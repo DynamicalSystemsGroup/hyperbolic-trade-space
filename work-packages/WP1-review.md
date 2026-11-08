@@ -111,14 +111,7 @@ Definition of good: docstrings give proved / not proved and cite symproof mimicr
 
 ## Open decisions (for the supervisor)
 
-- **G3-1.** Out-of-scope CI workflow changes in `.github/workflows/test.yml` (`0d2f0bd` action pins; `9b8a7e9` attribution check scanning the whole history). — options: accept as is / fix before acceptance / follow-up work package
-- **G3-2.** Added file and axioms beyond spec §6: `derivation/sumtools.py`; A0, A7, I5, I6, F5, F10. — options: accept as is / fix before acceptance / follow-up work package
-- **G3-3.** R-1 wording: extra shared symbols (i0, s, a, alpha, b, v, p, eps, t, M, simplex_theta, p_normalized) beyond the R-1 list. — options: accept as is / fix before acceptance / follow-up work package
-- **G3-4.** R-4: L8 `AXIOMS_USED` is [A7, I6] against spec §6's [A2]; A2 is not used by L8. — options: accept as is / fix before acceptance / follow-up work package
-- **G3-5.** Ledger placement: F5/F10 are tagged POSITED with `fallback=True` but printed only under FALLBACKS, not under POSITED. Roles and failure modes are substantive. — options: accept as is / fix before acceptance / follow-up work package
-- **G3-6.** R-10 literal grep: `range(` hits in helpers (`lemma_03:101` iteration cap, `lemma_08:47` block-grid indexing); neither loops over a concrete size. — options: accept as is / fix before acceptance / follow-up work package
-- **G3-7.** Remaining weak spots in R-5, documented in docstrings and ledger: L3 balanced-KKT premise (R1 plus first-order condition); L4 sign step on unlinked real placeholders; L5/L10 squeeze assembled by comment under F5/F10; L5 strictness for n ≥ 2 in STATEMENT/spec but not asserted. This touches a good-enough item (R-5). — options: accept as is / fix before acceptance / follow-up work package
-- **G3-8.** Minor observations: O-1 (README Status row names SHAs that no longer exist on main), O-3 (I1 to I3 as remarks), O-4 (helper-local symbols), the one-line spec edit to §6, and the CI history-scan behaviour noted under G3-1. — options: accept as is / fix before acceptance / follow-up work package
+None. Every item was resolved through the decision loop (round 3: G3-7 decided by the round-1 disposition; G3-1 to G3-6 and G3-8 put as one item). Decided: 8, deferred: 0, raised: 0. Records in `WP1-decisions.md`.
 
 Resolved in earlier rounds and verified closed in this pass: G-5 "Fix L8 before acceptance" (L8 now derived, three negative controls pass) and G-9 "Rewrite the message and force-push" (R-16 returns 0 over all history).
 
@@ -130,14 +123,14 @@ next to the scope if the project has no PRs.
 
 | Gap | Disposition (accept as is / fix before acceptance / follow-up work package) | Reason or follow-up |
 |---|---|---|
-| G3-1 CI workflow changes outside deliverables | pending | pending |
-| G3-2 sumtools.py, A0/A7/I5/I6/F5/F10 | pending | pending |
-| G3-3 extra shared symbols | pending | pending |
-| G3-4 L8 axiom list vs spec | pending | pending |
-| G3-5 F5/F10 ledger placement | pending | pending |
-| G3-6 `range(` grep hits | pending | pending |
-| G3-7 remaining weak spots L3/L4/L5/L10 | pending | pending |
-| G3-8 minor observations | pending | pending |
+| G3-1 CI workflow changes outside deliverables | accept as is | Supervisor (2026-11-08): "Accept all as is". See WP1-decisions.md, round 3. |
+| G3-2 sumtools.py, A0/A7/I5/I6/F5/F10 | accept as is | Supervisor (2026-11-08): "Accept all as is". See WP1-decisions.md, round 3. |
+| G3-3 extra shared symbols | accept as is | Supervisor (2026-11-08): "Accept all as is". See WP1-decisions.md, round 3. |
+| G3-4 L8 axiom list vs spec | accept as is | Supervisor (2026-11-08): "Accept all as is". See WP1-decisions.md, round 3. |
+| G3-5 F5/F10 ledger placement | accept as is | Supervisor (2026-11-08): "Accept all as is". See WP1-decisions.md, round 3. |
+| G3-6 `range(` grep hits | accept as is | Supervisor (2026-11-08): "Accept all as is". See WP1-decisions.md, round 3. |
+| G3-7 remaining weak spots L3/L4/L5/L10 | accept as is | Decided by the round-1 disposition (fix only L8); premises are documented and in the ledger. |
+| G3-8 minor observations | accept as is | Supervisor (2026-11-08): "Accept all as is". See WP1-decisions.md, round 3. |
 
 ## Recommendation
 

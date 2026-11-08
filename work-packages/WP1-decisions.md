@@ -42,6 +42,22 @@ Records typed by the agent (driver session, Claude Fable 5.1, 2026-11-07). Decis
   main with a lease on d9bcf63. A CI step now fails any push whose history contains an attribution
   line. The whole review reruns again; G-1 to G-8 are re-listed then.
 
+## Review gaps, round 3 (third full review, after the history rewrite)
+
+- **Date:** 2026-11-08
+- **Review:** `work-packages/WP1-review.md` (696aa1f); D-1..D-6 met, R-1..R-16 met.
+- **G3-7** (documented premises in L3/L4/L5/L10): decided by the supervisor's round-1 disposition
+  "Fix L8 before acceptance", which selected only the L8 derivation and the L5 n ≥ 2 note for fixing;
+  the rest stand as documented premises and ledger conditions. Disposition: accept as is.
+- **G3-1, G3-2, G3-3, G3-4, G3-5, G3-6, G3-8** put to the supervisor as one item.
+- **Supervisor (mzargham), verbatim:** "Accept all as is"
+- **Disposition:** accept as is. Reasons: CI edits are the driver's maintenance of a WP0 deliverable;
+  the helper module and the added axioms (A0, A7, I5, I6, F5, F10) were anticipated by the scope's
+  defaults and are all in the ledger; the spec's per-lemma axiom lists are updated to match the
+  ledger in WP6; the `range(` uses do not enumerate sizes.
+
 ## Acceptance (acceptance gate)
 
-- pending the rerun review.
+- Review recommends acceptance with the listed gaps noted; every gap has a disposition.
+- Acceptance act named in the scope: verbal acceptance in chat.
+- **Status:** awaiting the supervisor's acceptance.
