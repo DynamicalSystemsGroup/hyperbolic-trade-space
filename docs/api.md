@@ -1,0 +1,210 @@
+# API
+
+This page documents the public interface as built, stage by stage, and then as it extends to
+$K>1$ terms and to kernel methods. The extensions are **documented, not built**. Pipeline stages
+are those of [Mathematics](method.md): stage 2 conditioning, stage 3 identification, stage 4
+analysis. Dimension is arbitrary: $d$ metrics, $d-1$ chart coordinates. The package follows the
+scikit-learn conventions [@pedregosa2011scikit; @buitinck2013api]: parameters stored verbatim,
+validation in `fit`, fitted attributes ending in an underscore.
+
+## Overview
+
+| Name | Kind | Role | Stage |
+|---|---|---|---|
+| `LogAffinePreconditioner` | transformer | attributes to larger-is-better metrics, invertible (A4, L9) | 2 |
+| `frontier_in_original_units` | function | fitted frontier as a monomial in raw attributes (L9) | 2 and 4 |
+| `HyperbolicTradeSpace` | transformer | fit the frontier; chart $[Z\mid\log V]$ (L1 to L5, L8) | 3 |
+| `select_temperature` | function | choose $\tau$ by target fraction above the frontier (L5) | 3 |
+| `make_frontier_data` | function | synthetic data with a planted frontier | testing |
+| `make_configured_frontier_data` | function | planted frontier with configuration variables | testing |
+| `tension_report` | function | which metrics contend, align, and the directions of trade | 4 |
+| `TradeSpaceRegressor` | regressor | metrics, coordinates and novelty from configuration | 4 |
+| `__version__` | string | package version | |
+
+Submodules used by import path: `hyperbolic_trade_space.gaps` (`knn_gap_scores`, `find_holes`,
+`frontier_targets`, `orient_by_pca`), `hyperbolic_trade_space.tensions` (`TensionReport`) and
+`hyperbolic_trade_space.plotting` (the plotting helpers). They are stage 4 tools.
+
+## Stage 2: conditioning
+
+**`LogAffinePreconditioner(orientation=None, shift=0.0, scaler="standard")`.** Computes
+$z=o\log(X+s)$, scales it, and returns $m=\exp(\text{scaled }z)$. Zeros ($X+s=0$) map to $0$;
+negatives raise `ValueError` "Negative values in data". Fitted: `scaler_`, `log_scale_`,
+`log_offset_`, `orientation_`, `shift_`. `inverse_transform` is exact. This is the conditioning of
+assumption A4 and the map in lemma L9. The full discussion is in [Preconditioning](preconditioning.md).
+
+**`frontier_in_original_units(estimator, preconditioner)`.** Returns `exponents_orig`
+($w_j\alpha_j$), `log_const` ($w\cdot b-\beta$) and `shift`, the closed form of L9 for a
+single-term fit (A1, A2, A4).
+
+## Stage 3: identification
+
+**`HyperbolicTradeSpace`.** Parameters `temperature` ($\tau>0$ or `np.inf`, A3), `min_exponent`,
+`coordinates` (`"ilr"` or `"alr"`), `n_terms` (only 1 is built), `term_temperature` (reserved),
+`tol`, `max_iter`. Fitted attributes: `exponents_` of shape `(1, d)`, `log_offset_` of shape
+`(1,)`, `support_weights_`, `n_eff_`, `frac_above_`, `objective_`, `n_iter_`, `basis_`,
+`training_log_v_`. `transform` is the invertible chart $[Z\mid\log V]$ (L8, A7); `inverse_transform`
+inverts it; `score_samples` returns $\log V$ (L1); `invariant_value` and `project` give $V$ and the
+projection to the frontier. It has no `predict`: it follows the decomposition-family semantics of
+scikit-learn. Frontier $V\le1$ is attainable, $V=1$ the frontier (L1, A2).
+
+**`select_temperature(X, target_frac_above=0.10, bounds=(0.1, 1e4), tol=0.01, **params)`.**
+Bisects $\log\tau$ so that the fitted `frac_above_` is within `tol` of the target. The temperature's
+units are inverse log-spread, so the answer depends on the conditioning (L5); the bracket ends are
+checked and a `ValueError` is raised when the target is not bracketed.
+
+**`make_frontier_data`, `make_configured_frontier_data`.** Seeded generators of positive data with a
+planted frontier (the second also returns a configuration matrix and a smooth map from configuration
+to metrics), used by the tests and by the examples (A1, A2).
+
+## Stage 4: analysis
+
+### Gaps and white space (`hyperbolic_trade_space.gaps`)
+
+- `knn_gap_scores(Z, k=5)`: mean distance to the $k$ nearest neighbours, normalized by its median.
+- `find_holes(Z, resolution=50, threshold=2.0)`: grid cells inside the convex hull of $Z$ scored by
+  distance to the nearest data point; supports $d-1\in\{1,2,3\}$. A hole is a candidate, not a
+  verdict: a region with no near-frontier points can be an opportunity or a structural stratum,
+  and human validation decides (see [Extensions and limitations](limitations.md)).
+- `frontier_targets(Z_points, estimator, preconditioner=None)`: sets $\log V=0$ at given chart
+  coordinates and maps back to metrics (L8) and, if a preconditioner is given, to attributes (L9).
+- `orient_by_pca(Z, mask=None)`: rotation to the principal axes of the masked rows, with a fixed
+  sign convention; returns `(Z_rotated, components, explained_variance_ratio)`.
+
+### The tension report (`tension_report`)
+
+`tension_report(estimator, X, band=None, min_near_frontier=10, threshold=1e-3, association="pearson")`
+returns a frozen `TensionReport`. The model is built to find tensions, not variance: the fit picks
+the positive combination of log-metrics with the smallest upper extent (L3, L4), a binding
+constraint, where PCA picks the directions of largest spread. The report has three parts, plus the
+contending set.
+
+1. **Participation and exchange rates.** `participating` marks the metrics with exponent above
+   `threshold`; the rest are free at the balanced point. `exponents` are the working-temperature
+   weights, `exchange_rates[j, k]` $=-w_k/w_j$, the elasticity of metric $k$ against $j$ along
+   the frontier (L7), `nan` where $w_j$ is not above threshold. The reading needs the balanced
+   point on the relative interior of a facet with a positive normal (R1).
+2. **Association among near-frontier designs.** For rows with $|\log V|<$ `band`, `association` is
+   the Pearson (or Spearman) correlation matrix of the log-metrics: negative means traded,
+   positive means aligned. `closure_note` states the closure effect: near the frontier $w\cdot u$
+   is almost constant (L1), so a binding constraint induces negative association among participating
+   metrics even where no designer traded them. Association is evidence of tension only together
+   with the exponents and the directions.
+3. **Tension directions.** `tension_directions` are the principal directions of the near-frontier
+   $Z$ (unit vectors in chart coordinates), `tension_loadings` the same directions as loadings on
+   the log-metrics through the chart basis (L8, A7), and `explained_spread` the share of near-frontier
+   variance along each. They equal `orient_by_pca` on the same rows.
+
+**The contending set, the n-lemma reading.** `contending_set`, `contending_exponents`, `n_lemma` and
+`lemma_name` give the support of the solution at $\tau=\infty$. At $\tau=\infty$ the fit is a linear
+program (I1) whose solution is generically sparse, with exact zero exponents; the support is the set
+of metrics that contend at the balanced point, of any size $n$ and with no prior choice of which or
+how many: a monolemma ($n=1$), dilemma, trilemma, then an $n$-lemma. At a finite working $\tau$ the
+weights are smoothed (L5), so a small weight means weak participation, not membership; the report
+keeps the two distinct. **Caveat: `min_exponent` must be 0 for this reading.** A positive floor
+forces every exponent to be at least `min_exponent` and so masks the sparsity. The report solves the
+$\tau=\infty$ program itself with `min_exponent = 0` on the log of the supplied rows, independent of
+the fitted temperature and floor, and issues a `UserWarning` when the estimator was fitted with
+`min_exponent > 0` because its working weights are floored.
+
+Degenerate input is explicit: fewer than `min_near_frontier` near-frontier rows raises
+`ValueError` suggesting a larger band or temperature; $d=1$ returns a trivial report with empty
+directions; `band=None` means $1/\tau$ for finite $\tau$ and $0.1$ at $\tau=\infty$. The report is
+deterministic. Its limits: it describes one facet ($K=1$), so one tension; it depends on the band;
+and a tension is a binding constraint while a correlation is only a co-movement. Several regional
+tensions are the $K>1$ extension below, and a deflation search for successive tensions is a
+research question with no claim made.
+
+### Prediction from configuration (`TradeSpaceRegressor`)
+
+**`TradeSpaceRegressor(regressor, trade_space)`** is a supervised composition: `fit(X_config,
+Y_metrics)` clones and fits `trade_space` on the metrics, then clones and fits `regressor` on
+configuration to chart coordinates $[Z\mid\log V]$ (L8). `predict` returns metrics through the
+inverse chart; `predict_coordinates` returns `(Z, log_v)`; `predict_novelty` returns $V-1$ (novel
+where positive; L1); `predict_std` propagates the regressor's `return_std` by the delta method and
+raises `AttributeError` if the regressor lacks it; `score` is $R^2$ in coordinate space, not in
+metric units. Coordinates, not metrics, are the regression target, so the surrogate's error is
+inherited honestly by the novelty prediction. A 1-D `y` is accepted for a single metric. The
+`trade_space` may be a `Pipeline` ending in a `HyperbolicTradeSpace`, for example a preconditioner
+followed by the estimator.
+
+**Documented expected failure.** In `tests/test_sklearn_compat.py` the regressor instance carries
+one entry, `check_regressor_multioutput`. scikit-learn's check builds `y` with `make_regression`,
+which contains negative values, and does not apply the target-tag enforcement that the other
+regressor checks use; the regressor declares `target_tags.positive_only=True` and, because the metrics
+are log-transformed by the chart (A1), raises `ValueError` on negative `y`, which is the intended
+behaviour. Multi-output fit and predict shapes are covered separately by `tests/test_predictive.py`
+for $d=3$ and $d=1$. The dict is run with `xfail_strict=True`, so the entry would fail the suite if the
+check ever started passing. `LogAffinePreconditioner` and `HyperbolicTradeSpace` have empty
+expected-failure dicts.
+
+### Plotting (`hyperbolic_trade_space.plotting`)
+
+`plot_log_plane`, `plot_frontier_surface_3d`, `plot_frontier_coordinates`, `plot_v_by_variable` and
+`plot_tensions` each accept an optional `ax`, return a matplotlib `Axes`, and share one visual
+vocabulary declared as module constants: `FRONTIER_COLOR` (frontier $V=1$, black), `BAND_COLOR`
+(near-frontier band, grey), `HOLE_COLOR` (white space), `CATEGORY_COLORS` (one qualitative palette),
+`DATA_COLOR`, and `TENSION_CMAP` (diverging, tension to aligned). Targets are open markers.
+Matplotlib is imported lazily and nothing calls `plt.show()`.
+
+## As it extends to $K>1$ (documented, not built)
+
+The single monomial is the one-term case of the generalized posynomial
+
+$$
+V_K(m)=\Big(\sum_{k=1}^{K}c_k\prod_{j=1}^{d}m_j^{\kappa\theta_{kj}}\Big)^{1/\kappa},\qquad
+\Phi_K(u)=\frac1\kappa\log\sum_{k=1}^{K}\exp\!\big(\kappa(\theta_k\cdot u-\beta_k)\big),
+$$
+<!-- definition: L10 -->
+
+with each $\theta_k$ on the simplex and $\kappa>0$ (A6). $\Phi_K$ is softmax-affine and compatible
+with geometric programming (I4) [@hoburg2016data; @boyd2007tutorial]; the identity
+$\exp(\kappa\Phi_K)=\sum_ke^{-\kappa\beta_k}\prod_jm_j^{\kappa\theta_{kj}}$, the shift equivariance
+$\Phi_K(u+c\mathbf 1)=\Phi_K(u)+c$ that carries homogeneity, projection and novelty over, and the
+limit $\kappa\to\infty$ to $\max_k(\theta_k\cdot u-\beta_k)$ are proved in L10 (A2, A6, F10). As
+$\kappa\to\infty$ it is a maximum of monomials, the form fitted by convex piecewise-linear
+regression [@magnani2009convex]; it appears in aircraft design by geometric programming
+[@hoburg2014geometric].
+
+The interface is already shaped for it:
+
+- `n_terms` is the number of terms $K$; only 1 is built and other values raise
+  `NotImplementedError`.
+- `term_temperature` is $\kappa$, stored and ignored at $K=1$. It is distinct from `temperature`
+  ($\tau$, the data-level soft maximum of the fit), and the two roles stay separate.
+- `exponents_` has shape `(n_terms, d)`: row $k$ is $\theta_k$, each on the simplex (A6). At $K=1$ this is
+  `(1, d)`, the $w$ of the model.
+- `log_offset_` has shape `(n_terms,)`: entry $k$ is $\beta_k$.
+- Everything downstream is written in terms of $\Phi$, not of a single $w$: the score is
+  $\log V=\Phi(u)$, the chart is $[Z\mid\Phi(u)]$ with $Z$ unchanged (L8), novelty is $V-1$ and
+  projection subtracts $\Phi(u)$ from $u$ (L10). Any term set $\{(\theta_k,\beta_k)\}$ plugs in
+  through $\Phi$, whatever solver produced it, so the transform, inverse, plotting and the
+  regressor need no change.
+- Pieces that read $w$ directly (`frontier_in_original_units`, exchange rates, the contending set)
+  describe one facet. At $K>1$ they apply facet by facet, which is how regionally varying
+  elasticities and several regional tensions would be read.
+
+What is not built is a solver: the fit of an envelope with $K$ facets is non-convex, needs per-facet
+support, and needs a choice of $(K,\kappa)$. The L10 lemma proves identities, not fitted
+parameters. A solver-free substitute is to refit the single-term model at several reference points.
+See [Mathematics](method.md#the-posynomial-and-ggp-extension) and
+[Extensions and limitations](limitations.md).
+
+## Kernel methods (documented, not built)
+
+The research direction is expansions in a feature space that remain generalized posynomials, so that
+the programs stay geometric programs. Kernel PCA [@schoelkopf1998nonlinear] is the kin for the
+feature-engineering idea; no source cited here treats kernels restricted to GP-compatible forms. The
+candidate is a softmax-affine expansion anchored on support designs,
+
+$$
+\Phi(u)=\frac1\kappa\log\sum_{i\in S}\exp\!\big(\kappa\,\theta_i\cdot(u-u_i)\big),
+$$
+<!-- definition -->
+
+which is again of the form $\Phi$ above, so the API shape is the same: a term set, `exponents_` of
+shape `(n_terms, d)`, `log_offset_`, and `term_temperature`. A Gaussian radial basis function in log
+space is log-quadratic and falls outside the family. Selecting support designs, the local normals,
+the roles of the two temperatures, overfitting toward the data's convex hull and whether the novelty
+and white-space semantics survive are open questions. Nothing here is built, and nothing is claimed
+beyond the admissibility criterion; see [Mathematics](method.md#research-direction-kernel-methods-under-the-ggp-constraint).
