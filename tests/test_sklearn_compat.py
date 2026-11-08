@@ -66,3 +66,41 @@ def test_fitted_attributes_end_in_underscore_and_n_iter_positive():
         new = set(vars(est)) - before
         assert new and all(n.endswith("_") for n in new)
         assert est.n_iter_ >= 1
+
+
+# --- WP3 preconditioner ---
+from hyperbolic_trade_space import LogAffinePreconditioner  # noqa: E402
+
+PRECONDITIONER_EXPECTED_FAILURES: dict[str, str] = {}
+
+
+# A per-column orientation list fixes the width, but the checks fit several widths, so the
+# oriented instances use the scalar form (-1 for every column) and a shift/scaler variant.
+@parametrize_with_checks(
+    [
+        LogAffinePreconditioner(),
+        LogAffinePreconditioner(orientation=-1),
+        LogAffinePreconditioner(orientation=-1, shift=0.5, scaler="robust"),
+        LogAffinePreconditioner(scaler=None),
+    ],
+    expected_failed_checks=lambda est: PRECONDITIONER_EXPECTED_FAILURES,
+    xfail_strict=True,
+)
+def test_sklearn_compatible_preconditioner(estimator, check):
+    check(estimator)
+
+
+def test_preconditioner_expected_failures_have_reasons():
+    assert all(isinstance(r, str) and r.strip() for r in PRECONDITIONER_EXPECTED_FAILURES.values())
+
+
+def test_preconditioner_conformance_surface():
+    assert not hasattr(LogAffinePreconditioner, "_more_tags")
+    for name in ("predict", "decision_function", "score_samples"):
+        assert not hasattr(LogAffinePreconditioner, name)
+    tags = LogAffinePreconditioner().__sklearn_tags__()
+    assert tags.input_tags.positive_only is True and tags.input_tags.sparse is False
+    params = inspect.signature(LogAffinePreconditioner.__init__).parameters
+    odd = {name: object() for name in params if name != "self"}
+    est = LogAffinePreconditioner(**odd)
+    assert est.get_params() == odd and all(getattr(est, k) is v for k, v in odd.items())
