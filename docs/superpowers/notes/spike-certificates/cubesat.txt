@@ -1,0 +1,52 @@
+primary  K=3 tau                tau=  195.18 seed=0 assignment fixed     it=21 obj=0.117334 maxG=2.7e-05 bound=1.5e-05 gamma=2.20e-04 radius=1.79e-05 chg=0 empty=0 ties=0 dobj=1.8e-04 uncertified
+primary  K=3 tau                tau=  195.18 seed=1 assignment fixed     it= 7 obj=0.117334 maxG=2.7e-05 bound=1.5e-05 gamma=2.20e-04 radius=1.79e-05 chg=0 empty=0 ties=0 dobj=7.2e-05 uncertified
+primary  K=3 tau                tau=  195.18 seed=2 assignment fixed     it=21 obj=0.117333 maxG=2.2e-05 bound=1.2e-05 gamma=1.00e-03 radius=8.16e-05 chg=0 empty=0 ties=0 dobj=1.4e-05 uncertified
+primary  K=3 tau                tau=  195.18 seed=3 assignment fixed     it=13 obj=0.117334 maxG=2.7e-05 bound=1.5e-05 gamma=2.20e-04 radius=1.79e-05 chg=0 empty=0 ties=0 dobj=4.7e-05 uncertified
+primary  K=3 tau                tau=  195.18 seed=4 assignment fixed     it= 9 obj=0.117333 maxG=2.2e-05 bound=1.2e-05 gamma=1.00e-03 radius=8.16e-05 chg=0 empty=0 ties=0 dobj=8.1e-06 uncertified
+primary  K=1 tau (diagnostic)   tau=   38.10 seed=0 assignment fixed     it= 9 obj=0.052923 maxG=2.1e-05 bound=1.4e-05 gamma=5.84e-04 radius=4.76e-05 chg=0 empty=0 ties=0 dobj=5.1e-06 uncertified
+primary  K=1 tau (diagnostic)   tau=   38.10 seed=1 assignment fixed     it=23 obj=0.052923 maxG=1.6e-05 bound=1.1e-05 gamma=7.54e-04 radius=6.15e-05 chg=0 empty=0 ties=0 dobj=1.1e-06 uncertified
+primary  K=1 tau (diagnostic)   tau=   38.10 seed=2 assignment fixed     it=10 obj=0.052923 maxG=1.1e-05 bound=6.6e-06 gamma=1.13e-03 radius=9.23e-05 chg=0 empty=0 ties=0 dobj=9.2e-06 uncertified
+primary  K=1 tau (diagnostic)   tau=   38.10 seed=3 assignment fixed     it=13 obj=0.052922 maxG=2.8e-05 bound=1.5e-05 gamma=1.20e-03 radius=9.78e-05 chg=0 empty=0 ties=0 dobj=5.2e-06 uncertified
+primary  K=1 tau (diagnostic)   tau=   38.10 seed=4 assignment fixed     it= 9 obj=0.052923 maxG=2.1e-05 bound=1.4e-05 gamma=5.84e-04 radius=4.76e-05 chg=0 empty=0 ties=0 dobj=3.8e-06 uncertified
+primary  tau=inf                tau=     inf seed=0 assignment fixed     it= 6 obj=0.140561 maxG=2.0e-15 bound=8.5e-16 gamma=7.89e-04 radius=6.43e-05 chg=0 empty=0 ties=0 dobj=3.2e-06 certified
+primary  tau=inf                tau=     inf seed=1 assignment fixed     it= 7 obj=0.140562 maxG=9.2e-16 bound=6.2e-16 gamma=6.16e-05 radius=5.02e-06 chg=0 empty=0 ties=0 dobj=3.2e-05 certified
+primary  tau=inf                tau=     inf seed=2 assignment fixed     it= 8 obj=0.142377 maxG=2.8e-15 bound=1.7e-15 gamma=2.84e-04 radius=2.31e-05 chg=0 empty=0 ties=0 dobj=1.2e-04 certified
+primary  tau=inf                tau=     inf seed=3 assignment fixed     it= 8 obj=0.140094 maxG=1.7e-15 bound=8.9e-16 gamma=3.40e-04 radius=2.77e-05 chg=0 empty=0 ties=0 dobj=2.2e-05 certified
+primary  tau=inf                tau=     inf seed=4 assignment fixed     it= 8 obj=0.140109 maxG=6.9e-16 bound=5.7e-16 gamma=6.96e-04 radius=5.68e-05 chg=0 empty=0 ties=0 dobj=2.2e-04 certified
+primary: N=706, duplicate log-metric rows: 0, max ||(u,-1)|| = 6.135
+stock    K=3 tau                tau=  162.78 seed=0 assignment fixed     it=11 obj=0.092872 maxG=2.9e-05 bound=2.1e-05 gamma=1.49e-03 radius=1.19e-04 chg=0 empty=0 ties=0 dobj=8.1e-06 uncertified
+stock    K=3 tau                tau=  162.78 seed=1 assignment fixed     it=10 obj=0.092872 maxG=2.9e-05 bound=2.1e-05 gamma=1.49e-03 radius=1.19e-04 chg=0 empty=0 ties=0 dobj=1.1e-05 uncertified
+stock    K=3 tau                tau=  162.78 seed=2 assignment fixed     it=15 obj=0.114273 maxG=3.5e-05 bound=2.2e-05 gamma=8.71e-04 radius=6.96e-05 chg=0 empty=0 ties=0 dobj=3.8e-06 uncertified
+stock    K=3 tau                tau=  162.78 seed=3 assignment fixed     it=10 obj=0.092872 maxG=2.9e-05 bound=2.1e-05 gamma=1.49e-03 radius=1.19e-04 chg=0 empty=0 ties=0 dobj=1.1e-05 uncertified
+stock    K=3 tau                tau=  162.78 seed=4 assignment fixed     it= 7 obj=0.092872 maxG=2.9e-05 bound=2.1e-05 gamma=1.49e-03 radius=1.19e-04 chg=0 empty=0 ties=0 dobj=4.2e-06 uncertified
+stock    K=1 tau (diagnostic)   tau=   41.72 seed=0 assignment fixed     it= 9 obj=0.032607 maxG=1.8e-06 bound=1.3e-06 gamma=6.41e-04 radius=5.12e-05 chg=0 empty=0 ties=0 dobj=8.9e-06 uncertified
+stock    K=1 tau (diagnostic)   tau=   41.72 seed=1 assignment fixed     it= 9 obj=0.032607 maxG=1.8e-06 bound=1.3e-06 gamma=6.41e-04 radius=5.12e-05 chg=0 empty=0 ties=0 dobj=1.0e-05 uncertified
+stock    K=1 tau (diagnostic)   tau=   41.72 seed=2 assignment fixed     it=10 obj=0.032607 maxG=1.8e-06 bound=1.3e-06 gamma=6.41e-04 radius=5.12e-05 chg=0 empty=0 ties=0 dobj=1.3e-05 uncertified
+stock    K=1 tau (diagnostic)   tau=   41.72 seed=3 assignment fixed     it=10 obj=0.032607 maxG=1.8e-06 bound=1.3e-06 gamma=6.41e-04 radius=5.12e-05 chg=0 empty=0 ties=0 dobj=3.6e-06 uncertified
+stock    K=1 tau (diagnostic)   tau=   41.72 seed=4 assignment fixed     it= 9 obj=0.032607 maxG=3.0e-05 bound=1.3e-05 gamma=1.58e-04 radius=1.26e-05 chg=0 empty=0 ties=0 dobj=1.4e-05 uncertified
+stock    tau=inf                tau=     inf seed=0 assignment fixed     it= 8 obj=0.122401 maxG=2.0e-14 bound=4.4e-15 gamma=3.07e-04 radius=2.46e-05 chg=0 empty=0 ties=0 dobj=5.9e-04 certified
+stock    tau=inf                tau=     inf seed=1 assignment fixed     it= 7 obj=0.144716 maxG=1.0e-15 bound=5.8e-16 gamma=8.88e-16 radius=7.10e-17 chg=0 empty=0 ties=1 dobj=6.2e-07 certified
+stock    tau=inf                tau=     inf seed=2 assignment fixed     it=11 obj=0.144716 maxG=1.0e-15 bound=5.8e-16 gamma=8.88e-16 radius=7.10e-17 chg=0 empty=0 ties=1 dobj=8.0e-05 certified
+stock    tau=inf                tau=     inf seed=3 assignment fixed     it= 5 obj=0.122401 maxG=2.0e-14 bound=4.4e-15 gamma=3.07e-04 radius=2.46e-05 chg=0 empty=0 ties=0 dobj=1.6e-04 certified
+stock    tau=inf                tau=     inf seed=4 assignment fixed     it= 6 obj=0.144716 maxG=1.0e-15 bound=5.8e-16 gamma=8.88e-16 radius=7.10e-17 chg=0 empty=0 ties=1 dobj=2.5e-06 certified
+stock: N=780, duplicate log-metric rows: 0, max ||(u,-1)|| = 6.255
+
+== status by regime and setting
+regime   which                 status     
+primary  K=1 tau (diagnostic)  uncertified    5
+         K=3 tau               uncertified    5
+         tau=inf               certified      5
+stock    K=1 tau (diagnostic)  uncertified    5
+         K=3 tau               uncertified    5
+         tau=inf               certified      5
+
+== max_gap, gamma, radius, bound by regime and setting
+                                   max_gap                       bound                       gamma                  radius           n_iter     objective          
+                                       min           max           min           max           min       max           min       max    min max       min       max
+regime  which                                                                                                                                                      
+primary K=1 tau (diagnostic)  1.104880e-05  2.792985e-05  6.612772e-06  1.496193e-05  5.843216e-04  0.001200  4.762539e-05  0.000098      9  23  0.052922  0.052923
+        K=3 tau               2.188219e-05  2.653347e-05  1.244462e-05  1.481358e-05  2.198464e-04  0.001001  1.791868e-05  0.000082      7  21  0.117333  0.117334
+        tau=inf               6.938894e-16  2.803313e-15  5.669450e-16  1.666671e-15  6.159438e-05  0.000789  5.020277e-06  0.000064      6   8  0.140094  0.142377
+stock   K=1 tau (diagnostic)  1.753695e-06  3.007370e-05  1.325658e-06  1.255895e-05  1.581142e-04  0.000641  1.263913e-05  0.000051      9  10  0.032607  0.032607
+        K=3 tau               2.924639e-05  3.492048e-05  2.136838e-05  2.201931e-05  8.707286e-04  0.001486  6.960318e-05  0.000119      7  15  0.092872  0.114273
+        tau=inf               1.026956e-15  1.995626e-14  5.773160e-16  4.354387e-15  8.881784e-16  0.000307  7.099806e-17  0.000025      5  11  0.122401  0.144716

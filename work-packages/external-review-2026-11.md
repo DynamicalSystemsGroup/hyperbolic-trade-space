@@ -129,7 +129,24 @@ and the L10 docstring are wrong, as the reviewer says.
   assumptions and sensitivity evidence; derivations sharp; prose stating the policy once) before
   the next question.
 
-Pending: E-7 (second pass), E-8 to E-10 (E-1's implementation scope after the spike).
+- **E-1, spike delivered** (`docs/superpowers/notes/spike-certificates/README.md`, scripts and tables
+  beside it). Verdict: feasible in full as one package, 16 to 22 implementer hours, about 930 to
+  1220 net lines (code 200–260, tests 150–200, three lemma scripts and ledger 350–450, docs
+  230–310). The mathematics matches the solver as built exactly (step B is the argmin of
+  $f_k$; the mean slack is the fixed-assignment sum; the gap $G_k$ is the residual of E-2's full
+  simplex KKT). Two findings beyond the reviewer's ask: SLSQP's stop leaves $G_k\sim10^{-5}$ at
+  finite $\tau$, so a five-step Newton polish on the active set (25 lines) is needed for a tight
+  certificate; and the monotone guard fired on round-off in 9 of 100 $\tau=\infty$ restarts (8 of
+  them two identical facets), which a tolerance and the reported margin expose. At $\tau=\infty$ the
+  margin is exactly zero on the three recovery-failure seeds (a row on two facet planes), so the
+  proposition's hypothesis fails there by structure. Deferrable without weakening the response: the
+  SymPy scripts for Lemma 2's radius and Proposition 3's regrouping (state, verify numerically),
+  asserting the Corollary bound in tests, the floored-gap formula, a tolerance parameter. Not
+  deferrable: the three-level language and stopping declaration, $G_k$ computed and reported, the
+  margin and radius, the termination status, the four statements as ledger entries, the guard
+  tolerance. Implementation scope: put to the supervisor.
+
+Pending: E-7 (second pass), E-8 to E-10, E-1's implementation scope.
 
 ## Response letter
 

@@ -1,0 +1,24 @@
+== (a) polish at tau = 50, facets of the chosen fit, seeds 0..19
+  built            G_k: median=4.6e-06 max=4.7e-05  <=1e-6: 15/60  <=1e-8: 0/60  <=1e-10: 0/60  time 0.00s / 60 facets
+  ftol1e-14        G_k: median=2.1e-09 max=1.7e-07  <=1e-6: 60/60  <=1e-8: 33/60  <=1e-10: 13/60  time 0.06s / 60 facets
+  ftol1e-16+2000   G_k: median=3.8e-10 max=5.8e-08  <=1e-6: 60/60  <=1e-8: 48/60  <=1e-10: 24/60  time 0.09s / 60 facets
+  newton           G_k: median=1.0e-15 max=3.6e-15  <=1e-6: 60/60  <=1e-8: 60/60  <=1e-10: 60/60  time 0.07s / 60 facets
+  f_k decrease achieved by the Newton polish: median=1.0e-12 max=3.3e-11 (the built SLSQP point was within this of the exact optimum)
+
+== (b) tau = inf ties on seeds 1, 3, 16 (chosen fit)
+  seed  1: gamma=4.4e-17; tied row i=40 frontier_row=True planted facet=0; tying facets [1, 2] scores [-0.0, -0.0]; rows touching each facet plane [59, 58, 4]; rows touching >= 2 planes: 2
+  seed  3: gamma=4.0e-17; tied row i=127 frontier_row=True planted facet=1; tying facets [1, 0] scores [-0.0, -0.0]; rows touching each facet plane [4, 56, 58]; rows touching >= 2 planes: 2
+  seed 16: gamma=2.2e-16; tied row i=53 frontier_row=True planted facet=2; tying facets [2, 1] scores [0.0, -0.0]; rows touching each facet plane [66, 52, 2]; rows touching >= 2 planes: 2
+  seed  0: gamma=4.2e-04; tied row i=180 frontier_row=False planted facet=0; tying facets [1, 2] scores [-0.16523108167, -0.165652698349]; rows touching each facet plane [55, 29, 36]; rows touching >= 2 planes: 0
+
+== (b') guard stops at tau = inf: what happened in the 9 restarts
+  seed  0 restart 0: obj=0.739349849 rejected obj2=0.739349849 increase=+1.11e-16 rows reassigned=92 gamma(returned)=0.0e+00 it=3
+  seed  0 restart 3: obj=0.739349849 rejected obj2=0.739349849 increase=+1.11e-16 rows reassigned=89 gamma(returned)=0.0e+00 it=5
+  seed  1 restart 3: obj=0.651747630 rejected obj2=0.651747630 increase=+2.22e-16 rows reassigned=1 gamma(returned)=1.4e-16 it=9
+  seed  3 restart 2: obj=0.742437760 rejected obj2=0.742437760 increase=+3.33e-16 rows reassigned=58 gamma(returned)=0.0e+00 it=5
+  seed  8 restart 2: obj=0.679616317 rejected obj2=0.679616317 increase=+1.11e-16 rows reassigned=88 gamma(returned)=0.0e+00 it=12
+  seed  9 restart 1: obj=0.708331152 rejected obj2=0.708331152 increase=+1.11e-16 rows reassigned=27 gamma(returned)=0.0e+00 it=2
+  seed  9 restart 3: obj=0.708331152 rejected obj2=0.708331152 increase=+1.11e-16 rows reassigned=41 gamma(returned)=0.0e+00 it=7
+  seed 16 restart 1: obj=0.662266417 rejected obj2=0.662266417 increase=+1.11e-16 rows reassigned=17 gamma(returned)=0.0e+00 it=3
+  seed 17 restart 4: obj=0.713215378 rejected obj2=0.713215378 increase=+1.11e-16 rows reassigned=47 gamma(returned)=0.0e+00 it=3
+  9 guard stops found
