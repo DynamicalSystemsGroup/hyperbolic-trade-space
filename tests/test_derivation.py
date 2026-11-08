@@ -843,8 +843,6 @@ def test_wp13_lemmas_in_chain_in_order_and_no_enumeration(num):
 
     assert _WP13[num] in CHAIN_NAMES
     assert CHAIN_NAMES[-3:] == list(_WP13.values())
-    if importlib.util.find_spec(f"derivation.{_WP13[num]}") is None:
-        pytest.skip("lemma not written yet")
     src = inspect.getsource(_il.import_module(f"derivation.{_WP13[num]}"))
     assert "range(" not in src and "numpy" not in src and "scipy" not in src
 
@@ -958,3 +956,80 @@ def test_L13_fails_loudly_when_margin_claim_broken():
     ctx["L13"]["numeric"]["perturbed_margin"] = -1
     with pytest.raises(AssertionError, match="L13 FAIL"):
         mods[13].verify(ctx)
+
+
+def test_L14_verifies_at_symbolic_d_nk_K_with_declared_axioms():
+    ctx, mods = _run_wp13(12, 13, 14)
+    L14 = mods[14]
+    assert set(L14.AXIOMS_USED) >= {"A2", "R2"}
+    for name in L14.AXIOMS_USED:
+        assert name in AX.AXIOMS
+    assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
+    assert ctx["S"].K.is_integer and not ctx["S"].K.is_number
+    assert ctx["L14"]["nk"].is_integer and not ctx["L14"]["nk"].is_number
+
+
+def test_L14_statement_scopes_level_three_to_step_b_unpenalized_support_offsets():
+    _, mods = _run_wp13(12, 13, 14)
+    s = mods[14].STATEMENT
+    assert "Level 3" in s and "step B" in s and "unpenalized" in s
+    assert "beta_k = J_tau(U w_k)" in s and "support offsets" in s
+    assert "n_k (beta_k - w_k.ubar_k)" in s
+    assert "F(W') - F(W) = sum_k (n_k/N) (f_k(w'_k) - f_k(w_k)) >= 0" in s
+    assert "F(W) - F*_fixed" in s and "sum_k (n_k/N) G_k" in s
+    assert "fitted reference surface" in s
+
+
+def test_L14_partition_regrouping_is_stated_not_enumerated_and_not_a_fallback():
+    import inspect
+
+    mod = _il.import_module("derivation.lemma_14_assignment_stable")
+    src = inspect.getsource(mod)
+    assert "symbolic partition" in src and "one-line finite-sum argument" in src
+    assert not any("L14" in (a.statement + a.role) for a in AX.fallbacks())
+
+
+def test_L14_fails_loudly_when_premise_or_step_broken():
+    for key, bad in (
+        ("regroup_swap_equal", False),
+        ("local_min_slack", 1),
+        ("local_min_nonneg", False),
+        ("cor_slack", 1),
+        ("cor_nonneg", False),
+        ("objective_agrees", 1),
+    ):
+        ctx, mods = _run_wp13(12, 13, 14)
+        ctx["L14"][key] = bad
+        with pytest.raises(AssertionError, match="L14 FAIL"):
+            mods[14].verify(ctx)
+    # broken premises inherited from earlier lemmas
+    ctx, mods = _run_wp13(12, 13, 14)
+    ctx["L13"]["margin_positive"] = False  # R2 fails: no assignment-stable neighborhood
+    with pytest.raises(AssertionError, match="L14 FAIL"):
+        mods[14].verify(ctx)
+    ctx, mods = _run_wp13(12, 13, 14)
+    ctx["L12"]["chain_nonneg"] = False  # Lemma 1 not established
+    with pytest.raises(AssertionError, match="L14 FAIL"):
+        mods[14].verify(ctx)
+
+
+def test_wp13_audit_lists_new_axioms_and_headline_names_fallbacks():
+    _, used = run_chain(verbose=False)
+    for name in ("I8", "I9", "F12", "R2"):
+        assert name in used, f"{name} is consumed by no lemma"
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        print_audit(used)
+    out = buf.getvalue()
+    head = out[out.index("HEADLINE") :]
+    for name in ("I8", "I9"):
+        assert name in out
+    for name in ("R1", "R2", "F5", "F10", "F12"):
+        assert f"{name}: buys:" in head and f"{name}: when it fails:" in head
+    assert "L14" in out and "L12" in out and "L13" in out
+    buf = io.StringIO()
+    from derivation.run import main
+
+    with redirect_stdout(buf):
+        assert main() == 0
+    assert "L1 -> L14" in buf.getvalue() and buf.getvalue().rstrip().endswith("ALL LEMMAS PASS.")
