@@ -42,7 +42,15 @@ def test_check_designs_inside_the_aggressive_box_and_ranges():
 def test_predictions_recorded_for_the_proposals_only():
     preds = pd.read_csv(PREDS)
     assert len(preds) == 3 and (preds.role == "proposal").all()
-    for col in ["pred_log_v", "pred_z1", "pred_std_log_v", "tau", "band", *CONFIG]:
+    for col in [
+        "pred_log_v",
+        "pred_z1",
+        "pred_std_slew_time_s",
+        "pred_std_total_mass_kg",
+        "tau",
+        "band",
+        *CONFIG,
+    ]:
         assert col in preds.columns
     checks = pd.read_csv(CHECKS)
     prop = checks[checks.role == "proposal"].set_index("design_id")

@@ -14,7 +14,8 @@ trade space fitted on the four metrics slew time, pointing error, control effort
 well-separated holes of the data's chart, maps each to the configuration (from a seeded pool of
 random draws inside the aggressive gain box and the model's variable ranges) whose predicted
 ``[Z | log V]`` is nearest the target ``(Z_hole, 0)``, and writes the three proposals with their
-predictions (log V, Z and ``predict_std``) to ``data/check_predictions_cubesat.csv``. The three
+predictions (log V, Z and the delta-method standard deviations of the four predicted metrics,
+``pred_std_<metric>`` from ``predict_std``) to ``data/check_predictions_cubesat.csv``. The three
 hand-written candidates (a fast effort-hungry design, a precise heavy-sensor design, a light slow
 design) are fixed in ``CANDIDATES`` below; they are not predicted.
 
@@ -177,7 +178,7 @@ def predict() -> pd.DataFrame:
         i = best_i[k]
         cfg = pool.iloc[[i]]
         z, lv = reg.predict_coordinates(features(cfg, ranges))
-        zs, lvs = _std(reg, features(cfg, ranges), Z_data.shape[1])
+        sd = _std(reg, features(cfg, ranges), len(METRICS))
         row = {"role": "proposal", "design_id": 1004 + k, "name": f"proposal_{k + 1}"}
         row.update(cfg.iloc[0].to_dict())
         for j in range(Z_data.shape[1]):
@@ -185,9 +186,8 @@ def predict() -> pd.DataFrame:
         for j in range(Z_data.shape[1]):
             row[f"pred_z{j + 1}"] = float(z[0, j])
         row["pred_log_v"] = float(np.ravel(lv)[0])
-        for j in range(Z_data.shape[1]):
-            row[f"pred_std_z{j + 1}"] = float(zs[j])
-        row["pred_std_log_v"] = float(lvs)
+        for name, v in zip(METRICS, sd, strict=True):
+            row[f"pred_std_{name}"] = float(v)
         row["hole_score"] = chosen_scores[k]
         row["distance_to_target"] = best_d[k]
         row["tau"] = float(tau)
@@ -198,12 +198,12 @@ def predict() -> pd.DataFrame:
 
 
 def _std(reg, F, p):
-    """predict_std per output column ([Z | log V]); falls back on NaN if unavailable."""
+    """``predict_std``: standard deviation of each of the ``p`` predicted metrics (attribute units;
+    these are not standard deviations of Z or log V). NaN if unavailable."""
     try:
-        s = np.atleast_2d(np.asarray(reg.predict_std(F), float))
-        return s[0, :p], s[0, p]
+        return np.asarray(reg.predict_std(F), float).reshape(-1)[:p]
     except (AttributeError, ValueError, NotImplementedError):
-        return np.full(p, np.nan), np.nan
+        return np.full(p, np.nan)
 
 
 def simulate() -> pd.DataFrame:
