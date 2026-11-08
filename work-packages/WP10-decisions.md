@@ -301,6 +301,24 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   hardware values in the case (beyond: datasheet values). The outline's Discussion and Future work
   sections carry this list.
 
+## Sequencing: internal loops, external review, then the paper (2026-11-08, late)
+
+- **Supervisor (mzargham), verbatim** (during WP9's acceptance gate): "i also want to note that we
+  should probably do some session clean up. i think the old plan is out of date, though my overall
+  intents are in place. we've done a lot of reviewing and tightening loops. plus i have feedback
+  from a third party reviewer which i want to decide how to address. once we've completed the
+  internal loops and the decision plus act on how we want to handle the reviewer feedback we can
+  move  back to the paper writing. i punted that a lot since i view a paper as a narrative view on
+  the research itself and we've been hardening the research itself."
+- Disposition: the order is (1) finish WP9's internal loops and its acceptance; (2) take the third
+  party reviewer's feedback through the decision loop item by item, recorded in
+  `work-packages/external-review-2026-11.md` (each item: the reviewer's point, the supervisor's
+  verbatim disposition: accept as is / fix in a named package / follow-up / decline with reason),
+  and act on the dispositions; (3) then scope WP12 and WP10. The session plan file outside the
+  repository was rewritten to the current state; the intents (the story, the drill-down levels, the
+  reader model, the notation, the breakdown) stand as recorded in this file and the notes.
+
 ## Scope approval (approval gate)
 
-- pending (the paper's scope is drafted after WP9 and WP12 are approved)
+- pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
+  WP12)

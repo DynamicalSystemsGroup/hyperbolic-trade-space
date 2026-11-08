@@ -64,6 +64,6 @@ what it fixes for later packages. The design spec is
 | WP7 | `WP7-scope-of-work.md` | verbal, 2026-11-08 ("approve 7 and 8", `WP7-decisions.md`) | `main` 94f5fdf..755bf5e | `WP7-review.md` (39bbe18, second pass) | verbal, 2026-11-08 ("Accept WP7 as the baseline", `WP7-decisions.md`); notebook retired when the WP9 paper lands |
 | WP9 | `WP9-scope-of-work.md` (the solver) | verbal, 2026-11-08 ("Approved", `WP9-decisions.md`) | `main` 3bebe3e..6b4e773 (Amendment 1 at 98d8329) | `WP9-review.md` (third review after Amendment 2) | — |
 | WP12 | to be scoped after WP9's approval (the search; outline v2) | — | — | — | — |
-| WP10 | the paper; `WP10-decisions.md` holds the story and the redirection; scope drafted after WP9 and WP12 are approved (`WP10-scope-of-work.md` is the superseded first draft) | — | — | — | — |
+| WP10 | the paper; `WP10-decisions.md` holds the story and the redirection; scope drafted after WP9's acceptance, the external reviewer's feedback triage (`external-review-2026-11.md`, to be written) and WP12 (`WP10-scope-of-work.md` is the superseded first draft) | — | — | — | — |
 | WP11 | to be scoped at WP10's acceptance | — | — | — | — |
 | WP8 | `WP8-scope-of-work.md` (Amendment 1, MkDocs → mystmd, pending re-approval) | verbal, 2026-11-08 ("approve 7 and 8", `WP8-decisions.md`); Amendment 1 pending | waiting for WP11 | — | — |
