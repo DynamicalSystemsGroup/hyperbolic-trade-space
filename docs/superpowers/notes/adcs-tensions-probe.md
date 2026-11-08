@@ -566,3 +566,100 @@ its association with mass is -0.11 (-0.056 at 0.5 degree) and total mass has exp
 did. The statement for the notebook: on this case the mass-agility trade of the wheel class is a feasibility boundary; the
 frontier tensions are control effort against agility, pointing against effort and mass, and the energy-sizing ones (mass against
 depth of discharge, reserve and power margin). No further lever is used.
+
+### Amendment 5: three levers (reasoning written and committed before any simulation or any new column)
+
+Supervisor choice: "try both new levers then report back" (`work-packages/WP4b-decisions.md`, amendment 5). Momentum stays
+enforced (feasible = settled and `power_ok` and `momentum_ok`, every attribute positive); the clauses and thresholds of R-13 and
+R-14 are unchanged and the same hand probe (the tests of `tests/test_adcs_enrichment.py`, parametrized over the dataset) runs on
+each dataset. The 30 degree baseline `adcs_designs_cubesat.csv` is not touched; new datasets go beside it. Everything in this
+section is written before the new dataset is simulated and before the headroom attribute is computed on any row. The only
+numbers used are non-dynamic ones: the slew-axis inertia of the sampled designs (accounting only, no `simulate_adcs`) and
+closed-form bounds.
+
+**Lever (i): aggressive-gain regime. Deriving the box.**
+
+1. Linearised loop (q_vec = theta/2 as in Amendment 3): J theta'' + Kd theta' + (Kp/4) theta = 0. Damping ratio
+   zeta = Kd / sqrt(J Kp); the slow pole when overdamped is Kp/(4 Kd), so the settling timescale is 4 Kd/Kp s and a 1 % settling
+   takes 4.6 of those, a 1 degree arrival (1/30 of the slew) 3.4 of them.
+2. The torque-limited (bang-bang) part of a rest-to-rest slew of theta = 0.52 rad takes about 2 sqrt(J theta / T). At the median
+   inertia of the sampled designs (J = 0.36 kg m2; range 0.23 to 0.99) that is about 50 s for a small wheel (T = 0.3 mN m),
+   19 s for a medium (2 mN m) and 8.5 s for a large (10 mN m). Wheel class can separate arrival time only when the PD tail
+   (3.4 x 4 Kd/Kp = 13.6 Kd/Kp s) is not longer than these times, otherwise the tail hides the class, which is what Amendment 4
+   found: at the baseline box the median Kd/Kp is 3.9 and the tail is about 53 s, longer than the bang-bang time of medium and
+   large wheels. So the box must put Kd/Kp mostly at or below about 5 and, to make the demand exceed the cap of every class from the
+   first instant, put the proportional torque Kp/2 sin(theta/2) = 0.13 Kp above 10 mN m (Kp above 0.08) so that all three
+   wheels are torque-limited during the slew and the class sets the speed.
+3. Damping must stay sensible for the whole inertia range: stability holds for any positive gains, but a very underdamped loop
+   rings (long settling that is not a wheel effect and larger momentum reversals). Requirement: zeta of at least 0.5 for the
+   large majority of the box over J = 0.23 to 0.99, and overdamping not so deep that the slow pole returns.
+4. Chosen box (ranges, log-uniform as the baseline): **Kp 0.2 to 2.0 N m/rad, Kd 0.3 to 1.5 N m s/rad** (baseline: Kp 0.03 to 1.0,
+   Kd 0.3 to 1.5: the Kd range is kept, the Kp floor is raised by 6.7 and its ceiling by 2). Computed on the inertias of the 1000
+   sampled designs with independent log-uniform Kp, Kd: Kd/Kp at or below 5 for 97.8 % of the box (baseline 57 %), at or below 2
+   for 76 %, at or below 1 for 47 %, median 1.07 (baseline 3.9); zeta at or above 0.7 for 84 %, below 0.5 for 5.3 %, below 1
+   (underdamped) for 33 %. The slow-pole time constant 4 Kd/Kp has median 4.3 s (baseline 15.5 s). Other boxes were computed
+   on paper only (Kp 0.1 to 1.0 with Kd 0.1 to 1.0: zeta below 0.3 for 8 %; Kp 0.3 to 3.0 with Kd 0.4 to 1.5: 100 % at or below 5
+   but demand three times above the cap); this one was taken as the compromise, not tuned against any outcome.
+5. Where it lives: the SysML model gets a second design-space part, `part def AggressiveGainSpace :> DesignSpace` redefining
+   `KpMin`, `KpMax`, `KdMin`, `KdMax`, and `part aggressiveGains : AggressiveGainSpace`; the Python reads whichever part is selected
+   (`gain_box="baseline"` default or `"aggressive"`), no number enters Python. Generator flag `--gain-box {baseline,aggressive}`;
+   the aggressive dataset is written to `adcs_designs_cubesat_gains.csv`, the baseline default is unchanged.
+6. Scenario unchanged: 30 degrees, wheels as committed (10 / 30 / 100 mN m s, 0.3 / 2 / 10 mN m). Horizon: the worst corner
+   (Kd/Kp = 7.5) has a 1 % settling of 4.6 x 30 s = 138 s, so 300 s would suffice, but the horizon is kept at 600 s for
+   comparability and because it costs nothing in the results.
+7. Command (recorded): `uv run python examples/adcs/generate_dataset.py --model cubesat --gain-box aggressive --n 1000 --seed 0
+   --slew-deg 30 --t-end 600 --force`. The designs are sampled with the same seed and the same enumerations; the sampler draws Kp, Kd from the
+   chosen box, so the wheel, tracker, span and battery columns of design i are identical to the baseline's (same child seeds, the
+   Kp, Kd draws differ because the range changed).
+
+**Expected consequences of lever (i), stated before the data.**
+- More torque saturation for every class: the demand is 26 to 260 mN m at the first instant, above every cap. The median
+  saturated fraction of the horizon rises for all classes; the small/large ratio of R-14 may shrink (large wheels saturate far
+  more than at baseline), so R-14 clause 1 (small at least 3 times large) is at risk and is evaluated, not assumed.
+- More momentum violations for small wheels: with the demand always saturated the slew is bang-bang with little early braking,
+  so the bound of Amendment 3 (peak momentum sqrt(T J theta) against the capacity, J of at most h_max^2/(T theta)) applies
+  almost exactly: J at most 0.64 for small wheels, 0.86 for medium, 1.9 for large. The share of the sampled inertias above those
+  bounds is 18 % (small), 6 % (medium), 0 % (large); the baseline observed 19.2 %, 4.3 % and 0, so the bound is accurate. Underdamped
+  overshoot (33 % of the box) adds reversal momentum. Estimate: `momentum_ok` violated for about 25 % of small designs (range 20
+  to 35), about 7 % of medium (5 to 12), about 0 to 1 % of large; feasible share overall about 75 % (70 to 80).
+- Agility by wheel class: median 1 degree slew time about 55 to 65 s small, 25 to 30 s medium, 15 to 20 s large (small/large near
+  3, against 1.6 at baseline); the PD tail still adds a few times 4 Kd/Kp. Settling still carries the slow pole, so its class ratio
+  stays modest (about 1.5 to 2.5).
+- Whether mass enters the frontier: open. Wheel class explains 55 % of the variance of total mass and, with this box, much of the
+  variance of slew time, so a negative slew time-mass association near the frontier (heavier wheel, faster) of -0.3 to -0.5 is
+  plausible and total mass entering the contending set at tau = infinity is possible, but the frontier is selected on ten
+  attributes, and control effort and the pointing attribute (which now improves with Kp) are expected to keep dominating. I do not predict a pass.
+
+**Lever (ii): momentum headroom attribute. Choice and orientation.**
+
+- Definition: `momentum_utilisation` = `peak_momentum_nms` / wheel capacity (`maxMomentum` of the design's wheel class), the
+  fraction of the momentum storage used by the slew. **Smaller is better** (more headroom for the same slew), so it is oriented
+  with the reciprocal like the other smaller-is-better attributes (u = -log utilisation). For feasible designs `momentum_ok` is
+  exactly utilisation at most 1, so it lies in (0, 1] on the feasible set and its log is finite and bounded above by 0.
+- Why a ratio and not capacity minus peak: the ratio is dimensionless and bounded, it is the physical margin of the existing
+  `momentum_ok` flag (utilisation at most 1), and it treats a small wheel run at 90 % the same as a large wheel run at 90 %. The
+  difference is dominated by capacity (10 / 30 / 100 mN m s, a factor 10), so it would simply rank the classes and put mass on
+  the frontier by construction, which tests the wheel table and not the trade. With the bang-bang formulas the ratio is
+  1.25 sqrt(J), 1.07 sqrt(J), 0.72 sqrt(J) for small, medium, large (J in kg m2), a factor 1.7 between the extreme classes, which
+  is a margin that wheel class moves without fixing it. As a sensitivity only (declared now, not an attribute of the verdict, like the
+  0.5 degree band of Amendment 4) the difference capacity minus peak is also evaluated once on the datasets where the ratio is used.
+- Where it lives: a function in the model layer, `cubesat_model.add_momentum_utilisation(df, capacities)`, with
+  `CubesatModel.wheel_capacities()` reading the capacities of the wheel classes from the SysML model through the client
+  (`maxMomentum` of each wheel part def). The committed CSVs are not rewritten; the column is derived when a dataset is read.
+- Expectation (before the data): on the 30 degree baseline dataset the PD law is not saturated for most medium and large wheels, so
+  peak momentum is set by the response (inertia and gains) and not by the wheel; utilisation is then mostly inversely proportional to the capacity,
+  heavy wheels have a low utilisation and a high mass: a negative utilisation-mass association is plausible, but the wheel class
+  also acts only as a factor 10 in capacity against a factor 5 in mass, so the margin does not make wheel class a frontier trade
+  alone. I expect lever (ii) alone to fail R-13 (mass exponent below 0.05 or association above -0.30) but I do not know.
+
+**Lever (iii): both.** The aggressive-gain dataset with the utilisation attribute (eleven attributes). Lever (i) moves the speed of
+the class, lever (ii) its momentum margin; together heavy wheels would be fast and have low utilisation while light ones are slow and near their
+capacity, which is a mass-against-agility-and-headroom trade by construction of the physics. This is the lever most likely to
+change the answer; the expectation is a pass of (c) at best and a mass exponent above 0.05 only if the effort attribute does not absorb it.
+
+**Reporting.** For each lever the probe note will carry: feasible per class, the contending set at tau = infinity with exponents, the
+mass exponent and its bootstrap support (100 resamples, seed 0), the settling-mass and slew time-mass associations pooled over the
+near-frontier rows at the working tau, and the near-frontier counts per class. STOP RULE after lever (iii): if R-13 fails on all
+datasets the finding is recorded as the amendment to R-13 (for which lever mass entered the contending set and with what
+exponent; whether wheel class is a feasibility boundary or not) and the failing tests are `xfail(strict=True)` per dataset; if
+R-13 passes under a lever, that dataset's tests carry no xfail.
