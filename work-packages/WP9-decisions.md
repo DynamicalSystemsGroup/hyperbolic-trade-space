@@ -236,3 +236,11 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   assertions intact; edits forced by approved deliverables listed with their reasons) and drops
   "additions only" and the hard-coded lemma counts as constraints; the driver then names the gap
   that remains and proposes how to address it.
+- The driver named the remaining gap (the ledger's new "solver level" class is printed by the chain
+  runner but defined nowhere a reader of the ledger looks) and proposed a paragraph in the
+  proof-conventions note and a sentence on the method page, plus the `n_restarts` keyword for the
+  G2-1 condition. **Supervisor (mzargham), verbatim:** "Yes, do that and rerun the review".
+  Disposition: G2-3 fix = document the solver-level ledger class where the ledger's rules live; G2-1
+  condition = `n_restarts` (default 5) on `solve_terms` and the estimator, with the docs naming more
+  restarts as the analyst's option; a fresh third review of the delta; then the gate resumes with
+  G2-7 and the bundle.
