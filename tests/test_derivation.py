@@ -137,7 +137,8 @@ def test_L6_gaussian_cumulant_abstract():
 
 def test_L8_chart_abstract():
     mod, ctx = _run_lemma("lemma_08_helmert_chart")
-    assert "A7" in mod.AXIOMS_USED
+    assert {"A7", "I6"} <= set(mod.AXIOMS_USED)
+    assert AX.get("I6").tag == AX.INHERITED and AX.get("I6").citation.strip()
     assert AX.get("A7").tag == AX.POSITED
     assert AX.get("A7").role.strip() and AX.get("A7").failure_mode.strip()
     r = ctx["L8"]
@@ -153,6 +154,45 @@ def test_L8_A7_fails_without_kernel_hypothesis():
     one = OneMatrix(S_.d, 1)
     u = sp.MatrixSymbol("u_vec", S_.d, 1)
     assert (S_.B * (u + S_.c * one)).expand() != S_.B * u
+
+
+def _l8_inputs():
+    from sympy.matrices.expressions import OneMatrix
+
+    S_ = S.make_symbols()
+    return S_.B, sp.MatrixSymbol("u_vec", S_.d, 1), OneMatrix(S_.d, 1), S_.d
+
+
+def test_L8_roundtrip_derived_positive():
+    from derivation.lemma_08_helmert_chart import roundtrip_holds
+
+    assert roundtrip_holds(*_l8_inputs())
+
+
+def test_L8_roundtrip_fails_without_orthonormality():
+    """Negative control: dropping B B^T = I (A7) leaves Q Q^T != I, so the round trip fails."""
+    from derivation.lemma_08_helmert_chart import roundtrip_holds
+
+    assert not roundtrip_holds(*_l8_inputs(), use_orth=False)
+
+
+def test_L8_roundtrip_fails_without_kernel():
+    """Negative control: dropping B 1 = 0 (A7) leaves off-diagonal Gram blocks nonzero."""
+    from derivation.lemma_08_helmert_chart import roundtrip_holds
+
+    assert not roundtrip_holds(*_l8_inputs(), use_ker=False)
+
+
+def test_L8_roundtrip_fails_without_I6():
+    """Negative control: without I6, Q^T Q stays B^T B + (1/d) 1 1^T and (Q^T Q) u != u."""
+    from derivation.lemma_08_helmert_chart import roundtrip_holds
+
+    B, u, one, d = _l8_inputs()
+    assert not roundtrip_holds(B, u, one, d, use_I6=False)
+    QtQ = sp.block_collapse(
+        sp.BlockMatrix([[B], [one.T / sp.sqrt(d)]]).T * sp.BlockMatrix([[B], [one.T / sp.sqrt(d)]])
+    )
+    assert QtQ != sp.Identity(d)
 
 
 def test_crosscheck_L8_helmert_realization_d4():

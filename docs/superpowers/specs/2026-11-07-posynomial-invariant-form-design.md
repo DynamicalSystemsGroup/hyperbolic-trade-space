@@ -291,7 +291,7 @@ I1 is checked numerically in pytest (primal vs dual), I2 by the replication test
 Lemmas: L1 homogeneity and invariant form, V(k·m) = k·V(m), V(m/V) = 1 [A1, A2]; L2 uniform shift
 J_τ(w; U + c1ᵀ) = J_τ(w; U) + c [A2, A3]; L3 gradient = Σ_i p_i u_i and balanced KKT [A3]; L4
 convexity: second directional derivative = τ·Var_p(v·u) = (τ/2) ΣΣ p_i p_k (s_i − s_k)² ≥ 0 [A3]; L5
-LSE = LME + (log n)/τ, LSE − max > 0, lim_{τ→∞} LME = max, lim_{τ→0} LME = mean, mean ≤ LME ≤ max
+LSE = LME + (log n)/τ, LSE − max ≥ 0 (strictly > 0 for n ≥ 2), lim_{τ→∞} LME = max, lim_{τ→0} LME = mean, mean ≤ LME ≤ max
 [A3]; L6 Gaussian cumulant (1/τ) log E exp(τ w·ε) = τσ²‖w‖²/2 via `sympy.stats` [A2, A5]; L7
 elasticities −w_k/w_j and improvement factors [A1, A2]; L8 Helmert chart: BBᵀ = I, B1 = 0, round
 trip, Z(u + c1) = Z(u) [A2]; L9 pull-back formula [A1, A2, A4]; L10 extension: Φ_2(u + c1) =

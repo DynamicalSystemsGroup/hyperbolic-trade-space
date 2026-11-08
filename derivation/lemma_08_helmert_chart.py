@@ -2,9 +2,12 @@
 
 What this proves (abstract MatrixSymbol algebra, symbolic d, no explicit basis):
   (a) Z(u + c 1) = Z(u): the chart is blind to the common shift;
-  (b) with Q = [B; 1^T/sqrt(d)] (d x d) the Gram matrix Q Q^T equals I, so Q is orthogonal
-      (square with Q Q^T = I, hence Q^T Q = I too);
-  (c) hence the round trip u = B^T Z + (1/d)(1^T u) 1, and (log V, Z) -> u is a linear bijection.
+  (b) with Q = [B; 1^T/sqrt(d)] (d x d), Q Q^T = I block-wise from A7 (B B^T = I, B 1 = 0) and
+      1^T 1 / d = 1;
+  (c) Q^T Q = I follows from (b) by I6 (square matrix: left inverse is right inverse); the
+      round trip is then DERIVED, not self-compared: B^T B u + (1/d) 1 1^T u = (Q^T Q) u, and
+      substituting Q^T Q = I gives u. The check fails if A7 or I6 is dropped (negative controls
+      in the tests call roundtrip_holds with the hypothesis switched off).
 What this does NOT prove: that a B with B B^T = I, B 1 = 0 exists for every d (the Helmert basis
 is a realization, checked concretely in the tests as a realization check only), nor anything about
 which B is used (all results hold for any B satisfying A7).
@@ -14,14 +17,55 @@ algebra with block_collapse; no differentiation or limits. Mimics symproof's hab
 a structural claim by rewriting with the stated hypotheses (symproof/tactics.py).
 """
 
-import itertools
-
 import sympy as sp
 from sympy.matrices.expressions import Identity, OneMatrix, ZeroMatrix
 
 TITLE = "Sum-zero (Helmert-type) chart and scale/shape bijection"
 STATEMENT = "Z=Bu is shift-invariant; u = B^T Z + (1/d)(1^T u) 1; Q=[B;1^T/sqrt d] orthogonal"
-AXIOMS_USED = ["A7"]
+AXIOMS_USED = ["A7", "I6"]
+
+
+def gram_identity_blocks(B, one, d, use_orth=True, use_ker=True):
+    """Q Q^T block-wise after rewriting with A7 (switches allow negative controls)."""
+    Q = sp.BlockMatrix([[B], [one.T / sp.sqrt(d)]])
+    g = sp.block_collapse(Q * Q.T)
+    sub = {}
+    if use_orth:
+        sub[B * B.T] = Identity(d - 1)  # A7: B B^T = I
+
+    def kill(expr):
+        """A7: B 1 = 0 (and its transpose 1^T B^T = 0), through any scalar coefficient."""
+        if use_ker and isinstance(expr, sp.MatMul):
+            _, prod = expr.as_coeff_mmul()
+            if prod == B * one:
+                return ZeroMatrix(d - 1, 1)
+            if prod == one.T * B.T:
+                return ZeroMatrix(1, d - 1)
+        return expr
+
+    blocks = [
+        [sp.block_collapse(kill(g.blocks[a, b]).xreplace(sub)) for b in range(2)] for a in range(2)
+    ]
+    return Q, g, blocks
+
+
+def roundtrip_holds(B, u, one, d, use_orth=True, use_ker=True, use_I6=True):
+    """True iff recon = u is DERIVED: QQ^T = I (A7) => Q^T Q = I (I6) => (Q^T Q) u = u."""
+    Q, _, blocks = gram_identity_blocks(B, one, d, use_orth, use_ker)
+    zero_r, zero_c = ZeroMatrix(d - 1, 1), ZeroMatrix(1, d - 1)
+    gram_is_I = (
+        blocks[0][0] == Identity(d - 1)
+        and blocks[0][1] in (zero_r, 0)
+        and blocks[1][0] in (zero_c, 0)
+        and sp.simplify(blocks[1][1] - Identity(1)) in (0, ZeroMatrix(1, 1))
+    )
+    if not gram_is_I:
+        return False
+    QtQ = sp.block_collapse(Q.T * Q)
+    # I6 (Horn & Johnson): square Q, Q Q^T = I  =>  Q^T Q = I
+    QtQ_red = QtQ.xreplace({QtQ: Identity(d)}) if use_I6 else QtQ
+    recon = sp.block_collapse(QtQ_red * u).doit()
+    return recon == u
 
 
 def derive(ctx):
@@ -34,42 +78,31 @@ def derive(ctx):
     hyp_orth = Identity(d - 1)  # B B^T = this
     hyp_ker = ZeroMatrix(d - 1, 1)  # B 1 = this
 
-    def rewrite(expr):
-        """Rewrite with A7: any product containing the adjacent factors B, 1 is zero."""
-        expr = sp.block_collapse(expr).doit()
-        terms = expr.args if isinstance(expr, sp.MatAdd) else (expr,)
-        out = []
-        for term in terms:
-            facs = term.args if isinstance(term, sp.MatMul) else (term,)
-            kills = any(facs[i] == B and facs[i + 1] == one for i in range(len(facs) - 1))
-            if not kills:
-                out.append(term)
-        return sp.MatAdd(*out).doit() if out else hyp_ker
-
-    # (a) shift invariance
+    # (a) shift invariance: B (u + c 1) = B u + c (B 1) and B 1 = 0 (A7)
     Z = B * u
-    shifted = rewrite((B * (u + c * one)).expand())
+    shifted_raw = sp.block_collapse((B * (u + c * one)).expand()).doit()
+    kept = []
+    for term in shifted_raw.args:  # each term is coeff * (matrix product)
+        _coeff, prod = term.as_coeff_mmul()
+        if prod == B * one:  # A7: B 1 = 0 kills c * B * 1
+            continue
+        kept.append(term)
+    shifted = sp.MatAdd(*kept).doit()
 
-    # (b) extended orthonormal matrix
-    Q = sp.BlockMatrix([[B], [one.T / sp.sqrt(d)]])
-    gram = sp.block_collapse(Q * Q.T)
-    gram_blocks = [[gram.blocks[a, b] for b in range(2)] for a in range(2)]
-    # one^T one = d (OneMatrix algebra), so the (2,2) block is (1/d) one^T one = 1
-    corner = sp.simplify((one.T * one / d)[0, 0])
+    # (b) extended orthonormal matrix, Q Q^T = I block-wise from A7
+    Q, gram, gram_blocks = gram_identity_blocks(B, one, d)
 
-    # (c) round trip: Q^T Q = B^T B + (1/d) 1 1^T = I  (Q square with Q Q^T = I)
     ell = (one.T * u)[0, 0] / d  # log-scale coordinate (1/d) 1^T u
-    recon = B.T * (B * u) + one * ell
     ctx["L8"] = {
         "one": one,
         "u": u,
         "Z": Z,
         "shifted": shifted,
+        "shifted_raw": shifted_raw,
         "Q": Q,
+        "gram": gram,
         "gram_blocks": gram_blocks,
-        "corner": corner,
         "ell": ell,
-        "recon": recon,
         "hyp_orth": hyp_orth,
         "hyp_ker": hyp_ker,
     }
@@ -78,23 +111,17 @@ def derive(ctx):
 def verify(ctx):
     S = ctx["S"]
     r = ctx["L8"]
-    d, B = S.d, S.B
+    d, B, one, u = S.d, S.B, r["one"], r["u"]
     assert r["shifted"] == r["Z"], "L8 FAIL Z(u + c 1) != Z(u)"
-    # Gram blocks: B B^T = I (A7), B 1 / sqrt(d) = 0 (A7), (1/d) 1^T 1 = 1
     g = r["gram_blocks"]
-    assert g[0][0] == B * B.T, "L8 FAIL Gram (1,1) block shape"
-    assert g[0][0].xreplace({B * B.T: r["hyp_orth"]}) == Identity(d - 1), "L8 FAIL B B^T = I"
-    facs = g[0][1].args if isinstance(g[0][1], sp.MatMul) else (g[0][1],)
-    assert any(f1 == B and f2 == r["one"] for f1, f2 in itertools.pairwise(facs)), (
-        "L8 FAIL Gram (1,2) block is not a multiple of B 1 (= 0 by A7)"
-    )
-    assert r["corner"] == 1, "L8 FAIL (1/d) 1^T 1 != 1"
-    # Q Q^T = I with Q square => Q^T Q = I => B^T B + (1/d) 1 1^T = I; so recon returns u
+    assert g[0][0] == Identity(d - 1), "L8 FAIL B B^T != I"
+    assert g[0][1] == ZeroMatrix(d - 1, 1) or g[0][1] == 0, "L8 FAIL Gram (1,2) block != 0"
+    assert g[1][0] == ZeroMatrix(1, d - 1) or g[1][0] == 0, "L8 FAIL Gram (2,1) block != 0"
+    assert sp.simplify(g[1][1] - Identity(1)) in (0, ZeroMatrix(1, 1)), "L8 FAIL (1/d) 1^T 1 != 1"
     assert r["Q"].shape == (d, d), "L8 FAIL Q is not square"
-    # B^T B u + ell 1 = u follows from Q^T Q u = u with Q^T Q = B^T B + (1/d) 1 1^T
+    # Q^T Q expands to B^T B + (1/d) 1 1^T (exact)
     QtQ = sp.block_collapse(r["Q"].T * r["Q"])
-    expected = B.T * B + r["one"] * r["one"].T / d
-    assert sp.simplify((QtQ - expected).doit()) in (0, ZeroMatrix(d, d)) or QtQ == expected, (
-        "L8 FAIL Q^T Q expansion"
-    )
-    assert r["recon"] == B.T * (B * r["u"]) + r["one"] * r["ell"], "L8 FAIL round-trip form"
+    assert QtQ == B.T * B + OneMatrix(d, d) / d, "L8 FAIL Q^T Q expansion"
+    assert one * one.T == OneMatrix(d, d), "L8 FAIL 1 1^T != all-ones"
+    # round trip derived: QQ^T = I (A7) => Q^T Q = I (I6) => B^T B u + (1/d) 1 1^T u = u
+    assert roundtrip_holds(B, u, one, d), "L8 FAIL round trip u = B^T B u + ell 1 not derived"

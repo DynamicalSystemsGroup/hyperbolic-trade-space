@@ -42,7 +42,7 @@ from derivation.sumtools import linear
 
 TITLE = "LSE = LME + log(n)/tau; mean <= LME <= max; tau limits"
 STATEMENT = (
-    "LSE = LME + (log n)/tau; LSE - max > 0 (n >= 2); lim_{tau->inf} LME = max; "
+    "LSE = LME + (log n)/tau; LSE - max >= 0 (strict for n >= 2); lim_{tau->inf} LME = max; "
     "lim_{tau->0} LME = mean; mean <= LME <= max"
 )
 # I2 and I3 enter as recorded remarks (see docstring); F5 is the max representation fallback.

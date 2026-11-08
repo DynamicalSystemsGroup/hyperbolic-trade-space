@@ -2,7 +2,7 @@
 
 Tags:
   POSITED     - a modelling choice we declare (A0-A6).
-  INHERITED   - an external theorem we USE and CITE but do not prove here (I1-I5).
+  INHERITED   - an external theorem we USE and CITE but do not prove here (I1-I6).
   REGULARITY  - a condition the interpretation rests on (R1). Hypotheses are interpretive
                 conditions, not defects: each states what it buys (``role``) and what the
                 interpretation loses when it fails (``failure_mode``).
@@ -131,6 +131,13 @@ AXIOMS = {
         "the moment generating function of a sum of independent random variables is the "
         "product of their moment generating functions (ledger addition to spec section 6)",
         citation="Billingsley, Probability and Measure, MGF of independent sums",
+    ),
+    "I6": Axiom(
+        "I6",
+        INHERITED,
+        "for a square real matrix Q, Q Q^T = I implies Q^T Q = I (a left inverse of a square "
+        "matrix is also its right inverse)",
+        citation="Horn & Johnson, Matrix Analysis, invertible matrices (the inverse is two-sided)",
     ),
     # ------------------------------------------------------------- REGULARITY
     "R1": Axiom(
