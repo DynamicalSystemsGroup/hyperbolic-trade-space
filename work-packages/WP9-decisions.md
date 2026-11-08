@@ -170,3 +170,19 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   soft minimum of the slacks, the method's own kind of weighting) measured with the B and D steps
   on the planted seeds, in particular whether the planted partition becomes the optimum on seeds
   1, 3, 8 and 16, and on the cubesat tables; the fix is chosen after it; acceptance waits.
+- Spike round 2 delivered (`docs/superpowers/notes/spike-objective/README.md`, scripts and tables
+  beside it). Findings in brief: three of the four candidate objectives (support-weighted slack,
+  the entropic soft minimum of slacks, the per-facet support-gap sum) are identically zero at
+  τ = ∞ and discriminative rather than edge-tight at finite τ; the step that minimizes them
+  destroys the fit (0 of 20 planted, 5 signatures of 5 on the cubesat). Seeds 1 and 16 are not
+  identifiable from their frontier rows (3 and 2 rows for a facet in R^4), so no objective or
+  restart recovers them; seeds 3 and 8 are identifiable and are recovered by selecting among
+  restarts with an edge count (exact touches or band mean) with mean slack as tie-break, at τ = ∞:
+  18 of 20 with the built step B. Only mean slack (built) is monotone under B; nothing is monotone
+  under the tangent-plane step D. The mean slack is the honest K > 1 analogue of the K = 1 reach
+  (the one-sided volume between cloud and envelope); the interior rows it uses are the only
+  information that locates a facet with fewer than d frontier rows. The cubesat main basin is
+  unchanged under every sensible selector. Ranking offered: keep mean slack, add an edge-count
+  restart selector at τ = ∞ (4 to 5 lines); or keep everything and make the planted generator and
+  R-1 state the identifiability condition (≥ d + 1 frontier rows per facet); or D with a selector,
+  non-monotone. Put to the supervisor.
