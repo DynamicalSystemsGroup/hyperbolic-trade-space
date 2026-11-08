@@ -67,7 +67,16 @@ and the L10 docstring are wrong, as the reviewer says.
   corollary as derivation entries; docs restructured to the three levels). Response text: after the
   spike.
 
-Pending: E-2, E-3, E-5 to E-10 (E-1's implementation scope after the spike).
+- **E-2 (finite-temperature regularity; full simplex KKT).** Driver's options: extend L3 and the
+  method page / docs only / decline. **Supervisor (mzargham), verbatim:** "Accept: extend L3 and the
+  method page". Disposition class: accepted, in WP13: L3 gains the boundary KKT statement
+  ($g_j\ge\lambda$, $w_j(g_j-\lambda)=0$, $\lambda=w^\top g$), derived in SymPy where it can be and
+  verified numerically where it must; the method page states the full conditions, reserves the
+  equal-gradient reading for positive-weight coordinates, and records the reviewer's lesson that
+  balanced hard-support geometry does not imply an interior finite-$\tau$ optimizer; condition R1's
+  wording tightened accordingly. Response text: after the change, naming the commit and the lemma.
+
+Pending: E-3, E-5 to E-10 (E-1's implementation scope after the spike).
 
 ## Response letter
 
