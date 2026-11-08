@@ -55,7 +55,7 @@ AMEND2 = (
 
 
 def feasible(df: pd.DataFrame) -> pd.DataFrame:
-    """Feasible designs: settled, power_ok, dod_ok and momentum_ok (WP4b amendment 2), attributes > 0."""
+    """Feasible: settled, power_ok, dod_ok, momentum_ok (amendment 2), all attributes positive."""
     ok = df.settled & df.power_ok & df.dod_ok & df.momentum_ok
     ok &= (df[ATTRS] > 0).all(axis=1)
     return df[ok]
