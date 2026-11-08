@@ -52,7 +52,22 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 
 ## Acceptance (acceptance gate)
 
-- pending `work-packages/WP7-review.md`
+- **Date:** 2026-11-08 (Claude Code session, the day's second session).
+- **Context:** the supervisor redirected WP9 from a readability pass over this notebook to a paper
+  (a mystmd article in which the notebook is the paper; see `WP10-decisions.md`, "Redirection").
+  The driver asked: "With the paper replacing the WP7 notebook as the published artifact, what
+  happens to WP7's held acceptance gate?" with the options "Accept WP7 as the baseline", "Close WP7
+  as superseded", "Hold WP7 until the paper is accepted".
+- **Supervisor (mzargham), verbatim choice:** "Accept WP7 as the baseline (Recommended)"
+- **Disposition:** WP7 accepted as the machine-verified baseline. Its numbers, guards, datasets and
+  figures are what the paper (WP9) reports; nothing in them changes. The WP7 notebook is retired
+  as a published artifact when the paper lands (where it goes is the paper package's open decision), and its
+  guards in `tests/test_notebook.py` are carried into the paper's tests. Review of record:
+  `work-packages/WP7-review.md` (39bbe18, second pass); the supervisor's own reading verdict
+  ("its really hard to read") stands and is answered by WP10 (the paper) and WP11 (readability loops), not by this acceptance.
+- Note on the record: the driver's option labels carried a "(Recommended)" tag, against the
+  decision-loop rule in `work-packages/README.md` (plain options, no steering). The label is quoted
+  as shown because that is what was chosen; later questions drop the tag.
 
 ## Style study (notebook author briefing)
 

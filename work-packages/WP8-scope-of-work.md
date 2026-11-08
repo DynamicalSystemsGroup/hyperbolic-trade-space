@@ -105,3 +105,42 @@ All marked *(default)* where they appear; the supervisor approves or changes the
 ## Open decisions (for the supervisor)
 
 None. Every item was resolved through the decision loop, recorded verbatim in `work-packages/WP8-decisions.md`: OD1 "TestPyPI dry run only", OD2 "Rename first, then WP8", OD3 "MIT, copyright DynamicalSystemsGroup". Decided: 3, deferred: 0, raised: 0. The Agent's defaults list above is the one remaining item for the supervisor to approve or change at the scope gate.
+
+## Amendment 1 (2026-11-08, pending re-approval): MkDocs → mystmd
+
+What changes and why, per scope-of-work section 6. On 2026-11-08 the supervisor redirected the
+case notebook into a paper built with mystmd, the SciPy 2026 proceedings article as the reference
+case (verbatim in `WP10-decisions.md`: "mystmd is fine but https://proceedings.scipy.org/articles/wdyr6752
+as your reference case ... we still need it to read like a paper even with the supporting
+materials available in the repo or in other pages in the myst cite"). MkDocs Material cannot
+render the MyST directives the paper uses, so the site tooling changes; the purpose, the release
+and the preconditions do not. Items below replace their originals; everything not named is as
+approved.
+
+- G1: "A mystmd site configured from the repository's `myst.yml` (delivered by WP10), whose index
+  is the paper, with the supporting-material notebook, the docs pages (why and how, mathematics,
+  preconditioning, API, extensions and limitations, literature), the generated derivation ledger
+  and verification pages, and a landing section of cards mapped to the three worlds."
+- G2: `scripts/build_generated.py` writes MyST Markdown into `docs/generated/`.
+- D-1: `myst.yml` (from WP10) plus the site and deployment settings; the `docs` dependency group
+  drops `mkdocs-material`, `mkdocs-jupyter`, `mkdocstrings[python]`, `mkdocs-bibtex` and gains
+  `mystmd` (the PyPI wrapper, pinned; Node is provided by the wrapper or by `actions/setup-node`
+  in CI, recorded as a default to approve at re-approval).
+- D-3: the API reference page is produced by a small script that renders the package's numpydoc
+  docstrings to MyST Markdown (mystmd has no Python autodoc), or is dropped in favour of
+  `docs/api.md` alone — a default for the supervisor to approve at re-approval.
+- D-5 and R-10: the workflow runs `uv run myst build --html` (strict: warnings fail the build) and
+  deploys `_build/html`.
+- R-1, R-3, R-4, R-7, R-8: restated for mystmd (clean strict build from a clean clone; math and
+  citations render through mystmd's own MathJax and bibliography handling; the paper and the
+  supporting notebook render from committed outputs without a kernel).
+- R-2: navigation per `myst.yml`'s table of contents, in the order paper, supporting material,
+  docs pages, generated pages, literature.
+- Agent's defaults "Site tooling", "Site layout", "Landing page", "Notebook page", "Strictness",
+  "Link fixes": restated for mystmd at re-approval; "Workflow", "Release", "TestPyPI", "License",
+  "Tests" unchanged in substance.
+- Dependency: WP8 now waits for WP11 (readability loops on the paper), per the breakdown of
+  2026-11-08.
+
+Re-approval: verbal, quoted in `work-packages/WP8-decisions.md`, after WP10's scope exists (the
+`myst.yml` WP8 deploys is WP10's deliverable, so the restated defaults are written then).
