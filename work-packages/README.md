@@ -47,7 +47,7 @@ other two clearly in the roadmap".
 | Output | Built from | Package | Status |
 |---|---|---|---|
 | The paper | `paper/paper.ipynb` and `supporting_material.ipynb` with mystmd, modelled on the SciPy proceedings article | WP10 (writing), WP11 (readability loops), WP8 (deployment) | the current focus; WP9 and the external-review triage precede it |
-| The docsite | `docs/*.md`, the generated derivation ledger and verification pages | WP8 | build tool per the supervisor's decision (MkDocs unless Sphinx is needed; see `WP8-decisions.md`) |
+| The docsite | `docs/*.md`, the generated derivation ledger and verification pages | WP8 | MkDocs Material, as first approved; the paper is a separate mystmd build under `/paper/` of the same Pages site (`WP8-decisions.md`, "Amendment 1 revised") |
 | The PyPI release | `src/hyperbolic_trade_space/`, `pyproject.toml`, `uv.lock` | WP8 (version 0.1.0; TestPyPI dry run was the approved first step) | blocked on the supervisor configuring the publisher; PyPI proper is a later decision of his |
 
 ## Breakdown (search strategy)
@@ -71,7 +71,7 @@ what it fixes for later packages. The design spec is
 | WP12 Trade-off-aware search of the design space | An outer optimization that uses the fitted facets' ascent directions, chained to configuration space, to propose configurations, evaluates them against a noisy oracle, refits, and raises the frontier to the highest attainable level; it proposes, experts choose; new lemmas (gradient identity, stationarity as Pareto stationarity, outward monotonicity at τ = ∞) and inherited convergence results in the ledger; a literature pass (multiobjective gradient methods, stochastic approximation, sequential design for Pareto fronts); the cubesat simulator as the live oracle; minimal code on existing tools | The search procedure the paper reports and its theorem; the kernel direction it motivates | WP9; before WP10 |
 | WP10 The paper | A mystmd article in which the notebook is the paper (outline v2: `docs/superpowers/notes/paper-outline-v2-search.md`), with the story settled on 2026-11-08 (`WP10-decisions.md`): why (trade studies as documents, the bar for a trusted model-based method, PCA explains variance and this explains tensions), the contribution (scaling up trade studies with a reproducible method with a PCA-like feel), what (the trade space as a manifold, posynomials fit it to a coordinate system, the n-lemma as the analogue of a principal component), the cubesat case at K = 1 and K = 3, the novelty hook as the final remark; `supporting_material.ipynb` as computationally verifiable appendices; the case code as a tested module; fifteen state-of-practice citations; built for the six reader drill-down levels and the reader model | The published artifact; the site's index page | WP9, WP12, WP7 (accepted baseline), WP1–WP6 |
 | WP11 Readability loops on the paper | Browser-in-the-loop loops over the WP10 paper with the supervisor reading; one verdict per drill-down level per loop, recorded in `WP11-loops.md`; presentation only | What a human reader sees | WP10; before WP8 |
-| WP8 Site and publication (spec §9, Amendment 1) | mystmd site and GitHub Pages workflow around the paper and the supporting pages, generated pages, first release | Publication; then release controls | all |
+| WP8 Site and publication (spec §9, Amendment 1 revised) | MkDocs docsite plus the mystmd paper under `/paper/`, one Pages workflow, generated pages, first release | Publication; then release controls | all |
 
 ## Status
 
@@ -90,4 +90,4 @@ what it fixes for later packages. The design spec is
 | WP12 | to be scoped after WP9's approval (the search; outline v2) | — | — | — | — |
 | WP10 | the paper; `WP10-decisions.md` holds the story and the redirection; scope drafted after WP9's acceptance, the external reviewer's feedback triage (`external-review-2026-11.md`, to be written) and WP12 (`WP10-scope-of-work.md` is the superseded first draft) | — | — | — | — |
 | WP11 | to be scoped at WP10's acceptance | — | — | — | — |
-| WP8 | `WP8-scope-of-work.md` (Amendment 1, MkDocs → mystmd, pending re-approval) | verbal, 2026-11-08 ("approve 7 and 8", `WP8-decisions.md`); Amendment 1 pending | waiting for WP11 | — | — |
+| WP8 | `WP8-scope-of-work.md` (Amendment 1 revised: MkDocs docsite + MyST paper, one Pages site; re-approval at WP10's gate) | verbal, 2026-11-08 ("approve 7 and 8", `WP8-decisions.md`); Amendment 1 pending | waiting for WP11 | — | — |

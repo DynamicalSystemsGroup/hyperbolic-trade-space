@@ -106,7 +106,7 @@ All marked *(default)* where they appear; the supervisor approves or changes the
 
 None. Every item was resolved through the decision loop, recorded verbatim in `work-packages/WP8-decisions.md`: OD1 "TestPyPI dry run only", OD2 "Rename first, then WP8", OD3 "MIT, copyright DynamicalSystemsGroup". Decided: 3, deferred: 0, raised: 0. The Agent's defaults list above is the one remaining item for the supervisor to approve or change at the scope gate.
 
-## Amendment 1 (2026-11-08, pending re-approval): MkDocs → mystmd
+## Amendment 1 (2026-11-08, pending re-approval; REVISED the same day, see the note at the end of this section): MkDocs → mystmd
 
 What changes and why, per scope-of-work section 6. On 2026-11-08 the supervisor redirected the
 case notebook into a paper built with mystmd, the SciPy 2026 proceedings article as the reference
@@ -144,3 +144,11 @@ approved.
 
 Re-approval: verbal, quoted in `work-packages/WP8-decisions.md`, after WP10's scope exists (the
 `myst.yml` WP8 deploys is WP10's deliverable, so the restated defaults are written then).
+
+**Revision of Amendment 1 (2026-11-08, late; `WP8-decisions.md`, "Amendment 1 revised").** The
+supervisor's decision, verbatim: "MkDocs docsite + MyST paper, one Pages site". The items above that
+replaced MkDocs are withdrawn: the docsite is built with MkDocs Material as approved (G1, D-1 to
+D-4, R-1 to R-9 unchanged, with the Case page now linking the paper rather than rendering the
+retired WP7 notebook), and the paper is a separate mystmd build from `paper/` (WP10) deployed under
+`/paper/` of the same GitHub Pages site by the same workflow; D-5 and R-10 run both builds; D-7's
+tests cover both; the landing page carries a card for the paper. The dependency on WP11 stands.
