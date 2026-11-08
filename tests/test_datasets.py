@@ -59,3 +59,55 @@ def test_configured():
     np.testing.assert_array_equal(Y, Y2)
     with pytest.raises(ValueError):
         make_configured_frontier_data(10, 3, 1)
+
+
+def test_n_terms_one_is_unchanged():
+    X, info = make_frontier_data(50, 3, noise=0.1, random_state=2)
+    X1, info1 = make_frontier_data(50, 3, noise=0.1, random_state=2, n_terms=1)
+    np.testing.assert_array_equal(X, X1)
+    assert set(info) == set(info1) and "facet" not in info1
+    for key in info:
+        np.testing.assert_array_equal(info[key], info1[key])
+    assert info1["exponents"].shape == (3,)
+    np.testing.assert_allclose(X[0], [1.60881165, 1.53768322, 0.36959939], atol=1e-8)
+    np.testing.assert_allclose(info["exponents"], [0.37168011, 0.17607022, 0.45224967], atol=1e-8)
+    np.testing.assert_allclose(info["log_v"][:2], [-0.19764891, -0.09263645], atol=1e-8)
+
+
+def _phi(U, W, beta):
+    return (U @ W.T).max(axis=1) - beta
+
+
+def test_k_terms_planted_envelope():
+    n, d, K = 600, 4, 3
+    X, info = make_frontier_data(n, d, log_offset=0.4, n_terms=K, random_state=5)
+    W, mask, facet = info["exponents"], info["frontier_mask"], info["facet"]
+    assert X.shape == (n, d) and (X > 0).all() and W.shape == (K, d)
+    assert (W >= 0).all() and np.allclose(W.sum(axis=1), 1.0)
+    dist = np.abs(W[:, None] - W[None]).sum(-1)[np.triu_indices(K, 1)]
+    assert dist.min() >= 0.3
+    np.testing.assert_allclose(_phi(np.log(X), W, 0.4), info["log_v"], atol=1e-9)
+    assert np.abs(info["log_v"][mask]).max() < 1e-9 and (info["log_v"][~mask] < 0).all()
+    assert facet.shape == (n,) and facet.min() >= 0 and facet.max() < K
+    np.testing.assert_array_equal(facet, (np.log(X) @ W.T).argmax(axis=1))
+    counts = np.bincount(facet[mask], minlength=K)
+    assert (counts >= 0.1 * mask.sum()).all()
+    X2, info2 = make_frontier_data(n, d, log_offset=0.4, n_terms=K, random_state=5)
+    np.testing.assert_array_equal(X, X2)
+    np.testing.assert_array_equal(info["facet"], info2["facet"])
+
+
+def test_k_terms_errors_and_explicit_exponents():
+    with pytest.raises(ValueError, match="apart"):
+        make_frontier_data(10, 2, n_terms=12, random_state=0)
+    with pytest.raises(ValueError):
+        make_frontier_data(10, 1, n_terms=2, random_state=0)
+    with pytest.raises(ValueError):
+        make_frontier_data(10, 3, n_terms=2, exponents=[0.2, 0.3, 0.5])
+    with pytest.raises(ValueError):
+        make_frontier_data(10, 3, n_terms=2, exponents=[[0.5, 0.5, 0.1], [0.2, 0.3, 0.5]])
+    with pytest.raises(ValueError):
+        make_frontier_data(10, 3, n_terms=0)
+    W = [[0.7, 0.2, 0.1], [0.1, 0.2, 0.7]]
+    _, info = make_frontier_data(10, 3, n_terms=2, exponents=W, random_state=0)
+    np.testing.assert_array_equal(info["exponents"], W)

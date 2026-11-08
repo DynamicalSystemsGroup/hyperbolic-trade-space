@@ -20,6 +20,21 @@ def _planted_exponents(exponents, d, rng):
     return w
 
 
+def _planted_terms(exponents, n_terms, d, rng, min_apart=0.3, tries=1000):
+    if exponents is not None:
+        W = np.asarray(exponents, dtype=float)
+        if W.shape != (n_terms, d) or np.any(W < 0) or not np.allclose(W.sum(axis=1), 1.0):
+            raise ValueError(
+                "exponents must be (n_terms, n_features), nonnegative, rows summing to 1"
+            )
+        return W
+    for _ in range(tries):
+        W = rng.dirichlet(np.ones(d), n_terms)
+        if np.abs(W[:, None] - W[None]).sum(-1)[np.triu_indices(n_terms, 1)].min() >= min_apart:
+            return W
+    raise ValueError(f"no {n_terms} exponent vectors {min_apart} apart (L1) found in d={d}")
+
+
 def _frontier_mask(n, fraction, rng):
     if not 0.0 < fraction <= 1.0:
         raise ValueError("frontier_fraction must be in (0, 1]")
@@ -37,6 +52,7 @@ def make_frontier_data(
     interior_scale=1.0,
     noise=0.0,
     random_state=None,
+    n_terms=1,
 ):
     """Sample metrics around a planted monomial frontier ``prod m_j^{w_j} = e^{beta}``.
 
@@ -46,9 +62,11 @@ def make_frontier_data(
         Number of rows.
     n_features : int
         Number of metrics ``d`` (``d = 1`` gives a single column and no ``Z``).
-    exponents : array-like of shape (n_features,), optional
-        Planted exponents on the simplex; default a seeded random point with every
-        ``w_j >= 0.5/d``.
+    exponents : array-like of shape (n_features,) or (n_terms, n_features), optional
+        Planted exponents on the simplex (one row per term for ``n_terms > 1``). Default for
+        ``n_terms = 1``: a seeded random point with every ``w_j >= 0.5/d``. Default for
+        ``n_terms = K > 1``: K Dirichlet(1) draws, redrawn (at most 1000 tries, then
+        ``ValueError``) until every pair is at least 0.3 apart in L1.
     log_offset : float, default=0.0
         Planted ``beta``.
     frontier_fraction : float, default=0.3
@@ -59,33 +77,46 @@ def make_frontier_data(
         Standard deviation of the log-V noise of frontier rows.
     random_state : int, RandomState or None, default=None
         Seed.
+    n_terms : int, default=1
+        Number of planted monomials K. ``1`` reproduces the single-facet frontier exactly; ``K > 1``
+        plants the envelope ``Phi(u) = max_k (w_k . u - beta)`` and puts ``log V = Phi(u)``.
 
     Returns
     -------
     X : ndarray of shape (n_samples, n_features)
         Strictly positive metrics.
     info : dict
-        Keys ``exponents``, ``log_offset``, ``basis`` (ILR chart), ``frontier_mask``, ``Z``,
-        ``log_v``, ``noise``, ``interior_scale``.
+        Keys ``exponents`` (shape ``(d,)`` at K = 1, ``(K, d)`` otherwise), ``log_offset``,
+        ``basis`` (ILR chart), ``frontier_mask``, ``Z``, ``log_v``, ``noise``, ``interior_scale``;
+        for ``n_terms > 1`` also ``facet``, an integer array of shape ``(n_samples,)`` holding
+        ``argmax_k w_k . log x`` (the facet each row lies on or under).
 
     Notes
     -----
     ``Z ~ N(0, I)`` and the rows are mapped back through the ILR chart (lemma L8); the frontier is
-    identifiable when the Z-hull of the frontier rows contains 0 (spec section 4).
+    identifiable when the Z-hull of the frontier rows contains 0 (spec section 4). For K > 1 the
+    rows are ``u = C Z + s 1`` with ``s = log V + beta - max_k w_k . C Z`` (the K-term form of
+    ``from_frontier_coordinates``; ``sum w_k = 1`` makes ``Phi(u) = log V`` exact).
 
     Examples
     --------
     >>> X, info = make_frontier_data(200, 3, random_state=0)
     >>> X.shape, bool((X > 0).all()), round(float(info["exponents"].sum()), 6)
     ((200, 3), True, 1.0)
+    >>> X, info = make_frontier_data(200, 4, n_terms=3, random_state=0)
+    >>> info["exponents"].shape, int(info["facet"].max()) < 3
+    ((3, 4), True)
     """
-    if n_samples < 1 or n_features < 1:
-        raise ValueError("n_samples and n_features must be >= 1")
+    if n_samples < 1 or n_features < 1 or n_terms < 1:
+        raise ValueError("n_samples, n_features and n_terms must be >= 1")
     if noise < 0 or interior_scale <= 0:
         raise ValueError("noise must be >= 0 and interior_scale > 0")
     rng = check_random_state(random_state)
     d = int(n_features)
-    w = _planted_exponents(exponents, d, rng)
+    if n_terms == 1:
+        w = _planted_exponents(exponents, d, rng)
+    else:
+        w = _planted_terms(exponents, n_terms, d, rng)
     B = helmert_basis(d)
     mask = _frontier_mask(n_samples, frontier_fraction, rng)
     Z = rng.standard_normal((n_samples, d - 1))
@@ -94,7 +125,13 @@ def make_frontier_data(
         noise * rng.standard_normal(n_samples),
         -rng.exponential(interior_scale, n_samples),
     )
-    X = np.exp(from_frontier_coordinates(Z, log_v, w, log_offset, B))
+    if n_terms == 1:
+        U = from_frontier_coordinates(Z, log_v, w, log_offset, B)
+    else:
+        base = Z @ np.linalg.pinv(B).T
+        facet, top = (base @ w.T).argmax(axis=1), (base @ w.T).max(axis=1)
+        U = base + (log_v + log_offset - top)[:, None]
+    X = np.exp(U)
     info = {
         "exponents": w,
         "log_offset": float(log_offset),
@@ -105,6 +142,8 @@ def make_frontier_data(
         "noise": float(noise),
         "interior_scale": float(interior_scale),
     }
+    if n_terms > 1:
+        info["facet"] = facet
     return X, info
 
 

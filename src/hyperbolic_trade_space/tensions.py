@@ -4,8 +4,10 @@ The model is built to find *tensions*, not variance. PCA picks the directions of
 (where the data are free); the fit picks the positive combination ``w`` of log-metrics with the
 smallest upper extent, the binding constraint among larger-is-better metrics (lemmas L1-L4). The
 report reads that structure at three levels, all for the K = 1 fit (one tension; several regional
-tensions are the K > 1 extension, and a deflation search for successive tensions is a research
-question):
+tensions are the K > 1 extension, below, and a deflation search for successive tensions is a
+research question). At K > 1 the same three levels are read once per facet, on the rows assigned to
+that facet (:meth:`~hyperbolic_trade_space.HyperbolicTradeSpace.assign_facets`), and a list of K
+reports is returned:
 
 1. **Participation and exchange rates.** Metrics with ``w_j > threshold`` participate, the rest are
    free at the balanced point; the elasticity of metric ``k`` against metric ``j`` along the
@@ -24,7 +26,9 @@ Limits, stated here because the report cannot state them for you: a *tension* is
 constraint, a *correlation* is only a co-movement; near the frontier ``w . u`` is almost
 constant, so the **closure effect** forces some negative association among participating metrics
 even where no designer ever traded them; the result depends on the ``band``; and K = 1 finds
-one facet.
+one facet (at K > 1 each facet's contending set is the ``tau = inf`` LP support on that facet's rows
+centred on their mean, as in the facet refit, since the raw rows of one facet do not enclose the
+origin and the uncentred LP returns vertex artefacts).
 """
 
 from __future__ import annotations
@@ -115,7 +119,7 @@ def _lemma_name(n):
 def tension_report(
     estimator, X, band=None, min_near_frontier=10, threshold=1e-3, association="pearson"
 ):
-    """Report the tensions of a fitted trade space (K = 1).
+    """Report the tensions of a fitted trade space (a list of K reports when ``n_terms = K > 1``).
 
     Parameters
     ----------
@@ -136,13 +140,16 @@ def tension_report(
 
     Returns
     -------
-    TensionReport
+    TensionReport or list of TensionReport
+        One report at ``n_terms = 1``; at ``n_terms = K > 1`` a list of K, one per facet, each on
+        the rows assigned to that facet with the facet's exponents, near-frontier rows
+        (``|Phi_K| < band``), tension directions and loadings (through ``basis_[k]``).
 
     Raises
     ------
     ValueError
         If ``association`` is unknown or fewer than ``min_near_frontier`` rows are near the
-        frontier (use a larger ``band`` or temperature).
+        frontier (use a larger ``band`` or temperature); at K > 1 the message names the facet.
 
     Warns
     -----
@@ -166,6 +173,14 @@ def tension_report(
     >>> rep = tension_report(est, X)
     >>> rep.lemma_name, rep.contending_set.tolist(), rep.tension_directions.shape
     ('trilemma', [0, 1, 2], (2, 2))
+
+    At ``n_terms = 3`` there is one report per facet:
+
+    >>> W = [[.5, .5, 0, 0], [0, .5, .5, 0], [0, 0, .5, .5]]
+    >>> X, _ = make_frontier_data(900, 4, exponents=W, n_terms=3, random_state=0)
+    >>> est = HyperbolicTradeSpace(n_terms=3, temperature=20.0, random_state=0).fit(X)
+    >>> sorted(r.contending_set.tolist() for r in tension_report(est, X))
+    [[0, 1], [1, 2], [2, 3]]
     """
     check_is_fitted(estimator)
     if association not in ("pearson", "spearman"):
@@ -189,23 +204,36 @@ def tension_report(
     if band is None:
         band = 0.1 if np.isinf(tau) else 1.0 / tau
     band = float(band)
-    d = X.shape[1]
-    w = np.array(estimator.exponents_[0], dtype=float)
+    args = (float(band), min_near_frontier, threshold, association)
 
     Z, log_v = estimator._coordinates(X)
     finite = np.isfinite(log_v) & np.isfinite(Z).all(axis=1)
     U = np.log(X[finite])
     Zf, lvf = Z[finite], log_v[finite]
+    K = estimator.exponents_.shape[0]
+    if K == 1:
+        return _report(U, Zf, lvf, estimator.exponents_[0], U, estimator.basis_, *args, "")
+    lab = estimator.assign_facets(X)[finite]
+    reports = []
+    for k in range(K):
+        r = lab == k
+        Uk, wk, Bk = U[r], estimator.exponents_[k], estimator.basis_[k]
+        reports.append(_report(Uk, Zf[r], lvf[r], wk, Uk - Uk.mean(0), Bk, *args, f"facet {k}: "))
+    return reports
 
+
+def _report(U, Zf, lvf, w, U_lp, basis, band, min_near_frontier, threshold, association, who):
+    """One report from finite log rows ``U``, their chart ``Zf, lvf`` and the term ``w``."""
+    w, d = np.array(w, dtype=float), U.shape[1]
     # contending set: tau = inf LP with exact zeros
     if d == 1:
         support = np.array([0])
         lp_w = np.ones(1)
     else:
-        res = _solvers.solve_lp(U, 0.0)
+        res = _solvers.solve_lp(U_lp, 0.0)
         if not res.success:
             warnings.warn(
-                f"tau = inf LP did not converge: {res.message}", UserWarning, stacklevel=2
+                f"{who}tau = inf LP did not converge: {res.message}", UserWarning, stacklevel=3
             )
         support = np.flatnonzero(res.w > 1e-9)
         lp_w = res.w
@@ -219,7 +247,7 @@ def tension_report(
     n_near = int(near.sum())
     if d > 1 and n_near < min_near_frontier:
         raise ValueError(
-            f"only {n_near} near-frontier rows (|log V| < {band:g}) but min_near_frontier = "
+            f"{who}only {n_near} near-frontier rows (|log V| < {band:g}) but min_near_frontier = "
             f"{min_near_frontier}; use a larger band or temperature, or lower min_near_frontier"
         )
 
@@ -233,7 +261,7 @@ def tension_report(
         with np.errstate(invalid="ignore", divide="ignore"):
             assoc = np.corrcoef(Un, rowvar=False)
         _, dirs, evr = orient_by_pca(Zf, near)
-        load = dirs @ estimator.basis_
+        load = dirs @ basis
 
     return TensionReport(
         participating=participating,

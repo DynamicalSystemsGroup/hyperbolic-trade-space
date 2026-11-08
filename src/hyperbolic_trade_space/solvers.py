@@ -15,13 +15,18 @@ from dataclasses import dataclass
 import numpy as np
 from scipy.optimize import linprog, minimize
 from scipy.special import logsumexp
+from sklearn.utils import check_random_state
+
+from .coordinates import helmert_basis
 
 __all__ = [
     "SolveResult",
+    "TermsResult",
     "log_mean_exp",
     "objective_and_grad",
     "solve_lp",
     "solve_slsqp",
+    "solve_terms",
     "support_weights",
 ]
 
@@ -228,7 +233,29 @@ def solve_lp(U, min_exponent=0.0):
     )
 
 
-def solve_slsqp(U, tau, min_exponent=0.0, w0=None, tol=1e-10, max_iter=500):
+def _simplex_min(fun, w0, args, min_exponent, tol, max_iter):
+    """SLSQP of ``fun`` (returning value and gradient) over the simplex with a floor."""
+    d = w0.size
+    return minimize(
+        fun,
+        w0,
+        args=args,
+        jac=True,
+        method="SLSQP",
+        bounds=[(min_exponent, 1.0)] * d,
+        constraints=[{"type": "eq", "fun": lambda w: w.sum() - 1.0, "jac": lambda w: np.ones(d)}],
+        options={"ftol": tol, "maxiter": max_iter},
+    )
+
+
+def _reweighted(w, U, tau, prev, alpha, eps):
+    f, g = objective_and_grad(w, U, tau)
+    return f + alpha * np.sum(w / (prev + eps)), g + alpha / (prev + eps)
+
+
+def solve_slsqp(
+    U, tau, min_exponent=0.0, w0=None, tol=1e-10, max_iter=500, penalty=None, alpha=0.0
+):
     """Minimize ``J_tau`` over the simplex by SLSQP with analytic Jacobian.
 
     Parameters
@@ -245,11 +272,26 @@ def solve_slsqp(U, tau, min_exponent=0.0, w0=None, tol=1e-10, max_iter=500):
         SLSQP ``ftol``.
     max_iter : int, default=500
         SLSQP ``maxiter``.
+    penalty : {None, "reweighted_l1"}, default=None
+        Sparsity option. On the simplex the plain L1 norm is constant, so the penalty is the
+        reweighted L1 of Candes, Wakin and Boyd (2008): after the unpenalized solve, three rounds
+        (``eps = 1e-4``) minimize ``J_tau(w) + alpha * sum_j w_j / (w_prev_j + eps)`` from the
+        previous round's solution. Entries below ``1e-8`` are set to exact zero (when
+        ``min_exponent == 0``) and ``w`` is renormalized.
+    alpha : float, default=0.0
+        Penalty weight, ``alpha >= 0``. With ``alpha = 0`` or ``penalty=None`` the result is the
+        unpenalized one, by the same code path.
 
     Returns
     -------
     SolveResult
-        ``p`` are the softmax weights at the solution.
+        ``p`` are the softmax weights at the solution; ``beta`` and ``objective`` are the
+        unpenalized ``J_tau`` at the returned ``w`` (so ``beta`` stays the log-mean-exp offset).
+
+    Notes
+    -----
+    The penalty acts at finite ``tau`` only; at ``tau = inf`` the linear program is returned
+    unchanged.
 
     Examples
     --------
@@ -260,28 +302,185 @@ def solve_slsqp(U, tau, min_exponent=0.0, w0=None, tol=1e-10, max_iter=500):
     ([0.5, 0.5], True)
     """
     U = np.asarray(U, dtype=float)
-    d = U.shape[1]
+    if penalty not in (None, "reweighted_l1") or alpha < 0:
+        raise ValueError("penalty must be None or 'reweighted_l1' and alpha >= 0")
     if np.isinf(tau):
         return solve_lp(U, min_exponent)
     if w0 is None:
         w0 = solve_lp(U, min_exponent).w
     w0 = np.clip(np.asarray(w0, dtype=float), min_exponent, None)
     w0 = w0 / w0.sum()
-    res = minimize(
-        objective_and_grad,
-        w0,
-        args=(U, tau),
-        jac=True,
-        method="SLSQP",
-        bounds=[(min_exponent, 1.0)] * d,
-        constraints=[{"type": "eq", "fun": lambda w: w.sum() - 1.0, "jac": lambda w: np.ones(d)}],
-        options={"ftol": tol, "maxiter": max_iter},
-    )
+    res = _simplex_min(objective_and_grad, w0, (U, tau), min_exponent, tol, max_iter)
     w = np.clip(res.x, min_exponent, None)
     w = w / w.sum()
     f, _ = objective_and_grad(w, U, tau)
     f0, _ = objective_and_grad(w0, U, tau)
     if f0 < f:  # never return worse than the warm start
         w, f = w0, f0
+    if penalty == "reweighted_l1" and alpha > 0:
+        for _ in range(3):
+            r = _simplex_min(_reweighted, w, (U, tau, w, alpha, 1e-4), min_exponent, tol, max_iter)
+            w = np.clip(r.x, min_exponent, None)
+            w = w / w.sum()
+        if min_exponent == 0:
+            w = np.where(w < 1e-8, 0.0, w)
+            w = w / w.sum()
+        f = log_mean_exp(U @ w, tau)
     p = support_weights(U @ w, tau)
     return SolveResult(w, f, p, f, max(int(res.nit), 1), bool(res.success), str(res.message))
+
+
+@dataclass(frozen=True)
+class TermsResult:
+    """Result of :func:`solve_terms`.
+
+    Attributes
+    ----------
+    W : ndarray of shape (K, d)
+        Facet exponent vectors on the simplex.
+    beta : ndarray of shape (K,)
+        Facet offsets ``J_tau(w_k)`` over all rows (each facet is a supporting hyperplane).
+    labels : ndarray of shape (N,), dtype int
+        Facet of each row (argmax of ``w_k . u - beta_k``).
+    objective : float
+        ``sum_k (n_k / N) beta_k``.
+    n_iter : int
+        Partition-and-refit iterations performed.
+    success : bool
+        True if the assignment became fixed before ``max_iter``.
+    message : str
+        Stop reason.
+    history : ndarray
+        Objective after the initial fit and after each accepted iteration (non-increasing).
+    """
+
+    W: np.ndarray
+    beta: np.ndarray
+    labels: np.ndarray
+    objective: float
+    n_iter: int
+    success: bool
+    message: str
+    history: np.ndarray
+
+
+def _refit(U, labels, W, beta, tau, kw):
+    W, beta = W.copy(), beta.copy()
+    for k in np.unique(labels):
+        # centering on the facet's mean makes J_tau(Uc w) = J_tau(U w) - mean_k(U) . w
+        w = solve_slsqp(U - U[labels == k].mean(0), tau, **kw).w
+        W[k], beta[k] = w, log_mean_exp(U @ w, tau)
+    return W, beta, float(np.mean(beta[labels] - np.sum(W[labels] * U, axis=1)))
+
+
+def _solve_terms_once(U, K, tau, seed, max_iter, kw):
+    N, d = U.shape
+    Z = U @ helmert_basis(d).T  # frontier positions; the depth direction 1 is projected out
+    centers = Z[check_random_state(seed).choice(N, K, replace=False)]
+    labels = np.argmin(((Z[:, None] - centers) ** 2).sum(-1), axis=1)
+    W, beta = np.full((K, d), 1.0 / d), np.zeros(K)
+    W, beta, obj = _refit(U, labels, W, beta, tau, kw)
+    history, n_iter, success, message = [obj], 0, False, "max_iter reached"
+    while n_iter < max_iter:
+        n_iter += 1
+        new = np.argmax(U @ W.T - beta, axis=1)
+        if np.array_equal(new, labels):
+            success, message = True, "assignment fixed"
+            break
+        W2, beta2, obj2 = _refit(U, new, W, beta, tau, kw)
+        if obj2 > obj:  # monotone guard: reject an increase and stop
+            success, message = True, "no further decrease"
+            break
+        labels, W, beta, obj = new, W2, beta2, obj2
+        history.append(obj)
+    return TermsResult(W, beta, labels, obj, n_iter, success, message, np.array(history))
+
+
+def solve_terms(
+    U,
+    n_terms,
+    tau,
+    min_exponent=0.0,
+    penalty=None,
+    alpha=0.0,
+    n_restarts=5,
+    max_iter=50,
+    random_state=None,
+    tol=1e-10,
+    slsqp_max_iter=500,
+):
+    """Fit ``K`` monomial facets by alternating partition and entropic refit.
+
+    Parameters
+    ----------
+    U : ndarray of shape (N, d)
+        Log metrics (finite).
+    n_terms : int
+        Number of facets ``K >= 1``.
+    tau : float
+        Temperature of every facet's fit, ``tau > 0`` or ``np.inf``.
+    min_exponent, penalty, alpha, tol
+        Passed to :func:`solve_slsqp` for every facet.
+    n_restarts : int, default=5
+        Initializations (seeds drawn from ``random_state``); the lowest objective is kept.
+    max_iter : int, default=50
+        Maximum partition-and-refit iterations per restart.
+    random_state : int, RandomState or None
+        Seed.
+    slsqp_max_iter : int, default=500
+        SLSQP iteration cap per facet fit.
+
+    Returns
+    -------
+    TermsResult
+
+    Notes
+    -----
+    Partition-and-refit in the style of the max-affine scheme of Magnani and Boyd (2009).
+    Refitting a facet by the plain ``K = 1`` fit (minimize ``J_tau`` on the facet's own rows) is
+    ill-posed: the rows of one facet lie in a cone of the Helmert chart that does not enclose the
+    origin, so ``w`` tilts to a simplex vertex (checked: the linear program on the true rows of a
+    planted ``K = 3``, ``d = 4`` frontier returns vertices, not the planted exponents). The facet
+    is therefore fitted as a supporting hyperplane: ``w_k`` minimizes
+    ``J_tau(U w) - mean_k(U) . w`` over *all* rows, which is ``solve_slsqp`` on ``U`` centered at
+    the facet's mean; ``beta_k = J_tau(U w_k)``. The objective is the mean slack
+    ``(1/N) sum_i (beta_{k(i)} - w_{k(i)} . u_i)``, which both steps decrease (refit by convexity,
+    reassignment to ``argmax_k (w_k . u - beta_k)`` by the choice of the largest score); a guard
+    additionally rejects any iteration whose objective increased and returns the previous state.
+    It stops at a fixed assignment or ``max_iter``. For ``K = 1`` (and degenerate input
+    ``d = 1``, ``N < K``, where the ``K = 1`` solution is repeated) it returns exactly the
+    :func:`solve_slsqp` result, with ``objective = beta``.
+
+    Initialization: ``K`` random rows are the centers and every row takes its nearest center in
+    the Helmert coordinates ``Z = U B^T``. K-means on the near-frontier rows of the ``K = 1`` fit
+    was compared on a planted ``K = 3``, ``d = 4`` frontier (20 seeds, exponents recovered to
+    0.05): N=600, half the rows on the frontier, one restart, ``tau = inf``: K-means 19/20,
+    random 19/20; N=300, 20% on the frontier, ``tau = 50``, five restarts: K-means 19/20, random
+    20/20. Random is as reliable, needs no ``K = 1`` pre-fit and is shorter, so it is the
+    default. The result is a local optimum, hence the restarts.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from hyperbolic_trade_space.datasets import make_frontier_data
+    >>> U = np.log(make_frontier_data(60, 3, random_state=0)[0])
+    >>> r = solve_terms(U, 1, 20.0)
+    >>> r.W.shape, r.labels.tolist() == [0] * 60
+    ((1, 3), True)
+    """
+    U = np.asarray(U, dtype=float)
+    N, d = U.shape
+    K = int(n_terms)
+    kw = {
+        "min_exponent": min_exponent, "penalty": penalty, "alpha": alpha, "tol": tol,
+        "max_iter": slsqp_max_iter,
+    }  # fmt: skip
+    if K == 1 or d == 1 or N < K:
+        r = solve_slsqp(U, tau, **kw)
+        return TermsResult(
+            np.tile(r.w, (K, 1)), np.full(K, r.beta), np.zeros(N, dtype=int), r.beta, r.n_iter,
+            r.success, r.message, np.array([r.beta]),
+        )  # fmt: skip
+    seeds = check_random_state(random_state).randint(0, 2**31 - 1, size=n_restarts)
+    runs = [_solve_terms_once(U, K, tau, s, max_iter, kw) for s in seeds]
+    return min(runs, key=lambda r: r.objective)

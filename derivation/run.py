@@ -1,8 +1,8 @@
-"""Run the full abstract derivation chain L1 -> L10, then print the assumption audit.
+"""Run the full abstract derivation chain L1 -> L11, then print the assumption audit.
 
     uv run python derivation/run.py
 
-The chain is built from the ten lemma module names in ``CHAIN_NAMES``; modules whose file does
+The chain is built from the lemma module names in ``CHAIN_NAMES``; modules whose file does
 not exist yet are skipped so partial states run. Each lemma derives, verifies and reports the
 axioms it used. The closing AUDIT separates what was DERIVED (SymPy-verified for symbolic
 d, n, K) from POSITED, INHERITED and REGULARITY conditions and the FALLBACKS.
@@ -30,6 +30,7 @@ CHAIN_NAMES = [
     "lemma_08_helmert_chart",
     "lemma_09_pullback",
     "lemma_10_extension",
+    "lemma_11_pareto",
 ]
 
 
@@ -96,6 +97,10 @@ def print_audit(used):
     for a in sel(AX.INHERITED):
         print(f"  - {a}")
 
+    solver = [AX.get(n) for n in AX.SOLVER_LEVEL]
+    print("\nINHERITED, solver level (cited by the K > 1 solver, not consumed by a lemma):")
+    _print_conditions(solver)
+
     regularity = AX.by_tag(AX.REGULARITY)
     print("\nREGULARITY (interpretive conditions; hypotheses, not defects):")
     _print_conditions(regularity)
@@ -121,7 +126,7 @@ def print_audit(used):
 
 def main():
     print("=" * 72)
-    print("Posynomial invariant form - axiom-explicit derivation (L1 -> L10)")
+    print("Posynomial invariant form - axiom-explicit derivation (L1 -> L11)")
     print("=" * 72)
     print()
     _, used = run_chain(verbose=True)

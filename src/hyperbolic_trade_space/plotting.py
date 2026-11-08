@@ -47,6 +47,7 @@ __all__ = [
     "FRONTIER_COLOR",
     "HOLE_COLOR",
     "TENSION_CMAP",
+    "facet_labels",
     "plot_frontier_coordinates",
     "plot_frontier_surface_3d",
     "plot_log_plane",
@@ -101,13 +102,18 @@ def _category_legend(ax, cats_pal):
     ax.legend(handles=handles, frameon=False)
 
 
+def facet_labels(estimator, X):
+    """Facet of each row of ``X`` as ``"facet 1" .. "facet K"``, for ``color=`` (``K > 1``)."""
+    return np.array([f"facet {k + 1}" for k in estimator.assign_facets(X)])
+
+
 def _fitted_chart(estimator, d_required=None):
+    """Exponent rows ``(K, d)`` and offsets ``(K,)``; ``K = 1`` is the single frontier."""
     check_is_fitted(estimator, "exponents_")
-    w = np.asarray(estimator.exponents_[0], dtype=float)
-    beta = float(estimator.log_offset_[0])
-    if d_required is not None and w.size != d_required:
-        raise ValueError(f"this plot needs {d_required} metrics; the estimator has {w.size}")
-    return w, beta
+    W = np.atleast_2d(np.asarray(estimator.exponents_, dtype=float))
+    if d_required is not None and W.shape[1] != d_required:
+        raise ValueError(f"this plot needs {d_required} metrics; the estimator has {W.shape[1]}")
+    return W, np.asarray(estimator.log_offset_, dtype=float).ravel()
 
 
 def plot_log_plane(estimator, X, color=None, band=None, ax=None):
@@ -120,9 +126,12 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None):
     X : array-like of shape (n_samples, 2)
         Positive metrics to scatter (typically the training data).
     color : array-like of shape (n_samples,), default=None
-        Optional categories, coloured from ``CATEGORY_COLORS``.
+        Optional categories, coloured from ``CATEGORY_COLORS``. For ``n_terms > 1`` the default
+        (or ``"facet"``) colours by facet, legend ``facet 1 .. facet K``.
     band : float, default=None
-        Band width in ``log V``; default ``1/tau`` (``0.1`` at ``tau = inf``).
+        Band width in ``log V``; default ``1/tau`` (``0.1`` at ``tau = inf``). For ``n_terms > 1``
+        the black line is the envelope ``Phi_K = 0`` (the hard maximum of the facet lines) and the
+        band the strip down to ``Phi_K = -band``.
     ax : matplotlib Axes, default=None
 
     Returns
@@ -140,28 +149,44 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None):
     >>> ax.get_xlabel()
     'log m0'
     """
-    w, beta = _fitted_chart(estimator, 2)
+    W, bk = _fitted_chart(estimator, 2)
+    w, beta = W[0], bk[0]
     X = np.asarray(X, dtype=float)
     if np.any(X <= 0):
         raise ValueError("plot_log_plane needs strictly positive metrics")
     u = np.log(X)
+    if len(W) > 1 and (color is None or isinstance(color, str)):
+        color = facet_labels(estimator, X)
     b = _band(estimator, band)
     ax = _axes(ax)
-    n2 = float(w @ w)
-    p = beta * w / n2
-    t = np.array([w[1], -w[0]]) / np.sqrt(n2)
-    s = 1.1 * max(np.abs((u - p) @ t).max(), 1e-9)
-    lo, hi = p - s * t, p + s * t
-    shift = b * w / n2
-    ax.fill(
-        [lo[0], hi[0], hi[0] - shift[0], lo[0] - shift[0]],
-        [lo[1], hi[1], hi[1] - shift[1], lo[1] - shift[1]],
-        color=BAND_COLOR,
-        alpha=0.5,
-        linewidth=0,
-        label=f"band (log V >= -{b:.3g})",
-    )
-    ax.plot([lo[0], hi[0]], [lo[1], hi[1]], color=FRONTIER_COLOR, label="frontier V = 1")
+    if len(W) > 1:
+        # envelope Phi_K = 0: the lowest facet line m1(m0), over facets that bound m1 from above
+        g, ok = np.linspace(u[:, 0].min(), u[:, 0].max(), 200), W[:, 1] > 0
+
+        def edge(s):
+            return np.min((bk[ok] - s - np.outer(g, W[ok, 0])) / W[ok, 1], axis=1)
+
+        ax.fill_between(
+            g, edge(b), edge(0.0), color=BAND_COLOR, alpha=0.5, linewidth=0,
+            label=f"band (log V >= -{b:.3g})",
+        )  # fmt: skip
+        ax.plot(g, edge(0.0), color=FRONTIER_COLOR, label="frontier V = 1 (envelope)")
+    else:
+        n2 = float(w @ w)
+        p = beta * w / n2
+        t = np.array([w[1], -w[0]]) / np.sqrt(n2)
+        s = 1.1 * max(np.abs((u - p) @ t).max(), 1e-9)
+        lo, hi = p - s * t, p + s * t
+        shift = b * w / n2
+        ax.fill(
+            [lo[0], hi[0], hi[0] - shift[0], lo[0] - shift[0]],
+            [lo[1], hi[1], hi[1] - shift[1], lo[1] - shift[1]],
+            color=BAND_COLOR,
+            alpha=0.5,
+            linewidth=0,
+            label=f"band (log V >= -{b:.3g})",
+        )
+        ax.plot([lo[0], hi[0]], [lo[1], hi[1]], color=FRONTIER_COLOR, label="frontier V = 1")
     cols, cats = _point_colors(color, len(u))
     ax.scatter(u[:, 0], u[:, 1], c=cols, s=14, zorder=3)
     ax.set_xlabel("log m0")
@@ -188,7 +213,9 @@ def plot_frontier_surface_3d(estimator, X=None, z_index=None, grid=25, color=Non
     grid : int, default=25
         Grid points per horizontal axis.
     color : array-like of shape (n_samples,), default=None
-        Optional categories for the points. Without it, near-frontier points are grey.
+        Optional categories for the points. Without it, near-frontier points are grey; for
+        ``n_terms > 1`` points are coloured by facet and the surface is the lowest facet plane
+        (the envelope ``Phi_K = 0``).
     ax : Axes3D, default=None
         Must be a 3-D axes when given.
 
@@ -207,9 +234,9 @@ def plot_frontier_surface_3d(estimator, X=None, z_index=None, grid=25, color=Non
     >>> ax.name
     '3d'
     """
-    w, beta = _fitted_chart(estimator, 3)
-    z = int(np.argmax(w)) if z_index is None else int(z_index)
-    if not 0 <= z < 3 or w[z] <= 0:
+    W, bk = _fitted_chart(estimator, 3)
+    z = int(np.argmax(W.max(axis=0))) if z_index is None else int(z_index)
+    if not 0 <= z < 3 or W[:, z].max() <= 0:
         raise ValueError("z_index must select a metric with a positive exponent")
     x, y = [i for i in range(3) if i != z]
     ax = _axes(ax, projection="3d")
@@ -223,7 +250,11 @@ def plot_frontier_surface_3d(estimator, X=None, z_index=None, grid=25, color=Non
     gx = np.linspace(*(np.log([lo[x], hi[x]]) if lo is not None else (-1, 1)), grid)
     gy = np.linspace(*(np.log([lo[y], hi[y]]) if lo is not None else (-1, 1)), grid)
     GX, GY = np.meshgrid(gx, gy)
-    GZ = (beta - w[x] * GX - w[y] * GY) / w[z]
+    # the lowest facet plane over the facets that bound m_z from above (one plane at K = 1)
+    GZ = np.min(
+        [(bk[k] - W[k, x] * GX - W[k, y] * GY) / W[k, z] for k in range(len(W)) if W[k, z] > 0],
+        axis=0,
+    )
     zmax = np.log(hi[z]) if hi is not None else GZ.max()
     zmin = np.log(lo[z]) if lo is not None else GZ.min()
     GZ = np.where((zmax >= GZ) & (zmin <= GZ), GZ, np.nan)
@@ -233,6 +264,8 @@ def plot_frontier_surface_3d(estimator, X=None, z_index=None, grid=25, color=Non
     if X is not None:
         band = _band(estimator, None)
         near = estimator.score_samples(X) >= -band
+        if len(W) > 1 and (color is None or isinstance(color, str)):
+            color = facet_labels(estimator, X)
         cols, cats = _point_colors(color, len(X), near)
         ax.scatter(X[:, x], X[:, y], X[:, z], c=cols, s=10)
         _category_legend(ax, cats)
@@ -255,7 +288,8 @@ def plot_frontier_coordinates(Z, log_v, color=None, holes=None, targets=None, ba
         Chart coordinates (at least one column).
     log_v : array-like of shape (n_samples,)
     color : array-like of shape (n_samples,), default=None
-        Optional categories, coloured from ``CATEGORY_COLORS``.
+        Optional categories, coloured from ``CATEGORY_COLORS``. For ``K > 1`` pass
+        ``facet_labels(estimator, X)`` to colour by facet (``log V = 0`` is already the envelope).
     holes : array-like of shape (n_holes, n_metrics - 1), default=None
         Hole locations, drawn red.
     targets : array-like of shape (n_targets, n_metrics - 1), default=None
@@ -392,6 +426,21 @@ _LEMMA_NAMES = {1: "monolemma", 2: "dilemma", 3: "trilemma"}
 
 
 def plot_tensions(report, names=None, ax=None):
+    """One heatmap per report: a list of reports (one per facet at ``K > 1``) goes side by side.
+
+    Returns the ``Axes`` for a single report and a list of ``Axes`` for a list; ``ax`` is then a
+    sequence of axes. See :func:`_tension_panel` for what each panel draws.
+    """
+    if not isinstance(report, (list, tuple)):
+        return _tension_panel(report, names, ax)
+    axs = ax if ax is not None else _plt().subplots(1, len(report), squeeze=False)[1][0]
+    out = [_tension_panel(r, names, a) for r, a in zip(report, axs, strict=True)]
+    for k, a in enumerate(out):
+        a.set_title(f"facet {k + 1}: {a.get_title()}")
+    return out
+
+
+def _tension_panel(report, names=None, ax=None):
     """Association among near-frontier designs, with exponents and the contending set.
 
     Draws the association matrix of the log-metrics (negative: tension, positive: aligned) as a

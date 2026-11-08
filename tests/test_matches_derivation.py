@@ -281,3 +281,25 @@ def test_fitted_model_check_negative_control(ctx):
     est = HyperbolicTradeSpace(temperature=4.0).fit(X)
     assert chain_vs_model(ctx, est, X) < 1e-10
     assert chain_vs_model(ctx, est, X, perturb=1.0 + 1e-6) > 1e-7
+
+
+# ---------------------------------------------------------------- L10 (K-term extension, WP9)
+@pytest.mark.parametrize("kappa", [0.5, 3.0, 40.0])
+def test_L10_phi_k_bounds_shift_and_limit_at_numeric_instance(ctx, kappa):
+    """Lemma L10 (verified abstractly in derivation/lemma_10_extension.py) at the estimator."""
+    assert ctx["L10"]["ceil"] == sp.log(ctx["S"].K) / ctx["S"].kappa  # the bound being checked
+    X, _ = make_frontier_data(60, 3, n_terms=3, random_state=1)
+    est = HyperbolicTradeSpace(n_terms=3, term_temperature=kappa, random_state=0).fit(X)
+    x = np.log(X) @ est.exponents_.T - est.log_offset_
+    phi = est.score_samples(X)
+    ref = np.log(np.exp(kappa * x).sum(axis=1)) / kappa
+    np.testing.assert_allclose(phi, ref, atol=TOL)
+    gap = phi - x.max(axis=1)
+    assert (gap >= -TOL).all() and (gap <= np.log(3) / kappa + TOL).all()  # L10 squeeze
+    np.testing.assert_allclose(est.score_samples(X * 2.0), phi + np.log(2.0), atol=TOL)  # shift
+    hard = HyperbolicTradeSpace(n_terms=3, term_temperature=np.inf, random_state=0).fit(X)
+    far = HyperbolicTradeSpace(n_terms=3, term_temperature=1e6, random_state=0).fit(X)
+    np.testing.assert_allclose(far.score_samples(X), hard.score_samples(X), atol=1e-5)  # limit
+    one = HyperbolicTradeSpace(n_terms=1, temperature=np.inf).fit(X)
+    s1 = np.log(X) @ one.exponents_[0] - one.log_offset_[0]
+    np.testing.assert_allclose(one.score_samples(X), s1, atol=TOL)  # K = 1 reduction

@@ -26,6 +26,10 @@ TAGS = (POSITED, INHERITED, REGULARITY)
 # Axioms licensing symbol assumptions only; exempt from the every-axiom-is-used test.
 STRUCTURAL = ("A0",)
 
+# Inherited results that license the K > 1 solver, not a lemma premise: reported in the ledger
+# under their own heading and exempt from the every-axiom-is-used test (no lemma consumes them).
+SOLVER_LEVEL = ("I7",)
+
 
 @dataclass(frozen=True)
 class Axiom:
@@ -138,6 +142,20 @@ AXIOMS = {
         "for a square real matrix Q, Q Q^T = I implies Q^T Q = I (a left inverse of a square "
         "matrix is also its right inverse)",
         citation="Horn & Johnson, Matrix Analysis, invertible matrices (the inverse is two-sided)",
+    ),
+    "I7": Axiom(
+        "I7",
+        INHERITED,
+        "alternating partition and refit converges to a local optimum of the max-affine "
+        "(convex piecewise-linear) fitting problem: assign each point to its maximizing term, "
+        "refit each term on its cell, repeat; the least-squares error is nonincreasing and "
+        "the iteration terminates at a local optimum",
+        citation="Magnani & Boyd, 2009, Convex piecewise-linear fitting, Optimization and "
+        "Engineering 10(1), 1-17 (bib key magnani2009convex)",
+        role="the convergence of the K > 1 solver: the hard-assignment (kappa = infinity) "
+        "partition-and-refit loop stops at a local optimum rather than cycling",
+        failure_mode="a poor local optimum: the limit depends on the initial partition, "
+        "mitigated by restarts; a global optimum is not claimed",
     ),
     # ------------------------------------------------------------- REGULARITY
     "R1": Axiom(

@@ -30,3 +30,9 @@ Charnes, Cooper & Rhodes 1978 (DEA); Ahmadi-Javid (entropic value at risk); Aitc
 al. (kernel PCA); Chami et al. 2021 (HoroPCA, for disambiguation); Zitzler & Thiele 1999
 (hypervolume); Ross, Hastings et al. 2004 (multi-attribute tradespace exploration); Buchberger 1990;
 Artigue 2002; Sfard 1991.
+
+Added for WP9 (2026-11-08, Crossref DOI records): Candès, E. J., Wakin, M. B., Boyd, S. P. (2008).
+"Enhancing sparsity by reweighted ℓ1 minimization." *J. Fourier Anal. Appl.* 14(5–6), 877–905.
+doi:10.1007/s00041-008-9045-x. Miettinen, K. (1999). *Nonlinear Multiobjective Optimization.*
+Springer US (Kluwer print 1999). doi:10.1007/978-1-4615-5563-6. Ehrgott, M. (2005). *Multicriteria
+Optimization*, 2nd ed. Springer. doi:10.1007/3-540-27659-9 (author from Open Library; Crossref lists none).

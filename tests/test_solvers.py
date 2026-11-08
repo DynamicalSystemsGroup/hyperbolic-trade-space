@@ -12,6 +12,7 @@ from hyperbolic_trade_space.solvers import (
     objective_and_grad,
     solve_lp,
     solve_slsqp,
+    solve_terms,
     support_weights,
 )
 
@@ -100,3 +101,89 @@ def test_slsqp_properties_and_tau_inf():
 def test_chart_free_balance():
     # solver only sees U; sanity that helmert import works with datasets
     assert helmert_basis(2).shape == (1, 2)
+
+
+def test_penalty_validation_and_alpha_zero_exact():
+    U = np.log(make_frontier_data(80, 3, random_state=0)[0])
+    with pytest.raises(ValueError):
+        solve_slsqp(U, 20.0, penalty="l2", alpha=1.0)
+    with pytest.raises(ValueError):
+        solve_slsqp(U, 20.0, penalty="reweighted_l1", alpha=-1.0)
+    base = solve_slsqp(U, 20.0)
+    for kw in ({"penalty": "reweighted_l1", "alpha": 0.0}, {"penalty": None, "alpha": 5.0}):
+        r = solve_slsqp(U, 20.0, **kw)
+        np.testing.assert_array_equal(r.w, base.w)
+        assert r.beta == base.beta
+    lp = solve_slsqp(U, np.inf, penalty="reweighted_l1", alpha=5.0)
+    np.testing.assert_array_equal(lp.w, solve_lp(U).w)
+
+
+def test_reweighted_l1_gives_exact_zeros_on_planted_sparse_facet():
+    # d=4, planted exponents [0.6, 0.4, 0, 0], noisy frontier, tau=20, alpha=0.01 (R-11)
+    X, _ = make_frontier_data(300, 4, exponents=[0.6, 0.4, 0, 0], noise=0.1, random_state=0)
+    U = np.log(X)
+    plain = solve_slsqp(U, 20.0)
+    pen = solve_slsqp(U, 20.0, penalty="reweighted_l1", alpha=0.01)
+    assert plain.w[2] > 1e-3  # small but positive without the penalty
+    assert (pen.w[2:] == 0.0).all()  # exact zeros with it
+    assert pen.w.sum() == pytest.approx(1.0)
+    np.testing.assert_allclose(pen.w[:2], [0.6, 0.4], atol=0.02)
+    assert pen.beta == pytest.approx(log_mean_exp(U @ pen.w, 20.0))
+    assert pen.p.sum() == pytest.approx(1.0)
+
+
+_W3 = np.array([[0.7, 0.1, 0.1, 0.1], [0.1, 0.7, 0.1, 0.1], [0.1, 0.1, 0.7, 0.1]])
+
+
+def _planted_k3(n=400, frac=0.4, seed=0):
+    rng = np.random.default_rng(seed)
+    base = rng.standard_normal((n, 3)) @ helmert_basis(4)
+    log_v = np.where(rng.random(n) < frac, 0.0, -rng.exponential(1.0, n))
+    return base + (log_v - (base @ _W3.T).max(axis=1))[:, None]
+
+
+def _match_error(W):
+    import itertools
+
+    return min(np.abs(W[list(p)] - _W3).max() for p in itertools.permutations(range(3)))
+
+
+@pytest.mark.parametrize("tau", [np.inf, 50.0])
+def test_terms_recovers_planted_k3(tau):
+    # N=400, 40% of rows on the frontier; the recovery needs a few restarts at moderate tau
+    for seed in range(3):
+        r = solve_terms(_planted_k3(seed=seed), 3, tau, random_state=seed)
+        assert _match_error(r.W) < 0.05
+        assert set(np.unique(r.labels)) == {0, 1, 2}
+
+
+def test_terms_monotone_history_and_stops():
+    U = _planted_k3()
+    r = solve_terms(U, 3, np.inf, n_restarts=1, random_state=1, max_iter=50)
+    assert (np.diff(r.history) <= 1e-12).all() and r.history[-1] == pytest.approx(r.objective)
+    assert r.success and r.n_iter < 50  # stopped at a fixed assignment
+    assert (np.argmax(U @ r.W.T - r.beta, axis=1) == r.labels).all()
+    short = solve_terms(U, 3, np.inf, n_restarts=1, random_state=1, max_iter=1)
+    assert short.n_iter == 1 and not short.success  # stopped at max_iter
+
+
+def test_terms_k1_equals_slsqp_and_degenerate():
+    U = np.log(make_frontier_data(80, 3, random_state=0)[0])
+    one = solve_terms(U, 1, 20.0)
+    ref = solve_slsqp(U, 20.0)
+    np.testing.assert_array_equal(one.W[0], ref.w)
+    assert one.beta[0] == ref.beta and one.objective == ref.beta and (one.labels == 0).all()
+    few = solve_terms(U[:2], 3, 20.0)  # fewer rows than facets: the K=1 fit repeated
+    assert few.W.shape == (3, 3)
+    single = solve_terms(U[:, :1], 2, 20.0)  # d = 1
+    np.testing.assert_array_equal(single.W, [[1.0], [1.0]])
+
+
+def test_terms_deterministic_and_sparse():
+    U = _planted_k3()
+    a = solve_terms(U, 3, 50.0, random_state=7)
+    b = solve_terms(U, 3, 50.0, random_state=7)
+    np.testing.assert_array_equal(a.W, b.W)
+    np.testing.assert_array_equal(a.labels, b.labels)
+    s = solve_terms(U, 3, 50.0, penalty="reweighted_l1", alpha=0.05, random_state=7)
+    assert s.W.shape == (3, 4) and np.allclose(s.W.sum(axis=1), 1.0)

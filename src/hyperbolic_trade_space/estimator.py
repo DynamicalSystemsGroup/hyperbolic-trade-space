@@ -11,8 +11,10 @@ import numbers
 import warnings
 
 import numpy as np
+from scipy.special import logsumexp
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.exceptions import ConvergenceWarning
+from sklearn.utils import check_random_state
 from sklearn.utils.validation import check_array, check_is_fitted, check_non_negative, validate_data
 
 from . import coordinates as _coords
@@ -24,7 +26,7 @@ _ABOVE_TOL = 1e-9  # V > 1 + tol counts as "above the frontier" at tau = inf
 
 
 class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
-    """Posynomial invariant form: learn the shape of a design trade space (K = 1, monomial).
+    """Posynomial invariant form: learn the shape of a design trade space (K monomial facets).
 
     Fits ``V(m) = prod_j m_j^{w_j} / e^{beta}`` to strictly positive, larger-is-better metrics so
     that ``V <= 1`` is the attainable region and ``V = 1`` the frontier, by minimizing the
@@ -42,34 +44,59 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Chart basis: Helmert (orthonormal, the lemma L8 hypotheses hold) or additive log-ratio
         (invertible, not orthonormal; last metric is the reference).
     n_terms : int, default=1
-        Number of monomial terms. Only 1 is implemented; larger values raise
-        ``NotImplementedError`` (documented extension, spec section 4).
+        Number of monomial facets ``K`` (``K > 1`` is the posynomial frontier, fitted by
+        :func:`~hyperbolic_trade_space.solvers.solve_terms`; ``K = 1`` is the monomial fit).
     term_temperature : float, default=np.inf
-        Reserved for ``n_terms > 1``; stored and ignored.
+        Softness ``kappa`` of ``Phi_K(u) = (1/kappa) log sum_k exp(kappa (w_k . u - beta_k))``,
+        ``kappa > 0`` or ``np.inf`` (the exact maximum). Used for ``n_terms > 1`` only. The hard
+        ``beta_k`` are kept, so ``max_k x_k <= Phi_K <= max_k x_k + log K / kappa`` (lemma L10);
+        the gap is disclosed, not renormalized.
     tol : float, default=1e-10
         Solver tolerance (SLSQP ``ftol``).
     max_iter : int, default=500
-        Maximum SLSQP iterations.
+        Maximum SLSQP iterations (per facet fit for ``n_terms > 1``).
+    penalty : {None, "reweighted_l1"}, default=None
+        Sparsity option for the exponents (see ``solve_slsqp``); acts at finite ``temperature``.
+    alpha : float, default=0.0
+        Penalty weight, ``alpha >= 0``; 0 leaves the fit unchanged.
+    random_state : int, RandomState instance or None, default=None
+        Seed for the facet initializations (``n_terms > 1`` only).
 
     Attributes
     ----------
-    exponents_ : ndarray of shape (1, n_features_in_)
-        Fitted exponents ``w`` on the simplex.
-    log_offset_ : ndarray of shape (1,)
-        The offset ``beta = J_tau(w)``.
+    exponents_ : ndarray of shape (n_terms, n_features_in_)
+        Fitted exponents ``w_k`` on the simplex.
+    log_offset_ : ndarray of shape (n_terms,)
+        The offsets ``beta_k = J_tau(w_k)`` (for ``n_terms > 1`` over all rows: each facet is a
+        supporting hyperplane).
     support_weights_ : ndarray of shape (n_samples,)
         Softmax weights ``p`` at the solution (LP duals at ``tau = inf``); zero for rows with a
-        zero metric.
+        zero metric. For ``n_terms > 1`` each facet's weights on its own rows, scaled by its row
+        share (sum 1).
     n_eff_ : float
         Effective number of supporting rows, ``1 / sum p_i^2``.
     frac_above_ : float
         Fraction of (non-degenerate) training rows with ``V > 1``.
     objective_ : float
-        ``J_tau(w)`` at the solution (equals ``beta``).
+        ``J_tau(w)`` at the solution (equals ``beta``); for ``n_terms > 1`` the mean slack
+        ``(1/N) sum_i (beta_k(i) - w_k(i) . u_i)`` of the partition fit.
     n_iter_ : int
         Solver iterations (at least 1; 1 on the LP-only path).
     basis_ : ndarray of shape (n_features_in_ - 1, n_features_in_)
-        Chart matrix ``B`` (``Z = log(X) @ B.T``).
+        Chart matrix ``B`` (``Z = log(X) @ B.T``). For ``n_terms > 1`` the shape is
+        ``(n_terms, n_features_in_ - 1, n_features_in_)``: the chart does not depend on ``w``, so
+        the same ``B`` is stacked ``K`` times and ``Z`` is the same for every facet.
+    facet_ : ndarray of int, shape (n_samples,)
+        Only for ``n_terms > 1``: ``argmax_k (w_k . u - beta_k)`` of each training row (``-1`` for
+        a zero metric).
+    coefficients_ : ndarray of shape (n_terms,)
+        Only for ``n_terms > 1``: posynomial coefficients ``exp(-kappa beta_k)`` of
+        ``exp(kappa Phi_K) = sum_k c_k prod_j m_j^(kappa w_kj)``; at ``kappa = inf`` the
+        convention ``kappa = 1`` gives ``exp(-beta_k)``.
+    facet_share_ : ndarray of shape (n_terms,)
+        Only for ``n_terms > 1``: share of the near-frontier training rows (``|log V| < band``,
+        ``band = 1 / temperature``, or 0.1 at ``tau = inf``) assigned to each facet; zeros if
+        there are none.
     training_log_v_ : ndarray of shape (n_samples,)
         ``log V`` of the training rows (``-inf`` for rows with a zero metric).
     n_features_in_ : int
@@ -89,6 +116,12 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     (L1), the offset (L2), gradient and support weights (L3), convexity (L4), log-mean-exp
     (L5), noise offset (L6), elasticities and improvement factors (L7), the chart (L8).
 
+    For ``n_terms > 1`` the score is ``log V = Phi_K(u)`` and the chart ``[Z | log V]`` is
+    inverted in closed form (``Phi_K(u + s 1) = Phi_K(u) + s``, lemma L10), exactly for every
+    ``term_temperature``. ``K > 1`` is a local optimum of a partition-and-refit scheme; restarts
+    are drawn from ``random_state``. Degenerate input (one metric, one valid row, fewer valid
+    rows than ``n_terms``) repeats the ``K = 1`` fit.
+
     Examples
     --------
     >>> import numpy as np
@@ -103,6 +136,18 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     ['ilr0', 'ilr1', 'log_v']
     >>> bool(np.allclose(hts.inverse_transform(hts.transform(X)), X))
     True
+
+    Three facets:
+
+    >>> X, info = make_frontier_data(400, 4, n_terms=3, random_state=0)
+    >>> est = HyperbolicTradeSpace(n_terms=3, temperature=np.inf, random_state=0).fit(X)
+    >>> est.exponents_.shape, est.basis_.shape
+    ((3, 4), (3, 3, 4))
+    >>> bool(np.isclose(est.facet_share_.sum(), 1.0))
+    True
+    >>> bool(np.allclose(np.sort(est.exponents_, axis=0), np.sort(info["exponents"], axis=0),
+    ...                  atol=0.05))
+    True
     """
 
     def __init__(
@@ -114,6 +159,9 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         term_temperature=np.inf,
         tol=1e-10,
         max_iter=500,
+        penalty=None,
+        alpha=0.0,
+        random_state=None,
     ):
         self.temperature = temperature
         self.min_exponent = min_exponent
@@ -122,6 +170,9 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         self.term_temperature = term_temperature
         self.tol = tol
         self.max_iter = max_iter
+        self.penalty = penalty
+        self.alpha = alpha
+        self.random_state = random_state
 
     def __sklearn_tags__(self):
         tags = super().__sklearn_tags__()
@@ -145,11 +196,15 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
             raise ValueError(f"tol must be > 0, got {self.tol!r}")
         if not (isinstance(self.max_iter, numbers.Integral) and self.max_iter >= 1):
             raise ValueError(f"max_iter must be an integer >= 1, got {self.max_iter!r}")
-        if self.n_terms != 1:
-            raise NotImplementedError(
-                "n_terms > 1 is a documented extension (spec section 4); "
-                "only n_terms=1 is implemented"
-            )
+        k = self.term_temperature
+        if not (isinstance(k, numbers.Real) and not isinstance(k, bool) and k > 0):
+            raise ValueError(f"term_temperature must be a float > 0 or np.inf, got {k!r}")
+        if self.penalty not in (None, "reweighted_l1"):
+            raise ValueError(f"penalty must be None or 'reweighted_l1', got {self.penalty!r}")
+        a = self.alpha
+        if not (isinstance(a, numbers.Real) and not isinstance(a, bool) and a >= 0):
+            raise ValueError(f"alpha must be a real number >= 0, got {a!r}")
+        check_random_state(self.random_state)
 
     def _log_metrics(self, X, reset):
         X = validate_data(self, X, reset=reset, dtype=np.float64)
@@ -190,52 +245,111 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Uv = U[valid]
         nv = Uv.shape[0]
 
-        if d == 1:
-            w = np.ones(1)
-            beta = _solvers.log_mean_exp(Uv[:, 0], tau)
-            p = _solvers.support_weights(Uv[:, 0], tau)
-            n_iter = 1
-        elif nv == 1:
-            w = np.full(d, 1.0 / d)
-            beta = float(Uv[0] @ w)
-            p = np.ones(1)
-            n_iter = 1
+        K = int(self.n_terms)
+        if K > 1 and d > 1 and nv > 1:
+            tr = _solvers.solve_terms(
+                Uv, K, tau, self.min_exponent, self.penalty, self.alpha,
+                random_state=self.random_state, tol=self.tol, slsqp_max_iter=self.max_iter,
+            )  # fmt: skip
+            res, W, betas, n_iter, beta = tr, tr.W, tr.beta, tr.n_iter, tr.objective
         else:
-            res = _solvers.solve_lp(Uv, self.min_exponent)
-            if np.isfinite(tau):
-                res = _solvers.solve_slsqp(
-                    Uv, tau, self.min_exponent, w0=res.w, tol=self.tol, max_iter=self.max_iter
-                )
-            if not res.success:
-                warnings.warn(
-                    f"solver did not converge: {res.message}", ConvergenceWarning, stacklevel=2
-                )
-            w, beta, p, n_iter = res.w, res.beta, res.p, res.n_iter
+            if d == 1:
+                w = np.ones(1)
+                beta = _solvers.log_mean_exp(Uv[:, 0], tau)
+                p = _solvers.support_weights(Uv[:, 0], tau)
+                n_iter = 1
+            elif nv == 1:
+                w = np.full(d, 1.0 / d)
+                beta = float(Uv[0] @ w)
+                p = np.ones(1)
+                n_iter = 1
+            else:
+                res = _solvers.solve_lp(Uv, self.min_exponent)
+                if np.isfinite(tau):
+                    res = _solvers.solve_slsqp(
+                        Uv, tau, self.min_exponent, w0=res.w, tol=self.tol,
+                        max_iter=self.max_iter, penalty=self.penalty, alpha=self.alpha,
+                    )  # fmt: skip
+                w, beta, p, n_iter = res.w, res.beta, res.p, res.n_iter
+            if d == 1 or nv == 1:
+                res = None
+            W, betas = np.tile(w, (K, 1)), np.full(K, beta)
+        if res is not None and not res.success:
+            warnings.warn(
+                f"solver did not converge: {res.message}", ConvergenceWarning, stacklevel=2
+            )
 
         B = _coords.helmert_basis(d) if self.coordinates == "ilr" else _coords.alr_basis(d)
-        _, log_v = _coords.to_frontier_coordinates(U, w, beta, B)
+        self.exponents_, self.log_offset_ = W, betas
+        self.basis_ = B if K == 1 else np.repeat(B[None], K, axis=0)
+        _, log_v = self._chart(U)
+        if K > 1:
+            lab = self._assign(U)
+            near = valid & (np.abs(log_v) < (1.0 / tau if np.isfinite(tau) else 0.1))
+            kappa = self.term_temperature
+            p = np.zeros(nv)
+            for k in range(K):
+                m = lab[valid] == k
+                if m.any():
+                    p[m] = _solvers.support_weights(Uv[m] @ W[k], tau) * m.sum() / nv
+            self.facet_ = lab
+            with np.errstate(over="ignore"):
+                self.coefficients_ = np.exp(-(1.0 if np.isinf(kappa) else kappa) * betas)
+            self.facet_share_ = np.bincount(lab[near], minlength=K) / max(near.sum(), 1)
         support = np.zeros(n)
         support[valid] = p
         above = log_v[valid] > (_ABOVE_TOL if np.isinf(tau) else 0.0)
 
-        self.exponents_ = w[None, :]
-        self.log_offset_ = np.array([beta])
         self.support_weights_ = support
         self.n_eff_ = float(1.0 / np.sum(p**2))
         self.frac_above_ = float(np.mean(above))
         self.objective_ = float(beta)
         self.n_iter_ = max(int(n_iter), 1)
-        self.basis_ = B
         self.training_log_v_ = log_v
         return self
+
+    def _phi(self, S):
+        kappa = self.term_temperature
+        return S.max(axis=1) if np.isinf(kappa) else logsumexp(kappa * S, axis=1) / kappa
+
+    def _chart(self, U):
+        W, b, B = self.exponents_, self.log_offset_, self.basis_
+        if W.shape[0] == 1:
+            return _coords.to_frontier_coordinates(U, W[0], b[0], B)
+        bad = (-np.inf == U).any(axis=1)
+        Uf = np.where(bad[:, None], 0.0, U)
+        Z, log_v = Uf @ B[0].T, self._phi(Uf @ W.T - b)
+        Z[bad], log_v[bad] = np.nan, -np.inf
+        return Z, log_v
+
+    def _inverse(self, Z, log_v):
+        W, b, B = self.exponents_, self.log_offset_, self.basis_
+        if W.shape[0] == 1:
+            return _coords.from_frontier_coordinates(Z, log_v, W[0], b[0], B)
+        log_v = np.atleast_1d(np.asarray(log_v, dtype=float))
+        Z = np.asarray(Z, dtype=float).reshape(log_v.size, B.shape[1])
+        bad = ~np.isfinite(log_v) | ~np.isfinite(Z).all(axis=1)
+        d = W.shape[1]
+        base = (
+            np.where(bad[:, None], 0.0, Z) @ np.linalg.pinv(B[0]).T
+            if d > 1
+            else np.zeros((Z.shape[0], 1))
+        )
+        U = base + (np.where(bad, 0.0, log_v) - self._phi(base @ W.T - b))[:, None]
+        U[bad] = np.nan
+        return U
+
+    def _assign(self, U):
+        bad = (-np.inf == U).any(axis=1)
+        lab = np.argmax(
+            np.where(bad[:, None], 0.0, U) @ self.exponents_.T - self.log_offset_, axis=1
+        )
+        return np.where(bad, -1, lab)
 
     # ------------------------------------------------------------------ chart
     def _coordinates(self, X):
         check_is_fitted(self)
-        U = self._log_metrics(X, reset=False)
-        return _coords.to_frontier_coordinates(
-            U, self.exponents_[0], self.log_offset_[0], self.basis_
-        )
+        return self._chart(self._log_metrics(X, reset=False))
 
     def transform(self, X):
         """Map metrics to the chart ``[Z | log V]``.
@@ -291,10 +405,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
                 f"X has {Xt.shape[1]} features, but {self.__class__.__name__} is expecting "
                 f"{self.n_features_in_} features as input"
             )
-        U = _coords.from_frontier_coordinates(
-            Xt[:, :-1], Xt[:, -1], self.exponents_[0], self.log_offset_[0], self.basis_
-        )
-        return np.exp(U)
+        return np.exp(self._inverse(Xt[:, :-1], Xt[:, -1]))
 
     def get_feature_names_out(self, input_features=None):
         """Names of the transform columns: ``ilr0..`` (or ``alr0..``) then ``log_v``.
@@ -403,6 +514,31 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         out[V == 0] = np.nan
         return out
 
+    def assign_facets(self, X):
+        """Facet of each row: ``argmax_k (w_k . log m - beta_k)``.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            Metrics, nonnegative.
+
+        Returns
+        -------
+        ndarray of int, shape (n_samples,)
+            Index in ``[0, n_terms)`` of the facet that attains the maximum; ``-1`` for rows with
+            a zero metric. All zeros when ``n_terms = 1``.
+
+        Examples
+        --------
+        >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+        >>> X, _ = make_frontier_data(150, 4, n_terms=3, random_state=0)
+        >>> est = HyperbolicTradeSpace(n_terms=3, random_state=0).fit(X)
+        >>> bool((est.assign_facets(X) == est.facet_).all())
+        True
+        """
+        check_is_fitted(self)
+        return self._assign(self._log_metrics(X, reset=False))
+
     def improvement_factors(self, X):
         """Per-metric improvement factor ``V^(-1/w_j)`` that lands on the frontier (lemma L7).
 
@@ -428,12 +564,14 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         >>> round(float(hts.invariant_value(x)[0]), 6)
         1.0
         """
-        log_v = self.score_samples(X)
-        w = self.exponents_[0]
-        out = np.full((log_v.shape[0], w.shape[0]), np.inf)
+        check_is_fitted(self)
+        U = self._log_metrics(X, reset=False)
+        log_v = self._chart(U)[1]
+        w = self.exponents_[np.maximum(self._assign(U), 0)]  # exponents of the assigned facet
+        out = np.full(w.shape, np.inf)
         pos = w > 1e-12  # exponents below 1e-12 are numerically zero (solver noise)
         with np.errstate(divide="ignore", invalid="ignore", over="ignore"):
-            out[:, pos] = np.exp(-log_v[:, None] / w[None, pos])
+            out[pos] = np.exp(-log_v[:, None] / w)[pos]
         out[~np.isfinite(log_v), :] = np.inf
         return out
 
@@ -510,7 +648,4 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         if Z.shape[1] != d - 1:
             raise ValueError(f"Z must have {d - 1} columns, got {Z.shape[1]}")
         log_v = np.full(Z.shape[0], np.log(value))
-        U = _coords.from_frontier_coordinates(
-            Z, log_v, self.exponents_[0], self.log_offset_[0], self.basis_
-        )
-        return np.exp(U)
+        return np.exp(self._inverse(Z, log_v))

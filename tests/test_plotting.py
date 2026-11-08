@@ -135,3 +135,45 @@ def test_plot_tensions_with_real_report():
     assert isinstance(ax, Axes)
     assert ax.get_title().startswith(report.lemma_name)
     assert len(ax.patches) == report.n_lemma
+
+
+def _k3(d):
+    X, _ = make_frontier_data(300, d, n_terms=3, random_state=0)
+    return X, HyperbolicTradeSpace(n_terms=3, temperature=np.inf, random_state=0).fit(X)
+
+
+def _texts(ax):
+    out = [ax.get_xlabel(), ax.get_ylabel(), ax.get_title()]
+    out += [t.get_text() for t in ax.get_legend().get_texts()] if ax.get_legend() else []
+    return " ".join(out).lower()
+
+
+def test_log_plane_k3_draws_envelope_and_facet_legend():
+    X, hts = _k3(2)
+    ax = P.plot_log_plane(hts, X)
+    g, y = ax.lines[0].get_data()
+    u = np.log(X)
+    W, b = hts.exponents_, hts.log_offset_
+    phi = np.max(np.outer(g, W[:, 0]) + np.outer(y, W[:, 1]) - b, axis=1)
+    assert matplotlib.colors.to_hex(P.FRONTIER_COLOR) in colors_of(ax)
+    assert np.all(phi[np.isfinite(phi)] <= 1e-9) and np.isfinite(y).all() and len(u) == 300
+    labels = [t.get_text() for t in ax.get_legend().get_texts()]
+    assert labels == [f"facet {k + 1}" for k in range(len(labels))] and len(labels) >= 2
+    assert "red" not in _texts(ax)
+    assert P.plot_log_plane(hts, X, color="facet").get_legend() is not None
+
+
+def test_surface_k3_and_coordinates_facet_colouring():
+    X, hts = _k3(3)
+    ax = P.plot_frontier_surface_3d(hts, X)
+    assert ax.name == "3d" and len(ax.collections) >= 2
+    assert "facet 1" in _texts(ax) and "red" not in _texts(ax)
+    Z = hts.transform(X)
+    ax = P.plot_frontier_coordinates(Z[:, :-1], Z[:, -1], color=P.facet_labels(hts, X))
+    assert "facet 1" in _texts(ax) and "red" not in _texts(ax)
+
+
+def test_plot_tensions_list_of_reports_side_by_side():
+    axs = P.plot_tensions([make_report(), make_report()], names=["a", "b", "c"])
+    assert len(axs) == 2 and axs[1].get_title().startswith("facet 2: dilemma")
+    assert isinstance(P.plot_tensions(make_report()), Axes)

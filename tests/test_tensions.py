@@ -17,12 +17,13 @@ import dataclasses
 import numpy as np
 import pytest
 
-from hyperbolic_trade_space import HyperbolicTradeSpace, tension_report
+from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data, tension_report
 from hyperbolic_trade_space.coordinates import (
     from_frontier_coordinates,
     helmert_basis,
 )
 from hyperbolic_trade_space.gaps import orient_by_pca
+from hyperbolic_trade_space.tensions import TensionReport
 
 INF = np.inf
 BETA = 0.3
@@ -256,3 +257,29 @@ def test_deterministic_frozen_and_validation():
 
     with pytest.raises(NotFittedError):
         tension_report(HyperbolicTradeSpace(), X)
+
+
+# ---- K > 1: one report per facet (WP9 R-4) -------------------------------------------------
+_PLANTED = [[0.5, 0.5, 0, 0], [0, 0.5, 0.5, 0], [0, 0, 0.5, 0.5]]
+
+
+@pytest.mark.parametrize("seed", [0, 1, 2])
+def test_k3_reports_one_per_facet_recover_planted_supports(seed):
+    X, _ = make_frontier_data(1500, 4, exponents=_PLANTED, n_terms=3, random_state=seed)
+    est = HyperbolicTradeSpace(n_terms=3, temperature=20.0, random_state=0).fit(X)
+    reps = tension_report(est, X)
+    assert isinstance(reps, list) and len(reps) == 3
+    assert all(r.n_near_frontier >= 10 and r.band == 0.05 for r in reps)
+    assert all(r.tension_loadings.shape == (3, 4) for r in reps)
+    assert sorted(r.contending_set.tolist() for r in reps) == [[0, 1], [1, 2], [2, 3]]
+
+
+def test_k1_is_a_single_report_and_facet_error_names_facet():
+    X, _ = make_frontier_data(300, 3, random_state=0)
+    assert isinstance(
+        tension_report(HyperbolicTradeSpace(temperature=INF).fit(X), X), TensionReport
+    )
+    X, _ = make_frontier_data(900, 4, exponents=_PLANTED, n_terms=3, random_state=0)
+    est = HyperbolicTradeSpace(n_terms=3, temperature=20.0, random_state=0).fit(X)
+    with pytest.raises(ValueError, match="facet 0"):
+        tension_report(est, X, min_near_frontier=10**6)

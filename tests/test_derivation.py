@@ -112,7 +112,11 @@ def test_fallbacks_are_declared():
 @pytest.mark.skipif(not ALL_PRESENT, reason="needs all ten lemma modules")
 def test_every_axiom_is_used():
     _, used = run_chain(verbose=False)
-    unused = [n for n in AX.AXIOMS if n not in used and n not in AX.STRUCTURAL]
+    unused = [
+        n
+        for n in AX.AXIOMS
+        if n not in used and n not in AX.STRUCTURAL and n not in AX.SOLVER_LEVEL
+    ]
     assert not unused, f"axioms never used by any lemma: {unused}"
 
 
@@ -699,3 +703,60 @@ def test_crosscheck_L10(_ctx_all, dnk):
             _TAU * sum(_val("theta", (k, j), dnk) * _val("u", (j,), dnk) for j in range(1, d + 1))
         )
         _eq(_conc(r["term_in_m"].subs(S_.k, k), dnk, S_, ex, {"m": ov["m"]}), term)
+
+
+# --- L11: a V-maximizer is Pareto-efficient (WP9) ---
+def _run_l11():
+    import derivation.lemma_11_pareto as L11
+
+    ctx = {"S": S.make_symbols()}
+    L11.derive(ctx)
+    L11.verify(ctx)
+    return ctx, L11
+
+
+def test_L11_verifies_abstractly_with_declared_axioms():
+    ctx, L11 = _run_l11()
+    assert L11.TITLE and L11.STATEMENT
+    assert list(L11.AXIOMS_USED) == ["A1", "A2"]
+    for name in L11.AXIOMS_USED:
+        assert name in AX.AXIOMS
+    assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
+
+
+def test_L11_in_chain_and_states_non_converse():
+    from derivation.run import CHAIN_NAMES as names
+
+    assert "lemma_11_pareto" in names
+    _, L11 = _run_l11()
+    assert "converse is not claimed" in L11.STATEMENT
+    assert any(m.__name__.endswith("lemma_11_pareto") for m in CHAIN)
+
+
+def test_L11_no_enumeration():
+    import inspect
+
+    src = inspect.getsource(_il.import_module("derivation.lemma_11_pareto"))
+    assert "range(" not in src and "numpy" not in src and "scipy" not in src
+
+
+def test_L11_fails_loudly_when_sign_claim_broken():
+    ctx, L11 = _run_l11()
+    ctx["L11"]["gain_nonneg"] = False
+    with pytest.raises(AssertionError, match="L11 FAIL"):
+        L11.verify(ctx)
+    ctx, L11 = _run_l11()
+    ctx["L11"]["ratio_gt1"] = sp.Interval(0, sp.oo)  # strictness claim made non-strict
+    with pytest.raises(AssertionError, match="L11 FAIL"):
+        L11.verify(ctx)
+
+
+def test_I7_solver_level_inherited_entry():
+    a = AX.get("I7")
+    assert a.tag == AX.INHERITED and a.citation.strip() and "magnani2009convex" in a.citation
+    assert a.role.strip() and a.failure_mode.strip()
+    assert "I7" in AX.SOLVER_LEVEL
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        print_audit(["A1", "A2"])
+    assert "I7" in buf.getvalue() and "restarts" in buf.getvalue()
