@@ -73,3 +73,13 @@ may be conditions we cannot verify for the sampled spaces (e.g. conditioning, R1
 each one with (a) what it buys for understanding or interpreting results and (b) what happens to
 the interpretation when it fails. The docs (WP6) carry this per result as the method's limitations.
 Fewer hypotheses is not the goal; explicit, explained hypotheses are.
+
+## Solver-level inherited entries
+
+An inherited entry is normally consumed by a lemma, which lists it in `AXIOMS_USED`, and the audit
+in `tests/test_derivation.py` checks that every such entry is used. A *solver-level* inherited
+entry (`SOLVER_LEVEL` in `derivation/axioms.py`; today I7, Magnani and Boyd 2009) is a result the
+implementation leans on that no lemma consumes: here, that alternating partition and refit stops at
+a local optimum. It carries a role and a failure mode like every ledger entry, is printed by
+`derivation/run.py` in its own audit section, and is listed instead of being checked for
+consumption; the every-axiom-is-used audit covers the lemma-consumed entries only.

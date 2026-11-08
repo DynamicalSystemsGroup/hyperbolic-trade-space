@@ -61,6 +61,9 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Penalty weight, ``alpha >= 0``; 0 leaves the fit unchanged.
     random_state : int, RandomState instance or None, default=None
         Seed for the facet initializations (``n_terms > 1`` only).
+    n_restarts : int, default=5
+        Number of seeded initializations of the ``n_terms > 1`` alternation; the lowest mean
+        slack is kept. More restarts help against local optima (see the limitations page).
     facet_step : {"support", "tangent"}, default="support"
         Per-facet step of the ``n_terms > 1`` alternation (see
         :func:`~hyperbolic_trade_space.solvers.solve_terms`): ``"support"`` is the supporting
@@ -169,6 +172,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         alpha=0.0,
         random_state=None,
         facet_step="support",
+        n_restarts=5,
     ):
         self.temperature = temperature
         self.min_exponent = min_exponent
@@ -181,6 +185,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         self.alpha = alpha
         self.random_state = random_state
         self.facet_step = facet_step
+        self.n_restarts = n_restarts
 
     def __sklearn_tags__(self):
         tags = super().__sklearn_tags__()
@@ -213,6 +218,8 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         if not (isinstance(a, numbers.Real) and not isinstance(a, bool) and a >= 0):
             raise ValueError(f"alpha must be a real number >= 0, got {a!r}")
         check_random_state(self.random_state)
+        if not (isinstance(self.n_restarts, numbers.Integral) and self.n_restarts >= 1):
+            raise ValueError(f"n_restarts must be an integer >= 1, got {self.n_restarts!r}")
         if self.facet_step not in ("support", "tangent"):
             raise ValueError(f"facet_step must be 'support' or 'tangent', got {self.facet_step!r}")
 
@@ -260,7 +267,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
             tr = _solvers.solve_terms(
                 Uv, K, tau, self.min_exponent, self.penalty, self.alpha,
                 random_state=self.random_state, tol=self.tol, slsqp_max_iter=self.max_iter,
-                facet_step=self.facet_step,
+                facet_step=self.facet_step, n_restarts=self.n_restarts,
             )  # fmt: skip
             res, W, betas, n_iter, beta = tr, tr.W, tr.beta, tr.n_iter, tr.objective
         else:

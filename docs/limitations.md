@@ -126,9 +126,16 @@ global optimality. The assumptions behind it are named, defended and extended in
   the planted facets in 16 or 17, for either per-facet step, and the failures are facets with only
   five or six frontier rows (the generator guarantees at least $d+1$, which is necessary for
   identifiability and not sufficient for recovery) and one seed with a well-populated facet.
+  The analyst's options are more restarts (`n_restarts`), a better start, and the tangent step
+  (`facet_step="tangent"`). The spikes (`docs/superpowers/notes/spike-objective/`) show what
+  restarts buy: on seeds 3 and 8 two or three of the five restarts pass, so more restarts or a
+  better selection rule would recover them; on seeds 1 and 16 none does, because the sparse
+  facet is barely determined by its frontier rows.
 - *Thin facets.* A facet with fewer frontier rows than dimensions is not determined by them; only
   the interior rows locate it, and the mean-slack objective prefers to split a large facet rather
-  than keep a sparse one.
+  than keep a sparse one. More restarts do not cure this (no restart passes on seeds 1 and 16);
+  the options are a larger sample, a better start or the tangent step, which uses the near-frontier
+  rows directly.
 - *A non-monotone step.* `facet_step="tangent"` (step D) uses the near-frontier rows directly and
   recovers about as often as the default, but the mean slack is not monotone under it; the
   default `"support"` step is monotone and is the one the paper presents. A frontier-weighted

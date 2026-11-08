@@ -470,3 +470,15 @@ def test_facet_step_validated_and_inert_at_k1():
     b = HyperbolicTradeSpace(facet_step="tangent").fit(X)
     np.testing.assert_array_equal(a.exponents_, b.exponents_)
     assert HyperbolicTradeSpace().get_params()["facet_step"] == "support"
+
+
+def test_n_restarts_default_and_validation():
+    X, _ = make_frontier_data(150, 4, n_terms=3, random_state=0)
+    one = HyperbolicTradeSpace(n_terms=3, random_state=0, n_restarts=1).fit(X)
+    assert one.exponents_.shape == (3, 4)
+    five = HyperbolicTradeSpace(n_terms=3, random_state=0, n_restarts=5).fit(X)
+    default = HyperbolicTradeSpace(n_terms=3, random_state=0).fit(X)
+    np.testing.assert_array_equal(five.exponents_, default.exponents_)
+    for bad in (0, -1, 2.5, None):
+        with pytest.raises(ValueError, match="n_restarts"):
+            HyperbolicTradeSpace(n_terms=3, n_restarts=bad).fit(X)

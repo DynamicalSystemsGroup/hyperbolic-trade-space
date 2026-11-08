@@ -723,7 +723,7 @@ is the result of Magnani and Boyd for the least-squares max-affine problem (ledg
 objective (mean slack) and refit (a supporting hyperplane of the entropic fit) are different, so I7
 is the pattern the scheme follows and not a theorem about this objective; what protects against
 cycling here is the monotone guard and the iteration cap. I7 states a local optimum, with the
-failure mode that the limit depends on the initial partition; restarts mitigate it.
+failure mode that the limit depends on the initial partition; restarts mitigate it. I7 is a solver-level inherited entry, a result the implementation leans on that no lemma consumes (the rule is in the proof conventions, "Solver-level inherited entries").
 
 **Only observed.** (i) Recovery on planted data: on planted $K=3$, $d=4$ frontiers at $N=400$ the
 exponents are recovered to 0.05 in 16 or 17 of 20 seeds for either step and either $\tau$ (step B
