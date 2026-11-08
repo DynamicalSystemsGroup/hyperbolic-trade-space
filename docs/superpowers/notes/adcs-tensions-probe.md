@@ -160,12 +160,14 @@ committed CSV, deterministic seeds, plus an agreement test against `tension_repo
 
 ### Status against R-14 (amended)
 
-R-13 (all of a to e) holds on the final dataset. R-14 was amended (WP4b scope amendment 1, recorded in
+Status after amendment 4 (final): R-14 and the R-15 shares hold; R-13 (a), (b), (c) fail and (d), (e) hold on the committed
+dataset (see "Amendment 4: results" below; the statement written in phase 2, that R-13 a to e held, referred to the 90 degree
+dataset and is superseded by amendments 2 to 4). R-14 was amended (WP4b scope amendment 1, recorded in
 `work-packages/WP4b-decisions.md`): the absolute small-wheel level of 0.25 was an arbitrary default of the scope and is
 dropped; R-14 keeps its two relative clauses. Final numbers on the committed dataset: median `torque_saturated_frac` of
 small-wheel designs 0.237 (large wheels 0.0139, ratio about 17 against the required 3); median settling 247 s small
-against 76 s large, ratio 3.2 against the required 1.25. Both relative clauses hold. No new simulation was run and the
-dataset is unchanged. The test `test_torque_binds_for_small_wheels` carries no xfail marker and no longer asserts the
+against 76 s large, ratio 3.2 against the required 1.25 (these are the phase 2 numbers on the 90 degree dataset; the final
+R-14 numbers are in "Amendment 4: results"). Both relative clauses held then. The test `test_torque_binds_for_small_wheels` carries no xfail marker and no longer asserts the
 0.25 level. History kept for honesty: before the amendment the implementer stopped under the scope's stop rule after the
 three allowed adjustments, and a truncation of the same runs at 400 s (small-wheel median 0.266) was noted but not
 applied.
@@ -201,9 +203,14 @@ wheels hardly saturate, so the gains still matter for effort and pointing, and l
 Adjustments 2 and 3 each changed several constants at once; I count each as one adjustment (the scope's three), as
 the scope's wording is "at most three times total".
 
-### Final constants and scenario (all illustrative; superseded by amendment 3: slew 30 degrees, horizon 600 s, wheel momentum 10 / 30 / 100 mN m s)
+### Phase 2 constants and scenario (history; the final scenario is 30 degrees, 600 s, wheel momentum 10 / 30 / 100 mN m s, see amendment 3)
 
-Unchanged from the defaults list except: Kp 0.03 to 1.0 N.m/rad, Kd 0.3 to 1.5 N.m.s/rad (log-uniform); small wheel
+The paragraph below describes the 90 degree phase 2 dataset and is kept as history; its numbers (feasible counts, flag shares,
+ranges) do not describe the committed dataset. Final constants and scenario: slew 30 degrees about X, horizon 600 s,
+`max_step` 0.5 s; Kp 0.03 to 1.0 N.m/rad and Kd 0.3 to 1.5 N.m.s/rad (log-uniform); wheels maxTorque 0.3 / 2 / 10 mN.m with
+momentum 10 / 30 / 100 mN.m.s and mass 0.12 / 0.25 / 0.60 kg (small / medium / large); tracker, panel, battery and power constants as in the model.
+
+Phase 2 (superseded) text: Unchanged from the defaults list except: Kp 0.03 to 1.0 N.m/rad, Kd 0.3 to 1.5 N.m.s/rad (log-uniform); small wheel
 maxTorque 0.3 mN.m (momentum 5 mN.m.s, mass 0.12 kg; medium 2 mN.m, large 10 mN.m); scenario 90 degree slew about X,
 horizon 450 s, `max_step` 0.5 s. Total mass spans 11.9 to 16.1 kg (the scope expected about 13 to 18; the 12U bus mass
 of 10 kg is a default). The pointing floor, tracker, panel, battery and power constants are as in the model header.
@@ -215,7 +222,7 @@ so the flag is informational, as in WP4). 772 designs are feasible (settled, `po
 over all designs: power margin 6.6 to 68 W, energy balance 1.0 to 56 Wh, eclipse reserve -2.6 to 52 Wh, peak slew
 power 1.3 to 7.4 W, depth of discharge 0.04 to 0.43.
 
-### R-13 on the committed dataset (feasible designs, n = 772; conditioning as in the Method section)
+### R-13 on the phase 2 dataset (90 degrees; superseded; feasible designs, n = 772; conditioning as in the Method section)
 
 - Contending set at tau = infinity (LP, `min_exponent = 0`), size 6: settling 0.137, pointing 0.151, total mass 0.266,
   control effort 0.163, eclipse depth of discharge 0.065, energy balance 0.219; peak slew power, power margin and eclipse
@@ -239,7 +246,7 @@ power 1.3 to 7.4 W, depth of discharge 0.04 to 0.43.
 - R-15: 1000 designs; settled fraction 0.888 (at least 0.85); violation shares of `settled`, `momentum_ok`, `power_ok`, `dod_ok`:
   0.112, 0.551, 0.0, 0.131.
 
-### Physical explanation of the exposed tensions (R-17)
+### Physical explanation of the exposed tensions on the phase 2 dataset (R-17; superseded numerically by amendment 4 results)
 
 - Agility against mass (settling-mass -0.57): the wheel class. A larger wheel gives more torque, so the saturated slew is
   shorter (median settling 247, 101 and 76 s for small, medium and large) and costs 0.5 to 1.4 kg more. With the small
@@ -320,7 +327,7 @@ reason (scope Amendment 3), which is what the positivity filter already does; th
 Inertia range of the sampled designs (the existing `inertia_tensor` with the model's bus 10 kg, body 0.226 x 0.226 x 0.34 m,
 panels 2.5 kg/m2 x span x 0.34 m, battery 140 Wh/kg, antenna and tracker as in the model): the slew axis is X, and
 J_xx = 0.23 kg m2 (span 0.3 m, battery 20 Wh) to 0.99 kg m2 (span 1.0 m, battery 200 Wh); panel span dominates (0.23 to 0.97
-over the span range, battery adds 0.02); median about 0.5. The panel contribution scales like span^3.
+over the span range, battery adds 0.02); median about 0.35 (corrected: 0.353 on the first 300 designs of the seed-0 sample, 0.338 on the feasible ones of them; the figure 0.5 first written here was wrong, and the table's 'at J = 0.5' column is not the median). The panel contribution scales like span^3.
 
 Rest-to-rest slew of angle theta, torque saturated (accelerate for half the angle, brake for the other half): peak rate
 sqrt(T theta / J), peak wheel momentum h_peak = J omega = sqrt(T J theta). A class with capacity h_max survives iff
@@ -405,39 +412,43 @@ asserts it. R-13/R-14 evaluate on the same 780 designs.
 (and R-15) hold, but R-13 (a), (b), (c) and the pointing-mass clause of (e) do not. The tests that cannot hold are marked
 `xfail(strict=True)` with the reason (`test_a_`, `test_b_`, `test_c_`, `test_e_`); the R-14 and R-15 tests have no marker.
 Thresholds and method are untouched. Finding: with momentum respected, the agility-against-mass trade of wheel class does not
-appear as a frontier tension. Wheel class moves total mass by at most 3 x 0.48 = 1.4 kg of about 14 kg, while panel span,
-battery capacity and tracker grade move it by several kg; and the settling time at the 1 % criterion is set by the slow pole
-Kp / (4 Kd) of the gains rather than by the torque-limited phase (median settling: small 128 s, medium 67 s, large 69 s; medium
-and large are indistinguishable). Where wheel class does act, it acts as a feasibility boundary: small wheels fail on momentum
+appear as a frontier tension. Corrected explanation (the sentence first written here, that wheel class moves mass by at most 1.4 kg
+while other levers move it by several kg, was wrong: reviewer defect G-2): wheel mass is the largest single mass lever. The three wheels
+weigh 0.36 (small), 0.75 (medium) or 1.80 kg (large), standard deviation 0.60 kg of the 0.84 kg total standard deviation (panel mass
+std 0.16 kg, battery mass 0.34 kg), and wheel mass alone explains 55 % of the variance of total mass. Mass is nevertheless absent
+from the contending set because heavier wheels do not settle faster: the 1 % settling time is set by the slow pole Kp/(4 Kd) of the PD
+loop, corr(log settling, log(Kd/Kp)) = 0.992 for large wheels (0.993 in the review), so wheel class separates settling only at the
+most aggressive gains; medium and large are indistinguishable (median settling small 128 s, medium 67 s, large 69 s). Where wheel class does act, it acts as a feasibility boundary: small wheels fail on momentum
 for large-inertia designs (19 % of small designs at 30 degrees, 98 % at 90 degrees), not as a spread along the frontier. The
 notebook should say so.
 
 ### Facts for WP7 interpretation
 
-Updated for amendment 3 (dataset at 30 degrees, 600 s; feasible = settled, `power_ok`, `momentum_ok`, all attributes positive;
-780 of 1000 designs). The amendment 2 section above describes the earlier 90 degree dataset and is superseded numerically.
+Final (amendment 4): dataset at 30 degrees, 600 s, wheel capacities 10 / 30 / 100 mN m s, ten attributes; feasible = settled,
+`power_ok`, `momentum_ok`, all attributes positive; 780 of 1000 designs. Numbers in "Amendment 4: results" below.
 
-(a) Power never limits a slew in this dataset. The available-power cap on torque is below the wheel maximum in 3.2 % of
-designs (large wheels with the smallest panels), and `power_ok` is True for every design. The power attributes reach the
-controls only through mass and inertia (panel and battery mass, lever arm), so power tensions are energy-sizing tensions, not
-power-limited-slew tensions. On the feasible set the power margin is 7.0 to 68 W (median 27.6 W).
+(a) Power never limits a slew in this dataset. The available-power cap on torque is below the wheel maximum in 3.2 % of designs
+(large wheels with the smallest panels), and `power_ok` is True for every design. The power attributes reach the controls only
+through mass and inertia (panel and battery mass, lever arm), so power tensions are energy-sizing tensions, not power-limited-slew
+tensions. On the feasible set the power margin is 7.0 to 68 W (median 27.6 W).
 
-(b) Near-redundant attribute pairs, so that WP7 does not read them as independent findings: power margin with energy balance
-(correlation 0.966 of the oriented, standardized metrics on the new feasible set) and eclipse reserve with eclipse depth of
-discharge (0.921) are accounting near-identities, not separate findings.
+(b) Near-redundant attribute pairs (oriented, standardized log-metrics on the feasible set), so WP7 does not read them as
+independent findings: power margin with energy balance 0.966; eclipse reserve with eclipse depth of discharge 0.921; and the new
+slew time with settling time 0.947 (0.99 among near-frontier rows): the two measure the same slow-pole tail, see below.
 
-(c) Wheel classes on the feasible set: small 239, medium 279, large 262 (of 344, 345, 311). Near-frontier rows at the working
-tau (46.1): small 56, medium 16, large 4, so the frontier is mostly small-wheel designs and statements about large wheels rest
-on 4 near-frontier rows. Total mass (11.9 to 16.1 kg over the feasible set) is not in the tau = inf contending set (exponent
-0.000; bootstrap support 0.01): WP7 must read this as "mass is not a discriminating attribute on this frontier", not "mass
-does not matter"; it does associate with the energy attributes near the frontier (with depth of discharge -0.57, with
-eclipse reserve -0.46, with energy balance and power margin -0.35).
+(c) Wheel classes on the feasible set: small 239, medium 279, large 262 (of 344, 345, 311). Near-frontier rows at the working tau
+(42.8): small 78, medium 23, large 1, so statements about large wheels rest on a single near-frontier design. Total mass (11.9 to
+16.1 kg) is not in the contending set (exponent 0.000, bootstrap support 0.00): WP7 must read this as "mass is not a discriminating
+attribute on this frontier", not "mass does not matter"; wheel mass is the largest single mass lever (0.36 to 1.80 kg, std 0.60 of
+0.84), but heavier wheels do not settle or arrive faster at these gains. Mass associates with the energy attributes near the
+frontier (depth of discharge -0.65, eclipse reserve -0.58, power margin -0.47, energy balance -0.44) and with pointing error
+(-0.36: finer star trackers weigh more).
 
-(d) R-13 a, b, c and the pointing-mass clause of e fail on this set (see "Every attempt"); R-14 (torque binds: saturated
-fraction small 0.0409 against large 0.0080, ratio 5.1; settling small 128 s against large 69 s, ratio 1.85) and the R-15 shares
-pass. The tensions that hold: settling time with control effort (-0.95), pointing error with control effort (-0.63), settling
-with pointing aligned (+0.63), power tensions (mass with depth of discharge -0.57, pointing with peak slew power -0.50).
-Wheel class acts as a feasibility boundary (small wheels lose 19 % of designs to momentum), not as a frontier tension.
+(d) R-13 (a), (b), (c) fail and (d), (e) hold; R-14 and R-15 hold. The tensions that hold: settling time and slew time each with
+control effort (-0.95, -0.96), pointing error with control effort (-0.70), pointing with mass (-0.36), settling with pointing
+aligned (+0.68; slew time with pointing +0.71), power tensions (mass with depth of discharge -0.65, pointing with peak slew
+power -0.61). Wheel class acts as a feasibility boundary (small wheels lose 19 % of designs to momentum at 30 degrees, 98 % at 90),
+not as a frontier tension; agility by slew time does not trade against mass either.
 
 ### What the SysML client provided for free (R-17)
 
@@ -496,3 +507,62 @@ the outputs list; no constant is duplicated (the bands are scenario parameters o
    designs, the (oriented) slew time of small, light wheels is worse than that of large, heavy wheels, a slew-time/mass tension
    at the wheel class; if the weight of that effect is small against the panel and battery mass, mass stays absent and wheel
    class is reported as a feasibility boundary. Either result is recorded as found.
+
+### Amendment 4: results (adjustment 4, the last; STOP RULE TRIGGERED, R-13 still fails)
+
+Command (recorded, run after the model layer change): `uv run python examples/adcs/generate_dataset.py --model cubesat --n 1000
+--seed 0 --slew-deg 30 --t-end 600 --force`. All earlier columns are unchanged to 1e-6 relative; two columns added
+(`slew_time_s`, `slew_time_05deg_s`); the band never entered within 600 s for 4 designs (censored at the horizon). Feasible 780
+of 1000 (small 239, medium 279, large 262); violation shares unchanged (settled 2.2 %, `momentum_ok` 8.1 %, `power_ok` 0 %,
+`dod_ok` 13.1 %). Conditioning, method and thresholds as before, now with ten attributes (slew time oriented reciprocal).
+
+Wheel-class medians on the feasible set:
+
+| class | saturated fraction | slew time 1 deg (s) | slew time 0.5 deg (s) | settling 1 % (s) | slew/settling |
+|---|---|---|---|---|---|
+| small | 0.0409 | 82.7 | 97.1 | 128.3 | 0.74 |
+| medium | 0.0152 | 50.7 | 60.2 | 67.1 | 0.74 |
+| large | 0.0080 | 51.8 | 62.3 | 69.3 | 0.75 |
+
+R-14 holds: saturation ratio small/large 5.1 (needs 3), settling ratio 1.85 (needs 1.25); slew time ratio 1.60.
+
+R-13 on the ten attributes (n = 780):
+- Contending set at tau = infinity (size 6): control effort 0.434, slew time 0.253, power margin 0.179, settling 0.081, pointing 0.040,
+  eclipse reserve 0.013; total mass 0.000, energy balance 0.000, peak slew power 0, depth of discharge 0.
+- Working tau = 42.8 (`frac_above_` 0.101), exponents: effort 0.430, slew time 0.329, power margin 0.176, settling 0.028,
+  pointing 0.024, reserve 0.013, mass 0. Near-frontier rows 102: small 78, medium 23, large 1.
+- Bootstrap (100 resamples, seed 0) support / median exponent: slew time 1.00 / 0.252, effort 1.00 / 0.429, pointing 0.95 / 0.041,
+  settling 0.88 / 0.081, power margin 0.66 / 0.155, reserve 0.58 / 0.012, energy balance 0.50 / 0.015, depth of discharge 0.43 / 0,
+  total mass 0.00 / 0, peak slew power 0.
+- Near-frontier associations (negative = tension): settling-slew time +0.99; settling-mass -0.13; slew time-mass -0.11;
+  settling-effort -0.95; slew time-effort -0.96; pointing-effort -0.70; pointing-mass -0.36; pointing-peak slew power -0.61;
+  settling-pointing +0.68; slew time-pointing +0.71; mass-depth of discharge -0.65; mass-reserve -0.58; mass-power margin -0.47;
+  mass-energy balance -0.44; mass-peak slew power +0.65; power margin-energy balance +0.99; reserve-depth of discharge +0.93.
+- (a) FAILS: the set has size 6 and includes a power attribute (power margin 0.179), but total mass has exponent 0.000 (needs 0.05).
+  (b) FAILS: mass bootstrap support 0.00 (needs 0.90). (c) FAILS: settling-mass -0.13 and slew time-mass -0.11, both above -0.30,
+  and only the small (78) and medium (23) classes have 10 or more near-frontier designs, which would meet the class count but not
+  the association. (d) holds (mass with depth of discharge -0.65). (e) now holds (settling-effort -0.95, pointing-effort -0.70,
+  pointing-mass -0.36, settling-pointing +0.68; the pointing-mass clause that failed at -0.26 passes at -0.36 because the
+  near-frontier set is different with the new attribute). `test_e_previous_tensions_retained` therefore has no xfail marker;
+  `test_a_`, `test_b_`, `test_c_` stay `xfail(strict=True)` citing amendment 4.
+- Sensitivity, 0.5 degree band in place of 1 degree: same contending set, mass exponent 0.000, slew time-mass -0.056,
+  settling-mass -0.066, near-frontier small 77, medium 22, large 2. The band does not matter.
+
+**Expectation against result (Step A).** Held: medium and large slew times are indistinguishable (50.7 against 51.8 s); small wheels
+are the slow class (ratio 1.60 against the predicted at least 1.5); wheel-class medians of settling unchanged. Wrong: levels (small
+82.7 s against 70 predicted; medium and large 51 s against 35); slew time is about three quarters of settling in every class, not
+half, and its ratio small/large (1.60) is smaller than that of settling (1.85), not larger; slew time and settling are almost
+redundant (correlation 0.947 over the feasible set, 0.99 near the frontier), not 0.5 to 0.8. The reason I got wrong: a 1 degree band
+at a 30 degree slew is 1/30 of the initial error, 3.4 time constants of the slow pole against 4.6 for the 1 % criterion, so the
+two are in the same tail and ln 30 / ln 100 = 0.74 is exactly the ratio seen. corr(log slew time, log(Kd/Kp)) = 0.998 for large
+wheels, 0.990 for medium, 0.971 for small (settling: 0.992, 0.924, 0.707). Only at the most aggressive gains (Kd/Kp below 5) does
+the wheel class show: slew time small 35.4 s, medium 29.5 s, large 28.0 s (settling 88, 41, 37 s). The torque-limited part of the
+slew is short against the tail even for small wheels at 30 degrees, so a first-entry measure with a band of this size does not
+escape the slow pole.
+
+**Finding (reported, not tuned around).** Wheel class appears as a feasibility boundary (momentum: small wheels lose 19 % of the
+designs at 30 degrees, 98 % at 90 degrees) and not as a frontier tension. Agility measured by slew time does not trade against mass:
+its association with mass is -0.11 (-0.056 at 0.5 degree) and total mass has exponent 0.000 and bootstrap support 0.00, as settling
+did. The statement for the notebook: on this case the mass-agility trade of the wheel class is a feasibility boundary; the
+frontier tensions are control effort against agility, pointing against effort and mass, and the energy-sizing ones (mass against
+depth of discharge, reserve and power margin). No further lever is used.
