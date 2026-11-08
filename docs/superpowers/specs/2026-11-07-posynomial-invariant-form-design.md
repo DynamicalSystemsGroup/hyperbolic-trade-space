@@ -37,6 +37,22 @@ proposed configuration would fall, and reading the frontier's shape back in desi
   maximum (a frontier direction, not a variance direction) and w lives on the simplex (a positive
   index with elasticities, not a contrast). Docs explain the supervisor's "hyperbolic PCA" sense and
   disambiguate it from PCA in negative-curvature geometry (HoroPCA and relatives).
+- **Tensions, not variance (supervisor, 2026-11-08).** "We're building a model that should find the
+  tensions. Think of it as like PCA, but instead of finding independent components that explain
+  variance we want to find the tensions which define the trade-offs." Reading: PCA maximizes spread
+  (where the data are free); the fit minimizes the soft maximum of w·u over the simplex, i.e. picks
+  the positive combination along which the data have the smallest upper extent, the binding
+  constraint among larger-is-better metrics. The normal w is the tension that defines the frontier:
+  metrics with w_j > 0 participate, their ratios are the exchange rates, w_j = 0 means free at the
+  balanced point. Along the frontier, the spread of near-frontier designs in Z occurs only in
+  directions where metrics were actually traded; its principal directions are the exercised
+  trade-offs (PCA of near-frontier Z), and pairs whose log-metrics move together there are aligned,
+  not in tension. Consequences: WP3 adds a tension report (participating metrics and exponents,
+  pairwise tension-vs-alignment among near-frontier designs, principal tension directions in Z with
+  loadings); WP6 states the PCA contrast this way, with the limit that K = 1 finds one tension,
+  several regional tensions are the K > 1 extension, and a deflation-style search for successive
+  tensions is a research question. The ADCS case already shows it: effort vs pointing is a tension,
+  settling vs pointing is aligned, mass barely interacts.
 - **API.** Aligned with scikit-learn's unsupervised/decomposition family: `fit`, `transform` (Z and
   log V), `inverse_transform`, `fit_transform`, `score_samples` (log V), `exponents_` as the
   `components_` analogue (one row per term), `n_terms` as the capacity parameter; no `predict` on the
