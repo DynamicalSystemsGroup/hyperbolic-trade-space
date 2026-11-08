@@ -5,7 +5,7 @@ SymPy expressions (L1, L2, L3, L5, L7, L8) are evaluated at seeded numeric insta
 ``n = 5``; the chain indexes from 1) and compared to what the solvers, the chart and the estimator
 return, to 1e-10. A further group fits ``HyperbolicTradeSpace`` on seeded ``make_frontier_data``
 (d = 3, 4; finite and infinite temperature) and compares the fitted outputs, with no attribute
-overwritten, to the L1, L7 and L8 expressions at the fitted exponents and offset (to 1e-9).
+overwritten, to the L1, L7 and L8 expressions at the fitted exponents and offset (to 1e-10).
 Agreement shows the code implements those expressions; it does not re-prove them.
 """
 
@@ -273,11 +273,11 @@ def chain_vs_model(ctx, est, X, perturb=1.0, rows=3):
 def test_fitted_model_matches_chain_L1_L7_L8(ctx, seed, d, tau):
     X, _ = make_frontier_data(40, d, random_state=seed)
     est = HyperbolicTradeSpace(temperature=tau).fit(X)
-    assert chain_vs_model(ctx, est, X) < 1e-9
+    assert chain_vs_model(ctx, est, X) < 1e-10
 
 
 def test_fitted_model_check_negative_control(ctx):
     X, _ = make_frontier_data(40, 3, random_state=0)
     est = HyperbolicTradeSpace(temperature=4.0).fit(X)
-    assert chain_vs_model(ctx, est, X) < 1e-9
+    assert chain_vs_model(ctx, est, X) < 1e-10
     assert chain_vs_model(ctx, est, X, perturb=1.0 + 1e-6) > 1e-7
