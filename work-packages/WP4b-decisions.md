@@ -125,6 +125,26 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   clauses; reasoning written before simulation; report the outcome of each lever and the combination;
   the stop rule applies after that, and the finding is then recorded if R-13 still fails.
 
+## Amendment 5 outcome and review gaps, round 4 (review 2258281, 2026-11-08)
+
+- **Outcome:** lever (i), the aggressive-gain regime (Kp 0.2–2.0, Kd 0.3–1.5; median Kd/Kp ≈ 1.06),
+  passes the full richness test (contending set of 6 with mass 0.223 and bootstrap support 1.00;
+  settling–mass −0.50; slew-time–mass −0.45; R-14 13.1 / 4.85); lever (ii), momentum utilisation,
+  alone does not; lever (iii) adds nothing needed. On the baseline gain box the null finding stands.
+  The failure at amendment 4 came from the gain box, not from the case or the measures.
+- **G-1, standing dataset. Supervisor (mzargham), verbatim choice:** "Both, as two regimes"
+- **Disposition:** the aggressive-gain dataset (`adcs_designs_cubesat_gains.csv`) is the primary case
+  dataset (R-13 met); the baseline (`adcs_designs_cubesat.csv`) is kept as the regime comparison;
+  WP7 shows that the wheel-class tension appears only when the loop is driven hard enough for the
+  wheel to be the bottleneck (shape of the trade space conditional on the operating regime).
+- **G-3..G-8. Supervisor, verbatim choice:** "Fix G-6 note, G-5 to follow-up, accept the rest"
+- **Disposition:** G-6 fix before acceptance (complete the prediction-miss list in the probe note:
+  settling class ratio, mass as the largest weight, lever (iii) outcome); G-5 follow-up item:
+  investigate run-to-run nondeterminism of the generator on identical code (likely adaptive-step
+  integration sensitivity in the saturated-fraction and continuous columns) instead of tolerating a
+  10 % tolerance; G-3, G-4, G-7, G-8 accept as is (the finding is stated as conditional on the
+  stiff-loop regime). The whole review reruns after the note fix.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP4b-review.md`
