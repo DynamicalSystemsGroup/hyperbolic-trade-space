@@ -82,9 +82,11 @@ NaN/inf must raise `ValueError` matching `inf|NaN` (default `ensure_all_finite=T
 ```python
 from sklearn.utils.estimator_checks import parametrize_with_checks
 
-@parametrize_with_checks([PosynomialInvariantForm(), ...],
-                         expected_failed_checks=lambda est: {},  # {"check_name": "reason"}
-                         xfail_strict=True)
+@parametrize_with_checks(
+    [PosynomialInvariantForm(), ...],
+    expected_failed_checks=lambda est: {},  # {"check_name": "reason"}
+    xfail_strict=True,
+)
 def test_sklearn_compatible(estimator, check):
     check(estimator)
 ```
