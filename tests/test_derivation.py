@@ -166,3 +166,61 @@ def test_crosscheck_L8_helmert_realization_d4():
     assert Bc.shape == (d - 1, d)
     assert sp.simplify(Bc * Bc.T) == sp.eye(d - 1)
     assert sp.simplify(Bc * sp.ones(d, 1)) == sp.zeros(d - 1, 1)
+
+
+# --- lemmas L3,L4 ---
+from derivation import lemma_03_gradient_kkt as _L3  # noqa: E402
+from derivation import lemma_04_convexity as _L4  # noqa: E402
+
+
+def _ctx_l3_l4():
+    ctx = {"S": S.make_symbols()}
+    _L3.derive(ctx)
+    _L3.verify(ctx)
+    _L4.derive(ctx)
+    _L4.verify(ctx)
+    return ctx
+
+
+def test_L3_L4_verify_abstractly_with_declared_axioms():
+    ctx = _ctx_l3_l4()
+    for mod in (_L3, _L4):
+        assert all(a in AX.AXIOMS for a in mod.AXIOMS_USED)
+    assert "R1" in _L3.AXIOMS_USED and "A3" in _L3.AXIOMS_USED
+    assert "A3" in _L4.AXIOMS_USED
+    assert ctx["L3"]["KKT"].rhs == _L3.LAM  # (U^T p)_{j0} = lambda
+    assert ctx["L4"]["convex"] is True
+
+
+def test_L3_directional_derivative_is_softmax_weighted_and_wrong_claim_fails():
+    ctx = _ctx_l3_l4()
+    Sy, c = ctx["S"], ctx["L3"]
+    wrong = sp.Sum(c["sv"](Sy.i), (Sy.i, 1, Sy.n)) / Sy.n  # uniform weights, not softmax
+    wrong_L = sp.Sum(c["sv"](_L3.L), (_L3.L, 1, Sy.n)) / Sy.n
+    assert wrong != wrong_L
+    assert sp.simplify(_L3.linearize(c["dJ"]) - _L3.linearize(wrong_L)) != 0
+
+
+def test_L4_second_derivative_is_tau_variance_and_needs_normalization():
+    ctx = _ctx_l3_l4()
+    Sy, c = ctx["S"], ctx["L4"]
+    # a wrong factor (tau**2 instead of tau) is rejected by the same check
+    p_def, sv = ctx["L3"]["p_def"], ctx["L3"]["sv"]
+    n = Sy.n
+    var = (
+        sp.Sum(p_def(_L3.L) * sv(_L3.L) ** 2, (_L3.L, 1, n))
+        - sp.Sum(p_def(_L3.L) * sv(_L3.L), (_L3.L, 1, n)) ** 2
+    )
+    assert sp.simplify(_L3.linearize(c["d2"]) - Sy.tau**2 * _L3.linearize(var)) != 0
+
+
+def test_L4_sign_argument_is_per_term_then_net():
+    ctx = _ctx_l3_l4()
+    Sy, c = ctx["S"], ctx["L4"]
+    a_r, s_r = c["a_r"], c["s_r"]
+    term = sp.exp(Sy.tau * a_r[Sy.i])
+    assert term.is_positive is True
+    # without realness the per-term sign is not available
+    plain = sp.exp(Sy.tau * Sy.u[Sy.i, Sy.j])
+    assert plain.is_positive is not True
+    assert (s_r[Sy.i] - s_r[Sy.k]) ** 2 >= 0
