@@ -19,4 +19,12 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 
 ## Scope approval (approval gate)
 
-- pending
+- **Document:** `work-packages/WP13-scope-of-work.md` at commit 093e8d3 (no open items).
+- **Date:** 2026-11-08.
+- **Driver's question:** "WP13, the response to the external review: E-1 in full (...), E-2 (...), E-5
+  (...), E-6 (...), E-7 as classified, the abstraction-gaps ledger, the register completed, the
+  response letter; no open items. Do you approve the scope for execution?" (options: Approved / Not
+  yet).
+- **Supervisor (mzargham), verbatim:** "Approved"
+- **Disposition:** approved; `work-execution` starts under the PM/implementer pattern on `dev`;
+  the acceptance merge to `main` is the driver's.
