@@ -112,3 +112,9 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Supervisor (mzargham), verbatim:** "Approved"
 - **Disposition:** approved; `work-execution` starts for WP9 under the PM/implementer pattern;
   commits prefixed "WP9: ", local only while the push hold stands.
+
+## Push hold lifted (2026-11-08)
+
+- Driver's question: whether to lift the push hold set on 2026-11-08 (three local commits ahead of
+  `origin/main`). **Supervisor (mzargham), verbatim:** "Lift it, push main now"
+- Disposition: hold lifted; `main` pushed; WP9 commits are pushed as they land, each green.
