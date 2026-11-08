@@ -54,6 +54,6 @@ what it fixes for later packages. The design spec is
 | WP2 | `WP2-scope-of-work.md` | verbal, 2026-11-08 (`WP2-decisions.md`) | `main` c8e0f6e..5c3dc1c | `WP2-review.md` (39fa0c3, fourth pass) | verbal, 2026-11-08 ("okay proceed", `WP2-decisions.md`) |
 | WP4 | `WP4-scope-of-work.md` | verbal, 2026-11-08 (`WP4-decisions.md`) | `main` 932bbe4..ef79e83 (incl. Amendment 1) | `WP4-review.md` (9680193, third pass) | verbal, 2026-11-08 ("accept", `WP4-decisions.md`) |
 | WP5 | `WP5-scope-of-work.md` | verbal, 2026-11-08 (`WP5-decisions.md`) | `main` 442a538..4ce27d4 | `WP5-review.md` (1783375, second pass) | verbal, 2026-11-08 ("accept", `WP5-decisions.md`) |
-| WP3 | `WP3-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP3-decisions.md`) | `main` 7f82d43..d0a2c0d | `WP3-review.md` (4fbc6ea, second pass) | pending |
-| WP6 | `WP6-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP6-decisions.md`) | `main` 17dea12..e82594b | `WP6-review.md` (2cacd0c, third pass) | pending |
-| WP4b | `WP4b-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP4b-decisions.md`) | `main` 5dfbc8c..c89b5d0 (incl. Amendment 1) | `WP4b-review.md` (70081fb) | pending |
+| WP3 | `WP3-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP3-decisions.md`) | `main` 7f82d43..07fe9d3 | `WP3-review.md` (a63f6f5, third pass) | pending |
+| WP6 | `WP6-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP6-decisions.md`) | `main` 17dea12..94fbe72 | `WP6-review.md` (71764d3, fourth pass) | pending |
+| WP4b | `WP4b-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP4b-decisions.md`) | `main` 5dfbc8c..7704ab7 (Amendments 1 and 2; stop rule triggered under Amendment 2) | `WP4b-review.md` (70081fb, first pass; rerun pending the driver's decision) | pending |
