@@ -31,6 +31,17 @@ Records typed by the agent (driver session, Claude Fable 5.1, 2026-11-07). Decis
   trip asserted from it, permissive escape removed, spec note that the strict LSE − max > 0 needs
   n ≥ 2). The whole review reruns after the fix; G-1 to G-4 and G-6 to G-8 are re-listed then.
 
+## Review gaps, round 2 (after the L8 fix)
+
+- **Date:** 2026-11-08
+- **Review:** rerun by a fresh reviewer after the L8 fix. New gap G-9: the L8 fix commit carried a
+  "Co-Authored-By: Claude Sonnet 5.5" trailer added by an implementer subagent, failing R-16.
+- **Supervisor (mzargham), verbatim:** "Rewrite the message and force-push"
+- **Disposition:** fix before acceptance. The driver rewrote the message (bd953c4 → 82fdd47, tree
+  identical), rebased the two later commits (cc2453a → 2d12409, d9bcf63 → e534dee) and force-pushed
+  main with a lease on d9bcf63. A CI step now fails any push whose history contains an attribution
+  line. The whole review reruns again; G-1 to G-8 are re-listed then.
+
 ## Acceptance (acceptance gate)
 
 - pending the rerun review.
