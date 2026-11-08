@@ -163,7 +163,12 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 
 ## Acceptance (acceptance gate)
 
-- pending `work-packages/WP4b-review.md`
+- Review: `WP4b-review.md` (sixth pass, 3f5a00f), recommends acceptance; G-D/G-E corrected by the
+  driver (3cd043d) before the gate.
+- Acceptance act named in the scope: verbal acceptance in chat.
+- **Date:** 2026-11-08
+- **Supervisor (mzargham), verbatim:** "accept 4b and approve 7 and 8. given how long its been remember to send the notebook author to look at the acds-lifecycle-demo and hc-marimo repos and pages sites to get a sense of my style"
+- **Status:** accepted. WP4b is done.
 
 ## Follow-up candidates
 

@@ -14,4 +14,13 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 
 ## Scope approval (approval gate)
 
-- pending (after WP4b)
+- **Document:** `work-packages/WP7-scope-of-work.md` (draft 3, two regimes, de2f758).
+- **Date:** 2026-11-08
+- **Supervisor (mzargham), verbatim:** "accept 4b and approve 7 and 8. given how long its been remember to send the notebook author to look at the acds-lifecycle-demo and hc-marimo repos and pages sites to get a sense of my style"
+- **Disposition:** approved; defaults list approved as one item; open decisions: none. Standing
+  instruction from the supervisor: the notebook author studies the adcs-lifecycle-demo and hc-marimo
+  repositories and their GitHub Pages sites first to absorb his style.
+
+## Acceptance (acceptance gate)
+
+- pending `work-packages/WP7-review.md`

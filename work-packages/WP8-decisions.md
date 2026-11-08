@@ -15,4 +15,13 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 
 ## Scope approval (approval gate)
 
-- pending
+- **Document:** `work-packages/WP8-scope-of-work.md` (OD1–OD3 applied; preconditions: renamed repo
+  (done), Pages enabled with source "GitHub Actions", `TEST_PYPI_API_TOKEN` secret).
+- **Date:** 2026-11-08
+- **Supervisor (mzargham), verbatim:** "accept 4b and approve 7 and 8. given how long its been remember to send the notebook author to look at the acds-lifecycle-demo and hc-marimo repos and pages sites to get a sense of my style"
+- **Disposition:** approved; defaults list approved as one item; open decisions: none. Executes after
+  WP7's acceptance and once the preconditions hold. The same style instruction applies to the site.
+
+## Acceptance (acceptance gate)
+
+- pending `work-packages/WP8-review.md`
