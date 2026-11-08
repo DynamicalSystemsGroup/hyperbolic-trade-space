@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | DRAFT (draft 4). Approved only by the recorded act below. Nothing in this package is executed before then. |
+| **Status** | DRAFT (draft 4, amended five times: see Amendments 1 to 6). Approved by the recorded act below. |
 | **Supervisor (accountable)** | mzargham |
 | **Repository** | `DynamicalSystemsGroup/posynomial-invariant-form` (local: `/Users/z/Documents/GitHub/posynomial-invariant-form`) |
 | **Approval record** | Verbal approval in chat, quoted verbatim in `work-packages/WP4b-decisions.md` |

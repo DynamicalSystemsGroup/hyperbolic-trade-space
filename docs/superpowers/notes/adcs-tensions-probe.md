@@ -160,14 +160,12 @@ committed CSV, deterministic seeds, plus an agreement test against `tension_repo
 
 ### Status against R-14 (amended)
 
-Status after amendment 4 (final): R-14 and the R-15 shares hold; R-13 (a), (b), (c) fail and (d), (e) hold on the committed
-dataset (see "Amendment 4: results" below; the statement written in phase 2, that R-13 a to e held, referred to the 90 degree
+Status on the BASELINE dataset (`adcs_designs_cubesat.csv`, stock gains) after amendment 4: R-14 and the R-15 shares hold; R-13 (a), (b), (c) fail and (d), (e) hold on it (on the PRIMARY aggressive-gain dataset `adcs_designs_cubesat_gains.csv`, R-13 (a) to (e) and R-14 hold: see "Amendment 5: results" and "Two regimes"; see "Amendment 4: results" below; the statement written in phase 2, that R-13 a to e held, referred to the 90 degree
 dataset and is superseded by amendments 2 to 4). R-14 was amended (WP4b scope amendment 1, recorded in
 `work-packages/WP4b-decisions.md`): the absolute small-wheel level of 0.25 was an arbitrary default of the scope and is
-dropped; R-14 keeps its two relative clauses. Final numbers on the committed dataset: median `torque_saturated_frac` of
+dropped; R-14 keeps its two relative clauses. Numbers of the phase 2 (90 degree) dataset, not either committed dataset: median `torque_saturated_frac` of
 small-wheel designs 0.237 (large wheels 0.0139, ratio about 17 against the required 3); median settling 247 s small
-against 76 s large, ratio 3.2 against the required 1.25 (these are the phase 2 numbers on the 90 degree dataset; the final
-R-14 numbers are in "Amendment 4: results"). Both relative clauses held then. The test `test_torque_binds_for_small_wheels` carries no xfail marker and no longer asserts the
+against 76 s large, ratio 3.2 against the required 1.25 (the final R-14 numbers are: baseline, saturation ratio 5.1 and settling ratio 1.85, "Amendment 4: results"; primary aggressive gains, 13.1 and 4.85, "Amendment 5: results"). Both relative clauses held then. The test `test_torque_binds_for_small_wheels` carries no xfail marker and no longer asserts the
 0.25 level. History kept for honesty: before the amendment the implementer stopped under the scope's stop rule after the
 three allowed adjustments, and a truncation of the same runs at 400 s (small-wheel median 0.266) was noted but not
 applied.
@@ -424,7 +422,7 @@ notebook should say so.
 
 ### Facts for WP7 interpretation
 
-Final (amendment 4): dataset at 30 degrees, 600 s, wheel capacities 10 / 30 / 100 mN m s, ten attributes; feasible = settled,
+BASELINE dataset (`adcs_designs_cubesat.csv`, stock gains; final of amendment 4; the primary aggressive-gain dataset follows at the end of this section): 30 degrees, 600 s, wheel capacities 10 / 30 / 100 mN m s, ten attributes; feasible = settled,
 `power_ok`, `momentum_ok`, all attributes positive; 780 of 1000 designs. Numbers in "Amendment 4: results" below.
 
 (a) Power never limits a slew in this dataset. The available-power cap on torque is below the wheel maximum in 3.2 % of designs
@@ -444,11 +442,21 @@ attribute on this frontier", not "mass does not matter"; wheel mass is the large
 frontier (depth of discharge -0.65, eclipse reserve -0.58, power margin -0.47, energy balance -0.44) and with pointing error
 (-0.36: finer star trackers weigh more).
 
-(d) R-13 (a), (b), (c) fail and (d), (e) hold; R-14 and R-15 hold. The tensions that hold: settling time and slew time each with
+(d) On the baseline: R-13 (a), (b), (c) fail and (d), (e) hold; R-14 and R-15 hold. The tensions that hold: settling time and slew time each with
 control effort (-0.95, -0.96), pointing error with control effort (-0.70), pointing with mass (-0.36), settling with pointing
 aligned (+0.68; slew time with pointing +0.71), power tensions (mass with depth of discharge -0.65, pointing with peak slew
 power -0.61). Wheel class acts as a feasibility boundary (small wheels lose 19 % of designs to momentum at 30 degrees, 98 % at 90),
 not as a frontier tension; agility by slew time does not trade against mass either.
+
+Facts for the PRIMARY dataset (`adcs_designs_cubesat_gains.csv`, aggressive gains Kp 0.3 to 3, same designs otherwise; computed from the CSV
+and the probe of `tests/test_adcs_enrichment.py`): feasible 706 of 1000 (small 191, medium 248, large 267); (a) power again never limits
+a slew: the available-power cap on torque is below the wheel maximum in 3.2 % of all designs (all large wheels with the smallest panels;
+3.5 % of the feasible set), `power_ok` True for every design, power margin on the feasible set 6.9 to 65.9 W (median 24.7 W); (b) redundant
+pairs on the feasible set: power margin with energy balance 0.960, eclipse reserve with depth of discharge 0.923, slew time with settling
+time 0.698 (0.867 among near-frontier rows), so the slew/settling redundancy is much weaker than on the baseline (0.947 / 0.985);
+(c) near-frontier rows at tau = 35.2: small 21, medium 36, large 7; mass is in the contending set (exponent 0.223, support 1.00), associates
+with pointing -0.66, settling -0.50 and slew time -0.45 near the frontier. Wheel class is a feasibility boundary (37 % of small designs
+fail momentum) and a frontier trade.
 
 ### What the SysML client provided for free (R-17)
 
@@ -615,7 +623,7 @@ closed-form bounds.
 **Expected consequences of lever (i), stated before the data.**
 - More torque saturation for every class: the demand is 26 to 260 mN m at the first instant, above every cap. The median
   saturated fraction of the horizon rises for all classes; the small/large ratio of R-14 may shrink (large wheels saturate far
-  more than at baseline), so R-14 clause 1 (small at least 3 times large) is at risk and is evaluated, not assumed.
+  more than at baseline; both predictions missed, see the miss list), so R-14 clause 1 (small at least 3 times large) is at risk and is evaluated, not assumed.
 - More momentum violations for small wheels: with the demand always saturated the slew is bang-bang with little early braking,
   so the bound of Amendment 3 (peak momentum sqrt(T J theta) against the capacity, J of at most h_max^2/(T theta)) applies
   almost exactly: J at most 0.64 for small wheels, 0.86 for medium, 1.9 for large. The share of the sampled inertias above those
@@ -742,7 +750,10 @@ Predictions in the reasoning section that missed, in full: momentum violations (
 the settling class ratio (predicted about 1.5 to 2.5; observed 4.85); the expectation that control effort and the pointing attribute
 "keep dominating" (observed: total mass has the largest weight at tau = infinity in the gains dataset, 0.223, against effort 0.143 and
 pointing 0.135); lever (iii) predicted "a pass of (c) at best" (observed a full pass of (a) to (e), and the small wheels left the near
-frontier entirely, 0 rows, which was not predicted). Held: heavier wheels faster; lever (ii) alone fails; R-14 clause 1 holds (13.1).
+frontier entirely, 0 rows, which was not predicted). Lever (i) predictions that missed, completed (recomputed from the CSVs on the feasible set): "large wheels saturate far more" (observed: median
+large-wheel saturated fraction 0.008 baseline to 0.013 aggressive, +58 %, not "far more", while small went 0.041 to 0.165); "the small/large
+saturation ratio may shrink" (observed: it rose from 5.1 to 13.1); and the predicted small/large slew-time ratio of about 3 (observed 2.4:
+medians 33.0 / 13.8 s aggressive, against 1.6 at baseline, 82.7 / 51.8 s). Held: heavier wheels faster; lever (ii) alone fails; R-14 clause 1 holds (13.1).
 Associations were within the guessed range.
 
 ### Conditions of the finding (review gaps G-3, G-4)

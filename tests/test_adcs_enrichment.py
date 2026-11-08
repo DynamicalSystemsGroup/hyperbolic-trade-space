@@ -307,21 +307,47 @@ def test_regime_comparison_stock_gains(probe, dataset):
     (1); with the utilisation attribute mass enters weakly (0.060, support 0.99) and the
     pointing-mass association falls to -0.11. The primary (aggressive-gain) dataset is the one
     that satisfies R-13; this is the same finding seen from the other side.
+
+    Two-sided bands around the RECORDED values (probe note, "Two regimes" and "Amendment 5:
+    results"), wide enough for platform noise in the LP and the bootstrap, narrow enough that a
+    drift (settling-mass from -0.13 to -0.25) fails. Near-frontier counts depend on the working-tau
+    grid (bisection to frac_above 0.10): small and medium within 15 of the record, large at most 5
+    (baseline; headroom within 15).
+    Feasible counts are exact (780 = 239 / 279 / 262). The headroom recorded values: mass exponent
+    0.060 (support 0.99), settling-mass -0.126, slew time-mass -0.078, pointing-mass -0.114,
+    near-frontier 15 / 41 / 24 (small / medium / large).
     """
     a, w = probe["assoc"], probe["w_inf"]
-    assert a.loc["settling_time_s", "total_mass_kg"] > -0.30
-    assert a.loc["slew_time_s", "total_mass_kg"] > -0.30
-    assert w["total_mass_kg"] < 0.10, w
     near = probe["wheel_near_counts"]
+    feas = probe["frame"].wheel_class.value_counts().to_dict()
+    assert probe["n_feasible"] == 780
+    assert feas == {"small": 239, "medium": 279, "large": 262}, feas
+    sm, tm, pm = (
+        a.loc["settling_time_s", "total_mass_kg"],
+        a.loc["slew_time_s", "total_mass_kg"],
+        a.loc["pointing_error_deg", "total_mass_kg"],
+    )
+    boot = probe["boot_frac_in_support"]["total_mass_kg"]
     if dataset == "baseline":
-        assert w["total_mass_kg"] < 0.05, w
-        assert probe["boot_frac_in_support"]["total_mass_kg"] < 0.10
-        assert near.get("small", 0) > near.get("medium", 0) and near.get("large", 0) <= 5, near
-        assert a.loc["pointing_error_deg", "total_mass_kg"] <= -0.30  # previous tension retained
+        assert abs(sm - -0.129) <= 0.10, sm
+        assert abs(tm - -0.109) <= 0.10, tm
+        assert abs(pm - -0.357) <= 0.10, pm  # previous tension retained (also <= -0.30 below)
+        assert pm <= -0.30
+        assert abs(w["total_mass_kg"]) <= 0.02, w  # absent at tau = infinity (recorded 0.000)
+        assert boot <= 0.05, boot
+        assert abs(near.get("small", 0) - 78) <= 15, near
+        assert abs(near.get("medium", 0) - 23) <= 15, near
+        assert near.get("large", 0) <= 5, near
     else:
-        assert w["total_mass_kg"] >= 0.05, w
-        assert probe["boot_frac_in_support"]["total_mass_kg"] >= 0.90
-        assert a.loc["pointing_error_deg", "total_mass_kg"] > -0.30
+        assert abs(sm - -0.126) <= 0.10, sm
+        assert abs(tm - -0.078) <= 0.10, tm
+        assert abs(pm - -0.114) <= 0.10, pm
+        assert abs(w["total_mass_kg"] - 0.060) <= 0.03, w
+        assert boot >= 0.90, boot
+        assert abs(near.get("small", 0) - 15) <= 15, near
+        assert abs(near.get("medium", 0) - 41) <= 15, near
+        assert abs(near.get("large", 0) - 24) <= 15, near
+    assert sm > -0.30 and tm > -0.30  # agility does not trade against mass in this regime
 
 
 def test_hand_probe_agrees_with_tension_report(probe):
