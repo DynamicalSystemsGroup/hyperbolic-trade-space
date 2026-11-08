@@ -52,3 +52,16 @@ symproof's ledger conventions, so the chain can later be lifted into sealed symp
 Axioms A1–A6 (posited), I1–I4 (inherited with citations), R1 (regularity); lemmas L1–L10; run at
 d ∈ {2, 3, 4} and n ∈ {2, 3} via `make_symbols(d, n)`. Docs state that generic-d results are proved
 in prose and instantiated mechanically at these sizes.
+
+## Abstract spaces and techniques to mimic (supervisor's direction, 2026-11-07)
+
+- Work at symbolic d, n, K with `IndexedBase`, `Sum`/`Product` over symbolic bounds, the simplex
+  constraint as a substitutable `Sum(w[j], (j, 1, d)) = 1`, and the chart basis as a `MatrixSymbol`
+  with hypotheses B·Bᵀ = I, B·1 = 0. Enumerating concrete sizes is not a proof; concrete substitution
+  is only a cross-check. Steps that resist abstract simplification become explicit hypotheses or
+  inherited axioms in the ledger, never enumeration.
+- Do not import `symproof`, but mimic its library in plain SymPy (cite file and function in a
+  comment): `symproof/library/convex.py` (`convex_scalar`, `convex_hessian`, `strongly_convex`,
+  `unique_minimizer`, `gp_to_convex` — log-sum-exp convexity after x = e^y), `symproof/library/
+  topology.py` (`continuous_at_point` — compute `sympy.limit` outside the lemma, record the result as
+  an equality), `symproof/tactics.py` (`signed_sum_lemmas` for sums of signed terms).
