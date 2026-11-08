@@ -149,3 +149,24 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   of the per-facet step, enumerates ways to fulfil it, and measures them on the planted data
   (including the seeds where recovery failed) and on the cubesat tables; the G-1 fix is chosen
   from its findings; acceptance waits.
+- Spike delivered (`docs/superpowers/notes/spike-facet-refit/README.md`, scripts and tables beside
+  it). Findings in brief: the per-facet step as built (B, supporting hyperplane of all rows tightest
+  on the facet's rows) recovers 60 of 60 planted facets when given the true labels, including facets
+  with 2 to 4 frontier rows; the approved default (A, per-facet min-max) recovers 0 of 60 and is
+  ill-posed in principle; the failures on seeds 1, 3, 8, 16 are the alternation's: on those seeds the
+  planted partition has a higher mean slack than the found one, so the objective prefers splitting a
+  populated facet to keeping a sparse one. A tangent-plane direction from the facet's near-frontier
+  rows with B as the base (D, or its shrinkage form E) raises single-start recovery (16 to 19 of 20
+  against 12 to 19) and recovers seed 8, at the cost of a non-monotone step, about 30 lines and one
+  constant; responsibility weighting (C) degenerates to the K = 1 fit; fixed candidate directions (F)
+  cannot resolve d = 10. On the cubesat primary table B, D and E agree on four seeds of five and share
+  the same other local optimum on the fifth. The spike ranks E or D-with-fallback first, B-as-is with
+  corrected docs second, and raises the objective (mean slack versus a frontier-weighted slack) as
+  the question a fix must settle. Put to the supervisor.
+- Driver's question on the G-1 fix given the spike (options: tangent-plane step D/E with B base /
+  keep B and fix the account of it / change the objective first). **Supervisor (mzargham),
+  verbatim:** "Change the objective first". Disposition: a second spike round on the alternation's
+  objective (candidates: slack over near-frontier rows only; support-weighted slack; the entropic
+  soft minimum of the slacks, the method's own kind of weighting) measured with the B and D steps
+  on the planted seeds, in particular whether the planted partition becomes the optimum on seeds
+  1, 3, 8 and 16, and on the cubesat tables; the fix is chosen after it; acceptance waits.

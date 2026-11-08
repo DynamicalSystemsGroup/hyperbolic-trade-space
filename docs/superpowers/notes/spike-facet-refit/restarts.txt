@@ -1,0 +1,62 @@
+seed 0 done
+seed 1 done
+seed 2 done
+seed 3 done
+seed 4 done
+seed 5 done
+seed 6 done
+seed 7 done
+seed 8 done
+seed 9 done
+seed 10 done
+seed 11 done
+seed 12 done
+seed 13 done
+seed 14 done
+seed 15 done
+seed 16 done
+seed 17 done
+seed 18 done
+seed 19 done
+
+=== 5 restarts, best common slack, tau = inf ===
+        pass/20  pass_bad4  median_err  max_err  mean_right found<planted (seeds)            fail seeds
+method                                                                                                 
+B            16          0      0.0000    0.512       0.990         [1, 3, 8, 16]         [1, 3, 8, 16]
+D            17          1      0.0099    0.512       0.979                    []            [1, 3, 16]
+E            17          1      0.0074    0.512       0.981                    []            [1, 3, 16]
+F            14          0      0.0335    0.528       0.937                    []  [1, 3, 4, 8, 11, 16]
+bad seeds err:
+method      B      D      E      F
+seed                              
+1       0.512  0.512  0.512  0.528
+3       0.118  0.115  0.117  0.090
+8       0.248  0.048  0.011  0.184
+16      0.262  0.437  0.435  0.274
+slack planted vs found (B), bad seeds:
+ seed  slack_planted  slack
+    1         0.6554 0.6510
+    3         0.7333 0.7310
+    8         0.6757 0.6745
+   16         0.6638 0.6636
+
+=== 5 restarts, best common slack, tau = 50.0 ===
+        pass/20  pass_bad4  median_err  max_err  mean_right                                                   found<planted (seeds)         fail seeds
+method                                                                                                                                                
+B            16          0      0.0101    0.512       0.946  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]      [1, 3, 8, 16]
+D            17          1      0.0070    0.492       0.975                             [1, 3, 4, 8, 9, 10, 12, 13, 15, 16, 17, 18]         [1, 3, 16]
+E            17          1      0.0070    0.515       0.975               [0, 1, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]         [1, 3, 16]
+F            15          0      0.0368    0.325       0.920                                                                      []  [1, 3, 8, 14, 16]
+bad seeds err:
+method      B      D      E      F
+seed                              
+1       0.512  0.492  0.515  0.099
+3       0.113  0.099  0.102  0.107
+8       0.202  0.042  0.013  0.184
+16      0.339  0.330  0.350  0.325
+slack planted vs found (B), bad seeds:
+ seed  slack_planted  slack
+    1         0.6152 0.6113
+    3         0.6911 0.6884
+    8         0.6347 0.6338
+   16         0.6252 0.6231

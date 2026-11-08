@@ -1,0 +1,81 @@
+seed 0 done; frontier rows per facet [29, 36, 55]
+seed 1 done; frontier rows per facet [58, 59, 3]
+seed 2 done; frontier rows per facet [52, 34, 34]
+seed 3 done; frontier rows per facet [6, 56, 58]
+seed 4 done; frontier rows per facet [48, 43, 29]
+seed 5 done; frontier rows per facet [33, 44, 43]
+seed 6 done; frontier rows per facet [58, 27, 35]
+seed 7 done; frontier rows per facet [42, 42, 36]
+seed 8 done; frontier rows per facet [53, 56, 11]
+seed 9 done; frontier rows per facet [42, 22, 56]
+seed 10 done; frontier rows per facet [49, 29, 42]
+seed 11 done; frontier rows per facet [49, 27, 44]
+seed 12 done; frontier rows per facet [19, 46, 55]
+seed 13 done; frontier rows per facet [49, 31, 40]
+seed 14 done; frontier rows per facet [18, 47, 55]
+seed 15 done; frontier rows per facet [42, 22, 56]
+seed 16 done; frontier rows per facet [2, 66, 52]
+seed 17 done; frontier rows per facet [37, 28, 55]
+seed 18 done; frontier rows per facet [38, 43, 39]
+seed 19 done; frontier rows per facet [39, 40, 41]
+
+=== init: flipped ===
+
+--- tau = inf ---
+        pass/20  pass_bad4  pass_good16  median_err  max_err  mean_right  mean_slack  converged  mean_iter  mean_time_s
+method                                                                                                                 
+A             0          0            0      0.5921    0.909       0.280      0.9608          7       42.8        0.099
+B            19          3           16      0.0000    0.437       0.998      0.6877         19        4.6        0.026
+C_hard        0          0            0         NaN      NaN         NaN         NaN          0        0.0          NaN
+C_soft        0          0            0         NaN      NaN         NaN         NaN          0        0.0          NaN
+D            18          2           16      0.0099    0.437       0.981      0.6971         15       15.0        0.095
+E            19          3           16      0.0074    0.437       0.985      0.6962         18        8.2        0.051
+F            14          0           14      0.0329    0.204       0.926      0.7248         20        2.2        0.011
+
+failing seeds (1, 3, 8, 16) detail: err / right
+method      A      B  C_hard  C_soft      D      E      F
+seed                                                     
+1       0.830  0.011     NaN     NaN  0.074  0.012  0.122
+3       0.506  0.001     NaN     NaN  0.026  0.021  0.204
+8       0.620  0.044     NaN     NaN  0.049  0.011  0.150
+16      0.315  0.437     NaN     NaN  0.437  0.437  0.196
+method     A     B  C_hard  C_soft     D     E     F
+seed                                                
+1       0.46  1.00     NaN     NaN  0.92  0.98  0.97
+3       0.38  1.00     NaN     NaN  1.00  1.00  0.68
+8       0.38  1.00     NaN     NaN  0.99  0.98  0.87
+16      0.02  0.97     NaN     NaN  0.96  0.96  0.77
+
+--- tau = 50.0 ---
+        pass/20  pass_bad4  pass_good16  median_err  max_err  mean_right  mean_slack  converged  mean_iter  mean_time_s
+method                                                                                                                 
+A             0          0            0      0.3147    0.981       0.279      0.8865         12       31.8        0.167
+B            17          1           16      0.0101    0.337       0.959      0.6438         20        5.4        0.059
+C_hard        0          0            0      0.2704    0.473       0.057      0.8349          0       50.0        0.470
+C_soft        0          0            0      0.2812    0.494       0.055      0.8374          0       50.0        0.476
+D            18          2           16      0.0070    0.326       0.972      0.6445         19        6.1        0.071
+E            19          3           16      0.0070    0.207       0.972      0.6444         20        3.2        0.038
+F            17          1           16      0.0325    0.196       0.943      0.6547         20        2.7        0.028
+
+failing seeds (1, 3, 8, 16) detail: err / right
+method      A      B  C_hard  C_soft      D      E      F
+seed                                                     
+1       0.259  0.051   0.285   0.296  0.053  0.048  0.122
+3       0.255  0.112   0.254   0.262  0.027  0.029  0.015
+8       0.233  0.027   0.180   0.191  0.044  0.026  0.150
+16      0.981  0.337   0.254   0.246  0.326  0.207  0.196
+method     A     B  C_hard  C_soft     D     E     F
+seed                                                
+1       0.49  0.92    0.36    0.17  0.92  0.92  0.97
+3       0.05  0.94    0.02    0.07  0.96  0.96  0.94
+8       0.47  0.94    0.00    0.08  0.95  0.97  0.85
+16      0.03  0.65    0.00    0.02  0.81  0.82  0.78
+
+code lines per refit step (non-blank, non-docstring):
+  A: 9
+  B: 9
+  C_hard: 5
+  C_soft: 9
+  D: 13
+  E: 13
+  F: 1
