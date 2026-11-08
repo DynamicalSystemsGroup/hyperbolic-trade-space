@@ -107,6 +107,19 @@ What changed and why, per scope-of-work section 6; the supervisor's choice "Enfo
 - The stale `--slew-deg` help text in `generate_dataset.py` is corrected (the cubesat default is 90°).
 - Nothing else changes.
 
+## Amendment 3 (stop rule under Amendment 2, approved at the stop-rule gate)
+
+What changed and why, per scope-of-work section 6; the supervisor's choice "Reopen levers for a physically consistent scenario" is recorded verbatim in `work-packages/WP4b-decisions.md` ("Stop rule under amendment 2, and amendment 3").
+
+- Finding that triggered it: with momentum enforced (Amendment 2) only 346 of 1000 designs were feasible (7 of 344 small-wheel designs), total mass left the contending set, the frontier no longer spanned wheel classes, and the torque-binding ratio fell to 1.9. The earlier richness result had rested on designs that violated wheel momentum storage, so the scenario (a 90° slew) was not physically consistent with the wheel classes.
+- Momentum stays enforced. Feasible designs are settled ∧ power_ok ∧ momentum_ok. `dod_ok` is not a filter: the depth of discharge is a metric (OD2), and `dod_ok` is a reported flag, unless a design with a violated `dod_ok` would have a non-positive larger-is-better attribute, in which case it is excluded for that reason and the note says so.
+- The scenario is regenerated with the slew angle and horizon chosen for physical consistency first: small-wheel designs must stay within momentum storage while torque still binds. The reasoning is written in the probe note before any simulation. Guidance (not a requirement): for a rest-to-rest slew limited by torque T on inertia J through an angle θ, the peak body rate is about sqrt(Tθ/J) and the peak wheel momentum about sqrt(T·J·θ), so the largest angle a class can slew within its capacity h_max is about h_max² / (T·J); the implementer uses the actual inertia range and wheel numbers to estimate this per class and picks an angle that small wheels can survive, with a horizon long enough to settle.
+- Only if needed, wheel momentum capacities are made consistent with their torque classes (illustrative, plausibility rule: public cubesat wheel classes have momentum-to-torque ratios of the order of tens of seconds), recorded with the reasoning.
+- Allowed adjustments: up to three, counted from the start of this amendment, each recorded in the probe note with its physics reasoning and its R-13 and R-14 numbers (every attempt, including ones that fail). The richness conditions R-13 and R-14 are unchanged and evaluated on the feasible set; there is no tuning to the test.
+- Stop rule, restated: if after the allowed adjustments no scenario satisfies both physical consistency and R-13 and R-14, execution stops and the finding is reported (for small wheels the agility against mass trade then appears as a feasibility boundary rather than as a frontier tension, and the notebook says so). Tests that cannot hold are then marked `xfail(strict=True)` with the reason, as under Amendment 2.
+- The committed dataset and the probe note are updated, the facts for WP7 are revised, and the whole review is rerun by a fresh reviewer.
+- Nothing else changes.
+
 ## Definition of good
 
 - The cubesat makes engineering sense at a glance: bigger panels give more power, cost mass and slow the slew; bigger batteries ride through eclipse and weigh more; bigger wheels are agile, heavy and hungry; finer star trackers point better, weigh more and draw more. The fit finds these on its own.
