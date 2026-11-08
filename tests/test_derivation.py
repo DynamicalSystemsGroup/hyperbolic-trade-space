@@ -322,3 +322,340 @@ def test_L10_fails_loudly_when_limit_wrong_and_fallback_recorded():
     ctx["L10"]["lim_lower"] = ctx["L10"]["lim_lower"] + 1
     with pytest.raises(AssertionError, match="L10 FAIL"):
         mods[10].verify(ctx)
+
+
+# --- numeric I1/I2 and cross-checks ---
+import numpy as np  # noqa: E402
+from scipy.optimize import linprog, minimize  # noqa: E402
+
+
+@pytest.mark.parametrize("d", [2, 3, 4])
+def test_lp_duality_numeric(d):
+    """I1 (LP / minimax duality), numeric: min_{w in simplex_d} max_i w.u_i
+    = max_{lam in simplex_N} min_j (U^T lam)_j.  Numeric check of an inherited fact only."""
+    N = 8
+    rng = np.random.default_rng(0)
+    U = rng.normal(size=(N, d))
+    # primal: variables (w_1..w_d, z); min z s.t. U w - z <= 0, sum w = 1, w >= 0
+    c = np.r_[np.zeros(d), 1.0]
+    A_ub = np.c_[U, -np.ones(N)]
+    primal = linprog(
+        c,
+        A_ub=A_ub,
+        b_ub=np.zeros(N),
+        A_eq=[np.r_[np.ones(d), 0.0]],
+        b_eq=[1.0],
+        bounds=[(0, None)] * d + [(None, None)],
+        method="highs",
+    )
+    # dual: variables (lam_1..lam_N, y); max y s.t. y - (U^T lam)_j <= 0, sum lam = 1, lam >= 0
+    cd = np.r_[np.zeros(N), -1.0]
+    A_ub_d = np.c_[-U.T, np.ones(d)]
+    dual = linprog(
+        cd,
+        A_ub=A_ub_d,
+        b_ub=np.zeros(d),
+        A_eq=[np.r_[np.ones(N), 0.0]],
+        b_eq=[1.0],
+        bounds=[(0, None)] * N + [(None, None)],
+        method="highs",
+    )
+    assert primal.status == 0 and dual.status == 0
+    assert abs(primal.fun - (-dual.fun)) < 1e-7
+
+
+def _lme(U, w, tau):
+    z = tau * (U @ w)
+    mx = z.max()
+    return (mx + np.log(np.mean(np.exp(z - mx)))) / tau
+
+
+def test_replication_invariance():
+    """I2: replicating each row r times leaves the log-mean-exp J_tau (and its minimizer)
+    unchanged. numpy/scipy only; no import of src/."""
+    rng = np.random.default_rng(1)
+    N, d, r, tau = 6, 3, 3, 1.7
+    U = rng.normal(size=(N, d))
+    Ur = np.repeat(U, r, axis=0)
+    for _ in range(3):
+        w = rng.dirichlet(np.ones(d))
+        assert abs(_lme(U, w, tau) - _lme(Ur, w, tau)) < 1e-9
+
+    def argmin(M):
+        res = minimize(
+            lambda w: _lme(M, w, tau),
+            np.ones(d) / d,
+            method="SLSQP",
+            bounds=[(0, 1)] * d,
+            constraints=[{"type": "eq", "fun": lambda w: w.sum() - 1}],
+            options={"ftol": 1e-14, "maxiter": 500},
+        )
+        assert res.success
+        return res.x
+
+    assert np.max(np.abs(argmin(U) - argmin(Ur))) < 1e-6
+
+
+# ---- substitution cross-checks of the ABSTRACT lemma results (ctx), per (d, n, K) ----
+_DNK = [(2, 2, 1), (3, 3, 2), (4, 3, 3)]
+_TOL = sp.Float("1e-18")
+
+
+@pytest.fixture(scope="module")
+def _ctx_all():
+    ctx, _ = run_chain(verbose=False)
+    return ctx
+
+
+def _val(name, idx, dnk):
+    """Deterministic concrete entries for every IndexedBase (rationals, exact)."""
+    d, _n, _K = dnk
+    R = sp.Rational
+    if name == "w":
+        return R(idx[0], d * (d + 1) // 2)  # on the simplex
+    if name == "theta":
+        k, j = idx
+        return R(j + k, sum(jj + k for jj in range(1, d + 1)))  # each row on the simplex
+    if name == "u":
+        return R((3 * idx[0] + 5 * idx[-1]) % 7 - 3, 4)
+    if name == "v":
+        return R((-1) ** idx[0] * idx[0], 5)
+    if name == "m":
+        return R(idx[0] + 1, 2)
+    if name == "s":
+        return R(idx[0] ** 2, 3) - 1
+    if name == "beta":
+        return R(idx[0], 3)
+    if name == "a":
+        return R(idx[0], 2)
+    if name == "alpha":
+        return R(idx[0], 4)
+    if name == "b":
+        return R(idx[0], 5)
+    if name == "r":
+        return R(idx[0] + 2, 3)
+    if name == "u_pt":
+        return R(idx[0], 3)
+    if name == "eps":
+        return R(idx[0], 2)
+    raise KeyError(name)
+
+
+def _conc(expr, dnk, S_, extra=None, override=None):
+    """Substitute sizes + named scalars, expand Sums explicitly, then concrete entries, evalf."""
+    d, n, K = dnk
+    sub = {S_.d: d, S_.n: n, S_.K: K}
+    sub.update(extra or {})
+    e = expr.subs(sub).doit()
+    rep = {}
+    for at in e.atoms(sp.Indexed):
+        nm = str(at.base)
+        idx = tuple(int(x) for x in at.indices)
+        if override and nm in override:
+            rep[at] = override[nm](idx)
+        else:
+            rep[at] = _val(nm, idx, dnk)
+    return sp.N(e.xreplace(rep), 30)
+
+
+def _eq(a, b):
+    assert abs(sp.N(a - b, 30)) < _TOL, f"{a} != {b}"
+
+
+def _le(a, b):
+    assert sp.N(a - b, 30) <= _TOL, f"{a} > {b}"
+
+
+_TAU = sp.Rational(3, 2)
+_PARAMS = pytest.mark.parametrize("dnk", _DNK, ids=lambda t: f"d{t[0]}_n{t[1]}_K{t[2]}")
+
+
+@_PARAMS
+def test_crosscheck_L1(_ctx_all, dnk):
+    S_, r = _ctx_all["S"], _ctx_all["L1"]
+    ex = {S_.k_scale: sp.Rational(5, 2), r["beta0"]: sp.Rational(1, 3)}
+    V = _conc(r["V"], dnk, S_)
+    _eq(_conc(r["Vk"], dnk, S_, ex), sp.Rational(5, 2) * V)
+    _eq(_conc(r["V_tilde"], dnk, S_, ex), sp.exp(-sp.Rational(1, 3)) * V)
+    _eq(_conc(r["V_prod_as_exp"], dnk, S_), V)
+    _eq(_conc(r["V_inv_form"], dnk, S_), 1)
+
+
+@_PARAMS
+def test_crosscheck_L2(_ctx_all, dnk):
+    S_, r = _ctx_all["S"], _ctx_all["L2"]
+    ex = {S_.tau: _TAU, S_.c: sp.Rational(7, 3)}
+    J = _conc(r["J"], dnk, S_, ex)
+    _eq(_conc(r["J_shifted"], dnk, S_, ex), J + sp.Rational(7, 3))
+    _eq(_conc(r["J_shifted_reduced"], dnk, S_, ex), J + sp.Rational(7, 3))
+
+
+@_PARAMS
+def test_crosscheck_L3(_ctx_all, dnk):
+    """dJ (abstract directional derivative) vs exact softmax-weighted form and vs the
+    difference quotient of the abstract J."""
+    S_, r, r2 = _ctx_all["S"], _ctx_all["L3"], _ctx_all["L2"]
+    d, n, _ = dnk
+    ex = {S_.tau: _TAU}
+    dJ = _conc(r["dJ"], dnk, S_, ex)
+    # softmax weights p_i from the concrete w
+    sc = [
+        sum(_val("u", (i, j), dnk) * _val("w", (j,), dnk) for j in range(1, d + 1))
+        for i in range(1, n + 1)
+    ]
+    Z = sum(sp.exp(_TAU * x) for x in sc)
+    pv = {i: sp.exp(_TAU * sc[i - 1]) / Z for i in range(1, n + 1)}
+    ov = {"p": lambda idx: pv[idx[0]]}
+    _eq(_conc(r["lhs_abs"], dnk, S_, ex, ov), dJ)
+    _eq(_conc(r["rhs_abs"], dnk, S_, ex, ov), dJ)
+    _eq(_conc(r["dsimplex"], dnk, S_), sum(_val("v", (j,), dnk) for j in range(1, d + 1)))
+    # central difference of the abstract J along w + t v (u-independent of t)
+    h = sp.Rational(1, 10**8)
+    Jw = r2["J"]
+    wv = lambda sgn: lambda idx: _val("w", idx, dnk) + sgn * h * _val("v", idx, dnk)  # noqa: E731
+    fd = (_conc(Jw, dnk, S_, ex, {"w": wv(1)}) - _conc(Jw, dnk, S_, ex, {"w": wv(-1)})) / (2 * h)
+    # J (L2) is the log-MEAN-exp; its w-derivative equals that of the log-sum-exp, i.e. dJ.
+    assert abs(sp.N(fd - dJ, 30)) < 1e-12
+
+
+@_PARAMS
+def test_crosscheck_L4(_ctx_all, dnk):
+    S_, r = _ctx_all["S"], _ctx_all["L4"]
+    d, n, _ = dnk
+    ex = {S_.tau: _TAU}
+    sc = [
+        sum(_val("u", (i, j), dnk) * _val("w", (j,), dnk) for j in range(1, d + 1))
+        for i in range(1, n + 1)
+    ]
+    Z = sum(sp.exp(_TAU * x) for x in sc)
+    pv = {i: sp.exp(_TAU * sc[i - 1]) / Z for i in range(1, n + 1)}
+    sv = {
+        i: sum(_val("u", (i, j), dnk) * _val("v", (j,), dnk) for j in range(1, d + 1))
+        for i in range(1, n + 1)
+    }
+    ov = {"p": lambda idx: pv[idx[0]], "s": lambda idx: sv[idx[0]]}
+    var = _conc(r["var_abs"], dnk, S_, ex, ov)
+    _eq(_conc(r["dbl_abs"], dnk, S_, ex, ov), 2 * var)
+    _eq(_conc(r["d2"], dnk, S_, ex), _TAU * var)
+    assert var >= 0
+
+
+@_PARAMS
+def test_crosscheck_L5(_ctx_all, dnk):
+    S_, r = _ctx_all["S"], _ctx_all["L5"]
+    n = dnk[1]
+    ex = {S_.tau: _TAU}
+    lse, lme = _conc(r["LSE"], dnk, S_, ex), _conc(r["LME"], dnk, S_, ex)
+    _eq(lme, lse - sp.log(n) / _TAU)
+    M = max(_val("s", (i,), dnk) for i in range(1, n + 1))
+    mean = _conc(r["mean"], dnk, S_)
+    _le(mean, lme)
+    _le(lme, M)
+    _le(M, lse)
+    _le(M - sp.log(n) / _TAU, lme)
+    _eq(_conc(r["lme_floor"], dnk, S_), mean)
+    _eq(_conc(r["offset"], dnk, S_, ex), lse - lme)  # LSE - LME = log(n)/tau
+
+
+@_PARAMS
+def test_crosscheck_L6(_ctx_all, dnk):
+    S_, r = _ctx_all["S"], _ctx_all["L6"]
+    d = dnk[0]
+    ex = {S_.tau: _TAU, S_.sigma: sp.Rational(5, 4)}
+    sig, t = sp.Rational(5, 4), r["t"]
+    # product of one-dimensional mgfs at t = tau w_j equals the closed form
+    prod = sp.Integer(1)
+    for j in range(1, d + 1):
+        prod *= r["mgf1"].subs({S_.sigma: sig, t: _TAU * _val("w", (j,), dnk)})
+    _eq(prod, _conc(r["mgf_closed"], dnk, S_, ex))
+    _eq(sp.log(prod) / _TAU, _conc(r["cumulant"], dnk, S_, ex))
+    _eq(_conc(r["cumulant"], dnk, S_, ex), _conc(r["target"], dnk, S_, ex))
+
+
+@_PARAMS
+def test_crosscheck_L7(_ctx_all, dnk):
+    S_, r = _ctx_all["S"], _ctx_all["L7"]
+    for jj in range(1, dnk[0] + 1):
+        ex = {r["j0"]: jj, r["k0"]: 1}
+        wj = _val("w", (jj,), dnk)
+        xs = _conc(r["x_sol"], dnk, S_, ex)
+        _eq(xs, -_val("w", (1,), dnk) / wj)
+        dG = r["dG"].subs({r["j0"]: jj, r["k0"]: 1})
+        wsub = {
+            at: _val("w", tuple(int(i) for i in at.indices), dnk) for at in dG.atoms(sp.Indexed)
+        }
+        dGc = dG.xreplace(wsub)
+        (xsym,) = dGc.free_symbols
+        _eq(dGc.subs(xsym, xs), 0)
+        lf = _conc(r["logf_star"], dnk, S_, ex)
+        _eq(_conc(r["logV_new"], dnk, S_, {**ex, r["logf"]: lf}), 0)
+        _eq(_conc(r["f_star"], dnk, S_, ex), sp.exp(lf))
+
+
+@_PARAMS
+def test_crosscheck_L8(_ctx_all, dnk):
+    """Helmert realization of the abstract chart identities (A7 hypotheses and recon)."""
+    ctxL8 = _ctx_all["L8"]
+    assert ctxL8["hyp_orth"] is not None
+    d = dnk[0]
+    rows = []
+    for k in range(1, d):
+        rows.append(
+            [sp.Integer(x) / sp.sqrt(k * (k + 1)) for x in [1] * k + [-k] + [0] * (d - k - 1)]
+        )
+    Bc = sp.Matrix(rows)
+    uc = sp.Matrix([_val("u", (j + 1,), dnk) for j in range(d)])
+    assert sp.simplify(Bc * Bc.T) == sp.eye(d - 1)  # hyp_orth
+    assert sp.simplify(Bc * sp.ones(d, 1)) == sp.zeros(d - 1, 1)  # hyp_ker
+    ell = sum(uc) / d
+    recon = ell * sp.ones(d, 1) + Bc.T * Bc * uc  # abstract: ell*1 + B^T B u
+    assert sp.simplify(recon - uc) == sp.zeros(d, 1)
+    # shift equivariance: B (u + c 1) = B u
+    assert sp.simplify(Bc * (uc + sp.Rational(3, 7) * sp.ones(d, 1)) - Bc * uc) == sp.zeros(
+        d - 1, 1
+    )
+
+
+@_PARAMS
+def test_crosscheck_L9(_ctx_all, dnk):
+    S_, r = _ctx_all["S"], _ctx_all["L9"]
+    d = dnk[0]
+    beta0 = sp.Rational(1, 3)
+    ex = {r["beta0"]: beta0}
+    Vd = _conc(r["V_derived"], dnk, S_, ex)
+    _eq(Vd, _conc(r["target"], dnk, S_, ex))
+    direct = sp.exp(-beta0)
+    for j in range(1, d + 1):
+        direct *= (
+            sp.exp(_val("b", (j,), dnk))
+            * (_val("a", (j,), dnk) + _val("r", (j,), dnk)) ** _val("alpha", (j,), dnk)
+        ) ** _val("w", (j,), dnk)
+    _eq(Vd, direct)
+
+
+@_PARAMS
+def test_crosscheck_L10(_ctx_all, dnk):
+    S_, r = _ctx_all["S"], _ctx_all["L10"]
+    d, _n, K = dnk
+    ex = {S_.kappa: _TAU, S_.c: 0, S_.K: K}
+    phi = [
+        -_val("beta", (k,), dnk)
+        + sum(_val("theta", (k, j), dnk) * _val("u", (j,), dnk) for j in range(1, d + 1))
+        for k in range(1, K + 1)
+    ]
+    M = max(phi)
+    lse = _conc(r["base"], dnk, S_, ex) / _TAU
+    _le(M, lse)
+    _le(lse, M + sp.log(K) / _TAU)
+    _eq(_conc(r["phi1"], dnk, S_), phi[0])
+    _eq(_conc(r["ceil"], dnk, S_, ex), sp.log(K) / _TAU)
+    # shift: u -> u + c adds c because each theta row sums to 1
+    cc = sp.Rational(7, 3)
+    _eq(_conc(r["shifted_reduced"], dnk, S_, {**ex, S_.c: cc}), cc + lse)
+    # monomial form with m = exp(u)
+    ov = {"m": lambda idx: sp.exp(_val("u", idx, dnk))}
+    for k in range(1, K + 1):
+        term = sp.exp(-_TAU * _val("beta", (k,), dnk)) * sp.exp(
+            _TAU * sum(_val("theta", (k, j), dnk) * _val("u", (j,), dnk) for j in range(1, d + 1))
+        )
+        _eq(_conc(r["term_in_m"].subs(S_.k, k), dnk, S_, ex, {"m": ov["m"]}), term)
