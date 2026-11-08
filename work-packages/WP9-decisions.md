@@ -279,3 +279,19 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - Loop status: G-1 (Amendment 1), G2-3 (Amendment 2, docs of the solver-level ledger class),
   G2-1 (documented understanding, `n_restarts`), G2-7 (Amendment 3), E-4 (folded in) all closed;
   no open item remains before the acceptance question.
+
+## Acceptance (acceptance gate)
+
+- **Reviews of record:** `work-packages/WP9-review.md`, first review (28caf5b), second (b61df28, after
+  Amendment 1), third (96044fe, after Amendment 2), fourth (c4133c8, after Amendment 3 and E-4).
+- **Delivery:** `main` cbd618c..094e86d plus `dev` c4133c8 and the records; merged into `main` with
+  a no-ff merge after this acceptance.
+- **Date:** 2026-11-08.
+- **Driver's question:** "WP9, the posynomial solver for K > 1, with Amendments 1 to 3 and the E-4
+  correction: four reviews, every gap dispositioned, no open item. Do you accept the work?"
+- **Supervisor (mzargham), verbatim:** "Accepted"
+- **Disposition:** accepted. Carried forward: G4-2 and G4-3 into WP10; candidates for later
+  packages (from the PM's reports): a K-specific target fraction, a better start for thin facets,
+  nonsmooth search on the ridges, a K-selection helper, a readable multi-metric envelope plot,
+  scalability and performance, kernels; the external review's items E-1 to E-10 (E-4 done) into
+  WP13.
