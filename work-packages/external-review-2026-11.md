@@ -57,7 +57,17 @@ and the L10 docstring are wrong, as the reviewer says.
   page, the L10 docstring and the API page now state the bound as the script proves it (commit to be
   named)."
 
-Pending: all other items.
+- **E-1 (certificates, assignment-stable neighbourhood, conditional local optimality, three-level
+  language).** Driver's options: accept in full in WP13 / accept the statements and defer the code /
+  decline part. **Supervisor (mzargham), verbatim:** "accept the statements. do a spike to determine
+  implementation level of effort. i prefer to accept in full but i need to make sure this is
+  feasible. we can assess after the spike if anything needs to get deferred". Disposition class:
+  accepted (the statements); the implementation scope is decided after a research spike on the
+  level of effort (certificates and termination reporting in the solver; the lemma, proposition and
+  corollary as derivation entries; docs restructured to the three levels). Response text: after the
+  spike.
+
+Pending: E-2, E-3, E-5 to E-10 (E-1's implementation scope after the spike).
 
 ## Response letter
 
