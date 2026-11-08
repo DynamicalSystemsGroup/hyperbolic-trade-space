@@ -53,6 +53,15 @@ Bisects $\log\tau$ so that the fitted `frac_above_` is within `tol` of the targe
 units are inverse log-spread, so the answer depends on the conditioning (L5); the bracket ends are
 checked and a `ValueError` is raised when the target is not bracketed.
 
+The fitted `frac_above_` is not monotone in $\tau$ for small $\tau$. By L5 the log-mean-exp lies
+between the mean and the maximum of the scores and tends to the mean as $\tau\to0$ and to the
+maximum as $\tau\to\infty$; so below $\tau\approx3$ `frac_above_` can overshoot $0.5$ (the
+project's reading of the mean limit, not proved by L5: the fraction tends toward what lies above the
+mean of the scores rather than the median), and above it decreases monotonically toward $0$ (the
+test asserts this on $\tau\ge3$ and $0.4<$ `frac_above_` $<0.65$ at $\tau=0.1$). `select_temperature`
+only needs the target bracketed by the two ends of `bounds`. A $\tau$ below about 3 is outside the
+documented useful range (see `docs/limitations.md`).
+
 **`make_frontier_data`, `make_configured_frontier_data`.** Seeded generators of positive data with a
 planted frontier (the second also returns a configuration matrix and a smooth map from configuration
 to metrics), used by the tests and by the examples (A1, A2).

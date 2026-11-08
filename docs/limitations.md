@@ -37,7 +37,7 @@ away from it. Trade spaces whose exchange rates vary by region need the $K>1$ ex
 **Optimism off the balanced point (condition: R1).** Far from the diagonal a design can have
 $V\ll1$ while being locally on the frontier, because the one hyperplane is not tangent there. The
 score $V-1$ is then conservative. Near the balanced region it is more reliable. Points whose chart
-coordinates lie outside the training hull are flagged; the $K>1$ extension tightens the bound.
+coordinates lie outside the training hull are flagged; the $K>1$ extension is expected to tighten the bound (a conjecture, not proved).
 When R1 fails outright (the balanced point at a vertex, an edge, or a facet with a zero normal
 component) the exponents are not unique, some elasticities are undefined, and the frontier reading
 degrades to the weaker invariant-form reading.
@@ -70,8 +70,9 @@ designs, or designs that barely differ near the envelope, the fit may be weakly 
 proves convexity of the objective, not strict convexity; uniqueness at a finite temperature needs
 a rank condition on the weighted covariance that is not proved, and the fit reports its effective
 sample size so the analyst can see how many designs carry it. At very high temperature the fit
-rests on a few extreme designs and is noise-sensitive; at very low temperature it degenerates to a
-vertex.
+rests on a few extreme designs and is noise-sensitive; at very low temperature (below $\tau\approx3$, outside the documented useful range) the
+weights approach uniform and the soft maximum approaches the mean of the scores (L5), so
+`frac_above_` is not monotone there (see `select_temperature` in `docs/api.md`).
 
 **What the n-lemma reading cannot say.** The contending set is read from the support of the
 exponents. That reading requires the floor on exponents to be zero, is exact only at infinite
@@ -102,8 +103,9 @@ exercised cannot appear.
 
 **The posynomial extension, $K>1$.** Replace the monomial by the generalized posynomial
 $V_K$, whose logarithm is a softmax-affine function [@hoburg2016data] and which is compatible with
-geometric programming [@boyd2007tutorial]. The identities that carry homogeneity, projection and
-novelty over are proved (L10, conditions A6 and F10). What is not built is a solver: the fit of an
+geometric programming [@boyd2007tutorial]. The identities underlying the shift equivariance, and the soft-maximum limit, are proved
+(L10, conditions A6 and F10); that homogeneity, projection and novelty carry over is expected from
+the construction, not proved. What is not built is a solver: the fit of an
 envelope with $K$ facets is a non-convex problem with per-facet support and a choice of the
 number of terms and the temperature, and we leave it to a later package. The estimator's
 `n_terms` parameter exists so the interface need not change; a value other than one raises
