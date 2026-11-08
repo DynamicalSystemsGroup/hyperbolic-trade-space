@@ -319,3 +319,16 @@ def test_column_transformer_passes_metrics_and_covariates():
     assert list(ct.fit_transform(df).columns) == names
     est = ct.named_transformers_["hts"]
     assert est.feature_names_in_.tolist() == ["m0", "m1", "m2"]
+
+
+def test_improvement_factors_inf_for_numerically_zero_exponent_without_warning():
+    est = HyperbolicTradeSpace(temperature=10.0).fit(make_frontier_data(80, 3, random_state=0)[0])
+    est.exponents_ = np.array([[0.5, 0.5, 3.4e-17]])  # solver noise on a planted zero
+    X = make_frontier_data(20, 3, random_state=1)[0]
+    import warnings
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        F = est.improvement_factors(X)
+    assert np.isinf(F[:, 2]).all()
+    assert np.isfinite(F[:, :2]).all()

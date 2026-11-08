@@ -414,7 +414,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         -------
         ndarray of shape (n_samples, n_features)
             Entry ``(i, j)``: the factor by which metric ``j`` alone must be multiplied to reach
-            ``V = 1``. ``inf`` where ``w_j = 0`` or ``V = 0``.
+            ``V = 1``. ``inf`` where ``w_j`` is below ``1e-12`` (numerically zero) or ``V = 0``.
 
         Examples
         --------
@@ -430,9 +430,10 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         """
         log_v = self.score_samples(X)
         w = self.exponents_[0]
-        with np.errstate(divide="ignore", invalid="ignore"):
-            out = np.exp(-log_v[:, None] / w[None, :])
-        out[:, w == 0] = np.inf
+        out = np.full((log_v.shape[0], w.shape[0]), np.inf)
+        pos = w > 1e-12  # exponents below 1e-12 are numerically zero (solver noise)
+        with np.errstate(divide="ignore", invalid="ignore", over="ignore"):
+            out[:, pos] = np.exp(-log_v[:, None] / w[None, pos])
         out[~np.isfinite(log_v), :] = np.inf
         return out
 
