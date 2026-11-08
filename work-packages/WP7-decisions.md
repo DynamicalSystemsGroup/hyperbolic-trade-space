@@ -99,3 +99,46 @@ is its beat sheet. The next implementer (notebook author) should adopt the follo
 (Observed difference to respect: the two repositories are written as marimo notebooks or Jupyter notebooks with
 interleaved HTML helper output; WP7's deliverable is a plain executed Jupyter notebook, so interactive sliders are not
 used; the static figures carry the story.)
+
+## Author notes (WP7 phase B, notebook author)
+
+Written 2026-11-08 by the notebook author. The notebook is `examples/adcs/adcs_trade_study.ipynb`, built with `nbformat`
+from a script kept outside the repository and executed with `jupyter nbconvert --execute --to notebook --inplace`
+(about 11 s; needs `uv sync --group notebooks`, no change to `pyproject.toml` or `uv.lock`). Style points of the study above
+that were applied, and where:
+
+- Point 1 (embodied question first): section 1 opens with the designer's questions and a figure of the raw attributes; no
+  method before it. No tension or n-lemma is named before the report cell (checked by `tests/test_notebook.py`).
+- Point 2 (small visible steps): sixteen numbered sections, one object each, a short markdown cell and one code cell.
+- Point 3 (prose after output, marked): every "What the output shows" cell follows its output; section 9 is headed as the
+  author's interpretation for human validation and comes after the report and the sensitivity table.
+- Points 4 and 5 (verify versus validate, what remains): section 16, with the machine-verified list (tests, L1 to L9
+  with tags, ledger R1, A4, F5, F10 with failure modes) and a seven-item "What remains for a human".
+- Point 6 (limits plainly): section 15 in declarative voice with the notebook's own numbers; the thin margins are numbers.
+- Point 7 (one visual vocabulary): the plotting module's constants, printed in the first cell; wheel class is the only
+  categorical colouring; measured check designs add one colour (`CATEGORY_COLORS[3]`), declared there.
+- Point 8 (notation at first use): a notation table after the hook and definitions repeated where each symbol first works.
+- Point 9 (assumed, derived, inherited): section 16 lists the conditions by ledger tag.
+- Point 10 (credit, no priority claims): plain-text citation lines with existing bib keys; "novelty" only as V - 1.
+- Point 11 (show the unwelcome result): the propose-predict-check comparison is reported as measured: log V inside the band
+  for all three, position along the frontier outside it for all three, two of three proposals fail `dod_ok`.
+- Point 12 (card): the opening cell has title, stack line, one paragraph and pointers.
+- Point 13 (arc): each section ends with a "Next" line; the notebook ends on the human step.
+- Point 14 (mode flags): the load and check cells print "read from ... (cached ...)"; nothing is regenerated or simulated.
+- Point 15 (no emojis, no hype): none used.
+
+Deviations and findings the reviewer should know:
+
+- The "reference shifted +0.5 log-spread on all metrics" check of the default list multiplies every score by one factor and
+  leaves the fit unchanged by L2 (the notebook shows that it does); an alternating +0.5 / -0.5 shift was added as the real
+  probe of the reference point.
+- The sensitivity and interpretation sections come after the tension report (they need its output), which is a section
+  order the scope allows (R-3 lists stages, not their placement relative to the interpretation).
+- Defect in the recorded predictions file, not changed: the columns `pred_std_z1`, `pred_std_z2`, `pred_std_z3`,
+  `pred_std_log_v` of `check_predictions_cubesat.csv` are the delta-method standard deviations of the four predicted
+  metrics (slew time, pointing error, control effort, total mass; `TradeSpaceRegressor.predict_std` has shape
+  (n, n_metrics)), written by `make_check_designs.py` under coordinate names. The notebook shows them under their true meaning.
+- The damping figures (a third underdamped, 4.7 % below 0.5) are quoted from the WP4b record; the dataset has no damping column
+  and the notebook does not recompute them.
+- Contending sets are not stable in detail under the conditioning checks (effort leaves the set under the robust scaler and
+  the eight-metric refit); total mass and pointing error stay in all five variants. The notebook reports this.
