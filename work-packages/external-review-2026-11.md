@@ -99,7 +99,17 @@ and the L10 docstring are wrong, as the reviewer says.
   exposes a conditioning diagnostic (the smallest eigenvalue of the restricted Hessian at the fit,
   or an equivalent) so sensitivity is reportable. Response text: after the change.
 
-Pending: E-6 to E-10 (E-1's implementation scope after the spike).
+- **E-6 (statistical claims at their demonstrated level).** Driver's options: restate L6's scope,
+  add the assumptions, drop any consistency claim / keep a conditional consistency remark /
+  decline. **Supervisor (mzargham), verbatim:** "Accept: restate L6's scope, add the assumptions,
+  drop any consistency claim". Disposition class: accepted, in WP13: L6's statement and the noise
+  section say "population identity under the log-space Gaussian model"; every sentence that reads as
+  finite-sample unbiasedness or consistency is removed or conditioned on named ledger assumptions
+  (independence, integrability, identifiability); the reading that a fitted normal is a feature of
+  the conditioned empirical model and not a causal exchange goes into the interpretation section.
+  Response text: after the change.
+
+Pending: E-7 to E-10 (E-1's implementation scope after the spike).
 
 ## Response letter
 
