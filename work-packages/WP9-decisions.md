@@ -259,3 +259,15 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   diagnostic that shows why; the log-plane figures draw each facet's envelope only in slices where
   that facet has weight on both plotted metrics, or choose slices that have it; a fresh fourth
   review of the delta; then the bundle and acceptance.
+- Fourth review delivered (`WP9-review.md`, "Fourth review (after Amendment 3)"; commits a15566b
+  (E-4), 094e86d (Amendment 3) on main before the dev-branch rule reached the PM, c4133c8 (review,
+  two figure titles, status) on dev; manual Tests run on dev green at 42531411476; main CI green at
+  094e86d). Driver's own checks on dev: 1122 passed, 11 skipped, 1 xfailed; ruff, format, lock
+  clean; attribution grep with the CI pattern 0 over the package. Re-selected τ: primary 38.10 /
+  113.22 / 195.18 and stock 41.72 / 78.75 / 162.78 for K = 1 / 2 / 3, each with about a tenth of
+  designs above the envelope; the peak-slew-power facet's share rises under re-selection (primary
+  0.669 → 0.778, stock 0.161 → 0.590); every facet visible in at least one log-plane panel. Fourth
+  review gaps: G4-1 stale figure titles (fixed), G4-2 the reports use K = 1's band because 1/τ_K
+  leaves some facets with 3 to 6 designs (accept; carry into WP10), G4-3 the peak-slew-power slices
+  are legible but uninformative (accept), G4-4 long lines in method.md (accept), G4-5 τ re-selection
+  on Linux as a watch item (accept). No component of G2-7 remains.
