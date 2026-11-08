@@ -141,4 +141,4 @@ Acceptance is the supervisor's act, recorded as named above. This report does no
   `facet 1..K`. No solver change (the K = 1 path and facet order in `solve_terms` are untouched);
   `tests/test_k_terms_case.py` and the cubesat record assert nothing on facet order (shares, counts
   and exponents per facet are reported as fitted; numbering is by fit and may differ by platform).
-- **Green run:** see the Delivery entry in `WP9-decisions.md`.
+- **Green run:** GitHub run 42518908382 (commit 0a91cb7), success.
