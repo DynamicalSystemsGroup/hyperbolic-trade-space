@@ -89,7 +89,17 @@ and the L10 docstring are wrong, as the reviewer says.
   text: the distinction is enforced in the executable derivations and defined once in the text;
   the prose uses "frontier" where unambiguous. In WP13 (docs, derivations) and WP10 (paper).
 
-Pending: E-5 to E-10 (E-1's implementation scope after the spike).
+- **E-5 (existence, uniqueness, stability; tolerances).** Driver's options: docs, tolerances and a
+  sensitivity diagnostic / docs and tolerances only / decline. **Supervisor (mzargham), verbatim:**
+  "Accept: docs, tolerances, and a sensitivity diagnostic". Disposition class: accepted, in WP13: a
+  method-page section separating existence (compact simplex, continuity), uniqueness (strict
+  convexity on the simplex tangent space) and stability (the restricted Hessian and local
+  sensitivity); the participation threshold and the contending-set rule stated with their
+  tolerances wherever used, numerically zero distinguished from mathematically zero; the estimator
+  exposes a conditioning diagnostic (the smallest eigenvalue of the restricted Hessian at the fit,
+  or an equivalent) so sensitivity is reportable. Response text: after the change.
+
+Pending: E-6 to E-10 (E-1's implementation scope after the spike).
 
 ## Response letter
 
