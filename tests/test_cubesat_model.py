@@ -197,8 +197,10 @@ def test_no_duplicated_constants_in_python():
     code = code.replace("1.0 [", "[")  # unit constructors in expressions, not table values
     tables = re.findall(
         r"part def (?:Small|Medium|Large|Coarse|Fine)\w+ :> .*?\n    }\n", SYSML, flags=re.S
-    ) + re.findall(r"part def DesignSpace \{.*?\n    }\n", SYSML, flags=re.S)
-    assert len(tables) >= 7
+    ) + re.findall(
+        r"part def (?:DesignSpace|AggressiveGainSpace) \{.*?\n    }\n", SYSML, flags=re.S
+    )
+    assert len(tables) >= 8
     numbers = set()
     for block in tables:
         for tok in re.findall(r"= ([0-9][0-9.eE+-]*)", block):
@@ -206,6 +208,48 @@ def test_no_duplicated_constants_in_python():
     assert numbers
     for tok in sorted(numbers):
         assert not re.search(rf"(?<![\w.]){re.escape(tok)}(?![\w.])", code), tok
+
+
+def test_aggressive_gain_box_is_read_from_the_model(cubesat):
+    """Amendment 5, lever i: the gain box is a part of the SysML model, selected by name."""
+    aggressive = cm.load_model(gain_box="aggressive")
+    assert cubesat.gain_box == "baseline" and aggressive.gain_box == "aggressive"
+    assert cubesat.kp_range == pytest.approx((0.03, 1.0))  # the default is unchanged
+    assert aggressive.kp_range == pytest.approx((0.2, 2.0))
+    assert aggressive.kd_range == pytest.approx((0.3, 1.5))
+    base = cubesat.sample_designs(50, seed=0)
+    gains = aggressive.sample_designs(50, seed=0)
+    for col in ("wheel_class", "st_grade", "panel_span_m", "battery_wh"):
+        assert (base[col] == gains[col]).all(), col  # same designs, different gains
+    assert gains.Kp.between(0.2, 2.0).all() and gains.Kd.between(0.3, 1.5).all()
+    with pytest.raises(ValueError):
+        cm.CubesatModel(SYSML, gain_box="nonsense")
+    # R-4: the box is the model's: editing the model's range changes the sampler
+    edited = SYSML.replace("attribute KpMin : Real = 0.2;", "attribute KpMin : Real = 0.5;")
+    assert edited != SYSML
+    assert cm.CubesatModel(edited, gain_box="aggressive").kp_range[0] == pytest.approx(0.5)
+
+
+def test_wheel_capacities_and_momentum_utilisation(cubesat):
+    """Lever ii: capacity from the model's wheel table; utilisation is peak / capacity."""
+    import pandas as pd
+
+    cap = cubesat.wheel_capacities()
+    assert cap == pytest.approx({"small": 0.010, "medium": 0.030, "large": 0.100})
+    df = pd.DataFrame(
+        {
+            "wheel_class": ["small", "medium", "large"],
+            "peak_momentum_nms": [0.005, 0.045, 0.02],
+            "momentum_ok": [True, False, True],
+        }
+    )
+    out = cm.add_momentum_utilisation(df, cap)
+    assert out.momentum_utilisation.tolist() == pytest.approx([0.5, 1.5, 0.2])
+    assert ((out.momentum_utilisation <= 1) == out.momentum_ok).all()
+    assert out.momentum_headroom_nms.tolist() == pytest.approx([0.005, -0.015, 0.08])
+    assert "momentum_utilisation" not in df.columns  # the input is not modified
+    with pytest.raises(ValueError):
+        cm.add_momentum_utilisation(df.assign(wheel_class="huge"), cap)
 
 
 def test_sampler_is_seed_stable_and_independent_of_n(cubesat):
@@ -476,12 +520,19 @@ GENERATE_COMMAND = (
     " --slew-deg 30 --t-end 600 --force"
 )
 CUBESAT_CSV = ADCS_DIR / "data" / "adcs_designs_cubesat.csv"
+# Amendment 5, lever i: the aggressive-gain dataset beside the baseline (the baseline is untouched).
+GAINS_GENERATE_COMMAND = (
+    "uv run python examples/adcs/generate_dataset.py --model cubesat --gain-box aggressive"
+    " --n 1000 --seed 0 --slew-deg 30 --t-end 600 --force"
+)
+GAINS_CSV = ADCS_DIR / "data" / "adcs_designs_cubesat_gains.csv"
+DATASETS = [("baseline", CUBESAT_CSV), ("aggressive", GAINS_CSV)]
 
 
-def _generate(n, workers=1):
+def _generate(n, workers=1, gain_box="baseline"):
     import generate_dataset as gd
 
-    return gd.generate_cubesat(n, 0, workers=workers)
+    return gd.generate_cubesat(n, 0, workers=workers, gain_box=gain_box)
 
 
 def test_generator_cli_has_the_cubesat_flags():
@@ -491,16 +542,17 @@ def test_generator_cli_has_the_cubesat_flags():
         text=True,
     )
     assert out.returncode == 0
-    for flag in ("--model", "--slew-deg", "--t-end"):
+    for flag in ("--model", "--slew-deg", "--t-end", "--gain-box"):
         assert flag in out.stdout
 
 
-def test_dataset_reproducible_first_20(cubesat):
-    """Regenerate the first 20 designs with the default options; WP4 per-column tolerances."""
+@pytest.mark.parametrize(("gain_box", "csv"), DATASETS)
+def test_dataset_reproducible_first_20(cubesat, gain_box, csv):
+    """Regenerate the first 20 designs with the recorded options; WP4 per-column tolerances."""
     import pandas as pd
 
-    committed = pd.read_csv(CUBESAT_CSV)
-    fresh = _generate(20)
+    committed = pd.read_csv(csv)
+    fresh = _generate(20, gain_box=gain_box)
     head = committed.iloc[:20].reset_index(drop=True)
     assert list(head.columns) == list(fresh.columns)
     exact = ["design_id", "seed", "wheel_class", "st_grade"]
@@ -519,8 +571,11 @@ def test_dataset_reproducible_first_20(cubesat):
         np.testing.assert_allclose(head[col], fresh[col], atol=0.5, err_msg=col)
 
 
-def test_dataset_reproducible_same_platform_exact(cubesat):
+@pytest.mark.parametrize("gain_box", ["baseline", "aggressive"])
+def test_dataset_reproducible_same_platform_exact(cubesat, gain_box):
     """40 designs regenerated twice on the same platform are identical."""
     import pandas as pd
 
-    pd.testing.assert_frame_equal(_generate(40), _generate(40))
+    pd.testing.assert_frame_equal(
+        _generate(40, gain_box=gain_box), _generate(40, gain_box=gain_box)
+    )

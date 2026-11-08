@@ -149,6 +149,18 @@ package CubesatTradeSpace {
     }
     part designSpace : DesignSpace;
 
+    // The aggressive-gain regime (WP4b amendment 5, lever i): the same gains, a stiffer gain box with
+    // Kd/Kp mostly at or below 5, where the wheel class can separate the slew time. Kp 0.2 to 2.0
+    // N.m/rad and Kd 0.3 to 1.5 N.m.s/rad; the derivation is in
+    // docs/superpowers/notes/adcs-tensions-probe.md ("Amendment 5"). The baseline box above is the default.
+    part def AggressiveGainSpace {
+        attribute KpMin : Real = 0.2;     // N.m/rad
+        attribute KpMax : Real = 2.0;
+        attribute KdMin : Real = 0.3;     // N.m.s/rad
+        attribute KdMax : Real = 1.5;
+    }
+    part aggressiveGains : AggressiveGainSpace;
+
     // ------------------------------------------------------------------------------------------
     // The cubesat: composition of the abstract parts, with the design variables as attributes.
     // ------------------------------------------------------------------------------------------

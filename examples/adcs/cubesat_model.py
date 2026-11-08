@@ -71,6 +71,8 @@ from opensysml.values import Quantity
 
 MODEL_PATH = pathlib.Path(__file__).resolve().parent / "cubesat_tradespace.sysml"
 PKG = "CubesatTradeSpace"
+# Gain boxes (WP4b amendment 5): the name of the model's design-space part each one reads.
+GAIN_BOXES = {"baseline": "designSpace", "aggressive": "aggressiveGains"}
 
 # Scenario defaults (not model constants): 30 degree slew about X, horizon 600 s, step 0.5 s
 # (amendment 3, adjustment 3 of the WP4b record in docs/superpowers/notes/adcs-tensions-probe.md).
@@ -175,7 +177,10 @@ class Configuration:
 class CubesatModel:
     """The loaded SysML model plus everything the Python layer reads from it."""
 
-    def __init__(self, source: str, connection=None):
+    def __init__(self, source: str, connection=None, gain_box: str = "baseline"):
+        if gain_box not in GAIN_BOXES:
+            raise ValueError(f"gain_box must be one of {sorted(GAIN_BOXES)}, got {gain_box!r}")
+        self.gain_box = gain_box
         self.source = source
         self.connection = connection if connection is not None else get_connection()
         self.model = self.connection.load_from_content(source, strict=True)
@@ -184,8 +189,10 @@ class CubesatModel:
         self._read_structure()
 
     @classmethod
-    def from_path(cls, path=MODEL_PATH, connection=None) -> CubesatModel:
-        return cls(pathlib.Path(path).read_text(), connection)
+    def from_path(
+        cls, path=MODEL_PATH, connection=None, gain_box: str = "baseline"
+    ) -> CubesatModel:
+        return cls(pathlib.Path(path).read_text(), connection, gain_box)
 
     def _evaluation_engine(self) -> str:
         """The name of a ready engine that answers ``evaluate`` questions, from ``list_engines``."""
@@ -227,8 +234,9 @@ class CubesatModel:
             self._eval_value(f"{ds}.batteryCapacityMin", "SI::W*SI::h"),
             self._eval_value(f"{ds}.batteryCapacityMax", "SI::W*SI::h"),
         )
-        self.kp_range = (self._eval_value(f"{ds}.KpMin"), self._eval_value(f"{ds}.KpMax"))
-        self.kd_range = (self._eval_value(f"{ds}.KdMin"), self._eval_value(f"{ds}.KdMax"))
+        gs = f"{PKG}::{GAIN_BOXES[self.gain_box]}"  # the gain box selected (amendment 5)
+        self.kp_range = (self._eval_value(f"{gs}.KpMin"), self._eval_value(f"{gs}.KpMax"))
+        self.kd_range = (self._eval_value(f"{gs}.KdMin"), self._eval_value(f"{gs}.KdMax"))
         self.wheel_classes = [c.name for c in m.find(f"{PKG}::WheelClass").children()]
         self.tracker_grades = [c.name for c in m.find(f"{PKG}::TrackerGrade").children()]
         self.wheels = self._alternatives("ReactionWheel", "wheelClass", self.wheel_classes)
@@ -251,6 +259,14 @@ class CubesatModel:
         if missing:
             raise ValueError(f"enum literals of {abstract} without a part definition: {missing}")
         return {lit: table[lit] for lit in literals}
+
+    def wheel_capacities(self) -> dict[str, float]:
+        """Momentum capacity ``maxMomentum`` (N m s) of every wheel class, read from the model."""
+        out = {}
+        for lit, alt in self.wheels.items():
+            inst = self.model.instantiate(alt.part_def)
+            out[lit] = self.value(inst.get("maxMomentum"), "SI::N*SI::m*SI::s")
+        return out
 
     # -- configure -----------------------------------------------------------------------------
     def sample_designs(self, n: int, seed: int = 0) -> pd.DataFrame:
@@ -475,16 +491,42 @@ class CubesatModel:
 
 
 _DEFAULT: CubesatModel | None = None
+_BOXED: dict[str, CubesatModel] = {}
 
 
-def load_model(path=MODEL_PATH, connection=None) -> CubesatModel:
-    """Load the model once per process (the default model is cached); fails with a named cause."""
+def load_model(path=MODEL_PATH, connection=None, gain_box: str = "baseline") -> CubesatModel:
+    """Load the model once per process (the default model is cached); fails with a named cause.
+
+    ``gain_box`` selects which design-space part of the SysML model supplies the Kp and Kd
+    ranges: ``"baseline"`` (default, the committed dataset) or ``"aggressive"`` (amendment 5).
+    """
     global _DEFAULT
     if path == MODEL_PATH and connection is None:
-        if _DEFAULT is None:
-            _DEFAULT = CubesatModel.from_path(path)
-        return _DEFAULT
-    return CubesatModel.from_path(path, connection)
+        if gain_box == "baseline":
+            if _DEFAULT is None:
+                _DEFAULT = CubesatModel.from_path(path)
+            return _DEFAULT
+        if gain_box not in _BOXED:
+            _BOXED[gain_box] = CubesatModel.from_path(path, gain_box=gain_box)
+        return _BOXED[gain_box]
+    return CubesatModel.from_path(path, connection, gain_box)
+
+
+def add_momentum_utilisation(df: pd.DataFrame, capacities: Mapping[str, float]) -> pd.DataFrame:
+    """A copy of ``df`` with ``momentum_utilisation`` = ``peak_momentum_nms`` / wheel capacity.
+
+    Lever (ii) of amendment 5: the fraction of the wheel's momentum storage the slew uses, smaller
+    is better; ``momentum_ok`` is exactly utilisation at most 1. ``capacities`` maps wheel class to
+    ``maxMomentum`` in N m s (``CubesatModel.wheel_capacities``). The dataset on disk is not
+    rewritten; ``momentum_headroom_nms`` (capacity minus peak) is added for the sensitivity check.
+    """
+    cap = df["wheel_class"].map(dict(capacities)).astype(float)
+    if cap.isna().any():
+        raise ValueError("a wheel class has no capacity")
+    out = df.copy()
+    out["momentum_utilisation"] = out["peak_momentum_nms"] / cap
+    out["momentum_headroom_nms"] = cap - out["peak_momentum_nms"]
+    return out
 
 
 def sample_designs(n: int, seed: int = 0, model: CubesatModel | None = None) -> pd.DataFrame:

@@ -14,6 +14,8 @@ WP4b adds the illustrative cubesat model (SysML configuration space read through
 ``--model adcs`` (default) is the unchanged WP4 behaviour. ``--model cubesat`` writes
 ``data/adcs_designs_cubesat.csv`` by default; ``--slew-deg`` and ``--t-end`` set the scenario
 (defaults 10 deg / 900 s for adcs, the values of ``cubesat_model`` for cubesat: 30 deg / 600 s).
+``--gain-box aggressive`` (amendment 5) samples Kp, Kd from the model's ``aggressiveGains`` part
+and writes ``data/adcs_designs_cubesat_gains.csv``; the default ``baseline`` is unchanged.
 Each cubesat worker process opens its own ``opensysml`` connection. The cubesat columns are those
 returned by ``CubesatModel.measure`` (including ``slew_time_s`` and ``slew_time_05deg_s``).
 """
@@ -34,6 +36,7 @@ from design_space import FAST_SIM, evaluate_design, sample_designs
 
 DEFAULT_OUT = pathlib.Path(__file__).resolve().parent / "data" / "adcs_designs.csv"
 CUBESAT_OUT = pathlib.Path(__file__).resolve().parent / "data" / "adcs_designs_cubesat.csv"
+GAINS_OUT = pathlib.Path(__file__).resolve().parent / "data" / "adcs_designs_cubesat_gains.csv"
 CUBESAT_CHUNK = 10
 COLUMNS = [
     "design_id",
@@ -82,6 +85,7 @@ def generate_cubesat(
     fast: bool = False,
     slew_deg: float | None = None,
     t_end: float | None = None,
+    gain_box: str = "baseline",
 ) -> pd.DataFrame:
     """Sample ``n`` cubesat designs from the SysML model and measure them.
 
@@ -98,7 +102,7 @@ def generate_cubesat(
     }
     if fast:
         kwargs["max_step"] = FAST_SIM["max_step"]
-    designs = cm.load_model().sample_designs(n, seed)
+    designs = cm.load_model(gain_box=gain_box).sample_designs(n, seed)
     chunks = [
         ([r.to_dict() for _, r in designs.iloc[i : i + CUBESAT_CHUNK].iterrows()], kwargs)
         for i in range(0, n, CUBESAT_CHUNK)
@@ -123,10 +127,11 @@ def generate(
     model: str = "adcs",
     slew_deg: float | None = None,
     t_end: float | None = None,
+    gain_box: str = "baseline",
 ) -> pd.DataFrame:
     """Sample ``n`` designs and evaluate them (in a process pool when ``workers`` > 1)."""
     if model == "cubesat":
-        return generate_cubesat(n, seed, workers, fast, slew_deg, t_end)
+        return generate_cubesat(n, seed, workers, fast, slew_deg, t_end, gain_box)
     designs = sample_designs(n, seed)
     kwargs = dict(FAST_SIM) if fast else {}
     if t_end is not None:
@@ -154,6 +159,12 @@ def main(argv=None) -> int:
     p.add_argument(
         "--t-end", type=float, default=None, help="horizon in s (default 900 / cubesat 600)"
     )
+    p.add_argument(
+        "--gain-box",
+        choices=["baseline", "aggressive"],
+        default="baseline",
+        help="cubesat Kp, Kd ranges read from the SysML model (aggressive: amendment 5, lever i)",
+    )
     p.add_argument("--out", type=pathlib.Path, default=None)
     p.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 1))
     p.add_argument("--force", action="store_true", help="overwrite an existing output file")
@@ -161,10 +172,14 @@ def main(argv=None) -> int:
     a = p.parse_args(argv)
     if a.out is None:
         a.out = CUBESAT_OUT if a.model == "cubesat" else DEFAULT_OUT
+        if a.model == "cubesat" and a.gain_box == "aggressive":
+            a.out = GAINS_OUT
     if a.out.exists() and not a.force:
         print(f"{a.out} exists; skipping (use --force to regenerate)")
         return 0
-    df = generate(a.n, a.seed, a.workers, a.fast, a.model, a.slew_deg, a.t_end)
+    if a.gain_box != "baseline" and a.model != "cubesat":
+        p.error("--gain-box applies to --model cubesat only")
+    df = generate(a.n, a.seed, a.workers, a.fast, a.model, a.slew_deg, a.t_end, a.gain_box)
     a.out.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(a.out, index=False, float_format="%.9g")
     print(f"wrote {len(df)} designs to {a.out}")
