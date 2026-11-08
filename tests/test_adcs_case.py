@@ -30,7 +30,7 @@ def _settling(kp, kd):
         (4, 30, 77.97, 0.2),
         (8, 30, 87.40, 0.2),
         (4, 25, 120.50, 0.2),
-        # scope R-2 says 201.6; source repo pins 310.6; amendment pending with supervisor
+        # scope R-2 says 201.6; source repo pins 310.6; WP4 scope Amendment 1 adopts 310.6
         (1, 10, 310.6, 0.5),
     ],
 )
@@ -170,6 +170,10 @@ def test_dataset_reproducible_first_20():
     head = committed.iloc[:20]
     for col in ("design_id", "wheel_class", "st_grade", "settled", "momentum_ok"):
         assert (head[col].to_numpy() == fresh[col].to_numpy()).all(), col
+    # Per-column cross-platform tolerances, WP4 scope Amendment 1 (R-9): categorical columns and
+    # flags equal; settling_time_s within 0.5 s; continuous columns rtol 1e-4 (CI differs from the
+    # committed CSV by up to ~2.6e-5 relative, BLAS/solver differences); torque_saturated_frac
+    # rtol 2e-2 (a time-step fraction sensitive to tiny trajectory shifts, up to ~6.1e-3 observed).
     cont = [
         "Kp",
         "Kd",
@@ -178,16 +182,49 @@ def test_dataset_reproducible_first_20():
         "pointing_error_deg",
         "adcs_mass_kg",
         "control_effort",
-        "torque_saturated_frac",
         "peak_momentum_nms",
     ]
-    # Cross-platform reproducibility tolerance. Scope R-9 says rtol 1e-6 (amendment
-    # pending with the supervisor); CI (ubuntu-24.04) differs from the committed CSV
-    # by up to ~2.6e-5 relative (control_effort) and ~6.1e-3 (torque_saturated_frac, a
-    # time-step fraction sensitive to tiny trajectory shifts), from BLAS/solver differences.
     for col in cont:
-        np.testing.assert_allclose(head[col], fresh[col], rtol=3e-2, atol=1e-12, err_msg=col)
+        np.testing.assert_allclose(head[col], fresh[col], rtol=1e-4, atol=1e-12, err_msg=col)
+    np.testing.assert_allclose(
+        head.torque_saturated_frac,
+        fresh.torque_saturated_frac,
+        rtol=2e-2,
+        atol=1e-12,
+        err_msg="torque_saturated_frac",
+    )
     np.testing.assert_allclose(head.settling_time_s, fresh.settling_time_s, atol=0.5)
+
+
+def test_dataset_same_platform_exact():
+    """Amendment 1 (R-9): on one platform, regeneration is bit-for-bit repeatable."""
+    from generate_dataset import generate
+
+    pd.testing.assert_frame_equal(
+        generate(40, 0, workers=1), generate(40, 0, workers=1), check_exact=True
+    )
+
+
+def test_pointing_budget_srp_term(monkeypatch):
+    """O-2: the SRP term enters the analytic budget as theta_ss = 4 (tau_gg + tau_srp) / Kp."""
+    import adcs_sim
+
+    kp, grade = 2.5, "medium"
+    st_arcsec = STAR_TRACKERS[grade][0]
+    jx, jy, jz = inertia_tensor(BASELINE)
+    n = BASELINE["orbitalRate"]
+    tau_gg = 3 * n**2 * max(abs(jz - jy), abs(jz - jx)) * np.radians(0.1)
+    floor = st_arcsec / 3600.0
+
+    def rss(tau_srp):
+        return float(np.hypot(np.degrees(4 * (tau_gg + tau_srp) / kp), floor))
+
+    default = adcs_sim.pointing_budget(BASELINE, kp, st_arcsec)["pointing_error_deg"]
+    assert default == pytest.approx(rss(1e-5), rel=1e-12)
+    monkeypatch.setattr(adcs_sim, "SRP_TORQUE_NM", 0.0)
+    no_srp = adcs_sim.pointing_budget(BASELINE, kp, st_arcsec)["pointing_error_deg"]
+    assert no_srp == pytest.approx(rss(0.0), rel=1e-12)
+    assert default > no_srp
 
 
 def test_dataset_summary(capsys):
