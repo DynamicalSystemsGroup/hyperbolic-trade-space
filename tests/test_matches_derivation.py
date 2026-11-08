@@ -3,7 +3,10 @@
 The WP1 chain (``derivation/``) derives the formulas for symbolic ``d`` and ``n``. Here its stored
 SymPy expressions (L1, L2, L3, L5, L7, L8) are evaluated at seeded numeric instances (``d = 3``,
 ``n = 5``; the chain indexes from 1) and compared to what the solvers, the chart and the estimator
-return, to 1e-10. Agreement shows the code implements those expressions; it does not re-prove them.
+return, to 1e-10. A further group fits ``HyperbolicTradeSpace`` on seeded ``make_frontier_data``
+(d = 3, 4; finite and infinite temperature) and compares the fitted outputs, with no attribute
+overwritten, to the L1, L7 and L8 expressions at the fitted exponents and offset (to 1e-9).
+Agreement shows the code implements those expressions; it does not re-prove them.
 """
 
 import numpy as np
@@ -11,7 +14,7 @@ import pytest
 import sympy as sp
 
 from derivation.run import run_chain
-from hyperbolic_trade_space import HyperbolicTradeSpace, solvers
+from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data, solvers
 from hyperbolic_trade_space.coordinates import (
     from_frontier_coordinates,
     helmert_basis,
@@ -201,3 +204,80 @@ def test_L8_chart_relations(ctx, inst):
     Q = np.vstack([B, np.ones((1, D)) / np.sqrt(D)])
     np.testing.assert_allclose(Q @ Q.T, np.eye(D), atol=TOL)
     np.testing.assert_allclose(Q.T @ Q, np.eye(D), atol=TOL)
+
+
+# ------------------------------------------- fitted-model cross-check (no attribute overwritten)
+FIT_CASES = [(s, d, tau) for s in (0, 1, 2) for d in (3, 4) for tau in (4.0, np.inf)]
+
+
+def ev_fit(expr, S, d, n, w, row_m, extra=None, pre=None):
+    """Evaluate a chain expression at fitted exponents ``w`` and one data row ``row_m``."""
+    tables = {
+        "w": lambda j: w[int(j) - 1],
+        "m": lambda j: row_m[int(j) - 1],
+        **(extra or {}),
+    }
+    e = expr.subs({S.d: d, S.n: n, **(pre or {})}).doit()
+    e = e.replace(
+        lambda x: isinstance(x, sp.Indexed) and str(x.base) in tables,
+        lambda x: sp.Float(tables[str(x.base)](*x.indices), 30),
+    )
+    return float(sp.N(e.doit(), 30))
+
+
+def chain_vs_model(ctx, est, X, perturb=1.0, rows=3):
+    """Compare fitted outputs (times ``perturb``) with the L1/L7/L8 chain at the fitted values.
+
+    Returns the largest relative discrepancy. The fitted attributes are only read.
+    """
+    S, L1, L7, L8 = ctx["S"], ctx["L1"], ctx["L7"], ctx["L8"]
+    n, d = X.shape
+    w, beta, B = est.exponents_[0], est.log_offset_[0], est.basis_
+    V = est.invariant_value(X) * perturb
+    F = est.improvement_factors(X) * perturb
+    P = est.project(X) * perturb
+    T = est.transform(X)
+    worst = 0.0
+
+    def rel(a, b):
+        return abs(a - b) / max(1.0, abs(b))
+
+    for i in range(min(rows, n)):
+        m = X[i]
+        Vt = ev_fit(L1["V_tilde"], S, d, n, w, m, pre={L1["beta0"]: beta})
+        worst = max(worst, rel(V[i], Vt))
+        # project: m / V~ (invariant form), componentwise from the chain value
+        worst = max(worst, *(rel(P[i, j], m[j] / Vt) for j in range(d)))
+        ut = {"u_pt": lambda j, i=i: np.log(X[i, int(j) - 1]) - beta}
+        for j0 in range(1, d + 1):
+            f = ev_fit(L7["f_star"].subs(L7["j0"], j0), S, d, n, w, m, ut)
+            worst = max(worst, rel(F[i, j0 - 1], f))
+        # chart: Z = B u (L8), log V = log V_tilde
+        sub = {S.B: sp.Matrix(B), L8["u"]: sp.Matrix(np.log(m))}
+        Zc = np.array(L8["Z"].xreplace(sub).doit().tolist(), dtype=float).ravel()
+        worst = max(worst, *(rel(T[i, k], Zc[k]) for k in range(d - 1)))
+        worst = max(worst, rel(T[i, -1], np.log(Vt)))
+    # inverse chart at a perturbed chart point: u = B^T Z + ell 1, ell = log V + beta - w.B^T Z
+    Xt = T[:rows] + 0.1
+    inv = est.inverse_transform(Xt)
+    Z, lv = Xt[:, :-1], Xt[:, -1]
+    ell = lv + beta - (Z @ B) @ w
+    expected = np.exp(Z @ B + ell[:, None])
+    worst = max(worst, float(np.max(np.abs(inv / expected - 1.0))))
+    # round trip
+    worst = max(worst, float(np.max(np.abs(est.inverse_transform(T) / X - 1.0))))
+    return worst
+
+
+@pytest.mark.parametrize("seed,d,tau", FIT_CASES)
+def test_fitted_model_matches_chain_L1_L7_L8(ctx, seed, d, tau):
+    X, _ = make_frontier_data(40, d, random_state=seed)
+    est = HyperbolicTradeSpace(temperature=tau).fit(X)
+    assert chain_vs_model(ctx, est, X) < 1e-9
+
+
+def test_fitted_model_check_negative_control(ctx):
+    X, _ = make_frontier_data(40, 3, random_state=0)
+    est = HyperbolicTradeSpace(temperature=4.0).fit(X)
+    assert chain_vs_model(ctx, est, X) < 1e-9
+    assert chain_vs_model(ctx, est, X, perturb=1.0 + 1e-6) > 1e-7
