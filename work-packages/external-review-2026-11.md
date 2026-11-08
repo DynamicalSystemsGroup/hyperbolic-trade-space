@@ -171,7 +171,21 @@ and the L10 docstring are wrong, as the reviewer says.
   classified above, in WP13. Response text: after the changes, citing the register and the
   abstraction-gaps ledger.
 
-Pending: E-8 to E-10, E-1's implementation scope.
+- **E-1, implementation scope.** Driver's options: accept in full / accept the must-haves and defer
+  the deferrable. **Supervisor (mzargham), verbatim:** "Accept in full". Disposition class: accepted
+  in full, in WP13: per-facet gap $G_k$ (LP duality gap at $\tau=\infty$; a reduced-Newton polish at
+  finite $\tau$ so the certificate is tight), the termination record (status certified / stationary
+  without margin / guard stop / iteration cap, with feasibility residuals, max gap, objective change,
+  assignment changes, empty facets, tolerances), the assignment margin and explicit radius, the
+  guard tolerance, the four statements (Lemma 1 facet gap, Lemma 2 margin and radius, Proposition 3
+  assignment-stable local optimality, Corollary 4 approximate certificate) as SymPy lemma scripts
+  L12 to L14 with ledger entries (I8 first-order convexity inequality, I9 Cauchy–Schwarz, F12 min
+  representation, a positive-margin regularity condition with role and failure mode), the method
+  page restructured to the three levels with the stopping declaration, and the statement that
+  level 3 is for step B, unpenalized, with support offsets only. Response text: after the change,
+  citing commits, lemmas and the measured certificates on the planted data and the cubesat tables.
+
+Pending: E-8 to E-10.
 
 ## Response letter
 
