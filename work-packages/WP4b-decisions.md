@@ -21,6 +21,26 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   measurements. Scope to be redrafted by the PM; open decisions for the supervisor only where the
   model's meaning is at stake.
 
+
+## Pre-approval decisions: SysML tooling, scale, OD1, OD2 (2026-11-08)
+
+- **SysML tooling, verbatim:** "you may want to pull uptodate opensysml and/or sysml-toolkit packages
+  and make sure you use them. you should get a lot for free. no need to go crazy just make a simple
+  demonstrative cubsat config space using sysml" and, pointing at a reference repo: "this almost
+  certainly does not use the latest releases so you should find them upstream but you can learn a lot
+  from looking at this /Users/z/Documents/GitHub/toaster". Disposition: the configuration space is a
+  SysML v2 model handled with the current `opensysml` (0.12.1 on PyPI, 2026-11-06; Open-MBEE/sysml-toolkit
+  checked as optional tooling); cubesat-class satellite; the physics port's geosat pins stay as port
+  verification only; `toaster` is read for usage patterns, not for its pinned versions.
+- **OD1 (power attribute), verbatim:** "all of the above i think. the point was to get a rich set of
+  relevant phenomena so we can discover trade offs". Disposition: four power attributes: sunlit power
+  margin (W, larger better), orbit-average energy balance (Wh, larger better), eclipse energy reserve
+  (Wh, larger better), peak slew power draw (W, smaller better).
+- **OD2 (depth of discharge), verbatim choice:** "Metric". Disposition: eclipse depth of discharge is
+  a metric (smaller is better), in addition to a `dod_ok` feasibility flag if useful.
+- Resulting attribute set (d ≈ 9): settling time, pointing error, total mass, control effort, the
+  four power attributes, depth of discharge; the fit, not the author, decides which contend.
+
 ## Scope approval (approval gate)
 
 - pending (draft 2)
