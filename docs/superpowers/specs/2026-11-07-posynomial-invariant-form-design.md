@@ -67,8 +67,8 @@ proposed configuration would fall, and reading the frontier's shape back in desi
   release; no AI attribution lines on commits, PRs or documents.
 
 Agent defaults (changeable at the relevant scope gate): MkDocs Material for the site; estimator
-class name `HyperbolicTradeSpace` (a rename such as `HyperbolicTradeSpace` is an option at the
-WP2 gate); Z oriented for plots and hole detection by ordinary PCA of near-frontier Z (for K = 1
+class name `HyperbolicTradeSpace` and package `hyperbolic_trade_space` (decided by the supervisor
+at the WP2 gate, 2026-11-08; the method keeps the name "posynomial invariant form"); Z oriented for plots and hole detection by ordinary PCA of near-frontier Z (for K = 1
 only w is learned, Z is a canonical basis); demo physics additions in §8.
 
 ## 3. Pipeline stages and contracts
