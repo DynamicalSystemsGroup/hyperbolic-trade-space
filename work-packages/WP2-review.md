@@ -1,14 +1,14 @@
-# WP2 — Review report (second pass)
+# WP2 — Review report (third pass)
 
 | | |
 |---|---|
 | **Scope of work** | `work-packages/WP2-scope-of-work.md` (approved at 67fff4e) |
 | **Scope approval verified** | Recorded act: verbal approval typed into `work-packages/WP2-decisions.md` (commit bcfe110, authored Michael Zargham, after 67fff4e). Supervisor's words as recorded: "double check with the github cli but then let's move forward". `gh run list` shows CI success on 67fff4e and bcfe110. The record is conditional in wording, typed by the agent, dated 2026-11-08 against a 2026-11-07 commit date (see G-1). |
-| **Work reviewed** | `67fff4e..b95a0d4` on main. WP2 commits: c8e0f6e 6ab5f5c 5600a4c c14bbfa bfadf36 880a4ec 6b5a6a5, and fixes 454b227 07f8b67 a60b57c (WP4/WP5 commits interleaved are not reviewed here) |
+| **Work reviewed** | `c8e0f6e..76f93f1` on main, head checked at 4ce27d4. WP2 commits: c8e0f6e 6ab5f5c 5600a4c c14bbfa bfadf36 880a4ec 6b5a6a5, fixes 454b227 07f8b67 a60b57c, and the G-2 fix 76f93f1 (WP4/WP5 commits interleaved are not reviewed here) |
 | **Supervisor (accepts)** | mzargham |
 | **Acceptance record** | Verbal acceptance in chat, quoted verbatim in `work-packages/WP2-decisions.md`, after this report |
 
-Reviewer: a fresh session that did not build WP2 or write the first review. This replaces the first review (5099f1f). Review only; nothing was repaired.
+Reviewer: a fresh session that built none of WP2 and wrote none of the earlier reviews. This replaces the second pass (e84bd7f). The whole review was rerun from step 1 after the G-2 fix (supervisor's disposition recorded in `WP2-decisions.md`). Review only; nothing was repaired.
 
 ## Deliverables
 
@@ -25,7 +25,7 @@ Reviewer: a fresh session that did not build WP2 or write the first review. This
 
 ## Requirements
 
-Plain `unset VIRTUAL_ENV; uv run pytest -q` at b95a0d4: **366 passed, 3 skipped** (skips are sklearn array-API checks, `SCIPY_ARRAY_API` unset). `pytest --collect-only` lists 23 `src/...::` doctest items, so doctests are collected by default (`testpaths = ["tests", "src"]`, `--doctest-modules`).
+Plain `unset VIRTUAL_ENV; uv run pytest -q` at 4ce27d4 (code identical to 76f93f1 for WP2 paths): **381 passed, 3 skipped** (skips are sklearn array-API checks, `SCIPY_ARRAY_API` unset). `pytest --collect-only` lists 23 `src/...::` doctest items, so doctests are collected by default (`testpaths = ["tests", "src"]`, `--doctest-modules`).
 
 | ID | Verdict | Evidence |
 |---|---|---|
@@ -44,25 +44,31 @@ Plain `unset VIRTUAL_ENV; uv run pytest -q` at b95a0d4: **366 passed, 3 skipped*
 | R-13 | met | `test_pipeline_and_feature_names`, `test_column_transformer_passes_metrics_and_covariates` pass |
 | R-14 | met | `test_sklearn_compat.py` non-check tests pass (no predict/decision_function/score; tags via `__sklearn_tags__` only, `positive_only=True`, not sparse; `__init__` verbatim; fitted attributes end in `_`; `n_iter_ >= 1` at tau=inf and finite) |
 | R-15 | met | `EXPECTED_FAILURES: dict = {}`, `xfail_strict=True`, three instances (default, tau=inf, ALR); 144 parametrized checks collected; `uv run pytest tests/test_sklearn_compat.py`: 146 passed, 3 skipped. Independent judgment: conformance claim is substantiated; the empty dict is not hiding anything (xfail_strict would flag an unused entry, and there are none). Array-API skips are expected (`array_api_support=False`). |
-| R-16 | met, with a limitation (see G-2) | `test_matches_derivation.py` evaluates stored SymPy expressions (L1, L2, L3, L5, L7, L8) at a seeded d=3, n=5 instance and compares to solvers, chart and estimator at TOL=1e-10; the offset-of-a-fit comparison is now 1e-10 too (a60b57c). Trial (c) shows it fails when the improvement factor is perturbed. Limitation: for L1 and L7 the test fits an estimator and then overwrites `exponents_` and `log_offset_` with the instance values, so it checks the formulas of `invariant_value` and `improvement_factors` against the chain, not fitted outputs; only the L2 offset comparison uses a genuinely fitted attribute. The labelling as a cross-check (not a proof) is accurate. |
+| R-16 | met | `test_matches_derivation.py` evaluates stored SymPy expressions (L1, L2, L3, L5, L7, L8) at a seeded d=3, n=5 instance against solvers, chart and estimator at TOL=1e-10 (the formula-level group). Since 76f93f1 a second group, `test_fitted_model_matches_chain_L1_L7_L8` (12 cases: seeds 0,1,2 x d 3,4 x tau 4, inf) and `test_fitted_model_check_negative_control`, fits `HyperbolicTradeSpace` on `make_frontier_data` and compares fitted `invariant_value`, `project`, `improvement_factors`, `transform` (Z and log V) and `inverse_transform` (plus the round trip) to the chain's L1 `V_tilde`, L7 `f_star` and L8 `Z` evaluated at the fitted `exponents_[0]`, `log_offset_[0]`, `basis_`, to 1e-9 (not 1e-10 as R-16 words it; a sensible fitted-value tolerance, see G-5). I read the group: `grep` for assignments to `est.*_` in it finds none; fitted attributes are only read. Trials below confirm it detects perturbations. See G-2 verdict below. |
 | R-17 | met | Default run collects 23 doctests and passes. An introspection audit of every public class, function and method for Parameters / Returns / Attributes (classes) / Examples found only `fit_transform` (inherited from `TransformerMixin`) without its own Examples. |
-| R-18 | met | pytest as above; `uv run ruff check .` all checks passed; `uv run ruff format --check .` 60 files already formatted; `uv lock --check` resolved 153 packages, no change. Diff of `67fff4e..HEAD` excluding `work-packages/`: WP2 paths plus `pyproject.toml` (see Outside the scope). |
-| R-19 | met | `git log --format=%B \| grep -ciE 'co-authored-by\|generated with'` returns 0 over all commits; all 61 commits authored "Michael Zargham". CI on head b95a0d4: `gh run list` shows **success**. |
+| R-18 | met | `uv run pytest -q` 381 passed, 3 skipped; `uv run ruff check .` all checks passed; `uv run ruff format --check .` 60 files already formatted; `uv lock --check` resolved 153 packages, no change. WP2 commits (c8e0f6e..76f93f1, WP2-labelled) touch only the D-1..D-7 paths, `__init__.py` and `pyproject.toml` (see Outside the scope). |
+| R-19 | met | `git log --format=%B \| grep -ciE 'co-authored-by\|generated with'` returns 0 over all commits; all 69 commits authored "Michael Zargham" (`git log --format=%an`). `gh run list --limit 5`: runs on 76f93f1, ef79e83, b138b6d, eae37e0 success; run on head 4ce27d4 completed success (`gh run view 42440079285`). |
 
 ## Reviewer trials (restored with `git checkout`, nothing committed; `git status --short` empty afterwards)
 
+Fitted-model tests = `test_fitted_model_matches_chain_L1_L7_L8` plus `test_fitted_model_check_negative_control` (13 tests).
+
 | Trial | Edit | Result |
 |---|---|---|
-| (a) | `solvers.py` line 112: drop the 1/N normalization (`b=1.0 / s.size` -> `b=1.0`) | 15 failed, 56 passed over `test_solvers.py`, `test_matches_derivation.py`, `test_estimator.py` (e.g. `test_fit_invariants[...-10.0/1000.0]`, `test_row_replication_leaves_fit_unchanged[20.0]`, `test_d1`) |
-| (b) | `coordinates.py` line 148: add 1e-3 to the chart inverse | 27 failed, 54 passed over `test_coordinates.py`, `test_matches_derivation.py`, `test_estimator.py` (round trips, `test_level_set`, `test_d1`) |
-| (c) | `estimator.py` `improvement_factors`: exponent scaled by 1.01 | `test_matches_derivation.py::test_L7_improvement_factor_and_elasticity` fails (expected 0.29848901 +- 3e-11); 1 failed, 5 passed |
+| (a) G-2 | `estimator.py` `invariant_value`: result times 1.001 | 13 failed (all fitted-model tests) |
+| (b) G-2 | `estimator.py` `improvement_factors`: result times 1.001 | 13 failed |
+| (c) | `solvers.py` `log_mean_exp`: drop the 1/N normalization (`b=1.0 / s.size` -> `b=1.0`) | Fitted-model tests still pass (13 passed): the offset is read from the fit, so the chain check is self-consistent. Across `test_matches_derivation.py`, `test_solvers.py`, `test_estimator.py`: 15 failed, 69 passed (the formula-level L1/L2 tests and the solver and estimator tests catch it) |
+| (d) | `coordinates.py` `from_frontier_coordinates`: add 1e-3 to `U` | 13 failed in the fitted-model tests (chart inverse caught) |
+| (e) | `estimator.py` `inverse_transform`: result times 1.001 | 13 failed |
+
+The new test detects perturbations of `invariant_value`, `improvement_factors` and the chart inverse at the level of fitted outputs. A broken `log_mean_exp` is not caught by it (it consumes the fitted offset as given) but is caught by the other tests, as in the second pass.
 
 ## Definition of good enough
 
 | Item | Verdict | Evidence |
 |---|---|---|
 | D-1 to D-8 exist at the stated paths | met | Deliverables table |
-| R-1 to R-19 pass as checked, with evidence | met | Requirements table, run at b95a0d4 |
+| R-1 to R-19 pass as checked, with evidence | met | Requirements table, run at 4ce27d4 |
 | Non-goals untouched | met | No preconditioner, `select_temperature`, regressor, gaps, plotting or K>1 code in `src/`; no `predict`/`score`/`decision_function`; no new runtime dependency (`pyproject.toml` dependencies unchanged); `git diff 67fff4e..HEAD -- derivation docs/superpowers/specs` has no WP2 changes |
 | Expected-failures dict, if non-empty, has reasons | met | Empty |
 
@@ -70,38 +76,38 @@ Definition of good, observed (not graded): names match the spec; docstrings cite
 
 ## Outside the scope
 
-- **Out-of-scope changes by WP2 commits:** none. The seven original WP2 commits touch only the D-1..D-7 paths and `__init__.py`; fixes 454b227 (`pyproject.toml` testpaths, `solvers.py` docstring), 07f8b67 (`estimator.py`, `test_estimator.py`), a60b57c (`test_matches_derivation.py`) are within the deliverables. `pyproject.toml` changes in the range: `testpaths = ["tests", "src"]` (WP2, the R-17 fix; R-18 allows pyproject changes "only if a test option needs it") and `pythonpath` gaining `examples/adcs` (WP4).
-- **Other packages in the range:** WP4 (`examples/adcs/`, `tests/test_adcs_case.py`) and WP5 (`docs/literature.md`, `docs/references.bib`, `tests/test_references.py`) files, plus their review/decision files. Not WP2's; reviewed in their own reports.
-- **Non-goals touched:** none.
+- **Out-of-scope changes by WP2 commits:** none. The WP2 commits (c8e0f6e 6ab5f5c 5600a4c c14bbfa bfadf36 880a4ec 6b5a6a5 454b227 07f8b67 a60b57c 76f93f1) touch only `src/hyperbolic_trade_space/{__init__,solvers,coordinates,datasets,estimator}.py`, `tests/test_{solvers,coordinates,datasets,estimator,sklearn_compat,matches_derivation}.py` and `pyproject.toml` (`testpaths = ["tests", "src"]`, the R-17 doctest fix; R-18 allows pyproject changes if a test option needs it). 76f93f1 touches only `tests/test_matches_derivation.py`. `pythonpath` also gained `examples/adcs` in the range, from WP4. No change under `derivation/` or `docs/superpowers/specs`.
+- **Other packages in the range:** WP4 (`examples/adcs/`, `tests/test_adcs_case.py`, adcs-port note) and WP5 (`docs/literature.md`, `docs/references.bib`, `tests/test_references.py`) plus their review and decision files. Not WP2's.
+- **Non-goals touched:** none (no preconditioner, `select_temperature`, regressor, gaps, plotting or K>1 code; no `predict`/`score`/`decision_function`; no new runtime dependency).
 
 ## Observations (not counted as failures)
 
-- Still present from the first review: the approval record wording and date (G-1); the cross-check injecting fitted attributes (G-2); the documented departures from the scope defaults (G-3); one red commit, 880a4ec (G-4).
-- CI history: c14bbfa is not listed; runs on 3864a8a, bfadf36, 880a4ec, 6b5a6a5, 5099f1f, 087f2ed and a60b57c were red, the head b95a0d4 is green. The failure on the WP2 commits was the WP4 platform-float test, not a WP2 test; the head fix widened that WP4 test's rtol to 3e-2 (the WP4 scope's R-9 amendment is flagged as pending in 234ee2c).
-- The scope file's own Status line still reads "DRAFT" (the approval is recorded in `WP2-decisions.md` and the README status table says "in progress").
-- Spec sections 4, 5, 7 were checked through the scope's requirements and tests rather than a line-by-line spec read; I found no divergence.
-- Planted-hole round trip and `select_temperature` remain WP3's.
+- G-2 assessment: **genuinely fixed.** The new group fits real estimators on seeded data, overwrites no fitted attribute, compares fitted outputs to the chain's L1/L7/L8 expressions evaluated at the fitted values, and fails when `invariant_value`, `improvement_factors`, `inverse_transform` or the chart inverse is perturbed by 1e-3 relative; the built-in negative control (perturb 1e-6, expects discrepancy > 1e-7) is itself live. Residual limits: the chain's L7 expression takes `u_pt` from the data and fitted offset, and the inverse-chart comparison uses a formula derived in the test (`ell = log V + beta - w.B^T Z`), not a chain expression; `log_mean_exp` correctness is covered by the formula-level and solver tests rather than by this group.
+- G-1, G-3, G-4 are still present as recorded in the second pass, and carry the supervisor's recorded disposition (accept as is).
+- G-5 (new): R-16 says 1e-10; the fitted-model group uses 1e-9 (fits to a numerical tolerance, `tol` default 1e-10, SLSQP at finite tau).
+- CI history: several earlier WP2-labelled commits were red because of a WP4 platform-float test (fixed at b95a0d4 by widening its rtol); the head and the last five runs are green. The scope file's own Status line still reads "DRAFT".
+- Spec sections 4, 5, 7 were checked through the scope's requirements and tests rather than a line-by-line read; no divergence found.
 
 ## Open decisions (for the supervisor)
 
-- **G-1.** Approval record: conditional wording ("double check with the github cli but then let's move forward"), typed by the agent, dated 2026-11-08 while commits are dated 2026-11-07 (likely UTC versus local); the scope Status line still says DRAFT. — options: accept as is / fix before acceptance / follow-up work package
-- **G-2.** The cross-check overrides `exponents_` and `log_offset_` after fitting for L1 and L7, so those lemmas are checked on formulas, not on fitted values (L2 offset uses a real fit). — options: accept as is / fix before acceptance / follow-up work package
-- **G-3.** Documented departures consistent with the scope defaults: validation order in `fit` (data checks before parameter checks); all-zero input raises; `inf` improvement factors where w_j < 1e-12 or V = 0 (the stated rule was w_j = 0; the threshold is a documented widening); calibrated novelty ranks against finite training log V. — options: accept as is / fix before acceptance / follow-up work package
-- **G-4.** Commit 880a4ec was red on lint for one commit (fixed by 6b5a6a5), and several WP2-labelled commits had red CI because of a WP4 test; the head is green. — options: accept as is / fix before acceptance / follow-up work package
+- **G-5.** The fitted-model cross-check uses a 1e-9 tolerance where R-16 reads 1e-10. — options: accept as is / fix before acceptance / follow-up work package
+
+Items G-1 to G-4 were dispositioned by the supervisor ("Fix G-2 before acceptance"; G-1, G-3, G-4 accept as is); G-2 is now fixed (above).
 
 ## Gap dispositions
 
-Records go in `work-packages/WP2-decisions.md` through the decision loop (`~/.claude/skills/CLAUDE.md`).
+Records are in `work-packages/WP2-decisions.md` (round 1) and go through the decision loop (`~/.claude/skills/CLAUDE.md`).
 
-| Gap | Disposition (accept as is / fix before acceptance / follow-up work package) | Reason or follow-up |
+| Gap | Disposition | Reason or follow-up |
 |---|---|---|
-| G-1 Approval record wording and date; Status line DRAFT | pending | |
-| G-2 Cross-check injects fitted attributes for L1, L7 | pending | |
-| G-3 Documented departures from scope defaults | pending | |
-| G-4 880a4ec red on lint; CI red on earlier WP2 commits | pending | |
+| G-1 Approval record wording and date; Status line DRAFT | accept as is (WP2-decisions.md) | Supervisor's round 1 choice |
+| G-2 Cross-check injects fitted attributes for L1, L7 | fix before acceptance (WP2-decisions.md); fix delivered in 76f93f1 and verified in this pass | Whole review rerun; trials above |
+| G-3 Documented departures from scope defaults | accept as is (WP2-decisions.md) | Supervisor's round 1 choice |
+| G-4 880a4ec red on lint; CI red on earlier WP2 commits | accept as is (WP2-decisions.md) | Supervisor's round 1 choice |
+| G-5 Fitted-model cross-check tolerance 1e-9 vs R-16's 1e-10 | pending | New item |
 
 ## Recommendation
 
-Provisional, pending the gap dispositions: recommend acceptance with the listed gaps noted, because all of R-1 to R-19 are met at head b95a0d4 with run evidence (366 passed, doctests collected by default, ruff, format and lock clean, zero attribution lines, CI green, expected-failures dict empty), the three reviewer trials are all caught, and no non-goal or out-of-scope change by WP2 was found. The remaining gaps are record-keeping and test-depth observations, none affecting a good-enough item.
+Recommend acceptance with the listed gaps noted (G-5 still needs the supervisor's disposition), because all of R-1 to R-19 are met at head 4ce27d4 with run evidence (381 passed, 3 skipped; doctests collected by default; ruff, format and lock clean; zero attribution lines; all commits authored by Michael Zargham; CI green at head; expected-failures dict empty), G-2 is genuinely fixed and demonstrated by trial (perturbing `invariant_value`, `improvement_factors` or the chart inverse fails the new fitted-model tests), and no non-goal or out-of-scope change by WP2 was found.
 
 Acceptance is the supervisor's act, recorded as named above. This report does not accept the work.
