@@ -190,11 +190,11 @@ AXIOMS = {
         POSITED,
         "max representation for L10: the maximum over the K terms of x_k = theta_k.u - beta_k "
         "is a symbol M with x_k <= M for all k in 1..K and x_{k0} = M for some k0 in 1..K",
-        role="lets lim_{kappa->inf} Phi_K = max_k x_k and the bound Phi_K <= max be proved for "
-        "symbolic K (same squeeze as F5), so the extension reads as a soft maximum of K "
-        "affine log-scores",
-        failure_mode="as F5: if M is not attained by some term the lower squeeze bound "
-        "M - (log K)/kappa is lost and only an upper bound on the limit is available",
+        role="lets lim_{kappa->inf} Phi_K = max_k x_k and the bounds max <= Phi_K <= "
+        "max + (log K)/kappa be proved for symbolic K (same squeeze as F5), so the extension "
+        "reads as a soft maximum of K affine log-scores",
+        failure_mode="as F5: if M is not attained by some term the lower bound Phi_K >= M "
+        "is lost and only the upper bound M + (log K)/kappa on the limit is available",
         fallback=True,
     ),
 }

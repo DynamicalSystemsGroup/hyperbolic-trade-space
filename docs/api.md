@@ -187,7 +187,7 @@ with each $w_k$ on the simplex and $\kappa>0$ (A6). $\Phi_K$ is softmax-affine a
 with geometric programming (I4) [@hoburg2016data; @boyd2007tutorial]; the identity
 $\exp(\kappa\Phi_K)=\sum_ke^{-\kappa\beta_k}\prod_jm_j^{\kappa w_{kj}}$, the shift equivariance
 $\Phi_K(u+c\mathbf 1)=\Phi_K(u)+c$ that carries homogeneity, projection and novelty over, and the
-bounds $\max_kx_k-(\log K)/\kappa\le\Phi_K\le\max_kx_k$ are proved in L10 (A2, A6, F10). It is built
+bounds $\max_kx_k\le\Phi_K\le\max_kx_k+(\log K)/\kappa$ are proved in L10 (A2, A6, F10). It is built
 for small $K$: `n_terms=K` fits the facets by partition and refit
 (`hyperbolic_trade_space.solvers.solve_terms`; the algorithm, what is proved and inherited (I7)
 and the simplifying assumptions are in [Mathematics](method.md#the-solver-for-small-k)).

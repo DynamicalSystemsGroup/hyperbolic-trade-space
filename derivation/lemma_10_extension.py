@@ -8,7 +8,8 @@ What this proves:
      carried by A6; Sum linearity; log of a product with a positive Sum).
   2. K = 1 reduction: Phi_1(u) = theta_1 . u - beta_1 (substitute K = 1 into the abstract
      expression), the single log-affine (monomial) fit of L1-L3.
-  3. Phi_K <= max_k x_k and Phi_K >= max_k x_k - (log K)/kappa, hence
+  3. Phi_K >= max_k x_k and Phi_K <= max_k x_k + (log K)/kappa (a log-sum-exp lies above the
+     maximum by at most log K / kappa), hence
      lim_{kappa->inf} Phi_K = max_k x_k, where x_k = theta_k . u - beta_k. Limits are computed
      by sympy.limit in derive on the squeeze bounds and recorded; verify asserts equality
      (mimics symproof library/topology.py continuous_at_point).

@@ -60,7 +60,7 @@ marked as such.
 | R1 | the balanced point lies in the relative interior of a facet of the frontier with positive normal | makes the KKT balanced point a genuine interior frontier point, so the gradient condition identifies w* as the facet normal and the improvement factors and elasticities can be read as trade-offs along the frontier | at a vertex, an edge or a facet with a zero normal component the gradient condition holds only as a subgradient inclusion: w* is not unique, some elasticities are undefined, and the frontier reading degrades to the weaker invariant-form reading |
 | A4 | conditioning is log-affine and invertible: log m_j = alpha_j log(a_j + s_j) + b_j with alpha_j != 0 (negative alpha_j marks a cost attribute) | A4 is posited, so the ledger records none; stated here: it makes the pull-back to raw attributes an exact, invertible log-affine map (L9), so the fitted frontier can be read in the units of the attributes and negative exponents mark cost attributes | stated here: if conditioning is not log-affine and invertible (or is poorly chosen), the pulled-back formula no longer describes the attributes, the exponents $w$ describe the conditioned metrics only, and a different conditioning answers a different question |
 | F5 | max representation for L5: the maximum of the scores is a symbol M with s_i <= M for all i in 1..n and s_{i0} = M for some i0 in 1..n | lets the tau -> infinity limit and the bound LME <= max be proved for symbolic n (sympy has no symbolic-n max and cannot take limits through the symbolic Sum): M - (log n)/tau <= LME <= M is squeezed with sympy.limit | the statement is about the actual maximum only when M really is max_i s_i; if M is any upper bound that is not attained the lower squeeze bound is lost and the limit is only an upper bound on the true limit |
-| F10 | max representation for L10: the maximum over the K terms of x_k = theta_k.u - beta_k is a symbol M with x_k <= M for all k in 1..K and x_{k0} = M for some k0 in 1..K | lets lim_{kappa->inf} Phi_K = max_k x_k and the bound Phi_K <= max be proved for symbolic K (same squeeze as F5), so the extension reads as a soft maximum of K affine log-scores | as F5: if M is not attained by some term the lower squeeze bound M - (log K)/kappa is lost and only an upper bound on the limit is available |
+| F10 | max representation for L10: the maximum over the K terms of x_k = theta_k.u - beta_k is a symbol M with x_k <= M for all k in 1..K and x_{k0} = M for some k0 in 1..K | lets lim_{kappa->inf} Phi_K = max_k x_k and the bounds max <= Phi_K <= max + (log K)/kappa be proved for symbolic K (same squeeze as F5), so the extension reads as a soft maximum of K affine log-scores | as F5: if M is not attained by some term the lower bound Phi_K >= M is lost and only the upper bound M + (log K)/kappa on the limit is available |
 
 The chart axiom A7 is also worth reading in the ledger's own words. Its role: "makes Z the
 scale-free coordinates of the metric vector: Z is blind to a common multiplicative scale (a shift
@@ -551,7 +551,7 @@ $$
 and, with $x_k=\theta_k\cdot u-\beta_k$ and the maximum carried as the F10 symbol,
 
 $$
-\max_kx_k-\frac{\log K}{\kappa}\le\Phi_K(u)\le\max_kx_k,\qquad
+\max_kx_k\le\Phi_K(u)\le\max_kx_k+\frac{\log K}{\kappa},\qquad
 \lim_{\kappa\to\infty}\Phi_K(u)=\max_kx_k .
 $$
 <!-- lemma: L10 -->
@@ -732,11 +732,9 @@ planted facets with only five or six frontier rows, trapped in local optima, and
 well-populated facet (see the measured recovery above). At $N=600$ with half the rows on the
 frontier the rate was 19 or 20 of 20. (ii) The cubesat record
 (`docs/superpowers/notes/k3-cubesat.md`) reports the $K=1,2,3$ fits on two datasets. The mean
-slack falls to about a quarter of its $K=1$ value at $K=3$, and the $K=3$ objective agrees across
-five seeds to within $2\times10^{-6}$ in the primary regime. (iii) The fraction of designs above
-the frontier, `frac_above_`, rises with $K$ at a fixed $\tau$: in the primary regime 0.096, 0.261
-and 0.382 at $K=1,2,3$, where $\tau$ was chosen at $K=1$ for 0.10. This is a finding, reported and
-not re-tuned; a $K$-specific temperature is a separate decision. None of these is a guarantee on
+slack at $K=3$ is 0.117 against 0.204 at $K=1$ in the primary regime (0.093 against 0.131 in the stock regime), at a temperature re-selected at each $K$; the $K=3$ objective agrees across five seeds to
+within $2\times10^{-6}$ in the primary regime, and in the stock regime one seed of five reaches a worse optimum (0.114 against 0.093). (iii) The temperature is re-selected at each $K$ by
+the $K=1$ criterion, a tenth of the designs above $V=1$: $\tau$ is 38.1, 113 and 195 at $K=1,2,3$ in the primary regime and `frac_above_` is 0.096, 0.096 and 0.098. Reusing the $K=1$ $\tau$ instead raises the fraction (0.096, 0.261, 0.382), because each facet is a supporting hyperplane at that $\tau$ but the envelope is the maximum over facets; that table is kept in the record as a diagnostic. Whether the target fraction should differ by $K$ is open. None of these is a guarantee on
 other data. **Nothing is claimed about global optimality.**
 
 ### Simplifying assumptions
