@@ -53,6 +53,19 @@ proposed configuration would fall, and reading the frontier's shape back in desi
   several regional tensions are the K > 1 extension, and a deflation-style search for successive
   tensions is a research question. The ADCS case already shows it: effort vs pointing is a tension,
   settling vs pointing is aligned, mass barely interacts.
+- **n-lemmas are discovered, not assumed (supervisor, 2026-11-08).** "In engineering, concepts like
+  'trilemma' are common but they are heuristics more often than not. Our approach can find and
+  parameterize regions of the tradespace without knowing about them a priori, and it need not be
+  limited to 2 or 3 variables contending. Our fit model should reveal them." Reading: a dilemma,
+  trilemma or n-lemma is a facet of the admissibility set on which n metrics contend, i.e. a
+  supporting hyperplane whose normal has exactly those n positive exponents. The fit discovers the
+  contending set as the support of w (no prior choice of which metrics or how many; d arbitrary) and
+  parameterizes it by the exponents (exchange rates). Details for WP3/WP6: the contending set is
+  exact at τ = ∞ (the LP solution is sparse, zero exponents are exact) and smooth at a working τ
+  (small exponents = weak participation), so the tension report gives both; `min_exponent` masks
+  sparsity and must be 0 for this reading; K = 1 reveals the contention at the balanced point, and a
+  trade space with several regional n-lemmas is what the K > 1 extension is for, one contending set
+  per facet. The ADCS case should let the fit say what contends rather than assert a trilemma.
 - **API.** Aligned with scikit-learn's unsupervised/decomposition family: `fit`, `transform` (Z and
   log V), `inverse_transform`, `fit_transform`, `score_samples` (log V), `exponents_` as the
   `components_` analogue (one row per term), `n_terms` as the capacity parameter; no `predict` on the
