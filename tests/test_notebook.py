@@ -14,7 +14,7 @@ import pytest
 ADCS = pathlib.Path(__file__).resolve().parents[1] / "examples" / "adcs"
 NOTEBOOK = ADCS / "adcs_trade_study.ipynb"
 FIGURES = [
-    "01_attributes",
+    "01_two_designs",
     "02_tau_sweep",
     "03_frontier_surfaces",
     "04_log_planes",
@@ -212,3 +212,66 @@ def test_no_machine_specific_paths(nb):
     raw = NOTEBOOK.read_text()
     for bad in ["/Users/", "/private/", "/home/", "C:\\\\", "token", "password", "secret"]:
         assert bad not in raw, bad
+
+
+def test_figure_axis_labels_are_in_attribute_terms(nb):
+    """Editing pass (G-2): no bare '(m)' axis label in figure code; conditioned axes say so."""
+    figure_code = [
+        source(c)
+        for c in nb["cells"]
+        if c["cell_type"] == "code" and "save(fig" in source(c) and "def save" not in source(c)
+    ]
+    assert len(figure_code) >= len(FIGURES) - 3
+    for code in figure_code:
+        assert "(m)" not in code
+    surfaces = source(nb["cells"][cell_with(nb, "# CELL: surfaces")])
+    assert "short_label" in surfaces and "cond_label" in surfaces
+    names = source(nb["cells"][cell_with(nb, "# CELL: names")])
+    assert "conditioned" in names and "larger is better" in names
+
+
+def test_colour_words_match_the_plotting_vocabulary(nb):
+    """Editing pass (G-2): holes are vermillion (HOLE_COLOR #D55E00), never called red."""
+    everything = "\n".join(source(c) for c in nb["cells"])
+    assert re.search(r"vermillion", everything)
+    assert not re.search(r"\bred\b", everything, flags=re.I)
+
+
+def test_closing_call_to_action_with_source_links(nb):
+    """Editing pass (G-7): the notebook ends with a call to action and plain source links."""
+    last = nb["cells"][-1]
+    assert last["cell_type"] == "markdown"
+    flat = source(last)
+    assert flat.startswith("## Where to go from here")
+    assert "start wherever suits you" in flat.lower()
+    repo = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space"
+    assert repo in flat and "docs/method.md" in flat and "design.md" in flat
+    for word in ["Derivations", "Toolkit", "Limitations", "SysML", "Your own data"]:
+        assert word in flat
+    # plain text and markdown links only
+    assert not re.search(r"[\U0001F300-\U0001FAFF\u2600-\u27BF]", flat)
+
+
+def test_hook_figure_is_early_and_names_no_tension(nb):
+    """Editing pass (G-7): an embodied hook figure precedes section 2."""
+    hook = cell_with(nb, "# CELL: hook-figure")
+    sec2 = next(
+        i
+        for i, c in enumerate(nb["cells"])
+        if c["cell_type"] == "markdown" and "## 2 · " in source(c)
+    )
+    assert hook < sec2
+    assert any("image/png" in o.get("data", {}) for o in nb["cells"][hook]["outputs"])
+
+
+def test_prediction_columns_are_named_for_what_they_hold():
+    """Editing pass (G-4): predicted-metric standard deviations are named by metric."""
+    preds = pd.read_csv(ADCS / "data" / "check_predictions_cubesat.csv")
+    assert not any(c.startswith("pred_std_z") or c == "pred_std_log_v" for c in preds.columns)
+    for c in [
+        "pred_std_slew_time_s",
+        "pred_std_pointing_error_deg",
+        "pred_std_control_effort",
+        "pred_std_total_mass_kg",
+    ]:
+        assert c in preds.columns

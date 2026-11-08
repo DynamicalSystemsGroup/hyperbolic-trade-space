@@ -154,3 +154,31 @@ Deviations and findings the reviewer should know:
   and the notebook does not recompute them.
 - Contending sets are not stable in detail under the conditioning checks (effort leaves the set under the robust scaler and
   the eight-metric refit); total mass and pointing error stay in all five variants. The notebook reports this.
+
+### Editing pass (after the supervisor's disposition "Fix G-1, G-2, G-7, G-4, G-10; accept the rest")
+
+Notebook author, 2026-11-08. G-3, G-5, G-6, G-8 and G-9 are untouched, as dispositioned.
+
+- **G-1.** Section 8 reading corrected: control effort loads against an agility metric in the first principal direction in four of
+  the five variants (and one of the four, the all-metric shift, is the baseline again by L2); the exception is the eight-metric
+  refit, where the first direction is led by total mass (-0.58) and control effort (-0.46) and settling time loads +0.04. The sensitivity
+  cell now prints the effort and agility loadings of direction 1 per variant, so the sentence is checkable from the output.
+- **G-2.** Axis labels of every figure are in attribute terms with units and say "conditioned ... (larger is better)" where a conditioned
+  metric is shown; no "(m)" labels remain. Figure 03 is now a 2 x 2 figure: the 3-D surface (left) and an edge-on log-space view of the
+  same surface (right: each design against the height of V = 1 above it, black line V = 1, grey band, near-frontier designs ringed).
+  It shows the hugging in the first subset and shows plainly that in the second subset the surface runs above the data at its upper end
+  (reported in the reading). Hole colour is called vermillion everywhere in the notebook (a test forbids "red").
+- **G-7.** Figure 01 is now a hook of two designs picked by one column each (the fastest slew, the lightest bus), their ten attributes as
+  factors of the table median, and the table cloud of slew time and mass by wheel class (`01_two_designs.png` replaces `01_attributes.png`);
+  it names no tension (test unchanged). Section 9 and the report, regime and verification cells are split into short cells of one idea each
+  (mechanism, design variable, what would change it). The notebook ends with "Where to go from here": next steps by interest (derivations,
+  toolkit and API, limitations, the SysML model, your own data with a five-line recipe) and links to the repository, the specification and
+  `docs/method.md`; the card at the top carries the repository link.
+- **G-4.** The four standard-deviation columns of `check_predictions_cubesat.csv` are now `pred_std_slew_time_s`,
+  `pred_std_pointing_error_deg`, `pred_std_control_effort`, `pred_std_total_mass_kg` (header only; data rows are byte-identical, checked
+  with a diff of the rows). `make_check_designs.py` writes them under those names and its docstring says what they are;
+  `tests/test_check_designs.py` and the notebook follow.
+- **G-10.** Section 8 no longer says the uniform shift "multiplies every score": it adds the constant to every score and to the fitted
+  offset, and the exponents are unchanged (L2). (The first author note above, which used the old wording, is the record of the earlier draft.)
+- Tests: `tests/test_notebook.py` keeps all guards and adds: no "(m)" in figure code, "vermillion" and no "red", a closing call-to-action
+  with the repository link, the hook figure before section 2, and the renamed prediction columns.
