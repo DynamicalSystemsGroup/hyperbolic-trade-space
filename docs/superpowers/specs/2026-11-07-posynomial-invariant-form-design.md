@@ -347,6 +347,19 @@ numpydoc docstrings with doctests.
 
 ## 8. ADCS demo (examples/adcs/)
 
+**Requirement on the case (supervisor, 2026-11-08):** "we do want to require our example case is rich
+enough to expose tensions which were not asserted a priori but are recognizable and intuitive when
+explicated." The fitted model on the case data must discover a contending set (the n-lemma at the
+balanced point, with the tension report's pairwise and principal-direction structure) that was not
+built into the analysis, and each exposed tension must be explicable in physical terms once named
+(e.g. settling speed vs control effort; pointing vs sensor mass through star-tracker grade; agility
+vs mass through wheel class). The WP4 review found genuine tension only in effort vs pointing, with
+settling and pointing aligned and mass weakly involved, so WP7 scopes an early probe of the current
+dataset and a contingency: if the fit does not expose recognizable contention, the case is enriched
+(wider hardware spread, scenarios in which small wheels saturate, or an additional cost-like
+attribute) as an amendment or a follow-up package before the notebook is written. The notebook
+never asserts a trilemma; it reports what the fit found and then explains it.
+
 See `docs/superpowers/notes/adcs-port.md` for the source files, baseline values and regression
 pins. Demo modelling defaults (confirm at the WP4 scope gate): a constant solar-radiation-pressure
 disturbance torque (illustrative GEO-typical ~1e-5 N·m) so steady pointing error depends
