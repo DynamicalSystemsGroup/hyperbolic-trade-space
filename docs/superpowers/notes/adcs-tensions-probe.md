@@ -663,3 +663,74 @@ near-frontier rows at the working tau, and the near-frontier counts per class. S
 datasets the finding is recorded as the amendment to R-13 (for which lever mass entered the contending set and with what
 exponent; whether wheel class is a feasibility boundary or not) and the failing tests are `xfail(strict=True)` per dataset; if
 R-13 passes under a lever, that dataset's tests carry no xfail.
+
+### Amendment 5: results (levers i, ii, iii; R-13 PASSES under lever i and lever iii, FAILS under lever ii)
+
+Commands (recorded, run after the reasoning commit `75823dc`): the aggressive-gain dataset
+`uv run python examples/adcs/generate_dataset.py --model cubesat --gain-box aggressive --n 1000 --seed 0 --slew-deg 30 --t-end 600 --force`
+writes `examples/adcs/data/adcs_designs_cubesat_gains.csv` (same 35 columns as the baseline; wheel, tracker, span and battery columns identical
+to the baseline's, only Kp, Kd differ). The baseline `adcs_designs_cubesat.csv` is untouched. The utilisation attribute is derived on read
+(`cubesat_model.add_momentum_utilisation(df, CubesatModel.wheel_capacities())`, capacities 10 / 30 / 100 mN m s read from the model through
+the client); no CSV was rewritten. Method, conditioning, bootstrap (100 resamples, seed 0) and thresholds as before; the tests of
+`tests/test_adcs_enrichment.py` run the same R-13/R-14/R-15 checks over the four datasets (`baseline`, `headroom` = lever ii, `gains` =
+lever i, `gains_headroom` = lever iii). Reproducibility: `tests/test_cubesat_model.py -k reproduc` regenerates the first 20 designs of both CSVs
+with the WP4 per-column tolerances and checks same-platform exactness for both gain boxes.
+
+| | baseline (10 attr.) | lever ii: baseline + utilisation (11) | lever i: aggressive gains (10) | lever iii: gains + utilisation (11) |
+|---|---|---|---|---|
+| feasible n (small / medium / large) | 780 (239 / 279 / 262) | 780 (239 / 279 / 262) | 706 (191 / 248 / 267) | 706 (191 / 248 / 267) |
+| momentum violated (small / medium / large) | 19.2 / 4.3 / 0 % | same | 37.2 / 17.4 / 0 % (overall 18.8 %) | same |
+| contending set at tau = inf (size) | 6: effort .434, slew .253, power margin .179, settling .081, pointing .040, reserve .013 | 8: slew .304, effort .296, power margin .193, utilisation .086, mass .060, pointing .030, depth of discharge .027, reserve .005 | 6: slew .201, mass .223, energy balance .169, effort .143, pointing .135, depth of discharge .129 | 6: mass .249, utilisation .214, power margin .170, slew .141, depth of discharge .122, pointing .104 |
+| total mass exponent at tau = inf / working tau | 0.000 / 0 | 0.060 / 0.077 | 0.223 / 0.179 | 0.249 / 0.259 |
+| bootstrap support of mass (median exponent) | 0.00 (0) | 0.99 (0.060) | 1.00 (0.200) | 1.00 (0.249) |
+| working tau, near-frontier rows (small / medium / large) | 42.8, 102 (78 / 23 / 1) | 51.4, 80 (15 / 41 / 24) | 35.2, 64 (21 / 36 / 7) | 58.8, 80 (0 / 49 / 31) |
+| settling-mass association (near-frontier, pooled) | -0.129 | -0.126 | -0.503 | -0.329 |
+| slew time-mass association | -0.109 | -0.078 | -0.453 | -0.139 |
+| pointing-mass / settling-effort / pointing-effort / settling-pointing | -0.357 / -0.951 / -0.701 / +0.681 | -0.114 / -0.956 / -0.742 / +0.716 | -0.658 / -0.659 / -0.349 / +0.143 | -0.539 / -0.390 / -0.464 / +0.183 |
+| strongest power tension (d) | depth of discharge-mass -0.65 | depth of discharge-mass -0.59 | peak slew power-settling -0.67 | peak slew power-utilisation -0.57 |
+| utilisation associations (mass / slew / effort / settling) | n/a | -0.362 / -0.800 / +0.747 / -0.746 | n/a | -0.328 / -0.661 / +0.612 / -0.232 |
+| R-14: saturated ratio small/large (needs 3), settling ratio (needs 1.25) | 5.12, 1.85 (holds) | same | 13.1, 4.85 (holds) | same |
+| (a) (b) (c) (d) (e) | fail fail fail pass pass | pass pass FAIL pass FAIL | pass pass pass pass pass | pass pass pass pass pass |
+
+Medians on the feasible set (small / medium / large). Baseline: saturated fraction 0.041 / 0.015 / 0.008, settling 128 / 67 / 69 s, slew time 83 / 51 / 52 s.
+Aggressive gains: saturated fraction 0.165 / 0.044 / 0.013, settling 104 / 41 / 21 s, 1 degree slew time 33 / 18 / 14 s, total mass 12.65 / 13.31 / 14.46 kg.
+Utilisation medians: baseline small 0.587, medium 0.38, large 0.13; gains 0.807, 0.638, 0.358. In the aggressive box the correlation of log slew
+time with log(Kd/Kp) falls to 0.79 (small), 0.89 (medium), 0.97 (large) (baseline 0.971, 0.990, 0.998), the slew time and settling correlation
+to 0.698 (baseline 0.947), and wheel mass explains 65 % of the variance of total mass.
+
+**Reading, lever by lever.**
+- Lever (i), aggressive gains: R-13 holds in full (a: size 6 with mass 0.223 and a power attribute, depth of discharge 0.129 and energy balance
+  0.169; b: mass bootstrap support 1.00 with median 0.200; c: settling-mass -0.503 and slew time-mass -0.453, two classes with at least 10
+  near-frontier rows (medium 36, small 21); d, e). The mechanism was the one reasoned in advance: with the proportional demand above every wheel
+  cap and Kd/Kp mostly at or below 5, the class sets the arrival time (slew 33 / 18 / 14 s, a ratio 2.4 small/large against 1.6), so a
+  heavier wheel buys a faster slew, and mass becomes a frontier attribute (heavier wheels are faster and cost mass). Wheel class is now both a
+  feasibility boundary (37 % of small designs fail on momentum) and a frontier trade.
+- Lever (ii), utilisation alone: mass enters the contending set (0.060, bootstrap support 0.99, median 0.060, so (a) and (b) hold) and the
+  new attribute is itself in it (0.086, support 1.0), but the agility-mass associations stay at -0.126 and -0.078 (c fails) and the pointing-mass
+  association falls to -0.114 (e fails: the near-frontier set shifts to medium and large wheels, 41 and 24 rows). Utilisation is
+  tied to the mass (-0.362) and the slew (-0.800) but not strongly enough to make the agility trade appear at the baseline gains. Sensitivity
+  (declared before): the headroom difference (capacity minus peak) in place of the ratio gives mass exponent 0.025, support 0.99, settling-mass -0.253,
+  slew time-mass -0.238 (c still fails by a margin), pointing-mass -0.186 (e fails), so the choice of form does not change the verdict at
+  the baseline gains; on the aggressive gains the difference gives mass 0.282, settling-mass -0.476, slew time-mass -0.371 (all pass).
+- Lever (iii), both: R-13 holds in full (mass 0.249, support 1.00; settling-mass -0.329 passes (c) while slew time-mass is only -0.139; near-frontier
+  rows medium 49, large 31, small 0). Utilisation adds a second, correlated wheel-class attribute and removes the small wheels from the near
+  frontier. Lever (i) already suffices; the headroom attribute is not needed.
+
+**Expectation against result (Step A of amendment 5).** Held: heavier wheels are faster and the class separates agility in the aggressive box; mass enters
+the contending set under lever (i); lever (ii) alone does not pass (the prediction "fails" held, though (a) and (b) pass, only (c) and (e) fail); R-14
+clause 1 held (ratio 13.1, my concern that it would shrink was wrong: the small wheel saturates for 16 % of the horizon against 1.3 % for the large).
+Wrong in size: the momentum violations (small 37 %, medium 17 %, against my 25 % and 7 %; the closed-form bound gave 18 % and 6 % and
+the underdamped overshoot added much more than I allowed for); the slew times (33 / 18 / 14 s against 55 to 65, 25 to 30, 15 to 20 s, because the
+fraction of high Kp is larger and the PD braking starts earlier than a bang-bang); the feasible share (706 of 1000 = 70.6 % against about 75 %).
+The associations are larger than I guessed (-0.45 to -0.50 against -0.3 to -0.5, within it).
+
+**Disposition (stop rule after lever iii).** R-13 passes under lever (i) and lever (iii) with no change of clause or threshold, so the stop
+rule does not apply to those datasets: their tests carry no `xfail`. R-13 fails under the baseline (a, b, c; amendment 4) and under lever (ii)
+(c, e) on the 30 degree baseline gains: those tests are `xfail(strict=True)` per dataset (`EXPECTED_FAIL` in `tests/test_adcs_enrichment.py`).
+Finding for the supervisor: the richness failure of amendment 4 is a property of the gain box, not of the case or the measures: at the committed
+box (median Kd/Kp 3.9) the slow pole hides the wheel class; in the aggressive box (median Kd/Kp 1.07) it appears as a frontier tension (mass
+exponent 0.22, support 1.00) and the wheel class is both a feasibility boundary and a frontier trade. Which dataset stands (the baseline or
+`adcs_designs_cubesat_gains.csv`) is the supervisor's choice; WP7 and the notebook read it. Caveats: the aggressive box is a stiffer
+attitude loop than the baseline and the choice of the box was reasoned from the physics but is still a choice of the case; in the gains datasets
+the large-wheel near-frontier count is 7 (lever i) so large-wheel statements are weak there; 18.8 % of the aggressive designs fail momentum (small
+wheels 37 %).
