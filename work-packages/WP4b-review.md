@@ -88,7 +88,7 @@ Every number reproduces within the tau-grid tolerance. `test_e_previous_tensions
 
 ## Outside the scope
 
-- **Out-of-scope changes:** none by WP4b beyond those accepted earlier (`.github/workflows/test.yml` cache edit, `pyproject.toml`, `uv.lock`, a comment-only edit to `extended_design_space.sysml`). `git diff --stat 5dfbc8c~1..HEAD -- . ':!work-packages'` also lists `docs/api.md`, `docs/limitations.md`, `docs/method.md`, `docs/preconditioning.md`, `docs/why-and-how.md`, `docs/test_docs.py`, `src/hyperbolic_trade_space/__init__.py`, `tuning.py`: these are commits by WP3 and WP6 (`git log` shows `f6d9b9a`, `94fbe72`, `07fe9d3`, `e82594b`, `8f49253`, `f635a04`, `0815c82`, `c793e10`), not WP4b. Amendment 4 touched only the six files in `git show --stat a27502e` and the note.
+- **Out-of-scope changes:** none by WP4b beyond those accepted earlier (`.github/workflows/test.yml` cache edit, `pyproject.toml`, `uv.lock`, a comment-only edit to `extended_design_space.sysml`). `git diff --stat 5dfbc8c~1..HEAD -- . ':!work-packages'` also lists `docs/api.md`, `docs/limitations.md`, `docs/method.md`, `docs/preconditioning.md`, `docs/why-and-how.md`, `tests/test_docs.py`, `src/hyperbolic_trade_space/__init__.py`, `tuning.py`: these are commits by WP3 and WP6 (`git log` shows `f6d9b9a`, `94fbe72`, `07fe9d3`, `e82594b`, `8f49253`, `f635a04`, `0815c82`, `c793e10`), not WP4b. Amendment 4 touched only the six files in `git show --stat a27502e` and the note.
 - **Non-goals touched:** none. `adcs_sim.py` byte-identical; no estimator, solver, coordinates, WP2/WP3 or notebook change by WP4b; no `sysml-toolkit` dependency; WP4 CSV and tests untouched.
 
 ## Trials (undone)
