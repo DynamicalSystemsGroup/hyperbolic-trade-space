@@ -178,3 +178,22 @@ def test_plot_tensions_list_of_reports_side_by_side():
     axs = P.plot_tensions([make_report(), make_report()], names=["a", "b", "c"])
     assert len(axs) == 2 and axs[1].get_title().startswith("facet 2: dilemma")
     assert isinstance(P.plot_tensions(make_report()), Axes)
+
+
+def test_log_plane_k3_draws_facet_only_where_it_has_weight_on_both_metrics():
+    hts = HyperbolicTradeSpace(n_terms=2, temperature=np.inf)
+    hts.exponents_ = np.array([[0.5, 0.5], [0.0005, 1.0]])  # facet 2 below the threshold on m0
+    hts.log_offset_ = np.array([0.0, -50.0])  # would dominate the envelope if it were drawn
+    hts.n_features_in_ = 2
+    X = np.exp(np.random.default_rng(0).normal(size=(40, 2)))
+    ax = P.plot_log_plane(hts, X, color=np.arange(40) % 2)
+    g, y = ax.lines[0].get_data()
+    assert np.allclose(y, (0.0 - 0.5 * g) / 0.5)  # facet 1's line only
+    hts.exponents_ = np.array([[0.0005, 1.0], [1.0, 0.0005]])  # no facet has weight on both
+    assert len(P.plot_log_plane(hts, X, color=np.arange(40) % 2).lines) == 0
+
+
+def test_log_plane_k1_unchanged_by_the_envelope_rule():
+    X, _ = make_frontier_data(80, 2, random_state=0)
+    ax = P.plot_log_plane(HyperbolicTradeSpace().fit(X), X)
+    assert len(ax.lines) == 1 and ax.get_legend() is not None

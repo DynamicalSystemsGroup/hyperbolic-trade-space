@@ -39,6 +39,7 @@ HOLE_COLOR = "#D55E00"
 CATEGORY_COLORS = ("#0072B2", "#E69F00", "#009E73", "#CC79A7", "#56B4E9", "#F0E442")
 DATA_COLOR = CATEGORY_COLORS[0]
 TENSION_CMAP = "PuOr"
+PARTICIPATION = 1e-3  # a facet participates in a metric above this exponent (tension report's)
 
 __all__ = [
     "BAND_COLOR",
@@ -131,7 +132,8 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None):
     band : float, default=None
         Band width in ``log V``; default ``1/tau`` (``0.1`` at ``tau = inf``). For ``n_terms > 1``
         the black line is the envelope ``Phi_K = 0`` (the hard maximum of the facet lines) and the
-        band the strip down to ``Phi_K = -band``.
+        band the strip down to ``Phi_K = -band``; a facet is drawn only where it has weight on
+        both plotted metrics (exponents above ``PARTICIPATION``), and no envelope is drawn if none.
     ax : matplotlib Axes, default=None
 
     Returns
@@ -161,16 +163,17 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None):
     ax = _axes(ax)
     if len(W) > 1:
         # envelope Phi_K = 0: the lowest facet line m1(m0), over facets that bound m1 from above
-        g, ok = np.linspace(u[:, 0].min(), u[:, 0].max(), 200), W[:, 1] > 0
+        g, ok = np.linspace(u[:, 0].min(), u[:, 0].max(), 200), W.min(axis=1) > PARTICIPATION
 
         def edge(s):
             return np.min((bk[ok] - s - np.outer(g, W[ok, 0])) / W[ok, 1], axis=1)
 
-        ax.fill_between(
-            g, edge(b), edge(0.0), color=BAND_COLOR, alpha=0.5, linewidth=0,
-            label=f"band (log V >= -{b:.3g})",
-        )  # fmt: skip
-        ax.plot(g, edge(0.0), color=FRONTIER_COLOR, label="frontier V = 1 (envelope)")
+        if ok.any():
+            ax.fill_between(
+                g, edge(b), edge(0.0), color=BAND_COLOR, alpha=0.5, linewidth=0,
+                label=f"band (log V >= -{b:.3g})",
+            )  # fmt: skip
+            ax.plot(g, edge(0.0), color=FRONTIER_COLOR, label="frontier V = 1 (envelope)")
     else:
         n2 = float(w @ w)
         p = beta * w / n2

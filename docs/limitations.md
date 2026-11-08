@@ -115,7 +115,9 @@ global optimality. The assumptions behind it are named, defended and extended in
 
 - *Scalability and performance.* Many terms, many designs, and faster solves.
 - *Selection of $K$.* The analyst chooses $K$, reading a table of the objective and the fraction
-  above the frontier by $K$ (which rises with $K$ at a fixed temperature); a selection rule is open.
+  above the frontier by $K$, with the temperature re-selected at each $K$; a selection rule is open.
+- *Temperature across $K$.* $\tau$ is re-selected at each $K$ by the $K = 1$ criterion; whether the
+  target fraction should differ by $K$ is open.
 - *Nonsmooth search.* The fit is a hard maximum with kinks on the ridges, smoothed on request by
   `term_temperature`. We expect, and have not shown, that searches along the frontier tolerate the
   kinks, since a maximum of smooth functions has a tangent cone at a ridge and its generalized

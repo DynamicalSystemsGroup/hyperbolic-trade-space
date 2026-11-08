@@ -1,4 +1,4 @@
-"""WP9 D-6: the K = 1, 2, 3 cubesat case script runs, and its figures and labels are sound."""
+"""WP9 D-6 / Amendment 3: the K = 1, 2, 3 cubesat script (tau re-selected at each K) runs."""
 
 import re
 from pathlib import Path
@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 
 SCRIPT = Path(k_terms.__file__)
+FIGS = ("log_planes", "frontier_coordinates", "tensions")
 
 
 @pytest.fixture(scope="module", params=list(k_terms.REGIMES))
@@ -22,27 +23,40 @@ def test_k3_fits_and_three_reports(result):
     _, out = result
     est, reps = out["fits"][3], out["reports"][3]
     assert est.exponents_.shape == (3, 10)
-    assert len(reps) == 3 and len(out["reports"][1]) == 1
+    assert len(reps) == 3 and len(out["reports"][1]) == 1 and len(out["reports"][2]) == 2
     assert np.isclose(est.facet_share_.sum(), 1.0)
     assert (np.bincount(est.facet_, minlength=3) > 0).all()
     assert all(r.n_lemma == len(r.contending_set) >= 1 for r in reps)
-    assert list(out["diag"].K) == [1, 2, 3]
+    assert list(out["diag"].K) == [1, 2, 3] and list(out["fixed_diag"].K) == [1, 2, 3]
     assert out["diag"].objective_.is_monotonic_decreasing
+
+
+def test_tau_reselected_at_each_k_holds_the_fraction(result):
+    regime, out = result
+    for K in (1, 2, 3):
+        assert abs(out["fits"][K].frac_above_ - 0.10) <= 0.011  # tool tolerance 0.01
+        assert out["fits"][K].temperature == out["taus"][K]
+    assert out["taus"][1] == pytest.approx({"primary": 38.10, "stock": 41.72}[regime], abs=0.01)
+    # the diagnostic reuses K = 1's tau and shows the fraction rising with K
+    assert (out["fixed_diag"]["tau"] == round(out["taus"][1], 2)).all()
+    assert out["fixed_diag"].frac_above_.iloc[-1] > 0.25
+
+
+def test_every_facet_is_drawn_in_some_panel(result):
+    _, out = result
+    drawn = {f for n in out["panels"] for f in n["facets drawn"]}
+    assert drawn == {1, 2, 3}
+    assert len(out["panels"]) <= 3
 
 
 def test_figures_written(result):
     regime, out = result
-    figs = out["figs"]
-    for name in ("log_planes", "frontier_coordinates", "tensions"):
-        assert (figs / f"k3_{name}_{regime}.png").stat().st_size > 0
+    for name in FIGS:
+        assert (out["figs"] / f"k3_{name}_{regime}.png").stat().st_size > 0
 
 
 def test_committed_figures_exist_if_script_was_run():
-    paths = [
-        k_terms.FIGS / f"k3_{n}_{r}.png"
-        for n in ("log_planes", "frontier_coordinates", "tensions")
-        for r in k_terms.REGIMES
-    ]
+    paths = [k_terms.FIGS / f"k3_{n}_{r}.png" for n in FIGS for r in k_terms.REGIMES]
     if not any(p.exists() for p in paths):
         pytest.skip("k_terms.py has not been run")
     assert all(p.exists() and p.stat().st_size > 0 for p in paths)
