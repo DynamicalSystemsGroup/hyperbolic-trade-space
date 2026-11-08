@@ -674,7 +674,7 @@ to the baseline's, only Kp, Kd differ). The baseline `adcs_designs_cubesat.csv` 
 the client); no CSV was rewritten. Method, conditioning, bootstrap (100 resamples, seed 0) and thresholds as before; the tests of
 `tests/test_adcs_enrichment.py` run the same R-13/R-14/R-15 checks over the four datasets (`baseline`, `headroom` = lever ii, `gains` =
 lever i, `gains_headroom` = lever iii). Reproducibility: `tests/test_cubesat_model.py -k reproduc` regenerates the first 20 designs of both CSVs
-with the WP4 per-column tolerances (relative 1e-4; for the aggressive box 1e-3 on the continuous columns, because the CI runner differed from the author's platform by 1.25e-4 in the control effort of one design: the saturated trajectories are more platform-sensitive) and checks same-platform exactness for both gain boxes.
+with the WP4 per-column tolerances (relative 1e-4; for the aggressive box 1e-3 on the continuous columns, because the CI runner differed from the author's platform by 1.25e-4 in the control effort of one design, and by 6.2 % in the saturated fraction, for which the aggressive box allows 10 % instead of 2 %: the saturated trajectories are more platform-sensitive) and checks same-platform exactness for both gain boxes.
 
 | | baseline (10 attr.) | lever ii: baseline + utilisation (11) | lever i: aggressive gains (10) | lever iii: gains + utilisation (11) |
 |---|---|---|---|---|
