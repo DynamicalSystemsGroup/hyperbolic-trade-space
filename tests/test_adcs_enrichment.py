@@ -10,8 +10,14 @@ each dataset of ``DATASETS`` (WP4b amendment 5): the 30 degree baseline, the bas
 momentum utilisation attribute (lever ii), the aggressive-gain dataset (lever i) and that with the
 attribute (lever iii). Only the two utilisation datasets need the opensysml client, once, to read
 the wheel capacities from the SysML model. The thresholds are those of the approved scope and are
-not to be tuned; where a check does not hold on a dataset it is marked ``xfail(strict=True)`` for
-that dataset with the recorded finding.
+not to be tuned.
+
+Two regimes (WP4b decision, "Both, as two regimes"): the aggressive-gain datasets (``gains``,
+``gains_headroom``) are PRIMARY and carry the R-13 assertions (a), (b), (c), (e). The baseline
+datasets (``baseline``, ``headroom``) are the regime comparison: they assert the recorded numbers
+(wheel class is a feasibility boundary only in that regime; mass absent or weak, agility-mass
+associations above -0.30) in ``test_regime_*``. R-14, R-15, (d) and the tension-report agreement
+run on all four.
 """
 
 from __future__ import annotations
@@ -64,36 +70,8 @@ SUPPORT_TOL = 1e-3  # an exponent above this is in the contending set
 TARGET_FRAC_ABOVE = 0.10
 
 
-STOP4 = (
-    "WP4b amendment 4 stop rule: after the fourth and last adjustment (slew_time_s attribute) "
-    "total mass is still absent from the contending set (exponent 0.000) and the settling-mass "
-    "and slew_time-mass associations are -0.13 and -0.11; thresholds not weakened, reported to "
-    "the supervisor (see docs/superpowers/notes/adcs-tensions-probe.md)"
-)
-# (dataset, test name prefix) -> reason: checks that do not hold on that dataset (strict xfail)
-STOP5_HEADROOM = (
-    "WP4b amendment 5, lever ii (momentum utilisation on the 30 degree baseline): mass enters the "
-    "contending set (0.060) with bootstrap support 0.99 so (a) and (b) hold, but the settling-mass "
-    "and slew_time-mass associations are -0.126 and -0.078 and the pointing-mass association is "
-    "-0.114; thresholds not weakened (see docs/superpowers/notes/adcs-tensions-probe.md)"
-)
-EXPECTED_FAIL: dict[tuple[str, str], str] = {
-    ("baseline", "test_a_"): STOP4,
-    ("baseline", "test_b_"): STOP4,
-    ("baseline", "test_c_"): STOP4,
-    ("headroom", "test_c_"): STOP5_HEADROOM,
-    ("headroom", "test_e_"): STOP5_HEADROOM,
-}
-
-
-@pytest.fixture(autouse=True)
-def _expected_failures(request):
-    """Apply the recorded per-dataset xfail(strict=True) markers (amendment 5 findings)."""
-    callspec = getattr(request.node, "callspec", None)
-    name = callspec.params.get("dataset") if callspec else None
-    for (ds, prefix), reason in EXPECTED_FAIL.items():
-        if ds == name and request.node.originalname.startswith(prefix):
-            request.node.add_marker(pytest.mark.xfail(strict=True, reason=reason))
+PRIMARY = ["gains", "gains_headroom"]  # aggressive-gain regime: R-13 (a), (b), (c), (e)
+REGIME = ["baseline", "headroom"]  # stock-gain regime: the recorded comparison
 
 
 def feasible(df: pd.DataFrame, attrs: list[str] = ATTRS) -> pd.DataFrame:
@@ -271,6 +249,7 @@ def test_working_temperature_found(probe):
     assert probe["n_near"] >= 10
 
 
+@pytest.mark.parametrize("dataset", PRIMARY, indirect=True)
 def test_a_contending_set_includes_mass_and_a_power_attribute(probe):
     w = probe["w_inf"]
     assert len(probe["contending"]) >= 3, w
@@ -278,12 +257,14 @@ def test_a_contending_set_includes_mass_and_a_power_attribute(probe):
     assert max(w[a] for a in POWER) >= 0.05, w
 
 
+@pytest.mark.parametrize("dataset", PRIMARY, indirect=True)
 def test_b_bootstrap_support_of_mass_and_power(probe):
     frac, med = probe["boot_frac_in_support"], probe["boot_median_w"]
     assert frac["total_mass_kg"] >= 0.90 and med["total_mass_kg"] >= 0.05, (frac, med)
     assert any(frac[a] >= 0.90 and med[a] >= 0.05 for a in POWER), (frac, med)
 
 
+@pytest.mark.parametrize("dataset", PRIMARY, indirect=True)
 def test_c_agility_against_mass(probe):
     """Amendment 4: the settling-mass OR the slew_time-mass association is at most -0.30."""
     a = probe["assoc"]
@@ -306,12 +287,41 @@ def test_d_a_power_tension(probe):
     assert min(pairs.values()) <= -0.30, sorted(pairs.items(), key=lambda kv: kv[1])[:4]
 
 
+@pytest.mark.parametrize("dataset", PRIMARY, indirect=True)
 def test_e_previous_tensions_retained(probe):
     a = probe["assoc"]
     assert a.loc["settling_time_s", "control_effort"] <= -0.30
     assert a.loc["pointing_error_deg", "control_effort"] <= -0.30
     assert a.loc["pointing_error_deg", "total_mass_kg"] <= -0.30
     assert a.loc["settling_time_s", "pointing_error_deg"] >= 0.0
+
+
+@pytest.mark.parametrize("dataset", REGIME, indirect=True)
+def test_regime_comparison_stock_gains(probe, dataset):
+    """Regime comparison: at the stock gains (median Kd/Kp 3.9) wheel class is a feasibility boundary.
+
+    The slow pole of the PD loop hides the wheel class, so agility does not trade against mass
+    (recorded numbers: settling-mass -0.13 / -0.13 and slew time-mass -0.11 / -0.08, baseline /
+    headroom). On the baseline total mass is absent from the contending set (exponent 0.000,
+    bootstrap support 0.00) and the near-frontier rows are small wheels (78) rather than large
+    (1); with the utilisation attribute mass enters weakly (0.060, support 0.99) and the
+    pointing-mass association falls to -0.11. The primary (aggressive-gain) dataset is the one
+    that satisfies R-13; this is the same finding seen from the other side.
+    """
+    a, w = probe["assoc"], probe["w_inf"]
+    assert a.loc["settling_time_s", "total_mass_kg"] > -0.30
+    assert a.loc["slew_time_s", "total_mass_kg"] > -0.30
+    assert w["total_mass_kg"] < 0.10, w
+    near = probe["wheel_near_counts"]
+    if dataset == "baseline":
+        assert w["total_mass_kg"] < 0.05, w
+        assert probe["boot_frac_in_support"]["total_mass_kg"] < 0.10
+        assert near.get("small", 0) > near.get("medium", 0) and near.get("large", 0) <= 5, near
+        assert a.loc["pointing_error_deg", "total_mass_kg"] <= -0.30  # previous tension retained
+    else:
+        assert w["total_mass_kg"] >= 0.05, w
+        assert probe["boot_frac_in_support"]["total_mass_kg"] >= 0.90
+        assert a.loc["pointing_error_deg", "total_mass_kg"] > -0.30
 
 
 def test_hand_probe_agrees_with_tension_report(probe):

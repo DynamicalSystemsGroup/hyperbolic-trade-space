@@ -726,7 +726,7 @@ The associations are larger than I guessed (-0.45 to -0.50 against -0.3 to -0.5,
 
 **Disposition (stop rule after lever iii).** R-13 passes under lever (i) and lever (iii) with no change of clause or threshold, so the stop
 rule does not apply to those datasets: their tests carry no `xfail`. R-13 fails under the baseline (a, b, c; amendment 4) and under lever (ii)
-(c, e) on the 30 degree baseline gains: those tests are `xfail(strict=True)` per dataset (`EXPECTED_FAIL` in `tests/test_adcs_enrichment.py`).
+(c, e) on the 30 degree baseline gains. Superseded by the supervisor's choice "Both, as two regimes" (see the end of this note): the baseline datasets no longer carry xfail markers; `test_regime_comparison_stock_gains` asserts their recorded numbers.
 Finding for the supervisor: the richness failure of amendment 4 is a property of the gain box, not of the case or the measures: at the committed
 box (median Kd/Kp 3.9) the slow pole hides the wheel class; in the aggressive box (median Kd/Kp 1.07) it appears as a frontier tension (mass
 exponent 0.22, support 1.00) and the wheel class is both a feasibility boundary and a frontier trade. Which dataset stands (the baseline or
@@ -734,3 +734,39 @@ exponent 0.22, support 1.00) and the wheel class is both a feasibility boundary 
 attitude loop than the baseline and the choice of the box was reasoned from the physics but is still a choice of the case; in the gains datasets
 the large-wheel near-frontier count is 7 (lever i) so large-wheel statements are weak there; 18.8 % of the aggressive designs fail momentum (small
 wheels 37 %).
+
+### Complete miss list (review gap G-6) and what was held
+
+Predictions in the reasoning section that missed, in full: momentum violations (predicted about 25 % small, 7 % medium; observed 37.2 %,
+17.4 %); 1 degree slew times (55 to 65 / 25 to 30 / 15 to 20 s; observed 33 / 18 / 14 s); feasible share (about 75 %; observed 70.6 %);
+the settling class ratio (predicted about 1.5 to 2.5; observed 4.85); the expectation that control effort and the pointing attribute
+"keep dominating" (observed: total mass has the largest weight at tau = infinity in the gains dataset, 0.223, against effort 0.143 and
+pointing 0.135); lever (iii) predicted "a pass of (c) at best" (observed a full pass of (a) to (e), and the small wheels left the near
+frontier entirely, 0 rows, which was not predicted). Held: heavier wheels faster; lever (ii) alone fails; R-14 clause 1 holds (13.1).
+Associations were within the guessed range.
+
+### Conditions of the finding (review gaps G-3, G-4)
+
+The aggressive-gain result is conditional on the stiff-loop regime it was built to create. The proportional demand exceeds every wheel
+cap from the first instant, so the loop is saturated by design. The price is visible in the data: a third of the aggressive designs are
+underdamped (33 %), 4.7 % lie below damping ratio 0.5, 37 % of small-wheel designs (17 % of medium) fail the momentum flag, and large
+wheels have only 6 to 7 near-frontier rows (lever iii: none for small wheels), so large-wheel statements are weak. The margins of the pass
+are thin on two checks: pointing-effort is -0.35 against the -0.30 threshold, and settling-pointing is +0.15 against the 0.0 bound.
+The finding is therefore: the wheel-class (mass against agility) tension appears only when the loop is driven hard enough for the wheel
+to be the bottleneck; at the stock gains it is a feasibility boundary only.
+
+### Two regimes (supervisor: "Both, as two regimes")
+
+The aggressive-gain dataset `adcs_designs_cubesat_gains.csv` is PRIMARY (R-13 met). The baseline `adcs_designs_cubesat.csv` is kept as the regime comparison.
+
+| | baseline (stock gains, comparison) | aggressive gains (primary) |
+|---|---|---|
+| median Kd/Kp | 3.9 | 1.06 |
+| feasible n (small / medium / large) | 780 (239 / 279 / 262) | 706 (191 / 248 / 267) |
+| contending set at tau = inf | 6, no mass (effort, slew, power margin, settling, pointing, reserve) | 6, with mass (slew, mass .223, energy balance, effort, pointing, depth of discharge) |
+| total mass exponent (bootstrap support) | 0.000 (0.00) | 0.223 (1.00) |
+| settling-mass / slew time-mass | -0.129 / -0.109 | -0.503 / -0.453 |
+| pointing-effort / settling-pointing | -0.701 / +0.681 | -0.349 / +0.143 |
+| near-frontier rows (small / medium / large) | 78 / 23 / 1 | 21 / 36 / 7 |
+| R-14 saturated ratio / settling ratio | 5.12 / 1.85 | 13.1 / 4.85 |
+| R-13 | not met (finding) | met |

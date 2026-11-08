@@ -148,3 +148,15 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP4b-review.md`
+
+## Follow-up candidates
+
+- **Generator nondeterminism (review G-5).** Investigate the run-to-run nondeterminism of the dataset
+  generator on identical code (likely adaptive-step integration sensitivity in the saturated-fraction
+  and continuous columns; CI differed from the author's platform and from itself, 3.8 % then 6.2 % on the
+  saturated fraction). The 10 % saturated-fraction tolerance (and rtol 1e-3) for the aggressive box in
+  `tests/test_cubesat_model.py` is a stopgap, to be replaced by a fixed-step or tighter-tolerance
+  integration or a documented cause.
+- **Unused levers from the review observations:** peak slew rate as an attribute; wheel mass scaled
+  with capacity; a milder gain box between the baseline and the aggressive one (to map where the
+  wheel-class tension appears); the headroom difference (capacity minus peak) form as an attribute.
