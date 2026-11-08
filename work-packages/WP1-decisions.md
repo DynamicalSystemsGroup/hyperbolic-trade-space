@@ -60,4 +60,6 @@ Records typed by the agent (driver session, Claude Fable 5.1, 2026-11-07). Decis
 
 - Review recommends acceptance with the listed gaps noted; every gap has a disposition.
 - Acceptance act named in the scope: verbal acceptance in chat.
-- **Status:** awaiting the supervisor's acceptance.
+- **Date:** 2026-11-08
+- **Supervisor (mzargham), verbatim:** "i accept"
+- **Status:** accepted. WP1 is done.
