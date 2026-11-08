@@ -25,8 +25,9 @@ it.
 ## Cobb-Douglas production functions and Shephard distance functions
 
 A weighted geometric mean of inputs with exponents summing to one is the Cobb-Douglas form with
-constant returns to scale, introduced as a production function in a 1928 paper
-[@cobb1928theory]. The homogeneity of degree one that we impose through $\sum_j w_j = 1$ is the
+constant returns to scale. The form is attributed to a 1928 paper, "A Theory of Production"
+[@cobb1928theory]; only a secondary record of that paper was checked, so we rely on its
+title, venue and date, not on its content. The homogeneity of degree one that we impose through $\sum_j w_j = 1$ is the
 constant-returns restriction of that form. This is classical, and we use the form with outputs or
 attributes in place of inputs.
 
@@ -41,14 +42,31 @@ neighbour in the same tradition (the record was checked; the paper was not read)
 
 ## Deterministic and stochastic frontiers
 
-Aigner and Chu estimated an industry production function so that observed outputs do not exceed the
-function, a deterministic frontier, with estimation by mathematical programming [@aigner1968estimating]
-(the record was checked; the paper itself was not read). Aigner, Lovell and Schmidt formulated
-and estimated stochastic frontier production function models [@aigner1977formulation] (record only). Our fit is also a one-sided criterion, since a soft maximum penalizes
-points above the surface. The relationship to stochastic frontier analysis stated in the spec
-(that it describes the same geometry as a regression with one-sided error) is the supervisor's
-reading. The corrected-OLS (COLS) variant named in the spec is not separately sourced; see Appendix
-A.
+Aigner and Chu is the cited origin of the deterministic frontier production function estimated by
+mathematical programming [@aigner1968estimating]. That statement rests on a secondary record: a
+survey that was read [@battese1992frontier] says the deterministic frontier models were first
+specified by Aigner and Chu for a Cobb-Douglas model, with parameters estimated by linear or
+quadratic programming. The paper itself was not read. Afriat is cited by the same survey as the
+first to present the deterministic frontier model in its statistical form [@afriat1972efficiency]
+(record only). Aigner, Lovell and Schmidt formulated and estimated stochastic frontier production
+function models [@aigner1977formulation] (record only). Our fit is also a one-sided criterion, since
+a soft maximum penalizes points above the surface. The relationship to stochastic frontier analysis
+stated in the spec (that it describes the same geometry as a regression with one-sided error) is
+the supervisor's reading.
+
+Corrected OLS (COLS) is a distinct, regression-based estimator of a deterministic frontier: fit the
+log-linear model by ordinary least squares, then raise the intercept by the largest residual so that
+no observation lies above the frontier. This definition, and the statement that Greene showed the
+estimator consistent for independent identically distributed one-sided errors
+[@greene1980maximum], are taken from the survey [@battese1992frontier], which was read. The same
+survey names Afriat as the source of the deterministic frontier model and Richmond as a further
+treatment of it with gamma-distributed errors [@richmond1974estimating]. Richmond's paper itself
+could not be opened, so what the checked sources support is that Richmond and Greene extended
+Afriat's deterministic frontier approach and that Greene proved properties of COLS; none of the
+sources read states that a particular paper introduced COLS, and Aigner and Chu is not cited for
+COLS. Our method differs from COLS in using a smooth soft maximum over a simplex-constrained
+geometric mean rather than an OLS fit with a shifted intercept; that comparison is the
+supervisor's.
 
 ## Data envelopment analysis, super-efficiency and Malmquist indices
 
@@ -103,9 +121,10 @@ posynomials and generalized posynomials [@boyd2007tutorial]. Geometric programmi
 and Abbeel fit softmax-affine functions to data so that the fitted functions are compatible with GP
 posynomial constraints, with max-monomial and posynomial fitting as special cases
 [@hoburg2016data]; this is the source for the spec's statement that a log-sum-exp of affine terms is
-GP-compatible, which is inherited axiom I4. Magnani and Boyd fit convex piecewise-linear functions to
-data, and the max of affine functions is the $\kappa\to\infty$ limit of the softmax-affine form
-[@magnani2009convex]. Our extension to $K>1$ terms with a shared temperature is the supervisor's
+GP-compatible, which is inherited axiom I4. Magnani and Boyd fit convex piecewise-linear functions
+(maxima of affine functions) to data [@magnani2009convex] (record only; the paper was not read). That
+the max of affine functions is the $\kappa\to\infty$ limit of the softmax-affine form is the
+project's own statement, not one shown to be in either source. Our extension to $K>1$ terms with a shared temperature is the supervisor's
 design built on these; the sources fit regression surfaces, while we fit an envelope, which the
 sources do not do (the spec flags this as the reason a later package is needed).
 
@@ -128,10 +147,13 @@ should keep them apart.
 Zitzler and Thiele compare multiobjective evolutionary algorithms with a strength Pareto approach
 [@zitzler1999multiobjective]; the spec's seed notes cite it for hypervolume, which was not
 confirmed from the abstract (record only). Ross, Hastings and co-authors describe multi-attribute tradespace exploration as a front
-end to space system design [@ross2004multi]; this is the application setting for the ADCS case study
-and the closest named prior art for exploring a design space by its attributes. Neither source
-fits a parametric frontier of the kind used here. The spec also lists Pareto "gap" and "spacing"
-metrics; no source for those was verified (Appendix A).
+end to space system design [@ross2004multi]; this is related tradespace-exploration work and the
+application setting for the ADCS case study. Neither source fits a parametric frontier of the kind
+used here. The spec also lists Pareto "gap" and "spacing" metrics as prior art. The one source
+verified for this family is the NSGA-II paper [@deb2002fast], whose experiments define a diversity
+(spread) metric from the distances between consecutive solutions on an obtained nondominated front.
+This is a spread measure of a front, not a gap to a frontier. The spacing metric commonly credited
+to Schott's 1995 thesis was not confirmed (Appendix A).
 
 ## Convex analysis, duality and probability foundations
 
@@ -169,8 +191,8 @@ motivate the presentation; they say nothing about the method itself.
   isometric log-ratio chart into one estimator is the supervisor's design. The sources establish
   each piece separately; none establishes the combination.
 - Priority and novelty are not established here. Super-efficiency [@andersen1993procedure], Malmquist
-  indices [@fare1994productivity], stochastic frontiers [@aigner1977formulation] and Pareto-based
-  metrics [@zitzler1999multiobjective] are close neighbours that do part of the same job.
+  indices [@fare1994productivity], stochastic frontiers [@aigner1977formulation], corrected OLS
+  [@battese1992frontier] and Pareto-based metrics [@zitzler1999multiobjective; @deb2002fast] are close neighbours that do part of the same job.
 - That $V-1$ is a calibrated novelty score, that holes in $Z$ are opportunities, and that a
   surrogate regression predicts position on the frontier are claims of the spec, resting on its own
   derivations and caveats, not on the literature.
@@ -183,13 +205,17 @@ motivate the presentation; they say nothing about the method itself.
 
 | Candidate | Where it came from | Disposition and reason |
 |---|---|---|
-| Original source of corrected OLS (COLS) | spec section 4 lineage | Not sourced. No record for a COLS origin was resolved; the attribution "COLS (Aigner & Chu 1968...)" in the spec was not confirmed. Not cited. |
+| Aigner and Chu 1968 as the source of corrected OLS (COLS) | spec section 4 lineage | Limited. Not supported as a COLS source: the survey read [@battese1992frontier] credits Aigner and Chu with the programming-based deterministic frontier and gives COLS as a separate regression estimator. Aigner and Chu stays cited for the deterministic/programming frontier only, on a secondary record. |
+| Richmond 1974 and Greene 1980 as COLS sources | considered | Limited. Both resolved as records ([@richmond1974estimating], [@greene1980maximum]) but neither paper was read; they are cited only for what the read survey says of them. Whether either one introduced COLS is not established. |
 | Malmquist index original papers (Caves, Christensen, Diewert; Malmquist) | implied by the Malmquist line | Not resolved, not cited. [@fare1994productivity] is cited for its own application. |
-| Pareto gap and spacing metrics | spec section 4 | No source verified. Only hypervolume is sourced [@zitzler1999multiobjective]. |
+| Schott 1995 spacing metric (MIT thesis, DSpace handle 1721.1/11582) | spec section 4, "Pareto gap/spacing" | Resolved as a thesis record and its abstract, which does not mention a spacing metric; no source read defines it. Not cited. [@deb2002fast] is cited for a spread metric instead. |
+| Zitzler and Thiele 1999 as the hypervolume source | spec section 4 | Limited. Cited, but the paper's text could not be obtained; the hypervolume attribution rests on secondary summaries. |
 | Kolmogorov's strong law (original paper) | `derivation/axioms.py` I2 | Not resolved; the textbook [@billingsley2012probability] is used instead. |
 | GPfit software documentation (gpfit.readthedocs.io) | references-verified note | Not fetched in this package; not cited. The paper [@hoburg2016data] is. |
 | Föllmer and Schied on convex risk measures | considered | Not needed once Föllmer's notes were verified; not cited. |
-| COLS and Greene, Winsten | considered | Searches did not resolve a source whose content was read; dropped. |
+| Winsten as a COLS source | considered | Not resolved; not cited. |
+| Aigner and Chu 1968; Cobb and Douglas 1928 | spec section 4 | Limited: both rest on secondary records (see the `verified` fields); the sentences above claim only title, venue, date and what the read survey says. |
+| Ross et al. 2004 as "closest named prior art" | draft wording | Wording removed; described as related tradespace-exploration work. |
 
 Corrections to the seed notes found while verifying (observations for the supervisor, nothing was
 changed in the spec or notes):
