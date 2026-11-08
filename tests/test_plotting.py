@@ -126,7 +126,8 @@ def test_module_does_not_import_matplotlib_at_import_time():
 
 
 def test_plot_tensions_with_real_report():
-    tensions = pytest.importorskip("hyperbolic_trade_space.tensions")
+    from hyperbolic_trade_space import tensions
+
     X, _ = make_frontier_data(500, 3, random_state=0)
     hts = HyperbolicTradeSpace().fit(X)
     report = tensions.tension_report(hts, X, band=0.5)
