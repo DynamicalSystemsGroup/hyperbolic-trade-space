@@ -1,4 +1,4 @@
-# WP2 — Scope of work: Core estimator (solvers, chart, PosynomialInvariantForm)
+# WP2 — Scope of work: Core estimator (solvers, chart, HyperbolicTradeSpace)
 
 | | |
 |---|---|
@@ -13,7 +13,7 @@
 WP1 fixed the mathematics (log-mean-exp objective, gradient, convexity, simplex chart, invariant form). WP2 builds the
 numerical core and the scikit-learn estimator that implements it for K = 1 (monomial), so that conditioning,
 prediction, analysis, the case study and the documentation (WP3, WP4, WP7, WP8) have a working, conformant
-`PosynomialInvariantForm` to build on. The estimator must match the derivation chain's formulas; the chain grounds
+`HyperbolicTradeSpace` to build on. The estimator must match the derivation chain's formulas; the chain grounds
 and interprets it, and where the implementation departs from a hypothesis of the chain (for example R1, or a finite
 sample), the departure is reported as a diagnostic, not hidden.
 
@@ -21,7 +21,7 @@ sample), the departure is reported as a diagnostic, not hidden.
 
 - G1. Solvers (spec §5 `solvers.py`) compute the entropic soft-maximum fit: β is the log-mean-exp, w* the minimizer over the simplex, with support weights, by an LP at τ = ∞ and a warm-started SLSQP at finite τ.
 - G2. Coordinates (spec §5 `coordinates.py`) provide an invertible chart (log V and d−1 log-ratio coordinates Z) from an ILR basis satisfying the L8/A7 hypotheses (B Bᵀ = I, B 1 = 0) and an ALR alternative.
-- G3. `PosynomialInvariantForm` (spec §5 `estimator.py`) is a decomposition-style scikit-learn transformer with the domain methods `invariant_value`, `novelty_score`, `project`, `improvement_factors`, `level_set`, K = 1 only, and the documented fitted attributes and diagnostics.
+- G3. `HyperbolicTradeSpace` (spec §5 `estimator.py`) is a decomposition-style scikit-learn transformer with the domain methods `invariant_value`, `novelty_score`, `project`, `improvement_factors`, `level_set`, K = 1 only, and the documented fitted attributes and diagnostics.
 - G4. The estimator conforms to scikit-learn per spec §7 and `docs/superpowers/notes/sklearn-conformance.md`, checked by `parametrize_with_checks`.
 - G5. Synthetic frontier data generators (spec §5 `datasets.py`) support recovery and shape tests, and the predictive tests of WP3.
 - G6. The implementation is shown to match the WP1 derivation chain numerically (a cross-check, not a re-proof).
@@ -39,10 +39,10 @@ sample), the departure is reported as a diagnostic, not hidden.
 
 | ID | Deliverable | Serves |
 |---|---|---|
-| D-1 | `src/posynomial_invariant_form/solvers.py` | G1 |
-| D-2 | `src/posynomial_invariant_form/coordinates.py` | G2 |
-| D-3 | `src/posynomial_invariant_form/estimator.py` and package exports in `__init__.py` | G3, G4 |
-| D-4 | `src/posynomial_invariant_form/datasets.py` | G5 |
+| D-1 | `src/hyperbolic_trade_space/solvers.py` | G1 |
+| D-2 | `src/hyperbolic_trade_space/coordinates.py` | G2 |
+| D-3 | `src/hyperbolic_trade_space/estimator.py` and package exports in `__init__.py` | G3, G4 |
+| D-4 | `src/hyperbolic_trade_space/datasets.py` | G5 |
 | D-5 | `tests/test_solvers.py`, `test_coordinates.py`, `test_datasets.py`, `test_estimator.py` | G1–G3, G5 |
 | D-6 | `tests/test_sklearn_compat.py` | G4 |
 | D-7 | `tests/test_matches_derivation.py` | G6 |
@@ -95,8 +95,8 @@ Good enough is met, **no open item remains unresolved**, and the supervisor has 
 
 All marked *(default)* where they appear; the supervisor approves or changes the list as one item.
 
-- Estimator class name `PosynomialInvariantForm` *(default; the spec lists a rename such as `HyperbolicTradeSpace` as an option at this gate; this scope keeps the spec's name)*.
-- Public exports in `__init__.py`: `PosynomialInvariantForm`, `make_frontier_data`, `make_configured_frontier_data`, `__version__`; `solvers` and `coordinates` are imported as submodules, not re-exported *(default)*.
+- Estimator class name `HyperbolicTradeSpace` *(default; the spec lists a rename such as `HyperbolicTradeSpace` as an option at this gate; this scope keeps the spec's name)*.
+- Public exports in `__init__.py`: `HyperbolicTradeSpace`, `make_frontier_data`, `make_configured_frontier_data`, `__version__`; `solvers` and `coordinates` are imported as submodules, not re-exported *(default)*.
 - `temperature` accepts a float > 0 or `np.inf`; `min_exponent` in [0, 1/d); `coordinates` in {"ilr", "alr"}; `n_terms` an int ≥ 1; `tol` > 0; `max_iter` ≥ 1; all validated in `fit` with `ValueError` *(default)*. `term_temperature` is stored and ignored for K = 1 *(default)*.
 - Parameter defaults exactly as spec §5: `temperature=10.0, min_exponent=0.0, coordinates="ilr", n_terms=1, term_temperature=np.inf, tol=1e-10, max_iter=500` *(default)*.
 - `n_terms != 1` raises `NotImplementedError("n_terms > 1 is a documented extension (spec section 4); only n_terms=1 is implemented")` from `fit` *(default)*.

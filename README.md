@@ -22,7 +22,7 @@ uv run pytest    # tests
 
 ## Layout
 
-- `src/posynomial_invariant_form/` — the package
+- `src/hyperbolic_trade_space/` — the package
 - `derivation/` — SymPy axiom and lemma scripts (WP1)
 - `examples/adcs/` — the ADCS trade-study case (WP4, WP7)
 - `docs/` — mathematics, preconditioning, API, literature; site in WP8

@@ -84,7 +84,7 @@ from sklearn.utils.estimator_checks import parametrize_with_checks
 
 
 @parametrize_with_checks(
-    [PosynomialInvariantForm(), ...],
+    [HyperbolicTradeSpace(), ...],
     expected_failed_checks=lambda est: {},  # {"check_name": "reason"}
     xfail_strict=True,
 )

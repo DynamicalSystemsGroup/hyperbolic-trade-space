@@ -36,7 +36,7 @@ what it fixes for later packages. The design spec is
 |---|---|---|---|
 | WP0 Setup | Skills installed, plan persisted (spec, notes, this file, PM brief, `CLAUDE.md`), uv scaffold, test CI, first push | Toolchain, conventions, the documents every package cites | — |
 | WP1 Derivations (spec §6) | `derivation/` SymPy chain L1–L10, axioms ledger, `run.py`, `tests/test_derivation.py` at d ∈ {2,3,4} | Exact formulas the code must match; lemma numbers the narrative cites | WP0 |
-| WP2 Core estimator (spec §5, §7) | `solvers`, `coordinates`, `datasets`, `PosynomialInvariantForm` with domain methods, sklearn checks, shape tests, numpydoc | Public API and the conformance baseline | WP0 (WP1 formulas) |
+| WP2 Core estimator (spec §5, §7) | `solvers`, `coordinates`, `datasets`, `HyperbolicTradeSpace` with domain methods, sklearn checks, shape tests, numpydoc | Public API and the conformance baseline | WP0 (WP1 formulas) |
 | WP3 Conditioning, prediction, analysis (spec §5) | `LogAffinePreconditioner`, `frontier_in_original_units`, `select_temperature`, `TradeSpaceRegressor`, `gaps`, `plotting`, `docs/preconditioning.md`, `docs/api.md` (as built and as it extends to K > 1 and kernels) | Everything the notebook needs besides data | WP2 (WP5 for literature in api.md) |
 | WP4 ADCS case generator (spec §8) | Port, design space, dataset generator, SysML text, tests, committed seeded CSV | The dataset | WP0; independent of WP2–3 |
 | WP5 Literature review and bibliography | `docs/references.bib` (every entry resolved by DOI/URL) and `docs/literature.md`; citation-hygiene test | Citation keys and lineage claims | WP0; parallel with WP1–4 |

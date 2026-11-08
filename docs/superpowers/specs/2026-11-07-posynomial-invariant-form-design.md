@@ -61,13 +61,13 @@ proposed configuration would fall, and reading the frontier's shape back in desi
 - **Docs and site.** Markdown + LaTeX; GitHub Pages site as executable specification paired with
   narrative, framed by the supervisor's SciPy 2026 paper (Tall's three worlds); literature review
   and BibTeX as their own package.
-- **Tooling.** uv for reproducibility; Python 3.12; src layout; package `posynomial_invariant_form`.
+- **Tooling.** uv for reproducibility; Python 3.12; src layout; package `hyperbolic_trade_space`.
 - **Process.** Gated work packages per `github.com/mzargham/claude-skills`; Sonnet 5.5 as project
   manager and implementer from WP1 on; verbal approvals for now, release controls after the first
   release; no AI attribution lines on commits, PRs or documents.
 
 Agent defaults (changeable at the relevant scope gate): MkDocs Material for the site; estimator
-class name `PosynomialInvariantForm` (a rename such as `HyperbolicTradeSpace` is an option at the
+class name `HyperbolicTradeSpace` (a rename such as `HyperbolicTradeSpace` is an option at the
 WP2 gate); Z oriented for plots and hole detection by ordinary PCA of near-frontier Z (for K = 1
 only w is learned, Z is a canonical basis); demo physics additions in §8.
 
@@ -187,7 +187,7 @@ examine. Open: choosing S from p_i, local normals θ_i, roles of τ and κ, over
 hull, survival of novelty/white-space semantics. API implication now: Φ-based definitions so any
 term set {(θ_k, β_k)} plugs in; kernel PCA is the feature-engineering kin to cite.
 
-## 5. Package (src/posynomial_invariant_form/)
+## 5. Package (src/hyperbolic_trade_space/)
 
 - `solvers.py` (numpy/scipy): `log_mean_exp(s, tau)` (τ=inf → max), `support_weights(s, tau)`
   (softmax; τ=inf → argmax, ties averaged), `objective_and_grad(w, U, tau)`, `solve_lp(U,
@@ -198,7 +198,7 @@ term set {(θ_k, β_k)} plugs in; kernel PCA is the feature-engineering kin to c
   caller.
 - `coordinates.py`: `helmert_basis(d)`, `alr_basis(d)`, `to_frontier_coordinates(U, w, beta, B) →
   (Z, log_v)`, `from_frontier_coordinates(Z, log_v, w, beta, B) → U`; d = 1 ⇒ Z has 0 columns.
-- `estimator.py`: `class PosynomialInvariantForm(TransformerMixin, BaseEstimator)`;
+- `estimator.py`: `class HyperbolicTradeSpace(TransformerMixin, BaseEstimator)`;
   `__init__(temperature=10.0, min_exponent=0.0, coordinates="ilr", n_terms=1,
   term_temperature=np.inf, tol=1e-10, max_iter=500)`; `n_terms != 1` → NotImplementedError pointing
   to the documented extension. `fit(X, y=None)`: validate, reject negatives, allow zeros (−∞ row:
@@ -212,7 +212,7 @@ term set {(θ_k, β_k)} plugs in; kernel PCA is the feature-engineering kin to c
   `n_eff_`, `frac_above_`, `objective_`, `n_iter_` (≥ 1 also on the LP path), `basis_`,
   `training_log_v_`, `n_features_in_`, `feature_names_in_`.
 - `predictive.py`: `TradeSpaceRegressor(regressor, trade_space)` (RegressorMixin, BaseEstimator):
-  `fit(X_config, Y_metrics)` fits `trade_space` (a `PosynomialInvariantForm` or a Pipeline of
+  `fit(X_config, Y_metrics)` fits `trade_space` (a `HyperbolicTradeSpace` or a Pipeline of
   preconditioner + estimator) on Y, then `regressor` on X_config → `trade_space.transform(Y)`;
   `predict(X_config)` → predicted metrics via `inverse_transform`; `predict_coordinates` → (Z,
   log V); `predict_novelty`; `predict_std` when the regressor supports `return_std`; `score` = R² in
