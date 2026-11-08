@@ -15,7 +15,7 @@ If you have used principal component analysis, the first picture is a good one. 
 data and finds the directions in which it spreads most; it asks where the data are free. This
 method asks a different question: along which positive combination of the metrics do the data stop?
 It looks for the binding constraint among metrics that are all better when larger. The answer is a
-set of weights, one per metric, that sum to one. Metrics with positive weight are the ones that
+set of weights, one per metric, that sum to one. Metrics in the support of the weights (at infinite temperature; at finite temperature, those with non-negligible weight) are the ones that
 contend at the edge; their ratios are the exchange rates between them; a metric with zero weight is
 not constrained by the edge at that point.
 
@@ -27,7 +27,7 @@ metrics that rise and fall together there are aligned, not in tension.
 The set of contending metrics is found, not chosen. Engineering is full of named dilemmas and
 trilemmas, which are often rules of thumb. We use the term n-lemma for a facet of the achievable
 region on which exactly $n$ metrics contend (dilemma and trilemma are $n=2$ and $n=3$). The fit does not need to know in advance which metrics
-contend, or how many: it reports the metrics whose weights are positive, and that may be two,
+contend, or how many: it reports the contending set, the support of the weights at infinite temperature (at a finite temperature other metrics may carry small weight, a graded participation), and that may be two,
 three or more. What the fit reports is a finding to be explained, not a label to be confirmed.
 
 ## The frontier as $V=1$
@@ -84,7 +84,7 @@ comparably scaled metrics. You get back:
 ## What to keep in mind
 
 The method is a model, and all models are wrong. It reads the edge of the achievable region as a
-single flat surface in log space, tangent at one balanced place. Away from that place it is
+single flat surface in log space, tangent at one balanced place. Away from that place our reading is that it is
 conservative; where the trade space is not log-convex it cannot see the structure; where there are
 too few designs the weights are weakly determined. The conditions behind each result are listed in
 [Mathematics](method.md#conditions-of-the-theory), each with what it buys and what is lost without

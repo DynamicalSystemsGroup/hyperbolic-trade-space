@@ -31,12 +31,13 @@ prove.
 
 **One facet at $K=1$ (conditions: R1, A2).** A single monomial has constant exchange rates: it is
 tangent to the admissibility set at one place, the balanced point, and finds one tension there.
-The elasticities of L7 are those at that point and are proved for the surface, not for the data
-away from it. Trade spaces whose exchange rates vary by region need the $K>1$ extension.
+L7 proves the elasticities $-w_k/w_j$ for the fitted hyperplane itself; identifying them with the
+fit at the balanced point needs L3 and R1, and they are not proved for the data away from it. Trade spaces whose exchange rates vary by region need the $K>1$ extension.
 
 **Optimism off the balanced point (condition: R1).** Far from the diagonal a design can have
-$V\ll1$ while being locally on the frontier, because the one hyperplane is not tangent there. The
-score $V-1$ is then conservative. Near the balanced region it is more reliable. Points whose chart
+$V\ll1$ while being locally on the frontier, because the one hyperplane is not tangent there. Our
+reading (from the spec, with no lemma behind it) is that the score $V-1$ is then conservative and
+that near the balanced region it is more reliable. Points whose chart
 coordinates lie outside the training hull are flagged; the $K>1$ extension is expected to tighten the bound (a conjecture, not proved).
 When R1 fails outright (the balanced point at a vertex, an edge, or a facet with a zero normal
 component) the exponents are not unique, some elasticities are undefined, and the frontier reading
@@ -45,8 +46,8 @@ degrades to the weaker invariant-form reading.
 **Noise band and calibrated novelty (conditions: A3, A5).** At a finite temperature some training
 designs lie above $V=1$ by construction. A novelty score is meaningful only relative to a band of
 order $1/\tau$, so the calibrated score (the rank of $\log V$ among training scores, and
-$\tau\log V$) belongs next to $V-1$. Gaussian noise adds a known offset to $\beta$ and a ridge
-toward balanced exponents (L6); noise that is not Gaussian, independent or homoscedastic is
+$\tau\log V$) belongs next to $V-1$. Gaussian noise adds a known offset to $\beta$ and the Gaussian cumulant
+$\tau\sigma^2\|w\|^2/2$ (L6), which we read as a ridge toward balanced exponents; noise that is not Gaussian, independent or homoscedastic is
 outside that statement.
 
 **Holes versus structural strata (condition: human validation).** A region of the chart with no
@@ -71,7 +72,7 @@ proves convexity of the objective, not strict convexity; uniqueness at a finite 
 a rank condition on the weighted covariance that is not proved, and the fit reports its effective
 sample size so the analyst can see how many designs carry it. At very high temperature the fit
 rests on a few extreme designs and is noise-sensitive; at very low temperature (below $\tau\approx3$, outside the documented useful range) the
-weights approach uniform and the soft maximum approaches the mean of the scores (L5), so
+the softmax weights approach uniform (by their definition, L3) and the soft maximum approaches the mean of the scores (L5), so
 `frac_above_` is not monotone there (see the API page).
 
 **What the n-lemma reading cannot say.** The contending set is read from the support of the

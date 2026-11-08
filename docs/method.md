@@ -158,7 +158,7 @@ $$
 $$
 <!-- lemma: L5 -->
 
-As $\tau\to0$ the soft maximum tends to the mean and the softmax weights tend to uniform (L5). Our
+As $\tau\to0$ the soft maximum tends to the mean and the softmax weights tend to uniform (the mean by L5; the weights by their definition in L3). Our
 reading, not proved here, is that the fit then moves toward a vertex of the simplex (the metric with the
 smallest mean), by the limit of the minimization; as $\tau\to\infty$ it becomes the worst-case linear program. In units of inverse log-spread, a
 working range after conditioning is roughly 3 to 100, default 10. Uniform scaling of all metrics
@@ -275,9 +275,10 @@ $$
 $$
 <!-- lemma: L6 -->
 
-The term is a known offset in $\beta$ plus a mild ridge toward balanced exponents (it is smallest
-when $w$ is uniform). Needs: A2, A5, I5. L6 says nothing about non-Gaussian or dependent noise;
-the reading as a ridge is an interpretation of the added convex term.
+L6 proves the cumulant $\tau\sigma^2\|w\|^2/2$. Reading it as a known offset in $\beta$ plus a
+mild ridge toward balanced exponents (the term is smallest when $w$ is uniform) is the project's
+interpretation of that added convex term, not part of L6. Needs: A2, A5, I5. L6 says nothing about
+non-Gaussian or dependent noise.
 
 **5. Consistency and the normalization.** The sample functional converges to $\rho_\tau$ by the
 strong law of large numbers (I2, recorded in the L5 docstring; checked in the tests by replication,
@@ -310,7 +311,7 @@ directions of greatest spread: where the data are free. The fit does the opposit
 It minimizes the soft maximum of $w\cdot u$ over the simplex, which picks the positive combination
 along which the data have the smallest upper extent: the binding constraint among larger-is-better
 metrics. The normal $w$ is the tension that defines the frontier. Metrics with $w_j>0$
-participate, and their ratios $w_k/w_j$ are the exchange rates (the elasticities of L7, see
+participate (the contending set at $\tau=\infty$; at finite $\tau$ participation is graded), and their ratios $w_k/w_j$ are the exchange rates (the elasticities of L7, see
 Interpretation). A metric with $w_j=0$ is free at the balanced point: the frontier places no
 constraint on it there.
 
@@ -373,7 +374,7 @@ $$
 
 Both hold with $w_j\neq0$; R1 supplies $w_j>0$ at the balanced point. They are shape quantities,
 not preferences: the elasticity says how metrics trade on the surface, not how they should be
-traded. L7 proves them for $F$ itself and does not say that the elasticities are those of the
+traded. L7 proves them for $F$ itself, the hyperplane $\{w\cdot u=\beta\}$ in log space, where $w_j\ne0$ (for the improvement factor, with $V$ the score against that hyperplane); it does not say that the elasticities are those of the
 balanced point; that identification needs the fit (L3) and R1. The projection of a design onto
 the frontier along the diagonal is $m/V$ (L1).
 
@@ -447,8 +448,9 @@ Four caveats are part of the method.
    among training scores and $\tau\log V$ next to $V-1$: a design is novel only relative to the
    band of order $1/\tau$.
 2. **Optimism off the balanced point.** Far from the diagonal a design has $V\ll1$ even when it
-   is locally on the frontier, because a single hyperplane is tangent only at one place. $V-1$ is
-   reliable near the balanced region and conservative elsewhere; points whose $Z$ lies outside the
+   is locally on the frontier, because a single hyperplane is tangent only at one place. our
+   reading (spec section 4, no lemma behind it) is that $V-1$ is reliable near the balanced
+   region and conservative elsewhere; points whose $Z$ lies outside the
    training hull of $Z$ are flagged. The $K>1$ extension is expected to tighten this (a conjecture). This caveat is the failure
    mode of R1 and of the one-facet model, stated again.
 3. **Holes versus strata.** Holes are regions of $Z$ with no near-frontier points ($|\log V|$
@@ -483,9 +485,10 @@ are credited to [@aigner1968estimating] (on a secondary record); the statistical
 OLS, defined in the survey [@battese1992frontier] (an OLS fit with the intercept raised by the
 largest residual), is a distinct estimator from ours, which uses a smooth soft maximum over a
 simplex-constrained geometric mean. Stochastic frontiers are [@aigner1977formulation]. Data
-envelopment analysis [@charnes1978measuring] computes hulls of the data; the log-convex hull of
-the data is the limit object of the hierarchy $K=1$ tangent, $K$-facet soft maximum, hull, in the
-sense of the object that DEA-style hull methods compute (the project's reading). The entropic risk functional is the source of
+envelopment analysis [@charnes1978measuring] is a linear-programming measure of the relative
+efficiency of decision-making units. The hierarchy $K=1$ tangent, $K$-facet soft maximum, hull of
+the data (in log space, the data's log-convex hull) is the project's own framing from the
+design spec, not a statement taken from the DEA literature. The entropic risk functional is the source of
 $\rho_\tau$ [@foellmer2026entropic], and log-ratio PCA of compositional data
 [@aitchison1983principal; @aitchison1986statistical] is the kin in feature engineering, with
 isometric log-ratio coordinates in [@egozcue2003isometric]. Combining these pieces in one
@@ -567,7 +570,7 @@ $$
 $$
 <!-- definition -->
 
-The data-level log-mean-exp is already a posynomial in the data (L5's normalization identity), and
+By definition, the data-level log-mean-exp is already a posynomial in the data (a sum of exponentials of affine terms in the log data, normalized by $1/N$), and
 the dual weights $p_i$ of the fit are support weights; the support-vector analogy is a hypothesis
 to examine, not a result. Open questions are choosing $S$ from $p_i$, the local normals
 $\theta_i$, the roles of $\tau$ and $\kappa$, overfitting toward the data's convex hull, and
