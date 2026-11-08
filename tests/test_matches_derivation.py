@@ -94,7 +94,7 @@ def test_L2_objective_and_shift(ctx, inst):
     # offset of a fit equals J at the fitted exponents
     est = HyperbolicTradeSpace(temperature=TAU).fit(np.exp(U))
     inst_fit = {**inst, "w": est.exponents_[0]}
-    assert est.log_offset_[0] == pytest.approx(ev(L2["J"], S, inst_fit), abs=1e-8)
+    assert est.log_offset_[0] == pytest.approx(ev(L2["J"], S, inst_fit), abs=1e-10)
 
 
 def test_L5_log_mean_exp(ctx, inst):
