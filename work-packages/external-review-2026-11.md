@@ -48,7 +48,16 @@ own docstring repeats the wrong direction; two later sentences of the method pag
 ("within $(\log K)/\kappa$ above the maximum"). So the executable derivation is right and the prose
 and the L10 docstring are wrong, as the reviewer says.
 
-Pending: all items.
+- **E-4 (multi-term bounds).** Driver's question: fold the correction into WP9's current loop or hold
+  it for the triage. **Supervisor (mzargham), verbatim:** "Fold the E-4 correction into WP9 now".
+  Disposition class: accepted as is, made in WP9 (the running Amendment 3 loop; the fourth review
+  covers it). Response text (draft, to be confirmed by the commit): "Correct. $\Phi_K$ is the
+  normalized-by-nothing log-sum-exp, so $\max_k x_k\le\Phi_K\le\max_k x_k+\frac{\log K}{\kappa}$; the
+  derivation script L10 computed this bound and the prose stated the log-mean-exp bound. The method
+  page, the L10 docstring and the API page now state the bound as the script proves it (commit to be
+  named)."
+
+Pending: all other items.
 
 ## Response letter
 
