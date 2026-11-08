@@ -93,6 +93,22 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   agility–mass trade appears as a feasibility boundary rather than a frontier tension) and the
   notebook says so.
 
+## Stop rule under amendment 3, and amendment 4 (2026-11-08)
+
+- **Finding at 30° with momentum enforced:** physics consistent (small wheels 81 % feasible; saturation
+  ratio 5.1; settling ratio 1.85), but mass has exponent 0.000 and the wheel-class clauses of R-13
+  fail. Reviewer's corrected explanation: wheel mass is the largest single mass lever; mass is absent
+  because heavier wheels do not settle faster: 1 % settling is set by the controller's slow pole
+  (log settling vs log(Kd/Kp) correlation 0.993 for large wheels), so wheel class separates settling
+  only at the most aggressive gains.
+- **Supervisor (mzargham), verbatim choice:** "One physics-justified lever: slew-time attribute"
+- **Disposition (amendment 4):** add an actuator-limited agility attribute, the slew time to first
+  entry into a tolerance band (e.g. 1°), alongside settling, with the reasoning written before any
+  simulation; recorded as adjustment 4; richness test R-13 unchanged in its clauses (mass must enter
+  the contending set and settling- or slew-time-vs-mass across wheel classes); if it still fails, the
+  finding is accepted and the notebook reports wheel class as a feasibility boundary. Probe-note
+  defects G-2 and G-3 fixed in the same pass.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP4b-review.md`
