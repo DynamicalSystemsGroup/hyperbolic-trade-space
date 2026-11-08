@@ -65,3 +65,11 @@ in prose and instantiated mechanically at these sizes.
   `unique_minimizer`, `gp_to_convex` — log-sum-exp convexity after x = e^y), `symproof/library/
   topology.py` (`continuous_at_point` — compute `sympy.limit` outside the lemma, record the result as
   an equality), `symproof/tactics.py` (`signed_sum_lemmas` for sums of signed terms).
+
+## Hypotheses are interpretive conditions, not defects (supervisor's direction, 2026-11-07)
+
+The theory grounds the method; it need not match the implementation exactly. A theorem's hypotheses
+may be conditions we cannot verify for the sampled spaces (e.g. conditioning, R1). The ledger lists
+each one with (a) what it buys for understanding or interpreting results and (b) what happens to
+the interpretation when it fails. The docs (WP6) carry this per result as the method's limitations.
+Fewer hypotheses is not the goal; explicit, explained hypotheses are.

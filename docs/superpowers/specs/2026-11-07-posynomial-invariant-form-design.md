@@ -46,6 +46,13 @@ proposed configuration would fall, and reading the frontier's shape back in desi
   supervised composition: a regressor from configuration variables to chart coordinates predicts
   where a proposed configuration without measurements would fall (predicted log V, V − 1, Z),
   implemented with `TransformedTargetRegressor` plus a thin wrapper.
+- **Theory grounds, it does not have to match (supervisor, 2026-11-07).** Theoretical results need
+  not match the implementation exactly. Theorems may carry hypotheses we cannot certify for the
+  spaces we sample (well-conditioned metrics, the balanced point in a facet's relative interior,
+  log-convexity where white space is read). "All models are wrong, some are useful": the theory's
+  job is to ground the work and to explain how to understand and interpret results, including the
+  method's limitations. Every such hypothesis is explicit in the ledger with its interpretive role
+  and its failure mode; it is not a defect to be minimized.
 - **Proofs.** Docs discursive; every load-bearing result gets a SymPy axiom/lemma script in the
   hc-marimo plain-SymPy pattern (not a `symproof` dependency: not on PyPI, tree mid-merge),
   mirroring symproof's ledger conventions so the chain can be lifted into sealed bundles later.
