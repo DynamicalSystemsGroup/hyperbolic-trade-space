@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | DRAFT. Approved only by the recorded act below. Nothing in this package is executed before then. |
 | **Supervisor (accountable)** | mzargham |
-| **Repository** | `DynamicalSystemsGroup/posynomial-invariant-form` (local: `/Users/z/Documents/GitHub/posynomial-invariant-form`; the supervisor intends to rename it, see OD2) |
+| **Repository** | `DynamicalSystemsGroup/posynomial-invariant-form` (local: `/Users/z/Documents/GitHub/posynomial-invariant-form`; renamed by the supervisor to `hyperbolic-trade-space` before WP8 executes, see Preconditions) |
 | **Approval record** | Verbal approval in chat, quoted verbatim in `work-packages/WP8-decisions.md` |
 | **Acceptance record** | Verbal acceptance in chat, quoted verbatim in `work-packages/WP8-decisions.md`, after the review report `work-packages/WP8-review.md` |
 
@@ -17,7 +17,7 @@ All the content exists as repository files: the method (WP1 derivations, WP2 to 
 - G1. A MkDocs Material site configured from the existing Markdown, with pages: Home (a landing page with one card per artifact, mapped to the three worlds), Why and how to use it, Mathematics, Derivations (generated ledger), Preconditioning, Case: ADCS trade study (the rendered notebook), Verification and validation (generated), API and API reference, Extensions and limitations, Literature (from the bibliography).
 - G2. Generated pages: `scripts/build_generated.py` writes the derivation ledger and lemma status page and the verification and validation summary page into `docs/generated/` at build time.
 - G3. A publishing workflow modelled on the ADCS and hc-marimo workflows: test and derivation run, strict site build, deploy to GitHub Pages on `main` only, build without deploy on pull requests.
-- G4. The first release: version, tag, release notes and (per OD1) what else is published.
+- G4. The first release: version `0.1.0`, tag, release notes, a GitHub release, and a TestPyPI dry run (not PyPI) to rehearse packaging; the license file.
 - G5. The site is verified: a strict build succeeds, every formula and citation resolves, every internal link resolves.
 
 ## Non-goals
@@ -25,7 +25,7 @@ All the content exists as repository files: the method (WP1 derivations, WP2 to 
 - No change to the content of the accepted packages (code, derivations, narrative, bibliography, notebook) except what the site build strictly requires (front matter, link fixes, a docs index), each recorded; substantive content defects are reported as follow-up work.
 - No re-execution of the notebook in CI: it is rendered as committed.
 - No release controls (branch protection, required reviews, PR-merge acceptance records): they follow the first release, by the supervisor's earlier decision.
-- No publication to a package index unless OD1 decides so.
+- No publication to PyPI: only a TestPyPI dry run is made (supervisor's decision OD1).
 - No custom domain, analytics or theme development beyond configuration.
 
 ## Deliverables
@@ -37,7 +37,7 @@ All the content exists as repository files: the method (WP1 derivations, WP2 to 
 | D-3 | `docs/case.md` (or a navigation entry) rendering `examples/adcs/adcs_trade_study.ipynb` through `mkdocs-jupyter`, and `docs/api-reference.md` using `mkdocstrings` | G1 |
 | D-4 | `scripts/build_generated.py` and its tests | G2 |
 | D-5 | `.github/workflows/publish.yml` | G3 |
-| D-6 | Release artifacts: version bump, `CHANGELOG.md`, annotated tag, GitHub release with notes (per OD1) | G4 |
+| D-6 | Release artifacts: version bump, `CHANGELOG.md`, `LICENSE` (MIT, 2026 Dynamical Systems Group), annotated tag, GitHub release with notes, TestPyPI upload of the built wheel and sdist | G4 |
 | D-7 | `tests/test_site.py` (configuration, link and citation resolution, generated-page content) | G5 |
 | D-8 | `work-packages/WP8-decisions.md` (approval record) | G1–G5 |
 
@@ -56,7 +56,7 @@ All the content exists as repository files: the method (WP1 derivations, WP2 to 
 | R-9 | The landing page has one card per artifact with working links, and the framing (Tall's three worlds, glass-box seams, verify with the machine and validate as a human) follows `presentation-framing.md` | inspection; link check |
 | R-10 | `.github/workflows/publish.yml`: checkout, `astral-sh/setup-uv`, `uv sync --locked` (with the `docs` group), `uv run pytest`, the derivation run, `scripts/build_generated.py`, `uv run mkdocs build --strict`, `actions/upload-pages-artifact`, `actions/deploy-pages` with the permissions and environment `github-pages`; deploy only on pushes to `main`; pull requests build without deploying; actions pinned to current versions as in the existing workflows | inspect; a workflow run on a pull request builds and does not deploy; a run on `main` deploys |
 | R-11 | The deployed site is reachable at the Pages URL and the main pages load (home, mathematics, derivations, case, API, literature, V&V) | reviewer fetches the pages after deployment |
-| R-12 | The first release exists as OD1 decides: the version in `pyproject.toml` and `__version__` agree; `CHANGELOG.md` summarizes the packages WP0 to WP7; an annotated tag exists; a GitHub release carries the notes and links the site; the tag points at a commit whose CI is green | `git tag -l`, `gh release view` |
+| R-12 | The first release exists: the version in `pyproject.toml` and `__version__` agree (0.1.0); `LICENSE` is present with the MIT text and the copyright line "Copyright (c) 2026 Dynamical Systems Group"; `CHANGELOG.md` summarizes the packages WP0 to WP7; an annotated tag `v0.1.0` exists; a GitHub release carries the notes and links the site; the tag points at a commit whose CI is green; `uv build` produces a wheel and an sdist that pass `twine check`, and they are uploaded to TestPyPI (a dry run; the PyPI upload is not made) and install from TestPyPI into a clean environment with `import hyperbolic_trade_space` working | `git tag -l`, `gh release view`, `uv build`, `twine check`, a clean-environment install from TestPyPI |
 | R-13 | `tests/test_site.py` runs in the default `uv run pytest`: configuration parses, every nav page exists, every relative link in `docs/*.md` resolves, generated pages contain the required sections; no network access is needed | run it |
 | R-14 | Suite, linters and lock pass and nothing outside scope changed: `uv run pytest`, `uv run ruff check .`, `uv run ruff format --check .`, `uv lock --check`; `git diff --stat` shows only the deliverable paths, `.gitignore`, `pyproject.toml` and `uv.lock` (only for the version and docs-group pins), recorded front-matter or link fixes in `docs/` and `work-packages/` | run the commands; inspect the diff |
 | R-15 | No AI attribution lines; commits authored as Michael Zargham; CI green on every push; the release commit's CI is green | `git log` grep returns 0; `gh run list` |
@@ -78,9 +78,15 @@ All the content exists as repository files: the method (WP1 derivations, WP2 to 
 
 Good enough is met, **no open item remains unresolved**, and the supervisor has accepted the work by the acceptance record above.
 
+## Preconditions
+
+- The supervisor has renamed the GitHub repository to `hyperbolic-trade-space` (OD2, "Rename first, then WP8"); the driver has updated `origin` and the repository paths and URLs in the documents; WP8 builds the site and the Pages URL under the final name. If this has not happened when WP8 is to start, WP8 does not start.
+- GitHub Pages is enabled for the repository with source "GitHub Actions" (the supervisor's setting).
+- TestPyPI credentials are the supervisor's to provide: a TestPyPI API token stored as a repository secret (`TEST_PYPI_API_TOKEN`) or a trusted-publisher registration for the project name on TestPyPI. Without it, the TestPyPI part of R-12 cannot be done and WP8 stops at that step and tells the driver (a precondition, not a defect).
+
 ## Agent's defaults
 
-All marked *(default)* where they appear; the supervisor approves or changes the list as one item. Execution waits for the acceptance of WP7 (the Case page) and for OD1 and OD2.
+All marked *(default)* where they appear; the supervisor approves or changes the list as one item. Execution waits for the acceptance of WP7 (the Case page) and for the preconditions below.
 
 - Site tooling *(default)*: MkDocs Material, `pymdownx.arithmatex` (generic, MathJax loaded from the CDN version pinned in `mkdocs.yml`), `mkdocs-jupyter` (`execute: false`, `include_source: false`), `mkdocstrings[python]` with the numpydoc docstring style, `mkdocs-bibtex` reading `docs/references.bib`; versions pinned in the `docs` dependency group and the lock (the group exists; extra pins are added if the build requires them).
 - Site layout *(default)*: `docs_dir: docs`; navigation Home, Why and how to use it (`why-and-how.md`), Mathematics (`method.md`), Derivations (`generated/derivations.md`), Preconditioning (`preconditioning.md`), Case: ADCS trade study (the notebook), Verification & validation (`generated/verification.md`), API (`api.md`), API reference (`api-reference.md`), Extensions and limitations (`limitations.md`), Literature (`literature.md`); `docs/superpowers/` and `docs/references.bib` are excluded from the navigation (`exclude_docs`).
@@ -89,13 +95,13 @@ All marked *(default)* where they appear; the supervisor approves or changes the
 - `scripts/build_generated.py` *(default)*: pure standard library plus the project's modules and `subprocess` for `pytest --collect-only -q`; writes Markdown; derivation ledger from `derivation.run.run_chain` and `derivation.axioms`; fails (non-zero exit) if the chain fails; `docs/generated/` is gitignored (already in `.gitignore` from WP0).
 - Workflow *(default)*: triggers `push` to `main`, `pull_request` to `main` and `workflow_dispatch`; `concurrency: pages`; build job on `ubuntu-24.04` with the `opensysml` runtime cache step copied from `test.yml` if the test step needs it (`REQUIRE_OPENSYSML=1`); deploy job needs the build job, `permissions: pages: write, id-token: write`, environment `github-pages`, `if: github.ref == 'refs/heads/main'`; pinned `actions/checkout@v5`, `astral-sh/setup-uv@v7`, `actions/upload-pages-artifact@v4`, `actions/deploy-pages@v4`.
 - Strictness *(default)*: `mkdocs build --strict`; known benign warnings (if any) are silenced explicitly in `mkdocs.yml` with a comment, never by dropping `--strict`.
-- Release *(default, subject to OD1)*: version `0.1.0` in `pyproject.toml` and `__version__` (currently 0.0.1); `CHANGELOG.md` in "Keep a Changelog" style listing WP0 to WP7 outcomes; annotated tag `v0.1.0` created on the commit that passes CI after the version bump; GitHub release created with `gh release create v0.1.0 --notes-file` linking the site and the notebook; the tag and release are created only after the supervisor's approval of this scope (approval of the scope is the authorization for the release named in OD1).
+- Release *(default)*: version `0.1.0` in `pyproject.toml` and `__version__` (currently 0.0.1); `CHANGELOG.md` in "Keep a Changelog" style listing WP0 to WP7 outcomes; annotated tag `v0.1.0` created on the commit that passes CI after the version bump; GitHub release created with `gh release create v0.1.0 --notes-file` linking the site and the notebook; the tag, the GitHub release and the TestPyPI upload are created only after the supervisor's approval of this scope (approval of the scope is the authorization for the release it names: tag, GitHub release and TestPyPI dry run; no PyPI upload).
 - Link fixes *(default)*: relative links between pages are normalized to the MkDocs form (`page.md#anchor`); the `[@key]` citation syntax is unchanged; front matter is added only where Material needs a title.
 - Tests *(default)*: `tests/test_site.py` uses `yaml.safe_load` (PyYAML is pulled in by mkdocs; imported lazily and skipped with a clear failure message, not silently, if the `docs` group is absent), regular expressions and the built site directory when present; the full-build test runs `mkdocs build --strict` into a temporary directory and is marked to run in the default suite only when the `docs` group is installed in CI (CI installs it through the default groups: the `docs` group is added to `default-groups` in this package, a recorded `pyproject.toml` and `uv.lock` change).
+- TestPyPI *(default)*: built with `uv build`; uploaded in the publish workflow job `testpypi` (manual `workflow_dispatch` input or on the release tag only, never on pull requests) with `pypa/gh-action-pypi-publish@release/v1` pointed at `https://test.pypi.org/legacy/`, using the secret above or trusted publishing; the dry run is verified by installing from `https://test.pypi.org/simple/` with `--extra-index-url https://pypi.org/simple/` into a clean environment; a failed upload because the version exists is not retried by bumping the version without the driver.
+- License *(default)*: standard MIT text, `Copyright (c) 2026 Dynamical Systems Group`; `pyproject.toml` already declares MIT and keeps `authors = [{ name = "Michael Zargham" }]`.
 - Commits prefixed "WP8: "; configuration and pages, then generated-page script and tests, then the workflow, then the version bump and release notes, then the status table and decisions file; every push green and attribution-free *(default)*.
 
 ## Open decisions (for the supervisor)
 
-- **OD1.** What does the first release publish? — options: (a) a git tag and a GitHub release with notes and the Pages site, nothing on a package index / (b) as (a), and also publish the package to PyPI (distribution `hyperbolic-trade-space`, import `hyperbolic_trade_space`) / (c) as (a), and also publish to TestPyPI only, as a dry run for a later PyPI release
-- **OD2.** The supervisor intends to rename the GitHub repository (the Pages URL, the repository links in `mkdocs.yml`, the release page and the `pyproject.toml` project URLs all depend on the repository name). When should WP8 run relative to the rename? — options: (a) rename the repository before WP8 executes, and use the new name throughout / (b) run WP8 under the current name and update the links and the Pages URL in a small follow-up after the rename / (c) run WP8 after the rename and WP7, with the rename also covering the local path in the work-package documents
-- **OD3.** The repository has no `LICENSE` file, while `pyproject.toml` declares `license = { text = "MIT" }`. Which license applies to the first release, and under whose name? — options: (a) MIT, copyright Michael Zargham, with a `LICENSE` file added by WP8 / (b) MIT, copyright the organization `DynamicalSystemsGroup` / (c) another license the supervisor names (the ADCS source carries its own LICENSE notice, already preserved in `adcs_sim.py`)
+None. Every item was resolved through the decision loop, recorded verbatim in `work-packages/WP8-decisions.md`: OD1 "TestPyPI dry run only", OD2 "Rename first, then WP8", OD3 "MIT, copyright DynamicalSystemsGroup". Decided: 3, deferred: 0, raised: 0. The Agent's defaults list above is the one remaining item for the supervisor to approve or change at the scope gate.
