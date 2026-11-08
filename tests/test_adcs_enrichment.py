@@ -158,19 +158,13 @@ def test_settled_fraction_and_flag_shares(df, capsys):
 # ---------------------------------------------------------------------------------------------
 # R-14: torque binds
 # ---------------------------------------------------------------------------------------------
-@pytest.mark.xfail(
-    strict=True,
-    reason=(
-        "WP4b STOP RULE: R-14 not met after the three allowed adjustments (median "
-        "torque_saturated_frac of small wheels 0.237 < 0.25; the other R-14 clauses hold). "
-        "Thresholds are not weakened; driver decision pending (probe note, section 'WP4b results')."
-    ),
-)
+# R-14 as amended (WP4b scope amendment 1, work-packages/WP4b-decisions.md): only the two relative
+# clauses remain; the absolute small-wheel level 0.25 was an arbitrary default and is dropped
+# (the committed dataset has 0.237).
 def test_torque_binds_for_small_wheels(df):
     med_sat = df.groupby("wheel_class").torque_saturated_frac.median()
     med_t = df.groupby("wheel_class").settling_time_s.median()
     small, large = med_sat["small"], med_sat["large"]
-    assert small >= 0.25, med_sat.to_dict()
     assert small >= 3 * large, med_sat.to_dict()
     assert med_t["small"] >= 1.25 * med_t["large"], med_t.to_dict()
 

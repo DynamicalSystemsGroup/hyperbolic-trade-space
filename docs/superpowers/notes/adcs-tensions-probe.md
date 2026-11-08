@@ -158,16 +158,17 @@ seed 0, generated with
 committed CSV, deterministic seeds, plus an agreement test against `tension_report`) and the `-k reproduc` tests in
 `tests/test_cubesat_model.py`. Thresholds are exactly those of the approved scope and were not touched.
 
-### Status against the stop rule
+### Status against R-14 (amended)
 
-R-13 (all of a to e) holds on the final dataset. R-14 does NOT hold, narrowly: the median `torque_saturated_frac` of
-small-wheel designs is 0.237 against the required 0.25 (the other R-14 clauses hold: large wheels 0.0139, ratio 17 against
-the required 3; median settling 247 s small against 76 s large, ratio 3.2 against 1.25). The three allowed adjustments are
-used, so by the scope's stop rule tuning stops here. The R-14 test is committed as `xfail(strict=True)` with that reason; it
-is the only xfail, and it will XPASS (and so fail the suite, forcing the marker off) the moment the dataset meets R-14.
-Information for the driver, from a re-analysis of the committed CSV and not applied: truncating the same runs at a
-horizon of 400 s instead of 450 s gives small-wheel median saturation 0.266 (0.254 at 420 s) and a settled fraction 0.864 (0.879 at
-420 s), which would meet R-14 and R-15; that is a fourth adjustment, so it needs the driver's decision.
+R-13 (all of a to e) holds on the final dataset. R-14 was amended (WP4b scope amendment 1, recorded in
+`work-packages/WP4b-decisions.md`): the absolute small-wheel level of 0.25 was an arbitrary default of the scope and is
+dropped; R-14 keeps its two relative clauses. Final numbers on the committed dataset: median `torque_saturated_frac` of
+small-wheel designs 0.237 (large wheels 0.0139, ratio about 17 against the required 3); median settling 247 s small
+against 76 s large, ratio 3.2 against the required 1.25. Both relative clauses hold. No new simulation was run and the
+dataset is unchanged. The test `test_torque_binds_for_small_wheels` carries no xfail marker and no longer asserts the
+0.25 level. History kept for honesty: before the amendment the implementer stopped under the scope's stop rule after the
+three allowed adjustments, and a truncation of the same runs at 400 s (small-wheel median 0.266) was noted but not
+applied.
 
 ### Diagnosis of the phase 1 dataset, and the levers (every attempt)
 
@@ -268,6 +269,20 @@ power 1.3 to 7.4 W, depth of discharge 0.04 to 0.43.
   of the designs (large wheels with the smallest panels); the power attributes act mainly through panel and battery mass
   and inertia. The case is honest about this: the power story is the energy-sizing one (panel and battery against mass), not a
   power-limited slew.
+
+### Facts for WP7 interpretation
+
+(a) Power never limits a slew in this dataset. The available-power cap on torque is below the wheel maximum in about 3 %
+of designs (3.2 %, large wheels with the smallest panels), and `power_ok` is True for every design. The power attributes
+reach the controls only through mass and inertia (panel and battery mass, lever arm), so power tensions are
+energy-sizing tensions, not power-limited-slew tensions.
+
+(b) Near-redundant attribute pairs, so that WP7 does not read them as independent findings. On the 772 feasible designs
+(settled, `power_ok`, `dod_ok`), Pearson correlation: power margin with energy balance 0.990 raw, 0.965 for the logs
+(about 0.98 on the oriented, standardized metrics of the R-13 conditioning); eclipse reserve with eclipse depth of
+discharge -0.884 raw, -0.969 against the log of the depth of discharge (the sign is the orientation: a larger reserve
+means a smaller depth, so as oriented metrics the pair is aligned at about 0.95 to 0.97). These pairs are accounting
+near-identities, not separate findings.
 
 ### What the SysML client provided for free (R-17)
 
