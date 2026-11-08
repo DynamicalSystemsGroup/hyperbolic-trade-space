@@ -14,6 +14,7 @@ import pathlib
 import re
 import subprocess
 import sys
+from types import SimpleNamespace
 
 import cubesat_model as cm
 import numpy as np
@@ -186,8 +187,13 @@ def test_no_duplicated_constants_in_python():
         line for line in py.splitlines() if not line.lstrip().startswith(("#", '"', "*"))
     )
     code = re.sub(r'""".*?"""', "", code, flags=re.S)
-    # scenario parameters (slew angle, horizon, step) are not model constants
-    code = re.sub(r"^(SLEW_DEG|T_END|MAX_STEP) = .*$", "", code, flags=re.M)
+    # scenario parameters (slew angle, horizon, step, slew-time bands) are not model constants
+    code = re.sub(
+        r"^(SLEW_DEG|T_END|MAX_STEP|SLEW_BAND_DEG|SLEW_BAND_SENSITIVITY_DEG) = .*$",
+        "",
+        code,
+        flags=re.M,
+    )
     code = code.replace("1.0 [", "[")  # unit constructors in expressions, not table values
     tables = re.findall(
         r"part def (?:Small|Medium|Large|Coarse|Fine)\w+ :> .*?\n    }\n", SYSML, flags=re.S
@@ -344,6 +350,7 @@ def test_slew_energy_nonnegative_and_grows_with_angle(cubesat):
 # ---------------------------------------------------------------------------------------------
 ATTRIBUTES = [
     "settling_time_s",
+    "slew_time_s",
     "pointing_error_deg",
     "total_mass_kg",
     "control_effort",
@@ -363,7 +370,7 @@ def sample_rows(cubesat):
 
 
 def test_measure_returns_attributes_and_flags(sample_rows):
-    """R-11: all nine attributes and five flags, finite; strictly positive when feasible."""
+    """R-11: all ten attributes and five flags, finite; strictly positive when feasible."""
     for col in ATTRIBUTES + FLAGS + ["adcs_mass_kg"]:
         assert col in sample_rows.columns
     assert np.isfinite(sample_rows[ATTRIBUTES].to_numpy(dtype=float)).all()
@@ -371,6 +378,27 @@ def test_measure_returns_attributes_and_flags(sample_rows):
     assert len(ok) > 0
     assert (ok[ATTRIBUTES] > 0).all().all()
     assert (ok.eclipse_reserve_wh >= 0).all()
+
+
+def test_slew_time_definition_and_ordering(cubesat, sample_rows):
+    """Amendment 4: first entry below 1 degree (0.5 degree column), never after the 1 % settling."""
+    assert "slew_time_05deg_s" in sample_rows.columns
+    r = sample_rows
+    assert (r.slew_time_s > 0).all()
+    assert (r.slew_time_s <= r.slew_time_05deg_s).all()
+    assert (r.slew_time_05deg_s <= r.settling_time_s + 1e-9).all()  # 0.5 deg > 1 % of 30 deg
+    assert (r.slew_time_s <= FAST["t_end"]).all()
+
+
+def test_slew_time_helper_first_entry_and_censoring():
+    t = np.array([0.0, 1.0, 2.0, 3.0, 4.0])
+    err = np.radians(np.array([30.0, 5.0, 0.8, 2.0, 0.1]))  # re-exits after 2 s: first entry wins
+    res = SimpleNamespace(
+        t=t, q=np.column_stack([np.sin(err / 2), 0 * err, 0 * err, np.cos(err / 2)])
+    )
+    assert cm.slew_time(res, 1.0) == 2.0
+    assert cm.slew_time(res, 0.5) == 4.0
+    assert cm.slew_time(res, 0.01) == 4.0  # never entered: censored at the horizon
 
 
 def test_attributes_are_documented():
@@ -479,7 +507,7 @@ def test_dataset_reproducible_first_20(cubesat):
     flags = ["settled", "momentum_ok", "power_ok", "dod_ok"]
     for col in exact + flags:
         assert (head[col].to_numpy() == fresh[col].to_numpy()).all(), col
-    special = {"settling_time_s", "torque_saturated_frac"}
+    special = {"settling_time_s", "slew_time_s", "slew_time_05deg_s", "torque_saturated_frac"}
     for col in head.columns:
         if col in exact + flags or col in special:
             continue
@@ -487,7 +515,8 @@ def test_dataset_reproducible_first_20(cubesat):
     np.testing.assert_allclose(
         head.torque_saturated_frac, fresh.torque_saturated_frac, rtol=2e-2, atol=1e-12
     )
-    np.testing.assert_allclose(head.settling_time_s, fresh.settling_time_s, atol=0.5)
+    for col in ("settling_time_s", "slew_time_s", "slew_time_05deg_s"):
+        np.testing.assert_allclose(head[col], fresh[col], atol=0.5, err_msg=col)
 
 
 def test_dataset_reproducible_same_platform_exact(cubesat):

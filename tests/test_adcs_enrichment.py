@@ -1,7 +1,7 @@
 """Richness acceptance of the committed cubesat dataset (WP4b, R-13, R-14, R-15).
 
 The probe of ``docs/superpowers/notes/adcs-tensions-probe.md`` as tests: feasible designs only,
-the nine attributes oriented (reciprocal for smaller-is-better, direct for larger-is-better),
+the ten attributes oriented (reciprocal for smaller-is-better, direct for larger-is-better),
 logged and standardized by hand; ``HyperbolicTradeSpace`` fitted at tau = inf (``min_exponent = 0``)
 and at the working tau (bisection to ``frac_above_`` about 0.10); near-frontier rows
 ``|log V| < 1/tau``; Pearson association of the oriented log-metrics (negative = tension).
@@ -26,6 +26,7 @@ CSV = CSV / "adcs_designs_cubesat.csv"
 # attribute -> orientation: -1 smaller is better (reciprocal), +1 larger is better (direct)
 ORIENTATION = {
     "settling_time_s": -1,
+    "slew_time_s": -1,
     "pointing_error_deg": -1,
     "total_mass_kg": -1,
     "control_effort": -1,
@@ -47,10 +48,11 @@ SUPPORT_TOL = 1e-3  # an exponent above this is in the contending set
 TARGET_FRAC_ABOVE = 0.10
 
 
-STOP3 = (
-    "WP4b amendment 3 stop rule: after the three allowed adjustments of the physically consistent "
-    "scenario this richness check fails on the feasible set; thresholds not weakened, reported "
-    "to the supervisor (see docs/superpowers/notes/adcs-tensions-probe.md)"
+STOP4 = (
+    "WP4b amendment 4 stop rule: after the fourth and last adjustment (slew_time_s attribute) "
+    "total mass is still absent from the contending set (exponent 0.000) and the settling-mass "
+    "and slew_time-mass associations are -0.13 and -0.11; thresholds not weakened, reported to "
+    "the supervisor (see docs/superpowers/notes/adcs-tensions-probe.md)"
 )
 
 
@@ -67,7 +69,7 @@ def feasible(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def conditioned(df: pd.DataFrame) -> np.ndarray:
-    """Standardized log larger-is-better metrics ``u`` (n, 9), columns in ``ATTRS`` order."""
+    """Standardized log larger-is-better metrics ``u`` (n, 10), columns in ``ATTRS`` order."""
     U = np.column_stack([ORIENTATION[a] * np.log(df[a].to_numpy(float)) for a in ATTRS])
     return (U - U.mean(axis=0)) / U.std(axis=0)
 
@@ -148,7 +150,7 @@ def test_dataset_shape_and_columns(df):
     design += ["Kp", "Kd"]
     flags = ["settled", "momentum_ok", "torque_saturated_frac", "power_ok", "dod_ok"]
     scenario = ["slew_deg", "t_end_s", "max_step_s"]
-    needed = [*design, *ATTRS, "adcs_mass_kg", *flags, *scenario]
+    needed = [*design, *ATTRS, "slew_time_05deg_s", "adcs_mass_kg", *flags, *scenario]
     assert len(df) >= 1000
     assert set(needed) <= set(df.columns)
     assert df.design_id.tolist() == list(range(len(df)))
@@ -196,7 +198,7 @@ def test_working_temperature_found(probe):
     assert probe["n_near"] >= 10
 
 
-@pytest.mark.xfail(strict=True, reason=STOP3)
+@pytest.mark.xfail(strict=True, reason=STOP4)
 def test_a_contending_set_includes_mass_and_a_power_attribute(probe):
     w = probe["w_inf"]
     assert len(probe["contending"]) >= 3, w
@@ -204,16 +206,21 @@ def test_a_contending_set_includes_mass_and_a_power_attribute(probe):
     assert max(w[a] for a in POWER) >= 0.05, w
 
 
-@pytest.mark.xfail(strict=True, reason=STOP3)
+@pytest.mark.xfail(strict=True, reason=STOP4)
 def test_b_bootstrap_support_of_mass_and_power(probe):
     frac, med = probe["boot_frac_in_support"], probe["boot_median_w"]
     assert frac["total_mass_kg"] >= 0.90 and med["total_mass_kg"] >= 0.05, (frac, med)
     assert any(frac[a] >= 0.90 and med[a] >= 0.05 for a in POWER), (frac, med)
 
 
-@pytest.mark.xfail(strict=True, reason=STOP3)
+@pytest.mark.xfail(strict=True, reason=STOP4)
 def test_c_agility_against_mass(probe):
-    assert probe["assoc"].loc["settling_time_s", "total_mass_kg"] <= -0.30
+    """Amendment 4: the settling-mass OR the slew_time-mass association is at most -0.30."""
+    a = probe["assoc"]
+    assert (
+        min(a.loc["settling_time_s", "total_mass_kg"], a.loc["slew_time_s", "total_mass_kg"])
+        <= -0.30
+    )
     big = [w for w, c in probe["wheel_near_counts"].items() if c >= 10]
     assert len(big) >= 2, probe["wheel_near_counts"]
 
@@ -229,7 +236,6 @@ def test_d_a_power_tension(probe):
     assert min(pairs.values()) <= -0.30, sorted(pairs.items(), key=lambda kv: kv[1])[:4]
 
 
-@pytest.mark.xfail(strict=True, reason=STOP3)
 def test_e_previous_tensions_retained(probe):
     a = probe["assoc"]
     assert a.loc["settling_time_s", "control_effort"] <= -0.30

@@ -24,6 +24,13 @@ battery capacity raise the slew-axis inertia (panel mass and lever arm; battery 
 which slows the slew; Kp and Kd set the response; the wheel class and the available power cap the
 torque, which stretches the slew when the cap binds (more generated power -> larger panels ->
 more torque but more inertia).
+``slew_time_s`` (S): first time the attitude error angle (2 norm(q[:3]) in degrees, as
+``SimResult.summary`` computes it) falls below a band of 1 degree: the time to arrive, an
+actuator-limited agility measure that the slow-pole 1 % settling time hides (WP4b amendment 4;
+the reasoning is in the probe note). The wheel class and the available power cap the torque and
+so the saturated phase of the slew; the inertia lengthens it; the gains matter when the cap does
+not bind. Censored at the horizon if the band is never entered. ``slew_time_05deg_s`` is the same
+with a 0.5 degree band, recorded for sensitivity and not an attribute of the fit.
 ``pointing_error_deg`` (S): root-sum-square of the steady error ``4 (tau_gg + tau_dist) / Kp`` and
 the star-tracker floor (grade). Inertia enters through the gravity-gradient torque; Kp lowers the
 steady error; a finer tracker lowers the floor.
@@ -70,6 +77,9 @@ PKG = "CubesatTradeSpace"
 SLEW_DEG = 30.0
 T_END = 600.0
 MAX_STEP = 0.5
+# Slew-time tolerance bands in degrees (amendment 4): the attribute and the sensitivity column.
+SLEW_BAND_DEG = 1.0
+SLEW_BAND_SENSITIVITY_DEG = 0.5
 
 DESIGN_COLUMNS = [
     "design_id",
@@ -81,6 +91,17 @@ DESIGN_COLUMNS = [
     "Kp",
     "Kd",
 ]
+
+
+def slew_time(res, band_deg: float = SLEW_BAND_DEG) -> float:
+    """First time the attitude error angle falls below ``band_deg`` (post-processes a SimResult).
+
+    The error angle is ``2 norm(q[:3])`` in degrees, as ``SimResult.summary`` computes it. If the
+    band is never entered the value is the last time of the history (the horizon): censored.
+    """
+    err_deg = np.degrees(2 * np.linalg.norm(res.q[:, :3], axis=1))
+    inside = np.flatnonzero(err_deg < band_deg)
+    return float(res.t[inside[0]] if len(inside) else res.t[-1])
 
 
 class OpenSysMLUnavailable(RuntimeError):
@@ -404,6 +425,7 @@ class CubesatModel:
         )
         return {
             "settling_time_s": summ["settling_time_s"],
+            "slew_time_s": slew_time(res, SLEW_BAND_DEG),
             "pointing_error_deg": self.pointing_error_deg(params),
             "total_mass_kg": acc["total_mass_kg"],
             "adcs_mass_kg": adcs_mass,
@@ -428,6 +450,7 @@ class CubesatModel:
             "generated_power_w": acc["generated_power_w"],
             "available_power_w": acc["available_power_w"],
             "usable_torque_nm": acc["usable_torque_nm"],
+            "slew_time_05deg_s": slew_time(res, SLEW_BAND_SENSITIVITY_DEG),
             "slew_loss_energy_wh": self.value(Quantity(energy_j, self.unit(j)), wh),
         }
 

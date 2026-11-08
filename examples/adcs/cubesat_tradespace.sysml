@@ -335,7 +335,9 @@ package CubesatTradeSpace {
                existing attitude simulator for a slew with that torque cap and the structure
                mass, panel span and panel mass in the inertia model; (3) the model evaluates the
                energy accounting and the constraints on the measured slew energy and peak
-               torque. Attributes: settling time, pointing error, total mass, control effort,
+               torque. Attributes: settling time, slew time (first time the attitude error falls
+               below a 1 degree band, from the simulated attitude history; a 0.5 degree band is
+               recorded as a sensitivity column), pointing error, total mass, control effort,
                power margin, energy balance, eclipse reserve, peak slew power, eclipse depth of
                discharge; flags: settled, momentum_ok, torque_saturated_frac, power_ok, dod_ok. */
         subject cubesat : Cubesat;

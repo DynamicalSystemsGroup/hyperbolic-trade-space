@@ -14,7 +14,8 @@ WP4b adds the illustrative cubesat model (SysML configuration space read through
 ``--model adcs`` (default) is the unchanged WP4 behaviour. ``--model cubesat`` writes
 ``data/adcs_designs_cubesat.csv`` by default; ``--slew-deg`` and ``--t-end`` set the scenario
 (defaults 10 deg / 900 s for adcs, the values of ``cubesat_model`` for cubesat: 30 deg / 600 s).
-Each cubesat worker process opens its own ``opensysml`` connection.
+Each cubesat worker process opens its own ``opensysml`` connection. The cubesat columns are those
+returned by ``CubesatModel.measure`` (including ``slew_time_s`` and ``slew_time_05deg_s``).
 """
 
 from __future__ import annotations
