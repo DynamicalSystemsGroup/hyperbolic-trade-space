@@ -38,6 +38,13 @@ the chat happened on the evening of 2026-11-07 local time.
   only, plus same-platform exactness on 40 designs. Review gaps G-3 (observations O-1 to O-9) are
   re-listed by the rerun review. The whole review reruns after the amendment and the test change.
 
+## Review gaps, round 2 (third review, 9680193, against Amendment 1)
+
+- **Date:** 2026-11-08. R-1..R-13 met. Observations O-3..O-10 put to the supervisor as one item
+  (together with WP2 G-5 and WP5 O-6..O-8).
+- **Supervisor (mzargham), verbatim choice:** "Fix WP2 tolerance to 1e-10" (i.e. the WP4 observations accepted as is)
+- **Disposition:** O-3..O-10 accept as is; the committed CSV is the authoritative dataset.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP4-review.md`

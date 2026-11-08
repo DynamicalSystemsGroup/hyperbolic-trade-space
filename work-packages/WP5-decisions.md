@@ -39,6 +39,14 @@ the chat happened on the evening of 2026-11-07 local time.
   driver corrects the spec attribution once WP5 reports the verified sources. G-1 and G-6 accept as
   is (approval note above; minor items). The whole review reruns after the fix.
 
+## Review gaps, round 2 (second review, 1783375)
+
+- **Date:** 2026-11-08. G-2..G-5 verified fixed. Observations O-6..O-8 put to the supervisor as one
+  item (together with WP2 G-5 and WP4 O-3..O-10). The driver corrected the spec §4 COLS sentence to
+  the verified sources (7f3d589).
+- **Supervisor (mzargham), verbatim choice:** "Fix WP2 tolerance to 1e-10" (i.e. the WP5 observations accepted as is)
+- **Disposition:** O-6..O-8 accept as is.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP5-review.md`

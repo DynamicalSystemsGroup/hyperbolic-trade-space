@@ -46,6 +46,14 @@ the chat happened on the evening of 2026-11-07 local time.
 - **Disposition:** G-2 fix before acceptance (add a cross-check comparing a real fit's outputs to the
   L1/L7 formulas); G-1, G-3, G-4 accept as is. The whole review reruns after the fix.
 
+## Review gaps, round 2 (third review, ea3105b)
+
+- **Date:** 2026-11-08. G-2 verified fixed. New item G-5: fitted-model cross-check tolerance 1e-9
+  vs R-16's 1e-10; chart-inverse formula derived inside the test. Put to the supervisor together
+  with the WP4 and WP5 observations as one item.
+- **Supervisor (mzargham), verbatim choice:** "Fix WP2 tolerance to 1e-10"
+- **Disposition:** fix before acceptance (tolerance set to 1e-10); the whole review reruns.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP2-review.md`
