@@ -132,6 +132,20 @@ What changed and why, per scope-of-work section 6; the supervisor's choice "One 
 - The probe-note defects found by the review are fixed in the same pass: the wrong mass explanation is replaced by the reviewer's corrected one, and the stale sections (the R-14 status section that still says R-13 a to e hold, the final-constants section that still lists the 90° scenario) are brought up to date; the facts for WP7 are carried forward.
 - Wherever this scope says nine attributes it now reads ten; nothing else changes.
 
+## Amendment 5 (stop rule under Amendment 4, approved at the stop-rule gate)
+
+What changed and why, per scope-of-work section 6; the supervisor's choice "try both new levers then report back" is recorded verbatim in `work-packages/WP4b-decisions.md` ("Stop rule under amendment 4, and amendment 5").
+
+- Finding that triggered it: at the committed 30° scenario with momentum enforced, wheel class is a feasibility boundary and not a frontier tension; slew time to the 1° band tracks settling (correlation 0.947) and Kd/Kp (0.998 for large wheels); total mass has exponent 0.000. The result is "not found with these measures and this gain box", not "cannot exist": wheel class separates agility only at Kd/Kp below about 5.
+- Two further levers, each tried and recorded separately and then together, with the reasoning written and committed before each simulation, momentum enforced throughout and the richness conditions R-13 and R-14 unchanged in their clauses:
+  - Lever (i), aggressive-gain regime: the gain box is resampled toward Kd/Kp at or below about 5 (the new box and the reason are stated in the probe note), keeping the 30° scenario and the committed wheels; the dataset is regenerated and R-13 and R-14 are evaluated.
+  - Lever (ii), momentum headroom: an attribute derived from the existing `peak_momentum_nms` and the wheel capacity, on the existing 30° dataset without resimulation, with the direction (whether less headroom used is better) stated, justified and oriented consistently; R-13 is evaluated on the eleven attributes.
+  - Lever (iii), both together.
+- For each lever the probe note reports separately: the contending set at τ = ∞ with exponents, the total-mass exponent and bootstrap support, the settling-mass and slew-time–mass associations across wheel classes, and the near-frontier counts per wheel class.
+- The 30° baseline dataset is kept (not deleted); any new dataset is committed beside it under a new name, and the supervisor later chooses which one stands. Datasets are seed-stable with the recorded commands.
+- After lever (iii) the stop rule applies: if R-13 still fails, the finding is recorded as the amendment to R-13 and the fresh-reviewer review is run; if R-13 passes under a lever, the review is run on that dataset. Either way the result is reported to the driver before the WP4b gate.
+- Nothing else changes.
+
 ## Definition of good
 
 - The cubesat makes engineering sense at a glance: bigger panels give more power, cost mass and slow the slew; bigger batteries ride through eclipse and weigh more; bigger wheels are agile, heavy and hungry; finer star trackers point better, weigh more and draw more. The fit finds these on its own.
