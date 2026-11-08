@@ -1,4 +1,4 @@
-"""Run the full abstract derivation chain L1 -> L11, then print the assumption audit.
+"""Run the full abstract derivation chain L1 -> L14, then print the assumption audit.
 
     uv run python derivation/run.py
 
@@ -31,6 +31,9 @@ CHAIN_NAMES = [
     "lemma_09_pullback",
     "lemma_10_extension",
     "lemma_11_pareto",
+    "lemma_12_facet_gap",
+    "lemma_13_margin",
+    "lemma_14_assignment_stable",
 ]
 
 
@@ -126,7 +129,7 @@ def print_audit(used):
 
 def main():
     print("=" * 72)
-    print("Posynomial invariant form - axiom-explicit derivation (L1 -> L11)")
+    print("Posynomial invariant form - axiom-explicit derivation (L1 -> L14)")
     print("=" * 72)
     print()
     _, used = run_chain(verbose=True)

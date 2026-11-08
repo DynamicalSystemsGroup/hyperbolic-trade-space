@@ -812,3 +812,94 @@ def test_L6_statement_is_the_restricted_population_identity():
     assert "population" in s and "A5" in s and "independent across j" in s and "sigma > 0" in s
     assert "not a finite-sample estimator" in s and "no consistency claim" in s
     assert "A5" in L6.AXIOMS_USED
+
+
+# --- WP13 (E-1): L12 facet gap, L13 margin, L14 assignment-stable local optimality ---
+_WP13 = {
+    12: "lemma_12_facet_gap",
+    13: "lemma_13_margin",
+    14: "lemma_14_assignment_stable",
+}
+
+
+def _run_wp13(*numbers):
+    """derive+verify L3, L4 (L12 reads L4's convexity), then the listed WP13 lemmas."""
+    ctx = {"S": S.make_symbols()}
+    _L3.derive(ctx)
+    _L3.verify(ctx)
+    _L4.derive(ctx)
+    _L4.verify(ctx)
+    mods = {}
+    for n in numbers:
+        mods[n] = _il.import_module(f"derivation.{_WP13[n]}")
+        mods[n].derive(ctx)
+        mods[n].verify(ctx)
+    return ctx, mods
+
+
+@pytest.mark.parametrize("num", sorted(_WP13))
+def test_wp13_lemmas_in_chain_in_order_and_no_enumeration(num):
+    import inspect
+
+    assert _WP13[num] in CHAIN_NAMES
+    assert CHAIN_NAMES[-3:] == list(_WP13.values())
+    if importlib.util.find_spec(f"derivation.{_WP13[num]}") is None:
+        pytest.skip("lemma not written yet")
+    src = inspect.getsource(_il.import_module(f"derivation.{_WP13[num]}"))
+    assert "range(" not in src and "numpy" not in src and "scipy" not in src
+
+
+def test_L12_verifies_at_symbolic_d_with_declared_axioms():
+    ctx, mods = _run_wp13(12)
+    L12 = mods[12]
+    assert L12.TITLE and L12.STATEMENT
+    assert set(L12.AXIOMS_USED) >= {"A2", "A3", "I1", "I8", "F12"}
+    for name in L12.AXIOMS_USED:
+        assert name in AX.AXIOMS
+    assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
+    assert ctx["L12"]["convex"] is True
+
+
+def test_L12_statement_names_the_gap_the_chain_and_the_objects():
+    _, mods = _run_wp13(12)
+    s = mods[12].STATEMENT
+    assert "G = g.w - min_j g_j = sum_j w_j (g_j - min g)" in s
+    assert "0 <= f(w) - f* <= G" in s
+    assert "w_j (g_j - min g) = 0" in s  # E-2's KKT, equality iff
+    assert "fitted reference surface" in s and "tau = inf supporting envelope" in s
+    assert "LP duality gap" in s
+
+
+def test_L12_min_representation_fallback_and_inherited_first_order_inequality():
+    _, mods = _run_wp13(12)
+    assert AX.get("F12").fallback and AX.get("F12").role and AX.get("F12").failure_mode
+    assert "F12" in mods[12].AXIOMS_USED
+    a = AX.get("I8")
+    assert a.tag == AX.INHERITED and "3.1.3" in a.citation and "Boyd" in a.citation
+    assert a.role.strip() and a.failure_mode.strip()
+
+
+def test_L12_lp_duality_gap_instance_is_exact():
+    ctx, _ = _run_wp13(12)
+    lp = ctx["L12"]["lp"]
+    assert lp["gap_at_optimum"] == 0 and lp["primal_at_optimum"] == lp["dual_at_optimum"]
+    assert lp["gap_off_optimum"] >= lp["f_off_optimum"] - lp["f_star"] >= 0
+
+
+def test_L12_fails_loudly_when_gap_claim_broken():
+    ctx, mods = _run_wp13(12)
+    ctx["L12"]["gap_nonneg"] = False
+    with pytest.raises(AssertionError, match="L12 FAIL"):
+        mods[12].verify(ctx)
+    ctx, mods = _run_wp13(12)
+    ctx["L12"]["chain_slack"] = ctx["L12"]["chain_slack"] - 1  # G - (f - f*) != a + b
+    with pytest.raises(AssertionError, match="L12 FAIL"):
+        mods[12].verify(ctx)
+    ctx, mods = _run_wp13(12)
+    ctx["L12"]["lp"]["gap_at_optimum"] = 1
+    with pytest.raises(AssertionError, match="L12 FAIL"):
+        mods[12].verify(ctx)
+    ctx, mods = _run_wp13(12)
+    ctx["L4"]["convex"] = False  # L12 is conditional on L4's convexity
+    with pytest.raises(AssertionError, match="L12 FAIL"):
+        mods[12].verify(ctx)
