@@ -47,3 +47,7 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   one card for the paper, one for the docs, one for the package, "start wherever suits you"), the
   MkDocs docsite under `/docs/` and the mystmd paper under `/paper/`; the workflow builds both into
   `_site/docs/` and `_site/paper/` beside the root `index.html`.
+- **Supervisor (mzargham), verbatim:** "that index page will serve as a hook for talks and other items
+  later". Disposition: the root index is designed as a growing landing page (one card per artifact,
+  as the ADCS and hc-marimo sites do), so talks, decks and later artifacts are added as cards without
+  restructuring; WP8's D-2 says so.

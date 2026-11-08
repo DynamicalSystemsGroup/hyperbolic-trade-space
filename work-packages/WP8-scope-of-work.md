@@ -155,3 +155,5 @@ tests cover both; the landing page carries a card for the paper. The dependency 
 Layout (supervisor, verbatim: "you can use an index page at the top level on github pages then spit
 to the paper and to the docs."): root `index.html` as the landing page with cards for the paper, the
 docs and the package; the MkDocs docsite under `/docs/`; the mystmd paper under `/paper/`.
+The root index is a growing landing page (supervisor: "that index page will serve as a hook for
+talks and other items later"): one card per artifact, so talks and later items are added as cards.
