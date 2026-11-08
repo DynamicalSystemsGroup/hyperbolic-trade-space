@@ -1,6 +1,8 @@
 // Extended ADCS design space for the posynomial-invariant-form case study.
 // Documentation only: this file is not parsed or executed by any code in this repository.
 // Hardware values are illustrative, not calibrated to real products.
+// WP4b: the executable, opensysml-backed cubesat configuration space is cubesat_tradespace.sysml
+// (this file is the geosat-scale description of the WP4 port and is left as documentation).
 // Derived from the baseline satellite model of ADCS-lifecycle-demo (sysml/satellite.sysml).
 
 package ExtendedDesignSpace {

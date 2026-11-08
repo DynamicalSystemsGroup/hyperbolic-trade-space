@@ -46,13 +46,13 @@ package CubesatTradeSpace {
         attribute maxMomentum : AngularMomentumValue;
         attribute mass : MassValue;
     }
-    doc /* Public cubesat wheel classes (illustrative): small ~ 0.5 mN.m, medium ~ 2 mN.m,
+    doc /* Public cubesat wheel classes (illustrative): small ~ 0.3 mN.m, medium ~ 2 mN.m,
            large ~ 10 mN.m peak torque; momentum storage 5, 20, 100 mN.m.s; mass 0.12, 0.25,
            0.60 kg. The set spans a factor of 20 in torque so that wheel class can trade agility
            against mass and power. */
     part def SmallWheel :> ReactionWheel {
         :>> wheelClass = WheelClass::small;
-        :>> maxTorque = 0.0005 [N*m];
+        :>> maxTorque = 0.0003 [N*m];
         :>> maxMomentum = 0.005 [N*m*s];
         :>> mass = 0.12 [kg];
     }
@@ -134,17 +134,18 @@ package CubesatTradeSpace {
     // ------------------------------------------------------------------------------------------
     part def DesignSpace {
         doc /* Ranges (illustrative): panel span 0.3 to 1.0 m per wing (two wings; chord 0.34 m
-               so total area 0.2 to 0.68 m^2); battery 20 to 200 Wh; Kp 0.003 to 0.1 N.m/rad and
-               Kd 0.03 to 1.0 N.m.s/rad, chosen so that settling times span tens to hundreds of
-               seconds on this inertia. */
+               so total area 0.2 to 0.68 m^2); battery 20 to 200 Wh; Kp 0.03 to 1.0 N.m/rad and
+               Kd 0.3 to 1.5 N.m.s/rad: a stiff attitude loop that asks for more torque than a
+               cubesat wheel can give on a large slew, so the wheel class binds (adjustment 3 of
+               the WP4b record in docs/superpowers/notes/adcs-tensions-probe.md). */
         attribute panelSpanMin : LengthValue = 0.3 [m];
         attribute panelSpanMax : LengthValue = 1.0 [m];
         attribute batteryCapacityMin : EnergyValue = 20.0 [W*h];
         attribute batteryCapacityMax : EnergyValue = 200.0 [W*h];
-        attribute KpMin : Real = 0.003;     // N.m/rad
-        attribute KpMax : Real = 0.1;
-        attribute KdMin : Real = 0.03;      // N.m.s/rad
-        attribute KdMax : Real = 1.0;
+        attribute KpMin : Real = 0.03;     // N.m/rad
+        attribute KpMax : Real = 1.0;
+        attribute KdMin : Real = 0.3;      // N.m.s/rad
+        attribute KdMax : Real = 1.5;
     }
     part designSpace : DesignSpace;
 

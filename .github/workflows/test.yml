@@ -29,5 +29,17 @@ jobs:
         run: uv lock --check
       - name: Install (locked)
         run: uv sync --locked
+      - name: Locked opensysml version
+        id: opensysml
+        run: |
+          v=$(grep -A1 '^name = "opensysml"' uv.lock | grep '^version' | cut -d'"' -f2)
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+      - name: Cache the opensysml runtime (downloaded on first use)
+        uses: actions/cache@v4
+        with:
+          path: ~/.opensysml
+          key: opensysml-${{ runner.os }}-${{ steps.opensysml.outputs.version }}
       - name: Test
+        env:
+          REQUIRE_OPENSYSML: "1"
         run: uv run pytest -q

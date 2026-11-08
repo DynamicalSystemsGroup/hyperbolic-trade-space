@@ -3,7 +3,7 @@
 Every test that needs the opensysml runtime goes through the module-scoped ``cubesat`` fixture,
 which FAILS (never skips) with a message naming the cause when the client cannot start. CI should
 set ``REQUIRE_OPENSYSML=1``; the flag only makes the message say so, the behaviour is the same.
-Reproducibility tests against the committed dataset arrive with the dataset (phase 2).
+Reproducibility tests (``-k reproduc``) regenerate designs of the committed dataset (phase 2).
 """
 
 from __future__ import annotations
@@ -435,3 +435,60 @@ class Q:
         from opensysml.values import Quantity
 
         return Quantity(magnitude, unit)
+
+
+# ---------------------------------------------------------------------------------------------
+# R-16: reproducibility of the committed dataset (run with ``-k reproduc``)
+# ---------------------------------------------------------------------------------------------
+# Recorded command; the defaults for the cubesat are --slew-deg 90 --t-end 450 (final scenario).
+GENERATE_COMMAND = (
+    "uv run python examples/adcs/generate_dataset.py --model cubesat --n 1000 --seed 0 --force"
+)
+CUBESAT_CSV = ADCS_DIR / "data" / "adcs_designs_cubesat.csv"
+
+
+def _generate(n, workers=1):
+    import generate_dataset as gd
+
+    return gd.generate_cubesat(n, 0, workers=workers)
+
+
+def test_generator_cli_has_the_cubesat_flags():
+    out = subprocess.run(
+        [sys.executable, str(ADCS_DIR / "generate_dataset.py"), "--help"],
+        capture_output=True,
+        text=True,
+    )
+    assert out.returncode == 0
+    for flag in ("--model", "--slew-deg", "--t-end"):
+        assert flag in out.stdout
+
+
+def test_dataset_reproducible_first_20(cubesat):
+    """Regenerate the first 20 designs with the default options; WP4 per-column tolerances."""
+    import pandas as pd
+
+    committed = pd.read_csv(CUBESAT_CSV)
+    fresh = _generate(20)
+    head = committed.iloc[:20].reset_index(drop=True)
+    assert list(head.columns) == list(fresh.columns)
+    exact = ["design_id", "seed", "wheel_class", "st_grade"]
+    flags = ["settled", "momentum_ok", "power_ok", "dod_ok"]
+    for col in exact + flags:
+        assert (head[col].to_numpy() == fresh[col].to_numpy()).all(), col
+    special = {"settling_time_s", "torque_saturated_frac"}
+    for col in head.columns:
+        if col in exact + flags or col in special:
+            continue
+        np.testing.assert_allclose(head[col], fresh[col], rtol=1e-4, atol=1e-6, err_msg=col)
+    np.testing.assert_allclose(
+        head.torque_saturated_frac, fresh.torque_saturated_frac, rtol=2e-2, atol=1e-12
+    )
+    np.testing.assert_allclose(head.settling_time_s, fresh.settling_time_s, atol=0.5)
+
+
+def test_dataset_reproducible_same_platform_exact(cubesat):
+    """40 designs regenerated twice on the same platform are identical."""
+    import pandas as pd
+
+    pd.testing.assert_frame_equal(_generate(40), _generate(40))

@@ -137,7 +137,7 @@ read from the older notes. The checks are kept as tests in `tests/test_cubesat_m
 - Verdict errors are data, not exceptions: checked in `CubesatModel._holds`.
 - Constraint parameters are not bound by `subject`: member constraints with `in c default = self`.
 - Instance feature errors are strings: only features whose success the tests establish are read.
-- The CI runner downloads the runtime binary on first use (not cached); `REQUIRE_OPENSYSML=1` is read by the test fixture only to say so in the failure message; the behaviour is the same without it.
+- The CI runner downloads the runtime binary on first use; `REQUIRE_OPENSYSML=1` is read by the test fixture only to say so in the failure message (the behaviour is the same without it). Phase 2 sets the flag in `.github/workflows/test.yml` and caches `~/.opensysml` keyed on the locked `opensysml` version.
 
 ### What the client provided for free
 
@@ -145,3 +145,136 @@ Parsing and diagnostics with a reflective self-check, unit-carrying arithmetic i
 derived-attribute evaluation at instantiation (the whole mass and power accounting of a configuration in one
 round trip), constraint verification per concrete configuration, the grid sweep of a calc, the enumeration and
 specialization reads that remove every table from the Python layer, and the documented analysis definition.
+
+## WP4b results (phase 2): dataset, levers, R-13, R-14
+
+Written by the phase 2 implementer, 2026-11-07. Dataset `examples/adcs/data/adcs_designs_cubesat.csv`, 1000 designs,
+seed 0, generated with
+
+    uv run python examples/adcs/generate_dataset.py --model cubesat --n 1000 --seed 0 --force
+
+(the cubesat defaults are `--slew-deg 90 --t-end 450`; `max_step` 0.5 s; the scenario is also stored in the columns
+`slew_deg`, `t_end_s`, `max_step_s`). The checks are `tests/test_adcs_enrichment.py` (hand version of the probe on the
+committed CSV, deterministic seeds, plus an agreement test against `tension_report`) and the `-k reproduc` tests in
+`tests/test_cubesat_model.py`. Thresholds are exactly those of the approved scope and were not touched.
+
+### Status against the stop rule
+
+R-13 (all of a to e) holds on the final dataset. R-14 does NOT hold, narrowly: the median `torque_saturated_frac` of
+small-wheel designs is 0.237 against the required 0.25 (the other R-14 clauses hold: large wheels 0.0139, ratio 17 against
+the required 3; median settling 247 s small against 76 s large, ratio 3.2 against 1.25). The three allowed adjustments are
+used, so by the scope's stop rule tuning stops here. The R-14 test is committed as `xfail(strict=True)` with that reason; it
+is the only xfail, and it will XPASS (and so fail the suite, forcing the marker off) the moment the dataset meets R-14.
+Information for the driver, from a re-analysis of the committed CSV and not applied: truncating the same runs at a
+horizon of 400 s instead of 450 s gives small-wheel median saturation 0.266 (0.254 at 420 s) and a settled fraction 0.864 (0.879 at
+420 s), which would meet R-14 and R-15; that is a fourth adjustment, so it needs the driver's decision.
+
+### Diagnosis of the phase 1 dataset, and the levers (every attempt)
+
+Why torque did not bind at the defaults (45 degrees, 1500 s, Kp 0.003 to 0.1, Kd 0.03 to 1.0, wheels 0.5/2/10 mN.m):
+`torque_saturated_frac` is the share of the whole horizon with a saturated axis, and a wheel saturates only during the
+acceleration and braking of the slew (tens of seconds for a 0.5 mN.m wheel on a 0.5 kg.m2 inertia) while the horizon is
+1500 s long: the flag is diluted by waiting time, and power never constrains torque either, because with c = 5e4
+W/(N.m)2 the power-limited torque is above every wheel maximum for all but the smallest panels (3.2 % of final-dataset
+designs have a power-capped torque, all with large wheels). A 400-design check of the defaults: median saturation
+0.009 / 0.003 / 0.0 (small / medium / large), settling 231 s against 185 s, power_ok True for all.
+Before the three adjustments I ran simulation-only scans (60 to 90 designs, gain multipliers, slew 45 and 90 degrees,
+horizons 200 to 1500 s, Kd ranges, small-wheel torque) to see which mechanism moves saturation; I did not evaluate R-13
+on any scan. The scans showed that (i) a steeper slew or a shorter horizon alone cannot reach 0.25 with 85 % settled;
+(ii) the gains are what makes the command exceed the cap (command about 0.35 Kp N.m at 90 degrees, against caps of
+0.3 to 10 mN.m); (iii) saturation and the settled fraction trade against each other through underdamped
+saturated ringing (high Kp with low Kd does not settle).
+
+| # | change (what, why) | R-14 (sat small / medium / large; settling small vs large) | settled | R-13 |
+|---|---|---|---|---|
+| 0 | none (45 deg, 1500 s, Kp .003-.1, Kd .03-1) | 0.009 / 0.003 / 0 ; 231 vs 185 s (400 designs) | 0.92 | (a) fails: mass exponent 0.002 |
+| 1 | scenario: 90 deg, 600 s (the scope's first lever for R-14) | 0.034 / 0.013 / 0 ; 283 vs 196 s : FAIL | 0.761 (R-15 fails) | (a) fails: mass .024; (b) fails: mass in support 87 %; (c) fails: settling-mass -0.07; (e) fails: pointing-mass -0.02 |
+| 2 | constants: Kp 0.1-3.0, Kd 0.5-2.0 (a stiff loop that saturates every wheel), horizon 400 s, 90 deg | 0.349 / 0.131 / 0.021 ; 208 vs 44 s : PASS | 0.919 | (a) pass (mass .318, energy balance .276); (b) pass; (c) FAILS: settling-mass -0.01 (near-frontier: small 45, medium 41, large 0); (d) pass; (e) FAILS: settling-effort +0.17, settling-pointing -0.13 |
+| 3 | constants: Kp 0.03-1.0, Kd 0.3-1.5 (between the two earlier ranges, to keep gains mattering), small wheel maxTorque 0.5 -> 0.3 mN.m (public small cubesat wheels reach 0.2 mN.m class), horizon 450 s, 90 deg | 0.237 / 0.043 / 0.014 ; 247 vs 76 s : small-wheel saturation FAILS 0.25 (others pass) | 0.888 | all pass |
+
+Adjustment 2 failed (c) and (e) for a physical reason that guided adjustment 3: once every wheel saturates, the control
+effort integral is set by the momentum the slew has to carry (roughly the same for any gains) and the pointing floor is
+set by the star tracker (steady error 4(tau)/Kp is negligible at Kp >= 0.1), so the gains stop acting as a design axis
+and the settling-effort and settling-pointing relations disappear. Adjustment 3 keeps Kp low enough that the large
+wheels hardly saturate, so the gains still matter for effort and pointing, and lowers the small wheel's cap instead.
+Adjustments 2 and 3 each changed several constants at once; I count each as one adjustment (the scope's three), as
+the scope's wording is "at most three times total".
+
+### Final constants and scenario (all illustrative)
+
+Unchanged from the defaults list except: Kp 0.03 to 1.0 N.m/rad, Kd 0.3 to 1.5 N.m.s/rad (log-uniform); small wheel
+maxTorque 0.3 mN.m (momentum 5 mN.m.s, mass 0.12 kg; medium 2 mN.m, large 10 mN.m); scenario 90 degree slew about X,
+horizon 450 s, `max_step` 0.5 s. Total mass spans 11.9 to 16.1 kg (the scope expected about 13 to 18; the 12U bus mass
+of 10 kg is a default). The pointing floor, tracker, panel, battery and power constants are as in the model header.
+Feasibility: `power_ok` is True for every design (available power is at least 11.1 W: the smallest panel gives 24 W, the
+loads are 12 W plus at most 1.5 W), `dod_ok` is violated by 13.1 % of designs (small battery with a fine tracker or
+a busy slew), `settled` by 11.2 % (76 % settled for small wheels, 95 % for the other two), `momentum_ok` by 55.1 %
+(the 90 degree slew needs more momentum than small and many medium wheels store; the simulator does not clip momentum,
+so the flag is informational, as in WP4). 772 designs are feasible (settled, `power_ok`, `dod_ok`). Attribute ranges
+over all designs: power margin 6.6 to 68 W, energy balance 1.0 to 56 Wh, eclipse reserve -2.6 to 52 Wh, peak slew
+power 1.3 to 7.4 W, depth of discharge 0.04 to 0.43.
+
+### R-13 on the committed dataset (feasible designs, n = 772; conditioning as in the Method section)
+
+- Contending set at tau = infinity (LP, `min_exponent = 0`), size 6: settling 0.137, pointing 0.151, total mass 0.266,
+  control effort 0.163, eclipse depth of discharge 0.065, energy balance 0.219; peak slew power, power margin and eclipse
+  reserve are at 0 (power margin and energy balance are the same quantity up to a constant, correlation 0.98; reserve
+  and depth of discharge likewise, 0.95).
+- Working tau = 20.8 (`frac_above_` 0.0997), exponents: settling 0.223, pointing 0.090, mass 0.144, effort 0.240,
+  depth of discharge 0.075, energy balance 0.228. Near-frontier rows |log V| < 1/tau: 87 (medium 43, small 34, large 10).
+- Bootstrap (100 resamples, seed 0, LP support above 1e-3): mass in the support 100 % (median exponent 0.179), energy
+  balance 100 % (0.213), settling 100 % (0.222), effort 100 % (0.228), pointing 95 % (0.100), depth of discharge 85 %
+  (0.049), power margin 3 %, reserve 13 %, peak slew power 0 %.
+- Near-frontier Pearson associations of the oriented log-metrics (negative = tension): settling-mass -0.57,
+  settling-effort -0.88, settling-peak slew power -0.75, pointing-effort -0.57, pointing-mass -0.61, pointing-peak slew power
+  -0.65, mass-depth of discharge -0.63, mass-eclipse reserve -0.60, mass-energy balance -0.40, mass-power margin -0.33,
+  settling-pointing +0.50 (aligned), settling-power margin -0.16, settling-energy balance -0.05.
+- (a) holds (size 6; mass 0.266 and energy balance 0.219 above 0.05); (b) holds; (c) holds (settling-mass -0.57, three wheel
+  classes with at least 10 near-frontier designs, the large class with exactly 10); (d) holds (several power tensions, the
+  strongest are peak slew power with settling -0.75 and depth of discharge with mass -0.63); (e) holds (-0.88, -0.57,
+  -0.61, and settling-pointing +0.50). `tension_report` agrees with the hand computation (association matrix to 1e-9,
+  same near-frontier count). Near-frontier samples are small (10 to 43 per wheel class), so the associations are
+  noisy at the 0.1 level; the large-wheel class is thin; the mass exponent is stable under resampling.
+- R-15: 1000 designs; settled fraction 0.888 (at least 0.85); violation shares of `settled`, `momentum_ok`, `power_ok`, `dod_ok`:
+  0.112, 0.551, 0.0, 0.131.
+
+### Physical explanation of the exposed tensions (R-17)
+
+- Agility against mass (settling-mass -0.57): the wheel class. A larger wheel gives more torque, so the saturated slew is
+  shorter (median settling 247, 101 and 76 s for small, medium and large) and costs 0.5 to 1.4 kg more. With the small
+  wheel's cap at 0.3 mN.m and the horizon at 450 s, torque limits bind for small wheels (median 24 % of the horizon, up to
+  98 %) and not for large (1.4 %). Acts through the wheel-class variable.
+- Power tensions: (1) energy balance (and power margin) against mass: the orbit-average surplus comes from panel area,
+  and panel area costs mass (2.5 kg/m2) and, through the lever arm and panel mass, slew-axis inertia: -0.40 and -0.33
+  with mass, +/-0.16 with settling. Acts through panel span. (2) Eclipse depth of discharge and reserve against mass: a
+  larger battery rides through eclipse at a shallower depth and weighs 1/140 kg per Wh: -0.63 and -0.60. Acts through
+  battery capacity. (3) Peak slew power against settling (-0.75) and pointing (-0.65): drawing less power in the slew
+  means a smaller wheel or lower gains, hence a slower slew; low peak power comes with a coarse tracker (less load) hence
+  poorer pointing. Acts through wheel class, gains and tracker grade. Peak slew power itself has exponent 0 in the
+  contending set: it is aligned with mass (+0.75), so it rides on mass; it is a true but secondary tension.
+  (Panel-power tensions mirror the energy balance; power margin and energy balance are redundant, as are reserve and depth
+  of discharge.)
+- Settling against effort (-0.88): faster settling needs stiffer gains and the effort integral grows with the torque
+  commanded; recognizable. Acts through Kp and Kd.
+- Pointing against effort (-0.57): the steady-state part of the pointing budget falls as 1/Kp and high gains cost effort;
+  recognizable once explained.
+- Pointing against mass (-0.61): a finer star tracker points better and weighs more (0.15, 0.35, 0.90 kg) and draws more.
+  Acts through tracker grade.
+- Settling and pointing are aligned (+0.50): both improve with Kp.
+- Not recognizable / secondary: the strong mass-effort (+0.72) and mass-peak slew power (+0.75) alignments are two
+  consequences of the same hardware choice (a large wheel is heavy, and with the high gains saturates and draws more); the
+  alignment of power margin and energy balance with each other is an accounting identity, not a finding.
+- What the power model does not do: power barely reaches the controls. The available-power cap on torque binds for only 3.2 %
+  of the designs (large wheels with the smallest panels); the power attributes act mainly through panel and battery mass
+  and inertia. The case is honest about this: the power story is the energy-sizing one (panel and battery against mass), not a
+  power-limited slew.
+
+### What the SysML client provided for free (R-17)
+
+Strict loading with diagnostics and `self_check` (a typo in the model is an error, not a silently wrong number);
+instantiation of 10 configurations per load with all derived accounting (masses, generated and available power, usable
+torque) computed by the model's `calc def`s; unit-aware arithmetic and the compound-unit checks of the accounting;
+per-configuration constraint verification (`power_ok`, `dod_ok`); `run_sweep` for the panel-span grid check; enumeration
+and specialization reads that removed every wheel or tracker table and every range from the Python. Costs: a runtime
+download on first use, about 3.5 ms per instantiated cubesat, and a `fork` warning from the gRPC library when the generator's
+pool is used (the pool is spawned, each worker opening its own connection, so it is harmless).
