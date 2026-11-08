@@ -104,3 +104,43 @@ def test_preconditioner_conformance_surface():
     odd = {name: object() for name in params if name != "self"}
     est = LogAffinePreconditioner(**odd)
     assert est.get_params() == odd and all(getattr(est, k) is v for k, v in odd.items())
+
+
+# --- WP3 regressor ---
+from sklearn.linear_model import LinearRegression  # noqa: E402
+
+from hyperbolic_trade_space import TradeSpaceRegressor  # noqa: E402
+
+# Bare check name -> written reason. The goal is an empty dict.
+REGRESSOR_EXPECTED_FAILURES: dict[str, str] = {
+    "check_regressor_multioutput": (
+        "scikit-learn 1.9.1 builds y with make_regression (negative values) and never applies "
+        "_enforce_estimator_tags_y here, ignoring target_tags.positive_only=True that the other "
+        "regressor checks honour. Metrics are log-transformed by the chart, so negative y must "
+        "raise ValueError; multi-output fit/predict shapes are covered by tests/test_predictive.py "
+        "(d=3 and d=1)."
+    ),
+}
+
+
+@parametrize_with_checks(
+    [TradeSpaceRegressor(LinearRegression(), HyperbolicTradeSpace())],
+    expected_failed_checks=lambda est: REGRESSOR_EXPECTED_FAILURES,
+    xfail_strict=True,
+)
+def test_sklearn_compatible_trade_space_regressor(estimator, check):
+    check(estimator)
+
+
+def test_regressor_expected_failures_have_reasons():
+    assert all(isinstance(r, str) and r.strip() for r in REGRESSOR_EXPECTED_FAILURES.values())
+
+
+def test_regressor_tags():
+    tags = TradeSpaceRegressor(LinearRegression(), HyperbolicTradeSpace()).__sklearn_tags__()
+    assert tags.target_tags.positive_only is True
+    assert tags.target_tags.multi_output is True
+    assert tags.estimator_type == "regressor"
+
+
+# --- end WP3 regressor ---
