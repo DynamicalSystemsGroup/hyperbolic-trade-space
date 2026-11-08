@@ -49,4 +49,4 @@ what it fixes for later packages. The design spec is
 | WP | Scope | Approval | Delivery | Review | Acceptance |
 |---|---|---|---|---|---|
 | WP0 | `WP0-scope-of-work.md` | verbal, 2026-11-07 (`WP0-decisions.md`) | `main` 4281350..f5cde59 | `WP0-review.md` | verbal, 2026-11-07 ("i accept", `WP0-decisions.md`) |
-| WP1 | `WP1-scope-of-work.md` | verbal, 2026-11-07 ("OK", `WP1-decisions.md`) | `main` 5e901aa..bd953c4 (incl. L8 fix) | `WP1-review.md` (cc2453a, rerun) | pending |
+| WP1 | `WP1-scope-of-work.md` | verbal, 2026-11-07 ("OK", `WP1-decisions.md`) | `main` 5e901aa..82fdd47 (incl. L8 fix) | `WP1-review.md` (696aa1f, third pass) | pending |
