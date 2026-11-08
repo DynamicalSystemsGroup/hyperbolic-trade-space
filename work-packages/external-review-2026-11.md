@@ -185,7 +185,21 @@ and the L10 docstring are wrong, as the reviewer says.
   level 3 is for step B, unpenalized, with support offsets only. Response text: after the change,
   citing commits, lemmas and the measured certificates on the planted data and the cubesat tables.
 
-Pending: E-8 to E-10.
+- **E-8, E-9, E-10 (bundle).** **Supervisor (mzargham), verbatim:** "Accept the bundle". Disposition
+  class: accepted: E-8 adopted as the structure of the algorithm part of the Results (Lemma 1,
+  Lemma 2, Proposition 3, Corollary 4, the stopping declaration); E-9 noted for WP10's framing of the
+  contribution; E-10's paper map reconciled with outline v2 in WP10's scope, its Derived / Numerical
+  / Open badges adopted as the paper's marking, and Q1 to Q4 entered in the abstraction-gaps ledger
+  with Q1 (global convergence) marked as not pursued, as the reviewer allows.
+
+Triage complete (2026-11-08): E-1 accepted in full; E-2 accepted (extend L3 and the method page);
+E-3 accepted with a change (sharp in the derivations, the register for the words, room in the
+prose); E-4 accepted and done (a15566b); E-5 accepted (docs, tolerances, a sensitivity diagnostic);
+E-6 accepted (L6 scope, assumptions, no consistency claim); E-7 accepted as classified (declared
+convention with a warning; zero-metric scoring aligned with the formal limit; "distance" settled in
+the register as the energy differential; the sliver claim moved to "observed"); E-8 to E-10
+accepted. Nothing declined. The changes are WP13's scope; the response letter is assembled when
+WP13 is accepted.
 
 ## Response letter
 
