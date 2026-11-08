@@ -95,7 +95,7 @@ Good enough is met, **no open item remains unresolved**, and the supervisor has 
 
 All marked *(default)* where they appear; the supervisor approves or changes the list as one item.
 
-- Estimator class name `HyperbolicTradeSpace` *(default; the spec lists a rename such as `HyperbolicTradeSpace` as an option at this gate; this scope keeps the spec's name)*.
+- Estimator class `HyperbolicTradeSpace` in package `hyperbolic_trade_space` (distribution `hyperbolic-trade-space`, docs alias `hts`), as decided by the supervisor before approval and recorded in `work-packages/WP2-decisions.md`; "posynomial invariant form" remains the name of the method and representation, and the repository keeps its current name and path until the supervisor renames it. This is a recorded decision, not a default.
 - Public exports in `__init__.py`: `HyperbolicTradeSpace`, `make_frontier_data`, `make_configured_frontier_data`, `__version__`; `solvers` and `coordinates` are imported as submodules, not re-exported *(default)*.
 - `temperature` accepts a float > 0 or `np.inf`; `min_exponent` in [0, 1/d); `coordinates` in {"ilr", "alr"}; `n_terms` an int ≥ 1; `tol` > 0; `max_iter` ≥ 1; all validated in `fit` with `ValueError` *(default)*. `term_temperature` is stored and ignored for K = 1 *(default)*.
 - Parameter defaults exactly as spec §5: `temperature=10.0, min_exponent=0.0, coordinates="ilr", n_terms=1, term_temperature=np.inf, tol=1e-10, max_iter=500` *(default)*.
