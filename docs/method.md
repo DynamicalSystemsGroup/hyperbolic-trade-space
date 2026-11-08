@@ -140,10 +140,13 @@ $$
 $$
 <!-- lemma: L5 -->
 
-The log-sum-exp overshoots the maximum (strictly for $N\ge2$) by an amount that diverges with the
-sample size, and would never let a point exceed $V=1$; the log-mean-exp stays between the mean and
-the maximum, so $\beta$ is a property of the data's shape and not of how many designs happen to be
-sampled. This is why $\beta$ is always the log-mean-exp and never the unnormalized sum. Needs: A3,
+L5 proves the exact identity $\mathrm{LSE}_\tau=\mathrm{LME}_\tau+(\log N)/\tau$, so the
+log-sum-exp is at least the maximum and exceeds the log-mean-exp by an offset that grows with the
+sample size $N$; it proves no more about the size of the excess over the maximum itself (that excess
+is only bounded above by $(\log N)/\tau$). Our reading, not a lemma, is that an unnormalized sum
+would therefore tie $\beta$ to the number of designs sampled and would not let a point exceed
+$V=1$ in the intended way, whereas the log-mean-exp stays between the mean and the maximum, so
+$\beta$ is a property of the data's shape. This is why $\beta$ is always the log-mean-exp and never the unnormalized sum. Needs: A3,
 and the F5 symbol for the maximum in the squeeze (F5 holds when $M$ really is $\max_i s_i$).
 
 The temperature has two limits, also by L5 (under F5 for the second):
@@ -276,9 +279,11 @@ the reading as a ridge is an interpretation of the added convex term.
 
 **5. Consistency and the normalization.** The sample functional converges to $\rho_\tau$ by the
 strong law of large numbers (I2, recorded in the L5 docstring; checked in the tests by replication,
-which leaves the sample functional unchanged), so $\hat w$ and $\hat\beta$ converge; that
-statement is inherited, not derived, and uniform convergence on $\Delta$ is not proved in the
-lemmas. The $1/N$ normalization of L5 (see the fit) is what makes $\beta$ a limit at all.
+which leaves the sample functional unchanged). Under I2, and given the convexity of the sample
+functional in $w$ (L4, which is not strict), we expect $\hat w$ and $\hat\beta$ to converge to the
+minimizer and the offset of $\rho_\tau$; this is an expectation, not a proved result. L5 disclaims
+consistency, and neither pointwise-to-uniform convergence on $\Delta$ nor convergence of the
+minimizers is proved in the lemmas. The $1/N$ normalization of L5 (see the fit) is what makes $\beta$ a limit at all.
 
 **6. Invariances.** Uniform scaling shifts $\beta$ by $\log k$ and leaves $w$ and $V$ unchanged
 (L2, L1). Permuting the metrics permutes $w$ (a symmetry of the objective, covered by the tests, not
@@ -379,13 +384,16 @@ $$
 
 with $B$ a $(d-1)\times d$ matrix satisfying $BB^{\top}=I$ and $B\mathbf 1=0$ (A7), and the
 orthogonal completion $Q=[B;\ \mathbf 1^{\top}/\sqrt d]$ satisfying $QQ^{\top}=Q^{\top}Q=I$ (I6).
-Because $\log V=w\cdot u-\beta$ is a linear function of the log-scale $\mathbf 1^\top u$ and of
-$Z$, the pair $(Z,\log V)$ is an invertible linear change of coordinates on log space; $Z$ is the
+L8 proves that $u\leftrightarrow(Z,\text{log-scale})$ is a bijection. Because $\log V=w\cdot u-\beta$
+and $w$ sums to one (A2), $w\cdot u=\mathbf 1^\top u/d+w\cdot B^\top Z$ is affine in
+$(Z,\text{log-scale})$ with a nonzero coefficient on the log-scale, so the pair $(Z,\log V)$ is an
+invertible affine change of coordinates on log space (this last step is ours, using A2 and the
+fitted $w$, not part of L8); $Z$ is the
 position along the frontier and $\log V$ the distance from it. The Helmert basis is one realization
 of A7 and the code also offers additive log-ratio coordinates; L8 holds for any $B$ satisfying A7,
 not specifically for Helmert. It does not prove that such a $B$ exists for every $d$ (the Helmert
 basis is checked concretely as a realization). The chart is in the spirit of isometric log-ratio
-coordinates [@egozcue2003isometric] (our reading). Needs: A7, I6.
+coordinates [@egozcue2003isometric] (our reading). Needs: A7, I6, and A2 (the simplex, for the step to $\log V$).
 
 **Pull-back to attributes.** If conditioning is log-affine per metric, $\log m_j=\alpha_j\log(a_j+s_j)+b_j$
 with $\alpha_j\ne0$ (A4), then by L9
@@ -438,7 +446,7 @@ Four caveats are part of the method.
 2. **Optimism off the balanced point.** Far from the diagonal a design has $V\ll1$ even when it
    is locally on the frontier, because a single hyperplane is tangent only at one place. $V-1$ is
    reliable near the balanced region and conservative elsewhere; points whose $Z$ lies outside the
-   training hull of $Z$ are flagged. The $K>1$ extension tightens this. This caveat is the failure
+   training hull of $Z$ are flagged. The $K>1$ extension is expected to tighten this (a conjecture). This caveat is the failure
    mode of R1 and of the one-facet model, stated again.
 3. **Holes versus strata.** Holes are regions of $Z$ with no near-frontier points ($|\log V|$
    below a band), scored by nearest-neighbour or grid distance inside the hull. A hole is an
@@ -457,7 +465,7 @@ both, then read the predicted $\log V$ (distance to or beyond the frontier), the
 surrogate's error and extrapolation risk and is conditional on the fitted trade space. It belongs
 to the composition of a regressor with the chart, not to the unsupervised estimator, which has no
 predict method; it is implemented in the analysis toolkit, with the regressor chosen by the analyst.
-The chart is exactly invertible (L8), which is why a prediction in $(Z,\log V)$ maps back to
+The chart is exactly invertible (L8 with A2 and A7), which is why a prediction in $(Z,\log V)$ maps back to
 metrics through the estimator's inverse transform.
 
 ## Lineage
@@ -472,8 +480,9 @@ are credited to [@aigner1968estimating] (on a secondary record); the statistical
 OLS, defined in the survey [@battese1992frontier] (an OLS fit with the intercept raised by the
 largest residual), is a distinct estimator from ours, which uses a smooth soft maximum over a
 simplex-constrained geometric mean. Stochastic frontiers are [@aigner1977formulation]. Data
-envelopment analysis [@charnes1978measuring] is the limit object in the hierarchy
-$K=1$ tangent, $K$-facet soft maximum, convex hull. The entropic risk functional is the source of
+envelopment analysis [@charnes1978measuring] computes hulls of the data; the log-convex hull of
+the data is the limit object of the hierarchy $K=1$ tangent, $K$-facet soft maximum, hull, in the
+sense of the object that DEA-style hull methods compute (the project's reading). The entropic risk functional is the source of
 $\rho_\tau$ [@foellmer2026entropic], and log-ratio PCA of compositional data
 [@aitchison1983principal; @aitchison1986statistical] is the kin in feature engineering, with
 isometric log-ratio coordinates in [@egozcue2003isometric]. Combining these pieces in one
@@ -503,7 +512,8 @@ Abbeel [@hoburg2016data]), and $V_K$ is a generalized posynomial [@boyd2007tutor
 the posynomial identity (the coefficients are $c_k=e^{-\kappa\beta_k}$)
 $\exp(\kappa\Phi_K)=\sum_ke^{-\kappa\beta_k}\prod_jm_j^{\kappa\theta_{kj}}$
 for symbolic $K$ and $d$. Because each $\theta_k$ is on the simplex, L10 gives the shift
-equivariance that carries homogeneity, projection, the invariant form and novelty over:
+equivariance, the identity that the homogeneity, projection and invariant-form arguments rest on
+(whether novelty carries over unchanged is expected from the construction, not proved by L10):
 
 $$
 \Phi_K(u+c\mathbf 1)=\Phi_K(u)+c,\qquad \Phi_1(u)=\theta_1\cdot u-\beta_1,
@@ -519,12 +529,15 @@ $$
 <!-- lemma: L10 -->
 
 At $K=1$ this is the monomial fit; as $\kappa\to\infty$ it is a max of monomials, the form fitted
-by convex piecewise-linear regression [@magnani2009convex]. Needs: A2, A6, I4 for the GP
+by convex piecewise-linear regression (maxima of affine functions) [@magnani2009convex]. That the
+max of affine functions is the $\kappa\to\infty$ limit of the softmax-affine form is the
+project's own statement (L10 proves the limit; Magnani and Boyd do not state this link). Needs: A2, A6, I4 for the GP
 statement, and F10 for the limit (F10 holds when the symbol is the true maximum). What $K$ buys:
 $K=1$ is one facet, with constant trade-off rates (in log space the analogue of weighted-sum
 scalarization, a hypothesis we do not rely on); $K>1$ is any log-convex admissibility set with up
-to $K$ facets, with regionally varying elasticities, and removes most of the off-diagonal
-optimism that confounds white space. No $K$ represents non-log-convex structure: the picture is a
+to $K$ facets, with regionally varying elasticities. We conjecture that this reduces the off-diagonal
+optimism that confounds white space, in the limit only as far as the log-convex envelope fits; this
+is expected from the construction and is neither proved by L10 nor tested. No $K$ represents non-log-convex structure: the picture is a
 log-convex envelope, $K$ terms, plus a non-convex residual, the holes. L10 proves identities;
 it does not provide a $K>1$ solver and proves nothing about fitted parameters. The solver, a
 non-convex envelope fit with per-facet support and a selection of $(K,\kappa)$, is a later
