@@ -10,6 +10,16 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Supervisor (mzargham), verbatim:** "okay proceed"
 - **Disposition:** approved; defaults list approved as one item; open decisions: none.
 
+## Review gaps, round 1 (2026-11-08)
+
+- **Review:** `work-packages/WP3-review.md` (a0db131). Items: G-2 `frac_above_` overshoots 0.5 below
+  τ ≈ 3, disclosed only in a test comment; G-3 no true beyond-frontier novelty test (generator never
+  exceeds log V = 0); G-4 observations; G-1 approval wording.
+- **Supervisor (mzargham), verbatim choice:** "Fix G-2 docs before acceptance"
+- **Disposition:** G-2 fix before acceptance (document the small-τ overshoot in the docs and the
+  `select_temperature` docstring); G-3 follow-up candidate (needs WP2's generator); G-1, G-4 accept
+  as is. The whole review reruns after the fix.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP3-review.md`

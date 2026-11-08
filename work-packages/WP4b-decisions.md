@@ -49,6 +49,18 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Supervisor (mzargham), verbatim:** "okay proceed"
 - **Disposition:** approved; defaults list approved as one item; open decisions: none.
 
+## Scope amendment 1: R-14 threshold (stop rule, 2026-11-08)
+
+- **Context:** the implementers hit the stop rule after the three allowed adjustments: median
+  `torque_saturated_frac` for small wheels 0.237 against R-14's 0.25 (the PM's own default number),
+  while the relative clauses pass widely (saturation ratio small/large ≈ 17, need 3; settling ratio
+  3.2, need 1.25) and the richness test R-13 passes fully (contending set of size 6 incl. mass 0.266;
+  agility-vs-mass −0.57; earlier tensions retained). They did not tune further.
+- **Supervisor (mzargham), verbatim choice:** "Amend R-14 to its intent; keep the dataset"
+- **Disposition:** R-14 is amended to its two relative clauses (saturation ratio ≥ 3, settling ratio
+  ≥ 1.25) with the absolute 0.25 removed and recorded as arbitrary; no new simulation; the committed
+  dataset stands; the xfail marker comes off; the review proceeds with a fresh reviewer.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP4b-review.md`
