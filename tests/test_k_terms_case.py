@@ -42,6 +42,34 @@ def test_tau_reselected_at_each_k_holds_the_fraction(result):
     assert out["fixed_diag"].frac_above_.iloc[-1] > 0.25
 
 
+# margin gamma and stable radius of the re-selected fits, as printed (six decimals)
+MARGIN = {
+    ("primary", 2): (0.000830, 0.000068), ("primary", 3): (0.000220, 0.000018),
+    ("stock", 2): (0.001575, 0.000126), ("stock", 3): (0.001487, 0.000119),
+}  # fmt: skip
+
+
+def test_certificate_margin_and_radius_columns(result):
+    regime, out = result
+    for table in (out["diag"], out["fixed_diag"]):
+        assert {"max gap", "status", "gamma", "radius", "bound"} <= set(table.columns)
+        k1, rest = table.iloc[0], table.iloc[1:]
+        assert k1.status == "not_applicable" and np.isnan(k1.gamma) and np.isnan(k1.radius)
+        assert (rest.status == "certified").all()
+        assert (rest["max gap"] < 1e-12).all() and (rest.bound <= rest["max gap"] + 1e-15).all()
+        assert (rest.gamma > 0).all() and (rest.radius > 0).all()
+    for K in (2, 3):
+        row = out["diag"].set_index("K").loc[K]
+        gamma, radius = MARGIN[regime, K]
+        assert row.gamma == pytest.approx(gamma, abs=5e-7)
+        assert row.radius == pytest.approx(radius, abs=5e-7)
+    # the per-facet gap column of the K = 3 record is the termination record's gaps
+    est = out["fits"][3]
+    assert np.allclose(out["record"]["gap G_k"], est.termination_.gaps)
+    assert (out["record"]["gap G_k"] < 1e-12).all()
+    assert (out["stab"].status == "certified").all()
+
+
 def test_every_facet_is_drawn_in_some_panel(result):
     _, out = result
     drawn = {f for n in out["panels"] for f in n["facets drawn"]}

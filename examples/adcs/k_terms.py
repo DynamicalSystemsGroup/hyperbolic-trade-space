@@ -120,6 +120,7 @@ def facet_record(est, reps, rows):
             "n_lemma": rep.n_lemma, "largest exponents": top(NAMES, rep.exponents),
             "near-frontier": rep.n_near_frontier, "reach beta_k": float(est.log_offset_[k]),
             "share": float(est.facet_share_[k]) if est.n_terms > 1 else 1.0,
+            "gap G_k": float(est.termination_.gaps[k]),
         })  # fmt: skip
     return pd.DataFrame(out)
 
@@ -244,8 +245,15 @@ def relation(rep1, reps3):
     return "\n".join(lines)
 
 
+def certificate(est):
+    """The fit's stopping record as columns: max facet gap, status, margin, radius, bound."""
+    t = est.termination_
+    return {"max gap": t.max_gap, "status": t.status, "gamma": t.gamma, "radius": t.radius,
+            "bound": t.bound}  # fmt: skip
+
+
 def summary(fits, M):
-    """One row per K: the fit's objective, fraction above V = 1, facet rows and shares."""
+    """One row per K: objective, fraction above V = 1, facet rows and shares, certificate."""
     rows = []
     for K, e in fits.items():
         sizes = np.bincount(e.facet_, minlength=K) if K > 1 else [len(M)]
@@ -254,7 +262,8 @@ def summary(fits, M):
                      "band 1/tau": round(1 / float(e.temperature), 4),
                      "objective_": e.objective_, "frac_above_": e.frac_above_,
                      "facet rows": list(map(int, sizes)),
-                     "facet shares": [round(float(x), 3) for x in share]})  # fmt: skip
+                     "facet shares": [round(float(x), 3) for x in share],
+                     **certificate(e)})  # fmt: skip
     return pd.DataFrame(rows)
 
 
@@ -300,7 +309,7 @@ def run_regime(regime, seeds=range(5), n_max=None, figs=FIGS, make_figures=True,
         sig = " | ".join(sorted("+".join(sorted(contend(x))) for x in r))
         stab.append({"seed": s, "objective_": e.objective_, "frac_above_": e.frac_above_,
                      "shares (sorted)": sorted(round(float(x), 3) for x in e.facet_share_),
-                     "contending sets": sig})  # fmt: skip
+                     **certificate(e), "contending sets": sig})  # fmt: skip
     stab = pd.DataFrame(stab)
     with pd.option_context("display.width", 300, "display.max_colwidth", 200):
         p(f"\nK = 3 stability over seeds at the re-selected tau = {taus[3]:.2f}:\n"
