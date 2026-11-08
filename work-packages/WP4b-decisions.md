@@ -109,6 +109,22 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   finding is accepted and the notebook reports wheel class as a feasibility boundary. Probe-note
   defects G-2 and G-3 fixed in the same pass.
 
+## Stop rule under amendment 4, and amendment 5 (2026-11-08)
+
+- **Finding after amendment 4:** with momentum enforced at 30°, wheel class is a feasibility boundary
+  (small wheels lose 19.2 % of designs to momentum; large 0 %); slew time to a 1° band tracks settling
+  (correlation 0.947) and Kd/Kp (0.998 for large wheels); mass exponent 0.000; "not found with these
+  measures and this gain box", not "cannot exist" (wheel class separates agility only at Kd/Kp ≲ 5).
+- **Question put:** record the finding and accept, or spend another lever (aggressive-gain regime;
+  momentum headroom attribute; peak slew rate; wheel mass scaled with capacity).
+- **Supervisor (mzargham), verbatim:** "try both new levers then report back"
+- **Disposition (amendment 5):** two further levers, each tried and recorded separately and then
+  together: (i) resample the gain box toward the aggressive regime (Kd/Kp ≲ 5) where wheel class
+  separates agility; (ii) add momentum headroom (peak momentum / capacity) as an attribute so wheel
+  class enters through storage. Momentum stays enforced; the richness test R-13 is unchanged in its
+  clauses; reasoning written before simulation; report the outcome of each lever and the combination;
+  the stop rule applies after that, and the finding is then recorded if R-13 still fails.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP4b-review.md`
