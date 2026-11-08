@@ -16,6 +16,29 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Disposition (driver's reading, stated to the supervisor):** approval of this scope and its
   Agent's defaults as one item; for WP4, confirmation of the physics additions. Open decisions: none.
 
+
+## Approval-record note (driver, 2026-11-08)
+
+The reviewers flagged the approval wording as conditional. The condition ("double check with the
+github cli") was satisfied before execution started: the driver ran `gh api .../check-runs` and
+`gh run list` and reported to the supervisor that the head of main was green and only superseded
+run 36 had failed; execution was dispatched after that report. Dates: commits are stamped in UTC,
+the chat happened on the evening of 2026-11-07 local time.
+
+## Review gaps, round 1 (decision loop at the acceptance gate)
+
+- **Date:** 2026-11-08. Review: `work-packages/WP5-review.md` (1c71306).
+- **Items put as one question (G-2 to G-5, touching R-5/R-6):** COLS attribution to Aigner & Chu
+  1968 unconfirmed (driver's plan error; COLS is usually attributed to Richmond 1974 / Greene 1980,
+  to be verified); no Pareto gap/spacing source; Ross et al. called "closest named prior art"
+  without support; Magnani & Boyd cited after the project's own mathematics; Aigner & Chu 1968 and
+  Cobb–Douglas 1928 on secondary records.
+- **Supervisor (mzargham), verbatim choice:** "Fix before acceptance"
+- **Disposition:** fix before acceptance: verify and add COLS and spacing-metric sources, drop the
+  unsupported superlative, move the Magnani & Boyd citation, label secondary-record entries; the
+  driver corrects the spec attribution once WP5 reports the verified sources. G-1 and G-6 accept as
+  is (approval note above; minor items). The whole review reruns after the fix.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP5-review.md`

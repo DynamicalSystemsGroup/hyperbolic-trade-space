@@ -41,7 +41,7 @@ Resulting inertia ≈ (327.14, 107.48, 303.45) kg·m².
 ## Regression pins (from the source `tests/test_sysml_evidence.py`, ±0.2 s)
 
 X-axis 10° slew, 360 s horizon, tight tolerances: (Kp, Kd) = (4, 30) → 78.0 s; (8, 30) → 87.4 s;
-(4, 25) → 120.5 s. Baseline (1, 10) ≈ 201.6 s. Measured cost ≈ 0.11 s per design at 360 s.
+(4, 25) → 120.5 s. Baseline (1, 10) → 310.6 s (source repo pin; reproduced 310.626 s on 2026-11-08; an earlier planning note said 201.6 s, which was wrong). Measured cost ≈ 0.11 s per design at 360 s.
 
 ## What the source does not have (so the case must add)
 

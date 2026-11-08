@@ -27,6 +27,25 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Disposition (driver's reading, stated to the supervisor):** approval of this scope and its
   Agent's defaults as one item; for WP4, confirmation of the physics additions. Open decisions: none.
 
+
+## Approval-record note (driver, 2026-11-08)
+
+The reviewers flagged the approval wording as conditional. The condition ("double check with the
+github cli") was satisfied before execution started: the driver ran `gh api .../check-runs` and
+`gh run list` and reported to the supervisor that the head of main was green and only superseded
+run 36 had failed; execution was dispatched after that report. Dates: commits are stamped in UTC,
+the chat happened on the evening of 2026-11-07 local time.
+
+## Review gaps, round 1 (decision loop at the acceptance gate)
+
+- **Date:** 2026-11-08. Review: `work-packages/WP2-review.md` (second pass, e84bd7f).
+- **Items put as one question:** G-1 approval wording; G-2 the chain cross-check overwrites fitted
+  attributes for L1/L7 (checks formulas, not fitted values); G-3 documented departures from
+  defaults; G-4 one intermediate red commit.
+- **Supervisor (mzargham), verbatim choice:** "Fix G-2 before acceptance"
+- **Disposition:** G-2 fix before acceptance (add a cross-check comparing a real fit's outputs to the
+  L1/L7 formulas); G-1, G-3, G-4 accept as is. The whole review reruns after the fix.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP2-review.md`
