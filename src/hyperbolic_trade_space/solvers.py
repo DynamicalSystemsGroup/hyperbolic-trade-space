@@ -20,10 +20,21 @@ from sklearn.utils import check_random_state
 from .coordinates import helmert_basis
 
 __all__ = [
+    "EPS_FEAS",
+    "EPS_KKT",
+    "GUARD_TOL",
+    "POLISH_STEPS",
     "SolveResult",
+    "Termination",
     "TermsResult",
+    "assignment_margin",
+    "facet_gap",
+    "facet_objective",
+    "fixed_assignment_bound",
     "log_mean_exp",
     "objective_and_grad",
+    "simplex_gap",
+    "single_facet_termination",
     "solve_lp",
     "solve_slsqp",
     "solve_terms",
@@ -31,6 +42,11 @@ __all__ = [
 ]
 
 _TIE_TOL = 1e-12
+EPS_KKT = 1e-8  # first-order gap tolerance of the stopping declaration
+EPS_FEAS = 1e-9  # feasibility and margin-positivity tolerance
+GUARD_TOL = 1e-12  # the monotone guard rejects an objective increase above this
+POLISH_STEPS = 5  # reduced-Newton steps after each finite-tau facet refit
+_ACTIVE_TOL = 1e-10
 
 
 @dataclass(frozen=True)
@@ -330,6 +346,314 @@ def solve_slsqp(
     return SolveResult(w, f, p, f, max(int(res.nit), 1), bool(res.success), str(res.message))
 
 
+def _dual_value(g, min_exponent):
+    """``min_{v >= m, 1.v = 1} g.v = m sum(g) + (1 - d m) min(g)``."""
+    d = g.size
+    return float(min_exponent * g.sum() + (1.0 - d * min_exponent) * g.min())
+
+
+def simplex_gap(g, w, min_exponent=0.0):
+    """First-order gap ``G = g.w - min_{v >= m, 1.v = 1} g.v`` of a convex function on the simplex.
+
+    Parameters
+    ----------
+    g : ndarray of shape (d,)
+        Gradient (or certifying subgradient) at ``w``.
+    w : ndarray of shape (d,)
+        Feasible point.
+    min_exponent : float, default=0.0
+        Floor ``m`` on every coordinate, in ``[0, 1/d)``.
+
+    Returns
+    -------
+    float
+        ``g.w - min_j g_j`` for ``m = 0`` (``sum_j w_j (g_j - min g)``, the residual of the
+        simplex KKT conditions); for ``m > 0`` the minimizing ``v`` puts ``1 - d m`` on the
+        smallest component and ``m`` on the rest. By convexity ``0 <= f(w) - f* <= G``.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> g = np.array([0.1, 0.5, 0.9])
+    >>> round(simplex_gap(g, np.array([0.5, 0.5, 0.0])), 12)
+    0.2
+    >>> simplex_gap(g, np.array([1.0, 0.0, 0.0]))
+    0.0
+    """
+    g = np.asarray(g, dtype=float)
+    return float(g @ np.asarray(w, dtype=float) - _dual_value(g, min_exponent))
+
+
+def facet_objective(U, w, ubar, tau):
+    """Facet refit objective ``f_k(w) = J_tau(U w) - ubar . w`` (lemma L4, step B).
+
+    Parameters
+    ----------
+    U : ndarray of shape (N, d)
+        Log metrics (finite).
+    w : ndarray of shape (d,)
+        Exponents on the simplex.
+    ubar : ndarray of shape (d,)
+        Mean log metric of the facet's rows.
+    tau : float
+        Temperature, ``tau > 0`` or ``np.inf``.
+
+    Returns
+    -------
+    float
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> U = np.array([[0.0, 1.0], [1.0, 0.0]])
+    >>> round(facet_objective(U, np.array([0.5, 0.5]), U.mean(0), np.inf), 6)
+    0.0
+    """
+    return float(log_mean_exp(U @ w, tau) - np.asarray(ubar) @ w)
+
+
+def facet_gap(U, w, ubar, tau, min_exponent=0.0, p=None):
+    """First-order gap ``G_k`` of the facet refit ``f_k`` at ``w`` (Lemma 1).
+
+    Parameters
+    ----------
+    U : ndarray of shape (N, d)
+        Log metrics (finite).
+    w : ndarray of shape (d,)
+        Feasible exponents.
+    ubar : ndarray of shape (d,)
+        Mean log metric of the facet's rows.
+    tau : float
+        Temperature, ``tau > 0`` or ``np.inf``.
+    min_exponent : float, default=0.0
+        Floor on every exponent.
+    p : ndarray of shape (N,), optional
+        Used at ``tau = inf`` only: dual weights (a point of the simplex). Default: the dual of
+        the facet's linear program, re-solved. At finite ``tau`` the softmax weights are used.
+
+    Returns
+    -------
+    float
+        Finite ``tau``: :func:`simplex_gap` of ``grad f_k = U^T softmax(tau U w) - ubar``.
+        ``tau = inf``: ``f_k(w) - min_j (U^T p - ubar)_j`` (with the floor, the dual value of
+        :func:`simplex_gap`), the linear-programming duality gap for the duals ``p``; it is a
+        valid bound ``f_k(w) - f_k* <= G_k`` for every ``p`` in the simplex (weak duality), and
+        zero at an optimum with the LP duals. Uniform weights on the argmax set
+        (``support_weights(U @ w, np.inf)``) give a valid but loose bound.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> U = np.array([[1.0, 0.0], [0.0, 1.0]])
+    >>> round(facet_gap(U, np.array([0.5, 0.5]), U.mean(0), 5.0), 12)
+    0.0
+    >>> round(facet_gap(U, np.array([0.5, 0.5]), U.mean(0), np.inf), 12)
+    0.0
+    """
+    U = np.asarray(U, dtype=float)
+    w = np.asarray(w, dtype=float)
+    ubar = np.asarray(ubar, dtype=float)
+    if np.isinf(tau):
+        if p is None:
+            p = solve_lp(U - ubar, min_exponent).p
+        g = U.T @ np.asarray(p) - ubar
+        return float(facet_objective(U, w, ubar, tau) - _dual_value(g, min_exponent))
+    g = U.T @ support_weights(U @ w, tau) - ubar
+    return simplex_gap(g, w, min_exponent)
+
+
+def assignment_margin(U, W, beta):
+    """Assignment margin ``gamma`` and the explicit stable radius (Lemma 2).
+
+    Parameters
+    ----------
+    U : ndarray of shape (N, d)
+        Log metrics.
+    W : ndarray of shape (K, d)
+        Facet exponents.
+    beta : ndarray of shape (K,)
+        Facet offsets.
+
+    Returns
+    -------
+    gamma : float
+        ``min_i [s_{i k(i)} - max_{k != k(i)} s_{ik}]`` with ``s = U W^T - beta``: zero when a row
+        ties between two facets (for example two identical facets). ``inf`` for ``K = 1``.
+    radius : float
+        ``gamma / (2 max_i ||(u_i, -1)||_2)``: any perturbation of every ``(w_k, beta_k)`` of
+        Euclidean norm below it changes each score by less than ``gamma / 2``, so the
+        assignment is unchanged.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> U = np.array([[0.0, 0.0], [1.0, 0.0]])
+    >>> gamma, radius = assignment_margin(U, np.eye(2), np.array([0.0, 0.5]))
+    >>> round(gamma, 6), round(radius, 6)
+    (0.5, 0.176777)
+    """
+    U = np.asarray(U, dtype=float)
+    S = U @ np.asarray(W, dtype=float).T - np.asarray(beta, dtype=float)
+    if S.shape[1] < 2:
+        return float("inf"), float("inf")
+    top = np.sort(S, axis=1)[:, -2:]
+    gamma = float(np.min(top[:, 1] - top[:, 0]))
+    norms = np.sqrt((U**2).sum(axis=1) + 1.0)
+    return gamma, gamma / (2.0 * float(norms.max()))
+
+
+def fixed_assignment_bound(U, W, labels, tau, min_exponent=0.0, P=None):
+    """Fixed-assignment objective ``F`` and the Corollary 4 bound ``sum_k |C_k|/N G_k``.
+
+    Parameters
+    ----------
+    U : ndarray of shape (N, d)
+        Log metrics.
+    W : ndarray of shape (K, d)
+        Facet exponents.
+    labels : ndarray of shape (N,), dtype int
+        Assignment ``C_k = {i : labels[i] = k}``.
+    tau : float
+        Temperature.
+    min_exponent : float, default=0.0
+        Floor on every exponent.
+    P : ndarray of shape (K, N), optional
+        Dual weights per facet (rows of ``nan`` for an empty facet), used at ``tau = inf``.
+
+    Returns
+    -------
+    bound : float
+        ``sum_k |C_k|/N G_k`` over the nonempty facets: ``F(W) - F*_fixed <= bound``.
+    gaps : ndarray of shape (K,)
+        ``G_k``, ``nan`` for an empty facet.
+    F : float
+        ``sum_k |C_k|/N f_k(w_k)``, equal to the mean slack of the returned fit.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> U = np.array([[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]])
+    >>> W = np.array([[0.5, 0.5]])
+    >>> bound, gaps, F = fixed_assignment_bound(U, W, np.zeros(3, dtype=int), np.inf)
+    >>> round(bound, 6), round(F, 6)
+    (0.0, 0.333333)
+    """
+    U = np.asarray(U, dtype=float)
+    N, K = U.shape[0], W.shape[0]
+    shares = np.bincount(labels, minlength=K) / N
+    gaps, F = np.full(K, np.nan), 0.0
+    for k in np.flatnonzero(shares):
+        ubar = U[labels == k].mean(axis=0)
+        gaps[k] = facet_gap(U, W[k], ubar, tau, min_exponent, None if P is None else P[k])
+        F += shares[k] * facet_objective(U, W[k], ubar, tau)
+    return float(np.nansum(shares * gaps)), gaps, float(F)
+
+
+def _newton_polish(Uc, w, tau, min_exponent=0.0, n_steps=POLISH_STEPS):
+    """Reduced-Newton steps on the active set of ``J_tau(Uc w)`` over the simplex (finite tau).
+
+    The active set is ``w > m`` (coordinates at the floor are held); each step solves the KKT
+    system of the Hessian restricted to it and the equality ``1.step = 0``, then backtracks so
+    the objective never increases.
+    """
+    w = np.asarray(w, dtype=float).copy()
+    m = min_exponent
+    for _ in range(n_steps):
+        p = support_weights(Uc @ w, tau)
+        act = w > m + _ACTIVE_TOL
+        na = int(act.sum())
+        if na < 2:
+            break
+        Ua = Uc[:, act]
+        pa = Ua.T @ p
+        H = tau * (Ua.T @ (p[:, None] * Ua) - np.outer(pa, pa))
+        KKT = np.block([[H, np.ones((na, 1))], [np.ones((1, na)), np.zeros((1, 1))]])
+        sol = np.linalg.lstsq(KKT, np.concatenate([-(Uc.T @ p)[act], [0.0]]), rcond=None)[0]
+        step = np.zeros_like(w)
+        step[act] = sol[:na]
+        f0, t = log_mean_exp(Uc @ w, tau), 1.0
+        while t > 1e-6:
+            w1 = w + t * step
+            w1 = w1 / w1.sum()
+            if (w1 >= m).all() and log_mean_exp(Uc @ w1, tau) <= f0 + 1e-15:
+                break
+            t *= 0.5
+        else:
+            break
+        w = w1
+    return w
+
+
+@dataclass(frozen=True, eq=False)
+class Termination:
+    """Stopping record of a multi-facet fit: the three levels of guarantee, with tolerances.
+
+    Attributes
+    ----------
+    status : str
+        ``"certified"``: the assignment is fixed (zero assignment changes), the feasibility
+        residuals are at most ``eps_feas``, ``max_gap <= eps_kkt``, no facet is empty and the
+        margin is positive (``gamma > eps_feas``). ``"stationary_without_margin"``: the same with
+        ``gamma <= eps_feas`` (a row ties between facets, for example two identical facets) or an
+        empty facet. ``"uncertified"``: the assignment is fixed but a residual or the gap exceeds
+        its tolerance. ``"guard_stop"``: an iteration raised the objective by more than
+        ``guard_tol`` and the previous state was returned. ``"iteration_cap"``: ``max_iter`` was
+        reached. ``"not_applicable"``: ``facet_step="tangent"``, a ``penalty``, or the
+        ``K = 1`` / ``d = 1`` / ``N < K`` shortcut; the gaps are then diagnostics.
+    reason : str
+        The solver's stop message.
+    n_iter : int
+        Partition-and-refit iterations of the returned run.
+    sum_residual, floor_residual : float
+        ``max_k |1.w_k - 1|`` and ``max_k max(0, min_exponent - min_j w_kj)``.
+    offset_residual : float
+        ``max_k |beta_k - J_tau(U w_k)|`` over the nonempty facets.
+    max_gap : float
+        ``max_k G_k`` over the nonempty facets.
+    bound : float
+        Corollary 4: ``sum_k |C_k|/N G_k``, a bound on ``F(W) - F*_fixed`` for the assignment of
+        this run (not across restarts).
+    objective_change : float
+        Absolute change of the objective at the last accepted step (``nan`` with none).
+    assignment_changes : int
+        Rows whose argmax under the returned ``(W, beta)`` differs from the returned ``labels``.
+    n_empty : int
+        Facets with no assigned row (their gap is ``nan`` and their share 0).
+    gamma, radius : float
+        Assignment margin and the explicit stable radius (:func:`assignment_margin`).
+    eps_kkt, eps_feas, guard_tol : float
+        The tolerances used (:data:`EPS_KKT`, :data:`EPS_FEAS`, :data:`GUARD_TOL`).
+    gaps, shares : ndarray of shape (K,)
+        Per-facet gap (``nan`` for an empty facet) and row share ``|C_k|/N``.
+
+    Notes
+    -----
+    Level 3 (Proposition 3, conditional local optimality of the fixed assignment) holds for
+    ``facet_step="support"`` (step B), unpenalized, with support offsets
+    ``beta_k = J_tau(U w_k)``; under step D or a penalty the gap is a diagnostic. The record
+    describes the returned run's own fixed assignment, not the choice among restarts.
+    """
+
+    status: str
+    reason: str
+    n_iter: int
+    sum_residual: float
+    floor_residual: float
+    offset_residual: float
+    max_gap: float
+    bound: float
+    objective_change: float
+    assignment_changes: int
+    n_empty: int
+    gamma: float
+    radius: float
+    eps_kkt: float
+    eps_feas: float
+    guard_tol: float
+    gaps: np.ndarray
+    shares: np.ndarray
+
+
 @dataclass(frozen=True)
 class TermsResult:
     """Result of :func:`solve_terms`.
@@ -351,7 +675,10 @@ class TermsResult:
     message : str
         Stop reason.
     history : ndarray
-        Objective after the initial fit and after each accepted iteration (non-increasing).
+        Objective after the initial fit and after each accepted iteration (non-increasing up to
+        :data:`GUARD_TOL`).
+    termination : Termination
+        Stopping record of the returned run (status, gaps, margin, tolerances).
     """
 
     W: np.ndarray
@@ -362,6 +689,92 @@ class TermsResult:
     success: bool
     message: str
     history: np.ndarray
+    termination: Termination
+
+
+def _termination(
+    U, W, beta, labels, P, tau, min_exponent, n_iter, history, reason, stop, applicable
+):
+    """Build the :class:`Termination` of a run (``stop``: ``"fixed"``, ``"guard"``, ``"cap"``)."""
+    N, K = U.shape[0], W.shape[0]
+    bound, gaps, _ = fixed_assignment_bound(U, W, labels, tau, min_exponent, P)
+    shares = np.bincount(labels, minlength=K) / N
+    full = shares > 0
+    max_gap = float(np.max(gaps[full])) if full.any() else float("nan")
+    changes = int((np.argmax(U @ W.T - beta, axis=1) != labels).sum())
+    gamma, radius = assignment_margin(U, W, beta)
+    sum_res = float(np.abs(W.sum(axis=1) - 1.0).max())
+    floor_res = float(max(0.0, min_exponent - W.min()))
+    offs = [abs(beta[k] - log_mean_exp(U @ W[k], tau)) for k in np.flatnonzero(full)]
+    hist = np.asarray(history)
+    n_empty = int(K - full.sum())
+    if not applicable:
+        status = "not_applicable"
+    elif stop == "cap":
+        status = "iteration_cap"
+    elif stop == "guard":
+        status = "guard_stop"
+    elif changes or sum_res > EPS_FEAS or floor_res > EPS_FEAS or not max_gap <= EPS_KKT:
+        status = "uncertified"
+    elif gamma > EPS_FEAS and n_empty == 0:
+        status = "certified"
+    else:
+        status = "stationary_without_margin"
+    return Termination(
+        status, reason, int(n_iter), sum_res, floor_res, float(max(offs, default=0.0)), max_gap,
+        bound, float(abs(hist[-1] - hist[-2])) if hist.size > 1 else float("nan"), changes,
+        n_empty, gamma, radius, EPS_KKT, EPS_FEAS, GUARD_TOL, gaps, shares,
+    )  # fmt: skip
+
+
+def single_facet_termination(U, w, beta, p, tau, min_exponent, n_iter, reason, n_terms=1):
+    """``"not_applicable"`` record of a single-facet fit (``K = 1`` and the degenerate shortcuts).
+
+    Parameters
+    ----------
+    U : ndarray of shape (N, d)
+        Log metrics (finite).
+    w : ndarray of shape (d,)
+        Fitted exponents.
+    beta : float
+        Fitted offset.
+    p : ndarray of shape (N,)
+        Support weights (LP duals at ``tau = inf``).
+    tau, min_exponent : float
+        Temperature and floor.
+    n_iter : int
+        Solver iterations.
+    reason : str
+        Solver message.
+    n_terms : int, default=1
+        Requested ``K``; the other ``K - 1`` facets repeat the fit and count as empty.
+
+    Returns
+    -------
+    Termination
+        ``max_gap`` is the first-order gap of ``J_tau(U w)`` itself (read only).
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> U = np.array([[1.0, 0.0], [0.0, 1.0]])
+    >>> t = single_facet_termination(U, np.array([0.5, 0.5]), 0.5, np.array([0.5, 0.5]),
+    ...                              np.inf, 0.0, 1, "ok")
+    >>> t.status, round(t.max_gap, 9)
+    ('not_applicable', 0.0)
+    """
+    U = np.asarray(U, dtype=float)
+    gap = facet_gap(U, w, np.zeros(U.shape[1]), tau, min_exponent, p)
+    gaps = np.full(n_terms, np.nan)
+    gaps[0] = gap
+    shares = np.zeros(n_terms)
+    shares[0] = 1.0
+    return Termination(
+        "not_applicable", str(reason), int(n_iter), float(abs(np.sum(w) - 1.0)),
+        float(max(0.0, min_exponent - np.min(w))),
+        float(abs(beta - log_mean_exp(U @ w, tau))), gap, gap, float("nan"), 0, n_terms - 1,
+        float("nan"), float("nan"), EPS_KKT, EPS_FEAS, GUARD_TOL, gaps, shares,
+    )  # fmt: skip
 
 
 def _tls_normal(Uk, w0, min_exponent):
@@ -374,17 +787,25 @@ def _tls_normal(Uk, w0, min_exponent):
 
 
 def _refit(U, labels, W, beta, tau, kw, tangent=False):
-    W, beta = W.copy(), beta.copy()
+    W, beta, P = W.copy(), beta.copy(), np.full((W.shape[0], U.shape[0]), np.nan)
     band = 0.1 if np.isinf(tau) else 1.0 / tau
+    # the polish acts on the unpenalized step-B refit at finite tau only
+    polish = np.isfinite(tau) and not tangent and not (kw["penalty"] and kw["alpha"] > 0)
     for k in np.unique(labels):
         # centering on the facet's mean makes J_tau(Uc w) = J_tau(U w) - mean_k(U) . w
-        w = solve_slsqp(U - U[labels == k].mean(0), tau, **kw).w
+        Uc = U - U[labels == k].mean(0)
+        r = solve_slsqp(Uc, tau, **kw)
+        w, p = r.w, r.p  # p: softmax weights, or the LP duals at tau = inf
+        if polish:
+            w = _newton_polish(Uc, w, tau, kw["min_exponent"])
+            p = support_weights(U @ w, tau)
         if tangent:  # rows of the facet within the band of the support plane (step B)
             near = (labels == k) & (log_mean_exp(U @ w, tau) - U @ w < band)
             if near.sum() > U.shape[1]:
                 w = _tls_normal(U[near], w, kw["min_exponent"])
-        W[k], beta[k] = w, log_mean_exp(U @ w, tau)
-    return W, beta, float(np.mean(beta[labels] - np.sum(W[labels] * U, axis=1)))
+                p = support_weights(U @ w, tau)
+        W[k], beta[k], P[k] = w, log_mean_exp(U @ w, tau), p
+    return W, beta, float(np.mean(beta[labels] - np.sum(W[labels] * U, axis=1))), P
 
 
 def _solve_terms_once(U, K, tau, seed, max_iter, kw, tangent=False):
@@ -393,25 +814,31 @@ def _solve_terms_once(U, K, tau, seed, max_iter, kw, tangent=False):
     centers = Z[check_random_state(seed).choice(N, K, replace=False)]
     labels = np.argmin(((Z[:, None] - centers) ** 2).sum(-1), axis=1)
     W, beta = np.full((K, d), 1.0 / d), np.zeros(K)
-    W, beta, obj = _refit(U, labels, W, beta, tau, kw)  # the first refit is step B
-    history, n_iter, success, message = [obj], 0, False, "max_iter reached"
-    best = (obj, labels, W, beta)
+    W, beta, obj, P = _refit(U, labels, W, beta, tau, kw)  # the first refit is step B
+    history, n_iter, stop, message = [obj], 0, "cap", "max_iter reached"
+    best = (obj, labels, W, beta, P)
     while n_iter < max_iter:
         n_iter += 1
         new = np.argmax(U @ W.T - beta, axis=1)
         if np.array_equal(new, labels):
-            success, message = True, "assignment fixed"
+            stop, message = "fixed", "assignment fixed"
             break
-        W2, beta2, obj2 = _refit(U, new, W, beta, tau, kw, tangent)
-        if obj2 > obj and not tangent:  # monotone guard (step B): reject an increase and stop
-            success, message = True, "no further decrease"
+        W2, beta2, obj2, P2 = _refit(U, new, W, beta, tau, kw, tangent)
+        if obj2 > obj + GUARD_TOL and not tangent:  # monotone guard (step B): reject, stop
+            stop, message = "guard", "no further decrease"
             break
-        labels, W, beta, obj = new, W2, beta2, obj2
+        labels, W, beta, obj, P = new, W2, beta2, obj2, P2
         history.append(obj)
-        best = min(best, (obj, labels, W, beta), key=lambda t: t[0])
+        best = min(best, (obj, labels, W, beta, P), key=lambda t: t[0])
     if tangent:  # the objective is not monotone under step D: keep the best iterate seen
-        obj, labels, W, beta = best
-    return TermsResult(W, beta, labels, obj, n_iter, success, message, np.array(history))
+        obj, labels, W, beta, P = best
+    applicable = not tangent and kw["penalty"] is None
+    term = _termination(
+        U, W, beta, labels, P, tau, kw["min_exponent"], n_iter, history, message, stop, applicable
+    )
+    return TermsResult(
+        W, beta, labels, obj, n_iter, stop != "cap", message, np.array(history), term
+    )
 
 
 def solve_terms(
@@ -519,9 +946,12 @@ def solve_terms(
     }  # fmt: skip
     if K == 1 or d == 1 or N < K:
         r = solve_slsqp(U, tau, **kw)
+        term = single_facet_termination(
+            U, r.w, r.beta, r.p, tau, min_exponent, r.n_iter, r.message, K
+        )
         return TermsResult(
             np.tile(r.w, (K, 1)), np.full(K, r.beta), np.zeros(N, dtype=int), r.beta, r.n_iter,
-            r.success, r.message, np.array([r.beta]),
+            r.success, r.message, np.array([r.beta]), term,
         )  # fmt: skip
     seeds = check_random_state(random_state).randint(0, 2**31 - 1, size=n_restarts)
     runs = [_solve_terms_once(U, K, tau, s, max_iter, kw, facet_step == "tangent") for s in seeds]
