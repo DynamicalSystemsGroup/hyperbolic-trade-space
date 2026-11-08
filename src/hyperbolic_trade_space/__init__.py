@@ -1,4 +1,4 @@
-"""Posynomial invariant form: learn the shape of a design trade space.
+"""Hyperbolic trade space: learn the shape of a design trade space (the posynomial invariant form).
 
 Package code arrives in later work packages (see ``work-packages/README.md``).
 """

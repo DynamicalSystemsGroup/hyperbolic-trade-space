@@ -1,4 +1,6 @@
-# posynomial-invariant-form
+# hyperbolic-trade-space
+
+Python package `hyperbolic_trade_space` (import alias `hts`); the method is the *posynomial invariant form*.
 
 Learn the shape of a design trade space. From noisy, biased observations of a design problem
 (configuration variables and empirically assessed attributes), the method learns a hyperbolic
