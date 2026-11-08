@@ -21,6 +21,18 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   instruction from the supervisor: the notebook author studies the adcs-lifecycle-demo and hc-marimo
   repositories and their GitHub Pages sites first to absorb his style.
 
+## Review gaps, round 1 (review 2c28bd0, 2026-11-08)
+
+- Items: G-1 factual error (four of five variants); G-2 axis labels "(m)" and a weak frontier figure;
+  G-7 style shortfalls (no embodied hook figure, overlong cells, no call-to-action or source link);
+  G-4 misnamed uncertainty columns; G-3, G-5, G-6, G-8, G-9, G-10 minor.
+- **Supervisor (mzargham), verbatim choice:** "Fix G-1, G-2, G-7, G-4, G-10; accept the rest"
+- **Disposition:** one editing pass (correct the sentence; relabel axes in attribute terms and
+  strengthen the frontier figure; add an embodied hook figure; split long cells; add the closing
+  call-to-action and source links; rename the uncertainty columns in CSV header, script and test;
+  fix the loose wording), re-execute the notebook, then a fresh-reviewer rerun. G-3, G-5, G-6, G-8,
+  G-9 accept as is.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP7-review.md`
