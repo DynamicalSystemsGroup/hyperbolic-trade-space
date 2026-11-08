@@ -84,6 +84,19 @@ AXIOMS = {
         "the extension temperature is positive, kappa > 0, and each of the K terms has "
         "exponents theta_k on the simplex",
     ),
+    "A7": Axiom(
+        "A7",
+        POSITED,
+        "the sum-zero chart: Z = B u with B a (d-1) x d matrix satisfying B B^T = I and "
+        "B 1 = 0 (orthonormal rows spanning the sum-zero subspace; the Helmert basis is one "
+        "realization)",
+        role="makes Z the scale-free coordinates of the metric vector: Z is blind to a common "
+        "multiplicative scale (a shift of u along 1), and with the log-scale it gives an "
+        "isometric linear bijection, so Gaussian noise and distances can be read in Z",
+        failure_mode="if B 1 != 0 the chart sees the overall scale and Z is not invariant; if "
+        "B B^T != I the chart is not isometric, so noise in u is not isotropic in Z and "
+        "distances in Z distort those in u",
+    ),
     # -------------------------------------------------------------- INHERITED
     "I1": Axiom(
         "I1",
