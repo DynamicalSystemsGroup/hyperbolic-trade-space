@@ -1,0 +1,44 @@
+[project]
+name = "posynomial-invariant-form"
+version = "0.0.1"
+description = "Learn the shape of a design trade space: a scikit-learn-compatible posynomial (monomial first) frontier model with an invertible log-ratio chart, SymPy-verified derivations, and an ADCS trade-study case."
+readme = "README.md"
+authors = [{ name = "Michael Zargham" }]
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.12",
+    "sympy>=1.12",
+    "scikit-learn>=1.8",
+    "pandas>=2.0",
+    "matplotlib>=3.8",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6"]
+docs = ["mkdocs-material>=9.5", "mkdocs-jupyter>=0.24", "mkdocstrings[python]>=0.26", "mkdocs-bibtex>=2.16"]
+notebooks = ["jupyter>=1.0", "nbconvert>=7"]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/posynomial_invariant_form"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--doctest-modules"
+doctest_optionflags = "NORMALIZE_WHITESPACE"
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]

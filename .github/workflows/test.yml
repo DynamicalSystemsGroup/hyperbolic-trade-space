@@ -1,0 +1,23 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version-file: ".python-version"
+      - name: Check the lockfile is current
+        run: uv lock --check
+      - name: Install (locked)
+        run: uv sync --locked
+      - name: Test
+        run: uv run pytest -q
