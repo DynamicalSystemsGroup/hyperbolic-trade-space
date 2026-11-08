@@ -9,12 +9,12 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest migrates to Ubuntu 26 from 2026-10-19 (actions/runner-images#14748).
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
-        with:
-          python-version-file: ".python-version"
+      - uses: actions/checkout@v5
+      # uv reads .python-version itself; setup-uv has no python-version-file input.
+      - uses: astral-sh/setup-uv@v7
       - name: Check the lockfile is current
         run: uv lock --check
       - name: Install (locked)
