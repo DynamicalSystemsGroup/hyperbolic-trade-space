@@ -24,3 +24,78 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP7-review.md`
+
+## Style study (notebook author briefing)
+
+Written 2026-11-08 by the WP7 phase A implementer, in answer to the supervisor's standing instruction (scope approval
+above). Sources read: `adcs-lifecycle-demo` (`jaxa_notebook.ipynb`, `notebook.py`, `README.md`, `site/index.html`
+through the published site https://dynamicalsystemsgroup.github.io/ADCS-lifecycle-demo/) and `hc-marimo`
+(`homicidal_chauffeur.py`, `TALK_NOTES.md`, `VALIDATION_CHECKLIST.md`, `README.md`, and the published site
+https://mzargham.github.io/hc-marimo/). `talk.py` in both repositories was skimmed through `TALK_NOTES.md`, which
+is its beat sheet. The next implementer (notebook author) should adopt the following.
+
+1. **Open with an embodied question, not a definition.** The Pages site of hc-marimo opens with "Can a fast car with
+   a bounded turning radius always catch a slower but perfectly agile pedestrian?"; the talk starts from the puzzle
+   (beat 2 of `TALK_NOTES.md`) and says "Watch it get computed." The ADCS notebook opens with the question "How do
+   we keep records of design judgment auditable ...". Adopt: open with the cubesat engineer's question (what must a
+   small satellite give up to slew fast?), then a figure, then the method.
+2. **Small visible steps, one idea per cell, numbered sections.** `jaxa_notebook.ipynb` runs ten short numbered
+   sections ("## 3 . Traceable oracles ...") with a code cell that prints the quantity just named;
+   `homicidal_chauffeur.py` is twelve sections (section signs) each introducing one object. Adopt: one stage per
+   section, a few lines of markdown, one small code cell, one output.
+3. **Prose after the output, marked as interpretation.** In `jaxa_notebook.ipynb` the sentence "The attitude error is
+   still above the 0.1 line when it crosses the 120 s budget" follows the figure; the oracle records "what it computed,
+   not a judgment". Adopt: every interpretation cell follows its output cell, is headed or tagged as the author's
+   interpretation (human validation), and states what the output did show, not more.
+4. **Verification by machine versus validation by human, stated as a distinction and shown as a section.**
+   `TALK_NOTES.md` beat 9 ("Verify = did we build it right? Validate = did we build the right thing?"), the ADCS
+   README ("A tool says pass. A person says satisfied.") and the hc-marimo notebook's closing V&V section (symbolic
+   and numerical cross-checks, degenerate cases, symmetry) all do it. Adopt: a closing "Verification and validation"
+   section with a machine-checked list (tests, lemma ids, with pointers) and a human list.
+5. **A "What remains" list for the human.** `homicidal_chauffeur.py` ends its V&V with "### What Remains" (F2, F3, F4:
+   checks that need visual comparison and cannot be automated), backed by `VALIDATION_CHECKLIST.md` that separates
+   section A (machine-verified) from section B (requires a human). Adopt: name concretely which figures the reader
+   must judge and what they should look for; leave the judgment to the reader.
+6. **Limits stated plainly and early enough to matter.** The ADCS site: "Every kind of evidence has a blind spot",
+   "The model is not the system", "None of them is the spacecraft". The notebook repeats "Evidence is not
+   verification". Adopt: the limits section (R-12) uses the same declarative voice (hardware is stratified, values
+   illustrative, times censored) and does not hedge into vagueness; the thin margins are stated as numbers.
+7. **One documented visual vocabulary.** `jaxa_notebook.ipynb` defines a palette in its first code cell ("blue,
+   green, purple for X, Y, Z; red reserved for limits") and uses it throughout; the hc-marimo and talk figures keep
+   one colour per player. Adopt: use the plotting module's constants (`FRONTIER_COLOR`, `CATEGORY_COLORS`, ...), say
+   so in the first figure cell, and never reuse a colour for a second meaning.
+8. **Notation introduced at first use, plus a compact legend.** `TALK_NOTES.md` beat 4c: "capital = policy, lowercase
+   = action" introduced before the symbols appear; "define the controls before they appear in the dynamics".
+   Adopt: define V, Z, tau, orientation and the contending set where they first occur, in one sentence each, with the
+   quickstart table near the top (SciPy paper prescription, `presentation-framing.md`).
+9. **Name what was assumed, derived, inherited, leaned on.** Beat 8-9 of the talk: a script "that derives it, checks
+   it, and names what it assumed" (`AXIOMS_USED`), and a ledger of Derived, Posited, Inherited, Leaned-on. Adopt in
+   the final section: the conditions of the theory the case touches (R1, A4, conditioning, regime), by ledger tag.
+10. **Credit sources and claim only the implementation.** The ADCS notebook's ontology section: "The contribution is
+    the assembly, not new terms - imported like open-source packages"; hc-marimo credits Isaacs (1951) and cites the
+    literature in its extensions section; the site credits author, group and projects used. Adopt: cite the packages
+    and the prior work the notebook uses; no novelty, priority or "first" claims; "novelty" is used only as the
+    technical term V - 1.
+11. **Show the failure or the unwelcome result, then discuss it.** `jaxa_notebook.ipynb` section 3 shows REQ-001 failing
+    ("the behavior model itself tells us the settling requirement is not met") before the retune in section 7, and
+    the attestation text says the evidence shows the requirement is "not yet satisfied". Adopt: report the
+    propose-predict-check comparison whether or not it is inside the band, and say plainly when a prediction misses.
+12. **Landing-page tone and cards for anything the notebook points to.** Both sites: a single scrolling page, short
+    declarative sentences, bold labels, one card per artifact with a bold title, a stack line of tools, an audience
+    note, a one-sentence description and a call to action ("Open the notebook ->"), "start wherever suits you",
+    source link at the foot. Adopt: the notebook's opening cell reads like a card (title, byline, stack line, one
+    paragraph, links); WP8 should reuse the card form.
+13. **Narrative arc over taxonomy.** The ADCS notebook is organized as acts ("Act 1: The Assignment" ... "Act 8:
+    Design Iteration") and the HC talk as ten beats ending on the human step. Adopt: keep the R-3 stage headings, but
+    let each section end by saying what the next one needs from it; end on validation, the human step, not on a
+    summary of results.
+14. **Honest mode flags for anything not live.** The ADCS README labels each piece of its demo as precomputed or live
+    with a "labelled fallback"; `jaxa_notebook.ipynb` prints "FLEXO_TOKEN not set - offline rehearsal mode". Adopt:
+    where the notebook reads cached results (datasets, check designs), say so in the cell output ("read from
+    `check_designs_cubesat.csv`, simulated once by `make_check_designs.py`"); no silent regeneration.
+15. **No emojis, no hype.** Neither repository uses emojis in notebooks; the sites avoid superlatives and say what the
+    page does. Adopt: plain headings, no exclamation, no "powerful", "novel" or "breakthrough".
+
+(Observed difference to respect: the two repositories are written as marimo notebooks or Jupyter notebooks with
+interleaved HTML helper output; WP7's deliverable is a plain executed Jupyter notebook, so interactive sliders are not
+used; the static figures carry the story.)
