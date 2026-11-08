@@ -20,5 +20,7 @@ Records typed by the agent (Claude, Fable 5.1 session of 2026-11-07). Decisions 
 ## Acceptance (acceptance gate)
 
 - Review: `work-packages/WP0-review.md` (recommend acceptance with the listed gaps noted).
-- Acceptance act named in the scope: verbal acceptance in chat, to be quoted here verbatim.
-- **Status:** awaiting the supervisor's acceptance.
+- Acceptance act named in the scope: verbal acceptance in chat.
+- **Date:** 2026-11-07
+- **Supervisor (mzargham), verbatim:** "i accept"
+- **Status:** accepted. WP0 is done.
