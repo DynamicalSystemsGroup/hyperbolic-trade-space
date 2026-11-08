@@ -343,7 +343,7 @@ class TermsResult:
     labels : ndarray of shape (N,), dtype int
         Facet of each row (argmax of ``w_k . u - beta_k``).
     objective : float
-        ``sum_k (n_k / N) beta_k``.
+        Mean slack ``(1/N) sum_i (beta_k(i) - w_k(i) . u_i)``; ``beta`` for ``n_terms = 1``.
     n_iter : int
         Partition-and-refit iterations performed.
     success : bool

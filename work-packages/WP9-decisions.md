@@ -118,3 +118,10 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - Driver's question: whether to lift the push hold set on 2026-11-08 (three local commits ahead of
   `origin/main`). **Supervisor (mzargham), verbatim:** "Lift it, push main now"
 - Disposition: hold lifted; `main` pushed; WP9 commits are pushed as they land, each green.
+
+## Delivery (2026-11-08, PM)
+
+- Delivered `main` 3bebe3e..6c304a8; review `WP9-review.md`. Gaps G-1 to G-9 await the driver's
+  triage with the supervisor; PM suggestions: G-5 (recovery rate wording) and the G-1 docstring
+  line fixed after the review in the follow-on commit; the rest accept as is, G-7 (frac_above_
+  rises with K) a follow-up candidate.

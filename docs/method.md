@@ -659,8 +659,9 @@ cycling here is the monotone guard and the iteration cap. I7 states a local opti
 failure mode that the limit depends on the initial partition; restarts mitigate it.
 
 **Only observed.** (i) Recovery on planted data: on planted $K=3$, $d=4$ frontiers the exponents
-are recovered to 0.05 in most seeds (19 or 20 of 20 in the comparisons recorded in the solver's
-documentation), not in every seed. (ii) The cubesat record
+are recovered to 0.05 in most seeds, not in every seed: 19 or 20 of 20 at $N=600$ with half the
+rows on the frontier, but 16 or 17 of 20 at $N=400$ with 30 % on the frontier (the review of WP9),
+where the failing seeds are those in which a planted facet has only a handful of frontier rows. (ii) The cubesat record
 (`docs/superpowers/notes/k3-cubesat.md`) reports the $K=1,2,3$ fits on two datasets. The mean
 slack falls to about a quarter of its $K=1$ value at $K=3$, and the $K=3$ objective agrees across
 five seeds to within $2\times10^{-6}$ in the primary regime. (iii) The fraction of designs above
