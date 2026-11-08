@@ -51,6 +51,9 @@ what it fixes for later packages. The design spec is
 |---|---|---|---|---|---|
 | WP0 | `WP0-scope-of-work.md` | verbal, 2026-11-07 (`WP0-decisions.md`) | `main` 4281350..f5cde59 | `WP0-review.md` | verbal, 2026-11-07 ("i accept", `WP0-decisions.md`) |
 | WP1 | `WP1-scope-of-work.md` | verbal, 2026-11-07 ("OK", `WP1-decisions.md`) | `main` 5e901aa..82fdd47 (incl. L8 fix) | `WP1-review.md` (696aa1f, third pass) | verbal, 2026-11-08 ("i accept", `WP1-decisions.md`) |
-| WP2 | `WP2-scope-of-work.md` | verbal, 2026-11-08 (`WP2-decisions.md`) | `main` c8e0f6e..5c3dc1c | `WP2-review.md` (39fa0c3, fourth pass) | pending |
+| WP2 | `WP2-scope-of-work.md` | verbal, 2026-11-08 (`WP2-decisions.md`) | `main` c8e0f6e..5c3dc1c | `WP2-review.md` (39fa0c3, fourth pass) | verbal, 2026-11-08 ("okay proceed", `WP2-decisions.md`) |
 | WP4 | `WP4-scope-of-work.md` | verbal, 2026-11-08 (`WP4-decisions.md`) | `main` 932bbe4..ef79e83 (incl. Amendment 1) | `WP4-review.md` (9680193, third pass) | verbal, 2026-11-08 ("accept", `WP4-decisions.md`) |
 | WP5 | `WP5-scope-of-work.md` | verbal, 2026-11-08 (`WP5-decisions.md`) | `main` 442a538..4ce27d4 | `WP5-review.md` (1783375, second pass) | verbal, 2026-11-08 ("accept", `WP5-decisions.md`) |
+| WP3 | `WP3-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP3-decisions.md`) | in progress | — | — |
+| WP6 | `WP6-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP6-decisions.md`) | in progress | — | — |
+| WP4b | `WP4b-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP4b-decisions.md`) | in progress | — | — |

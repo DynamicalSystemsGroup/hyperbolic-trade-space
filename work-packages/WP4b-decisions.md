@@ -43,4 +43,12 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 
 ## Scope approval (approval gate)
 
-- pending (draft 2)
+- **Document:** `work-packages/WP4b-scope-of-work.md` at d27c177 (draft 4 plus the toaster amendment).
+- **Date:** 2026-11-08
+- **Context:** the driver presented four gates together (accept WP2; approve WP3, WP6 and WP4b with their defaults lists as one item each) and said one line could cover all four.
+- **Supervisor (mzargham), verbatim:** "okay proceed"
+- **Disposition:** approved; defaults list approved as one item; open decisions: none.
+
+## Acceptance (acceptance gate)
+
+- pending `work-packages/WP4b-review.md`
