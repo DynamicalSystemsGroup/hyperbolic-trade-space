@@ -270,19 +270,67 @@ power 1.3 to 7.4 W, depth of discharge 0.04 to 0.43.
   and inertia. The case is honest about this: the power story is the energy-sizing one (panel and battery against mass), not a
   power-limited slew.
 
+### Amendment 2: R-13 and R-14 rerun on the momentum-feasible set (STOP RULE TRIGGERED)
+
+Feasible now means settled, `power_ok`, `dod_ok` and `momentum_ok` (WP4b scope amendment 2, the supervisor's "Enforce as
+feasibility"). Same dataset (1000 designs), method, conditioning and thresholds; no simulation, no tuning, no new levers.
+Violation shares: settled 11.2 %, `momentum_ok` 55.1 %, `power_ok` 0 %, `dod_ok` 13.1 %.
+
+Feasible designs: 346 of 1000 (previously 772), by wheel class: large 248 (of 311), medium 91 (of 345), small 7 (of 344).
+Small-wheel designs are 98 % infeasible, medium 74 %, large 20 %.
+
+R-14 on the feasible set (medians): saturated fraction small 0.0276, medium 0.0173, large 0.0146; the ratio small/large is
+1.9, so "at least 3 times" FAILS. Settling time small 393 s, medium 196 s, large 73 s (ratio 5.4, the 1.25 clause passes).
+Reason: the 7 surviving small-wheel designs have the smallest slews' worth of momentum (peak momentum about 0.004 N m s)
+only because they are the sluggish, low-gain ones; torque saturation is no longer a discriminating feature.
+
+R-13 on the feasible set (n = 346): working tau = 77.0, `frac_above_` = 0.101, 28 near-frontier rows (medium 20, large 8,
+small 0).
+- Contending set at tau = inf: settling time 0.320, pointing error 0.044, control effort 0.407, eclipse depth of discharge
+  0.017, power margin 0.137, energy balance 0.077. Total mass exponent 0.000, peak slew power 0, eclipse reserve 0.
+  (a) FAILS: the set has six attributes and a power attribute, but total mass is absent (needs >= 0.05).
+- (b) FAILS: bootstrap support (100 resamples) of total mass is 0.00 (needs >= 0.90). Settling time, pointing error and
+  control effort 1.00, power margin 0.92, depth of discharge 0.86, energy balance 0.56, mass 0.00.
+- (c) FAILS on the near-frontier count: associations survive (settling time with total mass -0.79) but only one wheel class
+  (medium, 20 rows) has >= 10 near-frontier designs; large has 8, small 0.
+- (d) passes: strongest power tension peak slew power with settling time -0.899 (then with pointing error -0.614, energy
+  balance with mass -0.515).
+- (e) passes: settling time with control effort -0.984, pointing error with control effort -0.538, pointing error with mass
+  -0.477, settling time with pointing error +0.512.
+- R-15 share check (feasible > 50 % of the dataset) also fails, 346 of 1000.
+
+Agility against mass: the association itself survives (-0.79, stronger than before) but the frontier does not
+support it as a spread across wheel classes: with 7 small-wheel designs left, the near-frontier set is medium and large
+only, and mass drops out of the contending set (mass is carried by the wheel class, which momentum feasibility now
+filters on, so within the feasible set mass varies little: 13.4 to 16.1 kg for large, std about 0.5 kg).
+
+Disposition: per the stop rule the failing tests are marked `xfail(strict=True)` citing amendment 2 (R-15 shares, R-14,
+R-13 a, b, c); no threshold was weakened and nothing was tuned. For the supervisor.
+
 ### Facts for WP7 interpretation
 
-(a) Power never limits a slew in this dataset. The available-power cap on torque is below the wheel maximum in about 3 %
-of designs (3.2 %, large wheels with the smallest panels), and `power_ok` is True for every design. The power attributes
-reach the controls only through mass and inertia (panel and battery mass, lever arm), so power tensions are
-energy-sizing tensions, not power-limited-slew tensions.
+Updated for amendment 2 (feasible = settled, `power_ok`, `dod_ok`, `momentum_ok`; 346 of 1000 designs).
 
-(b) Near-redundant attribute pairs, so that WP7 does not read them as independent findings. On the 772 feasible designs
-(settled, `power_ok`, `dod_ok`), Pearson correlation: power margin with energy balance 0.990 raw, 0.965 for the logs
-(about 0.98 on the oriented, standardized metrics of the R-13 conditioning); eclipse reserve with eclipse depth of
-discharge -0.884 raw, -0.969 against the log of the depth of discharge (the sign is the orientation: a larger reserve
-means a smaller depth, so as oriented metrics the pair is aligned at about 0.95 to 0.97). These pairs are accounting
-near-identities, not separate findings.
+(a) Power never limits a slew in this dataset. The available-power cap on torque is below the wheel maximum in about 3 %
+of designs (large wheels with the smallest panels), and `power_ok` is True for every design. The power attributes
+reach the controls only through mass and inertia (panel and battery mass, lever arm), so power tensions are
+energy-sizing tensions, not power-limited-slew tensions. On the feasible set the power margin is 6.9 to 65 W (median 25 W;
+by class: large median 26.5, medium 23.6, small 16.4 W).
+
+(b) Near-redundant attribute pairs, so that WP7 does not read them as independent findings: power margin with energy balance
+(about 0.98 on the oriented, standardized metrics) and eclipse reserve with eclipse depth of discharge (about 0.95 to 0.97)
+are accounting near-identities, not separate findings (correlations measured on the earlier 772-design set).
+
+(c) Wheel classes on the feasible set: large 248, medium 91, small 7. Small-wheel designs are almost all infeasible
+(momentum storage is exceeded by the 90 degree slew in 93 % of them, and the rest by settling or depth of discharge), so the
+fit sees essentially a medium-and-large-wheel space. Near-frontier rows: medium 20, large 8, small 0. Any statement about
+small wheels (agility against mass, torque saturation) rests on 7 designs and should not be made. Total mass varies little
+inside the feasible set (about 12 to 16 kg) and drops out of the tau = inf contending set; WP7 must not interpret an absent
+mass exponent as "mass does not matter" but as "mass is not a discriminating attribute once momentum-infeasible designs are
+removed".
+
+(d) The richness checks R-13 a, b, c and R-14, and the R-15 feasible-share check, fail on this set (see the amendment 2
+section above); the associations retained (settling time with control effort, with mass, power tensions) still hold.
 
 ### What the SysML client provided for free (R-17)
 

@@ -47,9 +47,16 @@ SUPPORT_TOL = 1e-3  # an exponent above this is in the contending set
 TARGET_FRAC_ABOVE = 0.10
 
 
+AMEND2 = (
+    "WP4b amendment 2 stop rule: on the feasible set (settled, power_ok, dod_ok, momentum_ok) "
+    "this check fails; thresholds not weakened, reported to the supervisor "
+    "(see docs/superpowers/notes/adcs-tensions-probe.md)"
+)
+
+
 def feasible(df: pd.DataFrame) -> pd.DataFrame:
-    """Designs that settled and satisfy both feasibility flags, with all attributes positive."""
-    ok = df.settled & df.power_ok & df.dod_ok
+    """Feasible designs: settled, power_ok, dod_ok and momentum_ok (WP4b amendment 2), attributes > 0."""
+    ok = df.settled & df.power_ok & df.dod_ok & df.momentum_ok
     ok &= (df[ATTRS] > 0).all(axis=1)
     return df[ok]
 
@@ -143,6 +150,7 @@ def test_dataset_shape_and_columns(df):
     assert np.isfinite(df[ATTRS].to_numpy(float)).all()
 
 
+@pytest.mark.xfail(strict=True, reason=AMEND2)
 def test_settled_fraction_and_flag_shares(df, capsys):
     assert df.settled.mean() >= 0.85
     shares = {
@@ -161,9 +169,11 @@ def test_settled_fraction_and_flag_shares(df, capsys):
 # R-14 as amended (WP4b scope amendment 1, work-packages/WP4b-decisions.md): only the two relative
 # clauses remain; the absolute small-wheel level 0.25 was an arbitrary default and is dropped
 # (the committed dataset has 0.237).
+@pytest.mark.xfail(strict=True, reason=AMEND2)
 def test_torque_binds_for_small_wheels(df):
-    med_sat = df.groupby("wheel_class").torque_saturated_frac.median()
-    med_t = df.groupby("wheel_class").settling_time_s.median()
+    ok = feasible(df)  # amendment 2: R-14 is evaluated on the feasible set
+    med_sat = ok.groupby("wheel_class").torque_saturated_frac.median()
+    med_t = ok.groupby("wheel_class").settling_time_s.median()
     small, large = med_sat["small"], med_sat["large"]
     assert small >= 3 * large, med_sat.to_dict()
     assert med_t["small"] >= 1.25 * med_t["large"], med_t.to_dict()
@@ -177,6 +187,7 @@ def test_working_temperature_found(probe):
     assert probe["n_near"] >= 10
 
 
+@pytest.mark.xfail(strict=True, reason=AMEND2)
 def test_a_contending_set_includes_mass_and_a_power_attribute(probe):
     w = probe["w_inf"]
     assert len(probe["contending"]) >= 3, w
@@ -184,12 +195,14 @@ def test_a_contending_set_includes_mass_and_a_power_attribute(probe):
     assert max(w[a] for a in POWER) >= 0.05, w
 
 
+@pytest.mark.xfail(strict=True, reason=AMEND2)
 def test_b_bootstrap_support_of_mass_and_power(probe):
     frac, med = probe["boot_frac_in_support"], probe["boot_median_w"]
     assert frac["total_mass_kg"] >= 0.90 and med["total_mass_kg"] >= 0.05, (frac, med)
     assert any(frac[a] >= 0.90 and med[a] >= 0.05 for a in POWER), (frac, med)
 
 
+@pytest.mark.xfail(strict=True, reason=AMEND2)
 def test_c_agility_against_mass(probe):
     assert probe["assoc"].loc["settling_time_s", "total_mass_kg"] <= -0.30
     big = [w for w, c in probe["wheel_near_counts"].items() if c >= 10]

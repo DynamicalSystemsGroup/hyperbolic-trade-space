@@ -148,7 +148,7 @@ def main(argv=None) -> int:
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--model", choices=["adcs", "cubesat"], default="adcs")
     p.add_argument(
-        "--slew-deg", type=float, default=None, help="slew angle (default 10 / cubesat 45)"
+        "--slew-deg", type=float, default=None, help="slew angle (default 10 / cubesat 90)"
     )
     p.add_argument("--t-end", type=float, default=None, help="horizon in s (default 900 / cubesat)")
     p.add_argument("--out", type=pathlib.Path, default=None)
