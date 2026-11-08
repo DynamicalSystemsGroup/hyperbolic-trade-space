@@ -298,7 +298,7 @@ def test_e_previous_tensions_retained(probe):
 
 @pytest.mark.parametrize("dataset", REGIME, indirect=True)
 def test_regime_comparison_stock_gains(probe, dataset):
-    """Regime comparison: at the stock gains (median Kd/Kp 3.9) wheel class is a feasibility boundary.
+    """Regime comparison: at the stock gains (Kd/Kp 3.9) wheel class is a feasibility boundary.
 
     The slow pole of the PD loop hides the wheel class, so agility does not trade against mass
     (recorded numbers: settling-mass -0.13 / -0.13 and slew time-mass -0.11 / -0.08, baseline /
