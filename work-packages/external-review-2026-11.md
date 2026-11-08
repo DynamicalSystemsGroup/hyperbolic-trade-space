@@ -109,7 +109,27 @@ and the L10 docstring are wrong, as the reviewer says.
   the conditioned empirical model and not a causal exchange goes into the interpretation section.
   Response text: after the change.
 
-Pending: E-7 to E-10 (E-1's implementation scope after the spike).
+- **E-7 (four implementation and terminology items), first pass.** Driver's options: accept all four
+  / accept (iii) and (iv) now and (i), (ii) later / decline part. **Supervisor (mzargham), verbatim:**
+  "can we look at them a little closer. let's make sure we distinguish claims about the formal
+  abstractions and the implementations. we know these are different things as the reviewers noted.
+  i don't want to muddle up the text with lots of caveats if we can just clarify that the
+  theoretical objects formal properties are conditioned on assumptions we cannot know hold in
+  practice and thus we interpret results in light of them. this a common map territory gap for
+  numerical methods. we should maintain a record of these gaps but also not trip over ourselves
+  relitigating them. focus on the core research materials documenting the abstraction gaps and
+  assumptions that we cannot strictly prove hold but we can explore how sensitive they are in
+  practice. ideally we're insensitive enough to get practical results without throwing the baby out
+  the baby the bath water. look at these four and also have a look at the other feedback through
+  this lens so we take a consistent position. all models are wrong some are useful, useful to a
+  specific purpose in a specific situation and we're focused on improving trade studies"
+- Disposition: open; the driver examines the four items in the code and docs, classifies each
+  (formal claim / implementation convention / wording), re-reads E-1 to E-10 through the same lens,
+  and proposes one consistent position (a standing record of abstraction gaps with their bridging
+  assumptions and sensitivity evidence; derivations sharp; prose stating the policy once) before
+  the next question.
+
+Pending: E-7 (second pass), E-8 to E-10 (E-1's implementation scope after the spike).
 
 ## Response letter
 
