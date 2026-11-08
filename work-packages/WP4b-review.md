@@ -46,7 +46,7 @@ A fresh reviewer who built none of WP4b and wrote none of its earlier reviews; r
 
 ### CI (`gh run list --limit 10`, plus failures in the last 40)
 
-The latest ten runs (`9bd` through `f1e38ca`, listed newest first from `f1e38ca`) are all success; the latest, `f1e38ca`, in 2m00s. Three red runs earlier, causes confirmed with `gh run view --log-failed`, all the aggressive-box first-20 reproducibility test: `7a175a4` (continuous column, 1 of 20, max abs difference 2.3e-5, rtol 1e-4), `4897434` (note-only commit, same code; `torque_saturated_frac` 3 of 20, abs 0.0027), `be9ea7d` (3 of 20, abs 0.0061). Fixed by `620cfc8`; no red run since.
+The latest ten runs (from `f1e38ca` back to `af8b08d`) are all success; the latest, `f1e38ca`, in 2m00s. Three red runs earlier, causes confirmed with `gh run view --log-failed`, all the aggressive-box first-20 reproducibility test: `7a175a4` (continuous column, 1 of 20, max abs difference 2.3e-5, rtol 1e-4), `4897434` (note-only commit, same code; `torque_saturated_frac` 3 of 20, abs 0.0027), `be9ea7d` (3 of 20, abs 0.0061). Fixed by `620cfc8`; no red run since.
 
 ## Independent hand probe on the PRIMARY dataset
 
