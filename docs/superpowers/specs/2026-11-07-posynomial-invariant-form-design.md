@@ -253,16 +253,25 @@ mixed orientation and shift; unit log-std; `frontier_in_original_units` reproduc
 
 ## 6. Derivation scripts (derivation/, SymPy, hc-marimo pattern)
 
+**Abstract spaces, not enumerated instances (supervisor's direction, 2026-11-07).** The chain
+works at symbolic dimension d, symbolic sample count n and symbolic term count K: metrics and data
+as `IndexedBase` (m_j, u_ij) with symbolic bounds, exponents w_j with the simplex constraint
+Σ_j w_j = 1 carried as a substitutable `Sum`, sums and products as `Sum`/`Product` over symbolic
+ranges, and the chart as a `MatrixSymbol` basis B with its defining properties (B Bᵀ = I, B 1 = 0)
+taken as hypotheses. Identities are verified in log space, where everything is linear in sums.
+Concrete instantiation (e.g. d = 3, n = 3) is only a secondary cross-check substituted into the
+abstract identity, never the proof; any step that resists abstract simplification falls back to a
+clearly labelled inherited axiom or an explicitly stated hypothesis, recorded in the ledger.
+
 Layout mirrors `/Users/z/Documents/GitHub/hc-marimo/derivation/` (see
-`docs/superpowers/notes/proof-conventions.md`): `symbols.py` (`make_symbols(d, n)`: w_1..w_{d−1}
-with w_d = 1 − Σ, u_{ij}, τ, κ, σ, c, k; `SYMBOL_ASSUMPTIONS` mapping each strong Symbol assumption
-to its licensing axiom), `axioms.py` (frozen dataclass; tags POSITED / INHERITED-with-citation /
-REGULARITY), `lemma_NN_<slug>.py` (`TITLE`, `STATEMENT`, `AXIOMS_USED`, `derive(ctx)`,
-`verify(ctx)`, "what this proves / does not prove" docstring), `run.py` (`CHAIN`, `run_chain`,
-`print_audit` ledger DERIVED / POSITED / INHERITED / REGULARITY), `tests/test_derivation.py` (full
-chain at d ∈ {2,3,4}, n ∈ {2,3}; per lemma; no phantom axioms; inherited are cited; load-bearing
-Symbol assumptions declared). Docs say generic-d statements are proved in prose and instantiated
-mechanically at these sizes.
+`docs/superpowers/notes/proof-conventions.md`): `symbols.py` (abstract symbol namespace: d, n, K,
+indices i, j, k, `IndexedBase` m, u, w, θ, β, τ, κ, σ, c; `SYMBOL_ASSUMPTIONS` mapping each strong
+Symbol assumption to its licensing axiom), `axioms.py` (frozen dataclass; tags POSITED /
+INHERITED-with-citation / REGULARITY), `lemma_NN_<slug>.py` (`TITLE`, `STATEMENT`, `AXIOMS_USED`,
+`derive(ctx)`, `verify(ctx)`, "what this proves / does not prove" docstring), `run.py` (`CHAIN`,
+`run_chain`, `print_audit` ledger DERIVED / POSITED / INHERITED / REGULARITY),
+`tests/test_derivation.py` (full abstract chain; per lemma; concrete cross-check by substitution;
+no phantom axioms; inherited are cited; load-bearing Symbol assumptions declared).
 
 Axioms: POSITED A1 metrics positive; A2 exponents on the simplex; A3 τ > 0; A4 conditioning
 log-affine and invertible (α_j ≠ 0); A5 noise i.i.d. N(0, σ²I); A6 κ > 0 and each term on the
