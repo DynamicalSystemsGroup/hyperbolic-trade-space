@@ -13,8 +13,10 @@ This repository is built as supervisor-gated work packages, following the superv
   `work-packages/WPn-decisions.md` (supervisor: "we can do verbal approvals for now"; release
   controls, e.g. PR-merge records, come after the first release).
 - **Hierarchy:** the supervisor is the chief engineer; the Fable session is his assistant and
-  driver; a Sonnet 5.5 project manager (PM) reports to the driver and orchestrates Sonnet 5.5
-  implementer subagents. The driver coordinates with the supervisor only to escalate: the gate
+  driver, filtering what the PM escalates; ONE Sonnet 5.5 project manager (PM), persistent across
+  packages, reports to the driver, drafts scopes, runs approved packages concurrently on disjoint
+  files, and orchestrates fresh implementer and reviewer subagents, each bound to one task and
+  scope (the supervisor's words of 2026-11-08 in `PM-BRIEF.md`). The driver coordinates with the supervisor only to escalate: the gate
   decisions that are his (scope approval, acceptance) and problem-level changes. Acceptance reviews
   run in a fresh context, never the one that built the work. WP0 was executed by the driver.
 - **Files per package:** `WPn-scope-of-work.md` (template in the `scope-of-work` skill),

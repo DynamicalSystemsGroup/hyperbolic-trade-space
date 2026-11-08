@@ -28,3 +28,13 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Supervisor (mzargham), verbatim:** "Approved"
 - **Disposition:** approved; `work-execution` starts under the PM/implementer pattern on `dev`;
   the acceptance merge to `main` is the driver's.
+
+## Process note (2026-11-08, not a WP13 decision)
+
+- The supervisor, verbatim: "its supposed to be one PM not multiple PMs but then the implementers
+  and reviewers are clean sub agents with specific tasks who are not allowed to deviate from their
+  scopes without explicit approvals and PM makes sure it all works together. the fable level is my
+  assistant who decides whether what the PM escalates actually needs to go to me or not."
+  Disposition: the WP13 PM becomes the single PM across packages; it drafts the WP14, WP8a and WP10
+  scopes through bounded subagents while WP13 executes, and later runs the approved packages
+  concurrently; `PM-BRIEF.md` and the README carry the hierarchy.
