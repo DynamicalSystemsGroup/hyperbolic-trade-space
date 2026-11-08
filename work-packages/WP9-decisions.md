@@ -244,3 +244,18 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   condition = `n_restarts` (default 5) on `solve_terms` and the estimator, with the docs naming more
   restarts as the analyst's option; a fresh third review of the delta; then the gate resumes with
   G2-7 and the bundle.
+- Third review delivered (`WP9-review.md`, "Third review"; commits bdf17b2 and 96044fe; CI green at
+  run 42528218236). Driver's own checks: 1116 passed, 11 skipped, 1 xfailed; ruff, format, lock
+  clean; attribution grep 0 over 3bebe3e..HEAD; the solver-level ledger class is defined in
+  `proof-conventions.md` and cited on the method page; `n_restarts` exists with default 5. G3-1
+  (the reviewer found that more restarts do not recover seeds 1, 3, 16 and can lose seed 8, so the
+  docs now call `n_restarts` a cost-for-robustness knob with the measured limits): fixed by the PM
+  before hand-back; noted here as the kind of understanding the supervisor asked to have documented.
+- **G2-7 (τ not re-selected at K; stock log-plane figure legibility).** Options: follow-up package
+  and WP10 figures / fix before acceptance / accept as is. **Supervisor (mzargham), verbatim:** "Fix
+  before acceptance". Disposition: Amendment 3 of the scope: the cubesat record re-selects τ at each
+  K by the same criterion as at K = 1 (a target fraction of designs above V = 1, now of the K-facet
+  envelope), reports the re-selected fits as the record and keeps the fixed-τ table as the
+  diagnostic that shows why; the log-plane figures draw each facet's envelope only in slices where
+  that facet has weight on both plotted metrics, or choose slices that have it; a fresh fourth
+  review of the delta; then the bundle and acceptance.

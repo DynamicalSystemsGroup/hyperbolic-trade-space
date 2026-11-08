@@ -230,3 +230,33 @@ R-6 is restated above to its intent: the K = 1 results and the notebook are unch
 pre-existing K = 1 assertions are intact, and edits forced by approved deliverables are listed in
 the review with their reasons. No test or ledger restructuring is done to satisfy a count.
 Nothing else changes.
+
+## Amendment 3 (2026-11-08, at the acceptance gate; supervisor's G2-7 disposition)
+
+What changed and why, per scope-of-work section 6. The record (D-6) used the temperature selected
+at K = 1 for the K = 2 and K = 3 fits, so the fraction of designs above the K-facet envelope rose
+to about a third (reviewed as G-7 and G2-7); and two of three stock-regime log-plane panels showed
+no envelope (G-6). The supervisor's disposition, verbatim in `WP9-decisions.md`: "Fix before
+acceptance". Items below replace or extend their originals; everything not named is as approved.
+
+- D-6 and the "Cubesat record" default: for each regime and each K in {1, 2, 3}, τ is selected by
+  `select_temperature` with the same target (a tenth of designs above V = 1) applied to the
+  K-term fit, so the band means the same thing at every K; the record reports the re-selected
+  fits (τ, band, facets, contending sets, n-lemmas, reach, share, near-frontier counts) as the
+  record, and keeps the fixed-τ table (τ from K = 1 reused at K = 2, 3) as the diagnostic that shows
+  the effect of not re-selecting; `select_temperature` accepts the estimator parameters it needs
+  for this (`n_terms`, `facet_step`, `n_restarts`, `random_state`) *(default)*. The K = 1 rows are
+  unchanged.
+- D-4 and R-7 (figures): a log-plane slice draws a facet's envelope only where that facet has
+  weight on both plotted metrics (exponents above the report's participation threshold), and the
+  record's slices are chosen so that every facet is visible in at least one panel; the caption of
+  each figure names the facets it shows *(default)*. If a legible two-metric slice does not exist
+  for a facet, the record says so and the coordinates and tension figures carry it.
+- R-7: "both cubesat datasets at K = 3 fit" is checked at the re-selected τ; the fixed-τ diagnostic
+  is present.
+- `docs/superpowers/notes/k3-cubesat.md`, `docs/limitations.md` (the open question "a K-specific
+  temperature" becomes "τ is re-selected at each K by the K = 1 criterion; whether the target
+  fraction should differ by K is open") and `docs/method.md` follow.
+
+Re-approval: the supervisor's disposition is the approval of this amendment; the delivery is
+re-reviewed (fourth review, delta) before acceptance.
