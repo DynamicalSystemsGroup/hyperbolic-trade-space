@@ -72,7 +72,7 @@ that the paper can show the cubesat case at K = 1 and K = 3.
 | R-3 | At `n_terms=K`, `transform` returns `(Z, log V)` with `log V = Φ_K(u)` and `inverse_transform(transform(X))` reproduces `X` within 1e-8 on the facet each row is assigned to; `score_samples` equals `log V` | `tests/test_estimator.py` round trip at K = 2, 3 |
 | R-4 | `tension_report` at `n_terms=K` returns K reports, each with `n_near_frontier >= min_near_frontier` on the planted data, and the facet contending sets differ where the planted facets differ | `tests/test_tensions.py` |
 | R-5 | scikit-learn conformance holds at `n_terms=3` as it does at 1: `parametrize_with_checks` on `HyperbolicTradeSpace(n_terms=3)` with the same expected-failures dict | `tests/test_sklearn_compat.py` |
-| R-6 | The K = 1 path is byte-for-byte the same: the WP7 notebook's committed report outputs and `tests/test_notebook.py` pass unchanged; every pre-existing test passes without edits to its assertions | `uv run pytest`; `git diff` of `tests/` shows additions only in the pre-existing files |
+| R-6 | The K = 1 path is byte-for-byte the same: the WP7 notebook's committed report outputs and `tests/test_notebook.py` pass unchanged; every pre-existing assertion about K = 1 behaviour is intact; a pre-existing test changes only where an approved deliverable makes its assertion false (a feature that now exists, a lemma that now exists), and every such change is listed in the review with its reason (amended, see Amendment 2) | `uv run pytest`; `git diff` of `tests/` against the pre-package commit, each removed or edited line listed and justified in the review |
 | R-7 | Both cubesat datasets (primary and stock gains) at K = 3 fit, and the record (D-6) states per regime and per facet: size, contending set, n-lemma, the largest exponents, the near-frontier count, and how the K = 1 contending set relates to the three; figures exist and are legible | run D-6; inspect the record and figures |
 | R-8 | New code is small: net added lines in `src/hyperbolic_trade_space/` (excluding docstrings, blank lines and tests) within the budget in the defaults; no new dependency | `git diff --stat`; a line count the reviewer runs; `uv lock --check` |
 | R-9 | Docs: the method page states the algorithm, cites L10 for the identities it uses and the ledger entry for what is inherited, and claims nothing about global optimality; "documented, not built" no longer appears for K > 1; `tests/test_docs.py` and `tests/test_narrative.py` pass | read the pages; run the tests |
@@ -216,3 +216,17 @@ their originals; everything not named is as approved.
 Re-approval: the supervisor's disposition above is the approval of this amendment (it was decided
 at the gate in the decision loop); the delivery is re-reviewed in full by a fresh reviewer before
 acceptance.
+
+## Amendment 2 (2026-11-08, at the acceptance gate; supervisor's G2-3 direction)
+
+What changed and why, per scope-of-work section 6. R-6 as approved said "every pre-existing test
+passes without edits to its assertions" and "additions only", which contradicts the package's own
+deliverables: a test asserting that `n_terms > 1` is not implemented must change when it is
+implemented, and tests that hard-code the lemma count must change when L11 is added. The
+supervisor, verbatim (`WP9-decisions.md`): "i think the lemma count is arbitrary and i don't want
+you to mess up the logical structure or clarity to game a metric" and "start by relaxing
+artificial constraints then tell me what gap remains and propose how to address remaining gaps".
+R-6 is restated above to its intent: the K = 1 results and the notebook are unchanged, the
+pre-existing K = 1 assertions are intact, and edits forced by approved deliverables are listed in
+the review with their reasons. No test or ledger restructuring is done to satisfy a count.
+Nothing else changes.

@@ -201,3 +201,38 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   state are defaults in the amendment (keyword name, the identifiability condition in the planted
   generator and in R-1, the recovery claim quoted as measured). The whole review is rerun after the
   fix (work-acceptance rule).
+
+## Acceptance gate, second review (2026-11-08)
+
+- Review of record: `work-packages/WP9-review.md`, "Second review (after Amendment 1)" (b61df28;
+  CI green at run 42525071154 on 27d5b04). Driver's own checks: 1115 passed, 11 skipped, 1 xfailed;
+  ruff, format, lock clean; attribution grep 0 over 3bebe3e..HEAD.
+- **G2-1 (recovery 16 to 17 of 20 against "works in practice for small K").** Options: accept as
+  is / fix before acceptance / follow-up package. **Supervisor (mzargham), verbatim:** "accept as is
+  and document why, document the option to do more restarts etc. this is a good \"good enough\"
+  result we just need to make sure we understand it and that this understanding is documented".
+  Disposition: accepted as is, with a documentation condition checked by the driver before the
+  acceptance record: the docs state why recovery fails (thin facets, a local optimum), and name the
+  options an analyst has (more restarts, a better start, the tangent step), so the understanding is
+  recorded.
+- **G2-3 (R-6 literal wording; six old test lines changed).** Options: accept as is / fix before
+  acceptance. **Supervisor (mzargham), verbatim:** "Fix before acceptance". Disposition: fix is
+  separate work and the review is rerun; the driver asks one question a level up on which of the
+  six edits must be undone, since two are forced by the feature existing (the not-implemented test
+  and the lemma ceilings).
+- On the driver's question which edits the G2-3 fix must undo. **Supervisor (mzargham),
+  verbatim:** "i am unclear about what you are proposing and why. lay out in detail for me what you
+  are proposing we do and why". Disposition: the driver lays out R-6, the six edits, why each was
+  made and what undoing each would mean, in chat, before asking again.
+- After the driver's lay-out of R-6 and the six edits. **Supervisor (mzargham), verbatim:** "i think
+  the lemma count is arbitrary and i don't want you to mess up the logical structure or clarity to
+  game a metric". Disposition: no restructuring of tests or ledger to satisfy R-6's literal wording;
+  the lemma-count ceilings stay as edited numbers; the driver asks what the G2-3 fix is, since the
+  tests are not it.
+- Driver's question: what the G2-3 fix is (fix the requirement / restore the audit's meaning only /
+  accept as is). **Supervisor (mzargham), verbatim:** "start by relaxing artificial constraints
+  then tell me what gap remains and propose how to address remaining gaps". Disposition: Amendment 2
+  restates R-6 to its intent (K = 1 results and the notebook unchanged; pre-existing K = 1
+  assertions intact; edits forced by approved deliverables listed with their reasons) and drops
+  "additions only" and the hard-coded lemma counts as constraints; the driver then names the gap
+  that remains and proposes how to address it.
