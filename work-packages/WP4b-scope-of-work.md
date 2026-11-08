@@ -98,6 +98,15 @@ What changed and why, per scope-of-work section 6; the supervisor's choice "Amen
 - R-14: the absolute threshold "median `torque_saturated_frac` of small-wheel designs is at least 0.25" is dropped; the two relative clauses stay (saturation ratio small/large at least 3; settling ratio small/large at least 1.25). The 0.25 was an arbitrary default of the PM, not a requirement from the spec or the supervisor; the final dataset gives 0.237 for small wheels, ratio about 17 for saturation and about 3.2 for settling, and R-13 holds in full. No new simulation is run and the committed dataset stands.
 - Nothing else changes: goals, non-goals, deliverables, R-13 and the definitions of good and good enough are as approved.
 
+## Amendment 2 (after the first review, approved at the review-gap gate)
+
+What changed and why, per scope-of-work section 6; the supervisor's choice "Enforce as feasibility" is recorded verbatim in `work-packages/WP4b-decisions.md` ("amendment 2").
+
+- Feasibility: a design is feasible for the fit when it is settled, `power_ok` and `momentum_ok`. Previously `momentum_ok` was informational and designs that exceed wheel momentum storage (55 % of the dataset, 93 % of small-wheel designs, because the 90° slew exceeds storage and the simulator does not clip momentum) stayed in the fit. Everywhere this scope says "feasible designs" (R-13, R-15 and the probe method) it now means settled ∧ power_ok ∧ momentum_ok.
+- R-13 and R-14 are rerun on that feasible set with no other change: no new levers, no tuning, no new simulation, the committed dataset stands. If R-13 or R-14 fails on the feasible set, the stop rule applies and execution stops with a report to the driver (agility against mass may collapse); R-14 is evaluated on the feasible set.
+- The stale `--slew-deg` help text in `generate_dataset.py` is corrected (the cubesat default is 90°).
+- Nothing else changes.
+
 ## Definition of good
 
 - The cubesat makes engineering sense at a glance: bigger panels give more power, cost mass and slow the slew; bigger batteries ride through eclipse and weigh more; bigger wheels are agile, heavy and hungry; finer star trackers point better, weigh more and draw more. The fit finds these on its own.
