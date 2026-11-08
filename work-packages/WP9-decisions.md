@@ -125,3 +125,5 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   triage with the supervisor; PM suggestions: G-5 (recovery rate wording) and the G-1 docstring
   line fixed after the review in the follow-on commit; the rest accept as is, G-7 (frac_above_
   rises with K) a follow-up candidate.
+- Post-review fix 2: CI on Linux failed one plotting test through facet relabelling of duplicate
+  facets (d = 2, K = 3); the test is now permutation-robust (see `WP9-review.md`).

@@ -126,3 +126,19 @@ Pending the supervisor, through the decision loop. Reviewer's suggestions:
 Recommend acceptance with the listed gaps noted, once G-5 is dispositioned (suggested: the one-sentence docs fix, after which the whole review is rerun as the skill requires, or you accept it as is). Reasons: every deliverable and requirement is met with run evidence (1049 tests pass, lint, format, lock, derivation and attribution checks clean; 218 of 300 budgeted lines; K=1 notebook and tests untouched; the cubesat record reproduces exactly), the PM's disclosed deviations are documented and defensible, and no non-goal was touched. The honest limits are that planted recovery is 16-17 of 20 seeds (failing where a facet has almost no frontier rows) and that `frac_above_` rises with K.
 
 Acceptance is the supervisor's act, recorded as named above. This report does not accept the work.
+
+## Post-review fix 2 (CI on Linux)
+
+- **What failed.** GitHub runs 42517718511 and 42518318170 (commits 6c304a8, 28caf5b):
+  `tests/test_plotting.py::test_log_plane_k3_draws_envelope_and_facet_legend` got legend labels
+  `['facet 1', 'facet 3']` where it expected `['facet 1', 'facet 2']`. It was the only failure.
+- **Cause.** The test plants K = 3 facets in d = 2, where only two distinct facets exist; the fit
+  returns two near-identical facets (locally exponents [.87,.13], [.21,.79], [.21,.79]) and which
+  of the duplicates takes the rows is a tie that differs by platform. A relabelling of equal
+  fits, not a different optimum; the other K = 3 tests (recovery, tensions, sklearn, cubesat) passed
+  on Linux. The test wrongly assumed the legend labels are consecutive.
+- **Change.** The test now asserts that the labels are a set of at least two names within
+  `facet 1..K`. No solver change (the K = 1 path and facet order in `solve_terms` are untouched);
+  `tests/test_k_terms_case.py` and the cubesat record assert nothing on facet order (shares, counts
+  and exponents per facet are reported as fitted; numbering is by fit and may differ by platform).
+- **Green run:** see the Delivery entry in `WP9-decisions.md`.
