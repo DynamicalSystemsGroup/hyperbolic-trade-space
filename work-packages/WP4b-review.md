@@ -1,165 +1,137 @@
-# WP4b — Review report (fourth pass)
+# WP4b — Review report (fifth pass)
 
 | | |
 |---|---|
-| **Scope of work** | `work-packages/WP4b-scope-of-work.md` with Amendments 1 to 5 (R-14 relative clauses; momentum enforced; physically consistent 30 degree scenario; slew-time attribute and ten attributes; aggressive-gain box and momentum utilisation levers) |
-| **Scope approval verified** | The project has no PRs, so the recorded act is `work-packages/WP4b-decisions.md`: "Scope approval (approval gate)", supervisor mzargham, verbatim "okay proceed", document at `d27c177`. Amendment 1 "Amend R-14 to its intent; keep the dataset"; amendment 2 "Enforce as feasibility" and "Fix the stale help text, accept the rest"; amendment 3 "Reopen levers for a physically consistent scenario"; amendment 4 "One physics-justified lever: slew-time attribute"; amendment 5 "try both new levers then report back" (record `5b1d087`, scope text `78c39c8`, both before the reasoning commit `75823dc`). Records typed by the agent, decisions are the supervisor's. |
-| **Work reviewed** | `main` at `620cfc8`. Amendment 5 delivery: scope `78c39c8`, reasoning note `75823dc` (01:09:22), generating commit `7a175a4` (01:16:58), results note `4897434`, tolerance fixes `be9ea7d`, `620cfc8`. Earlier delivery as in the third pass (`5dfbc8c` to `6c8c3e9`). Start for diffs `5dfbc8c~1`; WP4 state `932bbe4` (simulator) and `9680193` (WP4 tests, CSV, design space). |
+| **Scope of work** | `work-packages/WP4b-scope-of-work.md` with Amendments 1 to 6 (R-14 relative clauses; momentum enforced; physically consistent 30 degree scenario; slew-time attribute and ten attributes; aggressive-gain box and momentum utilisation levers; Amendment 6: the aggressive-gain dataset is the primary case dataset on which R-13, R-14, R-15 are evaluated, the 30 degree baseline is the regime comparison whose null result is a recorded finding) |
+| **Scope approval verified** | The project has no PRs; the recorded act is `work-packages/WP4b-decisions.md`: "Scope approval (approval gate)", supervisor mzargham, verbatim "okay proceed", document at `d27c177`. Amendments 1 to 5 and the round-4 dispositions ("Both, as two regimes"; "Fix G-6 note, G-5 to follow-up, accept the rest") are recorded verbatim in the same file; Amendment 6 is committed in `5665272` and applies the supervisor's "Both, as two regimes". |
+| **Work reviewed** | `main` at `93d162c`. Since the fourth pass (`2258281`): `a104195` (decisions), `5665272` (Amendment 6), `5c252f7` (regime structure in the suite, complete miss list, conditions, two-regimes table, follow-up candidates), `93d162c` (line length). Earlier delivery as in the fourth pass (`5dfbc8c` to `620cfc8`). Start for diffs `5dfbc8c~1`; WP4 state `932bbe4` (simulator) and `9680193` (WP4 tests, CSV, design space). |
 | **Supervisor (accepts)** | mzargham |
 | **Acceptance record** | Verbal acceptance in chat, quoted verbatim in `work-packages/WP4b-decisions.md`, after this report |
 
-A fresh reviewer who built none of WP4b and wrote none of its earlier reviews; replaces the third-pass report. Every command was run in this session with `unset VIRTUAL_ENV`. Review only: two trial edits were made and undone with `git checkout`; `git status` is clean. The review covers BOTH datasets: the 30 degree baseline `adcs_designs_cubesat.csv` and the aggressive-gain dataset `adcs_designs_cubesat_gains.csv`, plus the two utilisation variants. Which dataset stands is the supervisor's decision; this report does not choose.
+A fresh reviewer who built none of WP4b and wrote none of its earlier reviews; replaces the fourth-pass report. Every command was run in this session with `unset VIRTUAL_ENV`. Review only: four trial edits were made and undone with `git checkout`; `git status` is clean. The review is a complete one from step 1 against the amended scope; R-13, R-14 and R-15 are evaluated on the PRIMARY dataset `adcs_designs_cubesat_gains.csv`, and the baseline is checked through its regime-comparison assertions.
 
 ## Deliverables
 
 | ID | Verdict | Evidence |
 |---|---|---|
-| D-1 | met | `cubesat_tradespace.sysml`: amendment 5 adds `part def AggressiveGainSpace` (KpMin 0.2, KpMax 2.0, KdMin 0.3, KdMax 1.5) and `part aggressiveGains`; the baseline `designSpace` is unchanged (`git diff 6c8c3e9 HEAD`). |
-| D-2 | met | `cubesat_model.py`: `GAIN_BOXES` maps `baseline` to `designSpace` and `aggressive` to `aggressiveGains`, the sampler reads Kp, Kd from the selected part; `CubesatModel.wheel_capacities()` reads `maxMomentum` per wheel class through the client; `add_momentum_utilisation(df, capacities)` returns a copy. |
-| D-3 | met | `generate_dataset.py`: additive `--gain-box {baseline,aggressive}`, default unchanged; `--gain-box` with `--model adcs` is an error. |
-| D-4 | met | Baseline CSV: last changed `a27502e` (amendment 4), not touched since (`git diff 6c8c3e9 HEAD --stat -- adcs_designs_cubesat.csv` empty). New `adcs_designs_cubesat_gains.csv`: 1000 rows, same 35 columns, 30 degrees, 600 s, seed 0, aggressive box. Utilisation is derived on read; no CSV rewritten. |
-| D-5 | met | `uv lock --check`: "Resolved 173 packages". |
-| D-6 | met (5 strict xfails, all WP4b, all per dataset) | `REQUIRE_OPENSYSML=1 uv run pytest -q -rx tests/test_cubesat_model.py tests/test_adcs_enrichment.py`: 74 passed, 5 xfailed in 49 s. xfails: `test_a_`, `test_b_`, `test_c_` on `[baseline]`; `test_c_` and `test_e_` on `[headroom]`. No xfail on `[gains]` or `[gains_headroom]`. |
-| D-7 | met | Probe note: "Amendment 5: three levers" (reasoning) and "Amendment 5: results". |
-| D-8 | met | `WP4b-decisions.md` holds approval, amendments 1 to 5 verbatim; acceptance pending. |
+| D-1 | met | `examples/adcs/cubesat_tradespace.sysml` (baseline `designSpace`, `AggressiveGainSpace`/`aggressiveGains`); unchanged since `7a175a4` (`git diff 7a175a4..HEAD -- examples src` empty). |
+| D-2 | met | `examples/adcs/cubesat_model.py` loads the model through `opensysml`, samples from model ranges, `GAIN_BOXES`, `wheel_capacities()`, `add_momentum_utilisation`; unchanged since `7a175a4`. |
+| D-3 | met | `generate_dataset.py` additive flags (`--model`, `--gain-box`); defaults unchanged. |
+| D-4 | met | Primary `adcs_designs_cubesat_gains.csv`: last changed `7a175a4`, `git diff 7a175a4 HEAD --stat` empty. Baseline `adcs_designs_cubesat.csv`: last changed `a27502e`, `git diff 6c8c3e9 HEAD --stat` empty. |
+| D-5 | met | `uv lock --check`: "Resolved 173 packages". `pyproject.toml` last changed `5dfbc8c`. |
+| D-6 | met | `REQUIRE_OPENSYSML=1 uv run pytest -q tests/test_cubesat_model.py tests/test_adcs_enrichment.py`: **73 passed**, no xfail, no skip, 50 s. No `xfail`/`EXPECTED_FAIL` remains in either test file (grep). |
+| D-7 | met, with wording-level staleness | Probe note updated (see "Probe note checks"). |
+| D-8 | met | `WP4b-decisions.md` holds approval, amendments 1 to 5, round-4 dispositions verbatim, follow-up candidates; acceptance pending. |
 
 ## Requirements
 
 | ID | Verdict | Evidence |
 |---|---|---|
-| R-1 | met | `git diff 932bbe4..HEAD -- examples/adcs/adcs_sim.py` empty (byte-identical); `git diff 9680193..HEAD --stat -- adcs_sim.py tests/test_adcs_case.py adcs_designs.csv design_space.py` empty. WP4 tests pass in the full suite. |
-| R-2 | met | Original CSV, `design_space.py`, WP4 tests untouched; default generator behaviour unchanged. |
-| R-3 | met | Model tests pass under `REQUIRE_OPENSYSML=1`. |
-| R-4 | met | Test `test_no_duplicated_constants_in_python` passes. My trial on a COPY of the model (`/private/tmp/claude-501/scratch/copy.sysml`, aggressive box edited to KpMin 0.5, KdMax 0.9): copy aggressive ranges (0.5, 2.0) and (0.3, 0.9), copy baseline ranges unchanged (0.03, 1.0), (0.3, 1.5); the sampler's Kp minimum moves 0.202 to 0.503 and Kd maximum 1.498 to 0.899 with wheel and span columns identical. No gain-box number appears in Python (grep of 0.2, 2.0, 0.3, 1.5 in `cubesat_model.py`: no hits). |
-| R-5, R-6, R-8, R-9, R-10 | met | Pass inside the 74 model and enrichment tests and the full suite (unchanged code paths). |
+| R-1 | met | `git diff 932bbe4..HEAD --stat -- examples/adcs/adcs_sim.py` empty (byte-identical). `git diff 9680193..HEAD --stat -- tests/test_adcs_case.py examples/adcs/data/adcs_designs.csv examples/adcs/design_space.py` empty. WP4 tests pass in the full suite. |
+| R-2 | met | Original CSV, WP4 tests, design space untouched; defaults of the generator unchanged. |
+| R-3 to R-6, R-8 to R-10 | met | Pass inside the 73 model and enrichment tests and the full suite; `cubesat_model.py`, `.sysml`, `generate_dataset.py` have no change since `7a175a4`. |
+| R-4 | met | Test passes; trial on a model copy was done in the fourth pass and the code is unchanged since. |
 | R-7 | met | Panel monotonicity tests pass. |
-| R-11 | met | Attributes test passes; eleventh attribute is derived on read, not a `measure` column, and is documented. |
+| R-11 | met | Attributes test passes; momentum utilisation is derived on read and documented. |
 | R-12 | met | `uv lock --check` ok; hard-failing fixture; `REQUIRE_OPENSYSML=1` in CI. |
-| R-13, baseline (10 attributes) | **not met** (a, b, c fail; d, e hold) | Own probe below. Pre-agreed finding under Amendment 4. |
-| R-13, baseline + utilisation (11, lever ii) | **not met** (c, e fail; a, b, d hold) | Own probe below. |
-| R-13, gains (10, lever i) | **met** (a to e hold) | Own probe below. |
-| R-13, gains + utilisation (11, lever iii) | **met** (a to e hold) | Own probe below. |
-| R-14, baseline / gains | met / met | Saturated ratio small/large 5.12 / 13.08 (needs 3); settling ratio 1.85 / 4.85 (needs 1.25) on the feasible sets (tests pass). |
-| R-15 | met | Gains: 1000 designs, settled 0.976, feasible 706 (191 / 248 / 267); momentum violations small 37.2 %, medium 17.4 %, large 0 %. Baseline: feasible 780 (239 / 279 / 262). |
-| R-16 | met | `test_dataset_reproducible_first_20` (parametrized over both CSVs) and `..._same_platform_exact` pass locally; see verification 4 for the widened tolerances. |
-| R-17 | met | The note records reasoning before data, results per lever, the physical mechanism, the miss list (incomplete, see G-6), caveats. |
-| R-18 | met | SysML unchanged in substance apart from the new part. |
-| R-19 | met | `uv run pytest`: 883 passed, 8 skipped, 6 xfailed (93 s; 5 WP4b strict xfails plus 1 WP3 scikit-learn xfail). `ruff check .`: All checks passed. `ruff format --check .`: 97 files already formatted. `uv lock --check`: ok. Diff outside scope: see below. |
-| R-20 | met, with three red runs recorded | Attribution grep over `5dfbc8c~1..HEAD` (case-insensitive `co-authored`, `generated with`, `claude`): 0 matches. All 55 commits authored and committed by Michael Zargham. CI: see below. |
+| R-13, PRIMARY (gains, 10 attributes) | **met** (a to e) | Own hand probe, below. Tests `test_a_`, `test_b_`, `test_c_`, `test_e_` run on `gains` and `gains_headroom` and pass; `test_d_` runs on all four. |
+| R-13, baseline (comparison) | **not met, as the recorded finding** (a, b, c fail; d, e hold) | Not a failure of the package under Amendment 6. Asserted by `test_regime_comparison_stock_gains[baseline]` (passes). |
+| R-14 (primary) | met | Small/large saturated ratio 13.08 (needs 3), settling ratio 4.85 (needs 1.25) on the feasible set. Baseline for comparison 5.12 / 1.85. |
+| R-15 (primary) | met | 1000 designs; settled 0.976; feasible 706 (191 / 248 / 267); momentum violations small 37.2 %, medium 17.4 %, large 0 %. Baseline: settled 0.978, feasible 780 (239 / 279 / 262). |
+| R-16 | met | `test_dataset_reproducible_first_20` over both CSVs and `..._same_platform_exact` pass locally. Tolerances for the aggressive box are widened (rtol 1e-3, saturated fraction 10 %); see G-5 follow-up. |
+| R-17 | met | The note records reasoning before data, results per lever, mechanisms, the miss list (now checked as complete save one item, G-A below), conditions of the finding, the two-regimes table. |
+| R-18 | met | SysML unchanged in substance. |
+| R-19 | met | `uv run pytest`: **882 passed, 8 skipped, 1 xfailed** (94 s; the xfail is the WP3 scikit-learn check, none is WP4b). `ruff check .`: All checks passed. `ruff format --check .`: 97 files already formatted. `uv lock --check`: ok. Diff outside scope: see below. |
+| R-20 | met, with three red runs recorded | `git log 5dfbc8c~1..HEAD` message grep (case-insensitive `co-authored`, `generated with`, `claude`): 0. All 61 commits authored and committed by Michael Zargham. CI below. |
 
 ### CI (`gh run list --limit 10`)
 
-Latest is green (`620cfc8`, 3m54s). The implementer reported two red runs on the first-20 reproducibility test; there were **three**, all on `test_dataset_reproducible_first_20[aggressive-csv1]`:
+Latest seven runs (`620cfc8` through `93d162c`) are green, the latest `93d162c` in 4m05s. Three red runs in the window, all in the aggressive-box first-20 reproducibility test, causes confirmed from `gh run view --log-failed`:
 
-| Commit | Cause (from `gh run view --log-failed`) |
+| Commit | Cause |
 |---|---|
-| `7a175a4` (generating commit) | continuous column mismatch, 1 of 20 designs, max relative difference 1.25e-4 against rtol 1e-4 (CI runner versus the author's platform) |
-| `4897434` (note-only commit, same code) | `torque_saturated_frac` mismatch, 3 of 20, max relative difference 0.0378 against rtol 2e-2; the continuous columns passed this time |
-| `be9ea7d` (rtol 1e-3 on continuous columns) | `torque_saturated_frac` mismatch, 3 of 20, max relative difference 0.0620 against 2e-2 |
+| `7a175a4` | continuous column, 1 of 20 designs, max relative difference 1.25e-4 against rtol 1e-4 |
+| `4897434` (note-only commit, same code) | `torque_saturated_frac`, 3 of 20, max relative difference 0.0378 against 2e-2 |
+| `be9ea7d` | `torque_saturated_frac`, 3 of 20, max relative difference 0.0620 against 2e-2 |
 
-Fixed by `620cfc8` (sat fraction rtol 10 % for the aggressive box). Earlier red runs in the window belong to WP3/WP6 (third pass). No other red runs in the last 10.
+Fixed by `620cfc8`. No red run since.
 
-### R-13 per dataset, my own probe
+## Independent hand probe on the PRIMARY dataset
 
-Script `/private/tmp/claude-501/scratch/probe.py` (not committed). Feasible = settled and `power_ok` and `momentum_ok`, all attributes positive. Orientation: reciprocal (u = -log) for settling, slew time, pointing, mass, effort, peak slew power, depth of discharge and for utilisation (smaller is better); direct (+log) for power margin, energy balance, eclipse reserve; standardize; `solve_lp(U, 0)`; tau grid (60 points, 2 to 300) to the nearest `frac_above_` of 0.10, via `HyperbolicTradeSpace(temperature=tau)`; near-frontier |log V| < 1/tau; bootstrap 100 resamples seed 0. Implementer's numbers in brackets.
+Own script (feasible = settled, `power_ok`, `momentum_ok`; reciprocal orientation for smaller-is-better, direct for the three larger-is-better; log; standardize; `solve_lp(U, 0)`; tau grid for `frac_above_` near 0.10; near-frontier |log V| < 1/tau; 100 bootstrap resamples seeded 0). Compared with the probe note:
 
-| | gains (lever i) | gains + util (lever iii) | baseline + util (lever ii) | baseline |
-|---|---|---|---|---|
-| feasible n (s/m/l) | 706 (191/248/267) [706] | same | 780 (239/279/262) [780] | same |
-| contending set at tau = inf | 6: slew .201, **mass .223**, energy balance .169, effort .143, pointing .135, depth of discharge .129 [identical] | 6: **mass .249**, util .214, power margin .170, slew .141, depth of discharge .122, pointing .104 [identical] | 8: slew .304, effort .296, power margin .193, util .086, **mass .060**, pointing .030, dod .027, reserve .005 [identical] | 6: effort .434, slew .253, margin .179, settling .081, pointing .040, reserve .013; mass 0 [identical] |
-| working tau / frac_above | 35.9 / 0.099 [35.2] | 59.8 / 0.096 [58.8] | 50.4 / 0.103 [51.4] | 42.5 / 0.103 [42.8] |
-| near-frontier rows (s/m/l) | 63 (21/36/6) [64: 21/36/7] | 79 (0/49/30) [80: 0/49/31] | 88 (15/45/28) [80: 15/41/24] | 102 (78/23/1) [102] |
-| mass bootstrap support (median) | 1.00 (0.200) [1.00 (0.200)] | 1.00 (0.249) [1.00 (0.249)] | 0.99 (0.060) [0.99 (0.060)] | 0.00 [0.00] |
-| best power attribute support | energy balance 1.00, dod 1.00 | power margin 1.00, dod 1.00 | power margin 1.00 | margin 0.66 |
-| settling-mass / slew-mass | **-0.475 / -0.422** [-0.503 / -0.453] | -0.322 / -0.132 [-0.329 / -0.139] | -0.082 / -0.036 [-0.126 / -0.078] | -0.126 / -0.107 [-0.129 / -0.109] |
-| pointing-mass | -0.675 [-0.658] | -0.541 [-0.539] | -0.095 [-0.114] | -0.349 [-0.357] |
-| settling-effort / pointing-effort / settling-pointing | -0.649 / -0.354 / +0.151 | -0.387 / -0.465 / +0.189 | -0.961 / -0.736 / +0.716 | -0.950 / -0.700 / +0.684 |
-| strongest power tensions | peak slew power-pointing -0.68, -settling -0.65 | peak slew power-util -0.57, energy balance-mass -0.56 | dod-mass -0.59, reserve-mass -0.49 | dod-mass -0.65 |
-| R-14 ratios | 13.08, 4.85 [13.1, 4.85] | same | 5.12, 1.85 | 5.12, 1.85 |
-| (a) (b) (c) (d) (e) | pass pass pass pass pass | pass pass pass pass pass | pass pass **fail** pass **fail** (pointing-mass -0.095) | **fail fail fail** pass pass |
+| Quantity | Note | My probe |
+|---|---|---|
+| feasible n (s/m/l) | 706 = 191/248/267 | 706 = 191/248/267 |
+| contending set at tau = inf | slew .201, mass .223, energy balance .169, effort .143, pointing .135, DoD .129 | identical (all six) |
+| mass bootstrap support | 1.00 | 1.00 (median .200) |
+| settling-mass / slew-mass | -0.503 / -0.453 | -0.475 / -0.422 (working tau 35.9 against the note's 35.2; differences are the tau grid) |
+| pointing-effort / settling-pointing | -0.349 / +0.143 | -0.354 / +0.151 |
+| near-frontier rows (s/m/l) | 21 / 36 / 7 | 21 / 36 / 6 |
+| R-14 | 13.1 / 4.85 | 13.08 / 4.85 |
+| (a) to (e) | pass | pass |
 
-Differences from the implementer come from the tau grid and, for a few cells (gains settling-mass -0.475 against -0.503; baseline+util near-frontier 88 against 80), the working tau. No verdict changes. Robustness of the gains pass across the working tau (rerun at tau 25, 30, 36, 42, 50, 60, `/private/tmp/claude-501/scratch/rob.py`): settling-mass -0.65, -0.55, -0.48, -0.55, -0.30, -0.39; slew-mass -0.62, -0.56, -0.42, -0.52, -0.41, -0.54; pointing-effort -0.34, -0.43, -0.36, -0.34, -0.35, -0.50 (always at or below -0.30 but close); settling-pointing +0.18 down to -0.07 at tau 50 and +0.00 at 60 (not negative, with one value at the edge); two classes with 10 or more near-frontier rows at every tau up to 42 (at tau 50 and 60 only medium and small at 18 and 13, and 16 and 13). The gains pass is not a tau-edge artefact, but (e)'s pointing-effort clause has little margin.
+Baseline, same script: contending set of six with no mass (settling .081, slew .253, pointing .040, effort .434, power margin .179, reserve .013), mass support 0.00, settling-mass -0.126, slew-mass -0.107, pointing-effort -0.70, settling-pointing +0.684, near-frontier 78 / 23 / 1. The note's "Two regimes" table matches within the tau-grid tolerance on every row (baseline settling-mass -0.129, slew-mass -0.109, pointing-effort -0.701, settling-pointing +0.681). Median Kd/Kp 1.06 against 3.95 (table: 1.06, 3.9); underdamped share 33.4 %, damping below 0.5 for 4.7 % (note: 33 %, 4.7 %). Median saturated fraction by class on the feasible sets: baseline 0.040 / 0.015 / 0.008, primary 0.162 / 0.043 / 0.012.
 
-Other facts reproduced (feasible set, medians small / medium / large). Gains: saturated fraction 0.162 / 0.043 / 0.012, settling 104 / 41 / 22 s, 1 degree slew time 33 / 18 / 14 s, total mass 12.63 / 13.22 / 14.36 kg, utilisation 0.807 / 0.631 / 0.334. Baseline: saturated 0.040 / 0.015 / 0.008, settling 130 / 67 / 70 s, slew 84 / 51 / 52 s, utilisation 0.58 / 0.384 / 0.125. Utilisation is at most 1 exactly where `momentum_ok` is true (0 mismatches over 1000 rows in each CSV; feasible maximum 0.994 and 0.998).
+## Regime-comparison assertions are not vacuous (trials, undone)
 
-## Independent verification asked for
+1. Pointed the `baseline` dataset at the primary CSV (equivalent to the baseline numbers becoming the primary's): `test_regime_comparison_stock_gains[baseline]` fails (`assert -0.503 > -0.3`). Restored.
+2. Perturbed the committed baseline CSV in a working copy (large-wheel settling and slew times divided by 5): both `test_regime_comparison_stock_gains[baseline]` and `[headroom]` fail (`assert -0.706 > -0.3`, `-0.761 > -0.3`). Restored by `git checkout`.
+3. Utilisation derivation (`peak / (2 * cap)`): 3 failed (`test_momentum_utilisation_matches_the_momentum_flag[headroom]`, `[gains_headroom]`, `test_wheel_capacities_and_momentum_utilisation`), 70 passed. Restored.
+4. Gain-box coupling (fourth-pass trial, code unchanged since): `aggressive` mapped to `designSpace` fails `test_aggressive_gain_box_is_read_from_the_model` and the aggressive reproducibility test.
 
-**(1) Ordering.** `75823dc` (01:09:22) changes only the probe note (+97 lines); `7a175a4` (01:16:58) is the first commit with code and the new CSV; the reasoning section of the note is unchanged in HEAD apart from the added results heading (diff of the section between `75823dc` and HEAD: one added heading line). The scope amendment (`78c39c8`, `5b1d087`) precedes both. Ordering is verified from git; git cannot show that nobody simulated privately before 01:09 (the note states only non-dynamic numbers, inertia and closed-form bounds). The reasoning also names the alternative boxes considered on paper and rejected, and says "I do not predict a pass". Predictions that missed: the implementer lists momentum violations (predicted ~25 % small, ~7 % medium; observed 37.2 %, 17.4 %), 1 degree slew times (55 to 65 / 25 to 30 / 15 to 20 s; observed 33 / 18 / 14 s), feasible share (about 75 %; 70.6 %), and association size (within range). The implementer's list is incomplete; I found three more misses (G-6): the settling class ratio predicted "about 1.5 to 2.5" (observed 4.85); "control effort and the pointing attribute ... expected to keep dominating" (observed: mass has the largest weight, 0.223, effort 0.143, pointing 0.135); the lever (iii) expectation "a pass of (c) at best" (observed full pass) and no expectation of the small wheels leaving the near frontier (0 rows). Held: lever ii alone fails (it fails on (c) and (e)); heavier wheels faster; R-14 clause 1 holds (the stated concern that it would shrink was wrong, ratio 13.1).
+Observation (wording-level, G-B): Amendment 6 says the baseline tests "assert the recorded baseline numbers within stated tolerances"; the regime test asserts one-sided thresholds (associations above -0.30, mass weight below 0.05 or 0.10, bootstrap support below 0.10, near-frontier small above medium and large at most 5, pointing-mass at most -0.30) that the recorded numbers satisfy with margin, not the numbers within a tolerance band. A drift of the baseline from -0.13 to -0.25 would pass. The tests do detect a regime flip (trials 1 and 2).
 
-**(2) Hand probe.** Reproduced above for gains and baseline + utilisation (and for the other two).
+## Probe note checks
 
-**(3) Physics of the aggressive box.** Inertia of the 1000 sampled designs through the model and `inertia_tensor` (script `/private/tmp/claude-501/scratch/phys.py`): Jxx 0.226 to 0.986, median 0.361 kg m2, as the note states. With the linearisation in the note (J theta'' + Kd theta' + (Kp/4) theta = 0, zeta = Kd / sqrt(J Kp), slow pole Kp / (4 Kd)): on the actual dataset Kd/Kp has median 1.06 (baseline 3.95), 96.6 % of designs at or below 5 (baseline 57.2 %; note: 97.8 % on independent draws), 76 % at or below 2; zeta median 1.34, below 0.5 for 4.7 % (note 5.3 %), below 0.7 for 16 %, below 1 (underdamped) for 33 %; slow-pole time constant 4 Kd/Kp has median 4.2 s (baseline 15.8 s). Kd range is the baseline's, only Kp is raised (floor 6.7 times, ceiling 2 times), so Kd/Kp falls by moving Kp; the share of Kd/Kp at or below 5 is the Amendment 5 target (authorized). Consistency with the slow-pole analysis: yes, the box moves the 4 Kd/Kp tail from 16 s to 4 s so that the bang-bang part (50 s small, 19 s medium, 8.5 s large at median inertia) is no longer hidden; the measured correlation of log slew time with log(Kd/Kp) falls (0.79 / 0.89 / 0.97 small / medium / large, from 0.97 / 0.99 / 1.00) and settling-slew correlation falls to 0.698, as it should if the wheel now sets the time. Judgement: the choice is physics-reasoned and recorded before any simulation, with rejected alternatives disclosed and no iteration; it is not tuning toward a test threshold. But it is constructed so the result appears: the note states the aim "to make the demand exceed the cap of every class from the first instant ... so the class sets the speed". The proportional demand at the start of a 30 degree slew (0.13 Kp = 26 to 260 mN m) is above every wheel cap (0.3 to 10 mN m, and below by the available-power cap), so the loop is saturated by design; the gains are far above actuator authority, a legitimate (and common) saturating PD, with a price visible in the data: 37 % of small and 17 % of medium designs fail momentum from overshoot. The finding is therefore conditional on a stiff-loop regime and should say so (G-4).
-
-**(4) Reproducibility tolerance.** `tests/test_cubesat_model.py` lines 562 to 568: continuous columns rtol 1e-4 baseline, 1e-3 aggressive (observed 1.25e-4 at the first red run, margin 8 times); saturated fraction 2 % baseline, 10 % aggressive (observed 3.8 % and 6.2 % in two CI runs of the same simulation code, margin 1.6 times). Documented in the test comment and in the note. Justified by observed CI differences; the baseline tolerances are unchanged. Caveats: it is reactive (set after each red run), the observations show CI itself differs from run to run for identical code (3.8 % then 6.2 %), so the 10 % margin is thin and the test could still flake; and the committed gains CSV was generated on the author's platform. The widening leaves the same-platform exactness test (40 designs twice) as the strict check. Does not affect the enrichment tests, which read the committed CSV only (G-5).
-
-**(5) Lever (ii).** Definition is `peak_momentum_nms` / `maxMomentum` of the design's wheel class, oriented smaller is better (u = -log), at most 1 exactly where `momentum_ok` (0 mismatches in either CSV; `test_momentum_utilisation_matches_the_momentum_flag` asserts it on both utilisation datasets). Capacities (10 / 30 / 100 mN m s) are read from the SysML model through the client (`wheel_capacities()` instantiates each wheel part def; the enrichment fixture uses it; a unit test checks an unknown class raises and the input frame is not modified). The CSVs are not rewritten (`git diff` empty for the baseline; the gains CSV is new in `7a175a4` and has no utilisation column). The ratio form is justified in the note before data; the difference form was run as a declared sensitivity (baseline: mass 0.025, settling-mass -0.253, slew-mass -0.238, still fails; gains: all pass).
-
-**(6) R-4 trial**: see R-4 above (passes for the new gain box part).
-
-**(7) Near-frontier sample caveats.** Gains: large wheels have 6 (mine) or 7 (implementer) near-frontier rows (5 to 22 across tau 25 to 42; 0 at tau 50), so statements about large wheels on that frontier are weak; the two classes with at least 10 are small 21 and medium 36. Gains + utilisation: small wheels have 0 near-frontier rows (medium 49, large 30): the pooled settling-mass association -0.32 comes from medium and large wheels only, so lever (iii) does not show the class that motivates the trade (small wheels, the most torque-limited) on the frontier; slew-mass there is only -0.13. Baseline + utilisation: 15 / 45 / 28 in mine, 15 / 41 / 24 in the implementer's. Baseline: 78 / 23 / 1.
-
-**(8) WP7 implications (observations; which dataset WP7 uses is the supervisor's decision).**
-- If the baseline stands: R-13 stays unmet (a, b, c), the tension report finds mass absent (exponent 0, bootstrap 0.00), wheel class appears as a feasibility boundary (small wheels lose 19.2 % of designs) and not as a frontier trade; the finding wording is "agility against mass not found with these measures and this gain box"; settling-effort (-0.95), pointing-effort (-0.70), settling-pointing aligned (+0.68) and pointing-mass (-0.35) are strong; three strict xfails stay, and lever (ii) would add two more; WP7's narrative must state that the null is partly built in (slew time and settling correlate 0.947) and that it depends on the slow pole (Kd/Kp median 3.95).
-- If the gains dataset stands: R-13 holds in full, no xfail on it; the tension report shows mass in the contending set (0.22), settling-mass -0.48 to -0.50 and slew-mass -0.42 to -0.45 (heavier wheels buy faster slews), pointing-mass -0.66, strong peak-slew-power tensions (-0.65 to -0.68), and wheel class both a boundary (37 % of small designs) and a frontier trade. But the earlier findings weaken: settling-effort -0.65 (from -0.95), pointing-effort -0.35 (near the -0.30 line), settling-pointing +0.15 (from +0.68, nearly independent, "aligned" no longer holds as a strong claim); settling and slew correlation 0.698 (less redundant); large wheels rest on 6 to 7 near-frontier rows. The finding wording must include the regime: stiff loop with demand above actuator authority, a choice of the case; the baseline CSV remains the comparison (the richness failure is a property of the gain box, per the note). The notebook should disclose that the dataset was chosen after the baseline failed R-13, with the baseline retained.
-- If a utilisation variant stands: eleven attributes (d = 11), the notebook must derive utilisation from the model's capacities; with gains + utilisation small wheels are absent from the near frontier (0 rows) and slew-mass is weak (-0.14); with baseline + utilisation R-13 fails (c, e).
-- Either way: WP7's dataset path, attribute set and finding text follow the supervisor's choice; the third-pass facts (power never limits a slew; redundant pairs) need rechecking on the gains dataset (not rerun here).
+- **Miss list complete?** Compared with the predictions written in `75823dc` (momentum violations, 1 degree slew times, feasible share, settling class ratio, effort and pointing dominating, lever iii outcome, associations, lever ii alone failing, R-14 clause 1 at risk): every miss is now recorded, with one exception (G-A below, wording-level): `75823dc` predicted "more torque saturation for every class ... large wheels saturate far more than at baseline" and that the small/large saturation ratio "may shrink"; observed, large-wheel median saturated fraction goes from 0.008 to 0.012 (barely) and the ratio rises from 5.12 to 13.1. The "R-14 clause 1 holds" line under "held" covers the pass but not that the shrink and large-wheel predictions were wrong. A second small omission: the predicted small/large 1 degree slew-time ratio of about 3 (observed 33/14 = 2.4) is only implicit in the slew-time miss.
+- **Conditional on the stiff-loop regime:** yes ("Conditions of the finding": the wheel-class tension appears only when the loop is driven hard enough for the wheel to be the bottleneck; at the stock gains a feasibility boundary only; a third of the designs underdamped, 4.7 % below 0.5, 37 % of small-wheel designs fail momentum).
+- **Thin margins disclosed:** yes (pointing-effort -0.35 against -0.30; settling-pointing +0.15 against 0.0; large-wheel near-frontier 6 to 7 rows; lever iii small wheels 0 rows). My robustness rerun across tau 25 to 60 is in the fourth-pass probe and the code is unchanged; settling-mass at tau 50 was -0.30 (edge).
+- **"Two regimes" table matches the numbers:** yes (above).
+- **Stale statements:** the amendment 5 result disposition was updated (xfail sentence superseded, pointer to the regime test). Remaining stale text (wording-level, G-C): the section "Status against R-14 (amended)" opens "Status after amendment 4 (final) ... on the committed dataset" and "Facts for WP7 interpretation" opens "Final (amendment 4) ... (d) R-13 (a), (b), (c) fail", and "committed dataset" in those sections means the baseline, whereas Amendment 6 makes the gains CSV primary. They are chronologically labelled but still say "final". The scope-of-work status line still reads "DRAFT (draft 4)" and its good-enough text says "the committed dataset" (Amendment 6 clarifies the meaning; the header was never refreshed).
+- **Follow-up item present:** yes. `WP4b-decisions.md`: round-4 disposition (G-5 to follow-up) and a "Follow-up candidates" section ("Generator nondeterminism (review G-5)": run-to-run nondeterminism of the generator on identical code, likely adaptive-step integration sensitivity, CI differed 3.8 % then 6.2 % on the saturated fraction; the 10 % tolerance and rtol 1e-3 are a stopgap; to be replaced by a fixed-step or tighter-tolerance integration or a documented cause), plus unused levers (peak slew rate, wheel mass scaled with capacity, a milder gain box, the headroom difference). **Recorded here as well:** investigate the generator's run-to-run nondeterminism; the 10 % saturated-fraction tolerance is a stopgap; not part of WP4b.
 
 ## Definition of good enough
 
 | Item | Verdict | Evidence |
 |---|---|---|
 | D-1 to D-8 exist | met | See Deliverables. |
-| R-1 to R-20 pass as checked | met on the gains and gains+utilisation datasets; **not met (R-13) on baseline and baseline+utilisation** | See R-13 per dataset. |
-| R-13 and R-14 hold on the committed dataset | depends on which dataset stands: holds on gains (a to e; R-14), fails on baseline | Supervisor's choice (G-1). |
+| R-1 to R-20 pass as checked | met | R-13 and R-14 met on the primary dataset; baseline recorded as the regime finding. |
+| R-13 and R-14 hold on the committed (primary) dataset | met | Own probe. |
 | Non-goals untouched | met | See below. |
 
 ## Outside the scope
 
-- **Out-of-scope changes:** none by WP4b in amendment 5. `git diff 6c8c3e9 HEAD --stat -- . ':!work-packages' ':!docs/superpowers/notes' ':!examples/adcs' ':!tests/test_adcs_enrichment.py' ':!tests/test_cubesat_model.py'` lists only `CLAUDE.md` and the spec (both one-line title edits from the repository rename `a469aa2`, a supervisor-driven change, not WP4b). `work-packages/` changes are WP7, WP8, README and WP4b records. Earlier accepted extras (the `.github/workflows/test.yml` cache edit, `pyproject.toml`, `uv.lock`, comment edit to `extended_design_space.sysml`) are unchanged since the third pass.
-- **Non-goals touched:** none. `adcs_sim.py` byte-identical; no estimator, solver, coordinates, WP2/WP3 or notebook change; no `sysml-toolkit` dependency; WP4 CSV, tests and `design_space.py` untouched; baseline cubesat CSV untouched since `a27502e`.
-
-## Trials (undone)
-
-1. Utilisation derivation: divide by `2 * cap` in `add_momentum_utilisation`: `test_wheel_capacities_and_momentum_utilisation`, `test_momentum_utilisation_matches_the_momentum_flag[headroom]` and `[gains_headroom]` fail (3 failed, 71 passed, 5 xfailed). Restored by `git checkout`.
-2. Gain-box coupling: map `aggressive` to `designSpace`: `test_aggressive_gain_box_is_read_from_the_model` and `test_dataset_reproducible_first_20[aggressive-csv1]` fail (2 failed, 72 passed, 5 xfailed). Restored by `git checkout`. `git status` clean afterwards.
+- **Out-of-scope changes:** none by WP4b since the fourth pass. `git diff 2258281..HEAD --stat` lists only the probe note, `tests/test_adcs_enrichment.py`, `work-packages/{README,WP4b-decisions,WP4b-scope-of-work,WP8-scope-of-work}.md` (WP8 and README are status-table edits made by the supervisor's workflow, not WP4b deliverables). Over the whole range from `5dfbc8c~1`, `src/`, `docs/api.md`, `docs/method.md`, `tests/test_docs.py` and similar belong to WP3 and WP6 commits (checked with `git log` per path); `.github/workflows/test.yml` is a 12-line CI change in `379dee0` (recorded in earlier reviews, R-19 allowance); `CLAUDE.md` and the spec title are the repository-rename edit `a469aa2`.
+- **Non-goals touched:** none. `adcs_sim.py` byte-identical; no estimator, solver, coordinates, WP2/WP3 or notebook change by WP4b; no `sysml-toolkit` dependency; WP4 CSV, tests and design space untouched; both cubesat CSVs untouched since their generating commits.
 
 ## Observations (not counted as failures)
 
-- Strict xfails per dataset are a tripwire and are correct for the baseline and lever ii; they would become dead weight if the baseline stops being a tested dataset.
-- Slew time and settling are still near-redundant on the baseline (0.947) and less so on gains (0.698).
-- Gains pointing-effort (-0.35) and settling-pointing (+0.15) are close to their (e) thresholds; settling-mass at tau 50 is -0.30 (edge). The pass at the working tau is robust over tau 25 to 42.
-- The implementer's R-13 table is matched by my probe within the tau-grid tolerance on every verdict.
-- Earlier dispositions on record: first round G-1, G-3, G-4, rest of G-5 accept as is, stale help text fixed (verified); G-2 momentum "Enforce as feasibility"; second-pass R-13 stop rule answered "Reopen levers..." then "One physics-justified lever: slew-time attribute"; third-pass G-1 (R-13 under the stop rule) answered "try both new levers then report back" (amendment 5, this delivery); third-pass G-2, G-3, G-4 were left pending and are carried forward as G-6 (partly) and G-8 below.
+- G-A, G-B, G-C above are wording-level; none changes a verdict. No substantive new finding.
+- The package's primary-case result rests on a deliberately stiff regime (see conditions); this is disclosed and carried into the finding text.
+- The full suite shows one non-WP4b xfail (WP3 scikit-learn).
+- Previously dispositioned (fourth pass round, recorded in `WP4b-decisions.md`): G-1 standing dataset "Both, as two regimes" (applied by Amendment 6, verified); G-3 thin margins, G-4 conditional regime, G-7 WP7 consequences, G-8 small items: accept as is (the finding is stated as conditional on the stiff-loop regime, verified present); G-6 prediction-miss list: fix before acceptance (done in `5c252f7`, verified with the one small residual G-A); G-5 reproducibility tolerance: follow-up (recorded, verified); G-2 (baseline stands): moot, Amendment 6. Earlier rounds: first-round G-1, G-3, G-4, rest of G-5 accept as is, stale help text fixed; G-2 momentum "Enforce as feasibility"; "Reopen levers for a physically consistent scenario"; "One physics-justified lever: slew-time attribute"; "try both new levers then report back".
 
 ## Open decisions (for the supervisor)
 
-- **G-1. Which dataset stands.** R-13 holds on `adcs_designs_cubesat_gains.csv` (lever i, 10 attributes) and with utilisation (lever iii, 11 attributes); it fails on the baseline (a, b, c) and on baseline + utilisation (c, e). Choosing which dataset the notebook and WP7 read, and so whether R-13 stands as met or recorded as a finding, is the supervisor's decision. — options: accept as is (record a chosen dataset and the R-13 outcome for it) / fix before acceptance / follow-up work package. **pending**
-- **G-2. If the baseline stands:** R-13 (a, b, c) remains unmet under the Amendment 4 and 5 stop rule, with five strict xfails; the supervisor would record R-13 as the finding. — options: accept as is / fix before acceptance / follow-up work package. **pending**
-- **G-3. Thin margins on the gains pass:** pointing-effort -0.35 (threshold -0.30), settling-pointing +0.15, large-wheel near-frontier 6 to 7 rows, and in lever iii small wheels 0 near-frontier rows. — options: accept as is / fix before acceptance / follow-up work package. **pending**
-- **G-4. Conditional regime of the aggressive box:** the box is physics-reasoned and written before data, but built so the wheel is the bottleneck (demand above every cap from the first instant, 37 % of small designs infeasible on momentum); the finding is valid for a stiff-loop regime and the notebook should say so. — options: accept as is / fix before acceptance / follow-up work package. **pending**
-- **G-5. Reproducibility tolerance for the aggressive box** (rtol 1e-3, saturated fraction 10 %): justified by observed CI differences, documented, but reactive and thin (10 % against 6.2 % observed; three red runs, causes above, the implementer reported two). — options: accept as is / fix before acceptance / follow-up work package. **pending**
-- **G-6. Incomplete miss list in the note:** the note's "expectation against result" omits the settling class ratio (predicted 1.5 to 2.5, observed 4.85) and the expectation that effort and pointing would dominate (mass has the largest weight). — options: accept as is / fix before acceptance / follow-up work package. **pending**
-- **G-7. WP7 consequences** (item 8 above) depend on G-1 and should be carried into WP7's scope after the choice. — options: accept as is / fix before acceptance / follow-up work package. **pending**
-- **G-8. Small items carried from the third pass:** the note's "55 %" wheel-mass variance share is feasible-set-specific; the ordering evidence cannot exclude private earlier simulation; the full suite shows one non-WP4b xfail (WP3). — options: accept as is / fix before acceptance / follow-up work package. **pending**
+- **G-A.** Miss list residual: the lever (i) predictions "large wheels saturate far more" and "small/large saturation ratio may shrink" (observed: large 0.008 to 0.012, ratio 5.1 to 13.1) and the small/large slew-time ratio (about 3 predicted, 2.4 observed) are not listed as misses. Wording-level. — options: accept as is / fix before acceptance / follow-up work package
+- **G-B.** Regime-comparison assertions are one-sided thresholds rather than recorded numbers within tolerance bands (Amendment 6 wording). Wording-level. — options: accept as is / fix before acceptance / follow-up work package
+- **G-C.** Stale "final (amendment 4)" and "committed dataset" labels in two probe-note sections and the scope status line "DRAFT (draft 4)". Wording-level. — options: accept as is / fix before acceptance / follow-up work package
+
+Proposed as one item per the decision loop (none affects a good-enough item or a non-goal): "accept G-A, G-B, G-C as is, or pick any to act on".
 
 ## Gap dispositions
 
-Resolved through the decision loop (`~/.claude/skills/CLAUDE.md`); records go in `work-packages/WP4b-decisions.md`.
-
-| Gap | Disposition (accept as is / fix before acceptance / follow-up work package) | Reason or follow-up |
+| Gap | Disposition | Reason or follow-up |
 |---|---|---|
-| G-1 | pending | |
-| G-2 | pending | |
-| G-3 | pending | |
-| G-4 | pending | |
-| G-5 | pending | |
-| G-6 | pending | |
-| G-7 | pending | |
-| G-8 | pending | |
-| Previously dispositioned (see Observations) | as recorded | accept as is / fixed / amendments 2 to 5 as quoted in `WP4b-decisions.md` |
+| G-A | pending | |
+| G-B | pending | |
+| G-C | pending | |
+| Previously dispositioned (see Observations) | as recorded | accept as is / fixed / follow-up as quoted in `WP4b-decisions.md` |
+| Follow-up: generator nondeterminism, 10 % tolerance stopgap | follow-up work package (recorded) | `WP4b-decisions.md`, "Follow-up candidates"; not part of WP4b |
 
 ## Recommendation
 
-**Do not recommend acceptance yet: every gap is pending and the standing dataset is not chosen.** The evidence supports the following. R-13 is met on the aggressive-gain dataset (lever i) and on gains + utilisation (lever iii) and is not met on the baseline or baseline + utilisation; R-14 holds on all. All other requirements are met: full suite (883 passed, 5 WP4b strict xfails), `REQUIRE_OPENSYSML=1` tests, ruff, lock, attribution (0), authorship, `adcs_sim.py` byte-identical, WP4 tests and the baseline CSV untouched, CI green on the latest run (three earlier red runs on one reproducibility test, causes above). My independent probe reproduces every implementer verdict, the reasoning note was committed before the generating commit, and the trials break tests as they should. Lever (i) is the sufficient lever; lever (ii) alone does not pass and lever (iii) adds a correlated attribute that removes small wheels from the near frontier. Choosing which dataset stands (G-1), and so whether R-13 is recorded as met or as a finding, is the supervisor's decision; once G-1 to G-8 have dispositions the recommendation can be restated (with the gains dataset standing and the gaps noted, the evidence would support acceptance with the listed gaps noted).
+**Recommend acceptance with the listed gaps noted.** Against the amended scope every deliverable and requirement is met: R-13 (a to e), R-14 and R-15 hold on the primary aggressive-gain dataset and my independent probe reproduces the note's numbers (contending set, mass 0.223 with bootstrap support 1.00, settling-mass about -0.5, feasible 706 = 191/248/267); the baseline's null result is asserted by non-vacuous regime-comparison tests (trials fail as they should) and recorded as a finding; the full suite is 882 passed with no WP4b xfail, ruff, format and lock are clean, CI is green on the last seven runs, `adcs_sim.py`, the WP4 tests and both cubesat CSVs are untouched, authorship and attribution are clean, and the follow-up item is recorded. The three new gaps are wording-level and are pending the supervisor's one-item disposition; the finding is correctly stated as conditional on the stiff-loop regime with thin margins disclosed.
 
 Acceptance is the supervisor's act, recorded as named above. This report does not accept the work.
