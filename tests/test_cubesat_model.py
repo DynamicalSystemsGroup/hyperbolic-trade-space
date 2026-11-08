@@ -186,6 +186,8 @@ def test_no_duplicated_constants_in_python():
         line for line in py.splitlines() if not line.lstrip().startswith(("#", '"', "*"))
     )
     code = re.sub(r'""".*?"""', "", code, flags=re.S)
+    # scenario parameters (slew angle, horizon, step) are not model constants
+    code = re.sub(r"^(SLEW_DEG|T_END|MAX_STEP) = .*$", "", code, flags=re.M)
     code = code.replace("1.0 [", "[")  # unit constructors in expressions, not table values
     tables = re.findall(
         r"part def (?:Small|Medium|Large|Coarse|Fine)\w+ :> .*?\n    }\n", SYSML, flags=re.S
@@ -440,9 +442,10 @@ class Q:
 # ---------------------------------------------------------------------------------------------
 # R-16: reproducibility of the committed dataset (run with ``-k reproduc``)
 # ---------------------------------------------------------------------------------------------
-# Recorded command; the defaults for the cubesat are --slew-deg 90 --t-end 450 (final scenario).
+# Recorded command; the cubesat defaults are --slew-deg 30 --t-end 600 (amendment 3, final).
 GENERATE_COMMAND = (
-    "uv run python examples/adcs/generate_dataset.py --model cubesat --n 1000 --seed 0 --force"
+    "uv run python examples/adcs/generate_dataset.py --model cubesat --n 1000 --seed 0"
+    " --slew-deg 30 --t-end 600 --force"
 )
 CUBESAT_CSV = ADCS_DIR / "data" / "adcs_designs_cubesat.csv"
 

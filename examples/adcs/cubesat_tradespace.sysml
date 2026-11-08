@@ -47,19 +47,19 @@ package CubesatTradeSpace {
         attribute mass : MassValue;
     }
     doc /* Public cubesat wheel classes (illustrative): small ~ 0.3 mN.m, medium ~ 2 mN.m,
-           large ~ 10 mN.m peak torque; momentum storage 5, 20, 100 mN.m.s; mass 0.12, 0.25,
+           large ~ 10 mN.m peak torque; momentum storage 10, 30, 100 mN.m.s (momentum-to-torque ratios of 33, 15 and 10 s); mass 0.12, 0.25,
            0.60 kg. The set spans a factor of 20 in torque so that wheel class can trade agility
            against mass and power. */
     part def SmallWheel :> ReactionWheel {
         :>> wheelClass = WheelClass::small;
         :>> maxTorque = 0.0003 [N*m];
-        :>> maxMomentum = 0.005 [N*m*s];
+        :>> maxMomentum = 0.010 [N*m*s];
         :>> mass = 0.12 [kg];
     }
     part def MediumWheel :> ReactionWheel {
         :>> wheelClass = WheelClass::medium;
         :>> maxTorque = 0.002 [N*m];
-        :>> maxMomentum = 0.020 [N*m*s];
+        :>> maxMomentum = 0.030 [N*m*s];
         :>> mass = 0.25 [kg];
     }
     part def LargeWheel :> ReactionWheel {

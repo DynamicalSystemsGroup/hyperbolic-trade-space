@@ -65,10 +65,10 @@ from opensysml.values import Quantity
 MODEL_PATH = pathlib.Path(__file__).resolve().parent / "cubesat_tradespace.sysml"
 PKG = "CubesatTradeSpace"
 
-# Scenario defaults (not model constants): 90 degree slew about X, horizon 450 s, step 0.5 s
-# (adjustment 3 of the WP4b record in docs/superpowers/notes/adcs-tensions-probe.md).
-SLEW_DEG = 90.0
-T_END = 450.0
+# Scenario defaults (not model constants): 30 degree slew about X, horizon 600 s, step 0.5 s
+# (amendment 3, adjustment 3 of the WP4b record in docs/superpowers/notes/adcs-tensions-probe.md).
+SLEW_DEG = 30.0
+T_END = 600.0
 MAX_STEP = 0.5
 
 DESIGN_COLUMNS = [

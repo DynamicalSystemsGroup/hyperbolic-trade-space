@@ -201,7 +201,7 @@ wheels hardly saturate, so the gains still matter for effort and pointing, and l
 Adjustments 2 and 3 each changed several constants at once; I count each as one adjustment (the scope's three), as
 the scope's wording is "at most three times total".
 
-### Final constants and scenario (all illustrative)
+### Final constants and scenario (all illustrative; superseded by amendment 3: slew 30 degrees, horizon 600 s, wheel momentum 10 / 30 / 100 mN m s)
 
 Unchanged from the defaults list except: Kp 0.03 to 1.0 N.m/rad, Kd 0.3 to 1.5 N.m.s/rad (log-uniform); small wheel
 maxTorque 0.3 mN.m (momentum 5 mN.m.s, mass 0.12 kg; medium 2 mN.m, large 10 mN.m); scenario 90 degree slew about X,
@@ -270,7 +270,7 @@ power 1.3 to 7.4 W, depth of discharge 0.04 to 0.43.
   and inertia. The case is honest about this: the power story is the energy-sizing one (panel and battery against mass), not a
   power-limited slew.
 
-### Amendment 2: R-13 and R-14 rerun on the momentum-feasible set (STOP RULE TRIGGERED)
+### Amendment 2: R-13 and R-14 rerun on the momentum-feasible set (STOP RULE TRIGGERED; superseded by amendment 3 below)
 
 Feasible now means settled, `power_ok`, `dod_ok` and `momentum_ok` (WP4b scope amendment 2, the supervisor's "Enforce as
 feasibility"). Same dataset (1000 designs), method, conditioning and thresholds; no simulation, no tuning, no new levers.
@@ -307,30 +307,137 @@ filters on, so within the feasible set mass varies little: 13.4 to 16.1 kg for l
 Disposition: per the stop rule the failing tests are marked `xfail(strict=True)` citing amendment 2 (R-15 shares, R-14,
 R-13 a, b, c); no threshold was weakened and nothing was tuned. For the supervisor.
 
+### Amendment 3: physically consistent scenario (written before any simulation)
+
+Supervisor choice: "Reopen levers for a physically consistent scenario" (`work-packages/WP4b-decisions.md`). Feasible stays settled, `power_ok` and `momentum_ok`, with every larger-is-better attribute positive. `dod_ok` is a reported
+flag, not a filter in its own right, but it is not free: `dod_ok` is false exactly when the eclipse demand exceeds
+(maximum depth of discharge x capacity), which is exactly when `eclipse_reserve_wh` (usable energy minus demand) is not
+positive. A design with `dod_ok` false therefore has a non-positive larger-is-better attribute and is excluded for that
+reason (scope Amendment 3), which is what the positivity filter already does; the test `feasible()` states it so.
+
+**Step A: physics reasoning.**
+
+Inertia range of the sampled designs (the existing `inertia_tensor` with the model's bus 10 kg, body 0.226 x 0.226 x 0.34 m,
+panels 2.5 kg/m2 x span x 0.34 m, battery 140 Wh/kg, antenna and tracker as in the model): the slew axis is X, and
+J_xx = 0.23 kg m2 (span 0.3 m, battery 20 Wh) to 0.99 kg m2 (span 1.0 m, battery 200 Wh); panel span dominates (0.23 to 0.97
+over the span range, battery adds 0.02); median about 0.5. The panel contribution scales like span^3.
+
+Rest-to-rest slew of angle theta, torque saturated (accelerate for half the angle, brake for the other half): peak rate
+sqrt(T theta / J), peak wheel momentum h_peak = J omega = sqrt(T J theta). A class with capacity h_max survives iff
+theta <= h_max^2 / (T J). Using the SysML wheel numbers (T, h_max): small 0.3 mN m, 5 mN m s (h/T = 17 s); medium 2 mN m,
+20 mN m s (10 s); large 10 mN m, 100 mN m s (10 s):
+
+| class | h_max^2/(T) | theta_max at J = 0.23 | at J = 0.5 | at J = 0.99 |
+|---|---|---|---|---|
+| small | 0.083 | 0.36 rad (21 deg) | 0.17 rad (9.5 deg) | 0.084 rad (4.8 deg) |
+| medium | 0.20 | 0.87 rad (50 deg) | 0.40 rad (23 deg) | 0.20 rad (11.6 deg) |
+| large | 1.00 | 4.3 rad | 2.0 rad (115 deg) | 1.0 rad (58 deg) |
+
+So the 90 degree slew of the previous scenario (1.57 rad) exceeds the capacity of every small wheel at every inertia, of
+medium wheels above J = 0.13 (all designs) and of large wheels above J = 0.64 (the large-span half). That is why momentum
+feasibility removed 98 % of small, 74 % of medium and 20 % of large designs: the scenario, not the design, was inconsistent
+with the wheel classes. For small wheels to survive across most of the inertia range the slew must be of the order of 10
+degrees or less; at 10 degrees (0.175 rad) the bang-bang bound is J <= 0.48 for small wheels (span up to about 0.66 m, over
+half of the designs), J <= 1.1 for medium wheels (all) and everything for large wheels. The PD law lowers the peak rate
+below the bang-bang one (the derivative term brakes early), so the bound is conservative.
+
+Gains: the commanded torque is Kp/2 sin(theta/2) at the start of the slew. At 10 degrees that is 1.3 mN m (Kp = 0.03) to 44 mN m
+(Kp = 1.0), so every small wheel (0.3 mN m) saturates at the start of every slew; a medium wheel (2 mN m) saturates for
+Kp above about 0.046 (about 80 % of the log range of Kp); a large wheel (10 mN m) for Kp above about 0.23 (about 40 %). Torque
+therefore binds hardest for small wheels, less for medium, least for large, which is the ordering needed for R-14, and at
+10 degrees the large wheels are mostly PD-limited so the gains still act as a design axis. The linear closed loop is
+J theta'' + Kd theta' + (Kp/4) theta = 0 (q_vec = theta/2); the slow pole when overdamped is Kp/(4 Kd), so a 1 % settling needs
+about 4.6 Kd/(Kp/4) s: 920 s for the worst corner (Kp 0.03, Kd 1.5), 190 s for (0.03, 0.3), under 20 s for Kp >= 0.3. A
+horizon of 600 s settles every design with Kp/Kd above 0.031 (the large majority of the gain box).
+
+Wheel capacities: public cubesat wheels have momentum-to-torque ratios of roughly 5 to 20 s (for example 0.23 mN m with 1.7 mN m s
+and 10 mN m with 180 mN m s in the commercial range), the brief's "tens of seconds" is the upper end. The current ratios (17,
+10, 10 s) are within the plausible range, so the first adjustment changes only the scenario (slew angle and horizon); wheel
+momentum capacities are changed only if the scenario alone leaves small wheels infeasible and that is recorded.
+
+Choice for adjustment 1: slew 10 degrees about X, horizon 600 s, `max_step` 0.5 s, gains and wheel numbers as they are.
+
+Simulation-only scans, if any, are declared below with their purpose; none evaluates R-13.
+
+**Declared simulation-only scans.** After adjustment 2 and before adjustment 3, one scan: the first 200 designs of the seed-0
+sample at 30 and at 40 degrees (horizon 600 s, wheel numbers of adjustment 2), to read momentum feasibility, saturation and
+settling per wheel class. R-13 was not evaluated on it. Result (30 / 40 degrees): `momentum_ok` small 0.77 / 0.67, medium
+0.93 / 0.90, large 1.0 / 1.0; median saturated fraction small 0.057 / 0.083, medium 0.015 / 0.018, large 0.008 / 0.009; median
+settling small 152 / 169 s, medium 60 / 68 s, large 86 / 87 s. The bound of Step A predicted this (small wheels lose the
+large-inertia designs as the angle grows). 30 degrees was chosen for adjustment 3 as the largest angle at which most small
+wheels are still momentum-feasible (about 80 %).
+
+**Every attempt** (1000 designs, seed 0, horizon 600 s, `max_step` 0.5 s, feasible = settled, `power_ok`, `momentum_ok`, all
+attributes positive; no threshold or method change). Recorded command per attempt:
+`uv run python examples/adcs/generate_dataset.py --model cubesat --n 1000 --seed 0 --slew-deg A --t-end 600 --force`.
+
+| # | change and physics | feasible (small / medium / large) | R-14: sat. small / medium / large; settling small / medium / large | contending set (tau = inf) | bootstrap of mass | settling-mass; near-frontier rows (small / medium / large) |
+|---|---|---|---|---|---|---|
+| 1 | scenario only: 10 degrees (A = 10), wheels unchanged (5, 20, 100 mN m s). Small-wheel bang-bang bound J <= 0.48, medium J <= 1.1, large all | 796 (241 / 293 / 262); `momentum_ok` small 0.81, medium 0.997, large 1.0 | 0.0193 / 0.0102 / 0.0 (ratio unbounded, passes); 101 / 60 / 69 s (ratio 1.47, passes) | settling .338, effort .408, power margin .235, depth of discharge .019; mass 0 | 0.00 | -0.08; 66 / 32 / 16 |
+| 2 | 20 degrees and wheel momentum capacities made consistent with torque: small 5 -> 10, medium 20 -> 30 mN m s (momentum/torque 33, 15, 10 s; a 20 degree rest-to-rest slew needs J <= 0.95 for small and 1.3 for medium by the bound; the larger angle lengthens the torque-limited phase) | 833 (279 / 292 / 262); `momentum_ok` small 0.94, medium 0.994, large 1.0 | 0.0376 / 0.0131 / 0.0068 (ratio 5.5, passes); 109 / 62 / 69 s (ratio 1.58, passes) | settling .305, mass .046, effort .403, depth of discharge .025, energy balance .165, reserve .055 | 0.69 | -0.13; 74 / 45 / 23 |
+| 3 | 30 degrees (A = 30), wheel numbers of adjustment 2 (scan above) | 780 (239 / 279 / 262); `momentum_ok` small 0.81, medium 0.957, large 1.0 | 0.0409 / 0.0152 / 0.0080 (ratio 5.1, passes); 128 / 67 / 69 s (ratio 1.85, passes) | settling .310, pointing .044, effort .433, depth of discharge .006, power margin .207; mass 0 | 0.01 | -0.09; 56 / 16 / 4 |
+
+Further numbers. Adjustment 1: working tau 41.4 (`frac_above_` 0.1005), 114 near-frontier rows; bootstrap support settling 1.0,
+effort 1.0, power margin 0.97, depth of discharge 0.70, pointing 0.40, mass 0.00; associations settling-effort -0.96,
+pointing-effort -0.65, pointing-mass -0.19 (e fails), settling-pointing +0.64, strongest power tension mass with depth of
+discharge -0.54. Adjustment 2: working tau 28.4 (0.1008), 142 near-frontier rows; bootstrap settling 1.0, effort 1.0,
+energy balance 1.0, mass 0.69, reserve 0.68, depth of discharge 0.63; settling-effort -0.97, pointing-effort -0.60,
+pointing-mass -0.18 (e fails), settling-pointing +0.59, mass with depth of discharge -0.65; the mass exponent 0.046 misses
+the 0.05 threshold of (a) by 0.004. Adjustment 3: working tau 46.1 (0.1013), 76 near-frontier rows; bootstrap settling 1.0,
+pointing 1.0, effort 1.0, power margin 0.73, depth of discharge 0.72, energy balance 0.46, mass 0.01; settling-effort -0.95,
+pointing-effort -0.63, pointing-mass -0.26 (e fails), settling-pointing +0.63, mass with depth of discharge -0.57, pointing
+with peak slew power -0.50. In all three attempts total mass is absent or marginal in the contending set and the settling-mass
+association is between -0.08 and -0.13 (threshold -0.30), so (a), (b), (c) fail in every attempt, and (e) fails on the
+pointing-mass clause in every attempt (-0.19, -0.18, -0.26 against -0.30). (d) passes in every attempt. R-14 and the R-15
+feasible-share check pass in every attempt.
+
+**Committed dataset: adjustment 3** (30 degrees, 600 s, wheel capacities 10 / 30 / 100 mN m s). It is physically consistent: no
+class is removed by the scenario beyond a boundary (small wheels lose 19 % of designs to momentum, medium 4 %, large none;
+`settled` 97 to 98 % in each class; `momentum_ok` violated by 8.1 % overall, `settled` by 2.2 %, `power_ok` 0 %, `dod_ok`
+13.1 %). Feasible 780 of 1000 (78 %; settled share 97.8 %).
+
+**dod_ok.** `dod_ok` is false exactly when `eclipse_reserve_wh` is not positive (checked on the committed data, all 1000 rows:
+no design with `dod_ok` false has a positive reserve), so the 13.1 % of designs with a violated `dod_ok` are excluded because
+a larger-is-better attribute would be non-positive, not because `dod_ok` is a filter; `test_dod_violation_is_a_non_positive_reserve`
+asserts it. R-13/R-14 evaluate on the same 780 designs.
+
+**Disposition (STOP RULE TRIGGERED, amendment 3).** After three adjustments there is a physically consistent scenario and R-14
+(and R-15) hold, but R-13 (a), (b), (c) and the pointing-mass clause of (e) do not. The tests that cannot hold are marked
+`xfail(strict=True)` with the reason (`test_a_`, `test_b_`, `test_c_`, `test_e_`); the R-14 and R-15 tests have no marker.
+Thresholds and method are untouched. Finding: with momentum respected, the agility-against-mass trade of wheel class does not
+appear as a frontier tension. Wheel class moves total mass by at most 3 x 0.48 = 1.4 kg of about 14 kg, while panel span,
+battery capacity and tracker grade move it by several kg; and the settling time at the 1 % criterion is set by the slow pole
+Kp / (4 Kd) of the gains rather than by the torque-limited phase (median settling: small 128 s, medium 67 s, large 69 s; medium
+and large are indistinguishable). Where wheel class does act, it acts as a feasibility boundary: small wheels fail on momentum
+for large-inertia designs (19 % of small designs at 30 degrees, 98 % at 90 degrees), not as a spread along the frontier. The
+notebook should say so.
+
 ### Facts for WP7 interpretation
 
-Updated for amendment 2 (feasible = settled, `power_ok`, `dod_ok`, `momentum_ok`; 346 of 1000 designs).
+Updated for amendment 3 (dataset at 30 degrees, 600 s; feasible = settled, `power_ok`, `momentum_ok`, all attributes positive;
+780 of 1000 designs). The amendment 2 section above describes the earlier 90 degree dataset and is superseded numerically.
 
-(a) Power never limits a slew in this dataset. The available-power cap on torque is below the wheel maximum in about 3 %
-of designs (large wheels with the smallest panels), and `power_ok` is True for every design. The power attributes
-reach the controls only through mass and inertia (panel and battery mass, lever arm), so power tensions are
-energy-sizing tensions, not power-limited-slew tensions. On the feasible set the power margin is 6.9 to 65 W (median 25 W;
-by class: large median 26.5, medium 23.6, small 16.4 W).
+(a) Power never limits a slew in this dataset. The available-power cap on torque is below the wheel maximum in 3.2 % of
+designs (large wheels with the smallest panels), and `power_ok` is True for every design. The power attributes reach the
+controls only through mass and inertia (panel and battery mass, lever arm), so power tensions are energy-sizing tensions, not
+power-limited-slew tensions. On the feasible set the power margin is 7.0 to 68 W (median 27.6 W).
 
 (b) Near-redundant attribute pairs, so that WP7 does not read them as independent findings: power margin with energy balance
-(about 0.98 on the oriented, standardized metrics) and eclipse reserve with eclipse depth of discharge (about 0.95 to 0.97)
-are accounting near-identities, not separate findings (correlations measured on the earlier 772-design set).
+(correlation 0.966 of the oriented, standardized metrics on the new feasible set) and eclipse reserve with eclipse depth of
+discharge (0.921) are accounting near-identities, not separate findings.
 
-(c) Wheel classes on the feasible set: large 248, medium 91, small 7. Small-wheel designs are almost all infeasible
-(momentum storage is exceeded by the 90 degree slew in 93 % of them, and the rest by settling or depth of discharge), so the
-fit sees essentially a medium-and-large-wheel space. Near-frontier rows: medium 20, large 8, small 0. Any statement about
-small wheels (agility against mass, torque saturation) rests on 7 designs and should not be made. Total mass varies little
-inside the feasible set (about 12 to 16 kg) and drops out of the tau = inf contending set; WP7 must not interpret an absent
-mass exponent as "mass does not matter" but as "mass is not a discriminating attribute once momentum-infeasible designs are
-removed".
+(c) Wheel classes on the feasible set: small 239, medium 279, large 262 (of 344, 345, 311). Near-frontier rows at the working
+tau (46.1): small 56, medium 16, large 4, so the frontier is mostly small-wheel designs and statements about large wheels rest
+on 4 near-frontier rows. Total mass (11.9 to 16.1 kg over the feasible set) is not in the tau = inf contending set (exponent
+0.000; bootstrap support 0.01): WP7 must read this as "mass is not a discriminating attribute on this frontier", not "mass
+does not matter"; it does associate with the energy attributes near the frontier (with depth of discharge -0.57, with
+eclipse reserve -0.46, with energy balance and power margin -0.35).
 
-(d) The richness checks R-13 a, b, c and R-14, and the R-15 feasible-share check, fail on this set (see the amendment 2
-section above); the associations retained (settling time with control effort, with mass, power tensions) still hold.
+(d) R-13 a, b, c and the pointing-mass clause of e fail on this set (see "Every attempt"); R-14 (torque binds: saturated
+fraction small 0.0409 against large 0.0080, ratio 5.1; settling small 128 s against large 69 s, ratio 1.85) and the R-15 shares
+pass. The tensions that hold: settling time with control effort (-0.95), pointing error with control effort (-0.63), settling
+with pointing aligned (+0.63), power tensions (mass with depth of discharge -0.57, pointing with peak slew power -0.50).
+Wheel class acts as a feasibility boundary (small wheels lose 19 % of designs to momentum), not as a frontier tension.
 
 ### What the SysML client provided for free (R-17)
 

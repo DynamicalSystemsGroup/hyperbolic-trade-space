@@ -47,16 +47,21 @@ SUPPORT_TOL = 1e-3  # an exponent above this is in the contending set
 TARGET_FRAC_ABOVE = 0.10
 
 
-AMEND2 = (
-    "WP4b amendment 2 stop rule: on the feasible set (settled, power_ok, dod_ok, momentum_ok) "
-    "this check fails; thresholds not weakened, reported to the supervisor "
-    "(see docs/superpowers/notes/adcs-tensions-probe.md)"
+STOP3 = (
+    "WP4b amendment 3 stop rule: after the three allowed adjustments of the physically consistent "
+    "scenario this richness check fails on the feasible set; thresholds not weakened, reported "
+    "to the supervisor (see docs/superpowers/notes/adcs-tensions-probe.md)"
 )
 
 
 def feasible(df: pd.DataFrame) -> pd.DataFrame:
-    """Feasible: settled, power_ok, dod_ok, momentum_ok (amendment 2), all attributes positive."""
-    ok = df.settled & df.power_ok & df.dod_ok & df.momentum_ok
+    """Feasible: settled, power_ok, momentum_ok, every attribute positive (amendments 2 and 3).
+
+    ``dod_ok`` is a reported flag, not a filter; but a design with ``dod_ok`` false has a
+    non-positive ``eclipse_reserve_wh`` (a larger-is-better attribute) and is excluded by the
+    positivity condition for that reason (``test_dod_violation_is_a_non_positive_reserve``).
+    """
+    ok = df.settled & df.power_ok & df.momentum_ok
     ok &= (df[ATTRS] > 0).all(axis=1)
     return df[ok]
 
@@ -150,7 +155,6 @@ def test_dataset_shape_and_columns(df):
     assert np.isfinite(df[ATTRS].to_numpy(float)).all()
 
 
-@pytest.mark.xfail(strict=True, reason=AMEND2)
 def test_settled_fraction_and_flag_shares(df, capsys):
     assert df.settled.mean() >= 0.85
     shares = {
@@ -163,13 +167,18 @@ def test_settled_fraction_and_flag_shares(df, capsys):
     assert (ok[ATTRS] > 0).all().all()
 
 
+def test_dod_violation_is_a_non_positive_reserve(df):
+    """dod_ok false <=> eclipse reserve not positive: excluding on positivity covers dod_ok."""
+    assert ((~df.dod_ok) == (df.eclipse_reserve_wh <= 0)).all()
+    assert (df[ATTRS][df.dod_ok] > 0).all().all()
+
+
 # ---------------------------------------------------------------------------------------------
 # R-14: torque binds
 # ---------------------------------------------------------------------------------------------
 # R-14 as amended (WP4b scope amendment 1, work-packages/WP4b-decisions.md): only the two relative
 # clauses remain; the absolute small-wheel level 0.25 was an arbitrary default and is dropped
 # (the committed dataset has 0.237).
-@pytest.mark.xfail(strict=True, reason=AMEND2)
 def test_torque_binds_for_small_wheels(df):
     ok = feasible(df)  # amendment 2: R-14 is evaluated on the feasible set
     med_sat = ok.groupby("wheel_class").torque_saturated_frac.median()
@@ -187,7 +196,7 @@ def test_working_temperature_found(probe):
     assert probe["n_near"] >= 10
 
 
-@pytest.mark.xfail(strict=True, reason=AMEND2)
+@pytest.mark.xfail(strict=True, reason=STOP3)
 def test_a_contending_set_includes_mass_and_a_power_attribute(probe):
     w = probe["w_inf"]
     assert len(probe["contending"]) >= 3, w
@@ -195,14 +204,14 @@ def test_a_contending_set_includes_mass_and_a_power_attribute(probe):
     assert max(w[a] for a in POWER) >= 0.05, w
 
 
-@pytest.mark.xfail(strict=True, reason=AMEND2)
+@pytest.mark.xfail(strict=True, reason=STOP3)
 def test_b_bootstrap_support_of_mass_and_power(probe):
     frac, med = probe["boot_frac_in_support"], probe["boot_median_w"]
     assert frac["total_mass_kg"] >= 0.90 and med["total_mass_kg"] >= 0.05, (frac, med)
     assert any(frac[a] >= 0.90 and med[a] >= 0.05 for a in POWER), (frac, med)
 
 
-@pytest.mark.xfail(strict=True, reason=AMEND2)
+@pytest.mark.xfail(strict=True, reason=STOP3)
 def test_c_agility_against_mass(probe):
     assert probe["assoc"].loc["settling_time_s", "total_mass_kg"] <= -0.30
     big = [w for w, c in probe["wheel_near_counts"].items() if c >= 10]
@@ -220,6 +229,7 @@ def test_d_a_power_tension(probe):
     assert min(pairs.values()) <= -0.30, sorted(pairs.items(), key=lambda kv: kv[1])[:4]
 
 
+@pytest.mark.xfail(strict=True, reason=STOP3)
 def test_e_previous_tensions_retained(probe):
     a = probe["assoc"]
     assert a.loc["settling_time_s", "control_effort"] <= -0.30

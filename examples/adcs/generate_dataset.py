@@ -13,8 +13,8 @@ WP4b adds the illustrative cubesat model (SysML configuration space read through
 
 ``--model adcs`` (default) is the unchanged WP4 behaviour. ``--model cubesat`` writes
 ``data/adcs_designs_cubesat.csv`` by default; ``--slew-deg`` and ``--t-end`` set the scenario
-(defaults 10 deg / 900 s for adcs, the values of ``cubesat_model`` for cubesat). Each cubesat
-worker process opens its own ``opensysml`` connection.
+(defaults 10 deg / 900 s for adcs, the values of ``cubesat_model`` for cubesat: 30 deg / 600 s).
+Each cubesat worker process opens its own ``opensysml`` connection.
 """
 
 from __future__ import annotations
@@ -148,9 +148,11 @@ def main(argv=None) -> int:
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--model", choices=["adcs", "cubesat"], default="adcs")
     p.add_argument(
-        "--slew-deg", type=float, default=None, help="slew angle (default 10 / cubesat 90)"
+        "--slew-deg", type=float, default=None, help="slew angle (default 10 / cubesat 30)"
     )
-    p.add_argument("--t-end", type=float, default=None, help="horizon in s (default 900 / cubesat)")
+    p.add_argument(
+        "--t-end", type=float, default=None, help="horizon in s (default 900 / cubesat 600)"
+    )
     p.add_argument("--out", type=pathlib.Path, default=None)
     p.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 1))
     p.add_argument("--force", action="store_true", help="overwrite an existing output file")
