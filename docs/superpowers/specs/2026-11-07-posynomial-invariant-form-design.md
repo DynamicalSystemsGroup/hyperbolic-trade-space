@@ -1,4 +1,4 @@
-# Design spec: posynomial-invariant-form
+# Design spec: hyperbolic-trade-space (the posynomial invariant form)
 
 Date: 2026-11-07. Supervisor and author of the method: Michael Zargham (`mzargham`). This document
 is the persisted form of the approved plan. Executing agents read it together with the notes in

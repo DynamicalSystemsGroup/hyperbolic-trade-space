@@ -8,7 +8,7 @@ This repository is built as supervisor-gated work packages, following the superv
 ## Roles and records
 
 - **Supervisor (accountable):** Michael Zargham, GitHub `mzargham`. Remote:
-  `https://github.com/DynamicalSystemsGroup/posynomial-invariant-form`.
+  `https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space`.
 - **Approval and acceptance records:** verbal, in chat, quoted verbatim by the agent in
   `work-packages/WPn-decisions.md` (supervisor: "we can do verbal approvals for now"; release
   controls, e.g. PR-merge records, come after the first release).

@@ -1,4 +1,4 @@
-# posynomial-invariant-form — conventions for agents
+# hyperbolic-trade-space (the posynomial invariant form) — conventions for agents
 
 Method and author: Michael Zargham (`mzargham`), who is the accountable supervisor. Read
 `work-packages/README.md` and `work-packages/PM-BRIEF.md` before doing anything substantial; the
