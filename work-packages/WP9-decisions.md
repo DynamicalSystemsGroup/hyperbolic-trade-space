@@ -105,4 +105,10 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 
 ## Scope approval (approval gate)
 
-- pending (decision loop over OD1 to OD3 and the defaults)
+- **Document:** `work-packages/WP9-scope-of-work.md` at commit d3abf28 (loop closed, no open items).
+- **Date:** 2026-11-08.
+- **Driver's question:** "WP9, the posynomial solver for K > 1, has no open items. Do you approve the
+  scope of work for execution?" (options: Approved / Not yet).
+- **Supervisor (mzargham), verbatim:** "Approved"
+- **Disposition:** approved; `work-execution` starts for WP9 under the PM/implementer pattern;
+  commits prefixed "WP9: ", local only while the push hold stands.
