@@ -146,6 +146,17 @@ What changed and why, per scope-of-work section 6; the supervisor's choice "try 
 - After lever (iii) the stop rule applies: if R-13 still fails, the finding is recorded as the amendment to R-13 and the fresh-reviewer review is run; if R-13 passes under a lever, the review is run on that dataset. Either way the result is reported to the driver before the WP4b gate.
 - Nothing else changes.
 
+## Amendment 6 (standing dataset, approved at the review-gap gate)
+
+What changed and why, per scope-of-work section 6; the supervisor's choice "Both, as two regimes" is recorded verbatim in `work-packages/WP4b-decisions.md` (review gaps, round 4).
+
+- The aggressive-gain dataset `examples/adcs/data/adcs_designs_cubesat_gains.csv` is the primary case dataset. R-13 and R-14 are evaluated on it (and R-13 is met there). The 30° baseline dataset `adcs_designs_cubesat.csv` is kept as the regime comparison: its null result (total mass absent from the contending set; wheel class a feasibility boundary only) is a recorded finding about the operating regime, not a failure of the package. The shape of the trade space is conditional on the operating regime: the wheel-class tension appears only when the loop is driven hard enough for the wheel to be the bottleneck.
+- Everywhere this scope says "the committed dataset" in R-13 to R-16 it means the primary dataset; the baseline's tests become regime-comparison assertions (they assert the recorded baseline numbers within stated tolerances) and no longer carry `xfail` markers for R-13.
+- The finding is stated as conditional on the stiff-loop regime (a third of the aggressive designs are underdamped and 37 % of small-wheel designs fail momentum), and the thin margins of the primary pass (pointing–effort −0.35 against −0.30, settling–pointing +0.15) are disclosed in the probe note.
+- The prediction-miss list in the probe note is completed (settling class ratio, mass as the largest weight, the lever (iii) outcome).
+- A follow-up item is recorded in the review and in `WP4b-decisions.md`: investigate the run-to-run nondeterminism of the generator on identical code (likely adaptive-step integration sensitivity in the saturated-fraction and continuous columns); the 10 % saturated-fraction tolerance of the aggressive box is a stopgap. This is not part of WP4b.
+- Nothing else changes.
+
 ## Definition of good
 
 - The cubesat makes engineering sense at a glance: bigger panels give more power, cost mass and slow the slew; bigger batteries ride through eclipse and weigh more; bigger wheels are agile, heavy and hungry; finer star trackers point better, weigh more and draw more. The fit finds these on its own.
