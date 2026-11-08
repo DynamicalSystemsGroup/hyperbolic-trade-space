@@ -448,3 +448,51 @@ per-configuration constraint verification (`power_ok`, `dod_ok`); `run_sweep` fo
 and specialization reads that removed every wheel or tracker table and every range from the Python. Costs: a runtime
 download on first use, about 3.5 ms per instantiated cubesat, and a `fork` warning from the gRPC library when the generator's
 pool is used (the pool is spawned, each worker opening its own connection, so it is harmless).
+
+### Amendment 4: slew-time attribute (Step A, written before any simulation or any change to the model layer)
+
+Supervisor choice: "One physics-justified lever: slew-time attribute" (`work-packages/WP4b-decisions.md`). This is adjustment 4
+and the last; no further levers. Everything below is written and committed before `slew_time_s` is computed on any design.
+
+**Why the 1 % settling time hides the actuator limits.** With the closed loop linearised, J theta'' + Kd theta' + (Kp/4) theta = 0
+(q_vec = theta/2). When the loop is overdamped (the usual case in this gain box, Kd large against sqrt(J Kp)), one pole is
+fast, about Kd/J, and one is slow, about Kp/(4 Kd). The error is the sum of the two modes and after the fast one has died
+it decays as exp(-(Kp/(4 Kd)) t). The 1 % criterion waits for that tail: it needs about ln(100) = 4.6 time constants of the
+slow pole, 4.6 x 4 Kd/Kp s, independent of the inertia and of the wheel torque as long as the saturated phase of the slew is
+shorter than this tail. The saturated phase (accelerate and brake at the torque cap T: about 2 sqrt(J theta / T) s for
+theta = 0.52 rad, so tens of seconds for a small wheel and under ten for a large one) happens first and is then followed by
+the tail, so a wheel that is ten times stronger shortens the early part of the slew but moves the 1 % time hardly at all.
+Settling therefore reads the controller (Kd/Kp) and not the actuator, which is why wheel class, and with it the largest
+single mass lever, drops out of the frontier. The reviewer measured this on the committed data: corr(log settling,
+log(Kd/Kp)) = 0.993 for large wheels.
+
+**Definition.** `slew_time_s` = the first time at which the attitude error angle falls below a band of 1 degree, where the
+error angle is 2 norm(q[:3]) in degrees, exactly the quantity `SimResult.summary()` computes as `theta_err_deg`; if the error
+never falls below the band within the horizon the value is the horizon `t_end` (censored; such designs are not settled either).
+First entry, not last exit: the time to arrive, not the time to remain. The reason for 1 degree: it is 1/30 of the 30 degree
+slew (a tolerance within which a pointing slew would be considered arrived at), it is above the star-tracker floors (the
+coarsest is a few hundredths of a degree) so it is not a sensor-floor measure, and it is reached when the fast, torque-limited
+part of the slew is over, before the slow tail that sets the 1 % criterion (0.3 degree here). A second column
+`slew_time_05deg_s` with a band of 0.5 degrees is recorded for sensitivity only, it is not an attribute of the fit; the
+attribute is the 1 degree one, chosen here before any data is seen.
+
+**Where it is computed.** Post-processing of the existing `SimResult` time histories (`t`, `q`) in the model layer
+(`cubesat_model.measure`); `adcs_sim.py` is not touched and stays byte-identical. The SysML `analysis def ModelTest` documents
+the outputs list; no constant is duplicated (the bands are scenario parameters of `measure`, like the slew angle).
+
+**Expectation (stated in advance, to be compared with the data).**
+1. Slew time depends on torque for small wheels at 30 degrees and on the gains otherwise. The small wheel (0.3 mN m cap) is
+   saturated for about 5 times the share of the horizon that large wheels are (median saturated fraction 0.0409 against
+   0.0080, ratio 5.1), so its first arrival is set by the bang-bang phase, roughly 2 sqrt(J theta / T) = 40 to 80 s at
+   J = 0.25 to 1 kg m2, and larger J (larger panels) lengthens it. For medium and large wheels the cap is mostly not reached
+   and the arrival is set by the PD response: time scale between J/Kd and 4 Kd/Kp times a few, so it moves with the gains.
+2. Wheel-class medians (feasible designs). Slew time: small about 70 s, medium about 35 s, large about 35 s (small
+   at least 1.5 times large; medium and large within 30 % of each other). Settling (existing, 128 / 67 / 69 s) stays as it is:
+   it compresses the class differences, so the small/large ratio of slew time (about 2) is larger than that of settling (1.85),
+   and the slew time is below settling in every class (slew time about half of settling for medium and large).
+3. Slew time and settling are positively correlated but not redundant: I expect a correlation of the oriented log-metrics of
+   0.5 to 0.8 over the feasible set.
+4. Whether mass enters the frontier is open and not predicted to follow. If the small-wheel saturated phase now separates
+   designs, the (oriented) slew time of small, light wheels is worse than that of large, heavy wheels, a slew-time/mass tension
+   at the wheel class; if the weight of that effect is small against the panel and battery mass, mass stays absent and wheel
+   class is reported as a feasibility boundary. Either result is recorded as found.
