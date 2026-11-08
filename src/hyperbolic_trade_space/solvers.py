@@ -32,6 +32,13 @@ _TIE_TOL = 1e-12
 class SolveResult:
     """Result of a simplex solve.
 
+    Parameters
+    ----------
+    w : ndarray of shape (d,)
+        Minimizer on the simplex.
+    beta, p, objective, n_iter, success, message
+        As in Attributes below; the fields are set once by the solvers and are read-only in use.
+
     Attributes
     ----------
     w : ndarray of shape (d,)
@@ -48,6 +55,14 @@ class SolveResult:
         Whether the solver reported success.
     message : str
         Solver message.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from hyperbolic_trade_space.solvers import SolveResult
+    >>> r = SolveResult(np.array([1.0]), 0.0, np.array([1.0]), 0.0, 1, True, "ok")
+    >>> r.success, r.w.tolist()
+    (True, [1.0])
     """
 
     w: np.ndarray

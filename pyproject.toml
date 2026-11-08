@@ -31,7 +31,7 @@ build-backend = "hatchling.build"
 packages = ["src/hyperbolic_trade_space"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "src"]
 addopts = "--doctest-modules"
 doctest_optionflags = "NORMALIZE_WHITESPACE"
 pythonpath = [".", "src", "examples/adcs"]
