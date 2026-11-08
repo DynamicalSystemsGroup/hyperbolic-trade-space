@@ -50,6 +50,6 @@ what it fixes for later packages. The design spec is
 |---|---|---|---|---|---|
 | WP0 | `WP0-scope-of-work.md` | verbal, 2026-11-07 (`WP0-decisions.md`) | `main` 4281350..f5cde59 | `WP0-review.md` | verbal, 2026-11-07 ("i accept", `WP0-decisions.md`) |
 | WP1 | `WP1-scope-of-work.md` | verbal, 2026-11-07 ("OK", `WP1-decisions.md`) | `main` 5e901aa..82fdd47 (incl. L8 fix) | `WP1-review.md` (696aa1f, third pass) | verbal, 2026-11-08 ("i accept", `WP1-decisions.md`) |
-| WP2 | `WP2-scope-of-work.md` | verbal, 2026-11-08 (`WP2-decisions.md`) | `main` c8e0f6e..a60b57c | `WP2-review.md` (e84bd7f, second pass) | pending |
-| WP4 | `WP4-scope-of-work.md` | verbal, 2026-11-08 (`WP4-decisions.md`) | `main` 932bbe4..b95a0d4 | `WP4-review.md` (cbedabe, second pass) | pending |
-| WP5 | `WP5-scope-of-work.md` | verbal, 2026-11-08 (`WP5-decisions.md`) | `main` 442a538..2d2c10e | `WP5-review.md` (1c71306) | pending |
+| WP2 | `WP2-scope-of-work.md` | verbal, 2026-11-08 (`WP2-decisions.md`) | `main` c8e0f6e..76f93f1 | `WP2-review.md` (ea3105b, third pass) | pending |
+| WP4 | `WP4-scope-of-work.md` | verbal, 2026-11-08 (`WP4-decisions.md`) | `main` 932bbe4..ef79e83 (incl. Amendment 1) | `WP4-review.md` (9680193, third pass) | pending |
+| WP5 | `WP5-scope-of-work.md` | verbal, 2026-11-08 (`WP5-decisions.md`) | `main` 442a538..4ce27d4 | `WP5-review.md` (1783375, second pass) | pending |
