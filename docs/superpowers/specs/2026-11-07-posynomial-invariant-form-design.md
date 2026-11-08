@@ -85,8 +85,17 @@ proposed configuration would fall, and reading the frontier's shape back in desi
 - **Proofs.** Docs discursive; every load-bearing result gets a SymPy axiom/lemma script in the
   hc-marimo plain-SymPy pattern (not a `symproof` dependency: not on PyPI, tree mid-merge),
   mirroring symproof's ledger conventions so the chain can be lifted into sealed bundles later.
-- **Demo.** ADCS geosat trade study with two categorical hardware choices; minimal numpy/scipy code
-  copied from `/Users/z/Documents/GitHub/adcs-lifecycle-demo`; Jupyter notebook.
+- **Demo.** ADCS trade study: the slew/pointing physics is minimal numpy/scipy code copied from
+  `/Users/z/Documents/GitHub/adcs-lifecycle-demo` (its regression pins verify the port at the source's
+  geosat parameters); the case itself (WP4b, supervisor 2026-11-08) is a coherent illustrative
+  small-satellite ("cubesat") configuration space with panel sizing feeding power and inertia,
+  battery storage, wheel classes that bind, star-tracker grade and gains, measured into mass, power,
+  settling, pointing and effort. **SysML v2 is used, not just written:** the configuration space is
+  defined in SysML v2 and handled with the current `opensysml` package (0.12.1 on PyPI as of
+  2026-11-08; the ADCS repo pinned 0.10.0), so the sampler reads enumerations and ranges from the
+  model and concrete configurations are instances of the abstract parts (configure → model test →
+  measurements). Supervisor: "no need to go crazy just make a simple demonstrative cubesat config
+  space using sysml". Jupyter notebook for the case.
 - **Docs and site.** Markdown + LaTeX; GitHub Pages site as executable specification paired with
   narrative, framed by the supervisor's SciPy 2026 paper (Tall's three worlds); literature review
   and BibTeX as their own package.
