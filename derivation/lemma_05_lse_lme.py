@@ -46,7 +46,7 @@ STATEMENT = (
     "lim_{tau->0} LME = mean; mean <= LME <= max"
 )
 # I2 and I3 enter as recorded remarks (see docstring); F5 is the max representation fallback.
-AXIOMS_USED = ["A3", "I2", "I3", "F5"]
+AXIOMS_USED = ["A3", "I1", "I2", "I3", "F5"]
 
 
 def derive(ctx):
@@ -121,6 +121,12 @@ def derive(ctx):
         "max_symbol": M,
         "consistency_remark": (
             "I2: the sample LME -> rho_tau(w) a.s. (SLLN); as tau->0 the limit is E[w.u]."
+        ),
+        "lp_duality_remark": (
+            "I1: as tau->inf, lim LME = max, so the fit becomes the LP "
+            "min_{w in simplex} max_i w.u_i, whose dual max_{lambda in simplex_N} min_j "
+            "(U^T lambda)_j has equal value by LP strong duality (checked numerically in "
+            "tests, test_lp_duality_numeric). Used as a remark, not proved here."
         ),
         "support_function_remark": (
             "I3: rho_tau increases to the support function h_A(w) as tau->inf; "
