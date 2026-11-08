@@ -51,3 +51,8 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   later". Disposition: the root index is designed as a growing landing page (one card per artifact,
   as the ADCS and hc-marimo sites do), so talks, decks and later artifacts are added as cards without
   restructuring; WP8's D-2 says so.
+- **Supervisor (mzargham), verbatim:** "the index can be pretty thin html like in the hc-marimo repo".
+  Disposition: the root index is a thin hand-written `index.html` modelled on
+  `/Users/z/Documents/GitHub/hc-marimo/site/index.html` (no framework, no build step; cards, a stack
+  line, an audience note, a call to action per artifact, a source link at the foot); D-2 names it as
+  the template.

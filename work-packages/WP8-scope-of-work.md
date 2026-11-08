@@ -157,3 +157,5 @@ to the paper and to the docs."): root `index.html` as the landing page with card
 docs and the package; the MkDocs docsite under `/docs/`; the mystmd paper under `/paper/`.
 The root index is a growing landing page (supervisor: "that index page will serve as a hook for
 talks and other items later"): one card per artifact, so talks and later items are added as cards.
+The root index is thin hand-written HTML modelled on hc-marimo's `site/index.html` (supervisor:
+"the index can be pretty thin html like in the hc-marimo repo"); no framework and no build step.
