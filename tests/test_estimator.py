@@ -1,10 +1,13 @@
 """Estimator behaviour: recovery, invariants, shape tests, chart, novelty, edges, composition."""
 
+import warnings
+
 import numpy as np
 import pandas as pd
 import pytest
 from sklearn.base import clone
 from sklearn.compose import ColumnTransformer
+from sklearn.exceptions import ConvergenceWarning
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
@@ -211,7 +214,8 @@ def test_d1():
 
 
 def test_single_sample_gives_balanced_exponents():
-    est = HyperbolicTradeSpace().fit(np.array([[1.0, 2.0, 3.0]]))
+    with pytest.warns(UserWarning, match="single valid row"):
+        est = HyperbolicTradeSpace().fit(np.array([[1.0, 2.0, 3.0]]))
     np.testing.assert_allclose(est.exponents_[0], 1 / 3)
     assert est.score_samples(np.array([[1.0, 2.0, 3.0]]))[0] == pytest.approx(0.0, abs=1e-12)
 
@@ -428,7 +432,9 @@ def test_k_terms_zero_rows_and_determinism():
 @pytest.mark.parametrize("shape", [(30, 1), (1, 3), (2, 3)])
 def test_k_terms_degenerate_inputs_replicate(shape):
     X = np.abs(np.random.default_rng(0).standard_normal(shape)) + 0.5
-    est = HyperbolicTradeSpace(n_terms=3, random_state=0).fit(X)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)  # the single-row convention warns (tested)
+        est = HyperbolicTradeSpace(n_terms=3, random_state=0).fit(X)
     assert est.exponents_.shape == (3, shape[1]) and est.log_offset_.shape == (3,)
     np.testing.assert_allclose(est.inverse_transform(est.transform(X)), X)
 
@@ -482,3 +488,176 @@ def test_n_restarts_default_and_validation():
     for bad in (0, -1, 2.5, None):
         with pytest.raises(ValueError, match="n_restarts"):
             HyperbolicTradeSpace(n_terms=3, n_restarts=bad).fit(X)
+
+
+# ------------------------------------------------ WP13 (E-1, E-5, E-7): record, warning, limit
+from hyperbolic_trade_space import estimator as _est  # noqa: E402
+from hyperbolic_trade_space import solvers as _solvers  # noqa: E402
+
+
+def _k3(seed, tau=INF, **kw):
+    X, _ = make_frontier_data(400, 4, n_terms=3, random_state=seed)
+    return X, HyperbolicTradeSpace(n_terms=3, temperature=tau, random_state=0, **kw)
+
+
+def test_constants_are_reexported():
+    assert (_est.EPS_KKT, _est.EPS_FEAS, _est.GUARD_TOL, _est.POLISH_STEPS) == (
+        1e-8, 1e-9, 1e-12, 5,
+    )  # fmt: skip
+    assert _est.EPS_ZERO_EXPONENT == 1e-12 and _est.PARTICIPATION_THRESHOLD == 1e-3
+
+
+@pytest.mark.parametrize(
+    "seed,tau,status",
+    [(0, INF, "certified"), (1, INF, "stationary_without_margin"), (0, 50.0, "certified")],
+)
+def test_termination_record_for_k_terms(seed, tau, status):
+    X, est = _k3(seed, tau)
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")  # certified and stationary-without-margin do not warn
+        est.fit(X)
+    t = est.termination_
+    ref = _solvers.solve_terms(np.log(X), 3, tau, random_state=0)
+    assert t.status == status and t.max_gap <= _est.EPS_KKT and t.assignment_changes == 0
+    assert t.n_iter == ref.n_iter and t.gamma == ref.termination.gamma
+    assert (t.eps_kkt, t.eps_feas, t.guard_tol) == (1e-8, 1e-9, 1e-12)
+    np.testing.assert_array_equal(est.exponents_, ref.W)
+
+
+def test_termination_not_applicable_cases_do_not_warn():
+    X, _ = make_frontier_data(300, 4, n_terms=3, random_state=0)
+    d1 = np.abs(np.random.default_rng(0).standard_normal((20, 1))) + 0.5
+    cases = [
+        (HyperbolicTradeSpace(), X),
+        (HyperbolicTradeSpace(temperature=INF), X),
+        (HyperbolicTradeSpace(n_terms=3, facet_step="tangent", random_state=0), X),
+        (HyperbolicTradeSpace(n_terms=3, penalty="reweighted_l1", alpha=0.01, random_state=0), X),
+        (HyperbolicTradeSpace(n_terms=2), d1),
+    ]
+    for est, data in cases:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            est.fit(data)
+        assert est.termination_.status == "not_applicable"
+    # K = 1 gap is read only: the fit is the unchanged single-term fit
+    ref = _solvers.solve_slsqp(np.log(X), 10.0, w0=_solvers.solve_lp(np.log(X)).w)
+    est = HyperbolicTradeSpace().fit(X)
+    np.testing.assert_array_equal(est.exponents_[0], ref.w)
+    assert est.log_offset_[0] == ref.beta and np.isfinite(est.termination_.max_gap)
+
+
+def _one_warning(est, X, pattern):
+    with warnings.catch_warnings(record=True) as rec:
+        warnings.simplefilter("always")
+        est.fit(X)
+    cw = [w for w in rec if issubclass(w.category, ConvergenceWarning)]
+    assert len(cw) == 1 and pattern in str(cw[0].message), [str(w.message) for w in rec]
+    assert "max facet gap" in str(cw[0].message)
+
+
+def test_convergence_warning_keyed_to_iteration_cap(monkeypatch):
+    real = _solvers.solve_terms
+    monkeypatch.setattr(_solvers, "solve_terms", lambda *a, **k: real(*a, max_iter=1, **k))
+    X, est = _k3(1)
+    _one_warning(est, X, "iteration_cap")
+    assert est.termination_.status == "iteration_cap"
+
+
+def test_convergence_warning_keyed_to_guard_stop(monkeypatch):
+    real, calls = _solvers._refit, []
+
+    def worse(*args, **kw):
+        W, beta, obj, P = real(*args, **kw)
+        calls.append(1)
+        return (W, beta, obj, P) if len(calls) % 2 else (W, beta, obj + 10.0, P)
+
+    monkeypatch.setattr(_solvers, "_refit", worse)
+    X, est = _k3(1, n_restarts=1)
+    _one_warning(est, X, "guard_stop")
+    assert est.termination_.status == "guard_stop"
+
+
+def test_conditioning_is_the_restricted_hessian_eigenvalue():
+    X, _ = planted(300, 3, seed=2)
+    tau = 20.0
+    est = HyperbolicTradeSpace(temperature=tau).fit(X)
+    cond = est.conditioning_
+    assert cond.shape == (1,) and cond[0] > 0
+    U = np.log(X)
+    p = _solvers.support_weights(U @ est.exponents_[0], tau)
+    H = tau * np.cov(U.T, aweights=p, ddof=0)  # Hessian of J_tau: tau * weighted covariance
+    B = _coords_helmert(3)
+    assert cond[0] == pytest.approx(np.linalg.eigvalsh(B @ H @ B.T).min(), rel=1e-6)
+    # read only: the fit is the unchanged one
+    ref = _solvers.solve_slsqp(U, tau, w0=_solvers.solve_lp(U).w)
+    np.testing.assert_array_equal(est.exponents_[0], ref.w)
+
+
+def _coords_helmert(d):
+    from hyperbolic_trade_space.coordinates import helmert_basis
+
+    return helmert_basis(d)
+
+
+def test_conditioning_drops_for_nearly_collinear_metrics():
+    X, _ = planted(300, 3, seed=2, noise=0.05)
+    Xc = X.copy()
+    Xc[:, 1] = Xc[:, 0] * np.exp(1e-3 * np.random.default_rng(0).standard_normal(len(X)))
+    kw = {"temperature": 20.0, "min_exponent": 0.1}  # the floor keeps every metric participating
+    good = HyperbolicTradeSpace(**kw).fit(X).conditioning_[0]
+    bad = HyperbolicTradeSpace(**kw).fit(Xc).conditioning_[0]
+    assert 0 < bad < 1e-2 * good
+
+
+def test_conditioning_per_facet_and_nan_cases():
+    X, est = _k3(0, 50.0)
+    est.fit(X)
+    assert est.conditioning_.shape == (3,) and (est.conditioning_ > 0).all()
+    assert np.isnan(HyperbolicTradeSpace(temperature=INF).fit(X).conditioning_).all()  # tau = inf
+    d1 = np.abs(np.random.default_rng(0).standard_normal((20, 1))) + 0.5
+    assert np.isnan(HyperbolicTradeSpace(temperature=5.0).fit(d1).conditioning_).all()
+    sparse, _ = make_frontier_data(300, 4, exponents=[0.7, 0.3, 0, 0], noise=0.05, random_state=0)
+    one_dim = HyperbolicTradeSpace(temperature=20.0, penalty="reweighted_l1", alpha=0.05)
+    assert np.isfinite(one_dim.fit(sparse).conditioning_).all()  # two coordinates participate
+
+
+def test_zero_metric_with_zero_exponent_equals_the_formal_limit():
+    X, _ = make_frontier_data(300, 4, exponents=[0.6, 0.4, 0, 0], noise=0.1, random_state=0)
+    est = HyperbolicTradeSpace(temperature=20.0, penalty="reweighted_l1", alpha=0.01).fit(X)
+    w = est.exponents_[0]
+    assert w[2] <= _est.EPS_ZERO_EXPONENT and w[3] <= _est.EPS_ZERO_EXPONENT
+    Xz = X[:20].copy()
+    Xz[:10, 2] = 0.0  # zero metric on a zero exponent
+    Xz[10:15, 0] = 0.0  # zero metric on a participating exponent
+    got = est.score_samples(Xz)
+    limit = est.score_samples(np.where(Xz == 0, 1.0, Xz))  # m^0 = 1: the continuous extension
+    np.testing.assert_allclose(got[:10], limit[:10], atol=1e-12)
+    assert np.isfinite(got[:10]).all()
+    assert np.isneginf(got[10:15]).all() and np.isfinite(got[15:]).all()
+    T = est.transform(Xz)
+    assert np.isnan(T[:15, :-1]).all() and T[:10, -1].tolist() == got[:10].tolist()
+    np.testing.assert_allclose(est.invariant_value(Xz)[:10], np.exp(limit[:10]))
+    assert np.isnan(est.inverse_transform(T)[:15]).all()
+
+
+def test_zero_metric_limit_for_k_terms_follows_each_facet():
+    W = np.array([[0.5, 0.5, 0.0], [0.0, 0.5, 0.5]])
+    est = HyperbolicTradeSpace(n_terms=2)
+    est.fit(make_frontier_data(60, 3, n_terms=2, random_state=0)[0])
+    est.exponents_, est.log_offset_ = W, np.zeros(2)
+    X = np.array([[0.0, 2.0, 3.0], [2.0, 2.0, 0.0], [0.0, 2.0, 0.0], [2.0, 3.0, 4.0]])
+    lv = est.score_samples(X)
+    assert lv[0] == pytest.approx(0.5 * np.log(6.0))  # only facet 1 has no zero metric
+    assert lv[1] == pytest.approx(np.log(2.0))  # only facet 0
+    assert np.isneginf(lv[2])  # a zero on a participating exponent of both facets
+    assert np.isfinite(lv[3])
+
+
+def test_degenerate_single_valid_row_warns_with_the_convention():
+    X = np.array([[1.0, 2.0, 3.0], [0.0, 1.0, 1.0]])  # one valid row among two
+    for k in (1, 3):
+        with pytest.warns(UserWarning, match="single valid row.*convention"):
+            est = HyperbolicTradeSpace(n_terms=k).fit(X)
+        np.testing.assert_allclose(est.exponents_, 1 / 3)
+        assert est.termination_.status == "not_applicable"
+    assert "single valid row" in HyperbolicTradeSpace.__doc__
