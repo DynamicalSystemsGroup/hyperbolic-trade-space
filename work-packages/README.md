@@ -57,5 +57,5 @@ what it fixes for later packages. The design spec is
 | WP3 | `WP3-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP3-decisions.md`) | `main` 7f82d43..07fe9d3 | `WP3-review.md` (a63f6f5, third pass) | verbal, 2026-11-08 ("accept", `WP3-decisions.md`) |
 | WP6 | `WP6-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP6-decisions.md`) | `main` 17dea12..f6d9b9a | `WP6-review.md` (4f5d211, fifth pass) | verbal, 2026-11-08 ("accept", `WP6-decisions.md`) |
 | WP4b | `WP4b-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP4b-decisions.md`) | `main` 5dfbc8c..f1e38ca (Amendments 1 to 6; primary = aggressive-gain dataset, baseline = regime comparison) | `WP4b-review.md` (3f5a00f/99fdea2, sixth pass) | verbal, 2026-11-08 ("accept 4b ...", `WP4b-decisions.md`) |
-| WP7 | `WP7-scope-of-work.md` | verbal, 2026-11-08 ("approve 7 and 8", `WP7-decisions.md`) | in progress | — | — |
+| WP7 | `WP7-scope-of-work.md` | verbal, 2026-11-08 ("approve 7 and 8", `WP7-decisions.md`) | `main` 94f5fdf..db4aa0a | `WP7-review.md` (2c28bd0) | pending |
 | WP8 | `WP8-scope-of-work.md` | verbal, 2026-11-08 ("approve 7 and 8", `WP8-decisions.md`) | waiting for WP7 | — | — |
