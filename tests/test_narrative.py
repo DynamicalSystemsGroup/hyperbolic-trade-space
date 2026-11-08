@@ -11,8 +11,6 @@ import importlib
 import re
 from pathlib import Path
 
-import pytest
-
 from derivation import axioms
 from hyperbolic_trade_space import HyperbolicTradeSpace, coordinates, datasets, solvers
 
