@@ -130,3 +130,81 @@ def test_sampling_reproducible_and_prefix_stable():
     # lognormal mass perturbation, sigma about 0.10
     assert np.log(big.panel_mass_kg / 30.0).std() == pytest.approx(0.10, abs=0.01)
     assert np.log(big.antenna_mass_kg / 18.0).std() == pytest.approx(0.10, abs=0.01)
+
+
+# ---------------------------------------------------------------------------------------------
+# Generator and dataset (R-8..R-10)
+# ---------------------------------------------------------------------------------------------
+import subprocess  # noqa: E402
+import sys  # noqa: E402
+
+CSV = ADCS_DIR / "data" / "adcs_designs.csv"
+GEN = ADCS_DIR / "generate_dataset.py"
+
+
+def test_generator_cli_skip_and_force(tmp_path):
+    """R-8: help works, existing output is skipped unless --force."""
+    help_out = subprocess.run([sys.executable, str(GEN), "--help"], capture_output=True, text=True)
+    assert help_out.returncode == 0
+    for flag in ("--n", "--seed", "--out", "--workers", "--force", "--fast"):
+        assert flag in help_out.stdout
+    out = tmp_path / "d.csv"
+    cmd = [sys.executable, str(GEN), "--n", "4", "--fast", "--workers", "2", "--out", str(out)]
+    assert subprocess.run(cmd, capture_output=True).returncode == 0
+    first = out.read_text()
+    assert len(pd.read_csv(out)) == 4
+    out.write_text("sentinel")
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    assert "skipping" in r.stdout and out.read_text() == "sentinel"
+    assert subprocess.run([*cmd, "--force"], capture_output=True).returncode == 0
+    assert out.read_text() == first
+
+
+def test_dataset_reproducible_first_20():
+    """R-9: committed CSV has 1000 rows; the first 20 designs regenerate."""
+    from generate_dataset import COLUMNS, generate
+
+    committed = pd.read_csv(CSV)
+    assert len(committed) == 1000 and list(committed.columns) == COLUMNS
+    fresh = generate(20, 0, workers=1)
+    head = committed.iloc[:20]
+    for col in ("design_id", "wheel_class", "st_grade", "settled", "momentum_ok"):
+        assert (head[col].to_numpy() == fresh[col].to_numpy()).all(), col
+    cont = [
+        "Kp",
+        "Kd",
+        "panel_mass_kg",
+        "antenna_mass_kg",
+        "pointing_error_deg",
+        "adcs_mass_kg",
+        "control_effort",
+        "torque_saturated_frac",
+        "peak_momentum_nms",
+    ]
+    for col in cont:
+        np.testing.assert_allclose(head[col], fresh[col], rtol=1e-6, atol=1e-12, err_msg=col)
+    np.testing.assert_allclose(head.settling_time_s, fresh.settling_time_s, atol=0.5)
+
+
+def test_dataset_summary(capsys):
+    """R-10: spread of attributes, mostly settled; report the infeasible fractions."""
+    d = pd.read_csv(CSV)
+    spreads = {c: float(np.log10(d[c].max() / d[c].min())) for c in ATTRS}
+    assert sum(s >= 1.0 for s in spreads.values()) >= 3, spreads
+    assert d.settled.mean() > 0.5
+    with capsys.disabled():
+        print(
+            f"\n[dataset_summary] not settled: {1 - d.settled.mean():.3f}, "
+            f"momentum violated: {1 - d.momentum_ok.mean():.3f}, "
+            f"log10 spreads: { {k: round(v, 2) for k, v in spreads.items()} }"
+        )
+
+
+def test_sysml_documentation_file():
+    """R-11."""
+    text = (ADCS_DIR / "extended_design_space.sysml").read_text()
+    assert text.strip()
+    assert "documentation only" in text.lower()
+    for name in (*WHEEL_CLASSES, *STAR_TRACKERS, *ATTRS):
+        assert name in text or name.replace("_s", "").replace("_deg", "").replace("_kg", "") in text
+    assert "wheel" in text.lower() and "star" in text.lower()
