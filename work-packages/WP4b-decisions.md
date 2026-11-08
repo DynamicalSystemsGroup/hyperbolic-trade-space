@@ -61,6 +61,20 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   ≥ 1.25) with the absolute 0.25 removed and recorded as arbitrary; no new simulation; the committed
   dataset stands; the xfail marker comes off; the review proceeds with a fresh reviewer.
 
+## Review gaps, round 1 (review 70081fb) and amendment 2 (2026-11-08)
+
+- **Physics item (G-2), put on its own:** 55 % of designs (93 % of small-wheel designs) exceed wheel
+  momentum storage during the 90° slew; the simulator does not clip momentum; the flag was
+  informational and such designs remained in the fit.
+- **Supervisor (mzargham), verbatim choice:** "Enforce as feasibility"
+- **Disposition (amendment 2):** `momentum_ok = False` designs are excluded from the fit (feasible =
+  settled ∧ power_ok ∧ momentum_ok); the richness test R-13 reruns on the feasible set; if it fails,
+  the stop rule returns to the supervisor (agility-vs-mass may collapse). No tuning.
+- **Other gaps (G-1 scans and multi-constant adjustments, G-3 threshold margin, G-4 comment edit,
+  G-5 small items) put as one item. Supervisor, verbatim choice:** "Fix the stale help text, accept
+  the rest". Disposition: fix the `--slew-deg` help text; G-1, G-3, G-4 and the rest of G-5 accept
+  as is. The whole review reruns after amendment 2 and the fix.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP4b-review.md`

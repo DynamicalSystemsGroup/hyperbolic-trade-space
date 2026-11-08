@@ -20,6 +20,15 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   `select_temperature` docstring); G-3 follow-up candidate (needs WP2's generator); G-1, G-4 accept
   as is. The whole review reruns after the fix.
 
+## Review gaps, round 2 (review 4fbc6ea)
+
+- Items: G-5 the docs fix also edited WP6's limitations page and that push went red (fixed next
+  commit); G-6 `select_temperature` default lower bound 0.1 below the recommended τ ≈ 3 without
+  saying so; G-3 follow-up (planted beyond-frontier novelty test needs WP2's generator).
+- **Supervisor (mzargham), verbatim choice:** "Fix G-6 docstring line, accept the rest"
+- **Disposition:** G-6 fix before acceptance (one docstring sentence); G-5 accept as is; G-3 on the
+  follow-up list. The whole review reruns after the fix.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP3-review.md`

@@ -21,6 +21,14 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   supports; mark conjectures as such; add the missing pointers where the reword touches them);
   G-1, G-2, G-4, G-6 accept as is. The whole review reruns after the fix.
 
+## Review gaps, round 2 (review 2cacd0c, third pass)
+
+- Items: N-3 DEA lineage sentence beyond literature.md; N-4 "log-mean-exp is already a posynomial in
+  the data" attributed to L5; G-7 red push; O-10/O-11 minor wording.
+- **Supervisor (mzargham), verbatim choice:** "Fix N-3, N-4 and the wording items, accept G-7"
+- **Disposition:** one editing pass fixing N-3, N-4, O-10 and O-11 with one-sentence edits; G-7 accept
+  as is. The whole review reruns once after the pass.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP6-review.md`
