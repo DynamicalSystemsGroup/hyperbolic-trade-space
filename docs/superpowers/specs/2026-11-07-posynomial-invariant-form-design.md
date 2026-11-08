@@ -156,9 +156,13 @@ the surrogate's error and extrapolation risk and is conditional on the fitted tr
 belongs to the composition, not to the unsupervised estimator.
 
 **Lineage.** Cobb–Douglas / Shephard distance function with homogeneity imposed; deterministic
-frontiers and COLS (Aigner & Chu 1968; Aigner, Lovell & Schmidt 1977); DEA as the hull limit;
-entropic risk measure for ρ_τ; log-ratio PCA (Aitchison) as feature-engineering kin. Full review in
-WP5 (`docs/superpowers/notes/references-verified.md` is the seed).
+frontiers (programming-based: Aigner & Chu 1968; statistical: Afriat 1972, extended by Richmond
+1974 and Greene 1980) and corrected OLS (COLS: OLS fit, intercept raised by the largest residual so
+no observation lies above the frontier, as defined in Battese 1992; no single originator is named
+in the sources read); stochastic frontiers (Aigner, Lovell & Schmidt 1977); DEA as the hull limit;
+entropic risk measure for ρ_τ; log-ratio PCA (Aitchison) as feature-engineering kin. Sources and
+their verification status are in `docs/references.bib` and `docs/literature.md` (WP5); an earlier
+draft of this sentence attributed COLS to Aigner & Chu 1968, which the sources do not support.
 
 **Extension: posynomial / GGP (documented, not built).** V_K(m) = (Σ_k c_k Π_j m_j^{κ w_kj})^{1/κ},
 w_k ∈ Δ, κ > 0; in log space Φ(u) = (1/κ) log Σ_k exp(κ(θ_k·u − β_k)), a softmax-affine function
