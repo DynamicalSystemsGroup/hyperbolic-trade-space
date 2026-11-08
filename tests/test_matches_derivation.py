@@ -189,7 +189,7 @@ def test_L8_chart_relations(ctx, inst):
             .doit()
             .replace(
                 lambda x: isinstance(x, sp.matrices.expressions.matexpr.MatrixElement),
-                lambda x: sp.Float(U[r, int(x.args[1])], 30),
+                lambda x, r=r: sp.Float(U[r, int(x.args[1])], 30),
             )
         )
         ell = float(ell_expr)
