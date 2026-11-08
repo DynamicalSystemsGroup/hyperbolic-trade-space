@@ -448,7 +448,7 @@ Four caveats are part of the method.
    among training scores and $\tau\log V$ next to $V-1$: a design is novel only relative to the
    band of order $1/\tau$.
 2. **Optimism off the balanced point.** Far from the diagonal a design has $V\ll1$ even when it
-   is locally on the frontier, because a single hyperplane is tangent only at one place. our
+   is locally on the frontier, because a single hyperplane is tangent only at one place. Our
    reading (spec section 4, no lemma behind it) is that $V-1$ is reliable near the balanced
    region and conservative elsewhere; points whose $Z$ lies outside the
    training hull of $Z$ are flagged. The $K>1$ extension is expected to tighten this (a conjecture). This caveat is the failure
@@ -570,7 +570,7 @@ $$
 $$
 <!-- definition -->
 
-By definition, the data-level log-mean-exp is already a posynomial in the data (a sum of exponentials of affine terms in the log data, normalized by $1/N$), and
+From the definition, $\exp(\tau\cdot\text{log-mean-exp})$ is the mean of exponentials of affine terms in the log data, which is a posynomial in the data (a sum of monomials with positive coefficients $1/N$), and
 the dual weights $p_i$ of the fit are support weights; the support-vector analogy is a hypothesis
 to examine, not a result. Open questions are choosing $S$ from $p_i$, the local normals
 $\theta_i$, the roles of $\tau$ and $\kappa$, overfitting toward the data's convex hull, and
