@@ -325,3 +325,98 @@ The overstatement in `docs/api.md` and `docs/limitations.md` ("more restarts" as
 corrected to the reviewer's measurements: scope tau = infinity for the spike restarts; selection by
 mean slack, not the restart count, is the limit; extra restarts can lose a recovery (seed 8, step
 B, tau = infinity); `n_restarts` is a cost-for-robustness knob. Docs only; no code or test change.
+
+## Fourth review (after Amendment 3)
+
+Reviewer: fresh context, did not build the work. Reviewed `dev` at 48f241a (delta `git diff 0b0bcbc HEAD`: a15566b E-4, 094e86d Amendment 3, 48f241a branching process). Nothing fixed; this section is the only file edited, nothing committed (`git status --short` empty before writing). Everything below was re-run. Scratch: `/private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/` (`runk.py`, `k_out.txt`, `figs/`, `band.py`).
+
+### Checks run
+
+| Check | Command | Result |
+|---|---|---|
+| Suite | `uv run pytest -q` | `1122 passed, 11 skipped, 1 xfailed` (206 s); +6 over the third review (new: tau-reselection, every-facet-drawn, two plotting tests, and the split of the figures test) |
+| Lint / format / lock | `ruff check .`; `ruff format --check .`; `uv lock --check` | `All checks passed!`; `117 files already formatted`; `Resolved 173 packages` |
+| Derivation | `uv run python derivation/run.py` | `ALL LEMMAS PASS.` (diff to `derive`/`verify` is prose only: docstring and ledger role/failure-mode text in `axioms.py`, `lemma_10_extension.py` lines 11-12; the executable asserts `ceil - log K/kappa == 0` at line 129 are untouched) |
+| Attribution | `git log 3bebe3e..HEAD --format=%B \| grep -i -c "co-authored-by\|generated"` | `0` |
+| K = 1 / notebook | `git diff --stat 3bebe3e HEAD -- examples/adcs/adcs_trade_study.ipynb tests/test_notebook.py` | empty |
+| R-8 | AST docstring/comment/blank-excluded count, HEAD vs 3bebe3e (`/private/tmp/claude-501/r8.py`) | **262 net** (budget 300): 260 of the third review plus 2 (the `PARTICIPATION` constant and the `if ok.any():` guard in `plotting.py`) |
+| CI | `gh run list --branch main --limit 4` | 42530244023 (094e86d) success, 42530248162 (48f241a) success (after finishing while I reviewed), 42529690560, 42529624440 success. Note `main` already carries these commits; `dev` is the same tip |
+
+### (1) Amendment 3, item by item
+
+**D-6, re-selection at each K: met.** I ran `k_terms.run_regime(regime, figs=<scratch>)` for both regimes (the script's own function; committed figures untouched; `git status` clean) and compared every number of `docs/superpowers/notes/k3-cubesat.md` with the printout.
+
+- Re-selected tau, band, objective_, frac_above_, facet rows, shares, all identical to the record. Primary: K=1 38.10 / 0.0262 / 0.2036 / 0.096 / 706; K=2 113.22 / 0.0088 / 0.1384 / 0.096 / 332, 374 / 0.371, 0.629; K=3 195.18 / 0.0051 / 0.1173 / 0.098 / 201, 188, 317 / 0.089, 0.133, 0.778. Stock: K=1 41.72 / 0.0240 / 0.1312 / 0.104 / 780; K=2 78.75 / 0.0127 / 0.1059 / 0.092 / 390, 390 / 0.694, 0.306; K=3 162.78 / 0.0061 / 0.0929 / 0.094 / 284, 149, 347 / 0.077, 0.590, 0.333. **K=1 tau 38.10 and 41.72 unchanged.** No warnings in the run (stdout and stderr captured), consistent with "bracketed at every K, no warning".
+- Facet tables (K=3 and K=2, both regimes): every row, contending set (in order), n-lemma, three largest exponents, near-frontier count (17, 33, 126; 35, 88; 20, 71, 47; 67, 29), reach beta_k and share match.
+- K=1 vs K=3/K=2 relation paragraphs (shares "five of six", "four of seven", union of nine and ten, K=1 subset of the union in primary, not in stock, eclipse reserve and power margin absent) match the script's `relation` output line by line. "Only facet containing total mass (K=3, both regimes)" holds (primary facet 3, stock facet 2).
+- Fixed-tau diagnostic table matches (primary 0.261, 0.382; stock 0.204, 0.338; objective_ 0.0900, 0.0529, 0.0678, 0.0326; sizes and shares). The "re-selection changed" paragraph (302,190,214 to 201,188,317; 0.669 to 0.778; settling time now in both control-effort facets; stock sizes, unchanged sets, 0.161 to 0.590, 0.307 to 0.077; objective ratio about a quarter at fixed tau: 0.0529/0.2036 = 0.26, 0.0326/0.1312 = 0.25) matches the fixed-tau per-facet table the script prints.
+- Seed stability (seeds 0-4): primary objective_ 0.117334/0.117333 (below 2e-6), frac_above_ 0.0977 (0.0991 for seeds 2, 4), shares identical, sets identical; stock seeds 0, 1, 3, 4 agree (0.092872, 0.09359), seed 2 differs (0.114273, 0.0756, shares 0.2, 0.24, 0.56, different sets). Matches the text.
+- The "own band" claim that some K=2/3 facets have 3 to 6 designs in their own band 1/tau_K: I counted (`band.py`): primary K=3 [4, 6, 35], K=2 [13, 22]; stock K=3 [3, 23, 13], K=2 [34, 15]. So at K=3 three facets are below 10 (4, 6, 3), and `tension_report` would refuse them; the statement is true for K=3 (the record's "3 to 6" is exact) and not for K=2.
+
+**Use of K=1's band for reports, slices and shading: disclosed and defensible, with one reading cost.** Disclosed in the record's header paragraph, in the script's comments and in the figure section. It is defensible: it makes near-frontier counts comparable across K and avoids a refusal. Cost: for K=3 the shaded band is about five times wider than the fit's own band (0.0262 against 0.0051, primary), so "near-frontier" in the reports and the panel shading is not "within the K-facet fit's band". The record says this ("the fit itself uses 1/tau_K"), so no hidden effect; WP10 should carry the sentence.
+
+**D-4/R-7, envelope drawn only where both weights exceed 1e-3: met.**
+- `plotting.py`: `PARTICIPATION = 1e-3`; `ok = W.min(axis=1) > PARTICIPATION`; `fill_between` and `plot` guarded by `if ok.any()`. K=1 `else` branch untouched (diff shows no change there). Tests: `test_log_plane_k3_draws_facet_only_where_it_has_weight_on_both_metrics` (a facet at 0.0005 excluded though it would dominate; no lines when none qualifies) and `test_log_plane_k1_unchanged_by_the_envelope_rule` (one line, legend present). Notebook and its test unchanged.
+- Consistency of the two thresholds: `_slice` in `k_terms.py` skips facets with raw `min(W[f,j], W[f,k]) <= PARTICIPATION` and passes weights renormalised by their sum, which are at least the raw ones, so plot_log_plane's own filter admits every facet `_slice` keeps. Not a defect.
+- Every facet is the top-two pair of at least one panel (`slice_pairs`); `test_every_facet_is_drawn_in_some_panel` asserts the union of "facets drawn" is {1,2,3} and at most 3 panels. The script printed: primary panels (slew time, control effort) facets [1,2]; (control effort, energy balance) [1,2]; (total mass, peak slew power) [3]; stock (slew time, control effort) [1,2,3]; (pointing error, peak slew power) [2]; (control effort, energy balance) [1,3].
+
+**The six committed `k3_*.png`, viewed.**
+
+| Figure | Panel | Envelope visible? | Title names |
+|---|---|---|---|
+| log_planes_primary | slew time / control effort | Yes, one black line (the narrow grey band is hardly visible) through the lower edge of the data | "facets 1, 2 drawn" |
+| | control effort / energy balance | Yes, a kinked line through the lower-left of the cloud | "facets 1, 2 drawn" |
+| | total mass / peak slew power | Yes, a straight line at the upper right, above all but the last few points; data sit on discrete peak-slew-power levels | "facets 3 drawn" |
+| log_planes_stock | slew time / control effort | Yes, kinked, with a steep right-hand segment | "facets 1, 2, 3 drawn" |
+| | pointing error / peak slew power | Yes, a straight line well above the data (discrete levels, two clusters) | "facets 2 drawn" |
+| | control effort / energy balance | Yes, kinked, bounding the upper-left | "facets 1, 3 drawn" |
+| frontier_coordinates (primary, stock) | Z0-Z1 and Z0-Z2 | no envelope by construction (chart coordinates); faceted colour, band-points outlined | n/a, facet colours in legend |
+| tensions (primary, stock) | one heat map per facet | n/a; contending set outlined; titles "facet k: n-lemma (n metrics contend)" | k = 1, 2, 3 |
+
+All six log-plane panels have a visible envelope (the G-6 defect, panels with no envelope, is gone). The least informative are the two peak-slew-power slices (primary facet 3, stock facet 2): the envelope lies above nearly all of the data on a few discrete levels, which the record states. The frontier-coordinates figures read as cloud-with-structure plots; the tension maps are legible at the size shown.
+
+**Committed PNGs against a fresh run (`ImageChops.difference`).** The four coordinates and tensions PNGs are pixel-identical to the regenerated ones. The two `k3_log_planes_*.png` differ only in a 15-pixel title line: committed shows "facets 3 drawn" and "facets 2 drawn", the script as committed now produces "facet 3 drawn" and "facet 2 drawn" (the singular `noun` branch in `log_plane_slices`). The committed log-plane figures were generated before that grammar edit and not regenerated (gap G4-1, cosmetic).
+
+**Docs wording.** `docs/limitations.md` has the new bullet "Temperature across K": "tau is re-selected at each K by the K = 1 criterion; whether the target fraction should differ by K is open", as the amendment words it; the "Selection of K" bullet is updated too. Greps over `docs/`, `README.md`, `src`, `examples/adcs/*.py`: `'0.382'` appears only in `method.md:737` (framed as the effect of reusing K=1's tau), the record's diagnostic table and its explanation; `'rises with'` appears only in the record's diagnostic paragraph; `'fixed tau'` only in the record and in script labels; `'K-specific'` nowhere. No sentence contradicts the new record. `docs/method.md` item (ii)-(iii) numbers (0.117/0.204, 0.093/0.131, 38.1/113/195, 0.096/0.096/0.098, fixed 0.096/0.261/0.382, stock seed with 0.114 against 0.093) all match the run. Formatting nit: those new sentences are very long single lines in `method.md` (lines 735-738), unlike the wrapped neighbours.
+
+### (2) E-4
+
+- Grep `log K`, `\log K`, `(log K)`, `log(K)` over `docs/`, `derivation/`, `src/`, `docs/superpowers/notes/notation.md`: statements are `docs/method.md:554` (displayed bound, now `max <= Phi_K <= max + log K/kappa`), `:693` and `:750` ("within (log K)/kappa above the maximum", "moves the score by at most (log K)/kappa", both correct), `docs/api.md:190` (bound, corrected), `:199` ("within (log K)/kappa above the maximum", correct), `estimator.py:52` (docstring already correct), the F10 ledger row in `method.md:63` and `axioms.py:190-197` (reworded: lower bound is `Phi_K >= M`, failure mode is the lost lower bound and the remaining upper bound `M + log K/kappa`), `lemma_10_extension.py:11-12` (docstring corrected), tests `test_estimator.py:380` (`-1e-12 <= gap <= log K/kappa`) and `test_derivation.py:693,695` (correct). `notation.md:28` states no bound (only the hard-max limit), so nothing to correct there. The derivation `derive`/`verify` is unchanged; `derivation/run.py` passes. Met; no remaining wrong-direction statement found (`max.*- (log K)` grep empty).
+- The L10 L5 distinction is intact: the L5 log-mean-exp bound `M - log n/tau <= LME <= M` remains in `lemma_05_lse_lme.py` and the F5 row, correctly (beta is the log-mean-exp).
+
+### (3) R-7, D-4/D-6 as amended, R-8
+
+- R-7 "both cubesat datasets at K = 3 fit" at the re-selected tau: met (`test_k3_fits_and_three_reports` for both regimes, plus `test_tau_reselected_at_each_k_holds_the_fraction`: |frac_above_ - 0.10| <= 0.011 at every K, tau K=1 equal to 38.10 / 41.72, fixed-tau diagnostic present with last fraction above 0.25); the fixed-tau diagnostic is in the script output and the record.
+- D-4 as amended: the envelope rule, every facet visible in a panel, titles naming the facets drawn (met above). The Amendment's "the caption of each figure names the facets it shows" is met through the panel titles (the record's prose also lists them per panel); the figure suptitle states the rule, not facet names.
+- D-6 "`select_temperature` accepts the estimator parameters it needs (`n_terms`, `facet_step`, `n_restarts`, `random_state`)": met through the existing `**params`; `tuning.py` is unchanged and the script passes `n_terms` and `random_state` (the others stay at estimator defaults, as the record says). No code change was needed.
+- R-8: 262 net, within 300.
+
+### (4) Non-goals and out-of-scope
+
+No non-goal touched: no kernels, no K=1 numeric change, no notebook change, no paper or site. Files outside Amendment 3 and E-4 in the delta: `CLAUDE.md` and `work-packages/README.md` (the branching convention of 48f241a; a process change the supervisor directed verbatim and the README quotes). It is not WP9 deliverable content and not covered by a WP9 amendment, so the supervisor should see it, as the skill requires. The six committed figure binaries changed as Amendment 3 requires.
+
+### (5) Tests: no assertion on facet order or on which of two equal fits a platform picks
+
+Grep of the added test lines (`git diff 0b0bcbc HEAD -U0 -- tests | grep '^+'`) for `facet_[`, `argsort`, `order`, `sorted`, `[0]`, `equal`: only `ax.lines[0].get_data()` (the first drawn line of a hand-constructed fit). `test_every_facet_is_drawn_in_some_panel` compares a set; the K=3 test checks sizes through `np.bincount > 0` and `facet_share_.sum()`; the tau test asserts a tolerance, not a facet. The old order-insensitive tests are untouched. One platform risk remains in principle: `select_temperature` bisects on `frac_above_`, a step function of tau, and at K=3 the fit can sit at different local optima (stock seed 2 does), so the Linux value of tau or the 0.011 tolerance could differ. CI on Linux passed both pushes (runs above), so it is a watch item, not a failure.
+
+### (6) Gaps
+
+| Gap | Description | Suggested disposition |
+|---|---|---|
+| G4-1 | The committed `k3_log_planes_primary.png` and `_stock.png` carry "facets 3 drawn" and "facets 2 drawn"; the script now writes "facet 3 drawn" and "facet 2 drawn". Cosmetic. | Regenerate the two PNGs before acceptance (one command, no content change), or accept as is |
+| G4-2 | The reports, slices and shading use K=1's band (about five times the K=3 fit's own band 1/tau_K); disclosed, defensible, but "near-frontier" is then not "within the K-facet band". Using 1/tau_K leaves three K=3 facets with 3 to 6 rows (I measured 4, 6, 3). | Accept as is (disclosed), and carry the sentence into WP10 |
+| G4-3 | The two peak-slew-power slices (primary facet 3, stock facet 2) show the envelope above nearly all of the discrete data; legible but uninformative. The record says so; the coordinates and tensions figures carry those facets. | Accept as is; WP10 may pick other slices |
+| G4-4 | `docs/method.md` lines 735-738 are very long single lines; `README`/`CLAUDE.md` branching change sits in the delta without a WP9 item. | Observations: accept as is, or reflow the paragraph at the next docs pass |
+| G4-5 | Platform sensitivity of the re-selected tau at K=3 (step function, local optima) is untested beyond CI passing. | Accept as is; revisit if a Linux run ever fails |
+| (carried) | G2-2, G2-4 to G2-6, G2-8 accepted minors from the earlier reviews | unchanged |
+
+**G2-7 components.** Figure legibility: resolved (every panel of the six has a visible envelope, every facet appears in at least one panel, titles name the facets; two peak-slew-power slices remain low-information, G4-3). `frac_above_` by K: resolved (0.096, 0.096, 0.098 primary; 0.104, 0.092, 0.094 stock, within the 0.01 tolerance; the fixed-tau table is kept as the diagnostic). No component of G2-7 remains open; the K-specific target fraction is recorded as an open question in `limitations.md`.
+
+### Recommendation
+
+Recommend acceptance with the listed gaps noted. Amendment 3 and E-4 are met with evidence, the figures and every number of the record reproduce, the full checks and CI are green, and no K=1 result or non-goal was touched. G4-1 is the only item I would fix first (regenerating two PNGs); the rest are observations. The acceptance act remains the supervisor's; this report does not accept the work.
+
+### G4-1 disposition (PM)
+
+The two log-plane PNGs were regenerated by `examples/adcs/k_terms.py` (titles now "facet 3 drawn" and
+"facet 2 drawn"); no content change. G4-2 to G4-5 accepted as is (G4-2 to be carried into WP10).
