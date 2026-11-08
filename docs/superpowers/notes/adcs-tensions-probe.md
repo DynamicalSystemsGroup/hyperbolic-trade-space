@@ -176,7 +176,7 @@ Why torque did not bind at the defaults (45 degrees, 1500 s, Kp 0.003 to 0.1, Kd
 `torque_saturated_frac` is the share of the whole horizon with a saturated axis, and a wheel saturates only during the
 acceleration and braking of the slew (tens of seconds for a 0.5 mN.m wheel on a 0.5 kg.m2 inertia) while the horizon is
 1500 s long: the flag is diluted by waiting time, and power never constrains torque either, because with c = 5e4
-W/(N.m)2 the power-limited torque is above every wheel maximum for all but the smallest panels (3.2 % of final-dataset
+W/(N.m)2 the power-limited torque is above every wheel maximum for all but the smallest panels (3.2 % of baseline-dataset
 designs have a power-capped torque, all with large wheels). A 400-design check of the defaults: median saturation
 0.009 / 0.003 / 0.0 (small / medium / large), settling 231 s against 185 s, power_ok True for all.
 Before the three adjustments I ran simulation-only scans (60 to 90 designs, gain multipliers, slew 45 and 90 degrees,
@@ -204,7 +204,7 @@ the scope's wording is "at most three times total".
 ### Phase 2 constants and scenario (history; the final scenario is 30 degrees, 600 s, wheel momentum 10 / 30 / 100 mN m s, see amendment 3)
 
 The paragraph below describes the 90 degree phase 2 dataset and is kept as history; its numbers (feasible counts, flag shares,
-ranges) do not describe the committed dataset. Final constants and scenario: slew 30 degrees about X, horizon 600 s,
+ranges) do not describe the committed datasets. Baseline-dataset constants and scenario (the primary aggressive-gain dataset differs only in its gain box, Kp 0.2 to 2.0 and Kd 0.3 to 1.5): slew 30 degrees about X, horizon 600 s,
 `max_step` 0.5 s; Kp 0.03 to 1.0 N.m/rad and Kd 0.3 to 1.5 N.m.s/rad (log-uniform); wheels maxTorque 0.3 / 2 / 10 mN.m with
 momentum 10 / 30 / 100 mN.m.s and mass 0.12 / 0.25 / 0.60 kg (small / medium / large); tracker, panel, battery and power constants as in the model.
 
@@ -448,7 +448,7 @@ aligned (+0.68; slew time with pointing +0.71), power tensions (mass with depth 
 power -0.61). Wheel class acts as a feasibility boundary (small wheels lose 19 % of designs to momentum at 30 degrees, 98 % at 90),
 not as a frontier tension; agility by slew time does not trade against mass either.
 
-Facts for the PRIMARY dataset (`adcs_designs_cubesat_gains.csv`, aggressive gains Kp 0.3 to 3, same designs otherwise; computed from the CSV
+Facts for the PRIMARY dataset (`adcs_designs_cubesat_gains.csv`, aggressive gains Kp 0.2 to 2.0 N.m/rad and Kd 0.3 to 1.5 N.m.s/rad, same designs otherwise; computed from the CSV
 and the probe of `tests/test_adcs_enrichment.py`): feasible 706 of 1000 (small 191, medium 248, large 267); (a) power again never limits
 a slew: the available-power cap on torque is below the wheel maximum in 3.2 % of all designs (all large wheels with the smallest panels;
 3.5 % of the feasible set), `power_ok` True for every design, power margin on the feasible set 6.9 to 65.9 W (median 24.7 W); (b) redundant

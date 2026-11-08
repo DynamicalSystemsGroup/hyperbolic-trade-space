@@ -153,6 +153,14 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Supervisor (mzargham), verbatim choice:** "Fix all three"
 - **Disposition:** fix G-A, G-B, G-C; the whole review reruns once; then the acceptance gate.
 
+## Review gaps, round 6 (review 3f5a00f, sixth pass)
+
+- Items: G-D factual typo in the probe note's primary-dataset paragraph ("Kp 0.3 to 3"; committed box
+  Kp 0.2–2.0, Kd 0.3–1.5), which WP7 reads; G-E residual stale labels and the scope status line.
+- **Disposition (driver, maintenance):** both corrected by the driver in one commit before presenting
+  the gate (note paragraph and labels fixed; status line records the approval and six amendments);
+  presented to the supervisor with the acceptance gate, who may ask for a rerun instead.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP4b-review.md`
