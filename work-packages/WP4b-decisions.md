@@ -75,6 +75,24 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   the rest". Disposition: fix the `--slew-deg` help text; G-1, G-3, G-4 and the rest of G-5 accept
   as is. The whole review reruns after amendment 2 and the fix.
 
+## Stop rule under amendment 2, and amendment 3 (2026-11-08)
+
+- **Finding:** with momentum enforced, 346/1000 designs are feasible (small wheels 7/344); total mass
+  leaves the contending set (exponent 0.000; 0 % bootstrap support); the frontier no longer spans
+  wheel classes; the torque-binding ratio is 1.9 (need 3). The earlier richness result rested on
+  designs that violated wheel momentum storage. Settling–effort, pointing–effort, pointing–mass, a
+  strong peak-power–settling tension and a settling–mass association still hold.
+- **Supervisor (mzargham), verbatim choice:** "Reopen levers for a physically consistent scenario"
+- **Disposition (amendment 3):** momentum stays enforced (feasible = settled ∧ power_ok ∧ momentum_ok,
+  with dod_ok as decided for OD2: a metric, not a filter, unless the scope states otherwise). The
+  scenario is regenerated: slew angle and horizon chosen so that small-wheel designs stay within
+  momentum storage while torque still binds, and, if needed, wheel momentum capacities made
+  consistent with their torque classes (illustrative, plausibility rule). The richness test R-13/R-14
+  is unchanged; the stop rule applies again after the allowed, recorded adjustments; if no scenario
+  satisfies both physics and richness, that is reported as a finding (for small wheels the
+  agility–mass trade appears as a feasibility boundary rather than a frontier tension) and the
+  notebook says so.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP4b-review.md`

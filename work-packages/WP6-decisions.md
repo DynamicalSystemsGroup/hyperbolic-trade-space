@@ -29,6 +29,13 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Disposition:** one editing pass fixing N-3, N-4, O-10 and O-11 with one-sentence edits; G-7 accept
   as is. The whole review reruns once after the pass.
 
+## Review gaps, round 3 (review 71764d3, fourth pass)
+
+- Items: N-5 "By definition, the log-mean-exp is already a posynomial" (strictly exp(τ·LME) is the
+  posynomial; a short derivation, not a definition); N-6 lowercase "our" after a full stop.
+- **Supervisor (mzargham), verbatim choice:** "One-line fixes, then accept"
+- **Disposition:** fix both; the review reruns once; then the acceptance gate.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP6-review.md`
