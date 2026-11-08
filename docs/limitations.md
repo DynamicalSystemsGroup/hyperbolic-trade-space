@@ -127,13 +127,19 @@ global optimality. The assumptions behind it are named, defended and extended in
   five or six frontier rows (the generator guarantees at least $d+1$, which is necessary for
   identifiability and not sufficient for recovery) and one seed with a well-populated facet.
   The analyst's options are more restarts (`n_restarts`), a better start, and the tangent step
-  (`facet_step="tangent"`). The spikes (`docs/superpowers/notes/spike-objective/`) show what
-  restarts buy: on seeds 3 and 8 two or three of the five restarts pass, so more restarts or a
-  better selection rule would recover them; on seeds 1 and 16 none does, because the sparse
-  facet is barely determined by its frontier rows.
+  (`facet_step="tangent"`), and their limits are measured. The spikes
+  (`docs/superpowers/notes/spike-objective/`) found, at $\tau=\infty$, that on seeds 3 and 8 two or
+  three of the five restarts pass, so a restart that recovers the facets exists there; on seeds 1
+  and 16 none does, because the sparse facet is barely determined by its frontier rows. But the
+  restart is chosen by the mean slack, and that selection does not pick the passing restarts:
+  rerunning the built solver with 5, 20 and 50 restarts recovered none of seeds 1, 3 and 16, and on
+  seed 8 (step B, $\tau=\infty$) it passed at 5 restarts and failed at 20 and 50. At $\tau=50$
+  the default step has no passing restart on seeds 3 and 8; the tangent step does (3 and 5). So
+  `n_restarts` is a cost-for-robustness knob, not a remedy; the selection rule and the start are
+  the limit, and a different selection rule or start is future work.
 - *Thin facets.* A facet with fewer frontier rows than dimensions is not determined by them; only
   the interior rows locate it, and the mean-slack objective prefers to split a large facet rather
-  than keep a sparse one. More restarts do not cure this (no restart passes on seeds 1 and 16);
+  than keep a sparse one. More restarts do not cure this (no restart passes on seeds 1 and 16, and extra restarts did not help elsewhere: see above);
   the options are a larger sample, a better start or the tangent step, which uses the near-frontier
   rows directly.
 - *A non-monotone step.* `facet_step="tangent"` (step D) uses the near-frontier rows directly and

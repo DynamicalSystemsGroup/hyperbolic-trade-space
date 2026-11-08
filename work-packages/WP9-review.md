@@ -254,3 +254,74 @@ No gap is suggested as "fix before acceptance".
 Recommend acceptance with the listed gaps noted. Reasons: every amendment item is present in code and docs and was verified by running it (the default step is bit-identical to the pre-amendment code on 12 cases; D is implemented as specified with its fallback and best-iterate return; the generator guarantees >= d+1 frontier rows per facet and leaves K = 1 untouched); the recovery rates quoted for both steps were independently reproduced to the count and the seed; the full suite (1115 passed), lint, format, lock, derivation and attribution checks are clean; the code budget is 256 of 300; CI is green on the amendment's code and docs commits; K = 1 notebook and tests are untouched. The honest limits are unchanged in kind: 16 to 17 of 20 planted seeds recovered, failing where a facet has only 5 to 6 frontier rows, and the supervisor's chosen default (monotone B) is not more accurate than D, only guaranteed monotone.
 
 Acceptance is the supervisor's act, recorded as named at the top. This report does not accept the work.
+
+## Third review (after Amendment 2 and the G2-1/G2-3 fix)
+
+Reviewer: fresh context, did not build the work. Reviewed `main` at bdf17b2 (`git log 27d5b04..HEAD`: 2bb5179 Amendment 2, d5ba7c0 dispositions, bdf17b2 fix). Nothing fixed; this section is the only file edited, nothing committed (`git status --short` empty before writing). Everything below was re-run.
+
+### Checks run
+
+| Check | Command | Result |
+|---|---|---|
+| Suite | `uv run pytest -q` | `1116 passed, 11 skipped, 1 xfailed` (178 s); +1 is `test_n_restarts_default_and_validation` |
+| Lint / format / lock | `ruff check .`; `ruff format --check .`; `uv lock --check` | `All checks passed!`; `116 files already formatted`; `Resolved 173 packages` |
+| Derivation | `uv run python derivation/run.py` | `ALL LEMMAS PASS.` |
+| Attribution | `git log 3bebe3e..HEAD --format=%B \| grep -i -c "co-authored-by\|generated"` | `0` |
+| K = 1 untouched | `git diff --stat 3bebe3e HEAD -- examples/adcs/adcs_trade_study.ipynb tests/test_notebook.py` | empty |
+| R-8 | AST docstring-excluding count, HEAD vs 3bebe3e (`/private/tmp/claude-501/r8.py`) | **260 net** (budget 300): the 256 of the second review plus 4 for `n_restarts` in the estimator (+75 there); `solvers.py` unchanged by this fix (it already had `n_restarts`) |
+| CI | `gh run list --branch main --limit 4` | 42527548929 (bdf17b2) success; 42527139679, 42527080205, 42525071154 success |
+
+### (1) Ledger rule: met, no restructuring
+
+- `git diff 27d5b04 HEAD --stat`: docs (api, limitations, method, proof-conventions), `estimator.py` (+9/-1), `tests/test_estimator.py` (+12), `WP9-decisions.md`, `WP9-scope-of-work.md`. Nothing under `derivation/`, nothing in `tests/test_derivation.py`, `tests/test_docs.py` or `tests/test_narrative.py`. So no code, test or ledger restructuring was done to satisfy a count.
+- `proof-conventions.md` has the paragraph "Solver-level inherited entries". Accuracy against the code: `SOLVER_LEVEL = ("I7",)` in `derivation/axioms.py:31` (matches "today I7, Magnani and Boyd 2009"); `tests/test_derivation.py:118` exempts it from the every-axiom-is-used audit and `test_I7_solver_level_inherited_entry` (line 754) asserts citation, role, failure mode, membership and the printed audit (matches "carries a role and a failure mode", "listed instead of being checked for consumption", "the every-axiom-is-used audit covers the lemma-consumed entries only"); `derivation/run.py:100-102` prints it in its own section, and the run shows `INHERITED, solver level (cited by the K > 1 solver, not consumed by a lemma)` with I7's statement, role and failure mode (matches "printed in its own audit section"). The claim that a normal inherited entry is consumed by a lemma via `AXIOMS_USED` and checked by the audit is consistent with the old line `n not in used and n not in AX.STRUCTURAL`. Accurate.
+- Method page: `docs/method.md:726` has the pointer sentence at I7 ("I7 is a solver-level inherited entry ... the rule is in the proof conventions, "Solver-level inherited entries""). Met. Cosmetic: it is one very long line, unlike the wrapped neighbours.
+
+### (2) `n_restarts`: implementation met; the limitations claim is only partly supported
+
+- Estimator: `n_restarts=5` in `__init__`, stored verbatim (`self.n_restarts = n_restarts`), validated in `fit` (`isinstance(.., numbers.Integral) and >= 1`, message names `n_restarts`), passed as `n_restarts=self.n_restarts` to `solve_terms` (which already took the keyword; `solvers.py` is not in the diff). Test rejects 0, -1, 2.5, None. Numpydoc entry present; `api.md` documents it (default, no effect at K = 1, first remedy).
+- Default path byte-identical: I ran `HyperbolicTradeSpace(n_terms=3, temperature=tau, random_state=0, facet_step=step).fit` on `make_frontier_data(400, 4, n_terms=3, random_state=s)` for s in {0,1,3,8} x tau in {inf, 50} x step in {support, tangent} = 16 cases at 27d5b04 (git worktree, `PYTHONPATH` to its `src`, verified it imported the worktree) and at HEAD, and compared `exponents_` and `facet_` with `np.array_equal`: **all 16 identical**. (Worktree removed.) The in-repo test also asserts `n_restarts=5` equals the default.
+- Limitations text names more restarts, a better start and the tangent step, and states the seed claim. Checked against `spike-objective/README.md` line 104 ("Passing restarts of 5 on the bad seeds"): inf: s1 B 0 D 0; **s3 B 3 D 3; s8 B 2 D 3**; s16 0/0. tau 50: s1 0/0; **s3 B 0 D 3; s8 B 0 D 5**; s16 0/0. So:
+  - "seeds 1 and 16 none" is supported exactly (0 of 5 for B and D, both tau).
+  - "seeds 3 and 8 two or three of the five pass" is supported **only at tau = inf** (B: 3 and 2; D: 3 and 3). At tau = 50 for the default step B it is 0 and 0 (D: 3 and 5). The text does not say tau or step. Not exactly supported as written.
+  - The consequence drawn, "so more restarts or a better selection rule would recover them", is **not supported for more restarts**. I measured the built solver with `n_restarts` 5, 20 and 50 on seeds 1, 3, 8, 16 (same pass criterion as the earlier re-measurement; script `/private/tmp/claude-501/scratch/rec2.py`). Seed 3 fails at every count, both steps, both tau. Seed 8 with the default step at tau = inf passes at 5 restarts and **fails at 20 and 50** (error 0.507): more restarts moved the mean-slack winner to a worse-recovering partition. Tangent at tau = 50 passes seed 8 at 5 (the one pass in those four seeds) and fails at 20 and 50. Seeds 1 and 16 fail throughout. So extra restarts did not recover a single failing seed and cost one recovery. The spikes' passing restarts exist among the five, but the mean-slack selector does not pick them (the README says an edge-count selector at tau = inf recovers 3 and 8, 18/20). The docs' "better selection rule" half is right; "more restarts" is not, and the `api.md` sentence "More restarts are the analyst's first remedy for a local optimum" and the limitations line "the analyst's options are more restarts ..." overstate it for this selector. In the second paragraph, "More restarts do not cure this (no restart passes on seeds 1 and 16)" is correct.
+
+### (3) R-6 as restated in Amendment 2: met; the six edits, again (`git diff 3bebe3e HEAD -- tests/`, removed or edited lines)
+
+Restated R-6: K = 1 behaviour and the notebook unchanged, pre-existing K = 1 assertions intact, edits forced by approved deliverables listed with reasons. Notebook and `tests/test_notebook.py` diff is empty; the full suite passes; the K = 1 path is also byte-identical (second review's old-tree comparison; unchanged by this fix).
+
+| # | Edit | Reason, against the new wording |
+|---|---|---|
+| 1 | `test_estimator.py::test_n_terms_not_implemented` removed (`NotImplementedError` for `n_terms=2`) | A feature that now exists (the package's deliverable D-1); the assertion is false by design. Not a K = 1 assertion. |
+| 2 | `test_derivation.py` unused-axiom audit gains `and n not in AX.SOLVER_LEVEL` | A lemma-less inherited entry (I5/I7) that the approved derivation default requires; documented by the new proof-conventions paragraph. A narrowing of an audit, named and tested (`test_I7_...`); K = 1 untouched. |
+| 3 | `test_docs.py` `1 <= n <= 10` to `<= 11` | L11 now exists (R-11). |
+| 4 | `test_narrative.py` `range(1, 11)` to `range(1, 12)` | L11 now exists. |
+| 5 | `test_tensions.py` import adds `make_frontier_data` | No assertion change. |
+| 6 | `test_solvers.py` import adds `linear_sum_assignment` | No assertion change. |
+
+Edits 1 to 4 are forced by approved deliverables; 5 and 6 are imports. Each fits the restated R-6. Also in the diff, the new `test_n_restarts_default_and_validation` is an addition. No K = 1 assertion was removed or weakened.
+
+### (4) Non-goals and out-of-scope
+
+No non-goal touched (no kernels, performance code, K = 1 results, paper or site). The fix touched only the files listed in (1). No new dependency.
+
+### (5) Gaps
+
+Beyond G2-7 (figure legibility, `frac_above_` by K; follow-up) and the accepted minors G2-2, G2-4 to G2-6, G2-8, **one new gap**:
+
+| Gap | Description | Suggested disposition |
+|---|---|---|
+| G3-1 | The G2-1 documentation condition says "more restarts" is a remedy and cites seeds 3 and 8 as recoverable that way. The spikes' counts hold only at tau = inf (at tau = 50 the default step has 0 passing restarts of 5 on both seeds), and with the built mean-slack selector more restarts did not recover any failing seed (3 never; 8 passes at 5, fails at 20 and 50; 1 and 16 never). The restarts that pass exist but the selector does not choose them. `api.md` ("first remedy") and `limitations.md` (twice) overstate it. The condition the supervisor set was that the understanding be recorded accurately. | Fix before acceptance, docs only, a few lines: say that at tau = inf the spikes found passing restarts among five on seeds 3 and 8 (at tau = 50 only for the tangent step), that mean-slack selection does not pick them and extra restarts can lose a recovery (seed 8 at 20 restarts), so `n_restarts` is a cost-for-robustness knob and the remedy that worked in the spikes is a different selection rule or a better start. Reword "first remedy" in `api.md`. Alternative: accept as is and record the caveat in the decision log. |
+
+Everything else requested is met: the ledger rule and its pointer, the keyword and its test, the default path unchanged, R-6 restated and satisfied, the full checks green, CI green.
+
+### Recommendation
+
+Accept after G3-1 is either fixed (docs only) or knowingly accepted by the supervisor; no other open item blocks. The acceptance act remains the supervisor's; this report does not accept the work.
+
+### G3-1 disposition (PM, after the third review)
+
+The overstatement in `docs/api.md` and `docs/limitations.md` ("more restarts" as a remedy) is
+corrected to the reviewer's measurements: scope tau = infinity for the spike restarts; selection by
+mean slack, not the restart count, is the limit; extra restarts can lose a recovery (seed 8, step
+B, tau = infinity); `n_restarts` is a cost-for-robustness knob. Docs only; no code or test change.

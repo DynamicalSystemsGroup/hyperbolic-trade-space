@@ -203,8 +203,10 @@ of every facet [@candes2008enhancing]; `alpha=0` leaves the fit unchanged and it
 kept); `max_iter` caps the inner SLSQP of each facet fit.
 
 `n_restarts` (default 5) is the number of seeded initializations of the alternation, the one with
-the lowest mean slack being kept; it has no effect at `n_terms=1`. More restarts are the analyst's
-first remedy for a local optimum (see the limitations page); the default path is the five
+the lowest mean slack being kept; it has no effect at `n_terms=1`. More restarts cost time and buy
+some robustness, but they are not a cure for a local optimum: the restart is chosen by the mean
+slack, and on the planted seeds that fail, extra restarts did not recover them (see the
+limitations page). The default path is the five
 restarts of the earlier releases, unchanged.
 
 `facet_step` chooses the per-facet step of the alternation and has no effect at `n_terms=1`.
