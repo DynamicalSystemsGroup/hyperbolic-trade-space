@@ -781,3 +781,79 @@ The aggressive-gain dataset `adcs_designs_cubesat_gains.csv` is PRIMARY (R-13 me
 | near-frontier rows (small / medium / large) | 78 / 23 / 1 | 21 / 36 / 7 |
 | R-14 saturated ratio / settling ratio | 5.12 / 1.85 | 13.1 / 4.85 |
 | R-13 | not met (finding) | met |
+
+## WP7 step 0: tension_report on both regimes
+
+Written 2026-11-08 by the WP7 phase A implementer, before any cache or notebook work (R-14). The probe is rerun with
+the accepted WP3 `tension_report` on the final conditioning, replacing the hand computation of the earlier sections.
+
+**Conditioning (both datasets).** Feasible = `settled` AND `power_ok` AND `momentum_ok` (and every attribute positive,
+which also removes the designs with `dod_ok` false). The ten attributes with orientation reciprocal for settling time,
+slew time, pointing error, total mass, control effort, peak slew power and depth of discharge, direct for power
+margin, energy balance and eclipse reserve; `LogAffinePreconditioner(orientation=..., scaler="standard")`;
+`tau = select_temperature(M, target_frac_above=0.10, bounds=(3, 1e3))`; `HyperbolicTradeSpace(temperature=tau).fit(M)`;
+`tension_report(est, M)` with the default band `1/tau` and Pearson association. Association is of the oriented
+(larger-is-better) log-metrics: negative means traded, positive means aligned.
+
+| | primary (aggressive gains) | regime comparison (stock gains) |
+|---|---|---|
+| dataset | `adcs_designs_cubesat_gains.csv` | `adcs_designs_cubesat.csv` |
+| feasible n (small / medium / large) | 706 of 1000 (191 / 248 / 267) | 780 of 1000 (239 / 279 / 262) |
+| median Kd/Kp | 1.06 | 3.95 |
+| working tau, `frac_above_`, `n_eff_` | 38.10, 0.096, 16.2 | 41.72, 0.104, 14.5 |
+| band 1/tau, near-frontier rows | 0.0262, 51 | 0.0240, 103 |
+| near-frontier rows (small / medium / large) | 20 / 25 / 6 | 79 / 23 / 1 |
+| near-frontier by tracker (coarse / medium / fine) | 15 / 17 / 19 | 37 / 34 / 32 |
+| contending set at tau = inf, `n_lemma` | 6 (6-lemma): total mass 0.223, slew time 0.201, energy balance 0.169, control effort 0.143, pointing 0.135, depth of discharge 0.129 | 6 (6-lemma), no total mass: control effort 0.434, slew time 0.253, power margin 0.179, settling 0.081, pointing 0.040, eclipse reserve 0.013 |
+| working-tau exponents (non-zero) | slew 0.240, control effort 0.197, energy balance 0.190, mass 0.180, pointing 0.102, depth of discharge 0.091 | control effort 0.430, slew 0.332, power margin 0.176, settling 0.026, pointing 0.024, reserve 0.013 (mass 0.000) |
+
+Association among the near-frontier rows (Pearson of oriented log-metrics; the Spearman value in brackets for the
+four headline pairs, computed on the same rows):
+
+| pair | primary | regime comparison |
+|---|---|---|
+| settling time, total mass | -0.54 (-0.34) | -0.12 (-0.02) |
+| slew time, total mass | -0.48 (-0.33) | -0.10 (-0.03) |
+| pointing error, control effort | -0.36 (-0.48) | -0.70 (-0.77) |
+| settling time, pointing error | +0.18 (+0.20) | +0.69 (+0.75) |
+| slew time, control effort | -0.87 | -0.96 |
+| settling time, control effort | -0.74 | -0.95 |
+| pointing error, total mass | -0.64 | -0.34 |
+| settling time, slew time (aligned) | +0.91 | +0.99 |
+| power margin, energy balance (aligned) | +0.98 | +0.99 |
+| depth of discharge, eclipse reserve (aligned) | +0.98 | +0.93 |
+| total mass, peak slew power | +0.78 | +0.64 |
+
+Thin margins of the primary result: pointing-effort -0.36 against the -0.30 threshold used for the mass associations in R-9, and
+settling-pointing +0.18 (near zero, weakly aligned); with Spearman the pointing-effort value is -0.48 and the
+settling-mass and slew-mass values weaken to -0.34 and -0.33, still at or below -0.30 but only just. These values
+come from 51 near-frontier rows, six of them large wheels.
+
+Principal tension directions (loadings on the oriented log-metrics; the sign of a direction is arbitrary; the
+top five loadings by magnitude).
+
+- Primary, explained spread 0.461, 0.212, 0.184, 0.100 for the first four: direction 1 pointing +0.43, total mass
+  -0.42, peak slew power -0.41, control effort -0.40, slew time +0.40 (precise and fast designs against heavy,
+  effortful ones: the metrics that improve with a better sensor and a faster slew are opposed to mass and effort);
+  direction 2 depth of discharge -0.52, total mass +0.46, slew time +0.39, eclipse reserve -0.37, settling +0.35
+  (the energy reserve against agility and mass); direction 3 pointing -0.71, depth of discharge +0.38, slew time
+  +0.31, settling +0.28, eclipse reserve +0.27 (pointing against the rest).
+- Regime comparison, explained spread 0.451, 0.320, 0.121, 0.081: direction 1 control effort -0.58, slew time
+  +0.45, settling +0.44, pointing +0.40, total mass -0.20 (agility and pointing against effort, with mass nearly
+  inert); direction 2 depth of discharge -0.59, eclipse reserve -0.55, total mass +0.52 (energy reserve against
+  mass); direction 3 power margin -0.63, energy balance -0.60, total mass +0.33.
+
+**Differences from the hand probe, stated plainly.** The contending sets and exponents agree with the recorded
+probe (same LP). The near-frontier counts (20 / 25 / 6 in the primary dataset, 79 / 23 / 1 in the baseline) and the
+associations differ somewhat from the "21 / 36 / 7" and "-0.503 / -0.453" recorded under Two regimes above, because
+the report uses the band 1/tau of the final `select_temperature` (target 0.10, bounds (3, 1e3)) and the probe used
+the hand-chosen working fit; qualitative conclusions are unchanged (mass is in the primary contending set and
+traded against settling and slew time; it is absent in the baseline; large wheels contribute only a few
+near-frontier designs). The notebook should quote the values of its own report, not these.
+
+**Gate statement (R-14).** Contending set size at least 2: yes (6 in both regimes). Explicable tensions: yes
+(slew time and settling against control effort in both regimes; pointing against control effort and against
+mass through the star-tracker grade; total mass against settling and slew time on the primary dataset only, wheel
+class acting through the momentum limit and the wheel mass; the accounting near-identities slew time with settling,
+power margin with energy balance, eclipse reserve with depth of discharge appear as aligned). The gate passes;
+work continues with the check designs.
