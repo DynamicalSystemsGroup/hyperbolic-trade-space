@@ -142,3 +142,115 @@ Acceptance is the supervisor's act, recorded as named above. This report does no
   `tests/test_k_terms_case.py` and the cubesat record assert nothing on facet order (shares, counts
   and exponents per facet are reported as fitted; numbering is by fit and may differ by platform).
 - **Green run:** GitHub run 42518908382 (commit 0a91cb7), success.
+
+## Second review (after Amendment 1)
+
+Reviewer: fresh context, did not build the work. Reviewed `main` at 6b4e773 (`git log 3bebe3e..HEAD`, 13 commits; the amendment is 98d8329, code 19383f8, docs 6b4e773). Nothing fixed; this section is the only file edited (`git status --short` empty before writing). The first review above is not relied on: every item below was re-run.
+
+### Checks run
+
+| Check | Command | Result |
+|---|---|---|
+| Suite | `uv run pytest -q` | `1115 passed, 11 skipped, 1 xfailed` (175 s). The 11 skips are all "SCIPY_ARRAY_API is not set" (one more than before: the new `n_terms=3, facet_step="tangent"` sklearn case); the xfail is the earlier wrapper's `check_regressor_multioutput`. |
+| Lint / format | `uv run ruff check .`; `uv run ruff format --check .` | `All checks passed!`; `116 files already formatted` |
+| Lock | `uv lock --check` | `Resolved 173 packages`; `git diff 3bebe3e HEAD -- pyproject.toml uv.lock`: only the two-line `extend-exclude = ["docs/superpowers/notes/spike-*"]` in `[tool.ruff]` (no dependency, `uv.lock` untouched) |
+| Derivation | `uv run python derivation/run.py` | ends `ALL LEMMAS PASS.` (L11 PASS, I7 listed) |
+| Attribution | `git log 3bebe3e..HEAD --format=%B \| grep -i -c "co-authored-by\|generated"` | `0` (also no matching lines with `-n`) |
+| K = 1 untouched | `git diff --stat 3bebe3e HEAD -- examples/adcs/adcs_trade_study.ipynb tests/test_notebook.py` | empty |
+| R-8 | AST docstring exclusion, non-blank, non-comment lines, per file, HEAD vs 3bebe3e | datasets +40, estimator +71, plotting +28, solvers +106, tensions +11 = **256 net** (budget 300; was 218 at the first review, the amendment added 38: D, the generator top-up, `facet_step` plumbing). Script: `/private/tmp/claude-501/r8.py`. |
+| CI | `gh run list --branch main --limit 5` | 42524561753 (6b4e773, docs commit) success; 42524420226 (19383f8, code commit) success; 42523357419 (98d8329) success; 42522968839 and 42521162005 success. Both amendment commits that changed behaviour are green on Linux. |
+
+### Amendment 1 items, each checked
+
+| Item | Verdict | Evidence |
+|---|---|---|
+| `facet_step="support"` default is byte-identical to the pre-amendment code | met | I extracted the pre-amendment tree (`git archive 322fd85 src`) and ran both trees on 6 synthetic tables x tau in {inf, 50} (12 cases), comparing `solve_terms(...)` `W, beta, labels, objective, history` and `HyperbolicTradeSpace(n_terms=3).fit` `exponents_, facet_` with `np.array_equal`: **all 12 identical**. The generator change (below) alters only K > 1 planted data where a facet had < d+1 frontier rows, so the old-tree comparison used generator-independent tables. In-repo guard: `tests/test_solvers.py::test_default_facet_step_is_unchanged_literals` (stored literals, objective 0.708229464326431 to 1e-9). `HyperbolicTradeSpace().get_params()["facet_step"] == "support"` asserted. |
+| `"tangent"` is the spike's D | met | `_tls_normal` (smallest-variance direction of the facet's near rows, constrained to the simplex via SLSQP) inside `_refit(..., tangent=True)`; near rows = own rows with `J_tau(Uw) - U w < band`, band `0.1` at tau = inf else `1/tau`, as the docs say; `beta_k` = support value over all rows in both steps; guard applied to B only, D returns the lowest-objective iterate seen (`test_tangent_keeps_best_iterate_and_is_deterministic`). I compared to the spike's description in `spike-facet-refit/README.md`, not to its code line by line. |
+| Fallback below d+1 near rows | met | `if near.sum() > U.shape[1]` is exactly `>= d+1`; `test_tangent_falls_back_to_support_without_enough_near_rows` passes (D equals B to 1e-9 on a 12-row table). |
+| First iteration is B | met | `_solve_terms_once` calls `_refit(U, labels, W, beta, tau, kw)` (no `tangent`) for the initial fit; only in-loop refits pass `tangent`. Docstring and method page say so. |
+| beta over all rows | met | `W[k], beta[k] = w, log_mean_exp(U @ w, tau)` on the full `U` in both steps. |
+| Generator guarantees >= d+1 frontier rows per facet; K = 1 identical | met | `_identifiable` is called only in the `else` (K > 1) branch; `test_k_terms_every_facet_has_d_plus_one_frontier_rows` (20 seeds, d = 4, plus a noisy d = 3 K = 2 case, determinism) and `..._too_few_rows_..._raises` pass; the K = 1 datasets tests (unchanged) pass; the old-tree comparison above and the empty notebook diff cover K = 1. A side effect, disclosed in the docstring Notes: the realized frontier fraction can slightly exceed `frontier_fraction` for K > 1. |
+| Docs: per-facet problem, both steps | met | `docs/method.md` "The per-facet problem as step 2 solves it" (B, the support-function objective), "Step D, the evidence-driven alternative", the pseudocode in given/repeat/until form with the guard; own-rows ill-posedness with the 0/60 vs 60/60 oracle numbers cited to spike section 3a. |
+| Docs: objective | met | "The objective" paragraph: mean slack as the K > 1 analogue of the K = 1 reach, why the sum of reaches is degenerate, the measured 0.000 worsening fraction for B cited to spike-objective table 1. I spot-checked `spike-objective/mono.csv` (header and first rows: `worse` 0.0 for B); I did not recompute the 35-50 % D figure. |
+| Docs: monotone-guarantee sentence and the paper presents mean slack | met | `method.md` "Which step the paper presents": "the paper presents the mean-slack approach, step B, because of its monotone guarantee"; same in `docs/api.md` ("this is the step the paper presents"), assumption 5 and `limitations.md`. |
+| Docs and docstring: measured recovery for BOTH steps | met, numbers verified | `solve_terms` docstring, `method.md` ("Measured recovery", "Only observed (i)"), `api.md`: B 17/20 (tau inf; fails 1, 3, 16) and 16/20 (tau 50; fails 1, 3, 8, 16); D 16/20 (inf; fails 1, 3, 8, 16) and 17/20 (50; fails 1, 3, 16). Independent re-measurement below matches every count and every failing seed. |
+| Docs: simplifying assumptions with parked alternatives | met | `method.md` assumption 5 ("The per-facet step") names the choice, defends it, and parks D (kept in code) and the frontier-weighted objective (slack on near rows only, entropic variant), with the reason; `limitations.md` repeats it. |
+| `docs/api.md` documents `facet_step` | met | paragraph at the `HyperbolicTradeSpace` section, both values, fallback, non-monotonicity, measured rates, `ValueError` for other values; estimator numpydoc has the parameter. |
+| Stale text from the first review | fixed | `TermsResult.objective` docstring now says mean slack; no `19 or 20` claim left except the correctly conditioned "At N=600 with half the rows on the frontier" sentence; `grep` for `sum_k (n_k` and `n_k/N` finds nothing. |
+
+### Independent recovery re-measurement
+
+Script `/private/tmp/claude-501/scratch/rec.py`: `make_frontier_data(400, 4, n_terms=3, random_state=s)`, s = 0..19, `HyperbolicTradeSpace(n_terms=3, temperature=tau, random_state=0, facet_step=step)` defaults otherwise; pass = max exponent error < 0.05 after `linear_sum_assignment` matching and >= 90 % of frontier rows on the matched facet.
+
+| step | tau | passes | failing seeds (error, row fraction, fewest frontier rows on a facet) |
+|---|---|---|---|
+| support | inf | **17/20** | 1 (0.468, 0.96, 5), 3 (0.118, 0.95, 6), 16 (0.437, 0.94, 5) |
+| support | 50 | **16/20** | 1 (0.32, 0.54, 5), 3 (0.113, 0.94, 6), 8 (0.218, 0.73, 11), 16 (0.363, 0.85, 5) |
+| tangent | inf | **16/20** | 1 (0.325, 0.49, 5), 3 (0.118, 0.93, 6), 8 (0.054, 0.99, 11), 16 (0.437, 0.93, 5) |
+| tangent | 50 | **17/20** | 1 (0.327, 0.54, 5), 3 (0.099, 0.94, 6), 16 (0.33, 0.83, 5) |
+
+All four rows equal the docs exactly (counts and seed lists). Note: tangent at tau = inf seed 8 fails by 0.004 (error 0.054 against 0.05), so that count is threshold-sensitive; the docs state the threshold. The docs' explanation (seeds 1, 3, 16 have a facet with only 5 or 6 frontier rows, which is the minimum the generator now guarantees; seed 8 has 11) agrees with the last column. The claim "D recovers about as often as B" is borne out; D does not recover more at the defaults, so the gain the first spike measured (16 to 19 vs 12 to 19 from one start) does not show up in the five-restart default, which the docs do not hide.
+
+### Requirements, re-verified (original IDs, amended where the amendment says)
+
+| ID | Verdict | Evidence |
+|---|---|---|
+| R-1 (amended: states the >= d+1 condition) | met as amended | `test_k_terms_recovers_planted_facets` and the new `test_k_terms_both_steps_recover_under_identifiability` (both steps x seeds 0, 2 at inf, 0, 4 at 50; each asserts the generator's >= 5 frontier rows per facet) pass. The measured rate on 20 seeds is the table above, quoted in the docs, with the cause. Not universal: stated honestly. |
+| R-2 | met | `test_terms_monotone_history_and_stops`, `test_terms_k1_equals_slsqp_and_degenerate` pass (full suite). Monotone for B; D's non-monotonicity tested and documented. |
+| R-3 | met | `test_k_terms_round_trip_and_scores` (K in 2, 3 x kappa in inf, 5) pass. |
+| R-4 | met | `test_k3_reports_one_per_facet_recover_planted_supports` (3 seeds) pass; comparison is `sorted(...)`, order-free. |
+| R-5 | met | `parametrize_with_checks` for `n_terms=3`, `n_terms=3` with finite kappa, and the new `n_terms=3, facet_step="tangent"`; `EXPECTED_FAILURES` still empty; all pass with `xfail_strict=True`. |
+| R-6 | met for K = 1 behaviour; literal wording unmet as before | See the old-assertion list below. Notebook and `tests/test_notebook.py` diff empty. |
+| R-7 | met (unchanged by the amendment) | `tests/test_k_terms_case.py` (default step only, per the amendment) passes; figures and record not regenerated by the amendment (`git diff --stat 6c304a8 HEAD -- examples docs/superpowers/notes/k3-cubesat.md` shows no change). First review's remark on figure weakness (G-6) stands. |
+| R-8 | met | 256 of 300 net lines; no new dependency. |
+| R-9 (amended: both steps) | met | method page states the algorithm for both steps, B default with the reason; claims no global optimality ("Nothing is claimed about global optimality", assumption 2, `api.md`); `tests/test_docs.py`, `tests/test_narrative.py` pass; `grep -rn -i "documented, not built"` hits only kernel methods. |
+| R-10 | met on HEAD and on the two amendment code/docs commits (CI success on 19383f8 and 6b4e773) | commands above; earlier-commit runs also success per `gh run list`. |
+| R-11, R-12 | met | `test_reweighted_l1_*`, `test_penalty_*`, L11 derivation and narrative tests pass in the suite; `derivation/run.py` ends `ALL LEMMAS PASS.` |
+
+### Old-test assertions removed or edited (`git diff 3bebe3e HEAD -- tests/`)
+
+Unchanged list from the first review; no new removals since 6c304a8 except the import line in `test_solvers.py`.
+
+1. `tests/test_estimator.py::test_n_terms_not_implemented` removed (`pytest.raises(NotImplementedError ...)` for `n_terms=2`): required by G2; replaced by a passing-behaviour test. Conflicts with R-6's "additions only" wording.
+2. `tests/test_derivation.py` `unused = [n for n in AX.AXIOMS if n not in used and n not in AX.STRUCTURAL]` gained `and n not in AX.SOLVER_LEVEL` (I7): a small weakening of an audit, named and printed.
+3. `tests/test_docs.py` `1 <= n <= 10` -> `<= 11` (L11).
+4. `tests/test_narrative.py` `range(1, 11)` -> `range(1, 12)` (L11).
+5. `tests/test_tensions.py` import line adds `make_frontier_data` (no assertion change).
+6. `tests/test_solvers.py` import line `from scipy.optimize import check_grad` -> `check_grad, linear_sum_assignment` (new in the amendment; no assertion change).
+
+### Order and platform tie-breaks (the Linux failure class of run 42518318170)
+
+Searched the K > 1 tests for assertions on facet labels or order. Findings:
+
+- Order-free (good): recovery tests use `linear_sum_assignment` and compare after matching (`test_estimator.py`, `test_solvers.py` tangent test); `test_tensions.py` compares `sorted(contending sets)`; the literal-pinning test `test_default_facet_step_is_unchanged_literals` sorts rows by first column before comparing (its comment says facet order is arbitrary); `test_k_terms_improvement_factors_use_assigned_facet` uses the assigned facet's own argmax; `test_k_terms_zero_rows...` compares two same-seed fits; `test_log_plane_k3_draws_envelope_and_facet_legend` was already made a set test. All K > 1 tests, including the Amendment 1 ones, passed on Linux CI (runs 42524420226 and 42524561753).
+- Residual order dependence, low risk, not currently failing:
+  1. `tests/test_plotting.py::test_surface_k3_and_coordinates_facet_colouring` asserts `"facet 1" in _texts(ax)` (K = 3, d = 3, one seed): it assumes facet index 0 owns at least one row. A platform tie-break that emptied facet 0 (as happened to a facet in the d = 2 duplicate case) would fail it. It passed on macOS and on Linux CI.
+  2. `tests/test_plotting.py::test_plot_tensions_list_of_reports_side_by_side` asserts `axs[1].get_title().startswith("facet 2: dilemma")`; this is about the report list index, which is deterministic by construction (not a label permutation issue).
+  3. `tests/test_k_terms_case.py` asserts `(np.bincount(est.facet_, minlength=3) > 0).all()` (no empty facet in the cubesat K = 3 fit, seed 0) and `diag.objective_.is_monotonic_decreasing` over K = 1, 2, 3. Both are about outcome, not order, and are numeric-platform sensitive in principle; they passed on CI. The cubesat tests use the default step only, as the amendment says.
+  4. `tests/test_tensions.py` `match="facet 0"` names the first facet checked, deterministic.
+- No `argsort`-free ordered comparison of exponents across facets, and no assertion like `labels[...] == k` against planted labels without matching, was found.
+
+### Outside the scope (amendment-era)
+
+Out-of-scope but expected: the two spike folders `docs/superpowers/notes/spike-facet-refit/` and `spike-objective/` (+30 k lines of scripts, CSV and READMEs; the research the supervisor requested at the gate; ~23 k lines are one CSV, `mono.csv`), the ruff `extend-exclude` in `pyproject.toml` to keep throwaway scripts out of lint, and the decision-record entries in `WP9-decisions.md`. No non-goal touched: no performance or scalability code, no kernels, K = 1 results, notebook and datasets untouched, no paper or site files, no change to the cubesat record or figures.
+
+### New gap list
+
+| Gap | Description | Suggested disposition |
+|---|---|---|
+| G2-1 | Recovery is 16 to 17 of 20 seeds for either step and either tau. Failures are facets with exactly 5 to 6 frontier rows (the generator's minimum) plus one seed (8) with a well-populated facet in a local optimum. The amendment's "evidence-driven" D does not beat B at the defaults (16/17 vs 17/16). Fully disclosed in docstring, method, api and limitations. | accept as is; the paper (WP10) should quote the measured rates, not "recovers" |
+| G2-2 | D's seed-8 result at tau = inf misses the 0.05 criterion by 0.004 (error 0.054); the "16/20" count is threshold-sensitive. | accept as is (docs state the threshold); optional follow-up |
+| G2-3 | R-6 literal wording ("additions only") still not achievable: `NotImplementedError` test removed, ceilings raised, one audit exemption. | accept as is (same as G-4 of the first review) |
+| G2-4 | Plotting test `"facet 1" in _texts(ax)` assumes facet index 0 is non-empty; the cubesat case test asserts no empty facet. Not failing on macOS or Linux CI, but the same class as the 42518318170 failure. | accept as is, or follow-up (make `test_surface_k3_and_coordinates_facet_colouring` assert any `facet \d` label). Not worth blocking acceptance. |
+| G2-5 | The generator now moves extra rows onto the frontier for K > 1, so the realized frontier fraction can exceed `frontier_fraction` and K > 1 planted data differ from pre-amendment data on seeds that needed a top-up (any pre-amendment K > 1 numbers outside the repo, such as WP10 drafts, would not reproduce on those seeds). Documented in the docstring Notes. | accept as is |
+| G2-6 | The D-related percentages in the docs (35 to 50 % worse refits; 16 vs 12 of 20 from one start) come from the spike tables and were not recomputed by me; B's 0.000 was spot-checked in `mono.csv` only. | accept as is (sources cited); or follow-up to add a one-line recompute test |
+| G2-7 | First-review gaps G-6 (figure legibility) and G-7 (`frac_above_` rises with K) are unchanged by the amendment and remain open follow-ups for WP10. | follow-up work package, as before |
+| G2-8 | Spike folders add about 30 k lines (mostly CSV) to the repo. | accept as is (requested research, ruff-excluded); note for the supervisor |
+
+No gap is suggested as "fix before acceptance".
+
+### Recommendation
+
+Recommend acceptance with the listed gaps noted. Reasons: every amendment item is present in code and docs and was verified by running it (the default step is bit-identical to the pre-amendment code on 12 cases; D is implemented as specified with its fallback and best-iterate return; the generator guarantees >= d+1 frontier rows per facet and leaves K = 1 untouched); the recovery rates quoted for both steps were independently reproduced to the count and the seed; the full suite (1115 passed), lint, format, lock, derivation and attribution checks are clean; the code budget is 256 of 300; CI is green on the amendment's code and docs commits; K = 1 notebook and tests are untouched. The honest limits are unchanged in kind: 16 to 17 of 20 planted seeds recovered, failing where a facet has only 5 to 6 frontier rows, and the supervisor's chosen default (monotone B) is not more accurate than D, only guaranteed monotone.
+
+Acceptance is the supervisor's act, recorded as named at the top. This report does not accept the work.
