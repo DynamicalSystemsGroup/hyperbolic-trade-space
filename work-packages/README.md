@@ -43,6 +43,7 @@ what it fixes for later packages. The design spec is
 | WP5 Literature review and bibliography | `docs/references.bib` (every entry resolved by DOI/URL) and `docs/literature.md`; citation-hygiene test | Citation keys and lineage claims | WP0; parallel with WP1–4 |
 | WP6 Mathematics narrative (spec §4) | `docs/method.md`, why/how page, limitations page, citing WP1 lemmas and WP5 keys | The narrative the site renders | WP1, WP5 |
 | WP7 Case notebook (spec §8) | Executed `examples/adcs/adcs_trade_study.ipynb` with interpretation as human validation and propose-predict-check | The embodied demonstration | WP2, WP3, WP4 |
+| WP9 Human readability of the notebook and the page | Iterative, browser-in-the-loop presentation work on the WP7 notebook and its rendered page (hook, short steps, captions, code secondary, navigation), numbers and claims unchanged | What a human reader sees; WP8 adopts the page configuration | WP7 (held); before WP8 |
 | WP8 Site and publication (spec §9) | MkDocs site, generated pages, Pages workflow, first release | Publication; then release controls | all |
 
 ## Status
@@ -57,5 +58,6 @@ what it fixes for later packages. The design spec is
 | WP3 | `WP3-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP3-decisions.md`) | `main` 7f82d43..07fe9d3 | `WP3-review.md` (a63f6f5, third pass) | verbal, 2026-11-08 ("accept", `WP3-decisions.md`) |
 | WP6 | `WP6-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP6-decisions.md`) | `main` 17dea12..f6d9b9a | `WP6-review.md` (4f5d211, fifth pass) | verbal, 2026-11-08 ("accept", `WP6-decisions.md`) |
 | WP4b | `WP4b-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP4b-decisions.md`) | `main` 5dfbc8c..f1e38ca (Amendments 1 to 6; primary = aggressive-gain dataset, baseline = regime comparison) | `WP4b-review.md` (3f5a00f/99fdea2, sixth pass) | verbal, 2026-11-08 ("accept 4b ...", `WP4b-decisions.md`) |
-| WP7 | `WP7-scope-of-work.md` | verbal, 2026-11-08 ("approve 7 and 8", `WP7-decisions.md`) | `main` 94f5fdf..755bf5e | `WP7-review.md` (39bbe18, second pass) | pending |
+| WP7 | `WP7-scope-of-work.md` | verbal, 2026-11-08 ("approve 7 and 8", `WP7-decisions.md`) | `main` 94f5fdf..755bf5e | `WP7-review.md` (39bbe18, second pass) | held 2026-11-08: supervisor read it ("really hard to read"); readability loops in WP9 |
 | WP8 | `WP8-scope-of-work.md` | verbal, 2026-11-08 ("approve 7 and 8", `WP8-decisions.md`) | waiting for WP7 | — | — |
+| WP9 | `WP9-scope-of-work.md` | pending (first loop in Claude Code, browser in the loop) | — | — | — |

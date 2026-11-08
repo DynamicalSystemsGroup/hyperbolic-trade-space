@@ -41,6 +41,15 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Disposition:** WP7 held at the acceptance gate pending the supervisor's own reading of
   `examples/adcs/adcs_trade_study.ipynb`; no changes meanwhile.
 
+## Supervisor's reading (2026-11-08)
+
+- Read in a local MkDocs preview (branch `preview/site`, served locally). Verbatim: "its really hard
+  to read. we're definitely going to need to do some loops, but i expect we'll need to switch to
+  claude code so the browser is in the loop."
+- Disposition: WP7 remains held at the gate; readability is handled by WP9 (scoped, not executed);
+  WP9's OD4 decides whether WP7 is accepted as the machine-verified baseline or closed together
+  with WP9.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP7-review.md`
