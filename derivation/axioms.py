@@ -146,6 +146,32 @@ AXIOMS = {
         "elasticities are undefined, and the frontier reading degrades to the weaker "
         "invariant-form reading",
     ),
+    # -------------------------------------------------- FALLBACK HYPOTHESES (L5, L10)
+    "F5": Axiom(
+        "F5",
+        POSITED,
+        "max representation for L5: the maximum of the scores is a symbol M with "
+        "s_i <= M for all i in 1..n and s_{i0} = M for some i0 in 1..n",
+        role="lets the tau -> infinity limit and the bound LME <= max be proved for symbolic n "
+        "(sympy has no symbolic-n max and cannot take limits through the symbolic Sum): "
+        "M - (log n)/tau <= LME <= M is squeezed with sympy.limit",
+        failure_mode="the statement is about the actual maximum only when M really is "
+        "max_i s_i; if M is any upper bound that is not attained the lower squeeze bound is "
+        "lost and the limit is only an upper bound on the true limit",
+        fallback=True,
+    ),
+    "F10": Axiom(
+        "F10",
+        POSITED,
+        "max representation for L10: the maximum over the K terms of x_k = theta_k.u - beta_k "
+        "is a symbol M with x_k <= M for all k in 1..K and x_{k0} = M for some k0 in 1..K",
+        role="lets lim_{kappa->inf} Phi_K = max_k x_k and the bound Phi_K <= max be proved for "
+        "symbolic K (same squeeze as F5), so the extension reads as a soft maximum of K "
+        "affine log-scores",
+        failure_mode="as F5: if M is not attained by some term the lower squeeze bound "
+        "M - (log K)/kappa is lost and only an upper bound on the limit is available",
+        fallback=True,
+    ),
 }
 
 

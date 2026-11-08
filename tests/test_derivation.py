@@ -224,3 +224,101 @@ def test_L4_sign_argument_is_per_term_then_net():
     plain = sp.exp(Sy.tau * Sy.u[Sy.i, Sy.j])
     assert plain.is_positive is not True
     assert (s_r[Sy.i] - s_r[Sy.k]) ** 2 >= 0
+
+
+# --- lemmas L1,L2,L5,L7,L9,L10 ---
+import importlib as _il  # noqa: E402
+
+_MY_LEMMAS = {
+    1: "lemma_01_homogeneity",
+    2: "lemma_02_shift",
+    5: "lemma_05_lse_lme",
+    7: "lemma_07_elasticities",
+    9: "lemma_09_pullback",
+    10: "lemma_10_extension",
+}
+
+
+def _run_lemmas(*numbers):
+    """derive+verify the listed lemmas (L7 reads L1 through ctx) on a fresh abstract ctx."""
+    ctx = {"S": S.make_symbols()}
+    mods = {}
+    for n in numbers:
+        mods[n] = _il.import_module(f"derivation.{_MY_LEMMAS[n]}")
+        mods[n].derive(ctx)
+        mods[n].verify(ctx)
+    return ctx, mods
+
+
+@pytest.mark.parametrize("num", sorted(_MY_LEMMAS))
+def test_lemma_L1_L2_L5_L7_L9_L10_verify_abstractly(num):
+    needs = (1, num) if num == 7 else (num,)
+    ctx, mods = _run_lemmas(*needs)
+    mod = mods[num]
+    assert mod.TITLE and mod.STATEMENT and mod.AXIOMS_USED
+    for name in mod.AXIOMS_USED:
+        assert name in AX.AXIOMS
+    # abstract: sizes stay symbolic, no concrete dimension in the lemma state
+    assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
+
+
+@pytest.mark.parametrize("num", sorted(_MY_LEMMAS))
+def test_lemma_L1_L2_L5_L7_L9_L10_no_enumeration(num):
+    import inspect
+
+    src = inspect.getsource(_il.import_module(f"derivation.{_MY_LEMMAS[num]}"))
+    assert "range(" not in src, f"L{num}: loop over concrete sizes"
+    assert "numpy" not in src and "scipy" not in src and "random" not in src
+
+
+def test_L1_fails_loudly_when_formula_broken():
+    ctx, mods = _run_lemmas(1)
+    ctx["L1"]["Vk"] = ctx["L1"]["Vk"] * 2  # V(k m) = 2 k V(m): wrong
+    with pytest.raises(AssertionError, match="L1 FAIL"):
+        mods[1].verify(ctx)
+
+
+def test_L2_fails_loudly_when_shift_broken():
+    ctx, mods = _run_lemmas(2)
+    ctx["L2"]["J_shifted_reduced"] = ctx["L2"]["J_shifted_reduced"] + 1
+    with pytest.raises(AssertionError, match="L2 FAIL"):
+        mods[2].verify(ctx)
+
+
+def test_L5_limits_and_fallback_recorded():
+    ctx, _ = _run_lemmas(5)
+    r = ctx["L5"]
+    assert sp.simplify(r["lim_zero"] - r["mean"]) == 0
+    assert sp.simplify(r["lim_lower"] - ctx["S"].M) == 0
+    assert "F5" in _il.import_module("derivation.lemma_05_lse_lme").AXIOMS_USED
+    assert AX.get("F5").fallback and AX.get("F5").role and AX.get("F5").failure_mode
+    assert "SLLN" in r["consistency_remark"] and "support function" in r["support_function_remark"]
+
+
+def test_L5_fails_loudly_when_limit_wrong():
+    ctx, mods = _run_lemmas(5)
+    ctx["L5"]["lim_zero"] = ctx["L5"]["lim_zero"] + 1
+    with pytest.raises(AssertionError, match="L5 FAIL"):
+        mods[5].verify(ctx)
+
+
+def test_L7_fails_loudly_when_elasticity_wrong():
+    ctx, mods = _run_lemmas(1, 7)
+    ctx["L7"]["x_sol"] = -ctx["L7"]["x_sol"]  # +w_k/w_j: wrong sign
+    with pytest.raises(AssertionError, match="L7 FAIL"):
+        mods[7].verify(ctx)
+
+
+def test_L9_fails_loudly_when_exponent_wrong():
+    ctx, mods = _run_lemmas(9)
+    ctx["L9"]["target"] = ctx["L9"]["target"] * 2
+    with pytest.raises(AssertionError, match="L9 FAIL"):
+        mods[9].verify(ctx)
+
+
+def test_L10_fails_loudly_when_limit_wrong_and_fallback_recorded():
+    ctx, mods = _run_lemmas(10)
+    assert AX.get("F10").fallback and "F10" in mods[10].AXIOMS_USED
+    ctx["L10"]["lim_lower"] = ctx["L10"]["lim_lower"] + 1
+    with pytest.raises(AssertionError, match="L10 FAIL"):
+        mods[10].verify(ctx)
