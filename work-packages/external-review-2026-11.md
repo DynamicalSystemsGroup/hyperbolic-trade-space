@@ -146,7 +146,32 @@ and the L10 docstring are wrong, as the reviewer says.
   margin and radius, the termination status, the four statements as ledger entries, the guard
   tolerance. Implementation scope: put to the supervisor.
 
-Pending: E-7 (second pass), E-8 to E-10, E-1's implementation scope.
+- **E-7, second pass, and the standing position.** The driver classified the four items (the
+  single-observation shortcut: a convention at an input outside the map, kept, declared, warned;
+  the zero-metric scoring: a mismatch with the formal limit, aligned in code, masking in the fit
+  kept; "distance": terminology; the sliver claim: an observed claim written in the formal register,
+  moved to "observed") and proposed one position for the whole review: formal statements made exact
+  in derivations and ledger; one abstraction-gaps ledger (formal object, implementation, bridging
+  assumption, what cannot be proved, sensitivity evidence, interpretive consequence); terminology
+  defined once; the policy stated once in the prose. On "distance" the supervisor asked, verbatim:
+  "this is still an energy differential in a formal sense right?" Answer recorded: yes, $\log V$ is
+  the potential $\Phi(u)=w\cdot u-\beta$ relative to the frontier level, a path-independent
+  difference, equal by L1 and L2 to the uniform log-scaling step that carries the design to the
+  frontier, and equal to the Euclidean distance to the hyperplane only up to $\|w\|_2$; the words are
+  "energy differential" or "level offset", not Euclidean distance. **Supervisor (mzargham),
+  verbatim:** "okay so we can avoid a headache by building a separate supporting table for
+  mathematical expressions and their meaning in the context of our paper. this can be a supporting
+  table. we can resolve wordsmithing for math concepts in the register so we don't end up with
+  destructive resonance or limit cycles in prose."
+- **Disposition (position adopted, with the register as its mechanism):** `docs/superpowers/notes/notation.md`
+  becomes the register: for each mathematical expression, the formal object, the one phrase the
+  prose uses for it, what it is not, and where it is defined or proved; it is published as the
+  paper's supporting table (Appendix A). Terminology items (E-3's three objects, E-7's "distance")
+  are resolved there and nowhere else; the prose uses the register's phrase. E-7 (i), (ii), (iv) as
+  classified above, in WP13. Response text: after the changes, citing the register and the
+  abstraction-gaps ledger.
+
+Pending: E-8 to E-10, E-1's implementation scope.
 
 ## Response letter
 

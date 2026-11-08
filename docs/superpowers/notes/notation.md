@@ -1,4 +1,12 @@
-# Note: notation and interpretations (settled with the supervisor, 2026-11-08)
+# The register: mathematical expressions and their meaning in the paper (settled with the supervisor, 2026-11-08)
+
+This note is the register (the supervisor, 2026-11-08: "a separate supporting table for
+mathematical expressions and their meaning in the context of our paper ... we can resolve
+wordsmithing for math concepts in the register so we don't end up with destructive resonance or
+limit cycles in prose"). For each expression it fixes the formal object, the one phrase the prose
+uses for it, what it is not, and where it is defined or proved. Wording disputes about the
+mathematics are settled here, once; the prose uses the register's phrase and does not re-argue it.
+It is published as the paper's supporting table (Appendix A of the supporting material).
 
 Source of the paper's notation block (WP10) and the vocabulary of the K > 1 package (WP9). Each
 row: the symbol, its name, what it means in the model, the PCA analogue where one helps, and the
@@ -27,7 +35,7 @@ follow the scikit-learn documentation.
 | $V_K(m)=\big(\sum_k c_k\prod_j m_j^{\kappa w_{kj}}\big)^{1/\kappa}$ | the posynomial | the $K$-term value; its level surfaces exist at every value; $V=1$ is placed at the frontier by normalization so results read as factors of improvement | | WP9 |
 | $\Phi_K(u)=\tfrac1\kappa\log\sum_k\exp(\kappa(w_k\cdot u-\beta_k))$ | log of $V_K$ | softmax-affine in log space; a soft maximum of the $K$ hyperplanes; at $\kappa\to\infty$ the hard max, the envelope (L10) | | WP9 |
 | $V=1$, $\Phi=0$ | the frontier | the fitted edge of the achievable; inside is $V<1$, beyond is $V>1$ | | |
-| $\log V$ | distance from the frontier | one coordinate of the chart; negative inside, positive beyond | | `transform(X)[:, -1]` |
+| $\log V=\Phi(u)$ | energy differential (level offset) to the frontier | the potential $\Phi(u)=w\cdot u-\beta$ evaluated at the design, relative to the frontier's zero level; a path-independent difference; equal by L1 and L2 to the uniform log-scaling step that carries the design onto the frontier (the improvement factor's logarithm); negative inside, positive beyond. **Not** a Euclidean distance: the signed Euclidean distance to the hyperplane is $\Phi(u)/\|w\|_2$. The prose says "energy differential" or "level offset"; "distance" only in that sense. | | `transform(X)[:, -1]`, `score_samples` |
 | $Z\in\mathbb{R}^{d-1}$ | position along the frontier | the other $d-1$ chart coordinates (Helmert log-ratios, L8); free of overall scale; where in the trade space a design sits; holes in $Z$ are white space | the scores in the component basis | `transform(X)[:, :-1]`, `basis_` |
 | $(Z,\log V)\leftrightarrow m$ | the chart | the reversible transformation between metric space and the fitting space (L8, L9); nothing is lost either way | | `transform`, `inverse_transform` |
 | $\tau$ | fit temperature | how hard the maximum is in the one-sided fit; $\tau=\infty$ is the exact maximum (a linear program); finite $\tau$ gives a band of near-frontier designs of half-width $1/\tau$ in $\log V$ (L5); chosen so a target fraction of designs lies above $V=1$ | | `temperature`, `select_temperature` |
