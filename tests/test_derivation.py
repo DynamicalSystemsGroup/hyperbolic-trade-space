@@ -903,3 +903,58 @@ def test_L12_fails_loudly_when_gap_claim_broken():
     ctx["L4"]["convex"] = False  # L12 is conditional on L4's convexity
     with pytest.raises(AssertionError, match="L12 FAIL"):
         mods[12].verify(ctx)
+
+
+def test_L13_verifies_with_declared_axioms_and_states_the_radius():
+    ctx, mods = _run_wp13(13)
+    L13 = mods[13]
+    assert set(L13.AXIOMS_USED) >= {"F12", "I9", "R2"}
+    for name in L13.AXIOMS_USED:
+        assert name in AX.AXIOMS
+    s = L13.STATEMENT
+    assert "gamma - 2 delta" in s and "2 delta < gamma" in s
+    assert "max_k ||Delta theta_k||_2 < gamma / (2 max_i ||(u_i, -1)||_2)" in s
+    assert "energy differential" in s
+    assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
+
+
+def test_wp13_new_axioms_are_declared_with_role_and_failure_mode():
+    i9 = AX.get("I9")
+    assert i9.tag == AX.INHERITED and "Horn" in i9.citation and "Matrix Analysis" in i9.citation
+    assert i9.role.strip() and i9.failure_mode.strip()
+    r2 = AX.get("R2")
+    assert r2.tag == AX.REGULARITY and "positive assignment margin" in r2.statement
+    assert r2.role.strip() and "unique maximizing" in r2.role and "Proposition 3" in r2.role
+    assert "ridge" in r2.failure_mode and "stationary_without_margin" in r2.failure_mode
+    assert "duplicate" in r2.failure_mode
+    r1 = AX.get("R1")
+    assert "does not imply" in r1.statement and "interior" in r1.statement
+
+
+def test_L13_numeric_endpoint_labels_survive_the_radius():
+    ctx, _ = _run_wp13(13)
+    num = ctx["L13"]["numeric"]
+    assert num["margin"] == 1 and num["perturbed_margin"] >= num["margin"] - 2 * num["delta"] > 0
+    assert num["labels"] == num["labels_perturbed"]
+    assert num["r"] < num["radius"]
+
+
+def test_L13_fails_loudly_when_margin_claim_broken():
+    for key, bad in (
+        ("margin_slack", 1),  # new gap != (gamma - 2 delta) + slacks
+        ("margin_nonneg", False),
+        ("margin_positive", False),
+        ("score_change_slack", 1),  # change in the score is not Delta theta . (u, -1)
+    ):
+        ctx, mods = _run_wp13(13)
+        ctx["L13"][key] = bad
+        with pytest.raises(AssertionError, match="L13 FAIL"):
+            mods[13].verify(ctx)
+    ctx, mods = _run_wp13(13)
+    ctx["L13"]["radius_set"] = sp.Interval(0, sp.oo)  # radius not bounded by gamma / (2 U)
+    with pytest.raises(AssertionError, match="L13 FAIL"):
+        mods[13].verify(ctx)
+    ctx, mods = _run_wp13(13)
+    ctx["L13"]["numeric"]["perturbed_margin"] = -1
+    with pytest.raises(AssertionError, match="L13 FAIL"):
+        mods[13].verify(ctx)
