@@ -54,6 +54,6 @@ what it fixes for later packages. The design spec is
 | WP2 | `WP2-scope-of-work.md` | verbal, 2026-11-08 (`WP2-decisions.md`) | `main` c8e0f6e..5c3dc1c | `WP2-review.md` (39fa0c3, fourth pass) | verbal, 2026-11-08 ("okay proceed", `WP2-decisions.md`) |
 | WP4 | `WP4-scope-of-work.md` | verbal, 2026-11-08 (`WP4-decisions.md`) | `main` 932bbe4..ef79e83 (incl. Amendment 1) | `WP4-review.md` (9680193, third pass) | verbal, 2026-11-08 ("accept", `WP4-decisions.md`) |
 | WP5 | `WP5-scope-of-work.md` | verbal, 2026-11-08 (`WP5-decisions.md`) | `main` 442a538..4ce27d4 | `WP5-review.md` (1783375, second pass) | verbal, 2026-11-08 ("accept", `WP5-decisions.md`) |
-| WP3 | `WP3-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP3-decisions.md`) | in progress | — | — |
-| WP6 | `WP6-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP6-decisions.md`) | in progress | — | — |
-| WP4b | `WP4b-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP4b-decisions.md`) | in progress | — | — |
+| WP3 | `WP3-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP3-decisions.md`) | `main` 7f82d43..0815c82 | `WP3-review.md` (a0db131) | pending |
+| WP6 | `WP6-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP6-decisions.md`) | `main` 17dea12..bdf1c8b | `WP6-review.md` (4719f55) | pending |
+| WP4b | `WP4b-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP4b-decisions.md`) | `main` 5dfbc8c..379dee0 (R-14 stop rule triggered; work in progress) | — | — |
