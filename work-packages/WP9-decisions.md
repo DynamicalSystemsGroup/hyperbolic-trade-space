@@ -259,3 +259,39 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   diagnostic that shows why; the log-plane figures draw each facet's envelope only in slices where
   that facet has weight on both plotted metrics, or choose slices that have it; a fresh fourth
   review of the delta; then the bundle and acceptance.
+- Fourth review delivered (`WP9-review.md`, "Fourth review (after Amendment 3)"; commits a15566b
+  (E-4), 094e86d (Amendment 3) on main before the dev-branch rule reached the PM, c4133c8 (review,
+  two figure titles, status) on dev; manual Tests run on dev green at 42531411476; main CI green at
+  094e86d). Driver's own checks on dev: 1122 passed, 11 skipped, 1 xfailed; ruff, format, lock
+  clean; attribution grep with the CI pattern 0 over the package. Re-selected τ: primary 38.10 /
+  113.22 / 195.18 and stock 41.72 / 78.75 / 162.78 for K = 1 / 2 / 3, each with about a tenth of
+  designs above the envelope; the peak-slew-power facet's share rises under re-selection (primary
+  0.669 → 0.778, stock 0.161 → 0.590); every facet visible in at least one log-plane panel. Fourth
+  review gaps: G4-1 stale figure titles (fixed), G4-2 the reports use K = 1's band because 1/τ_K
+  leaves some facets with 3 to 6 designs (accept; carry into WP10), G4-3 the peak-slew-power slices
+  are legible but uninformative (accept), G4-4 long lines in method.md (accept), G4-5 τ re-selection
+  on Linux as a watch item (accept). No component of G2-7 remains.
+- **Bundle of the remaining items** (first review G-2, G-3, G-8, G-9; second review G2-2, G2-4,
+  G2-5, G2-6, G2-8; G3-1 and G4-1 fixed before hand-back; fourth review G4-2 to G4-5). **Supervisor
+  (mzargham), verbatim:** "Accept the bundle as is". Disposition: all accepted with the reviewers'
+  reasons; G4-2 (the reports use K = 1's band) and G4-3 (two uninformative slices) carried into
+  WP10's figure and band decisions.
+- Loop status: G-1 (Amendment 1), G2-3 (Amendment 2, docs of the solver-level ledger class),
+  G2-1 (documented understanding, `n_restarts`), G2-7 (Amendment 3), E-4 (folded in) all closed;
+  no open item remains before the acceptance question.
+
+## Acceptance (acceptance gate)
+
+- **Reviews of record:** `work-packages/WP9-review.md`, first review (28caf5b), second (b61df28, after
+  Amendment 1), third (96044fe, after Amendment 2), fourth (c4133c8, after Amendment 3 and E-4).
+- **Delivery:** `main` cbd618c..094e86d plus `dev` c4133c8 and the records; merged into `main` with
+  a no-ff merge after this acceptance.
+- **Date:** 2026-11-08.
+- **Driver's question:** "WP9, the posynomial solver for K > 1, with Amendments 1 to 3 and the E-4
+  correction: four reviews, every gap dispositioned, no open item. Do you accept the work?"
+- **Supervisor (mzargham), verbatim:** "Accepted"
+- **Disposition:** accepted. Carried forward: G4-2 and G4-3 into WP10; candidates for later
+  packages (from the PM's reports): a K-specific target fraction, a better start for thin facets,
+  nonsmooth search on the ridges, a K-selection helper, a readable multi-metric envelope plot,
+  scalability and performance, kernels; the external review's items E-1 to E-10 (E-4 done) into
+  WP13.

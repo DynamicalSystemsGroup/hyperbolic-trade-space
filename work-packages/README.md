@@ -36,6 +36,30 @@ This repository is built as supervisor-gated work packages, following the superv
 - **Execution:** autonomous inside the approved scope; TDD per module; `uv run` for every command;
   scikit-learn conformance per `docs/superpowers/notes/sklearn-conformance.md`.
 
+## Roadmap: the three outputs of the monorepo
+
+The supervisor, 2026-11-08, verbatim: "the final state of this repo will have 3 outputs (since its
+a mono repo): * release to pypi (blocked on me configuring it) * update to a docsite (we can stick
+to make docs unless you think we need sphynx) * update to the paper (myst modeled after scipy
+proceedings) right now we're focused on getting a release of the paper. but we should keep the
+other two clearly in the roadmap".
+
+| Output | Built from | Package | Status |
+|---|---|---|---|
+| The paper | `paper/paper.ipynb` and `supporting_material.ipynb` with mystmd, modelled on the SciPy proceedings article | WP10 (writing), WP11 (readability loops), WP8 (deployment) | the current focus; WP9 and the external-review triage precede it |
+| The docsite | `docs/*.md`, the generated derivation ledger and verification pages | WP8 | MkDocs Material, as first approved; a root index page splits to the MkDocs docsite under `/docs/` and the mystmd paper under `/paper/` (`WP8-decisions.md`, "Amendment 1 revised") |
+| The PyPI release | `src/hyperbolic_trade_space/`, `pyproject.toml`, `uv.lock` | WP8 (version 0.1.0; TestPyPI dry run was the approved first step) | blocked on the supervisor configuring the publisher; PyPI proper is a later decision of his |
+
+Supervisor, 2026-11-08, verbatim: "please make sure our plan is up to date. with clear work packages
+so we can work to get a working draft of the paper, code and documentation up (pypi deferred for
+pending feedback from friends and collaborators)". The revised list was put to the supervisor on 2026-11-08; his answer, verbatim: "yes but let's
+assert an interface contract between the technical work and the presentation layer work so they
+can proceed in parallel. the docsite, the paper publishing, and eventually the pypi release
+machinery need to stay stable even as the content evolves. so we should be able to pin that
+interface so i can iterate on content and the release machinery and publication flow in
+parallel". The list below carries that as WP14, the interface contract, scoped and pinned before
+the presentation packages start.
+
 ## Breakdown (search strategy)
 
 Only WP0 was firm at approval; the rest is revisited at each acceptance gate. Each line: goal, and
@@ -53,11 +77,14 @@ what it fixes for later packages. The design spec is
 | WP5 Literature review and bibliography | `docs/references.bib` (every entry resolved by DOI/URL) and `docs/literature.md`; citation-hygiene test | Citation keys and lineage claims | WP0; parallel with WP1–4 |
 | WP6 Mathematics narrative (spec §4) | `docs/method.md`, why/how page, limitations page, citing WP1 lemmas and WP5 keys | The narrative the site renders | WP1, WP5 |
 | WP7 Case notebook (spec §8) | Executed `examples/adcs/adcs_trade_study.ipynb` with interpretation as human validation and propose-predict-check | The embodied demonstration | WP2, WP3, WP4 |
-| WP9 Posynomial solver, K > 1 | A second solver used when `n_terms` > 1, built with as little code as possible on the K = 1 solver and SciPy (partition designs among facets, refit each facet, repeat; κ from the band, K by the fraction-above criterion), required to work in practice for small K; tension report, chart and plots facet-aware; a planted multi-facet dataset; the cubesat case at K = 3; method, API and limitations pages updated; scalability and performance named as future work | The meaning of K and κ, the per-facet report the paper reads, the figures of the manifold | WP2, WP3, WP1 (L10), WP4b |
-| WP12 Trade-off-aware search of the design space | An outer optimization that uses the fitted facets' ascent directions, chained to configuration space, to propose configurations, evaluates them against a noisy oracle, refits, and raises the frontier to the highest attainable level; it proposes, experts choose; new lemmas (gradient identity, stationarity as Pareto stationarity, outward monotonicity at τ = ∞) and inherited convergence results in the ledger; a literature pass (multiobjective gradient methods, stochastic approximation, sequential design for Pareto fronts); the cubesat simulator as the live oracle; minimal code on existing tools | The search procedure the paper reports and its theorem; the kernel direction it motivates | WP9; before WP10 |
-| WP10 The paper | A mystmd article in which the notebook is the paper (outline v2: `docs/superpowers/notes/paper-outline-v2-search.md`), with the story settled on 2026-11-08 (`WP10-decisions.md`): why (trade studies as documents, the bar for a trusted model-based method, PCA explains variance and this explains tensions), the contribution (scaling up trade studies with a reproducible method with a PCA-like feel), what (the trade space as a manifold, posynomials fit it to a coordinate system, the n-lemma as the analogue of a principal component), the cubesat case at K = 1 and K = 3, the novelty hook as the final remark; `supporting_material.ipynb` as computationally verifiable appendices; the case code as a tested module; fifteen state-of-practice citations; built for the six reader drill-down levels and the reader model | The published artifact; the site's index page | WP9, WP12, WP7 (accepted baseline), WP1–WP6 |
-| WP11 Readability loops on the paper | Browser-in-the-loop loops over the WP10 paper with the supervisor reading; one verdict per drill-down level per loop, recorded in `WP11-loops.md`; presentation only | What a human reader sees | WP10; before WP8 |
-| WP8 Site and publication (spec §9, Amendment 1) | mystmd site and GitHub Pages workflow around the paper and the supporting pages, generated pages, first release | Publication; then release controls | all |
+| WP9 Posynomial solver, K > 1 | A second solver used when `n_terms` > 1 (facet steps B default and D, mean-slack objective, sparsity option, L11, the cubesat record at K = 1, 2, 3 in both regimes with τ re-selected at each K); amendments 1 to 3 at the gate | The meaning of K and κ, the per-facet report the paper reads, the figures of the manifold | WP2, WP3, WP1 (L10), WP4b |
+| WP13 Response to the external review | Triage of `external-review-2026-11.md` item by item with the supervisor (accept / change in a named package / decline with reason), the changes it assigns (certificates and stopping declaration, simplex KKT statement, surface-versus-frontier terminology, identifiability and tolerances, the scope of statistical claims, the presentation lemmas), and the response letter | Hardened claims the paper states; the lemmas the Results section needs | WP9 (accepted) |
+| WP14 Interface contract (technical ↔ presentation) | A pinned contract between the technical work (package API and version, case module functions, data and figure paths, derivation ledger and generated pages, the executed notebooks) and the presentation layer (docsite build, paper build, release machinery): a document and a test that asserts it, so content and machinery iterate in parallel without breaking each other | Stable paths, entry points and build commands for WP8a, WP10, WP12, WP8b | WP9; before WP8a and WP10 |
+| WP8a Site skeleton up | Root index (thin HTML after hc-marimo), MkDocs docsite under `/docs/`, a `/paper/` slot, the Pages workflow deploying from `main` on merge, generated ledger and V&V pages; built against WP14 | A working draft of the docs visible early; the paper's deployment target | WP14 |
+| WP10 The paper, working draft | A mystmd article in which the notebook is the paper (story, notation, outline v2: `docs/superpowers/notes/paper-outline-v2-search.md`), the supporting-material notebook of computationally verifiable appendices, the case code as a tested module, the state-of-practice and multiobjective citations, built for the six reader drill-down levels and the reader model; the search section marked preliminary until WP12 lands; deployed under `/paper/` | The published artifact | WP13, WP14; parallel with WP12 (different files) |
+| WP12 Trade-off-aware search of the design space | Ascent directions in configuration space from the facets, the outer loop against a noisy oracle, the lemmas and inherited convergence results, the cubesat simulator live, minimal code; its results feed WP10's search section | The search procedure and its theorem | WP9, WP13; parallel with WP10 |
+| WP11 Readability loops on the paper | Browser-in-the-loop loops with the supervisor; one verdict per drill-down level per loop; presentation only | What a human reader sees | WP10, WP12 |
+| WP8b Release | Version 0.1.0, changelog, license, tag, GitHub release; TestPyPI and PyPI deferred (supervisor: "pypi deferred for pending feedback from friends and collaborators") | The first release | WP11; the supervisor's publisher configuration |
 
 ## Status
 
@@ -72,8 +99,8 @@ what it fixes for later packages. The design spec is
 | WP6 | `WP6-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP6-decisions.md`) | `main` 17dea12..f6d9b9a | `WP6-review.md` (4f5d211, fifth pass) | verbal, 2026-11-08 ("accept", `WP6-decisions.md`) |
 | WP4b | `WP4b-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP4b-decisions.md`) | `main` 5dfbc8c..f1e38ca (Amendments 1 to 6; primary = aggressive-gain dataset, baseline = regime comparison) | `WP4b-review.md` (3f5a00f/99fdea2, sixth pass) | verbal, 2026-11-08 ("accept 4b ...", `WP4b-decisions.md`) |
 | WP7 | `WP7-scope-of-work.md` | verbal, 2026-11-08 ("approve 7 and 8", `WP7-decisions.md`) | `main` 94f5fdf..755bf5e | `WP7-review.md` (39bbe18, second pass) | verbal, 2026-11-08 ("Accept WP7 as the baseline", `WP7-decisions.md`); notebook retired when the WP9 paper lands |
-| WP9 | `WP9-scope-of-work.md` (the solver) | verbal, 2026-11-08 ("Approved", `WP9-decisions.md`) | `main` 3bebe3e..6b4e773 (Amendment 1 at 98d8329) | `WP9-review.md` (third review after Amendment 2) | — |
+| WP9 | `WP9-scope-of-work.md` (the solver; Amendments 1 to 3) | verbal, 2026-11-08 ("Approved", `WP9-decisions.md`) | `main` cbd618c..094e86d, `dev` c4133c8 | `WP9-review.md` (four reviews; last c4133c8) | verbal, 2026-11-08 ("Accepted", `WP9-decisions.md`) |
 | WP12 | to be scoped after WP9's approval (the search; outline v2) | — | — | — | — |
 | WP10 | the paper; `WP10-decisions.md` holds the story and the redirection; scope drafted after WP9's acceptance, the external reviewer's feedback triage (`external-review-2026-11.md`, to be written) and WP12 (`WP10-scope-of-work.md` is the superseded first draft) | — | — | — | — |
 | WP11 | to be scoped at WP10's acceptance | — | — | — | — |
-| WP8 | `WP8-scope-of-work.md` (Amendment 1, MkDocs → mystmd, pending re-approval) | verbal, 2026-11-08 ("approve 7 and 8", `WP8-decisions.md`); Amendment 1 pending | waiting for WP11 | — | — |
+| WP8 | `WP8-scope-of-work.md` (Amendment 1 revised: MkDocs docsite + MyST paper, one Pages site; re-approval at WP10's gate) | verbal, 2026-11-08 ("approve 7 and 8", `WP8-decisions.md`); Amendment 1 pending | waiting for WP11 | — | — |
