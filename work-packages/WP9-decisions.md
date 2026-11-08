@@ -127,3 +127,4 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   rises with K) a follow-up candidate.
 - Post-review fix 2: CI on Linux failed one plotting test through facet relabelling of duplicate
   facets (d = 2, K = 3); the test is now permutation-robust (see `WP9-review.md`).
+- CI green on 0a91cb7: run 42518908382.
