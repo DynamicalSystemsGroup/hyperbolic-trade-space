@@ -60,11 +60,14 @@ CONFIG = ["panel_span_m", "battery_wh", "wheel_class", "st_grade", "Kp", "Kd"]
 WHEELS = ["small", "medium", "large"]
 TRACKERS = ["coarse", "medium", "fine"]
 # Hand-written candidates, inside the aggressive gain box (Kp 0.2-2.0, Kd 0.3-1.5) and the model
-# ranges (panel span 0.3-1.0 m, battery 20-200 Wh).
+# ranges (panel span 0.3-1.0 m, battery 20-200 Wh). The precise design first ran with a medium wheel
+# and failed momentum (peak 0.030 N m s on a 0.030 capacity class edge); it was changed to a large
+# wheel before the final run. The candidates carry no predictions, so this does not touch the
+# propose-predict-check order.
 CANDIDATES = [
     dict(name="fast_effort_hungry", wheel_class="large", st_grade="medium", panel_span_m=0.55,
          battery_wh=90.0, Kp=1.8, Kd=1.4),
-    dict(name="precise_heavy_sensor", wheel_class="medium", st_grade="fine", panel_span_m=0.8,
+    dict(name="precise_heavy_sensor", wheel_class="large", st_grade="fine", panel_span_m=0.8,
          battery_wh=140.0, Kp=1.2, Kd=1.0),
     dict(name="light_slow", wheel_class="small", st_grade="coarse", panel_span_m=0.35,
          battery_wh=40.0, Kp=0.25, Kd=0.4),
@@ -155,7 +158,7 @@ def predict() -> pd.DataFrame:
     Zp, lvp = reg.predict_coordinates(Fp)
     lvp = np.ravel(lvp)
     chosen, best_i, best_d, chosen_scores = [], [], [], []
-    for h, sc in zip(holes[:300], scores[:300]):
+    for h, sc in zip(holes[:300], scores[:300], strict=False):
         dist = np.sqrt(((Zp - h) ** 2).sum(axis=1) + (2 * lvp) ** 2)
         i = int(np.argmin(dist))
         if dist[i] > REACH or any(np.linalg.norm(h - c) <= sep for c in chosen):
