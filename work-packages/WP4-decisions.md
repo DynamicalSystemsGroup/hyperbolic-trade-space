@@ -47,4 +47,9 @@ the chat happened on the evening of 2026-11-07 local time.
 
 ## Acceptance (acceptance gate)
 
-- pending `work-packages/WP4-review.md`
+- Review: `WP4-review.md` (third pass, 9680193), recommend acceptance with the listed gaps noted; every gap has a disposition.
+- Acceptance act named in the scope: verbal acceptance in chat.
+- **Date:** 2026-11-08
+- **Supervisor (mzargham), verbatim:** "accept" (given for WP4 and WP5 together, after the driver
+  presented both gates in one message)
+- **Status:** accepted. WP4 is done.
