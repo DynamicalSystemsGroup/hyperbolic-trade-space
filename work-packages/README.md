@@ -62,7 +62,7 @@ what it fixes for later packages. The design spec is
 | WP6 | `WP6-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP6-decisions.md`) | `main` 17dea12..f6d9b9a | `WP6-review.md` (4f5d211, fifth pass) | verbal, 2026-11-08 ("accept", `WP6-decisions.md`) |
 | WP4b | `WP4b-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP4b-decisions.md`) | `main` 5dfbc8c..f1e38ca (Amendments 1 to 6; primary = aggressive-gain dataset, baseline = regime comparison) | `WP4b-review.md` (3f5a00f/99fdea2, sixth pass) | verbal, 2026-11-08 ("accept 4b ...", `WP4b-decisions.md`) |
 | WP7 | `WP7-scope-of-work.md` | verbal, 2026-11-08 ("approve 7 and 8", `WP7-decisions.md`) | `main` 94f5fdf..755bf5e | `WP7-review.md` (39bbe18, second pass) | verbal, 2026-11-08 ("Accept WP7 as the baseline", `WP7-decisions.md`); notebook retired when the WP9 paper lands |
-| WP9 | `WP9-scope-of-work.md` (the solver) | verbal, 2026-11-08 ("Approved", `WP9-decisions.md`) | `main` 3bebe3e..6c304a8 | `WP9-review.md` | — |
+| WP9 | `WP9-scope-of-work.md` (the solver) | verbal, 2026-11-08 ("Approved", `WP9-decisions.md`) | `main` 3bebe3e..6b4e773 (Amendment 1 at 98d8329) | `WP9-review.md` (second review after Amendment 1) | — |
 | WP12 | to be scoped after WP9's approval (the search; outline v2) | — | — | — | — |
 | WP10 | the paper; `WP10-decisions.md` holds the story and the redirection; scope drafted after WP9 and WP12 are approved (`WP10-scope-of-work.md` is the superseded first draft) | — | — | — | — |
 | WP11 | to be scoped at WP10's acceptance | — | — | — | — |
