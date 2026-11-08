@@ -19,6 +19,18 @@ Records typed by the agent (driver session, Claude Fable 5.1, 2026-11-07). Decis
 - **Supervisor (mzargham), verbatim:** "OK"
 - **Disposition:** approved; defaults list approved as one item; open decisions: none.
 
+## Review gaps (decision loop at the acceptance gate), round 1
+
+- **Date:** 2026-11-08
+- **Review:** `work-packages/WP1-review.md` at dcfd527 (delivery 5e901aa..2e2eafc).
+- **Item G-5** (affects good enough: L8 round trip asserted by self-comparison with a permissive
+  check; L3/L4/L5 sub-claims resting on stated premises). Driver's assessment given: L3/L4/L5 sound
+  and honestly labelled; L8 round trip is a test that cannot fail.
+- **Supervisor (mzargham), verbatim:** "Fix L8 before acceptance"
+- **Disposition:** fix before acceptance (inherited axiom for the square-matrix inverse step, round
+  trip asserted from it, permissive escape removed, spec note that the strict LSE − max > 0 needs
+  n ≥ 2). The whole review reruns after the fix; G-1 to G-4 and G-6 to G-8 are re-listed then.
+
 ## Acceptance (acceptance gate)
 
-- pending `work-packages/WP1-review.md`
+- pending the rerun review.
