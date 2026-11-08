@@ -72,7 +72,10 @@ planted frontier (the second also returns a configuration matrix and a smooth ma
 to metrics), used by the tests and by the examples (A1, A2). `make_frontier_data(..., n_terms=K)`
 plants the envelope $\max_k(w_k\cdot u-\beta)$ of $K$ monomials (`exponents` of shape `(K, d)`,
 by default $K$ random draws at least 0.3 apart in $\ell_1$) and also returns `facet`, the planted
-facet of each row in `info`; `n_terms=1` reproduces the single-facet generator exactly.
+facet of each row in `info`; `n_terms=1` reproduces the single-facet generator exactly. At `n_terms=K` the generator guarantees at least $d+1$ frontier rows on every planted facet
+(a facet with fewer is not determined by its frontier rows, so recovery is not identifiable);
+this is necessary for recovery and not sufficient, and the recovery claim is the measured rate
+above.
 
 ## Stage 4: analysis
 
@@ -198,6 +201,19 @@ renormalized. `penalty="reweighted_l1"` with `alpha` $\ge0$ is the sparsity opti
 of every facet [@candes2008enhancing]; `alpha=0` leaves the fit unchanged and it acts at finite
 `temperature` only. `random_state` seeds the facet initializations (five restarts, the best
 kept); `max_iter` caps the inner SLSQP of each facet fit.
+
+`facet_step` chooses the per-facet step of the alternation and has no effect at `n_terms=1`.
+`"support"` (the default, step B) fits each facet as the supporting hyperplane of all rows that is
+tightest on the facet's rows; the mean slack $\frac1N\sum_i(\beta_{k(i)}-w_{k(i)}\cdot u_i)$ does
+not increase under either half-step, a guard enforces it, and this is the step the paper
+presents. `"tangent"` (step D) takes the direction from the facet's near-frontier rows (its own
+rows within $1/\tau$ of its support plane, $0.1$ at $\tau=\infty$) when there are at least $d+1$
+of them and falls back to step B otherwise; the mean slack is **not** monotone under it, so the
+loop returns the lowest-objective iterate it visited. Measured recovery on 20 planted seeds
+($K=3$, $d=4$, $N=400$): step B 17 of 20 at $\tau=\infty$ and 16 of 20 at $\tau=50$, step D 16
+and 17; the failures are facets with only five or six frontier rows trapped in local optima, and
+nothing is claimed about global optimality ([Mathematics](method.md#the-solver-for-small-k)).
+Any other value raises `ValueError`.
 
 **Fitted attributes** (the shapes at $K=1$ are the same with $K=1$):
 

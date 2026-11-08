@@ -122,7 +122,17 @@ global optimality. The assumptions behind it are named, defended and extended in
   gradient is the convex hull of the active normals; searching on those tangent cones is the way
   to drop the smoothing.
 - *The local optimum.* A global search or a certificate, and a joint rather than facet-by-facet
-  refit.
+  refit. The alternation can be trapped: on 20 planted seeds ($K=3$, $d=4$, $N=400$) it recovers
+  the planted facets in 16 or 17, for either per-facet step, and the failures are facets with only
+  five or six frontier rows (the generator guarantees at least $d+1$, which is necessary for
+  identifiability and not sufficient for recovery) and one seed with a well-populated facet.
+- *Thin facets.* A facet with fewer frontier rows than dimensions is not determined by them; only
+  the interior rows locate it, and the mean-slack objective prefers to split a large facet rather
+  than keep a sparse one.
+- *A non-monotone step.* `facet_step="tangent"` (step D) uses the near-frontier rows directly and
+  recovers about as often as the default, but the mean slack is not monotone under it; the
+  default `"support"` step is monotone and is the one the paper presents. A frontier-weighted
+  objective was measured and parked (`docs/superpowers/notes/spike-objective/`).
 - *Kernels,* below.
 
 **Kernel methods.** The research direction is kernel expansions that remain generalized

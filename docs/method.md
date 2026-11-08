@@ -585,7 +585,7 @@ speed are future work. In the style of Boyd and Vandenberghe's algorithm boxes [
 > 1. *Initialize.* Choose $K$ rows at random as centres. Map every row to the chart coordinates
 >    $z_i=Bu_i$ (the Helmert coordinates of L8, in which the overall scale is projected out) and
 >    give it the label $k(i)$ of the nearest centre.
-> 2. *Refit.* For each facet $k$, with $\bar u_k$ the mean of its rows, find the supporting
+> 2. *Refit (step B, the default).* For each facet $k$, with $\bar u_k$ the mean of its rows, find the supporting
 >    hyperplane $w_k=\arg\min_{w\in\Delta}\ J_\tau(Uw)-\bar u_k\cdot w$ over **all** $N$ rows, and set
 >    $\beta_k=J_\tau(Uw_k)$. Compute the objective, the mean slack
 >    $\bar s=\frac1N\sum_i\big(\beta_{k(i)}-w_{k(i)}\cdot u_i\big)$.
@@ -600,26 +600,93 @@ speed are future work. In the style of Boyd and Vandenberghe's algorithm boxes [
 > **until** the assignment is fixed, the guard fires or the iteration cap (50) is reached.
 >
 > **return** the restart with the smallest $\bar s$: exponents $w_k$, offsets $\beta_k$ and labels.
+>
+> (With `facet_step="tangent"`, step D below replaces $w_k$ in the refits after the first, the guard
+> in step 5 is not applied, and the iterate with the smallest $\bar s$ is returned.)
 
-The refit in step 2 is written $J_\tau(Uw)-\bar u_k\cdot w$, where $J_\tau(Uw)$ is the objective of
-the fit section applied to all rows. It is the entropic fit with the log-metrics centred at the
-facet's mean, so it is the same convex program as the $K=1$ fit (`solvers.solve_slsqp`, or the
-linear program at $\tau=\infty$) on shifted data, and at the solution $\beta_k-w_k\cdot\bar u_k$ is
-the mean slack of the facet's own rows below the soft supporting hyperplane. The hyperplane is
-fitted against all rows, not only the facet's own, because the rows of one facet lie in a cone of
-the chart that does not enclose the origin; the plain $K=1$ fit on a facet's own rows therefore
-tilts to a vertex of the simplex (observed on a planted $K=3$, $d=4$ frontier, where the linear
-program on the true facet rows returns vertices, not the planted exponents). Fitting against all
-rows makes the facet a support of the whole data set, which is what a facet of an upper envelope is.
-At $K=1$ the solver reduces to the single-term fit of the fit section (`solvers.solve_terms`
-returns the `solvers.solve_slsqp` result).
+**The per-facet problem as step 2 solves it.** The refit is written $J_\tau(Uw)-\bar u_k\cdot w$,
+where $J_\tau(Uw)$ is the objective of the fit section applied to **all** rows. It is the entropic
+fit with the log-metrics centred at the facet's mean, so it is the same convex program as the
+$K=1$ fit (`solvers.solve_slsqp`, or the linear program at $\tau=\infty$) on shifted data. Read
+geometrically, $w_k$ is the supporting hyperplane of the whole cloud that is tightest on the
+facet's rows: at the solution $\beta_k-w_k\cdot\bar u_k$ is the mean slack of the facet's own rows
+below the soft supporting hyperplane, and $\beta_k$ is a support value of all $N$ rows, so that
+$V=1$ is the frontier and the coefficients $e^{-\kappa\beta_k}$ keep the meaning they have at
+$K=1$. Call this step B (the `facet_step="support"` default).
 
-The objective $\bar s$ is the mean slack, and each step does not increase it: reassignment picks
-for every row the term with the largest score, which is the smallest slack, and the refit
-minimizes a convex function of $w_k$, of which the previous $w_k$ is a feasible point. The guard
-enforces the monotonicity in the code regardless of how well the inner solver converged. The scheme
-stops at a fixed assignment or the iteration cap; it returns a local optimum, and the restarts keep
-the best of several.
+The obvious alternative, refitting facet $k$ by the plain $K=1$ fit on its own rows only, is
+ill-posed. The rows of one facet lie in a cone of the chart that does not enclose the origin, and
+the support function of such a sliver is minimized at a vertex of the simplex. Measured on the
+planted $K=3$, $d=4$ frontiers with the **true** labels given, so that the alternation plays no
+part, the own-rows refit recovers 0 of 60 planted facets (the linear program on the true rows of
+seed 0 returns $(0.416,0,0.119,0.465)$ for the planted $(0.212,0.334,0.245,0.209)$), while step B
+recovers 60 of 60, including facets with only two to four frontier rows, because the facet's
+roughly 130 interior rows locate it
+(`docs/superpowers/notes/spike-facet-refit/`, section 3a). At $K=1$ the solver reduces to the
+single-term fit of the fit section (`solvers.solve_terms` returns the `solvers.solve_slsqp`
+result).
+
+**The objective.** The alternation minimizes the mean slack $\bar s$, the average over rows of
+the gap between the row's own facet plane and the row. It is the $K>1$ analogue of the $K=1$
+reach: at $K=1$ the objective is the reach $J_\tau(w)$, the size of the envelope above the cloud;
+at $K>1$ the sum of the facets' reaches is degenerate (every facet would repeat the $K=1$ fit),
+and the non-degenerate size of a $K$-facet envelope against the whole cloud is the mean slack, the
+one-sided volume between the cloud and the envelope (the one-sided $L^1$ criterion of Magnani and
+Boyd's max-affine fit [@magnani2009convex]). Under step B each half-step does not increase it:
+reassignment picks for every row the term with the largest score, which is the smallest slack, and
+the refit minimizes a convex function of $w_k$ of which the previous $w_k$ is a feasible point.
+The guard enforces the monotonicity in the code regardless of how well the inner solver
+converged. The measured fraction of half-steps in which the mean slack got worse is 0.000 for
+both the reassignment and the refit of step B, at $\tau=\infty$ and at $\tau=50$ (the second
+spike, table 1); every other objective the spike tried (touch counts, band means, entropic
+variants) worsens in some half-steps of B, or is constant at $\tau=\infty$. The scheme stops at a
+fixed assignment or the iteration cap; it returns a local optimum, and the restarts keep the best
+of several by mean slack.
+
+**Step D, the evidence-driven alternative.** With `facet_step="tangent"` the direction of facet
+$k$ is taken from the rows that actually lie on it. Its near-frontier rows are its own rows within
+$1/\tau$ of its support plane ($0.1$ at $\tau=\infty$, as elsewhere in the toolkit); when there
+are at least $d+1$ of them, $w_k$ is their smallest-variance direction, a constrained
+total-least-squares normal on the simplex (the complementary end of the principal-component read
+that the tension report takes of the same rows), and when there are fewer the facet falls back to
+step B. The first refit is always step B, $\beta_k$ is the support value over all rows in both
+steps, and the sparsity penalty acts on step B only. D is more robust than B to a wrong
+assignment in mid-alternation, since misassigned interior rows are not near the plane and do not
+pull it (16 against 12 passes of 20 from one common start at $\tau=\infty$; first spike,
+section 3b). **The mean slack is not monotone under D**: it rises in 35 to 50 percent of D's
+refits at $\tau=\infty$ and 35 percent at $\tau=50$ (second spike, table 1), nothing is monotone
+under it, and a guard on the mean slack would remove its gain. The code therefore applies the
+guard to B only; under D the loop stops at a fixed assignment or the cap and returns the iterate
+with the lowest mean slack that it saw, so the returned fit is no worse by that measure than any
+visited, but the sequence of iterates need not decrease.
+
+**Which step the paper presents.** Both steps are kept in the code and the evidence base
+(supervisor's decision at the acceptance gate of WP9), but the paper presents the mean-slack
+approach, step B, because of its monotone guarantee: the objective it minimizes is an
+interpretable quantity (the envelope's one-sided volume) that cannot rise, and it is the default.
+Step D is offered as the alternative that uses the near-frontier evidence directly, with its
+non-monotonicity disclosed.
+
+**Measured recovery.** On the planted generator at $K=3$, $d=4$, $N=400$ (30 percent of the rows
+on the frontier; `make_frontier_data(400, 4, n_terms=3, random_state=s)`, $s=0,\dots,19$), with the
+estimator defaults, five restarts and `random_state=0`, a seed passes when the matched exponents
+are within 0.05 of the planted ones and at least 90 percent of the frontier rows are on the right
+facet. Step B recovers 17 of 20 at $\tau=\infty$ (failing seeds 1, 3, 16) and 16 of 20 at $\tau=50$
+(1, 3, 8, 16); step D recovers 16 of 20 at $\tau=\infty$ (1, 3, 8, 16) and 17 of 20 at $\tau=50$
+(1, 3, 16). The failures have one cause. Seeds 1, 3 and 16 have a facet with only five or six
+frontier rows (or fewer in the planted draw, before the generator's top-up), so the facet is
+barely determined and its mean-slack optimum sits in a local optimum that no restart escaped;
+seed 8 is a local optimum with a well-populated facet (11 frontier rows). The generator at
+`n_terms=K` guarantees at least $d+1$ frontier rows per facet. That condition is **necessary**:
+a facet with fewer frontier rows than dimensions is not determined by them, every edge-only
+objective is flat across the family of hyperplanes through them, and no restart of either step
+passed on such a facet (second spike, section 2). It is **not sufficient**: seeds 3 and 8 satisfy
+it and still fail in some settings, and a thin facet near the bound leaves local optima. The claim
+is therefore the measured rate on these 20 seeds under the generator's conditions, not a
+guarantee of recovery. The two spikes hold the measurements and the throwaway scripts that
+produced them: `docs/superpowers/notes/spike-facet-refit/` (the per-facet step: oracle recovery,
+the alternation from common starts) and `docs/superpowers/notes/spike-objective/` (the objective:
+monotonicity, identifiability, selection among restarts).
 
 After the fit, scoring uses $\Phi_K$ with the hard offsets $\beta_k$ kept. At the default
 $\kappa=\infty$ the score is the exact maximum $\max_k(w_k\cdot u-\beta_k)$; at finite $\kappa$ it
@@ -658,10 +725,12 @@ is the pattern the scheme follows and not a theorem about this objective; what p
 cycling here is the monotone guard and the iteration cap. I7 states a local optimum, with the
 failure mode that the limit depends on the initial partition; restarts mitigate it.
 
-**Only observed.** (i) Recovery on planted data: on planted $K=3$, $d=4$ frontiers the exponents
-are recovered to 0.05 in most seeds, not in every seed: 19 or 20 of 20 at $N=600$ with half the
-rows on the frontier, but 16 or 17 of 20 at $N=400$ with 30 % on the frontier (the review of WP9),
-where the failing seeds are those in which a planted facet has only a handful of frontier rows. (ii) The cubesat record
+**Only observed.** (i) Recovery on planted data: on planted $K=3$, $d=4$ frontiers at $N=400$ the
+exponents are recovered to 0.05 in 16 or 17 of 20 seeds for either step and either $\tau$ (step B
+17 and 16, step D 16 and 17, at $\tau=\infty$ and $50$), not in every seed; the failures are
+planted facets with only five or six frontier rows, trapped in local optima, and one seed with a
+well-populated facet (see the measured recovery above). At $N=600$ with half the rows on the
+frontier the rate was 19 or 20 of 20. (ii) The cubesat record
 (`docs/superpowers/notes/k3-cubesat.md`) reports the $K=1,2,3$ fits on two datasets. The mean
 slack falls to about a quarter of its $K=1$ value at $K=3$, and the $K=3$ objective agrees across
 five seeds to within $2\times10^{-6}$ in the primary regime. (iii) The fraction of designs above
@@ -691,9 +760,10 @@ beyond it.
 
 2. **A local optimum, with restarts.** The partition-and-refit loop finds a local optimum of a
    non-convex problem (I7), and which one depends on the initial centres. *Defence:* every refit is
-   convex, the objective never increases (the guard), the restarts keep the best of several (five
-   by default), and on the planted and cubesat data the optimum was reproducible across seeds
-   (observed above). *Beyond:* a global search or a certificate of optimality; none is claimed.
+   convex, the objective never increases under the default step (the guard), the restarts keep the
+   best of several (five by default), and on the planted and cubesat data the optimum was
+   reproducible across seeds (observed above). Thin facets (five or six frontier rows) are the
+   known trap. *Beyond:* a global search or a certificate of optimality; none is claimed.
 
 3. **The analyst chooses $K$.** There is no automatic selection of the number of terms
    (supervisor's decision OD1). *Defence:* the right $K$ is a modelling choice about how many
@@ -709,12 +779,23 @@ beyond it.
    contending set readable. *Beyond:* scalability and performance (many terms, many designs) are
    future work.
 
-5. **The supporting-hyperplane refit.** A facet's plane is fitted against all rows, not only its own,
-   because the cone of a facet's own rows does not enclose the origin, so the plain fit on them
-   degenerates to a vertex (above). *Defence:* the plane is the one the facet would have as a
-   support of the whole data set, which is what makes it an upper envelope. The cost is that a
-   facet is influenced by rows that another facet owns. *Beyond:* a refit that uses only the
-   rows near the facet, or a joint fit of all terms, would remove the dependence; not built.
+5. **The per-facet step: the mean-slack supporting hyperplane.** A facet's plane is fitted against
+   all rows, not only its own (step B), and the alternation minimizes the mean slack. *Defence:*
+   the own-rows refit is ill-posed (0 of 60 planted facets recovered even from the true labels,
+   against 60 of 60 for B); the plane is the one the facet would have as a support of the whole
+   data set, which is what makes it an upper envelope; and the mean slack is the $K>1$ analogue of
+   the $K=1$ reach and is monotone under either half-step, which is why the paper presents this
+   approach. The cost is that a facet is influenced by rows that another facet owns, and that the
+   mean slack prefers to split a large facet rather than keep a sparse one, so a facet with five
+   or six frontier rows can be lost to a local optimum (measured above). *Beyond:* two
+   alternatives were built and measured and are parked. A non-monotone evidence step, D
+   (`facet_step="tangent"`, kept in the code), takes the direction from the near-frontier rows and
+   recovers about as often (16 or 17 of 20) but gives up the guarantee. A frontier-weighted
+   objective (a slack counted on near-frontier rows only, or an entropic variant) was measured
+   against the mean slack and was not better: edge-only objectives are flat on facets with too few
+   frontier rows, and the exact minimizer of the entropic variant destroyed the fit on planted and
+   cubesat data. A joint fit of all terms would remove the facet-by-facet dependence. None is
+   claimed.
 
 6. **A log-convex envelope.** $\Phi_K$ is convex in $u$, so the frontier is a log-convex
    envelope, plus a residual (holes) that no $K$ represents. *Defence:* this is the form that
@@ -724,7 +805,7 @@ beyond it.
 | Formula | Implementation | Cross-check |
 |---|---|---|
 | $\Phi_K$, argmax assignment, partition-and-refit | `solvers.solve_terms`, `HyperbolicTradeSpace.assign_facets` | L10 `verify`; planted $K=3$ recovery in the solver and estimator tests |
-| supporting-hyperplane refit, sparsity option | `solvers.solve_slsqp` (centred data; `penalty`, `alpha`) | solver tests |
+| supporting-hyperplane refit (step B), tangent step (D), sparsity option | `solvers.solve_slsqp` (centred data; `penalty`, `alpha`), `solvers.solve_terms(facet_step=...)` | solver tests, both steps on planted data |
 | `n_terms`, `exponents_` | `HyperbolicTradeSpace.fit` | estimator tests |
 | $\Phi_K(u+c\mathbf 1)=\Phi_K(u)+c$, chart inverse | `HyperbolicTradeSpace.inverse_transform` | L10 `verify`; round-trip tests |
 | $w\cdot u'\ge w\cdot u$ for $u'\ge u$ | the maximizer of `HyperbolicTradeSpace.score_samples` | L11 `verify` (symbolic) |
