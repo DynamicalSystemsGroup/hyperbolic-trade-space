@@ -145,6 +145,14 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   10 % tolerance; G-3, G-4, G-7, G-8 accept as is (the finding is stated as conditional on the
   stiff-loop regime). The whole review reruns after the note fix.
 
+## Review gaps, round 5 (review 2a4051e, fifth pass, against amendment 6)
+
+- Items: G-A prediction-miss list omits two lever-(i) predictions; G-B the baseline regime test
+  asserts one-sided thresholds, not recorded values within bands; G-C stale section labels and a
+  stale DRAFT status line.
+- **Supervisor (mzargham), verbatim choice:** "Fix all three"
+- **Disposition:** fix G-A, G-B, G-C; the whole review reruns once; then the acceptance gate.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP4b-review.md`
