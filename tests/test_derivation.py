@@ -760,3 +760,55 @@ def test_I7_solver_level_inherited_entry():
     with redirect_stdout(buf):
         print_audit(["A1", "A2"])
     assert "I7" in buf.getvalue() and "restarts" in buf.getvalue()
+
+
+# --- WP13 (E-2, E-6): L3 full simplex KKT, L6 restricted to the population identity ---
+def test_L3_states_full_simplex_kkt():
+    assert "g_j >= lambda" in _L3.STATEMENT and "w_j (g_j - lambda) = 0" in _L3.STATEMENT
+    assert "complementary slackness" in _L3.STATEMENT
+    assert "does not imply an interior finite-tau minimizer" in _L3.STATEMENT
+
+
+def test_L3_boundary_kkt_derives_symbolically_in_d():
+    ctx = _ctx_l3_l4()
+    c = ctx["L3"]
+    Sy = ctx["S"]
+    assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
+    # equal-gradient case is kept, the boundary KKT is added
+    kb = c["KKT_boundary"]
+    assert c["KKT"].rhs == _L3.LAM
+    assert kb["lambda_solved"] == [sp.Sum(Sy.w[Sy.j] * kb["gr"][Sy.j], (Sy.j, 1, Sy.d))]
+    assert kb["mu"][Sy.j].is_nonnegative is True  # g_j - lambda = mu_j >= 0
+    assert kb["positive_case_solution"] == [0]  # w_j > 0 forces mu_j = 0: G_j = lambda
+
+
+def test_L3_boundary_example_has_inactive_gradient_above_lambda():
+    ctx = _ctx_l3_l4()
+    ex = ctx["L3"]["boundary_example"]
+    # balanced hard-support geometry at tau = inf, boundary optimizer at finite tau
+    assert ex["hard_primal"] == ex["hard_dual"] == 1
+    assert ex["w_star"] == (1, 0)
+    assert ex["g_inactive_minus_lambda"].evalf() > 0
+
+
+def test_L3_fails_loudly_when_boundary_claim_broken():
+    ctx = _ctx_l3_l4()
+    ctx["L3"]["KKT_boundary"]["lambda_solved"] = [
+        sp.Sum(ctx["S"].p[ctx["S"].j], (ctx["S"].j, 1, ctx["S"].d))
+    ]
+    with pytest.raises(AssertionError, match="L3 FAIL"):
+        _L3.verify(ctx)
+    ctx = _ctx_l3_l4()
+    ctx["L3"]["boundary_example"]["g_inactive_minus_lambda"] = -ctx["L3"]["boundary_example"][
+        "g_inactive_minus_lambda"
+    ]
+    with pytest.raises(AssertionError, match="L3 FAIL"):
+        _L3.verify(ctx)
+
+
+def test_L6_statement_is_the_restricted_population_identity():
+    L6 = _il.import_module("derivation.lemma_06_gaussian_cumulant")
+    s = L6.STATEMENT
+    assert "population" in s and "A5" in s and "independent across j" in s and "sigma > 0" in s
+    assert "not a finite-sample estimator" in s and "no consistency claim" in s
+    assert "A5" in L6.AXIOMS_USED

@@ -1,12 +1,16 @@
-"""L6: Gaussian cumulant of a weighted noise sum.
+"""L6: Gaussian cumulant of a weighted noise sum (a population identity).
 
-(1/tau) log E exp(tau w.eps) = tau sigma^2 ||w||^2 / 2, eps_j iid N(0, sigma^2), symbolic d.
+(1/tau) log E exp(tau w.eps) = tau sigma^2 ||w||^2 / 2 under A5 (eps_j iid N(0, sigma^2),
+independent across j, sigma > 0), symbolic d.  E is the population expectation over eps.
 
 What this proves: for one Normal(0, sigma^2) variable, E exp(t eps) = exp(sigma^2 t^2 / 2)
 (sympy.stats evaluates the expectation); then, by the independent-sum MGF rule (I5), the MGF of
 w.eps = sum_j w_j eps_j is the Product over j = 1..d of the single-variable MGFs at t = tau w_j,
 which collapses to exp(tau^2 sigma^2 / 2 * Sum_j w_j^2) with d symbolic.
-What this does NOT prove: I5 itself (inherited); anything about non-Gaussian or dependent noise.
+What this does NOT prove: I5 itself (inherited); anything about non-Gaussian or dependent noise;
+anything about a finite sample: the identity is about the population cumulant, not about a
+finite-sample estimator of it, and no consistency claim (a sample statement would need its own
+independence, integrability and identifiability assumptions).
 
 Route: sympy.stats Normal + E for the one-variable MGF (no differentiation or limit); the
 Product over a symbolic range is rewritten as exp(Sum) by the exponential-product identity.
@@ -18,7 +22,11 @@ import sympy as sp
 from sympy.stats import E, Normal
 
 TITLE = "Gaussian cumulant of a weighted noise sum"
-STATEMENT = "(1/tau) log E exp(tau w.eps) = tau sigma^2 ||w||^2 / 2, eps_j iid N(0, sigma^2)"
+STATEMENT = (
+    "Population identity under the log-space Gaussian model (A5: eps_j iid N(0, sigma^2), "
+    "independent across j, sigma > 0): (1/tau) log E exp(tau w.eps) = tau sigma^2 ||w||^2 / 2, "
+    "with E the population expectation; not a finite-sample estimator, and no consistency claim"
+)
 AXIOMS_USED = ["A2", "A5", "I5"]
 
 

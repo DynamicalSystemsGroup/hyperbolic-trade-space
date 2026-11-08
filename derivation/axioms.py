@@ -162,14 +162,19 @@ AXIOMS = {
         "R1",
         REGULARITY,
         "the balanced point lies in the relative interior of a facet of the frontier with "
-        "positive normal",
+        "positive normal; this is a statement about the hard-support (tau = infinity) geometry "
+        "and does not imply that the finite-tau minimizer of J_tau is interior",
         role="makes the KKT balanced point a genuine interior frontier point, so the "
         "gradient condition identifies w* as the facet normal and the improvement factors "
-        "and elasticities can be read as trade-offs along the frontier",
+        "and elasticities can be read as trade-offs along the frontier; where the fitted "
+        "minimizer has w_j > 0 the equal-gradient condition holds on those coordinates",
         failure_mode="at a vertex, an edge or a facet with a zero normal component the "
         "gradient condition holds only as a subgradient inclusion: w* is not unique, some "
         "elasticities are undefined, and the frontier reading degrades to the weaker "
-        "invariant-form reading",
+        "invariant-form reading; at finite tau the multiplicity of the observations can put "
+        "the minimizer on the simplex boundary even when the hard-support geometry is balanced, "
+        "and then only the full simplex KKT (g_j >= lambda, w_j (g_j - lambda) = 0) holds, with "
+        "equal gradients on the positive-weight coordinates only",
     ),
     # -------------------------------------------------- FALLBACK HYPOTHESES (L5, L10)
     "F5": Axiom(
