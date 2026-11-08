@@ -33,6 +33,14 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   fix the loose wording), re-execute the notebook, then a fresh-reviewer rerun. G-3, G-5, G-6, G-8,
   G-9 accept as is.
 
+## Review gaps, round 2 (review 39bbe18, second pass)
+
+- Items: G-12 second subset hugs the envelope only partly (disclosed); G-7r style residual (hook not
+  a puzzle; cells ~2× the reference length); G-11, G-13, G-14 minor.
+- **Supervisor (mzargham), verbatim choice:** "I will read the notebook first"
+- **Disposition:** WP7 held at the acceptance gate pending the supervisor's own reading of
+  `examples/adcs/adcs_trade_study.ipynb`; no changes meanwhile.
+
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP7-review.md`
