@@ -1,7 +1,7 @@
 # API
 
-This page documents the public interface as built, stage by stage, and then as it extends to
-$K>1$ terms and to kernel methods. The extensions are **documented, not built**. Pipeline stages
+This page documents the public interface as built, stage by stage, including the $K>1$ posynomial
+fit (built for small $K$), and then the kernel methods, which are **documented, not built**. Pipeline stages
 are those of [Mathematics](method.md): stage 2 conditioning, stage 3 identification, stage 4
 analysis. Dimension is arbitrary: $d$ metrics, $d-1$ chart coordinates. The package follows the
 scikit-learn conventions [@pedregosa2011scikit; @buitinck2013api]: parameters stored verbatim,
@@ -40,10 +40,11 @@ single-term fit (A1, A2, A4).
 ## Stage 3: identification
 
 **`HyperbolicTradeSpace`.** Parameters `temperature` ($\tau>0$ or `np.inf`, A3), `min_exponent`,
-`coordinates` (`"ilr"` or `"alr"`), `n_terms` (only 1 is built), `term_temperature` (reserved),
-`tol`, `max_iter`. Fitted attributes: `exponents_` of shape `(1, d)`, `log_offset_` of shape
-`(1,)`, `support_weights_`, `n_eff_`, `frac_above_`, `objective_`, `n_iter_`, `basis_`,
-`training_log_v_`. `transform` is the invertible chart $[Z\mid\log V]$ (L8, A7); `inverse_transform`
+`coordinates` (`"ilr"` or `"alr"`), `n_terms` ($K$, default 1), `term_temperature` ($\kappa$,
+default `np.inf`), `tol`, `max_iter`, `penalty` and `alpha` (the sparsity option), `random_state`.
+Fitted attributes: `exponents_` of shape `(n_terms, d)`, `log_offset_` of shape `(n_terms,)`,
+`support_weights_`, `n_eff_`, `frac_above_`, `objective_`, `n_iter_`, `basis_`, `training_log_v_`
+(and, for $K>1$, `facet_`, `coefficients_` and `facet_share_`; see the $K>1$ section below). `transform` is the invertible chart $[Z\mid\log V]$ (L8, A7); `inverse_transform`
 inverts it; `score_samples` returns $\log V$ (L1); `invariant_value` and `project` give $V$ and the
 projection to the frontier. It has no `predict`: it follows the decomposition-family semantics of
 scikit-learn. Frontier $V\le1$ is attainable, $V=1$ the frontier (L1, A2).
@@ -68,7 +69,10 @@ range should pass `bounds=(3, ...)`.
 
 **`make_frontier_data`, `make_configured_frontier_data`.** Seeded generators of positive data with a
 planted frontier (the second also returns a configuration matrix and a smooth map from configuration
-to metrics), used by the tests and by the examples (A1, A2).
+to metrics), used by the tests and by the examples (A1, A2). `make_frontier_data(..., n_terms=K)`
+plants the envelope $\max_k(w_k\cdot u-\beta)$ of $K$ monomials (`exponents` of shape `(K, d)`,
+by default $K$ random draws at least 0.3 apart in $\ell_1$) and also returns `facet`, the planted
+facet of each row in `info`; `n_terms=1` reproduces the single-facet generator exactly.
 
 ## Stage 4: analysis
 
@@ -123,10 +127,13 @@ the fitted temperature and floor, and issues a `UserWarning` when the estimator 
 Degenerate input is explicit: fewer than `min_near_frontier` near-frontier rows raises
 `ValueError` suggesting a larger band or temperature; $d=1$ returns a trivial report with empty
 directions; `band=None` means $1/\tau$ for finite $\tau$ and $0.1$ at $\tau=\infty$. The report is
-deterministic. Its limits: it describes one facet ($K=1$), so one tension; it depends on the band;
-and a tension is a binding constraint while a correlation is only a co-movement. Several regional
-tensions are the $K>1$ extension below, and a deflation search for successive tensions is a
-research question with no claim made.
+deterministic. At $K>1$ the function returns a **list** of $K$ reports, one per facet, each computed on the
+rows assigned to that facet with the facet's exponents, near-frontier rows $|\Phi_K|<$ `band`,
+and directions and loadings through `basis_[k]`; a facet with fewer than `min_near_frontier`
+near-frontier rows raises `ValueError` naming the facet. Its limits: each report describes one
+facet, so one tension; it depends on the band; and a tension is a binding constraint while a
+correlation is only a co-movement. A deflation search for successive tensions is a research
+question with no claim made.
 
 ### Prediction from configuration (`TradeSpaceRegressor`)
 
@@ -158,48 +165,71 @@ expected-failure dicts.
 vocabulary declared as module constants: `FRONTIER_COLOR` (frontier $V=1$, black), `BAND_COLOR`
 (near-frontier band, grey), `HOLE_COLOR` (white space), `CATEGORY_COLORS` (one qualitative palette),
 `DATA_COLOR`, and `TENSION_CMAP` (diverging, tension to aligned). Targets are open markers.
-Matplotlib is imported lazily and nothing calls `plt.show()`.
+Matplotlib is imported lazily and nothing calls `plt.show()`. For a fit with $K>1$ the plots
+draw every facet (the log plane shows the facets with weight on both plotted metrics) and
+`facet_labels(estimator, X)` returns `"facet 1"` to `"facet K"` for each row, to pass as `color=`
+so that the data are coloured by the facet that is active there.
 
-## As it extends to $K>1$ (documented, not built)
+## The posynomial fit, $K>1$
 
 The single monomial is the one-term case of the generalized posynomial
 
 $$
-V_K(m)=\Big(\sum_{k=1}^{K}c_k\prod_{j=1}^{d}m_j^{\kappa\theta_{kj}}\Big)^{1/\kappa},\qquad
-\Phi_K(u)=\frac1\kappa\log\sum_{k=1}^{K}\exp\!\big(\kappa(\theta_k\cdot u-\beta_k)\big),
+V_K(m)=\Big(\sum_{k=1}^{K}c_k\prod_{j=1}^{d}m_j^{\kappa w_{kj}}\Big)^{1/\kappa},\qquad
+\Phi_K(u)=\frac1\kappa\log\sum_{k=1}^{K}\exp\!\big(\kappa(w_k\cdot u-\beta_k)\big),
 $$
 <!-- definition: L10 -->
 
-with each $\theta_k$ on the simplex and $\kappa>0$ (A6). $\Phi_K$ is softmax-affine and compatible
+with each $w_k$ on the simplex and $\kappa>0$ (A6). $\Phi_K$ is softmax-affine and compatible
 with geometric programming (I4) [@hoburg2016data; @boyd2007tutorial]; the identity
-$\exp(\kappa\Phi_K)=\sum_ke^{-\kappa\beta_k}\prod_jm_j^{\kappa\theta_{kj}}$, the shift equivariance
+$\exp(\kappa\Phi_K)=\sum_ke^{-\kappa\beta_k}\prod_jm_j^{\kappa w_{kj}}$, the shift equivariance
 $\Phi_K(u+c\mathbf 1)=\Phi_K(u)+c$ that carries homogeneity, projection and novelty over, and the
-limit $\kappa\to\infty$ to $\max_k(\theta_k\cdot u-\beta_k)$ are proved in L10 (A2, A6, F10). As
-$\kappa\to\infty$ it is a maximum of monomials, the form fitted by convex piecewise-linear
-regression [@magnani2009convex]; it appears in aircraft design by geometric programming
-[@hoburg2014geometric].
+bounds $\max_kx_k-(\log K)/\kappa\le\Phi_K\le\max_kx_k$ are proved in L10 (A2, A6, F10). It is built
+for small $K$: `n_terms=K` fits the facets by partition and refit
+(`hyperbolic_trade_space.solvers.solve_terms`; the algorithm, what is proved and inherited (I7)
+and the simplifying assumptions are in [Mathematics](method.md#the-solver-for-small-k)).
+Nothing is claimed about global optimality; scalability and performance are future work.
 
-The interface is already shaped for it:
+**Parameters.** `n_terms` is $K$. `term_temperature` is $\kappa$, default `np.inf` (the exact
+maximum of the facets); it is distinct from `temperature` ($\tau$, the data-level soft maximum of
+every facet's fit). A finite $\kappa$ rounds the corners of the score and leaves the facets
+unchanged; the score lies within $(\log K)/\kappa$ above the maximum (L10) and the gap is not
+renormalized. `penalty="reweighted_l1"` with `alpha` $\ge0$ is the sparsity option for the exponents
+of every facet [@candes2008enhancing]; `alpha=0` leaves the fit unchanged and it acts at finite
+`temperature` only. `random_state` seeds the facet initializations (five restarts, the best
+kept); `max_iter` caps the inner SLSQP of each facet fit.
 
-- `n_terms` is the number of terms $K$; only 1 is built and other values raise
-  `NotImplementedError`.
-- `term_temperature` is $\kappa$, stored and ignored at $K=1$. It is distinct from `temperature`
-  ($\tau$, the data-level soft maximum of the fit), and the two roles stay separate.
-- `exponents_` has shape `(n_terms, d)`: row $k$ is $\theta_k$, each on the simplex (A6). At $K=1$ this is
-  `(1, d)`, the $w$ of the model.
-- `log_offset_` has shape `(n_terms,)`: entry $k$ is $\beta_k$.
-- Everything downstream is written in terms of $\Phi$, not of a single $w$: the score is
-  $\log V=\Phi(u)$, the chart is $[Z\mid\Phi(u)]$ with $Z$ unchanged (L8), novelty is $V-1$ and
-  projection subtracts $\Phi(u)$ from $u$ (L10). Any term set $\{(\theta_k,\beta_k)\}$ plugs in
-  through $\Phi$, whatever solver produced it, so the transform, inverse, plotting and the
-  regressor need no change.
-- Pieces that read $w$ directly (`frontier_in_original_units`, exchange rates, the contending set)
-  describe one facet. At $K>1$ they apply facet by facet, which is how regionally varying
-  elasticities and several regional tensions would be read.
+**Fitted attributes** (the shapes at $K=1$ are the same with $K=1$):
 
-What is not built is a solver: the fit of an envelope with $K$ facets is non-convex, needs per-facet
-support, and needs a choice of $(K,\kappa)$. The L10 lemma proves identities, not fitted
-parameters. A solver-free substitute is to refit the single-term model at several reference points.
+- `exponents_`, shape `(K, d)`: row $k$ is $w_k$, on the simplex (A6).
+- `log_offset_`, shape `(K,)`: entry $k$ is $\beta_k=J_\tau(Uw_k)$, the soft supporting offset of
+  facet $k$ over the rows.
+- `basis_`, shape `(K, d-1, d)`: the chart matrix $B$ stacked $K$ times, because the chart does not
+  depend on $w$ and $Z$ is identical for every facet (L8).
+- `facet_`, shape `(N,)`: the training assignment $\arg\max_k(w_k\cdot u-\beta_k)$, with $-1$ for a
+  row with a zero metric.
+- `coefficients_`, shape `(K,)`: the posynomial coefficients $c_k=e^{-\kappa\beta_k}$ of $V_K$
+  (L10); at $\kappa=\infty$ the convention $\kappa=1$ gives $e^{-\beta_k}$.
+- `facet_share_`, shape `(K,)`: the share of near-frontier training rows ($|\log V|<1/\tau$, or $0.1$
+  at $\tau=\infty$) assigned to each facet, the analogue of explained variance; zeros if there are
+  none.
+- `objective_`: for $K>1$, the mean slack $\frac1N\sum_i(\beta_{k(i)}-w_{k(i)}\cdot u_i)$ of the
+  partition fit. `support_weights_` combines each facet's weights on its own rows, scaled by its row
+  share (sum 1).
+
+**Methods at $K>1$.** `assign_facets(X)` returns the index of the active facet of each row (the
+$\arg\max_k(w_k\cdot\log m-\beta_k)$; $-1$ for a zero metric; all zeros at $K=1$).
+`score_samples` returns $\log V=\Phi_K(u)$ (L10), `transform` the chart $[Z\mid\Phi_K(u)]$, and
+`inverse_transform` its inverse in closed form: since $B\mathbf 1=0$ and $\Phi_K$ is shift
+equivariant, $u=B^{+}Z+(\log V-\Phi_K(B^{+}Z))\mathbf 1$, exact for every $\kappa$ because $Z$ is
+the same for every facet (L8, L10). `tension_report` returns a list of $K$ reports, as above.
+`invariant_value` and `project` use the score $\Phi_K$ (L10), and `improvement_factors` uses the exponents of each row's active facet (L7). A maximizer of $V$ is
+Pareto-efficient in the contending metrics (L11, A1, A2); the converse is not claimed.
+
+**Where `frontier_in_original_units`, exchange rates and contending sets apply.** Pieces that read
+one $w$ describe one facet; at $K>1$ they apply facet by facet, which is how regionally varying
+elasticities and several regional tensions are read.
+
 See [Mathematics](method.md#the-posynomial-and-ggp-extension) and
 [Extensions and limitations](limitations.md).
 

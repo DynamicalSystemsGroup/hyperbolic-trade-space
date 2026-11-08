@@ -331,7 +331,7 @@ sum-zero chart (B Bᵀ = I, B 1 = 0). INHERITED: I1 LP strong duality (Boyd & Va
 Optimization §5.2); I2 strong law of large numbers; I3 a closed convex set is determined by its
 support function (Rockafellar, Convex Analysis §13); I4 softmax-affine functions are GP-compatible
 (Hoburg et al. 2016); I5 the moment generating function of an independent sum is the product of
-the MGFs; I6 for square Q, Q Qᵀ = I implies Qᵀ Q = I. REGULARITY R1: the balanced point lies in
+the MGFs; I6 for square Q, Q Qᵀ = I implies Qᵀ Q = I; I7 alternating partition and refit converges to a local optimum of the max-affine fitting problem (Magnani & Boyd 2009; the K > 1 solver). REGULARITY R1: the balanced point lies in
 the relative interior of a facet with positive normal. FALLBACK hypotheses (introduced because a
 step resisted abstract simplification, each with a role and a failure mode in the ledger): F5 the
 max representation for L5 (a symbol M with s_i ≤ M and s_{i0} = M), F10 the same for L10. I1 is
@@ -346,7 +346,7 @@ max carried as the F5 symbol [A3, I1, I2, I3, F5]; L6 Gaussian cumulant (1/τ) l
 τσ²‖w‖²/2 via `sympy.stats` [A2, A5, I5]; L7 elasticities −w_k/w_j and improvement factors [A1, A2];
 L8 sum-zero chart: B Bᵀ = I, B 1 = 0, round trip, Z(u + c1) = Z(u) [A7, I6]; L9 pull-back formula
 [A1, A2, A4]; L10 extension: Φ_K(u + c1) = Φ_K(u) + c, K = 1 reduction, lim_{κ→∞} Φ_K = max, GP
-compatibility, with the max carried as the F10 symbol [A2, A6, I4, F10]. SymPy pitfalls: avoid eager evaluation of
+compatibility, with the max carried as the F10 symbol [A2, A6, I4, F10]; L11 a maximizer of V is Pareto-efficient (weighted-sum scalarization, one direction; converse not claimed) [A1, A2]. SymPy pitfalls: avoid eager evaluation of
 inequalities; helper symbols for bounded quantities; `sympy.limit` under explicit assumptions with
 the result recorded as an equality; ordering assumption s_1 > s_2 instead of `Max`.
 

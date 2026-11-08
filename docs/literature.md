@@ -126,7 +126,19 @@ GP-compatible, which is inherited axiom I4. Magnani and Boyd fit convex piecewis
 the max of affine functions is the $\kappa\to\infty$ limit of the softmax-affine form is the
 project's own statement, not one shown to be in either source. Our extension to $K>1$ terms with a shared temperature is the supervisor's
 design built on these; the sources fit regression surfaces, while we fit an envelope, which the
-sources do not do (the spec flags this as the reason a later package is needed).
+sources do not do (the spec flags this as the reason a later package is needed). The built solver for
+$K>1$ follows the alternating partition-and-refit scheme of Magnani and Boyd (inherited axiom I7,
+whose least-squares objective differs from ours), and its sparsity option is the reweighted
+$\ell_1$ minimization of Candès, Wakin and Boyd [@candes2008enhancing] (record only; the paper was not
+read).
+
+## Multiobjective optimization and Pareto efficiency
+
+Lemma L11 (a maximizer of $V$ is Pareto-efficient) is the elementary direction of weighted-sum
+scalarization. That the converse fails for non-convex fronts, so that only the supported part of a
+front is reached by some weight vector, is a standard statement of the multiobjective optimization
+textbooks [@miettinen1999nonlinear; @ehrgott2005multicriteria] (records only; the passages were not
+read here). We state L11 and its non-converse on that basis and claim nothing about priority.
 
 ## Kernel PCA and its disambiguation from hyperbolic PCA
 
@@ -242,8 +254,14 @@ changed in the spec or notes):
 | I4 | Softmax-affine (log-sum-exp of affine) functions are GP-compatible | [@hoburg2016data] |
 | I5 | The moment generating function of a sum of independent variables is the product | [@billingsley2012probability] |
 | I6 | For square $Q$, $QQ^T=I$ implies $Q^TQ=I$ | [@horn2012matrix] |
+| I7 | Alternating partition and refit converges to a local optimum of the max-affine fitting problem | [@magnani2009convex] |
 
 I1, I2, I3, I5 and I6 rest on textbook records whose passages were checked by table of contents or
 bibliographic record only (strong duality in section 5.2.3 of the first was read in the authors' PDF).
 I4 is supported by the abstract of the cited paper, which states GP compatibility for the softmax
 functions of affine terms it fits; the full text is not read here.
+
+I7 rests on the bibliographic record of Magnani and Boyd, not on a reading of the paper, and its
+statement is for their least-squares objective. Lemma L11 is derived from the ledger axioms A1 and
+A2 alone; its sources, [@miettinen1999nonlinear] and [@ehrgott2005multicriteria], are cited for the
+non-converse only.

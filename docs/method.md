@@ -3,7 +3,7 @@
 This page sets out the mathematics of posynomial invariant form in the order of the pipeline. It is
 discursive on purpose: each result is stated, said in words, tied to the lemma that proves it, and
 tied to the hypotheses that lemma needs. The lemmas are plain-SymPy scripts in `derivation/`
-(L1 to L10) and are machine-checked; machine verification shows that a formula follows from stated
+(L1 to L11) and are machine-checked; machine verification shows that a formula follows from stated
 hypotheses, and it is for a human to judge whether those hypotheses are reasonable for the problem
 at hand. Throughout, formulas carry a tag comment naming the lemma that proves them, or marking
 them as definitions, and the sections close with a small table pointing to the code that
@@ -425,6 +425,27 @@ descriptive uses of the fitted coordinates; the estimator fits no surrogate.
 | $(Z,\log V)$ and back | `coordinates.to_frontier_coordinates`, `coordinates.from_frontier_coordinates`, `HyperbolicTradeSpace.transform`, `HyperbolicTradeSpace.inverse_transform` | `test_matches_derivation.py` (L8 group) |
 | pull-back $V(a)$ | the analysis toolkit (preconditioning; API in `api.md`) | L9 `verify` |
 
+**A maximizer of $V$ is Pareto-efficient (L11).** For $w\in\Delta$ and a design that is better in every metric,
+$u'=u+\delta$ with $\delta\ge0$,
+
+$$
+w\cdot u'-w\cdot u=\sum_{j=1}^{d}w_j\,(u'_j-u_j)\ge0 ,
+$$
+<!-- lemma: L11 -->
+
+which is strict as soon as one metric with $w_j>0$ is strictly better. L11 (A1, A2) proves this
+for symbolic $d$, and so $V(u')\ge V(u)$ with strict inequality under the same condition. Hence a
+design that maximizes $V$ over a set of designs is not dominated in the contending metrics by any
+member of the set: it is weakly efficient in all $d$ metrics, and efficient when every exponent is
+positive. At $K>1$ and $\kappa=\infty$ the same holds for $\Phi_K$ through a term active at the
+maximizer: if $u'\ge u$ were no worse, the active term would score $u'$ at least as high, so it
+gains nothing in the metrics that term uses (L11, which proves it at symbolic $d$).
+
+L11 does not state the converse. Weighted-sum scalarization reaches only the part of a Pareto front
+that some $w$ supports (the log-convex part, here); a front point on a non-log-convex part is
+efficient and is the maximizer of $V$ for no $w$ [@miettinen1999nonlinear; @ehrgott2005multicriteria].
+L11 also does not say which $w$ to use, nor that the fitted frontier is the true front.
+
 ## Novelty and white space
 
 Scoring a measured or hypothetical attribute vector evaluates the learned chart after the fitted
@@ -513,10 +534,11 @@ $$
 $$
 <!-- definition -->
 
-Softmax-affine functions are compatible with geometric programming (I4, Hoburg, Kirschen and
-Abbeel [@hoburg2016data]), and $V_K$ is a generalized posynomial [@boyd2007tutorial]; L10 verifies
-the posynomial identity (the coefficients are $c_k=e^{-\kappa\beta_k}$)
-$\exp(\kappa\Phi_K)=\sum_ke^{-\kappa\beta_k}\prod_jm_j^{\kappa\theta_{kj}}$
+In the fit and in the code the exponent vector of term $k$ is written $w_k=\theta_k$ (the
+`exponents_` rows). Softmax-affine functions are compatible with geometric programming (I4, Hoburg,
+Kirschen and Abbeel [@hoburg2016data]), and $V_K$ is a generalized posynomial
+[@boyd2007tutorial]; L10 verifies the posynomial identity (the coefficients are
+$c_k=e^{-\kappa\beta_k}$) $\exp(\kappa\Phi_K)=\sum_ke^{-\kappa\beta_k}\prod_jm_j^{\kappa\theta_{kj}}$
 for symbolic $K$ and $d$. Because each $\theta_k$ is on the simplex, L10 gives the shift
 equivariance, the identity that the homogeneity, projection and invariant-form arguments rest on
 (whether novelty carries over unchanged is expected from the construction, not proved by L10):
@@ -544,16 +566,167 @@ scalarization, a hypothesis we do not rely on); $K>1$ is any log-convex admissib
 to $K$ facets, with regionally varying elasticities. We conjecture that this reduces the off-diagonal
 optimism that confounds white space, in the limit only as far as the log-convex envelope fits; this
 is expected from the construction and is neither proved by L10 nor tested. No $K$ represents non-log-convex structure: the picture is a
-log-convex envelope, $K$ terms, plus a non-convex residual, the holes. L10 proves identities;
-it does not provide a $K>1$ solver and proves nothing about fitted parameters. The solver, a
-non-convex envelope fit with per-facet support and a selection of $(K,\kappa)$, is a later
-package, and the estimator raises `NotImplementedError` for more than one term, pointing here. A
-solver-free intermediate is to refit $K=1$ at several reference points.
+log-convex envelope, $K$ terms, plus a non-convex residual, the holes.
+
+### The solver for small $K$
+
+L10 proves identities; it says nothing about how to choose $(w_k,\beta_k)$ from data. The fit of
+an envelope with $K$ facets is not a convex program (the assignment of designs to facets is
+combinatorial), so the estimator uses the partition-and-refit scheme that Magnani and Boyd give for
+maxima of affine functions [@magnani2009convex], adapted to the one-sided entropic fit of this
+page. The estimator is built for small $K$ (the case study uses $K=3$); scalability to large $K$ and
+speed are future work. In the style of Boyd and Vandenberghe's algorithm boxes [@boyd2004convex]:
+
+> **given** log-metrics $u_1,\dots,u_N$ (rows with a zero metric are set aside), the number of
+> terms $K$, the fit temperature $\tau$ (A3), a number of restarts, an iteration cap.
+>
+> **for each restart** (the seeds are drawn from `random_state`):
+>
+> 1. *Initialize.* Choose $K$ rows at random as centres. Map every row to the chart coordinates
+>    $z_i=Bu_i$ (the Helmert coordinates of L8, in which the overall scale is projected out) and
+>    give it the label $k(i)$ of the nearest centre.
+> 2. *Refit.* For each facet $k$, with $\bar u_k$ the mean of its rows, find the supporting
+>    hyperplane $w_k=\arg\min_{w\in\Delta}\ J_\tau(Uw)-\bar u_k\cdot w$ over **all** $N$ rows, and set
+>    $\beta_k=J_\tau(Uw_k)$. Compute the objective, the mean slack
+>    $\bar s=\frac1N\sum_i\big(\beta_{k(i)}-w_{k(i)}\cdot u_i\big)$.
+>
+> **repeat**
+>
+> 3. *Reassign.* $k'(i)=\arg\max_k\ (w_k\cdot u_i-\beta_k)$.
+> 4. If $k'=k$, **stop**: the assignment is fixed.
+> 5. *Refit* on $k'$ as in step 2, giving $\bar s'$. If $\bar s'>\bar s$ reject the iteration and
+>    **stop** with the previous state (the monotone guard); otherwise accept it.
+>
+> **until** the assignment is fixed, the guard fires or the iteration cap (50) is reached.
+>
+> **return** the restart with the smallest $\bar s$: exponents $w_k$, offsets $\beta_k$ and labels.
+
+The refit in step 2 is written $J_\tau(Uw)-\bar u_k\cdot w$, where $J_\tau(Uw)$ is the objective of
+the fit section applied to all rows. It is the entropic fit with the log-metrics centred at the
+facet's mean, so it is the same convex program as the $K=1$ fit (`solvers.solve_slsqp`, or the
+linear program at $\tau=\infty$) on shifted data, and at the solution $\beta_k-w_k\cdot\bar u_k$ is
+the mean slack of the facet's own rows below the soft supporting hyperplane. The hyperplane is
+fitted against all rows, not only the facet's own, because the rows of one facet lie in a cone of
+the chart that does not enclose the origin; the plain $K=1$ fit on a facet's own rows therefore
+tilts to a vertex of the simplex (observed on a planted $K=3$, $d=4$ frontier, where the linear
+program on the true facet rows returns vertices, not the planted exponents). Fitting against all
+rows makes the facet a support of the whole data set, which is what a facet of an upper envelope is.
+At $K=1$ the solver reduces to the single-term fit of the fit section (`solvers.solve_terms`
+returns the `solvers.solve_slsqp` result).
+
+The objective $\bar s$ is the mean slack, and each step does not increase it: reassignment picks
+for every row the term with the largest score, which is the smallest slack, and the refit
+minimizes a convex function of $w_k$, of which the previous $w_k$ is a feasible point. The guard
+enforces the monotonicity in the code regardless of how well the inner solver converged. The scheme
+stops at a fixed assignment or the iteration cap; it returns a local optimum, and the restarts keep
+the best of several.
+
+After the fit, scoring uses $\Phi_K$ with the hard offsets $\beta_k$ kept. At the default
+$\kappa=\infty$ the score is the exact maximum $\max_k(w_k\cdot u-\beta_k)$; at finite $\kappa$ it
+is the softmax of L10, which lies within $(\log K)/\kappa$ above the maximum (L10, F10), a gap that
+is disclosed and not renormalized. The chart $[Z\mid\log V]$ keeps $Z=Bu$ and uses $\log
+V=\Phi_K(u)$; because $B\mathbf 1=0$ (A7) and $\Phi_K$ is shift-equivariant (L10), a chart point
+maps back in closed form, $u=B^{+}Z+\big(\log V-\Phi_K(B^{+}Z)\big)\mathbf 1$, exactly for every
+$\kappa$ (L8, L10). Each facet has its own exponents, so the tensions of the analysis toolkit are
+read facet by facet: one contending set, one set of exchange rates (L7) and one reach $\beta_k$ per
+facet, with the facet's share of the near-frontier designs as the analogue of explained variance.
+
+**The sparsity option.** The existing rules that keep a metric out of a term are the floor
+`min_exponent` (a lower bound on every exponent), the support of the $\tau=\infty$ linear
+program, and a threshold on the working-temperature weights. The solver also offers a
+regularization-based alternative, as a keyword argument: `penalty="reweighted_l1"` with weight
+`alpha`. On the simplex the plain $\ell_1$ norm is constant, so the penalty is the reweighted
+$\ell_1$ of Candès, Wakin and Boyd [@candes2008enhancing]: after the unpenalized solve, three rounds
+minimize $J_\tau(w)+\alpha\sum_jw_j/(w^{\text{prev}}_j+\epsilon)$, starting from the previous
+round, and entries below $10^{-8}$ are set to exact zero. A zero exponent removes the metric from
+the product (the hazard of the logarithm is a zero metric, which is masked), so the zeros are
+safe. With `alpha=0` the fit is exactly the unpenalized one. The penalty acts at finite $\tau$ and
+is passed to every facet's refit; at $\tau=\infty$ the linear program is returned unchanged. That
+it helps recover the planted zeros is checked on a planted sparse facet in the solver tests; that
+it picks the right metrics on real data is not claimed.
+
+### What is proved, what is inherited, what is only observed
+
+**Proved.** The identities of $\Phi_K$ (the posynomial form, shift equivariance, the $K=1$
+reduction, the bounds and the limit) are L10; that a maximizer of $V$ is Pareto-efficient is L11,
+in Interpretation. The chart inverse above is L8 and L10 combined.
+
+**Inherited.** That alternating partition and refit stops at a local optimum rather than cycling
+is the result of Magnani and Boyd for the least-squares max-affine problem (ledger entry I7). Our
+objective (mean slack) and refit (a supporting hyperplane of the entropic fit) are different, so I7
+is the pattern the scheme follows and not a theorem about this objective; what protects against
+cycling here is the monotone guard and the iteration cap. I7 states a local optimum, with the
+failure mode that the limit depends on the initial partition; restarts mitigate it.
+
+**Only observed.** (i) Recovery on planted data: on planted $K=3$, $d=4$ frontiers the exponents
+are recovered to 0.05 in most seeds (19 or 20 of 20 in the comparisons recorded in the solver's
+documentation), not in every seed. (ii) The cubesat record
+(`docs/superpowers/notes/k3-cubesat.md`) reports the $K=1,2,3$ fits on two datasets. The mean
+slack falls to about a quarter of its $K=1$ value at $K=3$, and the $K=3$ objective agrees across
+five seeds to within $2\times10^{-6}$ in the primary regime. (iii) The fraction of designs above
+the frontier, `frac_above_`, rises with $K$ at a fixed $\tau$: in the primary regime 0.096, 0.261
+and 0.382 at $K=1,2,3$, where $\tau$ was chosen at $K=1$ for 0.10. This is a finding, reported and
+not re-tuned; a $K$-specific temperature is a separate decision. None of these is a guarantee on
+other data. **Nothing is claimed about global optimality.**
+
+### Simplifying assumptions
+
+The solver makes simplifying assumptions. For each we name it, defend it and say how we would go
+beyond it.
+
+1. **Hard assignment, with smoothing on request.**
+   The facets are assigned and fitted at $\kappa=\infty$, a hard maximum with kinks (ridges where
+   two terms tie). Smoothness matters for gradients, level sets and plots, which want a
+   differentiable $\Phi_K$. *Defence:* the smooth $\Phi_K$ is available on request by setting
+   `term_temperature` $=\kappa$, which leaves the facets unchanged and moves the score by at most
+   $(\log K)/\kappa$ (L10, F10); the kinks sit exactly on the ridges, where the facet labels
+   change, so smoothing rounds a corner and does not change the facets. *Beyond:* future work. We
+   expect, and have not shown, that the searches built on this frontier tolerate the kinks. At a
+   ridge a maximum of smooth functions has a tangent cone, and its generalized gradient is the
+   convex hull of the normals $w_k$ of the active terms, which is the object that
+   common-direction and subgradient methods already work with. A nonsmooth search on the tangent
+   cones of the ridges, and the choice of $\kappa$ by its effect on that search, are the way
+   beyond.
+
+2. **A local optimum, with restarts.** The partition-and-refit loop finds a local optimum of a
+   non-convex problem (I7), and which one depends on the initial centres. *Defence:* every refit is
+   convex, the objective never increases (the guard), the restarts keep the best of several (five
+   by default), and on the planted and cubesat data the optimum was reproducible across seeds
+   (observed above). *Beyond:* a global search or a certificate of optimality; none is claimed.
+
+3. **The analyst chooses $K$.** There is no automatic selection of the number of terms
+   (supervisor's decision OD1). *Defence:* the right $K$ is a modelling choice about how many
+   trade-off regimes to distinguish, in the way the number of retained components is for PCA, and a
+   criterion would hide it. The diagnostic is a table of the objective and `frac_above_` by $K$,
+   read like a scree plot (for the cubesat primary regime the mean slack is 0.2036, 0.0900 and
+   0.0529 at $K=1,2,3$; the objective falls with $K$ by construction, so it cannot choose $K$ by
+   itself). *Beyond:* a selection rule, for example one that penalizes complexity or uses held-out
+   designs, is future work.
+
+4. **Small $K$ only.** The solver is a Python loop of convex fits, with restarts, tested at
+   $K\le3$. *Defence:* the case study needs three regimes, and a small $K$ keeps each facet's
+   contending set readable. *Beyond:* scalability and performance (many terms, many designs) are
+   future work.
+
+5. **The supporting-hyperplane refit.** A facet's plane is fitted against all rows, not only its own,
+   because the cone of a facet's own rows does not enclose the origin, so the plain fit on them
+   degenerates to a vertex (above). *Defence:* the plane is the one the facet would have as a
+   support of the whole data set, which is what makes it an upper envelope. The cost is that a
+   facet is influenced by rows that another facet owns. *Beyond:* a refit that uses only the
+   rows near the facet, or a joint fit of all terms, would remove the dependence; not built.
+
+6. **A log-convex envelope.** $\Phi_K$ is convex in $u$, so the frontier is a log-convex
+   envelope, plus a residual (holes) that no $K$ represents. *Defence:* this is the form that
+   stays inside geometric programming (I4) and keeps the later optimization convex. *Beyond:* the
+   kernel methods under the GGP constraint below, which keep a posynomial form with more terms.
 
 | Formula | Implementation | Cross-check |
 |---|---|---|
-| $\Phi_K$, $K=1$ reduction | documented extension, not built | L10 `verify` (symbolic, no code counterpart) |
-| `n_terms`, `exponents_` | `HyperbolicTradeSpace.fit` (rejects `n_terms != 1`) | estimator tests |
+| $\Phi_K$, argmax assignment, partition-and-refit | `solvers.solve_terms`, `HyperbolicTradeSpace.assign_facets` | L10 `verify`; planted $K=3$ recovery in the solver and estimator tests |
+| supporting-hyperplane refit, sparsity option | `solvers.solve_slsqp` (centred data; `penalty`, `alpha`) | solver tests |
+| `n_terms`, `exponents_` | `HyperbolicTradeSpace.fit` | estimator tests |
+| $\Phi_K(u+c\mathbf 1)=\Phi_K(u)+c$, chart inverse | `HyperbolicTradeSpace.inverse_transform` | L10 `verify`; round-trip tests |
+| $w\cdot u'\ge w\cdot u$ for $u'\ge u$ | the maximizer of `HyperbolicTradeSpace.score_samples` | L11 `verify` (symbolic) |
 
 ## Research direction: kernel methods under the GGP constraint
 
@@ -592,3 +765,4 @@ here is built and nothing is claimed beyond its admissibility criterion.
 | L8 | the chart | interpretation, prediction |
 | L9 | pull-back | interpretation |
 | L10 | extension $\Phi_K$ (F10) | the GGP extension |
+| L11 | a maximizer of $V$ is Pareto-efficient (converse not claimed) | the GGP extension, interpretation |

@@ -40,7 +40,7 @@ def test_citation_keys_resolve(page):
 def test_lemma_tags_in_range(page):
     tags = [int(n) for n in LEMMA_RE.findall(_text(page))]
     assert tags, "page cites no lemma"
-    assert all(1 <= n <= 10 for n in tags)
+    assert all(1 <= n <= 11 for n in tags)
 
 
 @pytest.mark.parametrize("page", PAGES)

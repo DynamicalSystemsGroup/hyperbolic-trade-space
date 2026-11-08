@@ -100,20 +100,30 @@ that it works or that successive tensions are orthogonal in any sense. And a ten
 statement about the conditioned metrics and the sampled space: tensions the sampling never
 exercised cannot appear.
 
-## Extensions, documented and not built
+## Extensions: the posynomial fit (small K) and kernels (not built)
 
-**The posynomial extension, $K>1$.** Replace the monomial by the generalized posynomial
-$V_K$, whose logarithm is a softmax-affine function [@hoburg2016data] and which is compatible with
-geometric programming [@boyd2007tutorial]. The identities underlying the shift equivariance, and the soft-maximum limit, are proved
-(L10, conditions A6 and F10); that homogeneity, projection and novelty carry over is expected from
-the construction, not proved. What is not built is a solver: the fit of an
-envelope with $K$ facets is a non-convex problem with per-facet support and a choice of the
-number of terms and the temperature, and we leave it to a later package. The estimator's
-`n_terms` parameter exists so the interface need not change; a value other than one raises
-`NotImplementedError`. A solver-free substitute is to refit the single-term model at several
-reference points. A planted two-facet frontier is the demonstration to build when the solver
-exists: $K=1$ should under-score one region and $K=2$ should recover both. See
-[Mathematics](method.md#the-posynomial-and-ggp-extension).
+**The posynomial extension, $K>1$: built for small $K$.** The monomial is replaced by the
+generalized posynomial $V_K$, whose logarithm is a softmax-affine function [@hoburg2016data] and
+which is compatible with geometric programming [@boyd2007tutorial]. The identities underlying the
+shift equivariance, and the soft-maximum limit, are proved (L10, conditions A6 and F10); that a
+maximizer of $V$ is Pareto-efficient is proved (L11), without its converse; that homogeneity,
+projection and novelty carry over is expected from the construction, not proved. The estimator's
+`n_terms` fits $K$ facets by partition and refit; it is built, tested and demonstrated for small $K$
+(the case study uses $K=3$). What it returns is a local optimum (I7), and nothing is claimed about
+global optimality. The assumptions behind it are named, defended and extended in
+[Mathematics](method.md#simplifying-assumptions). Future work, none of it built:
+
+- *Scalability and performance.* Many terms, many designs, and faster solves.
+- *Selection of $K$.* The analyst chooses $K$, reading a table of the objective and the fraction
+  above the frontier by $K$ (which rises with $K$ at a fixed temperature); a selection rule is open.
+- *Nonsmooth search.* The fit is a hard maximum with kinks on the ridges, smoothed on request by
+  `term_temperature`. We expect, and have not shown, that searches along the frontier tolerate the
+  kinks, since a maximum of smooth functions has a tangent cone at a ridge and its generalized
+  gradient is the convex hull of the active normals; searching on those tangent cones is the way
+  to drop the smoothing.
+- *The local optimum.* A global search or a certificate, and a joint rather than facet-by-facet
+  refit.
+- *Kernels,* below.
 
 **Kernel methods.** The research direction is kernel expansions that remain generalized
 posynomials, so that the programs stay geometric programs. Kernel PCA [@schoelkopf1998nonlinear]
