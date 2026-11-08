@@ -76,7 +76,20 @@ and the L10 docstring are wrong, as the reviewer says.
   balanced hard-support geometry does not imply an interior finite-$\tau$ optimizer; condition R1's
   wording tightened accordingly. Response text: after the change, naming the commit and the lemma.
 
-Pending: E-3, E-5 to E-10 (E-1's implementation scope after the spike).
+- **E-3 (fitted reference surface / empirical envelope / Pareto boundary).** Driver's options: three
+  named objects used consistently / a lighter touch / decline. **Supervisor (mzargham), verbatim:**
+  "enforce the sharp distinction in the sympy work but leave us some room to maneuver in the prose.
+  we don't want constant caveats to break flow. its okay to know which we mean from context as long
+  as the underlying math is tight". Disposition class: accepted with a change: the three objects are
+  defined once (notation note, method page, the paper's definitions) and the derivation scripts and
+  their statements name the object they are about precisely (the finite-$\tau$ reference surface
+  $\Phi=0$ with $V>1$ possible; the $\tau=\infty$ supporting envelope; the Pareto boundary of the
+  attainable set, which L11 relates to maximizers and nothing identifies with the fit); the prose
+  may say "frontier" where the context makes the object clear, without repeated caveats. Response
+  text: the distinction is enforced in the executable derivations and defined once in the text;
+  the prose uses "frontier" where unambiguous. In WP13 (docs, derivations) and WP10 (paper).
+
+Pending: E-5 to E-10 (E-1's implementation scope after the spike).
 
 ## Response letter
 
