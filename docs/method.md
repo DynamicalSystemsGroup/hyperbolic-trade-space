@@ -158,8 +158,9 @@ $$
 $$
 <!-- lemma: L5 -->
 
-As $\tau\to0$ the fit degenerates to a vertex of the simplex (the metric with the smallest mean);
-as $\tau\to\infty$ it becomes the worst-case linear program. In units of inverse log-spread, a
+As $\tau\to0$ the soft maximum tends to the mean and the softmax weights tend to uniform (L5). Our
+reading, not proved here, is that the fit then moves toward a vertex of the simplex (the metric with the
+smallest mean), by the limit of the minimization; as $\tau\to\infty$ it becomes the worst-case linear program. In units of inverse log-spread, a
 working range after conditioning is roughly 3 to 100, default 10. Uniform scaling of all metrics
 by $k$ shifts the data by $c=\log k$ along the diagonal, and by L2
 
@@ -235,8 +236,9 @@ tending to $\mathbb{E}[w\cdot u]$ as $\tau\to0$ and increasing to the support fu
 $h_A(w)=\operatorname{ess\,sup}\,w\cdot u$ as $\tau\to\infty$ (L5 proves the sample versions of the
 two limits; the passage to the population quantities is recorded there as a remark resting on I2
 and I3). A closed convex set is determined by its support function (I3, a
-theorem of convex analysis [@rockafellar1970convex]), so a softened support function over positive
-directions carries the log-convex hull of the admissibility set. Convexity of $\rho_\tau$ in $w$ is
+theorem of convex analysis [@rockafellar1970convex]), so the full support function (all directions) determines
+the log-convex hull of the admissibility set. That a softened support function over positive directions
+conveys that hull when read at finitely many directions is our reading, not I3; the method reads it at one direction ($K=1$). Convexity of $\rho_\tau$ in $w$ is
 L4 for the sample version. This is the entropic risk measure read from the mean to the worst case
 [@foellmer2026entropic], applied to $-w\cdot u$; it is not the entropic value-at-risk
 [@ahmadijavid2012entropic]. The method reads one direction ($K=1$) of that support function. Needs:
@@ -288,7 +290,8 @@ minimizers is proved in the lemmas. The $1/N$ normalization of L5 (see the fit) 
 **6. Invariances.** Uniform scaling shifts $\beta$ by $\log k$ and leaves $w$ and $V$ unchanged
 (L2, L1). Permuting the metrics permutes $w$ (a symmetry of the objective, covered by the tests, not
 a lemma). Rescaling a single metric changes which facet is tangent; this is the documented lever
-of stage 2 and is outside L2. The map $(\log V,Z)$ is a linear bijection of log space with $Z$
+of stage 2 and is outside L2. L8 gives the bijection between $u$ and $(Z,\text{log-scale})$; the passage to
+$(Z,\log V)$ is an invertible affine change of coordinates that uses A2 and the fitted $w$ (our step, not part of L8), with $Z$
 independent of $w$ (see the chart below).
 
 **7. Identifiability.** $w^*$ is unique when the balanced point lies in the relative interior of a
