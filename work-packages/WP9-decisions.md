@@ -271,3 +271,11 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   leaves some facets with 3 to 6 designs (accept; carry into WP10), G4-3 the peak-slew-power slices
   are legible but uninformative (accept), G4-4 long lines in method.md (accept), G4-5 τ re-selection
   on Linux as a watch item (accept). No component of G2-7 remains.
+- **Bundle of the remaining items** (first review G-2, G-3, G-8, G-9; second review G2-2, G2-4,
+  G2-5, G2-6, G2-8; G3-1 and G4-1 fixed before hand-back; fourth review G4-2 to G4-5). **Supervisor
+  (mzargham), verbatim:** "Accept the bundle as is". Disposition: all accepted with the reviewers'
+  reasons; G4-2 (the reports use K = 1's band) and G4-3 (two uninformative slices) carried into
+  WP10's figure and band decisions.
+- Loop status: G-1 (Amendment 1), G2-3 (Amendment 2, docs of the solver-level ledger class),
+  G2-1 (documented understanding, `n_restarts`), G2-7 (Amendment 3), E-4 (folded in) all closed;
+  no open item remains before the acceptance question.
