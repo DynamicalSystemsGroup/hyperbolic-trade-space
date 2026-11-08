@@ -322,22 +322,31 @@ INHERITED-with-citation / REGULARITY), `lemma_NN_<slug>.py` (`TITLE`, `STATEMENT
 `tests/test_derivation.py` (full abstract chain; per lemma; concrete cross-check by substitution;
 no phantom axioms; inherited are cited; load-bearing Symbol assumptions declared).
 
-Axioms: POSITED A1 metrics positive; A2 exponents on the simplex; A3 τ > 0; A4 conditioning
-log-affine and invertible (α_j ≠ 0); A5 noise i.i.d. N(0, σ²I); A6 κ > 0 and each term on the
-simplex. INHERITED: I1 LP strong duality (Boyd & Vandenberghe, Convex Optimization §5.2); I2 strong
-law of large numbers; I3 a closed convex set is determined by its support function (Rockafellar,
-Convex Analysis §13); I4 softmax-affine functions are GP-compatible (Hoburg et al. 2016).
-REGULARITY R1: the balanced point lies in the relative interior of a facet with positive normal.
-I1 is checked numerically in pytest (primal vs dual), I2 by the replication test.
+Axioms (equal to the ledger `derivation/axioms.py`; the ids and the per-lemma lists below are
+checked against it by `tests/test_narrative.py::test_spec_matches_ledger`). POSITED: A0 sizes
+(structural: d, n, K positive integers, index symbols integers; not required to be cited by a
+lemma); A1 metrics positive; A2 exponents on the simplex; A3 τ > 0; A4 conditioning log-affine and
+invertible (α_j ≠ 0); A5 noise i.i.d. N(0, σ²I); A6 κ > 0 and each term on the simplex; A7 the
+sum-zero chart (B Bᵀ = I, B 1 = 0). INHERITED: I1 LP strong duality (Boyd & Vandenberghe, Convex
+Optimization §5.2); I2 strong law of large numbers; I3 a closed convex set is determined by its
+support function (Rockafellar, Convex Analysis §13); I4 softmax-affine functions are GP-compatible
+(Hoburg et al. 2016); I5 the moment generating function of an independent sum is the product of
+the MGFs; I6 for square Q, Q Qᵀ = I implies Qᵀ Q = I. REGULARITY R1: the balanced point lies in
+the relative interior of a facet with positive normal. FALLBACK hypotheses (introduced because a
+step resisted abstract simplification, each with a role and a failure mode in the ledger): F5 the
+max representation for L5 (a symbol M with s_i ≤ M and s_{i0} = M), F10 the same for L10. I1 is
+checked numerically in pytest, I2 by the replication test.
 
 Lemmas: L1 homogeneity and invariant form, V(k·m) = k·V(m), V(m/V) = 1 [A1, A2]; L2 uniform shift
-J_τ(w; U + c1ᵀ) = J_τ(w; U) + c [A2, A3]; L3 gradient = Σ_i p_i u_i and balanced KKT [A3]; L4
-convexity: second directional derivative = τ·Var_p(v·u) = (τ/2) ΣΣ p_i p_k (s_i − s_k)² ≥ 0 [A3]; L5
-LSE = LME + (log n)/τ, LSE − max ≥ 0 (strictly > 0 for n ≥ 2), lim_{τ→∞} LME = max, lim_{τ→0} LME = mean, mean ≤ LME ≤ max
-[A3]; L6 Gaussian cumulant (1/τ) log E exp(τ w·ε) = τσ²‖w‖²/2 via `sympy.stats` [A2, A5]; L7
-elasticities −w_k/w_j and improvement factors [A1, A2]; L8 Helmert chart: BBᵀ = I, B1 = 0, round
-trip, Z(u + c1) = Z(u) [A2]; L9 pull-back formula [A1, A2, A4]; L10 extension: Φ_2(u + c1) =
-Φ_2(u) + c, K = 1 reduction, lim_{κ→∞} Φ_2 = max [A2, A6]. SymPy pitfalls: avoid eager evaluation of
+J_τ(w; U + c1ᵀ) = J_τ(w; U) + c [A2, A3]; L3 gradient = Σ_i p_i u_i and balanced KKT (the
+stationarity premise is R1) [A2, A3, R1]; L4 convexity: second directional derivative =
+τ·Var_p(v·u) = (τ/2) ΣΣ p_i p_k (s_i − s_k)² ≥ 0 [A1, A3]; L5 LSE = LME + (log n)/τ, LSE − max ≥ 0
+(strictly > 0 for n ≥ 2), lim_{τ→∞} LME = max, lim_{τ→0} LME = mean, mean ≤ LME ≤ max, with the
+max carried as the F5 symbol [A3, I1, I2, I3, F5]; L6 Gaussian cumulant (1/τ) log E exp(τ w·ε) =
+τσ²‖w‖²/2 via `sympy.stats` [A2, A5, I5]; L7 elasticities −w_k/w_j and improvement factors [A1, A2];
+L8 sum-zero chart: B Bᵀ = I, B 1 = 0, round trip, Z(u + c1) = Z(u) [A7, I6]; L9 pull-back formula
+[A1, A2, A4]; L10 extension: Φ_K(u + c1) = Φ_K(u) + c, K = 1 reduction, lim_{κ→∞} Φ_K = max, GP
+compatibility, with the max carried as the F10 symbol [A2, A6, I4, F10]. SymPy pitfalls: avoid eager evaluation of
 inequalities; helper symbols for bounded quantities; `sympy.limit` under explicit assumptions with
 the result recorded as an equality; ordering assumption s_1 > s_2 instead of `Max`.
 
