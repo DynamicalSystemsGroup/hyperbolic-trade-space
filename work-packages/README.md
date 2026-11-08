@@ -47,7 +47,7 @@ other two clearly in the roadmap".
 | Output | Built from | Package | Status |
 |---|---|---|---|
 | The paper | `paper/paper.ipynb` and `supporting_material.ipynb` with mystmd, modelled on the SciPy proceedings article | WP10 (writing), WP11 (readability loops), WP8 (deployment) | the current focus; WP9 and the external-review triage precede it |
-| The docsite | `docs/*.md`, the generated derivation ledger and verification pages | WP8 | MkDocs Material, as first approved; the paper is a separate mystmd build under `/paper/` of the same Pages site (`WP8-decisions.md`, "Amendment 1 revised") |
+| The docsite | `docs/*.md`, the generated derivation ledger and verification pages | WP8 | MkDocs Material, as first approved; a root index page splits to the MkDocs docsite under `/docs/` and the mystmd paper under `/paper/` (`WP8-decisions.md`, "Amendment 1 revised") |
 | The PyPI release | `src/hyperbolic_trade_space/`, `pyproject.toml`, `uv.lock` | WP8 (version 0.1.0; TestPyPI dry run was the approved first step) | blocked on the supervisor configuring the publisher; PyPI proper is a later decision of his |
 
 ## Breakdown (search strategy)

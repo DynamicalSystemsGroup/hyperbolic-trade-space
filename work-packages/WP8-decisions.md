@@ -41,3 +41,9 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   landing page and the docsite navigation link the paper; `tests/test_site.py` covers both builds.
   Sphinx is not needed. Re-approval of the revised amendment at WP10's scope gate, when the
   `myst.yml` it deploys exists.
+- Layout, **supervisor (mzargham), verbatim:** "you can use an index page at the top level on github
+  pages then spit to the paper and to the docs." Disposition: the Pages site has a hand-written
+  index at its root (the landing page of D-2, in the tone of the ADCS and hc-marimo landing pages:
+  one card for the paper, one for the docs, one for the package, "start wherever suits you"), the
+  MkDocs docsite under `/docs/` and the mystmd paper under `/paper/`; the workflow builds both into
+  `_site/docs/` and `_site/paper/` beside the root `index.html`.

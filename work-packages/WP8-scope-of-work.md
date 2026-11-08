@@ -152,3 +152,6 @@ D-4, R-1 to R-9 unchanged, with the Case page now linking the paper rather than 
 retired WP7 notebook), and the paper is a separate mystmd build from `paper/` (WP10) deployed under
 `/paper/` of the same GitHub Pages site by the same workflow; D-5 and R-10 run both builds; D-7's
 tests cover both; the landing page carries a card for the paper. The dependency on WP11 stands.
+Layout (supervisor, verbatim: "you can use an index page at the top level on github pages then spit
+to the paper and to the docs."): root `index.html` as the landing page with cards for the paper, the
+docs and the package; the MkDocs docsite under `/docs/`; the mystmd paper under `/paper/`.
