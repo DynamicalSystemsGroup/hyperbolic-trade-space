@@ -128,3 +128,24 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - Post-review fix 2: CI on Linux failed one plotting test through facet relabelling of duplicate
   facets (d = 2, K = 3); the test is now permutation-robust (see `WP9-review.md`).
 - CI green on 0a91cb7: run 42518908382.
+
+## Acceptance gate: review gaps (2026-11-08)
+
+- Review of record: `work-packages/WP9-review.md` (28caf5b; post-review fixes 1 and 2 at 28caf5b
+  and 0a91cb7; CI green at run 42518908382). Gaps G-1 to G-9 taken through the decision loop; the
+  ones touching a good-enough item one at a time, the rest as one item.
+- **G-1 (facet refit and objective).** Options: accept as is / fix before acceptance / follow-up
+  package. **Supervisor (mzargham), verbatim:** "Fix before acceptance". Disposition: fix is
+  separate work and the whole review is rerun afterwards; before dispatching, the driver states in
+  chat why the per-facet-rows min-max refit is ill-posed in principle and asks one question a level
+  up about what the fix should be (decision loop, step 4).
+- The driver explained (chat) that the per-facet-rows min-max is ill-posed in principle (the
+  support function of a sliver is minimized at a simplex vertex) and that the built solve is the
+  one-sided analogue of per-partition least squares (supporting hyperplane of all rows, tightest on
+  the facet's rows), and asked what the fix should be. **Supervisor (mzargham), verbatim:** "do a
+  research spike. what function did this fulfill and what are some ways to handle that function
+  which is better fit with our evidence". Disposition: a throwaway research spike (scratch code
+  outside the repository; a note of findings in `docs/superpowers/notes/`) that names the function
+  of the per-facet step, enumerates ways to fulfil it, and measures them on the planted data
+  (including the seeds where recovery failed) and on the cubesat tables; the G-1 fix is chosen
+  from its findings; acceptance waits.
