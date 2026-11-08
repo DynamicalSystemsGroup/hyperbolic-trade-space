@@ -61,6 +61,12 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Penalty weight, ``alpha >= 0``; 0 leaves the fit unchanged.
     random_state : int, RandomState instance or None, default=None
         Seed for the facet initializations (``n_terms > 1`` only).
+    facet_step : {"support", "tangent"}, default="support"
+        Per-facet step of the ``n_terms > 1`` alternation (see
+        :func:`~hyperbolic_trade_space.solvers.solve_terms`): ``"support"`` is the supporting
+        hyperplane tightest on the facet's rows, which keeps the mean slack monotone;
+        ``"tangent"`` fits the near-frontier rows' tangent plane, which is not monotone. No effect
+        for ``n_terms = 1``.
 
     Attributes
     ----------
@@ -162,6 +168,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         penalty=None,
         alpha=0.0,
         random_state=None,
+        facet_step="support",
     ):
         self.temperature = temperature
         self.min_exponent = min_exponent
@@ -173,6 +180,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         self.penalty = penalty
         self.alpha = alpha
         self.random_state = random_state
+        self.facet_step = facet_step
 
     def __sklearn_tags__(self):
         tags = super().__sklearn_tags__()
@@ -205,6 +213,8 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         if not (isinstance(a, numbers.Real) and not isinstance(a, bool) and a >= 0):
             raise ValueError(f"alpha must be a real number >= 0, got {a!r}")
         check_random_state(self.random_state)
+        if self.facet_step not in ("support", "tangent"):
+            raise ValueError(f"facet_step must be 'support' or 'tangent', got {self.facet_step!r}")
 
     def _log_metrics(self, X, reset):
         X = validate_data(self, X, reset=reset, dtype=np.float64)
@@ -250,6 +260,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
             tr = _solvers.solve_terms(
                 Uv, K, tau, self.min_exponent, self.penalty, self.alpha,
                 random_state=self.random_state, tol=self.tol, slsqp_max_iter=self.max_iter,
+                facet_step=self.facet_step,
             )  # fmt: skip
             res, W, betas, n_iter, beta = tr, tr.W, tr.beta, tr.n_iter, tr.objective
         else:

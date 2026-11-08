@@ -443,3 +443,30 @@ def test_penalty_gives_exact_zero_exponents_at_the_estimator():
     assert (pen.exponents_[0, 2:] == 0.0).all()
     np.testing.assert_allclose(pen.exponents_[0, :2], [0.6, 0.4], atol=0.02)
     np.testing.assert_array_equal(zero.exponents_, plain.exponents_)
+
+
+# ------------------------------------------- WP9 Amendment 1: facet_step
+@pytest.mark.parametrize("step", ["support", "tangent"])
+@pytest.mark.parametrize("seed,tau", [(0, np.inf), (2, np.inf), (0, 50.0), (4, 50.0)])
+def test_k_terms_both_steps_recover_under_identifiability(step, seed, tau):
+    # R-1 with the condition: every planted facet has >= d + 1 frontier rows (the generator
+    # guarantees it); recovery within 0.05 after matching, >= 90% of frontier rows right
+    X, info = make_frontier_data(400, 4, n_terms=3, random_state=seed)
+    assert np.bincount(info["facet"][info["frontier_mask"]], minlength=3).min() >= 5
+    est = HyperbolicTradeSpace(n_terms=3, temperature=tau, random_state=0, facet_step=step).fit(X)
+    C = np.abs(est.exponents_[:, None] - info["exponents"][None]).max(-1)
+    r, c = linear_sum_assignment(C)
+    assert C[r, c].max() < 0.05
+    perm = dict(zip(r, c, strict=True))
+    lab = np.array([perm[k] for k in est.facet_])
+    assert (lab == info["facet"])[info["frontier_mask"]].mean() >= 0.9
+
+
+def test_facet_step_validated_and_inert_at_k1():
+    X, _ = make_frontier_data(100, 3, random_state=0)
+    with pytest.raises(ValueError, match="facet_step"):
+        HyperbolicTradeSpace(facet_step="nope").fit(X)
+    a = HyperbolicTradeSpace().fit(X)
+    b = HyperbolicTradeSpace(facet_step="tangent").fit(X)
+    np.testing.assert_array_equal(a.exponents_, b.exponents_)
+    assert HyperbolicTradeSpace().get_params()["facet_step"] == "support"

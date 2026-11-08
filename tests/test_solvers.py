@@ -2,7 +2,7 @@
 
 import numpy as np
 import pytest
-from scipy.optimize import check_grad
+from scipy.optimize import check_grad, linear_sum_assignment
 
 from hyperbolic_trade_space.coordinates import helmert_basis
 from hyperbolic_trade_space.datasets import make_frontier_data
@@ -187,3 +187,52 @@ def test_terms_deterministic_and_sparse():
     np.testing.assert_array_equal(a.labels, b.labels)
     s = solve_terms(U, 3, 50.0, penalty="reweighted_l1", alpha=0.05, random_state=7)
     assert s.W.shape == (3, 4) and np.allclose(s.W.sum(axis=1), 1.0)
+
+
+# ------------------------------------------------ WP9 Amendment 1: the facet step
+def test_default_facet_step_is_unchanged_literals():
+    # stored from the pre-amendment code: the default path must not change (facet order is
+    # arbitrary, so the rows are compared sorted)
+    X, _ = make_frontier_data(400, 4, n_terms=3, random_state=0)
+    r = solve_terms(np.log(X), 3, np.inf, random_state=0)
+    assert r.objective == pytest.approx(0.708229464326431, rel=1e-9)
+    ref = np.array([[0.54164484, 0.07901886, 0.25635204, 0.12298427],
+                    [0.21154331, 0.33382619, 0.24539256, 0.20923794],
+                    [0.12557359, 0.23657699, 0.13115001, 0.50669941]])  # fmt: skip
+    np.testing.assert_allclose(r.W[np.argsort(r.W[:, 0])], ref[np.argsort(ref[:, 0])], atol=1e-7)
+    same = solve_terms(np.log(X), 3, np.inf, random_state=0, facet_step="support")
+    np.testing.assert_array_equal(same.W, r.W)
+
+
+def test_facet_step_validated():
+    with pytest.raises(ValueError, match="facet_step"):
+        solve_terms(_planted_k3(), 3, 50.0, facet_step="best")
+
+
+@pytest.mark.parametrize("tau,seed", [(np.inf, 0), (np.inf, 2), (50.0, 0), (50.0, 4)])
+def test_tangent_recovers_planted_facets(tau, seed):
+    X, info = make_frontier_data(400, 4, n_terms=3, random_state=seed)
+    fm, facet = info["frontier_mask"], info["facet"]
+    assert np.bincount(facet[fm], minlength=3).min() >= 5  # identifiability: >= d + 1 per facet
+    r = solve_terms(np.log(X), 3, tau, random_state=0, facet_step="tangent")
+    C = np.abs(r.W[:, None] - info["exponents"][None]).sum(-1)
+    rows, cols = linear_sum_assignment(C)
+    assert np.abs(r.W[rows] - info["exponents"][cols]).max() < 0.05
+    perm = dict(zip(rows, cols, strict=True))
+    assert (np.array([perm[k] for k in r.labels]) == facet)[fm].mean() >= 0.9
+
+
+def test_tangent_keeps_best_iterate_and_is_deterministic():
+    U = _planted_k3()
+    a = solve_terms(U, 3, 50.0, n_restarts=1, random_state=1, facet_step="tangent")
+    b = solve_terms(U, 3, 50.0, n_restarts=1, random_state=1, facet_step="tangent")
+    np.testing.assert_array_equal(a.W, b.W)
+    assert a.objective == pytest.approx(a.history.min())  # not monotone: the best is returned
+
+
+def test_tangent_falls_back_to_support_without_enough_near_rows():
+    U = _planted_k3(n=12)  # at most a few rows per facet: fewer than d + 1 = 5 near rows
+    sup = solve_terms(U, 3, np.inf, random_state=3)
+    tan = solve_terms(U, 3, np.inf, random_state=3, facet_step="tangent")
+    np.testing.assert_allclose(tan.W, sup.W, atol=1e-9)
+    assert tan.objective == pytest.approx(sup.objective, abs=1e-9)  # ties in labels are not tested

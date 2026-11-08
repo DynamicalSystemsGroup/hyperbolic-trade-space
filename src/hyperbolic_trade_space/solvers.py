@@ -364,35 +364,53 @@ class TermsResult:
     history: np.ndarray
 
 
-def _refit(U, labels, W, beta, tau, kw):
+def _tls_normal(Uk, w0, min_exponent):
+    """Smallest-variance direction of the rows ``Uk`` on the simplex (constrained TLS normal)."""
+    S = np.cov(Uk, rowvar=False)
+    S = S / max(np.trace(S), 1e-12)
+    res = _simplex_min(lambda w: (w @ S @ w, 2 * S @ w), w0, (), min_exponent, 1e-14, 500)
+    w = np.clip(res.x, min_exponent, None)
+    return w / w.sum()
+
+
+def _refit(U, labels, W, beta, tau, kw, tangent=False):
     W, beta = W.copy(), beta.copy()
+    band = 0.1 if np.isinf(tau) else 1.0 / tau
     for k in np.unique(labels):
         # centering on the facet's mean makes J_tau(Uc w) = J_tau(U w) - mean_k(U) . w
         w = solve_slsqp(U - U[labels == k].mean(0), tau, **kw).w
+        if tangent:  # rows of the facet within the band of the support plane (step B)
+            near = (labels == k) & (log_mean_exp(U @ w, tau) - U @ w < band)
+            if near.sum() > U.shape[1]:
+                w = _tls_normal(U[near], w, kw["min_exponent"])
         W[k], beta[k] = w, log_mean_exp(U @ w, tau)
     return W, beta, float(np.mean(beta[labels] - np.sum(W[labels] * U, axis=1)))
 
 
-def _solve_terms_once(U, K, tau, seed, max_iter, kw):
+def _solve_terms_once(U, K, tau, seed, max_iter, kw, tangent=False):
     N, d = U.shape
     Z = U @ helmert_basis(d).T  # frontier positions; the depth direction 1 is projected out
     centers = Z[check_random_state(seed).choice(N, K, replace=False)]
     labels = np.argmin(((Z[:, None] - centers) ** 2).sum(-1), axis=1)
     W, beta = np.full((K, d), 1.0 / d), np.zeros(K)
-    W, beta, obj = _refit(U, labels, W, beta, tau, kw)
+    W, beta, obj = _refit(U, labels, W, beta, tau, kw)  # the first refit is step B
     history, n_iter, success, message = [obj], 0, False, "max_iter reached"
+    best = (obj, labels, W, beta)
     while n_iter < max_iter:
         n_iter += 1
         new = np.argmax(U @ W.T - beta, axis=1)
         if np.array_equal(new, labels):
             success, message = True, "assignment fixed"
             break
-        W2, beta2, obj2 = _refit(U, new, W, beta, tau, kw)
-        if obj2 > obj:  # monotone guard: reject an increase and stop
+        W2, beta2, obj2 = _refit(U, new, W, beta, tau, kw, tangent)
+        if obj2 > obj and not tangent:  # monotone guard (step B): reject an increase and stop
             success, message = True, "no further decrease"
             break
         labels, W, beta, obj = new, W2, beta2, obj2
         history.append(obj)
+        best = min(best, (obj, labels, W, beta), key=lambda t: t[0])
+    if tangent:  # the objective is not monotone under step D: keep the best iterate seen
+        obj, labels, W, beta = best
     return TermsResult(W, beta, labels, obj, n_iter, success, message, np.array(history))
 
 
@@ -408,6 +426,7 @@ def solve_terms(
     random_state=None,
     tol=1e-10,
     slsqp_max_iter=500,
+    facet_step="support",
 ):
     """Fit ``K`` monomial facets by alternating partition and entropic refit.
 
@@ -429,6 +448,16 @@ def solve_terms(
         Seed.
     slsqp_max_iter : int, default=500
         SLSQP iteration cap per facet fit.
+    facet_step : {"support", "tangent"}, default="support"
+        Per-facet step. ``"support"`` (step B, below) is the default and the monotone one.
+        ``"tangent"`` (step D) replaces ``w_k`` by the smallest-variance direction of the facet's
+        near-frontier rows (its own rows within ``1/tau`` of its support plane; ``0.1`` at
+        ``tau = inf``), a constrained total-least-squares normal on the simplex, when there are at
+        least ``d + 1`` such rows, and keeps step B's ``w_k`` otherwise; ``beta_k`` is the support
+        value over all rows in both. The first refit is always step B. ``penalty`` and ``alpha``
+        act on step B only. The mean slack is *not* monotone under ``"tangent"`` (the guard is
+        applied to ``"support"`` only): the iteration stops at a fixed assignment or ``max_iter``
+        and returns the lowest-objective iterate seen, so ``history`` need not be non-increasing.
 
     Returns
     -------
@@ -451,6 +480,17 @@ def solve_terms(
     ``d = 1``, ``N < K``, where the ``K = 1`` solution is repeated) it returns exactly the
     :func:`solve_slsqp` result, with ``objective = beta``.
 
+    Step D (``facet_step="tangent"``) is the evidence-driven alternative measured in the research
+    spikes; the objective is not monotone under it (see ``facet_step``). Recovery rate on the
+    planted data, ``make_frontier_data(400, 4, n_terms=3, random_state=s)``, ``s = 0..19`` (every
+    facet has at least ``d + 1`` frontier rows), estimator defaults, ``random_state=0``, five
+    restarts, pass = exponent error below 0.05 after matching and at least 90% of the frontier rows
+    on the right facet: ``"support"`` 17/20 at ``tau = inf`` (fails: seeds 1, 3, 16) and 16/20 at
+    ``tau = 50`` (fails: 1, 3, 8, 16); ``"tangent"`` 16/20 at ``tau = inf`` (fails: 1, 3, 8, 16)
+    and 17/20 at ``tau = 50`` (fails: 1, 3, 16). Seeds 1, 3 and 16 have a facet with only 5 or 6
+    frontier rows (``d + 1 = 5``): identifiable, but a thin facet leaves local optima that no
+    restart escaped. Seed 8 is a local optimum with a well-populated facet (11 frontier rows).
+
     Initialization: ``K`` random rows are the centers and every row takes its nearest center in
     the Helmert coordinates ``Z = U B^T``. K-means on the near-frontier rows of the ``K = 1`` fit
     was compared on a planted ``K = 3``, ``d = 4`` frontier (20 seeds, exponents recovered to
@@ -471,6 +511,8 @@ def solve_terms(
     U = np.asarray(U, dtype=float)
     N, d = U.shape
     K = int(n_terms)
+    if facet_step not in ("support", "tangent"):
+        raise ValueError(f"facet_step must be 'support' or 'tangent', got {facet_step!r}")
     kw = {
         "min_exponent": min_exponent, "penalty": penalty, "alpha": alpha, "tol": tol,
         "max_iter": slsqp_max_iter,
@@ -482,5 +524,5 @@ def solve_terms(
             r.success, r.message, np.array([r.beta]),
         )  # fmt: skip
     seeds = check_random_state(random_state).randint(0, 2**31 - 1, size=n_restarts)
-    runs = [_solve_terms_once(U, K, tau, s, max_iter, kw) for s in seeds]
+    runs = [_solve_terms_once(U, K, tau, s, max_iter, kw, facet_step == "tangent") for s in seeds]
     return min(runs, key=lambda r: r.objective)

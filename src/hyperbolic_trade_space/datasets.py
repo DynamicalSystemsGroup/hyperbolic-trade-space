@@ -43,6 +43,23 @@ def _frontier_mask(n, fraction, rng):
     return mask
 
 
+def _identifiable(mask, facet, log_v, noise, d, rng):
+    """Put at least ``d + 1`` frontier rows on every planted facet (extra rows, drawn from rng)."""
+    for k in range(int(facet.max()) + 1):
+        own = facet == k
+        extra = np.flatnonzero(own & ~mask)
+        need = d + 1 - int((own & mask).sum())
+        if need > 0:
+            if need > extra.size:
+                raise ValueError(
+                    f"facet {k} has {own.sum()} rows, fewer than n_features + 1 = {d + 1}; "
+                    "increase n_samples"
+                )
+            pick = rng.permutation(extra)[:need]
+            mask[pick] = True
+            log_v[pick] = noise * rng.standard_normal(need)
+
+
 def make_frontier_data(
     n_samples,
     n_features,
@@ -93,6 +110,12 @@ def make_frontier_data(
 
     Notes
     -----
+    For ``n_terms > 1`` every planted facet gets at least ``n_features + 1`` frontier rows
+    (identifiability: a facet with fewer frontier rows than dimensions is not determined by them).
+    If a facet falls short after the draw, further rows of that facet, chosen by the seeded
+    generator, are moved onto the frontier (so the frontier fraction can slightly exceed
+    ``frontier_fraction``); a facet with too few rows overall raises ``ValueError``.
+
     ``Z ~ N(0, I)`` and the rows are mapped back through the ILR chart (lemma L8); the frontier is
     identifiable when the Z-hull of the frontier rows contains 0 (spec section 4). For K > 1 the
     rows are ``u = C Z + s 1`` with ``s = log V + beta - max_k w_k . C Z`` (the K-term form of
@@ -130,6 +153,7 @@ def make_frontier_data(
     else:
         base = Z @ np.linalg.pinv(B).T
         facet, top = (base @ w.T).argmax(axis=1), (base @ w.T).max(axis=1)
+        _identifiable(mask, facet, log_v, noise, d, rng)
         U = base + (log_v + log_offset - top)[:, None]
     X = np.exp(U)
     info = {

@@ -111,3 +111,22 @@ def test_k_terms_errors_and_explicit_exponents():
     W = [[0.7, 0.2, 0.1], [0.1, 0.2, 0.7]]
     _, info = make_frontier_data(10, 3, n_terms=2, exponents=W, random_state=0)
     np.testing.assert_array_equal(info["exponents"], W)
+
+
+def test_k_terms_every_facet_has_d_plus_one_frontier_rows():
+    d = 4
+    for seed in range(20):
+        _, info = make_frontier_data(400, d, n_terms=3, random_state=seed)
+        on = np.bincount(info["facet"][info["frontier_mask"]], minlength=3)
+        assert on.min() >= d + 1
+        assert (info["log_v"][info["frontier_mask"]] == 0).all()  # noise = 0
+    X, info = make_frontier_data(60, 3, n_terms=2, noise=0.05, random_state=1)
+    on = np.bincount(info["facet"][info["frontier_mask"]], minlength=2)
+    assert on.min() >= 4
+    X2, _ = make_frontier_data(60, 3, n_terms=2, noise=0.05, random_state=1)
+    np.testing.assert_array_equal(X, X2)
+
+
+def test_k_terms_too_few_rows_for_identifiability_raises():
+    with pytest.raises(ValueError, match="increase n_samples"):
+        make_frontier_data(8, 4, n_terms=2, random_state=0)

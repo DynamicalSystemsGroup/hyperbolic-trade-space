@@ -18,6 +18,7 @@ EXPECTED_FAILURES: dict[str, str] = {}
         HyperbolicTradeSpace(coordinates="alr"),
         HyperbolicTradeSpace(n_terms=3),  # WP9 (R-5): the same expected failures (none)
         HyperbolicTradeSpace(n_terms=3, temperature=np.inf, term_temperature=5.0),
+        HyperbolicTradeSpace(n_terms=3, facet_step="tangent"),  # Amendment 1: same (empty) failures
     ],
     expected_failed_checks=lambda est: EXPECTED_FAILURES,
     xfail_strict=True,
