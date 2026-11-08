@@ -36,6 +36,20 @@ This repository is built as supervisor-gated work packages, following the superv
 - **Execution:** autonomous inside the approved scope; TDD per module; `uv run` for every command;
   scikit-learn conformance per `docs/superpowers/notes/sklearn-conformance.md`.
 
+## Roadmap: the three outputs of the monorepo
+
+The supervisor, 2026-11-08, verbatim: "the final state of this repo will have 3 outputs (since its
+a mono repo): * release to pypi (blocked on me configuring it) * update to a docsite (we can stick
+to make docs unless you think we need sphynx) * update to the paper (myst modeled after scipy
+proceedings) right now we're focused on getting a release of the paper. but we should keep the
+other two clearly in the roadmap".
+
+| Output | Built from | Package | Status |
+|---|---|---|---|
+| The paper | `paper/paper.ipynb` and `supporting_material.ipynb` with mystmd, modelled on the SciPy proceedings article | WP10 (writing), WP11 (readability loops), WP8 (deployment) | the current focus; WP9 and the external-review triage precede it |
+| The docsite | `docs/*.md`, the generated derivation ledger and verification pages | WP8 | build tool per the supervisor's decision (MkDocs unless Sphinx is needed; see `WP8-decisions.md`) |
+| The PyPI release | `src/hyperbolic_trade_space/`, `pyproject.toml`, `uv.lock` | WP8 (version 0.1.0; TestPyPI dry run was the approved first step) | blocked on the supervisor configuring the publisher; PyPI proper is a later decision of his |
+
 ## Breakdown (search strategy)
 
 Only WP0 was firm at approval; the rest is revisited at each acceptance gate. Each line: goal, and
