@@ -60,7 +60,11 @@ project's reading of the mean limit, not proved by L5: the fraction tends toward
 mean of the scores rather than the median), and above it decreases monotonically toward $0$ (the
 test asserts this on $\tau\ge3$ and $0.4<$ `frac_above_` $<0.65$ at $\tau=0.1$). `select_temperature`
 only needs the target bracketed by the two ends of `bounds`. A $\tau$ below about 3 is outside the
-documented useful range (see `docs/limitations.md`).
+documented useful range (see `docs/limitations.md`). The default `bounds[0]` $=0.1$ is wider than
+the recommended $\tau\gtrsim3$; bisection tolerates it because it needs only that the target be
+bracketed by the ends of `bounds` (a `ValueError` otherwise), but below $\tau\approx3$ the response
+is not monotone, so the returned $\tau$ is a root of the bracket search. Callers who need the useful
+range should pass `bounds=(3, ...)`.
 
 **`make_frontier_data`, `make_configured_frontier_data`.** Seeded generators of positive data with a
 planted frontier (the second also returns a configuration matrix and a smooth map from configuration

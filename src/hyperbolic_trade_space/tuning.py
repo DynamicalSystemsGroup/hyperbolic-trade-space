@@ -24,6 +24,11 @@ def select_temperature(X, target_frac_above=0.10, bounds=(1e-1, 1e4), tol=0.01, 
     bracketed by the fractions at the ends of ``bounds`` (checked, ``ValueError`` otherwise); it
     returns a ``tau`` with ``|frac_above_ - target_frac_above| <= tol`` found in at most 60
     iterations on ``log tau``. Keep ``bounds[0]`` near or above 3 for a unique answer.
+    The default ``bounds[0] = 0.1`` is wider than the recommended ``tau`` of about 3 or more:
+    bisection tolerates it because it needs only that the target be bracketed by the ends of
+    ``bounds`` (``ValueError`` otherwise), but below ``tau`` of about 3 the ``frac_above_``
+    response is not monotone, so the returned ``tau`` is a root of the bracket search; callers
+    who need the useful range should pass ``bounds=(3, ...)``.
 
     Parameters
     ----------

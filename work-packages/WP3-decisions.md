@@ -32,3 +32,8 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 ## Acceptance (acceptance gate)
 
 - pending `work-packages/WP3-review.md`
+
+## Follow-up candidates
+
+- G-3: a planted beyond-frontier row for a true novelty test needs a hook in WP2's `datasets.py`
+  generator (not in WP3's scope).
