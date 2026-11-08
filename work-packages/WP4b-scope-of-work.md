@@ -120,6 +120,18 @@ What changed and why, per scope-of-work section 6; the supervisor's choice "Reop
 - The committed dataset and the probe note are updated, the facts for WP7 are revised, and the whole review is rerun by a fresh reviewer.
 - Nothing else changes.
 
+## Amendment 4 (stop rule under Amendment 3, approved at the stop-rule gate)
+
+What changed and why, per scope-of-work section 6; the supervisor's choice "One physics-justified lever: slew-time attribute" is recorded verbatim in `work-packages/WP4b-decisions.md` ("Stop rule under amendment 3, and amendment 4").
+
+- Finding that triggered it: at the physically consistent 30° scenario with momentum enforced, R-14 holds but total mass has exponent 0.000 in the contending set and the wheel-class clauses of R-13 fail. The corrected explanation: wheel mass is the largest single mass lever, and mass is absent because heavier wheels do not settle faster; the 1 % settling time of the PD loop is set by the controller's slow pole (correlation of log settling with log(Kd/Kp) is 0.993 for large wheels), so wheel class separates settling only at the most aggressive gains.
+- New attribute (tenth, smaller is better): `slew_time_s`, the first time the attitude error falls below a tolerance band, an actuator-limited agility measure that the slow-pole settling hides. The band is 1° (a tolerance a pointing slew would be considered "arrived" at, about a tenth of the 10° WP4 slew and well above the star-tracker floors), with 0.5° recorded as an additional column for sensitivity. It is computed by post-processing the attitude-error history of the existing `SimResult` in the model layer, with no change to `adcs_sim.py`; if the result object lacks the needed history, execution stops and says so. The reasoning and the expectation (slew time depends on torque for small wheels at 30°, where their saturation share is about five times that of large wheels, and on the gains otherwise) are written in the probe note before any simulation.
+- Scope of the change: the measurements, the SysML analysis/calc documentation, the CSV (regenerated at the committed 30° scenario, same wheels, seed 0, 600 s horizon), the enrichment tests and the probe. Momentum stays enforced.
+- R-13 is unchanged in substance, evaluated on the ten attributes (slew time oriented as reciprocal, smaller is better): (a) and (b) total mass enters the contending set with exponent at least 0.05 and is bootstrap-stable as before; (c) agility against mass across wheel classes is satisfied if either the settling–mass or the slew-time–mass near-frontier association is at most −0.30, with at least 10 near-frontier designs in at least two wheel classes; (d) and (e) as before. R-14 unchanged.
+- This is adjustment 4 and the last: if R-13 still fails, execution stops, the finding is recorded (wheel class appears as a feasibility boundary; agility by slew time does or does not trade against mass) and reported; the supervisor has agreed to accept that finding.
+- The probe-note defects found by the review are fixed in the same pass: the wrong mass explanation is replaced by the reviewer's corrected one, and the stale sections (the R-14 status section that still says R-13 a to e hold, the final-constants section that still lists the 90° scenario) are brought up to date; the facts for WP7 are carried forward.
+- Wherever this scope says nine attributes it now reads ten; nothing else changes.
+
 ## Definition of good
 
 - The cubesat makes engineering sense at a glance: bigger panels give more power, cost mass and slow the slew; bigger batteries ride through eclipse and weigh more; bigger wheels are agile, heavy and hungry; finer star trackers point better, weigh more and draw more. The fit finds these on its own.
