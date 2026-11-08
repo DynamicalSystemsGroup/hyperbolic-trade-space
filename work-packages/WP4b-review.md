@@ -1,136 +1,121 @@
-# WP4b — Review report (second pass)
+# WP4b — Review report (third pass)
 
 | | |
 |---|---|
-| **Scope of work** | `work-packages/WP4b-scope-of-work.md` with Amendment 1 (R-14 to its relative clauses), Amendment 2 (momentum enforced as feasibility) and Amendment 3 (physically consistent scenario, stop rule restated) |
-| **Scope approval verified** | The project has no PRs, so the recorded act is `work-packages/WP4b-decisions.md`: "Scope approval (approval gate)", supervisor mzargham, verbatim "okay proceed", document at `d27c177` (draft 4 plus the toaster amendment), defaults list approved as one item. Amendment 1: verbatim "Amend R-14 to its intent; keep the dataset". Amendment 2: verbatim "Enforce as feasibility" and "Fix the stale help text, accept the rest". Amendment 3: verbatim "Reopen levers for a physically consistent scenario" (recorded in `53afc54`; scope text `f099ddf`). The amendment texts match the recorded choices. Records typed by the agent, decisions are the supervisor's. |
-| **Work reviewed** | `main`. WP4b delivery commits `5dfbc8c`, `379dee0`, `c89b5d0`, `b8fd0cc`, `7704ab7`, and the amendment 3 delivery `354bffd` (dataset, model constants, tests, probe note). Records: `aa1f1f1`, `6b88cda`, `4e2acf6`, `d721d12`, `53afc54`, `f099ddf`, `914fe63`. HEAD at review start `4f5d211` (a WP6 review commit by a parallel reviewer). Start for diffs `5dfbc8c~1`; WP4 state `932bbe4` / `a9fc4f2`. |
+| **Scope of work** | `work-packages/WP4b-scope-of-work.md` with Amendment 1 (R-14 to its relative clauses), Amendment 2 (momentum enforced as feasibility), Amendment 3 (physically consistent scenario) and Amendment 4 (slew-time attribute, the last adjustment, ten attributes) |
+| **Scope approval verified** | The project has no PRs, so the recorded act is `work-packages/WP4b-decisions.md`: "Scope approval (approval gate)", supervisor mzargham, verbatim "okay proceed", document at `d27c177`, defaults list approved as one item. Amendment 1: "Amend R-14 to its intent; keep the dataset". Amendment 2: "Enforce as feasibility" and "Fix the stale help text, accept the rest". Amendment 3: "Reopen levers for a physically consistent scenario". Amendment 4: "One physics-justified lever: slew-time attribute" (record `aec9276`, scope text `92b58ed`). The record states that if R-13 still fails the finding is accepted and the notebook reports wheel class as a feasibility boundary; the scope text of Amendment 4 repeats "the supervisor has agreed to accept that finding". Records typed by the agent, decisions are the supervisor's. |
+| **Work reviewed** | `main` at `6c8c3e9`. Amendment 4 delivery: Step A note `25517f0`, model/dataset/tests `a27502e`, results note `6c8c3e9`. Earlier delivery `5dfbc8c`, `379dee0`, `c89b5d0`, `b8fd0cc`, `7704ab7`, `354bffd`. Start for diffs `5dfbc8c~1`; WP4 state `932bbe4` (simulator) / `9680193` (WP4 tests, CSV, design space). |
 | **Supervisor (accepts)** | mzargham |
 | **Acceptance record** | Verbal acceptance in chat, quoted verbatim in `work-packages/WP4b-decisions.md`, after this report |
 
-A fresh reviewer who built none of WP4b and wrote none of its earlier reviews (this replaces the first-pass report, `70081fb`). Every command below was run in this session with `unset VIRTUAL_ENV`. Review only: nothing was repaired; the one trial edit was undone with `git checkout` and `git status` is clean. R-13 is judged as the supervisor asked: unmet, and under the Amendment 3 stop rule.
+A fresh reviewer who built none of WP4b and wrote none of its earlier reviews (replaces the second-pass report, `b16e1b7`). Every command below was run in this session with `unset VIRTUAL_ENV`. Review only: two trial edits were made and undone with `git checkout`; `git status` is clean. R-13 is judged under the Amendment 4 stop rule.
 
 ## Deliverables
 
 | ID | Verdict | Evidence |
 |---|---|---|
-| D-1 | met | `examples/adcs/cubesat_tradespace.sysml`; amendment 3 changed only the small and medium wheel `maxMomentum` (0.005 -> 0.010, 0.020 -> 0.030 N m s) and the doc comment (`git diff 354bffd~1 354bffd`). |
-| D-2 | met | `examples/adcs/cubesat_model.py`: scenario defaults now `SLEW_DEG = 30.0`, `T_END = 600.0`; nothing else changed. |
-| D-3 | met | `generate_dataset.py`: help text and docstring now say cubesat default 30 degrees / 600 s (the stale-help fix of the round-1 disposition is verified). |
-| D-4 | met | `data/adcs_designs_cubesat.csv`: 1000 rows, 33 columns, `slew_deg`/`t_end_s`/`max_step_s` columns, regenerated at 30 degrees, 600 s. |
+| D-1 | met | `examples/adcs/cubesat_tradespace.sysml`; amendment 4 changed only the `ModelTest` documentation (ten attributes, slew time described), `git show a27502e`. |
+| D-2 | met | `examples/adcs/cubesat_model.py`: new `slew_time(res, band_deg)` helper (post-processes `res.t`, `res.q`; error angle `2 norm(q[:3])` in degrees, first entry, censored at the last time), `SLEW_BAND_DEG = 1.0`, `SLEW_BAND_SENSITIVITY_DEG = 0.5`, `measure` returns `slew_time_s` and `slew_time_05deg_s`. |
+| D-3 | met | `generate_dataset.py`: docstring only (columns come from `measure`). |
+| D-4 | met | `data/adcs_designs_cubesat.csv`: 1000 rows, 35 columns incl. `slew_time_s`, `slew_time_05deg_s`; 30 degrees, 600 s, seed 0. |
 | D-5 | met | `uv lock --check`: "Resolved 173 packages". |
-| D-6 | met (with 4 strict xfails) | `REQUIRE_OPENSYSML=1 uv run pytest -q -rx tests/test_cubesat_model.py tests/test_adcs_enrichment.py`: 32 passed, 4 xfailed in 27 s. The xfails are `test_a_`, `test_b_`, `test_c_`, `test_e_` of `test_adcs_enrichment.py`, all `strict=True` with the same reason string citing amendment 3. (The brief says five xfails; the full suite has five, but the fifth is WP3's scikit-learn check, `tests/test_sklearn_compat.py`; WP4b owns four.) |
-| D-7 | met, with defects | Probe note updated (levers table, committed dataset, WP7 facts). Two defects: stale text and an unsupported mass argument (G-2, G-3). |
-| D-8 | met | `WP4b-decisions.md` holds the approval, amendments 1 to 3 and the stop-rule record; acceptance is pending. |
+| D-6 | met (3 strict xfails) | `REQUIRE_OPENSYSML=1 uv run pytest -q -rx tests/test_cubesat_model.py tests/test_adcs_enrichment.py`: 35 passed, 3 xfailed in 27 s. xfails: `test_a_`, `test_b_`, `test_c_` (strict, reason STOP4 with the numbers). `test_e_` lost its marker (it now passes, see R-13). Two new tests: `test_slew_time_definition_and_ordering`, `test_slew_time_helper_first_entry_and_censoring`. |
+| D-7 | met | Probe note: Step A, results, corrected mass explanation, stale sections fixed (see verification 4). |
+| D-8 | met | `WP4b-decisions.md` holds the approval, amendments 1 to 4 and every disposition; acceptance pending. |
 
 ## Requirements
 
 | ID | Verdict | Evidence |
 |---|---|---|
-| R-1 | met | `git diff 932bbe4..HEAD -- examples/adcs/adcs_sim.py` empty; `git diff a9fc4f2..HEAD --stat` over `adcs_sim.py`, `tests/test_adcs_case.py`, `design_space.py` and `adcs_designs.csv`: empty. `pytest tests/test_adcs_case.py`: 16 passed. |
-| R-2 | met | Original CSV, `design_space.py` and `test_adcs_case.py` untouched in the diff; the WP4 reproducibility tests pass in the full suite. No separate test of the defaults (accepted in round 1 as part of G-5). |
-| R-3 | met | `test_cubesat_model.py` model-load, self-check, units and negative-control tests pass (25 tests). |
-| R-4 | met | `test_editing_a_range_or_enum_literal_changes_the_sampler` and `test_no_duplicated_constants_in_python` pass. Amendment 3 edited the latter to strip the three scenario lines (`SLEW_DEG`, `T_END`, `MAX_STEP`) from the scan; scenario numbers are not model constants (the scope allows scenario parameters in Python), and the wheel momentum numbers (the model constants that changed) live only in the SysML. |
-| R-5 | met | Unchanged code path; `test_run_sweep_over_panel_span_matches_python_accounting` and the accounting test pass. |
-| R-6 | met | `test_flags_equal_independent_python_evaluation`, `test_flags_negative_controls` pass. |
-| R-7 | met | Trial: set `panelMass=0.0` in `CubesatModel.sim_params`; `pytest tests/test_cubesat_model.py` gave 4 failed (`test_mass_accounting_identity`, `test_baseline_inertia_pin`, `test_panel_span_raises_inertia_and_slows_the_slew`, `test_dataset_reproducible_first_20`), 21 passed. Restored with `git checkout`; tree clean. |
-| R-8 | met | `test_battery_capacity_raises_mass_and_inertia`, `test_baseline_inertia_pin` pass (baseline inertia unaffected by the amendment). |
-| R-9 | met | `test_available_power_caps_the_usable_torque`, `test_slew_energy_nonnegative_and_grows_with_angle` pass. Power cap below the class torque in 32 of 1000 designs (3.2 %, all large wheels), minimum available power 11.1 W (own computation). |
-| R-10 | met | `test_mass_accounting_identity` passes. |
-| R-11 | met | `test_measure_returns_attributes_and_flags`, `test_attributes_are_documented` pass; on the feasible set all nine attributes are positive (780 rows). |
-| R-12 | met | `uv lock --check` ok; the fixture fails hard with a named cause, `REQUIRE_OPENSYSML=1` in CI; green runs below. |
-| R-13 | **not met, under the stop rule** | Details below. Clauses (a), (b), (c) and the pointing-mass part of (e) fail; (d) and the rest of (e) hold. Four tests carry strict xfail with the reason. Thresholds and method unchanged (checked in the test file). |
-| R-14 | met (amended) | Own computation on the 780 feasible rows: median `torque_saturated_frac` small 0.0409, medium 0.0152, large 0.0080, ratio 5.1 (need 3); median settling small 128.3 s, medium 67.1 s, large 69.3 s, ratio 1.85 (need 1.25). `test_torque_binds_for_small_wheels` passes, no marker. Note the medium/large settling medians are indistinguishable (finding below). |
-| R-15 | met | 1000 designs; settled share 0.978; feasible 780 (78 %); violation shares settled 0.022, momentum_ok 0.081, power_ok 0.000, dod_ok 0.131 (own pandas run equals the note). |
-| R-16 | met | `-k reproduc` passes (first 20 against the committed CSV; 40 twice identical); the recorded command in the test now carries `--slew-deg 30 --t-end 600`. |
-| R-17 | partly met | The note records every attempt, constants, near-frontier sizes and explanations, and states plainly that the agility-mass tension is absent. Defects: stale sections and an unsupported mass argument (G-2, G-3). |
-| R-18 | met | SysML reads as a plausible cubesat; wheel momentum-to-torque ratios 33, 15, 10 s, inside the stated public range. |
-| R-19 | met | `uv run pytest -q`: 841 passed, 8 skipped, 5 xfailed (71 s; 4 WP4b strict xfails + 1 WP3 sklearn). `ruff check .`: All checks passed. `ruff format --check .`: 95 files already formatted. `uv lock --check`: ok. `git diff --stat 5dfbc8c~1..HEAD` over non-`work-packages` paths lists the deliverables, `pyproject.toml`, `uv.lock`, `.github/workflows/test.yml` (the cache edit recorded in the first review) and other packages' files (WP3, WP6). Amendment 3 touched only the 7 files listed in `git diff --stat 354bffd~1 354bffd` (note, model, SysML, generator, CSV, two test files). |
-| R-20 | met | Grep of all commit messages in `5dfbc8c~1..HEAD` for `co-authored`, `generated with`, `claude`: 0. All commits author and committer Michael Zargham. `gh run list --limit 40`: every WP4b push is green, including `354bffd` (1m39s). Red runs in the window: `8f49253` (WP6) and `f635a04` (WP3), both failing `tests/test_narrative.py::test_no_wp3_signatures_quoted` ("limitations.md quotes select_temperature"), fixed by `d0a2c0d`; neither is WP4b's. The run for `4f5d211` was still in progress. |
+| R-1 | met | `git diff 932bbe4..HEAD -- examples/adcs/adcs_sim.py` empty; `git diff 9680193..HEAD --stat` over `adcs_sim.py`, `tests/test_adcs_case.py`, `design_space.py`, `adcs_designs.csv` empty. WP4 tests pass inside the full suite. |
+| R-2 | met | Original CSV, `design_space.py`, `test_adcs_case.py` untouched; WP4 reproducibility tests pass. (No separate defaults test: accepted in round 1.) |
+| R-3 | met | `test_cubesat_model.py`: 27 passed under `REQUIRE_OPENSYSML=1`. |
+| R-4 | met | Range/enum edit and no-duplicate-constants tests pass; amendment 4 added the two band constants to the scenario-parameter exemption in the scan (scenario parameters, not model constants). |
+| R-5 | met | Unchanged code path; sweep/accounting tests pass. |
+| R-6 | met | Flag and negative-control tests pass. |
+| R-7 | met | Trial 1 below (breaking the slew helper) and the second-pass coupling trial both fail tests; panel monotonicity test passes. |
+| R-8 | met | Battery and baseline-inertia tests pass. |
+| R-9 | met | Power-cap and slew-energy tests pass. |
+| R-10 | met | Mass identity test passes. |
+| R-11 | met | `test_measure_returns_attributes_and_flags` covers ten attributes and five flags; `test_attributes_are_documented` passes (slew time documented in the module docstring). |
+| R-12 | met | `uv lock --check` ok; hard-failing fixture, `REQUIRE_OPENSYSML=1` in CI; CI green. |
+| R-13 | **not met, under the Amendment 4 stop rule** | See "R-13 clause by clause" below: (a), (b), (c) fail; (d) and (e) hold. |
+| R-14 | met (amended) | Own computation on 780 feasible rows: median saturated fraction small 0.0409, large 0.0080, ratio 5.1 (needs 3); median settling small 128.3 s, large 69.3 s, ratio 1.85 (needs 1.25). `test_torque_binds_for_small_wheels` passes without marker. |
+| R-15 | met | 1000 designs, settled share 0.978, feasible 780; violation shares settled 0.022, momentum_ok 0.081, power_ok 0.000, dod_ok 0.131. |
+| R-16 | met | `test_dataset_reproducible_first_20` (now also checks the two slew-time columns within 0.5 s) and the same-platform exactness test pass. Trial 2 shows the first fails when slew time is wrong. |
+| R-17 | met | The note records every attempt including the four-lever history, the Step A expectation, the results with near-frontier sizes, the SysML client account, and explicit physical explanations; the wrong Step A expectation is reported as wrong (verification 4). |
+| R-18 | met | SysML unchanged in substance; plausible cubesat. |
+| R-19 | met | `uv run pytest`: 844 passed, 8 skipped, 4 xfailed (69.7 s; 3 WP4b strict xfails plus 1 WP3 scikit-learn xfail). `ruff check .`: All checks passed. `ruff format --check .`: 95 files already formatted. `uv lock --check`: ok. |
+| R-20 | met | Grep of all commit messages and authors in `5dfbc8c~1..HEAD` for `co-authored`, `generated with`, `claude`: 0. All 41 commits authored and committed by Michael Zargham. `gh run list --limit 8`: all 8 green including `6c8c3e9` (1m37s). Over the last 40 runs only two were red, `8f49253` (WP6) and `f635a04` (WP3), both `test_narrative` failures belonging to WP3/WP6 and fixed later; neither WP4b. |
 
-### R-13 on the committed dataset (independent hand probe)
+### R-13 clause by clause (my own probe, committed CSV, ten attributes)
 
-Own script (not the test's functions): feasible = settled and `power_ok` and `momentum_ok` and every attribute positive (780 rows); reciprocal orientation for settling, pointing, mass, effort, peak slew power and depth of discharge, direct for margin, balance and reserve; log; standardize; `solve_lp(U, 0.0)`; 300-point grid on tau for `frac_above_` nearest 0.10; near-frontier |log V| < 1/tau; Pearson of oriented log-metrics; 100 bootstrap resamples seeded 0.
+Feasible = settled and `power_ok` and `momentum_ok` and all ten attributes positive (780 rows: small 239, medium 279, large 262). Reciprocal for settling, slew time, pointing, mass, effort, peak slew power and depth of discharge; direct for margin, balance, reserve; log; standardize; `solve_lp(U, 0)`; 300-point tau grid to `frac_above_` nearest 0.10; near-frontier |log V| < 1/tau; 100 bootstrap resamples seeded 0.
 
-| Quantity | Mine | Implementer's | Threshold and verdict |
+| Quantity | Mine | Implementer's | Verdict |
 |---|---|---|---|
-| Contending set at tau = inf | settling .310, pointing .044, effort .433, depth of discharge .006, power margin .207 (size 5); mass 0.000 | same, mass 0.000 | (a) needs size >= 3 (holds), a power attribute (holds) and mass >= 0.05: **fails on mass** |
-| Working tau, frac_above | 47.5, 0.100 | 46.1, 0.1013 | about 0.10 |
-| Near-frontier rows (small / medium / large) | 75 (55 / 16 / 4) | 76 (56 / 16 / 4) | |
-| Bootstrap support (100) | mass **0.01** (median 0.000); power margin 0.73, depth of discharge 0.72, energy balance 0.46, reserve 0.18; settling, pointing, effort 1.00 | mass 0.01, margin 0.73, dod 0.72 | (b) needs mass and a power attribute >= 0.90 with median >= 0.05: **fails on both** (best power attribute 0.73; mass 0.01) |
-| Settling-mass association | **-0.08** | -0.09 | (c) needs <= -0.30: **fails**; the wheel-class clause (>= 2 classes with >= 10 near rows: small 55, medium 16) holds |
-| Power tensions | mass with depth of discharge -0.57; pointing with peak slew power -0.50 | -0.57, -0.50 | (d) holds |
-| Previous tensions | settling-effort -0.95, pointing-effort -0.64, **pointing-mass -0.26**, settling-pointing +0.63 | -0.95, -0.63, -0.26, +0.63 | (e): pointing-mass **fails** (-0.26 against -0.30); the other three hold |
+| Contending set, tau = inf | effort .434, slew .253, power margin .179, settling .081, pointing .040, reserve .013 (size 6); **mass 0.000**, energy balance, peak power, depth of discharge 0 | identical | (a) needs mass >= 0.05: **fails** (size >= 3 and a power attribute hold) |
+| Working tau, frac_above | 43.0, 0.100 | 42.8, 0.101 | about 0.10 |
+| Near-frontier rows (small/medium/large) | 104 (79/24/1) | 102 (78/23/1) | difference is the tau grid |
+| Bootstrap support (median exponent) | mass **0.00** (0), power margin 0.66 (0.155), reserve 0.58, balance 0.50, depth of discharge 0.43; slew 1.00, effort 1.00, pointing 0.95, settling 0.88 | mass 0.00, margin 0.66, reserve 0.58 | (b) **fails** on both mass (needs .90) and the best power attribute (.66 < .90) |
+| Settling-mass / slew time-mass association | **-0.13 / -0.11** | -0.13 / -0.11 | (c) needs either at most -0.30: **fails**; the class-count clause (small 79, medium 24 with >= 10) holds |
+| Power tensions | mass with depth of discharge -0.66; pointing with peak slew power -0.61; mass with reserve -0.58 | -0.65, -0.61, -0.58 | (d) holds |
+| Previous tensions | settling-effort -0.95, pointing-effort -0.68, pointing-mass -0.34, settling-pointing +0.66 | -0.95, -0.70, -0.36, +0.68 | (e) holds (pointing-mass now passes) |
+| Slew-settling | corr 0.947 over the feasible set, 0.98 near the frontier | 0.947, 0.99 | |
 
-All of the implementer's numbers reproduce, within the tau tolerance (46.1 against my 47.5). The `tension_report` agreement test passes.
+Every number reproduces within the tau-grid tolerance. `test_e_previous_tensions_retained` passes unmarked.
 
-Claim checks:
-- dod filter: `dod_ok` false on 131 rows; of these 0 have `eclipse_reserve_wh > 0`; `dod_ok` true with reserve <= 0: 0. So `dod_ok` false is exactly a non-positive reserve and the positivity filter already excludes those rows; feasible = settled and `power_ok` and `momentum_ok` and positive attributes = 780, and `dod_ok` is true on all of them. Claim confirmed. (Without the positivity filter the settled, power, momentum set is 897.)
-- Per class: feasible small 239 of 344, medium 279 of 345, large 262 of 311. Small-wheel designs are feasible in meaningful numbers, as claimed.
+## Independent verification asked for
 
-## Independent verification of the findings
+**(1) Ordering.** `git log`: `25517f0` "probe note, amendment 4 step A (slew-time definition and expectation, before any simulation)" 00:40:58 is an ancestor of `a27502e` (model, dataset, tests) 00:47:12 and of `6c8c3e9` (results note). `git show 25517f0` changes only the note (+48 lines): definition, band choice (1 degree, 0.5 as sensitivity only), where it is computed, four expectations. Ordering is verified from git. What git cannot show is that nobody simulated slew time privately before 00:40:58; the Step A numbers for saturation (0.0409/0.0080, ratio 5.1) are the earlier dataset's, which is legitimate. Note `a27502e` and `6c8c3e9` carry the same commit second (00:47:12); only order matters and it is as required.
 
-**(1) Physics, momentum consistency.** I loaded the model, took the inertia of every design through `sim_params` and the existing `inertia_tensor`, and applied the bound theta_max = h_max^2 / (T J) with the committed wheel numbers (T 0.3, 2, 10 mN m; h_max 10, 30, 100 mN m s).
-- J_xx over the 1000 designs: 0.226 to 0.986 kg m^2, 10th/50th/90th percentile 0.251/0.361/0.783 (the note says 0.23 to 0.99, which matches, but "median about 0.5"; the actual median is 0.36, a small slip).
-- theta_max at J_min / median / J_max: small 84 / 53 / 19 degrees; medium 114 / 71 / 26; large 254 / 159 / 58. Share of designs whose bound is at least 30 degrees: small 0.83, medium 0.93, large 1.00. Observed `momentum_ok` share: small 0.808, medium 0.957, large 1.000. The bound is conservative as the note says (a PD law brakes earlier): of the designs the bound calls feasible, 253 of 285 small and 314 of 320 medium are actually momentum_ok. So the 30 degree scenario is momentum-consistent: no class is wiped out, and small wheels lose 19 % to large-inertia designs, a boundary.
-- At the previous 90 degree scenario every small design (theta_max <= 85 degrees even at J_min) was infeasible by the bound, consistent with the earlier 98 %.
+**(2) Slew time recomputed.** My own post-processing (`argmax(err < 1 degree)` on `simulate_adcs` output, rebuilt through `CubesatModel.configure/sim_params` and `make_config` at 30 degrees, 600 s, 0.5 s step) on designs 0, 1, 5, 17, 99, 250, 500, 777: differences from the CSV 0.0000 s in all; settling recomputed equal too. Censoring: exactly 4 designs have `slew_time_s` = 600 (ids 222, 308, 345, 438; Kp about 0.031, Kd about 1.4), all of them also unsettled (22 unsettled in total), so none is in the feasible set; designs 222 and 308 recomputed as censored. Also: slew time never exceeds settling time (0 violations), the 0.5 degree time is never earlier than the 1 degree time.
 
-**(2) R-13 hand probe:** reproduced above; every number in the brief (contending set, mass exponent 0.000, bootstrap 0.01, settling-mass -0.09 vs mine -0.08, pointing-mass -0.26, near-frontier per class 56/16/4 vs mine 55/16/4) matches.
+**(3) Probe.** Reproduced above, including contending set, bootstrap, near-frontier counts and associations.
 
-**(3) Adjustments and discipline.** Three adjustments are recorded with reasoning and numbers (table "Every attempt" in the note): 1: 10 degrees, wheels unchanged; 2: 20 degrees and momentum capacities 5 -> 10 and 20 -> 30 mN m s (momentum-to-torque ratio 33, 15, 10 s, within the stated public range of 5 to 20 s); 3: 30 degrees, capacities as in 2. Each row carries feasible counts per class, R-14 numbers, contending set, mass bootstrap, settling-mass and near-frontier sizes. The simulation-only scan (first 200 designs at 30 and 40 degrees, between adjustments 2 and 3) is declared with its purpose and results, and the note states R-13 was not evaluated on it. Judgment on discipline:
-- Adjustment 2 reached mass exponent 0.046 (miss of (a) by 0.004; bootstrap 0.69) and still failed (c) and (e). The next move (30 degrees) took mass to 0.000, so it did not chase the near-pass; it is justified in physics terms (the largest angle at which about 80 % of small wheels stay momentum-feasible, read from the scan) and the scan's R-14-type outputs (saturation and settling per class) were what it read. That is a defensible physical reading, but it is also the direction (more torque binding) that the failing clauses need, and the scan read quantities close to R-14's. I find no sign of tuning to pass R-13; I also cannot verify from git that the Step A reasoning was written "before any simulation", since the note arrives in one commit (`354bffd`). This is a G-4 item for the supervisor, not a defect.
-- Adjustment 2 moved two levers at once (angle and capacities), as the first-round G-1 observation already noted for adjustments 2 and 3 of the original series; the supervisor dispositioned that kind of bundling "accept as is" in round 1 and Amendment 3 itself allowed the capacity lever.
-- The committed dataset is the third attempt; the scope does not say which attempt to commit when the stop rule triggers. Attempt 2 (20 degrees) was closer on (a) and (b) (bootstrap 0.69) but its small-wheel saturation ratio and settling are similar and (c)/(e) fail in all three. Choice of the 30 degree dataset is the implementer's and is stated.
+**(4) Probe-note corrections.** G-2 fixed: the note now says wheels weigh 0.36 / 0.75 / 1.80 kg, std 0.60 of 0.84 kg total (my data: wheel 0.36 to 1.80, std 0.599; total std 0.837; panel std 0.169, battery std 0.350); the old sentence is quoted as the wrong one. Minor: the note says wheel mass "explains 55 %" of mass variance; my full-dataset variance share is 51 % (about 56 % as squared correlation on the feasible set), so the figure is right only on the feasible-set reading. G-3 fixed: the R-14 status section now says R-13 (a), (b), (c) fail, (d), (e) hold, labelled superseded; the old constants section is retitled "Phase 2 ... (history)" with the final scenario stated; `grep` finds no remaining "all of a to e holds" claim. Honesty of the Step A correction: the note says the expectation was partly wrong (levels 82.7 vs 70 and 51 vs 35 s; slew about 0.74 of settling, not half; small/large ratio 1.60, not above settling's 1.85; correlation 0.947, not 0.5 to 0.8) and gives the reason ln 30 / ln 100 = 0.74. I verified: ratio median 0.745, ln30/ln100 = 0.739, correlation 0.947, class medians 82.7 / 50.7 / 51.8 vs settling 128.3 / 67.1 / 69.3, slew corr with log(Kd/Kp) 0.998 / 0.990 / 0.971 (large/medium/small; settling 0.992 / 0.924 / 0.707), and at Kd/Kp below 5 (494 designs) slew medians small 35.5, medium 29.7, large 27.6 s against settling 88, 42, 36 s. All as stated. One thing the note could say more directly: the Step A rationale itself argued that the 1 degree band sits "before the slow tail"; it does not, and the note says so.
 
-**(4) The finding itself.** "1 % settling time is set by the slow pole Kp / (4 Kd), so medium and large wheels settle in the same time" is supported by the data:
-- For large wheels, corr(log settling, log(Kd/Kp)) = 0.993 and the median ratio of settling to 4.6 x 4 Kd/Kp is 0.98; medium 0.895 and 1.00; small 0.368 and 1.14 (small wheels depart because torque binds).
-- Median settling by quintile of Kd/Kp (large / medium / small, seconds): (0.3,1.4] 15.5 / 34.5 / 186; (1.4,2.6] 34.6 / 39.6 / 87; (2.6,5.2] 67.6 / 67.8 / 89; (5.2,10.7] 125 / 140 / 138; (10.7,32] 277 / 281 / 338. Medium and large coincide except in the highest-gain-ratio quintile, where large settles twice as fast.
-- Regression of log settling on log(Kd/Kp) and class dummies: R^2 0.53 with the ratio alone, 0.66 with classes; coefficient on small +0.79, on medium +0.20 (large is the base).
-- One part of the stated argument is **not supported**: "wheel class moves total mass by at most 1.4 kg of about 14 kg while panel span, battery capacity and tracker grade move it by several kg". From the CSV: panel mass 0.26 to 0.85 kg, battery mass 0.14 to 1.43 kg, tracker 0.15 to 0.90 kg, wheels 0.36 to 1.80 kg (3 wheels). Wheel class is the largest single mass lever (std 0.60 kg of a total std 0.84 kg; correlation of wheel class with total mass on the feasible set 0.75). Mass is absent from the contending set not because wheel class barely moves it, but because heavier wheels do not buy faster settling (medium and large settle alike), so mass and settling do not trade along wheel class. That is a correction to the explanation, not to the numbers (G-2).
-
-Observations on levers the amendment did not allow (for the supervisor, not defects):
-- Settling metric: the 1 % last-exceed criterion in the unchanged `adcs_sim.py` is dominated by the slow pole; a 5 % or 2 % criterion, a time to first entry, or peak slew rate would respond more to torque. Changing it means changing the metric definition (and the simulator is a non-goal if done there; it could be implemented in the new layer from the stored history).
-- Gain box: wheel class only separates settling at high Kp/Kd (Kd/Kp below about 1.4: large 15 s, medium 35 s, small 186 s). Narrowing Kd to a lower range or sampling the gain ratio so that more designs sit in that region would let torque bind across classes; it is a design-space change, not a scenario change.
-- Wheel mass spread: large (0.60 kg) against small (0.12 kg) is a deliberate factor of five; a larger spread, or a scaling of wheel mass with momentum capacity (which grows 10x), would raise the mass lever.
-- Slew angle as a sampled scenario variable rather than a constant; or per-class slew limits set from h_max^2/(T J), so each class operates at its own boundary.
-- The 90 degree scenario's "rich" result rested on momentum-violating designs (Amendment 2), so the earlier tension was partly an artefact; the present result is more honest and the supervisor may prefer it as the notebook's story (feasibility boundary instead of frontier tension).
-
-**(5) The two WP7 facts.** (a) Power never limits a slew: verified (3.2 % of designs have a power-capped torque, all large wheels; `power_ok` true everywhere; power margin on the feasible set 6.99 to 67.99 W, median 27.6 W, matching the note's 7.0 to 68 and 27.6). (b) Redundant pairs updated: power margin with energy balance 0.966 (own computation 0.966), reserve with depth of discharge 0.921 (own 0.921) over the feasible set, and 1.00 and 0.90 over near-frontier rows; accounting near-identities. Mass associations near the frontier: depth of discharge -0.57, reserve -0.45 (note -0.46), energy balance -0.38 and margin -0.37 (note -0.35), within the tau tolerance. Class counts on the feasible set (239/279/262) and the note's near-frontier counts agree with mine.
+**(5) Is the finding supported?** Yes. "Wheel class is a feasibility boundary; agility by slew time does not trade against mass" rests on: small wheels lose 19.2 % of designs to momentum at 30 degrees (medium 4.3 %, large 0 %; my numbers from `momentum_ok`; the 98 % at 90 degrees is from the prior dataset and was verified in the second pass by the h_max^2/(T J) bound); mass exponent 0.000 and bootstrap support 0.00; slew-mass and settling-mass associations -0.11 and -0.13 (-0.06 at 0.5 degrees). The caveat is that the null is partly built in: slew time at a 1 degree band is almost the same quantity as settling (0.947), so the fourth adjustment did not add independent evidence about actuator-limited agility; it confirmed that the first-entry time at this band is in the same slow tail. The finding is therefore "not found with these measures and this gain box", not "cannot exist".
 
 ## Definition of good enough
 
 | Item | Verdict | Evidence |
 |---|---|---|
-| Deliverables D-1 to D-8 exist at the stated paths | met | See Deliverables (D-7 with defects, G-2, G-3). |
-| R-1 to R-20 pass as checked | **not met** | R-13 fails (a), (b), (c) and the pointing-mass clause of (e); the stop rule of Amendment 3 has triggered. R-17 is partly met. All others met. |
-| The richness conditions R-13 and R-14 hold on the committed dataset | **not met** | R-14 holds; R-13 does not (see the table). |
+| Deliverables D-1 to D-8 exist | met | See Deliverables. |
+| R-1 to R-20 pass as checked | **not met (R-13)** | R-13 (a), (b), (c) fail; every other requirement is met. |
+| R-13 and R-14 hold on the committed dataset | **not met (R-13)** | R-14 holds; R-13 does not. This is the pre-agreed finding; accepting it means the supervisor records R-13 as a finding rather than a passed requirement. |
 | Non-goals untouched | met | See below. |
-
-Because R-13 is unmet under the stop rule, good enough is not met; only a supervisor scope decision changes that.
 
 ## Outside the scope
 
-- **Out-of-scope changes:** none beyond those accepted in round 1 (`.github/workflows/test.yml`, `pyproject.toml`, `uv.lock`, the comment-only edit to `extended_design_space.sysml`). Amendment 3 touched the seven files listed under R-19, all deliverable paths.
-- **Non-goals touched:** none. `adcs_sim.py` byte-identical; no estimator, solver, coordinates, WP2/WP3 or notebook change by WP4b; no `sysml-toolkit` dependency; the original CSV and WP4 tests untouched.
+- **Out-of-scope changes:** none by WP4b beyond those accepted earlier (`.github/workflows/test.yml` cache edit, `pyproject.toml`, `uv.lock`, a comment-only edit to `extended_design_space.sysml`). `git diff --stat 5dfbc8c~1..HEAD -- . ':!work-packages'` also lists `docs/api.md`, `docs/limitations.md`, `docs/method.md`, `docs/preconditioning.md`, `docs/why-and-how.md`, `docs/test_docs.py`, `src/hyperbolic_trade_space/__init__.py`, `tuning.py`: these are commits by WP3 and WP6 (`git log` shows `f6d9b9a`, `94fbe72`, `07fe9d3`, `e82594b`, `8f49253`, `f635a04`, `0815c82`, `c793e10`), not WP4b. Amendment 4 touched only the six files in `git show --stat a27502e` and the note.
+- **Non-goals touched:** none. `adcs_sim.py` byte-identical; no estimator, solver, coordinates, WP2/WP3 or notebook change by WP4b; no `sysml-toolkit` dependency; WP4 CSV and tests untouched.
+
+## Trials (undone)
+
+1. Broke the helper (`err_deg < band_deg` to `err_deg < 2 * band_deg`): `test_slew_time_helper_first_entry_and_censoring` and `test_dataset_reproducible_first_20` fail, 2 failed 25 passed. Restored by `git checkout`.
+2. Replaced `slew_time_s` in `measure` by the settling time: `test_slew_time_definition_and_ordering` and `test_dataset_reproducible_first_20` fail. Restored by `git checkout`. `git status` clean.
 
 ## Observations (not counted as failures)
 
-- Stale text in the probe note: "Status against R-14 (amended)" still says "R-13 (all of a to e) holds on the final dataset" with the 0.237 numbers, and "Final constants and scenario" still lists the 90 degree scenario and 5 mN m s small momentum (its heading says superseded). A reader skimming will get contradictory statements (G-3).
-- The note's Step A table uses the pre-adjustment wheel momenta (5 and 20 mN m s) and a median J of 0.5; actual median 0.36.
-- The R-15 sentence in the amendment 2 section ("feasible > 50 %") is historical.
-- The 4 xfails are in four separate tests with one shared reason; a reader seeing "5 xfailed" in the suite should know one belongs to WP3.
-- Strict xfail means that if a later change made (a) pass, the suite would fail (XPASS), a useful tripwire.
-- The finding (feasibility boundary instead of frontier tension) is a legitimate and instructive outcome; it also matches what the scope anticipated for small wheels. The pointing-mass clause of (e) at -0.26 is a near miss.
-- Previously dispositioned items (round 1, `WP4b-decisions.md`): G-1 (scans and multi-constant adjustments) accept as is; G-2 (momentum) decided "Enforce as feasibility" (amendment 2); G-3 (threshold margin) accept as is; G-4 (comment edit) accept as is; G-5 (small items): fix stale help text (done, verified), rest accept as is. G-6 (WP7 facts) has no recorded disposition; it is carried below as G-6.
+Levers still unused, for the supervisor (none was allowed by Amendment 4, which was the last adjustment):
+- **Momentum headroom as an attribute.** `peak_momentum_nms` is already in the CSV. A larger-is-better headroom (h_max over peak momentum) would put wheel class on the frontier directly (heavier wheel, more headroom), instead of only as a feasibility filter; a natural physics lever and a change to the attribute set, not the scenario.
+- **Gain box.** Wheel class only separates agility at Kd/Kp below about 5 (494 of the feasible designs; slew small 35.5 s vs large 27.6 s, settling 88 vs 36 s). Narrowing or re-sampling the Kd/Kp range, or per-class gains, would put more designs in the torque-limited regime.
+- **Larger tolerance band** (for example 5 or 10 degrees at 30 degrees) or peak slew rate, which sit in the saturated phase rather than the tail; the 1 degree band was fixed in Step A before data and is in the tail (3.4 slow-pole time constants).
+- **Wheel mass.** Scaling wheel mass with momentum capacity (which grows tenfold while mass grows fivefold) or a wider spread would strengthen the mass lever. Wheel mass is already the largest single mass lever.
+- **Sampled or per-class slew angle**, so each class operates at its own boundary (h_max^2 / (T J)).
+- **Cost of two near-duplicate attributes.** Settling and slew time (0.947) now both sit in the fit; the LP splits weight between them (slew .253, settling .081). WP7 must not read these as independent findings (the note already lists the pair under the redundant pairs).
+- **Large wheels on the frontier rest on 1 design** (near-frontier counts 79/24/1).
+- The note's "55 %" wheel-mass variance share is feasible-set-specific (51 % on all 1000).
+- Strict xfail on `test_a_`, `test_b_`, `test_c_` is a useful tripwire: a later change that makes any pass fails the suite. The suite shows 4 xfails, one of which (scikit-learn) belongs to WP3.
+- Earlier dispositions on record: round 1 G-1, G-3, G-4, rest of G-5 accept as is, stale help text fixed (verified); G-2 momentum "Enforce as feasibility" (amendment 2); second-pass G-1 (R-13 under the stop rule) answered "Reopen levers for a physically consistent scenario" then "One physics-justified lever: slew-time attribute" (amendments 3 and 4); second-pass G-2 and G-3 (probe-note defects) fixed in amendment 4 and verified here.
 
 ## Open decisions (for the supervisor)
 
-- **G-1. R-13 is unmet under the Amendment 3 stop rule** (a, b, c, and the pointing-mass clause of e; R-14 holds). Whether to accept this as a recorded finding changes the definition of good enough, so "accept as is" needs a scope amendment (for example, R-13 recorded as a finding with the notebook stating that wheel class appears as a feasibility boundary); "fix before acceptance" means reopening levers (see the observations, for example the settling metric or gain box) as another amendment; "follow-up work package" means accepting the rest and moving the richness question to a later package. — options: accept as is / fix before acceptance / follow-up work package. **pending**
-- **G-2.** The probe note's mass argument ("wheel class moves mass by at most 1.4 kg; panel, battery, tracker several kg") is contradicted by the data (wheel class is the largest mass lever; the real reason is that heavier wheels do not settle faster). The numbers in the note are right; the explanation of R-17 is wrong in this clause. — options: accept as is / fix before acceptance / follow-up work package. **pending**
-- **G-3.** Stale and contradictory text in the probe note (the R-14 status section claims R-13 a to e hold; the final-constants section lists the 90 degree scenario). — options: accept as is / fix before acceptance / follow-up work package. **pending**
-- **G-4.** Adjustment discipline under Amendment 3: one declared scan that read R-14-type quantities, adjustment 2 changing two levers, the choice of attempt 3 over attempt 2, and the "written before any simulation" ordering not verifiable from git. I found no sign of tuning to R-13. — options: accept as is / fix before acceptance / follow-up work package. **pending**
-- **G-5.** Small items: the suite shows 5 xfails (4 WP4b, 1 WP3); no test of the defaults (carried from round 1, previously accepted); median J in the note. — options: accept as is / fix before acceptance / follow-up work package. **pending**
-- **G-6.** The two WP7 facts and the updated redundant-pair correlations are verified and should be carried into WP7's scope, together with the finding that wheel class acts as a feasibility boundary. — options: accept as is (WP7 will carry them) / fix before acceptance / follow-up work package. **pending**
+- **G-1. R-13 (a), (b), (c) remain unmet after the last adjustment** (total mass exponent 0.000, bootstrap support 0.00; settling-mass -0.13, slew time-mass -0.11; (d) and (e) hold; R-14 holds). The supervisor pre-agreed to accept this finding in Amendment 4, but good enough requires R-13 to hold, so acceptance needs the supervisor to record R-13 as the finding (wheel class is a feasibility boundary; agility by slew time does not trade against mass) and the notebook to say so. — options: accept as is / fix before acceptance (reopen levers, see observations) / follow-up work package (accept the rest, move the richness question to a later package). **pending**
+- **G-2.** Slew time is near-redundant with settling (0.947), so the fourth adjustment adds little independent evidence; the unused levers above are candidates if the richness question is revisited. — options: accept as is / fix before acceptance / follow-up work package. **pending**
+- **G-3.** Small items: the "55 %" figure in the note is feasible-set-specific; Step A ordering is verifiable from git but not that no private simulation preceded it; suite shows one non-WP4b xfail. — options: accept as is / fix before acceptance / follow-up work package. **pending**
+- **G-4.** WP7 facts (power never limits a slew, redundant pairs including slew-settling, class counts 239/279/262, near-frontier 79/24/1, finding statement) are verified and should be carried into WP7's scope. — options: accept as is (WP7 will carry them) / fix before acceptance / follow-up work package. **pending**
 
 ## Gap dispositions
 
@@ -142,11 +127,9 @@ Resolved through the decision loop (`~/.claude/skills/CLAUDE.md`); records go in
 | G-2 | pending | |
 | G-3 | pending | |
 | G-4 | pending | |
-| G-5 | pending | |
-| G-6 | pending | |
 
 ## Recommendation
 
-**Do not recommend acceptance yet**, because R-13, a requirement and a good-enough item, is unmet, and the stop rule of Amendment 3 hands that to the supervisor: I cannot recommend acceptance of a package whose approved richness condition fails. Everything else is met on evidence I ran myself: the full suite (841 passed, 4 WP4b strict xfails), both WP4b test files under `REQUIRE_OPENSYSML=1`, ruff, lock, attribution, authors and CI are clean; `adcs_sim.py` and the WP4 tests are untouched; a coupling-break trial fails four tests; R-14 holds; the 30 degree scenario is verifiably momentum-consistent with meaningful small-wheel feasibility; and my independent probe reproduces every number the implementer reports. If the supervisor decides, by a scope amendment, that R-13 is to be recorded as a finding (wheel class acts as a feasibility boundary, not a frontier tension) and fixes the probe-note defects G-2 and G-3, the recommendation would become *recommend acceptance with the listed gaps noted*; that is the supervisor's scope decision, not mine. The alternative is a further amendment reopening the levers listed under (4).
+**Recommend acceptance with the listed gaps noted, conditional on the supervisor recording R-13 as the pre-agreed finding.** The evidence supports that recommendation. The stop rule was triggered by a lever the supervisor chose, run in the stated order (Step A in git before the model and dataset change, verified), with the implementer's own wrong expectation reported honestly; the slew times in the CSV reproduce exactly from the simulator output; my independent probe reproduces every R-13 number; R-14 and R-1 to R-12, R-15 to R-20 are met; the full suite, both WP4b files under `REQUIRE_OPENSYSML=1`, ruff, lock, attribution, authors and CI (last 8 runs) are clean; `adcs_sim.py` and the WP4 tests are untouched; two trials break tests as they should. R-13 (a), (b), (c) fail on numbers that are not near the thresholds (mass 0.000 against 0.05; bootstrap 0.00 against 0.90; associations -0.13 and -0.11 against -0.30), so the finding is firmly established and not a near miss. Whether to accept a package whose approved richness requirement is unmet is the supervisor's scope decision (G-1); the evidence does not contradict the finding, but it is weaker than it looks because slew time and settling are nearly the same measure (G-2).
 
 Acceptance is the supervisor's act, recorded as named above. This report does not accept the work.
