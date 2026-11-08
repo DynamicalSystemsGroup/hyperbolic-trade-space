@@ -186,3 +186,18 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   restart selector at τ = ∞ (4 to 5 lines); or keep everything and make the planted generator and
   R-1 state the identifiability condition (≥ d + 1 frontier rows per facet); or D with a selector,
   non-monotone. Put to the supervisor.
+- Driver's question on the G-1 fix given round 2 (options: keep mean slack and add an edge-count
+  restart selector / keep everything and fix the generator and the claim / tangent-plane step with
+  edge selection). **Supervisor (mzargham), verbatim:** "keep both B and D in the code base, and
+  evidence base but paper should focus on the mean slack approach because of the monotone
+  guarantee"
+- **Disposition (G-1 decided: fix before acceptance, as Amendment 1 of the scope):** the solver
+  keeps the built per-facet step B (supporting hyperplane of all rows, tightest on the facet's
+  rows; mean-slack objective; monotone) as the default and adds the tangent-plane step D (direction
+  from the facet's near-frontier rows where it has at least d + 1 of them, B otherwise; no monotone
+  objective) as a keyword option; both are tested on the planted data and both spikes' evidence
+  enters the documentation; the paper (WP10) presents the mean-slack approach because of the
+  monotone guarantee and names D as the evidence-driven alternative. Details the supervisor did not
+  state are defaults in the amendment (keyword name, the identifiability condition in the planted
+  generator and in R-1, the recovery claim quoted as measured). The whole review is rerun after the
+  fix (work-acceptance rule).

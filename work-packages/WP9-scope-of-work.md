@@ -172,3 +172,47 @@ future work). OD3 where K = 3 is demonstrated: "do experiments on both and we ca
 use after we see the results". OD4 regularization (raised by OD2): a regularization-based sparsity
 option as keyword arguments, alongside the existing rule. The Agent's defaults were approved as one
 item: "Approve the defaults as listed".
+
+## Amendment 1 (2026-11-08, at the acceptance gate; supervisor's G-1 disposition)
+
+What changed and why, per scope-of-work section 6. The approved default "refit each facet by
+`solve_slsqp` on its rows" is ill-posed in principle (the support function of a sliver is
+minimized at a simplex vertex; 0 of 60 planted facets recovered even from the true labels), as the
+two research spikes measured (`docs/superpowers/notes/spike-facet-refit/`,
+`docs/superpowers/notes/spike-objective/`). The supervisor's decision, verbatim in
+`WP9-decisions.md`: "keep both B and D in the code base, and evidence base but paper should focus
+on the mean slack approach because of the monotone guarantee". Items below replace or extend
+their originals; everything not named is as approved.
+
+- Algorithm default (replaces the "Algorithm" default): the per-facet step is **B**, the supporting
+  hyperplane of all rows tightest on the facet's rows: $w_k=\arg\min_w\,[J_\tau(Uw)-\bar u_k\cdot w]$
+  (`solve_slsqp` on $U$ centred at the facet mean), $\beta_k=J_\tau(Uw_k)$ over all rows; the
+  alternation minimizes the mean slack $\frac1N\sum_i(\beta_{k(i)}-w_{k(i)}\cdot u_i)$, which does
+  not increase under either half-step (R-2). Mean slack is the K > 1 analogue of the K = 1 reach: the
+  one-sided volume between the cloud and the envelope.
+- D-1 and D-2 gain a keyword `facet_step` with values `"support"` (B, default) and `"tangent"`
+  (**D**: the facet's direction is the smallest-variance direction of its near-frontier rows,
+  projected to the simplex, when the facet has at least $d+1$ such rows, and B otherwise;
+  $\beta_k$ the support value over all rows; the objective is not monotone under D and the docs say
+  so) *(default: name and values)*. Restart selection stays by mean slack *(default)*.
+- D-5 and R-1: the planted generator at `n_terms=K` guarantees at least $d+1$ frontier rows per
+  facet (identifiability: a facet with fewer frontier rows than dimensions is not determined by
+  them; spike round 2, section 2), and R-1 states that condition; the recovery claim in the docs is
+  the measured rate on 20 seeds under the generator's conditions, for both steps, with the cause of
+  any failure *(default)*.
+- D-7: `tests/test_estimator.py` and `tests/test_solvers.py` cover both steps on the planted data;
+  `tests/test_k_terms_case.py` runs the cubesat record with the default step only *(default)*.
+- D-8: the method page states the per-facet problem as B solves it, with the spikes' evidence
+  (the ill-posedness of the own-rows refit, the oracle recovery, the identifiability limit, the
+  monotonicity table), presents D as the evidence-driven alternative, and says that the paper
+  presents the mean-slack approach because of the monotone guarantee; `docs/api.md` documents
+  `facet_step`; the "Simplifying assumptions" passage gains this choice (named, defended, beyond:
+  a non-monotone evidence step or a frontier-weighted objective, both measured and parked).
+- R-9: "the method page states the algorithm" now means both steps, with B as the default and the
+  reason.
+- Non-goals unchanged; code budget unchanged (300 net lines; D is about 26 lines by the spike's
+  count).
+
+Re-approval: the supervisor's disposition above is the approval of this amendment (it was decided
+at the gate in the decision loop); the delivery is re-reviewed in full by a fresh reviewer before
+acceptance.
