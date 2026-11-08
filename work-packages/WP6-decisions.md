@@ -38,4 +38,10 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 
 ## Acceptance (acceptance gate)
 
-- pending `work-packages/WP6-review.md`
+- Review: `WP6-review.md` (fifth pass, 4f5d211), recommends acceptance with N-8, N-9, N-10 noted.
+- Acceptance act named in the scope: verbal acceptance in chat.
+- **Date:** 2026-11-08
+- **Wording items N-8..N-10:** put as one item with the gate; accepted as is by the same word.
+- **Supervisor (mzargham), verbatim:** "accept" (given for WP3 and WP6 together, after the driver
+  presented both gates in one message)
+- **Status:** accepted. WP6 is done.

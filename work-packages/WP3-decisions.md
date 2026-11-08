@@ -31,7 +31,12 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 
 ## Acceptance (acceptance gate)
 
-- pending `work-packages/WP3-review.md`
+- Review: `WP3-review.md` (third pass, a63f6f5), recommends acceptance; G-3 on the follow-up list.
+- Acceptance act named in the scope: verbal acceptance in chat.
+- **Date:** 2026-11-08
+- **Supervisor (mzargham), verbatim:** "accept" (given for WP3 and WP6 together, after the driver
+  presented both gates in one message)
+- **Status:** accepted. WP3 is done.
 
 ## Follow-up candidates
 
