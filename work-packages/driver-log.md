@@ -155,4 +155,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   replaced by commit-and-push to `dev` as each unit is done, with verification after, on `dev`.
   Fourteen held commits were pushed, and the container files left uncommitted since the Colima
   incident were committed.
+- 2026-11-09, waiting on checks. The supervisor: "are you regularly blocked waiting on ci (which
+  takes a long time); i think you should design a strategy to be employed by our PM that helps keep
+  us unblocked while also not completely forgoing the checks". The driver had spent 12 to 25
+  minutes waiting on each full run. Now: `docs/superpowers/notes/verification-strategy.md` (tiers;
+  the full suite runs on each new head in a watcher nobody waits for; Linux per batch; both
+  platforms only at acceptances and merges), stream P11 for the tooling, and a separate worktree
+  for the browser staging.
 

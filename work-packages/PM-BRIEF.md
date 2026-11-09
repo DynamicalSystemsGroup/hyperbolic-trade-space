@@ -159,3 +159,15 @@ changed, the tests of the files changed, and the Appendix B test with the append
 any change under `derivation/`). The full suite and the browser passes run afterwards on `dev`; a
 red head is fixed forward within the hour. Nothing waits uncommitted or unpushed.
 
+## Verification in tiers (2026-11-09, the supervisor's direction)
+
+The supervisor: "i think you should design a strategy to be employed by our PM that helps keep us
+unblocked while also not completely forgoing the checks". The strategy is
+`docs/superpowers/notes/verification-strategy.md`. For the PM: tier 0 before a commit (lint, format,
+the tests mapped to the changed paths, the appendix test for derivation changes) and tier 1 before a
+push (the fast suite, without `slow` tests) are the author's; tier 2 (the full suite on every new
+head of `dev`) runs in the driver's watcher and nobody waits for it; a red tier 2 verdict is routed
+to the owning stream to fix forward within the hour; tier 3 (both platforms green on the exact
+commit, the driver's browser pass) is only for acceptances and merges to `main`. Never dispatch the
+Linux run per push; the driver dispatches it per batch.
+
