@@ -80,6 +80,7 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 **Method from here on.** The driver verifies a named commit in its own clean checkout (a git
 worktree in the session scratchpad with its own locked environment), not the shared tree, so a
 result is a verdict on a commit and cannot be disturbed by agents at work. First used at 66f997c.
+| 2026-11-09 | CI stays blocked by a GitHub timeout on one toolkit download: the helper gains an idempotent fetch, an install from a local archive and an API fallback, all with the same checksum verification; the pin is not changed | the direct URL returns 504 from CI and from this Mac for over an hour; the same asset fetched through the release API has the pinned sha256 | to the PM; the workflow step follows the helper's commit |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
