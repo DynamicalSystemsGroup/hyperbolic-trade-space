@@ -108,6 +108,10 @@ be pushed. Every brief to an implementer who touches `derivation/` ends with tha
 implementer's report carries its output. The PM does not push a commit that touches `derivation/`
 without that output.
 
+**Pre-push list (rule of 2026-11-09).** Before any push, in a clean worktree at the commit to be
+pushed: `uv run ruff check . && uv run ruff format --check . && uv lock --check`, and the test files the
+commit touches (the Appendix B test above for `derivation/`). A push whose ruff check fails is a red head.
+
 ## Read first, in this order
 
 1. `~/.claude/skills/CLAUDE.md` (the decision loop) and `~/.claude/skills/README.md`.
