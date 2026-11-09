@@ -116,3 +116,10 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
   `index.html` (the staged output uses the same function). A long install command overflowed at
   phone width and now wraps. Checked in the browser pane at desktop and 375 px width. MathJax in
   the docs loads from a CDN, so math on docs pages needs network access during localhost review.
+
+## Delivery notes (PM, factual; not decisions)
+
+- Execution on `dev`: commits "WP8a: ..." 53919c3 to e85a97c; fresh-context review `WP8a-review.md` (2c35dd1).
+- The PM added `permissions: contents: read` to the build job of `.github/workflows/pages.yml` (security review of the workflow); the deploy job keeps `pages: write` and `id-token: write`. Candidate for a later package: pin both workflows' actions to full commit SHAs with the version in a comment.
+- The docs `default-groups` change was committed by the driver (ee68bfa); `uv lock --check` unchanged.
+- Math in the docsite loads MathJax from a CDN, so math needs network during the localhost review.
