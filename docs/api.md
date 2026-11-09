@@ -6,17 +6,23 @@ package follows the scikit-learn conventions [@pedregosa2011scikit; @buitinck201
 stored verbatim, validation in `fit`, fitted attributes ending in an underscore. Dimension is
 arbitrary: `d` metrics and `d - 1` chart coordinates.
 
-| Name | Kind | Role | Guide |
-|---|---|---|---|
-| `LogAffinePreconditioner` | transformer | attributes to larger-is-better metrics, invertible | [Conditioning](user-guide/conditioning.md) |
-| `frontier_in_original_units` | function | fitted surface as a monomial in raw attributes | [Conditioning](user-guide/conditioning.md) |
-| `HyperbolicTradeSpace` | transformer | fit the surface; chart of position and log V | [Fitting](user-guide/fitting.md) |
-| `select_temperature` | function | choose the temperature by target fraction above V = 1 | [Fitting](user-guide/fitting.md) |
-| `make_frontier_data` | function | seeded synthetic data with a planted frontier | [Fitting](user-guide/fitting.md) |
-| `make_configured_frontier_data` | function | the same with configuration variables | [Prediction](user-guide/prediction.md) |
-| `tension_report` | function | contending set, exchange rates, tension directions | [Tensions](user-guide/tensions.md) |
-| `TradeSpaceRegressor` | regressor | metrics, coordinates and novelty from configuration | [Prediction](user-guide/prediction.md) |
-| `__version__` | string | package version | |
+- [`LogAffinePreconditioner`](user-guide/conditioning.md), a transformer: attributes to
+  larger-is-better metrics, invertible.
+- [`frontier_in_original_units`](user-guide/conditioning.md), a function: the fitted surface as a
+  monomial in raw attributes.
+- [`HyperbolicTradeSpace`](user-guide/fitting.md), a transformer: fits the surface and gives the
+  chart of position and log V.
+- [`select_temperature`](user-guide/fitting.md), a function: chooses the temperature by a target
+  fraction above V = 1.
+- [`make_frontier_data`](user-guide/fitting.md), a function: seeded synthetic data with a planted
+  frontier.
+- [`make_configured_frontier_data`](user-guide/prediction.md), a function: the same with
+  configuration variables.
+- [`tension_report`](user-guide/tensions.md), a function: contending set, exchange rates and
+  tension directions.
+- [`TradeSpaceRegressor`](user-guide/prediction.md), a regressor: metrics, coordinates and novelty
+  from configuration.
+- `__version__`: the package version.
 
 Submodules are used by import path:
 

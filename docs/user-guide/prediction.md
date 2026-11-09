@@ -13,9 +13,12 @@ from hyperbolic_trade_space import (
     make_configured_frontier_data,
 )
 
-C, Y, info = make_configured_frontier_data(300, 3, 2, random_state=0)
+C, Y, info = make_configured_frontier_data(
+    300, 3, 2, random_state=0
+)
 reg = TradeSpaceRegressor(
-    RandomForestRegressor(n_estimators=20, random_state=0), HyperbolicTradeSpace(temperature=20.0)
+    RandomForestRegressor(n_estimators=20, random_state=0),
+    HyperbolicTradeSpace(temperature=20.0),
 ).fit(C, Y)
 print(reg.predict(C[:2]).shape, reg.predict_novelty(C[:2]).round(2))
 ```

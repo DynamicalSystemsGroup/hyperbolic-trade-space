@@ -5,10 +5,15 @@ is the minimizer. With several terms the fit alternates between assigning design
 refitting each facet, and the record says which of three levels the returned run meets.
 
 ```python {.runnable}
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+from hyperbolic_trade_space import (
+    HyperbolicTradeSpace,
+    make_frontier_data,
+)
 
 X, info = make_frontier_data(400, 4, n_terms=3, random_state=0)
-ts = HyperbolicTradeSpace(n_terms=3, temperature=50.0, random_state=0).fit(X)
+ts = HyperbolicTradeSpace(
+    n_terms=3, temperature=50.0, random_state=0
+).fit(X)
 t = ts.termination_
 print(t.status, t.max_gap < 1e-8, t.gamma > 0)
 print(ts.conditioning_.round(1))
@@ -28,14 +33,17 @@ print(ts.conditioning_.round(1))
 
 `termination_.status` is one of:
 
-| Status | Meaning | Use |
-|---|---|---|
-| `certified` | assignment fixed, residuals within `eps_feas`, `max_gap` within `eps_kkt`, no empty facet, margin positive | all three levels hold |
-| `stationary_without_margin` | the same, with margin at most `eps_feas` or an empty facet | levels 1 and 2 only; no local-optimality claim |
-| `uncertified` | assignment fixed, a residual or the gap above tolerance | do not rely on the fit; `fit` warns |
-| `guard_stop` | an iteration raised the mean slack by more than `guard_tol` | not converged; `fit` warns |
-| `iteration_cap` | `max_iter` reached | not converged; `fit` warns |
-| `not_applicable` | one term, `facet_step="tangent"`, a `penalty`, one metric, or fewer designs than facets | not a failure; the gaps are diagnostics only |
+- `certified`: assignment fixed, residuals within `eps_feas`, `max_gap` within `eps_kkt`, no empty
+  facet, margin positive. All three levels hold.
+- `stationary_without_margin`: the same, with margin at most `eps_feas` or an empty facet. Levels 1
+  and 2 only, with no local-optimality claim.
+- `uncertified`: assignment fixed, a residual or the gap above tolerance. Do not rely on the fit;
+  `fit` warns.
+- `guard_stop`: an iteration raised the mean slack by more than `guard_tol`. Not converged; `fit`
+  warns.
+- `iteration_cap`: `max_iter` reached. Not converged; `fit` warns.
+- `not_applicable`: one term, `facet_step="tangent"`, a `penalty`, one metric, or fewer designs than
+  facets. Not a failure; the gaps are diagnostics only.
 
 The warnings are scikit-learn `ConvergenceWarning`s that name the status and the largest gap. A
 guard stop or an iteration cap is never reported as `certified`.

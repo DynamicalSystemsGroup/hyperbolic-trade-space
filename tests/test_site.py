@@ -260,6 +260,15 @@ def test_every_hand_written_page_is_free_of_front_matter():
         assert not page.read_text().startswith("---"), page.name
 
 
+def test_no_table_needs_columns_on_a_phone(mkdocs_config):
+    """D3: the hand-written pages use lists, and the API reference renders parameters as lists."""
+    for page in source_pages():
+        tables = [ln for ln in page.read_text().splitlines() if ln.startswith("|")]
+        assert not tables, f"{page.name}: a table (use a list)"
+    handler = next(p["mkdocstrings"] for p in mkdocs_config["plugins"] if "mkdocstrings" in p)
+    assert handler["handlers"]["python"]["options"]["docstring_section_style"] == "list"
+
+
 def test_api_reference_names_equal_the_contract():
     text = (DOCS / "api-reference.md").read_text()
     names = re.findall(r"^::: hyperbolic_trade_space\.(\w+)\s*$", text, re.M)
@@ -397,12 +406,26 @@ def test_root_index_is_thin_and_has_the_cards():
         assert href in hrefs
     assert any(h.endswith("hyperbolic-trade-space") for h in hrefs), "repository link"
     assert "New card" in text
+    # R1: the map is a plain link to its full-size file and may use a wide screen's width
+    assert re.search(r'<a href="paper-map\.webp">\s*<img[^>]*src="paper-map\.webp"', text)
+    assert "min(94vw" in text and "figure.wide" in text
+    # R2: the install command breaks between words, never inside one
+    assert "break-all" not in text and "anywhere" not in text
+    install = re.search(r'<p class="install">(.*?)</p>', text, re.S).group(1)
+    assert re.sub(r"<[^>]+>", "", install) == (
+        "pip install git+https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space.git"
+    )
+    # R3: the wording matches the thinned docsite
+    for stale in ("page by page", "its mathematics", "in full"):
+        assert stale not in text.lower(), stale
     assert "pypi.org" not in text.lower()
     paper = (SITE / "paper" / "index.html").read_text()
     assert "The paper is in preparation" in paper
     assert "../docs/" in html_links(SITE / "paper" / "index.html")
     assert "../" in html_links(SITE / "paper" / "index.html")
     assert "working draft" not in (text + paper).lower()
+    for stale in ("page by page", "its mathematics", "in full"):
+        assert stale not in paper.lower(), stale
 
 
 def test_punch_list_covers_post_release_checks():

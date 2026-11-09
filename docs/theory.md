@@ -8,7 +8,10 @@ Let $m\in\mathbb{R}^d_{>0}$ be the metrics of a design, positive and larger-is-b
 The model scores a design by a weighted geometric mean
 
 $$
-V(m)=\prod_{j=1}^{d} m_j^{\,w_j},\qquad w_j\ge 0,\quad \sum_j w_j=1 .
+\begin{aligned}
+V(m)&=\prod_{j=1}^{d} m_j^{\,w_j},\\
+w_j&\ge 0,\quad \sum_j w_j=1 .
+\end{aligned}
 $$
 
 Because the weights sum to one, $V(\lambda m)=\lambda V(m)$: doubling every metric doubles V. So V

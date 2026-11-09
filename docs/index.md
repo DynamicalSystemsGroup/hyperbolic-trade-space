@@ -11,7 +11,7 @@ where they stop, and the two chain.
 
 ## Where to start
 
-- [Getting started](getting-started.md): install from source and run a first fit in five lines.
+- [Getting started](getting-started.md): install from source and run a first fit.
 - [User guide](user-guide/overview.md): one page per task, from conditioning your attributes to
   reading what the fit reports.
 - [API](api.md) and [API reference](api-reference.md): the public names and their docstrings.

@@ -8,11 +8,16 @@ supplies `LogAffinePreconditioner`, which implements the family of maps the meth
 
 ```python {.runnable}
 import numpy as np
-from hyperbolic_trade_space import HyperbolicTradeSpace, LogAffinePreconditioner
+from hyperbolic_trade_space import (
+    HyperbolicTradeSpace,
+    LogAffinePreconditioner,
+)
 
 rng = np.random.default_rng(0)
-A = np.exp(rng.normal(size=(200, 3))) * [1.0, 10.0, 100.0]  # three raw attributes
-pre = LogAffinePreconditioner(orientation=[1, -1, 1])  # the second is smaller-is-better
+# three raw attributes
+A = np.exp(rng.normal(size=(200, 3))) * [1.0, 10.0, 100.0]
+# the second attribute is smaller-is-better
+pre = LogAffinePreconditioner(orientation=[1, -1, 1])
 M = pre.fit_transform(A)
 print(np.allclose(pre.inverse_transform(M), A))
 ```

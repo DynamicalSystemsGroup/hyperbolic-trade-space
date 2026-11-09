@@ -71,6 +71,17 @@
   section h2 { font-size: 1.25rem; margin: 2rem 0 0.5rem; }
   figure { margin: 0 0 1rem; }
   figcaption { font-size: 0.9rem; color: var(--muted); }
+  /* The map is read at its own size: on a wide screen the figure leaves the text column and takes
+     most of the width (a plain link opens the full-size file). */
+  figure.wide a { display: block; }
+  @media (min-width: 52rem) {
+    figure.wide {
+      position: relative;
+      left: 50%;
+      width: min(94vw, 96rem);
+      transform: translateX(-50%);
+    }
+  }
   .cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -132,7 +143,7 @@
     padding: 0.1rem 0.35rem;
   }
   .card p.install { font-size: 0.85rem; }
-  .card p.install code { overflow-wrap: anywhere; word-break: break-all; }
+  .card p.install code span { white-space: nowrap; }
   footer {
     margin-top: 3rem;
     padding-top: 1rem;
@@ -175,10 +186,12 @@
 
   <section>
     <h2>How</h2>
-    <figure>
-      <img class="hero" src="paper-map.webp" width="1536" height="1024"
-           alt="A map of the paper as connected boxes: assumptions feed the single-term core, which leads to the chart and its uses, then the multi-facet extension, and finally the open questions.">
-      <figcaption>A map of the mathematics: assumptions, the single-term core, the chart and its uses, the multi-facet extension, the open questions</figcaption>
+    <figure class="wide">
+      <a href="paper-map.webp">
+        <img class="hero" src="paper-map.webp" width="1536" height="1024"
+             alt="A map of the paper as connected boxes: assumptions feed the single-term core, which leads to the chart and its uses, then the multi-facet extension, and finally the open questions.">
+      </a>
+      <figcaption>A map of the mathematics: assumptions, the single-term core, the chart and its uses, the multi-facet extension, the open questions. Select the map to open it at full size.</figcaption>
     </figure>
     <p>
       Read the map from the top. The foundation box is the invariant form: a weighted geometric mean
@@ -194,8 +207,8 @@
   </section>
 
   <p>
-    The paper tells the method, the documentation explains it page by page, and the package is the
-    tool you run on your own data. Start wherever suits you.
+    The paper tells the method, the documentation shows how to use the package task by task, and the
+    package is the tool you run on your own data. Start wherever suits you.
   </p>
 
   <ul class="cards">
@@ -209,9 +222,9 @@
     <li class="card">
       <h2>Documentation</h2>
       <p>
-        For a user of the package: getting started, a guide per task from conditioning your
-        attributes to reading a tension report, the API reference, a spacecraft example, the
-        theory in brief and a glossary.
+        For a user of the package: a first fit, a guide per task from conditioning your attributes
+        to reading a tension report, the API reference, a spacecraft example, the model in brief
+        and a glossary.
       </p>
       <a class="go" href="docs/">Open the docs →</a>
     </li>
@@ -221,7 +234,7 @@
         A scikit-learn-compatible estimator for the frontier, with an invertible log-ratio chart,
         tension reports and plotting helpers. Install from source:
       </p>
-      <p class="install"><code>pip install git+https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space.git</code></p>
+      <p class="install"><code><span>pip install</span> <span>git+https://github.com/</span><wbr><span>DynamicalSystemsGroup/</span><wbr><span>hyperbolic-trade-space.git</span></code></p>
       <a class="go" href="docs/api-reference/">API reference →</a>
       <p class="footnote"><a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space">Repository</a> · <a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/releases">Release notes</a></p>
     </li>
