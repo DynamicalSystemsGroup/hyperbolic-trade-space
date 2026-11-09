@@ -224,3 +224,18 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
   as a later-package candidate: once the paper and its appendices are stable (after WP11), add the
   docsite's references to the paper through stable reference keys (a key registry resolved at build
   time, in the manner of LaTeX labels and refs), so links do not break when sections move.
+
+## Amendment 2 and contract version 2: approval (2026-11-08)
+
+- **Documents:** `WP8a-scope-of-work.md`, "Amendment 2 (draft)" with its gate outcomes (G9
+  withdrawn, R-26 added); the contract's version-2 items listed there, without the paper-anchors
+  item.
+- **Driver's question:** "Amendment 2 is changed as you said: a test that nothing on the docsite
+  refers to removed content; no citations from the docsite into the paper for now (...); references
+  to the paper by stable keys recorded as deferred until the paper and appendices are stable. With
+  that, do you approve Amendment 2 and contract version 2 for execution?" (options: Approved / Not
+  yet).
+- **Supervisor (mzargham), verbatim:** "Approved"
+- **Disposition:** approved; the PM executes Amendment 2 and the contract's version 2 on `dev`;
+  acceptance of WP8a (skeleton plus Amendment 2) on the supervisor's second staged review and a
+  green Tests run; the Pages dispatch build after the merge.

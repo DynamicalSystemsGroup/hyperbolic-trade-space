@@ -84,3 +84,15 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Supervisor (mzargham), verbatim:** "Accepted"
 - **Disposition:** accepted; contract version 1 is in force; changes to it are amendments; WP15 may
   start once its scope is approved; the PM's follow-up list carries the skip-list housekeeping.
+
+## Contract version 2 (amendment; approved with WP8a's Amendment 2, 2026-11-08)
+
+- Items (from `WP8a-scope-of-work.md`, "WP14 contract amendments (contract version 2)", as changed at
+  the gate): the pinned docs pages become the user-facing set; ownership of the docs pages moves to
+  the presentation side; a pinned path `docs/superpowers/notes/paper-sources/`; the known-gaps row on
+  the bibliography and literature page; generated Derivations and Verification pages leave the
+  docsite and the world key (C-9) is withdrawn; a change-log row; the route lists in
+  `scripts/stage_site.py` and `tests/test_site.py`. The paper-anchors item is dropped (docsite
+  citations into the paper are deferred to stable reference keys).
+- **Supervisor (mzargham), verbatim** (the same quote as in `WP8a-decisions.md`): "Approved"
+- Disposition: contract version 2 approved; executed with WP8a's Amendment 2.
