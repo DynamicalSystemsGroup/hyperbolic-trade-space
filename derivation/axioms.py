@@ -99,6 +99,9 @@ _JF_MEAN, _JMEAN_F = sp.symbols(
 _JSLACK = sp.IndexedBase("jen_slack")  # I14: the slack of the instance with index i
 _GG_BUILT = sp.Symbol("built_from_posynomials")  # I15 premise and conclusion
 _GG_GENPOS = sp.Symbol("generalized_posynomial")
+_SOS_KKT = sp.Symbol("kkt_conditions_hold_at_a_feasible_point")  # I16 premises and conclusion
+_SOS_PD = sp.Symbol("lagrangian_hessian_positive_on_the_critical_cone")
+_SOS_MIN = sp.Symbol("strict_local_minimizer")
 
 _GT, _GE, _LE = sp.StrictGreaterThan, sp.GreaterThan, sp.LessThan
 
@@ -562,6 +565,34 @@ AXIOMS = {
         relation=(sp.Equivalent(_GG_BUILT, _GG_GENPOS),),
         objects=(("premise", _GG_BUILT), ("conclusion", _GG_GENPOS)),
     ),
+    "I16": Axiom(
+        "I16",
+        INHERITED,
+        "second-order sufficient conditions: let x be a feasible point of min f(x) subject to "
+        "equality and inequality constraints c_i, with f and c_i twice continuously "
+        "differentiable, and suppose there is a Lagrange multiplier vector for which the KKT "
+        "conditions hold at x. If w' (Hessian of the Lagrangian) w > 0 for every nonzero w in "
+        "the critical cone C(x, lambda) (the linearized feasible directions that are tangent "
+        "to the equalities and to the active inequalities with a positive multiplier, and "
+        "nonnegative along the active inequalities with a zero multiplier), then x is a strict "
+        "local solution. No constraint qualification is needed. With affine constraints the "
+        "Hessian of the Lagrangian is the Hessian of f",
+        citation="Nocedal & Wright, Numerical Optimization, 2nd ed., Theorem 12.6 "
+        "(Second-Order Sufficient Conditions), with the critical cone of section 12.5 "
+        "(definition 12.53) and the KKT conditions (12.34); read in a course copy of the "
+        "book's text (Kent State, pages as in the printed edition, p. 333), not the "
+        "publisher's: to be confirmed by the author against the printed second edition",
+        role="turns a first-order stationary point of the soft-weight fit, at which the Hessian "
+        "D - kappa M of the soft objective is positive definite on the tangent space of the "
+        "active face, into a strict local minimizer of that objective: the certificate of L17",
+        failure_mode="the theorem is about an exact KKT point: a numerical stationarity "
+        "tolerance is not covered by it; the critical cone is contained in the tangent space "
+        "of the active face (bounds with a positive multiplier fixed), so positive definiteness "
+        "on that space is sufficient, not necessary; a Hessian that is only positive "
+        "semidefinite on the cone decides nothing",
+        relation=(sp.Implies(sp.And(_SOS_KKT, _SOS_PD), _SOS_MIN),),
+        objects=(("kkt", _SOS_KKT), ("curvature", _SOS_PD), ("conclusion", _SOS_MIN)),
+    ),
     # ------------------------------------------------------------- REGULARITY
     "R1": Axiom(
         "R1",
@@ -670,6 +701,7 @@ I12 = AXIOMS["I12"]
 I13 = AXIOMS["I13"]
 I14 = AXIOMS["I14"]
 I15 = AXIOMS["I15"]
+I16 = AXIOMS["I16"]
 R1 = AXIOMS["R1"]
 R2 = AXIOMS["R2"]
 F5 = AXIOMS["F5"]

@@ -272,3 +272,70 @@ stops at L14 and is pinned to L1 to L14 by `tests/test_narrative.py`, left as it
 negative controls in `tests/test_proof_map.py`: each ledger entry withheld, a changed step named
 by its tag, a licence withheld for the logarithm of alpha, Jensen's inequality failing for a
 concave function, and every computed fact of L16 falsified in turn.
+
+## WP17 R-8: the soft-fit certificate (L17), 2026-11-09
+
+One new lemma script, `lemma_17_soft_fit_certificate.py` (L17, 52 tagged steps), appended to
+`CHAIN_NAMES` (the numbers and statements of L1 to L16 are unchanged; every existing step keeps its
+fingerprint, the record gained L17 and one ledger entry, I16). Source: the soft-fit spike's report
+and its addendum (`docs/superpowers/notes/spike-soft-fit/`).
+
+Statement, as given by the PM, unchanged: at a feasible point of the soft-weight fit where the
+first-order (KKT) conditions hold, if the Hessian H = D - kappa M of the soft objective is positive
+definite on the tangent space of the active face, the point is a strict local minimizer; D and M are
+both positive semidefinite, D the weighted within-term curvature and kappa M the designs' ambiguity
+between terms.
+
+| Part | Steps | Kinds | What is scripted |
+|---|---|---|---|
+| bases | L17.1 to L17.3 | A1, A2 by axiom | the log-metrics, the direction V and the scores are real; the exponents are nonnegative |
+| (i) the gradient | L17.4 to L17.12 | computed | SymPy differentiates the offset beta_k(t) and the score x_ik(t) along an arbitrary direction V (first derivative y_ik = c_ik - sum_l p_lk c_lk, second -tau Var_{p_k}(c)); the composition with the soft maximum (symbolic K, an undefined function x(k, t)) gives -sum alpha y and -kappa Var_alpha(y) - sum alpha z; the weights sum to one; the derivative of F regroups to sum_k V_k.g_k with g_k = (n_k/N)(utilde_k - ubar_k^alpha) |
+| (ii) the Hessian | L17.13 | computed | the second derivative of F along V is V'DV - kappa V'MV in moment form |
+| (iii) D, M >= 0 | L17.14 to L17.17 (and L17.39, L17.40) | computed; A3, A6 by axiom | the squares form of a weighted variance equals the moment form plus vbar^2 (Q - 1) for any weights (generic q, v); the weights sum to one at the support weights and at each design's weights, so the correction vanishes; each quadratic form is then a sum of nonnegative terms (tau > 0 by A3, kappa > 0 by A6) |
+| (iv) the test | L17.18 to L17.23 | computed; A2, I16 by axiom | the simplex constraint is affine (second derivative zero, A2), so the Hessian of the Lagrangian is that of F; the critical cone lies inside the tangent space of the face and positive definiteness on the face gives it on the cone (propositional); I16 gives the strict local minimizer; without the first-order premise or without the curvature the conclusion does not follow |
+| (v) numbers | L17.24, L17.25 and their checks | computed | an exact instance (N = 4, K = 2, d = 2, tau = kappa = 1, the L16 designs): the gradient and Hessian formulas against central finite differences of F at 60 digits (largest differences 4.6e-27 and 1.3e-26; the Hessian is symmetric to 5e-63); with both terms equal to (1/2, 1/2) the gradient components agree to 4e-62 and the smallest eigenvalue of the Hessian on the tangent space (basis (1,-1) in each term, unnormalized) is -0.0233 at kappa = 1 and +0.1329 at kappa = 1/2; D has smallest eigenvalue 0.0154 and M has smallest eigenvalue -3e-63 (zero) |
+
+Findings, none of which changes the statement:
+
+1. **The ledger entry.** I16 (Nocedal and Wright, Theorem 12.6, with the critical cone of (12.53) and
+   the KKT conditions (12.34)) is the only new ledger entry; its theorem number, its hypotheses and
+   the absence of a constraint qualification were read in the book's text (a course copy, not the
+   publisher's) and are recorded in `docs/superpowers/notes/references-verified.md`; the printed
+   page is marked "to be confirmed by the author".
+2. **Exact KKT versus a tolerance.** Theorem 12.6 is about an exact KKT point. The package's test is
+   a gap within `EPS_KKT` and a curvature above `EPS_FEAS`; a point with a small gap is not exactly
+   stationary, and the step from "near a stationary point where the curvature is positive" to "a
+   strict local minimizer at the point" is not scripted. The certificate is stated, as the PM gave
+   it, for a point where the conditions hold; the entry's failure mode says so. What the software
+   reports with a tolerance is the exact certificate's numerical reading.
+3. **Face versus cone.** The theorem needs positive definiteness on the critical cone. The package
+   tests the tangent space of the face (bounds with a strictly positive multiplier fixed, the others
+   free), which contains the cone; positive definiteness on it is sufficient and not necessary (a
+   bound with a zero multiplier gives a cone, not a subspace). L17.19, L17.20 script the inclusion
+   and the restriction.
+4. **The direction V is real by A1's route.** The nonnegativity of the quadratic forms needs the
+   direction V real; the checker has no ledger entry for "a direction is real", so V is taken from
+   `A1.real_base` (the entry that declares the log-metrics real). The direction is a vector of
+   R^(K d), so the fact is not in doubt; the route is the tool's.
+5. **Instantiation of the variance identity.** The identity "squares form = moment form + vbar^2
+   (Q - 1)" is computed for generic weights q and values v (L17.14); its use at the support weights
+   p_k and at a design's weights alpha_i is by substitution, with Q = 1 computed at those weights
+   (L17.15, L17.16). SymPy did not close the concrete expression directly (a sum_simplify error), so
+   the substitution is the step; it is not re-expanded.
+6. **Instance versus the spike's numbers.** The spike's instance (planted table A; all-equal
+   curvature -17.0) needs the data generator and is not reproduced in the lemma; the lemma's
+   instance is exact and small. The all-equal point on it is stationary at every kappa and its
+   curvature changes sign near kappa = D/M = 0.925, the same by-product the spike reports.
+
+Pins corrected (before to after): `tests/test_build_generated.py` chain length 16 to 17;
+`tests/test_derivation.py` banner "L1 -> L16" to "L1 -> L17" (and in `run.py`), the WP13 chain
+slice `CHAIN_NAMES[-5:-2]` to `[-6:-3]`, and the "L15 is followed by L16" slice `[-2:]` to
+`[-3:-1]`; `tests/test_proof_map.py` L16 is now second last (`CHAIN_NAMES[-2]`). Spec section 6 gains
+I16 in the inherited list (the lemma list there stops at L14 and is pinned to L1 to L14 by
+`tests/test_narrative.py`, left as it was). New tests in `tests/test_proof_map.py`: the statement and
+the entry, the kinds and which steps apply which entry, every computed fact falsified in turn (each
+fails with "L17 FAIL"), the numerical endpoints falsified, the wrong Hessians (D + kappa M, D alone)
+rejected against finite differences, the cone not inside a face that fails to fix the positive
+multiplier bounds, the certificate needing both premises of I16, each ledger import withheld in a
+scratch copy (A1, A2, A3, A6, I16), and a changed step and a changed citation named by the checker.
+`test_paper.py` Appendix B tests go stale until the paper is regenerated from the record.

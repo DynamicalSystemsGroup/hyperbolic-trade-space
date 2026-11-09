@@ -4211,6 +4211,624 @@
      "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
     }
    ]
+  },
+  "lemma_17_soft_fit_certificate.py": {
+   "number": 17,
+   "axioms_used": [
+    "A1",
+    "A2",
+    "A3",
+    "A6",
+    "I16"
+   ],
+   "hypotheses": [],
+   "proved_results_imported": {},
+   "proved_results_exported": [],
+   "imports": [
+    "A1",
+    "A2",
+    "A3",
+    "A6",
+    "I16"
+   ],
+   "results": [
+    {
+     "name": "the soft-fit certificate: Hessian D - kappa M and the second-order test",
+     "steps": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52
+     ]
+    }
+   ],
+   "steps": [
+    {
+     "tag": "L17.1",
+     "kind": "axiom",
+     "applies": [
+      "A1"
+     ],
+     "results": [],
+     "prose": "A1: the log-metrics u and the direction V (real vectors) are real families",
+     "code": "u, V = (A1.real_base('u'), A1.real_base('V'))",
+     "fingerprint": "7d023f535eff0a4d980d12a72cf346fc49f0f0301691c12bdb64e818b4a89783",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.2",
+     "kind": "axiom",
+     "applies": [
+      "A2"
+     ],
+     "results": [],
+     "prose": "A2: the exponents W_kj of every term are nonnegative (on the simplex)",
+     "code": "W = A2.nonneg_base('W')",
+     "fingerprint": "ca91a094f3892a348455a0eb59078aafe5a3c9a8c49a44e5eee7b159f3fe5f04",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.3",
+     "kind": "axiom",
+     "applies": [
+      "A1"
+     ],
+     "results": [],
+     "prose": "A1: the scores x0 of the model at W are real",
+     "code": "x0 = A1.real_base('x0')",
+     "fingerprint": "e27a0bcc10ee0f9b0c3f32ec96bac11f26fc654704ad901fdbd09ba4602f08a1",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.4",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the first derivative of the offset along V is sum_l p_lk c_lk (the L3 gradient)",
+     "code": "out['beta1_gap'] = sp.simplify(sp.diff(beta_t, t).subs(t, 0) - pc(k))",
+     "fingerprint": "559be3cad1d36f879744b70df3b8468eb664a573e2f9ebbdbacdb0706580fcbc",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.5",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "its second derivative is tau times the variance of c under the support weights",
+     "code": "out['beta2_gap'] = sp.simplify(sp.diff(beta_t, t, 2).subs(t, 0) - tau * (pc2(k) - pc(k) ** 2))",
+     "fingerprint": "7a72621f1cd00b89f1c14d0ef6ebafefb9468f85c7cd5a33b8ea8c414bff5d90",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.6",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the first derivative of the score x_ik(t) = (W_k + tV_k).u_i - beta_k(t) is y_ik",
+     "code": "out['y_gap'] = sp.simplify(sp.diff(score_t, t).subs(t, 0) - y(i, k))",
+     "fingerprint": "9bdcc3ed5d32ac169a3ce7668e0844dacded0cdf45fe8d625bfa5f090ef5f896",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.7",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "its second derivative is -tau Var_{p_k}(c_.k)",
+     "code": "out['z_gap'] = sp.simplify(sp.diff(score_t, t, 2).subs(t, 0) - z(k))",
+     "fingerprint": "59b6369a6e14ee33d4c584a73f01a17a26d255ee73c5d1515a3334a4c0771ddc",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.8",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the first derivative of -Phi_i at t = 0 is -sum_k alpha_ik y_ik",
+     "code": "out['row1_gap'] = sp.simplify(_tidy(G1, *names) - _tidy(-ybar, *names))",
+     "fingerprint": "7af630b46ad152b8acc19eb9e60a98c708113b7222313ba7de4b2a8561fcb90f",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.9",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the second derivative of -Phi_i at t = 0 is -kappa Var_alpha(y) - sum_k alpha_ik z_k",
+     "code": "out['row2_gap'] = sp.simplify(_tidy(G2, *names) - _tidy(-kappa * var_row - sp.Sum(al(i, k) * z(k), (k, 1, K)), *names))",
+     "fingerprint": "d614d612a62f6eacb1b3f51025923e717229e3bd188ed3743628d65d92c321b3",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.10",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the weights alpha_ik = softmax_k(kappa x_ik) of a design sum to one",
+     "code": "out['alpha_sum'] = _tidy_sums(sp.Sum(al(i, k), (k, 1, K)) - 1, *names)",
+     "fingerprint": "db090e571344f5c2a856702bfff5fcb1c1fdc26babbdcbdfe9d29b6f26f759b4",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.11",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the support weights p_lk of a term sum to one",
+     "code": "out['p_sum'] = _tidy_sums(sp.Sum(p(_LL, k), (_LL, 1, n)) - 1, *names)",
+     "fingerprint": "b881ab872980b16cdb96aa4e4662cea048d8a364729579f336fe027d5404c2c3",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.12",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "dF along V is sum_k V_k.g_k, g_k = (n_k/N)(utilde_k - ubar_k^alpha) (refit gradient)",
+     "code": "out['grad_gap'] = sp.expand(_nf(F1) - _nf(grad))",
+     "fingerprint": "d0d5f364da02a46e77b707aaeb09dfdb5cd6973944b48df6ab9a38ab7b19f83a",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.13",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the second derivative of F along V is V'DV - kappa V'MV, the moment forms of D and M",
+     "code": "out['hess_gap'] = sp.expand(_nf(F2) - _nf(D_mom - kappa * M_mom))",
+     "fingerprint": "bbd607d8e4cd63954437f08d1e3875c5d5edd0a707e774844df918e2925bc2fb",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.14",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "for weights q with sum Q, sum q (v - vbar)^2 = sum q v^2 - vbar^2 + vbar^2 (Q-1)",
+     "code": "q, v = (sp.IndexedBase('q'), sp.IndexedBase('v'))",
+     "fingerprint": "0628a6ba6e8af3149c3c98acb06a60ebaf9165a4f9778c3f10224816e9898b79",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.15",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "at the support weights of term k the sum of the weights is 1: the correction vanishes",
+     "code": "out['D_var_gap'] = _tidy_sums(cbar ** 2 * (sp.Sum(p(_LL, k), (_LL, 1, n)) - 1), *names)",
+     "fingerprint": "19610d5c500bc2b14a768b80ff5f82aed446e54c51a60313323d3e10ac2b9819",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.16",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "at the weights of design i the sum of the weights is 1: the correction vanishes",
+     "code": "out['M_var_gap'] = _tidy_sums(ybar_m ** 2 * (sp.Sum(al(i, k), (k, 1, K)) - 1), *names)",
+     "fingerprint": "ae35c9278a9a07fb3bc43d1924e99dd7709f60f096e42f65295e7c74016c9875",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.17",
+     "kind": "axiom",
+     "applies": [
+      "A3",
+      "A6"
+     ],
+     "results": [],
+     "prose": "A3, A6: tau > 0 and kappa > 0; the squares forms are sums of nonnegative terms",
+     "code": "tau_p, kappa_p = (A3.positive(tau), A6.positive(kappa))",
+     "fingerprint": "42633a0a8de860c60c393f9555a5a7e6d85dd41fc3cc0a4573b7606faf7ff4c9",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.18",
+     "kind": "axiom",
+     "applies": [
+      "A2"
+     ],
+     "results": [],
+     "prose": "A2: the simplex constraint of a term is affine in W: second derivative along V is 0",
+     "code": "out['affine_gap'] = sp.diff(replace_indexed(A2.rule(0)[0], S.w, lambda b: W[k, b] + t * V[k, b]) - A2.rule(0)[1], t, 2).doit()",
+     "fingerprint": "98bb9fa15b8a09ec1a6ee4938e2c24d49c69808ba6bde417f242de7785c52ad5",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.19",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "every direction of the critical cone is a direction of the tangent space of the face",
+     "code": "out['cone_in_face'] = not satisfiable(sp.And(cone, sp.Not(face)))",
+     "fingerprint": "30f2856c633460a79d938b8cf661643f59baec7039323e5c6d8288df52c7da1f",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.20",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "A positive definite form on the face is positive on the cone (a restriction)",
+     "code": "pos_face = sp.Symbol('form_positive_at_w_on_face')",
+     "fingerprint": "95eb7652acce2a9c52d5a871b62b05081a67e2f51842392d7a6a31520033fa87",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.21",
+     "kind": "axiom",
+     "applies": [
+      "I16"
+     ],
+     "results": [],
+     "prose": "I16: first-order conditions and positive definiteness on the face give a strict",
+     "code": "out['certificate'] = I16.entails([I16.obj('kkt'), sp.Implies(sp.Symbol('pd_on_face'), I16.obj('curvature')), sp.Symbol('pd_on_face')], I16.obj('conclusion'))",
+     "fingerprint": "c41d96b6f0ab89eb55136c506f6816989f89bb98ceec144081d4ed214decb72c",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.22",
+     "kind": "axiom",
+     "applies": [
+      "I16"
+     ],
+     "results": [],
+     "prose": "without the first-order conditions the premises of I16 do not give the conclusion",
+     "code": "out['certificate_without_kkt'] = I16.entails([sp.Implies(sp.Symbol('pd_on_face'), I16.obj('curvature')), sp.Symbol('pd_on_face')], I16.obj('conclusion'))",
+     "fingerprint": "2193613e83d741fb950861009dd429d5211347c42e530978e17e700798a61a80",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.23",
+     "kind": "axiom",
+     "applies": [
+      "I16"
+     ],
+     "results": [],
+     "prose": "without the curvature premise I16 does not give the conclusion",
+     "code": "out['certificate_without_curvature'] = I16.entails([I16.obj('kkt')], I16.obj('conclusion'))",
+     "fingerprint": "7321933d779f9f2d2c328de2f684a07f90e4ae87e7d6d8e0dcb0ca34263fc78a",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.24",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "exact instance: the formulas agree with central finite differences of F (60 digits)",
+     "code": "out['instance'] = _instance()",
+     "fingerprint": "9295091cbc277e0d6aa93fdd358841d3769049d678308f7cb7ceadb1b4b2bf5b",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.25",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "exact instance: both terms equal: the gradient and the curvature at kappa 1 and 1/2",
+     "code": "out['all_equal'] = _all_equal()",
+     "fingerprint": "ea5d26cb84879fec0c596f56b161c6ac1e835090c0b013f064c81441a49362bd",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.26",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the offset's first derivative along V is the support-weighted mean of V_k.u",
+     "code": "assert r['beta1_gap'] == 0, 'L17 FAIL: the offset derivative is not the weighted mean'",
+     "fingerprint": "5442915182836a31637f1550ec693c6ef92a1c16ebf19961c6293c2d180583b2",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.27",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "its second derivative is tau times the variance under the support weights",
+     "code": "assert r['beta2_gap'] == 0, 'L17 FAIL: the offset curvature is not tau Var_p(c)'",
+     "fingerprint": "48e3f94e1a362e65deada44b16e7051bcea1871839525c959ce33da850caca57",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.28",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the first derivative of the score is c_ik minus the weighted mean of c",
+     "code": "assert r['y_gap'] == 0, 'L17 FAIL: the score derivative is not y_ik'",
+     "fingerprint": "d6cd87db33d07ac82aa984274ced758713537dcd80d7a10576da6124f66427c3",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.29",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the second derivative of the score is minus tau Var_p(c)",
+     "code": "assert r['z_gap'] == 0, 'L17 FAIL: the score curvature is not -tau Var_p(c)'",
+     "fingerprint": "729a8b618ccf75d54b5d36444152b0a5d4306f27c71f9e7a7f6852f916896afb",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.30",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the soft model of a design: first derivative of -Phi_i is -sum alpha y",
+     "code": "assert r['row1_gap'] == 0, 'L17 FAIL: the soft-max first derivative is not -sum alpha y'",
+     "fingerprint": "13d153920c8c09eb7a82138669a50989765f509da63884da64d7778565f8bce0",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.31",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the soft model of a design: second derivative is -kappa Var_alpha(y) - sum alpha z",
+     "code": "assert r['row2_gap'] == 0, 'L17 FAIL: the soft-max second derivative is wrong'",
+     "fingerprint": "b523d5ae5be828be42adec9e7fd3816023919a98c04486b681562e4e0c981a87",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.32",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the weights of a design sum to one",
+     "code": "assert r['alpha_sum'] == 0, 'L17 FAIL: the design weights do not sum to one'",
+     "fingerprint": "9ca8b2945b7c50592903c7c9e49b8354077d6b7c5c82f8a553d1440016441e71",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.33",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the support weights of a term sum to one",
+     "code": "assert r['p_sum'] == 0, 'L17 FAIL: the support weights do not sum to one'",
+     "fingerprint": "8f9e171ef35f8b53ee7e385a764398fe884ddd8e4859d8d260907c38c06ae63a",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.34",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the gradient of F is the weighted refit gradient of each term",
+     "code": "assert r['grad_gap'] == 0, 'L17 FAIL: the gradient is not the weighted refit gradient'",
+     "fingerprint": "e42496096d7a4cef1f01554d837c0866acbc0cc42292cf814b6476b5f57a3cfa",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.35",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the second derivative of F is V'DV - kappa V'MV",
+     "code": "assert r['hess_gap'] == 0, 'L17 FAIL: the Hessian is not D - kappa M'",
+     "fingerprint": "035066727ba355528ae5c67527d3c40236a1de4e378308d0a225e30ea6549e8c",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.36",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the squares form of a weighted variance is the moment form plus vbar^2 (Q - 1)",
+     "code": "assert r['var_generic'] == 0, 'L17 FAIL: the variance identity does not hold'",
+     "fingerprint": "3dcc96c4014ffbab6c710b9acfb6542256022363f50df377249dade3b2d06513",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.37",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the variance of the support weights, in squares form, is its moment form",
+     "code": "assert r['D_var_gap'] == 0, 'L17 FAIL: the squares form of D differs from its moment form'",
+     "fingerprint": "9e645ac9654b19401624bec6140cee780b8f2fbebf7005f972d02e2b137a2b81",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.38",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the variance under a design's weights, in squares form, is its moment form",
+     "code": "assert r['M_var_gap'] == 0, 'L17 FAIL: the squares form of M differs from its moment form'",
+     "fingerprint": "76b41c524a90244bee31d3b3041faaf55c0ca6b069fcf87135c09991117d57eb",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.39",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "D is positive semidefinite: V'DV is a sum of nonnegative terms",
+     "code": "assert r['D_nonneg'] is True, 'L17 FAIL: D is not positive semidefinite'",
+     "fingerprint": "3a3e46baa30c5fbbb86a1f38cc3c208e62c39b12d347535395f2de8f1c2cbe19",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.40",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "M is positive semidefinite: V'MV is a sum of nonnegative terms",
+     "code": "assert r['M_nonneg'] is True, 'L17 FAIL: M is not positive semidefinite'",
+     "fingerprint": "591c519c85b271bffd8d35fd6d42ea171d5cfc860a9e179f9131a85f382f667b",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.41",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the constraints are affine: the Hessian of the Lagrangian is the Hessian of F",
+     "code": "assert r['affine_gap'] == 0, 'L17 FAIL: the simplex constraint is not affine in W'",
+     "fingerprint": "5f9f96ca20714faefb5f13967fdec2184d5021bb7d71bdeec681af7b594fe1fd",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.42",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the critical cone is inside the tangent space of the active face",
+     "code": "assert r['cone_in_face'] is True, 'L17 FAIL: the cone is not inside the face'",
+     "fingerprint": "44dd5dd7a02867577ae8d809d17868fd26a350f030ce9972cbae84e450e80a1d",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.43",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "positive definiteness on the face gives it on the cone",
+     "code": "assert r['restriction'] is True, 'L17 FAIL: restriction of a positive form to the cone'",
+     "fingerprint": "56c6b48f62337ceea94533312b666b2205ba9a66c5e4d87bbd6213c235d50a65",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.44",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "KKT and positive definiteness on the face give a strict local minimizer (I16)",
+     "code": "assert r['certificate'] is True, 'L17 FAIL: the certificate does not follow from I16'",
+     "fingerprint": "09a5484fa67e58a9a2e4d134ec94190f26b1785603c1d3ae3f30bcec86f1d358",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.45",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "without the first-order conditions the certificate does not follow",
+     "code": "assert r['certificate_without_kkt'] is False, 'L17 FAIL: the certificate needs the KKT premise'",
+     "fingerprint": "36e7139a80ab7c307ddd62bb62ad53a13233a0e9d319c930cc3e4ecac307d4b5",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.46",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "without the curvature the certificate does not follow",
+     "code": "assert r['certificate_without_curvature'] is False, 'L17 FAIL: the certificate needs curvature'",
+     "fingerprint": "16d9e9a6d97fef6e2c455c22e1ea629f1c721ee0f91b52028670cc416211d756",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.47",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "exact instance: the gradient formula agrees with finite differences of F",
+     "code": "assert ins['grad_err'] < sp.Float('1e-15'), 'L17 FAIL: the gradient differs from finite differences'",
+     "fingerprint": "8893539f44eaab93419b1f3ab1ff604ecc9df8659473815ac0e65c309c11ce8b",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.48",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "exact instance: the Hessian formula agrees with finite differences and is symmetric",
+     "code": "assert ins['hess_err'] < sp.Float('1e-15') and ins['asymmetry'] < sp.Float('1e-40'), 'L17 FAIL: the Hessian differs from finite differences'",
+     "fingerprint": "935c240df670c6da2f332a0e5c190c98c645691e9a8309a2a0794e62862dbeb9",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.49",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "exact instance: the point with both terms equal is stationary on the simplex",
+     "code": "assert eq['one']['gap'] < sp.Float('1e-40'), 'L17 FAIL: the all-equal point is not stationary'",
+     "fingerprint": "ba7cec435706054d9b11abf3a0da28c460564212997873bd8eb9d84430c25579",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.50",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "exact instance: at kappa = 1 its Hessian on the tangent space has negative curvature",
+     "code": "assert eq['one']['lambda_min'] < -sp.Float('0.01'), 'L17 FAIL: no negative curvature at kappa 1'",
+     "fingerprint": "3cbbd91838e63ef257c164bacdaf2ff7f797dfc7f6ed74cab72a75a89bc61483",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.51",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "exact instance: at kappa = 1/2 the same point has positive curvature (certified)",
+     "code": "assert eq['half']['lambda_min'] > sp.Float('0.01'), 'L17 FAIL: no positive curvature at kappa 1/2'",
+     "fingerprint": "7ee44ce265f61e1a7fbee1ffe572ff8c0b1f26870f7ba432df75671911f74279",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    },
+    {
+     "tag": "L17.52",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "exact instance: D and M are positive semidefinite at the point (eigenvalues >= 0)",
+     "code": "assert min(eq['one']['D_min'], eq['one']['M_min']) > -sp.Float('1e-40'), 'L17 FAIL: a negative eigenvalue of D or M'",
+     "fingerprint": "278f93b3b1d4e9098906ded65d14bdf4a115432ed09663564bae4cb950f2bf48",
+     "result": "the soft-fit certificate: Hessian D - kappa M and the second-order test"
+    }
+   ]
   }
  },
  "ledger": {
@@ -4238,6 +4856,7 @@
   "I13": "593b861f45acc60788a22de75b2902d3f0454ed0c7612997f9772753a0ed4408",
   "I14": "ead5becfc717ccd920a77c9a92f7ae47bf5a80d981eec5f3f6ba21e6979a43eb",
   "I15": "4aacdaf3b5cfeba77d4de2f4ae041a267baae11ffa435f93ad67e9553714255d",
+  "I16": "3a6b8998c00ccc585ef8354f5bd57e0e96d8802ab71ab90021806038fd6f2275",
   "R1": "b38653c84f3e4f29bd37d548018ad6a1556b8f3c246977f4b7aba50f455c344f",
   "R2": "b15ed265e27c49ab47fb9424ad6b6cb807964bdf79810a3cf078ec1befbb1bc8",
   "F5": "2b7224349cd656ed5f398c4834e6f572187f4d7d78fbd70c1ae142002943eebe",
