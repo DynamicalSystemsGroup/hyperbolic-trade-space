@@ -46,4 +46,15 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 
 ## Scope approval (approval gate)
 
-- pending
+- **Document:** `work-packages/WP8a-scope-of-work.md` with its "Gate outcomes" and link policy
+  (no open items).
+- **Date:** 2026-11-08.
+- **Driver's question:** "WP8a, the site skeleton: root index after hc-marimo, MkDocs docsite under
+  /docs/, the /paper/ slot, the generated ledger and verification pages, one assembly-and-serve
+  command for localhost review, the Pages workflow armed for the release tag and manual dispatch
+  only, tests, the punch list; no open items. Do you approve the scope for execution?" (options:
+  Approved / Not yet).
+- **Supervisor (mzargham), verbatim:** "Approved"
+- **Disposition:** approved; the PM executes on `dev` against WP14's contract as it lands;
+  acceptance is judged on the supervisor's review of the staged localhost site plus a green
+  dispatch build on `dev`; no deployment before the first release.
