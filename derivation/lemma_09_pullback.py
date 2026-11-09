@@ -22,6 +22,7 @@ substitution. No differentiation or limits.
 
 import sympy as sp
 
+from derivation.axioms import A1, A2, A4
 from derivation.sumtools import linear, product_to_exp_sum
 
 TITLE = "Pull-back: V = e^{w.b - beta} prod_j (a_j + s_j)^{w_j alpha_j}"
@@ -35,18 +36,24 @@ def derive(ctx):
     s_raw = sp.IndexedBase("r")  # raw attribute r_j; a_j + r_j > 0 (domain of A4)
     lim = (j, 1, d)
 
-    u = alpha[j] * sp.log(a[j] + s_raw[j]) + b[j]  # A4: u_j = log m_j
+    # [L9.1] A1: u_j = log m_j is defined because m_j > 0
+    u_j = A1.invoke(S.u[j])
+    # [L9.2] A4: log m_j = alpha_j log(a_j + r_j) + b_j for the raw attribute r_j
+    u = A4.rewrite(u_j)
     # invariant form: m~_j = m_j e^{-beta}; log of (m~_j)^{w_j}
-    logV = linear(sp.Sum(w[j] * (u - beta0), lim)).subs(S.simplex.lhs, 1)  # A2
+    # [L9.3] A2: sum_j w_j = 1 absorbs the offset: sum_j w_j (u_j - beta) = w.u - beta
+    logV = A2.rewrite(linear(sp.Sum(w[j] * (u - beta0), lim)))
     V_derived = sp.exp(logV)
 
     prod = sp.Product((a[j] + s_raw[j]) ** (w[j] * alpha[j]), lim)
-    target_exp = sp.exp(sp.Sum(w[j] * b[j], lim) - beta0) * product_to_exp_sum(prod)
+    # [L9.4] A4: a_j + r_j > 0 licenses the log of the power (a_j + r_j)^(w_j alpha_j)
+    target_exp = sp.exp(sp.Sum(w[j] * b[j], lim) - beta0) * product_to_exp_sum(prod, A4)
 
     # invertibility (alpha_j != 0): u_j -> s_j -> u_j
     uj = sp.Symbol("uj", real=True)
     s_back = sp.exp((uj - b[j]) / alpha[j]) - a[j]
-    u_again = alpha[j] * sp.expand_log(sp.log(a[j] + s_back), force=True) + b[j]
+    # [L9.5] A4: alpha_j != 0 and a_j + r_j > 0, so the conditioning inverts: u -> r -> u
+    u_again = alpha[j] * A4.force_log(sp.log(a[j] + s_back)) + b[j]
 
     ctx["L9"] = {
         "V_derived": V_derived,
@@ -64,7 +71,10 @@ def verify(ctx):
     r = ctx["L9"]
     lhs = sp.expand(sp.expand_power_exp(r["V_derived"]))
     rhs = sp.expand(sp.expand_power_exp(r["target"]))
+    # [L9.6] V = e^{w.b - beta} prod_j (a_j + r_j)^{w_j alpha_j}
     assert sp.simplify(lhs - rhs) == 0, "L9 FAIL: V != e^{w.b-beta} prod (a_j+s_j)^{w_j alpha_j}"
+    # [L9.7] the conditioning is invertible: the round trip returns u_j
     assert sp.simplify(r["u_again"] - r["uj"]) == 0, "L9 FAIL: conditioning is not invertible"
     # simplex substitution was actually needed: beta enters only through sum_j w_j
+    # [L9.8] the offset enters only through sum_j w_j, which A2 sets to 1
     assert S.simplex.lhs not in r["V_derived"].atoms(sp.Sum), "L9 FAIL: simplex not substituted"

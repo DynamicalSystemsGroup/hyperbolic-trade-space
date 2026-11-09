@@ -30,7 +30,14 @@ def linear(expr):
     )
 
 
-def product_to_exp_sum(prod):
-    """Product(f_j) -> exp(Sum(log f_j)), log of a power expanded (licensed by positivity)."""
+def product_to_exp_sum(prod, licence=None):
+    """Product(f_j) -> exp(Sum(log f_j)), log of a power expanded.
+
+    ``licence`` is the ledger entry (A1, A4) whose positivity relation licenses the expansion;
+    without one the expansion is forced on the caller's word (positivity stated in the caller).
+    """
     f, lim = prod.function, prod.limits[0]
-    return sp.exp(sp.Sum(sp.expand_log(sp.log(f), force=True), lim))
+    log_f = sp.log(f)
+    return sp.exp(
+        sp.Sum(licence.force_log(log_f) if licence else sp.expand_log(log_f, force=True), lim)
+    )

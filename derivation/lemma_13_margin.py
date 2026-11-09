@@ -31,6 +31,7 @@ data U.
 
 import sympy as sp
 
+from derivation.axioms import F12, I9, R2
 from derivation.sumtools import linear
 
 TITLE = "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
@@ -67,10 +68,12 @@ def derive(ctx):
     # 2. margin algebra: gamma = c + 2 delta, e1 = a1 - delta, e2 = delta - a2
     c = sp.Symbol("c", positive=True)  # gamma - 2 delta > 0 (2 delta < gamma)
     delta = sp.Symbol("delta", nonnegative=True)
-    rest = sp.Symbol("rest", nonnegative=True)  # (s_ik(i) - s_il) - gamma >= 0 (F12)
+    # [L13.1] F12: gamma <= s_ik(i) - s_il for every row and facet, so the slack rest is >= 0
+    rest = F12.slack_symbol("rest")
     a1 = sp.Symbol("a1", nonnegative=True)  # e_ik(i) + delta >= 0  (|e| <= delta)
     a2 = sp.Symbol("a2", nonnegative=True)  # delta - e_il >= 0
-    gamma = c + 2 * delta
+    # [L13.2] R2: the margin gamma is positive; here gamma = c + 2 delta, c = gamma - 2 delta > 0
+    gamma = R2.invoke(c + 2 * delta)
     e1, e2 = a1 - delta, delta - a2
     new_gap = (gamma + rest) + e1 - e2
     margin_slack = sp.simplify(new_gap - (c + rest + a1 + a2))
@@ -82,6 +85,9 @@ def derive(ctx):
     nth, a_, b_, UU = sp.symbols("nth a_ b_ UU", nonnegative=True)
     bound_slack = sp.simplify((nth + a_) * UU - nth * (UU - b_) - (a_ * UU + nth * b_))
     bound_nonneg = (a_ * UU + nth * b_).is_nonnegative
+    # [L13.3] I9 (Cauchy-Schwarz): |Delta theta . u~| <= ||Delta theta|| ||u~||, with slack cs >= 0
+    cs = I9.slack_symbol("cs")
+    cs_chain_nonneg = (a_ * UU + nth * b_ + cs).is_nonnegative  # delta - |Delta theta.u~| >= 0
     r_ = sp.Symbol("r_", nonnegative=True)
     U_ = sp.Symbol("U_", positive=True)  # U >= 1: the last component of u~ is -1
     g_ = sp.Symbol("g_", positive=True)
@@ -129,6 +135,7 @@ def derive(ctx):
         margin_positive=margin_positive,
         bound_slack=bound_slack,
         bound_nonneg=bound_nonneg,
+        cs_chain_nonneg=cs_chain_nonneg,
         radius_set=radius_set,
         r_=r_,
         U_=U_,
@@ -139,33 +146,47 @@ def derive(ctx):
 
 def verify(ctx):
     r = ctx["L13"]
+    # [L13.4] a parameter change moves the score by Delta theta_k . (u_i, -1)
     assert sp.simplify(r["score_change_slack"]) == 0, (
         "L13 FAIL: change of the score is not Delta theta . (u, -1)"
     )
+    # [L13.5] the new gap to facet l is (gamma - 2 delta) + rest + a1 + a2
     assert sp.simplify(r["margin_slack"]) == 0, (
         "L13 FAIL: new gap != (gamma - 2 delta) + rest + a1 + a2"
     )
+    # [L13.6] the slacks rest + a1 + a2 are nonnegative (F12 and |e| <= delta)
     assert r["margin_nonneg"] is True, "L13 FAIL: the slacks rest + a1 + a2 are not nonnegative"
+    # [L13.7] the new gap is positive when 2 delta < gamma: each maximizing facet is unchanged
     assert r["margin_positive"] is True, (
         "L13 FAIL: the new gap is not positive when 2 delta < gamma"
     )
+    # [L13.8] r U - ||Delta|| ||u~|| = a U + ||Delta|| b with a, b >= 0 (r = max norm, U = max norm)
     assert sp.simplify(r["bound_slack"]) == 0, (
         "L13 FAIL: r U - ||Delta|| ||u~|| != a U + ||Delta|| b"
     )
+    # [L13.9] the Cauchy-Schwarz chain slack a U + ||Delta|| b is nonnegative
     assert r["bound_nonneg"] is True, "L13 FAIL: Cauchy-Schwarz chain slack is not nonnegative"
+    # [L13.10] with the Cauchy-Schwarz slack (I9), delta - |Delta theta . u~| is nonnegative
+    assert r["cs_chain_nonneg"] is True, "L13 FAIL: delta - |Delta theta . u~| is not nonnegative"
+    # [L13.11] 2 r U < gamma exactly when r < gamma / (2 U): the stable radius
     assert r["radius_set"] == sp.Interval.open(-sp.oo, r["g_"] / (2 * r["U_"])), (
         "L13 FAIL: 2 r U < gamma is not r < gamma / (2 U)"
     )
 
     num = r["numeric"]
+    # [L13.12] exact instance (d = 2): margin 1 and maximizing facets (1, 2)
     assert num["margin"] == 1 and num["labels"] == (1, 2), "L13 FAIL: instance margin or labels"
+    # [L13.13] exact instance: the labels are unchanged by the perturbation
     assert num["labels_perturbed"] == num["labels"], (
         "L13 FAIL: labels changed inside the stable radius"
     )
+    # [L13.14] exact instance: the perturbation has norm r, inside the radius gamma / (2 U)
     assert all(sp.simplify(x - num["r"]) == 0 for x in num["norms"]) and num["r"] < num["radius"], (
         "L13 FAIL: the instance perturbation is not inside the radius"
     )
+    # [L13.15] exact instance: 2 delta < gamma holds
     assert 2 * num["delta"] < num["margin"], "L13 FAIL: 2 delta < gamma not met by the instance"
+    # [L13.16] exact instance: the new margin is at least gamma - 2 delta and positive
     assert bool(num["perturbed_margin"] >= num["margin"] - 2 * num["delta"]) and bool(
         num["perturbed_margin"] > 0
     ), "L13 FAIL: perturbed margin below gamma - 2 delta"

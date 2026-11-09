@@ -22,6 +22,7 @@ the fit, L3 + R1), or anything off F; they are shape quantities, not preferences
 
 import sympy as sp
 
+from derivation.axioms import A1, A2
 from derivation.sumtools import linear
 
 TITLE = "Elasticities -w_k/w_j on the frontier; improvement factor V^(-1/w_j)"
@@ -63,12 +64,14 @@ def derive(ctx):
     w_j0 = w[j0]
     logf_star = -logV / w_j0
     # V = exp(logV) > 0 (A1), so V**(-1/w) = exp(-logV/w) (power of a positive base).
-    V = sp.exp(logV)
+    # [L7.1] A1: V = exp(log V) with m > 0, so V > 0 and V^(-1/w_j) is a power of a positive base
+    V = A1.invoke(sp.exp(logV))
     f_star = sp.powdenest(V ** (-1 / w_j0), force=True)
 
     # Uniform improvement: f = 1/V in L1's V(k m) = k V(m) gives V = 1.
     L1 = ctx["L1"]
-    uniform = sp.simplify(L1["Vk"].subs(S.k_scale, 1 / L1["V"]))
+    # [L7.2] A2: sum_j w_j = 1 (already applied in L1's V(k m)), so V(m / V) is 1
+    uniform = sp.simplify(A2.rewrite(L1["Vk"].subs(S.k_scale, 1 / L1["V"])))
 
     ctx["L7"] = {
         "dG": dG,
@@ -91,16 +94,22 @@ def verify(ctx):
     r = ctx["L7"]
     w, j0, k0 = S.w, r["j0"], r["k0"]
     x = sp.Symbol("x", real=True)
+    # [L7.3] the tangent direction e_k0 + x e_j0 has dG(v) = w_k0 + x w_j0
     assert sp.simplify(r["dG"] - (w[k0] + x * w[j0])) == 0, "L7 FAIL: dG(v) != w_k + x w_j"
+    # [L7.4] dG(v) = 0 gives the elasticity x = d log m_j0 / d log m_k0 = -w_k0 / w_j0
     assert sp.simplify(r["x_sol"] + w[k0] / w[j0]) == 0, "L7 FAIL: elasticity != -w_k/w_j"
     # scaling m_j0 by f adds w_j0 log f to log V
+    # [L7.5] scaling m_j0 by f adds w_j0 log f to log V, so V -> f^w_j0 V
     assert sp.simplify(r["logV_new"] - (r["logV"] + w[j0] * r["logf"])) == 0, (
         "L7 FAIL: V(f m_j) != f^{w_j} V"
     )
     # at f = V^(-1/w_j0) the new log V vanishes: V = 1 (frontier)
     new_logV = r["logV_new"].subs(r["logf"], r["logf_star"])
+    # [L7.6] at f = V^(-1/w_j0) the new log V is 0: the point reaches the frontier V = 1
     assert sp.simplify(new_logV) == 0, "L7 FAIL: improvement factor does not reach V = 1"
+    # [L7.7] the improvement factor V^(-1/w_j0) equals exp(-log V / w_j0)
     assert sp.simplify(r["f_star"] - sp.exp(r["logf_star"])) == 0, (
         "L7 FAIL: V^(-1/w_j) != exp(-log V / w_j)"
     )
+    # [L7.8] uniform improvement: scaling every metric by 1/V gives V = 1
     assert sp.simplify(r["uniform"] - 1) == 0, "L7 FAIL: uniform improvement 1/V does not give V=1"

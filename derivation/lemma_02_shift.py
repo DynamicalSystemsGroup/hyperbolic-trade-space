@@ -16,6 +16,7 @@ so expand_log(force=True) is licensed.
 
 import sympy as sp
 
+from derivation.axioms import A2, A3
 from derivation.sumtools import linear
 
 TITLE = "Uniform shift: J_tau(w; U + c 1^T) = J_tau(w; U) + c"
@@ -37,7 +38,8 @@ def derive(ctx):
     shifted = J(S, c)
 
     # Per-term: tau * sum_j w_j (u_ij + c) = tau * s_i + tau * c  (A2: sum_j w_j = 1).
-    term_lin = linear(tau * sp.Sum(w[j] * (u[i, j] + c), (j, 1, d))).subs(S.simplex.lhs, 1)
+    # [L2.1] A2: sum_j w_j = 1 turns tau sum_j w_j (u_ij + c) into tau s_i + tau c
+    term_lin = A2.rewrite(linear(tau * sp.Sum(w[j] * (u[i, j] + c), (j, 1, d))))
     s_i = sp.Sum(w[j] * u[i, j], (j, 1, d))
     term_ok = sp.expand(term_lin - (tau * s_i + tau * c))
 
@@ -45,7 +47,8 @@ def derive(ctx):
     summand = sp.expand(sp.exp(term_lin))
     total = linear(sp.Sum(summand, (i, 1, n)))
     # log of product: positivity of the Sum of exponentials licenses the force (see docstring).
-    shifted_lin = sp.expand_log(sp.log(total / n), force=True) / tau
+    # [L2.2] A3 (tau > 0): log(e^{tau c} X) = tau c + log X for the positive sum X, then / tau
+    shifted_lin = A3.force_log(sp.log(total / n)) / tau
 
     ctx["L2"] = {
         "J": base,
@@ -59,9 +62,11 @@ def derive(ctx):
 def verify(ctx):
     S = ctx["S"]
     r = ctx["L2"]
+    # [L2.3] per term, tau sum_j w_j (u_ij + c) - (tau s_i + tau c) is 0
     assert r["term_diff"] == 0, "L2 FAIL: per-term shift tau*(s_i + c) not obtained from simplex"
     # J(U + c) after Sum algebra equals J(U) + c.
     lhs = r["J_shifted_reduced"]
     rhs = sp.expand(sp.expand_log(r["J"], force=True) + S.c)
     diff = sp.simplify(sp.expand_log(lhs - rhs, force=True))
+    # [L2.4] J_tau(U + c 1^T) - (J_tau(U) + c) is 0 after the Sum algebra
     assert diff == 0, f"L2 FAIL: J(U + c1^T) - (J(U) + c) = {diff}"

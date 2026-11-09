@@ -17,6 +17,7 @@ linearity and constant factoring are done by sumtools.linear, and the simplex eq
 
 import sympy as sp
 
+from derivation.axioms import A1, A2
 from derivation.sumtools import linear, product_to_exp_sum
 
 TITLE = "Homogeneity and invariant form: V(k m) = k V(m), V(m / V) = 1"
@@ -28,7 +29,8 @@ AXIOMS_USED = ["A1", "A2"]
 
 
 def _subs_simplex(expr, S):
-    return expr.subs(S.simplex.lhs, 1)  # A2: sum_j w_j = 1
+    # [L1.1] A2: the simplex sum_j w_j is replaced by 1 wherever it appears
+    return A2.rewrite(expr)
 
 
 def derive(ctx):
@@ -40,10 +42,12 @@ def derive(ctx):
     V_prod = sp.Product(m[j] ** w[j], lim)
     logV = sp.Sum(w[j] * sp.log(m[j]), lim)
     V = sp.exp(logV)
-    V_prod_as_exp = product_to_exp_sum(V_prod)
+    # [L1.2] A1 (m_j > 0) licenses log(m_j^w_j) = w_j log m_j: V is exp of a Sum
+    V_prod_as_exp = product_to_exp_sum(V_prod, A1)
 
     # Homogeneity: V(k m).
-    Vk_exp = product_to_exp_sum(sp.Product((k * m[j]) ** w[j], lim))
+    # [L1.3] A1 again for the scaled point k m: (k m_j)^w_j in log space
+    Vk_exp = product_to_exp_sum(sp.Product((k * m[j]) ** w[j], lim), A1)
     Vk = sp.expand(_subs_simplex(linear(Vk_exp), S))  # -> k * exp(sum w log m)
 
     # Invariant form: m / V(m), with log(m_j / V) = log m_j - logV (V = exp(logV) > 0).
@@ -71,13 +75,18 @@ def verify(ctx):
     S = ctx["S"]
     r = ctx["L1"]
     V = r["V"]
+    # [L1.4] V(m) = prod_j m_j^w_j equals exp(sum_j w_j log m_j)
     assert sp.simplify(r["V_prod_as_exp"] - V) == 0, "L1 FAIL: V is not exp(sum w log m)"
+    # [L1.5] homogeneity of degree 1: V(k m) = k V(m), using sum_j w_j = 1
     assert sp.simplify(r["Vk"] - S.k_scale * V) == 0, "L1 FAIL: V(k m) != k V(m)"
+    # [L1.6] invariant form: V(m / V(m)) = 1, the point lies on the frontier
     assert sp.simplify(r["V_inv_form"] - 1) == 0, "L1 FAIL: V(m / V(m)) != 1"
+    # [L1.7] offset: V(m e^-beta) = e^-beta V(m), so log V = w.u - beta
     assert sp.simplify(r["V_tilde"] - sp.exp(-r["beta0"]) * V) == 0, (
         "L1 FAIL: V(m e^-beta) != e^-beta V(m)"
     )
     # Degree of homogeneity is the simplex total: without sum w = 1 it would not be 1.
+    # [L1.8] the degree of homogeneity passes through sum_j w_j (without it, not degree 1)
     assert S.simplex.lhs in linear(
         product_to_exp_sum(sp.Product((S.k_scale * S.m[S.j]) ** S.w[S.j], (S.j, 1, S.d)))
     ).atoms(sp.Sum), "L1 FAIL: homogeneity must pass through sum_j w_j"

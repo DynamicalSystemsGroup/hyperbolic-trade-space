@@ -36,6 +36,7 @@ hypothesis beta_k = J_tau(U w_k) or exact facet optimality fails; that R2 holds 
 
 import sympy as sp
 
+from derivation.axioms import A2, R2
 from derivation.lemma_03_gradient_kkt import fuse, push_in, replace_indexed, sum_swap_equal
 from derivation.sumtools import linear
 
@@ -52,12 +53,19 @@ STATEMENT = (
     "of L12 (nonnegative sums)"
 )
 AXIOMS_USED = ["A2", "R2"]
+# Two results share this file (the step tags run in one sequence; each step is owned by one result).
+PROOF_RESULTS = (
+    ("Proposition 3", (1, 2, 3, 5, 6, 7, 8)),
+    ("Corollary 4", (4, 9, 10)),
+)
 
 
 def derive(ctx):
     S = ctx["S"]
     d, i, j, k, K = S.d, S.i, S.j, S.k, S.K
-    w, u = S.w, S.u
+    u = S.u
+    # [L14.1] A2: every facet's exponents w_k lie on the simplex
+    w = A2.invoke(S.w)
     lim = (j, 1, d)
 
     # 1. per-facet regrouping at symbolic cell size n_k
@@ -83,9 +91,8 @@ def derive(ctx):
     sfix = sp.IndexedBase("sfix")
     Mx = sp.IndexedBase("Mx")
     N = sp.Symbol("N", integer=True, positive=True)
-    agree = replace_indexed(
-        sp.Sum(sfix[i] - Mx[i], (i, 1, N)), Mx, lambda x: sfix[x]
-    )  # M_i = s_ik(i)
+    # [L14.2] R2: the margin is positive, so row i's maximum score is its score on k(i)
+    agree = R2.invoke(replace_indexed(sp.Sum(sfix[i] - Mx[i], (i, 1, N)), Mx, lambda x: sfix[x]))
     objective_agrees = sp.simplify(agree.doit())
 
     # 4. local minimality: F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k)), terms >= 0
@@ -126,23 +133,31 @@ def derive(ctx):
 def verify(ctx):
     r = ctx["L14"]
     # hypotheses carried from the earlier lemmas
+    # [L14.3] L13 and R2: the margin is positive, so an assignment-stable neighborhood exists
     assert ctx["L13"].get("margin_positive") is True, (
         "L14 FAIL: no assignment-stable neighborhood (R2 positive margin, L13)"
     )
+    # [L14.4] L12 (Lemma 1) holds: 0 <= f_k(w_k) - f_k* <= G_k for every facet
     assert ctx["L12"].get("chain_nonneg") is True and ctx["L12"].get("lower_nonneg") is True, (
         "L14 FAIL: Lemma 1 (0 <= f - f* <= G) not established"
     )
+    # [L14.5] per facet, sum_i (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) by a Fubini swap
     assert r["regroup_swap_equal"] is True, (
         "L14 FAIL: per-facet regrouping is not a Fubini swap of the double sum"
     )
+    # [L14.6] on the neighborhood the full objective equals the fixed-assignment expression
     assert r["objective_agrees"] == 0, (
         "L14 FAIL: full objective differs from the fixed-assignment expression"
     )
+    # [L14.7] F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k))
     assert sp.simplify(r["local_min_slack"]) == 0, (
         "L14 FAIL: F(W') - F(W) != sum_k share_k (f_k(w'_k) - f_k(w_k))"
     )
+    # [L14.8] each term share_k (f_k' - f_k) is >= 0 (exact facet optima), so W is a local minimizer
     assert r["local_min_nonneg"] is True, "L14 FAIL: sum_k share_k (f_k' - f_k) is not nonnegative"
+    # [L14.9] sum share G - sum share (f - f*) = sum share (G - (f - f*))
     assert sp.simplify(r["cor_slack"]) == 0, (
         "L14 FAIL: sum share G - sum share (f - f*) != sum share (G - (f - f*))"
     )
+    # [L14.10] each term share_k (G_k - (f_k - f_k*)) is >= 0 (L12): F(W) - F*_fixed <= sum share G
     assert r["cor_nonneg"] is True, "L14 FAIL: sum_k share_k (G_k - (f_k - f_k*)) not nonnegative"

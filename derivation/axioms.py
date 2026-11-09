@@ -139,11 +139,11 @@ class Axiom:
             raise ValueError(f"{self.name} declares no positivity relation to license log rules")
         return sp.expand_log(expr, force=True)
 
-    def slack_expr(self, values):
-        """lhs - rhs of the entry's inequality (>= 0 by the entry), at the given values."""
+    def slack_expr(self, **values):
+        """lhs - rhs of the entry's inequality (>= 0 by the entry), at values given by name."""
         rel = next(r for r in self.relations() if isinstance(r, (_GE, _GT, _LE)))
         gap = rel.lhs - rel.rhs if isinstance(rel, (_GE, _GT)) else rel.rhs - rel.lhs
-        return gap.subs(values)
+        return gap.subs({s: values[s.name] for s in gap.free_symbols if s.name in values})
 
     def slack_symbol(self, name):
         """A symbol for the entry's inequality slack: nonnegative (positive for a strict one)."""

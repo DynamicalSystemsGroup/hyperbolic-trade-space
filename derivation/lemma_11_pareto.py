@@ -30,6 +30,7 @@ w to use, or about the fitted frontier being the true front.
 
 import sympy as sp
 
+from derivation.axioms import A1, A2
 from derivation.sumtools import linear
 
 TITLE = "A V-maximizer is Pareto-efficient (weighted-sum scalarization; converse not claimed)"
@@ -48,11 +49,14 @@ AXIOMS_USED = ["A1", "A2"]
 
 def derive(ctx):
     S = ctx["S"]
-    d, j, w, u, theta = S.d, S.j, S.w, S.u, S.theta
+    d, j, w, theta = S.d, S.j, S.w, S.theta
     lim = (j, 1, d)
+    # [L11.1] A1: u = log m with m > 0, so the log-metrics u are real
+    u = A1.invoke(S.u)
 
     # local nonnegative families: the hypotheses w_j >= 0 (A2) and delta_j >= 0 (dominance)
-    wn = sp.IndexedBase("wn", nonnegative=True)
+    # [L11.2] A2: the exponents are nonnegative, w_j >= 0
+    wn = A2.nonneg_base("wn")
     dl = sp.IndexedBase("dl", nonnegative=True)
     beta0 = sp.Symbol("beta0", real=True)
 
@@ -82,7 +86,8 @@ def derive(ctx):
     eps = sp.Symbol("eps", positive=True)
     gam = sp.IndexedBase("gam", nonnegative=True)
     low = linear(sp.Sum(wn[j] * (eps + gam[j]), lim))
-    low = low.subs(sp.Sum(wn[j], lim), 1)  # A2: sum_j w_j = 1
+    # [L11.3] A2: sum_j w_j = 1 turns sum_j w_j (eps + gam_j) into eps + sum_j w_j gam_j
+    low = A2.rewrite(low, rename={w: wn})
     low_minus_eps = sp.simplify(low - eps)  # = sum_j w_j gam_j
     low_remainder_nonneg = sp.Sum(wn[j] * gam[j], lim).is_nonnegative
     low_positive = (eps + sp.Sum(wn[j] * gam[j], lim)).is_positive
@@ -126,24 +131,35 @@ def verify(ctx):
     wn, dl, gam = r["wn"], r["dl"], r["gam"]
 
     # 1. identity and sign
+    # [L11.4] w.u' - w.u = sum_j w_j delta_j, by Sum linearity
     assert sp.simplify(r["diff"] - sp.Sum(w[j] * dl[j], (j, 1, d))) == 0, (
         "L11 FAIL: w.u' - w.u != sum_j w_j delta_j"
     )
+    # [L11.5] every summand w_j delta_j is >= 0, so the gain is >= 0
     assert r["gain_nonneg"] is True, "L11 FAIL: sum_j w_j delta_j is not nonnegative"
     # 2. strictness
+    # [L11.6] strictness: a nonnegative rest plus the positive term w_j0 delta_j0 is > 0
     assert r["strict_positive"] is True, "L11 FAIL: nonnegative rest + positive term is not > 0"
     # 3. V ratio
+    # [L11.7] exp(x) >= 1 exactly when x >= 0, so V(u') >= V(u)
     assert r["ratio_ge1"] == sp.Interval(0, sp.oo), "L11 FAIL: exp(x) >= 1 iff x >= 0"
+    # [L11.8] exp(x) > 1 exactly when x > 0, so V(u') > V(u) under the strictness condition
     assert r["ratio_gt1"] == sp.Interval.open(0, sp.oo), "L11 FAIL: exp(x) > 1 iff x > 0"
+    # [L11.9] the ratio V(u')/V(u) is exp(sum_j w_j delta_j)
     assert r["ratio_identity"] == 0, "L11 FAIL: V(u')/V(u) != exp(sum_j w_j delta_j)"
     # 4. simplex lower bound: w.delta - eps = sum_j w_j gam_j >= 0, hence w.delta >= eps > 0
     gap = sp.simplify(r["low_minus_eps"] - sp.Sum(wn[j] * gam[j], (j, 1, d)))
+    # [L11.10] with sum_j w_j = 1: w.delta - eps = sum_j w_j gam_j
     assert gap == 0, f"L11 FAIL: sum_j w_j (eps + gam_j) - eps != sum_j w_j gam_j (gap {gap})"
+    # [L11.11] the remainder sum_j w_j gam_j is >= 0
     assert r["low_remainder_nonneg"] is True, "L11 FAIL: sum_j w_j gam_j is not nonnegative"
+    # [L11.12] hence w.delta >= eps > 0 whenever every delta_j >= eps
     assert r["low_positive"] is True, "L11 FAIL: eps + nonnegative sum is not > 0"
     # 5. K > 1: the facet inequality chain leaves only theta_k0 . delta = 0
+    # [L11.13] K > 1: theta_k0.delta >= 0 and x0 + theta_k0.delta <= x0 force theta_k0.delta = 0
     assert r["squeeze"] == sp.FiniteSet(0), "L11 FAIL: theta_k0.delta is not forced to 0"
     k0 = sp.Symbol("k0", integer=True)
+    # [L11.14] theta_k0.delta expands as sum_j theta_k0j delta_j
     assert sp.simplify(r["a_def"] - sp.Sum(S.theta[k0, j] * dl[j], (j, 1, d))) == 0, (
         "L11 FAIL: theta_k0.delta mis-expanded"
     )
@@ -154,7 +170,9 @@ def verify(ctx):
     uv = [R(0), R(1), R(2)]
     up = [R(1, 3), R(1), R(5)]  # dominates uv; strictly better in metric 1 (w_1 > 0)
     gain = sum(a * (b - c) for a, b, c in zip(wv, up, uv, strict=True))
+    # [L11.15] exact instance (d = 3): the dominating point gains 1/6 > 0 where w_1 > 0
     assert gain == R(1, 6) and gain > 0, "L11 FAIL: numeric instance gain"
     up_free = [R(0), R(1), R(5)]  # better only in metric 3, where w_3 = 0: no gain, not blocked
     gain0 = sum(a * (b - c) for a, b, c in zip(wv, up_free, uv, strict=True))
+    # [L11.16] exact instance: a gain only in the zero-exponent metric 3 does not count
     assert gain0 == 0, "L11 FAIL: gain in a zero-exponent metric must not count"
