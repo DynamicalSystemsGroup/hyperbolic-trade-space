@@ -147,7 +147,8 @@ def figure1(figsize=(8.2, 3.6)):
     Returns
     -------
     matplotlib.figure.Figure
-        Three panes: the fitted reference surface in metric space (kinked sheets), the facets
+        Three panes: the fitted reference surface in metric space (kinked sheets, with the design's
+        scaling onto it as the black arrow), the facets
         with their normals and one design's energy differential in log space, and the chart
         (Z, log V) with the frontier as one horizontal line and the facets as coloured regions.
     """
@@ -191,6 +192,17 @@ def figure1(figsize=(8.2, 3.6)):
                 zorder=4,
                 solid_capstyle="round",
             )
+        axm.add_patch(  # the same uniform scaling as the arrows of the other two panes
+            FancyArrowPatch(
+                np.exp(us),
+                np.exp(top),
+                arrowstyle="-|>",
+                mutation_scale=11,
+                color=HIGHLIGHT,
+                lw=2.0,
+                zorder=8,
+            )
+        )
         _star(axm, np.exp(us))
         axm.set_xlim(0, 5.2)
         axm.set_ylim(0, 5.2)
