@@ -177,14 +177,16 @@ def derivations_page(chain, AX):
         "",
     ]
     solver = set(AX.SOLVER_LEVEL)
+    cited = set(AX.CITED_CONTEXT)
     fallbacks = {a.name for a in AX.fallbacks()}
     sections = [
         ("POSITED", [a for a in AX.by_tag(AX.POSITED) if a.name not in fallbacks]),
         (
             "INHERITED",
-            [a for a in AX.by_tag(AX.INHERITED) if a.name not in solver],
+            [a for a in AX.by_tag(AX.INHERITED) if a.name not in solver | cited],
         ),
         ("INHERITED, solver level", [AX.get(n) for n in AX.SOLVER_LEVEL]),
+        ("Cited context (no step depends on it)", [AX.get(n) for n in sorted(cited)]),
         ("REGULARITY", AX.by_tag(AX.REGULARITY)),
         ("Fallbacks", AX.fallbacks()),
     ]
@@ -195,6 +197,8 @@ def derivations_page(chain, AX):
             continue
         for a in entries:
             out += _axiom_block(a, users)
+            if a.name in cited:
+                out.append(f"  - Why no step depends on it: {AX.CITED_CONTEXT[a.name]}.")
         out.append("")
     return "\n".join(out).rstrip() + "\n"
 

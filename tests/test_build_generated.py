@@ -56,6 +56,19 @@ def test_ledger_equals_axioms(pages):
                 assert field in text
 
 
+def test_cited_context_reported_apart(pages):
+    text = pages["derivations"]
+    head = "### Cited context (no step depends on it)"
+    assert head in text
+    block = text[text.index(head) :]
+    block = block[: block.index("\n### ", 1)] if "\n### " in block[1:] else block
+    for name, why in AX.CITED_CONTEXT.items():
+        assert f"- **{name}** (INHERITED)" in block
+        assert f"Why no step depends on it: {why}." in block
+        inherited = text[text.index("### INHERITED\n") : text.index(head)]
+        assert f"- **{name}** (" not in inherited
+
+
 def test_headings_present(pages):
     for h in build_generated.DERIVATION_HEADINGS:
         assert f"\n## {h}\n" in pages["derivations"]
