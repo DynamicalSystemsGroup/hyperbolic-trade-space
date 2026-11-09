@@ -348,6 +348,15 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   the browser as a gallery, notes that a schematic would be a new drawing, and asks again with the
   images in view.
 
+- OD2, with the gallery of existing figures in the browser. **Supervisor (mzargham), verbatim:** "i
+  am leaning G. all of the other example you gave me are not self explanatory. a hero image is a
+  hook. its okay for it to be conceptual and to convey the idea if it pulls the reader in and does
+  not misrepresent the content". Disposition: a spike draws candidate schematics (conceptual, no
+  case numbers, the plotting module's colour vocabulary; the cloud, the facets, the energy levels
+  with V = 1 at the frontier, the chart, the reversible transformation) for the supervisor to choose
+  from in the browser; OD2 is decided when he picks one; WP10's author then produces the final
+  drawing to that choice.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
