@@ -357,6 +357,13 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   from in the browser; OD2 is decided when he picks one; WP10's author then produces the final
   drawing to that choice.
 
+- **OD3, the WP7 notebook when the paper lands.** Options: delete with guards moved / archive with
+  a banner / keep as the long tutorial. **Supervisor (mzargham), verbatim:** "archive it with banner
+  for now so we can use it as reference but plan to clean out the archive before the first release".
+  Disposition: decided; archived (`examples/adcs/archive/` or as WP10's defaults name it) with a
+  first cell pointing to the paper, kept as reference; its guard tests move into the paper's tests
+  where they still apply; the archive's removal is a WP8b release item on the punch list.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
