@@ -492,3 +492,12 @@ they are imported from". Within R-28: a lemma script imports the ledger entries 
 appendix may cite the import line in the proof's file as the declaration's address; the checker
 requires that a file's ledger imports, the entries its steps apply and its `AXIOMS_USED` are the same
 set. No change to scope, deliverables or files.
+
+Second clarification (supervisor, verbatim, `WP10-decisions.md`): "this also elegantly handles the
+case where multiple lemmas use the same axiom, or where one lemmas result is important by another
+proof script as a proven result". Within R-28: one ledger entry imported by several scripts is one
+declaration cited from each; a script that builds on an earlier lemma imports that lemma's proved
+result, and the step that applies it is of a third kind, *by a proved result*; the checker requires
+that the imported result belongs to a lemma earlier in the chain, is exported by it as proved, and is
+applied by a step. Today's four dependencies (L4 on L3, L7 on L1, L12 on L4, L14 on L12 and L13) are
+declared this way. No change to scope, deliverables or files.

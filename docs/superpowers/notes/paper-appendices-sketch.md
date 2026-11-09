@@ -59,6 +59,9 @@ And, after the approval, on how the scripts take their axioms from the ledger:
 "its python we can handle the axioms as import statements. if needed we can cite the import
 statements instead of the location they are imported from"
 
+"this also elegantly handles the case where multiple lemmas use the same axiom, or where one lemmas
+result is important by another proof script as a proven result"
+
 ## The test each appendix must pass
 
 An appendix exists only if it answers a question that a reader of the paper has and that the main
@@ -128,8 +131,8 @@ How the correspondence is built (so that it can be checked, and cannot drift):
   tags; the work is to give each step its line and its tag, with the mathematics, the statements
   and the axioms used unchanged.
 - **Every step is a line of code, including a step that cites a result** (the supervisor's rule).
-  Two kinds, declared on the line and shown in the appendix: *computed* (SymPy derives the step's
-  condition) and *by a declared axiom* (the line applies an entry of the axiom ledger, as code, to
+  Kinds, declared on the line and shown in the appendix: *computed* (SymPy derives the step's
+  condition), *by a proved result* (below) and *by a declared axiom* (the line applies an entry of the axiom ledger, as code, to
   move the proof forward; the appendix shows the entry's name, its class and, for an inherited
   result, its citation). There is no third kind for arguments made only in prose: by the project's
   proof conventions a step that SymPy cannot derive becomes an explicit hypothesis or an inherited
@@ -141,6 +144,18 @@ How the correspondence is built (so that it can be checked, and cannot drift):
   line that applies the entry, and the import line that brings it in. The appendix cites the
   import line where a reference to the declaration is wanted, so a reader stays in one file; the
   entry's wording and citation shown beside it are compiled from the ledger.
+- **Imports also carry shared axioms and proved results** (the supervisor's observation). The same
+  ledger entry imported by several scripts is one declaration cited from each (today A2 is used by
+  ten of the fourteen scripts, A1 and A3 by five each). And a script that builds on an earlier
+  lemma imports that lemma's proved result, which gives a third kind of step: *by a proved result*
+  (the line applies a result imported from another proof's script; the appendix shows "by" that
+  statement, with the import line as its address in this file and a link to that proof's entry).
+  Today four scripts lean on earlier lemmas (L4 on L3, L7 on L1, L12 on L4, L14 on L12 and L13),
+  passed through the runner's shared dictionary in chain order rather than declared by import.
+  The checker requires that an imported result belongs to a lemma earlier in the chain (no
+  circular proof), that it is one that lemma exports as proved, and that it is applied by a step.
+  Helper functions that some scripts import from another lemma's file are tools, not results, and
+  are kept distinguishable from them.
 - **Where the scripts stand on this today:** inherited results are used in code at the point of
   use (for example L8 applies I6 as a substitution and has tests showing the proof fails without
   it; L12 carries I8 as an inequality), but each script writes the result's SymPy form itself. The
@@ -313,7 +328,7 @@ form is declared as a named proposition, and the step that applies it says so.
   been built against the old letters.
 - B (the supervisor's rule, not a default): each proof is one file, each prose step one line of
   it, explained at the head of the appendix, with a checker. Defaults under that rule: tags of the
-  form L2.1; the two kinds of step (computed, by a declared axiom) and no prose-only kind; the
+  form L2.1; the kinds of step (computed, by a declared axiom, by a proved result) and no prose-only kind; the
   step's formal claim and the line link compiled from the script; the committed record of
   fingerprints; the checker as a module beside the runner and a test in the suite.
 - Two results sharing a script (the supervisor's rule, not a default) keep the file's tags in one

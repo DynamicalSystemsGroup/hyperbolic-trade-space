@@ -617,3 +617,13 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   declaration's address inside the proof's file and may be cited in Appendix B in place of the
   ledger's location; the checker compares each file's ledger imports, the entries its steps apply
   and its `AXIOMS_USED`. Sent to the PM.
+- **Shared axioms and imported results.** **Supervisor (mzargham), verbatim:** "this also elegantly
+  handles the case where multiple lemmas use the same axiom, or where one lemmas result is
+  important by another proof script as a proven result". Disposition: taken into the design as a
+  clarification within R-28. Found in the code: A2 is used by ten scripts, A1 and A3 by five, R2,
+  I1 and F12 by two; four scripts lean on earlier lemmas (L4 on L3, L7 on L1, L12 on L4, L14 on
+  L12 and L13) through the runner's shared dictionary, not by import; three scripts also import
+  helper functions from L3's file, which are tools and not results. A third kind of step, "by a
+  proved result", is added; the checker forbids a circular import of results. Sent to the PM.
+  Candidate for a later package, not done now: move the shared helper functions out of L3's file
+  into the tools module.
