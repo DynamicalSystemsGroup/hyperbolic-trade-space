@@ -400,6 +400,13 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   forthcoming it is out." Disposition: the bibliography entry is made from the published record
   (DOI resolved under the WP5 rule), not from the SciPy paper's "forthcoming" note.
 
+- Published record, supplied by the supervisor (verbatim):
+  "https://incose.onlinelibrary.wiley.com/doi/abs/10.1002/iis2.70203". Crossref (checked
+  2026-11-08): Zargham, M., "Formalizing Document Assurance: A Topological Framework for
+  Verification, Validation, and Human Accountability", INCOSE International Symposium 36(1),
+  1501–1514, 2026, doi 10.1002/iis2.70203. Enters `docs/references.bib` as `zargham2026incose`
+  under the WP5 rule in WP10.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
