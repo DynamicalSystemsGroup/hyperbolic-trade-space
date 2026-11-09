@@ -1,8 +1,8 @@
 # Reading `termination_` and `conditioning_`
 
 Every fit records how it stopped. At one term the fit is a convex program and its answer is the
-minimizer. With several terms it alternates between assigning designs to facets and refitting
-each facet, and the record says which of three levels the run meets.
+minimizer. With several terms it alternates between weights from the current model and refitting each
+facet, and the record says which of three levels it meets.
 
 ```python {.runnable}
 from hyperbolic_trade_space import (
@@ -26,7 +26,7 @@ print(ts.conditioning_.round(1))
 2. Numerical stationarity: no first-order improvement is left. The facet gap G_k measures what
    remains (at infinite temperature, the linear-programming duality gap).
 3. Conditional local optimality: if no design sits exactly on a seam between facets, small changes
-   to the facets cannot change which facet owns which design, so the fixed assignment is optimal.
+   to the facets cannot change which facet dominates which design, so the fixed assignment is optimal.
    The assignment margin is the smallest gap by which a row's facet beats the runner-up; the stable
    radius is the perturbation that provably leaves every row's facet unchanged.
 

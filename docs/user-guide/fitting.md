@@ -77,8 +77,9 @@ ts = HyperbolicTradeSpace(
 print(ts.exponents_.shape, ts.termination_.status)
 ```
 
-Fitting partitions the designs among facets and refits each, from several seeded starts
-(`n_restarts`, default 5) keeping the best. `assign_facets(X)` labels new rows with their facet. Options:
+Fitting alternates weights from the current model (sharp: one label each) with a refit, from several
+seeded starts (`n_restarts`, default 5) keeping the best. `assign_facets(X)` reads which facet
+dominates new rows. Options:
 
 - `term_temperature` (kappa, default infinity) rounds the corners where facets meet; a finite kappa
   leaves the facets unchanged.
@@ -87,7 +88,7 @@ Fitting partitions the designs among facets and refits each, from several seeded
 - `facet_step` is `"support"` (default) or `"tangent"`, which is not monotone and carries no
   local-optimality status.
 
-`facet_` gives each training row's facet; `coefficients_` and `facet_share_` the facets' posynomial
+`facet_` gives each training row's dominant facet; `coefficients_` and `facet_share_` the facets' posynomial
 coefficients and shares. At one term `facet_` is all zeros and `facet_share_` is `[1.0]`. What the fit
 reports about itself is on the [termination page](termination.md).
 

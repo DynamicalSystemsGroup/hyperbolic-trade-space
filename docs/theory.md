@@ -18,8 +18,9 @@ Because the weights sum to one, $V(\lambda m)=\lambda V(m)$: doubling every metr
 reads as a factor of improvement, which is what "invariant" refers to. A sum of such products, a
 posynomial, extends one term to K terms and keeps the programs inside geometric programming. The
 model is a root of that sum, so the surface V = 1 is where the posynomial equals one. Fitting one facet is a geometric program (GP), solved as
-a convex program after the logarithmic change of variables; fitting several facets alternates assigning
-designs to facets with one such program per facet.
+a convex program after the logarithmic change of variables; fitting several facets alternates weights from
+the current model with one program for all terms. The package takes the sharp limit of the weights, one
+label per design; which facet dominates a design is analysis of the fitted model, not part of the fit.
 
 ## V = 1 is the fitted reference surface
 

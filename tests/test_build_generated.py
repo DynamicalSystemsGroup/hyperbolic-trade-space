@@ -221,6 +221,19 @@ def test_glossary_carries_the_class_words_and_the_withdrawn_phrases():
     assert all(set(a) == {"term", "reason"} for a in lists["assumed"]) and lists["assumed"]
 
 
+def test_generalized_geometric_program_is_the_sense_of_boyd_et_al_2007():
+    """WP10 Amendment 5 (R-40): generalized posynomial objective and inequality constraints,
+    monomial equalities (the tutorial's section 5.4); the older signomial use is in ``not``."""
+    entries = {e["term"]: e for e in build_generated.load_glossary(GLOSSARY)}
+    ggp = entries["generalized geometric program"]
+    assert "section 5.4" in ggp["short"] and "Boyd et al. 2007" in ggp["short"]
+    for part in ("generalized posynomial", "monomial constraints equal to one"):
+        assert part in ggp["formal"], part
+    assert "signomial" in ggp["not"] and "signomial" not in ggp["formal"]
+    gp = entries["geometric program"]["not"]
+    assert "assigning" not in gp and "not convex in the terms" in gp  # the fit is not membership
+
+
 def test_glossary_page_shows_term_and_short_only_despite_the_new_fields():
     entries = build_generated.load_glossary(GLOSSARY)
     page = build_generated.glossary_page(entries)

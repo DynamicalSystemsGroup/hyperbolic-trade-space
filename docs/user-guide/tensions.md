@@ -71,8 +71,8 @@ along the surface is the set of trade-offs the designs exercised.
 
 ## With several terms
 
-At K > 1 the function returns a list of K reports, one per facet, each on the rows assigned to that
-facet. A facet with fewer than `min_near_frontier` (default 10) near-frontier rows raises
+At K > 1 the function returns a list of K reports, one per facet, each on the rows that facet
+dominates. A facet with fewer than `min_near_frontier` (default 10) near-frontier rows raises
 `ValueError`; widen `band` or lower `min_near_frontier`.
 
 ## What it cannot say

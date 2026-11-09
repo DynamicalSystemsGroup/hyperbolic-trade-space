@@ -165,7 +165,7 @@ entries:
     short: 'The minimization of a posynomial under posynomial inequality and monomial equality constraints; convex after x = exp(y).'
     register: 'geometric program'
     formal: 'minimize a posynomial subject to posynomial constraints at most one and monomial constraints equal to one, over positive variables; the logarithmic change of variables makes it a convex program'
-    not: 'the several-facet fit, which alternates assigning designs to facets with one such program per facet, or a generalized geometric program'
+    not: 'the several-facet fit as one program, which is not convex in the terms (L16); with the weights given, the fit of all terms is a generalized geometric program'
     defined_in: 'L4.14 to L4.24'
     aliases:
       - 'geometric programs'
@@ -174,11 +174,11 @@ entries:
 
   - id: 'generalized-geometric-program'
     term: 'generalized geometric program'
-    short: 'A geometric program whose objective and inequality constraints may be generalized posynomials; it reduces to a geometric program.'
+    short: 'A program that minimizes a generalized posynomial under generalized-posynomial inequality constraints and monomial equality constraints (Boyd et al. 2007, section 5.4); convex after x = exp(y).'
     register: 'generalized geometric program'
-    formal: 'a program of geometric-program form whose objective and inequality constraints are generalized posynomials; added variables turn it into a geometric program'
-    not: 'a function class, or the fit itself; a design problem that uses the fitted model is one'
-    defined_in: 'Boyd et al. 2007, section 5'
+    formal: 'minimize a generalized posynomial subject to generalized-posynomial constraints at most one and monomial constraints equal to one, over positive variables; the logarithmic change of variables makes it a convex program, and added variables turn it into a geometric program'
+    not: 'a function class, or the unsupervised several-facet fit as one program (not convex in the terms); the older use of the phrase for signomial programs; a design problem that uses the fitted model is one, and so is the fit with its weights given'
+    defined_in: 'Boyd et al. 2007, section 5.4; L16 (iii)'
     aliases:
       - 'generalized geometric programs'
       - 'generalized geometric programming'
