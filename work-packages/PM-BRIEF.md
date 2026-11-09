@@ -62,6 +62,29 @@ own call, it asks the driver in one message with the facts and the options.
 basis, and what is waiting for the supervisor. The supervisor's own words stay in the
 `WPn-decisions.md` files, verbatim.
 
+**Reviews that pass through the browser are done in the browser.** The supervisor, verbatim: "make
+sure you review loops that pass through the browser don't shortcut it leads to overlooking bad ux".
+Whenever what is reviewed is something a person reads rendered (the root page, the docsite, the
+paper's site, a notebook, a figure in its page), the review is of the rendered page:
+
+- Serve the staged build and open **every** page a reader can reach, not a sample; at desktop
+  width and at 375 px; in light and dark where the site has both.
+- Read each page as its reader would: scroll all of it, follow the path a newcomer takes from the
+  root, use the navigation, the table of contents and the in-page links.
+- Look at what only rendering shows: text or tables running off the page, mathematics that did not
+  render, raw markup, code blocks, figures that cannot be read at the size shown and their
+  captions, heading order, dead ends, links that land somewhere unexpected, walls of text, errors
+  in the browser console.
+- Keep the evidence: a screenshot or a note per page and a list of findings in the review record;
+  after a fix, look again at the pages that changed.
+- These are **not** a browser review and never stand in for one: a strict build that passes, a
+  link checker, a test of the HTML, reading the Markdown or the page's extracted text, a status
+  code. They are checks to run as well.
+
+A reviewer subagent without a browser tool says so and does not sign off the rendered part; the
+driver makes its own complete pass in the browser before anything rendered goes to the supervisor,
+whose own reading remains the gate.
+
 **Limits that hold throughout.** Commits to `dev` only. No merge to `main`, no tag, no deployment,
 no publishing, no pull request. No AI attribution anywhere. No edit to a test or record that would
 weaken a requirement; a test changes only when its requirement changed by a recorded decision.
