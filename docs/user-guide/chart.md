@@ -6,27 +6,54 @@ free of overall scale. Together they are a reversible rewriting of the metrics.
 
 ```python {.runnable}
 import numpy as np
-from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+from hyperbolic_trade_space import (
+    HyperbolicTradeSpace,
+    make_frontier_data,
+)
 
 X, info = make_frontier_data(300, 3, random_state=0)
 ts = HyperbolicTradeSpace(temperature=20.0).fit(X)
-chart = ts.transform(X)  # columns: Z (d - 1 of them), then log V
+# columns: Z (d - 1 of them), then log V
+chart = ts.transform(X)
 Z, log_v = chart[:, :-1], chart[:, -1]
-print(np.allclose(ts.inverse_transform(chart), X), np.allclose(ts.score_samples(X), log_v))
+print(
+    np.allclose(ts.inverse_transform(chart), X),
+    np.allclose(ts.score_samples(X), log_v),
+)
 ```
 
 `transform` returns the chart, `inverse_transform` inverts it, and `score_samples` is log V alone. A
 row with a zero metric has `nan` coordinates and no inverse.
 
+With two metrics the chart is the log plane itself:
+
+```python {.runnable}
+from hyperbolic_trade_space.plotting import plot_log_plane
+
+X2, _ = make_frontier_data(300, 2, random_state=0)
+ts2 = HyperbolicTradeSpace(temperature=20.0).fit(X2)
+plot_log_plane(ts2, X2)
+```
+
+<figure markdown>
+![Designs in the log plane of two metrics, a straight frontier line, and a grey band of near-frontier designs below it.](../generated/figures/log-plane-light.png#only-light)
+![Designs in the log plane of two metrics, a straight frontier line, and a grey band of near-frontier designs below it.](../generated/figures/log-plane-dark.png#only-dark)
+<figcaption>Figure 4. One facet in the log plane: the line is V = 1, and the band below it has width 1/tau.</figcaption>
+</figure>
+
 ## Reading log V
 
-V is a factor of improvement: doubling every metric doubles V. `invariant_value(X)` returns V,
-`project(X)` returns the design moved onto V = 1 by scaling all its metrics together, and
-`improvement_factors(X)` gives, per metric, the factor on that metric alone that reaches V = 1 (`inf`
-where the exponent is numerically zero). At a finite temperature some training designs lie beyond
-V = 1 by construction, so a score is meaningful relative to the band of width 1/tau: compare
-`tau * log V` and the rank of log V among training scores, not V - 1 alone. A score beyond the
-surface is not a verdict that the design is wanted, feasible or safe.
+V is a factor of improvement: doubling every metric doubles V. Three methods read it:
+
+- `invariant_value(X)` returns V.
+- `project(X)` returns the design moved onto V = 1 by scaling all its metrics together.
+- `improvement_factors(X)` gives, per metric, the factor on that metric alone that reaches V = 1
+  (`inf` where the exponent is numerically zero).
+
+At a finite temperature some training designs lie beyond V = 1 by construction, so a score is
+meaningful relative to the band of width 1/tau. Compare `tau * log V` and the rank of log V among
+training scores, not V - 1 alone. A score beyond the surface is not a verdict that the design is
+wanted, feasible or safe.
 
 For a multi-term fit, log V is the soft maximum over facets, and `improvement_factors` uses each
 row's active facet.
@@ -43,15 +70,46 @@ candidates for white space (`hyperbolic_trade_space.gaps`):
   maps back to metrics and, with a preconditioner, to attributes.
 - `orient_by_pca(Z, mask=None)`: rotates to the principal axes of the masked rows.
 
+The holes of a three-metric fit, marked on the chart:
+
+```python {.runnable}
+from hyperbolic_trade_space.gaps import find_holes
+from hyperbolic_trade_space.plotting import (
+    plot_frontier_coordinates,
+)
+
+X3, _ = make_frontier_data(300, 3, random_state=0)
+ts3 = HyperbolicTradeSpace(temperature=20.0).fit(X3)
+chart3 = ts3.transform(X3)
+holes, scores = find_holes(
+    chart3[:, :-1], resolution=30, threshold=3.0
+)
+plot_frontier_coordinates(
+    chart3[:, :-1], chart3[:, -1], holes=holes
+)
+```
+
+<figure markdown>
+![Designs in the plane of two position coordinates with red points marking empty regions inside the cloud.](../generated/figures/chart-holes-light.png#only-light)
+![Designs in the plane of two position coordinates with red points marking empty regions inside the cloud.](../generated/figures/chart-holes-dark.png#only-dark)
+<figcaption>Figure 5. The chart with holes: the red points are grid positions far from every design, candidates for white space.</figcaption>
+</figure>
+
 A hole is a candidate and not a verdict. An empty region can be an opportunity, a categorical
 stratum that cannot be occupied, or simply unsampled. The score cannot tell these apart; you decide.
 The surface is also log-convex, so structure that is not log-convex is invisible to it.
 
 ## Plots
 
-`hyperbolic_trade_space.plotting` provides `plot_log_plane`, `plot_frontier_surface_3d`,
-`plot_frontier_coordinates`, `plot_v_by_variable` and `plot_tensions`. Each accepts an optional `ax`
-and returns a matplotlib `Axes`; nothing calls `plt.show()`. They share one vocabulary, declared as
-module constants (`FRONTIER_COLOR`, `BAND_COLOR`, `HOLE_COLOR`, `CATEGORY_COLORS`, `DATA_COLOR`,
+`hyperbolic_trade_space.plotting` provides five plots:
+
+- `plot_log_plane`: two metrics, the data, the frontier and its band.
+- `plot_frontier_surface_3d`: three metrics, the frontier surface.
+- `plot_frontier_coordinates`: the chart, with optional holes and targets.
+- `plot_v_by_variable`: log V against a configuration variable.
+- `plot_tensions`: the tension report as a heatmap.
+
+Each accepts an optional `ax` and returns a matplotlib `Axes`; nothing calls `plt.show()`. They share
+one colour vocabulary, declared as module constants (`FRONTIER_COLOR`, `BAND_COLOR`, `HOLE_COLOR`,
 `TENSION_CMAP`). For a multi-term fit the plots draw every facet, and `facet_labels(estimator, X)`
 gives a per-row label to pass as `color=`.

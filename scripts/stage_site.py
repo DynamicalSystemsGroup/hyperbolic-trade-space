@@ -51,11 +51,16 @@ def serve_in_thread(directory, port=0):
     return server
 
 
-def stage(out=STAGE_DIR, build=True, mkdocs_runner=None):
-    """Assemble into ``out`` (unless ``build`` is false and it exists). Returns the path."""
+def stage(out=STAGE_DIR, build=True, mkdocs_runner=None, **assemble_kwargs):
+    """Assemble into ``out`` (unless ``build`` is false and it exists). Returns the path.
+
+    The site is served from the root of 127.0.0.1, so the paper is built for the route ``/paper``
+    (the real paper when it builds, the placeholder otherwise); other keywords go to ``assemble``.
+    """
     out = Path(out)
     if build or not out.exists():
-        return assemble_site.assemble(out, mkdocs_runner=mkdocs_runner)
+        assemble_kwargs.setdefault("paper_base", "/paper")
+        return assemble_site.assemble(out, mkdocs_runner=mkdocs_runner, **assemble_kwargs)
     return out
 
 
@@ -64,9 +69,15 @@ def main(argv=None):
     parser.add_argument("--serve", action="store_true", help="serve the staged site")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--no-build", action="store_true", help="reuse an existing _stage/")
+    parser.add_argument(
+        "--paper",
+        choices=("auto", "placeholder"),
+        default="auto",
+        help="stage the real paper when it builds (default) or the placeholder",
+    )
     args = parser.parse_args(argv)
     try:
-        out = stage(STAGE_DIR, build=not args.no_build)
+        out = stage(STAGE_DIR, build=not args.no_build, paper=args.paper)
     except Exception as exc:
         print(f"stage_site: FAILED: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1

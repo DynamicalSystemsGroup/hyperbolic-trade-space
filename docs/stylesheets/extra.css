@@ -1,0 +1,11 @@
+/* Displayed mathematics that is wider than the column scrolls inside its own box instead of
+   being clipped; the navigation drawer and tables are left to the theme. */
+.md-typeset div.arithmatex {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+.md-typeset figure img {
+  max-width: 100%;
+  height: auto;
+}

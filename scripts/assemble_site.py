@@ -6,8 +6,10 @@ Default output is ``_site/``. Steps: write the generated pages (``build_generate
 glossary into ``docs/generated/`` for the docsite, derivations and verification into
 ``build/generated/`` for the paper's build), run
 ``mkdocs build --strict -d <out>/docs``, copy ``site/index.html`` to ``<out>/index.html`` and
-build the paper slot through ``build_paper`` (WP10 replaces that one function). Any error
-stops the build with a non-zero exit.
+build the paper slot through ``build_paper``: the real paper (``myst build --html`` in ``paper/``,
+copied from ``paper/_build/html``) when it builds, the placeholder page when it does not or when
+``--paper placeholder`` is given. Any other error stops the build with a non-zero exit. The
+docsite's figures (``build_figures``) are built before MkDocs reads ``docs/``.
 """
 
 from __future__ import annotations
@@ -15,6 +17,7 @@ from __future__ import annotations
 import argparse
 import contextlib
 import importlib.util
+import os
 import shutil
 import subprocess
 import sys
@@ -23,6 +26,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import build_figures  # noqa: E402
 import build_generated  # noqa: E402
 
 DEFAULT_OUT = ROOT / "_site"
@@ -30,6 +34,9 @@ GENERATED_DIR = build_generated.DEFAULT_OUT  # outside docs/: the paper's build 
 DOCS_GENERATED_DIR = build_generated.DOCS_GENERATED  # inside mkdocs docs_dir: the glossary
 ROOT_INDEX = ROOT / "site" / "index.html"
 PAPER_PLACEHOLDER = ROOT / "site" / "paper" / "index.html"
+PAPER_DIR = ROOT / "paper"
+PAPER_HTML = PAPER_DIR / "_build" / "html"
+PUBLIC_PAPER_BASE = "/hyperbolic-trade-space/paper"  # the published route (the Pages project path)
 
 
 def mkdocs_command(out_docs):
@@ -49,14 +56,46 @@ def run_mkdocs(out_docs, runner=None):
     subprocess.run(cmd, cwd=ROOT, check=True)
 
 
-def build_paper(out):
-    """Place the paper at ``<out>/paper/``. WP10 replaces this function with the MyST build."""
+def paper_command():
+    """The MyST HTML build command, run from ``paper/``."""
+    return ["uv", "run", "myst", "build", "--html"]
+
+
+def run_paper_build(base_url, paper_dir=PAPER_DIR):
+    """Build the paper with MyST for the route ``base_url``; True when it built."""
+    env = {**os.environ, "BASE_URL": base_url}
+    try:
+        subprocess.run(paper_command(), cwd=paper_dir, env=env, check=True)
+    except (OSError, subprocess.CalledProcessError) as exc:
+        print(
+            f"assemble_site: the paper did not build ({type(exc).__name__}): {exc}", file=sys.stderr
+        )
+        return False
+    return (paper_dir / "_build" / "html" / "index.html").is_file()
+
+
+def build_paper(out, paper="auto", base_url=PUBLIC_PAPER_BASE, paper_runner=None, paper_html=None):
+    """Place the paper at ``<out>/paper/``; returns ``"paper"`` or ``"placeholder"``.
+
+    ``paper="auto"`` builds the real paper (``paper_runner(base_url)``, default ``run_paper_build``)
+    and copies its HTML; when the build is unavailable or fails, or ``paper="placeholder"``, the
+    placeholder page is used instead. ``base_url`` is the route the paper is served under.
+    """
     out = Path(out)
+    dest = out / "paper"
+    if paper == "auto":
+        built = (paper_runner or run_paper_build)(base_url)
+        source = Path(paper_html) if paper_html is not None else PAPER_HTML
+        if built and (source / "index.html").is_file():
+            shutil.copytree(source, dest, dirs_exist_ok=True)
+            return "paper"
+    elif paper != "placeholder":
+        raise ValueError(f"paper must be 'auto' or 'placeholder', got {paper!r}")
     if not PAPER_PLACEHOLDER.is_file():
         raise FileNotFoundError(f"missing paper placeholder: {PAPER_PLACEHOLDER}")
-    dest = out / "paper"
     dest.mkdir(parents=True, exist_ok=True)
     shutil.copy2(PAPER_PLACEHOLDER, dest / "index.html")
+    return "placeholder"
 
 
 @contextlib.contextmanager
@@ -91,6 +130,11 @@ def assemble(
     generated_dir=GENERATED_DIR,
     collect_runner=None,
     docs_generated_dir=DOCS_GENERATED_DIR,
+    figures_builder=None,
+    paper="auto",
+    paper_base=PUBLIC_PAPER_BASE,
+    paper_runner=None,
+    paper_html=None,
 ):
     """Build the whole site into ``out`` (replaced if present). Returns the output path."""
     out = _check_out(out)
@@ -101,13 +145,14 @@ def assemble(
         build_generated.build(
             generated_dir, collect_runner=collect_runner, docs_out=docs_generated_dir
         )
+        (figures_builder or build_figures.build)(Path(docs_generated_dir) / "figures")
         run_mkdocs(out / "docs", runner=mkdocs_runner)
     if not ROOT_INDEX.is_file():
         raise FileNotFoundError(f"missing root index: {ROOT_INDEX}")
     shutil.copy2(ROOT_INDEX, out / "index.html")
     for asset in sorted(ROOT_INDEX.parent.glob("*.webp")):  # figures the root index uses
         shutil.copy2(asset, out / asset.name)
-    build_paper(out)
+    build_paper(out, paper, paper_base, paper_runner, paper_html)
     return out
 
 
@@ -119,9 +164,15 @@ def main(argv=None):
         default=str(GENERATED_DIR),
         help="directory for derivations.md and verification.md (default build/generated/)",
     )
+    parser.add_argument(
+        "--paper",
+        choices=("auto", "placeholder"),
+        default="auto",
+        help="build the real paper when it builds (default) or always use the placeholder",
+    )
     args = parser.parse_args(argv)
     try:
-        out = assemble(args.out, generated_dir=args.generated_dir)
+        out = assemble(args.out, generated_dir=args.generated_dir, paper=args.paper)
     except Exception as exc:
         print(f"assemble_site: FAILED: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1

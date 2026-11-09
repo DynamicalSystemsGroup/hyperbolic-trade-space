@@ -167,9 +167,10 @@ def source_pages() -> list[Path]:
 
 
 def prose_words(path: Path) -> int:
-    """Words of a page outside fenced code blocks, tables and HTML comments."""
+    """Words of a page outside fenced code blocks, tables, image alt text and HTML comments."""
     text = re.sub(r"```.*?```", "", path.read_text(), flags=re.S)
     text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
+    text = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", text)  # alt text is not prose; captions count
     text = re.sub(r"^\|.*$", "", text, flags=re.M)
     return len(text.split())
 
@@ -470,15 +471,30 @@ def test_workflow_build_and_deploy_jobs(workflow):
 
 
 @pytest.fixture(scope="session")
-def assembled(tmp_path_factory) -> Path:
+def generated_dir(tmp_path_factory) -> Path:
+    """The paper's generated pages (derivations, verification), built here for the test that
+    asserts them: a test never relies on a file another command left in ``build/``."""
+    return tmp_path_factory.mktemp("generated")
+
+
+@pytest.fixture(scope="session")
+def assembled(tmp_path_factory, generated_dir) -> Path:
     if not HAVE_MKDOCS:
         pytest.skip("the docs dependency group is not installed (mkdocs not importable)")
     if not ASSEMBLE.is_file():
         pytest.skip("scripts/assemble_site.py has not been delivered yet")
     out = tmp_path_factory.mktemp("site")
-    generated = tmp_path_factory.mktemp("generated")  # the paper's pages, kept out of build/
     result = subprocess.run(
-        [sys.executable, str(ASSEMBLE), "--out", str(out), "--generated-dir", str(generated)],
+        [
+            sys.executable,
+            str(ASSEMBLE),
+            "--out",
+            str(out),
+            "--generated-dir",
+            str(generated_dir),
+            "--paper",
+            "placeholder",  # the real paper's build is a separate, slow step with its own tests
+        ],
         cwd=ROOT,
         capture_output=True,
         text=True,
@@ -555,15 +571,18 @@ def test_api_reference_renders_every_public_name(assembled):
     assert "doc-class" in html and "doc-function" in html
 
 
-def test_generated_pages_in_the_build(assembled):
+def test_generated_pages_in_the_build(assembled, generated_dir):
     for name in CONTRACT["docs"]["generated_pages"]:
         stem = name[: -len(".md")]
         assert (assembled / "docs" / "generated" / stem / "index.html").is_file()
     # OD1: derivations and verification are the paper's build, not the docsite's
-    assert sorted(p.name for p in (assembled / "docs" / "generated").iterdir()) == ["glossary"]
-    gen = CONTRACT["derivation"]["generated_dir"]
+    # the glossary page and the figures the pages embed
+    assert sorted(p.name for p in (assembled / "docs" / "generated").iterdir()) == [
+        "figures",
+        "glossary",
+    ]
     for name in CONTRACT["derivation"]["generated_pages"]:
-        assert (ROOT / gen / name).is_file()
+        assert (generated_dir / name).is_file(), "built by the assemble step into the given dir"
         assert not (ROOT / "docs" / "generated" / name).exists()
 
 
@@ -660,3 +679,90 @@ def test_bare_mkdocs_build_leaves_the_root_site_directory_alone(mkdocs_config, a
         )
     assert (SITE / "index.html").is_file()
     assert (SITE / "paper" / "index.html").is_file()
+
+
+# --- the figures and the code columns ------------------------------------------------------------
+
+CODE_COLUMN = (
+    72  # characters: a code line that fits the docsite column at 1280 px without scrolling
+)
+FENCE = re.compile(r"^```[^\n]*\n(.*?)^```", re.M | re.S)
+
+
+def _figures_module():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    try:
+        import build_figures
+
+        return build_figures
+    finally:
+        sys.path.remove(str(ROOT / "scripts"))
+
+
+def test_no_code_line_in_a_docsite_page_exceeds_the_column():
+    """D2: the rendered column holds about 72 characters at 1280 px (measured in the browser pass),
+    so no code line is longer; imports and comments are wrapped."""
+    long_lines = {}
+    for page in source_pages():
+        for block in FENCE.findall(page.read_text()):
+            for line in block.splitlines():
+                if len(line) > CODE_COLUMN:
+                    long_lines.setdefault(page.name, []).append(line)
+    assert long_lines == {}
+
+
+def test_figures_are_few_captioned_and_in_both_colour_schemes():
+    """D1: at most seven figures; each is a light and a dark image with the same alt text and one
+    caption, directly below the code block that makes it."""
+    bf = _figures_module()
+    names = []
+    for page in source_pages():
+        text = page.read_text()
+        for name in re.findall(r"!\[[^\]]*\]\([^)\s#]*?([\w-]+)-light\.png#only-light\)", text):
+            names.append(name)
+            pair = re.findall(
+                rf"!\[([^\]]+)\]\([^)\s#]*{name}-(light|dark)\.png#only-(?:light|dark)\)", text
+            )
+            assert sorted(k for _, k in pair) == ["dark", "light"], name
+            assert pair[0][0] == pair[1][0] and len(pair[0][0].split()) >= 8, f"alt text: {name}"
+            assert re.search(
+                rf"{name}-dark\.png[^\n]*\n<figcaption>Figure \d+\. [^<]{{30,}}</figcaption>", text
+            )
+        assert [i for i, _ in bf.page_figures(page)] == sorted(i for i, _ in bf.page_figures(page))
+    assert 1 <= len(names) <= bf.MAX_FIGURES == 7
+    assert len(set(names)) == len(names)
+    assert {"first-fit", "three-facets", "tension-report", "log-plane", "chart-holes"} <= set(names)
+    assert any(n.startswith("adcs-") for n in names), "an example from the case, on the frozen data"
+
+
+def test_each_figure_is_produced_by_the_code_shown_above_it(tmp_path):
+    """The runnable blocks of each page, executed by the figure builder, produce exactly the
+    images the page embeds: present, non-blank, and different in the two colour schemes."""
+    from PIL import Image
+
+    bf = _figures_module()
+    built = {}
+    for page in bf.pages_with_figures(DOCS):
+        written = bf.build_page(page, tmp_path)
+        names = {name for _, name in bf.page_figures(page)}
+        assert {p.name for p in written} == {
+            f"{n}-{s}.png" for n in names for s in ("light", "dark")
+        }
+        built[page] = names
+    for names in built.values():
+        for name in names:
+            images = {}
+            for scheme in ("light", "dark"):
+                im = Image.open(tmp_path / f"{name}-{scheme}.png").convert("RGBA")
+                assert min(im.size) > 150, (name, im.size)
+                alpha = im.getchannel("A")
+                assert alpha.getextrema()[1] == 255
+                colours = {c for _, c in im.getcolors(1_000_000)}
+                assert len(colours) > 20, f"{name}-{scheme} looks blank"
+                images[scheme] = im.tobytes()
+            assert images["light"] != images["dark"], name
+    embedded = set().union(*built.values())
+    on_pages = set()
+    for page in source_pages():
+        on_pages |= set(re.findall(r"([\w-]+)-light\.png#only-light", page.read_text()))
+    assert embedded == on_pages

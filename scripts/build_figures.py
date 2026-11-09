@@ -1,0 +1,167 @@
+"""Build the docsite's figures by running the code blocks that sit above them.
+
+    uv run python scripts/build_figures.py [--out DIR]
+
+A docsite page embeds a figure as the pair ``![alt](.../NAME-light.png#only-light)`` and
+``![alt](.../NAME-dark.png#only-dark)``. The figure is what the last matplotlib figure holds after
+the ``{.runnable}`` code block directly above that pair has run, with the page's earlier blocks
+run first in one namespace (the same rule the tests use). Nothing is copied from the paper and no
+data are hand-drawn: each image is the package's own plotting function on the block's seeded
+synthetic data, or the case module on the committed data. Every page's blocks run once per colour
+scheme (the light pass and the dark pass differ only in the matplotlib style and the frontier
+colour), so the two images of a figure show the same picture. Default output is
+``docs/generated/figures/`` (git-ignored, inside the docsite's ``docs_dir``).
+"""
+
+from __future__ import annotations
+
+import argparse
+import contextlib
+import io
+import os
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+DOCS = ROOT / "docs"
+DEFAULT_OUT = DOCS / "generated" / "figures"
+
+MAX_FIGURES = 7
+BLOCK = re.compile(r"^```python \{\.runnable\}\n(.*?)^```", re.M | re.S)
+IMAGE = re.compile(r"!\[[^\]]*\]\(([^)\s#]*?)([\w-]+)-light\.png#only-light\)")
+_SIZE = (7.0, 4.2)  # inches; width fits a 46 rem column at 100 dpi
+_DPI = 110
+
+# What differs between the schemes: the style that is applied, and the colour of "black". The
+# dark scheme leaves ``text.color`` alone: the heatmap's cell values are drawn in it, on cells that
+# are light and dark, and keep the legibility they have in the light scheme.
+SCHEMES = {
+    "light": {"rc": {}, "frontier": "black", "text": "#1c1c1c"},
+    "dark": {
+        "rc": {
+            "axes.labelcolor": "#e8e6e1",
+            "axes.edgecolor": "#a5a19a",
+            "xtick.color": "#e8e6e1",
+            "ytick.color": "#e8e6e1",
+            "axes.titlecolor": "#e8e6e1",
+            "legend.labelcolor": "#e8e6e1",
+        },
+        "frontier": "white",
+        "text": "#e8e6e1",
+    },
+}
+
+
+def page_blocks(path):
+    """The ``{.runnable}`` blocks of a page, in order."""
+    return BLOCK.findall(Path(path).read_text())
+
+
+def page_figures(path):
+    """``[(block_index, name)]``: each figure and the index of the block directly above it."""
+    text = Path(path).read_text()
+    events = [(m.start(), "block", None) for m in BLOCK.finditer(text)]
+    events += [(m.start(), "figure", m.group(2)) for m in IMAGE.finditer(text)]
+    figures, seen = [], -1
+    for _, kind, name in sorted(events):
+        if kind == "block":
+            seen += 1
+        else:
+            if seen < 0:
+                raise ValueError(f"{path}: figure {name} has no code block above it")
+            figures.append((seen, name))
+    return figures
+
+
+def pages_with_figures(docs=DOCS):
+    """The hand-written pages that embed a figure, as sorted paths."""
+    return sorted(
+        p
+        for p in Path(docs).rglob("*.md")
+        if p.relative_to(docs).parts[0] not in ("generated", "superpowers") and page_figures(p)
+    )
+
+
+def _apply(scheme):
+    import matplotlib.pyplot as plt
+
+    from hyperbolic_trade_space import plotting
+
+    spec = SCHEMES[scheme]
+    plotting.FRONTIER_COLOR = spec["frontier"]
+    return plt.rc_context(
+        {"figure.figsize": _SIZE, "figure.dpi": _DPI, "savefig.dpi": _DPI, **spec["rc"]}
+    )
+
+
+def build_page(path, out, schemes=("light", "dark")):
+    """Run a page's blocks once per scheme and save each figure; returns the written paths."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    from hyperbolic_trade_space import plotting
+
+    path, out = Path(path), Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    blocks, wanted = page_blocks(path), {}
+    for index, name in page_figures(path):
+        wanted.setdefault(index, []).append(name)
+    written = []
+    cwd, sys_path = os.getcwd(), list(sys.path)
+    original = plotting.FRONTIER_COLOR
+    os.chdir(ROOT)  # the case page imports examples/adcs by a path relative to the repository
+    try:
+        for scheme in schemes:
+            namespace = {"__name__": "__docs_block__"}
+            with _apply(scheme):
+                for i, block in enumerate(blocks):
+                    with contextlib.redirect_stdout(io.StringIO()):  # the blocks print results
+                        exec(compile(block, f"{path.name}[block {i + 1}]", "exec"), namespace)
+                    for name in wanted.get(i, []):
+                        fig = plt.gcf()
+                        target = out / f"{name}-{scheme}.png"
+                        fig.savefig(
+                            target,
+                            bbox_inches="tight",
+                            transparent=True,
+                            metadata={"Software": None},
+                        )
+                        written.append(target)
+                        plt.close("all")
+            plt.close("all")
+    finally:
+        plotting.FRONTIER_COLOR = original
+        os.chdir(cwd)
+        sys.path[:] = sys_path
+    return written
+
+
+def build(out=DEFAULT_OUT, docs=DOCS):
+    """Build every figure of the docsite into ``out``; returns the written paths."""
+    written = []
+    for page in pages_with_figures(docs):
+        written += build_page(page, out)
+    names = {p.name.rsplit("-", 1)[0] for p in written}
+    if len(names) > MAX_FIGURES:
+        raise ValueError(f"{len(names)} figures; the docsite carries at most {MAX_FIGURES}")
+    return written
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--out", default=str(DEFAULT_OUT), help="output directory")
+    args = parser.parse_args(argv)
+    try:
+        written = build(args.out)
+    except Exception as exc:
+        print(f"build_figures: FAILED: {type(exc).__name__}: {exc}", file=sys.stderr)
+        return 1
+    print(f"built {len(written)} images in {args.out}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -252,7 +252,7 @@ def test_assemble_with_fake_mkdocs(tmp_path, monkeypatch):
     (site / "paper" / "index.html").write_text("<html>paper</html>")
     monkeypatch.setattr(assemble_site, "ROOT_INDEX", site / "index.html")
     monkeypatch.setattr(assemble_site, "PAPER_PLACEHOLDER", site / "paper" / "index.html")
-    seen = []
+    seen, figures = [], []
 
     def fake(cmd):
         seen.append(cmd)
@@ -266,7 +266,10 @@ def test_assemble_with_fake_mkdocs(tmp_path, monkeypatch):
         generated_dir=tmp_path / "gen",
         collect_runner=lambda: FAKE_COLLECT,
         docs_generated_dir=tmp_path / "docsgen",
+        figures_builder=figures.append,
+        paper="placeholder",
     )
+    assert figures == [tmp_path / "docsgen" / "figures"]
     assert (out / "index.html").read_text() == "<html>root</html>"
     assert (out / "docs" / "index.html").exists()
     assert (out / "paper" / "index.html").read_text() == "<html>paper</html>"
@@ -286,7 +289,75 @@ def test_assemble_fails_loudly_when_mkdocs_fails(tmp_path):
             generated_dir=tmp_path / "gen",
             collect_runner=lambda: FAKE_COLLECT,
             docs_generated_dir=tmp_path / "docsgen",
+            figures_builder=lambda out: None,
+            paper="placeholder",
         )
+
+
+def _paper_slot(tmp_path, monkeypatch):
+    """A fake placeholder and a fake built paper, so no real MyST build runs."""
+    placeholder = tmp_path / "placeholder.html"
+    placeholder.write_text("<html>placeholder</html>")
+    monkeypatch.setattr(assemble_site, "PAPER_PLACEHOLDER", placeholder)
+    built = tmp_path / "html"
+    (built / "build").mkdir(parents=True)
+    (built / "index.html").write_text("<html>the real paper</html>")
+    (built / "build" / "entry.js").write_text("js")
+    return built
+
+
+def test_build_paper_stages_the_real_paper_when_it_builds(tmp_path, monkeypatch):
+    built = _paper_slot(tmp_path, monkeypatch)
+    calls = []
+    kind = assemble_site.build_paper(
+        tmp_path / "out",
+        paper_runner=lambda base: calls.append(base) or True,
+        paper_html=built,
+        base_url="/hyperbolic-trade-space/paper",
+    )
+    assert kind == "paper" and calls == ["/hyperbolic-trade-space/paper"]
+    assert (tmp_path / "out" / "paper" / "index.html").read_text() == "<html>the real paper</html>"
+    assert (tmp_path / "out" / "paper" / "build" / "entry.js").is_file()
+
+
+def test_build_paper_falls_back_to_the_placeholder(tmp_path, monkeypatch):
+    built = _paper_slot(tmp_path, monkeypatch)
+    for runner, html in (
+        (lambda base: False, built),  # the build failed
+        (lambda base: True, tmp_path / "missing"),  # it reported success but wrote nothing
+    ):
+        out = tmp_path / f"out{id(runner)}"
+        kind = assemble_site.build_paper(out, paper_runner=runner, paper_html=html)
+        assert kind == "placeholder"
+        assert (out / "paper" / "index.html").read_text() == "<html>placeholder</html>"
+    # the explicit placeholder never runs the build
+    out = tmp_path / "forced"
+    kind = assemble_site.build_paper(
+        out,
+        paper="placeholder",
+        paper_runner=lambda base: pytest.fail("the build must not run"),
+        paper_html=built,
+    )
+    assert kind == "placeholder"
+    with pytest.raises(ValueError):
+        assemble_site.build_paper(tmp_path / "x", paper="sometimes")
+
+
+def test_run_paper_build_reports_failure_without_raising(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(assemble_site, "paper_command", lambda: ["false"])
+    assert assemble_site.run_paper_build("/paper", paper_dir=tmp_path) is False
+    assert "did not build" in capsys.readouterr().err
+    monkeypatch.setattr(assemble_site, "paper_command", lambda: ["no-such-program-hts"])
+    assert assemble_site.run_paper_build("/paper", paper_dir=tmp_path) is False
+
+
+def test_stage_builds_the_paper_for_the_root_route(tmp_path, monkeypatch):
+    seen = {}
+    monkeypatch.setattr(
+        assemble_site, "assemble", lambda out, **kw: seen.update(kw, out=out) or out
+    )
+    stage_site.stage(tmp_path / "s", paper="auto")
+    assert seen["paper_base"] == "/paper" and seen["paper"] == "auto"
 
 
 def test_assemble_refuses_repo_root():

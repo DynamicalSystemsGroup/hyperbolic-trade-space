@@ -25,6 +25,38 @@ designs above V = 1:
 These are observations of the fit, not explanations. Reading them in physical terms is the
 engineer's work.
 
+## The one-term fit, drawn
+
+The case module in `examples/adcs/case.py` runs the study from the committed table. These blocks
+draw the tension report and the chart of the one-term fit:
+
+```python {.runnable}
+import sys
+
+sys.path.insert(0, "examples/adcs")
+import case
+
+study = case.load_study("primary")
+fit = case.fit_study(study, K=1)
+case.tension_figure(study, fit)
+```
+
+<figure markdown>
+![Heatmap of the association among ten conditioned metrics near the frontier; six metrics are outlined as the contending set.](generated/figures/adcs-tensions-light.png#only-light)
+![Heatmap of the association among ten conditioned metrics near the frontier; six metrics are outlined as the contending set.](generated/figures/adcs-tensions-dark.png#only-dark)
+<figcaption>Figure 6. The tension report of the one-term fit to the aggressive-gains table. The six outlined metrics are the contending set; grey labels mark metrics that do not participate.</figcaption>
+</figure>
+
+```python {.runnable}
+case.coordinates_figure(study, fit)
+```
+
+<figure markdown>
+![Two scatter plots of the feasible designs in pairs of chart coordinates, coloured by reaction-wheel class, with the designs nearest the frontier ringed in black.](generated/figures/adcs-coordinates-light.png#only-light)
+![Two scatter plots of the feasible designs in pairs of chart coordinates, coloured by reaction-wheel class, with the designs nearest the frontier ringed in black.](generated/figures/adcs-coordinates-dark.png#only-dark)
+<figcaption>Figure 7. The 706 feasible designs by position along the frontier, coloured by wheel class; the ringed designs lie nearest the frontier.</figcaption>
+</figure>
+
 ## Run it
 
 The code, data and figures are in the repository under
