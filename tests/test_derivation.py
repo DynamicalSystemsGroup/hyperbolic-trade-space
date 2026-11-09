@@ -845,7 +845,7 @@ def test_wp13_lemmas_in_chain_in_order_and_no_enumeration(num):
     import inspect
 
     assert _WP13[num] in CHAIN_NAMES
-    assert CHAIN_NAMES[-4:-1] == list(_WP13.values())  # L15 follows (Level 1)
+    assert CHAIN_NAMES[-5:-2] == list(_WP13.values())  # L15 (Level 1) and L16 follow
     src = inspect.getsource(_il.import_module(f"derivation.{_WP13[num]}"))
     assert "range(" not in src and "numpy" not in src and "scipy" not in src
 
@@ -1035,13 +1035,13 @@ def test_wp13_audit_lists_new_axioms_and_headline_names_fallbacks():
 
     with redirect_stdout(buf):
         assert main() == 0
-    assert "L1 -> L15" in buf.getvalue() and buf.getvalue().rstrip().endswith("ALL LEMMAS PASS.")
+    assert "L1 -> L16" in buf.getvalue() and buf.getvalue().rstrip().endswith("ALL LEMMAS PASS.")
 
 
 # --- WP10 C-1: L15, Level 1 (descent) ---
-def test_L15_is_the_last_lemma_and_states_level_one_exactly():
+def test_L15_is_followed_by_L16_and_states_level_one_exactly():
     mod = _il.import_module("derivation.lemma_15_descent")
-    assert CHAIN_NAMES[-1] == "lemma_15_descent"
+    assert CHAIN_NAMES[-2:] == ["lemma_15_descent", "lemma_16_soft_fit_alternation"]
     assert mod.STATEMENT == (
         "Level 1 (descent), step B unpenalized: reassigning every row to its maximizing facet "
         "does not increase the mean slack F, and refitting each facet to a minimizer of its "

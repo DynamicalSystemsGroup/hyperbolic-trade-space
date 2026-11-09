@@ -3598,6 +3598,619 @@
      "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
     }
    ]
+  },
+  "lemma_16_soft_fit_alternation.py": {
+   "number": 16,
+   "axioms_used": [
+    "A1",
+    "A2",
+    "A3",
+    "A6",
+    "I14",
+    "I15"
+   ],
+   "hypotheses": [],
+   "proved_results_imported": {},
+   "proved_results_exported": [],
+   "imports": [
+    "A1",
+    "A2",
+    "A3",
+    "A6",
+    "I14",
+    "I15"
+   ],
+   "results": [
+    {
+     "name": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial",
+     "steps": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+     ]
+    }
+   ],
+   "steps": [
+    {
+     "tag": "L16.1",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "shifting the K terms by s in 0..K-1 sends position k to term k+s, wrapped: the head",
+     "code": "head = sp.Sum(h[i, k + s], (k, 1, K - s)).change_index(k, k + s, t)",
+     "fingerprint": "15f517e7f17998fc11bbcd55459a3b41ae452911a747e8f23edae88b1c21cc30",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.2",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the shifted sum over the terms equals the unshifted sum, so row i's soft slack is",
+     "code": "out['shift_gap'] = sp.simplify(head + tail - sp.Sum(h[i, t], (t, 1, K)))",
+     "fingerprint": "eacf29ca3cbc0de6767ae1b9157a099d528881ce643a76cfe13582864ddc2c32",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.3",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "F is a function of the sums T_i alone, so F(shifted terms) - F = 0",
+     "code": "out['F_shift_gap'] = sp.simplify(_F(T, n, kappa).subs(T[i], head + tail) - _F(T, n, kappa).subs(T[i], sp.Sum(h[i, t], (t, 1, K))))",
+     "fingerprint": "dce75b780a89cc1f79aa2ef11ef49019f3bb605f7c91e9448d0a13928ff0fbb6",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.4",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the average over the K cyclic shifts puts at position k the sum of the terms",
+     "code": "shift_head = sp.Sum(th[k + s, j], (s, 0, K - k)).change_index(s, k + s, t)",
+     "fingerprint": "4c1909d8bd9fb89999f9b10dfba56a58c9ae1c83fc1a4462981d65eeffe2d7e0",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.5",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the average at every position is (1/K) sum_t th_tj, the mean of the terms",
+     "code": "out['average_gap'] = sp.simplify((shift_head + shift_tail) / K - sp.Sum(th[t, j], (t, 1, K)) / K)",
+     "fingerprint": "985ee12e2f91cca39d6d5166a49b85ba1a58c99a76bdd554e9c350cafece564e",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.6",
+     "kind": "axiom",
+     "applies": [
+      "I14"
+     ],
+     "results": [],
+     "prose": "I14, F convex: the slack J = (1/K) sum_s F(shift_s W) - F(average) is >= 0",
+     "code": "J = I14.slack_symbol('J')",
+     "fingerprint": "f84c6160e30cb5972e90f1c64b7fda3388504fcf2013140426de59ebecbeadcd",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.7",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "by [L16.2]/[L16.3] each shifted value is F(W): the mean of K copies of F(W) is F(W)",
+     "code": "mean_of_shifts = sp.Sum(Fth / K, (s, 0, K - 1)).doit()",
+     "fingerprint": "8d1e7a86a56904f2f04ceff2ddffa6e53171609c98b6197d673bb45482aa8ed7",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.8",
+     "kind": "axiom",
+     "applies": [
+      "I14"
+     ],
+     "results": [],
+     "prose": "I14: F(all equal) = F(W) - J, with J >= 0",
+     "code": "out['equal_value'] = sp.solve(sp.Eq(I14.slack_expr(jen_f_of_mean=Feq, jen_mean_of_f=mean_of_shifts), J), Feq)[0]",
+     "fingerprint": "22227311fa4ea4e3d8c402ff278b770af5dcb63bf3f3ef46bbfcb1db986922fb",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.9",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "exact instance: designs (1,0), (1,1/2), (0,1), (1/2,1), tau = kappa = 1, two terms",
+     "code": "out['instance'] = _instance()",
+     "fingerprint": "aa8d518d2871f0be2f214d6a1aa1479280dd8620391aba551c15d0e59b564644",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.10",
+     "kind": "axiom",
+     "applies": [
+      "A1"
+     ],
+     "results": [],
+     "prose": "A1: the log-metrics are real, so the scores x_ik, x0_ik (current model) are real",
+     "code": "x, x0 = (A1.real_base('x'), A1.real_base('x0'))",
+     "fingerprint": "a834a4bcf762b5784bbcc33f2596b5bfb8970006db071c5b51158a1fde29a313",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.11",
+     "kind": "axiom",
+     "applies": [
+      "A6"
+     ],
+     "results": [],
+     "prose": "A6: kappa > 0; the weights sum to one",
+     "code": "out['alpha_sum'] = sp.simplify(_rename(sp.Sum(al, (k, 1, K)).doit(), lsum, k) - 1) if A6.positive(kappa) else None",
+     "fingerprint": "aa4a49c7db3fff287b3566a31566a51df864b6f4b3ef2609647ed76d3879add4",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.12",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the points y_k = exp(kappa x_ik)/alpha_ik have weighted mean sum_k exp(kappa x_ik)",
+     "code": "out['mean_y'] = sp.simplify(sp.Sum(al * y, (k, 1, K)).doit() - sp.Sum(sp.exp(kappa * x[i, k]), (k, 1, K)))",
+     "fingerprint": "c29a2c1557bd33c1c14dec600b76c81a9a33b438ba5617f327f1ea74f81faf95",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.13",
+     "kind": "axiom",
+     "applies": [
+      "A1",
+      "A6"
+     ],
+     "results": [],
+     "prose": "A1, A6: the licensed logarithm of y_k = exp(kappa x_k)/alpha_k: the sum alpha f(y)",
+     "code": "mean_f = sp.Sum(al * -log_expand(sp.log(y), A1, A6), (k, 1, K))",
+     "fingerprint": "e18eb190fcb1c989a73d7d379e41e015e490efee8ecfde4ca7b9efa2230093b2",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.14",
+     "kind": "axiom",
+     "applies": [
+      "I14"
+     ],
+     "results": [],
+     "prose": "I14 with f = -log: the row's Jensen slack sum_k alpha (-log y_k) + LSE",
+     "code": "gibbs_slack = I14.slack_expr(jen_f_of_mean=f_mean, jen_mean_of_f=mean_f)",
+     "fingerprint": "e5bd67c0c21e107f5e8a2834294978d590d4b7600c58c97236aa9fcbb44f4fa0",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.15",
+     "kind": "axiom",
+     "applies": [
+      "A1",
+      "A6"
+     ],
+     "results": [],
+     "prose": "A1, A6: the same slack with the logarithms expanded (each argument is positive)",
+     "code": "Jrow = log_expand(gibbs_slack, A1, A6)",
+     "fingerprint": "3d98fbbec22dbc531825dbbb658311b940b1dceaaa371b409477e5064181a6f7",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.16",
+     "kind": "axiom",
+     "applies": [
+      "A1",
+      "A6"
+     ],
+     "results": [],
+     "prose": "A1, A6: the right side of Gibbs' inequality, with log alpha expanded",
+     "code": "gibbs_rhs = sp.log(sp.Sum(sp.exp(kappa * x[i, k]), (k, 1, K))) - sp.Sum(al * (kappa * x[i, k] - log_expand(sp.log(al), A1, A6)), (k, 1, K))",
+     "fingerprint": "ff8c4ec02b53a573703b3ddcc40ab5446a719bacedffec66f46a80006262b105",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.17",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "Gibbs: log sum_k exp(kappa x) - sum_k alpha (kappa x - log alpha) = Jensen slack",
+     "code": "out['gibbs_gap'] = sp.simplify(Jrow - gibbs_rhs)",
+     "fingerprint": "67390ec2312a0f4beed7bdab11de1638b8ba6a61fb7fc9b4e2665e59cfe39766",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.18",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "tightness: at x = x0 the same slack is 0 (log alpha = kappa x0 - log Z0)",
+     "code": "out['tight'] = sp.simplify(_rename(Jrow.subs(x, x0).doit(), lsum, k))",
+     "fingerprint": "13fb8ad692241dd62f1113b5782e51e0881f86cd97e7bc23f7690932d5af4938",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.19",
+     "kind": "axiom",
+     "applies": [
+      "A1",
+      "A6"
+     ],
+     "results": [],
+     "prose": "A1, A6: H_i = -sum_k alpha_ik log alpha_ik, the entropy of the weights",
+     "code": "H_row = -sp.Sum(al * log_expand(sp.log(al), A1, A6), (k, 1, K))",
+     "fingerprint": "132505164ec64de367c27271e4d4c8f47cab267a6643e95893143328df913b43",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.20",
+     "kind": "axiom",
+     "applies": [
+      "A6"
+     ],
+     "results": [],
+     "prose": "A6: kappa > 0; the bound minus the soft slack is (Jensen slack) / kappa",
+     "code": "out['bound_gap'] = sp.simplify(row_bound - row_slack - Jrow / A6.positive(kappa))",
+     "fingerprint": "fc339df92938a47a9544c0045012eead0bb0a7e3571a46f4b929f376da03d68d",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.21",
+     "kind": "axiom",
+     "applies": [
+      "I14"
+     ],
+     "results": [],
+     "prose": "I14: the Jensen slacks Jf_i of the rows are nonnegative, so every row obeys the bound",
+     "code": "Jf = I14.nonneg_base('Jf')",
+     "fingerprint": "e2b0c10d0258d848cd0f26baf262d4f95ab902c49a2a85e6eb0c1c21a3554e19",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.22",
+     "kind": "axiom",
+     "applies": [
+      "A6"
+     ],
+     "results": [],
+     "prose": "A6: kappa > 0, so the mean over the rows of Jf_i / kappa is nonnegative",
+     "code": "out['rows_nonneg'] = sp.Sum(Jf[i] / (n * A6.positive(kappa)), (i, 1, n)).is_nonnegative",
+     "fingerprint": "f109594ec22818fc0c4203f5a0e2457898281b4b5d6caad28b6dca8539d1fbef",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.23",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the mean over rows of the alpha-weighted slack is sum_k (n_k/N)(beta_k - ubar_k.w_k)",
+     "code": "out['regroup_gap'] = sp.expand(_canon(mean_slack) - _canon(grouped))",
+     "fingerprint": "c99d9be35bf86199fedf637e6e256f078ba009c6b30b406787578f21f9f11e9f",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.24",
+     "kind": "axiom",
+     "applies": [
+      "A2"
+     ],
+     "results": [],
+     "prose": "A2: the exponents w_kj are real (on the simplex), so x_kj = exp(w_kj) > 0",
+     "code": "wn = A2.nonneg_base('wn')",
+     "fingerprint": "69c9ffb71065f4aa704f9180541851cc64511b0c3434370fc70ebc6c20ee95c5",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.25",
+     "kind": "axiom",
+     "applies": [
+      "A1"
+     ],
+     "results": [],
+     "prose": "A1: the log-metrics u_ij are real",
+     "code": "ur = A1.real_base('ur')",
+     "fingerprint": "1f933f9fd845fb968f8728e737de37d35818fc5e47b10471c79628e7d65f41b8",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.26",
+     "kind": "axiom",
+     "applies": [
+      "A1"
+     ],
+     "results": [],
+     "prose": "A1: the weighted mean log metrics ubar_kj are real",
+     "code": "ub = A1.real_base('ub')",
+     "fingerprint": "4999e27fc7540f571205d53f6cbbeb340c864c15a372a7d88a37dd2dc3a97d40",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.27",
+     "kind": "axiom",
+     "applies": [
+      "A3"
+     ],
+     "results": [],
+     "prose": "A3: the power n_k/(N tau) of the posynomial is positive (alpha > 0, tau > 0)",
+     "code": "power = nk_pos / (n * A3.positive(tau))",
+     "fingerprint": "9bbd337c9ff7adbbc35aa960b09f5c4cf788d6731911496c03f98b60b3536fbd",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.28",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the posynomial P_k(x) = (1/N) sum_i prod_j x_kj^(tau u_ij): coefficient 1/N > 0",
+     "code": "out['posy'] = posynomial_term(1 / n, tau * ur[i, j], wn)",
+     "fingerprint": "783b07eefc851f10a4782cb6124e6a71bea51cd2f9707de9aa5659bcc46cf0d0",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.29",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the monomial prod_j x_kj^(-ubar_kj n_k/N): coefficient 1, exponents real",
+     "code": "out['mono'] = posynomial_term(sp.Integer(1), -ub[k, j] * nk_pos / n, wn)",
+     "fingerprint": "954b01826361002cda92cd6a2b9f2960061d40b1f18ac6dc9b5d1bd084b67eeb",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.30",
+     "kind": "axiom",
+     "applies": [
+      "A1",
+      "A2",
+      "A3",
+      "A6"
+     ],
+     "results": [],
+     "prose": "A2 licenses the logarithms: log prod_k P_k^(n_k/(N tau)) * Mono_k = G_alpha(W)",
+     "code": "logged = sp.Sum(log_expand(sp.log(factor_k), A1, A2, A3, A6), (k, 1, K))",
+     "fingerprint": "6d2e3f0ec748056d04285c72ae952125cd33b6152eb0fb9a16336baa46f9c857",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.31",
+     "kind": "axiom",
+     "applies": [
+      "I15"
+     ],
+     "results": [],
+     "prose": "I15: positive powers of posynomials times monomials, multiplied over the terms,",
+     "code": "out['generalized_posynomial'] = I15.entails([sp.Equivalent(I15.obj('premise'), sp.true if out['posy'] and out['mono'] and out['power_positive'] else sp.false)], I15.obj('conclusion'))",
+     "fingerprint": "be497758c3df7812859599015dd7d22f0dc080441cd19b6299d7b6cefdc57f80",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.32",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the shifted and unshifted sums over the terms agree for every row",
+     "code": "assert r['shift_gap'] == 0, 'L16 FAIL: the shifted sum over the terms differs from the sum'",
+     "fingerprint": "fe02b9267b27e3433a1e1d908366870d72cf314c799de2db35ec0cf265746a14",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.33",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "F, a function of the sums T_i, is unchanged by a cyclic shift of the terms",
+     "code": "assert r['F_shift_gap'] == 0, 'L16 FAIL: F changes under a cyclic shift of the terms'",
+     "fingerprint": "53a1634c6df91988a7a5cdfacc98769db9b72540619b31a99515a939f90e91b6",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.34",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the average of the K cyclic shifts has the mean of the terms at every position",
+     "code": "assert r['average_gap'] == 0, 'L16 FAIL: the shift average is not the mean at every position'",
+     "fingerprint": "65eb249795d6fc217a052978a6ecbb6539440c99ede2ee6ebfb808e321897cc5",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.35",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "F(all terms equal) = F(W) - J, so F(all equal) <= F(W) for a convex symmetric F",
+     "code": "assert sp.simplify(r['equal_value'] - (r['Fth'] - r['J'])) == 0 and (r['Fth'] - r['equal_value']).is_nonnegative is True, 'L16 FAIL: the all-equal point is not F(W) - J with J >= 0'",
+     "fingerprint": "6a71851b8f72f1d3cd533d25a5875b98002451750c8858a03f1edcf303032f11",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.36",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "exact instance: F is unchanged by swapping the two terms",
+     "code": "assert abs(ins['F'] - ins['F_swapped']) < sp.Float('1e-30'), 'L16 FAIL: F(swapped) != F(W)'",
+     "fingerprint": "3e2ef4be0d3d3cee5becee04ec1e4613acc14f409530493a3f609a60281c7f13",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.37",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "exact instance: F at the midpoint (all terms equal) exceeds F(W), so F is not convex",
+     "code": "assert ins['F_mid'] - ins['F'] > sp.Float('0.004'), 'L16 FAIL: the midpoint does not exceed F(W)'",
+     "fingerprint": "92465764fc8bf7ffd6fdec871d10cb6a5e9e207303ea8666262eb52f5e123273",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.38",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the weights alpha_ik sum to one over the terms",
+     "code": "assert r['alpha_sum'] == 0, 'L16 FAIL: the weights do not sum to one'",
+     "fingerprint": "0b97b3e3ac04c54a69352cffea15420e9975c62c30eb3897a31f92e8f95b80b7",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.39",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the weighted mean of the points y_k is sum_k exp(kappa x_ik)",
+     "code": "assert r['mean_y'] == 0, 'L16 FAIL: sum_k alpha y_k != sum_k exp(kappa x_k)'",
+     "fingerprint": "1e789d5d7e5fac09f142befce771e96a952388b66913f15f93d680a2a9c37d32",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.40",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "Gibbs: the I14 slack equals log sum exp - sum alpha (kappa x - log alpha)",
+     "code": "assert r['gibbs_gap'] == 0, \"L16 FAIL: Gibbs' slack is not the Jensen slack\"",
+     "fingerprint": "b792cd93e0943d8f6804e50296d45ceeab9c2bd31d2be676f951097127541835",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.41",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "at the weights' own model the Jensen slack is 0: the bound is tight there",
+     "code": "assert r['tight'] == 0, \"L16 FAIL: the bound is not tight at the weights' own model\"",
+     "fingerprint": "b296052306914eb27f2d23c342600723f0d500a73274d6d1fbf5643d44fd7ebd",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.42",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the bound minus the soft slack of row i is (Jensen slack) / kappa",
+     "code": "assert r['bound_gap'] == 0, 'L16 FAIL: the bound minus the soft slack is not Jensen slack / kappa'",
+     "fingerprint": "f0e59599e6da2a00e52489609e6792b4b232681e0b0487286bff99ff4f419bb3",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.43",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the mean of the nonnegative Jensen slacks is nonnegative: F <= G_alpha - E",
+     "code": "assert r['rows_nonneg'] is True, 'L16 FAIL: the soft slack is not bounded by the fixed-weight objective'",
+     "fingerprint": "f4190d6550c098fba91b8dbdbd7ae67bb9697e6598e5f8630b6a0340cb0168c7",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.44",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the alpha-weighted mean slack regroups by terms",
+     "code": "assert r['regroup_gap'] == 0, 'L16 FAIL: the weighted mean slack does not regroup by terms'",
+     "fingerprint": "7f5e1dbbd5e7e6a91d92bd30e626a41876ea0d327a681eee4606c686ca2cfa04",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.45",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the posynomial P_k has positive coefficient and real exponents independent of x",
+     "code": "assert r['posy'], 'L16 FAIL: P_k is not a posynomial in x = exp(w)'",
+     "fingerprint": "4b4c958e49781718df61b3c90bdf7d7e317963f122e61d9cb21f7e8731d9c809",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.46",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the monomial factor has coefficient 1 and real exponents",
+     "code": "assert r['mono'], 'L16 FAIL: the weighted mean term is not a monomial in x'",
+     "fingerprint": "30a703b60e5bfa552cb3f88e6fdc825a7e7f6ed99d6312886f6842b5477593d0",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.47",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the power n_k/(N tau) is positive",
+     "code": "assert r['power_positive'] is True, 'L16 FAIL: the power of P_k is not positive'",
+     "fingerprint": "296101b5aabb90f71287621fdfd51dc42316bdaa24225cffd55eec6836724ca4",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.48",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the logarithm of the product over terms is the fixed-weight objective",
+     "code": "assert r['log_gap'] == 0, 'L16 FAIL: log of the product is not G_alpha'",
+     "fingerprint": "141276341f8ffd5686abd4e19dcacad98371279bd154fcb62e54288bfd626480",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    },
+    {
+     "tag": "L16.49",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the product over the terms is a generalized posynomial (I15's premise held at L16.31)",
+     "code": "assert r['generalized_posynomial'], 'L16 FAIL: not a generalized posynomial'",
+     "fingerprint": "ee0a600faf1cf6444b2dbbc976e3a53cd6e34d653be2aa494b30a1aec814f8f8",
+     "result": "soft-weight alternation: symmetry, the fixed-weight bound and the generalized posynomial"
+    }
+   ]
   }
  },
  "ledger": {
@@ -3623,6 +4236,8 @@
   "I11": "ebcb6a1847dbfc77e6127957a173fd6ec9dfcc21db586ad6ce314ff5b815f6b1",
   "I12": "a9b9e7d03dbc1fc0705983f7b0d7d3217bba2cb33523b3b3a694a82ae275806f",
   "I13": "593b861f45acc60788a22de75b2902d3f0454ed0c7612997f9772753a0ed4408",
+  "I14": "ead5becfc717ccd920a77c9a92f7ae47bf5a80d981eec5f3f6ba21e6979a43eb",
+  "I15": "4aacdaf3b5cfeba77d4de2f4ae041a267baae11ffa435f93ad67e9553714255d",
   "R1": "b38653c84f3e4f29bd37d548018ad6a1556b8f3c246977f4b7aba50f455c344f",
   "R2": "b15ed265e27c49ab47fb9424ad6b6cb807964bdf79810a3cf078ec1befbb1bc8",
   "F5": "2b7224349cd656ed5f398c4834e6f572187f4d7d78fbd70c1ae142002943eebe",

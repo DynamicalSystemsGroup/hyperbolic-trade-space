@@ -912,3 +912,155 @@ def test_L4_geometric_program_steps_are_of_the_kinds_the_rules_allow():
     assert steps["L4.22"]["applies"] == ["A2"] and steps["L4.24"]["applies"] == ["I13"]
     for t in ("L4.17", "L4.19", "L4.20", "L4.21", "L4.23"):
         assert kinds[t] == "computed"
+
+
+# ------------- WP10 Amendment 5, R-41: L16, the soft-weight alternation (three scripted steps)
+import importlib  # noqa: E402
+
+from derivation.axioms import I14  # noqa: E402
+from derivation.symbols import make_symbols  # noqa: E402
+
+_L16 = "lemma_16_soft_fit_alternation.py"
+
+
+def _l16_steps():
+    return {s["tag"]: s for s in _record()["lemmas"][_L16]["steps"]}
+
+
+def _run_L16():
+    mod = importlib.import_module("derivation.lemma_16_soft_fit_alternation")
+    ctx = {"S": make_symbols()}
+    mod.derive(ctx)
+    return ctx, mod
+
+
+def test_L16_is_in_the_chain_with_its_exact_statement_and_new_entries():
+    assert CHAIN_NAMES[-1] == "lemma_16_soft_fit_alternation"
+    mod = importlib.import_module("derivation.lemma_16_soft_fit_alternation")
+    assert mod.STATEMENT == (
+        "Soft-weight alternation: with weights alpha_ik = softmax_k(kappa score_ik) from the "
+        "current model, (i) a convex program symmetric in the terms attains its minimum with all "
+        "terms equal, so the objective over all terms is not convex in them in general; (ii) the "
+        "soft model's slack is bounded above by the fixed-weight objective, with equality at the "
+        "weights' own model; (iii) the fixed-weight objective is a generalized posynomial in "
+        "exp(w)."
+    )
+    assert set(mod.AXIOMS_USED) == {"A1", "A2", "A3", "A6", "I14", "I15"}
+    for name, section in (("I14", "3.1.8"), ("I15", "5.3")):
+        entry = AX.get(name)
+        assert entry.tag == AX.INHERITED and entry.has_form() and not entry.proposition
+        assert section in entry.citation and "web.stanford.edu" in entry.citation
+
+
+def test_L16_steps_are_of_the_kinds_the_rules_allow():
+    steps = _l16_steps()
+    assert len(steps) == 49
+    applies = {t: st["applies"] for t, st in steps.items() if st["kind"] == "axiom"}
+    ledger_steps = {name: [t for t, a in applies.items() if name in a] for name in AX.AXIOMS}
+    assert ledger_steps["I14"] == ["L16.6", "L16.8", "L16.14", "L16.21"]
+    assert ledger_steps["I15"] == ["L16.31"]
+    assert all(st["kind"] != "result" for st in steps.values())  # imports no earlier result
+
+
+def test_L16_verifies_and_each_falsified_fact_fails_loudly():
+    ctx, mod = _run_L16()
+    mod.verify(ctx)
+    for key, bad in (
+        ("shift_gap", 1),
+        ("F_shift_gap", 1),
+        ("average_gap", 1),
+        ("alpha_sum", 1),
+        ("mean_y", 1),
+        ("gibbs_gap", 1),
+        ("tight", 1),
+        ("bound_gap", 1),
+        ("rows_nonneg", None),
+        ("regroup_gap", 1),
+        ("posy", False),
+        ("mono", False),
+        ("power_positive", None),
+        ("log_gap", 1),
+        ("generalized_posynomial", False),
+    ):
+        ctx, mod = _run_L16()
+        ctx["L16"][key] = bad
+        with pytest.raises(AssertionError, match="L16 FAIL"):
+            mod.verify(ctx)
+    ctx, mod = _run_L16()
+    ctx["L16"]["equal_value"] = ctx["L16"]["Fth"] + ctx["L16"]["J"]  # F(equal) above F(W)
+    with pytest.raises(AssertionError, match="L16 FAIL"):
+        mod.verify(ctx)
+    ctx, mod = _run_L16()
+    ins = dict(ctx["L16"]["instance"])
+    ins["F_mid"] = ins["F"]  # a convex F would not rise at the midpoint
+    ctx["L16"]["instance"] = ins
+    with pytest.raises(AssertionError, match="L16 FAIL"):
+        mod.verify(ctx)
+
+
+def test_the_symmetric_convex_step_needs_convexity_and_the_gibbs_step_needs_I14():
+    # Jensen's inequality (I14) is for a convex f: the slack of a concave f is negative
+    a, b = sp.Rational(0), sp.Rational(2)
+    f = lambda x: -(x**2)  # noqa: E731  (concave)
+    mean_of_f = (f(a) + f(b)) / 2
+    f_of_mean = f((a + b) / 2)
+    assert I14.slack_expr(jen_f_of_mean=f_of_mean, jen_mean_of_f=mean_of_f) < 0
+    g = lambda x: x**2  # noqa: E731  (convex)
+    assert I14.slack_expr(jen_f_of_mean=g((a + b) / 2), jen_mean_of_f=(g(a) + g(b)) / 2) >= 0
+    # the entry gives its nonnegative family only through its own relation
+    assert I14.nonneg_base("Jf")[1].is_nonnegative is True
+    with pytest.raises(LicenceError):
+        A3.nonneg_base("Jf")
+    # a withheld licence: log alpha with alpha = softmax(kappa x0) needs A1 (x0 real) and A6
+    x0 = sp.IndexedBase("x0", real=True)
+    z = sp.Sum(sp.exp(_S.kappa * x0[_S.i, _S.L]), (_S.L, 1, _S.K))
+    alpha = sp.exp(_S.kappa * x0[_S.i, _S.k]) / z
+    log_expand(sp.log(alpha), A1, A6)
+    with pytest.raises(LicenceError):
+        log_expand(sp.log(alpha), A1)  # kappa is not known to be real
+    with pytest.raises(LicenceError):
+        log_expand(sp.log(alpha))
+
+
+def test_a_scratch_L16_without_the_I14_or_I15_import_fails_naming_the_ledger_entry(scratch):
+    edit(
+        scratch,
+        _L16,
+        "from derivation.axioms import A1, A2, A3, A6, I14, I15",
+        "from derivation.axioms import A1, A2, A3, A6, I15",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and _L16 in out and "I14" in out
+
+
+def test_a_scratch_L16_without_I15_fails(scratch):
+    edit(
+        scratch,
+        _L16,
+        "from derivation.axioms import A1, A2, A3, A6, I14, I15",
+        "from derivation.axioms import A1, A2, A3, A6, I14",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and _L16 in out and "I15" in out
+
+
+def test_a_scratch_L16_with_a_changed_step_fails_naming_the_step(scratch):
+    edit(scratch, _L16, 'assert r["tight"] == 0', 'assert r["tight"] != 0')
+    code, out = run_checker(scratch)
+    assert code != 0 and "L16.41" in out
+    # a ledger entry whose citation changes is also named
+    edit(
+        scratch,
+        "axioms.py",
+        "section 3.1.8 (Jensen's inequality",
+        "section 3.1.7 (Jensen's inequality",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "I14" in out
+
+
+def test_the_exact_instance_shows_the_objective_is_not_convex_in_the_terms():
+    ctx, _ = _run_L16()
+    ins = ctx["L16"]["instance"]
+    assert abs(ins["F"] - ins["F_swapped"]) < sp.Float("1e-30")  # the swap is a symmetry of F
+    assert ins["F_mid"] - ins["F"] > sp.Float("0.004")  # the midpoint is worse: not convex

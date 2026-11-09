@@ -93,6 +93,13 @@ _chi = sp.IndexedBase("chi", nonnegative=True)  # A8: chi[k, i] = 1 when row i l
 _ncell = sp.IndexedBase("ncell")  # A8: n_k, the number of rows of cell k
 _NROWS = sp.Symbol("N", integer=True, positive=True)  # A8: the number of rows
 
+_JF_MEAN, _JMEAN_F = sp.symbols(
+    "jen_f_of_mean jen_mean_of_f", real=True
+)  # I14: f(sum th x), sum th f(x)
+_JSLACK = sp.IndexedBase("jen_slack")  # I14: the slack of the instance with index i
+_GG_BUILT = sp.Symbol("built_from_posynomials")  # I15 premise and conclusion
+_GG_GENPOS = sp.Symbol("generalized_posynomial")
+
 _GT, _GE, _LE = sp.StrictGreaterThan, sp.GreaterThan, sp.LessThan
 
 
@@ -518,6 +525,43 @@ AXIOMS = {
             ("conclusion", _GP_STD),
         ),
     ),
+    "I14": Axiom(
+        "I14",
+        INHERITED,
+        "Jensen's inequality: if f is convex, x_1, ..., x_K are in its domain and theta_1, ..., "
+        "theta_K >= 0 with sum_k theta_k = 1, then f(sum_k theta_k x_k) <= sum_k theta_k f(x_k)",
+        citation="Boyd & Vandenberghe, Convex Optimization, section 3.1.8 (Jensen's inequality "
+        "and extensions; the two-point form is the definition of convexity, (3.1) of section "
+        "3.1.1); read in the authors' PDF https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf",
+        role="averages a convex function over finitely many points: L16 uses it for the "
+        "permutation average of a program that is convex and symmetric in its terms, and for "
+        "the concave logarithm (the convex function -log) in Gibbs' inequality",
+        failure_mode="holds for every convex f and every convex combination; for a function "
+        "that is not convex it fails, which is how L16 exhibits that the several-term objective "
+        "is not convex",
+        relation=(
+            _LE(_JF_MEAN, _JMEAN_F, evaluate=False),
+            _GE(_JSLACK[_i], 0, evaluate=False),  # the slack of each instance is nonnegative
+        ),
+    ),
+    "I15": Axiom(
+        "I15",
+        INHERITED,
+        "a function of positive variables formed from posynomials using addition, "
+        "multiplication, positive (fractional) power and maximum is a generalized posynomial "
+        "(the definition)",
+        citation="Boyd, Kim, Vandenberghe & Hassibi, A tutorial on geometric programming, "
+        "Optimization and Engineering 8(1), 2007, section 5.3 (generalized posynomials; "
+        "section 5.4 defines the generalized geometric program with a generalized posynomial "
+        "objective and inequalities and monomial equalities); read in the authors' PDF "
+        "https://web.stanford.edu/~boyd/papers/pdf/gp_tutorial.pdf",
+        role="names the exponential of the fixed-weight objective of L16 as a generalized "
+        "posynomial: a product of positive powers of posynomials and of monomials",
+        failure_mode="a power that is not positive, a posynomial with a negative coefficient or "
+        "a difference of posynomials leaves the class",
+        relation=(sp.Equivalent(_GG_BUILT, _GG_GENPOS),),
+        objects=(("premise", _GG_BUILT), ("conclusion", _GG_GENPOS)),
+    ),
     # ------------------------------------------------------------- REGULARITY
     "R1": Axiom(
         "R1",
@@ -624,6 +668,8 @@ I10 = AXIOMS["I10"]
 I11 = AXIOMS["I11"]
 I12 = AXIOMS["I12"]
 I13 = AXIOMS["I13"]
+I14 = AXIOMS["I14"]
+I15 = AXIOMS["I15"]
 R1 = AXIOMS["R1"]
 R2 = AXIOMS["R2"]
 F5 = AXIOMS["F5"]

@@ -217,3 +217,58 @@ checker, and one with a changed L4.19 fails naming L4.19.
 Pins corrected: none in `test_derivation.py`; `test_narrative.py` needed no edit (the spec text was
 updated instead). `test_paper.py` Appendix B tests go stale until the paper is regenerated with
 `uv run python -m derivation.proofmap --update` followed by the paper build.
+
+## Amendment 5, R-41: the soft-weight alternation (L16), 2026-11-09
+
+One new lemma script, `lemma_16_soft_fit_alternation.py` (L16, 49 tagged steps), appended to
+`CHAIN_NAMES`; the numbers of the existing lemmas are unchanged, and no `TITLE` or `STATEMENT` of an
+existing lemma changed (every existing step keeps its fingerprint; the record gained L16 and two
+ledger entries only). Source: `docs/superpowers/notes/spike-ggp-fit/report.md`, findings 2 and 3.
+
+Statement, as given by the PM, unchanged: with weights alpha_ik = softmax_k(kappa score_ik) from
+the current model, (i) a convex program symmetric in the terms attains its minimum with all terms
+equal, so the objective over all terms is not convex in them in general; (ii) the soft model's
+slack is bounded above by the fixed-weight objective, with equality at the weights' own model;
+(iii) the fixed-weight objective is a generalized posynomial in exp(w).
+
+| Clause | Steps | Kinds | What is scripted |
+|---|---|---|---|
+| (i) | L16.1 to L16.9, L16.32 to L16.37 | computed; L16.6 and L16.8 by I14 | the head and tail of a cyclic shift of the K terms re-index to the sum over 1..K (symbolic K and shift s), so F is unchanged by the shift; the average of the K shifts has the mean of the terms at every position (the all-equal point); I14 gives F(all equal) = F(W) - J with J >= 0; an exact instance (N = 4, K = 2, d = 2, tau = kappa = 1) has F(W) = F(swapped W) and F(midpoint) larger by 0.0046, so F is not convex |
+| (ii) | L16.10 to L16.23, L16.38 to L16.44 | A1, A6, I14 by axiom; the identities computed | Gibbs' inequality at symbolic K by Jensen applied to -log at the points exp(kappa x_k)/alpha_k; equality at alpha = softmax(kappa x0) (the slack is 0 at x = x0); the row bound -Phi_i <= sum_k alpha_ik s_ik - H_i/kappa, the difference being (Jensen slack)/kappa >= 0; regrouping of the alpha-weighted mean slack to sum_k (n_k/N)(beta_k - ubar_k.w_k) |
+| (iii) | L16.24 to L16.31, L16.45 to L16.49 | A1, A2, A3 by axiom; I15 | the exponential of the fixed-weight objective is a product over terms of the posynomial P_k raised to the positive power n_k/(N tau) and a monomial; its logarithm is the objective; I15 concludes generalized posynomial |
+
+Exact inequality scripted (symbolic K, per row i, a_k = kappa x_ik, alpha = softmax(kappa x0)):
+log sum_k exp(a_k) - sum_k alpha_k (a_k - log alpha_k) = J_i >= 0, with J_i = 0 at x = x0. In terms
+of the slack of the soft model, -Phi_i <= sum_k alpha_ik s_ik - H_i/kappa, s_ik = -x_ik,
+H_i = -sum_k alpha_ik log alpha_ik; averaged over rows, F(W) <= G_alpha(W) - E with
+G_alpha(W) = sum_k (n_k/N)(beta_k - ubar_k.w_k) and the constant E = (1/(kappa N)) sum_i H_i.
+
+Three points for the reader of the statement (none changes it):
+
+1. The fixed-weight objective in (ii) is read as G_alpha less the constant E, which does not depend
+   on W (same minimizers); with E left out the bound still holds (E >= 0) but equality at the
+   weights' own model needs it. The direction of the inequality is the one the spike states.
+2. In (iii) the object that is a generalized posynomial is the exponential of the objective (the
+   program minimizes its logarithm, as L4.22 does for one facet).
+3. Clause (i) is proved for the K cyclic shifts of the terms (a symmetry subgroup that suffices to
+   put the mean at every position); the invariance of F is scripted for those shifts, not for every
+   permutation. That "a convex symmetric F is, at the all-equal point, no larger than at W" is the
+   implication; that the soft objective is not convex is shown by the exact instance. The numbers of
+   the spike (0.18, 0.14 rise at the midpoint on the planted tables; 0.889 against 0.631) are the
+   numerical check and are not reproduced by the script.
+
+Ledger: I14 (Jensen's inequality; Boyd and Vandenberghe 3.1.8, two-point form 3.1.1) and I15
+(generalized posynomial, definition; Boyd, Kim, Vandenberghe and Hassibi 2007, section 5.3, with 5.4
+for the program) added; both section numbers read in the authors' PDFs
+(`docs/superpowers/notes/references-verified.md`). A side correction there: an earlier note listed
+"2.5 (generalized posynomials)"; section 2.5 is "How GPs are solved" and generalized posynomials
+are section 5.3.
+
+Pins corrected (before to after): `tests/test_build_generated.py` chain length 15 to 16;
+`tests/test_derivation.py` banner "L1 -> L15" to "L1 -> L16" (and in `run.py`), the WP13 chain
+slice `CHAIN_NAMES[-4:-1]` to `[-5:-2]`, and the "L15 is the last lemma" test now says L15 is
+followed by L16; spec section 6 gains I14 and I15 in the inherited list (the lemma list there
+stops at L14 and is pinned to L1 to L14 by `tests/test_narrative.py`, left as it was). New
+negative controls in `tests/test_proof_map.py`: each ledger entry withheld, a changed step named
+by its tag, a licence withheld for the logarithm of alpha, Jensen's inequality failing for a
+concave function, and every computed fact of L16 falsified in turn.
