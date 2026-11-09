@@ -23,6 +23,50 @@ they were given without the PM's explicit approval (and the PM does not widen a 
 driver's); the driver (the Fable session) decides what reaches the supervisor: gate decisions and
 problem-level changes, nothing else.
 
+## The autonomous phase (from 2026-11-08)
+
+The supervisor, verbatim: "let's get ourselves set of for a phase of extended development and
+testing loops which are mostly autonomous with me serving only to resolve escalations which you
+cannot answer for the PM".
+
+**The loop, per part of a package.** A bounded implementer builds the part on its own files; a
+fresh reviewer checks it against the scope's requirements by running the stated checks; defects
+against a stated requirement are fixed and re-reviewed without asking anyone; the PM checks that
+the part works with the others (file ownership, the full suite, lint, lock, the lemma chain); the
+PM reports to the driver; the driver verifies independently before anything is called delivered.
+A manual Tests run on `dev` (`gh workflow run Tests --ref dev`) at each package's delivery and
+after any change that could differ by platform.
+
+**Who answers what.**
+
+- *The PM decides:* how a part is built inside its scope; the order of parts; which implementer
+  owns which file; fixes to defects against a stated requirement.
+- *The driver decides for the PM:* a detail the scope leaves open, when the supervisor's recorded
+  words or an approved default settle it; conflicts between packages over files or order; a
+  dependency an approved scope needs (`pyproject.toml` and `uv.lock` are the driver's); whether a
+  reported problem is a defect (fix it) or a question about the bar (escalate it).
+- *The supervisor decides,* and only these reach him: a change to any scope's goals, non-goals,
+  deliverables, files it may edit, or its definitions of good and good enough (an amendment); every
+  acceptance and every staged-site review; anything outward-facing or hard to undo (a merge to
+  `main`, a tag, a deployment, publishing to a registry or index, a pull request, a new external
+  service); a finding about the mathematics (a lemma that fails or whose statement must change, a
+  proof step that is neither computed nor resting on a declared axiom or proved result, a recorded
+  number moving beyond its stated tolerance); anything that contradicts his recorded words; a
+  trade-off he has shown he cares about (budgets, the platform of record, the data swap).
+
+**Reporting lines.** Implementers and reviewers report to the PM, never to the driver. The PM
+reports to the driver, never to the supervisor. When the PM is unsure whether something is its
+own call, it asks the driver in one message with the facts and the options.
+
+**The record.** `work-packages/driver-log.md`: what the driver decided for the PM and on what
+basis, and what is waiting for the supervisor. The supervisor's own words stay in the
+`WPn-decisions.md` files, verbatim.
+
+**Limits that hold throughout.** Commits to `dev` only. No merge to `main`, no tag, no deployment,
+no publishing, no pull request. No AI attribution anywhere. No edit to a test or record that would
+weaken a requirement; a test changes only when its requirement changed by a recorded decision.
+Stop and report, do not improvise, when a step would cross one of these.
+
 ## Read first, in this order
 
 1. `~/.claude/skills/CLAUDE.md` (the decision loop) and `~/.claude/skills/README.md`.
