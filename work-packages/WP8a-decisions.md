@@ -58,3 +58,18 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Disposition:** approved; the PM executes on `dev` against WP14's contract as it lands;
   acceptance is judged on the supervisor's review of the staged localhost site plus a green
   dispatch build on `dev`; no deployment before the first release.
+
+## Front matter and link fixes
+
+Applied last (D-9). The only change to each page is the front-matter block of four lines at the top of the file, with the page's world (`world: embodied | symbolic | formal`, rendered as the world line under the title by `overrides/partials/content.html`):
+
+| File | Line | Before | After |
+|---|---|---|---|
+| `docs/why-and-how.md` | 1 | (none) | `---` / `world: embodied` / `---` / blank line |
+| `docs/method.md` | 1 | (none) | `world: formal` block |
+| `docs/preconditioning.md` | 1 | (none) | `world: symbolic` block |
+| `docs/api.md` | 1 | (none) | `world: symbolic` block |
+| `docs/limitations.md` | 1 | (none) | `world: formal` block |
+| `docs/literature.md` | 1 | (none) | `world: formal` block |
+
+`docs/index.md` carries no world (it maps all three). The generated pages carry no front matter; the override sets their world (`formal`). No title key was needed. Link fixes: none; `mkdocs build --strict` and `tests/test_site.py` find no broken relative link in the six pages.
