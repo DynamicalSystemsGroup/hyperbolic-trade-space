@@ -183,3 +183,7 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
   paper's supporting material as appendices (WP10's draft: Appendix B theory and lemma coverage,
   Appendix D algorithm; the audit under its verification appendix); `scripts/build_generated.py`
   keeps producing them for the paper's build, not for the docsite.
+- **OD2, a docsite page for the abstraction-gaps ledger.** Options: no page, paper appendix only /
+  a short table. **Supervisor (mzargham), verbatim:** "No docsite page; paper appendix only".
+  Disposition: decided; the user guide's limitations section names the gaps that bear on use and
+  links to the paper's appendix.
