@@ -501,3 +501,11 @@ result, and the step that applies it is of a third kind, *by a proved result*; t
 that the imported result belongs to a lemma earlier in the chain, is exported by it as proved, and is
 applied by a step. Today's four dependencies (L4 on L3, L7 on L1, L12 on L4, L14 on L12 and L13) are
 declared this way. No change to scope, deliverables or files.
+
+Third clarification, an instruction (supervisor, verbatim, `WP10-decisions.md`): "its a best bet to
+factor helper tools into their own file". Within D-12: the helper functions defined in
+`derivation/lemma_03_gradient_kkt.py` and imported by other lemma scripts move to
+`derivation/sumtools.py`, and the shared index symbols to `derivation/symbols.py` (both files become
+editable by WP10 for this move only), with no change in behaviour; the checker requires that a lemma
+script imports from another lemma script nothing but a proved result. The existing derivation tests
+stay unedited and pass, including the test that every load-bearing symbol assumption is declared.

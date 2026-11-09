@@ -62,6 +62,10 @@ statements instead of the location they are imported from"
 "this also elegantly handles the case where multiple lemmas use the same axiom, or where one lemmas
 result is important by another proof script as a proven result"
 
+On the helper functions that three scripts import from L3's file:
+
+"its a best bet to factor helper tools into their own file"
+
 ## The test each appendix must pass
 
 An appendix exists only if it answers a question that a reader of the paper has and that the main
@@ -154,8 +158,12 @@ How the correspondence is built (so that it can be checked, and cannot drift):
   passed through the runner's shared dictionary in chain order rather than declared by import.
   The checker requires that an imported result belongs to a lemma earlier in the chain (no
   circular proof), that it is one that lemma exports as proved, and that it is applied by a step.
-  Helper functions that some scripts import from another lemma's file are tools, not results, and
-  are kept distinguishable from them.
+- **Tools live in their own file** (the supervisor's instruction). L3's script today defines nine
+  Sum-algebra helper functions and two shared index symbols that L4, L12 and L14 import from it.
+  The functions move to the existing shared tools module (`derivation/sumtools.py`) and the index
+  symbols to the shared symbols module, unchanged in behaviour. The rule is then simple and
+  checkable: a lemma's script imports from another lemma's script only a proved result; tools come
+  from the tools module, symbols from the symbols module, axioms from the ledger.
 - **Where the scripts stand on this today:** inherited results are used in code at the point of
   use (for example L8 applies I6 as a substitution and has tests showing the proof fails without
   it; L12 carries I8 as an inequality), but each script writes the result's SymPy form itself. The

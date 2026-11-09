@@ -627,3 +627,14 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   proved result", is added; the checker forbids a circular import of results. Sent to the PM.
   Candidate for a later package, not done now: move the shared helper functions out of L3's file
   into the tools module.
+- **Helper tools in their own file.** The driver had left the helpers in L3's script and recorded
+  moving them as a later candidate. **Supervisor (mzargham), verbatim:** "its a best bet to factor
+  helper tools into their own file". Disposition: done in this package, not later. Found in the
+  code: `lemma_03_gradient_kkt.py` defines nine Sum-algebra helpers (`pull_constants`,
+  `split_sums`, `linearize`, `push_in`, `fuse`, `sum_swap_equal`, `replace_indexed`,
+  `piece_in_range`, `_peel`) and the index symbols `L`, `J0`, imported by L4, L12 and L14;
+  `derivation/sumtools.py` is already the shared tools module; no test or script outside
+  `derivation/` imports from a lemma file by name. The functions move to `sumtools.py`, the shared
+  index symbols to `symbols.py` (registered under the structural axiom so the symbol-assumption
+  test passes unedited); a lemma script then imports from another lemma script only proved
+  results, and the checker enforces it. Sent to the PM.
