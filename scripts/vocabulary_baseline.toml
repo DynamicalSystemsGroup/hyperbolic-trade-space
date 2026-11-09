@@ -1,0 +1,682 @@
+# Known vocabulary violations (check_vocabulary.py). A row is a debt, with an owner;
+# the test fails on a violation not listed here. Remove a row when it is fixed.
+
+[[violation]]
+kind = "avoid"
+file = "docs/index.md"
+phrase = "exchange rates"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (avoid)"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "assignment"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "fit temperature"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "improvement factor"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "invariant value"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "level offset"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "position along the frontier"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "term temperature"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+
+[[violation]]
+kind = "stem"
+file = "docs/api.md"
+phrase = "fitted surface"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/examples.md"
+phrase = "power margin"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/getting-started.md"
+phrase = "working temperature"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/index.md"
+phrase = "exchange rate"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/theory.md"
+phrase = "constant rate"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/theory.md"
+phrase = "level surface"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/theory.md"
+phrase = "working temperature"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/chart.md"
+phrase = "finite temperature"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/conditioning.md"
+phrase = "error rate"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/conditioning.md"
+phrase = "fitted surface"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/fitting.md"
+phrase = "finite temperature"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/fitting.md"
+phrase = "mean gap"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/fitting.md"
+phrase = "select temperature"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/limitations.md"
+phrase = "finite temperature"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/limitations.md"
+phrase = "infinite temperature"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/limitations.md"
+phrase = "learned surface"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/limitations.md"
+phrase = "varying rate"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/limitations.md"
+phrase = "working temperature"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/tensions.md"
+phrase = "fitted temperature"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/tensions.md"
+phrase = "infinity program"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/tensions.md"
+phrase = "working temperature"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/termination.md"
+phrase = "infinite temperature"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/termination.md"
+phrase = "largest gap"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/termination.md"
+phrase = "max gap"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/termination.md"
+phrase = "median gap"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/termination.md"
+phrase = "median margin"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/termination.md"
+phrase = "smallest gap"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "docs/user-guide/termination.md"
+phrase = "weighted gap"
+owner = "WP8a docsite stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "across temperature"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "convex envelope"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "duality gap"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "fitted surface"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "level surface"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "power margin"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "reference surface"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "row gap"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "sample envelope"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "selected temperature"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "sided envelope"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "working temperature"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "abstraction gap"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "assert gap"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "different temperature"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "duality gap"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "explicit radius"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "extension temperature"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "finite temperature"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "fitted surface"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "infinite temperature"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "instance margin"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "level surface"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "lp gap"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "max gap"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "maximal gap"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "maximum temperature"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "objective margin"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "order gap"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "perturbed margin"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "positive margin"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "power margin"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "recovery rate"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "reference surface"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "regression surface"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "row gap"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "selected temperature"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "sided envelope"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "sided surface"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "signomial program"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "summand gap"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "unshifted gap"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "working temperature"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "zero margin"
+owner = "WP10 paper stream"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/estimator.py"
+phrase = "finite temperature"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/estimator.py"
+phrase = "parameter temperature"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/estimator.py"
+phrase = "weighted gap"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/gaps.py"
+phrase = "knn gap"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/plotting.py"
+phrase = "wireframe surface"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "duality gap"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "float temperature"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "max gap"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "order gap"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "recovery rate"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "return gap"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "smallest gap"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "weighted gap"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/tensions.py"
+phrase = "fitted temperature"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/tensions.py"
+phrase = "matching temperature"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/tensions.py"
+phrase = "working temperature"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/tuning.py"
+phrase = "return temperature"
+owner = "package docstrings"
+reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+
