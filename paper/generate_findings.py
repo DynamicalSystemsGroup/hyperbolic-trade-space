@@ -10,6 +10,7 @@ from __future__ import annotations
 import case
 import numpy as np
 from paper_common import Md
+from paper_facets import aligned
 from paper_stability import stable, summary
 
 
@@ -103,7 +104,7 @@ def k_sweep_sentence(study, fits) -> Md:
     tau = {
         K: stable(f"fit | {r} K={K} | tau selected (raw)", lambda v: f"{v:.0f}") for K in (1, 2, 3)
     }
-    ft = case.facet_table(study, fits, K=max(fits), band=fits[1].band)
+    ft = aligned(r, study, fits)[1]
     sets = [set(s.strip() for s in x.split(",")) for x in ft["contending set"]]
     union = set().union(*sets)
     k1 = set(_contending(study, fits[1]))

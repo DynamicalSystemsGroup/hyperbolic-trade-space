@@ -809,6 +809,90 @@ def test_facet_numbered_tables_are_current():
             assert _cells_of_table(committed) == _cells_of_table(fresh), f"{cid}: {STALE}"
 
 
+def _permute_live_facets(monkeypatch, perm):
+    """Make ``case`` return the K = 3 facets in the order ``perm`` (live facet j is old perm[j])."""
+    import case
+
+    exp, fac, kt = case.exponent_table, case.facet_table, case.k_table
+
+    def exponent_table(study, fit):
+        t = exp(study, fit)
+        cols = [c for c in t.columns if c.startswith("facet ")]
+        if len(cols) != 3:
+            return t
+        out = t.copy()
+        for j, old in enumerate(perm):
+            out[f"facet {j + 1}"] = t[cols[old]].to_numpy()
+        return out
+
+    def facet_table(study, fits, K=3, band=None):
+        t = fac(study, fits, K=K, band=band)
+        if K != 3:
+            return t
+        out = t.iloc[list(perm)].reset_index(drop=True)
+        out["facet"] = range(1, 4)
+        return out
+
+    def k_table(study, fits):
+        t = kt(study, fits)
+        for i in range(len(t)):
+            if len(t.iloc[i]["facet rows"]) == 3:
+                for col in ("facet rows", "facet shares"):
+                    v = list(t.iloc[i][col])
+                    t.iat[i, t.columns.get_loc(col)] = [v[old] for old in perm]
+        return t
+
+    monkeypatch.setattr(case, "exponent_table", exponent_table)
+    monkeypatch.setattr(case, "facet_table", facet_table)
+    monkeypatch.setattr(case, "k_table", k_table)
+
+
+@pytest.mark.skipif(not os.environ.get("PAPER_EXECUTE"), reason="set PAPER_EXECUTE=1 (about 40 s)")
+def test_a_different_facet_order_gives_the_same_tables_d2_d3_d8_and_the_sentence(monkeypatch):
+    """Facets are matched to the committed labels by exponent vector, never by index (G-11)."""
+    import itertools
+
+    import generate_findings as gf
+    import generate_results as gr
+
+    def everything():
+        out = [str(gr.exponents_and_facets()), str(gr.k_diagnostics())]
+        for r in ("primary", "stock"):
+            out.append(str(gf.k_sweep_sentence(gr._study(r), gr._fits(r))))
+        return out
+
+    base = everything()
+    for perm in itertools.permutations(range(3)):
+        if perm == (0, 1, 2):
+            continue
+        with monkeypatch.context() as m:
+            _permute_live_facets(m, perm)
+            assert everything() == base, f"facet order {perm} changes a table"
+
+
+def test_the_match_follows_the_stored_exponent_vectors_for_any_stored_order():
+    """The label of a live facet is that of the stored facet nearest by L1 distance, one to one."""
+    import itertools
+
+    import paper_facets as pf
+
+    for regime in ("primary", "stock"):
+        names = sorted({k.split(" | ")[2] for k in generate_stored() if f"K=3 | {regime} |" in k})
+        stored = pf.stored_exponents(regime, names)
+        assert stored.shape == (3, len(names))
+        for perm in itertools.permutations(range(3)):
+            labels = pf.match_labels(stored[list(perm)], stored)
+            assert labels == [p + 1 for p in perm]
+        noisy = stored + 1e-3 * np.cos(np.arange(stored.size)).reshape(stored.shape)
+        assert pf.match_labels(noisy[[2, 0, 1]], stored) == [3, 1, 2]
+
+
+def generate_stored():
+    from paper_stability import summary
+
+    return [k for k in summary()["quantities"] if k.startswith("D exponents K=3")]
+
+
 def test_c_committed_output_is_current():
     """C is cheap to regenerate, so its committed outputs are compared with a re-run.
 

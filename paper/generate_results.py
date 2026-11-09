@@ -15,6 +15,7 @@ import case
 import numpy as np
 from generate_model import DATASET_LABELS, PLANTED, planted_table
 from paper_common import Md, frame_table, md_table
+from paper_facets import aligned
 from paper_stability import residue_bound, stable, stable_frame, summary
 
 
@@ -44,20 +45,20 @@ def _t(df, prefix, key=None):
     return frame_table(stable_frame(df, prefix, key))
 
 
-def _facets(regime, study, k1, k3):
+def _facets(regime, ft):
     """The K = 3 facet table with each moving quantity stated as the datasets allow.
 
-    The leading exponents are named in the order they hold in every dataset; their values are those
-    of the exponent table, to the digits that held.
+    ``ft`` carries the stored facet labels (:func:`paper_facets.aligned`). The leading exponents
+    are named in the order they hold in every dataset; their values are those of the exponent
+    table, to the digits that held.
     """
-    table = stable_frame(
-        case.facet_table(study, {1: k1, 3: k3}), f"D facets K=3 | {regime}", "facet"
-    )
+    table = stable_frame(ft, f"D facets K=3 | {regime}", "facet")
     three = lambda v: f"{v:.3f}"  # noqa: E731
     for i, text in enumerate(table["largest exponents"]):
+        label = int(ft["facet"].iloc[i])
         pairs = [part.rsplit(" ", 1)[0] for part in text.split(", ")]
         table.iat[i, table.columns.get_loc("largest exponents")] = ", ".join(
-            f"{name} " + stable(f"D exponents K=3 | {regime} | {name} | facet {i + 1}", three)
+            f"{name} " + stable(f"D exponents K=3 | {regime} | {name} | facet {label}", three)
             for name in pairs
         )
     return table
@@ -87,7 +88,8 @@ def k_diagnostics() -> Md:
     """
     parts = []
     for r, s in _studies().items():
-        parts.append(f"{_cite(r)}:\n\n" + _t(case.k_table(s, _fits(r)), f"D k_table | {r}", "K"))
+        kt = aligned(r, s, _fits(r))[2]
+        parts.append(f"{_cite(r)}:\n\n" + _t(kt, f"D k_table | {r}", "K"))
     return Md("\n\n".join(parts))
 
 
@@ -100,14 +102,15 @@ def exponents_and_facets() -> Md:
     """
     parts = []
     for r, s in _studies().items():
-        k1, k3 = _fits(r)[1], _fits(r)[3]
+        k1 = _fits(r)[1]
+        exp3, ft3, _, _ = aligned(r, s, _fits(r))
         parts.append(
             f"{_cite(r)}, K = 1:\n\n"
             + _t(case.exponent_table(s, k1), f"D exponents K=1 | {r}", "metric")
             + f"\n\n{_cite(r)}, K = 3:\n\n"
-            + _t(case.exponent_table(s, k3), f"D exponents K=3 | {r}", "metric")
+            + _t(exp3, f"D exponents K=3 | {r}", "metric")
             + f"\n\n{_cite(r)}, K = 3, per facet:\n\n"
-            + frame_table(_facets(r, s, k1, k3))
+            + frame_table(_facets(r, ft3))
         )  # fmt: skip
     return Md("\n\n".join(parts))
 
