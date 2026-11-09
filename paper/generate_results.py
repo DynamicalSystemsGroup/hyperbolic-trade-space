@@ -524,15 +524,22 @@ def _tau_name(tau) -> str:
 def planted_recovery() -> Md:
     """Does the fit recover a known answer: twenty planted tables, at two temperatures.
 
+    Only what is the same on every platform is printed. At the exact maximum a row of the frontier
+    can lie on two facet planes (gap G-10), so the status a failing fit stops with and its error
+    values follow the platform's tie-breaking and are not printed; at temperature 50 the status
+    and the errors are the same on macOS arm64 and Linux amd64 and are printed.
+
     Returns
     -------
     Md
-        The count of tables recovered at each temperature and the tables that were not, with the
-        frontier rows of the thinnest planted facet, the largest exponent error, the share of
-        frontier rows on the right facet and the solver's status.
+        The count of tables recovered at each temperature and, for each table not recovered at
+        either, the frontier rows of its thinnest planted facet, whether it was recovered at the
+        exact maximum and at temperature 50, and at temperature 50 the solver's status, the largest
+        exponent error and the share of frontier rows on the right facet.
     """
     runs = recovery_runs()
-    summary_rows, failures = [], []
+    hot, warm = RECOVERY_TAUS
+    summary_rows = []
     for tau in RECOVERY_TAUS:
         mine = [r for r in runs if r["tau"] == tau]
         bad = [r for r in mine if not r["recovered"]]
@@ -540,11 +547,14 @@ def planted_recovery() -> Md:
             _tau_name(tau), len(mine), f"{len(mine) - len(bad)} of {len(mine)}",
             ", ".join(str(r["seed"]) for r in bad) or "none",
         ])  # fmt: skip
-        failures += [
-            [r["seed"], _tau_name(tau), r["rows_on_thinnest"], f"{r['error']:.2f}",
-             f"{r['right']:.2f}", r["status"]]
-            for r in bad
-        ]  # fmt: skip
+    by = {(r["seed"], r["tau"]): r for r in runs}
+    seeds = sorted({r["seed"] for r in runs if not r["recovered"]})
+    yes_no = lambda r: "yes" if r["recovered"] else "no"  # noqa: E731
+    failures = [
+        [s, by[s, hot]["rows_on_thinnest"], yes_no(by[s, hot]), yes_no(by[s, warm]),
+         by[s, warm]["status"], f"{by[s, warm]['error']:.2f}", f"{by[s, warm]['right']:.2f}"]
+        for s in seeds
+    ]  # fmt: skip
     thin = sorted({r["rows_on_thinnest"] for r in runs if r["recovered"]})
     return Md(
         f"Dataset {DATASET_LABELS['planted']}, the generator of Appendix C at {RECOVERY_ROWS} "
@@ -556,13 +566,23 @@ def planted_recovery() -> Md:
                    summary_rows)
         + "\n\nThe tables not recovered, with the frontier rows of their thinnest planted facet "
         "(a facet needs at least 5 frontier rows, one more than there are metrics, to be "
-        "determined by them), the largest exponent error, the share of frontier rows on the "
-        "right facet and the solver's status:\n\n"
-        + md_table(["Seed", "Temperature", "Frontier rows, thinnest facet", "Largest error",
-                    "Frontier rows on the right facet", "Status"], failures)
-        + f"\n\nEvery table recovered has at least {min(thin)} frontier rows on each planted "
-        "facet. The count of recovered tables is an exact property of the seeded tables and "
-        "the solver; the errors are printed to two digits."
+        "determined by them), whether each was recovered at the exact maximum and at temperature "
+        f"{warm:g}, and at temperature {warm:g} the solver's status, the largest exponent error "
+        "and the share of frontier rows on the right facet:\n\n"
+        + md_table(["Seed", "Frontier rows, thinnest facet", "Recovered at the exact maximum",
+                    f"Recovered at temperature {warm:g}", f"Status at {warm:g}",
+                    f"Largest error at {warm:g}", f"Frontier rows on the right facet at {warm:g}"],
+                   failures)
+        + "\n\nAt the exact maximum the fit of each of these tables stops without a margin "
+        "(`stationary_without_margin`) or at the iteration cap, depending on the platform, "
+        "and its errors move with it, so neither is printed: a frontier row on two facet planes "
+        "ties at the exact maximum and the platform's argmax and linear-program vertex choice "
+        "resolve the tie (gap G-10). What does not depend on the platform is the count and the "
+        f"seeds: {len(runs) // len(RECOVERY_TAUS) - len(seeds)} of {RECOVERY_SEEDS} tables were "
+        "recovered, and the seeds above failed, at both temperatures on macOS arm64 and on Linux "
+        f"amd64. Every table recovered has at least {min(thin)} frontier rows on each planted "
+        f"facet. At temperature {warm:g} the status and the errors, printed to two digits, were "
+        "the same on both platforms."
     )  # fmt: skip
 
 

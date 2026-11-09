@@ -8,6 +8,34 @@
 # record with `uv run python paper/paper_common.py`. Setting the variable on a machine that is not
 # the environment of record (the Mac) is expected to fail for these values: the exact path is for
 # the image.
+#
+# AUDIT of the generated tables (WP10, the driver's rule: every generated table is checked, before it
+# is committed, for quantities that depend on ties at the exact maximum, on step counts or on hashes
+# of floats). Method: read every generator; run `paper/paper_perturb.py` with the BLAS thread count
+# changed and with the restart order permuted (`random_state` shifted), and compare the text (the
+# gated test test_generated_tables_do_not_move_under_platform_perturbation does this).
+#
+# | quantity                                         | where                      | why platform-sensitive                                    | action |
+# |---|---|---|---|
+# | status and errors of the failing fits at tau=inf | D.14 planted_recovery      | rows on two facet planes tie at the exact maximum (G-10); | not printed; the table prints
+# |                                                  |                            | iteration_cap vs stationary_without_margin, errors move   | seeds, thin-facet rows, yes/no, and the status and errors at tau=50 only |
+# | number of tables recovered at the exact maximum  | D.14, num-recovery         | the same on macOS arm64 and Linux amd64 (16 of 20, seeds 1, 3, 8, 16, CI runs 42611285270 and 42611824421) | printed; stated with the platforms |
+# | settling time, torque-saturated fraction         | v2 dataset rows (first 20) | read off the accepted steps of an adaptive solver         | listed: v2_first_designs_rows (existing) |
+# | SHA-256 of the planted table, of Figure 1's data | C datasets, Figure 1       | float hashes                                              | listed: planted_table_sha256, figure1_data_hash (existing) |
+# | facet numbering, order of facet sizes and shares | D.2 k_diagnostics, D.3 exponents_and_facets, D.8 termination_records, D.12 conditioning_diagnostic, num-k-sweep | facet numbers are labels (G-10): the restart that wins decides them; restart order moves them | listed: facet_numbered_tables |
+# | per-fit margin and status at finite tau          | D.8, margin_reading, num-certificates | smooth optimum, margin 1e-4 to 1e-2: unchanged by the perturbation | none |
+# | exponents of the jittered fits                   | D.3, D.11 (stable())       | printed only to the digits that held under 1e-12 jitter   | none (existing) |
+# | step counts, iteration counts                    | none printed               | the iteration cap appears only as the D.14 status above   | none |
+# | figures' data                                    | Figure 1 (hash, listed); the case figures are not compared byte for byte | | none |
+
+[values.facet_numbered_tables]
+reason = """facet labels (gap G-10): which restart wins, and so the order in which the facets are
+numbered, can differ between platforms where two restarts tie; the rows, columns and keys of the
+tables below follow that numbering (D.2 k_diagnostics, D.3 exponents_and_facets, D.8
+termination_records, D.12 conditioning_diagnostic); with the restart order permuted the same
+facets appear in another order"""
+elsewhere = """tests/test_paper.py::test_facet_numbered_tables_are_current compares the multiset of
+the cells of each table with its committed output, so the same facets in another order agree"""
 
 [values.planted_table_sha256]
 reason = """processor architecture and maths library: the SHA-256 of the 900-row planted table
@@ -40,3 +68,21 @@ torque_saturated_frac within 0.01 absolute, categorical columns and flags equal"
 values_rtol = 1e-3
 time_atol = 0.5
 saturation_atol = 0.01
+
+# Generated text that is known to move when the restart order of the fits is permuted
+# (paper/paper_perturb.py --restarts N), read by
+# tests/test_paper.py::test_generated_tables_do_not_move_under_platform_perturbation. Nothing moves
+# when only the BLAS thread count changes. Each name is in the audit table above: the facet-numbered
+# tables and sentence are listed values (facet_numbered_tables); D.14 and its sentence print the
+# outcome of failing, multi-modal fits for random_state = 0, identical on macOS arm64 and Linux
+# amd64 (CI runs 42611285270 and 42611824421) but dependent on which restart wins.
+[perturbation]
+moves_under_restart_shift = [
+  "D planted_recovery",
+  "D k_diagnostics",
+  "D exponents_and_facets",
+  "D termination_records",
+  "D conditioning_diagnostic",
+  "sentence num-recovery",
+  "sentence num-k-sweep",
+]

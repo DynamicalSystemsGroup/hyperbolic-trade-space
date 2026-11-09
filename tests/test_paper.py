@@ -29,6 +29,19 @@ import pytest
 import yaml
 from _env import ENV_VAR, REFERENCE_FILE, VALUES_FILE, exact_only, listed
 
+# GENERAL RULE (the driver's, WP10): every test that compares a committed notebook output with a
+# re-run goes through the environment of record (tests/_env.py, paper/environment_values.toml):
+# exact only there (``_current``), and elsewhere the reproducible content, which is the text with
+# its numbers within the tolerance stated for it. Every generated table of the paper and its
+# appendices is checked BEFORE it is committed for quantities that depend on ties at the exact
+# maximum (termination statuses, margins near 1e-16, errors on tied facets), on step counts of an
+# adaptive solver (settling or slew times, saturated fractions, iteration counts) or on hashes of
+# floats: such a quantity is either not printed or listed as exact-only in
+# environment_values.toml with its reason. The gated test
+# test_generated_tables_do_not_move_under_platform_perturbation (PAPER_EXECUTE=1) flags what moves
+# when the BLAS thread count and the restart order change; the audit table is in the comment of
+# paper/environment_values.toml.
+
 ROOT = Path(__file__).resolve().parent.parent
 PAPER = ROOT / "paper"
 if str(PAPER) not in sys.path:
@@ -752,6 +765,48 @@ def _same_text(a: str, b: str, rtol: float) -> bool:
         elif not np.isclose(float(x), float(y), rtol=rtol, atol=0.0):
             return False
     return True
+
+
+def _current(committed: str, fresh: str, what: str) -> None:
+    """A committed output against its re-run: byte-equal in the environment of record, elsewhere
+    the same text with its numbers within the stated tolerance (the digest left uncompared)."""
+    if exact_only("planted_table_sha256"):
+        assert committed == fresh, f"{what}: {STALE}"
+    else:
+        rtol = listed()["planted_table_sha256"]["text_rtol"]
+        assert _same_text(_mask_exact_only(committed), _mask_exact_only(fresh), rtol), (
+            f"{what}: {STALE}"
+        )
+
+
+_FACET_NUMBERED = (
+    ("tab-D-k_diagnostics", "k_diagnostics"),
+    ("tab-D-exponents_and_facets", "exponents_and_facets"),
+    ("tab-D-termination_records", "termination_records"),
+    ("tab-D-conditioning_diagnostic", "conditioning_diagnostic"),
+)
+
+
+def _cells_of_table(text: str) -> list[str]:
+    """The cells of every table row, whitespace-normalised and sorted: the order-free content."""
+    return sorted(
+        c.strip() for line in text.splitlines() if line[:1] == "|" for c in line.split("|")
+    )
+
+
+def test_facet_numbered_tables_are_current():
+    """The tables whose rows follow the facet numbering: exact in the environment of record,
+    elsewhere the same cells in whatever order the facets are numbered (gap G-10)."""
+    import generate_results
+
+    exact = exact_only("facet_numbered_tables")
+    by_id = {c.id: c for c in _code_cells(_nb(SUPPORT_NB))}
+    for cid, fn in _FACET_NUMBERED:
+        committed, fresh = _out_text(by_id[cid]), str(getattr(generate_results, fn)())
+        if exact:
+            assert committed == fresh, f"{cid}: {STALE}"
+        else:
+            assert _cells_of_table(committed) == _cells_of_table(fresh), f"{cid}: {STALE}"
 
 
 def test_c_committed_output_is_current():
@@ -1821,11 +1876,52 @@ def test_cr2_the_planted_recovery_is_in_section_9_with_its_table_in_d14():
     ids = [c.id for c in _nb(PAPER_NB).cells]
     assert ids.index("sec-case-analysis") < ids.index("num-recovery") < ids.index("fig-plane-k1")
     cell = _cell_out(SUPPORT_NB, "tab-D-planted_recovery")
-    assert cell == str(generate_results.planted_recovery()), STALE
+    _current(cell, str(generate_results.planted_recovery()), "planted_recovery")
     assert re.search(r"\| infinity \| 20 \| 16 of 20 \| 1, 3, 8, 16 \|", cell)
     assert re.search(r"\| 50 \| 20 \| 16 of 20 \| 1, 3, 8, 16 \|", cell)
+    # only what is the same on both platforms: no status or error digits for the exact maximum
+    assert "iteration cap" in cell and "G-10" in cell and "Linux amd64" in cell
+    assert re.search(r"\| 1 \| 5 \| no \| no \| certified \| \d\.\d\d \| \d\.\d\d \|", cell)
+    assert not re.search(r"\| infinity \| \d+ \| \d\.\d\d", cell)
     heads = _headings(_nb(SUPPORT_NB), "###")
     assert any(h.startswith("D.14 ") for h in heads)
+
+
+@pytest.mark.skipif(not os.environ.get("PAPER_EXECUTE"), reason="set PAPER_EXECUTE=1 (about 4 min)")
+def test_generated_tables_do_not_move_under_platform_perturbation(tmp_path):
+    """Regenerate every generated table and sentence three ways and flag what moves.
+
+    A run with one BLAS thread and a run with four must agree with the plain run exactly; a run
+    with the restart order permuted (``random_state`` shifted) may move only the names listed under
+    ``[perturbation]`` in ``paper/environment_values.toml`` (the facet-numbered tables and the
+    multi-modal D.14), each of which the audit table there explains.
+    """
+    allowed = set(tomllib.loads(VALUES_FILE.read_text(encoding="utf-8"))["perturbation"][
+        "moves_under_restart_shift"])  # fmt: skip
+
+    def run(tag, extra_env, *args):
+        out = tmp_path / f"{tag}.json"
+        env = {**os.environ, **extra_env}
+        subprocess.run(
+            [sys.executable, str(PAPER / "paper_perturb.py"), str(out), *args],
+            check=True, cwd=PAPER, env=env,
+        )  # fmt: skip
+        return json.loads(out.read_text(encoding="utf-8"))
+
+    threads = lambda n: {  # noqa: E731
+        k: str(n) for k in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
+                            "VECLIB_MAXIMUM_THREADS")
+    }  # fmt: skip
+    base = run("one", threads(1))
+    for tag, other in (("four", run("four", threads(4))),
+                       ("restarts", run("restarts", threads(1), "--restarts", "7"))):  # fmt: skip
+        moved = {k for k in base if base[k] != other[k]}
+        if tag == "restarts":
+            assert moved <= allowed, (
+                f"printed quantities that move with the restart order: {moved - allowed}"
+            )
+        else:
+            assert not moved, f"printed quantities that move with the thread count: {moved}"
 
 
 def test_cr3_the_target_and_the_band_carry_their_reason_and_the_sensitivity_holds():
@@ -1878,7 +1974,7 @@ def test_cr8_the_k_comparison_says_the_temperature_differs_and_d15_fixes_it():
     assert "Appendix D.15" in sentence
     assert "the analyst's choice" in _section("Case analysis")
     cell = _cell_out(SUPPORT_NB, "tab-D-mean_slack_fixed")
-    assert cell == str(generate_results.mean_slack_fixed()), STALE
+    _current(cell, str(generate_results.mean_slack_fixed()), "mean_slack_fixed")
     assert "refitted at the K = 1 temperature" in cell
 
 
@@ -1889,7 +1985,7 @@ def test_cr9_the_margin_and_the_radius_are_read_against_the_band_and_the_median_
     sentence = _cell_out(PAPER_NB, "num-margin")
     assert "band 1/tau" in sentence and "median best-minus-second-best" in sentence
     cell = _cell_out(SUPPORT_NB, "tab-D-margin_reading")
-    assert cell == str(generate_results.margin_reading()), STALE
+    _current(cell, str(generate_results.margin_reading()), "margin_reading")
     ids = [c.id for c in _nb(PAPER_NB).cells]
     assert ids.index("num-certificates") < ids.index("num-margin") < ids.index("sec-search")
 
@@ -1909,7 +2005,7 @@ def test_cr11_chaining_with_pca_is_worked_on_the_case_in_d16():
 
     assert "Appendix D.16" in _section("The decision problem")
     cell = _cell_out(SUPPORT_NB, "tab-D-pca_chain")
-    assert cell == str(generate_results.pca_chain()), STALE
+    _current(cell, str(generate_results.pca_chain()), "pca_chain")
     assert "Share of the spread" in cell
     import paper_stability
 
