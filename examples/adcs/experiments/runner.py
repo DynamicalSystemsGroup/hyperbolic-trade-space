@@ -136,7 +136,15 @@ def _run_cell(cell: Experiment, oracle, sampler, root: Path, ledger: Path, own) 
                 f"{cell.id}: model {cell.model_path} differs from its declared hash"
             )
     code = lg.hash_files(root, cell.code)
-    orc = _instance(oracle, "evaluate", cell)
+    try:
+        orc = _instance(oracle, "evaluate", cell)
+    except Exception:
+        # a factory that classified the model and proved the variant infeasible left the record in
+        # the experiment's inputs; write it to the ledger before the error goes on
+        block = dict(cell.inputs).get("exclusion")
+        if isinstance(block, Mapping) and block.get("variant_excluded"):
+            record_exclusion(cell, block, root, ledger, model_hash, code)
+        raise
     smp = _instance(sampler, "draw", cell)
     designs = smp.draw(cell.count, cell.seed)
     table = orc.evaluate(designs)
@@ -187,6 +195,71 @@ def _run_cell(cell: Experiment, oracle, sampler, root: Path, ledger: Path, own) 
     except Exception:
         out.unlink(missing_ok=True)
         raise
+
+
+def record_exclusion(
+    cell: Experiment,
+    block: Mapping,
+    root: Path,
+    ledger: Path,
+    model_hash: str | None,
+    code: Mapping[str, str],
+) -> dict | None:
+    """Append the ``exclusion`` entry for a model variant proved infeasible; nothing is simulated.
+
+    The entry carries the variant's edits (``inputs['variant_edits']`` of the experiment, when it
+    names them), the classified regions with claim, engine, verdict, strength and witnesses, the
+    model hash and the reason. It has no output file. A variant already recorded (same model hash)
+    is not recorded twice; ``None`` is returned then.
+    """
+    tag = (model_hash or block.get("model_sha256") or "unknown")[:12]
+    entry_id = f"{cell.id}:exclusion@{tag}"
+    entries = lg.read(ledger)
+    if lg.find(entries, entry_id) is not None:
+        return None
+    regions = list(block.get("regions", []))
+    excluded = [r for r in regions if r.get("excluded")]
+    commit, dirty = lg.git_state(root, [ledger])
+    entry = {
+        "id": entry_id,
+        "kind": "exclusion",
+        "time_utc": lg.utc_now(),
+        "git_commit": commit,
+        "git_dirty": dirty,
+        "evidence_kind": cell.evidence_kind,
+        "model_path": cell.model_path,
+        "model_sha256": model_hash,
+        "code": dict(code),
+        "output_path": None,
+        "output_rows": 0,
+        "output_sha256": None,
+        "versions": lg.versions(),
+        "platform": lg.platform_string(),
+        "inputs": {
+            "experiment": cell.id,
+            "variant_edits": dict(dict(cell.inputs).get("variant_edits") or {}),
+            "regions": regions,
+            "excluded_regions": [r["region"]["name"] for r in excluded],
+            "claims": [r["claim"] for r in excluded],
+            "engine": block.get("engine"),
+            "verdicts": dict(block.get("verdicts", {})),
+            "witnesses": {
+                r["region"]["name"]: {
+                    "feasible": r["witness_feasible"],
+                    "violation": r["witness_violation"],
+                }
+                for r in excluded
+            },
+            "model_sha256": block.get("model_sha256"),
+            "reason": (
+                "the solver proved no configuration of the variant feasible; "
+                "no design was sampled or simulated"
+            ),
+        },
+        "parents": [],
+        "supersedes": [],
+    }
+    return lg.append(ledger, entry)
 
 
 def adopt(specs: Sequence[AdoptedSpec], root: Path, ledger: Path) -> list[dict]:

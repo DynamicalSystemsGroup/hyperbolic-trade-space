@@ -106,7 +106,14 @@ def wheel_region(wheel_class: str, inertia_kgm2, *, torque_nm=None, name: str | 
 
 
 def design_space_regions() -> list[Region]:
-    """The model's whole design space, per condition that needs no extra input: for a variant."""
+    """The model's whole design space, per condition that needs no extra input: for a variant.
+
+    Power and depth of discharge only. The momentum condition is left out on purpose: it depends on
+    the inertia, which depends on the panel span and the configuration, and it is the closed-form
+    approximation (the ODE peak exceeds it), so an all-feasible verdict from it would claim more
+    than the simulation gives. A wheel region can still be classified on its own
+    (``wheel_region``), where ``excluded`` is a necessary-condition result.
+    """
     return [power_region(name="design-space power"), battery_region(name="design-space battery")]
 
 

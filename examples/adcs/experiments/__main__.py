@@ -25,7 +25,7 @@ def main(argv=None) -> int:
     p.add_argument("--ledger", type=Path, default=lg.LEDGER_PATH)
     sub = p.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run", help="run a declared experiment by id")
-    r.add_argument("id")
+    r.add_argument("id", help="an experiment id, or a group id (members run in order)")
     r.add_argument(
         "--supersede",
         action="store_true",
@@ -51,19 +51,24 @@ def main(argv=None) -> int:
         print(f"adopted {len(added)} entries: {[e['id'] for e in added]}")
         return 0
     if a.cmd == "run":
-        exp = df.EXPERIMENTS.get(a.id)
-        if exp is None:
-            print(f"unknown experiment {a.id!r}; known: {sorted(df.EXPERIMENTS)}")
-            return 2
-        if a.supersede:
-            exp = df.revise(exp, lg.read(a.ledger))
-        entries = runner.run(
-            exp,
-            df.resolve_oracle(exp.oracle),
-            df.resolve_sampler(exp.sampler),
-            a.root,
-            a.ledger,
+        members = df.GROUPS.get(a.id) or (
+            df.EXPERIMENTS.get(a.id) or df.SHARED_EXPERIMENTS.get(a.id),
         )
+        if members == (None,):
+            known = sorted({*df.EXPERIMENTS, *df.SHARED_EXPERIMENTS, *df.GROUPS})
+            print(f"unknown experiment {a.id!r}; known: {known}")
+            return 2
+        entries = []
+        for exp in members:
+            if a.supersede:
+                exp = df.revise(exp, lg.read(a.ledger))
+            entries += runner.run(
+                exp,
+                df.resolve_oracle(exp.oracle),
+                df.resolve_sampler(exp.sampler),
+                a.root,
+                a.ledger,
+            )
         print(f"ran {[e['id'] for e in entries]}")
         return 0
     try:

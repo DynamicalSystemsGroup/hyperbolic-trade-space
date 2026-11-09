@@ -161,7 +161,7 @@ def test_the_commands_shown_exist(howto):
     assert {c for c, _ in cmds} == {"run", "verify", "adopt", "compare"}
     for cmd, arg in cmds:
         if cmd == "run":
-            assert arg in df.EXPERIMENTS, arg
+            assert arg in {*df.EXPERIMENTS, *df.SHARED_EXPERIMENTS, *df.GROUPS}, arg
     with pytest.raises(SystemExit):
         main(["not-a-command"])
 

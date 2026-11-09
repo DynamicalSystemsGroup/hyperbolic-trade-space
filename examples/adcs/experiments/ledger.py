@@ -28,7 +28,9 @@ import pandas as pd
 
 LEDGER_PATH = Path(__file__).resolve().parent / "ledger" / "ledger.jsonl"
 REPO_ROOT = Path(__file__).resolve().parents[3]
-KINDS = ("generated", "adopted")
+# ``exclusion``: a model variant the solver proved infeasible, recorded before anything was
+# simulated; it has no output file (``output_path`` is null, ``output_rows`` 0)
+KINDS = ("generated", "adopted", "exclusion")
 FIELDS = (
     "id",
     "kind",
@@ -281,9 +283,13 @@ def verify(ledger_path: Path, root: Path) -> list[Drift]:
             check(i, "model", e["model_path"], e["model_sha256"])
         for rel, h in e.get("code", {}).items():
             check(i, "code file", rel, h)
-        check(i, "output", e["output_path"], e["output_sha256"])
-        out = root / e["output_path"]
-        if out.exists() and sha256_file(out) == e["output_sha256"]:
+        if e.get("output_path") is None:
+            if e.get("kind") != "exclusion":
+                drifts.append(Drift(i, "output missing", "only an exclusion entry has no output"))
+        else:
+            check(i, "output", e["output_path"], e["output_sha256"])
+        out = root / e["output_path"] if e.get("output_path") else None
+        if out is not None and out.exists() and sha256_file(out) == e["output_sha256"]:
             rows = count_rows(out)
             if rows != e["output_rows"]:
                 drifts.append(Drift(i, "output rows changed", f"{rows} != {e['output_rows']}"))
@@ -320,6 +326,9 @@ def superseded(ledger_path: Path, root: Path) -> list[Superseded]:
     for old, new in superseded_by(entries).items():
         e = find(entries, old)
         if e is None:
+            continue
+        if e.get("output_path") is None:
+            out.append(Superseded(old, new, "superseded"))
             continue
         path = root / e["output_path"]
         same = path.exists() and sha256_file(path) == e["output_sha256"]

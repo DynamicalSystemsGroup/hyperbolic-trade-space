@@ -32,11 +32,13 @@ ORACLES: dict[str, str] = {
     "cubesat-v2": "experiments.cubesat_oracle:build",
     "check-passthrough": "experiments.check_designs:build_passthrough",
     "check-cubesat-v2": "experiments.check_designs:build_check_oracle",
+    "legacy-geostationary": "experiments.legacy_oracle:build",
 }
 SAMPLERS: dict[str, str] = {
     "cubesat-v2": "experiments.cubesat_oracle:build_sampler",
     "check-proposer": "experiments.check_designs:build_proposer",
     "check-designs": "experiments.check_designs:build_checks",
+    "shared-subspace": "experiments.legacy_oracle:build_shared_sampler",
 }
 
 
@@ -138,7 +140,58 @@ V2: tuple[Experiment, ...] = (
         },
     ),
 )
+
+# The scope-sensitivity experiment (OD1): the v2 oracle and the legacy geostationary oracle on the
+# same designs of the configuration variables they share (wheel class, tracker grade, Kp; Kd is
+# fixed in each, the other variables belong to one variant). The study of what the two reveal is a
+# later candidate; this is the definition and a small run (20 designs).
+SHARED_ID = "scope-sensitivity-shared-subspace"
+SCOPE_DIR = f"{ADCS}/data/scope-sensitivity"
+SHARED_SEED = 20261109
+SHARED_COUNT = 20
+_SHARED_COMMON = {
+    "subspace": "wheel_class, st_grade, Kp (overlap of the two Kp ranges); Kd fixed per variant",
+    "subspace_model": V2_MODEL,
+}
+SHARED_V2 = Experiment(
+    id=f"{SHARED_ID}-v2",
+    output=f"{SCOPE_DIR}/scope_sensitivity_v2.csv",
+    count=SHARED_COUNT,
+    seed=SHARED_SEED,
+    oracle="cubesat-v2",
+    sampler="shared-subspace",
+    scenario=V2_SCENARIO,
+    gain_box="aggressive",
+    model_path=V2_MODEL,
+    evidence_kind="simulation",
+    code=(*V2_CODE, f"{ADCS}/experiments/legacy_oracle.py"),
+    inputs={**_SHARED_COMMON, "variant": "v2", "group": SHARED_ID},
+)
+SHARED_LEGACY = Experiment(
+    id=f"{SHARED_ID}-legacy",
+    output=f"{SCOPE_DIR}/scope_sensitivity_legacy.csv",
+    count=SHARED_COUNT,
+    seed=SHARED_SEED,
+    oracle="legacy-geostationary",
+    sampler="shared-subspace",
+    evidence_kind="simulation",
+    code=(
+        f"{ADCS}/adcs_sim.py",
+        f"{ADCS}/design_space.py",
+        f"{ADCS}/experiments/legacy_oracle.py",
+    ),
+    inputs={
+        **_SHARED_COMMON,
+        "variant": "legacy",
+        "group": SHARED_ID,
+        "scenario_legacy": "10 degree slew, 900 s, 0.5 s step (design_space.evaluate_design)",
+        "legacy_dataset": "adopted-adcs_designs",
+    },
+)
+# an id on the command line may name a group: its members run in this order
+GROUPS: dict[str, tuple[Experiment, ...]] = {SHARED_ID: (SHARED_V2, SHARED_LEGACY)}
 EXPERIMENTS: dict[str, Experiment] = {e.id: e for e in V2}
+SHARED_EXPERIMENTS: dict[str, Experiment] = {e.id: e for e in GROUPS[SHARED_ID]}
 
 
 def revise(exp: Experiment, entries: list[dict]) -> Experiment:

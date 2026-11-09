@@ -244,7 +244,7 @@ The three hand-written candidates are identical in both generations by construct
 | `tests/test_mutation_v2.py` | adcs_designs_cubesat_gains.csv |
 | `tests/test_notebook.py` | adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv, check_designs_cubesat.csv, check_predictions_cubesat.csv |
 
-**Records and documentation that cite them** (17)
+**Records and documentation that cite them** (18)
 
 | file | frozen files named |
 |---|---|
@@ -254,6 +254,7 @@ The three hand-written candidates are identical in both generations by construct
 | `docs/superpowers/notes/system-model-tidy.md` | adcs_designs.csv, adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv, check_designs_cubesat.csv, check_predictions_cubesat.csv |
 | `docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md` | adcs_designs.csv |
 | `work-packages/WP14-scope-of-work.md` | adcs_designs.csv, adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv, check_designs_cubesat.csv, check_predictions_cubesat.csv |
+| `work-packages/WP15-review.md` | adcs_designs.csv |
 | `work-packages/WP15-scope-of-work.md` | adcs_designs.csv |
 | `work-packages/WP4-scope-of-work.md` | adcs_designs.csv |
 | `work-packages/WP4b-decisions.md` | adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv |

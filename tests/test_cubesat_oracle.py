@@ -300,6 +300,46 @@ def test_a_variant_without_a_feasible_configuration_is_not_simulated(solver, tmp
     assert exp.inputs["exclusion"]["excluded_regions"]
 
 
+def test_a_proved_infeasible_variant_is_recorded_in_the_ledger_before_the_error(solver, tmp_path):
+    from experiments import runner
+
+    old = "attribute maxDepthOfDischarge : Real = 0.3;"
+    edits = {old: old.replace("0.3;", "0.03;")}
+    (tmp_path / "variant.sysml").write_text(ex.model_variant(TEXT, edits))
+    exp = dataclasses.replace(
+        df.EXPERIMENTS["v2-primary"],
+        model_path="variant.sysml",
+        model_sha256=None,
+        output="out/variant.csv",
+        code=(),
+        inputs={"variant_edits": edits},
+    )
+    led = tmp_path / "ledger.jsonl"
+    with pytest.raises(co.ExcludedVariant, match="not simulated"):
+        runner.run(exp, lambda e: co.build(e, tmp_path, 1), co.build_sampler, tmp_path, led)
+    entries = lg.read(led)
+    assert len(entries) == 1 and not (tmp_path / "out").exists()  # nothing was simulated
+    e = entries[0]
+    assert e["kind"] == "exclusion" and e["id"].startswith("v2-primary:exclusion@")
+    assert e["output_path"] is None and e["output_sha256"] is None and e["output_rows"] == 0
+    assert e["model_sha256"] == lg.sha256_file(tmp_path / "variant.sysml")
+    inp = e["inputs"]
+    assert inp["variant_edits"] == edits and inp["engine"] == "solve"
+    assert inp["excluded_regions"] and inp["claims"] and inp["reason"]
+    name = inp["excluded_regions"][0]
+    assert inp["verdicts"][name] == "excluded" and set(inp["witnesses"][name]) == {
+        "feasible",
+        "violation",
+    }
+    region = next(r for r in inp["regions"] if r["region"]["name"] == name)
+    assert region["satisfiable"][0] == "unsatisfiable" and region["model_sha256"]
+    assert lg.verify(led, tmp_path) == []
+    fresh = dataclasses.replace(exp, inputs={"variant_edits": edits})
+    with pytest.raises(co.ExcludedVariant):  # again, a new declaration: recorded once
+        runner.run(fresh, lambda e: co.build(e, tmp_path, 1), co.build_sampler, tmp_path, led)
+    assert len(lg.read(led)) == 1
+
+
 def _in_battery(designs: pd.DataFrame, lo: float, hi: float, n: int, seed: int) -> pd.DataFrame:
     """``n`` sampled designs with the battery log-uniform in ``[lo, hi]``."""
     g = np.random.default_rng(seed)
