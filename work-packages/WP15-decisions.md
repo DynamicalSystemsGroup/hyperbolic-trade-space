@@ -141,3 +141,13 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **2026-11-09. The Linux run owed at acceptance is in.** Tests run 42588028427 on `dev` at 5636ca7
   (which contains 2d2a751): 1838 passed, none failed, on ubuntu amd64; the same counts as the
   driver's clean checkout on the Mac.
+
+## The model may become explicit about requirements and verification cases (2026-11-09)
+
+- **Supervisor (mzargham), verbatim:** "if necessary we can extend the scope of the sysmlv2 model to be
+  more explicit about requirements, verification cases. we want to have a clear logical train of
+  reasoning from the sysmlv2 model to the metrics we're trading".
+- **Disposition:** an amendment to WP15 is drafted when the diagram work has listed what the model
+  lacks; constraint: evaluation and committed data unchanged, the ledger carrying the new model
+  version; the driver approves before execution. Recorded also in `WP19-backlog.md`.
+

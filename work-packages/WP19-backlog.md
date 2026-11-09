@@ -113,3 +113,14 @@ control, as the case already groups them), the requirements, and the ten metrics
 the relation of each metric to a requirement shown, so that a reader sees which traded metrics a
 requirement constrains and which are traded with no requirement on them.
 
+**Supervisor, verbatim:** "if necessary we can extend the scope of the sysmlv2 model to be more
+explicit about requirements, verification cases. we want to have a clear logical train of reasoning
+from the sysmlv2 model to the metrics we're trading". Disposition: the visualization engineer first
+reports what the model lacks for an honest second view (which traded metrics have no requirement or
+verification element behind them); then the PM drafts an amendment to WP15 (the model) that adds the
+requirement definitions and verification cases needed for the chain model to metrics to be explicit,
+under the hard constraint that the evaluation and the committed data do not change (the equivalence
+test on the regenerated first designs; the experiment ledger records the model's new version with
+outputs unchanged). The driver approves the amendment before it runs. The second view is then
+generated from those elements, not from the analyst's reading.
+
