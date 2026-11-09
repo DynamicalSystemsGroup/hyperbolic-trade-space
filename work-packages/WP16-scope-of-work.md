@@ -82,3 +82,29 @@ not made, with the reason recorded, if it is.
   produced natively from the clean checkout, the container reproduces a stated sample of it, and
   that is said in Appendix F.
 - The generation of record lives in `examples/adcs/data/v2/`.
+
+## Amendment 1 (2026-11-09, the driver, under the mandate): the times read off the step sequence
+
+Why: `work-packages/swap-evidence.md` found that `settling_time_s` and `slew_time_s`, two of the ten
+fitted attributes, are read off the accepted steps of the adaptive integration and move by up to
+1.3 percent (0.48 s) under perturbations of one unit in the last place.
+
+- **G5 (new).** The sensitivity of the paper's conclusions to that quantization is measured, not
+  assumed.
+- **D-6 (new).** Each of the two cubesat datasets regenerated five times through the clean oracle
+  with the four continuous design variables perturbed by a relative 1e-12 (seeded); for each
+  regeneration the case module's one-term fit (temperature re-selected), the K = 2 and K = 3 fits,
+  the regime comparison, the nondominated counts and propose-predict-check; a generated section of
+  `swap-evidence.md` with, per quantity the paper reports, the committed value, the range over the
+  regenerations, and whether it changes at the paper's printed precision. No Docker.
+- **R-7 (new).** The section lists the per-column deviation of every fitted attribute between
+  regenerations; states for the contending set, the leading metrics of each facet, the signs of the
+  tensions, the selected temperatures, the certificate statuses, the regime comparison and the
+  check designs' outcomes whether each is identical across regenerations; and the stop condition of
+  R-4 applies to it. Checked by the driver from the generated section.
+- **For the supervisor, with that evidence:** whether the two times stay as read off the steps
+  (data unchanged; the quantization named as a gap with its measured effect) or are measured by the
+  integrator's event detection (reproducible to rounding; the data and every number change).
+- **Tolerances.** `torque_saturated_frac`: absolute 0.01, no relative term, in every test that
+  compares it. The two time columns keep their absolute allowance until D-6 gives the evidence to
+  set it.

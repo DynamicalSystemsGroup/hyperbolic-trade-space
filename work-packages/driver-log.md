@@ -16,6 +16,11 @@ running workloads. State left: Colima running with `rosetta: false`; one contain
 started, `hts-exec`, still running. To restore: set line 126 back to `rosetta: true` and restart
 Colima when convenient. No agent uses Docker or Colima until he says so.
 
+**Coming to him with evidence (not yet):** two fitted attributes, settling time and slew time, are
+read off integration steps and jitter by about one percent under rounding. A spike is measuring
+whether any conclusion of the paper moves. He will be asked whether to keep the data as it is, with
+the effect named as a gap, or to measure the times by event detection, which changes every number.
+
 **For his eye, not blocking:** the platform of record for the container is provisionally
 linux/arm64 instead of linux/amd64, which he was told would come back to him
 (`docs/superpowers/notes/spike-container-platform/report.md`).
@@ -36,6 +41,8 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 | 2026-11-08 | Root page map links to its full size and may use a wide screen; a redraw is left to the reader loops. Phone-width tables become lists; API reference parameters render as lists | the same pass: the map is 694 px wide from a 1536 px image and unreadable; tables cut off at 375 px | `WP8a-driver-browser-pass.md` |
 | 2026-11-09 | **Provisional, promised back to the supervisor:** the container of record is linux/arm64, not linux/amd64; exact equality only inside it, stated tolerances elsewhere | spike: amd64 under Rosetta cannot start the notebook kernel; arm64 runs both notebooks and 67 of 68 paper tests in two minutes; hashes of float data differ by architecture and by operating system | `docs/superpowers/notes/spike-container-platform/report.md`; `WP10-decisions.md` |
 | 2026-11-09 | WP15 returned after its fresh review: the two oracles through one interface, exclusions written to the ledger and consumed by the sampler are fixed before acceptance; the momentum condition outside the solver is accepted with its reason | `WP15-review.md`: the clean model is what is evaluated (trace with equal hashes; the reviewer's own mutations move the attributes and flip the flags); gaps A to F | `WP15-decisions.md`, "The driver's calls under the mandate" |
+| 2026-11-09 | The saturation fraction is compared with an absolute tolerance of 0.01 and no relative term | `swap-evidence.md`: a step count over about 1340 steps, diagnostic only; moves by whole steps under 1e-15 perturbations; largest deviation 0.0080 over 60 re-runs; flags never change | `WP16-decisions.md` |
+| 2026-11-09 | Before the swap is decided: measure whether the paper's conclusions move when the two step-quantized fitted times jitter (five perturbed regenerations per dataset, refit each) | the same evidence: settling and slew time move up to 1.3 percent, 0.48 s, under rounding-level perturbation | `WP16-scope-of-work.md`, Amendment 1 |
 
 ## Decided by the driver for the PM
 
