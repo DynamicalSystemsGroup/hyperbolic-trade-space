@@ -464,7 +464,7 @@ note = "Appendix F.2; RECORD.md: History section: git bundle passed as the named
 
 [[claim]]
 id = "C029"
-fragment = "The image pins Node.js 24.22.2 for arm64, with its checksum and signature verified"
+fragment = "The image pins Node.js for arm64, with its checksum and signature verified"
 file = "paper/supporting_material.ipynb"
 anchor = "F.2 The environment of record"
 kind = "S"
