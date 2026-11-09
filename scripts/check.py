@@ -4,7 +4,9 @@
     uv run python scripts/check.py --fast      # the fast suite: pytest -m "not slow" -n auto
     uv run python scripts/check.py --list      # print the path-to-tests map
 
-``--changed`` reads ``git diff --name-only origin/dev`` plus uncommitted and untracked files.
+``--changed`` reads ``git diff --name-only origin/dev...HEAD`` (against the merge base, so upstream
+changes are not listed as local) plus uncommitted and untracked files. A changed path that no
+mapping covers (README, work-packages, uv.lock, tests/conftest.py) runs the fast suite instead.
 Add ``--dry-run`` to print what would run without running it.
 """
 
@@ -108,13 +110,23 @@ def mapped_tests(paths: list[str]) -> list[list[str]]:
     return groups
 
 
+def unmapped(paths: list[str]) -> list[str]:
+    """The changed paths that no mapping covers (these fall back to the fast suite)."""
+    return [p for p in paths if not mapped_tests([p])]
+
+
+FAST = ["-m", "not slow"]
+
+
 def changed_paths(base: str = "origin/dev") -> list[str]:
     def git(*a: str) -> list[str]:
         out = subprocess.run(["git", *a], cwd=ROOT, capture_output=True, text=True)
         return [x for x in out.stdout.splitlines() if x]
 
-    names = set(git("diff", "--name-only", base)) | set(
-        git("ls-files", "--others", "--exclude-standard")
+    names = (
+        set(git("diff", "--name-only", f"{base}...HEAD"))
+        | set(git("diff", "--name-only", "HEAD"))
+        | set(git("ls-files", "--others", "--exclude-standard"))
     )
     return sorted(n for n in names if (ROOT / n).exists())
 
@@ -154,6 +166,11 @@ def main(argv: list[str] | None = None) -> int:
     for group in mapped_tests(paths):
         rc |= _run(
             ["uv", "run", "pytest", "-q", "-n", "auto", "--dist", "loadgroup", *group], args.dry_run
+        )
+    if unmapped(paths):
+        print("unmapped:", *unmapped(paths), sep="\n  ")
+        rc |= _run(
+            ["uv", "run", "pytest", *FAST, "-q", "-n", "auto", "--dist", "loadgroup"], args.dry_run
         )
     return 1 if rc else 0
 

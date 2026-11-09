@@ -31,3 +31,10 @@ The reviewer does not accept; the driver verifies and the supervisor accepts at 
 ## Recommendation
 
 Accept after gap 1 and gap 3 are resolved (R-1 is not met as written; the rest is met). Gap 2 and 4 are minor and may be follow-ups. Full suite: 9:04 parallel, green.
+
+## Fix-forward
+
+Gaps 1 and 2 are addressed; gap 3 (the workflow trigger) and gap 4 (shard balance) are not touched here.
+
+- Gap 1 (R-1): `case_sentences` joins `SLOW_FIXTURES` (the 40 s paper set-up); the sklearn-compat checks over about 5 s (`check_transformer_data_not_an_array`, `check_estimators_dtypes`, `check_pipeline_consistency`, `check_dtype_object`, `check_transformer_general`, `check_fit_idempotent`, `check_transformer_preserve_dtypes`) and the `plot_ternary` doctest are marked slow by node id in `tests/conftest.py`; the ternary marker table test and `test_run_analysis_with_the_measured_slew_equals_the_frozen_oracle` (7.8 s set-up) carry `@pytest.mark.slow`. Evidence: `pytest -m 'not slow' -n auto --dist loadgroup --durations`: 1679 passed, 16 skipped, 1 xfailed in 36 s, the slowest remaining entry 4.6 s. Collected 2133 before; 2138 after, the five added being the new `test_check_script.py` cases.
+- Gap 2 (R-3): `scripts/check.py --changed` diffs `origin/dev...HEAD` (plus uncommitted and untracked files); a changed path with no mapping (README, work-packages, uv.lock, `tests/conftest.py`) runs the fast suite (`-m 'not slow'`). `tests/test_check_script.py` extended for both.

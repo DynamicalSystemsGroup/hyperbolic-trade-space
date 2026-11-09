@@ -715,6 +715,7 @@ def test_momentum_closed_form_is_optimistic_against_the_ode(pool, measured, v2, 
 # ---------------------------------------------------------------------------------------------
 # R-7: analysis and sweep
 # ---------------------------------------------------------------------------------------------
+@pytest.mark.slow
 def test_run_analysis_with_the_measured_slew_equals_the_frozen_oracle(sample20, pool):
     """R-7: the eight computed attributes of run_analysis on a configuration plus the Python
     measurement equal the frozen oracle's output (1e-9 relative), and the flags are those the requirements give."""

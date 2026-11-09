@@ -46,9 +46,38 @@ def test_derivation_adds_the_appendix_b_test():
     assert ["tests/test_paper.py", "-k", "appendix_b"] in check.mapped_tests(["derivation/x.py"])
 
 
-def test_a_changed_test_file_runs_itself_and_unmapped_paths_run_nothing():
+def test_a_changed_test_file_runs_itself_and_unmapped_paths_have_no_mapping():
     assert check.mapped_tests(["tests/test_check_script.py"]) == [["tests/test_check_script.py"]]
     assert check.mapped_tests(["README.md"]) == []
+
+
+@pytest.mark.parametrize(
+    "path",
+    ["README.md", "work-packages/WP20-review.md", "uv.lock", "tests/conftest.py"],
+)
+def test_unmapped_paths_fall_back_to_the_fast_suite(path, monkeypatch, capsys):
+    assert check.unmapped([path]) == [path]
+    assert check.unmapped(["src/hyperbolic_trade_space/estimator.py"]) == []
+    monkeypatch.setattr(check, "changed_paths", lambda base="origin/dev": [path])
+    assert check.main(["--changed", "--dry-run"]) == 0
+    assert "-m not slow" in capsys.readouterr().out
+
+
+def test_changed_paths_diff_against_the_merge_base(monkeypatch):
+    calls = []
+
+    def fake_run(cmd, **kw):
+        calls.append(cmd)
+
+        class R:
+            stdout = ""
+
+        return R()
+
+    monkeypatch.setattr(check.subprocess, "run", fake_run)
+    check.changed_paths("origin/dev")
+    assert ["git", "diff", "--name-only", "origin/dev...HEAD"] in calls
+    assert ["git", "diff", "--name-only", "origin/dev"] not in calls
 
 
 def test_list_and_dry_run_modes(capsys):

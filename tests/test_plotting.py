@@ -353,6 +353,7 @@ def test_ternary_marker_values_equal_an_independent_recomputation(planted3):
     assert table.attrs["levels"] == [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.97]
 
 
+@pytest.mark.slow
 def test_ternary_marker_table_matches_the_drawn_markers_and_levels(planted3):
     X, ts = planted3
     ax = P.plot_ternary(ts, X, lines=True)
