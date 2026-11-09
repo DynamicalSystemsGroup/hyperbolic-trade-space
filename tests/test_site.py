@@ -710,6 +710,7 @@ def test_bare_mkdocs_build_leaves_the_root_site_directory_alone(mkdocs_config, a
 
 # --- the figures and the code columns ------------------------------------------------------------
 
+
 def _docs_line_length():
     """The one setting of the code column: ruff's ``line-length`` in ``docs/ruff.toml``, which
     formats the Markdown code blocks (a code line that fits the column at 1280 px)."""
