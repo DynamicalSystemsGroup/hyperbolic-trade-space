@@ -178,3 +178,28 @@ Browser pane; the server is stopped.
   keywords and `index.json` carry the list properly separated). Left as is.
 - **Remaining.** The pane shows a stale frame for a second after a theme change or a jump; the
   "frontier, log V = 0" label in Figure 1 sits at the right edge of the chart pane (as before).
+
+## WP10 Amendment 4 (A, B, C): one name for the surface, the data as what is modelled, the glossary's class words (1280 px, light and dark)
+
+Built with `cd paper && uv run myst build --html` (no warnings), served on port 8806 from
+`paper/_build/html`, viewed in the Browser pane; the server is stopped.
+
+- **Abstract** (200 words): "A fitted posynomial reference surface models the data underlying the
+  table, not the Pareto boundary, and gives the data a coordinate system; the table and its reading
+  are views." Reads through, light and dark; "generalized" no longer appears in it.
+- **Section 1**: "A posynomial surface fitted to the data underlying the table gives them a
+  coordinate system; it is not the Pareto boundary, and the table and its reading are views". The
+  Definition "Three objects" now stands in section 3 straight after the sentence that announces it
+  (it moved to pay for the new words in Definitions, which sat 2 words under its ceiling); the
+  definitions after it are renumbered by the theme (Invariant form is now Definition 2).
+- **The Definition "Posynomial"** (light): the invariant is the 1/kappa power of a posynomial, a
+  sum of monomials, with the link to Theorem 8 (L10); Phi_K is its logarithm. "Three objects" says
+  the surface is V = 1 where the posynomial equals one.
+- **Section 5** (light and dark): the one cited sentence reads "V_K is a generalized posynomial,
+  the term maximum at the default kappa = infinity (Boyd et al., 2007)"; it runs on into the
+  several-facet sentence.
+- **Appendix A**: five new rows (monomial, posynomial, generalized posynomial, geometric program,
+  generalized geometric program) and the amended fitted reference surface row; the columns hold
+  plain words (an earlier draft with underscores and carets in the Meaning cell printed as raw
+  source and was rewritten). The aliases and avoid fields are not rendered.
+- **Remaining.** The pane shows a stale frame for a second after a theme change or a jump.

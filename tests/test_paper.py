@@ -251,14 +251,16 @@ def test_keywords_name_no_tool_or_library():
 
 
 def test_abstract_and_section_5_say_the_one_facet_fit_is_a_geometric_program():
-    """The model is a generalized posynomial; one facet is a geometric program (convex after the
-    log change of variables, L4.14 to L4.24); several facets alternate one such program per facet.
-    Nothing says the several-facet fit is itself a convex program or a GGP."""
+    """The surface is posynomial (the abstract says "a fitted posynomial reference surface", the
+    supervisor's reading of 2026-11-09) and section 5 keeps one cited sentence that the invariant is
+    a generalized posynomial; one facet is a geometric program (convex after the log change of
+    variables, L4.14 to L4.24); several facets alternate one such program per facet. Nothing says
+    the several-facet fit is itself a convex program or a GGP."""
     nb = _nb(PAPER_NB)
     fm = yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"]
     flat = " ".join(fm.split())
+    assert "generalized" not in flat and "fitted posynomial reference surface" in flat
     for phrase in (
-        "generalized posynomial",
         "geometric program",
         "logarithmic change of variables",
         "one such program per facet",
@@ -274,11 +276,41 @@ def test_abstract_and_section_5_say_the_one_facet_fit_is_a_geometric_program():
         "boyd2007tutorial",
     ):
         assert phrase in methods, phrase  # fmt: skip
+    assert methods.count("generalized posynomial") == 1  # one cited sentence, nowhere else
+    cited = "generalized posynomial, the term maximum at the default $\\kappa=\\infty$"
+    assert f"{cited} [@boyd2007tutorial]" in methods
     assert "geometric program" in _section("The decision problem")
     for text in (flat, methods, _section("The decision problem")):
         assert "GGP" not in text and "several facets is a" not in text
         assert not re.search(r"several[^.;]*(transform|convex program)", text.replace(
             "one such program per facet", ""))  # fmt: skip
+
+
+def test_one_name_for_the_surface_and_the_data_is_what_is_modelled():
+    """WP10 Amendment 4, R-33 and R-34 (the supervisor's two readings of the abstract). The
+    Definition names the posynomial, the invariant as its root and the surface as the sum equal to
+    one, citing L10; "generalized posynomial" is in no Markdown cell of the paper but the Methods
+    one (reports of a source, the family table and Appendix G, are generated output and stay).
+    The surface is a model of the data underlying the table, whose reading is a view."""
+    nb = _nb(PAPER_NB)
+    definition = next(c for c in nb.cells if "prf:definition} Posynomial" in _src(c))
+    text = " ".join(_src(definition).split())
+    assert "a posynomial, a sum of monomials" in text
+    assert "{prf:ref}`thm-extension`" in text and "is the $1/\\kappa$ power of a posynomial" in text
+    assert "generalized" not in text
+    assert "where the posynomial equals one" in " ".join(_markdown(nb).split())  # the surface
+    fm = " ".join(yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"].split())
+    assert "models the data underlying the table" in fm and "views" in fm
+    body = " ".join(_markdown(nb).split())
+    for phrase in ("model of the table", "models the table", "surface models the table"):
+        assert phrase not in body and phrase not in fm, phrase
+    assert "fitted to the data underlying the table" in body and "its reading are views" in body
+    others = [
+        _src(c) for c in nb.cells
+        if c.cell_type == "markdown" and "generalized posynomial" in _src(c)
+    ]  # fmt: skip
+    assert len(others) == 1
+    assert "$V_K$ is a generalized posynomial" in others[0] and "@boyd2007tutorial" in others[0]
 
 
 def test_the_case_is_described_as_power_mass_and_attitude_control():
