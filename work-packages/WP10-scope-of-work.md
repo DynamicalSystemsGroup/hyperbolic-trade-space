@@ -474,7 +474,8 @@ What changes:
     the paper's committed outputs are produced in that container; the container builds and the
     paper executes in it locally (Colima) before delivery, with the commands and the result in
     `WP10-review.md`; Appendix F names it as the environment of record and states the known
-    differences outside it (G-10). No image is published by this package. Checked by a test of the
+    differences outside it (G-10). No image is published by this package (the supervisor: "we don't need the image on a registry
+    just document it in the appendix for now and we can optionally publish it to a registry later"). Checked by a test of the
     Dockerfile's pins (digest present, lock used); the recorded local run; inspection.
 - **Order of work:** the step tagging and the checker come first, by their own bounded
   implementer, before any proof is written in prose.

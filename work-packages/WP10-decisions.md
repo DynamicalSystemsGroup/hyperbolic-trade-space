@@ -582,3 +582,8 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   release). **Supervisor (mzargham), verbatim:** "Reference environment now". Disposition:
   decided; D-13 and R-31; the paper's committed outputs are produced in the container; built and
   tested locally with Colima; no image published by this package.
+- **No registry for now.** **Supervisor (mzargham), verbatim:** "we don't need the image on a
+  registry just document it in the appendix for now and we can optionally publish it to a registry
+  later". Disposition: as drafted (R-31 publishes nothing); the Dockerfile is in the repository
+  and Appendix F documents how to build and run it; publishing the image is an optional candidate
+  for the release package (WP8b), to be added to the release punch list by the PM.
