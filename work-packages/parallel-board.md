@@ -25,7 +25,7 @@ A stream with no package behind it is not started until the package is scoped an
 | P10 | WP10 Amendment 1 (Appendix F, the container of record) and the supervisor's go-ahead in `WP10-decisions.md` |
 | P11 | verification tooling: NOT YET SCOPED; becomes WP20 (`WP20-scope-of-work.md`) before it starts |
 | D1 | WP11 (the reader grid), scoped and approved |
-| B1 | WP19 (backlog); B2 | WP16 (held) |
+| B1 | WP19 (backlog); B2 | WP16 (held); B3 | WP22, the system model's two views (to be scoped by the PM; replaces the planned WP15 amendment) |
 
 ## Rules of the board
 

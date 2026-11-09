@@ -150,4 +150,12 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Disposition:** an amendment to WP15 is drafted when the diagram work has listed what the model
   lacks; constraint: evaluation and committed data unchanged, the ledger carrying the new model
   version; the driver approves before execution. Recorded also in `WP19-backlog.md`.
+- **Superseded the same day:** the amendment above becomes a package of its own, WP22. **Supervisor
+  (mzargham), verbatim:** "i think we have a new open package regarding the system model because we're
+  discussing extending/refactoring/tightening in a manner that makes the behavioral view with
+  requirements, and measurements (via simulation or model checking in our case) that help us trace to
+  our metrics back to model. we have 2 views of the model: one on how its configured and one on how
+  its assessed. two view, the same sysmlv2 model i strongly expect this will require a serious
+  modeler loop to preserve the results but make the sysmlv2 model a more obvious connection between
+  the configuration variables, the assessed attributes and metrics we're trading."
 
