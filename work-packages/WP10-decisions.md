@@ -553,3 +553,9 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   23 ledger entries have `relation=None`, and no script takes an axiom from the ledger. Open, to
   the supervisor: whether each cited result's SymPy form is declared once in the ledger and taken
   from there, or stays at the line that applies it, tagged with the entry's name.
+- **Two results in one script.** **Supervisor (mzargham), verbatim:** "and if too results use the
+  same script they can have the same file reference that should not break our addressing scheme for
+  proof steps". Disposition: decided; a step's address is its file and its tag (unique within the
+  file); results may share a file, each owning its own steps; the checker requires that every step
+  of a file belongs to exactly one proof, not that a file has one proof. This replaces the driver's
+  default for L14.

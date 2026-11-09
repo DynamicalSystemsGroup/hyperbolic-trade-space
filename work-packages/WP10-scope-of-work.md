@@ -446,8 +446,10 @@ What changes:
     subset of the register with the same wording, and R-9's rule on the words "novel", "first" and
     "new" holds in G as in section 2. Checked by a test on the register's source file; inspection.
   - R-28 (proofs step for step): Appendix B opens with the rule and with what the correspondence
-    does and does not establish; each proof names exactly one file and each lemma file is the file
-    of exactly one proof; prose steps and script steps correspond one to one and in order; each
+    does and does not establish; each proof names exactly one file; two results may share a file, a
+    step's address being its file and its tag, unique within the file, and every step of every
+    lemma file belonging to exactly one proof; prose steps and script steps correspond one to one
+    and in order; each
     step is a line of code and shows its kind (computed, or by a declared axiom with the entry's
     name, class and citation), its formal claim and its line link, the last two compiled from the
     script; there is no prose-only kind, and a step that is neither is reported to the supervisor;

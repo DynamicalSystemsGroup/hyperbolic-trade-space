@@ -39,6 +39,11 @@ On the driver's three kinds of step (computed, inherited, argued):
 "proof steps that cite an inherited result are still steps. and in sympy we need to declare the
 cited results as axioms to use them which still needs to happen in the code"
 
+And on two results proved in one script:
+
+"and if too results use the same script they can have the same file reference that should not break
+our addressing scheme for proof steps"
+
 ## The test each appendix must pass
 
 An appendix exists only if it answers a question that a reader of the paper has and that the main
@@ -97,6 +102,11 @@ the search's evidence becomes an appendix is decided in WP12's scope, when there
 
 How the correspondence is built (so that it can be checked, and cannot drift):
 
+- **The address of a step is its file and its tag,** and the tag is unique within the file. Two
+  results may therefore share a file (the supervisor's rule; today L14's script proves a
+  proposition and its corollary): each names the same file, each owns its own steps, and no
+  address collides. A later result in a file cites the earlier one as established; it does not
+  re-own its steps.
 - **In the script, a step is one line:** a call that carries the step's tag (L2.1, L2.2, ...), its
   formal claim as a short statement, its kind, and the condition SymPy checks. Today the scripts
   hold these as comments, intermediate results and 143 assertions across the fourteen files, with no
@@ -122,9 +132,9 @@ How the correspondence is built (so that it can be checked, and cannot drift):
 The tool (the supervisor's instruction: no regression goes unnoticed):
 
 - **A checker,** run as one command and by the test suite, that fails unless: every proof in the
-  appendix names exactly one file and every lemma file is the file of exactly one proof; within
-  each, the prose steps and the script's steps correspond one to one and in the same order, with no
-  step on either side unmatched; every *computed* step's condition passes; every step *by a declared
+  appendix names exactly one file; every step of every lemma file belongs to exactly one proof;
+  within each proof, the prose steps and its script steps correspond one to one and in the same
+  order, with no step on either side unmatched; every *computed* step's condition passes; every step *by a declared
   axiom* names a ledger entry that exists; the entries applied by a file's steps are exactly the
   entries the file lists as used (none listed and unused, none used and unlisted); and tags are
   unique and unbroken.
@@ -273,11 +283,11 @@ checker, not by being one object).
 - B (the supervisor's rule, not a default): each proof is one file, each prose step one line of
   it, explained at the head of the appendix, with a checker. Defaults under that rule: tags of the
   form L2.1; the two kinds of step (computed, by a declared axiom) and no prose-only kind; the
-  step's formal claim and the line link compiled from the script; the committed record of fingerprints; the checker as a
-  module beside the runner and a test in the suite.
-- One file may prove a statement together with its corollary as one sequence of steps (today only
-  L14: the proposition on assignment-stable optimality and its corollary); the appendix then has
-  one entry for that file. No file is split and the numbering L1 to L14 is unchanged.
+  step's formal claim and the line link compiled from the script; the committed record of
+  fingerprints; the checker as a module beside the runner and a test in the suite.
+- Two results sharing a script (the supervisor's rule, not a default) keep the file's tags in one
+  sequence (L14.1, L14.2, ...), each step owned by one result; no file is split and the numbering
+  L1 to L14 is unchanged.
 - The main text's proof sketches stay narrative and are not step-tagged; they point to the appendix
   entry and the file.
 - The sources of the inherited axioms are cited in B, at the step that inherits them.
