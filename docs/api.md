@@ -11,7 +11,9 @@ arbitrary: `d` metrics and `d - 1` chart coordinates.
 - [`frontier_in_original_units`](user-guide/conditioning.md), a function: the fitted surface as a
   monomial in raw attributes.
 - [`HyperbolicTradeSpace`](user-guide/fitting.md), a transformer: fits the surface and gives the
-  chart of position and log V.
+  chart of position and log V. Fitted attributes for every number of terms include `exponents_`,
+  `facet_`, `coefficients_`, `facet_share_`, `objective_` (what the solver minimized) and
+  `mean_slack_` (the mean slack, to compare fits across numbers of terms).
 - [`select_temperature`](user-guide/fitting.md), a function: chooses the temperature by a target
   fraction above V = 1.
 - [`make_frontier_data`](user-guide/fitting.md), a function: seeded synthetic data with a planted

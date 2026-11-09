@@ -99,8 +99,15 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     frac_above_ : float
         Fraction of (non-degenerate) training rows with ``V > 1``.
     objective_ : float
-        ``J_tau(w)`` at the solution (equals ``beta``); for ``n_terms > 1`` the mean slack
-        ``(1/N) sum_i (beta_k(i) - w_k(i) . u_i)`` of the partition fit.
+        What the solver minimized: ``J_tau(w)`` at the solution (equals ``beta``, a soft maximum)
+        for ``n_terms = 1``; for ``n_terms > 1`` the mean slack
+        ``(1/N) sum_i (beta_k(i) - w_k(i) . u_i)`` of the partition fit. The two are different
+        quantities: to compare fits across ``n_terms`` use ``mean_slack_``.
+    mean_slack_ : float
+        The mean slack ``mean_i (beta_k(i) - w_k(i) . u_i)`` over the rows with no zero metric,
+        with ``k(i)`` the row's facet (``facet_``); defined for every ``n_terms``. At
+        ``n_terms = 1`` it is ``beta - mean_i (w . u_i)``. At a fixed ``temperature`` it is
+        comparable across ``n_terms`` (and across restarts); ``objective_`` is not.
     n_iter_ : int
         Solver iterations (at least 1; 1 on the LP-only path).
     basis_ : ndarray of shape (n_features_in_ - 1, n_features_in_)
@@ -108,16 +115,16 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         ``(n_terms, n_features_in_ - 1, n_features_in_)``: the chart does not depend on ``w``, so
         the same ``B`` is stacked ``K`` times and ``Z`` is the same for every facet.
     facet_ : ndarray of int, shape (n_samples,)
-        Only for ``n_terms > 1``: ``argmax_k (w_k . u - beta_k)`` of each training row (``-1`` for
-        a zero metric).
+        ``argmax_k (w_k . u - beta_k)`` of each training row (``-1`` for a zero metric); all
+        zeros at ``n_terms = 1``.
     coefficients_ : ndarray of shape (n_terms,)
-        Only for ``n_terms > 1``: posynomial coefficients ``exp(-kappa beta_k)`` of
+        Posynomial coefficients ``exp(-kappa beta_k)`` of
         ``exp(kappa Phi_K) = sum_k c_k prod_j m_j^(kappa w_kj)``; at ``kappa = inf`` the
         convention ``kappa = 1`` gives ``exp(-beta_k)``.
     facet_share_ : ndarray of shape (n_terms,)
-        Only for ``n_terms > 1``: share of the near-frontier training rows (``|log V| < band``,
+        Share of the near-frontier training rows (``|log V| < band``,
         ``band = 1 / temperature``, or 0.1 at ``tau = inf``) assigned to each facet; zeros if
-        there are none.
+        there are none; ``[1.0]`` at ``n_terms = 1``.
     training_log_v_ : ndarray of shape (n_samples,)
         ``log V`` of the training rows (``-inf`` for rows with a zero metric on a participating
         exponent; a zero metric on an exponent at or below ``EPS_ZERO_EXPONENT`` contributes
@@ -352,19 +359,25 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         self.exponents_, self.log_offset_ = W, betas
         self.basis_ = B if K == 1 else np.repeat(B[None], K, axis=0)
         _, log_v = self._chart(U)
+        lab = self._assign(U)
+        kappa = self.term_temperature
         if K > 1:
-            lab = self._assign(U)
             near = valid & (np.abs(log_v) < (1.0 / tau if np.isfinite(tau) else 0.1))
-            kappa = self.term_temperature
             p = np.zeros(nv)
             for k in range(K):
                 m = lab[valid] == k
                 if m.any():
                     p[m] = _solvers.support_weights(Uv[m] @ W[k], tau) * m.sum() / nv
-            self.facet_ = lab
-            with np.errstate(over="ignore"):
-                self.coefficients_ = np.exp(-(1.0 if np.isinf(kappa) else kappa) * betas)
-            self.facet_share_ = np.bincount(lab[near], minlength=K) / max(near.sum(), 1)
+            share = np.bincount(lab[near], minlength=K) / max(near.sum(), 1)
+        else:
+            share = np.ones(1)  # the single facet owns every near-frontier row
+        self.facet_ = lab
+        with np.errstate(over="ignore"):
+            self.coefficients_ = np.exp(-(1.0 if np.isinf(kappa) else kappa) * betas)
+        self.facet_share_ = share
+        # mean slack over the valid rows: beta_k(i) - w_k(i) . u_i, k(i) the row's facet
+        lv = lab[valid]
+        self.mean_slack_ = float(np.mean(betas[lv] - np.einsum("ij,ij->i", W[lv], Uv)))
         support = np.zeros(n)
         support[valid] = p
         above = log_v[valid] > (_ABOVE_TOL if np.isinf(tau) else 0.0)

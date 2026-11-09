@@ -60,7 +60,7 @@ BUDGETS = {
     "user-guide/tensions.md": 700,
     "user-guide/chart.md": 600,
     "user-guide/prediction.md": 350,
-    "user-guide/termination.md": 600,
+    "user-guide/termination.md": 700,
     "user-guide/limitations.md": 500,
     "api.md": 300,
     "examples.md": 400,

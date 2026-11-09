@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 2
+contract_version = 3
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -87,7 +87,7 @@ fixed_assignment_bound = ["U", "W", "labels", "tau", "min_exponent", "P"]
 # Fitted attributes and methods the paper reads.
 [package.estimator]
 class = "HyperbolicTradeSpace"
-fitted_attributes = ["exponents_", "log_offset_", "training_log_v_", "termination_", "conditioning_"]
+fitted_attributes = ["exponents_", "log_offset_", "training_log_v_", "termination_", "conditioning_", "mean_slack_", "facet_", "coefficients_", "facet_share_"]
 methods = [
   "fit", "fit_transform", "transform", "inverse_transform", "score_samples", "invariant_value",
   "improvement_factors", "level_set", "novelty_score", "project", "assign_facets",

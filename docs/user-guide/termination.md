@@ -21,7 +21,9 @@ print(ts.conditioning_.round(1))
 
 ## The three levels
 
-1. Descent: no step made the mean slack worse.
+1. Descent: no step made the mean slack worse (`mean_slack_` is that quantity, defined at every number
+   of terms; `objective_` is what the solver minimized: the soft maximum at one term, the mean slack
+   at several).
 2. Numerical stationarity: each facet sits where no first-order improvement is left. The facet gap
    G_k measures what remains; at infinite temperature it is the linear-programming duality gap.
 3. Conditional local optimality: if no design sits exactly on the seam between two facets, small
@@ -58,7 +60,8 @@ facets coincide; the status is then `stationary_without_margin`.
   one), and each facet's row share.
 - `bound`: the share-weighted sum of facet gaps, a bound on the objective's distance from the
   fixed-assignment optimum for this run. It does not compare restarts.
-- `gamma`, `radius`: the assignment margin and the stable radius, both `inf` at one term.
+- `gamma`, `radius`: the assignment margin and the stable radius. Both are `nan` at one term: with no
+  competing facet there is no runner-up to beat, so the margin is undefined, not infinite.
 - `sum_residual`, `floor_residual`, `offset_residual`, `objective_change`, `assignment_changes`,
   `n_empty`: feasibility and step diagnostics.
 - `eps_kkt`, `eps_feas`, `guard_tol`: the tolerances in force.

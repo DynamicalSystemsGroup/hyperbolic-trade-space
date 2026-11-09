@@ -23,6 +23,10 @@ The attributes to read first:
 - `exponents_`: shape `(n_terms, d)`, each row on the simplex.
 - `frac_above_`: the fraction of designs beyond V = 1.
 - `n_eff_`: how many designs carry the fit.
+- `objective_` and `mean_slack_`: `objective_` is what the solver minimized, the soft maximum at one
+  term and the mean slack at several, so it is not comparable across numbers of terms.
+  `mean_slack_` is the mean over designs of the gap between the facet and the design, defined for
+  every number of terms; compare fits with it, at a fixed temperature.
 - `termination_` and `conditioning_`: how the fit stopped and how well its exponents are identified
   ([termination page](termination.md)).
 
@@ -85,7 +89,8 @@ local optimum. `assign_facets(X)` labels new rows with their facet. Options:
   local-optimality status.
 
 Each training row's facet is `facet_`, and `coefficients_` and `facet_share_` hold the facets'
-posynomial coefficients and shares. What the fit reports about itself is on the
+posynomial coefficients and shares. They exist at every number of terms: at one term `facet_` is all
+zeros and `facet_share_` is `[1.0]`. What the fit reports about itself is on the
 [termination page](termination.md).
 
 With two metrics the facets can be drawn in the log plane:

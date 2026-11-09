@@ -403,8 +403,9 @@ def test_k_terms_attributes_conventions():
         assert est.n_eff_ == pytest.approx(1.0 / np.sum(est.support_weights_**2))
         assert est.facet_.shape == (300,) and est.n_iter_ >= 1
         assert 0.0 <= est.frac_above_ <= 1.0
+    # K = 1: the same attributes exist (WP10 item 19, recorded in contract version 3)
     k1 = HyperbolicTradeSpace().fit(X)
-    assert not any(hasattr(k1, a) for a in ("facet_", "coefficients_", "facet_share_"))
+    assert all(hasattr(k1, a) for a in ("facet_", "coefficients_", "facet_share_", "mean_slack_"))
     far = HyperbolicTradeSpace(n_terms=3, temperature=1000.0, random_state=0).fit(X * 1e3)
     assert far.facet_share_.sum() in (0.0, pytest.approx(1.0))
 
@@ -661,3 +662,46 @@ def test_degenerate_single_valid_row_warns_with_the_convention():
         np.testing.assert_allclose(est.exponents_, 1 / 3)
         assert est.termination_.status == "not_applicable"
     assert "single valid row" in HyperbolicTradeSpace.__doc__
+
+
+def test_attributes_exist_for_every_k_and_k1_numbers_are_unchanged():
+    X, _ = make_frontier_data(300, 4, n_terms=2, random_state=777)
+    for tau in (np.inf, 50.0):
+        e = HyperbolicTradeSpace(temperature=tau).fit(X)
+        assert e.facet_.shape == (300,) and not e.facet_.any()
+        np.testing.assert_array_equal(e.facet_share_, [1.0])
+        np.testing.assert_allclose(e.coefficients_, np.exp(-e.log_offset_))  # kappa = inf -> 1
+        assert e.coefficients_.shape == (1,)
+    Xz = X.copy()
+    Xz[5, 1] = 0.0
+    assert HyperbolicTradeSpace().fit(Xz).facet_[5] == -1  # zero metric, as at K > 1
+    # the fitted numbers of the K = 1 fit are those of the pre-change code (literals)
+    e = HyperbolicTradeSpace(temperature=50.0).fit(X)
+    assert e.objective_ == pytest.approx(-0.06947951610557283, rel=1e-12)
+    assert e.log_offset_[0] == pytest.approx(e.objective_, rel=1e-12)
+
+
+def test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized():
+    X, _ = make_frontier_data(300, 4, n_terms=2, random_state=777)
+    U = np.log(X)
+    # K = 1: beta - mean(w . u); not the soft maximum
+    e1 = HyperbolicTradeSpace(temperature=50.0).fit(X)
+    expected = e1.log_offset_[0] - np.mean(U @ e1.exponents_[0])
+    assert e1.mean_slack_ == pytest.approx(expected, rel=1e-12)
+    assert e1.mean_slack_ > 0 and e1.objective_ < e1.mean_slack_
+    # K > 1: the mean slack is what the solver minimized
+    for tau in (np.inf, 50.0):
+        e2 = HyperbolicTradeSpace(n_terms=2, temperature=tau, random_state=0).fit(X)
+        k = e2.facet_
+        slack = e2.log_offset_[k] - np.einsum("ij,ij->i", e2.exponents_[k], U)
+        assert e2.mean_slack_ == pytest.approx(slack.mean(), rel=1e-12)
+        assert e2.mean_slack_ == pytest.approx(e2.objective_, rel=1e-9)
+    # zero-metric rows are masked
+    Xz = X.copy()
+    Xz[7, 2] = 0.0
+    ez = HyperbolicTradeSpace(temperature=50.0).fit(Xz)
+    v = np.log(np.delete(Xz, 7, axis=0))
+    assert ez.mean_slack_ == pytest.approx(
+        ez.log_offset_[0] - np.mean(v @ ez.exponents_[0]), rel=1e-12
+    )
+    assert np.isfinite(ez.mean_slack_)
