@@ -11,6 +11,17 @@ import math
 import paper_paths  # noqa: F401  (puts the repository on sys.path)
 
 SCROLL_STYLE = "overflow-x:auto;max-width:100%"
+LINK_STYLE = "color:inherit;text-decoration:underline"
+"""A link in an output cell takes the text colour and is underlined, so it reads in both themes."""
+
+
+def appendix_link(label: str, text: str) -> str:
+    """A link from the paper's page to a subsection of the supporting material (``sub-d-11``).
+
+    The generated sentences are output cells, which the site does not parse for cross-reference
+    roles; the link is plain HTML to the target that the supporting page's heading carries.
+    """
+    return f'<a href="supporting-material/#{label}" target="_self" style="{LINK_STYLE}">{text}</a>'
 
 
 class Md(str):

@@ -129,3 +129,27 @@ both pages at 375 px; every new heading and table is present once the page has l
   section 2 (Pareto paragraph ending in an Open reading; "on this case"; DEA without the N linear
   programs clause); Methods R2 sentence ends with a full stop; section 7 limits sentence.
 - Light and dark both read; no layout change. The pane lagged one frame after the theme change.
+
+## WP10, facet matching, legible figures, Table 1, subsection links (1280 px light; 375 px dark)
+
+Built with `cd paper && uv run myst build --html` (no warnings), served on port 8801 from
+`paper/_build/html`, viewed in a tab of my own in the Browser pane; the server is stopped.
+
+- **Figures.** The figure column is 842 px at 1280 px. All figures are now 8 in wide at 100 dpi
+  (792 to 793 px) and shown at scale 1.00, with 9 pt type (12.5 px) as the smallest text; Figure 1
+  (1640 px, shown at 0.51) has 9 pt as its smallest type, 12.8 px. Panels stand one per row. Figure
+  6 (three association maps) is 22 in tall; each panel reads without zooming (viewed). The
+  `enlarge` link under each caption opens the file the site serves from `/build/` (eight links, all
+  resolve).
+- **Table 1.** Four columns (family with its sources in small type, then three short phrases);
+  793 px tall where it was 1663 px, one screen at 1280 px; the cells are left-aligned (the notebook
+  output style right-aligned them; `style.css` overrides it). At 375 px the table scrolls sideways
+  inside its container (the last column is cut at the edge until scrolled); the page itself does
+  not (`scrollWidth` 375, dark).
+- **Subsection links.** `supporting-material#sub-d-7` and `supporting-material/#sub-d-13` land with
+  the heading at the top of the viewport (D.7, D.13); the link in a generated sentence
+  (`supporting-material/#sub-d-14`) is underlined and takes the text colour.
+- **Remaining.** At 375 px an image is scaled to the column (about 0.43), so figure text is about
+  5 px there; the `enlarge` link is the remedy on a phone. As before, the pane shows a stale frame
+  after a jump or a theme change for a second. A figure link shows a download mark (the site's
+  rendering of a link to a file).

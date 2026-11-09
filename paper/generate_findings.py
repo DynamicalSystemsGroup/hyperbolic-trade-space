@@ -9,9 +9,13 @@ from __future__ import annotations
 
 import case
 import numpy as np
-from paper_common import Md
+from paper_common import Md, appendix_link
 from paper_facets import aligned
 from paper_stability import stable, summary
+
+_D11 = appendix_link("sub-d-11", "Appendix D.11")
+_D14 = appendix_link("sub-d-14", "Appendix D.14")
+_D15 = appendix_link("sub-d-15", "Appendix D.15")
 
 
 def _and(items) -> str:
@@ -45,7 +49,7 @@ def nondominated_sentence(study) -> Md:
     return Md(
         f"Of {n} feasible cubesat designs, the nondominated sets hold {_and(parts)} attributes "
         f"(a range is the spread over {_NUMBER_WORDS.get(runs, runs)} regenerations of the data "
-        f"under rounding-level perturbation, Appendix D.11)."
+        f"under rounding-level perturbation, {_D11})."
     )
 
 
@@ -112,7 +116,7 @@ def k_sweep_sentence(study, fits) -> Md:
     return Md(
         f"The mean slack falls from {own[1]} at K = 1 to {own[2]} at K = 2 and {own[3]} at "
         f"K = 3, at the temperatures {tau[1]}, {tau[2]} and {tau[3]}; refitted at the K = 1 "
-        f"temperature it falls to {fixed[2]} and {fixed[3]} (Appendix D.15). The "
+        f"temperature it falls to {fixed[2]} and {fixed[3]} ({_D15}). The "
         f"K = 3 facets have contending sets (exact-maximum supports) of {_and(ft['n_lemma'])} "
         f"metrics; {_and(new) if new else 'none'} are absent from the K = 1 set."
     )
@@ -173,10 +177,9 @@ def recovery_sentence() -> Md:
             for g, t in zip(good, gr.RECOVERY_TAUS, strict=True)
         )
     tail = (
-        f"the {len(rows)} failures have {_and(rows)} frontier rows on their thinnest facet "
-        f"(Appendix D.14)"
+        f"the {len(rows)} failures have {_and(rows)} frontier rows on their thinnest facet ({_D14})"
         if same
-        else "the failures differ between the temperatures (Appendix D.14)"
+        else f"the failures differ between the temperatures ({_D14})"
     )
     return Md(
         f"**A known answer.** On {n} planted tables ({gr.RECOVERY_ROWS} rows, 4 metrics) "

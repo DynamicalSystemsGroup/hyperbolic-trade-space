@@ -342,6 +342,8 @@ def rendered_words(text: str) -> int:
     equations. Captions, hypotheses, sketches, script pointers and list items are counted.
     """
     text = _rendered(text)
+    text = re.sub(r"<[^>]+>", "", text)  # the tags of a link in a generated sentence print nothing
+    text = re.sub(r"\]\([^)\s]*\)", "]", text)  # a link's target is not read, only its text
     text = _PRF_REF.sub("Theorem 0", text)
     text = _CITES.sub(lambda m: "Author 2000 " * (m.group(1).count("@")), text)
     text = _DISPLAY_MATH.sub(" ", text)
@@ -1102,7 +1104,8 @@ def test_figure1_appears_once_in_the_built_page():
     cell = next(c for c in _code_cells(nb) if c.id == "fig-schematic")
     assert "remove-cell" in cell.metadata.get("tags", [])
     md = _markdown(nb)
-    assert md.count("figures/figure1.png") == 1
+    # drawn once; the caption's full-size link names the same file
+    assert md.count("{figure} figures/figure1.png") == 1
     assert "#fig-schematic" not in md
     assert (PAPER / "figures" / "figure1.png").is_file()
 
@@ -1200,15 +1203,27 @@ def test_prior_art_says_nothing_is_novel_first_or_new():
 
 
 def test_section2_table_is_a_subset_of_the_register_with_the_same_wording():
-    """R-27: section 2's rows are the flagged entries, word for word."""
+    """R-27: section 2's rows are the flagged entries, and each cell's phrase is an extract of the
+    Appendix G field of the same name, word for word.
+
+    The requirement's intent is one source with one wording. The table used to print the three
+    sentences in full, five columns of them in a narrow column two screens tall; it now prints a
+    short phrase per cell (``short`` in ``prior_art.yaml``) and Appendix G the sentences, so the
+    test asks that each phrase occurs in the field it abbreviates, and that the field is in the
+    register verbatim. Decided by the driver (WP10, table 1 made readable)."""
     entries = generate_prior_art.entries()
     flagged = [e for e in entries if e.get("section2")]
     assert 0 < len(flagged) < len(entries) or len(flagged) == len(entries)
     table = str(generate_prior_art.family_table())
     register = str(generate_prior_art.register())
     for e in flagged:
-        assert e["differs"] in table and e["differs"] in register
-        assert e["does"] in table and e["does"] in register
+        assert set(e["short"]) == {"does", "shares", "differs"}, e["id"]
+        for field, phrase in e["short"].items():
+            phrase = " ".join(phrase.split())
+            assert phrase and phrase in e[field], (e["id"], field)
+            assert len(phrase.split()) <= 12, (e["id"], field)  # a phrase, not a sentence
+            assert phrase in table and e[field] in register, (e["id"], field)
+        assert e["family"] in table
     for e in entries:
         assert e["differs"] in register, e["id"]
         if not e.get("section2"):
@@ -1261,7 +1276,7 @@ def test_cells_whose_output_is_embedded_are_removed_from_the_page():
 def test_candidates_table_is_in_appendix_d_and_the_text_points_to_it():
     """Change request 14: Table 2 left the main text; its sentence points to D.7."""
     assert "tab-candidates" not in {c.id for c in _code_cells(_nb(PAPER_NB))}
-    assert "{ref}`Appendix D.7 <appendix-d>`" in _section("Case analysis")
+    assert "{ref}`Appendix D.7 <sub-d-7>`" in _section("Case analysis")
     assert "tab-D-candidate_designs" in {c.id for c in _cells_of("D")}
 
 
@@ -1427,6 +1442,54 @@ def _reference_targets():
     return sections, appendices, own, unlabelled, unlabelled_support
 
 
+def _subsection_labels() -> dict[str, str]:
+    """``sub-d-3`` -> its heading, from the ``(sub-d-3)=`` line of each subsection of the supporting
+    material (Appendices B to G); the number in the label must be the heading's own."""
+    out = {}
+    for c in _nb(SUPPORT_NB).cells:
+        m = (
+            re.match(r"^\((sub-[b-g]-\d+)\)=\n### ([B-G]\.\d+) ", _src(c))
+            if c.cell_type == "markdown"
+            else None
+        )
+        if m:
+            letter, num = m.group(2).lower().split(".")
+            assert m.group(1) == f"sub-{letter}-{num}", m.group(0)
+            out[m.group(1)] = m.group(2)
+    return out
+
+
+def test_every_subsection_heading_carries_a_label():
+    """Cross-references land on the subsection (D.3, F.2), not the top of the appendix (G-12)."""
+    headings = [
+        h for c in _nb(SUPPORT_NB).cells if c.cell_type == "markdown"
+        for h in re.findall(r"^### ([B-G]\.\d+) ", _unlabel(_src(c)), re.M)
+    ]  # fmt: skip
+    assert headings and sorted(_subsection_labels().values()) == sorted(headings)
+
+
+def test_every_appendix_subsection_named_in_the_main_text_resolves_to_a_label_that_exists():
+    """In the prose, a reference to Appendix D.n (or just D.n) is a role naming ``sub-d-n``; in a
+    generated sentence it is a link to ``supporting-material/#sub-d-n``; both labels exist."""
+    labels = _subsection_labels()
+    paper = _nb(PAPER_NB)
+    body = _markdown(paper)
+    roles = re.findall(r"\{ref\}`([^`<]*?)\s*<(sub-[^>`]+)>`", body)
+    assert len(roles) >= 5
+    for title, label in roles:
+        assert label in labels and title.endswith(labels[label]), (title, label)
+    plain = _ROLE.sub("", _unlabel(body))
+    plain = re.sub(r"\{ref\}`[^`]*`", "", plain)
+    assert not re.search(r"\b[B-G]\.\d{1,2}\b", plain), re.search(r"\b[B-G]\.\d{1,2}\b", plain)
+    generated = " ".join(_out_text(c) for c in _code_cells(paper) if c.id.startswith("num-"))
+    links = re.findall(r'<a href="supporting-material/#(sub-[^"]+)"[^>]*>([^<]*)</a>', generated)
+    assert len(links) >= 3
+    for label, text in links:
+        assert label in labels and text == f"Appendix {labels[label]}", (label, text)
+    unlinked = re.sub(r"<a [^>]*>[^<]*</a>", "", generated)
+    assert not re.search(r"\b(?:Appendix )?[B-G]\.\d{1,2}\b", unlinked), unlinked
+
+
 def test_every_heading_has_a_label_and_the_labels_follow_the_structure():
     """Section and appendix targets are derived from the notebooks: nothing is numbered by hand."""
     sections, appendices, _, unlabelled, unlabelled_support = _reference_targets()
@@ -1444,7 +1507,7 @@ def test_appendix_and_section_references_resolve():
     printed by MyST from the structure; the lemma number of a proof link is checked against the
     proof-map record."""
     sections, appendices, own, *_ = _reference_targets()
-    targets = {*sections, *appendices, *own}
+    targets = {*sections, *appendices, *own, *_subsection_labels()}
     record = _record()["lemmas"]
     for nb in (_nb(PAPER_NB), _nb(SUPPORT_NB)):
         body = "\n".join(
@@ -1456,6 +1519,9 @@ def test_appendix_and_section_references_resolve():
             assert label in targets, (role, title, label)
             if label in sections:
                 assert role == "numref" and "%s" in title, (title, label)
+            if label.startswith("sub-"):  # a subsection: its number is the label's
+                _, letter, num = label.split("-")
+                assert title in (f"Appendix {letter.upper()}.{num}", f"{letter.upper()}.{num}")
             if label.startswith("appendix-"):
                 assert (role == "ref" and title.startswith(f"Appendix {label[-1].upper()}")) or (
                     len(title) == 1 and title == label[-1].upper()
@@ -1590,6 +1656,16 @@ def test_myst_builds_the_html_site(tmp_path):
     assert out.returncode == 0, out.stdout[-2000:] + out.stderr[-2000:]
     assert (work / "_build" / "html" / "index.html").is_file()
     assert "⛔" not in out.stdout
+    # every figure's full-size link names a file of the built site, and the subsection labels the
+    # cross-references use are heading identifiers of the supporting page
+    html = work / "_build" / "html"
+    page = (html / "index.json").read_text(encoding="utf-8")
+    urls = re.findall(r'"url":"(/build/fig[\w.-]+\.png)"[^]]*?enlarge', page)
+    assert len(urls) == 8
+    assert all((html / u.lstrip("/")).is_file() for u in urls)
+    support = (html / "supporting-material.json").read_text(encoding="utf-8")
+    for label in _subsection_labels():
+        assert f'"identifier":"{label}"' in support, label
 
 
 # -- the list of values exact only in the environment of record
@@ -1909,7 +1985,7 @@ def test_reading_pass_rows_carry_what_the_paper_does_and_resolve_in_the_bibliogr
 
 def test_reading_pass_table_is_in_appendix_g_and_current():
     cells = _appendix_cells(_nb(SUPPORT_NB))["G"]
-    headings = [_src(c) for c in cells if c.cell_type == "markdown"]
+    headings = [_unlabel(_src(c)) for c in cells if c.cell_type == "markdown"]
     assert any(h.startswith("### G.2 ") for h in headings)
     cell = next(c for c in cells if c.cell_type == "code" and c.id == "tab-G-reading_pass_table")
     assert _out_text(cell) == str(generate_reading_pass.reading_pass_table()), STALE
@@ -2174,3 +2250,94 @@ def test_the_added_quantities_are_recorded_on_the_same_five_regenerations():
             assert e["min"] <= e["committed"] <= e["max"], name
     groups = {n.split(" | ")[0] for n in record["quantities"]}
     assert groups == {"kslack", "kslack fixed", "margin", "pca"}
+
+
+# -- legible figures and their full-size files (the driver's, WP10) -------------------------------
+
+FIGURE_COLUMN_PX = 842
+"""Width of the figure column of the site at a 1280 px window (measured in the built page)."""
+MIN_TEXT_PX = 12.0
+"""The smallest type a figure may show on the page: the body's small print, 12 to 13 px."""
+
+
+def _png_size_and_dpi(data: bytes) -> tuple[int, float]:
+    """Width in pixels and resolution in dots per inch of a PNG (its ``pHYs`` chunk)."""
+    import struct
+
+    assert data[:8] == b"\x89PNG\r\n\x1a\n"
+    width = struct.unpack(">I", data[16:20])[0]
+    pos, dpi = 8, None
+    while pos < len(data):
+        n, kind = struct.unpack(">I4s", data[pos : pos + 8])
+        if kind == b"pHYs":
+            dpi = struct.unpack(">I", data[pos + 8 : pos + 12])[0] * 0.0254
+            break
+        pos += 12 + n
+    assert dpi, "the PNG records no resolution"
+    return width, dpi
+
+
+def _figure_images() -> dict[str, tuple[bytes, float]]:
+    """Each figure of the paper: its PNG bytes and the smallest type size in points drawn in it."""
+    import base64
+
+    import case
+
+    sys.path.insert(0, str(PAPER / "figures"))
+    import figure1
+
+    out = {"fig-schematic": ((PAPER / "figures" / "figure1.png").read_bytes(), figure1.MIN_FONT_PT)}
+    for c in _code_cells(_nb(PAPER_NB)):
+        if c.id.startswith("fig-") and c.id != "fig-schematic":
+            png = next(
+                o["data"]["image/png"] for o in c.outputs if "image/png" in o.get("data", {})
+            )
+            out[c.id] = (base64.b64decode(png), case.FIGURE_MIN_FONT_PT)
+    return out
+
+
+def test_every_figure_shows_its_smallest_text_at_the_body_small_print_size_at_1280_px():
+    """Text size on the page = type size (pt) / 72 x resolution x the scale at which the column
+    shows the image (the column is FIGURE_COLUMN_PX wide; an image narrower than it is not
+    stretched). Figure 6 was shown at 0.40 of its size and its 7 pt labels were 4 px."""
+    images = _figure_images()
+    assert len(images) == 8
+    for name, (data, min_pt) in images.items():
+        width, dpi = _png_size_and_dpi(data)
+        scale = min(1.0, FIGURE_COLUMN_PX / width)
+        px = min_pt / 72 * dpi * scale
+        assert px >= MIN_TEXT_PX, (name, round(px, 1), width, round(scale, 2))
+
+
+def test_every_figure_has_a_full_size_link_to_a_file_that_is_the_figure():
+    nb = _nb(PAPER_NB)
+    images = _figure_images()
+    for cid in images:
+        cap = next(c for c in nb.cells if c.id == f"{cid}-caption")
+        m = re.search(r"\[enlarge\]\((figures/[\w.-]+\.png)\)\s*\n:::\s*$", _src(cap))
+        assert m, cid
+        assert (PAPER / m.group(1)).read_bytes() == images[cid][0], f"{cid}: {STALE}"
+    assert not (PAPER / "figures" / "fig-schematic.png").exists()
+
+
+def test_the_figure_functions_hold_every_text_at_the_minimum_size(monkeypatch):
+    """The decorator of case.py raises smaller text to the floor and checks it."""
+    import case
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.text import Text
+
+    @case._legible
+    def draw():
+        fig, ax = plt.subplots(figsize=(case.FIGURE_WIDTH_IN, 3))
+        ax.annotate("small", (0.5, 0.5), fontsize=5)
+        ax.set_title("title", fontsize=6)
+        return fig
+
+    fig = draw()
+    sizes = {t.get_text(): t.get_fontsize() for t in fig.findobj(Text) if t.get_text().strip()}
+    assert min(sizes.values()) >= case.FIGURE_MIN_FONT_PT, sizes
+    assert fig.get_size_inches()[0] * case.FIGURE_DPI <= FIGURE_COLUMN_PX
+    plt.close(fig)
