@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import case
 import numpy as np
-from paper_common import Md
+from paper_common import Md, Scroll
 from paper_stability import stable
 
 
@@ -131,6 +131,11 @@ def regime_sentence() -> Md:
         f"Only the {a} regime has {_and(sorted(sets[a] - sets[b]))} contending; only the {b} "
         f"regime has {_and(sorted(sets[b] - sets[a]))}."
     )
+
+
+def candidates_table(study, fit) -> Scroll:
+    """The measured candidates scored against the K = 1 fit, as a table that scrolls sideways."""
+    return Scroll(case.candidate_table(study, fit).to_html(border=0, float_format="{:.4g}".format))
 
 
 def candidates_sentence(table) -> Md:

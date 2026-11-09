@@ -24,6 +24,20 @@ class Md(str):
         return MarkdownIt("commonmark").enable("table").render(str(self))
 
 
+class Scroll(str):
+    """An HTML table in a container that scrolls sideways, so a wide table never overflows a page.
+
+    The static site shows a pandas table at its natural width; on a phone the table is then wider
+    than the column. The wrapper keeps the table inside its container and lets it scroll.
+    """
+
+    def _repr_html_(self) -> str:
+        return f'<div style="overflow-x:auto;max-width:100%">{self}</div>'
+
+    def _repr_markdown_(self) -> str:
+        return str(self)
+
+
 def cell_text(value, floatfmt: str = ".4g") -> str:
     """One table cell as text: floats formatted, newlines and pipes made safe."""
     if isinstance(value, bool):

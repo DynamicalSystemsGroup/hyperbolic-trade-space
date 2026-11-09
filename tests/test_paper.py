@@ -60,7 +60,9 @@ SECTIONS = [
     "Discussion",
     "Reproducibility and your own case",
     "Future work and final remark",
-    "Acknowledgments",
+    # Not plain "Acknowledgments": the site lifts a heading of that name out of the flow and prints
+    # it after the bibliography; this heading keeps it before the references (BROWSER_NOTES).
+    "Acknowledgments and process",
     "Works cited",
 ]
 APPENDICES = {
@@ -118,6 +120,20 @@ def _code_cells(nb):
     return [c for c in nb.cells if c.cell_type == "code"]
 
 
+_TARGET = re.compile(r"^\((?P<label>[\w-]+)\)=\n", re.M)
+_ROLE = re.compile(r"\{(?P<role>ref|numref)\}`(?P<title>[^`<]*?)\s*<(?P<label>[^>`]+)>`")
+
+
+def _unlabel(text: str) -> str:
+    """The text without its target-label lines, ``(label)=``, which print nothing."""
+    return _TARGET.sub("", text)
+
+
+def _rendered(text: str) -> str:
+    """The text as the reader sees it: target lines gone, each cross-reference role as its title."""
+    return _ROLE.sub(lambda m: m.group("title").replace("%s", "0"), _unlabel(text))
+
+
 def _markdown(nb) -> str:
     return "\n".join(_src(c) for c in nb.cells if c.cell_type == "markdown")
 
@@ -143,7 +159,11 @@ def _appendix_cells(nb):
     """Map letter to the cells from its heading up to the next appendix heading."""
     sections, current = {}, None
     for c in nb.cells:
-        m = re.match(r"^## Appendix ([A-G])\. ", _src(c)) if c.cell_type == "markdown" else None
+        m = (
+            re.match(r"^## Appendix ([A-G])\. ", _unlabel(_src(c)))
+            if c.cell_type == "markdown"
+            else None
+        )
         if m:
             current = m.group(1)
             sections[current] = []
@@ -261,12 +281,12 @@ def test_search_section_is_labelled_preliminary():
     for c in nb.cells:
         if c.cell_type != "markdown":
             continue
-        text = _src(c)
+        text = _unlabel(_src(c))
         if text.startswith("## "):
             grab = text.startswith("## Search of the design space")
         if grab:
             cells.append(text)
-    assert not re.search(r"\d+\.\d+|\d+\s*%", "\n".join(cells).replace("Section 7", ""))
+    assert not re.search(r"\d+\.\d+|\d+\s*%", "\n".join(cells))
 
 
 def test_separation_of_concerns_no_user_guide_headers():
@@ -284,9 +304,9 @@ def test_counted_words_within_the_cap():
     """R-2: counted prose (the abstract and code excluded) is at most 6,000 words."""
     words = 0
     for i, c in enumerate(_nb(PAPER_NB).cells):
-        if c.cell_type != "markdown" or i == 0:
-            continue
-        words += len(re.sub(r"[#>*`:{}\[\]@|-]", " ", _src(c)).split())
+        if c.cell_type != "markdown" or i == 0 or "remove-cell" in c.metadata.get("tags", []):
+            continue  # the abstract, and cells the page does not show
+        words += len(re.sub(r"[#>*`:{}\[\]@|-]", " ", _rendered(_src(c))).split())
     assert words <= 6000
 
 
@@ -377,7 +397,11 @@ def test_case_calls_go_through_the_case_module():
         tree = ast.parse(_src(cell))
         call = _calls(tree)[0]
         name = ast.unparse(call.func)
-        assert name.startswith("case.") or name in {"family_table", "figure1"}, (cell.id, name)
+        assert name.startswith("case.") or name in {
+            "family_table",
+            "figure1",
+            "candidates_table",
+        }, (cell.id, name)
 
 
 def test_paper_cells_have_committed_outputs_without_errors():
@@ -986,6 +1010,34 @@ def test_register_has_every_entry_grouped_by_family():
         )
 
 
+def test_family_table_cites_are_author_year_links_to_the_reference_list():
+    """The table is an output cell, which the site does not parse for citations: each key is an
+    author-year link to its entry in the reference list, and the hidden cell cites every key so
+    that the list holds the entry."""
+    table = str(generate_prior_art.family_table())
+    assert "[@" not in table
+    for e in generate_prior_art.entries():
+        if not e.get("section2"):
+            continue
+        for key in e["cites"]:
+            label = generate_prior_art.author_year(key)
+            assert re.search(rf'<a href="#cite-{key}"[^>]*>{re.escape(label)}</a>', table), key
+            assert re.fullmatch(r"[^\d]+ \d{4}|[^\d]+ n\.d\.", label), label
+    assert "../#cite-" in str(generate_prior_art.register())  # the register is on the other page
+    hidden = next(c for c in _nb(PAPER_NB).cells if c.get("id") == "nocite-prior-art")
+    assert hidden.metadata["tags"] == ["remove-cell"]
+    assert _src(hidden) == generate_prior_art.nocite(), "re-run the sync: " + STALE
+    assert set(generate_prior_art.all_cited_keys()) <= _bib_keys()
+
+
+def test_candidates_table_scrolls_inside_its_container():
+    """On a phone the wide table scrolls within the column instead of overflowing the page."""
+    cell = next(c for c in _code_cells(_nb(PAPER_NB)) if c.id == "tab-candidates")
+    html = "".join(o["data"]["text/html"] for o in cell.outputs if "data" in o)
+    assert html.startswith('<div style="overflow-x:auto')
+    assert "<table" in html
+
+
 def test_prior_art_committed_outputs_are_current():
     paper = {c.id: c for c in _code_cells(_nb(PAPER_NB))}
     assert _out_text(paper["tab-families"]) == str(generate_prior_art.family_table()), STALE
@@ -1013,7 +1065,7 @@ def _section(name: str) -> str:
     for c in _nb(PAPER_NB).cells:
         if c.cell_type != "markdown":
             continue
-        text = _src(c)
+        text = _unlabel(_src(c))
         if text.startswith("## "):
             grab = text.startswith(f"## {name}")
         if grab:
@@ -1033,10 +1085,10 @@ def test_no_shell_marker_remains_in_the_paper():
 def test_search_section_is_short_future_work_without_numbers():
     """R-15: about 150 to 250 words, says it is future work, carries no digits at all."""
     text = _section("Search of the design space")
-    words = len(re.sub(r"[#>*`:{}\[\]@|-]", " ", text).split())
+    words = len(re.sub(r"[#>*`:{}\[\]@|-]", " ", _rendered(text)).split())
     assert 150 <= words <= 250
     assert "future work" in text and "no results" in text
-    assert not re.search(r"\d", text.replace("Section 7", "").replace("Section 10", ""))
+    assert not re.search(r"\d", text)
 
 
 def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script():
@@ -1059,7 +1111,8 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
         assert tail.lstrip().startswith(":::{prf:proof} Sketch"), label
         pointer = re.search(
             r":::\{admonition\} Script\n:class: tip\n"
-            r"`derivation/(lemma_\d+_\w+\.py)`, `verify`; Appendix B, L(\d+)\.",
+            r"`derivation/(lemma_\d+_\w+\.py)`, `verify`; "
+            r"\{ref\}`Appendix B, L(\d+) <appendix-b>`\.",
             tail,
         )
         assert pointer and int(pointer.group(2)) == n, label
@@ -1114,18 +1167,82 @@ def test_disclosure_cites_the_incose_paper_and_the_search_and_stage_one_stay_abs
     assert not re.search(r"SysML|OpenSysML|Modelica|Simulink|pip install", body, re.I)
 
 
+def _structure(nb):
+    """The labelled structure of a notebook, read from its cells: section number by label.
+
+    Returns ``(sections, unlabelled)``: the ``(label)=`` target before each ``## `` heading mapped
+    to the heading's number in order of appearance (the number MyST prints), and the headings
+    that have no label.
+    """
+    sections, unlabelled, n = {}, [], 0
+    for c in nb.cells:
+        if c.cell_type != "markdown":
+            continue
+        src = _src(c)
+        m = re.match(r"\((?P<label>[\w-]+)\)=\n## ([^#].*)", src)
+        if m:
+            n += 1
+            sections[m.group("label")] = (n, m.group(2).strip())
+        elif src.startswith("## "):
+            n += 1
+            unlabelled.append(src.splitlines()[0])
+    return sections, unlabelled
+
+
+def _reference_targets():
+    """Every label a cross-reference may name: sections, appendices and the paper's own labels."""
+    paper, support = _nb(PAPER_NB), _nb(SUPPORT_NB)
+    sections, unlabelled = _structure(paper)
+    appendices, unlabelled_support = _structure(support)
+    own = set(re.findall(r"^:label: (\S+)$", _markdown(paper) + "\n" + _markdown(support), re.M))
+    return sections, appendices, own, unlabelled, unlabelled_support
+
+
+def test_every_heading_has_a_label_and_the_labels_follow_the_structure():
+    """Section and appendix targets are derived from the notebooks: nothing is numbered by hand."""
+    sections, appendices, _, unlabelled, unlabelled_support = _reference_targets()
+    assert not unlabelled and not unlabelled_support
+    assert [name for _, name in sections.values()] == SECTIONS
+    assert [n for n, _ in sections.values()] == list(range(1, len(SECTIONS) + 1))
+    assert list(appendices) == [f"appendix-{k.lower()}" for k in APPENDICES]
+    for label, (_, heading) in appendices.items():
+        assert heading.startswith(f"Appendix {label[-1].upper()}. "), label
+
+
 def test_appendix_and_section_references_resolve():
-    """R-4, R-13 L-C and L-D: every appendix letter, section number, label and script exists."""
-    body = _markdown(_nb(PAPER_NB))
-    letters = set(re.findall(r"Appendix ([A-Z])\b", body))
-    assert letters == set(APPENDICES)
+    """R-4, R-13 L-C and L-D, and the readers' links: every cross-reference is a MyST role that
+    names a label which exists, and no reference is typed as plain text. The section number is
+    printed by MyST from the structure; the lemma number of a proof link is checked against the
+    proof-map record."""
+    sections, appendices, own, *_ = _reference_targets()
+    targets = {*sections, *appendices, *own}
     record = _record()["lemmas"]
-    for n in re.findall(r"Appendix B, L(\d+)\.", body):
-        assert any(v["number"] == int(n) for v in record.values()), n
-    for n in re.findall(r"Sections? (\d+)(?:\b)", body):
-        assert 1 <= int(n) <= 12, n
-    labels = set(re.findall(r":label: (\S+)", body))
-    for ref in re.findall(r"\{prf:ref\}`([^`]+)`", body):
+    for nb in (_nb(PAPER_NB), _nb(SUPPORT_NB)):
+        body = "\n".join(
+            _src(c) for c in nb.cells if c.cell_type == "markdown" and c.id != "frontmatter"
+        )
+        refs = _ROLE.findall(body)
+        assert refs
+        for role, title, label in refs:
+            assert label in targets, (role, title, label)
+            if label in sections:
+                assert role == "numref" and "%s" in title, (title, label)
+            if label.startswith("appendix-"):
+                assert (role == "ref" and title.startswith(f"Appendix {label[-1].upper()}")) or (
+                    len(title) == 1 and title == label[-1].upper()
+                ), (title, label)
+            for n in re.findall(r"^Appendix B, L(\d+)$", title):
+                assert any(v["number"] == int(n) for v in record.values()), n
+        plain = _ROLE.sub("", _unlabel(body))
+        plain = "\n".join(ln for ln in plain.splitlines() if not ln.startswith("#"))
+        assert not re.search(r"\b[Ss]ections? \d|\bAppendix [A-G]\b|\b(Table|Figure) \d", plain), (
+            re.search(r"\b[Ss]ections? \d|\bAppendix [A-G]\b|\b(Table|Figure) \d", plain)
+        )
+    paper_body = _markdown(_nb(PAPER_NB))
+    letters = {m[-1].upper() for _, _, m in _ROLE.findall(paper_body) if m.startswith("appendix-")}
+    assert letters == set(APPENDICES)
+    labels = set(re.findall(r":label: (\S+)", paper_body))
+    for ref in re.findall(r"\{prf:ref\}`([^`]+)`", paper_body):
         assert ref in labels, ref
 
 
@@ -1179,9 +1296,8 @@ def test_reader_depth_anchors_are_all_present():
     labels += ("thm-extension", "thm-pareto", "lem-gap", "lem-margin", "prop-local")
     for label in labels:
         assert f"`{label}`" in results, label
-    assert "Appendix B" in _markdown(nb) and "supporting_material.ipynb" in _section(
-        "The decision problem"
-    )
+    intro = _section("The decision problem")
+    assert all(f"<appendix-{k.lower()}>`" in intro for k in APPENDICES)  # links to the lettered set
 
 
 def test_simplifying_assumptions_are_named_where_made_and_taken_up_in_future_work():
