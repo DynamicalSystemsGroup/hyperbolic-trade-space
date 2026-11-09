@@ -35,19 +35,22 @@ print(report.exponents.round(2))
 
 The output is `trilemma [0 1 2]` and then `[0.3  0.37 0.33]`.
 
-The chart of the same fit draws each design by its position along the frontier:
+The idea is easiest to see with two of the metrics, where the model is a line. In the log plane of
+metrics 0 and 1 the designs lie on or just beyond a straight frontier, and the grey band marks those
+within 0.5 of it in log V:
 
 ```python {.runnable}
-from hyperbolic_trade_space.plotting import plot_frontier_coordinates
+from hyperbolic_trade_space.plotting import plot_log_plane
 
-chart = ts.transform(X)
-plot_frontier_coordinates(chart[:, :-1], chart[:, -1])
+X2 = X[:, :2]
+ts2 = HyperbolicTradeSpace(temperature=20.0).fit(X2)
+plot_log_plane(ts2, X2, band=0.5)
 ```
 
 <figure markdown>
-![The 300 designs in the plane of the two position coordinates Z0 and Z1; the designs nearest the frontier are ringed in black.](generated/figures/first-fit-light.png#only-light)
-![The 300 designs in the plane of the two position coordinates Z0 and Z1; the designs nearest the frontier are ringed in black.](generated/figures/first-fit-dark.png#only-dark)
-<figcaption>Figure 1. The 300 designs of the first fit, placed by two position coordinates; the ringed designs lie nearest the frontier.</figcaption>
+![Designs in the log plane of two metrics: the frontier is a straight line, and the designs scatter below it, a few just beyond it, and the nearest ones lie in a grey band under the line.](generated/figures/first-fit-light.png#only-light)
+![Designs in the log plane of two metrics: the frontier is a straight line, and the designs scatter below it, a few just beyond it, and the nearest ones lie in a grey band under the line.](generated/figures/first-fit-dark.png#only-dark)
+<figcaption>Figure 1. The first fit seen on two metrics: the line is the fitted frontier, the designs fall below it or just beyond it, and the grey band holds those nearest to it.</figcaption>
 </figure>
 
 ## Reading the output
