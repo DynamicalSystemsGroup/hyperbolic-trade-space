@@ -831,3 +831,11 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   Abstract, section 8, the main-results line, Appendix C's opening and the docsite's Examples page
   follow. The finding gains its point by this: the tensions the fit reports run across subsystems.
   Sent to the PM. The ternary spike's three groups are these three subsystems.
+- On the keywords. **Supervisor (mzargham), verbatim:** "scikit-learn does not belong in the
+  keywords list because its a tool, but we can say open source software and/or scientific computing
+  if you think its merited". **Disposition (the driver's judgment, as he left it):** "scikit-learn"
+  is removed; "open source software" is added, because the method ships as a package that backs
+  every claim and a reader searching for a usable tool should find it; "scientific computing" is
+  not added, being too broad to help anyone find the paper. The list becomes: decision analysis,
+  trade studies, trade space, posynomial, geometric programming, unsupervised learning, model-based
+  systems engineering, open source software. Sent to the PM.
