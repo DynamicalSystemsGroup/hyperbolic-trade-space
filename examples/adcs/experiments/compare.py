@@ -219,6 +219,16 @@ def register_rows(register: Path) -> list[dict]:
     return rows
 
 
+def check_register(exceeded: dict[str, list[str]], rows: list[dict]) -> tuple[list[str], list[str]]:
+    """``(unexplained, stale)``: differences beyond tolerance no row covers, and register rows
+    that cover no difference (or name one that does not exist). Equality is not required."""
+    every = {i for ids in exceeded.values() for i in ids}
+    covered = {i for r in rows for i in r["covers"]}
+    unexplained = sorted(every - covered)
+    stale = sorted(r["n"] for r in rows if not r["covers"] or set(r["covers"]) - every)
+    return unexplained, stale
+
+
 # -- the swap checklist --------------------------------------------------------------------------
 def frozen_consumers(root: Path) -> dict[str, list[str]]:
     """``{file: [frozen CSV names it mentions]}`` over the tracked text files (a grep)."""
@@ -409,7 +419,7 @@ def _fmt(x, digits: int = 4) -> str:
 
 
 def _table(header: list[str], rows: list[list]) -> list[str]:
-    lines = ["| " + " | ".join(header) + " |", "|" + "|".join("---" for _ in header) + "|"]
+    lines = ["", "| " + " | ".join(header) + " |", "|" + "|".join("---" for _ in header) + "|"]
     lines += ["| " + " | ".join(str(c) for c in r) + " |" for r in rows]
     return [*lines, ""]
 
@@ -587,21 +597,27 @@ def _exclusion_section(entries: list[dict]) -> list[str]:
         if e["kind"] == "generated" and e.get("inputs", {}).get("exclusion")
     )
     for r in shown["regions"]:
-        box = ", ".join(f"{k} in [{v[0]:g}, {v[1]:g}]" for k, v in r["box"].items())
+        box = ", ".join(f"{k} in [{v[0]:g}, {v[1]:g}]" for k, v in r["region"]["box"].items())
         L.append(
             f"- `{r['region']['name']}` ({r['basis']}): {r['verdict']}; {box}. {r['reason']}. "
             f"Witness of a violation: {r['witness_violation'] or 'none'}."
         )
+    kept = sorted(set(shown["verdicts"].values()))
     L += [
         "",
-        "Result: the standard v2 space is not decided by the solver. The power region is "
-        "all-feasible (every panel span and tracker gives positive available power); the battery "
-        "region is mixed (capacities below the eclipse base load floor fail the depth of "
-        "discharge, the rest depend on the slew loss energy). Nothing is excluded, so all 1000 "
-        "designs of each dataset are simulated and the flags are observations; the agreement of "
-        "observation with verdict is tested on excluded sub-regions "
-        "(`tests/test_cubesat_oracle.py`: a battery region of 20 to 26 Wh is proved infeasible "
-        "and every design sampled in it simulates `dod_ok` False).",
+        f"Result: the solver's verdicts on the declared ranges are {', '.join(kept)}; "
+        f"{len(shown['excluded_regions'])} region(s) excluded"
+        + (
+            ", so every design of each dataset is simulated and the flags are observations. "
+            "The standard space is not decided by the solver: the battery region is mixed "
+            "(capacities below the eclipse base load floor fail the depth of discharge, the rest "
+            "depend on the slew loss energy)."
+            if not shown["excluded_regions"]
+            else "; the designs in them are not simulated."
+        )
+        + " The agreement of observation with verdict is tested on excluded sub-regions "
+        "(`tests/test_cubesat_oracle.py`): a battery region of 20 to 26 Wh is proved infeasible "
+        "and every design sampled in it simulates `dod_ok` False.",
         "",
     ]
     return L
@@ -730,7 +746,7 @@ def build_report(root: Path, runtime: bool = True) -> str:
     reg = p["reports"] / REGISTER
     L += [reg.read_text().rstrip() if reg.exists() else "(change-register.md is not written yet)"]
     L += ["<!-- change-register:end -->", ""]
-    return "\n".join(L) + "\n"
+    return re.sub(r"\n{3,}", "\n\n", "\n".join(L)) + "\n"
 
 
 def _pct(x) -> str:
