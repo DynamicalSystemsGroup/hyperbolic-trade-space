@@ -1,14 +1,22 @@
 name: Tests
 
+# Manual dispatch only (the driver dispatches once per batch of pushes; verification in tiers).
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
+
+env:
+  # The modules that build the site, the docs and the paper (they share generated files).
+  DOCS_MODULES: >-
+    tests/test_site.py tests/test_build_generated.py tests/test_docs.py tests/test_paper.py
+    tests/test_container.py tests/test_narrative.py
 
 jobs:
   test:
+    name: test (${{ matrix.shard }})
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [fast, slow, docs-paper]
     # Pinned: ubuntu-latest migrates to Ubuntu 26 from 2026-10-19 (actions/runner-images#14748).
     runs-on: ubuntu-24.04
     steps:
@@ -67,7 +75,19 @@ jobs:
         with:
           path: ~/.cache/hyperbolic-trade-space
           key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
-      - name: Test
+      # fast + slow + docs-paper = every test: unmarked tests; marked slow outside the docs
+      # modules; marked slow inside them.
+      - name: Test (${{ matrix.shard }})
         env:
           REQUIRE_OPENSYSML: "1"
-        run: uv run pytest -q
+          SHARD: ${{ matrix.shard }}
+        run: |
+          opts="-q -n auto --dist loadgroup"
+          case "$SHARD" in
+            fast) uv run pytest $opts -m "not slow" ;;
+            slow)
+              ignores=""
+              for m in $DOCS_MODULES; do ignores="$ignores --ignore=$m"; done
+              uv run pytest $opts -m slow $ignores ;;
+            docs-paper) uv run pytest $opts -m slow $DOCS_MODULES ;;
+          esac
