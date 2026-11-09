@@ -158,7 +158,7 @@ follows the contract.
 
 ## Open decisions (for the supervisor)
 
-- **OD1.** Where the new prose goes. `examples.md` is at 399 of 400 words and `chart.md` at 543 of
+- **OD1. RESOLVED** by the driver under the mandate (`WP18-decisions.md`): option (b), the key, the limits and both examples on `examples.md`, its budget raised from 400 to 650 words, no new page. Question as asked: where the new prose goes. `examples.md` is at 399 of 400 words and `chart.md` at 543 of
   600, so the key, the two captions and the limits (about 250 words) do not fit in either without a
   change. Options: (a) a new page `user-guide/ternary.md` with its own budget of 350 words, inside the
   7,600 total (currently 6,065), holding the key and the limits, with the two examples' figures
@@ -166,7 +166,7 @@ follows the contract.
   650 and the key and limits there, no new page / (c) the key and limits in `chart.md` (57 words
   free) with `chart.md`'s budget raised to about 800 and the examples on `examples.md` with a
   smaller raise.
-- **OD2.** The figure cap. The docsite has seven figures, the cap in `build_figures.MAX_FIGURES` and
+- **OD2. RESOLVED** by the driver under the mandate (`WP18-decisions.md`): the cap is raised from seven to nine, one figure per example. Question as asked: the figure cap. The docsite has seven figures, the cap in `build_figures.MAX_FIGURES` and
   `test_figures_are_few_captioned_and_in_both_colour_schemes`, so two more need a raise to nine.
   Options: raise the cap to nine / keep seven by dropping the equal-V overlay and showing both
   examples in one two-panel figure / keep seven by retiring an existing figure (the supervisor names which).
