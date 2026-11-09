@@ -106,3 +106,10 @@ engineer agent in the spike folder before any slot is taken:
    drawn from the model's requirement and satisfy elements and the analysis, not from the
    calculation dependency graph.
 
+**Supervisor, verbatim, the same hour:** "i am also interested in a second plot that is focused on
+functional subsystems, requirements and how the metrics we're actually trading relate to those
+requirements". The behavioural view becomes this: the functional subsystems (power, mass, attitude
+control, as the case already groups them), the requirements, and the ten metrics of the trade, with
+the relation of each metric to a requirement shown, so that a reader sees which traded metrics a
+requirement constrains and which are traded with no requirement on them.
+
