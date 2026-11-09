@@ -195,3 +195,12 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
   docsite". Disposition: decided; the three-worlds framing stays in the paper and the root page's
   How; the docsite pages carry no world line; WP14's contract item C-9 (the world key) is
   withdrawn in the contract v2 amendment.
+- **OD5, a glossary.** Options: a short glossary / none. **Supervisor (mzargham), verbatim:** "yes to
+  glossary but let's generate it programmatically rather than hand write it. you can make
+  glossary.yaml so that the source is skimmable but the glossary should be compiled from that not
+  free text". Disposition: decided; a `glossary.yaml` (skimmable: term, the register's one-phrase
+  definition, what it is not where the register says so, the code name, the paper anchor) is the
+  single source; `scripts/build_generated.py` compiles the docsite's Glossary page from it; the
+  same file is proposed to WP10 as the source of the paper's register table (Appendix A), so the
+  docsite and the paper cannot drift apart on the words; the register note stays the human record
+  of how each word was settled.
