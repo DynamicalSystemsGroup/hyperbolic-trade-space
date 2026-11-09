@@ -429,22 +429,43 @@ model = (root / "toy.sysml").read_text()
 draw = LogUniformSampler({}, ranges(model))
 
 simulation = Experiment(
-    id="toy-simulation", output="out/simulation.csv", count=4, seed=0,
-    oracle="toy-simulator", sampler="log-uniform", model_path="toy.sysml",
+    id="toy-simulation",
+    output="out/simulation.csv",
+    count=4,
+    seed=0,
+    oracle="toy-simulator",
+    sampler="log-uniform",
+    model_path="toy.sysml",
     evidence_kind="simulation",
 )
 physical = Experiment(
-    id="toy-physical", output="out/physical.csv", count=4, seed=0,
-    oracle="recorded-tests", sampler="campaign", code=("campaign.csv",),
+    id="toy-physical",
+    output="out/physical.csv",
+    count=4,
+    seed=0,
+    oracle="recorded-tests",
+    sampler="campaign",
+    code=("campaign.csv",),
     evidence_kind="physical-test",
 )
 human = Experiment(
-    id="toy-human", output="out/human.csv", count=4, seed=0,
-    oracle="panel-ratings", sampler="log-uniform", evidence_kind="human-assessment",
+    id="toy-human",
+    output="out/human.csv",
+    count=4,
+    seed=0,
+    oracle="panel-ratings",
+    sampler="log-uniform",
+    evidence_kind="human-assessment",
 )
 
 runner.run(simulation, ToySimulator(model), draw, root, ledger)
-runner.run(physical, RecordedTests(root / "campaign.csv"), CampaignSampler(root / "campaign.csv"), root, ledger)
+runner.run(
+    physical,
+    RecordedTests(root / "campaign.csv"),
+    CampaignSampler(root / "campaign.csv"),
+    root,
+    ledger,
+)
 runner.run(human, PanelRatings(rater), draw, root, ledger)
 assert lg.verify(ledger, root) == []
 ```
