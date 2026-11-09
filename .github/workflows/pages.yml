@@ -1,0 +1,58 @@
+name: Pages
+
+# Deploys only on a release tag (v*). A manual dispatch on any branch builds the site and
+# does not deploy. Pushes to main never trigger this workflow.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v7
+      - name: Install (locked)
+        run: uv sync --locked
+      - name: Locked opensysml version
+        id: opensysml
+        run: |
+          v=$(grep -A1 '^name = "opensysml"' uv.lock | grep '^version' | cut -d'"' -f2)
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+      - name: Cache the opensysml runtime (downloaded on first use)
+        uses: actions/cache@v4
+        with:
+          path: ~/.opensysml
+          key: opensysml-${{ runner.os }}-${{ steps.opensysml.outputs.version }}
+      - name: Test
+        env:
+          REQUIRE_OPENSYSML: "1"
+        run: uv run pytest -q
+      - name: Assemble the site
+        run: uv run python scripts/assemble_site.py
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
