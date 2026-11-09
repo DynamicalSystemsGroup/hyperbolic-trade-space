@@ -77,6 +77,14 @@ would make it much more interpretable for someone interested in cross applying t
 models. can you scope this as a tidying work package and identify how to break it out so it can be
 worked in parallel without disruption".
 
+**Separation of concerns (supervisor, 2026-11-08, verbatim): "i need a seperation of concerns
+between the paper and the doc site the doc site is for a user of the package. the paper is for
+someone who wants to understand the how and why underneath".** The docsite (WP8a, held for its
+restructure) is a scikit-learn-style site for a user of the package; the paper (WP10) is the SciPy-
+style article for the how and why; material that explains the method's foundations lives in the
+paper and its appendices, material a user needs to run the package lives in the docsite, and each
+links to the other.
+
 ## Breakdown (search strategy)
 
 Only WP0 was firm at approval; the rest is revisited at each acceptance gate. Each line: goal, and

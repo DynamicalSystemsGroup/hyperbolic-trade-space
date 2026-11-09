@@ -152,3 +152,24 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
   API reference, a theory section with theorem-style statements and the ledger, examples,
   literature), which is beyond WP8a's skeleton and either holds WP8a's acceptance or becomes a
   package of its own.
+- Driver's question: accept the skeleton and restructure in a new package / hold WP8a until the
+  docsite is restructured / fold the restructure into WP10. **Supervisor (mzargham), verbatim:**
+  "hold until the doc site is restructured. i think it can be thinned out. should be more scikit
+  learn doc site like. don't force things into the doc site that belong in the paper"; and then,
+  verbatim: "i need a seperation of concerns between the paper and the doc site
+  the doc site is for a user of the package. the paper is for someone who wants to understand the
+  how and why underneath"
+- **Disposition:** WP8a is HELD at its gate; Amendment 2 (drafted by the PM's bounded subagent,
+  re-approved at the gate) extends WP8a to the docsite restructure under the separation of concerns:
+  the docsite is for a user of the package (getting started and install, a user guide that walks
+  conditioning, fitting, reading the tension report, the chart and the plots, the API reference
+  generated from the docstrings, a short example that points to the paper for the case, a one-page
+  "theory in brief" that links to the paper for the how and why, limitations as they bear on use,
+  changelog); the paper is for someone who wants the how and why underneath (the mathematics
+  narrative, the lemmas as theorem-style statements with narrative proof sketches pointing to the
+  derivation scripts, the derivation ledger, the literature review, the full case, the abstraction
+  gaps), so `docs/method.md`, `docs/literature.md`, the derivation narrative and the long
+  limitations move into the paper and its appendices or supporting material (WP10's sources), and
+  the docsite is thinned accordingly; the root page's How figure gets a summarizing paragraph.
+  Nothing is forced into the docsite that belongs in the paper; nothing a package user needs is
+  left only in the paper. The staged review is repeated after the restructure.

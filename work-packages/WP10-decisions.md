@@ -432,6 +432,16 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   (Results as theorem-style statements with narrative proof sketches and pointers to the derivation
   scripts; appendices for the rest; acceptance structural); WP11's scope carries the cold-read grid.
 
+- Separation of concerns (supervisor, verbatim in `WP8a-decisions.md` and the README): the paper is
+  "for someone who wants to understand the how and why underneath"; the docsite is "for a user of
+  the package". Disposition: WP10's draft is revised before its gate: the paper absorbs the
+  paper-register material now in the docsite (`docs/method.md`'s narrative and lemma statements,
+  recast as theorem-style statements with narrative proof sketches pointing to the derivation
+  scripts; the derivation ledger; `docs/literature.md`'s review; the long limitations and the
+  abstraction gaps) into its body and its appendices or supporting material, modelled on the SciPy
+  paper; the docsite keeps a one-page theory-in-brief that links to the paper. The revised draft's
+  approval waits for that revision; OD4 (PDF export) remains open.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
