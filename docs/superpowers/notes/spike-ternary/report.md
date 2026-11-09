@@ -69,3 +69,43 @@ Cost: one plotting helper for exponent vectors on a ternary (three named metrics
 groups; prints the weight carried), mpltern as an optional plotting dependency, a contract amendment
 for the new public name, and three short algebraic facts (the face reading, ratios kept by
 sub-compositions, exponents adding over groups) that could each be one scripted step.
+
+## Addendum (2026-11-09): lines of equal V on the triangle
+
+The supervisor's question: can lines of equal V (or equal log V) be drawn on the triangle, to show
+how the triangle maps to the method. Script: `make_why4.py`. Figures: `why4-A-lines-on-regions.png`,
+`why4-B-lines-only.png`, `why4-C-designs-by-logV.png`, `why4-E-log-ratio-plane.png`; side by side at
+`mock/lines.html`.
+
+**The identity.** Every exponent vector sums to one, so with t the mean of the log metrics (the
+overall level) and p = u - t the position,
+
+    log V(m) = t + h(p),    h(p) = max_k (w_k . p - beta_k).
+
+Checked on the planted table against `score_samples`: largest difference 4.4e-16. The triangle shows
+p and drops t. So V is not a function of the position (figure C: designs at one position carry
+different V), but its level lines are: h = const is the line of equal V among designs at one overall
+level, the same family at every level. Read the other way, the frontier V = 1 sits at the level
+t = -h(p) over each position, so the same lines are a contour map of the frontier.
+
+**What the lines show.**
+
+- They bend exactly at the borders of the regions (A, B): a region is where one facet attains the
+  maximum, and the lines are that facet's.
+- In log-ratio coordinates (E) the method is straight: each region is a polygon, and its lines are
+  parallel and evenly spaced, normal to w_k - 1/d. The spacing for a step of 0.25 in log V is
+  0.25 / |w_k - 1/d|: 0.47 and 0.42 in the two-metric regions, 1.09 where all three trade. Uneven
+  exponents give tight lines; a facet with equal exponents would give none (V would depend on the
+  level alone).
+- On the triangle itself the lines curve and crowd toward the edges. That is the closure, not the
+  method (the Limits above: the triangle is for reading, not for measuring).
+- No interior peak on this table: 1/d is outside the hull of the three exponent vectors, so V at
+  one level rises all the way toward metric 3 (its exponent is the largest in two facets).
+- A drawing as a solid (the triangle as floor, the level as height, the frontier as a roof of three
+  flat faces, log V as the gap under it) was tried and dropped: the roof hides the designs.
+
+**Use.** For the index page the lines crowd the image the supervisor chose (mock:
+`mock/index-lines.html`); the driver's view is that they belong one level down, in the paper's
+section on the chart or the docsite's theory page, as B or E, where "position and level" is the
+point being made. Three scripted steps would back them: exponents sum to one, the split of log V,
+and the normal of a facet's lines.

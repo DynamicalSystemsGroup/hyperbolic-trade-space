@@ -427,3 +427,17 @@ The driver's calls on `WP8a-driver-browser-pass.md` are binding and applied as f
   (`spike-ternary/mock/index.html`). **Sent to the PM:** the arrow in the first pane of the figure's
   generator. **Open with the supervisor:** his reaction to the iterated Why image; whether the
   three-pane figure also stays the paper's Figure 1 (asked; he answered with a message instead).
+
+- **Supervisor (mzargham), verbatim,** on the iterated Why image (`why3-regions.png`): "i like this.
+  much more intuitive". And a further plot to consider: "can we plot lines of equal V, or lines of
+  equal log V on the ternary plot. these isotropic lines may provide provide some intuition on how
+  the triangle maps to our method". Disposition: the Why image is settled as `why3-regions.png`; the
+  index page gains the three images (sent to the PM). The lines were drawn in the spike
+  (`spike-ternary/report.md`, addendum; `make_why4.py`; side by side at `mock/lines.html`): log V
+  splits exactly into the overall level plus a function of the position, so the lines are those of
+  equal V at one level; they bend at the region borders, and are straight and evenly spaced in
+  log-ratio coordinates. Where they are used (index image, paper, docsite) is open with him.
+- **Driver's call, for his ratification at the PR:** the three-pane figure goes on the index page
+  beside What and also stays the paper's Figure 1 (his words place it on the index page and do not
+  remove it from the paper); the Why image's generator uses plain Matplotlib (the barycentric
+  projection written out), so the site gains no plotting dependency.
