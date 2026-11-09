@@ -710,9 +710,15 @@ def test_bare_mkdocs_build_leaves_the_root_site_directory_alone(mkdocs_config, a
 
 # --- the figures and the code columns ------------------------------------------------------------
 
-CODE_COLUMN = (
-    72  # characters: a code line that fits the docsite column at 1280 px without scrolling
-)
+def _docs_line_length():
+    """The one setting of the code column: ruff's ``line-length`` in ``docs/ruff.toml``, which
+    formats the Markdown code blocks (a code line that fits the column at 1280 px)."""
+    import tomllib
+
+    return tomllib.loads((DOCS / "ruff.toml").read_text())["line-length"]
+
+
+CODE_COLUMN = _docs_line_length()
 FENCE = re.compile(r"^```[^\n]*\n(.*?)^```", re.M | re.S)
 
 

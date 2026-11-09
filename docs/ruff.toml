@@ -1,0 +1,3 @@
+# Markdown code blocks in the docsite are formatted to the rendered column (see tests/test_site.py).
+extend = "../pyproject.toml"
+line-length = 72

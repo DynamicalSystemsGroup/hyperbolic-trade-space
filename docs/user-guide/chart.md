@@ -81,12 +81,8 @@ from hyperbolic_trade_space.plotting import (
 X3, _ = make_frontier_data(300, 3, random_state=0)
 ts3 = HyperbolicTradeSpace(temperature=20.0).fit(X3)
 chart3 = ts3.transform(X3)
-holes, scores = find_holes(
-    chart3[:, :-1], resolution=30, threshold=3.0
-)
-plot_frontier_coordinates(
-    chart3[:, :-1], chart3[:, -1], holes=holes
-)
+holes, scores = find_holes(chart3[:, :-1], resolution=30, threshold=3.0)
+plot_frontier_coordinates(chart3[:, :-1], chart3[:, -1], holes=holes)
 ```
 
 <figure markdown>

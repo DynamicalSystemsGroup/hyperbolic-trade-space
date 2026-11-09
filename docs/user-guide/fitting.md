@@ -46,9 +46,7 @@ from hyperbolic_trade_space import (
 )
 
 X, info = make_frontier_data(300, 3, random_state=0)
-tau = select_temperature(
-    X, target_frac_above=0.35, bounds=(3, 1000)
-)
+tau = select_temperature(X, target_frac_above=0.35, bounds=(3, 1000))
 print(round(tau, 1))
 ```
 
