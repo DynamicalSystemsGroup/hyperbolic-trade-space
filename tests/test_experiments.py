@@ -358,7 +358,7 @@ def test_adopt_is_idempotent_and_does_not_touch_the_files(tmp_path):
 
 
 @pytest.mark.slow
-def test_cli_verify_and_compare_message():
+def test_cli_verify_and_compare_message(tmp_path):
     env = {"PYTHONPATH": str(ADCS), "PATH": "/usr/bin:/bin"}
     v = subprocess.run(
         [sys.executable, "-m", "experiments", "verify"],
@@ -369,7 +369,7 @@ def test_cli_verify_and_compare_message():
     )
     assert v.returncode == 0, v.stdout + v.stderr
     c = subprocess.run(
-        [sys.executable, "-m", "experiments", "compare"],
+        [sys.executable, "-m", "experiments", "compare", "--out", str(tmp_path / "report.md")],
         capture_output=True,
         text=True,
         env=env,
