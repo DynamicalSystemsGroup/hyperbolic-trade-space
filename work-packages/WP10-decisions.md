@@ -1055,4 +1055,13 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   and images are not touched; if a build needs more memory or disk than the machine gives, the
   agent stops and reports. **Driver's call, for his review:** linux/arm64 in that container stays
   the environment of record (it was provisional); Linux on amd64 is covered by the CI runs.
+- On the environment of record. **Supervisor, verbatim:** "seems fine to me. i don't care about the
+  details, i just want reproducibility (via pinning) but also robustness, doesn't go to shit if you
+  swap a different but generally comparable image". **Disposition:** the driver's call is ratified
+  (linux/arm64 in the pinned container is the environment of record). The requirement is two-sided
+  and both sides are checked: *reproducible* means the pinned image reproduces the committed values
+  exactly; *robust* means a different, generally comparable image (another base, same Python minor
+  version, the same lock) passes the whole suite within the stated tolerances and reaches the same
+  conclusions, with every value that differs listed. Added to stream P10. The CI runs on Linux
+  amd64 and the Mac runs are further evidence of the second side.
 
