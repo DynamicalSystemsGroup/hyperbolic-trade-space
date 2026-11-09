@@ -28,3 +28,15 @@ data arrays (u, logV, Z, corners, W, BETA) with the reference arrays within valu
 values_atol, and the facet labels and the highlighted design index exactly"""
 values_rtol = 1e-9
 values_atol = 1e-12
+
+[values.v2_first_designs_rows]
+reason = """processor architecture and operating system: the rows of the first 20 designs of the v2
+primary dataset are byte-equal where they were produced; on Linux amd64 (CI) settling_time_s moves
+by up to 0.4 s and torque_saturated_frac by up to 0.004, because both are read off the accepted
+steps of an adaptive solver"""
+elsewhere = """tests/test_cubesat_oracle.py::test_declared_space_excludes_nothing_so_the_first_designs_are_unchanged
+compares the rows within the frozen reproducibility tolerances: rtol 1e-3, times within 0.5 s,
+torque_saturated_frac within 0.01 absolute, categorical columns and flags equal"""
+values_rtol = 1e-3
+time_atol = 0.5
+saturation_atol = 0.01

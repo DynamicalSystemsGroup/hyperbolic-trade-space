@@ -26,6 +26,8 @@ import cubesat_model as cm
 import numpy as np
 import pandas as pd
 import pytest
+from _env import exact_only, listed
+from experiments import compare as cmp
 from experiments import cubesat_oracle as co
 from experiments import definitions as df
 from experiments import exclusion as ex
@@ -437,7 +439,26 @@ def test_declared_space_excludes_nothing_so_the_first_designs_are_unchanged(tmp_
     got = pd.read_csv(tmp_path / "primary20.csv")
     want = pd.read_csv(ADCS / "data" / "v2" / "adcs_designs_cubesat_gains.csv").head(20)
     assert got.columns.tolist() == want.columns.tolist()
-    pd.testing.assert_frame_equal(got, want, check_exact=False, rtol=1e-6)
-    got_text = (tmp_path / "primary20.csv").read_text().splitlines()
-    want_text = (ADCS / "data" / "v2" / "adcs_designs_cubesat_gains.csv").read_text().splitlines()
-    assert got_text == want_text[:21]
+    if exact_only("v2_first_designs_rows"):  # the environment of record: byte-equal rows
+        pd.testing.assert_frame_equal(got, want, check_exact=False, rtol=1e-6)
+        got_text = (tmp_path / "primary20.csv").read_text().splitlines()
+        want_text = (
+            (ADCS / "data" / "v2" / "adcs_designs_cubesat_gains.csv").read_text().splitlines()
+        )
+        assert got_text == want_text[:21]
+        return
+    # elsewhere: the frozen reproducibility tolerances (paper/environment_values.toml)
+    tol = listed()["v2_first_designs_rows"]
+    labels = ["design_id", "seed", "wheel_class", "st_grade", *cmp.FLAGS]
+    for col in labels:
+        assert (got[col].to_numpy() == want[col].to_numpy()).all(), col
+    for col in got.columns:
+        if col in labels:
+            continue
+        if col in cmp.TIME_COLUMNS:
+            kw = {"rtol": 0, "atol": tol["time_atol"]}
+        elif col == "torque_saturated_frac":
+            kw = {"rtol": 0, "atol": tol["saturation_atol"]}
+        else:
+            kw = {"rtol": tol["values_rtol"], "atol": 1e-6}
+        np.testing.assert_allclose(got[col], want[col], err_msg=col, **kw)
