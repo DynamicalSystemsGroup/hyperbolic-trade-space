@@ -1,24 +1,40 @@
-# Environment of record for the paper (WP10, Amendment 1, D-13 / R-31).
+# Environment of record for the paper (WP10, Amendment 1, D-13 / R-31; platform ratified by the
+# supervisor 2026-11-09: linux/arm64, the architecture the author's machine runs natively).
 #
-# Base: python:3.12-slim (Debian trixie), pinned by the DIGEST of its linux/amd64 manifest
-# (resolved 2026-11-08 with `docker buildx imagetools inspect python:3.12-slim`; tag at
-# resolution: 3.12-slim = 3.12.16-slim-trixie; the multi-arch index digest was
-# sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b). The tag is kept
-# for readers only; the digest is what is pulled. Platform of record: linux/amd64 (matches CI).
+# Base: python:3.12-slim (Debian trixie), pinned by the DIGEST of its multi-arch index
+# (resolved 2026-11-09 with `docker buildx imagetools inspect python:3.12-slim`; tag at
+# resolution: 3.12-slim = 3.12.16-slim-trixie; the arm64 manifest in it is
+# sha256:c61cffc3bacb94ed026ff8b45d5114b7693dd0420baca0a1ace0e3d0ce9035fd, the amd64 one
+# sha256:05a994d2344eb364cc186910f4fc8786a38215f39f00d0acc25bff33a08f4177). The tag is kept for
+# readers only; the digest is what is pulled. Platform of record: linux/arm64. The same index
+# builds linux/amd64 (PLATFORM=linux/amd64 NODE_ARCH=x64 and the x64 NODE_SHA256 below).
 #
-# Build:  docker build --platform linux/amd64 -t hts-paper .
-# Run:    docker run --rm --platform linux/amd64 hts-paper            (toolchain + derivation)
-#         docker run --rm --platform linux/amd64 hts-paper uv run pytest -q    (full test suite)
+# Build:  sh paper/container/build.sh            (image hts-paper; also the history bundle, below)
+#         sh paper/container/build.sh hts-alt    (robustness image: a different Debian release)
+# Run:    docker run --rm hts-paper                                    (toolchain + derivation)
+#         docker run --rm --network none hts-paper uv run pytest -q    (full test suite)
+# Robustness: BASE_IMAGE is a build argument. The second image (hts-alt) uses the python:3.12-slim
+# of Debian bookworm, pinned by digest, with the same uv.lock; it does NOT set
+# HTS_ENVIRONMENT_OF_RECORD, so the exact comparisons are not asserted there (build ARG
+# OF_RECORD=0).
 # Node (needed by mystmd) is pinned below by version, sha256 and the release signature; the
 # Python packages by uv.lock; the toolkit by examples/adcs/experiments/toolkit-pin.toml; the
 # MyST site template and web libraries are fetched ONCE at build time (warm-up build) so that the
 # whole paper builds with `--network none` at run time. Debian packages (git, curl, gnupg, ...) are
 # installed from the base image's apt snapshot-of-the-day and their versions are recorded in
 # paper/container/RECORD.md rather than pinned.
+# History: tests read the git history (generating commits of the frozen data, the ledger). The
+# build context excludes .git (see .dockerignore); instead `build.sh` writes a `git bundle` of HEAD
+# outside the context and passes it as the named context `history`, and the image rebuilds a
+# repository from it (no .git directory is copied from the host). Without it the image still
+# builds and those tests skip with a reason.
 # See paper/container/README.md for the full-paper commands and paper/container/RECORD.md for
-# the recorded local run. Nothing is published to a registry.
-ARG PLATFORM=linux/amd64
-FROM --platform=${PLATFORM} python:3.12-slim@sha256:05a994d2344eb364cc186910f4fc8786a38215f39f00d0acc25bff33a08f4177
+# the recorded runs. Nothing is published to a registry.
+ARG PLATFORM=linux/arm64
+ARG BASE_IMAGE=python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+# Empty by default; `--build-context history=<dir holding history.bundle>` replaces it.
+FROM scratch AS history
+FROM --platform=${PLATFORM} ${BASE_IMAGE}
 
 # System tools: git (toolkit stdlib fetch, tests), gnupg (Node signature), procps (`ps`, which the
 # MyST static-site build uses to stop its local server).
@@ -26,20 +42,22 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates curl git gnupg procps xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
-# Node.js (MyST needs >= 22): an exact LTS release, linux x64 tarball from nodejs.org.
+# Node.js (MyST needs >= 22): an exact LTS release, tarball for the build architecture from nodejs.org.
 #  1. the tarball's sha256 below is checked with `sha256sum -c` before extraction;
 #  2. SHASUMS256.txt of the release is checked against its clearsigned .asc with GnuPG, with the
 #     signing key taken from nodejs/release-keys at a pinned commit (key file sha256 pinned too)
 #     and the signature required to be VALIDSIG from that exact fingerprint; and the tarball's
 #     line in SHASUMS256.txt must equal the literal sha256 below.
 ARG NODE_VERSION=24.22.2
-ARG NODE_SHA256=48cc0e21e048790e54c0cf5749c2725005313d652651c40b7a21feb9697aaf75
+ARG NODE_ARCH=arm64
+# arm64 (default); x64: 48cc0e21e048790e54c0cf5749c2725005313d652651c40b7a21feb9697aaf75
+ARG NODE_SHA256=eb187837a2230d4047161ac0be008584e16b46f726e9c9490ee35dc6b17d9ba8
 ARG NODE_SIGNING_FPR=5BE8A3F6C8A5C01D106C0AD820B1A390B168D356
 ARG NODE_RELEASERS_COMMIT=481637f813e912c4aa3622d7964ab426c97b8e8d
 ARG NODE_SIGNER_ASC_SHA256=5115095e2f8010c75da052ecb1cfb3af630e084f0f8daa93a863557b01b0f90a
 RUN set -eux; \
     cd /tmp; \
-    f="node-v${NODE_VERSION}-linux-x64.tar.xz"; \
+    f="node-v${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz"; \
     curl -fsSLO "https://nodejs.org/dist/v${NODE_VERSION}/${f}"; \
     curl -fsSLO "https://nodejs.org/dist/v${NODE_VERSION}/SHASUMS256.txt"; \
     curl -fsSLO "https://nodejs.org/dist/v${NODE_VERSION}/SHASUMS256.txt.asc"; \
@@ -60,6 +78,8 @@ RUN set -eux; \
 ARG UV_VERSION=0.9.18
 RUN pip install --no-cache-dir "uv==${UV_VERSION}"
 
+ARG OF_RECORD=1
+ENV HTS_ENVIRONMENT_OF_RECORD=${OF_RECORD}
 ENV UV_PYTHON_DOWNLOADS=never \
     UV_LINK_MODE=copy \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -70,6 +90,15 @@ ENV UV_PYTHON_DOWNLOADS=never \
 
 WORKDIR /app
 COPY . /app
+# The history of the tracked files, rebuilt from the bundle (HEAD only; the working tree stays as
+# copied, so `git diff` in the image shows any difference from HEAD).
+COPY --from=history / /history/
+RUN if [ -f /history/history.bundle ]; then \
+        git init -q . && git fetch -q /history/history.bundle HEAD \
+        && git -c user.name=hts -c user.email=hts@invalid reset -q FETCH_HEAD \
+        && git log -1 --format='history: %H' ; \
+    else echo "no history bundle: history-dependent tests will skip"; fi \
+    && rm -rf /history
 RUN uv sync --locked
 
 # The pinned model-checking toolkit (examples/adcs/experiments/toolkit-pin.toml: sha256-verified

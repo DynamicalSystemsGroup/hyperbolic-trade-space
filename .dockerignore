@@ -4,7 +4,6 @@ build
 dist
 _site
 _stage
-site
 docs/generated
 **/__pycache__
 **/*.pyc

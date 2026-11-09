@@ -16,16 +16,25 @@ def _instructions():
 
 
 def test_from_is_pinned_by_digest():
-    froms = [ln for ln in _instructions() if ln.startswith("FROM ")]
-    assert froms, "no FROM line"
-    for ln in froms:
-        assert re.search(r"@sha256:[0-9a-f]{64}\b", ln), f"FROM not pinned by digest: {ln}"
+    # The base is a build argument (BASE_IMAGE, so a comparable image can be swapped in); its
+    # default is pinned by digest, and every FROM that names a registry image goes through it.
+    base = [ln for ln in _instructions() if ln.startswith("ARG BASE_IMAGE=")]
+    assert base, "no ARG BASE_IMAGE"
+    assert re.search(r"@sha256:[0-9a-f]{64}$", base[0]), f"base not pinned by digest: {base[0]}"
+    froms = [ln for ln in _instructions() if ln.startswith("FROM ") and "scratch" not in ln]
+    assert froms and all("${BASE_IMAGE}" in ln for ln in froms)
 
 
-def test_platform_of_record_is_linux_amd64():
-    froms = [ln for ln in _instructions() if ln.startswith("FROM ")]
+def test_platform_of_record_is_linux_arm64():
+    froms = [ln for ln in _instructions() if ln.startswith("FROM ") and "scratch" not in ln]
     assert all("--platform=" in ln for ln in froms)
-    assert "ARG PLATFORM=linux/amd64" in DOCKERFILE
+    assert "ARG PLATFORM=linux/arm64" in DOCKERFILE
+    assert "ARG NODE_ARCH=arm64" in DOCKERFILE
+
+
+def test_environment_of_record_variable_is_set_in_the_image():
+    assert "ARG OF_RECORD=1" in DOCKERFILE
+    assert "ENV HTS_ENVIRONMENT_OF_RECORD=${OF_RECORD}" in DOCKERFILE
 
 
 def test_locked_install_and_pinned_uv():
