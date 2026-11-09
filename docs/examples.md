@@ -3,15 +3,15 @@
 ## A cubesat trade study across power, mass and attitude control
 
 The worked case is a cubesat model coupling power, mass and attitude control: bus, antenna, inertial unit,
-controller, wheel and tracker alternatives, solar panel and battery. Ten attributes are compared under two controller-gain regimes: settling time, slew time, pointing error,
+controller, wheel and tracker alternatives, solar panel and battery. Ten attributes are compared under two controller-gain settings: settling time, slew time, pointing error,
 control effort, power margin, energy balance, eclipse reserve, peak slew power, depth of discharge and total
 mass. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`.
 Nothing is simulated here; the evaluated tables are committed.
 
-The aggressive-gains table has 706 feasible designs. With the temperature selected for a tenth of the
+The aggressive-gains table has 706 feasible designs. With the fit temperature chosen by `select_temperature` for a tenth of the
 designs above V = 1:
 
-- **One term.** The tension report finds a contending set of six metrics (total mass, slew time,
+- **One term.** The tension report finds a contending set (metrics that trade off) of six metrics (total mass, slew time,
   energy balance, control effort, pointing error, depth of discharge): a 6-lemma, found from the data with no prior choice of which
   metrics or how many.
 - **Three terms.** The mean slack falls from 0.204 at one term to 0.117 at three, and the status is
@@ -62,7 +62,7 @@ plot_frontier_coordinates(chart[:, :-1], chart[:, -1])
 ## Three metrics as shares of a total
 
 A ternary plot places a design by its shares of a total among three metrics. This block fits a
-planted table and draws it with lines of equal V:
+synthetic table (`make_frontier_data`) and draws it with lines of equal V:
 
 ```python {.runnable}
 from hyperbolic_trade_space import (
@@ -88,47 +88,26 @@ How to read this plot:
 
 - A corner is the whole total in one metric; an edge splits it between two.
 - A numbered marker is a facet's exponent vector, where that facet's V is largest for a fixed total.
-  V also depends on the total, so a marker is not where V = 1.
+  V, the invariant value, also depends on the total, so a marker is not where V = 1.
 - A region is where one facet dominates, named by the metrics that trade there: an analysis of the
   fit, not a label on a design.
 - A design mostly in metric 3 with a little metric 1 is in the blue region, where metric 3 trades
   against metric 1.
 
-Limits: three parts only; the choice of metrics, or of the grouping below, is the analyst's and
-can be cherry-picked; the triangle is for reading, not for measuring distance; designs of a ten-metric
-case do not separate in three metrics, so none is drawn for the cubesat.
-
-## The cubesat by subsystem
-
-Exponents add over groups exactly: a facet's weight on a subsystem is a sum. The analyst chooses the
-grouping:
-
 ```python {.runnable}
-fit3 = case.fit_study(study, K=3)
-groups = {
-    "power": [
-        "power margin",
-        "energy balance",
-        "eclipse reserve",
-        "peak slew power",
-        "depth of discharge",
-    ],
-    "mass": ["total mass"],
-    "attitude control": [
-        "settling time",
-        "slew time",
-        "pointing error",
-        "control effort",
-    ],
-}
-plot_ternary(fit3.estimator, names=study.names, groups=groups)
+from hyperbolic_trade_space.plotting import ternary_marker_values
+
+values = ternary_marker_values(ts, X)
+print(values.round(2).to_string(index=False))
+print("lines at", values.attrs["levels"])
 ```
 
-<figure markdown>
-![A triangle whose corners are power, mass and attitude control, with three numbered markers: facets 1 and 2 lie on the power and attitude control edge, and facet 3 sits inside, carrying some mass.](generated/figures/ternary-cubesat-light.png#only-light)
-![A triangle whose corners are power, mass and attitude control, with three numbered markers: facets 1 and 2 lie on the power and attitude control edge, and facet 3 sits inside, carrying some mass.](generated/figures/ternary-cubesat-dark.png#only-dark)
-<figcaption>Figure 9. The three-term cubesat fit by summed exponents: only facet 3 carries mass (0.18).</figcaption>
-</figure>
+Key: a row is a marker, its shares of the total, and V there as a fraction of the highest marker's V
+(the units of the lines).
+
+Limits: three parts only; the choice of metrics is the analyst's and
+can be chosen to flatter the result; the triangle is for reading, not for measuring distance; designs of a ten-metric
+case do not separate in three metrics, so none is drawn for the cubesat.
 
 ## Run it
 
