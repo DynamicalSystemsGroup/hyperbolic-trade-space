@@ -23,3 +23,13 @@ the PR. The supervisor's words on the grid and the personas ("Use these six") ar
   P1 at L-A, P2 at L-A, P3 at L-D, P4 at L-C, P5 at L-D, P6 at L-B.
 - **Correction.** The grid has 24 core cells and 6 edge cells; the note, the scope and the driver's
   report to the supervisor said 23. Round 1 therefore reads 18 core cells and three edge cells.
+
+## Answer key, version 2 (2026-11-09, 17:50)
+
+- The triager (the driver) updated the key for the supervisor's decisions of the day (elasticity for
+  exchange rate; the fit stated without membership; depth A is the title and abstract since the
+  three-pane figure left the paper's body; posynomial as the model class; the data as what is
+  modelled; the two named uses). Held outside the repository as before. SHA-256 of version 2:
+  `e72f3eeac76089d8657add60ac1b7553ac8fcfd022cc6cb0b69fb050931ad638`. Round 1 begins with the L-A and L-B cells of all six personas on the staged paper at
+  20fa550, the stable part of the paper while the narration and figure passes run.
+
