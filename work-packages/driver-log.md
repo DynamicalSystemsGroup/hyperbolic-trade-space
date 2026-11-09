@@ -98,6 +98,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   tests at tau = inf (run 42705219840; the three shards work); returned to the PM with the container
   of record as the place to reproduce it.
 
+- 2026-11-09, 17:20: the supervisor steps away for an extended period and leaves the driver in charge.
+  **Verbatim:** "i want to remind you to remind our team to look at images/screenshots not just code
+  and text because we're building this for humans. we have a grid of human stakeholder proxies and
+  depths of reading you can use for assessments. remember you report to me the pm agent reports to
+  you and all the subagents report to the PM. we're orchestrating a complex engineering project and
+  what i want is to get this project into a state i can approve for a first release. you are left
+  in charge while i am away from my computer." Standing while he is away: every rendered thing is
+  judged from its image in the browser, never from code or text alone; the reader grid (six personas
+  by six depths, `docs/superpowers/notes/reader-grid.md`) is the instrument for assessments; the
+  chain of report is subagents to the PM, the PM to the driver, the driver to him; decisions that are
+  his accumulate under "Waiting for the supervisor" below with the driver's recommendation and the
+  work routes around them; the progress updates continue in the chat.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
