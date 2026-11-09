@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Figure 1 candidates</title>
+<style>
+  body { font-family: Georgia, "Times New Roman", serif; max-width: 1700px; margin: 2rem auto; padding: 0 1rem; color: #222; background: #fff; }
+  h1 { font-size: 1.5rem; font-weight: normal; }
+  p.lead { color: #444; max-width: 70ch; }
+  figure { margin: 2.5rem 0; }
+  figure img { width: 100%; height: auto; border: 1px solid #ddd; display: block; }
+  figcaption { margin-top: 0.6rem; font-size: 1.02rem; line-height: 1.45; max-width: 110ch; }
+  figcaption b { font-family: Helvetica, Arial, sans-serif; margin-right: 0.4rem; }
+  .meta { color: #777; font-size: 0.9rem; font-family: Helvetica, Arial, sans-serif; }
+  .meta a { color: inherit; }
+</style>
+</head>
+<body>
+<h1>Figure 1 candidates: three conceptual schematics</h1>
+<p class="lead">Synthetic, two-metric, three-facet world drawn once and read three ways. All three use the
+plotting module's palette (one colour per facet, black for the frontier V&nbsp;=&nbsp;1, grey for other
+energy levels). No case data. Click an image for the 2x version.</p>
+
+<figure id="S1">
+  <a href="S1@2x.png"><img src="S1.png" alt="S1: metric space and log space side by side"></a>
+  <figcaption><b>S1</b> <em>Where the designs stop.</em> Designs stop at an envelope of K&nbsp;=&nbsp;3 monomials: hyperbolic sheets in
+  metric space, flat facets in log space, related by the reversible log/exp map. V&nbsp;=&nbsp;1 is placed on the envelope; the
+  other energy levels of V are its uniform scalings (parallel offsets in log space), and each facet's normal w<sub>k</sub> is one trade-off
+  with its own exchange rates.</figcaption>
+</figure>
+
+<figure id="S2">
+  <a href="S2@2x.png"><img src="S2.png" alt="S2: PCA directions versus fitted facets"></a>
+  <figcaption><b>S2</b> <em>Variance versus tensions.</em> The same designs in log space, read two ways: PCA draws the directions of
+  spread through the middle of the cloud; this method draws the facets where the cloud stops, and each facet normal says what trades
+  against what, and at which exchange rate, in that region of the trade space.</figcaption>
+</figure>
+
+<figure id="S3">
+  <a href="S3@2x.png"><img src="S3.png" alt="S3: one design and the chart (Z, log V)"></a>
+  <figcaption><b>S3</b> <em>One design, read in the chart.</em> A design's energy differential log&nbsp;V is the uniform-scaling step that carries
+  it onto the frontier. The chart (Z,&nbsp;log&nbsp;V) is an invertible change of coordinates that flattens the frontier to the line
+  log&nbsp;V&nbsp;=&nbsp;0: Z is position along it, log&nbsp;V the offset from it, and the coloured bands say which facet binds at each Z.</figcaption>
+</figure>
+
+<figure id="S4">
+  <a href="S4@2x.png"><img src="S4.png" alt="S4: metric space, log space and the chart in three panes"></a>
+  <figcaption><b>S4</b> <em>S1 and S3 combined (the supervisor's choice).</em> Metric space (hyperbolic sheets, V&nbsp;=&nbsp;1 on the envelope, the
+  other energy levels as its uniform scalings), log space (flat facets with normals w<sub>k</sub>, and one design's energy differential
+  log&nbsp;V as the uniform-scaling step to the frontier) and the chart (Z,&nbsp;log&nbsp;V) with the frontier flat at log&nbsp;V&nbsp;=&nbsp;0 and
+  facet bands along Z. The envelope has a finite-κ rounding and a few designs sit just beyond V&nbsp;=&nbsp;1: the frontier is a fitted
+  reference surface, not a hard Pareto bound.</figcaption>
+</figure>
+
+<p class="meta">Regenerate: see <a href="README.md">README.md</a> (<code>make_schematics.py</code>, matplotlib only, seeded).</p>
+</body>
+</html>
