@@ -14,8 +14,9 @@ survey.
 - A tutorial on geometric programming [@boyd2007tutorial]: posynomials and generalized posynomials,
   the family the multi-term fit stays inside.
 - Fitting softmax-affine functions to data so they remain compatible with geometric programming
-  [@hoburg2016data], and fitting convex piecewise-linear functions by alternating partition and refit
-  [@magnani2009convex]: the two sources of the multi-term fit.
+  [@hoburg2016data] is the source of the multi-term fit.
+- Fitting convex piecewise-linear functions by alternating partition and refit [@magnani2009convex]:
+  the second source of the multi-term fit.
 - Reweighted $\ell_1$ minimization [@candes2008enhancing]: the sparsity option, `penalty="reweighted_l1"`.
 
 **Charts and neighbouring methods**

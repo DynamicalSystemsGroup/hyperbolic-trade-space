@@ -4,6 +4,9 @@ site_url: https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/
 repo_url: https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space
 repo_name: DynamicalSystemsGroup/hyperbolic-trade-space
 docs_dir: docs
+# A bare `mkdocs build` must never wipe the tracked root page in site/ (assemble_site.py and
+# stage_site.py pass -d explicitly).
+site_dir: build/docsite
 strict: true
 
 # The Glossary page is compiled from glossary.yaml into docs/generated/ by

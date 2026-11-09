@@ -16,9 +16,11 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+import os
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -390,6 +392,20 @@ def glossary_page(entries):
 # ------------------------------------------------------------------------------ driver
 
 
+def _write_atomic(path, text):
+    """Write ``text`` to ``path`` through a temporary file and ``os.replace`` so that parallel
+    builds in one checkout never expose a half-written page."""
+    path = Path(path)
+    fd, tmp = tempfile.mkstemp(dir=path.parent, prefix=path.name + ".", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            fh.write(text)
+        os.replace(tmp, path)
+    except BaseException:
+        Path(tmp).unlink(missing_ok=True)
+        raise
+
+
 def build(
     out_dir=DEFAULT_OUT,
     collect_runner=None,
@@ -412,12 +428,12 @@ def build(
     paths = []
     for name, text in pages.items():
         path = out_dir / name
-        path.write_text(text, encoding="utf-8")
+        _write_atomic(path, text)
         paths.append(path)
     docs_out = Path(docs_out)
     docs_out.mkdir(parents=True, exist_ok=True)
     path = docs_out / "glossary.md"
-    path.write_text(glossary_page(entries), encoding="utf-8")
+    _write_atomic(path, glossary_page(entries))
     paths.append(path)
     return paths
 

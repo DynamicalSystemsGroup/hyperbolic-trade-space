@@ -13,6 +13,7 @@ stops the build with a non-zero exit.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import importlib.util
 import shutil
 import subprocess
@@ -58,6 +59,25 @@ def build_paper(out):
     shutil.copy2(PAPER_PLACEHOLDER, dest / "index.html")
 
 
+@contextlib.contextmanager
+def _build_lock():
+    """Serialize the generated-page step and the MkDocs read of ``docs/`` across processes
+    (parallel pytest runs or builds in one checkout)."""
+    lock_dir = ROOT / "build"
+    lock_dir.mkdir(exist_ok=True)
+    with open(lock_dir / ".site-build.lock", "w") as fh:
+        try:
+            import fcntl
+        except ImportError:  # not POSIX: no lock available
+            yield
+            return
+        fcntl.flock(fh, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)
+
+
 def _check_out(out):
     out = Path(out).resolve()
     if out == ROOT or out in ROOT.parents or out == Path(out.anchor):
@@ -74,11 +94,14 @@ def assemble(
 ):
     """Build the whole site into ``out`` (replaced if present). Returns the output path."""
     out = _check_out(out)
-    build_generated.build(generated_dir, collect_runner=collect_runner, docs_out=docs_generated_dir)
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
-    run_mkdocs(out / "docs", runner=mkdocs_runner)
+    with _build_lock():
+        build_generated.build(
+            generated_dir, collect_runner=collect_runner, docs_out=docs_generated_dir
+        )
+        run_mkdocs(out / "docs", runner=mkdocs_runner)
     if not ROOT_INDEX.is_file():
         raise FileNotFoundError(f"missing root index: {ROOT_INDEX}")
     shutil.copy2(ROOT_INDEX, out / "index.html")
@@ -91,9 +114,14 @@ def assemble(
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--out", default=str(DEFAULT_OUT), help="output directory (default _site/)")
+    parser.add_argument(
+        "--generated-dir",
+        default=str(GENERATED_DIR),
+        help="directory for derivations.md and verification.md (default build/generated/)",
+    )
     args = parser.parse_args(argv)
     try:
-        out = assemble(args.out)
+        out = assemble(args.out, generated_dir=args.generated_dir)
     except Exception as exc:
         print(f"assemble_site: FAILED: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1

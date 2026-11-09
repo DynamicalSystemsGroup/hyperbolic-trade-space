@@ -66,3 +66,6 @@ Metrics are positive and larger-is-better (conditioning is yours to choose); the
 at one term the exchange rates are constant; designs are chosen by an evaluator and not drawn from
 the attainable set. The [limitations](user-guide/limitations.md) page says what each means when you
 act on a result.
+
+The argument itself lives in the project repository, in the derivation scripts under `derivation/`
+and the README there, and the full account will be in the paper when it is published.

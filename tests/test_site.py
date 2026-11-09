@@ -476,8 +476,9 @@ def assembled(tmp_path_factory) -> Path:
     if not ASSEMBLE.is_file():
         pytest.skip("scripts/assemble_site.py has not been delivered yet")
     out = tmp_path_factory.mktemp("site")
+    generated = tmp_path_factory.mktemp("generated")  # the paper's pages, kept out of build/
     result = subprocess.run(
-        [sys.executable, str(ASSEMBLE), "--out", str(out)],
+        [sys.executable, str(ASSEMBLE), "--out", str(out), "--generated-dir", str(generated)],
         cwd=ROOT,
         capture_output=True,
         text=True,
@@ -641,3 +642,21 @@ def test_r26_built_docsite_refers_to_no_removed_content(assembled):
         assert not (assembled / "docs" / removed).exists(), removed
     assert not (assembled / "docs" / "generated" / "derivations").exists()
     assert not (assembled / "docs" / "generated" / "verification").exists()
+
+
+def test_bare_mkdocs_build_leaves_the_root_site_directory_alone(mkdocs_config, assembled):
+    """O-4: the default ``site_dir`` is not the tracked root ``site/`` directory."""
+    assert Path(mkdocs_config["site_dir"]).resolve() != SITE.resolve()
+    assert (ROOT / mkdocs_config["site_dir"]).resolve() != SITE.resolve()
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import assemble_site
+
+    with assemble_site._build_lock():  # the default site_dir is shared by parallel runs
+        subprocess.run(
+            [sys.executable, "-m", "mkdocs", "build", "--strict", "-f", str(ROOT / "mkdocs.yml")],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+        )
+    assert (SITE / "index.html").is_file()
+    assert (SITE / "paper" / "index.html").is_file()
