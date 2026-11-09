@@ -92,7 +92,9 @@ class Oracle(Protocol):
     flag_names: tuple[str, ...]
 
     def __call__(self, configuration: Mapping[str, float | str]) -> dict[str, float | bool]: ...
-    def evaluate(self, designs: pandas.DataFrame) -> pandas.DataFrame: ...  # batch, rows in design_id order
+    def evaluate(
+        self, designs: pandas.DataFrame
+    ) -> pandas.DataFrame: ...  # batch, rows in design_id order
 ```
 
 `__call__` returns a mapping whose keys are the attributes, flags and auxiliary columns. It is
