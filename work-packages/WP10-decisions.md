@@ -655,3 +655,24 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   the sceptical neighbour; options: Use these six / Change the set). **Supervisor (mzargham),
   verbatim:** "Use these six". Disposition: the persona axis is decided; the grid is six depths by
   six personas (23 core cells, 6 edge cells); the protocol is decided when WP11 is scoped.
+
+## The driver's calls under the mandate (not the supervisor's words; for his review at the PR)
+
+- **2026-11-08. The step tagging accepted as a first increment of D-12.** Evidence, run by the
+  driver on `dev` at 85574de: the proof-map checker reports 14 files and 191 tagged steps; the
+  lemma chain passes; `tests/test_derivation.py`, `tests/test_matches_derivation.py` and
+  `tests/test_proof_map.py` pass (148 tests), the first two unedited since 750ff12; no `TITLE`,
+  `STATEMENT` or `AXIOMS_USED` line changed; lint and format clean. Not yet in: the helper move,
+  and earlier lemmas' results by import (those instructions reached the PM after the implementer
+  had started).
+- **2026-11-08. The findings of the tagging, and Amendment 2.** The implementer reported, without
+  relabelling: seven steps argued only in prose (in L2, L3, L4, L5, L11, L12, L14); premises held
+  as assumptions on local symbols (L11 to L14); `AXIOMS_USED` entries no step depends on,
+  reconciled only by lines that do nothing (among them I1, I2, I3 in L5 and A2 in L6, L7, L10); and
+  forced log expansions without a licence. None changes a statement or a conclusion as far as is
+  known; one could (L5 states a strict inequality the script does not assert). The driver's call:
+  close them truthfully, by the five principles of Amendment 2 in the scope, and withdraw the
+  driver's own instruction not to touch `AXIOMS_USED`, which had caused the do-nothing lines. Stop
+  condition kept: if a finding cannot be closed without changing a statement, it goes to the
+  supervisor. The supervisor was told of the findings in the progress update of the same hour, as
+  promised when the rule was set ("a step that is neither comes to you as a finding").

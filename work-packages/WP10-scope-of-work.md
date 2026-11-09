@@ -509,3 +509,51 @@ factor helper tools into their own file". Within D-12: the helper functions defi
 editable by WP10 for this move only), with no change in behaviour; the checker requires that a lemma
 script imports from another lemma script nothing but a proved result. The existing derivation tests
 stay unedited and pass, including the test that every load-bearing symbol assumption is declared.
+
+## Amendment 2 (2026-11-08; defined and approved by the driver under the mandate, `release-candidate.md`; for the supervisor's review at the PR): closing what the tagging found
+
+Why: the step tagging (D-12, commits d45ef4d and 78b29e2) recorded its findings in
+`derivation/PROOF_MAP_FINDINGS.md` instead of relabelling them. They show where the scripts fall
+short of the supervisor's rule ("every step in the prose proof should be mapped to a step in a
+sympy script"; "proof steps that cite an inherited result are still steps ... which still needs to
+happen in the code"): seven steps argued only in prose; premises carried as assumptions on local
+symbols; ledger entries listed as used that no step depends on, which the tagging could only
+reconcile with lines that do nothing; forced log expansions with no licence. The driver's own
+instruction not to change `AXIOMS_USED` caused the do-nothing lines and is withdrawn here.
+
+Principles (so that the result is true, not merely consistent):
+
+1. **A listed axiom is one a step depends on.** Lines that apply an entry without effect are
+   removed. `AXIOMS_USED` is corrected to the dependencies that exist. Where an entry is a real
+   premise (positivity licensing a logarithm or a power), the operation takes the entry as its
+   licence and a negative control shows the step fails without it, as L8 does for I6.
+2. **Every step is a line.** Each of the seven prose-only steps becomes a computed step, or a step
+   by a declared entry. Two are textbook results and become inherited entries with a verified
+   citation (the first-order condition with a linear equality constraint; convexity as nonnegative
+   second derivative along every line). The others are coded: the regrouping over facets from a
+   declared partition relation; complementary slackness as a declared relation applied termwise;
+   the strict inequality for n >= 2; the corollary on the shifted minimizer; the contrapositive
+   and the efficiency deductions as propositional steps SymPy checks.
+3. **No premise hides in a symbol.** A local symbol created with a sign or positivity assumption
+   that stands for a premise is tied to the ledger entry, or to the earlier lemma's proved result,
+   that licenses it; the checker fails on an unlicensed one. Forced expansions take a licence.
+4. **Entries no proof consumes are said to be so.** They move to a class reported apart from the
+   lemma-consumed entries, as the solver-level class already is, or leave the ledger; each is
+   listed with its reason.
+5. **The earlier instructions still to land:** the helper functions out of L3's script into the
+   tools module, as its own commit first; earlier lemmas' results taken by import, with the step
+   kind "by a proved result".
+
+Guards. No `TITLE` or `STATEMENT` changes and no change to what is proved. **If a finding cannot be
+closed without changing a statement (in particular the strict inequality of L5, which the statement
+claims and the script does not assert), the work stops there and the driver takes it to the
+supervisor.** Every change to an `AXIOMS_USED` list, every new or reclassified ledger entry and
+every edit to `tests/test_derivation.py` (allowed only where a test pins a list this amendment
+corrects; no negative control is removed) is listed in a table (before, after, why) in the
+findings file, which becomes the record of how each finding was closed.
+
+New requirement R-32: `derivation/PROOF_MAP_FINDINGS.md` shows every finding of sections 1 to 4
+closed with its address, or open with the reason; the checker enforces principles 1 and 3 (no
+do-nothing application; no unlicensed assuming symbol; imports, applied entries and `AXIOMS_USED`
+equal); the chain and the suite pass; a fresh reviewer confirms that no statement changed and that
+each closure is a real dependency, by withholding the entry and seeing the step fail.
