@@ -50,3 +50,34 @@ headings. The API reference shows no lemma, axiom or specification tags.
 - **D3:** the two hand-written tables become lists that do not need columns on a phone; the API
   reference renders parameters as lists instead of tables.
 - D2, D4, D5, D6, R2, R3: fixed as found; a test keeps docsite code lines within the column.
+
+## Second pass (2026-11-09, clean checkout at 7656157, the same server and browser)
+
+Looked at again, rendered: Getting started, Fitting, Tensions, Chart, Examples at 1280 px light;
+the docsite home, Termination, Theory in brief, API and the root page at 375 px dark; and the
+behaviours left out of the first pass: the phone navigation drawer (opened, the User guide section
+entered, Termination reached through it), the search box (a query for "exchange rate" returns ten
+documents with Theory in brief first), and the root page's map as a link.
+
+| Finding | State |
+|---|---|
+| R1 map unreadable | the map now links to its full-size file; the redraw question stays with the reader loops |
+| D1 no figures | **fixed:** seven figures, each under the code that draws it, with a caption and alternative text, in a light and a dark version that follow the page |
+| D2 code scrolling sideways at 1280 px | **fixed:** no code block scrolls on the five pages |
+| D3 tables on a phone | **fixed:** the API overview and the termination statuses are lists; the API reference renders parameters as lists |
+| D4 clipped equation | **fixed:** the invariant form breaks over two lines at 375 px |
+| D6 console 404 | no failed request on the root page or Theory in brief |
+| R3 stale placeholder | superseded: the staged `/paper/` is now the built paper |
+
+Not yet re-checked: D5 (attribute inventories) page by page, R2 (the install command in the card).
+
+New, smaller observations for the loop:
+
+- Getting started's first figure is an unstructured cloud of points in two position coordinates. It
+  is the first picture a newcomer sees and it does not show the idea. Colour the points by log V,
+  or show the two-metric log plane with its frontier line there (the Chart page's first figure
+  does show the idea).
+- Search result previews show raw LaTeX source. A known limit of the site generator; left.
+- The staged paper shows Figure 1 twice in succession, and its sections are still shells. The
+  three panes match the supervisor's specification (kinked; piecewise linear; flat line with
+  coloured regions). The paper is WP10's and is not judged here.
