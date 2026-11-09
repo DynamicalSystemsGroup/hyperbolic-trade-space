@@ -58,6 +58,7 @@ __all__ = [
     "plot_tensions",
     "plot_ternary",
     "plot_v_by_variable",
+    "ternary_marker_values",
 ]
 
 
@@ -537,6 +538,7 @@ _TERN_REF = 7.0 * 1.08 / 1.07  # axes width (in) at which the label sizes below 
 _TERN_LABEL_SIZES = (15.0, 14.5, 14.0)  # points at the reference width; the largest that fits
 _TERN_LABEL_MARGIN = 0.004  # clear space, in plane units, between a label's box and any border
 _TERN_MARKERS = (("*", 420), ("D", 150), ("s", 170), ("^", 200), ("v", 200), ("P", 190))
+_TERN_LEVELS = (0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.97)  # equal-V lines, as fractions of the peak
 _TERN_BLUE, _TERN_AMBER, _TERN_GREEN = CATEGORY_COLORS[:3]
 _TERN_SCHEMES = {
     "light": {"ink": "#1a1a1a", "plate": "#ffffff", "dots": "#7d7d7d", "mix": ("#ffffff", 0.80)},
@@ -649,6 +651,20 @@ def _ternary_peak(fit, s):
     own = [int(np.argmax(a + s * (logw[k] @ W.T))) for k in range(len(W))]
     own_peaks = [peak[k] for k in range(len(W)) if own[k] == k]
     return float(max(own_peaks)) if own_peaks else float((a[None] + s * logw @ W.T).max())
+
+
+def _ternary_marker_logv(fit, s):
+    """log V (less the level) of the fit at each facet's exponent vector, in the lines' units:
+    the same ``g`` the regions and lines are drawn from, evaluated at the marker positions."""
+    W = fit["W"]
+    a = W @ fit["colmean"] - fit["beta"]
+    logw = np.log(np.clip(W, 1e-300, None))
+    return (a[None] + s * logw @ W.T).max(axis=1)
+
+
+def _ternary_marker_fractions(fit, s):
+    """V at each marker as a fraction of the highest marker's V (one total; the total cancels)."""
+    return np.exp(_ternary_marker_logv(fit, s) - _ternary_peak(fit, s))
 
 
 def _ternary_wraps(text, names):
@@ -772,6 +788,73 @@ def _ternary_parts(W, names, groups):
     return list(groups), np.column_stack([W[:, g].sum(axis=1) for g in members])
 
 
+def ternary_marker_values(estimator, X, names=None):
+    """The values attained at the numbered markers of ``plot_ternary(..., lines=True)``.
+
+    One row per marker: its shape and number, the facet's exponent vector (the shares of the total
+    at which the marker sits, one column per metric) and the value of V attained there, in the
+    units of the equal-V lines: a fraction of the highest marker's value, so that row reads 1.00.
+    It is computed by the code that draws the lines and the markers.
+
+    Parameters
+    ----------
+    estimator : HyperbolicTradeSpace
+        A fitted estimator with three metrics.
+    X : array-like of shape (n_samples, 3)
+        The table of strictly positive metrics the plot is drawn with (the fitted table).
+    names : sequence of str, default=None
+        One name per metric, for the share columns. Default ``"metric 1"``, ``"metric 2"``,
+        ``"metric 3"``.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Columns ``marker`` (Matplotlib shape code), ``number`` (the numeral drawn beside it),
+        ``share of <name>`` for each metric and ``V`` (fraction of the highest marker's V).
+        ``df.attrs["levels"]`` holds the fractions at which the equal-V lines are drawn.
+
+    Notes
+    -----
+    *Total.* A position of the lines plot is a set of shares of a total: the sum of the three
+    metrics, each in units of its typical size (its geometric mean over ``X``, up to a factor
+    common to all three). The lines plot spreads nothing by a power (that is only done without
+    ``lines``, to fill the triangle with the designs): the shares are plain shares. V scales with
+    the total S as ``log V = log S + g(c)``, so at any one fixed total the ratios of V between
+    positions are those of ``exp g``, and a fraction of the highest marker's V does not depend on
+    the total chosen.
+
+    Examples
+    --------
+    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+    >>> from hyperbolic_trade_space.plotting import ternary_marker_values
+    >>> X, _ = make_frontier_data(300, 3, n_terms=3, random_state=11)
+    >>> ts = HyperbolicTradeSpace(n_terms=3, temperature=50.0, random_state=0).fit(X)
+    >>> table = ternary_marker_values(ts, X)
+    >>> list(table["number"])
+    [1, 2, 3]
+    >>> float(table["V"].max())
+    1.0
+    >>> table.attrs["levels"][0], table.attrs["levels"][-1]
+    (0.3, 0.97)
+    """
+    import pandas as pd
+
+    W, _ = _fitted_chart(estimator, 3)
+    names = _ternary_parts(W, names, None)[0]
+    fit = _ternary_geometry(estimator, X)
+    frac = _ternary_marker_fractions(fit, 1.0)
+    table = pd.DataFrame(
+        {
+            "marker": [_TERN_MARKERS[k % len(_TERN_MARKERS)][0] for k in range(len(W))],
+            "number": np.arange(1, len(W) + 1),
+            **{f"share of {n}": W[:, j] for j, n in enumerate(names)},
+            "V": frac,
+        }
+    )
+    table.attrs["levels"] = list(_TERN_LEVELS)
+    return table
+
+
 def plot_ternary(
     estimator, X=None, names=None, groups=None, lines=False, near=0.2, ax=None, scheme="auto"
 ):
@@ -818,6 +901,10 @@ def plot_ternary(
     matplotlib.axes.Axes
         The artists carry ids: ``ternary-star-k`` (the marker of facet k), ``ternary-star-label-k``
         and, with ``X``, ``ternary-label-k`` (the region's words).
+
+    See Also
+    --------
+    ternary_marker_values : the values attained at the numbered markers, as a table.
 
     Notes
     -----
@@ -909,7 +996,7 @@ def plot_ternary(
                 zorder=3,
             )
         if lines:
-            ratios = np.array([0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.97])
+            ratios = np.array(_TERN_LEVELS)
             ax.contour(
                 x,
                 y,

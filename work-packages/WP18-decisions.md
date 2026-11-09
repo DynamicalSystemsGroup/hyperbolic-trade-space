@@ -72,3 +72,19 @@ Records typed by the agent (driver session). The supervisor's review is at the P
   verdict in the figure review; its record needs only the recipe and what the figure shows and does
   not show.
 
+
+## Delivery note: the values at the marked points (P7, 2026-11-09)
+
+- Public helper `ternary_marker_values(estimator, X, names=None)` in `hyperbolic_trade_space.plotting`
+  returns a table, one row per numbered marker of `plot_ternary(..., lines=True)`: marker shape and
+  number, the facet's exponent vector (its shares) and V there as a fraction of the highest
+  marker's V (that row reads 1.00), with the levels of the equal-V lines in `attrs["levels"]`. It
+  shares the level constant, the marker shapes and the log-V evaluation with the drawing code; no
+  second implementation. Contract version 8.
+- The figure is unchanged: the docs example (900 designs) renders to an identical pixel array
+  before and after.
+- "Total" is the sum of the three metrics each in units of its typical size; the lines plot applies
+  no power (only the lines-off view spreads the designs by one), and the fraction does not depend on
+  the total chosen.
+- `groups=` is kept: its generic test and docstring stand, and `docs/examples.md` still calls it
+  until the example (ii) removal lands (P6). It can go with that removal.

@@ -365,3 +365,46 @@ def test_ternary_cubesat_groups_are_the_docs_example_and_the_group_sums_hold():
         x, y = art.get_offsets()[0]
         top = y / (np.sqrt(3) / 2)
         np.testing.assert_allclose([top, 1 - top - (x - top / 2), x - top / 2], want[k], atol=1e-12)
+
+
+def test_ternary_marker_values_equal_an_independent_recomputation(planted3):
+    """V at a facet's exponent vector at a fixed total, from first principles (the soft maximum is
+    the hard maximum over facets here: log V = log S + max_k(a_k + w_k . log c)), as a fraction of
+    the highest marker's; one row reads 1.00; the levels are those the lines are drawn at."""
+    X, ts = planted3
+    table = P.ternary_marker_values(ts, X, names=["p", "q", "r"])
+    W = ts.exponents_
+    fit = P._ternary_geometry(ts, X)
+    a = W @ fit["colmean"] - fit["beta"]
+    for total in (1.0, 7.5):  # the fraction does not depend on the total
+        v = np.array([total * np.exp((a + np.log(np.maximum(w, 1e-300)) @ W.T).max()) for w in W])
+        np.testing.assert_allclose(table["V"], v / v.max(), rtol=1e-12)
+    assert table["V"].max() == pytest.approx(1.0) and (table["V"] <= 1.0 + 1e-12).all()
+    np.testing.assert_allclose(table[["share of p", "share of q", "share of r"]].to_numpy(), W)
+    assert table.attrs["levels"] == [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.97]
+
+
+def test_ternary_marker_table_matches_the_drawn_markers_and_levels(planted3):
+    X, ts = planted3
+    ax = P.plot_ternary(ts, X, lines=True)
+    table = P.ternary_marker_values(ts, X)
+    stars = _by_gid(ax, "ternary-star-")
+    labels = _by_gid(ax, "ternary-star-label-")
+    assert [int(labels[k].get_text()) for k in sorted(stars)] == list(table["number"])
+    drawn = [stars[k].get_paths()[0].vertices.tobytes() for k in sorted(stars)]
+    want = []
+    for m in table["marker"]:
+        fig = plt.figure()
+        want.append(fig.add_subplot().scatter([0], [0], marker=m).get_paths()[0].vertices.tobytes())
+    assert drawn == want
+    # the contour levels drawn are the table's, on the same scale as the markers' values
+    cs = [c for c in ax.collections if hasattr(c, "levels")]
+    levels = np.exp(cs[0].levels)
+    np.testing.assert_allclose(levels, table.attrs["levels"])
+
+
+def test_ternary_marker_values_needs_three_metrics():
+    X, _ = make_frontier_data(100, 4, n_terms=2, random_state=1)
+    ts = HyperbolicTradeSpace(n_terms=2, temperature=30.0, random_state=0).fit(X)
+    with pytest.raises(ValueError, match="3 metrics"):
+        P.ternary_marker_values(ts, X)

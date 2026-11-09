@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 7. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 8. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 7
+contract_version = 8
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -288,6 +288,7 @@ the last row of the change log.
 | 5 | 2026-11-09 | The tension report's field `exchange_rates` is renamed `elasticities` (WP10 Amendment 4, R-37), with no alias since nothing is released: `package.tensions.report_fields` carries the new name; the code takes the glossary's word. No number changes | both | `WP10-decisions.md`, "The supervisor's reading of the abstract, second pass" ("i believe we define these as elasticities"), and the driver's call on the field |
 | 6 | 2026-11-09 | The soft several-term fit (WP17, R-1, R-7): a finite `term_temperature` selects the fit with a weight on every term for every design; the `Termination` record gains `min_curvature` and the status `"stationary"`; `"certified"` has two meanings (label fit: the fixed assignment; soft fit: the second-order test of the soft objective); `solvers` offers `soft_weights`, `soft_objective`, `soft_hessian`, `soft_certificate`. Additive: the pinned field, status and name lists grow (floor rule); the default (`np.inf`) fit is unchanged, attribute for attribute | technical (the docsite and the paper words follow) | `WP17-scope-of-work.md`, approved by the driver under the mandate on the supervisor's conditional direction and amended on his question ("can we get another certification method for the soft fit") |
 | 7 | 2026-11-09 | The ternary plot (WP18, R-5): `plotting` also offers `plot_ternary(estimator, X=None, names=None, groups=None, lines=False, near=0.2, ax=None, scheme="auto") -> Axes`; it draws a triangle of the shares of a total among three metrics, tinted by region (where each facet dominates, named by words read from the fit) with the designs as points and each facet's exponent vector as a numbered marker (where that facet's V peaks at a fixed total, not where V = 1); `lines=True` adds lines of equal V; `groups` sums each facet's exponents within three groups of metrics. Additive: the pinned `plotting` list grows (floor rule); no other pinned fact changes | technical (the docsite and the paper words follow) | `WP18-scope-of-work.md`, approved by the driver under the mandate |
+| 8 | 2026-11-09 | The values at the ternary plot's markers (WP18, supervisor's request): `plotting` also offers `ternary_marker_values(estimator, X, names=None) -> pandas.DataFrame`, one row per numbered marker of `plot_ternary(..., lines=True)` (marker shape, number, the facet's exponent vector as shares, and V attained there as a fraction of the highest marker's V; `attrs["levels"]` holds the equal-V levels), computed by the code that draws the lines and markers. Additive: the pinned `plotting` list grows (floor rule); `plot_ternary`'s signature is unchanged and its figure is unchanged | technical (the docsite and the paper words follow) | `WP18-decisions.md`, supervisor, "this one is great but make sure the prose is clear about the values attained at the square, star and triangle points marked" |
 
 ## 15. Consumers: may assume, must not touch
 
