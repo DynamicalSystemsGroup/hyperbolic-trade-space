@@ -3,14 +3,29 @@
 The toolkit (``sysmlv2``, a Rust CLI: ``check``, ``lint``, ``verify --solve``) is not on PyPI. The
 pin in ``toolkit-pin.toml`` names a release, one archive per platform with its size and sha256, and
 the standard-library directory the CLI needs (``--lib``). Nothing is downloaded unless somebody
-runs the fetch command explicitly::
+runs the fetch command explicitly. The command line (``PYTHONPATH`` makes ``experiments``
+importable from the repository root)::
 
-    PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch
+    PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch [--lib-only|--binary-only]
+    PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch --archive PATH
+    PYTHONPATH=examples/adcs uv run python -m experiments.toolkit pin
+    PYTHONPATH=examples/adcs uv run python -m experiments.toolkit where
 
-(``PYTHONPATH`` makes ``experiments`` importable from the repository root; the pytest configuration
-sets the same path.) The archive is verified against its pinned size and sha256 before a byte of it
-is extracted, the binary is then checked to report the pinned version, and the standard library is
-taken from a sparse git clone whose HEAD must equal the pinned commit. An unverified file is never
+``fetch`` is idempotent: a cached binary that reports the pinned version and a cached standard
+library recorded at the pinned commit mean no network at all ("cache hit"). Otherwise the archive
+is downloaded from the pinned URL with a bounded retry (3 attempts, short backoff) on transient
+errors (HTTP 5xx, timeouts, connection failures); if the direct URL still fails, the same tag and
+asset are fetched through the release-assets API (``GET /repos/<repo>/releases/tags/<tag>`` for the
+asset id, then ``GET /repos/<repo>/releases/assets/<id>`` with ``Accept: application/octet-stream``,
+sending ``Authorization: Bearer`` from ``GH_TOKEN`` or ``GITHUB_TOKEN`` when set). The git step for
+the library has the same bounded retry. ``fetch --archive PATH`` installs the binary from a local
+archive (for instance one obtained with ``gh release download``) with exactly the same size and
+sha256 verification. Every route verifies the pinned size and sha256 before a byte is extracted;
+the pin and the URL are never altered. ``pin`` prints, on one line, the repository, the tag and
+the asset name for the running platform, so a workflow need not hard-code them.
+
+The archive is verified against its pinned size and sha256 before a byte of it is extracted,
+the binary is then checked to report the pinned version, and the standard library is taken from a sparse git clone whose HEAD must equal the pinned commit. An unverified file is never
 executed.
 
 Where the binary is looked for, first hit wins: ``SYSML_TOOLKIT_BIN`` (the legacy ``SYSMLV2_BIN``),
@@ -41,7 +56,9 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import time
 import tomllib
+import urllib.error
 import urllib.request
 import zipfile
 from dataclasses import dataclass
@@ -183,31 +200,154 @@ def _extract_binary(archive: Path, binary: str, dest: Path) -> None:
     dest.chmod(0o755)
 
 
-def fetch_binary(triple: str | None = None) -> Path:
-    """Download the pinned archive, verify size and sha256, extract the binary, check version."""
-    pin = load_pin()
-    triple = triple or platform_triple()
+ATTEMPTS = 3
+BACKOFF = (1.0, 3.0)  # seconds before the 2nd and 3rd attempt
+
+
+def _transient(exc: BaseException) -> bool:
+    if isinstance(exc, urllib.error.HTTPError):
+        return exc.code >= 500 or exc.code in (408, 429)
+    return isinstance(exc, urllib.error.URLError | TimeoutError | ConnectionError)
+
+
+def with_retry(fn, *, attempts: int = ATTEMPTS, backoff=BACKOFF, sleep=None, transient=_transient):
+    """Call ``fn()``; retry up to ``attempts`` times in all when ``transient(exc)``, else raise.
+
+    >>> calls = []
+    >>> def flaky():
+    ...     calls.append(1)
+    ...     if len(calls) < 3:
+    ...         raise TimeoutError("slow")
+    ...     return "ok"
+    >>> with_retry(flaky, sleep=lambda s: None)
+    'ok'
+    """
+    sleep = sleep or time.sleep
+    for i in range(attempts):
+        try:
+            return fn()
+        except Exception as exc:
+            if i == attempts - 1 or not transient(exc):
+                raise
+            sleep(backoff[min(i, len(backoff) - 1)])
+    raise AssertionError("unreachable")
+
+
+def _git_retry(cmd: list[str], **kw):
+    """``subprocess.run(cmd, check=True)`` with the bounded retry on a failing git network step."""
+    return with_retry(
+        lambda: subprocess.run(cmd, check=True, **kw),
+        transient=lambda e: isinstance(
+            e, subprocess.CalledProcessError | subprocess.TimeoutExpired
+        ),
+    )
+
+
+def _download(url: str, dest: Path, headers: dict | None = None, opener=None) -> None:
+    opener = opener or urllib.request.urlopen
+    req = urllib.request.Request(url, headers=headers or {})
+    with opener(req, timeout=60) as resp, open(dest, "wb") as f:
+        shutil.copyfileobj(resp, f)
+
+
+def _api_headers(accept: str) -> dict:
+    h = {"Accept": accept, "User-Agent": "hyperbolic-trade-space-toolkit-fetch"}
+    token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    if token:
+        h["Authorization"] = f"Bearer {token}"
+    return h
+
+
+def _download_via_api(pin: dict, name: str, dest: Path, opener=None) -> None:
+    """The release-assets API route for the same tag and asset name."""
+    opener = opener or urllib.request.urlopen
+    t = pin["toolkit"]
+    base = f"https://api.github.com/repos/{t['repo']}/releases"
+    req = urllib.request.Request(
+        f"{base}/tags/{t['tag']}", headers=_api_headers("application/vnd.github+json")
+    )
+    with opener(req, timeout=60) as resp:
+        release = json.load(resp)
+    ids = [a["id"] for a in release.get("assets", []) if a.get("name") == name]
+    if len(ids) != 1:
+        raise ValueError(f"release {t['tag']} has {len(ids)} assets named {name}")
+    _download(f"{base}/assets/{ids[0]}", dest, _api_headers("application/octet-stream"), opener)
+
+
+def download_archive(pin: dict, name: str, dest: Path, opener=None, sleep=None) -> str:
+    """Download the pinned asset to ``dest``: direct URL (bounded retry), then the API route.
+
+    Returns the route taken (``"direct"`` or ``"api"``). Verification is the caller's, after.
+    """
     try:
-        asset = pin["toolkit"]["assets"][triple]
+        with_retry(lambda: _download(asset_url(pin, name), dest, opener=opener), sleep=sleep)
+        return "direct"
+    except Exception as direct:
+        print(f"direct download failed ({direct}); trying the release-assets API", file=sys.stderr)
+        with_retry(lambda: _download_via_api(pin, name, dest, opener), sleep=sleep)
+        return "api"
+
+
+def _asset_for(pin: dict, triple: str) -> dict:
+    try:
+        return pin["toolkit"]["assets"][triple]
     except KeyError:
         raise SystemExit(
             f"no pinned archive for {triple}; build from source instead (see the module docstring)"
         ) from None
+
+
+def _install_verified(pin: dict, archive: Path, asset: dict) -> Path:
+    """Verify size and sha256 (before any extraction), extract the binary, check its version."""
+    verify_archive(archive, asset["size"], asset["sha256"])
     dest = cached_binary(pin)
-    with tempfile.TemporaryDirectory() as tmp:
-        archive = Path(tmp) / asset["name"]
-        with (
-            urllib.request.urlopen(asset_url(pin, asset["name"])) as resp,
-            open(archive, "wb") as f,
-        ):
-            shutil.copyfileobj(resp, f)
-        verify_archive(archive, asset["size"], asset["sha256"])  # before any extraction
-        _extract_binary(archive, pin["toolkit"]["binary"], dest)
+    _extract_binary(archive, pin["toolkit"]["binary"], dest)
     got = version(dest)
     if got != pin["toolkit"]["version_output"]:
         dest.unlink()
         raise ValueError(f"{dest} reports {got!r}, pinned {pin['toolkit']['version_output']!r}")
     return dest
+
+
+def binary_cached(pin: dict | None = None) -> bool:
+    """True when the cached binary exists and reports the pinned version (no network)."""
+    pin = pin or load_pin()
+    b = cached_binary(pin)
+    if not b.is_file():
+        return False
+    try:
+        return version(b) == pin["toolkit"]["version_output"]
+    except (OSError, subprocess.SubprocessError):
+        return False
+
+
+def _stdlib_marker(pin: dict) -> Path:
+    return cache_dir(pin) / "stdlib.commit"
+
+
+def stdlib_cached(pin: dict | None = None) -> bool:
+    """True when the cached library exists and was recorded at the pinned commit (no network)."""
+    pin = pin or load_pin()
+    m = _stdlib_marker(pin)
+    return (
+        cached_stdlib(pin).is_dir()
+        and m.is_file()
+        and m.read_text().strip() == pin["stdlib"]["commit"]
+    )
+
+
+def fetch_binary(
+    triple: str | None = None, archive: Path | None = None, opener=None, sleep=None
+) -> Path:
+    """Obtain the pinned binary: download (or take ``archive``), verify, extract, check version."""
+    pin = load_pin()
+    asset = _asset_for(pin, triple or platform_triple())
+    if archive is not None:
+        return _install_verified(pin, Path(archive), asset)
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / asset["name"]
+        download_archive(pin, asset["name"], path, opener, sleep)
+        return _install_verified(pin, path, asset)
 
 
 def fetch_stdlib() -> Path:
@@ -220,8 +360,8 @@ def fetch_stdlib() -> Path:
         git = ["git", "-c", "advice.detachedHead=false"]
         clone_cmd = [*git, "clone", "--quiet", "--depth", "1", "--filter=blob:none", "--sparse"]
         clone_cmd += ["--branch", s["tag"], s["repo"], str(clone)]
-        subprocess.run(clone_cmd, check=True)
-        subprocess.run(["git", "-C", str(clone), "sparse-checkout", "set", s["path"]], check=True)
+        _git_retry(clone_cmd)
+        _git_retry(["git", "-C", str(clone), "sparse-checkout", "set", s["path"]])
         head = subprocess.run(
             ["git", "-C", str(clone), "rev-parse", "HEAD"],
             check=True,
@@ -234,6 +374,7 @@ def fetch_stdlib() -> Path:
             shutil.rmtree(dest)
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copytree(clone / s["path"], dest)
+        _stdlib_marker(pin).write_text(head + "\n")
     return dest
 
 
@@ -278,19 +419,44 @@ def locate() -> Toolkit:
     return Toolkit(binary, lib)
 
 
+def pin_line(triple: str | None = None) -> str:
+    """``<repo> <tag> <asset name>`` for the platform, from the pin file."""
+    pin = load_pin()
+    asset = _asset_for(pin, triple or platform_triple())
+    return f"{pin['toolkit']['repo']} {pin['toolkit']['tag']} {asset['name']}"
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="python -m experiments.toolkit", description=__doc__)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    f = sub.add_parser("fetch", help="download and verify the pinned toolkit (network)")
+    f = sub.add_parser(
+        "fetch",
+        help="obtain and verify the pinned toolkit (cache hit: no network)",
+        description="Idempotent. Retries transient errors 3 times, then falls back to the "
+        "release-assets API (GH_TOKEN or GITHUB_TOKEN used when set). Always verifies size and "
+        "sha256 before extraction.",
+    )
     f.add_argument("--lib-only", action="store_true", help="fetch only the standard library")
     f.add_argument("--binary-only", action="store_true", help="fetch only the binary")
+    f.add_argument("--archive", type=Path, metavar="PATH", help="install from a local archive")
+    sub.add_parser("pin", help="print '<repo> <tag> <asset name>' for this platform")
     sub.add_parser("where", help="print the located binary and library")
     args = ap.parse_args(argv)
+    if args.cmd == "pin":
+        print(pin_line())
+        return 0
     if args.cmd == "fetch":
+        pin = load_pin()
         if not args.lib_only:
-            print(f"binary: {fetch_binary()}")
+            if args.archive is None and binary_cached(pin):
+                print(f"binary: {cached_binary(pin)} (cache hit)")
+            else:
+                print(f"binary: {fetch_binary(archive=args.archive)}")
         if not args.binary_only:
-            print(f"stdlib: {fetch_stdlib()}")
+            if stdlib_cached(pin):
+                print(f"stdlib: {cached_stdlib(pin)} (cache hit)")
+            else:
+                print(f"stdlib: {fetch_stdlib()}")
         return 0
     print(f"binary: {find_binary()}\nstdlib: {find_stdlib()}\ncache:  {cache_dir()}")
     return 0
