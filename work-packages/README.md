@@ -62,6 +62,17 @@ interface so i can iterate on content and the release machinery and publication 
 parallel". The list below carries that as WP14, the interface contract, scoped and pinned before
 the presentation packages start.
 
+Supervisor, 2026-11-08, verbatim (a further package, to be scoped): "another round of tightening
+revisions i'd like to do is focused on the system model. it got built up a bit ad hoc and its under
+utilizing the sysml toolkit. the example was accreted and thus may seem a bit illegible and opaque.
+tightening it up to make better use of the simulation machinery and model checking capabilities
+native to sysmlv2 models would make the example more interpretable. strictly speaking our method
+needs to work for a black box that maps configurations to attributes but a clean sysmlv2 model here
+with python scripting extensions for scoping and ledgering experiments (with cadcad like semantics)
+would make it much more interpretable for someone interested in cross applying to other sysml
+models. can you scope this as a tidying work package and identify how to break it out so it can be
+worked in parallel without disruption".
+
 ## Breakdown (search strategy)
 
 Only WP0 was firm at approval; the rest is revisited at each acceptance gate. Each line: goal, and
