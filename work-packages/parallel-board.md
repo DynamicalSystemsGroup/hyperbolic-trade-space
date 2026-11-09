@@ -4,6 +4,29 @@ Written 2026-11-09 by the driver on the supervisor's direction: "it seems like y
 opportunity to use tight scopes of work to parallelize efforts using the PM as an orchestrator." And:
 "i don't like the fact that you are not committing. we have dev so you can commit work".
 
+## What the board is
+
+The supervisor (2026-11-09): "to be clear the PM is managing agents scoped to the work packages." The
+board is a view of the approved work packages, not a structure beside them. Every stream is a piece
+of one package's approved scope (an amendment, a requirement, a ticket recorded in that package's
+decisions file), and the agent that runs it is scoped to that package: its brief cites the package's
+scope document and the requirement it serves, and its blast radius is inside that package's files.
+A stream with no package behind it is not started until the package is scoped and approved.
+
+| Stream | Package and the requirement it serves |
+|---|---|
+| P1, P1r | WP10 Amendment 4 R-38 and Amendment 5 R-39; the tickets of 2026-11-09 in `WP10-decisions.md` (section 4 narration, section 6 skim path); WP17 R-9 for the soft-fit wording |
+| P2, P3 | WP10 Amendment 4 R-35 and R-36 (the vocabulary review) |
+| P4, P5 | WP10 Amendment 5 R-43 (the claims review) |
+| P6 | WP17 R-9 (docs wording); WP18 D-3, D-5 and the supervisor's confirmation in `WP18-decisions.md` |
+| P7 | WP18 D-1, D-6 and the marker-values request in `WP18-decisions.md` |
+| P8 | WP8a, the docsite figure review (a ticket in `WP8a-decisions.md`; to be recorded as WP8a Amendment 3 when its verdicts are settled) |
+| P9, D2 | WP8b, release preparation: NOT YET SCOPED. Its items were started ahead of a scope; the PM drafts `WP8b-scope-of-work.md` now and the driver approves before anything further is done under it |
+| P10 | WP10 Amendment 1 (Appendix F, the container of record) and the supervisor's go-ahead in `WP10-decisions.md` |
+| P11 | verification tooling: NOT YET SCOPED; becomes WP20 (`WP20-scope-of-work.md`) before it starts |
+| D1 | WP11 (the reader grid), scoped and approved |
+| B1 | WP19 (backlog); B2 | WP16 (held) |
+
 ## Rules of the board
 
 - **One stream, one tight scope, one set of files.** A stream owns the files listed for it and
