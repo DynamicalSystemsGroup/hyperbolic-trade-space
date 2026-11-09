@@ -475,3 +475,17 @@ status = "backed"
 disposition = "keep"
 source = "WP10 Amendment 1, P1c; supervisor approval of 2026-11-09 (WP10-decisions.md)"
 note = "Appendix F.2; RECORD.md: Pins: Node.js v24.22.2 linux-arm64 tarball, sha256 and SHASUMS256.txt.asc checked."
+
+[[claim]]
+id = "C030"
+fragment = "a fielded system's measured attributes would enter the same table and the same fit"
+file = "docs/examples.md"
+anchor = ""
+kind = "S"
+backing = [
+  "file:paper/supporting_material.ipynb",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10 Amendment 1, P6c; supervisor words of 2026-11-09 (WP10-decisions.md)"
+note = "The evaluation is a black box (simulator, physical test or human assessment): glossary row for attributes in the paper's section 3 and its supporting material."

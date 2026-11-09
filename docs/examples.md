@@ -6,7 +6,7 @@ The worked case is a cubesat model coupling power, mass and attitude control: bu
 controller, wheel and tracker alternatives, solar panel and battery. Ten attributes are compared under two controller-gain settings: settling time, slew time, pointing error,
 control effort, power margin, energy balance, eclipse reserve, peak slew power, depth of discharge and total
 mass. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`.
-Nothing is simulated here; the evaluated tables are committed.
+In this design loop the simulation measures the attributes (committed here as tables), and a fielded system's measured attributes would enter the same table and the same fit.
 
 The aggressive-gains table has 706 feasible designs. With the fit temperature chosen by `select_temperature` for a tenth of the
 designs above V = 1:
@@ -102,12 +102,9 @@ print(values.round(2).to_string(index=False))
 print("lines at", values.attrs["levels"])
 ```
 
-Key: a row is a marker, its shares of the total, and V there as a fraction of the highest marker's V
-(the units of the lines).
+Key: a row is a marker, its shares of the total, and V there as a fraction of the highest marker's V.
 
-Limits: three parts only; the choice of metrics is the analyst's and
-can be chosen to flatter the result; the triangle is for reading, not for measuring distance; designs of a ten-metric
-case do not separate in three metrics, so none is drawn for the cubesat.
+Limits: three parts only; the analyst's choice of metrics can flatter the result; the triangle is for reading, not measuring distance; a ten-metric case does not separate in three, so none is drawn for the cubesat.
 
 ## Run it
 
