@@ -1019,3 +1019,23 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   driver's call, for his review, is that the two tickets together (sections 4 and 6) may add at
   most 400 words to the paper's ceiling if trimming cannot pay for them.
 
+## Length is a regularizer; figures become their own package (2026-11-09)
+
+- On length. **Supervisor (mzargham), verbatim:** "the total length of the paper is less hard ceiling
+  and more regularization. each word earns his place, and more text has a higher burden".
+  **Disposition:** the paper's word ceiling stops being a hard cap. The count is still measured and
+  tested, but against a ceiling kept in a length ledger where every raise is one line: the section,
+  the words, the job those words do for which reader. Growth is admitted by its job and refused
+  without one. This supersedes the driver's calls of the same day that the narration tickets may
+  add "at most 150" and "at most 400" words: there is no allowance, only the burden of saying what
+  each addition is for. Sent to the PM.
+- On figures. His direction is quoted in full in `work-packages/WP19-backlog.md`: describe each plot by
+  what it does and does not show, and whether it earns its place; one or two diagrams of the SysML
+  v2 model; figure selection and narration as a package of its own with subpackages by section;
+  prose not fine-tuned until the slots and then the figures are confirmed; the package in the
+  backlog; the diagram spike in parallel. **Disposition:** WP19 on the backlog as step 3d of the
+  path; the spike scoped (`docs/superpowers/notes/spike-sysml-diagrams/SCOPE.md`) and started in
+  parallel by the driver; the PM told that the narration tickets for sections 4 and 6 are a first
+  pass of structure, with no polishing rounds, and that captions and figure prose are frozen until
+  WP19's gates.
+
