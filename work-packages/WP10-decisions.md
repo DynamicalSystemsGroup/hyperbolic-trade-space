@@ -473,5 +473,14 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
 
 ## Scope approval (approval gate)
 
-- pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
-  WP12)
+- **Document:** `work-packages/WP10-scope-of-work.md` (revision 2, ccb0cb6, with its "Gate outcomes"
+  and the correction on infrastructure versus outline; no open items).
+- **Date:** 2026-11-08.
+- **Driver's question:** "Corrected and recorded: the infrastructure follows your SciPy paper (...),
+  and the outline and development follow your IEEE papers as we settled them (...). With that
+  stated in the scope, do you approve WP10 for execution?" (options: Approved / Not yet).
+- **Supervisor (mzargham), verbatim:** "Approved"
+- **Disposition:** approved; the PM executes on `dev` in parallel with WP15 and WP8a's Amendment 2
+  on disjoint files, starting with the case module and the bibliography; acceptance is structural
+  (automated checks plus cold-reader trials per level); content is judged in WP11's grid of cold
+  reads across depth levels and personas.

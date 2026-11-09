@@ -129,6 +129,6 @@ what it fixes for later packages. The design spec is
 | WP13 | `WP13-scope-of-work.md` (response to the external review) | verbal, 2026-11-08 ("Approved", `WP13-decisions.md`) | `dev` c61ff49..655d978, merged to `main` | `WP13-review.md` (40062f6; R-10 re-check 1406261) | verbal, 2026-11-08 ("Accepted", `WP13-decisions.md`) |
 | WP15 | `WP15-scope-of-work.md` (system model tidy-up) | verbal, 2026-11-08 ("Approved", `WP15-decisions.md`) | in execution on `dev` | — | — |
 | WP12 | to be scoped after WP13 and WP15 (the search; outline v2) | — | — | — | — |
-| WP10 | the paper; `WP10-decisions.md` holds the story and the redirection; scope drafted after WP9's acceptance, the external reviewer's feedback triage (`external-review-2026-11.md`, to be written) and WP12 (`WP10-scope-of-work.md` is the superseded first draft) | — | — | — | — |
+| WP10 | `WP10-scope-of-work.md` (the paper, working draft; revision 2) | verbal, 2026-11-08 ("Approved", `WP10-decisions.md`) | in execution on `dev` | — | — |
 | WP11 | to be scoped at WP10's acceptance | — | — | — | — |
 | WP8 | `WP8-scope-of-work.md` (Amendment 1 revised: MkDocs docsite + MyST paper, one Pages site; re-approval at WP10's gate) | verbal, 2026-11-08 ("approve 7 and 8", `WP8-decisions.md`); Amendment 1 pending | waiting for WP11 | — | — |
