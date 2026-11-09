@@ -12,9 +12,18 @@ can reach: the paper, the supporting material, the docsite, the root page.
 
 ## The requirement
 
-**A figure stays only if it shows something a sentence or a small table could not say as well, and a
-reader who has not been told what to see, sees it.** Otherwise it is redrawn or it goes. A figure is
-judged as rendered, at the width a reader meets it, never from its code or its data.
+**A figure is judged by what it is intended to convey and whether it succeeds.** The author writes
+the intent first; a cold reader says what the figure conveyed; the figure succeeds when the two
+agree. A figure that succeeds is left alone. A figure that fails gets the smallest change that makes
+it succeed: a caption, a resize, then a redraw, in that order. A figure whose intent a sentence
+carries as well does not earn its place and goes.
+
+The supervisor, on the risk in this loop (2026-11-09): "i think there is a risk that you will
+overtune here. i don't need the paper to be fully readable on a phone. i think you should reassess
+the figures with a focus on what they are intended to convey and whether they succeed in doing so."
+So: no redraw of a figure that conveys its intent; legibility is judged at the width the figure is
+read at (the column on a laptop), and a phone is not a requirement for the paper's figures; the
+docs pages must not break at phone width, but their figure text need not be readable there.
 
 ## The five tests
 
@@ -27,8 +36,9 @@ judged as rendered, at the width a reader meets it, never from its code or its d
    triangle fail this; a cloud of designs with regions does not.)
 3. **Ink is data.** The reviewer names what share of the frame carries information. Large empty
    areas, decoration, and labels that cover the data are findings.
-4. **Legible where it is read.** At the page's column width and at 375 px, in light and dark, in the
-   browser: every label readable, nothing clipped, nothing relying on colour alone.
+4. **Legible where it is read.** At the column width on a laptop, in light and dark, in the
+   browser: the labels that carry the intent are readable. A phone is not required; a figure is
+   never redrawn for a phone.
 5. **Shows, does not show, good for.** One line each, written beside the figure in the record and,
    once the figure is confirmed, on the page beside it: what the figure shows; what it does not
    show or cannot be used for; what a reader would use it for. (The supervisor: "we need more
@@ -41,8 +51,9 @@ judged as rendered, at the width a reader meets it, never from its code or its d
 2. Generate the figure by committed code; render it on its page.
 3. Cold reads by fresh-context viewers (at least two; different reader personas where the reader
    grid applies), tests 1 to 4, findings verbatim.
-4. Triage: keep; redraw (say what changes); drop. A redraw goes round again, twice at most; a figure
-   that fails after two redraws is dropped.
+4. Triage, smallest change first: keep as is (it conveys its intent); caption; resize; redraw (say
+   what changes and why the intent needs it); drop. A redraw goes round again, twice at most; a
+   figure that fails after two redraws is dropped.
 5. The driver looks at every surviving figure himself in the browser and records what he saw. The
    driver's eye is one reading, not the verdict: his pass of the cubesat triangle is the case in
    point.

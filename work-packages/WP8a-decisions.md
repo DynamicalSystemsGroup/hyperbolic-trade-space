@@ -499,4 +499,15 @@ The driver's calls on `WP8a-driver-browser-pass.md` are binding and applied as f
   depth chart; keep one of Figures 1 and 4; rework Figures 2, 5 and 6 for a legend, a misleading
   reading and phone legibility; keep Figure 3) are put to him with the candidate images before
   anything on a page changes.
+- **Supervisor (mzargham), verbatim,** on the figure review's verdicts: "i like the tension heatmap.
+  you can resize it but don't rework it. i think there is a risk that you will overtune here. i
+  don't need the paper to be fully readable on a phone. i think you should reassess the figures
+  with a focus on what they are intended to convey and whether they succeed in doing so."
+  **Disposition:** Figure 6 (the tension heatmap) is kept; a resize only. The question put to him
+  (replace Figure 7 and apply the other verdicts) is withdrawn. The figure review is reframed
+  (`docs/superpowers/notes/figure-review.md`): intent first, success judged by a cold read against
+  it, the smallest change that makes a figure succeed, no redraw of a figure that succeeds, no
+  phone requirement for figures. The docsite figures are reassessed under that frame; the result
+  comes to him as one table (intended to convey; succeeds or not, with the reader's words; the
+  smallest action) before anything on a page changes.
 
