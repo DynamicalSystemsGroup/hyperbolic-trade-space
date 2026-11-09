@@ -896,4 +896,16 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   after the change of variables. What is true: each term's refit is a geometric program; the fitted
   posynomial is compatible with generalized geometric programming, so a design program that uses it
   is a GGP; kernels that keep that compatibility are the stated extension.
+- The held clause, put to him (driver's question: how should the abstract use GGP; options: the
+  fitted model is GGP-compatible / say the fit is a GGP / GGP only for the kernel extension).
+  **Supervisor, verbatim:** "i need you to do a research sprint. i don't think each config needs to
+  be in a unique facet. i think you may be getting confused between the fitting and the analysis.
+  fitting a model and interpreting it are different. any config is likely to have a projection onto
+  each facet but analysis tells us which dominates. do a research loop to make sure we're aligned.
+  for the abstract GGP compatible is okay language but keep in mind i am the author here. you can
+  check my work and help me substantiate it but please do be careful not to confuse fitting models
+  with analyzing and interpreting the results." **Disposition:** the abstract says "compatible with
+  generalized geometric programming" (sent to the PM; R-38 (a) no longer held). The research sprint
+  is `docs/superpowers/notes/spike-ggp-fit/` (the model, the fit and the analysis kept apart; whether
+  the several-term fit is a GGP; whether a design needs a unique facet in the fit; the sources).
 
