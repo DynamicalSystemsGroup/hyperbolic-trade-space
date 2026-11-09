@@ -99,6 +99,7 @@ worktree in the session scratchpad with its own locked environment), not the sha
 result is a verdict on a commit and cannot be disturbed by agents at work. First used at 66f997c.
 | 2026-11-09 | CI stays blocked by a GitHub timeout on one toolkit download: the helper gains an idempotent fetch, an install from a local archive and an API fallback, all with the same checksum verification; the pin is not changed | the direct URL returns 504 from CI and from this Mac for over an hour; the same asset fetched through the release API has the pinned sha256 | to the PM; the workflow step follows the helper's commit |
 | 2026-11-09 | commit b8dcd3b, the driver's clean checkout, this Mac | 1894 passed, 15 skipped, 1 xfailed, 1 failed; ruff check and format clean; lock clean; lemma chain passes; proof map OK, 15 files, 263 steps; attribution 0 | a verdict, not green: the geometric-program steps (L4.14 to L4.24, 23b1d66) landed before Appendix B was regenerated, so its committed output still says 252 steps. The guard caught it as designed. The regeneration is in the PM's hands (uncommitted in the shared checkout at the time). Rule sent to the PM: a lemma change and the regenerated appendix land in one push |
+| 2026-11-09 | commit b8dcd3b, CI run 42629688853, ubuntu | 1894 passed, 15 skipped, 1 xfailed, 1 failed | the same single failure as on the Mac (Appendix B's committed output not regenerated); nothing platform-specific |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
