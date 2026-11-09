@@ -442,6 +442,11 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   paper; the docsite keeps a one-page theory-in-brief that links to the paper. The revised draft's
   approval waits for that revision; OD4 (PDF export) remains open.
 
+- **OD4, the PDF export through the SciPy typst template.** Options: later, once the content has
+  settled / now in WP10. **Supervisor (mzargham), verbatim:** "Later, once the content has settled".
+  Disposition: decided; WP10 leaves the export block out; the PDF is added at the release package
+  or when a venue is chosen (on the punch list).
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
