@@ -1,0 +1,393 @@
+# The claims register (docs/superpowers/notes/claims-review.md; WP10 Amendment 5, R-43).
+# One [[claim]] per claim a reader can rely on. tests/test_claims_register.py checks every row.
+#
+# Fields
+#   id           unique, C + digits
+#   fragment     the sentence (or pieces joined by ' ... ', found in that order), verbatim from the
+#                source file; comparison collapses whitespace and ignores '$' and '\' (LaTeX delimiters)
+#   file         the source file (repo-relative): notebook markdown, docs page, or generator source
+#   anchor       the section heading the fragment sits under (md/ipynb), or text that must occur in
+#                the file (other types); '' = anywhere in the file
+#   kind         M mathematics/method, R result of a run, S what the software does, L literature,
+#                P practice (claims-review.md)
+#   backing      list of 'type:value': lemma:L17 | lemma:L17.3 (a step tag) | test:path::name |
+#                gen:path::name | func:path::name | file:path | bib:key | glossary:id | reading
+#                (reading only for kind P: the author's own experience, marked as such)
+#   status       backed | narrowed (only 'backed' passes the test)
+#   disposition  keep | narrow | back
+#   source       optional, the ticket or package that raised the claim; note: optional, what backs it
+#
+# Kind R needs a gen: and a test: backing.
+
+[[claim]]
+id = "C001"
+fragment = "a marker is not where V = 1"
+file = "docs/examples.md"
+anchor = ""
+kind = "S"
+backing = [
+  "test:tests/test_plotting.py::test_ternary_fixed_total_identity_and_peak",
+  "test:tests/test_plotting.py::test_ternary_markers_sit_at_the_exponent_vectors",
+  "func:src/hyperbolic_trade_space/plotting.py::plot_ternary",
+  "file:docs/superpowers/notes/spike-ternary/report.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP18 R-5"
+note = "A numbered marker is a facet's exponent vector, where that facet's V is largest for a fixed total; V also depends on the total. The plot_ternary doctest and Notes; spike-ternary report, Correction (2026-11-09): the largest log V of any design is 0.071, and the labels above V = 1 were V relative to the average mix."
+
+[[claim]]
+id = "C002"
+fragment = "weighted geometric mean of the metrics; doubling every metric doubles it"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L1",
+  "glossary:invariant-value",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "L1: V(km)=kV(m)."
+
+[[claim]]
+id = "C003"
+fragment = "It stays the same along a trade-off, hence invariant"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L1",
+  "lemma:L7",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "L1: log V = w.u - beta, so V is constant where w.u is; L7: the tangent step along a facet; Definition 8 (ascent direction)."
+
+[[claim]]
+id = "C004"
+fragment = "designs of equal V stand at the same level, and log V, the energy differential, is a design's level relative to the reference surface V=1: negative inside, positive beyond"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L1",
+  "glossary:energy-differential",
+  "glossary:level-offset",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Worded as an analogy with a potential; the physical potential is named as an analogy, not a claim."
+
+[[claim]]
+id = "C005"
+fragment = "A difference of levels is the same along every path between two designs"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L1",
+  "lemma:L2",
+  "glossary:energy-differential",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "log V(m) - log V(m') = w.(u - u') for any two designs, free of the offset."
+
+[[claim]]
+id = "C006"
+fragment = "neither a physical energy nor a Euclidean distance"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "glossary:energy-differential",
+  "glossary:level-offset",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "A statement of what the term does not mean (glossary not-clauses), not a claim about the data."
+
+[[claim]]
+id = "C007"
+fragment = "Where several trade-offs are active at once, the model is a sum of such terms, one per facet"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L10",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "e^(kappa Phi_K) is a posynomial in m, the sum of K monomials; Definition 3."
+
+[[claim]]
+id = "C008"
+fragment = "Two temperatures say how soft each maximum is, over designs and over facets; at infinity each is exact"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L5",
+  "lemma:L10",
+  "glossary:temperature",
+  "glossary:term-temperature",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "L5: the log-mean-exp, its limits and the bound; L10: max_k x_k <= Phi_K <= max_k x_k + (log K)/kappa; Definition 4."
+
+[[claim]]
+id = "C009"
+fragment = "The chart separates where a design sits along the surface from its energy differential, how far it is from the surface in levels and not in Euclidean distance"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L8",
+  "glossary:chart",
+  "glossary:position-along-the-frontier",
+  "glossary:energy-differential",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "L8: Z is free of the shift; the map between u and (position, log-scale) is a bijection; Definition 5."
+
+[[claim]]
+id = "C010"
+fragment = "a reversible rewriting of the metrics as a position along the surface and a level relative to it"
+file = "paper/paper.ipynb"
+anchor = "The decision problem"
+kind = "M"
+backing = [
+  "lemma:L8",
+  "glossary:chart",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 1; Definition 5."
+
+[[claim]]
+id = "C011"
+fragment = "a soft fit has a second-order certificate"
+file = "paper/paper.ipynb"
+anchor = "The decision problem"
+kind = "M"
+backing = [
+  "lemma:L17",
+  "file:derivation/lemma_17_soft_fit_certificate.py",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 1, main results item 4."
+
+[[claim]]
+id = "C012"
+fragment = "fitting at a finite kappa is the soft fit of ... which does change them"
+file = "paper/paper.ipynb"
+anchor = "Methods"
+kind = "S"
+backing = [
+  "file:work-packages/interface-contract.md",
+  "test:tests/test_soft_fit.py::test_r2_the_default_is_the_explicit_infinity_and_leaves_one_term_alone",
+  "test:tests/test_soft_fit.py::test_r3_the_limit_kappa_to_infinity_is_the_label_fit",
+  "lemma:L10",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 5, assumption ii. Interface contract version 6: a finite term_temperature selects the soft fit; the default np.inf fit is unchanged. The bound for given facets is L10."
+
+[[claim]]
+id = "C013"
+fragment = "The one-facet fit comes first: the invariant value and its shift (L1, L2), the fit as a convex program (L3 to L5)"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L1",
+  "lemma:L2",
+  "lemma:L3",
+  "lemma:L4",
+  "lemma:L5",
+  "lemma:L16",
+  "lemma:L15",
+  "lemma:L12",
+  "lemma:L13",
+  "lemma:L14",
+  "lemma:L17",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 6 opening: the boxes it names, L1 to L11 as stated; 'not convex' for the several-facet fit is L16 part (i); the three levels are L15, L12 to L14; the certificate is L17."
+
+[[claim]]
+id = "C014"
+fragment = "shifting every log-metric by a constant moves the offset by that constant and leaves the exponents unchanged"
+file = "paper/paper.ipynb"
+anchor = "The fit and its geometry"
+kind = "M"
+backing = [
+  "lemma:L2",
+  "lemma:L1",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 6.1; L1 for 'scales with the metrics'."
+
+[[claim]]
+id = "C015"
+fragment = "has simplex optimality conditions (L3), is convex (L4), and uses the log-mean-exp, which differs from the log-sum-exp by a constant (L5)"
+file = "paper/paper.ipynb"
+anchor = "The fit and its geometry"
+kind = "M"
+backing = [
+  "lemma:L3",
+  "lemma:L4",
+  "lemma:L5",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 6.1; LSE = LME + (log N)/tau."
+
+[[claim]]
+id = "C016"
+fragment = "the soft maximum of Gaussian noise has a closed form (L6), and along a facet the exponents are elasticities and give the improvement factors to V=1 (L7)"
+file = "paper/paper.ipynb"
+anchor = "The fit and its geometry"
+kind = "M"
+backing = [
+  "lemma:L6",
+  "lemma:L7",
+  "glossary:elasticity",
+  "glossary:improvement-factor",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 6.1; L6 is a population identity, no consistency claim."
+
+[[claim]]
+id = "C017"
+fragment = "The chart is a reversible rewriting of the log-metrics (L8), and under log-affine conditioning the pull-back to attributes is exact (L9)"
+file = "paper/paper.ipynb"
+anchor = "The fit and its geometry"
+kind = "M"
+backing = [
+  "lemma:L8",
+  "lemma:L9",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 6.1."
+
+[[claim]]
+id = "C018"
+fragment = "V_K is the 1/kappa power of a posynomial and its logarithm lies within (log K)/kappa of its largest term (L10); a maximizer of V is Pareto-efficient, and the converse is not claimed (L11)"
+file = "paper/paper.ipynb"
+anchor = "The fit and its geometry"
+kind = "M"
+backing = [
+  "lemma:L10",
+  "lemma:L11",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 6.1; the converse is stated as not claimed in the L11 box."
+
+[[claim]]
+id = "C019"
+fragment = "The package fits with sharp weights at the default term temperature (infinity) and with soft weights at a finite one; a soft fit is certified by the second-order test"
+file = "paper/paper.ipynb"
+anchor = "The algorithm for several facets"
+kind = "S"
+backing = [
+  "file:work-packages/interface-contract.md",
+  "file:work-packages/WP17-decisions.md",
+  "test:tests/test_soft_fit.py::test_r2_the_default_is_the_explicit_infinity_and_leaves_one_term_alone",
+  "test:tests/test_soft_fit.py::test_r7_the_benchmark_tables_are_certified",
+  "lemma:L17",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 6.2; WP17 R-1, R-7; the test is L17."
+
+[[claim]]
+id = "C020"
+fragment = "The sharp-weight fit meets three levels of guarantee, none global: descent (L15), numerical stationarity by the facet gap (L12) and local optimality where the margin is positive (L13, L14)"
+file = "paper/paper.ipynb"
+anchor = "The algorithm for several facets"
+kind = "M"
+backing = [
+  "lemma:L15",
+  "lemma:L12",
+  "lemma:L13",
+  "lemma:L14",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 6.2; as stated in their boxes."
+
+[[claim]]
+id = "C021"
+fragment = "At a finite term temperature a second-order test certifies a strict local minimizer (L17)"
+file = "paper/paper.ipynb"
+anchor = "The algorithm for several facets"
+kind = "M"
+backing = [
+  "lemma:L17",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 6.2; a connective: the box states the conditions under which the test certifies."
+
+[[claim]]
+id = "C022"
+fragment = "For a soft fit, certified means that the second-order test holds ... and stationary that the facet gaps hold and the curvature is not positive"
+file = "paper/paper.ipynb"
+anchor = "The algorithm for several facets"
+kind = "S"
+backing = [
+  "file:work-packages/interface-contract.md",
+  "file:work-packages/WP17-scope-of-work.md",
+  "test:tests/test_soft_fit.py::test_r7_the_benchmark_tables_are_certified",
+  "test:tests/test_soft_fit.py::test_r7_all_terms_equal_is_stationary_and_not_certified",
+  "lemma:L17",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "Section 6.2; interface contract version 6 ('certified' has two meanings; 'stationary'); WP17 R-7; the test is L17."
+
+[[claim]]
+id = "C023"
+fragment = "Soft-fit certificate: at a feasible point of the soft-weight fit where the first-order (KKT) conditions hold"
+file = "paper/paper.ipynb"
+anchor = "The algorithm for several facets"
+kind = "M"
+backing = [
+  "lemma:L17",
+  "file:derivation/lemma_17_soft_fit_certificate.py",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, tickets of 2026-11-09"
+note = "The L17 box, section 6.2; the statement of the derivation script (symbol H = D - kappa M typeset); hypotheses (finite tau and kappa; first-order conditions exactly) are the script's own text; the declared inherited result I16."
