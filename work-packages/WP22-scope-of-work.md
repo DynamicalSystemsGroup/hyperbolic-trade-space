@@ -120,3 +120,7 @@ Good enough is met, **no open item remains unresolved**, and the supervisor has 
 - **OD2.** Slew time is bounded today only by the horizon and the pointing band (`censored == false`); bounding it
   by the existing horizon makes the requirement the same as the settled requirement. Options: accept that
   (the requirement states the slew time is below the horizon) / treat slew time as needing a value too (moves it to WP22b)
+
+## Gate outcomes
+
+- 2026-11-09: OD1 settled by the driver under the mandate, for the supervisor's review: the four metrics with no bound in the project's configuration (pointing error, control effort, total mass, peak slew power) stay uncovered in this package and the assessment view shows them honestly as traded with no requirement on them; the values are WP22b, the supervisor's to name (his rule: say what the model lacks rather than invent it). OD2 settled by the driver: the slew-time requirement is that the slew completes within the horizon, stated as such and acknowledged as coinciding with the settled requirement. Approved for execution under the mandate with those two outcomes.

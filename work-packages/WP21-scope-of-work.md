@@ -108,3 +108,7 @@ None. Every item was resolved through the decision loop: A4 by the supervisor's 
 decision here changes a term's meaning or a conclusion, because the default keeps today's definition. If the
 supervisor strikes the default aggregation (making the mean the default), every committed soft-fit number
 would shift by log K / kappa and the scope would need an amendment.
+
+## Gate outcomes
+
+- 2026-11-09: approved for execution by the driver under the mandate; no open decision remained. Recorded in `driver-log.md`.

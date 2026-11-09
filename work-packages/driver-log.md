@@ -89,6 +89,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   regeneration inside the container runs under WP10 Appendix F; Appendix F's text states the
   two-sided result.
 
+- 2026-11-09: WP21 (the response to the independent assessment; the term-aggregation toggle with the
+  sum as default) and WP22 (the system model's two views) scoped by the PM and approved by the
+  driver under the mandate. WP22's two open decisions settled by the driver for the supervisor's
+  review: metrics without a bound in the configuration stay uncovered and are shown as traded without
+  a requirement (their values are his, WP22b); the slew-time requirement is completion within the
+  horizon. The Linux run on the head with the WP17 fix still fails the same three exact-recording
+  tests at tau = inf (run 42705219840; the three shards work); returned to the PM with the container
+  of record as the place to reproduce it.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
