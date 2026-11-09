@@ -381,18 +381,22 @@ outline and development follow the IEEE-paper structure recorded in `WP10-decisi
 Why: the supervisor's words after approval (`WP10-decisions.md`, "Appendices sketched in advance"):
 no source map; a computational reproducibility appendix "that suffices to reproduce the materials in
 the paper"; no appendix "for their own sake"; "their purpose is to build a bridge at an intermediate
-depth between the paper and cloning the repo". The sketch is
-`docs/superpowers/notes/paper-appendices-sketch.md`. Nothing below is executed before a recorded
-approval. Until then the approved text above stands, with the appendix shells, the source map and the
-paper's prose held.
+depth between the paper and cloning the repo"; C and D apart, "disjoint and complementary to the
+greatest extent possible"; "the larger register of prior art as an appendix", in which "for
+everything in our extended lit review we need to clarify what our work does differently, extends,
+adds". The sketch is `docs/superpowers/notes/paper-appendices-sketch.md`. Nothing below is executed
+before a recorded approval. Until then the approved text above stands, with the appendix shells, the
+source map and the paper's prose held.
 
 What changes:
 
-- **D-2 (the supporting notebook's appendices)** is replaced by the sketch's set: **A** notation and
-  terms; **B** proofs (the fit and its geometry, L1 to L11; the solver for K > 1 and its three levels
-  of guarantee, L12 to L14); **C** the case's model (new); **D** extended results of the case, with
-  the solver's printed termination records; **E** assumptions and abstraction gaps; **F**
-  computational reproducibility (new). Each is written to the sketch's three tiers.
+- **D-2 (the supporting notebook's appendices)** is replaced by the sketch's set, each written to
+  the sketch's three tiers (main text, appendix, repository) and opening with its job: **A**
+  notation and terms; **B** proofs (the fit and its geometry, L1 to L11; the solver for K > 1 and
+  its three levels of guarantee, L12 to L14); **C** the case's model: how the table of metrics came
+  to be; **D** extended results: what the method found in the table, with the solver's printed
+  termination records; **E** assumptions and abstraction gaps; **F** computational reproducibility
+  (new); **G** the register of prior art.
 - **D-9 and R-19 (the source map) are withdrawn**, with the table "Where the moved material goes"
   kept above as the author's working aid only, and "a complete source map" removed from the
   definition of good enough. `docs/superpowers/notes/paper-sources/` stays as working material.
@@ -401,20 +405,35 @@ What changes:
   appendix is for WP12's scope.
 - **The verification audit (approved F)** is reduced to the commands and pass criteria in the new F;
   "what remains for a human" is a paragraph of the Discussion.
+- **D-7 and R-10 (prior art)** read: section 2 keeps the concise record of the most immediately
+  relevant material; Appendix G is the larger register (approved H), not exhaustive and saying so,
+  with the dropped candidates left in the repository.
 - **Section 11 of the main text** shrinks to a pointer to F and to the docsite; its words are not
   reallocated.
 - **Letter references follow:** D-10 (full detail in B for L1 to L14); D-11 and R-20 (gaps in E,
   unchanged); R-11 (the printed certificates in D); the budget note (detail that does not fit moves
-  to B, D, E).
-- **New requirements.** R-23: the reproducibility appendix has a row for every figure, table and
-  reported number of the paper (item, command or call, input, output), states the environment and
-  the datasets' provenance, and every command in it runs (test comparing the paper's figures and
-  tables with the rows; smoke test of the commands). R-24: the tables of C and F are generated from
-  the model, the ledger and the paper's cells, not typed (test that the cells are calls; inspection).
-  R-25: no appendix is empty or a stub, and each is cited from the main text at least once (test).
+  to B, D, E, G).
+- **New requirements.**
+  - R-23 (reproducibility): Appendix F has a row for every figure, table and reported number of the
+    paper (item, command or call, input, output), states the environment and the datasets'
+    provenance, and every command in it runs. Checked by a test comparing the paper's figures and
+    tables with the rows, and a smoke test of the commands.
+  - R-24 (generated, not typed): the tables of C, D and F are produced by calls into the model, the
+    ledger, the case module or the paper's cells. Checked by a test that the cells are calls;
+    inspection.
+  - R-25 (no appendix for its own sake): no appendix is empty or a stub; each opens with its job
+    and is cited from the main text at least once. Checked by a test.
+  - R-26 (C and D disjoint and complementary): C contains no fitted quantity and D no definition of
+    the system; every table of D cites its dataset by the label C defines; no table or figure
+    appears in both; each points to the other in its opening sentence. Checked by a test on the
+    cells' calls and on the dataset labels; inspection.
+  - R-27 (the register says what is different): every entry of Appendix G has the four fields, the
+    field "what this work does differently, extends or adds" is never empty, the nearest neighbours
+    named in the sketch each carry a "why this is not just X" sentence, section 2's table is a
+    subset of the register with the same wording, and R-9's rule on the words "novel", "first" and
+    "new" holds in G as in section 2. Checked by a test on the register's source file; inspection.
 - **Dependency added:** C describes the model behind the data the paper uses (the frozen data until
   the swap gate; the WP15 model after it) and is regenerated at the swap.
 
-Open decision (for the supervisor): whether the prior-art review in full (approved Appendix H; D-7's
-second half; R-10's last clause) remains an appendix. Defaults for approval as one item: those listed
-at the end of the sketch.
+Open decisions: none (C and D apart, and the register as an appendix, decided by the supervisor,
+`WP10-decisions.md`). Defaults for approval as one item: those listed at the end of the sketch.

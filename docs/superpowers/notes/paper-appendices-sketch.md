@@ -16,6 +16,17 @@ is supposed to be. its okay to work on sketching the appendices but i don't want
 their own sake. their purpose is to build a bridge at an intermediate depth between the paper and
 cloning the repo."
 
+On the driver's question why C and D are separate, and on the prior-art review:
+
+"you can keep C & D apart but make their different purposes clear and make sure each does its job
+well. they should by disjoint and complementary to the greatest extent possible."
+
+"i do want the larger register of prior art as an appendix. its not supposed to be exhaustive thats
+implausible but the idea is that we can keep a concise record of the most immediately relevant
+material in the paper and expand to more literature in the appendix to make it clear we did our
+homework. we don't want to be told this is just X where X is some existing work. for everything in
+our extended lit review we need to clarify what our work does differently, extends, adds, etc."
+
 ## The test each appendix must pass
 
 An appendix exists only if it answers a question that a reader of the paper has and that the main
@@ -31,12 +42,12 @@ This also says what the main text must not carry: anything in the middle column 
 |---|---|---|
 | A | the register as a table | kept (A) |
 | B | conditions of the theory, full statements and proofs of L1 to L14, `derive`/`verify` output, ledger, lemma coverage | kept, and takes the algorithm's guarantees from D (B) |
-| C | full case detail (sensitivity, refits, regime tables, K = 1/2/3 table, propose-predict-check, candidates, nondominated counts) | split: the case's model (C, new, named by the supervisor) and the extended results (D) |
+| C | full case detail (sensitivity, refits, regime tables, K = 1/2/3 table, propose-predict-check, candidates, nondominated counts) | split at the metric table: how the table came to be (C, named by the supervisor) and what the method found in it (D); disjoint and complementary (decided) |
 | D | the algorithm in full with the certificates as printed by the code | divided: statements and proofs to B, printed certificates to D |
 | E | the abstraction gaps and the simplifying assumptions | kept (E) |
 | F | verification audit, what remains for a human; the source map as a table | replaced by the reproducibility appendix (F); source map withdrawn; "what remains for a human" stays in the Discussion |
 | G | the search's evidence, a marked stub until WP12 | not written (see below) |
-| H | the prior-art review in full | open: see the one question below |
+| H | the prior-art review in full | kept as the register of prior art (G), every entry saying what this work does differently, extends or adds (decided) |
 
 What G was meant to be: the round-by-round tables and convergence diagnostics of the trade-off-aware
 search (outline v2; WP12). WP12 is not scoped, so today it would be an empty, labelled stub. By the
@@ -67,34 +78,64 @@ the search's evidence becomes an appendix is decided in WP12's scope, when there
   stopping declaration).
 - **Repository keeps:** the SymPy scripts and their full output (`derivation/`), the axiom ledger.
 
-### C. The case's model
+### C and D: one boundary, two jobs
 
-- **Reader's question:** what system produced these numbers, precisely enough to judge the case or
-  to build a comparable one?
+The boundary is the table of metrics. **C is how the table came to be; D is what the method found in
+it.** The method treats everything in C as a black box, so a reader with a table from another model,
+a physical test or a human assessment skips C and loses nothing in D; a reader who wants to judge
+this case, or to build a comparable one from another system model, reads C and needs nothing from D.
+
+Rules that keep them disjoint and complementary:
+
+- C contains no fitted quantity: no exponent, temperature, value of V, facet, reach or share.
+- D contains no definition of the system: no variable range, constraint, scenario constant or
+  conditioning rule.
+- C names each dataset once with a label, its size and its provenance; every table in D cites its
+  dataset by that label and repeats nothing else from C.
+- No table or figure appears in both. Anything computed from the metric table belongs to D, even
+  when no fit is involved (the nondominated counts); anything that decides which rows are in the
+  table belongs to C (feasibility).
+- Each opens with one sentence stating its job and pointing to the other for the complementary half.
+
+### C. The case's model: how the table of metrics came to be
+
+- **Job:** let a reader judge whether the case is a fair test, and build a comparable one.
+- **Reader's question:** what system produced this table, and by what steps?
 - **Main text keeps:** section 8 in about 300 words: the cubesat, the two regimes, the ten
-  attributes, feasibility, conditioning, the temperature.
-- **Appendix carries:** tables generated from the model, not typed: the configuration variables with
-  their ranges and alternatives; the attributes with their definitions and units; the feasibility
-  constraints and how many designs each excludes; the scenario constants; the conditioning of each
-  attribute into a metric (orientation, shift, scale), worked for the case; the planted multi-facet
-  example's construction.
+  attributes, feasibility, conditioning.
+- **Appendix carries,** following the pipeline up to the method's input, as tables generated from
+  the model and never typed:
+  1. the configuration space: the design variables with their ranges and alternatives, per regime;
+  2. the evaluation: the attributes with their definitions and units, and which part of the model
+     or simulation produces each; the scenario constants;
+  3. feasibility: the constraints, what the model checking establishes over the whole space, and
+     how many sampled designs each constraint excludes;
+  4. conditioning: each attribute's orientation, shift and scale into a strictly positive,
+     larger-is-better metric, worked for this case;
+  5. the datasets: label, regime, number of designs sampled and kept, seed, ledger entry and hash;
+  6. the planted example: how the synthetic table with known facets is generated.
 - **Repository keeps:** the SysML model file, the evaluation code, the experiment ledger, the data.
-- **Dependency:** the appendix describes the model that produced the data the paper uses. That is
-  the frozen data until the swap gate, and the tidied model (WP15) after it; because the tables are
-  generated, the swap regenerates them.
+- **Dependency:** C describes the model behind the data the paper uses: the frozen data until the
+  swap gate, the tidied model (WP15) after it. Because the tables are generated, the swap
+  regenerates them.
 
-### D. Extended results of the case
+### D. Extended results: what the method found in the table
 
-- **Reader's question:** what else was run that the main text only summarizes, and does it change
-  the reading?
+- **Job:** let a reader check that the main text's summary of the analysis is fair, including the
+  results that are mixed.
+- **Reader's question:** what else was computed that the main text only summarizes, and does it
+  change the reading?
 - **Main text keeps:** section 9 in about 500 words: K = 1, K = 3, the regime comparison, the
   candidates, propose-predict-check in one paragraph, the nondominated counts.
-- **Appendix carries:** the full tables behind those sentences: the K = 1, 2, 3 diagnostic table
-  with the temperature re-selected at each K; exponents, reach and facet share per term in both
-  regimes; the sensitivity variants and per-category refits; propose-predict-check with its mixed
-  result; and the solver's termination records for the planted data and the cubesat tables (status,
-  gap, margin, radius) as printed by the code.
-- **Repository keeps:** the datasets, the case module, the record scripts.
+- **Appendix carries,** each table citing its dataset by C's label:
+  1. the selection of the temperature, and its re-selection at each K;
+  2. the K = 1, 2, 3 diagnostic table; exponents, reach and facet share per term, per regime;
+  3. the sensitivity variants and the per-category refits;
+  4. the solver's termination records for the planted data and the case (status, gap, margin,
+     radius), as printed by the code; recovery of the planted facets;
+  5. the comparison with nondominated sorting (the counts on ten, four and two attributes);
+  6. propose-predict-check, with its mixed result.
+- **Repository keeps:** the case module, the record scripts, the full printed output.
 
 ### E. Assumptions and abstraction gaps
 
@@ -123,6 +164,26 @@ the search's evidence becomes an appendix is decided in WP12's scope, when there
 - **Check:** a test that every figure and table in the paper has a row, and that every command in
   the table runs.
 
+### G. Register of prior art
+
+- **Job:** show that the homework was done, and answer in advance the objection that this work is
+  "just X" for some existing X.
+- **Reader's question:** how does this work stand to the method I already know?
+- **Main text keeps:** section 2 in about 600 words: a concise record of the most immediately
+  relevant material: the family table, the Pareto and DEA paragraphs, the lineage.
+- **Appendix carries:** the larger register, grouped by family. One entry per work or family, each
+  with the same four fields: what it does, in a sentence; what this work shares with it or takes
+  from it; **what this work does differently, extends or adds**; the citations. The nearest
+  neighbours (Pareto methods, DEA, PCA and log-ratio analysis, geometric programming and max-affine
+  fitting, production and distance functions, tradespace exploration) get a plain "why this is not
+  just X" sentence. It opens by saying it is not exhaustive and how the entries were chosen.
+- **Rules:** no entry without the third field; the main text's table is a subset of the register,
+  with the same wording; differences are stated as differences, without the words "novel", "first"
+  or "new" about the method (the approved R-9 stands); every cited source has a verified record in
+  the bibliography.
+- **Repository keeps:** the long review with its dropped candidates
+  (`docs/superpowers/notes/paper-sources/literature.md`), the bibliography of all adopted sources.
+
 ## What is not an appendix
 
 - **The source map** (approved D-9, R-19): withdrawn on the supervisor's word. The snapshot of the
@@ -133,21 +194,25 @@ the search's evidence becomes an appendix is decided in WP12's scope, when there
 - **"What remains for a human"**: a paragraph of the Discussion (verify versus validate), not a
   table in an appendix.
 
-## The one question for the supervisor
+## Open questions
 
-The approved H is the prior-art review in full: the by-family review at length, the state-of-practice
-section, the dropped candidates, the sources of the inherited axioms. Section 2 of the main text
-already carries the family table, the Pareto and DEA paragraphs and the lineage in about 600 words,
-and every adopted source stays in the bibliography whether or not the text cites it. H is a bridge to
-the literature, not to the repository, so the test above does not settle it.
+None. C and D stay apart and the register of prior art is an appendix, both in the supervisor's
+words above.
 
 ## Defaults in this sketch (for approval as one item with the amendment)
 
-- Letters A to F in the order above; letters are assigned once and not reused for something else.
-- B holds proofs in prose, not SymPy output; the scripts' output is the repository's.
+- Letters A to G in the order above. G was the search's appendix in the approved scope; nothing has
+  been built against the old letters.
+- B holds proofs in prose, not SymPy output; the scripts' output is the repository's. The sources
+  of the inherited axioms are cited there, at the statement that inherits them.
 - The algorithm's statements and proofs sit with the other proofs (B); its printed certificates sit
   with the other printed results (D).
-- C and F are generated from the model, the ledger and the paper's own cells; nothing in them is
-  typed by hand.
-- C describes the model behind the data in use at the time, and is regenerated at the swap gate.
+- C, D and F are generated from the model, the ledger, the case module and the paper's own cells;
+  nothing in them is typed by hand.
+- The boundary between C and D is the metric table, with the five rules above; the planted example
+  follows the same boundary (its construction in C, its results in D).
+- The register (G) and the main text's family table are compiled from one skimmable source file
+  (`paper/prior_art.yaml`), as the notation table is from `glossary.yaml`, so the two cannot drift
+  and the "differs, extends or adds" field can be tested for presence.
+- The dropped candidates of the long review stay in the repository and are not in G.
 - Section 11 of the main text shrinks; its freed words are not reallocated (the cap is a cap).

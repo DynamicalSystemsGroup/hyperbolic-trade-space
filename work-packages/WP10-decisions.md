@@ -510,3 +510,22 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   F as the source map. The approved F is the verification audit and "what remains for a human",
   with the source map rendered as a table inside it; the approved G is the search's evidence, a
   stub until WP12.
+
+- **C and D.** The supervisor asked: "what is the justification for keeping C and D seperate?" The
+  driver answered that the boundary is the method's own: C is the inside of the black box (specific
+  to this case), D is what the method produced from the table (the same shape for any table), with
+  the cost that both concern one case. **Supervisor (mzargham), verbatim:** "you can keep C & D
+  apart but make their different purposes clear and make sure each does its job well. they should by
+  disjoint and complementary to the greatest extent possible." Disposition: decided; the sketch
+  states one boundary (the table of metrics), each appendix's job, and five rules of disjointness;
+  the amendment makes them a requirement (R-26).
+- **The register of prior art.** Driver's question: keep the full prior-art review as an appendix,
+  or leave it out of the paper as an internal record. **Supervisor (mzargham), verbatim:** "i do
+  want the larger register of prior art as an appendix. its not supposed to be exhaustive thats
+  implausible but the idea is that we can keep a concise record of the most immediately relevant
+  material in the paper and expand to more literature in the appendix to make it clear we did our
+  homework. we don't want to be told this is just X where X is some existing work. for everything in
+  our extended lit review we need to clarify what our work does differently, extends, adds, etc."
+  Disposition: decided; Appendix G in the sketch, every entry with the field "what this work does
+  differently, extends or adds" (R-27). No open decision remains on the amendment; its defaults and
+  its approval are the next questions.
