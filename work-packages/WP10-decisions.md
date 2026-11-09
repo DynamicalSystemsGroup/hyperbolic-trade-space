@@ -447,6 +447,16 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   Disposition: decided; WP10 leaves the export block out; the PDF is added at the release package
   or when a venue is chosen (on the punch list).
 
+- At the defaults question, on Figure 1. **Supervisor (mzargham), verbatim:** "for the figure: the
+  first panel is kinked and the second panel is peicewise linear and the 3rd panel is a single
+  horizontal like with colored regions. this give the best intuition and accuracy balance".
+  Disposition: Figure 1's specification, replacing the earlier wording: three panes; pane 1 metric
+  space with the hyperbolic sheets meeting at sharp corners (the kinked envelope); pane 2 log space
+  with a piecewise-linear frontier (hard facets, no finite-κ rounding), the facet normals, and the
+  highlighted design's energy differential; pane 3 the chart with the frontier as a single
+  horizontal line and the facets as coloured regions along Z. The spike's script is regenerated to
+  that specification by WP10's author.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
