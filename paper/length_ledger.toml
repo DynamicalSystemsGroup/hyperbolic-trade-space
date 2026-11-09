@@ -32,9 +32,131 @@ total = 5900
 "Acknowledgments and process" = 73
 "Works cited" = 3
 
-# [[raise]]
-# date = "2026-11-09"
-# section = "Definitions"
-# words_added = 12
-# job = "what the sentence does for the reader"
-# reader = "which reader it serves"
+# Rows: the tickets of 2026-11-09 on sections 4 and 6 (the supervisor's, WP10-decisions.md).
+# Each row: date, section, words_added, job, reader.
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 27
+job = "says in plain words what the invariant value is and why it is called invariant, before the first definition uses it"
+reader = "the trade-study practitioner meeting the definitions cold"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 57
+job = "narrates why the logarithm of V is read as an energy (a potential, a level relative to the reference surface, path-independent) and what it is not, before the term is defined"
+reader = "every reader of the definitions; the convex-optimization reader needs the analogy marked as one"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 19
+job = "says that several trade-offs active at once are a sum of such terms, before the posynomial is defined"
+reader = "the trade-study practitioner"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 18
+job = "says in words what the two temperatures do, before they are defined"
+reader = "the trade-study practitioner and the machine-learning reader"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 28
+job = "says what the chart separates, with distance in the register's sense only, before the chart is defined"
+reader = "the trade-study practitioner and the optimization reader"
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 10
+job = "keeps the main-results list complete by naming the soft-fit certificate that WP17 added"
+reader = "the reader who stops at the introduction"
+
+[[raise]]
+date = "2026-11-09"
+section = "Methods"
+words_added = 21
+job = "corrects the simplifying assumption on sharp weights, which WP17 made incomplete: a finite kappa now changes the fit"
+reader = "the optimization reader checking the assumptions against the package"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 76
+job = "tells a skimmer what is established and in what order, in two sentences"
+reader = "the reader skimming the mathematics, and the practitioner choosing what to read closely"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 28
+job = "says what the first two boxes are for (the invariant value scales; a shift moves only the offset)"
+reader = "the reader skimming the mathematics"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 29
+job = "says what the next three boxes are (the one-facet fit is a convex program) before they appear"
+reader = "the reader skimming the mathematics"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 35
+job = "says what the fitted numbers mean, in one sentence for two boxes"
+reader = "the practitioner who reads the exponents as trade rates"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 24
+job = "says what the chart and pull-back boxes are for"
+reader = "the reader skimming the mathematics"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 37
+job = "says what the two several-term boxes state, and that the converse of Pareto-efficiency is not claimed"
+reader = "the optimization reader and the skimmer"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 27
+job = "states what the package fits at each term temperature and what certifies a soft fit, the wording WP17 requires of section 6"
+reader = "the machine-learning and optimization readers using the package"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 30
+job = "names the three levels of guarantee of the sharp-weight fit before their four boxes"
+reader = "the reader skimming the mathematics"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 15
+job = "says what the certificate box is for: a second-order test certifies a strict local minimizer of the soft fit"
+reader = "the optimization reader"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 154
+job = "states the soft-fit certificate (L17) as a box in the form of every other result, with hypotheses, sketch and script pointer"
+reader = "the close reader and the optimization reader"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 27
+job = "says what the statuses certified and stationary mean for a soft fit"
+reader = "the user reading a returned fit's status"

@@ -1491,11 +1491,11 @@ def test_search_section_is_short_future_work_without_numbers():
 
 
 def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script():
-    """R-17, R-18: L1 to L16 once each, each with the parts of the form. The paper's order is the
+    """R-17, R-18: L1 to L17 once each, each with the parts of the form. The paper's order is the
     algorithm's (E-8): the alternation (L16) and Level 1 (L15) come before Lemma 1 (L12)."""
     blocks = _blocks()
     tags = [re.search(r"\(L(\d+)\)\s*$", title).group(1) for _, title, _, _ in blocks]
-    assert [int(t) for t in tags] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 15, 12, 13, 14, 14]
+    assert [int(t) for t in tags] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 15, 12, 13, 14, 14, 17]
     body = _markdown(_nb(PAPER_NB))
     scripts = {
         int(re.match(r"lemma_(\d+)_", p.name).group(1)): p
@@ -1526,7 +1526,8 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
         ("lemma", 13),
         ("proposition", 14),
         ("corollary", 14),
-    ]  # E-8
+        ("theorem", 17),
+    ]  # E-8, and the soft-fit certificate (WP17) last
 
 
 def test_badges_are_present_and_the_open_questions_are_marked():
