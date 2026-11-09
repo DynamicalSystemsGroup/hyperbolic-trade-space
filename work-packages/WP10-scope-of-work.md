@@ -357,3 +357,16 @@ Decided at the scope gate and no longer open (title and byline, Figure 1, the WP
 statement, how the drill-down levels are judged): see "Decided at the scope gate" above with the
 supervisor's verbatim words. No new open decision arises from the separation of concerns: the paper's
 sections, appendices and word allocation are defaults; the cap of 6,000 is unchanged.
+
+## Gate outcomes (2026-11-08, `WP10-decisions.md`)
+
+No open decision remains. OD4: "Later, once the content has settled" (no PDF export block in WP10;
+on the punch list). Figure 1, the supervisor's specification: "the first panel is kinked and the
+second panel is peicewise linear and the 3rd panel is a single horizontal like with colored regions.
+this give the best intuition and accuracy balance" (pane 1 metric space with sharp corners between
+the hyperbolic sheets; pane 2 log space with a piecewise-linear frontier, the normals and the
+highlighted design's energy differential; pane 3 the chart with the frontier as one horizontal line
+and the facets as coloured regions). The register table is compiled from the shared `glossary.yaml`
+(WP8a Amendment 2 OD5). The docsite carries no citations into the paper for now (WP8a Amendment 2);
+the paper may link to the docsite's user pages. Defaults approved as one item: "Yes, approve the
+rest as listed". Decided 6, deferred 0, raised 0.

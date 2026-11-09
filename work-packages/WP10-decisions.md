@@ -457,6 +457,10 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   horizontal line and the facets as coloured regions along Z. The spike's script is regenerated to
   that specification by WP10's author.
 
+- **Agent's defaults, as one item** (with the Figure 1 specification). **Supervisor (mzargham),
+  verbatim:** "Yes, approve the rest as listed". Disposition: approved. Loop closed: decided 6 (OD1
+  to OD6), deferred 0, raised 0, defaults approved as one item.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
