@@ -529,3 +529,16 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   Disposition: decided; Appendix G in the sketch, every entry with the field "what this work does
   differently, extends or adds" (R-27). No open decision remains on the amendment; its defaults and
   its approval are the next questions.
+- **The proofs appendix.** The driver had listed as a default "Proofs are written in prose. The
+  SymPy output stays in the repo." **Supervisor (mzargham), verbatim:** "every step in the prose
+  proof should be mapped to a step in a sympy script. we should explain this at the beginning of
+  that appendix then each proof is one file, and and each step in the proof is a line in that file.
+  make sure you give yourself a tool for checking this we don't want any regressions to go
+  unnoticed". Disposition: decided, and no longer a default. Found in the scripts as they stand:
+  one file per lemma already; 143 assertions across the fourteen files; no step tags; one file
+  (L14) proves a proposition and its corollary together. The sketch's section B specifies the
+  one-line tagged step, the three kinds of step (computed, inherited, argued), the claim and line
+  link compiled from the script, the checker, and the committed record of fingerprints; the
+  amendment adds D-12, R-28 and R-29 and widens WP10's files to the lemma scripts for tagging only
+  (no change to the mathematics, statements or axioms). The remaining defaults are re-listed in
+  the sketch for approval as one item.

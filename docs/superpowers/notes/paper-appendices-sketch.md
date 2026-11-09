@@ -27,6 +27,13 @@ material in the paper and expand to more literature in the appendix to make it c
 homework. we don't want to be told this is just X where X is some existing work. for everything in
 our extended lit review we need to clarify what our work does differently, extends, adds, etc."
 
+On the default "proofs are written in prose; the SymPy output stays in the repository":
+
+"every step in the prose proof should be mapped to a step in a sympy script. we should explain this
+at the beginning of that appendix then each proof is one file, and and each step in the proof is a
+line in that file. make sure you give yourself a tool for checking this we don't want any
+regressions to go unnoticed"
+
 ## The test each appendix must pass
 
 An appendix exists only if it answers a question that a reader of the paper has and that the main
@@ -66,17 +73,53 @@ the search's evidence becomes an appendix is decided in WP12's scope, when there
 - **Repository keeps:** the register's reasoning and its phrase lists
   (`docs/superpowers/notes/notation.md`).
 
-### B. Proofs
+### B. Proofs, step for step with their scripts
 
-- **Reader's question:** why is each numbered statement true, in full?
+- **Job:** let a reader follow each proof in ordinary mathematics and, at any step, open the exact
+  line of code that checks it.
+- **Reader's question:** why is each numbered statement true, and where is each step checked?
 - **Main text keeps:** each statement as a theorem-style block with hypotheses, a narrative proof
-  sketch of a few sentences, and a one-line pointer to its script.
-- **Appendix carries:** in the paper's numbering, each statement restated with its hypotheses and a
-  complete proof in ordinary mathematical prose; its ledger status (proved, inherited from a cited
-  source, or observed only); the one-line result of its verification script. Two parts: the fit and
-  its geometry (L1 to L11); the solver for K > 1 and its three levels of guarantee (L12 to L14, the
-  stopping declaration).
-- **Repository keeps:** the SymPy scripts and their full output (`derivation/`), the axiom ledger.
+  sketch of a few sentences, and a one-line pointer to its file.
+- **Appendix opens with the rule** (the supervisor's): each proof is one file; each step of the
+  prose proof is one line of that file; the tag on a step is a link to that line; and what the
+  correspondence does and does not establish (below).
+- **Appendix carries,** per proof, in the paper's numbering: the statement with its hypotheses; its
+  file; the proof as numbered steps, each with a sentence of prose, the step's formal claim, its
+  kind, and its tag linking to the line; the ledger status of the statement. Two parts: the fit
+  and its geometry (L1 to L11); the solver for K > 1 and its three levels of guarantee (L12 to L14,
+  the stopping declaration).
+- **Repository keeps:** the scripts, the axiom ledger, the runner, the checker.
+
+How the correspondence is built (so that it can be checked, and cannot drift):
+
+- **In the script, a step is one line:** a call that carries the step's tag (L2.1, L2.2, ...), its
+  formal claim as a short statement, its kind, and the condition SymPy checks. Today the scripts
+  hold these as comments, intermediate results and 143 assertions across the fourteen files, with no
+  tags; the work is to give each step its line and its tag, with the mathematics, the statements
+  and the axioms used unchanged.
+- **Three kinds of step,** declared in the script and shown in the appendix, because not every step
+  of a proof is a computation: *computed* (SymPy verifies the condition); *inherited* (the step
+  cites a ledger entry with its source); *argued* (a named rule or an argument in prose that SymPy
+  does not check, such as extending a symbolic identity to every dimension). The appendix reports
+  the count of each kind per proof.
+- **In the appendix, the formal claim and the link are compiled from the script,** never typed: the
+  claim shown beside a step is the script's own text, and the line number in the link is resolved
+  at build time from the tag, so moving code cannot break or silently repoint a link.
+
+The tool (the supervisor's instruction: no regression goes unnoticed):
+
+- **A checker,** run as one command and by the test suite, that fails unless: every proof in the
+  appendix names exactly one file and every lemma file is the file of exactly one proof; within
+  each, the prose steps and the script's steps correspond one to one and in the same order, with no
+  step on either side unmatched; every *computed* step's condition passes; every *inherited* step
+  names a ledger entry that exists and that the file declares; and tags are unique and unbroken.
+- **A committed record** of every step (its tag, a fingerprint of its line in the script and a
+  fingerprint of its prose). The checker fails when either fingerprint differs from the record, so
+  a script step cannot change without its prose being looked at again, nor the prose without the
+  script; refreshing the record is an explicit command whose diff shows exactly which steps moved.
+- **What it cannot check,** said plainly at the top of the appendix: that a sentence of prose means
+  what its line computes. That reading is the human validation; the tool guarantees there is always
+  exactly one line to read it against, and that the line passes.
 
 ### C and D: one boundary, two jobs
 
@@ -203,8 +246,20 @@ words above.
 
 - Letters A to G in the order above. G was the search's appendix in the approved scope; nothing has
   been built against the old letters.
-- B holds proofs in prose, not SymPy output; the scripts' output is the repository's. The sources
-  of the inherited axioms are cited there, at the statement that inherits them.
+- B (the supervisor's rule, not a default): each proof is one file, each prose step one line of
+  it, explained at the head of the appendix, with a checker. Defaults under that rule: tags of the
+  form L2.1; the three kinds of step (computed, inherited, argued); the step's formal claim and
+  the line link compiled from the script; the committed record of fingerprints; the checker as a
+  module beside the runner and a test in the suite.
+- One file may prove a statement together with its corollary as one sequence of steps (today only
+  L14: the proposition on assignment-stable optimality and its corollary); the appendix then has
+  one entry for that file. No file is split and the numbering L1 to L14 is unchanged.
+- The main text's proof sketches stay narrative and are not step-tagged; they point to the appendix
+  entry and the file.
+- The sources of the inherited axioms are cited in B, at the step that inherits them.
+- The step tagging of the fourteen scripts is done first, by its own bounded implementer, before
+  any proof is written in prose; it changes no mathematics, statement or axiom list, and the
+  existing derivation tests stay as they are and pass.
 - The algorithm's statements and proofs sit with the other proofs (B); its printed certificates sit
   with the other printed results (D).
 - C, D and F are generated from the model, the ledger, the case module and the paper's own cells;

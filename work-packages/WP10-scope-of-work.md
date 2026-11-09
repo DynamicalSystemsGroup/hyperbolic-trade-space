@@ -397,6 +397,19 @@ What changes:
   to be; **D** extended results: what the method found in the table, with the solver's printed
   termination records; **E** assumptions and abstraction gaps; **F** computational reproducibility
   (new); **G** the register of prior art.
+- **The proofs appendix (B) is step for step with the scripts** (the supervisor's rule,
+  `WP10-decisions.md`): "every step in the prose proof should be mapped to a step in a sympy
+  script. we should explain this at the beginning of that appendix then each proof is one file, and
+  and each step in the proof is a line in that file. make sure you give yourself a tool for checking
+  this we don't want any regressions to go unnoticed". This adds a deliverable, **D-12: the step
+  tags in `derivation/lemma_01` to `lemma_14` and the proof-map checker with its committed record**
+  (sketch, "B. Proofs, step for step with their scripts"), and **widens what WP10 may edit**: the
+  fourteen lemma scripts, `derivation/run.py`, one new helper module and one new checker module
+  under `derivation/`, and a new `tests/test_proof_map.py`, limited to giving each existing step
+  its line, tag, claim and kind. No mathematics, `TITLE`, `STATEMENT` or `AXIOMS_USED` changes; the
+  interface contract's pinned names stay; `tests/test_derivation.py` and
+  `tests/test_matches_derivation.py` are not edited and pass. D-10's pointers in the main text
+  stay narrative.
 - **D-9 and R-19 (the source map) are withdrawn**, with the table "Where the moved material goes"
   kept above as the author's working aid only, and "a complete source map" removed from the
   definition of good enough. `docs/superpowers/notes/paper-sources/` stays as working material.
@@ -432,8 +445,22 @@ What changes:
     named in the sketch each carry a "why this is not just X" sentence, section 2's table is a
     subset of the register with the same wording, and R-9's rule on the words "novel", "first" and
     "new" holds in G as in section 2. Checked by a test on the register's source file; inspection.
+  - R-28 (proofs step for step): Appendix B opens with the rule and with what the correspondence
+    does and does not establish; each proof names exactly one file and each lemma file is the file
+    of exactly one proof; prose steps and script steps correspond one to one and in order; each
+    step shows its kind (computed, inherited, argued), its formal claim and its line link, the last
+    two compiled from the script; every computed step passes and every inherited step names a
+    declared ledger entry. Checked by the proof-map checker (`uv run python -m derivation.proofmap`)
+    and `tests/test_proof_map.py`.
+  - R-29 (no silent regression): the committed record holds a fingerprint of every step's script
+    line and of its prose; the checker fails on any difference, on any unmatched, duplicated or
+    reordered step, and on any broken tag; refreshing the record is an explicit command. Checked by
+    tests that alter a copy of a script step, of a prose step, and of the order, and expect the
+    checker to fail each time.
+- **Order of work:** the step tagging and the checker come first, by their own bounded
+  implementer, before any proof is written in prose.
 - **Dependency added:** C describes the model behind the data the paper uses (the frozen data until
   the swap gate; the WP15 model after it) and is regenerated at the swap.
 
-Open decisions: none (C and D apart, and the register as an appendix, decided by the supervisor,
-`WP10-decisions.md`). Defaults for approval as one item: those listed at the end of the sketch.
+Open decisions: none (C and D apart, the register as an appendix, and the proofs step for step with
+their scripts, decided by the supervisor, `WP10-decisions.md`). Defaults for approval as one item: those listed at the end of the sketch.
