@@ -61,6 +61,7 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 | 2026-11-09 | The novelty sentence is reworded to say what was looked at and not that the literature lacks it | "we claim nothing as novel"; "clarify what our work does differently, extends, adds" | `WP10-decisions.md` |
 | 2026-11-09 | Triage of the first cold reads (one fresh reader per depth): 22 findings; change requests to the paper, Appendix F, the docsite and the package | every reader stated the story correctly; reproduction matched cell for cell; an unseen planted table was read correctly from the docs alone; replicated gaps: n-lemma membership against the figure, the planted recovery result absent from the main text, the unexplained 10 percent target, the unargued analogy for the facet share | `WP10-cold-reads.md` (verbatim); `WP10-cold-reads-triage.md` |
 | 2026-11-09 | Package: fitted attributes exist for every K; a quantity comparable across K (`mean_slack_`); the contract's manifest amended with them | the adapt-depth reader hit an AttributeError at one term and compared `objective_` across K, which is two different quantities; reproduced by the driver | `WP10-cold-reads-triage.md`, items 19 to 22 |
+| 2026-11-09 | Defined and approved WP11, the reader-grid loops: answer key fixed first with its hash committed, six cells held out, three roles apart, at most four rounds | the supervisor's words on the grid; the first cold reads | `WP11-scope-of-work.md`, `WP11-decisions.md` |
 
 ## Decided by the driver for the PM
 
