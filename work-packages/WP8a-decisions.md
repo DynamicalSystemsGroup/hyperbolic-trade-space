@@ -19,6 +19,18 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   `main` follows; the public URL is checked afterwards and recorded in this file, fix-forward if it
   fails.
 
+- **OD2, a working-draft label on the public site.** Options: visible line / no label.
+  **Supervisor (mzargham), verbatim:** "no label we don't deploy to main and thus github pages until
+  we have an actual first release. in the mean time its local host review loops"
+- Disposition: decided, no label; and a consequence for the package: nothing is deployed to GitHub
+  Pages before the first release (WP8b). WP8a still delivers the Pages workflow, but it must not
+  trigger on pushes to `main` (merges to `main` continue for CI); it triggers on the release tag or
+  on manual dispatch only, and the first deployment is WP8b's. Review loops run on the localhost
+  staging build (WP14 R-12). OD1's "live check after the merge" therefore moves to WP8b's release;
+  WP8a's acceptance is judged on the staged localhost site plus a green manual build run on `dev`.
+  OD3 (the paper card before WP10) no longer concerns a public page and becomes a default: the card
+  is shown and links to the placeholder on the staging site.
+
 ## Scope approval (approval gate)
 
-- pending (OD2, OD3, the defaults as one item, then approval)
+- pending (the defaults as one item, then approval)

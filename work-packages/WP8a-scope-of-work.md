@@ -186,3 +186,16 @@ All marked *(default)* where they appear; the supervisor approves or changes the
 - **OD1.** Where does the live-site check sit in acceptance? The workflow can deploy only from `main`, so the live URL can be checked only after a merge. Options: (a) acceptance waits for the merge of `dev` into `main` and judges the live site (R-11 inside good enough); (b) acceptance is judged on the local assembly plus the green `dev` build run, then the merge to `main` follows and R-11 is checked as a post-merge confirmation that does not reopen acceptance.
 - **OD2.** Does the public site say it is a working draft? The deployment makes an unfinished site public at the Pages URL. Options: (a) a visible "working draft" line on the root page, the docs home and the paper placeholder; (b) no label, the paper placeholder alone says "in preparation".
 - **OD3.** What does the paper card on the root page do until WP10 publishes? Options: (a) it is shown and links to the placeholder page; (b) it is shown as "coming" without a link; (c) it is omitted from the root page until the paper exists.
+
+## Gate outcomes (2026-11-08, `WP8a-decisions.md`)
+
+- OD1: "Accept on the staged site; live check after the merge". OD2: "no label we don't deploy to
+  main and thus github pages until we have an actual first release. in the mean time its local host
+  review loops". Consequences, replacing the corresponding items above: the Pages workflow
+  (`.github/workflows/pages.yml`) triggers on the release tag (`v*`) and `workflow_dispatch` only,
+  never on pushes to `main`; no deployment happens in WP8a; R-11 (the live URL) moves to WP8b and is
+  checked at the first release; WP8a's acceptance evidence is the staged localhost assembly (one
+  command, WP14 R-12) reviewed by the supervisor plus a green `workflow_dispatch` build run on
+  `dev` that builds without deploying. OD3 becomes a default: the paper card is shown on the root
+  page and links to the placeholder. `pyproject.toml` and `uv.lock` changes (the `docs` group pins,
+  `default-groups`) are requested from the driver, who owns those files (WP14), not made by WP8a.
