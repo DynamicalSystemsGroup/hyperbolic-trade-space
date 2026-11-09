@@ -26,6 +26,11 @@ jumps from 33.4 s to 12.5 s where its trajectory grazes the settling band
 reproducible precision with the effect named as a gap, or measure the times by event detection and
 regenerate everything.
 
+**For his eye at the PR, from the cold reads:** three readers did not accept "facet share, our
+analogue of explained variance" as stated (the register's entry); the title's "scaling" is not
+carried by the first screen; how his own review of the mathematics and the tools disclosure are
+worded; the sentence about his INCOSE paper.
+
 **For his eye, not blocking:** the platform of record for the container is provisionally
 linux/arm64 instead of linux/amd64, which he was told would come back to him
 (`docs/superpowers/notes/spike-container-platform/report.md`).
@@ -54,6 +59,8 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 | 2026-11-09 | WP10 (the paper) returned after its fresh review. Fix before acceptance: the word cap counted on what renders; figures referenced; the execution test; Levels 2 and 3 named; the claims beyond their basis; a reading pass on what cited sources say | `WP10-review.md`: one requirement not met, one partly; rendered prose about 6,390 words against the cap of 6,000 because the counter omitted generated sentences | `WP10-decisions.md` |
 | 2026-11-09 | **Removed a false sentence from the paper:** "an external reviewer audited the mathematics" | the review was the supervisor's own, with an AI-made chart (his words, `external-review-2026-11.md`); how to describe it is his wording | `WP10-decisions.md` |
 | 2026-11-09 | The novelty sentence is reworded to say what was looked at and not that the literature lacks it | "we claim nothing as novel"; "clarify what our work does differently, extends, adds" | `WP10-decisions.md` |
+| 2026-11-09 | Triage of the first cold reads (one fresh reader per depth): 22 findings; change requests to the paper, Appendix F, the docsite and the package | every reader stated the story correctly; reproduction matched cell for cell; an unseen planted table was read correctly from the docs alone; replicated gaps: n-lemma membership against the figure, the planted recovery result absent from the main text, the unexplained 10 percent target, the unargued analogy for the facet share | `WP10-cold-reads.md` (verbatim); `WP10-cold-reads-triage.md` |
+| 2026-11-09 | Package: fitted attributes exist for every K; a quantity comparable across K (`mean_slack_`); the contract's manifest amended with them | the adapt-depth reader hit an AttributeError at one term and compared `objective_` across K, which is two different quantities; reproduced by the driver | `WP10-cold-reads-triage.md`, items 19 to 22 |
 
 ## Decided by the driver for the PM
 
