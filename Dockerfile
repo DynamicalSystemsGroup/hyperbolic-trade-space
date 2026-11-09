@@ -80,7 +80,10 @@ RUN pip install --no-cache-dir "uv==${UV_VERSION}"
 
 ARG OF_RECORD=1
 ENV HTS_ENVIRONMENT_OF_RECORD=${OF_RECORD}
-ENV UV_PYTHON_DOWNLOADS=never \
+# UV_NO_SYNC: the environment was synced (locked) at build time; `uv run` at run time, with no
+# network, must not try to re-resolve the build backend if a file's timestamp changes.
+ENV UV_NO_SYNC=1 \
+    UV_PYTHON_DOWNLOADS=never \
     UV_LINK_MODE=copy \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
