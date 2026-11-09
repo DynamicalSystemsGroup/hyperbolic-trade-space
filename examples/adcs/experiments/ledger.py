@@ -130,12 +130,23 @@ def _git(root: Path, *args: str) -> str | None:
     return r.stdout.strip()
 
 
-def git_state(root: Path) -> tuple[str | None, bool | None]:
-    """``(commit, dirty)`` of the repository at ``root``; ``(None, None)`` outside one."""
+def git_state(root: Path, ignore=()) -> tuple[str | None, bool | None]:
+    """``(commit, dirty)`` of the repository at ``root``; ``(None, None)`` outside one.
+
+    ``ignore`` lists paths (the ledger and the run's own outputs) that do not count as dirty.
+    """
     commit = _git(root, "rev-parse", "HEAD")
     if commit is None:
         return None, None
-    status = _git(root, "status", "--porcelain")
+    skip = []
+    for p in ignore:
+        try:
+            skip.append(
+                f":(exclude){Path(p).resolve().relative_to(Path(root).resolve()).as_posix()}"
+            )
+        except ValueError:
+            continue
+    status = _git(root, "status", "--porcelain", "--", ".", *skip)
     return commit, bool(status)
 
 

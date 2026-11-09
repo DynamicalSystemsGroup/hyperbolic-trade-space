@@ -121,10 +121,11 @@ def run(
     clash = [c.id for c in cells if c.id in existing]
     if clash:
         raise lg.LedgerError(f"entries {clash} exist; the ledger is append-only")
-    return [_run_cell(c, oracle, sampler, root, ledger) for c in cells]
+    own = [ledger, *(root / c.output for c in cells)]
+    return [_run_cell(c, oracle, sampler, root, ledger, own) for c in cells]
 
 
-def _run_cell(cell: Experiment, oracle, sampler, root: Path, ledger: Path) -> dict:
+def _run_cell(cell: Experiment, oracle, sampler, root: Path, ledger: Path, own) -> dict:
     entries = lg.read(ledger)
     parents = _parent_records(cell, entries, root)
     model_hash = None
@@ -146,7 +147,7 @@ def _run_cell(cell: Experiment, oracle, sampler, root: Path, ledger: Path) -> di
     out = root / cell.output
     out.parent.mkdir(parents=True, exist_ok=True)
     table.to_csv(out, index=False, float_format="%.9g")
-    commit, dirty = lg.git_state(root)
+    commit, dirty = lg.git_state(root, own)
     vers = lg.versions()
     runtime = getattr(orc, "runtime_info", None)
     if runtime:
@@ -199,7 +200,7 @@ def adopt(specs: Sequence[AdoptedSpec], root: Path, ledger: Path) -> list[dict]:
         if lg.find(lg.read(ledger), s.id) is not None:
             continue
         out = root / s.output
-        commit, dirty = lg.git_state(root)
+        commit, dirty = lg.git_state(root, [ledger])
         entries = lg.read(ledger)
         entry = {
             "id": s.id,
