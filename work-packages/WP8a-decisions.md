@@ -458,3 +458,18 @@ The driver's calls on `WP8a-driver-browser-pass.md` are binding and applied as f
   the driver in `site/index.html`. Two typographic normalizations, for him to overrule: "unsupervised"
   in lower case mid-sentence, and one space where he typed two. The page's `<title>` and its meta
   descriptions are unchanged (he selected the subtitle only).
+
+## Ternary plots in the documentation's examples (2026-11-09)
+
+- **Supervisor (mzargham), verbatim:** "one more thing i'd like you to put in your work backlog and
+  have the PM scope and provision agents to work on is adding examples using the ternary plots to
+  the documentation. keep it simple like with the other plots in the examples; we just want that
+  visualization pattern to be documented, accessible and interpretable for users."
+- **Disposition:** on the backlog as step 3c of the path (`release-candidate.md`), package WP18. The
+  PM drafts the scope through a bounded scope subagent and provisions the agents; the driver
+  approves the scope under the mandate and verifies the delivery in the browser. What the earlier
+  spikes already settled goes in as input (`docs/superpowers/notes/spike-ternary/report.md`): the
+  triangle shows shares of a total; a facet's exponent vector is a point of it, where that facet's
+  V peaks at a fixed total; designs in a sub-composition of a ten-metric case do not separate, so
+  the cubesat is shown by its exponents grouped by subsystem; plain Matplotlib, no new dependency.
+
