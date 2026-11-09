@@ -12,7 +12,7 @@
  *   2. the cubesat           its composition and its environment
  *   3. accounting            mass, power, energy, inertia, pointing: `calc def`s
  *   4. scenarios             the slew, and a closed-form approximation of it
- *   5. requirements          (15.2 fills the marked region: feasibility, satisfaction, claims)
+ *   5. requirements          feasibility as requirements, `satisfy`, verification cases, claims
  *   6. the experiment        an `analysis def`: configuration and measured slew in, attributes out
  *   7. named configurations  the baseline and two contrasts
  * The slew itself is integrated in Python (adcs_sim.simulate_adcs, the measurement of record);
@@ -455,10 +455,135 @@ package CubesatTradeSpaceV2 {
     // ==========================================================================================
     // 5. REQUIREMENTS, SATISFACTION AND VERIFICATION (15.2)
     // ==========================================================================================
-    doc /* Reserved for part 15.2: the four feasibility flags (settled, momentum_ok, power_ok,
-           dod_ok) as named requirements, `satisfy` statements tying them to the baseline,
-           `verification def`s, and the claims over every in-range configuration. */
+    doc /* The four feasibility flags (settled, momentum_ok, power_ok, dod_ok) as named
+           requirements, `satisfy` statements tying them to the baseline, `verification def`s
+           naming what each verifies, and claims over every in-range configuration. */
     // BEGIN 15.2
+    doc /* Feasibility is stated here and verified, not computed in Python. Four requirements, one
+           per flag the experiment reports: settled, momentum_ok, power_ok, dod_ok. A requirement
+           takes a Cubesat as its subject and, where it needs a measured quantity of the slew, an
+           `in` parameter that the runner binds by name (a Quantity, or a Real for the integral of
+           |tau|^2). The defaults of those parameters are the recorded measurement of the baseline
+           (below), so the `satisfy` statements are checkable without a runner. A fifth requirement
+           (the slew band was entered) reads the censoring of the slew time; it is not a flag. */
+    part def SlewMeasurement {
+        doc /* A measurement of one slew: the quantities the feasibility requirements read. */
+        attribute settlingTime : TimeValue;
+        attribute peakMomentum : AngularMomentumValue;
+        attribute torqueSquaredIntegral : Real;   // N^2 m^2 s
+        attribute censored : Boolean;
+    }
+    part baselineMeasurement : SlewMeasurement {
+        doc /* The baseline's slew integrated by adcs_sim.simulate_adcs (600 s horizon, 0.5 s step,
+               30 degree slew), recorded to reproduce the verdicts below. A test re-measures it. */
+        :>> settlingTime = 180.1904772571943 [s];
+        :>> peakMomentum = 0.00466041037173962 [N*m*s];
+        :>> torqueSquaredIntegral = 7.70613052023095e-06;
+        :>> censored = false;
+    }
+
+    requirement def SettledRequirement {
+        doc /* The attitude error settles inside the horizon (the flag `settled`). */
+        subject c : Cubesat;
+        in settlingTime : TimeValue default = baselineMeasurement.settlingTime;
+        require constraint { settlingTime < nominalSlew.horizon }
+    }
+    requirement def MomentumRequirement {
+        doc /* The peak wheel momentum stays within the wheel class capacity (`momentum_ok`). */
+        subject c : Cubesat;
+        in peakMomentum : AngularMomentumValue default = baselineMeasurement.peakMomentum;
+        require constraint { peakMomentum <= c.momentumCapacity }
+    }
+    requirement def PowerRequirement {
+        doc /* The panels cover the housekeeping and tracker loads (`power_ok`); it reads the
+               configuration only, so it can be checked before any simulation. */
+        subject c : Cubesat;
+        require constraint { c.availablePower > 0.0 [W] }
+    }
+    requirement def DepthOfDischargeRequirement {
+        doc /* The eclipse demand, with the slew loss energy, stays within the allowed depth of
+               discharge of the battery (`dod_ok`). */
+        subject c : Cubesat;
+        in torqueSquaredIntegral : Real default = baselineMeasurement.torqueSquaredIntegral;
+        require constraint {
+            EclipseDemand(c, SlewLossEnergy(torqueSquaredIntegral))
+                <= environment.maxDepthOfDischarge * c.battery.capacity
+        }
+    }
+    requirement def SlewBandRequirement {
+        doc /* The slew entered the pointing band within the horizon (the slew time is not
+               censored). Not a flag: it qualifies the slew-time attribute. */
+        subject c : Cubesat;
+        in censored : Boolean default = baselineMeasurement.censored;
+        require constraint { censored == false }
+    }
+
+    requirement baselineSettled : SettledRequirement;
+    requirement baselineMomentum : MomentumRequirement;
+    requirement baselinePower : PowerRequirement;
+    requirement baselineDepthOfDischarge : DepthOfDischargeRequirement;
+    requirement baselineSlewBand : SlewBandRequirement;
+    satisfy baselineSettled by cubesatBaseline;
+    satisfy baselineMomentum by cubesatBaseline;
+    satisfy baselinePower by cubesatBaseline;
+    satisfy baselineDepthOfDischarge by cubesatBaseline;
+    satisfy baselineSlewBand by cubesatBaseline;
+
+    verification def ConfigurationVerification {
+        doc /* Before simulation: what the configuration alone decides. */
+        subject c : Cubesat;
+        objective { verify requirement power : PowerRequirement; }
+    }
+    verification def SlewVerification {
+        doc /* After the slew is measured: what needs the measured quantities. */
+        subject c : Cubesat;
+        objective {
+            verify requirement settled : SettledRequirement;
+            verify requirement momentum : MomentumRequirement;
+            verify requirement depthOfDischarge : DepthOfDischargeRequirement;
+            verify requirement slewBand : SlewBandRequirement;
+        }
+    }
+
+    doc /* Claims over every in-range configuration. The solver (engine `solve`, answer `holds`,
+           evidence `proved`) reads arithmetic, comparisons and scalar features, not `calc def`
+           invocations; so each claim restates the accounting of section 3 over scalar features,
+           with the model's constants as literals (a test ties each literal to its source).
+           Constants: generated power per metre of span 81.627336 W/m (flux 1361 W/m^2 times the
+           efficiency product 0.08820 times two wings of chord 0.34 m); housekeeping 12 W; idle
+           wheels 3 x 0.3 W; eclipse 0.6 h; depth of discharge 0.3; span 0.3 to 1.0 m; tracker power
+           0.4 to 1.5 W; battery 20 to 200 Wh. */
+    constraint def MassAccountingIdentity {
+        doc /* The total mass less the structure mass is the panels plus the antenna. */
+        in c : Cubesat;
+        (c.bus.mass + c.battery.mass + c.panelPlus.mass + c.panelMinus.mass + c.antenna.mass
+            + 3.0 * c.wheel.mass + c.tracker.mass + c.imu.mass)
+        - (c.bus.mass + c.battery.mass + 3.0 * c.wheel.mass + c.tracker.mass + c.imu.mass)
+            == c.panelPlus.mass + c.panelMinus.mass + c.antenna.mass
+    }
+    constraint def GeneratedPowerMonotoneInSpan {
+        doc /* A longer panel never generates less. */
+        in s1 : LengthValue;
+        in s2 : LengthValue;
+        (s1 <= s2) implies (81.627336 [W/m] * s1 <= 81.627336 [W/m] * s2)
+    }
+    constraint def PowerRequirementHoldsInRange {
+        doc /* Over the whole span and tracker range the available power is positive: `power_ok`
+               is true for every in-range configuration. */
+        in s : LengthValue;
+        in t : PowerValue;
+        (s >= 0.3 [m] and s <= 1.0 [m] and t >= 0.4 [W] and t <= 1.5 [W])
+            implies (81.627336 [W/m] * s - 12.0 [W] - t > 0.0 [W])
+    }
+    constraint def SmallBatteryViolatesDepthOfDischarge {
+        doc /* A battery below the eclipse base load floor (26.6 Wh at the coarse tracker) fails
+               `dod_ok` for every tracker and every non-negative slew energy. */
+        in cap : EnergyValue;
+        in t : PowerValue;
+        in e : EnergyValue;
+        (cap >= 20.0 [W*h] and cap <= 26.5 [W*h] and t >= 0.4 [W] and t <= 1.5 [W] and e >= 0.0 [W*h])
+            implies ((12.0 [W] + t + 0.9 [W]) * 0.6 [h] + e > 0.3 * cap)
+    }
     // END 15.2
 
     // ==========================================================================================

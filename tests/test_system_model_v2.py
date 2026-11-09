@@ -242,18 +242,18 @@ def test_sections_in_order_each_with_header_and_doc():
         assert "doc /*" in TEXT[pos:nxt], title
 
 
-def test_marked_empty_region_for_part_15_2():
-    """The requirements region is present, marked once, and empty (part 15.2 fills it)."""
+def test_marked_region_for_part_15_2_is_filled_in_section_five():
+    """The requirements region is marked once, sits in section 5, and 15.2 filled it."""
     assert TEXT.count("// BEGIN 15.2") == 1 and TEXT.count("// END 15.2") == 1
     begin, end = TEXT.index("// BEGIN 15.2"), TEXT.index("// END 15.2")
-    assert begin < end and TEXT[begin + len("// BEGIN 15.2") : end].strip() == ""
+    assert begin < end and "requirement def" in TEXT[begin:end]
     assert TEXT.index(f"// {SECTIONS[4]}") < begin < TEXT.index(f"// {SECTIONS[5]}")
 
 
 def test_every_constant_has_a_doc_rationale():
     """Illustrative-only: constants sit under doc comments, as in the frozen model."""
     assert TEXT.count("doc /*") >= 18
-    assert len(TEXT.splitlines()) <= 530
+    assert len(TEXT.splitlines()) <= 700
 
 
 # ---------------------------------------------------------------------------------------------
