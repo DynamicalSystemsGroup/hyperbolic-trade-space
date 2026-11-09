@@ -38,6 +38,14 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   (torque-limited and linear regimes), with a reported comparison of the two on a sample; the
   approximation is named as such wherever it is used.
 
+- **OD3, the sysml-toolkit.** Options: pinned / optional / not used. **Supervisor (mzargham),
+  verbatim:** "Pinned". Disposition: decided; a pin file with checksums and a provisioning helper
+  under `examples/adcs/experiments/`, the toolkit's checks (`check`, `lint`, `verify --solve`) in
+  the default test suite, failing with a named cause if the binary is missing (the opensysml
+  discipline); CI downloads it on first use; the `case` dependency group and the CI workflow step
+  are requested from their owners (the driver for `pyproject.toml`; the workflow is WP0's,
+  amended by request).
+
 ## Scope approval (approval gate)
 
-- pending (OD3 to OD5, the defaults as one item, then approval)
+- pending (OD4, OD5, the defaults as one item, then approval)
