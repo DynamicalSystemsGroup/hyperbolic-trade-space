@@ -190,3 +190,8 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
 - **OD3, the Changelog page before the first release.** Options: an empty Unreleased section / a
   0.0.1 entry / no page until WP8b. **Supervisor (mzargham), verbatim:** "No page until WP8b".
   Disposition: decided; the docsite has no changelog until the release package adds it.
+- **OD4, the world line under page titles.** Options: drop it from the docsite / keep only on
+  Theory in brief / keep on every page. **Supervisor (mzargham), verbatim:** "Drop it from the
+  docsite". Disposition: decided; the three-worlds framing stays in the paper and the root page's
+  How; the docsite pages carry no world line; WP14's contract item C-9 (the world key) is
+  withdrawn in the contract v2 amendment.
