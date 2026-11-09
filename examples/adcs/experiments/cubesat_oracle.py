@@ -36,6 +36,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from adcs_sim import BASELINE, make_config, simulate_adcs
+from opensysml.errors import ExecutionError
 from opensysml.values import Quantity
 
 from . import ledger as lg
@@ -360,25 +361,47 @@ class CubesatOracle:
         }
 
     def _analyse(self, loaded, symbol: str, measured: dict) -> dict:
+        """The model's analysis on the measured slew: the ten attributes by name.
+
+        The analysis returns its attributes as a unique tuple, and the runtime (0.12.1) refuses a
+        tuple in which two entries are equal. The settling time and the slew time are passed
+        through unchanged and are equal when one step crosses both thresholds (a stiff loop); the
+        call is then repeated with the slew time one float step higher and the two pass-through
+        entries are taken from the measurement. No computed attribute depends on either value.
+        """
         u = self.reader.unit
-        args = {
-            "torqueSquaredIntegral": measured["torque_squared_integral"],
-            "peakTorque": Quantity(measured["peak_torque"], u("SI::N*SI::m")),
-            "peakMomentum": Quantity(measured["peak_momentum"], u("SI::N*SI::m*SI::s")),
-            "settlingTime": Quantity(measured["settling_time"], u("SI::s")),
-            "slewTime": Quantity(measured["slew_time"], u("SI::s")),
-            "controlEffort": Quantity(measured["control_effort"], u("SI::N*SI::m*SI::s")),
-            "censored": measured["censored"],
-        }
-        out = loaded.run_analysis(
-            f"{PACKAGE}::SlewExperiment", subject=symbol, named_arguments=args
-        )
-        return {
+
+        def call(slew_time: float):
+            args = {
+                "torqueSquaredIntegral": measured["torque_squared_integral"],
+                "peakTorque": Quantity(measured["peak_torque"], u("SI::N*SI::m")),
+                "peakMomentum": Quantity(measured["peak_momentum"], u("SI::N*SI::m*SI::s")),
+                "settlingTime": Quantity(measured["settling_time"], u("SI::s")),
+                "slewTime": Quantity(slew_time, u("SI::s")),
+                "controlEffort": Quantity(measured["control_effort"], u("SI::N*SI::m*SI::s")),
+                "censored": measured["censored"],
+            }
+            return loaded.run_analysis(
+                f"{PACKAGE}::SlewExperiment", subject=symbol, named_arguments=args
+            )
+
+        nudged = False
+        try:
+            out = call(measured["slew_time"])
+        except ExecutionError as exc:
+            if "uniqueness violation" not in str(exc):
+                raise
+            out, nudged = call(float(np.nextafter(measured["slew_time"], np.inf))), True
+        attrs = {
             name: _quantity_value(loaded, q, unit)
             for name, unit, q in zip(
                 ATTRIBUTE_NAMES, _ANALYSIS_UNITS, out.outputs["attributes"], strict=True
             )
         }
+        if nudged:
+            attrs["settling_time_s"] = measured["settling_time"]
+            attrs["slew_time_s"] = measured["slew_time"]
+        return attrs
 
     def _one(self, loaded, symbol: str, checker: FeasibilityChecker) -> dict:
         inst = loaded.instantiate(symbol)

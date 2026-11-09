@@ -334,3 +334,23 @@ def test_ledger_ready_record_of_an_excluded_region(oracle, solver):
         rec["satisfiable"] == ["unsatisfiable", "proved"] and "none is simulated" in rec["reason"]
     )
     assert lg.hash_entry({"x": rec})  # serialisable into the ledger
+
+
+def test_equal_settling_and_slew_times_are_analysed(oracle, designs):
+    """The runtime refuses a unique tuple with two equal entries; the oracle repeats the call and
+    returns both times exactly as measured (a stiff loop crosses both thresholds in one step)."""
+    loaded, symbols = oracle._configure([{**designs.iloc[0].to_dict(), "design_id": 0}])
+    measured = {
+        "torque_squared_integral": 1e-5,
+        "peak_torque": 1e-3,
+        "peak_momentum": 4e-3,
+        "settling_time": 14.398119154048933,
+        "slew_time": 14.398119154048933,
+        "control_effort": 1e-2,
+        "censored": False,
+    }
+    got = oracle._analyse(loaded, symbols[0], measured)
+    assert got["settling_time_s"] == got["slew_time_s"] == 14.398119154048933
+    distinct = oracle._analyse(loaded, symbols[0], {**measured, "slew_time": 10.0})
+    for k in co.ATTRIBUTE_NAMES[2:]:
+        assert got[k] == pytest.approx(distinct[k], rel=1e-12), k
