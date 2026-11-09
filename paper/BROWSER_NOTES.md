@@ -153,3 +153,28 @@ Built with `cd paper && uv run myst build --html` (no warnings), served on port 
   5 px there; the `enlarge` link is the remedy on a phone. As before, the pane shows a stale frame
   after a jump or a theme change for a second. A figure link shows a download mark (the site's
   rendering of a link to a file).
+
+## WP10, geometric program, case coverage, keywords, Figure 1 arrow (1280 px, light and dark)
+
+Built with `cd paper && uv run myst build --html` (no warnings; it prints the line that a server
+started on port 3000 and exits 0), served on port 8803 from `paper/_build/html`, viewed in the
+Browser pane; the server is stopped.
+
+- **Abstract** (200 words): reads through; the one-facet fit is a geometric program, the model a
+  generalized posynomial, several facets alternate one such program per facet. Light and dark.
+- **Section 5**: the geometric-program sentence carries the citation (Boyd et al., 2007) and the
+  pointer to Appendix B, L4.14 to L4.24; it reads as one run with the temperature sentence.
+- **Section 8**: opens with the cubesat model coupling power, mass and attitude control; the
+  attributes sentence is generated from the one mapping in `case.py` and is set in the small type
+  of every generated sentence, so it stands out from the paragraph above it (same as the
+  nondominated and dataset sentences).
+- **Section 9**: the K = 1 sentence and the regime sentence name the subsystems; the regime
+  sentence says mass enters only in the primary regime.
+- **Figure 1**: the black arrow now stands in the first pane from the design to V = 1 along the
+  ray from the origin (same style as the other two panes); caption clause present. Light and dark.
+- **Keywords**: the head of the page lists them, comma-separated visually. The theme draws each
+  comma with CSS (`::after`), so text copied from the page runs the keywords together with no
+  separator; the builder has no setting that puts a separator in the markup (the page's `meta`
+  keywords and `index.json` carry the list properly separated). Left as is.
+- **Remaining.** The pane shows a stale frame for a second after a theme change or a jump; the
+  "frontier, log V = 0" label in Figure 1 sits at the right edge of the chart pane (as before).
