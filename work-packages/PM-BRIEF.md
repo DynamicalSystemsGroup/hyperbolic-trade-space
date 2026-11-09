@@ -146,3 +146,16 @@ commit touches (the Appendix B test above for `derivation/`). A push whose ruff 
 - Mathematics must match the derivation chain (WP1) and the spec §4 exactly, including β as the
   log-mean-exp.
 - Never widen a scope during execution; propose an amendment instead.
+
+## Parallel streams and pushing (2026-11-09, the supervisor's direction; supersedes the pre-push list above where they differ)
+
+The supervisor: "you are missing the opportunity to use tight scopes of work to parallelize efforts
+using the PM as an orchestrator" and "i don't like the fact that you are not committing. we have dev
+so you can commit work". The PM orchestrates the streams of `work-packages/parallel-board.md` at the
+same time: one tight scope and one set of files per stream, each writing stream in its own git
+worktree, read-only passes fanned out one agent per section or page. Work is committed and pushed to
+`dev` as soon as a unit is done, after the stream's own short checks (lint and format on the files
+changed, the tests of the files changed, and the Appendix B test with the appendix regenerated for
+any change under `derivation/`). The full suite and the browser passes run afterwards on `dev`; a
+red head is fixed forward within the hour. Nothing waits uncommitted or unpushed.
+

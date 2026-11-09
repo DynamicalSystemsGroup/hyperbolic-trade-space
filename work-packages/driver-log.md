@@ -145,4 +145,12 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   figure is dropped. Lesson: tidy is not informative; a figure whose caption says all it shows fails.
   The figure review (`docs/superpowers/notes/figure-review.md`) now applies to every figure, and the
   driver's own look is one reading in it, not the verdict.
+- 2026-11-09, how the run was being driven. The supervisor: "it seems like you are missing the
+  opportunity to use tight scopes of work to parallelize efforts using the PM as an orchestrator."
+  and "i don't like the fact that you are not committing. we have dev so you can commit work".
+  Corrected: `work-packages/parallel-board.md` (one tight scope and one set of files per stream,
+  each in its own worktree, readers fanned out); the rule that held pushes until a full check is
+  replaced by commit-and-push to `dev` as each unit is done, with verification after, on `dev`.
+  Fourteen held commits were pushed, and the container files left uncommitted since the Colima
+  incident were committed.
 
