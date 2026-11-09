@@ -955,4 +955,17 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   accuracy; local optimality is not certified for a soft fit. **Disposition (the driver, on his
   conditional direction):** scoped and approved for execution as `work-packages/WP17-scope-of-work.md`;
   sent to the PM; for his review at the PR.
+- On the soft fit's certificate. **Supervisor, verbatim:** "we need to chase this cascade one more
+  level:\"Local optimality is not certified for a soft fit. The existing certificate, margin and
+  stable radius are defined for one label per design. A soft fit keeps descent and stationarity,
+  reported through one new termination status. That needs an interface contract amendment.\" can we
+  get another certification method for the soft fit". **What the driver found**
+  (`docs/superpowers/notes/spike-soft-fit/report.md`, addendum; `certificate.py`): yes. The soft
+  objective is smooth, so the second-order sufficient condition certifies a strict local minimizer
+  of the objective itself, with no assignment and no margin. The Hessian is each term's convex
+  curvature minus kappa times the designs' ambiguity between terms (checked against finite
+  differences to 3e-10). Certified: 20 of 20 benchmark fits and the four cubesat fits at
+  kappa = tau; the all-equal point, stationary to rounding, is rejected as a saddle. Limits: finite
+  fit temperature only; local, not global; no useful radius yet. **Disposition:** WP17's R-7 and
+  R-8 amended to carry it; sent to the PM.
 

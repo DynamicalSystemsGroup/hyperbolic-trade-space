@@ -22,8 +22,8 @@ the model it reports. At the default (kappa = inf) the fit is exactly today's.
 ## Non-goals
 
 No change to any default. No change to any committed number, table, figure or dataset. No automatic
-choice of kappa, no annealing schedule. No certificate of local optimality for a soft fit. No change
-to the one-term fit.
+choice of kappa, no annealing schedule. No certificate of the global minimum. No radius for a soft fit. No
+change to the one-term fit.
 
 ## Deliverables and requirements
 
@@ -45,13 +45,26 @@ to the one-term fit.
 - R-6. *Analysis stays analysis.* `facet_`, the facet shares, the contending sets and the
   elasticities are read from the dominant term as today; `mean_slack_` is the slack of the reported
   model; the docstrings say which is fit and which is analysis.
-- R-7. *Termination.* For a soft fit the fixed-assignment quantities (margin, radius, the bound) are
-  not asserted; a status "stationary" reports self-consistent weights with weighted gaps within
-  tolerance; the interface contract is amended (the status, the meaning of `term_temperature`).
-  *Check:* the contract test; tests of the status on a converged and on a capped run.
-- R-8. *One scripted step:* the gradient of the soft objective in a term's exponents is that term's
-  weighted refit gradient (with the offset tied to the support value), so the weighted gaps are the
-  first-order conditions. Appendix B regenerated in the same push. *Check:* the proof-map checker.
+- R-7. *Termination and the certificate of a soft fit* (amended 2026-11-09 on the supervisor's
+  question, "can we get another certification method for the soft fit"; the spike's addendum). A
+  soft fit at finite fit temperature is certified by a second-order test: every term's weighted gap
+  within `EPS_KKT`, and the Hessian of the soft objective positive definite on the tangent space of
+  the active face (bounds with a strictly positive multiplier fixed, the others free). Status
+  "certified" then means a strict local minimizer of the soft objective; "stationary" means the
+  gaps hold and the curvature is not positive (a saddle or a flat direction). The record gains the
+  smallest curvature; the margin, the radius and the fixed-assignment bound are not asserted for a
+  soft fit. A reduced Newton polish on the same Hessian follows the alternation. At tau = inf a
+  soft fit reports "not_applicable". The interface contract is amended (the status, the field, the
+  two meanings of "certified", the meaning of `term_temperature`). *Check:* the Hessian against
+  finite differences; the all-equal point is stationary and not certified; the benchmark tables
+  and the cubesat fits at kappa = tau are certified; the contract test.
+- R-8. *Scripted steps:* (i) the gradient of the soft objective in a term's exponents is that term's
+  weighted refit gradient (with the offset tied to the support value); (ii) the Hessian is
+  `D - kappa M`; (iii) `D` and `M` are positive semidefinite (a covariance under the support
+  weights; a variance over terms under each design's weights); (iv) the second-order sufficient
+  condition as a declared inherited result (Nocedal and Wright, chapter 12; the theorem and its
+  hypotheses checked against the source and recorded as for I10), from which the certificate
+  follows. Appendix B regenerated in the same push. *Check:* the proof-map checker.
 - R-9. *Words.* The user guide (fitting, termination), the API page, the glossary's "term
   temperature" and "assignment", and section 6 of the paper say what a finite kappa now does, give
   the guidance that kappa is read on the scale of tau, and claim nothing beyond R-1 to R-8. *Check:*
