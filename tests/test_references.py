@@ -10,7 +10,9 @@ from pathlib import Path
 
 DOCS = Path(__file__).resolve().parent.parent / "docs"
 BIB = DOCS / "references.bib"
-LIT = DOCS / "literature.md"
+LIT = (
+    DOCS / "superpowers" / "notes" / "paper-sources" / "literature.md"
+)  # moved off the docsite (WP8a Amendment 2)
 # WP10: keys added for the paper's prior-art section are cited in this source note, so the
 # bibliography stays free of uncited keys whether or not literature.md survives WP8a's restructure.
 SOURCES = DOCS / "superpowers" / "notes" / "paper-prior-art-sources.md"

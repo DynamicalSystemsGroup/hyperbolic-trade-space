@@ -23,11 +23,12 @@ HOST = "127.0.0.1"
 REVIEW_PAGES = (
     "/",
     "/docs/",
-    "/docs/method/",
-    "/docs/generated/derivations/",
-    "/docs/generated/verification/",
+    "/docs/getting-started/",
+    "/docs/user-guide/overview/",
+    "/docs/theory/",
+    "/docs/generated/glossary/",
     "/docs/api-reference/",
-    "/docs/literature/",
+    "/docs/further-reading/",
     "/paper/",
 )
 

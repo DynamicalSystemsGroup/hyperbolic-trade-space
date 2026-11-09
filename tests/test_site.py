@@ -18,15 +18,67 @@ from urllib.parse import unquote, urldefrag, urljoin, urlparse
 
 import pytest
 import yaml
+from markdown.extensions.toc import slugify
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 SITE = ROOT / "site"
 PUNCH_LIST = ROOT / "work-packages" / "release-punch-list.md"
 CONTRACT = tomllib.loads((ROOT / "work-packages" / "interface-contract.toml").read_text())
-GENERATED_PAGES = {f"generated/{n}" for n in CONTRACT["derivation"]["generated_pages"]}
+GENERATED_PAGES = {
+    CONTRACT["docs"]["generated_dir"].removeprefix("docs/") + n
+    for n in CONTRACT["docs"]["generated_pages"]
+}
 PUBLIC_URL = CONTRACT["build"]["public_url"]
-WORLDS = {"embodied", "symbolic", "formal"}
+
+# The navigation, in order (WP8a Amendment 2). The Glossary is the one generated page.
+NAV_PAGES = [
+    "index.md",
+    "getting-started.md",
+    "user-guide/overview.md",
+    "user-guide/conditioning.md",
+    "user-guide/fitting.md",
+    "user-guide/tensions.md",
+    "user-guide/chart.md",
+    "user-guide/prediction.md",
+    "user-guide/termination.md",
+    "user-guide/limitations.md",
+    "api.md",
+    "api-reference.md",
+    "examples.md",
+    "theory.md",
+    "generated/glossary.md",
+    "further-reading.md",
+]
+# Word budgets of the hand-written pages (code blocks and tables excluded), total at most 7,600.
+BUDGETS = {
+    "index.md": 250,
+    "getting-started.md": 400,
+    "user-guide/overview.md": 500,
+    "user-guide/conditioning.md": 700,
+    "user-guide/fitting.md": 800,
+    "user-guide/tensions.md": 700,
+    "user-guide/chart.md": 600,
+    "user-guide/prediction.md": 350,
+    "user-guide/termination.md": 600,
+    "user-guide/limitations.md": 500,
+    "api.md": 300,
+    "examples.md": 400,
+    "theory.md": 700,
+    "further-reading.md": 300,
+}
+TOTAL_BUDGET = 7600
+# Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
+LIVE_ROUTES = (
+    "docs/",
+    "docs/getting-started/",
+    "docs/user-guide/overview/",
+    "docs/theory/",
+    "docs/generated/glossary/",
+    "docs/api-reference/",
+    "docs/further-reading/",
+    "paper/",
+)
 
 HAVE_MKDOCS = all(
     importlib.util.find_spec(m) is not None
@@ -106,7 +158,20 @@ def is_external(href: str) -> bool:
 
 
 def source_pages() -> list[Path]:
-    return sorted(p for p in DOCS.glob("*.md"))
+    """The hand-written docsite pages, recursive (not the generated glossary, not the notes)."""
+    return sorted(
+        p
+        for p in DOCS.rglob("*.md")
+        if p.relative_to(DOCS).parts[0] not in ("generated", "superpowers")
+    )
+
+
+def prose_words(path: Path) -> int:
+    """Words of a page outside fenced code blocks, tables and HTML comments."""
+    text = re.sub(r"```.*?```", "", path.read_text(), flags=re.S)
+    text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
+    text = re.sub(r"^\|.*$", "", text, flags=re.M)
+    return len(text.split())
 
 
 @pytest.fixture(scope="session")
@@ -121,7 +186,8 @@ def test_mkdocs_config_parses(mkdocs_config):
     cfg = mkdocs_config
     assert cfg["site_url"] == PUBLIC_URL + "docs/"
     assert cfg["theme"]["name"] == "material"
-    assert cfg["theme"]["custom_dir"] == "overrides"
+    assert "custom_dir" not in cfg["theme"], "no template override: the world lines are gone"
+    assert not (ROOT / "overrides").exists()
     assert cfg["docs_dir"] == "docs"
     exts = {next(iter(e)) if isinstance(e, dict) else e for e in cfg["markdown_extensions"]}
     assert "pymdownx.arithmatex" in exts
@@ -139,30 +205,58 @@ def test_nav_pages_exist_and_cover_the_contract_pages(mkdocs_config):
     pages = flatten_nav(mkdocs_config["nav"])
     for page in pages:
         assert page in GENERATED_PAGES or (DOCS / page).is_file(), page
-    assert pages == [
-        "index.md",
-        "why-and-how.md",
-        "method.md",
-        "generated/derivations.md",
-        "preconditioning.md",
-        "case.md",
-        "generated/verification.md",
-        "api.md",
-        "api-reference.md",
-        "limitations.md",
-        "literature.md",
-    ]
+    assert pages == NAV_PAGES
     contract_pages = set(CONTRACT["docs"]["pages"])
     assert contract_pages <= set(pages)
     assert set(pages) >= GENERATED_PAGES
+    assert {f"docs/{p}" for p in pages if p not in GENERATED_PAGES} == set(
+        CONTRACT["docs"]["presentation_pages"]
+    )
+    # every hand-written page on disk is in the navigation, and nothing else
+    on_disk = {p.relative_to(DOCS).as_posix() for p in source_pages()}
+    assert on_disk == set(pages) - GENERATED_PAGES
 
 
-def test_world_key_on_every_page():
-    for path in source_pages():
-        if path.name == "index.md":
-            continue  # the home page maps all three worlds
-        world = front_matter(path).get("world")
-        assert world in WORLDS, f"{path.name}: front-matter world must be one of {sorted(WORLDS)}"
+def test_word_budgets_hold():
+    over = {}
+    total = 0
+    for page, budget in BUDGETS.items():
+        words = prose_words(DOCS / page)
+        total += words
+        if words > budget:
+            over[page] = (words, budget)
+    assert not over, over
+    assert total <= TOTAL_BUDGET, total
+
+
+def test_hand_written_pages_carry_no_review_or_proof_content():
+    """No lemma block, proof, review prose or ledger-id citation on a docsite page; displayed
+    formulas only on theory.md, at most six, none tagged."""
+    forbidden = [
+        r"^\*\*(Lemma|Proposition|Corollary)",
+        r"\bWP\d+\b",
+        r"supervisor",
+        r"reviewer",
+        r"abstraction-gaps",
+        r"\bG-\d+\b",
+        r"<!--\s*(lemma:|definition)",
+        r"^\*\*Proof",
+    ]
+    for page in source_pages():
+        text = re.sub(r"```.*?```", "", page.read_text(), flags=re.S)
+        for pattern in forbidden:
+            assert not re.search(pattern, text, re.I | re.M), f"{page.name}: {pattern}"
+        displays = re.findall(r"\$\$", text)
+        if page.name != "theory.md":
+            assert not displays, f"{page.name}: displayed formula outside theory.md"
+        else:
+            assert len(displays) // 2 <= 6, "theory.md: more than six displayed formulas"
+
+
+def test_every_hand_written_page_is_free_of_front_matter():
+    """No world key (or any front matter) on a docsite page."""
+    for page in source_pages():
+        assert not page.read_text().startswith("---"), page.name
 
 
 def test_api_reference_names_equal_the_contract():
@@ -213,6 +307,33 @@ def test_docs_relative_links_resolve():
             if _is_site_route(href):
                 continue  # published routes outside the docs tree; checked on the assembled site
             assert _doc_target_exists(path, href), f"{path.name}: broken link {href}"
+
+
+def _heading_slugs(path: Path) -> set[str]:
+    text = re.sub(r"```.*?```", "", path.read_text(), flags=re.S)
+    return {slugify(h, "-") for h in re.findall(r"^#{1,6}\s+(.*?)\s*#*\s*$", text, re.M)}
+
+
+def test_internal_anchors_resolve():
+    """A link with a fragment to a docsite page names a heading that page has."""
+    for path in source_pages():
+        for href in md_links(path):
+            if is_external(href) or href.startswith("../"):
+                continue
+            target, frag = urldefrag(href)
+            if not frag:
+                continue
+            resolved = (path.parent / unquote(target)).resolve() if target else path
+            assert resolved.is_file(), f"{path.name}: {href}"
+            assert frag in _heading_slugs(resolved), f"{path.name}: no heading for {href}"
+
+
+def test_docsite_pages_do_not_cite_into_the_paper():
+    """G9 withdrawn: no link from a docsite page into a paper section; paper references by stable
+    keys are deferred (punch list)."""
+    for path in source_pages():
+        for href in md_links(path):
+            assert "paper/" not in href and "paper_sections" not in href, f"{path.name}: {href}"
 
 
 def _resolve_site_href(page_url: str, href: str) -> str:
@@ -285,17 +406,21 @@ def test_root_index_is_thin_and_has_the_cards():
 
 def test_punch_list_covers_post_release_checks():
     text = PUNCH_LIST.read_text()
-    for route in (
-        "docs/",
-        "docs/method/",
-        "docs/generated/derivations/",
-        "docs/generated/verification/",
-        "docs/api-reference/",
-        "docs/literature/",
-        "paper/",
-    ):
+    for route in LIVE_ROUTES:
         assert f"`{route}`" in text, route
     assert "PyPI" in text and "release notes" in text.lower()
+    assert "stable reference keys" in text, "the deferred paper-reference item stays recorded"
+
+
+def test_stage_review_pages_follow_the_live_routes():
+    spec = importlib.util.spec_from_file_location("_stage_site", ROOT / "scripts" / "stage_site.py")
+    sys.path.insert(0, str(ROOT / "scripts"))
+    try:
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+    finally:
+        sys.path.remove(str(ROOT / "scripts"))
+    assert tuple(mod.REVIEW_PAGES) == ("/", *(f"/{r}" for r in LIVE_ROUTES))
 
 
 # --- the Pages workflow ------------------------------------------------------------------------
@@ -399,36 +524,27 @@ def test_every_link_in_the_assembled_site_resolves(assembled):
 
 
 def test_math_markers_in_built_pages(assembled):
-    for name in ("method", "preconditioning"):
-        html = (assembled / "docs" / name / "index.html").read_text()
-        assert 'class="arithmatex"' in html, name
-    assert "mathjax@" in (assembled / "docs" / "method" / "index.html").read_text()
+    html = (assembled / "docs" / "theory" / "index.html").read_text()
+    assert 'class="arithmatex"' in html
+    assert "mathjax@" in html
+    for page in source_pages():
+        if re.search(r"\$[^$\n]+\$", page.read_text()):
+            rel = page.relative_to(DOCS).with_suffix("").as_posix()
+            built = (assembled / "docs" / rel / "index.html").read_text()
+            assert 'class="arithmatex"' in built, f"{rel}: inline math is not rendered"
 
 
-def test_world_lines_render(assembled):
-    for name in (
-        "why-and-how",
-        "method",
-        "preconditioning",
-        "case",
-        "api",
-        "api-reference",
-        "limitations",
-        "literature",
-        "generated/derivations",
-        "generated/verification",
-    ):
-        html = (assembled / "docs" / name / "index.html").read_text()
-        assert 'class="world-line"' in html, name
+def test_no_world_lines_in_built_pages(assembled):
+    for html in (assembled / "docs").rglob("index.html"):
+        assert "world-line" not in html.read_text(), html
 
 
-def test_citations_render_and_literature_lists_the_bibliography(assembled):
-    html = (assembled / "docs" / "literature" / "index.html").read_text()
-    bib = (DOCS / "references.bib").read_text()
-    keys = re.findall(r"^@\w+\{([^,\s]+),", bib, re.M)
-    assert len(keys) > 5
+def test_citations_render_and_further_reading_lists_the_references(assembled):
+    html = (assembled / "docs" / "further-reading" / "index.html").read_text()
     assert "[@" not in re.sub(r"<code.*?</code>", "", html, flags=re.S)
     assert "<ol" in html or '<li id="' in html or "references" in html.lower()
+    for key_text in ("Boyd", "Hoburg"):
+        assert key_text in html, key_text
 
 
 def test_api_reference_renders_every_public_name(assembled):
@@ -439,6 +555,89 @@ def test_api_reference_renders_every_public_name(assembled):
 
 
 def test_generated_pages_in_the_build(assembled):
-    for name in CONTRACT["derivation"]["generated_pages"]:
+    for name in CONTRACT["docs"]["generated_pages"]:
         stem = name[: -len(".md")]
         assert (assembled / "docs" / "generated" / stem / "index.html").is_file()
+    # OD1: derivations and verification are the paper's build, not the docsite's
+    assert sorted(p.name for p in (assembled / "docs" / "generated").iterdir()) == ["glossary"]
+    gen = CONTRACT["derivation"]["generated_dir"]
+    for name in CONTRACT["derivation"]["generated_pages"]:
+        assert (ROOT / gen / name).is_file()
+        assert not (ROOT / "docs" / "generated" / name).exists()
+
+
+# --- R-26: nothing refers to removed content ----------------------------------------------------
+
+# Moved or removed content, as the patterns a reference to it would match.
+REMOVED_REFERENCES = {
+    "moved file names": r"\b(?:method|literature|why-and-how|preconditioning|case)\.md\b",
+    "moved routes": r"docs/(?:method|literature|why-and-how|preconditioning|case|limitations)/",
+    "generated pages under the docsite": r"generated/(?:derivations|verification)",
+    "the Mathematics page": r"\]\(\s*method|see Mathematics|Mathematics page|\[Mathematics\]",
+    "lemma tags": r"\bL(?:1[0-4]|[1-9])\b",
+    "the world key": r"world-line|^world:|\bworld line\b",
+}
+
+
+def _refs(text: str) -> list[str]:
+    found = []
+    for label, pattern in REMOVED_REFERENCES.items():
+        if re.search(pattern, text, re.M | re.I if label != "lemma tags" else re.M):
+            found.append(label)
+    return found
+
+
+def test_r26_docsite_sources_refer_to_no_removed_content():
+    problems = {p.relative_to(DOCS).as_posix(): _refs(p.read_text()) for p in source_pages()}
+    assert {k: v for k, v in problems.items() if v} == {}
+
+
+def test_r26_root_page_navigation_and_site_scripts_refer_to_no_removed_content():
+    scanned = [
+        SITE / "index.html",
+        SITE / "paper" / "index.html",
+        ROOT / "mkdocs.yml",
+        ROOT / "scripts" / "assemble_site.py",
+        ROOT / "scripts" / "stage_site.py",
+    ]
+    problems = {}
+    for path in scanned:
+        text = path.read_text()
+        if path.name == "mkdocs.yml":
+            text = "\n".join(ln for ln in text.splitlines() if not ln.lstrip().startswith("#"))
+            assert "overrides" not in text and "world" not in text.lower(), path.name
+        hits = [h for h in _refs(text) if h != "lemma tags"]
+        if hits:
+            problems[path.name] = hits
+    assert problems == {}
+
+
+def test_r26_route_lists_refer_to_no_removed_content():
+    assert _refs("\n".join(LIVE_ROUTES)) == []
+    assert _refs("\n".join(NAV_PAGES)) == []
+    assert not any("derivations" in r or "verification" in r for r in LIVE_ROUTES)
+    text = PUNCH_LIST.read_text()
+    section = text.split("## Post-release live checks", 1)[1]
+    assert _refs(section.split("- Deferred", 1)[0]) == []
+
+
+def test_r26_no_removed_pages_on_disk():
+    for name in ("method", "literature", "why-and-how", "preconditioning", "case", "limitations"):
+        assert not (DOCS / f"{name}.md").exists(), name
+    assert not (ROOT / "overrides").exists()
+    assert not (DOCS / "generated" / "derivations.md").exists()
+    assert not (DOCS / "generated" / "verification.md").exists()
+
+
+def test_r26_built_docsite_refers_to_no_removed_content(assembled):
+    problems = {}
+    for html in sorted((assembled / "docs").rglob("index.html")):
+        hrefs = [h for h in html_links(html) if not is_external(h)]
+        bad = [h for h in hrefs if _refs(urldefrag(h)[0])]
+        if bad:
+            problems[html.relative_to(assembled).as_posix()] = bad
+    assert problems == {}
+    for removed in ("method", "literature", "why-and-how", "preconditioning", "case"):
+        assert not (assembled / "docs" / removed).exists(), removed
+    assert not (assembled / "docs" / "generated" / "derivations").exists()
+    assert not (assembled / "docs" / "generated" / "verification").exists()

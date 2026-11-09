@@ -23,11 +23,12 @@ After the first tag deployment, each URL loads and shows its page (base
 
 - [ ] `/` root, three cards, links work
 - [ ] `docs/`
-- [ ] `docs/method/` (math renders)
-- [ ] `docs/generated/derivations/`
-- [ ] `docs/generated/verification/`
+- [ ] `docs/getting-started/` (the five-line example matches the output shown)
+- [ ] `docs/user-guide/overview/` (the user-guide pages load from its navigation)
+- [ ] `docs/theory/` (math renders)
+- [ ] `docs/generated/glossary/` (compiled from `glossary.yaml`)
 - [ ] `docs/api-reference/`
-- [ ] `docs/literature/` (bibliography listed)
+- [ ] `docs/further-reading/` (references listed)
 - [ ] `paper/`
 
 - Deferred (supervisor, 2026-11-08): docsite references to the paper by stable reference keys (a key registry resolved at build time, like LaTeX labels and refs), added only after the paper and its appendices are stable (post-WP11); until then the docsite carries no citations into the paper.

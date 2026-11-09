@@ -51,13 +51,19 @@ plugins:
 
 nav:
   - Home: index.md
-  - Why and how: why-and-how.md
-  - Mathematics: method.md
-  - Derivations: generated/derivations.md
-  - Preconditioning: preconditioning.md
-  - Case: case.md
-  - Verification and validation: generated/verification.md
+  - Getting started: getting-started.md
+  - User guide:
+      - Overview: user-guide/overview.md
+      - Conditioning: user-guide/conditioning.md
+      - Fitting: user-guide/fitting.md
+      - Tensions: user-guide/tensions.md
+      - Chart: user-guide/chart.md
+      - Prediction: user-guide/prediction.md
+      - Termination: user-guide/termination.md
+      - Limitations: user-guide/limitations.md
   - API: api.md
   - API reference: api-reference.md
-  - Extensions and limitations: limitations.md
-  - Literature: literature.md
+  - Examples: examples.md
+  - Theory in brief: theory.md
+  - Glossary: generated/glossary.md
+  - Further reading: further-reading.md

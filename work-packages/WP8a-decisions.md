@@ -239,3 +239,63 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
 - **Disposition:** approved; the PM executes Amendment 2 and the contract's version 2 on `dev`;
   acceptance of WP8a (skeleton plus Amendment 2) on the supervisor's second staged review and a
   green Tests run; the Pages dispatch build after the merge.
+
+## Amendment 2 delivery notes (2026-11-08; presentation side: configuration, scripts, tests, contract)
+
+Facts only. The docsite pages and `paper-sources/` are recorded by the writer of the pages.
+
+**What changed**
+
+- `glossary.yaml` (new, repository root): 37 entries with fields `id`, `term`, `symbol` (optional),
+  `short`, `register`, `formal`, `not`, `defined_in` (optional). Seeded from the register phrases of
+  `docs/superpowers/notes/notation.md` (all ten) and the terms the user guide uses.
+- `scripts/build_generated.py`: `load_glossary` validates the source (required and unknown fields,
+  non-empty strings, one-line `term` and `short`, slug ids, unique ids and terms) and `glossary_page`
+  compiles `docs/generated/glossary.md` (title, letter headings, one `- **term**: short` per entry;
+  no other text; sorted by term). `derivations.md` and `verification.md` are written to
+  `build/generated/` (outside `docs/`, git-ignored through `build/`) for the paper's build; their
+  content is unchanged. `--out` sets the first directory, `--docs-out` the glossary directory. An
+  invalid glossary stops the build.
+- `scripts/assemble_site.py` passes both directories; `scripts/stage_site.py` `REVIEW_PAGES` follows
+  the new routes.
+- `overrides/partials/content.html` removed; `custom_dir` removed from `mkdocs.yml`; navigation is
+  Home, Getting started, User guide (eight pages), API, API reference, Examples, Theory in brief,
+  Glossary (`generated/glossary.md`), Further reading.
+- `work-packages/release-punch-list.md`: post-release routes replaced (`docs/method/`,
+  `docs/generated/derivations/`, `docs/generated/verification/`, `docs/literature/` removed;
+  `docs/getting-started/`, `docs/user-guide/overview/`, `docs/theory/`, `docs/generated/glossary/`,
+  `docs/further-reading/` added). The deferred paper-reference item stays.
+- Contract version 2 (`interface-contract.md`, `.toml`, `tests/test_interface_contract.py`, one
+  commit): `docs.pages` is the fourteen hand-written pages; `docs.presentation_pages` is those plus
+  `docs/api-reference.md`; new keys `docs.generated_dir`, `docs.generated_pages`,
+  `docs.glossary_source`, `docs.paper_sources_dir`; `derivation.generated_dir` is `build/generated/`;
+  the five technical docs pages leave the technical set and `docs/literature.md` leaves WP10's; WP8a
+  gains the docs pages, `glossary.yaml` and the `paper-sources/` carve-out and loses `overrides/` and
+  `docs/case.md`; six delivered clauses leave the skip list; the bibliography gap row is rewritten.
+  The paper-anchors item is not present (G9 withdrawn); the world key (C-9) is not pinned in version
+  1 and is recorded as withdrawn in change-log row 2.
+
+**Test repoints (no assertion weakened)**
+
+| Test | Before | After |
+|---|---|---|
+| `tests/test_build_generated.py` | derivations and verification built into one directory | glossary built into a second directory; new tests: schema validation (bad sources rejected), page equals the compiled yaml with no other text, alphabetical grouping, determinism, build stops on an invalid glossary, outputs outside `docs/` |
+| `tests/test_docs.py` | `PAGES = preconditioning.md, api.md`; lemma tags, ledger ids, "cites a lemma/ledger id", method assertions on `docs/method.md` | pages are the recursive docsite glob; tag and id range checks over every docsite page; exported names and submodule functions over `api.md` plus the user guide; statuses, tolerances, `termination_`, `conditioning_` over `user-guide/termination.md`; policy paragraph not restated on any docsite page; register phrases over the docsite; forbidden phrases over the docsite, `paper-sources/` and `glossary.yaml`; new runnable-block execution test |
+| `tests/test_paper_sources.py` (new) | n/a | the assertions that required lemma/ledger citations, "Map and territory" exactly once, the three-levels headings, L12 to L14 cited, statuses and tolerances, run unchanged against the snapshots in `docs/superpowers/notes/paper-sources/` |
+| `tests/test_narrative.py` | `METHOD`, `PAGES` under `docs/` | constants point at the snapshots; new docsite hygiene test (no attribution, no emoji) |
+| `tests/test_site.py` | eleven old nav pages, world-key and world-line tests, `custom_dir == overrides`, math markers on `method`/`preconditioning`, literature bibliography test, old punch-list routes | sixteen-page nav, word budgets (per page and 7,600 total), forbidden-content regexes and the six-formula limit, internal anchors, no docsite link into the paper, no `custom_dir`, math markers on `theory` and any page with inline math, further-reading bibliography, live routes and `REVIEW_PAGES`, generated directory holds only the glossary, and R-26 (below) |
+| `tests/test_interface_contract.py` | skips for six WP8a deliveries; pinned pages owned by exact path | those clauses enforced, skip list asserted equal to `myst_config` and `oracle_protocol`; ownership by prefix; generated location and `.gitignore` checks; glossary source and paper-sources carve-out |
+| `tests/test_notebook.py` | asserts the retired notebook's closing cell names `docs/method.md` | unchanged: the assertion reads the notebook text, which is not edited; WP10 archives the notebook |
+
+**R-26 (nothing refers to removed content):** `tests/test_site.py` scans the hand-written pages, the
+root and paper pages, `mkdocs.yml`, `scripts/assemble_site.py`, `scripts/stage_site.py`, the nav and
+route lists, the punch-list routes and the built docsite for moved file names, moved routes,
+`generated/derivations` and `generated/verification`, the Mathematics page, lemma tags L1 to L14 (docs
+pages), and the world key; it asserts the moved pages, `overrides/` and the two generated pages are
+absent from `docs/` and from the built site.
+
+**Removed:** `overrides/`; `docs/generated/derivations.md` and `verification.md` as docsite pages;
+the world-key tests.
+
+**Not changed by W2:** `tests/test_references.py` still points `LIT` at `docs/literature.md` and is
+being edited by WP10; it needs the repoint to `paper-sources/literature.md`.
