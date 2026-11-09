@@ -1003,6 +1003,58 @@ def test_why_lines_overlay_is_the_fixed_total_function(why_fit):
         assert wk @ np.log(np.clip(wk, 1e-300, None)) >= (np.log(c) @ wk).max() - 1e-12
 
 
+def _label_boxes(bsf, fit, scheme):
+    """Each label's box in plane units (from the renderer), the regions' map and the triangle."""
+    import matplotlib.pyplot as plt
+
+    fig = bsf.draw(fit, scheme)
+    ax = fig.axes[0]
+    fig.canvas.draw()
+    inv = ax.transData.inverted()
+    boxes = {}
+    for t in ax.texts:
+        gid = t.get_gid() or ""
+        if gid.startswith("why-label-"):
+            bb = t.get_bbox_patch().get_window_extent(fig.canvas.get_renderer())
+            (x0, y0), (x1, y1) = inv.transform([[bb.x0, bb.y0], [bb.x1, bb.y1]])
+            boxes[int(gid.rsplit("-", 1)[1])] = (x0, y0, x1, y1, t.get_text(), t.get_fontsize())
+    plt.close(fig)
+    return boxes
+
+
+@pytest.mark.parametrize("scheme", ["light", "dark"])
+def test_why_labels_lie_wholly_inside_their_own_region_and_do_not_overlap(why_fit, scheme):
+    import numpy as np
+
+    bsf, fit = why_fit
+    boxes = _label_boxes(bsf, fit, scheme)
+    assert set(boxes) == {0, 1, 2}
+    for k, (x0, y0, x1, y1, text, size) in boxes.items():
+        assert text.replace("\n", " ") == bsf.says(fit["W"][k]).replace("\n", " ")
+        assert size >= 14.0, "legible when the page shrinks the image to a phone's width"
+        # the box's corners, edge midpoints and a lattice inside it all fall in the label's region
+        gx, gy = np.meshgrid(np.linspace(x0, x1, 9), np.linspace(y0, y1, 9))
+        top = gy / bsf.SQ3
+        right = gx - top / 2.0
+        left = 1.0 - top - right
+        assert (top > 0).all() and (left > 0).all() and (right > 0).all(), (
+            k,
+            "inside the triangle",
+        )
+        reg = bsf.region_of(fit, fit["spread"], top, left, right)[0]
+        assert (reg == k).all(), (k, "the label crosses a border")
+    for i in range(3):
+        for j in range(i + 1, 3):
+            a, b = boxes[i], boxes[j]
+            assert a[2] <= b[0] or b[2] <= a[0] or a[3] <= b[1] or b[3] <= a[1], (i, j)
+
+
+def test_why_label_placement_is_the_same_in_both_schemes(why_fit):
+    bsf, fit = why_fit
+    light, dark = _label_boxes(bsf, fit, "light"), _label_boxes(bsf, fit, "dark")
+    assert light == dark
+
+
 def test_site_does_not_import_a_ternary_package():
     text = (ROOT / "scripts" / "build_site_figures.py").read_text()
     assert "import mpltern" not in text and "projection=" not in text

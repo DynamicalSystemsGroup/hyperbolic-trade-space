@@ -25,6 +25,7 @@ colour, exactly where that facet's V peaks at a fixed total.
 from __future__ import annotations
 
 import argparse
+import re
 from pathlib import Path
 
 import numpy as np
@@ -35,7 +36,7 @@ FILES = {"light": "why-regions-light.png", "dark": "why-regions-dark.png"}
 
 N_ROWS, N_METRICS, N_TERMS, DATA_SEED = 900, 3, 3, 11
 TEMPERATURE, FIT_SEED = 50.0, 0
-FIGSIZE, DPI = (7.4, 6.2), 170
+FIGSIZE, DPI = (7.4, 7.0), 170  # the axes span 1.08 by 1.07 plane units, so the triangle fills it
 BLUE, AMBER, GREEN = "#0072B2", "#E69F00", "#009E73"
 BIG = 0.12  # an exponent above this makes its metric part of the trade-off the facet names
 NAMES = ["metric 1", "metric 2", "metric 3"]
@@ -140,27 +141,104 @@ def regions(fit, s, n=500):
     return np.column_stack([t, lf, r]), region_of(fit, s, t, lf, r)[0]
 
 
-def label_spots(fit, comp, s):
-    """Where each facet's label goes: inside its region, clear of the region's borders and of the
-    triangle's edges, and as far as possible from the designs."""
-    pts, reg = regions(fit, s, n=160)
-    xy = np.column_stack(project(pts[:, 0], pts[:, 1], pts[:, 2]))
-    dxy = np.column_stack(project(comp[:, 0], comp[:, 1], comp[:, 2]))
-    spots = {}
+LABEL_SIZES = (15.0, 14.5, 14.0)  # points; the largest that fits is used
+LABEL_MARGIN = 0.004  # clear space, in plane units, between a label's box and any border
+
+
+def _wraps(text):
+    """The label's own wrap, then the same words on one to four lines ("metric 3" is a unit)."""
+    units = re.findall(r"metric \d|\S+", text.replace("\n", " "))
+    out = [text]
+    for lines in (2, 3, 4, 1):
+        per = -(-len(units) // lines)
+        alt = "\n".join(" ".join(units[i : i + per]) for i in range(0, len(units), per))
+        if alt not in out:
+            out.append(alt)
+    return out
+
+
+def _box(ax, text, size, ink, plate, edge):
+    """A label drawn at the origin; returns the text artist and its box half-extents (plane units),
+    read from the renderer (the bounding box includes the round box around the words)."""
+    t = ax.text(
+        0,
+        0,
+        text,
+        ha="center",
+        va="center",
+        fontsize=size,
+        fontweight="bold",
+        color=ink,
+        bbox={"boxstyle": "round,pad=0.3", "fc": plate, "ec": edge, "lw": 2.0},
+        zorder=6,
+    )
+    ax.figure.canvas.draw()
+    bb = t.get_bbox_patch().get_window_extent(ax.figure.canvas.get_renderer())
+    (x0, y0), (x1, y1) = ax.transData.inverted().transform([[bb.x0, bb.y0], [bb.x1, bb.y1]])
+    return t, (x1 - x0) / 2.0, (y1 - y0) / 2.0
+
+
+def place_labels(fit, comp, s, ax, ink, plate, col):
+    """Draw each facet's label inside its own region and return ``{facet: text artist}``.
+
+    The rule reads the fit. On a fine grid of the triangle the region of facet k is where
+    ``k = argmax_k w_k . p - beta_k``. A label's box (its extent as the renderer measures it, in
+    plane units, plus a margin) is placed only where it lies wholly in its region, so it crosses
+    neither a border with another region nor an edge of the triangle: the feasible centres are the
+    region's grid points eroded by the box. Of those the chosen one maximises the distance to the
+    region's border less the local density of designs (a Gaussian-smoothed count, bandwidth 0.04;
+    the distance counts a quarter as much).
+    The largest of ``LABEL_SIZES`` that has a feasible centre is used, with the wrap (the same words
+    on one to four lines) whose best centre scores highest. Nothing in the rule depends on the
+    colour scheme, so the light and dark images get the same placement.
+    """
+    from scipy import ndimage
+
+    n = 500
+    x, y, top, left, right, inside = _grid(n)
+    reg = np.full(top.shape, -1, int)
+    reg[inside] = region_of(fit, s, top[inside], left[inside], right[inside])[0]
+    dx = x[0, 1] - x[0, 0]
+    dy = y[1, 0] - y[0, 0]
+    px, py = project(comp[:, 0], comp[:, 1], comp[:, 2])
+    hist, _, _ = np.histogram2d(
+        py,
+        px,
+        bins=[y.shape[0], x.shape[1]],
+        range=[[-dy / 2, SQ3 + dy / 2], [-dx / 2, 1 + dx / 2]],
+    )
+    density = ndimage.gaussian_filter(hist, sigma=0.04 / dx)
+    density /= density.max()
+    out = {}
     for k in range(len(fit["W"])):
-        mine, other = reg == k, reg != k
-        if not mine.any():
+        mask = reg == k
+        if not mask.any():
             continue
-        free = pts.min(axis=1) > 0.04  # off the triangle's edges
-        if other.any():  # and off the borders with the other regions
-            gap = np.array([np.min(np.hypot(*(xy[other] - p).T)) for p in xy[mine]])
-            free_mine = free[mine] & (gap > 0.12)
-            cand = np.flatnonzero(mine)[free_mine] if free_mine.any() else np.flatnonzero(mine)
+        dist = ndimage.distance_transform_edt(mask) * dx
+        text = says(fit["W"][k])
+        for size in LABEL_SIZES:
+            best = None
+            for variant in _wraps(text):
+                t, hw, hh = _box(ax, variant, size, ink, plate, col[k])
+                nx = int(np.ceil((hw + LABEL_MARGIN) / dx))
+                ny = int(np.ceil((hh + LABEL_MARGIN) / dy))
+                ok = ndimage.binary_erosion(mask, structure=np.ones((2 * ny + 1, 2 * nx + 1), bool))
+                score = np.where(ok, 0.25 * dist / dist.max() - density, -np.inf)
+                i, j = np.unravel_index(np.argmax(score), score.shape)
+                if ok.any() and (best is None or score[i, j] > best[0]):
+                    if best is not None:
+                        best[1].remove()
+                    best = (score[i, j], t, (x[i, j], y[i, j]))
+                else:
+                    t.remove()
+            if best is not None:  # the best wrap at the largest size that fits
+                best[1].set_position(best[2])
+                best[1].set_gid(f"why-label-{k}")
+                out[k] = best[1]
+                break
         else:
-            cand = np.flatnonzero(mine & free)
-        d = np.array([np.min(np.hypot(*(dxy - xy[i]).T)) for i in cand])
-        spots[k] = xy[cand[int(np.argmax(d))]]
-    return spots
+            raise RuntimeError(f"no room for the label of facet {k} inside its region")
+    return out
 
 
 def draw(fit, scheme="light", lines=False):
@@ -182,8 +260,8 @@ def draw(fit, scheme="light", lines=False):
     ax = fig.add_axes([0.0, 0.0, 1.0, 1.0])
     ax.set_axis_off()
     ax.set_aspect("equal")
-    ax.set_xlim(-0.2, 1.2)
-    ax.set_ylim(-0.17, SQ3 + 0.13)
+    ax.set_xlim(-0.04, 1.04)
+    ax.set_ylim(-0.13, SQ3 + 0.075)
     ax.patch.set_alpha(0.0)
 
     # the exact regions, as an image clipped by the triangle
@@ -205,8 +283,8 @@ def draw(fit, scheme="light", lines=False):
         zorder=0,
         aspect="equal",
     )
-    ax.set_xlim(-0.2, 1.2)
-    ax.set_ylim(-0.17, SQ3 + 0.13)
+    ax.set_xlim(-0.04, 1.04)
+    ax.set_ylim(-0.13, SQ3 + 0.075)
 
     px, py = project(comp[:, 0], comp[:, 1], comp[:, 2])
     ax.scatter(px[~near], py[~near], s=7, color=sc["dots"], alpha=0.55, linewidths=0, zorder=2)
@@ -247,24 +325,11 @@ def draw(fit, scheme="light", lines=False):
 
     ax.plot([0, 0.5, 1, 0], [0, SQ3, 0, 0], color=ink, lw=1.4, solid_joinstyle="miter", zorder=5)
 
-    spots = label_spots(fit, comp, s)
-    for k, (tx, ty) in spots.items():
-        ax.text(
-            tx,
-            ty,
-            says(W[k]),
-            ha="center",
-            va="center",
-            fontsize=11.5,
-            fontweight="bold",
-            color=ink,
-            bbox={"boxstyle": "round,pad=0.3", "fc": sc["plate"], "ec": col[k], "lw": 2.0},
-            zorder=6,
-        )
-    corner = {"fontsize": 14, "fontweight": "bold", "color": ink, "zorder": 6}
+    place_labels(fit, comp, s, ax, ink, sc["plate"], col)
+    corner = {"fontsize": 15, "fontweight": "bold", "color": ink, "zorder": 6}
     ax.text(0.5, SQ3 + 0.035, "favours metric 1", ha="center", va="bottom", **corner)
-    ax.text(-0.02, -0.04, "favours\nmetric 2", ha="right", va="top", **corner)
-    ax.text(1.02, -0.04, "favours\nmetric 3", ha="left", va="top", **corner)
+    ax.text(-0.03, -0.03, "favours\nmetric 2", ha="left", va="top", **corner)
+    ax.text(1.03, -0.03, "favours\nmetric 3", ha="right", va="top", **corner)
     return fig
 
 
