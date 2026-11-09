@@ -379,6 +379,17 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   directions are PCA of the near-frontier chart coordinates); the register's PCA-analogue column is
   read in that sense.
 
+- **OD5, tools statement.** Options: none / a tools-and-process statement in his words / decide at
+  submission. **Supervisor (mzargham), verbatim:** "look at my scipy paper; you can use a similar
+  disclosure as i followed similar methods. you can also cite my incose IS 2026 paper which is
+  specifically about documents, requirements and accountability". Disposition: decided; the paper's
+  acknowledgments carry a tools-and-process disclosure modelled on the SciPy 2026 article's (read
+  from its source), adapted to this repository's process (gated work packages, machine-checked
+  derivations, the external review), and cite his INCOSE IS 2026 paper on documents, requirements
+  and accountability (bibliographic record from the SciPy paper's `mybib.bib`, entered under the
+  WP5 rule). The repository's no-attribution rule for commits and documents is unchanged; the
+  paper's disclosure is the supervisor's own statement, in his voice.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
