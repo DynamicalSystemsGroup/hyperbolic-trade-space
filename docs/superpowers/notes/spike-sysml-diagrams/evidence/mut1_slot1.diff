@@ -1,4 +1,0 @@
-49a50,52
-> class "XLWheel\n<<part def>>" as XLWheel {
-> }
-> ReactionWheel <|-- XLWheel

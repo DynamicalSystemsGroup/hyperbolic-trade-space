@@ -1,0 +1,13 @@
+DepthOfDischargeRequirement      energy balance       weak    BaseLoad
+DepthOfDischargeRequirement      eclipse reserve      strong  EclipseDemand
+DepthOfDischargeRequirement      depth of discharge   strong  EclipseDemand
+PowerRequirement                 power margin         strong  GeneratedPower
+PowerRequirement                 energy balance       strong  GeneratedPower
+SettledRequirement               settling time        strong  settlingTime
+SlewBandRequirement              slew time            prose   prose
+DepthOfDischargeRequirement band: power and energy satisfy: ['cubesatBaseline'] verify: ['SlewVerification']
+MomentumRequirement band: controls satisfy: ['cubesatBaseline'] verify: ['SlewVerification']
+PowerRequirement band: power and energy satisfy: ['cubesatBaseline'] verify: ['ConfigurationVerification']
+SettledRequirement band: controls satisfy: ['cubesatBaseline'] verify: ['SlewVerification']
+SlewBandRequirement band: controls satisfy: ['cubesatBaseline'] verify: ['SlewVerification']
+ok

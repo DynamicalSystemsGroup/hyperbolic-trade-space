@@ -1,0 +1,12 @@
+52,53c52,53
+<   rectangle "no requirement def\nlands on this subsystem" as xNonemass #FFFFFF;line:gray;line.dashed;text:gray
+<   rectangle "total mass" as xTotalMass #FFFFFF;line:black;line.dashed
+---
+>   rectangle "**MassRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> none in the model" as xMassrequirement #FDEBD0
+>   rectangle "total mass" as xTotalMass #E3F1E3
+55c55
+< xNonemass -[hidden]-> xTotalMass
+---
+> xMassrequirement -[hidden]-> xTotalMass
+63a64
+> xMassrequirement -[#B5541C,thickness=2]-> xTotalMass : MassAccounting

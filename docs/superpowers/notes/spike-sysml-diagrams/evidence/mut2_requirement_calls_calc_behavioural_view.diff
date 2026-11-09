@@ -1,0 +1,6 @@
+64,65c64,65
+< xPowerrequirement -[#B5541C,dashed]-> xPowerMargin : GeneratedPower
+< xPowerrequirement -[#B5541C,dashed]-> xEnergyBalance : GeneratedPower
+---
+> xPowerrequirement -[#B5541C,thickness=2]-> xPowerMargin : GeneratedPower
+> xPowerrequirement -[#B5541C,thickness=2]-> xEnergyBalance : GeneratedPower
