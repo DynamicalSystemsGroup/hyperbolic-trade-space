@@ -46,6 +46,22 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   are requested from their owners (the driver for `pyproject.toml`; the workflow is WP0's,
   amended by request).
 
+- **OD4, how far v2 may depart.** Options: structure only / structure plus named corrections /
+  redesign allowed. **Supervisor (mzargham), verbatim:** "Redesign allowed". Disposition: decided;
+  the tidy may redesign the case (constants, couplings, attributes) where that makes the model
+  cleaner or more faithful, each change entered in the change register with its reason; the v2
+  generation is reviewed as a new case (richness conditions, fits, check designs re-established)
+  before any swap; the frozen generation and every number that depends on it stay untouched until
+  the swap gate.
+- On model checking. **Supervisor (mzargham), verbatim:** "the z3 model checking is key because it
+  can exclude infeasible models". Disposition: a goal of WP15 made explicit: the toolkit's
+  `verify --solve` (Z3) and opensysml's `smt`/`solve` engines are used to exclude infeasible
+  configurations and infeasible model variants before simulation (constraints and requirements
+  as the feasibility definition, checked for satisfiability over the design space), so the
+  experiment runner samples only what the model admits and the ledger records what was excluded
+  and why; the Python feasibility flags become observations of the simulated run, not the
+  definition of feasibility.
+
 ## Scope approval (approval gate)
 
-- pending (OD4, OD5, the defaults as one item, then approval)
+- pending (OD5, the defaults as one item, then approval)
