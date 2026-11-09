@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 3. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 4. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 3
+contract_version = 4
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -55,6 +55,10 @@ docs.pages = ["index.md", "getting-started.md", "user-guide/overview.md", "user-
 docs.generated_dir = "docs/generated/"
 docs.generated_pages = ["glossary.md"]
 docs.glossary_source = "glossary.yaml"
+docs.glossary_entry_field_names = ["id", "term", "short", "register", "formal", "not", "symbol", "defined_in", "aliases", "avoid"]
+docs.glossary_entry_required_field_names = ["id", "term", "short", "register", "formal", "not"]
+docs.glossary_list_field_names = ["aliases", "avoid"]
+docs.glossary_file_key_names = ["entries", "assumed", "stems"]
 docs.paper_sources_dir = "docs/superpowers/notes/paper-sources/"
 docs.bibliography = "docs/references.bib"
 docs.citation_syntax = "[@key]"
@@ -197,7 +201,13 @@ Theory in brief, Further reading), the generated API reference (`docs/api-refere
 generated Glossary, plus `references.bib`. The Glossary is compiled from `glossary.yaml` by
 `scripts/build_generated.py` into `docs/generated/glossary.md` (git-ignored) and carries term and a
 one-line definition only; `glossary.yaml` is the single source of the register's phrases and is
-offered to the paper as the source of its register table. Notes under `docs/superpowers/notes/` are
+offered to the paper as the source of its register table. Its schema is pinned (a floor, section 14):
+an entry has the required fields `id`, `term`, `short`, `register`, `formal`, `not` and the optional
+`symbol`, `defined_in`, `aliases` (a list of accepted variants) and `avoid` (a list of `phrase` and
+`reason`, variants that must not appear); the file has `entries` and the optional lists `assumed`
+(terms the reader is assumed to know, each with a reason) and `stems` (the stems that mark a term of
+art). The Glossary page renders term and short only; the new fields are for the paper's register and
+the vocabulary review (`docs/superpowers/notes/vocabulary-review.md`). Notes under `docs/superpowers/notes/` are
 excluded from navigation. `docs/superpowers/notes/paper-sources/` holds verbatim snapshots of the
 pages that left the docsite (read-only; the paper's author reads them). Citations: `[@key]` (several
 as `[@key1; @key2]`) against `docs/references.bib`. Math: LaTeX in `$...$` and `$$...$$`. The
@@ -256,6 +266,7 @@ the last row of the change log.
 | 1 | 2026-11-08 | Initial version: package surface, boundary, case, figures, derivation, docs, build, staging, ownership | both | `WP14-decisions.md`, scope approval ("Approved") |
 | 2 | 2026-11-08 | Docsite for a package user (WP8a Amendment 2): `docs.pages` becomes Home, Getting started, User guide, API, Examples, Theory in brief, Further reading; `method.md`, `why-and-how.md`, `preconditioning.md`, `limitations.md`, `literature.md`, `case.md` leave `docs/`; pinned path `docs/superpowers/notes/paper-sources/`; the docs pages move to the presentation side (carve-out for the paper sources); `glossary.yaml` is a presentation file and the Glossary is compiled from it into `docs/generated/glossary.md`; `derivations.md` and `verification.md` move to `build/generated/` for the paper's build; the world-line labelling (C-9) is withdrawn and `overrides/` is removed; delivered clauses leave the skip list; the known-gaps row on the bibliography and literature page is rewritten | both | `WP14-decisions.md`, "Contract version 2" ("Approved") |
 | 3 | 2026-11-09 | Fitted attributes for every number of terms (WP10, cold-reader findings 19 and 20): `facet_`, `coefficients_` and `facet_share_` exist at one term as well (all zeros, `exp(-kappa beta)`, `[1.0]`); `mean_slack_` is added, the mean slack defined for every number of terms, and `objective_` is documented as what the solver minimized. Additive: the pinned fitted attributes grow (floor rule); no existing fitted number changes | both | `WP10-cold-reads-triage.md`, items 19 and 20 (the driver's triage) |
+| 4 | 2026-11-09 | The glossary's schema (WP10 Amendment 4, R-35): the entry fields `aliases` and `avoid` (lists) and the file-level lists `assumed` and `stems` are pinned beside the existing fields (`docs.glossary_entry_field_names`, `docs.glossary_entry_required_field_names`, `docs.glossary_list_field_names`, `docs.glossary_file_key_names`); the Glossary page still renders term and short only. Additive: the pinned lists grow (floor rule) | presentation (the paper reads the same file) | `WP10-decisions.md`, "The supervisor's reading of the abstract, second pass" ("make sure its reflected in our glossary and that we have a documented review technique for jargon checking") |
 
 ## 15. Consumers: may assume, must not touch
 

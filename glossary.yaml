@@ -13,6 +13,17 @@
 #   formal      the formal object
 #   not         what it is not
 #   defined_in  optional, where it is defined or proved (lemma and ledger ids)
+#   aliases     optional list of strings: variants the prose may use for the term (plural,
+#               abbreviation); each resolves to this entry
+#   avoid       optional list of {phrase, reason}: variants that must not appear in prose, each
+#               with the reason (docs/superpowers/notes/vocabulary-review.md)
+#
+# File-level lists besides `entries`
+#   assumed     optional list of {term, reason}: standard vocabulary assumed of the reader (calculus,
+#               linear algebra, convex optimization at the level of Boyd and Vandenberghe,
+#               scikit-learn's documented terms), each with the reason it needs no entry here
+#   stems       optional list of strings: the stems that mark a term of art in this subject; a
+#               phrase built on one must resolve to an entry, an alias or an assumed term
 entries:
   - id: 'configuration'
     term: 'configuration'
@@ -119,14 +130,76 @@ entries:
     not: 'a cluster of designs'
     defined_in: 'L10'
 
+  - id: 'monomial'
+    term: 'monomial'
+    short: 'A positive coefficient times the metrics raised to real powers; one term of a posynomial, a hyperplane in log-metrics.'
+    register: 'monomial'
+    formal: 'a positive constant times each metric raised to a real power; its logarithm is affine in the log-metrics'
+    not: 'a posynomial (a sum of monomials), or a cluster of designs'
+    defined_in: 'Definition Posynomial, L4.17'
+    aliases:
+      - 'monomials'
+
+  - id: 'posynomial'
+    term: 'posynomial'
+    short: 'A sum of monomials; the fit''s K-term sum is one, and the fitted reference surface is where that sum equals one.'
+    register: 'posynomial'
+    formal: 'a sum of monomials with positive coefficients; here the sum of the fit''s terms, each a monomial in the metrics'
+    not: 'the invariant, which is a root of the sum, or a polynomial with coefficients of either sign'
+    defined_in: 'Definition Posynomial, L10'
+    aliases:
+      - 'posynomials'
+
+  - id: 'generalized-posynomial'
+    term: 'generalized posynomial'
+    short: 'A function built from posynomials by sums, products, positive powers and maxima (Boyd et al. 2007); the invariant V_K belongs to this class.'
+    register: 'generalized posynomial'
+    formal: 'a function of the class closed under sums, products, positive powers and maxima that contains the posynomials; a class of functions'
+    not: 'a name for the fitted reference surface, which is a level set of a posynomial, or for a class of problems (that is a generalized geometric program)'
+    defined_in: 'Boyd et al. 2007, section 5; the one cited sentence of the Methods'
+    aliases:
+      - 'generalized posynomials'
+
+  - id: 'geometric-program'
+    term: 'geometric program'
+    short: 'The minimization of a posynomial under posynomial inequality and monomial equality constraints; convex after x = exp(y).'
+    register: 'geometric program'
+    formal: 'minimize a posynomial subject to posynomial constraints at most one and monomial constraints equal to one, over positive variables; the logarithmic change of variables makes it a convex program'
+    not: 'the several-facet fit, which alternates assigning designs to facets with one such program per facet, or a generalized geometric program'
+    defined_in: 'L4.14 to L4.24'
+    aliases:
+      - 'geometric programs'
+      - 'GP'
+      - 'geometric programming'
+
+  - id: 'generalized-geometric-program'
+    term: 'generalized geometric program'
+    short: 'A geometric program whose objective and inequality constraints may be generalized posynomials; it reduces to a geometric program.'
+    register: 'generalized geometric program'
+    formal: 'a program of geometric-program form whose objective and inequality constraints are generalized posynomials; added variables turn it into a geometric program'
+    not: 'a function class, or the fit itself; a design problem that uses the fitted model is one'
+    defined_in: 'Boyd et al. 2007, section 5'
+    aliases:
+      - 'generalized geometric programs'
+      - 'GGP'
+
   - id: 'fitted-reference-surface'
     term: 'fitted reference surface'
     symbol: '\Phi(u) = 0'
-    short: 'The level V = 1 of the fitted invariant at finite temperature; rows above it exist by construction.'
+    short: 'The level V = 1 of the fitted invariant at finite temperature, a model of the data underlying the table; rows above it exist by construction.'
     register: 'fitted reference surface'
-    formal: 'the level set V = 1 of the fitted invariant'
-    not: 'the Pareto boundary, or a bound that no design exceeds'
+    formal: 'the level set V = 1 of the fitted invariant, where the posynomial sum equals one; it models the data (the evaluated designs)'
+    not: 'the Pareto boundary, or a bound that no design exceeds; the table and the reading drawn from it are views of the data, not what is modelled'
     defined_in: 'L3, L5, G-1'
+    avoid:
+      - phrase: 'generalized posynomial reference surface'
+        reason: 'the surface is the level set of a posynomial; generalized names the class the invariant belongs to'
+      - phrase: 'generalized posynomial surface'
+        reason: 'the surface is the level set of a posynomial; generalized names the class the invariant belongs to'
+      - phrase: 'model of the table'
+        reason: 'the surface models the data underlying the table; the table and its reading are views'
+      - phrase: 'models the table'
+        reason: 'the surface models the data underlying the table; the table and its reading are views'
 
   - id: 'supporting-envelope'
     term: 'supporting envelope'
@@ -333,3 +406,39 @@ entries:
     formal: 'V minus 1'
     not: 'a measure of attainability'
     defined_in: 'Novelty and white space'
+
+assumed:
+  - term: 'convex program'
+    reason: 'convex optimization at the level of Boyd and Vandenberghe 2004'
+  - term: 'linear program'
+    reason: 'convex optimization at the level of Boyd and Vandenberghe 2004'
+  - term: 'simplex'
+    reason: 'the probability simplex of Boyd and Vandenberghe 2004; named in Preliminaries'
+  - term: 'KKT conditions'
+    reason: 'Boyd and Vandenberghe 2004, section 5.5.3'
+  - term: 'Hessian'
+    reason: 'multivariate calculus'
+  - term: 'eigenvalue'
+    reason: 'linear algebra'
+  - term: 'log-sum-exp'
+    reason: 'Boyd and Vandenberghe 2004, section 3.1.5; the paper uses the log-mean-exp, which it defines'
+  - term: 'estimator'
+    reason: 'the scikit-learn documented vocabulary (Pedregosa et al. 2011; Buitinck et al. 2013)'
+  - term: 'transformer'
+    reason: 'the scikit-learn documented vocabulary (Pedregosa et al. 2011; Buitinck et al. 2013)'
+
+stems:
+  - 'posynomial'
+  - 'monomial'
+  - 'program'
+  - 'frontier'
+  - 'facet'
+  - 'envelope'
+  - 'surface'
+  - 'chart'
+  - 'lemma'
+  - 'rate'
+  - 'margin'
+  - 'radius'
+  - 'temperature'
+  - 'gap'

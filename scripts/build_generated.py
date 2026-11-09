@@ -31,7 +31,9 @@ DEFAULT_OUT = ROOT / "build" / "generated"  # derivations.md, verification.md (p
 DOCS_GENERATED = ROOT / "docs" / "generated"  # glossary.md (the docsite's generated page)
 GLOSSARY_SOURCE = ROOT / "glossary.yaml"
 GLOSSARY_REQUIRED = ("id", "term", "short", "register", "formal", "not")
-GLOSSARY_OPTIONAL = ("symbol", "defined_in")
+GLOSSARY_OPTIONAL = ("symbol", "defined_in", "aliases", "avoid")
+GLOSSARY_LIST_FIELDS = ("aliases", "avoid")
+GLOSSARY_FILE_KEYS = ("entries", "assumed", "stems")  # "entries" is required; the others optional
 GAPS_LEDGER = "docs/superpowers/notes/abstraction-gaps.md"
 SKLEARN_TEST_FILE = "tests/test_sklearn_compat.py"
 
@@ -335,21 +337,49 @@ def verification_page(chain, node_ids, expected):
 # ------------------------------------------------------------------------------ glossary
 
 
+def _nonempty_str(value, where, what):
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{where}: {what} must be a non-empty string")
+
+
+def _check_glossary_lists(data, where):
+    """Validate the file-level lists ``assumed`` and ``stems``."""
+    for item in data.get("assumed", []):
+        if not isinstance(item, dict) or set(item) != {"term", "reason"}:
+            raise ValueError(f"{where}: each 'assumed' item is a mapping with 'term' and 'reason'")
+        _nonempty_str(item["term"], where, "an 'assumed' term")
+        _nonempty_str(item["reason"], where, "an 'assumed' reason")
+    for stem in data.get("stems", []):
+        _nonempty_str(stem, where, "a stem")
+
+
 def load_glossary(path=None):
     """Read and validate ``glossary.yaml``; return the entries as a list of dicts.
 
-    Raises ``ValueError`` on a missing or unknown field, a non-string or empty value, a
-    multi-line ``short``, or a repeated ``id`` or ``term``.
+    The file has the key ``entries`` and, optionally, the lists ``assumed`` (terms assumed of the
+    reader, each a mapping with ``term`` and ``reason``) and ``stems`` (strings); read them with
+    :func:`load_glossary_lists`. An entry may carry ``aliases`` (a list of strings, accepted
+    variants) and ``avoid`` (a list of mappings with ``phrase`` and ``reason``, variants that must
+    not appear). Raises ``ValueError`` on a missing or unknown field, a non-string or empty value,
+    a multi-line ``short``, a repeated ``id`` or ``term``, or an alias or avoided phrase that is
+    another entry's term or alias.
     """
     import yaml
 
     path = Path(path) if path else GLOSSARY_SOURCE
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if not isinstance(data, dict) or set(data) != {"entries"}:
-        raise ValueError(f"{path.name}: the top level must be a single key 'entries'")
+    if not isinstance(data, dict) or "entries" not in data or set(data) - set(GLOSSARY_FILE_KEYS):
+        raise ValueError(
+            f"{path.name}: the top level has the key 'entries' and optionally "
+            f"{[k for k in GLOSSARY_FILE_KEYS if k != 'entries']}, nothing else"
+        )
     entries = data["entries"]
     if not isinstance(entries, list) or not entries:
         raise ValueError(f"{path.name}: 'entries' must be a non-empty list")
+    for key in ("assumed", "stems"):
+        if key in data and not isinstance(data[key], list):
+            raise ValueError(f"{path.name}: '{key}' must be a list")
+    _check_glossary_lists(data, path.name)
     allowed = set(GLOSSARY_REQUIRED) | set(GLOSSARY_OPTIONAL)
     seen_ids, seen_terms = set(), set()
     for i, entry in enumerate(entries):
@@ -363,8 +393,18 @@ def load_glossary(path=None):
         if unknown:
             raise ValueError(f"{where}: unknown field(s) {unknown}")
         for key, value in entry.items():
-            if not isinstance(value, str) or not value.strip():
+            if key in GLOSSARY_LIST_FIELDS:
+                if not isinstance(value, list) or not value:
+                    raise ValueError(f"{where}: field '{key}' must be a non-empty list")
+            elif not isinstance(value, str) or not value.strip():
                 raise ValueError(f"{where}: field '{key}' must be a non-empty string")
+        for alias in entry.get("aliases", []):
+            _nonempty_str(alias, where, "an alias")
+        for item in entry.get("avoid", []):
+            if not isinstance(item, dict) or set(item) != {"phrase", "reason"}:
+                raise ValueError(f"{where}: each 'avoid' item is a mapping with 'phrase', 'reason'")
+            _nonempty_str(item["phrase"], where, "an avoided phrase")
+            _nonempty_str(item["reason"], where, "an avoid reason")
         if "\n" in entry["short"].strip() or "\n" in entry["term"].strip():
             raise ValueError(f"{where}: 'short' and 'term' are one line")
         if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", entry["id"]):
@@ -375,7 +415,33 @@ def load_glossary(path=None):
             raise ValueError(f"{where}: repeated term '{entry['term']}'")
         seen_ids.add(entry["id"])
         seen_terms.add(entry["term"].casefold())
+    names: dict[str, str] = {}
+    for entry in entries:
+        for name in [entry["term"], *entry.get("aliases", [])]:
+            key = name.strip().casefold()
+            if key in names and names[key] != entry["id"]:
+                raise ValueError(
+                    f"{path.name}: '{name}' names both '{names[key]}' and '{entry['id']}'"
+                )
+            names[key] = entry["id"]
+    for entry in entries:
+        for item in entry.get("avoid", []):
+            if item["phrase"].strip().casefold() in names:
+                raise ValueError(f"{path.name}: avoided phrase '{item['phrase']}' is also a term")
     return entries
+
+
+def load_glossary_lists(path=None):
+    """The file-level lists of ``glossary.yaml``: ``{"assumed": [...], "stems": [...]}``.
+
+    Validates the whole file first (see :func:`load_glossary`); a missing list is empty.
+    """
+    import yaml
+
+    path = Path(path) if path else GLOSSARY_SOURCE
+    load_glossary(path)
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    return {"assumed": data.get("assumed", []), "stems": data.get("stems", [])}
 
 
 def glossary_page(entries):

@@ -997,3 +997,29 @@ def test_r9_wp14_owns_exactly_its_three_files_and_they_exist():
         "pyproject.toml",
         "uv.lock",
     }, msg("R-9", "WP14 must not own WP13's files, pyproject, uv.lock, examples or .github", "both")
+
+
+def test_r6_glossary_schema_pinned_as_a_floor():
+    """Contract version 4: the glossary's schema (entry fields, the list fields, the file's keys)
+    is pinned; the build script's validator accepts at least what the manifest names."""
+    import importlib.util as _u
+
+    spec = _u.spec_from_file_location("_bg", ROOT / DOCS["generated_by"])
+    bg = _u.module_from_spec(spec)
+    spec.loader.exec_module(bg)
+    fields = set(DOCS["glossary_entry_field_names"])
+    required = set(DOCS["glossary_entry_required_field_names"])
+    assert required == set(bg.GLOSSARY_REQUIRED), msg(
+        "R-6", "required glossary entry fields differ from the build script", "presentation"
+    )
+    assert fields <= set(bg.GLOSSARY_REQUIRED) | set(bg.GLOSSARY_OPTIONAL), msg(
+        "R-6", "a pinned glossary field is not accepted by the build script", "presentation"
+    )
+    assert {"aliases", "avoid"} <= set(DOCS["glossary_list_field_names"])
+    assert set(DOCS["glossary_file_key_names"]) <= set(bg.GLOSSARY_FILE_KEYS)
+    import yaml
+
+    data = yaml.safe_load((ROOT / DOCS["glossary_source"]).read_text(encoding="utf-8"))
+    assert set(data) <= set(DOCS["glossary_file_key_names"])
+    for entry in data["entries"]:
+        assert set(entry) <= fields, msg("R-6", f"{entry['id']}: field not pinned", "presentation")

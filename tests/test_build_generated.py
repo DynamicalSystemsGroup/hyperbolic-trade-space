@@ -194,6 +194,76 @@ def test_glossary_validation_rejects_bad_sources(tmp_path):
         build_generated.load_glossary(_write(tmp_path, yaml.safe_dump([_entry()])))
 
 
+CLASS_WORDS = (
+    "monomial",
+    "posynomial",
+    "generalized posynomial",
+    "geometric program",
+    "generalized geometric program",
+)
+
+
+def test_glossary_carries_the_class_words_and_the_withdrawn_phrases():
+    """WP10 Amendment 4 (R-33, R-35): five class words are entries; the surface is posynomial
+    and models the data, and the phrases withdrawn on the supervisor's direction are on its avoid
+    list."""
+    entries = {e["term"]: e for e in build_generated.load_glossary(GLOSSARY)}
+    for term in CLASS_WORDS:
+        assert term in entries, term
+    assert "function" in entries["generalized posynomial"]["formal"]
+    assert "problems" not in entries["generalized posynomial"]["formal"]
+    surface = entries["fitted reference surface"]
+    withdrawn = {a["phrase"] for a in surface["avoid"]}
+    assert {"generalized posynomial reference surface", "model of the table"} <= withdrawn
+    assert "data underlying the table" in surface["short"]
+    lists = build_generated.load_glossary_lists(GLOSSARY)
+    assert lists["stems"] and "posynomial" in lists["stems"]
+    assert all(set(a) == {"term", "reason"} for a in lists["assumed"]) and lists["assumed"]
+
+
+def test_glossary_page_shows_term_and_short_only_despite_the_new_fields():
+    entries = build_generated.load_glossary(GLOSSARY)
+    page = build_generated.glossary_page(entries)
+    for e in entries:
+        for item in e.get("avoid", []):
+            assert item["reason"] not in page
+        for alias in e.get("aliases", []):
+            assert f"**{alias}**" not in page
+
+
+def test_glossary_schema_aliases_avoid_assumed_stems(tmp_path):
+    import yaml
+
+    def load(entries, **lists):
+        text = yaml.safe_dump({"entries": entries, **lists})
+        return build_generated.load_glossary(_write(tmp_path, text))
+
+    ok = _entry(aliases=["xs"], avoid=[{"phrase": "bad x", "reason": "why"}])
+    assert load([ok], assumed=[{"term": "t", "reason": "r"}], stems=["s"])
+    bad = {
+        "alias not a list": [_entry(aliases="xs")],
+        "empty alias list": [_entry(aliases=[])],
+        "blank alias": [_entry(aliases=[" "])],
+        "avoid without reason": [_entry(avoid=[{"phrase": "p"}])],
+        "avoid as strings": [_entry(avoid=["p"])],
+        "alias is another term": [_entry(), _entry(id="y", term="y", aliases=["x"])],
+        "avoided phrase is a term": [_entry(avoid=[{"phrase": "x", "reason": "r"}])],
+    }
+    for label, entries in bad.items():
+        with pytest.raises(ValueError):
+            load(entries)
+        assert label
+    for lists in (
+        {"assumed": [{"term": "t"}]},
+        {"assumed": "t"},
+        {"stems": [1]},
+        {"stems": "s"},
+        {"other": []},
+    ):
+        with pytest.raises(ValueError):
+            load([_entry()], **lists)
+
+
 def test_glossary_sorting_ignores_source_order(tmp_path):
     import yaml
 

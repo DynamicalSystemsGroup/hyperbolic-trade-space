@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 3
+contract_version = 4
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -252,6 +252,10 @@ generated_dir = "docs/generated/"
 generated_pages = ["glossary.md"]
 generated_by = "scripts/build_generated.py"
 glossary_source = "glossary.yaml"
+glossary_entry_field_names = ["id", "term", "short", "register", "formal", "not", "symbol", "defined_in", "aliases", "avoid"]
+glossary_entry_required_field_names = ["id", "term", "short", "register", "formal", "not"]
+glossary_list_field_names = ["aliases", "avoid"]
+glossary_file_key_names = ["entries", "assumed", "stems"]
 paper_sources_dir = "docs/superpowers/notes/paper-sources/"
 bibliography = "docs/references.bib"
 notes_dir = "docs/superpowers/notes/"
