@@ -180,6 +180,7 @@ def _run_cell(cell: Experiment, oracle, sampler, root: Path, ledger: Path, own) 
             **dict(cell.inputs),
         },
         "parents": parents,
+        "supersedes": list(cell.supersedes),
     }
     try:
         return lg.append(ledger, entry)

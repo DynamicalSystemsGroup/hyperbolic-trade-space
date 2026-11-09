@@ -61,8 +61,8 @@ the file.
 | 3 | ACCOUNTING: mass, power, energy, inertia, pointing | 249 to 382 |
 | 4 | SCENARIOS: the slew, and a closed-form approximation of it | 384 to 454 |
 | 5 | REQUIREMENTS, SATISFACTION AND VERIFICATION (15.2) | 456 to 588 |
-| 6 | THE EXPERIMENT: configuration and measured slew in, attributes out | 590 to 619 |
-| 7 | NAMED CONFIGURATIONS | 621 to 644 |
+| 6 | THE EXPERIMENT: configuration and measured slew in, attributes out | 590 to 621 |
+| 7 | NAMED CONFIGURATIONS | 623 to 646 |
 <!-- sections:end -->
 
 What to take from each section:
@@ -99,11 +99,17 @@ PYTHONPATH=examples/adcs uv run python -m experiments compare
 ```
 
 - `verify` recomputes every hash in the ledger (entry chain, model, code files, outputs, row counts,
-  parents) and prints one line per drift; it exits 1 on drift.
+  parents) of the current entries and prints one line per drift; it exits 1 on drift. Entries a
+  later entry supersedes are listed after the drifts, not counted as drift.
 - `run <id>` executes the declared experiment and appends one entry. It refuses an id that already
   has an entry: the ledger is append-only. The ids of the v2 generation are `v2-primary`,
   `v2-baseline`, `v2-check-predictions` and `v2-check-designs`; the predictions are committed
   before the check designs are simulated, and the ledger order shows it.
+- `run <id> --supersede` is the re-run after the model or the code changed: a new entry
+  `<id>@<n>` names the entry it replaces in `supersedes`, and its parents are the current entries of
+  the parent experiments. Nothing earlier is rewritten; the superseded entry keeps the hashes of the
+  model and code it ran with, which is the history. If the re-run overwrote the output file, the
+  superseded entry is listed as `superseded, output replaced`.
 - `adopt` registers the five frozen datasets without regenerating them.
 - `compare` regenerates the v1 to v2 comparison report in `experiments/reports/`.
 
@@ -130,6 +136,7 @@ the previous one by hash, so editing or deleting a line breaks `verify`.
 | `platform` | the platform string |
 | `inputs` | count, seed, scenario, gain box, oracle and sampler names, the column names, and anything the experiment declares (for the v2 runs the exclusion record, below) |
 | `parents` | the entries whose outputs this run read, with their hashes taken before it ran |
+| `supersedes` | the earlier entry ids this run replaces (empty when none; unknown ids and itself are refused) |
 | `prev_hash` | the previous entry's hash |
 | `entry_hash` | the hash of this entry without this field |
 

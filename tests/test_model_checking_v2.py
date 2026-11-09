@@ -711,8 +711,8 @@ def test_momentum_closed_form_is_optimistic_against_the_ode(pool, measured, v2, 
 # R-7: analysis and sweep
 # ---------------------------------------------------------------------------------------------
 def test_run_analysis_with_the_measured_slew_equals_the_frozen_oracle(sample20, pool):
-    """R-7: ten attributes of run_analysis on a configuration plus the Python measurement equal the
-    frozen oracle's output (1e-9 relative), and the flags are those the requirements give."""
+    """R-7: the eight computed attributes of run_analysis on a configuration plus the Python
+    measurement equal the frozen oracle's output (1e-9 relative), and the flags are those the requirements give."""
     worst = 0.0
     for row in sample20:
         got = pool["v2"].experiment(pool["model"], row["symbol"], row["measured"])
@@ -732,8 +732,6 @@ def test_run_sweep_over_the_measured_energy_integral_reproduces_the_accounting(v
     named = {
         "peakTorque": Quantity(0.002, unit("SI::N*SI::m")),
         "peakMomentum": Quantity(0.004, unit("SI::N*SI::m*SI::s")),
-        "settlingTime": Quantity(100.0, unit("SI::s")),
-        "slewTime": Quantity(50.0, unit("SI::s")),
         "controlEffort": Quantity(0.1, unit("SI::N*SI::m*SI::s")),
         "censored": False,
     }
@@ -756,7 +754,7 @@ def test_run_sweep_over_the_measured_energy_integral_reproduces_the_accounting(v
         tsi = float(row.inputs["torqueSquaredIntegral"])
         energy_wh = k.env("wheelLossCoefficient") * tsi / 3600.0
         want = (load * k.env("eclipseDuration", "SI::h") + energy_wh) / cap
-        got = v2.value(row.outputs["attributes"][9])
+        got = v2.value(row.outputs["attributes"][7])
         assert got == pytest.approx(want, rel=1e-9), (base, tsi)
 
 

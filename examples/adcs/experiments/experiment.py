@@ -63,6 +63,8 @@ class Experiment:
         Further inputs recorded verbatim in the entry.
     parents : tuple of str
         Ledger ids whose outputs this experiment reads; their hashes are recorded before it runs.
+    supersedes : tuple of str
+        Earlier ledger ids this run replaces (a re-run after the model or the code changed).
     sweep : mapping or None
         ``{"scenario": [...]}`` and/or ``{"gain_box": [...]}``; one run per cell.
     """
@@ -81,6 +83,7 @@ class Experiment:
     code: tuple[str, ...] = ()
     inputs: Mapping = field(default_factory=dict)
     parents: tuple[str, ...] = ()
+    supersedes: tuple[str, ...] = ()
     sweep: Mapping[str, Sequence[str]] | None = None
 
     def __post_init__(self):

@@ -375,3 +375,86 @@ def test_cli_verify_and_compare_message():
         cwd=REPO,
     )
     assert c.returncode in (0, 2)
+
+
+# -- supersession: a model change after an entry --------------------------------------------------
+def _superseding(root, led, **kw):
+    """Run a second experiment (the same output) that supersedes ``toy``."""
+    return runner.run(
+        _exp(id="toy@2", supersedes=("toy",), **kw), SimulatorToy(), _sampler(), root, led
+    )
+
+
+def test_model_change_is_drift_and_a_superseding_entry_clears_it(tmp_path):
+    root = _tree(tmp_path)
+    led = root / "ledger.jsonl"
+    [old] = runner.run(_exp(), SimulatorToy(), _sampler(), root, led)
+    (root / "model.txt").write_text("toy model v2\n")
+    drifts = lg.verify(led, root)
+    assert [d.entry_id for d in drifts] == ["toy"] and drifts[0].what == "model changed"
+    [new] = _superseding(root, led)
+    assert new["supersedes"] == ["toy"] and new["git_dirty"] in (False, True, None)
+    assert lg.verify(led, root) == []
+    # the old entry is still readable, its fields unchanged, and listed as superseded
+    kept = lg.find(lg.read(led), "toy")
+    assert kept == old
+    assert kept["model_sha256"] != new["model_sha256"]
+    [s] = lg.superseded(led, root)
+    assert (s.entry_id, s.by) == ("toy", "toy@2")
+    assert s.status == "superseded"  # byte-identical output: still the file it recorded
+    assert [e["id"] for e in lg.current(lg.read(led))] == ["toy@2"]
+    assert lg.latest(lg.read(led), "toy")["id"] == "toy@2"
+
+
+def test_superseded_output_replaced_is_reported_not_drift(tmp_path):
+    root = _tree(tmp_path)
+    led = root / "ledger.jsonl"
+    runner.run(_exp(), SimulatorToy(), _sampler(), root, led)
+    (root / "model.txt").write_text("toy model v2\n")
+    _superseding(root, led, seed=8)  # other seed: the output file changes
+    assert lg.verify(led, root) == []
+    [s] = lg.superseded(led, root)
+    assert s.status == "superseded, output replaced"
+
+
+def test_supersession_is_hashed_and_cannot_be_dropped(tmp_path):
+    root = _tree(tmp_path)
+    led = root / "ledger.jsonl"
+    runner.run(_exp(), SimulatorToy(), _sampler(), root, led)
+    _superseding(root, led)
+    led.write_text(
+        led.read_text()
+        .replace('"supersedes":["toy"]', '"supersedes":[]')
+        .replace('"supersedes": ["toy"]', '"supersedes": []')
+    )
+    assert any(d.entry_id == "toy@2" and "edited" in d.what for d in lg.verify(led, root))
+
+
+def test_cannot_supersede_an_unknown_id_or_itself_or_twice(tmp_path):
+    root = _tree(tmp_path)
+    led = root / "ledger.jsonl"
+    [e] = runner.run(_exp(), SimulatorToy(), _sampler(), root, led)
+    base = {k: v for k, v in e.items() if k not in ("prev_hash", "entry_hash")}
+    with pytest.raises(lg.LedgerError, match="unknown"):
+        lg.append(led, {**base, "id": "b", "supersedes": ["nope"]})
+    with pytest.raises(lg.LedgerError, match="itself"):
+        lg.append(led, {**base, "id": "b", "supersedes": ["b"]})
+    lg.append(led, {**base, "id": "b", "supersedes": ["toy"]})
+    with pytest.raises(lg.LedgerError, match="already superseded"):
+        lg.append(led, {**base, "id": "c", "supersedes": ["toy"]})
+    assert [x["id"] for x in lg.read(led)] == ["toy", "b"]
+
+
+def test_entries_without_the_field_supersede_nothing():
+    assert lg.supersedes_of({"id": "x"}) == [] and lg.current([{"id": "x"}]) == [{"id": "x"}]
+
+
+def test_revise_names_the_revision_and_repoints_the_parents():
+    entries = [{"id": "v2-primary"}, {"id": "v2-check-predictions"}]
+    p = defs.revise(defs.EXPERIMENTS["v2-primary"], entries)
+    assert (p.id, p.supersedes) == ("v2-primary@2", ("v2-primary",))
+    entries.append({"id": "v2-primary@2", "supersedes": ["v2-primary"]})
+    c = defs.revise(defs.EXPERIMENTS["v2-check-predictions"], entries)
+    assert c.parents == ("v2-primary@2",) and c.supersedes == ("v2-check-predictions",)
+    with pytest.raises(KeyError):
+        defs.revise(defs.EXPERIMENTS["v2-baseline"], [])

@@ -37,10 +37,10 @@ SECTIONS = [
     "6. THE EXPERIMENT",
     "7. NAMED CONFIGURATIONS",
 ]
-# The ten attributes the experiment returns, in order, with the unit each is read in.
+# The eight attributes the experiment computes, in order, with the unit each is read in. The
+# settling time and the slew time are measured, not computed: the oracle takes them from the
+# measurement, so the analysis neither receives nor returns them.
 ATTRIBUTES = [
-    ("settling_time_s", "SI::s"),
-    ("slew_time_s", "SI::s"),
     ("pointing_error_deg", "SI::degree"),
     ("total_mass_kg", "SI::kg"),
     ("control_effort", "SI::N*SI::m*SI::s"),
@@ -121,14 +121,12 @@ class V2:
         return loaded, [f"Configurations::cfg_{int(d['design_id'])}" for d in designs]
 
     def experiment(self, model, symbol: str, measured: dict) -> dict:
-        """Run the model's analysis on a configuration; the ten attributes by name."""
+        """Run the model's analysis on a configuration; the eight computed attributes by name."""
         unit = self.unit
         args = {
             "torqueSquaredIntegral": measured["torque_squared_integral"],
             "peakTorque": Quantity(measured["peak_torque"], unit("SI::N*SI::m")),
             "peakMomentum": Quantity(measured["peak_momentum"], unit("SI::N*SI::m*SI::s")),
-            "settlingTime": Quantity(measured["settling_time"], unit("SI::s")),
-            "slewTime": Quantity(measured["slew_time"], unit("SI::s")),
             "controlEffort": Quantity(measured["control_effort"], unit("SI::N*SI::m*SI::s")),
             "censored": bool(measured["censored"]),
         }
@@ -392,8 +390,32 @@ def test_analysis_reproduces_the_frozen_attributes(v2, frozen, sample, capsys):
             if diff > worst:
                 worst, worst_key = diff, name
     with capsys.disabled():
-        print(f"\n[equivalence] ten attributes, 5 configs: max rel diff {worst:.2e} ({worst_key})")
+        print(
+            f"\n[equivalence] eight computed attributes, 5 configs: "
+            f"max rel diff {worst:.2e} ({worst_key})"
+        )
     assert worst < 1e-9
+
+
+def test_analysis_with_equal_measured_times_needs_no_workaround(v2):
+    """The runtime refuses a unique tuple with two equal entries; the analysis returns computed
+    attributes only, so a measurement whose settling time equals its slew time is analysed in
+    one call, whatever the two values are."""
+    measured = {
+        "torque_squared_integral": 1e-5,
+        "peak_torque": 1e-3,
+        "peak_momentum": 4e-3,
+        "settling_time": 14.398119154048933,
+        "slew_time": 14.398119154048933,
+        "control_effort": 1e-2,
+        "censored": False,
+    }
+    got = v2.experiment(v2.model, f"{P}::cubesatBaseline", measured)
+    assert list(got) == [name for name, _ in ATTRIBUTES]
+    assert len(set(got.values())) == len(ATTRIBUTES)
+    body = TEXT[TEXT.index("analysis def SlewExperiment") :]
+    body = body[: body.index("\n    }\n")]
+    assert "settlingTime" not in body and "slewTime" not in body
 
 
 # ---------------------------------------------------------------------------------------------

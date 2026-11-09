@@ -337,8 +337,9 @@ def test_ledger_ready_record_of_an_excluded_region(oracle, solver):
 
 
 def test_equal_settling_and_slew_times_are_analysed(oracle, designs):
-    """The runtime refuses a unique tuple with two equal entries; the oracle repeats the call and
-    returns both times exactly as measured (a stiff loop crosses both thresholds in one step)."""
+    """The analysis returns computed attributes only, so a stiff loop that crosses both thresholds
+    in one step (equal settling and slew times) is analysed in one call and both times enter the
+    row exactly as measured."""
     loaded, symbols = oracle._configure([{**designs.iloc[0].to_dict(), "design_id": 0}])
     measured = {
         "torque_squared_integral": 1e-5,
@@ -351,6 +352,8 @@ def test_equal_settling_and_slew_times_are_analysed(oracle, designs):
     }
     got = oracle._analyse(loaded, symbols[0], measured)
     assert got["settling_time_s"] == got["slew_time_s"] == 14.398119154048933
+    assert list(got) == list(co.ATTRIBUTE_NAMES)
     distinct = oracle._analyse(loaded, symbols[0], {**measured, "slew_time": 10.0})
     for k in co.ATTRIBUTE_NAMES[2:]:
         assert got[k] == pytest.approx(distinct[k], rel=1e-12), k
+    assert "nextafter" not in pathlib.Path(co.__file__).read_text()

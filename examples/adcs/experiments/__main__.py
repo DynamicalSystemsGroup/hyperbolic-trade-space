@@ -26,6 +26,11 @@ def main(argv=None) -> int:
     sub = p.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run", help="run a declared experiment by id")
     r.add_argument("id")
+    r.add_argument(
+        "--supersede",
+        action="store_true",
+        help="re-run after a model or code change: a new entry <id>@<n> supersedes the current one",
+    )
     sub.add_parser("verify", help="recompute every ledger hash; exit 1 on drift")
     sub.add_parser("adopt", help="register the frozen datasets (no regeneration)")
     c = sub.add_parser("compare", help="v1-v2 comparison report (experiments.compare)")
@@ -36,7 +41,10 @@ def main(argv=None) -> int:
         drifts = lg.verify(a.ledger, a.root)
         for d in drifts:
             print(d)
-        print(f"{len(lg.read(a.ledger))} entries; {len(drifts)} drifts")
+        for s in lg.superseded(a.ledger, a.root):
+            print(s)
+        entries = lg.read(a.ledger)
+        print(f"{len(entries)} entries ({len(lg.current(entries))} current); {len(drifts)} drifts")
         return 1 if drifts else 0
     if a.cmd == "adopt":
         added = runner.adopt(df.FROZEN, a.root, a.ledger)
@@ -47,6 +55,8 @@ def main(argv=None) -> int:
         if exp is None:
             print(f"unknown experiment {a.id!r}; known: {sorted(df.EXPERIMENTS)}")
             return 2
+        if a.supersede:
+            exp = df.revise(exp, lg.read(a.ledger))
         entries = runner.run(
             exp,
             df.resolve_oracle(exp.oracle),

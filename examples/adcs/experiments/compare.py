@@ -625,12 +625,14 @@ def _exclusion_section(entries: list[dict]) -> list[str]:
 
 def _entries_section(entries: list[dict]) -> list[str]:
     rows = []
+    gone = lg.superseded_by(entries)
     for e in entries:
         if not e["id"].startswith("v2-"):
             continue
         rows.append(
             [
                 e["id"],
+                f"superseded by {gone[e['id']]}" if e["id"] in gone else "current",
                 e["time_utc"],
                 e["output_rows"],
                 e["output_sha256"][:12],
@@ -639,7 +641,9 @@ def _entries_section(entries: list[dict]) -> list[str]:
                 e["platform"],
             ]
         )
-    return _table(["entry", "time (UTC)", "rows", "sha256", "commit", "dirty", "platform"], rows)
+    return _table(
+        ["entry", "status", "time (UTC)", "rows", "sha256", "commit", "dirty", "platform"], rows
+    )
 
 
 def build_report(root: Path, runtime: bool = True) -> str:
@@ -741,7 +745,7 @@ def build_report(root: Path, runtime: bool = True) -> str:
     else:
         L += ["Not evaluated (no runtime requested, or no v2 primary file).", ""]
     L += ["## Exclusion by the solver", ""]
-    L += _exclusion_section(entries)
+    L += _exclusion_section(lg.current(entries))
     L += ["## Change register", "", "<!-- change-register:begin -->"]
     reg = p["reports"] / REGISTER
     L += [reg.read_text().rstrip() if reg.exists() else "(change-register.md is not written yet)"]

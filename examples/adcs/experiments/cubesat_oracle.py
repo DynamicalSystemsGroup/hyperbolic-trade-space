@@ -11,7 +11,8 @@ also where the accounting, the attributes and the feasibility are computed:
   parameters the configuration implies; the measured quantities are the only numbers that enter
   the model from Python;
 * **account**: the model's ``analysis def SlewExperiment`` takes the measured quantities and
-  returns the ten attributes;
+  returns the eight attributes it computes (the settling and slew times are measured and pass
+  into the row unchanged);
 * **feasibility**: the four flags are the verdicts of the model's named requirements
   (``feasibility.FeasibilityChecker``, engine ``run``, evidence ``observed``). They are
   observations of single configurations; the solver's classification of regions before simulation
@@ -36,7 +37,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from adcs_sim import BASELINE, make_config, simulate_adcs
-from opensysml.errors import ExecutionError
 from opensysml.values import Quantity
 
 from . import ledger as lg
@@ -58,10 +58,10 @@ ATTRIBUTE_NAMES = (
     "dod_eclipse",
 )
 FLAG_NAMES = ("settled", "momentum_ok", "power_ok", "dod_ok")
-# the model's analysis returns the ten attributes in this order, each read in this unit
-_ANALYSIS_UNITS = (
-    "SI::s",
-    "SI::s",
+# the model's analysis returns the eight attributes it computes in this order, each read in this
+# unit; the settling and slew times are measured and enter the row from the measurement
+_COMPUTED_NAMES = ATTRIBUTE_NAMES[2:]
+_COMPUTED_UNITS = (
     "SI::degree",
     "SI::kg",
     "SI::N*SI::m*SI::s",
@@ -361,47 +361,33 @@ class CubesatOracle:
         }
 
     def _analyse(self, loaded, symbol: str, measured: dict) -> dict:
-        """The model's analysis on the measured slew: the ten attributes by name.
+        """The ten attributes by name: eight from the model's analysis, two from the measurement.
 
-        The analysis returns its attributes as a unique tuple, and the runtime (0.12.1) refuses a
-        tuple in which two entries are equal. The settling time and the slew time are passed
-        through unchanged and are equal when one step crosses both thresholds (a stiff loop); the
-        call is then repeated with the slew time one float step higher and the two pass-through
-        entries are taken from the measurement. No computed attribute depends on either value.
+        The settling time and the slew time are measured, not computed; the analysis neither
+        receives nor returns them, and they enter the row unchanged.
         """
         u = self.reader.unit
-
-        def call(slew_time: float):
-            args = {
-                "torqueSquaredIntegral": measured["torque_squared_integral"],
-                "peakTorque": Quantity(measured["peak_torque"], u("SI::N*SI::m")),
-                "peakMomentum": Quantity(measured["peak_momentum"], u("SI::N*SI::m*SI::s")),
-                "settlingTime": Quantity(measured["settling_time"], u("SI::s")),
-                "slewTime": Quantity(slew_time, u("SI::s")),
-                "controlEffort": Quantity(measured["control_effort"], u("SI::N*SI::m*SI::s")),
-                "censored": measured["censored"],
-            }
-            return loaded.run_analysis(
-                f"{PACKAGE}::SlewExperiment", subject=symbol, named_arguments=args
-            )
-
-        nudged = False
-        try:
-            out = call(measured["slew_time"])
-        except ExecutionError as exc:
-            if "uniqueness violation" not in str(exc):
-                raise
-            out, nudged = call(float(np.nextafter(measured["slew_time"], np.inf))), True
-        attrs = {
+        args = {
+            "torqueSquaredIntegral": measured["torque_squared_integral"],
+            "peakTorque": Quantity(measured["peak_torque"], u("SI::N*SI::m")),
+            "peakMomentum": Quantity(measured["peak_momentum"], u("SI::N*SI::m*SI::s")),
+            "controlEffort": Quantity(measured["control_effort"], u("SI::N*SI::m*SI::s")),
+            "censored": measured["censored"],
+        }
+        out = loaded.run_analysis(
+            f"{PACKAGE}::SlewExperiment", subject=symbol, named_arguments=args
+        )
+        computed = {
             name: _quantity_value(loaded, q, unit)
             for name, unit, q in zip(
-                ATTRIBUTE_NAMES, _ANALYSIS_UNITS, out.outputs["attributes"], strict=True
+                _COMPUTED_NAMES, _COMPUTED_UNITS, out.outputs["attributes"], strict=True
             )
         }
-        if nudged:
-            attrs["settling_time_s"] = measured["settling_time"]
-            attrs["slew_time_s"] = measured["slew_time"]
-        return attrs
+        return {
+            "settling_time_s": measured["settling_time"],
+            "slew_time_s": measured["slew_time"],
+            **computed,
+        }
 
     def _one(self, loaded, symbol: str, checker: FeasibilityChecker) -> dict:
         inst = loaded.instantiate(symbol)

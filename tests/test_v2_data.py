@@ -92,7 +92,7 @@ def test_scenario_seed_and_count_of_the_main_datasets(name, entries):
     assert v2["design_id"].tolist() == list(range(1000))
     assert set(v2["slew_deg"]) == {30.0} and set(v2["t_end_s"]) == {600.0}
     assert set(v2["max_step_s"]) == {0.5}
-    inp = lg.find(entries, ENTRY[name])["inputs"]
+    inp = lg.latest(entries, ENTRY[name])["inputs"]
     assert (inp["count"], inp["seed"], inp["scenario"]) == (1000, 0, "nominalSlew")
 
 
@@ -129,7 +129,7 @@ def test_every_frozen_and_v2_file_has_a_ledger_entry_with_the_file_hash(entries)
 
 def test_each_generated_entry_records_the_model_code_and_exclusion(entries):
     for entry_id in ENTRY.values():
-        e = lg.find(entries, entry_id)
+        e = lg.latest(entries, entry_id)
         assert e["kind"] == "generated" and e["evidence_kind"] == "simulation"
         assert e["model_path"] == df.V2_MODEL and len(e["model_sha256"]) == 64
         assert set(e["code"]) >= {f"{df.ADCS}/experiments/cubesat_oracle.py"}
@@ -146,12 +146,11 @@ def test_each_generated_entry_records_the_model_code_and_exclusion(entries):
 
 def test_predict_precedes_simulate_in_the_ledger_and_in_the_history(entries):
     ids = [e["id"] for e in entries]
-    assert (
-        ids.index("v2-primary") < ids.index("v2-check-predictions") < ids.index("v2-check-designs")
-    )
-    pred, sim = lg.find(entries, "v2-check-predictions"), lg.find(entries, "v2-check-designs")
-    assert [p["id"] for p in pred["parents"]] == ["v2-primary"]
-    assert [p["id"] for p in sim["parents"]] == ["v2-check-predictions"]
+    prim = lg.latest(entries, "v2-primary")
+    pred, sim = lg.latest(entries, "v2-check-predictions"), lg.latest(entries, "v2-check-designs")
+    assert ids.index(prim["id"]) < ids.index(pred["id"]) < ids.index(sim["id"])
+    assert [p["id"] for p in pred["parents"]] == [prim["id"]]
+    assert [p["id"] for p in sim["parents"]] == [pred["id"]]
     assert sim["parents"][0]["output_sha256"] == pred["output_sha256"]
     assert sim["parents"][0]["entry_hash"] == pred["entry_hash"]
     assert pred["time_utc"] <= sim["time_utc"]

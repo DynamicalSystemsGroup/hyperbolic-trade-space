@@ -591,25 +591,27 @@ package CubesatTradeSpaceV2 {
     // ==========================================================================================
     doc /* The model test of the method's first stage. The subject is a concrete Cubesat (the six
            design variables are its features). The Python runner integrates the slew and hands in
-           the measured quantities: the integral of |tau|^2 (N^2.m^2.s), the peak torque, the
-           peak wheel momentum, the settling time, the slew time (censored at the horizon),
-           the control effort (integral of |tau|, N.m.s) and whether the slew band was never
-           entered (censored). The analysis returns the ten attributes, in this order:
-           settling time, slew time, pointing error, total mass, control effort, power margin,
-           energy balance, eclipse reserve, peak slew power, eclipse depth of discharge.
-           Measured quantities not used by an attribute (peak momentum, censored) are the inputs
-           of the feasibility requirements of section 5. Flags are not returned here. */
+           the measured quantities the accounting needs: the integral of |tau|^2 (N^2.m^2.s), the
+           peak torque, the peak wheel momentum, the control effort (integral of |tau|, N.m.s) and
+           whether the slew band was never entered (censored). The analysis returns the eight
+           attributes the model computes, in this order: pointing error, total mass, control
+           effort, power margin, energy balance, eclipse reserve, peak slew power, eclipse depth
+           of discharge. The settling time and the slew time are measured, not computed: they go
+           from the measurement into the output row unchanged (the settling time is also the input
+           of the settled requirement of section 5), so they are neither inputs nor entries of
+           this return tuple (the runtime refuses a return tuple whose entries are equal, and
+           a stiff loop makes the two times equal). Measured quantities not used by an attribute
+           (peak momentum, censored) are the inputs of those requirements. Flags are not returned
+           here. */
     analysis def SlewExperiment {
         subject cubesat : Cubesat;
         in torqueSquaredIntegral : Real;
         in peakTorque : TorqueValue;
         in peakMomentum : AngularMomentumValue;
-        in settlingTime : TimeValue;
-        in slewTime : TimeValue;
         in controlEffort : AngularMomentumValue;
         in censored : Boolean;
         return attributes = (
-            settlingTime, slewTime, PointingError(cubesat), cubesat.totalMass, controlEffort,
+            PointingError(cubesat), cubesat.totalMass, controlEffort,
             PowerMargin(cubesat, peakTorque),
             EnergyBalance(cubesat, SlewLossEnergy(torqueSquaredIntegral)),
             EclipseReserve(cubesat, SlewLossEnergy(torqueSquaredIntegral)),

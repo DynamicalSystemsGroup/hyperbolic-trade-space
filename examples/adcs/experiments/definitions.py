@@ -9,6 +9,7 @@ check-design flow.
 
 from __future__ import annotations
 
+import dataclasses
 import importlib
 from collections.abc import Callable
 
@@ -138,6 +139,29 @@ V2: tuple[Experiment, ...] = (
     ),
 )
 EXPERIMENTS: dict[str, Experiment] = {e.id: e for e in V2}
+
+
+def revise(exp: Experiment, entries: list[dict]) -> Experiment:
+    """The declaration ``exp`` as a re-run: id ``<id>@<n>``, superseding its current entry.
+
+    Parents are re-pointed at the current entries of the parent experiments, so a re-run chain
+    (primary, predictions, check designs) records the new hashes. Raises ``KeyError`` when ``exp``
+    has no current entry to supersede.
+    """
+    from . import ledger as lg
+
+    old = lg.latest(entries, exp.id)
+    if old is None:
+        raise KeyError(f"{exp.id!r} has no current ledger entry to supersede")
+    n = 2 if "@" not in old["id"] else int(old["id"].rsplit("@", 1)[1]) + 1
+    parents = []
+    for p in exp.parents:
+        cur = lg.latest(entries, p)
+        parents.append(cur["id"] if cur else p)
+    return dataclasses.replace(
+        exp, id=f"{exp.id}@{n}", parents=tuple(parents), supersedes=(old["id"],)
+    )
+
 
 _SRC = (f"{ADCS}/adcs_sim.py", f"{ADCS}/design_space.py")
 _GEN = f"{ADCS}/generate_dataset.py"
