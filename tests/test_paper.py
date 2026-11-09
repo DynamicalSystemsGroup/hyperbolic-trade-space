@@ -1039,6 +1039,9 @@ def test_cells_whose_output_is_embedded_are_removed_from_the_page():
     cells = {c.id: c for c in _code_cells(nb)}
     for label in embedded:
         assert "remove-cell" in cells[label].metadata.get("tags", []), label
+    # an embedded table copies the whole cell: its input is dropped by the directive's option
+    for label in (c for c in embedded if c.startswith("tab-")):
+        assert re.search(rf":::\{{embed\}} #{label}\n:remove-input: true\n", _markdown(nb)), label
 
 
 def test_candidates_table_scrolls_inside_its_container():
