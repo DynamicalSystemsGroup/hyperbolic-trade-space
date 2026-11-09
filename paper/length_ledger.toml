@@ -195,3 +195,14 @@ section = "Future work and final remark"
 words_added = 18
 job = "names other cases across the engineering lifecycle, configuration management of a fielded system among them"
 reader = "the reader looking for where the workflow goes next"
+
+# Rows: WP11 round 1, the L-A and L-B cells (change requests CR-1 to CR-3). The abstract has its
+# own cap of 200 words (tests/test_paper.py) and stays at 200: the added clauses came out of
+# the space of the kernel clause and the cubesat sentence.
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 11
+job = "says once where facet first appears in the body that a facet is a piece of the surface and not a set of designs"
+reader = "the reader meeting facet cold, who read it as a cluster of rows"

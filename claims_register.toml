@@ -517,3 +517,50 @@ status = "backed"
 disposition = "keep"
 source = "WP10, supervisor words of 2026-11-09 (WP10-decisions.md)"
 note = "Section 3 defines the evaluation as a black box to the method (a simulator, a physical test or a human assessment), so the table and the fit do not depend on where the attributes came from."
+
+[[claim]]
+id = "C033"
+fragment = "It is a soft supporting envelope of the data, not a regression"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = [
+  "lemma:L5",
+  "glossary:supporting-envelope",
+  "glossary:fitted-reference-surface",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 1, CR-1"
+note = "The fit takes the entropic soft maximum of the scores over the designs (L5), so the surface sits at the upper edge of the data, with some designs beyond it at finite temperature, and is the soft form of the supporting envelope; it is not a least-squares curve through the points."
+
+[[claim]]
+id = "C034"
+fragment = "a single facet gives one tension, several separate sets"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::k1_sentence",
+  "gen:paper/generate_findings.py::k_sweep_sentence",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 1, CR-1"
+note = "On the primary regime the K = 1 fit reports one contending set and the K = 3 fit three different ones (sections 8 and 9, Appendix D.3); on this case only, not a claim about other tables."
+
+[[claim]]
+id = "C035"
+fragment = "Each facet, a piece of the surface and not a set of designs, names the metrics that contend on it"
+file = "paper/paper.ipynb"
+anchor = "The decision problem"
+kind = "M"
+backing = [
+  "glossary:facet",
+  "lemma:L16",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 1, CR-1 and CR-3"
+note = "A facet is a term of the posynomial, a flat piece of the surface in log space; designs are labelled to it (L16), and are not its members."
