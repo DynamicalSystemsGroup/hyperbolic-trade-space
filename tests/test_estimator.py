@@ -12,6 +12,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+from hyperbolic_trade_space import solvers as _solvers
 
 INF = np.inf
 
@@ -496,7 +497,6 @@ def test_n_restarts_default_and_validation():
 
 # ------------------------------------------------ WP13 (E-1, E-5, E-7): record, warning, limit
 from hyperbolic_trade_space import estimator as _est  # noqa: E402
-from hyperbolic_trade_space import solvers as _solvers  # noqa: E402
 
 
 def _k3(seed, tau=INF, **kw):
@@ -769,3 +769,41 @@ def test_term_aggregation_duplicated_term_shift_is_log2_over_kappa():
     est.term_aggregation = "mean"
     np.testing.assert_allclose(sum_phi - est._phi(s), np.log(2) / 4.0, atol=1e-12)
     np.testing.assert_allclose(est._phi(s), s[:, 0], atol=1e-12)
+
+
+# ---------------------------------------------------------------------------- WP21 D-5
+@pytest.mark.slow
+@pytest.mark.parametrize("kappa", [np.inf, 6.0])
+def test_n_distinct_terms_equals_k_on_planted_facets(kappa):
+    X, _ = make_frontier_data(300, 4, n_terms=3, random_state=0)
+    est = HyperbolicTradeSpace(
+        n_terms=3, term_temperature=kappa, temperature=20.0, random_state=0
+    ).fit(X)
+    assert est.termination_.n_distinct_terms == 3
+
+
+@pytest.mark.slow
+def test_n_distinct_terms_falls_below_k_where_terms_repeat():
+    X, _ = make_frontier_data(300, 4, n_terms=3, random_state=0)
+    est = HyperbolicTradeSpace(
+        n_terms=8, term_temperature=6.0, temperature=20.0, random_state=0
+    ).fit(X)
+    assert 3 <= est.termination_.n_distinct_terms < 8
+    W = est.exponents_
+    assert est.termination_.n_distinct_terms == _solvers.distinct_terms(W)
+    # the count reads the exponent vectors: a repeated row is one term, a far row another
+    assert _solvers.distinct_terms(np.vstack([W[:1], W[:1], W[:1] + 0.5 * (1 - W[:1])])) == 2
+    # within the stated distance is one term; just outside is two
+    d = _solvers.DISTINCT_TERMS_DISTANCE
+    base, step = np.array([0.5, 0.5]), np.array([1.0, -1.0]) / np.sqrt(2)
+    assert _solvers.distinct_terms(np.array([base, base + 0.5 * d * step])) == 1
+    assert _solvers.distinct_terms(np.array([base, base + 2 * d * step])) == 2
+
+
+@pytest.mark.parametrize("params", [{}, {"n_terms": 4}])
+def test_n_distinct_terms_is_one_in_the_degenerate_cases(params):
+    X1 = np.random.default_rng(0).uniform(1.0, 2.0, size=(40, 1))  # d = 1: K copies of w = 1
+    assert HyperbolicTradeSpace(**params).fit(X1).termination_.n_distinct_terms == 1
+    X, _ = make_frontier_data(60, 3, random_state=0)
+    one = HyperbolicTradeSpace(n_terms=1).fit(X).termination_
+    assert one.n_distinct_terms == 1 and one.status == "not_applicable"

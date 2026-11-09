@@ -15,12 +15,15 @@ from dataclasses import dataclass, replace
 import numpy as np
 from scipy.linalg import block_diag, eigh, null_space
 from scipy.optimize import linprog, minimize
+from scipy.sparse import csr_matrix
+from scipy.sparse.csgraph import connected_components
 from scipy.special import logsumexp, softmax
 from sklearn.utils import check_random_state
 
 from .coordinates import helmert_basis
 
 __all__ = [
+    "DISTINCT_TERMS_DISTANCE",
     "EPS_FEAS",
     "EPS_KKT",
     "GUARD_TOL",
@@ -29,6 +32,7 @@ __all__ = [
     "Termination",
     "TermsResult",
     "assignment_margin",
+    "distinct_terms",
     "facet_gap",
     "facet_objective",
     "fixed_assignment_bound",
@@ -52,6 +56,7 @@ EPS_FEAS = 1e-9  # feasibility and margin-positivity tolerance
 GUARD_TOL = 1e-12  # the monotone guard rejects an objective increase above this
 POLISH_STEPS = 5  # reduced-Newton steps after each finite-tau facet refit
 _ACTIVE_TOL = 1e-10
+DISTINCT_TERMS_DISTANCE = 1e-3  # exponent vectors closer than this (Euclidean) are one term
 _SOFT_STOP = 1e-10  # the soft alternation stops when the soft objective falls by less than this
 _SOFT_EMPTY = 1e-9  # a term whose weight mass is below this (in rows) is empty
 _SOFT_POLISH_STEPS = 30  # joint reduced-Newton steps after the soft alternation
@@ -593,6 +598,38 @@ def _newton_polish(Uc, w, tau, min_exponent=0.0, n_steps=POLISH_STEPS):
     return w
 
 
+def distinct_terms(W, distance=DISTINCT_TERMS_DISTANCE):
+    """Number of distinct terms: exponent vectors within ``distance`` (Euclidean) count as one.
+
+    Single linkage: two terms are one when a chain of terms, each step at most ``distance`` apart,
+    joins them. A requested ``K`` that repeats terms gives a count below ``K``; the offsets
+    ``beta_k`` are not compared (a repeated exponent vector is a repeated term).
+
+    Parameters
+    ----------
+    W : ndarray of shape (K, d)
+        Term exponent vectors.
+    distance : float, default=DISTINCT_TERMS_DISTANCE
+        Distance at or below which two exponent vectors are the same term.
+
+    Returns
+    -------
+    int
+        Between 1 and ``K``.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> distinct_terms(np.array([[0.5, 0.5], [0.5, 0.5], [0.9, 0.1]]))
+    2
+    >>> distinct_terms(np.eye(3))
+    3
+    """
+    W = np.atleast_2d(np.asarray(W, dtype=float))
+    gap = np.linalg.norm(W[:, None, :] - W[None, :, :], axis=-1)
+    return int(connected_components(csr_matrix(gap <= distance), directed=False)[0])
+
+
 @dataclass(frozen=True, eq=False)
 class Termination:
     """Stopping record of a multi-facet fit: the three levels of guarantee, with tolerances.
@@ -648,6 +685,10 @@ class Termination:
         Soft fit only (finite ``term_temperature`` with ``facet_step="support"``, unpenalized):
         the smallest eigenvalue of the Hessian ``H = D - kappa M`` of the soft objective on the
         tangent space of the active face (``soft_certificate``). ``nan`` for every other fit.
+    n_distinct_terms : int
+        Distinct terms of the returned model: the exponent vectors, counted as one when within
+        ``DISTINCT_TERMS_DISTANCE`` (``distinct_terms``). Below the requested ``K`` when terms
+        repeat, whatever the status; ``-1`` for a record built without the exponents.
 
     Notes
     -----
@@ -688,6 +729,7 @@ class Termination:
     gaps: np.ndarray
     shares: np.ndarray
     min_curvature: float = float("nan")
+    n_distinct_terms: int = -1
 
 
 @dataclass(frozen=True)
@@ -765,6 +807,7 @@ def _termination(
         status, reason, int(n_iter), sum_res, floor_res, float(max(offs, default=0.0)), max_gap,
         bound, float(abs(hist[-1] - hist[-2])) if hist.size > 1 else float("nan"), changes,
         n_empty, gamma, radius, EPS_KKT, EPS_FEAS, GUARD_TOL, gaps, shares,
+        n_distinct_terms=distinct_terms(W),
     )  # fmt: skip
 
 
@@ -816,6 +859,7 @@ def single_facet_termination(U, w, beta, p, tau, min_exponent, n_iter, reason, n
         float(max(0.0, min_exponent - np.min(w))),
         float(abs(beta - log_mean_exp(U @ w, tau))), gap, gap, float("nan"), 0, n_terms - 1,
         float("nan"), float("nan"), EPS_KKT, EPS_FEAS, GUARD_TOL, gaps, shares,
+        n_distinct_terms=1,
     )  # fmt: skip
 
 
@@ -1105,7 +1149,7 @@ def _soft_termination(U, W, beta, P, tau, kappa, min_exponent, n_iter, history, 
         status, reason, int(n_iter), sum_res, floor_res, float(max(offs, default=0.0)), max_gap,
         float("nan"), float(abs(hist[-1] - hist[-2])) if hist.size > 1 else float("nan"), 0,
         int(K - full.sum()), float("nan"), float("nan"), EPS_KKT, EPS_FEAS, GUARD_TOL, gaps,
-        n / N, curvature,
+        n / N, curvature, distinct_terms(W),
     )  # fmt: skip
 
 

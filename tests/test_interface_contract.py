@@ -1045,3 +1045,25 @@ def test_r1_term_aggregation_keyword_pinned():
     assert "term_aggregation" in DOC and "version 9" in DOC, msg(
         "R-8", "the document states the term aggregation amendment", "both"
     )
+
+
+def test_r1_distinct_terms_field_and_names_pinned():
+    """Version 10 (WP21 D-5): the record's count of distinct terms and the names that make it."""
+    import numpy as np
+
+    pkg = _pkg()
+    solvers = importlib.import_module("hyperbolic_trade_space.solvers")
+    assert "n_distinct_terms" in PKG["estimator"]["termination_fields"], msg(
+        "R-1", "the manifest pins Termination.n_distinct_terms"
+    )
+    for name in ("distinct_terms", "DISTINCT_TERMS_DISTANCE"):
+        assert name in PKG["submodule_names"]["solvers"] and hasattr(solvers, name), msg(
+            "R-1", f"solvers.{name} is pinned and importable"
+        )
+    X, _ = pkg.make_frontier_data(60, 3, random_state=0)
+    fitted = getattr(pkg, PKG["estimator"]["class"])(n_terms=2, random_state=0).fit(np.asarray(X))
+    n = fitted.termination_.n_distinct_terms
+    assert isinstance(n, int) and 1 <= n <= 2, msg("R-1", "n_distinct_terms is an int in 1..K")
+    assert "version 10" in DOC and "n_distinct_terms" in DOC, msg(
+        "R-8", "the document states the distinct-terms amendment", "both"
+    )
