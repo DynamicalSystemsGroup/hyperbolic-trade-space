@@ -51,7 +51,9 @@ class LogUniformSampler:
             for name, (lo, hi) in self.log_ranges.items():
                 row[name] = float(np.exp(g.uniform(*np.log((lo, hi)))))
             rows.append(row)
-        return pd.DataFrame(rows, columns=["design_id", "seed", *self.categorical, *self.log_ranges])
+        return pd.DataFrame(
+            rows, columns=["design_id", "seed", *self.categorical, *self.log_ranges]
+        )
 
     __call__ = draw
 
@@ -70,7 +72,9 @@ def _parent_records(experiment: Experiment, entries: list[dict], root: Path) -> 
         out = root / pe["output_path"]
         if not out.exists() or lg.sha256_file(out) != pe["output_sha256"]:
             raise lg.LedgerError(f"{experiment.id}: output of parent {pid!r} has drifted")
-        records.append({"id": pid, "entry_hash": pe["entry_hash"], "output_sha256": pe["output_sha256"]})
+        records.append(
+            {"id": pid, "entry_hash": pe["entry_hash"], "output_sha256": pe["output_sha256"]}
+        )
     return records
 
 
@@ -127,7 +131,9 @@ def _run_cell(cell: Experiment, oracle, sampler, root: Path, ledger: Path) -> di
     if cell.model_path:
         model_hash = lg.sha256_file(root / cell.model_path)
         if cell.model_sha256 and cell.model_sha256 != model_hash:
-            raise lg.LedgerError(f"{cell.id}: model {cell.model_path} differs from its declared hash")
+            raise lg.LedgerError(
+                f"{cell.id}: model {cell.model_path} differs from its declared hash"
+            )
     code = lg.hash_files(root, cell.code)
     orc = _instance(oracle, "evaluate", cell)
     smp = _instance(sampler, "draw", cell)

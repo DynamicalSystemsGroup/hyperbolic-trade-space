@@ -93,7 +93,9 @@ FROZEN: tuple[AdoptedSpec, ...] = (
     AdoptedSpec(
         id="adopted-adcs_designs",
         output=f"{ADCS}/data/adcs_designs.csv",
-        command="uv run python examples/adcs/generate_dataset.py --n 1000 --seed 0 --workers 8 --force",
+        command=(
+            "uv run python examples/adcs/generate_dataset.py --n 1000 --seed 0 --workers 8 --force"
+        ),
         model_path=None,
         code=(_GEN, *_SRC),
         tolerances={
@@ -118,8 +120,16 @@ FROZEN: tuple[AdoptedSpec, ...] = (
         code=_CUBESAT,
         tolerances={
             "test": "tests/test_cubesat_model.py::test_dataset_reproducible_first_20",
-            "exact": ["design_id", "seed", "wheel_class", "st_grade", "settled", "momentum_ok",
-                      "power_ok", "dod_ok"],  # fmt: skip
+            "exact": [
+                "design_id",
+                "seed",
+                "wheel_class",
+                "st_grade",
+                "settled",
+                "momentum_ok",
+                "power_ok",
+                "dod_ok",
+            ],
             "continuous_rtol": 1e-4,
             "continuous_atol": 1e-6,
             "torque_saturated_frac_rtol": 2e-2,
@@ -139,8 +149,16 @@ FROZEN: tuple[AdoptedSpec, ...] = (
         code=_CUBESAT,
         tolerances={
             "test": "tests/test_cubesat_model.py::test_dataset_reproducible_first_20",
-            "exact": ["design_id", "seed", "wheel_class", "st_grade", "settled", "momentum_ok",
-                      "power_ok", "dod_ok"],  # fmt: skip
+            "exact": [
+                "design_id",
+                "seed",
+                "wheel_class",
+                "st_grade",
+                "settled",
+                "momentum_ok",
+                "power_ok",
+                "dod_ok",
+            ],
             "continuous_rtol": 1e-3,
             "continuous_atol": 1e-6,
             "torque_saturated_frac_rtol": 1e-1,
@@ -153,9 +171,7 @@ FROZEN: tuple[AdoptedSpec, ...] = (
     AdoptedSpec(
         id="adopted-check_predictions_cubesat",
         output=f"{ADCS}/data/check_predictions_cubesat.csv",
-        command=(
-            "REQUIRE_OPENSYSML=1 uv run python examples/adcs/make_check_designs.py predict"
-        ),
+        command=("REQUIRE_OPENSYSML=1 uv run python examples/adcs/make_check_designs.py predict"),
         model_path=_TRADESPACE,
         code=(f"{ADCS}/make_check_designs.py", f"{ADCS}/cubesat_model.py"),
         tolerances={
@@ -168,9 +184,7 @@ FROZEN: tuple[AdoptedSpec, ...] = (
     AdoptedSpec(
         id="adopted-check_designs_cubesat",
         output=f"{ADCS}/data/check_designs_cubesat.csv",
-        command=(
-            "REQUIRE_OPENSYSML=1 uv run python examples/adcs/make_check_designs.py simulate"
-        ),
+        command=("REQUIRE_OPENSYSML=1 uv run python examples/adcs/make_check_designs.py simulate"),
         model_path=_TRADESPACE,
         code=(f"{ADCS}/make_check_designs.py", *_CUBESAT[1:]),
         tolerances={

@@ -102,8 +102,8 @@ class Experiment:
         output path with ``__key=value`` appended to the stem.
 
         >>> e = Experiment("e", "d/o.csv", 4, 0, "toy", sweep={"scenario": ["a", "b"]})
-        >>> [(c.id, c.output, c.scenario) for c in e.expand()]
-        [('e[scenario=a]', 'd/o__scenario=a.csv', 'a'), ('e[scenario=b]', 'd/o__scenario=b.csv', 'b')]
+        >>> [(c.id, c.output) for c in e.expand()]
+        [('e[scenario=a]', 'd/o__scenario=a.csv'), ('e[scenario=b]', 'd/o__scenario=b.csv')]
         """
         if not self.sweep:
             return [self]

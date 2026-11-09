@@ -50,7 +50,8 @@ def evaluate_rows(oracle: Oracle, designs: pd.DataFrame) -> pd.DataFrame:
     ...     flag_names = ("ok",)
     ...     def __call__(self, c):
     ...         return {"y": 2.0 * c["x"], "ok": True}
-    >>> evaluate_rows(Double(), pd.DataFrame({"design_id": [1, 0], "x": [1.0, 2.0]})).to_dict("list")
+    >>> d = pd.DataFrame({"design_id": [1, 0], "x": [1.0, 2.0]})
+    >>> evaluate_rows(Double(), d).to_dict("list")
     {'design_id': [0, 1], 'x': [2.0, 1.0], 'y': [4.0, 2.0], 'ok': [True, True]}
     """
     ordered = designs.sort_values("design_id").reset_index(drop=True)
