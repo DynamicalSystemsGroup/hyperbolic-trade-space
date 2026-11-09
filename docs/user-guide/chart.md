@@ -10,7 +10,7 @@ from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
 
 X, info = make_frontier_data(300, 3, random_state=0)
 ts = HyperbolicTradeSpace(temperature=20.0).fit(X)
-chart = ts.transform(X)                      # columns: Z (d - 1 of them), then log V
+chart = ts.transform(X)  # columns: Z (d - 1 of them), then log V
 Z, log_v = chart[:, :-1], chart[:, -1]
 print(np.allclose(ts.inverse_transform(chart), X), np.allclose(ts.score_samples(X), log_v))
 ```

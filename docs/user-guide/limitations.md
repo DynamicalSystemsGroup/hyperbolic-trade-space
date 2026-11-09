@@ -8,12 +8,10 @@ reference or the scale of one metric changes which facet is tangent. Refit under
 conditioning and report what moves ([Conditioning](conditioning.md)).
 
 **The surface is log-convex.** Dents, holes and disconnected regions are invisible to it, and no
-number of terms represents them. A hole is an opportunity only if the trade space is log-convex
-around it, which the data cannot show.
+number of terms represents them. A hole is an opportunity only if the trade space is log-convex around it.
 
 **One term has one tension.** A single term has constant exchange rates and finds one tension, at
-its balanced point. Away from that point a design can score below 1 while locally on the frontier; in our
-reading the score is conservative there, which no result here proves. If the balanced point sits on a vertex or
+its balanced point. Away from that point a design can score below 1 while locally on the frontier. If the balanced point sits on a vertex or
 edge of the weights' simplex, exponents are not unique and some exchange rates are undefined. For
 regionally varying rates fit [several terms](fitting.md).
 
@@ -23,7 +21,7 @@ of V is efficient in the contending metrics, and the converse is not claimed.
 
 **Noise and temperature.** At a finite temperature some designs lie beyond V = 1 by construction.
 Judge a score against the band 1/tau. A very high tau rests the fit on a few extreme designs; below
-tau of about 3 the soft maximum approaches the mean and `frac_above_` is not monotone.
+tau of about 3 the soft maximum approaches the mean.
 
 **Small samples.** With few designs, or designs that barely differ near the edge, exponents are
 weakly determined. Read `n_eff_` and `conditioning_` ([Reading termination](termination.md)).

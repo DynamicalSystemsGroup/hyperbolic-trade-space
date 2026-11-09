@@ -17,7 +17,7 @@ where they stop, and the two chain.
 - [API](api.md) and [API reference](api-reference.md): the public names and their docstrings.
 - [Examples](examples.md): a spacecraft attitude-control trade study.
 - [Theory in brief](theory.md): the model on one page.
-- [Glossary](glossary.md): the terms the package uses.
+- [Glossary](generated/glossary.md): the terms the package uses.
 - [Further reading](further-reading.md): the sources the method builds on.
 
 The [project page](../) links the paper, which is where the argument for the method is made, these

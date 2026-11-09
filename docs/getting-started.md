@@ -20,6 +20,7 @@ with a planted frontier.
 
 ```python {.runnable}
 from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data, tension_report
+
 X, info = make_frontier_data(300, 3, random_state=0)
 ts = HyperbolicTradeSpace(temperature=20.0).fit(X)
 report = tension_report(ts, X)
