@@ -1,6 +1,7 @@
 """WP16 D-6: the sensitivity module's perturbation, comparison and write guard (fast, no oracle)."""
 
 import hashlib
+import json
 import types
 from pathlib import Path
 
@@ -193,4 +194,56 @@ def test_the_module_names_no_write_to_the_ledger_or_the_data_directory():
     src = (Path(sens.__file__)).read_text()
     assert "lg.append" not in src and "runner.run" not in src and "ledger.jsonl" not in src
     # the only writers are the guarded ones
-    assert src.count(".to_csv(") == 1 and src.count(".write_text(") == 2
+    assert (
+        src.count(".to_csv(") == 1 and src.count(".write_text(") == 3
+    )  # the cache, the report, the summary
+
+
+# -- the compact results file the paper reads ------------------------------------------------------
+
+
+def test_summary_keeps_the_committed_value_inside_its_range_and_flags_identity():
+    committed = {"a | r | x": 1.0, "a | r | n": 7, "a | r | s": "u", "a | r | f": True}
+    runs = {
+        "1": {"a | r | x": 1.5, "a | r | n": 7, "a | r | s": "u", "a | r | f": True},
+        "2": {"a | r | x": 0.5, "a | r | n": 8, "a | r | s": "v", "a | r | f": True},
+    }
+    r = sens.summarise(committed, runs)
+    q = r["quantities"]
+    assert r["seeds"] == [1, 2] and r["perturbation"]["relative_half_width"] == sens.EPS
+    assert q["a | r | x"] == {"committed": 1.0, "min": 0.5, "max": 1.5, "identical": False}
+    assert q["a | r | n"]["min"] == 7 and q["a | r | n"]["max"] == 8
+    assert q["a | r | s"] == {"identical": False} and q["a | r | f"] == {"identical": True}
+    assert list(q) == sorted(q)  # deterministic order
+
+
+def test_the_results_file_is_written_deterministically_and_guarded(tmp_path):
+    committed, runs = {"a | r | x": 1.0 / 3.0}, {"1": {"a | r | x": 2.0 / 3.0}}
+    one, two = tmp_path / "one.json", tmp_path / "two.json"
+    sens.write_summary(one, committed, runs)
+    sens.write_summary(two, committed, runs)
+    assert one.read_bytes() == two.read_bytes()
+    assert json.loads(one.read_text())["quantities"]["a | r | x"]["min"] == 0.3333333333
+    with pytest.raises(ValueError, match="refusing to write inside examples/adcs/data"):
+        sens.write_summary(DATA / "v2" / "x.json", committed, runs)
+
+
+@pytest.fixture(scope="module")
+def recomputed():
+    return sens.quantities(DATA)
+
+
+def test_the_results_file_committed_values_equal_the_committed_case_results(recomputed):
+    """Every number of the file's ``committed`` column is what ``case.py`` gives on the data."""
+    saved = json.loads(sens.SUMMARY_FILE.read_text())
+    assert set(saved["quantities"]) == set(recomputed)
+    for name, e in saved["quantities"].items():
+        now = recomputed[name]
+        if "committed" not in e:
+            continue
+        if isinstance(now, (bool, str)):
+            continue
+        if isinstance(e["committed"], int):
+            assert now == e["committed"], name
+        else:  # floats: the file keeps ten digits; solver residues follow the platform
+            assert now == pytest.approx(e["committed"], rel=1e-6, abs=1e-9, nan_ok=True), name

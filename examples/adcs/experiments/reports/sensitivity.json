@@ -1,0 +1,3900 @@
+{
+ "perturbation": {
+  "distribution": "uniform per design and variable, numpy.random.default_rng(seed)",
+  "relative_half_width": 1e-12,
+  "variables": [
+   "Kp",
+   "Kd",
+   "panel_span_m",
+   "battery_wh"
+  ]
+ },
+ "quantities": {
+  "D exponents K=1 | primary | control effort | exponent w": {
+   "committed": 0.1973999777,
+   "identical": false,
+   "max": 0.1984975213,
+   "min": 0.1973999777
+  },
+  "D exponents K=1 | primary | depth of discharge | exponent w": {
+   "committed": 0.09106945082,
+   "identical": false,
+   "max": 0.09106945082,
+   "min": 0.09061281952
+  },
+  "D exponents K=1 | primary | eclipse reserve | exponent w": {
+   "committed": 5.630988799e-17,
+   "identical": false,
+   "max": 5.630988799e-17,
+   "min": 0.0
+  },
+  "D exponents K=1 | primary | energy balance | exponent w": {
+   "committed": 0.1902027987,
+   "identical": false,
+   "max": 0.1902027987,
+   "min": 0.1899787373
+  },
+  "D exponents K=1 | primary | peak slew power | exponent w": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 7.145158305e-17,
+   "min": 0.0
+  },
+  "D exponents K=1 | primary | pointing error | exponent w": {
+   "committed": 0.1022084844,
+   "identical": false,
+   "max": 0.1022084844,
+   "min": 0.1019921712
+  },
+  "D exponents K=1 | primary | power margin | exponent w": {
+   "committed": 3.530222118e-17,
+   "identical": false,
+   "max": 3.530222118e-17,
+   "min": 0.0
+  },
+  "D exponents K=1 | primary | settling time | exponent w": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 5.97850633e-17,
+   "min": 0.0
+  },
+  "D exponents K=1 | primary | slew time | exponent w": {
+   "committed": 0.2395170733,
+   "identical": false,
+   "max": 0.2405720937,
+   "min": 0.2395170733
+  },
+  "D exponents K=1 | primary | total mass | exponent w": {
+   "committed": 0.1796022152,
+   "identical": false,
+   "max": 0.1796022152,
+   "min": 0.178346657
+  },
+  "D exponents K=1 | stock | control effort | exponent w": {
+   "committed": 0.4295360887,
+   "identical": false,
+   "max": 0.4295816683,
+   "min": 0.4295184865
+  },
+  "D exponents K=1 | stock | depth of discharge | exponent w": {
+   "committed": 7.461335021e-18,
+   "identical": false,
+   "max": 2.337352323e-17,
+   "min": 0.0
+  },
+  "D exponents K=1 | stock | eclipse reserve | exponent w": {
+   "committed": 0.01343692481,
+   "identical": false,
+   "max": 0.01346311175,
+   "min": 0.01343255043
+  },
+  "D exponents K=1 | stock | energy balance | exponent w": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 2.501031249e-16,
+   "min": 0.0
+  },
+  "D exponents K=1 | stock | peak slew power | exponent w": {
+   "committed": 3.728740745e-17,
+   "identical": false,
+   "max": 6.525752715e-17,
+   "min": 0.0
+  },
+  "D exponents K=1 | stock | pointing error | exponent w": {
+   "committed": 0.02370073675,
+   "identical": false,
+   "max": 0.02378042471,
+   "min": 0.02370073675
+  },
+  "D exponents K=1 | stock | power margin | exponent w": {
+   "committed": 0.175749021,
+   "identical": false,
+   "max": 0.175749021,
+   "min": 0.1756676413
+  },
+  "D exponents K=1 | stock | settling time | exponent w": {
+   "committed": 0.02602276426,
+   "identical": false,
+   "max": 0.02656216776,
+   "min": 0.02602276426
+  },
+  "D exponents K=1 | stock | slew time | exponent w": {
+   "committed": 0.3315544644,
+   "identical": false,
+   "max": 0.3315544644,
+   "min": 0.3309527527
+  },
+  "D exponents K=1 | stock | total mass | exponent w": {
+   "committed": 3.364218138e-17,
+   "identical": false,
+   "max": 8.656279045e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | primary | control effort | facet 1": {
+   "committed": 0.429355056,
+   "identical": false,
+   "max": 0.429355056,
+   "min": 0.4267709885
+  },
+  "D exponents K=3 | primary | control effort | facet 2": {
+   "committed": 0.3076388546,
+   "identical": false,
+   "max": 0.3076388546,
+   "min": 0.3073560782
+  },
+  "D exponents K=3 | primary | control effort | facet 3": {
+   "committed": 5.154767649e-18,
+   "identical": false,
+   "max": 8.635099717e-18,
+   "min": 0.0
+  },
+  "D exponents K=3 | primary | depth of discharge | facet 1": {
+   "committed": 0.0235223524,
+   "identical": false,
+   "max": 0.02512106611,
+   "min": 0.0235223524
+  },
+  "D exponents K=3 | primary | depth of discharge | facet 2": {
+   "committed": 0.002260082243,
+   "identical": false,
+   "max": 0.002402084842,
+   "min": 0.002260082243
+  },
+  "D exponents K=3 | primary | depth of discharge | facet 3": {
+   "committed": 0.08525903355,
+   "identical": false,
+   "max": 0.08558455425,
+   "min": 0.08523765644
+  },
+  "D exponents K=3 | primary | eclipse reserve | facet 1": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 4.352405989e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | primary | eclipse reserve | facet 2": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 2.398398808e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | primary | eclipse reserve | facet 3": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 6.29095999e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | primary | energy balance | facet 1": {
+   "committed": 0.1417447536,
+   "identical": false,
+   "max": 0.1419915424,
+   "min": 0.1417447536
+  },
+  "D exponents K=3 | primary | energy balance | facet 2": {
+   "committed": 0.4339818621,
+   "identical": false,
+   "max": 0.4342459264,
+   "min": 0.4339818621
+  },
+  "D exponents K=3 | primary | energy balance | facet 3": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 6.57706026e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | primary | peak slew power | facet 1": {
+   "committed": 1.068389426e-16,
+   "identical": false,
+   "max": 1.068389426e-16,
+   "min": 0.0
+  },
+  "D exponents K=3 | primary | peak slew power | facet 2": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 9.940077779e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | primary | peak slew power | facet 3": {
+   "committed": 0.3800524502,
+   "identical": false,
+   "max": 0.3801190896,
+   "min": 0.3786216327
+  },
+  "D exponents K=3 | primary | pointing error | facet 1": {
+   "committed": 0.03992204524,
+   "identical": false,
+   "max": 0.04393042868,
+   "min": 0.03992204524
+  },
+  "D exponents K=3 | primary | pointing error | facet 2": {
+   "committed": 0.01525408209,
+   "identical": false,
+   "max": 0.01525408209,
+   "min": 0.01514530552
+  },
+  "D exponents K=3 | primary | pointing error | facet 3": {
+   "committed": 0.1746726655,
+   "identical": false,
+   "max": 0.1746771204,
+   "min": 0.1744183899
+  },
+  "D exponents K=3 | primary | power margin | facet 1": {
+   "committed": 4.350586558e-17,
+   "identical": false,
+   "max": 9.199967515e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | primary | power margin | facet 2": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 3.293997871e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | primary | power margin | facet 3": {
+   "committed": 0.06965128173,
+   "identical": false,
+   "max": 0.06990347338,
+   "min": 0.06963113548
+  },
+  "D exponents K=3 | primary | settling time | facet 1": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 4.424912997e-18,
+   "min": 0.0
+  },
+  "D exponents K=3 | primary | settling time | facet 2": {
+   "committed": 0.0220396045,
+   "identical": false,
+   "max": 0.0220396045,
+   "min": 0.02190185406
+  },
+  "D exponents K=3 | primary | settling time | facet 3": {
+   "committed": 0.01602156571,
+   "identical": false,
+   "max": 0.01602585683,
+   "min": 0.01577437484
+  },
+  "D exponents K=3 | primary | slew time | facet 1": {
+   "committed": 0.3654557927,
+   "identical": false,
+   "max": 0.3654557927,
+   "min": 0.3624068789
+  },
+  "D exponents K=3 | primary | slew time | facet 2": {
+   "committed": 0.2163654013,
+   "identical": false,
+   "max": 0.2164765376,
+   "min": 0.2162881356
+  },
+  "D exponents K=3 | primary | slew time | facet 3": {
+   "committed": 0.09205882024,
+   "identical": false,
+   "max": 0.09262144343,
+   "min": 0.09205882024
+  },
+  "D exponents K=3 | primary | total mass | facet 1": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 6.988093609e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | primary | total mass | facet 2": {
+   "committed": 0.002460113109,
+   "identical": false,
+   "max": 0.00258413302,
+   "min": 0.002460113109
+  },
+  "D exponents K=3 | primary | total mass | facet 3": {
+   "committed": 0.182284183,
+   "identical": false,
+   "max": 0.1830761315,
+   "min": 0.1822355881
+  },
+  "D exponents K=3 | stock | control effort | facet 1": {
+   "committed": 0.4875897959,
+   "identical": false,
+   "max": 0.4877219629,
+   "min": 0.4874462448
+  },
+  "D exponents K=3 | stock | control effort | facet 2": {
+   "committed": 0.02312123144,
+   "identical": false,
+   "max": 0.02315283468,
+   "min": 0.02270248957
+  },
+  "D exponents K=3 | stock | control effort | facet 3": {
+   "committed": 0.336281053,
+   "identical": false,
+   "max": 0.3363807471,
+   "min": 0.3361672398
+  },
+  "D exponents K=3 | stock | depth of discharge | facet 1": {
+   "committed": 0.007428660406,
+   "identical": false,
+   "max": 0.007459612067,
+   "min": 0.007376505284
+  },
+  "D exponents K=3 | stock | depth of discharge | facet 2": {
+   "committed": 0.0669524931,
+   "identical": false,
+   "max": 0.06698559119,
+   "min": 0.0669524931
+  },
+  "D exponents K=3 | stock | depth of discharge | facet 3": {
+   "committed": 0.01881703121,
+   "identical": false,
+   "max": 0.01886746405,
+   "min": 0.01866228162
+  },
+  "D exponents K=3 | stock | eclipse reserve | facet 1": {
+   "committed": 7.051801586e-17,
+   "identical": false,
+   "max": 7.051801586e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | stock | eclipse reserve | facet 2": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 4.850008732e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | stock | eclipse reserve | facet 3": {
+   "committed": 9.629005821e-18,
+   "identical": false,
+   "max": 1.037041477e-16,
+   "min": 0.0
+  },
+  "D exponents K=3 | stock | energy balance | facet 1": {
+   "committed": 0.08240859219,
+   "identical": false,
+   "max": 0.08267709453,
+   "min": 0.08188680813
+  },
+  "D exponents K=3 | stock | energy balance | facet 2": {
+   "committed": 2.260807436e-17,
+   "identical": false,
+   "max": 3.052761907e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | stock | energy balance | facet 3": {
+   "committed": 0.3554150544,
+   "identical": false,
+   "max": 0.3558041414,
+   "min": 0.3551515131
+  },
+  "D exponents K=3 | stock | peak slew power | facet 1": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 2.680053994e-16,
+   "min": 0.0
+  },
+  "D exponents K=3 | stock | peak slew power | facet 2": {
+   "committed": 0.3585291325,
+   "identical": false,
+   "max": 0.3590051566,
+   "min": 0.3584084898
+  },
+  "D exponents K=3 | stock | peak slew power | facet 3": {
+   "committed": 2.036173215e-16,
+   "identical": false,
+   "max": 2.036173215e-16,
+   "min": 0.0
+  },
+  "D exponents K=3 | stock | pointing error | facet 1": {
+   "committed": 0.05069515295,
+   "identical": false,
+   "max": 0.05112365683,
+   "min": 0.05059687904
+  },
+  "D exponents K=3 | stock | pointing error | facet 2": {
+   "committed": 0.1547127733,
+   "identical": false,
+   "max": 0.1548677389,
+   "min": 0.1546877743
+  },
+  "D exponents K=3 | stock | pointing error | facet 3": {
+   "committed": 0.001255080471,
+   "identical": false,
+   "max": 0.001495481897,
+   "min": 0.001020785122
+  },
+  "D exponents K=3 | stock | power margin | facet 1": {
+   "committed": 1.667310411e-17,
+   "identical": false,
+   "max": 5.97239475e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | stock | power margin | facet 2": {
+   "committed": 0.08690354045,
+   "identical": false,
+   "max": 0.08692257193,
+   "min": 0.0867717549
+  },
+  "D exponents K=3 | stock | power margin | facet 3": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 8.151994664e-17,
+   "min": 0.0
+  },
+  "D exponents K=3 | stock | settling time | facet 1": {
+   "committed": 0.1108908856,
+   "identical": false,
+   "max": 0.1125322456,
+   "min": 0.1107052054
+  },
+  "D exponents K=3 | stock | settling time | facet 2": {
+   "committed": 0.01730921878,
+   "identical": false,
+   "max": 0.01761187321,
+   "min": 0.01727527112
+  },
+  "D exponents K=3 | stock | settling time | facet 3": {
+   "committed": 0.08962814025,
+   "identical": false,
+   "max": 0.09041679085,
+   "min": 0.08912832491
+  },
+  "D exponents K=3 | stock | slew time | facet 1": {
+   "committed": 0.2609869129,
+   "identical": false,
+   "max": 0.2612609819,
+   "min": 0.2593162158
+  },
+  "D exponents K=3 | stock | slew time | facet 2": {
+   "committed": 0.144779769,
+   "identical": false,
+   "max": 0.1448504878,
+   "min": 0.1442252628
+  },
+  "D exponents K=3 | stock | slew time | facet 3": {
+   "committed": 0.1986036407,
+   "identical": false,
+   "max": 0.1992172271,
+   "min": 0.197688003
+  },
+  "D exponents K=3 | stock | total mass | facet 1": {
+   "committed": 0.0,
+   "identical": false,
+   "max": 1.70213618e-16,
+   "min": 0.0
+  },
+  "D exponents K=3 | stock | total mass | facet 2": {
+   "committed": 0.1476918414,
+   "identical": false,
+   "max": 0.1478301329,
+   "min": 0.1476918414
+  },
+  "D exponents K=3 | stock | total mass | facet 3": {
+   "committed": 2.332521969e-16,
+   "identical": false,
+   "max": 4.205611746e-16,
+   "min": 0.0
+  },
+  "D facets K=3 | primary | 1 | contending set": {
+   "identical": true
+  },
+  "D facets K=3 | primary | 1 | gap G_k": {
+   "committed": 1.065814104e-14,
+   "identical": false,
+   "max": 1.720845688e-14,
+   "min": 1.748601264e-15
+  },
+  "D facets K=3 | primary | 1 | largest exponents": {
+   "identical": false
+  },
+  "D facets K=3 | primary | 1 | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D facets K=3 | primary | 1 | near-frontier": {
+   "committed": 17,
+   "identical": false,
+   "max": 18.0,
+   "min": 17.0
+  },
+  "D facets K=3 | primary | 1 | reach beta_k": {
+   "committed": 0.3464310722,
+   "identical": false,
+   "max": 0.3464310722,
+   "min": 0.3442323015
+  },
+  "D facets K=3 | primary | 1 | rows": {
+   "committed": 201,
+   "identical": false,
+   "max": 202.0,
+   "min": 201
+  },
+  "D facets K=3 | primary | 1 | share": {
+   "committed": 0.08888888889,
+   "identical": false,
+   "max": 0.08888888889,
+   "min": 0.0652173913
+  },
+  "D facets K=3 | primary | 2 | contending set": {
+   "identical": true
+  },
+  "D facets K=3 | primary | 2 | gap G_k": {
+   "committed": 5.162537065e-15,
+   "identical": false,
+   "max": 7.743805597e-15,
+   "min": 1.443289932e-15
+  },
+  "D facets K=3 | primary | 2 | largest exponents": {
+   "identical": false
+  },
+  "D facets K=3 | primary | 2 | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D facets K=3 | primary | 2 | near-frontier": {
+   "committed": 33,
+   "identical": true,
+   "max": 33.0,
+   "min": 33.0
+  },
+  "D facets K=3 | primary | 2 | reach beta_k": {
+   "committed": 0.4773570125,
+   "identical": false,
+   "max": 0.477598359,
+   "min": 0.4771270466
+  },
+  "D facets K=3 | primary | 2 | rows": {
+   "committed": 188,
+   "identical": false,
+   "max": 188,
+   "min": 187.0
+  },
+  "D facets K=3 | primary | 2 | share": {
+   "committed": 0.1333333333,
+   "identical": false,
+   "max": 0.152173913,
+   "min": 0.1333333333
+  },
+  "D facets K=3 | primary | 3 | contending set": {
+   "identical": true
+  },
+  "D facets K=3 | primary | 3 | gap G_k": {
+   "committed": 1.360023205e-15,
+   "identical": false,
+   "max": 1.193489751e-14,
+   "min": 6.245004514e-16
+  },
+  "D facets K=3 | primary | 3 | largest exponents": {
+   "identical": false
+  },
+  "D facets K=3 | primary | 3 | n_lemma": {
+   "committed": 7,
+   "identical": true,
+   "max": 7.0,
+   "min": 7.0
+  },
+  "D facets K=3 | primary | 3 | near-frontier": {
+   "committed": 126,
+   "identical": false,
+   "max": 126.0,
+   "min": 125.0
+  },
+  "D facets K=3 | primary | 3 | reach beta_k": {
+   "committed": 0.4505050614,
+   "identical": false,
+   "max": 0.4505658227,
+   "min": 0.4497750551
+  },
+  "D facets K=3 | primary | 3 | rows": {
+   "committed": 317,
+   "identical": true,
+   "max": 317.0,
+   "min": 317.0
+  },
+  "D facets K=3 | primary | 3 | share": {
+   "committed": 0.7777777778,
+   "identical": false,
+   "max": 0.7954545455,
+   "min": 0.7608695652
+  },
+  "D facets K=3 | stock | 1 | contending set": {
+   "identical": true
+  },
+  "D facets K=3 | stock | 1 | gap G_k": {
+   "committed": 9.103828802e-15,
+   "identical": false,
+   "max": 1.404432126e-14,
+   "min": 1.720845688e-15
+  },
+  "D facets K=3 | stock | 1 | largest exponents": {
+   "identical": false
+  },
+  "D facets K=3 | stock | 1 | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D facets K=3 | stock | 1 | near-frontier": {
+   "committed": 20,
+   "identical": false,
+   "max": 21.0,
+   "min": 20.0
+  },
+  "D facets K=3 | stock | 1 | reach beta_k": {
+   "committed": 0.256434542,
+   "identical": false,
+   "max": 0.2567760699,
+   "min": 0.2562433585
+  },
+  "D facets K=3 | stock | 1 | rows": {
+   "committed": 284,
+   "identical": true,
+   "max": 284.0,
+   "min": 284.0
+  },
+  "D facets K=3 | stock | 1 | share": {
+   "committed": 0.07692307692,
+   "identical": false,
+   "max": 0.1052631579,
+   "min": 0.07692307692
+  },
+  "D facets K=3 | stock | 2 | contending set": {
+   "identical": true
+  },
+  "D facets K=3 | stock | 2 | gap G_k": {
+   "committed": 5.079270338e-15,
+   "identical": false,
+   "max": 5.079270338e-15,
+   "min": 6.938893904e-16
+  },
+  "D facets K=3 | stock | 2 | largest exponents": {
+   "identical": false
+  },
+  "D facets K=3 | stock | 2 | n_lemma": {
+   "committed": 7,
+   "identical": true,
+   "max": 7.0,
+   "min": 7.0
+  },
+  "D facets K=3 | stock | 2 | near-frontier": {
+   "committed": 71,
+   "identical": false,
+   "max": 72.0,
+   "min": 71.0
+  },
+  "D facets K=3 | stock | 2 | reach beta_k": {
+   "committed": 0.5892205053,
+   "identical": false,
+   "max": 0.5897416604,
+   "min": 0.5891615324
+  },
+  "D facets K=3 | stock | 2 | rows": {
+   "committed": 149,
+   "identical": true,
+   "max": 149.0,
+   "min": 149.0
+  },
+  "D facets K=3 | stock | 2 | share": {
+   "committed": 0.5897435897,
+   "identical": false,
+   "max": 0.5897435897,
+   "min": 0.5384615385
+  },
+  "D facets K=3 | stock | 3 | contending set": {
+   "identical": true
+  },
+  "D facets K=3 | stock | 3 | gap G_k": {
+   "committed": 6.161737787e-15,
+   "identical": false,
+   "max": 8.118505868e-15,
+   "min": 5.287437155e-15
+  },
+  "D facets K=3 | stock | 3 | largest exponents": {
+   "identical": false
+  },
+  "D facets K=3 | stock | 3 | n_lemma": {
+   "committed": 5,
+   "identical": true,
+   "max": 5.0,
+   "min": 5.0
+  },
+  "D facets K=3 | stock | 3 | near-frontier": {
+   "committed": 47,
+   "identical": true,
+   "max": 47.0,
+   "min": 47.0
+  },
+  "D facets K=3 | stock | 3 | reach beta_k": {
+   "committed": 0.2873901377,
+   "identical": false,
+   "max": 0.2878056248,
+   "min": 0.2871550421
+  },
+  "D facets K=3 | stock | 3 | rows": {
+   "committed": 347,
+   "identical": true,
+   "max": 347.0,
+   "min": 347.0
+  },
+  "D facets K=3 | stock | 3 | share": {
+   "committed": 0.3333333333,
+   "identical": false,
+   "max": 0.3684210526,
+   "min": 0.3333333333
+  },
+  "D k_table | primary | 1 | band 1/tau": {
+   "committed": 0.0262,
+   "identical": true,
+   "max": 0.0262,
+   "min": 0.0262
+  },
+  "D k_table | primary | 1 | bound": {
+   "committed": 4.724143194e-06,
+   "identical": false,
+   "max": 4.724143194e-06,
+   "min": 3.623554611e-06
+  },
+  "D k_table | primary | 1 | facet rows": {
+   "identical": true
+  },
+  "D k_table | primary | 1 | facet shares": {
+   "identical": true
+  },
+  "D k_table | primary | 1 | frac_above_": {
+   "committed": 0.09631728045,
+   "identical": true,
+   "max": 0.09631728045,
+   "min": 0.09631728045
+  },
+  "D k_table | primary | 1 | gamma": {
+   "committed": NaN,
+   "identical": true,
+   "max": NaN,
+   "min": NaN
+  },
+  "D k_table | primary | 1 | max gap": {
+   "committed": 4.724143194e-06,
+   "identical": false,
+   "max": 4.724143194e-06,
+   "min": 3.623554611e-06
+  },
+  "D k_table | primary | 1 | objective_": {
+   "committed": 0.2035608709,
+   "identical": false,
+   "max": 0.2035608709,
+   "min": 0.2028982834
+  },
+  "D k_table | primary | 1 | radius": {
+   "committed": NaN,
+   "identical": true,
+   "max": NaN,
+   "min": NaN
+  },
+  "D k_table | primary | 1 | status": {
+   "identical": true
+  },
+  "D k_table | primary | 1 | tau": {
+   "committed": 38.1,
+   "identical": true,
+   "max": 38.1,
+   "min": 38.1
+  },
+  "D k_table | primary | 2 | band 1/tau": {
+   "committed": 0.0088,
+   "identical": true,
+   "max": 0.0088,
+   "min": 0.0088
+  },
+  "D k_table | primary | 2 | bound": {
+   "committed": 3.720741059e-15,
+   "identical": false,
+   "max": 5.244467121e-15,
+   "min": 1.956886022e-15
+  },
+  "D k_table | primary | 2 | facet rows": {
+   "identical": false
+  },
+  "D k_table | primary | 2 | facet shares": {
+   "identical": false
+  },
+  "D k_table | primary | 2 | frac_above_": {
+   "committed": 0.09631728045,
+   "identical": false,
+   "max": 0.09915014164,
+   "min": 0.09631728045
+  },
+  "D k_table | primary | 2 | gamma": {
+   "committed": 0.0008297444865,
+   "identical": false,
+   "max": 0.001644186355,
+   "min": 0.0008297444865
+  },
+  "D k_table | primary | 2 | max gap": {
+   "committed": 3.941291737e-15,
+   "identical": false,
+   "max": 7.66053887e-15,
+   "min": 2.081668171e-15
+  },
+  "D k_table | primary | 2 | objective_": {
+   "committed": 0.1384197152,
+   "identical": false,
+   "max": 0.1384197152,
+   "min": 0.1381666691
+  },
+  "D k_table | primary | 2 | radius": {
+   "committed": 6.762869184e-05,
+   "identical": false,
+   "max": 0.0001340113187,
+   "min": 6.762869184e-05
+  },
+  "D k_table | primary | 2 | status": {
+   "identical": true
+  },
+  "D k_table | primary | 2 | tau": {
+   "committed": 113.22,
+   "identical": true,
+   "max": 113.22,
+   "min": 113.22
+  },
+  "D k_table | primary | 3 | band 1/tau": {
+   "committed": 0.0051,
+   "identical": true,
+   "max": 0.0051,
+   "min": 0.0051
+  },
+  "D k_table | primary | 3 | bound": {
+   "committed": 5.019788488e-15,
+   "identical": false,
+   "max": 7.756228772e-15,
+   "min": 3.199478768e-15
+  },
+  "D k_table | primary | 3 | facet rows": {
+   "identical": false
+  },
+  "D k_table | primary | 3 | facet shares": {
+   "identical": false
+  },
+  "D k_table | primary | 3 | frac_above_": {
+   "committed": 0.09773371105,
+   "identical": false,
+   "max": 0.09773371105,
+   "min": 0.09490084986
+  },
+  "D k_table | primary | 3 | gamma": {
+   "committed": 0.0002200902955,
+   "identical": false,
+   "max": 0.001908313334,
+   "min": 0.0002200902955
+  },
+  "D k_table | primary | 3 | max gap": {
+   "committed": 1.065814104e-14,
+   "identical": false,
+   "max": 1.720845688e-14,
+   "min": 4.385380947e-15
+  },
+  "D k_table | primary | 3 | objective_": {
+   "committed": 0.1173338578,
+   "identical": false,
+   "max": 0.1173338578,
+   "min": 0.1168206135
+  },
+  "D k_table | primary | 3 | radius": {
+   "committed": 1.7938557e-05,
+   "identical": false,
+   "max": 0.000155534726,
+   "min": 1.7938557e-05
+  },
+  "D k_table | primary | 3 | status": {
+   "identical": true
+  },
+  "D k_table | primary | 3 | tau": {
+   "committed": 195.18,
+   "identical": true,
+   "max": 195.18,
+   "min": 195.18
+  },
+  "D k_table | stock | 1 | band 1/tau": {
+   "committed": 0.024,
+   "identical": true,
+   "max": 0.024,
+   "min": 0.024
+  },
+  "D k_table | stock | 1 | bound": {
+   "committed": 1.816341962e-05,
+   "identical": false,
+   "max": 1.816341962e-05,
+   "min": 1.296736787e-05
+  },
+  "D k_table | stock | 1 | facet rows": {
+   "identical": true
+  },
+  "D k_table | stock | 1 | facet shares": {
+   "identical": true
+  },
+  "D k_table | stock | 1 | frac_above_": {
+   "committed": 0.1038461538,
+   "identical": false,
+   "max": 0.1051282051,
+   "min": 0.1038461538
+  },
+  "D k_table | stock | 1 | gamma": {
+   "committed": NaN,
+   "identical": true,
+   "max": NaN,
+   "min": NaN
+  },
+  "D k_table | stock | 1 | max gap": {
+   "committed": 1.816341962e-05,
+   "identical": false,
+   "max": 1.816341962e-05,
+   "min": 1.296736787e-05
+  },
+  "D k_table | stock | 1 | objective_": {
+   "committed": 0.1311956757,
+   "identical": false,
+   "max": 0.1312189203,
+   "min": 0.1311606538
+  },
+  "D k_table | stock | 1 | radius": {
+   "committed": NaN,
+   "identical": true,
+   "max": NaN,
+   "min": NaN
+  },
+  "D k_table | stock | 1 | status": {
+   "identical": true
+  },
+  "D k_table | stock | 1 | tau": {
+   "committed": 41.72,
+   "identical": true,
+   "max": 41.72,
+   "min": 41.72
+  },
+  "D k_table | stock | 2 | band 1/tau": {
+   "committed": 0.0127,
+   "identical": true,
+   "max": 0.0127,
+   "min": 0.0127
+  },
+  "D k_table | stock | 2 | bound": {
+   "committed": 1.7069679e-15,
+   "identical": false,
+   "max": 2.803313137e-15,
+   "min": 7.21644966e-16
+  },
+  "D k_table | stock | 2 | facet rows": {
+   "identical": true
+  },
+  "D k_table | stock | 2 | facet shares": {
+   "identical": false
+  },
+  "D k_table | stock | 2 | frac_above_": {
+   "committed": 0.09230769231,
+   "identical": false,
+   "max": 0.09358974359,
+   "min": 0.09102564103
+  },
+  "D k_table | stock | 2 | gamma": {
+   "committed": 0.00157509904,
+   "identical": false,
+   "max": 0.00157509904,
+   "min": 0.001291994862
+  },
+  "D k_table | stock | 2 | max gap": {
+   "committed": 1.859623566e-15,
+   "identical": false,
+   "max": 3.774758284e-15,
+   "min": 9.159339953e-16
+  },
+  "D k_table | stock | 2 | objective_": {
+   "committed": 0.1059256426,
+   "identical": false,
+   "max": 0.1059256426,
+   "min": 0.1058624973
+  },
+  "D k_table | stock | 2 | radius": {
+   "committed": 0.000125908242,
+   "identical": false,
+   "max": 0.000125908242,
+   "min": 0.0001032796758
+  },
+  "D k_table | stock | 2 | status": {
+   "identical": true
+  },
+  "D k_table | stock | 2 | tau": {
+   "committed": 78.75,
+   "identical": true,
+   "max": 78.75,
+   "min": 78.75
+  },
+  "D k_table | stock | 3 | band 1/tau": {
+   "committed": 0.0061,
+   "identical": true,
+   "max": 0.0061,
+   "min": 0.0061
+  },
+  "D k_table | stock | 3 | bound": {
+   "committed": 7.026181631e-15,
+   "identical": false,
+   "max": 8.484363497e-15,
+   "min": 4.039085661e-15
+  },
+  "D k_table | stock | 3 | facet rows": {
+   "identical": true
+  },
+  "D k_table | stock | 3 | facet shares": {
+   "identical": false
+  },
+  "D k_table | stock | 3 | frac_above_": {
+   "committed": 0.09358974359,
+   "identical": false,
+   "max": 0.09358974359,
+   "min": 0.09230769231
+  },
+  "D k_table | stock | 3 | gamma": {
+   "committed": 0.001487308921,
+   "identical": false,
+   "max": 0.001487308921,
+   "min": 0.001161206874
+  },
+  "D k_table | stock | 3 | max gap": {
+   "committed": 9.103828802e-15,
+   "identical": false,
+   "max": 1.404432126e-14,
+   "min": 5.287437155e-15
+  },
+  "D k_table | stock | 3 | objective_": {
+   "committed": 0.09287196878,
+   "identical": false,
+   "max": 0.09287196878,
+   "min": 0.09277169233
+  },
+  "D k_table | stock | 3 | radius": {
+   "committed": 0.0001188905884,
+   "identical": false,
+   "max": 0.0001188905884,
+   "min": 9.282170704e-05
+  },
+  "D k_table | stock | 3 | status": {
+   "identical": true
+  },
+  "D k_table | stock | 3 | tau": {
+   "committed": 162.78,
+   "identical": true,
+   "max": 162.78,
+   "min": 162.78
+  },
+  "D refits | primary | large | contending set": {
+   "identical": true
+  },
+  "D refits | primary | large | designs": {
+   "committed": 267,
+   "identical": true,
+   "max": 267.0,
+   "min": 267.0
+  },
+  "D refits | primary | large | frac_above_": {
+   "committed": 0.1086142322,
+   "identical": true,
+   "max": 0.1086142322,
+   "min": 0.1086142322
+  },
+  "D refits | primary | large | largest exponent at": {
+   "identical": true
+  },
+  "D refits | primary | large | n_eff_": {
+   "committed": 14.97471192,
+   "identical": false,
+   "max": 15.20865973,
+   "min": 14.97471192
+  },
+  "D refits | primary | large | n_lemma": {
+   "committed": 7,
+   "identical": true,
+   "max": 7.0,
+   "min": 7.0
+  },
+  "D refits | primary | large | tau": {
+   "committed": 113.2193013,
+   "identical": true,
+   "max": 113.2193013,
+   "min": 113.2193013
+  },
+  "D refits | primary | medium | contending set": {
+   "identical": true
+  },
+  "D refits | primary | medium | designs": {
+   "committed": 248,
+   "identical": true,
+   "max": 248.0,
+   "min": 248.0
+  },
+  "D refits | primary | medium | frac_above_": {
+   "committed": 0.09677419355,
+   "identical": false,
+   "max": 0.1048387097,
+   "min": 0.09677419355
+  },
+  "D refits | primary | medium | largest exponent at": {
+   "identical": true
+  },
+  "D refits | primary | medium | n_eff_": {
+   "committed": 9.441903682,
+   "identical": false,
+   "max": 9.914966728,
+   "min": 9.424092154
+  },
+  "D refits | primary | medium | n_lemma": {
+   "committed": 7,
+   "identical": true,
+   "max": 7.0,
+   "min": 7.0
+  },
+  "D refits | primary | medium | tau": {
+   "committed": 135.756437,
+   "identical": false,
+   "max": 135.756437,
+   "min": 123.9768081
+  },
+  "D refits | primary | small | contending set": {
+   "identical": true
+  },
+  "D refits | primary | small | designs": {
+   "committed": 191,
+   "identical": true,
+   "max": 191.0,
+   "min": 191.0
+  },
+  "D refits | primary | small | frac_above_": {
+   "committed": 0.0942408377,
+   "identical": true,
+   "max": 0.0942408377,
+   "min": 0.0942408377
+  },
+  "D refits | primary | small | largest exponent at": {
+   "identical": true
+  },
+  "D refits | primary | small | n_eff_": {
+   "committed": 5.466734204,
+   "identical": false,
+   "max": 5.466738428,
+   "min": 5.46672168
+  },
+  "D refits | primary | small | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D refits | primary | small | tau": {
+   "committed": 336.4807592,
+   "identical": true,
+   "max": 336.4807592,
+   "min": 336.4807592
+  },
+  "D refits | stock | large | contending set": {
+   "identical": true
+  },
+  "D refits | stock | large | designs": {
+   "committed": 262,
+   "identical": true,
+   "max": 262.0,
+   "min": 262.0
+  },
+  "D refits | stock | large | frac_above_": {
+   "committed": 0.106870229,
+   "identical": false,
+   "max": 0.106870229,
+   "min": 0.1030534351
+  },
+  "D refits | stock | large | largest exponent at": {
+   "identical": true
+  },
+  "D refits | stock | large | n_eff_": {
+   "committed": 12.27978985,
+   "identical": false,
+   "max": 12.29868075,
+   "min": 12.26633324
+  },
+  "D refits | stock | large | n_lemma": {
+   "committed": 7,
+   "identical": true,
+   "max": 7.0,
+   "min": 7.0
+  },
+  "D refits | stock | large | tau": {
+   "committed": 78.74818428,
+   "identical": true,
+   "max": 78.74818428,
+   "min": 78.74818428
+  },
+  "D refits | stock | medium | contending set": {
+   "identical": true
+  },
+  "D refits | stock | medium | designs": {
+   "committed": 279,
+   "identical": true,
+   "max": 279.0,
+   "min": 279.0
+  },
+  "D refits | stock | medium | frac_above_": {
+   "committed": 0.09318996416,
+   "identical": false,
+   "max": 0.1039426523,
+   "min": 0.09318996416
+  },
+  "D refits | stock | medium | largest exponent at": {
+   "identical": true
+  },
+  "D refits | stock | medium | n_eff_": {
+   "committed": 11.2527977,
+   "identical": false,
+   "max": 13.48852198,
+   "min": 11.23787206
+  },
+  "D refits | stock | medium | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D refits | stock | medium | tau": {
+   "committed": 78.74818428,
+   "identical": false,
+   "max": 78.74818428,
+   "min": 65.67507662
+  },
+  "D refits | stock | small | contending set": {
+   "identical": true
+  },
+  "D refits | stock | small | designs": {
+   "committed": 239,
+   "identical": true,
+   "max": 239.0,
+   "min": 239.0
+  },
+  "D refits | stock | small | frac_above_": {
+   "committed": 0.10041841,
+   "identical": false,
+   "max": 0.10041841,
+   "min": 0.09623430962
+  },
+  "D refits | stock | small | largest exponent at": {
+   "identical": true
+  },
+  "D refits | stock | small | n_eff_": {
+   "committed": 11.27300847,
+   "identical": false,
+   "max": 11.31460262,
+   "min": 11.23488634
+  },
+  "D refits | stock | small | n_lemma": {
+   "committed": 7,
+   "identical": true,
+   "max": 7.0,
+   "min": 7.0
+  },
+  "D refits | stock | small | tau": {
+   "committed": 113.2193013,
+   "identical": true,
+   "max": 113.2193013,
+   "min": 113.2193013
+  },
+  "D sensitivity | primary | baseline | contending set": {
+   "identical": true
+  },
+  "D sensitivity | primary | baseline | frac_above_": {
+   "committed": 0.09631728045,
+   "identical": true,
+   "max": 0.09631728045,
+   "min": 0.09631728045
+  },
+  "D sensitivity | primary | baseline | largest exponent at": {
+   "identical": true
+  },
+  "D sensitivity | primary | baseline | n_eff_": {
+   "committed": 16.18224345,
+   "identical": false,
+   "max": 16.18224345,
+   "min": 15.99842595
+  },
+  "D sensitivity | primary | baseline | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | primary | baseline | setting": {
+   "identical": true
+  },
+  "D sensitivity | primary | baseline | shared with baseline": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | primary | baseline | tau": {
+   "committed": 38.09611647,
+   "identical": true,
+   "max": 38.09611647,
+   "min": 38.09611647
+  },
+  "D sensitivity | primary | robust scaler | contending set": {
+   "identical": true
+  },
+  "D sensitivity | primary | robust scaler | frac_above_": {
+   "committed": 0.104815864,
+   "identical": true,
+   "max": 0.104815864,
+   "min": 0.104815864
+  },
+  "D sensitivity | primary | robust scaler | largest exponent at": {
+   "identical": true
+  },
+  "D sensitivity | primary | robust scaler | n_eff_": {
+   "committed": 28.85703675,
+   "identical": false,
+   "max": 29.01970061,
+   "min": 28.85703675
+  },
+  "D sensitivity | primary | robust scaler | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | primary | robust scaler | setting": {
+   "identical": true
+  },
+  "D sensitivity | primary | robust scaler | shared with baseline": {
+   "committed": 3,
+   "identical": true,
+   "max": 3.0,
+   "min": 3.0
+  },
+  "D sensitivity | primary | robust scaler | tau": {
+   "committed": 54.77225575,
+   "identical": true,
+   "max": 54.77225575,
+   "min": 54.77225575
+  },
+  "D sensitivity | primary | target fraction doubled | contending set": {
+   "identical": true
+  },
+  "D sensitivity | primary | target fraction doubled | frac_above_": {
+   "committed": 0.1997167139,
+   "identical": false,
+   "max": 0.2011331445,
+   "min": 0.1997167139
+  },
+  "D sensitivity | primary | target fraction doubled | largest exponent at": {
+   "identical": true
+  },
+  "D sensitivity | primary | target fraction doubled | n_eff_": {
+   "committed": 89.75632531,
+   "identical": false,
+   "max": 89.82873525,
+   "min": 89.71843694
+  },
+  "D sensitivity | primary | target fraction doubled | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | primary | target fraction doubled | setting": {
+   "identical": true
+  },
+  "D sensitivity | primary | target fraction doubled | shared with baseline": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | primary | target fraction doubled | tau": {
+   "committed": 18.4298102,
+   "identical": true,
+   "max": 18.4298102,
+   "min": 18.4298102
+  },
+  "D sensitivity | primary | target fraction halved | contending set": {
+   "identical": true
+  },
+  "D sensitivity | primary | target fraction halved | frac_above_": {
+   "committed": 0.0566572238,
+   "identical": false,
+   "max": 0.0566572238,
+   "min": 0.05382436261
+  },
+  "D sensitivity | primary | target fraction halved | largest exponent at": {
+   "identical": true
+  },
+  "D sensitivity | primary | target fraction halved | n_eff_": {
+   "committed": 5.82479,
+   "identical": false,
+   "max": 5.82479,
+   "min": 5.772506932
+  },
+  "D sensitivity | primary | target fraction halved | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | primary | target fraction halved | setting": {
+   "identical": true
+  },
+  "D sensitivity | primary | target fraction halved | shared with baseline": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | primary | target fraction halved | tau": {
+   "committed": 65.67507662,
+   "identical": true,
+   "max": 65.67507662,
+   "min": 65.67507662
+  },
+  "D sensitivity | primary | view: four metrics | contending set": {
+   "identical": true
+  },
+  "D sensitivity | primary | view: four metrics | frac_above_": {
+   "committed": 0.1090651558,
+   "identical": false,
+   "max": 0.1090651558,
+   "min": 0.1076487252
+  },
+  "D sensitivity | primary | view: four metrics | largest exponent at": {
+   "identical": true
+  },
+  "D sensitivity | primary | view: four metrics | n_eff_": {
+   "committed": 20.64067089,
+   "identical": false,
+   "max": 20.64067089,
+   "min": 20.32523181
+  },
+  "D sensitivity | primary | view: four metrics | n_lemma": {
+   "committed": 4,
+   "identical": true,
+   "max": 4.0,
+   "min": 4.0
+  },
+  "D sensitivity | primary | view: four metrics | setting": {
+   "identical": true
+  },
+  "D sensitivity | primary | view: four metrics | shared with baseline": {
+   "committed": 4,
+   "identical": true,
+   "max": 4.0,
+   "min": 4.0
+  },
+  "D sensitivity | primary | view: four metrics | tau": {
+   "committed": 15.37024895,
+   "identical": true,
+   "max": 15.37024895,
+   "min": 15.37024895
+  },
+  "D sensitivity | primary | view: settling time and slew time | contending set": {
+   "identical": true
+  },
+  "D sensitivity | primary | view: settling time and slew time | frac_above_": {
+   "committed": 0.09773371105,
+   "identical": true,
+   "max": 0.09773371105,
+   "min": 0.09773371105
+  },
+  "D sensitivity | primary | view: settling time and slew time | largest exponent at": {
+   "identical": true
+  },
+  "D sensitivity | primary | view: settling time and slew time | n_eff_": {
+   "committed": 23.96305111,
+   "identical": false,
+   "max": 24.29350197,
+   "min": 23.43472177
+  },
+  "D sensitivity | primary | view: settling time and slew time | n_lemma": {
+   "committed": 2,
+   "identical": true,
+   "max": 2.0,
+   "min": 2.0
+  },
+  "D sensitivity | primary | view: settling time and slew time | setting": {
+   "identical": true
+  },
+  "D sensitivity | primary | view: settling time and slew time | shared with baseline": {
+   "committed": 1,
+   "identical": true,
+   "max": 1.0,
+   "min": 1.0
+  },
+  "D sensitivity | primary | view: settling time and slew time | tau": {
+   "committed": 6.201276528,
+   "identical": true,
+   "max": 6.201276528,
+   "min": 6.201276528
+  },
+  "D sensitivity | stock | baseline | contending set": {
+   "identical": true
+  },
+  "D sensitivity | stock | baseline | frac_above_": {
+   "committed": 0.1038461538,
+   "identical": false,
+   "max": 0.1051282051,
+   "min": 0.1038461538
+  },
+  "D sensitivity | stock | baseline | largest exponent at": {
+   "identical": true
+  },
+  "D sensitivity | stock | baseline | n_eff_": {
+   "committed": 14.48453768,
+   "identical": false,
+   "max": 14.53070638,
+   "min": 14.48453768
+  },
+  "D sensitivity | stock | baseline | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | stock | baseline | setting": {
+   "identical": true
+  },
+  "D sensitivity | stock | baseline | shared with baseline": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | stock | baseline | tau": {
+   "committed": 41.71581052,
+   "identical": true,
+   "max": 41.71581052,
+   "min": 41.71581052
+  },
+  "D sensitivity | stock | robust scaler | contending set": {
+   "identical": true
+  },
+  "D sensitivity | stock | robust scaler | frac_above_": {
+   "committed": 0.1012820513,
+   "identical": false,
+   "max": 0.1012820513,
+   "min": 0.1
+  },
+  "D sensitivity | stock | robust scaler | largest exponent at": {
+   "identical": true
+  },
+  "D sensitivity | stock | robust scaler | n_eff_": {
+   "committed": 9.588121785,
+   "identical": false,
+   "max": 9.608620739,
+   "min": 9.579117344
+  },
+  "D sensitivity | stock | robust scaler | n_lemma": {
+   "committed": 5,
+   "identical": true,
+   "max": 5.0,
+   "min": 5.0
+  },
+  "D sensitivity | stock | robust scaler | setting": {
+   "identical": true
+  },
+  "D sensitivity | stock | robust scaler | shared with baseline": {
+   "committed": 4,
+   "identical": true,
+   "max": 4.0,
+   "min": 4.0
+  },
+  "D sensitivity | stock | robust scaler | tau": {
+   "committed": 59.97642948,
+   "identical": true,
+   "max": 59.97642948,
+   "min": 59.97642948
+  },
+  "D sensitivity | stock | target fraction doubled | contending set": {
+   "identical": true
+  },
+  "D sensitivity | stock | target fraction doubled | frac_above_": {
+   "committed": 0.1974358974,
+   "identical": true,
+   "max": 0.1974358974,
+   "min": 0.1974358974
+  },
+  "D sensitivity | stock | target fraction doubled | largest exponent at": {
+   "identical": true
+  },
+  "D sensitivity | stock | target fraction doubled | n_eff_": {
+   "committed": 58.48029808,
+   "identical": false,
+   "max": 58.49875216,
+   "min": 58.46118208
+  },
+  "D sensitivity | stock | target fraction doubled | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | stock | target fraction doubled | setting": {
+   "identical": true
+  },
+  "D sensitivity | stock | target fraction doubled | shared with baseline": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | stock | target fraction doubled | tau": {
+   "committed": 24.19807418,
+   "identical": true,
+   "max": 24.19807418,
+   "min": 24.19807418
+  },
+  "D sensitivity | stock | target fraction halved | contending set": {
+   "identical": true
+  },
+  "D sensitivity | stock | target fraction halved | frac_above_": {
+   "committed": 0.05769230769,
+   "identical": false,
+   "max": 0.05769230769,
+   "min": 0.05641025641
+  },
+  "D sensitivity | stock | target fraction halved | largest exponent at": {
+   "identical": true
+  },
+  "D sensitivity | stock | target fraction halved | n_eff_": {
+   "committed": 9.959756163,
+   "identical": false,
+   "max": 9.993060274,
+   "min": 9.959756163
+  },
+  "D sensitivity | stock | target fraction halved | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | stock | target fraction halved | setting": {
+   "identical": true
+  },
+  "D sensitivity | stock | target fraction halved | shared with baseline": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D sensitivity | stock | target fraction halved | tau": {
+   "committed": 54.77225575,
+   "identical": true,
+   "max": 54.77225575,
+   "min": 54.77225575
+  },
+  "D sensitivity | stock | view: four metrics | contending set": {
+   "identical": true
+  },
+  "D sensitivity | stock | view: four metrics | frac_above_": {
+   "committed": 0.09743589744,
+   "identical": true,
+   "max": 0.09743589744,
+   "min": 0.09743589744
+  },
+  "D sensitivity | stock | view: four metrics | largest exponent at": {
+   "identical": true
+  },
+  "D sensitivity | stock | view: four metrics | n_eff_": {
+   "committed": 14.97038181,
+   "identical": false,
+   "max": 14.9749884,
+   "min": 14.9233243
+  },
+  "D sensitivity | stock | view: four metrics | n_lemma": {
+   "committed": 2,
+   "identical": true,
+   "max": 2.0,
+   "min": 2.0
+  },
+  "D sensitivity | stock | view: four metrics | setting": {
+   "identical": true
+  },
+  "D sensitivity | stock | view: four metrics | shared with baseline": {
+   "committed": 2,
+   "identical": true,
+   "max": 2.0,
+   "min": 2.0
+  },
+  "D sensitivity | stock | view: four metrics | tau": {
+   "committed": 22.09839964,
+   "identical": true,
+   "max": 22.09839964,
+   "min": 22.09839964
+  },
+  "D sensitivity | stock | view: settling time and slew time | contending set": {
+   "identical": true
+  },
+  "D sensitivity | stock | view: settling time and slew time | frac_above_": {
+   "committed": 0.1076923077,
+   "identical": false,
+   "max": 0.108974359,
+   "min": 0.1076923077
+  },
+  "D sensitivity | stock | view: settling time and slew time | largest exponent at": {
+   "identical": true
+  },
+  "D sensitivity | stock | view: settling time and slew time | n_eff_": {
+   "committed": 20.46511713,
+   "identical": false,
+   "max": 20.57350684,
+   "min": 20.25967541
+  },
+  "D sensitivity | stock | view: settling time and slew time | n_lemma": {
+   "committed": 2,
+   "identical": true,
+   "max": 2.0,
+   "min": 2.0
+  },
+  "D sensitivity | stock | view: settling time and slew time | setting": {
+   "identical": true
+  },
+  "D sensitivity | stock | view: settling time and slew time | shared with baseline": {
+   "committed": 2,
+   "identical": true,
+   "max": 2.0,
+   "min": 2.0
+  },
+  "D sensitivity | stock | view: settling time and slew time | tau": {
+   "committed": 4.313215689,
+   "identical": true,
+   "max": 4.313215689,
+   "min": 4.313215689
+  },
+  "D tau_sweep | primary | row 1 | frac_above": {
+   "committed": 0.4532577904,
+   "identical": false,
+   "max": 0.4532577904,
+   "min": 0.4504249292
+  },
+  "D tau_sweep | primary | row 1 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 1 | largest w": {
+   "committed": 0.2440381079,
+   "identical": false,
+   "max": 0.2450581344,
+   "min": 0.2440381079
+  },
+  "D tau_sweep | primary | row 1 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 1 | n_eff": {
+   "committed": 588.7944442,
+   "identical": false,
+   "max": 589.32583,
+   "min": 588.7944442
+  },
+  "D tau_sweep | primary | row 1 | tau": {
+   "committed": 3.0,
+   "identical": true,
+   "max": 3.0,
+   "min": 3.0
+  },
+  "D tau_sweep | primary | row 10 | frac_above": {
+   "committed": 0.01274787535,
+   "identical": true,
+   "max": 0.01274787535,
+   "min": 0.01274787535
+  },
+  "D tau_sweep | primary | row 10 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 10 | largest w": {
+   "committed": 0.2215316883,
+   "identical": false,
+   "max": 0.221533895,
+   "min": 0.2212108251
+  },
+  "D tau_sweep | primary | row 10 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 10 | n_eff": {
+   "committed": 3.345917637,
+   "identical": false,
+   "max": 3.345917637,
+   "min": 3.337905955
+  },
+  "D tau_sweep | primary | row 10 | tau": {
+   "committed": 347.7721286,
+   "identical": true,
+   "max": 347.7721286,
+   "min": 347.7721286
+  },
+  "D tau_sweep | primary | row 11 | frac_above": {
+   "committed": 0.01133144476,
+   "identical": true,
+   "max": 0.01133144476,
+   "min": 0.01133144476
+  },
+  "D tau_sweep | primary | row 11 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 11 | largest w": {
+   "committed": 0.2220109142,
+   "identical": false,
+   "max": 0.222014507,
+   "min": 0.2217944111
+  },
+  "D tau_sweep | primary | row 11 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 11 | n_eff": {
+   "committed": 3.228898932,
+   "identical": false,
+   "max": 3.228898932,
+   "min": 3.222221181
+  },
+  "D tau_sweep | primary | row 11 | tau": {
+   "committed": 589.7220775,
+   "identical": true,
+   "max": 589.7220775,
+   "min": 589.7220775
+  },
+  "D tau_sweep | primary | row 12 | frac_above": {
+   "committed": 0.009915014164,
+   "identical": true,
+   "max": 0.009915014164,
+   "min": 0.009915014164
+  },
+  "D tau_sweep | primary | row 12 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 12 | largest w": {
+   "committed": 0.2221865353,
+   "identical": false,
+   "max": 0.2221924893,
+   "min": 0.222041245
+  },
+  "D tau_sweep | primary | row 12 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 12 | n_eff": {
+   "committed": 3.197323355,
+   "identical": false,
+   "max": 3.197323355,
+   "min": 3.188906987
+  },
+  "D tau_sweep | primary | row 12 | tau": {
+   "committed": 1000.0,
+   "identical": true,
+   "max": 1000.0,
+   "min": 1000.0
+  },
+  "D tau_sweep | primary | row 13 | frac_above": {
+   "committed": 0.0,
+   "identical": true,
+   "max": 0.0,
+   "min": 0.0
+  },
+  "D tau_sweep | primary | row 13 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 13 | largest w": {
+   "committed": 0.2228209108,
+   "identical": false,
+   "max": 0.2228271945,
+   "min": 0.222798149
+  },
+  "D tau_sweep | primary | row 13 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 13 | n_eff": {
+   "committed": 3.190669801,
+   "identical": false,
+   "max": 3.190820536,
+   "min": 3.18206306
+  },
+  "D tau_sweep | primary | row 13 | tau": {
+   "committed": Infinity,
+   "identical": true,
+   "max": Infinity,
+   "min": Infinity
+  },
+  "D tau_sweep | primary | row 2 | frac_above": {
+   "committed": 0.4036827195,
+   "identical": false,
+   "max": 0.4036827195,
+   "min": 0.4008498584
+  },
+  "D tau_sweep | primary | row 2 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 2 | largest w": {
+   "committed": 0.2459678186,
+   "identical": false,
+   "max": 0.2467883091,
+   "min": 0.2459678186
+  },
+  "D tau_sweep | primary | row 2 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 2 | n_eff": {
+   "committed": 462.058875,
+   "identical": false,
+   "max": 462.6239417,
+   "min": 462.058875
+  },
+  "D tau_sweep | primary | row 2 | tau": {
+   "committed": 5.087142087,
+   "identical": true,
+   "max": 5.087142087,
+   "min": 5.087142087
+  },
+  "D tau_sweep | primary | row 3 | frac_above": {
+   "committed": 0.3314447592,
+   "identical": false,
+   "max": 0.3314447592,
+   "min": 0.328611898
+  },
+  "D tau_sweep | primary | row 3 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 3 | largest w": {
+   "committed": 0.2476281084,
+   "identical": false,
+   "max": 0.2482926601,
+   "min": 0.2476281084
+  },
+  "D tau_sweep | primary | row 3 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 3 | n_eff": {
+   "committed": 290.97879,
+   "identical": false,
+   "max": 291.4134694,
+   "min": 290.97879
+  },
+  "D tau_sweep | primary | row 3 | tau": {
+   "committed": 8.626338205,
+   "identical": true,
+   "max": 8.626338205,
+   "min": 8.626338205
+  },
+  "D tau_sweep | primary | row 4 | frac_above": {
+   "committed": 0.2436260623,
+   "identical": false,
+   "max": 0.2450424929,
+   "min": 0.2422096317
+  },
+  "D tau_sweep | primary | row 4 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 4 | largest w": {
+   "committed": 0.248269436,
+   "identical": false,
+   "max": 0.2489186027,
+   "min": 0.248269436
+  },
+  "D tau_sweep | primary | row 4 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 4 | n_eff": {
+   "committed": 137.702412,
+   "identical": false,
+   "max": 137.9232068,
+   "min": 137.702412
+  },
+  "D tau_sweep | primary | row 4 | tau": {
+   "committed": 14.62780271,
+   "identical": true,
+   "max": 14.62780271,
+   "min": 14.62780271
+  },
+  "D tau_sweep | primary | row 5 | frac_above": {
+   "committed": 0.1558073654,
+   "identical": false,
+   "max": 0.1558073654,
+   "min": 0.1543909348
+  },
+  "D tau_sweep | primary | row 5 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 5 | largest w": {
+   "committed": 0.2461802533,
+   "identical": false,
+   "max": 0.2470272008,
+   "min": 0.2461802533
+  },
+  "D tau_sweep | primary | row 5 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 5 | n_eff": {
+   "committed": 46.89757767,
+   "identical": false,
+   "max": 46.89757767,
+   "min": 46.71710982
+  },
+  "D tau_sweep | primary | row 5 | tau": {
+   "committed": 24.80457028,
+   "identical": true,
+   "max": 24.80457028,
+   "min": 24.80457028
+  },
+  "D tau_sweep | primary | row 6 | frac_above": {
+   "committed": 0.08498583569,
+   "identical": true,
+   "max": 0.08498583569,
+   "min": 0.08498583569
+  },
+  "D tau_sweep | primary | row 6 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 6 | largest w": {
+   "committed": 0.2370078024,
+   "identical": false,
+   "max": 0.2380547974,
+   "min": 0.2370078024
+  },
+  "D tau_sweep | primary | row 6 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 6 | n_eff": {
+   "committed": 12.78932161,
+   "identical": false,
+   "max": 12.78932161,
+   "min": 12.62799254
+  },
+  "D tau_sweep | primary | row 6 | tau": {
+   "committed": 42.0614578,
+   "identical": true,
+   "max": 42.0614578,
+   "min": 42.0614578
+  },
+  "D tau_sweep | primary | row 7 | frac_above": {
+   "committed": 0.04532577904,
+   "identical": false,
+   "max": 0.04532577904,
+   "min": 0.04390934844
+  },
+  "D tau_sweep | primary | row 7 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 7 | largest w": {
+   "committed": 0.2195884895,
+   "identical": false,
+   "max": 0.2202284145,
+   "min": 0.2195884895
+  },
+  "D tau_sweep | primary | row 7 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 7 | n_eff": {
+   "committed": 5.332127054,
+   "identical": false,
+   "max": 5.332127054,
+   "min": 5.290268099
+  },
+  "D tau_sweep | primary | row 7 | tau": {
+   "committed": 71.32420408,
+   "identical": true,
+   "max": 71.32420408,
+   "min": 71.32420408
+  },
+  "D tau_sweep | primary | row 8 | frac_above": {
+   "committed": 0.02266288952,
+   "identical": true,
+   "max": 0.02266288952,
+   "min": 0.02266288952
+  },
+  "D tau_sweep | primary | row 8 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 8 | largest w": {
+   "committed": 0.211380616,
+   "identical": false,
+   "max": 0.211399184,
+   "min": 0.2107593365
+  },
+  "D tau_sweep | primary | row 8 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 8 | n_eff": {
+   "committed": 3.958959988,
+   "identical": false,
+   "max": 3.958959988,
+   "min": 3.9394984
+  },
+  "D tau_sweep | primary | row 8 | tau": {
+   "committed": 120.9454535,
+   "identical": true,
+   "max": 120.9454535,
+   "min": 120.9454535
+  },
+  "D tau_sweep | primary | row 9 | frac_above": {
+   "committed": 0.01558073654,
+   "identical": true,
+   "max": 0.01558073654,
+   "min": 0.01558073654
+  },
+  "D tau_sweep | primary | row 9 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | primary | row 9 | largest w": {
+   "committed": 0.2191645544,
+   "identical": false,
+   "max": 0.2191694023,
+   "min": 0.2186837854
+  },
+  "D tau_sweep | primary | row 9 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | primary | row 9 | n_eff": {
+   "committed": 3.57275689,
+   "identical": false,
+   "max": 3.572852257,
+   "min": 3.560483756
+  },
+  "D tau_sweep | primary | row 9 | tau": {
+   "committed": 205.0889022,
+   "identical": true,
+   "max": 205.0889022,
+   "min": 205.0889022
+  },
+  "D tau_sweep | stock | row 1 | frac_above": {
+   "committed": 0.45,
+   "identical": true,
+   "max": 0.45,
+   "min": 0.45
+  },
+  "D tau_sweep | stock | row 1 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 1 | largest w": {
+   "committed": 0.4169955522,
+   "identical": false,
+   "max": 0.4170034321,
+   "min": 0.4169884419
+  },
+  "D tau_sweep | stock | row 1 | metrics with w>1e-3": {
+   "committed": 7,
+   "identical": true,
+   "max": 7.0,
+   "min": 7.0
+  },
+  "D tau_sweep | stock | row 1 | n_eff": {
+   "committed": 719.2656249,
+   "identical": false,
+   "max": 719.2760323,
+   "min": 719.2578769
+  },
+  "D tau_sweep | stock | row 1 | tau": {
+   "committed": 3.0,
+   "identical": true,
+   "max": 3.0,
+   "min": 3.0
+  },
+  "D tau_sweep | stock | row 10 | frac_above": {
+   "committed": 0.01153846154,
+   "identical": true,
+   "max": 0.01153846154,
+   "min": 0.01153846154
+  },
+  "D tau_sweep | stock | row 10 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 10 | largest w": {
+   "committed": 0.4341237848,
+   "identical": false,
+   "max": 0.4342124253,
+   "min": 0.4341237848
+  },
+  "D tau_sweep | stock | row 10 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | stock | row 10 | n_eff": {
+   "committed": 6.106179692,
+   "identical": false,
+   "max": 6.106179692,
+   "min": 6.018992006
+  },
+  "D tau_sweep | stock | row 10 | tau": {
+   "committed": 347.7721286,
+   "identical": true,
+   "max": 347.7721286,
+   "min": 347.7721286
+  },
+  "D tau_sweep | stock | row 11 | frac_above": {
+   "committed": 0.01025641026,
+   "identical": true,
+   "max": 0.01025641026,
+   "min": 0.01025641026
+  },
+  "D tau_sweep | stock | row 11 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 11 | largest w": {
+   "committed": 0.4341584055,
+   "identical": false,
+   "max": 0.4342533846,
+   "min": 0.4341584055
+  },
+  "D tau_sweep | stock | row 11 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | stock | row 11 | n_eff": {
+   "committed": 5.351267576,
+   "identical": false,
+   "max": 5.351267576,
+   "min": 5.24111025
+  },
+  "D tau_sweep | stock | row 11 | tau": {
+   "committed": 589.7220775,
+   "identical": true,
+   "max": 589.7220775,
+   "min": 589.7220775
+  },
+  "D tau_sweep | stock | row 12 | frac_above": {
+   "committed": 0.01025641026,
+   "identical": true,
+   "max": 0.01025641026,
+   "min": 0.01025641026
+  },
+  "D tau_sweep | stock | row 12 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 12 | largest w": {
+   "committed": 0.4341560094,
+   "identical": false,
+   "max": 0.434263135,
+   "min": 0.4341560094
+  },
+  "D tau_sweep | stock | row 12 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | stock | row 12 | n_eff": {
+   "committed": 4.734815807,
+   "identical": false,
+   "max": 4.734815807,
+   "min": 4.681215082
+  },
+  "D tau_sweep | stock | row 12 | tau": {
+   "committed": 1000.0,
+   "identical": true,
+   "max": 1000.0,
+   "min": 1000.0
+  },
+  "D tau_sweep | stock | row 13 | frac_above": {
+   "committed": 0.0,
+   "identical": true,
+   "max": 0.0,
+   "min": 0.0
+  },
+  "D tau_sweep | stock | row 13 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 13 | largest w": {
+   "committed": 0.4340822256,
+   "identical": false,
+   "max": 0.43419295,
+   "min": 0.4340822256
+  },
+  "D tau_sweep | stock | row 13 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | stock | row 13 | n_eff": {
+   "committed": 4.530710916,
+   "identical": false,
+   "max": 4.530926846,
+   "min": 4.521210128
+  },
+  "D tau_sweep | stock | row 13 | tau": {
+   "committed": Infinity,
+   "identical": true,
+   "max": Infinity,
+   "min": Infinity
+  },
+  "D tau_sweep | stock | row 2 | frac_above": {
+   "committed": 0.4205128205,
+   "identical": false,
+   "max": 0.4217948718,
+   "min": 0.4205128205
+  },
+  "D tau_sweep | stock | row 2 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 2 | largest w": {
+   "committed": 0.4180189931,
+   "identical": false,
+   "max": 0.4180244399,
+   "min": 0.4180119511
+  },
+  "D tau_sweep | stock | row 2 | metrics with w>1e-3": {
+   "committed": 7,
+   "identical": true,
+   "max": 7.0,
+   "min": 7.0
+  },
+  "D tau_sweep | stock | row 2 | n_eff": {
+   "committed": 627.6998914,
+   "identical": false,
+   "max": 627.7274996,
+   "min": 627.6772398
+  },
+  "D tau_sweep | stock | row 2 | tau": {
+   "committed": 5.087142087,
+   "identical": true,
+   "max": 5.087142087,
+   "min": 5.087142087
+  },
+  "D tau_sweep | stock | row 3 | frac_above": {
+   "committed": 0.3705128205,
+   "identical": true,
+   "max": 0.3705128205,
+   "min": 0.3705128205
+  },
+  "D tau_sweep | stock | row 3 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 3 | largest w": {
+   "committed": 0.419372599,
+   "identical": false,
+   "max": 0.4193783043,
+   "min": 0.4193659756
+  },
+  "D tau_sweep | stock | row 3 | metrics with w>1e-3": {
+   "committed": 7,
+   "identical": true,
+   "max": 7.0,
+   "min": 7.0
+  },
+  "D tau_sweep | stock | row 3 | n_eff": {
+   "committed": 445.4808164,
+   "identical": false,
+   "max": 445.5668413,
+   "min": 445.42342
+  },
+  "D tau_sweep | stock | row 3 | tau": {
+   "committed": 8.626338205,
+   "identical": true,
+   "max": 8.626338205,
+   "min": 8.626338205
+  },
+  "D tau_sweep | stock | row 4 | frac_above": {
+   "committed": 0.2897435897,
+   "identical": true,
+   "max": 0.2897435897,
+   "min": 0.2897435897
+  },
+  "D tau_sweep | stock | row 4 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 4 | largest w": {
+   "committed": 0.4211860229,
+   "identical": false,
+   "max": 0.4211959259,
+   "min": 0.4211830856
+  },
+  "D tau_sweep | stock | row 4 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | stock | row 4 | n_eff": {
+   "committed": 207.54249,
+   "identical": false,
+   "max": 207.6032261,
+   "min": 207.4673936
+  },
+  "D tau_sweep | stock | row 4 | tau": {
+   "committed": 14.62780271,
+   "identical": true,
+   "max": 14.62780271,
+   "min": 14.62780271
+  },
+  "D tau_sweep | stock | row 5 | frac_above": {
+   "committed": 0.1923076923,
+   "identical": true,
+   "max": 0.1923076923,
+   "min": 0.1923076923
+  },
+  "D tau_sweep | stock | row 5 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 5 | largest w": {
+   "committed": 0.4241036078,
+   "identical": false,
+   "max": 0.4241342261,
+   "min": 0.4241036078
+  },
+  "D tau_sweep | stock | row 5 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | stock | row 5 | n_eff": {
+   "committed": 54.37630674,
+   "identical": false,
+   "max": 54.39421631,
+   "min": 54.35632078
+  },
+  "D tau_sweep | stock | row 5 | tau": {
+   "committed": 24.80457028,
+   "identical": true,
+   "max": 24.80457028,
+   "min": 24.80457028
+  },
+  "D tau_sweep | stock | row 6 | frac_above": {
+   "committed": 0.1025641026,
+   "identical": true,
+   "max": 0.1025641026,
+   "min": 0.1025641026
+  },
+  "D tau_sweep | stock | row 6 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 6 | largest w": {
+   "committed": 0.4296085027,
+   "identical": false,
+   "max": 0.4296543588,
+   "min": 0.4295908277
+  },
+  "D tau_sweep | stock | row 6 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | stock | row 6 | n_eff": {
+   "committed": 14.26267813,
+   "identical": false,
+   "max": 14.30878786,
+   "min": 14.26267813
+  },
+  "D tau_sweep | stock | row 6 | tau": {
+   "committed": 42.0614578,
+   "identical": true,
+   "max": 42.0614578,
+   "min": 42.0614578
+  },
+  "D tau_sweep | stock | row 7 | frac_above": {
+   "committed": 0.03205128205,
+   "identical": false,
+   "max": 0.03205128205,
+   "min": 0.03076923077
+  },
+  "D tau_sweep | stock | row 7 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 7 | largest w": {
+   "committed": 0.43307352,
+   "identical": false,
+   "max": 0.4331349177,
+   "min": 0.4330570144
+  },
+  "D tau_sweep | stock | row 7 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | stock | row 7 | n_eff": {
+   "committed": 8.454440187,
+   "identical": false,
+   "max": 8.47417251,
+   "min": 8.454440187
+  },
+  "D tau_sweep | stock | row 7 | tau": {
+   "committed": 71.32420408,
+   "identical": true,
+   "max": 71.32420408,
+   "min": 71.32420408
+  },
+  "D tau_sweep | stock | row 8 | frac_above": {
+   "committed": 0.01923076923,
+   "identical": true,
+   "max": 0.01923076923,
+   "min": 0.01923076923
+  },
+  "D tau_sweep | stock | row 8 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 8 | largest w": {
+   "committed": 0.4339574362,
+   "identical": false,
+   "max": 0.4340204341,
+   "min": 0.4339574362
+  },
+  "D tau_sweep | stock | row 8 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | stock | row 8 | n_eff": {
+   "committed": 7.344180036,
+   "identical": false,
+   "max": 7.344180036,
+   "min": 7.332619678
+  },
+  "D tau_sweep | stock | row 8 | tau": {
+   "committed": 120.9454535,
+   "identical": true,
+   "max": 120.9454535,
+   "min": 120.9454535
+  },
+  "D tau_sweep | stock | row 9 | frac_above": {
+   "committed": 0.01282051282,
+   "identical": true,
+   "max": 0.01282051282,
+   "min": 0.01282051282
+  },
+  "D tau_sweep | stock | row 9 | largest at": {
+   "identical": true
+  },
+  "D tau_sweep | stock | row 9 | largest w": {
+   "committed": 0.4340777375,
+   "identical": false,
+   "max": 0.4341566512,
+   "min": 0.4340777375
+  },
+  "D tau_sweep | stock | row 9 | metrics with w>1e-3": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D tau_sweep | stock | row 9 | n_eff": {
+   "committed": 6.723907372,
+   "identical": false,
+   "max": 6.723907372,
+   "min": 6.685275526
+  },
+  "D tau_sweep | stock | row 9 | tau": {
+   "committed": 205.0889022,
+   "identical": true,
+   "max": 205.0889022,
+   "min": 205.0889022
+  },
+  "candidate | fast_effort_hungry | log V": {
+   "committed": -0.1149908018,
+   "identical": false,
+   "max": -0.1147205006,
+   "min": -0.1151902056
+  },
+  "candidate | fast_effort_hungry | novelty V-1": {
+   "committed": -0.1086256571,
+   "identical": false,
+   "max": -0.108384685,
+   "min": -0.1088033828
+  },
+  "candidate | fast_effort_hungry | rank among training": {
+   "committed": 0.6685552408,
+   "identical": false,
+   "max": 0.6685552408,
+   "min": 0.6657223796
+  },
+  "candidate | fast_effort_hungry | st_grade": {
+   "identical": true
+  },
+  "candidate | fast_effort_hungry | tau*log V": {
+   "committed": -4.38070298,
+   "identical": false,
+   "max": -4.370405552,
+   "min": -4.38829949
+  },
+  "candidate | fast_effort_hungry | wheel_class": {
+   "identical": true
+  },
+  "candidate | light_slow | log V": {
+   "committed": -0.1436164282,
+   "identical": false,
+   "max": -0.1436164282,
+   "min": -0.1441036446
+  },
+  "candidate | light_slow | novelty V-1": {
+   "committed": -0.1337800582,
+   "identical": false,
+   "max": -0.1337800582,
+   "min": -0.1342019919
+  },
+  "candidate | light_slow | rank among training": {
+   "committed": 0.5949008499,
+   "identical": false,
+   "max": 0.5949008499,
+   "min": 0.5920679887
+  },
+  "candidate | light_slow | st_grade": {
+   "identical": true
+  },
+  "candidate | light_slow | tau*log V": {
+   "committed": -5.471228177,
+   "identical": false,
+   "max": -5.471228177,
+   "min": -5.489789229
+  },
+  "candidate | light_slow | wheel_class": {
+   "identical": true
+  },
+  "candidate | precise_heavy_sensor | log V": {
+   "committed": -0.07174135824,
+   "identical": false,
+   "max": -0.07054061477,
+   "min": -0.07174135824
+  },
+  "candidate | precise_heavy_sensor | novelty V-1": {
+   "committed": -0.06922839891,
+   "identical": false,
+   "max": -0.06811010973,
+   "min": -0.06922839891
+  },
+  "candidate | precise_heavy_sensor | rank among training": {
+   "committed": 0.7719546742,
+   "identical": false,
+   "max": 0.7776203966,
+   "min": 0.7719546742
+  },
+  "candidate | precise_heavy_sensor | st_grade": {
+   "identical": true
+  },
+  "candidate | precise_heavy_sensor | tau*log V": {
+   "committed": -2.733067139,
+   "identical": false,
+   "max": -2.687323476,
+   "min": -2.733067139
+  },
+  "candidate | precise_heavy_sensor | wheel_class": {
+   "identical": true
+  },
+  "certificate | primary | 1 | bound": {
+   "committed": 4.724143194e-06,
+   "identical": false,
+   "max": 4.724143194e-06,
+   "min": 3.623554611e-06
+  },
+  "certificate | primary | 1 | gamma": {
+   "committed": NaN,
+   "identical": true,
+   "max": NaN,
+   "min": NaN
+  },
+  "certificate | primary | 1 | max gap": {
+   "committed": 4.724143194e-06,
+   "identical": false,
+   "max": 4.724143194e-06,
+   "min": 3.623554611e-06
+  },
+  "certificate | primary | 1 | radius": {
+   "committed": NaN,
+   "identical": true,
+   "max": NaN,
+   "min": NaN
+  },
+  "certificate | primary | 1 | status": {
+   "identical": true
+  },
+  "certificate | primary | 2 | bound": {
+   "committed": 3.720741059e-15,
+   "identical": false,
+   "max": 5.244467121e-15,
+   "min": 1.956886022e-15
+  },
+  "certificate | primary | 2 | gamma": {
+   "committed": 0.0008297444865,
+   "identical": false,
+   "max": 0.001644186355,
+   "min": 0.0008297444865
+  },
+  "certificate | primary | 2 | max gap": {
+   "committed": 3.941291737e-15,
+   "identical": false,
+   "max": 7.66053887e-15,
+   "min": 2.081668171e-15
+  },
+  "certificate | primary | 2 | radius": {
+   "committed": 6.762869184e-05,
+   "identical": false,
+   "max": 0.0001340113187,
+   "min": 6.762869184e-05
+  },
+  "certificate | primary | 2 | status": {
+   "identical": true
+  },
+  "certificate | primary | 3 | bound": {
+   "committed": 5.019788488e-15,
+   "identical": false,
+   "max": 7.756228772e-15,
+   "min": 3.199478768e-15
+  },
+  "certificate | primary | 3 | gamma": {
+   "committed": 0.0002200902955,
+   "identical": false,
+   "max": 0.001908313334,
+   "min": 0.0002200902955
+  },
+  "certificate | primary | 3 | max gap": {
+   "committed": 1.065814104e-14,
+   "identical": false,
+   "max": 1.720845688e-14,
+   "min": 4.385380947e-15
+  },
+  "certificate | primary | 3 | radius": {
+   "committed": 1.7938557e-05,
+   "identical": false,
+   "max": 0.000155534726,
+   "min": 1.7938557e-05
+  },
+  "certificate | primary | 3 | status": {
+   "identical": true
+  },
+  "certificate | stock | 1 | bound": {
+   "committed": 1.816341962e-05,
+   "identical": false,
+   "max": 1.816341962e-05,
+   "min": 1.296736787e-05
+  },
+  "certificate | stock | 1 | gamma": {
+   "committed": NaN,
+   "identical": true,
+   "max": NaN,
+   "min": NaN
+  },
+  "certificate | stock | 1 | max gap": {
+   "committed": 1.816341962e-05,
+   "identical": false,
+   "max": 1.816341962e-05,
+   "min": 1.296736787e-05
+  },
+  "certificate | stock | 1 | radius": {
+   "committed": NaN,
+   "identical": true,
+   "max": NaN,
+   "min": NaN
+  },
+  "certificate | stock | 1 | status": {
+   "identical": true
+  },
+  "certificate | stock | 2 | bound": {
+   "committed": 1.7069679e-15,
+   "identical": false,
+   "max": 2.803313137e-15,
+   "min": 7.21644966e-16
+  },
+  "certificate | stock | 2 | gamma": {
+   "committed": 0.00157509904,
+   "identical": false,
+   "max": 0.00157509904,
+   "min": 0.001291994862
+  },
+  "certificate | stock | 2 | max gap": {
+   "committed": 1.859623566e-15,
+   "identical": false,
+   "max": 3.774758284e-15,
+   "min": 9.159339953e-16
+  },
+  "certificate | stock | 2 | radius": {
+   "committed": 0.000125908242,
+   "identical": false,
+   "max": 0.000125908242,
+   "min": 0.0001032796758
+  },
+  "certificate | stock | 2 | status": {
+   "identical": true
+  },
+  "certificate | stock | 3 | bound": {
+   "committed": 7.026181631e-15,
+   "identical": false,
+   "max": 8.484363497e-15,
+   "min": 4.039085661e-15
+  },
+  "certificate | stock | 3 | gamma": {
+   "committed": 0.001487308921,
+   "identical": false,
+   "max": 0.001487308921,
+   "min": 0.001161206874
+  },
+  "certificate | stock | 3 | max gap": {
+   "committed": 9.103828802e-15,
+   "identical": false,
+   "max": 1.404432126e-14,
+   "min": 5.287437155e-15
+  },
+  "certificate | stock | 3 | radius": {
+   "committed": 0.0001188905884,
+   "identical": false,
+   "max": 0.0001188905884,
+   "min": 9.282170704e-05
+  },
+  "certificate | stock | 3 | status": {
+   "identical": true
+  },
+  "contending | primary K=1 facet 1 | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "contending | primary K=1 facet 1 | set": {
+   "identical": true
+  },
+  "contending | primary K=2 facets as an unlabelled set | sets": {
+   "identical": true
+  },
+  "contending | primary K=3 facet 1 | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "contending | primary K=3 facet 1 | set": {
+   "identical": true
+  },
+  "contending | primary K=3 facet 2 | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "contending | primary K=3 facet 2 | set": {
+   "identical": true
+  },
+  "contending | primary K=3 facet 3 | n_lemma": {
+   "committed": 7,
+   "identical": true,
+   "max": 7.0,
+   "min": 7.0
+  },
+  "contending | primary K=3 facet 3 | set": {
+   "identical": true
+  },
+  "contending | primary K=3 facets as an unlabelled set | sets": {
+   "identical": true
+  },
+  "contending | stock K=1 facet 1 | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "contending | stock K=1 facet 1 | set": {
+   "identical": true
+  },
+  "contending | stock K=2 facets as an unlabelled set | sets": {
+   "identical": true
+  },
+  "contending | stock K=3 facet 1 | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "contending | stock K=3 facet 1 | set": {
+   "identical": true
+  },
+  "contending | stock K=3 facet 2 | n_lemma": {
+   "committed": 7,
+   "identical": true,
+   "max": 7.0,
+   "min": 7.0
+  },
+  "contending | stock K=3 facet 2 | set": {
+   "identical": true
+  },
+  "contending | stock K=3 facet 3 | n_lemma": {
+   "committed": 5,
+   "identical": true,
+   "max": 5.0,
+   "min": 5.0
+  },
+  "contending | stock K=3 facet 3 | set": {
+   "identical": true
+  },
+  "contending | stock K=3 facets as an unlabelled set | sets": {
+   "identical": true
+  },
+  "fit | primary K=1 | band": {
+   "committed": 0.02624939476,
+   "identical": true,
+   "max": 0.02624939476,
+   "min": 0.02624939476
+  },
+  "fit | primary K=1 | frac_above_": {
+   "committed": 0.09631728045,
+   "identical": true,
+   "max": 0.09631728045,
+   "min": 0.09631728045
+  },
+  "fit | primary K=1 | n_eff_": {
+   "committed": 16.18224345,
+   "identical": false,
+   "max": 16.18224345,
+   "min": 15.99842595
+  },
+  "fit | primary K=1 | near-frontier designs": {
+   "committed": 51,
+   "identical": false,
+   "max": 52.0,
+   "min": 51.0
+  },
+  "fit | primary K=1 | tau selected (raw)": {
+   "committed": 38.09611647,
+   "identical": true,
+   "max": 38.09611647,
+   "min": 38.09611647
+  },
+  "fit | primary K=2 | tau selected (raw)": {
+   "committed": 113.2193013,
+   "identical": true,
+   "max": 113.2193013,
+   "min": 113.2193013
+  },
+  "fit | primary K=3 | tau selected (raw)": {
+   "committed": 195.1822647,
+   "identical": true,
+   "max": 195.1822647,
+   "min": 195.1822647
+  },
+  "fit | stock K=1 | band": {
+   "committed": 0.02397172649,
+   "identical": true,
+   "max": 0.02397172649,
+   "min": 0.02397172649
+  },
+  "fit | stock K=1 | frac_above_": {
+   "committed": 0.1038461538,
+   "identical": false,
+   "max": 0.1051282051,
+   "min": 0.1038461538
+  },
+  "fit | stock K=1 | n_eff_": {
+   "committed": 14.48453768,
+   "identical": false,
+   "max": 14.53070638,
+   "min": 14.48453768
+  },
+  "fit | stock K=1 | near-frontier designs": {
+   "committed": 103,
+   "identical": true,
+   "max": 103.0,
+   "min": 103.0
+  },
+  "fit | stock K=1 | tau selected (raw)": {
+   "committed": 41.71581052,
+   "identical": true,
+   "max": 41.71581052,
+   "min": 41.71581052
+  },
+  "fit | stock K=2 | tau selected (raw)": {
+   "committed": 78.74818428,
+   "identical": true,
+   "max": 78.74818428,
+   "min": 78.74818428
+  },
+  "fit | stock K=3 | tau selected (raw)": {
+   "committed": 162.7797556,
+   "identical": true,
+   "max": 162.7797556,
+   "min": 162.7797556
+  },
+  "leading | primary K=1 facet 1 | metrics": {
+   "identical": true
+  },
+  "leading | primary K=3 facet 1 | metrics": {
+   "identical": true
+  },
+  "leading | primary K=3 facet 2 | metrics": {
+   "identical": true
+  },
+  "leading | primary K=3 facet 3 | metrics": {
+   "identical": true
+  },
+  "leading | stock K=1 facet 1 | metrics": {
+   "identical": true
+  },
+  "leading | stock K=3 facet 1 | metrics": {
+   "identical": true
+  },
+  "leading | stock K=3 facet 2 | metrics": {
+   "identical": true
+  },
+  "leading | stock K=3 facet 3 | metrics": {
+   "identical": true
+  },
+  "nondominated | primary | all attributes | columns": {
+   "committed": 10,
+   "identical": true,
+   "max": 10.0,
+   "min": 10.0
+  },
+  "nondominated | primary | all attributes | nondominated": {
+   "committed": 671,
+   "identical": true,
+   "max": 671.0,
+   "min": 671.0
+  },
+  "nondominated | primary | all attributes | of": {
+   "committed": 706,
+   "identical": true,
+   "max": 706.0,
+   "min": 706.0
+  },
+  "nondominated | primary | all attributes | share": {
+   "committed": 0.9504249292,
+   "identical": true,
+   "max": 0.9504249292,
+   "min": 0.9504249292
+  },
+  "nondominated | primary | four metrics | columns": {
+   "committed": 4,
+   "identical": true,
+   "max": 4.0,
+   "min": 4.0
+  },
+  "nondominated | primary | four metrics | nondominated": {
+   "committed": 146,
+   "identical": false,
+   "max": 146.0,
+   "min": 145.0
+  },
+  "nondominated | primary | four metrics | of": {
+   "committed": 706,
+   "identical": true,
+   "max": 706.0,
+   "min": 706.0
+  },
+  "nondominated | primary | four metrics | share": {
+   "committed": 0.2067988669,
+   "identical": false,
+   "max": 0.2067988669,
+   "min": 0.2053824363
+  },
+  "nondominated | primary | settling time and slew time | columns": {
+   "committed": 2,
+   "identical": true,
+   "max": 2.0,
+   "min": 2.0
+  },
+  "nondominated | primary | settling time and slew time | nondominated": {
+   "committed": 8,
+   "identical": false,
+   "max": 8.0,
+   "min": 7.0
+  },
+  "nondominated | primary | settling time and slew time | of": {
+   "committed": 706,
+   "identical": true,
+   "max": 706.0,
+   "min": 706.0
+  },
+  "nondominated | primary | settling time and slew time | share": {
+   "committed": 0.01133144476,
+   "identical": false,
+   "max": 0.01133144476,
+   "min": 0.009915014164
+  },
+  "nondominated | stock | all attributes | columns": {
+   "committed": 10,
+   "identical": true,
+   "max": 10.0,
+   "min": 10.0
+  },
+  "nondominated | stock | all attributes | nondominated": {
+   "committed": 732,
+   "identical": true,
+   "max": 732.0,
+   "min": 732.0
+  },
+  "nondominated | stock | all attributes | of": {
+   "committed": 780,
+   "identical": true,
+   "max": 780.0,
+   "min": 780.0
+  },
+  "nondominated | stock | all attributes | share": {
+   "committed": 0.9384615385,
+   "identical": true,
+   "max": 0.9384615385,
+   "min": 0.9384615385
+  },
+  "nondominated | stock | four metrics | columns": {
+   "committed": 4,
+   "identical": true,
+   "max": 4.0,
+   "min": 4.0
+  },
+  "nondominated | stock | four metrics | nondominated": {
+   "committed": 157,
+   "identical": false,
+   "max": 158.0,
+   "min": 157.0
+  },
+  "nondominated | stock | four metrics | of": {
+   "committed": 780,
+   "identical": true,
+   "max": 780.0,
+   "min": 780.0
+  },
+  "nondominated | stock | four metrics | share": {
+   "committed": 0.2012820513,
+   "identical": false,
+   "max": 0.2025641026,
+   "min": 0.2012820513
+  },
+  "nondominated | stock | settling time and slew time | columns": {
+   "committed": 2,
+   "identical": true,
+   "max": 2.0,
+   "min": 2.0
+  },
+  "nondominated | stock | settling time and slew time | nondominated": {
+   "committed": 2,
+   "identical": true,
+   "max": 2.0,
+   "min": 2.0
+  },
+  "nondominated | stock | settling time and slew time | of": {
+   "committed": 780,
+   "identical": true,
+   "max": 780.0,
+   "min": 780.0
+  },
+  "nondominated | stock | settling time and slew time | share": {
+   "committed": 0.002564102564,
+   "identical": true,
+   "max": 0.002564102564,
+   "min": 0.002564102564
+  },
+  "predict | proposal_1 | Z within band": {
+   "identical": true
+  },
+  "predict | proposal_1 | difference": {
+   "committed": -0.02100688835,
+   "identical": false,
+   "max": -0.02022290494,
+   "min": -0.02155812956
+  },
+  "predict | proposal_1 | log V within band": {
+   "identical": true
+  },
+  "predict | proposal_1 | measured log V": {
+   "committed": -0.09002067065,
+   "identical": false,
+   "max": -0.08923668724,
+   "min": -0.09057191186
+  },
+  "predict | proposal_1 | outcome": {
+   "identical": true
+  },
+  "predict | proposal_1 | predicted log V": {
+   "committed": -0.0690137823,
+   "identical": true,
+   "max": -0.0690137823,
+   "min": -0.0690137823
+  },
+  "predict | proposal_1 | |diff| / band": {
+   "committed": 0.3228811037,
+   "identical": false,
+   "max": 0.3313538183,
+   "min": 0.3108310834
+  },
+  "predict | proposal_1 | ||dZ||": {
+   "committed": 0.0880195083,
+   "identical": false,
+   "max": 0.09074283763,
+   "min": 0.0880195083
+  },
+  "predict | proposal_1 | ||dZ|| / band": {
+   "committed": 1.352881755,
+   "identical": false,
+   "max": 1.394740005,
+   "min": 1.352881755
+  },
+  "predict | proposal_2 | Z within band": {
+   "identical": true
+  },
+  "predict | proposal_2 | difference": {
+   "committed": -0.02210406611,
+   "identical": false,
+   "max": -0.02113107127,
+   "min": -0.02310171391
+  },
+  "predict | proposal_2 | log V within band": {
+   "identical": true
+  },
+  "predict | proposal_2 | measured log V": {
+   "committed": -0.07974134841,
+   "identical": false,
+   "max": -0.07876835357,
+   "min": -0.08073899621
+  },
+  "predict | proposal_2 | outcome": {
+   "identical": true
+  },
+  "predict | proposal_2 | predicted log V": {
+   "committed": -0.0576372823,
+   "identical": true,
+   "max": -0.0576372823,
+   "min": -0.0576372823
+  },
+  "predict | proposal_2 | |diff| / band": {
+   "committed": 0.339744999,
+   "identical": false,
+   "max": 0.355079094,
+   "min": 0.3247898261
+  },
+  "predict | proposal_2 | ||dZ||": {
+   "committed": 0.1438696636,
+   "identical": false,
+   "max": 0.1445364706,
+   "min": 0.1438696636
+  },
+  "predict | proposal_2 | ||dZ|| / band": {
+   "committed": 2.211312547,
+   "identical": false,
+   "max": 2.221561535,
+   "min": 2.211312547
+  },
+  "predict | proposal_3 | Z within band": {
+   "identical": true
+  },
+  "predict | proposal_3 | difference": {
+   "committed": -0.04593049253,
+   "identical": false,
+   "max": -0.0453897745,
+   "min": -0.04847557472
+  },
+  "predict | proposal_3 | log V within band": {
+   "identical": true
+  },
+  "predict | proposal_3 | measured log V": {
+   "committed": -0.2083748415,
+   "identical": false,
+   "max": -0.2078341235,
+   "min": -0.2109199237
+  },
+  "predict | proposal_3 | outcome": {
+   "identical": true
+  },
+  "predict | proposal_3 | predicted log V": {
+   "committed": -0.162444349,
+   "identical": true,
+   "max": -0.162444349,
+   "min": -0.162444349
+  },
+  "predict | proposal_3 | |diff| / band": {
+   "committed": 0.7059631047,
+   "identical": false,
+   "max": 0.7450816515,
+   "min": 0.6976521339
+  },
+  "predict | proposal_3 | ||dZ||": {
+   "committed": 0.2007354532,
+   "identical": false,
+   "max": 0.2016843752,
+   "min": 0.200733582
+  },
+  "predict | proposal_3 | ||dZ|| / band": {
+   "committed": 3.085353889,
+   "identical": false,
+   "max": 3.099939056,
+   "min": 3.085325128
+  },
+  "predict | regressor | tau": {
+   "committed": 15.37024895,
+   "identical": true,
+   "max": 15.37024895,
+   "min": 15.37024895
+  },
+  "predict, committed checks | proposal_1 | Z within band": {
+   "identical": true
+  },
+  "predict, committed checks | proposal_1 | difference": {
+   "committed": -0.02100688835,
+   "identical": false,
+   "max": -0.02016795429,
+   "min": -0.021339833
+  },
+  "predict, committed checks | proposal_1 | log V within band": {
+   "identical": true
+  },
+  "predict, committed checks | proposal_1 | measured log V": {
+   "committed": -0.09002067065,
+   "identical": false,
+   "max": -0.08918173659,
+   "min": -0.0903536153
+  },
+  "predict, committed checks | proposal_1 | outcome": {
+   "identical": true
+  },
+  "predict, committed checks | proposal_1 | predicted log V": {
+   "committed": -0.0690137823,
+   "identical": true,
+   "max": -0.0690137823,
+   "min": -0.0690137823
+  },
+  "predict, committed checks | proposal_1 | |diff| / band": {
+   "committed": 0.3228811037,
+   "identical": false,
+   "max": 0.3279985458,
+   "min": 0.3099864783
+  },
+  "predict, committed checks | proposal_1 | ||dZ||": {
+   "committed": 0.0880195083,
+   "identical": false,
+   "max": 0.09033344974,
+   "min": 0.0879326147
+  },
+  "predict, committed checks | proposal_1 | ||dZ|| / band": {
+   "committed": 1.352881755,
+   "identical": false,
+   "max": 1.388447611,
+   "min": 1.351546179
+  },
+  "predict, committed checks | proposal_2 | Z within band": {
+   "identical": true
+  },
+  "predict, committed checks | proposal_2 | difference": {
+   "committed": -0.02210406611,
+   "identical": false,
+   "max": -0.02113368394,
+   "min": -0.02310576118
+  },
+  "predict, committed checks | proposal_2 | log V within band": {
+   "identical": true
+  },
+  "predict, committed checks | proposal_2 | measured log V": {
+   "committed": -0.07974134841,
+   "identical": false,
+   "max": -0.07877096624,
+   "min": -0.08074304348
+  },
+  "predict, committed checks | proposal_2 | outcome": {
+   "identical": true
+  },
+  "predict, committed checks | proposal_2 | predicted log V": {
+   "committed": -0.0576372823,
+   "identical": true,
+   "max": -0.0576372823,
+   "min": -0.0576372823
+  },
+  "predict, committed checks | proposal_2 | |diff| / band": {
+   "committed": 0.339744999,
+   "identical": false,
+   "max": 0.3551413015,
+   "min": 0.3248299835
+  },
+  "predict, committed checks | proposal_2 | ||dZ||": {
+   "committed": 0.1438696636,
+   "identical": false,
+   "max": 0.144536891,
+   "min": 0.1438696636
+  },
+  "predict, committed checks | proposal_2 | ||dZ|| / band": {
+   "committed": 2.211312547,
+   "identical": false,
+   "max": 2.221567997,
+   "min": 2.211312547
+  },
+  "predict, committed checks | proposal_3 | Z within band": {
+   "identical": true
+  },
+  "predict, committed checks | proposal_3 | difference": {
+   "committed": -0.04593049253,
+   "identical": false,
+   "max": -0.04538977233,
+   "min": -0.04847557255
+  },
+  "predict, committed checks | proposal_3 | log V within band": {
+   "identical": true
+  },
+  "predict, committed checks | proposal_3 | measured log V": {
+   "committed": -0.2083748415,
+   "identical": false,
+   "max": -0.2078341213,
+   "min": -0.2109199215
+  },
+  "predict, committed checks | proposal_3 | outcome": {
+   "identical": true
+  },
+  "predict, committed checks | proposal_3 | predicted log V": {
+   "committed": -0.162444349,
+   "identical": true,
+   "max": -0.162444349,
+   "min": -0.162444349
+  },
+  "predict, committed checks | proposal_3 | |diff| / band": {
+   "committed": 0.7059631047,
+   "identical": false,
+   "max": 0.7450816182,
+   "min": 0.6976521006
+  },
+  "predict, committed checks | proposal_3 | ||dZ||": {
+   "committed": 0.2007354532,
+   "identical": false,
+   "max": 0.2016843729,
+   "min": 0.2007335797
+  },
+  "predict, committed checks | proposal_3 | ||dZ|| / band": {
+   "committed": 3.085353889,
+   "identical": false,
+   "max": 3.099939021,
+   "min": 3.085325094
+  },
+  "regime | band 1/tau, near-frontier designs | primary": {
+   "identical": false
+  },
+  "regime | band 1/tau, near-frontier designs | stock": {
+   "identical": true
+  },
+  "regime | contending set | primary": {
+   "identical": true
+  },
+  "regime | contending set | stock": {
+   "identical": true
+  },
+  "regime | dataset | primary": {
+   "identical": true
+  },
+  "regime | dataset | stock": {
+   "identical": true
+  },
+  "regime | feasible n | primary": {
+   "identical": true
+  },
+  "regime | feasible n | stock": {
+   "identical": true
+  },
+  "regime | n_lemma | primary": {
+   "identical": true
+  },
+  "regime | n_lemma | stock": {
+   "identical": true
+  },
+  "regime | pointing error, control effort | primary": {
+   "identical": true
+  },
+  "regime | pointing error, control effort | stock": {
+   "identical": true
+  },
+  "regime | settling time, pointing error | primary": {
+   "identical": false
+  },
+  "regime | settling time, pointing error | stock": {
+   "identical": true
+  },
+  "regime | settling time, slew time | primary": {
+   "identical": false
+  },
+  "regime | settling time, slew time | stock": {
+   "identical": true
+  },
+  "regime | settling time, total mass | primary": {
+   "identical": false
+  },
+  "regime | settling time, total mass | stock": {
+   "identical": true
+  },
+  "regime | slew time, control effort | primary": {
+   "identical": false
+  },
+  "regime | slew time, control effort | stock": {
+   "identical": true
+  },
+  "regime | slew time, total mass | primary": {
+   "identical": false
+  },
+  "regime | slew time, total mass | stock": {
+   "identical": true
+  },
+  "regime | tau, frac_above_, n_eff_ | primary": {
+   "identical": false
+  },
+  "regime | tau, frac_above_, n_eff_ | stock": {
+   "identical": false
+  },
+  "sentence | K = 1 contending | text": {
+   "identical": true
+  },
+  "sentence | K sweep | largest facet gap": {
+   "committed": 1.065814104e-14,
+   "identical": false,
+   "max": 1.720845688e-14,
+   "min": 4.385380947e-15
+  },
+  "sentence | K sweep | smallest margin": {
+   "committed": 0.0002200902955,
+   "identical": false,
+   "max": 0.001620824991,
+   "min": 0.0002200902955
+  },
+  "sentence | K sweep | smallest radius": {
+   "committed": 1.7938557e-05,
+   "identical": false,
+   "max": 0.000132103343,
+   "min": 1.7938557e-05
+  },
+  "sentence | K sweep | text": {
+   "identical": false
+  },
+  "sentence | candidates | highest log V": {
+   "committed": -0.07174135824,
+   "identical": false,
+   "max": -0.07054061477,
+   "min": -0.07174135824
+  },
+  "sentence | candidates | highest rank": {
+   "committed": 0.7719546742,
+   "identical": false,
+   "max": 0.7776203966,
+   "min": 0.7719546742
+  },
+  "sentence | candidates | lowest log V": {
+   "committed": -0.1436164282,
+   "identical": false,
+   "max": -0.1436164282,
+   "min": -0.1441036446
+  },
+  "sentence | candidates | lowest rank": {
+   "committed": 0.5949008499,
+   "identical": false,
+   "max": 0.5949008499,
+   "min": 0.5920679887
+  },
+  "sentence | candidates | text": {
+   "identical": false
+  },
+  "sentence | certificate | text": {
+   "identical": false
+  },
+  "sentence | datasets | text": {
+   "identical": true
+  },
+  "sentence | nondominated | text": {
+   "identical": false
+  },
+  "sentence | predict-check | band": {
+   "committed": 0.06506075491,
+   "identical": true,
+   "max": 0.06506075491,
+   "min": 0.06506075491
+  },
+  "sentence | predict-check | highest position error": {
+   "committed": 3.085353889,
+   "identical": false,
+   "max": 3.099939056,
+   "min": 3.085325128
+  },
+  "sentence | predict-check | lowest position error": {
+   "committed": 1.352881755,
+   "identical": false,
+   "max": 1.394740005,
+   "min": 1.352881755
+  },
+  "sentence | predict-check | text": {
+   "identical": true
+  },
+  "sentence | regime | text": {
+   "identical": true
+  },
+  "sentence | temperature | band": {
+   "committed": 0.02624939476,
+   "identical": true,
+   "max": 0.02624939476,
+   "min": 0.02624939476
+  },
+  "sentence | temperature | text": {
+   "identical": false
+  },
+  "tau | primary K=1 | tau selected (printed .1f)": {
+   "identical": true
+  },
+  "tau | primary K=2 | tau selected (printed .1f)": {
+   "identical": true
+  },
+  "tau | primary K=3 | tau selected (printed .1f)": {
+   "identical": true
+  },
+  "tau | stock K=1 | tau selected (printed .1f)": {
+   "identical": true
+  },
+  "tau | stock K=2 | tau selected (printed .1f)": {
+   "identical": true
+  },
+  "tau | stock K=3 | tau selected (printed .1f)": {
+   "identical": true
+  },
+  "tension | primary | pointing error, control effort | pearson": {
+   "committed": -0.3574183078,
+   "identical": false,
+   "max": -0.3574183078,
+   "min": -0.3576983834
+  },
+  "tension | primary | pointing error, control effort | pearson sign": {
+   "identical": true
+  },
+  "tension | primary | pointing error, control effort | spearman": {
+   "committed": -0.4815384615,
+   "identical": false,
+   "max": -0.4751984974,
+   "min": -0.4815384615
+  },
+  "tension | primary | pointing error, control effort | spearman sign": {
+   "identical": true
+  },
+  "tension | primary | settling time, pointing error | pearson": {
+   "committed": 0.180903599,
+   "identical": false,
+   "max": 0.1810378398,
+   "min": 0.1790252945
+  },
+  "tension | primary | settling time, pointing error | pearson sign": {
+   "identical": true
+  },
+  "tension | primary | settling time, pointing error | spearman": {
+   "committed": 0.2000904977,
+   "identical": false,
+   "max": 0.2000904977,
+   "min": 0.1940271493
+  },
+  "tension | primary | settling time, pointing error | spearman sign": {
+   "identical": true
+  },
+  "tension | primary | settling time, slew time | pearson": {
+   "committed": 0.9063890393,
+   "identical": false,
+   "max": 0.9065098181,
+   "min": 0.9006268603
+  },
+  "tension | primary | settling time, slew time | pearson sign": {
+   "identical": true
+  },
+  "tension | primary | settling time, slew time | spearman": {
+   "committed": 0.8750226244,
+   "identical": false,
+   "max": 0.8756561086,
+   "min": 0.8734739179
+  },
+  "tension | primary | settling time, slew time | spearman sign": {
+   "identical": true
+  },
+  "tension | primary | settling time, total mass | pearson": {
+   "committed": -0.5417527501,
+   "identical": false,
+   "max": -0.5413070569,
+   "min": -0.5418424174
+  },
+  "tension | primary | settling time, total mass | pearson sign": {
+   "identical": true
+  },
+  "tension | primary | settling time, total mass | spearman": {
+   "committed": -0.3369230769,
+   "identical": false,
+   "max": -0.3316742081,
+   "min": -0.338683514
+  },
+  "tension | primary | settling time, total mass | spearman sign": {
+   "identical": true
+  },
+  "tension | primary | slew time, control effort | pearson": {
+   "committed": -0.8733207573,
+   "identical": false,
+   "max": -0.871678086,
+   "min": -0.8733321849
+  },
+  "tension | primary | slew time, control effort | pearson sign": {
+   "identical": true
+  },
+  "tension | primary | slew time, control effort | spearman": {
+   "committed": -0.8314932127,
+   "identical": false,
+   "max": -0.8314932127,
+   "min": -0.8386408264
+  },
+  "tension | primary | slew time, control effort | spearman sign": {
+   "identical": true
+  },
+  "tension | primary | slew time, total mass | pearson": {
+   "committed": -0.4815541987,
+   "identical": false,
+   "max": -0.4795373146,
+   "min": -0.4815618811
+  },
+  "tension | primary | slew time, total mass | pearson sign": {
+   "identical": true
+  },
+  "tension | primary | slew time, total mass | spearman": {
+   "committed": -0.3336651584,
+   "identical": false,
+   "max": -0.3336651584,
+   "min": -0.3380005123
+  },
+  "tension | primary | slew time, total mass | spearman sign": {
+   "identical": true
+  },
+  "tension | stock | pointing error, control effort | pearson": {
+   "committed": -0.7020219975,
+   "identical": false,
+   "max": -0.702021856,
+   "min": -0.7020222465
+  },
+  "tension | stock | pointing error, control effort | pearson sign": {
+   "identical": true
+  },
+  "tension | stock | pointing error, control effort | spearman": {
+   "committed": -0.7689452181,
+   "identical": true,
+   "max": -0.7689452181,
+   "min": -0.7689452181
+  },
+  "tension | stock | pointing error, control effort | spearman sign": {
+   "identical": true
+  },
+  "tension | stock | settling time, pointing error | pearson": {
+   "committed": 0.6859883896,
+   "identical": false,
+   "max": 0.6860997452,
+   "min": 0.6856752147
+  },
+  "tension | stock | settling time, pointing error | pearson sign": {
+   "identical": true
+  },
+  "tension | stock | settling time, pointing error | spearman": {
+   "committed": 0.7462768528,
+   "identical": false,
+   "max": 0.7470676097,
+   "min": 0.7453213548
+  },
+  "tension | stock | settling time, pointing error | spearman sign": {
+   "identical": true
+  },
+  "tension | stock | settling time, slew time | pearson": {
+   "committed": 0.9852384907,
+   "identical": false,
+   "max": 0.9852469455,
+   "min": 0.9852094511
+  },
+  "tension | stock | settling time, slew time | pearson sign": {
+   "identical": true
+  },
+  "tension | stock | settling time, slew time | spearman": {
+   "committed": 0.9927623775,
+   "identical": false,
+   "max": 0.9929161358,
+   "min": 0.9925976365
+  },
+  "tension | stock | settling time, slew time | spearman sign": {
+   "identical": true
+  },
+  "tension | stock | settling time, total mass | pearson": {
+   "committed": -0.1191341571,
+   "identical": false,
+   "max": -0.1188709212,
+   "min": -0.11919446
+  },
+  "tension | stock | settling time, total mass | pearson sign": {
+   "identical": true
+  },
+  "tension | stock | settling time, total mass | spearman": {
+   "committed": -0.02058164565,
+   "identical": false,
+   "max": -0.01980187146,
+   "min": -0.02098800685
+  },
+  "tension | stock | settling time, total mass | spearman sign": {
+   "identical": true
+  },
+  "tension | stock | slew time, control effort | pearson": {
+   "committed": -0.9588878008,
+   "identical": false,
+   "max": -0.9588878008,
+   "min": -0.9589195024
+  },
+  "tension | stock | slew time, control effort | pearson sign": {
+   "identical": true
+  },
+  "tension | stock | slew time, control effort | spearman": {
+   "committed": -0.9542019945,
+   "identical": false,
+   "max": -0.9539274261,
+   "min": -0.9542019945
+  },
+  "tension | stock | slew time, control effort | spearman sign": {
+   "identical": true
+  },
+  "tension | stock | slew time, total mass | pearson": {
+   "committed": -0.1001479866,
+   "identical": false,
+   "max": -0.1000222855,
+   "min": -0.1002026063
+  },
+  "tension | stock | slew time, total mass | pearson sign": {
+   "identical": true
+  },
+  "tension | stock | slew time, total mass | spearman": {
+   "committed": -0.03440890919,
+   "identical": false,
+   "max": -0.03407942714,
+   "min": -0.03451873655
+  },
+  "tension | stock | slew time, total mass | spearman sign": {
+   "identical": true
+  }
+ },
+ "seeds": [
+  1,
+  2,
+  3,
+  4,
+  5
+ ]
+}

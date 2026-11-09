@@ -311,6 +311,9 @@ def quantities(data_dir: Path | str) -> dict:
         e = base.estimator
         q[f"fit | {r} K=1 | frac_above_"] = float(e.frac_above_)
         q[f"fit | {r} K=1 | n_eff_"] = float(e.n_eff_)
+        rep1 = case._reports(st, base)[0]
+        q[f"fit | {r} K=1 | near-frontier designs"] = int(rep1.n_near_frontier)
+        q[f"fit | {r} K=1 | band"] = float(rep1.band)
         for K in (1, 2, 3):
             q[f"tau | {r} K={K} | tau selected (printed .1f)"] = f"{f[K].tau:.1f}"
             q[f"fit | {r} K={K} | tau selected (raw)"] = float(f[K].tau)
@@ -361,6 +364,22 @@ def quantities(data_dir: Path | str) -> dict:
     q["sentence | candidates | text"] = str(gf.candidates_sentence(case.candidate_table(prim, k1)))
     q["sentence | predict-check | text"] = str(gf.predict_check_sentence(pc, reg))
     q["predict | regressor | tau"] = float(reg.tau)
+    # the numbers of the generated sentences that no table row carries, so that the paper can
+    # quote their ranges from the results file (``paper_stability``)
+    cand = case.candidate_table(prim, k1)
+    q["sentence | candidates | lowest log V"] = float(cand["log V"].min())
+    q["sentence | candidates | highest log V"] = float(cand["log V"].max())
+    q["sentence | candidates | lowest rank"] = float(cand["rank among training"].min())
+    q["sentence | candidates | highest rank"] = float(cand["rank among training"].max())
+    q["sentence | predict-check | band"] = float(1.0 / reg.tau)
+    q["sentence | predict-check | lowest position error"] = float(pc["||dZ|| / band"].min())
+    q["sentence | predict-check | highest position error"] = float(pc["||dZ|| / band"].max())
+    q["sentence | temperature | band"] = float(fits["primary"][1].band)
+    cert = case.certificate_table(fits["primary"])
+    cert = cert[cert["K"] > 1]
+    q["sentence | K sweep | largest facet gap"] = float(cert["max gap"].max())
+    q["sentence | K sweep | smallest margin"] = float(cert["gamma"].min())
+    q["sentence | K sweep | smallest radius"] = float(cert["radius"].min())
     q.update(_flat("predict", pc, key="proposal"))
     for _, row in pc.iterrows():
         q[f"predict | {row['proposal']} | outcome"] = (
@@ -467,6 +486,62 @@ def verdicts(table: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+# -- the compact results file the paper reads ----------------------------------------------------
+SUMMARY_FILE = lg.REPO_ROOT / "examples" / "adcs" / "experiments" / "reports" / "sensitivity.json"
+SIGNIFICANT = 10  # digits kept in the file, so that it is deterministic across platforms
+
+
+def _round(x):
+    if isinstance(x, bool) or not isinstance(x, (int, float)):
+        return x
+    if isinstance(x, float) and (math.isnan(x) or x == 0.0):
+        return x
+    return float(f"{x:.{SIGNIFICANT}g}") if isinstance(x, float) else x
+
+
+def summarise(committed: Mapping, runs: Mapping[str, Mapping]) -> dict:
+    """The compact record the paper reads: seeds, perturbation, and per quantity the range.
+
+    Every numeric quantity carries the committed value and the ``min`` and ``max`` over the
+    regenerations *and* the committed value (the range a reader would see across the six
+    datasets); text and truth values carry only ``identical`` (equal in every run). Values are
+    rounded to :data:`SIGNIFICANT` digits and keys are sorted, so the file is deterministic.
+
+    >>> r = summarise({"a | x": 1.0, "a | s": "u"}, {"1": {"a | x": 2.0, "a | s": "u"}})
+    >>> r["quantities"]["a | x"], r["quantities"]["a | s"]
+    ({'committed': 1.0, 'min': 1.0, 'max': 2.0, 'identical': False}, {'identical': True})
+    """
+    table = compare_runs(committed, runs)
+    out = {}
+    for _, r in table.iterrows():
+        if r["numeric"]:
+            lo, hi = min(r["min"], r["committed"]), max(r["max"], r["committed"])
+            out[r["quantity"]] = {
+                "committed": _round(r["committed"]),
+                "min": _round(lo),
+                "max": _round(hi),
+                "identical": bool(r["identical"]),
+            }
+        else:
+            out[r["quantity"]] = {"identical": bool(r["identical"])}
+    return {
+        "perturbation": {
+            "relative_half_width": EPS,
+            "variables": list(PERTURBED),
+            "distribution": "uniform per design and variable, numpy.random.default_rng(seed)",
+        },
+        "seeds": [int(k) for k in runs],
+        "quantities": dict(sorted(out.items())),
+    }
+
+
+def write_summary(path: Path, committed: Mapping, runs: Mapping[str, Mapping]) -> dict:
+    """Write :func:`summarise` as JSON (sorted keys, two-space indent); return the record."""
+    record = summarise(committed, runs)
+    guard(path).write_text(json.dumps(record, indent=1, sort_keys=True) + "\n")
+    return record
+
+
 # -- the report ---------------------------------------------------------------------------------
 def _md(headers, rows) -> str:
     out = ["| " + " | ".join(headers) + " |", "|" + "|".join("---" for _ in headers) + "|"]
@@ -542,8 +617,17 @@ def _deviation_section(runs_dirs: Mapping[int, Path], committed_dir: Path) -> li
     return lines
 
 
-def report(out_dir: Path | str, committed_dir: Path | str, runtime_s: float | None = None) -> str:
-    """The generated section of ``swap-evidence.md`` from the regenerations in ``out_dir``."""
+def report(
+    out_dir: Path | str,
+    committed_dir: Path | str,
+    runtime_s: float | None = None,
+    json_path: Path | str | None = None,
+) -> str:
+    """The generated section of ``swap-evidence.md`` from the regenerations in ``out_dir``.
+
+    With ``json_path``, also writes the compact results file the paper reads
+    (:func:`write_summary`).
+    """
     out_dir, committed_dir = Path(out_dir), Path(committed_dir)
     runs_dirs = {
         s: out_dir / f"seed{s}" for s in SEEDS if (out_dir / f"seed{s}" / CHECKS_FILE).exists()
@@ -556,7 +640,10 @@ def report(out_dir: Path | str, committed_dir: Path | str, runtime_s: float | No
         if f"seed{s}" not in qs:
             qs[f"seed{s}"] = quantities(d)
         cache.write_text(json.dumps(qs))
-    table = compare_runs(qs["committed"], {str(s): qs[f"seed{s}"] for s in runs_dirs})
+    runs = {str(s): qs[f"seed{s}"] for s in runs_dirs}
+    if json_path:
+        write_summary(Path(json_path), qs["committed"], runs)
+    table = compare_runs(qs["committed"], runs)
     ver = verdicts(table)
     n = len(runs_dirs)
     lines = ["## Sensitivity of the conclusions to the step-quantized times", ""]
@@ -655,6 +742,12 @@ def main(argv=None) -> int:
     a.add_argument("--md", type=Path, default=None, help="write the generated section here")
     a.add_argument("--runtime-s", type=float, default=None)
     a.add_argument("--committed", type=Path, default=DATA_ROOT)
+    a.add_argument(
+        "--json",
+        type=Path,
+        default=None,
+        help=f"write the compact results file (paper reads {SUMMARY_FILE.name})",
+    )
     args = p.parse_args(argv)
     if args.cmd == "regenerate":
         out = guard(args.out)
@@ -667,7 +760,7 @@ def main(argv=None) -> int:
         return 0
     out = guard(args.out)
     md = guard(args.md) if args.md else None
-    text = report(out, args.committed, args.runtime_s)
+    text = report(out, args.committed, args.runtime_s, args.json)
     if md:
         md.write_text(text)
     else:
