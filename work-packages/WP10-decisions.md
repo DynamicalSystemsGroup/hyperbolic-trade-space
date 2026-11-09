@@ -924,3 +924,25 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   finding is put to him there: the one-term fit minimizes the level and the several-term refit the
   mean slack, and only the first depends on the units of a single metric.
 
+## After the research sprint (2026-11-09)
+
+- Driver's proposals (the readout): 1. rewrite section 6 to state the fit without membership; 2. add
+  "generalized geometric program" to the glossary in the sense of Boyd et al., the older sense
+  noted as what it is not; 3. three short scripted proof steps (the symmetry argument, the bound,
+  the fixed-weight program); 4. leave the code (fitting with soft weights) for after 0.1.
+  **Supervisor (mzargham), verbatim:** "1. yes 2. yes 3. yes 4. do a spike now to assess the change.
+  i prefer to make this update for the first release if possible but only if the spike deems it
+  reasonable". **Disposition:** 1 to 3 are Amendment 5 of the scope (R-39 to R-41), sent to the PM.
+  4: the driver's spike `docs/superpowers/notes/spike-soft-fit/`, whose readout decides.
+- On the separate finding (the one-term fit minimizes the level, the several-term refit the mean
+  slack; "the extension reduces to the one-facet fit" is backed for the model only).
+  **Supervisor, verbatim:** "on the separate finding. i prefer to drop unbacked claims. as part of
+  our narrative, prose and copy editing work we need to sweep for claims to make sure they have
+  backing. this does not mean we need to heavily caveat and reference a claim everytime it appears
+  we just need to know we've not injected spurious details or unsupported claims. that should be
+  addressed primarily in clarifying our requirements and include offering a mechanism for assessing
+  the requirement." **Disposition:** the claim is narrowed to what L10 backs (R-42). The requirement
+  and its mechanism are R-43 and `docs/superpowers/notes/claims-review.md` (a register of claims
+  outside the prose, a test that keeps it current, a sampled coverage check by the driver);
+  `CLAUDE.md` points to it. Sent to the PM.
+

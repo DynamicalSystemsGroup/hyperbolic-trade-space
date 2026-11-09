@@ -652,3 +652,46 @@ replace an old one where plain words serve. No rewrite of prose the review does 
 **Good enough.** R-33 to R-36 checked; the suite green on both platforms; word ceilings held; the
 driver's own browser read of the abstract, section 1, the Definition, section 5 and the theory page.
 
+## Amendment 5 (2026-11-09; on the supervisor's direction, quoted in `WP10-decisions.md`, "After the research sprint"; scoped by the driver): the fit stated without membership, and every claim backed
+
+**Why.** The research sprint (`docs/superpowers/notes/spike-ggp-fit/report.md`) found that no design
+needs a unique facet in the fit, that "assigning designs to facets" is analysis, and that one
+sentence of the paper claimed more than its lemma backs. The supervisor approved the three
+proposals for the paper and asked for a requirement, with a way to assess it, that claims are
+backed.
+
+- R-39. *Section 6 states the fit without membership.* The objective (the mean slack under the
+  model); every facet fitted against every design; why the objective is not convex in the terms
+  (the symmetry argument, not "the assignment is combinatorial"); the alternation as weights from
+  the current model followed by one program for all terms; the single label per design named as
+  the limit of sharp weights that the package uses. "Which facet dominates" is described as
+  analysis, in section 6 and wherever else the fit was described by membership. *Check:* the
+  driver reads section 6 rendered against the readout; the vocabulary tool; no statement of a
+  theorem changes except by R-41.
+- R-40. *The glossary's "generalized geometric program"* is the sense of Boyd et al. 2007 (generalized
+  posynomial objective and inequality constraints, monomial equalities), with the older use of the
+  phrase for signomial programs in its `not` field. *Check:* the glossary tests.
+- R-41. *Three scripted steps* in the lemma scripts, each one tagged line, with Appendix B
+  regenerated in the same push: (i) a program convex in the terms and symmetric in them has an
+  optimum with all terms equal; (ii) the bound of the soft model's slack by the fixed-weight
+  objective (the arithmetic-geometric mean inequality) and its tightness at the weights' own model;
+  (iii) the fixed-weight objective is a generalized posynomial in exp(w). The readout's numbers are
+  the numerical check to reproduce. *Check:* the proof-map checker; the lemma chain.
+- R-42. *The claim that the extension "reduces to the one-facet fit" is narrowed* to what L10 backs:
+  with one term the model is the monomial. The paper does not say the several-term fit reduces to
+  the one-term fit. *Check:* the claims register.
+- R-43. *Every claim is backed* (`docs/superpowers/notes/claims-review.md`: the requirement, the five
+  kinds of claim and their backing, the mechanism). One full pass over the paper, the supporting
+  material, the docsite, the root page and the README; `claims_register.toml` and its test in the
+  suite; every unbacked or over-broad claim narrowed or dropped, with no caveat or reference added
+  only to satisfy the register; the record committed as `work-packages/WP10-claims-review.md`. The
+  docsite and root-page files are WP8a's and change under this amendment by the same direction.
+  *Check:* the register's test; the driver's seeded sample of at least thirty sentences finds no
+  claim without a row; the driver reads the dispositions.
+
+**Non-goals.** No new result. No claim backed by adding work beyond a small step already implied.
+No change to the code of the fit (that is the subject of the driver's spike on soft weights and, if
+the supervisor takes it, a package of its own).
+
+**Good enough.** R-39 to R-43 checked; the suite green on both platforms; word ceilings held.
+

@@ -55,5 +55,8 @@ with doctests.
   term, replace jargon that does no work with plain words. Check with
   `uv run python scripts/check_vocabulary.py` and the reading in
   `docs/superpowers/notes/vocabulary-review.md`.
+- Claims: every claim a reader can rely on is backed (a lemma step, a generated value, a test, a
+  verified source) or is narrowed or dropped; no caveats added to prove it. Register and mechanism:
+  `docs/superpowers/notes/claims-review.md`. Keep the model, the fit and the analysis apart in prose.
 - Site framing: Tall's three worlds, glass-box seams, machine verification vs human validation
   (`docs/superpowers/notes/presentation-framing.md`).
