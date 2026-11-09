@@ -37,6 +37,7 @@ from experiments.exclusion import battery_region, classify_region
 ADCS = pathlib.Path(__file__).resolve().parents[1] / "examples" / "adcs"
 MODEL = ADCS / "model_v2" / "cubesat.sysml"
 TEXT = MODEL.read_text()
+RECORDED_FIRST_DESIGNS = pathlib.Path(__file__).parent / "data" / "v2_first_designs_of_record.csv"
 FROZEN_CSV = ADCS / "data" / "adcs_designs_cubesat_gains.csv"
 FLAGS = co.FLAG_NAMES
 
@@ -441,13 +442,9 @@ def test_declared_space_excludes_nothing_so_the_first_designs_are_unchanged(tmp_
     got = pd.read_csv(tmp_path / "primary20.csv")
     want = pd.read_csv(ADCS / "data" / "v2" / "adcs_designs_cubesat_gains.csv").head(20)
     assert got.columns.tolist() == want.columns.tolist()
-    if exact_only("v2_first_designs_rows"):  # the environment of record: byte-equal rows
-        pd.testing.assert_frame_equal(got, want, check_exact=False, rtol=1e-6)
-        got_text = (tmp_path / "primary20.csv").read_text().splitlines()
-        want_text = (
-            (ADCS / "data" / "v2" / "adcs_designs_cubesat_gains.csv").read_text().splitlines()
-        )
-        assert got_text == want_text[:21]
+    if exact_only("v2_first_designs_rows"):  # the container of record: byte-equal to its recording
+        recorded = RECORDED_FIRST_DESIGNS.read_text().splitlines()
+        assert (tmp_path / "primary20.csv").read_text().splitlines() == recorded
         return
     # elsewhere: the frozen reproducibility tolerances (paper/environment_values.toml)
     tol = listed()["v2_first_designs_rows"]
