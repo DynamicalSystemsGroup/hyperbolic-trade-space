@@ -53,3 +53,22 @@ Records typed by the agent (driver session). The supervisor's review is at the P
   corrected" in the driver's log. The same review is stage 2 of WP19 for the paper's figures and is
   run over the docsite's existing figures as a ticket.
 
+## The supervisor on the planted triangle (2026-11-09)
+
+- **Supervisor (mzargham), verbatim,** on the first example's figure (three metrics on the planted
+  table: regions with their boxed labels, designs, the lines of equal V, and the numbered square,
+  star and diamond markers): "this one is great but make sure the prose is clear about the values
+  attained at the square, star and triangle points marked. that doesn't need to be in the figure
+  itself, it can be in a table or prose related to how to read this plot".
+- **Disposition:** the figure is confirmed by him and stays exactly as drawn. The driver's two change
+  requests on it (leave the boxed region labels off when the lines are on; enlarge the marker
+  numbers) are withdrawn: he judged the picture with them and called it great. The equal-V lines
+  stay ON in this example, which settles the default that had been flagged for him to strike. Added
+  to the page, in the "how to read this plot" key as a small table or a sentence each: for every
+  marked point, its marker and number, the facet's exponent vector (the shares at which it sits),
+  and the value of V attained there at one total, stated in the same units as the lines (a fraction
+  of the highest marker's value), with the levels of the lines named. The values are generated from
+  the fit by the code that draws the lines, never typed. His confirmation stands as this figure's
+  verdict in the figure review; its record needs only the recipe and what the figure shows and does
+  not show.
+
