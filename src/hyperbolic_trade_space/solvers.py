@@ -912,7 +912,7 @@ def solve_terms(
     planted data, ``make_frontier_data(400, 4, n_terms=3, random_state=s)``, ``s = 0..19`` (every
     facet has at least ``d + 1`` frontier rows), estimator defaults, ``random_state=0``, five
     restarts, pass = exponent error below 0.05 after matching and at least 90% of the frontier rows
-    on the right facet: ``"support"`` 17/20 at ``tau = inf`` (fails: seeds 1, 3, 16) and 16/20 at
+    on the right facet: ``"support"`` 16/20 at ``tau = inf`` (fails: seeds 1, 3, 8, 16) and 16/20 at
     ``tau = 50`` (fails: 1, 3, 8, 16); ``"tangent"`` 16/20 at ``tau = inf`` (fails: 1, 3, 8, 16)
     and 17/20 at ``tau = 50`` (fails: 1, 3, 16). Seeds 1, 3 and 16 have a facet with only 5 or 6
     frontier rows (``d + 1 = 5``): identifiable, but a thin facet leaves local optima that no
