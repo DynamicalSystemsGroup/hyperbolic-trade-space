@@ -39,13 +39,14 @@ def write_figure_files(nb) -> list[str]:
     """Write each ``fig-`` cell's image to ``figures/<cell id>.png``, which its caption links to.
 
     The page shows the output image; the link beside the caption opens the same image as a file of
-    the built site (the schematic is drawn by ``figures/figure1.py`` and is already a file).
+    the built site. The three-pane schematic (``figures/figure1.py``) is not in the paper: the
+    index page is its one consumer.
     """
     import base64
 
     written = []
     for cell in nb.cells:
-        if cell.cell_type == "code" and cell.id.startswith("fig-") and cell.id != "fig-schematic":
+        if cell.cell_type == "code" and cell.id.startswith("fig-"):
             for out in cell.outputs:
                 png = out.get("data", {}).get("image/png")
                 if png:

@@ -361,12 +361,6 @@ def test_the_case_is_described_as_power_mass_and_attitude_control():
         assert group in out, group
 
 
-def test_figure1_caption_names_the_black_arrow():
-    caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-schematic-caption"))
-    assert "The black arrow is the same step in each pane" in caption
-    assert "energy differential" in caption
-
-
 def test_generated_sentences_name_the_subsystems_from_the_one_mapping():
     """Subsystems come from ``CaseSpec.subsystems``; mass enters only in the primary regime."""
     import case
@@ -666,7 +660,7 @@ def test_case_calls_go_through_the_case_module():
         tree = ast.parse(_src(cell))
         call = _calls(tree)[0]
         name = ast.unparse(call.func)
-        assert name.startswith("case.") or name in {"family_table", "figure1"}, (cell.id, name)
+        assert name.startswith("case.") or name == "family_table", (cell.id, name)
 
 
 def test_paper_cells_have_committed_outputs_without_errors():
@@ -687,8 +681,6 @@ def test_figures_have_numbered_self_contained_captions():
             continue
         kind = "figure" if cell.id.startswith("fig-") else "table"
         embedded = re.search(rf"\{{({kind}|embed)\}}[^\n]*\n?[^\n]*#{cell.id}\b|#{cell.id}\b", md)
-        if cell.id == "fig-schematic":  # drawn from the committed file, see the figure-once test
-            embedded = "{figure} figures/figure1.png" in md
         assert embedded, f"{cell.id} is not embedded in a {kind}"
     for m in re.finditer(r"\{figure\}\s*#([\w-]+)\s*\n:label:\s*(\S+)\s*\n(.*?)\n:::", md, re.S):
         assert m.group(3).strip(), f"figure {m.group(1)} has no caption"
@@ -1262,29 +1254,17 @@ def test_figure1_has_three_panes_with_the_registers_words_and_writes_nothing(tmp
     assert list(tmp_path.iterdir()) == []
 
 
-def test_figure1_is_in_the_paper_with_a_placeholder_caption():
+def test_figure1_is_not_in_the_paper_and_stays_the_index_pages_one_consumer():
+    """The supervisor's ticket (WP10, 2026-11-09): the three-pane figure leaves the paper's body
+    and stays on the index page as the high-level story arc; its generator and files stay, and the
+    site assembler copies the file."""
     nb = _nb(PAPER_NB)
-    cell = next(c for c in _code_cells(nb) if c.id == "fig-schematic")
-    assert "figure1()" in _src(cell) and cell.outputs
-    caption = next(c for c in nb.cells if c.id == "fig-schematic-caption")
-    assert "figures/figure1.png" in _src(caption) and ":label:" in _src(caption)
-
-
-def test_figure1_appears_once_in_the_built_page():
-    """The captioned directive draws the committed file; the code cell is removed from the page.
-
-    An embed of the cell (``#fig-schematic``) renders the cell's own output as well, which showed
-    the figure twice; ``remove-output`` leaves the embed without its image, so the directive
-    takes the file and the cell (kept to check that the figure still draws) is ``remove-cell``.
-    """
-    nb = _nb(PAPER_NB)
-    cell = next(c for c in _code_cells(nb) if c.id == "fig-schematic")
-    assert "remove-cell" in cell.metadata.get("tags", [])
-    md = _markdown(nb)
-    # drawn once; the caption's full-size link names the same file
-    assert md.count("{figure} figures/figure1.png") == 1
-    assert "#fig-schematic" not in md
+    assert not [c for c in nb.cells if c.id.startswith("fig-schematic")]
+    assert "figure1" not in _markdown(nb) + " ".join(_src(c) for c in _code_cells(nb))
+    assert "fig-trade-space" not in _markdown(nb)
     assert (PAPER / "figures" / "figure1.png").is_file()
+    assembler = (ROOT / "scripts" / "assemble_site.py").read_text(encoding="utf-8")
+    assert 'PAPER_DIR / "figures" / "figure1.png"' in assembler
 
 
 # -- C and D: the completions
@@ -1748,17 +1728,14 @@ def test_generated_sentence_cells_have_outputs_and_the_case_numbers_are_not_type
 
 
 def test_reader_depth_anchors_are_all_present():
-    """R-13: L-A title, abstract and Figure 1 with its caption on the first page; L-B headings,
-    the main-results list and the statements; L-D appendix pointers."""
+    """R-13: L-A title and abstract on the first page (the three-pane figure left the body: it is
+    on the index page); L-B headings, the main-results list and the statements; L-D pointers."""
     nb = _nb(PAPER_NB)
     fm = yaml.safe_load(_src(nb.cells[0]).split("---")[1])
     assert fm["title"] and len(fm["abstract"].split()) <= 200
-    ids = [c.id for c in nb.cells]
-    first_heading = ids.index("sec-prior-art")
-    assert ids.index("fig-schematic-caption") < first_heading  # the hero precedes section 2
-    caption = _src(nb.cells[ids.index("fig-schematic-caption")])
-    for phrase in ("fitted reference surface", "supporting envelope", "energy differential"):
-        assert phrase in caption
+    first = " ".join(_src(c) for c in nb.cells[: [c.id for c in nb.cells].index("sec-prior-art")])
+    for phrase in ("chart", "reversible", "position along the surface"):  # in words, no picture
+        assert phrase in first, phrase
     assert "**Main results**" in _section("The decision problem")
     results = (
         _section("The decision problem")
@@ -2033,7 +2010,7 @@ def test_every_figure_and_table_is_referenced_from_the_text():
     """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
     body = _markdown(_nb(PAPER_NB))
     floats = re.findall(r"^:::+\{(?:figure|table)\}[^\n]*\n:label: (\S+)", body, re.M)
-    assert len(floats) == 9, floats  # eight figures and the family table (candidates: D.7)
+    assert len(floats) == 8, floats  # seven figures and the family table (candidates: D.7)
     for cell in _nb(PAPER_NB).cells:
         if cell.cell_type != "markdown" or cell.id == "frontmatter":
             continue
@@ -2475,11 +2452,9 @@ def _figure_images() -> dict[str, tuple[bytes, float]]:
     import case
 
     sys.path.insert(0, str(PAPER / "figures"))
-    import figure1
-
-    out = {"fig-schematic": ((PAPER / "figures" / "figure1.png").read_bytes(), figure1.MIN_FONT_PT)}
+    out = {}
     for c in _code_cells(_nb(PAPER_NB)):
-        if c.id.startswith("fig-") and c.id != "fig-schematic":
+        if c.id.startswith("fig-"):
             png = next(
                 o["data"]["image/png"] for o in c.outputs if "image/png" in o.get("data", {})
             )
@@ -2492,7 +2467,7 @@ def test_every_figure_shows_its_smallest_text_at_the_body_small_print_size_at_12
     shows the image (the column is FIGURE_COLUMN_PX wide; an image narrower than it is not
     stretched). Figure 6 was shown at 0.40 of its size and its 7 pt labels were 4 px."""
     images = _figure_images()
-    assert len(images) == 8
+    assert len(images) == 7
     for name, (data, min_pt) in images.items():
         width, dpi = _png_size_and_dpi(data)
         scale = min(1.0, FIGURE_COLUMN_PX / width)
