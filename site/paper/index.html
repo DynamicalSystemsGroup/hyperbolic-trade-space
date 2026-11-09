@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The paper: hyperbolic-trade-space</title>
+<meta name="description" content="The paper on posynomial invariant form is in preparation.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/paper/">
+<meta property="og:title" content="The paper: hyperbolic-trade-space">
+<meta property="og:description" content="The paper on posynomial invariant form is in preparation.">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --fg: #1c1c1c;
+    --muted: #5a5a5a;
+    --card-bg: #ffffff;
+    --card-border: #e2ddd4;
+    --accent: #1f5aa8;
+    --accent-soft: #e4edf8;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #191817;
+      --fg: #e8e6e1;
+      --muted: #a5a19a;
+      --card-bg: #221f1e;
+      --card-border: #3a3532;
+      --accent: #85b4ea;
+      --accent-soft: #1f2a3a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 17px/1.6 Georgia, "Times New Roman", serif;
+  }
+  main {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 4rem;
+  }
+  header h1 {
+    font-size: 2rem;
+    line-height: 1.25;
+    margin: 0 0 0.25rem;
+  }
+  header .subtitle {
+    font-size: 1.15rem;
+    color: var(--muted);
+    margin: 0 0 0.25rem;
+  }
+  header .byline {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin: 0 0 2rem;
+  }
+  p { margin: 0 0 1rem; }
+  .hero {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    margin: 0 0 1.5rem;
+  }
+  a { color: var(--accent); }
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 2.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (max-width: 40rem) {
+    .cards { grid-template-columns: 1fr; }
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 1.1rem 1.2rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .card h2 {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+  }
+  .card p {
+    font-size: 0.93rem;
+    color: var(--muted);
+    margin: 0 0 0.9rem;
+    flex: 1;
+  }
+  .card .go {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-family: system-ui, sans-serif;
+    text-decoration: none;
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 0.35rem 0.7rem;
+    align-self: start;
+  }
+  .card .soon {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-family: system-ui, sans-serif;
+    color: var(--muted);
+    border: 1px dashed var(--card-border);
+    border-radius: 6px;
+    padding: 0.35rem 0.7rem;
+    align-self: start;
+  }
+  .footnote {
+    margin: 1rem 0 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  code, pre {
+    font: 0.85rem/1.4 ui-monospace, Menlo, monospace;
+    background: var(--accent-soft);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+  }
+  .card p.install { font-size: 0.85rem; }
+  footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--card-border);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>The paper</h1>
+    <p class="subtitle">Posynomial invariant form for design trade spaces</p>
+    <p class="byline">Michael Zargham</p>
+  </header>
+
+  <p>The paper is in preparation. It will tell the method through the spacecraft attitude-control trade study, and it will appear on this page.</p>
+  <p>In the meantime the method is documented in full, page by page, and the package is available from source.</p>
+
+  <ul class="cards">
+    <li class="card">
+      <h2>Documentation</h2>
+      <p>The method, its mathematics and its limits.</p>
+      <a class="go" href="../docs/">Open the docs →</a>
+    </li>
+    <li class="card">
+      <h2>Project home</h2>
+      <p>The paper, the docs and the package.</p>
+      <a class="go" href="../">Back to the root →</a>
+    </li>
+  </ul>
+
+  <footer>
+    Source for everything on this page:
+    <a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space">github.com/DynamicalSystemsGroup/hyperbolic-trade-space</a>
+  </footer>
+</main>
+</body>
+</html>

@@ -15,7 +15,7 @@ htmlcov/
 
 # site builds and generated docs pages
 _site/
-site/
+_stage/
 docs/generated/
 
 # OS / editors
