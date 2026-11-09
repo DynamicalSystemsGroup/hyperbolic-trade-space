@@ -70,6 +70,16 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         the label of its dominant term, as before. Read ``kappa`` on the scale of ``temperature``:
         a ``kappa`` far below it merges facets. ``facet_step="tangent"`` ignores ``kappa`` in the
         fit.
+    term_aggregation : {"sum", "mean"}, default="sum"
+        How the K terms are aggregated when ``term_temperature`` is finite. ``"sum"`` (the default)
+        is the unnormalized log-sum-exp above, with ``max <= Phi_K <= max + log K / kappa``; a
+        duplicated term lowers the slack by ``log 2 / kappa`` without new geometry. ``"mean"`` is
+        the normalized log-mean-exp, ``Phi_K - log K / kappa``, with
+        ``max - log K / kappa <= Phi_K <= max``, the same convention as ``temperature``.
+        The two differ by the constant ``log K / kappa``: the soft weights, the Hessian, the
+        certificate and the fitted terms are the same, ``score_samples`` and the slack shift by
+        exactly that constant. No effect at ``term_temperature = inf`` or ``n_terms = 1``.
+        Validated in ``fit``.
     tol : float, default=1e-10
         Solver tolerance (SLSQP ``ftol``).
     max_iter : int, default=500
@@ -228,6 +238,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         coordinates="ilr",
         n_terms=1,
         term_temperature=np.inf,
+        term_aggregation="sum",
         tol=1e-10,
         max_iter=500,
         penalty=None,
@@ -241,6 +252,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         self.coordinates = coordinates
         self.n_terms = n_terms
         self.term_temperature = term_temperature
+        self.term_aggregation = term_aggregation
         self.tol = tol
         self.max_iter = max_iter
         self.penalty = penalty
@@ -274,6 +286,10 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         k = self.term_temperature
         if not (isinstance(k, numbers.Real) and not isinstance(k, bool) and k > 0):
             raise ValueError(f"term_temperature must be a float > 0 or np.inf, got {k!r}")
+        if self.term_aggregation not in ("sum", "mean"):
+            raise ValueError(
+                f"term_aggregation must be 'sum' or 'mean', got {self.term_aggregation!r}"
+            )
         if self.penalty not in (None, "reweighted_l1"):
             raise ValueError(f"penalty must be None or 'reweighted_l1', got {self.penalty!r}")
         a = self.alpha
@@ -331,6 +347,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
                 random_state=self.random_state, tol=self.tol, slsqp_max_iter=self.max_iter,
                 facet_step=self.facet_step, n_restarts=self.n_restarts,
                 term_temperature=self.term_temperature,
+                aggregation=self.term_aggregation,
             )  # fmt: skip
             res, W, betas, n_iter, beta = tr, tr.W, tr.beta, tr.n_iter, tr.objective
             term = tr.termination
@@ -399,7 +416,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         lv = lab[valid]
         self.mean_slack_ = float(np.mean(betas[lv] - np.einsum("ij,ij->i", W[lv], Uv)))
         if K > 1 and np.isfinite(kappa):  # the slack of the reported (soft) model
-            self.mean_slack_ = _solvers.soft_objective(Uv, W, betas, kappa)
+            self.mean_slack_ = _solvers.soft_objective(Uv, W, betas, kappa, self.term_aggregation)
         support = np.zeros(n)
         support[valid] = p
         above = log_v[valid] > (_ABOVE_TOL if np.isinf(tau) else 0.0)
@@ -435,7 +452,10 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
 
     def _phi(self, S):
         kappa = self.term_temperature
-        return S.max(axis=1) if np.isinf(kappa) else logsumexp(kappa * S, axis=1) / kappa
+        if np.isinf(kappa):
+            return S.max(axis=1)
+        shift = _solvers.aggregation_shift(S.shape[1], kappa, self.term_aggregation)
+        return logsumexp(kappa * S, axis=1) / kappa - shift
 
     def _zero_limit_scores(self, U):
         """Per-facet scores of rows with a zero metric: ``0 log 0 := 0`` below EPS_ZERO_EXPONENT."""

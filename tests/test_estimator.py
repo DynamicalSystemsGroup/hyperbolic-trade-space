@@ -709,3 +709,63 @@ def test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_mini
         ez.log_offset_[0] - np.mean(v @ ez.exponents_[0]), rel=1e-12
     )
     assert np.isfinite(ez.mean_slack_)
+
+
+# ---------------------------------------------------------------------------- WP21 D-1
+def test_term_aggregation_default_and_params_roundtrip():
+    est = HyperbolicTradeSpace()
+    assert est.term_aggregation == "sum"
+    assert est.get_params()["term_aggregation"] == "sum"
+    est2 = HyperbolicTradeSpace(**est.set_params(term_aggregation="mean").get_params())
+    assert est2.term_aggregation == "mean"
+    HyperbolicTradeSpace(term_aggregation="bad")  # stored verbatim, not validated in __init__
+
+
+@pytest.mark.parametrize("bad", ["bad", None, 1, "Sum"])
+def test_term_aggregation_invalid_raises_in_fit(bad):
+    with pytest.raises(ValueError, match="term_aggregation"):
+        HyperbolicTradeSpace(term_aggregation=bad).fit(planted(30, 3)[0])
+
+
+@pytest.mark.slow
+@pytest.mark.parametrize(("K", "kappa", "d"), [(2, 5.0, 3), (3, 2.0, 4), (4, 20.0, 5)])
+def test_term_aggregation_mean_shifts_score_by_log_k_over_kappa(K, kappa, d):
+    X, _ = make_frontier_data(120, d, n_terms=K, random_state=3)
+    kw = dict(n_terms=K, term_temperature=kappa, temperature=20.0, random_state=0)
+    s = HyperbolicTradeSpace(term_aggregation="sum", **kw).fit(X)
+    m = HyperbolicTradeSpace(term_aggregation="mean", **kw).fit(X)
+    shift = np.log(K) / kappa
+    np.testing.assert_allclose(m.exponents_, s.exponents_, atol=1e-10)
+    np.testing.assert_allclose(m.log_offset_, s.log_offset_, atol=1e-10)
+    np.testing.assert_allclose(s.score_samples(X) - m.score_samples(X), shift, atol=1e-10)
+    np.testing.assert_allclose(m.mean_slack_ - s.mean_slack_, shift, atol=1e-10)
+    assert m.termination_.status == s.termination_.status
+    np.testing.assert_allclose(m.inverse_transform(m.transform(X)), X, rtol=1e-8)
+    S_ = np.log(X) @ m.exponents_.T - m.log_offset_
+    gap = m.score_samples(X) - S_.max(axis=1)
+    assert (gap <= 1e-12).all() and (gap >= -shift - 1e-12).all()
+
+
+@pytest.mark.parametrize("params", [{"n_terms": 3, "term_temperature": np.inf}, {"n_terms": 1}])
+def test_term_aggregation_mean_equals_sum_at_kappa_inf_or_k1(params):
+    X, _ = make_frontier_data(80, 3, n_terms=3, random_state=2)
+    kw = dict(random_state=0, **params)
+    a = HyperbolicTradeSpace(term_aggregation="sum", **kw).fit(X)
+    b = HyperbolicTradeSpace(term_aggregation="mean", **kw).fit(X)
+    np.testing.assert_array_equal(a.score_samples(X), b.score_samples(X))
+    np.testing.assert_array_equal(a.exponents_, b.exponents_)
+    assert a.mean_slack_ == b.mean_slack_
+
+
+def test_term_aggregation_duplicated_term_shift_is_log2_over_kappa():
+    # sum: a repeated term raises Phi by log 2 / kappa where it ties the maximum
+    est = HyperbolicTradeSpace(n_terms=2, term_temperature=4.0).fit(planted(40, 3)[0])
+    one = est.exponents_[:1], est.log_offset_[:1]
+    est.exponents_, est.log_offset_ = np.repeat(one[0], 2, axis=0), np.repeat(one[1], 2)
+    est.basis_ = est.basis_[:2]
+    U = np.log(planted(40, 3)[0])
+    s = U @ est.exponents_.T - est.log_offset_
+    sum_phi = est._phi(s)
+    est.term_aggregation = "mean"
+    np.testing.assert_allclose(sum_phi - est._phi(s), np.log(2) / 4.0, atol=1e-12)
+    np.testing.assert_allclose(est._phi(s), s[:, 0], atol=1e-12)

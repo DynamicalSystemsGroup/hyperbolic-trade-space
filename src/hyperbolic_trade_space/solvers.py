@@ -10,7 +10,7 @@ Rows with ``-inf`` entries (zero metrics) must be masked by the caller before so
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 import numpy as np
 from scipy.linalg import block_diag, eigh, null_space
@@ -849,7 +849,25 @@ def soft_weights(U, W, beta, kappa):
     return softmax(kappa * (np.asarray(U) @ np.asarray(W).T - np.asarray(beta)), axis=1)
 
 
-def soft_objective(U, W, beta, kappa):
+def aggregation_shift(n_terms, kappa, aggregation="sum"):
+    """Constant subtracted from ``Phi_kappa`` by the term aggregation (``log K / kappa`` for mean).
+
+    The weights ``softmax_k(kappa x_k)``, the Hessian and the certificate do not depend on it
+    (a constant in ``Phi``), so the minimizers of the two forms coincide.
+
+    Examples
+    --------
+    >>> round(aggregation_shift(4, 2.0, "mean"), 6), aggregation_shift(4, 2.0, "sum")
+    (0.693147, 0.0)
+    """
+    if aggregation not in ("sum", "mean"):
+        raise ValueError(f"aggregation must be 'sum' or 'mean', got {aggregation!r}")
+    if aggregation == "sum" or not np.isfinite(kappa):
+        return 0.0
+    return float(np.log(n_terms) / kappa)
+
+
+def soft_objective(U, W, beta, kappa, aggregation="sum"):
     """Soft objective ``F = mean_i (-Phi_kappa(u_i))``, the mean slack of the soft model.
 
     Parameters
@@ -862,11 +880,15 @@ def soft_objective(U, W, beta, kappa):
         Term offsets.
     kappa : float
         Term temperature, ``kappa > 0`` (finite).
+    aggregation : {"sum", "mean"}, default="sum"
+        Term aggregation: ``"sum"`` the log-sum-exp over the K terms, ``"mean"`` the log-mean-exp
+        (the same minus ``log K / kappa``).
 
     Returns
     -------
     float
-        ``-(1/N) sum_i (1/kappa) log sum_k exp(kappa (w_k . u_i - beta_k))``.
+        ``-(1/N) sum_i (1/kappa) log sum_k exp(kappa (w_k . u_i - beta_k))`` for ``"sum"``;
+        ``"mean"`` adds ``log K / kappa``.
 
     Examples
     --------
@@ -876,7 +898,8 @@ def soft_objective(U, W, beta, kappa):
     -1.0
     """
     S = np.asarray(U) @ np.asarray(W).T - np.asarray(beta)
-    return float(-np.mean(logsumexp(kappa * S, axis=1)) / kappa)
+    shift = aggregation_shift(S.shape[1], kappa, aggregation)
+    return float(-np.mean(logsumexp(kappa * S, axis=1)) / kappa + shift)
 
 
 def soft_hessian(U, W, tau, kappa):
@@ -1216,6 +1239,7 @@ def solve_terms(
     slsqp_max_iter=500,
     facet_step="support",
     term_temperature=np.inf,
+    aggregation="sum",
 ):
     """Fit ``K`` monomial facets by alternating partition and entropic refit.
 
@@ -1258,6 +1282,11 @@ def solve_terms(
         ``D - kappa M`` (``soft_hessian``). ``labels`` stay the analysis: the dominant term of
         each row. Read ``kappa`` on the scale of ``tau``; ``kappa`` far below ``tau`` merges facets.
         ``facet_step="tangent"`` ignores ``kappa``.
+    aggregation : {"sum", "mean"}, default="sum"
+        Term aggregation of the soft model. The fit is carried out on the sum form (the weights,
+        Hessian and certificate are the same for both: ``Phi`` differs by the constant
+        ``log K / kappa``), and for ``"mean"`` the reported ``objective`` and ``history`` are
+        shifted by ``+ log K / kappa``, the mean slack of the log-mean-exp model.
 
     Returns
     -------
@@ -1331,4 +1360,8 @@ def solve_terms(
     runs = [
         _solve_terms_once(U, K, tau, s, max_iter, kw, facet_step == "tangent", kappa) for s in seeds
     ]
-    return min(runs, key=lambda r: r.objective)
+    best = min(runs, key=lambda r: r.objective)
+    shift = aggregation_shift(K, kappa, aggregation) if facet_step == "support" else 0.0
+    if shift:
+        best = replace(best, objective=best.objective + shift, history=best.history + shift)
+    return best
