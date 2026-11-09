@@ -215,6 +215,7 @@ def _assert_within_frozen_tolerances(committed: pd.DataFrame, fresh: pd.DataFram
         np.testing.assert_allclose(committed[col], fresh[col], atol=0.5, err_msg=col)
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize(
     ("name", "box"),
     [("adcs_designs_cubesat_gains.csv", "aggressive"), ("adcs_designs_cubesat.csv", "baseline")],
@@ -246,6 +247,7 @@ def test_the_check_designs_regenerate_within_the_tolerances(text):
         np.testing.assert_allclose(committed[col], fresh[col], rtol=rtol, atol=atol, err_msg=col)
 
 
+@pytest.mark.slow
 def test_the_predictions_regenerate_within_the_tolerances(text):
     """Re-proposing from the committed primary data gives the committed proposals."""
     _oracle(text, "aggressive")  # names the cause when the runtime cannot start
@@ -262,6 +264,7 @@ def test_the_predictions_regenerate_within_the_tolerances(text):
             )
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize(("gain_box"), ["aggressive", "baseline"])
 def test_40_designs_regenerated_twice_are_identical(gain_box, text):
     oracle = _oracle(text, gain_box, workers=3)
@@ -339,6 +342,7 @@ def test_register_rows_are_parsed_from_the_table(tmp_path):
     assert [r["n"] for r in rows] == ["CR-1"] and rows[0]["covers"] == ["primary:Kp", "primary:Kd"]
 
 
+@pytest.mark.slow
 def test_the_report_has_every_section_and_includes_the_register_verbatim(tmp_path):
     before = REGISTER.read_text()
     out = tmp_path / "report.md"

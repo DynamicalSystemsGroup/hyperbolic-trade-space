@@ -21,6 +21,9 @@ from derivation import axioms as AX
 from derivation import proofmap
 from derivation.run import CHAIN, CHAIN_NAMES, lemma_number
 
+# Slow module: shared fixtures cost minutes (verification in tiers); not in the fast suite.
+pytestmark = pytest.mark.slow
+
 ROOT = Path(__file__).resolve().parent.parent
 DERIVATION = ROOT / "derivation"
 
@@ -295,6 +298,7 @@ def test_the_order_of_steps_in_the_file_is_the_tag_order(scratch):
 # --------------------------------------------------------------------- refreshing is explicit
 
 
+@pytest.mark.slow
 def test_update_rewrites_the_record_and_prints_the_steps_that_moved(scratch):
     edit(
         scratch,
@@ -489,6 +493,7 @@ def test_new_entries_carry_a_form_and_a_verified_citation():
     assert "strong duality" not in i10.statement and "Slater" not in i10.statement
 
 
+@pytest.mark.slow
 def test_L3_licq_holds_on_the_simplex_and_fails_when_every_coordinate_is_zero(chain_ctx):
     lq = chain_ctx["L3"]["licq"]
     assert lq["whole_zero_set"] is sp.false  # A2: the zero set is a proper subset
@@ -587,6 +592,7 @@ def test_a_falsified_fact_breaks_the_step_that_rests_on_it(chain_ctx, module, ke
 # ------------- step 3 (principle 3): no premise hides in a symbol; the checker fails on one
 
 
+@pytest.mark.slow
 def test_a_symbol_with_a_sign_assumption_made_directly_fails(scratch):
     edit(
         scratch,
@@ -962,6 +968,7 @@ def test_L16_steps_are_of_the_kinds_the_rules_allow():
     assert all(st["kind"] != "result" for st in steps.values())  # imports no earlier result
 
 
+@pytest.mark.slow
 def test_L16_verifies_and_each_falsified_fact_fails_loudly():
     ctx, mod = _run_L16()
     mod.verify(ctx)
@@ -1044,6 +1051,7 @@ def test_a_scratch_L16_without_I15_fails(scratch):
     assert code != 0 and _L16 in out and "I15" in out
 
 
+@pytest.mark.slow
 def test_a_scratch_L16_with_a_changed_step_fails_naming_the_step(scratch):
     edit(scratch, _L16, 'assert r["tight"] == 0', 'assert r["tight"] != 0')
     code, out = run_checker(scratch)
@@ -1134,6 +1142,7 @@ def test_L17_steps_are_of_the_kinds_the_rules_allow():
     assert sum(st["kind"] == "computed" for st in steps.values()) == 52 - 8
 
 
+@pytest.mark.slow
 def test_L17_verifies_and_each_falsified_fact_fails_loudly(l17):
     ctx, mod = _l17_fresh(l17)
     mod.verify(ctx)
@@ -1157,6 +1166,7 @@ def test_L17_verifies_and_each_falsified_fact_fails_loudly(l17):
             mod.verify(ctx)
 
 
+@pytest.mark.slow
 def test_L17_numerical_endpoints_hold_and_a_falsified_endpoint_fails(l17):
     ctx, mod = _l17_fresh(l17)
     ins, eq = ctx["L17"]["instance"], ctx["L17"]["all_equal"]
@@ -1223,6 +1233,7 @@ def test_the_certificate_needs_both_premises_of_I16():
     assert not AX.I16.entails([], concl)
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("name", ["I16", "A3", "A6", "A2", "A1"])
 def test_a_scratch_L17_without_a_ledger_import_fails_naming_the_entry(scratch, name):
     header = "from derivation.axioms import A1, A2, A3, A6, I16"
@@ -1232,6 +1243,7 @@ def test_a_scratch_L17_without_a_ledger_import_fails_naming_the_entry(scratch, n
     assert code != 0 and _L17 in out and name in out
 
 
+@pytest.mark.slow
 def test_a_scratch_L17_with_a_changed_step_fails_naming_the_step(scratch):
     edit(scratch, _L17, 'assert r["hess_gap"] == 0', 'assert r["hess_gap"] != 0')
     code, out = run_checker(scratch)

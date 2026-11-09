@@ -200,6 +200,7 @@ def ctx():
     return run_chain(verbose=False)[0]
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("seed", [0, 1, 2])
 def test_pullback_matches_L9_chain_formula(ctx, seed):
     """Cross-check (labelled, not a proof): evaluate the WP1 L9 expression at the fitted values.

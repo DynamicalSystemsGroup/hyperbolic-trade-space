@@ -7,6 +7,9 @@ import k_terms
 import numpy as np
 import pytest
 
+# Slow module: shared fixtures cost minutes (verification in tiers); not in the fast suite.
+pytestmark = pytest.mark.slow
+
 SCRIPT = Path(k_terms.__file__)
 FIGS = ("log_planes", "frontier_coordinates", "tensions")
 
@@ -19,6 +22,7 @@ def result(request, tmp_path_factory):
     return request.param, out
 
 
+@pytest.mark.slow
 def test_k3_fits_and_three_reports(result):
     _, out = result
     est, reps = out["fits"][3], out["reports"][3]

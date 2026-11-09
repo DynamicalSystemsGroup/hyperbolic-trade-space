@@ -525,6 +525,7 @@ def smoke(tmp_path_factory):
     return out, time.perf_counter() - t0
 
 
+@pytest.mark.slow
 def test_r3_k_terms_smoke_run(smoke):
     out, seconds = smoke
     assert {"fits", "reports", "taus"} <= set(out), msg(

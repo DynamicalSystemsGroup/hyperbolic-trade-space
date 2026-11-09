@@ -965,6 +965,7 @@ def _cells_of_table(text: str) -> list[str]:
     )
 
 
+@pytest.mark.slow
 def test_facet_numbered_tables_are_current():
     """The tables whose rows follow the facet numbering: exact in the environment of record,
     elsewhere the same cells in whatever order the facets are numbered (gap G-10)."""
@@ -1902,6 +1903,7 @@ def test_results_file_records_the_five_seeds_and_the_perturbation():
             assert e["min"] <= e["committed"] <= e["max"], name
 
 
+@pytest.mark.slow
 def test_generated_sentences_quote_the_ranges_from_the_results_file(case_sentences):
     from paper_stability import stable
 
@@ -1939,6 +1941,7 @@ def test_generated_sentences_quote_the_ranges_from_the_results_file(case_sentenc
     assert f"{n_eff['committed']:.1f}" not in temp or n_eff["min"] == n_eff["max"]
 
 
+@pytest.mark.slow
 def test_no_residue_is_printed_as_raw_digits(case_sentences):
     for key, text in case_sentences.items():
         assert not RAW_RESIDUE.search(str(text)), key
@@ -2071,6 +2074,7 @@ def test_the_claims_of_c1_have_their_true_basis():
     assert re.search(r"\| 0 of 60 \|", text) and re.search(r"\| 60 of 60 \|", text)
 
 
+@pytest.mark.slow
 def test_appendix_d_prints_the_conditioning_diagnostic():
     """G-4: the column `conditioning_` is printed per regime, K and facet."""
     cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-conditioning_diagnostic")
@@ -2192,6 +2196,7 @@ def test_cr1_one_definition_of_the_contending_set_and_the_captions_say_it():
     assert "exact-maximum supports" in _cell_out(PAPER_NB, "num-k-sweep")
 
 
+@pytest.mark.slow
 def test_cr2_the_planted_recovery_is_in_section_9_with_its_table_in_d14():
     """(2) Does the method recover a known answer, how often, and what the failures are."""
     import generate_results
@@ -2328,6 +2333,7 @@ def test_cr10_the_discussion_says_what_propose_predict_check_showed_and_did_not(
     assert "the easy part" in text and "remains a hypothesis" in text
 
 
+@pytest.mark.slow
 def test_cr11_chaining_with_pca_is_worked_on_the_case_in_d16():
     """(11) One worked result, in D.16, with a pointer from section 1."""
     import generate_results

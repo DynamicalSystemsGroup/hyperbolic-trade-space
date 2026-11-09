@@ -142,6 +142,7 @@ CSV = ADCS_DIR / "data" / "adcs_designs.csv"
 GEN = ADCS_DIR / "generate_dataset.py"
 
 
+@pytest.mark.slow
 def test_generator_cli_skip_and_force(tmp_path):
     """R-8: help works, existing output is skipped unless --force."""
     help_out = subprocess.run([sys.executable, str(GEN), "--help"], capture_output=True, text=True)
@@ -160,6 +161,7 @@ def test_generator_cli_skip_and_force(tmp_path):
     assert out.read_text() == first
 
 
+@pytest.mark.slow
 def test_dataset_reproducible_first_20():
     """R-9: committed CSV has 1000 rows; the first 20 designs regenerate."""
     from generate_dataset import COLUMNS, generate
@@ -196,6 +198,7 @@ def test_dataset_reproducible_first_20():
     np.testing.assert_allclose(head.settling_time_s, fresh.settling_time_s, atol=0.5)
 
 
+@pytest.mark.slow
 def test_dataset_same_platform_exact():
     """Amendment 1 (R-9): on one platform, regeneration is bit-for-bit repeatable."""
     from generate_dataset import generate

@@ -129,6 +129,7 @@ def test_the_default_run_is_small():
     assert {e.count for e in df.GROUPS[df.SHARED_ID]} == {20}
 
 
+@pytest.mark.slow
 def test_two_ledger_entries_differing_in_oracle_name_the_shared_subspace(shared_run):
     root, led, entries, _ = shared_run
     assert [e["inputs"]["oracle"] for e in entries] == ["cubesat-v2", "legacy-geostationary"]

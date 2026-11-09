@@ -179,6 +179,7 @@ def test_terms_k1_equals_slsqp_and_degenerate():
     np.testing.assert_array_equal(single.W, [[1.0], [1.0]])
 
 
+@pytest.mark.slow
 def test_terms_deterministic_and_sparse():
     U = _planted_k3()
     a = solve_terms(U, 3, 50.0, random_state=7)
@@ -209,6 +210,7 @@ def test_facet_step_validated():
         solve_terms(_planted_k3(), 3, 50.0, facet_step="best")
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("tau,seed", [(np.inf, 0), (np.inf, 2), (50.0, 0), (50.0, 4)])
 def test_tangent_recovers_planted_facets(tau, seed):
     X, info = make_frontier_data(400, 4, n_terms=3, random_state=seed)
@@ -366,6 +368,7 @@ def test_assignment_margin_values_and_duplicate_facets():
     assert t.gamma == 0.0 and t.status != "certified" and t.n_empty == 1
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("tau", [INF, 50.0])
 def test_margin_lemma_perturbations_inside_the_radius_keep_labels(tau):
     rng = np.random.default_rng(11)
@@ -386,6 +389,7 @@ def test_margin_lemma_perturbations_inside_the_radius_keep_labels(tau):
     assert checked == (16 if np.isinf(tau) else 20)
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("tau", [INF, 50.0])
 def test_corollary_bound_on_every_planted_fit(tau):
     for seed in _SEEDS:
@@ -406,6 +410,7 @@ def test_corollary_bound_on_every_planted_fit(tau):
         assert bound == pytest.approx(t.bound, abs=1e-12)
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("tau", [INF, 50.0])
 def test_r1_planted_certificates(tau):
     zero_margin = []

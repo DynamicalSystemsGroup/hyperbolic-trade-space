@@ -162,6 +162,7 @@ def test_construction_names_the_cause_when_the_runtime_cannot_start():
     assert "NAMED: opensysml service binary unavailable" in done.stdout, done.stdout + done.stderr
 
 
+@pytest.mark.slow
 def test_worker_pool_gives_the_serial_result(oracle, designs):
     """Chunks measured in spawned processes equal the serial run (deterministic)."""
     serial = oracle.evaluate(designs)
@@ -421,6 +422,7 @@ def test_sampler_skips_a_solver_excluded_battery_region(oracle, exp, solver):
     assert smp.record()["avoided_by_region"] == {"battery": smp.avoided}
 
 
+@pytest.mark.slow
 def test_declared_space_excludes_nothing_so_the_first_designs_are_unchanged(tmp_path):
     """The v2 block excludes no region: the runner's draws and rows equal the committed dataset."""
     from experiments import runner

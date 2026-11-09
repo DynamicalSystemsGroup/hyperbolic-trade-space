@@ -310,6 +310,7 @@ def sample20(pool, measured):
     return rows
 
 
+@pytest.mark.slow
 def test_flags_equal_an_independent_python_evaluation_on_20_designs(sample20, v2, pool, capsys):
     """R-3: the verified flags equal the same inequalities evaluated in Python (and the frozen oracle)."""
     max_dod = v2.read("environment.maxDepthOfDischarge")

@@ -357,6 +357,7 @@ def test_adopt_is_idempotent_and_does_not_touch_the_files(tmp_path):
     assert json.loads(led.read_text().splitlines()[3])["parents"][0]["id"].startswith("adopted-")
 
 
+@pytest.mark.slow
 def test_cli_verify_and_compare_message():
     env = {"PYTHONPATH": str(ADCS), "PATH": "/usr/bin:/bin"}
     v = subprocess.run(

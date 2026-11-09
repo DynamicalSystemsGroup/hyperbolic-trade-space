@@ -15,6 +15,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
+# Slow module: shared fixtures cost minutes (verification in tiers); not in the fast suite.
+pytestmark = pytest.mark.slow
+
 N = 150  # small sample: the first N feasible designs
 
 
@@ -178,6 +181,7 @@ def test_regime_comparison_small():
     assert "contending set" in set(t.quantity) and len(t) == 6 + len(case.CUBESAT.association_pairs)
 
 
+@pytest.mark.slow
 def test_figures_return_figures_and_do_not_save(small, small_fit, tmp_path, monkeypatch):
     import matplotlib.pyplot as plt
 
@@ -259,6 +263,7 @@ MARGIN = {
 GAP_K1 = {"primary": 4.7e-6, "stock": 1.8e-5}
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("regime", ["primary", "stock"])
 def test_k_sweep_equals_the_record(regime, request):
     study = request.getfixturevalue(regime)
@@ -327,6 +332,7 @@ def test_candidates_are_scored(primary, primary_fits):
     assert t["log V"].idxmax() == 1  # the precise heavy-sensor design is the nearest to V = 1
 
 
+@pytest.mark.slow
 def test_refit_reproduces_the_recorded_predictions(primary, regressor):
     t = case.proposals_table(primary, regressor)
     assert len(t) == 3 and (t["max |recorded - refit|"] < 1e-6).all()

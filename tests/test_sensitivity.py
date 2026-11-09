@@ -233,6 +233,7 @@ def recomputed():
     return sens.quantities(DATA)
 
 
+@pytest.mark.slow
 def test_the_results_file_committed_values_equal_the_committed_case_results(recomputed):
     """Every number of the file's ``committed`` column is what ``case.py`` gives on the data."""
     saved = json.loads(sens.SUMMARY_FILE.read_text())

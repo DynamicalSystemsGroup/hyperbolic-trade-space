@@ -372,6 +372,7 @@ def test_k_terms_recovers_planted_facets(seed, tau):
         assert loose1 > 0.15 and abs(loose3) < 1e-6
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("K", [2, 3])
 @pytest.mark.parametrize("kappa", [np.inf, 5.0])
 def test_k_terms_round_trip_and_scores(K, kappa):
@@ -393,6 +394,7 @@ def test_k_terms_round_trip_and_scores(K, kappa):
     assert est.basis_.shape == (K, 3, 4) and est.exponents_.shape == (K, 4)
 
 
+@pytest.mark.slow
 def test_k_terms_attributes_conventions():
     X, _ = make_frontier_data(300, 4, n_terms=3, random_state=0)
     for kappa, kf in ((np.inf, 1.0), (4.0, 4.0)):
@@ -453,6 +455,7 @@ def test_penalty_gives_exact_zero_exponents_at_the_estimator():
 
 
 # ------------------------------------------- WP9 Amendment 1: facet_step
+@pytest.mark.slow
 @pytest.mark.parametrize("step", ["support", "tangent"])
 @pytest.mark.parametrize("seed,tau", [(0, np.inf), (2, np.inf), (0, 50.0), (4, 50.0)])
 def test_k_terms_both_steps_recover_under_identifiability(step, seed, tau):
@@ -508,6 +511,7 @@ def test_constants_are_reexported():
     assert _est.EPS_ZERO_EXPONENT == 1e-12 and _est.PARTICIPATION_THRESHOLD == 1e-3
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize(
     "seed,tau,status",
     [(0, INF, "certified"), (1, INF, "stationary_without_margin"), (0, 50.0, "certified")],

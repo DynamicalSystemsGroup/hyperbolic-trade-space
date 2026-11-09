@@ -263,6 +263,7 @@ def test_deterministic_frozen_and_validation():
 _PLANTED = [[0.5, 0.5, 0, 0], [0, 0.5, 0.5, 0], [0, 0, 0.5, 0.5]]
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("seed", [0, 1, 2])
 def test_k3_reports_one_per_facet_recover_planted_supports(seed):
     X, _ = make_frontier_data(1500, 4, exponents=_PLANTED, n_terms=3, random_state=seed)

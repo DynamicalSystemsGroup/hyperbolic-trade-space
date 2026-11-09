@@ -38,6 +38,7 @@ def pages(tmp_path_factory):
     }
 
 
+@pytest.mark.slow
 def test_every_lemma_title_and_statement(pages):
     for mod in R.CHAIN:
         n = R.lemma_number(mod)
@@ -87,6 +88,7 @@ def test_verification_content(pages):
         assert f"L{R.lemma_number(mod)} PASS" in v
 
 
+@pytest.mark.slow
 def test_deterministic(tmp_path):
     for tag in ("a", "b"):
         build_generated.build(
@@ -328,6 +330,7 @@ def test_exit_nonzero_on_failing_lemma(monkeypatch, tmp_path, capsys):
     assert not (tmp_path / "o" / "derivations.md").exists()
 
 
+@pytest.mark.slow
 def test_assemble_with_fake_mkdocs(tmp_path, monkeypatch):
     site = tmp_path / "src_site"
     (site / "paper").mkdir(parents=True)
@@ -361,6 +364,7 @@ def test_assemble_with_fake_mkdocs(tmp_path, monkeypatch):
     assert "--strict" in seen[0] and "build" in seen[0]
 
 
+@pytest.mark.slow
 def test_assemble_fails_loudly_when_mkdocs_fails(tmp_path):
     def boom(cmd):
         raise RuntimeError("mkdocs failed")

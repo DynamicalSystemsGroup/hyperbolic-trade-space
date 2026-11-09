@@ -189,6 +189,7 @@ def test_runnable_blocks_exist_where_the_guide_promises_them():
     assert sum(len(_runnable_blocks(p)) for p in RUNNABLE_PAGES) >= 5
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("page", RUNNABLE_PAGES)
 def test_runnable_blocks_execute(page, monkeypatch):
     """Each page's blocks run in order, in one namespace, offline, on seeded synthetic data."""

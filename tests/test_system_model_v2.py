@@ -421,6 +421,7 @@ def test_analysis_with_equal_measured_times_needs_no_workaround(v2):
 # ---------------------------------------------------------------------------------------------
 # The closed-form slew approximation against the ODE (OD2)
 # ---------------------------------------------------------------------------------------------
+@pytest.mark.slow
 def test_closed_form_slew_time_against_the_ode(v2, frozen, capsys):
     """The closed-form slew time tracks the ODE slew time within a loose factor on 10 configs.
 

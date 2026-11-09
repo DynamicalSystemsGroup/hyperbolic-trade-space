@@ -546,6 +546,7 @@ def test_generator_cli_has_the_cubesat_flags():
         assert flag in out.stdout
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize(("gain_box", "csv"), DATASETS)
 def test_dataset_reproducible_first_20(cubesat, gain_box, csv):
     """Regenerate the first 20 designs with the recorded options; WP4 per-column tolerances."""
@@ -584,6 +585,7 @@ def test_dataset_reproducible_first_20(cubesat, gain_box, csv):
         np.testing.assert_allclose(head[col], fresh[col], atol=0.5, err_msg=col)
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("gain_box", ["baseline", "aggressive"])
 def test_dataset_reproducible_same_platform_exact(cubesat, gain_box):
     """40 designs regenerated twice on the same platform are identical."""

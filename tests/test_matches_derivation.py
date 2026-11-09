@@ -21,6 +21,9 @@ from hyperbolic_trade_space.coordinates import (
     to_frontier_coordinates,
 )
 
+# Slow module: shared fixtures cost minutes (verification in tiers); not in the fast suite.
+pytestmark = pytest.mark.slow
+
 TOL = 1e-10
 D, N, TAU = 3, 5, 4.0
 
@@ -57,6 +60,7 @@ def ev(expr, S, inst, extra=None, tau=TAU, pre=None):
 
 
 # ---------------------------------------------------------------- L1 homogeneity, invariant form
+@pytest.mark.slow
 def test_L1_invariant_value_homogeneity_and_invariant_form(ctx, inst):
     S, L1 = ctx["S"], ctx["L1"]
     w, beta, M = inst["w"], inst["beta"], inst["M"]
@@ -284,6 +288,7 @@ def test_fitted_model_check_negative_control(ctx):
 
 
 # ---------------------------------------------------------------- L10 (K-term extension, WP9)
+@pytest.mark.slow
 @pytest.mark.parametrize("kappa", [0.5, 3.0, 40.0])
 def test_L10_phi_k_bounds_shift_and_limit_at_numeric_instance(ctx, kappa):
     """Lemma L10 (verified abstractly in derivation/lemma_10_extension.py) at the estimator."""

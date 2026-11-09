@@ -537,6 +537,7 @@ def assembled(tmp_path_factory, generated_dir) -> Path:
     return out
 
 
+@pytest.mark.slow
 def test_assembled_layout(assembled):
     for rel in ("index.html", "docs/index.html", "paper/index.html"):
         assert (assembled / rel).is_file(), rel
@@ -590,6 +591,7 @@ def test_math_markers_in_built_pages(assembled):
             assert 'class="arithmatex"' in built, f"{rel}: inline math is not rendered"
 
 
+@pytest.mark.slow
 def test_no_world_lines_in_built_pages(assembled):
     for html in (assembled / "docs").rglob("index.html"):
         assert "world-line" not in html.read_text(), html
@@ -702,6 +704,7 @@ def test_r26_built_docsite_refers_to_no_removed_content(assembled):
     assert not (assembled / "docs" / "generated" / "verification").exists()
 
 
+@pytest.mark.slow
 def test_bare_mkdocs_build_leaves_the_root_site_directory_alone(mkdocs_config, assembled):
     """O-4: the default ``site_dir`` is not the tracked root ``site/`` directory."""
     assert Path(mkdocs_config["site_dir"]).resolve() != SITE.resolve()
@@ -781,6 +784,7 @@ def test_figures_are_few_captioned_and_in_both_colour_schemes():
     assert any(n.startswith("adcs-") for n in names), "an example from the case, on the frozen data"
 
 
+@pytest.mark.slow
 def test_each_figure_is_produced_by_the_code_shown_above_it(tmp_path):
     """The runnable blocks of each page, executed by the figure builder, produce exactly the
     images the page embeds: present, non-blank, and different in the two colour schemes."""
@@ -950,6 +954,7 @@ def test_why_labels_come_from_the_exponents(why_fit):
     assert bsf.colours(W)[trade_all[0]] == bsf.AMBER
 
 
+@pytest.mark.slow
 def test_why_figure_files_have_the_expected_size_and_no_overlay_by_default(tmp_path, why_fit):
     import inspect
 
@@ -1022,6 +1027,7 @@ def _label_boxes(bsf, fit, scheme):
     return boxes
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("scheme", ["light", "dark"])
 def test_why_labels_lie_wholly_inside_their_own_region_and_do_not_overlap(why_fit, scheme):
     import numpy as np
@@ -1049,12 +1055,14 @@ def test_why_labels_lie_wholly_inside_their_own_region_and_do_not_overlap(why_fi
             assert a[2] <= b[0] or b[2] <= a[0] or a[3] <= b[1] or b[3] <= a[1], (i, j)
 
 
+@pytest.mark.slow
 def test_why_label_placement_is_the_same_in_both_schemes(why_fit):
     bsf, fit = why_fit
     light, dark = _label_boxes(bsf, fit, "light"), _label_boxes(bsf, fit, "dark")
     assert light == dark
 
 
+@pytest.mark.slow
 def test_why_image_is_drawn_by_the_package_function(why_fit, monkeypatch):
     """WP18 R-3: one implementation, two consumers; no second projection in the script."""
     import matplotlib.pyplot as plt

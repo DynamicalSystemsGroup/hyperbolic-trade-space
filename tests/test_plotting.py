@@ -237,6 +237,7 @@ def _by_gid(ax, prefix):
     return {int(a.get_gid().rsplit("-", 1)[1]): a for a in found}
 
 
+@pytest.mark.slow
 def test_ternary_markers_sit_at_the_exponent_vectors(planted3):
     X, ts = planted3
     ax = P.plot_ternary(ts, X, lines=True)
@@ -281,6 +282,7 @@ def test_ternary_regions_partition_the_triangle(planted3):
     assert (reg == (a + fit["spread"] * (np.log(pts) @ fit["W"].T)).argmax(axis=1)).all()
 
 
+@pytest.mark.slow
 def test_ternary_lines_are_off_by_default_and_add_contours_and_markers(planted3):
     import inspect
 
@@ -292,6 +294,7 @@ def test_ternary_lines_are_off_by_default_and_add_contours_and_markers(planted3)
     assert _by_gid(plain, "ternary-label-").keys() == {0, 1, 2}  # the regions are named in words
 
 
+@pytest.mark.slow
 def test_ternary_names_schemes_and_ax(planted3):
     X, ts = planted3
     _fig, ax = plt.subplots(figsize=(4, 4))
@@ -334,6 +337,7 @@ def test_ternary_groups_sum_the_exponents_exactly():
         P.plot_ternary(ts, X, names=names, groups=groups)
 
 
+@pytest.mark.slow
 def test_ternary_cubesat_groups_are_the_docs_example_and_the_group_sums_hold():
     """WP18 R-7: the docs' grouping (power, mass, attitude control) is a partition of the ten
     metrics, each facet's grouped vector is the group sum of ``exponents_`` and sums to one, and

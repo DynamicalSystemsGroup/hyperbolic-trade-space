@@ -20,6 +20,7 @@ ALL_PRESENT = all(
 )
 
 
+@pytest.mark.slow
 def test_full_chain_runs():
     ctx, used = run_chain(verbose=False)
     assert "S" in ctx
@@ -27,6 +28,7 @@ def test_full_chain_runs():
         assert name in AX.AXIOMS
 
 
+@pytest.mark.slow
 def test_each_lemma_verifies():
     ctx = {"S": S.make_symbols()}
     for lemma in CHAIN:
@@ -81,6 +83,7 @@ def test_load_bearing_symbol_assumptions_are_declared():
                     )
 
 
+@pytest.mark.slow
 def test_every_used_axiom_resolves_and_all_tags_valid():
     _, used = run_chain(verbose=False)
     for name in used:
@@ -109,6 +112,7 @@ def test_fallbacks_are_declared():
         assert "interpretive role" in out and "failure mode" in out and a.name in out
 
 
+@pytest.mark.slow
 @pytest.mark.skipif(not ALL_PRESENT, reason="needs all ten lemma modules")
 def test_every_axiom_is_used():
     _, used = run_chain(verbose=False)
@@ -517,6 +521,7 @@ _TAU = sp.Rational(3, 2)
 _PARAMS = pytest.mark.parametrize("dnk", _DNK, ids=lambda t: f"d{t[0]}_n{t[1]}_K{t[2]}")
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L1(_ctx_all, dnk):
     S_, r = _ctx_all["S"], _ctx_all["L1"]
@@ -528,6 +533,7 @@ def test_crosscheck_L1(_ctx_all, dnk):
     _eq(_conc(r["V_inv_form"], dnk, S_), 1)
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L2(_ctx_all, dnk):
     S_, r = _ctx_all["S"], _ctx_all["L2"]
@@ -537,6 +543,7 @@ def test_crosscheck_L2(_ctx_all, dnk):
     _eq(_conc(r["J_shifted_reduced"], dnk, S_, ex), J + sp.Rational(7, 3))
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L3(_ctx_all, dnk):
     """dJ (abstract directional derivative) vs exact softmax-weighted form and vs the
@@ -565,6 +572,7 @@ def test_crosscheck_L3(_ctx_all, dnk):
     assert abs(sp.N(fd - dJ, 30)) < 1e-12
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L4(_ctx_all, dnk):
     S_, r = _ctx_all["S"], _ctx_all["L4"]
@@ -587,6 +595,7 @@ def test_crosscheck_L4(_ctx_all, dnk):
     assert var >= 0
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L5(_ctx_all, dnk):
     S_, r = _ctx_all["S"], _ctx_all["L5"]
@@ -604,6 +613,7 @@ def test_crosscheck_L5(_ctx_all, dnk):
     _eq(_conc(r["offset"], dnk, S_, ex), lse - lme)  # LSE - LME = log(n)/tau
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L6(_ctx_all, dnk):
     S_, r = _ctx_all["S"], _ctx_all["L6"]
@@ -619,6 +629,7 @@ def test_crosscheck_L6(_ctx_all, dnk):
     _eq(_conc(r["cumulant"], dnk, S_, ex), _conc(r["target"], dnk, S_, ex))
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L7(_ctx_all, dnk):
     S_, r = _ctx_all["S"], _ctx_all["L7"]
@@ -639,6 +650,7 @@ def test_crosscheck_L7(_ctx_all, dnk):
         _eq(_conc(r["f_star"], dnk, S_, ex), sp.exp(lf))
 
 
+@pytest.mark.slow
 @_PARAMS
 def test_crosscheck_L8(_ctx_all, dnk):
     """Helmert realization of the abstract chart identities (A7 hypotheses and recon)."""
@@ -992,6 +1004,7 @@ def test_L14_partition_regrouping_is_declared_by_A8_not_enumerated_and_not_a_fal
     assert not any("L14" in (a.statement + a.role) for a in AX.fallbacks())
 
 
+@pytest.mark.slow
 def test_L14_fails_loudly_when_premise_or_step_broken():
     for key, bad in (
         ("regroup_swap_equal", False),
@@ -1016,6 +1029,7 @@ def test_L14_fails_loudly_when_premise_or_step_broken():
         mods[14].verify(ctx)
 
 
+@pytest.mark.slow
 def test_wp13_audit_lists_new_axioms_and_headline_names_fallbacks():
     _, used = run_chain(verbose=False)
     for name in ("I8", "I9", "F12", "R2"):
@@ -1059,6 +1073,7 @@ def _run_L15():
     return ctx, mod
 
 
+@pytest.mark.slow
 def test_L15_verifies_and_fails_loudly_when_a_step_is_broken():
     ctx, mod = _run_L15()
     assert ctx["L15"]["nonincreasing"] is True

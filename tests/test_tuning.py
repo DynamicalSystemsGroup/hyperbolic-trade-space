@@ -77,6 +77,7 @@ def test_step_function_gives_warning_when_tol_unreachable():
     assert np.isfinite(tau)
 
 
+@pytest.mark.slow
 def test_several_terms_unreachable_target_says_what_to_try():
     """WP10 item 21: at K > 1 the facets are not supporting planes, so frac_above_ levels off
     above zero; the default target is out of reach here and the message says what to try."""

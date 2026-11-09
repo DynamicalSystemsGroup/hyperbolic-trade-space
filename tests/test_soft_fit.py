@@ -19,6 +19,9 @@ from scipy.optimize import linear_sum_assignment
 from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
 from hyperbolic_trade_space import solvers as S
 
+# Slow module: shared fixtures cost minutes (verification in tiers); not in the fast suite.
+pytestmark = pytest.mark.slow
+
 REFERENCE = Path(__file__).parent / "data" / "soft_fit_default_reference.npz"
 TERM_NUM = (
     "n_iter", "sum_residual", "floor_residual", "offset_residual", "max_gap", "bound",
@@ -80,6 +83,7 @@ def test_r2_default_planted_fits_equal_the_recording(name, reference):
         _same(f"{name}/{k}", v, reference[f"{name}/{k}"])
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("regime", ["primary", "stock"])
 def test_r2_default_cubesat_fits_equal_the_recording(regime, reference):
     import case as C
@@ -144,12 +148,14 @@ def bench():
     return out
 
 
+@pytest.mark.slow
 def test_r5_recovery_at_kappa_equals_tau_is_no_worse(bench):
     hard = sum(_recovered(h, i) for _, i, h, _ in bench)
     soft = sum(_recovered(s, i) for _, i, _, s in bench)
     assert hard == 16 and soft >= hard
 
 
+@pytest.mark.slow
 def test_r1_the_soft_objective_never_rises_across_the_history(bench):
     for X, _, _, soft in bench:
         r = S.solve_terms(np.log(X), 3, TAU, random_state=0, term_temperature=TAU)
@@ -176,6 +182,7 @@ def test_r7_the_benchmark_tables_are_certified(bench):
         assert t.shares.sum() == pytest.approx(1.0)
 
 
+@pytest.mark.slow
 def test_r6_analysis_stays_analysis(bench):
     for X, _, _, soft in bench[:6]:
         U = np.log(X)
@@ -185,6 +192,7 @@ def test_r6_analysis_stays_analysis(bench):
         assert soft.facet_share_.sum() == pytest.approx(1.0)
 
 
+@pytest.mark.slow
 def test_r3_the_limit_kappa_to_infinity_is_the_label_fit():
     X, _ = make_frontier_data(400, 4, n_terms=3, random_state=4)
     kw = {"n_terms": 3, "temperature": TAU, "random_state": 0}
@@ -280,6 +288,7 @@ def test_r7_a_soft_fit_with_a_penalty_is_not_applicable():
     assert est.termination_.status == "not_applicable"
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("regime", ["primary", "stock"])
 def test_r7_the_cubesat_fits_at_kappa_equal_tau_are_certified(regime):
     import case as C
