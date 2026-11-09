@@ -51,7 +51,17 @@ def derive(ctx):
     # [L2.2] A1, A2, A3: log(e^{tau c} X) = tau c + log X for the positive sum X, then / tau
     shifted_lin = log_expand(sp.log(total / n), A1, A2, A3) / tau
 
+    # the corollary: the shift J_tau(w; U + c 1^T) - J_tau(w; U), for any w, and two values of J
+    # [L2.3] A1, A2, A3: the shift amount J(w; U + c 1^T) - J(w; U) after the Sum algebra
+    shift_amount = sp.simplify(
+        log_expand(sp.expand(shifted_lin) - log_expand(base, A1, A2, A3), A1, A2, A3)
+    )
+    Jw, Jw2 = sp.symbols("J_w J_w2", real=True)  # J_tau(w; U) and J_tau(w'; U), any two weights
+
     ctx["L2"] = {
+        "shift_amount": shift_amount,
+        "J_w": Jw,
+        "J_w2": Jw2,
         "J": base,
         "J_shifted": shifted,
         "term_diff": term_ok,
@@ -63,12 +73,24 @@ def derive(ctx):
 def verify(ctx):
     S = ctx["S"]
     r = ctx["L2"]
-    # [L2.3] per term, tau sum_j w_j (u_ij + c) - (tau s_i + tau c) is 0
+    # [L2.4] per term, tau sum_j w_j (u_ij + c) - (tau s_i + tau c) is 0
     assert r["term_diff"] == 0, "L2 FAIL: per-term shift tau*(s_i + c) not obtained from simplex"
     # J(U + c) after Sum algebra equals J(U) + c.
     lhs = r["J_shifted_reduced"]
-    # [L2.4] J_tau(U + c 1^T) - (J_tau(U) + c) is 0 after the Sum algebra (logs: A1, A2, A3)
+    # [L2.5] J_tau(U + c 1^T) - (J_tau(U) + c) is 0 after the Sum algebra (logs: A1, A2, A3)
     assert (
         sp.simplify(log_expand(lhs - sp.expand(log_expand(r["J"], A1, A2, A3) + S.c), A1, A2, A3))
         == 0
     ), "L2 FAIL: J(U + c1^T) - (J(U) + c) != 0"
+    # Corollary: beta = J_tau(w*; U) shifts by c, and w* is unchanged.
+    shift, Jw, Jw2 = r["shift_amount"], r["J_w"], r["J_w2"]
+    # [L2.6] beta shifts by c: the shift amount of J(w*; .) is c
+    assert sp.simplify(shift - S.c) == 0, "L2 FAIL: beta does not shift by c"
+    # [L2.7] for any weights w, w' the gap of the shifted objective equals the unshifted gap
+    assert sp.simplify(((Jw2 + shift) - (Jw + shift)) - (Jw2 - Jw)) == 0, (
+        "L2 FAIL: the shift does not cancel in the gap J(w') - J(w)"
+    )
+    # [L2.8] so J(w') >= J(w) for every w' exactly when the shifted J(w') >= J(w) does: w* unchanged
+    assert sp.Ge((Jw2 + shift) - (Jw + shift), 0) == sp.Ge(Jw2 - Jw, 0), (
+        "L2 FAIL: the minimizer moved under the shift"
+    )

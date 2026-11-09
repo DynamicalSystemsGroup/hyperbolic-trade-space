@@ -7,6 +7,7 @@ No concrete sizes appear here.
 """
 
 import sympy as sp
+from sympy.logic.inference import satisfiable
 
 from derivation.licence import log_expand
 from derivation.symbols import J0
@@ -31,6 +32,11 @@ def linear(expr):
         lambda e: isinstance(e, sp.Sum) and len(e.limits) == 1,
         lambda e: _split(e.function, e.limits[0]),
     )
+
+
+def entails(premises, goal):
+    """True iff the Boolean ``premises`` force ``goal``: its negation is unsatisfiable (SymPy)."""
+    return not satisfiable(sp.And(*premises, sp.Not(goal)))
 
 
 def product_to_exp_sum(prod, *licences):

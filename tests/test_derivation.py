@@ -983,12 +983,12 @@ def test_L14_statement_scopes_level_three_to_step_b_unpenalized_support_offsets(
     assert "fitted reference surface" in s
 
 
-def test_L14_partition_regrouping_is_stated_not_enumerated_and_not_a_fallback():
+def test_L14_partition_regrouping_is_declared_by_A8_not_enumerated_and_not_a_fallback():
     import inspect
 
     mod = _il.import_module("derivation.lemma_14_assignment_stable")
     src = inspect.getsource(mod)
-    assert "symbolic partition" in src and "one-line finite-sum argument" in src
+    assert "A8" in mod.AXIOMS_USED and "declared relation A8" in src
     assert not any("L14" in (a.statement + a.role) for a in AX.fallbacks())
 
 

@@ -20,6 +20,7 @@ import hashlib
 from dataclasses import dataclass
 
 import sympy as sp
+from sympy.logic.inference import satisfiable
 from sympy.matrices.expressions import Identity, OneMatrix, ZeroMatrix
 from sympy.stats import Normal
 
@@ -77,6 +78,17 @@ _PV, _DV = sp.symbols("v_primal v_dual", real=True)  # I1: the optimal LP primal
 _MSUM = sp.Symbol("Mgf_sum", real=True)  # I5: the MGF of the independent sum
 _MG1 = sp.Function("Mgf1")  # I5: the single-variable MGF, applied at tau w_j
 
+_gr = sp.IndexedBase("gr")  # I10: the gradient components g_j of the objective at the minimizer
+_lam = sp.Symbol(
+    "lambda", real=True
+)  # I10: the multiplier of the equality constraint sum_j w_j = 1
+_mu = sp.IndexedBase("mu", nonnegative=True)  # I10: the multipliers of w_j >= 0
+_P_LINE = sp.Symbol("second_derivative_nonneg_on_every_line")  # I11 premise
+_Q_CONVEX = sp.Symbol("convex")  # I11 conclusion
+_chi = sp.IndexedBase("chi", nonnegative=True)  # A8: chi[k, i] = 1 when row i lies in cell k
+_ncell = sp.IndexedBase("ncell")  # A8: n_k, the number of rows of cell k
+_NROWS = sp.Symbol("N", integer=True, positive=True)  # A8: the number of rows
+
 _GT, _GE, _LE = sp.StrictGreaterThan, sp.GreaterThan, sp.LessThan
 
 
@@ -88,7 +100,12 @@ def _rule_one(expr, rel):
             lambda e: isinstance(e, sp.Indexed) and e.base == lhs.base,
             lambda e: rhs.xreplace(dict(zip(lhs.indices, e.indices, strict=True))),
         )
-    return expr.subs(lhs, rhs)
+    out = expr.subs(lhs, rhs)
+    # the relation holds for every index: also inside a Sum whose bound variable is the relation's
+    return out.replace(
+        lambda e: isinstance(e, sp.Sum),
+        lambda e: sp.Sum(e.function.subs(lhs, rhs), *e.limits),
+    )
 
 
 @dataclass(frozen=True)
@@ -133,16 +150,23 @@ class Axiom:
         return hashlib.sha256("\x1f".join(parts).encode()).hexdigest()
 
     # ---- applying the entry in a proof step -------------------------------------------------
-    def rewrite(self, expr, rename=None):
+    def rewrite(self, expr, rename=None, only=None):
         """Apply the entry's equations to ``expr`` as rewrite rules (left side to right side).
 
         ``rename`` maps a symbol or family of the form to the one the proof uses (for example
-        the simplex family w to a nonnegative stand-in family wn).
+        the simplex family w to a nonnegative stand-in family wn); ``only`` selects equations by
+        position.
         """
-        for rel in self.relations():
-            if isinstance(rel, sp.Eq):
+        for position, rel in enumerate(self.relations()):
+            if isinstance(rel, sp.Eq) and (only is None or position in only):
                 expr = _rule_one(expr, rel.xreplace(rename) if rename else rel)
         return expr
+
+    def entails(self, facts, goal):
+        """True iff the entry's relations and the ``facts`` (Boolean) logically force ``goal``:
+        a propositional step that SymPy checks by showing the negated goal unsatisfiable."""
+        premises = [r for r in self.relations() if isinstance(r, (sp.Implies, sp.Equivalent))]
+        return not satisfiable(sp.And(*premises, *facts, sp.Not(goal)))
 
     def rule(self, index):
         """(left side, right side) of the entry's ``index``-th equation."""
@@ -300,6 +324,20 @@ AXIOMS = {
             sp.Eq(_S.B * _ONE, ZeroMatrix(_S.d - 1, 1)),
         ),
     ),
+    "A8": Axiom(
+        "A8",
+        POSITED,
+        "the cells C_1..C_K partition the N rows: every row lies in exactly one cell "
+        "(chi_ki = 1 when row i is in cell k, sum_k chi_ki = 1, chi_ki >= 0), and the cell "
+        "counts n_k = sum_i chi_ki are at least 1 (every facet is nonempty)",
+        relation=(
+            sp.Eq(sp.Sum(_chi[_k, _i], (_k, 1, _S.K)), 1),
+            _GE(_chi[_k, _i], 0, evaluate=False),
+            sp.Eq(_ncell[_k], sp.Sum(_chi[_k, _i], (_i, 1, _NROWS))),
+            _GE(_ncell[_k], 1, evaluate=False),
+        ),
+        objects=(("membership", _chi), ("count", _ncell), ("rows", _NROWS)),
+    ),
     # -------------------------------------------------------------- INHERITED
     "I1": Axiom(
         "I1",
@@ -391,6 +429,64 @@ AXIOMS = {
         "design vector",
         relation=(_LE(sp.Abs(_ab), _na * _nb, evaluate=False),),
     ),
+    "I10": Axiom(
+        "I10",
+        INHERITED,
+        "first-order (KKT) necessary conditions at a minimizer w of a differentiable f on the "
+        "simplex {w >= 0, sum_j w_j = 1}: there are lambda and mu_j >= 0 with "
+        "g_j - lambda - mu_j = 0 (g = grad f(w)) and w_j mu_j = 0. The constraints are affine, so "
+        "for a convex f (J_tau, L4) Slater's condition needs only feasibility and strong duality "
+        "holds, which makes the conditions necessary",
+        citation="Boyd & Vandenberghe, Convex Optimization, sections 5.5.3 (KKT optimality "
+        "conditions) and 5.2.3 (strong duality and Slater's constraint qualification)",
+        role="turns stationarity of the soft-maximum objective on the simplex into the "
+        "multiplier equations of L3: equal gradient components where no bound is active, and "
+        "g_j >= lambda with complementary slackness in general",
+        failure_mode="for a nonconvex objective the conditions need a constraint qualification "
+        "the citation does not supply (they still hold for linear constraints, but that is not "
+        "the cited text); the application here is to the convex J_tau",
+        relation=(
+            sp.Eq(_gr[_j] - _lam - _mu[_j], 0),
+            _GE(_mu[_j], 0, evaluate=False),
+            sp.Eq(_S.w[_j] * _mu[_j], 0),
+        ),
+        objects=(("gradient", _gr), ("lambda", _lam), ("mu", _mu)),
+    ),
+    "I11": Axiom(
+        "I11",
+        INHERITED,
+        "a function is convex if and only if its restriction to every line is convex, and a "
+        "twice differentiable function of one variable is convex if and only if its second "
+        "derivative is nonnegative: convexity is nonnegativity of the second derivative along "
+        "every line",
+        citation="Boyd & Vandenberghe, Convex Optimization, sections 3.1.1 (restriction to a "
+        "line) and 3.1.4 (second-order conditions)",
+        role="lets L4 conclude that J_tau is convex from the sign of its second directional "
+        "derivative at an arbitrary point in an arbitrary direction",
+        failure_mode="none for a twice differentiable function on an open convex domain, as "
+        "J_tau is on R^d",
+        relation=(sp.Equivalent(_P_LINE, _Q_CONVEX),),
+        objects=(("premise", _P_LINE), ("conclusion", _Q_CONVEX)),
+    ),
+    "I12": Axiom(
+        "I12",
+        INHERITED,
+        "complementary slackness of the LP pair at tau = infinity: the dual weights p are "
+        "supported on the rows whose score attains the maximum M, p_i (M - s_i) = 0 for every "
+        "row i, with s_i = w.u_i",
+        citation="Boyd & Vandenberghe, Convex Optimization, section 5.5.2 (complementary "
+        "slackness)",
+        role="gives the termwise zero p_i (M - s_i) = 0 that turns the LP duality gap into the "
+        "simplex gap G of a facet at tau = infinity",
+        failure_mode="holds for an optimal primal-dual pair (and by construction for any p "
+        "supported on the active rows); for a p with weight on a non-active row the gap is not G",
+        relation=(
+            sp.Eq(
+                _S.p[_i] * (_S.M - sp.Sum(_S.w[_j] * _S.u[_i, _j], (_j, 1, _S.d))),
+                0,
+            ),
+        ),
+    ),
     # ------------------------------------------------------------- REGULARITY
     "R1": Axiom(
         "R1",
@@ -409,7 +505,7 @@ AXIOMS = {
         "the minimizer on the simplex boundary even when the hard-support geometry is balanced, "
         "and then only the full simplex KKT (g_j >= lambda, w_j (g_j - lambda) = 0) holds, with "
         "equal gradients on the positive-weight coordinates only",
-        proposition=True,
+        relation=(_GT(_S.w[_j], 0, evaluate=False),),  # the balanced point has w_j > 0
     ),
     "R2": Axiom(
         "R2",
@@ -483,6 +579,7 @@ A4 = AXIOMS["A4"]
 A5 = AXIOMS["A5"]
 A6 = AXIOMS["A6"]
 A7 = AXIOMS["A7"]
+A8 = AXIOMS["A8"]
 I1 = AXIOMS["I1"]
 I2 = AXIOMS["I2"]
 I3 = AXIOMS["I3"]
@@ -492,6 +589,9 @@ I6 = AXIOMS["I6"]
 I7 = AXIOMS["I7"]
 I8 = AXIOMS["I8"]
 I9 = AXIOMS["I9"]
+I10 = AXIOMS["I10"]
+I11 = AXIOMS["I11"]
+I12 = AXIOMS["I12"]
 R1 = AXIOMS["R1"]
 R2 = AXIOMS["R2"]
 F5 = AXIOMS["F5"]

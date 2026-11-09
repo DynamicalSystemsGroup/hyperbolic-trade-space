@@ -130,8 +130,8 @@ def test_a_result_sharing_a_file_owns_its_own_steps():
     owners = {s["tag"]: s["result"] for s in lemma["steps"]}
     assert set(owners.values()) == {"Proposition 3", "Corollary 4"}
     assert len({s["tag"] for s in lemma["steps"]}) == len(lemma["steps"])
-    assert owners["L14.8"] == owners["L14.9"] == "Corollary 4"
-    assert owners["L14.4"] == "Proposition 3"
+    assert owners["L14.18"] == owners["L14.19"] == "Corollary 4"
+    assert owners["L14.10"] == "Proposition 3"
 
 
 # ----------------------------------- each kind of breakage makes the checker fail, naming the step
@@ -141,41 +141,41 @@ def test_a_changed_script_step_fails_naming_the_step(scratch):
     edit(scratch, "lemma_02_shift.py", 'assert r["term_diff"] == 0,', 'assert r["term_diff"] == 1,')
     code, out = run_checker(scratch)
     assert code != 0
-    assert "lemma_02_shift.py L2.3" in out and "script line changed" in out
-    assert "L2.4" not in out  # only the broken step is named
+    assert "lemma_02_shift.py L2.4" in out and "script line changed" in out
+    assert "L2.5" not in out  # only the broken step is named
 
 
 def test_a_changed_prose_step_fails_naming_the_step(scratch):
     edit(
         scratch,
         "lemma_02_shift.py",
-        "# [L2.3] per term, tau sum_j w_j (u_ij + c) - (tau s_i + tau c) is 0",
-        "# [L2.3] per term, the shift is absorbed",
+        "# [L2.4] per term, tau sum_j w_j (u_ij + c) - (tau s_i + tau c) is 0",
+        "# [L2.4] per term, the shift is absorbed",
     )
     code, out = run_checker(scratch)
     assert code != 0
-    assert "lemma_02_shift.py L2.3" in out and "prose changed" in out
+    assert "lemma_02_shift.py L2.4" in out and "prose changed" in out
 
 
 def test_swapped_tags_fail_naming_the_steps(scratch):
-    edit(scratch, "lemma_02_shift.py", "# [L2.3] per term", "# [L2.4] per term")
-    edit(scratch, "lemma_02_shift.py", "# [L2.4] J_tau(U", "# [L2.3] J_tau(U")
+    edit(scratch, "lemma_02_shift.py", "# [L2.4] per term", "# [L2.5] per term")
+    edit(scratch, "lemma_02_shift.py", "# [L2.5] J_tau(U", "# [L2.4] J_tau(U")
     code, out = run_checker(scratch)
     assert code != 0
-    assert "lemma_02_shift.py L2.4" in out and "out of order" in out
-    assert "lemma_02_shift.py L2.3" in out
+    assert "lemma_02_shift.py L2.5" in out and "out of order" in out
+    assert "lemma_02_shift.py L2.4" in out
 
 
 def test_a_duplicate_tag_fails(scratch):
-    edit(scratch, "lemma_02_shift.py", "# [L2.4] J_tau(U", "# [L2.3] J_tau(U")
+    edit(scratch, "lemma_02_shift.py", "# [L2.5] J_tau(U", "# [L2.4] J_tau(U")
     code, out = run_checker(scratch)
-    assert code != 0 and "lemma_02_shift.py L2.3" in out and "duplicate tag" in out
+    assert code != 0 and "lemma_02_shift.py L2.4" in out and "duplicate tag" in out
 
 
 def test_a_gap_in_the_numbering_fails(scratch):
-    edit(scratch, "lemma_02_shift.py", "# [L2.4] J_tau(U", "# [L2.5] J_tau(U")
+    edit(scratch, "lemma_02_shift.py", "# [L2.5] J_tau(U", "# [L2.9] J_tau(U")
     code, out = run_checker(scratch)
-    assert code != 0 and "lemma_02_shift.py L2.5" in out and "out of order" in out
+    assert code != 0 and "lemma_02_shift.py L2.9" in out and "out of order" in out
 
 
 def test_a_lemma_with_zero_tags_fails(scratch):
@@ -203,7 +203,7 @@ def test_removing_a_tag_from_a_step_fails(scratch):
     edit(
         scratch,
         "lemma_02_shift.py",
-        "    # [L2.3] per term, tau sum_j w_j (u_ij + c) - (tau s_i + tau c) is 0\n",
+        "    # [L2.4] per term, tau sum_j w_j (u_ij + c) - (tau s_i + tau c) is 0\n",
         "",
     )
     code, out = run_checker(scratch)
@@ -281,11 +281,11 @@ def test_the_order_of_steps_in_the_file_is_the_tag_order(scratch):
     """Moving a tagged line past its successor reorders the steps, so the tags are out of order."""
     path = scratch / "lemma_02_shift.py"
     text = path.read_text()
-    a = re.search(r"    # \[L2\.3\].*\n.*\n.*\n.*\n", text)  # the L2.3 comment and its assert
+    a = re.search(r"    # \[L2\.4\].*\n.*\n.*\n.*\n", text)  # the L2.4 comment and its assert
     assert a
     block3 = a.group(0)
     text = text.replace(block3, "", 1)
-    # put the L2.3 block after the last step (the end of verify)
+    # put the L2.4 block after the last step (the end of verify)
     path.write_text(text.rstrip("\n") + "\n" + block3)
     code, out = run_checker(scratch)
     assert code != 0 and "lemma_02_shift.py" in out
@@ -304,14 +304,14 @@ def test_update_rewrites_the_record_and_prints_the_steps_that_moved(scratch):
     code, _ = run_checker(scratch)
     assert code != 0  # drift is not silent
     code, out = run_checker(scratch, "--update")
-    assert code == 0 and "lemma_02_shift.py L2.3" in out  # the diff names exactly the moved step
-    assert "L2.4" not in out
+    assert code == 0 and "lemma_02_shift.py L2.4" in out  # the diff names exactly the moved step
+    assert "L2.5" not in out
     code, out = run_checker(scratch)
     assert code == 0, out
 
 
 def test_update_refuses_a_broken_proof_map(scratch):
-    edit(scratch, "lemma_02_shift.py", "# [L2.4] J_tau(U", "# [L2.3] J_tau(U")
+    edit(scratch, "lemma_02_shift.py", "# [L2.5] J_tau(U", "# [L2.4] J_tau(U")
     code, out = run_checker(scratch, "--update")
     assert code != 0 and "not updated" in out
 
@@ -459,3 +459,107 @@ def test_L6_MGF_product_comes_from_I5():
     assert isinstance(prod, sp.Product) and prod.limits[0] == (_S.j, 1, _S.d)
     assert I5.specialize(Other=lambda a: a) == I5.specialize()  # the product is the entry's form
     del t
+
+
+# ------------- step 2 (WP10 Amendment 2): the steps that were prose are lines; negative controls
+# The inherited and declared entries are applied by import; each control withholds the entry (or
+# falsifies the fact the step rests on) and the step has no conclusion, as with I6 in L8.
+
+from derivation.axioms import A8, I10, I11, I12, R1  # noqa: E402
+from derivation.run import run_chain  # noqa: E402
+
+
+@pytest.fixture(scope="module")
+def chain_ctx():
+    ctx, _ = run_chain(verbose=False)
+    return ctx
+
+
+def test_new_entries_carry_a_form_and_a_verified_citation():
+    for name, section in (("I10", "5.5.3"), ("I11", "3.1.4"), ("I12", "5.5.2")):
+        entry = AX.get(name)
+        assert entry.tag == AX.INHERITED and entry.has_form() and not entry.proposition
+        assert "Boyd & Vandenberghe" in entry.citation and section in entry.citation
+    assert AX.get("A8").tag == AX.POSITED and AX.get("A8").relations()
+
+
+def test_L3_KKT_conditions_come_from_I10_and_the_balance_needs_R1():
+    wp, mu = R1.positive_symbol("wp"), I10.obj("mu")
+    assert wp.is_nonzero is True
+    zero = sp.simplify(I10.rule(2)[1] / wp)
+    assert zero == 0 and I10.rule(2)[0] == _S.w[_S.j] * mu[_S.j]
+    weak = I10.nonneg_symbol("wq")  # a coordinate that may be 0 (no R1): mu_j = 0 is not forced
+    assert weak.is_nonzero is not True
+    with pytest.raises(LicenceError):
+        A2.positive_symbol("wp")  # A2 declares only w_j >= 0; only R1 licenses a positive wp
+    # complementary slackness applied termwise is the zero sum; without I10 the sum is not zero
+    w, gr, lam = _S.w, I10.obj("gradient"), I10.obj("lambda")
+    body = sp.Sum(w[_S.j] * (sp.solve(I10.rule(0)[0], gr[_S.j])[0] - lam), (_S.j, 1, _S.d))
+    assert I10.rewrite(body, only=(2,)).doit() == 0
+    assert body.doit() != 0
+
+
+def test_L3_the_balanced_step_fails_without_R1(chain_ctx):
+    import derivation.lemma_03_gradient_kkt as L3
+
+    ctx = dict(chain_ctx)
+    ctx["L3"] = dict(chain_ctx["L3"])
+    ctx["L3"]["KKT_boundary"] = dict(chain_ctx["L3"]["KKT_boundary"], positive_case_solution=[])
+    with pytest.raises(IndexError):  # no multiplier is forced to 0, so no balanced conclusion
+        L3.verify(ctx)
+
+
+def test_L4_convexity_needs_I11_and_the_sign_of_the_second_derivative():
+    P, Q = I11.obj("premise"), I11.obj("conclusion")
+    assert I11.entails([sp.Equivalent(P, sp.true)], Q)
+    assert not I11.entails([sp.Equivalent(P, sp.false)], Q)  # no sign, no convexity
+    assert not I11.entails([], Q)
+
+
+def test_L12_termwise_zero_needs_I12_and_the_support(chain_ctx):
+    r = chain_ctx["L12"]
+    assert r["support_zero"] == 0
+    support = sp.Sum(
+        _S.p[_S.i] * (_S.M - sp.Sum(_S.w[_S.j] * _S.u[_S.i, _S.j], (_S.j, 1, _S.d))),
+        (_S.i, 1, _S.n),
+    )
+    assert I12.rewrite(support).doit() == 0
+    assert support.doit() != 0  # without the entry the sum is not 0
+
+
+def test_L14_regrouping_needs_the_partition_relation_A8(chain_ctx):
+    r = chain_ctx["L14"]
+    assert r["rows_to_cells"] == (0, 2) and r["cells_swap_equal"] and r["cell_regroup_ok"]
+    assert r["F_regroup"] == 0
+    chi, i, k, K = A8.obj("membership"), _S.i, _S.k, _S.K
+    row_count = sp.Sum(chi[k, i], (k, 1, K))
+    assert A8.rewrite(row_count, only=(0,)) == 1 and row_count != 1  # one cell per row, by A8
+    # an A8-free count has no value, so the share is not nonnegative without the entry
+    free = sp.IndexedBase("c")
+    assert sp.Sum(free[k, i], (i, 1, A8.obj("rows"))).is_nonnegative is not True
+    assert A8.rewrite(A8.obj("count")[k] / A8.obj("rows"), only=(2,)).is_nonnegative is True
+
+
+@pytest.mark.parametrize(
+    ("module", "key", "tamper", "message"),
+    [
+        ("lemma_02_shift", "L2", lambda r: r.update(shift_amount=r["shift_amount"] + 1), "L2 FAIL"),
+        ("lemma_05_lse_lme", "L5", lambda r: r.update(other=sp.Integer(0)), "L5 FAIL"),
+        (
+            "lemma_11_pareto",
+            "L11",
+            lambda r: r.update(deductions=dict(r["deductions"], dominance_gains=sp.true)),
+            "L11 FAIL",
+        ),
+        ("lemma_12_facet_gap", "L12", lambda r: r.update(support_zero=sp.Integer(1)), "L12 FAIL"),
+        ("lemma_14_assignment_stable", "L14", lambda r: r.update(F_regroup=1), "L14 FAIL"),
+    ],
+)
+def test_a_falsified_fact_breaks_the_step_that_rests_on_it(chain_ctx, module, key, tamper, message):
+    import importlib
+
+    mod = importlib.import_module(f"derivation.{module}")
+    ctx = {k: (dict(v) if isinstance(v, dict) else v) for k, v in chain_ctx.items()}
+    tamper(ctx[key])
+    with pytest.raises(AssertionError, match=message):
+        mod.verify(ctx)

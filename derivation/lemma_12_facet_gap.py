@@ -21,7 +21,8 @@ What this proves (symbolic d, plain SymPy):
      f(w) - f* >= 0 because f* is the minimum: 0 <= f(w) - f* <= G.
   5. tau = infinity.  f_k is piecewise linear, g = U_c^T p for any p on the simplex supported on
      the active rows (p_i (M - s_i) = 0), with U_c the rows centred at ubar_k.  Sum swap (L3's
-     device) and sum_i p_i = 1 give g.w = sum_i p_i s_i - ubar.w = M - ubar.w = f(w), so G = f(w) -
+     device) and sum_i p_i = 1 give g.w = sum_i p_i s_i - ubar.w = M - ubar.w = f(w), where the
+     termwise zero p_i (M - s_i) = 0 is I12 applied to each summand, so G = f(w) -
      min_j (U_c^T p)_j is the primal objective minus the dual objective of the LP: the LP duality
      gap (I1), zero at an optimal primal-dual pair.  An exact two-metric LP checks it.
 
@@ -36,7 +37,7 @@ the finite-tau formula at tau = infinity (there the gap needs the LP duals).
 
 import sympy as sp
 
-from derivation.axioms import A2, F12, I1, I8
+from derivation.axioms import A2, F12, I1, I8, I12
 from derivation.sumtools import fuse, linear, push_in, sum_swap_equal
 from derivation.sumtools import piece_in_range as delta_branch
 from derivation.symbols import J0
@@ -50,7 +51,7 @@ STATEMENT = (
     "this is the stopping certificate of a facet; for the tau = inf supporting envelope, with the "
     "LP duals p, G is the LP duality gap (I1)"
 )
-AXIOMS_USED = ["A2", "I1", "I8", "F12"]
+AXIOMS_USED = ["A2", "I1", "I8", "I12", "F12"]
 
 
 def derive(ctx):
@@ -111,8 +112,13 @@ def derive(ctx):
     lhs_swap = sp.Sum(w[j] * sp.Sum(p[i] * u[i, j], (i, 1, n)), lim)
     rhs_swap = sp.Sum(p[i] * s_row(i), (i, 1, n))
     swap_equal = sum_swap_equal(fuse(push_in(lhs_swap)), fuse(push_in(rhs_swap)))
-    support = sp.Sum(p[i] * (M - s_row(i)), (i, 1, n))  # termwise zero: p_i > 0 => s_i = M
+    support = sp.Sum(p[i] * (M - s_row(i)), (i, 1, n))
+    # [L12.6] I12: complementary slackness p_i (M - s_i) = 0 applied to each summand: the sum is 0
+    support_zero = I12.rewrite(support).doit()
     support_reduced = linear(support).subs(sp.Sum(p[i], (i, 1, n)), 1)
+    ps = sp.Sum(p[i] * s_row(i), (i, 1, n))
+    ubw = sp.Sum(w[j] * ubj[j], lim)
+    uc_p = sp.Sum(p[i] * (u[i, j] - ubj[j]), (i, 1, n))  # (U_c^T p)_j, the centred rows
     g_dot_w = sp.Sum(w[j] * (sp.Sum(p[i] * u[i, j], (i, 1, n)) - ubj[j]), lim)
     g_dot_w_split = linear(g_dot_w)
 
@@ -130,7 +136,7 @@ def derive(ctx):
     p_opt = sp.Matrix([R(1, 2), R(1, 2)])
     w_off = sp.Matrix([1, 0])
     p_off = sp.Matrix([1, 0])  # supported on the active row 1 of U_c w_off = (1, -1)
-    # [L12.6] exact two-metric LP: primal and dual values and gaps at an optimal pair and off it
+    # [L12.7] exact two-metric LP: primal and dual values and gaps at an optimal pair and off it
     lp = dict(
         primal_at_optimum=f_lp(w_opt),
         dual_at_optimum=dual(p_opt),
@@ -161,6 +167,10 @@ def derive(ctx):
         lower_nonneg=lower_nonneg,
         swap_equal=swap_equal,
         support_reduced=support_reduced,
+        support_zero=support_zero,
+        ps=ps,
+        ubw=ubw,
+        uc_p=uc_p,
         g_dot_w_split=g_dot_w_split,
         lhs_swap=lhs_swap,
         lp=lp,
@@ -180,67 +190,82 @@ def verify(ctx):
     r = ctx["L12"]
 
     # 1. convexity of f = J_tau - linear: L4's second derivative is untouched by the linear part
-    # [L12.7] L4 established that J_tau is convex along every line
+    # [L12.8] L4 established that J_tau is convex along every line
     assert ctx["L4"].get("convex") is True, "L12 FAIL: L4 convexity of J_tau not established"
-    # [L12.8] the linear part has second directional derivative 0
+    # [L12.9] the linear part has second directional derivative 0
     assert r["second_linear"] == 0, "L12 FAIL: the linear part has a nonzero second derivative"
-    # [L12.9] hence f_k = J_tau - linear is convex
+    # [L12.10] hence f_k = J_tau - linear is convex
     assert r["convex"] is True, "L12 FAIL: f_k is not convex"
 
     # 2. g.v - m = sum_j v_j (g_j - m) >= 0 on the simplex; attained at e_{j0} (F12: g_{j0} = m)
-    # [L12.10] g.v - m = sum_j v_j (g_j - m) on the simplex
+    # [L12.11] g.v - m = sum_j v_j (g_j - m) on the simplex
     assert sp.simplify(r["gv_minus_m"] - r["gv_rhs"]) == 0, (
         "L12 FAIL: g.v - m != sum_j v_j (g_j - m)"
     )
-    # [L12.11] every summand v_j (g_j - m) is >= 0, so g.v >= m on the simplex
+    # [L12.12] every summand v_j (g_j - m) is >= 0, so g.v >= m on the simplex
     assert r["gap_nonneg"] is True, "L12 FAIL: sum_j v_j (g_j - m) is not nonnegative"
     att = delta_branch(r["vertex"], S)
-    # [L12.12] F12: the bound is attained at the vertex e_j0: g.e_j0 = g_j0 = m
+    # [L12.13] F12: the bound is attained at the vertex e_j0: g.e_j0 = g_j0 = m
     assert sp.simplify(att.subs(*F12.rule(1)) - r["m"]) == 0, "L12 FAIL: g.e_{j0} != m"
-    # [L12.13] G = g.w - m = sum_j w_j (g_j - m)
+    # [L12.14] G = g.w - m = sum_j w_j (g_j - m)
     assert sp.simplify(r["G_expr"] - sp.Sum(r["wn"][j] * r["gm"][j], lim)) == 0
-    # [L12.14] lambda - min g = w.g - m = G
+    # [L12.15] lambda - min g = w.g - m = G
     assert sp.simplify(r["lam_minus_m"] - r["G_expr"]) == 0, (
         "L12 FAIL: lambda - min g != G (lambda = w.g)"
     )
 
     # 3. G = 0 iff every term w_j (g_j - m) is 0: nonnegative terms that sum to 0 vanish
-    # [L12.15] nonnegative terms that sum to 0: a + r = 0 gives a = -r
+    # [L12.16] nonnegative terms that sum to 0: a + r = 0 gives a = -r
     assert r["zero_sol"] == [-r["r_t"]], "L12 FAIL: a + r = 0 does not give a = -r"
-    # [L12.16] with r >= 0, a = -r is <= 0
+    # [L12.17] with r >= 0, a = -r is <= 0
     assert (-r["r_t"]).is_nonpositive is True
-    # [L12.17] a >= 0 and a <= 0 force a = 0: G = 0 only if every term w_j (g_j - m) is 0
+    # [L12.18] a >= 0 and a <= 0 force a = 0: G = 0 only if every term w_j (g_j - m) is 0
     assert r["kkt_squeeze"] == sp.FiniteSet(0), "L12 FAIL: termwise vanishing not forced"
 
     # 4. 0 <= f(w) - f* <= G
-    # [L12.18] G - (f(w) - f*) = a + b, the I8 slack plus the minimum slack
+    # [L12.19] G - (f(w) - f*) = a + b, the I8 slack plus the minimum slack
     assert sp.simplify(r["chain_slack"]) == 0, "L12 FAIL: G - (f - f*) != a + b"
-    # [L12.19] a >= 0 (I8) and b >= 0 (step 2), so G - (f(w) - f*) >= 0
+    # [L12.20] a >= 0 (I8) and b >= 0 (step 2), so G - (f(w) - f*) >= 0
     assert r["chain_nonneg"] is True, "L12 FAIL: a + b is not nonnegative"
-    # [L12.20] f(w) - f* >= 0 because f* is the minimum
+    # [L12.21] f(w) - f* >= 0 because f* is the minimum
     assert r["lower_nonneg"] is True, "L12 FAIL: f(w) - f* >= 0 not carried"
 
     # 5. tau = infinity: G = f(w) - min_j (U_c^T p)_j, the LP duality gap (I1)
-    # [L12.21] swapping the finite sums: sum_j w_j (U^T p)_j = sum_i p_i (w.u_i)
+    # [L12.22] swapping the finite sums: sum_j w_j (U^T p)_j = sum_i p_i (w.u_i)
     assert r["swap_equal"] is True, "L12 FAIL: sum_j w_j (U^T p)_j != sum_i p_i (w.u_i)"
     sr = r["support_reduced"]
-    # [L12.22] p on the active rows with sum_i p_i = 1: sum_i p_i (M - s_i) = M - sum_i p_i s_i
+    # [L12.23] p on the active rows with sum_i p_i = 1: sum_i p_i (M - s_i) = M - sum_i p_i s_i
     assert sp.simplify(sr - (M - sp.Sum(p[i] * sp.Sum(w[j] * u[i, j], lim), (i, 1, n)))) == 0, (
         "L12 FAIL: sum_i p_i (M - s_i) != M - sum_i p_i s_i"
     )
+    X = sp.Dummy("X")
+    # [L12.24] I12: the sum vanishes termwise, so sum_i p_i s_i = M
+    assert sp.solve(sp.Eq(sr.subs(r["ps"], X), I12.rewrite(r["support_zero"])), X) == [M], (
+        "L12 FAIL: sum_i p_i s_i != M on the active rows"
+    )
+    gw = r["lhs_swap"] - r["ubw"]
+    # [L12.25] g.w = sum_i p_i s_i - ubar.w (swap) = M - ubar.w = f(w) at tau = infinity
+    assert sp.simplify(gw.subs(r["lhs_swap"], r["ps"]).subs(r["ps"], M) - (M - r["ubw"])) == 0, (
+        "L12 FAIL: g.w != M - ubar.w"
+    )
+    uc = linear(r["uc_p"]).subs(sp.Sum(p[i], (i, 1, n)), 1)
+    # [L12.26] with sum_i p_i = 1 the centred (U_c^T p)_j is sum_i p_i u_ij - ubar_j
+    assert sp.simplify(uc - (sp.Sum(p[i] * u[i, j], (i, 1, n)) - r["ubj"][j])) == 0, (
+        "L12 FAIL: centred (U_c^T p)_j"
+    )
     split = r["g_dot_w_split"]
-    # [L12.23] g.w splits into sum_j w_j (U^T p)_j minus the centring term ubar.w
+    # [L12.27] g.w splits into sum_j w_j (U^T p)_j minus the centring term ubar.w
     assert split.has(r["ubj"]), "L12 FAIL: centring term lost"
     lp = r["lp"]
-    # [L12.24] the LP gap is the primal objective minus the dual objective
+    # [L12.28] the LP gap is the primal objective minus the dual objective
     assert lp["gap_at_optimum"] == lp["primal_at_optimum"] - lp["dual_at_optimum"], (
         "L12 FAIL: LP gap is not primal minus dual"
     )
-    # [L12.25] I1: at an optimal primal-dual pair the values coincide, so the LP duality gap is 0
+    # [L12.29] I1: at an optimal primal-dual pair the values coincide, so the LP duality gap is 0
     assert sp.simplify(I1.rewrite(I1.obj("primal") - I1.obj("dual"))) == 0 and (
         lp["gap_at_optimum"] == 0
     ), "L12 FAIL: LP duality gap at the optimal pair is not 0"
-    # [L12.26] off the optimum 0 <= f - f* <= G holds on the exact two-metric LP
+    # [L12.30] off the optimum 0 <= f - f* <= G holds on the exact two-metric LP
     assert 0 <= lp["f_off_optimum"] - lp["f_star"] <= lp["gap_off_optimum"], (
         "L12 FAIL: 0 <= f - f* <= G violated off the optimum"
     )

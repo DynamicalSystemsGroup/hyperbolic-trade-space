@@ -19,6 +19,9 @@ Route: second directional derivative d^2/dt^2 J(w + t v) at t = 0 along a symbol
 v (no Hessian matrix with a symbolic index set).  Convexity of a function is equivalent to
 nonnegativity of its second derivative along every line.
 
+I11 (inherited, Boyd and Vandenberghe 3.1.1 and 3.1.4) is the last step: nonnegativity of the
+second directional derivative at an arbitrary point in an arbitrary direction is convexity.
+
 Real-valuedness: the sign argument needs w.u_i and v.u_i real.  That is A1 (u = log m with
 m > 0 is real) with w, v real vectors; the IndexedBases u, w, v of the shared namespace carry
 no assumption, so the sign step uses real-valued placeholder families a_r[i] (for w.u_i) and
@@ -38,7 +41,7 @@ for the sum).
 
 import sympy as sp
 
-from derivation.axioms import A1, A3
+from derivation.axioms import A1, A3, I11
 from derivation.sumtools import linearize
 from derivation.symbols import L
 
@@ -47,7 +50,7 @@ STATEMENT = (
     "d^2/dt^2 J_tau(w + t v)|_0 = tau Var_p(v.u) = (tau/2) sum_i sum_k p_i p_k (s_i - s_k)^2 "
     ">= 0 with p = softmax(tau U w), s_i = v.u_i, so J_tau is convex"
 )
-AXIOMS_USED = ["A1", "A3"]
+AXIOMS_USED = ["A1", "A3", "I11"]
 
 
 def canon_bound(expr, name):
@@ -164,4 +167,9 @@ def verify(ctx):
     assert (A3.positive(tau) / 2 * double).is_nonnegative is True, (
         "L4 FAIL: (tau/2) * double sum not >= 0"
     )
+    nonneg_everywhere = sp.true if (tau / 2 * double).is_nonnegative is True else sp.false
+    # [L4.12] I11: the second derivative along every line is >= 0, so J_tau is convex
+    assert I11.entails(
+        [sp.Equivalent(I11.obj("premise"), nonneg_everywhere)], I11.obj("conclusion")
+    ), "L4 FAIL: convexity does not follow from the sign of the second derivative"
     ctx["L4"]["convex"] = True

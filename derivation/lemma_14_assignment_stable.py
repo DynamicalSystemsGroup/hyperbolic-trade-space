@@ -10,10 +10,11 @@ What this proves (symbolic d, n_k, K; plain SymPy):
      symbolic n_k (the cell's rows listed 1..n_k).  Sum linearity leaves a double sum that
      equals its mirror by a Fubini swap (L3's ``sum_swap_equal``).  Since beta_k = J_tau(U w_k),
      beta_k - w_k.ubar_k = f_k(w_k).
-  2. The regrouping of the N-row sum over the K cells, sum_i = sum_k sum_{i in C_k}, is a
-     one-line finite-sum argument (every row lies in exactly one cell). SymPy has no
-     symbolic partition object, so this step is stated, not derived, and it needs no ledger
-     entry. With share_k = n_k/N it gives F(W) = sum_k share_k f_k(w_k).
+  2. The regrouping of the N-row sum over the K cells, sum_i = sum_k sum_{i in C_k}: the partition
+     is the declared relation A8 (a membership family chi_ki with sum_k chi_ki = 1, n_k = sum_i
+     chi_ki >= 1), applied by import; the swap of the row and cell sums is Fubini (L3's
+     ``sum_swap_equal``) and the cell sum is n_k f_k(w_k).  With share_k = n_k/N it gives
+     F(W) = sum_k share_k f_k(w_k), and beta_k = J_tau(U w_k) is the support offset itself.
   3. The full objective (1/N) sum_i min_k (beta_k - w_k.u_i) equals the fixed-assignment
      expression on the assignment-stable neighborhood: R2 (positive margin) and L13 keep k(i)
      the unique maximizing facet of every row, so the max score of row i is its score on k(i)
@@ -36,7 +37,7 @@ hypothesis beta_k = J_tau(U w_k) or exact facet optimality fails; that R2 holds 
 
 import sympy as sp
 
-from derivation.axioms import R2
+from derivation.axioms import A8, R2
 from derivation.sumtools import fuse, linear, push_in, sum_swap_equal
 
 TITLE = "assignment-stable local optimality of the multi-facet fit (Proposition 3, Corollary 4)"
@@ -51,12 +52,25 @@ STATEMENT = (
     "local minimizer. Corollary 4: F(W) - F*_fixed <= sum_k (n_k/N) G_k with G_k the facet gaps "
     "of L12 (nonnegative sums)"
 )
-AXIOMS_USED = ["R2"]
+AXIOMS_USED = ["A8", "R2"]
 # Two results share this file (the step tags run in one sequence; each step is owned by one result).
 PROOF_RESULTS = (
-    ("Proposition 3", (1, 2, 4, 5, 6, 7)),
-    ("Corollary 4", (3, 8, 9)),
+    ("Proposition 3", (1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17)),
+    ("Corollary 4", (9, 18, 19)),
 )
+
+
+def _is_fubini_residual(leftover):
+    """True iff ``leftover`` is exactly two double sums that are each other's mirror (Fubini)."""
+    dbl = [t for t in sp.Add.make_args(leftover) if t.has(sp.Sum)]
+    pos = [t for t in dbl if not t.could_extract_minus_sign()]
+    neg = [-t for t in dbl if t.could_extract_minus_sign()]
+    return (
+        len(dbl) == len(sp.Add.make_args(leftover))
+        and len(pos) == 1
+        and len(neg) == 1
+        and sum_swap_equal(fuse(push_in(pos[0])), fuse(push_in(neg[0])))
+    )
 
 
 def derive(ctx):
@@ -76,33 +90,53 @@ def derive(ctx):
     total = sp.Sum(beta - dot(i), (i, 1, nk))
     claim = nk * (beta - sp.Sum(w[j] * sp.Sum(u[i, j], (i, 1, nk)) / nk, lim))
     leftover = sp.simplify(linear(total) - linear(sp.expand(claim)))
-    dbl = [t for t in sp.Add.make_args(leftover) if t.has(sp.Sum)]
-    pos = [t for t in dbl if not t.could_extract_minus_sign()]
-    neg = [-t for t in dbl if t.could_extract_minus_sign()]
-    regroup_swap_equal = (
-        len(pos) == 1
-        and len(neg) == 1
-        and sum_swap_equal(fuse(push_in(pos[0])), fuse(push_in(neg[0])))
+    regroup_swap_equal = _is_fubini_residual(leftover)
+
+    # 2. the regrouping of the N rows over the K cells, from the declared partition relation A8
+    # [L14.1] A8: the membership family chi_ki, the cell counts n_k and the number N of rows
+    chi, ncell, N = A8.obj("membership"), A8.obj("count"), A8.obj("rows")
+    h = sp.IndexedBase("h")  # a quantity of row i, free of the cell
+    by_rows = sp.Sum(h[i] * sp.Sum(chi[k, i], (k, 1, K)), (i, 1, N))
+    # [L14.2] A8: every row lies in one cell, sum_k chi_ki = 1, so the row sum is unchanged
+    rows_to_cells = (
+        sp.simplify(A8.rewrite(by_rows, only=(0,)) - sp.Sum(h[i], (i, 1, N))),
+        len(fuse(push_in(by_rows)).limits),
     )
+    gc = sp.IndexedBase("gc")  # gc[k, i]: the slack of row i on facet k
+    row_major = sp.Sum(sp.Sum(chi[k, i] * gc[k, i], (k, 1, K)), (i, 1, N))
+    cell_major = sp.Sum(sp.Sum(chi[k, i] * gc[k, i], (i, 1, N)), (k, 1, K))
+    # [L14.3] the sum over rows of the slack on the row's own cell is the sum over the cells
+    cells_swap_equal = sum_swap_equal(fuse(push_in(row_major)), fuse(push_in(cell_major)))
+    Jk, Wk = sp.IndexedBase("Jk"), sp.IndexedBase("Wk")  # Jk[k] = beta_k = J_tau(U w_k)
+    cell_sum = sp.Sum(chi[k, i] * (Jk[k] - sp.Sum(Wk[k, j] * u[i, j], lim)), (i, 1, N))
+    # [L14.4] A8: n_k = sum_i chi_ki, so the cell sum is n_k (beta_k - w_k.ubar_k) = n_k f_k(w_k)
+    n_k = A8.rewrite(ncell[k], only=(2,))
+    f_k = Jk[k] - sp.Sum(Wk[k, j] * sp.Sum(chi[k, i] * u[i, j], (i, 1, N)) / n_k, lim)
+    cell_leftover = sp.simplify(linear(cell_sum) - linear(sp.expand(n_k * f_k)))
+    cell_regroup_ok = _is_fubini_residual(cell_leftover)
+    # [L14.5] A8: F(W) = (1/N) sum_k n_k f_k(w_k) = sum_k share_k f_k(w_k) with share_k = n_k / N
+    shares = A8.rewrite(ncell[k] / N, only=(2,))
+    F_regroup = sp.simplify(sp.Sum(n_k * f_k, (k, 1, K)) / N - sp.Sum(shares * f_k, (k, 1, K)))
 
     # 2-3. the objective on the neighborhood: scores s_fixed[i] on k(i), max score M[i]
     sfix = sp.IndexedBase("sfix")
     Mx = sp.IndexedBase("Mx")
-    N = sp.Symbol("N", integer=True, positive=True)
-    # [L14.1] R2: the margin is positive, so row i's maximum score M_i is its score s_i,k(i)
+    # [L14.6] R2: the margin is positive, so row i's maximum score M_i is its score s_i,k(i)
     agree = R2.rewrite(sp.Sum(sfix[i] - Mx[i], (i, 1, N)))
     objective_agrees = sp.simplify(agree.doit())
 
     # 4. local minimality: F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k)), terms >= 0
-    share = sp.IndexedBase("share", nonnegative=True)  # n_k / N, n_k >= 1
+    # [L14.7] A8: share_x = n_x / N = sum_i chi_xi / N, nonnegative because chi >= 0
+    share = lambda x: A8.rewrite(ncell[x] / N, only=(2,))  # noqa: E731
+
     fnew = sp.IndexedBase("fnew")
     fold = sp.IndexedBase("fold")
     dfk = sp.IndexedBase("dfk", nonnegative=True)  # f_k(w'_k) - f_k(w_k) >= 0 (exact optimum)
     local_min_slack = sp.simplify(
-        linear(sp.Sum(share[k] * fnew[k], (k, 1, K)) - sp.Sum(share[k] * fold[k], (k, 1, K)))
-        - linear(sp.Sum(share[k] * (fnew[k] - fold[k]), (k, 1, K)))
+        linear(sp.Sum(share(k) * fnew[k], (k, 1, K)) - sp.Sum(share(k) * fold[k], (k, 1, K)))
+        - linear(sp.Sum(share(k) * (fnew[k] - fold[k]), (k, 1, K)))
     )
-    local_min_nonneg = sp.Sum(share[k] * dfk[k], (k, 1, K)).is_nonnegative
+    local_min_nonneg = sp.Sum(share(k) * dfk[k], (k, 1, K)).is_nonnegative
 
     # 5. Corollary 4: F - F* = sum share (f - f*), bound by sum share G termwise
     fk = sp.IndexedBase("fk")
@@ -110,17 +144,21 @@ def derive(ctx):
     Gk = sp.IndexedBase("Gk")
     slackG = sp.IndexedBase("slackG", nonnegative=True)  # G_k - (f_k - f_k*) >= 0 (L12)
     cor_slack = sp.simplify(
-        linear(sp.Sum(share[k] * Gk[k], (k, 1, K)))
-        - linear(sp.Sum(share[k] * (fk[k] - fstar[k]), (k, 1, K)))
-        - linear(sp.Sum(share[k] * (Gk[k] - (fk[k] - fstar[k])), (k, 1, K)))
+        linear(sp.Sum(share(k) * Gk[k], (k, 1, K)))
+        - linear(sp.Sum(share(k) * (fk[k] - fstar[k]), (k, 1, K)))
+        - linear(sp.Sum(share(k) * (Gk[k] - (fk[k] - fstar[k])), (k, 1, K)))
     )
-    cor_nonneg = sp.Sum(share[k] * slackG[k], (k, 1, K)).is_nonnegative
+    cor_nonneg = sp.Sum(share(k) * slackG[k], (k, 1, K)).is_nonnegative
 
     ctx["L14"] = dict(
         nk=nk,
         regroup_leftover=leftover,
         regroup_swap_equal=regroup_swap_equal,
         objective_agrees=objective_agrees,
+        rows_to_cells=rows_to_cells,
+        cells_swap_equal=cells_swap_equal,
+        cell_regroup_ok=cell_regroup_ok,
+        F_regroup=F_regroup,
         local_min_slack=local_min_slack,
         local_min_nonneg=local_min_nonneg,
         cor_slack=cor_slack,
@@ -131,31 +169,39 @@ def derive(ctx):
 def verify(ctx):
     r = ctx["L14"]
     # hypotheses carried from the earlier lemmas
-    # [L14.2] L13 and R2: the margin is positive, so an assignment-stable neighborhood exists
+    # [L14.8] L13 and R2: the margin is positive, so an assignment-stable neighborhood exists
     assert ctx["L13"].get("margin_positive") is True, (
         "L14 FAIL: no assignment-stable neighborhood (R2 positive margin, L13)"
     )
-    # [L14.3] L12 (Lemma 1) holds: 0 <= f_k(w_k) - f_k* <= G_k for every facet
+    # [L14.9] L12 (Lemma 1) holds: 0 <= f_k(w_k) - f_k* <= G_k for every facet
     assert ctx["L12"].get("chain_nonneg") is True and ctx["L12"].get("lower_nonneg") is True, (
         "L14 FAIL: Lemma 1 (0 <= f - f* <= G) not established"
     )
-    # [L14.4] per facet, sum_i (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) by a Fubini swap
+    # [L14.10] per facet, sum_i (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) by a Fubini swap
     assert r["regroup_swap_equal"] is True, (
         "L14 FAIL: per-facet regrouping is not a Fubini swap of the double sum"
     )
-    # [L14.5] on the neighborhood the full objective equals the fixed-assignment expression
+    # [L14.11] A8: every row lies in one cell (sum_k chi_ki = 1): the row sum is unchanged
+    assert r["rows_to_cells"] == (0, 2), "L14 FAIL: the rows are not partitioned over the cells"
+    # [L14.12] the sum over rows of the slack on the row's own cell is the sum over the cells
+    assert r["cells_swap_equal"] is True, "L14 FAIL: sum_i sum_k != sum_k sum_i (Fubini)"
+    # [L14.13] A8: with n_k = sum_i chi_ki the cell sum is n_k (beta_k - w_k.ubar_k) = n_k f_k(w_k)
+    assert r["cell_regroup_ok"] is True, "L14 FAIL: the cell sum is not n_k f_k(w_k)"
+    # [L14.14] A8: F(W) = (1/N) sum_k n_k f_k(w_k) = sum_k share_k f_k(w_k), share_k = n_k / N
+    assert r["F_regroup"] == 0, "L14 FAIL: F(W) != sum_k share_k f_k(w_k)"
+    # [L14.15] on the neighborhood the full objective equals the fixed-assignment expression
     assert r["objective_agrees"] == 0, (
         "L14 FAIL: full objective differs from the fixed-assignment expression"
     )
-    # [L14.6] F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k))
+    # [L14.16] F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k))
     assert sp.simplify(r["local_min_slack"]) == 0, (
         "L14 FAIL: F(W') - F(W) != sum_k share_k (f_k(w'_k) - f_k(w_k))"
     )
-    # [L14.7] each term share_k (f_k' - f_k) is >= 0 (exact facet optima), so W is a local minimizer
+    # [L14.17] each term share_k (f_k' - f_k) is >= 0 (exact facet optima), so W is a local minimum
     assert r["local_min_nonneg"] is True, "L14 FAIL: sum_k share_k (f_k' - f_k) is not nonnegative"
-    # [L14.8] sum share G - sum share (f - f*) = sum share (G - (f - f*))
+    # [L14.18] sum share G - sum share (f - f*) = sum share (G - (f - f*))
     assert sp.simplify(r["cor_slack"]) == 0, (
         "L14 FAIL: sum share G - sum share (f - f*) != sum share (G - (f - f*))"
     )
-    # [L14.9] each term share_k (G_k - (f_k - f_k*)) is >= 0 (L12): F(W) - F*_fixed <= sum share G
+    # [L14.19] each term share_k (G_k - (f_k - f_k*)) is >= 0 (L12): F(W) - F*_fixed <= sum share G
     assert r["cor_nonneg"] is True, "L14 FAIL: sum_k share_k (G_k - (f_k - f_k*)) not nonnegative"
