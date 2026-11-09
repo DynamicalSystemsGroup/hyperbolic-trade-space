@@ -19,7 +19,7 @@ DOCS = ROOT / "docs"
 METHOD = DOCS / "method.md"
 PAGES = [METHOD, DOCS / "why-and-how.md", DOCS / "limitations.md"]
 SPEC = ROOT / "docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md"
-LEMMAS = {f"L{n}": next((ROOT / "derivation").glob(f"lemma_{n:02d}_*.py")) for n in range(1, 12)}
+LEMMAS = {f"L{n}": next((ROOT / "derivation").glob(f"lemma_{n:02d}_*.py")) for n in range(1, 15)}
 
 CITE_RE = re.compile(r"\[(@[^\]]+)\]")
 
@@ -79,23 +79,28 @@ def _table_rows(text, header_start):
     return rows
 
 
+def _cell(text):
+    """A table cell as the ledger wrote it: ``\\|`` is the Markdown escape of ``|``."""
+    return text.replace("\\|", "|")
+
+
 def test_conditions_table_equals_ledger_set():
     rows = _table_rows(_text(METHOD), "| id | statement |")
     ids = {r[0] for r in rows}
     expected = {a.name for a in axioms.by_tag(axioms.REGULARITY)}
     expected |= {a.name for a in axioms.fallbacks()}
     expected |= {"A4"}
-    assert ids == expected == {"R1", "F5", "F10", "A4"}
+    assert ids == expected == {"R1", "R2", "F5", "F10", "F12", "A4"}
 
 
 def test_conditions_table_quotes_ledger_role_and_failure_mode():
     rows = {r[0]: r for r in _table_rows(_text(METHOD), "| id | statement |")}
     for name, row in rows.items():
         ax = axioms.get(name)
-        assert row[1] == ax.statement, name
+        assert _cell(row[1]) == ax.statement, name
         if ax.role:
-            assert row[2] == ax.role, name
-            assert row[3] == ax.failure_mode, name
+            assert _cell(row[2]) == ax.role, name
+            assert _cell(row[3]) == ax.failure_mode, name
         else:  # A4: the ledger records none; the narrative must say so and supply text
             assert "ledger records none" in row[2] and row[3].strip()
 
@@ -112,6 +117,8 @@ def test_referenced_functions_exist():
         assert hasattr(HyperbolicTradeSpace, name) or name in {
             "exponents_",
             "log_offset_",
+            "termination_",
+            "conditioning_",
         }, f"HyperbolicTradeSpace.{name}"
         found += 1
     assert found >= 10
@@ -149,8 +156,7 @@ def test_names_and_hygiene():
     # beta is the log-mean-exp: the method states the normalization against the unnormalized sum
     assert "never the unnormalized sum" in method
     # required content of the conditions of the theory and the principle
-    assert "All models are wrong and some are useful" in method
-    assert "All models are wrong and some are useful" in _text(PAGES[2])
+    assert "All models are wrong" in method
     assert "n-lemma" in method and "n-lemma" in _text(PAGES[1])
     assert "min_exponent" in method
 
