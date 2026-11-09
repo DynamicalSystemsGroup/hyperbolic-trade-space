@@ -1,14 +1,14 @@
-<!-- The first draft of this file (written as WP9, the readability package) was superseded on 2026-11-08 by the supervisor's redirection (WP10-decisions.md) and is replaced by this draft; it remains in git history. -->
+<!-- The first draft of this file (written as WP9, the readability package) was superseded on 2026-11-08 by the supervisor's redirection (WP10-decisions.md) and replaced by the second draft. This is the THIRD draft (revision 2, 2026-11-08): it adds the separation of concerns recorded in WP8a-decisions.md (the paper absorbs the how and why from the docsite), marks the decisions taken at the scope gate as decided, and keeps OD4 open. Earlier drafts remain in git history. -->
 
 # WP10 — Scope of work: The paper, working draft
 
 | | |
 |---|---|
-| **Status** | DRAFT. Approved only by the recorded act below. Nothing in this package is executed before then. |
+| **Status** | DRAFT (revision 2). Approved only by the recorded act below. Nothing in this package is executed before then. |
 | **Supervisor (accountable)** | mzargham |
 | **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space` (local: `/Users/z/Documents/GitHub/posynomial-invariant-form`) |
 | **Approval record** | Verbal approval in chat, quoted verbatim in `work-packages/WP10-decisions.md` |
-| **Acceptance record** | Verbal acceptance in chat, quoted verbatim in `work-packages/WP10-decisions.md`, after `work-packages/WP10-review.md` |
+| **Acceptance record** | Verbal acceptance in chat, quoted verbatim in `work-packages/WP10-decisions.md`, after `work-packages/WP10-review.md`. Acceptance is STRUCTURAL (see "Acceptance is structural"). |
 
 Replaces the superseded first draft in `work-packages/WP10-scope-of-work.md` (history only; its readability-loop content is WP11's).
 
@@ -18,8 +18,46 @@ The research is hardened (WP1 to WP9, WP13); the supervisor views the paper as "
 the research itself" (`WP10-decisions.md`, "Sequencing"). This package writes that narrative as a
 working draft: a mystmd article in which the notebook is the paper, in the manner of his SciPy 2026
 proceedings article, organized as an academic paper (motivation, prior art, notation, definitions,
-results, case, discussion, future work, works cited) with every claim backed by computationally
-verifiable supporting material in the repository. Presentation polish is WP11's; deployment is WP8's.
+methods, results stated as theorems with proof sketches, case, discussion, future work, works cited)
+with every claim backed by computationally verifiable supporting material in the repository.
+**The paper is the home of the how and why underneath** (see "Separation of concerns"). Presentation
+polish and the cold-read loops are WP11's; deployment is WP8a/WP8b's.
+
+## Separation of concerns (supervisor, recorded in `WP8a-decisions.md`, 2026-11-08, "The supervisor's staged-site review")
+
+Verbatim: "i need a seperation of concerns between the paper and the doc site the doc site is for a
+user of the package. the paper is for someone who wants to understand the how and why underneath".
+Verbatim, on the lemmas: "the lemmas for example are not very readable and might be better organized
+as traditional theorem like statements from academic papers but with the proof sketches narrative and
+the reader directed to the specific scipy scripts or independent verification. some of that can be
+relegated to appendices if it helps with the flow." Verbatim, on the two registers: "actually i think
+you muddle togethe the doc site and the paper. i cannot tell what is what. i want the docsite to be
+more like scikit learn docs and the paper to me more like my scipy paper."
+
+Consequences for this package:
+
+- The paper **absorbs** the paper-register material now in the docsite: the mathematics narrative of
+  `docs/method.md`, the lemmas recast as **theorem-style statements** (Definition / Lemma /
+  Proposition / Theorem, numbered, hypotheses explicit) each followed by a **narrative proof sketch**
+  and a **pointer to the derivation script** `derivation/lemma_NN_*.py` and its `verify`; the
+  derivation ledger; the prior-art review of `docs/literature.md`; the long limitations; the
+  abstraction-gaps ledger as an appendix; the full case.
+- The docsite (a user's guide in the scikit-learn manner) is restructured by **WP8a Amendment 2**
+  (separate package, drafted in parallel). WP10 **reads** the moved text as sources under
+  `docs/superpowers/notes/paper-sources/` (which Amendment 2 proposes to preserve there) and **edits no
+  `docs/*.md`**. The docsite keeps a one-page theory-in-brief that links to the paper.
+- The paper is modelled on the SciPy article's build and register
+  (`/Users/z/Documents/GitHub/hc-scipy-2026/papers/michael_zargham/`: `myst.yml`, `paper.ipynb`,
+  `supporting_material.ipynb`, `derivations.py`).
+
+## Acceptance is structural (supervisor, `WP8a-decisions.md`, verbatim)
+
+"the paper is not something i've done a full read on yet. fist pass seems okay but it will definitely
+need readability and correctness loops. we'll need to run a grid of user reads (cold) at the depth
+levels previously outlined and with differing personas. this means the paper acceptance is stuctural
+not final sign off on content or aesthetics." WP10's acceptance therefore checks that the paper has
+the agreed structure and that every claim has its pointer; it is **not** a sign-off on content or
+aesthetics. WP11 carries the cold-read grid (depth levels x personas) and the content loops.
 
 ## Story (settled with the supervisor, `WP10-decisions.md`, "The paper's story"; final for scoping: "great. thats what we needed")
 
@@ -43,7 +81,10 @@ Why before what.
    are the trade-offs, within generalized geometric programming; level surfaces of V exist at every
    value and V = 1 is placed at the frontier by normalization (the invariant form), with a reversible
    transformation to the tractable log space of the fit; many plots because the method is
-   unsupervised; the three earlier spines (tensions not variance; n-lemmas found; a learned chart) as sections.
+   unsupervised; the three earlier spines (tensions not variance; n-lemmas found; a learned chart) as
+   sections. The method belongs to unsupervised learning and feature engineering beside PCA: kin, not
+   substitute, and the two chain (supervisor, `WP10-decisions.md`: "it can also be chained with pca its
+   not a strict substitute. it just belongs in unsupervised learning / feature engineering").
 4. **Case** at K = 1 and K = 3 (the cubesat, two regimes). **Final remark** (the hook): a novelty or
    impact score for new capabilities from how far above V = 1 they are forecast to sit.
 
@@ -64,34 +105,80 @@ the scikit-learn documentation and glossary, and on Boyd and Vandenberghe for ma
 algorithm descriptions. The paper must read "well" at six drill-down levels: **L-A** abstract and hero
 image; **L-B** headers, main results and figures; **L-C** the whole paper; **L-D** the paper and the
 supporting materials ("computationally verifiable appendices"); **L-E** pull the code and reproduce;
-**L-F** pull the code and adapt it to one's own case.
+**L-F** pull the code and adapt it to one's own case. (Statement blocks are written so that L-B reads
+the statements alone and L-C reads the sketches; L-D follows the script pointers.)
+
+## Decided at the scope gate (supervisor's words, `WP10-decisions.md`, "Scope gate decision loop")
+
+Not open. Recorded here so the scope is self-contained; the verbatim records are in the decisions file.
+
+- **Title and byline.** Supervisor, verbatim: "Working title now, final at WP11"; his proposal: "Scaling
+  Decision Analysis with Hyberbolic trade space identification" (normalized in the record to **Scaling
+  Decision Analysis with Hyperbolic Trade Space Identification**, working title). The author proposes
+  a subtitle for his pick at the first reading; the final title and subtitle are set in WP11. Byline:
+  sole author, Dynamical Systems Group, ORCID 0000-0001-5279-690X as in the SciPy article.
+- **Figure 1.** Supervisor, verbatim: "yes s4 is the direction but i liked it better when the first pane
+  was kinky. more realistic". Figure 1 is the three-pane S4 schematic (metric space with the
+  hard-max envelope drawn with sharp corners between the hyperbolic sheets as in S1 → log space with
+  flat facets → the chart), from the spike `docs/superpowers/notes/spike-figure1/`
+  (`make_schematics.py`, `S4.png`); the author produces the final figure to that design, with the
+  register's words in the caption. Earlier, verbatim: "a hero image is a hook. its okay for it to be
+  conceptual and to convey the idea if it pulls the reader in and does not misrepresent the content".
+- **The WP7 notebook.** Supervisor, verbatim: "archive it with banner for now so we can use it as
+  reference but plan to clean out the archive before the first release". It moves to
+  `examples/adcs/archive/` with a first cell pointing to the paper; its guard tests move into the
+  paper's tests where they still apply; the archive's removal is a WP8b release-punch-list item.
+- **Tools statement.** Supervisor, verbatim: "look at my scipy paper; you can use a similar disclosure
+  as i followed similar methods. you can also cite my incose IS 2026 paper which is specifically about
+  documents, requirements and accountability". The Acknowledgments carry a tools-and-process disclosure
+  modelled on the SciPy 2026 article's (read from its source), adapted to this repository's process
+  (gated work packages, machine-checked derivations, the external review), and cite Zargham 2026
+  (INCOSE International Symposium 36(1), doi 10.1002/iis2.70203; supervisor: "my INCOSE IS paper is no
+  longer forthcoming it is out"), entered in `docs/references.bib` as `zargham2026incose` under the
+  WP5 rule. The repository's no-attribution rule for commits and documents is unchanged; the
+  disclosure is the supervisor's own statement, in his voice.
+- **How the drill-down levels are judged at acceptance.** Supervisor, verbatim: "Automated checks plus
+  cold-reader trials". A fresh-context reviewer is given only what each level's reader sees and
+  reports per level in `WP10-review.md`; the supervisor's own reading and the cold-read grid are WP11's.
 
 ## Goals
 
-- G1. A mystmd article `paper/paper.ipynb` (notebook is the paper), about 5,000 words (cap 6,000), in the
-  section order of `paper-outline-v2-search.md` reconciled with the external reviewer's paper map
-  (E-10), that tells the Story above and reads well at L-A to L-F.
+- G1. A mystmd article `paper/paper.ipynb` (notebook is the paper), about 5,500 counted words (cap
+  6,000), in the section order of the table below (outline v2 reconciled with the external reviewer's
+  paper map, E-10, and with the SciPy paper's build), that tells the Story and reads well at L-A to L-F.
 - G2. A supporting notebook `paper/supporting_material.ipynb` of lettered, computationally verifiable
-  appendices (A to F) that the paper cites claim by claim.
-- G3. The paper keeps the configuration-to-attributes abstraction (above). Every computation the paper shows is a call into a tested module `examples/adcs/case.py` (cubesat
-  specifics as data), so another table runs through the same functions.
+  appendices (A to H) that the paper cites claim by claim; it carries the full proofs' detail, the
+  ledger, the abstraction gaps and the long case detail.
+- G3. The paper keeps the configuration-to-attributes abstraction. Every computation the paper shows
+  is a call into a tested module `examples/adcs/case.py` (cubesat specifics as data), so another table
+  runs through the same functions.
 - G4. The prior work is a prior-art review by family (claiming nothing as novel), with the Pareto and
-  DEA contrasts, and the fifteen state-of-practice sources plus Miettinen, Ehrgott and the three
-  DEA references are in `docs/references.bib` and `docs/literature.md`.
-- G5. Mathematical statements are marked Derived / Numerical / Open (E-10), the algorithm part of the
-  Results follows E-8's structure (written against the delivered WP13 text), and every simplifying assumption is named where
+  DEA contrasts, absorbing `docs/literature.md`; the fifteen state-of-practice sources plus Miettinen,
+  Ehrgott and the three DEA references are in `docs/references.bib`.
+- G5. **The mathematics is the paper's** (new). Every lemma L1 to L14 is stated as a numbered
+  theorem-style block (hypotheses explicit), followed by a narrative proof sketch and the pointer to
+  its derivation script and `verify`; the algorithm part of Results follows E-8's structure; every
+  statement is marked Derived / Numerical / Open (E-10); every simplifying assumption is named where
   made, defended there in a sentence, and taken up in Future work with how to go beyond it.
-- G6. The trade-off-aware search appears as a section marked preliminary until WP12 lands.
-- G7. A test file that guards the paper's structure, budget and register so later loops (WP11) cannot
-  silently break them.
+- G6. **The abstraction gaps and the limits are the paper's** (new). The one policy paragraph ("Map and
+  territory", `docs/method.md`) appears once in the body; the abstraction-gaps ledger
+  (`docs/superpowers/notes/abstraction-gaps.md`) is an appendix; the long limitations are in the
+  Discussion and the appendix.
+- G7. The trade-off-aware search appears as a section marked preliminary until WP12 lands.
+- G8. A test file that guards the paper's structure, budget, register and source coverage so later
+  loops (WP11) cannot silently break them.
 
 ## Non-goals
 
-- Readability loops with the supervisor and rendered-browser verdicts (WP11); the paper's publication
-  under `/paper/`, the Pages workflow and the docsite (WP8a); PDF/release machinery beyond what an
-  Open decision below selects; PyPI and the release (WP8b).
-- Any change to `docs/method.md`, `derivation/`, or the package source while WP13 runs; new
-  mathematics (the paper cites lemmas, it does not add them); the search's code, lemmas and results (WP12).
+- Readability loops, the cold-read grid (levels x personas) and rendered-browser verdicts (WP11); the
+  paper's publication under `/paper/`, the Pages workflow and the docsite, including its restructure
+  (WP8a and its Amendment 2); PDF/release machinery beyond what OD4 selects; PyPI and the release (WP8b).
+- **Editing any `docs/*.md`** or the docsite: WP10 reads the moved material from
+  `docs/superpowers/notes/paper-sources/` (and the current `docs/` pages until Amendment 2 lands) and
+  edits none. Likewise no change to `derivation/` or the package source while WP13 runs.
+- New mathematics (the paper cites lemmas, it does not add them); the search's code, lemmas and
+  results (WP12).
+- Final sign-off on content or aesthetics (acceptance is structural; WP11 does the loops).
 - Submission to a venue or venue-specific compliance (the SciPy proceedings are the structural
   reference only).
 - Reworking the system model (the separate SysML tidying package); a rewrite of the data or the
@@ -102,94 +189,143 @@ supporting materials ("computationally verifiable appendices"); **L-E** pull the
 
 | ID | Deliverable | Serves |
 |---|---|---|
-| D-1 | `paper/paper.ipynb`, executed, outputs committed, with the front matter (title, abstract, keywords, abbreviations), numbered definition/lemma/figure blocks with captions, Derived/Numerical/Open badges, the cross-references to Appendices A to F | G1, G5, G6 |
-| D-2 | `paper/supporting_material.ipynb`: A the register (`docs/superpowers/notes/notation.md`) as a table; B the derivation ledger and each lemma's output (L1 to L14); C full case detail (sensitivity variants, per-category refits, regime tables, the K = 1/2/3 diagnostic table, propose-predict-check with its mixed result, candidates, the nondominated counts); D verification audit (tests by area, lemma PASS list, sklearn checks and expected failures, cross-checks, the WP13 certificates (`termination_`, `conditioning_`, margin, radius, Corollary 4 bound) and the abstraction-gaps ledger G-1 to G-16 on the planted data and cubesat tables); E what remains for a human; F the search's evidence (a marked stub until WP12 lands) | G2, G5, G6 |
+| D-1 | `paper/paper.ipynb`, executed, outputs committed, with the front matter (title, abstract, keywords, abbreviations), numbered definition / lemma / proposition / theorem blocks with hypotheses, captions, Derived/Numerical/Open badges, the cross-references to Appendices A to H | G1, G5, G7 |
+| D-2 | `paper/supporting_material.ipynb`: **A** the register (`docs/superpowers/notes/notation.md`) as a table; **B** the theory in full: conditions of the theory, the full statements and proof detail of L1 to L14 with each lemma's `derive`/`verify` output, the derivation ledger and the summary of lemma coverage; **C** full case detail (sensitivity variants, per-category refits, regime tables, the K = 1/2/3 diagnostic table, propose-predict-check with its mixed result, candidates, the nondominated counts); **D** the algorithm in full: the posynomial and GGP extension, the solver for small K, the three levels of guarantee and the stopping declaration, with the WP13 certificates (`termination_`, `conditioning_`, margin, radius, Corollary 4 bound) as printed by the code; **E** the abstraction gaps: the ledger G-1 to G-16 evaluated on the planted data and the cubesat tables, "what is proved, inherited, observed", the simplifying assumptions; **F** verification audit (tests by area, lemma PASS list, sklearn checks and expected failures, cross-checks) and what remains for a human; **G** the search's evidence (a marked stub until WP12 lands); **H** the prior-art review in full (the by-family review absorbing `docs/literature.md`, the state-of-practice section, the dropped candidates and the sources for the inherited axioms) | G2, G4, G5, G6, G7 |
 | D-3 | `paper/myst.yml` (project, authors, keywords, abbreviations, bibliography, build settings), modelled on `hc-scipy-2026/papers/michael_zargham/myst.yml` | G1, G2 |
-| D-4 | `examples/adcs/case.py`: load, feasibility, conditioning, temperature selection and fit, K sweep, report and figure helpers, regime comparison, candidates, propose-predict-check, nondominated counts; cubesat specifics (attribute names and orientations, feasibility checks, configuration columns, data paths) as data; lifts from the WP7 notebook and `examples/adcs/k_terms.py` | G3 |
-| D-5 | `docs/references.bib` additions (fifteen sources; Miettinen 1998; Ehrgott 2005; Banker, Charnes and Cooper 1984; Allen et al. 1997; Dyson et al. 2001) under the WP5 rule; `docs/literature.md` new section "State of practice in trade studies"; plus the search-family entries of `search-prior-art.md` only if the paper cites them | G4 |
-| D-6 | `tests/test_paper.py` (and tests of D-4) | G7, G3 |
-| D-7 | The prior-art review table (paper section 2) and the Pareto and DEA paragraphs | G4 |
-| D-8 | `WP10-review.md` evidence inputs: the L-A to L-F check results | G7 |
+| D-4 | `examples/adcs/case.py`: load, feasibility, conditioning, temperature selection and fit, K sweep, report and figure helpers, regime comparison, candidates, propose-predict-check, nondominated counts; cubesat specifics as data; lifts from the WP7 notebook and `examples/adcs/k_terms.py`. The WP7 notebook is archived with a banner (decided) | G3 |
+| D-5 | `docs/references.bib` additions (fifteen sources; Miettinen 1998; Ehrgott 2005; Banker, Charnes and Cooper 1984; Allen et al. 1997; Dyson et al. 2001; `zargham2026incose`) under the WP5 rule. The state-of-practice review text lives in Appendix H of the paper (not in `docs/literature.md`, which WP10 does not edit) | G4 |
+| D-6 | `tests/test_paper.py` (and `tests/test_case.py` for D-4), including the statement-block, script-pointer and source-coverage tests of the Requirements | G8, G3 |
+| D-7 | The prior-art review: the family table, the Pareto and DEA paragraphs and the lineage paragraph in section 2; the full review in Appendix H | G4 |
+| D-8 | `WP10-review.md` evidence inputs: the structural check results and the L-A to L-F cold-reader trial reports | G8 |
+| D-9 | **The source map** (new): `paper/source_map.md` (rendered also as a table in Appendix F): every moved `docs/` page and section, and every file under `docs/superpowers/notes/paper-sources/`, mapped to the paper section or appendix that carries it (provisional homes below) | G5, G6, G8 |
+| D-10 | **The theorem-style statements with proof sketches and script pointers** (new): the L1 to L14 blocks in section 6 (and the Definitions in section 4), each with its hypotheses, a narrative sketch, and the path of its derivation script and `verify`; full detail in Appendix B (L1 to L11, L-conditions) and Appendix D (L12 to L14) | G5 |
+| D-11 | **The abstraction-gaps appendix** (new): Appendix E, and the one policy paragraph in the body | G6 |
 
-## Paper structure (reconciled outline v2 and E-10)
+### Where the moved material goes (provisional, D-9; to be re-pinned against WP8a Amendment 2 when it lands)
 
-Section word budgets are defaults; total about 5,150 against the 5,000 target (within 10 %) (abstract, captions of
-code-free figures, tables in appendices, references and appendices excluded from the count *(default)*).
+| Docs source (page, section) | Home in the paper |
+|---|---|
+| `method.md` "The pipeline and where the mathematics sits" | §3 Preliminaries |
+| `method.md` "Conditions of the theory" | §5 Methods; Appendix B |
+| `method.md` "The model" | §5 Methods |
+| `method.md` "The fit" | §6 Results (theorem-style) with Appendix B detail |
+| `method.md` "What the stage learns, and why it is shape" | §6 Results (theorem-style) |
+| `method.md` "Tensions, not variance" and "n-lemmas are discovered, not assumed" | §6 Results (theorem-style) |
+| `method.md` "Interpretation" | §10 Discussion |
+| `method.md` "Novelty and white space" | §10 Discussion; §12 final remark |
+| `method.md` "Prediction from configuration" *(default: not in the supervisor's list; follows the Results it extends)* | §6 Results (one proposition) or §10 Discussion |
+| `method.md` "Lineage"; all of `literature.md` | §2 Prior art; Appendix H |
+| `method.md` "The posynomial and GGP extension", "The solver for small K", "Three levels of guarantee" (Levels 1 to 3, "The stopping declaration") | §6 Results algorithm subsection (E-8 form); Appendix D |
+| `method.md` "What is proved, what is inherited, what is only observed", "Simplifying assumptions"; `abstraction-gaps.md` | Appendix E (gaps); §3 policy paragraph; assumptions named where made, listed in §12 |
+| `method.md` "Research direction: kernel methods under the GGP constraint" | §10 Discussion; §12 Future work |
+| `method.md` "Summary of lemma coverage" | Appendix B |
+| `limitations.md` "Limits of the method" (the long part) | §10 Discussion; Appendix E |
+| `limitations.md` "What the contrast with PCA does and does not claim" | §10 Discussion |
+| `limitations.md` "Extensions" | §12 Future work |
+| `preconditioning.md` (the derivation parts: what the theory asks of stage 2, orientation, shift, scaling, invertibility, zeros, the pull-back) | §5 Methods; Appendix C for the worked nine-attribute case |
+| `why-and-how.md`, `case.md`, `api.md`, `api-reference.md`, `index.md` | stay in the docsite (user-facing); the paper links to them from §11 and cites the package API |
+
+## Paper structure (reconciled outline v2, E-10, and the separation of concerns)
+
+Section word budgets are defaults. Counted words: prose and captions of `paper.ipynb`; abstract,
+code, tables of the appendices and references excluded *(default)*. Total about 5,550 counted against
+the cap of 6,000. **The target of the first draft was 5,000; absorbing the how and why raises it to
+about 5,500 under the supervisor's unchanged cap of 6,000; the detail that does not fit moves to the
+supporting material (Appendices B, D, E, H)** *(default)*.
 
 | § | Title | Budget | Content and badge |
 |---|---|---|---|
-| Abstract + Fig. 1 | | 200 | the Story in six sentences, the cubesat finding in one sentence; E-9 strengths as framing |
-| 1 | The decision problem | 600 | why; contribution; main-results list (the L-B anchor); organization |
-| 2 | Prior art, by family | 600 | the table (outline v1 prior-art table plus the three search families when cited): produces / shares / differs / cites; the Pareto and DEA paragraphs |
-| 3 | Preliminaries and notation | 400 | pipeline c → a → m, with stage 1 (c → a) stated as a black box / oracle (simulator, physical test campaign, human assessment) in the register's words for a; assumptions A1 to A6 (E-10); notation table anchored on sklearn glossary and Boyd and Vandenberghe; the register phrases |
-| 4 | Definitions | 400 | numbered definitions (invariant form, posynomial, τ and κ, chart, n-lemma, reach, share, exchange rate, ascent direction) |
-| 5 | Results | 1,000 | L1 to L11 as numbered blocks with proof dropdowns, badge Derived; the K > 1 algorithm in E-8 form (Lemma 1, Lemma 2, Proposition 3, Corollary 4, the stopping declaration; *written last, against the delivered WP13 text in `docs/method.md`, "Three levels of guarantee" to "The stopping declaration"*), badge Numerical where only observed; Open: Q1 to Q4 |
-| 6 | Search of the design space (preliminary) | 250 *(default)* | the nested loops, the procedure, the honest limits; no results until WP12 |
-| 7 | Case construction | 350 | cubesat, two regimes, ten attributes, feasibility, conditioning, temperature; planted multi-facet example |
-| 8 | Case analysis | 650 | K = 1, K = 3, regime comparison, candidates, propose-predict-check; Pareto counts from `case.py` |
-| 9 | Discussion | 400 | cross-application: the method sees only configurations and measured attributes, so it applies when scoring comes from other tools, physical systems or human assessments; interpretation as human validation; what the decision-maker holds; limits; verify versus validate; one line on log-convexity and holes |
-| 10 | Reproducibility and your own case | 200 | exact commands; the recipe and `case.py` interface |
-| 11 | Future work and final remark | 300 | organized by named assumptions; the final remark hook |
-
-(Exact allocation is a default; the cap of 6,000 is the supervisor's.)
+| Abstract + Fig. 1 | | 200 (not counted) | the Story in six sentences, the cubesat finding in one sentence; Figure 1 (three-pane S4) |
+| 1 | The decision problem | 500 | why; contribution; main-results list (the L-B anchor); organization |
+| 2 | Prior art, by family | 600 | the family table (produces / shares / differs / cites); the Pareto, DEA and lineage paragraphs; the state-of-practice sources; claims nothing as novel. Full review: Appendix H |
+| 3 | Preliminaries and notation | 450 | pipeline c → a → m, stage 1 a black box in the register's words for a; assumptions A1 to A6 (E-10); notation anchored on the sklearn glossary and Boyd and Vandenberghe; **the "Map and territory" policy paragraph, once**; the register phrases |
+| 4 | Definitions | 300 | numbered definitions (invariant form, posynomial, τ and κ, chart, n-lemma, reach, share, exchange rate, ascent direction) |
+| 5 | Methods | 450 | the conditions of the theory; the model; the fit; preconditioning (stage 2) as the analyst's step; the estimator interface in one paragraph |
+| 6 | Results | 1,400 | L1 to L11 as numbered theorem-style blocks (hypotheses, statement, narrative proof sketch, script pointer and `verify`), badge Derived; then the algorithm subsection in E-8 form (the posynomial and GGP extension; the solver for small K; Lemma 1, Lemma 2, Proposition 3, Corollary 4 of E-8 carrying L12 to L14; the three levels; the stopping declaration), *written last against the delivered WP13 text*, badge Numerical where only observed; Open: Q1 to Q4 |
+| 7 | Search of the design space (preliminary) | 200 | the nested loops, the procedure, the honest limits; no results until WP12 |
+| 8 | Case construction | 300 | cubesat, two regimes, ten attributes, feasibility, conditioning, temperature; planted multi-facet example |
+| 9 | Case analysis | 500 | K = 1, K = 3, regime comparison, candidates, propose-predict-check; Pareto counts from `case.py` |
+| 10 | Discussion | 450 | interpretation as human validation; cross-application (the abstraction); the long limitations in brief with the pointer to Appendix E; verify versus validate; the PCA contrast (what it does and does not claim); novelty and white space; the kernel direction; one line on log-convexity and holes |
+| 11 | Reproducibility and your own case | 150 | exact commands; the recipe and `case.py` interface; links to the docsite for use |
+| 12 | Future work and final remark | 250 | organized by named assumptions (from the gaps and the simplifying assumptions); the final remark hook |
+| | Acknowledgments, Works cited | not counted | tools-and-process disclosure (decided) and the INCOSE citation; bibliography |
 
 ## Requirements
 
 | ID | Requirement | Checked by |
 |---|---|---|
 | R-1 | Section order matches the table above; headers are the L-B skim. | `tests/test_paper.py` reads the notebook's markdown headers |
-| R-2 | Body prose is at most 6,000 words and within 10 % of 5,000 unless the supervisor changes it; per-section budgets reported. | test counting the counted cells |
+| R-2 | Counted body prose is at most 6,000 words (about 5,500 targeted); per-section budgets reported; where a section exceeds its budget the excess is moved to the supporting material, not trimmed from the statement blocks. | test counting the counted cells |
 | R-3 | Every code cell in `paper.ipynb` makes exactly one call into `case.py` (or the package), and defines nothing else. | test parsing cell ASTs |
 | R-4 | Every figure has a numbered, self-contained caption and is referenced in the text; every definition, lemma and appendix reference resolves. | test; `myst build --check` |
 | R-5 | The prose uses the register's phrase for each object and contains none of the register's forbidden phrases; the three objects (surface, frontier, facet-level) are distinguished as the register says. | test using the register's phrase lists |
 | R-6 | Each simplifying assumption on the supervisor's list is named in the body where made, defended in a sentence there, and appears in Future work with a way beyond it. | test for the eight assumptions' markers; inspection |
-| R-7 | Each of Derived / Numerical / Open applied to each Results statement matches the ledger status (proved / inherited / observed); Q1 is marked Open and not pursued. | test cross-checking against `derivation/axioms.py` and `abstraction-gaps.md` |
-| R-8 | The Pareto contrast (object, question, scale with d, noise, what is returned, relation, generation vs identification) and the DEA contrast appear in section 2 in one compressed paragraph each; nondominated counts (671/706; 146/706; 8/706) are produced by `case.py`, not typed. | test of `case.py` outputs against these values; inspection |
-| R-9 | The prior-art table has a row per family listed in `paper-outline-v1-baseline.md`, each with produces / shares / differs / cites, and claims nothing as novel (no "novel", "first", "new" claims about the method). | test on the table; inspection |
-| R-10 | All fifteen state-of-practice, two multiobjective and three DEA records are in `docs/references.bib` with a resolved DOI or stable URL and a `verified` field, even if the text cites only a subset; `docs/literature.md` has the new section. | `tests/test_references.py` |
-| R-11 | The algorithm part of Results follows E-8, cites the delivered lemmas L12 to L14 and states the three levels (descent, numerical stationarity, conditional local optimality) with the stopping declaration, as in `docs/method.md` headings "Three levels of guarantee", "Level 1" to "Level 3" and "The stopping declaration"; Appendix D reports `termination_` (status, gap G_k, margin, radius, Corollary 4 bound), `conditioning_`, and the abstraction-gaps ledger G-1 to G-16 for the planted data and cubesat tables, as printed by the code. | inspection against `docs/method.md`; test of cited lemma ids and of Appendix D numbers against `termination_` |
-| R-16 | Preliminaries state stage 1 as a black box in the register's wording for a, the Discussion's cross-application paragraph does likewise, and the body names no tooling versions. | test for the register phrase and for absence of version strings; inspection |
-| R-12 | Drill-down checks: L-A: abstract within 200 words and Figure 1 present with caption; L-B: headers, main-results list and figure captions alone state the Story and the finding; L-C: no unresolved forward reference; L-D: every appendix cited at least once from the body and every lemma has a runnable proof dropdown; L-E: each command in section 10 exists and runs in the smoke test; L-F: `case.py` runs end to end on a second table (the planted data) with no cubesat-specific edit. | `tests/test_paper.py`; D-8 |
-| R-13 | `uv run pytest`, `uv run ruff check .`, `uv run ruff format --check .`, `uv lock --check` pass; notebooks execute from a clean kernel with committed outputs equal to a re-run (seeded). | local checks; an execution test marked slow |
-| R-14 | Search section and Appendix F are labelled preliminary and contain no result numbers until WP12 lands. | test for the label; inspection |
-| R-15 | No AI attribution in commits or documents, per the repository's rule (subject to OD5). | attribution grep in the local checks |
+| R-7 | The Derived / Numerical / Open badge on each Results statement matches the ledger status (proved / inherited / observed); Q1 is marked Open and not pursued. | test cross-checking against `derivation/axioms.py` and `abstraction-gaps.md` |
+| R-8 | The Pareto contrast and the DEA contrast appear in section 2, one compressed paragraph each; nondominated counts (671/706; 146/706; 8/706) are produced by `case.py`, not typed. | test of `case.py` outputs; inspection |
+| R-9 | The prior-art table has a row per family in `paper-outline-v1-baseline.md`, each with produces / shares / differs / cites, and claims nothing as novel (no "novel", "first", "new" claims about the method). | test on the table; inspection |
+| R-10 | All fifteen state-of-practice, two multiobjective, three DEA records and `zargham2026incose` are in `docs/references.bib` with a resolved DOI or stable URL and a `verified` field, even if the text cites only a subset; Appendix H carries the state-of-practice review. | `tests/test_references.py` |
+| R-11 | The algorithm subsection follows E-8, cites L12 to L14 and states the three levels (descent, numerical stationarity, conditional local optimality) with the stopping declaration, as in the `method.md` headings "Three levels of guarantee", "Level 1" to "Level 3" and "The stopping declaration" (or the equivalent text in `paper-sources/`); Appendix D reports `termination_` (status, gap G_k, margin, radius, Corollary 4 bound) and `conditioning_` for the planted data and cubesat tables, as printed by the code. | inspection against the source text; test of cited lemma ids and of Appendix D numbers against `termination_` |
+| R-12 | Preliminaries state stage 1 as a black box in the register's wording for a, the Discussion's cross-application paragraph does likewise, and the body names no tooling versions. | test for the register phrase and for absence of version strings; inspection |
+| R-13 | Drill-down checks (structural): L-A: abstract within 200 words and Figure 1 present with caption; L-B: headers, main-results list, statement blocks and figure captions alone state the Story and the finding; L-C: no unresolved forward reference; L-D: every appendix cited at least once from the body and every lemma has a runnable script pointer; L-E: each command in section 11 exists and runs in the smoke test; L-F: `case.py` runs end to end on a second table (the planted data) with no cubesat-specific edit. Plus the cold-reader trial per level (decided). | `tests/test_paper.py`; cold-reader reports in `WP10-review.md` (D-8) |
+| R-14 | `uv run pytest`, `uv run ruff check .`, `uv run ruff format --check .`, `uv lock --check` pass; notebooks execute from a clean kernel with committed outputs equal to a re-run (seeded). | local checks; an execution test marked slow |
+| R-15 | Section 7 and Appendix G are labelled preliminary and contain no result numbers until WP12 lands. | test for the label; inspection |
+| R-16 | No AI attribution in commits or documents, per the repository's rule; the Acknowledgments disclosure is the supervisor's own statement (decided). | attribution grep in the local checks |
+| R-17 | **Theorem-style statements (new).** Every lemma L1 to L14 appears in `paper.ipynb` as a numbered block of the kinds Lemma / Proposition / Theorem (Definitions in section 4) with (i) explicit hypotheses, (ii) a statement, (iii) a narrative proof sketch, (iv) a pointer naming its script `derivation/lemma_NN_*.py` and `verify`; the statement block's derivation tag (L-number) is unique and complete (L1 to L14, none missing, none duplicated); the paper's own numbering follows the order of the paper. | `tests/test_paper.py` parsing the blocks against the file list of `derivation/` |
+| R-18 | **Script pointers resolve (new).** Every `derivation/lemma_NN_*.py` path named in the paper exists, defines `verify`, and passes (`derivation/run.py`); the Appendix B outputs are the scripts' printed results. | test; `uv run python -m derivation.run` |
+| R-19 | **Every moved section has a home (new).** `paper/source_map.md` lists every `docs/` page and section moved, and every file in `docs/superpowers/notes/paper-sources/`, with a paper section or appendix that exists in the notebook; no listed source is unmapped; no mapped home is missing. | test comparing the map with the source directory and the headers |
+| R-20 | **The policy paragraph appears once (new).** The "Map and territory" paragraph appears exactly once in the body (section 3), and the abstraction-gaps ledger G-1 to G-16 exactly once, in Appendix E, with each gap evaluated on the planted and cubesat tables as printed by the code. | test counting occurrences; inspection |
+| R-21 | **Separation of concerns (new).** `paper/` does not duplicate user-guide material (install, how to run, API tables, parameter lists): those are linked to the docsite from section 11; WP10 edits no file under `docs/` other than `docs/references.bib`. | test for the absence of install/API sections in the paper headers; `git diff --stat` shows no other `docs/` file |
+| R-22 | **Acceptance is structural (new).** `WP10-review.md` reports R-1 to R-22 and the L-A to L-F structural checks; it states that content and aesthetics are not signed off and lists improvements for WP11. | inspection of `WP10-review.md` |
 
 ## Definition of good
 
 A reader who stops at the abstract and Figure 1 knows the decision problem, the idea (tensions, not
-variance) and the finding; who skims headers and figure captions can state the main results; who reads
-the whole paper has an academic paper's argument, spaced out with MyST affordances, with one
-claim per block and each claim one click from its lemma output or test; who pulls the code reproduces
-every number and, with the `case.py` recipe, runs their own table. The paper never overstates: map and
-territory are kept apart as the abstraction-gaps ledger does, and the register's words are used and no others.
+variance) and the finding; who skims headers, statement blocks and figure captions can state the main
+results; who reads the whole paper has an academic paper's argument, with the mathematics as
+theorem-style statements and narrative proof sketches, spaced out with MyST affordances, with one
+claim per block and each claim one click from its derivation script or test; who pulls the code
+reproduces every number and, with the `case.py` recipe, runs their own table. The paper is
+recognizably a different document from the docsite: the how and why, not the how to. The paper never
+overstates: map and territory are kept apart as the abstraction-gaps ledger does, and the register's
+words are used and no others.
 
 ## Definition of good enough
 
-- D-1 to D-8 delivered; R-1 to R-16 pass; every OD below decided.
-- The Story's four parts, the six reader levels' checks (R-12), the Pareto and DEA contrasts and the
-  prior-art table are present.
-- The Results' algorithm subsection is written against the delivered (and, by acceptance time, accepted) WP13 text.
-- The search section is present and marked preliminary; Appendix F is a marked stub.
-- No readability polishing beyond R-12; remaining improvements are listed for WP11.
+- D-1 to D-11 delivered; R-1 to R-22 pass; OD4 decided.
+- The Story's four parts, the L-A to L-F structural checks, the L1 to L14 theorem-style blocks with
+  proof sketches and script pointers, the Pareto and DEA contrasts, the prior-art table, the gaps
+  appendix, the policy paragraph and a complete source map are present.
+- The algorithm subsection is written against the delivered (and, by acceptance time, accepted) WP13 text.
+- The search section is present and marked preliminary; Appendix G is a marked stub.
+- No readability or aesthetic polishing beyond the structural checks; remaining improvements are
+  listed for WP11 (whose cold-read grid does the content loops).
 
 ## Definition of done
 
-Good enough is met, **no open item remains unresolved**, and the supervisor has accepted the work by the acceptance record above.
+Good enough is met, **no open item remains unresolved**, and the supervisor has accepted the work by the acceptance record above (a structural acceptance, not a sign-off on content or aesthetics).
 
 ## Order of work (default)
 
-1. Early (parallel with WP13, files disjoint): `case.py` and its tests, bibliography and literature
-   section, `myst.yml`, notebook and appendix shells, `tests/test_paper.py` skeleton.
-2. Prose and appendices A, B, C, E; sections 1 to 4, 7 to 11.
-3. Results lemma blocks L1 to L11, then **last**: the algorithm subsection, Appendix D's certificates and the text that depends on the register, written against the delivered WP13 material on `dev`.
-4. The search section (preliminary) and Appendix F stub; WP12's results fill them by an amendment
+1. Early (parallel with WP13 and WP8a Amendment 2, files disjoint): `case.py` and its tests,
+   bibliography, `myst.yml`, notebook and appendix shells, `tests/test_paper.py` skeleton, the
+   archive of the WP7 notebook; read the `paper-sources/` text and draft `paper/source_map.md`.
+2. Prose and appendices that need no new numbers: sections 1 to 5, 8 to 12; Appendices A, C, E, F, H.
+3. Results: the L1 to L11 theorem-style blocks and Appendix B (statements first, then sketches,
+   then the script pointers verified), then **last**: the algorithm subsection with Appendix D's
+   certificates, written against the delivered WP13 material on `dev` and the L12 to L14 scripts.
+4. The structural tests (R-17 to R-22) green; the cold-reader trials per level.
+5. The search section (preliminary) and Appendix G stub; WP12's results fill them by an amendment
    or a follow-up when WP12 lands.
 
-Dependencies: WP13 (delivered on `dev`; its acceptance gate still precedes WP10's acceptance, and the text follows any change it makes), WP14 interface contract (paths and build commands; not
-yet scoped, so this draft uses the paths above and re-pins when WP14 lands), WP12 (not yet scoped;
-only for step 4's later fill). File ownership: `paper/`, `examples/adcs/case.py`, `tests/test_paper.py`,
-`docs/references.bib`, the new section of `docs/literature.md`. Not touched: `docs/method.md`,
-`derivation/`, `src/` while WP13 runs.
+Dependencies: WP13 (delivered on `dev`; its acceptance gate still precedes WP10's acceptance, and the
+text follows any change it makes); **WP8a Amendment 2** (the source of `paper-sources/` and the final
+list of moved pages; this scope's moved-material table is provisional until it lands, and is re-pinned
+by an amendment or in the source map); WP14 interface contract (paths and build commands; this draft
+uses the paths above and re-pins when needed); WP12 (only for step 5's later fill). File ownership:
+`paper/`, `examples/adcs/case.py`, `examples/adcs/archive/`, `tests/test_paper.py`,
+`tests/test_case.py`, `docs/references.bib`, and `work-packages/WP10-*`. **Read, never edited:** every
+`docs/*.md`, `docs/superpowers/notes/paper-sources/`, `docs/superpowers/notes/*`, `derivation/`,
+`src/` (while WP13 runs).
 
 ## Agent's defaults
 
@@ -198,21 +334,26 @@ All marked *(default)* in this list; the supervisor approves or changes the list
 - Notebook outputs are committed; seeds fixed; kernel is the project's `uv` environment.
 - mystmd is installed from PyPI through a `paper` dependency group in `pyproject.toml` so every command stays `uv run myst ...`; `ipykernel` and `nbclient` in the same group.
 - `paper/myst.yml` is standalone (not `extends: ../papers.yml`), with `project.index: paper.ipynb`, the supporting notebook as the second page, and `docs/references.bib` as the bibliography.
-- Word count: prose and captions of `paper.ipynb` counted; abstract, code, tables of the appendices, references excluded; the budget table above is the allocation.
-- Search section inside the body at section 6, about 250 words, before the case; no results numbers.
+- Word count: prose and captions of `paper.ipynb` counted; abstract, code, tables of the appendices, references excluded. Target about 5,500 counted words (raised from 5,000 by the absorbed mathematics, the prior-art review and the gaps), the supervisor's cap of 6,000 unchanged; the budget table is the allocation, and detail that does not fit moves to Appendices B, D, E, H rather than the cap being raised.
+- The theorem-style blocks: each lemma keeps its derivation tag (L1 to L14) and takes the paper's own sequential number (Definition 1, Lemma 2, Proposition 3, Theorem 4 and so on, in paper order); the author classes each as Lemma, Proposition or Theorem by its role (headline results as Theorems), with E-8's Lemma/Proposition/Corollary labels used inside the algorithm subsection with the L-tag alongside. The proof sketch is a short narrative paragraph; the script pointer is a one-line admonition giving the path, the `verify` entry point and the command; the full derivation output is in Appendix B or D.
+- Source map at `paper/source_map.md`, mirrored as a table in Appendix F; its home labels are the section numbers and appendix letters above.
+- Appendix letters A to H are stable labels, not the order of first citation.
+- Search section inside the body at section 7, about 200 words, before the case; no results numbers.
 - Badge implementation: a labelled admonition on each Results block (Derived / Numerical / Open) driven from a small table in the notebook's setup cell.
 - Case tests live in `tests/test_case.py` beside `tests/test_paper.py`; `examples/adcs/k_terms.py` is kept and `case.py` imports from it rather than duplicating.
-- Figure files are generated by the notebook into `paper/figures/` and committed; the plotting module's vocabulary is reused.
-- Appendix F's later fill is an amendment to this package, unless WP12's scope assigns it otherwise.
-- Cold-reader trial for the drill-down levels follows OD6.
+- The archive of the WP7 notebook is `examples/adcs/archive/` with the banner as its first cell.
+- Figure files are generated by the notebook into `paper/figures/` and committed; Figure 1 is produced by a script derived from the spike's `make_schematics.py`; the plotting module's vocabulary is reused.
+- Appendix G's later fill is an amendment to this package, unless WP12's scope assigns it otherwise.
+- Cold-reader trials (decided) are structural: one fresh-context reviewer per level, given only what that level shows, reporting what the reader can and cannot state; findings feed `WP10-review.md` and WP11.
 - Bibliography keys follow the repo's existing pattern (`authorYEARword`).
 - The 15 sources not all cited; the paper cites the subset its text needs (supervisor: "keep all of them in our bibtex records").
+- `method.md` "Prediction from configuration" has no home in the supervisor's provisional list; it goes to Results as one proposition or to the Discussion, wherever it reads better.
 
 ## Open decisions (for the supervisor)
 
-- **OD1. Title and byline.** What are the paper's title, subtitle, author list, affiliation and ORCID? Options: (a) a title you give, with you as sole author, Dynamical Systems Group as affiliation; (b) a title you give with additional co-authors you name; (c) a working title now, final at WP11.
-- **OD2. Figure 1 (the hero image for L-A).** Options: (a) the cubesat trade space with the K = 3 fitted facets and the contending metrics named (one chart from the K = 3 record); (b) a schematic of the idea (data cloud, facets, chart coordinates, V = 1 at the frontier) with no case data; (c) a pair: facets of the trade space and the frontier rising over rounds of the search (needs WP12's results); (d) your own choice.
-- **OD3. The WP7 notebook (`examples/adcs/adcs_trade_study.ipynb`) when the paper lands.** WP7 was accepted "as the baseline ... notebook retired when the WP9 paper lands". Options: (a) delete it (git history keeps it) together with `tests/test_notebook.py` guards moved into `tests/test_paper.py`; (b) move it to an archive directory with a banner pointing to the paper; (c) keep it in place as the long tutorial and link it from the paper's section 10.
 - **OD4. PDF export through the SciPy typst template.** Options: (a) now, as an export in `paper/myst.yml` that WP10 builds and checks; (b) later, in WP8a/WP8b, with WP10 leaving the export block out.
-- **OD5. Tools statement.** The SciPy article carries an Acknowledgments section naming the AI tools and process used; this repository's rule is no AI attribution on documents. Options: (a) no tools statement in the paper; (b) a tools-and-process statement in Acknowledgments in the manner of the SciPy article, in your words; (c) none now, decided at submission.
-- **OD6. How the drill-down levels are judged at acceptance.** Options: (a) the automated checks R-12 only, with your reading at WP11; (b) the automated checks plus a cold-reader trial per level by a fresh-context reviewer given only what that level shows, reported in `WP10-review.md`; (c) the automated checks plus your own reading of the draft before acceptance.
+
+Decided at the scope gate and no longer open (title and byline, Figure 1, the WP7 notebook, the tools
+statement, how the drill-down levels are judged): see "Decided at the scope gate" above with the
+supervisor's verbatim words. No new open decision arises from the separation of concerns: the paper's
+sections, appendices and word allocation are defaults; the cap of 6,000 is unchanged.
