@@ -27,12 +27,14 @@ ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 DEFAULT_OUT = DOCS / "generated" / "figures"
 
-MAX_FIGURES = 9
+MAX_FIGURES = 8
 BLOCK = re.compile(r"^```python \{\.runnable\}\n(.*?)^```", re.M | re.S)
 IMAGE = re.compile(r"!\[[^\]]*\]\(([^)\s#]*?)([\w-]+)-light\.png#only-light\)")
 ALT = re.compile(r"!\[([^\]]*)\]\([^)\s#]*?([\w-]+)-light\.png#only-light\)")
 _SIZE = (7.0, 4.2)  # inches; width fits a 46 rem column at 100 dpi
 _DPI = 110
+# Figures drawn wider than the column are redrawn at this width in inches (labels keep their size).
+RESIZE = {"adcs-tensions": 6.3}
 
 # What differs between the schemes: the style that is applied, and the colour of "black". The
 # dark scheme leaves ``text.color`` alone: the heatmap's cell values are drawn in it, on cells that
@@ -128,6 +130,10 @@ def build_page(path, out, schemes=("light", "dark")):
                         exec(compile(block, f"{path.name}[block {i + 1}]", "exec"), namespace)
                     for name in wanted.get(i, []):
                         fig = plt.gcf()
+                        if name in RESIZE:
+                            w, h = fig.get_size_inches()
+                            fig.set_size_inches(RESIZE[name], h * RESIZE[name] / w)
+                            fig.tight_layout()
                         target = out / f"{name}-{scheme}.png"
                         fig.savefig(
                             target,

@@ -88,9 +88,9 @@ plot_frontier_coordinates(chart3[:, :-1], chart3[:, -1], holes=holes)
 ```
 
 <figure markdown>
-![Designs in the plane of two position coordinates with red points marking empty regions inside the cloud.](../generated/figures/chart-holes-light.png#only-light)
-![Designs in the plane of two position coordinates with red points marking empty regions inside the cloud.](../generated/figures/chart-holes-dark.png#only-dark)
-<figcaption>Figure 5. The chart with holes: the red points are grid positions far from every design, candidates for white space.</figcaption>
+![Designs in the plane of two position coordinates with orange squares ringing the cloud at its rim, where the grid positions far from every design fall.](../generated/figures/chart-holes-light.png#only-light)
+![Designs in the plane of two position coordinates with orange squares ringing the cloud at its rim, where the grid positions far from every design fall.](../generated/figures/chart-holes-dark.png#only-dark)
+<figcaption>Figure 5. The chart with holes: the orange squares are grid positions far from every design, candidates for white space. This seeded blob has no interior hole, so they fall at the rim.</figcaption>
 </figure>
 
 A hole is a candidate and not a verdict. An empty region can be an opportunity, a categorical

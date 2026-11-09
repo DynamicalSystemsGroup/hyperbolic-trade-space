@@ -29,7 +29,7 @@ plot_tensions(report, names=["m0", "m1", "m2"])
 <figure markdown>
 ![Heatmap of the association among three metrics near the frontier; all three off-diagonal cells are negative, and all three metrics are outlined as contending.](../generated/figures/tension-report-light.png#only-light)
 ![Heatmap of the association among three metrics near the frontier; all three off-diagonal cells are negative, and all three metrics are outlined as contending.](../generated/figures/tension-report-dark.png#only-dark)
-<figcaption>Figure 3. The tension report of the three-metric table: negative association (orange) marks metrics that are traded, and the outlined cells are the contending set.</figcaption>
+<figcaption>Figure 3. The tension report of the three-metric table: association is the correlation of the log-metrics near the frontier; negative (orange) marks metrics that are traded, and diagonal outlines mark the contending set.</figcaption>
 </figure>
 
 ## The contending set and the n-lemma

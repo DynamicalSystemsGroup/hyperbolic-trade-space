@@ -35,3 +35,29 @@ Cold-read details (full reader text is in the P8 session transcript): readers of
 the intended takeaway from the image alone or with one caption sentence; readers of 3, 5 and 7 needed the
 caption for the outlines, the squares and the rings; the reader of 9 misread markers as designs until the
 caption, then read it correctly.
+
+## Applied (Amendment 3, approved by the driver 2026-11-09)
+
+Driver's words: "the three caption fixes, the heatmap resize, the cubesat triangle's drop; nothing else;
+then a browser check of the three pages".
+
+- Figure 9 (cubesat triangle): already dropped from `docs/examples.md` in 0fb09ab; nothing of it remained
+  in the builder. The figure cap is now eight (`MAX_FIGURES` in `scripts/build_figures.py` and the
+  test_site assertion), the page being the builder's input and emitting eight.
+- Figure 3 caption: defines association (correlation of the log-metrics near the frontier) and says
+  diagonal outlines mark the contending set.
+- Figure 5 caption and alt text: orange (the hole colour is #D55E00), and that the seeded blob has no
+  interior hole, so the positions fall at the rim.
+- Figure 7 caption: Z0 and Z1 are the first two of nine coordinates, meaningless alone; 212 ringed
+  designs (log V >= -0.1); coverage, not the frontier. Words paid for on the same page (examples.md at 650).
+- Figure 6: resize only. It was drawn 8.0 in wide (870 px) and shown at 0.79 in the 688 px column, so its
+  labels were shrunk; `RESIZE = {"adcs-tensions": 6.3}` redraws it at column width (687 px shown at 1.0).
+  No change to the drawing code.
+
+Browser check (built-in browser, 1280 px wide, light scheme, each caption read beside its figure):
+Figure 3 (tensions): caption reads cleanly under a clear heatmap, outlines on the diagonal as described.
+Figure 5 (chart): pale orange squares ring the cloud at the rim, as the caption now says; reads true.
+Figure 6 (examples): text is now full size and legible; finding: the rotated x-axis labels sit close and
+touch each other (two-line "name / w=" labels), still readable, not fixed (a rework, out of scope).
+Figure 7 (examples): ringed designs visible, caption states coverage and the 212 count; reads true.
+Dark scheme and phone width not inspected.

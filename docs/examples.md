@@ -6,20 +6,19 @@ The worked case is a cubesat model coupling power, mass and attitude control: bu
 controller, wheel and tracker alternatives, solar panel and battery. Ten attributes are compared under two controller-gain settings: settling time, slew time, pointing error,
 control effort, power margin, energy balance, eclipse reserve, peak slew power, depth of discharge and total
 mass. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`.
-In this design loop the simulation measures the attributes (committed here as tables), and a fielded system's measured attributes would enter the same table and the same fit.
+In this design loop the simulation measures the attributes, and a fielded system's measured attributes would enter the same table and the same fit.
 
 The aggressive-gains table has 706 feasible designs. With the fit temperature chosen by `select_temperature` for a tenth of the
 designs above V = 1:
 
 - **One term.** The tension report finds a contending set (metrics that trade off) of six metrics (total mass, slew time,
-  energy balance, control effort, pointing error, depth of discharge): a 6-lemma, found from the data with no prior choice of which
-  metrics or how many.
+  energy balance, control effort, pointing error, depth of discharge): a 6-lemma, found from the data, not chosen beforehand.
 - **Three terms.** The mean slack falls from 0.204 at one term to 0.117 at three, and the status is
   `certified`. The three facets have contending sets of 6, 6 and 7 metrics. The largest facet holds
   78 percent of the near-frontier share and is the only one containing total mass and peak slew
   power; the other two are built on control effort, slew time and energy balance.
 - **A second table.** The stock-gains table gives a different one-term contending set, so the
-  finding depends on the regime evaluated.
+  finding depends on the regime.
 
 These are observations of the fit, not explanations. Reading them in physical terms is the
 engineer's work.
@@ -56,7 +55,7 @@ plot_frontier_coordinates(chart[:, :-1], chart[:, -1])
 <figure markdown>
 ![The 706 feasible designs in the plane of the first two position coordinates Z0 and Z1, with the designs nearest the frontier ringed in black.](generated/figures/adcs-coordinates-light.png#only-light)
 ![The 706 feasible designs in the plane of the first two position coordinates Z0 and Z1, with the designs nearest the frontier ringed in black.](generated/figures/adcs-coordinates-dark.png#only-dark)
-<figcaption>Figure 7. The 706 feasible designs by their first two position coordinates; the ringed designs lie nearest the frontier.</figcaption>
+<figcaption>Figure 7. The 706 feasible designs by Z0 and Z1, the first two of nine position coordinates, meaningless alone; 212 ringed designs lie nearest the frontier. It shows coverage, not the frontier.</figcaption>
 </figure>
 
 ## Three metrics as shares of a total

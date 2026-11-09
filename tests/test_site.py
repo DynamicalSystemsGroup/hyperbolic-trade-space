@@ -778,7 +778,7 @@ def test_figures_are_few_captioned_and_in_both_colour_schemes():
                 rf"{name}-dark\.png[^\n]*\n<figcaption>Figure \d+\. [^<]{{30,}}</figcaption>", text
             )
         assert [i for i, _ in bf.page_figures(page)] == sorted(i for i, _ in bf.page_figures(page))
-    assert 1 <= len(names) <= bf.MAX_FIGURES == 9
+    assert 1 <= len(names) <= bf.MAX_FIGURES == 8
     assert len(set(names)) == len(names)
     assert {"first-fit", "three-facets", "tension-report", "log-plane", "chart-holes"} <= set(names)
     assert any(n.startswith("adcs-") for n in names), "an example from the case, on the frozen data"
