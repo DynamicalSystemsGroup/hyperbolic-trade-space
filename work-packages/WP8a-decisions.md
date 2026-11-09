@@ -123,3 +123,32 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
 - The PM added `permissions: contents: read` to the build job of `.github/workflows/pages.yml` (security review of the workflow); the deploy job keeps `pages: write` and `id-token: write`. Candidate for a later package: pin both workflows' actions to full commit SHAs with the version in a comment.
 - The docs `default-groups` change was committed by the driver (ee68bfa); `uv lock --check` unchanged.
 - Math in the docsite loads MathJax from a CDN, so math needs network during the localhost review.
+
+## The supervisor's staged-site review (2026-11-08)
+
+- Served with `uv run python scripts/stage_site.py --serve`, read in the browser pane.
+  **Supervisor (mzargham), verbatim:** "a few thoughts.
+  (1) the top level page can include the figure for how but it also needs text to summarize it.
+  (2) the paper is not something i've done a full read on yet. fist pass seems okay but it will
+  definitely need readability and correctness loops. we'll need to run a grid of user reads (cold)
+  at the depth levels previously outlined and with differing personas. this means the paper
+  acceptance is stuctural not final sign off on content or aesthetics.
+
+  the lemmas for example are not very readable and might be better organized as traditional
+  theorem like statements from academic papers but with the proof sketches narrative and the reader
+  directed to the specific scipy scripts or independent verification. some of that can be relegated
+  to appendices if it helps with the flow.
+
+  actually i think you muddle togethe the doc site and the paper. i cannot tell what is what. i
+  want the docsite to be more like scikit learn docs and the paper to me more like my scipy paper."
+- Driver's reading, for the record: the `/paper/` slot is a placeholder (WP10 has not started); the
+  lemma pages read were the docsite's Mathematics page (`docs/method.md`, WP6's discursive
+  narrative with lemma blocks, extended by WP13). The finding stands as stated: the docsite carries
+  paper-register material and the site does not make the distinction visible.
+- Consequences to put to the supervisor: (1) is a WP8a amendment (a summarizing paragraph under
+  the How figure); (2) shapes WP10 (acceptance structural; theorem-style statements with narrative
+  proof sketches pointing to the scripts; appendices) and WP11 (a grid of cold reads: depth levels
+  × personas); (3) is a docsite restructure in the scikit-learn style (getting started, user guide,
+  API reference, a theory section with theorem-style statements and the ledger, examples,
+  literature), which is beyond WP8a's skeleton and either holds WP8a's acceptance or becomes a
+  package of its own.

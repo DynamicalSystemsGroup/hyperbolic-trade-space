@@ -422,6 +422,16 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   and chart panes as in S4; the author produces the final figure to that design with the register's
   words in the caption.
 
+- From the staged-site review (verbatim in `WP8a-decisions.md`): the paper's acceptance is
+  "stuctural not final sign off on content or aesthetics"; readability and correctness loops with
+  "a grid of user reads (cold) at the depth levels previously outlined and with differing personas"
+  (WP11's design); lemmas "better organized as traditional theorem like statements from academic
+  papers but with the proof sketches narrative and the reader directed to the specific scipy scripts
+  or independent verification. some of that can be relegated to appendices"; the paper "more like
+  my scipy paper", the docsite "more like scikit learn docs". Disposition: WP10's scope says so
+  (Results as theorem-style statements with narrative proof sketches and pointers to the derivation
+  scripts; appendices for the rest; acceptance structural); WP11's scope carries the cold-read grid.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
