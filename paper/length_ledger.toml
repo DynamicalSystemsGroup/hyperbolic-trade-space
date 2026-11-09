@@ -1,0 +1,37 @@
+# The length ledger of the paper (WP10).
+#
+# The supervisor's rule: "the total length of the paper is less hard ceiling and more
+# regularization. each word earns his place, and more text has a higher burden". The word count is
+# still measured (tests/test_paper.py: the rendered prose the page shows, generated sentences
+# included, builder labels excluded) but against the ceiling kept here, not a fixed cap. A section's
+# ceiling is its baseline plus the words_added of the rows that name it; the total's ceiling is the
+# total baseline plus every row. Growth is admitted by its job and refused without one: a row says
+# what the added words do and for which reader. A cut needs no row.
+#
+# Baseline: the rendered counts of the paper at 2026-11-09, before the tickets of that day.
+
+[baseline]
+total = 5927
+
+[baseline.sections]
+"The decision problem" = 574
+"Prior art, by family" = 585
+"Preliminaries and notation" = 454
+"Definitions" = 314
+"Methods" = 515
+"Results" = 1609
+"Search of the design space (preliminary)" = 218
+"Case construction" = 330
+"Case analysis" = 572
+"Discussion" = 450
+"Reproducibility and your own case" = 60
+"Future work and final remark" = 170
+"Acknowledgments and process" = 73
+"Works cited" = 3
+
+# [[raise]]
+# date = "2026-11-09"
+# section = "Definitions"
+# words_added = 12
+# job = "what the sentence does for the reader"
+# reader = "which reader it serves"

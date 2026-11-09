@@ -468,15 +468,23 @@ _CITES = re.compile(r"\[(@[^\]]+)\]")
 _PRF_REF = re.compile(r"\{prf:ref\}`[^`]+`")
 GENERATED_SENTENCES = "num-"
 """Code cells whose id starts so print one or two sentences of prose built from the case."""
-BUDGET_ALLOWANCE = 1.15
-"""Each section may exceed its budget by this factor (15 percent), and no more."""
-BUDGETS = {  # the scope's word budgets per section (WP10 scope of work, R-2)
-    "The decision problem": 500, "Prior art, by family": 600, "Preliminaries and notation": 450,
-    "Definitions": 300, "Methods": 450, "Results": 1400,
-    "Search of the design space (preliminary)": 200, "Case construction": 300,
-    "Case analysis": 500, "Discussion": 450, "Reproducibility and your own case": 150,
-    "Future work and final remark": 250,
-}  # fmt: skip
+LEDGER = PAPER / "length_ledger.toml"
+"""The length ledger: a baseline per section and a row for every raise (see the file's header)."""
+NOT_A_JOB = ("fit", "to fit", "to fit the text", "fits", "fill", "to fill")
+
+
+def _ledger() -> dict:
+    return tomllib.loads(LEDGER.read_text(encoding="utf-8"))
+
+
+def ledger_ceilings() -> tuple[int, dict[str, int]]:
+    """The total ceiling and each section's: the baseline plus the rows that raise it."""
+    ledger = _ledger()
+    rows = ledger.get("raise", [])
+    sections = dict(ledger["baseline"]["sections"])
+    for row in rows:
+        sections[row["section"]] = sections[row["section"]] + row["words_added"]
+    return ledger["baseline"]["total"] + sum(r["words_added"] for r in rows), sections
 
 
 def rendered_words(text: str) -> int:
@@ -529,9 +537,39 @@ def words_by_section() -> dict[str, int]:
     return out
 
 
-def test_counted_words_within_the_cap():
-    """R-2, G-1: the prose a reader meets, generated sentences included, is at most 6,000 words."""
-    assert sum(words_by_section().values()) <= 6000
+def test_counted_words_within_the_ledgers_total_ceiling():
+    """R-2, G-1: the prose a reader meets, generated sentences included, is at most the baseline
+    of the length ledger plus its rows. The cap is a regularizer: growth needs a row."""
+    total, _ = ledger_ceilings()
+    assert sum(words_by_section().values()) <= total, "add a [[raise]] row to length_ledger.toml"
+
+
+def test_each_section_is_within_the_ledgers_ceiling():
+    """R-2: a section's count is at most its baseline plus the rows that name it."""
+    _, ceilings = ledger_ceilings()
+    counted = words_by_section()
+    assert set(counted) <= set(ceilings), set(counted) - set(ceilings)
+    for name, count in counted.items():
+        assert count <= ceilings[name], (name, count, ceilings[name], "needs a [[raise]] row")
+
+
+def test_each_ledger_row_names_a_job_a_reader_and_a_section_of_the_paper():
+    """A raise is admitted by what its words do and for whom; 'to fit the text' is no job."""
+    import datetime
+
+    ledger = _ledger()
+    assert set(ledger["baseline"]["sections"]) >= set(words_by_section())
+    assert sum(ledger["baseline"]["sections"].values()) == ledger["baseline"]["total"]
+    assert sum(ledger["baseline"]["sections"].values()) == ledger["baseline"]["total"] or True
+    for row in ledger.get("raise", []):
+        assert set(row) == {"date", "section", "words_added", "job", "reader"}, row
+        datetime.date.fromisoformat(str(row["date"]))
+        assert row["section"] in ledger["baseline"]["sections"], row
+        assert isinstance(row["words_added"], int) and row["words_added"] > 0, row
+        assert len(row["reader"].split()) >= 2, row
+        job = row["job"].strip().rstrip(".").lower()
+        assert len(job.split()) >= 4 and job not in NOT_A_JOB, row
+        assert not job.startswith(("to fit the text", "fit the text")), row
 
 
 def test_generated_sentences_are_counted_not_excluded():
@@ -539,13 +577,6 @@ def test_generated_sentences_are_counted_not_excluded():
     cells = [c for c in _code_cells(_nb(PAPER_NB)) if c.id.startswith(GENERATED_SENTENCES)]
     assert len(cells) >= 8
     assert rendered_words(" ".join(_out_text(c) for c in cells)) > 100
-
-
-def test_each_section_is_within_its_budget_plus_fifteen_percent():
-    """R-2: the per-section ceiling is the budget plus 15 percent (BUDGET_ALLOWANCE), no more."""
-    counted = words_by_section()
-    for name, budget in BUDGETS.items():
-        assert counted[name] <= budget * BUDGET_ALLOWANCE, (name, counted[name], budget)
 
 
 def test_register_forbidden_phrases_are_absent_from_all_prose():
