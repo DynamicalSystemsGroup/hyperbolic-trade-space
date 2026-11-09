@@ -61,7 +61,7 @@ cells are plausible and sampled less often; blank cells are not tested.
 | P5 optimization reader | edge | core | core | core | edge | |
 | P6 sceptical neighbour | core | core | core | core | | |
 
-Twenty-three core cells and six edge cells.
+Twenty-four core cells and six edge cells.
 
 ## Three roles that never share context
 

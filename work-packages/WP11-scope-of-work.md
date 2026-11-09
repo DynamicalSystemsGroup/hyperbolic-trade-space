@@ -17,7 +17,7 @@ a computer ... if you present the information badly i wont be able to sign off o
 ## Goals
 
 - G1. The paper, the root page and the docsite read correctly and without avoidable friction for
-  the six personas at the depths each one reads (the grid's 23 core cells), as far as model readers
+  the six personas at the depths each one reads (the grid's 24 core cells), as far as model readers
   can show it.
 - G2. No reader leaves with a belief the answer key lists as wrong.
 - G3. The result is robust: a change made for one cell is tested on its neighbours, and a held-out
@@ -51,7 +51,7 @@ brief, their depth's slice of the rendered site and a neutral task. The triager 
 
 - **Held out from the start:** six core cells, one per persona, chosen by a seeded draw recorded
   with the key's hash; never read until the end.
-- **Round 1:** the other seventeen core cells, one reader each; three edge cells.
+- **Round 1:** the other eighteen core cells, one reader each; three edge cells.
 - **Triage** by the grid note's rules: classify; a wrong belief or a defect counts at once, friction
   or a missing item counts when seen in two cells; preferences are logged. Contradictions resolve by
   the depth contract, then the recorded intents, then the reader model; what remains goes to the
@@ -81,6 +81,6 @@ friction; or four rounds have run and the grid is reported as it stands. R-1 to 
 
 ## Agent's defaults
 
-Seventeen plus three reads in round 1; briefs of about 150 words; slices as images for depths A and
+Eighteen plus three reads in round 1; briefs of about 150 words; slices as images for depths A and
 B and as the rendered page for C and D; depths E and F in a clean worktree at the commit; the
 docsite loop runs alongside round 1.
