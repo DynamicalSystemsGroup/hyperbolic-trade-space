@@ -137,3 +137,15 @@ entry per run, hashed; cadCAD vocabulary (state, policy, state-update block, tim
 sweep) used only where it fits the configure → measure flow, said once; experiment definitions as
 Python dataclasses next to the model; the equivalence test at the WP4 Amendment 1 tolerances; no
 change to `adcs_sim.py`'s numerics under "reproduce".
+
+## Tooling versions (checked 2026-11-08, on the supervisor's instruction "you probably need a clean pull of both opensysml and sysml-toolkit, my pins are out of date")
+
+- `opensysml`: the repository pins `>=0.12.1` and the lock holds 0.12.1, which is PyPI's latest
+  release (0.12.0 on 2026-11-04, 0.12.1 on 2026-11-06; a 0.12.2 dev build on 2026-11-07). The
+  toaster reference repository is at 0.9.0, which is the out-of-date pin; every pattern taken from
+  it is re-checked against 0.12.1 (`list_engines()` is authoritative).
+- `sysml-toolkit` (Open-MBEE, Rust): latest release v0.12.0 on 2026-11-08 (v0.11.3 on 2026-10-31);
+  toaster pinned v0.9.1; this repository does not pin it (optional tooling). WP15 decides whether to
+  pin it (open decision 4) and, if so, pins v0.12.0 or later.
+- Fresh shallow clones for the WP15 drafter to read: OpenSysML `main` and sysml-toolkit `v0.12.0`
+  under the session scratchpad (`sysml-sources/`); not part of the repository.
