@@ -1,0 +1,545 @@
+# Rows of the reading pass (work-packages/WP10-reading-pass.md), verbatim, with what the
+# paper now does with each sentence. Made by paper/generate_reading_pass.py.
+rows:
+- n: 1
+  sentence: 'A decision analysis has two products: an answer, and a justification that an accountable
+    executive can follow and defend'
+  key: howard1988decision
+  read: Crossref API https://api.crossref.org/works/10.1287/mnsc.34.6.679, abstract (full)
+  verdict: partly supported
+  why: Abstract stresses normative vs descriptive views and the influence diagram as clearer conversation
+    between decision-maker and analyst; no 'two products' or defensibility to an executive.
+  status: reworded
+  now: The two products are the paper's own statement, uncited; the work is cited for a clear conversation
+    with the decision-maker.
+- n: 2
+  sentence: (same sentence)
+  key: keeney1993decisions
+  read: https://www.cambridge.org/core/books/decisions-with-multiple-objectives/DEF338459C327778C3F8C4C4A682032F,
+    publisher description; Crossref API https://api.crossref.org/works/10.1017/CBO9781139174084, abstract
+  verdict: partly supported
+  why: Description speaks of a 'reasonable and responsible choice' among conflicting objectives; nothing
+    on justifying or defending the choice. Book body not accessible.
+  status: reworded
+  now: Cited now for responsible choice among conflicting objectives.
+- n: 3
+  sentence: 'In the practice we know a trade study is a document: a grid, a table, a ranking by weighted
+    criteria'
+  key: baker2012survey
+  read: https://www.nasa.gov/wp-content/uploads/2016/10/survey_of_trade_study_methods_-_baker.pdf, whole
+    (a one-page poster) read
+  verdict: partly supported
+  why: Poster says trade studies document the decision process for traceability and repeatability, and
+    compares Pugh, AHP and Kepner-Tregoe (criteria matrix, pairwise comparison, final scores). 'Is a document'
+    is not stated; weighted-criteria ranking is shown.
+  status: reworded
+  now: Cited now only for 'surveys compare them' (the weighted-criteria methods); that a trade study is
+    a document is stated as the practice the author knows.
+- n: 4
+  sentence: (same sentence)
+  key: parnell2016trade
+  read: https://www.wiley.com/en-us/Trade+off+Analytics%3A+Creating+and+Exploring+the+System+Tradespace-p-9781119237532,
+    publisher description
+  verdict: not found
+  why: Description presents a decision-management framework based on decision theory and cost analysis;
+    nothing on documents, grids or weighted rankings. Book body not accessible.
+  status: reworded
+  now: Removed from the sentence; the work stays in the bibliography and in Table 1 as a decision-management
+    text.
+- n: 5
+  sentence: The weights are human judgments, and human judgment in trade studies is open to known biases
+  key: smith2007ameliorating
+  read: Crossref API https://api.crossref.org/works/10.1002/sys.20072, abstract
+  verdict: supported
+  why: 'Abstract: tradeoff studies involve human numerical judgment and are susceptible to human mental
+    mistakes and biases.'
+  status: kept
+  now: ''
+- n: 6
+  sentence: (same sentence)
+  key: chilli2026decision
+  read: https://sebokwiki.org/wiki/Decision_Management, article body (fetched)
+  verdict: partly supported
+  why: Weights come from judged swing-weight matrices and cognitive bias 'can seriously distort decisions';
+    the article does not tie bias to the weights.
+  status: reworded
+  now: Cited together with Smith for bias in trade studies, as the SEBoK article says it can distort decisions;
+    no longer cited for the weights.
+- n: 7
+  sentence: Systems engineering is moving from documents to models
+  key: madni2018model
+  read: Crossref API https://api.crossref.org/works/10.1002/sys.21438, abstract
+  verdict: partly supported
+  why: 'Abstract: the community ''has turned to'' MBSE centred on the system model; it does not mention
+    documents as the incumbent.'
+  status: reworded
+  now: Cited together with Henderson for the move to model-based practice, centred on the system model;
+    no longer for documents as the incumbent.
+- n: 8
+  sentence: (same sentence)
+  key: henderson2021value
+  read: Crossref API https://api.crossref.org/works/10.1002/sys.21566, abstract
+  verdict: supported
+  why: 'Abstract opens: document-based practices ''are being transitioned'' to model-based ones. (The
+    same abstract finds the evidence for MBSE benefits inconclusive; listed for the supervisor, not a
+    contradiction of the sentence.)'
+  status: kept
+  now: ''
+- n: 9
+  sentence: PCA has that standing [recognized, reproducible, rigorous, trusted]
+  key: jolliffe2016principal
+  read: Crossref API https://api.crossref.org/works/10.1098/rsta.2015.0202, abstract
+  verdict: partly supported
+  why: 'Abstract: PCA reduces dimensionality, increases interpretability, minimizes information loss,
+    is adaptive. ''Trusted'', ''reproducible'', ''standing'' are not said.'
+  status: reworded
+  now: Cited now for what PCA does (reduces dimensionality, increases interpretability, minimizes information
+    loss); the standing is the paper's own wording.
+- n: 10
+  sentence: 'Table row Pareto: ''Returns a nondominated set of designs, and traces its supported part
+    with scalarizations such as weighted sums'' (and Pareto paragraph: ''Pareto methods return a nondominated
+    set and trace its supported part by scalarization'')'
+  key: miettinen1999nonlinear
+  read: https://users.jyu.fi/~miettine/book/ (author's overview and contents); Springer page redirects
+    to a cookie gate
+  verdict: partly supported
+  why: Contents list Pareto optimality (Part I) and the weighting method as an a posteriori scalarization
+    (Part II). The phrase 'supported part' is not on the page; body not accessible.
+  status: reworded
+  now: The words 'supported part' are gone; the sentence says scalarization, for example the weighting
+    method, finds Pareto-optimal solutions.
+- n: 11
+  sentence: (same)
+  key: ehrgott2005multicriteria
+  read: Springer page (cookie gate); contents only via library catalogues in search snippets
+  verdict: not accessible
+  why: Primary not accessible. Catalogue contents list chapters on the weighted sum method, scalarization
+    and efficiency/nondominance (secondary).
+  status: confirm
+  now: The sentence now says only that scalarization such as the weighted sum finds Pareto-optimal solutions.
+- n: 12
+  sentence: '''evolutionary algorithms generate such sets'''
+  key: zitzler1999multiobjective
+  read: https://www.cse.unr.edu/~sushil/class/gas/papers/StrengthParetoEA.pdf, abstract and introduction
+    (p. 1)
+  verdict: supported
+  why: 'Abstract: multiobjective EAs search for multiple solutions in one run; SPEA stores nondominated
+    solutions and samples the Pareto-optimal front.'
+  status: kept
+  now: ''
+- n: 13
+  sentence: (same)
+  key: deb2002fast
+  read: https://sci2s.ugr.es/sites/default/files/files/Teaching/OtherPostGraduateCourses/Metaheuristicas/Deb_NSGAII.pdf,
+    abstract (p. 1)
+  verdict: supported
+  why: 'Abstract: NSGA-II, a nondominated-sorting EA, finds spread and convergence near the true Pareto-optimal
+    front.'
+  status: kept
+  now: ''
+- n: 14
+  sentence: 'L11 proof sketch: ''Only the log-convex part of a front is reached by some w'''
+  key: miettinen1999nonlinear
+  read: as above
+  verdict: not found
+  why: Accessible pages say nothing on which part of a front weights reach. (Search snippets of lecture
+    slides by Miettinen, mcda-school18.tuc.gr/Slides/Miettinen2018.pdf, say weighting misses non-convex
+    parts; not read in full and not the cited book.) 'Log-convex' is the paper's own L11 reading, not
+    a textbook statement.
+  status: reworded
+  now: The citations are removed; the log-convex limit is stated as the paper's own statement.
+- n: 15
+  sentence: (same)
+  key: ehrgott2005multicriteria
+  read: as above
+  verdict: not accessible
+  why: Primary not accessible.
+  status: confirm
+  now: The citation is removed with the attribution; the log-convex limit is stated as the paper's own.
+- n: 16
+  sentence: 'DEA: ''It builds a one-sided envelope of the data and scores each unit against it'''
+  key: charnes1978measuring
+  read: ScienceDirect (refused); a university course copy returned a login page; abstract seen only as
+    a search-engine paraphrase
+  verdict: not accessible
+  why: 'Primary not accessible. Search paraphrase (secondary) of the record''s abstract: scalar efficiency
+    per unit, weights from observed data, equivalence to linear programs.'
+  status: confirm
+  now: The sentence now says only that DEA scores each unit against the data by mathematical programming.
+- n: 17
+  sentence: (same sentence; 'DEA is the closer cousin' is the author's judgement, not checkable against
+    a source)
+  key: banker1984some
+  read: Crossref API https://api.crossref.org/works/10.1287/mnsc.30.9.1078, abstract (full)
+  verdict: partly supported
+  why: 'Abstract: mathematical programming for ex post relative-efficiency evaluation, ratio form obtained
+    from the data with no a priori weights. ''One-sided envelope'' is not said in the abstract.'
+  status: reworded
+  now: '''One-sided envelope'' is no longer attributed; the sentence says the weights are obtained from
+    the data, not set in advance.'
+- n: 18
+  sentence: '''scores above one in the super-efficiency variant'''
+  key: andersen1993procedure
+  read: Crossref API https://api.crossref.org/works/10.1287/mnsc.39.10.1261, abstract
+  verdict: partly supported
+  why: 'Abstract: ranks efficient units against a reference technology spanned by all other units; ''scores
+    above one'' is not in the abstract. Body not accessible.'
+  status: reworded
+  now: '''Scores above one'' is no longer attributed; the sentence says a super-efficiency variant ranks
+    efficient units against a reference technology spanned by all other units.'
+- n: 19
+  sentence: '''Malmquist indices across data sets'''
+  key: fare1994productivity
+  read: https://ideas.repec.org/a/aea/aecrev/v84y1994i1p66-83.html, abstract
+  verdict: supported
+  why: 'Abstract: Malmquist productivity indexes by activity analysis for 17 OECD countries over 1979-1988,
+    split into technical and efficiency change (''across data sets'' = across periods).'
+  status: kept
+  now: ''
+- n: 20
+  sentence: '''each unit in DEA may choose favourable weights, a problem answered there by weights restrictions'''
+  key: allen1997weights
+  read: https://wrap.warwick.ac.uk/16229/, abstract
+  verdict: partly supported
+  why: 'Abstract: weights restrictions and value judgements arose from applications; effects on scores,
+    targets and peers. The ''units choose favourable weights'' framing is not in the abstract.'
+  status: reworded
+  now: Cited now for weights restrictions arising in practice; 'favourable weights chosen by each unit'
+    is no longer attributed.
+- n: 21
+  sentence: '''... and protocols'''
+  key: dyson2001pitfalls
+  read: https://repositorio-aberto.up.pt/handle/10216/96901, abstract (repository record)
+  verdict: partly supported
+  why: 'Abstract: procedural issues in applying DEA, incl. ''the weights attributed to them'', pitfalls
+    and protocols. Favourable self-chosen weights are not named in it.'
+  status: reworded
+  now: Cited now for protocols and pitfalls of applying DEA; the weights are no longer said to be self-chosen.
+- n: 22
+  sentence: 'Table row DEA: ''variants for scale and returns to scale'''
+  key: banker1984some
+  read: Crossref API https://api.crossref.org/works/10.1287/mnsc.30.9.1078, abstract
+  verdict: supported
+  why: 'Abstract: separates technical and scale efficiency and tells increasing, constant or decreasing
+    returns to scale.'
+  status: kept
+  now: ''
+- n: 23
+  sentence: 'Lineage: ''The weighted geometric mean with exponents summing to one is the constant-returns
+    Cobb-Douglas form'''
+  key: cobb1928theory
+  read: https://www.jstor.org/stable/1811556 (page failed to load)
+  verdict: not accessible
+  why: Not accessible. The claim is the paper's identification of its own form with Cobb-Douglas.
+  status: confirm
+  now: The identification of the weighted geometric mean with the Cobb-Douglas form is stated as the paper's
+    own.
+- n: 24
+  sentence: 'Lineage: ''reading V as the factor that scales a design to the boundary is a distance-function
+    reading''; table: ''the Shephard distance function with its duality'''
+  key: shephard1970theory
+  read: https://press.princeton.edu/books/hardcover/9780691647524/theory-of-cost-and-production-functions,
+    publisher description
+  verdict: partly supported
+  why: 'Description: distance function as a general characterization of technology, and duality between
+    cost and production functions (table sentence supported). The V reading is the author''s, not the
+    source''s.'
+  status: reworded
+  now: The distance-function reading of V is stated as the paper's own, after Shephard's characterization
+    of a technology by its distance function.
+- n: 25
+  sentence: (same)
+  key: fare1995multi
+  read: Crossref API https://api.crossref.org/works/10.1007/978-94-011-0651-1 (no abstract; chapter titled
+    'Distance Functions' per record); Springer gated
+  verdict: not accessible
+  why: Only the bibliographic record is reachable.
+  status: confirm
+  now: Cited as further reading after Shephard; nothing is attributed to it.
+- n: 26
+  sentence: (same)
+  key: farrell1957measurement
+  read: Crossref API https://api.crossref.org/works/10.2307/2343100 (no abstract); JSTOR/Wiley gated
+  verdict: not accessible
+  why: Only the bibliographic record is reachable.
+  status: confirm
+  now: Cited as further reading after Shephard; nothing is attributed to it.
+- n: 27
+  sentence: 'Lineage: ''Frontier estimation by programming, corrected least squares and one-sided error
+    is the family of one-sided fits''; table: ''programming, corrected OLS or maximum likelihood, and
+    stochastic frontiers with one-sided error'''
+  key: battese1992frontier
+  read: 'https://ageconsearch.umn.edu/record/172957/files/agec1992v007i003-004a001.pdf, body: deterministic
+    frontiers, COLS (fn. 2), stochastic frontiers'
+  verdict: supported
+  why: Body states LP/QP estimation of deterministic frontiers, COLS and ML estimators, and the stochastic
+    frontier with a non-negative (half-normal or exponential) component.
+  status: kept
+  now: ''
+- n: 28
+  sentence: (same)
+  key: aigner1968estimating
+  read: read second-hand in Battese 1992 body (above); primary not found online
+  verdict: partly supported
+  why: 'Battese: deterministic frontiers ''first specified by Aigner and Chu (1968)'', estimated by linear
+    or quadratic programming. Primary not read.'
+  status: reworded
+  now: Attributed through the review in Battese 1992 ('reviewed in', 'after'); the primary is not read.
+- n: 29
+  sentence: (same)
+  key: afriat1972efficiency
+  read: second-hand in Battese 1992 body; Crossref API https://api.crossref.org/works/10.2307/2525845
+    (no abstract)
+  verdict: partly supported
+  why: Battese attributes the deterministic frontier model to Afriat (1972). Primary not read.
+  status: reworded
+  now: Attributed through the review in Battese 1992; the primary is not read.
+- n: 30
+  sentence: (same)
+  key: richmond1974estimating
+  read: second-hand in Battese 1992 body
+  verdict: partly supported
+  why: 'Battese: Richmond (1974) treated the model with gamma errors. Primary not read.'
+  status: reworded
+  now: Attributed through the review in Battese 1992; the primary is not read.
+- n: 31
+  sentence: (same; table also cites it for maximum likelihood)
+  key: greene1980maximum
+  read: second-hand in Battese 1992 body
+  verdict: partly supported
+  why: 'Battese: Greene (1980) gave conditions for ML and proved COLS consistent. Primary not read.'
+  status: reworded
+  now: Attributed through the review in Battese 1992; the primary is not read.
+- n: 32
+  sentence: (same)
+  key: aigner1977formulation
+  read: second-hand in Battese 1992 body; Crossref API https://api.crossref.org/works/10.1016/0304-4076(77)90052-5
+    (no abstract)
+  verdict: partly supported
+  why: 'Battese: stochastic frontier model proposed independently by Aigner, Lovell and Schmidt (1977)
+    and Meeusen and van den Broeck. Primary not read.'
+  status: reworded
+  now: Attributed through the review in Battese 1992; the primary is not read.
+- n: 33
+  sentence: 'Table row PCA: ''uncorrelated components that successively maximize variance, reducing dimensionality
+    while keeping interpretability'''
+  key: jolliffe2016principal
+  read: Crossref API https://api.crossref.org/works/10.1098/rsta.2015.0202, abstract
+  verdict: supported
+  why: Matches the abstract almost term for term.
+  status: kept
+  now: ''
+- n: 34
+  sentence: 'Lineage: ''The chart is in the spirit of log-ratio coordinates for compositional data'';
+    table: ''PCA of compositional data, and isometric logratio transformations to coordinates free of
+    the constant-sum constraint'''
+  key: aitchison1983principal
+  read: Crossref API https://api.crossref.org/works/10.1093/biomet/70.1.57 (no abstract); Oxford/JSTOR
+    gated; a PDF at dugi-doc.udg.edu/.../Aitchison.pdf was a different, later lecture and was not used
+  verdict: not accessible
+  why: Title matches the table sentence; nothing else readable. 'In the spirit of' is the author's comparison.
+  status: confirm
+  now: '''In the spirit of'' is the paper''s own comparison; nothing is attributed to the work beyond
+    its title.'
+- n: 35
+  sentence: (same)
+  key: aitchison1986statistical
+  read: Crossref API https://api.crossref.org/works/10.1007/978-94-009-4109-0 (book record)
+  verdict: not accessible
+  why: Book body not accessible.
+  status: confirm
+  now: The table cell now says only what the title says.
+- n: 36
+  sentence: (same)
+  key: egozcue2003isometric
+  read: Crossref API https://api.crossref.org/works/10.1023/A:1023818214614 (no abstract); Springer gated;
+    abstract fragments only in search snippets
+  verdict: not accessible
+  why: Title matches; abstract not read directly.
+  status: confirm
+  now: '''In the spirit of'' is the paper''s own comparison; the table cell now says only what the title
+    says.'
+- n: 37
+  sentence: 'Lineage: ''The model class and refit scheme come from geometric programming and max-affine
+    fitting''; table: ''Geometric programming with generalized posynomials'''
+  key: boyd2007tutorial
+  read: https://web.stanford.edu/~boyd/papers/pdf/gp_tutorial.pdf, abstract, sect. 5.3 (generalized posynomials),
+    sect. 8 (approximation and fitting)
+  verdict: supported
+  why: 'Read: GP definitions, generalized posynomials (5.3), fitting functions and data in GP form (8).'
+  status: kept
+  now: ''
+- n: 38
+  sentence: (same row, family cited as a group)
+  key: hoburg2014geometric
+  read: https://convexengineering.github.io/publications/hoburgabbeel2014.pdf, abstract and text
+  verdict: partly supported
+  why: 'Abstract: aircraft design as geometric programs, with GP-compatible models fitted to non-GP relations.
+    The text contains no ''generalized posynomial''; the table''s phrase belongs to Boyd et al.'
+  status: reworded
+  now: The table cell now describes aircraft design as geometric programs with GP-compatible fits; 'generalized
+    posynomials' stays with Boyd et al.
+- n: 39
+  sentence: '''softmax-affine fits compatible with geometric programming'''
+  key: hoburg2016data
+  read: https://dspace.mit.edu/handle/1721.1/105753, abstract (full text not obtained)
+  verdict: supported
+  why: 'Abstract: softmax of affine functions, GP-compatible, max-monomial and posynomial fitting as special
+    cases, Levenberg-Marquardt.'
+  status: kept
+  now: ''
+- n: 40
+  sentence: '''convex piecewise-linear fits''; ''refit scheme'''
+  key: magnani2009convex
+  read: https://web.stanford.edu/~boyd/papers/pdf/cvx_pwl_fit.pdf, abstract and sect. 1
+  verdict: supported
+  why: 'Abstract: fitting a max of affine functions by a K-means-like heuristic (alternating assignment
+    and refit).'
+  status: kept
+  now: ''
+- n: 41
+  sentence: '''reweighted l1 sparsity'''
+  key: candes2008enhancing
+  read: https://arxiv.org/pdf/0711.1612, abstract
+  verdict: supported
+  why: 'Abstract: sequence of weighted l1 problems with weights from the current solution.'
+  status: kept
+  now: ''
+- n: 42
+  sentence: 'Lineage: ''the soft maximum is an entropic risk functional'''
+  key: foellmer2026entropic
+  read: https://www2.mathematik.hu-berlin.de/~foellmer/papers/ERMWS.pdf, introduction, eqs. (1)-(2)
+  verdict: supported
+  why: 'Eq. (1) is (1/beta) log E exp(-beta X), moving from the mean (beta to 0) to the worst case (beta
+    to infinity): the log-mean-exp. The paper is on Wiener space; the PDF date (15 Oct 2026) is a compile
+    date, as the .bib already notes.'
+  status: kept
+  now: ''
+- n: 43
+  sentence: 'Lineage: ''Kernel PCA is the feature-engineering kin'' (table: ''PCA in an implicit feature
+    space'')'
+  key: schoelkopf1998nonlinear
+  read: Crossref API https://api.crossref.org/works/10.1162/089976698300017467, abstract
+  verdict: supported
+  why: 'Abstract: nonlinear PCA through kernel functions in high-dimensional feature spaces. ''Kin of
+    the GP-compatible kernel direction'' is the author''s.'
+  status: kept
+  now: ''
+- n: 44
+  sentence: '''"hyperbolic" here is unrelated to hyperbolic PCA''; table: ''PCA in hyperbolic space with
+    horospherical projections'''
+  key: chami2021horopca
+  read: https://arxiv.org/abs/2106.03306, abstract
+  verdict: supported
+  why: 'Abstract: HoroPCA, PCA components generalized to hyperbolic space. The ''unrelated'' half is the
+    paper''s statement about itself.'
+  status: kept
+  now: ''
+- n: 45
+  sentence: 'Lineage: ''Tradespace exploration displays a table of designs''; table: ''Value-focused broad
+    exploration of design alternatives, user-guided samplers and linked visualization with the Pareto
+    frontier displayed'''
+  key: ross2005tradespace
+  read: Crossref API https://api.crossref.org/works/10.1002/j.2334-5837.2005.tb00783.x, abstract
+  verdict: supported
+  why: 'Abstract: value-focused, broad tradespace exploration for space systems (table half). ''Displays
+    a table'' is not said.'
+  status: reworded
+  now: '''Displays a table'' is gone; the sentence says tradespace exploration lets an analyst explore
+    designs.'
+- n: 46
+  sentence: (same)
+  key: stump2009visual
+  read: Crossref API https://api.crossref.org/works/10.1115/1.3243633, abstract
+  verdict: supported
+  why: 'Abstract: visual steering commands, user-guided samplers, linked views, brushing and Pareto frontier
+    display (table half). A ''table'' is not named: the tool is multidimensional plots.'
+  status: reworded
+  now: '''Displays a table'' is gone; the sentence says tradespace exploration lets an analyst explore
+    designs.'
+- n: 47
+  sentence: (table row)
+  key: ross2004multi
+  read: Semantic Scholar record of 10.2514/1.9204, abstract (api.semanticscholar.org/graph/v1/paper/DOI:10.2514/1.9204)
+  verdict: supported
+  why: 'Abstract: process using decision-maker preferences to generate and evaluate many space-system
+    designs (multi-attribute tradespace exploration).'
+  status: kept
+  now: ''
+- n: 48
+  sentence: (table row)
+  key: ross2010revisiting
+  read: https://dspace.mit.edu/handle/1721.1/81995, abstract
+  verdict: supported
+  why: 'Abstract: extensions of tradespace exploration to transportation and changing contexts, a question-driven
+    process, applied to three space systems.'
+  status: kept
+  now: ''
+- n: 49
+  sentence: '''tradespace exploration for resilient systems'''
+  key: spero2014tradespace
+  read: Semantic Scholar record of 10.1016/j.procs.2014.03.072, abstract (ScienceDirect refused)
+  verdict: supported
+  why: 'Abstract: an ERS view of tradespace exploration supporting decision analysis. Body not read.'
+  status: kept
+  now: ''
+- n: 50
+  sentence: 'Table row decision analysis: ''normative versus descriptive distinction'''
+  key: howard1988decision
+  read: Crossref API https://api.crossref.org/works/10.1287/mnsc.34.6.679, abstract
+  verdict: supported
+  why: 'Abstract: ''a central conceptual distinction is that between normative and descriptive views''.'
+  status: kept
+  now: ''
+- n: 51
+  sentence: '''multiple-objective preferences and value trade-offs'''
+  key: keeney1993decisions
+  read: Cambridge page and Crossref abstract (above)
+  verdict: supported
+  why: 'Description: trade-offs between incommensurable objectives.'
+  status: kept
+  now: ''
+- n: 52
+  sentence: '''weighted-criteria comparison methods (Pugh, AHP, Kepner-Tregoe)'''
+  key: baker2012survey
+  read: poster (above)
+  verdict: supported
+  why: Names and compares exactly those three methods.
+  status: kept
+  now: ''
+- n: 53
+  sentence: (same row)
+  key: parnell2016trade
+  read: publisher page (above)
+  verdict: partly supported
+  why: Supports 'decision-analysis text' only; no weighted-criteria methods named in the description.
+  status: reworded
+  now: The table cell adds the description's decision-management framework based on decision theory and
+    cost analysis.
+- n: 54
+  sentence: 'Table row MBSE: ''MBSE centred on the system model as the sole source of truth'''
+  key: madni2018model
+  read: Crossref API https://api.crossref.org/works/10.1002/sys.21438, abstract
+  verdict: supported
+  why: 'Abstract: ''sole source of truth''.'
+  status: kept
+  now: ''
+- n: 55
+  sentence: '''a systematic review of the evidence for MBSE benefits, opening from document-based practice'''
+  key: henderson2021value
+  read: Crossref API https://api.crossref.org/works/10.1002/sys.21566, abstract
+  verdict: supported
+  why: Matches the abstract.
+  status: kept
+  now: ''
+- n: 56
+  sentence: 'Acknowledgments sentence (outside sections 1-2, requested): ''a process modelled on the harness
+    described in [@zargham2026incose], whose deterministic checks and named human approver are the verification
+    mechanism this paper inherits'''
+  key: zargham2026incose
+  read: Crossref API https://api.crossref.org/works/10.1002/iis2.70203, abstract
+  verdict: accessible (own work)
+  why: 'Listed for the supervisor, no rewording. Abstract: LLM assistance regulated by deterministic automated
+    testing; mandatory human accountability and sign-off.'
+  status: supervisor
+  now: The sentence is unchanged; it is listed for the supervisor.

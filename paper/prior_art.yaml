@@ -25,8 +25,8 @@ entries:
     group: Optimization and efficiency analysis
     family: Pareto and multiobjective optimization
     does: >-
-      Returns a nondominated set of designs, and traces its supported part with scalarizations such
-      as weighted sums; evolutionary algorithms generate nondominated sets.
+      Returns a nondominated set of designs, and finds Pareto-optimal solutions by scalarization, for
+      example the weighting method; evolutionary algorithms generate nondominated sets.
     shares: >-
       A maximizer of a weighted geometric mean with positive exponents is Pareto-efficient (lemma
       L11), and the weights act as a trade-off.
@@ -47,14 +47,15 @@ entries:
     group: Optimization and efficiency analysis
     family: Data envelopment analysis (DEA)
     does: >-
-      Computes a relative efficiency score per decision-making unit from linear programs, with
-      variants for scale and returns to scale, super-efficiency scores above one, and Malmquist
-      productivity indices across data sets.
+      Evaluates the relative efficiency of each decision-making unit by mathematical programming on
+      the observed data, with weights obtained from the data, with variants for scale and returns
+      to scale, a super-efficiency variant that ranks efficient units against a reference
+      technology spanned by all other units, and Malmquist productivity indices across data sets.
     shares: >-
       A one-sided envelope of the data, a score per unit, scores beyond the boundary (V above 1)
       and a boundary that moves between data sets.
     differs: >-
-      One exponent vector per facet, a global named structure, in place of weights chosen by each
+      One exponent vector per facet, a global named structure, in place of weights obtained unit by
       unit; piecewise log-linear facets with constant elasticities within a facet; larger-is-better
       metrics with homogeneity by the simplex in place of inputs, outputs and a returns-to-scale
       choice; a soft maximum with a temperature, a band and an effective sample size in place of a
@@ -65,7 +66,7 @@ entries:
     section2: true
     nearest: true
     why_not_just: >-
-      This is not just DEA: DEA scores each unit against the envelope under weights it may choose,
+      This is not just DEA: DEA scores each unit against the envelope under weights obtained from the data,
       while the fit learns one set of exponents per facet from the whole table and reports where a
       design sits on the facet and which metrics trade there.
 
@@ -93,7 +94,8 @@ entries:
     family: Deterministic and stochastic frontiers
     does: >-
       Estimates frontier production functions by programming, corrected ordinary least squares or
-      maximum likelihood, and stochastic frontiers with one-sided error.
+      maximum likelihood, and stochastic frontiers with one-sided error, as reviewed by Battese
+      (1992).
     shares: >-
       A one-sided criterion on log-linear residuals.
     differs: >-
@@ -128,8 +130,8 @@ entries:
     group: Dimension reduction and model fitting
     family: Compositional and log-ratio PCA
     does: >-
-      PCA of compositional data, and isometric logratio transformations to coordinates free of the
-      constant-sum constraint.
+      PCA of compositional data, and isometric logratio transformations for compositional data
+      analysis.
     shares: >-
       The chart Z = Bu is in the spirit of an isometric logratio chart.
     differs: >-
@@ -147,8 +149,9 @@ entries:
     group: Dimension reduction and model fitting
     family: Geometric programming and max-affine fitting
     does: >-
-      Geometric programming with generalized posynomials, softmax-affine fits compatible with
-      geometric programming, convex piecewise-linear fits, and reweighted l1 sparsity.
+      Geometric programming with generalized posynomials, aircraft design as geometric programs with
+      fits compatible with them, softmax-affine fits compatible with geometric programming,
+      convex piecewise-linear fits, and reweighted l1 sparsity.
     shares: >-
       The model class, the K > 1 refit scheme and the sparsity option.
     differs: >-
@@ -216,7 +219,7 @@ entries:
     does: >-
       Decision analysis with a normative versus descriptive distinction; multiple-objective
       preferences and value trade-offs; weighted-criteria comparison methods (Pugh, AHP,
-      Kepner-Tregoe).
+      Kepner-Tregoe); a decision-management framework based on decision theory and cost analysis.
     shares: >-
       The weights are trade-off rates.
     differs: >-

@@ -11,7 +11,7 @@ import re
 
 import yaml
 from paper_common import Md, md_table
-from paper_paths import PAPER
+from paper_paths import PAPER, ROOT
 
 SOURCE = PAPER / "prior_art.yaml"
 FIELDS = ("does", "shares", "differs", "cites")
@@ -30,7 +30,7 @@ def entries(path=SOURCE) -> list[dict]:
     return out
 
 
-BIB = PAPER.parent / "docs" / "references.bib"
+BIB = ROOT / "docs" / "references.bib"
 _ACCENTS = {'\\"': "\u0308", "\\'": "\u0301", "\\`": "\u0300", "\\^": "\u0302"}
 
 
