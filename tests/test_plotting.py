@@ -1,5 +1,6 @@
 """Plotting smoke tests (Agg backend): each function returns an Axes and uses the vocabulary."""
 
+import re
 from types import SimpleNamespace
 
 import matplotlib
@@ -219,3 +220,114 @@ def test_tension_annotations_contrast_with_their_cell():
         assert t.get_color() == ("black" if lum > 0.5 else "white")
     assert {t.get_color() for t in ax.texts[:9]} == {"black", "white"}
     assert texts
+
+
+# ---- plot_ternary (WP18) ----------------------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def planted3():
+    X, _ = make_frontier_data(400, 3, n_terms=3, random_state=11)
+    return X, HyperbolicTradeSpace(n_terms=3, temperature=50.0, random_state=0).fit(X)
+
+
+def _by_gid(ax, prefix):
+    found = ax.findobj(lambda a: re.fullmatch(prefix + r"\d+", a.get_gid() or "") is not None)
+    return {int(a.get_gid().rsplit("-", 1)[1]): a for a in found}
+
+
+def test_ternary_markers_sit_at_the_exponent_vectors(planted3):
+    X, ts = planted3
+    ax = P.plot_ternary(ts, X, lines=True)
+    assert isinstance(ax, Axes)
+    stars = _by_gid(ax, "ternary-star-")
+    assert set(stars) == {0, 1, 2}
+    for k, art in stars.items():
+        x, y = art.get_offsets()[0]
+        top = y / (np.sqrt(3) / 2)
+        right = x - top / 2
+        np.testing.assert_allclose([top, 1 - top - right, right], ts.exponents_[k], atol=1e-12)
+    # colour is not the only cue: each marker has its own shape and a numbered label
+    assert len({a.get_paths()[0].vertices.tobytes() for a in stars.values()}) == 3
+    assert {int(t.get_text()) for t in _by_gid(ax, "ternary-star-label-").values()} == {1, 2, 3}
+
+
+def test_ternary_fixed_total_identity_and_peak(planted3):
+    """log V = log S + max_k (a_k + sum_j w_kj log c_j) at shares of the total, to 1e-10, and
+    facet k's piece is largest among all shares at c = w_k."""
+    X, ts = planted3
+    fit = P._ternary_geometry(ts, X)
+    W = fit["W"]
+    a = W @ fit["colmean"] - fit["beta"]
+    c = P._ternary_shares(fit, 1.0)
+    S = np.exp(fit["U"] - fit["colmean"]).sum(axis=1)
+    np.testing.assert_allclose(
+        np.log(S) + (a + np.log(c) @ W.T).max(axis=1), ts.score_samples(X), atol=1e-10
+    )
+    rng = np.random.default_rng(0)
+    cs = rng.dirichlet(np.ones(3), size=3000)
+    for w in W:
+        assert w @ np.log(np.clip(w, 1e-300, None)) >= (np.log(cs) @ w).max() - 1e-12
+
+
+def test_ternary_regions_partition_the_triangle(planted3):
+    X, ts = planted3
+    fit = P._ternary_geometry(ts, X)
+    pts, reg = P._ternary_regions(fit, fit["spread"], n=120)
+    assert np.allclose(pts.sum(axis=1), 1.0) and (pts > 0).all()
+    assert set(np.unique(reg)) == {0, 1, 2}
+    a = fit["W"] @ fit["colmean"] - fit["beta"]
+    assert (reg == (a + fit["spread"] * (np.log(pts) @ fit["W"].T)).argmax(axis=1)).all()
+
+
+def test_ternary_lines_are_off_by_default_and_add_contours_and_markers(planted3):
+    import inspect
+
+    X, ts = planted3
+    assert inspect.signature(P.plot_ternary).parameters["lines"].default is False
+    plain, lined = P.plot_ternary(ts, X), P.plot_ternary(ts, X, lines=True)
+    assert not _by_gid(plain, "ternary-star-")
+    assert len(lined.collections) > len(plain.collections)
+    assert _by_gid(plain, "ternary-label-").keys() == {0, 1, 2}  # the regions are named in words
+
+
+def test_ternary_names_schemes_and_ax(planted3):
+    X, ts = planted3
+    _fig, ax = plt.subplots(figsize=(4, 4))
+    names = ["cost", "speed", "range"]
+    assert P.plot_ternary(ts, X, names=names, ax=ax, scheme="dark") is ax
+    words = " ".join(t.get_text() for t in ax.texts)
+    assert "favours cost" in words and "metric 1" not in words
+    assert matplotlib.colors.to_hex(ax.lines[-1].get_color()) == "#e8e6e1"
+    with plt.rc_context({"axes.labelcolor": "#e8e6e1"}):
+        assert P._ternary_scheme("auto") == "dark"
+    assert P._ternary_scheme("auto") == "light"
+    with pytest.raises(ValueError, match="scheme"):
+        P.plot_ternary(ts, X, scheme="blue")
+    with pytest.raises(ValueError, match="strictly positive"):
+        P.plot_ternary(ts, X * 0.0)
+
+
+def test_ternary_groups_sum_the_exponents_exactly():
+    X, _ = make_frontier_data(300, 6, n_terms=2, random_state=3)
+    ts = HyperbolicTradeSpace(n_terms=2, temperature=30.0, random_state=0).fit(X)
+    names = list("abcdef")
+    groups = {"p": ["a", "b"], "q": ["c"], "r": [3, 4, 5]}
+    ax = P.plot_ternary(ts, names=names, groups=groups)
+    W = ts.exponents_
+    want = np.column_stack([W[:, [0, 1]].sum(1), W[:, [2]].sum(1), W[:, [3, 4, 5]].sum(1)])
+    assert np.allclose(want.sum(axis=1), 1.0)
+    stars = {
+        k: v for k, v in _by_gid(ax, "ternary-star-").items() if v.get_gid() == f"ternary-star-{k}"
+    }
+    for k, art in stars.items():
+        x, y = art.get_offsets()[0]
+        top = y / (np.sqrt(3) / 2)
+        np.testing.assert_allclose([top, 1 - top - (x - top / 2), x - top / 2], want[k], atol=1e-12)
+    assert "favours p" in " ".join(t.get_text() for t in ax.texts)
+    with pytest.raises(ValueError, match="exactly one group"):
+        P.plot_ternary(ts, names=names, groups={"p": ["a"], "q": ["b"], "r": ["c"]})
+    with pytest.raises(ValueError, match="needs 3 metrics"):
+        P.plot_ternary(ts, names=names)
+    with pytest.raises(ValueError, match="omit X"):
+        P.plot_ternary(ts, X, names=names, groups=groups)

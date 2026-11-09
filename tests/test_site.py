@@ -63,7 +63,7 @@ BUDGETS = {
     "user-guide/termination.md": 600,
     "user-guide/limitations.md": 500,
     "api.md": 300,
-    "examples.md": 400,
+    "examples.md": 650,
     "theory.md": 700,
     "further-reading.md": 300,
 }
@@ -758,7 +758,7 @@ def test_no_code_line_in_a_docsite_page_exceeds_the_column():
 
 
 def test_figures_are_few_captioned_and_in_both_colour_schemes():
-    """D1: at most seven figures; each is a light and a dark image with the same alt text and one
+    """D1: at most nine figures (WP18 OD2: one more per ternary example); each is a light and a dark image with the same alt text and one
     caption, directly below the code block that makes it."""
     bf = _figures_module()
     names = []
@@ -775,7 +775,7 @@ def test_figures_are_few_captioned_and_in_both_colour_schemes():
                 rf"{name}-dark\.png[^\n]*\n<figcaption>Figure \d+\. [^<]{{30,}}</figcaption>", text
             )
         assert [i for i, _ in bf.page_figures(page)] == sorted(i for i, _ in bf.page_figures(page))
-    assert 1 <= len(names) <= bf.MAX_FIGURES == 7
+    assert 1 <= len(names) <= bf.MAX_FIGURES == 9
     assert len(set(names)) == len(names)
     assert {"first-fit", "three-facets", "tension-report", "log-plane", "chart-holes"} <= set(names)
     assert any(n.startswith("adcs-") for n in names), "an example from the case, on the frozen data"
@@ -1053,6 +1053,23 @@ def test_why_label_placement_is_the_same_in_both_schemes(why_fit):
     bsf, fit = why_fit
     light, dark = _label_boxes(bsf, fit, "light"), _label_boxes(bsf, fit, "dark")
     assert light == dark
+
+
+def test_why_image_is_drawn_by_the_package_function(why_fit, monkeypatch):
+    """WP18 R-3: one implementation, two consumers; no second projection in the script."""
+    import matplotlib.pyplot as plt
+
+    from hyperbolic_trade_space import plotting
+
+    bsf, fit = why_fit
+    text = (ROOT / "scripts" / "build_site_figures.py").read_text()
+    assert "def project" not in text and "def place_labels" not in text
+    calls = []
+    real = plotting.plot_ternary
+    monkeypatch.setattr(bsf, "plot_ternary", lambda *a, **k: calls.append(k) or real(*a, **k))
+    plt.close(bsf.draw(fit, "dark", lines=True))
+    assert len(calls) == 1 and calls[0]["lines"] is True and calls[0]["scheme"] == "dark"
+    assert bsf.project is plotting._ternary_project
 
 
 def test_site_does_not_import_a_ternary_package():

@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 DEFAULT_OUT = DOCS / "generated" / "figures"
 
-MAX_FIGURES = 7
+MAX_FIGURES = 9
 BLOCK = re.compile(r"^```python \{\.runnable\}\n(.*?)^```", re.M | re.S)
 IMAGE = re.compile(r"!\[[^\]]*\]\(([^)\s#]*?)([\w-]+)-light\.png#only-light\)")
 _SIZE = (7.0, 4.2)  # inches; width fits a 46 rem column at 100 dpi
