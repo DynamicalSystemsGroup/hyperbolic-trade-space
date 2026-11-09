@@ -22,7 +22,7 @@ notebooks = ["jupyter>=1.0", "nbconvert>=7"]
 case = ["opensysml>=0.12.1"]
 
 [tool.uv]
-default-groups = ["dev", "case"]
+default-groups = ["dev", "case", "docs"]
 
 [build-system]
 requires = ["hatchling"]
