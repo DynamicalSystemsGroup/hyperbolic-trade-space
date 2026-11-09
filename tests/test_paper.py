@@ -254,7 +254,8 @@ def test_abstract_and_section_5_say_the_one_facet_fit_is_a_geometric_program():
     """The surface is posynomial (the abstract says "a fitted posynomial reference surface", the
     supervisor's reading of 2026-11-09) and section 5 keeps one cited sentence that the invariant is
     a generalized posynomial; one facet is a geometric program (convex after the log change of
-    variables, L4.14 to L4.24); several facets alternate one such program per facet. Nothing says
+    variables, L4.14 to L4.24); several facets alternate weights with one program for all terms
+    (R-39: no design is assigned to a facet in the fit). Nothing says
     the several-facet fit is itself a convex program or a GGP. The abstract (the supervisor's
     reading of 2026-11-09, R-38) says it plainly: a single n-lemma fits a monomial, which
     transforms into a convex program; with several active trades the model is a posynomial,
@@ -291,7 +292,7 @@ def test_abstract_and_section_5_say_the_one_facet_fit_is_a_geometric_program():
         "geometric program",
         "generalized posynomial",
         "L4.14 to L4.24",
-        "one such program per facet",
+        "one program for all terms",
         "boyd2007tutorial",
     ):
         assert phrase in methods, phrase  # fmt: skip
@@ -302,8 +303,7 @@ def test_abstract_and_section_5_say_the_one_facet_fit_is_a_geometric_program():
     assert flat.count("GGP") == 1  # spelled out at first use, one parenthesis
     for text in (flat, methods, _section("The decision problem")):
         assert "several facets is a" not in text
-        assert not re.search(r"several[^.;]*(transform|convex program)", text.replace(
-            "one such program per facet", ""))  # fmt: skip
+        assert not re.search(r"several[^.;]*(transform|convex program)", text)
     for text in (methods, _section("The decision problem")):
         assert "GGP" not in text
 
@@ -330,6 +330,7 @@ def test_one_name_for_the_surface_and_the_data_is_what_is_modelled():
     others = [
         _src(c) for c in nb.cells
         if c.cell_type == "markdown" and "generalized posynomial" in _src(c)
+        and ":label: thm-soft" not in _src(c)  # L16: the derivation's statement
     ]  # fmt: skip
     assert len(others) == 1
     assert "$V_K$ is a generalized posynomial" in others[0] and "@boyd2007tutorial" in others[0]
@@ -1479,11 +1480,11 @@ def test_search_section_is_short_future_work_without_numbers():
 
 
 def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script():
-    """R-17, R-18: L1 to L15 once each, each with the parts of the form. The paper's order is the
-    algorithm's (E-8): Level 1 (L15) comes before Lemma 1 (L12)."""
+    """R-17, R-18: L1 to L16 once each, each with the parts of the form. The paper's order is the
+    algorithm's (E-8): the alternation (L16) and Level 1 (L15) come before Lemma 1 (L12)."""
     blocks = _blocks()
     tags = [re.search(r"\(L(\d+)\)\s*$", title).group(1) for _, title, _, _ in blocks]
-    assert [int(t) for t in tags] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 12, 13, 14, 14]
+    assert [int(t) for t in tags] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 15, 12, 13, 14, 14]
     body = _markdown(_nb(PAPER_NB))
     scripts = {
         int(re.match(r"lemma_(\d+)_", p.name).group(1)): p
@@ -1508,6 +1509,7 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
         assert script.name == pointer.group(1) and "def verify(" in script.read_text(), label
     kinds = [(k, int(re.search(r"\(L(\d+)\)", t).group(1))) for k, t, _, _ in blocks]
     assert kinds[11:] == [
+        ("theorem", 16),
         ("theorem", 15),
         ("lemma", 12),
         ("lemma", 13),
@@ -1733,7 +1735,15 @@ def test_reader_depth_anchors_are_all_present():
         .split("**Organization", 1)[0]
     )
     labels = ("thm-invariant", "thm-kkt", "thm-convex", "thm-elasticity", "thm-chart")
-    labels += ("thm-extension", "thm-pareto", "thm-descent", "lem-gap", "lem-margin", "prop-local")
+    labels += (
+        "thm-extension",
+        "thm-pareto",
+        "thm-soft",
+        "thm-descent",
+        "lem-gap",
+        "lem-margin",
+        "prop-local",
+    )
     for label in labels:
         assert f"`{label}`" in results, label
     assert "Numerical" in results and "Open" in results  # O-6: the findings that are not derived
@@ -1746,14 +1756,14 @@ def test_simplifying_assumptions_are_named_where_made_and_taken_up_in_future_wor
     methods, future = _section("Methods"), _section("Future work and final remark")
     for marker in (
         "One facet",
-        "Hard assignment",
+        "Sharp weights",
         "analyst chooses",
         "Small $K$",
         "Log-affine",
         "log-convex envelope",
     ):
         assert marker.lower() in methods.lower(), marker
-    later = ("beyond one facet", "hard assignment", "analyst's k", "small k", "log-affine")
+    later = ("beyond one facet", "sharp weights", "analyst's k", "small k", "log-affine")
     later += ("log-convex envelope", "continuous variables", "illustrative hardware")
     for marker in later:
         assert marker in future.lower(), marker
@@ -2021,14 +2031,14 @@ def test_section_6_names_the_three_levels_and_has_level_1_as_a_derived_block():
 
 
 def test_appendix_b_shows_every_result_of_the_record_with_derived_counts():
-    """C-1: Appendix B follows the record (L15 included); its counts are read, never typed."""
+    """C-1: Appendix B follows the record (L16 included); its counts are read, never typed."""
     record = _record()["lemmas"]
     assert "lemma_15_descent.py" in record
     text = str(generate_proofs.how_to_read())
     results = sum(len(lem["results"]) for lem in record.values())
     steps = sum(len(lem["steps"]) for lem in record.values())
     assert f"{results} results in {len(record)} files and {steps} steps" in text
-    assert "(L12 to L15)" in text and "L15. descent" in _proof_text()
+    assert "(L12 to L16)" in text and "L15. descent" in _proof_text()
 
 
 def test_the_claims_of_c1_have_their_true_basis():
@@ -2245,7 +2255,7 @@ def test_cr4_5_6_the_facet_share_is_described_and_the_terms_carry_their_clause()
     """(4) no analogy to explained variance; (5) energy differential; (6) n-lemma."""
     definitions = _section("Definitions")
     assert "explained variance" not in definitions.lower()
-    assert "assigned to facet $k$" in definitions and "depends on the band" in definitions
+    assert "that facet $k$ dominates" in definitions and "depends on the band" in definitions
     assert "the level of a potential relative to the reference surface" in definitions
     front = _src(_nb(PAPER_NB).cells[0])
     intro = _section("The decision problem")
