@@ -559,3 +559,10 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   file); results may share a file, each owning its own steps; the checker requires that every step
   of a file belongs to exactly one proof, not that a file has one proof. This replaces the driver's
   default for L14.
+- **Where a cited result's SymPy form is declared.** Driver's question (popup, with the context that
+  all 23 ledger entries are declared in words only and each script writes the form where it uses
+  it): "Where should a cited result's SymPy form be declared?" (options: Once, in the ledger / In
+  the script, tagged). **Supervisor (mzargham), verbatim:** "Once, in the ledger". Disposition:
+  decided; each ledger entry carries its SymPy form and every script takes it from the ledger; a
+  result with no useful SymPy form is declared as a named proposition; the amendment widens WP10's
+  files to `derivation/axioms.py` for this. No open decision remains on Amendment 1.

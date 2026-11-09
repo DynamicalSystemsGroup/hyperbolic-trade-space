@@ -404,9 +404,11 @@ What changes:
   this we don't want any regressions to go unnoticed". This adds a deliverable, **D-12: the step
   tags in `derivation/lemma_01` to `lemma_14` and the proof-map checker with its committed record**
   (sketch, "B. Proofs, step for step with their scripts"), and **widens what WP10 may edit**: the
-  fourteen lemma scripts, `derivation/run.py`, one new helper module and one new checker module
-  under `derivation/`, and a new `tests/test_proof_map.py`, limited to giving each existing step
-  its line, tag, claim and kind. No mathematics, `TITLE`, `STATEMENT` or `AXIOMS_USED` changes; the
+  fourteen lemma scripts, `derivation/axioms.py`, `derivation/run.py`, one new helper module and
+  one new checker module under `derivation/`, and a new `tests/test_proof_map.py`, limited to
+  giving each existing step its line, tag, claim and kind, and to declaring each ledger entry's
+  SymPy form once in the ledger with the scripts taking it from there (the supervisor's decision:
+  "Once, in the ledger"; a result with no useful SymPy form is declared as a named proposition). No mathematics, `TITLE`, `STATEMENT` or `AXIOMS_USED` changes; the
   interface contract's pinned names stay; `tests/test_derivation.py` and
   `tests/test_matches_derivation.py` are not edited and pass. D-10's pointers in the main text
   stay narrative.
@@ -454,7 +456,9 @@ What changes:
     name, class and citation), its formal claim and its line link, the last two compiled from the
     script; there is no prose-only kind, and a step that is neither is reported to the supervisor;
     every computed step passes; every step by a declared axiom names an existing ledger entry, and
-    the entries a file's steps apply are exactly the entries in its `AXIOMS_USED`. Checked by the proof-map checker (`uv run python -m derivation.proofmap`)
+    the entries a file's steps apply are exactly the entries in its `AXIOMS_USED`. Every ledger entry carries
+    its SymPy form (or is declared as a named proposition), and a step by a declared axiom takes
+    the entry from the ledger. Checked by the proof-map checker (`uv run python -m derivation.proofmap`)
     and `tests/test_proof_map.py`.
   - R-29 (no silent regression): the committed record holds a fingerprint of every step's script
     line and of its prose; the checker fails on any difference, on any unmatched, duplicated or
@@ -466,8 +470,6 @@ What changes:
 - **Dependency added:** C describes the model behind the data the paper uses (the frozen data until
   the swap gate; the WP15 model after it) and is regenerated at the swap.
 
-Open decisions: one, on B: whether each cited result's SymPy form is declared once in the axiom ledger
-and taken from there by the scripts, or stays in the script at the line that applies it, tagged with
-the entry's name (sketch, "Open questions"). Decided by the supervisor (`WP10-decisions.md`): C and D
-apart; the register as an appendix; the proofs step for step with their scripts; cited results as
-steps in code. Defaults for approval as one item: those listed at the end of the sketch.
+Open decisions: none. Decided by the supervisor (`WP10-decisions.md`): C and D apart; the register as
+an appendix; the proofs step for step with their scripts; cited results as steps in code; results
+may share a script; each cited result's SymPy form declared once in the ledger. Defaults for approval as one item: those listed at the end of the sketch.

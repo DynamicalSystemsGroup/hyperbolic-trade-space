@@ -264,17 +264,12 @@ Rules that keep them disjoint and complementary:
 
 ## Open questions
 
-One, on the proofs (B). C and D apart, the register of prior art as an appendix, the proofs step for
-step with their scripts, and cited results as steps in code are decided in the supervisor's words
-above.
-
-Where a cited result's SymPy form is declared. Either it is declared once, in the axiom ledger, and
-every script takes it from there (the declaration and the use are then the same object; this
-rewrites how the fourteen scripts obtain their axioms, in material accepted under WP13, and for
-results with no useful SymPy form the entry is declared as a named proposition). Or it stays written
-in the script at the line that applies it, tagged with the ledger entry's name (the tagging then
-adds lines and tags only; the ledger's wording and the script's form are tied by name and by the
-checker, not by being one object).
+None. Decided in the supervisor's words above: C and D apart; the register of prior art as an
+appendix; the proofs step for step with their scripts; cited results as steps in code; results may
+share a script. And, by his answer "Once, in the ledger" to the driver's question where a cited
+result's SymPy form is declared: each ledger entry carries its SymPy form, and every script takes
+it from the ledger, so the declaration and the use are one object. A result with no useful SymPy
+form is declared as a named proposition, and the step that applies it says so.
 
 ## Defaults in this sketch (for approval as one item with the amendment)
 
@@ -291,9 +286,14 @@ checker, not by being one object).
 - The main text's proof sketches stay narrative and are not step-tagged; they point to the appendix
   entry and the file.
 - The sources of the inherited axioms are cited in B, at the step that inherits them.
+- The ledger's forms (the supervisor's decision, "Once, in the ledger"); defaults under it: each
+  entry's form is built from the shared symbols, so one declaration serves every size; a step by a
+  declared axiom takes the entry from the ledger on its line; the checker fails if an entry has no
+  form, or if a step names an entry without taking it from the ledger; the existing negative
+  controls (a proof failing when its axiom is withheld) are kept as they are.
 - The step tagging of the fourteen scripts is done first, by its own bounded implementer, before
-  any proof is written in prose; it changes no mathematics, statement or axiom list, and the
-  existing derivation tests stay as they are and pass.
+  any proof is written in prose; together with the ledger's forms; it changes no mathematics, statement or axiom list,
+  and the existing derivation tests stay as they are and pass.
 - The algorithm's statements and proofs sit with the other proofs (B); its printed certificates sit
   with the other printed results (D).
 - C, D and F are generated from the model, the ledger, the case module and the paper's own cells;
