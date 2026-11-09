@@ -192,7 +192,7 @@ def make_configured_frontier_data(
     n_config : int
         Number of configuration variables, ``>= 2``.
     exponents, log_offset, frontier_fraction, noise, random_state :
-        As in :func:`make_frontier_data`.
+        As in ``make_frontier_data``.
     interior_scale : float, default=1.0
         Depth scale: ``log V = -interior_scale * (c . g)^2`` for a fixed unit vector ``g``;
         frontier rows are projected onto ``c . g = 0`` so they lie exactly on the frontier.
@@ -206,7 +206,7 @@ def make_configured_frontier_data(
     Y_metrics : ndarray of shape (n_samples, n_features)
         Strictly positive metrics ``exp(from_frontier_coordinates(Z(c), log V(c) + noise))``.
     info : dict
-        As in :func:`make_frontier_data` (without noise-free redundancy), plus ``config_map``: a
+        As in ``make_frontier_data`` (without noise-free redundancy), plus ``config_map``: a
         callable ``c -> (Z, log_v)`` giving the noise-free truth for any configuration, and
         ``Z``, ``log_v`` of the training rows (noise included in ``log_v`` for frontier rows).
 

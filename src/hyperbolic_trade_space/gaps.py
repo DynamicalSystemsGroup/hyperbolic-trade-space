@@ -2,10 +2,10 @@
 
 The chart coordinates ``Z`` (``d - 1`` log ratios) are blind to the common scale of the
 metrics, so a *gap* in ``Z`` is a ratio profile no design has explored, whatever its quality. These
-functions find such gaps (:func:`knn_gap_scores`, :func:`find_holes`), place frontier targets over
-them (:func:`frontier_targets`, using ``V = 1`` and the inverse chart, and the pull-back
+functions find such gaps (``knn_gap_scores``, ``find_holes``), place frontier targets over
+them (``frontier_targets``, using ``V = 1`` and the inverse chart, and the pull-back
 to attributes through a preconditioner when one is given), and orient the near-frontier spread
-(:func:`orient_by_pca`, shared with :func:`hyperbolic_trade_space.tensions.tension_report`).
+(``orient_by_pca``, shared with ``hyperbolic_trade_space.tensions.tension_report``).
 """
 
 from __future__ import annotations
@@ -131,7 +131,7 @@ def frontier_targets(Z_points, estimator, preconditioner=None):
     Parameters
     ----------
     Z_points : array-like of shape (n_points, d - 1)
-        Chart coordinates, for example hole centres from :func:`find_holes`.
+        Chart coordinates, for example hole centres from ``find_holes``.
     estimator : HyperbolicTradeSpace
         Fitted estimator; ``log V = 0`` is set and the chart is inverted.
     preconditioner : transformer with ``inverse_transform``, optional

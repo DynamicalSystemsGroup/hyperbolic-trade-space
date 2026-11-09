@@ -41,7 +41,7 @@ def select_temperature(X, target_frac_above=0.10, bounds=(1e-1, 1e4), tol=0.01, 
     tol : float, default=0.01
         Accepted absolute error of ``frac_above_``.
     **params
-        Other :class:`~hyperbolic_trade_space.HyperbolicTradeSpace` parameters
+        Other ``HyperbolicTradeSpace`` parameters
         (``min_exponent``, ``coordinates``, ...); ``temperature`` is not allowed.
 
     Returns

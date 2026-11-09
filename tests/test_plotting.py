@@ -197,3 +197,25 @@ def test_log_plane_k1_unchanged_by_the_envelope_rule():
     X, _ = make_frontier_data(80, 2, random_state=0)
     ax = P.plot_log_plane(HyperbolicTradeSpace().fit(X), X)
     assert len(ax.lines) == 1 and ax.get_legend() is not None
+
+
+def test_tension_annotations_contrast_with_their_cell():
+    A = np.array([[1.0, -1.0, 0.0], [-1.0, 1.0, 0.1], [0.0, 0.1, 1.0]])
+    r = SimpleNamespace(
+        participating=np.array([True, True, False]),
+        exponents=np.array([0.5, 0.5, 0.0]),
+        association=A,
+        contending_set=np.array([0, 1]),
+        n_lemma=2,
+    )
+    ax = P.plot_tensions(r)
+    im = ax.images[0]
+    texts = {t.get_text(): t for t in ax.texts if t.get_text()[:1] in "-01"}
+    assert len(ax.texts) >= 9
+    for t in ax.texts[:9]:
+        v = float(t.get_text())
+        rgba = im.cmap(im.norm(v))
+        lum = 0.2126 * rgba[0] + 0.7152 * rgba[1] + 0.0722 * rgba[2]
+        assert t.get_color() == ("black" if lum > 0.5 else "white")
+    assert {t.get_color() for t in ax.texts[:9]} == {"black", "white"}
+    assert texts

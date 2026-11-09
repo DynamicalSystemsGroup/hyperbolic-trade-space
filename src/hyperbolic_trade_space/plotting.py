@@ -9,7 +9,7 @@ Visual vocabulary (module constants, shared by every function)
 * **Near-frontier band** (``-band <= log V <= 0``, default ``1/tau``, ``0.1`` at ``tau = inf``):
   grey (``BAND_COLOR``), a shaded strip or region; where no region can be shaded, the points
   inside it are grey.
-* **Holes** (white space found by :mod:`hyperbolic_trade_space.gaps`): red (``HOLE_COLOR``).
+* **Holes** (white space found by ``hyperbolic_trade_space.gaps``): red (``HOLE_COLOR``).
 * **Targets** (frontier points to aim for): open markers (no fill, black edge).
 * **Data and categories**: the first colour of one qualitative, colour-blind-safe palette
   (``CATEGORY_COLORS``) for plain data, successive colours for categories.
@@ -311,7 +311,8 @@ def plot_frontier_coordinates(Z, log_v, color=None, holes=None, targets=None, ba
     >>> matplotlib.use("Agg")
     >>> import numpy as np
     >>> rng = np.random.default_rng(0)
-    >>> ax = plot_frontier_coordinates(rng.normal(size=(30, 2)), -rng.exponential(size=30))
+    >>> ax = plot_frontier_coordinates(
+    ...     rng.normal(size=(30, 2)), -rng.exponential(size=30))
     >>> ax.get_ylabel()
     'Z1'
     """
@@ -401,7 +402,8 @@ def plot_v_by_variable(values, log_v, color=None, band=None, ax=None, label=None
     >>> import matplotlib
     >>> matplotlib.use("Agg")
     >>> import numpy as np
-    >>> ax = plot_v_by_variable(np.array(["a", "b", "a"]), np.array([-0.2, -0.1, -0.5]))
+    >>> ax = plot_v_by_variable(
+    ...     np.array(["a", "b", "a"]), np.array([-0.2, -0.1, -0.5]))
     >>> [t.get_text() for t in ax.get_xticklabels()]
     ['a', 'b']
     """
@@ -428,11 +430,18 @@ def plot_v_by_variable(values, log_v, color=None, band=None, ax=None, label=None
 _LEMMA_NAMES = {1: "monolemma", 2: "dilemma", 3: "trilemma"}
 
 
+def _annotation_color(rgba):
+    """White or black text, whichever contrasts with the cell colour ``rgba`` (by luminance)."""
+    r, g, b = (float(c) for c in rgba[:3])
+    luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    return "black" if luminance > 0.5 else "white"
+
+
 def plot_tensions(report, names=None, ax=None):
     """One heatmap per report: a list of reports (one per facet at ``K > 1``) goes side by side.
 
     Returns the ``Axes`` for a single report and a list of ``Axes`` for a list; ``ax`` is then a
-    sequence of axes. See :func:`_tension_panel` for what each panel draws.
+    sequence of axes. See ``_tension_panel`` for what each panel draws.
     """
     if not isinstance(report, (list, tuple)):
         return _tension_panel(report, names, ax)
@@ -454,7 +463,7 @@ def _tension_panel(report, names=None, ax=None):
     Parameters
     ----------
     report : TensionReport
-        From :func:`hyperbolic_trade_space.tensions.tension_report`. Only these attributes are
+        From ``hyperbolic_trade_space.tensions.tension_report``. Only these attributes are
         used: ``participating`` (bool per metric), ``exponents`` (per metric), ``association``
         (``d x d``), ``contending_set`` (metric indices), ``n_lemma`` (int). The principal
         ``tension_directions`` and ``tension_loadings`` are reported numerically and not drawn.
@@ -489,7 +498,15 @@ def _tension_panel(report, names=None, ax=None):
     ax.figure.colorbar(im, ax=ax, label="association (negative = tension)")
     for i in range(d):
         for j in range(d):
-            ax.text(j, i, f"{A[i, j]:.2f}", ha="center", va="center", fontsize=8)
+            ax.text(
+                j,
+                i,
+                f"{A[i, j]:.2f}",
+                ha="center",
+                va="center",
+                fontsize=8,
+                color=_annotation_color(im.cmap(im.norm(A[i, j]))),
+            )
     labels = [f"{names[j]}\nw={w[j]:.2f}" for j in range(d)]
     ax.set_xticks(range(d), labels)
     ax.set_yticks(range(d), labels)

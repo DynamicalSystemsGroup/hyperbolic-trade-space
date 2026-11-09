@@ -434,9 +434,9 @@ def facet_gap(U, w, ubar, tau, min_exponent=0.0, p=None):
     Returns
     -------
     float
-        Finite ``tau``: :func:`simplex_gap` of ``grad f_k = U^T softmax(tau U w) - ubar``.
+        Finite ``tau``: ``simplex_gap`` of ``grad f_k = U^T softmax(tau U w) - ubar``.
         ``tau = inf``: ``f_k(w) - min_j (U^T p - ubar)_j`` (with the floor, the dual value of
-        :func:`simplex_gap`), the linear-programming duality gap for the duals ``p``; it is a
+        ``simplex_gap``), the linear-programming duality gap for the duals ``p``; it is a
         valid bound ``f_k(w) - f_k* <= G_k`` for every ``p`` in the simplex (weak duality), and
         zero at an optimum with the LP duals. Uniform weights on the argmax set
         (``support_weights(U @ w, np.inf)``) give a valid but loose bound.
@@ -534,7 +534,8 @@ def fixed_assignment_bound(U, W, labels, tau, min_exponent=0.0, P=None):
     >>> import numpy as np
     >>> U = np.array([[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]])
     >>> W = np.array([[0.5, 0.5]])
-    >>> bound, gaps, F = fixed_assignment_bound(U, W, np.zeros(3, dtype=int), np.inf)
+    >>> bound, gaps, F = fixed_assignment_bound(
+    ...     U, W, np.zeros(3, dtype=int), np.inf)
     >>> round(bound, 6), round(F, 6)
     (0.0, 0.333333)
     """
@@ -621,9 +622,9 @@ class Termination:
     n_empty : int
         Facets with no assigned row (their gap is ``nan`` and their share 0).
     gamma, radius : float
-        Assignment margin and the explicit stable radius (:func:`assignment_margin`).
+        Assignment margin and the explicit stable radius (``assignment_margin``).
     eps_kkt, eps_feas, guard_tol : float
-        The tolerances used (:data:`EPS_KKT`, :data:`EPS_FEAS`, :data:`GUARD_TOL`).
+        The tolerances used (``EPS_KKT``, ``EPS_FEAS``, ``GUARD_TOL``).
     gaps, shares : ndarray of shape (K,)
         Per-facet gap (``nan`` for an empty facet) and row share ``|C_k|/N``.
 
@@ -657,7 +658,7 @@ class Termination:
 
 @dataclass(frozen=True)
 class TermsResult:
-    """Result of :func:`solve_terms`.
+    """Result of ``solve_terms``.
 
     Attributes
     ----------
@@ -677,7 +678,7 @@ class TermsResult:
         Stop reason.
     history : ndarray
         Objective after the initial fit and after each accepted iteration (non-increasing up to
-        :data:`GUARD_TOL`).
+        ``GUARD_TOL``).
     termination : Termination
         Stopping record of the returned run (status, gaps, margin, tolerances).
     """
@@ -696,7 +697,7 @@ class TermsResult:
 def _termination(
     U, W, beta, labels, P, tau, min_exponent, n_iter, history, reason, stop, applicable
 ):
-    """Build the :class:`Termination` of a run (``stop``: ``"fixed"``, ``"guard"``, ``"cap"``)."""
+    """Build the ``Termination`` of a run (``stop``: ``"fixed"``, ``"guard"``, ``"cap"``)."""
     N, K = U.shape[0], W.shape[0]
     bound, gaps, _ = fixed_assignment_bound(U, W, labels, tau, min_exponent, P)
     shares = np.bincount(labels, minlength=K) / N
@@ -762,8 +763,9 @@ def single_facet_termination(U, w, beta, p, tau, min_exponent, n_iter, reason, n
     --------
     >>> import numpy as np
     >>> U = np.array([[1.0, 0.0], [0.0, 1.0]])
-    >>> t = single_facet_termination(U, np.array([0.5, 0.5]), 0.5, np.array([0.5, 0.5]),
-    ...                              np.inf, 0.0, 1, "ok")
+    >>> t = single_facet_termination(
+    ...     U, np.array([0.5, 0.5]), 0.5, np.array([0.5, 0.5]),
+    ...     np.inf, 0.0, 1, "ok")
     >>> t.status, round(t.max_gap, 9)
     ('not_applicable', 0.0)
     """
@@ -870,7 +872,7 @@ def solve_terms(
     tau : float
         Temperature of every facet's fit, ``tau > 0`` or ``np.inf``.
     min_exponent, penalty, alpha, tol
-        Passed to :func:`solve_slsqp` for every facet.
+        Passed to ``solve_slsqp`` for every facet.
     n_restarts : int, default=5
         Initializations (seeds drawn from ``random_state``); the lowest objective is kept.
     max_iter : int, default=50
@@ -909,7 +911,7 @@ def solve_terms(
     additionally rejects any iteration whose objective increased and returns the previous state.
     It stops at a fixed assignment or ``max_iter``. For ``K = 1`` (and degenerate input
     ``d = 1``, ``N < K``, where the ``K = 1`` solution is repeated) it returns exactly the
-    :func:`solve_slsqp` result, with ``objective = beta``.
+    ``solve_slsqp`` result, with ``objective = beta``.
 
     Step D (``facet_step="tangent"``) is the evidence-driven alternative measured in the research
     spikes; the objective is not monotone under it (see ``facet_step``). Recovery rate on the

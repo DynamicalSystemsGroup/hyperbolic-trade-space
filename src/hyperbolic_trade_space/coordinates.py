@@ -92,7 +92,8 @@ def to_frontier_coordinates(U, w, beta, B):
     --------
     >>> import numpy as np
     >>> U = np.array([[0.0, 1.0], [2.0, 2.0]])
-    >>> Z, lv = to_frontier_coordinates(U, np.array([0.5, 0.5]), 0.5, helmert_basis(2))
+    >>> Z, lv = to_frontier_coordinates(
+    ...     U, np.array([0.5, 0.5]), 0.5, helmert_basis(2))
     >>> Z.round(4).tolist(), lv.round(4).tolist()
     ([[-0.7071], [0.0]], [0.0, 1.5])
     """
@@ -108,7 +109,7 @@ def to_frontier_coordinates(U, w, beta, B):
 
 
 def from_frontier_coordinates(Z, log_v, w, beta, B):
-    """Inverse of :func:`to_frontier_coordinates`: ``u = C Z + (log V + beta - w.C Z) 1``.
+    """Inverse of ``to_frontier_coordinates``: ``u = C Z + (log V + beta - w.C Z) 1``.
 
     Parameters
     ----------

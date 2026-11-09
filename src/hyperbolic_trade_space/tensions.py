@@ -6,7 +6,7 @@ smallest upper extent, the binding constraint among larger-is-better metrics. Th
 report reads that structure at three levels, all for the K = 1 fit (one tension; several regional
 tensions are the K > 1 extension, below, and a deflation search for successive tensions is a
 research question). At K > 1 the same three levels are read once per facet, on the rows assigned to
-that facet (:meth:`~hyperbolic_trade_space.HyperbolicTradeSpace.assign_facets`), and a list of K
+that facet (``assign_facets``), and a list of K
 reports is returned:
 
 1. **Participation and exchange rates.** Metrics with ``w_j > threshold`` participate, the rest are
@@ -57,7 +57,7 @@ _NAMES = {1: "monolemma", 2: "dilemma", 3: "trilemma"}
 
 @dataclass(frozen=True, eq=False)
 class TensionReport:
-    """Result of :func:`tension_report` (immutable; arrays are not copied).
+    """Result of ``tension_report`` (immutable; arrays are not copied).
 
     Attributes
     ----------
@@ -161,13 +161,14 @@ def tension_report(
     -----
     For ``d = 1`` the report is trivial (``w = [1]``, a monolemma, no directions). The report is
     deterministic. Part 3 equals ``orient_by_pca(Z, |log V| < band)`` on the same rows
-    (:func:`hyperbolic_trade_space.gaps.orient_by_pca`). The closure effect is stated in
+    (``hyperbolic_trade_space.gaps.orient_by_pca``). The closure effect is stated in
     ``closure_note`` and in the module docstring.
 
     Examples
     --------
     >>> import numpy as np
-    >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data, tension_report
+    >>> from hyperbolic_trade_space import (
+    ...     HyperbolicTradeSpace, make_frontier_data, tension_report)
     >>> X, _ = make_frontier_data(400, 3, random_state=0)
     >>> est = HyperbolicTradeSpace(temperature=np.inf).fit(X)
     >>> rep = tension_report(est, X)
@@ -178,7 +179,8 @@ def tension_report(
 
     >>> W = [[.5, .5, 0, 0], [0, .5, .5, 0], [0, 0, .5, .5]]
     >>> X, _ = make_frontier_data(900, 4, exponents=W, n_terms=3, random_state=0)
-    >>> est = HyperbolicTradeSpace(n_terms=3, temperature=20.0, random_state=0).fit(X)
+    >>> est = HyperbolicTradeSpace(
+    ...     n_terms=3, temperature=20.0, random_state=0).fit(X)
     >>> sorted(r.contending_set.tolist() for r in tension_report(est, X))
     [[0, 1], [1, 2], [2, 3]]
     """

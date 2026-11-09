@@ -1,9 +1,9 @@
 """Conditioning of attributes into larger-is-better metrics, and the pull-back to attributes.
 
 The analyst's conditioning is ``log m_j = alpha_j log(a_j + s_j) + b_j`` with
-``alpha_j != 0``. :class:`LogAffinePreconditioner` is that map with ``alpha_j = o_j / scale_j``
+``alpha_j != 0``. ``LogAffinePreconditioner`` is that map with ``alpha_j = o_j / scale_j``
 (``o_j = +1`` for larger-is-better, ``-1`` for smaller-is-better attributes), so metrics come out
-strictly positive and larger-is-better. :func:`frontier_in_original_units` is the closed form of
+strictly positive and larger-is-better. ``frontier_in_original_units`` is the closed form of
 the pull-back: the fitted frontier as a monomial in the raw attributes.
 """
 
@@ -23,7 +23,7 @@ class LogAffinePreconditioner(OneToOneFeatureMixin, TransformerMixin, BaseEstima
     Computes ``z = o * log(X + shift)`` per column, fits a scaler on the finite entries of ``z``,
     and returns ``m = exp(scaled z)``. Entries with ``X + shift == 0`` map to ``0`` (an infinitely
     dominated row for the estimator, whatever the orientation). The map is invertible
-    (:meth:`inverse_transform` is exact) and affine in log space, which is the conditioning of
+    (``inverse_transform`` is exact) and affine in log space, which is the conditioning of
     attributes.
 
     Parameters
@@ -217,7 +217,7 @@ class LogAffinePreconditioner(OneToOneFeatureMixin, TransformerMixin, BaseEstima
         return M
 
     def inverse_transform(self, Xt):
-        """Exact inverse of :meth:`transform` (``0`` maps to ``X = -shift``).
+        """Exact inverse of ``transform`` (``0`` maps to ``X = -shift``).
 
         Parameters
         ----------
@@ -282,7 +282,8 @@ def frontier_in_original_units(estimator, preconditioner):
     --------
     >>> import numpy as np
     >>> from hyperbolic_trade_space import (
-    ...     HyperbolicTradeSpace, LogAffinePreconditioner, frontier_in_original_units)
+    ...     HyperbolicTradeSpace, LogAffinePreconditioner,
+    ...     frontier_in_original_units)
     >>> rng = np.random.RandomState(0)
     >>> X = np.exp(rng.randn(40, 3))
     >>> pre = LogAffinePreconditioner(orientation=[1, -1, 1]).fit(X)

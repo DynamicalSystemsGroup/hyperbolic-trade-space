@@ -57,7 +57,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         (invertible, not orthonormal; last metric is the reference).
     n_terms : int, default=1
         Number of monomial facets ``K`` (``K > 1`` is the posynomial frontier, fitted by
-        :func:`~hyperbolic_trade_space.solvers.solve_terms`; ``K = 1`` is the monomial fit).
+        ``solve_terms``; ``K = 1`` is the monomial fit).
     term_temperature : float, default=np.inf
         Softness ``kappa`` of ``Phi_K(u) = (1/kappa) log sum_k exp(kappa (w_k . u - beta_k))``,
         ``kappa > 0`` or ``np.inf`` (the exact maximum). Used for ``n_terms > 1`` only. The hard
@@ -78,7 +78,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         slack is kept. More restarts help against local optima (see the limitations page).
     facet_step : {"support", "tangent"}, default="support"
         Per-facet step of the ``n_terms > 1`` alternation (see
-        :func:`~hyperbolic_trade_space.solvers.solve_terms`): ``"support"`` is the supporting
+        ``solve_terms``): ``"support"`` is the supporting
         hyperplane tightest on the facet's rows, which keeps the mean slack monotone;
         ``"tangent"`` fits the near-frontier rows' tangent plane, which is not monotone. No effect
         for ``n_terms = 1``.
@@ -122,7 +122,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         ``log V`` of the training rows (``-inf`` for rows with a zero metric on a participating
         exponent; a zero metric on an exponent at or below ``EPS_ZERO_EXPONENT`` contributes
         nothing, see Notes).
-    termination_ : :class:`~hyperbolic_trade_space.solvers.Termination`
+    termination_ : Termination
         Stopping record of the chosen run: ``status`` (``"certified"``,
         ``"stationary_without_margin"``, ``"uncertified"``, ``"guard_stop"``, ``"iteration_cap"``
         or ``"not_applicable"``), the first-order gaps, the assignment margin and radius, the
@@ -185,13 +185,15 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     Three facets:
 
     >>> X, info = make_frontier_data(400, 4, n_terms=3, random_state=0)
-    >>> est = HyperbolicTradeSpace(n_terms=3, temperature=np.inf, random_state=0).fit(X)
+    >>> est = HyperbolicTradeSpace(
+    ...     n_terms=3, temperature=np.inf, random_state=0).fit(X)
     >>> est.exponents_.shape, est.basis_.shape
     ((3, 4), (3, 3, 4))
     >>> bool(np.isclose(est.facet_share_.sum(), 1.0))
     True
-    >>> bool(np.allclose(np.sort(est.exponents_, axis=0), np.sort(info["exponents"], axis=0),
-    ...                  atol=0.05))
+    >>> bool(np.allclose(
+    ...     np.sort(est.exponents_, axis=0),
+    ...     np.sort(info["exponents"], axis=0), atol=0.05))
     True
     """
 
@@ -483,7 +485,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Parameters
         ----------
         Xt : array-like of shape (n_samples, n_features)
-            Chart coordinates as returned by :meth:`transform`.
+            Chart coordinates as returned by ``transform``.
 
         Returns
         -------
@@ -526,7 +528,8 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         --------
         >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(30, 2, random_state=0)
-        >>> HyperbolicTradeSpace(coordinates="alr").fit(X).get_feature_names_out().tolist()
+        >>> hts = HyperbolicTradeSpace(coordinates="alr").fit(X)
+        >>> hts.get_feature_names_out().tolist()
         ['alr0', 'log_v']
         """
         check_is_fitted(self)
@@ -705,7 +708,8 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(80, 3, random_state=0)
         >>> hts = HyperbolicTradeSpace().fit(X)
-        >>> hts.novelty_score(X[:3]).shape, hts.novelty_score(X[:3], calibrated=True).shape
+        >>> hts.novelty_score(X[:3]).shape, hts.novelty_score(
+        ...     X[:3], calibrated=True).shape
         ((3,), (3, 2))
         """
         log_v = self.score_samples(X)
@@ -723,7 +727,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Parameters
         ----------
         Z : array-like of shape (n_points, n_features - 1)
-            Log-ratio coordinates (the leading columns of :meth:`transform`).
+            Log-ratio coordinates (the leading columns of ``transform``).
         value : float, default=1.0
             Target invariant value ``V > 0``; 1 is the frontier.
 

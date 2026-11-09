@@ -1,8 +1,8 @@
 """Prediction from configuration: a supervised composition on the learned chart.
 
 Given designs with a configuration ``c`` (decisions known before anything is measured) and
-measured metrics ``m``, :class:`TradeSpaceRegressor` fits the chart ``m -> (Z, log V)`` with a
-``trade_space`` (a :class:`~hyperbolic_trade_space.HyperbolicTradeSpace`, or a ``Pipeline`` of a
+measured metrics ``m``, ``TradeSpaceRegressor`` fits the chart ``m -> (Z, log V)`` with a
+``trade_space`` (a ``HyperbolicTradeSpace``, or a ``Pipeline`` of a
 preconditioner and one), then fits an ordinary regressor ``c -> (Z, log V)``. Predicting where a
 proposed configuration would fall therefore inherits the regression error in *coordinates*
 (position along the frontier and distance to it), never in raw metrics.
@@ -36,7 +36,7 @@ class TradeSpaceRegressor(RegressorMixin, BaseEstimator):
         target has ``d`` columns, or one when ``d = 1``).
     trade_space : estimator
         Fitted on the metrics ``Y`` to define the chart: a
-        :class:`~hyperbolic_trade_space.HyperbolicTradeSpace` or a ``Pipeline`` whose last step
+        ``HyperbolicTradeSpace`` or a ``Pipeline`` whose last step
         is one (for example a preconditioner followed by the estimator). It is cloned at fit.
 
     Attributes
@@ -75,9 +75,12 @@ class TradeSpaceRegressor(RegressorMixin, BaseEstimator):
     >>> import numpy as np
     >>> from sklearn.linear_model import LinearRegression
     >>> from hyperbolic_trade_space import (
-    ...     HyperbolicTradeSpace, TradeSpaceRegressor, make_configured_frontier_data)
-    >>> C, Y, info = make_configured_frontier_data(200, 3, 3, nonlinearity=0.0, random_state=0)
-    >>> reg = TradeSpaceRegressor(LinearRegression(), HyperbolicTradeSpace(np.inf)).fit(C, Y)
+    ...     HyperbolicTradeSpace, TradeSpaceRegressor,
+    ...     make_configured_frontier_data)
+    >>> C, Y, info = make_configured_frontier_data(
+    ...     200, 3, 3, nonlinearity=0.0, random_state=0)
+    >>> reg = TradeSpaceRegressor(
+    ...     LinearRegression(), HyperbolicTradeSpace(np.inf)).fit(C, Y)
     >>> reg.predict(C[:2]).shape
     (2, 3)
     >>> Z, log_v = reg.predict_coordinates(C[:2])
