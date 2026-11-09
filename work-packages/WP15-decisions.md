@@ -75,4 +75,15 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 
 ## Scope approval (approval gate)
 
-- pending
+- **Document:** `work-packages/WP15-scope-of-work.md` with its "Gate outcomes" (no open items).
+- **Date:** 2026-11-08.
+- **Driver's question:** "WP15, the system-model tidy-up: one clean SysML v2 model of the cubesat with
+  a closed-form slew calc beside the Python ODE of record, Z3 and the runtime's solvers excluding
+  infeasible configurations before simulation, the pinned toolkit, an experiment runner with a
+  hashed ledger and the legacy WP4 oracle registered for scope-sensitivity experiments, a v2
+  generation beside the frozen data with a change register and a comparison report, a how-to for
+  plugging in another model; redesign allowed, frozen code untouched until the swap gate; no open
+  items. Do you approve the scope for execution?" (options: Approved / Not yet).
+- **Supervisor (mzargham), verbatim:** "Approved"
+- **Disposition:** approved; the PM executes on `dev` on WP15's own files, the probe record first;
+  `pyproject.toml`, `uv.lock` and the CI workflow step by request to the driver.
