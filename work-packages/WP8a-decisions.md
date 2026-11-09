@@ -450,3 +450,11 @@ The driver's calls on `WP8a-driver-browser-pass.md` are binding and applied as f
   designs' V. Redrawn holding the total fixed (`spike-ternary/report.md`, Correction;
   `make_why5.py`): each facet's V peaks exactly at its exponent vector, a point of the triangle.
   The first drawings are superseded. Recorded under "Overruled or corrected" in the driver's log.
+
+- **Supervisor (mzargham), verbatim,** at the staged index page, selecting the subtitle
+  ("Posynomial invariant form: the shape of a design trade space, learned from evaluated designs"):
+  "change the one line description to: \"An Unsupervised learning method which applies a posynomial
+  invariant form  to learn the shape of a trade space from evaluated designs.\"" Disposition: done by
+  the driver in `site/index.html`. Two typographic normalizations, for him to overrule: "unsupervised"
+  in lower case mid-sentence, and one space where he typed two. The page's `<title>` and its meta
+  descriptions are unchanged (he selected the subtitle only).
