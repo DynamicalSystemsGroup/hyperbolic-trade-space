@@ -26,6 +26,12 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   recorded; the contract pins the local build-and-serve command as part of the presentation
   interface.
 
+- **OD2, the API reference.** Options: generated from docstrings / hand-written only / generated
+  into the supporting material too. **Supervisor (mzargham), verbatim:** "Generated from docstrings".
+  Disposition: decided; `mkdocstrings` as WP8 first approved; the numpydoc docstrings are pinned as
+  the source in the contract; `docs/api-reference.md` is a presentation-owned stub; `docs/api.md`
+  stays the hand-written overview.
+
 ## Scope approval (approval gate)
 
-- pending (OD2, the defaults as one item, then approval)
+- pending (the defaults as one item, then approval)
