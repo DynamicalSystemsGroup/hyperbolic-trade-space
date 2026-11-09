@@ -51,13 +51,16 @@ jobs:
           path: ~/.cache/hyperbolic-trade-space
           key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
       - name: Provision the pinned sysml-toolkit
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          for attempt in 1 2 3; do
-            if PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch; then exit 0; fi
-            echo "provisioning attempt $attempt failed; retrying in 30 s"
-            sleep 30
-          done
-          exit 1
+          # The helper is idempotent (a cache hit opens no connection), retries, and falls back
+          # to the release-assets API. If its routes all fail, fetch the asset with gh and install
+          # from the local file. Every route verifies the pinned size and sha256 before extraction.
+          if PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch; then exit 0; fi
+          read -r repo tag asset < <(PYTHONPATH=examples/adcs uv run python -m experiments.toolkit pin)
+          gh release download "$tag" --repo "$repo" --pattern "$asset" --dir "$RUNNER_TEMP"
+          PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch --archive "$RUNNER_TEMP/$asset"
       - name: Save the pinned sysml-toolkit
         if: steps.toolkit-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
