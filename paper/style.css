@@ -8,3 +8,9 @@
     overflow-x: clip;
   }
 }
+
+/* Table 1 (the families of prior art) holds phrases: they read left-aligned, not centred. */
+article table th,
+article table td {
+  text-align: left !important; /* the notebook output style right-aligns a cell */
+}

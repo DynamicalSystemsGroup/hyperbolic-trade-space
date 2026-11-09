@@ -2,7 +2,7 @@
 
 One source, two views: the register (every entry, grouped by family, with the four fields and the
 "why this is not just X" sentence of the nearest neighbours) and section 2's table (the entries
-flagged ``section2``, with the same wording).
+flagged ``section2``, each cell a short extract of the register's sentence).
 """
 
 from __future__ import annotations
@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 
 import yaml
-from paper_common import Md, md_table
+from paper_common import LINK_STYLE, Md, md_table
 from paper_paths import PAPER, ROOT
 
 SOURCE = PAPER / "prior_art.yaml"
@@ -75,8 +75,7 @@ def author_year(key: str, path=BIB) -> str:
 
 
 # The site colours a link in an output cell dark blue in both themes, unreadable on the dark page;
-# a link that takes the text colour and is underlined reads in light and dark.
-LINK_STYLE = "color:inherit;text-decoration:underline"
+# a link that takes the text colour and is underlined reads in light and dark (LINK_STYLE).
 
 
 def cite(keys, prefix: str = "#") -> str:
@@ -111,7 +110,7 @@ def nocite() -> str:
 
 
 def family_table(only_section2: bool = True) -> Md:
-    """The family table: produces, shares, differs, cites.
+    """The family table: family with its sources, then three short extracts of the register.
 
     Parameters
     ----------
@@ -123,11 +122,14 @@ def family_table(only_section2: bool = True) -> Md:
     Md
     """
     rows = [
-        [e["family"], e["does"], e["shares"], e["differs"], cite(e["cites"])]
+        [
+            f"{e['family']}<br><small>{cite(e['cites'])}</small>",
+            *(e["short"][f] for f in FIELDS[:3]),
+        ]
         for e in entries()
         if e.get("section2") or not only_section2
     ]
-    return Md(md_table(["Family", "Produces", "Shares", "Differs", "Cites"], rows))
+    return Md(md_table(["Family and sources", "Produces", "Shares", "Differs"], rows))
 
 
 def register() -> Md:
