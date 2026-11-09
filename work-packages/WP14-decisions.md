@@ -49,3 +49,19 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Supervisor (mzargham), verbatim:** "Approved"
 - **Disposition:** approved; the PM executes WP14 first on `dev` (WP8a, WP10 and WP15 build against
   it); acceptance merge to `main` by the driver after a review.
+
+## Acceptance gate (2026-11-08)
+
+- Delivery on `dev`: df475b8, 02b9731 (contract and manifest, version 1), 9f8e5f7 (test), 328371a
+  (contract follows the delivered site machinery); review `WP14-review.md` (b7f81e0): G0–G4, D-1 to
+  D-5, R-1 to R-12 met; 101 manifest-versus-repository fact checks with 0 failures; five deliberate
+  breaks each failed with a clause-named message. Manual Tests run on `dev` at 32bb156 green
+  (42546036830). Driver's own checks at 32bb156: 1303 passed, 13 skipped, 1 xfailed; ruff, format,
+  lock clean; attribution grep 0; the contract, manifest, test, scripts and site files present.
+- Gaps (reviewer and PM suggest accept as is unless noted): G-1 commit 328371a edits the
+  WP8a-owned `pages.yml`; G-2 the deploy rule and `default-groups` moved while contract_version
+  stayed 1 (v1 not yet accepted); G-3 the manifest entered in a WP8a-titled commit; G-4 the test's
+  skip list is stale (six of eight entries now enforced; housekeeping follow-up); G-5 open-by-design
+  gaps (the Oracle protocol awaiting WP15, `paper/myst.yml` and the `paper` group awaiting WP10, a
+  package `__init__` docstring, WP12 ownership); G-6 `--serve` not exercised by the reviewer
+  (covered by the supervisor's staged review in WP8a).

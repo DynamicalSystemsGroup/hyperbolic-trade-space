@@ -414,6 +414,14 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   design with its energy differential as the uniform-scaling step) → the chart (Z, log V) with the
   frontier flat at zero and the facets as bands; shown to the supervisor for his pick.
 
+- **OD2 decided.** **Supervisor (mzargham), verbatim:** "yes s4 is the direction but i liked it
+  better when the first pane was kinky. more realistic". Disposition: Figure 1 is the three-pane S4
+  design (`docs/superpowers/notes/` will hold the spike's `make_schematics.py` and S4 when WP10
+  starts; today in the session scratchpad `figure1-schematics/`), with the first pane's envelope
+  drawn with sharp corners between the hyperbolic sheets as in S1 (the hard-max envelope), the log
+  and chart panes as in S4; the author produces the final figure to that design with the register's
+  words in the caption.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
