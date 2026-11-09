@@ -9,7 +9,7 @@ research question). At K > 1 the same three levels are read once per facet, on t
 that facet (``assign_facets``), and a list of K
 reports is returned:
 
-1. **Participation and exchange rates.** Metrics with ``w_j > threshold`` participate, the rest are
+1. **Participation and elasticities.** Metrics with ``w_j > threshold`` participate, the rest are
    free at the balanced point; the elasticity of metric ``k`` against metric ``j`` along the
    frontier is ``-w_k / w_j``.
 2. **The contending set (n-lemma).** At ``tau = inf`` the fit is a linear program whose solution is
@@ -65,7 +65,7 @@ class TensionReport:
         ``exponents > threshold`` at the working temperature.
     exponents : ndarray of shape (d,)
         Working-temperature exponents ``w`` (the estimator's ``exponents_[0]``).
-    exchange_rates : ndarray of shape (d, d)
+    elasticities : ndarray of shape (d, d)
         Entry ``[j, k] = -w_k / w_j`` ; ``nan`` in rows where ``w_j <= threshold``.
         The diagonal is ``-1`` by the formula and carries no information.
     association : ndarray of shape (d, d)
@@ -97,7 +97,7 @@ class TensionReport:
 
     participating: np.ndarray
     exponents: np.ndarray
-    exchange_rates: np.ndarray
+    elasticities: np.ndarray
     association: np.ndarray
     association_kind: str
     closure_note: str
@@ -287,7 +287,7 @@ def _report(U, Zf, lvf, w, U_lp, basis, band, min_near_frontier, threshold, asso
     return TensionReport(
         participating=participating,
         exponents=w,
-        exchange_rates=rates,
+        elasticities=rates,
         association=np.atleast_2d(assoc),
         association_kind=association,
         closure_note=_CLOSURE_NOTE,

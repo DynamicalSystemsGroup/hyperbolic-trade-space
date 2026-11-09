@@ -51,7 +51,7 @@ where $Z$ is free of overall scale and says where along the surface the design s
 how far from it. The map is reversible for every row with strictly positive metrics: nothing is lost
 either way. Holes in the $Z$ plane are candidates for white space.
 
-## Exchange rates and the n-lemma
+## Elasticities and the n-lemma
 
 On the surface $w\cdot u=\beta$, the level surface is flat in log space, so moving along it trades
 the contending metrics at constant rates:
@@ -64,12 +64,12 @@ The metrics with positive weight at tau = infinity are the contending set, and i
 n-lemma (a dilemma is n = 2, a trilemma n = 3). It is found from the data and not assumed: the fit at
 tau = infinity is a linear program whose solution is generically sparse. At a finite working
 temperature a small weight means weak participation, set by a participation threshold. With K
-terms there is one contending set per facet, and exchange rates vary between facets.
+terms there is one contending set per facet, and elasticities vary between facets.
 
 ## What the model assumes
 
 Metrics are positive and larger-is-better (conditioning is yours to choose); the surface is log-convex;
-at one term the exchange rates are constant; designs are chosen by an evaluator and not drawn from
+at one term the elasticities are constant; designs are chosen by an evaluator and not drawn from
 the attainable set. The [limitations](user-guide/limitations.md) page says what each means when you
 act on a result.
 

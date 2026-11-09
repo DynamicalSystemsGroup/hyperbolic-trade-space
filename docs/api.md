@@ -20,7 +20,7 @@ arbitrary: `d` metrics and `d - 1` chart coordinates.
   frontier.
 - [`make_configured_frontier_data`](user-guide/prediction.md), a function: the same with
   configuration variables.
-- [`tension_report`](user-guide/tensions.md), a function: contending set, exchange rates and
+- [`tension_report`](user-guide/tensions.md), a function: contending set, elasticities and
   tension directions.
 - [`TradeSpaceRegressor`](user-guide/prediction.md), a regressor: metrics, coordinates and novelty
   from configuration.

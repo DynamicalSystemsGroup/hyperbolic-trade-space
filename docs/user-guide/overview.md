@@ -4,7 +4,7 @@
 
 You have evaluated many designs, and each came back with a handful of numbers: mass, power, settling
 time, pointing error. Some designs win on one number and lose on another. You want the shape of the
-trade: which numbers pull against each other, at what exchange rate, where the edge of the evaluated
+trade: which numbers pull against each other, at what elasticity, where the edge of the evaluated
 designs lies, and where the table is empty.
 
 The package answers with tensions, not variance. PCA finds the directions in which the data spread;
@@ -35,7 +35,7 @@ A study has five stages and the package covers the last three:
 You supply a table of designs and the rule that turns attributes into metrics. You get back:
 
 - the weights and the metrics that participate;
-- the exchange rates between contending metrics;
+- the elasticities between contending metrics;
 - for each design, its energy differential (level offset) to the fitted reference surface and its
   position along the surface;
 - how much one metric alone would need to improve to reach the surface;

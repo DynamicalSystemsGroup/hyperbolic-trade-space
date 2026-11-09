@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 4
+contract_version = 5
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -105,7 +105,7 @@ termination_statuses = [
 # Per-facet report: the fields of hyperbolic_trade_space.tensions.TensionReport.
 report_class = "hyperbolic_trade_space.tensions.TensionReport"
 report_fields = [
-  "participating", "exponents", "exchange_rates", "association", "association_kind",
+  "participating", "exponents", "elasticities", "association", "association_kind",
   "closure_note", "tension_directions", "tension_loadings", "explained_spread", "contending_set",
   "contending_exponents", "n_lemma", "lemma_name", "band", "n_near_frontier",
 ]

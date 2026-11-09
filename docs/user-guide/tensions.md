@@ -15,7 +15,7 @@ X, info = make_frontier_data(300, 3, random_state=0)
 ts = HyperbolicTradeSpace(temperature=20.0).fit(X)
 report = tension_report(ts, X)
 print(report.contending_set, report.n_lemma, report.lemma_name)
-print(report.exchange_rates.round(2))
+print(report.elasticities.round(2))
 ```
 
 `plot_tensions` draws the report as a heatmap:
@@ -41,11 +41,11 @@ exactly n metrics contend. The report solves the tau = infinity program itself, 
 fitted temperature. `min_exponent` must be 0 for this reading, because a positive floor masks the
 sparsity; the report warns when the estimator was fitted with a floor.
 
-## Participation and exchange rates
+## Participation and elasticities
 
 At the working temperature the exponents are smoothed, so a small one means weak participation, not
 membership. `participating` marks metrics whose exponent exceeds the participation threshold
-(`threshold`, default 1e-3); an exponent at or below 1e-12 is numerically zero. `exchange_rates[j, k]`
+(`threshold`, default 1e-3); an exponent at or below 1e-12 is numerically zero. `elasticities[j, k]`
 is the elasticity along the surface: the percentage change of metric j per percentage change of
 metric k, constant on a facet and `nan` where metric j does not participate. It
 describes a feature of the fitted model, not a causal exchange.

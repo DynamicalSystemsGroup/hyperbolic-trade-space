@@ -125,14 +125,14 @@ def test_no_warning_when_min_exponent_zero(recwarn):
 
 # ------------------------------------------------------------------ R-8 part 1
 @pytest.mark.parametrize("seed", [0, 1, 2])
-def test_exponents_and_exchange_rates_consistent(seed):
+def test_exponents_and_elasticities_consistent(seed):
     w = np.array([0.6, 0.4, 0.0])
     X, _ = planted(w, 400, seed)
     est = HyperbolicTradeSpace(temperature=INF).fit(X)
     rep = tension_report(est, X)
     assert np.array_equal(rep.exponents, est.exponents_[0])
     assert rep.participating.tolist() == [True, True, False]
-    R = rep.exchange_rates
+    R = rep.elasticities
     assert R.shape == (3, 3)
     for j in range(3):
         for k in range(3):
@@ -140,7 +140,7 @@ def test_exponents_and_exchange_rates_consistent(seed):
                 assert np.isnan(R[j, k])
             else:
                 assert R[j, k] == pytest.approx(-rep.exponents[k] / rep.exponents[j])
-    assert R[0, 1] * R[1, 0] == pytest.approx(1.0)  # reciprocal exchange rates
+    assert R[0, 1] * R[1, 0] == pytest.approx(1.0)  # reciprocal elasticities
     assert np.all(R[~np.isnan(R)] <= 0)
 
 

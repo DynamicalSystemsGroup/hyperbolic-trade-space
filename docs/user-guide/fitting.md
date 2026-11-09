@@ -61,7 +61,7 @@ Re-select tau when you change the number of terms.
 
 ## Several terms
 
-One term is one flat facet in log space with constant exchange rates. When the rates vary by region,
+One term is one flat facet in log space with constant elasticities. When the rates vary by region,
 fit `n_terms=K` facets, where you choose K:
 
 ```python {.runnable}

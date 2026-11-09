@@ -58,8 +58,8 @@ plot_log_plane(ts2, X2, band=0.5)
 `fit` learned one exponent per metric, summing to one. `report.contending_set` lists the metrics that
 contend at the edge of the table: here all three, an n-lemma with n = 3, which the report names a
 trilemma. The set is found from the data and not chosen in advance. `report.exponents` are the
-fitted weights at the working temperature; their ratios are the exchange rates between the contending
-metrics (`report.exchange_rates`).
+fitted weights at the working temperature; their ratios are the elasticities between the contending
+metrics (`report.elasticities`).
 
 The fitted object has more to give. `ts.score_samples(X)` is the log of V for each design, the energy
 differential to the fitted reference surface: negative inside, positive beyond. `ts.transform(X)`

@@ -10,9 +10,9 @@ conditioning and report what moves ([Conditioning](conditioning.md)).
 **The surface is log-convex.** Dents, holes and disconnected regions are invisible to it, and no
 number of terms represents them. A hole is an opportunity only if the trade space is log-convex around it.
 
-**One term has one tension.** A single term has constant exchange rates and finds one tension, at
+**One term has one tension.** A single term has constant elasticities and finds one tension, at
 its balanced point. Away from that point a design can score below 1 while locally on the frontier. If the balanced point sits on a vertex or
-edge of the weights' simplex, exponents are not unique and some exchange rates are undefined. For
+edge of the weights' simplex, exponents are not unique and some elasticities are undefined. For
 regionally varying rates fit [several terms](fitting.md).
 
 **The surface is not the Pareto boundary.** The fitted reference surface and the supporting envelope
@@ -37,7 +37,7 @@ five or six frontier rows. More restarts do not cure this; a larger sample or `f
 can help.
 
 **Novelty is not preference.** V - 1 says how far a design lies beyond the learned surface, not that
-it is wanted, feasible or safe. Exchange rates are shape, not preference, and not causal.
+it is wanted, feasible or safe. Elasticities are shape, not preference, and not causal.
 
 **Prediction is conditional.** A prediction inherits the surrogate's error and the fitted trade
 space ([Predicting](prediction.md)).
