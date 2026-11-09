@@ -206,3 +206,31 @@ section = "The decision problem"
 words_added = 11
 job = "says once where facet first appears in the body that a facet is a piece of the surface and not a set of designs"
 reader = "the reader meeting facet cold, who read it as a cluster of rows"
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 20
+job = "puts the first main result in the glossary's words (the invariant value and the reference surface) in place of an unglossed phrase of the mathematics"
+reader = "the reader who stops at the introduction and is not an optimization specialist"
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 30
+job = "adds the main-results item that PCA and the fit are chained (Appendix D.16), a reading and not a result"
+reader = "the machine-learning reader who asked how the method relates to PCA"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 11
+job = "glosses reach at first use: how far the data extend along a direction, their largest score along it"
+reader = "the reader meeting the definitions cold"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 5
+job = "names the two regimes in the regimes figure's caption by what they are (aggressive gains, stock gains)"
+reader = "the reader meeting the regimes figure cold"

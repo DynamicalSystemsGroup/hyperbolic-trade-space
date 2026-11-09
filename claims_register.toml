@@ -564,3 +564,49 @@ status = "backed"
 disposition = "keep"
 source = "WP11 round 1, CR-1 and CR-3"
 note = "A facet is a term of the posynomial, a flat piece of the surface in log space; designs are labelled to it (L16), and are not its members."
+
+[[claim]]
+id = "C036"
+fragment = "The fitted reference surface is where the invariant value, a weighted geometric mean of the metrics that doubles when every metric doubles, equals one"
+file = "paper/paper.ipynb"
+anchor = "The decision problem"
+kind = "M"
+backing = [
+  "lemma:L1",
+  "glossary:invariant-value",
+  "glossary:fitted-reference-surface",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 1, CR-2"
+note = "The same statement as the main-results item it replaces, in the glossary's words: V(m) = prod m_j^w_j with w on the simplex is homogeneous of degree one (L1), and the surface is the level set V = 1."
+
+[[claim]]
+id = "C037"
+fragment = "PCA and the fit are chained: the principal directions of the near-frontier chart read the trade-offs the sampling exercised, a reading and not a result"
+file = "paper/paper.ipynb"
+anchor = "The decision problem"
+kind = "R"
+backing = [
+  "gen:paper/generate_results.py::pca_chain",
+  "test:tests/test_paper.py::test_cr11_chaining_with_pca_is_worked_on_the_case_in_d16",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 1, CR-2"
+note = "Appendix D.16 runs PCA on the near-frontier chart coordinates of the primary regime and reports the share of spread and loadings; the paper calls it a reading, not a result."
+
+[[claim]]
+id = "C038"
+fragment = "The reach $\\beta_k$ is the support value of the data in direction $w_k$: how far the data extend that way, their largest score along it"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L5",
+  "glossary:supporting-envelope",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 1, CR-3"
+note = "beta_k = J_tau(U w_k), the soft maximum of the scores along w_k (the exact maximum at tau = infinity); the gloss says the same in words."
