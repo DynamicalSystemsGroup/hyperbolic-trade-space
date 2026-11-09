@@ -92,3 +92,7 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
   supervisor's own, and the map was generated with ChatGPT at his direction; he states there is no
   conflict in using it; the page credits it as the map of the mathematics without tool attribution,
   per the repository's attribution rule.
+- **Supervisor (mzargham), verbatim:** "the scikit learn compatability can appear in the what".
+  Disposition: the WHAT section of the root index also states that the method is delivered as a
+  scikit-learn-compatible estimator (fit, transform, inverse_transform, score_samples; the
+  conformance checks pass), in one sentence, with the same feel as PCA in the ecosystem.
