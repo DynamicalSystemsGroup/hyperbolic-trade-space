@@ -750,8 +750,8 @@ def test_r7_python_version_and_branches():
     assert _read(".python-version").strip().startswith(BUILD["python"]), msg(
         "R-7", f".python-version must be {BUILD['python']}"
     )
-    assert BUILD["branches"] == ["dev", "main"] and BUILD["workflow_deploys_from"] == "main", msg(
-        "R-7", "branches dev and main; deployment from main only", "both"
+    assert BUILD["branches"] == ["dev", "main"] and "release tag" in BUILD["workflow_deploys_on"], (
+        msg("R-7", "branches dev and main; deployment on a release tag only", "both")
     )
     assert BUILD["workflow_never_deploys_from"] == "dev", msg("R-7", "dev never deploys", "both")
     assert (ROOT / BUILD["ci_workflow"]).is_file(), msg("R-7", "the technical CI workflow exists")
@@ -814,8 +814,11 @@ def test_r7_docsite_configuration_once_delivered():
 def test_r7_pages_workflow_once_delivered():
     _skip_unless_delivered("publish_workflow")
     text = _read(BUILD["workflow"])
-    assert BUILD["workflow_deploys_from"] in text, msg(
-        "R-7", "the Pages workflow deploys from main", "presentation"
+    assert re.search(r"tags:\s*\[\s*[\"']v\*[\"']", text) and "workflow_dispatch" in text, msg(
+        "R-7", "the Pages workflow triggers on a release tag v* and manual dispatch", "presentation"
+    )
+    assert not re.search(r"branches:\s*\[[^\]]*\bmain\b", text), msg(
+        "R-7", "the Pages workflow never triggers on a push to main", "presentation"
     )
     assert not re.search(r"branches:\s*\[[^\]]*\bdev\b", text), msg(
         "R-7", "the Pages workflow never deploys from dev", "presentation"

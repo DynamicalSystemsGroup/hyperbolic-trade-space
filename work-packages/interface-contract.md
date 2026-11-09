@@ -62,9 +62,9 @@ build.docs_out = "_site/docs/"
 build.paper_cmd = "uv run myst build --html"
 build.paper_out = "_site/paper/"
 build.root_index_out = "_site/index.html"
-build.workflow = ".github/workflows/publish.yml"
-build.workflow_deploys_from = "main"
-build.default_groups = ["dev", "case"]
+build.workflow = ".github/workflows/pages.yml"
+build.workflow_deploys_on = "release tag v* and manual dispatch only; never on a push to main or dev"
+build.default_groups = ["dev", "case", "docs"]
 build.stage.script = "scripts/stage_site.py"
 build.stage.command = "uv run python scripts/stage_site.py --serve"
 build.stage.build_dir = "_stage/"
@@ -198,11 +198,11 @@ below, release files.
 - docsite: `uv run --group docs mkdocs build --strict` into `_site/docs/`
 - paper: `uv run myst build --html`, run in `paper/`, delivered to `_site/paper/`
 - root index: `site/index.html` copied to `_site/index.html`
-- Pages: `.github/workflows/publish.yml` deploys from `main` only; `dev` never deploys; the existing
+- Pages: `.github/workflows/pages.yml` deploys on a release tag `v*` and on manual dispatch only, never on a push to `main` or `dev`; the existing
   `.github/workflows/test.yml` stays the technical side's CI
 - public paths: `/`, `/docs/`, `/paper/` (under `https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/`), stable
 - dependency groups: `docs` and `paper` belong to the presentation side, `dev`, `case`, `notebooks` to
-  the technical side; `default-groups` is `["dev", "case"]`; `pyproject.toml` itself is edited by the
+  the technical side; `default-groups` is `["dev", "case", "docs"]`; `pyproject.toml` itself is edited by the
   driver on request
 - the branching rule of `work-packages/README.md` applies
 
@@ -255,7 +255,7 @@ boundary of section 3; that figures and data are committed and stable. Must not 
 figures and case modules other than `examples/adcs/case.py`; the docsite files; the derivation chain.
 Its build is the paper command of section 11, delivered to `_site/paper/`; the paper is committed executed.
 
-**Release machinery (WP8b).** May assume: one version source (section 5), the `publish.yml` and
+**Release machinery (WP8b).** May assume: one version source (section 5), the `pages.yml` and
 `test.yml` workflow names, the branch rule. Must not touch: the package code or content, the docsite
 and the paper beyond reading their outputs; it edits the version in the two places together, with the
 manifest value.
@@ -274,7 +274,7 @@ Sides are pairwise disjoint; the manifest carries the explicit paths and the tes
 | technical | `src/`, `derivation/`, `tests/` (except carve-outs), the technical docs pages (`method.md`, `why-and-how.md`, `preconditioning.md`, `api.md`, `limitations.md`), `docs/superpowers/`, the case modules, notebook, `data/`, `figures/`, `model_v2/`, `experiments/` and `case-model.md` under `examples/adcs/`, `.github/workflows/test.yml`, `README.md`, `.python-version` |
 | process | `work-packages/` (except carve-outs), `CLAUDE.md` |
 | WP14 | `work-packages/interface-contract.md`, `work-packages/interface-contract.toml`, `tests/test_interface_contract.py` |
-| WP8a | `mkdocs.yml`, `overrides/`, `site/`, `scripts/`, `.github/workflows/publish.yml`, `tests/test_site.py`, `docs/index.md`, `docs/case.md`, `docs/api-reference.md`, `docs/generated/` |
+| WP8a | `mkdocs.yml`, `overrides/`, `site/`, `scripts/`, `.github/workflows/pages.yml`, `tests/test_site.py`, `docs/index.md`, `docs/case.md`, `docs/api-reference.md`, `docs/generated/` |
 | WP10 | `paper/`, `examples/adcs/case.py`, `tests/test_paper.py`, `tests/test_case.py`, `docs/references.bib`, `docs/literature.md` |
 | WP12 | none yet; declared by an additive amendment when its scope is approved |
 | WP8b | `CHANGELOG.md`, `LICENSE`, `.github/workflows/release.yml` |
@@ -289,13 +289,8 @@ Open conformance gaps, recorded and not fixed here; each names the closing packa
 | Gap | Closed by |
 |---|---|
 | The docstring of `src/hyperbolic_trade_space/__init__.py` says package code arrives in later work packages | WP8b |
-| `scripts/` does not exist | WP8a |
-| `docs/generated/` does not exist (built by `scripts/build_generated.py`) | WP8a |
-| `mkdocs.yml`, `site/index.html`, `paper/myst.yml`, `.github/workflows/publish.yml`, `scripts/stage_site.py` do not exist | WP8a (`paper/myst.yml`: WP10) |
-| `docs/api-reference.md` does not exist | WP8a |
-| `.gitignore` ignores `site/` (the root index source) and lacks `_stage/` | WP8a (edit by the driver) |
-| `pyproject.toml` has no `paper` group; `docs` is not in `default-groups` | WP10 and WP8a (edit by the driver) |
-| The WP8a draft names the workflow `pages.yml` and a script `assemble_site.py`; the contract names `publish.yml` and `stage_site.py` | WP8a follows the contract |
+| `paper/myst.yml` does not exist | WP10 |
+| `pyproject.toml` has no `paper` group | WP10 (edit by the driver) |
 | `docs/references.bib` and `docs/literature.md` are assigned to WP10; later technical edits go through an amendment | WP10 |
 | The Oracle protocol is stated but not yet pinned | WP15 |
 
@@ -308,7 +303,7 @@ The test skips each clause below, with its reason, until the file exists, then e
 | R-5 generated pages script | `scripts/build_generated.py` | WP8a delivers the generated-pages script | WP8a |
 | R-7 docsite configuration | `mkdocs.yml` | WP8a delivers the docsite configuration | WP8a |
 | R-6 API reference stub | `docs/api-reference.md` | WP8a delivers the presentation-owned stub | WP8a |
-| R-7 Pages workflow | `.github/workflows/publish.yml` | WP8a delivers the Pages workflow | WP8a |
+| R-7 Pages workflow | `.github/workflows/pages.yml` | WP8a delivers the Pages workflow | WP8a |
 | R-12 local staging command | `scripts/stage_site.py` | WP8a delivers the staging command | WP8a |
 | R-7 root index source | `site/index.html` | WP8a delivers the root index | WP8a |
 | R-7 paper configuration | `paper/myst.yml` | WP10 delivers the paper configuration | WP10 |

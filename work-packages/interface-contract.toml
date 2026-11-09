@@ -273,13 +273,13 @@ root_index_out = "_site/index.html"
 site_dir = "_site/"
 public_paths = ["/", "/docs/", "/paper/"]
 public_url = "https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/"
-workflow = ".github/workflows/publish.yml"
-workflow_deploys_from = "main"
+workflow = ".github/workflows/pages.yml"
+workflow_deploys_on = "release tag v* and manual dispatch only; never on a push to main or dev"
 workflow_never_deploys_from = "dev"
 ci_workflow = ".github/workflows/test.yml"
 branches = ["dev", "main"]
 dependency_groups_required = ["dev", "docs", "notebooks", "case"]
-default_groups = ["dev", "case"]
+default_groups = ["dev", "case", "docs"]
 python = "3.12"
 
 [build.dependency_groups_owner]
@@ -326,7 +326,7 @@ paths = [
 
 [ownership.wp8a]
 paths = [
-  "mkdocs.yml", "overrides/", "site/", "scripts/", ".github/workflows/publish.yml",
+  "mkdocs.yml", "overrides/", "site/", "scripts/", ".github/workflows/pages.yml",
   "tests/test_site.py", "docs/index.md", "docs/case.md", "docs/api-reference.md", "docs/generated/",
 ]
 
@@ -373,7 +373,7 @@ reason = "WP8a delivers the presentation-owned API reference stub"
 closed_by = "WP8a"
 [skips.publish_workflow]
 clause = "R-7 Pages workflow"
-file = ".github/workflows/publish.yml"
+file = ".github/workflows/pages.yml"
 reason = "WP8a delivers the Pages workflow"
 closed_by = "WP8a"
 [skips.stage_site]
@@ -401,27 +401,12 @@ closed_by = "WP15"
 [gaps.init_docstring]
 what = "the docstring of src/hyperbolic_trade_space/__init__.py says package code arrives in later work packages"
 closed_by = "WP8b"
-[gaps.no_scripts_dir]
-what = "scripts/ does not exist"
-closed_by = "WP8a"
-[gaps.no_generated_dir]
-what = "docs/generated/ does not exist (git-ignored, built by scripts/build_generated.py)"
-closed_by = "WP8a"
 [gaps.no_site_configs]
-what = "mkdocs.yml, site/index.html, paper/myst.yml, .github/workflows/publish.yml and scripts/stage_site.py do not exist"
-closed_by = "WP8a (WP10 for paper/myst.yml)"
-[gaps.no_api_reference_stub]
-what = "docs/api-reference.md does not exist"
-closed_by = "WP8a"
-[gaps.gitignore_site]
-what = ".gitignore ignores site/, the source directory of the root index, and lacks _stage/"
-closed_by = "WP8a (edit by the driver)"
+what = "paper/myst.yml does not exist"
+closed_by = "WP10"
 [gaps.paper_group]
-what = "pyproject.toml has no paper dependency group and the docs group is not in default-groups"
-closed_by = "WP10 (paper group), WP8a (docs group), edit by the driver"
-[gaps.workflow_name_draft]
-what = "the WP8a draft names the workflow pages.yml and an assemble_site.py script; the contract names publish.yml and stage_site.py, and WP8a follows the contract"
-closed_by = "WP8a"
+what = "pyproject.toml has no paper dependency group"
+closed_by = "WP10 (edit by the driver)"
 [gaps.bib_ownership]
 what = "docs/references.bib and docs/literature.md are assigned to WP10 (bibliography additions for the paper) although WP5 and WP13 own earlier content; later technical edits go through an amendment"
 closed_by = "WP10"
