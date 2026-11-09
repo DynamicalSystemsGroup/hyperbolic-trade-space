@@ -809,3 +809,106 @@ def test_a_proved_result_used_on_an_untagged_line_fails(scratch):
     )
     code, out = run_checker(scratch)
     assert code != 0 and "proved result L3_RESULT used on an untagged line" in out
+
+
+# ---------------------- the one-facet fit is a geometric program (L4.14 to L4.24)
+
+from derivation.axioms import I13  # noqa: E402
+from derivation.sumtools import posynomial_term  # noqa: E402
+
+
+def _gp_facts(obj, eq, ineq):
+    t = lambda b: sp.true if b else sp.false  # noqa: E731
+    return [
+        sp.Equivalent(I13.obj("objective"), t(obj)),
+        sp.Equivalent(I13.obj("equalities"), t(eq)),
+        sp.Equivalent(I13.obj("inequalities"), t(ineq)),
+    ]
+
+
+def test_I13_is_an_inherited_entry_citing_the_sections_read():
+    assert I13.tag == AX.INHERITED and I13.has_form() and not I13.proposition
+    for part in ("Boyd, Kim, Vandenberghe & Hassibi", "section 2.2", "section 2.5", "2007"):
+        assert part in I13.citation
+    assert (
+        "several facets" in I13.failure_mode
+    )  # the entry itself does not claim the multi-facet fit
+
+
+def test_I13_concludes_a_geometric_program_only_when_all_three_premises_hold():
+    goal = I13.obj("conclusion")
+    assert I13.entails(_gp_facts(True, True, True), goal)
+    for facts in ((False, True, True), (True, False, True), (True, True, False)):
+        assert not I13.entails(_gp_facts(*facts), goal)  # a falsified fact: no conclusion
+
+
+def test_posynomial_term_is_a_monomial_only_with_positive_coefficient_and_x_free_real_exponents():
+    wn = A2.nonneg_base("wn")
+    ur = A1.real_base("ur")
+    n, tau, i, j = _S.n, _S.tau, _S.i, _S.j
+    assert posynomial_term(1 / n, tau * ur[i, j], wn)  # the L4.17 term
+    assert posynomial_term(sp.exp(-1), sp.Integer(1), wn)  # (1/e) prod x_j = 1
+    assert not posynomial_term(-1 / n, tau * ur[i, j], wn)  # a negative coefficient
+    assert not posynomial_term(1 / n, tau * wn[j], wn)  # an exponent that depends on x
+    assert not posynomial_term(1 / n, tau * _S.u[i, j] * sp.I, wn)  # a non-real exponent
+    assert not posynomial_term(1 / n, sp.Symbol("q"), wn)  # an exponent not known to be real
+
+
+def test_the_L4_geometric_program_steps_take_their_licence_from_A2_and_A1():
+    wn = A2.nonneg_base("wn")
+    ur = A1.real_base("ur")
+    prod = sp.Product(sp.exp(wn[_S.j]) ** (_S.tau * ur[_S.i, _S.j]), (_S.j, 1, _S.d))
+    product_to_exp_sum(prod, A2)
+    with pytest.raises(LicenceError):
+        product_to_exp_sum(prod)  # no entry: the forced log is refused
+    with pytest.raises(LicenceError):
+        A3.nonneg_base("wn")  # A3 declares no nonnegative family: no x_j = exp(w_j) > 0
+    with pytest.raises(LicenceError):
+        A7.real_base("ur")
+
+
+def test_L4_geometric_program_facts_are_computed_and_a_falsified_fact_fails(chain_ctx):
+    assert chain_ctx["L4"]["geometric_program"] is True
+    y = sp.Symbol("y", real=True)
+    ok = sp.solve_univariate_inequality(sp.exp(y) >= 1, y, relational=False, domain=sp.S.Reals)
+    assert ok == sp.Interval(0, sp.oo)
+    bad = sp.solve_univariate_inequality(sp.exp(y) >= 2, y, relational=False, domain=sp.S.Reals)
+    assert bad != sp.Interval(0, sp.oo)  # w_j >= 0 is x_j >= 1 and no other bound
+    wn = A2.nonneg_base("wn")
+    x_prod = sp.Product(sp.exp(wn[_S.j]), (_S.j, 1, _S.d))
+    assert A2.rewrite(product_to_exp_sum(x_prod, A2), rename={_S.w: wn}) == sp.E
+    assert A2.rewrite(product_to_exp_sum(x_prod, A2)) != sp.E  # the rename ties the simplex to wn
+
+
+def test_a_scratch_L4_without_the_I13_import_or_with_a_falsified_step_fails(scratch):
+    edit(
+        scratch,
+        "lemma_04_convexity.py",
+        "from derivation.axioms import A1, A2, A3, I11, I13",
+        "from derivation.axioms import A1, A2, A3, I11",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "lemma_04_convexity.py" in out and "I13" in out
+
+
+def test_a_scratch_L4_with_a_changed_geometric_program_step_fails_naming_the_step(scratch):
+    edit(
+        scratch,
+        "lemma_04_convexity.py",
+        "assert mono_eq, ",
+        "assert not not mono_eq, ",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "L4.19" in out
+
+
+def test_L4_geometric_program_steps_are_of_the_kinds_the_rules_allow():
+    steps = {s["tag"]: s for s in _record()["lemmas"]["lemma_04_convexity.py"]["steps"]}
+    assert len(steps) == 24 and steps["L4.13"]["fingerprint"]  # L4.1 to L4.13 keep their addresses
+    kinds = {t: steps[t]["kind"] for t in (f"L4.{k}" for k in range(14, 25))}
+    assert kinds["L4.14"] == kinds["L4.15"] == "axiom"
+    assert steps["L4.14"]["applies"] == ["A2"] and steps["L4.15"]["applies"] == ["A1"]
+    assert steps["L4.16"]["applies"] == ["A2"] and steps["L4.18"]["applies"] == ["A2"]
+    assert steps["L4.22"]["applies"] == ["A2"] and steps["L4.24"]["applies"] == ["I13"]
+    for t in ("L4.17", "L4.19", "L4.20", "L4.21", "L4.23"):
+        assert kinds[t] == "computed"

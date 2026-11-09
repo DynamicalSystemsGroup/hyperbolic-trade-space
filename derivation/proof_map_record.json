@@ -683,8 +683,10 @@
    "number": 4,
    "axioms_used": [
     "A1",
+    "A2",
     "A3",
-    "I11"
+    "I11",
+    "I13"
    ],
    "hypotheses": [],
    "proved_results_imported": {
@@ -695,8 +697,10 @@
    ],
    "imports": [
     "A1",
+    "A2",
     "A3",
-    "I11"
+    "I11",
+    "I13"
    ],
    "results": [
     {
@@ -714,7 +718,18 @@
       10,
       11,
       12,
-      13
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24
      ]
     }
    ],
@@ -855,6 +870,128 @@
      "prose": "I11: the second derivative along every line is >= 0, so J_tau is convex",
      "code": "assert I11.entails([sp.Equivalent(I11.obj('premise'), nonneg_everywhere)], I11.obj('conclusion')), 'L4 FAIL: convexity does not follow from the sign of the second derivative'",
      "fingerprint": "46c8c44586208851bb12f7b74a75505cb434cdac1c0c24db99cff6c220cccf5e",
+     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+    },
+    {
+     "tag": "L4.14",
+     "kind": "axiom",
+     "applies": [
+      "A2"
+     ],
+     "results": [],
+     "prose": "A2: the exponents satisfy w_j >= 0, so they are real and x_j = exp(w_j) is positive",
+     "code": "wn = A2.nonneg_base('wn')",
+     "fingerprint": "47dec10b03ebdc377b1000d5b3732dd6093876959d0e95e43a410723f250907a",
+     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+    },
+    {
+     "tag": "L4.15",
+     "kind": "axiom",
+     "applies": [
+      "A1"
+     ],
+     "results": [],
+     "prose": "A1: the log-metrics u_ij = log m_ij are real, so the exponents tau u_ij are real",
+     "code": "ur = A1.real_base('ur')",
+     "fingerprint": "60972e180c7f8ba53207eed944bf56ede79a617acbe4807d7aed72b0b3f1355d",
+     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+    },
+    {
+     "tag": "L4.16",
+     "kind": "axiom",
+     "applies": [
+      "A2"
+     ],
+     "results": [],
+     "prose": "A2 licenses the logarithm of the positive x_j: prod_j x_j^(tau u_ij) = exp(tau w.u_i)",
+     "code": "assert sp.simplify(product_to_exp_sum(score_term, A2) - sp.exp(tau * sp.Sum(wn[j] * ur[i, j], lim))) == 0",
+     "fingerprint": "66ebfbcf3dfff40e51f781c72c0a049c9ab6e1f34f1c1f5be9b9624a8ebaae4d",
+     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+    },
+    {
+     "tag": "L4.17",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the objective (1/n) sum_i prod_j x_j^(tau u_ij) is a posynomial: coefficient 1/n > 0",
+     "code": "assert posy, 'L4 FAIL: the objective is not a posynomial in x = exp(w)'",
+     "fingerprint": "d11beed1505562a28371ee89b73e90f6e5ef0b1c65f2175dce71fa402e03cff4",
+     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+    },
+    {
+     "tag": "L4.18",
+     "kind": "axiom",
+     "applies": [
+      "A2"
+     ],
+     "results": [],
+     "prose": "A2: sum_j w_j = 1 is prod_j x_j = e (the product is exp of the sum, which is 1)",
+     "code": "assert A2.rewrite(product_to_exp_sum(x_prod, A2), rename={S.w: wn}) == sp.E",
+     "fingerprint": "8565ccb1affc1a0f5d9e3f7076d64a01c03cec46036a829ed1d767421078cc36",
+     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+    },
+    {
+     "tag": "L4.19",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "prod_j x_j = e is the monomial equality (1/e) prod_j x_j = 1: positive coefficient 1/e",
+     "code": "assert mono_eq, 'L4 FAIL: the simplex is not a monomial equality in x'",
+     "fingerprint": "023bdf8e84598234e8e4c79ef34730090c8c86df542c04729a2ffb15e5ea3f0a",
+     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+    },
+    {
+     "tag": "L4.20",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "w_j >= 0 is x_j >= 1: exp(y) >= 1 holds exactly for y in [0, oo)",
+     "code": "assert sp.solve_univariate_inequality(sp.exp(y) >= 1, y, relational=False, domain=sp.S.Reals) == sp.Interval(0, sp.oo)",
+     "fingerprint": "7da985510129945ce95aea6622a04b602ad28f658d40622283e94740cb88b9f1",
+     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+    },
+    {
+     "tag": "L4.21",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "x_j >= 1 is the monomial inequality x_j^(-1) <= 1: coefficient 1, exponent -1",
+     "code": "assert mono_ineq, 'L4 FAIL: x_j >= 1 is not a monomial bounded by one'",
+     "fingerprint": "da01c16965b381980a57f9764be3e4589246fe8eac2f8c6ac427d4f35a6cb957",
+     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+    },
+    {
+     "tag": "L4.22",
+     "kind": "axiom",
+     "applies": [
+      "A2"
+     ],
+     "results": [],
+     "prose": "A2 licenses the logs: the logarithm of the objective f0 in w is tau J_tau(w)",
+     "code": "assert sp.simplify(sp.log(sp.Sum(product_to_exp_sum(f0_terms, A2), (L, 1, n)) / n) - tau * J_w) == 0, 'L4 FAIL: log f0(exp w) != tau J_tau(w)'",
+     "fingerprint": "7e59f8de3a0479878a8f2671109a753ec984514d2f79e3df1419018529785bf9",
+     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+    },
+    {
+     "tag": "L4.23",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the problem in w (minimize log f0(exp w) = tau J_tau(w)) is convex, by L4.13",
+     "code": "assert ctx['L4']['convex'] is True, 'L4 FAIL: the convex form is not convex'",
+     "fingerprint": "18a0392432878b0cfceacf8cc4d4e965ca58f29bc52099211c3ee315401b6651",
+     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+    },
+    {
+     "tag": "L4.24",
+     "kind": "axiom",
+     "applies": [
+      "I13"
+     ],
+     "results": [],
+     "prose": "I13: a posynomial objective, monomial equality and monomial inequalities make the",
+     "code": "assert I13.entails([sp.Equivalent(I13.obj('objective'), sp.true if posy else sp.false), sp.Equivalent(I13.obj('equalities'), sp.true if mono_eq else sp.false), sp.Equivalent(I13.obj('inequalities'), sp.true if mono_ineq else sp.false)], I13.obj('conclusion')), 'L4 FAIL: the one-facet fit is not a geometric program in standard form'",
+     "fingerprint": "babaaca3cf299f19fa02b664e6fc1fcbf92da5e0a5386fde7e88747db0da9cd0",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     }
    ]
@@ -3485,6 +3622,7 @@
   "I10": "90e29324759fa587ec1b820db1e5519ac0d78d3aca2223dd132d0b37b8296c62",
   "I11": "ebcb6a1847dbfc77e6127957a173fd6ec9dfcc21db586ad6ce314ff5b815f6b1",
   "I12": "a9b9e7d03dbc1fc0705983f7b0d7d3217bba2cb33523b3b3a694a82ae275806f",
+  "I13": "593b861f45acc60788a22de75b2902d3f0454ed0c7612997f9772753a0ed4408",
   "R1": "b38653c84f3e4f29bd37d548018ad6a1556b8f3c246977f4b7aba50f455c344f",
   "R2": "b15ed265e27c49ab47fb9424ad6b6cb807964bdf79810a3cf078ec1befbb1bc8",
   "F5": "2b7224349cd656ed5f398c4834e6f572187f4d7d78fbd70c1ae142002943eebe",

@@ -39,6 +39,19 @@ def entails(premises, goal):
     return not satisfiable(sp.And(*premises, sp.Not(goal)))
 
 
+def posynomial_term(coefficient, exponents, variables):
+    """True iff ``coefficient * prod_j x_j**exponents_j`` is a monomial of the variables
+    ``variables`` (a family): the coefficient is positive, every exponent is real, and no
+    exponent depends on the variables (Boyd et al. 2007, section 2.1). A sum of such terms is a
+    posynomial."""
+    exps = exponents if isinstance(exponents, (list, tuple)) else [exponents]
+    return (
+        coefficient.is_positive is True
+        and all(e.is_real is True and not e.has(variables) for e in exps)
+        and not coefficient.has(variables)
+    )
+
+
 def product_to_exp_sum(prod, *licences):
     """Product(f_j) -> exp(Sum(log f_j)), log of a power expanded.
 

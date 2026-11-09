@@ -160,3 +160,60 @@ reassignment (an accepted iteration is one that keeps every facet nonempty, as A
 | `test_proof_map.py` exports | L1, L3, L4, L12, L13 | plus L14 | L14 exports its result for L15 |
 
 No negative control was removed; new controls for L15 are in `test_derivation.py`.
+
+## 10. The one-facet fit is a geometric program: L4.14 to L4.24 (WP10, the supervisor's reading of the abstract)
+
+The supervisor found "the fit is convex for one facet and an alternation of convex fits for several"
+obtuse and asked for it through geometric programming (`work-packages/WP10-decisions.md`, "The
+supervisor's reading of the abstract"). The change of variables x = exp(w) is a new statement, so it
+has steps; they are appended to `lemma_04_convexity.py`, so L4.1 to L4.13 keep their addresses and
+nothing moved or was renumbered. Eleven steps are new (L4 has 24; the chain has 263).
+
+| Step | Kind | What it computes |
+|---|---|---|
+| L4.14 | by a declared axiom, A2 | `A2.nonneg_base`: the exponents are real, so x_j = exp(w_j) is positive |
+| L4.15 | by a declared axiom, A1 | `A1.real_base`: the log-metrics are real, so the exponents tau u_ij are real |
+| L4.16 | by a declared axiom, A2 | exp(tau w.u_i) = prod_j x_j^(tau u_ij), at symbolic d and n (the log of the product is licensed by A2) |
+| L4.17 | computed | the objective (1/n) sum_i prod_j x_j^(tau u_ij) is a posynomial: coefficient 1/n > 0, real exponents that do not depend on x (`sumtools.posynomial_term`) |
+| L4.18 | by a declared axiom, A2 | sum_j w_j = 1 gives prod_j x_j = e |
+| L4.19 | computed | prod_j x_j = e is the monomial equality (1/e) prod_j x_j = 1 (positive coefficient) |
+| L4.20 | computed | w_j >= 0 is x_j >= 1: exp(y) >= 1 exactly on [0, oo) (`solve_univariate_inequality`) |
+| L4.21 | computed | x_j >= 1 is the monomial inequality x_j^(-1) <= 1 |
+| L4.22 | by a declared axiom, A2 | the log of the objective in w is tau J_tau(w) |
+| L4.23 | computed | the problem in w is convex (L4.13's result; no import, same script) |
+| L4.24 | by a declared axiom, I13 | `I13.entails`: a posynomial objective, a monomial equality and monomial inequalities make a geometric program in standard form |
+
+New ledger entry I13 (INHERITED): the definition of a geometric program in standard form and its
+convex form. Citation: Boyd, Kim, Vandenberghe and Hassibi, "A tutorial on geometric programming",
+Optimization and Engineering 8(1), 2007 (`boyd2007tutorial` in `docs/references.bib`), sections 2.1,
+2.2, 2.3 and 2.5. Verification: the text of sections 2.1 to 2.5 was read in the authors' PDF
+(https://web.stanford.edu/~boyd/papers/pdf/gp_tutorial.pdf, 46 pages): 2.1 "Monomial and
+posynomial functions", 2.2 "Standard form geometric program" (problem (3)), 2.3 "Simple extensions of
+GP" (g1 = g2 as g1/g2 = 1), 2.5 "How GPs are solved" (logarithmic change of variables, problem (6)).
+Nothing is left "to be confirmed by the author" except that the page numbers (70 to 73 in the journal
+pagination) were read from the author's copy, not the publisher's.
+
+Ledger and scripts: 27 entries (A0 to A8, I1 to I13, R1, R2, F5, F10, F12). `AXIOMS_USED` of L4 is
+now A1, A2, A3, I11, I13. `sumtools.posynomial_term` is new (a monomial test: positive coefficient,
+real exponents, none depending on the variables). The design spec's section 6 gained I13 and the L4
+list gained A2 and I13 with a clause on the geometric program (`test_narrative.py` pins the lists to
+the ledger and to `AXIOMS_USED`).
+
+Statement extended on the supervisor's instruction: none. `TITLE` and `STATEMENT` of L4 are
+unchanged; the module docstring ("What this proves") gained the paragraph "The geometric program",
+which also says what is not claimed (the several-facet fit is not a geometric program as a whole:
+each design counts against its nearest facet, a minimum over facets; each facet's refit is a program
+of the one-facet kind). The clause "equivalently a geometric program in exp(w)" was not added to the
+statement, to keep L12's imported `L4_RESULT` and every quotation of it as they were; the driver may
+ask for it.
+
+Negative controls (`tests/test_proof_map.py`, last section): I13 concludes only when all three
+premises hold (each premise falsified in turn: no conclusion); `posynomial_term` rejects a negative
+coefficient, an exponent that depends on x, a non-real exponent; the log of the product of the x_j
+takes A2 (`LicenceError` without it; A3 and A7 cannot make the nonnegative or real families); the
+solution set of exp(y) >= 2 is not [0, oo); a scratch copy of L4 without the I13 import fails the
+checker, and one with a changed L4.19 fails naming L4.19.
+
+Pins corrected: none in `test_derivation.py`; `test_narrative.py` needed no edit (the spec text was
+updated instead). `test_paper.py` Appendix B tests go stale until the paper is regenerated with
+`uv run python -m derivation.proofmap --update` followed by the paper build.

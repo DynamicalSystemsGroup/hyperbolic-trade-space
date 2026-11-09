@@ -85,6 +85,10 @@ _lam = sp.Symbol(
 _mu = sp.IndexedBase("mu", nonnegative=True)  # I10: the multipliers of w_j >= 0
 _P_LINE = sp.Symbol("second_derivative_nonneg_on_every_line")  # I11 premise
 _Q_CONVEX = sp.Symbol("convex")  # I11 conclusion
+_GP_OBJ = sp.Symbol("objective_is_posynomial")  # I13 premises and conclusion
+_GP_EQ = sp.Symbol("equalities_are_monomial_equal_one")
+_GP_INEQ = sp.Symbol("inequalities_are_posynomial_at_most_one")
+_GP_STD = sp.Symbol("geometric_program_in_standard_form")
 _chi = sp.IndexedBase("chi", nonnegative=True)  # A8: chi[k, i] = 1 when row i lies in cell k
 _ncell = sp.IndexedBase("ncell")  # A8: n_k, the number of rows of cell k
 _NROWS = sp.Symbol("N", integer=True, positive=True)  # A8: the number of rows
@@ -484,6 +488,36 @@ AXIOMS = {
             ),
         ),
     ),
+    "I13": Axiom(
+        "I13",
+        INHERITED,
+        "a geometric program in standard form minimizes a posynomial f0(x) (a sum of monomials "
+        "c x_1^a_1 ... x_n^a_n with coefficients c > 0 and real exponents) over positive x subject "
+        "to f_i(x) <= 1 with f_i posynomial and g_i(x) = 1 with g_i a monomial; a constraint "
+        "g1 = g2 of two monomials is the monomial g1 / g2 = 1. With y = log x, the problem "
+        "minimizing log f0(e^y) subject to log f_i(e^y) <= 0 and log g_i(e^y) = 0 is its convex "
+        "form",
+        citation="Boyd, Kim, Vandenberghe & Hassibi, A tutorial on geometric programming, "
+        "Optimization and Engineering 8(1), 2007, section 2.1 (monomial, posynomial), section 2.2 "
+        "(standard form, problem (3)), section 2.3 (g1 = g2 as g1/g2 = 1) and section 2.5 "
+        "(logarithmic change of variables, problem (6)); read in the authors' PDF "
+        "https://web.stanford.edu/~boyd/papers/pdf/gp_tutorial.pdf",
+        role="names the one-facet fit as a geometric program: L4 shows that its objective is a "
+        "posynomial in x = exp(w) and its simplex constraints are monomial, so the fit is a "
+        "geometric program in standard form and the problem in w is its convex form",
+        failure_mode="holds for a program that meets all three premises; a negative coefficient, "
+        "an exponent that depends on x, or a constraint that is not a posynomial bounded by one "
+        "or a monomial equal to one leaves the program outside the class. It says nothing of "
+        "several facets, where each design counts against its nearest facet (a minimum over "
+        "facets): that fit is not a geometric program as a whole",
+        relation=(sp.Equivalent(sp.And(_GP_OBJ, _GP_EQ, _GP_INEQ), _GP_STD),),
+        objects=(
+            ("objective", _GP_OBJ),
+            ("equalities", _GP_EQ),
+            ("inequalities", _GP_INEQ),
+            ("conclusion", _GP_STD),
+        ),
+    ),
     # ------------------------------------------------------------- REGULARITY
     "R1": Axiom(
         "R1",
@@ -589,6 +623,7 @@ I9 = AXIOMS["I9"]
 I10 = AXIOMS["I10"]
 I11 = AXIOMS["I11"]
 I12 = AXIOMS["I12"]
+I13 = AXIOMS["I13"]
 R1 = AXIOMS["R1"]
 R2 = AXIOMS["R2"]
 F5 = AXIOMS["F5"]
