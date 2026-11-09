@@ -1100,3 +1100,22 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   unchanged. The regeneration of the committed exact values inside the container proceeds as
   recorded above.
 
+## Measurement by simulation here; empirical data from a fielded system equally (2026-11-09)
+
+- **Supervisor (mzargham), verbatim:** "the simulations are how how take measurements since this a
+  design optimization loop but we should be clear that hts would work for emperical data from a
+  fielded system as well".
+- **What the paper says today:** section 3 states that the evaluation is a black box to the method
+  (a simulator behind a system model, a physical test, or a human assessment); the discussion says
+  the same functions serve a simulator, a physical test campaign or a human assessment, and that
+  the analysis must rerun on empirical data to support configuration management. The case's
+  framing (section 8, Appendix C, the docsite's Examples page) says the data are simulated without
+  saying why, or that a fielded system's measurements would enter the same way.
+- **Disposition:** routed to the paper stream (one sentence at the case's framing, in section 8 and
+  the Appendix C opening: the simulation is the measurement of this design loop, and a fielded
+  system's measured attributes would enter the same table; a claim of kind M, backed by the
+  method's definition of the evaluation as a black box), to the docs stream (one sentence on the
+  Examples page), and to the diagram work (the second view's recipe names the verification cases as
+  measurements by simulation here, with the same place taken by field data). No new term; the
+  glossary's "attributes" entry already says what the evaluation returns.
+
