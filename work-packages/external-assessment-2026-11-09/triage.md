@@ -33,3 +33,24 @@ A1 to A3 and A5 to A7 form one package, WP21, "response to the independent asses
 PM in the template and approved by the driver; its paper sentences go through the paper stream, its
 docs sentences through the docs stream, the distinct-terms count through the package's owner with a
 contract amendment, the fixture through the tests. A4 waits for the supervisor's answer.
+
+## A4, the supervisor's answer (2026-11-09)
+
+Driver's question: define the term aggregation as a log-mean-exp over terms, or keep the log-sum-exp
+and document the duplicated-term effect. **Supervisor (mzargham), verbatim:** "really the package
+should support both setups. think of it as weighted vs not weighted and normalized vs not normalized.
+in practice these should be keyword based. it should be pretty normal stuff to toggle in scikit-learn
+style unsupervised learning. you can also defer weighted versus not weighted since i dont think we have
+that yet".
+
+**Disposition:** A4 joins WP21 as a package item. A keyword parameter of the estimator selects the
+term aggregation: unnormalized (the sum, today's behaviour and the default, so no committed number
+moves) or normalized (the mean over the K terms, the same convention as the fit temperature);
+stored verbatim and validated in `fit` as the scikit-learn conventions require; the interface
+contract amended; L10 states the bound for both forms (sum: max <= Phi_K <= max + (log K)/kappa;
+mean: max - (log K)/kappa <= Phi_K <= max); the paper's Definition 3 and the docs name the toggle in
+one clause each; the duplicated-term effect is documented for the unnormalized form as the
+assessment's note. Weighted versus unweighted terms (per-term weights in the aggregation) is
+deferred, recorded as a candidate for after 0.1 (the supervisor: "you can also defer weighted versus
+not weighted since i dont think we have that yet").
+
