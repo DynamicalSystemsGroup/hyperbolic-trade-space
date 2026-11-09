@@ -36,10 +36,13 @@ ARG BASE_IMAGE=python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194
 FROM scratch AS history
 FROM --platform=${PLATFORM} ${BASE_IMAGE}
 
+# EXTRA_APT is empty for the python image; the robustness image on a bare distribution names the
+# Python it needs there (see paper/container/build.sh).
+ARG EXTRA_APT=""
 # System tools: git (toolkit stdlib fetch, tests), gnupg (Node signature), procps (`ps`, which the
 # MyST static-site build uses to stop its local server).
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates curl git gnupg procps xz-utils \
+    && apt-get install -y --no-install-recommends ca-certificates curl git gnupg procps xz-utils ${EXTRA_APT} \
     && rm -rf /var/lib/apt/lists/*
 
 # Node.js (MyST needs >= 22): an exact LTS release, tarball for the build architecture from nodejs.org.
@@ -76,7 +79,7 @@ RUN set -eux; \
 # uv version: the one the record was made with. CI installs astral-sh/setup-uv@v7 without a
 # version (latest); the locked environment, not uv, determines the installed packages.
 ARG UV_VERSION=0.9.18
-RUN pip install --no-cache-dir "uv==${UV_VERSION}"
+RUN pip install --no-cache-dir --break-system-packages "uv==${UV_VERSION}"
 
 ARG OF_RECORD=1
 ENV HTS_ENVIRONMENT_OF_RECORD=${OF_RECORD}
