@@ -908,4 +908,19 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   generalized geometric programming" (sent to the PM; R-38 (a) no longer held). The research sprint
   is `docs/superpowers/notes/spike-ggp-fit/` (the model, the fit and the analysis kept apart; whether
   the several-term fit is a GGP; whether a design needs a unique facet in the fit; the sources).
+- **The research sprint's readout** (`docs/superpowers/notes/spike-ggp-fit/report.md`, `check_fit.py`).
+  The supervisor was right on both counts. (1) Every facet is fitted against every design already
+  (offsets and support weights over all rows), and a fit in which each design carries a weight on
+  every term recovers the planted exponents as well as the single-label fit (errors 0.013 against
+  0.013, and 0.007 against 0.009); the single label is the limit of sharp weights, an
+  implementation choice. (2) "Assigning designs to facets" is analysis of the current model, and
+  the driver had written it into the fit. (3) With the weights given, fitting all terms is one
+  generalized geometric program in the sense of Boyd et al. 2007 (convex; a generalized posynomial
+  in exp(w) to 2e-16). The unsupervised problem as one program is not convex in the terms (the
+  objective rises by 0.18 and 0.14 at a midpoint; by symmetry no convex symmetric formulation can
+  return distinct facets); it is solved by a sequence of such programs, and the tutorial notes
+  that some authors call that wider class "generalized geometric programs" too. Proposals for the
+  paper, the glossary, the derivations and the code are in the readout; none is applied. A separate
+  finding is put to him there: the one-term fit minimizes the level and the several-term refit the
+  mean slack, and only the first depends on the units of a single metric.
 

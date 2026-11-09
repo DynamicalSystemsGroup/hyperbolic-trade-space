@@ -122,3 +122,10 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   total is held fixed, each facet's V peaks at its exponent vector, no design is above log V 0.071.
   Lesson for figures: a label on a level line must be a quantity a reader can check against the
   designs drawn beside it.
+- 2026-11-09, the GGP clause of the abstract. The driver held the supervisor's sentence and offered
+  him wordings, on the ground that section 6 says the several-facet fit is not convex. He answered
+  that the driver was confusing the fit with the analysis and asked for a research sprint. The
+  sprint (`docs/superpowers/notes/spike-ggp-fit/`) found him right: no design needs a unique facet
+  in the fit, and with the weights given the fit is one GGP. Lesson: when his statement about the
+  method looks false, do the spike from his side first and bring the finding, not a menu.
+
