@@ -107,6 +107,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-09 | commit 3c9a68d, CI run 42639977088, ubuntu | success | green on Linux: the index page commit |
 | 2026-11-09 | commit a17ecf6, the staged site built in the driver's clean checkout, in the browser | index page at desktop light and at 375 px dark: the three region labels of the Why image sit inside their own regions, clear of the edge and of the dense part of the cloud, legible at phone width; no horizontal overflow | the driver's finding on label placement is closed. Test suite on a17ecf6 running on both platforms at the time of this row |
 | 2026-11-09 | commit a17ecf6, the driver's clean checkout, this Mac | 1912 passed, 15 skipped, 1 xfailed, 0 failed; ruff check and format clean; lock clean; lemma chain passes; proof map OK, 15 files, 263 steps; ledger 15 entries, 0 drifts; attribution 0 | green: the Why image's labels inside their regions. Linux run 42642725921 in progress at the time of this row. The subtitle commit 4ee3a10 after it changed one line of `site/index.html`; the site tests (44) pass on it |
+| 2026-11-09 | commit a17ecf6, CI run 42642725921, ubuntu | success | green on Linux: the index page with its three images and the label placement. With the Mac verdict and the browser pass above, the index page change is accepted by the driver |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
