@@ -1039,3 +1039,20 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   pass of structure, with no polishing rounds, and that captions and figure prose are frozen until
   WP19's gates.
 
+## Docker and Colima are available again (2026-11-09)
+
+- Driver's question: may agents use Docker on his Colima again, within the limits listed (build and
+  run only images named `hts-*`; never stop, start or reconfigure Colima; never touch his other
+  containers or images). He first asked whether he had to run the commands the driver had given
+  (restoring the Rosetta setting, removing a stopped container); the answer was no: the container of
+  record is linux/arm64 and runs natively, so no setting has to change.
+- **Supervisor (mzargham), verbatim:** "go ahead. you can use colima. to be clear i made that
+  available to you for reproducibility reasons".
+- **Disposition:** the halt on container work is lifted, for the purpose he names: reproducibility.
+  Stream P10 of the board (the container of record) is ready. The limits stand and are in its
+  scope: linux/arm64, native; images and containers named `hts-*` only; nothing under `~/.colima`,
+  no `colima stop`, `start`, `delete` or restart, no change of its settings; his other containers
+  and images are not touched; if a build needs more memory or disk than the machine gives, the
+  agent stops and reports. **Driver's call, for his review:** linux/arm64 in that container stays
+  the environment of record (it was provisional); Linux on amd64 is covered by the CI runs.
+
