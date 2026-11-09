@@ -158,4 +158,15 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   its assessed. two view, the same sysmlv2 model i strongly expect this will require a serious
   modeler loop to preserve the results but make the sysmlv2 model a more obvious connection between
   the configuration variables, the assessed attributes and metrics we're trading."
+- **Supervisor, verbatim, on WP22's boundary:** "within reason you should be able to keep the modeling
+  loop bounded away from the core machinery of the hts because tightening the model implementation
+  should not alter the findings about it; there is a data set at the interface contract and its
+  still the same information about the same system, just organized and analyzed more rigorously
+  using the machinery of sysmlv2. if in the process the model cleaning materially alters the results
+  then most likely our earlier versions were buggy. that said don't swap the new model in in place of
+  the old model blindly." **Disposition, for WP22's scope:** the seam is the dataset at the interface
+  contract; the modelling loop stays on the model's side of it and never touches `src/`; a material
+  change of results is treated as a probable defect in the earlier model, stopped on, investigated
+  and reported to the driver before anything else; the new model replaces the old only at a
+  recorded gate after a comparison report (as WP16 does for the data), never by default.
 
