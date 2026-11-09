@@ -945,4 +945,14 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   and its mechanism are R-43 and `docs/superpowers/notes/claims-review.md` (a register of claims
   outside the prose, a test that keeps it current, a sampled coverage check by the driver);
   `CLAUDE.md` points to it. Sent to the PM.
+- **The spike on soft weights, readout** (`docs/superpowers/notes/spike-soft-fit/report.md`).
+  Reasonable for 0.1 in a contained form: soft weights when the term temperature is finite, today's
+  fit at the default, no committed number changed. Planted tables at temperature 50: 16 of 20
+  recovered with one label and with soft weights at kappa = tau (mean exponent error 0.063 and
+  0.053), about twice the time, the objective falling at every step. Cubesat, four fits: the same
+  contending sets and leading metrics at kappa = tau (largest exponent difference 0.003); a kappa
+  far below tau merges facets. It buys consistency between the fit and the reported model, not
+  accuracy; local optimality is not certified for a soft fit. **Disposition (the driver, on his
+  conditional direction):** scoped and approved for execution as `work-packages/WP17-scope-of-work.md`;
+  sent to the PM; for his review at the PR.
 

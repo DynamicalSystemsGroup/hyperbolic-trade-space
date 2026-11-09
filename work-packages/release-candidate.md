@@ -50,6 +50,7 @@ the release; the PDF export later.
 | 1 | System model tidy-up (WP15) delivered, verified, accepted by the driver | in execution |
 | 2 | Docsite restructure (WP8a Amendment 2) delivered; the driver's full browser pass; accepted | in execution |
 | 3 | The paper (WP10 with Amendment 1) delivered: proofs step for step, appendices, the container of record; structural acceptance by the driver | in execution |
+| 3b | The several-term fit with soft weights (WP17, scoped by the driver on the supervisor's conditional direction of 2026-11-09), and WP10 Amendments 4 and 5 (the abstract, the vocabulary review, the claims review) | 3 |
 | 4 | The data swap (a package the driver scopes): the case, the K = 1, 2, 3 record and the paper's numbers on the new data, every change listed | 1, 3 |
 | 5 | Readability and correctness loops over the reader grid (WP11, the driver scopes): context-gapped reads, triage, revision, re-test; browser passes | 3, 4 |
 | 6 | Release candidate (WP8b, the driver scopes): version, license file, changelog, the archive cleared, stable reference keys from the docsite into the paper, the punch list, the reviewer's guide in sittings | 2, 5 |
