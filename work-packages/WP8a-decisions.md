@@ -187,3 +187,6 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
   a short table. **Supervisor (mzargham), verbatim:** "No docsite page; paper appendix only".
   Disposition: decided; the user guide's limitations section names the gaps that bear on use and
   links to the paper's appendix.
+- **OD3, the Changelog page before the first release.** Options: an empty Unreleased section / a
+  0.0.1 entry / no page until WP8b. **Supervisor (mzargham), verbatim:** "No page until WP8b".
+  Disposition: decided; the docsite has no changelog until the release package adds it.
