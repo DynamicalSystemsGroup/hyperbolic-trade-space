@@ -375,6 +375,14 @@ def test_L10_fails_loudly_when_limit_wrong_and_fallback_recorded():
         mods[10].verify(ctx)
 
 
+def test_L10_mean_form_fails_loudly_when_bound_or_repeat_shift_wrong():
+    for key in ("lim_lower_mean", "ceil_mean", "dup_sum", "dup_mean"):
+        ctx, mods = _run_lemmas(10)
+        ctx["L10"][key] = ctx["L10"][key] + 1
+        with pytest.raises(AssertionError, match="L10 FAIL"):
+            mods[10].verify(ctx)
+
+
 # --- numeric I1/I2 and cross-checks ---
 import numpy as np  # noqa: E402
 from scipy.optimize import linprog, minimize  # noqa: E402
@@ -1091,3 +1099,30 @@ def test_L15_verifies_and_fails_loudly_when_a_step_is_broken():
         ctx["L15"][key] = bad
         with pytest.raises(AssertionError, match="L15 FAIL"):
             mod.verify(ctx)
+
+
+@pytest.mark.parametrize(("K", "kappa", "d"), [(2, 0.5, 2), (3, 4.0, 3), (7, 30.0, 5)])
+def test_L10_both_forms_bounds_hold_numerically_and_repeat_shift_is_log2_over_kappa(K, kappa, d):
+    """R-5: sum: max <= Phi_K <= max + log K / kappa; mean: max - log K / kappa <= Phi <= max."""
+    from scipy.special import logsumexp
+
+    rng = np.random.default_rng(10 * K + d)
+    for _ in range(200):
+        x = rng.normal(scale=3.0, size=(50, K))  # scores x_k = theta_k . u - beta_k
+        top = x.max(axis=1)
+        phi_sum = logsumexp(kappa * x, axis=1) / kappa
+        phi_mean = phi_sum - np.log(K) / kappa
+        assert (phi_sum >= top - 1e-12).all() and (phi_sum <= top + np.log(K) / kappa + 1e-12).all()
+        assert (phi_mean <= top + 1e-12).all() and (
+            phi_mean >= top - np.log(K) / kappa - 1e-12
+        ).all()
+        np.testing.assert_allclose(phi_mean, np.log(np.mean(np.exp(kappa * x), axis=1)) / kappa)
+    # a repeated term: the sum form moves by exactly log 2 / kappa, the mean form does not
+    x = rng.normal(size=(40, K))
+    two = np.concatenate([x[:, :1], x[:, :1]], axis=1)
+    np.testing.assert_allclose(
+        logsumexp(kappa * two, axis=1) / kappa - x[:, 0], np.log(2) / kappa, atol=1e-12
+    )
+    np.testing.assert_allclose(
+        np.log(np.mean(np.exp(kappa * two), axis=1)) / kappa, x[:, 0], atol=1e-12
+    )

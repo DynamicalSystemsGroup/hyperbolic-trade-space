@@ -8,11 +8,16 @@ What this proves:
      carried by A6; Sum linearity; log of a product with a positive Sum).
   2. K = 1 reduction: Phi_1(u) = theta_1 . u - beta_1 (substitute K = 1 into the abstract
      expression), the single log-affine (monomial) fit of L1-L3.
-  3. Phi_K >= max_k x_k and Phi_K <= max_k x_k + (log K)/kappa (a log-sum-exp lies above the
-     maximum by at most log K / kappa), hence
+  3. Sum form: Phi_K >= max_k x_k and Phi_K <= max_k x_k + (log K)/kappa (a log-sum-exp lies
+     above the maximum by at most log K / kappa), hence
      lim_{kappa->inf} Phi_K = max_k x_k, where x_k = theta_k . u - beta_k. Limits are computed
      by sympy.limit in derive on the squeeze bounds and recorded; verify asserts equality
      (mimics symproof library/topology.py continuous_at_point).
+  3b. Mean form (the normalized log-mean-exp, Phi^mean_K = (1/kappa) log((1/K) sum_k exp(kappa x_k))
+     = Phi_K - (log K)/kappa): max_k x_k - (log K)/kappa <= Phi^mean_K <= max_k x_k, with the same
+     limit. The two forms differ by the constant (log K)/kappa, so they share every gradient,
+     Hessian and minimizer. A term repeated once (two equal scores x) moves the sum form to
+     x + (log 2)/kappa, an apparent gain with no new geometry, and leaves the mean form at x.
   4. GP compatibility (I4 is cited context only): exp(kappa Phi_K)
      = sum_k e^{-kappa beta_k} prod_j m_j^{kappa theta_kj} is a posynomial in m (A1: u = log m),
      verified as an identity for symbolic K, d.
@@ -34,7 +39,9 @@ from derivation.sumtools import linear, product_to_exp_sum
 TITLE = "Extension Phi_K: shift equivariance, K = 1 reduction, kappa -> infinity = max"
 STATEMENT = (
     "Phi_K(u + c 1) = Phi_K(u) + c; Phi_1 = theta_1.u - beta_1; "
-    "lim_{kappa->inf} Phi_K = max_k (theta_k.u - beta_k); exp(kappa Phi_K) is a posynomial"
+    "lim_{kappa->inf} Phi_K = max_k (theta_k.u - beta_k); exp(kappa Phi_K) is a posynomial; "
+    "sum form: max <= Phi_K <= max + (log K)/kappa; "
+    "mean form: max - (log K)/kappa <= Phi_K - (log K)/kappa <= max"
 )
 AXIOMS_USED = ["A1", "A6", "F10"]  # F10: max representation; I4 is cited context only
 
@@ -94,6 +101,16 @@ def derive(ctx):
     lim_lower = sp.limit(M + floor, kappa, sp.oo)  # Phi >= M + floor
     lim_upper = sp.limit(M + ceil, kappa, sp.oo)  # Phi <= M + (log K)/kappa
 
+    # 3b. the mean form (log-mean-exp): Phi^mean_K = (1/kappa) log((1/K) sum_k exp(kappa x_k))
+    mean_log = sp.log(sp.Sum(sp.exp(kappa * _x(S)), (k, 1, K)) / K)  # log of the mean
+    floor_mean = floor - sp.log(K) / kappa  # Phi^mean - M >= -(log K)/kappa
+    ceil_mean = ceil - sp.log(K) / kappa  # Phi^mean - M <= 0
+    lim_lower_mean = sp.limit(M + floor_mean, kappa, sp.oo)
+    x_dup = sp.Symbol("x_dup", real=True)  # the common score of two equal terms
+    two_equal = sp.Sum(sp.exp(kappa * x_dup), (k, 1, 2)).doit()
+    dup_sum = sp.expand_log(sp.log(two_equal) / kappa)
+    dup_mean = sp.expand_log(sp.log(two_equal / 2) / kappa)
+
     # 4. exp(kappa Phi_K) as a posynomial in m = exp(u) (A1)
     m = S.m
     # [L10.7] A1: m > 0, so exp(kappa Phi_K) is a sum of monomials in m, a posynomial
@@ -120,6 +137,13 @@ def derive(ctx):
         "ceil": ceil,
         "lim_upper": lim_upper,
         "lim_lower": lim_lower,
+        "mean_log": mean_log,
+        "floor_mean": floor_mean,
+        "ceil_mean": ceil_mean,
+        "lim_lower_mean": lim_lower_mean,
+        "x_dup": x_dup,
+        "dup_sum": dup_sum,
+        "dup_mean": dup_mean,
         "mono": mono,
         "term_in_m": term_in_m,
     }
@@ -163,3 +187,24 @@ def verify(ctx):
     gap = sp.simplify(sp.expand(r["term_in_m"] - r["mono"]))
     # [L10.19] each term e^{kappa x_k} is the monomial e^{-kappa beta_k} prod_j m_j^(kappa theta_kj)
     assert gap == 0, f"L10 FAIL: exp(kappa Phi_K) is not the posynomial (gap {gap})"
+    # [L10.20] A1, A6: the log of the mean splits, so Phi^mean_K = Phi_K - (log K)/kappa
+    assert (
+        sp.simplify(
+            log_expand(r["mean_log"], A1, A6) / kappa - (r["base"] / kappa - sp.log(K) / kappa)
+        )
+        == 0
+    ), "L10 FAIL: log-mean-exp != Phi_K - log K / kappa"
+    # [L10.21] mean form, upper bound: Phi^mean - max <= (log K)/kappa - (log K)/kappa = 0
+    assert sp.simplify(r["ceil_mean"]) == 0, "L10 FAIL: Phi^mean - max <= 0"
+    # [L10.22] mean form, lower bound: Phi^mean - max >= 0 - (log K)/kappa
+    assert sp.simplify(r["floor_mean"] + sp.log(K) / kappa) == 0, (
+        "L10 FAIL: Phi^mean - max >= -log K / kappa"
+    )
+    # [L10.23] the lower bound of the mean form tends to max as kappa -> inf, so does Phi^mean_K
+    assert sp.simplify(r["lim_lower_mean"] - M) == 0, "L10 FAIL: lim mean lower bound != max"
+    # [L10.24] sum form, one term repeated (two equal scores x): Phi = x + (log 2)/kappa
+    assert sp.simplify(r["dup_sum"] - (r["x_dup"] + sp.log(2) / kappa)) == 0, (
+        "L10 FAIL: duplicated-term shift is not log 2 / kappa"
+    )
+    # [L10.25] mean form, one term repeated: Phi^mean = x, no shift without new geometry
+    assert sp.simplify(r["dup_mean"] - r["x_dup"]) == 0, "L10 FAIL: mean form moved by a repeat"
