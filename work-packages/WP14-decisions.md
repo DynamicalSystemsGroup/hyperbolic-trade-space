@@ -32,6 +32,11 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   the source in the contract; `docs/api-reference.md` is a presentation-owned stub; `docs/api.md`
   stays the hand-written overview.
 
+- **Agent's defaults, as one item** (with the localhost build-and-serve command added from OD1).
+  **Supervisor (mzargham), verbatim:** "Approve the defaults as listed". Disposition: approved. Loop
+  closed: decided 2 (OD1, OD2), deferred 0, raised 1 (the staging review, folded into the scope as a
+  requirement), defaults approved as one item.
+
 ## Scope approval (approval gate)
 
-- pending (the defaults as one item, then approval)
+- pending

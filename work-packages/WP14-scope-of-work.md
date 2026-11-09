@@ -158,27 +158,19 @@ Good enough is met, **no open item remains unresolved**, and the supervisor has 
 
 ## Open decisions (for the supervisor)
 
-- **OD1.** Is the paper executed at build time or committed already executed? This fixes what the
-  publishing machinery may assume about the paper and who owns the figures and numbers it shows.
-  Options: (a) committed executed: `paper/paper.ipynb` and `supporting_material.ipynb` are stored
-  with their outputs, the build (`myst build --html`) never starts a kernel, the author re-executes
-  and commits when content changes, CI and Pages need no case dependencies for the paper; (b) executed at
-  build: the build runs the notebooks (`myst build --execute`) from the lock with the `case` group,
-  outputs are not committed, a changed technical API breaks the paper build until the paper is
-  updated, and the build is slower and needs the `case` dependencies and the data in CI; (c) executed
-  at release only: committed unexecuted on `dev`, executed and committed by the release step before
-  the merge to `main`.
-- **OD2.** Is the docsite's API reference generated from the docstrings or hand-written? This fixes
-  whether a signature change on the technical side flows to the site by itself or needs a presentation
-  edit, and whether numpydoc docstrings are part of the pinned contract. Options: (a) generated
-  (`mkdocstrings` as WP8 D-3 approved; docstrings are pinned as the source, the page
-  `docs/api-reference.md` is a presentation-owned stub, and `docs/api.md` stays WP13's hand-written
-  overview); (b) hand-written (`docs/api.md` is the only API page, the technical side updates it with
-  each signature change, and no `mkdocstrings` dependency); (c) generated into the paper's
-  supporting material as well (the same extraction feeds both, which couples the paper's build to
-  the docstring format).
+None. Every item was resolved through the decision loop (`WP14-decisions.md`, 2026-11-08): OD1
+"committed executed but also i want you to ensure we can build and deploy to local host to support
+review loops that don't require a publish to github pages. the review of the staged local host
+version of the site should be done before a merge that would generate a deployment. this needs to
+be part of release control" (decided: committed executed; raised and folded in as R-12 below); OD2
+"Generated from docstrings" (decided); the Agent's defaults approved as one item. Decided 2,
+deferred 0, raised 1.
 
-Unresolved before the gate: OD1, OD2, and the Agent's defaults list as one item.
+### R-12 (raised by OD1): local staging as part of release control
+
+| ID | Requirement | Checked by |
+|---|---|---|
+| R-12 | The contract pins one command that builds the whole site (root `index.html`, the MkDocs docsite under `/docs/`, the mystmd paper under `/paper/`) into a local directory and serves it on localhost with no network and no kernel, for review loops that do not publish; the branching convention in `work-packages/README.md` gains the release-control step: a merge to `main` that would deploy is preceded by a review of the staged localhost site, recorded in the merging package's decisions file; WP8a delivers the command and the first such review | the contract names the command; `tests/test_interface_contract.py` asserts it exists once WP8a delivers it (skipped with the stated reason before); README's branching bullet carries the step |
 
 ## Oracle signature (added by the PM for consistency with the WP15 draft)
 
