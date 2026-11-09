@@ -448,9 +448,11 @@ What changes:
   - R-28 (proofs step for step): Appendix B opens with the rule and with what the correspondence
     does and does not establish; each proof names exactly one file and each lemma file is the file
     of exactly one proof; prose steps and script steps correspond one to one and in order; each
-    step shows its kind (computed, inherited, argued), its formal claim and its line link, the last
-    two compiled from the script; every computed step passes and every inherited step names a
-    declared ledger entry. Checked by the proof-map checker (`uv run python -m derivation.proofmap`)
+    step is a line of code and shows its kind (computed, or by a declared axiom with the entry's
+    name, class and citation), its formal claim and its line link, the last two compiled from the
+    script; there is no prose-only kind, and a step that is neither is reported to the supervisor;
+    every computed step passes; every step by a declared axiom names an existing ledger entry, and
+    the entries a file's steps apply are exactly the entries in its `AXIOMS_USED`. Checked by the proof-map checker (`uv run python -m derivation.proofmap`)
     and `tests/test_proof_map.py`.
   - R-29 (no silent regression): the committed record holds a fingerprint of every step's script
     line and of its prose; the checker fails on any difference, on any unmatched, duplicated or
@@ -462,5 +464,8 @@ What changes:
 - **Dependency added:** C describes the model behind the data the paper uses (the frozen data until
   the swap gate; the WP15 model after it) and is regenerated at the swap.
 
-Open decisions: none (C and D apart, the register as an appendix, and the proofs step for step with
-their scripts, decided by the supervisor, `WP10-decisions.md`). Defaults for approval as one item: those listed at the end of the sketch.
+Open decisions: one, on B: whether each cited result's SymPy form is declared once in the axiom ledger
+and taken from there by the scripts, or stays in the script at the line that applies it, tagged with
+the entry's name (sketch, "Open questions"). Decided by the supervisor (`WP10-decisions.md`): C and D
+apart; the register as an appendix; the proofs step for step with their scripts; cited results as
+steps in code. Defaults for approval as one item: those listed at the end of the sketch.

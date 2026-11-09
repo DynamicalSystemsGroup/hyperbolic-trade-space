@@ -542,3 +542,14 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   amendment adds D-12, R-28 and R-29 and widens WP10's files to the lemma scripts for tagging only
   (no change to the mathematics, statements or axioms). The remaining defaults are re-listed in
   the sketch for approval as one item.
+- **Cited results are steps, in code.** The driver had proposed three kinds of step (computed,
+  inherited, argued). **Supervisor (mzargham), verbatim:** "proof steps that cite an inherited
+  result are still steps. and in sympy we need to declare the cited results as axioms to use them
+  which still needs to happen in the code". Disposition: decided; every step is a line of code, of
+  two kinds (computed; by a declared axiom, applied as code), with no prose-only kind (the proof
+  conventions already make a step SymPy cannot derive an explicit hypothesis or inherited entry).
+  Found in the code: inherited results are applied in the scripts at the point of use (L8 with I6
+  and negative controls; L12 with I8; L13 with I9), each script writing the SymPy form itself; all
+  23 ledger entries have `relation=None`, and no script takes an axiom from the ledger. Open, to
+  the supervisor: whether each cited result's SymPy form is declared once in the ledger and taken
+  from there, or stays at the line that applies it, tagged with the entry's name.

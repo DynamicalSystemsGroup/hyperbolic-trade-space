@@ -34,6 +34,11 @@ at the beginning of that appendix then each proof is one file, and and each step
 line in that file. make sure you give yourself a tool for checking this we don't want any
 regressions to go unnoticed"
 
+On the driver's three kinds of step (computed, inherited, argued):
+
+"proof steps that cite an inherited result are still steps. and in sympy we need to declare the
+cited results as axioms to use them which still needs to happen in the code"
+
 ## The test each appendix must pass
 
 An appendix exists only if it answers a question that a reader of the paper has and that the main
@@ -97,11 +102,19 @@ How the correspondence is built (so that it can be checked, and cannot drift):
   hold these as comments, intermediate results and 143 assertions across the fourteen files, with no
   tags; the work is to give each step its line and its tag, with the mathematics, the statements
   and the axioms used unchanged.
-- **Three kinds of step,** declared in the script and shown in the appendix, because not every step
-  of a proof is a computation: *computed* (SymPy verifies the condition); *inherited* (the step
-  cites a ledger entry with its source); *argued* (a named rule or an argument in prose that SymPy
-  does not check, such as extending a symbolic identity to every dimension). The appendix reports
-  the count of each kind per proof.
+- **Every step is a line of code, including a step that cites a result** (the supervisor's rule).
+  Two kinds, declared on the line and shown in the appendix: *computed* (SymPy derives the step's
+  condition) and *by a declared axiom* (the line applies an entry of the axiom ledger, as code, to
+  move the proof forward; the appendix shows the entry's name, its class and, for an inherited
+  result, its citation). There is no third kind for arguments made only in prose: by the project's
+  proof conventions a step that SymPy cannot derive becomes an explicit hypothesis or an inherited
+  entry in the ledger. If the tagging finds a step that is neither, it is reported as a finding and
+  taken to the supervisor, not given a softer label.
+- **Where the scripts stand on this today:** inherited results are used in code at the point of
+  use (for example L8 applies I6 as a substitution and has tests showing the proof fails without
+  it; L12 carries I8 as an inequality), but each script writes the result's SymPy form itself. The
+  ledger declares every entry in words only: none of its 23 entries carries a SymPy form, and no
+  script takes an axiom from the ledger. A script's link to the ledger is its list of names.
 - **In the appendix, the formal claim and the link are compiled from the script,** never typed: the
   claim shown beside a step is the script's own text, and the line number in the link is resolved
   at build time from the tag, so moving code cannot break or silently repoint a link.
@@ -111,8 +124,10 @@ The tool (the supervisor's instruction: no regression goes unnoticed):
 - **A checker,** run as one command and by the test suite, that fails unless: every proof in the
   appendix names exactly one file and every lemma file is the file of exactly one proof; within
   each, the prose steps and the script's steps correspond one to one and in the same order, with no
-  step on either side unmatched; every *computed* step's condition passes; every *inherited* step
-  names a ledger entry that exists and that the file declares; and tags are unique and unbroken.
+  step on either side unmatched; every *computed* step's condition passes; every step *by a declared
+  axiom* names a ledger entry that exists; the entries applied by a file's steps are exactly the
+  entries the file lists as used (none listed and unused, none used and unlisted); and tags are
+  unique and unbroken.
 - **A committed record** of every step (its tag, a fingerprint of its line in the script and a
   fingerprint of its prose). The checker fails when either fingerprint differs from the record, so
   a script step cannot change without its prose being looked at again, nor the prose without the
@@ -239,8 +254,17 @@ Rules that keep them disjoint and complementary:
 
 ## Open questions
 
-None. C and D stay apart and the register of prior art is an appendix, both in the supervisor's
-words above.
+One, on the proofs (B). C and D apart, the register of prior art as an appendix, the proofs step for
+step with their scripts, and cited results as steps in code are decided in the supervisor's words
+above.
+
+Where a cited result's SymPy form is declared. Either it is declared once, in the axiom ledger, and
+every script takes it from there (the declaration and the use are then the same object; this
+rewrites how the fourteen scripts obtain their axioms, in material accepted under WP13, and for
+results with no useful SymPy form the entry is declared as a named proposition). Or it stays written
+in the script at the line that applies it, tagged with the ledger entry's name (the tagging then
+adds lines and tags only; the ledger's wording and the script's form are tied by name and by the
+checker, not by being one object).
 
 ## Defaults in this sketch (for approval as one item with the amendment)
 
@@ -248,8 +272,8 @@ words above.
   been built against the old letters.
 - B (the supervisor's rule, not a default): each proof is one file, each prose step one line of
   it, explained at the head of the appendix, with a checker. Defaults under that rule: tags of the
-  form L2.1; the three kinds of step (computed, inherited, argued); the step's formal claim and
-  the line link compiled from the script; the committed record of fingerprints; the checker as a
+  form L2.1; the two kinds of step (computed, by a declared axiom) and no prose-only kind; the
+  step's formal claim and the line link compiled from the script; the committed record of fingerprints; the checker as a
   module beside the runner and a test in the suite.
 - One file may prove a statement together with its corollary as one sequence of steps (today only
   L14: the proposition on assignment-stable optimality and its corollary); the appendix then has
