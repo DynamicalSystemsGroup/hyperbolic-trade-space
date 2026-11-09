@@ -19,10 +19,22 @@ from sklearn.utils.validation import check_array, check_is_fitted, check_non_neg
 
 from . import coordinates as _coords
 from . import solvers as _solvers
+from .solvers import EPS_FEAS, EPS_KKT, GUARD_TOL, POLISH_STEPS
 
-__all__ = ["HyperbolicTradeSpace"]
+__all__ = [
+    "EPS_FEAS",
+    "EPS_KKT",
+    "EPS_ZERO_EXPONENT",
+    "GUARD_TOL",
+    "PARTICIPATION_THRESHOLD",
+    "POLISH_STEPS",
+    "HyperbolicTradeSpace",
+]
 
 _ABOVE_TOL = 1e-9  # V > 1 + tol counts as "above the frontier" at tau = inf
+EPS_ZERO_EXPONENT = 1e-12  # an exponent at or below this is numerically zero: 0 * log 0 := 0
+PARTICIPATION_THRESHOLD = 1e-3  # exponents above this participate (tension_report's threshold)
+_WARN_STATUSES = ("iteration_cap", "guard_stop", "uncertified")
 
 
 class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
@@ -107,7 +119,25 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         ``band = 1 / temperature``, or 0.1 at ``tau = inf``) assigned to each facet; zeros if
         there are none.
     training_log_v_ : ndarray of shape (n_samples,)
-        ``log V`` of the training rows (``-inf`` for rows with a zero metric).
+        ``log V`` of the training rows (``-inf`` for rows with a zero metric on a participating
+        exponent; a zero metric on an exponent at or below ``EPS_ZERO_EXPONENT`` contributes
+        nothing, see Notes).
+    termination_ : :class:`~hyperbolic_trade_space.solvers.Termination`
+        Stopping record of the chosen run: ``status`` (``"certified"``,
+        ``"stationary_without_margin"``, ``"uncertified"``, ``"guard_stop"``, ``"iteration_cap"``
+        or ``"not_applicable"``), the first-order gaps, the assignment margin and radius, the
+        Corollary bound and the tolerances (``EPS_KKT``, ``EPS_FEAS``, ``GUARD_TOL``). Level 3
+        (conditional local optimality) is for ``n_terms > 1`` with ``facet_step="support"``
+        and no penalty; ``n_terms = 1`` and the degenerate shortcuts record ``"not_applicable"``
+        with the gap of the fitted objective, read only.
+    conditioning_ : ndarray of shape (n_terms,)
+        Smallest eigenvalue of the Hessian of ``J_tau`` at each facet's fit,
+        ``tau (U^T diag(p) U - (U^T p)(U^T p)^T)`` with ``p`` the softmax weights over the valid
+        rows, restricted to the simplex tangent space and to the participating exponents
+        (``w_j > PARTICIPATION_THRESHOLD``). Small values flag a nearly flat direction (weak
+        identifiability of the exponents). ``nan`` at ``temperature = inf`` (the objective is not
+        twice differentiable) and for a facet with fewer than two participating exponents. A
+        read-only diagnostic.
     n_features_in_ : int
         Number of metrics seen in ``fit``.
     feature_names_in_ : ndarray of shape (n_features_in_,)
@@ -119,9 +149,13 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
 
     Notes
     -----
-    Zero metrics are tolerated: ``log 0 = -inf``, so the row has ``V = 0``, ``log V = -inf``,
-    support weight 0, and is excluded from the objective; its ``Z`` is ``nan`` and it has no
-    inverse. Negative values raise ``ValueError``. Grounding: homogeneity and the invariant form
+    Zero metrics are tolerated: ``log 0 = -inf``, the row has support weight 0 and is excluded
+    from the objective; its ``Z`` is ``nan`` and it has no inverse. Scoring follows the
+    continuous extension of a monomial: ``log V = sum_{j: w_j > EPS_ZERO_EXPONENT} w_j log m_j -
+    beta`` with ``0 log 0 := 0``, so a zero metric on a numerically zero exponent leaves
+    ``log V`` finite and a zero metric on a participating exponent gives ``V = 0``,
+    ``log V = -inf`` (for ``n_terms > 1`` each facet's score follows the same rule). Negative
+    values raise ``ValueError``. Grounding: homogeneity and the invariant form
     (L1), the offset (L2), gradient and support weights (L3), convexity (L4), log-mean-exp
     (L5), noise offset (L6), elasticities and improvement factors (L7), the chart (L8).
 
@@ -129,7 +163,9 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     inverted in closed form (``Phi_K(u + s 1) = Phi_K(u) + s``, lemma L10), exactly for every
     ``term_temperature``. ``K > 1`` is a local optimum of a partition-and-refit scheme; restarts
     are drawn from ``random_state``. Degenerate input (one metric, one valid row, fewer valid
-    rows than ``n_terms``) repeats the ``K = 1`` fit.
+    rows than ``n_terms``) repeats the ``K = 1`` fit. A single valid row is a declared
+    convention: the fitted object does not exist for it (the objective has no minimizer worth
+    the name), uniform exponents are returned, and ``fit`` emits a ``UserWarning`` saying so.
 
     Examples
     --------
@@ -270,17 +306,24 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
                 facet_step=self.facet_step, n_restarts=self.n_restarts,
             )  # fmt: skip
             res, W, betas, n_iter, beta = tr, tr.W, tr.beta, tr.n_iter, tr.objective
+            term = tr.termination
         else:
             if d == 1:
                 w = np.ones(1)
                 beta = _solvers.log_mean_exp(Uv[:, 0], tau)
                 p = _solvers.support_weights(Uv[:, 0], tau)
-                n_iter = 1
+                n_iter, reason = 1, "d = 1: the exponent is 1"
             elif nv == 1:
+                warnings.warn(
+                    "a single valid row: the fitted object does not exist for this input; "
+                    "uniform exponents are returned as a convention",
+                    UserWarning,
+                    stacklevel=2,
+                )
                 w = np.full(d, 1.0 / d)
                 beta = float(Uv[0] @ w)
                 p = np.ones(1)
-                n_iter = 1
+                n_iter, reason = 1, "single valid row: uniform exponents (convention)"
             else:
                 res = _solvers.solve_lp(Uv, self.min_exponent)
                 if np.isfinite(tau):
@@ -288,13 +331,19 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
                         Uv, tau, self.min_exponent, w0=res.w, tol=self.tol,
                         max_iter=self.max_iter, penalty=self.penalty, alpha=self.alpha,
                     )  # fmt: skip
-                w, beta, p, n_iter = res.w, res.beta, res.p, res.n_iter
+                w, beta, p, n_iter, reason = res.w, res.beta, res.p, res.n_iter, res.message
             if d == 1 or nv == 1:
                 res = None
             W, betas = np.tile(w, (K, 1)), np.full(K, beta)
-        if res is not None and not res.success:
+            term = _solvers.single_facet_termination(
+                Uv, w, beta, p, tau, self.min_exponent, n_iter, reason, K
+            )
+        if res is not None and (not res.success or term.status in _WARN_STATUSES):
             warnings.warn(
-                f"solver did not converge: {res.message}", ConvergenceWarning, stacklevel=2
+                f"solver did not converge: {term.reason}; termination status {term.status!r}, "
+                f"max facet gap {term.max_gap:.2e}",
+                ConvergenceWarning,
+                stacklevel=2,
             )
 
         B = _coords.helmert_basis(d) if self.coordinates == "ilr" else _coords.alr_basis(d)
@@ -324,20 +373,55 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         self.objective_ = float(beta)
         self.n_iter_ = max(int(n_iter), 1)
         self.training_log_v_ = log_v
+        self.termination_ = term
+        self.conditioning_ = self._conditioning(Uv, tau)
         return self
+
+    def _conditioning(self, Uv, tau):
+        """Smallest eigenvalue of each facet's restricted Hessian of ``J_tau`` (read only)."""
+        W = self.exponents_
+        out = np.full(W.shape[0], np.nan)
+        if np.isinf(tau):
+            return out
+        for k, w in enumerate(W):
+            part = w > PARTICIPATION_THRESHOLD
+            n_part = int(part.sum())
+            if n_part < 2:
+                continue
+            Ua = Uv[:, part]
+            p = _solvers.support_weights(Uv @ w, tau)
+            pa = Ua.T @ p
+            H = tau * (Ua.T @ (p[:, None] * Ua) - np.outer(pa, pa))
+            T = _coords.helmert_basis(n_part)  # orthonormal basis of the simplex tangent space
+            out[k] = np.linalg.eigvalsh(T @ H @ T.T)[0]
+        return out
 
     def _phi(self, S):
         kappa = self.term_temperature
         return S.max(axis=1) if np.isinf(kappa) else logsumexp(kappa * S, axis=1) / kappa
 
+    def _zero_limit_scores(self, U):
+        """Per-facet scores of rows with a zero metric: ``0 log 0 := 0`` below EPS_ZERO_EXPONENT."""
+        W, b = self.exponents_, self.log_offset_
+        part = W > EPS_ZERO_EXPONENT  # (K, d)
+        zero = -np.inf == U  # (n, d)
+        S = np.where(zero, 0.0, U) @ np.where(part, W, 0.0).T - b
+        S[(zero.astype(float) @ part.T.astype(float)) > 0] = -np.inf
+        return S
+
     def _chart(self, U):
         W, b, B = self.exponents_, self.log_offset_, self.basis_
         if W.shape[0] == 1:
-            return _coords.to_frontier_coordinates(U, W[0], b[0], B)
+            Z, log_v = _coords.to_frontier_coordinates(U, W[0], b[0], B)
+        else:
+            bad = (-np.inf == U).any(axis=1)
+            Uf = np.where(bad[:, None], 0.0, U)
+            Z, log_v = Uf @ B[0].T, self._phi(Uf @ W.T - b)
         bad = (-np.inf == U).any(axis=1)
-        Uf = np.where(bad[:, None], 0.0, U)
-        Z, log_v = Uf @ B[0].T, self._phi(Uf @ W.T - b)
-        Z[bad], log_v[bad] = np.nan, -np.inf
+        if bad.any():  # rows with a zero metric: the formal limit, Z undefined
+            S = self._zero_limit_scores(U[bad])
+            log_v[bad] = S[:, 0] if S.shape[1] == 1 else self._phi(S)
+            Z[bad] = np.nan
         return Z, log_v
 
     def _inverse(self, Z, log_v):

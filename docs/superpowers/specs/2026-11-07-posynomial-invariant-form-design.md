@@ -14,7 +14,7 @@ attributes. Metrics are conditioned to be strictly positive, larger-is-better an
 scaled; the admissibility set is modelled in log-metric space; the frontier is the unit level set
 of a monomial V(m) = Π_j m_j^{w_j} (a generalized hyperbolic surface in metric space, a hyperplane
 in log space), uncovered by generalized-geometric-program fitting to level sets. The learned
-coordinates are log V (distance from the frontier) and d−1 log-ratio coordinates Z (position along
+coordinates are log V (energy differential to the frontier) and d−1 log-ratio coordinates Z (position along
 it). Uses: level sets, holes (white space), novelty of a concept (V − 1), prediction of where a
 proposed configuration would fall, and reading the frontier's shape back in design variables.
 
@@ -331,22 +331,22 @@ sum-zero chart (B Bᵀ = I, B 1 = 0). INHERITED: I1 LP strong duality (Boyd & Va
 Optimization §5.2); I2 strong law of large numbers; I3 a closed convex set is determined by its
 support function (Rockafellar, Convex Analysis §13); I4 softmax-affine functions are GP-compatible
 (Hoburg et al. 2016); I5 the moment generating function of an independent sum is the product of
-the MGFs; I6 for square Q, Q Qᵀ = I implies Qᵀ Q = I; I7 alternating partition and refit converges to a local optimum of the max-affine fitting problem (Magnani & Boyd 2009; the K > 1 solver). REGULARITY R1: the balanced point lies in
-the relative interior of a facet with positive normal. FALLBACK hypotheses (introduced because a
+the MGFs; I6 for square Q, Q Qᵀ = I implies Qᵀ Q = I; I7 alternating partition and refit converges to a local optimum of the max-affine fitting problem (Magnani & Boyd 2009; the K > 1 solver); I8 the first-order convexity inequality f(v) ≥ f(w) + ∇f(w)·(v − w) (Boyd & Vandenberghe §3.1.3); I9 the Cauchy–Schwarz inequality (Horn & Johnson). REGULARITY R1: the balanced point lies in
+the relative interior of a facet with positive normal, a statement about the hard-support (τ = ∞) geometry that does not imply an interior finite-τ minimizer; R2: the assignment margin γ is positive, so every row has a unique maximizing facet. FALLBACK hypotheses (introduced because a
 step resisted abstract simplification, each with a role and a failure mode in the ledger): F5 the
-max representation for L5 (a symbol M with s_i ≤ M and s_{i0} = M), F10 the same for L10. I1 is
+max representation for L5 (a symbol M with s_i ≤ M and s_{i0} = M), F10 the same for L10, F12 the
+min representation for L12 and L13 (a symbol m with x_j ≥ m and x_{j0} = m). I1 is
 checked numerically in pytest, I2 by the replication test.
 
 Lemmas: L1 homogeneity and invariant form, V(k·m) = k·V(m), V(m/V) = 1 [A1, A2]; L2 uniform shift
-J_τ(w; U + c1ᵀ) = J_τ(w; U) + c [A2, A3]; L3 gradient = Σ_i p_i u_i and balanced KKT (the
-stationarity premise is R1) [A2, A3, R1]; L4 convexity: second directional derivative =
+J_τ(w; U + c1ᵀ) = J_τ(w; U) + c [A2, A3]; L3 gradient = Σ_i p_i u_i and the full simplex KKT g_j ≥ λ, w_j (g_j − λ) = 0, λ = w·g (equal gradients on the positive-weight coordinates; the facet-normal reading is R1; a balanced hard-support optimum does not imply an interior finite-τ minimizer) [A2, A3, R1]; L4 convexity: second directional derivative =
 τ·Var_p(v·u) = (τ/2) ΣΣ p_i p_k (s_i − s_k)² ≥ 0 [A1, A3]; L5 LSE = LME + (log n)/τ, LSE − max ≥ 0
 (strictly > 0 for n ≥ 2), lim_{τ→∞} LME = max, lim_{τ→0} LME = mean, mean ≤ LME ≤ max, with the
-max carried as the F5 symbol [A3, I1, I2, I3, F5]; L6 Gaussian cumulant (1/τ) log E exp(τ w·ε) =
-τσ²‖w‖²/2 via `sympy.stats` [A2, A5, I5]; L7 elasticities −w_k/w_j and improvement factors [A1, A2];
+max carried as the F5 symbol [A3, I1, I2, I3, F5]; L6 Gaussian cumulant, a population identity under the log-space Gaussian model, (1/τ) log E exp(τ w·ε) =
+τσ²‖w‖²/2 via `sympy.stats`, with no finite-sample or consistency claim [A2, A5, I5]; L7 elasticities −w_k/w_j and improvement factors [A1, A2];
 L8 sum-zero chart: B Bᵀ = I, B 1 = 0, round trip, Z(u + c1) = Z(u) [A7, I6]; L9 pull-back formula
 [A1, A2, A4]; L10 extension: Φ_K(u + c1) = Φ_K(u) + c, K = 1 reduction, lim_{κ→∞} Φ_K = max, GP
-compatibility, with the max carried as the F10 symbol [A2, A6, I4, F10]; L11 a maximizer of V is Pareto-efficient (weighted-sum scalarization, one direction; converse not claimed) [A1, A2]. SymPy pitfalls: avoid eager evaluation of
+compatibility, with the max carried as the F10 symbol [A2, A6, I4, F10]; L11 a maximizer of V is Pareto-efficient (weighted-sum scalarization, one direction; converse not claimed) [A1, A2]; L12 Lemma 1, the facet first-order gap G = g·w − min_j g_j with 0 ≤ f − f* ≤ G, G = 0 iff the simplex KKT holds, and the LP duality gap at τ = ∞ [A2, A3, I1, I8, F12]; L13 Lemma 2, the assignment margin γ and the explicit stable radius γ / (2 max_i ‖(u_i, −1)‖₂) [F12, I9, R2]; L14 Proposition 3 and Corollary 4, assignment-stable local optimality of step B (unpenalized, support offsets) and the approximate certificate F(W) − F*_fixed ≤ Σ_k (n_k/N) G_k [A2, R2]. SymPy pitfalls: avoid eager evaluation of
 inequalities; helper symbols for bounded quantities; `sympy.limit` under explicit assumptions with
 the result recorded as an equality; ordering assumption s_1 > s_2 instead of `Max`.
 

@@ -40,10 +40,18 @@ learned from the data, and $V-1$ says by how much. We call this normalized repre
 invariant form, and the method posynomial invariant form because the same idea extends from one
 product of powers to sums of such products (posynomials).
 
+Three surfaces answer to the word edge, and the register names them. The *fitted reference
+surface* is the smooth $V=1$ surface that the fit places at its working temperature; because it is
+smooth, a few designs sit just beyond it. The *$\tau=\infty$ supporting envelope* is the hard
+version of the same surface, which no design exceeds. The *Pareto boundary* is the boundary of the
+attainable set, a property of the designs that can exist and not of the fit. The text says edge or
+frontier where the context makes the choice plain.
+
 ## The chart
 
-A fitted model gives each design two kinds of coordinate. One number, the log of $V$, says how far
-the design is from the edge. The remaining $d-1$ numbers, for $d$ metrics, say where along the edge it
+A fitted model gives each design two kinds of coordinate. One number, the log of $V$, is its
+energy differential (level offset) to the edge: how far above or below the edge it sits, in log
+terms. The remaining $d-1$ numbers, for $d$ metrics, say where along the edge it
 is, free of overall scale. Together they are a reversible rewriting of the metrics. Plot the
 along-the-edge coordinates and you see the designs spread over the trade space; holes in that
 picture are candidates for white space.
@@ -65,6 +73,20 @@ The method follows the stages of a trade study, and the package covers the last 
    proposed configuration would land, and plot. These tools are the analysis toolkit, described by
    concept here; their interface is documented in `api.md`.
 
+## What the fit certifies
+
+With one term the fit is a convex program and its answer is the minimizer. With several terms
+($K>1$) the fit alternates between assigning designs to terms and refitting each term, and it
+reports how far it got in three levels. The first is descent: no step made the objective worse.
+The second is stationarity: each term sits where no further first-order improvement is available,
+and the report gives the remaining gap for each term. The third is local optimality: if no design
+sits exactly on the seam between two terms (the margin is positive), small changes to the terms
+cannot change which term owns which design, and the fit is a local optimum; the report gives the
+margin and the size of change that is safe. A status line says which levels you have: certified,
+stationary without margin, uncertified (a gap above its tolerance), or a stop at the iteration cap or on the guard, which the report names
+and does not call converged. The statements and their conditions are in
+[Mathematics](method.md#three-levels-of-guarantee).
+
 ## What you supply, and what you get back
 
 You supply a table of designs and a rule for turning attributes into positive, larger-is-better,
@@ -72,7 +94,7 @@ comparably scaled metrics. You get back:
 
 - the weights (the tension) and the metrics that participate;
 - the exchange rates between contending metrics, as local trade-offs on the edge;
-- for any design, its distance from the edge and its position along it;
+- for any design, its energy differential (level offset) to the edge and its position along it;
 - for any design, how much a single metric alone would have to improve to reach the edge, and its
   projection onto the edge;
 - a novelty score with a calibrated companion that respects the noise band;
@@ -83,14 +105,15 @@ comparably scaled metrics. You get back:
 
 ## What to keep in mind
 
-The method is a model, and all models are wrong. It reads the edge of the achievable region as a
-single flat surface in log space, tangent at one balanced place. Away from that place our reading is that it is
-conservative; where the trade space is not log-convex it cannot see the structure; where there are
-too few designs the weights are weakly determined. The conditions behind each result are listed in
+The method reads the edge of the achievable region as a single flat surface in log space, tangent
+at one balanced place. Away from that place our reading is that it is conservative; where the trade
+space is not log-convex it cannot see the structure; where there are too few designs the weights
+are weakly determined. The conditions behind each result are listed in
 [Mathematics](method.md#conditions-of-the-theory), each with what it buys and what is lost without
-it. Machine verification confirms that the formulas follow from the stated conditions and that the
-code agrees with them; whether the conditions are reasonable for your problem is a human judgement,
-and so is whether a hole is an opportunity or a novel design is wanted.
+it, and the Map and territory paragraph there says how to read results in light of them. Machine
+verification confirms that the formulas follow from the stated conditions and that the code agrees
+with them; whether the conditions are reasonable for your problem is a human judgement, and so is
+whether a hole is an opportunity or a novel design is wanted.
 
 For a worked case, see the case study page on a small-satellite attitude-control trade space,
 where the fit is asked what contends and the answer is then explained in physical terms. For the

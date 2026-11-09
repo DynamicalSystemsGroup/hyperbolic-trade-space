@@ -1,15 +1,11 @@
 # Extensions and limitations
 
-All models are wrong and some are useful. Posynomial invariant form is a model of a trade space,
-and this page says where it is wrong in ways we know about, so that its usefulness can be judged
-by the reader and not assumed. The theory behind the method does not have to match the
-implementation exactly: its job is to ground the work and to explain how to understand and
-interpret results, including the method's limitations. Theorems may carry hypotheses that we cannot
-certify for the spaces we sample, such as well-conditioned metrics, a balanced point in the
-relative interior of a facet, or log-convexity where white space is read. We therefore state every
-such hypothesis explicitly, in the ledger `derivation/axioms.py`, with its interpretive role and its
-failure mode. The conditions of the theory are the method's limitations. They are not defects to be
-minimized; they are the terms on which the interpretation is offered. The table of conditions is in
+Posynomial invariant form is a model of a trade space, and this page lists where it is wrong in
+ways we know about, so that its usefulness can be judged by the reader and not assumed. The policy
+for reading the formal results is the Map and territory paragraph of [Mathematics](method.md), and
+the gaps between the formal objects and the implementation are recorded in
+`docs/superpowers/notes/abstraction-gaps.md`. The conditions of the theory are the terms on which
+the interpretation is offered; the table is in
 [Mathematics](method.md#conditions-of-the-theory), and each limitation below points back to the
 condition it comes from.
 
@@ -46,9 +42,10 @@ degrades to the weaker invariant-form reading.
 **Noise band and calibrated novelty (conditions: A3, A5).** At a finite temperature some training
 designs lie above $V=1$ by construction. A novelty score is meaningful only relative to a band of
 order $1/\tau$, so the calibrated score (the rank of $\log V$ among training scores, and
-$\tau\log V$) belongs next to $V-1$. Gaussian noise adds a known offset to $\beta$ and the Gaussian cumulant
-$\tau\sigma^2\|w\|^2/2$ (L6), which we read as a ridge toward balanced exponents; noise that is not Gaussian, independent or homoscedastic is
-outside that statement.
+$\tau\log V$) belongs next to $V-1$. Under the log-space Gaussian model the population objective gains the cumulant
+$\tau\sigma^2\|w\|^2/2$ (L6), a population identity that we read as a ridge toward balanced
+exponents; noise that is not Gaussian, independent or homoscedastic is outside that statement, and
+no finite-sample or consistency statement is made.
 
 **Holes versus structural strata (condition: human validation).** A region of the chart with no
 near-frontier points can be an opportunity, a categorical stratum that cannot be occupied, or a
@@ -70,10 +67,19 @@ step to be tuned until the answer looks right; it defines the question.
 designs, or designs that barely differ near the envelope, the fit may be weakly determined. L4
 proves convexity of the objective, not strict convexity; uniqueness at a finite temperature needs
 a rank condition on the weighted covariance that is not proved, and the fit reports its effective
-sample size so the analyst can see how many designs carry it. At very high temperature the fit
+sample size and `conditioning_` (the smallest eigenvalue of the restricted Hessian) so the analyst
+can see how many designs carry it and how flat the least-determined direction is. At very high temperature the fit
 rests on a few extreme designs and is noise-sensitive; at very low temperature (below $\tau\approx3$, outside the documented useful range) the
 the softmax weights approach uniform (by their definition, L3) and the soft maximum approaches the mean of the scores (L5), so
 `frac_above_` is not monotone there (see the API page).
+
+**Local optimality is conditional (condition: R2).** For the multi-facet fit, level 3 of the
+[three levels](method.md#three-levels-of-guarantee) holds for step B, unpenalized, where the
+assignment margin is positive. At $\tau=\infty$ the margin is zero when a frontier row lies on two
+facet planes or two facets coincide (4 of 20 chosen runs on the planted data, none at $\tau=50$);
+the status is then `stationary_without_margin`, with first-order stationarity per facet and no
+local-optimality claim. Step D and the penalty carry no level 3 (`not_applicable`), and
+`termination_` of an iteration cap or a guard stop is never `certified`.
 
 **What the n-lemma reading cannot say.** The contending set is read from the support of the
 exponents. That reading requires the floor on exponents to be zero, is exact only at infinite
@@ -134,8 +140,8 @@ global optimality. The assumptions behind it are named, defended and extended in
   three of the five restarts pass, so a restart that recovers the facets exists there; on seeds 1
   and 16 none does, because the sparse facet is barely determined by its frontier rows. But the
   restart is chosen by the mean slack, and that selection does not pick the passing restarts:
-  rerunning the built solver with 5, 20 and 50 restarts recovered none of seeds 1, 3 and 16, and on
-  seed 8 (step B, $\tau=\infty$) it passed at 5 restarts and failed at 20 and 50. At $\tau=50$
+  rerunning the built solver (step B, $\tau=\infty$) with 5, 20 and 50 restarts recovered none of
+  seeds 1, 3, 8 and 16. At $\tau=50$
   the default step has no passing restart on seeds 3 and 8; the tangent step does (3 and 5). So
   `n_restarts` is a cost-for-robustness knob, not a remedy; the selection rule and the start are
   the limit, and a different selection rule or start is future work.

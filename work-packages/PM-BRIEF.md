@@ -8,6 +8,21 @@ his (scope approval, acceptance) and for problem-level changes; everything else 
 level or the driver's. You orchestrate implementer subagents for each package's inner loop;
 acceptance reviews run in a fresh context (a reviewer subagent that did not build the work).
 
+## The hierarchy, in the supervisor's words (2026-11-08)
+
+"its supposed to be one PM not multiple PMs but then the implementers and reviewers are clean sub
+agents with specific tasks who are not allowed to deviate from their scopes without explicit
+approvals and PM makes sure it all works together. the fable level is my assistant who decides
+whether what the PM escalates actually needs to go to me or not."
+
+So: one PM, persistent across packages, who drafts scopes (through `scope-of-work`), runs approved
+packages concurrently where their files are disjoint, owns coherence (file ownership, the order of
+commits on `dev`, that the pieces work together), and escalates to the driver only; implementers
+and reviewers are fresh subagents with one bounded task each, who do not deviate from the scope
+they were given without the PM's explicit approval (and the PM does not widen a scope without the
+driver's); the driver (the Fable session) decides what reaches the supervisor: gate decisions and
+problem-level changes, nothing else.
+
 ## Read first, in this order
 
 1. `~/.claude/skills/CLAUDE.md` (the decision loop) and `~/.claude/skills/README.md`.

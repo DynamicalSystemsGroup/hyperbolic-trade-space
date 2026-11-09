@@ -760,3 +760,276 @@ def test_I7_solver_level_inherited_entry():
     with redirect_stdout(buf):
         print_audit(["A1", "A2"])
     assert "I7" in buf.getvalue() and "restarts" in buf.getvalue()
+
+
+# --- WP13 (E-2, E-6): L3 full simplex KKT, L6 restricted to the population identity ---
+def test_L3_states_full_simplex_kkt():
+    assert "g_j >= lambda" in _L3.STATEMENT and "w_j (g_j - lambda) = 0" in _L3.STATEMENT
+    assert "complementary slackness" in _L3.STATEMENT
+    assert "does not imply an interior finite-tau minimizer" in _L3.STATEMENT
+
+
+def test_L3_boundary_kkt_derives_symbolically_in_d():
+    ctx = _ctx_l3_l4()
+    c = ctx["L3"]
+    Sy = ctx["S"]
+    assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
+    # equal-gradient case is kept, the boundary KKT is added
+    kb = c["KKT_boundary"]
+    assert c["KKT"].rhs == _L3.LAM
+    assert kb["lambda_solved"] == [sp.Sum(Sy.w[Sy.j] * kb["gr"][Sy.j], (Sy.j, 1, Sy.d))]
+    assert kb["mu"][Sy.j].is_nonnegative is True  # g_j - lambda = mu_j >= 0
+    assert kb["positive_case_solution"] == [0]  # w_j > 0 forces mu_j = 0: G_j = lambda
+
+
+def test_L3_boundary_example_has_inactive_gradient_above_lambda():
+    ctx = _ctx_l3_l4()
+    ex = ctx["L3"]["boundary_example"]
+    # balanced hard-support geometry at tau = inf, boundary optimizer at finite tau
+    assert ex["hard_primal"] == ex["hard_dual"] == 1
+    assert ex["w_star"] == (1, 0)
+    assert ex["g_inactive_minus_lambda"].evalf() > 0
+
+
+def test_L3_fails_loudly_when_boundary_claim_broken():
+    ctx = _ctx_l3_l4()
+    ctx["L3"]["KKT_boundary"]["lambda_solved"] = [
+        sp.Sum(ctx["S"].p[ctx["S"].j], (ctx["S"].j, 1, ctx["S"].d))
+    ]
+    with pytest.raises(AssertionError, match="L3 FAIL"):
+        _L3.verify(ctx)
+    ctx = _ctx_l3_l4()
+    ctx["L3"]["boundary_example"]["g_inactive_minus_lambda"] = -ctx["L3"]["boundary_example"][
+        "g_inactive_minus_lambda"
+    ]
+    with pytest.raises(AssertionError, match="L3 FAIL"):
+        _L3.verify(ctx)
+
+
+def test_L6_statement_is_the_restricted_population_identity():
+    L6 = _il.import_module("derivation.lemma_06_gaussian_cumulant")
+    s = L6.STATEMENT
+    assert "population" in s and "A5" in s and "independent across j" in s and "sigma > 0" in s
+    assert "not a finite-sample estimator" in s and "no consistency claim" in s
+    assert "A5" in L6.AXIOMS_USED
+
+
+# --- WP13 (E-1): L12 facet gap, L13 margin, L14 assignment-stable local optimality ---
+_WP13 = {
+    12: "lemma_12_facet_gap",
+    13: "lemma_13_margin",
+    14: "lemma_14_assignment_stable",
+}
+
+
+def _run_wp13(*numbers):
+    """derive+verify L3, L4 (L12 reads L4's convexity), then the listed WP13 lemmas."""
+    ctx = {"S": S.make_symbols()}
+    _L3.derive(ctx)
+    _L3.verify(ctx)
+    _L4.derive(ctx)
+    _L4.verify(ctx)
+    mods = {}
+    for n in numbers:
+        mods[n] = _il.import_module(f"derivation.{_WP13[n]}")
+        mods[n].derive(ctx)
+        mods[n].verify(ctx)
+    return ctx, mods
+
+
+@pytest.mark.parametrize("num", sorted(_WP13))
+def test_wp13_lemmas_in_chain_in_order_and_no_enumeration(num):
+    import inspect
+
+    assert _WP13[num] in CHAIN_NAMES
+    assert CHAIN_NAMES[-3:] == list(_WP13.values())
+    src = inspect.getsource(_il.import_module(f"derivation.{_WP13[num]}"))
+    assert "range(" not in src and "numpy" not in src and "scipy" not in src
+
+
+def test_L12_verifies_at_symbolic_d_with_declared_axioms():
+    ctx, mods = _run_wp13(12)
+    L12 = mods[12]
+    assert L12.TITLE and L12.STATEMENT
+    assert set(L12.AXIOMS_USED) >= {"A2", "A3", "I1", "I8", "F12"}
+    for name in L12.AXIOMS_USED:
+        assert name in AX.AXIOMS
+    assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
+    assert ctx["L12"]["convex"] is True
+
+
+def test_L12_statement_names_the_gap_the_chain_and_the_objects():
+    _, mods = _run_wp13(12)
+    s = mods[12].STATEMENT
+    assert "G = g.w - min_j g_j = sum_j w_j (g_j - min g)" in s
+    assert "0 <= f(w) - f* <= G" in s
+    assert "w_j (g_j - min g) = 0" in s  # E-2's KKT, equality iff
+    assert "fitted reference surface" in s and "tau = inf supporting envelope" in s
+    assert "LP duality gap" in s
+
+
+def test_L12_min_representation_fallback_and_inherited_first_order_inequality():
+    _, mods = _run_wp13(12)
+    assert AX.get("F12").fallback and AX.get("F12").role and AX.get("F12").failure_mode
+    assert "F12" in mods[12].AXIOMS_USED
+    a = AX.get("I8")
+    assert a.tag == AX.INHERITED and "3.1.3" in a.citation and "Boyd" in a.citation
+    assert a.role.strip() and a.failure_mode.strip()
+
+
+def test_L12_lp_duality_gap_instance_is_exact():
+    ctx, _ = _run_wp13(12)
+    lp = ctx["L12"]["lp"]
+    assert lp["gap_at_optimum"] == 0 and lp["primal_at_optimum"] == lp["dual_at_optimum"]
+    assert lp["gap_off_optimum"] >= lp["f_off_optimum"] - lp["f_star"] >= 0
+
+
+def test_L12_fails_loudly_when_gap_claim_broken():
+    ctx, mods = _run_wp13(12)
+    ctx["L12"]["gap_nonneg"] = False
+    with pytest.raises(AssertionError, match="L12 FAIL"):
+        mods[12].verify(ctx)
+    ctx, mods = _run_wp13(12)
+    ctx["L12"]["chain_slack"] = ctx["L12"]["chain_slack"] - 1  # G - (f - f*) != a + b
+    with pytest.raises(AssertionError, match="L12 FAIL"):
+        mods[12].verify(ctx)
+    ctx, mods = _run_wp13(12)
+    ctx["L12"]["lp"]["gap_at_optimum"] = 1
+    with pytest.raises(AssertionError, match="L12 FAIL"):
+        mods[12].verify(ctx)
+    ctx, mods = _run_wp13(12)
+    ctx["L4"]["convex"] = False  # L12 is conditional on L4's convexity
+    with pytest.raises(AssertionError, match="L12 FAIL"):
+        mods[12].verify(ctx)
+
+
+def test_L13_verifies_with_declared_axioms_and_states_the_radius():
+    ctx, mods = _run_wp13(13)
+    L13 = mods[13]
+    assert set(L13.AXIOMS_USED) >= {"F12", "I9", "R2"}
+    for name in L13.AXIOMS_USED:
+        assert name in AX.AXIOMS
+    s = L13.STATEMENT
+    assert "gamma - 2 delta" in s and "2 delta < gamma" in s
+    assert "max_k ||Delta theta_k||_2 < gamma / (2 max_i ||(u_i, -1)||_2)" in s
+    assert "energy differential" in s
+    assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
+
+
+def test_wp13_new_axioms_are_declared_with_role_and_failure_mode():
+    i9 = AX.get("I9")
+    assert i9.tag == AX.INHERITED and "Horn" in i9.citation and "Matrix Analysis" in i9.citation
+    assert i9.role.strip() and i9.failure_mode.strip()
+    r2 = AX.get("R2")
+    assert r2.tag == AX.REGULARITY and "positive assignment margin" in r2.statement
+    assert r2.role.strip() and "unique maximizing" in r2.role and "Proposition 3" in r2.role
+    assert "ridge" in r2.failure_mode and "stationary_without_margin" in r2.failure_mode
+    assert "duplicate" in r2.failure_mode
+    r1 = AX.get("R1")
+    assert "does not imply" in r1.statement and "interior" in r1.statement
+
+
+def test_L13_numeric_endpoint_labels_survive_the_radius():
+    ctx, _ = _run_wp13(13)
+    num = ctx["L13"]["numeric"]
+    assert num["margin"] == 1 and num["perturbed_margin"] >= num["margin"] - 2 * num["delta"] > 0
+    assert num["labels"] == num["labels_perturbed"]
+    assert num["r"] < num["radius"]
+
+
+def test_L13_fails_loudly_when_margin_claim_broken():
+    for key, bad in (
+        ("margin_slack", 1),  # new gap != (gamma - 2 delta) + slacks
+        ("margin_nonneg", False),
+        ("margin_positive", False),
+        ("score_change_slack", 1),  # change in the score is not Delta theta . (u, -1)
+    ):
+        ctx, mods = _run_wp13(13)
+        ctx["L13"][key] = bad
+        with pytest.raises(AssertionError, match="L13 FAIL"):
+            mods[13].verify(ctx)
+    ctx, mods = _run_wp13(13)
+    ctx["L13"]["radius_set"] = sp.Interval(0, sp.oo)  # radius not bounded by gamma / (2 U)
+    with pytest.raises(AssertionError, match="L13 FAIL"):
+        mods[13].verify(ctx)
+    ctx, mods = _run_wp13(13)
+    ctx["L13"]["numeric"]["perturbed_margin"] = -1
+    with pytest.raises(AssertionError, match="L13 FAIL"):
+        mods[13].verify(ctx)
+
+
+def test_L14_verifies_at_symbolic_d_nk_K_with_declared_axioms():
+    ctx, mods = _run_wp13(12, 13, 14)
+    L14 = mods[14]
+    assert set(L14.AXIOMS_USED) >= {"A2", "R2"}
+    for name in L14.AXIOMS_USED:
+        assert name in AX.AXIOMS
+    assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
+    assert ctx["S"].K.is_integer and not ctx["S"].K.is_number
+    assert ctx["L14"]["nk"].is_integer and not ctx["L14"]["nk"].is_number
+
+
+def test_L14_statement_scopes_level_three_to_step_b_unpenalized_support_offsets():
+    _, mods = _run_wp13(12, 13, 14)
+    s = mods[14].STATEMENT
+    assert "Level 3" in s and "step B" in s and "unpenalized" in s
+    assert "beta_k = J_tau(U w_k)" in s and "support offsets" in s
+    assert "n_k (beta_k - w_k.ubar_k)" in s
+    assert "F(W') - F(W) = sum_k (n_k/N) (f_k(w'_k) - f_k(w_k)) >= 0" in s
+    assert "F(W) - F*_fixed" in s and "sum_k (n_k/N) G_k" in s
+    assert "fitted reference surface" in s
+
+
+def test_L14_partition_regrouping_is_stated_not_enumerated_and_not_a_fallback():
+    import inspect
+
+    mod = _il.import_module("derivation.lemma_14_assignment_stable")
+    src = inspect.getsource(mod)
+    assert "symbolic partition" in src and "one-line finite-sum argument" in src
+    assert not any("L14" in (a.statement + a.role) for a in AX.fallbacks())
+
+
+def test_L14_fails_loudly_when_premise_or_step_broken():
+    for key, bad in (
+        ("regroup_swap_equal", False),
+        ("local_min_slack", 1),
+        ("local_min_nonneg", False),
+        ("cor_slack", 1),
+        ("cor_nonneg", False),
+        ("objective_agrees", 1),
+    ):
+        ctx, mods = _run_wp13(12, 13, 14)
+        ctx["L14"][key] = bad
+        with pytest.raises(AssertionError, match="L14 FAIL"):
+            mods[14].verify(ctx)
+    # broken premises inherited from earlier lemmas
+    ctx, mods = _run_wp13(12, 13, 14)
+    ctx["L13"]["margin_positive"] = False  # R2 fails: no assignment-stable neighborhood
+    with pytest.raises(AssertionError, match="L14 FAIL"):
+        mods[14].verify(ctx)
+    ctx, mods = _run_wp13(12, 13, 14)
+    ctx["L12"]["chain_nonneg"] = False  # Lemma 1 not established
+    with pytest.raises(AssertionError, match="L14 FAIL"):
+        mods[14].verify(ctx)
+
+
+def test_wp13_audit_lists_new_axioms_and_headline_names_fallbacks():
+    _, used = run_chain(verbose=False)
+    for name in ("I8", "I9", "F12", "R2"):
+        assert name in used, f"{name} is consumed by no lemma"
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        print_audit(used)
+    out = buf.getvalue()
+    head = out[out.index("HEADLINE") :]
+    for name in ("I8", "I9"):
+        assert name in out
+    for name in ("R1", "R2", "F5", "F10", "F12"):
+        assert f"{name}: buys:" in head and f"{name}: when it fails:" in head
+    assert "L14" in out and "L12" in out and "L13" in out
+    buf = io.StringIO()
+    from derivation.run import main
+
+    with redirect_stdout(buf):
+        assert main() == 0
+    assert "L1 -> L14" in buf.getvalue() and buf.getvalue().rstrip().endswith("ALL LEMMAS PASS.")

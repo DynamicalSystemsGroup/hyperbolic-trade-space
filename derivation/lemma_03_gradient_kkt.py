@@ -12,6 +12,18 @@ What this proves (symbolic d and n; Sum with symbolic bounds, no enumeration):
      direction v reads sum_j v_j (G_j - lambda) = 0.  Instantiating v = e_{j0} (a
      KroneckerDelta direction, used only here) gives (U^T p)_{j0} = lambda for every index j0,
      hence all components of U^T p are equal.
+  4. Full simplex KKT (E-2).  The Lagrangian carries a multiplier lambda for sum_j w_j = 1 and
+     mu_j >= 0 for w_j >= 0.  Stationarity along e_{j0} gives mu_{j0} = G_{j0} - lambda for every
+     j0, so G_j >= lambda (mu_j >= 0).  Complementary slackness w_j mu_j = 0 is
+     w_j (G_j - lambda) = 0.  Summing over j with sum_j w_j = 1 (A2) gives lambda = w.G, and for
+     a coordinate with w_j > 0 it forces mu_j = 0, i.e. G_j = lambda: the equal-gradient
+     condition of step 3 is the w_j > 0 case.  All at symbolic d.
+  5. Constructed instance (exact arithmetic, d = 2): rows (2,0) once and (0,2) ten times.  At
+     tau = infinity the geometry is balanced (the minimax weights (1/2, 1/2) and the LP dual
+     p = (1/2, 1/2) have equal primal and dual value 1 and U^T p = (1, 1)); at tau = 1 the
+     minimizer of J_tau on the simplex is w = (1, 0), where G_2 - lambda > 0.  Balanced
+     hard-support geometry does not imply an interior finite-tau minimizer: J_tau depends on the
+     multiplicity of the observations, the hard maximum only on their extreme support.
 
 Route: directional derivatives d/dt J(w + t v) at t = 0 along a symbolic IndexedBase v (scope
 default), not componentwise partials with KroneckerDelta bookkeeping; the single coordinate
@@ -20,18 +32,19 @@ direction is used only in step 3.
 Hypotheses and honesty about what is used (interpretive conditions, not defects):
   * A3 (tau > 0) keeps the 1/tau prefactor and the softmax well defined.
   * A2 supplies the simplex constraint sum_j w_j = 1 whose derivative is sum_j v_j.
-  * R1 supplies the premise of step 3: the minimizer is a relative-interior point of the
-    frontier facet, so w_j > 0 for all j and no nonnegativity constraint is active (its
-    multipliers vanish by complementary slackness); the stationarity equation of the
-    Lagrangian is then the first-order necessary condition for a smooth function with one
-    linear equality constraint (standard calculus, not re-proved here).  The derivation
-    takes stationarity as the hypothesis "w* is such a point"; it does not prove that the
-    minimizer is interior.
+  * R1 supplies the premise of step 3: the minimizer has w_j > 0 for all j, so no
+    nonnegativity constraint is active (its multipliers vanish by complementary slackness); the
+    stationarity equation of the Lagrangian is then the first-order necessary condition for a
+    smooth function with one linear equality constraint (standard calculus, not re-proved
+    here).  The derivation takes stationarity as the hypothesis "w* is such a point"; it does
+    not prove that the minimizer is interior.  Step 4 holds without R1.
   * Real-valuedness of w, v, u is not asserted on the IndexedBases (A1: u = log m is real).
     No fallback was needed: every step is proved abstractly.
 
 What this does NOT prove: existence or uniqueness of the minimizer, that the minimizer is
-interior (that is R1), second-order conditions (L4), or anything about the sign of lambda.
+interior (that is R1, and step 5 shows it does not follow from hard-support geometry),
+second-order conditions (L4), or anything about the sign of lambda.  The KKT conditions are
+necessary at a minimizer (standard calculus); sufficiency at a convex J_tau is L12.
 
 Mimicked from symproof: library/convex.py ``convex_scalar``/``convex_hessian`` (differentiate
 symbolically, simplify, then certify) for the derivative step; tactics.py ``signed_sum_lemmas``
@@ -40,12 +53,18 @@ is used in L4, not here.
 
 import sympy as sp
 
-TITLE = "gradient of the soft-maximum objective and the balanced KKT condition"
+from derivation.sumtools import linear
+
+TITLE = "gradient of the soft-maximum objective and the full simplex KKT conditions"
 STATEMENT = (
     "d/dt J_tau(w + t v)|_0 = sum_i p_i (v . u_i) = sum_j v_j (sum_i p_i u_ij), "
     "p = softmax(tau U w), "
-    "so grad J_tau = sum_i p_i u_i; at an interior minimizer on the simplex (U^T p)_j = lambda "
-    "for all j (components equal)"
+    "so grad J_tau = g = U^T p. At a minimizer w of J_tau on the simplex, with lambda = w.g: "
+    "g_j >= lambda for all j and w_j (g_j - lambda) = 0 (complementary slackness); the "
+    "equal-gradient condition (U^T p)_j = lambda is the case w_j > 0, so all components are "
+    "equal at an interior minimizer. Balanced hard-support geometry (tau = infinity) does not "
+    "imply an interior finite-tau minimizer: a constructed instance has a balanced hard "
+    "optimum and a finite-tau minimizer on the boundary with g_j > lambda at the inactive j"
 )
 AXIOMS_USED = ["A2", "A3", "R1"]
 
@@ -197,9 +216,55 @@ def derive(ctx):
     # constraint derivative: d/dt sum_j (w_j + t v_j) at 0
     dsimplex = sp.diff(sp.Sum(w[j] + t * v[j], (j, 1, d)), t).subs(t, 0)
 
+    # --- step 4: full simplex KKT.  gr: any gradient family; mu_j >= 0 multiplies w_j >= 0 (A2).
+    gr = sp.IndexedBase("gr")
+    mu = sp.IndexedBase("mu", nonnegative=True)
+    delta = sp.KroneckerDelta(j, J0)
+    # stationarity of J - lambda (sum_j w_j - 1) - sum_j mu_j w_j along e_{j0}
+    stat_full = sp.Sum(delta * (gr[j] - LAM - mu[j]), (j, 1, d)).doit()
+    # complementary slackness per term, w_j mu_j = w_j (gr_j - lambda) = 0, summed with A2
+    zero_sum = sp.Sum(w[j] * (gr[j] - LAM), (j, 1, d))
+    reduced = linear(zero_sum).subs(sp.Sum(w[j], (j, 1, d)), 1)
+    lam_solved = sp.solve(sp.Eq(reduced, 0), LAM)
+    # a coordinate with w_j > 0 and its multiplier
+    wp = sp.Symbol("wp", positive=True)
+    mup = sp.Symbol("mup", nonnegative=True)
+    lam_abs = sp.Sum(w[j] * gr[j], (j, 1, d))
+
+    # --- step 5: constructed instance, exact: rows (2,0) once and (0,2) ten times, tau = 1
+    R = sp.Rational
+    s_ = sp.Symbol("s", real=True)  # w = (s, 1 - s)
+    J_s = sp.log((sp.exp(2 * s_) + 10 * sp.exp(2 * (1 - s_))) / 11)
+    U_h = sp.Matrix([[2, 0], [0, 2]])
+    half = sp.Matrix([R(1, 2), R(1, 2)])
+    z = sp.exp(2) + 10  # normalizer at w = (1, 0): scores 2 (once) and 0 (ten times)
+    g_b = sp.Matrix([2 * sp.exp(2) / z, 20 / z])  # g = sum_i p_i u_i at w = (1, 0)
+    boundary_example = dict(
+        s=s_,
+        J_s=J_s,
+        dJ_at_1=sp.diff(J_s, s_).subs(s_, 1),
+        d2J=sp.simplify(sp.diff(J_s, s_, 2)),
+        hard_primal=max(*(U_h * half)),
+        hard_dual=min(*(U_h.T * half)),
+        balanced=U_h.T * half,
+        w_star=(1, 0),
+        g=g_b,
+        lam=g_b[0],  # lambda = w.g at w = (1, 0)
+        g_inactive_minus_lambda=g_b[1] - g_b[0],
+    )
+    KKT_boundary = dict(
+        mu=mu,
+        gr=gr,
+        stat_full=stat_full,
+        lambda_abstract=lam_abs,
+        lambda_solved=lam_solved,
+        mu_of_positive_w=mup,
+        positive_case_solution=sp.solve(sp.Eq(wp * mup, 0), mup),
+    )
+
     ctx["L3"] = dict(
         a0=a0, sv=sv, p_def=p_def, Z0=Z0, dJ=dJ, lhs_abs=lhs_abs, rhs_abs=rhs_abs,
-        dsimplex=dsimplex,
+        dsimplex=dsimplex, boundary_example=boundary_example, KKT_boundary=KKT_boundary,
     )  # fmt: skip
 
 
@@ -248,3 +313,40 @@ def verify(ctx):
     gap = (G(J0) - LAM) - (G(K0) - LAM)
     assert sp.simplify(gap - (G(J0) - G(K0))) == 0, "L3 FAIL: components of U^T p not equal"
     ctx["L3"]["KKT"] = sp.Eq(G(J0), LAM)
+
+    # 4. full simplex KKT: mu_{j0} = G_{j0} - lambda >= 0, w_j (G_j - lambda) = 0, lambda = w.G
+    kb = c["KKT_boundary"]
+    mu = kb["mu"]
+    val_full = piece_in_range(kb["stat_full"], S)
+    assert sp.simplify(val_full - (kb["gr"][J0] - LAM - mu[J0])) == 0, (
+        "L3 FAIL: stationarity of the full Lagrangian along e_{j0}"
+    )
+    assert mu[J0].is_nonnegative is True, "L3 FAIL: mu_j >= 0 not carried (g_j >= lambda)"
+    assert kb["lambda_solved"] == [kb["lambda_abstract"]], (
+        "L3 FAIL: complementary slackness with sum_j w_j = 1 does not give lambda = w.g"
+    )
+    assert kb["positive_case_solution"] == [0], (
+        "L3 FAIL: w_j > 0 and w_j mu_j = 0 do not force mu_j = 0"
+    )
+    # the abstract lambda = w.g instantiates at the softmax gradient G = U^T p
+    assert replace_indexed(kb["lambda_abstract"], kb["gr"], G) == sp.Sum(
+        S.w[j] * G(j), (j, 1, d)
+    ), "L3 FAIL: lambda = w.G at the softmax gradient"
+
+    # 5. balanced hard support, boundary finite-tau minimizer (exact arithmetic).
+    ex = c["boundary_example"]
+    # hard support: equal primal (w = (1/2, 1/2)) and dual (p = (1/2, 1/2)) values, balanced U^T p
+    assert ex["hard_primal"] == ex["hard_dual"] == 1, "L3 FAIL: hard-support instance not optimal"
+    assert ex["balanced"][0] == ex["balanced"][1], "L3 FAIL: hard-support instance not balanced"
+    # finite tau: J(s) is convex (J'' > 0) and decreasing at s = 1, so the minimizer is s = 1
+    assert ex["d2J"].is_positive is True, "L3 FAIL: instance J_tau not convex in s"
+    assert bool(ex["dJ_at_1"].evalf() < 0), "L3 FAIL: J_tau not decreasing toward w = (1, 0)"
+    assert ex["w_star"] == (1, 0)
+    # at w = (1, 0): lambda = w.g and the inactive coordinate has g_2 > lambda, w_2 = 0
+    assert sp.simplify(ex["lam"] - ex["g"][0]) == 0
+    assert sp.simplify(ex["g_inactive_minus_lambda"] + ex["dJ_at_1"]) == 0, (
+        "L3 FAIL: g_2 - lambda is not minus the boundary slope"
+    )
+    assert bool(ex["g_inactive_minus_lambda"].evalf() > 0), (
+        "L3 FAIL: boundary instance has g_2 <= lambda"
+    )

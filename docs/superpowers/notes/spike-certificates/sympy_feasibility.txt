@@ -1,0 +1,19 @@
+== Lemma 1 (gap): max over the simplex of a linear functional, with a min-representation hypothesis (F-style, like F5/F10): g_j >= m for all j, g_{j0} = m
+  g.v - m == sum_j v_j (g_j - m): True
+  sum_j v_j (g_j - m) is nonnegative: True
+  g . e_{j0} = g[j0] (in range) -> equals g_{j0} = m: attained
+  G = sum_j w_j (g_j - m) >= 0, and = 0 iff every term w_j (g_j - m) = 0 (sum of nonneg): True
+  chain f_w - f* <= g.(w - v*) <= G: checked by solveset on the difference: False
+
+== Lemma 2 (margin): algebra with symbol assumptions (L11 style)
+  (s1+e1)-(s2+e2) - [(s1-s2) - 2 delta] = (e1 + delta) + (delta - e2), each >= 0 by |e| <= delta: True
+  gamma - 2 delta > 0 and rest >= 0 => lower bound positive: True
+  Cauchy-Schwarz |Delta theta . (u_i, -1)| <= ||Delta theta|| ||(u_i,-1)||: INHERITED (no symbolic-d proof in SymPy); the explicit radius follows by substitution delta = r * max_i ||(u_i,-1)||
+
+== Proposition 3: per-facet regrouping identity (symbolic facet size n_k)
+  sum_{i in C_k} (beta_k - w.u_i) - n_k (beta_k - w.ubar_k) simplifies to: Sum(w[j]*Sum(u[i, j], (i, 1, n_k)), (j, 1, d)) - Sum(u[i, j]*w[j], (j, 1, d), (i, 1, n_k))
+  double-sum terms (lhs, rhs): 1 1
+  equal after Fubini swap (L3's sum_swap_equal): True
+  the regrouping of the N-row sum over the K cells (sum_i = sum_k sum_{i in C_k}) has no symbolic-partition representation in SymPy: state it as the per-facet identity above plus a one-line finite-sum argument; local minimality is then a nonneg-weights-times-nonneg-differences sum (is_nonnegative), as L11 step 4
+  F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k)) is nonnegative: True
+  Corollary 4: F - F* = sum_k share_k (f_k - f_k*) <= sum_k share_k G_k, termwise by Lemma 1 (sum of nonneg share_k (G_k - (f_k - f_k*))): True

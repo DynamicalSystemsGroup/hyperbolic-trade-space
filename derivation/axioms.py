@@ -2,7 +2,7 @@
 
 Tags:
   POSITED     - a modelling choice we declare (A0-A6).
-  INHERITED   - an external theorem we USE and CITE but do not prove here (I1-I6).
+  INHERITED   - an external theorem we USE and CITE but do not prove here (I1-I9).
   REGULARITY  - a condition the interpretation rests on (R1). Hypotheses are interpretive
                 conditions, not defects: each states what it buys (``role``) and what the
                 interpretation loses when it fails (``failure_mode``).
@@ -157,19 +157,62 @@ AXIOMS = {
         failure_mode="a poor local optimum: the limit depends on the initial partition, "
         "mitigated by restarts; a global optimum is not claimed",
     ),
+    "I8": Axiom(
+        "I8",
+        INHERITED,
+        "first-order convexity inequality: a differentiable convex f satisfies "
+        "f(v) >= f(w) + grad f(w).(v - w) for all feasible v, w",
+        citation="Boyd & Vandenberghe, Convex Optimization, section 3.1.3",
+        role="turns the simplex first-order gap into an objective-error bound: "
+        "0 <= f(w) - f* <= G, so a reported gap certifies how far a facet refit is from optimal",
+        failure_mode="for a nonconvex objective (the penalized refit, a tangent refit) the "
+        "inequality fails and a small gap certifies only first-order stationarity",
+    ),
+    "I9": Axiom(
+        "I9",
+        INHERITED,
+        "Cauchy-Schwarz inequality: for real vectors a and b, |a.b| <= ||a||_2 ||b||_2",
+        citation="Horn & Johnson, Matrix Analysis, the Cauchy-Schwarz inequality",
+        role="bounds the change of a facet score by the norm of the parameter change times the "
+        "norm of the augmented design vector, which gives the explicit assignment-stable radius "
+        "gamma / (2 max_i ||(u_i, -1)||_2)",
+        failure_mode="none for real vectors in a Euclidean space; the radius is sufficient, not "
+        "tight, because the inequality is attained only when the change is parallel to the "
+        "design vector",
+    ),
     # ------------------------------------------------------------- REGULARITY
     "R1": Axiom(
         "R1",
         REGULARITY,
         "the balanced point lies in the relative interior of a facet of the frontier with "
-        "positive normal",
+        "positive normal; this is a statement about the hard-support (tau = infinity) geometry "
+        "and does not imply that the finite-tau minimizer of J_tau is interior",
         role="makes the KKT balanced point a genuine interior frontier point, so the "
         "gradient condition identifies w* as the facet normal and the improvement factors "
-        "and elasticities can be read as trade-offs along the frontier",
+        "and elasticities can be read as trade-offs along the frontier; where the fitted "
+        "minimizer has w_j > 0 the equal-gradient condition holds on those coordinates",
         failure_mode="at a vertex, an edge or a facet with a zero normal component the "
         "gradient condition holds only as a subgradient inclusion: w* is not unique, some "
         "elasticities are undefined, and the frontier reading degrades to the weaker "
-        "invariant-form reading",
+        "invariant-form reading; at finite tau the multiplicity of the observations can put "
+        "the minimizer on the simplex boundary even when the hard-support geometry is balanced, "
+        "and then only the full simplex KKT (g_j >= lambda, w_j (g_j - lambda) = 0) holds, with "
+        "equal gradients on the positive-weight coordinates only",
+    ),
+    "R2": Axiom(
+        "R2",
+        REGULARITY,
+        "positive assignment margin: gamma = min_i [s_i,k(i) - max_{k != k(i)} s_ik] > 0, where "
+        "s_ik = w_k.u_i - beta_k, so every row has a unique maximizing facet",
+        role="gives unique maximizing facets and an assignment-stable neighborhood (radius "
+        "gamma / (2 max_i ||(u_i, -1)||_2)) on which the multi-facet objective equals its "
+        "fixed-assignment expression, so Proposition 3 applies: a fit whose facets are exactly "
+        "optimal is a local minimizer, and with gap-bounded facets Corollary 4 bounds the "
+        "remaining improvement",
+        failure_mode="ridge rows: a frontier row on two facet planes has margin zero at tau = "
+        "infinity, and duplicate facets give identical scores; the neighborhood is then empty, "
+        "Proposition 3 does not apply, and termination reports stationary_without_margin: the "
+        "fit is first-order stationary per facet (levels 1 and 2) with no local-optimality claim",
     ),
     # -------------------------------------------------- FALLBACK HYPOTHESES (L5, L10)
     "F5": Axiom(
@@ -195,6 +238,20 @@ AXIOMS = {
         "reads as a soft maximum of K affine log-scores",
         failure_mode="as F5: if M is not attained by some term the lower bound Phi_K >= M "
         "is lost and only the upper bound M + (log K)/kappa on the limit is available",
+        fallback=True,
+    ),
+    "F12": Axiom(
+        "F12",
+        POSITED,
+        "min representation for L12 and L13: the minimum m of a finite family x_j (the gradient "
+        "components g_j in L12, the row gaps in L13) is a symbol with x_j >= m for all j and "
+        "x_{j0} = m for some j0",
+        role="lets the simplex gap G = g.w - min_j g_j and the bound min_{v in simplex} g.v = m be "
+        "proved for symbolic d (sympy has no symbolic-d min): g.v - m = sum_j v_j (g_j - m) >= 0, "
+        "attained at the vertex e_{j0}",
+        failure_mode="as F5: if m is only a lower bound that is not attained, g.v >= m holds but "
+        "the minimum over the simplex may exceed m, and G = g.w - m is then an upper bound on "
+        "the first-order gap rather than its value",
         fallback=True,
     ),
 }

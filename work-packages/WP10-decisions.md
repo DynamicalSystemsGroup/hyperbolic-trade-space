@@ -318,6 +318,21 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   repository was rewritten to the current state; the intents (the story, the drill-down levels, the
   reader model, the notation, the breakdown) stand as recorded in this file and the notes.
 
+## The abstraction the method keeps (2026-11-08)
+
+- **Supervisor (mzargham), verbatim** (on the fast-moving SysML tooling): "those repos and the
+  supporting tools for that ecosystem are developing quickly. we're keeping an abstraction of
+  config variables and measured attributes so our method is relevant even as tools move, or in
+  cases where scoring comes from physical systems or human assessments"
+- Disposition: a framing requirement of the paper and a design rule for the packages. The method's
+  input is a table of configurations and measured attributes; the evaluation that produces the
+  attributes is a black box to the method, whether a simulator behind a SysML model, a physical
+  test, or a human assessment. The cubesat model is one instance behind that abstraction, not part
+  of the method. The paper says so in Preliminaries (the pipeline's stage 1) and in the discussion
+  of cross-application; the register's entries for $c$ and $a$ carry it; WP14's interface contract
+  pins the configuration → attributes boundary as the stable surface, independent of tooling; WP15
+  treats tooling versions as its own concern, never the method's.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and

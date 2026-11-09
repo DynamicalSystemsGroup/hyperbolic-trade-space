@@ -57,11 +57,239 @@ and the L10 docstring are wrong, as the reviewer says.
   page, the L10 docstring and the API page now state the bound as the script proves it (commit to be
   named)."
 
-Pending: all other items.
+- **E-1 (certificates, assignment-stable neighbourhood, conditional local optimality, three-level
+  language).** Driver's options: accept in full in WP13 / accept the statements and defer the code /
+  decline part. **Supervisor (mzargham), verbatim:** "accept the statements. do a spike to determine
+  implementation level of effort. i prefer to accept in full but i need to make sure this is
+  feasible. we can assess after the spike if anything needs to get deferred". Disposition class:
+  accepted (the statements); the implementation scope is decided after a research spike on the
+  level of effort (certificates and termination reporting in the solver; the lemma, proposition and
+  corollary as derivation entries; docs restructured to the three levels). Response text: after the
+  spike.
+
+- **E-2 (finite-temperature regularity; full simplex KKT).** Driver's options: extend L3 and the
+  method page / docs only / decline. **Supervisor (mzargham), verbatim:** "Accept: extend L3 and the
+  method page". Disposition class: accepted, in WP13: L3 gains the boundary KKT statement
+  ($g_j\ge\lambda$, $w_j(g_j-\lambda)=0$, $\lambda=w^\top g$), derived in SymPy where it can be and
+  verified numerically where it must; the method page states the full conditions, reserves the
+  equal-gradient reading for positive-weight coordinates, and records the reviewer's lesson that
+  balanced hard-support geometry does not imply an interior finite-$\tau$ optimizer; condition R1's
+  wording tightened accordingly. Response text: after the change, naming the commit and the lemma.
+
+- **E-3 (fitted reference surface / empirical envelope / Pareto boundary).** Driver's options: three
+  named objects used consistently / a lighter touch / decline. **Supervisor (mzargham), verbatim:**
+  "enforce the sharp distinction in the sympy work but leave us some room to maneuver in the prose.
+  we don't want constant caveats to break flow. its okay to know which we mean from context as long
+  as the underlying math is tight". Disposition class: accepted with a change: the three objects are
+  defined once (notation note, method page, the paper's definitions) and the derivation scripts and
+  their statements name the object they are about precisely (the finite-$\tau$ reference surface
+  $\Phi=0$ with $V>1$ possible; the $\tau=\infty$ supporting envelope; the Pareto boundary of the
+  attainable set, which L11 relates to maximizers and nothing identifies with the fit); the prose
+  may say "frontier" where the context makes the object clear, without repeated caveats. Response
+  text: the distinction is enforced in the executable derivations and defined once in the text;
+  the prose uses "frontier" where unambiguous. In WP13 (docs, derivations) and WP10 (paper).
+
+- **E-5 (existence, uniqueness, stability; tolerances).** Driver's options: docs, tolerances and a
+  sensitivity diagnostic / docs and tolerances only / decline. **Supervisor (mzargham), verbatim:**
+  "Accept: docs, tolerances, and a sensitivity diagnostic". Disposition class: accepted, in WP13: a
+  method-page section separating existence (compact simplex, continuity), uniqueness (strict
+  convexity on the simplex tangent space) and stability (the restricted Hessian and local
+  sensitivity); the participation threshold and the contending-set rule stated with their
+  tolerances wherever used, numerically zero distinguished from mathematically zero; the estimator
+  exposes a conditioning diagnostic (the smallest eigenvalue of the restricted Hessian at the fit,
+  or an equivalent) so sensitivity is reportable. Response text: after the change.
+
+- **E-6 (statistical claims at their demonstrated level).** Driver's options: restate L6's scope,
+  add the assumptions, drop any consistency claim / keep a conditional consistency remark /
+  decline. **Supervisor (mzargham), verbatim:** "Accept: restate L6's scope, add the assumptions,
+  drop any consistency claim". Disposition class: accepted, in WP13: L6's statement and the noise
+  section say "population identity under the log-space Gaussian model"; every sentence that reads as
+  finite-sample unbiasedness or consistency is removed or conditioned on named ledger assumptions
+  (independence, integrability, identifiability); the reading that a fitted normal is a feature of
+  the conditioned empirical model and not a causal exchange goes into the interpretation section.
+  Response text: after the change.
+
+- **E-7 (four implementation and terminology items), first pass.** Driver's options: accept all four
+  / accept (iii) and (iv) now and (i), (ii) later / decline part. **Supervisor (mzargham), verbatim:**
+  "can we look at them a little closer. let's make sure we distinguish claims about the formal
+  abstractions and the implementations. we know these are different things as the reviewers noted.
+  i don't want to muddle up the text with lots of caveats if we can just clarify that the
+  theoretical objects formal properties are conditioned on assumptions we cannot know hold in
+  practice and thus we interpret results in light of them. this a common map territory gap for
+  numerical methods. we should maintain a record of these gaps but also not trip over ourselves
+  relitigating them. focus on the core research materials documenting the abstraction gaps and
+  assumptions that we cannot strictly prove hold but we can explore how sensitive they are in
+  practice. ideally we're insensitive enough to get practical results without throwing the baby out
+  the baby the bath water. look at these four and also have a look at the other feedback through
+  this lens so we take a consistent position. all models are wrong some are useful, useful to a
+  specific purpose in a specific situation and we're focused on improving trade studies"
+- Disposition: open; the driver examines the four items in the code and docs, classifies each
+  (formal claim / implementation convention / wording), re-reads E-1 to E-10 through the same lens,
+  and proposes one consistent position (a standing record of abstraction gaps with their bridging
+  assumptions and sensitivity evidence; derivations sharp; prose stating the policy once) before
+  the next question.
+
+- **E-1, spike delivered** (`docs/superpowers/notes/spike-certificates/README.md`, scripts and tables
+  beside it). Verdict: feasible in full as one package, 16 to 22 implementer hours, about 930 to
+  1220 net lines (code 200–260, tests 150–200, three lemma scripts and ledger 350–450, docs
+  230–310). The mathematics matches the solver as built exactly (step B is the argmin of
+  $f_k$; the mean slack is the fixed-assignment sum; the gap $G_k$ is the residual of E-2's full
+  simplex KKT). Two findings beyond the reviewer's ask: SLSQP's stop leaves $G_k\sim10^{-5}$ at
+  finite $\tau$, so a five-step Newton polish on the active set (25 lines) is needed for a tight
+  certificate; and the monotone guard fired on round-off in 9 of 100 $\tau=\infty$ restarts (8 of
+  them two identical facets), which a tolerance and the reported margin expose. At $\tau=\infty$ the
+  margin is exactly zero on the three recovery-failure seeds (a row on two facet planes), so the
+  proposition's hypothesis fails there by structure. Deferrable without weakening the response: the
+  SymPy scripts for Lemma 2's radius and Proposition 3's regrouping (state, verify numerically),
+  asserting the Corollary bound in tests, the floored-gap formula, a tolerance parameter. Not
+  deferrable: the three-level language and stopping declaration, $G_k$ computed and reported, the
+  margin and radius, the termination status, the four statements as ledger entries, the guard
+  tolerance. Implementation scope: put to the supervisor.
+
+- **E-7, second pass, and the standing position.** The driver classified the four items (the
+  single-observation shortcut: a convention at an input outside the map, kept, declared, warned;
+  the zero-metric scoring: a mismatch with the formal limit, aligned in code, masking in the fit
+  kept; "distance": terminology; the sliver claim: an observed claim written in the formal register,
+  moved to "observed") and proposed one position for the whole review: formal statements made exact
+  in derivations and ledger; one abstraction-gaps ledger (formal object, implementation, bridging
+  assumption, what cannot be proved, sensitivity evidence, interpretive consequence); terminology
+  defined once; the policy stated once in the prose. On "distance" the supervisor asked, verbatim:
+  "this is still an energy differential in a formal sense right?" Answer recorded: yes, $\log V$ is
+  the potential $\Phi(u)=w\cdot u-\beta$ relative to the frontier level, a path-independent
+  difference, equal by L1 and L2 to the uniform log-scaling step that carries the design to the
+  frontier, and equal to the Euclidean distance to the hyperplane only up to $\|w\|_2$; the words are
+  "energy differential" or "level offset", not Euclidean distance. **Supervisor (mzargham),
+  verbatim:** "okay so we can avoid a headache by building a separate supporting table for
+  mathematical expressions and their meaning in the context of our paper. this can be a supporting
+  table. we can resolve wordsmithing for math concepts in the register so we don't end up with
+  destructive resonance or limit cycles in prose."
+- **Disposition (position adopted, with the register as its mechanism):** `docs/superpowers/notes/notation.md`
+  becomes the register: for each mathematical expression, the formal object, the one phrase the
+  prose uses for it, what it is not, and where it is defined or proved; it is published as the
+  paper's supporting table (Appendix A). Terminology items (E-3's three objects, E-7's "distance")
+  are resolved there and nowhere else; the prose uses the register's phrase. E-7 (i), (ii), (iv) as
+  classified above, in WP13. Response text: after the changes, citing the register and the
+  abstraction-gaps ledger.
+
+- **E-1, implementation scope.** Driver's options: accept in full / accept the must-haves and defer
+  the deferrable. **Supervisor (mzargham), verbatim:** "Accept in full". Disposition class: accepted
+  in full, in WP13: per-facet gap $G_k$ (LP duality gap at $\tau=\infty$; a reduced-Newton polish at
+  finite $\tau$ so the certificate is tight), the termination record (status certified / stationary
+  without margin / guard stop / iteration cap, with feasibility residuals, max gap, objective change,
+  assignment changes, empty facets, tolerances), the assignment margin and explicit radius, the
+  guard tolerance, the four statements (Lemma 1 facet gap, Lemma 2 margin and radius, Proposition 3
+  assignment-stable local optimality, Corollary 4 approximate certificate) as SymPy lemma scripts
+  L12 to L14 with ledger entries (I8 first-order convexity inequality, I9 Cauchy–Schwarz, F12 min
+  representation, a positive-margin regularity condition with role and failure mode), the method
+  page restructured to the three levels with the stopping declaration, and the statement that
+  level 3 is for step B, unpenalized, with support offsets only. Response text: after the change,
+  citing commits, lemmas and the measured certificates on the planted data and the cubesat tables.
+
+- **E-8, E-9, E-10 (bundle).** **Supervisor (mzargham), verbatim:** "Accept the bundle". Disposition
+  class: accepted: E-8 adopted as the structure of the algorithm part of the Results (Lemma 1,
+  Lemma 2, Proposition 3, Corollary 4, the stopping declaration); E-9 noted for WP10's framing of the
+  contribution; E-10's paper map reconciled with outline v2 in WP10's scope, its Derived / Numerical
+  / Open badges adopted as the paper's marking, and Q1 to Q4 entered in the abstraction-gaps ledger
+  with Q1 (global convergence) marked as not pursued, as the reviewer allows.
+
+Triage complete (2026-11-08): E-1 accepted in full; E-2 accepted (extend L3 and the method page);
+E-3 accepted with a change (sharp in the derivations, the register for the words, room in the
+prose); E-4 accepted and done (a15566b); E-5 accepted (docs, tolerances, a sensitivity diagnostic);
+E-6 accepted (L6 scope, assumptions, no consistency claim); E-7 accepted as classified (declared
+convention with a warning; zero-metric scoring aligned with the formal limit; "distance" settled in
+the register as the energy differential; the sliver claim moved to "observed"); E-8 to E-10
+accepted. Nothing declined. The changes are WP13's scope; the response letter is assembled when
+WP13 is accepted.
 
 ## Response letter
 
-To be assembled from the dispositions.
+Reply to the reviewer, one numbered response per item in the review's order. Commits are on branch
+`dev` (WP13); lemma ids are in `derivation/`; the register is `docs/superpowers/notes/notation.md`; the
+gaps ledger is `docs/superpowers/notes/abstraction-gaps.md`. Measurements are on the planted data
+`make_frontier_data(400, 4, n_terms=3, random_state=s)`, s = 0..19, `solve_terms(U, 3, tau, random_state=0)`.
+
+**E-1 (3.1, certificates, assignment-stable neighbourhood, conditional local optimality). Accepted in full.**
+You asked for a first-order gap per facet, an assignment margin with an explicit radius, a conditional
+local-optimality proposition, an approximate certificate, and a three-level statement. Changed:
+`solvers.py` gains `simplex_gap`, `facet_gap`, `assignment_margin` and `fixed_assignment_bound`, a
+finite-temperature reduced-Newton polish at the end of each facet refit, per-facet duals kept (at tau = inf
+the gap is the LP duality gap), a guard tolerance of 1e-12, and a `Termination` record on `TermsResult`
+(status certified / stationary_without_margin / uncertified / guard_stop / iteration_cap / not_applicable;
+iterations; feasibility and offset residuals; maximum gap; Corollary bound; objective change; assignment
+changes; empty facets; margin; radius; tolerances EPS_KKT = 1e-8, EPS_FEAS = 1e-9) (03c8b1a); the
+estimator exposes `termination_` and a status-keyed `ConvergenceWarning` (1e9ae03). The four statements are SymPy lemma scripts: Lemma 1 = L12 (a9f142f), Lemma 2 = L13 with the
+explicit radius gamma / (2 max_i ||(u_i, -1)||) (c0b4e9c), Proposition 3 and Corollary 4 = L14 (d8fa513);
+the ledger gains I8 (first-order convexity inequality), I9 (Cauchy-Schwarz), F12 (min representation) and
+R2 (positive assignment margin) with role and failure mode. The method page states the three levels and the
+stopping declaration (4bfe591, "Three levels of guarantee" to "The stopping declaration"); Level 3 is stated
+for step B, unpenalized, with support offsets only, as you advised. Evidence: after the polish the maximum
+facet gap is 5e-15 at tau = 50 and 2e-15 at tau = inf over the 20 seeds; 20/20 fits are certified at
+tau = 50, and 16/20 at tau = inf, the other four (seeds 1, 3, 8, 16) stopping with a zero margin because a
+frontier row lies on two facet planes (status stationary_without_margin); 3,600 random perturbations within
+the radius left every assignment unchanged; the Corollary bound holds on all 40 fits against independent
+per-facet solves (`tests/test_solvers.py`, `tests/test_estimator.py`). Cubesat K = 2, 3: all certified,
+maximum gap 1.1e-14, margin 2.2e-4 to 1.6e-3 (`docs/superpowers/notes/k3-cubesat.md`, "Changes from WP13").
+Two implementation choices go beyond your list: a sixth status "uncertified" (fixed assignment, gap above its
+tolerance), and margin positivity read as gamma > EPS_FEAS. The guard tolerance moved one planted seed
+(seed 8, tau = inf) from certified to stationary_without_margin; the recovery table in the method page is
+re-run.
+
+**E-2 (3.2, finite-temperature regularity and the simplex KKT). Accepted.** You asked for the complete
+simplex KKT conditions with the equal-gradient reading reserved for positive weights. Changed: L3 states
+g_j >= lambda, w_j (g_j - lambda) = 0, lambda = w.g, derives the algebra at symbolic d and verifies a
+constructed instance whose hard-support optimum is balanced while the finite-tau minimizer is on the
+boundary with g_j > lambda (c61ff49); R1's wording is tightened; the method page "The fit" states the full
+conditions and the lesson (4bfe591).
+
+**E-3 (3.3, fitted surface, empirical envelope, Pareto boundary). Accepted with a change.** You asked that
+the three objects be kept apart. Changed: the lemma STATEMENTs name the object they are about (L12 to L14), the register defines "fitted reference surface", "supporting envelope" and "Pareto boundary" once with
+what each is not (b5467f0), and the method page defines the three objects in one paragraph (4bfe591); the
+prose uses "frontier" where the context fixes the object. The gaps ledger row G-1 records the bridging
+assumption and the evidence.
+
+**E-4 (3.4, multi-term bounds). Accepted and done earlier.** The text stated the log-mean-exp bound for the
+log-sum-exp construction. Changed in a15566b: the method page, the L10 docstring and the API page state
+max_k x_k <= Phi_K <= max_k x_k + (log K)/kappa, as the script proves.
+
+**E-5 (3.5, existence, uniqueness, stability, tolerances). Accepted.** You asked for the three notions to
+be separated, the restricted Hessian discussed, tolerances given and numerically zero distinguished from
+mathematically zero. Changed: the method page has existence (compact simplex, continuity), uniqueness
+(strict convexity on the simplex tangent space) and stability (restricted Hessian, local sensitivity) as
+separate statements, with the participation threshold (1e-3) and the contending-set rule given with their
+tolerances (4bfe591); the estimator exposes `conditioning_`, the smallest eigenvalue of the restricted
+Hessian of J_tau at the fit per facet (nan at tau = inf, where the objective is not twice differentiable)
+(1e9ae03); ledger row G-2 records the sensitivity evidence.
+
+**E-6 (3.6, statistical claims). Accepted.** You asked that L6 be stated as the population identity it is.
+Changed: L6's statement reads "population identity under the log-space Gaussian model" with A5 named and
+"no consistency claim" (c61ff49); the noise section of the method page drops every sentence that read as
+finite-sample unbiasedness or consistency, and says a fitted normal is a feature of the conditioned
+empirical model and not a causal exchange (4bfe591); ledger rows G-3, G-11 and G-12 carry the assumptions
+a consistency statement would need. A test greps the docs for the forbidden phrases (`tests/test_docs.py`).
+
+**E-7 (3.7, implementation and terminology). Accepted as classified.** (i) The single-observation shortcut
+keeps its behaviour as a declared convention: a `UserWarning` at fit and a docstring statement that the
+fitted object does not exist for that input (1e9ae03; ledger G-4). (ii) Zero-metric scoring now follows the
+formal limit: a zero metric with exponent <= 1e-12 contributes nothing (0 log 0 := 0), a zero metric on a
+participating exponent keeps V = 0, and masking in the fit is unchanged (1e9ae03; test on a planted-zero
+exponent; G-5). (iii) log V is the "energy differential" (level offset), not a Euclidean distance; the
+register settles the word and the docs use it (b5467f0, 4bfe591, c3cbec4). (iv) The sliver argument is
+moved to "observed" in "What is proved, inherited, observed" (4bfe591; G-6).
+
+**E-8 (4, presentation). Accepted.** You asked that the optimization discussion be consolidated into Lemma 1, Lemma 2, Proposition 3, Corollary 4 and a stopping declaration. The algorithm part is organized as Lemma 1, Lemma 2, Proposition 3,
+Corollary 4 and the stopping declaration, in L12 to L14 and in the method page (4bfe591), with certified
+convergence reported separately from iteration-cap and guard stops; WP10 carries the structure into the
+Results section.
+
+**E-9 (2.1 to 2.5, strengths). Noted.** The monomial invariant, the convex single-term fit, the invertible
+chart, the posynomial extension and the reproducibility are the contribution the paper will frame; this is
+carried in the paper's scope (WP10).
+
+**E-10 (Paper Map). Accepted.** You proposed a structure of assumptions, core, extensions, algorithm and open questions Q1 to Q4 with Derived / Numerical / Open badges. The map's open questions are entered in the gaps ledger: Q2 statistical
+consistency (G-11), Q3 identifiability of active metrics under finite, biased observations (G-12), Q4
+frontier recovery, fitted versus true Pareto boundary (G-13), and Q1 global convergence, marked not pursued
+(G-14), as you allow. The Derived / Numerical / Open badges are adopted as the paper's marking, and the map is
+reconciled with outline v2 in WP10's scope.
 
 ## The review, verbatim
 

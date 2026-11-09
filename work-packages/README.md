@@ -13,8 +13,10 @@ This repository is built as supervisor-gated work packages, following the superv
   `work-packages/WPn-decisions.md` (supervisor: "we can do verbal approvals for now"; release
   controls, e.g. PR-merge records, come after the first release).
 - **Hierarchy:** the supervisor is the chief engineer; the Fable session is his assistant and
-  driver; a Sonnet 5.5 project manager (PM) reports to the driver and orchestrates Sonnet 5.5
-  implementer subagents. The driver coordinates with the supervisor only to escalate: the gate
+  driver, filtering what the PM escalates; ONE Sonnet 5.5 project manager (PM), persistent across
+  packages, reports to the driver, drafts scopes, runs approved packages concurrently on disjoint
+  files, and orchestrates fresh implementer and reviewer subagents, each bound to one task and
+  scope (the supervisor's words of 2026-11-08 in `PM-BRIEF.md`). The driver coordinates with the supervisor only to escalate: the gate
   decisions that are his (scope approval, acceptance) and problem-level changes. Acceptance reviews
   run in a fresh context, never the one that built the work. WP0 was executed by the driver.
 - **Files per package:** `WPn-scope-of-work.md` (template in the `scope-of-work` skill),
@@ -60,6 +62,17 @@ interface so i can iterate on content and the release machinery and publication 
 parallel". The list below carries that as WP14, the interface contract, scoped and pinned before
 the presentation packages start.
 
+Supervisor, 2026-11-08, verbatim (a further package, to be scoped): "another round of tightening
+revisions i'd like to do is focused on the system model. it got built up a bit ad hoc and its under
+utilizing the sysml toolkit. the example was accreted and thus may seem a bit illegible and opaque.
+tightening it up to make better use of the simulation machinery and model checking capabilities
+native to sysmlv2 models would make the example more interpretable. strictly speaking our method
+needs to work for a black box that maps configurations to attributes but a clean sysmlv2 model here
+with python scripting extensions for scoping and ledgering experiments (with cadcad like semantics)
+would make it much more interpretable for someone interested in cross applying to other sysml
+models. can you scope this as a tidying work package and identify how to break it out so it can be
+worked in parallel without disruption".
+
 ## Breakdown (search strategy)
 
 Only WP0 was firm at approval; the rest is revisited at each acceptance gate. Each line: goal, and
@@ -81,6 +94,7 @@ what it fixes for later packages. The design spec is
 | WP13 Response to the external review | Triage of `external-review-2026-11.md` item by item with the supervisor (accept / change in a named package / decline with reason), the changes it assigns (certificates and stopping declaration, simplex KKT statement, surface-versus-frontier terminology, identifiability and tolerances, the scope of statistical claims, the presentation lemmas), and the response letter | Hardened claims the paper states; the lemmas the Results section needs | WP9 (accepted) |
 | WP14 Interface contract (technical ↔ presentation) | A pinned contract between the technical work (package API and version, case module functions, data and figure paths, derivation ledger and generated pages, the executed notebooks) and the presentation layer (docsite build, paper build, release machinery): a document and a test that asserts it, so content and machinery iterate in parallel without breaking each other | Stable paths, entry points and build commands for WP8a, WP10, WP12, WP8b | WP9; before WP8a and WP10 |
 | WP8a Site skeleton up | Root index (thin HTML after hc-marimo), MkDocs docsite under `/docs/`, a `/paper/` slot, the Pages workflow deploying from `main` on merge, generated ledger and V&V pages; built against WP14 | A working draft of the docs visible early; the paper's deployment target | WP14 |
+| WP15 System model tidy-up | The cubesat example as one clean SysML v2 model (design variables, alternatives, accounting, feasibility as requirements, the experiment as analysis and verification), the toolkit's model checking and simulation machinery used where it supports them, a Python experiment runner with a ledger (cadCAD-like semantics) that makes every dataset traceable, a how-to for plugging in another SysML model; the committed CSVs stay frozen and a `v2` generation lands beside them under the ledger (supervisor: "do it in parallel to start but eventually i'd like to be able to swap over onto the new data"), the swap being a later recorded gate; breakout and parallel safety in `docs/superpowers/notes/system-model-tidy.md` | A legible example; the oracle and runner WP12 uses | WP14 (the oracle signature); parallel with WP13, WP10, WP8a on disjoint files; before WP12 |
 | WP10 The paper, working draft | A mystmd article in which the notebook is the paper (story, notation, outline v2: `docs/superpowers/notes/paper-outline-v2-search.md`), the supporting-material notebook of computationally verifiable appendices, the case code as a tested module, the state-of-practice and multiobjective citations, built for the six reader drill-down levels and the reader model; the search section marked preliminary until WP12 lands; deployed under `/paper/` | The published artifact | WP13, WP14; parallel with WP12 (different files) |
 | WP12 Trade-off-aware search of the design space | Ascent directions in configuration space from the facets, the outer loop against a noisy oracle, the lemmas and inherited convergence results, the cubesat simulator live, minimal code; its results feed WP10's search section | The search procedure and its theorem | WP9, WP13; parallel with WP10 |
 | WP11 Readability loops on the paper | Browser-in-the-loop loops with the supervisor; one verdict per drill-down level per loop; presentation only | What a human reader sees | WP10, WP12 |
@@ -100,7 +114,9 @@ what it fixes for later packages. The design spec is
 | WP4b | `WP4b-scope-of-work.md` | verbal, 2026-11-08 ("okay proceed", `WP4b-decisions.md`) | `main` 5dfbc8c..f1e38ca (Amendments 1 to 6; primary = aggressive-gain dataset, baseline = regime comparison) | `WP4b-review.md` (3f5a00f/99fdea2, sixth pass) | verbal, 2026-11-08 ("accept 4b ...", `WP4b-decisions.md`) |
 | WP7 | `WP7-scope-of-work.md` | verbal, 2026-11-08 ("approve 7 and 8", `WP7-decisions.md`) | `main` 94f5fdf..755bf5e | `WP7-review.md` (39bbe18, second pass) | verbal, 2026-11-08 ("Accept WP7 as the baseline", `WP7-decisions.md`); notebook retired when the WP9 paper lands |
 | WP9 | `WP9-scope-of-work.md` (the solver; Amendments 1 to 3) | verbal, 2026-11-08 ("Approved", `WP9-decisions.md`) | `main` cbd618c..094e86d, `dev` c4133c8 | `WP9-review.md` (four reviews; last c4133c8) | verbal, 2026-11-08 ("Accepted", `WP9-decisions.md`) |
-| WP12 | to be scoped after WP9's approval (the search; outline v2) | — | — | — | — |
+| WP13 | `WP13-scope-of-work.md` (response to the external review) | verbal, 2026-11-08 ("Approved", `WP13-decisions.md`) | `dev` c61ff49..655d978, merged to `main` | `WP13-review.md` (40062f6; R-10 re-check 1406261) | verbal, 2026-11-08 ("Accepted", `WP13-decisions.md`) |
+| WP15 | to be drafted by the PM from `docs/superpowers/notes/system-model-tidy.md` | — | — | — | — |
+| WP12 | to be scoped after WP13 and WP15 (the search; outline v2) | — | — | — | — |
 | WP10 | the paper; `WP10-decisions.md` holds the story and the redirection; scope drafted after WP9's acceptance, the external reviewer's feedback triage (`external-review-2026-11.md`, to be written) and WP12 (`WP10-scope-of-work.md` is the superseded first draft) | — | — | — | — |
 | WP11 | to be scoped at WP10's acceptance | — | — | — | — |
 | WP8 | `WP8-scope-of-work.md` (Amendment 1 revised: MkDocs docsite + MyST paper, one Pages site; re-approval at WP10's gate) | verbal, 2026-11-08 ("approve 7 and 8", `WP8-decisions.md`); Amendment 1 pending | waiting for WP11 | — | — |
