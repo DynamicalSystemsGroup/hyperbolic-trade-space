@@ -52,7 +52,7 @@ fan-out, and triages the result. It edits no prose and no glossary.
 | R-5 | Every item quotes its sentence and has exactly one disposition: amend glossary entry / plain words / glossary term / add to `avoid` / no change with reason | grep: every item line has a quote and one disposition word; no item lacks one |
 | R-6 | Items on sentences in P1 or P6 units still rewriting are marked "routed to P1" or "routed to P6", with the owner's current state at the pinned commit; items that change a term's meaning are marked "to the driver" | inspection against `work-packages/PM-BRIEF.md` stream state |
 | R-7 | Only the one file changed | `git diff --stat origin/dev~1..HEAD` (or the stream's commits) lists only `work-packages/WP10-vocabulary-review.md` |
-| R-8 | No AI attribution in the file or the commit | grep for `Co-Authored-By` and `generated`, none |
+| R-8 | No AI attribution in the file or the commit | grep the file and the commit message for AI trailers or generation notes, none |
 
 ## Definition of good
 
