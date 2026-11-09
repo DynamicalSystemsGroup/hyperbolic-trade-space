@@ -391,3 +391,87 @@ status = "backed"
 disposition = "keep"
 source = "WP10, tickets of 2026-11-09"
 note = "The L17 box, section 6.2; the statement of the derivation script (symbol H = D - kappa M typeset); hypotheses (finite tau and kappa; first-order conditions exactly) are the script's own text; the declared inherited result I16."
+
+[[claim]]
+id = "C024"
+fragment = "Inside the pinned linux/arm64 image the results reproduce byte for byte"
+file = "paper/supporting_material.ipynb"
+anchor = "F.2 The environment of record"
+kind = "S"
+backing = [
+  "file:paper/container/RECORD.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10 Amendment 1, P1c; supervisor approval of 2026-11-09 (WP10-decisions.md)"
+note = "Appendix F.2; RECORD.md: hts-paper and hts-alt give the same executed-cell text; environment_reference.npz bit-identical in both."
+
+[[claim]]
+id = "C025"
+fragment = "values differ at the last digits because the platforms' mathematical libraries differ, and the conclusions are unchanged"
+file = "paper/supporting_material.ipynb"
+anchor = "F.2 The environment of record"
+kind = "S"
+backing = [
+  "file:paper/container/RECORD.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10 Amendment 1, P1c; supervisor approval of 2026-11-09 (WP10-decisions.md)"
+note = "Appendix F.2; RECORD.md: Values-that-differ table; the 46 failures are exact comparisons against Mac recordings."
+
+[[claim]]
+id = "C026"
+fragment = "The exact tests therefore run only in the environment of record, and everything else compares within stated tolerances"
+file = "paper/supporting_material.ipynb"
+anchor = "F.2 The environment of record"
+kind = "S"
+backing = [
+  "file:paper/container/RECORD.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10 Amendment 1, P1c; supervisor approval of 2026-11-09 (WP10-decisions.md)"
+note = "Appendix F.2; RECORD.md: HTS_ENVIRONMENT_OF_RECORD; tolerance 1e-9 and 0.5 s."
+
+[[claim]]
+id = "C027"
+fragment = "The image id changes with every commit because the history layer carries the commit"
+file = "paper/supporting_material.ipynb"
+anchor = "F.2 The environment of record"
+kind = "S"
+backing = [
+  "file:paper/container/RECORD.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10 Amendment 1, P1c; supervisor approval of 2026-11-09 (WP10-decisions.md)"
+note = "Appendix F.2; RECORD.md: Pins: image id of hts-paper."
+
+[[claim]]
+id = "C028"
+fragment = "Git history enters the image through a git bundle that"
+file = "paper/supporting_material.ipynb"
+anchor = "F.2 The environment of record"
+kind = "S"
+backing = [
+  "file:paper/container/RECORD.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10 Amendment 1, P1c; supervisor approval of 2026-11-09 (WP10-decisions.md)"
+note = "Appendix F.2; RECORD.md: History section: git bundle passed as the named build context."
+
+[[claim]]
+id = "C029"
+fragment = "The image pins Node.js 24.22.2 for arm64, with its checksum and signature verified"
+file = "paper/supporting_material.ipynb"
+anchor = "F.2 The environment of record"
+kind = "S"
+backing = [
+  "file:paper/container/RECORD.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10 Amendment 1, P1c; supervisor approval of 2026-11-09 (WP10-decisions.md)"
+note = "Appendix F.2; RECORD.md: Pins: Node.js v24.22.2 linux-arm64 tarball, sha256 and SHASUMS256.txt.asc checked."

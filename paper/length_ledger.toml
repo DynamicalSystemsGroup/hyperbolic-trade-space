@@ -167,3 +167,10 @@ section = "Results"
 words_added = 1
 job = "says the stable radius is sufficient and that its tightness is not claimed, as the lemma's docstring does (claims review U09-S02)"
 reader = "the optimization reader"
+
+[[raise]]
+date = "2026-11-09"
+section = "Reproducibility and your own case"
+words_added = 120
+job = "states in Appendix F.2 that results reproduce exactly in the image of record and agree within tolerances elsewhere"
+reader = "the reader reproducing the paper"
