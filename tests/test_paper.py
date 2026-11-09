@@ -1030,6 +1030,17 @@ def test_family_table_cites_are_author_year_links_to_the_reference_list():
     assert set(generate_prior_art.all_cited_keys()) <= _bib_keys()
 
 
+def test_cells_whose_output_is_embedded_are_removed_from_the_page():
+    """A cell that is embedded (``#id`` of a figure or table directive) is tagged ``remove-cell``:
+    with only ``remove-input`` the page showed each of its outputs twice."""
+    nb = _nb(PAPER_NB)
+    embedded = set(re.findall(r"\{(?:embed|figure)\} #([\w-]+)", _markdown(nb)))
+    assert len(embedded) >= 9
+    cells = {c.id: c for c in _code_cells(nb)}
+    for label in embedded:
+        assert "remove-cell" in cells[label].metadata.get("tags", []), label
+
+
 def test_candidates_table_scrolls_inside_its_container():
     """On a phone the wide table scrolls within the column instead of overflowing the page."""
     cell = next(c for c in _code_cells(_nb(PAPER_NB)) if c.id == "tab-candidates")
