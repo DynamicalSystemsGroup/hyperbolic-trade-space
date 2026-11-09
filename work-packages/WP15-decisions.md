@@ -68,6 +68,11 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   the frozen reproducibility tests keep running, no contract-pinned item changes; archiving is a
   swap-gate item.
 
+- **Agent's defaults, as one item** (with OD1 to OD5 and the Z3 role folded in). **Supervisor
+  (mzargham), verbatim:** "Approve the defaults as listed". Disposition: approved. Loop closed:
+  decided 5 (OD1 to OD5), deferred 0, raised 1 (the Z3 feasibility role, folded into G2's goal),
+  defaults approved as one item.
+
 ## Scope approval (approval gate)
 
-- pending (the defaults as one item, then approval)
+- pending

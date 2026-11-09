@@ -370,3 +370,20 @@ seam decision is not among them (made 2026-11-08; quoted in Purpose).
   are part of this package).
 
 Unresolved before the gate: OD1, OD2, OD3, OD4, OD5, and the Agent's defaults list as one item.
+
+## Gate outcomes (2026-11-08, `WP15-decisions.md`)
+
+Every open decision was resolved through the decision loop; the items above read with these
+outcomes: OD1 "i think i want to retire it but before we do lets make sure we preserve what we need
+to ensure we can test our approaches sensitivity to modeling assumptions ..." (retire the
+geostationary variant with preservation: its modules, data and tests stay frozen and runnable and
+are registered in the ledger as a legacy oracle so a scope-sensitivity experiment can be defined;
+the exploration itself is a later candidate); OD2 "Python plus a closed-form calc"; OD3 "Pinned"
+(D-8 active; the `case` group and the CI step by request to their owners); OD4 "Redesign allowed"
+(each change in the change register; v2 reviewed as a new case before any swap); OD5 "Stay as they
+are until the swap gate"; and, raised at the gate, "the z3 model checking is key because it can
+exclude infeasible models": G2 includes using `verify --solve` and the `smt`/`solve` engines to
+exclude infeasible configurations and model variants before simulation, the ledger recording what
+was excluded and why, the Python flags becoming observations rather than the definition of
+feasibility. Defaults approved as one item: "Approve the defaults as listed". Decided 5, deferred
+0, raised 1.
