@@ -11,6 +11,9 @@ from pathlib import Path
 DOCS = Path(__file__).resolve().parent.parent / "docs"
 BIB = DOCS / "references.bib"
 LIT = DOCS / "literature.md"
+# WP10: keys added for the paper's prior-art section are cited in this source note, so the
+# bibliography stays free of uncited keys whether or not literature.md survives WP8a's restructure.
+SOURCES = DOCS / "superpowers" / "notes" / "paper-prior-art-sources.md"
 
 KEY_RE = re.compile(r"^[a-z]+[0-9]{4}[a-z]+$")
 DOI_RE = re.compile(r"^10\.\d{4,9}/\S+$")
@@ -145,6 +148,8 @@ def test_every_citation_resolves_to_the_bib() -> None:
 
 
 def test_every_bib_key_is_cited() -> None:
-    cited = _cited_keys(LIT.read_text(encoding="utf-8"))
+    cited = _cited_keys(LIT.read_text(encoding="utf-8")) | _cited_keys(
+        SOURCES.read_text(encoding="utf-8")
+    )
     uncited = {e["key"] for e in _bib()} - cited
     assert not uncited, f"in references.bib but never cited in literature.md: {sorted(uncited)}"

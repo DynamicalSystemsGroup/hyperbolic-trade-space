@@ -36,3 +36,28 @@ Added for WP9 (2026-11-08, Crossref DOI records): Candès, E. J., Wakin, M. B., 
 doi:10.1007/s00041-008-9045-x. Miettinen, K. (1999). *Nonlinear Multiobjective Optimization.*
 Springer US (Kluwer print 1999). doi:10.1007/978-1-4615-5563-6. Ehrgott, M. (2005). *Multicriteria
 Optimization*, 2nd ed. Springer. doi:10.1007/3-540-27659-9 (author from Open Library; Crossref lists none).
+
+## Added for WP10 (2026-11-08, implementer P2)
+
+Method: each DOI was fetched from the Crossref API (authors, title, container, volume, issue, pages,
+date, abstract where present) and resolved through `curl -sIL https://doi.org/<doi>`. The doi.org
+redirect reached the publisher landing page for all fourteen DOIs; Wiley, INFORMS, Royal Society, ASME
+and AIAA answered an automated GET with 403 after the redirect (the DOI is live, the page is not
+machine-readable), Springer, Elsevier (Spero 2014, Allen 1997, Dyson 2001) and Cambridge answered
+200 on the redirect target. Full texts were not read; abstracts were read from Crossref where it has
+them (not for Allen 1997, Dyson 2001, Spero 2014, Ross 2010).
+
+- Fifteen state-of-practice sources (`WP10-decisions.md`, "adopt as listed"): `hirshorn2017nasa`
+  (NTRS page, no DOI), `baker2012survey` (nasa.gov PDF read, page one), `chilli2026decision`
+  (SEBoK page), `smith2007ameliorating`, `parnell2021system`, `madni2018model`, `henderson2021value`,
+  `ross2005tradespace`, `ross2010revisiting`, `stump2009visual`, `spero2014tradespace`,
+  `howard1988decision`, `keeney1993decisions`, `jolliffe2016principal`, `parnell2016trade` (Wiley
+  page, ISBN 9781119237532; no Crossref DOI exists for the book).
+- DEA: `banker1984some`, `allen1997weights`, `dyson2001pitfalls`.
+- `zargham2026incose` (10.1002/iis2.70203, INCOSE International Symposium 36(1), 1501-1514, 2026).
+- Already present, unchanged: `miettinen1999nonlinear` (Crossref dates the Springer record 1998, the
+  Kluwer print 1999), `ehrgott2005multicriteria`, `candes2008enhancing`.
+- Notes: the Crossref title for Ross and Hastings 2005 begins with the session code "11.4.3"; the entry
+  drops it. Baker and Whalen carries no date in the PDF; 2012 rests on the workshop listing found by
+  search (the nasa.gov workshop page itself now returns 404). The NASA handbook's section 6.8 and the
+  SEBoK article body were not read.
