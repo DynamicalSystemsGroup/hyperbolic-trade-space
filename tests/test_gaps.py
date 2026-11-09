@@ -4,6 +4,8 @@ Tolerances: planted holes are located to within one grid cell; frontier targets 
 round-trip to 1e-9; seeds 0, 1, 2.
 """
 
+from pathlib import Path
+
 import numpy as np
 import pytest
 
@@ -179,3 +181,77 @@ def test_orient_by_pca_validation():
         orient_by_pca(np.zeros((5, 2)), np.r_[True, np.zeros(4, bool)])
     with pytest.raises(ValueError, match="mask"):
         orient_by_pca(np.zeros((5, 2)), np.ones(4, bool))
+
+
+# ------------------------------------------------------------------ WP21 D-8, ledger gap G-18
+# Equal mean slack does not identify the boundary: two supporting envelopes over the same 48 rows,
+# the two-term envelope A and the three-term envelope B = A plus one plane that lies below A at
+# every row and above it in the unsampled gap between the two clusters of rows.
+G18 = Path(__file__).parent / "data" / "g18_equal_slack_fixture.npz"
+LEDGER = Path(__file__).parents[1] / "docs" / "superpowers" / "notes" / "abstraction-gaps.md"
+SLACK_TOL = 1e-12  # the two mean slacks agree to this (the envelopes agree at every row)
+BOUNDARY_MARGIN = 0.25  # the boundaries differ by more than this in log V at the gap's centre
+
+
+def _envelope(template, W, beta):
+    """The template estimator carrying the envelope ``(W, beta)`` (the package's own chart)."""
+    est = HyperbolicTradeSpace(n_terms=len(W)).fit(template)
+    est.exponents_, est.log_offset_ = np.asarray(W, float), np.asarray(beta, float)
+    est.basis_ = np.repeat(est.basis_[:1], len(W), axis=0)
+    return est
+
+
+@pytest.fixture(scope="module")
+def g18():
+    f = np.load(G18)
+    X = f["X"]
+    return X, _envelope(X, f["W_A"], f["beta_A"]), _envelope(X, f["W_B"], f["beta_B"]), f
+
+
+def test_g18_the_fixture_is_the_frozen_planted_data(g18):
+    X, _, _, f = g18
+    assert X.shape == (48, 2) and (X > 0).all()
+    assert f["W_A"].shape == (2, 2) and f["W_B"].shape == (3, 2)
+    np.testing.assert_allclose(f["W_A"].sum(axis=1), 1.0)
+    np.testing.assert_allclose(f["W_B"].sum(axis=1), 1.0)
+    assert "default_rng(18)" in str(f["recipe"])
+
+
+def test_g18_two_envelopes_have_equal_mean_slack(g18):
+    X, A, B, _ = g18
+    for est in (A, B):  # both support every row: V <= 1, with the frontier rows on it
+        log_v = est.score_samples(X)
+        assert (log_v <= 1e-12).all() and (log_v > -1e-9).sum() >= 16
+    slack_a, slack_b = -A.score_samples(X).mean(), -B.score_samples(X).mean()
+    assert slack_a == pytest.approx(slack_b, abs=SLACK_TOL) and slack_a > 0.1
+    # the K = 2 fit of the package finds envelope A on these rows, with the same mean slack
+    fit = HyperbolicTradeSpace(n_terms=2, temperature=np.inf, random_state=0).fit(X)
+    assert fit.mean_slack_ == pytest.approx(slack_a, abs=1e-9)
+    np.testing.assert_allclose(
+        np.sort(fit.exponents_, axis=0), np.sort(A.exponents_, axis=0), atol=1e-9
+    )
+
+
+def test_g18_the_boundaries_differ_where_there_are_no_rows(g18):
+    X, A, B, _ = g18
+    s = np.log(X[:, 0]) - np.log(X[:, 1])
+    assert not ((s > -1.2) & (s < 1.2)).any()  # the gap is unsampled
+    gap = np.linspace(-1.0, 1.0, 41)
+    base = np.exp(np.column_stack([gap / 2, -gap / 2]))  # metrics across the gap
+    diff = B.score_samples(base) - A.score_samples(base)
+    assert (diff >= -1e-12).all() and diff.max() > BOUNDARY_MARGIN  # B lies above A in the gap
+    assert diff.max() == pytest.approx(0.3, abs=1e-9)  # at the corner of A, s = 0
+    # the surfaces V = 1 differ by the same margin in the metrics (the package's level set)
+    Z = A.transform(base)[:, :-1]
+    gap_log_m = np.log(A.level_set(Z)) - np.log(B.level_set(Z))
+    assert np.abs(gap_log_m).max() > BOUNDARY_MARGIN
+    # at the rows the two agree exactly: the loss cannot tell them apart
+    np.testing.assert_allclose(B.score_samples(X), A.score_samples(X), atol=SLACK_TOL)
+
+
+def test_g18_is_in_the_ledger_with_the_assessment_as_evidence():
+    row = next(
+        line for line in LEDGER.read_text(encoding="utf-8").splitlines() if "**G-18." in line
+    )
+    assert "external-assessment-2026-11-09" in row and "g18_equal_slack_fixture" in row
+    assert "tests/test_gaps.py" in row
