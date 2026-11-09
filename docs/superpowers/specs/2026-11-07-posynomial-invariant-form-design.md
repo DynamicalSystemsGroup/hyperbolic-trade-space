@@ -14,7 +14,7 @@ attributes. Metrics are conditioned to be strictly positive, larger-is-better an
 scaled; the admissibility set is modelled in log-metric space; the frontier is the unit level set
 of a monomial V(m) = Π_j m_j^{w_j} (a generalized hyperbolic surface in metric space, a hyperplane
 in log space), uncovered by generalized-geometric-program fitting to level sets. The learned
-coordinates are log V (distance from the frontier) and d−1 log-ratio coordinates Z (position along
+coordinates are log V (energy differential to the frontier) and d−1 log-ratio coordinates Z (position along
 it). Uses: level sets, holes (white space), novelty of a concept (V − 1), prediction of where a
 proposed configuration would fall, and reading the frontier's shape back in design variables.
 

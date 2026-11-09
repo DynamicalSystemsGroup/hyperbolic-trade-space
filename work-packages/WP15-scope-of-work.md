@@ -126,11 +126,16 @@ model=None)` is the pinned oracle and is not changed by this package under OD5 o
 
 ```python
 class Oracle(Protocol):
-    config_names: tuple[str, ...]      # ("panel_span_m", "battery_wh", "wheel_class", "st_grade", "Kp", "Kd")
-    attribute_names: tuple[str, ...]   # the ten attributes of the cubesat case, as in the frozen CSV
-    flag_names: tuple[str, ...]        # ("settled", "momentum_ok", "power_ok", "dod_ok")
+    config_names: tuple[
+        str, ...
+    ]  # ("panel_span_m", "battery_wh", "wheel_class", "st_grade", "Kp", "Kd")
+    attribute_names: tuple[str, ...]  # the ten attributes of the cubesat case, as in the frozen CSV
+    flag_names: tuple[str, ...]  # ("settled", "momentum_ok", "power_ok", "dod_ok")
+
     def __call__(self, configuration: Mapping[str, float | str]) -> dict[str, float | bool]: ...
-    def evaluate(self, designs: pandas.DataFrame) -> pandas.DataFrame: ...   # batch, rows in design_id order
+    def evaluate(
+        self, designs: pandas.DataFrame
+    ) -> pandas.DataFrame: ...  # batch, rows in design_id order
 ```
 
 Semantics: deterministic (no noise; WP12 wraps it); one configuration in, a mapping out whose keys are

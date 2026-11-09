@@ -49,7 +49,7 @@ symproof's ledger conventions, so the chain can later be lifted into sealed symp
 
 ## This project's chain (spec §6)
 
-Axioms A1–A6 (posited), I1–I4 (inherited with citations), R1 (regularity); lemmas L1–L10; run at
+Axioms A1–A6 (posited), I1–I9 (inherited with citations), R1 and R2 (regularity); lemmas L1–L14; run at
 d ∈ {2, 3, 4} and n ∈ {2, 3} via `make_symbols(d, n)`. Docs state that generic-d results are proved
 in prose and instantiated mechanically at these sizes.
 

@@ -6,7 +6,7 @@ Learn the shape of a design trade space. From noisy, biased observations of a de
 (configuration variables and empirically assessed attributes), the method learns a hyperbolic
 "space": a monomial, later posynomial, frontier V(m) = Π m_j^{w_j} whose unit level set is the
 Pareto frontier, together with an invertible coordinate chart (position along the frontier, and
-log V, the distance from it). It is a scikit-learn-compatible unsupervised estimator, with
+log V, the energy differential to it). It is a scikit-learn-compatible unsupervised estimator, with
 SymPy-verified derivations and an ADCS trade-study case.
 
 Status: WP0 (setup) complete; the package code arrives in later work packages. See

@@ -83,7 +83,7 @@ and the report gives the remaining gap for each term. The third is local optimal
 sits exactly on the seam between two terms (the margin is positive), small changes to the terms
 cannot change which term owns which design, and the fit is a local optimum; the report gives the
 margin and the size of change that is safe. A status line says which levels you have: certified,
-stationary without margin, or a stop at the iteration cap or on the guard, which the report names
+stationary without margin, uncertified (a gap above its tolerance), or a stop at the iteration cap or on the guard, which the report names
 and does not call converged. The statements and their conditions are in
 [Mathematics](method.md#three-levels-of-guarantee).
 
