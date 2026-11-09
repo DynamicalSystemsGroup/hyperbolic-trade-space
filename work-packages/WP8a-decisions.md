@@ -491,4 +491,12 @@ The driver's calls on `WP8a-driver-browser-pass.md` are binding and applied as f
   one line each, what it shows, what it does not show, and what it is good for. No figure is
   redrawn or removed on the page before the driver has the dispositions; candidate redraws are
   produced as images for the supervisor to judge by eye.
+- **The docsite figure review delivered** (`WP8a-figure-review.md`, fb8fbe1; candidates for Figure 7 in
+  `docs/superpowers/notes/figure-candidates/`). The driver read the record and the three candidate
+  images. The record's verdict on Figure 8 (the planted triangle: "rework, labels cover data") is
+  overruled by the supervisor's own confirmation of that figure as drawn ("this one is great"); it
+  stays. Figure 9's drop agrees with his word. The rest of the verdicts (replace Figure 7 by the
+  depth chart; keep one of Figures 1 and 4; rework Figures 2, 5 and 6 for a legend, a misleading
+  reading and phone legibility; keep Figure 3) are put to him with the candidate images before
+  anything on a page changes.
 
