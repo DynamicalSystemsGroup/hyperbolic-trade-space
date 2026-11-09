@@ -415,6 +415,36 @@ entries:
     not: 'a measure of attainability'
     defined_in: 'Novelty and white space'
 
+  - id: 'ternary-plot'
+    term: 'ternary plot'
+    short: 'A triangle whose corners are three metrics: a design sits by its shares of their total, tinted by region, with a numbered marker for each facet''s exponent vector. For reading, not for measuring distance.'
+    register: 'ternary plot'
+    formal: 'the barycentric image of the shares of three metrics (x = right + top / 2, y = sqrt(3) / 2 * top); a facet''s exponent vector sums to one, so it is a point of the triangle, where that facet''s V is largest at a fixed total'
+    not: 'a plot of V, a distance between designs, or a place where V = 1; V also depends on the total'
+    defined_in: 'plot_ternary (docstring, Notes); spike-ternary report, Correction'
+    aliases:
+      - 'triangle plot'
+
+  - id: 'share'
+    term: 'share'
+    short: 'A position in the triangle: a metric''s fraction of the total of the three.'
+    register: 'share'
+    formal: 'c_j = m_j / S, where S is the sum of the three metrics, each in units of its typical size; the three shares sum to one'
+    not: 'a share of a total of designs, or a weight of a facet (that is a coefficient of the fit)'
+    defined_in: 'plot_ternary (docstring, Notes)'
+    aliases:
+      - 'shares'
+
+  - id: 'region'
+    term: 'region'
+    short: 'In the ternary plot, the set of positions where one facet dominates; an analysis of the fit, not a label on a design.'
+    register: 'region'
+    formal: 'the set of share positions where one facet attains the maximum in log V; the regions partition the triangle'
+    not: 'a part of the fit, a cluster of designs, or a property a design carries'
+    defined_in: 'plot_ternary (docstring); spike-ternary report'
+    aliases:
+      - 'regions'
+
 assumed:
   - term: 'convex program'
     reason: 'convex optimization at the level of Boyd and Vandenberghe 2004'

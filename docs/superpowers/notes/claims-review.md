@@ -64,3 +64,11 @@ as the author's judgment.
   which).
 - Together with the vocabulary review (`vocabulary-review.md`): the same fresh-context readers can
   return both lists.
+
+## Rows recorded so far
+
+Until `claims_register.toml` exists, rows are recorded here in the register's fields.
+
+| Fragment | File | Kind | Pointer | Verdict | Disposition |
+|---|---|---|---|---|---|
+| "a marker is not where V = 1" (the key: a numbered marker is a facet's exponent vector, where that facet's V is largest for a fixed total; V also depends on the total) | `docs/examples.md` (WP18, R-5) | S | the `plot_ternary` doctest and Notes in `src/hyperbolic_trade_space/plotting.py` (at a fixed total facet k peaks at c = w_k); `tests/test_plotting.py::test_ternary_fixed_total_identity_and_peak` and `test_ternary_markers_sit_at_the_exponent_vectors`; `docs/superpowers/notes/spike-ternary/report.md`, Correction (2026-11-09): the largest log V of any design is 0.071, and the labels above V = 1 were V relative to the average mix | backed | keep |

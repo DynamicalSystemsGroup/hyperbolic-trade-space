@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 6
+contract_version = 7
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -69,7 +69,7 @@ coordinates = ["alr_basis", "from_frontier_coordinates", "helmert_basis", "to_fr
 gaps = ["find_holes", "frontier_targets", "knn_gap_scores", "orient_by_pca"]
 plotting = [
   "facet_labels", "plot_frontier_coordinates", "plot_frontier_surface_3d", "plot_log_plane",
-  "plot_tensions", "plot_v_by_variable",
+  "plot_tensions", "plot_ternary", "plot_v_by_variable",
 ]
 datasets = ["make_configured_frontier_data", "make_frontier_data"]
 preconditioning = ["LogAffinePreconditioner", "frontier_in_original_units"]
