@@ -407,6 +407,13 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   1501–1514, 2026, doi 10.1002/iis2.70203. Enters `docs/references.bib` as `zargham2026incose`
   under the WP5 rule in WP10.
 
+- OD2, with S1, S2, S3 in view. **Supervisor (mzargham), verbatim:** "can you give me a 3 pane with
+  the combination of views from S1 and S3. (they have one view in common) together i think they
+  paint the picture well". Disposition: the spike draws S4, three panes: metric space (hyperbolic
+  sheets, V = 1 on the envelope, energy levels) → log space (flat facets, normals, one highlighted
+  design with its energy differential as the uniform-scaling step) → the chart (Z, log V) with the
+  frontier flat at zero and the facets as bands; shown to the supervisor for his pick.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
