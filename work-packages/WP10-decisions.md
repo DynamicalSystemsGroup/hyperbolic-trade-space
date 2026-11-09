@@ -863,4 +863,13 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   table so the table and associated interpretation are a view." **Disposition:** Amendment 4, R-34.
   The data (the evaluated designs) is what the surface models; the table and the reading drawn from
   it are views. Sent to the PM.
+- On the word for the rates. **Supervisor, verbatim:** "\"exchange rates.\" feels like money even
+  though its not. i believe we define these as elasticities. abstract should be consistent with
+  glossary and we can provide the gloss for what an elasticity is in the abstract so it remains
+  readable". **What the driver found:** the glossary's term was "exchange rate" while the theorem
+  that derives it is named for elasticities (L7) and the supporting material says "elasticity"
+  37 times: again two names for one object. **Disposition:** Amendment 4, R-37. The term is
+  "elasticity", glossed in the abstract; "exchange rate" is withdrawn everywhere. **Driver's call:**
+  the public field `exchange_rates` of the tension report becomes `elasticities` with a contract
+  amendment, since nothing is released and the code should carry the glossary's word. Sent to the PM.
 

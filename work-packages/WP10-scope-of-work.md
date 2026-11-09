@@ -619,6 +619,19 @@ docsite files are WP8a's and change under this amendment by the same direction).
   `work-packages/WP10-vocabulary-review.md`. *Check:* the tool exits zero on the head of `dev`; the
   record lists every item with its disposition; the driver reads the record and the rendered pages.
 
+- R-37. *Elasticity, not exchange rate.* The supervisor: "\"exchange rates.\" feels like money even
+  though its not. i believe we define these as elasticities. abstract should be consistent with
+  glossary and we can provide the gloss for what an elasticity is in the abstract so it remains
+  readable". The object is one (the derivative of one log-metric with respect to another along a
+  facet, -w_k / w_j; Theorem "elasticity", L7) and had two names. The glossary's term becomes
+  "elasticity"; "exchange rate" goes to its `avoid` list; the abstract says "elasticities" with a
+  gloss in plain words (the percentage of one metric given up per percentage gained in another);
+  the paper, the supporting material, the docsite, the root page and the notation note follow.
+  **Driver's call, for his ratification at the PR:** the tension report's public field
+  `exchange_rates` is renamed `elasticities` (no alias: nothing is released), with the interface
+  contract amended, so the code a user reads carries the glossary's word. *Check:* the vocabulary
+  tool passes with "exchange rate" in `avoid`; the contract test; the suite; no number changes.
+
 **Non-goals.** No change to a mathematical statement, a number or a figure. No new term coined to
 replace an old one where plain words serve. No rewrite of prose the review does not flag.
 

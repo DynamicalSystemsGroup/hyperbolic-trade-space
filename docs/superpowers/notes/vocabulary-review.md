@@ -11,6 +11,9 @@ What set it off: one object had two names. The paper's Definition called the mul
 posynomial". Both are defensible terms in the source (Boyd, Kim, Vandenberghe and Hassibi 2007);
 the fault was using two for one object and using the heavier one where the plain one is exact.
 
+The same reading found a second case: "exchange rate" in the glossary and the abstract, "elasticity"
+in the theorem that derives it. The supervisor's word is elasticity.
+
 ## The rule
 
 1. **One object, one name.** A term of art in the paper, the docsite, the root page or the README
