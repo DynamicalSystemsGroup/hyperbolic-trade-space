@@ -461,6 +461,16 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   verbatim:** "Yes, approve the rest as listed". Disposition: approved. Loop closed: decided 6 (OD1
   to OD6), deferred 0, raised 0, defaults approved as one item.
 
+- At the approval question, a correction. **Supervisor (mzargham), verbatim:** "the infrastructure
+  is modeled on my scipy paper but the we discussed the outline of paper seperately, its development
+  based on my IEEE papers". Disposition: the scope says so wherever it compares: the build and
+  publishing infrastructure (mystmd, the notebook as the article with modules beside it, the
+  supporting notebook, the bibliography handling) follows the SciPy 2026 article; the paper's
+  outline and development follow the structure of his IEEE papers as settled on 2026-11-08
+  (motivation, prior work, notation, definitions, results with proofs, numerical case construction,
+  analysis of the case, discussion, future work, works cited; outline v2 with the search), spaced
+  out with MyST's affordances.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and

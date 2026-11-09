@@ -370,3 +370,8 @@ and the facets as coloured regions). The register table is compiled from the sha
 (WP8a Amendment 2 OD5). The docsite carries no citations into the paper for now (WP8a Amendment 2);
 the paper may link to the docsite's user pages. Defaults approved as one item: "Yes, approve the
 rest as listed". Decided 6, deferred 0, raised 0.
+Correction at the gate (supervisor, verbatim): "the infrastructure is modeled on my scipy paper but
+the we discussed the outline of paper seperately, its development based on my IEEE papers". Wherever
+this scope says the paper is modelled on the SciPy article, read: the build infrastructure is; the
+outline and development follow the IEEE-paper structure recorded in `WP10-decisions.md` and
+`docs/superpowers/notes/paper-outline-v2-search.md`.
