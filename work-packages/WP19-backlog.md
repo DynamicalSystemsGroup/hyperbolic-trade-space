@@ -124,3 +124,17 @@ test on the regenerated first designs; the experiment ledger records the model's
 outputs unchanged). The driver approves the amendment before it runs. The second view is then
 generated from those elements, not from the analyst's reading.
 
+## The gates while the supervisor is away (2026-11-09, before he stepped out)
+
+**Supervisor, verbatim:** "you should include candidate figures don't wait on me. you should assume
+i'll want to iterate on them with you but you have enough experience with iterating on figures with
+me to get good initial candidate with clear purposes and at least the hypothesis that they adequately
+fulfill there purposes to be inputs to a review and revise loop with me".
+
+Disposition: WP19 leaves the backlog and runs now. The two gates become review points for his
+return, not stops: candidate figures are placed in the paper when they pass the figure review's loop
+(intent stated; cold reads agree; the sentence test; legible at column width), each carrying in its
+record its purpose, the hypothesis that it serves that purpose, and the reader evidence, so that the
+review with him revises rather than starts. The same for the docsite figures after the reassessment
+by intent. What he has already confirmed or dropped stands as decided.
+
