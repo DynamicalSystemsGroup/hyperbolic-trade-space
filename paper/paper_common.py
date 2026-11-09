@@ -49,3 +49,26 @@ def frame_table(df, index: bool = False, floatfmt: str = ".4g") -> str:
     if index:
         df = df.reset_index()
     return md_table([str(c) for c in df.columns], df.itertuples(index=False, name=None), floatfmt)
+
+
+def write_environment_reference() -> None:
+    """Write the reference arrays that tests compare within tolerance off the environment of record.
+
+    Run in the environment of record (``uv run python paper/paper_common.py``); the arrays are the
+    planted table and the data of Figure 1, listed with their tolerances in
+    ``environment_values.toml``.
+    """
+    import pathlib
+
+    import generate_model
+    import numpy as np
+    from figures import figure1
+
+    X, _ = generate_model.planted_table()
+    arrays = {"planted_X": X}
+    arrays.update({f"figure1_{k}": np.asarray(v) for k, v in figure1.figure1_data().items()})
+    np.savez_compressed(pathlib.Path(__file__).with_name("environment_reference.npz"), **arrays)
+
+
+if __name__ == "__main__":
+    write_environment_reference()

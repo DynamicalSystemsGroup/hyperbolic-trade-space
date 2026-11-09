@@ -24,8 +24,10 @@ import tomllib
 from pathlib import Path
 
 import nbformat
+import numpy as np
 import pytest
 import yaml
+from _env import ENV_VAR, REFERENCE_FILE, VALUES_FILE, exact_only, listed
 
 ROOT = Path(__file__).resolve().parent.parent
 PAPER = ROOT / "paper"
@@ -629,11 +631,55 @@ def test_no_table_or_figure_appears_in_both_c_and_d():
     assert not c_tables & d_tables
 
 
+_TOKEN = re.compile(r"([0-9a-f]{64}|[-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)")
+_PLANTED_LABEL = re.escape(generate_model.DATASET_LABELS["planted"])
+_PLANTED_ROW = re.compile(rf"^(\| {_PLANTED_LABEL} \|.*?)\b[0-9a-f]{{64}}\b", re.M)
+
+
+def _mask_exact_only(text: str) -> str:
+    """Blank the digest of the planted table's row: exact only in the environment of record."""
+    return _PLANTED_ROW.sub(r"\1<planted_table_sha256>", text)
+
+
+def _same_text(a: str, b: str, rtol: float) -> bool:
+    """Equal text whose numbers agree within ``rtol`` (digests and everything else must match)."""
+    pa, pb = _TOKEN.split(a), _TOKEN.split(b)
+    if len(pa) != len(pb):
+        return False
+    for i, (x, y) in enumerate(zip(pa, pb, strict=True)):
+        if i % 2 == 0 or len(x) == 64 or len(y) == 64:  # between tokens, or a digest
+            if x != y:
+                return False
+        elif not np.isclose(float(x), float(y), rtol=rtol, atol=0.0):
+            return False
+    return True
+
+
 def test_c_committed_output_is_current():
-    """C is cheap to regenerate, so its committed outputs are compared with a re-run."""
+    """C is cheap to regenerate, so its committed outputs are compared with a re-run.
+
+    Byte-equal in the environment of record; elsewhere the numbers of the printed tables agree
+    within the stated tolerance and the one digest that follows the platform is not compared.
+    """
+    exact = exact_only("planted_table_sha256")
+    rtol = listed()["planted_table_sha256"]["text_rtol"]
     for cell in _cells_of("C"):
         fn = re.search(r"import (\w+)", _src(cell)).group(1)
-        assert _out_text(cell) == str(getattr(generate_model, fn)()), f"{cell.id}: {STALE}"
+        committed, fresh = _out_text(cell), str(getattr(generate_model, fn)())
+        if exact:
+            assert committed == fresh, f"{cell.id}: {STALE}"
+        else:
+            ok = _same_text(_mask_exact_only(committed), _mask_exact_only(fresh), rtol)
+            assert ok, f"{cell.id}: {STALE}"
+
+
+def test_planted_table_agrees_with_the_reference_values():
+    """The planted table's values, not its hash: within the stated tolerance of the reference."""
+    entry = listed()["planted_table_sha256"]
+    X, _ = generate_model.planted_table()
+    ref = np.load(REFERENCE_FILE)["planted_X"]
+    assert X.shape == ref.shape == (900, 4)
+    np.testing.assert_allclose(X, ref, rtol=entry["values_rtol"], atol=entry["values_atol"])
 
 
 def test_planted_example_is_reproducible_and_has_known_facets():
@@ -756,7 +802,8 @@ def test_appendix_b_committed_output_is_current():
 
 # -- Figure 1
 
-FIGURE1_HASH = "f9d7219deb39227ee8d016bfe396cdd92be903ed5eb329e1743e24e56db60054"
+# exact only in the environment of record (the image): macOS gives f9d7219d..., the maths library
+FIGURE1_HASH = "4040cb8e22895e224c69322ad14290b81771aeae3a6addf46102ba7b00527a21"
 
 
 def test_figure1_files_exist_and_the_data_hash_is_pinned():
@@ -766,7 +813,18 @@ def test_figure1_files_exist_and_the_data_hash_is_pinned():
     assert (PAPER / "figures" / "figure1.svg").read_text().startswith(("<?xml", "<svg"))
     data = figure1.figure1_data()
     assert data["u"].shape == (253, 2)
-    assert figure1.data_hash(data) == figure1.data_hash() == FIGURE1_HASH
+    assert figure1.data_hash(data) == figure1.data_hash()  # deterministic within a platform
+    if exact_only("figure1_data_hash"):
+        assert figure1.data_hash(data) == FIGURE1_HASH
+    else:  # the same data, on their values, within the stated tolerance of the reference arrays
+        entry, ref = listed()["figure1_data_hash"], np.load(REFERENCE_FILE)
+        for key in ("u", "logV", "Z", "corners", "W", "BETA"):
+            np.testing.assert_allclose(
+                data[key], ref[f"figure1_{key}"], rtol=entry["values_rtol"],
+                atol=entry["values_atol"], err_msg=key,
+            )  # fmt: skip
+        assert (data["facet"] == ref["figure1_facet"]).all()
+        assert data["design"] == int(ref["figure1_design"])
 
 
 def test_figure1_has_three_panes_with_the_registers_words_and_writes_nothing(tmp_path, monkeypatch):
@@ -981,3 +1039,22 @@ def test_myst_builds_the_html_site(tmp_path):
     assert out.returncode == 0, out.stdout[-2000:] + out.stderr[-2000:]
     assert (work / "_build" / "html" / "index.html").is_file()
     assert "⛔" not in out.stdout
+
+
+# -- the list of values exact only in the environment of record
+
+
+def test_every_exact_only_assertion_names_a_listed_value_and_every_listed_value_is_used():
+    called = set()
+    for path in sorted((ROOT / "tests").glob("*.py")):
+        called |= set(re.findall(r"exact_only\(\s*\"([^\"]+)\"", path.read_text(encoding="utf-8")))
+    names = set(listed())
+    assert called <= names, f"exact assertions naming values that are not listed: {called - names}"
+    assert names <= called, f"listed values no exact assertion uses: {names - called}"
+    for name, entry in listed().items():
+        assert entry["reason"].strip() and entry["elsewhere"].strip(), name
+
+
+def test_the_variable_and_the_reference_file_exist():
+    assert ENV_VAR == "HTS_ENVIRONMENT_OF_RECORD"
+    assert VALUES_FILE.is_file() and REFERENCE_FILE.is_file()

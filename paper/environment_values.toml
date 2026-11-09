@@ -1,0 +1,30 @@
+# Values that are exact only in the environment of record (the container image).
+#
+# Exact equality (a hash of generated data, a byte-equal committed output) is asserted only when
+# HTS_ENVIRONMENT_OF_RECORD=1 (named once, in tests/_env.py). Everywhere else the same quantities
+# are compared on their VALUES within the tolerance stated here. Each name below is used by exactly
+# one `exact_only("<name>")` call in tests/, and a test checks that no name is unused or unlisted.
+# The reference arrays are in environment_reference.npz; regenerate them in the environment of
+# record with `uv run python paper/paper_common.py`. Setting the variable on a machine that is not
+# the environment of record (the Mac) is expected to fail for these values: the exact path is for
+# the image.
+
+[values.planted_table_sha256]
+reason = """processor architecture and maths library: the SHA-256 of the 900-row planted table
+(make_frontier_data, random_state 0) is c127dd4c... on macOS arm64 (the committed digest) and
+f6c45d25... on Linux amd64 (CI); the values agree to rounding"""
+elsewhere = """tests/test_paper.py::test_planted_table_agrees_with_the_reference_values compares the
+table's values with the reference array (values_rtol, values_atol), and the committed output of
+the datasets table is compared with numbers within text_rtol and this digest left uncompared"""
+values_rtol = 1e-9
+values_atol = 1e-12
+text_rtol = 1e-3  # the tables print four significant digits
+
+[values.figure1_data_hash]
+reason = """maths library (the operating system's, not the processor): the SHA-256 of Figure 1's
+data arrays is f9d7219d... on macOS and 4040cb8e... on Linux (amd64 CI and arm64 alike)"""
+elsewhere = """tests/test_paper.py::test_figure1_files_exist_and_the_data_hash_is_pinned compares the
+data arrays (u, logV, Z, corners, W, BETA) with the reference arrays within values_rtol and
+values_atol, and the facet labels and the highlighted design index exactly"""
+values_rtol = 1e-9
+values_atol = 1e-12
