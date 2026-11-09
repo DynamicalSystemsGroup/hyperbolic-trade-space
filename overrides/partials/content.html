@@ -1,0 +1,27 @@
+{#- Material's content partial, with one addition: a one-line world label from the page front
+    matter (world: embodied | symbolic | formal) placed under the page title. -#}
+{% include "partials/tags.html" %}
+{% include "partials/actions.html" %}
+{% set worlds = {
+  "embodied": "conceptual-embodied: see it, work an example",
+  "symbolic": "operational-symbolic: compute with it",
+  "formal": "axiomatic-formal: state it and prove it"
+} %}
+{#- The generated pages are written by a script and carry no front matter, so their world is set here. -#}
+{% set default_worlds = {"generated/derivations.md": "formal", "generated/verification.md": "formal"} %}
+{% set world = page.meta.world if page.meta and page.meta.world else default_worlds[page.file.src_uri] %}
+{% if "\u003ch1" not in page.content %}
+  <h1>{{ page.title | d(config.site_name, true)}}</h1>
+{% endif %}
+{% if world and "</h1>" in page.content %}
+  {% set parts = page.content.split("</h1>", 1) %}
+  {{ parts[0] }}</h1>
+  <p class="world-line"><em>World: {{ worlds[world] | d(world) }}</em></p>
+  {{ parts[1] }}
+{% else %}
+  {% if world %}<p class="world-line"><em>World: {{ worlds[world] | d(world) }}</em></p>{% endif %}
+  {{ page.content }}
+{% endif %}
+{% include "partials/source-file.html" %}
+{% include "partials/feedback.html" %}
+{% include "partials/comments.html" %}
