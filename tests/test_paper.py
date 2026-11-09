@@ -395,9 +395,10 @@ def test_figures_have_numbered_self_contained_captions():
         if not cell.id.startswith(("fig-", "tab-")):
             continue
         kind = "figure" if cell.id.startswith("fig-") else "table"
-        assert re.search(rf"\{{({kind}|embed)\}}[^\n]*\n?[^\n]*#{cell.id}\b|#{cell.id}\b", md), (
-            f"{cell.id} is not embedded in a {kind}"
-        )
+        embedded = re.search(rf"\{{({kind}|embed)\}}[^\n]*\n?[^\n]*#{cell.id}\b|#{cell.id}\b", md)
+        if cell.id == "fig-schematic":  # drawn from the committed file, see the figure-once test
+            embedded = "{figure} figures/figure1.png" in md
+        assert embedded, f"{cell.id} is not embedded in a {kind}"
     for m in re.finditer(r"\{figure\}\s*#([\w-]+)\s*\n:label:\s*(\S+)\s*\n(.*?)\n:::", md, re.S):
         assert m.group(3).strip(), f"figure {m.group(1)} has no caption"
     for m in re.finditer(r"\{table\}\s*([^\n]*)\n:label:\s*(\S+)", md):
@@ -486,12 +487,13 @@ def test_register_committed_output_is_current():
 
 def test_gaps_table_has_g1_to_g16_from_the_ledger():
     rows = generate_gaps.gap_rows()
-    assert [r["id"] for r in rows] == [f"G-{i}" for i in range(1, 17)]
+    ledger_ids = re.findall(r"^\| \*\*(G-\d+)\.", (NOTES / "abstraction-gaps.md").read_text(), re.M)
+    assert [r["id"] for r in rows] == ledger_ids == [f"G-{i}" for i in range(1, len(rows) + 1)]
     for r in rows:
         for col in generate_gaps.COLUMNS:
             assert r[col].strip(), (r["id"], col)
     ledger = (NOTES / "abstraction-gaps.md").read_text()
-    assert len(re.findall(r"^\| \*\*G-\d+\.", ledger, re.M)) == 16
+    assert len(re.findall(r"^\| \*\*G-\d+\.", ledger, re.M)) == len(rows)
 
 
 def test_gaps_committed_output_is_current():
@@ -664,13 +666,13 @@ def test_appendix_b_headings_equal_the_records_results():
     ]
     heads = re.findall(r"^#### (.+)$", _proof_text(), re.M)
     assert heads == expected == generate_proofs.result_headings()
-    assert len(heads) == 15  # fourteen files, L14 holds two results
+    assert len(heads) == sum(len(lem["results"]) for lem in _record()["lemmas"].values())
 
 
 def test_every_step_tag_of_the_record_appears_once_in_a_proof_and_none_is_empty():
     text = _proof_text()
     steps = [st for lem in _record()["lemmas"].values() for st in lem["steps"]]
-    assert len(steps) == 229
+    assert len(steps) == sum(len(lem["steps"]) for lem in _record()["lemmas"].values())
     for st in steps:
         assert text.count(f"| **{st['tag']}** |") == 1, st["tag"]
     rows = [ln for ln in text.splitlines() if ln.startswith("| **L")]
@@ -739,8 +741,10 @@ def test_appendix_b_closes_with_the_checkers_table():
     text = str(generate_proofs.checker())
     assert "uv run python -m derivation.proofmap" in text
     digest = __import__("hashlib").sha256(RECORD.read_bytes()).hexdigest()
-    assert digest in text and "| Lemma files, steps | 14, 229 |" in text
-    assert text.count("lemma_") >= 14
+    lemmas = _record()["lemmas"].values()
+    n_steps = sum(len(lem["steps"]) for lem in lemmas)
+    assert digest in text and f"| Lemma files, steps | {len(lemmas)}, {n_steps} |" in text
+    assert text.count("lemma_") >= len(lemmas)
 
 
 def test_appendix_b_committed_output_is_current():
@@ -788,7 +792,23 @@ def test_figure1_is_in_the_paper_with_a_placeholder_caption():
     cell = next(c for c in _code_cells(nb) if c.id == "fig-schematic")
     assert "figure1()" in _src(cell) and cell.outputs
     caption = next(c for c in nb.cells if c.id == "fig-schematic-caption")
-    assert "#fig-schematic" in _src(caption) and ":label:" in _src(caption)
+    assert "figures/figure1.png" in _src(caption) and ":label:" in _src(caption)
+
+
+def test_figure1_appears_once_in_the_built_page():
+    """The captioned directive draws the committed file; the code cell is removed from the page.
+
+    An embed of the cell (``#fig-schematic``) renders the cell's own output as well, which showed
+    the figure twice; ``remove-output`` leaves the embed without its image, so the directive
+    takes the file and the cell (kept to check that the figure still draws) is ``remove-cell``.
+    """
+    nb = _nb(PAPER_NB)
+    cell = next(c for c in _code_cells(nb) if c.id == "fig-schematic")
+    assert "remove-cell" in cell.metadata.get("tags", [])
+    md = _markdown(nb)
+    assert md.count("figures/figure1.png") == 1
+    assert "#fig-schematic" not in md
+    assert (PAPER / "figures" / "figure1.png").is_file()
 
 
 # -- C and D: the completions
