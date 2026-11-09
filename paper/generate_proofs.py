@@ -358,7 +358,7 @@ def proofs_fit(path=RECORD) -> Md:
 
 
 def proofs_solver(path=RECORD) -> Md:
-    """The proofs of the solver for K > 1 and its levels of guarantee (L12 to L15), step for step.
+    """The proofs of the solver for K > 1 and its levels of guarantee (L12 on), step for step.
 
     Parameters
     ----------
@@ -368,7 +368,8 @@ def proofs_solver(path=RECORD) -> Md:
     Returns
     -------
     Md
-        As :func:`proofs_fit`, for L12 to L15 (L14 is Proposition 3 and Corollary 4).
+        As :func:`proofs_fit`, for L12 to the record's last result (L14 is Proposition 3 and
+        Corollary 4; L17 is the soft-fit certificate).
     """
     return _part(range(PARTS[1][1], 10_000), path)
 

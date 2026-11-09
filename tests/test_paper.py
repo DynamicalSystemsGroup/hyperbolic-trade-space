@@ -2038,7 +2038,10 @@ def test_appendix_b_shows_every_result_of_the_record_with_derived_counts():
     results = sum(len(lem["results"]) for lem in record.values())
     steps = sum(len(lem["steps"]) for lem in record.values())
     assert f"{results} results in {len(record)} files and {steps} steps" in text
-    assert "(L12 to L16)" in text and "L15. descent" in _proof_text()
+    last = max(lem["number"] for lem in record.values())  # derived from the record, never typed
+    assert f"(L12 to L{last})" in text and "L15. descent" in _proof_text()
+    heading = f"### B.2 The several-facet fit and its levels of guarantee (L12 to L{last})"
+    assert heading in _src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-B-2"))
 
 
 def test_the_claims_of_c1_have_their_true_basis():
