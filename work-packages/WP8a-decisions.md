@@ -31,6 +31,19 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   OD3 (the paper card before WP10) no longer concerns a public page and becomes a default: the card
   is shown and links to the placeholder on the staging site.
 
+- **Agent's defaults, as one item** (OD3 folded in). **Supervisor (mzargham), verbatim:** "you are
+  allowed to include placeholder links that are not live yet as long as they will be live on an
+  official release. don't make extra steps for yourself and don't crowd your attention with
+  caveats. just keep a bang list for review once its live and if a link is broken we detect and fix
+  it in a patch"
+- Disposition: defaults approved with that change: links to pages that will exist at the first
+  release (the paper under `/paper/`, the PyPI page once published, release notes) may be placed
+  now; the link test treats them as expected-at-release rather than broken; a punch list
+  (`work-packages/release-punch-list.md`) records every such link and anything else to verify once
+  the site is live, checked at WP8b and fixed in a patch where broken; no caveat text on the pages.
+  Loop closed: decided 2 (OD1, OD2), OD3 folded into the defaults, raised 0, defaults approved with
+  the link policy.
+
 ## Scope approval (approval gate)
 
-- pending (the defaults as one item, then approval)
+- pending

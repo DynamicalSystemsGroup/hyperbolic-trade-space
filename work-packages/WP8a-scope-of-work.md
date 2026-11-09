@@ -199,3 +199,7 @@ All marked *(default)* where they appear; the supervisor approves or changes the
   `dev` that builds without deploying. OD3 becomes a default: the paper card is shown on the root
   page and links to the placeholder. `pyproject.toml` and `uv.lock` changes (the `docs` group pins,
   `default-groups`) are requested from the driver, who owns those files (WP14), not made by WP8a.
+Link policy (supervisor, at the defaults): placeholder links that will be live at the first release
+are allowed; `tests/test_site.py` lists them as expected-at-release, not broken; every such link goes
+on `work-packages/release-punch-list.md` for the live check at WP8b; broken links found live are
+fixed in a patch; no caveat text on the pages.

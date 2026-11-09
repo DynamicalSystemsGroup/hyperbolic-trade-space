@@ -1,0 +1,608 @@
+# Interface contract manifest: the single source of the pinned facts (WP14).
+# Read with tomllib. The contract document (interface-contract.md) quotes these facts and
+# tests/test_interface_contract.py asserts them against the repository.
+#
+# SCHEMA (for the test author)
+#   contract_version   integer. Equal to the number in the document's section "Quoted from the
+#                      manifest" and to the last row of its change log.
+#   Key kinds, by suffix or name:
+#     *path / *paths / paths / dir / file / files      repository paths relative to the repository root.
+#                                                      A trailing "/" marks a directory prefix.
+#     *_cmd / command / commands                       command strings (asserted as strings; run only
+#                                                      by the owning package's own tests).
+#     names / *_names / functions / modules            sets of identifiers (floor: the repository may
+#                                                      add, never lack one).
+#     signatures                                       tables name -> list of parameter names, in order,
+#                                                      exactly as inspect.signature(...).parameters.
+#     columns                                          table column -> dtype class in {int, float, bool,
+#                                                      str}; order is the CSV header order; exact.
+#     delivered_by = "WPn"                             the clause is SKIPPED (with the stated reason)
+#                                                      until the named file exists, then ENFORCED.
+#   [ownership.<side>].paths                           the sets that must be pairwise disjoint (R-10).
+#                                                      Overlap of a and b: a == b, or one ends in "/" and
+#                                                      is a prefix of the other. An entry listed in
+#                                                      [ownership.carve_outs] (path -> side) is a file
+#                                                      inside another side's directory prefix; it
+#                                                      belongs to the named side and is exempt from the
+#                                                      overlap check against that enclosing prefix only.
+#   [skips.*]                                          clauses that skip until `file` exists.
+#   [gaps.*]                                           open conformance gaps; each has `closed_by`.
+# Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
+# never shrink or rename without one.
+
+contract_version = 1
+
+[package]
+import_name = "hyperbolic_trade_space"
+distribution_name = "hyperbolic-trade-space"
+src_dir = "src/hyperbolic_trade_space/"
+version = "0.0.1"
+version_format = "PEP 440, MAJOR.MINOR.PATCH"
+version_sources = ["pyproject.toml [project].version", "hyperbolic_trade_space.__version__"]
+version_changed_by = "WP8b"
+public_names = [
+  "HyperbolicTradeSpace",
+  "LogAffinePreconditioner",
+  "TradeSpaceRegressor",
+  "__version__",
+  "frontier_in_original_units",
+  "make_configured_frontier_data",
+  "make_frontier_data",
+  "select_temperature",
+  "tension_report",
+]
+submodules = [
+  "plotting", "gaps", "solvers", "coordinates", "datasets", "preconditioning",
+  "predictive", "tensions", "tuning", "estimator",
+]
+
+# Names importable from each pinned submodule (floor).
+[package.submodule_names]
+solvers = [
+  "EPS_FEAS", "EPS_KKT", "GUARD_TOL", "POLISH_STEPS", "SolveResult", "Termination", "TermsResult",
+  "assignment_margin", "facet_gap", "facet_objective", "fixed_assignment_bound", "log_mean_exp",
+  "objective_and_grad", "simplex_gap", "single_facet_termination", "solve_lp", "solve_slsqp",
+  "solve_terms", "support_weights",
+]
+coordinates = ["alr_basis", "from_frontier_coordinates", "helmert_basis", "to_frontier_coordinates"]
+gaps = ["find_holes", "frontier_targets", "knn_gap_scores", "orient_by_pca"]
+plotting = [
+  "facet_labels", "plot_frontier_coordinates", "plot_frontier_surface_3d", "plot_log_plane",
+  "plot_tensions", "plot_v_by_variable",
+]
+datasets = ["make_configured_frontier_data", "make_frontier_data"]
+preconditioning = ["LogAffinePreconditioner", "frontier_in_original_units"]
+predictive = ["TradeSpaceRegressor"]
+tensions = ["TensionReport", "tension_report"]
+tuning = ["select_temperature"]
+estimator = ["HyperbolicTradeSpace"]
+
+# Parameter names of the WP13 certificate functions (floor on names; signatures exact).
+[package.signatures.solvers]
+simplex_gap = ["g", "w", "min_exponent"]
+facet_gap = ["U", "w", "ubar", "tau", "min_exponent", "p"]
+assignment_margin = ["U", "W", "beta"]
+fixed_assignment_bound = ["U", "W", "labels", "tau", "min_exponent", "P"]
+
+# Fitted attributes and methods the paper reads.
+[package.estimator]
+class = "HyperbolicTradeSpace"
+fitted_attributes = ["exponents_", "log_offset_", "training_log_v_", "termination_", "conditioning_"]
+methods = [
+  "fit", "fit_transform", "transform", "inverse_transform", "score_samples", "invariant_value",
+  "improvement_factors", "level_set", "novelty_score", "project", "assign_facets",
+]
+termination_class = "hyperbolic_trade_space.solvers.Termination"
+termination_fields = [
+  "status", "reason", "n_iter", "sum_residual", "floor_residual", "offset_residual", "max_gap",
+  "bound", "objective_change", "assignment_changes", "n_empty", "gamma", "radius", "eps_kkt",
+  "eps_feas", "guard_tol", "gaps", "shares",
+]
+termination_statuses = [
+  "certified", "stationary_without_margin", "uncertified", "guard_stop", "iteration_cap",
+  "not_applicable",
+]
+# Per-facet report: the fields of hyperbolic_trade_space.tensions.TensionReport.
+report_class = "hyperbolic_trade_space.tensions.TensionReport"
+report_fields = [
+  "participating", "exponents", "exchange_rates", "association", "association_kind",
+  "closure_note", "tension_directions", "tension_loadings", "explained_spread", "contending_set",
+  "contending_exponents", "n_lemma", "lemma_name", "band", "n_near_frontier",
+]
+
+[package.tolerances]
+EPS_FEAS = 1e-9
+EPS_KKT = 1e-8
+GUARD_TOL = 1e-12
+POLISH_STEPS = 5
+
+# The documented source of the generated API reference (OD2).
+[package.docstrings]
+style = "numpydoc"
+source_of_api_reference = true
+
+[boundary]
+rule = "The method consumes a table of evaluated configurations; the source of the attributes is a black box."
+table_row = "one evaluated configuration"
+column_kinds = ["configuration", "attribute", "flag", "identifier"]
+identifier_columns = ["design_id", "seed"]
+flag_dtype = "bool"
+attribute_conditioning = "the analyst's job; the package fits conditioned metrics (strictly positive, larger is better)"
+sources_satisfying = ["simulator", "physical test", "human assessment"]
+forbidden_words = "defined in tests/test_interface_contract.py (the two modeling-tool words and tool-version strings); not repeated here so that the scan files stay clean"
+scan_files = [
+  "work-packages/interface-contract.md",
+  "work-packages/interface-contract.toml",
+  "src/hyperbolic_trade_space/__init__.py",
+]
+
+[boundary.oracle]
+protocol = "Oracle"
+status = "pinned_at_WP15_acceptance"
+until = "the frozen cubesat pair below is the pinned oracle"
+config_names = "tuple[str, ...]"
+attribute_names = "tuple[str, ...]"
+flag_names = "tuple[str, ...]"
+call = "__call__(configuration: Mapping[str, float | str]) -> dict[str, float | bool]"
+evaluate = "evaluate(designs: pandas.DataFrame) -> pandas.DataFrame"
+deterministic = true
+noise = "added by a wrapper, not by the oracle"
+scenario = "fixed at construction, not per call"
+invalid_input = "ValueError naming the variable"
+batch_order = "rows in design_id order"
+
+[boundary.cubesat_instance]
+module = "cubesat_model"
+role = "the cubesat instance of the boundary only; not the protocol"
+[boundary.cubesat_instance.signatures]
+measure = ["configuration", "model", "kw"]
+sample_designs = ["n", "seed", "model"]
+
+[case]
+dir = "examples/adcs/"
+pythonpath = [".", "src", "examples/adcs"]
+modules = ["k_terms", "generate_dataset", "design_space", "cubesat_model", "adcs_sim", "make_check_designs"]
+regimes = ["primary", "stock"]
+regime_attribute = "k_terms.REGIMES"
+data_dir = "examples/adcs/data/"
+data_rule = "committed, seeded; regenerated only by a package whose scope says so"
+producing_command = "uv run python examples/adcs/k_terms.py"
+smoke_run = "k_terms.run_regime(regime, seeds=[0], figs=<tmp dir>, verbose=False)"
+
+[case.regime_files]
+primary = "adcs_designs_cubesat_gains.csv"
+stock = "adcs_designs_cubesat.csv"
+
+[case.signatures.k_terms]
+load_metrics = ["path", "n_max"]
+make_conditioner = ["attrs"]
+fit_k = ["M", "K", "tau", "seed"]
+select_tau = ["M", "K", "target"]
+reports = ["est", "M", "band"]
+facet_record = ["est", "reps", "rows"]
+certificate = ["est"]
+run_regime = ["regime", "seeds", "n_max", "figs", "make_figures", "verbose"]
+main = ["argv"]
+
+[case.signatures.generate_dataset]
+generate = ["n", "seed", "workers", "fast", "model", "slew_deg", "t_end", "gain_box"]
+generate_cubesat = ["n", "seed", "workers", "fast", "slew_deg", "t_end", "gain_box"]
+main = ["argv"]
+
+[case.signatures.design_space]
+sample_designs = ["n", "rng_or_seed"]
+evaluate_design = ["row", "t_end", "max_step", "initial_error_deg"]
+
+[case.signatures.cubesat_model]
+measure = ["configuration", "model", "kw"]
+sample_designs = ["n", "seed", "model"]
+
+[case.signatures.adcs_sim]
+simulate_adcs = ["config"]
+run_step_response = ["params", "Kp", "Kd", "t_end"]
+make_config = ["params", "Kp", "Kd", "wheel", "t_end", "initial_error_deg", "max_step", "axis"]
+
+[case.signatures.make_check_designs]
+feasible_primary = []
+predict = []
+simulate = []
+main = ["argv"]
+
+[case.figures]
+dir = "examples/adcs/figures/"
+format = "png"
+patterns = ["^[0-9]{2}_[a-z0-9_]+\\.png$", "^k3_[a-z_]+_(primary|stock)\\.png$"]
+produced_by_numbered = "examples/adcs/adcs_trade_study.ipynb"
+produced_by_k3 = "uv run python examples/adcs/k_terms.py"
+read_only_for = "presentation"
+files = [
+  "01_two_designs.png", "02_tau_sweep.png", "03_frontier_surfaces.png", "04_log_planes.png",
+  "05_coordinates_holes.png", "06_tension_association.png", "07_v_by_category.png",
+  "08_predict_check.png", "09_regime_comparison.png",
+  "k3_frontier_coordinates_primary.png", "k3_frontier_coordinates_stock.png",
+  "k3_log_planes_primary.png", "k3_log_planes_stock.png",
+  "k3_tensions_primary.png", "k3_tensions_stock.png",
+]
+
+[derivation]
+entry_cmd = "uv run python derivation/run.py"
+dir = "derivation/"
+run_module = "derivation.run"
+run_attributes = ["CHAIN", "CHAIN_NAMES", "run_chain", "load_chain", "lemma_number", "print_audit", "main"]
+axioms_module = "derivation.axioms"
+axioms_attributes = ["AXIOMS", "by_tag", "fallbacks"]
+chain_length = 14
+module_pattern = "^lemma_([0-9]{2})_[a-z0-9_]+$"
+numbering = "contiguous from 1; numbers never reused or renumbered; a new lemma takes the next number"
+exit_codes = "0 on success, non-zero on a failed lemma"
+generated_dir = "docs/generated/"
+generated_pages = ["derivations.md", "verification.md"]
+generated_by = "scripts/build_generated.py"
+generated_git = "ignored, never committed"
+
+[docs]
+dir = "docs/"
+pages = ["method.md", "why-and-how.md", "preconditioning.md", "api.md", "limitations.md", "literature.md"]
+bibliography = "docs/references.bib"
+notes_dir = "docs/superpowers/notes/"
+notes_in_navigation = false
+citation_syntax = "[@key]"
+citation_multi = "[@key1; @key2]"
+math_inline = "$...$"
+math_display = "$$...$$"
+rename_rule = "the technical side adds pages and renames none without an amendment"
+api_reference_page = "docs/api-reference.md"
+api_reference_source = "numpydoc docstrings of the public names, rendered by the docsite"
+api_overview_page = "docs/api.md"
+presentation_pages = ["docs/index.md", "docs/case.md", "docs/api-reference.md"]
+helper = "tests/test_references.py"
+
+[build]
+tests_cmd = "uv run pytest"
+lint_cmd = "uv run ruff check ."
+format_cmd = "uv run ruff format --check ."
+lock_cmd = "uv lock --check"
+docs_cmd = "uv run --group docs mkdocs build --strict"
+docs_out = "_site/docs/"
+docs_config = "mkdocs.yml"
+paper_cmd = "uv run myst build --html"
+paper_cwd = "paper/"
+paper_out = "_site/paper/"
+paper_config = "paper/myst.yml"
+root_index_source = "site/index.html"
+root_index_out = "_site/index.html"
+site_dir = "_site/"
+public_paths = ["/", "/docs/", "/paper/"]
+public_url = "https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/"
+workflow = ".github/workflows/publish.yml"
+workflow_deploys_from = "main"
+workflow_never_deploys_from = "dev"
+ci_workflow = ".github/workflows/test.yml"
+branches = ["dev", "main"]
+dependency_groups_required = ["dev", "docs", "notebooks", "case"]
+default_groups = ["dev", "case"]
+python = "3.12"
+
+[build.dependency_groups_owner]
+dev = "technical"
+case = "technical"
+notebooks = "technical"
+docs = "wp8a"
+paper = "wp10"
+
+[build.stage]
+release_control = "a merge to main that would deploy is preceded by a review of the staged localhost site, recorded in the merging package's decisions file"
+script = "scripts/stage_site.py"
+command = "uv run python scripts/stage_site.py --serve"
+build_dir = "_stage/"
+url = "http://127.0.0.1:8000"
+network = false
+kernel = false
+default = true
+delivered_by = "WP8a"
+
+[ownership]
+rule = "sides are pairwise disjoint; entries are explicit paths or directory prefixes; no globs"
+
+[ownership.technical]
+paths = [
+  "src/", "derivation/", "tests/", ".python-version", ".github/workflows/test.yml", "README.md",
+  "docs/method.md", "docs/why-and-how.md", "docs/preconditioning.md", "docs/api.md",
+  "docs/limitations.md", "docs/superpowers/",
+  "examples/adcs/k_terms.py", "examples/adcs/generate_dataset.py", "examples/adcs/design_space.py",
+  "examples/adcs/cubesat_model.py", "examples/adcs/adcs_sim.py", "examples/adcs/make_check_designs.py",
+  "examples/adcs/adcs_trade_study.ipynb", "examples/adcs/cubesat_tradespace.sysml",
+  "examples/adcs/extended_design_space.sysml", "examples/adcs/data/", "examples/adcs/figures/",
+  "examples/adcs/model_v2/", "examples/adcs/experiments/", "examples/adcs/case-model.md",
+]
+
+[ownership.process]
+paths = ["work-packages/", "CLAUDE.md"]
+
+[ownership.wp14]
+paths = [
+  "work-packages/interface-contract.md", "work-packages/interface-contract.toml",
+  "tests/test_interface_contract.py",
+]
+
+[ownership.wp8a]
+paths = [
+  "mkdocs.yml", "overrides/", "site/", "scripts/", ".github/workflows/publish.yml",
+  "tests/test_site.py", "docs/index.md", "docs/case.md", "docs/api-reference.md", "docs/generated/",
+]
+
+[ownership.wp10]
+paths = [
+  "paper/", "examples/adcs/case.py", "tests/test_paper.py", "tests/test_case.py",
+  "docs/references.bib", "docs/literature.md",
+]
+
+# WP12 touches presentation only through declared additions (additive amendment at its scope).
+[ownership.wp12]
+paths = []
+
+[ownership.wp8b]
+paths = ["CHANGELOG.md", "LICENSE", ".github/workflows/release.yml"]
+
+[ownership.driver]
+paths = ["pyproject.toml", "uv.lock", ".gitignore"]
+
+# Files inside another side's directory prefix, owned by the named side.
+[ownership.carve_outs]
+"work-packages/interface-contract.md" = "wp14"
+"work-packages/interface-contract.toml" = "wp14"
+"tests/test_interface_contract.py" = "wp14"
+"tests/test_site.py" = "wp8a"
+"tests/test_paper.py" = "wp10"
+"tests/test_case.py" = "wp10"
+
+[skips]
+[skips.build_generated]
+clause = "R-5 generated pages script"
+file = "scripts/build_generated.py"
+reason = "WP8a delivers the generated-pages script"
+closed_by = "WP8a"
+[skips.mkdocs_config]
+clause = "R-7 docsite configuration"
+file = "mkdocs.yml"
+reason = "WP8a delivers the docsite configuration"
+closed_by = "WP8a"
+[skips.api_reference_page]
+clause = "R-6 API reference stub"
+file = "docs/api-reference.md"
+reason = "WP8a delivers the presentation-owned API reference stub"
+closed_by = "WP8a"
+[skips.publish_workflow]
+clause = "R-7 Pages workflow"
+file = ".github/workflows/publish.yml"
+reason = "WP8a delivers the Pages workflow"
+closed_by = "WP8a"
+[skips.stage_site]
+clause = "R-12 local staging command"
+file = "scripts/stage_site.py"
+reason = "WP8a delivers the staging command"
+closed_by = "WP8a"
+[skips.root_index]
+clause = "R-7 root index source"
+file = "site/index.html"
+reason = "WP8a delivers the root index"
+closed_by = "WP8a"
+[skips.myst_config]
+clause = "R-7 paper configuration"
+file = "paper/myst.yml"
+reason = "WP10 delivers the paper configuration"
+closed_by = "WP10"
+[skips.oracle_protocol]
+clause = "R-3a Oracle protocol"
+file = "examples/adcs/experiments/oracle.py"
+reason = "WP15 delivers the protocol; pinned by additive amendment at its acceptance"
+closed_by = "WP15"
+
+[gaps]
+[gaps.init_docstring]
+what = "the docstring of src/hyperbolic_trade_space/__init__.py says package code arrives in later work packages"
+closed_by = "WP8b"
+[gaps.no_scripts_dir]
+what = "scripts/ does not exist"
+closed_by = "WP8a"
+[gaps.no_generated_dir]
+what = "docs/generated/ does not exist (git-ignored, built by scripts/build_generated.py)"
+closed_by = "WP8a"
+[gaps.no_site_configs]
+what = "mkdocs.yml, site/index.html, paper/myst.yml, .github/workflows/publish.yml and scripts/stage_site.py do not exist"
+closed_by = "WP8a (WP10 for paper/myst.yml)"
+[gaps.no_api_reference_stub]
+what = "docs/api-reference.md does not exist"
+closed_by = "WP8a"
+[gaps.gitignore_site]
+what = ".gitignore ignores site/, the source directory of the root index, and lacks _stage/"
+closed_by = "WP8a (edit by the driver)"
+[gaps.paper_group]
+what = "pyproject.toml has no paper dependency group and the docs group is not in default-groups"
+closed_by = "WP10 (paper group), WP8a (docs group), edit by the driver"
+[gaps.workflow_name_draft]
+what = "the WP8a draft names the workflow pages.yml and an assemble_site.py script; the contract names publish.yml and stage_site.py, and WP8a follows the contract"
+closed_by = "WP8a"
+[gaps.bib_ownership]
+what = "docs/references.bib and docs/literature.md are assigned to WP10 (bibliography additions for the paper) although WP5 and WP13 own earlier content; later technical edits go through an amendment"
+closed_by = "WP10"
+[gaps.oracle_not_adopted]
+what = "the Oracle protocol is stated but not yet pinned; the frozen cubesat pair stands in"
+closed_by = "WP15"
+
+# --- Data files (committed, frozen): header columns and dtypes -------------------------------------
+[case.data."adcs_designs_cubesat_gains.csv"]
+role = "primary regime dataset"
+rows = 1000
+
+[case.data."adcs_designs_cubesat_gains.csv".columns]
+design_id = "int"
+seed = "int"
+wheel_class = "str"
+st_grade = "str"
+panel_span_m = "float"
+battery_wh = "float"
+Kp = "float"
+Kd = "float"
+settling_time_s = "float"
+slew_time_s = "float"
+pointing_error_deg = "float"
+total_mass_kg = "float"
+adcs_mass_kg = "float"
+control_effort = "float"
+power_margin_w = "float"
+energy_balance_wh = "float"
+eclipse_reserve_wh = "float"
+peak_slew_power_w = "float"
+dod_eclipse = "float"
+settled = "bool"
+momentum_ok = "bool"
+torque_saturated_frac = "float"
+power_ok = "bool"
+dod_ok = "bool"
+peak_momentum_nms = "float"
+panel_mass_kg = "float"
+battery_mass_kg = "float"
+generated_power_w = "float"
+available_power_w = "float"
+usable_torque_nm = "float"
+slew_time_05deg_s = "float"
+slew_loss_energy_wh = "float"
+slew_deg = "int"
+t_end_s = "int"
+max_step_s = "float"
+
+[case.data."adcs_designs_cubesat.csv"]
+role = "stock (baseline) regime dataset"
+rows = 1000
+
+[case.data."adcs_designs_cubesat.csv".columns]
+design_id = "int"
+seed = "int"
+wheel_class = "str"
+st_grade = "str"
+panel_span_m = "float"
+battery_wh = "float"
+Kp = "float"
+Kd = "float"
+settling_time_s = "float"
+slew_time_s = "float"
+pointing_error_deg = "float"
+total_mass_kg = "float"
+adcs_mass_kg = "float"
+control_effort = "float"
+power_margin_w = "float"
+energy_balance_wh = "float"
+eclipse_reserve_wh = "float"
+peak_slew_power_w = "float"
+dod_eclipse = "float"
+settled = "bool"
+momentum_ok = "bool"
+torque_saturated_frac = "float"
+power_ok = "bool"
+dod_ok = "bool"
+peak_momentum_nms = "float"
+panel_mass_kg = "float"
+battery_mass_kg = "float"
+generated_power_w = "float"
+available_power_w = "float"
+usable_torque_nm = "float"
+slew_time_05deg_s = "float"
+slew_loss_energy_wh = "float"
+slew_deg = "int"
+t_end_s = "int"
+max_step_s = "float"
+
+[case.data."adcs_designs.csv"]
+role = "original ADCS dataset"
+rows = 1000
+
+[case.data."adcs_designs.csv".columns]
+design_id = "int"
+seed = "int"
+wheel_class = "str"
+st_grade = "str"
+Kp = "float"
+Kd = "float"
+panel_mass_kg = "float"
+antenna_mass_kg = "float"
+settling_time_s = "float"
+pointing_error_deg = "float"
+adcs_mass_kg = "float"
+control_effort = "float"
+settled = "bool"
+momentum_ok = "bool"
+torque_saturated_frac = "float"
+peak_momentum_nms = "float"
+
+[case.data."check_designs_cubesat.csv"]
+role = "propose-predict-check designs, simulated"
+rows = 6
+
+[case.data."check_designs_cubesat.csv".columns]
+role = "str"
+design_id = "int"
+name = "str"
+seed = "int"
+panel_span_m = "float"
+battery_wh = "float"
+wheel_class = "str"
+st_grade = "str"
+Kp = "float"
+Kd = "float"
+settling_time_s = "float"
+slew_time_s = "float"
+pointing_error_deg = "float"
+total_mass_kg = "float"
+control_effort = "float"
+power_margin_w = "float"
+energy_balance_wh = "float"
+eclipse_reserve_wh = "float"
+peak_slew_power_w = "float"
+dod_eclipse = "float"
+settled = "bool"
+momentum_ok = "bool"
+power_ok = "bool"
+dod_ok = "bool"
+torque_saturated_frac = "float"
+adcs_mass_kg = "float"
+peak_momentum_nms = "float"
+panel_mass_kg = "float"
+battery_mass_kg = "float"
+generated_power_w = "float"
+available_power_w = "float"
+usable_torque_nm = "float"
+slew_time_05deg_s = "float"
+slew_loss_energy_wh = "float"
+
+[case.data."check_predictions_cubesat.csv"]
+role = "propose-predict-check predictions"
+rows = 3
+
+[case.data."check_predictions_cubesat.csv".columns]
+role = "str"
+design_id = "int"
+name = "str"
+panel_span_m = "float"
+battery_wh = "float"
+Kp = "float"
+Kd = "float"
+wheel_class = "str"
+st_grade = "str"
+target_z1 = "float"
+target_z2 = "float"
+target_z3 = "float"
+pred_z1 = "float"
+pred_z2 = "float"
+pred_z3 = "float"
+pred_log_v = "float"
+pred_std_slew_time_s = "float"
+pred_std_pointing_error_deg = "float"
+pred_std_control_effort = "float"
+pred_std_total_mass_kg = "float"
+hole_score = "float"
+distance_to_target = "float"
+tau = "float"
+band = "float"
+n_train = "int"
+
