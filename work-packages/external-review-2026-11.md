@@ -203,7 +203,93 @@ WP13 is accepted.
 
 ## Response letter
 
-To be assembled from the dispositions.
+Reply to the reviewer, one numbered response per item in the review's order. Commits are on branch
+`dev` (WP13); lemma ids are in `derivation/`; the register is `docs/superpowers/notes/notation.md`; the
+gaps ledger is `docs/superpowers/notes/abstraction-gaps.md`. Measurements are on the planted data
+`make_frontier_data(400, 4, n_terms=3, random_state=s)`, s = 0..19, `solve_terms(U, 3, tau, random_state=0)`.
+
+**E-1 (3.1, certificates, assignment-stable neighbourhood, conditional local optimality). Accepted in full.**
+You asked for a first-order gap per facet, an assignment margin with an explicit radius, a conditional
+local-optimality proposition, an approximate certificate, and a three-level statement. Changed:
+`solvers.py` gains `simplex_gap`, `facet_gap`, `assignment_margin` and `fixed_assignment_bound`, a
+finite-temperature reduced-Newton polish at the end of each facet refit, per-facet duals kept (at tau = inf
+the gap is the LP duality gap), a guard tolerance of 1e-12, and a `Termination` record on `TermsResult`
+(status certified / stationary_without_margin / uncertified / guard_stop / iteration_cap / not_applicable;
+iterations; feasibility and offset residuals; maximum gap; Corollary bound; objective change; assignment
+changes; empty facets; margin; radius; tolerances EPS_KKT = 1e-8, EPS_FEAS = 1e-9) (03c8b1a); the
+estimator exposes `termination_` and a status-keyed `ConvergenceWarning` (1e9ae03). The four statements are SymPy lemma scripts: Lemma 1 = L12 (a9f142f), Lemma 2 = L13 with the
+explicit radius gamma / (2 max_i ||(u_i, -1)||) (c0b4e9c), Proposition 3 and Corollary 4 = L14 (d8fa513);
+the ledger gains I8 (first-order convexity inequality), I9 (Cauchy-Schwarz), F12 (min representation) and
+R2 (positive assignment margin) with role and failure mode. The method page states the three levels and the
+stopping declaration (4bfe591, "Three levels of guarantee" to "The stopping declaration"); Level 3 is stated
+for step B, unpenalized, with support offsets only, as you advised. Evidence: after the polish the maximum
+facet gap is 5e-15 at tau = 50 and 2e-15 at tau = inf over the 20 seeds; 20/20 fits are certified at
+tau = 50, and 16/20 at tau = inf, the other four (seeds 1, 3, 8, 16) stopping with a zero margin because a
+frontier row lies on two facet planes (status stationary_without_margin); 3,600 random perturbations within
+the radius left every assignment unchanged; the Corollary bound holds on all 40 fits against independent
+per-facet solves (`tests/test_solvers.py`, `tests/test_estimator.py`). Cubesat K = 2, 3: all certified,
+maximum gap 1.1e-14, margin 2.2e-4 to 1.6e-3 (`docs/superpowers/notes/k3-cubesat.md`, "Changes from WP13").
+Two implementation choices go beyond your list: a sixth status "uncertified" (fixed assignment, gap above its
+tolerance), and margin positivity read as gamma > EPS_FEAS. The guard tolerance moved one planted seed
+(seed 8, tau = inf) from certified to stationary_without_margin; the recovery table in the method page is
+re-run.
+
+**E-2 (3.2, finite-temperature regularity and the simplex KKT). Accepted.** You asked for the complete
+simplex KKT conditions with the equal-gradient reading reserved for positive weights. Changed: L3 states
+g_j >= lambda, w_j (g_j - lambda) = 0, lambda = w.g, derives the algebra at symbolic d and verifies a
+constructed instance whose hard-support optimum is balanced while the finite-tau minimizer is on the
+boundary with g_j > lambda (c61ff49); R1's wording is tightened; the method page "The fit" states the full
+conditions and the lesson (4bfe591).
+
+**E-3 (3.3, fitted surface, empirical envelope, Pareto boundary). Accepted with a change.** You asked that
+the three objects be kept apart. Changed: the lemma STATEMENTs name the object they are about (L12 to L14,
+L3), the register defines "fitted reference surface", "supporting envelope" and "Pareto boundary" once with
+what each is not (b5467f0), and the method page defines the three objects in one paragraph (4bfe591); the
+prose uses "frontier" where the context fixes the object. The gaps ledger row G-1 records the bridging
+assumption and the evidence.
+
+**E-4 (3.4, multi-term bounds). Accepted and done earlier.** The text stated the log-mean-exp bound for the
+log-sum-exp construction. Changed in a15566b: the method page, the L10 docstring and the API page state
+max_k x_k <= Phi_K <= max_k x_k + (log K)/kappa, as the script proves.
+
+**E-5 (3.5, existence, uniqueness, stability, tolerances). Accepted.** You asked for the three notions to
+be separated, the restricted Hessian discussed, tolerances given and numerically zero distinguished from
+mathematically zero. Changed: the method page has existence (compact simplex, continuity), uniqueness
+(strict convexity on the simplex tangent space) and stability (restricted Hessian, local sensitivity) as
+separate statements, with the participation threshold (1e-3) and the contending-set rule given with their
+tolerances (4bfe591); the estimator exposes `conditioning_`, the smallest eigenvalue of the restricted
+Hessian of J_tau at the fit per facet (nan at tau = inf, where the objective is not twice differentiable)
+(1e9ae03); ledger row G-2 records the sensitivity evidence.
+
+**E-6 (3.6, statistical claims). Accepted.** You asked that L6 be stated as the population identity it is.
+Changed: L6's statement reads "population identity under the log-space Gaussian model" with A5 named and
+"no consistency claim" (c61ff49); the noise section of the method page drops every sentence that read as
+finite-sample unbiasedness or consistency, and says a fitted normal is a feature of the conditioned
+empirical model and not a causal exchange (4bfe591); ledger rows G-3, G-11 and G-12 carry the assumptions
+a consistency statement would need. A test greps the docs for the forbidden phrases (`tests/test_docs.py`).
+
+**E-7 (3.7, implementation and terminology). Accepted as classified.** (i) The single-observation shortcut
+keeps its behaviour as a declared convention: a `UserWarning` at fit and a docstring statement that the
+fitted object does not exist for that input (1e9ae03; ledger G-4). (ii) Zero-metric scoring now follows the
+formal limit: a zero metric with exponent <= 1e-12 contributes nothing (0 log 0 := 0), a zero metric on a
+participating exponent keeps V = 0, and masking in the fit is unchanged (1e9ae03; test on a planted-zero
+exponent; G-5). (iii) log V is the "energy differential" (level offset), not a Euclidean distance; the
+register settles the word and the docs use it (b5467f0, 4bfe591, c3cbec4). (iv) The sliver argument is
+moved to "observed" in "What is proved, inherited, observed" (4bfe591; G-6).
+
+**E-8 (4, presentation). Accepted.** The algorithm part is organized as Lemma 1, Lemma 2, Proposition 3,
+Corollary 4 and the stopping declaration, in L12 to L14 and in the method page (4bfe591), with certified
+convergence reported separately from iteration-cap and guard stops.
+
+**E-9 (2.1 to 2.5, strengths). Noted.** The monomial invariant, the convex single-term fit, the invertible
+chart, the posynomial extension and the reproducibility are the contribution the paper will frame; this is
+carried in the paper's scope (WP10).
+
+**E-10 (Paper Map). Accepted.** The map's open questions are entered in the gaps ledger: Q2 statistical
+consistency (G-11), Q3 identifiability of active metrics under finite, biased observations (G-12), Q4
+frontier recovery, fitted versus true Pareto boundary (G-13), and Q1 global convergence, marked not pursued
+(G-14), as you allow. The Derived / Numerical / Open badges are adopted as the paper's marking in WP10's
+scope.
 
 ## The review, verbatim
 

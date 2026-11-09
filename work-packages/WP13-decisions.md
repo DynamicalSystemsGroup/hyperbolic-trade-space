@@ -38,3 +38,9 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   Disposition: the WP13 PM becomes the single PM across packages; it drafts the WP14, WP8a and WP10
   scopes through bounded subagents while WP13 executes, and later runs the approved packages
   concurrently; `PM-BRIEF.md` and the README carry the hierarchy.
+
+## Delivery notes (PM, factual; not decisions)
+
+- Execution on `dev`: commits "WP13: ..." from c61ff49 to c3cbec4; the fresh-context review is `WP13-review.md` (40062f6); the response letter is in `external-review-2026-11.md`.
+- Deviations from the scope's wording, for the acceptance gate: (1) a sixth termination status `uncertified` (fixed assignment, gap above EPS_KKT) beyond the five listed; (2) margin positivity implemented as gamma > EPS_FEAS (1e-9) rather than gamma > 0; the two readings coincide on all planted data; (3) the guard tolerance moved planted seed 8 at tau = inf, step B, from certified to stationary_without_margin (recovery 17/20 to 16/20; disclosed in the method page and the letter); (4) per-reach values in the K = 2, 3 cubesat record moved at the sixth decimal only (ten values, listed in `docs/superpowers/notes/k3-cubesat.md`).
+- Review gaps G-A to G-D fixed in c3cbec4 (format, ledger sd labels, stale ranges, register wording in README and spec).
