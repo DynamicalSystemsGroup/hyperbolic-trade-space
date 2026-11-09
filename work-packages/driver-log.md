@@ -39,6 +39,11 @@ conclusion, a trade-off his words do not settle, or an outward-facing act other 
 | Date | Tree | Result | Reading |
 |---|---|---|---|
 | 2026-11-08 | `dev` near 2e808f9 plus uncommitted work of four implementers | 1508 passed, 11 skipped, 1 xfailed, 13 errors; lock clean; attribution 0; lemma chain passes on re-run | not a verdict: 8 errors were a collision between concurrent site builds (pass alone); 5 need the pinned toolkit, absent from the driver's environment and from CI; lint errors only in an uncommitted file |
+| 2026-11-08 | `dev` near 33f63b1, shared checkout, the PM regenerating the experiments meanwhile | 1710 passed, 16 skipped, 1 xfailed, 7 failed; lock clean; attribution 0 | not a verdict: the 7 failures are the experiment and data tests, which pass alone (57 passed) and failed while the ledger was being rewritten; lint errors only in uncommitted files |
+
+**Method from here on.** The driver verifies a named commit in its own clean checkout (a git
+worktree in the session scratchpad with its own locked environment), not the shared tree, so a
+result is a verdict on a commit and cannot be disturbed by agents at work. First used at 66f997c.
 
 ## Overruled or corrected (kept so the pattern is visible)
 
