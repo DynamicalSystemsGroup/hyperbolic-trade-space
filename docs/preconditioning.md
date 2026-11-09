@@ -1,3 +1,7 @@
+---
+world: symbolic
+---
+
 # Preconditioning: from attributes to metrics
 
 The identification stage of the method consumes a strictly positive matrix of larger-is-better

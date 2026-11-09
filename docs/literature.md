@@ -1,3 +1,7 @@
+---
+world: formal
+---
+
 # Literature
 
 ## Introduction and how to read this page

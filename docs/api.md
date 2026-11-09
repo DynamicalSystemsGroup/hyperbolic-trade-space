@@ -1,3 +1,7 @@
+---
+world: symbolic
+---
+
 # API
 
 This page documents the public interface as built, stage by stage, including the $K>1$ posynomial

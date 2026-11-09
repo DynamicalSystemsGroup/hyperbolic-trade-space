@@ -1,3 +1,7 @@
+---
+world: embodied
+---
+
 # Why and how to use it
 
 Suppose you have run many designs through an evaluation, a simulator or a test, and each design

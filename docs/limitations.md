@@ -1,3 +1,7 @@
+---
+world: formal
+---
+
 # Extensions and limitations
 
 Posynomial invariant form is a model of a trade space, and this page lists where it is wrong in

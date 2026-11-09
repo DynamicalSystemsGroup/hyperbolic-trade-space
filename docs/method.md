@@ -1,3 +1,7 @@
+---
+world: formal
+---
+
 # Mathematics
 
 This page sets out the mathematics of posynomial invariant form in the order of the pipeline. It is
