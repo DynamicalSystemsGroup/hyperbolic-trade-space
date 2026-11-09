@@ -90,3 +90,33 @@ the DOM (below).
   the Level 1 block is Theorem 10 (the site numbers a kind in order of appearance, and the block
   stands before Lemma 1 as the algorithm's order asks); proof boxes are numbered by their position
   ("Proof 12" for Theorem 10).
+
+## Pass after the cold-read change requests (2026-11-09, round 2)
+
+Built with `cd paper && uv run myst build --html` (no warnings; it prints a line that a server
+started on port 3000, the builder's own temporary server, which stops with the build; Appendix F
+now says so), served with `uv run python -m http.server 8797 --directory paper/_build/html`, viewed
+in a tab of my own in the Browser pane, light and dark (the page's theme class, set and read back),
+at 1280 px and at 375 px, scrolling to each changed place. Viewed by eye: the abstract; section 1
+(what scales, the nondominated sentence, the main-results list); the definitions (the n-lemma, the
+band, the chart, the share); Methods (the target sentence, the participation sentence); a proof box
+with a worded label (L3); the margin sentence and Open questions; the start of section 9 (the
+recovery sentence, the K = 1 sentence), the K = 3 association figure and its caption, the K sweep
+sentence; on the supporting page D.14 (dark, 375 px). Measured in the DOM: `scrollWidth` is 375 on
+both pages at 375 px; every new heading and table is present once the page has loaded.
+
+- **Panel titles.** Each association panel is titled with its count and what it counts ("facet 1:
+  6-lemma (6 metrics in the exact-maximum support)"); the outlined squares on the diagonal are the
+  members (six in facet 1, counted in the image), and a member can carry w = 0.00 in its label (the
+  settling time of facet 1); the caption says both. The figure is 21 inches wide and is shown at 40
+  percent, so a title is small on the page; the caption carries the claim in text.
+- **First frame after a theme change or a jump is blank or stale** (white or black): the pane does
+  not redraw until it is scrolled or waited on; a second look showed the page. Not a page defect.
+- **Text of the generated sentences** prints in a smaller type than the prose around it (unchanged
+  from before). The nondominated sentence now stands in section 1 and shows the same.
+- **Candidates table** is no longer in the main text (Appendix D.7); the page has eight images and
+  one table in the text.
+- **D.14 at 375 px:** the table of failures scrolls inside its container (the status column is
+  cut at the edge until scrolled); dark text is `rgba(255,255,255,0.87)` on `rgb(28,25,23)`.
+- Not viewed by eye at 375 px: sections 1 to 8 of the main text (measured only), and the dark
+  frames of the changed places other than D.14 (checked by the theme class and the colours).
