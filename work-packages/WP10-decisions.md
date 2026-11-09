@@ -587,3 +587,26 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   later". Disposition: as drafted (R-31 publishes nothing); the Dockerfile is in the repository
   and Appendix F documents how to build and run it; publishing the image is an optional candidate
   for the release package (WP8b), to be added to the release punch list by the PM.
+
+## Amendment 1 approval (approval gate)
+
+- **Document:** `work-packages/WP10-scope-of-work.md`, "Amendment 1" at a3ea880, with the sketch
+  `docs/superpowers/notes/paper-appendices-sketch.md`; no open items.
+- **Date:** 2026-11-08.
+- **Driver's question (popup):** "Question 3 of 3, approval of the paper's Amendment 1. Context,
+  everything in it comes from your answers today: seven appendices, each written as a bridge
+  between the paper and the repo (...). No source map and no search stub. Case model and results
+  are disjoint at the metric table. Proofs are step for step with the SymPy scripts, each step a
+  tagged line of code, cited results declared once in the axiom ledger, with a checker and a
+  fingerprint record. This lets the paper package edit the derivation scripts and the ledger for
+  tagging and declaring forms only, with no change to the mathematics. The reproducibility appendix
+  states the pinned toolchain and names a pinned container as the environment of record, with the
+  Dockerfile in the repo, tested locally, and nothing published to a registry. One detail you have
+  not seen: I set the container's platform of record to linux/amd64 to match CI; if that will not
+  run workably on this Mac, it comes back to you. Do you approve Amendment 1 for execution?"
+  (options: Approved / Not yet).
+- **Supervisor (mzargham), verbatim:** "Approved"
+- **Disposition:** approved; the PM's hold on the appendix shells and the paper's prose is
+  released. Order: the step tagging of the fourteen scripts, the ledger's forms and the proof-map
+  checker first (one bounded implementer, `derivation/` only); then the appendices to the sketch
+  and the main text; the Dockerfile and the local container run before delivery.

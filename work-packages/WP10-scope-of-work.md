@@ -376,7 +376,7 @@ this scope says the paper is modelled on the SciPy article, read: the build infr
 outline and development follow the IEEE-paper structure recorded in `WP10-decisions.md` and
 `docs/superpowers/notes/paper-outline-v2-search.md`.
 
-## Amendment 1 (DRAFT, 2026-11-08; not approved): the appendices as a bridge
+## Amendment 1 (2026-11-08; approved by the recorded act in `WP10-decisions.md`): the appendices as a bridge
 
 Why: the supervisor's words after approval (`WP10-decisions.md`, "Appendices sketched in advance"):
 no source map; a computational reproducibility appendix "that suffices to reproduce the materials in
@@ -384,9 +384,8 @@ the paper"; no appendix "for their own sake"; "their purpose is to build a bridg
 depth between the paper and cloning the repo"; C and D apart, "disjoint and complementary to the
 greatest extent possible"; "the larger register of prior art as an appendix", in which "for
 everything in our extended lit review we need to clarify what our work does differently, extends,
-adds". The sketch is `docs/superpowers/notes/paper-appendices-sketch.md`. Nothing below is executed
-before a recorded approval. Until then the approved text above stands, with the appendix shells, the
-source map and the paper's prose held.
+adds". The sketch is `docs/superpowers/notes/paper-appendices-sketch.md`. Where this
+amendment and the text above differ, the amendment governs.
 
 What changes:
 
