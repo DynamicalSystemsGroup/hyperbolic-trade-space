@@ -390,6 +390,12 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   WP5 rule). The repository's no-attribution rule for commits and documents is unchanged; the
   paper's disclosure is the supervisor's own statement, in his voice.
 
+- **OD6, how the drill-down levels are judged at WP10's acceptance.** Options: automated checks plus
+  cold-reader trials / automated only / automated plus the supervisor's own reading. **Supervisor
+  (mzargham), verbatim:** "Automated checks plus cold-reader trials". Disposition: decided; a
+  fresh-context reviewer is given only what each level's reader sees and reports per level in
+  `WP10-review.md`; the supervisor's own reading is WP11's.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
