@@ -9,7 +9,7 @@ live is fixed in a patch release.
 
 - [ ] https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/releases (release notes; linked from the package card on the root page)
 - [ ] https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/ (root; the public URL and `site_url` base)
-- [ ] https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/paper/ (paper page; today a placeholder that says the paper is in preparation, WP10 replaces it with the paper)
+- [ ] https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/paper/ (paper page; `scripts/assemble_site.py` stages the real paper, built by `myst build --html` in `paper/` for the route `/hyperbolic-trade-space/paper`, and falls back to the placeholder page when the paper does not build)
 
 ## Not linked yet
 

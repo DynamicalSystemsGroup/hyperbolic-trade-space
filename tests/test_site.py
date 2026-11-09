@@ -370,6 +370,8 @@ def test_root_and_paper_links_classified():
     repo = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space"
     for rel, page_url in (("index.html", "/"), ("paper/index.html", "/paper/")):
         for href in html_links(SITE / rel):
+            if href.startswith("data:"):
+                continue  # the empty icon: the page asks the server for no /favicon.ico (404)
             if is_external(href):
                 assert href.startswith(repo) or href in expected, f"{rel}: unlisted external {href}"
                 continue
@@ -406,6 +408,8 @@ def test_root_index_is_thin_and_has_the_cards():
         assert href in hrefs
     assert any(h.endswith("hyperbolic-trade-space") for h in hrefs), "repository link"
     assert "New card" in text
+    assert '<link rel="icon" href="data:,">' in text  # D6: no /favicon.ico request, no 404
+    assert '<link rel="icon" href="data:,">' in (SITE / "paper" / "index.html").read_text()
     # R1: the map is a plain link to its full-size file and may use a wide screen's width
     assert re.search(r'<a href="paper-map\.webp">\s*<img[^>]*src="paper-map\.webp"', text)
     assert "min(94vw" in text and "figure.wide" in text

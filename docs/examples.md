@@ -28,7 +28,7 @@ engineer's work.
 ## The one-term fit, drawn
 
 The case module in `examples/adcs/case.py` runs the study from the committed table. These blocks
-draw the tension report and the chart of the one-term fit:
+draw the tension report and the first two chart coordinates of the one-term fit:
 
 ```python {.runnable}
 import sys
@@ -48,13 +48,16 @@ case.tension_figure(study, fit)
 </figure>
 
 ```python {.runnable}
-case.coordinates_figure(study, fit)
+from hyperbolic_trade_space.plotting import plot_frontier_coordinates
+
+chart = fit.estimator.transform(study.M)
+plot_frontier_coordinates(chart[:, :-1], chart[:, -1])
 ```
 
 <figure markdown>
-![Two scatter plots of the feasible designs in pairs of chart coordinates, coloured by reaction-wheel class, with the designs nearest the frontier ringed in black.](generated/figures/adcs-coordinates-light.png#only-light)
-![Two scatter plots of the feasible designs in pairs of chart coordinates, coloured by reaction-wheel class, with the designs nearest the frontier ringed in black.](generated/figures/adcs-coordinates-dark.png#only-dark)
-<figcaption>Figure 7. The 706 feasible designs by position along the frontier, coloured by wheel class; the ringed designs lie nearest the frontier.</figcaption>
+![The 706 feasible designs in the plane of the first two position coordinates Z0 and Z1, with the designs nearest the frontier ringed in black.](generated/figures/adcs-coordinates-light.png#only-light)
+![The 706 feasible designs in the plane of the first two position coordinates Z0 and Z1, with the designs nearest the frontier ringed in black.](generated/figures/adcs-coordinates-dark.png#only-dark)
+<figcaption>Figure 7. The 706 feasible designs by their first two position coordinates; the ringed designs lie nearest the frontier.</figcaption>
 </figure>
 
 ## Run it

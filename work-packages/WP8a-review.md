@@ -88,3 +88,47 @@ Owned-path check (`git diff --stat 53919c3~1..HEAD`, excluding `work-packages/`)
 - **G-5. Pending evidence.** The green dispatch build on `dev` (R-10, G6, R-14) and the supervisor's browser review of the staged site. Suggested: the PM runs the dispatch after this review and records the run URL; acceptance waits on both.
 
 No blocking defect found. Acceptance is the supervisor's.
+
+## Browser pass (implementer, round 2)
+
+2026-11-09, by the implementer, in the built-in browser on the site staged from `dev` after the
+fixes to the driver's first pass (`uv run python scripts/stage_site.py --serve --port 8791`: the root
+page, the real paper built by MyST for `/paper`, the sixteen docsite pages). Looked at rendered, at
+1280 px and at 375 px (the browser's mobile preset), in the light and the dark scheme (Material keeps
+the palette in local storage, so the scheme was switched by clearing it and reloading), scrolled to
+the bottom where noted. A strict build, the link tests and page text were not counted as the look.
+
+**What was done in the browser.** Root page at 1280 (top to bottom, the map at its width, the Package
+card) and at 375 dark; the paper page at 1280 and 375 (images load, no sideways scroll); every
+docsite page at 1280 light and at 1280 and 375 by an in-browser measurement of each page (page and
+element overflow, code, tables, images loaded, display mathematics, MathJax containers) in an
+iframe of that width; screenshots of Getting started, Tensions, Chart and Examples (light and dark,
+1280), of Theory in brief, Tensions, API, API reference, Termination, Examples and Limitations at 375;
+the phone navigation drawer opened, "User guide" expanded and "Tensions" followed; the search box used
+on the phone ("certified": three matching documents, the first result opened) and at 1280
+("exchange": nine matching documents); an in-page link followed (Fitting to the termination page); the
+console read in fresh tabs.
+
+| | Result |
+|---|---|
+| D1 figures | Seven, all loaded and legible in both schemes at 1280 and 375 (Getting started, Fitting, Tensions, Chart x2, Examples x2). Dark variants use white frontier lines and light axes on a transparent background. |
+| D2 code | No code block scrolls at 1280 on any hand-written page (the pre holds 80 characters at 1280; the longest line is 72). At 375 a block scrolls inside itself (a scrollbar shows), as every code block does at that width. The API reference's docstring examples (seven blocks at 1280, up to 107 characters) still scroll: they are docstring text in `src/`. |
+| D3 tables | No table remains on a hand-written page; the API reference has none (parameters are lists). At 375 the lists read without clipping. The API reference is 21,800 px at 1280 and 30,300 px at 375: the list style removed the tables and the clipping, and did not shorten the page much. |
+| D4 | The first display equation is on two lines at 375 and fully visible; seventeen MathJax containers on Theory, none clipped. |
+| D5 | Fitting, Chart and Tensions read as short lists; no paragraph over 110 words on Chart. |
+| D6 | No 404 on any docsite page in a fresh tab and none in the server log. The 404 seen on the root page was the browser's `/favicon.ico` request; gone after `<link rel="icon" href="data:,">`. The paper page logs two 404s from its own scripts' CDN requests (thebe, MathJax 2). |
+| R1 | The map is 1203 px wide at 1280 and readable; at 375 it is 335 px wide and the plain link opens the full-size file. |
+| R2 | The install command wraps as "pip install" / "git+https://github.com/" / "DynamicalSystemsGroup/" / "hyperbolic-trade-space.git" at 1280 and 375. |
+| R3 | The real paper is staged at `/paper/` (16 of 16 images load, no overflow at 375). |
+
+**Remaining (not fixed here).**
+
+1. `plot_tensions` draws its cell values in black: on the dark purple cells (the diagonal, and the
+   strongly aligned pairs) the value is hard to read in both schemes. A change to `src/` (the
+   technical side).
+2. A docstring in the API reference carries a raw Sphinx role (`:func:~hyperbolic_trade_space.solvers.solve_terms`
+   under `n_terms`), and docstring examples are up to 107 characters wide (`src/`).
+3. On the phone the first search keystroke after "Initializing search" shows no results until another
+   key is typed (Material's behaviour in this emulation); results then appear.
+4. Chrome keeps a visited page and its images in cache across rebuilds of the staged site; a
+   reload that bypasses the cache is needed after a rebuild while reviewing.

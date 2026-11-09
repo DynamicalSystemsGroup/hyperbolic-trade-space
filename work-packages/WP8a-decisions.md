@@ -348,3 +348,38 @@ being edited by WP10; it needs the repoint to `paper-sources/literature.md`.
 - `src/hyperbolic_trade_space/tuning.py:18`
 - `src/hyperbolic_trade_space/tuning.py:19`
 - `src/hyperbolic_trade_space/tuning.py:1`
+
+## The driver's first browser pass: fixes (implementer, round 2)
+
+The driver's calls on `WP8a-driver-browser-pass.md` are binding and applied as follows.
+
+- **D1 (reverses the approved default "figures not copied"; the driver's call).** Seven figures, each
+  built by `scripts/build_figures.py` from the `{.runnable}` block directly above it, in a light and a
+  dark image (`docs/generated/figures/`, ignored, built by `assemble_site.py` before MkDocs reads
+  `docs/`): Getting started 1, Fitting 1, Tensions 1, Chart 2, Examples 2 (the case module on the
+  committed data). None is copied from the paper. `tests/test_site.py` holds the count, the pairs, the
+  captions and that the builder's output equals what the pages embed. The word budgets count captions
+  and not image alt text.
+- **D2.** Code lines are at most 72 characters (the column holds 80 at 1280 px in the browser);
+  a test keeps them there. The API reference renders docstring examples as written: a few of those
+  lines are longer (`src/`, technical side).
+- **D3.** The API overview and the termination statuses are lists; `docstring_section_style: list` in
+  `mkdocs.yml` renders parameters as lists.
+- **D4.** The first display equation is split over two lines; `docs/stylesheets/extra.css` lets a wide
+  display scroll inside its box.
+- **D5.** Inventories of attribute and function names are lists (Fitting, Chart, Tensions).
+- **D6.** Not reproduced on any docsite page in a fresh browser tab (server log and console clean). The
+  only 404 reproduced was the browser's request for `/favicon.ico` on the root page and the paper
+  placeholder, which declare no icon; both now carry `<link rel="icon" href="data:,">`. The real paper's
+  page logs two 404s from its own CDN requests (thebe, MathJax 2); not changed here.
+- **R1.** The map is a plain link to `paper-map.webp` and takes up to 94 percent of a wide window
+  (CSS only). The map is not redrawn.
+- **R2.** The install command breaks between words (nowrap segments, `<wbr>` after slashes).
+- **R3.** Root and placeholder wording follows the thinned docsite. `assemble_site.py` and
+  `stage_site.py` build the real paper (`uv run myst build --html` in `paper/`, with `BASE_URL` set to
+  the route: `/hyperbolic-trade-space/paper` on the site, `/paper` when staged) and copy
+  `paper/_build/html` into `<out>/paper/`; they fall back to the placeholder when the build does not
+  run or fails, or with `--paper placeholder`. Both branches are tested with an injected runner.
+- **CI defect.** `test_generated_pages_in_the_build` read `build/generated/` left by another command;
+  its fixture now builds the generated pages into a temporary directory and the test asserts those.
+  Checked in a fresh worktree (`git worktree add`, `uv sync --locked`, the six test files): 220 passed.
