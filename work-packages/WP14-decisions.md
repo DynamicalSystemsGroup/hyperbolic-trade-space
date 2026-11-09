@@ -39,4 +39,13 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 
 ## Scope approval (approval gate)
 
-- pending
+- **Document:** `work-packages/WP14-scope-of-work.md` at commit 0ece73e (no open items; R-12 added).
+- **Date:** 2026-11-08.
+- **Driver's question:** "WP14, the interface contract between the technical work and the presentation
+  layer: a pinned contract document with a TOML manifest and a test, the configuration-to-attributes
+  table and oracle signature as the stable surface with no tool names, the paper committed executed,
+  the API reference generated from docstrings, the one-command localhost staging as release control;
+  no open items. Do you approve the scope for execution?" (options: Approved / Not yet).
+- **Supervisor (mzargham), verbatim:** "Approved"
+- **Disposition:** approved; the PM executes WP14 first on `dev` (WP8a, WP10 and WP15 build against
+  it); acceptance merge to `main` by the driver after a review.
