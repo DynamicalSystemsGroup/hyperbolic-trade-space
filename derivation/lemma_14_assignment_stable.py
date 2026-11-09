@@ -37,8 +37,7 @@ hypothesis beta_k = J_tau(U w_k) or exact facet optimality fails; that R2 holds 
 import sympy as sp
 
 from derivation.axioms import A2, R2
-from derivation.lemma_03_gradient_kkt import fuse, push_in, replace_indexed, sum_swap_equal
-from derivation.sumtools import linear
+from derivation.sumtools import fuse, linear, push_in, replace_indexed, sum_swap_equal
 
 TITLE = "assignment-stable local optimality of the multi-facet fit (Proposition 3, Corollary 4)"
 STATEMENT = (

@@ -29,12 +29,19 @@ SYMBOL_ASSUMPTIONS = {
     "j_integer": ("j", "integer", "A0"),
     "k_integer": ("k", "integer", "A0"),
     "i0_integer": ("i0", "integer", "A0"),
+    "L_integer": ("L", "integer", "A0"),
+    "J0_integer": ("J0", "integer", "A0"),
     "m_positive": ("m", "positive", "A1"),
     "k_scale_positive": ("k_scale", "positive", "A1"),
     "tau_positive": ("tau", "positive", "A3"),
     "sigma_positive": ("sigma", "positive", "A5"),
     "kappa_positive": ("kappa", "positive", "A6"),
 }
+
+# shared index symbols (integer, A0): L is the dummy of the softmax normalizer (L3, L4), J0 the
+# coordinate-direction index (L3, L12)
+L = sp.Symbol("l", integer=True)
+J0 = sp.Symbol("j0", integer=True)
 
 
 def make_symbols():
@@ -90,7 +97,7 @@ def make_symbols():
     p_normalized = sp.Eq(sp.Sum(p[i], (i, 1, n)), 1)
 
     return SimpleNamespace(
-        d=d, n=n, K=K, i=i, j=j, k=k, i0=i0,
+        d=d, n=n, K=K, i=i, j=j, k=k, i0=i0, L=L, J0=J0,
         m=m, u=u, w=w, theta=theta, beta=beta, s=s, a=a, alpha=alpha, b=b,
         v=v, p=p, eps=eps, t=t,
         tau=tau, kappa=kappa, sigma=sigma, c=c, k_scale=k_scale, M=M,

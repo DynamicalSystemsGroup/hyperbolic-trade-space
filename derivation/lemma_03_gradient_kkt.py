@@ -54,7 +54,16 @@ is used in L4, not here.
 import sympy as sp
 
 from derivation.axioms import A2, A3, R1
-from derivation.sumtools import linear
+from derivation.sumtools import (
+    fuse,
+    linear,
+    linearize,
+    piece_in_range,
+    push_in,
+    replace_indexed,
+    sum_swap_equal,
+)
+from derivation.symbols import J0, L
 
 TITLE = "gradient of the soft-maximum objective and the full simplex KKT conditions"
 STATEMENT = (
@@ -69,119 +78,8 @@ STATEMENT = (
 )
 AXIOMS_USED = ["A2", "A3", "R1"]
 
-# local integer dummies (index-valued, licensed by A0) and the multiplier
-L = sp.Symbol("l", integer=True)  # dummy for the softmax normalizer
-J0 = sp.Symbol("j0", integer=True)  # coordinate-direction index
+# the multiplier (the index dummies L and J0 are in derivation/symbols.py)
 LAM = sp.Symbol("lambda", real=True)  # Lagrange multiplier of the simplex constraint
-
-
-# ----------------------------------------------------------------- Sum algebra helpers
-def _peel(op):
-    """Lift a single-limit rewrite ``op`` to multi-limit Sums by peeling the innermost limit:
-    Sum(f, l1, ..., ln) = Sum(Sum(f, l1), l2, ..., ln)."""
-
-    def _go(s):
-        if len(s.limits) == 1:
-            return op(s)
-        inner = op(sp.Sum(s.function, s.limits[0]))
-        return sp.Sum(inner, *s.limits[1:])
-
-    return _go
-
-
-def pull_constants(expr):
-    """Sum(c*f, (x,a,b)) -> c*Sum(f, (x,a,b)) for c free of x (linearity; bottom-up)."""
-
-    def _pull(s):
-        x = s.limits[0][0]
-        args = sp.Mul.make_args(s.function)
-        const = [a for a in args if x not in a.free_symbols]
-        rest = [a for a in args if x in a.free_symbols]
-        if not const:
-            return s
-        return sp.Mul(*const) * sp.Sum(sp.Mul(*rest), *s.limits)
-
-    return expr.replace(lambda e: isinstance(e, sp.Sum), _peel(_pull))
-
-
-def split_sums(expr):
-    """Sum(a + b, lim) -> Sum(a, lim) + Sum(b, lim) (linearity of finite sums; bottom-up)."""
-
-    def _split(s):
-        terms = sp.Add.make_args(sp.expand(s.function))
-        if len(terms) == 1:
-            return s
-        return sp.Add(*[sp.Sum(t_, *s.limits) for t_ in terms])
-
-    return expr.replace(lambda e: isinstance(e, sp.Sum), _peel(_split))
-
-
-def linearize(expr):
-    """Split sums over Add summands and pull constants out, repeated to a fixed point."""
-    for _ in range(12):
-        new = pull_constants(split_sums(expr))
-        new = sp.expand(new)
-        if new == expr:
-            break
-        expr = new
-    return expr
-
-
-def push_in(expr):
-    """c * Sum(g, lim) -> Sum(c*g, lim) when c is free of the bound variable (inverse of pull)."""
-
-    def _is_target(e):
-        return isinstance(e, sp.Mul) and sum(isinstance(a, sp.Sum) for a in e.args) == 1
-
-    def _push(e):
-        s = next(a for a in e.args if isinstance(a, sp.Sum))
-        c = sp.Mul(*[a for a in e.args if a is not s])
-        bound = {lim[0] for lim in s.limits}
-        if bound & c.free_symbols:
-            return e
-        return sp.Sum(c * s.function, *s.limits)
-
-    return expr.replace(_is_target, _push)
-
-
-def fuse(expr):
-    """Sum(Sum(g, inner), outer) -> Sum(g, inner, outer) (multi-limit form, inner first)."""
-
-    def _is_target(e):
-        return isinstance(e, sp.Sum) and isinstance(e.function, sp.Sum)
-
-    def _fuse(e):
-        inner = e.function
-        return sp.Sum(inner.function, *inner.limits, *e.limits)
-
-    return expr.replace(_is_target, _fuse)
-
-
-def sum_swap_equal(a, b):
-    """True iff two multi-limit Sums agree after reordering the two limits (Fubini, finite)."""
-    return (
-        a.function == b.function
-        and set(a.limits) == set(b.limits)
-        and (a == b or a.reorder((0, 1)) == b)
-    )
-
-
-def replace_indexed(expr, base, fn):
-    """Replace base[x] by fn(x) everywhere (instantiate an abstract weight family)."""
-    return expr.replace(
-        lambda e: isinstance(e, sp.Indexed) and e.base == base,
-        lambda e: fn(e.indices[0]),
-    )
-
-
-def piece_in_range(pw, S):
-    """Return the in-range branch of a KroneckerDelta sum: the branch is guarded exactly by
-    1 <= j0 <= d (j0 is an index) and the other branch is 0."""
-    assert isinstance(pw, sp.Piecewise), "L3 FAIL: expected a Piecewise from the delta sum"
-    (val, cond), (zero, other) = pw.args
-    assert zero == 0 and other == sp.true, "L3 FAIL: out-of-range branch is not 0"
-    assert cond == sp.And(J0 >= 1, S.d >= J0), "L3 FAIL: in-range guard is not 1 <= j0 <= d"
-    return val
 
 
 # --------------------------------------------------------------------------- derive

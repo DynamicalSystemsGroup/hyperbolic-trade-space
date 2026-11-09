@@ -39,7 +39,8 @@ for the sum).
 import sympy as sp
 
 from derivation.axioms import A1, A3
-from derivation.lemma_03_gradient_kkt import L, linearize
+from derivation.sumtools import linearize
+from derivation.symbols import L
 
 TITLE = "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
 STATEMENT = (

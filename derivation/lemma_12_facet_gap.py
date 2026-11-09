@@ -37,9 +37,9 @@ the finite-tau formula at tau = infinity (there the gap needs the LP duals).
 import sympy as sp
 
 from derivation.axioms import A2, A3, F12, I1, I8
-from derivation.lemma_03_gradient_kkt import J0, fuse, push_in, sum_swap_equal
-from derivation.lemma_03_gradient_kkt import piece_in_range as delta_branch
-from derivation.sumtools import linear
+from derivation.sumtools import fuse, linear, push_in, sum_swap_equal
+from derivation.sumtools import piece_in_range as delta_branch
+from derivation.symbols import J0
 
 TITLE = "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
 STATEMENT = (
