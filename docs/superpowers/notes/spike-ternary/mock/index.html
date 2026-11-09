@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>hyperbolic-trade-space: posynomial invariant form</title>
+<meta name="description" content="Posynomial invariant form for design trade spaces: a paper, a documentation site and a Python package by Michael Zargham.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/">
+<meta property="og:title" content="hyperbolic-trade-space: posynomial invariant form">
+<meta property="og:description" content="Posynomial invariant form for design trade spaces: a paper, a documentation site and a Python package by Michael Zargham.">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --fg: #1c1c1c;
+    --muted: #5a5a5a;
+    --card-bg: #ffffff;
+    --card-border: #e2ddd4;
+    --accent: #1f5aa8;
+    --accent-soft: #e4edf8;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #191817;
+      --fg: #e8e6e1;
+      --muted: #a5a19a;
+      --card-bg: #221f1e;
+      --card-border: #3a3532;
+      --accent: #85b4ea;
+      --accent-soft: #1f2a3a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 17px/1.6 Georgia, "Times New Roman", serif;
+  }
+  main {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 4rem;
+  }
+  header h1 {
+    font-size: 2rem;
+    line-height: 1.25;
+    margin: 0 0 0.25rem;
+  }
+  header .subtitle {
+    font-size: 1.15rem;
+    color: var(--muted);
+    margin: 0 0 0.25rem;
+  }
+  header .byline {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin: 0 0 2rem;
+  }
+  p { margin: 0 0 1rem; }
+  .hero {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    margin: 0 0 1.5rem;
+  }
+  a { color: var(--accent); }
+  section h2 { font-size: 1.25rem; margin: 2rem 0 0.5rem; }
+  figure { margin: 0 0 1rem; }
+  figcaption { font-size: 0.9rem; color: var(--muted); }
+  /* The map is read at its own size: on a wide screen the figure leaves the text column and takes
+     most of the width (a plain link opens the full-size file). */
+  figure.wide a { display: block; }
+  @media (min-width: 52rem) {
+    figure.wide {
+      position: relative;
+      left: 50%;
+      width: min(94vw, 96rem);
+      transform: translateX(-50%);
+    }
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 2.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (max-width: 40rem) {
+    .cards { grid-template-columns: 1fr; }
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 1.1rem 1.2rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .card h2 {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+  }
+  .card p {
+    font-size: 0.93rem;
+    color: var(--muted);
+    margin: 0 0 0.9rem;
+    flex: 1;
+  }
+  .card .go {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-family: system-ui, sans-serif;
+    text-decoration: none;
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 0.35rem 0.7rem;
+    align-self: start;
+  }
+  .card .soon {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-family: system-ui, sans-serif;
+    color: var(--muted);
+    border: 1px dashed var(--card-border);
+    border-radius: 6px;
+    padding: 0.35rem 0.7rem;
+    align-self: start;
+  }
+  .footnote {
+    margin: 1rem 0 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  code, pre {
+    font: 0.85rem/1.4 ui-monospace, Menlo, monospace;
+    background: var(--accent-soft);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+  }
+  .card p.install { font-size: 0.85rem; }
+  .card p.install code span { white-space: nowrap; }
+  footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--card-border);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>hyperbolic-trade-space</h1>
+    <p class="subtitle">Posynomial invariant form: the shape of a design trade space, learned from evaluated designs</p>
+    <p class="byline">Michael Zargham</p>
+  </header>
+
+  <section>
+    <h2>Why</h2>
+    <p>
+      Trade studies are usually decided from documents and tables, where the detail of the
+      evaluated designs is lost, and the alternatives are bespoke or opaque. A model-based method
+      has to clear a bar before a decision-maker can trust it: it has to show its reasoning, say
+      where the data do not reach, and let the analysis be rerun.
+    </p>
+    <figure>
+      <a href="why3-regions.png"><img src="why3-regions.png" alt="A triangle of three metrics. Evaluated designs are dots placed by which metric they favour; three shaded regions are labelled by the trade-off that binds there: all three trade, metric 3 against metric 1, metric 3 against metric 2." style="width:100%;max-width:34rem;display:block;margin:0 auto"></a>
+      <figcaption>What trades against what depends on where a design sits. Each dot is an evaluated design, placed by which metric it favours; the coloured dots are at the frontier.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>What</h2>
+    <p>
+      PCA explains variance; this explains tensions. Its unit is the n-lemma, a power-weighted
+      product of the metrics that names which of them compete on one part of the trade space. The
+      method belongs in unsupervised learning and feature engineering beside PCA: kin rather than a
+      substitute, and the two chain (the tension report already runs PCA on the near-frontier chart
+      coordinates). It ships as a scikit-learn-compatible estimator (<code>fit</code>,
+      <code>transform</code>, <code>inverse_transform</code>, <code>score_samples</code>; the
+      conformance checks pass), so it drops into the same workflows.
+    </p>
+    <figure class="wide">
+      <a href="what-with-arrow.png"><img class="hero" src="what-with-arrow.png" alt="Three panes: the fitted reference surface in metric space, its facets as a supporting envelope in log space, and the chart in which the frontier is one line and the facets are regions. A black arrow in each pane marks one design's energy differential."></a>
+      <figcaption>One table of designs seen three ways. The black arrow is the same step in each pane: a design's energy differential to the fitted reference surface.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>How</h2>
+    <figure class="wide">
+      <a href="paper-map.webp">
+        <img class="hero" src="paper-map.webp" width="1536" height="1024"
+             alt="A map of the paper as connected boxes: assumptions feed the single-term core, which leads to the chart and its uses, then the multi-facet extension, and finally the open questions.">
+      </a>
+      <figcaption>A map of the mathematics: assumptions, the single-term core, the chart and its uses, the multi-facet extension, the open questions. Select the map to open it at full size.</figcaption>
+    </figure>
+    <p>
+      Read the map from the top. The foundation box is the invariant form: a weighted geometric mean
+      V of the metrics, whose level V = 1 is the fitted reference surface and whose logarithm is the
+      energy differential. The single-term core fits the weights and an offset to your designs as
+      one convex problem. Four boxes use that fit: the chart (each design becomes a position along
+      the frontier and a log V), the exchange rates between the metrics that contend, the
+      correction for noise, and the pull-back to your raw attributes. The lower boxes extend the
+      model to several facets, relate it to the Pareto boundary, and give the multi-facet algorithm
+      its guarantees. Each box carries a badge, derived, checked numerically or open; the red box
+      lists the open questions.
+    </p>
+  </section>
+
+  <p>
+    The paper tells the method, the documentation shows how to use the package task by task, and the
+    package is the tool you run on your own data. Start wherever suits you.
+  </p>
+
+  <ul class="cards">
+    <li class="card">
+      <h2>Paper</h2>
+      <p>
+        The method told from evaluated designs to the frontier, its tensions and its gaps.
+      </p>
+      <a class="go" href="paper/">Read the paper →</a>
+    </li>
+    <li class="card">
+      <h2>Documentation</h2>
+      <p>
+        For a user of the package: a first fit, a guide per task from conditioning your attributes
+        to reading a tension report, the API reference, a spacecraft example, the model in brief
+        and a glossary.
+      </p>
+      <a class="go" href="docs/">Open the docs →</a>
+    </li>
+    <li class="card">
+      <h2>Package</h2>
+      <p>
+        A scikit-learn-compatible estimator for the frontier, with an invertible log-ratio chart,
+        tension reports and plotting helpers. Install from source:
+      </p>
+      <p class="install"><code><span>pip install</span> <span>git+https://github.com/</span><wbr><span>DynamicalSystemsGroup/</span><wbr><span>hyperbolic-trade-space.git</span></code></p>
+      <a class="go" href="docs/api-reference/">API reference →</a>
+      <p class="footnote"><a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space">Repository</a> · <a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/releases">Release notes</a></p>
+    </li>
+    <!-- New card: copy a <li class="card"> block above (a talk, a deck, a notebook) and edit its
+         heading, text and link. Nothing else on this page changes. -->
+  </ul>
+
+  <footer>
+    Source for everything on this page:
+    <a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space">github.com/DynamicalSystemsGroup/hyperbolic-trade-space</a>
+  </footer>
+</main>
+</body>
+</html>
