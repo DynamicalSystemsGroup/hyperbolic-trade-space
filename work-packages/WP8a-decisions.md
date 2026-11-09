@@ -173,3 +173,13 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
   the docsite is thinned accordingly; the root page's How figure gets a summarizing paragraph.
   Nothing is forced into the docsite that belongs in the paper; nothing a package user needs is
   left only in the paper. The staged review is repeated after the restructure.
+
+## Amendment 2 decision loop (2026-11-08; draft appended to `WP8a-scope-of-work.md`, ccb0cb6)
+
+- **OD1, the generated Derivations and Verification pages.** Options: keep only Verification / keep
+  both as a section / move both to the paper. **Supervisor (mzargham), verbatim:** "move both to the
+  paper. and even there they are likely going to be appendices". Disposition: decided; neither
+  generated page is on the docsite; the derivation ledger and the verification audit go to the
+  paper's supporting material as appendices (WP10's draft: Appendix B theory and lemma coverage,
+  Appendix D algorithm; the audit under its verification appendix); `scripts/build_generated.py`
+  keeps producing them for the paper's build, not for the docsite.
