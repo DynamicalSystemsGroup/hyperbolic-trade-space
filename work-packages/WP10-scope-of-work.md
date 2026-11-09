@@ -1,3 +1,5 @@
+<!-- The first draft of this file (written as WP9, the readability package) was superseded on 2026-11-08 by the supervisor's redirection (WP10-decisions.md) and is replaced by this draft; it remains in git history. -->
+
 # WP10 — Scope of work: The paper, working draft
 
 | | |
