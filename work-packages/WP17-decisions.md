@@ -45,3 +45,19 @@ and its addendum. The supervisor's words are quoted in the scope of work and are
 - **Not done here (coordinated by the PM).** The scripted lemma step (R-8) and Appendix B; the words
   of R-9 (user guide fitting page, API prose, glossary, section 6 of the paper); only the
   termination page's status rows, the fields row and the API line were added, within the budgets.
+
+## Derivation delivery (R-8), 2026-11-09
+
+Delivered by the derivation implementer: `derivation/lemma_17_soft_fit_certificate.py` (L17, 52
+tagged steps, appended to `CHAIN_NAMES`; the banner of `run.py` reads L1 -> L17), the ledger entry
+I16 (Nocedal and Wright, Theorem 12.6, the second-order sufficient conditions; the theorem number
+and hypotheses read in the book's text, a course copy, and marked "to be confirmed by the author"
+against the printed edition: `docs/superpowers/notes/references-verified.md`), the record
+(`derivation/proof_map_record.json`, regenerated with `--update`), the tests in
+`tests/test_proof_map.py`, the corrected pins and the findings
+(`derivation/PROOF_MAP_FINDINGS.md`, "WP17 R-8"). The statement is the PM's, unchanged. The Hessian
+and gradient formulas agree with central finite differences of the objective on an exact instance
+(differences below 1.3e-26); the point with both terms equal is stationary there and not certified at
+kappa = 1 (smallest tangent eigenvalue negative), certified at kappa = 1/2. Appendix B is to be
+regenerated from the record by the paper implementer (the L17 section is new; no existing step
+moved).

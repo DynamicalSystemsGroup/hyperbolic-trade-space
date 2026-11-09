@@ -107,3 +107,25 @@ PDFs by the derivation implementer (text extracted with pdftotext), not taken fr
   generalized posynomials; any GP is a GGP. Section 9.1 (signomial programming) notes some authors
   use the name for the wider, nonconvex class (the older sense the glossary carries in `not`).
   Ledger entry I15 cites 5.3 (and 5.4 for the program).
+
+## Added for WP17 R-8 (2026-11-09, ledger entry I16, lemma L17)
+
+- Nocedal, J., Wright, S. J. (2006). *Numerical Optimization*, 2nd ed. Springer (key
+  `nocedal2006numerical`, already in the bibliography; doi:10.1007/978-0-387-40065-5). The text of
+  Chapter 12 was read in a course copy of the book (the Kent State copy of the full text,
+  `www.math.kent.edu/~reichel/courses/optimization/Numerical_Optimization.pdf`, text extracted with
+  pdftotext), not taken from memory. Section 12.5 "Second-Order Conditions": "f and c_i are all
+  assumed to be twice continuously differentiable"; the critical cone is defined as C(x*, lambda*) =
+  {w in F(x*) | grad c_i(x*)^T w = 0 for all i in A(x*) ∩ I with lambda_i* > 0}, equivalently (12.53)
+  grad c_i^T w = 0 for i in E and for active inequalities with a positive multiplier, and >= 0 for
+  active inequalities with a zero multiplier. **Theorem 12.6 (Second-Order Sufficient Conditions):**
+  "Suppose that for some feasible point x* there is a Lagrange multiplier vector lambda* such that
+  the KKT conditions (12.34) are satisfied. Suppose also that w^T Hess_xx L(x*, lambda*) w > 0 for
+  all w in C(x*, lambda*), w != 0 (12.65). Then x* is a strict local solution for (12.1)." The text
+  before the theorem says it differs from Theorem 12.5 (the necessary conditions, which assume LICQ)
+  in that the constraint qualification is not required and the inequality is strict. The same
+  section restates (12.65) as positive definiteness of Z^T Hess L Z for a basis Z of the critical
+  cone when it is a subspace. Ledger entry I16 cites Theorem 12.6, the critical cone (12.53) and the
+  KKT conditions (12.34). Status: numbers confirmed against the chapter text; the copy is not the
+  publisher's, so the page numbers (the theorem is on page 333 in that copy) are to be confirmed by
+  the author against the printed second edition.
