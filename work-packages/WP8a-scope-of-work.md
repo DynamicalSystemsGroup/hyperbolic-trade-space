@@ -539,3 +539,16 @@ All marked *(default)* where they appear; the supervisor approves or changes the
 - **OD5.** Does the docsite carry a Glossary page, as scikit-learn's does? Options: (a) yes, one line per
   register phrase and symbol a user meets (about 300 words); (b) no, the register stays the paper's
   Appendix A and the user guide defines terms where it uses them.
+
+## Amendment 2: gate outcomes (2026-11-08, `WP8a-decisions.md`)
+
+The draft above reads with these outcomes: OD1 "move both to the paper. and even there they are
+likely going to be appendices" (no generated Derivations or Verification page on the docsite; the
+script keeps producing them for the paper's build); OD2 "No docsite page; paper appendix only" (the
+gaps ledger); OD3 "No page until WP8b" (changelog); OD4 "Drop it from the docsite" (world lines; the
+`overrides/` partial for them is removed; contract item C-9 withdrawn in contract version 2); OD5
+"yes to glossary but let's generate it programmatically rather than hand write it. you can make
+glossary.yaml so that the source is skimmable but the glossary should be compiled from that not free
+text" (`glossary.yaml` as the single source, compiled into the Glossary page by
+`scripts/build_generated.py`, offered to WP10 as the register's source). Defaults approved as one
+item: "Approve the defaults as listed". Decided 5, deferred 0, raised 0.

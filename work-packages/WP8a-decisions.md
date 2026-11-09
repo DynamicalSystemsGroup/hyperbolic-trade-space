@@ -204,3 +204,7 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
   same file is proposed to WP10 as the source of the paper's register table (Appendix A), so the
   docsite and the paper cannot drift apart on the words; the register note stays the human record
   of how each word was settled.
+- **Amendment 2's Agent's defaults, as one item** (OD1 to OD5 folded in; the world-line override
+  removed; the glossary compiled from `glossary.yaml`). **Supervisor (mzargham), verbatim:** "Approve
+  the defaults as listed". Disposition: approved. Loop closed for Amendment 2: decided 5 (OD1 to
+  OD5), deferred 0, raised 0, defaults approved as one item.
