@@ -1,69 +1,129 @@
-# Proof-map findings (WP10, D-12)
+# Proof-map findings and how each was closed (WP10 Amendment 2, R-32)
 
-What the tagging of `lemma_01` to `lemma_14` found. Nothing here was relabelled to fit: a step that
-is neither computed (a line of SymPy that carries it) nor by a declared axiom (a line applying an
-imported ledger entry) has no tag and is listed in section 1 for the supervisor. Addresses are file
-and tag; an untagged step is addressed by the tags it falls between.
+The tagging (D-12, commits d45ef4d and 78b29e2) recorded what it found instead of relabelling it.
+This file is the record of how Amendment 2 closed each finding. Addresses are file and tag
+(`uv run python -m derivation.proofmap` lists them; the committed record is
+`proof_map_record.json`). No `TITLE` or `STATEMENT` changed in any of the fourteen scripts (checked
+by comparing the module literals with those at commit 093dc7a), and nothing proved changed.
 
-Method note. Tags are numbered in the order the steps appear in the file. The checker
-(`uv run python -m derivation.proofmap`) fails on an untagged `assert` in `verify`, so every
-asserted claim is a step; the other steps are the lines that apply a ledger entry.
+Commits, in order: 56ba9aa (helper functions to `sumtools.py`, shared index symbols `L` and `J0` to
+`symbols.py` under A0, no change in behaviour); 9d58e5f (principles 1 and 4); 5152db3 (principle 2);
+72b6d5a (principle 3); 3626aad (principle 5).
 
-## 1. Steps that are neither computed nor by a declared axiom (reported, not tagged)
+## What the checker now enforces (and its negative controls, `tests/test_proof_map.py`)
 
-| Address | The step (as the script's own text states it) | Why it has no line |
+| Rule | Where | Negative control |
 |---|---|---|
-| `lemma_14_assignment_stable.py`, between L14.5 and L14.6 | Docstring step 2 of Proposition 3: the regrouping `sum_i = sum_k sum_{i in C_k}` and `F(W) = sum_k share_k f_k(w_k)`, with `beta_k - w_k.ubar_k = f_k(w_k)` | The script says so itself ("stated, not derived"; no ledger entry). The definitional step `beta_k = J_tau(U w_k)` is also not coded |
-| `lemma_12_facet_gap.py`, after L12.24 | Docstring step 5: `p` supported on the active rows gives `sum_i p_i s_i = M`, hence `g.w = f(w)` and `G = f(w) - min_j (U_c^T p)_j` | Only `sum_i p_i (M - s_i) = M - sum_i p_i s_i` is asserted (L12.24); the termwise zero `p_i (M - s_i) = 0` is a comment (`# termwise zero`), not a line |
-| `lemma_05_lse_lme.py`, after L5.6 and L5.16 | "LSE - max > 0 for n >= 2" (strictness, in `STATEMENT`) | Only `LSE - max >= 0` is asserted (L5.16); strictness is a comment in `verify` |
-| `lemma_11_pareto.py`, after L11.9 and L11.13 | The deductions "a maximizer of V over S is not dominated" (contrapositive of L11.7 and L11.8) and "weakly efficient in all d metrics", "efficient when every `w_j > 0`" | Inference steps argued in the docstring and `STATEMENT`; no line |
-| `lemma_02_shift.py`, after L2.4 | "Hence beta shifts by c and `w*` is unchanged" (docstring) | A corollary argued in prose, not coded |
-| `lemma_04_convexity.py`, after L4.12 | "convexity of a function is equivalent to nonnegativity of its second derivative along every line" | Standard calculus, cited in the docstring, not a ledger entry and not coded |
-| `lemma_03_gradient_kkt.py`, before L3.8 | The first-order necessary condition for a smooth function with one linear equality constraint ("standard calculus, not re-proved here") | Not coded; L3.8 applies R1 (no active multiplier) to the stationarity condition the script takes as given |
+| imported ledger names = names applied by tagged steps = `AXIOMS_USED` | `proofmap.parse_lemma` (as before) | import an unapplied name; drop a name from `AXIOMS_USED` |
+| no `Axiom.invoke` (a do-nothing application; the method is removed from `Axiom`) | `proofmap._check_symbols` | a scratch copy with `A3.invoke(...)` fails |
+| no signed symbol made directly (`positive`, `nonnegative`, `negative`, `nonpositive`; and no real-valued `IndexedBase`): it comes from a ledger entry's factory (a tagged step), from an earlier result (`ProvedResult.family`), or is a module-level hypothesis of the statement whose quoted claim must occur in the lemma's `STATEMENT` or docstring | `proofmap._check_symbols` | direct `Symbol(..., nonnegative=True)`; `IndexedBase(..., real=True)`; `symbols(..., positive=True)`; a hypothesis inside a function; a hypothesis whose quotation is not in the statement |
+| a lemma script may import from another lemma script only `L<m>_RESULT`, of a lemma earlier in `CHAIN_NAMES`, which that script exports (`L<m>_RESULT = ProvedResult(...)`) and certifies in its `verify`; the import must be applied by a step of kind "result" and not used on an untagged line | `proofmap._result_imports` | an extra name; a whole-script import; a later lemma's result; an unapplied import; an uncertified export (fails exporter and importer); a name the script does not export; an untagged use |
+| a forced logarithm or power takes its licence from ledger entries that declare the positivity (`LicenceError` otherwise) | `derivation/licence.py` | each call site is run without its entry or with the wrong one (`test_proof_map.py`, "principle 1") |
 
-## 2. Premises carried as SymPy symbol assumptions (steps computed, premise not in the ledger)
+## 1. The seven prose-only steps (findings section 1): closed
 
-These steps are computed and tagged; the premise they rest on is encoded in a local symbol's
-assumption, not declared in the ledger (the hygiene test polices only the shared namespace):
+| Was | Now |
+|---|---|
+| L14, regrouping of the N rows over the K cells ("stated, not derived") | A8 (new, posited): the partition relation (`chi` with `sum_k chi_ki = 1`, `chi >= 0`, `n_k = sum_i chi_ki >= 1`) applied by import: L14.1, L14.2, L14.4, L14.5, L14.7; checked at L14.12 to L14.15 (Fubini swap of the row and cell sums; the cell sum is `n_k f_k(w_k)`; `F(W) = sum_k share_k f_k(w_k)`; `share_k` nonnegative because `chi >= 0`) |
+| L12, complementary slackness `p_i (M - s_i) = 0` (a comment) | I12 (new, inherited, Boyd and Vandenberghe 5.5.2) applied termwise by `rewrite` inside the sum: L12.8 (sum is 0), L12.27 (`sum_i p_i s_i = M`); then L12.28 (`g.w = M - ubar.w = f(w)`) and L12.29 (centred `(U_c^T p)_j`); the LP duality gap is zero by I1 at L12.32 |
+| L5, strictness of `LSE - max > 0` for n >= 2 (a comment) | coded, the statement unchanged: the i0 term is 1 by F5 (L5.3), a second shifted term is positive on real scores (L5.5, L5.19), `T >= 1 + (second term) > 1` so `(1/tau) log T > 0` (L5.20); L5.18 records that indices 1 and 2 are in range and differ when n >= 2. The statement claims strict for n >= 2 and the script now asserts exactly that; the n = 1 equality case is unchanged. No STOP was needed |
+| L11, contrapositive and efficiency deductions (prose) | propositional steps SymPy checks by showing the negated goal unsatisfiable (`sumtools.entails`): L11.17 (a maximizer is not dominated in a contending metric), L11.18 (weakly efficient in all d metrics, with "some w_j > 0" derived from the simplex by A2 at L11.3), L11.19 (efficient when every w_j > 0), L11.20 (the chain is not vacuous). The premises are built from the computed facts (L11.5 to L11.9); a falsified fact makes the step fail |
+| L2, "hence beta shifts by c and w* is unchanged" | L2.3 (shift amount of `J` computed under A1, A2, A3), L2.6 (it equals c), L2.7 (the shift cancels in `J(w') - J(w)`), L2.8 (so `J(w') >= J(w)` iff the shifted inequality) |
+| L4, convexity is nonnegativity of the second derivative along every line | I11 (new, inherited, Boyd and Vandenberghe 3.1.1 and 3.1.4), L4.13: `Equivalent(second derivative >= 0 on every line, convex)` applied by `entails` to the computed sign; with the sign false there is no conclusion |
+| L3, first-order necessary condition with a linear equality constraint | I10 (new, inherited, Boyd and Vandenberghe 5.5.3 and 5.2.3): the KKT conditions on the simplex, `g_j - lambda - mu_j = 0`, `mu_j >= 0`, `w_j mu_j = 0`, applied in L3.2 (stationarity along `e_j0`), L3.3 (complementary slackness termwise gives `sum_j w_j (g_j - lambda) = 0`), L3.7 and L3.13 (with R1) |
 
-- `lemma_14` L14.7, L14.8, L14.10: `share` nonnegative (facets nonempty, `n_k >= 1`), `dfk` nonnegative
-  (every `w_k` minimizes `f_k`), `slackG` nonnegative (from L12).
-- `lemma_11` L11.5, L11.6, L11.11, L11.12: `dl` nonnegative (`u' = u + delta`, `delta >= 0`), `gam`, `rest`.
-- `lemma_13` L13.5 to L13.9: `delta`, `rest`, `a1`, `a2` nonnegative and `c` positive (`2 delta < gamma`).
-- `lemma_12` L12.20 to L12.22: `a_nn`, `b_nn`, `c_nn` nonnegative stand for the I8 slack, the minimum slack
-  and `f(w) - f* >= 0`.
+Note on I10 (reported to the PM). The citation is to the KKT conditions as necessary for a
+differentiable problem with strong duality (5.5.3), and to refined Slater for affine constraints
+(5.2.3); for the convex `J_tau` the conditions are therefore necessary. Convexity of `J_tau` is L4,
+which comes after L3 in the chain, and the checker allows L3 to import nothing from L4. The entry's
+statement and failure mode say so; the dependency is on the textbook theorem, not on L4's script.
 
-## 3. Entries in `AXIOMS_USED` that no step of the existing script depends on
+## 2. Premises carried as symbol assumptions (findings section 2): closed
 
-Each is applied by a tagged line (`invoke`, or an `A2.rewrite` that is a no-op) so that imports,
-applied entries and `AXIOMS_USED` are the same set; the line records the premise and nothing
-downstream consumes it. `AXIOMS_USED` was not changed.
+Every signed symbol is now one of: made by a ledger factory on a tagged step; taken from an earlier
+result; or a module-level hypothesis of the statement that quotes it (listed per lemma in the record
+under `hypotheses`).
 
-| Address | Entry | Note |
+| Lemma | Symbols | Licence |
 |---|---|---|
-| L5.3, L5.4, L5.5 | I2, I1, I3 | The script records them as remarks ("recorded, not proved here"); no step uses them |
-| L2.2 | A3 | The docstring says "A3 does not enter here"; applied as the positivity licence of the forced log |
-| L3.1, L4.1, L5.1, L12.8 | A3 | `tau` is a positive symbol already; the line states the premise |
-| L6.1 | A2 | L6 never uses the simplex constraint; the weights `w` are declared on the simplex |
-| L7.2 | A2 | "via L1": the substitution happened in L1's `Vk`; the `rewrite` here is a no-op |
-| L10.3 | A2 | K = 1 reduction; no simplex substitution happens |
-| L4.2, L9.1, L11.1, L7.1 | A1 | Positivity of `m` stated as the premise of `u = log m` (L7.1: V > 0 for the power) |
-| L13.2, L14.2 | R2 | L13.2 states `gamma > 0`; L14.2 substitutes `M_i = s_i,k(i)` (the consequence of a unique maximizer), a real use |
-| L13.3 | I9 | **Added line.** The script cited Cauchy-Schwarz only in its docstring; L13.3 introduces its slack symbol and L13.10 asserts `delta - |Delta theta.u~| >= 0` with it. The chain L13.8 and L13.9 is unchanged |
+| L3 | `wp`, `mup`, `mu` | R1 (`w_j > 0`), I10 (multipliers) |
+| L4 | `a_r`, `s_r` (real) | A1 (`A1.real_base`) |
+| L5 | `slack`, `sr` | F5 |
+| L7 | `uu` (real) | A1 |
+| L10 | `slack` | F10 |
+| L11 | `wn` (A2); `dl`, `wp`, `dp`, `eps`, `gam` | hypotheses quoted from the statement/docstring; `rest` is now the computed sum over `j != j0` |
+| L12 | `vn`, `wn` (A2), `gm`, `b_nn` (F12), `a_nn` (I8); `c_nn` | hypothesis "f(w) - f* >= 0 because f* is the minimum"; `a_t`, `r_t` are now the term `w_j0 (g_j0 - m)` and the sum of the others; the chain `G - (f - f*) = a + b` is now computed from I8's slack equation and F12's slack, not from separate symbols |
+| L13 | `rest` (F12), `cs` (I9), `g_` (R2); `delta`, `a1`, `a2`, `c`, `nth`, `a_`, `b_`, `UU`, `r_`, `U_` | hypotheses quoted from the statement/docstring |
+| L14 | `share` (from A8: `n_k / N`, nonnegative because `chi >= 0`), `slackG` (L12's result), `dfk` (hypothesis "every w_k minimizes f_k"), `n_k` is the shared size `S.n` | |
 
-## 4. Positivity used but not through the ledger
+Forced logarithms and powers (findings section 4, second item): L2 (A1, A2, A3), L5 (A3, F5), L6
+(A2, A3, A5), L7 (A1, A2), L9 (A4), L10 (A1, A6), L1 (A1): each takes its licence and raises
+`LicenceError` without it.
 
-- `lemma_10` L10.4 raises `m_j^{kappa theta_kj}` to exp of a Sum with a forced log expansion that needs
-  `m > 0` (A1), but A1 is not in L10's `AXIOMS_USED`; the call has no licence argument.
-- Forced `expand_log(..., force=True)` calls whose positivity is argued in comments, not by an
-  entry: L2 (`verify`, the `rhs`), L5 (`offset`, `lme_floor`), L6 (`factor`), L10 (`shifted_reduced`,
-  `base`, `phi1`, the `verify` difference).
+## 3. Entries in `AXIOMS_USED` that no step depended on (findings section 3): closed
 
-## 5. Shape of the work
+Do-nothing lines (`invoke`) removed; `AXIOMS_USED` corrected. Before, after, why:
 
-- Ledger: 22 entries; 14 carry a SymPy form on the shared symbols (A1, A2, A3, A4, A5 with its noise
-  variable, A6, A7, I6, I8, I9, R2, F5, F10, F12); 8 are named propositions (A0, I1, I2, I3, I4, I5,
-  I7, R1). Each is an importable module-level name and has a stable fingerprint.
-- `sumtools.product_to_exp_sum` takes an optional licence entry (L1 and L9 pass A1 and A4).
-- Inter-lemma premises (L12.9, L14.3, L14.4) are computed assertions on the earlier lemma's result,
-  not re-derivations.
+| Lemma | Before | After | Why |
+|---|---|---|---|
+| L1 | A1, A2 | A1, A2 | both real (A1 licenses the logs; A2 rewrites the simplex); now `product_to_exp_sum` requires its licence |
+| L2 | A2, A3 | A1, A2, A3 | the forced log of a sum of exponentials needs `u` real (A1), `w` real (A2), `tau > 0` (A3); the docstring said A3 did not enter, it enters through the licence |
+| L3 | A2, A3, R1 | A2, I10, R1 | A3 stated the premise only (a division by `tau` needs no sign); R1 now a real premise (forces `mu_j = 0`); I10 added (section 1) |
+| L4 | A1, A3 | A1, A3, I11 | A1 supplies the real families, A3 the sign of `tau` at L4.12 (`A3.positive(tau)`); I11 added |
+| L5 | A3, I1, I2, I3, F5 | A3, F5 | I1, I2, I3 were remarks no step used (reported apart below); F5 now used by its second relation, its slack and the real scores |
+| L6 | A2, A5, I5 | A2, A3, A5, I5 | A2 was only declared; now A2, A3, A5 license the log of the MGF factor; I5 now supplies the product (a form) |
+| L7 | A1, A2 | A1, A2 | A1 makes the point of F real; A1 and A2 license the power `V^(-1/w)`; the A2 rewrite on L1's `Vk` was a no-op and is removed |
+| L8 | A7, I6 | A7, I6 | unchanged |
+| L9 | A1, A2, A4 | A2, A4 | the A1 line was a no-op; A4's own relation rewrites `u` |
+| L10 | A2, A6, I4, F10 | A1, A6, F10 | the A2 line (K = 1) was a no-op; I4 is cited context; A1 licenses the logs and the powers of `m`; F10 now used (second relation gives the unit term, slack) |
+| L11 | A1, A2 | A2 | the A1 line was a no-op |
+| L12 | A2, A3, I1, I8, F12 | A2, I1, I8, I12, F12 | the A3 line was a no-op (convexity is L4's); I1 now applied by `rewrite` (primal and dual values coincide); I12 added |
+| L13 | F12, I9, R2 | F12, I9, R2 | R2 now real: `g_` is R2's positive margin and the stable radius `g/(2U)` is positive only through it (L13.12) |
+| L14 | A2, R2 | A8, R2 | the A2 line was a no-op; R2 now supplies the equation `M_i = s_i,k(i)` (a form); A8 added |
+
+## 4. Ledger changes (new, changed, reclassified) and test edits
+
+| Entry | Change | Why |
+|---|---|---|
+| A8 | new, POSITED | the partition relation of L14 (section 1) |
+| I10 | new, INHERITED; Boyd and Vandenberghe 5.5.3 and 5.2.3 (read in the PDF of the authors' site: 5.5.3 "KKT optimality conditions", 5.2.3 "Strong duality and Slater's constraint qualification") | L3's first-order condition |
+| I11 | new, INHERITED; Boyd and Vandenberghe 3.1.1 (restriction to a line) and 3.1.4 (second-order conditions) | L4's convexity |
+| I12 | new, INHERITED; Boyd and Vandenberghe 5.5.2 ("Complementary slackness") | L12's termwise zero |
+| I1 | from named proposition to a form `v_primal = v_dual` | applied by `rewrite` at L12.32 |
+| I5 | from named proposition to a form (the MGF of the sum is the product of the MGFs) | applied by `specialize` at L6.2 |
+| R1 | from named proposition to a form `w_j > 0` | `R1.positive_symbol` at L3.5 |
+| R2 | relation extended with `M_i = s_i,k(i)` | applied by `rewrite` at L14.6 |
+| A6 | relation extended with `theta_kj >= 0` (the statement already says "on the simplex") | the simplex is a sum of 1 and nonnegativity; needed for the reality of `theta` in the licence |
+| I2, I3, I4 | reclassified: `CITED_CONTEXT` in `axioms.py`, a class reported apart in the audit with the reason for each (no step of L5 uses I2, I3; I4's reading "GP-compatible" is not a premise of L10's identity); like `SOLVER_LEVEL` (I7) they are exempt from the every-axiom-is-used test | principle 4 |
+| shared symbols | `S.beta` is declared `real=True` (a type, not a sign; not policed by the hygiene test); `L` and `J0` added to the namespace under A0 | licences need `beta` real; step 0 |
+
+Edits to `tests/test_derivation.py` (each pins something this amendment corrects; no negative control
+removed): the every-axiom-is-used exemption adds `AX.CITED_CONTEXT`; `"A3" in _L3.AXIOMS_USED` removed
+(L3); `L11.AXIOMS_USED == ["A2"]`; `L12 >= {A2, I1, I8, F12}` (A3 dropped); `L14 >= {R2}` (A2
+dropped); the L14 docstring-wording test now asserts A8 and "declared relation A8" instead of the
+words "symbolic partition" and "one-line finite-sum argument" (the prose the step replaced).
+
+## 5. Entries no proof consumes (principle 4)
+
+| Entry | Class | Reason |
+|---|---|---|
+| I7 | `SOLVER_LEVEL` (unchanged) | the K > 1 solver stops at a local optimum; no lemma consumes it |
+| I2 | `CITED_CONTEXT` | a remark on the consistency of the sample LME (L5); no step uses it |
+| I3 | `CITED_CONTEXT` | a remark on the support function (L5); no step uses it |
+| I4 | `CITED_CONTEXT` | L10 shows exp(kappa Phi_K) is a sum of monomials with positive coefficients (a posynomial); GP-compatibility is a reading, not a premise |
+| A0 | `STRUCTURAL` (unchanged) | licenses the sizes and indices |
+
+## 6. Earlier lemmas' results by import (principle 5)
+
+L4 on L3 (`L3_RESULT`), L7 on L1 (`L1_RESULT`), L12 on L4 (`L4_RESULT`), L14 on L12 and L13
+(`L12_RESULT`, `L13_RESULT`). The exporter declares `L<n>_RESULT = ProvedResult(...)` and certifies it
+as the last line of `verify` (`derivation/results.py`); the importer applies it in a tagged step of
+kind "result" (L4.1, L7.3, L12.10 and L12.11, L14.8 to L14.10). The objects still travel through the
+runner's `ctx`; a result taken before it is certified raises `UnprovedResultError`.
+
+## 7. Shape of the work now
+
+- Ledger: 26 entries (A0 to A8, I1 to I12, R1, R2, F5, F10, F12). 229 tagged steps in 14 files.
+- Step kinds: computed, by a declared axiom (the line applies a ledger entry, from the ledger), by a
+  proved result.
+- `PROOF_RESULTS` of L14: Proposition 3 and Corollary 4 partition its 20 steps.
