@@ -51,6 +51,17 @@ def stock_fits(stock):
 # ---- small-sample behaviour of every function ----------------------------------------------
 
 
+def test_subsystem_mapping_is_data_and_covers_every_attribute():
+    """Each attribute has one subsystem in the spec; the model's grouping is 4 + 5 + 1."""
+    spec = case.CUBESAT
+    assert set(spec.subsystems) == set(spec.attributes)
+    assert set(spec.subsystem_order) == set(spec.subsystems.values())
+    counts = {g: list(spec.subsystems.values()).count(g) for g in spec.subsystem_order}
+    assert counts == {"controls": 4, "power and energy": 5, "mass": 1}
+    assert spec.subsystems_of(["total mass", "slew time"]) == ["controls", "mass"]
+    assert spec.subsystems_of(["settling time"]) == ["controls"]
+
+
 def test_load_study_filters_and_conditions(small):
     assert small.M.shape == (N, 10) and (small.M > 0).all()
     assert len(small.raw) == 1000 and len(small.feasible) == N

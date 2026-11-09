@@ -75,6 +75,11 @@ class CaseSpec:
         Bracket of the temperature selection.
     seed : int
         Seed of every fit.
+    subsystems : dict of str to str
+        Subsystem of each attribute (the model's own grouping: controls, power and energy, mass);
+        the single source of every sentence that says which subsystems a set of metrics spans.
+    subsystem_order : tuple of str
+        The order in which subsystems are listed in a sentence.
     """
 
     name: str
@@ -96,6 +101,8 @@ class CaseSpec:
     target_frac: float = 0.10
     tau_bounds: tuple = (3.0, 1e3)
     seed: int = 0
+    subsystems: dict = field(default_factory=dict)
+    subsystem_order: tuple = ()
 
     @property
     def names(self):
@@ -107,6 +114,24 @@ class CaseSpec:
         """The first covariate (the colour category), or None."""
         return next(iter(self.covariates), None)
 
+    def subsystems_of(self, names) -> list:
+        """Subsystems spanned by plain-named metrics, in the order of ``subsystem_order``.
+
+        Parameters
+        ----------
+        names : iterable of str
+            Plain names of attributes (the values of ``short``).
+
+        Returns
+        -------
+        list of str
+            Distinct subsystems of ``names``.
+        """
+        by_name = {self.short[a]: self.subsystems[a] for a in self.attributes}
+        wanted = {by_name[n] for n in names}
+        order = self.subsystem_order or tuple(dict.fromkeys(by_name.values()))
+        return [g for g in order if g in wanted]
+
 
 _ATTRS = (
     "settling_time_s", "slew_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
@@ -115,6 +140,11 @@ _ATTRS = (
 _NAMES = (
     "settling time", "slew time", "pointing error", "total mass", "control effort",
     "power margin", "energy balance", "eclipse reserve", "peak slew power", "depth of discharge",
+)  # fmt: skip
+_SUBSYSTEMS = (
+    "controls", "controls", "controls", "mass", "controls",
+    "power and energy", "power and energy", "power and energy", "power and energy",
+    "power and energy",
 )  # fmt: skip
 _UNITS = ("s", "s", "deg", "kg", "torque.s, proxy", "W", "Wh", "Wh", "W", "fraction")
 _ORIENT = (-1, -1, -1, -1, -1, +1, +1, +1, -1, -1)
@@ -148,6 +178,8 @@ CUBESAT = CaseSpec(
     ),
     checks_file="check_designs_cubesat.csv",
     predictions_file="check_predictions_cubesat.csv",
+    subsystems=dict(zip(_ATTRS, _SUBSYSTEMS, strict=True)),
+    subsystem_order=("controls", "power and energy", "mass"),
     ranges={
         "panel_span_m": (0.3, 1.0),
         "battery_wh": (20.0, 200.0),
