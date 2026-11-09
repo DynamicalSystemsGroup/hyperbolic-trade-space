@@ -616,7 +616,8 @@ class Termination:
     objective_change : float
         Absolute change of the objective at the last accepted step (``nan`` with none).
     assignment_changes : int
-        Rows whose argmax under the returned ``(W, beta)`` differs from the returned ``labels``.
+        Rows whose returned label trails the maximum score under ``(W, beta)`` by more than
+        ``EPS_FEAS`` (exact ties are not changes).
     n_empty : int
         Facets with no assigned row (their gap is ``nan`` and their share 0).
     gamma, radius : float
@@ -701,7 +702,10 @@ def _termination(
     shares = np.bincount(labels, minlength=K) / N
     full = shares > 0
     max_gap = float(np.max(gaps[full])) if full.any() else float("nan")
-    changes = int((np.argmax(U @ W.T - beta, axis=1) != labels).sum())
+    S = U @ W.T - beta
+    # a label counts as changed only when its score trails the maximum by more than EPS_FEAS;
+    # exact ties (a row on two facet planes) resolve differently across platforms
+    changes = int((S.max(axis=1) - S[np.arange(N), labels] > EPS_FEAS).sum())
     gamma, radius = assignment_margin(U, W, beta)
     sum_res = float(np.abs(W.sum(axis=1) - 1.0).max())
     floor_res = float(max(0.0, min_exponent - W.min()))

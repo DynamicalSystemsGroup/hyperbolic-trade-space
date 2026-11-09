@@ -317,7 +317,7 @@ def test_gap_is_zero_at_the_optimum_and_bounds_suboptimality(kind):
         assert w[2] < 1e-9  # inactive coordinate with g_j > lambda
     else:
         assert w[2] == pytest.approx(m, abs=1e-12)
-    assert facet_gap(U, w, ubar, tau, m) < 1e-9
+    assert facet_gap(U, w, ubar, tau, m) < EPS_KKT
     rng = np.random.default_rng(5)
     d = U.shape[1]
     for v in m + (1 - d * m) * rng.dirichlet(np.ones(d) * 0.7, size=300):
@@ -463,7 +463,8 @@ def test_guard_stop_returns_the_consistent_previous_state(monkeypatch):
     t = r.termination
     assert t.status == "guard_stop" and len(calls) == 2
     assert r.objective == r.history[-1] == r.history[0] and len(r.history) == 1
-    changes = int((np.argmax(U @ r.W.T - r.beta, axis=1) != r.labels).sum())
+    S_ = U @ r.W.T - r.beta
+    changes = int((S_.max(axis=1) - S_[np.arange(len(U)), r.labels] > EPS_FEAS).sum())
     assert t.assignment_changes == changes > 0
     # a rejection below the tolerance is accepted, one above is not
     monkeypatch.setattr(S, "_refit", real)
