@@ -78,26 +78,49 @@ def reference():
     return np.load(REFERENCE)
 
 
+def _match_to_recording(W, ref_exponents):
+    """The recorded facet matched to each fitted facet, by exponent vector (as the paper does)."""
+    r, col = linear_sum_assignment(np.abs(W[:, None, :] - ref_exponents[None]).sum(-1))
+    to_ref = np.empty(len(r), int)
+    to_ref[r] = col
+    return to_ref
+
+
 @pytest.mark.parametrize("name", list(_cases()))
 def test_r2_default_planted_fits_equal_the_recording(name, reference):
-    """The default fit equals the recording: exactly on its platform, within tolerances off it.
+    """The default fit equals the recording: exactly on its platform, matched by facet off it.
 
     The recording was made on an arm64 Mac (``RECORDED_ON``). The tau = inf fit is a linear
-    program whose solution, and the facet assignment built on it, follow the platform's maths
-    library, so a bit-identical comparison off that platform (or the environment of record) fails
-    on Linux without any change in the method. There, only for tau = inf, the exponents and
-    offsets agree within ``TOL_FIT`` and the facet labels may differ only on rows whose two best
-    scores tie within ``EPS_FEAS``; every other quantity keeps its comparison above.
+    program whose solution, and the numbering of the facets it finds, follow the platform's maths
+    library: another platform finds the same facets in another order (and then a different
+    ``facet_`` array), so a bit-identical comparison there fails without any change in the method.
+    Off that platform (and outside the environment of record), for tau = inf only, the fitted facets
+    are first matched to the recorded ones by exponent vector, as the paper's tables do; then the
+    exponents and offsets agree within ``TOL_FIT`` (no wider), the labels agree after the matching
+    except on rows whose two best scores tie within ``EPS_FEAS``, and the facet-indexed arrays
+    follow the matching. Every other quantity keeps its comparison above.
     """
     X, K, tau, step = _cases()[name]
     est = HyperbolicTradeSpace(n_terms=K, temperature=tau, facet_step=step, random_state=0).fit(X)
-    relaxed = not EXACT and np.isinf(tau)
-    for k, v in _record(est).items():
+    _compare_planted(name, est, X, relaxed=not EXACT and np.isinf(tau), reference=reference)
+
+
+def _compare_planted(name, est, X, relaxed, reference):
+    rec = _record(est)
+    if relaxed:
+        to_ref = _match_to_recording(est.exponents_, reference[f"{name}/exponents_"])
+        back = np.argsort(to_ref)  # back[j]: the fitted facet matched to recorded facet j
+    for k, v in rec.items():
         ref = reference[f"{name}/{k}"]
-        if relaxed and k in ("exponents_", "log_offset_", "objective_"):
+        if relaxed and k in ("exponents_", "log_offset_", "facet_share_", "shares", "gaps"):
+            tol = TOL_FIT if k in ("exponents_", "log_offset_") else 1e-12
+            np.testing.assert_allclose(
+                np.asarray(v)[back], ref, rtol=0, atol=tol, equal_nan=True, err_msg=f"{name}/{k}"
+            )
+        elif relaxed and k == "objective_":
             np.testing.assert_allclose(v, ref, rtol=0, atol=TOL_FIT, err_msg=f"{name}/{k}")
         elif relaxed and k == "facet_":
-            differ = np.asarray(v) != np.asarray(ref)
+            differ = to_ref[np.asarray(v)] != np.asarray(ref)
             if differ.any():
                 U = est._log_metrics(X, reset=False)
                 top = np.sort(U @ est.exponents_.T - est.log_offset_, axis=1)[:, -2:]
