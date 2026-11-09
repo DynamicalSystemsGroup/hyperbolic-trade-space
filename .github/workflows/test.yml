@@ -39,6 +39,16 @@ jobs:
         with:
           path: ~/.opensysml
           key: opensysml-${{ runner.os }}-${{ steps.opensysml.outputs.version }}
+      # The model-checking tests need the pinned sysml-toolkit (examples/adcs/experiments/
+      # toolkit-pin.toml). The helper verifies the archive's size and sha256 before extracting it
+      # and requires the standard library clone to be at the pinned commit.
+      - name: Cache the pinned sysml-toolkit
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/hyperbolic-trade-space
+          key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
+      - name: Provision the pinned sysml-toolkit
+        run: PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch
       - name: Test
         env:
           REQUIRE_OPENSYSML: "1"
