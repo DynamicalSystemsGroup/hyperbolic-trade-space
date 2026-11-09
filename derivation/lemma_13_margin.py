@@ -32,6 +32,7 @@ data U.
 import sympy as sp
 
 from derivation.axioms import F12, I9, R2
+from derivation.licence import hypothesis_symbol
 from derivation.sumtools import linear
 
 TITLE = "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
@@ -46,6 +47,24 @@ STATEMENT = (
     "neighborhood of the fitted reference surface's facets"
 )
 AXIOMS_USED = ["F12", "I9", "R2"]
+
+# Hypotheses of the statement (each quotes it): the symbols that carry a sign stand for these.
+DELTA = hypothesis_symbol(
+    "delta", "nonnegative", "every facet score changes by at most delta"
+)  # the bound on every score change
+E_UP = hypothesis_symbol(
+    "a1", "nonnegative", "every facet score changes by at most delta"
+)  # e_ik(i) + delta >= 0
+E_DOWN = hypothesis_symbol(
+    "a2", "nonnegative", "every facet score changes by at most delta"
+)  # delta - e_il >= 0
+C_GAP = hypothesis_symbol("c", "positive", "positive when 2 delta < gamma")  # gamma - 2 delta
+NORM_DTHETA = hypothesis_symbol("nth", "nonnegative", "||Delta theta_k||_2")
+R_MINUS_NORM = hypothesis_symbol("a_", "nonnegative", "r = max_k ||Delta theta_k||_2")
+U_MINUS_NORM = hypothesis_symbol("b_", "nonnegative", "U = max_i ||u~_i||_2")
+U_MAX = hypothesis_symbol("UU", "nonnegative", "U = max_i ||u~_i||_2")
+R_MAX = hypothesis_symbol("r_", "nonnegative", "r = max_k ||Delta theta_k||_2")
+U_GE_1 = hypothesis_symbol("U_", "positive", "U >= 1 because the last component is -1")
 
 
 def derive(ctx):
@@ -66,12 +85,10 @@ def derive(ctx):
     score_change_slack = sp.simplify(score_change - score_change_claim)
 
     # 2. margin algebra: gamma = c + 2 delta, e1 = a1 - delta, e2 = delta - a2
-    c = sp.Symbol("c", positive=True)  # gamma - 2 delta > 0 (2 delta < gamma)
-    delta = sp.Symbol("delta", nonnegative=True)
+    c, delta = C_GAP, DELTA  # c = gamma - 2 delta > 0 (2 delta < gamma)
     # [L13.1] F12: gamma <= s_ik(i) - s_il for every row and facet, so the slack rest is >= 0
     rest = F12.slack_symbol("rest")
-    a1 = sp.Symbol("a1", nonnegative=True)  # e_ik(i) + delta >= 0  (|e| <= delta)
-    a2 = sp.Symbol("a2", nonnegative=True)  # delta - e_il >= 0
+    a1, a2 = E_UP, E_DOWN  # e_ik(i) + delta >= 0 and delta - e_il >= 0  (|e| <= delta)
     gamma = c + 2 * delta  # the margin, with c = gamma - 2 delta > 0 (2 delta < gamma)
     e1, e2 = a1 - delta, delta - a2
     new_gap = (gamma + rest) + e1 - e2
@@ -81,14 +98,13 @@ def derive(ctx):
 
     # 3. Cauchy-Schwarz (I9) chain and the radius: r U - nth nu = a U + nth b, nth = ||Delta||,
     # nu = ||u~||, r = nth + a >= nth, nu = U - b <= U
-    nth, a_, b_, UU = sp.symbols("nth a_ b_ UU", nonnegative=True)
+    nth, a_, b_, UU = NORM_DTHETA, R_MINUS_NORM, U_MINUS_NORM, U_MAX
     bound_slack = sp.simplify((nth + a_) * UU - nth * (UU - b_) - (a_ * UU + nth * b_))
     bound_nonneg = (a_ * UU + nth * b_).is_nonnegative
     # [L13.2] I9 (Cauchy-Schwarz): |Delta theta . u~| <= ||Delta theta|| ||u~||, with slack cs >= 0
     cs = I9.slack_symbol("cs")
     cs_chain_nonneg = (a_ * UU + nth * b_ + cs).is_nonnegative  # delta - |Delta theta.u~| >= 0
-    r_ = sp.Symbol("r_", nonnegative=True)
-    U_ = sp.Symbol("U_", positive=True)  # U >= 1: the last component of u~ is -1
+    r_, U_ = R_MAX, U_GE_1  # U >= 1: the last component of u~ is -1
     # [L13.3] R2: the margin gamma is positive
     g_ = R2.positive_symbol("g_")
     radius_set = sp.solveset(2 * r_ * U_ < g_, r_, sp.S.Reals)

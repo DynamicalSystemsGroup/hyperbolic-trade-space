@@ -1,5 +1,5 @@
 {
- "version": 1,
+ "version": 2,
  "lemmas": {
   "lemma_01_homogeneity.py": {
    "number": 1,
@@ -7,6 +7,7 @@
     "A1",
     "A2"
    ],
+   "hypotheses": [],
    "imports": [
     "A1",
     "A2"
@@ -116,6 +117,7 @@
     "A2",
     "A3"
    ],
+   "hypotheses": [],
    "imports": [
     "A1",
     "A2",
@@ -232,6 +234,7 @@
     "I10",
     "R1"
    ],
+   "hypotheses": [],
    "imports": [
     "A2",
     "I10",
@@ -550,6 +553,7 @@
     "A3",
     "I11"
    ],
+   "hypotheses": [],
    "imports": [
     "A1",
     "A3",
@@ -697,6 +701,7 @@
     "A3",
     "F5"
    ],
+   "hypotheses": [],
    "imports": [
     "A3",
     "F5"
@@ -975,6 +980,7 @@
     "A5",
     "I5"
    ],
+   "hypotheses": [],
    "imports": [
     "A2",
     "A3",
@@ -1095,6 +1101,7 @@
     "A1",
     "A2"
    ],
+   "hypotheses": [],
    "imports": [
     "A1",
     "A2"
@@ -1200,6 +1207,7 @@
     "A7",
     "I6"
    ],
+   "hypotheses": [],
    "imports": [
     "A7",
     "I6"
@@ -1370,6 +1378,7 @@
     "A2",
     "A4"
    ],
+   "hypotheses": [],
    "imports": [
     "A2",
     "A4"
@@ -1469,6 +1478,7 @@
     "A6",
     "F10"
    ],
+   "hypotheses": [],
    "imports": [
     "A1",
     "A6",
@@ -1701,6 +1711,38 @@
    "axioms_used": [
     "A2"
    ],
+   "hypotheses": [
+    {
+     "symbol": "dl",
+     "kind": "family",
+     "sign": "nonnegative",
+     "claim": "u' = u + delta with delta_j >= 0 for every j"
+    },
+    {
+     "symbol": "wp",
+     "kind": "symbol",
+     "sign": "positive",
+     "claim": "some j has w_j > 0 and delta_j > 0"
+    },
+    {
+     "symbol": "dp",
+     "kind": "symbol",
+     "sign": "positive",
+     "claim": "some j has w_j > 0 and delta_j > 0"
+    },
+    {
+     "symbol": "eps",
+     "kind": "symbol",
+     "sign": "positive",
+     "claim": "delta_j >= eps > 0 for all j"
+    },
+    {
+     "symbol": "gam",
+     "kind": "family",
+     "sign": "nonnegative",
+     "claim": "delta_j >= eps > 0 for all j"
+    }
+   ],
    "imports": [
     "A2"
    ],
@@ -1929,6 +1971,14 @@
     "I12",
     "I8"
    ],
+   "hypotheses": [
+    {
+     "symbol": "c_nn",
+     "kind": "symbol",
+     "sign": "nonnegative",
+     "claim": "f(w) - f* >= 0 because f* is the minimum"
+    }
+   ],
    "imports": [
     "A2",
     "F12",
@@ -1969,7 +2019,9 @@
       27,
       28,
       29,
-      30
+      30,
+      31,
+      32
      ]
     }
    ],
@@ -2024,242 +2076,264 @@
      "applies": [
       "I8"
      ],
-     "prose": "I8 at v = v*: the slack f(v*) - f(w) - g.(v* - w) is >= 0",
-     "code": "a_i8 = I8.slack_expr(f_v=fs, f_w=fw, g_dv=gvs - gw)",
-     "fingerprint": "d444a587eaa83b0728bb140b7c7fd9b3efd5bc68486865684a019100833ed4c4",
+     "prose": "I8 at v = v*: the slack a = f* - f(w) - g.(v* - w) is >= 0",
+     "code": "a_nn = I8.slack_symbol('a_nn')",
+     "fingerprint": "4a39bdc1315136229ab03826e4b9aeea064fa643261fc6ba83c67bfb0adb0877",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.6",
      "kind": "axiom",
      "applies": [
-      "I12"
+      "I8"
      ],
-     "prose": "I12: complementary slackness p_i (M - s_i) = 0 applied to each summand: the sum is 0",
-     "code": "support_zero = I12.rewrite(support).doit()",
-     "fingerprint": "f99ffb50881ab2de4aa5ecf06bab83e87e471d68fc81f29bcbdd4e05efa78491",
+     "prose": "I8: the slack equation gives f* = f(w) + g.(v* - w) + a",
+     "code": "f_star = sp.solve(sp.Eq(I8.slack_expr(f_v=fs, f_w=fw, g_dv=gvs - gw), a_nn), fs)[0]",
+     "fingerprint": "60620ce0b21a862029dd9bc069c82b4e29a35afda81df811bd84440ccd42779c",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.7",
-     "kind": "computed",
-     "applies": [],
-     "prose": "exact two-metric LP: primal and dual values and gaps at an optimal pair and off it",
-     "code": "lp = dict(primal_at_optimum=f_lp(w_opt), dual_at_optimum=dual(p_opt), gap_at_optimum=f_lp(w_opt) - dual(p_opt), f_star=f_lp(w_opt), f_off_optimum=f_lp(w_off), gap_off_optimum=f_lp(w_off) - dual(p_off), active_off=Uc * w_off)",
-     "fingerprint": "9d85f4874486188ca2513f90ba7b5f7ade746c3450630dc779d10ab975f64369",
+     "kind": "axiom",
+     "applies": [
+      "F12"
+     ],
+     "prose": "F12: step 2 at v = v*: the slack b = g.v* - m is >= 0",
+     "code": "b_nn = F12.nonneg_symbol('b_nn')",
+     "fingerprint": "787b1795a9cafd932be7bd61ed1b9d9108eddd0bda140cb0547474ece15a5f54",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.8",
-     "kind": "computed",
-     "applies": [],
-     "prose": "L4 established that J_tau is convex along every line",
-     "code": "assert ctx['L4'].get('convex') is True, 'L12 FAIL: L4 convexity of J_tau not established'",
-     "fingerprint": "ebfe38dd14659568334fcb51b68ca4f5831df327ef560eb8619799b38f21e2d9",
+     "kind": "axiom",
+     "applies": [
+      "I12"
+     ],
+     "prose": "I12: complementary slackness p_i (M - s_i) = 0 applied to each summand: the sum is 0",
+     "code": "support_zero = I12.rewrite(support).doit()",
+     "fingerprint": "71c1af0c399fa8889011edf042d207afdb5226eca0c2195282601ccb3c277acf",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.9",
      "kind": "computed",
      "applies": [],
-     "prose": "the linear part has second directional derivative 0",
-     "code": "assert r['second_linear'] == 0, 'L12 FAIL: the linear part has a nonzero second derivative'",
-     "fingerprint": "090e53ea80d6201db5858180f9f3a4dd2e43d22958f55038e9d76074fcb53d96",
+     "prose": "exact two-metric LP: primal and dual values and gaps at an optimal pair and off it",
+     "code": "lp = dict(primal_at_optimum=f_lp(w_opt), dual_at_optimum=dual(p_opt), gap_at_optimum=f_lp(w_opt) - dual(p_opt), f_star=f_lp(w_opt), f_off_optimum=f_lp(w_off), gap_off_optimum=f_lp(w_off) - dual(p_off), active_off=Uc * w_off)",
+     "fingerprint": "2b6e4a9a7ede7be5f0eb8415125fbb6e4fbc64e6e515c0535df1186349b43244",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.10",
      "kind": "computed",
      "applies": [],
-     "prose": "hence f_k = J_tau - linear is convex",
-     "code": "assert r['convex'] is True, 'L12 FAIL: f_k is not convex'",
-     "fingerprint": "f2ce7a7b5de5e36a0eadc380cee61cc8b7d6641f74daa8d2a329c94c5b746fbb",
+     "prose": "L4 established that J_tau is convex along every line",
+     "code": "assert ctx['L4'].get('convex') is True, 'L12 FAIL: L4 convexity of J_tau not established'",
+     "fingerprint": "2e7a0c332d4573c29398f63e72bc31f95dd81e3e7d6ebed83ede3b7a2b01efb0",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.11",
      "kind": "computed",
      "applies": [],
-     "prose": "g.v - m = sum_j v_j (g_j - m) on the simplex",
-     "code": "assert sp.simplify(r['gv_minus_m'] - r['gv_rhs']) == 0, 'L12 FAIL: g.v - m != sum_j v_j (g_j - m)'",
-     "fingerprint": "66ea48ed7cd238355439b1fd712652cb28b6bb26167e7adf480097c2ebc86dea",
+     "prose": "the linear part has second directional derivative 0",
+     "code": "assert r['second_linear'] == 0, 'L12 FAIL: the linear part has a nonzero second derivative'",
+     "fingerprint": "beb1c2c8b9c87554345cdd330e62a480964dae38739af2e759f40089503c43d7",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.12",
      "kind": "computed",
      "applies": [],
-     "prose": "every summand v_j (g_j - m) is >= 0, so g.v >= m on the simplex",
-     "code": "assert r['gap_nonneg'] is True, 'L12 FAIL: sum_j v_j (g_j - m) is not nonnegative'",
-     "fingerprint": "710c479ee4d68303c6dd447adea562bdb419cfddb50b1a2e7b2cd1700932e013",
+     "prose": "hence f_k = J_tau - linear is convex",
+     "code": "assert r['convex'] is True, 'L12 FAIL: f_k is not convex'",
+     "fingerprint": "7fffce565160268c82dc90e7b784083a7bf339ba2fd139c11dbb40d6f29d1359",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.13",
-     "kind": "axiom",
-     "applies": [
-      "F12"
-     ],
-     "prose": "F12: the bound is attained at the vertex e_j0: g.e_j0 = g_j0 = m",
-     "code": "assert sp.simplify(att.subs(*F12.rule(1)) - r['m']) == 0, 'L12 FAIL: g.e_{j0} != m'",
-     "fingerprint": "8158a545973d69f704a2890c94765823cd463b99f85fb458f74b102e515e071d",
+     "kind": "computed",
+     "applies": [],
+     "prose": "g.v - m = sum_j v_j (g_j - m) on the simplex",
+     "code": "assert sp.simplify(r['gv_minus_m'] - r['gv_rhs']) == 0, 'L12 FAIL: g.v - m != sum_j v_j (g_j - m)'",
+     "fingerprint": "3d62a40de331348a423e0b09480c46315702ffc83a767cbc69da9807c4079e97",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.14",
      "kind": "computed",
      "applies": [],
-     "prose": "G = g.w - m = sum_j w_j (g_j - m)",
-     "code": "assert sp.simplify(r['G_expr'] - sp.Sum(r['wn'][j] * r['gm'][j], lim)) == 0",
-     "fingerprint": "95d20f6512f985f8cc39412b19b474e5abf6817ea0ee99ba67f370144067aa8b",
+     "prose": "every summand v_j (g_j - m) is >= 0, so g.v >= m on the simplex",
+     "code": "assert r['gap_nonneg'] is True, 'L12 FAIL: sum_j v_j (g_j - m) is not nonnegative'",
+     "fingerprint": "d2cdcf7de57c93f2acbe2742cab98b55bce5e6c064f39e15ee3ac7aebfd879ec",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.15",
-     "kind": "computed",
-     "applies": [],
-     "prose": "lambda - min g = w.g - m = G",
-     "code": "assert sp.simplify(r['lam_minus_m'] - r['G_expr']) == 0, 'L12 FAIL: lambda - min g != G (lambda = w.g)'",
-     "fingerprint": "ed8dcd6420f4b9ee2a7aed59400ad2ad7ddcd5b77a21cb43a3ad550e82ce164e",
+     "kind": "axiom",
+     "applies": [
+      "F12"
+     ],
+     "prose": "F12: the bound is attained at the vertex e_j0: g.e_j0 = g_j0 = m",
+     "code": "assert sp.simplify(att.subs(*F12.rule(1)) - r['m']) == 0, 'L12 FAIL: g.e_{j0} != m'",
+     "fingerprint": "ba68639b1f2a130c98cd8df9ddb24eeff6d3721894d9cfdf7fb0b38403ae9700",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.16",
      "kind": "computed",
      "applies": [],
-     "prose": "nonnegative terms that sum to 0: a + r = 0 gives a = -r",
-     "code": "assert r['zero_sol'] == [-r['r_t']], 'L12 FAIL: a + r = 0 does not give a = -r'",
-     "fingerprint": "99a8e4fd47d02e73aabd50a48a384886b4f791cf2d22a6849362e3b07b4ac36f",
+     "prose": "G = g.w - m = sum_j w_j (g_j - m)",
+     "code": "assert sp.simplify(r['G_expr'] - sp.Sum(r['wn'][j] * r['gm'][j], lim)) == 0",
+     "fingerprint": "c947a0d856737563df96605c1bee131705be624698bbfc2c5d126ecbcd454bf7",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.17",
      "kind": "computed",
      "applies": [],
-     "prose": "with r >= 0, a = -r is <= 0",
-     "code": "assert (-r['r_t']).is_nonpositive is True",
-     "fingerprint": "9423d9ed2b8612797db0987446d9917dd493ff04f6cb138d9ed8e017d3fed676",
+     "prose": "lambda - min g = w.g - m = G",
+     "code": "assert sp.simplify(r['lam_minus_m'] - r['G_expr']) == 0, 'L12 FAIL: lambda - min g != G (lambda = w.g)'",
+     "fingerprint": "85826cdd6d22605afd836a108decff9d31c8286f8af36061a0b3aeafba46abdc",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.18",
      "kind": "computed",
      "applies": [],
-     "prose": "a >= 0 and a <= 0 force a = 0: G = 0 only if every term w_j (g_j - m) is 0",
-     "code": "assert r['kkt_squeeze'] == sp.FiniteSet(0), 'L12 FAIL: termwise vanishing not forced'",
-     "fingerprint": "3f67fda2c8e4803d1ae8b8f9389353520ba690606cbf9b7eaecd4dd03fd8055a",
+     "prose": "nonnegative terms that sum to 0: a + r = 0 gives a = -r",
+     "code": "assert r['zero_sol'] == [-r['r_t']], 'L12 FAIL: a + r = 0 does not give a = -r'",
+     "fingerprint": "5a20c19249f9eb1550b47c247ed25436a13e2ac982f375b3e446db558ba3eb1a",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.19",
      "kind": "computed",
      "applies": [],
-     "prose": "G - (f(w) - f*) = a + b, the I8 slack plus the minimum slack",
-     "code": "assert sp.simplify(r['chain_slack']) == 0, 'L12 FAIL: G - (f - f*) != a + b'",
-     "fingerprint": "91712c19fff656a599740afa82553c23032be6d30e3de319185c4964120ab798",
+     "prose": "with r >= 0, a = -r is <= 0",
+     "code": "assert (-r['r_t']).is_nonpositive is True",
+     "fingerprint": "f9583536833ff86a345327439963f6ba039ae0e44c1d78e0d2e35e0720a88f8b",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.20",
      "kind": "computed",
      "applies": [],
-     "prose": "a >= 0 (I8) and b >= 0 (step 2), so G - (f(w) - f*) >= 0",
-     "code": "assert r['chain_nonneg'] is True, 'L12 FAIL: a + b is not nonnegative'",
-     "fingerprint": "c549224231e020aed05c801a4a7acced5318c80fec47e35a13bf6ee5bc2e70bf",
+     "prose": "a >= 0 and a <= 0 force a = 0: G = 0 only if every term w_j (g_j - m) is 0",
+     "code": "assert r['a_t'].is_nonnegative is True and r['kkt_squeeze'] == sp.FiniteSet(0), 'L12 FAIL: termwise vanishing not forced'",
+     "fingerprint": "9c183d2d23cf25991d84f74b954a20b49fdd856003023cbeea5e73029ad198dd",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.21",
      "kind": "computed",
      "applies": [],
-     "prose": "f(w) - f* >= 0 because f* is the minimum",
-     "code": "assert r['lower_nonneg'] is True, 'L12 FAIL: f(w) - f* >= 0 not carried'",
-     "fingerprint": "0cc2875580659fd18667b874f64653b96c8f61e6ece33b9b534dd1fbee0c7ff8",
+     "prose": "G - (f(w) - f*) = a + b, the I8 slack plus the minimum slack",
+     "code": "assert sp.simplify(r['chain_slack']) == 0, 'L12 FAIL: G - (f - f*) != a + b'",
+     "fingerprint": "70bcdaf8750ccf7c3a4fcddadf51ffd20b1d636f293d9b4eca6487a10162c493",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.22",
      "kind": "computed",
      "applies": [],
-     "prose": "swapping the finite sums: sum_j w_j (U^T p)_j = sum_i p_i (w.u_i)",
-     "code": "assert r['swap_equal'] is True, 'L12 FAIL: sum_j w_j (U^T p)_j != sum_i p_i (w.u_i)'",
-     "fingerprint": "c9bd067ec304cf8dd9ce2f14694ade1679bdf825710b9d03ee68acb0f1f9bdf0",
+     "prose": "a >= 0 (I8) and b >= 0 (step 2), so G - (f(w) - f*) >= 0",
+     "code": "assert r['chain_nonneg'] is True, 'L12 FAIL: a + b is not nonnegative'",
+     "fingerprint": "71b43524ecc95a32f54e140d1f7e39d4ebf8803b373710b4dc20a7249cf5943a",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.23",
      "kind": "computed",
      "applies": [],
-     "prose": "p on the active rows with sum_i p_i = 1: sum_i p_i (M - s_i) = M - sum_i p_i s_i",
-     "code": "assert sp.simplify(sr - (M - sp.Sum(p[i] * sp.Sum(w[j] * u[i, j], lim), (i, 1, n)))) == 0, 'L12 FAIL: sum_i p_i (M - s_i) != M - sum_i p_i s_i'",
-     "fingerprint": "cd7158306aff791798c95af4269c9557403acfb48f2ab2549318c356393ead51",
+     "prose": "f(w) - f* >= 0 because f* is the minimum",
+     "code": "assert r['lower_nonneg'] is True, 'L12 FAIL: f(w) - f* >= 0 not carried'",
+     "fingerprint": "0db1f06f25f6f1663bca65dc9570531907d0a8f5a9bd7e49a1366674f3a47bd2",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.24",
-     "kind": "axiom",
-     "applies": [
-      "I12"
-     ],
-     "prose": "I12: the sum vanishes termwise, so sum_i p_i s_i = M",
-     "code": "assert sp.solve(sp.Eq(sr.subs(r['ps'], X), I12.rewrite(r['support_zero'])), X) == [M], 'L12 FAIL: sum_i p_i s_i != M on the active rows'",
-     "fingerprint": "39e33cccb7b807a75011da1db66c9f4825d7da748dae30bc78c53a2b98bc1c52",
+     "kind": "computed",
+     "applies": [],
+     "prose": "swapping the finite sums: sum_j w_j (U^T p)_j = sum_i p_i (w.u_i)",
+     "code": "assert r['swap_equal'] is True, 'L12 FAIL: sum_j w_j (U^T p)_j != sum_i p_i (w.u_i)'",
+     "fingerprint": "cc36010410cd38e6da2c60800d0596572cf5cba6a1a675d3d224e77bf14fa4c4",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.25",
      "kind": "computed",
      "applies": [],
-     "prose": "g.w = sum_i p_i s_i - ubar.w (swap) = M - ubar.w = f(w) at tau = infinity",
-     "code": "assert sp.simplify(gw.subs(r['lhs_swap'], r['ps']).subs(r['ps'], M) - (M - r['ubw'])) == 0, 'L12 FAIL: g.w != M - ubar.w'",
-     "fingerprint": "3bd1f348f866b0f5733fc49b289f73e7c832bf1152e5934a9b072b8ea4497c4e",
+     "prose": "p on the active rows with sum_i p_i = 1: sum_i p_i (M - s_i) = M - sum_i p_i s_i",
+     "code": "assert sp.simplify(sr - (M - sp.Sum(p[i] * sp.Sum(w[j] * u[i, j], lim), (i, 1, n)))) == 0, 'L12 FAIL: sum_i p_i (M - s_i) != M - sum_i p_i s_i'",
+     "fingerprint": "7021978587e07fef9962ccf0de258bb2e71f71fc7b880841c51a1b220efb3e25",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.26",
-     "kind": "computed",
-     "applies": [],
-     "prose": "with sum_i p_i = 1 the centred (U_c^T p)_j is sum_i p_i u_ij - ubar_j",
-     "code": "assert sp.simplify(uc - (sp.Sum(p[i] * u[i, j], (i, 1, n)) - r['ubj'][j])) == 0, 'L12 FAIL: centred (U_c^T p)_j'",
-     "fingerprint": "1ac5f7092a415cf4fe9ea748241017ed04378523bdbbef0efa997d582d87850e",
+     "kind": "axiom",
+     "applies": [
+      "I12"
+     ],
+     "prose": "I12: the sum vanishes termwise, so sum_i p_i s_i = M",
+     "code": "assert sp.solve(sp.Eq(sr.subs(r['ps'], X), I12.rewrite(r['support_zero'])), X) == [M], 'L12 FAIL: sum_i p_i s_i != M on the active rows'",
+     "fingerprint": "e4f0b96df9a58974e8cf737b73b811262e91cecc35c9a5dfdf4285e151e38785",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.27",
      "kind": "computed",
      "applies": [],
-     "prose": "g.w splits into sum_j w_j (U^T p)_j minus the centring term ubar.w",
-     "code": "assert split.has(r['ubj']), 'L12 FAIL: centring term lost'",
-     "fingerprint": "7b3bb486b9be3aca8a01ba8042837de708f785ac985361068bd012a4121a2e51",
+     "prose": "g.w = sum_i p_i s_i - ubar.w (swap) = M - ubar.w = f(w) at tau = infinity",
+     "code": "assert sp.simplify(gw.subs(r['lhs_swap'], r['ps']).subs(r['ps'], M) - (M - r['ubw'])) == 0, 'L12 FAIL: g.w != M - ubar.w'",
+     "fingerprint": "dff21f0b889347f38503964c01a0ed3868f0bbad3cc31c42736476d47b6ead48",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.28",
      "kind": "computed",
      "applies": [],
-     "prose": "the LP gap is the primal objective minus the dual objective",
-     "code": "assert lp['gap_at_optimum'] == lp['primal_at_optimum'] - lp['dual_at_optimum'], 'L12 FAIL: LP gap is not primal minus dual'",
-     "fingerprint": "b1f91d0c78276d0aa0ea0a48f23812bbc02505c83670f15de9085c9d4746c5a6",
+     "prose": "with sum_i p_i = 1 the centred (U_c^T p)_j is sum_i p_i u_ij - ubar_j",
+     "code": "assert sp.simplify(uc - (sp.Sum(p[i] * u[i, j], (i, 1, n)) - r['ubj'][j])) == 0, 'L12 FAIL: centred (U_c^T p)_j'",
+     "fingerprint": "4896940ac9f71be42c8e38fa2be60c518ec12ed0ff7342b355e501da515b9584",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.29",
-     "kind": "axiom",
-     "applies": [
-      "I1"
-     ],
-     "prose": "I1: at an optimal primal-dual pair the values coincide, so the LP duality gap is 0",
-     "code": "assert sp.simplify(I1.rewrite(I1.obj('primal') - I1.obj('dual'))) == 0 and lp['gap_at_optimum'] == 0, 'L12 FAIL: LP duality gap at the optimal pair is not 0'",
-     "fingerprint": "76a10548853690c88d992b03d6e0c6aa4950875218f256ff3ffbbde7a742bf8f",
+     "kind": "computed",
+     "applies": [],
+     "prose": "g.w splits into sum_j w_j (U^T p)_j minus the centring term ubar.w",
+     "code": "assert split.has(r['ubj']), 'L12 FAIL: centring term lost'",
+     "fingerprint": "e48e0fdacfc69ff218530a353bca1c8feb745cd1419b94d57defab3fc790da1b",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.30",
      "kind": "computed",
      "applies": [],
+     "prose": "the LP gap is the primal objective minus the dual objective",
+     "code": "assert lp['gap_at_optimum'] == lp['primal_at_optimum'] - lp['dual_at_optimum'], 'L12 FAIL: LP gap is not primal minus dual'",
+     "fingerprint": "15f481280a16aaa0b0bd7d8141cd4b6fe40e95a5a3eb2d67e33fd3bbb9e82299",
+     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+    },
+    {
+     "tag": "L12.31",
+     "kind": "axiom",
+     "applies": [
+      "I1"
+     ],
+     "prose": "I1: at an optimal primal-dual pair the values coincide, so the LP duality gap is 0",
+     "code": "assert sp.simplify(I1.rewrite(I1.obj('primal') - I1.obj('dual'))) == 0 and lp['gap_at_optimum'] == 0, 'L12 FAIL: LP duality gap at the optimal pair is not 0'",
+     "fingerprint": "6e4e70f51de64debbfc391d57ab04a2a841a2e1972471f9eb45ecd36e49b18b5",
+     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+    },
+    {
+     "tag": "L12.32",
+     "kind": "computed",
+     "applies": [],
      "prose": "off the optimum 0 <= f - f* <= G holds on the exact two-metric LP",
      "code": "assert 0 <= lp['f_off_optimum'] - lp['f_star'] <= lp['gap_off_optimum'], 'L12 FAIL: 0 <= f - f* <= G violated off the optimum'",
-     "fingerprint": "e6edae5e3ac751239be804739b4d5b1899a3646b8a4727ba77dda1ad94884b5e",
+     "fingerprint": "538b2f9d74969677418f6245380d09006d81f6a07e861eb6db86e053f878bfff",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     }
    ]
@@ -2270,6 +2344,68 @@
     "F12",
     "I9",
     "R2"
+   ],
+   "hypotheses": [
+    {
+     "symbol": "delta",
+     "kind": "symbol",
+     "sign": "nonnegative",
+     "claim": "every facet score changes by at most delta"
+    },
+    {
+     "symbol": "a1",
+     "kind": "symbol",
+     "sign": "nonnegative",
+     "claim": "every facet score changes by at most delta"
+    },
+    {
+     "symbol": "a2",
+     "kind": "symbol",
+     "sign": "nonnegative",
+     "claim": "every facet score changes by at most delta"
+    },
+    {
+     "symbol": "c",
+     "kind": "symbol",
+     "sign": "positive",
+     "claim": "positive when 2 delta < gamma"
+    },
+    {
+     "symbol": "nth",
+     "kind": "symbol",
+     "sign": "nonnegative",
+     "claim": "||Delta theta_k||_2"
+    },
+    {
+     "symbol": "a_",
+     "kind": "symbol",
+     "sign": "nonnegative",
+     "claim": "r = max_k ||Delta theta_k||_2"
+    },
+    {
+     "symbol": "b_",
+     "kind": "symbol",
+     "sign": "nonnegative",
+     "claim": "U = max_i ||u~_i||_2"
+    },
+    {
+     "symbol": "UU",
+     "kind": "symbol",
+     "sign": "nonnegative",
+     "claim": "U = max_i ||u~_i||_2"
+    },
+    {
+     "symbol": "r_",
+     "kind": "symbol",
+     "sign": "nonnegative",
+     "claim": "r = max_k ||Delta theta_k||_2"
+    },
+    {
+     "symbol": "U_",
+     "kind": "symbol",
+     "sign": "positive",
+     "claim": "U >= 1 because the last component is -1"
+    }
    ],
    "imports": [
     "F12",
@@ -2467,6 +2603,20 @@
    "axioms_used": [
     "A8",
     "R2"
+   ],
+   "hypotheses": [
+    {
+     "symbol": "dfk",
+     "kind": "family",
+     "sign": "nonnegative",
+     "claim": "every w_k minimizes f_k"
+    },
+    {
+     "symbol": "slackG",
+     "kind": "family",
+     "sign": "nonnegative",
+     "claim": "G_k the facet gaps of L12"
+    }
    ],
    "imports": [
     "A8",

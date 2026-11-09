@@ -563,3 +563,95 @@ def test_a_falsified_fact_breaks_the_step_that_rests_on_it(chain_ctx, module, ke
     tamper(ctx[key])
     with pytest.raises(AssertionError, match=message):
         mod.verify(ctx)
+
+
+# ------------- step 3 (principle 3): no premise hides in a symbol; the checker fails on one
+
+
+def test_a_symbol_with_a_sign_assumption_made_directly_fails(scratch):
+    edit(
+        scratch,
+        "lemma_02_shift.py",
+        "    base = J(S)\n",
+        '    base = J(S)\n    _bad = sp.Symbol("bad", nonnegative=True)\n',
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "lemma_02_shift.py" in out and "unlicensed assuming symbol" in out
+    assert "nonnegative=True on Symbol" in out
+
+
+def test_a_family_declared_real_or_signed_directly_fails(scratch):
+    edit(
+        scratch,
+        "lemma_02_shift.py",
+        "    base = J(S)\n",
+        "    base = J(S)\n"
+        '    _a = sp.IndexedBase("a", real=True)\n'
+        '    _b = sp.symbols("b c", positive=True)\n',
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and out.count("unlicensed assuming symbol") == 2
+
+
+def test_a_hypothesis_must_quote_the_statement(scratch):
+    edit(
+        scratch,
+        "lemma_14_assignment_stable.py",
+        '"every w_k minimizes f_k")',
+        '"every w_k is a global minimizer of everything")',
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "lemma_14_assignment_stable.py" in out
+    assert "which is not in the lemma's STATEMENT or docstring" in out
+
+
+def test_a_hypothesis_inside_a_function_fails(scratch):
+    edit(
+        scratch,
+        "lemma_02_shift.py",
+        "    base = J(S)\n",
+        '    base = J(S)\n    _h = hypothesis_symbol("h", "positive", "tau > 0")\n',
+    )
+    edit(
+        scratch,
+        "lemma_02_shift.py",
+        "from derivation.licence import log_expand",
+        "from derivation.licence import hypothesis_symbol, log_expand",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "a hypothesis must be declared at module level" in out
+
+
+def test_a_do_nothing_application_fails(scratch):
+    edit(
+        scratch,
+        "lemma_02_shift.py",
+        "    base = J(S)\n",
+        "    base = A3.invoke(J(S))\n",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "a do-nothing application: Axiom.invoke" in out
+
+
+def test_every_hypothesis_of_the_statements_is_listed_in_the_record():
+    rec = _record()["lemmas"]
+    listed = {(f, h["symbol"]) for f, lemma in rec.items() for h in lemma["hypotheses"]}
+    assert ("lemma_11_pareto.py", "dl") in listed and (
+        "lemma_14_assignment_stable.py",
+        "dfk",
+    ) in listed
+    assert ("lemma_13_margin.py", "delta") in listed and ("lemma_12_facet_gap.py", "c_nn") in listed
+    for lemma in rec.values():
+        for h in lemma["hypotheses"]:
+            assert h["sign"] in ("positive", "nonnegative") and h["claim"].strip()
+
+
+def test_no_lemma_script_creates_a_signed_symbol_directly():
+    """The committed scripts pass principle 3 by the checker, and by this plain scan."""
+    import ast
+
+    for path in sorted(DERIVATION.glob("lemma_*.py")):
+        for node in ast.walk(ast.parse(path.read_text())):
+            if isinstance(node, ast.Call):
+                for kw in node.keywords:
+                    assert kw.arg not in proofmap.SIGN_KWARGS, (path.name, node.lineno)

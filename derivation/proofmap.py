@@ -43,7 +43,10 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 RECORD_NAME = "proof_map_record.json"
-RECORD_VERSION = 1
+RECORD_VERSION = 2
+SIGN_KWARGS = ("positive", "nonnegative", "negative", "nonpositive")
+SYMBOL_MAKERS = ("Symbol", "symbols", "IndexedBase", "Dummy")
+HYPOTHESIS_MAKERS = ("hypothesis_symbol", "hypothesis_base")
 
 TAG_RE = re.compile(r"^#\s*\[(L(\d+)\.(\d+))\]\s*(.*?)\s*$")
 TAGLIKE_RE = re.compile(r"^#\s*\[L\d")
@@ -249,6 +252,9 @@ def parse_lemma(path, ledger, findings):
                     name, None, "untagged assert in verify (an untagged proof step)", node.lineno
                 )
 
+    # ---- principle 3: no premise hides in a symbol; principle 1: no do-nothing application
+    hypotheses = _check_symbols(name, tree, findings)
+
     # ---- imports == applied == AXIOMS_USED
     used_decl = _module_literal(tree, "AXIOMS_USED")
     if used_decl is None:
@@ -289,10 +295,88 @@ def parse_lemma(path, ledger, findings):
     return {
         "number": number,
         "axioms_used": sorted(declared),
+        "hypotheses": hypotheses,
         "imports": sorted(imported),
         "results": [{"name": r, "steps": list(ks)} for r, ks in results],
         "steps": out_steps,
     }
+
+
+def _call_name(node):
+    f = node.func
+    return f.attr if isinstance(f, ast.Attribute) else getattr(f, "id", None)
+
+
+def _normalized(text):
+    return " ".join(text.split())
+
+
+def _check_symbols(name, tree, findings):
+    """Rules 1 and 3 of WP10 Amendment 2, found from the syntax tree.
+
+    * A symbol or family created with a sign assumption (positive, nonnegative, ...) stands for a
+      premise.  Direct creation is an error: the symbol comes from a ledger entry's factory (a
+      tagged line, so it is a step), from an earlier lemma's proved result, or is declared at
+      module level as a hypothesis of the statement (``hypothesis_symbol`` / ``hypothesis_base``)
+      whose quoted claim must occur in the lemma's STATEMENT or docstring.  A real-valued
+      ``IndexedBase`` is a premise too.
+    * ``Axiom.invoke`` (an application that does nothing) is an error.
+    """
+    doc = ast.get_docstring(tree) or ""
+    statement = _module_literal(tree, "STATEMENT") or ""
+    source = _normalized(doc + " " + (statement if isinstance(statement, str) else ""))
+    module_level = {id(n.value): n for n in tree.body if isinstance(n, ast.Assign)}
+    hypotheses = []
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        called = _call_name(node)
+        if called == "invoke":
+            findings.add(name, None, "a do-nothing application: Axiom.invoke", node.lineno)
+        if called in SYMBOL_MAKERS:
+            for kw in node.keywords:
+                signed = (
+                    kw.arg in SIGN_KWARGS and isinstance(kw.value, ast.Constant) and kw.value.value
+                )
+                real_family = called == "IndexedBase" and kw.arg == "real"
+                if signed or real_family:
+                    findings.add(
+                        name,
+                        None,
+                        f"unlicensed assuming symbol ({kw.arg}=True on {called}): a premise hidden "
+                        "in a symbol; take it from a ledger entry, an earlier result, or declare "
+                        "a hypothesis of the statement",
+                        node.lineno,
+                    )
+        if called in HYPOTHESIS_MAKERS:
+            args = [a.value for a in node.args if isinstance(a, ast.Constant)]
+            if id(node) not in module_level:
+                findings.add(
+                    name, None, "a hypothesis must be declared at module level", node.lineno
+                )
+            elif len(args) != 3 or args[1] not in ("positive", "nonnegative"):
+                findings.add(
+                    name, None, "a hypothesis names a symbol, a sign and a claim", node.lineno
+                )
+            else:
+                symbol, sign, claim = args
+                if _normalized(claim) not in source:
+                    findings.add(
+                        name,
+                        None,
+                        f"hypothesis {symbol!r} quotes {claim!r}, which is not in the lemma's "
+                        "STATEMENT or docstring",
+                        node.lineno,
+                    )
+                hypotheses.append(
+                    {
+                        "symbol": symbol,
+                        "kind": "family" if called == "hypothesis_base" else "symbol",
+                        "sign": sign,
+                        "claim": claim,
+                    }
+                )
+    return hypotheses
 
 
 def build(directory, findings):
@@ -367,8 +451,8 @@ def compare(new, old, findings):
                     f"{' and '.join(what) or 'content'} changed since the record",
                     a["_line"],
                 )
-        for key in ("axioms_used", "imports", "results"):
-            if new_l[fname][key] != old_l[fname][key]:
+        for key in ("axioms_used", "imports", "results", "hypotheses"):
+            if new_l[fname][key] != old_l[fname].get(key):
                 findings.add(fname, None, f"{key} changed since the record")
     for name in sorted(set(new.get("ledger", {})) | set(old.get("ledger", {}))):
         if new.get("ledger", {}).get(name) != old.get("ledger", {}).get(name):

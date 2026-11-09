@@ -38,6 +38,7 @@ hypothesis beta_k = J_tau(U w_k) or exact facet optimality fails; that R2 holds 
 import sympy as sp
 
 from derivation.axioms import A8, R2
+from derivation.licence import hypothesis_base
 from derivation.sumtools import fuse, linear, push_in, sum_swap_equal
 
 TITLE = "assignment-stable local optimality of the multi-facet fit (Proposition 3, Corollary 4)"
@@ -54,6 +55,9 @@ STATEMENT = (
 )
 AXIOMS_USED = ["A8", "R2"]
 # Two results share this file (the step tags run in one sequence; each step is owned by one result).
+# Hypotheses of the statement (each quotes it): the symbols that carry a sign stand for these.
+EXACT_FACET_OPTIMUM = hypothesis_base("dfk", "nonnegative", "every w_k minimizes f_k")
+FACET_GAP_SLACK = hypothesis_base("slackG", "nonnegative", "G_k the facet gaps of L12")
 PROOF_RESULTS = (
     ("Proposition 3", (1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17)),
     ("Corollary 4", (9, 18, 19)),
@@ -81,7 +85,7 @@ def derive(ctx):
     lim = (j, 1, d)
 
     # 1. per-facet regrouping at symbolic cell size n_k
-    nk = sp.Symbol("n_k", integer=True, positive=True)
+    nk = S.n  # the cell size, a symbolic positive integer (A0)
     beta = sp.Symbol("beta_k", real=True)
 
     def dot(x):
@@ -129,24 +133,24 @@ def derive(ctx):
     # [L14.7] A8: share_x = n_x / N = sum_i chi_xi / N, nonnegative because chi >= 0
     share = lambda x: A8.rewrite(ncell[x] / N, only=(2,))  # noqa: E731
 
-    fnew = sp.IndexedBase("fnew")
     fold = sp.IndexedBase("fold")
-    dfk = sp.IndexedBase("dfk", nonnegative=True)  # f_k(w'_k) - f_k(w_k) >= 0 (exact optimum)
+    dfk = EXACT_FACET_OPTIMUM  # f_k(w'_k) = f_k(w_k) + dfk_k, dfk_k >= 0 (exact optimum)
     local_min_slack = sp.simplify(
-        linear(sp.Sum(share(k) * fnew[k], (k, 1, K)) - sp.Sum(share(k) * fold[k], (k, 1, K)))
-        - linear(sp.Sum(share(k) * (fnew[k] - fold[k]), (k, 1, K)))
+        linear(
+            sp.Sum(share(k) * (fold[k] + dfk[k]), (k, 1, K)) - sp.Sum(share(k) * fold[k], (k, 1, K))
+        )
+        - linear(sp.Sum(share(k) * dfk[k], (k, 1, K)))
     )
     local_min_nonneg = sp.Sum(share(k) * dfk[k], (k, 1, K)).is_nonnegative
 
     # 5. Corollary 4: F - F* = sum share (f - f*), bound by sum share G termwise
     fk = sp.IndexedBase("fk")
     fstar = sp.IndexedBase("fstar")
-    Gk = sp.IndexedBase("Gk")
-    slackG = sp.IndexedBase("slackG", nonnegative=True)  # G_k - (f_k - f_k*) >= 0 (L12)
+    slackG = FACET_GAP_SLACK  # G_k = (f_k - f_k*) + slackG_k, slackG_k >= 0 (L12)
     cor_slack = sp.simplify(
-        linear(sp.Sum(share(k) * Gk[k], (k, 1, K)))
+        linear(sp.Sum(share(k) * ((fk[k] - fstar[k]) + slackG[k]), (k, 1, K)))
         - linear(sp.Sum(share(k) * (fk[k] - fstar[k]), (k, 1, K)))
-        - linear(sp.Sum(share(k) * (Gk[k] - (fk[k] - fstar[k])), (k, 1, K)))
+        - linear(sp.Sum(share(k) * slackG[k], (k, 1, K)))
     )
     cor_nonneg = sp.Sum(share(k) * slackG[k], (k, 1, K)).is_nonnegative
 

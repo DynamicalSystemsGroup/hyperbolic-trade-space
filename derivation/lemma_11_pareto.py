@@ -31,7 +31,9 @@ w to use, or about the fitted frontier being the true front.
 import sympy as sp
 
 from derivation.axioms import A2
+from derivation.licence import hypothesis_base, hypothesis_symbol
 from derivation.sumtools import entails, linear
+from derivation.symbols import J0
 
 TITLE = "A V-maximizer is Pareto-efficient (weighted-sum scalarization; converse not claimed)"
 STATEMENT = (
@@ -46,6 +48,13 @@ STATEMENT = (
 )
 AXIOMS_USED = ["A2"]
 
+# Hypotheses of the statement (each quotes it): the symbols that carry a sign stand for these.
+DOMINANCE = hypothesis_base("dl", "nonnegative", "u' = u + delta with delta_j >= 0 for every j")
+W_POSITIVE = hypothesis_symbol("wp", "positive", "some j has w_j > 0 and delta_j > 0")
+D_POSITIVE = hypothesis_symbol("dp", "positive", "some j has w_j > 0 and delta_j > 0")
+EPSILON = hypothesis_symbol("eps", "positive", "delta_j >= eps > 0 for all j")
+DELTA_MINUS_EPS = hypothesis_base("gam", "nonnegative", "delta_j >= eps > 0 for all j")
+
 
 def derive(ctx):
     S = ctx["S"]
@@ -56,7 +65,7 @@ def derive(ctx):
     # local nonnegative families: the hypotheses w_j >= 0 (A2) and delta_j >= 0 (dominance)
     # [L11.1] A2: the exponents are nonnegative, w_j >= 0
     wn = A2.nonneg_base("wn")
-    dl = sp.IndexedBase("dl", nonnegative=True)
+    dl = DOMINANCE
     beta0 = sp.Symbol("beta0", real=True)
 
     # 1. identity, with u' = u + delta
@@ -65,9 +74,9 @@ def derive(ctx):
     gain_nonneg = gain.is_nonnegative
 
     # 2. strictness: separate the j0 term, j0 a distinguished index with w_j0 > 0, delta_j0 > 0
-    rest = sp.Symbol("rest", nonnegative=True)  # sum over j != j0 of a nonnegative summand
-    wp = sp.Symbol("wp", positive=True)  # w_j0 > 0
-    dp = sp.Symbol("dp", positive=True)  # delta_j0 > 0
+    # the sum over j != j0 of the nonnegative summands w_j delta_j (A2, dominance)
+    rest = sp.Sum(sp.Piecewise((0, sp.Eq(j, J0)), (wn[j] * dl[j], True)), lim)
+    wp, dp = W_POSITIVE, D_POSITIVE  # w_j0 > 0 and delta_j0 > 0
     strict = rest + wp * dp
     strict_positive = strict.is_positive
 
@@ -82,8 +91,7 @@ def derive(ctx):
     )
 
     # 4. simplex lower bound: delta_j = eps + gam_j, gam_j >= 0, sum_j w_j = 1
-    eps = sp.Symbol("eps", positive=True)
-    gam = sp.IndexedBase("gam", nonnegative=True)
+    eps, gam = EPSILON, DELTA_MINUS_EPS
     low = linear(sp.Sum(wn[j] * (eps + gam[j]), lim))
     # [L11.2] A2: sum_j w_j = 1 turns sum_j w_j (eps + gam_j) into eps + sum_j w_j gam_j
     low = A2.rewrite(low, rename={w: wn})

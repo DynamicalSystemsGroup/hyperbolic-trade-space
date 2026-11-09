@@ -114,3 +114,27 @@ def licensed_power(expr, *licences):
             names = ", ".join(e.name for e in licences)
             raise LicenceError(f"the base of {pw} is not licensed as positive by {names}")
     return sp.powdenest(expr, force=True)
+
+
+# ---------------------------------------------------------------------------------------------
+# Hypotheses of a statement.  A symbol that carries a sign assumption stands for a premise. It is
+# created by a ledger entry's factory (``A2.nonneg_base``, ``F12.nonneg_symbol``, ...), taken from
+# an earlier lemma's proved result, or declared here as a hypothesis of the lemma's own statement:
+# at module level, with the claim quoted from the lemma's STATEMENT or docstring (the checker
+# verifies that the quotation is there and lists the hypothesis in the proof map).
+# ---------------------------------------------------------------------------------------------
+SIGNS = ("positive", "nonnegative")
+
+
+def hypothesis_symbol(name, kind, claim):
+    """A symbol with the sign ``kind`` that a hypothesis of the statement (``claim``) gives it."""
+    if kind not in SIGNS or not claim.strip():
+        raise ValueError("a hypothesis names its sign and quotes the statement's claim")
+    return sp.Symbol(name, **{kind: True})
+
+
+def hypothesis_base(name, kind, claim):
+    """A family with the sign ``kind`` that a hypothesis of the statement (``claim``) gives it."""
+    if kind not in SIGNS or not claim.strip():
+        raise ValueError("a hypothesis names its sign and quotes the statement's claim")
+    return sp.IndexedBase(name, **{kind: True})

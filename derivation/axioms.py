@@ -241,14 +241,6 @@ class Axiom:
             raise LicenceError(f"{self.name} declares no nonnegative family")
         return sp.IndexedBase(name, nonnegative=True)
 
-    def invoke(self, value):
-        """Take ``value`` from this entry: the point where a proof step applies the entry.
-
-        For a named proposition (no SymPy form) this is how a step applies it: the claim the
-        proposition supplies is passed through ``invoke`` so that the line names the entry.
-        """
-        return value
-
 
 AXIOMS = {
     # ---------------------------------------------------------------- POSITED
