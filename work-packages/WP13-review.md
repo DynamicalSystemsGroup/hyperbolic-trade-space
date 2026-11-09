@@ -125,3 +125,46 @@ Not yet decided by the supervisor; the suggested dispositions above are suggesti
 Do not recommend acceptance yet. The mathematics, code, tests, derivations and ledger are sound and every numeric claim I could re-run held (R-1 to R-6, R-9, the cubesat change list), but three requirements are not closed: R-11 (format check fails at HEAD, manual Tests run not done), R-8 (stale "distance" in README and spec), and D-9 / R-10 / G6 (the response letter, pending by design). After the small fixes in G-A to G-D and the CI run (G-G), and the letter (G-H), the whole review should be rerun once, and I would then expect to recommend acceptance with G-E, G-F and G-I noted.
 
 Acceptance is the supervisor's act, recorded as named above. This report does not accept the work.
+
+## R-10 re-check (letter against the review)
+
+Fresh-context check of "Response letter" in `work-packages/external-review-2026-11.md` against "The
+review, verbatim", the item index and the dispositions. Every cited hash exists (`git cat-file -t`
+gives commit for 03c8b1a, 1e9ae03, a9f142f, c0b4e9c, d8fa513, 4bfe591, c61ff49, b5467f0, a15566b,
+c3cbec4) and each touches what the letter says (`git show --stat`: solvers and tests; estimator and
+tests; L12/I8/F12; L13/I9/R2; L14; method.md; L3/L6/R1; ledger, register, proof conventions; E-4 in
+L10 docstring, axioms, api.md, method.md; c3cbec4 README and why-and-how wording). Headings "The fit",
+"Three levels of guarantee" and "The stopping declaration" exist in `docs/method.md`; existence,
+uniqueness and stability are item 7 of "What the stage learns"; ledger ids G-1 to G-16 exist (G-11 to
+G-14 = Q2, Q3, Q4, Q1; G-14 not pursued). Tests ran: `tests/test_docs.py`, `test_gaps.py`,
+`test_derivation.py`, 136 passed.
+
+Numbers re-measured (`solve_terms(U,3,tau,random_state=0)` on `make_frontier_data(400,4,n_terms=3,
+random_state=s)`, s=0..19): tau=50: 20/20 certified, max gap 5.1e-15; tau=inf: 16 certified, 4
+stationary_without_margin (seeds 1, 3, 8, 16), max gap 2.0e-15. 3,600 = (16+20 fits with positive
+margin) x 100 perturbations in `test_margin_lemma_perturbations_inside_the_radius_keep_labels`; the
+Corollary bound is asserted on all 40 fits (`test_corollary_bound_on_every_planted_fit`). Constants
+EPS_KKT 1e-8, EPS_FEAS 1e-9, GUARD_TOL 1e-12, participation threshold 1e-3, statuses and Termination
+fields match the code. Cubesat K = 2, 3: all certified, max gap 1.1e-14 in the record tables
+(1.2e-14 in the seed-stability paragraph), gamma 2.2e-4 to 1.575e-3 (letter: 1.6e-3, rounded).
+
+| Item | Verdict | Notes and exact fix |
+|---|---|---|
+| E-1 | ok | Restated, all hashes and numbers verified; includes the guard-tolerance side effect (seed 8) and the extra status, matching the recovery paragraph in the method page. Optional: "max gap 1.1e-14" could read "1.1e-14 to 1.2e-14" to cover the seed-stability run. |
+| E-2 | ok | L3 STATEMENT, the constructed instance (d = 2, exact arithmetic) and R1 wording are in c61ff49; method page "The fit" in 4bfe591. |
+| E-3 | needs fix (minor) | The letter says the STATEMENTs of "L12 to L14, L3" name the object; L12 to L14 do ("fitted reference surface", "supporting envelope"), L3 does not (it separates tau = infinity from finite tau, but names none of the three objects). Fix: write "L12 to L14" and drop ", L3" (or "L3 separates tau = inf from finite tau"). |
+| E-4 | ok | a15566b touches method.md, api.md, the L10 docstring and axioms; the bound text matches the review. |
+| E-5 | ok | Threshold 1e-3 (`PARTICIPATION_THRESHOLD`), `conditioning_` (nan at tau = inf), G-2 verified. |
+| E-6 | ok | L6 STATEMENT reads as quoted; G-3, G-11, G-12 and `test_forbidden_phrases_absent` exist. |
+| E-7 | ok | Matches the classification (i) to (iv); tests `test_degenerate_single_valid_row_warns_with_the_convention`, `test_zero_metric_with_zero_exponent_equals_the_formal_limit`; G-4, G-5, G-6 exist. |
+| E-8 | needs fix (minor) | No restatement of the reviewer's point, and the disposition says the structure is adopted for the Results section of the paper. Fix: begin with "You asked that the optimization discussion be a short sequence of formal statements." and end with "WP10 carries the same structure into the Results section." |
+| E-9 | ok | Restates the five strengths; where: WP10 framing. |
+| E-10 | needs fix (minor) | No restatement of the reviewer's point and the reconciliation with outline v2 (in the disposition) is missing. Fix: begin with "You offered a structure of the mathematics (assumptions A1 to A6, core, extensions, algorithm, open questions Q1 to Q4, with Derived / Numerical / Open badges)." and add "The map is reconciled with outline v2 in WP10's scope." |
+
+Tone against the standing position: no overclaiming (statuses and the four zero-margin seeds are
+stated plainly; "Accepted in full" matches the disposition); no caveat sprinkling; two disclosed
+implementation choices are factual, not hedges.
+
+**Overall verdict: pass with three minor wording fixes (E-3, E-8, E-10).** No factual or numerical
+error, no missing or wrong hash, no overclaim. R-10 is met once the three edits are made; none
+changes a disposition or a number.
