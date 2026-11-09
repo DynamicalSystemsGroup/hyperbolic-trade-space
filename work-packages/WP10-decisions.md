@@ -333,6 +333,14 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   pins the configuration → attributes boundary as the stable surface, independent of tooling; WP15
   treats tooling versions as its own concern, never the method's.
 
+## Scope gate decision loop (2026-11-08; draft `WP10-scope-of-work.md`, f341690/993edee on dev)
+
+- **OD1, title and byline.** Options: working title now, final at WP11 / the supervisor gives the
+  title now. **Supervisor (mzargham), verbatim:** "Working title now, final at WP11". Disposition:
+  decided; the author proposes two working titles from the story for the supervisor's pick at the
+  first reading; sole author, Dynamical Systems Group, ORCID 0000-0001-5279-690X as in the SciPy
+  article; the final title is set in WP11.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
