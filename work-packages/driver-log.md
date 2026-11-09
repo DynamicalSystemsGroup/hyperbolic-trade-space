@@ -7,6 +7,12 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- (2026-11-09, 18:10) **The word "energy differential".** Every reader of round 1 guessed at it. Options:
+  keep it and gloss it in one clause at first use in the abstract; or make the glossary's other name,
+  "level offset", the term and keep "energy differential" as the analogy named once. The driver's
+  recommendation: keep it and gloss it; it carries his reading of V as a potential. Work routes
+  around it: the gloss is added either way.
+
 **Needs him (2026-11-09, 01:14):** his Colima configuration is changed from his original and the
 driver could not restore it. A second container implementer, dispatched by the PM with a brief that
 allowed restarting Colima, set `rosetta: false` in `~/.colima/default/colima.yaml` at 00:46 and
@@ -110,6 +116,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   chain of report is subagents to the PM, the PM to the driver, the driver to him; decisions that are
   his accumulate under "Waiting for the supervisor" below with the driver's recommendation and the
   work routes around them; the progress updates continue in the chat.
+
+- 2026-11-09, 18:10: WP11 round 1, the L-A and L-B cells (12 fresh readers on the staged paper at
+  20fa550): no reader believed the method picks a design or that a certificate is a global optimum;
+  three wrong beliefs replicated (the surface as a regression through the cloud; PCA replaced rather
+  than joined; a facet as a cluster of designs); "energy differential" guessed by 12 of 12; the case
+  sentence of the abstract carries no finding for any reader; Figure 2 the anchor, Figures 4 and 7
+  fail the cold read. Record and change requests CR-1 to CR-5 in `WP11-round-1/triage.md`; CR-5 is
+  a term decision for the supervisor (under "Waiting for the supervisor", with the driver's
+  recommendation).
 
 ## Verification snapshots by the driver
 
