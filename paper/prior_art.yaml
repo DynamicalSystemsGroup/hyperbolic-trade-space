@@ -48,7 +48,7 @@ entries:
     why_not_just: >-
       This is not just a Pareto front: a front is the set of designs that no other design dominates,
       while the fit returns a reference surface with coordinates, and for each facet the exponents
-      that give the exchange rates between metrics.
+      that give the elasticities between metrics.
 
   - id: dea
     group: Optimization and efficiency analysis
@@ -192,7 +192,7 @@ entries:
       The model class, the K > 1 refit scheme and the sparsity option.
     differs: >-
       The sources fit regression surfaces; this method fits an envelope, the one-sided boundary of
-      the data, and reads its exponents as exchange rates.
+      the data, and reads its exponents as elasticities.
     cites: [boyd2007tutorial, hoburg2014geometric, hoburg2016data, magnani2009convex, candes2008enhancing]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name

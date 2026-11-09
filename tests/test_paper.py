@@ -255,18 +255,37 @@ def test_abstract_and_section_5_say_the_one_facet_fit_is_a_geometric_program():
     supervisor's reading of 2026-11-09) and section 5 keeps one cited sentence that the invariant is
     a generalized posynomial; one facet is a geometric program (convex after the log change of
     variables, L4.14 to L4.24); several facets alternate one such program per facet. Nothing says
-    the several-facet fit is itself a convex program or a GGP."""
+    the several-facet fit is itself a convex program or a GGP. The abstract (the supervisor's
+    reading of 2026-11-09, R-38) says it plainly: a single n-lemma fits a monomial, which
+    transforms into a convex program; with several active trades the model is a posynomial,
+    compatible with generalized geometric programming (GGP); any kernel that keeps that
+    compatibility generalizes the method. It does not say the several-term fit is a GGP or
+    convex, and says nothing of assigning designs to facets."""
     nb = _nb(PAPER_NB)
     fm = yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"]
     flat = " ".join(fm.split())
-    assert "generalized" not in flat and "fitted posynomial reference surface" in flat
+    assert "generalized posynomial" not in flat and "fitted posynomial reference surface" in flat
     for phrase in (
-        "geometric program",
-        "logarithmic change of variables",
-        "one such program per facet",
-        "descent is derived, stationarity checked",
+        "Modelling a single n-lemma fits a monomial, which transforms into a convex program",
+        "is solved directly",
+        "when several trade-offs are active at once the model is a posynomial",
+        "compatible with generalized geometric programming (GGP)",
+        "any kernel that keeps that compatibility",
+        "elasticities: the percentage of one metric given up per percentage gained in another",
+        "mirrors the structure of PCA as an unsupervised learning method for feature engineering",
     ):
         assert phrase in flat, phrase  # fmt: skip
+    for gone in (  # R-38: cut from the abstract at the supervisor's direction (the body keeps them)
+        "chains with PCA",
+        "nondominated set stops shortlisting",
+        "Derived statements point",
+        "descent is derived",
+        "one such program per facet",
+        "assigning",
+        "exchange rate",
+    ):
+        assert gone not in flat, gone  # fmt: skip
+    assert "several-term" not in flat and "several facets" not in flat
     methods = _section("Methods")
     for phrase in (
         "geometric program",
@@ -280,10 +299,13 @@ def test_abstract_and_section_5_say_the_one_facet_fit_is_a_geometric_program():
     cited = "generalized posynomial, the term maximum at the default $\\kappa=\\infty$"
     assert f"{cited} [@boyd2007tutorial]" in methods
     assert "geometric program" in _section("The decision problem")
+    assert flat.count("GGP") == 1  # spelled out at first use, one parenthesis
     for text in (flat, methods, _section("The decision problem")):
-        assert "GGP" not in text and "several facets is a" not in text
+        assert "several facets is a" not in text
         assert not re.search(r"several[^.;]*(transform|convex program)", text.replace(
             "one such program per facet", ""))  # fmt: skip
+    for text in (methods, _section("The decision problem")):
+        assert "GGP" not in text
 
 
 def test_one_name_for_the_surface_and_the_data_is_what_is_modelled():
@@ -318,7 +340,9 @@ def test_the_case_is_described_as_power_mass_and_attitude_control():
     nb = _nb(PAPER_NB)
     fm = " ".join(yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"].split())
     assert "cubesat model coupling power, mass and attitude control" in fm
-    assert "ten attributes" in fm and "controller-gain regimes" in fm
+    assert len(re.findall(r"cubesat", fm)) == 1  # one sentence: the case and what it shows
+    for count in ("ten attributes", "controller-gain", "three facets", "one facet reports"):
+        assert count not in fm, count  # fmt: skip
     prose = _markdown(nb) + _markdown(_nb(SUPPORT_NB))
     assert "attitude determination and control system" not in prose
     assert "cubesat model coupling power, mass and attitude control" in _section(
@@ -1993,7 +2017,7 @@ def test_section_6_names_the_three_levels_and_has_level_1_as_a_derived_block():
         assert hypothesis in block[3], hypothesis
     assert "lemma_15_descent.py" in text
     abstract = yaml.safe_load(_src(_nb(PAPER_NB).cells[0]).split("---")[1])["abstract"]
-    assert "descent is derived" in abstract and "checked numerically" in abstract
+    assert "descent" not in abstract  # R-38: the abstract does not carry the three levels
 
 
 def test_appendix_b_shows_every_result_of_the_record_with_derived_counts():
@@ -2059,8 +2083,7 @@ def test_regime_names_a_gain_box_dataset_and_the_facets_are_facets():
     """C-4: 'regime' only for the two gain boxes; no 'three regimes' in the paper or its tables."""
     text = _all_rendered_text().lower()
     assert "three regimes" not in text and "regimes of the facet" not in text
-    abstract = _src(_nb(PAPER_NB).cells[0])
-    assert "three different contending sets" in abstract
+    assert "different contending sets" in _section("Case analysis")
     for section in ("Methods", "Case analysis"):
         prose = re.sub(r"fig-regimes[\w-]*|two (gain )?regimes", "", _section(section).lower())
         assert "regimes" not in prose, section
@@ -2238,7 +2261,10 @@ def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_ap
     assert ids.index("num-nondominated") < ids.index("sec-prior-art")
     assert "number of designs and of metrics" in _section("The decision problem")
     front = _src(nb.cells[0])
-    assert "not the Pareto" in front and "reference surface" in front and "scales where" in front
+    assert "not the Pareto" in front and "reference surface" in front
+    # R-38 (c): the abstract no longer carries the scaling sentence; section 1 keeps it
+    assert "scales where" not in front
+    assert "dominance stops shortlisting" in _section("The decision problem")
     results = _section("The decision problem").split("**Main results**", 1)[1]
     first = results.split("2.", 1)[0]
     assert "not the Pareto boundary" in first and "fitted reference surface" in first
