@@ -2,8 +2,9 @@
 
 Definitions only. Oracles and samplers are named here and resolved lazily by ``resolve_oracle``
 and ``resolve_sampler``, so importing this module needs no runtime. Part 15.4 runs the ``v2``
-experiments; it writes ``experiments/cubesat_oracle.py`` with a ``build(experiment)`` factory
-returning the oracle and a ``build_sampler(experiment)`` factory returning the sampler.
+experiments: ``experiments/cubesat_oracle.py`` has the ``build(experiment)`` and
+``build_sampler(experiment)`` factories; ``experiments/check_designs.py`` has those of the
+check-design flow.
 """
 
 from __future__ import annotations
@@ -16,11 +17,26 @@ from .experiment import AdoptedSpec, Experiment
 ADCS = "examples/adcs"
 V2_DIR = f"{ADCS}/data/v2"
 V2_MODEL = f"{ADCS}/model_v2/cubesat.sysml"
-V2_CODE = (f"{ADCS}/experiments/cubesat_oracle.py", f"{ADCS}/adcs_sim.py")
+V2_CODE = (
+    f"{ADCS}/experiments/cubesat_oracle.py",
+    f"{ADCS}/experiments/feasibility.py",
+    f"{ADCS}/adcs_sim.py",
+)
+V2_CHECK_CODE = (*V2_CODE, f"{ADCS}/experiments/check_designs.py")
+V2_SCENARIO = "nominalSlew"  # the model's scenario part (slew 30 degrees, 600 s, 0.5 s step)
+CHECK_SEED = 20261108  # the seed of the pool and of the check designs (make_check_designs.SEED)
 
 # Oracle and sampler names -> "module:factory"; a factory takes the (sweep-cell) Experiment.
-ORACLES: dict[str, str] = {"cubesat-v2": "experiments.cubesat_oracle:build"}
-SAMPLERS: dict[str, str] = {"cubesat-v2": "experiments.cubesat_oracle:build_sampler"}
+ORACLES: dict[str, str] = {
+    "cubesat-v2": "experiments.cubesat_oracle:build",
+    "check-passthrough": "experiments.check_designs:build_passthrough",
+    "check-cubesat-v2": "experiments.check_designs:build_check_oracle",
+}
+SAMPLERS: dict[str, str] = {
+    "cubesat-v2": "experiments.cubesat_oracle:build_sampler",
+    "check-proposer": "experiments.check_designs:build_proposer",
+    "check-designs": "experiments.check_designs:build_checks",
+}
 
 
 def _resolve(registry: dict[str, str], name: str) -> Callable:
@@ -42,22 +58,45 @@ def resolve_sampler(name: str) -> Callable:
     return _resolve(SAMPLERS, name)
 
 
-def _v2(id_, file, count, gain_box, parents=(), oracle="cubesat-v2", sampler="cubesat-v2"):
+def _v2(
+    id_,
+    file,
+    count,
+    gain_box,
+    parents=(),
+    oracle="cubesat-v2",
+    sampler="cubesat-v2",
+    seed=0,
+    code=V2_CODE,
+    inputs=None,
+):
     return Experiment(
         id=id_,
         output=f"{V2_DIR}/{file}",
         count=count,
-        seed=0,
+        seed=seed,
         oracle=oracle,
         sampler=sampler,
-        scenario="slew30deg-600s-0p5s",
+        scenario=V2_SCENARIO,
         gain_box=gain_box,
         model_path=V2_MODEL,
         evidence_kind="simulation",
-        code=V2_CODE,
+        code=code,
         parents=parents,
+        inputs=dict(inputs or {}),
     )
 
+
+# The three hand-written candidates of the check designs (the same as make_check_designs.CANDIDATES;
+# a test ties them). They are design points, not model constants.
+CANDIDATES = (
+    dict(name="fast_effort_hungry", wheel_class="large", st_grade="medium", panel_span_m=0.55,
+         battery_wh=90.0, Kp=1.8, Kd=1.4),
+    dict(name="precise_heavy_sensor", wheel_class="large", st_grade="fine", panel_span_m=0.8,
+         battery_wh=140.0, Kp=1.2, Kd=1.0),
+    dict(name="light_slow", wheel_class="small", st_grade="coarse", panel_span_m=0.35,
+         battery_wh=40.0, Kp=0.25, Kd=0.4),
+)  # fmt: skip
 
 # Order is the ledger order: predictions precede the check-design simulation, both follow primary.
 V2: tuple[Experiment, ...] = (
@@ -69,8 +108,17 @@ V2: tuple[Experiment, ...] = (
         3,
         "aggressive",
         parents=("v2-primary",),
-        oracle="cubesat-v2",
-        sampler="cubesat-v2",
+        oracle="check-passthrough",
+        sampler="check-proposer",
+        seed=CHECK_SEED,
+        code=V2_CHECK_CODE,
+        inputs={
+            "stage": "predict: fit on the feasible v2 primary designs, propose; nothing measured",
+            "primary": f"{V2_DIR}/adcs_designs_cubesat_gains.csv",
+            "metrics": ["slew_time_s", "pointing_error_deg", "control_effort", "total_mass_kg"],
+            "pool": 100000,
+            "reach": 0.35,
+        },
     ),
     _v2(
         "v2-check-designs",
@@ -78,6 +126,15 @@ V2: tuple[Experiment, ...] = (
         6,
         "aggressive",
         parents=("v2-check-predictions",),
+        oracle="check-cubesat-v2",
+        sampler="check-designs",
+        seed=CHECK_SEED,
+        code=V2_CHECK_CODE,
+        inputs={
+            "stage": "simulate: the candidates and the committed proposals, once each",
+            "predictions": f"{V2_DIR}/check_predictions_cubesat.csv",
+            "candidates": [dict(c) for c in CANDIDATES],
+        },
     ),
 )
 EXPERIMENTS: dict[str, Experiment] = {e.id: e for e in V2}
