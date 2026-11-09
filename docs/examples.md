@@ -1,13 +1,12 @@
 # Examples
 
-## A spacecraft attitude-control trade study
+## A cubesat trade study across power, mass and attitude control
 
-The worked case is a small-satellite attitude determination and control (ADCS) study. A system model
-and simulator evaluate each design into ten attributes:
-settling time, slew time, pointing error, total mass, control effort, power margin, energy balance,
-eclipse reserve, peak slew power and depth of discharge. Mixed orientations and units go through
-`LogAffinePreconditioner`, infeasible designs are removed first, and the conditioned metrics go to
-`HyperbolicTradeSpace`. Nothing is simulated by the package; the evaluated tables are committed.
+The worked case is a cubesat model coupling power, mass and attitude control: bus, antenna, inertial unit,
+controller, wheel and tracker alternatives, solar panel and battery. Ten attributes are compared under two controller-gain regimes: settling time, slew time, pointing error,
+control effort, power margin, energy balance, eclipse reserve, peak slew power, depth of discharge and total
+mass. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`.
+Nothing is simulated here; the evaluated tables are committed.
 
 The aggressive-gains table has 706 feasible designs. With the temperature selected for a tenth of the
 designs above V = 1:

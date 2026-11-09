@@ -15,7 +15,7 @@ where they stop, and the two chain.
 - [User guide](user-guide/overview.md): one page per task, from conditioning your attributes to
   reading what the fit reports.
 - [API](api.md) and [API reference](api-reference.md): the public names and their docstrings.
-- [Examples](examples.md): a spacecraft attitude-control trade study.
+- [Examples](examples.md): a cubesat trade study across power, mass and attitude control.
 - [Theory in brief](theory.md): the model on one page.
 - [Glossary](generated/glossary.md): the terms the package uses.
 - [Further reading](further-reading.md): the sources the method builds on.
