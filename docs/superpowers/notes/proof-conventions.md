@@ -49,7 +49,7 @@ symproof's ledger conventions, so the chain can later be lifted into sealed symp
 
 ## This project's chain (spec §6)
 
-Ledger (spec §6, as built through WP10 Amendment 2): A0 to A8 (posited), I1 to I13 (inherited with citations; I2, I3 and I4 are `CITED_CONTEXT`, reported apart and exempt from the every-axiom-is-used test, as I7 is `SOLVER_LEVEL`), R1 and R2 (regularity), F5, F10 and F12 (fallbacks); lemmas L1–L14; run at
+Ledger (spec §6, as built through WP10 Amendment 2): A0 to A8 (posited), I1 to I15 (inherited with citations; I14 Jensen's inequality and I15 the definition of a generalized posynomial are used by L16; I2, I3 and I4 are `CITED_CONTEXT`, reported apart and exempt from the every-axiom-is-used test, as I7 is `SOLVER_LEVEL`), R1 and R2 (regularity), F5, F10 and F12 (fallbacks); lemmas L1–L16; run at
 d ∈ {2, 3, 4} and n ∈ {2, 3} via `make_symbols(d, n)`. Docs state that generic-d results are proved
 in prose and instantiated mechanically at these sizes.
 

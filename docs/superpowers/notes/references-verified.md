@@ -81,6 +81,29 @@ them (not for Allen 1997, Dyson 2001, Spero 2014, Ross 2010).
 - Boyd, S., Kim, S.-J., Vandenberghe, L., Hassibi, A. (2007). A tutorial on geometric programming.
   *Optimization and Engineering* 8(1), 67-127. doi:10.1007/s11081-007-9001-7 (key `boyd2007tutorial`,
   already in the bibliography). Sections 2.1 (monomials and posynomials), 2.2 (standard form), 2.3
-  (convex form, the change of variables x = exp(y)) and 2.5 (generalized posynomials) were read in
+  (convex form, the change of variables x = exp(y)) and 2.5 (how GPs are solved, with the change of variables; generalized posynomials are section 5.3, see the next entry) were read in
   the authors' PDF by the derivation implementer; the paper cites it for the one-facet fit being a
   geometric program (Appendix B, L4.14 to L4.24) and the fitted model a generalized posynomial.
+
+## Added for WP10 Amendment 5, R-41 (2026-11-09, ledger entries I14 and I15, lemma L16)
+
+Both sources were already in the bibliography; the section numbers below were read in the authors'
+PDFs by the derivation implementer (text extracted with pdftotext), not taken from memory.
+
+- Boyd, S., Vandenberghe, L. (2004). *Convex Optimization* (key `boyd2004convex`). PDF
+  https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf. Section 3.1.1 "Definition" gives the
+  two-point inequality (3.1), f(theta x + (1 - theta) y) <= theta f(x) + (1 - theta) f(y), as the
+  definition of a convex function. Section 3.1.8 "Jensen's inequality and extensions" says the basic
+  inequality (3.1) is sometimes called Jensen's inequality and states the finite form: if f is
+  convex, x_1..x_k in dom f and theta_i >= 0 with sum 1, then f(sum theta_i x_i) <= sum theta_i
+  f(x_i). Ledger entry I14 cites 3.1.8, with 3.1.1 for the two-point form. The same section applies
+  the inequality to the convex -log to obtain the arithmetic-geometric mean inequality, the
+  argument L16 uses for Gibbs' inequality.
+- Boyd, S., Kim, S.-J., Vandenberghe, L., Hassibi, A. (2007) (key `boyd2007tutorial`). PDF
+  https://web.stanford.edu/~boyd/papers/pdf/gp_tutorial.pdf. Section 5.3 "Generalized posynomials":
+  a function of positive variables is a generalized posynomial if it can be formed from posynomials
+  using addition, multiplication, positive (fractional) power, and maximum. Section 5.4 "Generalized
+  geometric program": minimize f_0 subject to f_i <= 1 and g_i = 1, the g_i monomials and the f_i
+  generalized posynomials; any GP is a GGP. Section 9.1 (signomial programming) notes some authors
+  use the name for the wider, nonconvex class (the older sense the glossary carries in `not`).
+  Ledger entry I15 cites 5.3 (and 5.4 for the program).
