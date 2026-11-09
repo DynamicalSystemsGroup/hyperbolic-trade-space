@@ -485,3 +485,10 @@ Open decisions: none. Decided by the supervisor (`WP10-decisions.md`): C and D a
 an appendix; the proofs step for step with their scripts; cited results as steps in code; results
 may share a script; each cited result's SymPy form declared once in the ledger; the pinned toolchain
 stated in F; a pinned container image as the environment of record ("Reference environment now"). Defaults for approval as one item: those listed at the end of the sketch.
+
+Clarification after approval (supervisor, verbatim, `WP10-decisions.md`): "its python we can handle
+the axioms as import statements. if needed we can cite the import statements instead of the location
+they are imported from". Within R-28: a lemma script imports the ledger entries it uses by name; the
+appendix may cite the import line in the proof's file as the declaration's address; the checker
+requires that a file's ledger imports, the entries its steps apply and its `AXIOMS_USED` are the same
+set. No change to scope, deliverables or files.

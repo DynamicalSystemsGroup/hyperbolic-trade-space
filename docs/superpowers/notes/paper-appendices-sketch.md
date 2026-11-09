@@ -54,6 +54,11 @@ this as reproducible as possible. (we have colima locally so we can test the use
 
 And on the role of a pinned container image: "Reference environment now".
 
+And, after the approval, on how the scripts take their axioms from the ledger:
+
+"its python we can handle the axioms as import statements. if needed we can cite the import
+statements instead of the location they are imported from"
+
 ## The test each appendix must pass
 
 An appendix exists only if it answers a question that a reader of the paper has and that the main
@@ -130,6 +135,12 @@ How the correspondence is built (so that it can be checked, and cannot drift):
   proof conventions a step that SymPy cannot derive becomes an explicit hypothesis or an inherited
   entry in the ledger. If the tagging finds a step that is neither, it is reported as a finding and
   taken to the supervisor, not given a softer label.
+- **Axioms arrive by import** (the supervisor's clarification). A lemma script imports the ledger
+  entries it uses by name from `derivation/axioms.py`; the import line is the declaration's address
+  inside the proof's own file. A step by a declared axiom is then two addresses in one file: the
+  line that applies the entry, and the import line that brings it in. The appendix cites the
+  import line where a reference to the declaration is wanted, so a reader stays in one file; the
+  entry's wording and citation shown beside it are compiled from the ledger.
 - **Where the scripts stand on this today:** inherited results are used in code at the point of
   use (for example L8 applies I6 as a substitution and has tests showing the proof fails without
   it; L12 carries I8 as an inequality), but each script writes the result's SymPy form itself. The
@@ -145,8 +156,9 @@ The tool (the supervisor's instruction: no regression goes unnoticed):
   appendix names exactly one file; every step of every lemma file belongs to exactly one proof;
   within each proof, the prose steps and its script steps correspond one to one and in the same
   order, with no step on either side unmatched; every *computed* step's condition passes; every step *by a declared
-  axiom* names a ledger entry that exists; the entries applied by a file's steps are exactly the
-  entries the file lists as used (none listed and unused, none used and unlisted); and tags are
+  axiom* names a ledger entry that exists; the entries a file imports from the ledger, the
+  entries its steps apply and the entries it lists as used are the same set (none imported or
+  listed and unused, none used and not imported); and tags are
   unique and unbroken.
 - **A committed record** of every step (its tag, a fingerprint of its line in the script and a
   fingerprint of its prose). The checker fails when either fingerprint differs from the record, so

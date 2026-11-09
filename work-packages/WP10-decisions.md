@@ -610,3 +610,10 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   released. Order: the step tagging of the fourteen scripts, the ledger's forms and the proof-map
   checker first (one bounded implementer, `derivation/` only); then the appendices to the sketch
   and the main text; the Dockerfile and the local container run before delivery.
+- **After the approval, a clarification of mechanism (not a new decision on scope).**
+  **Supervisor (mzargham), verbatim:** "its python we can handle the axioms as import statements.
+  if needed we can cite the import statements instead of the location they are imported from".
+  Disposition: the lemma scripts import their ledger entries by name; the import line is the
+  declaration's address inside the proof's file and may be cited in Appendix B in place of the
+  ledger's location; the checker compares each file's ledger imports, the entries its steps apply
+  and its `AXIOMS_USED`. Sent to the PM.
