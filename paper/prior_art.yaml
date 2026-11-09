@@ -59,9 +59,8 @@ entries:
       unit; piecewise log-linear facets with constant elasticities within a facet; larger-is-better
       metrics with homogeneity by the simplex in place of inputs, outputs and a returns-to-scale
       choice; a soft maximum with a temperature, a band and an effective sample size in place of a
-      deterministic boundary set by extreme units; one convex program and K refits in place of N
-      linear programs; coordinates and a pull-back to attribute units in place of a score and a
-      peer set.
+      deterministic boundary set by extreme units; one convex program and K refits; coordinates and
+      a pull-back to attribute units in place of a score and a peer set.
     cites: [charnes1978measuring, banker1984some, andersen1993procedure, fare1994productivity, allen1997weights, dyson2001pitfalls]
     section2: true
     nearest: true

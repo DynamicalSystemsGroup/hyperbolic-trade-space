@@ -120,3 +120,12 @@ both pages at 375 px; every new heading and table is present once the page has l
   cut at the edge until scrolled); dark text is `rgba(255,255,255,0.87)` on `rgb(28,25,23)`.
 - Not viewed by eye at 375 px: sections 1 to 8 of the main text (measured only), and the dark
   frames of the changed places other than D.14 (checked by the theme class and the colours).
+
+## WP10, second-review gaps G-4 to G-8 (1280 px, light and dark)
+
+- Rendered and read: the abstract ("On one case it scales where dominance does not ...", "Every
+  derived statement points to its script and its step-by-step proof"); section 1 (document-based and
+  model-based citations split between Henderson and Madni; the contribution sentence "On this case");
+  section 2 (Pareto paragraph ending in an Open reading; "on this case"; DEA without the N linear
+  programs clause); Methods R2 sentence ends with a full stop; section 7 limits sentence.
+- Light and dark both read; no layout change. The pane lagged one frame after the theme change.
