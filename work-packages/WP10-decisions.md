@@ -983,3 +983,24 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   stays the paper's Figure 1 (`WP8a-decisions.md`); recorded under "Overruled or corrected" in the
   driver's log.
 
+## Ticket: narrate the definitions, the energy reading first (2026-11-09)
+
+- **Supervisor (mzargham), verbatim,** reading section 4 (Definitions 2 to 5) on the staged paper:
+  "another ticket. i think the energy interpretation of the invariant form needs to be narrated
+  otherwise it comes out of thin air. my suggestion is minimal prose before and between the
+  definitions so its a bit more human interpretable. keep in minimal but should ensure that people
+  of various levels of mathematical sophistication can follow the arc of the paper. recall we need
+  to pass muster for an ML or convex optimization expert but also support a reader who is trad
+  engineering decision analysis practicianer".
+- **Disposition:** logged as a ticket for the PM's next paper push. One or two plain sentences before
+  and between the definitions of section 4, carrying the arc: what the invariant is and why it is
+  called invariant; why its logarithm is read as an energy (a potential whose level sets are the
+  surfaces of equal standing, the level taken relative to the reference surface; path-independent;
+  not a physical energy and not a distance); several trade-offs as a sum of such terms; what the
+  two temperatures do; what the chart separates. The words are the glossary's; every sentence is
+  backed (L1, L2, L13 for the energy reading) under the claims requirement; nothing is added that
+  an expert would call loose. The section's reading is then tested on the reader grid (the
+  trade-study practitioner, the ML practitioner and the optimization reader, at the depth of the
+  definitions). The word ceiling: the driver's call, for his review, is that this ticket may add at
+  most 150 words to the paper's ceiling if trimming elsewhere cannot pay for it.
+
