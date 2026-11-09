@@ -25,19 +25,19 @@ The attributes to read first:
 - `n_eff_`: how many designs carry the fit.
 - `objective_` and `mean_slack_`: `objective_` is what the solver minimized, the soft maximum at one
   term and the mean slack at several, so it is not comparable across numbers of terms.
-  `mean_slack_` is the mean over designs of the gap between the facet and the design, defined for
-  every number of terms; compare fits with it, at a fixed temperature.
+  `mean_slack_` is the mean gap between facet and design, defined at every number of terms; compare
+  fits with it, at a fixed temperature.
 - `termination_` and `conditioning_`: how the fit stopped and how well its exponents are identified
   ([termination page](termination.md)).
 
-The chart's basis, the offsets and the support weights are `basis_`, `log_offset_` and
-`support_weights_`. Among the parameters, keep `min_exponent` (a floor on every exponent) at 0 to
+The chart's basis, offsets and support weights are `basis_`, `log_offset_` and `support_weights_`.
+Keep `min_exponent` (a floor on every exponent) at 0 to
 read the contending set, and choose `coordinates` as `"ilr"` or `"alr"`.
 
 ## Choosing the temperature
 
 `temperature` is tau, how hard the maximum is. Infinity (`np.inf`) is the exact maximum, a linear
-program that gives the supporting envelope: no design lies above it. A finite tau gives the fitted
+program giving the supporting envelope: no design lies above it. A finite tau gives the fitted
 reference surface with a band of near-frontier designs of width 1/tau, and a few designs beyond
 V = 1. Tau is in units of inverse log-spread, so it depends on the conditioning.
 
@@ -55,9 +55,9 @@ print(round(tau, 1))
 ```
 
 This synthetic table puts 30 percent of its rows on the planted frontier, hence the target 0.35;
-for real data the default 0.10 is a common start. Use values of tau of about 3 and above: below that
-`frac_above_` is not monotone in tau, and a `ValueError` says when the bracket `bounds` does not
-contain the target. Re-select tau when you change the number of terms.
+for real data the default 0.10 is a common start. Use tau of about 3 and above: below that
+`frac_above_` is not monotone in tau. A `ValueError` says when `bounds` does not contain the target.
+Re-select tau when you change the number of terms.
 
 ## Several terms
 
@@ -78,8 +78,7 @@ print(ts.exponents_.shape, ts.termination_.status)
 ```
 
 Fitting partitions the designs among facets and refits each, from several seeded starts
-(`n_restarts`, default 5) keeping the best. More restarts cost time and are not a cure for a poor
-local optimum. `assign_facets(X)` labels new rows with their facet. Options:
+(`n_restarts`, default 5) keeping the best. `assign_facets(X)` labels new rows with their facet. Options:
 
 - `term_temperature` (kappa, default infinity) rounds the corners where facets meet; a finite kappa
   leaves the facets unchanged.
@@ -88,10 +87,9 @@ local optimum. `assign_facets(X)` labels new rows with their facet. Options:
 - `facet_step` is `"support"` (default) or `"tangent"`, which is not monotone and carries no
   local-optimality status.
 
-Each training row's facet is `facet_`, and `coefficients_` and `facet_share_` hold the facets'
-posynomial coefficients and shares. They exist at every number of terms: at one term `facet_` is all
-zeros and `facet_share_` is `[1.0]`. What the fit reports about itself is on the
-[termination page](termination.md).
+`facet_` gives each training row's facet; `coefficients_` and `facet_share_` the facets' posynomial
+coefficients and shares. At one term `facet_` is all zeros and `facet_share_` is `[1.0]`. What the fit
+reports about itself is on the [termination page](termination.md).
 
 ## Choosing K, the temperature and the band
 
