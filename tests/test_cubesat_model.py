@@ -563,17 +563,23 @@ def test_dataset_reproducible_first_20(cubesat, gain_box, csv):
     # share of the slew, so integrals of the torque history (control effort, loss energies) shift
     # more between platforms (1.25e-4 observed between macOS and the CI runner): 1e-3 there.
     rtol = 1e-4 if gain_box == "baseline" else 1e-3
-    # The saturated fraction counts time steps; the aggressive box moved it by up to 6.2 % between
-    # platforms (3 of 20 designs above the baseline 2 %): 10 % there.
-    sat_rtol = 2e-2 if gain_box == "baseline" else 1e-1
+    # torque_saturated_frac: ABSOLUTE tolerance 0.01 with no relative term (decision of the driver).
+    # The relative form was wrong in kind: the quantity is a step count over about 1340 accepted
+    # steps of an adaptive solver, a diagnostic and not a fitted attribute (evidence in
+    # work-packages/swap-evidence.md).
+    sat_atol = 0.01
     special = {"settling_time_s", "slew_time_s", "slew_time_05deg_s", "torque_saturated_frac"}
     for col in head.columns:
         if col in exact + flags or col in special:
             continue
         np.testing.assert_allclose(head[col], fresh[col], rtol=rtol, atol=1e-6, err_msg=col)
     np.testing.assert_allclose(
-        head.torque_saturated_frac, fresh.torque_saturated_frac, rtol=sat_rtol, atol=1e-12
+        head.torque_saturated_frac, fresh.torque_saturated_frac, rtol=0, atol=sat_atol
     )
+    # The time columns are read off the accepted steps of an adaptive integration: 0.5 s allowed.
+    # A known way to exceed it is the grazing case, where the error trajectory touches the settling
+    # band and the time jumps (design 763 in the D-6 spike: slew time 33.44 s to 12.53 s under a
+    # 1e-12 perturbation; work-packages/swap-evidence.md).
     for col in ("settling_time_s", "slew_time_s", "slew_time_05deg_s"):
         np.testing.assert_allclose(head[col], fresh[col], atol=0.5, err_msg=col)
 
