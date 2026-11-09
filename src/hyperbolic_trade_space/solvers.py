@@ -634,6 +634,12 @@ class Termination:
     ``facet_step="support"`` (step B), unpenalized, with support offsets
     ``beta_k = J_tau(U w_k)``; under step D or a penalty the gap is a diagnostic. The record
     describes the returned run's own fixed assignment, not the choice among restarts.
+
+    ``gamma`` and ``radius`` are ``nan`` (not ``inf``) at ``K = 1`` and in the degenerate shortcuts.
+    The margin is the smallest gap by which a row's facet beats the runner-up; with one facet there
+    is no runner-up, so the margin does not exist. ``inf`` would assert a guarantee (no perturbation
+    can change an assignment) that was never examined, and a minimum over an empty set is undefined,
+    so ``nan`` is the honest value and the documentation says the same.
     """
 
     status: str

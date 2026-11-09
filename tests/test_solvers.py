@@ -497,3 +497,20 @@ def test_default_path_has_no_warnings_and_constants():
         warnings.simplefilter("error")
         solve_terms(_planted_k3(), 3, 50.0, random_state=0)
     assert (EPS_KKT, EPS_FEAS) == (1e-8, 1e-9)
+
+
+def test_margin_and_radius_are_nan_at_one_term_not_infinite():
+    """No competing facet: the margin is undefined (nan), as the Termination docstring and the
+    Termination page say (WP10 item 22)."""
+    import math
+
+    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+
+    X, _ = make_frontier_data(100, 3, random_state=0)
+    t = HyperbolicTradeSpace(temperature=20.0).fit(X).termination_
+    assert t.status == "not_applicable"
+    assert math.isnan(t.gamma) and math.isnan(t.radius)
+    from pathlib import Path
+
+    doc = Path(__file__).parents[1] / "docs/user-guide/termination.md"
+    assert "`nan` at one term" in doc.read_text()
