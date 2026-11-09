@@ -227,3 +227,15 @@ material change: interrogate it (what, where, how much, why), locate the cause, 
 can be stood behind, record the finding and the fix. Escalation to the driver, and from the driver to
 the supervisor, carries what was tried and the options left, not the bare problem.
 
+## Context management (2026-11-09, the supervisor's last note before stepping away)
+
+"i want you to actively manage your context and the context of the PM so compaction or context
+overflow doesn't degrade performance." For the PM: keep the state in the files, not in the
+conversation (the board, the scopes, the decisions files, the review records); read long things
+through bounded subagents that return short summaries, never whole transcripts or notebooks into the
+PM's own context; keep tool output short; report to the driver in the short table, not narratives;
+and tell the driver when the PM's own context is large (several hours or many agent returns) so a
+fresh PM is handed over from the files before performance drops, on the same handover shape as this
+morning's. For the driver the same rules, and a periodic check of the PM's turnaround and concurrency
+as the signal.
+
