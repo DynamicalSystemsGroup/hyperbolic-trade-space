@@ -1065,3 +1065,29 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   conclusions, with every value that differs listed. Added to stream P10. The CI runs on Linux
   amd64 and the Mac runs are further evidence of the second side.
 
+## The container of record is the source of the committed outputs (2026-11-09)
+
+- **What the container run found** (`paper/container/RECORD.md`, 48df440): inside the pinned
+  linux/arm64 image with the environment-of-record flag set, 46 tests fail and 2011 pass. Every
+  failure is an exact comparison against a value recorded on the Mac: the soft fit's reference
+  recording (45), one recorded design row (settling time 0.05 s apart, inside the stated 0.5 s),
+  and the planted table's digest (c127dd4c on the Mac, b17d4f8f in the container). Facets, offsets,
+  corners and the Figure 1 data hash are bit-equal; the reference arrays differ at 1e-15. The
+  robustness image (Ubuntu 24.04) agrees with the pinned image on all 69 executed notebook cells and
+  fails only the four soft-fit cases where the same facets come out numbered differently (gap G-10).
+- **Driver's call, under the supervisor's ratified words ("reproducibility (via pinning) but also
+  robustness"):** the committed exact values are produced inside the container of record, not on the
+  Mac. The notebooks' outputs, the paper's figures, the planted table's digest, the soft fit's
+  reference recording (with its platform written in) and the recorded design row are regenerated in
+  `hts-paper` and committed; every printed value that changes is listed; the conclusions (contending
+  sets, leading metrics, signs, certificates, check outcomes, the counts) must be unchanged, and any
+  change at that level stops the work and goes to the supervisor. The datasets (the CSVs) are not
+  touched: their regeneration is WP16, held on his step-read choice. Exact comparisons then pass in
+  the container; the Mac and Linux runs compare within the stated tolerances. The facet-numbering
+  failures are fixed by matching facets by exponent vector, as the paper's tables already do, under
+  WP17.
+- Also confirmed: P10's three edits to `tests/test_container.py` (base-image digest from the build
+  argument's default; platform arm64; the record's needle). Returned as a finding: the full suite
+  rewrites the tracked `examples/adcs/experiments/reports/v1-v2-comparison.md`; a test must not write
+  a tracked file.
+
