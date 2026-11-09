@@ -10,6 +10,8 @@ import math
 
 import paper_paths  # noqa: F401  (puts the repository on sys.path)
 
+SCROLL_STYLE = "overflow-x:auto;max-width:100%"
+
 
 class Md(str):
     """A string that Jupyter renders as Markdown."""
@@ -21,7 +23,11 @@ class Md(str):
         """The same text as HTML, because the static site shows a Markdown output as raw text."""
         from markdown_it import MarkdownIt
 
-        return MarkdownIt("commonmark").enable("table").render(str(self))
+        html = MarkdownIt("commonmark").enable("table").render(str(self))
+        # a wide table scrolls inside the column instead of widening the page on a phone
+        return html.replace("<table>", f'<div style="{SCROLL_STYLE}"><table>').replace(
+            "</table>", "</table></div>"
+        )
 
 
 class Scroll(str):
@@ -32,7 +38,7 @@ class Scroll(str):
     """
 
     def _repr_html_(self) -> str:
-        return f'<div style="overflow-x:auto;max-width:100%">{self}</div>'
+        return f'<div style="{SCROLL_STYLE}">{self}</div>'
 
     def _repr_markdown_(self) -> str:
         return str(self)

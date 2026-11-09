@@ -74,6 +74,11 @@ def author_year(key: str, path=BIB) -> str:
     return f"{who} {year}"
 
 
+# The site colours a link in an output cell dark blue in both themes, unreadable on the dark page;
+# a link that takes the text colour and is underlined reads in light and dark.
+LINK_STYLE = "color:inherit;text-decoration:underline"
+
+
 def cite(keys, prefix: str = "#") -> str:
     """The citation of the keys as links to the reference list, ``Author Year`` each.
 
@@ -83,7 +88,8 @@ def cite(keys, prefix: str = "#") -> str:
     supporting material's.
     """
     return "; ".join(
-        f'<a href="{prefix}cite-{k}" target="_self">{author_year(k)}</a>' for k in keys
+        f'<a href="{prefix}cite-{k}" target="_self" style="{LINK_STYLE}">{author_year(k)}</a>'
+        for k in keys
     )
 
 
