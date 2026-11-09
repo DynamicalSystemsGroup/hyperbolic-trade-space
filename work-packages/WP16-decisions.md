@@ -41,3 +41,30 @@ you believe i will expect"); the calls below are the driver's, for his review at
   Replacing the read-off by the integrator's event detection would remove the effect and change the
   data; that is a choice between keeping the accepted records' numbers and a cleaner measurement,
   and it is taken to the supervisor with the spike's evidence, not decided here.
+- **2026-11-09. The sensitivity spike's result (2d40fa2), and what goes to the supervisor.** Five
+  regenerations of each dataset with the four continuous inputs perturbed by at most 1e-12, each
+  refit; an unperturbed control reproduced the committed files exactly. **Identical in all five and
+  in the committed data:** the contending sets at K = 1 and on each facet at K = 3, in both regimes;
+  each facet's leading metrics; the signs of the six reported tensions; the selected temperatures at
+  one decimal; the certificate statuses; every check design's pass or miss; all four feasibility
+  flags of all 2000 designs; the count of 671 of 706 nondominated on ten attributes. **Not
+  identical at the printed precision:** the nondominated counts on reduced views (146 becomes 145;
+  8 becomes 7; 157 becomes 158); the K = 3 facet shares (0.089, 0.133, 0.778 range over 0.065 to
+  0.087, 0.136 to 0.152, 0.761 to 0.795, order unchanged); the effective sample size, one
+  near-frontier count and five association values in the second decimal; the solver's numerical
+  residues. **In the data:** settling and slew time move by up to 0.49 s, and one design's slew
+  time jumps from 33.44 s to 12.53 s because its error trajectory grazes the settling band.
+  Reading: R-4's stop condition as written (a conclusion, a facet's leading metrics, a sign, a
+  selected K, a certificate status) is not met; but numbers the paper prints are not reproducible
+  to the precision printed, and one fitted attribute is discontinuous in the design. The driver
+  had said this choice would be the supervisor's and puts it to him: keep the data and the
+  measurement and report at the precision that is reproducible, with the effect named as a gap; or
+  measure the two times by the integrator's event detection and regenerate everything (which
+  removes the sub-step part and not the grazing).
+- **2026-11-09. Done meanwhile, because it is needed under either answer.** (1) A new entry in the
+  abstraction-gaps ledger for the times read off the step sequence and the band-grazing
+  discontinuity, with this evidence. (2) The paper prints no number to a precision at which it is
+  not reproducible: the fragile quantities carry their range over the perturbed regenerations, and
+  numerical residues are printed as bounds. (3) The saturation fraction's absolute tolerance is
+  applied in the older first-twenty test as well. The swap itself is held: no file moves and
+  `adcs_sim` is untouched until he answers.

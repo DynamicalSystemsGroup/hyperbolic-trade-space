@@ -16,10 +16,15 @@ running workloads. State left: Colima running with `rosetta: false`; one contain
 started, `hts-exec`, still running. To restore: set line 126 back to `rosetta: true` and restart
 Colima when convenient. No agent uses Docker or Colima until he says so.
 
-**Coming to him with evidence (not yet):** two fitted attributes, settling time and slew time, are
-read off integration steps and jitter by about one percent under rounding. A spike is measuring
-whether any conclusion of the paper moves. He will be asked whether to keep the data as it is, with
-the effect named as a gap, or to measure the times by event detection, which changes every number.
+**Needs his decision (2026-11-09, 02:35; work continues meanwhile):** two fitted attributes,
+settling time and slew time, are read off integration steps. Under perturbations of one part in
+10^12 the paper's conclusions do not move (contending sets, leading metrics, signs of tensions,
+temperatures, certificates, check outcomes, feasibility), but several printed numbers do (146
+becomes 145; 8 becomes 7; the K = 3 shares move in the second decimal) and one design's slew time
+jumps from 33.4 s to 12.5 s where its trajectory grazes the settling band
+(`work-packages/swap-evidence.md`, "Sensitivity of the conclusions"). Keep the data and report at
+reproducible precision with the effect named as a gap, or measure the times by event detection and
+regenerate everything.
 
 **For his eye, not blocking:** the platform of record for the container is provisionally
 linux/arm64 instead of linux/amd64, which he was told would come back to him
@@ -43,6 +48,7 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 | 2026-11-09 | WP15 returned after its fresh review: the two oracles through one interface, exclusions written to the ledger and consumed by the sampler are fixed before acceptance; the momentum condition outside the solver is accepted with its reason | `WP15-review.md`: the clean model is what is evaluated (trace with equal hashes; the reviewer's own mutations move the attributes and flip the flags); gaps A to F | `WP15-decisions.md`, "The driver's calls under the mandate" |
 | 2026-11-09 | The saturation fraction is compared with an absolute tolerance of 0.01 and no relative term | `swap-evidence.md`: a step count over about 1340 steps, diagnostic only; moves by whole steps under 1e-15 perturbations; largest deviation 0.0080 over 60 re-runs; flags never change | `WP16-decisions.md` |
 | 2026-11-09 | Before the swap is decided: measure whether the paper's conclusions move when the two step-quantized fitted times jitter (five perturbed regenerations per dataset, refit each) | the same evidence: settling and slew time move up to 1.3 percent, 0.48 s, under rounding-level perturbation | `WP16-scope-of-work.md`, Amendment 1 |
+| 2026-11-09 | Under either answer on the times: a new abstraction gap for step-read times and band grazing; the paper prints fragile quantities with their measured range and residues as bounds; the swap is held and the simulator untouched | `swap-evidence.md`, sensitivity section: 740 quantities compared over five perturbed regenerations; conclusions identical, some printed numbers not | `WP16-decisions.md` |
 
 ## Decided by the driver for the PM
 
