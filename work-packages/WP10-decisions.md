@@ -1090,4 +1090,13 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   argument's default; platform arm64; the record's needle). Returned as a finding: the full suite
   rewrites the tracked `examples/adcs/experiments/reports/v1-v2-comparison.md`; a test must not write
   a tracked file.
+- **Supervisor (mzargham), verbatim,** on the container's results and the driver's call: "the
+  reproducibility results make sense to me. byte exact with identical image but small differences
+  due to minor variations in mathematical libriaries when switching between linux and mac. document
+  and approve". **Disposition:** approved. The two-sided finding is documented as the paper's
+  reproducibility statement (Appendix F, through the paper stream): byte-exact reproduction inside
+  the pinned image; small differences at the last digits between the image and the Mac, and between
+  the pinned and the comparable image, from the platforms' mathematical libraries; conclusions
+  unchanged. The regeneration of the committed exact values inside the container proceeds as
+  recorded above.
 

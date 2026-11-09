@@ -82,6 +82,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   the version last. WP20 covers the slow markers, `scripts/check.py`, the xdist group and the CI
   shards; its first two commits are already on `dev` (04a3471, 78f5e1c) and are accepted against it.
 
+- 2026-11-09: the container of record (P10, 48df440) and the driver's call that the committed exact
+  values are produced inside it, approved by the supervisor: "the reproducibility results make sense
+  to me. byte exact with identical image but small differences due to minor variations in
+  mathematical libriaries when switching between linux and mac. document and approve". The
+  regeneration inside the container runs under WP10 Appendix F; Appendix F's text states the
+  two-sided result.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
