@@ -8,13 +8,16 @@
 # total baseline plus every row. Growth is admitted by its job and refused without one: a row says
 # what the added words do and for which reader. A cut needs no row.
 #
-# Baseline: the rendered counts of the paper at 2026-11-09, before the tickets of that day.
+# Baseline: the rendered counts of the paper at 2026-11-09 after the three-pane figure left the body
+# (5,927 words before; the figure's caption and the sentence that pointed at it came out, 27 net, in
+# "The decision problem", whose ceiling was lowered to the new count; the sentence that now says the
+# chart in words is inside that net cut). The rows below start from here.
 
 [baseline]
-total = 5927
+total = 5900
 
 [baseline.sections]
-"The decision problem" = 574
+"The decision problem" = 547
 "Prior art, by family" = 585
 "Preliminaries and notation" = 454
 "Definitions" = 314
