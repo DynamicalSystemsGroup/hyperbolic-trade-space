@@ -42,13 +42,28 @@ jobs:
       # The model-checking tests need the pinned sysml-toolkit (examples/adcs/experiments/
       # toolkit-pin.toml). The helper verifies the archive's size and sha256 before extracting it
       # and requires the standard library clone to be at the pinned commit.
-      - name: Cache the pinned sysml-toolkit
-        uses: actions/cache@v4
+      # The cache is restored before and saved right after provisioning, not at the end of the
+      # job, so a failing test run does not leave every later run downloading again.
+      - name: Restore the pinned sysml-toolkit
+        id: toolkit-cache
+        uses: actions/cache/restore@v4
         with:
           path: ~/.cache/hyperbolic-trade-space
           key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
       - name: Provision the pinned sysml-toolkit
-        run: PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch
+        run: |
+          for attempt in 1 2 3; do
+            if PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch; then exit 0; fi
+            echo "provisioning attempt $attempt failed; retrying in 30 s"
+            sleep 30
+          done
+          exit 1
+      - name: Save the pinned sysml-toolkit
+        if: steps.toolkit-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/hyperbolic-trade-space
+          key: sysml-toolkit-${{ runner.os }}-${{ hashFiles('examples/adcs/experiments/toolkit-pin.toml') }}
       - name: Test
         env:
           REQUIRE_OPENSYSML: "1"
