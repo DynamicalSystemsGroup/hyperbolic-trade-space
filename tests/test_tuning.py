@@ -75,3 +75,21 @@ def test_step_function_gives_warning_when_tol_unreachable():
     with pytest.warns(UserWarning, match="closest tau"):
         tau = select_temperature(X, 0.105, tol=1e-6)
     assert np.isfinite(tau)
+
+
+def test_several_terms_unreachable_target_says_what_to_try():
+    """WP10 item 21: at K > 1 the facets are not supporting planes, so frac_above_ levels off
+    above zero; the default target is out of reach here and the message says what to try."""
+    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+
+    X, _ = make_frontier_data(300, 4, n_terms=2, random_state=777)
+    with pytest.raises(ValueError, match="not bracketed") as err:
+        select_temperature(X, n_terms=2, random_state=0)
+    msg = str(err.value)
+    for phrase in ("raise the target to about", "fixed temperature", "widen bounds", "mean_slack_"):
+        assert phrase in msg
+    # the suggested target is reachable
+    floor = HyperbolicTradeSpace(n_terms=2, temperature=1e4, random_state=0).fit(X).frac_above_
+    tau = select_temperature(X, floor + 0.04, bounds=(3.0, 1e4), n_terms=2, random_state=0)
+    fit = HyperbolicTradeSpace(n_terms=2, temperature=tau, random_state=0).fit(X)
+    assert abs(fit.frac_above_ - (floor + 0.04)) <= 0.01

@@ -93,6 +93,49 @@ posynomial coefficients and shares. They exist at every number of terms: at one 
 zeros and `facet_share_` is `[1.0]`. What the fit reports about itself is on the
 [termination page](termination.md).
 
+## Choosing K, the temperature and the band
+
+Compare numbers of terms at one fixed temperature, by `mean_slack_`, never by `objective_` and never
+at a temperature re-selected for each K. Add a term while `mean_slack_` still falls by more than the
+variation between restarts. Then resample: a facet whose exponents change between bootstrap resamples
+or restarts is a splinter, a few designs fitted alone, and K is too large.
+
+```python {.runnable}
+import numpy as np
+from hyperbolic_trade_space import (
+    HyperbolicTradeSpace,
+    make_frontier_data,
+)
+
+X, info = make_frontier_data(400, 4, n_terms=3, random_state=0)
+rng = np.random.default_rng(0)
+for K in (1, 2, 3, 4):
+    fit = lambda A, s: HyperbolicTradeSpace(
+        n_terms=K, temperature=50.0, random_state=s
+    ).fit(A)
+    ms = fit(X, 0).mean_slack_
+    W = [
+        fit(X[rng.choice(400, 400)], s).exponents_.min()
+        for s in range(4)
+    ]
+    print(K, round(ms, 3), np.round(W, 2))
+```
+
+The mean slack falls from 0.855 at K = 1 to 0.692, 0.664 and 0.658: the third term is the last that
+pays. Over the four resamples the smallest exponent stays within 0.07 to 0.08 at K = 3 and ranges from
+0.00 to 0.07 at K = 4: the fourth facet changes with the sample.
+
+`select_temperature` needs a target the fit can reach. With several terms the facets are not
+supporting planes, so `frac_above_` levels off above zero as tau grows (about 0.30 on the table of
+`make_frontier_data(300, 4, n_terms=2, random_state=777)`) and the default target 0.10 raises "not
+bracketed". The message names a target to raise to, a fixed `temperature`, and wider `bounds`. Select
+tau at K = 1 and hold it fixed, or choose a target above the level-off.
+
+`tension_report` takes its band from the temperature, 1/tau. A facet with fewer than
+`min_near_frontier` designs in the band raises, and the message names the `band`, and the matching
+`temperature`, that holds enough. On that table at tau = 50 the band 0.02 holds five designs of
+facet 0 and 0.025 holds ten.
+
 With two metrics the facets can be drawn in the log plane:
 
 ```python {.runnable}

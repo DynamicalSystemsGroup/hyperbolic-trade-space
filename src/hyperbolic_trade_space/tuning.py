@@ -53,7 +53,12 @@ def select_temperature(X, target_frac_above=0.10, bounds=(1e-1, 1e4), tol=0.01, 
     Raises
     ------
     ValueError
-        If the target is not bracketed by the fits at ``bounds``.
+        If the target is not bracketed by the fits at ``bounds``. The message gives the fractions at
+        both ends and what to try (a target within the achieved range, a fixed
+        ``temperature``, wider ``bounds``). For ``n_terms > 1`` the facets are not supporting planes
+        (rows can lie above them),
+        so ``frac_above_`` levels off above zero as ``tau`` grows and the default target 0.10
+        may be out of reach.
 
     Notes
     -----
@@ -87,9 +92,29 @@ def select_temperature(X, target_frac_above=0.10, bounds=(1e-1, 1e4), tol=0.01, 
     if abs(f_hi - target_frac_above) <= tol:
         return hi
     if not (f_hi < target_frac_above < f_lo):
+        n_terms = int(params.get("n_terms", 1))
+        lo_f, hi_f = min(f_lo, f_hi), max(f_lo, f_hi)
+        if target_frac_above <= lo_f:  # the target is below every fraction the interval reaches
+            near = hi if f_hi <= f_lo else lo
+            if n_terms > 1:
+                what = f"raise the target to about {lo_f + 0.02:.2f} or more"
+                why = (
+                    f"with n_terms={n_terms} the facets are not supporting planes (rows can lie "
+                    f"above them), so frac_above_ levels off near {lo_f:.2f} as tau grows"
+                )
+            else:
+                what = "raise the target or raise the upper bound"
+                why = "frac_above_ is still above the target at the largest tau"
+        else:  # the target is above every fraction the interval reaches
+            near = lo if f_lo >= f_hi else hi
+            what = f"lower the target to about {hi_f - 0.02:.2f} or less, or lower the lower bound"
+            why = "frac_above_ stays below the target over the whole interval"
         raise ValueError(
             f"target frac_above {target_frac_above} is not bracketed by bounds {bounds}: "
-            f"frac_above_ is {f_lo:.3f} at tau={lo:g} and {f_hi:.3f} at tau={hi:g}"
+            f"frac_above_ is {f_lo:.3f} at tau={lo:g} and {f_hi:.3f} at tau={hi:g} ({why}). "
+            f"Try: {what}; or fit at a fixed temperature (the closest end of bounds is "
+            f"temperature={near:g}, or select it at n_terms=1 and compare fits with "
+            f"mean_slack_); or widen bounds."
         )
     llo, lhi = np.log(lo), np.log(hi)
     best, best_err = lo, abs(f_lo - target_frac_above)

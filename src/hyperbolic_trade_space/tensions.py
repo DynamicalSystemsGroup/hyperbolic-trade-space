@@ -149,7 +149,9 @@ def tension_report(
     ------
     ValueError
         If ``association`` is unknown or fewer than ``min_near_frontier`` rows are near the
-        frontier (use a larger ``band`` or temperature); at K > 1 the message names the facet.
+        frontier; the message gives the ``band`` (and the matching ``temperature``, since the
+        default band is ``1 / tau``) that would hold ``min_near_frontier`` rows; at K > 1 it names
+        the facet.
 
     Warns
     -----
@@ -248,9 +250,26 @@ def _report(U, Zf, lvf, w, U_lp, basis, band, min_near_frontier, threshold, asso
     near = np.abs(lvf) < band
     n_near = int(near.sum())
     if d > 1 and n_near < min_near_frontier:
+        have = np.sort(np.abs(lvf))
+        if have.size >= min_near_frontier:
+            # the smallest band that holds min_near_frontier rows of this facet (strict inequality)
+            need = float(np.nextafter(float(f"{have[min_near_frontier - 1]:.2g}"), np.inf))
+            if need <= have[min_near_frontier - 1]:
+                need = float(f"{have[min_near_frontier - 1] * 1.1:.2g}")
+            hint = (
+                f"use a larger band, band={need:g} (the smallest round band with "
+                f"{min_near_frontier} rows on this facet), or fit at temperature={1.0 / need:.3g} "
+                f"(the band is 1/temperature), or "
+                f"lower min_near_frontier"
+            )
+        else:
+            hint = (
+                f"this facet owns only {have.size} usable rows; lower min_near_frontier to "
+                f"{max(have.size, 2)}, use a larger band, or fit with fewer terms"
+            )
         raise ValueError(
             f"{who}only {n_near} near-frontier rows (|log V| < {band:g}) but min_near_frontier = "
-            f"{min_near_frontier}; use a larger band or temperature, or lower min_near_frontier"
+            f"{min_near_frontier}; {hint}"
         )
 
     if d == 1:

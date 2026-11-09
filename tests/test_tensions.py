@@ -283,3 +283,24 @@ def test_k1_is_a_single_report_and_facet_error_names_facet():
     est = HyperbolicTradeSpace(n_terms=3, temperature=20.0, random_state=0).fit(X)
     with pytest.raises(ValueError, match="facet 0"):
         tension_report(est, X, min_near_frontier=10**6)
+
+
+def test_first_report_at_several_terms_names_a_workable_band():
+    """WP10 item 21: the default band 1/tau leaves a facet with too few rows on this table; the
+    message names a band (and the matching temperature) that works."""
+    import re
+
+    from hyperbolic_trade_space import make_frontier_data
+
+    X, _ = make_frontier_data(300, 4, n_terms=2, random_state=777)
+    est = HyperbolicTradeSpace(n_terms=2, temperature=50.0, random_state=0).fit(X)
+    with pytest.raises(ValueError, match="near-frontier rows") as err:
+        tension_report(est, X)
+    msg = str(err.value)
+    assert "facet" in msg and "larger band" in msg and "temperature=" in msg
+    band = float(re.search(r"band=([0-9.e-]+)", msg).group(1))
+    # the named band holds min_near_frontier rows on the named facet
+    k = int(re.search(r"facet (\d+)", msg).group(1))
+    _, lv = est._coordinates(X)
+    mine = est.assign_facets(X) == k
+    assert (np.abs(lv[mine & np.isfinite(lv)]) < band).sum() >= 10

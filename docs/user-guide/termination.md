@@ -79,6 +79,25 @@ direction, so weakly identified exponents; compare it with `n_eff_`, which says 
 carry the fit. It is `nan` at infinite temperature and for a facet with fewer than two participating
 exponents.
 
+## How small is a small margin
+
+The margin `gamma` is in score units (log metrics), the scale of the band 1/tau. A facet change of
+size r moves a row's score by at most r R, with R the largest norm of a row (u, -1); so `radius` is
+`gamma / (2R)`. Compare `gamma` with the band: below 1/tau, a change as small as the band can move a
+design to another facet. Compare it with the median margin, the median gap between a design's best
+and second-best facet score: far below it, a few designs sit on a seam and most do not.
+
+```python {.runnable}
+import numpy as np
+
+S = np.log(X) @ ts.exponents_.T - ts.log_offset_
+top = np.sort(S, axis=1)
+print(t.gamma, 1 / 50.0, np.median(top[:, -1] - top[:, -2]), t.radius)
+```
+
+On this table at tau = 50, `gamma` is 0.0020 against a band of 0.02 and a median margin of 0.21, and
+`radius` is 7.6e-5: the level-3 claim holds, for perturbations well under the band.
+
 ## What to decide from it
 
 `certified` says the returned run is a local optimum of its fixed assignment; it says nothing about
