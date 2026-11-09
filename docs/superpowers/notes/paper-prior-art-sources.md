@@ -105,3 +105,12 @@ needs; all stay in the bibliography (supervisor: "keep all of them in our bibtex
 Not found (WP10-decisions, 2026-11-08): an empirical study of trade studies delivered as documents or
 spreadsheets. The paper's sentence on documents rests on [@henderson2021value] (document-based
 practice in transition) and [@baker2012survey], not on such a study.
+
+## 5. A source of the derivation ledger
+
+`nocedal2006numerical` [@nocedal2006numerical] is cited by the ledger entry I10 of the derivations
+(first-order necessary conditions on the simplex, whose affine constraints satisfy the linear
+independence constraint qualification; Theorem 12.1 and Definition 12.4). Its row in the preserved
+snapshot `paper-sources/literature.md` is not in the snapshot (it was added to the snapshot after
+it was taken, and has been removed again); this note carries the citation so that the bibliography
+has no uncited key.

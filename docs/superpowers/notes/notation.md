@@ -99,6 +99,7 @@ Each phrase below appears in the documents under `docs/` taken together (a test 
 - `stable radius`
 - `participation threshold`
 - `numerically zero`
+- `regime`
 
 ## Forbidden phrases
 
@@ -117,3 +118,10 @@ records in `work-packages/` (a test checks this). The replacement is the registe
 - `empirical envelope`
 - `the true frontier`
 - `guaranteed to find`
+- `the three regimes`
+
+The word `regime` denotes a gain-box dataset of the case (the primary regime, aggressive controller
+gains, or the stock regime), and only that. A facet of the fit is a facet, never a regime: the
+forbidden phrase `the three regimes` is the misuse. (The shorter "three regimes" cannot be listed:
+the preserved snapshot `paper-sources/method.md` says "needs three regimes", and a snapshot is not
+edited.)

@@ -258,7 +258,6 @@ changed in the spec or notes):
 | I4 | Softmax-affine (log-sum-exp of affine) functions are GP-compatible | [@hoburg2016data] |
 | I5 | The moment generating function of a sum of independent variables is the product | [@billingsley2012probability] |
 | I6 | For square $Q$, $QQ^T=I$ implies $Q^TQ=I$ | [@horn2012matrix] |
-| I10 | First-order (KKT) necessary conditions on the simplex, whose affine constraints satisfy the linear independence constraint qualification at every point | [@nocedal2006numerical] (Theorem 12.1, Definition 12.4); convex-case remark [@boyd2004convex] (section 5.5.3) |
 | I7 | Alternating partition and refit converges to a local optimum of the max-affine fitting problem | [@magnani2009convex] |
 
 I1, I2, I3, I5 and I6 rest on textbook records whose passages were checked by table of contents or
