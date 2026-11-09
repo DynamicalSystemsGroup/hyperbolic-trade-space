@@ -126,6 +126,23 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   a term decision for the supervisor (under "Waiting for the supervisor", with the driver's
   recommendation).
 
+- 2026-11-09, 18:25, calls on the PM's table. (1) The regeneration inside the container of record
+  (03189c5, d66c106, 25dba3c): accepted on the record's evidence (0 failed in both images with the
+  flag; no conclusion-level change; the CSVs untouched; the changed values listed), subject to tier 2
+  and the Linux run dispatched on it (42717834248). (2) The WP17 fix for the Linux failure
+  (d66c106): the cause is a degenerate LP at tau = inf (gap G-10); off-platform the test now matches
+  facets by exponent vector and compares exponents and labels, and skips the path-dependent
+  quantities (status, iteration counts, support weights, the objective change) for tau = inf only,
+  with the exact comparison still run in the environment of record. Accepted as justified by the
+  tie analysis; the docstring must say so. (3) WP20's question on the workflow trigger: CI runs on
+  pushes to main, pull requests to main and manual dispatch, not on pushes to dev; the shards keep
+  all three triggers. (4) The docsite figures' reassessment by intent (ce87711): three caption
+  fixes, one resize (the tension heatmap) and one drop (the cubesat triangle, his word) approved;
+  applied to the pages. (5) The two model views from the visualization engineer (7afffce: the
+  assembly view, vertical, with the two kinds of configuration variable marked; the behavioural view
+  of requirements, subsystems and the ten traded metrics, with the gaps shown honestly) are
+  candidates for WP19 with their recipes; the gap list is WP22's first input.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
