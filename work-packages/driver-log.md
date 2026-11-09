@@ -7,7 +7,12 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
-Nothing. By the mandate of 2026-11-08 (`release-candidate.md`) the next thing that reaches him is
+**For his eye, not blocking:** (1) an implementer changed his Colima configuration and restarted
+his VM on 2026-11-09; the driver stopped it and restored the original (`WP10-decisions.md`). (2) The
+platform of record for the container is provisionally linux/arm64 instead of linux/amd64, which he
+was told would come back to him.
+
+Otherwise nothing. By the mandate of 2026-11-08 (`release-candidate.md`) the next thing that reaches him is
 the PR from `dev` to `main` with the reviewer's guide, unless a stop condition is met first: a
 contradiction of his recorded words, a finding about the mathematics that changes a statement or a
 conclusion, a trade-off his words do not settle, or an outward-facing act other than the PR.
@@ -26,6 +31,7 @@ conclusion, a trade-off his words do not settle, or an outward-facing act other 
 | 2026-11-08 | The paper's committed outputs must be produced in the container before CI is asked to match them; values that depend on the platform are named in one list with reasons, not skipped | the same run: a generated table's hash differs between macOS and Linux | `WP10-scope-of-work.md`, Amendment 1, R-31 |
 | 2026-11-08 | The docsite gains figures (at most seven, generated at build time from the package's plotting functions on the synthetic data of the code shown above each); this reverses the approved default of a docsite without figures | the driver's browser pass: sixteen pages, no figure, a page about plots that shows none; "like with other unsupervised method we need lots of plots to make the space intuitive" | `WP8a-driver-browser-pass.md` |
 | 2026-11-08 | Root page map links to its full size and may use a wide screen; a redraw is left to the reader loops. Phone-width tables become lists; API reference parameters render as lists | the same pass: the map is 694 px wide from a 1536 px image and unreadable; tables cut off at 375 px | `WP8a-driver-browser-pass.md` |
+| 2026-11-09 | **Provisional, promised back to the supervisor:** the container of record is linux/arm64, not linux/amd64; exact equality only inside it, stated tolerances elsewhere | spike: amd64 under Rosetta cannot start the notebook kernel; arm64 runs both notebooks and 67 of 68 paper tests in two minutes; hashes of float data differ by architecture and by operating system | `docs/superpowers/notes/spike-container-platform/report.md`; `WP10-decisions.md` |
 
 ## Decided by the driver for the PM
 

@@ -92,7 +92,10 @@ A reviewer subagent without a browser tool says so and does not sign off the ren
 driver makes its own complete pass in the browser before anything rendered goes to the supervisor,
 whose own reading remains the gate.
 
-**Limits that hold throughout.** Commits to `dev` only. No merge to `main`, no tag, no deployment,
+**Limits that hold throughout.** Nothing outside this repository and the session scratchpad is
+changed by any agent: no tool's global configuration, no settings under the supervisor's home
+directory, no stop, start or deletion of his container runtime or of images an agent did not
+create itself. Commits to `dev` only. No merge to `main`, no tag, no deployment,
 no publishing. One pull request, from `dev` to `main`, opened by the driver when the candidate is
 ready and by no one else. No AI attribution anywhere. No edit to a test or record that would
 weaken a requirement; a test changes only when its requirement changed by a recorded decision.

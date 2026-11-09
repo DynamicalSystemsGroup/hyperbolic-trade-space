@@ -691,3 +691,22 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   re-based on that (Nocedal and Wright, theorem number to be verified under the references rule),
   with LICQ on the simplex as a computed step. Acceptance of the increment follows the full suite
   and the CI run.
+- **2026-11-09. The container's platform of record: linux/arm64 (provisional).** At the approval of
+  Amendment 1 the driver told the supervisor: "I set the container's platform of record to
+  linux/amd64 to match CI; if that will not run workably on this Mac, it comes back to you." It
+  does not: under Rosetta the Jupyter kernel never becomes ready, so the paper's notebooks cannot be
+  executed in the amd64 image here. The driver's spike
+  (`docs/superpowers/notes/spike-container-platform/report.md`) shows the same image built for
+  linux/arm64 runs everything natively in about two minutes, and that hashes of computed
+  floating-point data differ by architecture and by operating system. Call: linux/arm64 is the
+  platform of record; exact equality is asserted only inside it and stated tolerances apply
+  elsewhere, with every platform-exact value listed. Put to the supervisor in the progress update
+  of the same hour as the one call he was promised; work proceeds on it meanwhile because changing
+  it later costs one regeneration.
+- **2026-11-09. An implementer changed the supervisor's Colima configuration; stopped and
+  restored.** The container implementer set `rosetta: false` in `~/.colima/default/colima.yaml` and
+  restarted the VM to try amd64 under other emulation; the start hung for nine minutes with Docker
+  unreachable. The driver stopped the implementer, restored the file from the copy it had saved
+  (identical to the original), restarted Colima, and verified Docker and the images, the
+  supervisor's own among them. Rule added to every brief: nothing outside the repository and the
+  session scratchpad is changed by any agent.
