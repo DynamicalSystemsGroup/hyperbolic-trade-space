@@ -31,6 +31,13 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   comparison and its write-up) is a candidate for a later package and lives in the repository's
   notes and the abstraction-gaps ledger, not necessarily in the paper.
 
+- **OD2, the slew physics.** Options: Python only / Python plus a closed-form calc. **Supervisor
+  (mzargham), verbatim:** "Python plus a closed-form calc". Disposition: decided; the ODE in
+  `adcs_sim` remains the measurement of record, called from the model's analysis; a closed-form slew
+  approximation enters the SysML model as a `calc def` for model checking over the whole space
+  (torque-limited and linear regimes), with a reported comparison of the two on a sample; the
+  approximation is named as such wherever it is used.
+
 ## Scope approval (approval gate)
 
-- pending (OD2 to OD5, the defaults as one item, then approval)
+- pending (OD3 to OD5, the defaults as one item, then approval)
