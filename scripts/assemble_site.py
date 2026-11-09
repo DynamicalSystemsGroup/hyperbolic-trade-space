@@ -73,6 +73,8 @@ def assemble(out=DEFAULT_OUT, mkdocs_runner=None, generated_dir=GENERATED_DIR, c
     if not ROOT_INDEX.is_file():
         raise FileNotFoundError(f"missing root index: {ROOT_INDEX}")
     shutil.copy2(ROOT_INDEX, out / "index.html")
+    for asset in sorted(ROOT_INDEX.parent.glob("*.webp")):  # figures the root index uses
+        shutil.copy2(asset, out / asset.name)
     build_paper(out)
     return out
 

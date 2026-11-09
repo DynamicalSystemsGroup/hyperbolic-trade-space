@@ -68,6 +68,9 @@
     margin: 0 0 1.5rem;
   }
   a { color: var(--accent); }
+  section h2 { font-size: 1.25rem; margin: 2rem 0 0.5rem; }
+  figure { margin: 0 0 1rem; }
+  figcaption { font-size: 0.9rem; color: var(--muted); }
   .cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -129,6 +132,7 @@
     padding: 0.1rem 0.35rem;
   }
   .card p.install { font-size: 0.85rem; }
+  .card p.install code { overflow-wrap: anywhere; word-break: break-all; }
   footer {
     margin-top: 3rem;
     padding-top: 1rem;
@@ -146,26 +150,49 @@
     <p class="byline">Michael Zargham</p>
   </header>
 
+  <section>
+    <h2>Why</h2>
+    <p>
+      Trade studies are usually decided from documents and tables, where the detail of the
+      evaluated designs is lost, and the alternatives are bespoke or opaque. A model-based method
+      has to clear a bar before a decision-maker can trust it: it has to show its reasoning, say
+      where the data do not reach, and let the analysis be rerun.
+    </p>
+  </section>
+
+  <section>
+    <h2>What</h2>
+    <p>
+      PCA explains variance; this explains tensions. Its unit is the n-lemma, a power-weighted
+      product of the metrics that names which of them compete on one part of the trade space. The
+      method belongs in unsupervised learning and feature engineering beside PCA: kin rather than a
+      substitute, and the two chain (the tension report already runs PCA on the near-frontier chart
+      coordinates). It ships as a scikit-learn-compatible estimator (<code>fit</code>,
+      <code>transform</code>, <code>inverse_transform</code>, <code>score_samples</code>; the
+      conformance checks pass), so it drops into the same workflows.
+    </p>
+  </section>
+
+  <section>
+    <h2>How</h2>
+    <figure>
+      <img class="hero" src="paper-map.webp" width="1536" height="1024"
+           alt="A map of the paper as connected boxes: assumptions feed the single-term core, which leads to the chart and its uses, then the multi-facet extension, and finally the open questions.">
+      <figcaption>A map of the mathematics: assumptions, the single-term core, the chart and its uses, the multi-facet extension, the open questions</figcaption>
+    </figure>
+    <p>The boxes are the reading order into the paper and the docs.</p>
+  </section>
+
   <p>
-    A design study evaluates many configurations and gets back a handful of numbers for each: mass,
-    power, settling time, pointing error. Some designs win on one number and lose on another. This
-    project models the edge of what is achievable as a posynomial frontier, and reads from it the
-    tensions between the metrics, the exchange rates between them, and the gaps where no design has
-    yet been tried. Every result is tied to a SymPy-checked derivation, and the package follows the
-    scikit-learn conventions.
-  </p>
-  <p>
-    The paper tells the method through a spacecraft attitude-control trade study, the documentation
-    explains and proves it page by page, and the package is the tool you run on your own data.
-    Start wherever suits you.
+    The paper tells the method, the documentation explains it page by page, and the package is the
+    tool you run on your own data. Start wherever suits you.
   </p>
 
   <ul class="cards">
     <li class="card">
       <h2>Paper</h2>
       <p>
-        The method told through the attitude determination and control (ADCS) trade study: from
-        evaluated designs to the frontier, its tensions and its gaps.
+        The method told from evaluated designs to the frontier, its tensions and its gaps.
       </p>
       <a class="go" href="paper/">Read the paper →</a>
     </li>

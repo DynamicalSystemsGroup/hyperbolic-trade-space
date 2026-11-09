@@ -255,6 +255,21 @@ def test_root_index_is_thin_and_has_the_cards():
     assert "<script" not in text.lower()
     assert "prefers-color-scheme: dark" in text
     assert "Start wherever suits you" in text
+    low = text.lower()
+    order = [
+        low.index(k) for k in ("<h2>why</h2>", "<h2>what</h2>", "<h2>how</h2>", 'class="cards"')
+    ]
+    assert order == sorted(order), "order: why, what, how, cards"
+    assert (
+        "A map of the mathematics: assumptions, the single-term core, the chart and its uses, "
+        "the multi-facet extension, the open questions"
+    ) in text
+    for needle in ("scikit-learn", "unsupervised", "feature engineering", "pca"):
+        assert needle in low, needle
+    for banned in ("sympy", "worked example", "chatgpt", "openai"):
+        assert banned not in low, banned
+    figure = [h for h in html_links(SITE / "index.html") if h.endswith(".webp")]
+    assert figure and all((SITE / h).is_file() for h in figure)
     hrefs = html_links(SITE / "index.html")
     for href in ("paper/", "docs/", "docs/api-reference/"):
         assert href in hrefs
@@ -350,6 +365,7 @@ def test_assembled_layout(assembled):
     for rel in ("index.html", "docs/index.html", "paper/index.html"):
         assert (assembled / rel).is_file(), rel
     assert (assembled / "index.html").read_text() == (SITE / "index.html").read_text()
+    assert (assembled / "paper-map.webp").is_file()
     assert (assembled / "paper" / "index.html").read_text() == (
         SITE / "paper" / "index.html"
     ).read_text()

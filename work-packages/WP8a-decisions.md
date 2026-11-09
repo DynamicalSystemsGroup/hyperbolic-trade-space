@@ -101,3 +101,18 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
   says so: the method belongs to unsupervised learning and feature engineering beside PCA, not in
   place of it, and the two chain (for example PCA on the near-frontier chart coordinates, as the
   tension report already does); the same wording goes to the register and WP10's framing.
+
+- **Delivery note (root index: why, what, how).** `site/index.html` now runs Why, What, How, then
+  the three cards and "Start wherever suits you", then the source link. What states the PCA
+  analogue (explains tensions, not variance; the n-lemma as the unit), the placement in
+  unsupervised learning and feature engineering beside PCA (kin, chainable; the tension report
+  runs PCA on the near-frontier chart coordinates) and the scikit-learn-compatible estimator in
+  one sentence. How carries `site/paper-map.webp` (copied from
+  `docs/superpowers/notes/external-review/paper-map.webp`), full width, with alt text and the
+  caption "A map of the mathematics: assumptions, the single-term core, the chart and its uses, the
+  multi-facet extension, the open questions", and one line naming the boxes as the reading order. No
+  SymPy or worked-example material remains on the page; still thin HTML, no scripts, light and
+  dark. `scripts/assemble_site.py` gained a minimal edit to copy `site/*.webp` next to
+  `index.html` (the staged output uses the same function). A long install command overflowed at
+  phone width and now wraps. Checked in the browser pane at desktop and 375 px width. MathJax in
+  the docs loads from a CDN, so math on docs pages needs network access during localhost review.
