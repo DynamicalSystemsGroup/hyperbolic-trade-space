@@ -1,5 +1,3 @@
-<!-- The first draft of this file (written as WP9, the readability package) was superseded on 2026-11-08 by the supervisor's redirection (WP10-decisions.md) and is replaced by this draft; it remains in git history. -->
-
 # WP10 — Scope of work: The paper, working draft
 
 | | |
@@ -47,6 +45,16 @@ Why before what.
 4. **Case** at K = 1 and K = 3 (the cubesat, two regimes). **Final remark** (the hook): a novelty or
    impact score for new capabilities from how far above V = 1 they are forecast to sit.
 
+## The abstraction the method keeps (supervisor, `WP10-decisions.md`, 2026-11-08, verbatim: "those repos and the supporting tools for that ecosystem are developing quickly. we're keeping an abstraction of config variables and measured attributes so our method is relevant even as tools move, or in cases where scoring comes from physical systems or human assessments")
+
+A framing requirement. The method's input is a table of configurations $c$ and attributes $a$; stage 1
+of the pipeline (configuration to attributes) is a black box to the method: a simulator behind a
+system model, a physical test campaign, or a human assessment. The cubesat model is one instance
+behind that abstraction, not part of the method. The paper states this in Preliminaries (stage 1 of
+the pipeline) and in the Discussion of cross-application, using the register's wording for $a$
+(`notation.md`, row $a$: "The evaluation is a black box to the method ..."), and names no tooling
+versions anywhere in the body.
+
 ## Reader model (supervisor, `WP10-decisions.md`, "Redirection")
 
 Assumed mathematics: multivariate calculus, linear algebra, convex optimization. Notation anchored on
@@ -63,13 +71,13 @@ supporting materials ("computationally verifiable appendices"); **L-E** pull the
   (E-10), that tells the Story above and reads well at L-A to L-F.
 - G2. A supporting notebook `paper/supporting_material.ipynb` of lettered, computationally verifiable
   appendices (A to F) that the paper cites claim by claim.
-- G3. Every computation the paper shows is a call into a tested module `examples/adcs/case.py` (cubesat
+- G3. The paper keeps the configuration-to-attributes abstraction (above). Every computation the paper shows is a call into a tested module `examples/adcs/case.py` (cubesat
   specifics as data), so another table runs through the same functions.
 - G4. The prior work is a prior-art review by family (claiming nothing as novel), with the Pareto and
   DEA contrasts, and the fifteen state-of-practice sources plus Miettinen, Ehrgott and the three
   DEA references are in `docs/references.bib` and `docs/literature.md`.
 - G5. Mathematical statements are marked Derived / Numerical / Open (E-10), the algorithm part of the
-  Results follows E-8's structure (after WP13 lands), and every simplifying assumption is named where
+  Results follows E-8's structure (written against the delivered WP13 text), and every simplifying assumption is named where
   made, defended there in a sentence, and taken up in Future work with how to go beyond it.
 - G6. The trade-off-aware search appears as a section marked preliminary until WP12 lands.
 - G7. A test file that guards the paper's structure, budget and register so later loops (WP11) cannot
@@ -93,7 +101,7 @@ supporting materials ("computationally verifiable appendices"); **L-E** pull the
 | ID | Deliverable | Serves |
 |---|---|---|
 | D-1 | `paper/paper.ipynb`, executed, outputs committed, with the front matter (title, abstract, keywords, abbreviations), numbered definition/lemma/figure blocks with captions, Derived/Numerical/Open badges, the cross-references to Appendices A to F | G1, G5, G6 |
-| D-2 | `paper/supporting_material.ipynb`: A the register (`docs/superpowers/notes/notation.md`) as a table; B the derivation ledger and each lemma's output (L1 to L14); C full case detail (sensitivity variants, per-category refits, regime tables, the K = 1/2/3 diagnostic table, propose-predict-check with its mixed result, candidates, the nondominated counts); D verification audit (tests by area, lemma PASS list, sklearn checks and expected failures, cross-checks, the WP13 certificates on the planted data and cubesat tables); E what remains for a human; F the search's evidence (a marked stub until WP12 lands) | G2, G5, G6 |
+| D-2 | `paper/supporting_material.ipynb`: A the register (`docs/superpowers/notes/notation.md`) as a table; B the derivation ledger and each lemma's output (L1 to L14); C full case detail (sensitivity variants, per-category refits, regime tables, the K = 1/2/3 diagnostic table, propose-predict-check with its mixed result, candidates, the nondominated counts); D verification audit (tests by area, lemma PASS list, sklearn checks and expected failures, cross-checks, the WP13 certificates (`termination_`, `conditioning_`, margin, radius, Corollary 4 bound) and the abstraction-gaps ledger G-1 to G-16 on the planted data and cubesat tables); E what remains for a human; F the search's evidence (a marked stub until WP12 lands) | G2, G5, G6 |
 | D-3 | `paper/myst.yml` (project, authors, keywords, abbreviations, bibliography, build settings), modelled on `hc-scipy-2026/papers/michael_zargham/myst.yml` | G1, G2 |
 | D-4 | `examples/adcs/case.py`: load, feasibility, conditioning, temperature selection and fit, K sweep, report and figure helpers, regime comparison, candidates, propose-predict-check, nondominated counts; cubesat specifics (attribute names and orientations, feasibility checks, configuration columns, data paths) as data; lifts from the WP7 notebook and `examples/adcs/k_terms.py` | G3 |
 | D-5 | `docs/references.bib` additions (fifteen sources; Miettinen 1998; Ehrgott 2005; Banker, Charnes and Cooper 1984; Allen et al. 1997; Dyson et al. 2001) under the WP5 rule; `docs/literature.md` new section "State of practice in trade studies"; plus the search-family entries of `search-prior-art.md` only if the paper cites them | G4 |
@@ -111,13 +119,13 @@ code-free figures, tables in appendices, references and appendices excluded from
 | Abstract + Fig. 1 | | 200 | the Story in six sentences, the cubesat finding in one sentence; E-9 strengths as framing |
 | 1 | The decision problem | 600 | why; contribution; main-results list (the L-B anchor); organization |
 | 2 | Prior art, by family | 600 | the table (outline v1 prior-art table plus the three search families when cited): produces / shares / differs / cites; the Pareto and DEA paragraphs |
-| 3 | Preliminaries and notation | 400 | pipeline c → a → m; assumptions A1 to A6 (E-10); notation table anchored on sklearn glossary and Boyd and Vandenberghe; the register phrases |
+| 3 | Preliminaries and notation | 400 | pipeline c → a → m, with stage 1 (c → a) stated as a black box / oracle (simulator, physical test campaign, human assessment) in the register's words for a; assumptions A1 to A6 (E-10); notation table anchored on sklearn glossary and Boyd and Vandenberghe; the register phrases |
 | 4 | Definitions | 400 | numbered definitions (invariant form, posynomial, τ and κ, chart, n-lemma, reach, share, exchange rate, ascent direction) |
-| 5 | Results | 1,000 | L1 to L11 as numbered blocks with proof dropdowns, badge Derived; the K > 1 algorithm in E-8 form (Lemma 1, Lemma 2, Proposition 3, Corollary 4, the stopping declaration; *written last, after WP13 lands*), badge Numerical where only observed; Open: Q1 to Q4 |
+| 5 | Results | 1,000 | L1 to L11 as numbered blocks with proof dropdowns, badge Derived; the K > 1 algorithm in E-8 form (Lemma 1, Lemma 2, Proposition 3, Corollary 4, the stopping declaration; *written last, against the delivered WP13 text in `docs/method.md`, "Three levels of guarantee" to "The stopping declaration"*), badge Numerical where only observed; Open: Q1 to Q4 |
 | 6 | Search of the design space (preliminary) | 250 *(default)* | the nested loops, the procedure, the honest limits; no results until WP12 |
 | 7 | Case construction | 350 | cubesat, two regimes, ten attributes, feasibility, conditioning, temperature; planted multi-facet example |
 | 8 | Case analysis | 650 | K = 1, K = 3, regime comparison, candidates, propose-predict-check; Pareto counts from `case.py` |
-| 9 | Discussion | 400 | interpretation as human validation; what the decision-maker holds; limits; verify versus validate; one line on log-convexity and holes |
+| 9 | Discussion | 400 | cross-application: the method sees only configurations and measured attributes, so it applies when scoring comes from other tools, physical systems or human assessments; interpretation as human validation; what the decision-maker holds; limits; verify versus validate; one line on log-convexity and holes |
 | 10 | Reproducibility and your own case | 200 | exact commands; the recipe and `case.py` interface |
 | 11 | Future work and final remark | 300 | organized by named assumptions; the final remark hook |
 
@@ -137,7 +145,8 @@ code-free figures, tables in appendices, references and appendices excluded from
 | R-8 | The Pareto contrast (object, question, scale with d, noise, what is returned, relation, generation vs identification) and the DEA contrast appear in section 2 in one compressed paragraph each; nondominated counts (671/706; 146/706; 8/706) are produced by `case.py`, not typed. | test of `case.py` outputs against these values; inspection |
 | R-9 | The prior-art table has a row per family listed in `paper-outline-v1-baseline.md`, each with produces / shares / differs / cites, and claims nothing as novel (no "novel", "first", "new" claims about the method). | test on the table; inspection |
 | R-10 | All fifteen state-of-practice, two multiobjective and three DEA records are in `docs/references.bib` with a resolved DOI or stable URL and a `verified` field, even if the text cites only a subset; `docs/literature.md` has the new section. | `tests/test_references.py` |
-| R-11 | The algorithm part of Results follows E-8, cites the WP13 lemmas L12 to L14 and states the three-level claim with the stopping declaration; Appendix D reports the certificates for the planted data and cubesat tables. | inspection against `docs/method.md`; test of cited lemma ids |
+| R-11 | The algorithm part of Results follows E-8, cites the delivered lemmas L12 to L14 and states the three levels (descent, numerical stationarity, conditional local optimality) with the stopping declaration, as in `docs/method.md` headings "Three levels of guarantee", "Level 1" to "Level 3" and "The stopping declaration"; Appendix D reports `termination_` (status, gap G_k, margin, radius, Corollary 4 bound), `conditioning_`, and the abstraction-gaps ledger G-1 to G-16 for the planted data and cubesat tables, as printed by the code. | inspection against `docs/method.md`; test of cited lemma ids and of Appendix D numbers against `termination_` |
+| R-16 | Preliminaries state stage 1 as a black box in the register's wording for a, the Discussion's cross-application paragraph does likewise, and the body names no tooling versions. | test for the register phrase and for absence of version strings; inspection |
 | R-12 | Drill-down checks: L-A: abstract within 200 words and Figure 1 present with caption; L-B: headers, main-results list and figure captions alone state the Story and the finding; L-C: no unresolved forward reference; L-D: every appendix cited at least once from the body and every lemma has a runnable proof dropdown; L-E: each command in section 10 exists and runs in the smoke test; L-F: `case.py` runs end to end on a second table (the planted data) with no cubesat-specific edit. | `tests/test_paper.py`; D-8 |
 | R-13 | `uv run pytest`, `uv run ruff check .`, `uv run ruff format --check .`, `uv lock --check` pass; notebooks execute from a clean kernel with committed outputs equal to a re-run (seeded). | local checks; an execution test marked slow |
 | R-14 | Search section and Appendix F are labelled preliminary and contain no result numbers until WP12 lands. | test for the label; inspection |
@@ -154,10 +163,10 @@ territory are kept apart as the abstraction-gaps ledger does, and the register's
 
 ## Definition of good enough
 
-- D-1 to D-8 delivered; R-1 to R-15 pass; every OD below decided.
+- D-1 to D-8 delivered; R-1 to R-16 pass; every OD below decided.
 - The Story's four parts, the six reader levels' checks (R-12), the Pareto and DEA contrasts and the
   prior-art table are present.
-- The Results' algorithm subsection is written against the accepted WP13 text.
+- The Results' algorithm subsection is written against the delivered (and, by acceptance time, accepted) WP13 text.
 - The search section is present and marked preliminary; Appendix F is a marked stub.
 - No readability polishing beyond R-12; remaining improvements are listed for WP11.
 
@@ -170,12 +179,11 @@ Good enough is met, **no open item remains unresolved**, and the supervisor has 
 1. Early (parallel with WP13, files disjoint): `case.py` and its tests, bibliography and literature
    section, `myst.yml`, notebook and appendix shells, `tests/test_paper.py` skeleton.
 2. Prose and appendices A, B, C, E; sections 1 to 4, 7 to 11.
-3. Results lemma blocks L1 to L11, then **last**, after WP13 is accepted: the algorithm subsection,
-   Appendix D's certificates, and the section 2 to 5 text that depends on the WP13 register.
+3. Results lemma blocks L1 to L11, then **last**: the algorithm subsection, Appendix D's certificates and the text that depends on the register, written against the delivered WP13 material on `dev`.
 4. The search section (preliminary) and Appendix F stub; WP12's results fill them by an amendment
    or a follow-up when WP12 lands.
 
-Dependencies: WP13 (accepted before step 3), WP14 interface contract (paths and build commands; not
+Dependencies: WP13 (delivered on `dev`; its acceptance gate still precedes WP10's acceptance, and the text follows any change it makes), WP14 interface contract (paths and build commands; not
 yet scoped, so this draft uses the paths above and re-pins when WP14 lands), WP12 (not yet scoped;
 only for step 4's later fill). File ownership: `paper/`, `examples/adcs/case.py`, `tests/test_paper.py`,
 `docs/references.bib`, the new section of `docs/literature.md`. Not touched: `docs/method.md`,

@@ -30,6 +30,15 @@ to swap over onto the new data". So the committed datasets stay frozen and cited
 an experiment runner write a `v2` generation beside them under a ledger; the swap of the paper's case
 and the records onto `v2` is a separate recorded gate after this package's acceptance.
 
+The design rule, supervisor, 2026-11-08, verbatim (`WP10-decisions.md`, "The abstraction the method keeps"):
+"those repos and the supporting tools for that ecosystem are developing quickly. we're keeping an
+abstraction of config variables and measured attributes so our method is relevant even as tools move, or
+in cases where scoring comes from physical systems or human assessments". So the cubesat SysML model is
+one instance behind the configuration to attributes abstraction, not part of the method; the tooling
+(opensysml, sysml-toolkit, their pins and probes) is WP15's own concern and appears in no contract the
+method or the paper relies on, and the experiment layer is written so that a simulator, a physical test
+campaign or a human assessment are three equal ways to provide the evaluation.
+
 Today the example is four generations of accretion (WP4, WP4b, WP7, WP9): two SysML files of different
 ambition, the slew physics and half the feasibility flags in Python, scenario numbers in module
 constants and CLI flags, the experiment protocol (seed, workers, gain box) in `generate_dataset.py`
@@ -45,18 +54,26 @@ The method itself is unchanged: stage 1 remains a black box configuration to att
   order: the configuration space (design variables, alternatives, ranges), the cubesat, the accounting
   (`calc def`), the scenarios, the feasibility as named requirements, and the experiment as an
   `analysis def` with `verification def`s.
-- G2. **The toolkit's machinery, used where it supports it.** Model checking (`self_check`,
-  `verify_constraint`, `verify_requirement`, `verify_satisfaction`, claims over the whole space where an
-  engine reaches them, the static checks of the toolkit per OD3) and simulation (`run_analysis`,
-  `run_sweep`) used for what they do; Python holds only what SysML cannot do (the ODE integration of the
-  slew, per OD2). A written account of what the toolkit offers, what was used and what was not, and why.
+- G2. **The toolkit's machinery, used where it supports it.** Based on what opensysml 0.12.1 and
+  sysml-toolkit v0.12.0 (fresh clones read 2026-11-08) provide: model checking (`verify_constraint`,
+  `verify_requirement`, `verify_satisfaction`, the `holds` question for claims over every assignment with
+  its reported evidence strength, `list_engines()`; the toolkit's `check`, `lint`, `verify --solve` per
+  OD3) and simulation (`calc`, `run_analysis`, `run_sweep`); Python holds only what SysML cannot do (the
+  ODE integration of the slew; the toolkit README states behavioral execution and statement-bodied
+  calculations are unsupported there). Sections relied on: opensysml `docs/clients/python/verification.md`
+  ("Constraints, requirements and satisfaction", "Questions beyond evaluation", "Calculations, analyses and
+  sweeps", "Choosing an engine and reading evidence") and the client README ("The service"); toolkit
+  README ("Calculation and static-analysis boundaries", "Status", "Known limitations") and `CLI.md`
+  (`check`, `lint`). A written account of what each offers, what was used and what was not, and why.
 - G3. **Experiments declared and ledgered, with cadCAD-like semantics.** An experiment is a declared
   object (model and its hash, scenario, sampled space, seed, count, measurement, outputs); a runner
   executes it and appends a hashed ledger entry; every dataset in `examples/adcs/data/`, frozen and `v2`,
   is traceable to an entry.
-- G4. **Cross-application.** A reader with another SysML v2 model can tell which part is the method's
-  contract (configuration to attributes), which is this example's physics, and how to plug their model
-  into the same runner: a how-to, proved by a toy model run through the runner in a test.
+- G4. **Cross-application: provide the oracle.** A reader can tell which part is the method's contract
+  (configuration to attributes), which is this example's physics, and that plugging in their own case means
+  providing the oracle, whatever stands behind it: a SysML v2 model with a simulator, a physical test
+  campaign, or a human assessment. A how-to, proved by three small oracles of those kinds run through the
+  same runner and ledger in a test.
 - G5. **No disruption.** The seam holds: the frozen CSVs, the records, the paper, WP13's and WP10's files
   and the tests that pin the frozen data are untouched; `v2` lands beside, with a comparison report of
   what changed between the generations and why.
@@ -72,6 +89,8 @@ The method itself is unchanged: stage 1 remains a black box configuration to att
   `.github/`, or WP13's notes. The estimator's public names are used read-only, at the names WP14 pins.
 - **No change to `adcs_sim.py`'s numerics** (the unchanged ODE simulator is the measurement of record).
 - **No new physics or recalibration** beyond what OD4 permits; no new design variables or attributes.
+- **No tooling in the method's contract.** Tool versions, pins and probe results are not pinned in WP14's
+  contract, the paper or the method pages; they live in WP15's tree (design rule above).
 - **No CI workflow edit** (WP8a owns the workflow); model checks run in the default `uv run pytest`.
 - **No new bibliography entries**; no site, MkDocs or navigation work (WP8a); no `docs/` page (the how-to
   lives in WP15's own tree, see Agent's defaults).
@@ -85,12 +104,12 @@ The method itself is unchanged: stage 1 remains a black box configuration to att
 | ID | Deliverable | Serves |
 |---|---|---|
 | D-1 | `examples/adcs/model_v2/cubesat.sysml` *(default)*: the single model file (15.1, 15.2) | G1, G2 |
-| D-2 | `examples/adcs/experiments/`: `oracle.py`, `experiment.py`, `ledger.py`, `runner.py`, `definitions.py`, `compare.py`, `__init__.py`, `__main__.py` *(default names)*; `ledger/ledger.jsonl` (append-only) (15.3) | G3, G4 |
+| D-2 | `examples/adcs/experiments/`: `oracle.py` (the tool-free protocol), `cubesat_oracle.py` (the SysML-backed instance), `experiment.py`, `ledger.py`, `runner.py`, `definitions.py`, `compare.py`, `probes.py`, `__init__.py`, `__main__.py` *(default names)*; `ledger/ledger.jsonl` (append-only); `probes/probe-record.md` (the recorded results of the first-task probes) (15.2, 15.3) | G3, G4 |
 | D-3 | `examples/adcs/data/v2/` *(default)*: the `v2` generation, same file names and column order as the frozen files (15.4) | G3, G5 |
 | D-4 | `examples/adcs/experiments/reports/v1-v2-comparison.md` *(default)*: generated tables plus the change register (what changed, why) (15.4) | G5 |
 | D-5 | `examples/adcs/case-model.md` *(default)*: the how-to and the toolkit account (15.5) | G2, G4 |
 | D-6 | Tests: `tests/test_system_model_v2.py`, `tests/test_model_checking_v2.py`, `tests/test_experiments.py`, `tests/test_v2_data.py`, `tests/test_case_model_howto.py` *(default names)* | G1 to G5 |
-| D-7 | Additive rows in WP14's manifest for the new paths (floor rule, WP14 R-8), if WP14 is accepted by then; `work-packages/WP15-decisions.md`; at the gate `WP15-review.md`; status rows in `work-packages/README.md` | G5 |
+| D-7 | Additive rows in WP14's manifest for the configuration to attributes boundary only (the oracle protocol and the `data/v2/` files; floor rule, WP14 R-8), if WP14 is accepted by then; `work-packages/WP15-decisions.md`; at the gate `WP15-review.md`; status rows in `work-packages/README.md` | G5 |
 | D-8 | Under OD3 option (a) only: the toolkit pin file and its provisioning helper inside `examples/adcs/experiments/` and the `case` group edit in `pyproject.toml`/`uv.lock` | G2 |
 
 ## Parts, file ownership and parallel safety
@@ -118,7 +137,8 @@ runs against the frozen `cubesat_model.measure` if it starts first.
 
 ## The oracle signature (stated for WP14's contract)
 
-The callable interface between the model and the analysis. The WP14 draft (R-3) pins module and
+The callable interface between the evaluation and the analysis, and the abstraction the design rule keeps:
+nothing in it mentions SysML, opensysml or any tool. The WP14 draft (R-3) pins module and
 function names and the committed files but no oracle signature; this section states it so WP14 can
 adopt it by an additive amendment (WP14 R-8) when WP15 is accepted. Until then the frozen pair
 `cubesat_model.measure(configuration, model=None, **kw)` and `cubesat_model.sample_designs(n, seed,
@@ -138,7 +158,10 @@ class Oracle(Protocol):
     ) -> pandas.DataFrame: ...  # batch, rows in design_id order
 ```
 
-Semantics: deterministic (no noise; WP12 wraps it); one configuration in, a mapping out whose keys are
+Semantics: it is satisfied by a SysML-backed simulator (`CubesatOracle`), by a lookup of recorded
+physical-test measurements, or by a function that collects human scores; the runner and ledger treat them
+alike and the ledger records which kind of evidence it was. The cubesat oracle is deterministic (no noise;
+WP12 wraps it); one configuration in, a mapping out whose keys are
 the frozen `measure` keys (attributes, flags and the auxiliary columns), values `float` or `bool`;
 the scenario (slew angle, horizon, step, bands) and the gain box are fixed when the oracle is
 constructed, not per call (the frozen `measure` takes `t_end`, `max_step`, `slew_deg` per call; that
@@ -160,16 +183,16 @@ Paths are the defaults above. "Frozen" means `examples/adcs/data/*.csv` as commi
 | R-5 | **Claims over the whole space.** The model states a small number of claims about every in-range configuration *(default: at least two, chosen by the implementer from the model's own accounting, for example the mass-accounting identity and the monotonicity of available power in panel span)*, each checked by an engine that answers `holds` (opensysml `smt` or `solve`, or the toolkit CLI per OD3), with the verdict recorded; a claim no engine reaches is recorded with the reason and is not silently skipped. | test: verdicts per claim; the test fails with the claim name when an engine disagrees |
 | R-6 | **Static checks.** `self_check` passes on `v2`; the toolkit's `check` and `lint` are run per OD3. | per the OD3 answer: test (a), documented command and a test that runs when the binary is found (b), none (c) |
 | R-7 | **Analysis and sweep.** The model's `analysis def` takes the design variables (as `in` parameters or a `Cubesat` subject) and the measured slew quantities, and returns the attributes and flags; `run_analysis` on a configuration plus the Python measurement equals the oracle's output; `run_sweep` over a design variable reproduces the Python-side accounting on a grid (the frozen sweep test, re-expressed). Whether the slew enters as a measurement handed in, or also as a closed-form calc, follows OD2. | `tests/test_model_checking_v2.py` |
-| R-8 | **Toolkit account.** The how-to has a table of the runtime and CLI capabilities (at least `verify_constraint`, `verify_requirement`, `verify_satisfaction`, `run_analysis`, `run_sweep`, `record_run`, `run_runs`, the engines from `list_engines()`, and the CLI's `check`, `lint`, `verify --solve`) with used, not used, and why, each row checked against the pinned version by a small probe whose result is recorded. | inspection against `list_engines()` and the probe notes; test that the engine names listed in the table exist in `list_engines()` |
-| R-9 | **Oracle.** `experiments/oracle.py` defines `Oracle` as in the section above and `CubesatOracle`, whose output keys equal the keys of the frozen `cubesat_model.measure` for the same configuration, in the frozen CSV column order via `evaluate`. | test: key-set and order equality against `measure` on 3 configurations; `ValueError` on an out-of-range value |
-| R-10 | **Experiments and ledger.** An `Experiment` declares: id, model path and hash, scenario name, gain box, count, seed, oracle, output path, and optionally a `sweep` over scenario or gain box (each cell its own run and entry). The runner executes it and appends one JSON line: id, kind (`generated` or `adopted`), UTC time, git commit and dirty flag, sha256 of the model text, the code files that determine the output, the output file and its row count, the opensysml and runtime versions and the engine list, Python/numpy/scipy/pandas versions, platform, the inputs, and parent entries (a `generated` entry whose input is another entry's output records that entry's hash before it runs). `verify` recomputes every hash and reports drift. | `tests/test_experiments.py`: a small experiment (`n = 4`, fast step) in a temporary directory produces an entry with every field; editing the output or the model makes `verify` fail naming the entry |
+| R-8 | **Toolkit account.** The how-to has a table of the runtime and CLI capabilities (at least `verify_constraint` and the `holds` question, `verify_requirement`, `verify_satisfaction`, `calc`, `run_analysis`, `run_sweep`, `record_run`, `run_runs`, the engines from `list_engines()`, and the CLI's `check`, `lint`, `verify --solve`), each with the documentation section it rests on, used or not used, and why, each row backed by a probe against the live runtime whose result is recorded in `probes/probe-record.md` (default list of probes in Agent's defaults). | inspection against `list_engines()` and the probe record; test that the engine names in the table exist in `list_engines()`; `probes.py` re-runs the probes and the test fails with the probe name when a recorded result no longer holds |
+| R-9 | **Oracle.** `experiments/oracle.py` defines `Oracle` as in the section above and imports neither opensysml nor any SysML tool (nor does `experiment.py`, `ledger.py`, `runner.py`); `cubesat_oracle.py` defines `CubesatOracle`, whose output keys equal the keys of the frozen `cubesat_model.measure` for the same configuration, in the frozen CSV column order via `evaluate`. | test: key-set and order equality against `measure` on 3 configurations; `ValueError` on an out-of-range value; a test imports the core modules with opensysml made unimportable and succeeds |
+| R-10 | **Experiments and ledger.** An `Experiment` declares: id, model path and hash, scenario name, gain box, count, seed, oracle, output path, and optionally a `sweep` over scenario or gain box (each cell its own run and entry). The runner executes it and appends one JSON line: id, kind (`generated` or `adopted`), UTC time, git commit and dirty flag, `evidence_kind` (`simulation`, `physical-test` or `human-assessment`), sha256 of the model text (null when the oracle has none), the code files that determine the output, the output file and its row count, the opensysml and runtime versions and the engine list, Python/numpy/scipy/pandas versions, platform, the inputs, and parent entries (a `generated` entry whose input is another entry's output records that entry's hash before it runs). `verify` recomputes every hash and reports drift. | `tests/test_experiments.py`: a small experiment (`n = 4`, fast step) in a temporary directory produces an entry with every field; editing the output or the model makes `verify` fail naming the entry |
 | R-11 | **Every dataset is traceable.** Each file in `data/` (the five frozen) has an `adopted` entry recording its sha256, the command that made it (from the frozen tests' command strings), the generating commit, and the tolerances of its reproducibility tests; each file in `data/v2/` has a `generated` entry. The frozen files are not rewritten. | test enumerates both directories and requires an entry per file and equal hashes; `git diff <start>..HEAD -- examples/adcs/data/*.csv` is empty |
 | R-12 | **cadCAD-like semantics, said once.** The mapping (state = configuration and measurements; policy = the sampler; state-update block = configure, measure, account; run = one seeded design; sweep = scenario or gain-box cells; timestep only where a flow has one) is stated once in the how-to and in `experiment.py`'s docstring, with the places it does not fit. | inspection; the `sweep` expansion test in R-10 |
 | R-13 | **`v2` generation.** `data/v2/` holds the cubesat primary (aggressive gains), the cubesat baseline gains, the check predictions and the check designs *(default; plus a geostationary file only under OD1 "fold")*, with the frozen files' column names and order, 1000 designs, seed 0 and the frozen scenario (30 degrees, 600 s, 0.5 s step) *(default)*, produced by ledger runs. The predictions file is committed, and its entry recorded, before the check-design simulation entry exists. | `tests/test_v2_data.py`: columns, row counts, ledger entries, entry order (predict before simulate) |
 | R-14 | **`v2` is reproducible.** The first 20 designs of each `v2` file regenerate within the tolerances of the frozen aggressive-box reproducibility test *(default: rtol 1e-3, saturated fraction 10 percent, times within 0.5 s, categorical columns and flags equal)*; 40 designs regenerated twice on one platform are identical. | `tests/test_v2_data.py` (needs the runtime; fails with the named cause, never skips, under `REQUIRE_OPENSYSML=1`) |
 | R-15 | **Comparison report, not a pin.** `v1-v2-comparison.md` is generated by `uv run python -m experiments compare` *(default)* and has: per dataset, the shared and differing columns, agreement of design ids, seeds, categorical values and flags, the maximum relative difference per column on shared design ids, quantiles and flag shares side by side; the list of frozen consumers (the swap checklist, from a grep); the WP4b richness conditions (a) to (e) evaluated on `v2` and reported without a pass requirement; and a hand-written **change register**, one row per deliberate or unavoidable difference: what, why, which columns and downstream numbers move. | `tests/test_v2_data.py`: every column or aggregate whose difference exceeds its reproducibility tolerance is covered by a register row, and every register row names a difference that exists; the test fails on an unexplained difference and on a stale row, and does not require equality |
-| R-16 | **How-to.** `case-model.md` covers: the contract (configuration to attributes) versus this example's physics; reading the model top to bottom; running an experiment and reading the ledger; the cadCAD mapping; the toolkit table (R-8); and plugging in another SysML model, with a toy model of about thirty lines whose text in the how-to is extracted by the test and run through the runner and ledger with a stub measurement. | `tests/test_case_model_howto.py`; inspection |
-| R-17 | **Nothing disrupted.** `git diff --stat <start>..HEAD` shows only WP15's paths, `work-packages/`, additive manifest rows, and (OD3 option a) `pyproject.toml`/`uv.lock` `case` lines; nothing under `src/`, `derivation/`, `docs/`, `paper/`, `scripts/`, `.github/`, `figures/`, the notebook, `k_terms.py`, `case.py`, or `data/*.csv`. Under OD5 option (a) also no change to `cubesat_model.py`, `generate_dataset.py`, `make_check_designs.py`, `design_space.py`, `adcs_sim.py`, `cubesat_tradespace.sysml`, `extended_design_space.sysml` or to the tests that pin them; every such test passes unchanged. | inspect `git diff --stat`; `uv run pytest` |
+| R-16 | **How-to.** `case-model.md` covers: the contract (configuration to attributes) versus this example's physics; reading the model top to bottom; running an experiment and reading the ledger; the cadCAD mapping; the toolkit table (R-8); and plugging in another SysML model, framed as "provide the oracle", with three small oracles shown in the how-to and run through the runner and ledger by the test: a simulator (a toy SysML model of about thirty lines with a stub measurement), a physical test campaign (recorded measurements read from a file, nothing simulated) and a human assessment (scores returned by a callable standing in for raters). Each ledger entry names its evidence kind. | `tests/test_case_model_howto.py`: the three oracles run, the entries differ in `evidence_kind`; inspection |
+| R-17 | **Nothing disrupted.** `git diff --stat <start>..HEAD` shows only WP15's paths, `work-packages/`, additive manifest rows, and (OD3 option a) `pyproject.toml`/`uv.lock` `case` lines (owned by the driver; requested, not edited unilaterally); nothing under `src/`, `derivation/`, `docs/`, `paper/`, `scripts/`, `.github/`, `figures/`, the notebook, `k_terms.py`, `case.py`, or `data/*.csv`. Under OD5 option (a) also no change to `cubesat_model.py`, `generate_dataset.py`, `make_check_designs.py`, `design_space.py`, `adcs_sim.py`, `cubesat_tradespace.sysml`, `extended_design_space.sysml` or to the tests that pin them; every such test passes unchanged. | inspect `git diff --stat`; `uv run pytest` |
 | R-18 | **Standard gates.** `REQUIRE_OPENSYSML=1 uv run pytest`, `uv run ruff check .`, `uv run ruff format --check .`, `uv lock --check` pass; commits prefixed "WP15: " and authored as Michael Zargham; no AI attribution lines (grep returns 0). | run the commands; `git log` grep |
 
 ## Follow-up items (not deliverables)
@@ -193,14 +216,15 @@ Recorded here so neither package is surprised; WP14's file is not edited by this
 - WP14 R-3 pins `generate_dataset.generate`, `generate_cubesat`, `main`; `design_space.sample_designs`,
   `evaluate_design`; `cubesat_model`, `adcs_sim`, `make_check_designs`; the two SysML files; and the five
   committed CSVs with their schemas. Under the defaults WP15 touches none of them. A different answer to
-  OD1 ("retire") or OD5 option (b) removes or moves a pinned item and needs a WP14 amendment (WP14 R-8)
+  OD1 ("retire") or OD5 option (b) removes or moves a pinned item and is a WP14 amendment candidate (WP14 R-8)
   with its own verbal approval, which this package lists as an acceptance item.
 - WP14 does not pin an oracle signature; the README makes it a WP15 dependency on WP14. The signature
   above is offered for an additive amendment. If WP14 is accepted without it, WP15 proceeds against the
   pinned frozen names and proposes the clause at its own acceptance.
-- The new paths (`model_v2/`, `experiments/`, `data/v2/`, `case-model.md`) are additions to the technical side's
-  floor; WP15 appends the rows to WP14's manifest in the same commit as the files (WP14 R-8). This is the
-  only edit WP15 makes to a WP14 file.
+- By the design rule, WP14 pins the configuration to attributes boundary and nothing about tooling. WP15
+  appends manifest rows (WP14 R-8, same commit as the files) only for the oracle protocol and the `data/v2/`
+  files; the SysML model, tool versions, pins and probes stay out of the contract. This is the only edit WP15
+  makes to a WP14 file.
 - WP14 R-6 lists the documentation pages the docsite reads; `case-model.md` is deliberately outside `docs/`
   (WP13 owns `docs/*.md`), so it is not in that list until S-2.
 - WP14 R-7 gives the `dev` and `case` dependency groups to the technical side and the workflow to the
@@ -276,11 +300,24 @@ The supervisor approves or changes this list as one item. Each is marked *(defau
   fail with the named cause, never skip, as in the frozen suite. Appears in D-6, R-14.
 - Order inside WP15 *(default)*: 15.1 skeleton, then 15.3 (parallel), then 15.2, then 15.4, 15.5 last; commits
   prefixed "WP15: " on `dev`, merged to `main` at acceptance with `git merge --no-ff dev`. Appears in the parts table.
-- Toolkit probe first *(default)*: the first task of 15.2 is a recorded probe of what `smt`, `solve`,
-  `verify_requirement`, `record_run`, `run_runs` and (if present) the CLI do at the pinned version, because the
-  notes were verified at 0.9.0 and 0.12.1 added capabilities; the probe fixes the claims in R-5. Appears in R-5, R-8.
-- opensysml *(default)*: stays at the locked 0.12.1 (the `case` group requires `>=0.12.1`), re-checked against
-  `list_engines()` at execution; no change to `uv.lock` unless OD3 option (a). Appears in R-1.
+- opensysml *(default)*: stays at the locked 0.12.1, which is the PyPI latest (0.12.0 on 2026-11-04, 0.12.1 on
+  2026-11-06; the toaster repository, at 0.9.0, is out of date and is read for patterns only). The `case` group
+  requires `>=0.12.1`; no change to `uv.lock` unless OD3 option (a). The toolkit's latest is v0.12.0
+  (2026-11-08); this repository pins none, toaster's v0.9.1 pin is out of date. Appears in R-1, R-6.
+- First task of 15.2, before building on anything *(default)*: probe against the live runtime and record in
+  `probes/probe-record.md` (the opensysml-usage note's pitfalls were found at 0.9.0): (1) cross-source `import`
+  (concatenate-and-load-once still required?); (2) a false `assert satisfy` loading without a diagnostic;
+  (3) `satisfy` target kinds (a first probe here found `satisfy` rejects a `requirement def` target, wanting a
+  requirement usage); (4) `verify_requirement` and `verify_satisfaction` on the cubesat baseline and a negative
+  control; (5) `verify_constraint(question="holds")` on engines `smt` and `solve`, the evidence strength
+  returned, and whether the model's range-bounded claims are decidable (the documented answer is that undecided
+  results are never proof); (6) `run_analysis` with `in` parameters and `run_sweep` grid and `samples`+`seed`
+  (reproducibility, independence of n, log ranges); (7) `record_run` and `run_runs`; (8) unit labels from `eval`;
+  (9) `query` and `to_api_json` blind spots; (10) the engine list and readiness of `list_engines()` (the
+  `tool:fmi` engine reported not ready here); (11) if the toolkit is built or obtained, `check`, `lint`
+  (`--format json`) and `verify --solve` on `v2`, and whether v0.12.0 publishes prebuilt binaries or needs
+  `cargo install` (the toolkit README's route; not on PyPI under this name). The results fix the claims in R-5
+  and the table in R-8. Appears in R-5, R-8.
 
 ## Open decisions (for the supervisor)
 
@@ -300,8 +337,11 @@ seam decision is not among them (made 2026-11-08; quoted in Purpose).
   the model, kept for model checking (claims over the whole space about slew time, torque-limited and
   linear regimes), with the ODE the measurement of record and a reported comparison of the two on a sample
   (a second slew model to maintain and explain; the model checks can then say something about agility).
-- **OD3.** The sysml-toolkit (Rust CLI: `check`, `lint`, `verify --solve`; not on PyPI; toaster pins v0.9.1
-  with per-platform sha256 and Z3). Options: (a) pinned: a pin file with checksums and a provisioning helper
+- **OD3.** The sysml-toolkit (Rust CLI v0.12.0: `check`, `lint`, `verify --solve` with Z3 as a subprocess; built
+  with `cargo install` per its README, not on PyPI under this name; toaster pins an old v0.9.1 with
+  per-platform sha256). For context, opensysml 0.12.1's own client documents a `holds` question with `smt` and
+  `solve` engines, so part of what `verify --solve` gave at 0.9.0 may now be reachable without the CLI (the
+  probes settle how much). Options: (a) pinned: a pin file with checksums and a provisioning helper
   inside `examples/adcs/experiments/`, its checks run in the default test suite and fail if the binary is
   missing under the same discipline as opensysml (edits the `case` group; CI downloads the binary on first
   use; the CI workflow step is a follow-up for its owner); (b) optional: documented commands, and a test that
