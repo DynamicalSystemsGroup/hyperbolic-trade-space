@@ -1118,4 +1118,13 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   Examples page), and to the diagram work (the second view's recipe names the verification cases as
   measurements by simulation here, with the same place taken by field data). No new term; the
   glossary's "attributes" entry already says what the evaluation returns.
+- **Supervisor, verbatim, the same hour:** "even if its just in prose i want design optimization and
+  configuration management to both be named uses for this workflow. because the paper is focused on
+  the underlying math and fitting the algorithm the case demonstration is a initially just a worked
+  example future work can include other cases spanning the engineering lifecycle". **Disposition:**
+  routed to the paper stream: the two uses named in prose where the workflow is introduced (section
+  1 or 3) and again in the discussion; the case framed as a worked example of the first use, not a
+  study of either; the future-work section names other cases across the engineering lifecycle,
+  configuration management of a fielded system among them. Statements of scope and intent, not
+  claims; the glossary's words. The docs' Home page says the two uses in one sentence.
 
