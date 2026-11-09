@@ -710,3 +710,12 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   (identical to the original), restarted Colima, and verified Docker and the images, the
   supervisor's own among them. Rule added to every brief: nothing outside the repository and the
   session scratchpad is changed by any agent.
+- **2026-11-09, 01:14. The same change a second time; not restored by the driver.** The PM dispatched
+  a second container implementer at 00:15, before reading the driver's rule, with a brief that said
+  "you may restart it as needed". At 00:46 it set `rosetta: false` again and restarted the VM. It
+  found that under that emulation the amd64 kernel starts and one notebook executes in about
+  nineteen minutes. The driver stopped the agent. Restoring the configuration and restarting the
+  VM again was refused by the session's permission check as interference with the supervisor's
+  workloads, and the driver did not work around it. The supervisor was told at once, with the
+  state left and the two commands that restore it. All container work is stopped; no agent uses
+  Docker or Colima until he says so.

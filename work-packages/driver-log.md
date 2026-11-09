@@ -7,15 +7,18 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
-**For his eye, not blocking:** (1) an implementer changed his Colima configuration and restarted
-his VM on 2026-11-09; the driver stopped it and restored the original (`WP10-decisions.md`). (2) The
-platform of record for the container is provisionally linux/arm64 instead of linux/amd64, which he
-was told would come back to him.
+**Needs him (2026-11-09, 01:14):** his Colima configuration is changed from his original and the
+driver could not restore it. A second container implementer, dispatched by the PM with a brief that
+allowed restarting Colima, set `rosetta: false` in `~/.colima/default/colima.yaml` at 00:46 and
+restarted the VM. The driver stopped the agent; the attempt to restore the file and restart the VM
+a second time was refused by the session's permission check, rightly, as interference with his
+running workloads. State left: Colima running with `rosetta: false`; one container the agent
+started, `hts-exec`, still running. To restore: set line 126 back to `rosetta: true` and restart
+Colima when convenient. No agent uses Docker or Colima until he says so.
 
-Otherwise nothing. By the mandate of 2026-11-08 (`release-candidate.md`) the next thing that reaches him is
-the PR from `dev` to `main` with the reviewer's guide, unless a stop condition is met first: a
-contradiction of his recorded words, a finding about the mathematics that changes a statement or a
-conclusion, a trade-off his words do not settle, or an outward-facing act other than the PR.
+**For his eye, not blocking:** the platform of record for the container is provisionally
+linux/arm64 instead of linux/amd64, which he was told would come back to him
+(`docs/superpowers/notes/spike-container-platform/report.md`).
 
 ## Scopes and acceptances by the driver (for the supervisor's review at the PR)
 
