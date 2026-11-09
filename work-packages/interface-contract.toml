@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 1
+contract_version = 2
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -234,14 +234,25 @@ chain_length = 14
 module_pattern = "^lemma_([0-9]{2})_[a-z0-9_]+$"
 numbering = "contiguous from 1; numbers never reused or renumbered; a new lemma takes the next number"
 exit_codes = "0 on success, non-zero on a failed lemma"
-generated_dir = "docs/generated/"
+generated_dir = "build/generated/"
 generated_pages = ["derivations.md", "verification.md"]
 generated_by = "scripts/build_generated.py"
 generated_git = "ignored, never committed"
+generated_consumer = "the paper's build (appendices); not the docsite"
 
 [docs]
 dir = "docs/"
-pages = ["method.md", "why-and-how.md", "preconditioning.md", "api.md", "limitations.md", "literature.md"]
+pages = [
+  "index.md", "getting-started.md", "user-guide/overview.md", "user-guide/conditioning.md",
+  "user-guide/fitting.md", "user-guide/tensions.md", "user-guide/chart.md",
+  "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md",
+  "api.md", "examples.md", "theory.md", "further-reading.md",
+]
+generated_dir = "docs/generated/"
+generated_pages = ["glossary.md"]
+generated_by = "scripts/build_generated.py"
+glossary_source = "glossary.yaml"
+paper_sources_dir = "docs/superpowers/notes/paper-sources/"
 bibliography = "docs/references.bib"
 notes_dir = "docs/superpowers/notes/"
 notes_in_navigation = false
@@ -249,11 +260,17 @@ citation_syntax = "[@key]"
 citation_multi = "[@key1; @key2]"
 math_inline = "$...$"
 math_display = "$$...$$"
-rename_rule = "the technical side adds pages and renames none without an amendment"
+rename_rule = "the presentation side owns the pages; the technical side edits none of them; a pinned page is renamed or removed only by an amendment"
 api_reference_page = "docs/api-reference.md"
 api_reference_source = "numpydoc docstrings of the public names, rendered by the docsite"
 api_overview_page = "docs/api.md"
-presentation_pages = ["docs/index.md", "docs/case.md", "docs/api-reference.md"]
+presentation_pages = [
+  "docs/index.md", "docs/getting-started.md", "docs/user-guide/overview.md",
+  "docs/user-guide/conditioning.md", "docs/user-guide/fitting.md", "docs/user-guide/tensions.md",
+  "docs/user-guide/chart.md", "docs/user-guide/prediction.md", "docs/user-guide/termination.md",
+  "docs/user-guide/limitations.md", "docs/api.md", "docs/examples.md", "docs/theory.md",
+  "docs/further-reading.md", "docs/api-reference.md",
+]
 helper = "tests/test_references.py"
 
 [build]
@@ -306,8 +323,7 @@ rule = "sides are pairwise disjoint; entries are explicit paths or directory pre
 [ownership.technical]
 paths = [
   "src/", "derivation/", "tests/", ".python-version", ".github/workflows/test.yml", "README.md",
-  "docs/method.md", "docs/why-and-how.md", "docs/preconditioning.md", "docs/api.md",
-  "docs/limitations.md", "docs/superpowers/",
+  "docs/superpowers/",
   "examples/adcs/k_terms.py", "examples/adcs/generate_dataset.py", "examples/adcs/design_space.py",
   "examples/adcs/cubesat_model.py", "examples/adcs/adcs_sim.py", "examples/adcs/make_check_designs.py",
   "examples/adcs/adcs_trade_study.ipynb", "examples/adcs/cubesat_tradespace.sysml",
@@ -326,14 +342,16 @@ paths = [
 
 [ownership.wp8a]
 paths = [
-  "mkdocs.yml", "overrides/", "site/", "scripts/", ".github/workflows/pages.yml",
-  "tests/test_site.py", "docs/index.md", "docs/case.md", "docs/api-reference.md", "docs/generated/",
+  "mkdocs.yml", "glossary.yaml", "site/", "scripts/", ".github/workflows/pages.yml",
+  "tests/test_site.py", "docs/index.md", "docs/getting-started.md", "docs/user-guide/",
+  "docs/api.md", "docs/api-reference.md", "docs/examples.md", "docs/theory.md",
+  "docs/further-reading.md", "docs/generated/", "docs/superpowers/notes/paper-sources/",
 ]
 
 [ownership.wp10]
 paths = [
   "paper/", "examples/adcs/case.py", "tests/test_paper.py", "tests/test_case.py",
-  "docs/references.bib", "docs/literature.md",
+  "docs/references.bib",
 ]
 
 # WP12 touches presentation only through declared additions (additive amendment at its scope).
@@ -352,40 +370,11 @@ paths = ["pyproject.toml", "uv.lock", ".gitignore"]
 "work-packages/interface-contract.toml" = "wp14"
 "tests/test_interface_contract.py" = "wp14"
 "tests/test_site.py" = "wp8a"
+"docs/superpowers/notes/paper-sources/" = "wp8a"
 "tests/test_paper.py" = "wp10"
 "tests/test_case.py" = "wp10"
 
 [skips]
-[skips.build_generated]
-clause = "R-5 generated pages script"
-file = "scripts/build_generated.py"
-reason = "WP8a delivers the generated-pages script"
-closed_by = "WP8a"
-[skips.mkdocs_config]
-clause = "R-7 docsite configuration"
-file = "mkdocs.yml"
-reason = "WP8a delivers the docsite configuration"
-closed_by = "WP8a"
-[skips.api_reference_page]
-clause = "R-6 API reference stub"
-file = "docs/api-reference.md"
-reason = "WP8a delivers the presentation-owned API reference stub"
-closed_by = "WP8a"
-[skips.publish_workflow]
-clause = "R-7 Pages workflow"
-file = ".github/workflows/pages.yml"
-reason = "WP8a delivers the Pages workflow"
-closed_by = "WP8a"
-[skips.stage_site]
-clause = "R-12 local staging command"
-file = "scripts/stage_site.py"
-reason = "WP8a delivers the staging command"
-closed_by = "WP8a"
-[skips.root_index]
-clause = "R-7 root index source"
-file = "site/index.html"
-reason = "WP8a delivers the root index"
-closed_by = "WP8a"
 [skips.myst_config]
 clause = "R-7 paper configuration"
 file = "paper/myst.yml"
@@ -408,7 +397,7 @@ closed_by = "WP10"
 what = "pyproject.toml has no paper dependency group"
 closed_by = "WP10 (edit by the driver)"
 [gaps.bib_ownership]
-what = "docs/references.bib and docs/literature.md are assigned to WP10 (bibliography additions for the paper) although WP5 and WP13 own earlier content; later technical edits go through an amendment"
+what = "docs/references.bib is assigned to WP10 (bibliography additions for the paper) although WP5 and WP13 own earlier content; docs/literature.md is a preserved source under docs/superpowers/notes/paper-sources/; later technical edits go through an amendment"
 closed_by = "WP10"
 [gaps.oracle_not_adopted]
 what = "the Oracle protocol is stated but not yet pinned; the frozen cubesat pair stands in"

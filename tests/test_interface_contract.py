@@ -617,24 +617,41 @@ def test_r5_entry_command_and_generated_pages_names():
         "R-5", "the entry script exists"
     )
     assert DER["entry_cmd"] in DOC, msg("R-5", "document states the entry command", "both")
-    assert DER["generated_dir"].endswith("/") and DER["generated_pages"] == [
+    assert DER["generated_dir"] == "build/generated/" and DER["generated_pages"] == [
         "derivations.md",
         "verification.md",
     ], msg("R-5", "generated page names and location are pinned (names, not prose)", "both")
-    ignore = _read(".gitignore")
-    assert DER["generated_dir"] in ignore or "generated" in ignore, msg(
-        "R-5", "docs/generated/ is git-ignored, never committed", "presentation"
+    assert not DER["generated_dir"].startswith(MAN["docs"]["dir"]), msg(
+        "R-5", "derivations and verification are outside docs/ (the paper's build, not the docsite)"
+    )
+    ignore = _read(".gitignore").splitlines()
+    assert "build/" in ignore and MAN["docs"]["generated_dir"] in ignore, msg(
+        "R-5", "build/ and docs/generated/ are git-ignored, never committed", "presentation"
     )
 
 
-def test_r5_generated_pages_script_once_delivered():
-    _skip_unless_delivered("build_generated")
+def test_r5_generated_pages_script():
     text = _read(DER["generated_by"])
-    for page in DER["generated_pages"]:
+    for page in DER["generated_pages"] + DOCS["generated_pages"]:
         assert page in text, msg("R-5", f"{DER['generated_by']} must write {page}", "presentation")
-    assert "docs/generated" in text or "generated" in text, msg(
-        "R-5", "script writes into docs/generated/", "presentation"
+    assert DOCS["generated_by"] == DER["generated_by"]
+    assert '"build" / "generated"' in text and '"docs" / "generated"' in text, msg(
+        "R-5",
+        "script writes build/generated/ (paper) and docs/generated/ (glossary)",
+        "presentation",
     )
+
+
+def test_r6_glossary_source_and_paper_sources_pinned():
+    assert (ROOT / DOCS["glossary_source"]).is_file(), msg(
+        "R-6", "glossary.yaml is the single source of the Glossary", "presentation"
+    )
+    assert DOCS["glossary_source"] in MAN["ownership"]["wp8a"]["paths"]
+    assert (ROOT / DOCS["paper_sources_dir"]).is_dir(), msg(
+        "R-6", "the paper-sources directory exists", "both"
+    )
+    assert MAN["ownership"]["carve_outs"][DOCS["paper_sources_dir"]] == "wp8a"
+    assert DOCS["generated_pages"] == ["glossary.md"] and DOCS["generated_dir"] == "docs/generated/"
 
 
 # -----------------------------------------------------------------------------------------------
@@ -664,11 +681,11 @@ def _check_citations(rel: str, bib_keys: set[str], helper, side: str) -> None:
 def test_r6_pinned_page_exists_and_citations_resolve(page):
     rel = f"{DOCS['dir']}{page}"
     assert page.endswith(".md") and (ROOT / rel).is_file(), msg(
-        "R-6", f"pinned page {rel} must exist and be Markdown"
+        "R-6", f"pinned page {rel} must exist and be Markdown", "presentation"
     )
     helper = _references_helper()
     keys = {e["key"] for e in helper.parse_bib(_read(DOCS["bibliography"]))}
-    _check_citations(rel, keys, helper, "technical")
+    _check_citations(rel, keys, helper, "presentation")
 
 
 def test_r6_syntax_helper_and_notes_pinned():
@@ -684,8 +701,7 @@ def test_r6_syntax_helper_and_notes_pinned():
     ), msg("R-6", "citation and math syntax are pinned", "both")
 
 
-def test_r6_api_reference_page_once_delivered():
-    _skip_unless_delivered("api_reference_page")
+def test_r6_api_reference_page():
     rel = DOCS["api_reference_page"]
     assert rel.endswith(".md") and rel in DOCS["presentation_pages"], msg(
         "R-6", f"{rel} is a presentation-owned page", "presentation"
@@ -697,16 +713,21 @@ def test_r6_api_reference_page_once_delivered():
 
 def test_r6_no_technical_path_in_a_presentation_set():
     technical = MAN["ownership"]["technical"]["paths"]
+    assert DOCS["presentation_pages"] == [f"{DOCS['dir']}{p}" for p in DOCS["pages"]] + [
+        DOCS["api_reference_page"]
+    ], msg("R-6", "presentation_pages is the pinned pages plus the API reference", "both")
     for page in DOCS["pages"]:
         rel = f"{DOCS['dir']}{page}"
         owner = [
             s
             for s, spec in MAN["ownership"].items()
-            if isinstance(spec, dict) and rel in spec.get("paths", [])
+            if isinstance(spec, dict) and any(_overlap(rel, q) for q in spec.get("paths", []))
         ]
-        assert owner, msg("R-6", f"pinned page {rel} has no owning side in the manifest", "both")
+        assert owner == ["wp8a"], msg(
+            "R-6", f"pinned page {rel} must have WP8a as its only owner, found {owner}", "both"
+        )
     for p in DOCS["presentation_pages"]:
-        assert p in MAN["ownership"]["wp8a"]["paths"], msg(
+        assert any(_overlap(p, q) for q in MAN["ownership"]["wp8a"]["paths"]), msg(
             "R-6", f"presentation page {p} belongs to WP8a", "presentation"
         )
         assert not any(_overlap(p, t) for t in technical), msg(
@@ -786,12 +807,6 @@ def test_r7_commands_are_pinned_strings():
 def test_r7_skips_name_the_manifest_build_files():
     skips = MAN["skips"]
     pairs = {
-        "build_generated": DER["generated_by"],
-        "mkdocs_config": BUILD["docs_config"],
-        "api_reference_page": DOCS["api_reference_page"],
-        "publish_workflow": BUILD["workflow"],
-        "stage_site": BUILD["stage"]["script"],
-        "root_index": BUILD["root_index_source"],
         "myst_config": BUILD["paper_config"],
     }
     for key, path in pairs.items():
@@ -804,15 +819,26 @@ def test_r7_skips_name_the_manifest_build_files():
         )
 
 
-def test_r7_docsite_configuration_once_delivered():
-    _skip_unless_delivered("mkdocs_config")
+def test_r7_delivered_clauses_left_the_skip_list():
+    for key in (
+        "build_generated",
+        "mkdocs_config",
+        "api_reference_page",
+        "publish_workflow",
+        "stage_site",
+        "root_index",
+    ):
+        assert key not in MAN["skips"], msg("R-7", f"{key} is delivered and enforced", "both")
+    assert set(MAN["skips"]) == {"myst_config", "oracle_protocol"}
+
+
+def test_r7_docsite_configuration():
     assert _read(BUILD["docs_config"]).strip(), msg(
         "R-7", f"{BUILD['docs_config']} is not empty", "presentation"
     )
 
 
-def test_r7_pages_workflow_once_delivered():
-    _skip_unless_delivered("publish_workflow")
+def test_r7_pages_workflow():
     text = _read(BUILD["workflow"])
     assert re.search(r"tags:\s*\[\s*[\"']v\*[\"']", text) and "workflow_dispatch" in text, msg(
         "R-7", "the Pages workflow triggers on a release tag v* and manual dispatch", "presentation"
@@ -825,8 +851,7 @@ def test_r7_pages_workflow_once_delivered():
     )
 
 
-def test_r7_root_index_once_delivered():
-    _skip_unless_delivered("root_index")
+def test_r7_root_index():
     assert _read(BUILD["root_index_source"]).strip(), msg(
         "R-7", "the root index source is not empty", "presentation"
     )
@@ -876,8 +901,7 @@ def test_r12_staging_command_named_in_manifest_document_and_readme():
     )
 
 
-def test_r12_staging_script_once_delivered():
-    _skip_unless_delivered("stage_site")
+def test_r12_staging_script():
     text = _read(STAGE["script"])
     assert "--serve" in text and STAGE["build_dir"].rstrip("/") in text, msg(
         "R-12", "stage_site.py offers --serve and builds into _stage/", "presentation"

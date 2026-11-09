@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 1. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 2. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 1
+contract_version = 2
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -48,10 +48,14 @@ case.producing_command = "uv run python examples/adcs/k_terms.py"
 case.figures.dir = "examples/adcs/figures/"
 derivation.entry_cmd = "uv run python derivation/run.py"
 derivation.chain_length = 14
-derivation.generated_dir = "docs/generated/"
+derivation.generated_dir = "build/generated/"
 derivation.generated_pages = ["derivations.md", "verification.md"]
 derivation.generated_by = "scripts/build_generated.py"
-docs.pages = ["method.md", "why-and-how.md", "preconditioning.md", "api.md", "limitations.md", "literature.md"]
+docs.pages = ["index.md", "getting-started.md", "user-guide/overview.md", "user-guide/conditioning.md", "user-guide/fitting.md", "user-guide/tensions.md", "user-guide/chart.md", "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md", "api.md", "examples.md", "theory.md", "further-reading.md"]
+docs.generated_dir = "docs/generated/"
+docs.generated_pages = ["glossary.md"]
+docs.glossary_source = "glossary.yaml"
+docs.paper_sources_dir = "docs/superpowers/notes/paper-sources/"
 docs.bibliography = "docs/references.bib"
 docs.citation_syntax = "[@key]"
 docs.math_inline = "$...$"
@@ -176,21 +180,29 @@ assumption audit, exits 0 on success and non-zero on a failed lemma. Lemma modul
 `derivation/lemma_NN_<name>.py`; numbers are contiguous from 1, never reused or renumbered, and a
 new lemma takes the next number. The interface of `derivation.run` (`CHAIN`, `CHAIN_NAMES`,
 `run_chain`, `load_chain`, `lemma_number`, `print_audit`, `main`) and of `derivation.axioms`
-(`AXIOMS`, `by_tag`, `fallbacks`) is pinned. Generated pages go to `docs/generated/` (git-ignored,
-never committed), built by `scripts/build_generated.py`, with page names `derivations.md` and
-`verification.md`; the contract pins names and location, not prose.
+(`AXIOMS`, `by_tag`, `fallbacks`) is pinned. Two pages are generated for the paper's appendices and
+are not on the docsite: `derivations.md` and `verification.md`, written by
+`scripts/build_generated.py` into `build/generated/` (git-ignored, never committed, outside
+`docs/`). The same script compiles the docsite's Glossary page (section 10). The contract pins names
+and locations, not prose.
 
 ## 10. R-6 Documentation sources
 
-The docsite reads Markdown in `docs/`: `method.md`, `why-and-how.md`, `preconditioning.md`, `api.md`,
-`limitations.md`, `literature.md`, and `references.bib`. Notes under `docs/superpowers/notes/` are
-excluded from navigation. Citations: `[@key]` (several as `[@key1; @key2]`) against
-`docs/references.bib`. Math: LaTeX in `$...$` and `$$...$$`. The technical side adds pages and
-renames none without an amendment. `docs/api.md` stays the hand-written overview;
-`docs/api-reference.md` is a presentation-owned page generated from the numpydoc docstrings
-(supervisor, OD2: "Generated from docstrings"). Presentation-owned: `mkdocs.yml`, `docs/index.md`,
-`docs/case.md`, `docs/api-reference.md`, `docs/generated/`, `site/`, `paper/`, the workflows named
-below, release files.
+The docsite is the documentation of the package for a user: Markdown in `docs/` (the pages of
+`docs.pages`: Home, Getting started, the User guide pages under `docs/user-guide/`, API, Examples,
+Theory in brief, Further reading), the generated API reference (`docs/api-reference.md`) and the
+generated Glossary, plus `references.bib`. The Glossary is compiled from `glossary.yaml` by
+`scripts/build_generated.py` into `docs/generated/glossary.md` (git-ignored) and carries term and a
+one-line definition only; `glossary.yaml` is the single source of the register's phrases and is
+offered to the paper as the source of its register table. Notes under `docs/superpowers/notes/` are
+excluded from navigation. `docs/superpowers/notes/paper-sources/` holds verbatim snapshots of the
+pages that left the docsite (read-only; the paper's author reads them). Citations: `[@key]` (several
+as `[@key1; @key2]`) against `docs/references.bib`. Math: LaTeX in `$...$` and `$$...$$`. The
+presentation side owns the pages; the technical side edits none, and a pinned page is renamed or
+removed only by an amendment. `docs/api.md` stays the hand-written overview; `docs/api-reference.md`
+is generated from the numpydoc docstrings (supervisor, OD2: "Generated from docstrings").
+Presentation-owned: `mkdocs.yml`, `glossary.yaml`, the pages above, `docs/generated/`, `site/`,
+`paper/`, the workflows named below, release files.
 
 ## 11. R-7 Build and publish interface
 
@@ -239,19 +251,22 @@ the last row of the change log.
 | Version | Date | Change | Side affected | Approval |
 |---|---|---|---|---|
 | 1 | 2026-11-08 | Initial version: package surface, boundary, case, figures, derivation, docs, build, staging, ownership | both | `WP14-decisions.md`, scope approval ("Approved") |
+| 2 | 2026-11-08 | Docsite for a package user (WP8a Amendment 2): `docs.pages` becomes Home, Getting started, User guide, API, Examples, Theory in brief, Further reading; `method.md`, `why-and-how.md`, `preconditioning.md`, `limitations.md`, `literature.md`, `case.md` leave `docs/`; pinned path `docs/superpowers/notes/paper-sources/`; the docs pages move to the presentation side (carve-out for the paper sources); `glossary.yaml` is a presentation file and the Glossary is compiled from it into `docs/generated/glossary.md`; `derivations.md` and `verification.md` move to `build/generated/` for the paper's build; the world-line labelling (C-9) is withdrawn and `overrides/` is removed; delivered clauses leave the skip list; the known-gaps row on the bibliography and literature page is rewritten | both | `WP14-decisions.md`, "Contract version 2" ("Approved") |
 
 ## 15. Consumers: may assume, must not touch
 
-**Docsite (WP8a).** May assume: the public names, version rule, docs page names, citation and math
-syntax, the bibliography path, the derivation entry points and the generated-page names and location,
-and the docstring style; that `uv run pytest` is green on `main`; that the build commands of section 11
-and the staging command of section 13 are its to implement. Must not touch: `src/`, `derivation/`,
-`examples/`, the technical docs pages (a front-matter block or link fix needs the owning package's
-agreement), `pyproject.toml` and `uv.lock` except through the driver.
+**Docsite (WP8a).** May assume: the public names, version rule, citation and math syntax, the
+bibliography path, the derivation entry points, the generated-page names and locations, and the
+docstring style; that `uv run pytest` is green on `main`; that the build commands of section 11 and
+the staging command of section 13 are its to implement. Must not touch: `src/`, `derivation/`,
+`examples/`, `docs/superpowers/` other than `docs/superpowers/notes/paper-sources/`,
+`docs/references.bib`, `pyproject.toml` and `uv.lock` except through the driver.
 
 **Paper (WP10, with the outputs of WP12).** May assume: the case modules, functions, parameter names,
 regimes, data headers and figure names of sections 7 and 8, the estimator attributes of section 4, the
-boundary of section 3; that figures and data are committed and stable. Must not touch: data files,
+boundary of section 3; that figures and data are committed and stable; the contents of
+`docs/superpowers/notes/paper-sources/` (read-only), `glossary.yaml` (the register's phrases) and the
+generated `derivations.md` and `verification.md` in `build/generated/`. Must not touch: data files,
 figures and case modules other than `examples/adcs/case.py`; the docsite files; the derivation chain.
 Its build is the paper command of section 11, delivered to `_site/paper/`; the paper is committed executed.
 
@@ -271,11 +286,11 @@ Sides are pairwise disjoint; the manifest carries the explicit paths and the tes
 
 | Side | Paths (prefixes end in `/`) |
 |---|---|
-| technical | `src/`, `derivation/`, `tests/` (except carve-outs), the technical docs pages (`method.md`, `why-and-how.md`, `preconditioning.md`, `api.md`, `limitations.md`), `docs/superpowers/`, the case modules, notebook, `data/`, `figures/`, `model_v2/`, `experiments/` and `case-model.md` under `examples/adcs/`, `.github/workflows/test.yml`, `README.md`, `.python-version` |
+| technical | `src/`, `derivation/`, `tests/` (except carve-outs), `docs/superpowers/` (except the carve-out below), the case modules, notebook, `data/`, `figures/`, `model_v2/`, `experiments/` and `case-model.md` under `examples/adcs/`, `.github/workflows/test.yml`, `README.md`, `.python-version` |
 | process | `work-packages/` (except carve-outs), `CLAUDE.md` |
 | WP14 | `work-packages/interface-contract.md`, `work-packages/interface-contract.toml`, `tests/test_interface_contract.py` |
-| WP8a | `mkdocs.yml`, `overrides/`, `site/`, `scripts/`, `.github/workflows/pages.yml`, `tests/test_site.py`, `docs/index.md`, `docs/case.md`, `docs/api-reference.md`, `docs/generated/` |
-| WP10 | `paper/`, `examples/adcs/case.py`, `tests/test_paper.py`, `tests/test_case.py`, `docs/references.bib`, `docs/literature.md` |
+| WP8a | `mkdocs.yml`, `glossary.yaml`, `site/`, `scripts/`, `.github/workflows/pages.yml`, `tests/test_site.py`, `docs/index.md`, `docs/getting-started.md`, `docs/user-guide/`, `docs/api.md`, `docs/api-reference.md`, `docs/examples.md`, `docs/theory.md`, `docs/further-reading.md`, `docs/generated/`, `docs/superpowers/notes/paper-sources/` (carve-out inside the technical `docs/superpowers/`) |
+| WP10 | `paper/`, `examples/adcs/case.py`, `tests/test_paper.py`, `tests/test_case.py`, `docs/references.bib` |
 | WP12 | none yet; declared by an additive amendment when its scope is approved |
 | WP8b | `CHANGELOG.md`, `LICENSE`, `.github/workflows/release.yml` |
 | driver | `pyproject.toml`, `uv.lock`, `.gitignore` |
@@ -291,20 +306,17 @@ Open conformance gaps, recorded and not fixed here; each names the closing packa
 | The docstring of `src/hyperbolic_trade_space/__init__.py` says package code arrives in later work packages | WP8b |
 | `paper/myst.yml` does not exist | WP10 |
 | `pyproject.toml` has no `paper` group | WP10 (edit by the driver) |
-| `docs/references.bib` and `docs/literature.md` are assigned to WP10; later technical edits go through an amendment | WP10 |
+| `docs/references.bib` is assigned to WP10; `docs/literature.md` is a preserved source under `docs/superpowers/notes/paper-sources/`; later technical edits go through an amendment | WP10 |
 | The Oracle protocol is stated but not yet pinned | WP15 |
 
 ## 18. Skip list
 
-The test skips each clause below, with its reason, until the file exists, then enforces it.
+The test skips each clause below, with its reason, until the file exists, then enforces it. The
+clauses WP8a delivered (the generated-pages script, the docsite configuration, the API reference
+page, the Pages workflow, the staging command, the root index) are enforced and left this list in
+version 2.
 
 | Clause | File | Reason | Closed by |
 |---|---|---|---|
-| R-5 generated pages script | `scripts/build_generated.py` | WP8a delivers the generated-pages script | WP8a |
-| R-7 docsite configuration | `mkdocs.yml` | WP8a delivers the docsite configuration | WP8a |
-| R-6 API reference stub | `docs/api-reference.md` | WP8a delivers the presentation-owned stub | WP8a |
-| R-7 Pages workflow | `.github/workflows/pages.yml` | WP8a delivers the Pages workflow | WP8a |
-| R-12 local staging command | `scripts/stage_site.py` | WP8a delivers the staging command | WP8a |
-| R-7 root index source | `site/index.html` | WP8a delivers the root index | WP8a |
 | R-7 paper configuration | `paper/myst.yml` | WP10 delivers the paper configuration | WP10 |
 | R-3a Oracle protocol | `examples/adcs/experiments/oracle.py` | WP15 delivers the protocol; pinned by additive amendment | WP15 |
