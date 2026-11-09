@@ -364,6 +364,14 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   first cell pointing to the paper, kept as reference; its guard tests move into the paper's tests
   where they still apply; the archive's removal is a WP8b release item on the punch list.
 
+- **OD1, revisited by the supervisor.** **Supervisor (mzargham), verbatim:** "The paper title I
+  would propose is something more like: \"Scaling Decision Analysis with Hyberbolic trade space
+  identification\"". Disposition: the working title is his: "Scaling Decision Analysis with
+  Hyperbolic Trade Space Identification" (spelling and capitalization normalized; "Hyberbolic" in
+  the message read as "Hyperbolic"); the author proposes a subtitle for his pick; the final title and
+  subtitle are set in WP11. Byline as decided: sole author, Dynamical Systems Group, ORCID
+  0000-0001-5279-690X.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
