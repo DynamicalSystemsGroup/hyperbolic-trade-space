@@ -789,3 +789,26 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   facet share's analogy; the title's "scaling"; ten cited claims marked for the author).
   **Not signed off, by design:** content and presentation, which are WP11's: figure legibility, the
   prior-art table, the length of the proofs appendix, the run of generated sentences in section 9.
+
+## The supervisor's reading of the abstract (2026-11-09, at the staged paper)
+
+- On "The fit is convex for one facet and an alternation of convex fits for several;".
+  **Supervisor (mzargham), verbatim:** "this feels a bit obtuse. we can either say it can be
+  transformed into a convex program, or we can say they are generalized geometric programs (GGPs)
+  solved via coordinate transform to a convex program."
+- **What the driver checked before changing the sentence.** For one facet both of his wordings are
+  true, and exactly so: with x_j = exp(w_j) the objective is a posynomial in x (coefficients 1/N,
+  exponents tau times the log-metrics), the simplex is one monomial equality (the product of the
+  x_j equals e) and the nonnegativity of the exponents is x_j >= 1; so the one-facet fit is a
+  geometric program in standard form and the problem in w is its convex form (checked numerically:
+  the two objectives agree to twelve digits). For several facets neither wording is true of the
+  fit as a whole: each design counts against its nearest facet, a minimum over facets, which is
+  not convex and not a generalized posynomial in the parameters. Each facet's refit is a program of
+  the one-facet kind, and the fitted model itself is a generalized posynomial in the metrics, so a
+  design problem that uses it is a GGP. Saying the several-facet fit transforms into a convex
+  program would overclaim against the paper's own "global optimality is not claimed".
+- **Disposition.** The sentence is rewritten in his direction where it is true: the model is a
+  generalized posynomial; fitting one facet is a geometric program, solved as a convex program
+  after the logarithmic change of variables; fitting several alternates assigning designs to
+  facets with one such program per facet. The change of variables gets its line in the proof
+  scripts, since it is a new statement. The abstract stays within 200 words. Sent to the PM.
