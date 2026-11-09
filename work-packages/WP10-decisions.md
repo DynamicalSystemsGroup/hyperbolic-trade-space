@@ -762,3 +762,13 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
     recorded; an edit to a verbatim snapshot under `paper-sources/` is to be explained or undone.
   - **G-8:** the cold-reader trials are running. **G-9, G-10, O-3 to O-5:** accepted as pending or
     left to the reader loops.
+- **2026-11-09. The second review (`WP10-review-2.md`): the driver's calls.** It recommends
+  acceptance with gaps noted and found every must-fix item of the first review closed. G-4 to G-8
+  were fixed by the PM (f3bbf30); G-10 was undone by trimming the two docsite pages back to their
+  budgets (be5ea99). **G-1:** the cap is read on the prose the page shows, generated sentences
+  included, without the builder's labels; 5,881 on that count; recorded in Amendment 3. **G-9:**
+  recorded as Amendment 3. **G-2, G-3, G-13 and the observations:** to the reader loops (WP11),
+  with figure legibility first. **G-12:** the rows marked for the author are on the supervisor's
+  list. **Returned:** Appendix D.3 pairs live facet numbers with stored labels; facets are to be
+  matched by their exponents, so that a different facet order on another platform cannot mislabel
+  a row.

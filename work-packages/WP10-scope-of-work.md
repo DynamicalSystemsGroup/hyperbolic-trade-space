@@ -557,3 +557,27 @@ closed with its address, or open with the reason; the checker enforces principle
 do-nothing application; no unlicensed assuming symbol; imports, applied entries and `AXIOMS_USED`
 equal); the chain and the suite pass; a fresh reviewer confirms that no statement changed and that
 each closure is a real dependency, by withholding the entry and seeing the step fail.
+
+## Amendment 3 (2026-11-09; the driver, under the mandate; for the supervisor's review at the PR): what the reviews and the cold reads added
+
+Why: the second review (`WP10-review-2.md`, G-9) noted that WP10 had changed files its written scope
+excludes. Those changes were ordered by the driver from the first review and from the triage of the
+cold reads; this amendment records them as scope.
+
+- **Reporting at reproducible precision.** The paper prints no number, status or hash beyond what
+  reproduces: ranges over perturbed regenerations for the fragile quantities, bounds for numerical
+  residues, and for the planted tables only what is the same on both platforms. A new entry in the
+  abstraction-gaps ledger (the times read as first crossings) and its row in Appendix E.
+- **The proofs.** L15, the descent guarantee as a script, added to the chain; ledger entries I10 to
+  I12 and A8; the edits to `tests/test_derivation.py`, `proof-conventions.md` and
+  `references-verified.md` that follow, each recorded in `derivation/PROOF_MAP_FINDINGS.md`.
+- **A reading pass** on what cited sources say (Appendix G.2), with rows marked for the author.
+- **The package and the docsite, from the cold reads (triage items 19 to 22):** fitted attributes at
+  one term; `mean_slack_` for every K; error messages that say what to try; the docsite passage on
+  choosing K, the temperature and the band; the Termination page; the interface contract at
+  version 3. R-21's "no `docs/` edit but the bibliography" is lifted for these.
+- **The word cap** counts the prose the page shows, generated sentences included, with per-section
+  ceilings at the budgets plus 15 percent. The builder's own labels ("Theorem 3.", "Figure 2:") and
+  the citations of Table 1's sources column are not counted. On that count the paper is at 5,881.
+- **Environment of record:** linux/arm64 (the driver's spike); exact comparisons only there. The
+  container deliverables (D-13, R-30's container part, R-31) stay open until container work resumes.
