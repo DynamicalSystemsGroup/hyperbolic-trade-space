@@ -28,9 +28,12 @@ TERM_NUM = (
     "objective_change", "assignment_changes", "n_empty", "gamma", "radius", "eps_kkt",
     "eps_feas", "guard_tol",
 )  # fmt: skip
-# The reference was recorded on an arm64 Mac. Exact (bit-identical) equality is asserted there and
-# in the environment of record; elsewhere the floats agree within 1e-12 (tests/_env.py).
-EXACT = of_record() or (sys.platform == "darwin" and platform.machine() == "arm64")
+# The reference was recorded on an arm64 Mac: (sys.platform, platform.machine()) below. Exact
+# (bit-identical) equality is asserted there and in the environment of record; elsewhere the floats
+# agree within 1e-12 (tests/_env.py), and the tau = inf planted fits within the stated tolerances.
+RECORDED_ON = ("darwin", "arm64")
+EXACT = of_record() or (sys.platform, platform.machine()) == RECORDED_ON
+TOL_FIT = 1e-6  # exponents and offsets of the tau = inf planted fits off the recording's platform
 
 
 def _cases():
@@ -77,10 +80,30 @@ def reference():
 
 @pytest.mark.parametrize("name", list(_cases()))
 def test_r2_default_planted_fits_equal_the_recording(name, reference):
+    """The default fit equals the recording: exactly on its platform, within tolerances off it.
+
+    The recording was made on an arm64 Mac (``RECORDED_ON``). The tau = inf fit is a linear
+    program whose solution, and the facet assignment built on it, follow the platform's maths
+    library, so a bit-identical comparison off that platform (or the environment of record) fails
+    on Linux without any change in the method. There, only for tau = inf, the exponents and
+    offsets agree within ``TOL_FIT`` and the facet labels may differ only on rows whose two best
+    scores tie within ``EPS_FEAS``; every other quantity keeps its comparison above.
+    """
     X, K, tau, step = _cases()[name]
     est = HyperbolicTradeSpace(n_terms=K, temperature=tau, facet_step=step, random_state=0).fit(X)
+    relaxed = not EXACT and np.isinf(tau)
     for k, v in _record(est).items():
-        _same(f"{name}/{k}", v, reference[f"{name}/{k}"])
+        ref = reference[f"{name}/{k}"]
+        if relaxed and k in ("exponents_", "log_offset_", "objective_"):
+            np.testing.assert_allclose(v, ref, rtol=0, atol=TOL_FIT, err_msg=f"{name}/{k}")
+        elif relaxed and k == "facet_":
+            differ = np.asarray(v) != np.asarray(ref)
+            if differ.any():
+                U = est._log_metrics(X, reset=False)
+                top = np.sort(U @ est.exponents_.T - est.log_offset_, axis=1)[:, -2:]
+                assert (top[differ, 1] - top[differ, 0] <= S.EPS_FEAS).all(), f"{name}/{k}"
+        else:
+            _same(f"{name}/{k}", v, ref)
 
 
 @pytest.mark.slow
