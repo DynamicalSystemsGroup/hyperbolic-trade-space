@@ -341,6 +341,13 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   first reading; sole author, Dynamical Systems Group, ORCID 0000-0001-5279-690X as in the SciPy
   article; the final title is set in WP11.
 
+- **OD2, Figure 1.** Options offered by description: the K = 3 facets of the cubesat trade space / a
+  schematic of the idea / a pair with the search. **Supervisor (mzargham), verbatim:** "i need you
+  to show me visuals to select from, i cannot select a hero image by text description".
+  Disposition: open; the driver shows the existing candidate figures (the WP7 and K = 3 figures) in
+  the browser as a gallery, notes that a schematic would be a new drawing, and asks again with the
+  images in view.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
