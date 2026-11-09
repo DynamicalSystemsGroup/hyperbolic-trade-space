@@ -372,6 +372,13 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   subtitle are set in WP11. Byline as decided: sole author, Dynamical Systems Group, ORCID
   0000-0001-5279-690X.
 
+- Framing note for the paper (from the index discussion). **Supervisor (mzargham), verbatim:** "it
+  can also be chained with pca its not a strict substitute. it just belongs in unsupervised learning
+  / feature engineering". Disposition: the paper places the method in unsupervised learning and
+  feature engineering beside PCA (kin, not substitute; the two chain: the tension report's principal
+  directions are PCA of the near-frontier chart coordinates); the register's PCA-analogue column is
+  read in that sense.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and

@@ -96,3 +96,8 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
   Disposition: the WHAT section of the root index also states that the method is delivered as a
   scikit-learn-compatible estimator (fit, transform, inverse_transform, score_samples; the
   conformance checks pass), in one sentence, with the same feel as PCA in the ecosystem.
+- **Supervisor (mzargham), verbatim:** "it can also be chained with pca its not a strict substitute.
+  it just belongs in unsupervised learning / feature engineering". Disposition: the WHAT section
+  says so: the method belongs to unsupervised learning and feature engineering beside PCA, not in
+  place of it, and the two chain (for example PCA on the near-frontier chart coordinates, as the
+  tension report already does); the same wording goes to the register and WP10's framing.
