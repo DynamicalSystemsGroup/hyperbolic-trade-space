@@ -71,6 +71,13 @@ switches to only at a recorded gate?
   only if the supervisor decides so at WP10's gate, with the numbers that change listed. More
   freedom, one later decision.
 
+**Decided (2026-11-08).** Driver's question: reproduce the committed data / new generation beside
+the old / decide at the gate. **Supervisor (mzargham), verbatim:** "do it in parallel to start but
+eventually i'd like to be able to swap over onto the new data". So: the second option. The
+originals stay frozen and cited; the tidied model writes a `v2` generation beside them under the
+experiment ledger; the swap of the paper's case (and the records that depend on it) onto `v2` is a
+recorded gate of its own, after WP15's acceptance, with every number that changes listed.
+
 ## Proposed package: WP15 System model tidy-up (the example as a readable SysML v2 model with an experiment ledger)
 
 Goals, as the driver reads the request:
