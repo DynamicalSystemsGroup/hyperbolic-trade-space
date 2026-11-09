@@ -107,3 +107,9 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-08 | Three kinds of proof step including one argued only in prose | "proof steps that cite an inherited result are still steps ... which still needs to happen in the code" |
 | 2026-11-08 | Leave the helper functions in L3's script; move them later | "its a best bet to factor helper tools into their own file" |
 | 2026-11-08 | Nine details in one defaults item | "you lumped a lot here" |
+- 2026-11-09, lines of equal V on the triangle (spike). The driver drew them at a fixed geometric
+  mean and labelled them with relative values of log V. The supervisor: "why is max V running off
+  the page. shouldn't it be interior?", "the points well above V=1 imply an error". Corrected: the
+  total is held fixed, each facet's V peaks at its exponent vector, no design is above log V 0.071.
+  Lesson for figures: a label on a level line must be a quantity a reader can check against the
+  designs drawn beside it.

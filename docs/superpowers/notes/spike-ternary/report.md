@@ -109,3 +109,47 @@ t = -h(p) over each position, so the same lines are a contour map of the frontie
 section on the chart or the docsite's theory page, as B or E, where "position and level" is the
 point being made. Three scripted steps would back them: exponents sum to one, the split of log V,
 and the normal of a facet's lines.
+
+## Correction (2026-11-09): hold the total fixed, not the geometric mean
+
+The supervisor, on the figures of the addendum above: "something seems off. why is max V running off
+the page. shouldn't it be interior?" and "the points well above V=1 imply an error". He was right
+about the picture; the fit is not in error. Script: `make_why5.py`; figures `why5-A-fixed-total.png`,
+`why5-B-fixed-total-map.png`, `why5-C-fixed-total-old-spread.png`. The `why4-*` figures are
+superseded and should not be shown.
+
+**No design is well above V = 1.** On this table the largest log V of any design is 0.071; 4.7
+percent of designs are above 0.05 and 32 percent are above 0 (the fit at temperature 50 is a soft
+maximum, so the reference surface sits just inside the outermost designs). The labels +0.5 to +2.0
+on `why4-E` were not values of designs. They were V relative to the average mix for a design at the
+same geometric mean, and the designs drawn in those zones are at lower levels. The labels invited
+the wrong reading and are gone.
+
+**Why V ran off the page.** The addendum split log V into the mean of the log metrics plus a function
+of position. Each facet's part is then linear in the log-ratio position, and a linear function has
+no interior maximum. That split is exact but it is not how a triangle is read. A triangle shows
+shares of a total. With S the sum of the metrics (each in units of its typical size) and c = m / S,
+
+    V_k(m) = e^{-beta_k} prod_j m_j^{w_kj} = e^{-beta_k} S prod_j c_j^{w_kj}    (sum_j w_kj = 1),
+
+so log V = log S + max_k (a_k + sum_j w_kj log c_j), checked against `score_samples` to 1e-10. At a
+fixed total, facet k's V is largest at c = w_k exactly (the weighted geometric mean against the
+arithmetic mean; the share property of a Cobb-Douglas form). The same holds if the triangle is
+spread by a power (shares of (m_j / typical_j)^(1/s)), with the level a power sum.
+
+**What the corrected picture shows.**
+
+- Each facet's exponent vector is a point of the triangle (the stars), and it is the peak of that
+  facet's V at a fixed total. On this table each star lies in its own region, so V has three peaks.
+- The facet where all three trade peaks in the interior. The two facets that trade two metrics peak
+  on the edge between those two metrics: the face reading of an n-lemma, now as the place V peaks.
+- At a star the exchange rates are one for one (dV/dm_j is proportional to w_j / c_j, equal for all
+  j at c = w). Away from it the rate between two metrics is the ratio of the star's barycentric
+  coordinates to the design's.
+- Read the other way: the frontier V = 1 is reached at the smallest total at the star (the knee of
+  that facet), and at ever larger totals toward the edges.
+- The lines still bend at the region borders.
+- The lines are drawn at V equal to 0.97, 0.9, 0.8, ... 0.3 of the highest peak, unlabelled.
+
+Three scripted steps would back this: exponents sum to one; the split of log V into the total and a
+function of the shares; the maximiser c = w_k on the simplex.

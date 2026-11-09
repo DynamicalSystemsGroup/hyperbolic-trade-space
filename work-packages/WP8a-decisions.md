@@ -441,3 +441,12 @@ The driver's calls on `WP8a-driver-browser-pass.md` are binding and applied as f
   beside What and also stays the paper's Figure 1 (his words place it on the index page and do not
   remove it from the paper); the Why image's generator uses plain Matplotlib (the barycentric
   projection written out), so the site gains no plotting dependency.
+
+- **Supervisor (mzargham), verbatim,** on the first drawings of the lines of equal V: "something
+  seems off. why is max V running off the page. shouldn't it be interior?" and "the points well
+  above V=1 imply an error". Disposition: he was right about the picture; the fit is not in error
+  (largest log V of any design 0.071). The driver had held the geometric mean fixed, under which no
+  facet's V can peak inside the triangle, and had labelled the lines with values that read as
+  designs' V. Redrawn holding the total fixed (`spike-ternary/report.md`, Correction;
+  `make_why5.py`): each facet's V peaks exactly at its exponent vector, a point of the triangle.
+  The first drawings are superseded. Recorded under "Overruled or corrected" in the driver's log.
