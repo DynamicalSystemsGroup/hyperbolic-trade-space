@@ -99,3 +99,27 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   `uv run z3 --version` reports 5.3.3; `uv lock --check` passes. Note: this machine also has a
   Homebrew `z3`, so only the first Tests run on `dev` shows that the wheel alone suffices on Linux;
   an `apt-get install z3` step is added to the workflow only if that run shows it is needed.
+
+## The driver's calls under the mandate (not the supervisor's words; for his review at the PR)
+
+- **2026-11-09. The fresh review (`WP15-review.md`, 21df997) and the gaps.** The review answers the
+  driver's question, whether the clean model is what is evaluated, with a trace from the experiment
+  definition to the loaded model text (equal hashes) and with the reviewer's own mutations of the
+  model (battery specific energy, housekeeping load, tracker mass), each of which moves the
+  attributes and, at the extreme, flips the feasibility flags. Identity of the new data with the
+  frozen data is therefore a result. Calls on the gaps:
+  - **A (both oracles through one interface, run side by side): fix before acceptance.** It is an
+    approved outcome, in the supervisor's words: "we can look at how two models of the same system
+    can produce different results depending on what phenomena are in or out of scope. i want that to
+    be a concept we explore in our repo". A wrapper over the legacy evaluation, one experiment
+    definition on the shared variables, a test, a paragraph in the how-to.
+  - **B(1) (a variant proved infeasible is not written to the ledger): fix.** An exclusion that
+    leaves no record is not usable evidence.
+  - **B(2) (the sampler does not consume excluded regions): fix, tested on a constructed space.**
+    His stated role for the solver is to exclude infeasible models; recording an exclusion without
+    acting on it is not exclusion. The declared space excludes nothing, so no dataset changes.
+  - **B(3) (the momentum condition is outside the solver's regions): accept, with the reason
+    recorded** (it depends on the integrated slew, which the solver cannot represent).
+  - **C (a stale sentence in the change register): fix. D: confirm whether it is still true** after
+    the model fix of 2d13465. **E, F: accept with the reviewer's reasons.**
+  WP15 is returned for A, B(1), B(2), C and D; the driver verifies and accepts after that.
