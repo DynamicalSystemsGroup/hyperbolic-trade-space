@@ -59,6 +59,77 @@ plot_frontier_coordinates(chart[:, :-1], chart[:, -1])
 <figcaption>Figure 7. The 706 feasible designs by their first two position coordinates; the ringed designs lie nearest the frontier.</figcaption>
 </figure>
 
+## Three metrics as shares of a total
+
+A ternary plot places a design by its shares of a total among three metrics. This block fits a
+planted table and draws it with lines of equal V:
+
+```python {.runnable}
+from hyperbolic_trade_space import (
+    HyperbolicTradeSpace,
+    make_frontier_data,
+)
+from hyperbolic_trade_space.plotting import plot_ternary
+
+X, _ = make_frontier_data(900, 3, n_terms=3, random_state=11)
+ts = HyperbolicTradeSpace(
+    n_terms=3, temperature=50.0, random_state=0
+).fit(X)
+plot_ternary(ts, X, lines=True)
+```
+
+<figure markdown>
+![A triangle whose corners are three metrics, tinted in three regions by the facet that dominates, with designs as points, a numbered marker for each facet's exponent vector, and lines of equal V closing around each marker.](generated/figures/ternary-planted-light.png#only-light)
+![A triangle whose corners are three metrics, tinted in three regions by the facet that dominates, with designs as points, a numbered marker for each facet's exponent vector, and lines of equal V closing around each marker.](generated/figures/ternary-planted-dark.png#only-dark)
+<figcaption>Figure 8. Designs by shares of three metrics: regions, numbered exponent vectors, lines of equal V.</figcaption>
+</figure>
+
+How to read this plot:
+
+- A corner is the whole total in one metric; an edge splits it between two.
+- A numbered marker is a facet's exponent vector, where that facet's V is largest for a fixed total.
+  V also depends on the total, so a marker is not where V = 1.
+- A region is where one facet dominates, named by the metrics that trade there: an analysis of the
+  fit, not a label on a design.
+- A design mostly in metric 3 with a little metric 1 is in the blue region, where metric 3 trades
+  against metric 1.
+
+Limits: three parts only; the choice of metrics, or of the grouping below, is the analyst's and
+can be cherry-picked; the triangle is for reading, not for measuring distance; designs of a ten-metric
+case do not separate in three metrics, so none is drawn for the cubesat.
+
+## The cubesat by subsystem
+
+Exponents add over groups exactly: a facet's weight on a subsystem is a sum. The analyst chooses the
+grouping:
+
+```python {.runnable}
+fit3 = case.fit_study(study, K=3)
+groups = {
+    "power": [
+        "power margin",
+        "energy balance",
+        "eclipse reserve",
+        "peak slew power",
+        "depth of discharge",
+    ],
+    "mass": ["total mass"],
+    "attitude control": [
+        "settling time",
+        "slew time",
+        "pointing error",
+        "control effort",
+    ],
+}
+plot_ternary(fit3.estimator, names=study.names, groups=groups)
+```
+
+<figure markdown>
+![A triangle whose corners are power, mass and attitude control, with three numbered markers: facets 1 and 2 lie on the power and attitude control edge, and facet 3 sits inside, carrying some mass.](generated/figures/ternary-cubesat-light.png#only-light)
+![A triangle whose corners are power, mass and attitude control, with three numbered markers: facets 1 and 2 lie on the power and attitude control edge, and facet 3 sits inside, carrying some mass.](generated/figures/ternary-cubesat-dark.png#only-dark)
+<figcaption>Figure 9. The three-term cubesat fit by summed exponents: only facet 3 carries mass (0.18).</figcaption>
+</figure>
+
 ## Run it
 
 The code, data and figures are in the repository under

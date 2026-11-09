@@ -41,6 +41,8 @@ plot_log_plane(ts2, X2)
 <figcaption>Figure 4. One facet in the log plane: the line is V = 1, and the band below it has width 1/tau.</figcaption>
 </figure>
 
+With three metrics the position can also be read as shares of a total: see the [ternary plot](../examples.md#three-metrics-as-shares-of-a-total).
+
 ## Reading log V
 
 V is a factor of improvement: doubling every metric doubles V. Three methods read it:

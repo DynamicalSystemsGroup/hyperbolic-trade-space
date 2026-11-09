@@ -30,6 +30,7 @@ DEFAULT_OUT = DOCS / "generated" / "figures"
 MAX_FIGURES = 9
 BLOCK = re.compile(r"^```python \{\.runnable\}\n(.*?)^```", re.M | re.S)
 IMAGE = re.compile(r"!\[[^\]]*\]\(([^)\s#]*?)([\w-]+)-light\.png#only-light\)")
+ALT = re.compile(r"!\[([^\]]*)\]\([^)\s#]*?([\w-]+)-light\.png#only-light\)")
 _SIZE = (7.0, 4.2)  # inches; width fits a 46 rem column at 100 dpi
 _DPI = 110
 
@@ -74,6 +75,11 @@ def page_figures(path):
     return figures
 
 
+def figure_alts(path):
+    """``{name: alt text}`` of the page's figures; the alt text is also written into each image."""
+    return {m.group(2): m.group(1) for m in ALT.finditer(Path(path).read_text())}
+
+
 def pages_with_figures(docs=DOCS):
     """The hand-written pages that embed a figure, as sorted paths."""
     return sorted(
@@ -106,7 +112,7 @@ def build_page(path, out, schemes=("light", "dark")):
 
     path, out = Path(path), Path(out)
     out.mkdir(parents=True, exist_ok=True)
-    blocks, wanted = page_blocks(path), {}
+    blocks, wanted, alts = page_blocks(path), {}, figure_alts(path)
     for index, name in page_figures(path):
         wanted.setdefault(index, []).append(name)
     written = []
@@ -127,7 +133,7 @@ def build_page(path, out, schemes=("light", "dark")):
                             target,
                             bbox_inches="tight",
                             transparent=True,
-                            metadata={"Software": None},
+                            metadata={"Software": None, "Description": alts.get(name)},
                         )
                         written.append(target)
                         plt.close("all")

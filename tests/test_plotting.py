@@ -1,6 +1,7 @@
 """Plotting smoke tests (Agg backend): each function returns an Axes and uses the vocabulary."""
 
 import re
+from pathlib import Path
 from types import SimpleNamespace
 
 import matplotlib
@@ -331,3 +332,36 @@ def test_ternary_groups_sum_the_exponents_exactly():
         P.plot_ternary(ts, names=names)
     with pytest.raises(ValueError, match="omit X"):
         P.plot_ternary(ts, X, names=names, groups=groups)
+
+
+def test_ternary_cubesat_groups_are_the_docs_example_and_the_group_sums_hold():
+    """WP18 R-7: the docs' grouping (power, mass, attitude control) is a partition of the ten
+    metrics, each facet's grouped vector is the group sum of ``exponents_`` and sums to one, and
+    the caption's claim holds: only facet 3 carries mass (0.18)."""
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "examples" / "adcs"))
+    import case
+
+    study = case.load_study("primary")
+    est = case.fit_study(study, K=3).estimator
+    groups = {
+        "power": [
+            "power margin",
+            "energy balance",
+            "eclipse reserve",
+            "peak slew power",
+            "depth of discharge",
+        ],
+        "mass": ["total mass"],
+        "attitude control": ["settling time", "slew time", "pointing error", "control effort"],
+    }
+    ax = P.plot_ternary(est, names=study.names, groups=groups)
+    idx = [[study.names.index(n) for n in g] for g in groups.values()]
+    want = np.column_stack([est.exponents_[:, g].sum(axis=1) for g in idx])
+    assert np.allclose(want.sum(axis=1), 1.0)
+    assert (want[:2, 1] < 0.005).all() and round(float(want[2, 1]), 2) == 0.18
+    for k, art in _by_gid(ax, "ternary-star-").items():
+        x, y = art.get_offsets()[0]
+        top = y / (np.sqrt(3) / 2)
+        np.testing.assert_allclose([top, 1 - top - (x - top / 2), x - top / 2], want[k], atol=1e-12)

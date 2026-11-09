@@ -758,8 +758,8 @@ def test_no_code_line_in_a_docsite_page_exceeds_the_column():
 
 
 def test_figures_are_few_captioned_and_in_both_colour_schemes():
-    """D1: at most nine figures (WP18 OD2: one more per ternary example); each is a light and a dark image with the same alt text and one
-    caption, directly below the code block that makes it."""
+    """D1: at most nine figures (WP18 OD2); each is a light and a dark image with the same alt text
+    and one caption, directly below the code block that makes it."""
     bf = _figures_module()
     names = []
     for page in source_pages():
