@@ -77,6 +77,7 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 | 2026-11-09 | commit 67de186, the driver's clean checkout, this Mac (includes the paper's main text and the environment-of-record tolerance design) | 1795 passed, 13 skipped, 1 xfailed, 0 failed; ruff check and format clean; lock clean; lemma chain passes; proof map OK, 236 steps; attribution 0 | green |
 | 2026-11-09 | commit 2d2a751, the driver's clean checkout, this Mac | 1804 passed, 13 skipped, 1 xfailed, 0 failed; ruff check and format clean; lock clean; lemma chain passes; proof map OK, 236 steps; ledger 15 entries, 0 drifts; attribution 0 | green; the commit on which WP15 and WP8a Amendment 2 are accepted |
 | 2026-11-09 | commit 5636ca7, the driver's clean checkout, this Mac (the paper with the new gap, reproducible-precision reporting and the rendering fixes; the hardened toolkit helper) | 1838 passed, 13 skipped, 1 xfailed, 0 failed; ruff check and format clean; lock clean; lemma chain passes; proof map OK, 236 steps; ledger 15 entries, 0 drifts; attribution 0 | green |
+| 2026-11-09 | commit 5636ca7, CI run 42588028427, ubuntu (amd64) | 1838 passed, 13 skipped, 1 xfailed, 0 failed | **green on Linux**, the first since the environment-of-record tolerance design; the same counts as the Mac. Settles the Linux run owed on WP15 and WP8a Amendment 2 (5636ca7 contains 2d2a751) |
 
 **Method from here on.** The driver verifies a named commit in its own clean checkout (a git
 worktree in the session scratchpad with its own locked environment), not the shared tree, so a

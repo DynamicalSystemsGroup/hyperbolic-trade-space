@@ -138,3 +138,6 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   last complete Linux run, at fda73a1, passed all but one test since corrected); the generation of
   record, which is WP16's and waits on the container and on the supervisor's choice about the two
   step-read times.
+- **2026-11-09. The Linux run owed at acceptance is in.** Tests run 42588028427 on `dev` at 5636ca7
+  (which contains 2d2a751): 1838 passed, none failed, on ubuntu amd64; the same counts as the
+  driver's clean checkout on the Mac.

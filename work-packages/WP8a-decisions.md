@@ -404,3 +404,6 @@ The driver's calls on `WP8a-driver-browser-pass.md` are binding and applied as f
   browser pass (the implementer did its own); the driver's passes are the independent ones. The
   supervisor's own staged review is not replaced by this: it happens at the PR, in the sitting for
   the docsite and root page. The merge to `main` waits for the candidate.
+- **2026-11-09. The Linux run owed at acceptance is in.** Tests run 42588028427 on `dev` at 5636ca7
+  (which contains 2d2a751): 1838 passed, none failed, on ubuntu amd64; the same counts as the
+  driver's clean checkout on the Mac.
