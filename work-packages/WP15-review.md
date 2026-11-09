@@ -63,3 +63,7 @@ Z3 evidence. `exclusion.py` builds `<stem>Sat` and `<stem>Holds` constraint defi
 - **D. NC-5 workaround.** The analysis is called a second time with the slew time one float step higher to avoid a runtime uniqueness error. Accept with reason: no computed attribute depends on it; recorded.
 - **E. Identity holds on one platform.** Cross-platform is WP16's evidence. Accept.
 - **F. Commit prefixes and D-7 rows.** Accept with reason (history; the contract records the gap).
+
+## Addendum (PM)
+
+Gap D was the stale NC-5 text; at HEAD the model returns no equal-valued entries and the oracle makes one analysis call; corrected in 90b1204; gap A, B(1), C closed in 33a249b, e50d1e2, 90b1204; B(2) closed in the commit that adds `runner.ExcludingSampler` (WP15: the sampler consumes excluded regions; see `git log -S ExcludingSampler`); B(3) momentum condition outside what the solver can represent, stated in `examples/adcs/case-model.md`.

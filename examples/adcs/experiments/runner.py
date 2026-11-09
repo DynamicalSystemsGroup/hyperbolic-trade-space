@@ -58,6 +58,127 @@ class LogUniformSampler:
     __call__ = draw
 
 
+class ExcludingSampler:
+    """A sampler that never draws a design from a region the solver proved infeasible.
+
+    Rejection on the base sampler's own stream: designs ``0, 1, 2, ...`` of ``base.draw`` are taken
+    in order, a design inside any excluded region is skipped and counted, and the first ``n``
+    others are returned with their original ``design_id`` and ``seed``. So the result equals the
+    unexcluded sampler's draws with the excluded ones skipped, reproducibly, and with no excluded
+    region it equals the base draw exactly. The flags stay observations: a region that is not
+    excluded is sampled whole.
+
+    Parameters
+    ----------
+    base : sampler
+        Object with ``draw(n, seed)``; design ``i`` must depend only on ``(seed, i)``.
+    regions : sequence of mapping
+        ``exclusion.exclusion_record`` dicts (or anything with ``region.name`` and
+        ``region.box``); only those with ``excluded`` true are used.
+    columns : mapping
+        Region variable to design column, e.g. ``{"capacity_wh": "battery_wh"}``. A region
+        variable with no column (the tracker power, the slew energy) is not a design axis of the
+        sampler: the region was proved over that variable's whole stated interval, which holds
+        for every value the designs take, so it does not narrow the region.
+    max_draws : int
+        Safety cap on designs examined; exceeded only when nearly the whole space is excluded.
+
+    Attributes
+    ----------
+    avoided, examined : int
+        Draws skipped and designs examined by the last ``draw``.
+
+    >>> class U:
+    ...     def draw(self, n, seed):
+    ...         return pd.DataFrame({"design_id": range(n), "x": [float(i) for i in range(n)]})
+    >>> reg = {"excluded": True, "region": {"name": "low", "box": {"cap": [0.0, 1.5]}}}
+    >>> s = ExcludingSampler(U(), [reg], {"cap": "x"})
+    >>> s.draw(3, 0)["design_id"].tolist(), s.avoided
+    ([2, 3, 4], 2)
+    """
+
+    def __init__(self, base, regions, columns: Mapping[str, str], max_draws: int = 100_000):
+        self.base = base
+        self.columns = dict(columns)
+        self.max_draws = int(max_draws)
+        self.regions = []
+        for r in regions:
+            if not _get(r, "excluded"):
+                continue
+            reg = _get(r, "region")
+            box = {k: tuple(map(float, v)) for k, v in dict(_get(reg, "box")).items()}
+            unmapped = [k for k in box if k not in self.columns]
+            self.regions.append((_get(reg, "name"), box, unmapped))
+        self.avoided = 0
+        self.examined = 0
+        self.avoided_by_region: dict[str, int] = {}
+
+    @property
+    def names(self) -> list[str]:
+        return [name for name, _, _ in self.regions]
+
+    def _inside(self, row) -> str | None:
+        for name, box, _ in self.regions:
+            if all(
+                lo <= float(row[self.columns[k]]) <= hi
+                for k, (lo, hi) in box.items()
+                if k in self.columns
+            ):
+                return name
+        return None
+
+    def draw(self, n: int, seed: int) -> pd.DataFrame:
+        """``n`` designs outside every excluded region; ``avoided`` counts the skipped draws."""
+        self.avoided, self.avoided_by_region = 0, {name: 0 for name in self.names}
+        if not self.regions:
+            self.examined = n
+            return self.base.draw(n, seed)
+        m = n
+        while True:
+            designs = self.base.draw(m, seed)
+            kept, skipped = [], {}
+            for pos, (_, row) in enumerate(designs.iterrows()):
+                hit = self._inside(row)
+                if hit is None:
+                    kept.append(pos)
+                    if len(kept) == n:
+                        break
+                else:
+                    skipped[hit] = skipped.get(hit, 0) + 1
+            if len(kept) == n:
+                break
+            if m >= self.max_draws:
+                raise ValueError(
+                    f"only {len(kept)} of {n} designs lie outside the excluded regions "
+                    f"after {m} draws"
+                )
+            m = min(m * 2, self.max_draws)
+        self.examined = kept[-1] + 1
+        self.avoided = sum(skipped.values())
+        self.avoided_by_region.update(skipped)
+        return designs.iloc[kept].reset_index(drop=True)
+
+    __call__ = draw
+
+    def record(self) -> dict:
+        """What the last ``draw`` did, for the ledger entry."""
+        return {
+            "regions": self.names,
+            "columns": dict(self.columns),
+            "examined": self.examined,
+            "avoided": self.avoided,
+            "avoided_by_region": dict(self.avoided_by_region),
+            "rule": (
+                "rejection on the base stream: a design inside an excluded region is skipped, "
+                "the first count others are kept with their original design_id and seed"
+            ),
+        }
+
+
+def _get(obj, key):
+    return obj[key] if isinstance(obj, Mapping) else getattr(obj, key)
+
+
 def _instance(obj, marker: str, cell: Experiment):
     """``obj`` itself when it has ``marker``; otherwise a factory called with the sweep cell."""
     return obj if hasattr(obj, marker) else obj(cell)
@@ -146,7 +267,20 @@ def _run_cell(cell: Experiment, oracle, sampler, root: Path, ledger: Path, own) 
             record_exclusion(cell, block, root, ledger, model_hash, code)
         raise
     smp = _instance(sampler, "draw", cell)
+    sampling = None
+    block = dict(cell.inputs).get("exclusion")
+    skip = [r for r in (block or {}).get("regions", []) if r.get("excluded")]
+    if skip and not block.get("variant_excluded"):
+        columns = dict(cell.inputs).get("exclusion_columns")
+        if not columns:
+            raise ValueError(
+                f"{cell.id}: regions {[r['region']['name'] for r in skip]} are excluded but the "
+                "experiment names no inputs['exclusion_columns'] to apply them to the designs"
+            )
+        smp = ExcludingSampler(smp, skip, columns)
     designs = smp.draw(cell.count, cell.seed)
+    if isinstance(smp, ExcludingSampler):
+        sampling = smp.record()
     table = orc.evaluate(designs)
     if len(table) != len(designs):
         raise ValueError(f"{cell.id}: oracle returned {len(table)} rows for {len(designs)} designs")
@@ -186,6 +320,7 @@ def _run_cell(cell: Experiment, oracle, sampler, root: Path, ledger: Path, own) 
             "attribute_names": list(orc.attribute_names),
             "flag_names": list(orc.flag_names),
             **dict(cell.inputs),
+            **({"excluded_sampling": sampling} if sampling else {}),
         },
         "parents": parents,
         "supersedes": list(cell.supersedes),

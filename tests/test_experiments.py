@@ -458,3 +458,63 @@ def test_revise_names_the_revision_and_repoints_the_parents():
     assert c.parents == ("v2-primary@2",) and c.supersedes == ("v2-check-predictions",)
     with pytest.raises(KeyError):
         defs.revise(defs.EXPERIMENTS["v2-baseline"], [])
+
+
+# -- the sampler consumes excluded regions (B2) ----------------------------------------------------
+def _low_a_region(hi=3.0):
+    """An ``exclusion_record``-shaped dict: the region a <= hi proved infeasible."""
+    return {"excluded": True, "region": {"name": "low-a", "box": {"a_var": [0.0, hi]}}}
+
+
+def test_excluding_sampler_equals_base_with_excluded_draws_skipped():
+    base = _sampler()
+    smp = runner.ExcludingSampler(base, [_low_a_region()], {"a_var": "a"})
+    got = smp.draw(30, 5)
+    assert (got["a"] > 3.0).all() and len(got) == 30
+    wide = base.draw(smp.examined, 5)
+    want = wide[wide["a"] > 3.0].head(30).reset_index(drop=True)
+    pd.testing.assert_frame_equal(got, want)
+    assert smp.avoided == int((wide["a"] <= 3.0).sum()) > 0
+    assert smp.examined == smp.avoided + 30
+    # reproducible, and independent of the batch the loop happened to use
+    again = runner.ExcludingSampler(base, [_low_a_region()], {"a_var": "a"})
+    pd.testing.assert_frame_equal(again.draw(30, 5), got)
+    assert again.avoided == smp.avoided
+
+
+def test_excluding_sampler_without_an_excluded_region_is_the_base_draw():
+    base = _sampler()
+    for regions in ([], [{**_low_a_region(), "excluded": False}]):
+        smp = runner.ExcludingSampler(base, regions, {"a_var": "a"})
+        pd.testing.assert_frame_equal(smp.draw(12, 3), base.draw(12, 3))
+        assert smp.avoided == 0
+
+
+def test_excluding_sampler_refuses_when_the_space_is_all_excluded():
+    smp = runner.ExcludingSampler(_sampler(), [_low_a_region(hi=100.0)], {"a_var": "a"}, 64)
+    with pytest.raises(ValueError, match="outside the excluded regions"):
+        smp.draw(3, 0)
+
+
+def test_runner_records_excluded_regions_and_avoided_draws(tmp_path):
+    root = _tree(tmp_path)
+    block = {"regions": [_low_a_region()], "variant_excluded": False}
+    exp = _exp(id="ex", count=10, inputs={"exclusion": block, "exclusion_columns": {"a_var": "a"}})
+    led = root / "ledger.jsonl"
+    [e] = runner.run(exp, SimulatorToy(), _sampler(), root, led)
+    rec = e["inputs"]["excluded_sampling"]
+    assert rec["regions"] == ["low-a"] and rec["avoided"] > 0
+    assert rec["examined"] == 10 + rec["avoided"]
+    out = pd.read_csv(root / "out" / "toy.csv")
+    assert (out["a"] > 3.0).all() and len(out) == 10
+    assert lg.verify(led, root) == []
+    # an excluded region with no column to apply it to is an error, not a silent no-op
+    bad = _exp(id="ex2", output="out/ex2.csv", inputs={"exclusion": block})
+    with pytest.raises(ValueError, match="exclusion_columns"):
+        runner.run(bad, SimulatorToy(), _sampler(), root, led)
+
+
+def test_no_excluded_region_leaves_the_entry_without_the_record(tmp_path):
+    root = _tree(tmp_path)
+    [e] = runner.run(_exp(), SimulatorToy(), _sampler(), root)
+    assert "excluded_sampling" not in e["inputs"]

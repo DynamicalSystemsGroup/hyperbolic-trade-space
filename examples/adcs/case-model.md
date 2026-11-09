@@ -248,12 +248,27 @@ When the whole variant is proved infeasible, `build` raises before anything is s
 runner first appends an `exclusion` entry: the variant's edits, the classified regions with claim,
 engine, verdict, strength and witnesses, the model hash and the reason
 (`tests/test_cubesat_oracle.py::test_a_proved_infeasible_variant_is_recorded_in_the_ledger_before_the_error`).
-The sampler does not consume excluded regions; the declared space excludes nothing, so there is
-nothing to consume. `design_space_regions` covers power and depth of discharge, not momentum,
-because the momentum condition depends on the configuration through the inertia and is the
-closed-form approximation. The momentum condition uses the closed-form bang-bang peak momentum, an approximation that the
+The sampler consumes excluded regions. When the exclusion block in `inputs["exclusion"]` has a
+region classified `excluded`, the runner wraps the sampler in `runner.ExcludingSampler`, which takes
+the base sampler's designs in order, skips any design inside an excluded region and keeps the first
+`count` others with their original `design_id` and `seed`. The result is the unexcluded sampler's
+draws with the excluded ones skipped, reproducibly; the entry's `inputs["excluded_sampling"]` records
+the regions, the designs examined and the draws avoided (per region). The experiment names the
+design column of each region variable in `inputs["exclusion_columns"]`; an excluded region without
+it is an error rather than a silent no-op. Regions that are not excluded are sampled whole and the
+flags remain observations. The declared space excludes nothing, so for every committed dataset the
+sampler is the base sampler and no data changed
+(`tests/test_cubesat_oracle.py::test_declared_space_excludes_nothing_so_the_first_designs_are_unchanged`;
+a constructed space with the battery range 20 to 26 Wh excluded:
+`tests/test_cubesat_oracle.py::test_sampler_skips_a_solver_excluded_battery_region`).
+`design_space_regions` covers power and depth of discharge, not momentum, because the momentum
+condition depends on the configuration through the inertia and is the closed-form approximation.
+The momentum condition uses the closed-form bang-bang peak momentum, an approximation that the
 integrated slew overshoots; an excluded wheel region is a necessary-condition result that the
-simulation confirms, and "all feasible" there means feasible by the closed form.
+simulation confirms, and "all feasible" there means feasible by the closed form. The momentum
+condition on the integrated slew (the peak momentum of the ODE against the wheel class capacity) is
+outside what the solver can represent, so it is not classified and stays an observation of the
+simulation.
 
 The four Python flags (`settled`, `momentum_ok`, `power_ok`, `dod_ok`) are observations of single
 simulated configurations, produced by verifying the model's requirements. They are not the

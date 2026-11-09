@@ -397,3 +397,47 @@ def test_equal_settling_and_slew_times_are_analysed(oracle, designs):
     for k in co.ATTRIBUTE_NAMES[2:]:
         assert got[k] == pytest.approx(distinct[k], rel=1e-12), k
     assert "nextafter" not in pathlib.Path(co.__file__).read_text()
+
+
+# -- the sampler consumes the regions the solver excludes (B2) -------------------------------------
+def test_sampler_skips_a_solver_excluded_battery_region(oracle, exp, solver):
+    """Constructed space, 20 to 26 Wh excluded: draws avoid it and equal the base minus it."""
+    from experiments.runner import ExcludingSampler
+
+    rec = ex.exclusion_record(
+        classify_region(TEXT, battery_region((20, 26)), connection=oracle.connection)
+    )
+    assert rec["excluded"]
+    base = co.build_sampler(exp)
+    smp = ExcludingSampler(base, [rec], {"capacity_wh": "battery_wh"})
+    got = smp.draw(60, 0)
+    assert not got["battery_wh"].between(20.0, 26.0).any()
+    wide = base.draw(smp.examined, 0)
+    inside = wide["battery_wh"].between(20.0, 26.0)
+    pd.testing.assert_frame_equal(got, wide[~inside].head(60).reset_index(drop=True))
+    assert smp.avoided == int(inside.sum()) > 0
+    assert smp.record()["avoided_by_region"] == {"battery": smp.avoided}
+
+
+def test_declared_space_excludes_nothing_so_the_first_designs_are_unchanged(tmp_path):
+    """The v2 block excludes no region: the runner's draws and rows equal the committed dataset."""
+    from experiments import runner
+
+    cell = dataclasses.replace(
+        df.EXPERIMENTS["v2-primary"],
+        count=20,
+        inputs={},
+        code=(),
+        model_path=str(MODEL),
+        model_sha256=None,
+        output="primary20.csv",
+    )
+    [e] = runner.run(cell, co.build, co.build_sampler, tmp_path, tmp_path / "ledger.jsonl")
+    assert "excluded_sampling" not in e["inputs"]
+    got = pd.read_csv(tmp_path / "primary20.csv")
+    want = pd.read_csv(ADCS / "data" / "v2" / "adcs_designs_cubesat_gains.csv").head(20)
+    assert got.columns.tolist() == want.columns.tolist()
+    pd.testing.assert_frame_equal(got, want, check_exact=False, rtol=1e-6)
+    got_text = (tmp_path / "primary20.csv").read_text().splitlines()
+    want_text = (ADCS / "data" / "v2" / "adcs_designs_cubesat_gains.csv").read_text().splitlines()
+    assert got_text == want_text[:21]
