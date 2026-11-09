@@ -1,8 +1,9 @@
 # Note: the reader grid (depths by personas) and the cold-read protocol
 
 Drafted 2026-11-08 by the driver as input to WP11's scope (not scoped yet). The depths are the
-supervisor's and are recorded; the personas below are **candidates drawn from his words and are not
-decided**; the protocol is the driver's proposal.
+supervisor's and are recorded; the six personas were drawn from his words and **decided by him on
+2026-11-08 ("Use these six", `WP10-decisions.md`)**; the protocol is the driver's proposal and is
+decided in WP11's scope.
 
 ## The supervisor's words
 
@@ -35,7 +36,7 @@ structural).
 The slices for L-A to L-D are captured from the rendered pages in the browser (so the reader sees
 what a person sees, and cannot read past its depth); L-E and L-F readers work in a clean checkout.
 
-## Axis 2: personas (candidates; each traced to the supervisor's words)
+## Axis 2: personas (decided; each traced to the supervisor's words)
 
 | | Persona | Traced to | Comes with | Wants |
 |---|---|---|---|---|
@@ -134,6 +135,6 @@ reads.
 
 ## Open for the supervisor
 
-The personas (the second axis is his to define). The rest of this note is the driver's proposal for
-WP11's scope and is decided there. A grid for the docsite (a package user doing tasks) would be a
-separate, smaller one and is not drafted here.
+Nothing on the axes. The protocol (roles, what readers return, the answer key, triage, the guards
+against tuning, the stopping rule) is the driver's proposal and is decided in WP11's scope. A grid
+for the docsite (a package user doing tasks) would be a separate, smaller one and is not drafted.

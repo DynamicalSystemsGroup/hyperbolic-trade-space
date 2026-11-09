@@ -638,3 +638,20 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   index symbols to `symbols.py` (registered under the structural axiom so the symbol-assumption
   test passes unedited); a lemma script then imports from another lemma script only proved
   results, and the checker enforces it. Sent to the PM.
+
+## The reader grid: depths by personas (2026-11-08; input to WP11)
+
+- **Supervisor (mzargham), verbatim:** "do you have a grid of our reader depths cross our reader
+  personas? that will be key for the testing loops. you'll need context gapped user tests and expect
+  them to give contradictory feedback which you will then needs to triage to get clean, clear,
+  robust results. it will help prevent metric gaming to reviewers persona or read depth"
+- Found: the six depths are recorded; no personas were defined anywhere. The driver drafted
+  `docs/superpowers/notes/reader-grid.md` (the grid, three roles that never share context, recall
+  and friction instead of scores, an answer key, triage rules for contradictory findings, guards
+  against tuning to the test) with six candidate personas drawn from his words.
+- **Driver's question (popup):** "Are these the personas for the paper's cold-read grid?" (P1 the
+  accountable decision maker; P2 the trade-study practitioner; P3 the modeller with their own
+  system model or test data; P4 the machine-learning practitioner; P5 the optimization reader; P6
+  the sceptical neighbour; options: Use these six / Change the set). **Supervisor (mzargham),
+  verbatim:** "Use these six". Disposition: the persona axis is decided; the grid is six depths by
+  six personas (23 core cells, 6 edge cells); the protocol is decided when WP11 is scoped.
