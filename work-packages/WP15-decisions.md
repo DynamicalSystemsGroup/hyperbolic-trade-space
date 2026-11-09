@@ -62,6 +62,12 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   and why; the Python feasibility flags become observations of the simulated run, not the
   definition of feasibility.
 
+- **OD5, the frozen code at acceptance.** Options: stay as they are until the swap gate / archive at
+  acceptance with shims. **Supervisor (mzargham), verbatim:** "Stay as they are until the swap gate".
+  Disposition: decided; two models in the directory until the swap, the how-to says which is which,
+  the frozen reproducibility tests keep running, no contract-pinned item changes; archiving is a
+  swap-gate item.
+
 ## Scope approval (approval gate)
 
-- pending (OD5, the defaults as one item, then approval)
+- pending (the defaults as one item, then approval)
