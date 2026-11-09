@@ -29,9 +29,10 @@ judged as rendered, at the width a reader meets it, never from its code or its d
    areas, decoration, and labels that cover the data are findings.
 4. **Legible where it is read.** At the page's column width and at 375 px, in light and dark, in the
    browser: every label readable, nothing clipped, nothing relying on colour alone.
-5. **Shows and does not show.** One line each, written beside the figure in the record (and in the
-   text once the figure is confirmed): what the figure shows, what it does not show or cannot be
-   used for.
+5. **Shows, does not show, good for.** One line each, written beside the figure in the record and,
+   once the figure is confirmed, on the page beside it: what the figure shows; what it does not
+   show or cannot be used for; what a reader would use it for. (The supervisor: "we need more
+   clarity about what specific plots show and dont show and what they are good for.")
 
 ## The loop
 

@@ -473,3 +473,22 @@ The driver's calls on `WP8a-driver-browser-pass.md` are binding and applied as f
   V peaks at a fixed total; designs in a sub-composition of a ten-metric case do not separate, so
   the cubesat is shown by its exponents grouped by subsystem; plain Matplotlib, no new dependency.
 
+## The docsite's figures: what each shows, does not show, and is good for (2026-11-09)
+
+- **Supervisor (mzargham), verbatim,** on the Examples page's Figure 7 (the 706 feasible designs by
+  their first two position coordinates, the near-frontier designs ringed): "this one feels a bit hard
+  to read. it doesn't really seem to reveal the frontier clearly, but maybe that's not the point. we
+  need more clarity about what specific plots show and dont show and what they are good for."
+- **The driver's reading of that figure, given to him:** it looks straight down onto the fitted
+  surface, so the frontier is the whole plane of the plot and not a curve in it; depth (log V) is the
+  direction out of the page and appears only as the rings. It shows where the evaluated designs sit
+  along the surface, which is what coverage and white space are read from. Its two axes are the
+  first two of nine coordinates of a fixed basis and have no meaning of their own. As drawn it
+  probably does not earn its place.
+- **Disposition:** the figure review of the docsite's existing figures
+  (`docs/superpowers/notes/figure-review.md`) starts now and takes this figure first, with his words
+  attached. Added to the requirement for every docsite figure: the page says, beside the figure, in
+  one line each, what it shows, what it does not show, and what it is good for. No figure is
+  redrawn or removed on the page before the driver has the dispositions; candidate redraws are
+  produced as images for the supervisor to judge by eye.
+
