@@ -65,3 +65,6 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   gaps (the Oracle protocol awaiting WP15, `paper/myst.yml` and the `paper` group awaiting WP10, a
   package `__init__` docstring, WP12 ownership); G-6 `--serve` not exercised by the reviewer
   (covered by the supervisor's staged review in WP8a).
+- **Bundle (G-1 to G-6).** **Supervisor (mzargham), verbatim:** "Accept the bundle as is".
+  Disposition: accepted with the reviewers' reasons; G-4's skip-list housekeeping goes to the PM's
+  follow-up list; no open item before the acceptance question.
