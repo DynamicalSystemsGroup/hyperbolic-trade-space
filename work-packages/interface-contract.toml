@@ -129,10 +129,9 @@ identifier_columns = ["design_id", "seed"]
 flag_dtype = "bool"
 attribute_conditioning = "the analyst's job; the package fits conditioned metrics (strictly positive, larger is better)"
 sources_satisfying = ["simulator", "physical test", "human assessment"]
-forbidden_words = "defined in tests/test_interface_contract.py (the two modeling-tool words and tool-version strings); not repeated here so that the scan files stay clean"
+forbidden_words = "defined in tests/test_interface_contract.py (the two modeling-tool words and tool-version strings); not repeated here; this manifest is not scanned because two ownership paths are model files whose names contain the word"
 scan_files = [
   "work-packages/interface-contract.md",
-  "work-packages/interface-contract.toml",
   "src/hyperbolic_trade_space/__init__.py",
 ]
 
