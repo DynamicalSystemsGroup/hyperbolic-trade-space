@@ -42,6 +42,11 @@ This repository is built as supervisor-gated work packages, following the superv
 - **Execution:** autonomous inside the approved scope; TDD per module; `uv run` for every command;
   scikit-learn conformance per `docs/superpowers/notes/sklearn-conformance.md`.
 
+**The 0.1 release candidate (mandate of 2026-11-08).** `release-candidate.md`: the driver loops
+on `dev` to a candidate and hands the supervisor one PR with a reviewer's guide in sittings; the
+driver defines and accepts scopes meanwhile, each call recorded for his review; the search (WP12)
+follows the release; the paper's case moves to the new data if the evidence supports it.
+
 **The autonomous phase (from 2026-11-08).** The supervisor: "a phase of extended development and
 testing loops which are mostly autonomous with me serving only to resolve escalations which you
 cannot answer for the PM". Who answers what is in `PM-BRIEF.md` ("The autonomous phase"); what the

@@ -45,14 +45,21 @@ after any change that could differ by platform.
   words or an approved default settle it; conflicts between packages over files or order; a
   dependency an approved scope needs (`pyproject.toml` and `uv.lock` are the driver's); whether a
   reported problem is a defect (fix it) or a question about the bar (escalate it).
-- *The supervisor decides,* and only these reach him: a change to any scope's goals, non-goals,
-  deliverables, files it may edit, or its definitions of good and good enough (an amendment); every
-  acceptance and every staged-site review; anything outward-facing or hard to undo (a merge to
-  `main`, a tag, a deployment, publishing to a registry or index, a pull request, a new external
-  service); a finding about the mathematics (a lemma that fails or whose statement must change, a
-  proof step that is neither computed nor resting on a declared axiom or proved result, a recorded
-  number moving beyond its stated tolerance); anything that contradicts his recorded words; a
-  trade-off he has shown he cares about (budgets, the platform of record, the data swap).
+- *The driver also holds the gates until the PR* (the supervisor, 2026-11-08: "i am the only one
+  who can accept and merge a pr but you can define and accept scopes to get to something you
+  believe i will expect. don't hesitate to define spikes if you don't have the info you need to
+  make a call."). So the driver defines and approves scopes and amendments, accepts packages on its
+  own verification, and runs a spike where the evidence for a call is missing. Every such call is
+  recorded with its evidence in `driver-log.md` for his review. See `release-candidate.md`.
+- *The supervisor decides:* the PR (only he accepts and merges it). Before the PR the driver stops
+  and goes to him only for: something that contradicts his recorded words; a finding about the
+  mathematics that changes a statement or a conclusion (a lemma that fails or must be restated, a
+  proof step resting on nothing declared, the new data changing a conclusion of the paper); a
+  trade-off his words do not settle; anything outward-facing other than the PR itself (a merge, a
+  tag, a deployment, publishing).
+
+**The chain** (the supervisor: "our org architecture is me -> you -> pm -> subagents to spec"): the
+supervisor, the driver, the PM, then subagents working to a written spec.
 
 **Reporting lines.** Implementers and reviewers report to the PM, never to the driver. The PM
 reports to the driver, never to the supervisor. When the PM is unsure whether something is its
@@ -86,7 +93,8 @@ driver makes its own complete pass in the browser before anything rendered goes 
 whose own reading remains the gate.
 
 **Limits that hold throughout.** Commits to `dev` only. No merge to `main`, no tag, no deployment,
-no publishing, no pull request. No AI attribution anywhere. No edit to a test or record that would
+no publishing. One pull request, from `dev` to `main`, opened by the driver when the candidate is
+ready and by no one else. No AI attribution anywhere. No edit to a test or record that would
 weaken a requirement; a test changes only when its requirement changed by a recorded decision.
 Stop and report, do not improvise, when a step would cross one of these.
 

@@ -7,15 +7,16 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
-Nothing is waiting now. Coming, each prepared as one sitting:
+Nothing. By the mandate of 2026-11-08 (`release-candidate.md`) the next thing that reaches him is
+the PR from `dev` to `main` with the reviewer's guide, unless a stop condition is met first: a
+contradiction of his recorded words, a finding about the mathematics that changes a statement or a
+conclusion, a trade-off his words do not settle, or an outward-facing act other than the PR.
 
-| Item | Package | What he will be asked | Ready when |
+## Scopes and acceptances by the driver (for the supervisor's review at the PR)
+
+| Date | Call | Evidence | Record |
 |---|---|---|---|
-| Second staged-site review | WP8a Amendment 2 | to read the staged site on localhost; then the acceptance question | the restructured docsite passes the driver's checks |
-| Acceptance | WP15 | the review's gaps, then the acceptance question | review report, change register and comparison report delivered and verified |
-| Structural acceptance | WP10 with Amendment 1 | the review's gaps and the cold-reader reports, then the acceptance question | the paper builds in the container of record and the structural tests pass |
-| Merge `dev` to `main` | after WP8a's acceptance | to say go (it runs CI and deploys nothing) | WP8a accepted |
-| Data swap | after WP15's acceptance | whether the paper's case moves to the new data, with every changed number listed | WP15 accepted |
+| | none yet | | |
 
 ## Decided by the driver for the PM
 
