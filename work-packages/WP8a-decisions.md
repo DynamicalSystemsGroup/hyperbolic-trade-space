@@ -208,3 +208,19 @@ Applied last (D-9). The only change to each page is the front-matter block of fo
   removed; the glossary compiled from `glossary.yaml`). **Supervisor (mzargham), verbatim:** "Approve
   the defaults as listed". Disposition: approved. Loop closed for Amendment 2: decided 5 (OD1 to
   OD5), deferred 0, raised 0, defaults approved as one item.
+- At the approval question for Amendment 2 and contract version 2. **Supervisor (mzargham),
+  verbatim:** "make sure we don't have left over references to content we removed. if we want to add
+  references to content in the paper we can come back and do that later after the paper is stable,
+  and we should do the references in a manner that they don't break when things move around
+  (similar to ref keys in latex) the citations to the paper in the docsite are deferred until there
+  is a paper and appendices to cite"
+- Disposition (changes to the draft before approval): (1) a requirement and a test that no docsite
+  page, navigation entry, docstring-rendered page or site script refers to removed content (moved
+  file names, old anchors, lemma tags, "see Mathematics", the generated pages, the world key); (2)
+  G9 and its machinery are withdrawn from Amendment 2: no citations from the docsite into the paper
+  for now, no `paper_sections.toml`, no expected-at-release paper-section links in docs pages, and
+  the contract's version-2 item for paper anchors is dropped (the root page's Paper card to the
+  `/paper/` slot stays as site navigation); (3) a deferred follow-up, recorded on the punch list and
+  as a later-package candidate: once the paper and its appendices are stable (after WP11), add the
+  docsite's references to the paper through stable reference keys (a key registry resolved at build
+  time, in the manner of LaTeX labels and refs), so links do not break when sections move.

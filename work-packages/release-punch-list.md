@@ -29,3 +29,5 @@ After the first tag deployment, each URL loads and shows its page (base
 - [ ] `docs/api-reference/`
 - [ ] `docs/literature/` (bibliography listed)
 - [ ] `paper/`
+
+- Deferred (supervisor, 2026-11-08): docsite references to the paper by stable reference keys (a key registry resolved at build time, like LaTeX labels and refs), added only after the paper and its appendices are stable (post-WP11); until then the docsite carries no citations into the paper.

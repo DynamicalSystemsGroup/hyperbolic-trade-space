@@ -552,3 +552,14 @@ glossary.yaml so that the source is skimmable but the glossary should be compile
 text" (`glossary.yaml` as the single source, compiled into the Glossary page by
 `scripts/build_generated.py`, offered to WP10 as the register's source). Defaults approved as one
 item: "Approve the defaults as listed". Decided 5, deferred 0, raised 0.
+
+Further gate outcome (supervisor, at the approval question; verbatim in `WP8a-decisions.md`): G9 is
+withdrawn: the docsite carries no citations into the paper for now; `scripts/paper_sections.toml`,
+the paper-section slugs and the expected-at-release paper links in docs pages are removed from this
+amendment, and contract version 2 drops its paper-anchors item. New requirement R-26: no leftover
+reference to removed content anywhere in the docsite, its navigation, the site scripts or the
+tests' route lists (checked by a test that scans the built docsite and the sources for the moved
+file names, their old anchors, lemma tags, the generated-page names and the world key, and by the
+strict build). Deferred, on the punch list: references from the docsite to the paper by stable
+reference keys (a registry resolved at build time, like LaTeX labels), added after the paper and
+its appendices are stable.
