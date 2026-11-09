@@ -51,3 +51,27 @@ Until stage 2 closes, no caption or figure prose is polished anywhere in the pap
 "the total length of the paper is less hard ceiling and more regularization. each word earns his
 place, and more text has a higher burden". So figure prose, like all prose, is admitted by the job it
 does and recorded in the paper's length ledger, not blocked or licensed by a number.
+
+## The diagram spike's readout (2026-11-09, `docs/superpowers/notes/spike-sysml-diagrams/report.md`)
+
+Checked by the driver (both images looked at; the agent wrote only inside its folder).
+
+- Two diagrams are candidates for slots, both written as PlantUML by one projection script that
+  queries the loaded model (`project.py`); no built-in view of either tool gives them.
+  1. *What a configuration is* (`out/slot1_configuration_700.png`): the cubesat, its parts, the wheel
+     and tracker alternatives, the design variables and their ranges, all read from the model.
+     Legible at the column width. The stronger candidate.
+  2. *What the model computes from a configuration* (`out/slot2_attributes_700.png`): the
+     calculations, the slew analysis, the requirements and their satisfy relations. A dependency
+     overview, legible at the column width and busy. It does not show the attributes the simulation
+     measures outside the model (settling time, slew time, control effort).
+- The built-in views (the OpenSysML command-line renderer found on this machine, version 0.9; the
+  toolkit's `viz`, version 0.12) run and are unreadable at the column width, or omit the
+  alternatives, and have no view of requirements or calculations.
+- Model-to-picture check: adding one alternative or changing one requirement changes exactly the
+  expected lines; the generated text is identical over three runs; every name in it is in the model.
+- Limits: white background only; not judged by a human yet; the projection uses an interface the
+  model library marks experimental; the current runtime's own view interface (nodes and edges, not
+  PlantUML) was not explored; PlantUML and Java are system tools, so adoption means committed text
+  and image with a test on the text where the tools exist.
+

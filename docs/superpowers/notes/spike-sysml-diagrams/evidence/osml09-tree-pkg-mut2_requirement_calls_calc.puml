@@ -1,0 +1,682 @@
+@startuml
+' tree rendering (no view declared; rendering CubesatTradeSpaceV2 directly)
+<style>
+root {
+  BackGroundColor white
+  FontName SansSerif
+  FontSize 14
+  FontColor black
+  LineColor #181818
+  HorizontalAlignment left
+}
+element {
+  BackGroundColor white
+  LineColor #181818
+  LineThickness 0.5
+  RoundCorner 0
+  Shadowing 0.0
+}
+start, end, activityBar {
+  BackGroundColor black
+}
+arrow {
+  LineColor #181818
+  LineThickness 1
+  FontSize 13
+}
+note {
+  BackGroundColor #FEFFDD
+  FontSize 13
+}
+.usage {
+  RoundCorner 20
+}
+.package {
+  LineThickness 1.5
+}
+.region {
+  LineStyle 4
+}
+</style>
+skinparam wrapWidth 300
+hide stereotype
+hide circle
+hide empty members
+class "**CubesatTradeSpaceV2**\n<size:10>//«package»//</size>" as n0 <<package>>
+class "**WheelClass**\n<size:10>//«enum def»//</size>" as n1 <<enum def>>
+class "**small**\n<size:10>//«enum»//</size>" as n2 <<enum>> <<usage>>
+n1 -- n2
+class "**medium**\n<size:10>//«enum»//</size>" as n3 <<enum>> <<usage>>
+n1 -- n3
+class "**large**\n<size:10>//«enum»//</size>" as n4 <<enum>> <<usage>>
+n1 -- n4
+n0 -- n1
+class "**TrackerGrade**\n<size:10>//«enum def»//</size>" as n5 <<enum def>>
+class "**coarse**\n<size:10>//«enum»//</size>" as n6 <<enum>> <<usage>>
+n5 -- n6
+class "**medium**\n<size:10>//«enum»//</size>" as n7 <<enum>> <<usage>>
+n5 -- n7
+class "**fine**\n<size:10>//«enum»//</size>" as n8 <<enum>> <<usage>>
+n5 -- n8
+n0 -- n5
+class "**ReactionWheel**\n<size:10>//«part def»//</size>" as n9 <<part def>>
+class "**wheelClass : WheelClass**\n<size:10>//«attribute»//</size>" as n10 <<attribute>> <<usage>>
+n9 -- n10
+class "**maxTorque : TorqueValue**\n<size:10>//«attribute»//</size>" as n11 <<attribute>> <<usage>>
+n9 -- n11
+class "**maxMomentum : AngularMomentumValue**\n<size:10>//«attribute»//</size>" as n12 <<attribute>> <<usage>>
+n9 -- n12
+class "**mass : MassValue**\n<size:10>//«attribute»//</size>" as n13 <<attribute>> <<usage>>
+n9 -- n13
+n0 -- n9
+class "**SmallWheel**\n<size:10>//«part def»//</size>" as n14 <<part def>>
+class "**wheelClass**\n<size:10>//«attribute»//</size>" as n15 <<attribute>> <<usage>>
+n14 -- n15
+class "**maxTorque**\n<size:10>//«attribute»//</size>" as n16 <<attribute>> <<usage>>
+n14 -- n16
+class "**maxMomentum**\n<size:10>//«attribute»//</size>" as n17 <<attribute>> <<usage>>
+n14 -- n17
+class "**mass**\n<size:10>//«attribute»//</size>" as n18 <<attribute>> <<usage>>
+n14 -- n18
+n0 -- n14
+class "**MediumWheel**\n<size:10>//«part def»//</size>" as n19 <<part def>>
+class "**wheelClass**\n<size:10>//«attribute»//</size>" as n20 <<attribute>> <<usage>>
+n19 -- n20
+class "**maxTorque**\n<size:10>//«attribute»//</size>" as n21 <<attribute>> <<usage>>
+n19 -- n21
+class "**maxMomentum**\n<size:10>//«attribute»//</size>" as n22 <<attribute>> <<usage>>
+n19 -- n22
+class "**mass**\n<size:10>//«attribute»//</size>" as n23 <<attribute>> <<usage>>
+n19 -- n23
+n0 -- n19
+class "**LargeWheel**\n<size:10>//«part def»//</size>" as n24 <<part def>>
+class "**wheelClass**\n<size:10>//«attribute»//</size>" as n25 <<attribute>> <<usage>>
+n24 -- n25
+class "**maxTorque**\n<size:10>//«attribute»//</size>" as n26 <<attribute>> <<usage>>
+n24 -- n26
+class "**maxMomentum**\n<size:10>//«attribute»//</size>" as n27 <<attribute>> <<usage>>
+n24 -- n27
+class "**mass**\n<size:10>//«attribute»//</size>" as n28 <<attribute>> <<usage>>
+n24 -- n28
+n0 -- n24
+class "**StarTracker**\n<size:10>//«part def»//</size>" as n29 <<part def>>
+class "**grade : TrackerGrade**\n<size:10>//«attribute»//</size>" as n30 <<attribute>> <<usage>>
+n29 -- n30
+class "**accuracy : PlaneAngleValue**\n<size:10>//«attribute»//</size>" as n31 <<attribute>> <<usage>>
+n29 -- n31
+class "**mass : MassValue**\n<size:10>//«attribute»//</size>" as n32 <<attribute>> <<usage>>
+n29 -- n32
+class "**power : PowerValue**\n<size:10>//«attribute»//</size>" as n33 <<attribute>> <<usage>>
+n29 -- n33
+n0 -- n29
+class "**CoarseTracker**\n<size:10>//«part def»//</size>" as n34 <<part def>>
+class "**grade**\n<size:10>//«attribute»//</size>" as n35 <<attribute>> <<usage>>
+n34 -- n35
+class "**accuracy**\n<size:10>//«attribute»//</size>" as n36 <<attribute>> <<usage>>
+n34 -- n36
+class "**mass**\n<size:10>//«attribute»//</size>" as n37 <<attribute>> <<usage>>
+n34 -- n37
+class "**power**\n<size:10>//«attribute»//</size>" as n38 <<attribute>> <<usage>>
+n34 -- n38
+n0 -- n34
+class "**MediumTracker**\n<size:10>//«part def»//</size>" as n39 <<part def>>
+class "**grade**\n<size:10>//«attribute»//</size>" as n40 <<attribute>> <<usage>>
+n39 -- n40
+class "**accuracy**\n<size:10>//«attribute»//</size>" as n41 <<attribute>> <<usage>>
+n39 -- n41
+class "**mass**\n<size:10>//«attribute»//</size>" as n42 <<attribute>> <<usage>>
+n39 -- n42
+class "**power**\n<size:10>//«attribute»//</size>" as n43 <<attribute>> <<usage>>
+n39 -- n43
+n0 -- n39
+class "**FineTracker**\n<size:10>//«part def»//</size>" as n44 <<part def>>
+class "**grade**\n<size:10>//«attribute»//</size>" as n45 <<attribute>> <<usage>>
+n44 -- n45
+class "**accuracy**\n<size:10>//«attribute»//</size>" as n46 <<attribute>> <<usage>>
+n44 -- n46
+class "**mass**\n<size:10>//«attribute»//</size>" as n47 <<attribute>> <<usage>>
+n44 -- n47
+class "**power**\n<size:10>//«attribute»//</size>" as n48 <<attribute>> <<usage>>
+n44 -- n48
+n0 -- n44
+class "**DesignRanges**\n<size:10>//«part def»//</size>" as n49 <<part def>>
+class "**panelSpanMin : LengthValue**\n<size:10>//«attribute»//</size>" as n50 <<attribute>> <<usage>>
+n49 -- n50
+class "**panelSpanMax : LengthValue**\n<size:10>//«attribute»//</size>" as n51 <<attribute>> <<usage>>
+n49 -- n51
+class "**batteryCapacityMin : EnergyValue**\n<size:10>//«attribute»//</size>" as n52 <<attribute>> <<usage>>
+n49 -- n52
+class "**batteryCapacityMax : EnergyValue**\n<size:10>//«attribute»//</size>" as n53 <<attribute>> <<usage>>
+n49 -- n53
+n0 -- n49
+class "**designRanges : DesignRanges**\n<size:10>//«part»//</size>" as n54 <<part>> <<usage>>
+n0 -- n54
+class "**GainBox**\n<size:10>//«part def»//</size>" as n55 <<part def>>
+class "**KpMin : Real**\n<size:10>//«attribute»//</size>" as n56 <<attribute>> <<usage>>
+n55 -- n56
+class "**KpMax : Real**\n<size:10>//«attribute»//</size>" as n57 <<attribute>> <<usage>>
+n55 -- n57
+class "**KdMin : Real**\n<size:10>//«attribute»//</size>" as n58 <<attribute>> <<usage>>
+n55 -- n58
+class "**KdMax : Real**\n<size:10>//«attribute»//</size>" as n59 <<attribute>> <<usage>>
+n55 -- n59
+n0 -- n55
+class "**baselineGains : GainBox**\n<size:10>//«part»//</size>" as n60 <<part>> <<usage>>
+class "**KpMin**\n<size:10>//«attribute»//</size>" as n61 <<attribute>> <<usage>>
+n60 -- n61
+class "**KpMax**\n<size:10>//«attribute»//</size>" as n62 <<attribute>> <<usage>>
+n60 -- n62
+class "**KdMin**\n<size:10>//«attribute»//</size>" as n63 <<attribute>> <<usage>>
+n60 -- n63
+class "**KdMax**\n<size:10>//«attribute»//</size>" as n64 <<attribute>> <<usage>>
+n60 -- n64
+n0 -- n60
+class "**aggressiveGains : GainBox**\n<size:10>//«part»//</size>" as n65 <<part>> <<usage>>
+class "**KpMin**\n<size:10>//«attribute»//</size>" as n66 <<attribute>> <<usage>>
+n65 -- n66
+class "**KpMax**\n<size:10>//«attribute»//</size>" as n67 <<attribute>> <<usage>>
+n65 -- n67
+class "**KdMin**\n<size:10>//«attribute»//</size>" as n68 <<attribute>> <<usage>>
+n65 -- n68
+class "**KdMax**\n<size:10>//«attribute»//</size>" as n69 <<attribute>> <<usage>>
+n65 -- n69
+n0 -- n65
+class "**Environment**\n<size:10>//«part def»//</size>" as n70 <<part def>>
+class "**orbitalRate : AngularVelocityValue**\n<size:10>//«attribute»//</size>" as n71 <<attribute>> <<usage>>
+n70 -- n71
+class "**eclipseDuration : TimeValue**\n<size:10>//«attribute»//</size>" as n72 <<attribute>> <<usage>>
+n70 -- n72
+class "**maxDepthOfDischarge : Real**\n<size:10>//«attribute»//</size>" as n73 <<attribute>> <<usage>>
+n70 -- n73
+class "**solarFlux : IrradianceValue**\n<size:10>//«attribute»//</size>" as n74 <<attribute>> <<usage>>
+n70 -- n74
+class "**cellEfficiency : Real**\n<size:10>//«attribute»//</size>" as n75 <<attribute>> <<usage>>
+n70 -- n75
+class "**packingFactor : Real**\n<size:10>//«attribute»//</size>" as n76 <<attribute>> <<usage>>
+n70 -- n76
+class "**degradation : Real**\n<size:10>//«attribute»//</size>" as n77 <<attribute>> <<usage>>
+n70 -- n77
+class "**incidenceFactor : Real**\n<size:10>//«attribute»//</size>" as n78 <<attribute>> <<usage>>
+n70 -- n78
+class "**housekeepingLoad : PowerValue**\n<size:10>//«attribute»//</size>" as n79 <<attribute>> <<usage>>
+n70 -- n79
+class "**wheelIdlePower : PowerValue**\n<size:10>//«attribute»//</size>" as n80 <<attribute>> <<usage>>
+n70 -- n80
+class "**wheelLossCoefficient : Real**\n<size:10>//«attribute»//</size>" as n81 <<attribute>> <<usage>>
+n70 -- n81
+class "**disturbanceTorque : TorqueValue**\n<size:10>//«attribute»//</size>" as n82 <<attribute>> <<usage>>
+n70 -- n82
+class "**gravityGradientOffset : PlaneAngleValue**\n<size:10>//«attribute»//</size>" as n83 <<attribute>> <<usage>>
+n70 -- n83
+class "**panelArealDensity : SurfaceDensityValue**\n<size:10>//«attribute»//</size>" as n84 <<attribute>> <<usage>>
+n70 -- n84
+class "**batterySpecificEnergy : Real**\n<size:10>//«attribute»//</size>" as n85 <<attribute>> <<usage>>
+n70 -- n85
+n0 -- n70
+class "**environment : Environment**\n<size:10>//«part»//</size>" as n86 <<part>> <<usage>>
+n0 -- n86
+class "**Bus**\n<size:10>//«part def»//</size>" as n87 <<part def>>
+class "**bodyLength : LengthValue**\n<size:10>//«attribute»//</size>" as n88 <<attribute>> <<usage>>
+n87 -- n88
+class "**bodyWidth : LengthValue**\n<size:10>//«attribute»//</size>" as n89 <<attribute>> <<usage>>
+n87 -- n89
+class "**bodyHeight : LengthValue**\n<size:10>//«attribute»//</size>" as n90 <<attribute>> <<usage>>
+n87 -- n90
+class "**mass : MassValue**\n<size:10>//«attribute»//</size>" as n91 <<attribute>> <<usage>>
+n87 -- n91
+n0 -- n87
+class "**Antenna**\n<size:10>//«part def»//</size>" as n92 <<part def>>
+class "**diameter : LengthValue**\n<size:10>//«attribute»//</size>" as n93 <<attribute>> <<usage>>
+n92 -- n93
+class "**offset : LengthValue**\n<size:10>//«attribute»//</size>" as n94 <<attribute>> <<usage>>
+n92 -- n94
+class "**mass : MassValue**\n<size:10>//«attribute»//</size>" as n95 <<attribute>> <<usage>>
+n92 -- n95
+n0 -- n92
+class "**Imu**\n<size:10>//«part def»//</size>" as n96 <<part def>>
+class "**mass : MassValue**\n<size:10>//«attribute»//</size>" as n97 <<attribute>> <<usage>>
+n96 -- n97
+n0 -- n96
+class "**Controller**\n<size:10>//«part def»//</size>" as n98 <<part def>>
+class "**Kp : Real**\n<size:10>//«attribute»//</size>" as n99 <<attribute>> <<usage>>
+n98 -- n99
+class "**Kd : Real**\n<size:10>//«attribute»//</size>" as n100 <<attribute>> <<usage>>
+n98 -- n100
+n0 -- n98
+class "**SolarPanel**\n<size:10>//«part def»//</size>" as n101 <<part def>>
+class "**span : LengthValue**\n<size:10>//«attribute»//</size>" as n102 <<attribute>> <<usage>>
+n101 -- n102
+class "**chord : LengthValue**\n<size:10>//«attribute»//</size>" as n103 <<attribute>> <<usage>>
+n101 -- n103
+class "**area : AreaValue**\n<size:10>//«attribute»//</size>" as n104 <<attribute>> <<usage>>
+n101 -- n104
+class "**mass : MassValue**\n<size:10>//«attribute»//</size>" as n105 <<attribute>> <<usage>>
+n101 -- n105
+n0 -- n101
+class "**Battery**\n<size:10>//«part def»//</size>" as n106 <<part def>>
+class "**capacity : EnergyValue**\n<size:10>//«attribute»//</size>" as n107 <<attribute>> <<usage>>
+n106 -- n107
+class "**mass : MassValue**\n<size:10>//«attribute»//</size>" as n108 <<attribute>> <<usage>>
+n106 -- n108
+n0 -- n106
+class "**Cubesat**\n<size:10>//«part def»//</size>" as n109 <<part def>>
+class "**panelSpan : LengthValue**\n<size:10>//«attribute»//</size>" as n110 <<attribute>> <<usage>>
+n109 -- n110
+class "**batteryCapacity : EnergyValue**\n<size:10>//«attribute»//</size>" as n111 <<attribute>> <<usage>>
+n109 -- n111
+class "**bus : Bus**\n<size:10>//«part»//</size>" as n112 <<part>> <<usage>>
+n109 -- n112
+class "**panelPlus : SolarPanel**\n<size:10>//«part»//</size>" as n113 <<part>> <<usage>>
+class "**span**\n<size:10>//«attribute»//</size>" as n114 <<attribute>> <<usage>>
+n113 -- n114
+n109 -- n113
+class "**panelMinus : SolarPanel**\n<size:10>//«part»//</size>" as n115 <<part>> <<usage>>
+class "**span**\n<size:10>//«attribute»//</size>" as n116 <<attribute>> <<usage>>
+n115 -- n116
+n109 -- n115
+class "**battery : Battery**\n<size:10>//«part»//</size>" as n117 <<part>> <<usage>>
+class "**capacity**\n<size:10>//«attribute»//</size>" as n118 <<attribute>> <<usage>>
+n117 -- n118
+n109 -- n117
+class "**antenna : Antenna**\n<size:10>//«part»//</size>" as n119 <<part>> <<usage>>
+n109 -- n119
+class "**imu : Imu**\n<size:10>//«part»//</size>" as n120 <<part>> <<usage>>
+n109 -- n120
+class "**wheel : ReactionWheel**\n<size:10>//«part»//</size>" as n121 <<part>> <<usage>>
+n109 -- n121
+class "**tracker : StarTracker**\n<size:10>//«part»//</size>" as n122 <<part>> <<usage>>
+n109 -- n122
+class "**controller : Controller**\n<size:10>//«part»//</size>" as n123 <<part>> <<usage>>
+n109 -- n123
+class "**wheelCount : Integer**\n<size:10>//«attribute»//</size>" as n124 <<attribute>> <<usage>>
+n109 -- n124
+class "**totalMass : MassValue**\n<size:10>//«attribute»//</size>" as n125 <<attribute>> <<usage>>
+n109 -- n125
+class "**structureMass : MassValue**\n<size:10>//«attribute»//</size>" as n126 <<attribute>> <<usage>>
+n109 -- n126
+class "**adcsMass : MassValue**\n<size:10>//«attribute»//</size>" as n127 <<attribute>> <<usage>>
+n109 -- n127
+class "**momentumCapacity : AngularMomentumValue**\n<size:10>//«attribute»//</size>" as n128 <<attribute>> <<usage>>
+n109 -- n128
+class "**generatedPower : PowerValue**\n<size:10>//«attribute»//</size>" as n129 <<attribute>> <<usage>>
+n109 -- n129
+class "**availablePower : PowerValue**\n<size:10>//«attribute»//</size>" as n130 <<attribute>> <<usage>>
+n109 -- n130
+class "**usableWheelTorque : TorqueValue**\n<size:10>//«attribute»//</size>" as n131 <<attribute>> <<usage>>
+n109 -- n131
+n0 -- n109
+class "**MassAccounting**\n<size:10>//«calc def»//</size>" as n132 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n133 <<attribute>> <<usage>>
+n132 -- n133
+class "**: MassValue**\n<size:10>//«attribute»//</size>" as n134 <<attribute>> <<usage>>
+n132 -- n134
+n0 -- n132
+class "**StructureMass**\n<size:10>//«calc def»//</size>" as n135 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n136 <<attribute>> <<usage>>
+n135 -- n136
+class "**: MassValue**\n<size:10>//«attribute»//</size>" as n137 <<attribute>> <<usage>>
+n135 -- n137
+n0 -- n135
+class "**AdcsMass**\n<size:10>//«calc def»//</size>" as n138 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n139 <<attribute>> <<usage>>
+n138 -- n139
+class "**: MassValue**\n<size:10>//«attribute»//</size>" as n140 <<attribute>> <<usage>>
+n138 -- n140
+n0 -- n138
+class "**GeneratedPower**\n<size:10>//«calc def»//</size>" as n141 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n142 <<attribute>> <<usage>>
+n141 -- n142
+class "**: PowerValue**\n<size:10>//«attribute»//</size>" as n143 <<attribute>> <<usage>>
+n141 -- n143
+n0 -- n141
+class "**BaseLoad**\n<size:10>//«calc def»//</size>" as n144 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n145 <<attribute>> <<usage>>
+n144 -- n145
+class "**: PowerValue**\n<size:10>//«attribute»//</size>" as n146 <<attribute>> <<usage>>
+n144 -- n146
+n0 -- n144
+class "**AvailablePower**\n<size:10>//«calc def»//</size>" as n147 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n148 <<attribute>> <<usage>>
+n147 -- n148
+class "**: PowerValue**\n<size:10>//«attribute»//</size>" as n149 <<attribute>> <<usage>>
+n147 -- n149
+n0 -- n147
+class "**UsableWheelTorque**\n<size:10>//«calc def»//</size>" as n150 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n151 <<attribute>> <<usage>>
+n150 -- n151
+class "**: TorqueValue**\n<size:10>//«attribute»//</size>" as n152 <<attribute>> <<usage>>
+n150 -- n152
+n0 -- n150
+class "**SlewLossEnergy**\n<size:10>//«calc def»//</size>" as n153 <<calc def>>
+class "**torqueSquaredIntegral : Real**\n<size:10>//«attribute»//</size>" as n154 <<attribute>> <<usage>>
+n153 -- n154
+class "**: EnergyValue**\n<size:10>//«attribute»//</size>" as n155 <<attribute>> <<usage>>
+n153 -- n155
+n0 -- n153
+class "**EclipseDemand**\n<size:10>//«calc def»//</size>" as n156 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n157 <<attribute>> <<usage>>
+n156 -- n157
+class "**slewEnergy : EnergyValue**\n<size:10>//«attribute»//</size>" as n158 <<attribute>> <<usage>>
+n156 -- n158
+class "**: EnergyValue**\n<size:10>//«attribute»//</size>" as n159 <<attribute>> <<usage>>
+n156 -- n159
+n0 -- n156
+class "**DepthOfDischarge**\n<size:10>//«calc def»//</size>" as n160 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n161 <<attribute>> <<usage>>
+n160 -- n161
+class "**slewEnergy : EnergyValue**\n<size:10>//«attribute»//</size>" as n162 <<attribute>> <<usage>>
+n160 -- n162
+class "**: Real**\n<size:10>//«attribute»//</size>" as n163 <<attribute>> <<usage>>
+n160 -- n163
+n0 -- n160
+class "**EclipseReserve**\n<size:10>//«calc def»//</size>" as n164 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n165 <<attribute>> <<usage>>
+n164 -- n165
+class "**slewEnergy : EnergyValue**\n<size:10>//«attribute»//</size>" as n166 <<attribute>> <<usage>>
+n164 -- n166
+class "**: EnergyValue**\n<size:10>//«attribute»//</size>" as n167 <<attribute>> <<usage>>
+n164 -- n167
+n0 -- n164
+class "**OrbitPeriod**\n<size:10>//«calc def»//</size>" as n168 <<calc def>>
+class "**: TimeValue**\n<size:10>//«attribute»//</size>" as n169 <<attribute>> <<usage>>
+n168 -- n169
+n0 -- n168
+class "**EnergyBalance**\n<size:10>//«calc def»//</size>" as n170 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n171 <<attribute>> <<usage>>
+n170 -- n171
+class "**slewEnergy : EnergyValue**\n<size:10>//«attribute»//</size>" as n172 <<attribute>> <<usage>>
+n170 -- n172
+class "**: EnergyValue**\n<size:10>//«attribute»//</size>" as n173 <<attribute>> <<usage>>
+n170 -- n173
+n0 -- n170
+class "**PeakSlewPower**\n<size:10>//«calc def»//</size>" as n174 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n175 <<attribute>> <<usage>>
+n174 -- n175
+class "**peakTorque : TorqueValue**\n<size:10>//«attribute»//</size>" as n176 <<attribute>> <<usage>>
+n174 -- n176
+class "**: PowerValue**\n<size:10>//«attribute»//</size>" as n177 <<attribute>> <<usage>>
+n174 -- n177
+n0 -- n174
+class "**PowerMargin**\n<size:10>//«calc def»//</size>" as n178 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n179 <<attribute>> <<usage>>
+n178 -- n179
+class "**peakTorque : TorqueValue**\n<size:10>//«attribute»//</size>" as n180 <<attribute>> <<usage>>
+n178 -- n180
+class "**: PowerValue**\n<size:10>//«attribute»//</size>" as n181 <<attribute>> <<usage>>
+n178 -- n181
+n0 -- n178
+class "**InertiaX**\n<size:10>//«calc def»//</size>" as n182 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n183 <<attribute>> <<usage>>
+n182 -- n183
+class "**: MomentOfInertiaValue**\n<size:10>//«attribute»//</size>" as n184 <<attribute>> <<usage>>
+n182 -- n184
+n0 -- n182
+class "**InertiaY**\n<size:10>//«calc def»//</size>" as n185 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n186 <<attribute>> <<usage>>
+n185 -- n186
+class "**: MomentOfInertiaValue**\n<size:10>//«attribute»//</size>" as n187 <<attribute>> <<usage>>
+n185 -- n187
+n0 -- n185
+class "**InertiaZ**\n<size:10>//«calc def»//</size>" as n188 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n189 <<attribute>> <<usage>>
+n188 -- n189
+class "**: MomentOfInertiaValue**\n<size:10>//«attribute»//</size>" as n190 <<attribute>> <<usage>>
+n188 -- n190
+n0 -- n188
+class "**GravityGradientTorque**\n<size:10>//«calc def»//</size>" as n191 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n192 <<attribute>> <<usage>>
+n191 -- n192
+class "**: TorqueValue**\n<size:10>//«attribute»//</size>" as n193 <<attribute>> <<usage>>
+n191 -- n193
+n0 -- n191
+class "**PointingError**\n<size:10>//«calc def»//</size>" as n194 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n195 <<attribute>> <<usage>>
+n194 -- n195
+class "**: PlaneAngleValue**\n<size:10>//«attribute»//</size>" as n196 <<attribute>> <<usage>>
+n194 -- n196
+n0 -- n194
+class "**Scenario**\n<size:10>//«part def»//</size>" as n197 <<part def>>
+class "**slewAngle : PlaneAngleValue**\n<size:10>//«attribute»//</size>" as n198 <<attribute>> <<usage>>
+n197 -- n198
+class "**horizon : TimeValue**\n<size:10>//«attribute»//</size>" as n199 <<attribute>> <<usage>>
+n197 -- n199
+class "**timeStep : TimeValue**\n<size:10>//«attribute»//</size>" as n200 <<attribute>> <<usage>>
+n197 -- n200
+class "**slewBand : PlaneAngleValue**\n<size:10>//«attribute»//</size>" as n201 <<attribute>> <<usage>>
+n197 -- n201
+class "**slewBandSensitivity : PlaneAngleValue**\n<size:10>//«attribute»//</size>" as n202 <<attribute>> <<usage>>
+n197 -- n202
+class "**settlingFraction : Real**\n<size:10>//«attribute»//</size>" as n203 <<attribute>> <<usage>>
+n197 -- n203
+n0 -- n197
+class "**nominalSlew : Scenario**\n<size:10>//«part»//</size>" as n204 <<part>> <<usage>>
+n0 -- n204
+class "**TorqueLimitedSlewTime**\n<size:10>//«calc def»//</size>" as n205 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n206 <<attribute>> <<usage>>
+n205 -- n206
+class "**scenario : Scenario**\n<size:10>//«attribute»//</size>" as n207 <<attribute>> <<usage>>
+n205 -- n207
+class "**: TimeValue**\n<size:10>//«attribute»//</size>" as n208 <<attribute>> <<usage>>
+n205 -- n208
+n0 -- n205
+class "**NaturalFrequency**\n<size:10>//«calc def»//</size>" as n209 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n210 <<attribute>> <<usage>>
+n209 -- n210
+class "**: Real**\n<size:10>//«attribute»//</size>" as n211 <<attribute>> <<usage>>
+n209 -- n211
+n0 -- n209
+class "**DampingRatio**\n<size:10>//«calc def»//</size>" as n212 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n213 <<attribute>> <<usage>>
+n212 -- n213
+class "**: Real**\n<size:10>//«attribute»//</size>" as n214 <<attribute>> <<usage>>
+n212 -- n214
+n0 -- n212
+class "**DominantPoleRate**\n<size:10>//«calc def»//</size>" as n215 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n216 <<attribute>> <<usage>>
+n215 -- n216
+class "**: Real**\n<size:10>//«attribute»//</size>" as n217 <<attribute>> <<usage>>
+n215 -- n217
+n0 -- n215
+class "**LinearSlewTime**\n<size:10>//«calc def»//</size>" as n218 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n219 <<attribute>> <<usage>>
+n218 -- n219
+class "**scenario : Scenario**\n<size:10>//«attribute»//</size>" as n220 <<attribute>> <<usage>>
+n218 -- n220
+class "**: TimeValue**\n<size:10>//«attribute»//</size>" as n221 <<attribute>> <<usage>>
+n218 -- n221
+n0 -- n218
+class "**SlewTimeEstimate**\n<size:10>//«calc def»//</size>" as n222 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n223 <<attribute>> <<usage>>
+n222 -- n223
+class "**scenario : Scenario**\n<size:10>//«attribute»//</size>" as n224 <<attribute>> <<usage>>
+n222 -- n224
+class "**: TimeValue**\n<size:10>//«attribute»//</size>" as n225 <<attribute>> <<usage>>
+n222 -- n225
+n0 -- n222
+class "**IsTorqueLimited**\n<size:10>//«calc def»//</size>" as n226 <<calc def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n227 <<attribute>> <<usage>>
+n226 -- n227
+class "**scenario : Scenario**\n<size:10>//«attribute»//</size>" as n228 <<attribute>> <<usage>>
+n226 -- n228
+class "**: Boolean**\n<size:10>//«attribute»//</size>" as n229 <<attribute>> <<usage>>
+n226 -- n229
+n0 -- n226
+class "**SlewMeasurement**\n<size:10>//«part def»//</size>" as n230 <<part def>>
+class "**settlingTime : TimeValue**\n<size:10>//«attribute»//</size>" as n231 <<attribute>> <<usage>>
+n230 -- n231
+class "**peakMomentum : AngularMomentumValue**\n<size:10>//«attribute»//</size>" as n232 <<attribute>> <<usage>>
+n230 -- n232
+class "**torqueSquaredIntegral : Real**\n<size:10>//«attribute»//</size>" as n233 <<attribute>> <<usage>>
+n230 -- n233
+class "**censored : Boolean**\n<size:10>//«attribute»//</size>" as n234 <<attribute>> <<usage>>
+n230 -- n234
+n0 -- n230
+class "**baselineMeasurement : SlewMeasurement**\n<size:10>//«part»//</size>" as n235 <<part>> <<usage>>
+class "**settlingTime**\n<size:10>//«attribute»//</size>" as n236 <<attribute>> <<usage>>
+n235 -- n236
+class "**peakMomentum**\n<size:10>//«attribute»//</size>" as n237 <<attribute>> <<usage>>
+n235 -- n237
+class "**torqueSquaredIntegral**\n<size:10>//«attribute»//</size>" as n238 <<attribute>> <<usage>>
+n235 -- n238
+class "**censored**\n<size:10>//«attribute»//</size>" as n239 <<attribute>> <<usage>>
+n235 -- n239
+n0 -- n235
+class "**SettledRequirement**\n<size:10>//«requirement def»//</size>" as n240 <<requirement def>>
+class "**c : Cubesat**\n<size:10>//«subject»//</size>" as n241 <<subject>> <<usage>>
+n240 -- n241
+class "**settlingTime : TimeValue**\n<size:10>//«attribute»//</size>" as n242 <<attribute>> <<usage>>
+n240 -- n242
+class "**require constraint**" as n243 <<require constraint>> <<usage>>
+n240 -- n243
+n0 -- n240
+class "**MomentumRequirement**\n<size:10>//«requirement def»//</size>" as n244 <<requirement def>>
+class "**c : Cubesat**\n<size:10>//«subject»//</size>" as n245 <<subject>> <<usage>>
+n244 -- n245
+class "**peakMomentum : AngularMomentumValue**\n<size:10>//«attribute»//</size>" as n246 <<attribute>> <<usage>>
+n244 -- n246
+class "**require constraint**" as n247 <<require constraint>> <<usage>>
+n244 -- n247
+n0 -- n244
+class "**PowerRequirement**\n<size:10>//«requirement def»//</size>" as n248 <<requirement def>>
+class "**c : Cubesat**\n<size:10>//«subject»//</size>" as n249 <<subject>> <<usage>>
+n248 -- n249
+class "**require constraint**" as n250 <<require constraint>> <<usage>>
+n248 -- n250
+n0 -- n248
+class "**DepthOfDischargeRequirement**\n<size:10>//«requirement def»//</size>" as n251 <<requirement def>>
+class "**c : Cubesat**\n<size:10>//«subject»//</size>" as n252 <<subject>> <<usage>>
+n251 -- n252
+class "**torqueSquaredIntegral : Real**\n<size:10>//«attribute»//</size>" as n253 <<attribute>> <<usage>>
+n251 -- n253
+class "**require constraint**" as n254 <<require constraint>> <<usage>>
+n251 -- n254
+n0 -- n251
+class "**SlewBandRequirement**\n<size:10>//«requirement def»//</size>" as n255 <<requirement def>>
+class "**c : Cubesat**\n<size:10>//«subject»//</size>" as n256 <<subject>> <<usage>>
+n255 -- n256
+class "**censored : Boolean**\n<size:10>//«attribute»//</size>" as n257 <<attribute>> <<usage>>
+n255 -- n257
+class "**require constraint**" as n258 <<require constraint>> <<usage>>
+n255 -- n258
+n0 -- n255
+class "**baselineSettled : SettledRequirement**\n<size:10>//«requirement»//</size>" as n259 <<requirement>> <<usage>>
+n0 -- n259
+class "**baselineMomentum : MomentumRequirement**\n<size:10>//«requirement»//</size>" as n260 <<requirement>> <<usage>>
+n0 -- n260
+class "**baselinePower : PowerRequirement**\n<size:10>//«requirement»//</size>" as n261 <<requirement>> <<usage>>
+n0 -- n261
+class "**baselineDepthOfDischarge : DepthOfDischargeRequirement**\n<size:10>//«requirement»//</size>" as n262 <<requirement>> <<usage>>
+n0 -- n262
+class "**baselineSlewBand : SlewBandRequirement**\n<size:10>//«requirement»//</size>" as n263 <<requirement>> <<usage>>
+n0 -- n263
+class "**satisfy**" as n264 <<satisfy>> <<usage>>
+n0 -- n264
+class "**satisfy**" as n265 <<satisfy>> <<usage>>
+n0 -- n265
+class "**satisfy**" as n266 <<satisfy>> <<usage>>
+n0 -- n266
+class "**satisfy**" as n267 <<satisfy>> <<usage>>
+n0 -- n267
+class "**satisfy**" as n268 <<satisfy>> <<usage>>
+n0 -- n268
+class "**ConfigurationVerification**\n<size:10>//«verification def»//</size>" as n269 <<verification def>>
+class "**c : Cubesat**\n<size:10>//«subject»//</size>" as n270 <<subject>> <<usage>>
+n269 -- n270
+class "**objective**" as n271 <<objective>> <<usage>>
+class "**power : PowerRequirement**\n<size:10>//«verify»//</size>" as n272 <<verify>> <<usage>>
+n271 -- n272
+n269 -- n271
+n0 -- n269
+class "**SlewVerification**\n<size:10>//«verification def»//</size>" as n273 <<verification def>>
+class "**c : Cubesat**\n<size:10>//«subject»//</size>" as n274 <<subject>> <<usage>>
+n273 -- n274
+class "**objective**" as n275 <<objective>> <<usage>>
+class "**settled : SettledRequirement**\n<size:10>//«verify»//</size>" as n276 <<verify>> <<usage>>
+n275 -- n276
+class "**momentum : MomentumRequirement**\n<size:10>//«verify»//</size>" as n277 <<verify>> <<usage>>
+n275 -- n277
+class "**depthOfDischarge : DepthOfDischargeRequirement**\n<size:10>//«verify»//</size>" as n278 <<verify>> <<usage>>
+n275 -- n278
+class "**slewBand : SlewBandRequirement**\n<size:10>//«verify»//</size>" as n279 <<verify>> <<usage>>
+n275 -- n279
+n273 -- n275
+n0 -- n273
+class "**MassAccountingIdentity**\n<size:10>//«constraint def»//</size>" as n280 <<constraint def>>
+class "**c : Cubesat**\n<size:10>//«attribute»//</size>" as n281 <<attribute>> <<usage>>
+n280 -- n281
+n0 -- n280
+class "**GeneratedPowerMonotoneInSpan**\n<size:10>//«constraint def»//</size>" as n282 <<constraint def>>
+class "**s1 : LengthValue**\n<size:10>//«attribute»//</size>" as n283 <<attribute>> <<usage>>
+n282 -- n283
+class "**s2 : LengthValue**\n<size:10>//«attribute»//</size>" as n284 <<attribute>> <<usage>>
+n282 -- n284
+n0 -- n282
+class "**PowerRequirementHoldsInRange**\n<size:10>//«constraint def»//</size>" as n285 <<constraint def>>
+class "**s : LengthValue**\n<size:10>//«attribute»//</size>" as n286 <<attribute>> <<usage>>
+n285 -- n286
+class "**t : PowerValue**\n<size:10>//«attribute»//</size>" as n287 <<attribute>> <<usage>>
+n285 -- n287
+n0 -- n285
+class "**SmallBatteryViolatesDepthOfDischarge**\n<size:10>//«constraint def»//</size>" as n288 <<constraint def>>
+class "**cap : EnergyValue**\n<size:10>//«attribute»//</size>" as n289 <<attribute>> <<usage>>
+n288 -- n289
+class "**t : PowerValue**\n<size:10>//«attribute»//</size>" as n290 <<attribute>> <<usage>>
+n288 -- n290
+class "**e : EnergyValue**\n<size:10>//«attribute»//</size>" as n291 <<attribute>> <<usage>>
+n288 -- n291
+n0 -- n288
+class "**SlewExperiment**\n<size:10>//«analysis def»//</size>" as n292 <<analysis def>>
+class "**cubesat : Cubesat**\n<size:10>//«subject»//</size>" as n293 <<subject>> <<usage>>
+n292 -- n293
+class "**torqueSquaredIntegral : Real**\n<size:10>//«attribute»//</size>" as n294 <<attribute>> <<usage>>
+n292 -- n294
+class "**peakTorque : TorqueValue**\n<size:10>//«attribute»//</size>" as n295 <<attribute>> <<usage>>
+n292 -- n295
+class "**peakMomentum : AngularMomentumValue**\n<size:10>//«attribute»//</size>" as n296 <<attribute>> <<usage>>
+n292 -- n296
+class "**controlEffort : AngularMomentumValue**\n<size:10>//«attribute»//</size>" as n297 <<attribute>> <<usage>>
+n292 -- n297
+class "**censored : Boolean**\n<size:10>//«attribute»//</size>" as n298 <<attribute>> <<usage>>
+n292 -- n298
+class "**attributes**\n<size:10>//«attribute»//</size>" as n299 <<attribute>> <<usage>>
+n292 -- n299
+n0 -- n292
+class "**cubesatBaseline : Cubesat**\n<size:10>//«part»//</size>" as n300 <<part>> <<usage>>
+class "**wheel : MediumWheel**\n<size:10>//«part»//</size>" as n301 <<part>> <<usage>>
+n300 -- n301
+class "**tracker : MediumTracker**\n<size:10>//«part»//</size>" as n302 <<part>> <<usage>>
+n300 -- n302
+n0 -- n300
+class "**cubesatAgile : Cubesat**\n<size:10>//«part»//</size>" as n303 <<part>> <<usage>>
+class "**panelSpan**\n<size:10>//«attribute»//</size>" as n304 <<attribute>> <<usage>>
+n303 -- n304
+class "**batteryCapacity**\n<size:10>//«attribute»//</size>" as n305 <<attribute>> <<usage>>
+n303 -- n305
+class "**wheel : LargeWheel**\n<size:10>//«part»//</size>" as n306 <<part>> <<usage>>
+n303 -- n306
+class "**tracker : FineTracker**\n<size:10>//«part»//</size>" as n307 <<part>> <<usage>>
+n303 -- n307
+class "**controller**\n<size:10>//«part»//</size>" as n308 <<part>> <<usage>>
+class "**Kp**\n<size:10>//«attribute»//</size>" as n309 <<attribute>> <<usage>>
+n308 -- n309
+class "**Kd**\n<size:10>//«attribute»//</size>" as n310 <<attribute>> <<usage>>
+n308 -- n310
+n303 -- n308
+n0 -- n303
+class "**cubesatCompact : Cubesat**\n<size:10>//«part»//</size>" as n311 <<part>> <<usage>>
+class "**panelSpan**\n<size:10>//«attribute»//</size>" as n312 <<attribute>> <<usage>>
+n311 -- n312
+class "**batteryCapacity**\n<size:10>//«attribute»//</size>" as n313 <<attribute>> <<usage>>
+n311 -- n313
+class "**wheel : SmallWheel**\n<size:10>//«part»//</size>" as n314 <<part>> <<usage>>
+n311 -- n314
+class "**tracker : CoarseTracker**\n<size:10>//«part»//</size>" as n315 <<part>> <<usage>>
+n311 -- n315
+class "**controller**\n<size:10>//«part»//</size>" as n316 <<part>> <<usage>>
+class "**Kp**\n<size:10>//«attribute»//</size>" as n317 <<attribute>> <<usage>>
+n316 -- n317
+class "**Kd**\n<size:10>//«attribute»//</size>" as n318 <<attribute>> <<usage>>
+n316 -- n318
+n311 -- n316
+n0 -- n311
+@enduml

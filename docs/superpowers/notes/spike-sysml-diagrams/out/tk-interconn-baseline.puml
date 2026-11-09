@@ -1,0 +1,6 @@
+@startuml
+rectangle "cubesatBaseline : Cubesat" as n1 <<part>> {
+  rectangle "wheel : MediumWheel" as n2 <<part>>
+  rectangle "tracker : MediumTracker" as n3 <<part>>
+}
+@enduml

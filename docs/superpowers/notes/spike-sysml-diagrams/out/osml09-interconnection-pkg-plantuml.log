@@ -1,0 +1,4 @@
+✓ package CubesatTradeSpaceV2
+note:  renders empty
+note: package CubesatTradeSpaceV2 has no place in an interconnection rendering; it is not shown
+wrote out/osml09-interconnection-pkg-plantuml.txt (plantuml, 873 bytes)

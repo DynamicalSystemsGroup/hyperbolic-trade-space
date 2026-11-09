@@ -1,0 +1,79 @@
+@startuml
+left to right direction
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 13
+skinparam ClassBackgroundColor white
+skinparam ClassBorderColor #404040
+skinparam ArrowColor #404040
+skinparam RectangleBackgroundColor white
+skinparam nodesep 12
+skinparam ranksep 30
+hide circle
+hide empty members
+
+class "Cubesat (configuration c)\n<<part def>>" as Cubesat #E8EEF7
+class "MassAccounting\n<<calc def>>" as MassAccounting
+class "StructureMass\n<<calc def>>" as StructureMass
+class "AdcsMass\n<<calc def>>" as AdcsMass
+class "GeneratedPower\n<<calc def>>" as GeneratedPower
+class "BaseLoad\n<<calc def>>" as BaseLoad
+class "AvailablePower\n<<calc def>>" as AvailablePower
+class "UsableWheelTorque\n<<calc def>>" as UsableWheelTorque
+class "SlewLossEnergy\n<<calc def>>" as SlewLossEnergy
+class "EclipseDemand\n<<calc def>>" as EclipseDemand
+class "DepthOfDischarge\n<<calc def>>" as DepthOfDischarge
+class "EclipseReserve\n<<calc def>>" as EclipseReserve
+class "OrbitPeriod\n<<calc def>>" as OrbitPeriod
+class "EnergyBalance\n<<calc def>>" as EnergyBalance
+class "PeakSlewPower\n<<calc def>>" as PeakSlewPower
+class "PowerMargin\n<<calc def>>" as PowerMargin
+class "InertiaX\n<<calc def>>" as InertiaX
+class "InertiaY\n<<calc def>>" as InertiaY
+class "InertiaZ\n<<calc def>>" as InertiaZ
+class "GravityGradientTorque\n<<calc def>>" as GravityGradientTorque
+class "PointingError\n<<calc def>>" as PointingError
+class "SettledRequirement\n<<requirement def>>" as SettledRequirement #FDEBD0
+class "MomentumRequirement\n<<requirement def>>" as MomentumRequirement #FDEBD0
+class "PowerRequirement\n<<requirement def>>" as PowerRequirement #FDEBD0
+class "DepthOfDischargeRequirement\n<<requirement def>>" as DepthOfDischargeRequirement #FDEBD0
+class "SlewBandRequirement\n<<requirement def>>" as SlewBandRequirement #FDEBD0
+class "SlewExperiment\n<<analysis def>>" as SlewExperiment #D5F0DC
+AvailablePower --> GeneratedPower
+Cubesat --> AdcsMass
+Cubesat --> AvailablePower
+Cubesat --> GeneratedPower
+Cubesat --> MassAccounting
+Cubesat --> StructureMass
+Cubesat --> UsableWheelTorque
+DepthOfDischarge --> EclipseDemand
+DepthOfDischargeRequirement --> EclipseDemand
+DepthOfDischargeRequirement --> SlewLossEnergy
+EclipseDemand --> BaseLoad
+EclipseReserve --> EclipseDemand
+EnergyBalance --> BaseLoad
+EnergyBalance --> GeneratedPower
+EnergyBalance --> OrbitPeriod
+GravityGradientTorque --> InertiaX
+GravityGradientTorque --> InertiaY
+GravityGradientTorque --> InertiaZ
+InertiaX --> StructureMass
+InertiaY --> StructureMass
+InertiaZ --> StructureMass
+PointingError --> GravityGradientTorque
+PowerMargin --> GeneratedPower
+PowerMargin --> PeakSlewPower
+SlewExperiment --> DepthOfDischarge
+SlewExperiment --> EclipseReserve
+SlewExperiment --> EnergyBalance
+SlewExperiment --> PeakSlewPower
+SlewExperiment --> PointingError
+SlewExperiment --> PowerMargin
+SlewExperiment --> SlewLossEnergy
+UsableWheelTorque --> AvailablePower
+SettledRequirement ..> cubesatBaseline : <<satisfy>>
+MomentumRequirement ..> cubesatBaseline : <<satisfy>>
+PowerRequirement ..> cubesatBaseline : <<satisfy>>
+DepthOfDischargeRequirement ..> cubesatBaseline : <<satisfy>>
+SlewBandRequirement ..> cubesatBaseline : <<satisfy>>
+@enduml

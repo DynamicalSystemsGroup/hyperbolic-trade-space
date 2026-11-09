@@ -1,0 +1,51 @@
+// kind: interconnection
+// stated: no view declared; rendering CubesatTradeSpaceV2::Cubesat directly
+// layout: dot
+digraph {
+  graph [fontname="Helvetica"];
+  node [shape=box, style=filled, fillcolor=white, color="#181818", fontname="Helvetica", fontsize=14, penwidth=0.5];
+  edge [color="#181818", fontname="Helvetica", fontsize=13, penwidth=1];
+  subgraph "cluster_n0" {
+    label=<<b>Cubesat</b><br/><font point-size="10"><i>«part def»</i></font>>;
+    color=black;
+    penwidth=0.5;
+    "n0" [shape=point, style=invis, width=0, height=0, label=""];
+    "n1" [style="rounded,filled", label=<<b>panelSpan : LengthValue</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+    "n2" [style="rounded,filled", label=<<b>batteryCapacity : EnergyValue</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+    "n3" [style="rounded,filled", label=<<b>bus : Bus</b><br/><font point-size="10"><i>«part»</i></font>>];
+    subgraph "cluster_n4" {
+      label=<<b>panelPlus : SolarPanel</b><br/><font point-size="10"><i>«part»</i></font>>;
+      color=black;
+      penwidth=0.5;
+      "n4" [shape=point, style=invis, width=0, height=0, label=""];
+      "n5" [style="rounded,filled", label=<<b>span</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+    }
+    subgraph "cluster_n6" {
+      label=<<b>panelMinus : SolarPanel</b><br/><font point-size="10"><i>«part»</i></font>>;
+      color=black;
+      penwidth=0.5;
+      "n6" [shape=point, style=invis, width=0, height=0, label=""];
+      "n7" [style="rounded,filled", label=<<b>span</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+    }
+    subgraph "cluster_n8" {
+      label=<<b>battery : Battery</b><br/><font point-size="10"><i>«part»</i></font>>;
+      color=black;
+      penwidth=0.5;
+      "n8" [shape=point, style=invis, width=0, height=0, label=""];
+      "n9" [style="rounded,filled", label=<<b>capacity</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+    }
+    "n10" [style="rounded,filled", label=<<b>antenna : Antenna</b><br/><font point-size="10"><i>«part»</i></font>>];
+    "n11" [style="rounded,filled", label=<<b>imu : Imu</b><br/><font point-size="10"><i>«part»</i></font>>];
+    "n12" [style="rounded,filled", label=<<b>wheel : ReactionWheel</b><br/><font point-size="10"><i>«part»</i></font>>];
+    "n13" [style="rounded,filled", label=<<b>tracker : StarTracker</b><br/><font point-size="10"><i>«part»</i></font>>];
+    "n14" [style="rounded,filled", label=<<b>controller : Controller</b><br/><font point-size="10"><i>«part»</i></font>>];
+    "n15" [style="rounded,filled", label=<<b>wheelCount : Integer</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+    "n16" [style="rounded,filled", label=<<b>totalMass : MassValue</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+    "n17" [style="rounded,filled", label=<<b>structureMass : MassValue</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+    "n18" [style="rounded,filled", label=<<b>adcsMass : MassValue</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+    "n19" [style="rounded,filled", label=<<b>momentumCapacity : AngularMomentumValue</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+    "n20" [style="rounded,filled", label=<<b>generatedPower : PowerValue</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+    "n21" [style="rounded,filled", label=<<b>availablePower : PowerValue</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+    "n22" [style="rounded,filled", label=<<b>usableWheelTorque : TorqueValue</b><br/><font point-size="10"><i>«attribute»</i></font>>];
+  }
+}
