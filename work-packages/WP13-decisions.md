@@ -60,3 +60,6 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   the LP gap equals the duality gap to 1e-12; labels unchanged under 100 perturbations within the
   radius on every fit; the Corollary bound holds on all 40 fits. Cubesat K = 2, 3: all certified; only
   ten reach values moved at the sixth decimal; K = 1 unchanged.
+- **Bundle (G-E, G-I, platform ties as ledger G-10, G-F).** **Supervisor (mzargham), verbatim:**
+  "Accept the bundle as is". Disposition: accepted with the reviewers' reasons; no open item remains
+  before the acceptance question.
