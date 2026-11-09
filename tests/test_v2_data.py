@@ -49,6 +49,8 @@ ENTRY = {
     "check_designs_cubesat.csv": "v2-check-designs",
 }
 
+SAT_ATOL = 0.01  # torque_saturated_frac: absolute tolerance, evidence in swap-evidence.md
+
 
 @pytest.fixture(scope="module")
 def entries():
@@ -198,14 +200,16 @@ def _assert_within_frozen_tolerances(committed: pd.DataFrame, fresh: pd.DataFram
     for col in exact:
         assert (committed[col].to_numpy() == fresh[col].to_numpy()).all(), col
     rtol = 1e-4 if box == "baseline" else 1e-3
-    sat_rtol = 2e-2 if box == "baseline" else 1e-1
     special = {*cmp.TIME_COLUMNS, "torque_saturated_frac"}
     for col in committed.columns:
         if col in exact or col in special:
             continue
         np.testing.assert_allclose(committed[col], fresh[col], rtol=rtol, atol=1e-6, err_msg=col)
+    # torque_saturated_frac is a step count over about 1340 accepted steps of an adaptive solver
+    # (a diagnostic, not a fitted attribute): compared with an absolute tolerance of 0.01 and no
+    # relative term (work-packages/swap-evidence.md).
     np.testing.assert_allclose(
-        committed.torque_saturated_frac, fresh.torque_saturated_frac, rtol=sat_rtol, atol=1e-12
+        committed.torque_saturated_frac, fresh.torque_saturated_frac, rtol=0, atol=SAT_ATOL
     )
     for col in cmp.TIME_COLUMNS:
         np.testing.assert_allclose(committed[col], fresh[col], atol=0.5, err_msg=col)
@@ -235,7 +239,10 @@ def test_the_check_designs_regenerate_within_the_tolerances(text):
         if col in ("role", "name", "wheel_class", "st_grade", *cmp.FLAGS):
             continue
         atol = 0.5 if col in cmp.TIME_COLUMNS else 1e-6
-        rtol = 1e-1 if col == "torque_saturated_frac" else 1e-3
+        if col == "torque_saturated_frac":  # absolute 0.01, no relative term (swap-evidence.md)
+            rtol, atol = 0, SAT_ATOL
+        else:
+            rtol = 1e-3
         np.testing.assert_allclose(committed[col], fresh[col], rtol=rtol, atol=atol, err_msg=col)
 
 
