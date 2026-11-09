@@ -203,3 +203,33 @@ Built with `cd paper && uv run myst build --html` (no warnings), served on port 
   plain words (an earlier draft with underscores and carets in the Meaning cell printed as raw
   source and was rewritten). The aliases and avoid fields are not rendered.
 - **Remaining.** The pane shows a stale frame for a second after a theme change or a jump.
+
+## WP10, tickets of 2026-11-09 (figure out of the body, sections 4 and 6, equations; 1280 and 375 px)
+
+Built with `cd paper && uv run myst build --html` (no warnings; it prints the line that a server
+started and is stopped by hand), served on port 8810 from `paper/_build/html`, then stopped. Light
+at 1280 and 375 px; dark at 375 px (Results, equation 2, the L17 box). Measured in the page with
+a script, then looked at in the pane.
+
+- **Display equations.** The paper has two. Equation (1) (Methods) and equation (2) (section 6.2)
+  were one line each; they now break across lines with `aligned` and fit the column at 375 px (the
+  widest content ends at 334 px against a box edge of 336 px for (1), 311 against 333 for (2)). A
+  first build showed the break lost: the `\\` had been written as a single backslash and the
+  line ran on and was cut ("w* = al"); corrected, rebuilt and measured again. No inline formula
+  overflows its paragraph or box at 375 px and the page has no horizontal scroll; only the family
+  table scrolls inside its own frame, as before. The driver's "two more wider than their box"
+  were not found beyond these two displays.
+- **First screens, no picture.** The first screen is the title, the abstract and section 1. The
+  three-pane figure is gone from the body (seven figures remain, Figure 1 to 7). Section 1 now
+  says what the chart is in words (a reversible rewriting of the metrics as a position along the
+  surface and a level relative to it); the abstract already said it. The opening reads without the
+  picture.
+- **Section 4** (light, 375 px). The paragraph before Definition 2, the energy paragraph and the
+  sentence on terms between Definitions 2 and 3, then one sentence before each of the next two
+  definitions. Each sits outside the definition boxes and reads as one short paragraph.
+- **Section 6** (light 1280, light and dark 375). The opening paragraph, one plain sentence before
+  each run of boxes, and the L17 box (Theorem 12 on the page) with its sketch and script pointer
+  render like the other boxes; the box numbers and the L numbers of the prose are two systems that
+  the reader meets side by side (existing).
+- **Remaining.** The dark theme at 1280 px was not looked at (the layout does not change); the
+  pane shows a stale frame for a second after a theme change or a jump.
