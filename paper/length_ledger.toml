@@ -115,7 +115,7 @@ reader = "the practitioner who reads the exponents as trade rates"
 [[raise]]
 date = "2026-11-09"
 section = "Results"
-words_added = 24
+words_added = 25
 job = "says what the chart and pull-back boxes are for"
 reader = "the reader skimming the mathematics"
 
@@ -174,3 +174,24 @@ section = "Reproducibility and your own case"
 words_added = 120
 job = "states in Appendix F.2 that results reproduce exactly in the image of record and agree within tolerances elsewhere"
 reader = "the reader reproducing the paper"
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 25
+job = "names the two uses of the workflow, design optimization and configuration management, where the workflow is introduced"
+reader = "the trade-study practitioner deciding whether the workflow is for them"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case construction"
+words_added = 58
+job = "frames the case as a worked example of design optimization, says the simulation is the measurement of this loop and that a fielded system's measured attributes would enter the same table and fit"
+reader = "the reader asking what the case does and does not show"
+
+[[raise]]
+date = "2026-11-09"
+section = "Future work and final remark"
+words_added = 18
+job = "names other cases across the engineering lifecycle, configuration management of a fielded system among them"
+reader = "the reader looking for where the workflow goes next"

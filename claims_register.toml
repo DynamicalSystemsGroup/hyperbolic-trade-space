@@ -489,3 +489,31 @@ status = "backed"
 disposition = "keep"
 source = "WP10 Amendment 1, P6c; supervisor words of 2026-11-09 (WP10-decisions.md)"
 note = "The evaluation is a black box (simulator, physical test or human assessment): glossary row for attributes in the paper's section 3 and its supporting material."
+
+[[claim]]
+id = "C031"
+fragment = "in this design loop the simulation is how the attributes are measured ... because the evaluation is a black box to the method"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "M"
+backing = [
+  "file:paper/paper.ipynb",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, supervisor words of 2026-11-09 (WP10-decisions.md)"
+note = "Section 3 defines the evaluation as a black box to the method (a simulator, a physical test or a human assessment), so the table and the fit do not depend on where the attributes came from."
+
+[[claim]]
+id = "C032"
+fragment = "in this design loop the simulation is how the attributes are measured ... because the evaluation is a black box to the method"
+file = "paper/supporting_material.ipynb"
+anchor = "Appendix C. The case's model: how the table of metrics came to be"
+kind = "M"
+backing = [
+  "file:paper/paper.ipynb",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10, supervisor words of 2026-11-09 (WP10-decisions.md)"
+note = "Section 3 defines the evaluation as a black box to the method (a simulator, a physical test or a human assessment), so the table and the fit do not depend on where the attributes came from."
