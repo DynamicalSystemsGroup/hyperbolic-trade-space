@@ -75,3 +75,12 @@ them (not for Allen 1997, Dyson 2001, Spero 2014, Ross 2010).
   Numbers confirmed against the chapter text; the copy is not the publisher's, so the author may
   wish to check the page numbers in the printed second edition. Ledger entry I10 cites these two
   numbers; the Boyd and Vandenberghe 5.5.3 reference stays only as a convex-case remark.
+
+## Added for the WP10 abstract change (2026-11-09, the one-facet fit is a geometric program)
+
+- Boyd, S., Kim, S.-J., Vandenberghe, L., Hassibi, A. (2007). A tutorial on geometric programming.
+  *Optimization and Engineering* 8(1), 67-127. doi:10.1007/s11081-007-9001-7 (key `boyd2007tutorial`,
+  already in the bibliography). Sections 2.1 (monomials and posynomials), 2.2 (standard form), 2.3
+  (convex form, the change of variables x = exp(y)) and 2.5 (generalized posynomials) were read in
+  the authors' PDF by the derivation implementer; the paper cites it for the one-facet fit being a
+  geometric program (Appendix B, L4.14 to L4.24) and the fitted model a generalized posynomial.
