@@ -49,6 +49,8 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 | 2026-11-09 | The saturation fraction is compared with an absolute tolerance of 0.01 and no relative term | `swap-evidence.md`: a step count over about 1340 steps, diagnostic only; moves by whole steps under 1e-15 perturbations; largest deviation 0.0080 over 60 re-runs; flags never change | `WP16-decisions.md` |
 | 2026-11-09 | Before the swap is decided: measure whether the paper's conclusions move when the two step-quantized fitted times jitter (five perturbed regenerations per dataset, refit each) | the same evidence: settling and slew time move up to 1.3 percent, 0.48 s, under rounding-level perturbation | `WP16-scope-of-work.md`, Amendment 1 |
 | 2026-11-09 | Under either answer on the times: a new abstraction gap for step-read times and band grazing; the paper prints fragile quantities with their measured range and residues as bounds; the swap is held and the simulator untouched | `swap-evidence.md`, sensitivity section: 740 quantities compared over five perturbed regenerations; conclusions identical, some printed numbers not | `WP16-decisions.md` |
+| 2026-11-09 | **Accepted WP15** (the system model tidy-up) | its fresh review with the reviewer's own mutations; the returned gaps closed with tests; commit 2d2a751 green in the driver's clean checkout (1804 passed, 0 failed; ledger verifies with no drift). A complete Linux run on this commit is still owed (GitHub download timeouts) | `WP15-decisions.md` |
+| 2026-11-09 | **Accepted WP8a with Amendment 2** (the docsite for a package user, the root page) | three browser passes by the driver at two widths and both schemes; commit 2d2a751 green; the docsite's own 78 tests. The PM's separate reviewer did not repeat the browser pass | `WP8a-decisions.md`; `WP8a-driver-browser-pass.md` |
 
 ## Decided by the driver for the PM
 
@@ -73,6 +75,7 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 | 2026-11-09 | commit a7eebde, the driver's clean checkout, this Mac | 1758 passed, 16 skipped, 1 xfailed, 0 failed; ruff check and format clean; lock clean; lemma chain passes; proof map OK, 236 steps; attribution 0 | **the first green verdict on a named commit** |
 | 2026-11-09 | commit a7eebde, CI run 42572757374, ubuntu | 1755 passed, 3 failed | the three values that are exact only where they were produced: the planted table's hash, Figure 1's data hash, one check design's saturation fraction. The pinned toolkit and the Z3 wheel both work on Linux. |
 | 2026-11-09 | commit 67de186, the driver's clean checkout, this Mac (includes the paper's main text and the environment-of-record tolerance design) | 1795 passed, 13 skipped, 1 xfailed, 0 failed; ruff check and format clean; lock clean; lemma chain passes; proof map OK, 236 steps; attribution 0 | green |
+| 2026-11-09 | commit 2d2a751, the driver's clean checkout, this Mac | 1804 passed, 13 skipped, 1 xfailed, 0 failed; ruff check and format clean; lock clean; lemma chain passes; proof map OK, 236 steps; ledger 15 entries, 0 drifts; attribution 0 | green; the commit on which WP15 and WP8a Amendment 2 are accepted |
 
 **Method from here on.** The driver verifies a named commit in its own clean checkout (a git
 worktree in the session scratchpad with its own locked environment), not the shared tree, so a

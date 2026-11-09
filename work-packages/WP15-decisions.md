@@ -123,3 +123,18 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   - **C (a stale sentence in the change register): fix. D: confirm whether it is still true** after
     the model fix of 2d13465. **E, F: accept with the reviewer's reasons.**
   WP15 is returned for A, B(1), B(2), C and D; the driver verifies and accepts after that.
+- **2026-11-09. WP15 accepted by the driver** (under the mandate; ratified or reversed by the
+  supervisor at the PR). Review of record: `WP15-review.md` (21df997, with its addendum). The gaps
+  the driver returned are closed: A, the legacy evaluation behind the Oracle protocol and the
+  shared-subspace experiment that runs both oracles (33a249b, e50d1e2, `tests/test_legacy_oracle.py`);
+  B(1), a variant proved infeasible is written to the ledger (33a249b); B(2), the sampler skips
+  excluded regions, tested on constructed spaces, the declared space excluding nothing and the
+  committed data unchanged (fae4865); C, D, the register corrected and the workaround gone
+  (90b1204, 2d13465); B(3), E, F accepted with their reasons. The driver's verification of commit
+  2d2a751 in a clean checkout: 1804 passed, 13 skipped, 1 xfailed, none failed; lint, format and
+  lock clean; the lemma chain passes; the ledger verifies with 15 entries and no drift;
+  attribution 0. Not yet in hand, and stated as such: a complete test run on Linux for this commit
+  (the last three CI runs stopped at a download that GitHub answered with a gateway timeout; the
+  last complete Linux run, at fda73a1, passed all but one test since corrected); the generation of
+  record, which is WP16's and waits on the container and on the supervisor's choice about the two
+  step-read times.

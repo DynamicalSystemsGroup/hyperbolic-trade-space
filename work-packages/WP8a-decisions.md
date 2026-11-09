@@ -383,3 +383,24 @@ The driver's calls on `WP8a-driver-browser-pass.md` are binding and applied as f
 - **CI defect.** `test_generated_pages_in_the_build` read `build/generated/` left by another command;
   its fixture now builds the generated pages into a temporary directory and the test asserts those.
   Checked in a fresh worktree (`git worktree add`, `uv sync --locked`, the six test files): 220 passed.
+
+## The driver's calls under the mandate (not the supervisor's words; for his review at the PR)
+
+- **2026-11-09. The docsite gains figures; API docstrings lose their tags.** From the driver's
+  browser pass (`WP8a-driver-browser-pass.md`): sixteen pages had no figure, so up to seven are
+  generated at build time from the code shown above each, reversing the approved default of a
+  docsite without figures; docstrings shown in the API reference carry no lemma, axiom or
+  specification tags (the review's gap G-1; "make sure we don't have left over references to
+  content we removed"); the two hand-written tables and the API reference's parameters are lists
+  so that they read on a phone.
+- **2026-11-09. WP8a with Amendment 2 accepted by the driver** (ratified or reversed by the
+  supervisor at the PR). Evidence: the driver's three browser passes on sites staged from clean
+  checkouts (the root page and all sixteen docsite pages at 1280 px and 375 px, in light and dark;
+  the phone navigation drawer, search and the map's link exercised; every finding of the first
+  pass closed or, for the map's redraw, left to the reader loops); the driver's verification of
+  commit 2d2a751: 1804 passed, none failed, lint, format and lock clean; the docsite's own tests
+  (structure, word budgets, no leftover references, the column of code blocks, figures produced by
+  the code shown) 78 passed. Stated plainly: the PM's separate fresh reviewer did not repeat the
+  browser pass (the implementer did its own); the driver's passes are the independent ones. The
+  supervisor's own staged review is not replaced by this: it happens at the PR, in the sitting for
+  the docsite and root page. The merge to `main` waits for the candidate.
