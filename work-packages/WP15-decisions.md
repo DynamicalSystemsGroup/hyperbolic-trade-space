@@ -87,3 +87,15 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Supervisor (mzargham), verbatim:** "Approved"
 - **Disposition:** approved; the PM executes on `dev` on WP15's own files, the probe record first;
   `pyproject.toml`, `uv.lock` and the CI workflow step by request to the driver.
+
+## Driver-owned dependency change (2026-11-08, on the PM's request; not a decision)
+
+- The PM asked for `z3-solver>=4.13` in the `case` group: probes 5 and 11 at opensysml 0.12.1 found
+  that the `solve` engine and the toolkit's `verify --solve` need a `z3` executable on PATH. This
+  serves the supervisor's recorded role for Z3 ("the z3 model checking is key because it can exclude
+  infeasible models") and is inside the approved scope.
+- Done by the driver: `case = ["opensysml>=0.12.1", "z3-solver>=4.13"]`; the lock resolves
+  z3-solver 5.3.3.0 (Linux wheels present in the lock); the wheel installs `.venv/bin/z3`, and
+  `uv run z3 --version` reports 5.3.3; `uv lock --check` passes. Note: this machine also has a
+  Homebrew `z3`, so only the first Tests run on `dev` shows that the wheel alone suffices on Linux;
+  an `apt-get install z3` step is added to the workflow only if that run shows it is needed.
