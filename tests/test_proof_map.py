@@ -935,7 +935,7 @@ def _run_L16():
 
 
 def test_L16_is_in_the_chain_with_its_exact_statement_and_new_entries():
-    assert CHAIN_NAMES[-1] == "lemma_16_soft_fit_alternation"
+    assert CHAIN_NAMES[-2] == "lemma_16_soft_fit_alternation"
     mod = importlib.import_module("derivation.lemma_16_soft_fit_alternation")
     assert mod.STATEMENT == (
         "Soft-weight alternation: with weights alpha_ik = softmax_k(kappa score_ik) from the "
@@ -1064,3 +1064,178 @@ def test_the_exact_instance_shows_the_objective_is_not_convex_in_the_terms():
     ins = ctx["L16"]["instance"]
     assert abs(ins["F"] - ins["F_swapped"]) < sp.Float("1e-30")  # the swap is a symmetry of F
     assert ins["F_mid"] - ins["F"] > sp.Float("0.004")  # the midpoint is worse: not convex
+
+
+# ------------- WP17 R-8: L17, the soft-fit certificate (the Hessian D - kappa M, second-order test)
+_L17 = "lemma_17_soft_fit_certificate.py"
+_L17_FACTS = (
+    "beta1_gap",
+    "beta2_gap",
+    "y_gap",
+    "z_gap",
+    "row1_gap",
+    "row2_gap",
+    "alpha_sum",
+    "p_sum",
+    "grad_gap",
+    "hess_gap",
+    "var_generic",
+    "D_var_gap",
+    "M_var_gap",
+    "affine_gap",
+)
+
+
+def _l17_steps():
+    return {s["tag"]: s for s in _record()["lemmas"][_L17]["steps"]}
+
+
+@pytest.fixture(scope="module")
+def l17():
+    mod = importlib.import_module("derivation.lemma_17_soft_fit_certificate")
+    ctx = {"S": make_symbols()}
+    mod.derive(ctx)
+    return ctx, mod
+
+
+def _l17_fresh(l17):
+    ctx, mod = l17
+    return {"S": ctx["S"], "L17": dict(ctx["L17"])}, mod
+
+
+def test_L17_is_in_the_chain_with_its_exact_statement_and_the_new_entry():
+    assert CHAIN_NAMES[-1] == "lemma_17_soft_fit_certificate"
+    mod = importlib.import_module("derivation.lemma_17_soft_fit_certificate")
+    assert mod.STATEMENT == (
+        "Soft-fit certificate: at a feasible point of the soft-weight fit where the first-order "
+        "(KKT) conditions hold, if the Hessian H = D - kappa M of the soft objective is positive "
+        "definite on the tangent space of the active face, the point is a strict local minimizer; "
+        "D and M are both positive semidefinite, D the weighted within-term curvature and kappa M "
+        "the designs' ambiguity between terms."
+    )
+    assert set(mod.AXIOMS_USED) == {"A1", "A2", "A3", "A6", "I16"}
+    entry = AX.get("I16")
+    assert entry.tag == AX.INHERITED and entry.has_form() and not entry.proposition
+    assert "Nocedal & Wright" in entry.citation and "Theorem 12.6" in entry.citation
+    assert "to be confirmed by the author" in entry.citation
+    assert "I10" in AX.AXIOMS and AX.get("I10").citation != entry.citation
+
+
+def test_L17_steps_are_of_the_kinds_the_rules_allow():
+    steps = _l17_steps()
+    assert len(steps) == 52
+    applies = {t: st["applies"] for t, st in steps.items() if st["kind"] == "axiom"}
+    ledger_steps = {name: [t for t, a in applies.items() if name in a] for name in AX.AXIOMS}
+    assert ledger_steps["I16"] == ["L17.21", "L17.22", "L17.23"]
+    assert ledger_steps["A3"] == ledger_steps["A6"] == ["L17.17"]
+    assert ledger_steps["A2"] == ["L17.2", "L17.18"]
+    assert ledger_steps["A1"] == ["L17.1", "L17.3"]
+    assert all(st["kind"] != "result" for st in steps.values())
+    assert sum(st["kind"] == "computed" for st in steps.values()) == 52 - 8
+
+
+def test_L17_verifies_and_each_falsified_fact_fails_loudly(l17):
+    ctx, mod = _l17_fresh(l17)
+    mod.verify(ctx)
+    for key in _L17_FACTS:
+        ctx, mod = _l17_fresh(l17)
+        ctx["L17"][key] = 1
+        with pytest.raises(AssertionError, match="L17 FAIL"):
+            mod.verify(ctx)
+    for key, bad in (
+        ("D_nonneg", None),
+        ("M_nonneg", None),
+        ("cone_in_face", False),
+        ("restriction", False),
+        ("certificate", False),
+        ("certificate_without_kkt", True),
+        ("certificate_without_curvature", True),
+    ):
+        ctx, mod = _l17_fresh(l17)
+        ctx["L17"][key] = bad
+        with pytest.raises(AssertionError, match="L17 FAIL"):
+            mod.verify(ctx)
+
+
+def test_L17_numerical_endpoints_hold_and_a_falsified_endpoint_fails(l17):
+    ctx, mod = _l17_fresh(l17)
+    ins, eq = ctx["L17"]["instance"], ctx["L17"]["all_equal"]
+    assert ins["grad_err"] < 1e-20 and ins["hess_err"] < 1e-20  # against finite differences
+    assert (
+        eq["one"]["gap"] < 1e-50
+        and eq["one"]["lambda_min"] < -0.01 < 0.01 < eq["half"]["lambda_min"]
+    )
+    for patch in (
+        {"instance": dict(ins, grad_err=sp.Float("1e-3"))},
+        {"instance": dict(ins, hess_err=sp.Float("1e-3"))},
+        {"instance": dict(ins, asymmetry=sp.Float("1e-3"))},
+        {"all_equal": dict(eq, one=dict(eq["one"], gap=sp.Float("1e-3")))},
+        {"all_equal": dict(eq, one=dict(eq["one"], lambda_min=sp.Float("0.5")))},
+        {"all_equal": dict(eq, half=dict(eq["half"], lambda_min=sp.Float("-0.5")))},
+        {"all_equal": dict(eq, one=dict(eq["one"], D_min=sp.Float("-0.5")))},
+    ):
+        ctx, mod = _l17_fresh(l17)
+        ctx["L17"].update(patch)
+        with pytest.raises(AssertionError, match="L17 FAIL"):
+            mod.verify(ctx)
+
+
+def test_the_hessian_D_plus_kappa_M_or_a_dropped_D_is_not_the_hessian(l17):
+    # the formulas are checked, not assumed: the wrong sign of kappa M, or D alone, disagrees with
+    # the finite differences of F at the exact instance
+    _, mod = l17
+    R = sp.Rational
+    U = [(1, 0), (1, R(1, 2)), (0, 1), (R(1, 2), 1)]
+    W = [(R(3, 4), R(1, 4)), (R(1, 5), R(4, 5))]
+    one = sp.Integer(1)
+    _, D, M, _ = mod._numbers(U, W, one, one)
+    h = sp.Float("1e-12", 60)
+
+    def second(a):
+        Wp = [list(r) for r in W]
+        Wm = [list(r) for r in W]
+        Wp[a // 2][a % 2] += h
+        Wm[a // 2][a % 2] -= h
+        return (
+            mod._F(U, Wp, one, one) - 2 * mod._F(U, W, one, one) + mod._F(U, Wm, one, one)
+        ) / h**2
+
+    for a in range(4):
+        assert abs(second(a) - (D - M)[a, a]) < 1e-9
+    assert any(abs(second(a) - (D + M)[a, a]) > 1e-3 for a in range(4))
+    assert any(abs(second(a) - D[a, a]) > 1e-3 for a in range(4))
+
+
+def test_the_cone_is_in_the_face_only_when_the_face_fixes_the_positive_multiplier_bounds():
+    from sympy.logic.inference import satisfiable
+
+    s, f, g = sp.symbols("s f g")
+    assert not satisfiable(sp.And(sp.And(s, f, g), sp.Not(sp.And(s, f))))
+    assert satisfiable(
+        sp.And(sp.And(s, f, g), sp.Not(sp.And(s, g))) | sp.And(sp.And(s, g), sp.Not(sp.And(s, f)))
+    )
+
+
+def test_the_certificate_needs_both_premises_of_I16():
+    kkt, curv, concl = (AX.I16.obj(key) for key in ("kkt", "curvature", "conclusion"))
+    assert AX.I16.entails([kkt, curv], concl)
+    assert not AX.I16.entails([kkt], concl) and not AX.I16.entails([curv], concl)
+    assert not AX.I16.entails([], concl)
+
+
+@pytest.mark.parametrize("name", ["I16", "A3", "A6", "A2", "A1"])
+def test_a_scratch_L17_without_a_ledger_import_fails_naming_the_entry(scratch, name):
+    header = "from derivation.axioms import A1, A2, A3, A6, I16"
+    names = [n for n in ("A1", "A2", "A3", "A6", "I16") if n != name]
+    edit(scratch, _L17, header, "from derivation.axioms import " + ", ".join(names))
+    code, out = run_checker(scratch)
+    assert code != 0 and _L17 in out and name in out
+
+
+def test_a_scratch_L17_with_a_changed_step_fails_naming_the_step(scratch):
+    edit(scratch, _L17, 'assert r["hess_gap"] == 0', 'assert r["hess_gap"] != 0')
+    code, out = run_checker(scratch)
+    assert code != 0 and "L17.35" in out
+    edit(scratch, "axioms.py", "Theorem 12.6", "Theorem 12.5")
+    code, out = run_checker(scratch)
+    assert code != 0 and "I16" in out
