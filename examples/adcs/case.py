@@ -225,6 +225,56 @@ def _plt():
     return plt
 
 
+FIGURE_WIDTH_IN = 8.0
+"""Width of every figure in inches; at ``FIGURE_DPI`` it is 800 px, under the 842 px figure column
+of the site at 1280 px, so a figure is shown at its natural size and not scaled down."""
+FIGURE_DPI = 100
+FIGURE_MIN_FONT_PT = 9.0
+"""The smallest type in any figure: 9 pt at 100 dpi is 12.5 px, the body's small print."""
+
+
+def _legible(fn):
+    """Draw the figure with every text at least ``FIGURE_MIN_FONT_PT``, at ``FIGURE_DPI``.
+
+    The panels of a figure are laid out one per row by the function itself; this decorator sets the
+    type sizes of the drawing, raises any smaller text (the package's annotations) to the floor,
+    lays the figure out again and checks that no text is below it.
+    """
+    import functools
+
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs):
+        from matplotlib.text import Text
+
+        plt = _plt()
+        size = FIGURE_MIN_FONT_PT
+        rc = {"font.size": size, "axes.titlesize": size, "axes.labelsize": size,
+              "xtick.labelsize": size, "ytick.labelsize": size, "legend.fontsize": size,
+              "figure.dpi": FIGURE_DPI}  # fmt: skip
+        with plt.rc_context(rc):
+            fig = fn(*args, **kwargs)
+            fig.canvas.draw()
+            for _ in range(2):
+                for t in fig.findobj(Text):
+                    if t.get_text().strip() and t.get_fontsize() < size:
+                        t.set_fontsize(size)
+                fig.tight_layout()
+                fig.canvas.draw()
+            small = [t.get_text() for t in fig.findobj(Text)
+                     if t.get_text().strip() and t.get_fontsize() < size]  # fmt: skip
+            assert not small, f"text below {size} pt in {fn.__name__}: {small[:3]}"
+        return fig
+
+    return wrapper
+
+
+def _wrap(text, width=48):
+    """A long axis label on several lines."""
+    import textwrap
+
+    return "\n".join(textwrap.wrap(text, width))
+
+
 def feasible_mask(raw, spec=CUBESAT):
     """Boolean mask of the feasible rows: every flag holds and every attribute is positive.
 
@@ -1170,6 +1220,7 @@ def cond_label(study, a):
     return f"conditioned {s.short[a]} ({inv}{s.units[a]}; larger is better)"
 
 
+@_legible
 def tau_sweep_figure(study, fit):
     """Fraction above V = 1, effective size and exponents across temperature.
 
@@ -1187,7 +1238,9 @@ def tau_sweep_figure(study, fit):
     plt = _plt()
     sweep = tau_sweep(study)
     fin = sweep[np.isfinite(sweep.tau)]
-    fig, axes = plt.subplots(1, 3, figsize=(12, 3.4))
+    fig = plt.figure(figsize=(FIGURE_WIDTH_IN, 6.6))
+    grid = fig.add_gridspec(2, 2, height_ratios=[1, 1.35])
+    axes = [fig.add_subplot(grid[0, 0]), fig.add_subplot(grid[0, 1]), fig.add_subplot(grid[1, :])]
     axes[0].semilogx(fin.tau, fin.frac_above, "o-", color=plotting.DATA_COLOR)
     axes[0].axhline(study.spec.target_frac, color=plotting.FRONTIER_COLOR, lw=0.8)
     axes[0].set(xlabel="temperature tau", ylabel="fraction above V = 1")
@@ -1206,15 +1259,16 @@ def tau_sweep_figure(study, fit):
     im = axes[2].imshow(W.T, cmap="Greys", aspect="auto", vmin=0, vmax=0.3)
     axes[2].set_xticks(
         range(len(sweep)), [f"{t:.0f}" if np.isfinite(t) else "inf" for t in sweep.tau],
-        rotation=60, fontsize=7,
+        rotation=60,
     )  # fmt: skip
-    axes[2].set_yticks(range(len(study.names)), study.names, fontsize=7)
+    axes[2].set_yticks(range(len(study.names)), study.names)
     axes[2].set(xlabel="tau")
     fig.colorbar(im, ax=axes[2])
     fig.tight_layout()
     return fig
 
 
+@_legible
 def log_plane_figure(study, fit, band=None):
     """Log-plane slices of the fit, one per pair of each facet's two largest exponents.
 
@@ -1238,8 +1292,9 @@ def log_plane_figure(study, fit, band=None):
     U = np.log(M)
     labels = plotting.facet_labels(est, M)
     pairs = k_terms.slice_pairs(est)
-    fig, axes = plt.subplots(1, len(pairs), figsize=(5 * len(pairs), 5.4), squeeze=False)
-    for ax, (j, k) in zip(axes[0], pairs, strict=True):
+    fig, axes = plt.subplots(len(pairs), 1, figsize=(FIGURE_WIDTH_IN, 4.6 * len(pairs)),
+                             squeeze=False)  # fmt: skip
+    for ax, (j, k) in zip(axes[:, 0], pairs, strict=True):
         keep, ws, bs = k_terms._slice(est, U, labels, band, j, k)
         sh = hts.HyperbolicTradeSpace(temperature=fit.tau, n_terms=len(keep))
         sh.exponents_, sh.log_offset_ = np.array(ws), np.array(bs)
@@ -1247,18 +1302,18 @@ def log_plane_figure(study, fit, band=None):
         for lim, col in ((ax.set_xlim, j), (ax.set_ylim, k)):
             lo, hi = U[:, col].min(), U[:, col].max()
             lim(lo - 0.1 * (hi - lo), hi + 0.1 * (hi - lo))
-        ax.set_xlabel("log of the " + cond_label(study, study.attrs[j]), fontsize=7)
-        ax.set_ylabel("log of the " + cond_label(study, study.attrs[k]), fontsize=7)
+        ax.set_xlabel(_wrap("log of the " + cond_label(study, study.attrs[j]), 80))
+        ax.set_ylabel(_wrap("log of the " + cond_label(study, study.attrs[k]), 44))
         noun = "facet" if len(keep) == 1 else "facets"
         names = ", ".join(str(f + 1) for f in keep)
         ax.set_title(
             f"{study.names[j]} and {study.names[k]}\n{noun} {names} drawn",
-            fontsize=9,
         )
     fig.tight_layout()
     return fig
 
 
+@_legible
 def coordinates_figure(study, fit, band=None):
     """Position along the frontier: two pairs of chart coordinates, shaded by facet.
 
@@ -1278,13 +1333,15 @@ def coordinates_figure(study, fit, band=None):
     chart = fit.estimator.transform(study.M)
     Z, logv = chart[:, :-1], chart[:, -1]
     labels = plotting.facet_labels(fit.estimator, study.M) if fit.K > 1 else _colors(study)
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.6))
+    fig, axes = plt.subplots(2, 1, figsize=(FIGURE_WIDTH_IN, 8.4))
     for ax, c in zip(axes, [(0, 1), (0, 2)], strict=True):
         if max(c) >= Z.shape[1]:
             c = (0, Z.shape[1] - 1)
         plotting.plot_frontier_coordinates(Z[:, list(c)], logv, color=labels, band=band, ax=ax)
         ax.set_xlabel(f"Z{c[0]} (log-ratio coordinate along the frontier, dimensionless)")
-        ax.set_ylabel(f"Z{c[1]} (log-ratio coordinate along the frontier, dimensionless)")
+        ax.set_ylabel(
+            _wrap(f"Z{c[1]} (log-ratio coordinate along the frontier, dimensionless)", 40)
+        )
     fig.tight_layout()
     return fig
 
@@ -1301,6 +1358,7 @@ def _member_title(rep, who):
     return f"{who}: {rep.lemma_name} ({n} metric{plural} in the exact-maximum support)"
 
 
+@_legible
 def tension_figure(study, fit, band=None):
     """Association among the near-frontier designs, one map per facet.
 
@@ -1317,16 +1375,18 @@ def tension_figure(study, fit, band=None):
     _, _, plotting = _lib()
     plt = _plt()
     reps = _reports(study, fit, band)
-    fig, axes = plt.subplots(1, len(reps), figsize=(7 * len(reps), 6.4), squeeze=False)
+    fig, axes = plt.subplots(len(reps), 1, figsize=(FIGURE_WIDTH_IN, 6.8 * len(reps)),
+                             squeeze=False)  # fmt: skip
     plotting.plot_tensions(reps if len(reps) > 1 else reps[0], names=study.names,
-                           ax=axes[0] if len(reps) > 1 else axes[0][0])  # fmt: skip
-    for k, (ax, rep) in enumerate(zip(axes[0], reps, strict=True)):
-        ax.set_title(_member_title(rep, f"facet {k + 1}"), fontsize=9)
-        plt.setp(ax.get_xticklabels(), rotation=45, ha="right", fontsize=7)
+                           ax=axes[:, 0] if len(reps) > 1 else axes[0][0])  # fmt: skip
+    for k, (ax, rep) in enumerate(zip(axes[:, 0], reps, strict=True)):
+        ax.set_title(_member_title(rep, f"facet {k + 1}"))
+        plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
     fig.tight_layout()
     return fig
 
 
+@_legible
 def regime_figure(spec=CUBESAT, n_max=None):
     """The tension maps of every regime side by side.
 
@@ -1342,18 +1402,19 @@ def regime_figure(spec=CUBESAT, n_max=None):
     _, _, plotting = _lib()
     plt = _plt()
     fig, axes = plt.subplots(
-        1, len(spec.regimes), figsize=(7 * len(spec.regimes), 6), squeeze=False
+        len(spec.regimes), 1, figsize=(FIGURE_WIDTH_IN, 6.8 * len(spec.regimes)), squeeze=False
     )
-    for ax, regime in zip(axes[0], spec.regimes, strict=True):
+    for ax, regime in zip(axes[:, 0], spec.regimes, strict=True):
         st = load_study(regime, spec, n_max)
         rep = _reports(st, fit_study(st))[0]
         plotting.plot_tensions(rep, names=st.names, ax=ax)
-        ax.set_title(_member_title(rep, regime), fontsize=9)
-        plt.setp(ax.get_xticklabels(), rotation=40, ha="right", fontsize=7)
+        ax.set_title(_member_title(rep, regime))
+        plt.setp(ax.get_xticklabels(), rotation=40, ha="right")
     fig.tight_layout()
     return fig
 
 
+@_legible
 def predict_check_figure(study, reg):
     """Predicted (open) and measured (filled diamond) chart positions of the proposals.
 
@@ -1377,7 +1438,7 @@ def predict_check_figure(study, reg):
     chart = fit.estimator.transform(vs.M)
     Z, logv = chart[:, :-1], chart[:, -1]
     Zm = reg.model.trade_space_.transform(meas[list(vs.attrs)].to_numpy(float))[:, :-1]
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.6))
+    fig, axes = plt.subplots(2, 1, figsize=(FIGURE_WIDTH_IN, 8.4))
     for ax, cols in zip(axes, [(0, 1), (0, 2)], strict=True):
         plotting.plot_frontier_coordinates(
             Z[:, list(cols)], logv, band=1.0 / reg.tau,
@@ -1387,7 +1448,7 @@ def predict_check_figure(study, reg):
                    color=plotting.CATEGORY_COLORS[3], zorder=5)  # fmt: skip
         for i in range(len(Zm)):
             ax.annotate(str(i + 1), (Zm[i, cols[0]], Zm[i, cols[1]]), xytext=(4, 4),
-                        textcoords="offset points", fontsize=8)  # fmt: skip
+                        textcoords="offset points")  # fmt: skip
     fig.tight_layout()
     return fig
 

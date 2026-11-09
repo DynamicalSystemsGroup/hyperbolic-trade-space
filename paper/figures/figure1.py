@@ -40,7 +40,9 @@ LEVEL_COLOR = "0.45"
 LEVELS = (0.5, 0.75, 1.25)
 BEYOND = np.array([[-1.35, 0.06], [0.15, 0.08], [1.0, 0.07]])  # (u1, offset above V = 1)
 EXTEND = 0.7
-FONT = 9.5
+FONT = 10.5
+MIN_FONT_PT = FONT - 1.5
+"""The smallest type in the figure (legend and annotations)."""
 
 
 def phi(u):
@@ -306,8 +308,9 @@ def figure1(figsize=(8.2, 3.6)):
         axc.set_ylabel("log V")
         axc.set_title("Chart (Z, log V):\nfacets as regions", loc="left")
         axl.legend(handles=[Line2D([], [], color=FACET_COLORS[k], lw=2.0, label=f"facet {k + 1}")
-                            for k in range(3)], loc="lower left", frameon=False,
-                   fontsize=FONT - 1, handlelength=1.2, borderaxespad=0.2)  # fmt: skip
+                            for k in range(3)], loc="upper right", frameon=False,
+                   fontsize=FONT - 1.5, handlelength=1.2, borderaxespad=0.0,
+                   labelspacing=0.15)  # fmt: skip
     return fig
 
 

@@ -35,6 +35,26 @@ def _tidy(nb) -> None:
         cell.outputs = kept
 
 
+def write_figure_files(nb) -> list[str]:
+    """Write each ``fig-`` cell's image to ``figures/<cell id>.png``, which its caption links to.
+
+    The page shows the output image; the link beside the caption opens the same image as a file of
+    the built site (the schematic is drawn by ``figures/figure1.py`` and is already a file).
+    """
+    import base64
+
+    written = []
+    for cell in nb.cells:
+        if cell.cell_type == "code" and cell.id.startswith("fig-") and cell.id != "fig-schematic":
+            for out in cell.outputs:
+                png = out.get("data", {}).get("image/png")
+                if png:
+                    (PAPER / "figures" / f"{cell.id}.png").write_bytes(base64.b64decode(png))
+                    written.append(cell.id)
+                    break
+    return written
+
+
 def execute(name: str, timeout: int = 1800) -> None:
     """Execute one notebook of ``paper/`` and write it back."""
     path = PAPER / name
@@ -48,6 +68,8 @@ def execute(name: str, timeout: int = 1800) -> None:
     ).execute()
     _tidy(nb)
     nbformat.write(nb, path)
+    if name == "paper.ipynb":
+        write_figure_files(nb)
 
 
 if __name__ == "__main__":
