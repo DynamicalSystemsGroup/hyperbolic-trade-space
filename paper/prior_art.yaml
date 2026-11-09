@@ -1,0 +1,253 @@
+# The register of prior art: the single source of Appendix G and of the family table in section 2.
+#
+# One entry per work or family. Compiled by paper/generate_prior_art.py; never typed into a table.
+# Restates what the verified sources say, at the depth recorded in each `verified` field of
+# docs/references.bib and in docs/superpowers/notes/paper-prior-art-sources.md. The "differs" cells
+# are the project's own statements (spec, outline addenda), not statements of the sources.
+#
+# Fields
+#   id           unique lower-case slug
+#   group        the family group the appendix sorts under
+#   family       the name of the work or family
+#   does         what it does, in a sentence
+#   shares       what this work shares with it or takes from it
+#   differs      what this work does differently, extends or adds (never empty)
+#   cites        bibliography keys (docs/references.bib), each resolved
+#   section2     true if the entry is also a row of section 2's table (same wording)
+#   why_not_just required where `nearest` is true: the plain sentence "why this is not just X"
+#   nearest      true for the nearest neighbours named in the appendix sketch
+#
+# Rules (tests/test_paper.py): no entry without `differs`; the words "novel", "first" and "new" are
+# absent from the fields; every cited key resolves in docs/references.bib.
+entries:
+  # --- Optimization and efficiency analysis ---------------------------------------------------
+  - id: pareto
+    group: Optimization and efficiency analysis
+    family: Pareto and multiobjective optimization
+    does: >-
+      Returns a nondominated set of designs, and traces its supported part with scalarizations such
+      as weighted sums; evolutionary algorithms generate nondominated sets.
+    shares: >-
+      A maximizer of a weighted geometric mean with positive exponents is Pareto-efficient (lemma
+      L11), and the weights act as a trade-off.
+    differs: >-
+      Returns no coordinate system and no exponents: a nondominated set says which designs survive,
+      the fit says what trades against what, with one exponent vector per facet, a band of
+      near-boundary designs and an effective sample size. Dominance is a hard comparison, the fit
+      a soft maximum. Identification from a table, not generation of designs.
+    cites: [miettinen1999nonlinear, ehrgott2005multicriteria, zitzler1999multiobjective, deb2002fast]
+    section2: true
+    nearest: true
+    why_not_just: >-
+      This is not just a Pareto front: a front is the set of designs that no other design dominates,
+      while the fit returns a reference surface with coordinates, and for each facet the exponents
+      that give the exchange rates between metrics.
+
+  - id: dea
+    group: Optimization and efficiency analysis
+    family: Data envelopment analysis (DEA)
+    does: >-
+      Computes a relative efficiency score per decision-making unit from linear programs, with
+      variants for scale and returns to scale, super-efficiency scores above one, and Malmquist
+      productivity indices across data sets.
+    shares: >-
+      A one-sided envelope of the data, a score per unit, scores beyond the boundary (V above 1)
+      and a boundary that moves between data sets.
+    differs: >-
+      One exponent vector per facet, a global named structure, in place of weights chosen by each
+      unit; piecewise log-linear facets with constant elasticities within a facet; larger-is-better
+      metrics with homogeneity by the simplex in place of inputs, outputs and a returns-to-scale
+      choice; a soft maximum with a temperature, a band and an effective sample size in place of a
+      deterministic boundary set by extreme units; one convex program and K refits in place of N
+      linear programs; coordinates and a pull-back to attribute units in place of a score and a
+      peer set.
+    cites: [charnes1978measuring, banker1984some, andersen1993procedure, fare1994productivity, allen1997weights, dyson2001pitfalls]
+    section2: true
+    nearest: true
+    why_not_just: >-
+      This is not just DEA: DEA scores each unit against the envelope under weights it may choose,
+      while the fit learns one set of exponents per facet from the whole table and reports where a
+      design sits on the facet and which metrics trade there.
+
+  - id: production-distance
+    group: Optimization and efficiency analysis
+    family: Production and distance functions
+    does: >-
+      The Cobb-Douglas production form, and the Shephard distance function with its duality.
+    shares: >-
+      The weighted geometric mean with exponents summing to one is the constant-returns
+      Cobb-Douglas form; V read as a scaling factor to the boundary is a distance-function reading.
+    differs: >-
+      Attributes in place of inputs, and the form is fitted from a table of designs with a soft
+      maximum.
+    cites: [cobb1928theory, shephard1970theory, fare1995multi, farrell1957measurement]
+    section2: true
+    nearest: true
+    why_not_just: >-
+      This is not just a production or distance function: those are economic forms for inputs and
+      outputs, while here the same product of powers is fitted to a table of attributes, as the
+      one-sided boundary of conditioned metrics.
+
+  - id: frontier-estimation
+    group: Optimization and efficiency analysis
+    family: Deterministic and stochastic frontiers
+    does: >-
+      Estimates frontier production functions by programming, corrected ordinary least squares or
+      maximum likelihood, and stochastic frontiers with one-sided error.
+    shares: >-
+      A one-sided criterion on log-linear residuals.
+    differs: >-
+      A smooth soft maximum over a simplex-constrained geometric mean in place of a shifted
+      intercept, and K facets.
+    cites: [aigner1968estimating, afriat1972efficiency, richmond1974estimating, greene1980maximum, aigner1977formulation, battese1992frontier]
+    section2: true
+
+  # --- Dimension reduction and model fitting --------------------------------------------------
+  - id: pca
+    group: Dimension reduction and model fitting
+    family: Principal component analysis (PCA)
+    does: >-
+      Finds uncorrelated components that successively maximize variance, reducing dimensionality
+      while keeping interpretability.
+    shares: >-
+      The question "what explains this table", answered by an unsupervised summary in a few
+      directions.
+    differs: >-
+      The criterion is a one-sided soft maximum, not variance, and the exponents live on the
+      simplex, so the components are trade-offs between metrics. The two chain: the method belongs
+      beside PCA in unsupervised learning and feature engineering.
+    cites: [jolliffe2016principal]
+    section2: true
+    nearest: true
+    why_not_just: >-
+      This is not just PCA: PCA explains variance, which is analysis and says nothing about what
+      trades against what, while the fit explains the edge of the table by the trade-offs among
+      metrics.
+
+  - id: logratio
+    group: Dimension reduction and model fitting
+    family: Compositional and log-ratio PCA
+    does: >-
+      PCA of compositional data, and isometric logratio transformations to coordinates free of the
+      constant-sum constraint.
+    shares: >-
+      The chart Z = Bu is in the spirit of an isometric logratio chart.
+    differs: >-
+      The criterion is one-sided, and the weights lie on the simplex; the chart is paired with the
+      level log V and is reversible to the metrics and to attribute units.
+    cites: [aitchison1983principal, aitchison1986statistical, egozcue2003isometric]
+    section2: true
+    nearest: true
+    why_not_just: >-
+      This is not just log-ratio analysis: the log-ratio chart is one half of the coordinate
+      system, and the other half is the level log V relative to a fitted one-sided surface, which
+      log-ratio analysis does not fit.
+
+  - id: gp-maxaffine
+    group: Dimension reduction and model fitting
+    family: Geometric programming and max-affine fitting
+    does: >-
+      Geometric programming with generalized posynomials, softmax-affine fits compatible with
+      geometric programming, convex piecewise-linear fits, and reweighted l1 sparsity.
+    shares: >-
+      The model class, the K > 1 refit scheme and the sparsity option.
+    differs: >-
+      The sources fit regression surfaces; this method fits an envelope, the one-sided boundary of
+      the data, and reads its exponents as exchange rates.
+    cites: [boyd2007tutorial, hoburg2014geometric, hoburg2016data, magnani2009convex, candes2008enhancing]
+    section2: true
+    nearest: true
+    why_not_just: >-
+      This is not just geometric-programming or max-affine fitting: those fit a surface through
+      the middle of the data by regression, while this fits the edge of the data and reports the
+      terms as trade-offs.
+
+  - id: kernel-hyperbolic-pca
+    group: Dimension reduction and model fitting
+    family: Kernel and hyperbolic PCA
+    does: >-
+      PCA in an implicit feature space, and PCA in hyperbolic space with horospherical projections.
+    shares: >-
+      Kernel PCA is the feature-engineering kin of the kernel direction that stays compatible with
+      geometric programming.
+    differs: >-
+      "Hyperbolic" here means the level surfaces of V in metric space, unrelated to negative-curvature
+      geometry.
+    cites: [schoelkopf1998nonlinear, chami2021horopca]
+    section2: true
+
+  - id: entropic-risk
+    group: Dimension reduction and model fitting
+    family: Entropic risk
+    does: >-
+      The entropic risk measure and its limits (the mean and the essential supremum), and entropic
+      value-at-risk.
+    shares: >-
+      The log-mean-exp soft maximum is the sample version of the entropic risk functional.
+    differs: >-
+      Nothing is used from the risk-measure side; the entries are cited to avoid confusion of the
+      soft maximum with a risk measure.
+    cites: [foellmer2026entropic, ahmadijavid2012entropic]
+    section2: false
+
+  # --- Systems engineering practice and decision analysis -------------------------------------
+  - id: tradespace
+    group: Systems engineering practice and decision analysis
+    family: Tradespace exploration
+    does: >-
+      Value-focused broad exploration of design alternatives, user-guided samplers and linked
+      visualization with the Pareto frontier displayed, and tradespace exploration for resilient
+      systems.
+    shares: >-
+      The setting, a table of evaluated designs.
+    differs: >-
+      These explore and display; this method fits and reports a coordinate system and a score.
+    cites: [ross2004multi, ross2005tradespace, ross2010revisiting, stump2009visual, spero2014tradespace]
+    section2: true
+    nearest: true
+    why_not_just: >-
+      This is not just tradespace exploration: exploration samples and shows the designs, while
+      this fits the table and returns the trade-offs and a score for each design in coordinates
+      that can be inverted.
+
+  - id: decision-analysis
+    group: Systems engineering practice and decision analysis
+    family: Decision analysis and multiple-criteria methods
+    does: >-
+      Decision analysis with a normative versus descriptive distinction; multiple-objective
+      preferences and value trade-offs; weighted-criteria comparison methods (Pugh, AHP,
+      Kepner-Tregoe).
+    shares: >-
+      The weights are trade-off rates.
+    differs: >-
+      The weights are fitted from the data's edge, not elicited.
+    cites: [howard1988decision, keeney1993decisions, baker2012survey, parnell2016trade]
+    section2: true
+
+  - id: practice
+    group: Systems engineering practice and decision analysis
+    family: Trade studies in systems engineering practice
+    does: >-
+      Describes the trade study as a documented decision activity, with elicited criteria weights
+      and known susceptibility to human bias; surveys the published state of trade-off analytics.
+    shares: >-
+      The setting, a decision for which an answer and a justification are required.
+    differs: >-
+      The weights are fitted from the table and the analysis reruns when the data change; the study is a
+      computation with a recorded environment, not a document.
+    cites: [hirshorn2017nasa, baker2012survey, chilli2026decision, smith2007ameliorating, parnell2021system]
+    section2: false
+
+  - id: mbse
+    group: Systems engineering practice and decision analysis
+    family: Model-based systems engineering
+    does: >-
+      MBSE centred on the system model as the sole source of truth; a systematic review of the
+      evidence for MBSE benefits, opening from document-based practice.
+    shares: >-
+      The trade space as a model rather than a document.
+    differs: >-
+      The method is a model-based trade analysis, not an MBSE methodology; the system model stays
+      behind the abstraction from configuration to attributes.
+    cites: [madni2018model, henderson2021value]
+    section2: true

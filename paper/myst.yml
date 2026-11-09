@@ -1,0 +1,65 @@
+version: 1
+# The build infrastructure is modelled on the SciPy 2026 article
+# (hc-scipy-2026/papers/michael_zargham/myst.yml); the outline and development follow the IEEE
+# structure recorded in work-packages/WP10-decisions.md. Standalone: it does not extend a shared file.
+project:
+  id: hyperbolic-trade-space-paper
+  # paper.ipynb is the paper (the notebook is the paper); supporting_material.ipynb is published
+  # beside it as the lettered appendices (Appendices A to G).
+  index: paper.ipynb
+  numbering:
+    headings: true
+  toc:
+    - file: paper.ipynb
+    - file: supporting_material.ipynb
+  # Working title; the final title and subtitle are set in WP11.
+  title: Scaling Decision Analysis with Hyperbolic Trade Space Identification
+  description: |
+    A scikit-learn-compatible posynomial frontier model that identifies the trade-offs in a table of
+    evaluated designs, with every claim backed by computationally verifiable supporting material.
+  github: https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space
+  authors:
+    - name: Michael Zargham
+      orcid: 0000-0001-5279-690X
+      affiliations:
+        - Dynamical Systems Group
+  keywords:
+    - decision analysis
+    - trade studies
+    - trade space
+    - posynomial
+    - geometric programming
+    - unsupervised learning
+    - scikit-learn
+    - model-based systems engineering
+  # Acronyms used in prose; every abbreviation in the paper's prose appears here.
+  abbreviations:
+    ADCS: attitude determination and control system
+    DEA: data envelopment analysis
+    GGP: generalized geometric programming
+    GP: geometric programming
+    KKT: Karush-Kuhn-Tucker
+    LP: linear program
+    MBSE: model-based systems engineering
+    PCA: principal component analysis
+  bibliography:
+    - ../docs/references.bib
+  # DOI exists-check ignore list: entries recorded with a stable URL and no DOI (docs/references.bib).
+  error_rules:
+    - rule: doi-exists
+      severity: ignore
+      keys:
+        - cobb1928theory
+        - aigner1968estimating
+        - fare1994productivity
+        - foellmer2026entropic
+        - chami2021horopca
+        - billingsley2012probability
+        - pedregosa2011scikit
+        - parnell2016trade
+        - hirshorn2017nasa
+        - baker2012survey
+        - chilli2026decision
+  # No export block: the PDF export is deferred (OD4, decided "Later, once the content has settled").
+site:
+  template: article-theme
