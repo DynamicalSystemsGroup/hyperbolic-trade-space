@@ -160,3 +160,10 @@ section = "Results"
 words_added = 27
 job = "says what the statuses certified and stationary mean for a soft fit"
 reader = "the user reading a returned fit's status"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 1
+job = "says the stable radius is sufficient and that its tightness is not claimed, as the lemma's docstring does (claims review U09-S02)"
+reader = "the optimization reader"
