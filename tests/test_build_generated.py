@@ -44,7 +44,7 @@ def test_every_lemma_title_and_statement(pages):
         assert f"### L{n}\n" in pages["derivations"]
         assert mod.TITLE in pages["derivations"]
         assert mod.STATEMENT in pages["derivations"]
-    assert len(R.CHAIN) == 14
+    assert len(R.CHAIN) == 15
 
 
 def test_ledger_equals_axioms(pages):

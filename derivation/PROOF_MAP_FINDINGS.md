@@ -136,3 +136,27 @@ combination of the active gradients, the solution, the negative control) and L3.
 their checks). Old L3.1 to L3.11 are now L3.5 to L3.15 (+4); old L3.12 to L3.28 are now L3.19 to
 L3.35 (+7). Nothing else in the record moved; the statement, title and `AXIOMS_USED` of every lemma are
 unchanged. Only the ledger fingerprint of I10 changed.
+
+## 9. L15, Level 1 (descent): a new lemma, and the pins it corrects (WP10, C-1)
+
+Level 1 (accepted iterations do not increase the mean slack F) had neither a badge nor a script.
+`lemma_15_descent.py` (L15, 16 steps) scripts it for step B unpenalized: reassignment to the
+maximizing facet does not increase F (F12 min representation, A8 partition; `F(current) -
+F(reassigned) = (1/N) sum_i sum_k chi_ki r_ki`, nonnegative terms), and a minimizing facet refit
+does not increase F (L14's cell identity, L12's `f - f* >= 0`; `F(reassigned) - F(refit) = sum_k
+share'_k e_k`, nonnegative terms). Its STATEMENT is new; no existing `TITLE` or `STATEMENT`
+changed. L14 now exports `L14_RESULT` (certified at the end of its `verify`, with the fact
+`partition_identity` added to its context); no L14 step changed. Steps by kind: tagged A8 (L15.1,
+3, 5, 6), F12 (L15.2, 4), by a proved result (L15.7 from L14, L15.8 from L12), computed (L15.9 to
+L15.16). Not proved, stated in the docstring: convergence, nonemptiness of cells after
+reassignment (an accepted iteration is one that keeps every facet nonempty, as A8 requires).
+
+| Pin | Before | After | Why |
+|---|---|---|---|
+| `test_derivation.py` WP13 chain order | `CHAIN_NAMES[-3:]` is L12, L13, L14 | `CHAIN_NAMES[-4:-1]`; `CHAIN_NAMES[-1]` is L15 | L15 is appended to the chain |
+| `test_derivation.py` run header | `L1 -> L14` | `L1 -> L15` | `run.py` banner counts the chain |
+| `test_build_generated.py` chain length | 14 | 15 | one more lemma |
+| `test_proof_map.py` imports | L14 imports L12, L13 | plus `lemma_15_descent.py` imports L12, L14 | L15 uses the results |
+| `test_proof_map.py` exports | L1, L3, L4, L12, L13 | plus L14 | L14 exports its result for L15 |
+
+No negative control was removed; new controls for L15 are in `test_derivation.py`.

@@ -2984,7 +2984,9 @@
     "L12_RESULT": "lemma_12_facet_gap",
     "L13_RESULT": "lemma_13_margin"
    },
-   "proved_results_exported": [],
+   "proved_results_exported": [
+    "L14_RESULT"
+   ],
    "imports": [
     "A8",
     "R2"
@@ -3239,6 +3241,224 @@
      "code": "assert r['cor_nonneg'] is True, 'L14 FAIL: sum_k share_k (G_k - (f_k - f_k*)) not nonnegative'",
      "fingerprint": "13c9df737b831dcde9335890d981a03e2c643af78b04ba09aea7d65d205c8666",
      "result": "Corollary 4"
+    }
+   ]
+  },
+  "lemma_15_descent.py": {
+   "number": 15,
+   "axioms_used": [
+    "A8",
+    "F12"
+   ],
+   "hypotheses": [],
+   "proved_results_imported": {
+    "L12_RESULT": "lemma_12_facet_gap",
+    "L14_RESULT": "lemma_14_assignment_stable"
+   },
+   "proved_results_exported": [],
+   "imports": [
+    "A8",
+    "F12"
+   ],
+   "results": [
+    {
+     "name": "descent (Level 1): reassignment and facet refit do not increase the mean slack",
+     "steps": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+     ]
+    }
+   ],
+   "steps": [
+    {
+     "tag": "L15.1",
+     "kind": "axiom",
+     "applies": [
+      "A8"
+     ],
+     "results": [],
+     "prose": "A8: the membership family chi_ki, the cell counts n_k and the number N of rows",
+     "code": "chi, ncell, N = (A8.obj('membership'), A8.obj('count'), A8.obj('rows'))",
+     "fingerprint": "fd2c3a89647c066da37bc2b627e04adc487c851af7607c596ea7b3b84ce0a13a",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.2",
+     "kind": "axiom",
+     "applies": [
+      "F12"
+     ],
+     "results": [],
+     "prose": "F12: r_ki = s_ki - m_i >= 0 for every row i and facet k, with equality at k*(i)",
+     "code": "r = F12.nonneg_base('r')",
+     "fingerprint": "3f66199c633cca70bd14897f71ba996172d27593c6679893b5e89d53383894fe",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.3",
+     "kind": "axiom",
+     "applies": [
+      "A8"
+     ],
+     "results": [],
+     "prose": "A8: sum_k chi_ki = 1, so row i's slack on its own cell is m_i + sum_k chi_ki r_ki",
+     "code": "row_split = sp.simplify(A8.rewrite(linear(row_now), only=(0,)) - (mrow[i] + row_drop))",
+     "fingerprint": "7cc7c66d737d90fa91108430e59d4be974f093ee8adf38fbc7ed087c1b13fb3c",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.4",
+     "kind": "axiom",
+     "applies": [
+      "F12"
+     ],
+     "results": [],
+     "prose": "F12: the slack of row i on its maximizing facet k*(i) is m_i, the least over facets",
+     "code": "on_maximizing = F12.rewrite(sx[kstar], rename={sp.IndexedBase('g'): sx, sp.Symbol('j0', integer=True): kstar, sp.Symbol('m', real=True): mrow[i]})",
+     "fingerprint": "9d8eeb31ddcc95b5a0ddf9b3a1f983bb5750240898e2b2a5d4182dc17689b4a9",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.5",
+     "kind": "axiom",
+     "applies": [
+      "A8"
+     ],
+     "results": [],
+     "prose": "A8: the new membership chi'_ki >= 0 and the new cell counts n'_k",
+     "code": "chip, ncellp = (A8.nonneg_base('chip'), sp.IndexedBase('ncellp'))",
+     "fingerprint": "c1cb1bd65e0136a7f127e2164b415f7df765caf584f86101dbafd92088fbcd00",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.6",
+     "kind": "axiom",
+     "applies": [
+      "A8"
+     ],
+     "results": [],
+     "prose": "A8 on the new cells: share'_k = n'_k / N = sum_i chi'_ki / N >= 0",
+     "code": "share = A8.rewrite(ncellp[k] / N, only=(2,), rename=new_cells)",
+     "fingerprint": "e7d0905ef101993236a3a918db1dfff4a097fc4f157a6aaa60342d1cbcbfebdd",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.7",
+     "kind": "result",
+     "applies": [],
+     "results": [
+      "L14_RESULT"
+     ],
+     "prose": "by L14: on any partition of the rows, F = sum_k share_k f_k(w_k)",
+     "code": "partition_identity = L14_RESULT.holds(ctx, 'partition_identity')",
+     "fingerprint": "f5c6dec8b35b05fab9459f99db2ae0c59115c29d693b39d8d47b5c77fd1aab09",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.8",
+     "kind": "result",
+     "applies": [],
+     "results": [
+      "L12_RESULT"
+     ],
+     "prose": "by L12: a minimizing refit has e_k = f'_k(w_k) - f'_k* >= 0",
+     "code": "e = L12_RESULT.family(ctx, 'lower_nonneg', 'e')",
+     "fingerprint": "d143879b56c69df6a6365f2dce34ef01c5c2315e72d90fbbc3b03516d9041537",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.9",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the slack of row i on its own cell splits as m_i + sum_k chi_ki r_ki (A8)",
+     "code": "assert r['row_split'] == 0, 'L15 FAIL: the row slack does not split as m_i + sum_k chi_ki r_ki'",
+     "fingerprint": "ac755b4f28bc64ceecf2e3bb9dac37d2a4ad96c3f1a448e56c36464bbf59bbc9",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.10",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the slack on the maximizing facet is the least slack m_i (F12)",
+     "code": "assert r['on_maximizing'] == 0, \"L15 FAIL: the maximizing facet's slack is not m_i\"",
+     "fingerprint": "8532253dcca2d9ecdd04c15393760c46b48331787b5660b8e4c9e3e8369eedf2",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.11",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "F(current) - F(reassigned) = (1/N) sum_i sum_k chi_ki r_ki",
+     "code": "assert r['reassign_diff'] == 0, 'L15 FAIL: F(current) - F(reassigned) != the mean of chi r'",
+     "fingerprint": "7569170640b706a2de2defb64036e9cb2cb67ee79c0827a02e7c6c3b306f59a0",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.12",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "each term chi_ki r_ki / N is >= 0, so reassignment does not increase F",
+     "code": "assert r['reassign_nonneg'] is True, 'L15 FAIL: the reassignment drop is not nonnegative'",
+     "fingerprint": "6c6aa4b219d8913886fdea587c74a38d7592b5b1df7dab6d92643b5c728b3127",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.13",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "by L14: F = sum_k share_k f_k(w_k) holds on the new cells",
+     "code": "assert r['partition_identity'] is True, \"L15 FAIL: L14's cell identity is not established\"",
+     "fingerprint": "213731082432a1d78e1a542c0780da8cd1b31115b9204badd765380557d8a3d0",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.14",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "F(reassigned) - F(refit) = sum_k share'_k (f'_k(w_k) - f'_k(w+_k))",
+     "code": "assert r['refit_diff'] == 0, \"L15 FAIL: F(reassigned) - F(refit) != sum_k share'_k e_k\"",
+     "fingerprint": "07f02f4387db7c510fb77b760eeda2ab53b0d719dd254ff36edc14fd774371fb",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.15",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "each term share'_k e_k is >= 0 (L12), so the facet refit does not increase F",
+     "code": "assert r['refit_nonneg'] is True, 'L15 FAIL: the refit drop is not nonnegative'",
+     "fingerprint": "f167b135f3520b7f8b89045f02f6267c791aaade0f5e1fd910e0224faaaeb01d",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.16",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "F(current) - F(refit) = drop + refit drop, both >= 0: F is non-increasing",
+     "code": "assert r['total'] == 0 and r['nonincreasing'] is True, 'L15 FAIL: F(current) - F(refit) is not the sum of the two nonnegative drops'",
+     "fingerprint": "633d28674e98c280f1c68e74b1c67e91a4ba065eb67ffa927db792cb18601b52",
+     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
     }
    ]
   }

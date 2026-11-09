@@ -696,6 +696,10 @@ def test_the_four_dependencies_are_declared_by_import_and_applied_by_steps():
             "L12_RESULT": "lemma_12_facet_gap",
             "L13_RESULT": "lemma_13_margin",
         },
+        "lemma_15_descent.py": {
+            "L12_RESULT": "lemma_12_facet_gap",
+            "L14_RESULT": "lemma_14_assignment_stable",
+        },
     }
     exported = {f for f, lem in rec.items() if lem["proved_results_exported"]}
     assert exported == {
@@ -704,6 +708,7 @@ def test_the_four_dependencies_are_declared_by_import_and_applied_by_steps():
         "lemma_04_convexity.py",
         "lemma_12_facet_gap.py",
         "lemma_13_margin.py",
+        "lemma_14_assignment_stable.py",
     }
     for fname, names in imported.items():
         applied = {n for st in rec[fname]["steps"] if st["kind"] == "result" for n in st["results"]}

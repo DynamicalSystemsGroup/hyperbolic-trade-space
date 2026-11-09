@@ -41,6 +41,7 @@ from derivation.axioms import A8, R2
 from derivation.lemma_12_facet_gap import L12_RESULT
 from derivation.lemma_13_margin import L13_RESULT
 from derivation.licence import hypothesis_base
+from derivation.results import ProvedResult
 from derivation.sumtools import fuse, linear, push_in, sum_swap_equal
 
 TITLE = "assignment-stable local optimality of the multi-facet fit (Proposition 3, Corollary 4)"
@@ -56,6 +57,7 @@ STATEMENT = (
     "of L12 (nonnegative sums)"
 )
 AXIOMS_USED = ["A8", "R2"]
+L14_RESULT = ProvedResult("L14", STATEMENT)  # taken by L15
 # Two results share this file (the step tags run in one sequence; each step is owned by one result).
 # Hypotheses of the statement (each quotes it): the symbols that carry a sign stand for these.
 EXACT_FACET_OPTIMUM = hypothesis_base("dfk", "nonnegative", "every w_k minimizes f_k")
@@ -165,6 +167,7 @@ def derive(ctx):
         cells_swap_equal=cells_swap_equal,
         cell_regroup_ok=cell_regroup_ok,
         F_regroup=F_regroup,
+        partition_identity=bool(F_regroup == 0 and cell_regroup_ok is True),
         local_min_slack=local_min_slack,
         local_min_nonneg=local_min_nonneg,
         cor_slack=cor_slack,
@@ -211,3 +214,4 @@ def verify(ctx):
     )
     # [L14.20] each term share_k (G_k - (f_k - f_k*)) is >= 0 (L12): F(W) - F*_fixed <= sum share G
     assert r["cor_nonneg"] is True, "L14 FAIL: sum_k share_k (G_k - (f_k - f_k*)) not nonnegative"
+    L14_RESULT.certify(ctx)

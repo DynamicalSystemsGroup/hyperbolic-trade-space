@@ -845,7 +845,7 @@ def test_wp13_lemmas_in_chain_in_order_and_no_enumeration(num):
     import inspect
 
     assert _WP13[num] in CHAIN_NAMES
-    assert CHAIN_NAMES[-3:] == list(_WP13.values())
+    assert CHAIN_NAMES[-4:-1] == list(_WP13.values())  # L15 follows (Level 1)
     src = inspect.getsource(_il.import_module(f"derivation.{_WP13[num]}"))
     assert "range(" not in src and "numpy" not in src and "scipy" not in src
 
@@ -1035,4 +1035,44 @@ def test_wp13_audit_lists_new_axioms_and_headline_names_fallbacks():
 
     with redirect_stdout(buf):
         assert main() == 0
-    assert "L1 -> L14" in buf.getvalue() and buf.getvalue().rstrip().endswith("ALL LEMMAS PASS.")
+    assert "L1 -> L15" in buf.getvalue() and buf.getvalue().rstrip().endswith("ALL LEMMAS PASS.")
+
+
+# --- WP10 C-1: L15, Level 1 (descent) ---
+def test_L15_is_the_last_lemma_and_states_level_one_exactly():
+    mod = _il.import_module("derivation.lemma_15_descent")
+    assert CHAIN_NAMES[-1] == "lemma_15_descent"
+    assert mod.STATEMENT == (
+        "Level 1 (descent), step B unpenalized: reassigning every row to its maximizing facet "
+        "does not increase the mean slack F, and refitting each facet to a minimizer of its "
+        "convex facet objective does not increase F; so F is non-increasing along accepted "
+        "iterations."
+    )
+    assert set(mod.AXIOMS_USED) == {"A8", "F12"}
+
+
+def _run_L15():
+    ctx, _ = _run_wp13(12, 13, 14)
+    mod = _il.import_module("derivation.lemma_15_descent")
+    mod.derive(ctx)
+    mod.verify(ctx)
+    return ctx, mod
+
+
+def test_L15_verifies_and_fails_loudly_when_a_step_is_broken():
+    ctx, mod = _run_L15()
+    assert ctx["L15"]["nonincreasing"] is True
+    for key, bad in (
+        ("row_split", 1),
+        ("on_maximizing", 1),
+        ("reassign_diff", 1),
+        ("reassign_nonneg", False),
+        ("partition_identity", False),
+        ("refit_diff", 1),
+        ("refit_nonneg", None),
+        ("total", 1),
+    ):
+        ctx, mod = _run_L15()
+        ctx["L15"][key] = bad
+        with pytest.raises(AssertionError, match="L15 FAIL"):
+            mod.verify(ctx)
