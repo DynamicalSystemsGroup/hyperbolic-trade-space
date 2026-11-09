@@ -59,7 +59,7 @@ What the sources and the project records support, in the order the paragraph nee
 
 - What the records say. Banker, Charnes and Cooper [@banker1984some]: the abstract says DEA uses
   mathematical programming for ex post evaluation of relative efficiency, that the CCR ratio form
-  comprehends technical and scale inefficiencies,, and the title names models for estimating technical and scale
+  comprehends technical and scale inefficiencies, and the title names models for estimating technical and scale
   inefficiencies. Charnes,
   Cooper and Rhodes [@charnes1978measuring] introduced DEA as a linear-programming measure of
   relative efficiency. Andersen and Petersen [@andersen1993procedure]: ranking efficient units with
