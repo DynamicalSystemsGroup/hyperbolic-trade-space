@@ -132,4 +132,8 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   sprint (`docs/superpowers/notes/spike-ggp-fit/`) found him right: no design needs a unique facet
   in the fit, and with the weights given the fit is one GGP. Lesson: when his statement about the
   method looks false, do the spike from his side first and bring the finding, not a menu.
+- 2026-11-09, the three-pane figure. The driver's call was that it goes on the index page and also
+  stays the paper's Figure 1. The supervisor, reviewing the staged paper: "i am worried they may be
+  out of place and distracting in the paper body. it may be best to keep this in the index as a high
+  level story arc / gloss." Overruled: the figure leaves the paper's body (ticket with the PM).
 

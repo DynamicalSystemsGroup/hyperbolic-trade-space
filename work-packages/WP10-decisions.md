@@ -969,3 +969,17 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   fit temperature only; local, not global; no useful radius yet. **Disposition:** WP17's R-7 and
   R-8 amended to carry it; sent to the PM.
 
+## Ticket: the three-pane figure leaves the paper's body (2026-11-09)
+
+- **Supervisor (mzargham), verbatim,** reading Figure 1 on the staged paper: "i am reviewing in
+  parallel; don't thrash yourself but i would like to log another ticket to be processed. these
+  images are helpful high level but i am worried they may be out of place and distracting in the
+  paper body. it may be best to keep this in the index as a high level story arc / gloss."
+- **Disposition:** logged as a ticket for the PM's next paper push, not an interruption. The
+  three-pane figure is removed from the paper's body and stays on the index page beside "What"; its
+  generator stays, with the index page as its one consumer. The paper's figures renumber, the
+  references to it in the text are reworded so the chart is explained in words where it was shown,
+  and the tests on figures follow. This overrules the driver's earlier call that the figure also
+  stays the paper's Figure 1 (`WP8a-decisions.md`); recorded under "Overruled or corrected" in the
+  driver's log.
+
