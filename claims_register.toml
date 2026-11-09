@@ -683,3 +683,3939 @@ status = "backed"
 disposition = "keep"
 source = "WP21 D-6, finding A7"
 note = "Consistency under noise and refitting is open question Q2; the sentence bounds how the exponents are read, from the author's practice with designed samples."
+
+[[claim]]
+id = "C044"
+fragment = "A trade study must produce an answer and a justification an accountable executive can follow."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Normative statement of the paper's own position; reading_pass n=1/2: the two products are uncited own statement (howard1988decision, keeney1993decisions only partly supported)"
+
+[[claim]]
+id = "C045"
+fragment = "Principal component analysis (PCA) is trusted as reproducible and interpretable, but explains"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "P"
+backing = ["bib:jolliffe2016principal", "reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n=9: source supports dimensionality reduction/interpretability only; 'trusted' and 'reproducible' are the author's wording, marked reading"
+
+[[claim]]
+id = "C046"
+fragment = "variance, not trade-offs. We explain tensions."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["bib:jolliffe2016principal"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "PCA explains variance: prior_art id pca / reading_pass n=33 supported; 'We explain tensions' is statement of intent/scope"
+
+[[claim]]
+id = "C047"
+fragment = "the data underlying the table, not the Pareto boundary, and gives the data a coordinate system;"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L8", "lemma:L11", "glossary:chart"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Chart is a coordinate system on the data (L8); surface is not the Pareto boundary (L11: maximizer of V is efficient, converse not claimed); def-objects scope statement"
+
+[[claim]]
+id = "C048"
+fragment = "Modelling a single n-lemma fits a monomial, which transforms into a convex program and is solved directly; when"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L10.9", "lemma:L4.13", "lemma:L4.24", "test:tests/test_solvers.py::test_slsqp_agrees_with_lp"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L10.9 K=1 is a monomial; L4.13 convex, L4.24 geometric program (one facet). 'solved directly' only loosely pinned by SLSQP-vs-LP agreement"
+
+[[claim]]
+id = "C049"
+fragment = "Decision analysis has two products: an answer, and a justification an accountable executive can follow and defend."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Paper's own statement, uncited by design (reading_pass n=1 'now'); register as reading."
+
+[[claim]]
+id = "C050"
+fragment = "It seeks responsible choice among conflicting objectives [@keeney1993decisions]"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:keeney1993decisions"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n=2 (reworded to 'responsible choice among conflicting objectives', matches publisher/Crossref description); row verdict was partly supported on the pre-reword sentence."
+
+[[claim]]
+id = "C051"
+fragment = "and clear conversation with the decision-maker [@howard1988decision]"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:howard1988decision"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n=1 (reworded: cited for clear conversation with the decision-maker, abstract); row verdict was partly supported on the pre-reword sentence; n=50 supported."
+
+[[claim]]
+id = "C052"
+fragment = "The justification is the hard product: the process turning much data into little must be recognized, reproducible, rigorous."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Author's judgment of what the justification must be; no source claimed."
+
+[[claim]]
+id = "C053"
+fragment = "A trade study is a document: a grid, a table, a ranking by weighted criteria"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n=3 'now': that a trade study is a document is stated as the practice the author knows."
+
+[[claim]]
+id = "C054"
+fragment = "a ranking by weighted criteria; surveys compare them [@baker2012survey]"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:baker2012survey"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n=3 (reworded, cited only for 'surveys compare them') and n=52 supported (Pugh, AHP, Kepner-Tregoe compared)."
+
+[[claim]]
+id = "C055"
+fragment = "The weights are human judgments, susceptible to bias in trade studies [@smith2007ameliorating; @chilli2026decision]"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:smith2007ameliorating", "bib:chilli2026decision"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n=5 supported (human numerical judgment, biases); n=6 reworded, cited for bias in trade studies only; 'weights are human judgments' is the paper's own gloss."
+
+[[claim]]
+id = "C056"
+fragment = "Systems engineering is moving from document-based [@henderson2021value] to model-based practice [@madni2018model]"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:henderson2021value", "bib:madni2018model"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n=8 supported (document-based to model-based, Henderson); n=7 reworded, Madni cited only for model-based practice."
+
+[[claim]]
+id = "C057"
+fragment = "PCA reduces dimensionality and increases interpretability while minimizing information loss [@jolliffe2016principal]"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:jolliffe2016principal"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n=9 (reworded to what PCA does: reduces dimensionality, increases interpretability, minimizes information loss) and n=33 supported."
+
+[[claim]]
+id = "C058"
+fragment = "Our implementation mirrors the structure of PCA as an unsupervised learning method for feature engineering"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_sklearn_compat.py::test_no_predict_decision_function_or_score", "test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Transformer with fit/transform/inverse_transform/score_samples under parametrize_with_checks, empty expected-failures dict, no predict; decomposition-family semantics."
+
+[[claim]]
+id = "C059"
+fragment = "and the two chain: {ref}`Appendix D.16 <sub-d-16>` reads the principal directions"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["gen:paper/generate_results.py::pca_chain", "test:tests/test_paper.py::test_cr11_chaining_with_pca_is_worked_on_the_case_in_d16"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "D.16 reads principal directions of the near-frontier chart (cell tab-D-pca_chain pinned current; leading metrics identical over regenerations); prose says a reading, not a result."
+
+[[claim]]
+id = "C060"
+fragment = "The one-facet fit is a geometric program, convex in the logarithmic variables"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L4.23", "lemma:L4.24", "glossary:geometric-program"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L4.14-L4.24: with x=exp(w) the one-facet fit is a GP in standard form, convex in w by L4.13/L4.23."
+
+[[claim]]
+id = "C061"
+fragment = "its exponents are elasticities and its chart is reversible"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L7.5", "lemma:L8.14", "glossary:elasticity", "glossary:chart"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L7.5 exponents give elasticities -w_k/w_j; L8.14 chart round trip (reversible)."
+
+[[claim]]
+id = "C062"
+fragment = "Pareto methods return a nondominated set and find its members by scalarization"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:miettinen1999nonlinear", "bib:ehrgott2005multicriteria", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "rows 10 (contents list the weighting method as a posteriori scalarization; verdict partly, for the old 'supported part' wording, since removed) and 11 (not accessible); AUDIT: no supported row for the current wording, re-mark row 10 or the pointer fails the test"
+
+[[claim]]
+id = "C063"
+fragment = "evolutionary algorithms generate such sets [@zitzler1999multiobjective; @deb2002fast]"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:zitzler1999multiobjective", "bib:deb2002fast", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass rows 12 and 13 both supported"
+
+[[claim]]
+id = "C064"
+fragment = "Dominance is a hard comparison that stops discriminating, on this case, as metrics are added"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "R"
+backing = ["gen:paper/generate_findings.py::nondominated_sentence", "test:tests/test_paper.py::test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_apart", "test:tests/test_paper.py::test_generated_sentences_quote_the_ranges_from_the_results_file"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "706 designs: nondominated 7-8 on 2, 145-146 on 4, 671 on 10 attributes; the test pins '671 on 10' and every range against the results file; 'on this case' scopes it"
+
+[[claim]]
+id = "C065"
+fragment = "while the fit returns an exponent vector per facet, a band of near-frontier designs and an effective sample size"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_fit_invariants", "test:tests/test_estimator.py::test_k_terms_attributes_conventions", "test:tests/test_estimator.py::test_n_terms_above_one_is_implemented"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "exponents_ (K,d), support_weights_ (the band, sums to 1), n_eff_ = 1/sum p^2; n_eff_ and support_weights_ are not in the interface contract's fitted_attributes list"
+
+[[claim]]
+id = "C066"
+fragment = "a maximizer of V with positive exponents is Pareto-efficient"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L11.17", "lemma:L11.19", "glossary:invariant-value"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L11.17 a maximizer of V is not dominated; L11.19 efficient when every w_j > 0 (K=1)"
+
+[[claim]]
+id = "C067"
+fragment = "the theorem gives efficiency of a maximizer, not the converse"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L11.17", "lemma:L11.19"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "the L11 statement says the converse is not claimed; the sentence states the scope of the theorem"
+
+[[claim]]
+id = "C068"
+fragment = "It scores each unit against the data by mathematical programming, with weights obtained from the data"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:banker1984some", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "row 17 abstract: mathematical programming, ratio form obtained from the data with no a priori weights (the sentence is the reworded remainder); AUDIT: row 17 verdict is partly supported, re-mark for the current wording"
+
+[[claim]]
+id = "C069"
+fragment = "a super-efficiency variant ranks efficient units against a reference technology spanned by all other units"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:andersen1993procedure", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "row 18 abstract states exactly this (reference technology spanned by all other units); AUDIT: verdict partly supported only for the dropped 'scores above one'; re-mark for the current wording"
+
+[[claim]]
+id = "C070"
+fragment = "Malmquist indices run across data sets"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:fare1994productivity", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass row 19 supported: Malmquist productivity indexes over periods ('across data sets' = across periods)"
+
+[[claim]]
+id = "C071"
+fragment = "practice has added weights restrictions [@allen1997weights] and protocols"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:allen1997weights", "bib:dyson2001pitfalls", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "rows 20 and 21: abstracts give weights restrictions arising from applications and protocols/pitfalls of applying DEA; AUDIT: both verdicts partly supported (dropped 'favourable weights' framing); re-mark for the current wording"
+
+[[claim]]
+id = "C072"
+fragment = "We fit one exponent vector per facet, a global named structure"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_fit_invariants", "test:tests/test_estimator.py::test_n_terms_above_one_is_implemented", "file:work-packages/interface-contract.toml", "glossary:exponent-vector"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "exponents_ has shape (K,d), one simplex point per facet, fitted from the whole table (contract fitted_attributes lists exponents_)"
+
+[[claim]]
+id = "C073"
+fragment = "Our facets are piecewise log-linear with constant elasticities within a facet"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L7.5", "lemma:L10.9", "lemma:L10.18", "lemma:L10.19", "glossary:facet", "glossary:elasticity"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "each facet is one monomial (log-linear, L10.19) with elasticity -w_k/w_j independent of the point (L7.5); piecewise exactly as kappa->inf (L10.18), within (log K)/kappa otherwise (L10.16)"
+
+[[claim]]
+id = "C074"
+fragment = "Our metrics are larger-is-better with homogeneity from the simplex"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1.5", "lemma:L1.8", "lemma:L11.7", "glossary:metrics", "glossary:invariant-value"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "degree-1 homogeneity passes through sum w_j = 1 (L1.5, L1.8); larger-is-better is the metrics convention (glossary) and V is nondecreasing in each metric (L11.7)"
+
+[[claim]]
+id = "C075"
+fragment = "Our boundary is a soft maximum with a temperature, a band and an effective sample size"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L5.15", "lemma:L5.16", "lemma:L5.24", "glossary:temperature", "glossary:support-weights", "test:tests/test_estimator.py::test_k_terms_attributes_conventions"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "soft maximum with temperature and band (log n)/tau (L5); effective sample size is a definition, n_eff_ = 1/sum p^2, pinned by the test, not a lemma"
+
+[[claim]]
+id = "C076"
+fragment = "We solve one convex program and K refits, and return coordinates with a pull-back to attribute units"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["lemma:L4", "test:tests/test_solvers.py::test_slsqp_agrees_with_lp", "test:tests/test_solvers.py::test_terms_k1_equals_slsqp_and_degenerate", "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "one convex program per facet (L4; K=1 fit equals the single program) and K facet refits in the alternation; the joint several-facet fit is not convex (L16), so read 'one program, K refits' as the sentence does; pull-back test pins the original-unit frontier"
+
+[[claim]]
+id = "C077"
+fragment = "The weighted geometric mean with exponents summing to one has the constant-returns Cobb-Douglas form"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1.5", "lemma:L1.8", "glossary:invariant-value"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "weighted geometric mean with sum w = 1 is homogeneous of degree one, i.e. constant returns; the identification with the Cobb-Douglas form is the paper's own (row 23 not accessible, nothing attributed)"
+
+[[claim]]
+id = "C078"
+fragment = "Shephard's characterization of a technology by its distance function"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:shephard1970theory", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "row 24: publisher description gives distance function as a general characterization of technology (the table sentence supported); AUDIT: row verdict partly supported because the V reading is the author's, which this fragment does not claim; re-mark"
+
+[[claim]]
+id = "C079"
+fragment = "Frontier estimation by programming, corrected least squares and one-sided error is the family of one-sided fits"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:battese1992frontier", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass row 27 supported: body states LP/QP, COLS, ML and stochastic frontiers with one-sided component; rows 28-32 (partly) for the earlier works"
+
+[[claim]]
+id = "C080"
+fragment = "The model class and refit scheme come from geometric programming and max-affine fitting"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:boyd2007tutorial", "bib:hoburg2016data", "bib:magnani2009convex", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass rows 37, 39, 40 all supported (GP and generalized posynomials; softmax-affine GP-compatible fits; alternating assignment and refit)"
+
+[[claim]]
+id = "C081"
+fragment = "the soft maximum is an entropic risk functional"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["bib:foellmer2026entropic", "lemma:L5", "glossary:temperature", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "row 42 supported: eq. (1) is (1/beta) log E exp(-beta X), the log-mean-exp on the empirical distribution (L5)"
+
+[[claim]]
+id = "C082"
+fragment = "Kernel PCA is the feature-engineering kin of the direction"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:schoelkopf1998nonlinear", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "row 43 supported for kernel PCA; 'kin of the direction' is the author's relation (row 43 notes it)"
+
+[[claim]]
+id = "C083"
+fragment = "\"hyperbolic\" here is unrelated to hyperbolic PCA"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:chami2021horopca", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass row 44 (chami2021horopca) verdict supported: HoroPCA is PCA in hyperbolic space; 'unrelated' is the paper's statement about its own term (prior_art.yaml kernel-hyperbolic-pca differs)"
+
+[[claim]]
+id = "C084"
+fragment = "Tradespace exploration lets an analyst explore designs"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:ross2005tradespace", "bib:stump2009visual", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass rows 45 and 46 verdict supported (status reworded to exactly this sentence); prior_art.yaml entry tradespace"
+
+[[claim]]
+id = "C085"
+fragment = "We did not find the combination in the sources reviewed"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["file:paper/prior_art.yaml", "test:tests/test_paper.py::test_prior_art_cites_resolve_in_the_bibliography"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "absence claim scoped to 'the sources reviewed', which Appendix G (generated from prior_art.yaml) lists; no row can verify absence, so it is backed only as a statement of the review's outcome"
+
+[[claim]]
+id = "C086"
+fragment = "the evaluation is a black box to the method"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["file:work-packages/interface-contract.md"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Scope/intent: interface contract 'Black box' paragraph (line 114) states exactly this; the pipeline is by the contract"
+
+[[claim]]
+id = "C087"
+fragment = "so the method stays relevant as tools move or where scoring comes from physical systems or human judgment"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "P"
+backing = ["reading", "file:work-packages/interface-contract.md"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Design rationale and forecast ('stays relevant'), the author's judgment; the contract backs the three sources of attributes; not marked as judgment in the prose"
+
+[[claim]]
+id = "C088"
+fragment = "The formal results are properties of mathematical objects, conditioned on assumptions that we cannot certify for a given table of designs"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["file:derivation/axioms.py", "file:docs/superpowers/notes/abstraction-gaps.md"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Each lemma is stated under declared axioms (A1-A7, F, I, R in axioms.py); that data cannot be certified to meet them is the point of the gaps ledger; scope statement, no single lemma step"
+
+[[claim]]
+id = "C089"
+fragment = "the implementation approximates those objects numerically"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["file:docs/superpowers/notes/abstraction-gaps.md"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Framing: floating-point/solver tolerances are recorded in the ledger (e.g. G-16 tolerances); no single test asserts 'approximates'; trivially true of numerical code"
+
+[[claim]]
+id = "C090"
+fragment = "which records for each place where the map and the territory part the assumption that bridges it"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "R"
+backing = ["gen:paper/generate_gaps.py::gaps_table", "test:tests/test_paper.py::test_gaps_table_has_every_ledger_row"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "gaps_table columns are formal object, bridging assumption, what cannot be proved, evidence, interpretive consequence; test pins every ledger row appears; completeness of 'each place' is not tested"
+
+[[claim]]
+id = "C091"
+fragment = "The supporting envelope is the $\\tau=\\infty$ fit, which none exceeds."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L5", "glossary:supporting-envelope"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Definition of the tau=inf fit plus the claim: at tau=inf beta=max so log V_i=w.u_i-max<=0; L5 (F5 s_i<=M, LME->max) gives it, but no step states V<=1 for all rows of the fit; weak"
+
+[[claim]]
+id = "C092"
+fragment = "At $K=1$ the frontier is the unit level set of $V$."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L10.9", "lemma:L1.6", "glossary:fitted-reference-surface"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L10.9 Phi_1 = w.u - beta (so Phi_1=0 iff log V=0, L1.7); glossary defines the reference surface as V=1"
+
+[[claim]]
+id = "C093"
+fragment = "At $\\tau=\\infty$ the fit is a linear program."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L5.24", "lemma:L12.31", "func:src/hyperbolic_trade_space/solvers.py::solve_lp", "test:tests/test_solvers.py::test_lp_gap_equals_duality_gap_and_uniform_ties_is_a_valid_bound"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L5.24 gives J_inf = max_i w.u_i; the epigraph LP is what solve_lp implements (doctest) and LP duality is tested; no step names the LP form itself"
+
+[[claim]]
+id = "C094"
+fragment = "At finite $\\tau$ one facet is a geometric program, convex after the change of variables $x=e^{w}$"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L4.24", "lemma:L4.23", "glossary:geometric-program"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L4.14-L4.24: posynomial objective, monomial equality/inequalities in x=e^w, convex by L4.13"
+
+[[claim]]
+id = "C095"
+fragment = "$V_K$ is a generalized posynomial, the term maximum at the default $\\kappa=\\infty$"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L10.7", "lemma:L10.18", "lemma:L10.19", "glossary:generalized-posynomial"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "finite kappa: e^(kappa Phi_K) posynomial (L10.7); kappa=inf: max of the monomial terms (L10.18/19), a generalized posynomial per Boyd (see C007)"
+
+[[claim]]
+id = "C096"
+fragment = "generalized posynomial, the term maximum at the default $\\kappa=\\infty$ [@boyd2007tutorial]"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:boyd2007tutorial", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass.yaml n=37 boyd2007tutorial verdict supported (sect. 5.3 generalized posynomials); prior_art.yaml row cites it"
+
+[[claim]]
+id = "C097"
+fragment = "Several facets alternate weights with one program for all terms"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L16.49", "lemma:L16.43", "lemma:L16.30"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "fixed-weight objective over all terms is a generalized posynomial (L16.49) and majorizes the soft slack (L16.43), the thm-soft statement"
+
+[[claim]]
+id = "C098"
+fragment = "$\\tau$ puts a target fraction of designs above $V=1$: 10 percent here"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tuning.py::test_selected_temperature_hits_target", "func:src/hyperbolic_trade_space/tuning.py::select_temperature", "test:tests/test_case.py::test_sensitivity_and_refits_on_frozen_primary"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "select_temperature hits the target frac_above_ within 0.01; the case uses spec.target_frac=0.10 (case.py), baseline tau pinned"
+
+[[claim]]
+id = "C099"
+fragment = "Zeros are tolerated in data and masked in the fit, negative values are rejected"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_zero_metric_row", "test:tests/test_estimator.py::test_negative_and_nonfinite_raise"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "zero row: exponents unchanged, support weight 0, score -inf; negatives raise 'Negative values in data' in fit and transform"
+
+[[claim]]
+id = "C100"
+fragment = "the pull-back to attribute units is exact"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L9.5", "lemma:L9.6", "test:tests/test_preconditioning.py::test_pullback_matches_L9_chain_formula"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "V = e^(w.b-beta) prod (a_j+s_j)^(w_j alpha_j) and the conditioning round trip returns u (L9.4/L9.6)"
+
+[[claim]]
+id = "C101"
+fragment = "The fit is a scikit-learn transformer of the decomposition family"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_sklearn_compat.py::test_no_predict_decision_function_or_score", "file:docs/superpowers/notes/sklearn-conformance.md"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "parametrize_with_checks with empty expected failures; TransformerMixin class; decomposition-family surface asserted"
+
+[[claim]]
+id = "C102"
+fragment = "`fit` identifies exponents and offsets, `transform` returns the chart"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_fit_invariants", "test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "fit sets exponents_ and log_offset_; transform returns the chart (shape and round trip)"
+
+[[claim]]
+id = "C103"
+fragment = "`inverse_transform` reverses it, `score_samples` returns the energy differential"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples", "glossary:energy-differential"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "inverse_transform(T) == X; last chart coordinate equals score_samples (log V, the energy differential)"
+
+[[claim]]
+id = "C104"
+fragment = "It has no `predict`: prediction composes a supervised regressor with the chart."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_sklearn_compat.py::test_no_predict_decision_function_or_score", "test:tests/test_predictive.py::test_trade_space_can_be_a_pipeline_and_regressor_a_pipeline"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "no predict attribute asserted; TradeSpaceRegressor composes a regressor with the chart (test_predictive)"
+
+[[claim]]
+id = "C105"
+fragment = "*One facet at $K=1$:* constant elasticities; $K>1$ is built."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["lemma:L7.5", "test:tests/test_estimator.py::test_k_terms_recovers_planted_facets", "test:tests/test_estimator.py::test_n_terms_above_one_is_implemented"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "elasticity -w_k/w_j constant along a facet (L7.5); K>1 implemented and recovers planted facets"
+
+[[claim]]
+id = "C106"
+fragment = "facets are fitted at $\\kappa=\\infty$ with kinks on the ridges"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["lemma:L10.18", "test:tests/test_soft_fit.py::test_r2_the_default_is_the_explicit_infinity_and_leaves_one_term_alone"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "default term_temperature is np.inf (label fit, max of affine terms, kink where terms tie)"
+
+[[claim]]
+id = "C107"
+fragment = "a finite $\\kappa$ moves the score by at most $(\\log K)/\\kappa$"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L10.15", "lemma:L10.16"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "max_k x_k <= Phi_K <= max_k x_k + (log K)/kappa"
+
+[[claim]]
+id = "C108"
+fragment = "on each facet the normal is an ascent direction in log space"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1.7", "lemma:L10"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L1.7: log V = w.u - beta so gradient in log space is w, the facet normal; L10 for per-facet terms"
+
+[[claim]]
+id = "C109"
+fragment = "Our case is a cubesat model coupling power, mass and attitude control."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "R"
+backing = ["gen:examples/adcs/cubesat_model.py::measure", "test:tests/test_cubesat_model.py::test_measure_returns_attributes_and_flags", "test:tests/test_paper.py::test_the_case_is_described_as_power_mass_and_attitude_control"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Model (cubesat_tradespace.sysml via cubesat_model.measure) has power, mass and attitude attributes and flags; the paper test pins the phrase"
+
+[[claim]]
+id = "C110"
+fragment = "Conditioning orients each attribute, shifts and scales it to unit log-spread and keeps the map invertible."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_preconditioning.py::test_unit_log_standard_deviation", "test:tests/test_preconditioning.py::test_round_trip_mixed_orientation_and_shift", "lemma:L9"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "default standard scaler gives unit log standard deviation, orientation and shift, round trip exact; L9 for the log-affine pull-back"
+
+[[claim]]
+id = "C111"
+fragment = "A regressor from configuration to chart coordinates predicts where proposals fall"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_predictive.py::test_recovers_planted_coordinates", "test:tests/test_case.py::test_predict_check_within_the_band"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "a regressor to chart coordinates (case.fit_regressor) predicts positions; tests cover recovery and the predict-check"
+
+[[claim]]
+id = "C112"
+fragment = "The exponents and elasticities are features of the conditioned empirical model"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L7.5", "glossary:elasticity"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Elasticity is the derivative along the fitted facet (L7.5); glossary not-clause: not a causal exchange or intervention effect; 'sampled designs' is the scope of the fit"
+
+[[claim]]
+id = "C113"
+fragment = "they describe how the sampled designs trade, and not a causal exchange that changing a variable would reproduce"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["glossary:elasticity", "lemma:L7.5"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Statement of what the quantities do not mean (glossary not-clause), a scope statement; no stronger claim made"
+
+[[claim]]
+id = "C114"
+fragment = "Novelty $V-1$ says how far beyond the fitted reference surface a design lies, not whether anyone wants it."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1.6", "lemma:L7.9", "glossary:novelty"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "V-1 as how far beyond the reference surface (V(m/V)=1, uniform improvement 1/V); 'not whether anyone wants it' is the glossary not-clause (not a measure of attainability), scope"
+
+[[claim]]
+id = "C115"
+fragment = "Machine verification shows that a formula follows from its hypotheses and that the code agrees"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_proof_map.py::test_record_holds_every_step_with_tag_prose_and_code", "test:tests/test_proof_map.py::test_checker_passes_on_the_committed_record"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "The checker ties each tagged step's prose and code to the record and the ledger of hypotheses; that is what 'verification' means here"
+
+[[claim]]
+id = "C116"
+fragment = "gives one line of code to read each proof step against"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_paper.py::test_appendix_b_shows_every_result_of_the_record_with_derived_counts", "test:tests/test_proof_map.py::test_record_holds_every_step_with_tag_prose_and_code"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Appendix B is generated from the record (every step is one tagged line of code, counts derived); tests pin both"
+
+[[claim]]
+id = "C117"
+fragment = "How the attributes were produced is a black box to the method, so the same functions serve a simulator"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["file:work-packages/interface-contract.md", "test:tests/test_case.py::test_a_second_table_runs_without_cubesat_edits"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Contract 'Black box' paragraph: simulator, physical test or human assessment satisfy the same contract and the method depends on the table and signature only"
+
+[[claim]]
+id = "C118"
+fragment = "Another table runs through the same calls."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_case.py::test_a_second_table_runs_without_cubesat_edits"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Test runs a planted second table through load_study, fit_study, tables and k_sweep without cubesat edits; 'same calls' = the case API, not every function"
+
+[[claim]]
+id = "C119"
+fragment = "The fitted surface is a log-convex envelope."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L10.7"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L10.7: exp(kappa Phi_K) is a posynomial in m, so Phi_K is convex in u by cited I4 (log-sum-exp of affine, context only); K=1 is affine (L10.9). Convexity itself rests on cited I4, not a proved step"
+
+[[claim]]
+id = "C120"
+fragment = "The exponents depend on the conditioning."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L9.5"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Raw-attribute exponents are w_j alpha_j and the offset changes: exponents are tied to the conditioning (L9.5, L9.6 invertible)"
+
+[[claim]]
+id = "C121"
+fragment = "K = 1 finds one tension; several regional tensions need K > 1."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L10.9"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "K=1 is one monomial/facet (L10.9); 'several regional tensions need K>1' follows from K being the number of facets (Definition 3), scope"
+
+[[claim]]
+id = "C122"
+fragment = "as PCA extracts components, is a research question"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:jolliffe2016principal", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Reading pass row 33 (verdict supported): PCA gives components that successively maximize variance; prior_art id pca. 'is a research question' is the author's scope"
+
+[[claim]]
+id = "C123"
+fragment = "a design with $V=v$ is a frontier design scaled by $v$"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1.5", "lemma:L1.6"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "V(km)=kV(m) and V(m/V(m))=1 give m = V(m) * (m/V(m)) with m/V on the frontier"
+
+[[claim]]
+id = "C124"
+fragment = "supply configurations, attributes and a conditioning rule, and use the same calls"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["file:work-packages/interface-contract.md", "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Contract states the source of attributes is a black box (simulator, test, human) behind the same table/signature; conditioning rule is the analyst's LogAffinePreconditioner/pipeline, tested; configurations enter the predictive fit (predictive.py, docs prediction.md). Instruction-like."
+
+[[claim]]
+id = "C125"
+fragment = "the package documentation is the user's guide"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["file:docs/user-guide/overview.md", "test:tests/test_docs.py::test_runnable_blocks_exist_where_the_guide_promises_them"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Docs has a user-guide section (mkdocs nav User guide, docs/user-guide/*.md) with executed runnable blocks; the sentence names where to look (pointer/intent)."
+
+[[claim]]
+id = "C126"
+fragment = "Beyond one facet, K > 1 is built"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_n_terms_above_one_is_implemented", "test:tests/test_estimator.py::test_k_terms_recovers_planted_facets"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "n_terms=2 fits exponents_ of shape (2,3); K=3 recovers planted facets"
+
+[[claim]]
+id = "C127"
+fragment = "GGP-compatible kernels, the generalization the search motivates"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L16.31"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "scope/intent; L16.31 shows the fixed-weight objective is a generalized posynomial (I15); 'kernels' are a stated direction, 'the search motivates' is the paper's own reading"
+
+[[claim]]
+id = "C128"
+fragment = "needs a convergence theorem, and Q2 to Q4 need their own conditions"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L15"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L15 docstring states it does NOT prove convergence; the sentence is a statement of what is open (scope)"
+
+[[claim]]
+id = "C129"
+fragment = "Work was done in supervisor-gated work packages: a written scope the author approved before execution, and a review afterwards."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "The author's own account of how the work was run (scope, approval, review), worded as process; work-packages/README.md records it; mark as reading in the register."
+
+[[claim]]
+id = "C130"
+fragment = "AI coding assistance (Claude Code, Anthropic) drafted code, derivation scripts and text inside those packages"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "The author's own account of tool use; worded as his experience; mark as reading."
+
+[[claim]]
+id = "C131"
+fragment = "compiled from `glossary.yaml` and never typed"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["gen:paper/generate_register.py::register_table", "test:tests/test_paper.py::test_register_table_equals_the_glossary", "test:tests/test_paper.py::test_register_committed_output_is_current"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "register_table builds the table from glossary.yaml; tests check rows equal entries and the committed output is current; appendix cell only imports from the generator (test_appendix_cells_import_from_the_generators)"
+
+[[claim]]
+id = "C132"
+fragment = "every facet is fitted against every design, each offset"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_corollary_bound_on_every_planted_fit", "test:tests/test_solvers.py::test_r1_planted_certificates"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Offsets use LME of full U@w_k for each facet; the linear part uses the facet's own rows; test pins the all-rows offset."
+
+[[claim]]
+id = "C133"
+fragment = "each offset $\\beta_k=J_\\tau(Uw_k)$ being the support over all rows"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_corollary_bound_on_every_planted_fit", "test:tests/test_solvers.py::test_r1_planted_certificates", "test:tests/test_solvers.py::test_terms_k1_equals_slsqp_and_degenerate"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Test recomputes log_mean_exp(U @ W[k], tau) over all rows and matches the objective; offset_residual <= 1e-12."
+
+[[claim]]
+id = "C134"
+fragment = "The alternation takes weights from the current model and then solves one program for all terms"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/solvers.py::soft_weights", "lemma:L16.11", "test:tests/test_soft_fit.py::test_r1_the_soft_objective_never_rises_across_the_history"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Soft path _solve_terms_soft takes softmax weights of the current model then refits; 'one program' is L16's formulation (code refits per term, which the fixed weights allow)"
+
+[[claim]]
+id = "C135"
+fragment = "The package uses the sharp limit of the weights, one label per design"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_soft_fit.py::test_r2_the_default_is_the_explicit_infinity_and_leaves_one_term_alone", "test:tests/test_soft_fit.py::test_r3_the_limit_kappa_to_infinity_is_the_label_fit"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Default term_temperature=inf is the label fit (one argmax label per row)"
+
+[[claim]]
+id = "C136"
+fragment = "the program then separates into one convex program per term"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["lemma:L16.44", "lemma:L4"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Fixed-weight objective regroups by terms (L16.44), each term a convex soft-max program (L4); code _refit loops per label"
+
+[[claim]]
+id = "C137"
+fragment = "For each restart the package starts from random centres in the chart"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/solvers.py::solve_terms"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Docstring and code: K random rows are the centres in the Helmert chart; no test pins the initialisation, and 'centres' are random rows"
+
+[[claim]]
+id = "C138"
+fragment = "if the mean slack rose, stop with the previous state"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_guard_stop_returns_the_consistent_previous_state"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Guard rejects a rise beyond GUARD_TOL and returns the previous state"
+
+[[claim]]
+id = "C139"
+fragment = "the fixed-weight objective bounds the soft model's mean slack from above and equals it at the model the weights came from"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L16.43", "lemma:L16.41"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "F <= G_alpha - E with equality at x = x0; fixed-weight objective is G_alpha less the constant E (same minimizers)"
+
+[[claim]]
+id = "C140"
+fragment = "it is a generalized posynomial in $e^{w}$, so its minimization is a generalized geometric program"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L16.49", "lemma:L16.31"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Generalized posynomial in exp(w) by I15 (inherited); GGP conclusion rests on I15"
+
+[[claim]]
+id = "C141"
+fragment = "a generalized geometric program in the sense of Boyd et al. [@boyd2007tutorial]"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "L"
+backing = ["bib:boyd2007tutorial", "file:paper/reading_pass.yaml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass.yaml row n 37, verdict supported (sect. 5.3 generalized posynomials)"
+
+[[claim]]
+id = "C142"
+fragment = "L16 does not prove that the alternation converges."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L16"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Stated as a non-result in the L16 docstring ('What this does NOT prove'); not a tagged step"
+
+[[claim]]
+id = "C143"
+fragment = "the gradient and the Hessian $D-\\kappa M$ of its objective"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L17.34", "lemma:L17.35"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Gradient L17.34, Hessian V'DV - kappa V'MV L17.35"
+
+[[claim]]
+id = "C144"
+fragment = "the second-order test that certifies a strict local minimizer"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "M"
+backing = ["lemma:L17.44"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "KKT plus positive definiteness on the face gives a strict local minimizer (I16)"
+
+[[claim]]
+id = "C145"
+fragment = "The label belongs to the package and not to the model"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_soft_fit.py::test_r6_analysis_stays_analysis", "file:work-packages/interface-contract.md"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "facet_ is argmax over the fitted scores, analysis not part of the model; contract: facet_ stays the analysis by the dominant term"
+
+[[claim]]
+id = "C146"
+fragment = "which facet dominates a design is analysis of the fitted model"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "P"
+backing = ["test:tests/test_soft_fit.py::test_r6_analysis_stays_analysis", "file:work-packages/interface-contract.md"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Same backing as C053; kind P but a statement about the package"
+
+[[claim]]
+id = "C147"
+fragment = "The repository keeps:** the SysML model file, the evaluation code, the experiment ledger and the data."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_paper.py::test_each_attribute_has_a_producer_that_exists_in_its_file", "test:tests/test_paper.py::test_c_committed_output_is_current"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "SysML model, evaluation code (adcs_sim.py, cubesat_model.py) read by the producer test; ledger and data read by datasets() whose output the committed-output test pins; a scope statement"
+
+[[claim]]
+id = "C148"
+fragment = "`certified`: the assignment is fixed, residuals and gaps are within tolerance, no facet is empty and the margin is positive; levels 1 to 3 hold."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:tests/test_estimator.py::test_termination_record_for_k_terms", "file:work-packages/interface-contract.md"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Termination docstring and contract define certified as stated; test pins certified with max_gap<=EPS_KKT and zero assignment changes; the 'levels 1 to 3' mapping is documentation (estimator termination_ docstring), not asserted"
+
+[[claim]]
+id = "C149"
+fragment = "`stationary_without_margin`: the same with a zero margin or an empty facet; levels 1 and 2 only."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:tests/test_estimator.py::test_termination_record_for_k_terms", "test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_facets"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "seed-1 case pins stationary_without_margin; the empty-facet test only asserts status != certified, not the label; levels mapping is documentation"
+
+[[claim]]
+id = "C150"
+fragment = "`uncertified`, `guard_stop` and `iteration_cap`: level 1 only, reported apart from certified."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:tests/test_solvers.py::test_iteration_cap_status", "test:tests/test_solvers.py::test_guard_stop_returns_the_consistent_previous_state", "test:tests/test_estimator.py::test_convergence_warning_keyed_to_iteration_cap"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "statuses pinned and warned (reported apart from certified); 'level 1 only' is documentation, not asserted; uncertified status itself has no named test"
+
+[[claim]]
+id = "C151"
+fragment = "`not_applicable`: a penalty, the tangent step or a single facet; the gaps are diagnostics."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:tests/test_solvers.py::test_not_applicable_statuses", "test:tests/test_soft_fit.py::test_r7_a_soft_fit_at_infinite_tau_is_not_applicable"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "tangent step, penalty, single facet and soft fit at tau=inf all asserted not_applicable; 'gaps are diagnostics' is in the docstring and test_estimator K=1 case (finite max_gap)"
+
+[[claim]]
+id = "C152"
+fragment = "The record also holds the maximal gap, the Corollary bound, the margin, the stable radius and the shares."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "file:work-packages/interface-contract.toml", "test:tests/test_interface_contract.py::test_r1_termination_fields_statuses_and_report_fields"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "the Termination fields (max_gap, bound, gamma, radius, shares) are the contract's pinned termination_fields, checked against the class"
+
+[[claim]]
+id = "C153"
+fragment = "says that refitting a facet on its own rows is ill-posed"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "R"
+backing = ["gen:paper/generate_results.py::own_rows_refit", "test:tests/test_paper.py::test_the_claims_of_c1_have_their_true_basis"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "meta-sentence about what Section 'Results' says; the test asserts 'ill-posed (observed on planted data' and 'D.13' in Results, and that D.13 shows 0 of 60 against 60 of 60"
+
+[[claim]]
+id = "C154"
+fragment = "The temperature is selected afresh at each K"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_k_terms_case.py::test_tau_reselected_at_each_k_holds_the_fraction", "func:examples/adcs/case.py::k_fits"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "k_fits re-selects the temperature at each K; the test asserts the temperature per K equals the re-selected one and the fraction above V=1 is held"
+
+[[claim]]
+id = "C155"
+fragment = "`mean_slack_` is defined for every K and is comparable across K at one temperature; `objective_` is the soft maximum at one term and the mean slack at several, and is not."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized", "test:tests/test_case.py::test_mean_slack_by_k_reads_the_estimator_and_the_fixed_tau_refit_shares_one_temperature"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "definitions pinned (mean_slack_ at K=1 and K>1, objective_ = soft max at one term, mean slack at several); 'comparable at one temperature' is the design reading of the definition"
+
+[[claim]]
+id = "C156"
+fragment = "The tension report runs a principal component analysis on the chart coordinates Z of a facet's near-frontier designs."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions", "test:tests/test_case.py::test_pca_directions_are_the_tension_reports_own_principal_directions"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "the report's directions equal orient_by_pca of the chart coordinates of the near-frontier rows"
+
+[[claim]]
+id = "C157"
+fragment = "Its directions say along which combinations of metrics the near-frontier designs vary the most"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_tensions.py::test_first_direction_recovers_planted_spread"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "gloss of what a principal direction is (largest variance); no lemma step, the test recovers a planted spread direction and maps loadings back to metrics through the chart basis"
+
+[[claim]]
+id = "C158"
+fragment = "the fit says which metrics bind, the analysis says where the sampled designs spread along the fitted surface."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "test:tests/test_tensions.py::test_first_direction_recovers_planted_spread"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "gloss of the two analyses' roles; the contending set is the support of w, the PCA is of near-frontier chart coordinates; stated as intent, 'binds' is the reading (G-12)"
+
+[[claim]]
+id = "C159"
+fragment = "the second is computed from the first's coordinates"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "the test builds the chart coordinates from est.transform (the fit) and reproduces the report's directions"
+
+[[claim]]
+id = "C160"
+fragment = "The sign of a direction is arbitrary; each is shown with its largest loading positive."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_case.py::test_pca_directions_are_the_tension_reports_own_principal_directions", "func:examples/adcs/case.py::pca_directions"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "pca_directions flips the sign so the largest-magnitude loading is positive; the test asserts '+' on the first listed loading"
+
+[[claim]]
+id = "C161"
+fragment = "The repository keeps:** the long review with its dropped candidates"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_paper_sources.py::test_the_six_snapshots_and_the_move_table_exist", "file:docs/superpowers/notes/paper-sources/literature.md", "file:docs/references.bib"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "literature.md exists (test) with Appendix A \"candidates dropped or limited\"; references.bib holds the adopted sources (test_references checks hygiene)."
+
+[[claim]]
+id = "C162"
+fragment = "learns the shape of a design trade space from evaluated designs"
+file = "docs/index.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_recovery_tau_inf", "test:tests/test_estimator.py::test_recovery_tau_1e3"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Planted frontier exponents and offset are recovered from evaluated designs; the phrase is a gloss of fit."
+
+[[claim]]
+id = "C163"
+fragment = "model in the posynomial invariant form. It then tells you which metrics contend"
+file = "docs/index.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "test:tests/test_estimator.py::test_fit_invariants", "test:tests/test_estimator.py::test_recovery_tau_inf"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Fit of the frontier model (exponents, offset) pinned by recovery/invariants tests; the tension report is the 'which metrics contend' part (C003)."
+
+[[claim]]
+id = "C164"
+fragment = "It then tells you which metrics contend, at what exchange"
+file = "docs/index.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "test:tests/test_tensions.py::test_exponents_and_elasticities_consistent"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Contending set recovers planted support; elasticities R[j,k] = -w_k/w_j pin the exchange rate."
+
+[[claim]]
+id = "C165"
+fragment = "rate, where each design sits relative to the fitted reference surface"
+file = "docs/index.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples", "test:tests/test_estimator.py::test_project_and_improvement_factors_land_on_frontier"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "score_samples/log V is the design's level relative to the fitted surface V=1; chart and V=1 projection pinned."
+
+[[claim]]
+id = "C166"
+fragment = "and where the table has gaps"
+file = "docs/index.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_gaps.py::test_find_holes_2d_planted_disc", "test:tests/test_gaps.py::test_find_holes_1d_planted_gap", "test:tests/test_gaps.py::test_knn_flags_isolated_point"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Planted holes in the chart are located; gaps are gaps in ratio profiles (gaps.py docstring), the gloss 'gaps in the table' is a fair short form."
+
+[[claim]]
+id = "C167"
+fragment = "It is a scikit-learn estimator (`fit`, `transform`, `inverse_transform`, `score_samples`) in the"
+file = "docs/index.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_sklearn_compat.py::test_no_predict_decision_function_or_score", "test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples", "test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Methods exist and behave as a transformer; parametrize_with_checks passes; class is TransformerMixin+BaseEstimator."
+
+[[claim]]
+id = "C168"
+fragment = "unsupervised and feature-engineering family, beside PCA"
+file = "docs/index.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_sklearn_compat.py::test_no_predict_decision_function_or_score", "test:tests/test_estimator.py::test_pipeline_and_feature_names"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Transformer API with no predict, composes in Pipeline/ColumnTransformer; 'family beside PCA' is classification (decomposition-family semantics) backed by the conformance tests."
+
+[[claim]]
+id = "C169"
+fragment = "The idea is easiest to see with two of the metrics, where the model is a line."
+file = "docs/getting-started.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1", "test:tests/test_plotting.py::test_log_plane_draws_frontier_line_in_black_and_band_in_grey"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "log V = w.u - beta, so V=1 is a line in the log plane when d=2; test asserts the drawn line is w.u = beta"
+
+[[claim]]
+id = "C170"
+fragment = "`fit` learned one exponent per metric, summing to one."
+file = "docs/getting-started.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_fit_invariants"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "asserts exponents_ shape (1,d) and sum to 1 (nonnegative) at tau inf, 10, 1e3"
+
+[[claim]]
+id = "C171"
+fragment = "summing to one. `report.contending_set` lists the metrics that"
+file = "docs/getting-started.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "func:src/hyperbolic_trade_space/tensions.py::tension_report"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "contending_set equals the planted support across sizes 2 to 5"
+
+[[claim]]
+id = "C172"
+fragment = "The set is found from the data and not chosen in advance."
+file = "docs/getting-started.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "test:tests/test_tensions.py::test_finite_tau_smooths_weights_and_contending_set_stays_exact"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "set recovered from the data (tau=inf LP) without being supplied"
+
+[[claim]]
+id = "C173"
+fragment = "fitted weights at the working temperature; their ratios are the elasticities between the contending"
+file = "docs/getting-started.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L7", "test:tests/test_tensions.py::test_exponents_and_elasticities_consistent"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L7 elasticities are ratios of exponents along a facet; test pins report.elasticities against report.exponents; ratios of working-tau weights as elasticities assumed from L7, not separately stepped at finite tau"
+
+[[claim]]
+id = "C174"
+fragment = "`ts.score_samples(X)` is the log of V for each design, the energy"
+file = "docs/getting-started.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples", "lemma:L1", "glossary:energy-differential"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "last chart column equals score_samples; log V = w.u - beta by L1"
+
+[[claim]]
+id = "C175"
+fragment = "is the chart, `d - 1` position coordinates plus that log V, and `ts.inverse_transform` undoes it."
+file = "docs/getting-started.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples", "lemma:L8"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "T has d columns (d-1 coordinates plus log V last) and inverse_transform(T)==X"
+
+[[claim]]
+id = "C176"
+fragment = "From there the guide follows the order of a study: [fit](user-guide/fitting.md),"
+file = "docs/getting-started.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_site.py::test_docs_relative_links_resolve", "test:tests/test_site.py::test_nav_pages_exist_and_cover_the_contract_pages"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "guide pages exist and links resolve; the sentence is a pointer to the guide order (instruction), nav order in mkdocs.yml"
+
+[[claim]]
+id = "C177"
+fragment = "The package follows the scikit-learn conventions [@pedregosa2011scikit; @buitinck2013api]: parameters"
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_sklearn_compat.py::test_init_stores_parameters_verbatim"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "parametrize_with_checks plus verbatim-params test; the citations are the conventions' sources"
+
+[[claim]]
+id = "C178"
+fragment = "validation in `fit`, fitted attributes ending in an underscore."
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_sklearn_compat.py::test_fitted_attributes_end_in_underscore_and_n_iter_positive", "test:tests/test_preconditioning.py::test_parameter_validation_in_fit"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "underscore test asserts all new attrs end in _; validation in fit pinned for the preconditioner and by the sklearn checks for the estimator"
+
+[[claim]]
+id = "C179"
+fragment = "Dimension is arbitrary: `d` metrics and `d - 1` chart coordinates."
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_coordinates.py::test_helmert_orthonormal_kernel", "test:tests/test_datasets.py::test_d1", "test:tests/test_estimator.py::test_d1"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "helmert basis is (d-1,d) for d 2..8; d=1 handled; arbitrary d shown over a range, not literally every d"
+
+[[claim]]
+id = "C180"
+fragment = "[`frontier_in_original_units`](user-guide/conditioning.md), a function: the fitted surface as a"
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "func:src/hyperbolic_trade_space/preconditioning.py::frontier_in_original_units"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "returns exponents_orig, log_const, shift; log V in raw attributes equals pipeline score_samples"
+
+[[claim]]
+id = "C181"
+fragment = "[`HyperbolicTradeSpace`](user-guide/fitting.md), a transformer: fits the surface and gives the"
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_predictive.py::test_recovers_planted_coordinates", "test:tests/test_estimator.py::test_d1", "test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "transform gives (Z, log V) chart (inverse_transform of column_stack([Z, log_v]) in the predictive test)"
+
+[[claim]]
+id = "C182"
+fragment = "chart of position and log V. Fitted attributes for every number of terms include `exponents_`,"
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_attributes_exist_for_every_k_and_k1_numbers_are_unchanged", "test:tests/test_estimator.py::test_k_terms_attributes_conventions", "test:tests/test_interface_contract.py::test_r1_estimator_methods_and_fitted_attributes"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "exponents_, facet_, coefficients_, facet_share_ exist at K=1 and K>1"
+
+[[claim]]
+id = "C183"
+fragment = "`facet_`, `coefficients_`, `facet_share_`, `objective_` (what the solver minimized) and"
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized", "test:tests/test_estimator.py::test_attributes_exist_for_every_k_and_k1_numbers_are_unchanged"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "objective_ and mean_slack_ at K=1 and K=2; the test asserts the solver-minimized quantity per K"
+
+[[claim]]
+id = "C184"
+fragment = "`mean_slack_` (the mean slack, to compare fits across numbers of terms)."
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized", "test:tests/test_case.py::test_mean_slack_by_k_reads_the_estimator_and_the_fixed_tau_refit_shares_one_temperature"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "mean_slack_ defined for every K; comparison across K at a shared temperature is what the case test does (the gloss 'to compare' is intent)"
+
+[[claim]]
+id = "C185"
+fragment = "[`select_temperature`](user-guide/fitting.md), a function: chooses the temperature by a target"
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tuning.py::test_selected_temperature_hits_target", "func:src/hyperbolic_trade_space/tuning.py::select_temperature"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "tests assert frac_above_ within 0.01 of target"
+
+[[claim]]
+id = "C186"
+fragment = "[`make_frontier_data`](user-guide/fitting.md), a function: seeded synthetic data with a planted"
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_datasets.py::test_frontier_info_and_planting", "test:tests/test_datasets.py::test_reproducible_and_noise"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "seeded reproducibility and planted frontier"
+
+[[claim]]
+id = "C187"
+fragment = "[`make_configured_frontier_data`](user-guide/prediction.md), a function: the same with"
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_datasets.py::test_configured"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "configured data with config_map to (Z, log V), reproducible by seed"
+
+[[claim]]
+id = "C188"
+fragment = "[`tension_report`](user-guide/tensions.md), a function: contending set, elasticities and"
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "test:tests/test_tensions.py::test_exponents_and_elasticities_consistent", "test:tests/test_tensions.py::test_first_direction_recovers_planted_spread"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "report carries contending set, elasticities, tension directions"
+
+[[claim]]
+id = "C189"
+fragment = "[`TradeSpaceRegressor`](user-guide/prediction.md), a regressor: metrics, coordinates and novelty"
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_predictive.py::test_recovers_planted_coordinates", "test:tests/test_predictive.py::test_novelty_beyond_the_soft_frontier"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "predict (metrics), predict_coordinates and predict_novelty from configuration"
+
+[[claim]]
+id = "C190"
+fragment = "`hyperbolic_trade_space.tensions`: `TensionReport`, the object `tension_report` returns."
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_interface_contract.py::test_r1_termination_fields_statuses_and_report_fields", "func:src/hyperbolic_trade_space/tensions.py::tension_report"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "TensionReport is in tensions and tension_report returns it (test_tensions asserts report fields)"
+
+[[claim]]
+id = "C191"
+fragment = "`hyperbolic_trade_space.solvers`: the multi-term solver, the `Termination` record and the"
+file = "docs/api.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_interface_contract.py::test_r1_submodule_importable_with_pinned_names", "test:tests/test_interface_contract.py::test_r1_termination_fields_statuses_and_report_fields"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "solve_terms and Termination pinned in the solvers contract list"
+
+[[claim]]
+id = "C192"
+fragment = "Because the weights sum to one, $V(\\lambda m)=\\lambda V(m)$: doubling every metric doubles V."
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1.5", "glossary:invariant-value"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L1.5 states V(km)=kV(m) using sum w=1"
+
+[[claim]]
+id = "C193"
+fragment = "extends one term to K terms and keeps the programs inside geometric programming."
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L10.7", "lemma:L16.49", "glossary:generalized-posynomial"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L10.7 the K-term model is a posynomial; L16.49 the fixed-weight multi-term objective is a generalized posynomial (GGP)"
+
+[[claim]]
+id = "C194"
+fragment = "so the surface V = 1 is where the posynomial equals one."
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L10.7", "glossary:posynomial"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "V_K is the 1/kappa power of the posynomial (L10.7, glossary), so V=1 iff posynomial = 1"
+
+[[claim]]
+id = "C195"
+fragment = "Fitting one facet is a geometric program (GP), solved as"
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L4.24", "glossary:geometric-program"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L4.17-L4.24: posynomial objective, monomial equality/inequalities, convex in log variables (declared I13)"
+
+[[claim]]
+id = "C196"
+fragment = "fitting several facets alternates weights from"
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L16.49", "lemma:L16.48", "lemma:L15.16"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Weights from the current model fixed gives one GGP over all terms (L16.48-49); sharp-label reassign-then-refit is L15; the alternation loop itself is the algorithm"
+
+[[claim]]
+id = "C197"
+fragment = "The package takes the sharp limit of the weights, one"
+file = "docs/theory.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_soft_fit.py::test_r2_the_default_is_the_explicit_infinity_and_leaves_one_term_alone", "test:tests/test_soft_fit.py::test_r6_analysis_stays_analysis", "file:work-packages/interface-contract.md"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Default term_temperature is inf (sharp); facet_ is one argmax label per design"
+
+[[claim]]
+id = "C198"
+fragment = "which facet dominates a design is analysis of the fitted model, not part of the fit."
+file = "docs/theory.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_soft_fit.py::test_r6_analysis_stays_analysis", "glossary:assignment"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "test pins facet_ as argmax of the fitted scores, computed from the model (analysis)"
+
+[[claim]]
+id = "C199"
+fragment = "With one term this is a convex program."
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L4.13", "lemma:L4.24"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L4.13 J_tau convex in w; L4.23-24 the one-term problem is a convex program"
+
+[[claim]]
+id = "C200"
+fragment = "the same fit at tau = infinity: the exact maximum, a linear program,"
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L5.24", "lemma:L12.31", "glossary:supporting-envelope"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L5.24 LME -> max as tau -> inf; L12.31 the LP gap at tau=inf; glossary supporting-envelope"
+
+[[claim]]
+id = "C201"
+fragment = "The fit does not identify the other two with it."
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L11", "glossary:pareto-boundary", "glossary:supporting-envelope"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L11 docstring: maximizer of V is efficient, converse not proven, nothing claimed about the fitted frontier being the true front; statement of what is not claimed"
+
+[[claim]]
+id = "C202"
+fragment = "Inside the surface V < 1; beyond it V > 1, and V - 1 says by how much."
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1.7", "glossary:energy-differential"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L1.7 log V = w.u - beta, so V<1 / V>1 are the sides of the surface; V-1 is the relative excess by definition"
+
+[[claim]]
+id = "C203"
+fragment = "the level surface is flat in log space, so moving along it trades"
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L7.5", "lemma:L1.7", "glossary:elasticity"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L7.5 dlog m_j0/dlog m_k0 = -w_k0/w_j0 along the tangent at constant V"
+
+[[claim]]
+id = "C204"
+fragment = "It is found from the data and not assumed: the fit at"
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_tensions.py::test_finite_tau_smooths_weights_and_contending_set_stays_exact", "glossary:contending-set", "glossary:n-lemma"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Contending set computed from the tau=inf fit and pinned for planted supports of size 3; found from data is the design of tension_report"
+
+[[claim]]
+id = "C205"
+fragment = "temperature a small weight means weak participation, set by a participation threshold."
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_tensions.py::test_finite_tau_smooths_weights_and_contending_set_stays_exact", "glossary:participation-threshold"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Test: weights on free metrics below half the members' weights; participation depends on threshold"
+
+[[claim]]
+id = "C206"
+fragment = "terms there is one contending set per facet, and elasticities vary between facets."
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_tensions.py::test_k3_reports_one_per_facet_recover_planted_supports", "glossary:contending-set"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "K=3 returns one report per facet recovering planted supports; per-facet elasticities follow from L7.5 with facet-specific w"
+
+[[claim]]
+id = "C207"
+fragment = "at one term the elasticities are constant; designs are chosen by an evaluator and not drawn from"
+file = "docs/theory.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L7.5", "lemma:L10.9"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Constant elasticities at K=1: L7.5 with L10.9 (Phi_1 monomial); second clause is a statement of the sampling assumption (scope)"
+
+[[claim]]
+id = "C208"
+fragment = "A tutorial on geometric programming [@boyd2007tutorial]: posynomials and generalized posynomials,"
+file = "docs/further-reading.md"
+anchor = ""
+kind = "L"
+backing = ["bib:boyd2007tutorial"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n37 supported (GP definitions, generalized posynomials sect. 5.3)"
+
+[[claim]]
+id = "C209"
+fragment = "the family the multi-term fit stays inside."
+file = "docs/further-reading.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L10", "lemma:L16.49", "bib:boyd2007tutorial"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L10 step 4: exp(kappa Phi_K) is a posynomial in m; L16.49: soft-fit fixed-weight objective is a generalized posynomial"
+
+[[claim]]
+id = "C210"
+fragment = "Fitting softmax-affine functions to data so they remain compatible with geometric programming"
+file = "docs/further-reading.md"
+anchor = ""
+kind = "L"
+backing = ["bib:hoburg2016data"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n39 supported from the abstract (full text not obtained)"
+
+[[claim]]
+id = "C211"
+fragment = "Fitting convex piecewise-linear functions by alternating partition and refit [@magnani2009convex]:"
+file = "docs/further-reading.md"
+anchor = ""
+kind = "L"
+backing = ["bib:magnani2009convex"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n40 supported: alternating assignment and refit"
+
+[[claim]]
+id = "C212"
+fragment = "Reweighted $\\ell_1$ minimization [@candes2008enhancing]: the sparsity option,"
+file = "docs/further-reading.md"
+anchor = ""
+kind = "L"
+backing = ["bib:candes2008enhancing"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n41 supported: sequence of reweighted l1 problems"
+
+[[claim]]
+id = "C213"
+fragment = "minimization [@candes2008enhancing]: the sparsity option, `penalty=\"reweighted_l1\"`."
+file = "docs/further-reading.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_reweighted_l1_gives_exact_zeros_on_planted_sparse_facet", "test:tests/test_estimator.py::test_penalty_gives_exact_zero_exponents_at_the_estimator"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "penalty=\"reweighted_l1\" exists and sparsifies exponents at solver and estimator"
+
+[[claim]]
+id = "C214"
+fragment = "the second source of the multi-term fit."
+file = "docs/further-reading.md"
+anchor = ""
+kind = "L"
+backing = ["bib:magnani2009convex"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "refit scheme as sentence in n40 and prior_art gp-maxaffine 'K > 1 refit scheme'; 'second source' is the author's attribution of the scheme, same caveat as C006 is lighter since the abstract describes the scheme"
+
+[[claim]]
+id = "C215"
+fragment = "Kernel PCA [@schoelkopf1998nonlinear]: the kin of the documented kernel direction, which is not"
+file = "docs/further-reading.md"
+anchor = ""
+kind = "L"
+backing = ["bib:schoelkopf1998nonlinear"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n43 supported: kernel PCA via feature spaces"
+
+[[claim]]
+id = "C216"
+fragment = "HoroPCA [@chami2021horopca]: principal component analysis in hyperbolic space, which this package"
+file = "docs/further-reading.md"
+anchor = ""
+kind = "L"
+backing = ["bib:chami2021horopca"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass n44 supported: HoroPCA, PCA generalized to hyperbolic space"
+
+[[claim]]
+id = "C217"
+fragment = "analysis, the nearest neighbour outside engineering design."
+file = "docs/further-reading.md"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "'nearest neighbour outside engineering design' is the author's judgment (n17 'closer cousin' is judgment); register as reading"
+
+[[claim]]
+id = "C218"
+fragment = "PCA finds the directions in which the data spread;"
+file = "docs/user-guide/overview.md"
+anchor = ""
+kind = "M"
+backing = ["bib:jolliffe2016principal"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass.yaml PCA table row (maximize variance successively) supported; textbook gloss"
+
+[[claim]]
+id = "C219"
+fragment = "The answer is one weight per metric, the"
+file = "docs/user-guide/overview.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_fit_invariants", "test:tests/test_tensions.py::test_exponents_and_elasticities_consistent"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "fit returns one exponent per metric on the simplex, min and sum asserted"
+
+[[claim]]
+id = "C220"
+fragment = "found from the data, so you need not know in advance which dilemma or trilemma your problem holds."
+file = "docs/user-guide/overview.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "contending set recovered from data on planted supports (size 1,2,3); backing is planted data, not a general guarantee, claim worded modestly"
+
+[[claim]]
+id = "C221"
+fragment = "The weights define a score V, a weighted geometric mean of the metrics."
+file = "docs/user-guide/overview.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1", "glossary:invariant-value"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "V = prod m_j^w_j = exp(sum w_j log m_j)"
+
+[[claim]]
+id = "C222"
+fragment = "V = 1 is the fitted reference surface,"
+file = "docs/user-guide/overview.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "corollary: V(m/e^beta)=1 exactly when V(m)=e^beta; also test_uniform_rescaling_shifts_beta"
+
+[[claim]]
+id = "C223"
+fragment = "Because V scales with the metrics, it reads as a factor of improvement."
+file = "docs/user-guide/overview.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1", "lemma:L7"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "V(km)=kV(m) (L1) and uniform improvement by V^-1 reaches V=1 (L7)"
+
+[[claim]]
+id = "C224"
+fragment = "the weights and the metrics that participate;"
+file = "docs/user-guide/overview.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_exponents_and_elasticities_consistent", "test:tests/test_tensions.py::test_contending_set_recovers_planted_support"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "tension_report exposes weights (exponents) and participating mask, asserted"
+
+[[claim]]
+id = "C225"
+fragment = "its energy differential (level offset) to the fitted reference surface and its"
+file = "docs/user-guide/overview.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples", "test:tests/test_coordinates.py::test_round_trip_and_invariance"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "score_samples (level) and transform (position along surface) with exact round trip; 'energy differential' is the glossary name for log V"
+
+[[claim]]
+id = "C226"
+fragment = "how much one metric alone would need to improve to reach the surface;"
+file = "docs/user-guide/overview.md"
+anchor = ""
+kind = "S"
+backing = ["lemma:L7", "test:tests/test_estimator.py::test_project_and_improvement_factors_land_on_frontier"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "improvement_factors f=V^(-1/w_j) reaches V=1; test checks landing on frontier"
+
+[[claim]]
+id = "C227"
+fragment = "a novelty score and candidate white space;"
+file = "docs/user-guide/overview.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_novelty_score", "test:tests/test_gaps.py::test_find_holes_2d_planted_disc"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "novelty_score and find_holes (white space) tested; 'candidate' wording fits"
+
+[[claim]]
+id = "C228"
+fragment = "the surface written back in your original attribute units;"
+file = "docs/user-guide/overview.md"
+anchor = ""
+kind = "S"
+backing = ["lemma:L9", "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "frontier_in_original_units reproduces score_samples exactly under log-affine conditioning"
+
+[[claim]]
+id = "C229"
+fragment = "a stopping record, [`termination_` and `conditioning_`](termination.md), saying how far to trust"
+file = "docs/user-guide/overview.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_termination_record_for_k_terms", "test:tests/test_estimator.py::test_conditioning_is_the_restricted_hessian_eigenvalue"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "termination_ and conditioning_ attributes exist and are tested; 'how far to trust' is the intended reading"
+
+[[claim]]
+id = "C230"
+fragment = "The fit consumes a strictly positive matrix of larger-is-better metrics."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_round_trip_mixed_orientation_and_shift"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Preconditioner output is strictly positive larger-is-better (M>0 asserted); zeros tolerated is stated later on the page and tested separately"
+
+[[claim]]
+id = "C231"
+fragment = "attributes: kilograms, dollars, error rates, counts, some of them better when small."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Description of what attributes look like in practice; the author's own framing"
+
+[[claim]]
+id = "C232"
+fragment = "which implements the family of maps the method allows,"
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_fitted_attributes_and_larger_is_better_direction", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Test pins log m = (o log(X+shift) - offset)/scale; the log-affine family"
+
+[[claim]]
+id = "C233"
+fragment = "`frontier_in_original_units`, which reports the fitted surface back in the units you started with."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "func:src/hyperbolic_trade_space/preconditioning.py::frontier_in_original_units"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Pulled-back log V equals the pipeline score_samples on raw rows"
+
+[[claim]]
+id = "C234"
+fragment = "smaller-is-better attribute is inverted in log space and comes out larger-is-better."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_fitted_attributes_and_larger_is_better_direction"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Asserts negative correlation of metric with raw attribute for orientation -1 (inverted, larger-is-better)"
+
+[[claim]]
+id = "C235"
+fragment = "The cheap diagnostic is the sign of the pulled-back exponent below."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Test asserts exponents_orig * orientation >= 0, so exponent sign follows orientation (w_j >= 0)"
+
+[[claim]]
+id = "C236"
+fragment = "`shift` moves the argument to `a + shift`; it must keep every"
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_negative_after_shift_raises", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Shift 0.5 on a value of -1 raises; shift 1.0 (zero after shift) allowed"
+
+[[claim]]
+id = "C237"
+fragment = "value nonnegative, and `ValueError` with \"Negative values in data\" is raised otherwise."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_negative_after_shift_raises"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "match=\"Negative values in data\" on fit, transform, inverse_transform"
+
+[[claim]]
+id = "C238"
+fragment = "The reference point is the attribute value that maps to metric 1; it is the centre removed by the"
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_fitted_attributes_and_larger_is_better_direction", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Test pins log m = (z - log_offset_)/log_scale_, so offset is the z mapping to metric 1; the V = 1 gloss is intent"
+
+[[claim]]
+id = "C239"
+fragment = "scaler and stored as `log_offset_`. It fixes what V = 1 means in practice."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_fitted_attributes_and_larger_is_better_direction"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Same test; log_offset_ is the centre removed by the scaler; second sentence is a gloss"
+
+[[claim]]
+id = "C240"
+fragment = "a scaler is fitted per column. `scaler=\"standard\"` gives each metric unit"
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_unit_log_standard_deviation", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "std of log M is 1 per column (doctest too); scaler fitted per column"
+
+[[claim]]
+id = "C241"
+fragment = "normalizes the interquartile range instead and suits data where a"
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_robust_normalizes_log_iqr_and_ignores_zeros"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Log IQR is 1 for robust; the 'suits data with extreme designs' is advice"
+
+[[claim]]
+id = "C242"
+fragment = "works if it is affine per column. The reason to scale is the temperature of the next page: it is"
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_round_trip_mixed_orientation_and_shift"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Round trip with a MinMaxScaler instance; docstring requires affine per column; the rationale sentence is covered under the temperature claim"
+
+[[claim]]
+id = "C243"
+fragment = "An entry at exactly `-shift` maps to metric 0, and the scaler ignores it."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_zero_after_shift_maps_to_zero_and_inverts_to_minus_shift", "test:tests/test_preconditioning.py::test_zeros_map_to_zero_and_invert"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "X+shift==0 maps to 0 and the scale equals that of the fit without the entry"
+
+[[claim]]
+id = "C244"
+fragment = "An entry at exactly `-shift` maps to metric 0, and the scaler ignores it. The estimator tolerates"
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_zero_metric_row"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Fit with a zero-metric row leaves exponents unchanged"
+
+[[claim]]
+id = "C245"
+fragment = "such a row has V = 0 and no support weight,"
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_zero_metric_row"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Asserts invariant_value == 0 and support_weights_ == 0 for the row"
+
+[[claim]]
+id = "C246"
+fragment = "and its chart coordinates are `nan`."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_zero_metric_row", "test:tests/test_coordinates.py::test_minus_inf_rows"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Transform coordinates are nan for the zero row"
+
+[[claim]]
+id = "C247"
+fragment = "For a smaller-is-better attribute a raw zero is the best value, so mapping it to metric 0 is"
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_preconditioning.py::test_zeros_map_to_zero_and_invert"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Zero maps to metric 0 for orientation -1 (tested); 'best value' is the definition of smaller-is-better and 'bookkeeping not a verdict' is the author's judgment"
+
+[[claim]]
+id = "C248"
+fragment = "None proves a conditioning right; they show whether the story is sensible."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Author's judgment about diagnostics"
+
+[[claim]]
+id = "C249"
+fragment = "After `\"standard\"` scaling, `np.log(M).std(axis=0)` is one in every finite column."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_unit_log_standard_deviation", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Asserts std(log M, axis=0)=1 and doctest; 'finite column' covers zeros ignored by the scaler"
+
+[[claim]]
+id = "C250"
+fragment = "`inverse_transform(transform(X))` returns `X`; the conditioning is exactly invertible."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_round_trip_mixed_orientation_and_shift", "test:tests/test_preconditioning.py::test_zeros_map_to_zero_and_invert"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Round trip to rtol 1e-10 across scalers, orientations, shifts and zeros; 'exactly' means to floating precision"
+
+[[claim]]
+id = "C251"
+fragment = "The pulled-back exponent on a raw attribute is `w_j * alpha_j`."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L9.5"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "V = e^{w.b-beta} prod (a_j+r_j)^{w_j alpha_j}; exponent on raw attribute is w_j alpha_j; test_pullback_matches_L9_chain_formula cross-checks"
+
+[[claim]]
+id = "C252"
+fragment = "contending set moves, the finding depends on the conditioning, and should be reported that way."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Author's advice on reporting sensitivity to conditioning"
+
+[[claim]]
+id = "C253"
+fragment = "`exponents_orig`, `log_const` and `shift`. The surface is again a monomial, now in the raw"
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Asserts set(f) == {exponents_orig, log_const, shift}; 'again a monomial' is L9.5"
+
+[[claim]]
+id = "C254"
+fragment = "attributes: a negative exponent marks a smaller-is-better attribute."
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L9.5", "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Monomial form is L9.5; test asserts exponent*orientation >= 0 so negative exponent implies orientation -1 (w_j >= 0)"
+
+[[claim]]
+id = "C255"
+fragment = "to get log V for raw rows. The function needs a"
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L9.5", "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "The stated expression log_const + exponents_orig @ log(X+shift) is the one tested equal to score_samples"
+
+[[claim]]
+id = "C256"
+fragment = "problem and returns the minimizer. It follows the scikit-learn decomposition family: `fit`,"
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "S"
+backing = ["lemma:L4", "test:tests/test_solvers.py::test_slsqp_agrees_with_lp", "test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Solver agrees with the exact LP and the planted fit to tolerance; decomposition-family conformance by the sklearn checks."
+
+[[claim]]
+id = "C257"
+fragment = "- `exponents_`: shape `(n_terms, d)`, each row on the simplex."
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_fit_invariants", "test:tests/test_estimator.py::test_k_terms_round_trip_and_scores"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Shape (n_terms,d) and simplex at K=1 in the estimator test; K>1 row sums pinned only at solver level (test_solvers::test_terms_deterministic_and_sparse)."
+
+[[claim]]
+id = "C258"
+fragment = "- `n_eff_`: how many designs carry the fit."
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_k_terms_attributes_conventions", "test:tests/test_tuning.py::test_tau_sweep_is_monotone_from_half_toward_zero"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "n_eff_ = 1/sum p^2 asserted; sweeps from N toward d."
+
+[[claim]]
+id = "C259"
+fragment = "term and the mean slack at several, so it is not comparable across numbers of terms."
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized", "file:work-packages/interface-contract.md"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "At K=1 objective_ < mean_slack_ (different quantities); contract v3 says objective_ is what the solver minimized and mean_slack_ is the one to compare."
+
+[[claim]]
+id = "C260"
+fragment = "- `termination_` and `conditioning_`: how the fit stopped and how well its exponents are identified"
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_termination_record_for_k_terms", "test:tests/test_estimator.py::test_conditioning_is_the_restricted_hessian_eigenvalue", "test:tests/test_estimator.py::test_conditioning_drops_for_nearly_collinear_metrics"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Termination status record and conditioning as smallest restricted Hessian eigenvalue, tested."
+
+[[claim]]
+id = "C261"
+fragment = "The chart's basis, offsets and support weights are `basis_`, `log_offset_` and `support_weights_`."
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples", "test:tests/test_estimator.py::test_fit_invariants"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Names of attributes; basis_ drives the chart round trip, support_weights_ and log_offset_ asserted."
+
+[[claim]]
+id = "C262"
+fragment = "`min_exponent` (a floor on every exponent) at 0 to"
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "S"
+backing = ["glossary:contending-set", "test:tests/test_estimator.py::test_fit_invariants"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "definition/instruction: contending set is the support at the exact fit; a floor above 0 would hide it; coordinates validated."
+
+[[claim]]
+id = "C263"
+fragment = "This synthetic table puts 30 percent of its rows on the planted frontier, hence the target 0.35;"
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "R"
+backing = ["gen:src/hyperbolic_trade_space/datasets.py::make_frontier_data", "test:tests/test_datasets.py::test_frontier_info_and_planting"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "frontier_fraction default 0.3 pinned (mask.sum()==150 of 500); I confirmed mask mean 0.3 for n=300; 'hence 0.35' is the author's rationale, not asserted."
+
+[[claim]]
+id = "C264"
+fragment = "Fitting alternates weights from the current model with a refit, from several seeded starts"
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "S"
+backing = ["lemma:L15", "test:tests/test_solvers.py::test_terms_monotone_history_and_stops", "test:tests/test_estimator.py::test_k_terms_zero_rows_and_determinism"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Alternation of assignment and refit with nonincreasing history; seeded restarts deterministic."
+
+[[claim]]
+id = "C265"
+fragment = "`make_frontier_data(300, 4, n_terms=2, random_state=777)`) and the default target 0.10 raises \"not"
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tuning.py::test_several_terms_unreachable_target_says_what_to_try"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Same table (300,4,n_terms=2,seed 777); default target raises 'not bracketed' (slow-marked test)."
+
+[[claim]]
+id = "C266"
+fragment = "also returns configuration variables. Both are seeded and used throughout these pages."
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_datasets.py::test_configured"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "random_state seeding tested (same seed same data); 'used throughout these pages' is descriptive"
+
+[[claim]]
+id = "C267"
+fragment = "returns a frozen `TensionReport` that says which metrics contend and"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_deterministic_frozen_and_validation", "test:tests/test_tensions.py::test_contending_set_recovers_planted_support"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "frozen dataclass asserted (FrozenInstanceError); contending set recovered"
+
+[[claim]]
+id = "C268"
+fragment = "`plot_tensions` draws the report as a heatmap:"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_plot_tensions_with_real_report", "test:tests/test_plotting.py::test_plot_tensions_with_stand_in_report"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "asserts imshow image with tension cmap, 3x3 annotated cells, outlines"
+
+[[claim]]
+id = "C269"
+fragment = "`contending_set` holds the metrics with positive exponent in the exact-maximum fit (tau = infinity,"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "test:tests/test_tensions.py::test_finite_tau_smooths_weights_and_contending_set_stays_exact"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "support of tau=inf LP, 1e-9 cutoff is in code; planted supports recovered"
+
+[[claim]]
+id = "C270"
+fragment = "`n_lemma` is its size and `lemma_name` names it: monolemma, dilemma,"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "test:tests/test_tensions.py::test_d1_trivial_report"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "n_lemma = support size, names monolemma/dilemma/trilemma/n-lemma pinned"
+
+[[claim]]
+id = "C271"
+fragment = "The set is found, not assumed: a facet of the achievable region on which"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "M"
+backing = ["glossary:n-lemma", "test:tests/test_tensions.py::test_contending_set_recovers_planted_support"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "definition (pointer definition); glossary n-lemma; found-not-assumed shown by planted recovery"
+
+[[claim]]
+id = "C272"
+fragment = "The report solves the tau = infinity program itself, independent of the"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_finite_tau_smooths_weights_and_contending_set_stays_exact"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "contending set same at tau=5 as at inf"
+
+[[claim]]
+id = "C273"
+fragment = "the report warns when the estimator was fitted with a floor."
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_warns_when_min_exponent_positive", "test:tests/test_tensions.py::test_no_warning_when_min_exponent_zero"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "warning on floor, none without"
+
+[[claim]]
+id = "C274"
+fragment = "`participating` marks metrics whose exponent exceeds the participation threshold"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_exponents_and_elasticities_consistent", "test:tests/test_tensions.py::test_finite_tau_smooths_weights_and_contending_set_stays_exact", "glossary:participation-threshold"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "participating = exponents > threshold; threshold=1e-9 override tested"
+
+[[claim]]
+id = "C275"
+fragment = "is the elasticity along the surface: the percentage change of metric j per percentage change of"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L7.5", "glossary:elasticity", "test:tests/test_tensions.py::test_exponents_and_elasticities_consistent"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "d log m_j/d log m_k = -w_k/w_j along F; code entry [j,k]=-w_k/w_j asserted"
+
+[[claim]]
+id = "C276"
+fragment = "metric k, constant on a facet and `nan`"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L7.5", "test:tests/test_tensions.py::test_exponents_and_elasticities_consistent"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "ratio of exponents is constant on a facet (L7.5); nan rows tested"
+
+[[claim]]
+id = "C277"
+fragment = "where metric j does not participate. It"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_exponents_and_elasticities_consistent"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "nan for rows with exponent <= 1e-3 asserted"
+
+[[claim]]
+id = "C278"
+fragment = "For designs with absolute log V below `band` (by default 1/tau, or 0.1 at infinite tau),"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_band_default_and_report_fields", "test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "band 0.1 at inf, 1/tau finite (0.05 at tau=20); near = |log V| < band asserted"
+
+[[claim]]
+id = "C279"
+fragment = "`association` is the Pearson or Spearman correlation of the log-metrics: negative is traded, positive"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_association_signs_aligned_and_traded"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "pearson and spearman; aligned > 0.5, traded < -0.5"
+
+[[claim]]
+id = "C280"
+fragment = "Near the surface the weighted sum of log-metrics is almost constant, so a binding"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "log V = w.u - beta (L1), so |log V|<band keeps w.u within band of beta; 'almost constant' is the band reading"
+
+[[claim]]
+id = "C281"
+fragment = "Three fields describe the spread of the near-frontier designs along the surface:"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_first_direction_recovers_planted_spread"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "fields exist with shapes (d-1,d-1), (d-1,d), (d-1,)"
+
+[[claim]]
+id = "C282"
+fragment = "`tension_directions`: the principal directions of the near-frontier chart coordinates."
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_first_direction_recovers_planted_spread"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "principal direction recovers planted spread within 5 degrees; unit norms"
+
+[[claim]]
+id = "C283"
+fragment = "`tension_loadings`: the same directions as loadings on the log-metrics."
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_first_direction_recovers_planted_spread"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "loadings = directions @ basis, proportional to planted trade vector"
+
+[[claim]]
+id = "C284"
+fragment = "`explained_spread`: the share of variance along each."
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_first_direction_recovers_planted_spread"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "explained_spread sums to 1, first > 0.9"
+
+[[claim]]
+id = "C285"
+fragment = "They equal `orient_by_pca` on the same rows."
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "allclose of components and evr with orient_by_pca on same rows"
+
+[[claim]]
+id = "C286"
+fragment = "At K > 1 the function returns a list of K reports, one per facet, each on the rows that facet"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_k3_reports_one_per_facet_recover_planted_supports", "test:tests/test_tensions.py::test_k1_is_a_single_report_and_facet_error_names_facet"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "list of K reports, one per facet on its assigned rows (slow-marked test)"
+
+[[claim]]
+id = "C287"
+fragment = "dominates. A facet with fewer than `min_near_frontier` (default 10) near-frontier rows raises"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_k3_reports_one_per_facet_recover_planted_supports", "test:tests/test_tensions.py::test_k1_is_a_single_report_and_facet_error_names_facet", "test:tests/test_tensions.py::test_too_few_near_frontier_raises"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "default 10 asserted (n_near >= 10), ValueError names facet and min_near_frontier"
+
+[[claim]]
+id = "C288"
+fragment = "depends on the band, and is a statement about"
+file = "docs/user-guide/tensions.md"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_tensions.py::test_too_few_near_frontier_raises", "test:tests/test_tensions.py::test_band_default_and_report_fields"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "band changes the near-frontier set (raise at default, n_near > 10 at band=5)"
+
+[[claim]]
+id = "C289"
+fragment = "say where along the surface the design sits,"
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L8.6", "lemma:L8.14"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "chart Z blind to common shift (L8.6, free of overall scale); Z are the d-1 coordinates; round trip L8.14"
+
+[[claim]]
+id = "C290"
+fragment = "`transform` returns the chart, `inverse_transform` inverts it, and `score_samples` is log V alone."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "asserts inverse_transform(T)==X, T[:,-1]==score_samples, transform shape"
+
+[[claim]]
+id = "C291"
+fragment = "row with a zero metric has `nan` coordinates and no inverse."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_zero_metric_row", "test:tests/test_coordinates.py::test_minus_inf_rows"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "nan Z, -inf log V, nan inverse row asserted"
+
+[[claim]]
+id = "C292"
+fragment = "`project(X)` returns the design moved onto V = 1 by scaling all its metrics together."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_project_and_improvement_factors_land_on_frontier", "lemma:L1.6", "lemma:L7.9"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "V(project(X))==1 asserted; project is m/V (uniform scaling, L7.9)"
+
+[[claim]]
+id = "C293"
+fragment = "`improvement_factors(X)` gives, per metric, the factor on that metric alone that reaches V = 1"
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_project_and_improvement_factors_land_on_frontier", "lemma:L7.7", "func:src/hyperbolic_trade_space/estimator.py::improvement_factors"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "scaling metric j alone by F[:,j] gives V=1 asserted; L7.7 states the factor"
+
+[[claim]]
+id = "C294"
+fragment = "(`inf` where the exponent is numerically zero)."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_improvement_factors_inf_for_numerically_zero_exponent_without_warning", "test:tests/test_estimator.py::test_improvement_factor_inf_at_zero_exponent"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "inf at exponent below 1e-12 asserted"
+
+[[claim]]
+id = "C295"
+fragment = "For a multi-term fit, log V is the soft maximum over facets"
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_matches_derivation.py::test_L10_phi_k_bounds_shift_and_limit_at_numeric_instance", "test:tests/test_estimator.py::test_k_terms_round_trip_and_scores", "lemma:L10.15", "lemma:L10.16"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "score_samples == (1/kappa) log sum exp(kappa x_k), within (log K)/kappa of the max (the entropic sum over K facets, not mean)"
+
+[[claim]]
+id = "C296"
+fragment = "For a multi-term fit, log V is the soft maximum over facets, and `improvement_factors` uses each"
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_k_terms_improvement_factors_use_assigned_facet", "test:tests/test_estimator.py::test_k_terms_round_trip_and_scores"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "improvement factor of the assigned facet lands on V=1; soft max as C015"
+
+[[claim]]
+id = "C297"
+fragment = "`knn_gap_scores(Z, k=5)`: mean distance to the k nearest neighbours, normalized by its median."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/gaps.py::knn_gap_scores", "test:tests/test_gaps.py::test_knn_flags_isolated_point"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "median score 1 asserted, isolated point flagged; mean-of-k is the implementation and doctest"
+
+[[claim]]
+id = "C298"
+fragment = "`find_holes(Z, resolution=50, threshold=2.0)`: grid points inside the convex hull of Z that sit far"
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/gaps.py::find_holes", "test:tests/test_gaps.py::test_find_holes_restricts_to_hull", "test:tests/test_gaps.py::test_find_holes_2d_planted_disc"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "hull restriction and far-from-design score asserted"
+
+[[claim]]
+id = "C299"
+fragment = "supports `d - 1` of 1, 2 or 3."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_gaps.py::test_find_holes_3d_runs_and_other_dims_raise", "test:tests/test_gaps.py::test_find_holes_1d_planted_gap"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "1, 2, 3 run; 0 and 4 raise"
+
+[[claim]]
+id = "C300"
+fragment = "`frontier_targets(Z_points, estimator, preconditioner=None)`: sets log V = 0 at given positions and"
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_gaps.py::test_frontier_targets_on_frontier_and_round_trip"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "V==1, log V==0 and round trip of chart coordinates asserted"
+
+[[claim]]
+id = "C301"
+fragment = "maps back to metrics and, with a preconditioner, to attributes."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_gaps.py::test_frontier_targets_with_real_preconditioner", "test:tests/test_gaps.py::test_frontier_targets_with_preconditioner_stand_in", "test:tests/test_gaps.py::test_frontier_targets_on_frontier_and_round_trip"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "metrics always; attributes None without a preconditioner, mapped back with one"
+
+[[claim]]
+id = "C302"
+fragment = "`orient_by_pca(Z, mask=None)`: rotates to the principal axes of the masked rows."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_gaps.py::test_orient_by_pca_rotation_and_sign", "test:tests/test_gaps.py::test_orient_by_pca_mask_uses_only_masked_rows"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "principal axes; mask uses only masked rows"
+
+[[claim]]
+id = "C303"
+fragment = "Figure 5. The chart with holes: the red points are grid positions far from every design, candidates for white space."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "R"
+backing = ["test:tests/test_gaps.py::test_find_holes_2d_planted_disc", "test:tests/test_site.py::test_each_figure_is_produced_by_the_code_shown_above_it", "gen:scripts/build_figures.py::build_page", "func:src/hyperbolic_trade_space/plotting.py::plot_frontier_coordinates"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "hole points are grid positions far from the data (score vs nearest design); marker colour HOLE_COLOR is orange-red (#D55E00), worded red"
+
+[[claim]]
+id = "C304"
+fragment = "`plot_log_plane`: two metrics, the data, the frontier and its band."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_log_plane_draws_frontier_line_in_black_and_band_in_grey"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "data, frontier line, band asserted"
+
+[[claim]]
+id = "C305"
+fragment = "`plot_frontier_surface_3d`: three metrics, the frontier surface."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_surface_3d_returns_3d_axes_and_validates"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "3d axes for three metrics"
+
+[[claim]]
+id = "C306"
+fragment = "`plot_frontier_coordinates`: the chart, with optional holes and targets."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_frontier_coordinates_one_and_two_coordinates_and_overlays"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "holes and targets overlays asserted"
+
+[[claim]]
+id = "C307"
+fragment = "`plot_v_by_variable`: log V against a configuration variable."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_v_by_variable_numeric_and_categorical_and_existing_ax"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "log V against a numeric or categorical variable"
+
+[[claim]]
+id = "C308"
+fragment = "`plot_tensions`: the tension report as a heatmap."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_plot_tensions_with_stand_in_report"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "image with TENSION_CMAP asserted"
+
+[[claim]]
+id = "C309"
+fragment = "one colour vocabulary, declared as module constants (`FRONTIER_COLOR`, `BAND_COLOR`, `HOLE_COLOR`,"
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_log_plane_draws_frontier_line_in_black_and_band_in_grey", "test:tests/test_plotting.py::test_plot_tensions_with_stand_in_report"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "FRONTIER_COLOR, BAND_COLOR, TENSION_CMAP used and asserted; HOLE_COLOR used in plot_frontier_coordinates (constants in __all__)"
+
+[[claim]]
+id = "C310"
+fragment = "gives a per-row label to pass as `color=`."
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_surface_k3_and_coordinates_facet_colouring", "func:src/hyperbolic_trade_space/plotting.py::facet_labels"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "labels 'facet k' per row passed as color= and shown"
+
+[[claim]]
+id = "C311"
+fragment = "where would a configuration without measurements fall? It composes two fits."
+file = "docs/user-guide/prediction.md"
+anchor = ""
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor", "test:tests/test_predictive.py::test_clones_leave_parameters_untouched"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Class docstring and doctest; fit composes chart fit then regressor fit."
+
+[[claim]]
+id = "C312"
+fragment = "- `predict(X_config)`: metrics, through the inverse chart."
+file = "docs/user-guide/prediction.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_predictive.py::test_recovers_planted_coordinates"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Asserts predict equals inverse_transform of predicted coordinates."
+
+[[claim]]
+id = "C313"
+fragment = "- `predict_coordinates(X_config)`: the pair `(Z, log_v)`."
+file = "docs/user-guide/prediction.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_predictive.py::test_recovers_planted_coordinates", "func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Z, log_v recovered against planted map; doctest shapes."
+
+[[claim]]
+id = "C314"
+fragment = "- `predict_novelty(X_config)`: V - 1, positive where the design is predicted beyond the surface."
+file = "docs/user-guide/prediction.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_predictive.py::test_novelty_beyond_the_soft_frontier"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Asserts novelty positive on frontier designs, negative far inside, log1p(nov) equals log V."
+
+[[claim]]
+id = "C315"
+fragment = "the regressor's `return_std` propagated by the delta method; raises"
+file = "docs/user-guide/prediction.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_predictive.py::test_predict_std_plumbing_with_gaussian_process", "test:tests/test_predictive.py::test_predict_std_absent_without_return_std"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Delta method checked against Monte Carlo (rtol 5%); AttributeError without return_std."
+
+[[claim]]
+id = "C316"
+fragment = "- `score`: R-squared in coordinate space, not in metric units."
+file = "docs/user-guide/prediction.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_predictive.py::test_score_is_coordinate_space_r2_and_order_independent"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Score equals mean coordinate-space R2."
+
+[[claim]]
+id = "C317"
+fragment = "novelty prediction. A one-dimensional `y` is accepted for a single metric. `trade_space` may be a"
+file = "docs/user-guide/prediction.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_predictive.py::test_single_metric_accepts_1d_y", "test:tests/test_predictive.py::test_trade_space_can_be_a_pipeline_and_regressor_a_pipeline"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "1-D y and Pipeline chart tested (with a FunctionTransformer, not a literal preconditioner)."
+
+[[claim]]
+id = "C318"
+fragment = "`Pipeline` ending in a `HyperbolicTradeSpace`, such as a preconditioner followed by the estimator."
+file = "docs/user-guide/prediction.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_predictive.py::test_trade_space_can_be_a_pipeline_and_regressor_a_pipeline"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Pipeline ending in HyperbolicTradeSpace works; preconditioner example itself not tested here."
+
+[[claim]]
+id = "C319"
+fragment = "A predicted position inherits the surrogate's error and extrapolation risk, and is conditional on"
+file = "docs/user-guide/prediction.md"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_predictive.py::test_predict_std_plumbing_with_gaussian_process", "test:tests/test_predictive.py::test_recovers_planted_coordinates"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Cautionary gloss; surrogate error and growing std far from data shown by tests; conditional on trade_space_ by construction."
+
+[[claim]]
+id = "C320"
+fragment = "evaluation to run, to be checked, not a result. The regressor declares `positive_only` targets and"
+file = "docs/user-guide/prediction.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_sklearn_compat.py::test_regressor_tags"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "positive_only tag asserted; the 'proposal to be checked' clause is advice, not a software claim."
+
+[[claim]]
+id = "C321"
+fragment = "Every fit records how it stopped."
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_termination_record_for_k_terms", "test:tests/test_estimator.py::test_termination_not_applicable_cases_do_not_warn", "test:tests/test_solvers.py::test_margin_and_radius_are_nan_at_one_term_not_infinite"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "K>1, K=1, tangent, penalty and degenerate fits all end with a termination_ record with a status"
+
+[[claim]]
+id = "C322"
+fragment = "At one term the fit is a convex program and its answer is the"
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L4", "lemma:L12.13", "test:tests/test_solvers.py::test_terms_k1_equals_slsqp_and_degenerate"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "f_k = J_tau - linear is convex (L12.13, from L4) on the simplex; K=1 fit equals the SLSQP solve; minimizer up to solver tolerance"
+
+[[claim]]
+id = "C323"
+fragment = "With several terms it alternates between weights from the current model and refitting each"
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_terms_monotone_history_and_stops", "test:tests/test_soft_fit.py::test_r1_the_soft_objective_never_rises_across_the_history"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "hard fit: argmax relabel then per-facet refit until the assignment is fixed; soft fit uses softmax weights; the sentence's weights are labels in the hard case"
+
+[[claim]]
+id = "C324"
+fragment = "no step made the mean slack worse (`mean_slack_`, defined at every number of terms)."
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_terms_monotone_history_and_stops", "test:tests/test_soft_fit.py::test_r1_the_soft_objective_never_rises_across_the_history", "test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized", "lemma:L15.16"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "descent holds up to guard_tol 1e-12 and not under facet_step='tangent' (status not_applicable); mean_slack_ defined at every K is pinned"
+
+[[claim]]
+id = "C325"
+fragment = "Numerical stationarity: no first-order improvement is left."
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L12.21", "lemma:L12.23"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "level 2 is the gap G within eps_kkt; L12: G=0 iff the simplex KKT holds, and 0<=f-f*<=G; a definition of the level with a tolerance"
+
+[[claim]]
+id = "C326"
+fragment = "The facet gap G_k measures what"
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L12.23"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "G_k bounds the remaining suboptimality f_k - f_k* from above (0<=f-f*<=G); 'measures' is loose for 'bounds'"
+
+[[claim]]
+id = "C327"
+fragment = "if no design sits exactly on a seam between facets, small changes"
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L13.7", "lemma:L13.12", "test:tests/test_solvers.py::test_margin_lemma_perturbations_inside_the_radius_keep_labels"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "no row on a seam = positive margin (R2); L13: score changes below gamma/2 keep every maximizing facet; 'small' is relative to gamma"
+
+[[claim]]
+id = "C328"
+fragment = "is the perturbation provably leaving every facet unchanged."
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L13.7", "lemma:L13.11", "test:tests/test_solvers.py::test_margin_lemma_perturbations_inside_the_radius_keep_labels"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L13.11 radius gamma/(2U) keeps every row's maximizing facet (assignment); 'leaving every facet unchanged' is loose wording for the assignment"
+
+[[claim]]
+id = "C329"
+fragment = "At infinite temperature this happens when a frontier row lies on two facet planes or two"
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_facets", "test:tests/test_solvers.py::test_r1_planted_certificates"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "gamma=0 exactly for a tied row or identical facets (pinned); zero-margin seeds only at tau=inf, none at tau=50"
+
+[[claim]]
+id = "C330"
+fragment = "- `guard_stop`: an iteration raised the mean slack by more than `guard_tol`. Not converged."
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_guard_stop_returns_the_consistent_previous_state", "test:tests/test_estimator.py::test_convergence_warning_keyed_to_guard_stop"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "status and the warning pinned with a +10 rise; the threshold obj2 > obj + GUARD_TOL is read from code (_solve_terms_once), not tested at the boundary"
+
+[[claim]]
+id = "C331"
+fragment = "- `iteration_cap`: `max_iter` reached. Not converged."
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_iteration_cap_status", "test:tests/test_estimator.py::test_convergence_warning_keyed_to_iteration_cap"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "max_iter reached gives iteration_cap, success False, and a ConvergenceWarning"
+
+[[claim]]
+id = "C332"
+fragment = "- `not_applicable`: one term, `facet_step=\"tangent\"`, a `penalty`, one metric, fewer designs than"
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_not_applicable_statuses", "test:tests/test_soft_fit.py::test_r7_a_soft_fit_at_infinite_tau_is_not_applicable", "test:tests/test_soft_fit.py::test_r7_a_soft_fit_with_a_penalty_is_not_applicable", "test:tests/test_estimator.py::test_termination_not_applicable_cases_do_not_warn"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "one term, tangent, penalty, one metric, fewer designs than facets and soft at tau=inf are each asserted not_applicable"
+
+[[claim]]
+id = "C333"
+fragment = "- `bound`: the share-weighted sum of facet gaps, bounding the distance from the fixed-assignment"
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L14.20", "test:tests/test_solvers.py::test_corollary_bound_on_every_planted_fit"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "bound = sum_k share_k G_k >= F(W) - F*_fixed (Corollary 4), asserted on every planted fit; fixed assignment of this run, not across restarts"
+
+[[claim]]
+id = "C334"
+fragment = "- `gamma`, `radius`: the margin and stable radius, `nan` at one term."
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_margin_and_radius_are_nan_at_one_term_not_infinite"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "gamma and radius nan at one term pinned; margin and radius defined by assignment_margin (values test)"
+
+[[claim]]
+id = "C335"
+fragment = "A soft fit leaves `gamma`, `radius` and `bound` `nan`."
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_soft_fit.py::test_r7_the_benchmark_tables_are_certified"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "asserts np.isnan([bound, gamma, radius]).all() on soft fits"
+
+[[claim]]
+id = "C336"
+fragment = "The tolerances are module constants of `hyperbolic_trade_space.solvers`, not parameters: `EPS_KKT` ="
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_default_path_has_no_warnings_and_constants", "test:tests/test_estimator.py::test_constants_are_reexported"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "constants defined in solvers.py and re-exported; they are not estimator parameters (only get_params-level check via sklearn conformance suite)"
+
+[[claim]]
+id = "C337"
+fragment = "1e-8, `EPS_FEAS` = 1e-9, `GUARD_TOL` = 1e-12, `POLISH_STEPS` = 5."
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_default_path_has_no_warnings_and_constants", "test:tests/test_solvers.py::test_polish_never_increases_the_facet_objective_and_closes_the_gap", "test:tests/test_estimator.py::test_constants_are_reexported"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "EPS_KKT 1e-8, EPS_FEAS 1e-9 (default-path test); GUARD_TOL 1e-12 and POLISH_STEPS 5 (polish test)"
+
+[[claim]]
+id = "C338"
+fragment = "exponents (above 1e-3), one per facet. A small value marks a nearly flat direction (weakly identified exponents). It is `nan` at infinite"
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_conditioning_per_facet_and_nan_cases"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "shape (n_terms,) positive per facet; nan at tau=inf pinned"
+
+[[claim]]
+id = "C339"
+fragment = "temperature and for a facet with fewer than two participating exponents."
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_conditioning_per_facet_and_nan_cases"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "nan at tau=inf and for a facet with one participating exponent (d=1 case) pinned; fewer-than-two in d>1 only by code"
+
+[[claim]]
+id = "C340"
+fragment = "A small value marks a nearly flat direction (weakly identified exponents)."
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L17.5", "test:tests/test_estimator.py::test_conditioning_drops_for_nearly_collinear_metrics"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "the Hessian of J_tau is tau times a weighted covariance (L17.5), so a small eigenvalue is a nearly flat direction; 'weakly identified' is the interpretation, illustrated by the collinear-metrics test"
+
+[[claim]]
+id = "C341"
+fragment = "The margin `gamma` is in score units (log metrics), the scale of the band 1/tau; `radius` is"
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_facets"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "gamma is a gap between scores w.u - beta with u = log metrics; the 1/tau band is the softmax scale, a guide not a theorem"
+
+[[claim]]
+id = "C342"
+fragment = "`gamma / (2R)`, with R the largest norm of a row (u, -1). Compare `gamma` with the median margin,"
+file = "docs/user-guide/termination.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L13.11", "test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_facets"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "radius = gamma/(2U), U the largest norm of (u,-1) (L13.11); values test pins 0.4/(2 sqrt 2); median-margin comparison is advice"
+
+[[claim]]
+id = "C343"
+fragment = "A single term has constant elasticities and finds one tension, at"
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L7", "lemma:L3"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L7: elasticities -w_k/w_j constant on the facet; L3 balanced KKT gives the balanced point"
+
+[[claim]]
+id = "C344"
+fragment = "are determined by the sample you give; the Pareto boundary is a property of the system."
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L11", "glossary:fitted-reference-surface", "glossary:supporting-envelope", "glossary:pareto-boundary"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Gap G-1 and glossary: the surface/envelope are fitted to the sample, the Pareto boundary is the system's; L11 non-converse"
+
+[[claim]]
+id = "C345"
+fragment = "of V is efficient in the contending metrics, and the converse is not claimed."
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L11", "test:tests/test_derivation.py::test_L11_in_chain_and_states_non_converse"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L11.3: a V-maximizer is weakly efficient in all metrics, efficient in contending ones (no dominating u'); converse explicitly not proved"
+
+[[claim]]
+id = "C346"
+fragment = "At a finite temperature some designs lie beyond V = 1 by construction."
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L5", "glossary:temperature"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L5.3: mean <= LME <= max, so beta = LME <= max and the maximizing design has log V >= 0 (strictly above for non-constant scores)"
+
+[[claim]]
+id = "C347"
+fragment = "A very high tau rests the fit on a few extreme designs"
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L5", "lemma:L3"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L5.5: LME -> max as tau -> inf; L3.5: the hard maximum depends only on the extreme support of the observations"
+
+[[claim]]
+id = "C348"
+fragment = "The set is exact at infinite temperature with `min_exponent` at"
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "M"
+backing = ["glossary:contending-set", "test:tests/test_tensions.py::test_finite_tau_smooths_weights_and_contending_set_stays_exact", "test:tests/test_tensions.py::test_no_warning_when_min_exponent_zero"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Glossary: contending set = support of the exponents at infinite temperature; test shows set stays exact at finite tau under min_exponent 0"
+
+[[claim]]
+id = "C349"
+fragment = "0, and graded participation at a working temperature."
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_tensions.py::test_finite_tau_smooths_weights_and_contending_set_stays_exact", "glossary:support-weights"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Test: finite tau smooths the weights (graded participation); glossary support-weights = softmax weights"
+
+[[claim]]
+id = "C350"
+fragment = "negative association near the surface is partly a closure effect."
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_tensions.py::test_closure_induces_negative_association_without_trade"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Test asserts closure induces negative association without any trade; tension_report carries closure_note"
+
+[[claim]]
+id = "C351"
+fragment = "A multi-term fit is a local optimum chosen among seeded restarts."
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L15", "test:tests/test_estimator.py::test_n_restarts_default_and_validation"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "L15 descent is local only; gap G-14 no global claim; n_restarts seeds the restarts and the lowest mean slack is kept"
+
+[[claim]]
+id = "C352"
+fragment = "which tends to zero as any participating"
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "M"
+backing = ["glossary:invariant-value", "test:tests/test_preconditioning.py::test_pullback_zero_attribute_gives_minus_inf_in_both"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "V is a weighted geometric mean so V -> 0 as a participating (w_j > 0) metric -> 0; test pins zero attribute -> log V = -inf"
+
+[[claim]]
+id = "C353"
+fragment = "It is unrelated to PCA in hyperbolic space [@chami2021horopca]."
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "L"
+backing = ["bib:chami2021horopca"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "reading_pass.yaml n=44 verdict supported (HoroPCA abstract; 'unrelated' is the paper's own statement); prior_art.yaml id kernel-hyperbolic-pca"
+
+[[claim]]
+id = "C354"
+fragment = "Machine checks confirm that formulas follow from stated conditions and that the code agrees with"
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_matches_derivation.py::test_fitted_model_matches_chain_L1_L7_L8"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Derivation lemma scripts machine-check formulas; test_matches_derivation checks the code agrees with the chain; scope statement for the rest"
+
+[[claim]]
+id = "C355"
+fragment = "evaluated designs is lost, and the alternatives are bespoke or opaque. A model-based method"
+file = "site/index.html"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Practice stated as fact (trade studies decided from documents and tables; alternatives bespoke or opaque); register must mark it reading, the author's experience; no audit row"
+
+[[claim]]
+id = "C356"
+fragment = "has to clear a bar before a decision-maker can trust it: it has to show its reasoning, say"
+file = "site/index.html"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Normative judgment on what a model-based method must do to be trusted; reading"
+
+[[claim]]
+id = "C357"
+fragment = "Trade studies are usually decided from documents and tables, where the detail of the"
+file = "site/index.html"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Practice claim (usually decided from documents and tables); reading, author's experience"
+
+[[claim]]
+id = "C358"
+fragment = "What trades against what depends on where a design sits."
+file = "site/index.html"
+anchor = ""
+kind = "M"
+backing = ["lemma:L7", "lemma:L10", "test:tests/test_site.py::test_why_labels_come_from_the_exponents", "test:tests/test_site.py::test_why_regions_partition_the_triangle_and_there_are_three_facets"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Each facet has its own exponents (L7 elasticities along a facet, L10 sum of facets); the why-figure test pins that regions and labels follow the fitted exponents"
+
+[[claim]]
+id = "C359"
+fragment = "product of the metrics that names which of them compete on one part of the trade space."
+file = "site/index.html"
+anchor = ""
+kind = "M"
+backing = ["lemma:L3", "glossary:n-lemma", "test:tests/test_tensions.py::test_contending_set_recovers_planted_support"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "n-lemma = support of the exponent vector of a facet (L3 simplex optimality, sparse at tau=inf); the test recovers planted supports; the glossary defines it"
+
+[[claim]]
+id = "C360"
+fragment = "method belongs in unsupervised learning and feature engineering beside PCA: kin rather than a"
+file = "site/index.html"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Author's judgment on where the method belongs; the kin wording for kernel PCA is in prior_art.yaml but this is about PCA; reading"
+
+[[claim]]
+id = "C361"
+fragment = "substitute, and the two chain (the tension report already runs PCA on the near-frontier chart"
+file = "site/index.html"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions", "func:src/hyperbolic_trade_space/tensions.py::tension_report"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "The report's tension directions equal orient_by_pca of the near-frontier chart coordinates; the test asserts it"
+
+[[claim]]
+id = "C362"
+fragment = "The foundation box is the invariant form: a weighted geometric mean"
+file = "site/index.html"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1", "glossary:invariant-value"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "V(km)=kV(m); weighted geometric mean per the glossary"
+
+[[claim]]
+id = "C363"
+fragment = "V of the metrics, whose level V = 1 is the fitted reference surface and whose logarithm is the"
+file = "site/index.html"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1", "glossary:fitted-reference-surface", "glossary:energy-differential"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "log V = w.u - beta (L1); V=1 is the fitted reference surface (Definition 1, glossary)"
+
+[[claim]]
+id = "C364"
+fragment = "energy differential. The single-term core fits the weights and an offset to your designs as"
+file = "site/index.html"
+anchor = ""
+kind = "M"
+backing = ["lemma:L3", "lemma:L4", "lemma:L5"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "K=1 fit of exponents on the simplex and an offset is a convex program (L4), with KKT (L3) and log-mean-exp (L5)"
+
+[[claim]]
+id = "C365"
+fragment = "one convex problem. Four boxes use that fit: the chart (each design becomes a position along"
+file = "site/index.html"
+anchor = ""
+kind = "M"
+backing = ["lemma:L8", "lemma:L7", "lemma:L6", "lemma:L9"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Chart (L8), elasticities along a facet (L7), Gaussian noise correction (L6), pull-back (L9); the fragment is the map's structural description"
+
+[[claim]]
+id = "C366"
+fragment = "correction for noise, and the pull-back to your raw attributes. The lower boxes extend the"
+file = "site/index.html"
+anchor = ""
+kind = "M"
+backing = ["lemma:L6", "lemma:L9", "lemma:L10", "lemma:L11", "lemma:L12", "lemma:L13", "lemma:L14", "lemma:L15", "lemma:L17"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Noise correction L6, pull-back L9, several facets L10, Pareto relation L11, algorithm guarantees L12-L15 and L17 (the paper states none is global)"
+
+[[claim]]
+id = "C367"
+fragment = "A scikit-learn-compatible estimator for the frontier, with an invertible log-ratio chart,"
+file = "site/index.html"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples", "test:tests/test_tensions.py::test_monolemma_and_names", "test:tests/test_plotting.py::test_ternary_regions_partition_the_triangle", "file:work-packages/interface-contract.toml"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Estimator, invertible chart round trip, tension_report and plotting are in package.public_names and submodules of the contract and tested"
+
+[[claim]]
+id = "C368"
+fragment = "to reading a tension report, the API reference, a cubesat example, the model in brief"
+file = "site/index.html"
+anchor = ""
+kind = "S"
+backing = ["file:work-packages/interface-contract.toml", "test:tests/test_site.py::test_nav_pages_exist_and_cover_the_contract_pages"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "docs.pages in the contract lists getting-started, user-guide (conditioning, tensions), api-reference, examples (cubesat), theory, glossary; the test checks the nav covers them"
+
+[[claim]]
+id = "C369"
+fragment = "\"space\": a monomial, later posynomial, frontier V(m) = Π m_j^{w_j} whose unit level set is the"
+file = "README.md"
+anchor = ""
+kind = "M"
+backing = ["lemma:L1.4", "lemma:L1.6", "glossary:invariant-value"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "V = prod m_j^w_j is L1.4; V(m/V(m))=1 puts the point on the unit level set (L1.6); 'later posynomial' is the documented extension (L10)"
+
+[[claim]]
+id = "C370"
+fragment = "log V, the energy differential to it). It is a scikit-learn-compatible unsupervised estimator, with"
+file = "README.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_sklearn_compat.py::test_no_predict_decision_function_or_score", "glossary:energy-differential"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "parametrize_with_checks conformance, TransformerMixin estimator with fit(X, y=None); log V as energy differential is the glossary definition"
+
+[[claim]]
+id = "C371"
+fragment = "SymPy-verified derivations and an ADCS trade-study case."
+file = "README.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_proof_map.py::test_checker_passes_on_the_committed_record", "test:tests/test_adcs_case.py::test_evaluate_design_three_fast"]
+status = "backed"
+disposition = "keep"
+source = "P5 claims pass, WP10 Amendment 5 R-43"
+note = "Proof-map checker passes on the committed lemma record (SymPy scripts); ADCS case is exercised by tests/test_adcs_case.py"

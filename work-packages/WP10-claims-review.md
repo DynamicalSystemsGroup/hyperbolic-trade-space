@@ -5865,3 +5865,27 @@ disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "Proof-map checker passes on the committed lemma record (SymPy scripts); ADCS case is exercised by tests/test_adcs_case.py"
 ```
+
+
+## Rows not landed
+
+Landing of the proposed rows (Amendment 5, R-43), at the head that follows the pinned commit. 328 of the 338 proposed rows were landed in `claims_register.toml` as C044 to C371, in the order of the block (proposed C024 becomes C044, and so on; the proposed ids C024 to C041 collided with rows added by other streams, so every landed row was renumbered). `tests/test_claims_register.py` passes.
+
+**Unbacked or broader than their backing.** None of the 338 proposed rows has either verdict (the block held backed, kept claims only), so no row is held back for that reason. The claims with those verdicts stay in the unit tables, "Candidates for later", "Claims narrowed" and the driver's routed list above, for the driver.
+
+**Dropped for fragment mismatch (10).** The sentence was edited after the pinned commit (P1, P6), so the fragment no longer occurs verbatim in its file. Verdict at the pin: backed; disposition proposed by P5: keep. They are to be re-extracted after the edits settle.
+
+| Proposed id | File | Fragment (start) | Pointer |
+|---|---|---|---|
+| C029 | `paper/paper.ipynb` | compatibility. Our implementation mirrors the structure of PCA as an u | test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator test:tests/test_sklearn_compat.py::test_tags_only_through_sklearn_tags func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace |
+| C030 | `paper/paper.ipynb` | the fit identifies the trade-offs among the metrics those subsystems s | gen:examples/adcs/case.py::facet_table test:tests/test_case.py::test_k3_facets_equal_the_primary_record test:tests/test_case.py::test_k1_contending_set_equals_the_record test:tests/test_case.py::test_subsystem_mapping_is_data_and_covers_every_attribute |
+| C040 | `paper/paper.ipynb` | Each facet names the metrics that contend on it with elasticities | lemma:L7.5 glossary:elasticity glossary:contending-set |
+| C043 | `paper/paper.ipynb` | The fitted reference surface is the unit level set of a degree-one wei | lemma:L1.5 lemma:L1.6 glossary:invariant-value glossary:fitted-reference-surface glossary:pareto-boundary |
+| C176 | `docs/api.md` | certificate functions, with `min_curvature` for a soft fit | test:tests/test_interface_contract.py::test_r1_certificate_signatures_exact test:tests/test_soft_fit.py::test_r7_the_benchmark_tables_are_certified |
+| C242 | `docs/user-guide/fitting.md` | `score_samples`, and no `predict`. Parameters are stored as given | test:tests/test_sklearn_compat.py::test_no_predict_decision_function_or_score test:tests/test_sklearn_compat.py::test_init_stores_parameters_verbatim test:tests/test_estimator.py::test_invalid_params_raise_in_fit_not_init |
+| C250 | `docs/user-guide/fitting.md` | A `ValueError` says when `bounds` misses the target. | test:tests/test_tuning.py::test_not_bracketed_raises |
+| C320 | `docs/user-guide/termination.md` | facets, or a soft fit at infinite temperature. Not a failure. | test:tests/test_estimator.py::test_termination_not_applicable_cases_do_not_warn |
+| C321 | `docs/user-guide/termination.md` | A soft fit (finite `term_temperature`) has no assignment, so no margin | test:tests/test_soft_fit.py::test_r7_the_benchmark_tables_are_certified |
+| C324 | `docs/user-guide/termination.md` | - `min_curvature`: soft fit only, the smallest curvature on the active | test:tests/test_soft_fit.py::test_r7_a_soft_fit_at_infinite_tau_is_not_applicable test:tests/test_soft_fit.py::test_r2_the_default_is_the_explicit_infinity_and_leaves_one_term_alone test:tests/test_soft_fit.py::test_r7_the_benchmark_tables_are_certified |
+
+**Notebook-output claims the checker cannot read.** None among the proposed rows (each fragment was in a markdown cell). The generated-prose claims noted under "Findings about the pass itself" (Appendices A, C to G, the prior-art table) remain unregistered until `_source_text` reads markdown outputs.
