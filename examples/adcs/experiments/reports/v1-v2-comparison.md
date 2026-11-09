@@ -260,13 +260,14 @@ The three hand-written candidates are identical in both generations by construct
 | `work-packages/interface-contract.md` | adcs_designs.csv, adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv, check_designs_cubesat.csv, check_predictions_cubesat.csv |
 | `work-packages/interface-contract.toml` | adcs_designs.csv, adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv, check_designs_cubesat.csv, check_predictions_cubesat.csv |
 
-**WP15's own files (they name the frozen files to compare, adopt or test)** (3)
+**WP15's own files (they name the frozen files to compare, adopt or test)** (4)
 
 | file | frozen files named |
 |---|---|
 | `examples/adcs/experiments/compare.py` | adcs_designs.csv, adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv, check_designs_cubesat.csv, check_predictions_cubesat.csv |
 | `examples/adcs/experiments/definitions.py` | adcs_designs.csv, adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv, check_designs_cubesat.csv, check_predictions_cubesat.csv |
 | `tests/test_cubesat_oracle.py` | adcs_designs_cubesat_gains.csv |
+| `tests/test_v2_data.py` | adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv, check_designs_cubesat.csv, check_predictions_cubesat.csv |
 
 ## Richness conditions on v2 (WP4b a to e)
 
