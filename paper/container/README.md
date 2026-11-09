@@ -38,3 +38,14 @@ cached when the image was built). A named container lets you copy the regenerate
 
 Outside this container, tied rows of gap G-10 may differ on other platforms; the values exact only
 in the environment of record are listed in `paper/environment_values.toml`.
+
+## What is committed from the container
+
+The committed exact values are the container's (the supervisor's decision recorded in
+`work-packages/WP10-decisions.md`): the output cells of both notebooks, `paper/figures/`,
+`paper/environment_reference.npz`, `tests/data/soft_fit_default_reference.npz` (with the field `recorded_on`, read by
+`tests/test_soft_fit.py`) and `tests/data/v2_first_designs_of_record.csv` (the first 20 v2 designs, compared byte for byte
+in the container only). To regenerate them, rebuild the image at the head that carries the code, run the commands under
+"Run" for the notebooks, figures and reference arrays, and re-run in the image the test's own case list for the soft-fit
+recording and its runner call for the 20 designs, with `docker create`, `docker cp` and `docker start` on `hts-` names.
+`RECORD.md` lists what changed against the earlier (Mac) values and the tolerance of each.
