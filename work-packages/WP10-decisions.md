@@ -396,6 +396,10 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   fresh-context reviewer is given only what each level's reader sees and reports per level in
   `WP10-review.md`; the supervisor's own reading is WP11's.
 
+- On the INCOSE citation. **Supervisor (mzargham), verbatim:** "my INCOSE IS paper is no longer
+  forthcoming it is out." Disposition: the bibliography entry is made from the published record
+  (DOI resolved under the WP5 rule), not from the SciPy paper's "forthcoming" note.
+
 ## Scope approval (approval gate)
 
 - pending (the paper's scope is drafted after WP9's acceptance, the external review's triage, and
