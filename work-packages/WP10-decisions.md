@@ -772,3 +772,20 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   list. **Returned:** Appendix D.3 pairs live facet numbers with stored labels; facets are to be
   matched by their exponents, so that a different facet order on another platform cannot mislabel
   a row.
+- **2026-11-09. WP10 (the paper, with Amendments 1 to 3) accepted structurally by the driver**
+  (under the mandate; ratified or reversed by the supervisor at the PR). As the supervisor set it,
+  the acceptance is structural: "the paper acceptance is stuctural not final sign off on content or
+  aesthetics". Reviews of record: `WP10-review.md` (not yet) and `WP10-review-2.md` (accept with
+  gaps noted; every must-fix item of the first closed; 28 numbers recomputed; no mathematical
+  error found). Cold reads: `WP10-cold-reads.md`, one fresh reader per depth, with the driver's
+  triage and its change requests done. The driver's own evidence: commit 4ede5bd is green in a
+  clean checkout on the Mac and on Linux (Tests run 42623588724), 1882 passed and none failed on
+  both, with ruff, format, lock, the lemma chain, the proof map (15 scripts, 252 steps), the ledger
+  and attribution clean on the Mac; the main page read rendered from top to bottom at 1280 px and
+  the appendices sampled, with no error in the mathematics, images or layout. **Open and stated:**
+  the container deliverables (D-13, R-31, R-30's container part) until the supervisor restores his
+  container runtime and settles the platform of record; the data swap (WP16) and the choice on the
+  two step-read times; the items on his list (the disclosure and how his review is described; the
+  facet share's analogy; the title's "scaling"; ten cited claims marked for the author).
+  **Not signed off, by design:** content and presentation, which are WP11's: figure legibility, the
+  prior-art table, the length of the proofs appendix, the run of generated sentences in section 9.
