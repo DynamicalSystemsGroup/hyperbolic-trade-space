@@ -1,11 +1,7 @@
----
-world: symbolic
----
-
 # API reference
 
 
-Generated from the numpydoc docstrings of the public names. The overview and the usage notes are on the [API](api.md) page.
+Generated from the numpydoc docstrings of the public names. The overview is on the [API](api.md) page.
 
 ## `HyperbolicTradeSpace`
 

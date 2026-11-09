@@ -1,20 +1,24 @@
 # hyperbolic-trade-space
 
-Posynomial invariant form: a model of a design trade space as a frontier, with the tools to fit it,
-read the tensions between metrics, and find the gaps. This is the documentation site. The
-[root page](../) of the project links the paper, these docs and the package.
+`hyperbolic_trade_space` learns the shape of a design trade space from evaluated designs. Give it a
+table of designs, each scored on several metrics where larger is better, and it fits a frontier
+model in the posynomial invariant form. It then tells you which metrics contend, at what exchange
+rate, where each design sits relative to the fitted reference surface, and where the table has gaps.
 
-The documents are written for three kinds of understanding, after Tall's three worlds of
-mathematics. Each page names the world it serves under its title, so a reader can choose a way in.
+It is a scikit-learn estimator (`fit`, `transform`, `inverse_transform`, `score_samples`) in the
+unsupervised and feature-engineering family, beside PCA: PCA finds where the data spread, this finds
+where they stop, and the two chain.
 
-| World | What it asks | Pages |
-|---|---|---|
-| Conceptual-embodied | See the idea and work an example | [Why and how](why-and-how.md), [Case](case.md) |
-| Operational-symbolic | Compute with it | [Preconditioning](preconditioning.md), [API](api.md), [API reference](api-reference.md) |
-| Axiomatic-formal | State it and prove it | [Mathematics](method.md), [Derivations](generated/derivations.md), [Verification and validation](generated/verification.md), [Extensions and limitations](limitations.md), [Literature](literature.md) |
+## Where to start
 
-The machine can verify that a formula follows from stated hypotheses, and that the code agrees with
-the formula. Whether the hypotheses suit your problem is for a human to judge. The
-[Derivations](generated/derivations.md) page lists the hypotheses, and
-[Verification and validation](generated/verification.md) separates what the machine checked from what
-a person must decide.
+- [Getting started](getting-started.md): install from source and run a first fit in five lines.
+- [User guide](user-guide/overview.md): one page per task, from conditioning your attributes to
+  reading what the fit reports.
+- [API](api.md) and [API reference](api-reference.md): the public names and their docstrings.
+- [Examples](examples.md): a spacecraft attitude-control trade study.
+- [Theory in brief](theory.md): the model on one page.
+- [Glossary](glossary.md): the terms the package uses.
+- [Further reading](further-reading.md): the sources the method builds on.
+
+The [project page](../) links the paper, which is where the argument for the method is made, these
+docs and the package.
