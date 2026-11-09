@@ -171,3 +171,51 @@ to the owning stream to fix forward within the hour; tier 3 (both platforms gree
 commit, the driver's browser pass) is only for acceptances and merges to `main`. Never dispatch the
 Linux run per push; the driver dispatches it per batch.
 
+## Handover to a fresh PM (2026-11-09)
+
+The supervisor: "you need to make sure the scopes of work and definitions of good and good enough
+are correct. blast radii are kept small. you know the deal we use the same core skills as an anchor
+all the time. make sure the PM is aware of https://github.com/mzargham/claude-skills and you manage
+him, he orchestrates the work. you triage so only decisions i need to actually make come to me". And:
+"if needed you can get a clean PM and swap the old one. in the future you may need to more actively
+context manage your PM". And: "i don't want to drift or get crufty; we were making great progress but
+lately its slowed down a lot".
+
+The anchor is the skills repository https://github.com/mzargham/claude-skills, installed at
+`~/.claude/skills/` (`CLAUDE.md` the decision loop; `work-breakdown`, `scope-of-work`,
+`work-execution`, `work-acceptance`). Nothing here replaces them.
+
+Roles: the supervisor decides; the driver manages the PM, approves scopes under the mandate, verifies
+and accepts, and triages so that only decisions the supervisor must make reach him; the PM
+orchestrates: scopes through bounded scope subagents, executes through bounded implementers in their
+own worktrees, reviews through fresh-context reviewers, and keeps the board current. The PM does not
+wait on one agent to act on the driver's messages.
+
+Every stream of `parallel-board.md` runs as a small package in the skills' shape: a one-page scope
+(purpose, goals, non-goals, deliverables, requirements each with a check, definition of good,
+definition of good enough, and the blast radius: the files it owns and nothing else), approved by the
+driver before execution, executed to good enough and no further, accepted against its own
+requirements. Small blast radius is the rule: one set of files, one worktree, one push per unit.
+
+Context management: a PM is swapped for a fresh one when it slows or nears its context limit. The
+state lives in files, so a handover is: this brief, `parallel-board.md` with its status column true,
+the `WPn-decisions.md` files, `driver-log.md`, and the outgoing PM's one-page note of what its
+agents are doing. The outgoing PM finishes the agents it has running and starts nothing new.
+
+## Current state at the handover (2026-11-09, 15:35)
+
+- Streams pushed and awaiting the driver's tier 2 verdict: P2 vocabulary tool (9a3156e), P4 claims
+  register (4cb61c0), P7 marker values (0a18b5b), P9 LICENSE, changelog, punch list (fde5fc0,
+  ce80b39), P8 first record and Figure 7 candidates (fb8fbe1; verdicts withdrawn by the supervisor,
+  reassessment by intent pending).
+- Running under the outgoing PM, to be finished by it: P1 (paper text: section 4 narration, section
+  6 skim path, soft-fit wording), P6 (docs text: soft-fit wording, Examples page: cubesat triangle
+  dropped, marker-values table), P8 (reassessment by intent).
+- Ready, for the fresh PM to scope and launch: P10 (container of record, hard Colima limits), P11
+  (verification tooling), P3 (vocabulary reading, fan-out), P5 (claim extraction, fan-out), P1r
+  (reader tests when P1's first pass is pushed). Then the follow-ups of P2 and P4: the first full
+  passes (the baseline of known violations with owners; the claims register's coverage).
+- Red on Linux at f7e5055: three soft-fit tests exact across platforms (owner: WP17); fix forward.
+- Open with the supervisor, none blocking: the step-read times (WP16); the docsite figures after
+  the reassessment; WP19's slot gate later.
+
