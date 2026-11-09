@@ -812,3 +812,22 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   after the logarithmic change of variables; fitting several alternates assigning designs to
   facets with one such program per facet. The change of variables gets its line in the proof
   scripts, since it is a new statement. The abstract stays within 200 words. Sent to the PM.
+- On "On a cubesat trade space under two controller-gain regimes, one facet reports one tension and
+  three facets three different contending sets." **Supervisor (mzargham), verbatim:** "the cubesat
+  model we used covers power, mass and controls i thought."
+- **Checked.** He is right. The model (`examples/adcs/model_v2/cubesat.sysml`) has a bus, antenna,
+  inertial unit, controller, reaction wheel and star tracker alternatives, solar panel and battery,
+  with calculations for mass (structure, attitude hardware, total), power (generated, base load,
+  available), energy (eclipse demand, reserve, depth of discharge, balance) and the slew. The ten
+  attributes fall into three subsystems: controls (settling time, slew time, pointing error,
+  control effort), power and energy (power margin, energy balance, eclipse reserve, peak slew
+  power, depth of discharge) and mass (total mass). The paper says "Our case is the attitude
+  determination and control system (ADCS) of a cubesat", the abstract names only the two gain
+  regimes, and the docsite's example is headed "A spacecraft attitude-control trade study". The
+  name is left over from the first, attitude-only case. Readers of the cold reads all called it an
+  attitude-control study.
+- **Disposition.** The case is described as what it is: a cubesat model coupling power, mass and
+  attitude control, ten attributes across the three, compared under two controller-gain regimes.
+  Abstract, section 8, the main-results line, Appendix C's opening and the docsite's Examples page
+  follow. The finding gains its point by this: the tensions the fit reports run across subsystems.
+  Sent to the PM. The ternary spike's three groups are these three subsystems.
