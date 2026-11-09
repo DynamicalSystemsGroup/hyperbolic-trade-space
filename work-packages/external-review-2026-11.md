@@ -242,8 +242,7 @@ boundary with g_j > lambda (c61ff49); R1's wording is tightened; the method page
 conditions and the lesson (4bfe591).
 
 **E-3 (3.3, fitted surface, empirical envelope, Pareto boundary). Accepted with a change.** You asked that
-the three objects be kept apart. Changed: the lemma STATEMENTs name the object they are about (L12 to L14,
-L3), the register defines "fitted reference surface", "supporting envelope" and "Pareto boundary" once with
+the three objects be kept apart. Changed: the lemma STATEMENTs name the object they are about (L12 to L14), the register defines "fitted reference surface", "supporting envelope" and "Pareto boundary" once with
 what each is not (b5467f0), and the method page defines the three objects in one paragraph (4bfe591); the
 prose uses "frontier" where the context fixes the object. The gaps ledger row G-1 records the bridging
 assumption and the evidence.
@@ -277,19 +276,20 @@ exponent; G-5). (iii) log V is the "energy differential" (level offset), not a E
 register settles the word and the docs use it (b5467f0, 4bfe591, c3cbec4). (iv) The sliver argument is
 moved to "observed" in "What is proved, inherited, observed" (4bfe591; G-6).
 
-**E-8 (4, presentation). Accepted.** The algorithm part is organized as Lemma 1, Lemma 2, Proposition 3,
+**E-8 (4, presentation). Accepted.** You asked that the optimization discussion be consolidated into Lemma 1, Lemma 2, Proposition 3, Corollary 4 and a stopping declaration. The algorithm part is organized as Lemma 1, Lemma 2, Proposition 3,
 Corollary 4 and the stopping declaration, in L12 to L14 and in the method page (4bfe591), with certified
-convergence reported separately from iteration-cap and guard stops.
+convergence reported separately from iteration-cap and guard stops; WP10 carries the structure into the
+Results section.
 
 **E-9 (2.1 to 2.5, strengths). Noted.** The monomial invariant, the convex single-term fit, the invertible
 chart, the posynomial extension and the reproducibility are the contribution the paper will frame; this is
 carried in the paper's scope (WP10).
 
-**E-10 (Paper Map). Accepted.** The map's open questions are entered in the gaps ledger: Q2 statistical
+**E-10 (Paper Map). Accepted.** You proposed a structure of assumptions, core, extensions, algorithm and open questions Q1 to Q4 with Derived / Numerical / Open badges. The map's open questions are entered in the gaps ledger: Q2 statistical
 consistency (G-11), Q3 identifiability of active metrics under finite, biased observations (G-12), Q4
 frontier recovery, fitted versus true Pareto boundary (G-13), and Q1 global convergence, marked not pursued
-(G-14), as you allow. The Derived / Numerical / Open badges are adopted as the paper's marking in WP10's
-scope.
+(G-14), as you allow. The Derived / Numerical / Open badges are adopted as the paper's marking, and the map is
+reconciled with outline v2 in WP10's scope.
 
 ## The review, verbatim
 
