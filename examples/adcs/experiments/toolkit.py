@@ -5,11 +5,13 @@ pin in ``toolkit-pin.toml`` names a release, one archive per platform with its s
 the standard-library directory the CLI needs (``--lib``). Nothing is downloaded unless somebody
 runs the fetch command explicitly::
 
-    uv run python -m experiments.toolkit fetch
+    PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch
 
-The archive is verified against its pinned size and sha256 before a byte of it is extracted, the
-binary is then checked to report the pinned version, and the standard library is taken from a
-sparse git clone whose HEAD must equal the pinned commit. An unverified file is never executed.
+(``PYTHONPATH`` makes ``experiments`` importable from the repository root; the pytest configuration
+sets the same path.) The archive is verified against its pinned size and sha256 before a byte of it
+is extracted, the binary is then checked to report the pinned version, and the standard library is
+taken from a sparse git clone whose HEAD must equal the pinned commit. An unverified file is never
+executed.
 
 Where the binary is looked for, first hit wins: ``SYSML_TOOLKIT_BIN`` (the legacy ``SYSMLV2_BIN``),
 the cache directory (``SYSML_TOOLKIT_CACHE``, default ``~/.cache/hyperbolic-trade-space/
@@ -23,8 +25,8 @@ The alternative route, a source build, gives the same binary::
     cargo build --release --locked -p sysmlv2-cli      # toolchain from rust-toolchain.toml
     export SYSML_TOOLKIT_BIN=$PWD/target/release/sysmlv2
 
-with ``SYSML_TOOLKIT_LIB`` pointing at the pinned standard-library directory (``fetch`` can supply
-it alone: ``uv run python -m experiments.toolkit fetch --lib-only``).
+with ``SYSML_TOOLKIT_LIB`` pointing at the pinned standard-library directory (``fetch --lib-only``
+supplies it alone).
 """
 
 from __future__ import annotations
@@ -47,7 +49,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PIN_PATH = HERE / "toolkit-pin.toml"
-FETCH_COMMAND = "uv run python -m experiments.toolkit fetch"
+FETCH_COMMAND = "PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch"
 
 
 def load_pin(path: Path = PIN_PATH) -> dict:
