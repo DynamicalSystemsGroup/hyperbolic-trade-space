@@ -49,7 +49,7 @@ symproof's ledger conventions, so the chain can later be lifted into sealed symp
 
 ## This project's chain (spec §6)
 
-Axioms A1–A6 (posited), I1–I9 (inherited with citations), R1 and R2 (regularity); lemmas L1–L14; run at
+Ledger (spec §6, as built through WP10 Amendment 2): A0 to A8 (posited), I1 to I12 (inherited with citations; I2, I3 and I4 are `CITED_CONTEXT`, reported apart and exempt from the every-axiom-is-used test, as I7 is `SOLVER_LEVEL`), R1 and R2 (regularity), F5, F10 and F12 (fallbacks); lemmas L1–L14; run at
 d ∈ {2, 3, 4} and n ∈ {2, 3} via `make_symbols(d, n)`. Docs state that generic-d results are proved
 in prose and instantiated mechanically at these sizes.
 
@@ -133,3 +133,26 @@ finite-sum step (SymPy has no symbolic partitions), and nothing is replaced by e
 the lemma proves the formal statement and the implementation can only approach it (tolerances,
 the polish, ties), the gap is a row of `docs/superpowers/notes/abstraction-gaps.md` (G-2, G-10,
 G-15, G-16).
+
+## Step kinds and the licence rule (WP10 Amendment 2)
+
+Every proof step is one tagged line of a lemma script (`# [Ln.k] prose`), and its kind is read from
+the line, never declared apart from it: *computed* (SymPy code: an assertion or a call), *by a
+declared axiom* (the line applies a ledger entry the file imports by name from
+`derivation.axioms`), or *by a proved result* (the line uses an earlier lemma's `L<n>_RESULT`). There
+is no prose-only kind. `uv run python -m derivation.proofmap` checks tags, order, kinds and the
+record; `--update` rewrites the record deliberately.
+
+The licence rule: a logarithm or a power with a symbolic exponent is taken only through
+`derivation.licence` (`log_expand`, `licensed_power`), which receives the ledger entries that
+declare the positivity (or reality) it needs and raises `LicenceError` without them. A symbol that
+carries a sign (`positive`, `nonnegative`, ...) is made by an entry's factory
+(`A2.nonneg_base`, `R1.positive_symbol`, ...), taken from a proved result, or declared as a
+hypothesis of the lemma's own statement; the checker refuses any other signed symbol.
+
+An inherited entry used as a necessary condition states its own constraint qualification and the
+lemma computes it: I10 (first-order conditions on the simplex) rests on Nocedal and Wright,
+Theorem 12.1 with the LICQ of Definition 12.4, and L3 computes the LICQ (the active gradients, the
+all-ones vector and e_j for each w_j = 0, are independent because A2 leaves some w_k > 0), with a
+negative control (all coordinates zero: dependent). A proof does not lean on a later lemma through a
+textbook (convexity, L4, is not needed for necessity).

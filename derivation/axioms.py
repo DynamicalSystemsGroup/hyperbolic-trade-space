@@ -424,19 +424,24 @@ AXIOMS = {
     "I10": Axiom(
         "I10",
         INHERITED,
-        "first-order (KKT) necessary conditions at a minimizer w of a differentiable f on the "
-        "simplex {w >= 0, sum_j w_j = 1}: there are lambda and mu_j >= 0 with "
-        "g_j - lambda - mu_j = 0 (g = grad f(w)) and w_j mu_j = 0. The constraints are affine, so "
-        "for a convex f (J_tau, L4) Slater's condition needs only feasibility and strong duality "
-        "holds, which makes the conditions necessary",
-        citation="Boyd & Vandenberghe, Convex Optimization, sections 5.5.3 (KKT optimality "
-        "conditions) and 5.2.3 (strong duality and Slater's constraint qualification)",
+        "first-order (KKT) necessary conditions at a local minimizer w of a continuously "
+        "differentiable f on the simplex {w >= 0, sum_j w_j = 1}: there are lambda and mu_j >= 0 "
+        "with "
+        "g_j - lambda - mu_j = 0 (g = grad f(w)) and w_j mu_j = 0. The constraints are affine and "
+        "their active gradients (the all-ones vector, and e_j for each w_j = 0) are linearly "
+        "independent at every point of the simplex, so the linear independence constraint "
+        "qualification holds and no convexity of f is used",
+        citation="Nocedal & Wright, Numerical Optimization, 2nd ed., Theorem 12.1 (first-order "
+        "necessary conditions) with Definition 12.4 (LICQ); for a convex f the same conditions "
+        "are also Boyd & Vandenberghe, Convex Optimization, section 5.5.3, a remark and not the "
+        "basis",
         role="turns stationarity of the soft-maximum objective on the simplex into the "
         "multiplier equations of L3: equal gradient components where no bound is active, and "
         "g_j >= lambda with complementary slackness in general",
-        failure_mode="for a nonconvex objective the conditions need a constraint qualification "
-        "the citation does not supply (they still hold for linear constraints, but that is not "
-        "the cited text); the application here is to the convex J_tau",
+        failure_mode="the conditions are necessary at a local minimizer of a continuously "
+        "differentiable f for any such f, convex or not (the penalized refit, a tangent refit); "
+        "at a non-minimizing stationary point they hold without being sufficient, and sufficiency "
+        "needs convexity (L12)",
         relation=(
             sp.Eq(_gr[_j] - _lam - _mu[_j], 0),
             _GE(_mu[_j], 0, evaluate=False),

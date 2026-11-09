@@ -477,11 +477,29 @@ def chain_ctx():
 
 
 def test_new_entries_carry_a_form_and_a_verified_citation():
-    for name, section in (("I10", "5.5.3"), ("I11", "3.1.4"), ("I12", "5.5.2")):
+    for name, section in (("I11", "3.1.4"), ("I12", "5.5.2")):
         entry = AX.get(name)
         assert entry.tag == AX.INHERITED and entry.has_form() and not entry.proposition
         assert "Boyd & Vandenberghe" in entry.citation and section in entry.citation
     assert AX.get("A8").tag == AX.POSITED and AX.get("A8").relations()
+    i10 = AX.get("I10")  # re-based on the LICQ (no strong duality, no convexity)
+    assert i10.tag == AX.INHERITED and i10.has_form() and not i10.proposition
+    assert "Nocedal & Wright" in i10.citation and "Theorem 12.1" in i10.citation
+    assert "Definition 12.4" in i10.citation
+    assert "strong duality" not in i10.statement and "Slater" not in i10.statement
+
+
+def test_L3_licq_holds_on_the_simplex_and_fails_when_every_coordinate_is_zero(chain_ctx):
+    lq = chain_ctx["L3"]["licq"]
+    assert lq["whole_zero_set"] is sp.false  # A2: the zero set is a proper subset
+    assert lq["solution"] == [{lq["al"]: 0, lq["gam"][_S.J0]: 0}]  # 1 and e_j independent
+    assert lq["control"] != lq["solution"]  # Z = every coordinate: 1 - sum_j e_j = 0, dependent
+    import derivation.lemma_03_gradient_kkt as L3
+
+    ctx = dict(chain_ctx)
+    ctx["L3"] = dict(chain_ctx["L3"], licq=dict(lq, solution=lq["control"]))
+    with pytest.raises(AssertionError, match="LICQ on the simplex"):
+        L3.verify(ctx)
 
 
 def test_L3_KKT_conditions_come_from_I10_and_the_balance_needs_R1():

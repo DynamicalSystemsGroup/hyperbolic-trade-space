@@ -297,7 +297,14 @@
       25,
       26,
       27,
-      28
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
      ]
     }
    ],
@@ -306,60 +313,54 @@
      "tag": "L3.1",
      "kind": "axiom",
      "applies": [
-      "I10"
+      "A2"
      ],
      "results": [],
-     "prose": "I10: the first-order conditions have gradient components g_j and multipliers mu_j >= 0",
-     "code": "gr, mu = (I10.obj('gradient'), I10.obj('mu'))",
-     "fingerprint": "668f50d8ce4d0006a46be58974e9fd417065b707feb7d6fb2a69443dd00e30d7",
+     "prose": "A2: if Z were all d coordinates the simplex sum would be 0, but A2 makes it 1",
+     "code": "whole_zero_set = sp.Eq(A2.rule(0)[1], sp.Sum(sp.S.Zero, (j, 1, d)).doit())",
+     "fingerprint": "1b9aee763f1de9719d492ffe04594ae4b6cb73885ea6d30c7e9be6152710e717",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
      "tag": "L3.2",
-     "kind": "axiom",
-     "applies": [
-      "I10"
-     ],
+     "kind": "computed",
+     "applies": [],
      "results": [],
-     "prose": "I10: stationarity of J - lambda (sum_j w_j - 1) - sum_j mu_j w_j along e_{j0}",
-     "code": "stat_full = sp.Sum(delta * I10.rule(0)[0], (j, 1, d)).doit()",
-     "fingerprint": "c7d80b46ccfb65bfbc54af52d687f929d4f1e7234014456576eff7508bb1fcf7",
+     "prose": "the combination alpha 1 + sum_j gamma_j e_j has component alpha + gamma_m at m",
+     "code": "licq_comp = al + piece_in_range(sp.Sum(gam[j] * sp.KroneckerDelta(j, J0), (j, 1, d)).doit(), S)",
+     "fingerprint": "7ce96f3faf6d152078812e384dbdc948ba782ebf2651b183eb3286b2244d5388",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
      "tag": "L3.3",
-     "kind": "axiom",
-     "applies": [
-      "I10"
-     ],
+     "kind": "computed",
+     "applies": [],
      "results": [],
-     "prose": "I10: g_j = lambda + mu_j and w_j mu_j = 0 termwise, so sum_j w_j (g_j - lambda) = 0",
-     "code": "zero_sum = I10.rewrite(sp.Sum(w[j] * (sp.solve(I10.rule(0)[0], gr[j])[0] - LAM), (j, 1, d)), only=(2,)).doit()",
-     "fingerprint": "4e823b7b48a43b27700f70b420980fbae36f5a5056b51749bcacebd2edfadb37",
+     "prose": "a coordinate outside Z (gamma = 0) and one inside Z force alpha = 0 and gamma = 0",
+     "code": "licq_solution = sp.solve([licq_comp.subs(gam[J0], 0), licq_comp], [al, gam[J0]], dict=True)",
+     "fingerprint": "8d72ae91759f72b0db9e1618f5ea2698c148e23a976eb99c3ea2e4fc90121784",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
      "tag": "L3.4",
-     "kind": "axiom",
-     "applies": [
-      "A2"
-     ],
+     "kind": "computed",
+     "applies": [],
      "results": [],
-     "prose": "A2: sum_j w_j = 1 reduces sum_j w_j (g_j - lambda) to w.g - lambda",
-     "code": "reduced = A2.rewrite(linear(sp.Sum(w[j] * (gr[j] - LAM), (j, 1, d))))",
-     "fingerprint": "5dd65fff35858ef139cda7b5f0e9a3f972919e990930c0c8d26f5e16a577ea53",
+     "prose": "negative control: with Z all coordinates only the inside equation remains, alpha free",
+     "code": "licq_control = sp.solve([licq_comp], [al, gam[J0]], dict=True)",
+     "fingerprint": "353d163dd672508ccf26ebf1a81f3634e06fd4d412034e2987074a2ab1d24899",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
      "tag": "L3.5",
      "kind": "axiom",
      "applies": [
-      "R1"
+      "I10"
      ],
      "results": [],
-     "prose": "R1: the balanced point has w_j > 0, so w_j is a positive coordinate",
-     "code": "wp = R1.positive_symbol('wp')",
-     "fingerprint": "7e9a1014c2086c0891311dedb1fdb5fe8c81e41851ed47c42fa44d55fcf79b57",
+     "prose": "I10: the first-order conditions have gradient components g_j and multipliers mu_j >= 0",
+     "code": "gr, mu = (I10.obj('gradient'), I10.obj('mu'))",
+     "fingerprint": "5d9b1bf029e996c62403ddc510c83bf359921c1373f9dc713e389dc8a693fb40",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -369,9 +370,9 @@
       "I10"
      ],
      "results": [],
-     "prose": "I10: the multiplier mu_j >= 0 of a coordinate",
-     "code": "mup = I10.nonneg_symbol('mup')",
-     "fingerprint": "42440485b063825aca00e806a2e210c4cb2f08dad6c984071784a365b1329f0b",
+     "prose": "I10: stationarity of J - lambda (sum_j w_j - 1) - sum_j mu_j w_j along e_{j0}",
+     "code": "stat_full = sp.Sum(delta * I10.rule(0)[0], (j, 1, d)).doit()",
+     "fingerprint": "8a332b98683177a260f81aab8a26647fbb4aca690c6120fa358dbaea77aa19c8",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -381,49 +382,57 @@
       "I10"
      ],
      "results": [],
-     "prose": "I10 with R1: w_j mu_j = 0 and w_j > 0 (so w_j != 0) force mu_j = 0",
-     "code": "mu_zero = [sp.simplify(I10.rule(2)[1] / wp)] if wp.is_nonzero is True else []",
-     "fingerprint": "fcc8d9b26bb00641c82e9924c6eed71e0082eae871854dc2237fbf3e2c05945b",
+     "prose": "I10: g_j = lambda + mu_j and w_j mu_j = 0 termwise, so sum_j w_j (g_j - lambda) = 0",
+     "code": "zero_sum = I10.rewrite(sp.Sum(w[j] * (sp.solve(I10.rule(0)[0], gr[j])[0] - LAM), (j, 1, d)), only=(2,)).doit()",
+     "fingerprint": "73009fa6077654487f5991d7c3fb2e5c751424ddb373064dd8cad23fff512102",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
      "tag": "L3.8",
-     "kind": "computed",
-     "applies": [],
+     "kind": "axiom",
+     "applies": [
+      "A2"
+     ],
      "results": [],
-     "prose": "d/dt J_tau(w + t v) at 0 equals sum_i p_i (v.u_i), p the softmax of tau U w",
-     "code": "assert sp.simplify(linearize(c['dJ']) - linearize(claim_L)) == 0, 'L3 FAIL: d/dt J(w+tv)|0 != sum_i p_i (v.u_i)'",
-     "fingerprint": "dc1f0697f98c688942b9e96cb0c344e310e5d71e93c7f0b495eeb767602994a1",
+     "prose": "A2: sum_j w_j = 1 reduces sum_j w_j (g_j - lambda) to w.g - lambda",
+     "code": "reduced = A2.rewrite(linear(sp.Sum(w[j] * (gr[j] - LAM), (j, 1, d))))",
+     "fingerprint": "0aa1ba6d590c5ab64473d967e91838f1303be0f8ee35eaaf9a1dad2e41d5ae72",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
      "tag": "L3.9",
-     "kind": "computed",
-     "applies": [],
+     "kind": "axiom",
+     "applies": [
+      "R1"
+     ],
      "results": [],
-     "prose": "swapping the finite sums: sum_i p_i (v.u_i) = sum_j v_j sum_i p_i u_ij for any p",
-     "code": "assert sum_swap_equal(lhs, rhs), 'L3 FAIL: sum_i p_i (v.u_i) != sum_j v_j sum_i p_i u_ij'",
-     "fingerprint": "9a37effa257415458b2769869ca59464978915d52ef97965d08fb90cda85a595",
+     "prose": "R1: the balanced point has w_j > 0, so w_j is a positive coordinate",
+     "code": "wp = R1.positive_symbol('wp')",
+     "fingerprint": "2cb48e8151f8421fb30b70c3c82c9be666d484fa3bd3952097eb34742f9c1426",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
      "tag": "L3.10",
-     "kind": "computed",
-     "applies": [],
+     "kind": "axiom",
+     "applies": [
+      "I10"
+     ],
      "results": [],
-     "prose": "the swap identity holds at the softmax weights p = softmax(tau U w)",
-     "code": "assert linearize(inst_lhs) == linearize(sp.Sum(p_def(i) * sp.Sum(u[i, j] * v[j], (j, 1, d)), (i, 1, n))) and linearize(inst_lhs) == linearize(claim), 'L3 FAIL: softmax instance of the swap identity'",
-     "fingerprint": "ee1c29f70c93a8ae5f7711241d1fb54c8000bc815958faefad996f83815358d6",
+     "prose": "I10: the multiplier mu_j >= 0 of a coordinate",
+     "code": "mup = I10.nonneg_symbol('mup')",
+     "fingerprint": "a176a1311fa417c0d9891de81607663c3587ffab71d3cafb94f10793b9deda2d",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
      "tag": "L3.11",
-     "kind": "computed",
-     "applies": [],
+     "kind": "axiom",
+     "applies": [
+      "I10"
+     ],
      "results": [],
-     "prose": "hence the gradient is G_j = sum_i p_i u_ij, as v is arbitrary",
-     "code": "assert linearize(replace_indexed(c['rhs_abs'], S.p, p_def)) == linearize(grad_form), 'L3 FAIL: gradient form'",
-     "fingerprint": "d48905a4805326846261065f26c649802795895d1c88099fc74e92de23185bfe",
+     "prose": "I10 with R1: w_j mu_j = 0 and w_j > 0 (so w_j != 0) force mu_j = 0",
+     "code": "mu_zero = [sp.simplify(I10.rule(2)[1] / wp)] if wp.is_nonzero is True else []",
+     "fingerprint": "11504a0e2c711f278ad93d4c5cb04546914ec89460893fb72962fc122897b1d4",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -431,21 +440,19 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the constraint sum_j w_j has directional derivative sum_j v_j",
-     "code": "assert sp.simplify(c['dsimplex'] - sp.Sum(v[j], (j, 1, d)).doit()) == 0, 'L3 FAIL: derivative of the simplex constraint'",
-     "fingerprint": "d4700c08ab51ed1b6722156bbd56534c2fb9dba3e09e704d98a5ce98ee81fd56",
+     "prose": "d/dt J_tau(w + t v) at 0 equals sum_i p_i (v.u_i), p the softmax of tau U w",
+     "code": "assert sp.simplify(linearize(c['dJ']) - linearize(claim_L)) == 0, 'L3 FAIL: d/dt J(w+tv)|0 != sum_i p_i (v.u_i)'",
+     "fingerprint": "662445f2334f92fd1155ae70b040034004c90d5d037b188b17c0640f95a8decd",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
      "tag": "L3.13",
-     "kind": "axiom",
-     "applies": [
-      "I10"
-     ],
+     "kind": "computed",
+     "applies": [],
      "results": [],
-     "prose": "I10, R1: along e_j0 it reads G_j0 - lambda - mu_j0, and w_j0 > 0 forces mu_j0 = 0",
-     "code": "val = replace_indexed(piece_in_range(kb['stat_full'], S), kb['gr'], G).subs(I10.obj('mu')[J0], kb['positive_case_solution'][0])",
-     "fingerprint": "70c15faa6dc8cd7eac9cdadc38c293d8ca69288bf8b6d34a6adad962c39ba495",
+     "prose": "swapping the finite sums: sum_i p_i (v.u_i) = sum_j v_j sum_i p_i u_ij for any p",
+     "code": "assert sum_swap_equal(lhs, rhs), 'L3 FAIL: sum_i p_i (v.u_i) != sum_j v_j sum_i p_i u_ij'",
+     "fingerprint": "88c13e13afc8b2f30d9a8c9182f8654157a570d26e4759e44588797db6486c78",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -453,9 +460,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the stationarity condition along e_j0 evaluates to G_j0 - lambda = 0",
-     "code": "assert sp.simplify(val - (G(J0) - LAM)) == 0, 'L3 FAIL: stationarity along e_{j0}'",
-     "fingerprint": "650b956827a52171597ba0d61ec114a25cb50003637cfbfe712ca1cb41cc2f23",
+     "prose": "the swap identity holds at the softmax weights p = softmax(tau U w)",
+     "code": "assert linearize(inst_lhs) == linearize(sp.Sum(p_def(i) * sp.Sum(u[i, j] * v[j], (j, 1, d)), (i, 1, n))) and linearize(inst_lhs) == linearize(claim), 'L3 FAIL: softmax instance of the swap identity'",
+     "fingerprint": "ed1724e8167d288e866171238bf0aa38329fe30a723d04b859c9057c9b46127f",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -463,9 +470,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "G_j0 = lambda for every j0, so all components of U^T p are equal",
-     "code": "assert sp.simplify(gap - (G(J0) - G(K0))) == 0, 'L3 FAIL: components of U^T p not equal'",
-     "fingerprint": "200afc9109d455414f2f5e813931d2a7fce5c67282f0560c28b79469b8b2af86",
+     "prose": "hence the gradient is G_j = sum_i p_i u_ij, as v is arbitrary",
+     "code": "assert linearize(replace_indexed(c['rhs_abs'], S.p, p_def)) == linearize(grad_form), 'L3 FAIL: gradient form'",
+     "fingerprint": "6cba08df6c19f20d7e1a41ad61f709e3c6f340ba099d883a7e1888da4ee415fa",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -473,9 +480,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "full simplex KKT: stationarity along e_j0 gives mu_j0 = G_j0 - lambda",
-     "code": "assert sp.simplify(val_full - (kb['gr'][J0] - LAM - mu[J0])) == 0, 'L3 FAIL: stationarity of the full Lagrangian along e_{j0}'",
-     "fingerprint": "e02125484bc46fb8aa643a0c288b63ff8892f804fdb461c28938dc6d46212cad",
+     "prose": "the zero set is a proper subset of the coordinates, so some coordinate k0 has w_k0 > 0",
+     "code": "assert lq['whole_zero_set'] is sp.false, 'L3 FAIL: A2 allows w = 0 on every coordinate'",
+     "fingerprint": "c04ff365726377132f217801bc3ab60824945c3c8e6fd04ddc1987c69aa6db27",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -483,9 +490,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "mu_j >= 0, hence G_j >= lambda for every j",
-     "code": "assert mu[J0].is_nonnegative is True, 'L3 FAIL: mu_j >= 0 not carried (g_j >= lambda)'",
-     "fingerprint": "4dd9237be4db464dc699fa35ee06ec90f11a3efb5703447b79d89bae7f2c4292",
+     "prose": "the active gradients 1 and e_j (j in Z) are linearly independent: LICQ holds",
+     "code": "assert lq['solution'] == [{lq['al']: 0, lq['gam'][J0]: 0}], 'L3 FAIL: LICQ on the simplex'",
+     "fingerprint": "577537495fe70058eab35cd7e40fc9ded3f00962da7e1eb8f38dd5d62ed75317",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -493,9 +500,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "complementary slackness summed with sum_j w_j = 1 gives lambda = w.G",
-     "code": "assert kb['lambda_solved'] == [kb['lambda_abstract']], 'L3 FAIL: complementary slackness with sum_j w_j = 1 does not give lambda = w.g'",
-     "fingerprint": "2c20f4872cf4af1a0d056b69292da1cd9a97bb86184f03930321565378d6de8e",
+     "prose": "negative control: with Z all coordinates they are dependent (1 - sum_j e_j = 0)",
+     "code": "assert lq['control'] == [{lq['al']: -lq['gam'][J0]}], 'L3 FAIL: LICQ negative control'",
+     "fingerprint": "19a4f0300b6b3efc3ecdba867a6f4fe591132a207926f461f84187416f78e442",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -503,19 +510,21 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "a coordinate with w_j > 0 and w_j mu_j = 0 forces mu_j = 0, i.e. G_j = lambda",
-     "code": "assert kb['positive_case_solution'] == [0], 'L3 FAIL: w_j > 0 and w_j mu_j = 0 do not force mu_j = 0'",
-     "fingerprint": "be84b9da5f26c6b5a87115a54c2f812ada100ad3e8895fb0fd89d2d9d821e29e",
+     "prose": "the constraint sum_j w_j has directional derivative sum_j v_j",
+     "code": "assert sp.simplify(c['dsimplex'] - sp.Sum(v[j], (j, 1, d)).doit()) == 0, 'L3 FAIL: derivative of the simplex constraint'",
+     "fingerprint": "c836c260eeeca74ecb41644749f4e2306511297456c750beff77a029d593bd68",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
      "tag": "L3.20",
-     "kind": "computed",
-     "applies": [],
+     "kind": "axiom",
+     "applies": [
+      "I10"
+     ],
      "results": [],
-     "prose": "lambda = w.G instantiates at the softmax gradient G = U^T p",
-     "code": "assert replace_indexed(kb['lambda_abstract'], kb['gr'], G) == sp.Sum(S.w[j] * G(j), (j, 1, d)), 'L3 FAIL: lambda = w.G at the softmax gradient'",
-     "fingerprint": "bad28763cdc550f985540ae0484290164fee2e8b2f906510db1e06aaf9ae4a5b",
+     "prose": "I10, R1: along e_j0 it reads G_j0 - lambda - mu_j0, and w_j0 > 0 forces mu_j0 = 0",
+     "code": "val = replace_indexed(piece_in_range(kb['stat_full'], S), kb['gr'], G).subs(I10.obj('mu')[J0], kb['positive_case_solution'][0])",
+     "fingerprint": "f9a5041efb935aa70ed4db345dc2e06337af2f537cd8b0dafa2955b2add5ef59",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -523,9 +532,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "constructed instance: at tau = inf primal and dual values are equal (both 1)",
-     "code": "assert ex['hard_primal'] == ex['hard_dual'] == 1, 'L3 FAIL: hard-support instance not optimal'",
-     "fingerprint": "ff788e0b9c432db6c322d734b8a353c61b00fe2d05d29371b1c83ecd52cbdc8b",
+     "prose": "the stationarity condition along e_j0 evaluates to G_j0 - lambda = 0",
+     "code": "assert sp.simplify(val - (G(J0) - LAM)) == 0, 'L3 FAIL: stationarity along e_{j0}'",
+     "fingerprint": "7f4af2dc30f9224ef642a8e5b0b0a4dbd63e07e5a01aabfd6ad219a2c079c426",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -533,9 +542,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the hard-support geometry is balanced: U^T p = (1, 1)",
-     "code": "assert ex['balanced'][0] == ex['balanced'][1], 'L3 FAIL: hard-support instance not balanced'",
-     "fingerprint": "bc5ef699322b69e22a5aefd30499b830495460086e1f90fdec1272048be68267",
+     "prose": "G_j0 = lambda for every j0, so all components of U^T p are equal",
+     "code": "assert sp.simplify(gap - (G(J0) - G(K0))) == 0, 'L3 FAIL: components of U^T p not equal'",
+     "fingerprint": "87ffe544ea5ed4aac29a0463b477bcbfe90519150b877652cb7f85c20aa09f8a",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -543,9 +552,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "at tau = 1, J is strictly convex in s on the simplex segment",
-     "code": "assert ex['d2J'].is_positive is True, 'L3 FAIL: instance J_tau not convex in s'",
-     "fingerprint": "6d7e74e054a58cb9e9cd7e34d18ceab0c41b6facdd7f63ce21635db7deef115e",
+     "prose": "full simplex KKT: stationarity along e_j0 gives mu_j0 = G_j0 - lambda",
+     "code": "assert sp.simplify(val_full - (kb['gr'][J0] - LAM - mu[J0])) == 0, 'L3 FAIL: stationarity of the full Lagrangian along e_{j0}'",
+     "fingerprint": "f780b94ca3bb762b82d69e197963b7e663f62f880db6ec73e1975f98aa4aa7b8",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -553,9 +562,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "J is decreasing at s = 1, so the finite-tau minimizer is w = (1, 0)",
-     "code": "assert bool(ex['dJ_at_1'].evalf() < 0), 'L3 FAIL: J_tau not decreasing toward w = (1, 0)'",
-     "fingerprint": "0c6e1b7c64297ff36901b41c03ffd7934a10a44b7d0c148186550a40b917dc66",
+     "prose": "mu_j >= 0, hence G_j >= lambda for every j",
+     "code": "assert mu[J0].is_nonnegative is True, 'L3 FAIL: mu_j >= 0 not carried (g_j >= lambda)'",
+     "fingerprint": "5d4f3a6bb6457a6fa51b654092d25b0f1a738cdca1181e633dbb16cd8cd93b01",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -563,9 +572,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the finite-tau minimizer of the instance is the boundary point w = (1, 0)",
-     "code": "assert ex['w_star'] == (1, 0)",
-     "fingerprint": "914bf54b2465d21b7b14389fd918aebe787c6a6b99cc9e6992e7ea76739e269b",
+     "prose": "complementary slackness summed with sum_j w_j = 1 gives lambda = w.G",
+     "code": "assert kb['lambda_solved'] == [kb['lambda_abstract']], 'L3 FAIL: complementary slackness with sum_j w_j = 1 does not give lambda = w.g'",
+     "fingerprint": "464b6dbc7c0df47f152c8777c5072085b43fa42ec90a2c13c10b0de6f36aff8a",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -573,9 +582,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "at w = (1, 0), lambda = w.g equals g_1",
-     "code": "assert sp.simplify(ex['lam'] - ex['g'][0]) == 0",
-     "fingerprint": "40861191f3a53f1f92da1735f555d0504f2a9eb01f46a116240e4f9531d585a3",
+     "prose": "a coordinate with w_j > 0 and w_j mu_j = 0 forces mu_j = 0, i.e. G_j = lambda",
+     "code": "assert kb['positive_case_solution'] == [0], 'L3 FAIL: w_j > 0 and w_j mu_j = 0 do not force mu_j = 0'",
+     "fingerprint": "7857615c49a394d7b129175655fdcb3c95eaffa7065b645d87ef7d1108bac679",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -583,9 +592,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "g_2 - lambda equals minus the boundary slope of J at s = 1",
-     "code": "assert sp.simplify(ex['g_inactive_minus_lambda'] + ex['dJ_at_1']) == 0, 'L3 FAIL: g_2 - lambda is not minus the boundary slope'",
-     "fingerprint": "fb71facd0f9edcaf54418b2048a3c5b085236d5c0bfd538e20beb44635e42f33",
+     "prose": "lambda = w.G instantiates at the softmax gradient G = U^T p",
+     "code": "assert replace_indexed(kb['lambda_abstract'], kb['gr'], G) == sp.Sum(S.w[j] * G(j), (j, 1, d)), 'L3 FAIL: lambda = w.G at the softmax gradient'",
+     "fingerprint": "4aaf8c7af6a199ba6404f8459b5e8dcf179d96ecd83cfa11a0773fc910de038a",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     },
     {
@@ -593,9 +602,79 @@
      "kind": "computed",
      "applies": [],
      "results": [],
+     "prose": "constructed instance: at tau = inf primal and dual values are equal (both 1)",
+     "code": "assert ex['hard_primal'] == ex['hard_dual'] == 1, 'L3 FAIL: hard-support instance not optimal'",
+     "fingerprint": "b79b6760a154bf2a18edcb3bfcaf48a540939ade1cec7c3bdb779f5bafaeb272",
+     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+    },
+    {
+     "tag": "L3.29",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the hard-support geometry is balanced: U^T p = (1, 1)",
+     "code": "assert ex['balanced'][0] == ex['balanced'][1], 'L3 FAIL: hard-support instance not balanced'",
+     "fingerprint": "417c7687d7792a1199605896396390c27491bab67b324d58092ba9ea41300dac",
+     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+    },
+    {
+     "tag": "L3.30",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "at tau = 1, J is strictly convex in s on the simplex segment",
+     "code": "assert ex['d2J'].is_positive is True, 'L3 FAIL: instance J_tau not convex in s'",
+     "fingerprint": "9e014dccc088916a01482e7005827289e77677665c4405bb1256382493fc171f",
+     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+    },
+    {
+     "tag": "L3.31",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "J is decreasing at s = 1, so the finite-tau minimizer is w = (1, 0)",
+     "code": "assert bool(ex['dJ_at_1'].evalf() < 0), 'L3 FAIL: J_tau not decreasing toward w = (1, 0)'",
+     "fingerprint": "a5d6e95556dc6b6cb9e5da93fa6e91a68d3de2215d85968691e2008cf93df5b8",
+     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+    },
+    {
+     "tag": "L3.32",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the finite-tau minimizer of the instance is the boundary point w = (1, 0)",
+     "code": "assert ex['w_star'] == (1, 0)",
+     "fingerprint": "3ce1fd121a509fb57ab87a2baabe2a046280d6dd5859e6bddf100b864a57714c",
+     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+    },
+    {
+     "tag": "L3.33",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "at w = (1, 0), lambda = w.g equals g_1",
+     "code": "assert sp.simplify(ex['lam'] - ex['g'][0]) == 0",
+     "fingerprint": "f07c411149cbe2e3d8b5b84e49cc67323ce94070170ba90263d77739d50f0a7e",
+     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+    },
+    {
+     "tag": "L3.34",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "g_2 - lambda equals minus the boundary slope of J at s = 1",
+     "code": "assert sp.simplify(ex['g_inactive_minus_lambda'] + ex['dJ_at_1']) == 0, 'L3 FAIL: g_2 - lambda is not minus the boundary slope'",
+     "fingerprint": "dc8e4c18a95f34dd7a049770aeff7e097eefe7cb32c8ac8c6fc385c09a9d406e",
+     "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
+    },
+    {
+     "tag": "L3.35",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
      "prose": "g_2 > lambda at the inactive coordinate: balanced hard support, boundary minimizer",
      "code": "assert bool(ex['g_inactive_minus_lambda'].evalf() > 0), 'L3 FAIL: boundary instance has g_2 <= lambda'",
-     "fingerprint": "070ab8691632859d59d6afc45b6b023c1c5d25932d35095a921e596f88f82bb1",
+     "fingerprint": "8f6c3c82c2fd75263a0f9a95b1eb30f0399af4d30ceecfffd5b85f2f6e0dbd74",
      "result": "gradient of the soft-maximum objective and the full simplex KKT conditions"
     }
    ]
@@ -3183,7 +3262,7 @@
   "I7": "f0a02ffdf7736eea14d00ff802ae24687c3fdbc5ad58619357fb50471bff5fef",
   "I8": "13c8ee0f47f7019c2a731e3fd72f46273913f7c1540c5dafe1c3a9ebeb29db1f",
   "I9": "c4e85b6d858d9b239b2f774e80e05d327ffcf67debcee001c140700f11ee0b9f",
-  "I10": "fccdb23077198846e5049409d5389d9cad11cd02583a1ee9c6a5365afab3e5be",
+  "I10": "90e29324759fa587ec1b820db1e5519ac0d78d3aca2223dd132d0b37b8296c62",
   "I11": "ebcb6a1847dbfc77e6127957a173fd6ec9dfcc21db586ad6ce314ff5b815f6b1",
   "I12": "a9b9e7d03dbc1fc0705983f7b0d7d3217bba2cb33523b3b3a694a82ae275806f",
   "R1": "b38653c84f3e4f29bd37d548018ad6a1556b8f3c246977f4b7aba50f455c344f",

@@ -61,3 +61,17 @@ them (not for Allen 1997, Dyson 2001, Spero 2014, Ross 2010).
   drops it. Baker and Whalen carries no date in the PDF; 2012 rests on the workshop listing found by
   search (the nasa.gov workshop page itself now returns 404). The NASA handbook's section 6.8 and the
   SEBoK article body were not read.
+
+## Added for the WP10 Amendment 2 follow-up (2026-11-09, I10 re-based on LICQ)
+
+- Nocedal, J., Wright, S. J. (2006). *Numerical Optimization*, 2nd ed. Springer.
+  doi:10.1007/978-0-387-40065-5 (key `nocedal2006numerical`). Crossref record read (authors, title,
+  Springer New York, 2006); the doi.org redirect reached the Springer landing page. The text of
+  Chapter 12 was read in a course copy (pages.mtu.edu, `NocedalAndWright/Chpt12.pdf`, 51 pages):
+  Definition 12.4 is the linear independence constraint qualification (LICQ: the gradients of the
+  active constraints at the point are linearly independent; the active set is Definition 12.1) and
+  Theorem 12.1 (First-Order Necessary Conditions) states that at a local solution with continuously
+  differentiable f and c_i and LICQ, there is a multiplier vector satisfying the KKT conditions.
+  Numbers confirmed against the chapter text; the copy is not the publisher's, so the author may
+  wish to check the page numbers in the printed second edition. Ledger entry I10 cites these two
+  numbers; the Boyd and Vandenberghe 5.5.3 reference stays only as a convex-case remark.

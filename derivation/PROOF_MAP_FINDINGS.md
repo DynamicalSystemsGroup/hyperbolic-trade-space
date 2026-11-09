@@ -30,7 +30,7 @@ Commits, in order: 56ba9aa (helper functions to `sumtools.py`, shared index symb
 | L11, contrapositive and efficiency deductions (prose) | propositional steps SymPy checks by showing the negated goal unsatisfiable (`sumtools.entails`): L11.17 (a maximizer is not dominated in a contending metric), L11.18 (weakly efficient in all d metrics, with "some w_j > 0" derived from the simplex by A2 at L11.3), L11.19 (efficient when every w_j > 0), L11.20 (the chain is not vacuous). The premises are built from the computed facts (L11.5 to L11.9); a falsified fact makes the step fail |
 | L2, "hence beta shifts by c and w* is unchanged" | L2.3 (shift amount of `J` computed under A1, A2, A3), L2.6 (it equals c), L2.7 (the shift cancels in `J(w') - J(w)`), L2.8 (so `J(w') >= J(w)` iff the shifted inequality) |
 | L4, convexity is nonnegativity of the second derivative along every line | I11 (new, inherited, Boyd and Vandenberghe 3.1.1 and 3.1.4), L4.13: `Equivalent(second derivative >= 0 on every line, convex)` applied by `entails` to the computed sign; with the sign false there is no conclusion |
-| L3, first-order necessary condition with a linear equality constraint | I10 (new, inherited, Boyd and Vandenberghe 5.5.3 and 5.2.3): the KKT conditions on the simplex, `g_j - lambda - mu_j = 0`, `mu_j >= 0`, `w_j mu_j = 0`, applied in L3.2 (stationarity along `e_j0`), L3.3 (complementary slackness termwise gives `sum_j w_j (g_j - lambda) = 0`), L3.7 and L3.13 (with R1) |
+| L3, first-order necessary condition with a linear equality constraint | I10 (new, inherited; first cited to Boyd and Vandenberghe 5.5.3 and 5.2.3, re-based on Nocedal and Wright 12.1 with the LICQ of 12.4, section 4): the KKT conditions on the simplex, `g_j - lambda - mu_j = 0`, `mu_j >= 0`, `w_j mu_j = 0`, applied in L3.6 (stationarity along `e_j0`), L3.7 (complementary slackness termwise gives `sum_j w_j (g_j - lambda) = 0`), L3.11 and L3.20 (with R1) |
 
 Note on I10 (reported to the PM). The citation is to the KKT conditions as necessary for a
 differentiable problem with strong duality (5.5.3), and to refined Slater for affine constraints
@@ -68,7 +68,7 @@ Do-nothing lines (`invoke`) removed; `AXIOMS_USED` corrected. Before, after, why
 |---|---|---|---|
 | L1 | A1, A2 | A1, A2 | both real (A1 licenses the logs; A2 rewrites the simplex); now `product_to_exp_sum` requires its licence |
 | L2 | A2, A3 | A1, A2, A3 | the forced log of a sum of exponentials needs `u` real (A1), `w` real (A2), `tau > 0` (A3); the docstring said A3 did not enter, it enters through the licence |
-| L3 | A2, A3, R1 | A2, I10, R1 | A3 stated the premise only (a division by `tau` needs no sign); R1 now a real premise (forces `mu_j = 0`); I10 added (section 1) |
+| L3 | A2, A3, R1 | A2, I10, R1 (unchanged by the follow-up: the LICQ steps apply A2) | A3 stated the premise only (a division by `tau` needs no sign); R1 now a real premise (forces `mu_j = 0`); I10 added (section 1) |
 | L4 | A1, A3 | A1, A3, I11 | A1 supplies the real families, A3 the sign of `tau` at L4.12 (`A3.positive(tau)`); I11 added |
 | L5 | A3, I1, I2, I3, F5 | A3, F5 | I1, I2, I3 were remarks no step used (reported apart below); F5 now used by its second relation, its slack and the real scores |
 | L6 | A2, A5, I5 | A2, A3, A5, I5 | A2 was only declared; now A2, A3, A5 license the log of the MGF factor; I5 now supplies the product (a form) |
@@ -87,11 +87,12 @@ Do-nothing lines (`invoke`) removed; `AXIOMS_USED` corrected. Before, after, why
 |---|---|---|
 | A8 | new, POSITED | the partition relation of L14 (section 1) |
 | I10 | new, INHERITED; Boyd and Vandenberghe 5.5.3 and 5.2.3 (read in the PDF of the authors' site: 5.5.3 "KKT optimality conditions", 5.2.3 "Strong duality and Slater's constraint qualification") | L3's first-order condition |
+| I10 (follow-up, 2026-11-09) | re-based: Nocedal and Wright, Theorem 12.1 under the LICQ of Definition 12.4 (text of Chapter 12 read); Boyd and Vandenberghe 5.5.3 kept only as a convex-case remark; statement and failure mode no longer mention strong duality or convexity | the first version made KKT necessary through strong duality, hence through convexity (L4, which imports L3): a proof must not lean on a later lemma even through a textbook. LICQ is computed in L3 (steps L3.1 to L3.4 and their checks L3.16 to L3.18), with a negative control |
 | I11 | new, INHERITED; Boyd and Vandenberghe 3.1.1 (restriction to a line) and 3.1.4 (second-order conditions) | L4's convexity |
 | I12 | new, INHERITED; Boyd and Vandenberghe 5.5.2 ("Complementary slackness") | L12's termwise zero |
 | I1 | from named proposition to a form `v_primal = v_dual` | applied by `rewrite` at L12.32 |
 | I5 | from named proposition to a form (the MGF of the sum is the product of the MGFs) | applied by `specialize` at L6.2 |
-| R1 | from named proposition to a form `w_j > 0` | `R1.positive_symbol` at L3.5 |
+| R1 | from named proposition to a form `w_j > 0` | `R1.positive_symbol` at L3.9 (was L3.5) |
 | R2 | relation extended with `M_i = s_i,k(i)` | applied by `rewrite` at L14.6 |
 | A6 | relation extended with `theta_kj >= 0` (the statement already says "on the simplex") | the simplex is a sum of 1 and nonnegativity; needed for the reality of `theta` in the licence |
 | I2, I3, I4 | reclassified: `CITED_CONTEXT` in `axioms.py`, a class reported apart in the audit with the reason for each (no step of L5 uses I2, I3; I4's reading "GP-compatible" is not a premise of L10's identity); like `SOLVER_LEVEL` (I7) they are exempt from the every-axiom-is-used test | principle 4 |
@@ -123,7 +124,15 @@ runner's `ctx`; a result taken before it is certified raises `UnprovedResultErro
 
 ## 7. Shape of the work now
 
-- Ledger: 26 entries (A0 to A8, I1 to I12, R1, R2, F5, F10, F12). 229 tagged steps in 14 files.
+- Ledger: 26 entries (A0 to A8, I1 to I12, R1, R2, F5, F10, F12). 236 tagged steps in 14 files (L3 has 35 since the I10 follow-up).
 - Step kinds: computed, by a declared axiom (the line applies a ledger entry, from the ledger), by a
   proved result.
 - `PROOF_RESULTS` of L14: Proposition 3 and Corollary 4 partition its 20 steps.
+
+## 8. L3 tags moved by the I10 follow-up (LICQ steps added)
+
+Seven steps are new: L3.1 to L3.4 (derive: the zero set is proper by A2, the component of the
+combination of the active gradients, the solution, the negative control) and L3.16 to L3.18 (verify:
+their checks). Old L3.1 to L3.11 are now L3.5 to L3.15 (+4); old L3.12 to L3.28 are now L3.19 to
+L3.35 (+7). Nothing else in the record moved; the statement, title and `AXIOMS_USED` of every lemma are
+unchanged. Only the ledger fingerprint of I10 changed.
