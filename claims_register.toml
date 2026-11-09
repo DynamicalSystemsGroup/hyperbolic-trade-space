@@ -610,3 +610,76 @@ status = "backed"
 disposition = "keep"
 source = "WP11 round 1, CR-3"
 note = "beta_k = J_tau(U w_k), the soft maximum of the scores along w_k (the exact maximum at tau = infinity); the gloss says the same in words."
+
+[[claim]]
+id = "C039"
+fragment = "That the optimizer reached a local minimizer of the objective is the certificate"
+file = "paper/paper.ipynb"
+anchor = "Discussion"
+kind = "M"
+backing = [
+  "lemma:L17",
+  "glossary:termination-status",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-6, finding A1"
+note = "L17: where the first-order conditions hold and the Hessian is positive definite on the tangent space, the point is a strict local minimizer of the soft objective; nothing in it speaks to designs outside the table."
+
+[[claim]]
+id = "C040"
+fragment = "That the fit holds for designs outside the table, or supports a decision, is a third claim the certificate does not make"
+file = "paper/paper.ipynb"
+anchor = "Discussion"
+kind = "M"
+backing = [
+  "lemma:L17",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-6, finding A1"
+note = "The certificate is a statement about the objective at the returned point (L17); prediction outside the sample is open question Q3 and the gaps ledger."
+
+[[claim]]
+id = "C041"
+fragment = "a prediction outside the quantity's admissible range is reported as invalid, never clipped"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "P"
+backing = [
+  "reading",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-6, finding A6"
+note = "A rule for the reading, not a measured result: inverting a level into a bounded outcome is the analyst's task; clipping would hide that the model left the quantity's range. The author's practice, from the external assessment's observation of impossible breach fractions."
+
+[[claim]]
+id = "C042"
+fragment = "so a stable fitted direction answers that question and is not a context-free discovery"
+file = "paper/paper.ipynb"
+anchor = "Methods"
+kind = "M"
+backing = [
+  "glossary:conditioning-of-the-exponents",
+  "lemma:L2",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-6, finding A7"
+note = "Rescaling or shifting a metric changes the log-metrics the fit sees (the shift of L2 moves the offsets only for a common constant), so the exponents belong to the conditioning chosen."
+
+[[claim]]
+id = "C043"
+fragment = "Designed samples, such as grids, are not independent observations: the exponents describe the sample and are not estimates with a sampling error"
+file = "paper/paper.ipynb"
+anchor = "Discussion"
+kind = "P"
+backing = [
+  "reading",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-6, finding A7"
+note = "Consistency under noise and refitting is open question Q2; the sentence bounds how the exponents are read, from the author's practice with designed samples."

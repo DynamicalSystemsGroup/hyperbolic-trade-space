@@ -234,3 +234,33 @@ section = "Case analysis"
 words_added = 5
 job = "names the two regimes in the regimes figure's caption by what they are (aggressive gains, stock gains)"
 reader = "the reader meeting the regimes figure cold"
+
+# Rows: WP21 D-4 and D-6 (the response to the external assessment, findings A1, A4, A6, A7).
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 12
+job = "names the term-aggregation toggle in one clause in the posynomial definition: sum by default, or mean (WP21 D-4)"
+reader = "the optimization and machine-learning readers using the package's keyword"
+
+[[raise]]
+date = "2026-11-09"
+section = "Methods"
+words_added = 15
+job = "says that a stable fitted direction answers the question the conditioning poses and is not a context-free discovery (finding A7)"
+reader = "the analyst choosing a conditioning"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 33
+job = "states that turning a predicted level into a bounded outcome is the analyst's task, can fail while the fit is certified, and that an out-of-range prediction is reported as invalid and never clipped (finding A6)"
+reader = "the practitioner using propose, predict, check"
+
+[[raise]]
+date = "2026-11-09"
+section = "Discussion"
+words_added = 92
+job = "keeps three claims apart in one paragraph (the certificate, the description of this table, usefulness outside it), and says designed samples are not independent observations (findings A1 and A7)"
+reader = "the decision-maker and the analyst deciding what a certified fit licenses"
