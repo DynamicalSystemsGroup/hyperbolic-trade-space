@@ -17,6 +17,12 @@ class Md(str):
     def _repr_markdown_(self) -> str:
         return str(self)
 
+    def _repr_html_(self) -> str:
+        """The same text as HTML, because the static site shows a Markdown output as raw text."""
+        from markdown_it import MarkdownIt
+
+        return MarkdownIt("commonmark").enable("table").render(str(self))
+
 
 def cell_text(value, floatfmt: str = ".4g") -> str:
     """One table cell as text: floats formatted, newlines and pipes made safe."""

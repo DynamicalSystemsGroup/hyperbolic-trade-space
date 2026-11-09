@@ -72,7 +72,7 @@ APPENDICES = {
 }
 TIERS = ("**Main text keeps:**", "**This appendix carries:**", "**The repository keeps:**")
 # Appendices whose generated content waits for another package's deliverable (stated in the report).
-AWAITING_RECORD = {"B"}
+AWAITING_RECORD: set[str] = set()
 NEAREST = {"pareto", "dea", "pca", "logratio", "gp-maxaffine", "production-distance", "tradespace"}
 # The families of the outline (v1 baseline, v2): each has an entry in the register (R-9).
 OUTLINE_FAMILIES = {
@@ -375,7 +375,7 @@ def test_case_calls_go_through_the_case_module():
         tree = ast.parse(_src(cell))
         call = _calls(tree)[0]
         name = ast.unparse(call.func)
-        assert name.startswith("case.") or name == "family_table", (cell.id, name)
+        assert name.startswith("case.") or name in {"family_table", "figure1"}, (cell.id, name)
 
 
 def test_paper_cells_have_committed_outputs_without_errors():
@@ -641,13 +641,200 @@ def test_planted_example_is_reproducible_and_has_known_facets():
     assert info["exponents"].shape == (3, 4) and X.shape[1] == 4
 
 
-def test_proofs_stub_reads_the_record_when_present(tmp_path):
-    missing = generate_proofs.proof_map(tmp_path / "none.json")
-    assert "not delivered yet" in missing
-    assert "L1 to L11" in missing and "L12 to L14" in missing
-    rec = tmp_path / "record.json"
-    rec.write_text(json.dumps({"steps": [1, 2, 3]}))
-    assert "3 steps" in generate_proofs.proof_map(rec)
+# -- B: the proofs, compiled from the record
+
+RECORD = ROOT / "derivation" / "proof_map_record.json"
+_PROOF_CELLS = ("tab-B-how-to-read", "tab-B-proof-map", "tab-B-proofs-fit", "tab-B-proofs-solver",
+                "tab-B-checker")  # fmt: skip
+
+
+def _record():
+    return json.loads(RECORD.read_text(encoding="utf-8"))
+
+
+def _proof_text() -> str:
+    return str(generate_proofs.proofs_fit()) + "\n\n" + str(generate_proofs.proofs_solver())
+
+
+def test_appendix_b_headings_equal_the_records_results():
+    expected = [
+        f"L{lem['number']}. {res['name']}"
+        for lem in sorted(_record()["lemmas"].values(), key=lambda lem: lem["number"])
+        for res in lem["results"]
+    ]
+    heads = re.findall(r"^#### (.+)$", _proof_text(), re.M)
+    assert heads == expected == generate_proofs.result_headings()
+    assert len(heads) == 15  # fourteen files, L14 holds two results
+
+
+def test_every_step_tag_of_the_record_appears_once_in_a_proof_and_none_is_empty():
+    text = _proof_text()
+    steps = [st for lem in _record()["lemmas"].values() for st in lem["steps"]]
+    assert len(steps) == 229
+    for st in steps:
+        assert text.count(f"| **{st['tag']}** |") == 1, st["tag"]
+    rows = [ln for ln in text.splitlines() if ln.startswith("| **L")]
+    assert len(rows) == len(steps)
+    for row in rows:
+        cells = [c.strip() for c in re.split(r"(?<!\\)\|", row)[1:-1]]
+        assert len(cells) == 4 and all(cells), row[:60]
+
+
+def test_proof_kinds_are_compiled_from_the_ledger_and_the_earlier_proofs():
+    from derivation.axioms import AXIOMS
+
+    text = _proof_text()
+    for lem in _record()["lemmas"].values():
+        for st in lem["steps"]:
+            row = next(ln for ln in text.splitlines() if ln.startswith(f"| **{st['tag']}** |"))
+            kind = row.split(" | ")[1]
+            if st["kind"] == "computed":
+                assert kind.strip() == "computed"
+            elif st["kind"] == "axiom":
+                for name in st["applies"]:
+                    assert f"by declared axiom **{name}**" in kind
+                    assert generate_proofs._esc(AXIOMS[name].statement).replace("|", "\\|") in kind
+                    if AXIOMS[name].citation:
+                        assert (
+                            generate_proofs._esc(AXIOMS[name].citation).replace("|", "\\|") in kind
+                        )
+                    assert (
+                        "declared at [line " in kind
+                    )  # the import line, the declaration's address
+            else:
+                for key in st["results"]:
+                    assert f"by proved result **L{key[1:].split('_')[0]}**" in kind
+                    assert "imported at [line " in kind
+
+
+def test_appendix_b_names_each_results_file_statement_and_hypotheses():
+    text = _proof_text()
+    for file, lem in _record()["lemmas"].items():
+        assert text.count(f"**File.** [{file}]") == len(lem["results"]), file
+        assert generate_proofs._esc(generate_proofs._statement(file)[:60]) in text
+    assert "carried by the symbols" in text  # a hypothesis of a statement is quoted, not dropped
+
+
+def test_appendix_b_lines_resolve_to_the_scripts_text():
+    """A step's link points at the line of the script that holds the step's code."""
+    for file, lem in _record()["lemmas"].items():
+        lines = (ROOT / "derivation" / file).read_text(encoding="utf-8").splitlines()
+        tags = generate_proofs._tag_lines(file)
+        assert set(tags) == {st["tag"] for st in lem["steps"]}
+        for st in lem["steps"]:
+            first = st["code"].splitlines()[0].strip()
+            line = lines[tags[st["tag"]] - 1].replace('"', "'")  # the record is ast.unparse
+            assert first.split()[0].replace('"', "'") in line, (st["tag"], first)
+
+
+def test_appendix_b_is_deterministic_and_reads_without_writing():
+    derivation = sorted((ROOT / "derivation").glob("*"))
+    before = {p: p.stat().st_mtime_ns for p in derivation if p.is_file()}
+    first = _proof_text() + str(generate_proofs.checker())
+    assert first == _proof_text() + str(generate_proofs.checker())
+    assert before == {p: p.stat().st_mtime_ns for p in derivation if p.is_file()}
+
+
+def test_appendix_b_closes_with_the_checkers_table():
+    text = str(generate_proofs.checker())
+    assert "uv run python -m derivation.proofmap" in text
+    digest = __import__("hashlib").sha256(RECORD.read_bytes()).hexdigest()
+    assert digest in text and "| Lemma files, steps | 14, 229 |" in text
+    assert text.count("lemma_") >= 14
+
+
+def test_appendix_b_committed_output_is_current():
+    for cell in _code_cells(_nb(SUPPORT_NB)):
+        if cell.id in _PROOF_CELLS:
+            fn = re.search(r"import (\w+)", _src(cell)).group(1)
+            assert _out_text(cell) == str(getattr(generate_proofs, fn)()), f"{cell.id}: {STALE}"
+
+
+# -- Figure 1
+
+FIGURE1_HASH = "f9d7219deb39227ee8d016bfe396cdd92be903ed5eb329e1743e24e56db60054"
+
+
+def test_figure1_files_exist_and_the_data_hash_is_pinned():
+    from figures import figure1
+
+    assert (PAPER / "figures" / "figure1.png").stat().st_size > 10_000
+    assert (PAPER / "figures" / "figure1.svg").read_text().startswith(("<?xml", "<svg"))
+    data = figure1.figure1_data()
+    assert data["u"].shape == (253, 2)
+    assert figure1.data_hash(data) == figure1.data_hash() == FIGURE1_HASH
+
+
+def test_figure1_has_three_panes_with_the_registers_words_and_writes_nothing(tmp_path, monkeypatch):
+    import matplotlib.pyplot as plt
+    from figures import figure1
+
+    monkeypatch.chdir(tmp_path)
+    fig = figure1.figure1()
+    try:
+        titles = [ax.get_title(loc="left") for ax in fig.axes]
+        assert len(fig.axes) == 3
+        assert "fitted reference surface" in titles[0]
+        assert "supporting envelope" in titles[1] and "facets" in titles[2]
+        words = " ".join(t.get_text() for ax in fig.axes for t in ax.texts)
+        assert "energy" in words and "differential" in words and "facet 1" in words
+    finally:
+        plt.close(fig)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_figure1_is_in_the_paper_with_a_placeholder_caption():
+    nb = _nb(PAPER_NB)
+    cell = next(c for c in _code_cells(nb) if c.id == "fig-schematic")
+    assert "figure1()" in _src(cell) and cell.outputs
+    caption = next(c for c in nb.cells if c.id == "fig-schematic-caption")
+    assert "#fig-schematic" in _src(caption) and ":label:" in _src(caption)
+
+
+# -- C and D: the completions
+
+
+def test_each_attribute_has_a_producer_that_exists_in_its_file():
+    import case
+
+    assert set(generate_model.PRODUCERS) == set(case.CUBESAT.attributes)
+    for file, name, _ in generate_model.PRODUCERS.values():
+        assert name in (ROOT / "examples" / "adcs" / file).read_text(encoding="utf-8"), name
+
+
+def test_the_metric_rule_reproduces_the_table_of_metrics():
+    import case
+    import numpy as np
+
+    st = case.load_study("primary", n_max=60)
+    pre = st.preconditioner
+    a = st.feasible[list(st.attrs)].to_numpy(float)
+    o = np.array([case.CUBESAT.orientation[x] for x in st.attrs], float)
+    m = np.exp((o * np.log(a + pre.shift_) - pre.log_offset_) / pre.log_scale_)
+    assert np.allclose(m, st.M)
+    assert "m_j = exp((o_j log(a_j + s_j) - c_j) / k_j)" in str(generate_model.metric_table(n=2))
+
+
+def test_c_has_the_metric_table_and_the_sources_and_d_has_the_extended_tables():
+    sections = _appendix_cells(_nb(SUPPORT_NB))
+    ids_c = {c.id for c in sections["C"]}
+    assert {"tab-C-attribute_sources", "tab-C-metric_table"} <= ids_c
+    ids_d = {c.id for c in sections["D"]}
+    assert {"tab-D-sensitivity_variants", "tab-D-refits_by_category",
+            "tab-D-candidate_designs"} <= ids_d  # fmt: skip
+    heads = [h for h in _headings(_nb(SUPPORT_NB), "###") if h.startswith(("C.", "D."))]
+    assert heads == [f"C.{k}" + h[3:] for k, h in enumerate(heads[: len(heads)], 1) if h[0] == "C"][
+        : sum(h[0] == "C" for h in heads)
+    ] + [h for h in heads if h[0] == "D"]  # C numbered in order
+    d_nums = [int(re.match(r"D\.(\d+)", h).group(1)) for h in heads if h[0] == "D"]
+    assert d_nums == list(range(1, len(d_nums) + 1))
+
+
+def test_the_c_and_d_additions_are_current_and_cite_the_labels():
+    for cell in _cells_of("D"):
+        if cell.id in {"tab-D-sensitivity_variants", "tab-D-refits_by_category",
+                       "tab-D-candidate_designs"}:  # fmt: skip
+            assert "cubesat-primary" in _out_text(cell), cell.id
 
 
 # ---- the register of prior art -----------------------------------------------------------------
