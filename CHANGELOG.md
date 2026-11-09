@@ -36,7 +36,7 @@ package.
   (WP14).
 - The case study (a SysML-modelled illustrative cubesat attitude-control design space): the
   simulation port, design space, seeded dataset, the SysML v2 model with an experiment ledger,
-  and the experiments module (WP4, WP4b, WP15, WP16).
+  and the experiments module (WP4, WP4b, WP15). The swap onto the new data generation (WP16) is held at the time of writing and is not recorded as changed.
 - The paper as an executed notebook (mystmd), with a supporting-material notebook of
   computationally verifiable appendices and a container definition (`Dockerfile`) for the
   environment of record (WP10).
@@ -44,8 +44,6 @@ package.
 
 ### Changed
 
-- The case and its records moved to the new data generation, with the frozen data kept as the
-  cited comparison (WP16).
 - The fit's formal statements made exact in the derivations and the ledger, following the
   response to the external review (WP13).
 

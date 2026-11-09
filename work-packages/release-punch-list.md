@@ -31,5 +31,20 @@ After the first tag deployment, each URL loads and shows its page (base
 - [ ] `docs/further-reading/` (references listed)
 - [ ] `paper/`
 
+## Items for the release package (WP8b)
+
+Collected from the records; tick each when done or decided.
+
+- [ ] Archive cleared: `examples/adcs/adcs_trade_study.ipynb` (the retired WP7 notebook) is to be archived with a banner, then the archive removed before the first release (supervisor, `WP10-decisions.md` OD3: "archive it with banner for now so we can use it as reference but plan to clean out the archive before the first release"). Status: not yet archived; the notebook is pinned by `tests/test_notebook.py` and `work-packages/interface-contract.toml` (lines for `produced_by_numbered` and the examples list), so moving or removing it is a contract amendment.
+- [ ] PDF export through the SciPy typst template: later, once the content has settled (supervisor, `WP10-decisions.md` OD4); added at the release package or when a venue is chosen.
+- [ ] Docsite references to the paper by stable reference keys (a key registry resolved at build time, like LaTeX labels and refs), after the paper and its appendices are stable (supervisor, 2026-11-08; `WP8a-scope-of-work.md`; `driver-log.md` 2026-11-08 entry on docstrings). Until then the docsite carries no citations into the paper.
+- [ ] Optionally publish the pinned container image (`Dockerfile`; WP10 D-13) to a registry (supervisor, WP10: "we can optionally publish it to a registry later"); the paper documents the local build only. Release-candidate mandate: no image on a registry for 0.1.
+- [ ] PyPI / TestPyPI: deferred ("pypi deferred for pending feedback from friends and collaborators"); when published, add the link to the package card and this list.
+- [ ] Version 0.1.0, tag and GitHub release (WP8b): `CHANGELOG.md` section `Unreleased` to be dated and renamed to `0.1.0` at the tag; `__version__` in `src/hyperbolic_trade_space/__init__.py` currently reads 0.0.1 and must match `pyproject.toml` (to confirm with the driver, who owns the version).
+- [ ] Pages workflow (`pages.yml`) triggers on a release tag `v*` or manual dispatch only (WP14 G-2): confirm the first deployment runs from the tag and that the staged-site review preceded it (branching convention, `work-packages/README.md`).
+- [ ] Reading pass: 9 rows marked "confirm" (author to confirm) and 1 "supervisor" (INCOSE) in `paper/reading_pass.yaml`, Appendix G.2 (`WP10-review-2.md` C-3).
+- [ ] Paper venue and byline: sole author, Dynamical Systems Group, ORCID as in the SciPy template (`WP10-decisions.md`); confirm at release.
+- [ ] `LICENSE` present and consistent with `pyproject.toml` (`license = { text = "MIT" }`); check the GitHub repository's license badge after the first push to the public repository.
+
 - Deferred (supervisor, 2026-11-08): docsite references to the paper by stable reference keys (a key registry resolved at build time, like LaTeX labels and refs), added only after the paper and its appendices are stable (post-WP11); until then the docsite carries no citations into the paper.
 - Optionally publish the pinned container image (Dockerfile; WP10 D-13) to a registry (supervisor, WP10: "we can optionally publish it to a registry later"); the paper documents the local build only.
