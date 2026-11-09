@@ -63,3 +63,20 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Bundle (G-E, G-I, platform ties as ledger G-10, G-F).** **Supervisor (mzargham), verbatim:**
   "Accept the bundle as is". Disposition: accepted with the reviewers' reasons; no open item remains
   before the acceptance question.
+
+## Acceptance (acceptance gate)
+
+- **Review of record:** `work-packages/WP13-review.md` (40062f6; R-10 re-check 1406261).
+- **Delivery:** `dev` c61ff49..655d978, merged into `main` with a no-ff merge after this acceptance
+  (the merge also carries the four draft scopes WP14, WP8a, WP10, WP15 and the process records).
+- **Date:** 2026-11-08.
+- **Driver's question:** "WP13, the response to the external review: E-1 in full (...); the full
+  simplex KKT in L3; L6 narrowed to its population identity; the conditioning diagnostic and stated
+  tolerances; the conventions declared or aligned; the abstraction-gaps ledger G-1 to G-16; the
+  register completed; the response letter re-checked. Every gap dispositioned, CI green. Do you
+  accept the work?" (options: Accepted / Not yet).
+- **Supervisor (mzargham), verbatim:** "Accepted"
+- **Disposition:** accepted. The response letter in `external-review-2026-11.md` is the record of
+  what was done for the reviewer. Candidates for later packages (from the PM): assert the Corollary
+  bound in reporting; a floored-gap test at m > 0; an estimator tolerance parameter; a separate
+  termination status for step D and the penalty; the stale wording in the v1 outline note.
