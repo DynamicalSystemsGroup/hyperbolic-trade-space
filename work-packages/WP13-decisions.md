@@ -44,3 +44,19 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - Execution on `dev`: commits "WP13: ..." from c61ff49 to c3cbec4; the fresh-context review is `WP13-review.md` (40062f6); the response letter is in `external-review-2026-11.md`.
 - Deviations from the scope's wording, for the acceptance gate: (1) a sixth termination status `uncertified` (fixed assignment, gap above EPS_KKT) beyond the five listed; (2) margin positivity implemented as gamma > EPS_FEAS (1e-9) rather than gamma > 0; the two readings coincide on all planted data; (3) the guard tolerance moved planted seed 8 at tau = inf, step B, from certified to stationary_without_margin (recovery 17/20 to 16/20; disclosed in the method page and the letter); (4) per-reach values in the K = 2, 3 cubesat record moved at the sixth decimal only (ten values, listed in `docs/superpowers/notes/k3-cubesat.md`).
 - Review gaps G-A to G-D fixed in c3cbec4 (format, ledger sd labels, stale ranges, register wording in README and spec).
+
+## Acceptance gate (2026-11-08)
+
+- Review of record: `work-packages/WP13-review.md` (40062f6; R-10 re-check appended in 1406261,
+  letter fixes 19747fe). Delivery: `dev` c61ff49..655d978 (29 commits incl. the four draft scopes and
+  records). Manual Tests run on dev green at 42541989924 (655d978); two earlier dev runs failed on
+  Linux-only platform ties (a floored-gap test against a hard-coded tolerance; a tied-row argmax
+  counted as an assignment change; a tied τ = ∞ seed stopping at the iteration cap), fixed by
+  comparing against the module tolerances and by accepting either stop status on zero-margin seeds;
+  recorded as evidence under ledger gap G-10. Driver's own checks on 655d978: 1188 passed, 11
+  skipped, 1 xfailed; ruff, format, lock clean; ALL LEMMAS PASS; attribution grep 0.
+- Measured (planted data, 20 seeds): max facet gap after the polish 2e-15 (τ = ∞) and 5e-15 (τ = 50);
+  certified 20/20 at τ = 50 and 16/20 at τ = ∞ with seeds 1, 3, 8, 16 stationary without margin;
+  the LP gap equals the duality gap to 1e-12; labels unchanged under 100 perturbations within the
+  radius on every fit; the Corollary bound holds on all 40 fits. Cubesat K = 2, 3: all certified; only
+  ten reach values moved at the sixth decimal; K = 1 unchanged.
