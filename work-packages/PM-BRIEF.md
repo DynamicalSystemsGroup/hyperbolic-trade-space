@@ -219,3 +219,11 @@ agents are doing. The outgoing PM finishes the agents it has running and starts 
 - Open with the supervisor, none blocking: the step-read times (WP16); the docsite figures after
   the reassessment; WP19's slot gate later.
 
+## Escalation (2026-11-09, the supervisor)
+
+"don't just stop and complain to me. interrogate and resolve if possible, escalate to me only once
+there is no path forward that you can stand behind." A surprising result, a failing comparison, a
+material change: interrogate it (what, where, how much, why), locate the cause, resolve it when a fix
+can be stood behind, record the finding and the fix. Escalation to the driver, and from the driver to
+the supervisor, carries what was tried and the options left, not the bare problem.
+

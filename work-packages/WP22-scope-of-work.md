@@ -124,3 +124,8 @@ Good enough is met, **no open item remains unresolved**, and the supervisor has 
 ## Gate outcomes
 
 - 2026-11-09: OD1 settled by the driver under the mandate, for the supervisor's review: the four metrics with no bound in the project's configuration (pointing error, control effort, total mass, peak slew power) stay uncovered in this package and the assessment view shows them honestly as traded with no requirement on them; the values are WP22b, the supervisor's to name (his rule: say what the model lacks rather than invent it). OD2 settled by the driver: the slew-time requirement is that the slew completes within the horizon, stated as such and acknowledged as coinciding with the settled requirement. Approved for execution under the mandate with those two outcomes.
+- 2026-11-09, the supervisor on the stop rule: "don't just stop and complain to me. interrogate and
+  resolve if possible, escalate to me only once there is no path forward that you can stand behind".
+  Read every "stop and report" of this scope accordingly: interrogate, locate the cause, fix what can
+  be stood behind and record it; escalate with the record only when no path remains.
+

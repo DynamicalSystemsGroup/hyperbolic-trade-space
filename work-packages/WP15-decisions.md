@@ -169,4 +169,12 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   change of results is treated as a probable defect in the earlier model, stopped on, investigated
   and reported to the driver before anything else; the new model replaces the old only at a
   recorded gate after a comparison report (as WP16 does for the data), never by default.
+- **Supervisor, verbatim, correcting the driver's reading of the stop rule:** "don't just stop and
+  complain to me. interrogate and resolve if possible, escalate to me only once there is no path
+  forward that you can stand behind". **Disposition:** the rule for WP22 (and for every package)
+  reads: a material change of results is treated as a probable defect in the earlier model; the
+  package interrogates it (which element, which design rows, which quantity, by how much; the
+  earlier model re-run against the new one on the same rows; the cause located) and resolves it
+  where a fix the driver can stand behind exists, with the finding and the fix recorded; it comes to
+  the supervisor only when no such path exists, with what was tried and the options left.
 
