@@ -1,7 +1,11 @@
 """Project the loaded SysML v2 model to PlantUML text for two paper figures.
 
-Reads the model through the opensysml Python API (query, eval, to_api_json); the metric to model
-identifier table and the layout choices below are the only things typed here (parameters).
+Reads the model through the opensysml Python API (query, eval, to_api_json). Nothing about the case
+is typed here that the model can state: each traded metric (its name and subsystem from the CaseSpec)
+is found in the model by its own name (``settling time`` -> ``settlingTime``, ``eclipse reserve`` ->
+``EclipseReserve``), the requirement-metric relations are read from the elements, and the metrics with
+no requirement are checked against the model's own statement of them (the verification cases' docs).
+Typed here: layout parameters, colours, and the analyst's subsystem for a requirement no metric reads.
 
     uv run python project.py MODEL.sysml OUTDIR [--package NAME]
 
@@ -51,27 +55,21 @@ hide empty members
 TAG_CATEGORICAL = ("swap", "#F6C98B")   # a part is replaced by one of its alternatives
 TAG_CONTINUOUS = ("tune", "#9CC8EE")    # a parameter of a part takes a value in a range
 
-# ---- behavioural view: the model's identifier for each traded metric (names from CaseSpec) ------
+# ---- behavioural view: the model's element for a traded metric is found by the metric's own name ----
 # kind: calc = a calc def the analysis returns; attr = a Cubesat attribute the analysis returns;
-#       input = an analysis `in` parameter returned unchanged; measured = a SlewMeasurement quantity
-#       (or, with None, a quantity the model names only in prose) passed through unchanged.
-METRIC_ELEMENT = {
-    "settling time": ("measured", "settlingTime"),
-    "slew time": ("measured", None),
-    "pointing error": ("calc", "PointingError"),
-    "total mass": ("attr", "totalMass"),
-    "control effort": ("input", "controlEffort"),
-    "power margin": ("calc", "PowerMargin"),
-    "energy balance": ("calc", "EnergyBalance"),
-    "eclipse reserve": ("calc", "EclipseReserve"),
-    "peak slew power": ("calc", "PeakSlewPower"),
-    "depth of discharge": ("calc", "DepthOfDischarge"),
-}
+#       input = an analysis `in` parameter returned unchanged; measured = a SlewMeasurement quantity.
 # the analyst's reading, used only where the model leaves a requirement with no related metric:
 # the subsystem the requirement lands on (CaseSpec groups metrics, not requirements)
 ANALYST_SUBSYSTEM = {"MomentumRequirement": "controls"}
 # name used in the model's prose for a measured quantity, to find documentary relations
 PROSE_NAME = {"slew time": "slew time", "settling time": "settling time"}
+
+
+def camel(metric: str, upper: bool) -> str:
+    """``eclipse reserve`` -> ``EclipseReserve`` (calc def) or ``eclipseReserve`` (an attribute)."""
+    words = metric.split()
+    head = words[0].title() if upper else words[0]
+    return head + "".join(w.title() for w in words[1:])
 REQ_COLOUR = "#FDEBD0"
 RELATION_COLOUR = "#B5541C"
 SOURCE_COLOUR = "#6B6B6B"
@@ -288,7 +286,6 @@ def behavioural(m, byid, P):
     spec = case.CUBESAT
     metrics = [(spec.short[a], spec.subsystems[a]) for a in spec.attributes]
     order = list(spec.subsystem_order)
-    assert {n for n, _ in metrics} == set(METRIC_ELEMENT), "METRIC_ELEMENT must name every traded metric"
     pre = P.replace("::", "__") + "__"
     rd = Reads(byid, P)
 
@@ -317,23 +314,25 @@ def behavioural(m, byid, P):
     a_text = doc_text(byid, pre[:-2]).replace("-", " ")   # the package-level prose of section 6
     meas_attrs = {short(i) for i, e in byid.items() if e["@type"] == "AttributeUsage" and i.startswith(pre + "SlewMeasurement__")}
 
-    # --- where each metric comes from; check the table against the model -----------------------------
-    origin, mcalc = {}, {}
+    # --- where each metric comes from: the element of the model that carries the metric's name ------
+    origin, mcalc, METRIC_ELEMENT = {}, {}, {}
     for name, _ in metrics:
-        kind, ident = METRIC_ELEMENT[name]
-        if kind == "calc":
-            assert pre + ident in a_inv, f"analysis does not return {ident}"
-            origin[name], mcalc[name] = "analysis", pre + ident
-        elif kind == "attr":
-            assert ident in a_chain, f"analysis does not return cubesat.{ident}"
+        calc_id, attr_id = pre + camel(name, True), camel(name, False)
+        if calc_id in rd.calcs and calc_id in a_inv:
+            kind, ident = "calc", camel(name, True)
+            origin[name], mcalc[name] = "analysis", calc_id
+        elif attr_id in rd.cub_attrs and attr_id in a_chain:
+            kind, ident = "attr", attr_id
             origin[name], mcalc[name] = "analysis", None
-        elif kind == "input":
-            assert ident in a_refs, f"analysis has no parameter {ident}"
+        elif attr_id in a_refs:
+            kind, ident = "input", attr_id
+            origin[name], mcalc[name] = "measurement", None
+        elif attr_id in meas_attrs:
+            kind, ident = "measured", attr_id
             origin[name], mcalc[name] = "measurement", None
         else:
-            assert ident is None or ident in meas_attrs, f"SlewMeasurement has no {ident}"
-            assert name in a_text, f"model prose does not say {name} is measured"
-            origin[name], mcalc[name] = "measurement", None
+            raise AssertionError(f"the model has no element named {calc_id} / {attr_id} for the metric {name!r}")
+        METRIC_ELEMENT[name] = (kind, ident)
 
     # metric -> the calcs it reads directly / transitively
     def m_direct(name):
@@ -371,14 +370,26 @@ def behavioural(m, byid, P):
             if PROSE_NAME.get(name) and PROSE_NAME[name] in rdoc:
                 rel.append((r, name, "prose", "prose"))
 
+    # a requirement is placed in a subsystem by every relation it has (rel_all), but a line is drawn only
+    # where the requirement reads the metric itself (strong). A shared upstream calc is not a bound on the
+    # metric (PowerMargin calls PeakSlewPower, and no requirement bounds the peak slew power).
+    rel_all = rel
+    rel = [x for x in rel_all if x[2] == "strong"]
+
     def req_subsystem(r):
-        votes = [dict(metrics)[n] for rr, n, _, _ in rel if rr == r]
+        votes = [dict(metrics)[n] for rr, n, _, _ in rel_all if rr == r]
         if votes:
             return max(order, key=lambda s: votes.count(s))
         return ANALYST_SUBSYSTEM.get(short(r), "unassigned")
 
     band = {r: req_subsystem(r) for r in reqs}
     related = {n for _, n, _, _ in rel}
+    # a metric with no requirement is open: the model says so itself, in a verification case's doc
+    ver_docs = " ".join(doc_text(byid, vid) for vid, v in byid.items() if v["@type"] == "VerificationCaseDefinition")
+    ver_docs = " ".join(ver_docs.replace("-", " ").split())
+    for name, _ in metrics:
+        if name not in related:
+            assert name in ver_docs, f"{name!r} is traded with no requirement and no verification case doc says so"
 
     # --- PlantUML ------------------------------------------------------------------------------
     nid = lambda s: "x" + "".join(ch for ch in s.title() if ch.isalnum())  # noqa: E731
@@ -396,7 +407,7 @@ def behavioural(m, byid, P):
         for r in sreqs:
             sat = ", ".join(sorted(satisfied_by[r])) or "none in the model"
             ver = ", ".join(sorted(verified_by[r])) or "none in the model"
-            lands = "" if any(rr == r for rr, _, _, _ in rel) else "\\n**no traded metric reads it**"
+            lands = "" if any(rr == r for rr, _, _, _ in rel) else "\\n**no line to a traded metric**"
             out.append(f'  rectangle "**{short(r)}**\\n<<requirement def>>\\n<<satisfy>> {sat}\\n<<verify>> {ver}{lands}" as {nid(short(r))} {REQ_COLOUR}')
             anchors.append(nid(short(r)))
         if not sreqs:
@@ -418,21 +429,21 @@ def behavioural(m, byid, P):
         if strength == "strong":
             out.append(f"{nid(short(r))} -[#{RELATION_COLOUR[1:]},thickness=2]-> {nid(n)} : {ev}")
         else:
-            out.append(f"{nid(short(r))} -[#{RELATION_COLOUR[1:]},dashed]-> {nid(n)} : {ev}")
+            raise AssertionError("only strong relations are drawn")
     for name, _ in metrics:
         src = "xAnalysis" if origin[name] == "analysis" else "xMeasure"
         out.append(f"{nid(name)} <-[#{SOURCE_COLOUR[1:]}]- {src}")
     out.append("")
     out.append("legend bottom")
-    out.append("  **Requirement - metric** (orange, requirement to metric; evidence on the line)")
-    out.append("  thick: the requirement and the metric read the same calc or measured quantity")
-    out.append("  dashed: they share only a calc further upstream, or the model's prose says so (prose)")
-    out.append("  green metric: a requirement relation exists in the model; dashed white: traded, none in the model")
+    out.append("  **Requirement - metric** (orange line, requirement to metric; the shared quantity on the line)")
+    out.append("  every line: the requirement and the metric read the same calc or measured quantity")
+    out.append("  green metric: a requirement reads it; dashed white: traded, no requirement reads it")
+    out.append("  (the model names each dashed white metric as open in its verification cases)")
     out.append("  **Source** (grey): from the analysis def, or from the measurement of the slew")
     out.append("  Requirement placement in a subsystem is the analyst's reading (CaseSpec groups metrics)")
     out.append("end legend")
     out.append("@enduml")
-    return "\n".join(out) + "\n", {"rel": rel, "reqs": reqs, "band": band, "metrics": metrics,
+    return "\n".join(out) + "\n", {"rel": rel, "rel_all": rel_all, "metric_element": METRIC_ELEMENT, "related": related, "reqs": reqs, "band": band, "metrics": metrics,
                                     "origin": origin, "satisfied": satisfied_by, "verified": verified_by}
 
 
