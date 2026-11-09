@@ -839,3 +839,28 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   not added, being too broad to help anyone find the paper. The list becomes: decision analysis,
   trade studies, trade space, posynomial, geometric programming, unsupervised learning, model-based
   systems engineering, open source software. Sent to the PM.
+
+## The supervisor's reading of the abstract, second pass (2026-11-09)
+
+- On the model class. **Supervisor (mzargham), verbatim:** "\"A fitted generalized posynomial
+  reference surface\" this feels weird. its a posynomial or a generalized geometric program. i think
+  you are blending them". **What the driver found:** the model is V_K = (sum of monomials)^(1/kappa).
+  The sum is a posynomial and V_K = 1 exactly where the sum is one, so the surface is the level set
+  of a posynomial. V_K itself, a root of a posynomial (and at the default the maximum of its terms),
+  is a generalized posynomial in the sense of Boyd et al. 2007, a class of functions; a generalized
+  geometric program is a class of problems defined from it. The terms were not confused in the
+  source, but the paper used two names for one object: its Definition said "Posynomial", its
+  abstract, section 5 and the docsite's theory page said "generalized posynomial".
+- **Supervisor, verbatim:** "we need to change it. also make sure its reflected in our glossary and
+  that we have a documented review technique for jargon checking across our paper and documentation
+  to ensure we're consistent with our glossary. we should avoid unecessary jargon but use the
+  glossary defined terms to keep the prose clear and concise." **Disposition:** Amendment 4 of the
+  scope (R-33, R-35, R-36); the technique is `docs/superpowers/notes/vocabulary-review.md` (a tool in
+  the test suite and a reading by fresh-context reviewers, with a fixed triage); `CLAUDE.md` points
+  to it. Sent to the PM.
+- On what is modelled. **Supervisor, verbatim:** "\"a model of the table, not the Pareto boundary,
+  gives the table a coordinate system.\" should be described as a model of the data underlying the
+  table so the table and associated interpretation are a view." **Disposition:** Amendment 4, R-34.
+  The data (the evaluated designs) is what the surface models; the table and the reading drawn from
+  it are views. Sent to the PM.
+

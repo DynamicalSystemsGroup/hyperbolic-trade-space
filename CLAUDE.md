@@ -51,5 +51,9 @@ with doctests.
   symproof-compatible ledger; see `docs/superpowers/notes/proof-conventions.md`).
 - Docs are Markdown + LaTeX, discursive, each claim citing its lemma; no reference enters
   `docs/references.bib` without a resolved DOI or stable URL.
+- Vocabulary: `glossary.yaml` is the one source of terms. One object, one name; use the glossary's
+  term, replace jargon that does no work with plain words. Check with
+  `uv run python scripts/check_vocabulary.py` and the reading in
+  `docs/superpowers/notes/vocabulary-review.md`.
 - Site framing: Tall's three worlds, glass-box seams, machine verification vs human validation
   (`docs/superpowers/notes/presentation-framing.md`).

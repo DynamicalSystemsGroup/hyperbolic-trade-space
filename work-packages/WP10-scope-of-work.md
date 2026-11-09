@@ -581,3 +581,47 @@ cold reads; this amendment records them as scope.
   the citations of Table 1's sources column are not counted. On that count the paper is at 5,881.
 - **Environment of record:** linux/arm64 (the driver's spike); exact comparisons only there. The
   container deliverables (D-13, R-30's container part, R-31) stay open until container work resumes.
+
+## Amendment 4 (2026-11-09; on the supervisor's direction, quoted in `WP10-decisions.md`, "The supervisor's reading of the abstract, second pass"; scoped by the driver): one name for the model class, the data as what is modelled, and the vocabulary review
+
+**Why.** The supervisor read "A fitted generalized posynomial reference surface" and "a model of the
+table, not the Pareto boundary, gives the table a coordinate system" in the abstract and found both
+off. The first gave one object two names across the paper and the docsite. The second named the
+table as the thing modelled, where the thing modelled is the data and the table is a view of it.
+
+**Scope (the paper, and with it the docsite pages and the glossary that share the words; the
+docsite files are WP8a's and change under this amendment by the same direction).**
+
+- R-33. *The surface is posynomial.* The abstract says "a fitted posynomial reference surface". The
+  Definition names the posynomial as the sum of monomials, the invariant V_K as its root, and the
+  reference surface as the sum equal to one. Section 5 keeps one cited sentence that V_K is a
+  generalized posynomial in the sense of Boyd et al. 2007, including the exact-maximum default.
+  "Generalized" appears nowhere else for the surface or the model. The docsite's theory page
+  follows. Sentences that report a source (Appendix G, Further reading) stay. *Check:* the
+  vocabulary tool's `avoid` list carries the withdrawn phrases and passes; a scripted step or an
+  existing one (L10: the power of the invariant is a posynomial) is cited beside the Definition.
+- R-34. *The data is what is modelled; the table and the reading are views.* Wherever the surface is
+  called a model of the table (abstract; section 1), it is a model of the data underlying the table
+  (the evaluated designs), not of the Pareto boundary; the table and the interpretation drawn from
+  it (the chart, the contending sets) are views of that data. The glossary's entry for the fitted
+  reference surface says so. *Check:* no "model of the table" or "models the table" remains in any
+  prose the tool reads; the abstract stays within its word ceiling.
+- R-35. *The glossary carries the class words.* `glossary.yaml` gains entries for monomial,
+  posynomial, generalized posynomial, geometric program and generalized geometric program (each with
+  what it is not), and the fields `aliases`, `avoid`, the lists `assumed` and `stems`
+  (`docs/superpowers/notes/vocabulary-review.md`). The interface contract is amended for the
+  glossary's schema. *Check:* the glossary tests; the contract test.
+- R-36. *The vocabulary review exists and has been run once in full.* The tool
+  `scripts/check_vocabulary.py` as specified in the note, in the test suite, with tests that plant
+  each kind of violation; one full pass of the tool and of the reading (fresh-context reviewers, in
+  the browser, the three lists) over the paper, the supporting material, the docsite and the root
+  page; every item triaged with one of the five dispositions; the record committed as
+  `work-packages/WP10-vocabulary-review.md`. *Check:* the tool exits zero on the head of `dev`; the
+  record lists every item with its disposition; the driver reads the record and the rendered pages.
+
+**Non-goals.** No change to a mathematical statement, a number or a figure. No new term coined to
+replace an old one where plain words serve. No rewrite of prose the review does not flag.
+
+**Good enough.** R-33 to R-36 checked; the suite green on both platforms; word ceilings held; the
+driver's own browser read of the abstract, section 1, the Definition, section 5 and the theory page.
+
