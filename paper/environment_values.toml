@@ -40,7 +40,7 @@ the cells of each table with its committed output, so the same facets in another
 [values.planted_table_sha256]
 reason = """processor architecture and maths library: the SHA-256 of the 900-row planted table
 (make_frontier_data, random_state 0) is c127dd4c... on macOS arm64 (the committed digest) and
-f6c45d25... on Linux amd64 (CI); the values agree to rounding"""
+f6c45d25... on Linux amd64 (CI), b17d4f8f... in the container of record (Linux arm64, glibc 2.41; the same on Ubuntu 24.04, glibc 2.39, arm64); the values agree to rounding"""
 elsewhere = """tests/test_paper.py::test_planted_table_agrees_with_the_reference_values compares the
 table's values with the reference array (values_rtol, values_atol), and the committed output of
 the datasets table is compared with numbers within text_rtol and this digest left uncompared"""

@@ -63,7 +63,7 @@ def test_record_has_the_recorded_result_lines():
         "python version",
         "lock hash",
         "ALL LEMMAS PASS",
-        "101 passed",
+        "103 passed",
         "sha256:",
     ):
         assert needle in text, needle
