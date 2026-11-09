@@ -998,6 +998,219 @@ def test_register_opens_by_saying_it_is_not_exhaustive():
     assert "not exhaustive" in _src(cells[2])
 
 
+# ---- the main text: prose-dependent checks (WP10) -----------------------------------------------
+
+BLOCK = re.compile(
+    r":::\{prf:(theorem|lemma|proposition|corollary)\} ([^\n]*)\n:label: (\S+)\n(.*?)\n:::\n", re.S
+)
+BADGES = ("Derived", "Numerical", "Open")
+HEDGES = re.compile(r"caveat|note that|however", re.I)
+
+
+def _section(name: str) -> str:
+    """The Markdown of the paper from heading ``## name`` up to the next ``## `` heading."""
+    out, grab = [], False
+    for c in _nb(PAPER_NB).cells:
+        if c.cell_type != "markdown":
+            continue
+        text = _src(c)
+        if text.startswith("## "):
+            grab = text.startswith(f"## {name}")
+        if grab:
+            out.append(text)
+    return "\n".join(out)
+
+
+def _blocks():
+    body = _markdown(_nb(PAPER_NB))
+    return [(m.group(1), m.group(2), m.group(3), m.group(4)) for m in BLOCK.finditer(body + "\n")]
+
+
+def test_no_shell_marker_remains_in_the_paper():
+    assert SHELL not in _markdown(_nb(PAPER_NB))
+
+
+def test_search_section_is_short_future_work_without_numbers():
+    """R-15: about 150 to 250 words, says it is future work, carries no digits at all."""
+    text = _section("Search of the design space")
+    words = len(re.sub(r"[#>*`:{}\[\]@|-]", " ", text).split())
+    assert 150 <= words <= 250
+    assert "future work" in text and "no results" in text
+    assert not re.search(r"\d", text.replace("Section 7", "").replace("Section 10", ""))
+
+
+def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script():
+    """R-17, R-18: L1 to L14 once each, in the paper's order, each with the parts of the form."""
+    blocks = _blocks()
+    tags = [re.search(r"\(L(\d+)\)\s*$", title).group(1) for _, title, _, _ in blocks]
+    assert [int(t) for t in tags] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14]
+    body = _markdown(_nb(PAPER_NB))
+    scripts = {
+        int(re.match(r"lemma_(\d+)_", p.name).group(1)): p
+        for p in (ROOT / "derivation").glob("lemma_*.py")
+    }
+    for _kind, title, label, content in blocks:
+        n = int(re.search(r"\(L(\d+)\)", title).group(1))
+        assert "*Hypotheses.*" in content, label
+        assert re.match(
+            r"\*\*(Derived|Numerical|Open)\.\*\*", content.split(":enumerated: false\n")[-1]
+        ), label
+        tail = body.split(f":label: {label}\n", 1)[1].split("\n:::\n", 1)[1]
+        assert tail.lstrip().startswith(":::{prf:proof} Sketch"), label
+        pointer = re.search(
+            r":::\{admonition\} Script\n:class: tip\n"
+            r"`derivation/(lemma_\d+_\w+\.py)`, `verify`; Appendix B, L(\d+)\.",
+            tail,
+        )
+        assert pointer and int(pointer.group(2)) == n, label
+        script = scripts[n]
+        assert script.name == pointer.group(1) and "def verify(" in script.read_text(), label
+    kinds = [(k, int(re.search(r"\(L(\d+)\)", t).group(1))) for k, t, _, _ in blocks]
+    assert kinds[11:] == [
+        ("lemma", 12),
+        ("lemma", 13),
+        ("proposition", 14),
+        ("corollary", 14),
+    ]  # E-8
+
+
+def test_badges_are_present_and_the_open_questions_are_marked():
+    """R-7: Derived on proved statements, Numerical on what is observed, Open on Q1 to Q4."""
+    body = _markdown(_nb(PAPER_NB))
+    assert body.count("**Derived.**") == 15
+    assert body.count("**Numerical.**") >= 1 and body.count("**Open.**") >= 1
+    open_text = body.split("### Open questions", 1)[1].split("## ", 1)[0]
+    for q in ("Q1", "Q2", "Q3", "Q4", "not pursued"):
+        assert q in open_text, q
+    assert all(f"G-{g}" in open_text for g in (11, 12, 13, 14))
+
+
+def test_policy_paragraph_appears_once_in_preliminaries_and_points_to_appendix_e():
+    body = _markdown(_nb(PAPER_NB))
+    assert body.count("Map and territory") == 1 and body.lower().count("all models are wrong") == 1
+    prelim = _section("Preliminaries and notation")
+    assert "All models are wrong" in prelim and "Appendix E" in prelim
+    for part in ("specific purpose in a specific situation", "improving trade studies",
+                 "cannot certify", "gaps ledger"):  # fmt: skip
+        assert part in prelim, part
+
+
+def test_no_hedging_phrases_in_the_body():
+    assert not HEDGES.search(_markdown(_nb(PAPER_NB)))
+
+
+def test_register_phrases_are_used_in_the_main_text_itself():
+    text = (NOTES / "notation.md").read_text()
+    block = text.split("## Register phrases", 1)[1].split("## Forbidden phrases", 1)[0]
+    body = _markdown(_nb(PAPER_NB)).lower()
+    assert [p for p in re.findall(r"^- `([^`]+)`", block, re.M) if p.lower() not in body] == []
+
+
+def test_disclosure_cites_the_incose_paper_and_the_search_and_stage_one_stay_abstract():
+    ack = _section("Acknowledgments")
+    assert "@zargham2026incose" in ack and "supervisor-gated" in ack
+    body = _markdown(_nb(PAPER_NB))
+    assert "black box to the method" in body  # the register's wording for a
+    assert not re.search(r"SysML|OpenSysML|Modelica|Simulink|pip install", body, re.I)
+
+
+def test_appendix_and_section_references_resolve():
+    """R-4, R-13 L-C and L-D: every appendix letter, section number, label and script exists."""
+    body = _markdown(_nb(PAPER_NB))
+    letters = set(re.findall(r"Appendix ([A-Z])\b", body))
+    assert letters == set(APPENDICES)
+    record = _record()["lemmas"]
+    for n in re.findall(r"Appendix B, L(\d+)\.", body):
+        assert any(v["number"] == int(n) for v in record.values()), n
+    for n in re.findall(r"Sections? (\d+)(?:\b)", body):
+        assert 1 <= int(n) <= 12, n
+    labels = set(re.findall(r":label: (\S+)", body))
+    for ref in re.findall(r"\{prf:ref\}`([^`]+)`", body):
+        assert ref in labels, ref
+
+
+def test_section2_has_the_family_table_and_both_contrast_paragraphs_with_generated_counts():
+    """R-8: the Pareto and DEA paragraphs, the table; the counts come from case.py, never typed."""
+    s2 = _section("Prior art, by family")
+    assert (
+        "**Pareto methods.**" in s2
+        and "**Data envelopment analysis.**" in s2
+        and "**Lineage.**" in s2
+    )
+    assert "@miettinen1999nonlinear" in s2 and "@charnes1978measuring" in s2
+    body = _markdown(_nb(PAPER_NB))
+    for typed in ("671", "706", "146"):
+        assert typed not in body
+    cell = next(c for c in _code_cells(_nb(PAPER_NB)) if c.id == "num-nondominated")
+    assert "nondominated" in _out_text(cell) and re.search(r"\d", _out_text(cell))
+    assert not WORDS_BANNED_IN_PRIOR_ART.search(s2)  # claims nothing as novel, first or new
+
+
+def test_generated_sentence_cells_have_outputs_and_the_case_numbers_are_not_typed():
+    cells = [c for c in _code_cells(_nb(PAPER_NB)) if c.id.startswith("num-")]
+    assert len(cells) >= 8
+    for c in cells:
+        assert _out_text(c).strip(), f"{c.id} has no committed output ({STALE})"
+    body = _markdown(_nb(PAPER_NB))
+    for c in cells:
+        for number in re.findall(r"\d+\.\d{3,}", _out_text(c)):
+            assert number not in body, number
+
+
+def test_reader_depth_anchors_are_all_present():
+    """R-13: L-A title, abstract and Figure 1 with its caption on the first page; L-B headings,
+    the main-results list and the statements; L-D appendix pointers."""
+    nb = _nb(PAPER_NB)
+    fm = yaml.safe_load(_src(nb.cells[0]).split("---")[1])
+    assert fm["title"] and len(fm["abstract"].split()) <= 200
+    ids = [c.id for c in nb.cells]
+    first_heading = ids.index("sec-prior-art")
+    assert ids.index("fig-schematic-caption") < first_heading  # the hero precedes section 2
+    caption = _src(nb.cells[ids.index("fig-schematic-caption")])
+    for phrase in ("fitted reference surface", "supporting envelope", "energy differential"):
+        assert phrase in caption
+    assert "**Main results**" in _section("The decision problem")
+    results = (
+        _section("The decision problem")
+        .split("**Main results**", 1)[1]
+        .split("**Organization", 1)[0]
+    )
+    labels = ("thm-invariant", "thm-kkt", "thm-convex", "thm-elasticity", "thm-chart")
+    labels += ("thm-extension", "thm-pareto", "lem-gap", "lem-margin", "prop-local")
+    for label in labels:
+        assert f"`{label}`" in results, label
+    assert "Appendix B" in _markdown(nb) and "supporting_material.ipynb" in _section(
+        "The decision problem"
+    )
+
+
+def test_simplifying_assumptions_are_named_where_made_and_taken_up_in_future_work():
+    """R-6: the named assumptions of the supervisor's rule appear in Methods and in Section 12."""
+    methods, future = _section("Methods"), _section("Future work and final remark")
+    for marker in (
+        "One facet",
+        "Hard assignment",
+        "analyst chooses",
+        "Small $K$",
+        "Log-affine",
+        "log-convex envelope",
+    ):
+        assert marker.lower() in methods.lower(), marker
+    later = ("beyond one facet", "hard assignment", "analyst's k", "small k", "log-affine")
+    later += ("log-convex envelope", "continuous variables", "illustrative hardware")
+    for marker in later:
+        assert marker in future.lower(), marker
+
+
+def test_the_paper_never_hedges_the_counted_prose_stays_within_the_stated_sections():
+    """R-2: each section within a generous multiple of its budget; the total within the cap."""
+    budgets = {"The decision problem": 900, "Prior art, by family": 700, "Results": 2400,
+               "Case analysis": 650, "Discussion": 550}  # fmt: skip
+    for name, cap in budgets.items():
+        text = _section(name)
+        assert len(re.sub(r"[#>*`:{}\[\]@|-]", " ", text).split()) <= cap, name
+
+
 # ---- gated checks (slow or networked) ----------------------------------------------------------
 
 
