@@ -30,8 +30,8 @@ project:
     - posynomial
     - geometric programming
     - unsupervised learning
-    - scikit-learn
     - model-based systems engineering
+    - open source software
   # Acronyms used in prose; every abbreviation in the paper's prose appears here.
   abbreviations:
     ADCS: attitude determination and control system

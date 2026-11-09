@@ -25,12 +25,23 @@ def _and(items) -> str:
     return ", ".join(items[:-1]) + " and " + items[-1]
 
 
+def _span(groups) -> str:
+    """Subsystems as a phrase; 'and' inside a name (power and energy) is kept apart by 'plus'."""
+    groups = list(groups)
+    if len(groups) <= 1:
+        return "".join(groups)
+    return ", ".join(groups[:-1]) + (" plus " if len(groups) == 2 else ", plus ") + groups[-1]
+
+
 def _contending(study, fit) -> list[str]:
     row = case.tension_table(study, fit).iloc[0]
     return [s.strip() for s in row["contending set"].split(",")]
 
 
-_NUMBER_WORDS = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight"}
+_NUMBER_WORDS = {
+    2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine",
+    10: "ten",
+}  # fmt: skip
 
 
 def nondominated_sentence(study) -> Md:
@@ -50,6 +61,20 @@ def nondominated_sentence(study) -> Md:
         f"Of {n} feasible cubesat designs, the nondominated sets hold {_and(parts)} attributes "
         f"(a range is the spread over {_NUMBER_WORDS.get(runs, runs)} regenerations of the data "
         f"under rounding-level perturbation, {_D11})."
+    )
+
+
+def attributes_sentence(study) -> Md:
+    """The attributes of the case grouped by subsystem (the spec's one mapping, ``subsystems``)."""
+    spec = study.spec
+    n = len(spec.attributes)
+    parts = [
+        f"{g} ({_and(spec.short[a] for a in spec.attributes if spec.subsystems[a] == g)})"
+        for g in spec.subsystem_order
+    ]
+    return Md(
+        f"Each configuration is evaluated once into {_NUMBER_WORDS.get(n, n)} attributes: "
+        f"{', '.join(parts[:-1])} and {parts[-1]}."
     )
 
 
@@ -80,16 +105,15 @@ def k1_sentence(study, fit) -> Md:
     """The K = 1 contending set: the support of the exact-maximum fit, and its exponents."""
     rep = case._reports(study, fit)[0]
     names = _contending(study, fit)
-    rest = [n for n in study.names if n not in names]
     w = {study.names[j]: float(rep.exponents[j]) for j in rep.contending_set}
     two = lambda n: stable(  # noqa: E731
         f"D exponents K=1 | {study.regime} | {n} | exponent w", lambda v: f"{v:.2f}"
     )
     low, high = min(w, key=w.get), max(w, key=w.get)
     return Md(
-        f"At K = 1 the exact-maximum fit has a {len(names)}-lemma: {_and(names)} contend, with "
-        f"working-temperature exponents from {two(low)} to {two(high)}; the other {len(rest)} "
-        f"do not."
+        f"At K = 1 the exact-maximum fit has a {len(names)}-lemma across "
+        f"{_span(study.spec.subsystems_of(names))}: {_and(names)} contend, with "
+        f"working-temperature exponents from {two(low)} to {two(high)}."
     )
 
 
@@ -193,11 +217,16 @@ def regime_sentence() -> Md:
     regs = list(case.CUBESAT.regimes)
     sets = {r: set(s.strip() for s in t.loc["contending set", r].split(",")) for r in regs}
     a, b = regs[0], regs[1]
+    spec = case.CUBESAT
+    ga, gb = spec.subsystems_of(sets[a]), spec.subsystems_of(sets[b])
+    only = [g for g in ga if g not in gb]
+    point = f": {_span(only)} enters only in the {a} regime" if only else ""
     return Md(
-        f"The two regimes return a {t.loc['n_lemma', a]}-lemma and a {t.loc['n_lemma', b]}-lemma "
-        f"that share {len(sets[a] & sets[b])} metrics ({_and(sorted(sets[a] & sets[b]))}); "
+        f"The regimes return a {t.loc['n_lemma', a]}-lemma and a {t.loc['n_lemma', b]}-lemma "
+        f"sharing {len(sets[a] & sets[b])} metrics ({_and(sorted(sets[a] & sets[b]))}); "
         f"the {a} regime alone has {_and(sorted(sets[a] - sets[b]))}, the {b} regime alone "
-        f"{_and(sorted(sets[b] - sets[a]))}."
+        f"{_and(sorted(sets[b] - sets[a]))}. The {b} set spans "
+        f"{_span(gb)}{point}."
     )
 
 

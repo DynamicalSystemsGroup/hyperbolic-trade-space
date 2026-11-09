@@ -235,6 +235,95 @@ def test_myst_config_parses_and_is_modelled_on_the_scipy_build():
     assert bib == (ROOT / "docs" / "references.bib").resolve()
 
 
+TOOL_NAMES = ("scikit-learn", "sklearn", "numpy", "scipy", "python", "sympy", "cvxpy", "pandas",
+              "matplotlib", "marimo", "jupyter", "mystmd", "docker", "uv")  # fmt: skip
+
+
+def test_keywords_name_no_tool_or_library():
+    """The supervisor's rule: a keyword is a subject, not a tool (WP10, reading of the abstract)."""
+    keywords = yaml.safe_load((PAPER / "myst.yml").read_text())["project"]["keywords"]
+    assert keywords == [
+        "decision analysis", "trade studies", "trade space", "posynomial", "geometric programming",
+        "unsupervised learning", "model-based systems engineering", "open source software",
+    ]  # fmt: skip
+    for k in keywords:
+        assert not set(re.split(r"[\s-]+", k.lower())) & set(TOOL_NAMES), k
+
+
+def test_abstract_and_section_5_say_the_one_facet_fit_is_a_geometric_program():
+    """The model is a generalized posynomial; one facet is a geometric program (convex after the
+    log change of variables, L4.14 to L4.24); several facets alternate one such program per facet.
+    Nothing says the several-facet fit is itself a convex program or a GGP."""
+    nb = _nb(PAPER_NB)
+    fm = yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"]
+    flat = " ".join(fm.split())
+    for phrase in (
+        "generalized posynomial",
+        "geometric program",
+        "logarithmic change of variables",
+        "one such program per facet",
+        "descent is derived, stationarity checked",
+    ):
+        assert phrase in flat, phrase  # fmt: skip
+    methods = _section("Methods")
+    for phrase in (
+        "geometric program",
+        "generalized posynomial",
+        "L4.14 to L4.24",
+        "one such program per facet",
+        "boyd2007tutorial",
+    ):
+        assert phrase in methods, phrase  # fmt: skip
+    assert "geometric program" in _section("The decision problem")
+    for text in (flat, methods, _section("The decision problem")):
+        assert "GGP" not in text and "several facets is a" not in text
+        assert not re.search(r"several[^.;]*(transform|convex program)", text.replace(
+            "one such program per facet", ""))  # fmt: skip
+
+
+def test_the_case_is_described_as_power_mass_and_attitude_control():
+    """The case couples power, mass and attitude control (cubesat.sysml), not attitude alone."""
+    nb = _nb(PAPER_NB)
+    fm = " ".join(yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"].split())
+    assert "cubesat model coupling power, mass and attitude control" in fm
+    assert "ten attributes" in fm and "controller-gain regimes" in fm
+    prose = _markdown(nb) + _markdown(_nb(SUPPORT_NB))
+    assert "attitude determination and control system" not in prose
+    assert "cubesat model coupling power, mass and attitude control" in _section(
+        "Case construction"
+    )
+    assert "cubesat model coupling power, mass and attitude control" in _section(
+        "The decision problem"
+    )
+    assert "cubesat model coupling power, mass and attitude control" in _src(
+        next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-C-job")
+    )
+    cell = next(c for c in _code_cells(nb) if c.id == "num-attributes")
+    out = _out_text(cell)
+    for group in ("controls (", "power and energy (", "mass (total mass)"):
+        assert group in out, group
+
+
+def test_figure1_caption_names_the_black_arrow():
+    caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-schematic-caption"))
+    assert "The black arrow is the same step in each pane" in caption
+    assert "energy differential" in caption
+
+
+def test_generated_sentences_name_the_subsystems_from_the_one_mapping():
+    """Subsystems come from ``CaseSpec.subsystems``; mass enters only in the primary regime."""
+    import case
+
+    spec = case.CUBESAT
+    nb = _nb(PAPER_NB)
+    k1 = _out_text(next(c for c in _code_cells(nb) if c.id == "num-k1"))
+    reg = _out_text(next(c for c in _code_cells(nb) if c.id == "num-regimes"))
+    assert "across controls, power and energy, plus mass:" in k1
+    assert "The stock set spans controls plus power and energy" in reg
+    assert "mass enters only in the primary regime" in reg
+    assert spec.subsystems["total_mass_kg"] == "mass"
+
+
 def test_no_pdf_export_block():
     text = (PAPER / "myst.yml").read_text()
     cfg = yaml.safe_load(text)
