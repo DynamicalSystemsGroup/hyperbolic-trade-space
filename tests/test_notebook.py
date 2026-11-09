@@ -275,3 +275,10 @@ def test_prediction_columns_are_named_for_what_they_hold():
         "pred_std_total_mass_kg",
     ]:
         assert c in preds.columns
+
+
+def test_prose_says_elasticities_not_exchange_rates(nb):
+    """WP10 Amendment 4 (R-37): the term is elasticity in the notebook's prose too."""
+    prose = " ".join(source(c) for c in nb["cells"] if c["cell_type"] == "markdown")
+    assert "exchange rate" not in prose.lower()
+    assert "constant elasticities" in prose and "read as elasticities" in prose
