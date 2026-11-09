@@ -407,3 +407,23 @@ The driver's calls on `WP8a-driver-browser-pass.md` are binding and applied as f
 - **2026-11-09. The Linux run owed at acceptance is in.** Tests run 42588028427 on `dev` at 5636ca7
   (which contains 2d2a751): 1838 passed, none failed, on ubuntu amd64; the same counts as the
   driver's clean checkout on the Mac.
+
+## The index page: an image for each of why, what and how (2026-11-09, the supervisor at the staged site)
+
+- **Supervisor (mzargham), verbatim,** on the three-pane figure: "this image is narrative in nature.
+  it was originally designed to go in the index page to go along with the what blurb. i am also
+  thinking we can use a ternary plot to go with the why. this way we have an image for each of why,
+  what and how". And: "also i think it might help if the first image also had a black arrow in the
+  direction of increasing energy".
+- On three first candidates for the Why image (`docs/superpowers/notes/spike-ternary/why-*.png`):
+  "i need you to show me the alternatives so we can reason visually based on what fits our top level
+  story"; "none of these look great"; then, of the schematic one with designs coloured by the
+  trade-off that binds them: "maybe iterate on this one".
+- **Done so far (spike only; nothing in the site or the paper changed):** the chosen image iterated
+  (`why3-regions.png`: the triangle shaded exactly by the trade-off that binds at each position,
+  one label per region); the three-pane figure with a black arrow in the first pane along the ray
+  from the origin through the design, the same uniform scaling as the arrow of the middle pane
+  (`what-with-arrow.png`); a mock of the index page with the three images in place
+  (`spike-ternary/mock/index.html`). **Sent to the PM:** the arrow in the first pane of the figure's
+  generator. **Open with the supervisor:** his reaction to the iterated Why image; whether the
+  three-pane figure also stays the paper's Figure 1 (asked; he answered with a message instead).
