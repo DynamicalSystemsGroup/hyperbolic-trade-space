@@ -25,8 +25,8 @@ the pin and the URL are never altered. ``pin`` prints, on one line, the reposito
 the asset name for the running platform, so a workflow need not hard-code them.
 
 The archive is verified against its pinned size and sha256 before a byte of it is extracted,
-the binary is then checked to report the pinned version, and the standard library is taken from a sparse git clone whose HEAD must equal the pinned commit. An unverified file is never
-executed.
+the binary is then checked to report the pinned version, and the standard library is taken from
+a sparse git clone whose HEAD must equal the pinned commit. An unverified file is never executed.
 
 Where the binary is looked for, first hit wins: ``SYSML_TOOLKIT_BIN`` (the legacy ``SYSMLV2_BIN``),
 the cache directory (``SYSML_TOOLKIT_CACHE``, default ``~/.cache/hyperbolic-trade-space/
