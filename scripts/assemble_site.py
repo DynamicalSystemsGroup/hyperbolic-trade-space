@@ -5,7 +5,8 @@
 Default output is ``_site/``. Steps: write the generated pages (``build_generated``: the
 glossary into ``docs/generated/`` for the docsite, derivations and verification into
 ``build/generated/`` for the paper's build), run
-``mkdocs build --strict -d <out>/docs``, copy ``site/index.html`` to ``<out>/index.html`` and
+``mkdocs build --strict -d <out>/docs``, copy ``site/index.html`` to ``<out>/index.html`` (with
+the paper's ``figure1.png`` and the Why image from ``build_site_figures``) and
 build the paper slot through ``build_paper``: the real paper (``myst build --html`` in ``paper/``,
 copied from ``paper/_build/html``) when it builds, the placeholder page when it does not or when
 ``--paper placeholder`` is given. Any other error stops the build with a non-zero exit. The
@@ -28,6 +29,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import build_figures  # noqa: E402
 import build_generated  # noqa: E402
+import build_site_figures  # noqa: E402
 
 DEFAULT_OUT = ROOT / "_site"
 GENERATED_DIR = build_generated.DEFAULT_OUT  # outside docs/: the paper's build reads it
@@ -35,6 +37,9 @@ DOCS_GENERATED_DIR = build_generated.DOCS_GENERATED  # inside mkdocs docs_dir: t
 ROOT_INDEX = ROOT / "site" / "index.html"
 PAPER_PLACEHOLDER = ROOT / "site" / "paper" / "index.html"
 PAPER_DIR = ROOT / "paper"
+# The What image on the root page is the paper's Figure 1, copied (never regenerated) at build time.
+FIGURE1 = PAPER_DIR / "figures" / "figure1.png"
+FIGURE1_NAME = "figure1.png"
 PAPER_HTML = PAPER_DIR / "_build" / "html"
 PUBLIC_PAPER_BASE = "/hyperbolic-trade-space/paper"  # the published route (the Pages project path)
 
@@ -131,6 +136,8 @@ def assemble(
     collect_runner=None,
     docs_generated_dir=DOCS_GENERATED_DIR,
     figures_builder=None,
+    site_figures_builder=None,
+    figure1=FIGURE1,
     paper="auto",
     paper_base=PUBLIC_PAPER_BASE,
     paper_runner=None,
@@ -152,6 +159,10 @@ def assemble(
     shutil.copy2(ROOT_INDEX, out / "index.html")
     for asset in sorted(ROOT_INDEX.parent.glob("*.webp")):  # figures the root index uses
         shutil.copy2(asset, out / asset.name)
+    if not Path(figure1).is_file():
+        raise FileNotFoundError(f"missing the paper's Figure 1: {figure1}")
+    shutil.copy2(figure1, out / FIGURE1_NAME)  # the What image: the paper's own file
+    (site_figures_builder or build_site_figures.build)(out)  # the Why image, both schemes
     build_paper(out, paper, paper_base, paper_runner, paper_html)
     return out
 

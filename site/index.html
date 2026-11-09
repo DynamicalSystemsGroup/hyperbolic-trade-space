@@ -75,6 +75,17 @@
   /* The map is read at its own size: on a wide screen the figure leaves the text column and takes
      most of the width (a plain link opens the full-size file). */
   figure.wide a { display: block; }
+  /* The Why image comes in two colour schemes (transparent backgrounds); the link and image of the
+     other scheme are hidden, so each reader opens the full-size file in their own scheme. */
+  figure.why a { display: block; max-width: 34rem; margin: 0 auto; }
+  figure.why img { display: block; width: 100%; height: auto; }
+  figure.why .only-dark { display: none; }
+  @media (prefers-color-scheme: dark) {
+    figure.why .only-light { display: none; }
+    figure.why .only-dark { display: block; }
+  }
+  /* The paper's Figure 1 is drawn on white; it keeps its white ground in both schemes. */
+  figure.what img { background: #ffffff; }
   @media (min-width: 52rem) {
     figure.wide {
       position: relative;
@@ -170,6 +181,11 @@
       has to clear a bar before a decision-maker can trust it: it has to show its reasoning, say
       where the data do not reach, and let the analysis be rerun.
     </p>
+    <figure class="why">
+      <a class="only-light" href="why-regions-light.png"><img src="why-regions-light.png" width="1258" height="1054" alt="A triangle of three metrics. Evaluated designs are dots placed by which metric they favour; three shaded regions are labelled by the trade-off that binds there: all three trade, metric 3 against metric 1, metric 3 against metric 2."></a>
+      <a class="only-dark" href="why-regions-dark.png"><img src="why-regions-dark.png" width="1258" height="1054" alt="A triangle of three metrics. Evaluated designs are dots placed by which metric they favour; three shaded regions are labelled by the trade-off that binds there: all three trade, metric 3 against metric 1, metric 3 against metric 2."></a>
+      <figcaption>What trades against what depends on where a design sits. Each dot is an evaluated design, placed by which metric it favours; the coloured dots are at the frontier. Select the figure to open it at full size.</figcaption>
+    </figure>
   </section>
 
   <section>
@@ -183,6 +199,10 @@
       <code>transform</code>, <code>inverse_transform</code>, <code>score_samples</code>; the
       conformance checks pass), so it drops into the same workflows.
     </p>
+    <figure class="wide what">
+      <a href="figure1.png"><img class="hero" src="figure1.png" width="1640" height="720" alt="Three panes: the fitted reference surface in metric space, its facets as a supporting envelope in log space, and the chart in which the frontier is one line and the facets are regions. A black arrow in each pane marks one design's energy differential."></a>
+      <figcaption>One table of designs seen three ways. The black arrow is the same step in each pane: a design's energy differential to the fitted reference surface. Select the figure to open it at full size.</figcaption>
+    </figure>
   </section>
 
   <section>

@@ -363,6 +363,11 @@ def _site_file_for(path_in_site: str, site_root: Path) -> Path | None:
     return candidate if candidate.is_file() else None
 
 
+# Images the assembled root page gets at build time (the paper's Figure 1, copied; the Why image,
+# generated); they are not in site/ and are checked on the assembled site.
+BUILT_IMAGES = {"figure1.png", "why-regions-light.png", "why-regions-dark.png"}
+
+
 def test_root_and_paper_links_classified():
     """Every link on the two hand-written pages is internal and resolvable, or external and
     either the repository or a punch-list URL."""
@@ -374,6 +379,8 @@ def test_root_and_paper_links_classified():
                 continue  # the empty icon: the page asks the server for no /favicon.ico (404)
             if is_external(href):
                 assert href.startswith(repo) or href in expected, f"{rel}: unlisted external {href}"
+                continue
+            if rel == "index.html" and href in BUILT_IMAGES:
                 continue
             route = _resolve_site_href(page_url, href)
             assert route.startswith(urlparse(PUBLIC_URL).path)
@@ -535,6 +542,11 @@ def test_assembled_layout(assembled):
         assert (assembled / rel).is_file(), rel
     assert (assembled / "index.html").read_text() == (SITE / "index.html").read_text()
     assert (assembled / "paper-map.webp").is_file()
+    for name in sorted(BUILT_IMAGES):
+        assert (assembled / name).stat().st_size > 10_000, name
+    assert (assembled / "figure1.png").read_bytes() == (
+        ROOT / "paper" / "figures" / "figure1.png"
+    ).read_bytes(), "the What image is the paper's Figure 1, copied, not regenerated"
     assert (assembled / "paper" / "index.html").read_text() == (
         SITE / "paper" / "index.html"
     ).read_text()
@@ -800,3 +812,198 @@ def test_each_figure_is_produced_by_the_code_shown_above_it(tmp_path):
     for page in source_pages():
         on_pages |= set(re.findall(r"([\w-]+)-light\.png#only-light", page.read_text()))
     assert embedded == on_pages
+
+
+# ---- the index page's images: Why, What, How --------------------------------------------------
+
+WHY_ALT = (
+    "A triangle of three metrics. Evaluated designs are dots placed by which metric they favour; "
+    "three shaded regions are labelled by the trade-off that binds there: all three trade, "
+    "metric 3 against metric 1, metric 3 against metric 2."
+)
+
+
+class _Figures(HTMLParser):
+    """The root page's figures: for each, its links, images (src, alt) and caption text."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.figures: list[dict] = []
+        self._cap = False
+        self._open = False
+
+    def handle_starttag(self, tag, attrs):
+        d = dict(attrs)
+        if tag == "figure":
+            self._open = True
+            self.figures.append({"class": d.get("class", ""), "a": [], "img": [], "cap": ""})
+        elif self._open and tag == "a":
+            self.figures[-1]["a"].append(d.get("href"))
+        elif self._open and tag == "img":
+            self.figures[-1]["img"].append((d.get("src"), d.get("alt")))
+        elif self._open and tag == "figcaption":
+            self._cap = True
+
+    def handle_endtag(self, tag):
+        if tag == "figcaption":
+            self._cap = False
+        elif tag == "figure":
+            self._open = False
+
+    def handle_data(self, data):
+        if self._cap:
+            self.figures[-1]["cap"] += data
+
+
+def _index_figures():
+    parser = _Figures()
+    parser.feed((SITE / "index.html").read_text())
+    return parser.figures
+
+
+def test_index_has_a_figure_each_for_why_what_and_how_in_that_order():
+    text = (SITE / "index.html").read_text()
+    figures = _index_figures()
+    assert [f["class"].split()[0] if f["class"] else "" for f in figures] == ["why", "wide", "wide"]
+    srcs = [f["img"][0][0] for f in figures]
+    assert srcs == ["why-regions-light.png", "figure1.png", "paper-map.webp"]
+    sections = [text.index(f"<h2>{h}</h2>") for h in ("Why", "What", "How")]
+    assert sections == sorted(sections)
+    for h, f in zip(("Why", "What", "How"), figures, strict=True):
+        start = text.index(f"<h2>{h}</h2>")
+        assert text.index(f["img"][0][0], start) < (
+            text.index("<h2>", start + 5) if "<h2>" in text[start + 5 :] else len(text)
+        ), f"{h}: the figure sits in its own section"
+    assert "<script" not in text.lower()
+
+
+def test_index_images_have_alt_text_captions_and_full_size_links():
+    figures = _index_figures()
+    why, what, how = figures
+    assert [a for a in why["a"]] == ["why-regions-light.png", "why-regions-dark.png"]
+    assert [i[0] for i in why["img"]] == ["why-regions-light.png", "why-regions-dark.png"]
+    assert all(alt == WHY_ALT for _, alt in why["img"])
+    assert what["a"] == ["figure1.png"] and how["a"] == ["paper-map.webp"]
+    for f in figures:
+        assert all(alt and len(alt) > 60 for _, alt in f["img"]), "alt text names what is shown"
+        assert len(f["cap"].strip()) > 40
+    assert "black arrow" in what["img"][0][1] and "black arrow" in what["cap"]
+    assert "coloured dots are at the frontier" in why["cap"]
+    for f in figures:  # plain links: each figure's link is the file the image shows
+        assert [i[0] for i in f["img"]] == f["a"]
+    # in the dark scheme the light twin is hidden (and the dark one shown), by CSS alone
+    css = (SITE / "index.html").read_text()
+    assert "figure.why .only-dark { display: none; }" in css
+    assert "figure.why .only-light { display: none; }" in css
+
+
+def test_assembled_index_images_exist_and_links_resolve(assembled):
+    for f in _index_figures():
+        for href in f["a"] + [i[0] for i in f["img"]]:
+            assert (assembled / href).is_file(), href
+            assert (assembled / href).stat().st_size > 10_000, href
+
+
+# ---- the Why image generator ------------------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def why_fit():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_site_figures as bsf
+
+    return bsf, bsf.fit_why()
+
+
+def test_why_regions_partition_the_triangle_and_there_are_three_facets(why_fit):
+    import numpy as np
+
+    bsf, fit = why_fit
+    assert fit["W"].shape == (3, 3) and np.allclose(fit["W"].sum(axis=1), 1.0, atol=1e-6)
+    pts, reg = bsf.regions(fit, fit["spread"], n=120)
+    assert np.allclose(pts.sum(axis=1), 1.0) and (pts > 0).all()  # inside the triangle
+    assert set(np.unique(reg)) == {0, 1, 2}, "three regions, every one non-empty"
+    # exact: each position is in the region of the facet that is the largest affine piece there
+    a = fit["W"] @ fit["colmean"] - fit["beta"]
+    g = a + fit["spread"] * (np.log(pts) @ fit["W"].T)
+    assert (g.argmax(axis=1) == reg).all()
+    # the planar projection is the barycentric one: corners to corners, equal sides
+    x, y = bsf.project([1, 0, 0], [0, 1, 0], [0, 0, 1])
+    assert np.allclose(x, [0.5, 0, 1]) and np.allclose(y, [np.sqrt(3) / 2, 0, 0])
+
+
+def test_why_labels_come_from_the_exponents(why_fit):
+    import numpy as np
+
+    bsf, fit = why_fit
+    W = fit["W"]
+    labels = {k: bsf.says(W[k]).replace("\n", " ") for k in range(3)}
+    trade_all = [k for k in range(3) if labels[k] == "all three trade"]
+    assert len(trade_all) == 1, labels
+    assert (W[trade_all[0]] > bsf.BIG).all()
+    for k in set(range(3)) - set(trade_all):
+        big = [f"metric {j + 1}" for j in np.argsort(-W[k]) if W[k, j] > bsf.BIG]
+        assert labels[k] == f"{big[0]} trades against {big[1]}", (labels[k], W[k])
+    # the same words after permuting the metrics' names would follow the exponents, not a table
+    assert bsf.says(np.array([0.1, 0.45, 0.45])) == "metric 2 trades\nagainst metric 3"
+    assert bsf.says(np.array([0.3, 0.3, 0.4])) == "all three trade"
+    assert bsf.colours(W)[trade_all[0]] == bsf.AMBER
+
+
+def test_why_figure_files_have_the_expected_size_and_no_overlay_by_default(tmp_path, why_fit):
+    import inspect
+
+    from PIL import Image
+
+    bsf, fit = why_fit
+    assert inspect.signature(bsf.build).parameters["lines"].default is False
+    assert inspect.signature(bsf.draw).parameters["lines"].default is False
+    plain = bsf.build(tmp_path / "plain", fit=fit)
+    assert {p.name for p in plain.values()} == {
+        "why-regions-light.png",
+        "why-regions-dark.png",
+    }
+    for scheme, path in plain.items():
+        with Image.open(path) as im:
+            assert im.size == (round(bsf.FIGSIZE[0] * bsf.DPI), round(bsf.FIGSIZE[1] * bsf.DPI))
+            assert im.mode == "RGBA" and im.getpixel((2, 2))[3] == 0, "transparent background"
+        assert path.stat().st_size > 30_000, scheme
+    # the default draws no line and no star; the option adds them (stars: one per facet)
+    import matplotlib.pyplot as plt
+
+    fig = bsf.draw(fit, "light")
+    ax = fig.axes[0]
+    n_default = len(ax.collections)
+    plt.close(fig)
+    fig = bsf.draw(fit, "light", lines=True)
+    ax = fig.axes[0]
+    assert len(ax.collections) > n_default, "the option adds the contours and the stars"
+    plt.close(fig)
+    assert "--lines" in bsf.__doc__ and "off by default" in bsf.__doc__
+
+
+def test_why_lines_overlay_is_the_fixed_total_function(why_fit):
+    """Option on: at the total fixed, facet k's exponent vector is where its own piece peaks."""
+    import numpy as np
+
+    bsf, fit = why_fit
+    W = fit["W"]
+    a = W @ fit["colmean"] - fit["beta"]
+    comp = bsf.shares(fit, 1.0)
+    assert np.allclose(comp.sum(axis=1), 1.0)
+    # log V = s log L + f(c), exactly (the identity the overlay rests on)
+    Y = np.exp(fit["U"] - fit["colmean"])
+    f = (a + np.log(comp) @ W.T).max(axis=1)
+    assert np.abs(np.log(Y.sum(axis=1)) + f - fit["logv"]).max() < 1e-8
+    # each piece is largest at c = w_k among all c on the simplex (weighted vs arithmetic mean)
+    rng = np.random.default_rng(0)
+    c = rng.dirichlet(np.ones(3), size=2000)
+    for k in range(3):
+        wk = W[k]
+        assert wk @ np.log(np.clip(wk, 1e-300, None)) >= (np.log(c) @ wk).max() - 1e-12
+
+
+def test_site_does_not_import_a_ternary_package():
+    text = (ROOT / "scripts" / "build_site_figures.py").read_text()
+    assert "import mpltern" not in text and "projection=" not in text
+    assert "mpltern" not in (ROOT / "pyproject.toml").read_text()

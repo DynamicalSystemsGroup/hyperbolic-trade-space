@@ -21,7 +21,7 @@ live is fixed in a patch release.
 After the first tag deployment, each URL loads and shows its page (base
 `https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/`):
 
-- [ ] `/` root, three cards, links work
+- [ ] `/` root, three cards, links work; the Why triangle (light and dark scheme) and the What figure load and open at full size on click. The Why image is generated at build time from the planted table (`scripts/build_site_figures.py`): confirm its three region labels read "all three trade", "metric 3 trades against metric 1", "metric 3 trades against metric 2" on the deployed build (labels come from the fit and could differ by platform)
 - [ ] `docs/`
 - [ ] `docs/getting-started/` (the five-line example matches the output shown)
 - [ ] `docs/user-guide/overview/` (the user-guide pages load from its navigation)
