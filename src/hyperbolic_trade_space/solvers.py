@@ -1,7 +1,7 @@
 """Solvers for the entropic soft-maximum fit (numpy and scipy only, no scikit-learn).
 
 The fit minimizes the log-mean-exp objective ``J_tau(w) = (1/tau) log((1/N) sum_i exp(tau w.u_i))``
-over the simplex (derivation lemmas L1 to L5, spec section 4). At ``tau = inf`` it is the linear
+over the simplex (see the documentation). At ``tau = inf`` it is the linear
 program ``min_w max_i w.u_i``; at finite ``tau`` it is a smooth convex program solved by SLSQP,
 warm-started from the linear program.
 
@@ -96,7 +96,7 @@ class SolveResult:
 
 
 def log_mean_exp(s, tau):
-    """Entropic soft maximum ``(1/tau) log mean(exp(tau s))`` (lemmas L1, L5).
+    """Entropic soft maximum ``(1/tau) log mean(exp(tau s))``, the log-mean-exp.
 
     Parameters
     ----------
@@ -134,7 +134,7 @@ def log_mean_exp(s, tau):
 
 
 def support_weights(s, tau):
-    """Softmax support weights ``p_i`` of the scores (lemma L3).
+    """Softmax support weights ``p_i`` of the scores.
 
     Parameters
     ----------
@@ -169,7 +169,7 @@ def support_weights(s, tau):
 
 
 def objective_and_grad(w, U, tau):
-    """Objective ``J_tau(w)`` and gradient ``U^T p`` (lemma L3).
+    """Objective ``J_tau(w)`` and gradient ``U^T p``.
 
     Parameters
     ----------
@@ -385,7 +385,7 @@ def simplex_gap(g, w, min_exponent=0.0):
 
 
 def facet_objective(U, w, ubar, tau):
-    """Facet refit objective ``f_k(w) = J_tau(U w) - ubar . w`` (lemma L4, step B).
+    """Facet refit objective ``f_k(w) = J_tau(U w) - ubar . w``.
 
     Parameters
     ----------

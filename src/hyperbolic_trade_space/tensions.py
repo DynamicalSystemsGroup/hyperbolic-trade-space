@@ -2,7 +2,7 @@
 
 The model is built to find *tensions*, not variance. PCA picks the directions of largest spread
 (where the data are free); the fit picks the positive combination ``w`` of log-metrics with the
-smallest upper extent, the binding constraint among larger-is-better metrics (lemmas L1-L4). The
+smallest upper extent, the binding constraint among larger-is-better metrics. The
 report reads that structure at three levels, all for the K = 1 fit (one tension; several regional
 tensions are the K > 1 extension, below, and a deflation search for successive tensions is a
 research question). At K > 1 the same three levels are read once per facet, on the rows assigned to
@@ -11,7 +11,7 @@ reports is returned:
 
 1. **Participation and exchange rates.** Metrics with ``w_j > threshold`` participate, the rest are
    free at the balanced point; the elasticity of metric ``k`` against metric ``j`` along the
-   frontier is ``-w_k / w_j`` (lemma L7).
+   frontier is ``-w_k / w_j``.
 2. **The contending set (n-lemma).** At ``tau = inf`` the fit is a linear program whose solution is
    sparse, with exact zero exponents; the support is the set of metrics that contend, of any size
    ``n`` and without a prior choice of which or how many. At a working finite ``tau`` the weights
@@ -66,7 +66,7 @@ class TensionReport:
     exponents : ndarray of shape (d,)
         Working-temperature exponents ``w`` (the estimator's ``exponents_[0]``).
     exchange_rates : ndarray of shape (d, d)
-        Entry ``[j, k] = -w_k / w_j`` (lemma L7); ``nan`` in rows where ``w_j <= threshold``.
+        Entry ``[j, k] = -w_k / w_j`` ; ``nan`` in rows where ``w_j <= threshold``.
         The diagonal is ``-1`` by the formula and carries no information.
     association : ndarray of shape (d, d)
         Correlation matrix of the log-metrics of the near-frontier rows.

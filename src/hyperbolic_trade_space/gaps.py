@@ -1,9 +1,9 @@
 """Gap and white-space tools on the learned chart (stage 4 of the method).
 
-The chart coordinates ``Z`` (``d - 1`` log ratios, lemma L8) are blind to the common scale of the
+The chart coordinates ``Z`` (``d - 1`` log ratios) are blind to the common scale of the
 metrics, so a *gap* in ``Z`` is a ratio profile no design has explored, whatever its quality. These
 functions find such gaps (:func:`knn_gap_scores`, :func:`find_holes`), place frontier targets over
-them (:func:`frontier_targets`, using ``V = 1`` and the inverse chart of lemma L8, and the pull-back
+them (:func:`frontier_targets`, using ``V = 1`` and the inverse chart, and the pull-back
 to attributes through a preconditioner when one is given), and orient the near-frontier spread
 (:func:`orient_by_pca`, shared with :func:`hyperbolic_trade_space.tensions.tension_report`).
 """
@@ -133,7 +133,7 @@ def frontier_targets(Z_points, estimator, preconditioner=None):
     Z_points : array-like of shape (n_points, d - 1)
         Chart coordinates, for example hole centres from :func:`find_holes`.
     estimator : HyperbolicTradeSpace
-        Fitted estimator; ``log V = 0`` is set and the chart is inverted (lemma L8).
+        Fitted estimator; ``log V = 0`` is set and the chart is inverted.
     preconditioner : transformer with ``inverse_transform``, optional
         Fitted conditioner of attributes into metrics (``LogAffinePreconditioner``); when given,
         the metric targets are mapped back to attribute units.

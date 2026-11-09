@@ -1,8 +1,8 @@
 """The ``HyperbolicTradeSpace`` estimator: a monomial (K = 1) frontier in a log-ratio chart.
 
-The model is ``V(m) = prod_j m_j^{w_j} e^{-beta}`` with ``w`` on the simplex (lemmas L1, L2);
-the fit minimizes the log-mean-exp objective ``J_tau`` (L3 to L5); the chart ``(Z, log V)`` is the
-linear bijection of log space of lemma L8. Mathematics: ``docs`` and spec section 4.
+The model is ``V(m) = prod_j m_j^{w_j} e^{-beta}`` with ``w`` on the simplex;
+the fit minimizes the log-mean-exp objective ``J_tau``; the chart ``(Z, log V)`` is a linear
+bijection of log space. Mathematics: see the documentation site.
 """
 
 from __future__ import annotations
@@ -53,7 +53,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     min_exponent : float, default=0.0
         Lower bound on each exponent, in ``[0, 1/d)``.
     coordinates : {"ilr", "alr"}, default="ilr"
-        Chart basis: Helmert (orthonormal, the lemma L8 hypotheses hold) or additive log-ratio
+        Chart basis: Helmert (orthonormal rows) or additive log-ratio
         (invertible, not orthonormal; last metric is the reference).
     n_terms : int, default=1
         Number of monomial facets ``K`` (``K > 1`` is the posynomial frontier, fitted by
@@ -61,7 +61,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     term_temperature : float, default=np.inf
         Softness ``kappa`` of ``Phi_K(u) = (1/kappa) log sum_k exp(kappa (w_k . u - beta_k))``,
         ``kappa > 0`` or ``np.inf`` (the exact maximum). Used for ``n_terms > 1`` only. The hard
-        ``beta_k`` are kept, so ``max_k x_k <= Phi_K <= max_k x_k + log K / kappa`` (lemma L10);
+        ``beta_k`` are kept, so ``max_k x_k <= Phi_K <= max_k x_k + log K / kappa``;
         the gap is disclosed, not renormalized.
     tol : float, default=1e-10
         Solver tolerance (SLSQP ``ftol``).
@@ -155,12 +155,12 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     beta`` with ``0 log 0 := 0``, so a zero metric on a numerically zero exponent leaves
     ``log V`` finite and a zero metric on a participating exponent gives ``V = 0``,
     ``log V = -inf`` (for ``n_terms > 1`` each facet's score follows the same rule). Negative
-    values raise ``ValueError``. Grounding: homogeneity and the invariant form
-    (L1), the offset (L2), gradient and support weights (L3), convexity (L4), log-mean-exp
-    (L5), noise offset (L6), elasticities and improvement factors (L7), the chart (L8).
+    values raise ``ValueError``. Grounding: homogeneity and the invariant form, the offset, gradient
+    and support weights, convexity, log-mean-exp, the noise offset, elasticities and improvement
+    factors, and the chart, each derived in the documentation.
 
     For ``n_terms > 1`` the score is ``log V = Phi_K(u)`` and the chart ``[Z | log V]`` is
-    inverted in closed form (``Phi_K(u + s 1) = Phi_K(u) + s``, lemma L10), exactly for every
+    inverted in closed form (``Phi_K(u + s 1) = Phi_K(u) + s``), exactly for every
     ``term_temperature``. ``K > 1`` is a local optimum of a partition-and-refit scheme; restarts
     are drawn from ``random_state``. Degenerate input (one metric, one valid row, fewer valid
     rows than ``n_terms``) repeats the ``K = 1`` fit. A single valid row is a declared
@@ -488,7 +488,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Returns
         -------
         ndarray of shape (n_samples, n_features)
-            Metrics ``exp(u)`` (lemma L8 inverse). Rows with non-finite coordinates (a zero
+            Metrics ``exp(u)`` (the inverse chart). Rows with non-finite coordinates (a zero
             metric in the original) are not invertible and give ``nan``.
 
         Examples
@@ -546,7 +546,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
 
     # ------------------------------------------------------------------ scores and domain methods
     def score_samples(self, X):
-        """Log invariant value ``log V(m) = w . log m - beta`` of each row (lemma L1).
+        """Log invariant value ``log V(m) = w . log m - beta`` of each row.
 
         Parameters
         ----------
@@ -589,7 +589,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         return np.exp(self.score_samples(X))
 
     def project(self, X):
-        """Project onto the frontier along the diagonal: ``m / V`` (invariant form, lemma L1).
+        """Project onto the frontier along the diagonal: ``m / V`` (invariant form).
 
         Parameters
         ----------
@@ -642,7 +642,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         return self._assign(self._log_metrics(X, reset=False))
 
     def improvement_factors(self, X):
-        """Per-metric improvement factor ``V^(-1/w_j)`` that lands on the frontier (lemma L7).
+        """Per-metric improvement factor ``V^(-1/w_j)`` that lands on the frontier.
 
         Parameters
         ----------
@@ -685,8 +685,8 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         X : array-like of shape (n_samples, n_features)
         calibrated : bool, default=False
             If False return ``V - 1`` (the uniform factor by which a frontier design must improve
-            to reach the point, lemma L1). If True return an array whose first column is the
-            fraction of training ``log V`` (finite ones) that are ``<=`` the query's, and whose
+            to reach the point, the invariant form). If True return an array whose first column is
+            the fraction of training ``log V`` (finite ones) that are ``<=`` the query's, and whose
             second is ``tau * log V`` (``log V`` itself when ``tau`` is infinite).
 
         Returns

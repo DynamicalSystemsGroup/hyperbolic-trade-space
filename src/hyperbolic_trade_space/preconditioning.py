@@ -1,10 +1,10 @@
 """Conditioning of attributes into larger-is-better metrics, and the pull-back to attributes.
 
-The analyst's conditioning (assumption A4) is ``log m_j = alpha_j log(a_j + s_j) + b_j`` with
+The analyst's conditioning is ``log m_j = alpha_j log(a_j + s_j) + b_j`` with
 ``alpha_j != 0``. :class:`LogAffinePreconditioner` is that map with ``alpha_j = o_j / scale_j``
 (``o_j = +1`` for larger-is-better, ``-1`` for smaller-is-better attributes), so metrics come out
 strictly positive and larger-is-better. :func:`frontier_in_original_units` is the closed form of
-lemma L9: the fitted frontier as a monomial in the raw attributes.
+the pull-back: the fitted frontier as a monomial in the raw attributes.
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ class LogAffinePreconditioner(OneToOneFeatureMixin, TransformerMixin, BaseEstima
     and returns ``m = exp(scaled z)``. Entries with ``X + shift == 0`` map to ``0`` (an infinitely
     dominated row for the estimator, whatever the orientation). The map is invertible
     (:meth:`inverse_transform` is exact) and affine in log space, which is the conditioning of
-    assumption A4 (lemma L9).
+    attributes.
 
     Parameters
     ----------
@@ -62,11 +62,11 @@ class LogAffinePreconditioner(OneToOneFeatureMixin, TransformerMixin, BaseEstima
 
     Notes
     -----
-    In the notation of lemma L9 the map is ``log m_j = alpha_j log(a_j + s_j) + b_j`` with
-    ``alpha_j = o_j / log_scale_j``, ``b_j = -log_offset_j / log_scale_j`` and ``a_j = shift_j``
-    (lemma L9 and assumption A4). Which orientation, shift and scaling are appropriate is the
-    analyst's decision, not derived. Entries with ``X + shift == 0`` are ignored by the scaler;
-    a column consisting only of such entries gets the identity scaling (offset 0, scale 1).
+    The map is ``log m_j = alpha_j log(a_j + s_j) + b_j`` with ``alpha_j = o_j / log_scale_j``,
+    ``b_j = -log_offset_j / log_scale_j`` and ``a_j = shift_j``. Which orientation, shift and
+    scaling are appropriate is the analyst's decision, not derived. Entries with ``X + shift == 0``
+    are ignored by the scaler; a column consisting only of such entries gets the identity scaling
+    (offset 0, scale 1).
 
     Examples
     --------
@@ -258,12 +258,12 @@ class LogAffinePreconditioner(OneToOneFeatureMixin, TransformerMixin, BaseEstima
 
 
 def frontier_in_original_units(estimator, preconditioner):
-    """Pull the fitted frontier back to raw attributes (closed form of lemma L9).
+    """Pull the fitted frontier back to raw attributes (closed form).
 
     With ``log m_j = alpha_j log(a_j + s_j) + b_j`` and ``log V = w . log m - beta`` the frontier
     is ``V = exp(log_const) * prod_j (s_j + shift_j)^(exponents_orig_j)`` for raw attributes
-    ``s_j``, where ``exponents_orig_j = w_j alpha_j`` and ``log_const = w . b - beta``
-    (lemma L9, assumptions A1, A2, A4). A negative exponent marks a smaller-is-better attribute.
+    ``s_j``, where ``exponents_orig_j = w_j alpha_j`` and ``log_const = w . b - beta``. A negative
+    exponent marks a smaller-is-better attribute.
 
     Parameters
     ----------

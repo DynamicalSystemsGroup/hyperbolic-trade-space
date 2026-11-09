@@ -1,4 +1,4 @@
-"""Temperature selection for the soft-maximum fit (spec section 4, lemma L5)."""
+"""Temperature selection for the soft-maximum fit."""
 
 from __future__ import annotations
 
@@ -14,15 +14,15 @@ __all__ = ["select_temperature"]
 def select_temperature(X, target_frac_above=0.10, bounds=(1e-1, 1e4), tol=0.01, **params):
     """Choose the temperature ``tau`` whose fit has a target fraction of designs above V = 1.
 
-    For ``tau`` of about 3 and above, the fitted ``frac_above_`` falls as ``tau`` grows (a
-    harder maximum leaves fewer designs beyond the frontier; lemma L5 gives the ``log(n)/tau``
-    softening). It is not monotone for small ``tau``: by L5 the log-mean-exp lies between the
-    mean and the maximum of the scores and tends to the mean as ``tau -> 0``, so ``frac_above_``
-    can overshoot 0.5 below ``tau`` of about 3 (the project's reading: the soft maximum tends to
-    the mean of the scores, not the median) before decreasing toward 0 as ``tau`` grows. ``tau``
-    below about 3 is outside the documented useful range. Bisection only needs the target
-    bracketed by the fractions at the ends of ``bounds`` (checked, ``ValueError`` otherwise); it
-    returns a ``tau`` with ``|frac_above_ - target_frac_above| <= tol`` found in at most 60
+    For ``tau`` of about 3 and above, the fitted ``frac_above_`` falls as ``tau`` grows (a harder
+    maximum leaves fewer designs beyond the frontier; the log-mean-exp is within ``log(n)/tau`` of
+    the maximum). It is not monotone for small ``tau``: the log-mean-exp lies between the mean and
+    the maximum of the scores and tends to the mean as ``tau -> 0``, so ``frac_above_`` can
+    overshoot 0.5 below ``tau`` of about 3 (the project's reading: the soft maximum tends to the
+    mean of the scores, not the median) before decreasing toward 0 as ``tau`` grows. ``tau`` below
+    about 3 is outside the documented useful range. Bisection only needs the target bracketed by the
+    fractions at the ends of ``bounds`` (checked, ``ValueError`` otherwise); it returns a ``tau``
+    with ``|frac_above_ - target_frac_above| <= tol`` found in at most 60
     iterations on ``log tau``. Keep ``bounds[0]`` near or above 3 for a unique answer.
     The default ``bounds[0] = 0.1`` is wider than the recommended ``tau`` of about 3 or more:
     bisection tolerates it because it needs only that the target be bracketed by the ends of

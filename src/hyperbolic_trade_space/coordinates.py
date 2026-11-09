@@ -1,9 +1,9 @@
 """Invertible chart of log-metric space: ``log V`` and ``d - 1`` log-ratio coordinates ``Z``.
 
 With ``u = log m`` and a basis ``B`` of shape ``(d-1, d)`` whose rows span ``1^perp`` (``B 1 = 0``),
-``Z = B u`` is blind to the common shift ``u + c 1`` (lemma L8) and ``log V = w.u - beta`` carries
-the scale. For the ILR (Helmert) basis ``B B^T = I`` (axiom A7), so ``u = B^T Z + (log V + beta -
-w.B^T Z) 1``; the ALR basis is invertible but not orthonormal.
+``Z = B u`` is blind to the common shift ``u + c 1`` (a shift along the diagonal) and ``log V = w.u
+- beta`` carries the scale. For the ILR (Helmert) basis ``B B^T = I`` (orthonormal rows), so ``u =
+B^T Z + (log V + beta - w.B^T Z) 1``; the ALR basis is invertible but not orthonormal.
 """
 
 from __future__ import annotations
@@ -24,7 +24,8 @@ def helmert_basis(d):
     Returns
     -------
     ndarray of shape (d-1, d)
-        ``B B^T = I`` and ``B 1 = 0`` (lemma L8, axiom A7). For ``d = 1`` the shape is ``(0, 1)``.
+        ``B B^T = I`` and ``B 1 = 0`` (orthonormal rows spanning the zero-sum subspace). For
+        ``d = 1`` the shape is ``(0, 1)``.
 
     Examples
     --------

@@ -1,4 +1,4 @@
-"""Prediction from configuration: a supervised composition on the learned chart (spec section 4).
+"""Prediction from configuration: a supervised composition on the learned chart.
 
 Given designs with a configuration ``c`` (decisions known before anything is measured) and
 measured metrics ``m``, :class:`TradeSpaceRegressor` fits the chart ``m -> (Z, log V)`` with a

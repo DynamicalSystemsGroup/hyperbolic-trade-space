@@ -1,4 +1,4 @@
-"""Synthetic frontier data with a planted monomial frontier (spec section 5)."""
+"""Synthetic frontier data with a planted monomial frontier."""
 
 from __future__ import annotations
 
@@ -116,8 +116,8 @@ def make_frontier_data(
     generator, are moved onto the frontier (so the frontier fraction can slightly exceed
     ``frontier_fraction``); a facet with too few rows overall raises ``ValueError``.
 
-    ``Z ~ N(0, I)`` and the rows are mapped back through the ILR chart (lemma L8); the frontier is
-    identifiable when the Z-hull of the frontier rows contains 0 (spec section 4). For K > 1 the
+    ``Z ~ N(0, I)`` and the rows are mapped back through the ILR chart; the frontier is
+    identifiable when the Z-hull of the frontier rows contains 0. For K > 1 the
     rows are ``u = C Z + s 1`` with ``s = log V + beta - max_k w_k . C Z`` (the K-term form of
     ``from_frontier_coordinates``; ``sum w_k = 1`` makes ``Phi(u) = log V`` exact).
 
