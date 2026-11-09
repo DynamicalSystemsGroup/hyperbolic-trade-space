@@ -30,7 +30,6 @@ default), not componentwise partials with KroneckerDelta bookkeeping; the single
 direction is used only in step 3.
 
 Hypotheses and honesty about what is used (interpretive conditions, not defects):
-  * A3 (tau > 0) keeps the 1/tau prefactor and the softmax well defined.
   * A2 supplies the simplex constraint sum_j w_j = 1 whose derivative is sum_j v_j.
   * R1 supplies the premise of step 3: the minimizer has w_j > 0 for all j, so no
     nonnegativity constraint is active (its multipliers vanish by complementary slackness); the
@@ -53,7 +52,7 @@ is used in L4, not here.
 
 import sympy as sp
 
-from derivation.axioms import A2, A3, R1
+from derivation.axioms import A2, R1
 from derivation.sumtools import (
     fuse,
     linear,
@@ -76,7 +75,7 @@ STATEMENT = (
     "imply an interior finite-tau minimizer: a constructed instance has a balanced hard "
     "optimum and a finite-tau minimizer on the boundary with g_j > lambda at the inactive j"
 )
-AXIOMS_USED = ["A2", "A3", "R1"]
+AXIOMS_USED = ["A2", "R1"]
 
 # the multiplier (the index dummies L and J0 are in derivation/symbols.py)
 LAM = sp.Symbol("lambda", real=True)  # Lagrange multiplier of the simplex constraint
@@ -86,8 +85,7 @@ LAM = sp.Symbol("lambda", real=True)  # Lagrange multiplier of the simplex const
 def derive(ctx):
     S = ctx["S"]
     d, n, i, j, t = S.d, S.n, S.i, S.j, S.t
-    # [L3.1] A3: the temperature tau > 0, so the 1/tau prefactor and the softmax are defined
-    tau = A3.invoke(S.tau)
+    tau = S.tau
     w, v, u = S.w, S.v, S.u
 
     def a0(x):  # w . u_x
@@ -125,7 +123,7 @@ def derive(ctx):
     stat_full = sp.Sum(delta * (gr[j] - LAM - mu[j]), (j, 1, d)).doit()
     # complementary slackness per term, w_j mu_j = w_j (gr_j - lambda) = 0, summed with A2
     zero_sum = sp.Sum(w[j] * (gr[j] - LAM), (j, 1, d))
-    # [L3.2] A2: sum_j w_j = 1 reduces sum_j w_j (g_j - lambda) to w.g - lambda
+    # [L3.1] A2: sum_j w_j = 1 reduces sum_j w_j (g_j - lambda) to w.g - lambda
     reduced = A2.rewrite(linear(zero_sum))
     lam_solved = sp.solve(sp.Eq(reduced, 0), LAM)
     # a coordinate with w_j > 0 and its multiplier
@@ -181,7 +179,7 @@ def verify(ctx):
     # 1. directional derivative = sum_i p_i (v.u_i)   [equality; dJ computed in derive]
     # (same bound-variable name L as in derive so that structural equality is meaningful)
     claim_L = sp.Sum(p_def(L) * sv(L), (L, 1, n))
-    # [L3.3] d/dt J_tau(w + t v) at 0 equals sum_i p_i (v.u_i), p the softmax of tau U w
+    # [L3.2] d/dt J_tau(w + t v) at 0 equals sum_i p_i (v.u_i), p the softmax of tau U w
     assert sp.simplify(linearize(c["dJ"]) - linearize(claim_L)) == 0, (
         "L3 FAIL: d/dt J(w+tv)|0 != sum_i p_i (v.u_i)"
     )
@@ -190,37 +188,37 @@ def verify(ctx):
     # 2. sum_i p_i (v.u_i) = sum_j v_j G_j for arbitrary weights p, then instantiate p = softmax
     lhs = fuse(push_in(c["lhs_abs"]))
     rhs = fuse(push_in(c["rhs_abs"]))
-    # [L3.4] swapping the finite sums: sum_i p_i (v.u_i) = sum_j v_j sum_i p_i u_ij for any p
+    # [L3.3] swapping the finite sums: sum_i p_i (v.u_i) = sum_j v_j sum_i p_i u_ij for any p
     assert sum_swap_equal(lhs, rhs), "L3 FAIL: sum_i p_i (v.u_i) != sum_j v_j sum_i p_i u_ij"
     G_abs = lambda x: sp.Sum(S.p[i] * u[i, x], (i, 1, n))  # noqa: E731
     G = lambda x: replace_indexed(G_abs(x), S.p, p_def)  # noqa: E731
     grad_form = sp.Sum(v[j] * G(j), (j, 1, d))
     inst_lhs = replace_indexed(c["lhs_abs"], S.p, p_def)
-    # [L3.5] the swap identity holds at the softmax weights p = softmax(tau U w)
+    # [L3.4] the swap identity holds at the softmax weights p = softmax(tau U w)
     assert linearize(inst_lhs) == linearize(
         sp.Sum(p_def(i) * sp.Sum(u[i, j] * v[j], (j, 1, d)), (i, 1, n))
     ) and linearize(inst_lhs) == linearize(claim), "L3 FAIL: softmax instance of the swap identity"
-    # [L3.6] hence the gradient is G_j = sum_i p_i u_ij, as v is arbitrary
+    # [L3.5] hence the gradient is G_j = sum_i p_i u_ij, as v is arbitrary
     assert linearize(replace_indexed(c["rhs_abs"], S.p, p_def)) == linearize(grad_form), (
         "L3 FAIL: gradient form"
     )
 
     # 3. balanced KKT.  D_v J = sum_j v_j G_j and D_v(sum_j w_j) = sum_j v_j.
-    # [L3.7] the constraint sum_j w_j has directional derivative sum_j v_j
+    # [L3.6] the constraint sum_j w_j has directional derivative sum_j v_j
     assert sp.simplify(c["dsimplex"] - sp.Sum(v[j], (j, 1, d)).doit()) == 0, (
         "L3 FAIL: derivative of the simplex constraint"
     )
     # stationarity of Lagrangian in direction v = e_{j0}:  sum_j delta(j,j0)(G_j - lambda) = 0
     delta = sp.KroneckerDelta(j, J0)
-    # [L3.8] R1: all w_j > 0, so no multiplier is active; stationarity along e_j0 is G_j0 - lambda
+    # [L3.7] R1: all w_j > 0, so no multiplier is active; stationarity along e_j0 is G_j0 - lambda
     stat = R1.invoke(sp.Sum(delta * (G(j) - LAM), (j, 1, d)).doit())
     val = piece_in_range(stat, S)
-    # [L3.9] the stationarity condition along e_j0 evaluates to G_j0 - lambda = 0
+    # [L3.8] the stationarity condition along e_j0 evaluates to G_j0 - lambda = 0
     assert sp.simplify(val - (G(J0) - LAM)) == 0, "L3 FAIL: stationarity along e_{j0}"
     # hence (U^T p)_{j0} = lambda for every index j0; two indices then give equal components
     K0 = sp.Symbol("k0", integer=True)
     gap = (G(J0) - LAM) - (G(K0) - LAM)
-    # [L3.10] G_j0 = lambda for every j0, so all components of U^T p are equal
+    # [L3.9] G_j0 = lambda for every j0, so all components of U^T p are equal
     assert sp.simplify(gap - (G(J0) - G(K0))) == 0, "L3 FAIL: components of U^T p not equal"
     ctx["L3"]["KKT"] = sp.Eq(G(J0), LAM)
 
@@ -228,22 +226,22 @@ def verify(ctx):
     kb = c["KKT_boundary"]
     mu = kb["mu"]
     val_full = piece_in_range(kb["stat_full"], S)
-    # [L3.11] full simplex KKT: stationarity along e_j0 gives mu_j0 = G_j0 - lambda
+    # [L3.10] full simplex KKT: stationarity along e_j0 gives mu_j0 = G_j0 - lambda
     assert sp.simplify(val_full - (kb["gr"][J0] - LAM - mu[J0])) == 0, (
         "L3 FAIL: stationarity of the full Lagrangian along e_{j0}"
     )
-    # [L3.12] mu_j >= 0, hence G_j >= lambda for every j
+    # [L3.11] mu_j >= 0, hence G_j >= lambda for every j
     assert mu[J0].is_nonnegative is True, "L3 FAIL: mu_j >= 0 not carried (g_j >= lambda)"
-    # [L3.13] complementary slackness summed with sum_j w_j = 1 gives lambda = w.G
+    # [L3.12] complementary slackness summed with sum_j w_j = 1 gives lambda = w.G
     assert kb["lambda_solved"] == [kb["lambda_abstract"]], (
         "L3 FAIL: complementary slackness with sum_j w_j = 1 does not give lambda = w.g"
     )
-    # [L3.14] a coordinate with w_j > 0 and w_j mu_j = 0 forces mu_j = 0, i.e. G_j = lambda
+    # [L3.13] a coordinate with w_j > 0 and w_j mu_j = 0 forces mu_j = 0, i.e. G_j = lambda
     assert kb["positive_case_solution"] == [0], (
         "L3 FAIL: w_j > 0 and w_j mu_j = 0 do not force mu_j = 0"
     )
     # the abstract lambda = w.g instantiates at the softmax gradient G = U^T p
-    # [L3.15] lambda = w.G instantiates at the softmax gradient G = U^T p
+    # [L3.14] lambda = w.G instantiates at the softmax gradient G = U^T p
     assert replace_indexed(kb["lambda_abstract"], kb["gr"], G) == sp.Sum(
         S.w[j] * G(j), (j, 1, d)
     ), "L3 FAIL: lambda = w.G at the softmax gradient"
@@ -251,25 +249,25 @@ def verify(ctx):
     # 5. balanced hard support, boundary finite-tau minimizer (exact arithmetic).
     ex = c["boundary_example"]
     # hard support: equal primal (w = (1/2, 1/2)) and dual (p = (1/2, 1/2)) values, balanced U^T p
-    # [L3.16] constructed instance: at tau = inf primal and dual values are equal (both 1)
+    # [L3.15] constructed instance: at tau = inf primal and dual values are equal (both 1)
     assert ex["hard_primal"] == ex["hard_dual"] == 1, "L3 FAIL: hard-support instance not optimal"
-    # [L3.17] the hard-support geometry is balanced: U^T p = (1, 1)
+    # [L3.16] the hard-support geometry is balanced: U^T p = (1, 1)
     assert ex["balanced"][0] == ex["balanced"][1], "L3 FAIL: hard-support instance not balanced"
     # finite tau: J(s) is convex (J'' > 0) and decreasing at s = 1, so the minimizer is s = 1
-    # [L3.18] at tau = 1, J is strictly convex in s on the simplex segment
+    # [L3.17] at tau = 1, J is strictly convex in s on the simplex segment
     assert ex["d2J"].is_positive is True, "L3 FAIL: instance J_tau not convex in s"
-    # [L3.19] J is decreasing at s = 1, so the finite-tau minimizer is w = (1, 0)
+    # [L3.18] J is decreasing at s = 1, so the finite-tau minimizer is w = (1, 0)
     assert bool(ex["dJ_at_1"].evalf() < 0), "L3 FAIL: J_tau not decreasing toward w = (1, 0)"
-    # [L3.20] the finite-tau minimizer of the instance is the boundary point w = (1, 0)
+    # [L3.19] the finite-tau minimizer of the instance is the boundary point w = (1, 0)
     assert ex["w_star"] == (1, 0)
     # at w = (1, 0): lambda = w.g and the inactive coordinate has g_2 > lambda, w_2 = 0
-    # [L3.21] at w = (1, 0), lambda = w.g equals g_1
+    # [L3.20] at w = (1, 0), lambda = w.g equals g_1
     assert sp.simplify(ex["lam"] - ex["g"][0]) == 0
-    # [L3.22] g_2 - lambda equals minus the boundary slope of J at s = 1
+    # [L3.21] g_2 - lambda equals minus the boundary slope of J at s = 1
     assert sp.simplify(ex["g_inactive_minus_lambda"] + ex["dJ_at_1"]) == 0, (
         "L3 FAIL: g_2 - lambda is not minus the boundary slope"
     )
-    # [L3.23] g_2 > lambda at the inactive coordinate: balanced hard support, boundary minimizer
+    # [L3.22] g_2 > lambda at the inactive coordinate: balanced hard support, boundary minimizer
     assert bool(ex["g_inactive_minus_lambda"].evalf() > 0), (
         "L3 FAIL: boundary instance has g_2 <= lambda"
     )

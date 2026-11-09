@@ -130,8 +130,8 @@ def test_a_result_sharing_a_file_owns_its_own_steps():
     owners = {s["tag"]: s["result"] for s in lemma["steps"]}
     assert set(owners.values()) == {"Proposition 3", "Corollary 4"}
     assert len({s["tag"] for s in lemma["steps"]}) == len(lemma["steps"])
-    assert owners["L14.9"] == owners["L14.10"] == "Corollary 4"
-    assert owners["L14.5"] == "Proposition 3"
+    assert owners["L14.8"] == owners["L14.9"] == "Corollary 4"
+    assert owners["L14.4"] == "Proposition 3"
 
 
 # ----------------------------------- each kind of breakage makes the checker fail, naming the step
@@ -214,15 +214,20 @@ def test_a_ledger_import_that_no_step_applies_fails(scratch):
     edit(
         scratch,
         "lemma_02_shift.py",
-        "from derivation.axioms import A2, A3",
-        "from derivation.axioms import A2, A3, I1",
+        "from derivation.axioms import A1, A2, A3",
+        "from derivation.axioms import A1, A2, A3, I1",
     )
     code, out = run_checker(scratch)
     assert code != 0 and "lemma_02_shift.py" in out and "imported ledger names" in out
 
 
 def test_a_ledger_entry_applied_but_not_listed_in_axioms_used_fails(scratch):
-    edit(scratch, "lemma_02_shift.py", 'AXIOMS_USED = ["A2", "A3"]', 'AXIOMS_USED = ["A2"]')
+    edit(
+        scratch,
+        "lemma_02_shift.py",
+        'AXIOMS_USED = ["A1", "A2", "A3"]',
+        'AXIOMS_USED = ["A1", "A2"]',
+    )
     code, out = run_checker(scratch)
     assert code != 0 and "differ from AXIOMS_USED" in out
 
@@ -242,8 +247,8 @@ def test_importing_a_name_that_is_not_a_ledger_entry_fails(scratch):
     edit(
         scratch,
         "lemma_02_shift.py",
-        "from derivation.axioms import A2, A3",
-        "from derivation.axioms import A2, A3, A99",
+        "from derivation.axioms import A1, A2, A3",
+        "from derivation.axioms import A1, A2, A3, A99",
     )
     code, out = run_checker(scratch)
     assert code != 0 and "A99" in out and "not a ledger entry" in out
@@ -280,11 +285,8 @@ def test_the_order_of_steps_in_the_file_is_the_tag_order(scratch):
     assert a
     block3 = a.group(0)
     text = text.replace(block3, "", 1)
-    marker = '    assert diff == 0, f"L2 FAIL'
-    # put the L2.3 block after the L2.4 assert block
-    idx = text.index(marker)
-    end = text.index("\n", idx) + 1
-    path.write_text(text[:end] + block3 + text[end:])
+    # put the L2.3 block after the last step (the end of verify)
+    path.write_text(text.rstrip("\n") + "\n" + block3)
     code, out = run_checker(scratch)
     assert code != 0 and "lemma_02_shift.py" in out
 
@@ -312,3 +314,148 @@ def test_update_refuses_a_broken_proof_map(scratch):
     edit(scratch, "lemma_02_shift.py", "# [L2.4] J_tau(U", "# [L2.3] J_tau(U")
     code, out = run_checker(scratch, "--update")
     assert code != 0 and "not updated" in out
+
+
+# ------------- principle 1 (WP10 Amendment 2): a listed entry is a dependency; negative controls
+# Each licensed operation of the lemma scripts is called here with the entry withheld (or the wrong
+# one given) and must fail, as L8's chain fails without I6. The controls use the shared symbols.
+
+import sympy as sp  # noqa: E402
+
+from derivation import symbols as _symbols  # noqa: E402
+from derivation.axioms import A1, A2, A3, A4, A5, A6, A7, F5, F10, F12, I1, I5, I6, R2  # noqa: E402
+from derivation.licence import LicenceError, licensed_power, log_expand  # noqa: E402
+from derivation.sumtools import product_to_exp_sum  # noqa: E402
+
+_S = _symbols.make_symbols()
+
+
+def _prod(base):
+    return sp.Product(base ** _S.w[_S.j], (_S.j, 1, _S.d))
+
+
+def test_a_forced_log_with_no_licence_fails():
+    with pytest.raises(LicenceError):
+        product_to_exp_sum(_prod(_S.m[_S.j]))  # L1.2 without A1
+    with pytest.raises(LicenceError):
+        log_expand(sp.log(_S.m[_S.j]))
+
+
+def test_the_power_of_m_needs_A1_not_another_entry():
+    product_to_exp_sum(_prod(_S.m[_S.j]), A1)
+    for wrong in (A2, A3, A4, A6):
+        with pytest.raises(LicenceError):
+            product_to_exp_sum(_prod(_S.m[_S.j]), wrong)  # L1.2, L1.3, L1.8, L10.8
+
+
+def test_L2_log_of_the_shifted_sum_needs_A1_A2_and_A3_together():
+    i, j, n, d, w, u, tau = _S.i, _S.j, _S.n, _S.d, _S.w, _S.u, _S.tau
+    total = sp.exp(tau * _S.c) * sp.Sum(sp.exp(tau * sp.Sum(w[j] * u[i, j], (j, 1, d))), (i, 1, n))
+    log_expand(sp.log(total / n), A1, A2, A3)
+    for withheld in ((A2, A3), (A1, A3), (A1, A2)):  # u, w or tau no longer declared real
+        with pytest.raises(LicenceError):
+            log_expand(sp.log(total / n), *withheld)
+
+
+def test_L5_log_split_needs_F5_for_the_real_scores_and_A3_for_tau():
+    i, n, s, tau = _S.i, _S.n, _S.s, _S.tau
+    lse_minus_lme = sp.log(sp.Sum(sp.exp(tau * s[i]), (i, 1, n))) / tau
+    log_expand(lse_minus_lme, A3, F5)
+    for wrong in ((A3,), (F5,), (A3, A2)):
+        with pytest.raises(LicenceError):
+            log_expand(lse_minus_lme, *wrong)
+
+
+def test_L6_log_of_the_mgf_factor_needs_A2_A3_and_A5():
+    factor = sp.exp(_S.sigma**2 * (_S.tau * _S.w[_S.j]) ** 2 / 2)
+    log_expand(sp.log(factor), A2, A3, A5)
+    for wrong in ((A3, A5), (A2, A5), (A2, A3)):
+        with pytest.raises(LicenceError):
+            log_expand(sp.log(factor), *wrong)
+
+
+def test_L7_power_of_V_needs_A1_and_A2():
+    w0 = _S.w[sp.Symbol("j0", integer=True)]
+    logV = sp.Sum(_S.w[_S.j] * A1.real_base("u_pt")[_S.j], (_S.j, 1, _S.d))
+    licensed_power(sp.exp(logV) ** (-1 / w0), A1, A2)
+    for wrong in ((A1,), (A3,)):  # w is not declared real; or the wrong entries altogether
+        with pytest.raises(LicenceError):
+            licensed_power(sp.exp(logV) ** (-1 / w0), *wrong)
+    unreal = sp.Sum(_S.w[_S.j] * sp.IndexedBase("u_pt")[_S.j], (_S.j, 1, _S.d))
+    with pytest.raises(LicenceError):  # an undeclared (not real-valued) log-metric family
+        licensed_power(sp.exp(unreal) ** (-1 / w0), A1, A2)
+
+
+def test_L9_log_of_the_conditioned_attribute_needs_A4():
+    raw = sp.IndexedBase("r")
+    prod = sp.Product((_S.a[_S.j] + raw[_S.j]) ** (_S.w[_S.j] * _S.alpha[_S.j]), (_S.j, 1, _S.d))
+    product_to_exp_sum(prod, A4)
+    for wrong in (A1, A2, A6):
+        with pytest.raises(LicenceError):
+            product_to_exp_sum(prod, wrong)
+
+
+def test_L10_log_of_the_extension_sum_needs_A1_and_A6():
+    k, j, d, K, kappa = _S.k, _S.j, _S.d, _S.K, _S.kappa
+    x = sp.Sum(_S.theta[k, j] * _S.u[j], (j, 1, d)) - _S.beta[k]
+    expr = sp.log(sp.Sum(sp.exp(kappa * x), (k, 1, K)))
+    log_expand(expr, A1, A6)
+    for wrong in ((A1,), (A6,), (A2, A3)):
+        with pytest.raises(LicenceError):
+            log_expand(expr, *wrong)
+
+
+def test_the_sign_of_tau_in_L4_L5_L10_is_taken_from_the_entry_that_declares_it():
+    assert A3.positive(_S.tau) == _S.tau and A6.positive(_S.kappa) == _S.kappa
+    for wrong, sym in ((A1, _S.tau), (A2, _S.tau), (A3, _S.kappa), (A6, _S.tau)):
+        with pytest.raises(LicenceError):
+            wrong.positive(sym)
+    plain = sp.Symbol("tau", real=True)  # a non-positive tau: the L4 sign step has no conclusion
+    assert (plain / 2 * sp.Symbol("x", nonnegative=True)).is_nonnegative is not True
+
+
+def test_real_placeholders_and_slacks_come_only_from_entries_that_declare_them():
+    assert A1.real_base("a").is_real is True
+    with pytest.raises(LicenceError):
+        A7.real_base("a")  # A7 (a matrix identity) declares nothing real
+    with pytest.raises(LicenceError):
+        A3.nonneg_base("v")  # A3 declares no nonnegative family
+    with pytest.raises(LicenceError):
+        I6.nonneg_symbol("s")  # I6 declares no inequality
+    assert F5.nonneg_symbol("s").is_nonnegative is True
+    assert R2.positive_symbol("g").is_positive is True
+    with pytest.raises(LicenceError):
+        A2.positive_symbol("g")  # A2 declares nothing strictly positive
+
+
+def test_F5_and_F10_second_relation_gives_the_unit_term_and_nothing_else_does():
+    k0, kappa, M = sp.Symbol("k0", integer=True), _S.kappa, _S.M
+    xk = sp.IndexedBase("xk")
+    assert sp.exp(kappa * (xk[k0] - M)).subs(*F10.rule(1)) == 1
+    assert sp.exp(kappa * (xk[k0] - M)) != 1  # without the entry the term is not 1
+    s_i0 = _S.s[_S.i0]
+    assert sp.exp(_S.tau * (s_i0 - M)).subs(*F5.rule(1)) == 1
+    assert sp.exp(_S.tau * (_S.s[_S.i] - M)).subs(*F5.rule(1)) != 1  # only the index i0
+
+
+def test_L12_vertex_value_needs_F12_and_the_LP_gap_needs_I1():
+    g, m, j0 = sp.IndexedBase("g"), sp.Symbol("m", real=True), _symbols.J0
+    assert g[j0].subs(*F12.rule(1)) == m and g[j0] != m
+    gap = I1.obj("primal") - I1.obj("dual")
+    assert sp.simplify(I1.rewrite(gap)) == 0 and sp.simplify(gap) != 0
+
+
+def test_L14_fixed_assignment_agreement_needs_R2():
+    i, N = _S.i, sp.Symbol("N", integer=True, positive=True)
+    sfix, Mx = sp.IndexedBase("sfix"), sp.IndexedBase("Mx")
+    expr = sp.Sum(sfix[i] - Mx[i], (i, 1, N))
+    assert sp.simplify(R2.rewrite(expr).doit()) == 0
+    assert sp.simplify(expr.doit()) != 0  # the row maxima are not the scores on k(i) without R2
+
+
+def test_L6_MGF_product_comes_from_I5():
+    t = sp.Symbol("t", real=True)
+    prod = I5.specialize(Mgf1=lambda arg: sp.exp(_S.sigma**2 * arg**2 / 2))
+    assert isinstance(prod, sp.Product) and prod.limits[0] == (_S.j, 1, _S.d)
+    assert I5.specialize(Other=lambda a: a) == I5.specialize()  # the product is the entry's form
+    del t

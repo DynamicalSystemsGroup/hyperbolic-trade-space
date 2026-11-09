@@ -104,6 +104,11 @@ def print_audit(used):
     print("\nINHERITED, solver level (cited by the K > 1 solver, not consumed by a lemma):")
     _print_conditions(solver)
 
+    print("\nINHERITED, cited context (recorded remarks; no proof step consumes them):")
+    for name, reason in AX.CITED_CONTEXT.items():
+        print(f"  - {AX.get(name)}")
+        print(f"      why not consumed: {reason}")
+
     regularity = AX.by_tag(AX.REGULARITY)
     print("\nREGULARITY (interpretive conditions; hypotheses, not defects):")
     _print_conditions(regularity)

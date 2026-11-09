@@ -10,18 +10,19 @@ non-uniform (per-metric) shifts, which change the facet (spec section 4, item 6)
 
 Route: Sum linearity / constant factoring (sumtools.linear), substitution of the simplex
 equation, log space. The step log(e^{tau c} X) = tau c + log X needs X > 0; X is a sum of
-exponentials of real numbers, each term positive (A3 does not enter here, A2 and tau > 0 do),
-so expand_log(force=True) is licensed.
+exponentials of real numbers (u = log m is real by A1, w by A2, tau > 0 by A3), each term
+positive, so the forced expansion is licensed by A1, A2 and A3 together (it raises without them).
 """
 
 import sympy as sp
 
-from derivation.axioms import A2, A3
+from derivation.axioms import A1, A2, A3
+from derivation.licence import log_expand
 from derivation.sumtools import linear
 
 TITLE = "Uniform shift: J_tau(w; U + c 1^T) = J_tau(w; U) + c"
 STATEMENT = "J_tau(w; U + c 1^T) = J_tau(w; U) + c for all n, d, w in the simplex, tau > 0"
-AXIOMS_USED = ["A2", "A3"]
+AXIOMS_USED = ["A1", "A2", "A3"]
 
 
 def J(S, shift=0):
@@ -47,8 +48,8 @@ def derive(ctx):
     summand = sp.expand(sp.exp(term_lin))
     total = linear(sp.Sum(summand, (i, 1, n)))
     # log of product: positivity of the Sum of exponentials licenses the force (see docstring).
-    # [L2.2] A3 (tau > 0): log(e^{tau c} X) = tau c + log X for the positive sum X, then / tau
-    shifted_lin = A3.force_log(sp.log(total / n)) / tau
+    # [L2.2] A1, A2, A3: log(e^{tau c} X) = tau c + log X for the positive sum X, then / tau
+    shifted_lin = log_expand(sp.log(total / n), A1, A2, A3) / tau
 
     ctx["L2"] = {
         "J": base,
@@ -66,7 +67,8 @@ def verify(ctx):
     assert r["term_diff"] == 0, "L2 FAIL: per-term shift tau*(s_i + c) not obtained from simplex"
     # J(U + c) after Sum algebra equals J(U) + c.
     lhs = r["J_shifted_reduced"]
-    rhs = sp.expand(sp.expand_log(r["J"], force=True) + S.c)
-    diff = sp.simplify(sp.expand_log(lhs - rhs, force=True))
-    # [L2.4] J_tau(U + c 1^T) - (J_tau(U) + c) is 0 after the Sum algebra
-    assert diff == 0, f"L2 FAIL: J(U + c1^T) - (J(U) + c) = {diff}"
+    # [L2.4] J_tau(U + c 1^T) - (J_tau(U) + c) is 0 after the Sum algebra (logs: A1, A2, A3)
+    assert (
+        sp.simplify(log_expand(lhs - sp.expand(log_expand(r["J"], A1, A2, A3) + S.c), A1, A2, A3))
+        == 0
+    ), "L2 FAIL: J(U + c1^T) - (J(U) + c) != 0"

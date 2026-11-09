@@ -8,6 +8,7 @@ No concrete sizes appear here.
 
 import sympy as sp
 
+from derivation.licence import log_expand
 from derivation.symbols import J0
 
 
@@ -32,17 +33,15 @@ def linear(expr):
     )
 
 
-def product_to_exp_sum(prod, licence=None):
+def product_to_exp_sum(prod, *licences):
     """Product(f_j) -> exp(Sum(log f_j)), log of a power expanded.
 
-    ``licence`` is the ledger entry (A1, A4) whose positivity relation licenses the expansion;
-    without one the expansion is forced on the caller's word (positivity stated in the caller).
+    ``licences`` are the ledger entries (A1, A4, ...) whose positivity relations license the
+    expansion; with none, or with entries that do not declare the factors positive, it fails
+    (``LicenceError``): the forced log is never taken on the caller's word.
     """
     f, lim = prod.function, prod.limits[0]
-    log_f = sp.log(f)
-    return sp.exp(
-        sp.Sum(licence.force_log(log_f) if licence else sp.expand_log(log_f, force=True), lim)
-    )
+    return sp.exp(sp.Sum(log_expand(sp.log(f), *licences), lim))
 
 
 # ----------------------------------------------------------------- Sum algebra helpers

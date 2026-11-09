@@ -13,8 +13,9 @@ What this proves:
      lim_{kappa->inf} Phi_K = max_k x_k, where x_k = theta_k . u - beta_k. Limits are computed
      by sympy.limit in derive on the squeeze bounds and recorded; verify asserts equality
      (mimics symproof library/topology.py continuous_at_point).
-  4. GP compatibility (I4): exp(kappa Phi_K) = sum_k e^{-kappa beta_k} prod_j m_j^{kappa theta_kj}
-     is a posynomial in m (A1: u = log m), verified as an identity for symbolic K, d.
+  4. GP compatibility (I4 is cited context only): exp(kappa Phi_K)
+     = sum_k e^{-kappa beta_k} prod_j m_j^{kappa theta_kj} is a posynomial in m (A1: u = log m),
+     verified as an identity for symbolic K, d.
 
 Max representation (FALLBACK F10, listed in the ledger): the maximum over the K terms is a
 symbol M with x_k <= M for all k and x_{k0} = M for some k0 (same reason as F5 in L5: sympy
@@ -26,7 +27,8 @@ that Phi_K approximates a given set; only the identities above.
 
 import sympy as sp
 
-from derivation.axioms import A2, A6, F10, I4
+from derivation.axioms import A1, A6, F10
+from derivation.licence import log_expand
 from derivation.sumtools import linear, product_to_exp_sum
 
 TITLE = "Extension Phi_K: shift equivariance, K = 1 reduction, kappa -> infinity = max"
@@ -34,7 +36,7 @@ STATEMENT = (
     "Phi_K(u + c 1) = Phi_K(u) + c; Phi_1 = theta_1.u - beta_1; "
     "lim_{kappa->inf} Phi_K = max_k (theta_k.u - beta_k); exp(kappa Phi_K) is a posynomial"
 )
-AXIOMS_USED = ["A2", "A6", "I4", "F10"]  # I4: posynomial/GP-compatibility; F10: max representation
+AXIOMS_USED = ["A1", "A6", "F10"]  # F10: max representation; I4 is cited context only
 
 
 def _x(S, shift=0):
@@ -51,23 +53,24 @@ def Phi(S, K, shift=0):
 def derive(ctx):
     S = ctx["S"]
     k, j, d, K, kappa, c = S.k, S.j, S.d, S.K, S.kappa, S.c
-    # [L10.1] F10: the maximum is the symbol M, with x_k <= M for all k and x_k0 = M for some k0
-    M = F10.invoke(S.M)
+    M = S.M  # the maximum of the K scores (F10: x_k <= M for all k, x_k0 = M for some k0)
     u, theta, beta = S.u, S.theta, S.beta
 
     # 1. shift. Work on the summand with k free so the per-term simplex equation matches.
     term = linear(kappa * (sp.Sum(theta[k, j] * (u[j] + c), (j, 1, d)) - beta[k]))
-    # [L10.2] A6: sum_j theta_kj = 1 per term gives kappa (theta_k.u + c - beta_k)
+    # [L10.1] A6: sum_j theta_kj = 1 per term gives kappa (theta_k.u + c - beta_k)
     term = A6.rewrite(term)
     summand = sp.expand(sp.exp(term))
     total = linear(sp.Sum(summand, (k, 1, K)))
-    shifted_reduced = sp.expand(sp.expand_log(sp.log(total), force=True) / kappa)
-    base = sp.expand(sp.expand_log(sp.log(sp.Sum(sp.exp(kappa * _x(S)), (k, 1, K))), force=True))
+    # [L10.2] A1, A6: the terms are exponentials of real scores (u, theta real), so log splits
+    shifted_reduced = sp.expand(log_expand(sp.log(total), A1, A6) / kappa)
+    # [L10.3] A1, A6: likewise for the unshifted sum of exponentials
+    base = sp.expand(log_expand(sp.log(sp.Sum(sp.exp(kappa * _x(S)), (k, 1, K))), A1, A6))
 
     # 2. K = 1 reduction
-    phi1 = sp.expand_log(Phi(S, 1).doit(), force=True)
-    # [L10.3] A2: with K = 1 the single term's exponents lie on the simplex (the fit of L1-L3)
-    x1 = A2.invoke(_x(S).subs(k, 1))
+    # [L10.4] A1, A6: log(exp(kappa x_1)) = kappa x_1 for the real score x_1
+    phi1 = log_expand(Phi(S, 1).doit(), A1, A6)
+    x1 = _x(S).subs(k, 1)
 
     # 3. limit by squeeze. T = sum_k exp(kappa (x_k - M)) in [1, K] under F10.
     n_upper = sp.Sum(1, (k, 1, K)).doit()
@@ -82,19 +85,21 @@ def derive(ctx):
             sp.expand(sp.exp(kappa * M) * linear(sp.Sum(sp.expand(T.function), (k, 1, K))) - T_raw)
         )
     )
-    floor = sp.log(sp.Integer(1)) / kappa  # Phi - M = (1/kappa) log T >= (1/kappa) log 1
+    # [L10.5] F10: the term k0 of the shifted sum T is exp(kappa (x_k0 - M)) = exp(0) = 1
+    term_k0 = sp.exp(kappa * (xk[sp.Symbol("k0", integer=True)] - M)).subs(*F10.rule(1))
+    # [L10.6] F10: the slack M - x_k of x_k <= M is nonnegative
+    slack = F10.nonneg_symbol("slack")
+    floor = sp.log(term_k0) / kappa  # Phi - M = (1/kappa) log T >= (1/kappa) log 1
     ceil = sp.log(n_upper) / kappa  # ... <= (1/kappa) log K
     lim_lower = sp.limit(M + floor, kappa, sp.oo)  # Phi >= M + floor
     lim_upper = sp.limit(M + ceil, kappa, sp.oo)  # Phi <= M + (log K)/kappa
 
     # 4. exp(kappa Phi_K) as a posynomial in m = exp(u) (A1)
     m = S.m
-    # [L10.4] I4: exp(kappa Phi_K) is a sum of monomials in m, a posynomial (GP-compatible)
-    mono = I4.invoke(
-        linear(
-            sp.exp(-kappa * beta[k])
-            * product_to_exp_sum(sp.Product(m[j] ** (kappa * theta[k, j]), (j, 1, d)))
-        )
+    # [L10.7] A1: m > 0, so exp(kappa Phi_K) is a sum of monomials in m, a posynomial
+    mono = linear(
+        sp.exp(-kappa * beta[k])
+        * product_to_exp_sum(sp.Product(m[j] ** (kappa * theta[k, j]), (j, 1, d)), A1)
     )
     # exp(kappa Phi_K) = sum_k exp(kappa x_k), with u_j = log m_j (A1)
     x_in_m = sp.Sum(theta[k, j] * sp.log(m[j]), (j, 1, d)) - beta[k]
@@ -110,6 +115,8 @@ def derive(ctx):
         "term_le_one": term_le_one,
         "shift_check": shift_check,
         "floor": floor,
+        "term_k0": term_k0,
+        "slack": slack,
         "ceil": ceil,
         "lim_upper": lim_upper,
         "lim_lower": lim_lower,
@@ -123,31 +130,36 @@ def verify(ctx):
     S = ctx["S"]
     r = ctx["L10"]
     kappa, K, M = S.kappa, S.K, S.M
-    diff = sp.simplify(sp.expand_log(r["shifted_reduced"] - r["base"] / kappa - S.c, force=True))
-    # [L10.5] shift equivariance: Phi_K(u + c 1) - (Phi_K(u) + c) is 0
-    assert diff == 0, f"L10 FAIL: Phi_K(u + c1) - (Phi_K(u) + c) = {diff}"
-    # [L10.6] K = 1 reduction: Phi_1(u) = theta_1.u - beta_1
+    # [L10.8] shift equivariance: Phi_K(u + c 1) - (Phi_K(u) + c) is 0 (logs licensed: A1, A6)
+    assert sp.simplify(log_expand(r["shifted_reduced"] - r["base"] / kappa - S.c, A1, A6)) == 0, (
+        "L10 FAIL: Phi_K(u + c1) - (Phi_K(u) + c) != 0"
+    )
+    # [L10.9] K = 1 reduction: Phi_1(u) = theta_1.u - beta_1
     assert sp.simplify(r["phi1"] - r["x1"]) == 0, (
         "L10 FAIL: K = 1 reduction is not theta_1.u - beta_1"
     )
-    # [L10.7] per term, exp(x) > 0 for every real x
+    # [L10.10] per term, exp(x) > 0 for every real x
     assert r["term_positive"] == sp.S.Reals, "L10 FAIL: exp(x) > 0 per term"
-    # [L10.8] per term, exp(x) <= 1 exactly when x <= 0 (the shifted exponents are <= 0 by F10)
+    # [L10.11] per term, exp(x) <= 1 exactly when x <= 0 (the shifted exponents are <= 0 by F10)
     assert r["term_le_one"] == sp.Interval(-sp.oo, 0), "L10 FAIL: exp(x) <= 1 iff x <= 0"
-    # [L10.9] the sum of K ones is K, so the shifted sum T is at most K
+    # [L10.12] F10, A6: kappa (x_k - M) = -kappa * slack is <= 0, so each shifted term is <= 1
+    assert (-A6.positive(kappa) * r["slack"]).is_nonpositive is True, (
+        "L10 FAIL: kappa (x_k - M) > 0"
+    )
+    # [L10.13] the sum of K ones is K, so the shifted sum T is at most K
     assert r["n_upper"] == K, "L10 FAIL: sum of K ones != K"
-    # [L10.10] shifting by the maximum: sum_k e^{kappa x_k} = e^{kappa M} sum_k e^{kappa (x_k - M)}
+    # [L10.14] shifting by the maximum: sum_k e^{kappa x_k} = e^{kappa M} sum_k e^{kappa (x_k - M)}
     assert r["shift_check"] == 0, "L10 FAIL: sum e^{kappa x_k} != e^{kappa M} sum e^{kappa (x_k-M)}"
     # T in [1, K]: Phi - M in [floor, ceil] = [0, (log K)/kappa]; both bounds tend to M
-    # [L10.11] Phi_K >= max: Phi - M = (1/kappa) log T >= (1/kappa) log 1 = 0 (the k0 term is 1)
+    # [L10.15] Phi_K >= max: Phi - M = (1/kappa) log T >= (1/kappa) log 1 = 0 (the k0 term is 1)
     assert sp.simplify(r["floor"]) == 0, "L10 FAIL: Phi - max >= 0 floor"
-    # [L10.12] Phi_K <= max + (log K)/kappa: T <= K
+    # [L10.16] Phi_K <= max + (log K)/kappa: T <= K
     assert sp.simplify(r["ceil"] - sp.log(K) / kappa) == 0, "L10 FAIL: Phi - max <= log K / kappa"
-    # [L10.13] the upper squeeze bound M + (log K)/kappa tends to M as kappa -> inf
+    # [L10.17] the upper squeeze bound M + (log K)/kappa tends to M as kappa -> inf
     assert sp.simplify(r["lim_upper"] - M) == 0, "L10 FAIL: lim upper bound != max"
-    # [L10.14] the lower squeeze bound M tends to M, so lim_{kappa->inf} Phi_K = max_k x_k
+    # [L10.18] the lower squeeze bound M tends to M, so lim_{kappa->inf} Phi_K = max_k x_k
     assert sp.simplify(r["lim_lower"] - M) == 0, "L10 FAIL: lim lower bound != max"
-    # GP compatibility (I4): each term e^{kappa x_k} is the monomial e^{-kappa beta_k} prod m^..
+    # GP compatibility: each term e^{kappa x_k} is the monomial e^{-kappa beta_k} prod m^..
     gap = sp.simplify(sp.expand(r["term_in_m"] - r["mono"]))
-    # [L10.15] each term e^{kappa x_k} is the monomial e^{-kappa beta_k} prod_j m_j^(kappa theta_kj)
+    # [L10.19] each term e^{kappa x_k} is the monomial e^{-kappa beta_k} prod_j m_j^(kappa theta_kj)
     assert gap == 0, f"L10 FAIL: exp(kappa Phi_K) is not the posynomial (gap {gap})"

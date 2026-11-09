@@ -23,6 +23,7 @@ import sympy as sp
 from sympy.matrices.expressions import Identity, OneMatrix, ZeroMatrix
 from sympy.stats import Normal
 
+from derivation.licence import LicenceError, _atoms_sigs, _is_positive, _sig, log_expand
 from derivation.symbols import make_symbols
 
 POSITED = "POSITED"
@@ -32,6 +33,16 @@ TAGS = (POSITED, INHERITED, REGULARITY)
 
 # Axioms licensing symbol assumptions only; exempt from the every-axiom-is-used test.
 STRUCTURAL = ("A0",)
+
+# Inherited results cited as context that no proof step consumes (WP10 Amendment 2, principle 4):
+# a recorded remark or an interpretation, not a premise of any lemma. Reported apart in the audit
+# and exempt from the every-axiom-is-used test, as SOLVER_LEVEL is; each is listed with its reason.
+CITED_CONTEXT = {
+    "I2": "L5 records it as a remark on the consistency of the sample LME; no step of L5 uses it",
+    "I3": "L5 records it as a remark on the support function; no step of L5 uses it",
+    "I4": "L10 shows exp(kappa Phi_K) is a sum of monomials with positive coefficients, which is "
+    "the definition of a posynomial; GP-compatibility is the cited reading, not a premise",
+}
 
 # Inherited results that license the K > 1 solver, not a lemma premise: reported in the ledger
 # under their own heading and exempt from the every-axiom-is-used test (no lemma consumes them).
@@ -60,6 +71,11 @@ _gj = sp.IndexedBase("g")  # F12: the family g_j whose minimum is m
 _mmin = sp.Symbol("m", real=True)
 _j0 = sp.Symbol("j0", integer=True)
 _gamma = sp.Symbol("gamma", real=True)  # R2: the assignment margin
+_Mrow = sp.IndexedBase("Mx")  # R2: M_i, the maximum score of row i over the facets
+_srow = sp.IndexedBase("sfix")  # R2: s_i,k(i), the score of row i on its maximizing facet
+_PV, _DV = sp.symbols("v_primal v_dual", real=True)  # I1: the optimal LP primal and dual values
+_MSUM = sp.Symbol("Mgf_sum", real=True)  # I5: the MGF of the independent sum
+_MG1 = sp.Function("Mgf1")  # I5: the single-variable MGF, applied at tau w_j
 
 _GT, _GE, _LE = sp.StrictGreaterThan, sp.GreaterThan, sp.LessThan
 
@@ -133,11 +149,56 @@ class Axiom:
         rel = self.relations()[index]
         return rel.lhs, rel.rhs
 
-    def force_log(self, expr):
-        """``expand_log(expr, force=True)``, licensed by the entry's positivity relation x > 0."""
-        if not any(isinstance(r, _GT) and r.rhs == 0 for r in self.relations()):
-            raise ValueError(f"{self.name} declares no positivity relation to license log rules")
-        return sp.expand_log(expr, force=True)
+    def positive_sigs(self):
+        """Signatures of the atoms this entry declares positive (relations ``x > 0``)."""
+        return {_sig(r.lhs) for r in self.relations() if isinstance(r, _GT) and r.rhs == 0} - {None}
+
+    def real_sigs(self):
+        """Signatures of the atoms this entry declares real: those in an ordering relation or in
+        an equation with a logarithm (log of a declared-positive quantity)."""
+        out = set()
+        for r in self.relations():
+            if isinstance(r, (_GT, _GE, _LE)) or (isinstance(r, sp.Eq) and r.has(sp.log)):
+                out |= _atoms_sigs(r.lhs) | _atoms_sigs(r.rhs)
+        return out - {None}
+
+    def force_log(self, expr, *also):
+        """``expand_log(expr, force=True)``, licensed by this entry (and ``also``)."""
+        return log_expand(expr, self, *also)
+
+    def positive(self, x):
+        """``x`` itself, taken as positive on this entry's licence (``LicenceError`` if the entry
+        does not declare it)."""
+        if not _is_positive(x, [self]):
+            raise LicenceError(f"{self.name} does not declare {x} positive")
+        return x
+
+    def real_base(self, name):
+        """A real-valued family of the kind this entry declares real (A1: the log-metrics)."""
+        if not self.real_sigs():
+            raise LicenceError(f"{self.name} declares nothing real")
+        return sp.IndexedBase(name, real=True)
+
+    def positive_symbol(self, name):
+        """A positive symbol standing for a quantity this entry declares positive."""
+        if not any(isinstance(r, _GT) for r in self.relations()):
+            raise LicenceError(f"{self.name} declares nothing positive")
+        return sp.Symbol(name, positive=True)
+
+    def nonneg_symbol(self, name):
+        """A nonnegative symbol for a slack or quantity this entry declares nonnegative."""
+        if not any(isinstance(r, (_GT, _GE, _LE)) for r in self.relations()):
+            raise LicenceError(f"{self.name} declares no inequality")
+        return sp.Symbol(name, nonnegative=True)
+
+    def specialize(self, **funcs):
+        """The right side of the entry's equation with its undefined functions replaced
+        (``I5.specialize(Mgf1=lambda arg: ...)``): the entry applied to a concrete instance."""
+        rel = next(r for r in self.relations() if isinstance(r, sp.Eq))
+        return rel.rhs.replace(
+            lambda e: isinstance(e, sp.core.function.AppliedUndef) and e.func.__name__ in funcs,
+            lambda e: funcs[e.func.__name__](*e.args),
+        )
 
     def slack_expr(self, **values):
         """lhs - rhs of the entry's inequality (>= 0 by the entry), at values given by name."""
@@ -151,7 +212,9 @@ class Axiom:
         return sp.Symbol(name, positive=True) if strict else sp.Symbol(name, nonnegative=True)
 
     def nonneg_base(self, name):
-        """A family w_j >= 0 declared by the entry (A2), under a name the proof uses."""
+        """A family x_j >= 0 declared by the entry (A2: w_j >= 0; F12: g_j - m >= 0)."""
+        if not any(isinstance(r, _GE) and isinstance(r.lhs, sp.Indexed) for r in self.relations()):
+            raise LicenceError(f"{self.name} declares no nonnegative family")
         return sp.IndexedBase(name, nonnegative=True)
 
     def invoke(self, value):
@@ -214,7 +277,11 @@ AXIOMS = {
         POSITED,
         "the extension temperature is positive, kappa > 0, and each of the K terms has "
         "exponents theta_k on the simplex",
-        relation=(_S.simplex_theta, _GT(_S.kappa, 0, evaluate=False)),
+        relation=(
+            _S.simplex_theta,
+            _GE(_S.theta[_k, _j], 0, evaluate=False),
+            _GT(_S.kappa, 0, evaluate=False),
+        ),
     ),
     "A7": Axiom(
         "A7",
@@ -240,7 +307,8 @@ AXIOMS = {
         "LP strong duality: min_{w in simplex} max_i w.u_i equals the dual max over "
         "lambda in the simplex of min_j (U^T lambda)_j (checked numerically in pytest)",
         citation="Boyd & Vandenberghe, Convex Optimization, section 5.2",
-        proposition=True,
+        relation=(sp.Eq(_PV, _DV),),  # the optimal primal and dual values coincide
+        objects=(("primal", _PV), ("dual", _DV)),
     ),
     "I2": Axiom(
         "I2",
@@ -271,7 +339,9 @@ AXIOMS = {
         "the moment generating function of a sum of independent random variables is the "
         "product of their moment generating functions (ledger addition to spec section 6)",
         citation="Billingsley, Probability and Measure, MGF of independent sums",
-        proposition=True,
+        relation=(
+            sp.Eq(_MSUM, sp.Product(_MG1(_S.tau * _S.w[_j]), (_j, 1, _S.d))),
+        ),  # M_{sum_j w_j eps_j}(tau) = prod_j M_{eps_j}(tau w_j)
     ),
     "I6": Axiom(
         "I6",
@@ -355,7 +425,7 @@ AXIOMS = {
         "infinity, and duplicate facets give identical scores; the neighborhood is then empty, "
         "Proposition 3 does not apply, and termination reports stationary_without_margin: the "
         "fit is first-order stationary per facet (levels 1 and 2) with no local-optimality claim",
-        relation=(_GT(_gamma, 0, evaluate=False),),
+        relation=(_GT(_gamma, 0, evaluate=False), sp.Eq(_Mrow[_i], _srow[_i])),
     ),
     # -------------------------------------------------- FALLBACK HYPOTHESES (L5, L10)
     "F5": Axiom(

@@ -72,8 +72,7 @@ def derive(ctx):
     rest = F12.slack_symbol("rest")
     a1 = sp.Symbol("a1", nonnegative=True)  # e_ik(i) + delta >= 0  (|e| <= delta)
     a2 = sp.Symbol("a2", nonnegative=True)  # delta - e_il >= 0
-    # [L13.2] R2: the margin gamma is positive; here gamma = c + 2 delta, c = gamma - 2 delta > 0
-    gamma = R2.invoke(c + 2 * delta)
+    gamma = c + 2 * delta  # the margin, with c = gamma - 2 delta > 0 (2 delta < gamma)
     e1, e2 = a1 - delta, delta - a2
     new_gap = (gamma + rest) + e1 - e2
     margin_slack = sp.simplify(new_gap - (c + rest + a1 + a2))
@@ -85,13 +84,14 @@ def derive(ctx):
     nth, a_, b_, UU = sp.symbols("nth a_ b_ UU", nonnegative=True)
     bound_slack = sp.simplify((nth + a_) * UU - nth * (UU - b_) - (a_ * UU + nth * b_))
     bound_nonneg = (a_ * UU + nth * b_).is_nonnegative
-    # [L13.3] I9 (Cauchy-Schwarz): |Delta theta . u~| <= ||Delta theta|| ||u~||, with slack cs >= 0
+    # [L13.2] I9 (Cauchy-Schwarz): |Delta theta . u~| <= ||Delta theta|| ||u~||, with slack cs >= 0
     cs = I9.slack_symbol("cs")
     cs_chain_nonneg = (a_ * UU + nth * b_ + cs).is_nonnegative  # delta - |Delta theta.u~| >= 0
     r_ = sp.Symbol("r_", nonnegative=True)
     U_ = sp.Symbol("U_", positive=True)  # U >= 1: the last component of u~ is -1
-    g_ = sp.Symbol("g_", positive=True)
-    radius_set = sp.solveset(2 * r_ * U_ < g_, r_, sp.S.Reals)  # r = max norm, so r >= 0
+    # [L13.3] R2: the margin gamma is positive
+    g_ = R2.positive_symbol("g_")
+    radius_set = sp.solveset(2 * r_ * U_ < g_, r_, sp.S.Reals)
 
     # 4. exact instance: facets theta_1 = ((1,0), 0), theta_2 = ((0,1), 0); rows (2,0), (0,1)
     R = sp.Rational
@@ -172,21 +172,25 @@ def verify(ctx):
     assert r["radius_set"] == sp.Interval.open(-sp.oo, r["g_"] / (2 * r["U_"])), (
         "L13 FAIL: 2 r U < gamma is not r < gamma / (2 U)"
     )
+    # [L13.12] R2: gamma > 0, so the radius gamma / (2 U) is positive: the neighborhood is nonempty
+    assert (r["g_"] / (2 * r["U_"])).is_positive is True, (
+        "L13 FAIL: the stable radius is not positive"
+    )
 
     num = r["numeric"]
-    # [L13.12] exact instance (d = 2): margin 1 and maximizing facets (1, 2)
+    # [L13.13] exact instance (d = 2): margin 1 and maximizing facets (1, 2)
     assert num["margin"] == 1 and num["labels"] == (1, 2), "L13 FAIL: instance margin or labels"
-    # [L13.13] exact instance: the labels are unchanged by the perturbation
+    # [L13.14] exact instance: the labels are unchanged by the perturbation
     assert num["labels_perturbed"] == num["labels"], (
         "L13 FAIL: labels changed inside the stable radius"
     )
-    # [L13.14] exact instance: the perturbation has norm r, inside the radius gamma / (2 U)
+    # [L13.15] exact instance: the perturbation has norm r, inside the radius gamma / (2 U)
     assert all(sp.simplify(x - num["r"]) == 0 for x in num["norms"]) and num["r"] < num["radius"], (
         "L13 FAIL: the instance perturbation is not inside the radius"
     )
-    # [L13.15] exact instance: 2 delta < gamma holds
+    # [L13.16] exact instance: 2 delta < gamma holds
     assert 2 * num["delta"] < num["margin"], "L13 FAIL: 2 delta < gamma not met by the instance"
-    # [L13.16] exact instance: the new margin is at least gamma - 2 delta and positive
+    # [L13.17] exact instance: the new margin is at least gamma - 2 delta and positive
     assert bool(num["perturbed_margin"] >= num["margin"] - 2 * num["delta"]) and bool(
         num["perturbed_margin"] > 0
     ), "L13 FAIL: perturbed margin below gamma - 2 delta"

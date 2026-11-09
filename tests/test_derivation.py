@@ -115,7 +115,10 @@ def test_every_axiom_is_used():
     unused = [
         n
         for n in AX.AXIOMS
-        if n not in used and n not in AX.STRUCTURAL and n not in AX.SOLVER_LEVEL
+        if n not in used
+        and n not in AX.STRUCTURAL
+        and n not in AX.SOLVER_LEVEL
+        and n not in AX.CITED_CONTEXT
     ]
     assert not unused, f"axioms never used by any lemma: {unused}"
 
@@ -230,7 +233,7 @@ def test_L3_L4_verify_abstractly_with_declared_axioms():
     ctx = _ctx_l3_l4()
     for mod in (_L3, _L4):
         assert all(a in AX.AXIOMS for a in mod.AXIOMS_USED)
-    assert "R1" in _L3.AXIOMS_USED and "A3" in _L3.AXIOMS_USED
+    assert "R1" in _L3.AXIOMS_USED
     assert "A3" in _L4.AXIOMS_USED
     assert ctx["L3"]["KKT"].rhs == _L3.LAM  # (U^T p)_{j0} = lambda
     assert ctx["L4"]["convex"] is True
@@ -718,7 +721,7 @@ def _run_l11():
 def test_L11_verifies_abstractly_with_declared_axioms():
     ctx, L11 = _run_l11()
     assert L11.TITLE and L11.STATEMENT
-    assert list(L11.AXIOMS_USED) == ["A1", "A2"]
+    assert list(L11.AXIOMS_USED) == ["A2"]
     for name in L11.AXIOMS_USED:
         assert name in AX.AXIOMS
     assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
@@ -851,7 +854,7 @@ def test_L12_verifies_at_symbolic_d_with_declared_axioms():
     ctx, mods = _run_wp13(12)
     L12 = mods[12]
     assert L12.TITLE and L12.STATEMENT
-    assert set(L12.AXIOMS_USED) >= {"A2", "A3", "I1", "I8", "F12"}
+    assert set(L12.AXIOMS_USED) >= {"A2", "I1", "I8", "F12"}
     for name in L12.AXIOMS_USED:
         assert name in AX.AXIOMS
     assert ctx["S"].d.is_integer and not ctx["S"].d.is_number
@@ -961,7 +964,7 @@ def test_L13_fails_loudly_when_margin_claim_broken():
 def test_L14_verifies_at_symbolic_d_nk_K_with_declared_axioms():
     ctx, mods = _run_wp13(12, 13, 14)
     L14 = mods[14]
-    assert set(L14.AXIOMS_USED) >= {"A2", "R2"}
+    assert set(L14.AXIOMS_USED) >= {"R2"}
     for name in L14.AXIOMS_USED:
         assert name in AX.AXIOMS
     assert ctx["S"].d.is_integer and not ctx["S"].d.is_number

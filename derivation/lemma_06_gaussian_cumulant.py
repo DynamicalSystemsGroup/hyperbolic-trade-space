@@ -21,7 +21,8 @@ stated target (symproof/library/convex.py, closed-form identity checks).
 import sympy as sp
 from sympy.stats import E
 
-from derivation.axioms import A2, A5, I5
+from derivation.axioms import A2, A3, A5, I5
+from derivation.licence import log_expand
 
 TITLE = "Gaussian cumulant of a weighted noise sum"
 STATEMENT = (
@@ -29,28 +30,26 @@ STATEMENT = (
     "independent across j, sigma > 0): (1/tau) log E exp(tau w.eps) = tau sigma^2 ||w||^2 / 2, "
     "with E the population expectation; not a finite-sample estimator, and no consistency claim"
 )
-AXIOMS_USED = ["A2", "A5", "I5"]
+AXIOMS_USED = ["A2", "A3", "A5", "I5"]
 
 
 def derive(ctx):
     S = ctx["S"]
     t = sp.Symbol("t", real=True)
-    sigma, tau, j, d = S.sigma, S.tau, S.j, S.d
-    # [L6.1] A2: the exponents w lie on the simplex (the weights of the noise sum w.eps)
-    w = A2.invoke(S.w)
+    sigma, tau, j, d, w = S.sigma, S.tau, S.j, S.d, S.w
 
     # single-variable MGF (A5: eps ~ N(0, sigma^2))
-    # [L6.2] A5: each noise term is eps ~ N(0, sigma^2) with sigma > 0, independent across j
+    # [L6.1] A5: each noise term is eps ~ N(0, sigma^2) with sigma > 0, independent across j
     X = A5.obj("noise")
     mgf1 = sp.simplify(E(sp.exp(t * X)))
 
     # I5: MGF of sum_j w_j eps_j = Product_j mgf1(tau w_j)
     factor = mgf1.subs(t, tau * w[j])
-    # [L6.3] I5: the MGF of the independent sum w.eps is the product of the MGFs at tau w_j
-    prod = I5.invoke(sp.Product(factor, (j, 1, d)))
+    # [L6.2] I5: the MGF of the independent sum w.eps is the product of the MGFs at tau w_j
+    prod = I5.specialize(Mgf1=lambda arg: mgf1.subs(t, arg))
     # exp-product identity: Product exp(f_j) = exp(Sum f_j)
-    f = sp.log(factor)
-    f = sp.expand_log(f, force=True)
+    # [L6.3] A2, A3, A5: w, tau and sigma are real, so log of each factor is its exponent
+    f = log_expand(sp.log(factor), A2, A3, A5)
     mgf_sum = sp.exp(sp.Sum(sp.simplify(f), (j, 1, d)))
     # j-independent constants are pulled out of the Sum by simplify (w stays symbolic)
     norm2 = sp.Sum(w[j] ** 2, (j, 1, d))

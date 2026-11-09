@@ -87,8 +87,7 @@ def apply_normalization(expr, norm):
 def derive(ctx):
     S = ctx["S"]
     n, i, k, t = S.n, S.i, S.k, S.t
-    # [L4.1] A3: the temperature tau > 0, so J_tau and the softmax weights are defined
-    tau = A3.invoke(S.tau)
+    tau = S.tau
     c3 = ctx["L3"]  # a0, sv, p_def, Z0 from L3
     a0, sv, p_def = c3["a0"], c3["sv"], c3["p_def"]
     d, j, w, v, u = S.d, S.j, S.w, S.v, S.u
@@ -105,8 +104,8 @@ def derive(ctx):
     dbl_abs = sp.Sum(sp.Sum(p[i] * p[k] * (s[i] - s[k]) ** 2, (k, 1, n)), (i, 1, n))
 
     # real placeholders for the sign step (A1: w.u_i, v.u_i are real)
-    # [L4.2] A1: u = log m is real, so the scores w.u_i and v.u_i are real families
-    a_r, s_r = A1.invoke((sp.IndexedBase("a_r", real=True), sp.IndexedBase("s_r", real=True)))
+    # [L4.1] A1: u = log m is real, so the scores w.u_i and v.u_i are real families
+    a_r, s_r = A1.real_base("a_r"), A1.real_base("s_r")
 
     ctx["L4"] = dict(d2=d2, var_abs=var_abs, dbl_abs=dbl_abs, a_r=a_r, s_r=s_r, a0=a0, sv=sv)
     ctx["L4"]["p_def"] = p_def
@@ -120,47 +119,49 @@ def verify(ctx):
 
     # 1. d2 = tau * Var_p(v.u) with softmax weights   [equality]
     var_L = sp.Sum(p_def(L) * sv(L) ** 2, (L, 1, n)) - sp.Sum(p_def(L) * sv(L), (L, 1, n)) ** 2
-    # [L4.3] d^2/dt^2 J_tau(w + t v) at 0 equals tau Var_p(v.u) for the softmax weights p
+    # [L4.2] d^2/dt^2 J_tau(w + t v) at 0 equals tau Var_p(v.u) for the softmax weights p
     assert sp.simplify(linearize(c["d2"]) - tau * linearize(var_L)) == 0, (
         "L4 FAIL: second directional derivative != tau * Var_p(v.u)"
     )
 
     # softmax satisfies the carried normalization sum_i p_i = 1
     norm_lhs = linearize(sp.Sum(p_def(L), (L, 1, n)))
-    # [L4.4] the softmax weights satisfy the normalization sum_i p_i = 1
+    # [L4.3] the softmax weights satisfy the normalization sum_i p_i = 1
     assert sp.simplify(norm_lhs - S.p_normalized.rhs) == 0, "L4 FAIL: softmax not normalized"
 
     # 2. 2 Var = double sum, by Sum algebra and p_normalized (abstract p, s)
     expanded = canon_bound(linearize(c["dbl_abs"]), "i")
     expanded = sp.expand(apply_normalization(expanded, S.p_normalized))
     two_var = sp.expand(2 * canon_bound(c["var_abs"], "i"))
-    # [L4.5] with sum_i p_i = 1: 2 Var_p(s) = sum_i sum_k p_i p_k (s_i - s_k)^2
+    # [L4.4] with sum_i p_i = 1: 2 Var_p(s) = sum_i sum_k p_i p_k (s_i - s_k)^2
     assert sp.simplify(expanded - two_var) == 0, "L4 FAIL: Var_p(s) != (1/2) double sum"
     # (without the normalization the identity must fail: the equation is genuinely used)
     unnormalized = sp.expand(canon_bound(linearize(c["dbl_abs"]), "i"))
-    # [L4.6] negative control: without sum_i p_i = 1 the identity fails, so it is used
+    # [L4.5] negative control: without sum_i p_i = 1 the identity fails, so it is used
     assert sp.simplify(unnormalized - two_var) != 0, "L4 FAIL: normalization not load-bearing"
 
     # 3. signed accumulation (tactics.signed_sum_lemmas): per-term sign, then net direction
     a_r, s_r = c["a_r"], c["s_r"]
     term_exp = sp.exp(tau * a_r[L])
-    # [L4.7] each term exp(tau a_i) of the normalizer is positive (real argument, tau > 0)
+    # [L4.6] each term exp(tau a_i) of the normalizer is positive (real argument, tau > 0)
     assert term_exp.is_positive is True, "L4 FAIL: exp term not positive"
     Z_r = sp.Sum(term_exp, (L, 1, n))
-    # [L4.8] the normalizer Z, a net sum of positive terms, is positive
+    # [L4.7] the normalizer Z, a net sum of positive terms, is positive
     assert Z_r.is_positive is True, "L4 FAIL: normalizer not positive (net of positive terms)"
 
     def p_r(x):
         return sp.exp(tau * a_r[x]) / Z_r
 
-    # [L4.9] each softmax weight p_i = exp(tau a_i) / Z is positive
+    # [L4.8] each softmax weight p_i = exp(tau a_i) / Z is positive
     assert p_r(i).is_positive is True, "L4 FAIL: softmax weight not positive"
     summand = p_r(i) * p_r(k) * (s_r[i] - s_r[k]) ** 2
-    # [L4.10] each summand p_i p_k (s_i - s_k)^2 is a positive factor times a square, so >= 0
+    # [L4.9] each summand p_i p_k (s_i - s_k)^2 is a positive factor times a square, so >= 0
     assert summand.is_nonnegative is True, "L4 FAIL: per-term p_i p_k (s_i-s_k)^2 not >= 0"
     double = sp.Sum(summand, (i, 1, n), (k, 1, n))
-    # [L4.11] the double sum of nonnegative summands is nonnegative
+    # [L4.10] the double sum of nonnegative summands is nonnegative
     assert double.is_nonnegative is True, "L4 FAIL: net double sum not >= 0"
-    # [L4.12] (tau / 2) times the double sum is nonnegative: J_tau is convex along every line
-    assert (tau / 2 * double).is_nonnegative is True, "L4 FAIL: (tau/2) * double sum not >= 0"
+    # [L4.11] A3: tau > 0, so (tau / 2) times the double sum is nonnegative: convex along every line
+    assert (A3.positive(tau) / 2 * double).is_nonnegative is True, (
+        "L4 FAIL: (tau/2) * double sum not >= 0"
+    )
     ctx["L4"]["convex"] = True

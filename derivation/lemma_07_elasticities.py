@@ -23,6 +23,7 @@ the fit, L3 + R1), or anything off F; they are shape quantities, not preferences
 import sympy as sp
 
 from derivation.axioms import A1, A2
+from derivation.licence import licensed_power
 from derivation.sumtools import linear
 
 TITLE = "Elasticities -w_k/w_j on the frontier; improvement factor V^(-1/w_j)"
@@ -48,7 +49,8 @@ def derive(ctx):
     x = sp.Symbol("x", real=True)  # change of u_{j0} per unit change of u_{k0}
     lim = (j, 1, d)
 
-    uu = sp.IndexedBase("u_pt")  # a point on F
+    # [L7.1] A1: a point of F is a point of log-metrics u = log m, a real family
+    uu = A1.real_base("u_pt")
     delta = sp.KroneckerDelta
     v = lambda jj: delta(jj, k0) + x * delta(jj, j0)  # noqa: E731  direction e_k0 + x e_j0
     G_t = sp.Sum(w[j] * (uu[j] + t * v(j)), lim)
@@ -63,15 +65,14 @@ def derive(ctx):
     logV_new = _impose_index_bounds(logV_new.doit())
     w_j0 = w[j0]
     logf_star = -logV / w_j0
-    # V = exp(logV) > 0 (A1), so V**(-1/w) = exp(-logV/w) (power of a positive base).
-    # [L7.1] A1: V = exp(log V) with m > 0, so V > 0 and V^(-1/w_j) is a power of a positive base
-    V = A1.invoke(sp.exp(logV))
-    f_star = sp.powdenest(V ** (-1 / w_j0), force=True)
+    # V = exp(logV) > 0 (A1: u real, A2: w real), so V**(-1/w) = exp(-logV/w)
+    # [L7.2] A1, A2: V = exp(log V) > 0, so the power V^(-1/w_j) is exp(-log V / w_j)
+    f_star = licensed_power(sp.exp(logV) ** (-1 / w_j0), A1, A2)
 
     # Uniform improvement: f = 1/V in L1's V(k m) = k V(m) gives V = 1.
     L1 = ctx["L1"]
-    # [L7.2] A2: sum_j w_j = 1 (already applied in L1's V(k m)), so V(m / V) is 1
-    uniform = sp.simplify(A2.rewrite(L1["Vk"].subs(S.k_scale, 1 / L1["V"])))
+    # L1's V(k m) already carries sum_j w_j = 1; at k = 1/V it gives V(m / V)
+    uniform = sp.simplify(L1["Vk"].subs(S.k_scale, 1 / L1["V"]))
 
     ctx["L7"] = {
         "dG": dG,

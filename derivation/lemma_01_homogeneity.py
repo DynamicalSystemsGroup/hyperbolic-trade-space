@@ -88,5 +88,5 @@ def verify(ctx):
     # Degree of homogeneity is the simplex total: without sum w = 1 it would not be 1.
     # [L1.8] the degree of homogeneity passes through sum_j w_j (without it, not degree 1)
     assert S.simplex.lhs in linear(
-        product_to_exp_sum(sp.Product((S.k_scale * S.m[S.j]) ** S.w[S.j], (S.j, 1, S.d)))
+        product_to_exp_sum(sp.Product((S.k_scale * S.m[S.j]) ** S.w[S.j], (S.j, 1, S.d)), A1)
     ).atoms(sp.Sum), "L1 FAIL: homogeneity must pass through sum_j w_j"

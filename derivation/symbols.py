@@ -66,7 +66,7 @@ def make_symbols():
     u = sp.IndexedBase("u")
     w = sp.IndexedBase("w")  # exponents (simplex, A2)
     theta = sp.IndexedBase("theta")  # theta[k, j]: exponent of term k (L10)
-    beta = sp.IndexedBase("beta")  # beta[k]: offset of term k (L10)
+    beta = sp.IndexedBase("beta", real=True)  # beta[k]: real offset of term k (L10)
     s = sp.IndexedBase("s")  # scores s[i] = w . u_i
     a = sp.IndexedBase("a")  # conditioning offsets (L9)
     alpha = sp.IndexedBase("alpha")  # conditioning exponents, alpha_j != 0 (A4, L9)
