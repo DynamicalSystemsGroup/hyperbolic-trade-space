@@ -6,15 +6,15 @@ repo_name: DynamicalSystemsGroup/hyperbolic-trade-space
 docs_dir: docs
 strict: true
 
-# The generated pages are built into docs/generated/ by scripts/build_generated.py
-# (assemble_site.py and stage_site.py run it first). The notes and specs are working material.
+# The Glossary page is compiled from glossary.yaml into docs/generated/ by
+# scripts/build_generated.py (assemble_site.py and stage_site.py run it first). The notes and
+# specs are working material.
 exclude_docs: |
   superpowers/
   references.bib
 
 theme:
   name: material
-  custom_dir: overrides
   features: [navigation.sections, navigation.top, content.code.copy]
   palette:
     - scheme: default

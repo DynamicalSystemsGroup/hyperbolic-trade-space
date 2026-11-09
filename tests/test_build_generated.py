@@ -29,10 +29,12 @@ FAKE_COLLECT = (
 @pytest.fixture(scope="module")
 def pages(tmp_path_factory):
     out = tmp_path_factory.mktemp("gen")
-    build_generated.build(out, collect_runner=lambda: FAKE_COLLECT)
+    docs_out = tmp_path_factory.mktemp("docsgen")
+    build_generated.build(out, collect_runner=lambda: FAKE_COLLECT, docs_out=docs_out)
     return {
         "derivations": (out / "derivations.md").read_text(),
         "verification": (out / "verification.md").read_text(),
+        "glossary": (docs_out / "glossary.md").read_text(),
     }
 
 
@@ -73,10 +75,132 @@ def test_verification_content(pages):
 
 
 def test_deterministic(tmp_path):
-    build_generated.build(tmp_path / "a", collect_runner=lambda: FAKE_COLLECT)
-    build_generated.build(tmp_path / "b", collect_runner=lambda: FAKE_COLLECT)
+    for tag in ("a", "b"):
+        build_generated.build(
+            tmp_path / tag, collect_runner=lambda: FAKE_COLLECT, docs_out=tmp_path / (tag + "g")
+        )
     for name in ("derivations.md", "verification.md"):
         assert (tmp_path / "a" / name).read_bytes() == (tmp_path / "b" / name).read_bytes()
+    assert (tmp_path / "ag" / "glossary.md").read_bytes() == (
+        tmp_path / "bg" / "glossary.md"
+    ).read_bytes()
+
+
+def test_derivations_and_verification_leave_the_docsite():
+    """OD1: the paper's build reads them from build/generated/, outside docs/ (mkdocs docs_dir)."""
+    assert build_generated.DEFAULT_OUT == ROOT / "build" / "generated"
+    assert not build_generated.DEFAULT_OUT.is_relative_to(ROOT / "docs")
+    assert build_generated.DOCS_GENERATED == ROOT / "docs" / "generated"
+
+
+# --- the glossary, compiled from glossary.yaml ----------------------------------------------------
+
+GLOSSARY = ROOT / "glossary.yaml"
+REGISTER_PHRASES = (
+    "fitted reference surface",
+    "supporting envelope",
+    "Pareto boundary",
+    "energy differential",
+    "level offset",
+    "facet gap",
+    "assignment margin",
+    "stable radius",
+    "participation threshold",
+    "numerically zero",
+)
+
+
+def _write(tmp_path, text):
+    path = tmp_path / "g.yaml"
+    path.write_text(text)
+    return path
+
+
+def _entry(**over):
+    e = {"id": "x", "term": "x", "short": "s", "register": "r", "formal": "f", "not": "n"}
+    e.update(over)
+    return e
+
+
+def test_glossary_source_validates_and_has_every_register_phrase():
+    entries = build_generated.load_glossary(GLOSSARY)
+    terms = {e["term"].casefold() for e in entries}
+    for phrase in REGISTER_PHRASES:
+        assert phrase.casefold() in terms, phrase
+    assert len(entries) >= 30
+
+
+def test_glossary_page_is_exactly_the_yaml(pages):
+    """Title, letter headings and one bullet per entry (term and short); nothing else."""
+    entries = build_generated.load_glossary(GLOSSARY)
+    lines = [ln for ln in pages["glossary"].splitlines() if ln.strip()]
+    assert lines[0] == "# Glossary"
+    bullets = [ln for ln in lines if ln.startswith("- ")]
+    headings = [ln for ln in lines[1:] if ln.startswith("## ")]
+    assert len(bullets) + len(headings) + 1 == len(lines), "no free text beyond the yaml"
+    assert len(bullets) == len(entries)
+    for e in entries:
+        assert f"- **{e['term'].strip()}**: {e['short'].strip()}" in bullets
+    assert pages["glossary"] == build_generated.glossary_page(entries)
+    # grouped alphabetically: headings ascend and each bullet sits under its own letter
+    letters = [h[3:] for h in headings]
+    assert letters == sorted(letters)
+    current = None
+    for ln in lines[1:]:
+        if ln.startswith("## "):
+            current = ln[3:]
+        else:
+            assert ln[len("- **")].upper() == current, ln
+    terms = [ln[len("- **") : ln.index("**:")].casefold() for ln in bullets]
+    assert terms == sorted(terms)
+
+
+def test_glossary_validation_rejects_bad_sources(tmp_path):
+    import yaml
+
+    def load(entries):
+        return build_generated.load_glossary(_write(tmp_path, yaml.safe_dump({"entries": entries})))
+
+    assert load([_entry()])
+    bad = {
+        "missing field": [{k: v for k, v in _entry().items() if k != "formal"}],
+        "unknown field": [_entry(extra="y")],
+        "empty value": [_entry(short=" ")],
+        "multi-line short": [_entry(short="a\nb")],
+        "bad id": [_entry(id="Not A Slug")],
+        "repeated id": [_entry(), _entry(term="y")],
+        "repeated term": [_entry(), _entry(id="y")],
+        "not a list": "text",
+        "empty": [],
+    }
+    for label, entries in bad.items():
+        with pytest.raises(ValueError):
+            load(entries)
+        assert label
+    with pytest.raises(ValueError):
+        build_generated.load_glossary(_write(tmp_path, yaml.safe_dump([_entry()])))
+
+
+def test_glossary_sorting_ignores_source_order(tmp_path):
+    import yaml
+
+    a = _entry(id="b", term="beta", short="second")
+    b = _entry(id="a", term="alpha", short="first")
+    p1 = _write(tmp_path, yaml.safe_dump({"entries": [a, b]}))
+    page = build_generated.glossary_page(build_generated.load_glossary(p1))
+    assert page == "# Glossary\n\n## A\n\n- **alpha**: first\n\n## B\n\n- **beta**: second\n"
+
+
+def test_invalid_glossary_stops_the_build(tmp_path, capsys):
+    bad = _write(tmp_path, "entries: []\n")
+    with pytest.raises(ValueError):
+        build_generated.build(
+            tmp_path / "o",
+            collect_runner=lambda: FAKE_COLLECT,
+            docs_out=tmp_path / "d",
+            glossary_path=bad,
+        )
+    assert not (tmp_path / "o" / "derivations.md").exists()
 
 
 def test_expected_failures_loaded_match_test_module():
@@ -128,11 +252,13 @@ def test_assemble_with_fake_mkdocs(tmp_path, monkeypatch):
         mkdocs_runner=fake,
         generated_dir=tmp_path / "gen",
         collect_runner=lambda: FAKE_COLLECT,
+        docs_generated_dir=tmp_path / "docsgen",
     )
     assert (out / "index.html").read_text() == "<html>root</html>"
     assert (out / "docs" / "index.html").exists()
     assert (out / "paper" / "index.html").read_text() == "<html>paper</html>"
     assert (tmp_path / "gen" / "derivations.md").exists()
+    assert (tmp_path / "docsgen" / "glossary.md").exists()
     assert "--strict" in seen[0] and "build" in seen[0]
 
 
@@ -146,6 +272,7 @@ def test_assemble_fails_loudly_when_mkdocs_fails(tmp_path):
             mkdocs_runner=boom,
             generated_dir=tmp_path / "gen",
             collect_runner=lambda: FAKE_COLLECT,
+            docs_generated_dir=tmp_path / "docsgen",
         )
 
 

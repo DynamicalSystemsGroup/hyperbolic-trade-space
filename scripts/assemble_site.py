@@ -2,7 +2,9 @@
 
     uv run python scripts/assemble_site.py [--out DIR]
 
-Default output is ``_site/``. Steps: write the generated pages (``build_generated``), run
+Default output is ``_site/``. Steps: write the generated pages (``build_generated``: the
+glossary into ``docs/generated/`` for the docsite, derivations and verification into
+``build/generated/`` for the paper's build), run
 ``mkdocs build --strict -d <out>/docs``, copy ``site/index.html`` to ``<out>/index.html`` and
 build the paper slot through ``build_paper`` (WP10 replaces that one function). Any error
 stops the build with a non-zero exit.
@@ -23,7 +25,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build_generated  # noqa: E402
 
 DEFAULT_OUT = ROOT / "_site"
-GENERATED_DIR = ROOT / "docs" / "generated"  # inside mkdocs docs_dir (docs/)
+GENERATED_DIR = build_generated.DEFAULT_OUT  # outside docs/: the paper's build reads it
+DOCS_GENERATED_DIR = build_generated.DOCS_GENERATED  # inside mkdocs docs_dir: the glossary
 ROOT_INDEX = ROOT / "site" / "index.html"
 PAPER_PLACEHOLDER = ROOT / "site" / "paper" / "index.html"
 
@@ -62,10 +65,16 @@ def _check_out(out):
     return out
 
 
-def assemble(out=DEFAULT_OUT, mkdocs_runner=None, generated_dir=GENERATED_DIR, collect_runner=None):
+def assemble(
+    out=DEFAULT_OUT,
+    mkdocs_runner=None,
+    generated_dir=GENERATED_DIR,
+    collect_runner=None,
+    docs_generated_dir=DOCS_GENERATED_DIR,
+):
     """Build the whole site into ``out`` (replaced if present). Returns the output path."""
     out = _check_out(out)
-    build_generated.build(generated_dir, collect_runner=collect_runner)
+    build_generated.build(generated_dir, collect_runner=collect_runner, docs_out=docs_generated_dir)
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)

@@ -1,12 +1,15 @@
-"""Write the generated docsite pages from running the code.
+"""Write the generated pages from running the code and from ``glossary.yaml``.
 
-    uv run python scripts/build_generated.py [--out DIR]
+    uv run python scripts/build_generated.py [--out DIR] [--docs-out DIR]
 
 Writes ``derivations.md`` (every lemma of the chain; the axiom ledger by tag) and
 ``verification.md`` (tests by area, conformance, lemma checks, what a human validated) into
-``docs/generated/`` (git-ignored, never committed). The chain is executed through
-``derivation.run.run_chain``; the exit status is non-zero when any lemma fails. Output is pure
-Markdown and deterministic for a given repository state.
+``build/generated/`` (git-ignored, never committed, outside the docsite: the paper's build reads
+them). Writes ``glossary.md``, compiled from ``glossary.yaml`` (term and short, grouped
+alphabetically; no other text), into ``docs/generated/`` (git-ignored), which is the docsite's
+generated page. The chain is executed through ``derivation.run.run_chain``; the exit status is
+non-zero when any lemma fails or the glossary source is invalid. Output is pure Markdown and
+deterministic for a given repository state.
 """
 
 from __future__ import annotations
@@ -22,7 +25,11 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-DEFAULT_OUT = ROOT / "docs" / "generated"
+DEFAULT_OUT = ROOT / "build" / "generated"  # derivations.md, verification.md (paper's build)
+DOCS_GENERATED = ROOT / "docs" / "generated"  # glossary.md (the docsite's generated page)
+GLOSSARY_SOURCE = ROOT / "glossary.yaml"
+GLOSSARY_REQUIRED = ("id", "term", "short", "register", "formal", "not")
+GLOSSARY_OPTIONAL = ("symbol", "defined_in")
 GAPS_LEDGER = "docs/superpowers/notes/abstraction-gaps.md"
 SKLEARN_TEST_FILE = "tests/test_sklearn_compat.py"
 
@@ -319,11 +326,80 @@ def verification_page(chain, node_ids, expected):
     return "\n".join(out)
 
 
+# ------------------------------------------------------------------------------ glossary
+
+
+def load_glossary(path=None):
+    """Read and validate ``glossary.yaml``; return the entries as a list of dicts.
+
+    Raises ``ValueError`` on a missing or unknown field, a non-string or empty value, a
+    multi-line ``short``, or a repeated ``id`` or ``term``.
+    """
+    import yaml
+
+    path = Path(path) if path else GLOSSARY_SOURCE
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict) or set(data) != {"entries"}:
+        raise ValueError(f"{path.name}: the top level must be a single key 'entries'")
+    entries = data["entries"]
+    if not isinstance(entries, list) or not entries:
+        raise ValueError(f"{path.name}: 'entries' must be a non-empty list")
+    allowed = set(GLOSSARY_REQUIRED) | set(GLOSSARY_OPTIONAL)
+    seen_ids, seen_terms = set(), set()
+    for i, entry in enumerate(entries):
+        where = f"{path.name}: entry {i + 1}"
+        if not isinstance(entry, dict):
+            raise ValueError(f"{where}: must be a mapping")
+        missing = [f for f in GLOSSARY_REQUIRED if f not in entry]
+        if missing:
+            raise ValueError(f"{where}: missing field(s) {missing}")
+        unknown = sorted(set(entry) - allowed)
+        if unknown:
+            raise ValueError(f"{where}: unknown field(s) {unknown}")
+        for key, value in entry.items():
+            if not isinstance(value, str) or not value.strip():
+                raise ValueError(f"{where}: field '{key}' must be a non-empty string")
+        if "\n" in entry["short"].strip() or "\n" in entry["term"].strip():
+            raise ValueError(f"{where}: 'short' and 'term' are one line")
+        if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", entry["id"]):
+            raise ValueError(f"{where}: id '{entry['id']}' must be a lower-case slug")
+        if entry["id"] in seen_ids:
+            raise ValueError(f"{where}: repeated id '{entry['id']}'")
+        if entry["term"].casefold() in seen_terms:
+            raise ValueError(f"{where}: repeated term '{entry['term']}'")
+        seen_ids.add(entry["id"])
+        seen_terms.add(entry["term"].casefold())
+    return entries
+
+
+def glossary_page(entries):
+    """Markdown for the Glossary page: term and short only, grouped alphabetically."""
+    ordered = sorted(entries, key=lambda e: (e["term"].casefold(), e["id"]))
+    out = ["# Glossary", ""]
+    letter = None
+    for e in ordered:
+        first = e["term"].strip()[0].upper()
+        if first != letter:
+            letter = first
+            out += [f"## {letter}", ""]
+        out.append(f"- **{e['term'].strip()}**: {e['short'].strip()}")
+        out.append("")
+    return "\n".join(out).rstrip() + "\n"
+
+
 # ------------------------------------------------------------------------------ driver
 
 
-def build(out_dir=DEFAULT_OUT, collect_runner=None, expected_path=None):
-    """Run the chain and write both pages. Raises on a failed lemma. Returns the paths."""
+def build(
+    out_dir=DEFAULT_OUT,
+    collect_runner=None,
+    expected_path=None,
+    docs_out=DOCS_GENERATED,
+    glossary_path=None,
+):
+    """Run the chain; write derivations and verification to ``out_dir`` and the glossary to
+    ``docs_out``. Raises on a failed lemma or an invalid glossary. Returns the paths."""
+    entries = load_glossary(glossary_path)
     chain, AX = _chain_results()
     node_ids = collect_tests(collect_runner)
     expected = load_expected_failures(expected_path)
@@ -338,15 +414,25 @@ def build(out_dir=DEFAULT_OUT, collect_runner=None, expected_path=None):
         path = out_dir / name
         path.write_text(text, encoding="utf-8")
         paths.append(path)
+    docs_out = Path(docs_out)
+    docs_out.mkdir(parents=True, exist_ok=True)
+    path = docs_out / "glossary.md"
+    path.write_text(glossary_page(entries), encoding="utf-8")
+    paths.append(path)
     return paths
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--out", default=str(DEFAULT_OUT), help="output directory")
+    parser.add_argument(
+        "--out", default=str(DEFAULT_OUT), help="directory for derivations.md, verification.md"
+    )
+    parser.add_argument(
+        "--docs-out", default=str(DOCS_GENERATED), help="directory for the docsite glossary.md"
+    )
     args = parser.parse_args(argv)
     try:
-        paths = build(args.out)
+        paths = build(args.out, docs_out=args.docs_out)
     except Exception as exc:  # a failed lemma or collection must stop the build
         print(f"build_generated: FAILED: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
