@@ -1004,3 +1004,18 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   definitions). The word ceiling: the driver's call, for his review, is that this ticket may add at
   most 150 words to the paper's ceiling if trimming elsewhere cannot pay for it.
 
+## Ticket: the results section must flow for a close reader and for a skimmer (2026-11-09)
+
+- **Supervisor (mzargham), verbatim:** "i have a similar feeling about the results section. again
+  minimal but needs to flow for a reader who is reading the math closely AND a reader who is just
+  skimming the math."
+- **Disposition:** logged as a ticket for the PM's next paper push, with the ticket on section 4.
+  The prose between the boxed results of section 6 becomes a path a skimmer can read on its own:
+  an opening that says what is established and in what order, and before each result one plain
+  sentence saying what it says and what it is for. The boxes stay exact and unchanged, so the close
+  reader loses nothing; no sentence of the prose may say more than its box. Two tests of the
+  result: a reader given the section with the boxes hidden states the arc; a reader given the
+  whole section finds no sentence looser than the box it introduces. The word ceiling: the
+  driver's call, for his review, is that the two tickets together (sections 4 and 6) may add at
+  most 400 words to the paper's ceiling if trimming cannot pay for them.
+
