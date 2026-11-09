@@ -40,3 +40,8 @@ A predicted position inherits the surrogate's error and extrapolation risk, and 
 the fitted trade space. A configuration predicted beyond V = 1 is a proposal for the next
 evaluation to run, to be checked, not a result. The regressor declares `positive_only` targets and
 raises `ValueError` on negative `y`.
+
+The package returns positions in the metrics. Turning a predicted or reference level into a bounded
+outcome, such as a breach fraction or a probability, is an inversion you carry out, and it can leave
+the quantity's admissible range while the certificate holds. Report such a value as invalid, never
+clipped.

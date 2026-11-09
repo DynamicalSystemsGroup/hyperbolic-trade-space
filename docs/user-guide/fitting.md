@@ -83,6 +83,8 @@ dominates new rows. Options:
 - `term_temperature` (kappa, term temperature, default infinity): infinity, one label per design;
   finite, every design weighs every term. Read kappa on the scale of tau: far below it, facets
   merge. At tau = 50, kappa = 5000 is within 0.001 of the infinite-kappa exponents.
+- `term_aggregation`: `"sum"` (default) or `"mean"`, which subtracts log K / kappa; with the sum, a
+  repeated term shifts the soft maximum by log 2 / kappa.
 - `penalty="reweighted_l1"` with `alpha` pushes small exponents to exact zero, at finite temperature
   only.
 - `facet_step` is `"support"` (default) or `"tangent"`, which is not monotone and carries no
@@ -127,13 +129,12 @@ pays. Over the four resamples the smallest exponent stays within 0.07 to 0.08 at
 `select_temperature` needs a target the fit can reach. With several terms the facets are not
 supporting planes, so `frac_above_` levels off above zero as tau grows (about 0.30 on the table of
 `make_frontier_data(300, 4, n_terms=2, random_state=777)`) and the default target 0.10 raises "not
-bracketed". The message names a target, a fixed `temperature`, and wider `bounds`. Select
+bracketed". Select
 tau at K = 1 and hold it fixed, or choose a target above the level-off.
 
 `tension_report` takes its band from the temperature, 1/tau. A facet with fewer than
 `min_near_frontier` designs in the band raises, and the message names the `band`, and the matching
-`temperature`, that holds enough. On that table at tau = 50 the band 0.02 holds five designs of
-facet 0 and 0.025 holds ten.
+`temperature`, that holds enough.
 
 With two metrics the facets can be drawn in the log plane:
 

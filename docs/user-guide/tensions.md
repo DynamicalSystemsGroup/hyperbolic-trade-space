@@ -75,6 +75,34 @@ At K > 1 the function returns a list of K reports, one per facet, each on the ro
 dominates. A facet with fewer than `min_near_frontier` (default 10) near-frontier rows raises
 `ValueError`; widen `band` or lower `min_near_frontier`.
 
+## A cap can hide a slope
+
+A facet reported as a `monolemma` is a cap: one metric binds on the rows that facet dominates. It does
+not say the design space has no trade-off. Here the planted frontier is flat for low m0 and falls
+beyond, and the tail has few rows:
+
+```python {.runnable}
+import numpy as np
+
+rng = np.random.default_rng(0)
+a = rng.uniform(-3, 0.5, 300)
+b = np.minimum(0, -a) - rng.exponential(0.1, 300)
+Xc = np.exp(np.c_[a, b])
+one = HyperbolicTradeSpace(temperature=np.inf).fit(Xc)
+two = HyperbolicTradeSpace(
+    n_terms=2, temperature=50.0, random_state=0
+).fit(Xc)
+reports = tension_report(two, Xc)
+print(round(one.mean_slack_, 3), round(two.mean_slack_, 3))
+print([r.lemma_name for r in reports])
+assert "monolemma" in [r.lemma_name for r in reports]
+assert two.mean_slack_ < one.mean_slack_ / 3
+```
+
+One term blends cap and slope into a dilemma that fits neither; two terms return the cap and the slope
+as separate facets, at a fraction of the mean slack (0.043 against 0.351). Conversely, a cap on a table that
+never reaches the slope is all the report can show.
+
 ## What it cannot say
 
 Each report describes one facet and so one tension, depends on the band, and is a statement about

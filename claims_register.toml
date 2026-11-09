@@ -4619,3 +4619,211 @@ status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "Proof-map checker passes on the committed lemma record (SymPy scripts); ADCS case is exercised by tests/test_adcs_case.py"
+
+[[claim]]
+id = "C372"
+fragment = "`term_aggregation`: `\"sum\"` (default) or `\"mean\"`, which subtracts log K / kappa"
+file = "docs/user-guide/fitting.md"
+anchor = "Several terms"
+kind = "S"
+backing = [
+  "lemma:L10.20",
+  "test:tests/test_estimator.py::test_term_aggregation_mean_shifts_score_by_log_k_over_kappa",
+  "test:tests/test_interface_contract.py::test_r1_term_aggregation_keyword_pinned",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "The keyword takes sum (default) or mean; the mean is the log-mean-exp, the sum minus log K / kappa (L10.20)."
+
+[[claim]]
+id = "C373"
+fragment = "with the sum, a repeated term shifts the soft maximum by log 2 / kappa"
+file = "docs/user-guide/fitting.md"
+anchor = "Several terms"
+kind = "M"
+backing = [
+  "lemma:L10.24",
+  "lemma:L10.25",
+  "test:tests/test_estimator.py::test_term_aggregation_duplicated_term_shift_is_log2_over_kappa",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "Two equal scores x: the sum form gives x + log 2 / kappa (L10.24), the mean form x (L10.25); no new geometry is added by the repeat."
+
+[[claim]]
+id = "C374"
+fragment = "`n_distinct_terms`: terms whose exponent vectors differ by more than 1e-3"
+file = "docs/user-guide/termination.md"
+anchor = "The fields"
+kind = "S"
+backing = [
+  "test:tests/test_estimator.py::test_n_distinct_terms_falls_below_k_where_terms_repeat",
+  "func:src/hyperbolic_trade_space/solvers.py::distinct_terms",
+  "test:tests/test_interface_contract.py::test_r1_distinct_terms_field_and_names_pinned",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "Exponent vectors within DISTINCT_TERMS_DISTANCE = 1e-3 (Euclidean, single linkage) count as one; read only (interface contract version 10)."
+
+[[claim]]
+id = "C375"
+fragment = "`certified` is the first: a local optimum of the objective, not of other restarts"
+file = "docs/user-guide/termination.md"
+anchor = "What to decide from it"
+kind = "M"
+backing = [
+  "lemma:L17",
+  "glossary:termination-status",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "L17: where the first-order conditions hold and the Hessian is positive definite on the tangent space, the point is a strict local minimizer of the soft objective; other restarts are other runs (gaps ledger G-15)."
+
+[[claim]]
+id = "C376"
+fragment = "The second, a description of the observed designs, is read from `mean_slack_`"
+file = "docs/user-guide/termination.md"
+anchor = "What to decide from it"
+kind = "S"
+backing = [
+  "test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "mean_slack_ is the mean gap between facet and design on the fitted table, defined at every number of terms."
+
+[[claim]]
+id = "C377"
+fragment = "The third, that it holds outside the table or supports a decision, the certificate does not make"
+file = "docs/user-guide/termination.md"
+anchor = "What to decide from it"
+kind = "M"
+backing = [
+  "lemma:L17",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "The certificate is a statement about the objective at the returned point (L17); prediction outside the sample is open question Q3 and the gaps ledger."
+
+[[claim]]
+id = "C378"
+fragment = "A facet reported as a `monolemma` is a cap: one metric binds on the rows that facet dominates"
+file = "docs/user-guide/tensions.md"
+anchor = "A cap can hide a slope"
+kind = "S"
+backing = [
+  "test:tests/test_tensions.py::test_monolemma_and_names",
+  "func:src/hyperbolic_trade_space/tensions.py::tension_report",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "n_lemma is the size of the contending set of the facet's rows; one metric is a monolemma."
+
+[[claim]]
+id = "C379"
+fragment = "One term blends cap and slope into a dilemma that fits neither; two terms return the cap and the slope as separate facets, at a fraction of the mean slack"
+file = "docs/user-guide/tensions.md"
+anchor = "A cap can hide a slope"
+kind = "R"
+backing = [
+  "gen:tests/test_docs.py::_runnable_blocks",
+  "test:tests/test_docs.py::test_runnable_blocks_execute",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "The planted cap-plus-slope table of the runnable block (seed 0, 300 rows, tail of about 1/7): K = 1 gives mean slack 0.351 and a dilemma, K = 2 gives 0.043 with a monolemma facet and a dilemma facet; the block asserts a monolemma facet and a threefold fall of the mean slack. One table, not a rate."
+
+[[claim]]
+id = "C380"
+fragment = "a cap on a table that never reaches the slope is all the report can show"
+file = "docs/user-guide/tensions.md"
+anchor = "A cap can hide a slope"
+kind = "S"
+backing = [
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "The report describes the sampled table (limitations; gaps ledger G-12: the contending set is a statement about the sampled region)."
+
+[[claim]]
+id = "C381"
+fragment = "is an inversion you carry out, and it can leave the quantity's admissible range while the certificate holds"
+file = "docs/user-guide/prediction.md"
+anchor = "Using it"
+kind = "M"
+backing = [
+  "lemma:L17",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "The certificate speaks to the objective at the returned point (L17), not to a downstream inversion of a level into a bounded outcome."
+
+[[claim]]
+id = "C382"
+fragment = "Report such a value as invalid, never clipped"
+file = "docs/user-guide/prediction.md"
+anchor = "Using it"
+kind = "P"
+backing = [
+  "reading",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "A rule for the reading, not a measured result: clipping hides that the model left the quantity's range; from the external assessment's observation of impossible breach fractions."
+
+[[claim]]
+id = "C383"
+fragment = "a stable fitted direction answers that question as conditioned and is not a context-free discovery"
+file = "docs/user-guide/conditioning.md"
+anchor = ""
+kind = "M"
+backing = [
+  "lemma:L2",
+  "glossary:conditioning-of-the-exponents",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "Rescaling or shifting a metric changes the log-metrics the fit sees (L2: a common shift moves the offsets only), so the exponents belong to the conditioning chosen."
+
+[[claim]]
+id = "C384"
+fragment = "Designed samples, such as grids, are not independent observations: the exponents describe the sample and carry no sampling error"
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "P"
+backing = [
+  "reading",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "Consistency under noise and refitting is open question Q2 (gaps ledger G-11); the sentence bounds how the exponents are read, from the author's practice with designed samples."
+
+[[claim]]
+id = "C385"
+fragment = "and inverting a level into a bounded outcome is yours"
+file = "docs/user-guide/limitations.md"
+anchor = ""
+kind = "P"
+backing = [
+  "reading",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-4 to D-7 (docs)"
+note = "Responsibility statement for the downstream inversion; see the prediction page."

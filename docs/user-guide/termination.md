@@ -26,28 +26,27 @@ print(ts.conditioning_.round(1))
    remains.
 3. Conditional local optimality: if no design sits exactly on a seam between facets, small changes
    to the facets cannot change which facet dominates which design, so the fixed assignment is optimal.
-   The assignment margin is the smallest gap by which a row's facet beats the runner-up; the stable radius
-   is the perturbation provably leaving every facet unchanged.
+   The assignment margin is the smallest gap by which a row's facet beats the runner-up; the stable
+   radius is the perturbation provably leaving every facet unchanged.
 
 ## Statuses
 
 `termination_.status` is one of:
 
 - `certified`: assignment fixed, residuals within `eps_feas`, `max_gap` within `eps_kkt`, no empty
-  facet, margin positive. All three levels hold.
+  facet, margin positive: all three levels.
 - `stationary_without_margin`: the same, with margin at most `eps_feas` or an empty facet. Levels 1
-  and 2 only. At infinite temperature this happens when a frontier row lies on two facet planes or two
+  and 2. At infinite temperature this happens when a frontier row lies on two facet planes or two
   facets coincide.
 - `uncertified`: assignment fixed, a residual or the gap above tolerance.
 - `guard_stop`: an iteration raised the mean slack by more than `guard_tol`. Not converged.
 - `iteration_cap`: `max_iter` reached. Not converged.
 - `not_applicable`: one term, `facet_step="tangent"`, a `penalty`, one metric, fewer designs than
-  facets, or a soft fit at infinite tau. Not a failure.
+  facets, or a soft fit at infinite tau.
 
-`fit` warns (a `ConvergenceWarning` naming the status and the largest gap) for `uncertified`,
-`guard_stop` and `iteration_cap`.
+`fit` warns for `uncertified`, `guard_stop` and `iteration_cap`.
 
-A soft fit (finite term temperature) weighs every term: no assignment, no margin.
+A soft fit weighs every term: no assignment, no margin.
 
 - `certified`: weighted gaps within `eps_kkt` and `min_curvature` above `eps_feas`, a strict local
   minimizer of the soft objective.
@@ -56,6 +55,7 @@ A soft fit (finite term temperature) weighs every term: no assignment, no margin
 ## The fields
 
 - `status`, `reason`, `n_iter`; `max_gap`, `gaps` (`nan` for an empty facet) and `shares`.
+- `n_distinct_terms`: terms whose exponent vectors differ by more than 1e-3.
 - `bound`: the share-weighted sum of facet gaps, bounding the distance from the fixed-assignment
   optimum.
 - `gamma`, `radius`: the margin and stable radius, `nan` at one term.
@@ -77,7 +77,7 @@ temperature and for a facet with fewer than two participating exponents.
 The margin `gamma` is in score units (log metrics), the scale of the band 1/tau; `radius` is
 `gamma / (2R)`, with R the largest norm of a row (u, -1). Compare `gamma` with the median margin,
 the median gap between a design's best and second-best facet score: far below it, a few designs sit
-on a seam and most do not.
+on a seam.
 
 ```python {.runnable}
 import numpy as np
@@ -88,8 +88,10 @@ print(t.gamma, 1 / 50.0, np.median(top[:, -1] - top[:, -2]), t.radius)
 ```
 
 On this table at tau = 50, `gamma` is 0.0020 against a band of 0.02 and a median margin of 0.21:
-level 3 holds, for perturbations well under the band.
+level 3 holds.
 
 ## What to decide from it
 
-`certified` says the run is a local optimum (of its fixed assignment, or of the soft objective), nothing about other restarts. A small `conditioning_` or `n_eff_` says to widen the sample or read exponents loosely.
+Keep three claims apart. `certified` is the first: a local optimum of the objective, not of other restarts. The second, a description of the observed designs, is read from `mean_slack_`. The
+third, that it holds outside the table or supports a decision, the certificate does not make: check it
+on held-out evaluations.

@@ -1,7 +1,6 @@
 # Limitations
 
-The model is a map of a trade space and not the territory. These are the limits that change what you
-do with a result.
+The model is a map, not the territory. These limits change what you do with a result.
 
 **Conditioning defines the question.** The exponents describe the conditioned metrics. Moving the
 reference or the scale of one metric changes which facet is tangent. Refit under a second reasonable
@@ -24,23 +23,24 @@ Judge a score against the band 1/tau. A very high tau rests the fit on a few ext
 tau of about 3 the soft maximum approaches the mean.
 
 **Small samples.** With few designs, or designs that barely differ near the edge, exponents are
-weakly determined. Read `n_eff_` and `conditioning_` ([Reading termination](termination.md)).
+weakly determined. Read `n_eff_` and `conditioning_` ([Reading termination](termination.md)). Designed
+samples, such as grids, are not independent observations: the exponents describe the sample and carry
+no sampling error.
 
 **Contending sets are a reading.** The set is exact at infinite temperature with `min_exponent` at
-0, and graded participation at a working temperature. The fit reports what contends; whether that is
+0, and graded participation at a working temperature. Whether what contends is
 a recognizable dilemma is for you. A tension is a binding constraint, not a correlation, and
 negative association near the surface is partly a closure effect.
 
 **Local fits.** A multi-term fit is a local optimum chosen among seeded restarts. On 20 planted seeds
 ($K = 3$, $d = 4$, $N = 400$) it recovers the planted facets in 16 or 17; failures are facets with
-five or six frontier rows. More restarts do not cure this; a larger sample or `facet_step="tangent"`
-can help.
+five or six frontier rows. More restarts do not cure this; a larger sample can help.
 
 **Novelty is not preference.** V - 1 says how far a design lies beyond the learned surface, not that
-it is wanted, feasible or safe. Elasticities are shape, not preference, and not causal.
+it is wanted, feasible or safe.
 
 **Prediction is conditional.** A prediction inherits the surrogate's error and the fitted trade
-space ([Predicting](prediction.md)).
+space, and inverting a level into a bounded outcome is yours ([Predicting](prediction.md)).
 
 **Name.** "Hyperbolic" describes the shape of the score, which tends to zero as any participating
 metric does. It is unrelated to PCA in hyperbolic space [@chami2021horopca].

@@ -2,7 +2,8 @@
 
 The fit consumes a strictly positive matrix of larger-is-better metrics. Real evaluations produce
 attributes: kilograms, dollars, error rates, counts, some of them better when small. The map from
-attributes to metrics is yours to choose, because it is part of the question you ask. The package
+attributes to metrics is yours to choose, because it is part of the question you ask: a stable fitted
+direction answers that question as conditioned and is not a context-free discovery. The package
 supplies `LogAffinePreconditioner`, which implements the family of maps the method allows, and
 `frontier_in_original_units`, which reports the fitted surface back in the units you started with.
 
