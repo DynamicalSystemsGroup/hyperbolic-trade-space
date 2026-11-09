@@ -2,8 +2,7 @@
 
 `HyperbolicTradeSpace` fits the frontier model to conditioned metrics. At one term it solves a convex
 problem and returns the minimizer. It follows the scikit-learn decomposition family: `fit`,
-`transform`, `inverse_transform`, `score_samples`, and no `predict`. Parameters are stored as given
-and validated in `fit`.
+`transform`, `inverse_transform`, `score_samples`, and no `predict`.
 
 ## One term
 
@@ -56,7 +55,7 @@ print(round(tau, 1))
 
 This synthetic table puts 30 percent of its rows on the planted frontier, hence the target 0.35;
 for real data the default 0.10 is a common start. Use tau of about 3 and above: below that
-`frac_above_` is not monotone in tau. A `ValueError` says when `bounds` misses the target.
+`frac_above_` is not monotone in tau.
 Re-select tau when you change the number of terms.
 
 ## Several terms
@@ -81,9 +80,9 @@ Fitting alternates weights from the current model with a refit, from several see
 (`n_restarts`, default 5) keeping the best. `assign_facets(X)` reads which facet
 dominates new rows. Options:
 
-- `term_temperature` (kappa, default infinity) sets the temperature of the soft weights: finite,
-  every design weighs every term; infinity, one label per design. Reported facets are the dominant
-  term.
+- `term_temperature` (kappa, term temperature, default infinity): infinity, one label per design;
+  finite, every design weighs every term. Read kappa on the scale of tau: far below it, facets
+  merge. At tau = 50, kappa = 5000 is within 0.001 of the infinite-kappa exponents.
 - `penalty="reweighted_l1"` with `alpha` pushes small exponents to exact zero, at finite temperature
   only.
 - `facet_step` is `"support"` (default) or `"tangent"`, which is not monotone and carries no

@@ -42,12 +42,12 @@ print(ts.conditioning_.round(1))
 - `guard_stop`: an iteration raised the mean slack by more than `guard_tol`. Not converged.
 - `iteration_cap`: `max_iter` reached. Not converged.
 - `not_applicable`: one term, `facet_step="tangent"`, a `penalty`, one metric, fewer designs than
-  facets, or a soft fit at infinite temperature. Not a failure.
+  facets, or a soft fit at infinite tau. Not a failure.
 
 `fit` warns (a `ConvergenceWarning` naming the status and the largest gap) for `uncertified`,
 `guard_stop` and `iteration_cap`.
 
-A soft fit (finite `term_temperature`) has no assignment, so no margin:
+A soft fit (finite term temperature) weighs every term: no assignment, no margin.
 
 - `certified`: weighted gaps within `eps_kkt` and `min_curvature` above `eps_feas`, a strict local
   minimizer of the soft objective.
@@ -60,7 +60,7 @@ A soft fit (finite `term_temperature`) has no assignment, so no margin:
   optimum.
 - `gamma`, `radius`: the margin and stable radius, `nan` at one term.
 - Residuals, `objective_change`, `assignment_changes`, `n_empty`, tolerances: diagnostics.
-- `min_curvature`: soft fit only, the smallest curvature on the active face; `nan` otherwise.
+- `min_curvature`: soft fit only, the smallest curvature there; `nan` otherwise.
   A soft fit leaves `gamma`, `radius` and `bound` `nan`.
 
 The tolerances are module constants of `hyperbolic_trade_space.solvers`, not parameters: `EPS_KKT` =

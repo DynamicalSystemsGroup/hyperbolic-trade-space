@@ -34,4 +34,4 @@ Submodules are used by import path:
 - `hyperbolic_trade_space.plotting`: `plot_tensions`, `plot_log_plane`, `plot_frontier_surface_3d`,
   `plot_frontier_coordinates`, `plot_v_by_variable`, `facet_labels`.
 - `hyperbolic_trade_space.solvers`: the multi-term solver, the `Termination` record and the
-  certificate functions, with `min_curvature` for a soft fit ([Reading termination](user-guide/termination.md)).
+  certificate functions, with `min_curvature` for a fit at a finite term temperature, the soft fit ([Reading termination](user-guide/termination.md)).
