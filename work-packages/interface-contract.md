@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 8. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 9. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 8
+contract_version = 9
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -35,6 +35,8 @@ package.version_changed_by = "WP8b"
 package.public_names = ["HyperbolicTradeSpace", "LogAffinePreconditioner", "TradeSpaceRegressor", "__version__", "frontier_in_original_units", "make_configured_frontier_data", "make_frontier_data", "select_temperature", "tension_report"]
 package.submodules = ["plotting", "gaps", "solvers", "coordinates", "datasets", "preconditioning", "predictive", "tensions", "tuning", "estimator"]
 package.estimator.fitted_attributes = ["exponents_", "log_offset_", "training_log_v_", "termination_", "conditioning_", "mean_slack_", "facet_", "coefficients_", "facet_share_"]
+package.estimator.term_aggregation_default = "sum"
+package.estimator.term_aggregation_values = ["sum", "mean"]
 boundary.oracle.status = "pinned_at_WP15_acceptance"
 boundary.oracle.call = "__call__(configuration: Mapping[str, float | str]) -> dict[str, float | bool]"
 boundary.oracle.evaluate = "evaluate(designs: pandas.DataFrame) -> pandas.DataFrame"
@@ -154,6 +156,15 @@ curvature not positive (a saddle or a flat direction); `min_curvature` is the sm
 `"not_applicable"` (the last: the fit is the label fit). `facet_`, the facet shares, the
 contending sets and the elasticities stay the analysis by the dominant term; `mean_slack_` is the
 mean slack of the reported model.
+
+*The term aggregation (version 9, WP21 D-1).* The constructor keyword `term_aggregation` of
+`HyperbolicTradeSpace` takes `"sum"` (the default) or `"mean"` (manifest
+`package.estimator.term_aggregation_default`, `term_aggregation_values`); it is stored verbatim and
+validated in `fit`. `"sum"` is the log-sum-exp over the K terms (today's behaviour, every committed
+number), with `max <= Phi_K <= max + log K / kappa`; `"mean"` is the log-mean-exp, `Phi_K - log K /
+kappa`, with `max - log K / kappa <= Phi_K <= max`. The two differ by the constant `log K / kappa`,
+so the soft weights, the Hessian, the certificate and the fitted terms are the same; `score_samples`
+and the mean slack shift by exactly that constant. No effect at `term_temperature = inf` or one term.
 
 Consumers: the docsite generates its API reference from the numpydoc docstrings of the public names,
 and the paper reads the attributes above; neither imports a name outside this list without an
@@ -289,6 +300,7 @@ the last row of the change log.
 | 6 | 2026-11-09 | The soft several-term fit (WP17, R-1, R-7): a finite `term_temperature` selects the fit with a weight on every term for every design; the `Termination` record gains `min_curvature` and the status `"stationary"`; `"certified"` has two meanings (label fit: the fixed assignment; soft fit: the second-order test of the soft objective); `solvers` offers `soft_weights`, `soft_objective`, `soft_hessian`, `soft_certificate`. Additive: the pinned field, status and name lists grow (floor rule); the default (`np.inf`) fit is unchanged, attribute for attribute | technical (the docsite and the paper words follow) | `WP17-scope-of-work.md`, approved by the driver under the mandate on the supervisor's conditional direction and amended on his question ("can we get another certification method for the soft fit") |
 | 7 | 2026-11-09 | The ternary plot (WP18, R-5): `plotting` also offers `plot_ternary(estimator, X=None, names=None, groups=None, lines=False, near=0.2, ax=None, scheme="auto") -> Axes`; it draws a triangle of the shares of a total among three metrics, tinted by region (where each facet dominates, named by words read from the fit) with the designs as points and each facet's exponent vector as a numbered marker (where that facet's V peaks at a fixed total, not where V = 1); `lines=True` adds lines of equal V; `groups` sums each facet's exponents within three groups of metrics. Additive: the pinned `plotting` list grows (floor rule); no other pinned fact changes | technical (the docsite and the paper words follow) | `WP18-scope-of-work.md`, approved by the driver under the mandate |
 | 8 | 2026-11-09 | The values at the ternary plot's markers (WP18, supervisor's request): `plotting` also offers `ternary_marker_values(estimator, X, names=None) -> pandas.DataFrame`, one row per numbered marker of `plot_ternary(..., lines=True)` (marker shape, number, the facet's exponent vector as shares, and V attained there as a fraction of the highest marker's V; `attrs["levels"]` holds the equal-V levels), computed by the code that draws the lines and markers. Additive: the pinned `plotting` list grows (floor rule); `plot_ternary`'s signature is unchanged and its figure is unchanged | technical (the docsite and the paper words follow) | `WP18-decisions.md`, supervisor, "this one is great but make sure the prose is clear about the values attained at the square, star and triangle points marked" |
+| 9 | 2026-11-09 | The term aggregation keyword (WP21 D-1, D-2): `HyperbolicTradeSpace` gains `term_aggregation` (`"sum"` default, `"mean"`), stored verbatim and validated in `fit`; manifest `package.estimator.term_aggregation_default` and `term_aggregation_values`. Additive; the default is today's behaviour, so no committed number changes | technical (the docsite and the paper words follow) | `external-assessment-2026-11-09/triage.md`, the supervisor on A4: "really the package should support both setups ... in practice these should be keyword based." |
 
 ## 15. Consumers: may assume, must not touch
 

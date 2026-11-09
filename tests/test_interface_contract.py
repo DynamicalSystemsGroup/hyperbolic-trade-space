@@ -1024,3 +1024,24 @@ def test_r6_glossary_schema_pinned_as_a_floor():
     assert set(data) <= set(DOCS["glossary_file_key_names"])
     for entry in data["entries"]:
         assert set(entry) <= fields, msg("R-6", f"{entry['id']}: field not pinned", "presentation")
+
+
+def test_r1_term_aggregation_keyword_pinned():
+    """Version 9 (WP21 D-2): the keyword, its default and its values; validated in ``fit``."""
+    import numpy as np
+
+    pkg = _pkg()
+    spec = PKG["estimator"]
+    cls = getattr(pkg, spec["class"])
+    param = inspect.signature(cls).parameters["term_aggregation"]
+    assert param.default == spec["term_aggregation_default"] == "sum", msg(
+        "R-1", "term_aggregation defaults to the manifest's value 'sum'"
+    )
+    X, _ = pkg.make_frontier_data(40, 3, random_state=0)
+    for value in spec["term_aggregation_values"]:
+        cls(term_aggregation=value).fit(np.asarray(X))
+    with pytest.raises(ValueError, match="term_aggregation"):
+        cls(term_aggregation="not-a-value").fit(np.asarray(X))
+    assert "term_aggregation" in DOC and "version 9" in DOC, msg(
+        "R-8", "the document states the term aggregation amendment", "both"
+    )

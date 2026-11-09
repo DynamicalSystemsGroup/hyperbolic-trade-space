@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 8
+contract_version = 9
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -93,6 +93,9 @@ methods = [
   "fit", "fit_transform", "transform", "inverse_transform", "score_samples", "invariant_value",
   "improvement_factors", "level_set", "novelty_score", "project", "assign_facets",
 ]
+# Constructor keyword of the term aggregation (version 9, WP21 D-1): default and the values fit accepts.
+term_aggregation_default = "sum"
+term_aggregation_values = ["sum", "mean"]
 termination_class = "hyperbolic_trade_space.solvers.Termination"
 termination_fields = [
   "status", "reason", "n_iter", "sum_residual", "floor_residual", "offset_residual", "max_gap",
