@@ -872,4 +872,28 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   "elasticity", glossed in the abstract; "exchange rate" is withdrawn everywhere. **Driver's call:**
   the public field `exchange_rates` of the tension report becomes `elasticities` with a contract
   amendment, since nothing is released and the code should carry the glossary's word. Sent to the PM.
+- Continuing through the abstract. **Supervisor, verbatim:** "\"Fitting one facet is a geometric
+  program, solved as a convex program after a logarithmic change of variables; fitting several
+  alternates assigning designs to facets with one such program per facet; descent is derived,
+  stationarity checked numerically, local optimality derived under stated hypotheses.\" this is to
+  complex of prose for an abstract. just make it clear that if we are modeling a single n-lemma its
+  fitting a monomial with can be transformed into a convex program and solved directly. when there
+  are multiple active trades at the same time we use a posynomial and the resulting program is a
+  generalized geometric program (GGP). we can note the method may be further generalized to any
+  kernel which satisfies the conditions of a GGP."
+  On "The method belongs beside PCA, and the two chain.": "our implementation mirrors the structure
+  of a PCA as an unsupervised learning method for feature engineering."
+  "cut \"On one case it scales where dominance does not: the nondominated set stops shortlisting
+  with more metrics.\" (too much detail)"
+  On the cubesat sentence: "just summarize the case we used and what we show using the case."
+  On "Derived statements point to script and proof.": "drop the point about proof scripts thats a
+  distraction".
+- **Disposition.** Amendment 4, R-38: four of the five edits are sent to the PM as written. **One
+  clause is held and put to him** (a stop condition of the mandate: a requested statement against
+  a derived one): "the resulting program is a generalized geometric program". The paper's section 6
+  states and the derivations use (L11 to L13) that the fit of several facets is not convex, because
+  the assignment of designs to facets is combinatorial; a generalized geometric program is convex
+  after the change of variables. What is true: each term's refit is a geometric program; the fitted
+  posynomial is compatible with generalized geometric programming, so a design program that uses it
+  is a GGP; kernels that keep that compatibility are the stated extension.
 

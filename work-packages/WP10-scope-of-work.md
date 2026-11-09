@@ -632,6 +632,20 @@ docsite files are WP8a's and change under this amendment by the same direction).
   contract amended, so the code a user reads carries the glossary's word. *Check:* the vocabulary
   tool passes with "exchange rate" in `avoid`; the contract test; the suite; no number changes.
 
+- R-38. *The abstract, simplified in the supervisor's words* (`WP10-decisions.md`, "Continuing
+  through the abstract"). (a) The sentence on the fit says plainly: one n-lemma is a monomial, whose
+  fit transforms into a convex program and is solved directly; several trade-offs active at once
+  are a posynomial; the method may extend to any kernel that satisfies the conditions of generalized
+  geometric programming. The clause on what kind of program the several-term case is stays HELD
+  until he answers the driver's question. The clauses on descent, stationarity and local optimality
+  leave the abstract (they stay in section 6). (b) "The method belongs beside PCA, and the two
+  chain." becomes a sentence that the implementation mirrors the structure of PCA as an unsupervised
+  learning method for feature engineering. (c) The sentence "On one case it scales where dominance
+  does not..." is cut. (d) The cubesat sentence summarizes the case used and what is shown with it,
+  in one sentence, without counts of attributes, regimes or facets, claiming only what section 9
+  supports. (e) "Derived statements point to script and proof." is cut. *Check:* the abstract's word
+  ceiling; every term in it resolves in the glossary; the driver reads it rendered.
+
 **Non-goals.** No change to a mathematical statement, a number or a figure. No new term coined to
 replace an old one where plain words serve. No rewrite of prose the review does not flag.
 
