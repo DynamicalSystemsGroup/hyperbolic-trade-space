@@ -243,13 +243,15 @@ def feasible_mask(raw, spec=CUBESAT):
     return ok & (raw[list(spec.attributes)] > 0).all(axis=1)
 
 
-def conditioner_for(attrs, spec=CUBESAT):
+def conditioner_for(attrs, spec=CUBESAT, scaler="standard"):
     """The ColumnTransformer: attributes to metrics, covariates to codes, design variables through.
 
     Parameters
     ----------
     attrs : sequence of str
     spec : CaseSpec
+    scaler : {"standard", "robust"}, default "standard"
+        The log-space scaler of the conditioning (unit log standard deviation or unit log IQR).
 
     Returns
     -------
@@ -265,7 +267,7 @@ def conditioner_for(attrs, spec=CUBESAT):
         (
             "metrics",
             LogAffinePreconditioner(
-                orientation=[spec.orientation[a] for a in attrs], scaler="standard"
+                orientation=[spec.orientation[a] for a in attrs], scaler=scaler
             ),
             list(attrs),
         )
@@ -283,8 +285,8 @@ def conditioner_for(attrs, spec=CUBESAT):
     return ColumnTransformer(parts, verbose_feature_names_out=True).set_output(transform="pandas")
 
 
-def _condition(feasible, attrs, spec):
-    cond = conditioner_for(attrs, spec)
+def _condition(feasible, attrs, spec, scaler="standard"):
+    cond = conditioner_for(attrs, spec, scaler)
     table = cond.fit_transform(feasible)
     return cond, table[[f"metrics__{a}" for a in attrs]].to_numpy()
 
@@ -471,6 +473,97 @@ def tau_sweep(study, taus=None):
         rows.append({"tau": t, "frac_above": e.frac_above_, "n_eff": e.n_eff_,
                      "metrics with w>1e-3": int((w > 1e-3).sum()), "largest w": w.max(),
                      "largest at": study.names[int(w.argmax())]})  # fmt: skip
+    return pd.DataFrame(rows)
+
+
+def _rebuilt(study, feasible=None, scaler="standard"):
+    """A study on other rows or another scaler, conditioned afresh on the study's attributes."""
+    feasible = study.feasible if feasible is None else feasible.reset_index(drop=True)
+    cond, M = _condition(feasible, study.attrs, study.spec, scaler)
+    return Study(study.spec, study.regime, study.raw, feasible, study.attrs, M, cond)
+
+
+def _fit_row(study, fit, baseline=None):
+    """One summary row of a K = 1 fit: temperature, fraction above, size, contending set."""
+    e, rep = fit.estimator, _reports(study, fit)[0]
+    contending = _sorted_contending(rep, study.names)
+    row = {
+        "tau": fit.tau,
+        "frac_above_": e.frac_above_,
+        "n_eff_": e.n_eff_,
+        "n_lemma": rep.n_lemma,
+        "contending set": ", ".join(contending),
+        "largest exponent at": study.names[int(np.argmax(np.ravel(e.exponents_)))],
+    }
+    if baseline is not None:
+        row["shared with baseline"] = len(set(contending) & set(baseline))
+    return row, contending
+
+
+def sensitivity_table(study):
+    """The K = 1 fit under variants of the pipeline's choices, against the baseline.
+
+    Variants: the target fraction above ``V = 1`` halved and doubled, the robust (log-IQR) scaler
+    in place of the standard one, and each named view of the attributes (``spec.views``).
+
+    Parameters
+    ----------
+    study : Study
+        Built on all attributes (the ten-attribute fit).
+
+    Returns
+    -------
+    pandas.DataFrame
+        One row per variant: its setting, the selected temperature, ``frac_above_``, ``n_eff_``,
+        the contending set, the largest exponent's metric and how many metrics of the baseline's
+        contending set the variant's contending set shares.
+    """
+    spec = study.spec
+    target = spec.target_frac
+    base_row, base = _fit_row(study, fit_study(study))
+    setting = f"target {target:g}, standard scaler, all"
+    rows = [{"variant": "baseline", "setting": setting, **base_row,
+             "shared with baseline": len(base)}]  # fmt: skip
+
+    def add(variant, setting, st, fit):
+        row, _ = _fit_row(st, fit, base)
+        rows.append({"variant": variant, "setting": setting, **row})
+
+    for label, t in (
+        ("target fraction halved", target / 2),
+        ("target fraction doubled", 2 * target),
+    ):
+        add(label, f"target {t:g}", study, fit_study(study, 1, t))
+    robust = _rebuilt(study, scaler="robust")
+    add("robust scaler", "log-IQR scaling", robust, fit_study(robust))
+    for name in spec.views:
+        v = view_study(study, name)
+        add(f"view: {name}", f"{len(v.attrs)} attributes", v, fit_study(v))
+    return pd.DataFrame(rows)
+
+
+def category_refits(study):
+    """The K = 1 fit refit within each level of the first covariate (the colour category).
+
+    Parameters
+    ----------
+    study : Study
+        Built on all attributes (the ten-attribute fit).
+
+    Returns
+    -------
+    pandas.DataFrame
+        One row per level of ``spec.category``: its designs, the temperature selected on them,
+        ``frac_above_``, ``n_eff_``, the contending set and the largest exponent's metric. Empty
+        when the spec has no covariate.
+    """
+    spec = study.spec
+    rows = []
+    for level in spec.covariates.get(spec.category, ()):
+        sub = study.feasible[study.feasible[spec.category] == level]
+        st = _rebuilt(study, sub)
+        row, _ = _fit_row(st, fit_study(st))
+        rows.append({spec.category: level, "designs": len(sub), **row})
     return pd.DataFrame(rows)
 
 

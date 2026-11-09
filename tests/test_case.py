@@ -187,6 +187,37 @@ def test_figures_return_figures_and_do_not_save(small, small_fit, tmp_path, monk
     assert list(tmp_path.iterdir()) == []
 
 
+def test_sensitivity_table_has_the_variants_and_the_baseline_shares_all(primary):
+    t = case.sensitivity_table(primary)
+    spec = primary.spec
+    assert t.variant.tolist() == [
+        "baseline", "target fraction halved", "target fraction doubled", "robust scaler",
+        *[f"view: {v}" for v in spec.views],
+    ]  # fmt: skip
+    assert t.loc[0, "shared with baseline"] == t.loc[0, "n_lemma"]
+    assert (t.frac_above_ >= 0).all() and (t.tau > 0).all()
+    # halving the target fraction raises the temperature, doubling it lowers it
+    assert t.tau[1] > t.tau[0] > t.tau[2]
+    again = case.sensitivity_table(primary)
+    pd.testing.assert_frame_equal(t, again)
+
+
+def test_category_refits_cover_each_level_and_partition_the_designs(primary):
+    t = case.category_refits(primary)
+    levels = primary.spec.covariates[primary.spec.category]
+    assert t[primary.spec.category].tolist() == list(levels)
+    assert t.designs.sum() == len(primary.feasible)
+    assert (t.frac_above_ >= 0).all() and (t.n_eff_ > 0).all()
+
+
+def test_scaler_option_changes_the_conditioning_and_is_standard_by_default(small):
+    assert case.conditioner_for(small.attrs).transformers[0][1].scaler == "standard"
+    robust = case._rebuilt(small, scaler="robust")
+    assert robust.preconditioner.scaler == "robust"
+    assert not np.allclose(robust.M, small.M)
+    assert robust.M.shape == small.M.shape and len(robust.feasible) == len(small.feasible)
+
+
 # ---- the frozen data: counts and the K = 1, 2, 3 record -----------------------------------
 
 
@@ -398,3 +429,11 @@ def test_docstrings_run_and_are_numpydoc():
     ):  # fmt: skip
         doc = getattr(case, name).__doc__
         assert "Parameters\n    ----------" in doc and "Returns\n    -------" in doc, name
+
+
+def test_sensitivity_and_refits_on_frozen_primary(primary):
+    t = case.sensitivity_table(primary).set_index("variant")
+    assert t.loc["baseline", "tau"] == pytest.approx(38.0961, rel=1e-4)  # the K = 1 record
+    assert t.loc["baseline", "n_lemma"] == 6
+    r = case.category_refits(primary)
+    assert r.designs.tolist() == [191, 248, 267]

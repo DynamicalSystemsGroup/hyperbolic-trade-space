@@ -57,6 +57,22 @@ def _label(regime):
     return DATASET_LABELS.get(regime, regime)
 
 
+# Which part of the model produces each attribute: the file of examples/adcs and the name in it.
+# A test checks that each name occurs in its file; nothing here is a number.
+PRODUCERS = {
+    "settling_time_s": ("adcs_sim.py", "simulate_adcs", "measured: on the integrated slew"),
+    "slew_time_s": ("cubesat_model.py", "slew_time", "measured: on the integrated slew"),
+    "pointing_error_deg": ("cubesat_model.py", "pointing_error_deg", "computed: pointing budget"),
+    "total_mass_kg": ("cubesat_tradespace.sysml", "MassAccounting", "computed: accounting"),
+    "control_effort": ("adcs_sim.py", "simulate_adcs", "measured: on the integrated slew"),
+    "power_margin_w": ("cubesat_tradespace.sysml", "PowerMargin", "computed: accounting"),
+    "energy_balance_wh": ("cubesat_tradespace.sysml", "EnergyBalance", "computed: accounting"),
+    "eclipse_reserve_wh": ("cubesat_tradespace.sysml", "EclipseReserve", "computed: accounting"),
+    "peak_slew_power_w": ("cubesat_tradespace.sysml", "PeakSlewPower", "computed: accounting"),
+    "dod_eclipse": ("cubesat_tradespace.sysml", "DepthOfDischarge", "computed: accounting"),
+}
+
+
 def configuration_space(spec=None) -> Md:
     """The design variables with their declared ranges, levels and sampled extent per regime.
 
@@ -105,6 +121,21 @@ def evaluation(spec=None) -> Md:
     return Md(attrs + "\n\n" + md_table(["Scenario constant (column)", "Value"], const))
 
 
+def attribute_sources(spec=None) -> Md:
+    """Which part of the model produces each attribute, in the order of the evaluation table.
+
+    Returns
+    -------
+    Md
+        One row per attribute: how it is obtained (measured on the slew or computed by the
+        accounting), the file of ``examples/adcs`` and the name in it that produces it.
+    """
+    spec = _spec(spec)
+    rows = [[spec.short[a], f"`{PRODUCERS[a][0]}`", f"`{PRODUCERS[a][1]}`", PRODUCERS[a][2]]
+            for a in spec.attributes]  # fmt: skip
+    return Md(md_table(["Attribute", "File", "Name in the file", "How it is obtained"], rows))
+
+
 def feasibility(spec=None) -> Md:
     """The feasibility conditions applied in order, per regime, from the case module.
 
@@ -132,6 +163,40 @@ def conditioning(spec=None) -> Md:
     for r in spec.regimes:
         tab = case.conditioning_table(case.load_study(r, spec))
         parts.append(f"Dataset {_label(r)}:\n\n" + frame_table(tab.rename_axis("attribute"), True))
+    return Md("\n\n".join(parts))
+
+
+def metric_table(spec=None, n=5) -> Md:
+    """The table of metrics, the method's input: its definition and its first rows per dataset.
+
+    Parameters
+    ----------
+    spec : case.CaseSpec, optional
+    n : int, default 5
+        Rows shown per dataset.
+
+    Returns
+    -------
+    Md
+        The rule that turns an attribute into a metric, then per dataset the number of designs and
+        the first ``n`` rows of the metric table (one column per metric, strictly positive,
+        larger is better). Nothing is fitted to it here.
+    """
+    spec = _spec(spec)
+    parts = [
+        "Each metric is `m_j = exp((o_j log(a_j + s_j) - c_j) / k_j)` for attribute `a_j`, with "
+        "orientation `o_j` (+1 larger is better, -1 smaller is better), shift `s_j = 0`, and "
+        "the offset `c_j` and log scale `k_j` of the conditioning above. The table of metrics, "
+        "one row per kept design and one column per metric, is where the model ends and the method "
+        "begins."
+    ]
+    for r in spec.regimes:
+        st = case.load_study(r, spec)
+        head = pd.DataFrame(st.M[:n], columns=st.names).rename_axis("design").reset_index()
+        parts.append(
+            f"Dataset {_label(r)}: {st.M.shape[0]} designs by {st.M.shape[1]} metrics; "
+            f"the first {n} rows:\n\n" + frame_table(head)
+        )
     return Md("\n\n".join(parts))
 
 

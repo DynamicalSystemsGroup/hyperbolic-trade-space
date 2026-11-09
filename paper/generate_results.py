@@ -148,3 +148,42 @@ def propose_predict_check() -> Md:
     s = case.load_study("primary")
     reg = case.fit_regressor(s)
     return Md(f"{_cite('primary')}:\n\n" + frame_table(case.predict_check(s, reg)))
+
+
+def sensitivity_variants() -> Md:
+    """The K = 1 fit under variants of the pipeline's choices, per regime.
+
+    Returns
+    -------
+    Md
+        The target fraction halved and doubled, the robust scaler and each named view, against the
+        baseline, with how many metrics of the baseline's contending set each variant shares.
+    """
+    parts = [f"{_cite(r)}:\n\n" + frame_table(case.sensitivity_table(s))
+             for r, s in _studies().items()]  # fmt: skip
+    return Md("\n\n".join(parts))
+
+
+def refits_by_category() -> Md:
+    """The K = 1 fit refit within each level of the first covariate, per regime.
+
+    Returns
+    -------
+    Md
+    """
+    parts = [f"{_cite(r)}:\n\n" + frame_table(case.category_refits(s))
+             for r, s in _studies().items()]  # fmt: skip
+    return Md("\n\n".join(parts))
+
+
+def candidate_designs() -> Md:
+    """The measured candidate designs scored against the K = 1 fit of the primary regime.
+
+    Returns
+    -------
+    Md
+    """
+    return Md(
+        f"{_cite('primary')}:\n\n"
+        + frame_table(case.candidate_table(_study("primary"), _fits("primary")[1]))
+    )
