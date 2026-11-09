@@ -487,7 +487,7 @@ def test_register_committed_output_is_current():
 # -- E: the abstraction gaps
 
 
-def test_gaps_table_has_g1_to_g16_from_the_ledger():
+def test_gaps_table_has_every_ledger_row():
     rows = generate_gaps.gap_rows()
     ledger_ids = re.findall(r"^\| \*\*(G-\d+)\.", (NOTES / "abstraction-gaps.md").read_text(), re.M)
     assert [r["id"] for r in rows] == ledger_ids == [f"G-{i}" for i in range(1, len(rows) + 1)]
@@ -1271,3 +1271,125 @@ def test_every_exact_only_assertion_names_a_listed_value_and_every_listed_value_
 def test_the_variable_and_the_reference_file_exist():
     assert ENV_VAR == "HTS_ENVIRONMENT_OF_RECORD"
     assert VALUES_FILE.is_file() and REFERENCE_FILE.is_file()
+
+
+# ---- WP16 D-6: the paper prints nothing to a precision at which it is not reproducible ----------
+
+RESULTS = ROOT / "examples" / "adcs" / "experiments" / "reports" / "sensitivity.json"
+RAW_RESIDUE = re.compile(r"\de-(?:1[3-9]|[2-9]\d)")  # 1e-13 and below, as raw digits
+NUM_CELLS = [
+    "num-nondominated", "num-certificates", "num-temperature", "num-k-sweep", "num-regimes",
+    "num-candidates", "num-predict",
+]  # fmt: skip
+
+
+def _results():
+    return json.loads(RESULTS.read_text(encoding="utf-8"))
+
+
+def _case_sentences():
+    import case
+    import generate_findings as gf
+
+    study = case.load_study("primary")
+    fits = case.k_fits(study)
+    cand = case.candidate_table(study, fits[1])
+    reg = case.fit_regressor(study)
+    return {
+        "num-nondominated": gf.nondominated_sentence(study),
+        "num-certificates": gf.certificate_sentence(fits),
+        "num-temperature": gf.temperature_sentence(study, fits[1]),
+        "num-k-sweep": gf.k_sweep_sentence(study, fits),
+        "num-regimes": gf.regime_sentence(),
+        "num-candidates": gf.candidates_sentence(cand),
+        "num-predict": gf.predict_check_sentence(case.predict_check(study, reg), reg),
+    }
+
+
+@pytest.fixture(scope="module")
+def case_sentences():
+    return _case_sentences()
+
+
+def test_results_file_records_the_five_seeds_and_the_perturbation():
+    r = _results()
+    assert r["seeds"] == [1, 2, 3, 4, 5]
+    assert r["perturbation"]["relative_half_width"] == 1e-12
+    assert set(r["perturbation"]["variables"]) == {"Kp", "Kd", "panel_span_m", "battery_wh"}
+    for name, e in r["quantities"].items():
+        if "min" in e and np.isfinite(e["committed"]):
+            assert e["min"] <= e["committed"] <= e["max"], name
+
+
+def test_generated_sentences_quote_the_ranges_from_the_results_file(case_sentences):
+    from paper_stability import stable
+
+    q = _results()["quantities"]
+    nd = str(case_sentences["num-nondominated"])
+    moved = 0
+    for name, e in q.items():
+        if not name.startswith("nondominated | primary | ") or not name.endswith("| nondominated"):
+            continue
+        lo, hi = int(e["min"]), int(e["max"])
+        moved += lo != hi
+        assert (f"{lo} to {hi}" if lo != hi else f"{lo} on") in nd, name
+    assert moved, "no count moves: the sentence would quote no range"
+    ks = str(case_sentences["num-k-sweep"])
+    gap = q["sentence | K sweep | largest facet gap"]
+    if max(abs(gap["min"]), abs(gap["max"])) < 1e-12:
+        assert "facet gap below 1e-12" in ks
+    for k in (1, 2, 3):
+        name = f"D facets K=3 | primary | {k} | share"
+        e = q[name]
+        shown = stable(name, lambda v: f"{v:.3f}")
+        assert shown in ks, name
+        if f"{e['min']:.3f}" != f"{e['max']:.3f}":  # the share moves at the printed three decimals
+            assert shown != f"{e['committed']:.3f}", name
+    temp = str(case_sentences["num-temperature"])
+    n_eff = q["fit | primary K=1 | n_eff_"]
+    assert f"{n_eff['committed']:.1f}" not in temp or n_eff["min"] == n_eff["max"]
+
+
+def test_no_residue_is_printed_as_raw_digits(case_sentences):
+    for key, text in case_sentences.items():
+        assert not RAW_RESIDUE.search(str(text)), key
+    for nb in (PAPER_NB, SUPPORT_NB):
+        for cell in _code_cells(_nb(nb)):
+            if cell.id.startswith(("num-", "tab-D-")):
+                assert not RAW_RESIDUE.search(_out_text(cell)), cell.id
+    assert "below 1e-12" in str(case_sentences["num-certificates"])
+
+
+def test_generated_sentences_committed_output_is_current(case_sentences):
+    exact = exact_only("planted_table_sha256")
+    rtol = listed()["planted_table_sha256"]["text_rtol"]
+    by_id = {c.id: c for c in _code_cells(_nb(PAPER_NB))}
+    for cid in NUM_CELLS:
+        committed, fresh = _out_text(by_id[cid]), str(case_sentences[cid])
+        ok = committed == fresh if exact else _same_text(committed, fresh, rtol)
+        assert ok, f"{cid}: {STALE}"
+
+
+def test_appendix_d_has_the_stability_subsection_and_section_9_points_to_it():
+    import generate_results
+
+    heads = [h for h in _headings(_nb(SUPPORT_NB), "###") if h.startswith("D.")]
+    assert heads[-1] == "D.11 Stability of the conclusions under rounding-level jitter"
+    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-stability")
+    exact = exact_only("planted_table_sha256")
+    committed, fresh = _out_text(cell), str(generate_results.stability())
+    rtol = listed()["planted_table_sha256"]["text_rtol"]
+    assert (committed == fresh) if exact else _same_text(committed, fresh, rtol), STALE
+    assert "identical" in committed and "differs" not in committed
+    assert "D.11" in _section("Case analysis")
+
+
+def test_stability_table_is_derived_from_the_results_file():
+    import generate_results
+
+    q = _results()["quantities"]
+    rows = generate_results._verdict_rows()
+    for (_, prefixes, suffix), (_, _, ok) in zip(generate_results.CONCLUSIONS, rows, strict=True):
+        names = [n for n in q if n.startswith(prefixes) and n.endswith(suffix)]
+        assert ok == all(q[n]["identical"] for n in names)
+    assert all(count > 0 for _, count, _ in rows)

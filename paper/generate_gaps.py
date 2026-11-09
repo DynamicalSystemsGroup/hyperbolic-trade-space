@@ -1,4 +1,4 @@
-"""Appendix E: the abstraction gaps G-1 to G-16, compiled from ``abstraction-gaps.md``.
+"""Appendix E: the abstraction gaps G-1 to G-17, compiled from ``abstraction-gaps.md``.
 
 The ledger's table is read, not retyped: one row per gap with the formal object, the bridging
 assumption, what cannot be proved, the sensitivity evidence and the interpretive consequence.

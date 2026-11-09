@@ -10,6 +10,12 @@ from __future__ import annotations
 import case
 import numpy as np
 from paper_common import Md
+from paper_stability import stable
+
+
+def _end(text: str) -> str:
+    """The end of an interval: in parentheses where it is itself a range."""
+    return f"({text})" if " to " in text else text
 
 
 def _and(items) -> str:
@@ -28,7 +34,10 @@ def nondominated_sentence(study) -> Md:
     """Nondominated counts of the study's table on each view."""
     df = case.nondominated_counts(study)
     n = int(df["of"].iloc[0])
-    parts = [f"{int(r.nondominated)} on {int(r.columns)}" for r in df.itertuples()]
+    parts = [
+        f"{stable(f'nondominated | {study.regime} | {r.view} | nondominated')} on {int(r.columns)}"
+        for r in df.itertuples()
+    ]
     return Md(
         f"On the cubesat table, of {n} feasible designs, the nondominated sets hold "
         f"{_and(parts)} attributes respectively."
@@ -47,11 +56,14 @@ def datasets_sentence(primary, stock) -> Md:
 
 def temperature_sentence(study, fit) -> Md:
     """The selected temperature and what it leaves above V = 1."""
-    e = fit.estimator
+    r = study.regime
+    frac = stable(f"fit | {r} K=1 | frac_above_", lambda v: f"{v:.3f}")
+    n_eff = stable(f"fit | {r} K=1 | n_eff_", lambda v: f"{v:.1f}")
+    band = stable("sentence | temperature | band", lambda v: f"{v:.4f}")
     return Md(
-        f"The selected temperature is tau = {fit.tau:.1f}: a fraction {e.frac_above_:.3f} of "
+        f"The selected temperature is tau = {fit.tau:.1f}: a fraction {frac} of "
         f"designs lies above V = 1 (the target is {study.spec.target_frac:.2f}), the band "
-        f"1/tau is {fit.band:.4f} and the effective sample size is {e.n_eff_:.1f} designs."
+        f"1/tau is {band} and the effective sample size is {n_eff} designs."
     )
 
 
@@ -65,10 +77,18 @@ def k1_sentence(study, fit) -> Md:
     )
 
 
+def _share(regime, facet) -> str:
+    return stable(f"D facets K=3 | {regime} | {int(facet)} | share", lambda v: f"{v:.3f}")
+
+
 def k_sweep_sentence(study, fits) -> Md:
     """Mean slack by K, the facets at K = 3 and what the solver declared."""
     t = case.k_table(study, fits)
-    obj = {int(r.K): r.objective_ for r in t.itertuples()}
+    r = study.regime
+    obj = {
+        int(row.K): stable(f"D k_table | {r} | {int(row.K)} | objective_", lambda v: f"{v:.3f}")
+        for row in t.itertuples()
+    }
     cert = t[t["K"] > 1]
     ft = case.facet_table(study, fits, K=max(fits), band=fits[1].band)
     sets = [set(s.strip() for s in x.split(",")) for x in ft["contending set"]]
@@ -76,14 +96,15 @@ def k_sweep_sentence(study, fits) -> Md:
     k1 = set(_contending(study, fits[1]))
     new = sorted(union - k1)
     return Md(
-        f"The mean slack falls from {obj[1]:.3f} at K = 1 to {obj[2]:.3f} at K = 2 and "
-        f"{obj[3]:.3f} at K = 3. The facets of the K = 3 fit hold facet shares "
-        f"{_and(f'{s:.3f}' for s in ft['share'])} and contending sets of "
+        f"The mean slack falls from {obj[1]} at K = 1 to {obj[2]} at K = 2 and "
+        f"{obj[3]} at K = 3. The facets of the K = 3 fit hold facet shares "
+        f"{_and(_share(r, k) for k in ft['facet'])} and contending sets of "
         f"{_and(ft['n_lemma'])} metrics; their union has {len(union)} metrics, of which "
         f"{_and(new) if new else 'none'} are absent from the K = 1 set. The solver declares "
         f"the status {_and(sorted(set(cert['status'])))} at K = 2 and 3, with the largest "
-        f"facet gap {cert['max gap'].max():.1e}, the smallest assignment margin "
-        f"{cert['gamma'].min():.5f} and the smallest stable radius {cert['radius'].min():.1e}."
+        f"facet gap {stable('sentence | K sweep | largest facet gap')}, the smallest assignment "
+        f"margin {stable('sentence | K sweep | smallest margin')} and the smallest stable radius "
+        f"{stable('sentence | K sweep | smallest radius')}."
     )
 
 
@@ -91,7 +112,8 @@ def certificate_sentence(fits) -> Md:
     """What the solver reports at each K (the Numerical badge of section 6)."""
     t = case.certificate_table(fits)
     rows = [
-        f"K = {int(r['K'])}: status {r['status']}, largest facet gap {r['max gap']:.1e}"
+        f"K = {int(r['K'])}: status {r['status']}, largest facet gap "
+        + stable(f"certificate | primary | {int(r['K'])} | max gap", lambda v: f"{v:.1e}")
         for _, r in t.iterrows()
     ]
     return Md("As printed by the solver on the primary regime, " + "; ".join(rows) + ".")
@@ -114,13 +136,16 @@ def regime_sentence() -> Md:
 def candidates_sentence(table) -> Md:
     """Where the measured candidates sit against the K = 1 reference surface."""
     lv = table["log V"]
-    rk = table["rank among training"]
     beyond = int((lv > 0).sum())
+    three = lambda v: f"{v:.3f}"  # noqa: E731
+    two = lambda v: f"{v:.2f}"  # noqa: E731
     return Md(
         f"The {len(table)} measured candidates have energy differentials between "
-        f"{lv.min():.3f} and {lv.max():.3f}; {beyond} of them lie beyond the fitted reference "
-        f"surface. Their ranks among the training designs run from {rk.min():.2f} to "
-        f"{rk.max():.2f}."
+        f"{_end(stable('sentence | candidates | lowest log V', three))} and "
+        f"{_end(stable('sentence | candidates | highest log V', three))}; {beyond} of them lie "
+        f"beyond the fitted reference surface. Their ranks among the training designs run from "
+        f"{_end(stable('sentence | candidates | lowest rank', two))} to "
+        f"{_end(stable('sentence | candidates | highest rank', two))}."
     )
 
 
@@ -129,11 +154,14 @@ def predict_check_sentence(table, reg) -> Md:
     n = len(table)
     lv = int(table["log V within band"].sum())
     z = int(table["Z within band"].sum())
+    one = lambda v: f"{v:.1f}"  # noqa: E731
     return Md(
         f"Of {n} proposals, the predicted energy differential lies within the band "
-        f"1/tau = {1 / reg.tau:.4f} of the measured one for {lv}, and the predicted position "
-        f"along the frontier lies within the band for {z}; the position errors run from "
-        f"{table['||dZ|| / band'].min():.1f} to {table['||dZ|| / band'].max():.1f} bands."
+        f"1/tau = {stable('sentence | predict-check | band', lambda v: f'{v:.4f}')} of the "
+        f"measured one for {lv}, and the predicted position along the frontier lies within the "
+        f"band for {z}; the position errors run from "
+        f"{_end(stable('sentence | predict-check | lowest position error', one))} to "
+        f"{_end(stable('sentence | predict-check | highest position error', one))} bands."
     )
 
 
