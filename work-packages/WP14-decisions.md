@@ -68,3 +68,19 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
 - **Bundle (G-1 to G-6).** **Supervisor (mzargham), verbatim:** "Accept the bundle as is".
   Disposition: accepted with the reviewers' reasons; G-4's skip-list housekeeping goes to the PM's
   follow-up list; no open item before the acceptance question.
+
+## Acceptance (acceptance gate)
+
+- **Review of record:** `work-packages/WP14-review.md` (b7f81e0). **Delivery:** `dev` df475b8..328371a
+  (with 32bb156 the PM's status commit), merged to `main` together with WP8a after its staged
+  review (the merge deploys nothing: the Pages workflow triggers on a release tag or manual
+  dispatch only).
+- **Date:** 2026-11-08.
+- **Driver's question:** "WP14, the interface contract: contract document and manifest at version 1,
+  the configuration-to-attributes table and oracle signature pinned with no tool names, the paper
+  committed executed, the API reference from docstrings, the localhost staging command pinned, a
+  test that checked 101 clauses against the repository; every gap dispositioned, CI green. Do you
+  accept the work?" (options: Accepted / Not yet).
+- **Supervisor (mzargham), verbatim:** "Accepted"
+- **Disposition:** accepted; contract version 1 is in force; changes to it are amendments; WP15 may
+  start once its scope is approved; the PM's follow-up list carries the skip-list housekeeping.
