@@ -121,7 +121,7 @@ the previous one by hash, so editing or deleting a line breaks `verify`.
 | field | meaning |
 |---|---|
 | `id` | the experiment id (a sweep cell appends `[key=value]`) |
-| `kind` | `generated` (the runner made the file) or `adopted` (the file existed before the ledger) |
+| `kind` | `generated` (the runner made the file), `adopted` (the file existed before the ledger) or `exclusion` (a model variant the solver proved infeasible; no file, `output_path` is null) |
 | `time_utc` | when the entry was written |
 | `git_commit` | the commit the run started from |
 | `git_dirty` | whether files other than the run's own outputs differed from that commit |
@@ -244,13 +244,44 @@ The ledger records what was excluded and why. `build` classifies the declared de
 stores the block in the experiment's `inputs["exclusion"]`: per region the claim text, the engine,
 the verdict, the evidence strength, the witness and the model hash
 (`tests/test_cubesat_oracle.py::test_the_exclusion_block_records_the_classification_of_the_declared_space`).
-The momentum condition uses the closed-form bang-bang peak momentum, an approximation that the
+When the whole variant is proved infeasible, `build` raises before anything is simulated, and the
+runner first appends an `exclusion` entry: the variant's edits, the classified regions with claim,
+engine, verdict, strength and witnesses, the model hash and the reason
+(`tests/test_cubesat_oracle.py::test_a_proved_infeasible_variant_is_recorded_in_the_ledger_before_the_error`).
+The sampler does not consume excluded regions; the declared space excludes nothing, so there is
+nothing to consume. `design_space_regions` covers power and depth of discharge, not momentum,
+because the momentum condition depends on the configuration through the inertia and is the
+closed-form approximation. The momentum condition uses the closed-form bang-bang peak momentum, an approximation that the
 integrated slew overshoots; an excluded wheel region is a necessary-condition result that the
 simulation confirms, and "all feasible" there means feasible by the closed form.
 
 The four Python flags (`settled`, `momentum_ok`, `power_ok`, `dod_ok`) are observations of single
 simulated configurations, produced by verifying the model's requirements. They are not the
 definition of feasibility; the requirements and the solver's classification of regions are.
+
+## The legacy geostationary oracle and the scope-sensitivity experiment
+
+The first case of this repository, the geostationary spacecraft of `design_space.py`, is kept
+frozen and runnable. `experiments/legacy_oracle.py` puts `design_space.evaluate_design` behind the
+same `Oracle` protocol (`LegacyGeostationaryOracle`, evidence `simulation`, the frozen keys and
+column order, no edit to the frozen modules; it needs no `opensysml`), and the ledger entry
+`adopted-adcs_designs` registers its dataset as the legacy oracle.
+
+From the repository root, this runs both oracles on the same designs:
+
+```
+PYTHONPATH=examples/adcs uv run python -m experiments run scope-sensitivity-shared-subspace
+```
+
+The draws are 20 of the variables the two variants share. Wheel class and tracker grade are
+shared over the levels both declare; Kp is shared over the overlap of the v2 gain box and the
+frozen range. Kd carries the same name but the ranges do not overlap, so it is fixed in each
+variant (1.0 in v2, the frozen baseline 10.0), and the variables that belong to one variant only
+are fixed at declared values (panel span 0.6 m and battery 80 Wh in v2; panel mass 30 kg and
+antenna mass 18 kg in the frozen variant). Each oracle keeps its own scenario. The two ledger
+entries (`scope-sensitivity-shared-subspace-v2`, `-legacy`) record the subspace in
+`inputs["shared_subspace"]`, and `legacy_oracle.side_by_side` joins the two CSVs on `design_id`.
+What the comparison shows is a later study; this is its definition and a small run.
 
 ## Provide the oracle: three small cases through the same runner and ledger
 
