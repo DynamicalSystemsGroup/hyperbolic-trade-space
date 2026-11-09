@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 """Candidate redraws of Figure 7 (plot_frontier_coordinates, the cubesat one-term fit).
 
     uv run python docs/superpowers/notes/figure-candidates/figure7_candidates.py
@@ -19,7 +20,6 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 sys.path.insert(0, str(ROOT / "examples" / "adcs"))
 import case  # noqa: E402
-
 from hyperbolic_trade_space.plotting import plot_frontier_coordinates  # noqa: E402
 
 BLUE, ORANGE, GREY = "#0072B2", "#D55E00", "#bbbbbb"
