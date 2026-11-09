@@ -68,3 +68,25 @@ you believe i will expect"); the calls below are the driver's, for his review at
   numerical residues are printed as bounds. (3) The saturation fraction's absolute tolerance is
   applied in the older first-twenty test as well. The swap itself is held: no file moves and
   `adcs_sim` is untouched until he answers.
+
+## The step-read times, decided (2026-11-09, before the supervisor stepped away)
+
+- Driver's question: keep the data and report ranges / event detection and regenerate / decide later.
+- **Supervisor (mzargham), verbatim:** "event detection and regenerate. i also want to note that i do
+  expect changes of this order of complexity due to the sysmlv2 model refactor. there may be others.
+  focus on ensuring the integrity of the process so we can justify or bound our claims relative to
+  the methods and data we have. all models are wrong and some are useful. our focus is being
+  demonstrably useful for a trade study that supports decision analysis/design optimization over
+  part swapping and param tuning against a handful of metrics."
+- **Disposition:** WP16 is unblocked. The simulator reads the crossing times (settling, slew) by event
+  detection instead of the integrator's accepted steps; the datasets, the K = 1, 2, 3 record, the
+  check designs and the paper's numbers are regenerated on the new model (WP22) inside the
+  container of record; every change is listed in the comparison report at the data gate; the
+  conclusions are checked item by item (contending sets, leading metrics, signs, certificates,
+  check outcomes, counts) and any that changes is interrogated and resolved, or brought to him with
+  the record. Order: WP22's model with the event-detection change in the simulator, the ledger's
+  new version; then the v2 regeneration; then the gate and the swap; then the paper's regeneration
+  in the container. His framing of what the work is for is the test of every claim: demonstrably
+  useful for a trade study over part swapping and parameter tuning against a handful of metrics,
+  with claims justified or bounded by the methods and data.
+
