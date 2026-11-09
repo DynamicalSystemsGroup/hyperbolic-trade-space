@@ -38,6 +38,8 @@ hypothesis beta_k = J_tau(U w_k) or exact facet optimality fails; that R2 holds 
 import sympy as sp
 
 from derivation.axioms import A8, R2
+from derivation.lemma_12_facet_gap import L12_RESULT
+from derivation.lemma_13_margin import L13_RESULT
 from derivation.licence import hypothesis_base
 from derivation.sumtools import fuse, linear, push_in, sum_swap_equal
 
@@ -57,10 +59,9 @@ AXIOMS_USED = ["A8", "R2"]
 # Two results share this file (the step tags run in one sequence; each step is owned by one result).
 # Hypotheses of the statement (each quotes it): the symbols that carry a sign stand for these.
 EXACT_FACET_OPTIMUM = hypothesis_base("dfk", "nonnegative", "every w_k minimizes f_k")
-FACET_GAP_SLACK = hypothesis_base("slackG", "nonnegative", "G_k the facet gaps of L12")
 PROOF_RESULTS = (
-    ("Proposition 3", (1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17)),
-    ("Corollary 4", (9, 18, 19)),
+    ("Proposition 3", (1, 2, 3, 4, 5, 6, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18)),
+    ("Corollary 4", (8, 10, 19, 20)),
 )
 
 
@@ -146,7 +147,8 @@ def derive(ctx):
     # 5. Corollary 4: F - F* = sum share (f - f*), bound by sum share G termwise
     fk = sp.IndexedBase("fk")
     fstar = sp.IndexedBase("fstar")
-    slackG = FACET_GAP_SLACK  # G_k = (f_k - f_k*) + slackG_k, slackG_k >= 0 (L12)
+    # [L14.8] by L12: G_k - (f_k - f_k*) >= 0, so G_k = (f_k - f_k*) + slackG_k with slackG_k >= 0
+    slackG = L12_RESULT.family(ctx, "chain_nonneg", "slackG")
     cor_slack = sp.simplify(
         linear(sp.Sum(share(k) * ((fk[k] - fstar[k]) + slackG[k]), (k, 1, K)))
         - linear(sp.Sum(share(k) * (fk[k] - fstar[k]), (k, 1, K)))
@@ -173,39 +175,39 @@ def derive(ctx):
 def verify(ctx):
     r = ctx["L14"]
     # hypotheses carried from the earlier lemmas
-    # [L14.8] L13 and R2: the margin is positive, so an assignment-stable neighborhood exists
-    assert ctx["L13"].get("margin_positive") is True, (
+    # [L14.9] by L13 (under R2): the margin is positive, so an assignment-stable neighborhood exists
+    assert L13_RESULT.holds(ctx, "margin_positive"), (
         "L14 FAIL: no assignment-stable neighborhood (R2 positive margin, L13)"
     )
-    # [L14.9] L12 (Lemma 1) holds: 0 <= f_k(w_k) - f_k* <= G_k for every facet
-    assert ctx["L12"].get("chain_nonneg") is True and ctx["L12"].get("lower_nonneg") is True, (
+    # [L14.10] by L12 (Lemma 1): 0 <= f_k(w_k) - f_k* <= G_k for every facet
+    assert L12_RESULT.holds(ctx, "chain_nonneg") and L12_RESULT.holds(ctx, "lower_nonneg"), (
         "L14 FAIL: Lemma 1 (0 <= f - f* <= G) not established"
     )
-    # [L14.10] per facet, sum_i (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) by a Fubini swap
+    # [L14.11] per facet, sum_i (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) by a Fubini swap
     assert r["regroup_swap_equal"] is True, (
         "L14 FAIL: per-facet regrouping is not a Fubini swap of the double sum"
     )
-    # [L14.11] A8: every row lies in one cell (sum_k chi_ki = 1): the row sum is unchanged
+    # [L14.12] A8: every row lies in one cell (sum_k chi_ki = 1): the row sum is unchanged
     assert r["rows_to_cells"] == (0, 2), "L14 FAIL: the rows are not partitioned over the cells"
-    # [L14.12] the sum over rows of the slack on the row's own cell is the sum over the cells
+    # [L14.13] the sum over rows of the slack on the row's own cell is the sum over the cells
     assert r["cells_swap_equal"] is True, "L14 FAIL: sum_i sum_k != sum_k sum_i (Fubini)"
-    # [L14.13] A8: with n_k = sum_i chi_ki the cell sum is n_k (beta_k - w_k.ubar_k) = n_k f_k(w_k)
+    # [L14.14] A8: with n_k = sum_i chi_ki the cell sum is n_k (beta_k - w_k.ubar_k) = n_k f_k(w_k)
     assert r["cell_regroup_ok"] is True, "L14 FAIL: the cell sum is not n_k f_k(w_k)"
-    # [L14.14] A8: F(W) = (1/N) sum_k n_k f_k(w_k) = sum_k share_k f_k(w_k), share_k = n_k / N
+    # [L14.15] A8: F(W) = (1/N) sum_k n_k f_k(w_k) = sum_k share_k f_k(w_k), share_k = n_k / N
     assert r["F_regroup"] == 0, "L14 FAIL: F(W) != sum_k share_k f_k(w_k)"
-    # [L14.15] on the neighborhood the full objective equals the fixed-assignment expression
+    # [L14.16] on the neighborhood the full objective equals the fixed-assignment expression
     assert r["objective_agrees"] == 0, (
         "L14 FAIL: full objective differs from the fixed-assignment expression"
     )
-    # [L14.16] F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k))
+    # [L14.17] F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k))
     assert sp.simplify(r["local_min_slack"]) == 0, (
         "L14 FAIL: F(W') - F(W) != sum_k share_k (f_k(w'_k) - f_k(w_k))"
     )
-    # [L14.17] each term share_k (f_k' - f_k) is >= 0 (exact facet optima), so W is a local minimum
+    # [L14.18] each term share_k (f_k' - f_k) is >= 0 (exact facet optima), so W is a local minimum
     assert r["local_min_nonneg"] is True, "L14 FAIL: sum_k share_k (f_k' - f_k) is not nonnegative"
-    # [L14.18] sum share G - sum share (f - f*) = sum share (G - (f - f*))
+    # [L14.19] sum share G - sum share (f - f*) = sum share (G - (f - f*))
     assert sp.simplify(r["cor_slack"]) == 0, (
         "L14 FAIL: sum share G - sum share (f - f*) != sum share (G - (f - f*))"
     )
-    # [L14.19] each term share_k (G_k - (f_k - f_k*)) is >= 0 (L12): F(W) - F*_fixed <= sum share G
+    # [L14.20] each term share_k (G_k - (f_k - f_k*)) is >= 0 (L12): F(W) - F*_fixed <= sum share G
     assert r["cor_nonneg"] is True, "L14 FAIL: sum_k share_k (G_k - (f_k - f_k*)) not nonnegative"

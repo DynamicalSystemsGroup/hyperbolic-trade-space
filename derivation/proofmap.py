@@ -150,6 +150,13 @@ def parse_lemma(path, ledger, findings):
                 else:
                     imported.add(alias.name)
 
+    # ---- imports of proved results (and only those) from other lemma scripts
+    imported_results = _result_imports(name, path, tree, findings)
+    own_export = f"L{number}_RESULT"
+    exported, certified = _exports(path, own_export)
+    if exported and not certified:
+        findings.add(name, None, f"exports {own_export} but its verify never certifies it")
+
     # ---- tags and the statements they bind to
     simple = [s for s in stmts if not isinstance(s, COMPOUND)]
     bound = {}  # id(stmt) -> (tag, prose, tag_line)
@@ -203,13 +210,18 @@ def parse_lemma(path, ledger, findings):
             )
 
     # ---- kinds, applied ledger names, code
-    out_steps, applied = [], set()
+    out_steps, applied, applied_results = [], set(), set()
     for stmt, _k, tag, prose, _line in steps:
         names = sorted(
             {n.id for n in ast.walk(stmt) if isinstance(n, ast.Name) and n.id in imported}
         )
+        used_results = sorted(
+            {n.id for n in ast.walk(stmt) if isinstance(n, ast.Name) and n.id in imported_results}
+        )
         code = ast.unparse(stmt)
-        if names:
+        if used_results:
+            kind = "result"
+        elif names:
             kind = "axiom"
         else:
             kind = "computed"
@@ -221,11 +233,13 @@ def parse_lemma(path, ledger, findings):
                     name, tag, "a computed step must be an assertion or a call", stmt.lineno
                 )
         applied.update(names)
+        applied_results.update(used_results)
         out_steps.append(
             {
                 "tag": tag,
                 "kind": kind,
                 "applies": names,
+                "results": used_results,
                 "prose": prose,
                 "code": code,
                 "fingerprint": _fingerprint(tag, prose, code),
@@ -245,6 +259,16 @@ def parse_lemma(path, ledger, findings):
             findings.add(
                 name, None, f"ledger entry {', '.join(used)} used on an untagged line", stmt.lineno
             )
+        used_res = sorted(
+            {n.id for n in ast.walk(stmt) if isinstance(n, ast.Name) and n.id in imported_results}
+        )
+        if used_res and not isinstance(stmt, (ast.Import, ast.ImportFrom)):
+            findings.add(
+                name,
+                None,
+                f"proved result {', '.join(used_res)} used on an untagged line",
+                stmt.lineno,
+            )
     for fn in (n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "verify"):
         for node in ast.walk(fn):
             if isinstance(node, ast.Assert) and id(node) not in tagged_ids:
@@ -254,6 +278,15 @@ def parse_lemma(path, ledger, findings):
 
     # ---- principle 3: no premise hides in a symbol; principle 1: no do-nothing application
     hypotheses = _check_symbols(name, tree, findings)
+
+    # ---- every imported proved result is applied by a step
+    if set(imported_results) != applied_results:
+        findings.add(
+            name,
+            None,
+            f"imported proved results {sorted(imported_results)} differ from the results the "
+            f"tagged steps apply {sorted(applied_results)}",
+        )
 
     # ---- imports == applied == AXIOMS_USED
     used_decl = _module_literal(tree, "AXIOMS_USED")
@@ -296,10 +329,96 @@ def parse_lemma(path, ledger, findings):
         "number": number,
         "axioms_used": sorted(declared),
         "hypotheses": hypotheses,
+        "proved_results_imported": {k: v for k, v in sorted(imported_results.items())},
+        "proved_results_exported": [own_export] if exported else [],
         "imports": sorted(imported),
         "results": [{"name": r, "steps": list(ks)} for r, ks in results],
         "steps": out_steps,
     }
+
+
+def _exports(path, name):
+    """(exported, certified): does ``path`` declare ``name = ProvedResult(...)`` at module level,
+    and does its ``verify`` call ``name.certify(...)``?"""
+    tree = ast.parse(path.read_text())
+    exported = any(
+        isinstance(n, ast.Assign)
+        and any(isinstance(t, ast.Name) and t.id == name for t in n.targets)
+        and isinstance(n.value, ast.Call)
+        and _call_name(n.value) == "ProvedResult"
+        for n in tree.body
+    )
+    certified = any(
+        isinstance(c, ast.Call)
+        and isinstance(c.func, ast.Attribute)
+        and c.func.attr == "certify"
+        and isinstance(c.func.value, ast.Name)
+        and c.func.value.id == name
+        for fn in tree.body
+        if isinstance(fn, ast.FunctionDef) and fn.name == "verify"
+        for c in ast.walk(fn)
+    )
+    return exported, certified
+
+
+def _result_imports(name, path, tree, findings):
+    """Imports between lemma scripts: only a proved result of an earlier lemma may be imported."""
+    chain = chain_names(path.parent)
+    me = path.stem
+    found = {}
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                if "lemma_" in alias.name.split(".")[-1]:
+                    findings.add(name, None, f"imports the lemma script {alias.name}", node.lineno)
+        elif isinstance(node, ast.Call) and _call_name(node) in ("import_module", "__import__"):
+            if any(isinstance(a, ast.Constant) and "lemma_" in str(a.value) for a in node.args):
+                findings.add(name, None, "imports a lemma script by name", node.lineno)
+        elif isinstance(node, ast.ImportFrom):
+            module = node.module or ""
+            if node.level and any("lemma_" in a.name for a in node.names):
+                findings.add(name, None, "relative import of a lemma script", node.lineno)
+            if module == "derivation":
+                for alias in node.names:
+                    if alias.name.startswith("lemma_"):
+                        findings.add(
+                            name, None, f"imports the lemma script {alias.name}", node.lineno
+                        )
+            if not module.startswith("derivation.lemma_"):
+                continue
+            source = module.split(".")[1]
+            expected = f"L{int(source.split('_')[1])}_RESULT"
+            for alias in node.names:
+                if alias.name != expected or alias.asname:
+                    findings.add(
+                        name,
+                        None,
+                        f"imports {alias.name} from {source}: a lemma script may import from "
+                        f"another lemma script only its proved result, {expected}",
+                        node.lineno,
+                    )
+                elif (
+                    source not in chain or me not in chain or chain.index(source) >= chain.index(me)
+                ):
+                    findings.add(
+                        name,
+                        None,
+                        f"imports {expected}, but {source} is not earlier in the chain",
+                        node.lineno,
+                    )
+                else:
+                    exported, certified = _exports(path.parent / f"{source}.py", expected)
+                    if not exported:
+                        findings.add(
+                            name, None, f"{source} does not export {expected}", node.lineno
+                        )
+                    elif not certified:
+                        findings.add(
+                            name, None, f"{source} never certifies {expected}", node.lineno
+                        )
+                    else:
+                        found[alias.name] = source
+    return found
 
 
 def _call_name(node):
@@ -451,7 +570,8 @@ def compare(new, old, findings):
                     f"{' and '.join(what) or 'content'} changed since the record",
                     a["_line"],
                 )
-        for key in ("axioms_used", "imports", "results", "hypotheses"):
+        keys = ("axioms_used", "imports", "results", "hypotheses")
+        for key in (*keys, "proved_results_imported", "proved_results_exported"):
             if new_l[fname][key] != old_l[fname].get(key):
                 findings.add(fname, None, f"{key} changed since the record")
     for name in sorted(set(new.get("ledger", {})) | set(old.get("ledger", {}))):

@@ -8,6 +8,10 @@
     "A2"
    ],
    "hypotheses": [],
+   "proved_results_imported": {},
+   "proved_results_exported": [
+    "L1_RESULT"
+   ],
    "imports": [
     "A1",
     "A2"
@@ -34,6 +38,7 @@
      "applies": [
       "A2"
      ],
+     "results": [],
      "prose": "A2: the simplex sum_j w_j is replaced by 1 wherever it appears",
      "code": "return A2.rewrite(expr)",
      "fingerprint": "5f2671ae8aff05d70ea21af024a3c18b21a8467090ad9585d0b2935903d46ac4",
@@ -45,6 +50,7 @@
      "applies": [
       "A1"
      ],
+     "results": [],
      "prose": "A1 (m_j > 0) licenses log(m_j^w_j) = w_j log m_j: V is exp of a Sum",
      "code": "V_prod_as_exp = product_to_exp_sum(V_prod, A1)",
      "fingerprint": "d0cc59e8325d141195f65fabc9f004da6c4d68477c7d7636f89c436d4ba4c78a",
@@ -56,6 +62,7 @@
      "applies": [
       "A1"
      ],
+     "results": [],
      "prose": "A1 again for the scaled point k m: (k m_j)^w_j in log space",
      "code": "Vk_exp = product_to_exp_sum(sp.Product((k * m[j]) ** w[j], lim), A1)",
      "fingerprint": "43af3fcc32b26478dd1b50c8c433f4598d5c98c5623a1bebae9bc6706559df1d",
@@ -65,6 +72,7 @@
      "tag": "L1.4",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "V(m) = prod_j m_j^w_j equals exp(sum_j w_j log m_j)",
      "code": "assert sp.simplify(r['V_prod_as_exp'] - V) == 0, 'L1 FAIL: V is not exp(sum w log m)'",
      "fingerprint": "66390338551acc07218a3de6c8fe83236eb51bdc55c93243aea6f00ea8e1af19",
@@ -74,6 +82,7 @@
      "tag": "L1.5",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "homogeneity of degree 1: V(k m) = k V(m), using sum_j w_j = 1",
      "code": "assert sp.simplify(r['Vk'] - S.k_scale * V) == 0, 'L1 FAIL: V(k m) != k V(m)'",
      "fingerprint": "a060449ed31629fbe49ef7a28852673863952f5c3a6c8907b0ad775318dbc46d",
@@ -83,6 +92,7 @@
      "tag": "L1.6",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "invariant form: V(m / V(m)) = 1, the point lies on the frontier",
      "code": "assert sp.simplify(r['V_inv_form'] - 1) == 0, 'L1 FAIL: V(m / V(m)) != 1'",
      "fingerprint": "62084d95c3cb930225159b16b70cc93f99753e0323dc7b971b9352b3185c528c",
@@ -92,6 +102,7 @@
      "tag": "L1.7",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "offset: V(m e^-beta) = e^-beta V(m), so log V = w.u - beta",
      "code": "assert sp.simplify(r['V_tilde'] - sp.exp(-r['beta0']) * V) == 0, 'L1 FAIL: V(m e^-beta) != e^-beta V(m)'",
      "fingerprint": "cd400bedb14bd4e66307bfcbff5db3af5fae82f5d34b593a5f0741fd178684f7",
@@ -103,6 +114,7 @@
      "applies": [
       "A1"
      ],
+     "results": [],
      "prose": "the degree of homogeneity passes through sum_j w_j (without it, not degree 1)",
      "code": "assert S.simplex.lhs in linear(product_to_exp_sum(sp.Product((S.k_scale * S.m[S.j]) ** S.w[S.j], (S.j, 1, S.d)), A1)).atoms(sp.Sum), 'L1 FAIL: homogeneity must pass through sum_j w_j'",
      "fingerprint": "029f9183888b9678d597bc92a6229730e1bc5078fc561e5e087d6def6bbc78e1",
@@ -118,6 +130,8 @@
     "A3"
    ],
    "hypotheses": [],
+   "proved_results_imported": {},
+   "proved_results_exported": [],
    "imports": [
     "A1",
     "A2",
@@ -145,6 +159,7 @@
      "applies": [
       "A2"
      ],
+     "results": [],
      "prose": "A2: sum_j w_j = 1 turns tau sum_j w_j (u_ij + c) into tau s_i + tau c",
      "code": "term_lin = A2.rewrite(linear(tau * sp.Sum(w[j] * (u[i, j] + c), (j, 1, d))))",
      "fingerprint": "53ad362715eaa778eed9f1f7d473ff041957c3efee24392d55a412e59a311ab9",
@@ -158,6 +173,7 @@
       "A2",
       "A3"
      ],
+     "results": [],
      "prose": "A1, A2, A3: log(e^{tau c} X) = tau c + log X for the positive sum X, then / tau",
      "code": "shifted_lin = log_expand(sp.log(total / n), A1, A2, A3) / tau",
      "fingerprint": "de6da581684f3a315fc2b5aa3d8b2bc80a589d24279ab20f7d7437e1b93191b8",
@@ -171,6 +187,7 @@
       "A2",
       "A3"
      ],
+     "results": [],
      "prose": "A1, A2, A3: the shift amount J(w; U + c 1^T) - J(w; U) after the Sum algebra",
      "code": "shift_amount = sp.simplify(log_expand(sp.expand(shifted_lin) - log_expand(base, A1, A2, A3), A1, A2, A3))",
      "fingerprint": "1f1d57705d2716d2992629008c2b31fd68740605aa2e1a8897b53c6d0b09015c",
@@ -180,6 +197,7 @@
      "tag": "L2.4",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "per term, tau sum_j w_j (u_ij + c) - (tau s_i + tau c) is 0",
      "code": "assert r['term_diff'] == 0, 'L2 FAIL: per-term shift tau*(s_i + c) not obtained from simplex'",
      "fingerprint": "0b38b79c495db9fe2fa832527e8cc5afada3bcb57129c51f011cba79f1971122",
@@ -193,6 +211,7 @@
       "A2",
       "A3"
      ],
+     "results": [],
      "prose": "J_tau(U + c 1^T) - (J_tau(U) + c) is 0 after the Sum algebra (logs: A1, A2, A3)",
      "code": "assert sp.simplify(log_expand(lhs - sp.expand(log_expand(r['J'], A1, A2, A3) + S.c), A1, A2, A3)) == 0, 'L2 FAIL: J(U + c1^T) - (J(U) + c) != 0'",
      "fingerprint": "ce470f73e92f2982d3ed8ce909f5c2c3f55d063275365485500b18e667cb0cb5",
@@ -202,6 +221,7 @@
      "tag": "L2.6",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "beta shifts by c: the shift amount of J(w*; .) is c",
      "code": "assert sp.simplify(shift - S.c) == 0, 'L2 FAIL: beta does not shift by c'",
      "fingerprint": "374e85d0e88ebc9fc3510e7ada9be33633696144577b5721eb6a7eec35659c21",
@@ -211,6 +231,7 @@
      "tag": "L2.7",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "for any weights w, w' the gap of the shifted objective equals the unshifted gap",
      "code": "assert sp.simplify(Jw2 + shift - (Jw + shift) - (Jw2 - Jw)) == 0, \"L2 FAIL: the shift does not cancel in the gap J(w') - J(w)\"",
      "fingerprint": "d30e4c41f73f51d76ca9a495c99034c65d247b7806621f85a1240699263cf51d",
@@ -220,6 +241,7 @@
      "tag": "L2.8",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "so J(w') >= J(w) for every w' exactly when the shifted J(w') >= J(w) does: w* unchanged",
      "code": "assert sp.Ge(Jw2 + shift - (Jw + shift), 0) == sp.Ge(Jw2 - Jw, 0), 'L2 FAIL: the minimizer moved under the shift'",
      "fingerprint": "c68b180c555115909cbb521ddce830434df10cc32ca20f89481ef76d66c3f762",
@@ -235,6 +257,10 @@
     "R1"
    ],
    "hypotheses": [],
+   "proved_results_imported": {},
+   "proved_results_exported": [
+    "L3_RESULT"
+   ],
    "imports": [
     "A2",
     "I10",
@@ -282,6 +308,7 @@
      "applies": [
       "I10"
      ],
+     "results": [],
      "prose": "I10: the first-order conditions have gradient components g_j and multipliers mu_j >= 0",
      "code": "gr, mu = (I10.obj('gradient'), I10.obj('mu'))",
      "fingerprint": "668f50d8ce4d0006a46be58974e9fd417065b707feb7d6fb2a69443dd00e30d7",
@@ -293,6 +320,7 @@
      "applies": [
       "I10"
      ],
+     "results": [],
      "prose": "I10: stationarity of J - lambda (sum_j w_j - 1) - sum_j mu_j w_j along e_{j0}",
      "code": "stat_full = sp.Sum(delta * I10.rule(0)[0], (j, 1, d)).doit()",
      "fingerprint": "c7d80b46ccfb65bfbc54af52d687f929d4f1e7234014456576eff7508bb1fcf7",
@@ -304,6 +332,7 @@
      "applies": [
       "I10"
      ],
+     "results": [],
      "prose": "I10: g_j = lambda + mu_j and w_j mu_j = 0 termwise, so sum_j w_j (g_j - lambda) = 0",
      "code": "zero_sum = I10.rewrite(sp.Sum(w[j] * (sp.solve(I10.rule(0)[0], gr[j])[0] - LAM), (j, 1, d)), only=(2,)).doit()",
      "fingerprint": "4e823b7b48a43b27700f70b420980fbae36f5a5056b51749bcacebd2edfadb37",
@@ -315,6 +344,7 @@
      "applies": [
       "A2"
      ],
+     "results": [],
      "prose": "A2: sum_j w_j = 1 reduces sum_j w_j (g_j - lambda) to w.g - lambda",
      "code": "reduced = A2.rewrite(linear(sp.Sum(w[j] * (gr[j] - LAM), (j, 1, d))))",
      "fingerprint": "5dd65fff35858ef139cda7b5f0e9a3f972919e990930c0c8d26f5e16a577ea53",
@@ -326,6 +356,7 @@
      "applies": [
       "R1"
      ],
+     "results": [],
      "prose": "R1: the balanced point has w_j > 0, so w_j is a positive coordinate",
      "code": "wp = R1.positive_symbol('wp')",
      "fingerprint": "7e9a1014c2086c0891311dedb1fdb5fe8c81e41851ed47c42fa44d55fcf79b57",
@@ -337,6 +368,7 @@
      "applies": [
       "I10"
      ],
+     "results": [],
      "prose": "I10: the multiplier mu_j >= 0 of a coordinate",
      "code": "mup = I10.nonneg_symbol('mup')",
      "fingerprint": "42440485b063825aca00e806a2e210c4cb2f08dad6c984071784a365b1329f0b",
@@ -348,6 +380,7 @@
      "applies": [
       "I10"
      ],
+     "results": [],
      "prose": "I10 with R1: w_j mu_j = 0 and w_j > 0 (so w_j != 0) force mu_j = 0",
      "code": "mu_zero = [sp.simplify(I10.rule(2)[1] / wp)] if wp.is_nonzero is True else []",
      "fingerprint": "fcc8d9b26bb00641c82e9924c6eed71e0082eae871854dc2237fbf3e2c05945b",
@@ -357,6 +390,7 @@
      "tag": "L3.8",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "d/dt J_tau(w + t v) at 0 equals sum_i p_i (v.u_i), p the softmax of tau U w",
      "code": "assert sp.simplify(linearize(c['dJ']) - linearize(claim_L)) == 0, 'L3 FAIL: d/dt J(w+tv)|0 != sum_i p_i (v.u_i)'",
      "fingerprint": "dc1f0697f98c688942b9e96cb0c344e310e5d71e93c7f0b495eeb767602994a1",
@@ -366,6 +400,7 @@
      "tag": "L3.9",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "swapping the finite sums: sum_i p_i (v.u_i) = sum_j v_j sum_i p_i u_ij for any p",
      "code": "assert sum_swap_equal(lhs, rhs), 'L3 FAIL: sum_i p_i (v.u_i) != sum_j v_j sum_i p_i u_ij'",
      "fingerprint": "9a37effa257415458b2769869ca59464978915d52ef97965d08fb90cda85a595",
@@ -375,6 +410,7 @@
      "tag": "L3.10",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the swap identity holds at the softmax weights p = softmax(tau U w)",
      "code": "assert linearize(inst_lhs) == linearize(sp.Sum(p_def(i) * sp.Sum(u[i, j] * v[j], (j, 1, d)), (i, 1, n))) and linearize(inst_lhs) == linearize(claim), 'L3 FAIL: softmax instance of the swap identity'",
      "fingerprint": "ee1c29f70c93a8ae5f7711241d1fb54c8000bc815958faefad996f83815358d6",
@@ -384,6 +420,7 @@
      "tag": "L3.11",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "hence the gradient is G_j = sum_i p_i u_ij, as v is arbitrary",
      "code": "assert linearize(replace_indexed(c['rhs_abs'], S.p, p_def)) == linearize(grad_form), 'L3 FAIL: gradient form'",
      "fingerprint": "d48905a4805326846261065f26c649802795895d1c88099fc74e92de23185bfe",
@@ -393,6 +430,7 @@
      "tag": "L3.12",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the constraint sum_j w_j has directional derivative sum_j v_j",
      "code": "assert sp.simplify(c['dsimplex'] - sp.Sum(v[j], (j, 1, d)).doit()) == 0, 'L3 FAIL: derivative of the simplex constraint'",
      "fingerprint": "d4700c08ab51ed1b6722156bbd56534c2fb9dba3e09e704d98a5ce98ee81fd56",
@@ -404,6 +442,7 @@
      "applies": [
       "I10"
      ],
+     "results": [],
      "prose": "I10, R1: along e_j0 it reads G_j0 - lambda - mu_j0, and w_j0 > 0 forces mu_j0 = 0",
      "code": "val = replace_indexed(piece_in_range(kb['stat_full'], S), kb['gr'], G).subs(I10.obj('mu')[J0], kb['positive_case_solution'][0])",
      "fingerprint": "70c15faa6dc8cd7eac9cdadc38c293d8ca69288bf8b6d34a6adad962c39ba495",
@@ -413,6 +452,7 @@
      "tag": "L3.14",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the stationarity condition along e_j0 evaluates to G_j0 - lambda = 0",
      "code": "assert sp.simplify(val - (G(J0) - LAM)) == 0, 'L3 FAIL: stationarity along e_{j0}'",
      "fingerprint": "650b956827a52171597ba0d61ec114a25cb50003637cfbfe712ca1cb41cc2f23",
@@ -422,6 +462,7 @@
      "tag": "L3.15",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "G_j0 = lambda for every j0, so all components of U^T p are equal",
      "code": "assert sp.simplify(gap - (G(J0) - G(K0))) == 0, 'L3 FAIL: components of U^T p not equal'",
      "fingerprint": "200afc9109d455414f2f5e813931d2a7fce5c67282f0560c28b79469b8b2af86",
@@ -431,6 +472,7 @@
      "tag": "L3.16",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "full simplex KKT: stationarity along e_j0 gives mu_j0 = G_j0 - lambda",
      "code": "assert sp.simplify(val_full - (kb['gr'][J0] - LAM - mu[J0])) == 0, 'L3 FAIL: stationarity of the full Lagrangian along e_{j0}'",
      "fingerprint": "e02125484bc46fb8aa643a0c288b63ff8892f804fdb461c28938dc6d46212cad",
@@ -440,6 +482,7 @@
      "tag": "L3.17",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "mu_j >= 0, hence G_j >= lambda for every j",
      "code": "assert mu[J0].is_nonnegative is True, 'L3 FAIL: mu_j >= 0 not carried (g_j >= lambda)'",
      "fingerprint": "4dd9237be4db464dc699fa35ee06ec90f11a3efb5703447b79d89bae7f2c4292",
@@ -449,6 +492,7 @@
      "tag": "L3.18",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "complementary slackness summed with sum_j w_j = 1 gives lambda = w.G",
      "code": "assert kb['lambda_solved'] == [kb['lambda_abstract']], 'L3 FAIL: complementary slackness with sum_j w_j = 1 does not give lambda = w.g'",
      "fingerprint": "2c20f4872cf4af1a0d056b69292da1cd9a97bb86184f03930321565378d6de8e",
@@ -458,6 +502,7 @@
      "tag": "L3.19",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "a coordinate with w_j > 0 and w_j mu_j = 0 forces mu_j = 0, i.e. G_j = lambda",
      "code": "assert kb['positive_case_solution'] == [0], 'L3 FAIL: w_j > 0 and w_j mu_j = 0 do not force mu_j = 0'",
      "fingerprint": "be84b9da5f26c6b5a87115a54c2f812ada100ad3e8895fb0fd89d2d9d821e29e",
@@ -467,6 +512,7 @@
      "tag": "L3.20",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "lambda = w.G instantiates at the softmax gradient G = U^T p",
      "code": "assert replace_indexed(kb['lambda_abstract'], kb['gr'], G) == sp.Sum(S.w[j] * G(j), (j, 1, d)), 'L3 FAIL: lambda = w.G at the softmax gradient'",
      "fingerprint": "bad28763cdc550f985540ae0484290164fee2e8b2f906510db1e06aaf9ae4a5b",
@@ -476,6 +522,7 @@
      "tag": "L3.21",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "constructed instance: at tau = inf primal and dual values are equal (both 1)",
      "code": "assert ex['hard_primal'] == ex['hard_dual'] == 1, 'L3 FAIL: hard-support instance not optimal'",
      "fingerprint": "ff788e0b9c432db6c322d734b8a353c61b00fe2d05d29371b1c83ecd52cbdc8b",
@@ -485,6 +532,7 @@
      "tag": "L3.22",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the hard-support geometry is balanced: U^T p = (1, 1)",
      "code": "assert ex['balanced'][0] == ex['balanced'][1], 'L3 FAIL: hard-support instance not balanced'",
      "fingerprint": "bc5ef699322b69e22a5aefd30499b830495460086e1f90fdec1272048be68267",
@@ -494,6 +542,7 @@
      "tag": "L3.23",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "at tau = 1, J is strictly convex in s on the simplex segment",
      "code": "assert ex['d2J'].is_positive is True, 'L3 FAIL: instance J_tau not convex in s'",
      "fingerprint": "6d7e74e054a58cb9e9cd7e34d18ceab0c41b6facdd7f63ce21635db7deef115e",
@@ -503,6 +552,7 @@
      "tag": "L3.24",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "J is decreasing at s = 1, so the finite-tau minimizer is w = (1, 0)",
      "code": "assert bool(ex['dJ_at_1'].evalf() < 0), 'L3 FAIL: J_tau not decreasing toward w = (1, 0)'",
      "fingerprint": "0c6e1b7c64297ff36901b41c03ffd7934a10a44b7d0c148186550a40b917dc66",
@@ -512,6 +562,7 @@
      "tag": "L3.25",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the finite-tau minimizer of the instance is the boundary point w = (1, 0)",
      "code": "assert ex['w_star'] == (1, 0)",
      "fingerprint": "914bf54b2465d21b7b14389fd918aebe787c6a6b99cc9e6992e7ea76739e269b",
@@ -521,6 +572,7 @@
      "tag": "L3.26",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "at w = (1, 0), lambda = w.g equals g_1",
      "code": "assert sp.simplify(ex['lam'] - ex['g'][0]) == 0",
      "fingerprint": "40861191f3a53f1f92da1735f555d0504f2a9eb01f46a116240e4f9531d585a3",
@@ -530,6 +582,7 @@
      "tag": "L3.27",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "g_2 - lambda equals minus the boundary slope of J at s = 1",
      "code": "assert sp.simplify(ex['g_inactive_minus_lambda'] + ex['dJ_at_1']) == 0, 'L3 FAIL: g_2 - lambda is not minus the boundary slope'",
      "fingerprint": "fb71facd0f9edcaf54418b2048a3c5b085236d5c0bfd538e20beb44635e42f33",
@@ -539,6 +592,7 @@
      "tag": "L3.28",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "g_2 > lambda at the inactive coordinate: balanced hard support, boundary minimizer",
      "code": "assert bool(ex['g_inactive_minus_lambda'].evalf() > 0), 'L3 FAIL: boundary instance has g_2 <= lambda'",
      "fingerprint": "070ab8691632859d59d6afc45b6b023c1c5d25932d35095a921e596f88f82bb1",
@@ -554,6 +608,12 @@
     "I11"
    ],
    "hypotheses": [],
+   "proved_results_imported": {
+    "L3_RESULT": "lemma_03_gradient_kkt"
+   },
+   "proved_results_exported": [
+    "L4_RESULT"
+   ],
    "imports": [
     "A1",
     "A3",
@@ -574,123 +634,148 @@
       9,
       10,
       11,
-      12
+      12,
+      13
      ]
     }
    ],
    "steps": [
     {
      "tag": "L4.1",
-     "kind": "axiom",
-     "applies": [
-      "A1"
+     "kind": "result",
+     "applies": [],
+     "results": [
+      "L3_RESULT"
      ],
-     "prose": "A1: u = log m is real, so the scores w.u_i and v.u_i are real families",
-     "code": "a_r, s_r = (A1.real_base('a_r'), A1.real_base('s_r'))",
-     "fingerprint": "ca20d0e53e8f517073075309445886dc18aa6cadc6c4ac569f51f61fadc92852",
+     "prose": "by L3: the scores w.u_i and v.u_i and the softmax weights p, as L3 defined and proved",
+     "code": "a0, sv, p_def = L3_RESULT.take(ctx, 'a0', 'sv', 'p_def')",
+     "fingerprint": "6881f52b394c69b4925e22aabcc1cb0b03eb73238335c29399857f5692d6fcca",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.2",
-     "kind": "computed",
-     "applies": [],
-     "prose": "d^2/dt^2 J_tau(w + t v) at 0 equals tau Var_p(v.u) for the softmax weights p",
-     "code": "assert sp.simplify(linearize(c['d2']) - tau * linearize(var_L)) == 0, 'L4 FAIL: second directional derivative != tau * Var_p(v.u)'",
-     "fingerprint": "b2bdc4caa9f4cd7df46148f4d04b881a901cb3348ae035fd21197084ddff73a3",
+     "kind": "axiom",
+     "applies": [
+      "A1"
+     ],
+     "results": [],
+     "prose": "A1: u = log m is real, so the scores w.u_i and v.u_i are real families",
+     "code": "a_r, s_r = (A1.real_base('a_r'), A1.real_base('s_r'))",
+     "fingerprint": "2a38f352417d24d82c2bf5d78ae66f0152d18194b414916e4d38c7fc5533c109",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.3",
      "kind": "computed",
      "applies": [],
-     "prose": "the softmax weights satisfy the normalization sum_i p_i = 1",
-     "code": "assert sp.simplify(norm_lhs - S.p_normalized.rhs) == 0, 'L4 FAIL: softmax not normalized'",
-     "fingerprint": "dabcc74eb08fc67e15dd7aaa1992b7ce3ccb23cc616c7db620c5e421780c6e7e",
+     "results": [],
+     "prose": "d^2/dt^2 J_tau(w + t v) at 0 equals tau Var_p(v.u) for the softmax weights p",
+     "code": "assert sp.simplify(linearize(c['d2']) - tau * linearize(var_L)) == 0, 'L4 FAIL: second directional derivative != tau * Var_p(v.u)'",
+     "fingerprint": "57fc15a68a1ba504255402e8d327db5cd94ee4192dea898bb706bbb95941727d",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.4",
      "kind": "computed",
      "applies": [],
-     "prose": "with sum_i p_i = 1: 2 Var_p(s) = sum_i sum_k p_i p_k (s_i - s_k)^2",
-     "code": "assert sp.simplify(expanded - two_var) == 0, 'L4 FAIL: Var_p(s) != (1/2) double sum'",
-     "fingerprint": "1fab77db476cf89e255cfc575b893aa486b084cae8a593d5acafa7b071c7cc7c",
+     "results": [],
+     "prose": "the softmax weights satisfy the normalization sum_i p_i = 1",
+     "code": "assert sp.simplify(norm_lhs - S.p_normalized.rhs) == 0, 'L4 FAIL: softmax not normalized'",
+     "fingerprint": "a2735d2ef6bfe74933672b016a780eb56f3e2ac98b8aac9e573eb394807ab319",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.5",
      "kind": "computed",
      "applies": [],
-     "prose": "negative control: without sum_i p_i = 1 the identity fails, so it is used",
-     "code": "assert sp.simplify(unnormalized - two_var) != 0, 'L4 FAIL: normalization not load-bearing'",
-     "fingerprint": "a33b7ce75f67d2f860cc75a3bb2df4699e68b7bc4a855ff7ea96cb2cf77bcab2",
+     "results": [],
+     "prose": "with sum_i p_i = 1: 2 Var_p(s) = sum_i sum_k p_i p_k (s_i - s_k)^2",
+     "code": "assert sp.simplify(expanded - two_var) == 0, 'L4 FAIL: Var_p(s) != (1/2) double sum'",
+     "fingerprint": "f7e697a91327b159d43333aee108b448b4f46201e9d00945ef453710c865b99c",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.6",
      "kind": "computed",
      "applies": [],
-     "prose": "each term exp(tau a_i) of the normalizer is positive (real argument, tau > 0)",
-     "code": "assert term_exp.is_positive is True, 'L4 FAIL: exp term not positive'",
-     "fingerprint": "67e79d850152984dc142e83ed88581321e8d66a502d55ef04229689721ff640f",
+     "results": [],
+     "prose": "negative control: without sum_i p_i = 1 the identity fails, so it is used",
+     "code": "assert sp.simplify(unnormalized - two_var) != 0, 'L4 FAIL: normalization not load-bearing'",
+     "fingerprint": "965c71af45e9334c7b9a0302e487d2fa86ebce812c53508cb6fcfbb6ce669c25",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.7",
      "kind": "computed",
      "applies": [],
-     "prose": "the normalizer Z, a net sum of positive terms, is positive",
-     "code": "assert Z_r.is_positive is True, 'L4 FAIL: normalizer not positive (net of positive terms)'",
-     "fingerprint": "f0b4250780978da7bcb6295eb0129b89701dd51dd2b29044fd4ff55eaeef1c18",
+     "results": [],
+     "prose": "each term exp(tau a_i) of the normalizer is positive (real argument, tau > 0)",
+     "code": "assert term_exp.is_positive is True, 'L4 FAIL: exp term not positive'",
+     "fingerprint": "d2e11ffe96a496fe31a8d7b592063a25c819038cfcfc69fbe2d5a687f313311f",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.8",
      "kind": "computed",
      "applies": [],
-     "prose": "each softmax weight p_i = exp(tau a_i) / Z is positive",
-     "code": "assert p_r(i).is_positive is True, 'L4 FAIL: softmax weight not positive'",
-     "fingerprint": "d136f6e2d1aed851585da6cf69f6df359d22af5e7b6ee8b4fb484c29d84ccf28",
+     "results": [],
+     "prose": "the normalizer Z, a net sum of positive terms, is positive",
+     "code": "assert Z_r.is_positive is True, 'L4 FAIL: normalizer not positive (net of positive terms)'",
+     "fingerprint": "3a2ae78e3ccfb2d0ad94e92817323f7a5783883a612de70206747749df29babb",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.9",
      "kind": "computed",
      "applies": [],
-     "prose": "each summand p_i p_k (s_i - s_k)^2 is a positive factor times a square, so >= 0",
-     "code": "assert summand.is_nonnegative is True, 'L4 FAIL: per-term p_i p_k (s_i-s_k)^2 not >= 0'",
-     "fingerprint": "8d47c0d4295b3aff6e5d5ce0dcf09ebced34736643ddcda13570407af4d2d621",
+     "results": [],
+     "prose": "each softmax weight p_i = exp(tau a_i) / Z is positive",
+     "code": "assert p_r(i).is_positive is True, 'L4 FAIL: softmax weight not positive'",
+     "fingerprint": "463ad97da25cf8e9c626d2e69efb3a1c6cceba51e1af1181c778cd078091cedc",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.10",
      "kind": "computed",
      "applies": [],
-     "prose": "the double sum of nonnegative summands is nonnegative",
-     "code": "assert double.is_nonnegative is True, 'L4 FAIL: net double sum not >= 0'",
-     "fingerprint": "2eb2e41f6ffe122b8df7c4f447b156a8af10becbe98c7d1fc255749defa3e998",
+     "results": [],
+     "prose": "each summand p_i p_k (s_i - s_k)^2 is a positive factor times a square, so >= 0",
+     "code": "assert summand.is_nonnegative is True, 'L4 FAIL: per-term p_i p_k (s_i-s_k)^2 not >= 0'",
+     "fingerprint": "1a5c792c44ae757ba4df9887a646d2574dde82f61a7c8a41a5b3a6560462ec4f",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.11",
-     "kind": "axiom",
-     "applies": [
-      "A3"
-     ],
-     "prose": "A3: tau > 0, so (tau / 2) times the double sum is nonnegative: convex along every line",
-     "code": "assert (A3.positive(tau) / 2 * double).is_nonnegative is True, 'L4 FAIL: (tau/2) * double sum not >= 0'",
-     "fingerprint": "d6dd6db6d115902cdcecc880e4bacf4dfae06ee9bf7a9c22c162e1c31b39e5fc",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the double sum of nonnegative summands is nonnegative",
+     "code": "assert double.is_nonnegative is True, 'L4 FAIL: net double sum not >= 0'",
+     "fingerprint": "a3abb047bd2546851c631efd83efca6663547e257633587d2d4347f4799695ac",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     },
     {
      "tag": "L4.12",
      "kind": "axiom",
      "applies": [
+      "A3"
+     ],
+     "results": [],
+     "prose": "A3: tau > 0, so (tau / 2) times the double sum is nonnegative: convex along every line",
+     "code": "assert (A3.positive(tau) / 2 * double).is_nonnegative is True, 'L4 FAIL: (tau/2) * double sum not >= 0'",
+     "fingerprint": "664fb01586bc0cc174c40f7e65828ee15ee7f26f81de4d31752f83871e84cec6",
+     "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
+    },
+    {
+     "tag": "L4.13",
+     "kind": "axiom",
+     "applies": [
       "I11"
      ],
+     "results": [],
      "prose": "I11: the second derivative along every line is >= 0, so J_tau is convex",
      "code": "assert I11.entails([sp.Equivalent(I11.obj('premise'), nonneg_everywhere)], I11.obj('conclusion')), 'L4 FAIL: convexity does not follow from the sign of the second derivative'",
-     "fingerprint": "b197b84a6eb9569c22ef107faa758c5fe71bee4a2d71e4baf68764a0a7297bd9",
+     "fingerprint": "46c8c44586208851bb12f7b74a75505cb434cdac1c0c24db99cff6c220cccf5e",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     }
    ]
@@ -702,6 +787,8 @@
     "F5"
    ],
    "hypotheses": [],
+   "proved_results_imported": {},
+   "proved_results_exported": [],
    "imports": [
     "A3",
     "F5"
@@ -745,6 +832,7 @@
       "A3",
       "F5"
      ],
+     "results": [],
      "prose": "A3, F5: T_raw > 0 (exponentials of the real scores, tau > 0), so log splits: LSE - LME",
      "code": "offset = log_expand(LSE - LME, A3, F5)",
      "fingerprint": "8afee42d1b3750bd8b826d974ff20f276056afe46337bc1ee8fb6ee17874b27d",
@@ -757,6 +845,7 @@
       "A3",
       "F5"
      ],
+     "results": [],
      "prose": "A3, F5: the mean is real and tau > 0, so log(e^{tau mean}) = tau mean: the floor",
      "code": "lme_floor = log_expand(sp.log(tangent_sum / n), A3, F5) / tau",
      "fingerprint": "c92d882c93479c90b0e0284ffa1a5055b51733378400b5beb6a0c2d96acc946c",
@@ -768,6 +857,7 @@
      "applies": [
       "F5"
      ],
+     "results": [],
      "prose": "F5: the term i0 of the shifted sum T is exp(tau (s_i0 - M)) = exp(0) = 1",
      "code": "term_i0 = sp.exp(tau * (s[S.i0] - M)).subs(*F5.rule(1))",
      "fingerprint": "3ff3224659bd52679b500b0b9310d522e0ecc12cf39ff18b0ded81115ef347e5",
@@ -779,6 +869,7 @@
      "applies": [
       "F5"
      ],
+     "results": [],
      "prose": "F5: the slack M - s_i of s_i <= M is nonnegative",
      "code": "slack = F5.nonneg_symbol('slack')",
      "fingerprint": "9537daaf82b0a1f4825335bcabe293c9fd810670e67305ec954aa56a424d34ba",
@@ -790,6 +881,7 @@
      "applies": [
       "F5"
      ],
+     "results": [],
      "prose": "F5: the scores are real (they are bounded by M), so a second shifted term is positive",
      "code": "sr = F5.real_base('sr')",
      "fingerprint": "a5052475adbd84ea523528b8388a6837672aabcc235be8e13cdd2d30ea2b8f22",
@@ -799,6 +891,7 @@
      "tag": "L5.6",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "offset: LSE - LME = (log n) / tau",
      "code": "assert sp.simplify(r['offset'] - sp.log(n) / tau) == 0, 'L5 FAIL: LSE - LME != log(n)/tau'",
      "fingerprint": "a9b0453f6e1b11a7775328aa4cfa186e45bcd0442e9381c2b5b37d86a9671f67",
@@ -808,6 +901,7 @@
      "tag": "L5.7",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "shifting by the maximum: sum_i e^{tau s_i} = e^{tau M} sum_i e^{tau (s_i - M)}",
      "code": "assert r['shift_check'] == 0, 'L5 FAIL: sum exp(tau s_i) != e^{tau M} sum exp(tau (s_i - M))'",
      "fingerprint": "d46a51e5ec771e658695aed30101241e7665df985be3f4b64b4f2ad9584487d9",
@@ -817,6 +911,7 @@
      "tag": "L5.8",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "per term, exp(x) > 0 for every real x",
      "code": "assert r['term_positive'] == sp.S.Reals, 'L5 FAIL: exp(x) > 0 not established per term'",
      "fingerprint": "d63a4998c6bed6b359b5610080c81ab033314357f6ebd0528d84e665896d20c8",
@@ -826,6 +921,7 @@
      "tag": "L5.9",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "per term, exp(x) <= 1 exactly when x <= 0 (the shifted exponents are <= 0 by F5)",
      "code": "assert r['term_le_one'] == sp.Interval(-sp.oo, 0), 'L5 FAIL: exp(x) <= 1 iff x <= 0'",
      "fingerprint": "9a7f9729c2ec10c26b7033f101822406d2409450b1022d21bcfd0ddf748568a3",
@@ -837,6 +933,7 @@
      "applies": [
       "A3"
      ],
+     "results": [],
      "prose": "F5, A3: tau (s_i - M) = -tau * slack is <= 0, so each shifted term is <= 1",
      "code": "assert (-A3.positive(tau) * r['slack']).is_nonpositive is True, 'L5 FAIL: tau (s_i - M) > 0'",
      "fingerprint": "240054553f7c48d16fbdbc4cba2f6a767686f605bd0f5e152075fcfd57aac670",
@@ -846,6 +943,7 @@
      "tag": "L5.11",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the sum of n ones is n, so the shifted sum T is at most n",
      "code": "assert r['n_upper'] == n, 'L5 FAIL: sum of n ones != n'",
      "fingerprint": "773bbed90ea57ef0f78e7d8717e8679b7c003995415a705d52ec557fdb9454ee",
@@ -855,6 +953,7 @@
      "tag": "L5.12",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the tangent-line bound e^x >= 1 + x: the minimum of e^x - 1 - x over R is 0",
      "code": "assert r['tangent_min'] == 0, 'L5 FAIL: e^x >= 1 + x not established'",
      "fingerprint": "fddcccae32ba56b0b2f41f3043b63e76304119679075749004b1b1210f95993f",
@@ -864,6 +963,7 @@
      "tag": "L5.13",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the centred scores sum to zero: sum_i (s_i - mean) = 0",
      "code": "assert r['centered'] == 0, 'L5 FAIL: sum_i (s_i - mean) != 0'",
      "fingerprint": "852775c331e46ce08ae7c828e95f8a96257808fba084d063cbd0bc91da3c5359",
@@ -873,6 +973,7 @@
      "tag": "L5.14",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "mean <= LME: the tangent-line floor of the LME equals the mean",
      "code": "assert sp.simplify(r['lme_floor'] - r['mean']) == 0, 'L5 FAIL: LME floor != mean'",
      "fingerprint": "f6b0ead2465fb8c141dbccf77566f351ad2f12dd94af066acb937089003b31f2",
@@ -882,6 +983,7 @@
      "tag": "L5.15",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "LME <= max: T <= n gives LME - M <= (1/tau) log(n/n) = 0",
      "code": "assert sp.simplify(r['lme_minus_M_upper']) == 0, 'L5 FAIL: LME <= max bound is not 0'",
      "fingerprint": "0818c56695209c1fc343aab17776f8779751c6a406a1c7d2dbb30fb6522793df",
@@ -891,6 +993,7 @@
      "tag": "L5.16",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "LME >= max - (log n)/tau: T >= 1 because the i0 term equals 1 (F5)",
      "code": "assert sp.simplify(r['lme_minus_M_lower'] + sp.log(n) / tau) == 0, 'L5 FAIL: lower bound'",
      "fingerprint": "aed660e7e451db45aea0c7146582682c1e43b17e009235760e654539781a0e1d",
@@ -900,6 +1003,7 @@
      "tag": "L5.17",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "LSE >= max: LSE - M = (1/tau) log T >= (1/tau) log 1 = 0",
      "code": "assert r['lse_minus_M_floor'] == 0, 'L5 FAIL: LSE - max floor != 0'",
      "fingerprint": "97fc23e47ec52f997303cad3b3e1d9625356491f290f011171509f279e1486d4",
@@ -909,6 +1013,7 @@
      "tag": "L5.18",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "n >= 2: the indices 1 and 2 are both in range and differ, so one of them is not i0",
      "code": "assert sp.Ge(n, 2).canonical == sp.Le(2, n).canonical and sp.Ne(1, 2) == sp.true, 'L5 FAIL: no second index'",
      "fingerprint": "3f29460def61df1c17e074b3caba172552e064db9f99f625ee939a6ccc2a3fbc",
@@ -918,6 +1023,7 @@
      "tag": "L5.19",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the second shifted term exp(tau (s_k2 - M)) is positive (real scores, per-term sign)",
      "code": "assert r['other'].is_positive is True, 'L5 FAIL: the second shifted term is not positive'",
      "fingerprint": "094a58af041906bdbe62ecde9e98fd0fd35e795e8d682f75411cec00f6156221",
@@ -929,6 +1035,7 @@
      "applies": [
       "A3"
      ],
+     "results": [],
      "prose": "T >= 1 + (second term) > 1, so LSE - max = (1/tau) log T > 0 for n >= 2 (tau > 0)",
      "code": "assert (sp.log(r['term_i0'] + r['other']) / A3.positive(tau)).is_positive is True, 'L5 FAIL: LSE - max > 0 not obtained for n >= 2'",
      "fingerprint": "f6e6582b3f22ebb035158e8f4243d49b33a6d035824e474b9c90504723353346",
@@ -938,6 +1045,7 @@
      "tag": "L5.21",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "N(tau) = log((1/n) sum_i e^{tau s_i}) vanishes at tau = 0",
      "code": "assert r['N0'] == 0, 'L5 FAIL: N(0) != 0'",
      "fingerprint": "50c07aba2512d40a4f9fb54d3b4198f43c8e9b5ca928a7ef26a9d21af67b489e",
@@ -947,6 +1055,7 @@
      "tag": "L5.22",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "lim_{tau->0} LME = N'(0) = mean",
      "code": "assert sp.simplify(r['lim_zero'] - r['mean']) == 0, 'L5 FAIL: lim_{tau->0} LME != mean'",
      "fingerprint": "97d648d7636b6b702d1a13c4a5defd1d2a2ee83eba2d00af3eb969c0f22e87b2",
@@ -956,6 +1065,7 @@
      "tag": "L5.23",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the lower squeeze bound M - (log n)/tau tends to M as tau -> inf",
      "code": "assert sp.simplify(r['lim_lower'] - r['max_symbol']) == 0, 'L5 FAIL: lower bound limit != max'",
      "fingerprint": "aebd5020377334a1d81932927a38be8bf368a59a1e627b146d6e2c8ccb1ac727",
@@ -965,6 +1075,7 @@
      "tag": "L5.24",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the upper squeeze bound M tends to M, so lim_{tau->inf} LME = max",
      "code": "assert sp.simplify(r['lim_upper'] - r['max_symbol']) == 0, 'L5 FAIL: upper bound limit != max'",
      "fingerprint": "7dd5887752fd39b10de58bcf04fe5335da329f93a39a9c865bf8fb058012df83",
@@ -981,6 +1092,8 @@
     "I5"
    ],
    "hypotheses": [],
+   "proved_results_imported": {},
+   "proved_results_exported": [],
    "imports": [
     "A2",
     "A3",
@@ -1010,6 +1123,7 @@
      "applies": [
       "A5"
      ],
+     "results": [],
      "prose": "A5: each noise term is eps ~ N(0, sigma^2) with sigma > 0, independent across j",
      "code": "X = A5.obj('noise')",
      "fingerprint": "01c922f2f62d29fee6d348bd9217fc51af6707e109a3058acf6a068835ea0c15",
@@ -1021,6 +1135,7 @@
      "applies": [
       "I5"
      ],
+     "results": [],
      "prose": "I5: the MGF of the independent sum w.eps is the product of the MGFs at tau w_j",
      "code": "prod = I5.specialize(Mgf1=lambda arg: mgf1.subs(t, arg))",
      "fingerprint": "d91ad6b0050d7fc81ab970b9540412983ed255a29eb719543ad80b517bda8d13",
@@ -1034,6 +1149,7 @@
       "A3",
       "A5"
      ],
+     "results": [],
      "prose": "A2, A3, A5: w, tau and sigma are real, so log of each factor is its exponent",
      "code": "f = log_expand(sp.log(factor), A2, A3, A5)",
      "fingerprint": "55068e9444adc42af18820a245f0535cbd89db0a255b5ee2be476ce7d6c50eb9",
@@ -1043,6 +1159,7 @@
      "tag": "L6.4",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "one noise variable: E exp(t eps) = exp(sigma^2 t^2 / 2)",
      "code": "assert sp.simplify(r['mgf1'] - sp.exp(sigma ** 2 * t ** 2 / 2)) == 0, 'L6 FAIL one-variable MGF'",
      "fingerprint": "932d290f855da53f6ce235df62922fdca722a8535fd27705baf8d3a3ca518d23",
@@ -1052,6 +1169,7 @@
      "tag": "L6.5",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the exponent of the product of MGFs is a Sum over j",
      "code": "assert isinstance(lhs, sp.Sum), 'L6 FAIL exponent is not a Sum over j'",
      "fingerprint": "d063081e15e7be449e94c4b7556df82c835d5dc692645778cdf66a767cfae18e",
@@ -1061,6 +1179,7 @@
      "tag": "L6.6",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "each summand of the exponent is tau^2 sigma^2 w_j^2 / 2",
      "code": "assert summand_gap == 0, 'L6 FAIL per-term exponent mismatch'",
      "fingerprint": "41a538ef48483557265df4cb9e6fc512e875d95ffc7c4b127fd9ee051c00b678",
@@ -1070,6 +1189,7 @@
      "tag": "L6.7",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the Sum runs over j = 1..d, the same range as ||w||^2",
      "code": "assert lhs.limits == r['norm2'].limits, 'L6 FAIL Sum range is not 1..d'",
      "fingerprint": "76f9e4ca787b249a4fbbec1c8ac5a0bab069934a8dbaf34177bf950c41f7dc17",
@@ -1079,6 +1199,7 @@
      "tag": "L6.8",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the cumulant (1/tau) log E exp(tau w.eps) equals tau sigma^2 ||w||^2 / 2",
      "code": "assert sp.simplify(r['cumulant'] - r['target']) == 0, 'L6 FAIL cumulant formula'",
      "fingerprint": "7cf1effccfff34acad3d64889b315bc498943752c1031bf55704cf210763f637",
@@ -1088,6 +1209,7 @@
      "tag": "L6.9",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the identity holds at symbolic d (the upper limit of ||w||^2 is d)",
      "code": "assert r['norm2'].limits[0][2] == S.d, 'L6 FAIL upper limit is not symbolic d'",
      "fingerprint": "b9979ac46c2f1ceb136e08e82473034291410a15454dec7039797c4276caa30a",
@@ -1102,6 +1224,10 @@
     "A2"
    ],
    "hypotheses": [],
+   "proved_results_imported": {
+    "L1_RESULT": "lemma_01_homogeneity"
+   },
+   "proved_results_exported": [],
    "imports": [
     "A1",
     "A2"
@@ -1117,7 +1243,8 @@
       5,
       6,
       7,
-      8
+      8,
+      9
      ]
     }
    ],
@@ -1128,6 +1255,7 @@
      "applies": [
       "A1"
      ],
+     "results": [],
      "prose": "A1: a point of F is a point of log-metrics u = log m, a real family",
      "code": "uu = A1.real_base('u_pt')",
      "fingerprint": "9370bc0e495c870aff21c16de3e5c60c13e1d9178926cfadd15e65d784793b4b",
@@ -1140,6 +1268,7 @@
       "A1",
       "A2"
      ],
+     "results": [],
      "prose": "A1, A2: V = exp(log V) > 0, so the power V^(-1/w_j) is exp(-log V / w_j)",
      "code": "f_star = licensed_power(sp.exp(logV) ** (-1 / w_j0), A1, A2)",
      "fingerprint": "2ae5a68e407055111c964dcd9263957986e976a6956b2e9eb466155b7f21dce3",
@@ -1147,56 +1276,74 @@
     },
     {
      "tag": "L7.3",
-     "kind": "computed",
+     "kind": "result",
      "applies": [],
-     "prose": "the tangent direction e_k0 + x e_j0 has dG(v) = w_k0 + x w_j0",
-     "code": "assert sp.simplify(r['dG'] - (w[k0] + x * w[j0])) == 0, 'L7 FAIL: dG(v) != w_k + x w_j'",
-     "fingerprint": "06f56c7434eed3b27160043c0c0c77d36263a8caf613ff7f16b1f7acbb305cf6",
+     "results": [
+      "L1_RESULT"
+     ],
+     "prose": "by L1: V(k m) = k V(m), the simplex already applied; at k = 1/V it gives V(m / V)",
+     "code": "Vk, V1 = L1_RESULT.take(ctx, 'Vk', 'V')",
+     "fingerprint": "f491e4dbb41617cca896a100857b87115b77c1b83a59c2431a62a3d649a19aac",
      "result": "Elasticities -w_k/w_j on the frontier; improvement factor V^(-1/w_j)"
     },
     {
      "tag": "L7.4",
      "kind": "computed",
      "applies": [],
-     "prose": "dG(v) = 0 gives the elasticity x = d log m_j0 / d log m_k0 = -w_k0 / w_j0",
-     "code": "assert sp.simplify(r['x_sol'] + w[k0] / w[j0]) == 0, 'L7 FAIL: elasticity != -w_k/w_j'",
-     "fingerprint": "152658dfb3cf7ccc5b461f13c3de4cc6bb64c7b7f36b6efcf1b8e3806b4ca26d",
+     "results": [],
+     "prose": "the tangent direction e_k0 + x e_j0 has dG(v) = w_k0 + x w_j0",
+     "code": "assert sp.simplify(r['dG'] - (w[k0] + x * w[j0])) == 0, 'L7 FAIL: dG(v) != w_k + x w_j'",
+     "fingerprint": "916325c63367a7fad100c59c4555389d733ffeb27af739bc5e7ad562a34fdf5e",
      "result": "Elasticities -w_k/w_j on the frontier; improvement factor V^(-1/w_j)"
     },
     {
      "tag": "L7.5",
      "kind": "computed",
      "applies": [],
-     "prose": "scaling m_j0 by f adds w_j0 log f to log V, so V -> f^w_j0 V",
-     "code": "assert sp.simplify(r['logV_new'] - (r['logV'] + w[j0] * r['logf'])) == 0, 'L7 FAIL: V(f m_j) != f^{w_j} V'",
-     "fingerprint": "99818d71096f3131665bdda213fb49e541e9b5f59f32fa78a5397db59191c1bc",
+     "results": [],
+     "prose": "dG(v) = 0 gives the elasticity x = d log m_j0 / d log m_k0 = -w_k0 / w_j0",
+     "code": "assert sp.simplify(r['x_sol'] + w[k0] / w[j0]) == 0, 'L7 FAIL: elasticity != -w_k/w_j'",
+     "fingerprint": "6b0e78dc53f19e314438e72e485900eba8be14a13a6069aea22f29a0d3f6d7c3",
      "result": "Elasticities -w_k/w_j on the frontier; improvement factor V^(-1/w_j)"
     },
     {
      "tag": "L7.6",
      "kind": "computed",
      "applies": [],
-     "prose": "at f = V^(-1/w_j0) the new log V is 0: the point reaches the frontier V = 1",
-     "code": "assert sp.simplify(new_logV) == 0, 'L7 FAIL: improvement factor does not reach V = 1'",
-     "fingerprint": "b3c8cf0db1252c063ccf5ab16ac458f7a609002df44113626eba36cfc0de95c2",
+     "results": [],
+     "prose": "scaling m_j0 by f adds w_j0 log f to log V, so V -> f^w_j0 V",
+     "code": "assert sp.simplify(r['logV_new'] - (r['logV'] + w[j0] * r['logf'])) == 0, 'L7 FAIL: V(f m_j) != f^{w_j} V'",
+     "fingerprint": "71db5eac0c1cdad55f98f38b02d0a44e5116beb4ce42a330d8893068106d2961",
      "result": "Elasticities -w_k/w_j on the frontier; improvement factor V^(-1/w_j)"
     },
     {
      "tag": "L7.7",
      "kind": "computed",
      "applies": [],
-     "prose": "the improvement factor V^(-1/w_j0) equals exp(-log V / w_j0)",
-     "code": "assert sp.simplify(r['f_star'] - sp.exp(r['logf_star'])) == 0, 'L7 FAIL: V^(-1/w_j) != exp(-log V / w_j)'",
-     "fingerprint": "479a1a3f6baec35505074ac2fc995fac18cb778342876800c98fe17ed32b55fa",
+     "results": [],
+     "prose": "at f = V^(-1/w_j0) the new log V is 0: the point reaches the frontier V = 1",
+     "code": "assert sp.simplify(new_logV) == 0, 'L7 FAIL: improvement factor does not reach V = 1'",
+     "fingerprint": "9fd9dfe8bf714bd851815c82ca71bdfc602fc6fa9da48373ca65ce5f49bb9d15",
      "result": "Elasticities -w_k/w_j on the frontier; improvement factor V^(-1/w_j)"
     },
     {
      "tag": "L7.8",
      "kind": "computed",
      "applies": [],
+     "results": [],
+     "prose": "the improvement factor V^(-1/w_j0) equals exp(-log V / w_j0)",
+     "code": "assert sp.simplify(r['f_star'] - sp.exp(r['logf_star'])) == 0, 'L7 FAIL: V^(-1/w_j) != exp(-log V / w_j)'",
+     "fingerprint": "2b308f52e15e7f96b832b66fc7c064de057114e0784d1885aef2dac044760a99",
+     "result": "Elasticities -w_k/w_j on the frontier; improvement factor V^(-1/w_j)"
+    },
+    {
+     "tag": "L7.9",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
      "prose": "uniform improvement: scaling every metric by 1/V gives V = 1",
      "code": "assert sp.simplify(r['uniform'] - 1) == 0, 'L7 FAIL: uniform improvement 1/V does not give V=1'",
-     "fingerprint": "dd6ae2643f35f3675ad6ad3dc6a3894ae7ed2f6eb6ca84f33257da1159de82a6",
+     "fingerprint": "cc2875a7b98fb7f49ebdcecff98e0503bf2f802f5db5386e05a3d2afefc9afbd",
      "result": "Elasticities -w_k/w_j on the frontier; improvement factor V^(-1/w_j)"
     }
    ]
@@ -1208,6 +1355,8 @@
     "I6"
    ],
    "hypotheses": [],
+   "proved_results_imported": {},
+   "proved_results_exported": [],
    "imports": [
     "A7",
     "I6"
@@ -1240,6 +1389,7 @@
      "applies": [
       "A7"
      ],
+     "results": [],
      "prose": "A7: B B^T = I (the chart's rows are orthonormal)",
      "code": "sub[B * B.T] = A7.rule(0)[1]",
      "fingerprint": "df1ea5ead12c2be318b6ea3e038c8d040ea34ce72283194ca57b1902ea4f053d",
@@ -1251,6 +1401,7 @@
      "applies": [
       "A7"
      ],
+     "results": [],
      "prose": "A7: B 1 = 0, and its transpose 1^T B^T = 0",
      "code": "zero = A7.rule(1)[1]",
      "fingerprint": "68e537a5903a2cc5dbf1c6fe0957ea33d64e5c7d2361d8892fd71ac733421c4b",
@@ -1262,6 +1413,7 @@
      "applies": [
       "I6"
      ],
+     "results": [],
      "prose": "I6: Q is square and Q Q^T = I, so Q^T Q = I",
      "code": "QtQ_red = QtQ.xreplace({QtQ: I6.rule(0)[1]}) if use_I6 else QtQ",
      "fingerprint": "dad46c0611cf28aa0caf20173845ba391aba6273a08d6b7414927492a07a83f9",
@@ -1273,6 +1425,7 @@
      "applies": [
       "A7"
      ],
+     "results": [],
      "prose": "A7: the chart's hypotheses are B B^T = I and B 1 = 0",
      "code": "hyp_orth, hyp_ker = (A7.rule(0)[1], A7.rule(1)[1])",
      "fingerprint": "8c3a049c2d67a6bf82b568c504fa8c69f6f50edb16b72ab0e5a869949fb2cc82",
@@ -1284,6 +1437,7 @@
      "applies": [
       "A7"
      ],
+     "results": [],
      "prose": "A7: B 1 = 0 kills the term c (B 1) of B (u + c 1)",
      "code": "kills = prod == A7.rule(1)[0]",
      "fingerprint": "e12cea85a79d424b3aafbc5f32e579908df36d74aa020fb3109010b10595dc93",
@@ -1293,6 +1447,7 @@
      "tag": "L8.6",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the chart is blind to the common shift: Z(u + c 1) = Z(u)",
      "code": "assert r['shifted'] == r['Z'], 'L8 FAIL Z(u + c 1) != Z(u)'",
      "fingerprint": "3bab3a8f95ee0098bf52801bbbe0b7172949706b46b0b9e7e394d03dfa906e68",
@@ -1302,6 +1457,7 @@
      "tag": "L8.7",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "block (1,1) of Q Q^T is B B^T = I",
      "code": "assert g[0][0] == Identity(d - 1), 'L8 FAIL B B^T != I'",
      "fingerprint": "fe72dbfe6e0d3ef6faa78854b9b06523929a381920ae5215620fe3b6c114604b",
@@ -1311,6 +1467,7 @@
      "tag": "L8.8",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "block (1,2) of Q Q^T is B 1 / sqrt(d) = 0",
      "code": "assert g[0][1] == ZeroMatrix(d - 1, 1) or g[0][1] == 0, 'L8 FAIL Gram (1,2) block != 0'",
      "fingerprint": "52204d223d084ba8cd3bbf0c1dd9de135b5efe367f9aabe25367526b904c262b",
@@ -1320,6 +1477,7 @@
      "tag": "L8.9",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "block (2,1) of Q Q^T is 1^T B^T / sqrt(d) = 0",
      "code": "assert g[1][0] == ZeroMatrix(1, d - 1) or g[1][0] == 0, 'L8 FAIL Gram (2,1) block != 0'",
      "fingerprint": "632daa8cfd7de24f1d58544bba3c1e281f98945c351d60dbfa86aa9068e2f70b",
@@ -1329,6 +1487,7 @@
      "tag": "L8.10",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "block (2,2) of Q Q^T is (1/d) 1^T 1 = 1",
      "code": "assert sp.simplify(g[1][1] - Identity(1)) in (0, ZeroMatrix(1, 1)), 'L8 FAIL (1/d) 1^T 1 != 1'",
      "fingerprint": "9f96040596e8b6760e209d896af60c6eb30c275a2d853a7b90c0d2e833381427",
@@ -1338,6 +1497,7 @@
      "tag": "L8.11",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "Q = [B; 1^T / sqrt(d)] is a square d x d matrix",
      "code": "assert r['Q'].shape == (d, d), 'L8 FAIL Q is not square'",
      "fingerprint": "e3ef54c0e43bb8ddebc7ccd64f9be0d5b8678f98b0946d25b4b2489705d034f4",
@@ -1347,6 +1507,7 @@
      "tag": "L8.12",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "Q^T Q expands to B^T B + (1/d) 1 1^T",
      "code": "assert QtQ == B.T * B + OneMatrix(d, d) / d, 'L8 FAIL Q^T Q expansion'",
      "fingerprint": "6c7d958ace74f45c7321397f1f098a20994c5c8fbb623b5e178c06f3c08d2c0d",
@@ -1356,6 +1517,7 @@
      "tag": "L8.13",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "1 1^T is the all-ones d x d matrix",
      "code": "assert one * one.T == OneMatrix(d, d), 'L8 FAIL 1 1^T != all-ones'",
      "fingerprint": "c07e94ff3959c2f475ed72502f885f9a5c78b61c15e43bf52c4497847d92dad8",
@@ -1365,6 +1527,7 @@
      "tag": "L8.14",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "round trip: Q Q^T = I (A7) and Q^T Q = I (I6) give B^T B u + (1/d) 1 1^T u = u",
      "code": "assert roundtrip_holds(B, u, one, d), 'L8 FAIL round trip u = B^T B u + ell 1 not derived'",
      "fingerprint": "4c67441367ca6f5d152c7f9a6417525b3eec13a45e43b1782c89e49c64a18faa",
@@ -1379,6 +1542,8 @@
     "A4"
    ],
    "hypotheses": [],
+   "proved_results_imported": {},
+   "proved_results_exported": [],
    "imports": [
     "A2",
     "A4"
@@ -1404,6 +1569,7 @@
      "applies": [
       "A4"
      ],
+     "results": [],
      "prose": "A4: log m_j = alpha_j log(a_j + r_j) + b_j for the raw attribute r_j",
      "code": "u = A4.rewrite(S.u[j])",
      "fingerprint": "f17a1841a01fc8acb715e27c52f04bee9b063cf228dcb4d5ab6ce1017c6c44a6",
@@ -1415,6 +1581,7 @@
      "applies": [
       "A2"
      ],
+     "results": [],
      "prose": "A2: sum_j w_j = 1 absorbs the offset: sum_j w_j (u_j - beta) = w.u - beta",
      "code": "logV = A2.rewrite(linear(sp.Sum(w[j] * (u - beta0), lim)))",
      "fingerprint": "0a5937118e255ee4d1d7146952a6dc7fd4311e2f6b8534a71cedecd474faee68",
@@ -1426,6 +1593,7 @@
      "applies": [
       "A4"
      ],
+     "results": [],
      "prose": "A4: a_j + r_j > 0 licenses the log of the power (a_j + r_j)^(w_j alpha_j)",
      "code": "target_exp = sp.exp(sp.Sum(w[j] * b[j], lim) - beta0) * product_to_exp_sum(prod, A4)",
      "fingerprint": "dde513f6ad156c7b134d71e5d59130fa1f0263dabff18fd913ecd78676ffe9ee",
@@ -1437,6 +1605,7 @@
      "applies": [
       "A4"
      ],
+     "results": [],
      "prose": "A4: alpha_j != 0 and a_j + r_j > 0, so the conditioning inverts: u -> r -> u",
      "code": "u_again = alpha[j] * A4.force_log(sp.log(a[j] + s_back)) + b[j]",
      "fingerprint": "1e5cb7b39f212f18ba208e6ef8f3caf1e085e960b7fed9dd89b5c64022e7af67",
@@ -1446,6 +1615,7 @@
      "tag": "L9.5",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "V = e^{w.b - beta} prod_j (a_j + r_j)^{w_j alpha_j}",
      "code": "assert sp.simplify(lhs - rhs) == 0, 'L9 FAIL: V != e^{w.b-beta} prod (a_j+s_j)^{w_j alpha_j}'",
      "fingerprint": "6c789e2bc49f187cce0c9ba465a6666cab7b96155d6a69c83818bc8697dbf4b5",
@@ -1455,6 +1625,7 @@
      "tag": "L9.6",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the conditioning is invertible: the round trip returns u_j",
      "code": "assert sp.simplify(r['u_again'] - r['uj']) == 0, 'L9 FAIL: conditioning is not invertible'",
      "fingerprint": "4faf3d728b5eb412af1973ad58dee7f1938a4b6abf00da649d5511db5c906413",
@@ -1464,6 +1635,7 @@
      "tag": "L9.7",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the offset enters only through sum_j w_j, which A2 sets to 1",
      "code": "assert S.simplex.lhs not in r['V_derived'].atoms(sp.Sum), 'L9 FAIL: simplex not substituted'",
      "fingerprint": "8df2957a88ecb0809f5a7f97af927e927c832c9e30af9e34d329ab1cb5f504ca",
@@ -1479,6 +1651,8 @@
     "F10"
    ],
    "hypotheses": [],
+   "proved_results_imported": {},
+   "proved_results_exported": [],
    "imports": [
     "A1",
     "A6",
@@ -1517,6 +1691,7 @@
      "applies": [
       "A6"
      ],
+     "results": [],
      "prose": "A6: sum_j theta_kj = 1 per term gives kappa (theta_k.u + c - beta_k)",
      "code": "term = A6.rewrite(term)",
      "fingerprint": "c5f35a072d46bf399a258b18b9749c7bdb18b25ed0a58764eb0dee9c8ed580bc",
@@ -1529,6 +1704,7 @@
       "A1",
       "A6"
      ],
+     "results": [],
      "prose": "A1, A6: the terms are exponentials of real scores (u, theta real), so log splits",
      "code": "shifted_reduced = sp.expand(log_expand(sp.log(total), A1, A6) / kappa)",
      "fingerprint": "679c23d777717c4ca2c1ae93aefbc4b71f728201ad9cc1551516855da58635df",
@@ -1541,6 +1717,7 @@
       "A1",
       "A6"
      ],
+     "results": [],
      "prose": "A1, A6: likewise for the unshifted sum of exponentials",
      "code": "base = sp.expand(log_expand(sp.log(sp.Sum(sp.exp(kappa * _x(S)), (k, 1, K))), A1, A6))",
      "fingerprint": "5221f2645dbe9951b39eb35964bce010cfd8e64d86e386a5a6961a6ab6855677",
@@ -1553,6 +1730,7 @@
       "A1",
       "A6"
      ],
+     "results": [],
      "prose": "A1, A6: log(exp(kappa x_1)) = kappa x_1 for the real score x_1",
      "code": "phi1 = log_expand(Phi(S, 1).doit(), A1, A6)",
      "fingerprint": "771bb1890548e8ef1a17e2100e8c91dbc2b2bff4183815394a27fec774b073c7",
@@ -1564,6 +1742,7 @@
      "applies": [
       "F10"
      ],
+     "results": [],
      "prose": "F10: the term k0 of the shifted sum T is exp(kappa (x_k0 - M)) = exp(0) = 1",
      "code": "term_k0 = sp.exp(kappa * (xk[sp.Symbol('k0', integer=True)] - M)).subs(*F10.rule(1))",
      "fingerprint": "1b8c5499059684398a277bfd2e7248be8e95913b01c5ddac82049ce55e48aced",
@@ -1575,6 +1754,7 @@
      "applies": [
       "F10"
      ],
+     "results": [],
      "prose": "F10: the slack M - x_k of x_k <= M is nonnegative",
      "code": "slack = F10.nonneg_symbol('slack')",
      "fingerprint": "975897e4258c4008ec5e0a9f056a725c377e10b9d917bfeaffef09b21426b3e8",
@@ -1586,6 +1766,7 @@
      "applies": [
       "A1"
      ],
+     "results": [],
      "prose": "A1: m > 0, so exp(kappa Phi_K) is a sum of monomials in m, a posynomial",
      "code": "mono = linear(sp.exp(-kappa * beta[k]) * product_to_exp_sum(sp.Product(m[j] ** (kappa * theta[k, j]), (j, 1, d)), A1))",
      "fingerprint": "cb06cf45e8d1a5a15a03e215653c1d29ed15bff367d29560680f86020ccc6c65",
@@ -1598,6 +1779,7 @@
       "A1",
       "A6"
      ],
+     "results": [],
      "prose": "shift equivariance: Phi_K(u + c 1) - (Phi_K(u) + c) is 0 (logs licensed: A1, A6)",
      "code": "assert sp.simplify(log_expand(r['shifted_reduced'] - r['base'] / kappa - S.c, A1, A6)) == 0, 'L10 FAIL: Phi_K(u + c1) - (Phi_K(u) + c) != 0'",
      "fingerprint": "8c37a886340253922a031579cd834befb1423fee39ac68c50a44d678bd6877e3",
@@ -1607,6 +1789,7 @@
      "tag": "L10.9",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "K = 1 reduction: Phi_1(u) = theta_1.u - beta_1",
      "code": "assert sp.simplify(r['phi1'] - r['x1']) == 0, 'L10 FAIL: K = 1 reduction is not theta_1.u - beta_1'",
      "fingerprint": "715f59a8f3586049c54dca9648455c590587dd87564f8b8eefaa2024c52f9164",
@@ -1616,6 +1799,7 @@
      "tag": "L10.10",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "per term, exp(x) > 0 for every real x",
      "code": "assert r['term_positive'] == sp.S.Reals, 'L10 FAIL: exp(x) > 0 per term'",
      "fingerprint": "e75afd5e1169fd93cef5d55dc91a855286adc3e74b72d6a9d2f6e6b49ff27a00",
@@ -1625,6 +1809,7 @@
      "tag": "L10.11",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "per term, exp(x) <= 1 exactly when x <= 0 (the shifted exponents are <= 0 by F10)",
      "code": "assert r['term_le_one'] == sp.Interval(-sp.oo, 0), 'L10 FAIL: exp(x) <= 1 iff x <= 0'",
      "fingerprint": "6ca62e9fb75c57f2bf3e6bc391177da8c1f304fe0414a6cd619bba9bf09dcd3d",
@@ -1636,6 +1821,7 @@
      "applies": [
       "A6"
      ],
+     "results": [],
      "prose": "F10, A6: kappa (x_k - M) = -kappa * slack is <= 0, so each shifted term is <= 1",
      "code": "assert (-A6.positive(kappa) * r['slack']).is_nonpositive is True, 'L10 FAIL: kappa (x_k - M) > 0'",
      "fingerprint": "54b6b0a7a5de5dd3af313de37ee8824dac491ec1cdb22314315418d1aa450bf5",
@@ -1645,6 +1831,7 @@
      "tag": "L10.13",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the sum of K ones is K, so the shifted sum T is at most K",
      "code": "assert r['n_upper'] == K, 'L10 FAIL: sum of K ones != K'",
      "fingerprint": "6ad7711886aa79bf59d4e23702deae04e94109e19ac929af2af60ca5bc9fa6e0",
@@ -1654,6 +1841,7 @@
      "tag": "L10.14",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "shifting by the maximum: sum_k e^{kappa x_k} = e^{kappa M} sum_k e^{kappa (x_k - M)}",
      "code": "assert r['shift_check'] == 0, 'L10 FAIL: sum e^{kappa x_k} != e^{kappa M} sum e^{kappa (x_k-M)}'",
      "fingerprint": "e62fa279ecc9830903bc9b13c1e95206b5e4449305d4a57f97868a6bffeaab27",
@@ -1663,6 +1851,7 @@
      "tag": "L10.15",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "Phi_K >= max: Phi - M = (1/kappa) log T >= (1/kappa) log 1 = 0 (the k0 term is 1)",
      "code": "assert sp.simplify(r['floor']) == 0, 'L10 FAIL: Phi - max >= 0 floor'",
      "fingerprint": "4bb73d7965cad679e59dee9aa28eac51e358b676090b67579f6e4fd43c7641ac",
@@ -1672,6 +1861,7 @@
      "tag": "L10.16",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "Phi_K <= max + (log K)/kappa: T <= K",
      "code": "assert sp.simplify(r['ceil'] - sp.log(K) / kappa) == 0, 'L10 FAIL: Phi - max <= log K / kappa'",
      "fingerprint": "9a08a02de820b987a8b8cc8c268095779dda1ef90640f1308953c0dbbc0141fe",
@@ -1681,6 +1871,7 @@
      "tag": "L10.17",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the upper squeeze bound M + (log K)/kappa tends to M as kappa -> inf",
      "code": "assert sp.simplify(r['lim_upper'] - M) == 0, 'L10 FAIL: lim upper bound != max'",
      "fingerprint": "ec2296e0258552648fdfc6e7944c834389925a31a3f5d149592ae7099d69825b",
@@ -1690,6 +1881,7 @@
      "tag": "L10.18",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the lower squeeze bound M tends to M, so lim_{kappa->inf} Phi_K = max_k x_k",
      "code": "assert sp.simplify(r['lim_lower'] - M) == 0, 'L10 FAIL: lim lower bound != max'",
      "fingerprint": "d35cddd544bf21f0f9d2b9d0d7b178c05fe3215ea936596e984642a29d38e090",
@@ -1699,6 +1891,7 @@
      "tag": "L10.19",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "each term e^{kappa x_k} is the monomial e^{-kappa beta_k} prod_j m_j^(kappa theta_kj)",
      "code": "assert gap == 0, f'L10 FAIL: exp(kappa Phi_K) is not the posynomial (gap {gap})'",
      "fingerprint": "b1762861e9f69b326020f723189a9df4693431df8d3e7f4e6dfb1b1be6812b6a",
@@ -1743,6 +1936,8 @@
      "claim": "delta_j >= eps > 0 for all j"
     }
    ],
+   "proved_results_imported": {},
+   "proved_results_exported": [],
    "imports": [
     "A2"
    ],
@@ -1780,6 +1975,7 @@
      "applies": [
       "A2"
      ],
+     "results": [],
      "prose": "A2: the exponents are nonnegative, w_j >= 0",
      "code": "wn = A2.nonneg_base('wn')",
      "fingerprint": "afef00dcec4fe2c2f18b5be355538a1616c2882fb279c2f0764f586a0b362ed8",
@@ -1791,6 +1987,7 @@
      "applies": [
       "A2"
      ],
+     "results": [],
      "prose": "A2: sum_j w_j = 1 turns sum_j w_j (eps + gam_j) into eps + sum_j w_j gam_j",
      "code": "low = A2.rewrite(low, rename={w: wn})",
      "fingerprint": "96f3f7038e408a91ed82792b6e23f2ff7d574aa59810dd878599b6fb63e71be8",
@@ -1802,6 +1999,7 @@
      "applies": [
       "A2"
      ],
+     "results": [],
      "prose": "A2: if no w_j were positive the simplex sum would be 0, not 1, so some w_j > 0",
      "code": "some_positive = sp.true if sp.Sum(0, lim).doit() != A2.rule(0)[1] else sp.false",
      "fingerprint": "460cd9415353f71765a8e4d5dd7b16c5c228fc572d339f4240f8fca65a5eb72d",
@@ -1811,6 +2009,7 @@
      "tag": "L11.4",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "w.u' - w.u = sum_j w_j delta_j, by Sum linearity",
      "code": "assert sp.simplify(r['diff'] - sp.Sum(w[j] * dl[j], (j, 1, d))) == 0, \"L11 FAIL: w.u' - w.u != sum_j w_j delta_j\"",
      "fingerprint": "47759ee2292cf58a9d7b4ad2277eea373a3ef6a83f645b76560cba79fe07beb6",
@@ -1820,6 +2019,7 @@
      "tag": "L11.5",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "every summand w_j delta_j is >= 0, so the gain is >= 0",
      "code": "assert r['gain_nonneg'] is True, 'L11 FAIL: sum_j w_j delta_j is not nonnegative'",
      "fingerprint": "9c946548e25bff48b0478fcc892fd0e2741418669d53633f848e19c836cdb2a4",
@@ -1829,6 +2029,7 @@
      "tag": "L11.6",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "strictness: a nonnegative rest plus the positive term w_j0 delta_j0 is > 0",
      "code": "assert r['strict_positive'] is True, 'L11 FAIL: nonnegative rest + positive term is not > 0'",
      "fingerprint": "672284f912f36cafbe19ab43e331581d6a6145051abad702cc71fc0ca2ada01b",
@@ -1838,6 +2039,7 @@
      "tag": "L11.7",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "exp(x) >= 1 exactly when x >= 0, so V(u') >= V(u)",
      "code": "assert r['ratio_ge1'] == sp.Interval(0, sp.oo), 'L11 FAIL: exp(x) >= 1 iff x >= 0'",
      "fingerprint": "125a91d287021e6947f2201b9abc18f02178c9bdeabda7b9f832d1f81f1bc9e5",
@@ -1847,6 +2049,7 @@
      "tag": "L11.8",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "exp(x) > 1 exactly when x > 0, so V(u') > V(u) under the strictness condition",
      "code": "assert r['ratio_gt1'] == sp.Interval.open(0, sp.oo), 'L11 FAIL: exp(x) > 1 iff x > 0'",
      "fingerprint": "cc7a70c4a1a1ffcdbe5b9c2d92c3e0853fa8436b915e5398ed763e1f30ce129c",
@@ -1856,6 +2059,7 @@
      "tag": "L11.9",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the ratio V(u')/V(u) is exp(sum_j w_j delta_j)",
      "code": "assert r['ratio_identity'] == 0, \"L11 FAIL: V(u')/V(u) != exp(sum_j w_j delta_j)\"",
      "fingerprint": "4e32fcc9ded3bebd9f6111c051ab1963b5d2e12383997744458170baa1919690",
@@ -1865,6 +2069,7 @@
      "tag": "L11.10",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "with sum_j w_j = 1: w.delta - eps = sum_j w_j gam_j",
      "code": "assert gap == 0, f'L11 FAIL: sum_j w_j (eps + gam_j) - eps != sum_j w_j gam_j (gap {gap})'",
      "fingerprint": "ac1d6637acb6314da7ec0f93340b2ac454b9f0b1599db75c8bb6690232836cb9",
@@ -1874,6 +2079,7 @@
      "tag": "L11.11",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the remainder sum_j w_j gam_j is >= 0",
      "code": "assert r['low_remainder_nonneg'] is True, 'L11 FAIL: sum_j w_j gam_j is not nonnegative'",
      "fingerprint": "481635e247189d92b06e33e91babba7bdb0aef5a500eab01cf6b4b764273e81e",
@@ -1883,6 +2089,7 @@
      "tag": "L11.12",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "hence w.delta >= eps > 0 whenever every delta_j >= eps",
      "code": "assert r['low_positive'] is True, 'L11 FAIL: eps + nonnegative sum is not > 0'",
      "fingerprint": "30c7763f494c5377997683de36c8e35ac20943d4c5cb8c1d37acaf1edacac0c7",
@@ -1892,6 +2099,7 @@
      "tag": "L11.13",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "K > 1: theta_k0.delta >= 0 and x0 + theta_k0.delta <= x0 force theta_k0.delta = 0",
      "code": "assert r['squeeze'] == sp.FiniteSet(0), 'L11 FAIL: theta_k0.delta is not forced to 0'",
      "fingerprint": "f9230fde74d98f0d785787d9b2f2caf00f0cd71ad9c0f504efb04eb3c416235d",
@@ -1901,6 +2109,7 @@
      "tag": "L11.14",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "theta_k0.delta expands as sum_j theta_k0j delta_j",
      "code": "assert sp.simplify(r['a_def'] - sp.Sum(S.theta[k0, j] * dl[j], (j, 1, d))) == 0, 'L11 FAIL: theta_k0.delta mis-expanded'",
      "fingerprint": "7ac46f35f7ba3779a4a92db54a400191baf24126325a0c55f2d4a17fbb3e675e",
@@ -1910,6 +2119,7 @@
      "tag": "L11.15",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "exact instance (d = 3): the dominating point gains 1/6 > 0 where w_1 > 0",
      "code": "assert gain == R(1, 6) and gain > 0, 'L11 FAIL: numeric instance gain'",
      "fingerprint": "8fe7bd722b8c807eaefc4527d7f157e3029fd118fb0efea3ae90ecd7e42ff1da",
@@ -1919,6 +2129,7 @@
      "tag": "L11.16",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "exact instance: a gain only in the zero-exponent metric 3 does not count",
      "code": "assert gain0 == 0, 'L11 FAIL: gain in a zero-exponent metric must not count'",
      "fingerprint": "de79833b345345b89bd9a46cbe9d44315ec6b98186ac977bcdb1b1c6960b6f45",
@@ -1928,6 +2139,7 @@
      "tag": "L11.17",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "contrapositive of steps 2 and 3: a maximizer of V over S is not dominated",
      "code": "assert entails(base, sp.Not(sp.And(Mx, Dc))), 'L11 FAIL: a maximizer is dominated'",
      "fingerprint": "9388e38a14228d5fceecf8ff39e8f6d3142214baca0dedea379cdb9c643520c2",
@@ -1937,6 +2149,7 @@
      "tag": "L11.18",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "weakly efficient in all d metrics: no u' in S is strictly better in every metric",
      "code": "assert entails([*base, dd['every_metric'], dd['some_positive']], sp.Not(sp.And(Mx, Sall))), 'L11 FAIL: a maximizer is strictly beaten in every metric'",
      "fingerprint": "14f8fad70dc7cfa36012e7cb0aa1fa8c9733db31fd323de36cd4e77b16650dff",
@@ -1946,6 +2159,7 @@
      "tag": "L11.19",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "efficient when every w_j > 0: no u' >= u, u' != u in S",
      "code": "assert entails([*base, dd['all_positive']], sp.Not(sp.And(Mx, Pall, Dw))), 'L11 FAIL: a maximizer with every w_j > 0 is dominated'",
      "fingerprint": "f4c1d28d20b50ae9548830e39623b7501541b256aaa9a159e37df3c177be509e",
@@ -1955,6 +2169,7 @@
      "tag": "L11.20",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "negative control inside the chain: without step 3 (V strictly larger) nothing follows",
      "code": "assert not entails([dd['maximizer']], sp.Not(sp.And(Mx, Dc))), 'L11 FAIL: the chain is vacuous'",
      "fingerprint": "2af5e185fb49c496b13bfcaa1e20405e5ee01020b334deefb056fdab895dffd8",
@@ -1978,6 +2193,12 @@
      "sign": "nonnegative",
      "claim": "f(w) - f* >= 0 because f* is the minimum"
     }
+   ],
+   "proved_results_imported": {
+    "L4_RESULT": "lemma_04_convexity"
+   },
+   "proved_results_exported": [
+    "L12_RESULT"
    ],
    "imports": [
     "A2",
@@ -2021,7 +2242,8 @@
       29,
       30,
       31,
-      32
+      32,
+      33
      ]
     }
    ],
@@ -2032,6 +2254,7 @@
      "applies": [
       "A2"
      ],
+     "results": [],
      "prose": "A2: the weight families v and w on the simplex are nonnegative",
      "code": "vn, wn = (A2.nonneg_base('vn'), A2.nonneg_base('wn'))",
      "fingerprint": "49aadbf556892716f6f3a762c2ae43acc07fc7e70548676f34a1c01d8c9fe762",
@@ -2043,6 +2266,7 @@
      "applies": [
       "F12"
      ],
+     "results": [],
      "prose": "F12: the slacks gm_j = g_j - m are nonnegative",
      "code": "gm = F12.nonneg_base('gm')",
      "fingerprint": "12a6e3d05989eb7c068f6777ffbf1d9b53f7aa518c5f93d3edc579d68fd3d3c5",
@@ -2054,6 +2278,7 @@
      "applies": [
       "A2"
      ],
+     "results": [],
      "prose": "A2: sum_j v_j = 1 gives g.v - m = sum_j v_j (g_j - m)",
      "code": "gv_minus_m = A2.rewrite(linear(sp.Sum(vn[j] * (gm[j] + m), lim) - m), rename={w: vn})",
      "fingerprint": "77b74632d7e177ef5436b061e8a16d732c7bb7ccff8bd02c10657d38a56dbb1c",
@@ -2065,6 +2290,7 @@
      "applies": [
       "A2"
      ],
+     "results": [],
      "prose": "A2: sum_j w_j = 1 gives lambda - m = w.g - m = sum_j w_j (g_j - m) = G",
      "code": "lam_minus_m = A2.rewrite(linear(sp.Sum(wn[j] * (gm[j] + m), lim) - m), rename={w: wn})",
      "fingerprint": "bdd314e425c2a51f666c73ca343ae3a6cdaa2c73052421418338e7e13e123a8d",
@@ -2076,6 +2302,7 @@
      "applies": [
       "I8"
      ],
+     "results": [],
      "prose": "I8 at v = v*: the slack a = f* - f(w) - g.(v* - w) is >= 0",
      "code": "a_nn = I8.slack_symbol('a_nn')",
      "fingerprint": "4a39bdc1315136229ab03826e4b9aeea064fa643261fc6ba83c67bfb0adb0877",
@@ -2087,6 +2314,7 @@
      "applies": [
       "I8"
      ],
+     "results": [],
      "prose": "I8: the slack equation gives f* = f(w) + g.(v* - w) + a",
      "code": "f_star = sp.solve(sp.Eq(I8.slack_expr(f_v=fs, f_w=fw, g_dv=gvs - gw), a_nn), fs)[0]",
      "fingerprint": "60620ce0b21a862029dd9bc069c82b4e29a35afda81df811bd84440ccd42779c",
@@ -2098,6 +2326,7 @@
      "applies": [
       "F12"
      ],
+     "results": [],
      "prose": "F12: step 2 at v = v*: the slack b = g.v* - m is >= 0",
      "code": "b_nn = F12.nonneg_symbol('b_nn')",
      "fingerprint": "787b1795a9cafd932be7bd61ed1b9d9108eddd0bda140cb0547474ece15a5f54",
@@ -2109,6 +2338,7 @@
      "applies": [
       "I12"
      ],
+     "results": [],
      "prose": "I12: complementary slackness p_i (M - s_i) = 0 applied to each summand: the sum is 0",
      "code": "support_zero = I12.rewrite(support).doit()",
      "fingerprint": "71c1af0c399fa8889011edf042d207afdb5226eca0c2195282601ccb3c277acf",
@@ -2118,6 +2348,7 @@
      "tag": "L12.9",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "exact two-metric LP: primal and dual values and gaps at an optimal pair and off it",
      "code": "lp = dict(primal_at_optimum=f_lp(w_opt), dual_at_optimum=dual(p_opt), gap_at_optimum=f_lp(w_opt) - dual(p_opt), f_star=f_lp(w_opt), f_off_optimum=f_lp(w_off), gap_off_optimum=f_lp(w_off) - dual(p_off), active_off=Uc * w_off)",
      "fingerprint": "2b6e4a9a7ede7be5f0eb8415125fbb6e4fbc64e6e515c0535df1186349b43244",
@@ -2125,215 +2356,252 @@
     },
     {
      "tag": "L12.10",
-     "kind": "computed",
+     "kind": "result",
      "applies": [],
-     "prose": "L4 established that J_tau is convex along every line",
-     "code": "assert ctx['L4'].get('convex') is True, 'L12 FAIL: L4 convexity of J_tau not established'",
-     "fingerprint": "2e7a0c332d4573c29398f63e72bc31f95dd81e3e7d6ebed83ede3b7a2b01efb0",
+     "results": [
+      "L4_RESULT"
+     ],
+     "prose": "by L4: J_tau is convex along every line, so f = J_tau - linear is convex",
+     "code": "convex = L4_RESULT.holds(ctx, 'convex') and second_linear == 0",
+     "fingerprint": "4a19318942d1ca39c75657bf3578cebd21fcfcfdd1899841384e1f992d80cf21",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.11",
-     "kind": "computed",
+     "kind": "result",
      "applies": [],
-     "prose": "the linear part has second directional derivative 0",
-     "code": "assert r['second_linear'] == 0, 'L12 FAIL: the linear part has a nonzero second derivative'",
-     "fingerprint": "beb1c2c8b9c87554345cdd330e62a480964dae38739af2e759f40089503c43d7",
+     "results": [
+      "L4_RESULT"
+     ],
+     "prose": "L4 established that J_tau is convex along every line",
+     "code": "assert L4_RESULT.holds(ctx, 'convex'), 'L12 FAIL: L4 convexity of J_tau not established'",
+     "fingerprint": "adfb86643166081acaea7a761b179592c005a9c6d5fd6ed4abb4fd09adeae9eb",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.12",
      "kind": "computed",
      "applies": [],
-     "prose": "hence f_k = J_tau - linear is convex",
-     "code": "assert r['convex'] is True, 'L12 FAIL: f_k is not convex'",
-     "fingerprint": "7fffce565160268c82dc90e7b784083a7bf339ba2fd139c11dbb40d6f29d1359",
+     "results": [],
+     "prose": "the linear part has second directional derivative 0",
+     "code": "assert r['second_linear'] == 0, 'L12 FAIL: the linear part has a nonzero second derivative'",
+     "fingerprint": "71e9d0a347b7e5ec9ded4c1e57960974ad443bc7e732c829e3796b9abe776f7b",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.13",
      "kind": "computed",
      "applies": [],
-     "prose": "g.v - m = sum_j v_j (g_j - m) on the simplex",
-     "code": "assert sp.simplify(r['gv_minus_m'] - r['gv_rhs']) == 0, 'L12 FAIL: g.v - m != sum_j v_j (g_j - m)'",
-     "fingerprint": "3d62a40de331348a423e0b09480c46315702ffc83a767cbc69da9807c4079e97",
+     "results": [],
+     "prose": "hence f_k = J_tau - linear is convex",
+     "code": "assert r['convex'] is True, 'L12 FAIL: f_k is not convex'",
+     "fingerprint": "2a99cd346e7a3690a0201bb77aac4333f5669174a385761ee9d4dd108e7b72b3",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.14",
      "kind": "computed",
      "applies": [],
-     "prose": "every summand v_j (g_j - m) is >= 0, so g.v >= m on the simplex",
-     "code": "assert r['gap_nonneg'] is True, 'L12 FAIL: sum_j v_j (g_j - m) is not nonnegative'",
-     "fingerprint": "d2cdcf7de57c93f2acbe2742cab98b55bce5e6c064f39e15ee3ac7aebfd879ec",
+     "results": [],
+     "prose": "g.v - m = sum_j v_j (g_j - m) on the simplex",
+     "code": "assert sp.simplify(r['gv_minus_m'] - r['gv_rhs']) == 0, 'L12 FAIL: g.v - m != sum_j v_j (g_j - m)'",
+     "fingerprint": "f5268aa9bc5fb709b9941fb81094cddd074a394b0533ba76f554719bcb12e227",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.15",
-     "kind": "axiom",
-     "applies": [
-      "F12"
-     ],
-     "prose": "F12: the bound is attained at the vertex e_j0: g.e_j0 = g_j0 = m",
-     "code": "assert sp.simplify(att.subs(*F12.rule(1)) - r['m']) == 0, 'L12 FAIL: g.e_{j0} != m'",
-     "fingerprint": "ba68639b1f2a130c98cd8df9ddb24eeff6d3721894d9cfdf7fb0b38403ae9700",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "every summand v_j (g_j - m) is >= 0, so g.v >= m on the simplex",
+     "code": "assert r['gap_nonneg'] is True, 'L12 FAIL: sum_j v_j (g_j - m) is not nonnegative'",
+     "fingerprint": "1d64564e707f8333a506b38b6d7d5d3b6260b5564ac336559ba41291f4b0f0ea",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.16",
-     "kind": "computed",
-     "applies": [],
-     "prose": "G = g.w - m = sum_j w_j (g_j - m)",
-     "code": "assert sp.simplify(r['G_expr'] - sp.Sum(r['wn'][j] * r['gm'][j], lim)) == 0",
-     "fingerprint": "c947a0d856737563df96605c1bee131705be624698bbfc2c5d126ecbcd454bf7",
+     "kind": "axiom",
+     "applies": [
+      "F12"
+     ],
+     "results": [],
+     "prose": "F12: the bound is attained at the vertex e_j0: g.e_j0 = g_j0 = m",
+     "code": "assert sp.simplify(att.subs(*F12.rule(1)) - r['m']) == 0, 'L12 FAIL: g.e_{j0} != m'",
+     "fingerprint": "8c5d75991a8e87e7f22fcb637f8849154f71eb35fe34aedbe4fda76821470950",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.17",
      "kind": "computed",
      "applies": [],
-     "prose": "lambda - min g = w.g - m = G",
-     "code": "assert sp.simplify(r['lam_minus_m'] - r['G_expr']) == 0, 'L12 FAIL: lambda - min g != G (lambda = w.g)'",
-     "fingerprint": "85826cdd6d22605afd836a108decff9d31c8286f8af36061a0b3aeafba46abdc",
+     "results": [],
+     "prose": "G = g.w - m = sum_j w_j (g_j - m)",
+     "code": "assert sp.simplify(r['G_expr'] - sp.Sum(r['wn'][j] * r['gm'][j], lim)) == 0",
+     "fingerprint": "5c390eb961f201dcb51af6e7ebf0dd17b3c7d93130c4e9890c8bf90419e68bbd",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.18",
      "kind": "computed",
      "applies": [],
-     "prose": "nonnegative terms that sum to 0: a + r = 0 gives a = -r",
-     "code": "assert r['zero_sol'] == [-r['r_t']], 'L12 FAIL: a + r = 0 does not give a = -r'",
-     "fingerprint": "5a20c19249f9eb1550b47c247ed25436a13e2ac982f375b3e446db558ba3eb1a",
+     "results": [],
+     "prose": "lambda - min g = w.g - m = G",
+     "code": "assert sp.simplify(r['lam_minus_m'] - r['G_expr']) == 0, 'L12 FAIL: lambda - min g != G (lambda = w.g)'",
+     "fingerprint": "2c8065cdc92a120575d4388b7cc257e3737f5e781e1d53cebf19615c0a26d346",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.19",
      "kind": "computed",
      "applies": [],
-     "prose": "with r >= 0, a = -r is <= 0",
-     "code": "assert (-r['r_t']).is_nonpositive is True",
-     "fingerprint": "f9583536833ff86a345327439963f6ba039ae0e44c1d78e0d2e35e0720a88f8b",
+     "results": [],
+     "prose": "nonnegative terms that sum to 0: a + r = 0 gives a = -r",
+     "code": "assert r['zero_sol'] == [-r['r_t']], 'L12 FAIL: a + r = 0 does not give a = -r'",
+     "fingerprint": "917a7de4acfdeb9dbb5ee4f77953197ccfe6fd0b2842ab555fbc0937a5ceaf21",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.20",
      "kind": "computed",
      "applies": [],
-     "prose": "a >= 0 and a <= 0 force a = 0: G = 0 only if every term w_j (g_j - m) is 0",
-     "code": "assert r['a_t'].is_nonnegative is True and r['kkt_squeeze'] == sp.FiniteSet(0), 'L12 FAIL: termwise vanishing not forced'",
-     "fingerprint": "9c183d2d23cf25991d84f74b954a20b49fdd856003023cbeea5e73029ad198dd",
+     "results": [],
+     "prose": "with r >= 0, a = -r is <= 0",
+     "code": "assert (-r['r_t']).is_nonpositive is True",
+     "fingerprint": "23218977641c8e3772cd7fec33327eab97cfd036fb7c908fbc61c042c3fb8a10",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.21",
      "kind": "computed",
      "applies": [],
-     "prose": "G - (f(w) - f*) = a + b, the I8 slack plus the minimum slack",
-     "code": "assert sp.simplify(r['chain_slack']) == 0, 'L12 FAIL: G - (f - f*) != a + b'",
-     "fingerprint": "70bcdaf8750ccf7c3a4fcddadf51ffd20b1d636f293d9b4eca6487a10162c493",
+     "results": [],
+     "prose": "a >= 0 and a <= 0 force a = 0: G = 0 only if every term w_j (g_j - m) is 0",
+     "code": "assert r['a_t'].is_nonnegative is True and r['kkt_squeeze'] == sp.FiniteSet(0), 'L12 FAIL: termwise vanishing not forced'",
+     "fingerprint": "8ae06d51f6e212201f591efdd71fce6b538b5491507a0a59c877e800844d8fae",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.22",
      "kind": "computed",
      "applies": [],
-     "prose": "a >= 0 (I8) and b >= 0 (step 2), so G - (f(w) - f*) >= 0",
-     "code": "assert r['chain_nonneg'] is True, 'L12 FAIL: a + b is not nonnegative'",
-     "fingerprint": "71b43524ecc95a32f54e140d1f7e39d4ebf8803b373710b4dc20a7249cf5943a",
+     "results": [],
+     "prose": "G - (f(w) - f*) = a + b, the I8 slack plus the minimum slack",
+     "code": "assert sp.simplify(r['chain_slack']) == 0, 'L12 FAIL: G - (f - f*) != a + b'",
+     "fingerprint": "f3b06f7d0d61c0738e2b950f595a68137f604c6ad613f5b143deb9c6c9f1c2b1",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.23",
      "kind": "computed",
      "applies": [],
-     "prose": "f(w) - f* >= 0 because f* is the minimum",
-     "code": "assert r['lower_nonneg'] is True, 'L12 FAIL: f(w) - f* >= 0 not carried'",
-     "fingerprint": "0db1f06f25f6f1663bca65dc9570531907d0a8f5a9bd7e49a1366674f3a47bd2",
+     "results": [],
+     "prose": "a >= 0 (I8) and b >= 0 (step 2), so G - (f(w) - f*) >= 0",
+     "code": "assert r['chain_nonneg'] is True, 'L12 FAIL: a + b is not nonnegative'",
+     "fingerprint": "d26704aea83a443c1dc5479c9dd0cd91de34804b2f04c9bd92e135f3802e102a",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.24",
      "kind": "computed",
      "applies": [],
-     "prose": "swapping the finite sums: sum_j w_j (U^T p)_j = sum_i p_i (w.u_i)",
-     "code": "assert r['swap_equal'] is True, 'L12 FAIL: sum_j w_j (U^T p)_j != sum_i p_i (w.u_i)'",
-     "fingerprint": "cc36010410cd38e6da2c60800d0596572cf5cba6a1a675d3d224e77bf14fa4c4",
+     "results": [],
+     "prose": "f(w) - f* >= 0 because f* is the minimum",
+     "code": "assert r['lower_nonneg'] is True, 'L12 FAIL: f(w) - f* >= 0 not carried'",
+     "fingerprint": "80fe1da3060605c5a11e37262bbb8c198ae7580e2a6436b7c75aac561b4302c4",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.25",
      "kind": "computed",
      "applies": [],
-     "prose": "p on the active rows with sum_i p_i = 1: sum_i p_i (M - s_i) = M - sum_i p_i s_i",
-     "code": "assert sp.simplify(sr - (M - sp.Sum(p[i] * sp.Sum(w[j] * u[i, j], lim), (i, 1, n)))) == 0, 'L12 FAIL: sum_i p_i (M - s_i) != M - sum_i p_i s_i'",
-     "fingerprint": "7021978587e07fef9962ccf0de258bb2e71f71fc7b880841c51a1b220efb3e25",
+     "results": [],
+     "prose": "swapping the finite sums: sum_j w_j (U^T p)_j = sum_i p_i (w.u_i)",
+     "code": "assert r['swap_equal'] is True, 'L12 FAIL: sum_j w_j (U^T p)_j != sum_i p_i (w.u_i)'",
+     "fingerprint": "449476f5e2406f3a44001eb734d491a4adc0b732f84fa281e31f4863ac36d2ae",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.26",
-     "kind": "axiom",
-     "applies": [
-      "I12"
-     ],
-     "prose": "I12: the sum vanishes termwise, so sum_i p_i s_i = M",
-     "code": "assert sp.solve(sp.Eq(sr.subs(r['ps'], X), I12.rewrite(r['support_zero'])), X) == [M], 'L12 FAIL: sum_i p_i s_i != M on the active rows'",
-     "fingerprint": "e4f0b96df9a58974e8cf737b73b811262e91cecc35c9a5dfdf4285e151e38785",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "p on the active rows with sum_i p_i = 1: sum_i p_i (M - s_i) = M - sum_i p_i s_i",
+     "code": "assert sp.simplify(sr - (M - sp.Sum(p[i] * sp.Sum(w[j] * u[i, j], lim), (i, 1, n)))) == 0, 'L12 FAIL: sum_i p_i (M - s_i) != M - sum_i p_i s_i'",
+     "fingerprint": "a056c00301282cdad2541ce44fc471637aa019f81e98fbe75d5f436d7832d315",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.27",
-     "kind": "computed",
-     "applies": [],
-     "prose": "g.w = sum_i p_i s_i - ubar.w (swap) = M - ubar.w = f(w) at tau = infinity",
-     "code": "assert sp.simplify(gw.subs(r['lhs_swap'], r['ps']).subs(r['ps'], M) - (M - r['ubw'])) == 0, 'L12 FAIL: g.w != M - ubar.w'",
-     "fingerprint": "dff21f0b889347f38503964c01a0ed3868f0bbad3cc31c42736476d47b6ead48",
+     "kind": "axiom",
+     "applies": [
+      "I12"
+     ],
+     "results": [],
+     "prose": "I12: the sum vanishes termwise, so sum_i p_i s_i = M",
+     "code": "assert sp.solve(sp.Eq(sr.subs(r['ps'], X), I12.rewrite(r['support_zero'])), X) == [M], 'L12 FAIL: sum_i p_i s_i != M on the active rows'",
+     "fingerprint": "1d9877cadd89cd2218be0dac12c7d76aa66d581fc059385f048177a9a33fbee0",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.28",
      "kind": "computed",
      "applies": [],
-     "prose": "with sum_i p_i = 1 the centred (U_c^T p)_j is sum_i p_i u_ij - ubar_j",
-     "code": "assert sp.simplify(uc - (sp.Sum(p[i] * u[i, j], (i, 1, n)) - r['ubj'][j])) == 0, 'L12 FAIL: centred (U_c^T p)_j'",
-     "fingerprint": "4896940ac9f71be42c8e38fa2be60c518ec12ed0ff7342b355e501da515b9584",
+     "results": [],
+     "prose": "g.w = sum_i p_i s_i - ubar.w (swap) = M - ubar.w = f(w) at tau = infinity",
+     "code": "assert sp.simplify(gw.subs(r['lhs_swap'], r['ps']).subs(r['ps'], M) - (M - r['ubw'])) == 0, 'L12 FAIL: g.w != M - ubar.w'",
+     "fingerprint": "11f1804adc2b45730300390b615b541a4de947cf7d7580cdab366cfbf7d7af7c",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.29",
      "kind": "computed",
      "applies": [],
-     "prose": "g.w splits into sum_j w_j (U^T p)_j minus the centring term ubar.w",
-     "code": "assert split.has(r['ubj']), 'L12 FAIL: centring term lost'",
-     "fingerprint": "e48e0fdacfc69ff218530a353bca1c8feb745cd1419b94d57defab3fc790da1b",
+     "results": [],
+     "prose": "with sum_i p_i = 1 the centred (U_c^T p)_j is sum_i p_i u_ij - ubar_j",
+     "code": "assert sp.simplify(uc - (sp.Sum(p[i] * u[i, j], (i, 1, n)) - r['ubj'][j])) == 0, 'L12 FAIL: centred (U_c^T p)_j'",
+     "fingerprint": "05ead86ed3bd37fef44a4388bf4a4808f4627258ec9ef7370495b6ee9e534bee",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.30",
      "kind": "computed",
      "applies": [],
-     "prose": "the LP gap is the primal objective minus the dual objective",
-     "code": "assert lp['gap_at_optimum'] == lp['primal_at_optimum'] - lp['dual_at_optimum'], 'L12 FAIL: LP gap is not primal minus dual'",
-     "fingerprint": "15f481280a16aaa0b0bd7d8141cd4b6fe40e95a5a3eb2d67e33fd3bbb9e82299",
+     "results": [],
+     "prose": "g.w splits into sum_j w_j (U^T p)_j minus the centring term ubar.w",
+     "code": "assert split.has(r['ubj']), 'L12 FAIL: centring term lost'",
+     "fingerprint": "c9da8b8c69cedeaf3c7339368ae8f88ac05b6be85b77ed88599931de6839a980",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.31",
-     "kind": "axiom",
-     "applies": [
-      "I1"
-     ],
-     "prose": "I1: at an optimal primal-dual pair the values coincide, so the LP duality gap is 0",
-     "code": "assert sp.simplify(I1.rewrite(I1.obj('primal') - I1.obj('dual'))) == 0 and lp['gap_at_optimum'] == 0, 'L12 FAIL: LP duality gap at the optimal pair is not 0'",
-     "fingerprint": "6e4e70f51de64debbfc391d57ab04a2a841a2e1972471f9eb45ecd36e49b18b5",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the LP gap is the primal objective minus the dual objective",
+     "code": "assert lp['gap_at_optimum'] == lp['primal_at_optimum'] - lp['dual_at_optimum'], 'L12 FAIL: LP gap is not primal minus dual'",
+     "fingerprint": "e41551eb541795a24955849ca52af443e33240fe01598d9c41de3fc7bba4c29b",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.32",
+     "kind": "axiom",
+     "applies": [
+      "I1"
+     ],
+     "results": [],
+     "prose": "I1: at an optimal primal-dual pair the values coincide, so the LP duality gap is 0",
+     "code": "assert sp.simplify(I1.rewrite(I1.obj('primal') - I1.obj('dual'))) == 0 and lp['gap_at_optimum'] == 0, 'L12 FAIL: LP duality gap at the optimal pair is not 0'",
+     "fingerprint": "04ac6cd2090162b69d2769cb7a90ea45ca4410073d64cabaa10829283077defe",
+     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+    },
+    {
+     "tag": "L12.33",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "off the optimum 0 <= f - f* <= G holds on the exact two-metric LP",
      "code": "assert 0 <= lp['f_off_optimum'] - lp['f_star'] <= lp['gap_off_optimum'], 'L12 FAIL: 0 <= f - f* <= G violated off the optimum'",
-     "fingerprint": "538b2f9d74969677418f6245380d09006d81f6a07e861eb6db86e053f878bfff",
+     "fingerprint": "bf94662f735efdde2e7f39cc269d0eb85437ea9fb154bed5828888e0e3f0bbcf",
      "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     }
    ]
@@ -2407,6 +2675,10 @@
      "claim": "U >= 1 because the last component is -1"
     }
    ],
+   "proved_results_imported": {},
+   "proved_results_exported": [
+    "L13_RESULT"
+   ],
    "imports": [
     "F12",
     "I9",
@@ -2443,6 +2715,7 @@
      "applies": [
       "F12"
      ],
+     "results": [],
      "prose": "F12: gamma <= s_ik(i) - s_il for every row and facet, so the slack rest is >= 0",
      "code": "rest = F12.slack_symbol('rest')",
      "fingerprint": "fa739b8fc4d4c0bb125f73bcbb24939cf6237954b79c14d0c9af8a84ce0a55ed",
@@ -2454,6 +2727,7 @@
      "applies": [
       "I9"
      ],
+     "results": [],
      "prose": "I9 (Cauchy-Schwarz): |Delta theta . u~| <= ||Delta theta|| ||u~||, with slack cs >= 0",
      "code": "cs = I9.slack_symbol('cs')",
      "fingerprint": "bf50aef347c194f9d2b336d8f153d17b631c38655dd1db9d3f7d27bc81b65e31",
@@ -2465,6 +2739,7 @@
      "applies": [
       "R2"
      ],
+     "results": [],
      "prose": "R2: the margin gamma is positive",
      "code": "g_ = R2.positive_symbol('g_')",
      "fingerprint": "a8140b614ac7e444da3150133c7b9a338e7b85c875a2d9723bb05e5e5385ded0",
@@ -2474,6 +2749,7 @@
      "tag": "L13.4",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "a parameter change moves the score by Delta theta_k . (u_i, -1)",
      "code": "assert sp.simplify(r['score_change_slack']) == 0, 'L13 FAIL: change of the score is not Delta theta . (u, -1)'",
      "fingerprint": "86e2f183f55b859ed90491157e82cfca8a7abfdefdc5e2eba3efbe5f100be644",
@@ -2483,6 +2759,7 @@
      "tag": "L13.5",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the new gap to facet l is (gamma - 2 delta) + rest + a1 + a2",
      "code": "assert sp.simplify(r['margin_slack']) == 0, 'L13 FAIL: new gap != (gamma - 2 delta) + rest + a1 + a2'",
      "fingerprint": "7ae7061ee7caa2454639476c8d48adff74e43d04b96151960a05c3ea201a39aa",
@@ -2492,6 +2769,7 @@
      "tag": "L13.6",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the slacks rest + a1 + a2 are nonnegative (F12 and |e| <= delta)",
      "code": "assert r['margin_nonneg'] is True, 'L13 FAIL: the slacks rest + a1 + a2 are not nonnegative'",
      "fingerprint": "472dc961a820ec6384e4cb56c3908d24034ddeba341511382aae676d86c3e407",
@@ -2501,6 +2779,7 @@
      "tag": "L13.7",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the new gap is positive when 2 delta < gamma: each maximizing facet is unchanged",
      "code": "assert r['margin_positive'] is True, 'L13 FAIL: the new gap is not positive when 2 delta < gamma'",
      "fingerprint": "67a9f60d7e157db93e2b725d469977a387e028b7bd63ed35e72d999f2af42cfd",
@@ -2510,6 +2789,7 @@
      "tag": "L13.8",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "r U - ||Delta|| ||u~|| = a U + ||Delta|| b with a, b >= 0 (r = max norm, U = max norm)",
      "code": "assert sp.simplify(r['bound_slack']) == 0, 'L13 FAIL: r U - ||Delta|| ||u~|| != a U + ||Delta|| b'",
      "fingerprint": "15aad94bd3e0d660f6e55673b7456cfa3335e8092b5ee6572da80aceba731cdc",
@@ -2519,6 +2799,7 @@
      "tag": "L13.9",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the Cauchy-Schwarz chain slack a U + ||Delta|| b is nonnegative",
      "code": "assert r['bound_nonneg'] is True, 'L13 FAIL: Cauchy-Schwarz chain slack is not nonnegative'",
      "fingerprint": "e2aacbdec3498fc0a1bca9e174d42c5189f9b5801e89f7a912fdf9dfb89f31dc",
@@ -2528,6 +2809,7 @@
      "tag": "L13.10",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "with the Cauchy-Schwarz slack (I9), delta - |Delta theta . u~| is nonnegative",
      "code": "assert r['cs_chain_nonneg'] is True, 'L13 FAIL: delta - |Delta theta . u~| is not nonnegative'",
      "fingerprint": "a23e45a6e97d1564ee45fe1ba393bf6c4c75f2df130a986ca1d83a037f89f60f",
@@ -2537,6 +2819,7 @@
      "tag": "L13.11",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "2 r U < gamma exactly when r < gamma / (2 U): the stable radius",
      "code": "assert r['radius_set'] == sp.Interval.open(-sp.oo, r['g_'] / (2 * r['U_'])), 'L13 FAIL: 2 r U < gamma is not r < gamma / (2 U)'",
      "fingerprint": "2380a2ddb59c2d7c71a1a74eb48aca153454726024ae333f7bd6d55f095260cd",
@@ -2546,6 +2829,7 @@
      "tag": "L13.12",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "R2: gamma > 0, so the radius gamma / (2 U) is positive: the neighborhood is nonempty",
      "code": "assert (r['g_'] / (2 * r['U_'])).is_positive is True, 'L13 FAIL: the stable radius is not positive'",
      "fingerprint": "2495f783c3f70fef8a434511b08f932a34692be643627945185dc5d993e14245",
@@ -2555,6 +2839,7 @@
      "tag": "L13.13",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "exact instance (d = 2): margin 1 and maximizing facets (1, 2)",
      "code": "assert num['margin'] == 1 and num['labels'] == (1, 2), 'L13 FAIL: instance margin or labels'",
      "fingerprint": "dc07ad5866c8db981d27ba0c2a9cef9741b0d98a600f936cf3a9b973297a5ed4",
@@ -2564,6 +2849,7 @@
      "tag": "L13.14",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "exact instance: the labels are unchanged by the perturbation",
      "code": "assert num['labels_perturbed'] == num['labels'], 'L13 FAIL: labels changed inside the stable radius'",
      "fingerprint": "7a9ff38cdd366c40d230238a462b539e37bd20640aa693dbd8787152fc771081",
@@ -2573,6 +2859,7 @@
      "tag": "L13.15",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "exact instance: the perturbation has norm r, inside the radius gamma / (2 U)",
      "code": "assert all((sp.simplify(x - num['r']) == 0 for x in num['norms'])) and num['r'] < num['radius'], 'L13 FAIL: the instance perturbation is not inside the radius'",
      "fingerprint": "78881276bc35cd9bd69a18eeaac455ec826f090e22ac3e297a5d2c13079f86ff",
@@ -2582,6 +2869,7 @@
      "tag": "L13.16",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "exact instance: 2 delta < gamma holds",
      "code": "assert 2 * num['delta'] < num['margin'], 'L13 FAIL: 2 delta < gamma not met by the instance'",
      "fingerprint": "800c158f894382260707be48ac4a1f825cdcc712bd2343d87842920c0b7303d3",
@@ -2591,6 +2879,7 @@
      "tag": "L13.17",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "exact instance: the new margin is at least gamma - 2 delta and positive",
      "code": "assert bool(num['perturbed_margin'] >= num['margin'] - 2 * num['delta']) and bool(num['perturbed_margin'] > 0), 'L13 FAIL: perturbed margin below gamma - 2 delta'",
      "fingerprint": "1bab094ae410d085d43534f8ffb9555a9e1b0ff627020745f75e5b62a54805c2",
@@ -2610,14 +2899,13 @@
      "kind": "family",
      "sign": "nonnegative",
      "claim": "every w_k minimizes f_k"
-    },
-    {
-     "symbol": "slackG",
-     "kind": "family",
-     "sign": "nonnegative",
-     "claim": "G_k the facet gaps of L12"
     }
    ],
+   "proved_results_imported": {
+    "L12_RESULT": "lemma_12_facet_gap",
+    "L13_RESULT": "lemma_13_margin"
+   },
+   "proved_results_exported": [],
    "imports": [
     "A8",
     "R2"
@@ -2633,23 +2921,24 @@
       5,
       6,
       7,
-      8,
-      10,
+      9,
       11,
       12,
       13,
       14,
       15,
       16,
-      17
+      17,
+      18
      ]
     },
     {
      "name": "Corollary 4",
      "steps": [
-      9,
-      18,
-      19
+      8,
+      10,
+      19,
+      20
      ]
     }
    ],
@@ -2660,6 +2949,7 @@
      "applies": [
       "A8"
      ],
+     "results": [],
      "prose": "A8: the membership family chi_ki, the cell counts n_k and the number N of rows",
      "code": "chi, ncell, N = (A8.obj('membership'), A8.obj('count'), A8.obj('rows'))",
      "fingerprint": "3a1e6312e6c110bbb296aa9958c21b29214012bb4dd5823cc973f6644fe67e69",
@@ -2671,6 +2961,7 @@
      "applies": [
       "A8"
      ],
+     "results": [],
      "prose": "A8: every row lies in one cell, sum_k chi_ki = 1, so the row sum is unchanged",
      "code": "rows_to_cells = (sp.simplify(A8.rewrite(by_rows, only=(0,)) - sp.Sum(h[i], (i, 1, N))), len(fuse(push_in(by_rows)).limits))",
      "fingerprint": "d98d4d6bf7f39fe101b211230c07b770a2baea670418de04377f386633fc9458",
@@ -2680,6 +2971,7 @@
      "tag": "L14.3",
      "kind": "computed",
      "applies": [],
+     "results": [],
      "prose": "the sum over rows of the slack on the row's own cell is the sum over the cells",
      "code": "cells_swap_equal = sum_swap_equal(fuse(push_in(row_major)), fuse(push_in(cell_major)))",
      "fingerprint": "82ecdc92674cc15f10a6ccab39789a75e9bac1daed6df436ff7b3cdf64936818",
@@ -2691,6 +2983,7 @@
      "applies": [
       "A8"
      ],
+     "results": [],
      "prose": "A8: n_k = sum_i chi_ki, so the cell sum is n_k (beta_k - w_k.ubar_k) = n_k f_k(w_k)",
      "code": "n_k = A8.rewrite(ncell[k], only=(2,))",
      "fingerprint": "86bf5fd6ac16f767a22e5e5f4d4eeadfb33f7b3c623a8db351eea15793ba839b",
@@ -2702,6 +2995,7 @@
      "applies": [
       "A8"
      ],
+     "results": [],
      "prose": "A8: F(W) = (1/N) sum_k n_k f_k(w_k) = sum_k share_k f_k(w_k) with share_k = n_k / N",
      "code": "shares = A8.rewrite(ncell[k] / N, only=(2,))",
      "fingerprint": "fe5d4688d3a186ad738f11454d5fa946c9b71536ee608028d42004344ce5057f",
@@ -2713,6 +3007,7 @@
      "applies": [
       "R2"
      ],
+     "results": [],
      "prose": "R2: the margin is positive, so row i's maximum score M_i is its score s_i,k(i)",
      "code": "agree = R2.rewrite(sp.Sum(sfix[i] - Mx[i], (i, 1, N)))",
      "fingerprint": "68c44173d6cd8fee5495c0f665f46a13993d703f24ed2a539a36e354482aa100",
@@ -2724,6 +3019,7 @@
      "applies": [
       "A8"
      ],
+     "results": [],
      "prose": "A8: share_x = n_x / N = sum_i chi_xi / N, nonnegative because chi >= 0",
      "code": "share = lambda x: A8.rewrite(ncell[x] / N, only=(2,))",
      "fingerprint": "7a5917fa81a359ca8f6f4fa577d8673af5e677177d24f64a906451039265c36e",
@@ -2731,110 +3027,138 @@
     },
     {
      "tag": "L14.8",
-     "kind": "computed",
+     "kind": "result",
      "applies": [],
-     "prose": "L13 and R2: the margin is positive, so an assignment-stable neighborhood exists",
-     "code": "assert ctx['L13'].get('margin_positive') is True, 'L14 FAIL: no assignment-stable neighborhood (R2 positive margin, L13)'",
-     "fingerprint": "695f166572e59a5a9a7102a2fec18c152037fb4470e2e00b586067c6b6249668",
-     "result": "Proposition 3"
-    },
-    {
-     "tag": "L14.9",
-     "kind": "computed",
-     "applies": [],
-     "prose": "L12 (Lemma 1) holds: 0 <= f_k(w_k) - f_k* <= G_k for every facet",
-     "code": "assert ctx['L12'].get('chain_nonneg') is True and ctx['L12'].get('lower_nonneg') is True, 'L14 FAIL: Lemma 1 (0 <= f - f* <= G) not established'",
-     "fingerprint": "d1333d665f72f26dd2eb01421c756bfee213e810f7b676ec34a19ef34f250553",
+     "results": [
+      "L12_RESULT"
+     ],
+     "prose": "by L12: G_k - (f_k - f_k*) >= 0, so G_k = (f_k - f_k*) + slackG_k with slackG_k >= 0",
+     "code": "slackG = L12_RESULT.family(ctx, 'chain_nonneg', 'slackG')",
+     "fingerprint": "e0c356394e4c63a035af21d3a575e6bcb922b68fb50438ae46b987628646659b",
      "result": "Corollary 4"
     },
     {
-     "tag": "L14.10",
-     "kind": "computed",
+     "tag": "L14.9",
+     "kind": "result",
      "applies": [],
-     "prose": "per facet, sum_i (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) by a Fubini swap",
-     "code": "assert r['regroup_swap_equal'] is True, 'L14 FAIL: per-facet regrouping is not a Fubini swap of the double sum'",
-     "fingerprint": "12f6cb6d8f0252b956ba63a409a6017a3785a2b8a341abc8b9356b9785c30a25",
+     "results": [
+      "L13_RESULT"
+     ],
+     "prose": "by L13 (under R2): the margin is positive, so an assignment-stable neighborhood exists",
+     "code": "assert L13_RESULT.holds(ctx, 'margin_positive'), 'L14 FAIL: no assignment-stable neighborhood (R2 positive margin, L13)'",
+     "fingerprint": "9aee7afaef216e445cfd5abb3962b6257cae0c41a20ed14711b852daceb082f1",
      "result": "Proposition 3"
+    },
+    {
+     "tag": "L14.10",
+     "kind": "result",
+     "applies": [],
+     "results": [
+      "L12_RESULT"
+     ],
+     "prose": "by L12 (Lemma 1): 0 <= f_k(w_k) - f_k* <= G_k for every facet",
+     "code": "assert L12_RESULT.holds(ctx, 'chain_nonneg') and L12_RESULT.holds(ctx, 'lower_nonneg'), 'L14 FAIL: Lemma 1 (0 <= f - f* <= G) not established'",
+     "fingerprint": "1fb1cd1aaa28036b541727ad9d93d09064195f9ff656d08220d3f59aefbf93fa",
+     "result": "Corollary 4"
     },
     {
      "tag": "L14.11",
      "kind": "computed",
      "applies": [],
-     "prose": "A8: every row lies in one cell (sum_k chi_ki = 1): the row sum is unchanged",
-     "code": "assert r['rows_to_cells'] == (0, 2), 'L14 FAIL: the rows are not partitioned over the cells'",
-     "fingerprint": "80cc430816cdf65f846ae17f8ebbd5679c5ecee536667c0f617eeea5d933b728",
+     "results": [],
+     "prose": "per facet, sum_i (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) by a Fubini swap",
+     "code": "assert r['regroup_swap_equal'] is True, 'L14 FAIL: per-facet regrouping is not a Fubini swap of the double sum'",
+     "fingerprint": "8b061e4393384bd83013a838a093bd66fcede0d5947f1046123c572faa548b58",
      "result": "Proposition 3"
     },
     {
      "tag": "L14.12",
      "kind": "computed",
      "applies": [],
-     "prose": "the sum over rows of the slack on the row's own cell is the sum over the cells",
-     "code": "assert r['cells_swap_equal'] is True, 'L14 FAIL: sum_i sum_k != sum_k sum_i (Fubini)'",
-     "fingerprint": "e478e07a628dc777b10f013e5a7acdf33b8d84446ce1d0e668e3b5120b6cc5db",
+     "results": [],
+     "prose": "A8: every row lies in one cell (sum_k chi_ki = 1): the row sum is unchanged",
+     "code": "assert r['rows_to_cells'] == (0, 2), 'L14 FAIL: the rows are not partitioned over the cells'",
+     "fingerprint": "341db562c1799d7ec0b1bc0a9f85d1f5bb017d0042c2f8df8f56784f21ccd4f1",
      "result": "Proposition 3"
     },
     {
      "tag": "L14.13",
      "kind": "computed",
      "applies": [],
-     "prose": "A8: with n_k = sum_i chi_ki the cell sum is n_k (beta_k - w_k.ubar_k) = n_k f_k(w_k)",
-     "code": "assert r['cell_regroup_ok'] is True, 'L14 FAIL: the cell sum is not n_k f_k(w_k)'",
-     "fingerprint": "2d29040a661c091d098ed60bd4c2b328fffaa844e7bef7c70b54ea5ae3c72506",
+     "results": [],
+     "prose": "the sum over rows of the slack on the row's own cell is the sum over the cells",
+     "code": "assert r['cells_swap_equal'] is True, 'L14 FAIL: sum_i sum_k != sum_k sum_i (Fubini)'",
+     "fingerprint": "0e9e1c70fac34525d3096f01eef81d67163a8ee85886aa88f1bccea3b03b23a2",
      "result": "Proposition 3"
     },
     {
      "tag": "L14.14",
      "kind": "computed",
      "applies": [],
-     "prose": "A8: F(W) = (1/N) sum_k n_k f_k(w_k) = sum_k share_k f_k(w_k), share_k = n_k / N",
-     "code": "assert r['F_regroup'] == 0, 'L14 FAIL: F(W) != sum_k share_k f_k(w_k)'",
-     "fingerprint": "8b8511c30c5209076c4d4d9f18551faf10ac87799d51bb9ac2ac43711b643903",
+     "results": [],
+     "prose": "A8: with n_k = sum_i chi_ki the cell sum is n_k (beta_k - w_k.ubar_k) = n_k f_k(w_k)",
+     "code": "assert r['cell_regroup_ok'] is True, 'L14 FAIL: the cell sum is not n_k f_k(w_k)'",
+     "fingerprint": "aa23029e86655f451f2753dc3250db2b2ccdc3933e7951e964cfb7428b5e214d",
      "result": "Proposition 3"
     },
     {
      "tag": "L14.15",
      "kind": "computed",
      "applies": [],
-     "prose": "on the neighborhood the full objective equals the fixed-assignment expression",
-     "code": "assert r['objective_agrees'] == 0, 'L14 FAIL: full objective differs from the fixed-assignment expression'",
-     "fingerprint": "7b3f4fd83efb74092363e35792618435209d1780ebf00f20f2b56e86e17a0602",
+     "results": [],
+     "prose": "A8: F(W) = (1/N) sum_k n_k f_k(w_k) = sum_k share_k f_k(w_k), share_k = n_k / N",
+     "code": "assert r['F_regroup'] == 0, 'L14 FAIL: F(W) != sum_k share_k f_k(w_k)'",
+     "fingerprint": "e66f6e2ca4e6f4e731ac562eac0e111a213ea394b7b6903e096fc20f39223063",
      "result": "Proposition 3"
     },
     {
      "tag": "L14.16",
      "kind": "computed",
      "applies": [],
-     "prose": "F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k))",
-     "code": "assert sp.simplify(r['local_min_slack']) == 0, \"L14 FAIL: F(W') - F(W) != sum_k share_k (f_k(w'_k) - f_k(w_k))\"",
-     "fingerprint": "2951f573ce19413c0aeb9a8495ed11e2a244f312287807379f32b83400939404",
+     "results": [],
+     "prose": "on the neighborhood the full objective equals the fixed-assignment expression",
+     "code": "assert r['objective_agrees'] == 0, 'L14 FAIL: full objective differs from the fixed-assignment expression'",
+     "fingerprint": "9efcf35d438ca1a45a47a74eecc75bc2697e6b69e9af5341b7a55c974f187e64",
      "result": "Proposition 3"
     },
     {
      "tag": "L14.17",
      "kind": "computed",
      "applies": [],
-     "prose": "each term share_k (f_k' - f_k) is >= 0 (exact facet optima), so W is a local minimum",
-     "code": "assert r['local_min_nonneg'] is True, \"L14 FAIL: sum_k share_k (f_k' - f_k) is not nonnegative\"",
-     "fingerprint": "ee4623b86f10dd5591233c99d142b72414be57e6198121da94262f871abda522",
+     "results": [],
+     "prose": "F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k))",
+     "code": "assert sp.simplify(r['local_min_slack']) == 0, \"L14 FAIL: F(W') - F(W) != sum_k share_k (f_k(w'_k) - f_k(w_k))\"",
+     "fingerprint": "b430d6d83b7f346700b3dbcda18a89eace8540b0e095976e81e567701123a596",
      "result": "Proposition 3"
     },
     {
      "tag": "L14.18",
      "kind": "computed",
      "applies": [],
-     "prose": "sum share G - sum share (f - f*) = sum share (G - (f - f*))",
-     "code": "assert sp.simplify(r['cor_slack']) == 0, 'L14 FAIL: sum share G - sum share (f - f*) != sum share (G - (f - f*))'",
-     "fingerprint": "6cf1eae7de70b74070fdecf81299bc68946b7301201b713290ecd5229edaef78",
-     "result": "Corollary 4"
+     "results": [],
+     "prose": "each term share_k (f_k' - f_k) is >= 0 (exact facet optima), so W is a local minimum",
+     "code": "assert r['local_min_nonneg'] is True, \"L14 FAIL: sum_k share_k (f_k' - f_k) is not nonnegative\"",
+     "fingerprint": "6a8c3e58d231ca8e13a9d9faa5c687cac47a901a322f7831ef0a119881356d62",
+     "result": "Proposition 3"
     },
     {
      "tag": "L14.19",
      "kind": "computed",
      "applies": [],
+     "results": [],
+     "prose": "sum share G - sum share (f - f*) = sum share (G - (f - f*))",
+     "code": "assert sp.simplify(r['cor_slack']) == 0, 'L14 FAIL: sum share G - sum share (f - f*) != sum share (G - (f - f*))'",
+     "fingerprint": "be0f409ade9f082d95cf532b58030b2cb255af0e7e6c7453580363158c82eb5b",
+     "result": "Corollary 4"
+    },
+    {
+     "tag": "L14.20",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
      "prose": "each term share_k (G_k - (f_k - f_k*)) is >= 0 (L12): F(W) - F*_fixed <= sum share G",
      "code": "assert r['cor_nonneg'] is True, 'L14 FAIL: sum_k share_k (G_k - (f_k - f_k*)) not nonnegative'",
-     "fingerprint": "d6209549e9bd504debf3b89f2f5a068feb23c039e8ace45854ad121348e5abb4",
+     "fingerprint": "13c9df737b831dcde9335890d981a03e2c643af78b04ba09aea7d65d205c8666",
      "result": "Corollary 4"
     }
    ]

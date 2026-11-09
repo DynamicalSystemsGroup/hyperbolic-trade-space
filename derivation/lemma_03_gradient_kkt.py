@@ -54,6 +54,7 @@ is used in L4, not here.
 import sympy as sp
 
 from derivation.axioms import A2, I10, R1
+from derivation.results import ProvedResult
 from derivation.sumtools import (
     fuse,
     linear,
@@ -77,6 +78,7 @@ STATEMENT = (
     "optimum and a finite-tau minimizer on the boundary with g_j > lambda at the inactive j"
 )
 AXIOMS_USED = ["A2", "I10", "R1"]
+L3_RESULT = ProvedResult("L3", STATEMENT)  # taken by L4
 
 # the multiplier (the index dummies L and J0 are in derivation/symbols.py)
 LAM = sp.Symbol("lambda", real=True)  # Lagrange multiplier of the simplex constraint
@@ -277,3 +279,4 @@ def verify(ctx):
     assert bool(ex["g_inactive_minus_lambda"].evalf() > 0), (
         "L3 FAIL: boundary instance has g_2 <= lambda"
     )
+    L3_RESULT.certify(ctx)

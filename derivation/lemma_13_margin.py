@@ -33,6 +33,7 @@ import sympy as sp
 
 from derivation.axioms import F12, I9, R2
 from derivation.licence import hypothesis_symbol
+from derivation.results import ProvedResult
 from derivation.sumtools import linear
 
 TITLE = "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
@@ -47,6 +48,7 @@ STATEMENT = (
     "neighborhood of the fitted reference surface's facets"
 )
 AXIOMS_USED = ["F12", "I9", "R2"]
+L13_RESULT = ProvedResult("L13", STATEMENT)  # taken by L14
 
 # Hypotheses of the statement (each quotes it): the symbols that carry a sign stand for these.
 DELTA = hypothesis_symbol(
@@ -210,3 +212,4 @@ def verify(ctx):
     assert bool(num["perturbed_margin"] >= num["margin"] - 2 * num["delta"]) and bool(
         num["perturbed_margin"] > 0
     ), "L13 FAIL: perturbed margin below gamma - 2 delta"
+    L13_RESULT.certify(ctx)

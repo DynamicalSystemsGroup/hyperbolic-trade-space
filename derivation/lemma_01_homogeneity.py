@@ -18,6 +18,7 @@ linearity and constant factoring are done by sumtools.linear, and the simplex eq
 import sympy as sp
 
 from derivation.axioms import A1, A2
+from derivation.results import ProvedResult
 from derivation.sumtools import linear, product_to_exp_sum
 
 TITLE = "Homogeneity and invariant form: V(k m) = k V(m), V(m / V) = 1"
@@ -26,6 +27,7 @@ STATEMENT = (
     "V(m e^{-beta}) = e^{-beta} V(m)"
 )
 AXIOMS_USED = ["A1", "A2"]
+L1_RESULT = ProvedResult("L1", STATEMENT)  # taken by L7
 
 
 def _subs_simplex(expr, S):
@@ -90,3 +92,4 @@ def verify(ctx):
     assert S.simplex.lhs in linear(
         product_to_exp_sum(sp.Product((S.k_scale * S.m[S.j]) ** S.w[S.j], (S.j, 1, S.d)), A1)
     ).atoms(sp.Sum), "L1 FAIL: homogeneity must pass through sum_j w_j"
+    L1_RESULT.certify(ctx)

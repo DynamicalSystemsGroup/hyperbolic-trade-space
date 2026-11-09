@@ -81,8 +81,9 @@ def test_record_holds_every_step_with_tag_prose_and_code():
         for pos, step in enumerate(lemma["steps"], start=1):
             assert step["tag"] == f"L{lemma['number']}.{pos}"
             assert step["prose"].strip() and step["code"].strip()
-            assert step["kind"] in ("computed", "axiom")
-            assert (step["kind"] == "axiom") == bool(step["applies"])
+            assert step["kind"] in ("computed", "axiom", "result")
+            assert (step["kind"] == "result") == bool(step["results"])
+            assert (step["kind"] == "axiom") == (bool(step["applies"]) and not step["results"])
             assert len(step["fingerprint"]) == 64
             assert step["result"]
     assert set(rec["ledger"]) == set(AX.AXIOMS)
@@ -130,8 +131,8 @@ def test_a_result_sharing_a_file_owns_its_own_steps():
     owners = {s["tag"]: s["result"] for s in lemma["steps"]}
     assert set(owners.values()) == {"Proposition 3", "Corollary 4"}
     assert len({s["tag"] for s in lemma["steps"]}) == len(lemma["steps"])
-    assert owners["L14.18"] == owners["L14.19"] == "Corollary 4"
-    assert owners["L14.10"] == "Proposition 3"
+    assert owners["L14.19"] == owners["L14.20"] == owners["L14.10"] == "Corollary 4"
+    assert owners["L14.11"] == "Proposition 3"
 
 
 # ----------------------------------- each kind of breakage makes the checker fail, naming the step
@@ -655,3 +656,133 @@ def test_no_lemma_script_creates_a_signed_symbol_directly():
             if isinstance(node, ast.Call):
                 for kw in node.keywords:
                     assert kw.arg not in proofmap.SIGN_KWARGS, (path.name, node.lineno)
+
+
+# ------------- step 5: earlier lemmas' results by import, step kind "by a proved result"
+
+from derivation.results import ProvedResult, UnprovedResultError  # noqa: E402
+
+
+def test_the_four_dependencies_are_declared_by_import_and_applied_by_steps():
+    rec = _record()["lemmas"]
+    imported = {
+        f: lem["proved_results_imported"]
+        for f, lem in rec.items()
+        if lem["proved_results_imported"]
+    }
+    assert imported == {
+        "lemma_04_convexity.py": {"L3_RESULT": "lemma_03_gradient_kkt"},
+        "lemma_07_elasticities.py": {"L1_RESULT": "lemma_01_homogeneity"},
+        "lemma_12_facet_gap.py": {"L4_RESULT": "lemma_04_convexity"},
+        "lemma_14_assignment_stable.py": {
+            "L12_RESULT": "lemma_12_facet_gap",
+            "L13_RESULT": "lemma_13_margin",
+        },
+    }
+    exported = {f for f, lem in rec.items() if lem["proved_results_exported"]}
+    assert exported == {
+        "lemma_01_homogeneity.py",
+        "lemma_03_gradient_kkt.py",
+        "lemma_04_convexity.py",
+        "lemma_12_facet_gap.py",
+        "lemma_13_margin.py",
+    }
+    for fname, names in imported.items():
+        applied = {n for st in rec[fname]["steps"] if st["kind"] == "result" for n in st["results"]}
+        assert applied == set(names)
+
+
+def test_a_result_taken_before_it_is_proved_raises():
+    result = ProvedResult("L3", "claim")
+    with pytest.raises(UnprovedResultError):
+        result.take({"L3": {"a0": 1}}, "a0")
+    ctx = {"L3": {"a0": 1}}
+    result.certify(ctx)
+    assert result.take(ctx, "a0") == 1 and not result.holds(ctx, "a0")  # holds needs fact True
+    with pytest.raises(UnprovedResultError):
+        ProvedResult("L4", "c").family({"L4": {"convex": True}}, "convex", "x")  # uncertified
+
+
+def test_a_lemma_may_import_nothing_but_a_proved_result_from_another_lemma(scratch):
+    edit(
+        scratch,
+        "lemma_04_convexity.py",
+        "from derivation.lemma_03_gradient_kkt import L3_RESULT",
+        "from derivation.lemma_03_gradient_kkt import L3_RESULT, linearize",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "lemma_04_convexity.py" in out
+    assert "only its proved result, L3_RESULT" in out
+
+
+def test_a_whole_lemma_script_cannot_be_imported(scratch):
+    edit(
+        scratch,
+        "lemma_04_convexity.py",
+        "from derivation.lemma_03_gradient_kkt import L3_RESULT",
+        "import derivation.lemma_03_gradient_kkt\n"
+        "from derivation.lemma_03_gradient_kkt import L3_RESULT",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "imports the lemma script derivation.lemma_03_gradient_kkt" in out
+
+
+def test_a_result_of_a_later_lemma_cannot_be_imported(scratch):
+    edit(
+        scratch,
+        "lemma_04_convexity.py",
+        "from derivation.lemma_03_gradient_kkt import L3_RESULT",
+        "from derivation.lemma_03_gradient_kkt import L3_RESULT\n"
+        "from derivation.lemma_12_facet_gap import L12_RESULT",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "lemma_12_facet_gap is not earlier in the chain" in out
+
+
+def test_an_imported_result_that_no_step_applies_fails(scratch):
+    edit(
+        scratch,
+        "lemma_02_shift.py",
+        "from derivation.axioms import A1, A2, A3",
+        "from derivation.axioms import A1, A2, A3\n"
+        "from derivation.lemma_01_homogeneity import L1_RESULT",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "imported proved results ['L1_RESULT'] differ" in out
+
+
+def test_a_result_that_its_lemma_never_certifies_fails_for_exporter_and_importer(scratch):
+    edit(scratch, "lemma_03_gradient_kkt.py", "    L3_RESULT.certify(ctx)\n", "")
+    code, out = run_checker(scratch)
+    assert code != 0
+    assert "lemma_03_gradient_kkt.py: exports L3_RESULT but its verify never certifies it" in out
+    assert "lemma_04_convexity.py" in out and "never certifies L3_RESULT" in out
+
+
+def test_an_import_of_a_result_the_lemma_does_not_export_fails(scratch):
+    edit(
+        scratch,
+        "lemma_04_convexity.py",
+        "from derivation.lemma_03_gradient_kkt import L3_RESULT",
+        "from derivation.lemma_01_homogeneity import L1_RESULT\n"
+        "from derivation.lemma_03_gradient_kkt import L3_RESULT",
+    )
+    edit(
+        scratch,
+        "lemma_01_homogeneity.py",
+        "L1_RESULT = ProvedResult",
+        "L1_NOT_RESULT = ProvedResult",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "lemma_01_homogeneity does not export L1_RESULT" in out
+
+
+def test_a_proved_result_used_on_an_untagged_line_fails(scratch):
+    edit(
+        scratch,
+        "lemma_04_convexity.py",
+        "    d, j, w, v, u = S.d, S.j, S.w, S.v, S.u\n",
+        "    d, j, w, v, u = S.d, S.j, S.w, S.v, S.u\n    _ok = L3_RESULT.proved(ctx)\n",
+    )
+    code, out = run_checker(scratch)
+    assert code != 0 and "proved result L3_RESULT used on an untagged line" in out
