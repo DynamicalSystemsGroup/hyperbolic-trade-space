@@ -676,3 +676,18 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   condition kept: if a finding cannot be closed without changing a statement, it goes to the
   supervisor. The supervisor was told of the findings in the progress update of the same hour, as
   promised when the rule was set ("a step that is neither comes to you as a finding").
+- **2026-11-08. The proof-gap closure (Amendment 2), checked; one correction.** Delivered at
+  33f63b1: the helper move as its own commit; the seven prose-only steps as lines; no premise in a
+  symbol; axiom lists corrected to real dependencies (ten lists changed, each with its reason in
+  `derivation/PROOF_MAP_FINDINGS.md`); new entries A8, I10, I11, I12; I2, I3, I4 reported apart as
+  cited context; earlier lemmas' results by import; 229 tagged steps; no statement or title
+  changed; L5's strict inequality closed as stated. The driver's own checks: the checker and the
+  chain pass; a forced expansion is refused without a licensing entry; the six edits to
+  `tests/test_derivation.py` pin corrected lists and remove no negative control. Correction called
+  by the driver: I10 (the first-order condition in L3) was justified through strong duality, hence
+  through convexity, which is L4, which imports L3. The implementer had flagged it. Convexity is
+  not needed: the simplex's constraints are affine and its active gradients are linearly
+  independent, so the conditions are necessary under the constraint qualification alone. I10 is
+  re-based on that (Nocedal and Wright, theorem number to be verified under the references rule),
+  with LICQ on the simplex as a computed step. Acceptance of the increment follows the full suite
+  and the CI run.
