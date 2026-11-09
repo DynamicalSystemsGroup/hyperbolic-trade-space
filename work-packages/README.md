@@ -140,5 +140,6 @@ what it fixes for later packages. The design spec is
 | WP15 | `WP15-scope-of-work.md` (system model tidy-up) | verbal, 2026-11-08 ("Approved", `WP15-decisions.md`) | in execution on `dev` | — | — |
 | WP12 | to be scoped after WP13 and WP15 (the search; outline v2) | — | — | — | — |
 | WP10 | `WP10-scope-of-work.md` (the paper, working draft; revision 2; Amendment 1: appendices as a bridge, proofs step for step with the scripts, container of record) | verbal, 2026-11-08 ("Approved", scope and Amendment 1, `WP10-decisions.md`) | in execution on `dev` | — | — |
+| WP16 | `WP16-scope-of-work.md` (the data swap) | the driver, under the mandate, 2026-11-08 (`WP16-decisions.md`) | after WP15 | — | — |
 | WP11 | to be scoped at WP10's acceptance | — | — | — | — |
 | WP8 | `WP8-scope-of-work.md` (Amendment 1 revised: MkDocs docsite + MyST paper, one Pages site; re-approval at WP10's gate) | verbal, 2026-11-08 ("approve 7 and 8", `WP8-decisions.md`); Amendment 1 pending | waiting for WP11 | — | — |
