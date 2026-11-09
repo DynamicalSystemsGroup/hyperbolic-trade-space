@@ -13,11 +13,6 @@ from paper_common import Md, Scroll
 from paper_stability import stable
 
 
-def _end(text: str) -> str:
-    """The end of an interval: in parentheses where it is itself a range."""
-    return f"({text})" if " to " in text else text
-
-
 def _and(items) -> str:
     items = [str(i) for i in items]
     if len(items) <= 1:
@@ -72,24 +67,22 @@ def k1_sentence(study, fit) -> Md:
     names = _contending(study, fit)
     rest = [n for n in study.names if n not in names]
     return Md(
-        f"At K = 1 the fit reports a {len(names)}-lemma: {_and(names)} contend, and "
-        f"{_and(rest)} do not constrain the frontier at that facet."
+        f"At K = 1 the fit reports a {len(names)}-lemma: {_and(names)} contend, and the other "
+        f"{len(rest)} do not constrain the frontier at that facet."
     )
 
 
-def _share(regime, facet) -> str:
-    return stable(f"D facets K=3 | {regime} | {int(facet)} | share", lambda v: f"{v:.3f}")
-
-
 def k_sweep_sentence(study, fits) -> Md:
-    """Mean slack by K, the facets at K = 3 and what the solver declared."""
+    """Mean slack by K and the contending sets of the K = 3 facets.
+
+    The facet shares, gaps, margins and radii are Appendix D's tables (D.3, D.8).
+    """
     t = case.k_table(study, fits)
     r = study.regime
     obj = {
         int(row.K): stable(f"D k_table | {r} | {int(row.K)} | objective_", lambda v: f"{v:.3f}")
         for row in t.itertuples()
     }
-    cert = t[t["K"] > 1]
     ft = case.facet_table(study, fits, K=max(fits), band=fits[1].band)
     sets = [set(s.strip() for s in x.split(",")) for x in ft["contending set"]]
     union = set().union(*sets)
@@ -97,26 +90,26 @@ def k_sweep_sentence(study, fits) -> Md:
     new = sorted(union - k1)
     return Md(
         f"The mean slack falls from {obj[1]} at K = 1 to {obj[2]} at K = 2 and "
-        f"{obj[3]} at K = 3. The facets of the K = 3 fit hold facet shares "
-        f"{_and(_share(r, k) for k in ft['facet'])} and contending sets of "
-        f"{_and(ft['n_lemma'])} metrics; their union has {len(union)} metrics, of which "
-        f"{_and(new) if new else 'none'} are absent from the K = 1 set. The solver declares "
-        f"the status {_and(sorted(set(cert['status'])))} at K = 2 and 3, with the largest "
-        f"facet gap {stable('sentence | K sweep | largest facet gap')}, the smallest assignment "
-        f"margin {stable('sentence | K sweep | smallest margin')} and the smallest stable radius "
-        f"{stable('sentence | K sweep | smallest radius')}."
+        f"{obj[3]} at K = 3. The K = 3 facets have contending sets of {_and(ft['n_lemma'])} "
+        f"metrics; of their {len(union)} in all, {_and(new) if new else 'none'} are absent from "
+        f"the K = 1 set."
     )
 
 
 def certificate_sentence(fits) -> Md:
-    """What the solver reports at each K (the Numerical badge of section 6)."""
+    """What the solver declares for K > 1 on the primary regime (section 6, Numerical)."""
     t = case.certificate_table(fits)
-    rows = [
-        f"K = {int(r['K'])}: status {r['status']}, largest facet gap "
-        + stable(f"certificate | primary | {int(r['K'])} | max gap", lambda v: f"{v:.1e}")
-        for _, r in t.iterrows()
+    multi = t[t["K"] > 1]
+    gaps = [
+        stable(f"certificate | primary | {int(k)} | max gap", lambda v: f"{v:.1e}")
+        for k in multi["K"]
     ]
-    return Md("As printed by the solver on the primary regime, " + "; ".join(rows) + ".")
+    gap = gaps[0] if len(set(gaps)) == 1 else _and(gaps)
+    ks = _and(int(k) for k in multi["K"])
+    return Md(
+        f"On the primary regime the solver declares the status "
+        f"{_and(sorted(set(multi['status'])))} at K = {ks}, with the largest facet gap {gap}."
+    )
 
 
 def regime_sentence() -> Md:
@@ -127,9 +120,9 @@ def regime_sentence() -> Md:
     a, b = regs[0], regs[1]
     return Md(
         f"The two regimes return a {t.loc['n_lemma', a]}-lemma and a {t.loc['n_lemma', b]}-lemma "
-        f"that share {len(sets[a] & sets[b])} metrics ({_and(sorted(sets[a] & sets[b]))}). "
-        f"Only the {a} regime has {_and(sorted(sets[a] - sets[b]))} contending; only the {b} "
-        f"regime has {_and(sorted(sets[b] - sets[a]))}."
+        f"that share {len(sets[a] & sets[b])} metrics ({_and(sorted(sets[a] & sets[b]))}); "
+        f"the {a} regime alone has {_and(sorted(sets[a] - sets[b]))}, the {b} regime alone "
+        f"{_and(sorted(sets[b] - sets[a]))}."
     )
 
 
@@ -143,14 +136,11 @@ def candidates_sentence(table) -> Md:
     lv = table["log V"]
     beyond = int((lv > 0).sum())
     three = lambda v: f"{v:.3f}"  # noqa: E731
-    two = lambda v: f"{v:.2f}"  # noqa: E731
     return Md(
-        f"The {len(table)} measured candidates have energy differentials between "
-        f"{_end(stable('sentence | candidates | lowest log V', three))} and "
-        f"{_end(stable('sentence | candidates | highest log V', three))}; {beyond} of them lie "
-        f"beyond the fitted reference surface. Their ranks among the training designs run from "
-        f"{_end(stable('sentence | candidates | lowest rank', two))} to "
-        f"{_end(stable('sentence | candidates | highest rank', two))}."
+        f"The {len(table)} measured candidates have lowest energy differential "
+        f"{stable('sentence | candidates | lowest log V', three)} and highest "
+        f"{stable('sentence | candidates | highest log V', three)}, and {beyond} of them lie "
+        f"beyond the fitted reference surface."
     )
 
 
@@ -161,12 +151,11 @@ def predict_check_sentence(table, reg) -> Md:
     z = int(table["Z within band"].sum())
     one = lambda v: f"{v:.1f}"  # noqa: E731
     return Md(
-        f"Of {n} proposals, the predicted energy differential lies within the band "
-        f"1/tau = {stable('sentence | predict-check | band', lambda v: f'{v:.4f}')} of the "
-        f"measured one for {lv}, and the predicted position along the frontier lies within the "
-        f"band for {z}; the position errors run from "
-        f"{_end(stable('sentence | predict-check | lowest position error', one))} to "
-        f"{_end(stable('sentence | predict-check | highest position error', one))} bands."
+        f"Of {n} proposals, the predicted energy differential lies within the regressor's own "
+        f"band 1/tau = {stable('sentence | predict-check | band', lambda v: f'{v:.4f}')} of the "
+        f"measured one for {lv}, and the predicted position within that band for {z}; the smallest "
+        f"position error is {stable('sentence | predict-check | lowest position error', one)} "
+        f"bands, the largest {stable('sentence | predict-check | highest position error', one)}."
     )
 
 

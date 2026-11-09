@@ -378,3 +378,87 @@ def stability() -> Md:
         f"minimum and maximum over the {n + 1} datasets and the text this paper prints:\n\n"
         f"{moving_tab}"
     )
+
+
+OWN_ROWS_SEEDS = 20
+"""Planted tables for the own-rows comparison (the spike's twenty seeds, three facets each)."""
+OWN_ROWS_TOLERANCE = 0.05
+"""A facet is recovered when its largest exponent error is within this."""
+
+
+def own_rows_refit() -> Md:
+    """The refit of a facet on its own rows against the support refit, given the true labels.
+
+    Planted tables of 400 rows, 4 metrics and 3 facets (``make_frontier_data``, seeds 0 to 19)
+    are fitted once per facet with the true labels given, so the alternation plays no part: the
+    plain ``K = 1`` fit on the facet's own rows, and the support refit that the solver uses (the
+    fit of all rows with the log-metrics centred at the facet's mean). The same comparison is
+    ``docs/superpowers/notes/spike-facet-refit/bench_oracle.py`` (methods A and B).
+
+    Returns
+    -------
+    Md
+        Per temperature: the facets, the facets each refit recovers to within
+        :data:`OWN_ROWS_TOLERANCE` and the largest exponent error of each.
+    """
+    from hyperbolic_trade_space import make_frontier_data
+    from hyperbolic_trade_space.solvers import solve_slsqp
+
+    rows = []
+    for tau in (np.inf, 50.0):
+        err = {"own": [], "support": []}
+        for seed in range(OWN_ROWS_SEEDS):
+            X, info = make_frontier_data(400, 4, n_terms=3, random_state=seed)
+            U, lab = np.log(X), np.asarray(info["facet"])
+            for k, planted in enumerate(np.asarray(info["exponents"])):
+                mine = U[lab == k]
+                w_own = solve_slsqp(mine, tau).w
+                w_sup = solve_slsqp(U - mine.mean(axis=0), tau).w
+                err["own"].append(float(np.abs(w_own - planted).max()))
+                err["support"].append(float(np.abs(w_sup - planted).max()))
+        n = len(err["own"])
+        count = {k: sum(e <= OWN_ROWS_TOLERANCE for e in v) for k, v in err.items()}
+        rows.append([
+            "infinity" if np.isinf(tau) else f"{tau:g}", n,
+            f"{count['own']} of {n}", f"{max(err['own']):.2f}",
+            f"{count['support']} of {n}", f"{max(err['support']):.3f}",
+        ])  # fmt: skip
+    return Md(
+        f"Dataset {DATASET_LABELS['planted']}, the generator of Appendix C at 400 rows and seeds 0 "
+        f"to {OWN_ROWS_SEEDS - 1}, the true labels given:\n\n"
+        + md_table(
+            [
+                "Temperature",
+                "Planted facets",
+                "Own-rows refit recovers",
+                "Largest error, own rows",
+                "Support refit recovers",
+                "Largest error, support",
+            ],
+            rows,
+        )
+    )
+
+
+def conditioning_diagnostic() -> Md:
+    """The conditioning of the exponents, ``conditioning_``, per regime, K and facet.
+
+    Returns
+    -------
+    Md
+        The smallest eigenvalue of the restricted Hessian of the objective at each facet's fit, to
+        two digits: a small value flags a nearly flat direction (weak identifiability of the
+        exponents); a read-only diagnostic of the estimator.
+    """
+    parts = []
+    for r in _studies():
+        rows = [
+            [K, k + 1, f"{v:.2g}"]
+            for K, f in _fits(r).items()
+            for k, v in enumerate(np.atleast_1d(f.estimator.conditioning_))
+        ]
+        parts.append(
+            f"{_cite(r)}:\n\n"
+            + md_table(["K", "Facet", "`conditioning_` (smallest eigenvalue)"], rows)
+        )
+    return Md("\n\n".join(parts))

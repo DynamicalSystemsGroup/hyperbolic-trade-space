@@ -29,6 +29,7 @@ READS = {
     "generate_gaps": "docs/superpowers/notes/abstraction-gaps.md",
     "generate_repro": "uv.lock, pyproject.toml, .python-version",
     "generate_proofs": "derivation/proof_map_record.json",
+    "generate_reading_pass": "paper/reading_pass.yaml",
 }
 CASE_DATA = "examples/adcs/data/ (the regimes' CSV files named by the case module)"
 
@@ -110,11 +111,16 @@ def commands() -> Md:
     Md
         Only commands whose target exists in the repository.
     """
+    last = max(int(p.name.split("_")[1]) for p in (ROOT / "derivation").glob("lemma_*.py"))
     rows = [
         ("uv sync --locked", "install the locked environment", "exits 0"),
         ("uv lock --check", "check that the lock matches pyproject.toml", "exits 0"),
         ("uv run pytest", "run the test suite, doctests included", "all tests pass"),
-        ("uv run python -m derivation.run", "run the chain L1 to L14", "every lemma reports PASS"),
+        (
+            "uv run python -m derivation.run",
+            f"run the chain L1 to L{last}",
+            "every lemma reports PASS",
+        ),
     ]
     if (ROOT / "derivation" / "proofmap.py").exists():
         rows.append(

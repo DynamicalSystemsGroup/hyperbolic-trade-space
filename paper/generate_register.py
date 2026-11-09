@@ -8,6 +8,8 @@ and Vandenberghe usage an entry anchors to) is shown as a column when any entry 
 
 from __future__ import annotations
 
+import re
+
 import yaml
 from paper_common import Md, md_table
 from paper_paths import ROOT
@@ -20,6 +22,16 @@ def glossary_entries(path=GLOSSARY) -> list[dict]:
     return yaml.safe_load(path.read_text(encoding="utf-8"))["entries"]
 
 
+def symbol_markup(symbol: str) -> str:
+    """A symbol as the table prints it: mathematics, or code font for an attribute name.
+
+    A name such as ``conditioning_`` (a fitted attribute of the estimator, with the trailing
+    underscore of scikit-learn) is not mathematics; between dollar signs its underscore starts a
+    subscript with nothing in it and the page prints a processing error.
+    """
+    return f"`{symbol}`" if re.fullmatch(r"[A-Za-z]\w*_", symbol) else f"${symbol}$"
+
+
 def register_rows(entries=None) -> tuple[list[str], list[list[str]]]:
     """Headers and rows of the register table, one row per glossary entry."""
     entries = glossary_entries() if entries is None else entries
@@ -29,7 +41,7 @@ def register_rows(entries=None) -> tuple[list[str], list[list[str]]]:
         headers.append("Anchored to")
     rows = []
     for e in entries:
-        row = [e["register"], f"${e['symbol']}$" if e.get("symbol") else "", e["formal"],
+        row = [e["register"], symbol_markup(e["symbol"]) if e.get("symbol") else "", e["formal"],
                e["not"], e.get("defined_in", "")]  # fmt: skip
         if anchored:
             row.append(e.get("anchor", ""))

@@ -45,7 +45,48 @@ table among them, were checked by their DOM measurements, not by eye.
   a "Proof n (Sketch)" box and each script pointer a green "Script" box with the link. Titles read
   "Name (Ln)", which nests parentheses.
 - The family table's cells are centred or right-aligned by the site's table style.
-- The supporting-material page measures 378 px at 375 px; no element outside a scrolling container
-  reaches that far, and the cause was not found.
+- The supporting-material page measured 378 px at 375 px (cause found and fixed in the pass below).
 - Clicking an author-year link of a reference that the list has not yet opened ("Show All" closed)
   does not scroll, because the entry is not on the page until the list is opened.
+
+## Pass after the driver's change requests (2026-11-09)
+
+Built with `cd paper && uv run myst build --html` (no warnings), served with
+`uv run python -m http.server 8796 --directory paper/_build/html`, viewed in a tab of my own in the
+Browser pane. Light and dark (the page's theme class, set and read back) at 1280 px and at 375 px.
+Viewed by eye: the main-results list and organization paragraph; the Level paragraph and the Level 1
+block (Theorem 10); the stopping declaration and the Numerical line; the Open questions and the
+search section; the case analysis from its opening to the candidates table, with the figure and
+table references; on the supporting page G.2 (the reading pass), D.8 (the status paragraph), D.13
+and Appendix A. The pages were not scrolled end to end by eye: the pane is 800 by 569 points, the
+main page is 27,000 px and the supporting page 73,000 px at 1280 px, so the rest was measured in
+the DOM (below).
+
+- **Cross-references to floats.** The page has ten links to a figure or table in the running text
+  (Figure 1 to 8, Table 1 and 2), each to its own target; Table 2 and every figure are now
+  referenced (test `test_every_figure_and_table_is_referenced_from_the_text`).
+- **Defects of the review, fixed.** "Definition Definition 9" is gone (the role prints its own
+  kind); "[Math Processing Error]" is gone (`conditioning_` is in code font in Appendix A);
+  no interval stands in parentheses in a generated sentence; the regressor's band is called its own.
+  DOM check on both pages: no "Math Processing Error", no "Definition Definition", no raw `$...$`
+  text once the page has loaded, no "external reviewer".
+- **375 px overflow of the supporting page (3 px), cause and fix.** The anchor mark of a heading is
+  a zero-width inline box moved 10 px to the right (`translate-x-[10px]`); after a heading whose
+  text fills the line, here "B.1 The fit and its geometry (L1 to L11)", the glyph leaves the page by
+  3 px and the whole page scrolls sideways. Found by hiding elements until `scrollWidth` fell.
+  `paper/style.css` (the template option `site.options.style`) clips the article's horizontal
+  overflow below 640 px (`overflow-x: clip`, which makes no scroll container). After the fix
+  `scrollWidth` is 375 on both pages; tables still scroll inside their own containers.
+- **Raw dollar signs before the mathematics appears.** Not fixed: no template option controls it.
+  The text sits in output cells (raw HTML) that the page typesets with MathJax after it loads, so
+  the dollar signs show for a moment. Left as the review recorded it.
+- **Reference list shows 15 entries until "Show All".** Not fixable by a setting: the article theme
+  takes the limit as a component default (`hideLongBibliography`, 15) and `template.yml` has no
+  option for it; the hidden entries are not in the page until the button is pressed.
+- **G.2, the reading pass (56 rows).** The table is wider than a column and scrolls inside its
+  container at 1280 and 375 px (the site's table style fixes the column widths); long addresses wrap
+  inside their cell. Readable in light and dark.
+- **Seen and unchanged.** A generated sentence prints in a smaller type than the prose around it;
+  the Level 1 block is Theorem 10 (the site numbers a kind in order of appearance, and the block
+  stands before Lemma 1 as the algorithm's order asks); proof boxes are numbered by their position
+  ("Proof 12" for Theorem 10).

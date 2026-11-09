@@ -5,11 +5,14 @@ Importing this module puts the repository root, ``src``, ``examples/adcs`` (the 
 can be imported by the tests and by the cells alike.
 """
 
+import os
 import sys
 from pathlib import Path
 
 PAPER = Path(__file__).resolve().parent
-ROOT = PAPER.parent
+# ``paper/`` sits in the repository, so the repository is its parent. A copy of ``paper/`` made
+# elsewhere (the clean-kernel execution test) names the repository in ``PAPER_REPO_ROOT``.
+ROOT = Path(os.environ.get("PAPER_REPO_ROOT") or PAPER.parent).resolve()
 
 for _p in (ROOT, ROOT / "src", ROOT / "examples" / "adcs", PAPER):
     if str(_p) not in sys.path:

@@ -63,3 +63,6 @@ project:
   # No export block: the PDF export is deferred (OD4, decided "Later, once the content has settled").
 site:
   template: article-theme
+  options:
+    # a narrow screen clips the anchor mark of a heading that fills its line (BROWSER_NOTES)
+    style: style.css

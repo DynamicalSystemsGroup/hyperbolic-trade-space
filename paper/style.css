@@ -1,0 +1,10 @@
+/* The anchor mark of a heading is a zero-width box moved 10px to the right. After a heading that
+   fills its line (for example "B.1 The fit and its geometry (L1 to L11)") its glyph leaves the page
+   by 3px at 375px and the whole page scrolls sideways. On a narrow screen the article clips the
+   overflow instead (clip, not hidden: it makes no scroll container). */
+@media (max-width: 640px) {
+  article.myst-article,
+  main {
+    overflow-x: clip;
+  }
+}

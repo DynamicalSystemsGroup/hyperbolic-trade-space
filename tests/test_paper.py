@@ -300,14 +300,91 @@ def test_body_names_no_tooling_versions():
     assert not re.search(r"\b\d+\.\d+\.\d+\b", _markdown(_nb(PAPER_NB)))
 
 
-def test_counted_words_within_the_cap():
-    """R-2: counted prose (the abstract and code excluded) is at most 6,000 words."""
-    words = 0
+# ---- the word count: what renders, generated sentences included (G-1) ------------------------
+
+_OPTION_LINE = re.compile(r"^:[\w-]+:.*$", re.M)  # a directive option: it prints nothing
+_FENCE = re.compile(r"^:{3,}\{(?P<name>[\w:-]+)\}[ \t]*(?P<arg>.*)$", re.M)
+_DISPLAY_MATH = re.compile(r"\$\$.*?\$\$", re.S)
+_CITES = re.compile(r"\[(@[^\]]+)\]")
+_PRF_REF = re.compile(r"\{prf:ref\}`[^`]+`")
+GENERATED_SENTENCES = "num-"
+"""Code cells whose id starts so print one or two sentences of prose built from the case."""
+BUDGET_ALLOWANCE = 1.15
+"""Each section may exceed its budget by this factor (15 percent), and no more."""
+BUDGETS = {  # the scope's word budgets per section (WP10 scope of work, R-2)
+    "The decision problem": 500, "Prior art, by family": 600, "Preliminaries and notation": 450,
+    "Definitions": 300, "Methods": 450, "Results": 1400,
+    "Search of the design space (preliminary)": 200, "Case construction": 300,
+    "Case analysis": 500, "Discussion": 450, "Reproducibility and your own case": 150,
+    "Future work and final remark": 250,
+}  # fmt: skip
+
+
+def rendered_words(text: str) -> int:
+    """Words the reader meets in a cell's Markdown source.
+
+    A cross-reference counts as its printed title (``Section 0``, ``Theorem 0``), a citation as an
+    author and a year for each key, an inline formula and an inline code span as one token each.
+    What prints nothing is not counted: the directive lines and their options, labels, display
+    equations. Captions, hypotheses, sketches, script pointers and list items are counted.
+    """
+    text = _rendered(text)
+    text = _PRF_REF.sub("Theorem 0", text)
+    text = _CITES.sub(lambda m: "Author 2000 " * (m.group(1).count("@")), text)
+    text = _DISPLAY_MATH.sub(" ", text)
+    text = _FENCE.sub(  # a title or a caption is read; a figure's path is not
+        lambda m: (
+            m.group("arg") if m.group("name").startswith(("prf:", "admonition", "table")) else ""
+        ),
+        text,
+    )
+    text = _OPTION_LINE.sub("", text)
+    text = re.sub(r"^:{3,}\s*$", "", text, flags=re.M)
+    return len(re.sub(r"[#>*`:{}\[\]|-]", " ", text).split())
+
+
+def words_by_section() -> dict[str, int]:
+    """Rendered words of the body, per section: the Markdown the page shows plus the generated
+    sentences of the case. Not counted: the abstract (its own cap), cells the page does not show,
+    the bibliography, and the tables (the family table and the candidates table are data, as the
+    appendices' tables are)."""
+    out: dict[str, int] = {}
+    current = None
     for i, c in enumerate(_nb(PAPER_NB).cells):
-        if c.cell_type != "markdown" or i == 0 or "remove-cell" in c.metadata.get("tags", []):
-            continue  # the abstract, and cells the page does not show
-        words += len(re.sub(r"[#>*`:{}\[\]@|-]", " ", _rendered(_src(c))).split())
-    assert words <= 6000
+        if i == 0:
+            continue
+        if c.cell_type == "markdown":
+            if "remove-cell" in c.metadata.get("tags", []):
+                continue
+            head = _unlabel(_src(c))
+            if head.startswith("## "):
+                current = head.splitlines()[0][3:].strip()
+            n = rendered_words(_src(c))
+        elif c.id.startswith(GENERATED_SENTENCES):
+            n = rendered_words(_out_text(c))
+        else:
+            continue
+        out[current] = out.get(current, 0) + n
+    return out
+
+
+def test_counted_words_within_the_cap():
+    """R-2, G-1: the prose a reader meets, generated sentences included, is at most 6,000 words."""
+    assert sum(words_by_section().values()) <= 6000
+
+
+def test_generated_sentences_are_counted_not_excluded():
+    """The counter reads the committed outputs of the sentence cells, so none is left out."""
+    cells = [c for c in _code_cells(_nb(PAPER_NB)) if c.id.startswith(GENERATED_SENTENCES)]
+    assert len(cells) >= 8
+    assert rendered_words(" ".join(_out_text(c) for c in cells)) > 100
+
+
+def test_each_section_is_within_its_budget_plus_fifteen_percent():
+    """R-2: the per-section ceiling is the budget plus 15 percent (BUDGET_ALLOWANCE), no more."""
+    counted = words_by_section()
+    for name, budget in BUDGETS.items():
+        assert counted[name] <= budget * BUDGET_ALLOWANCE, (name, counted[name], budget)
 
 
 def test_register_forbidden_phrases_are_absent_from_all_prose():
@@ -499,7 +576,9 @@ def test_register_table_equals_the_glossary():
         assert row[0] == e["register"] and row[2] == e["formal"] and row[3] == e["not"]
         assert e["register"] in text and e["formal"] in text
         if e.get("symbol"):
-            assert f"${e['symbol']}$" in text
+            sym = e["symbol"]  # mathematics, or code font for a fitted attribute such as `name_`
+            shown = f"`{sym}`" if re.fullmatch(r"[A-Za-z]\w*_", sym) else f"${sym}$"
+            assert shown in text
     assert headers[:5] == ["Term", "Symbol", "Meaning in this paper", "Not", "Defined in"]
 
 
@@ -1106,10 +1185,11 @@ def test_search_section_is_short_future_work_without_numbers():
 
 
 def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script():
-    """R-17, R-18: L1 to L14 once each, in the paper's order, each with the parts of the form."""
+    """R-17, R-18: L1 to L15 once each, each with the parts of the form. The paper's order is the
+    algorithm's (E-8): Level 1 (L15) comes before Lemma 1 (L12)."""
     blocks = _blocks()
     tags = [re.search(r"\(L(\d+)\)\s*$", title).group(1) for _, title, _, _ in blocks]
-    assert [int(t) for t in tags] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14]
+    assert [int(t) for t in tags] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 12, 13, 14, 14]
     body = _markdown(_nb(PAPER_NB))
     scripts = {
         int(re.match(r"lemma_(\d+)_", p.name).group(1)): p
@@ -1134,6 +1214,7 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
         assert script.name == pointer.group(1) and "def verify(" in script.read_text(), label
     kinds = [(k, int(re.search(r"\(L(\d+)\)", t).group(1))) for k, t, _, _ in blocks]
     assert kinds[11:] == [
+        ("theorem", 15),
         ("lemma", 12),
         ("lemma", 13),
         ("proposition", 14),
@@ -1144,7 +1225,7 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
 def test_badges_are_present_and_the_open_questions_are_marked():
     """R-7: Derived on proved statements, Numerical on what is observed, Open on Q1 to Q4."""
     body = _markdown(_nb(PAPER_NB))
-    assert body.count("**Derived.**") == 15
+    assert body.count("**Derived.**") == len(_blocks())
     assert body.count("**Numerical.**") >= 1 and body.count("**Open.**") >= 1
     open_text = body.split("### Open questions", 1)[1].split("## ", 1)[0]
     for q in ("Q1", "Q2", "Q3", "Q4", "not pursued"):
@@ -1307,9 +1388,10 @@ def test_reader_depth_anchors_are_all_present():
         .split("**Organization", 1)[0]
     )
     labels = ("thm-invariant", "thm-kkt", "thm-convex", "thm-elasticity", "thm-chart")
-    labels += ("thm-extension", "thm-pareto", "lem-gap", "lem-margin", "prop-local")
+    labels += ("thm-extension", "thm-pareto", "thm-descent", "lem-gap", "lem-margin", "prop-local")
     for label in labels:
         assert f"`{label}`" in results, label
+    assert "Numerical" in results and "Open" in results  # O-6: the findings that are not derived
     intro = _section("The decision problem")
     assert all(f"<appendix-{k.lower()}>`" in intro for k in APPENDICES)  # links to the lettered set
 
@@ -1332,15 +1414,6 @@ def test_simplifying_assumptions_are_named_where_made_and_taken_up_in_future_wor
         assert marker in future.lower(), marker
 
 
-def test_the_paper_never_hedges_the_counted_prose_stays_within_the_stated_sections():
-    """R-2: each section within a generous multiple of its budget; the total within the cap."""
-    budgets = {"The decision problem": 900, "Prior art, by family": 700, "Results": 2400,
-               "Case analysis": 650, "Discussion": 550}  # fmt: skip
-    for name, cap in budgets.items():
-        text = _section(name)
-        assert len(re.sub(r"[#>*`:{}\[\]@|-]", " ", text).split()) <= cap, name
-
-
 # ---- gated checks (slow or networked) ----------------------------------------------------------
 
 
@@ -1352,6 +1425,7 @@ def test_notebooks_execute_from_a_clean_kernel_and_match_the_committed_outputs(t
     out = subprocess.run(
         [sys.executable, str(work / "execute_notebooks.py")],
         capture_output=True, text=True, cwd=work, check=False,
+        env={**os.environ, "PAPER_REPO_ROOT": str(ROOT)},  # the copy is not inside the repository
     )  # fmt: skip
     assert out.returncode == 0, out.stderr[-2000:]
     for name in ("paper.ipynb", "supporting_material.ipynb"):
@@ -1464,17 +1538,25 @@ def test_generated_sentences_quote_the_ranges_from_the_results_file(case_sentenc
         moved += lo != hi
         assert (f"{lo} to {hi}" if lo != hi else f"{lo} on") in nd, name
     assert moved, "no count moves: the sentence would quote no range"
-    ks = str(case_sentences["num-k-sweep"])
-    gap = q["sentence | K sweep | largest facet gap"]
+    cert = str(
+        case_sentences["num-certificates"]
+    )  # the largest facet gap moved here from the sweep
+    gap = q["certificate | primary | 2 | max gap"]
     if max(abs(gap["min"]), abs(gap["max"])) < 1e-12:
-        assert "facet gap below 1e-12" in ks
+        assert "facet gap below 1e-12" in cert
+    # the facet shares moved from the sentence to the facets table of Appendix D (D.3), where each
+    # is printed to the digits that hold over the datasets, never the committed value alone
+    facets = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-exponents_and_facets")
+    primary = _out_text(facets).split("Dataset cubesat-stock", 1)[0]
     for k in (1, 2, 3):
         name = f"D facets K=3 | primary | {k} | share"
         e = q[name]
-        shown = stable(name, lambda v: f"{v:.3f}")
-        assert shown in ks, name
-        if f"{e['min']:.3f}" != f"{e['max']:.3f}":  # the share moves at the printed three decimals
-            assert shown != f"{e['committed']:.3f}", name
+        shown = stable(name)
+        assert shown in primary, name
+        if format(e["min"], ".4g") != format(
+            e["max"], ".4g"
+        ):  # the share moves at the print format
+            assert shown != format(e["committed"], ".4g"), name
     temp = str(case_sentences["num-temperature"])
     n_eff = q["fit | primary K=1 | n_eff_"]
     assert f"{n_eff['committed']:.1f}" not in temp or n_eff["min"] == n_eff["max"]
@@ -1504,7 +1586,8 @@ def test_appendix_d_has_the_stability_subsection_and_section_9_points_to_it():
     import generate_results
 
     heads = [h for h in _headings(_nb(SUPPORT_NB), "###") if h.startswith("D.")]
-    assert heads[-1] == "D.11 Stability of the conclusions under rounding-level jitter"
+    assert "D.11 Stability of the conclusions under rounding-level jitter" in heads
+    assert heads[:11] == [h for h in heads if int(h.split()[0][2:]) <= 11]  # D.1 to D.11 in order
     cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-stability")
     exact = exact_only("planted_table_sha256")
     committed, fresh = _out_text(cell), str(generate_results.stability())
@@ -1523,3 +1606,184 @@ def test_stability_table_is_derived_from_the_results_file():
         names = [n for n in q if n.startswith(prefixes) and n.endswith(suffix)]
         assert ok == all(q[n]["identical"] for n in names)
     assert all(count > 0 for _, count, _ in rows)
+
+
+# ---- the driver's change requests of WP10 (review of 2026-11) -----------------------------------
+
+
+def _all_rendered_text() -> str:
+    """Everything a reader can see in both notebooks: the Markdown and the committed outputs."""
+    parts = []
+    for path in (PAPER_NB, SUPPORT_NB):
+        nb = _nb(path)
+        parts += [_src(c) for c in nb.cells if c.cell_type == "markdown"]
+        parts += [_out_text(c) for c in _code_cells(nb)]
+    return "\n".join(parts)
+
+
+def test_the_paper_claims_no_external_review():
+    """(1) The review of 2026-11 was the supervisor's own: no sentence says an external reviewer
+    audited the mathematics (the front matter, the body, the appendices and every output)."""
+    text = _all_rendered_text().lower()
+    assert "external reviewer" not in text
+    assert "audited the mathematics" not in text
+    assert "The derivations are machine-checked." in _section("Acknowledgments")
+
+
+def test_every_figure_and_table_is_referenced_from_the_text():
+    """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
+    body = _markdown(_nb(PAPER_NB))
+    floats = re.findall(r"^:::+\{(?:figure|table)\}[^\n]*\n:label: (\S+)", body, re.M)
+    assert len(floats) == 10, floats  # eight figures and two tables
+    for cell in _nb(PAPER_NB).cells:
+        if cell.cell_type != "markdown" or cell.id == "frontmatter":
+            continue
+        text = _src(cell)
+        if re.search(r"^:::+\{(?:figure|table)\}", text, re.M):
+            body = body.replace(text, "")  # the caption's own cell is not a reference
+    for label in floats:
+        pattern = rf"\{{numref\}}`(Figure|Table) %s <{re.escape(label)}>`"
+        assert re.search(pattern, body), f"{label} is not referenced from the text"
+
+
+def test_section_6_names_the_three_levels_and_has_level_1_as_a_derived_block():
+    """G-4, C-1: Level 1 (descent), Level 2 (numerical stationarity) and Level 3 (conditional
+    local optimality) are named; Level 1 is a Derived block with its script (L15)."""
+    text = _section("Results")
+    for name in ("Level 1, descent", "Level 2, numerical stationarity",
+                 "Level 3, conditional local optimality"):  # fmt: skip
+        assert name in text, name
+    block = next(b for b in _blocks() if "(L15)" in b[1])
+    assert block[2] == "thm-descent" and "**Derived.**" in block[3]
+    for hypothesis in ("step B", "unpenalized", "support offsets"):
+        assert hypothesis in block[3], hypothesis
+    assert "lemma_15_descent.py" in text
+    abstract = yaml.safe_load(_src(_nb(PAPER_NB).cells[0]).split("---")[1])["abstract"]
+    assert "descent is derived" in abstract and "checked numerically" in abstract
+
+
+def test_appendix_b_shows_every_result_of_the_record_with_derived_counts():
+    """C-1: Appendix B follows the record (L15 included); its counts are read, never typed."""
+    record = _record()["lemmas"]
+    assert "lemma_15_descent.py" in record
+    text = str(generate_proofs.how_to_read())
+    results = sum(len(lem["results"]) for lem in record.values())
+    steps = sum(len(lem["steps"]) for lem in record.values())
+    assert f"{results} results in {len(record)} files and {steps} steps" in text
+    assert "(L12 to L15)" in text and "L15. descent" in _proof_text()
+
+
+def test_the_claims_of_c1_have_their_true_basis():
+    """C-1: facets unchanged under smoothing is by construction; outward monotonicity is Open; the
+    principal directions are a reading; the own-rows refit points to its number in Appendix D."""
+    methods = _section("Methods")
+    assert "by construction" in methods and "leaves the facets unchanged" in methods
+    assert not re.search(r"unchanged \(\{prf:ref\}`thm-extension`\)", methods)
+    search = _section("Search of the design space")
+    assert "**Open.** Outward monotonicity" in search
+    intro = _section("The decision problem")
+    assert "a reading and not a result" in intro
+    results = _section("Results")
+    assert "ill-posed (observed on planted data" in results and "D.13" in results
+    own = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-own_rows_refit")
+    text = _out_text(own)
+    assert text == str(generate_results.own_rows_refit())
+    assert re.search(r"\| 0 of 60 \|", text) and re.search(r"\| 60 of 60 \|", text)
+
+
+def test_appendix_d_prints_the_conditioning_diagnostic():
+    """G-4: the column `conditioning_` is printed per regime, K and facet."""
+    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-conditioning_diagnostic")
+    assert "`conditioning_`" in _out_text(cell)
+    assert _out_text(cell) == str(generate_results.conditioning_diagnostic())
+    assert any(r in _out_text(cell) for r in ("Dataset cubesat-primary", "Dataset cubesat-stock"))
+
+
+def test_no_doubled_label_before_a_cross_reference():
+    """G-7: a reference to a definition or theorem prints its own kind; none is typed before it."""
+    body = _markdown(_nb(PAPER_NB))
+    assert not re.search(r"\b(Definition|Theorem|Lemma|Proposition|Corollary) \{prf:ref\}", body)
+    assert "Definition Definition" not in _all_rendered_text()
+
+
+def test_generated_sentences_have_no_interval_in_parentheses():
+    """G-7: an interval ('x to y') is never wrapped in parentheses in a generated sentence."""
+    for c in _code_cells(_nb(PAPER_NB)):
+        if c.id.startswith(GENERATED_SENTENCES):
+            assert not re.search(r"\([^()]* to [^()]*\)", _out_text(c)), c.id
+    predict = next(c for c in _code_cells(_nb(PAPER_NB)) if c.id == "num-predict")
+    assert "regressor's own band" in _out_text(predict)
+
+
+def test_conditioning_symbol_is_not_set_as_mathematics():
+    """G-7: `$conditioning_$` printed a processing error; an attribute name is in code font."""
+    text = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-A-register"))
+    assert "$conditioning_$" not in text and "`conditioning_`" in text
+
+
+def test_regime_names_a_gain_box_dataset_and_the_facets_are_facets():
+    """C-4: 'regime' only for the two gain boxes; no 'three regimes' in the paper or its tables."""
+    text = _all_rendered_text().lower()
+    assert "three regimes" not in text and "regimes of the facet" not in text
+    abstract = _src(_nb(PAPER_NB).cells[0])
+    assert "three different contending sets" in abstract
+    for section in ("Methods", "Case analysis"):
+        prose = re.sub(r"fig-regimes[\w-]*|two (gain )?regimes", "", _section(section).lower())
+        assert "regimes" not in prose, section
+    notation = (NOTES / "notation.md").read_text()
+    register = notation.split("## Register phrases", 1)[1].split("## Forbidden phrases", 1)[0]
+    forbidden = notation.split("## Forbidden phrases", 1)[1]
+    assert "- `regime`" in register and "- `the three regimes`" in forbidden
+
+
+# ---- C-3: the reading pass is a committed table of the paper ------------------------------------
+
+import generate_reading_pass  # noqa: E402
+import generate_results  # noqa: E402
+
+
+def test_reading_pass_yaml_matches_the_markdown_table_verbatim():
+    md = generate_reading_pass.markdown_rows()
+    rows = generate_reading_pass.rows()
+    assert len(md) == len(rows) == 56
+    for a, b in zip(md, rows, strict=True):
+        assert {k: b[k] for k in generate_reading_pass.FIELDS} == a, a["n"]
+    verdicts = [r["verdict"] for r in rows]
+    assert [verdicts.count(v) for v in ("supported", "partly supported", "not accessible")] == [
+        25, 19, 9
+    ]  # fmt: skip
+    assert verdicts.count("not found") == 2 and verdicts.count("accessible (own work)") == 1
+
+
+def test_reading_pass_rows_carry_what_the_paper_does_and_resolve_in_the_bibliography():
+    keys = _bib_keys()
+    for r in generate_reading_pass.rows():
+        assert r["status"] in generate_reading_pass.STATUS, r["n"]
+        assert r["key"] in keys, r["key"]
+        if r["status"] != "kept":
+            assert r["now"].strip(), r["n"]
+        if r["verdict"] in ("partly supported", "not found"):
+            assert r["status"] == "reworded", r["n"]  # a sentence is never left as it was
+        if r["verdict"] == "not accessible":
+            assert r["status"] == "confirm", r["n"]
+    own = next(r for r in generate_reading_pass.rows() if r["key"] == "zargham2026incose")
+    assert own["status"] == "supervisor"
+
+
+def test_reading_pass_table_is_in_appendix_g_and_current():
+    cells = _appendix_cells(_nb(SUPPORT_NB))["G"]
+    headings = [_src(c) for c in cells if c.cell_type == "markdown"]
+    assert any(h.startswith("### G.2 ") for h in headings)
+    cell = next(c for c in cells if c.cell_type == "code" and c.id == "tab-G-reading_pass_table")
+    assert _out_text(cell) == str(generate_reading_pass.reading_pass_table()), STALE
+    text = _out_text(cell)
+    assert text.count("\n| ") >= 56 and "to be confirmed by the author" in text
+
+
+def test_the_combination_sentence_says_what_was_looked_at():
+    """C-2: no assertion of absence in the literature; it names the sources reviewed."""
+    s2 = _section("Prior art, by family")
+    assert "The sources establish the pieces, not the combination" not in s2
+    assert "We did not find the combination in the sources reviewed" in s2
+    assert "appendix-g" in s2.split("We did not find the combination", 1)[1]
+    assert not WORDS_BANNED_IN_PRIOR_ART.search(s2)

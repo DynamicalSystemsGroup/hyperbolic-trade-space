@@ -25,9 +25,10 @@ DERIVATION = ROOT / "derivation"
 BLOB = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/derivation"
 CHECK_COMMAND = "uv run python -m derivation.proofmap"
 PARTS = (
-    ("The fit and its geometry", "L1 to L11", range(1, 12)),
-    ("The solver for K > 1 and its three levels of guarantee", "L12 to L14", range(12, 15)),
+    ("The fit and its geometry", 1, 11),
+    ("The solver for K > 1 and its three levels of guarantee", 12, None),
 )  # fmt: skip
+"""Name, first and last lemma of each part; the last of the final part is the record's last."""
 KIND_ORDER = ("computed", "axiom", "result")
 _SPECIAL = re.compile(r"([\\`*_<>\[\]$])")  # the pipe is escaped by the table writer
 
@@ -273,7 +274,8 @@ def how_to_read(path=RECORD) -> Md:
     steps = [s for _, lem in _lemmas(record) for s in lem["steps"]]
     counts = {k: sum(s["kind"] == k for s in steps) for k in KIND_ORDER}
     results = sum(len(lem["results"]) for _, lem in _lemmas(record))
-    parts = "\n".join(f"- {name} ({lemmas})" for name, lemmas, _ in PARTS)
+    last = max(lem["number"] for lem in record["lemmas"].values())
+    parts = "\n".join(f"- {name} (L{lo} to L{hi or last})" for name, lo, hi in PARTS)
     return Md(
         f"Each proof is one file of `derivation/`, and each step of the proof is one line of that "
         f"file. The address of a step is its file and its tag (`L2.1`, `L2.2`, ...), and the tag "
@@ -344,11 +346,11 @@ def proofs_fit(path=RECORD) -> Md:
         Per result: the heading, file, statement, hypotheses, ledger status and the table of
         steps with tag, kind, prose, the script's own line and the link to it.
     """
-    return _part(PARTS[0][2], path)
+    return _part(range(PARTS[0][1], PARTS[0][2] + 1), path)
 
 
 def proofs_solver(path=RECORD) -> Md:
-    """The proofs of the solver for K > 1 and its levels of guarantee (L12 to L14), step for step.
+    """The proofs of the solver for K > 1 and its levels of guarantee (L12 to L15), step for step.
 
     Parameters
     ----------
@@ -358,9 +360,9 @@ def proofs_solver(path=RECORD) -> Md:
     Returns
     -------
     Md
-        As :func:`proofs_fit`, for L12, L13 and L14 (Proposition 3 and Corollary 4).
+        As :func:`proofs_fit`, for L12 to L15 (L14 is Proposition 3 and Corollary 4).
     """
-    return _part(PARTS[1][2], path)
+    return _part(range(PARTS[1][1], 10_000), path)
 
 
 def checker(path=RECORD) -> Md:
