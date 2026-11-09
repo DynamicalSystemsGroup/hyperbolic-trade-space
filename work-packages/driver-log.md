@@ -75,6 +75,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 | 2026-11-08 | Site tests collide when several agents run the suite in one checkout | the site fixture builds into a temporary directory; a failure in files an implementer does not own is re-run alone before it is reported | a defect in the tests' robustness, inside WP8a's own requirement that the suite passes |
 | 2026-11-08 | The pinned toolkit is not provisioned in CI, so five model-checking tests would fail there | no Tests dispatch on `dev` until the workflow provisions it; the PM sends the step, the driver commits it | the supervisor's "Pinned" for the toolkit in WP15; fixtures fail by name by design |
 
+- 2026-11-09: WP8b (release preparation) and WP20 (verification in tiers) scoped by the fresh PM's
+  bounded scope subagents in the template, no open decisions; approved by the driver under the
+  mandate. WP8b brings the items done ahead of its scope (LICENSE, changelog, punch list, archive)
+  under it and sequences the reference keys and the reviewer's guide after WP11's stopping rule and
+  the version last. WP20 covers the slow markers, `scripts/check.py`, the xdist group and the CI
+  shards; its first two commits are already on `dev` (04a3471, 78f5e1c) and are accepted against it.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
