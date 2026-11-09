@@ -58,5 +58,8 @@ with doctests.
 - Claims: every claim a reader can rely on is backed (a lemma step, a generated value, a test, a
   verified source) or is narrowed or dropped; no caveats added to prove it. Register and mechanism:
   `docs/superpowers/notes/claims-review.md`. Keep the model, the fit and the analysis apart in prose.
+- Figures: every figure earns its place or goes; judged as rendered by a visual loop (cold read,
+  the sentence test, ink as data, legibility, shows and does not show):
+  `docs/superpowers/notes/figure-review.md`.
 - Site framing: Tall's three worlds, glass-box seams, machine verification vs human validation
   (`docs/superpowers/notes/presentation-framing.md`).

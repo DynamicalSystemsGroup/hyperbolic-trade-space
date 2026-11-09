@@ -75,3 +75,12 @@ Checked by the driver (both images looked at; the agent wrote only inside its fo
   PlantUML) was not explored; PlantUML and Java are system tools, so adoption means committed text
   and image with a test on the text where the tools exist.
 
+## Visual loops (the supervisor, 2026-11-09)
+
+"make sure we also do visual loops for figures". Stage 2 of this package runs the figure review of
+`docs/superpowers/notes/figure-review.md` on every candidate before it is put to him: a cold read of
+the image alone, the sentence test, ink as data, legibility where it is read, what it shows and does
+not show. A candidate that a sentence replaces is not put forward. The cubesat triangle of the docs
+(three markers in an empty triangle) is the worked failure; by the same test the first diagram of
+the model spike has content and the ternary plot of the cubesat by groups does not.
+

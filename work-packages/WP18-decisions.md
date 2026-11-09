@@ -37,3 +37,19 @@ Records typed by the agent (driver session). The supervisor's review is at the P
 - **Disposition:** approved for execution. Execution starts when an implementer is free on files
   that do not collide: WP17 is amending the interface contract and the glossary now, so WP18's
   contract amendment takes the next version number after WP17's lands.
+
+## The supervisor on the cubesat triangle (2026-11-09)
+
+- **Supervisor (mzargham), verbatim,** on the second example's figure (the three-term cubesat fit by
+  exponents summed over subsystems: three markers in an empty triangle; caption "only facet 3
+  carries mass (0.18)"): "just a heads up. this is pretty vacuous. doesn't seem to earn its place on
+  the page, even in the documentation. make sure we also do visual loops for figures".
+- **Disposition:** example (ii) is dropped from the documentation (figure, code block and caption);
+  its one finding stays as a sentence if the page wants it. The figure cap goes to eight. The
+  remaining example and the root page's Why image go through the figure review
+  (`docs/superpowers/notes/figure-review.md`: a cold read of the image alone, the sentence test, ink
+  as data, legibility where it is read, what it shows and does not show) before WP18 is delivered.
+  The driver had passed this figure as "clean" in his browser pass; recorded under "Overruled or
+  corrected" in the driver's log. The same review is stage 2 of WP19 for the paper's figures and is
+  run over the docsite's existing figures as a ticket.
+

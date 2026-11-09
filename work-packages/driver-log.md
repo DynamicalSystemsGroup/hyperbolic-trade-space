@@ -139,4 +139,10 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   stays the paper's Figure 1. The supervisor, reviewing the staged paper: "i am worried they may be
   out of place and distracting in the paper body. it may be best to keep this in the index as a high
   level story arc / gloss." Overruled: the figure leaves the paper's body (ticket with the PM).
+- 2026-11-09, the cubesat triangle in the docs' examples. The driver's browser pass called it clean
+  and informative. The supervisor: "this is pretty vacuous. doesn't seem to earn its place on the
+  page, even in the documentation. make sure we also do visual loops for figures". Overruled: the
+  figure is dropped. Lesson: tidy is not informative; a figure whose caption says all it shows fails.
+  The figure review (`docs/superpowers/notes/figure-review.md`) now applies to every figure, and the
+  driver's own look is one reading in it, not the verdict.
 
