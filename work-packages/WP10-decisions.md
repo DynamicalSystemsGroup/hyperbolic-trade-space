@@ -484,3 +484,29 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   on disjoint files, starting with the case module and the bibliography; acceptance is structural
   (automated checks plus cold-reader trials per level); content is judged in WP11's grid of cold
   reads across depth levels and personas.
+
+## Appendices sketched in advance (2026-11-08, after approval; Amendment 1 in draft)
+
+- **Supervisor (mzargham), verbatim:** "the paper will have several appendices which will keep us
+  from crowding the main text. the full proofs, the computational reproducibility, the full model
+  for the case and more can go in appendices. it make be worth sketching the appendices in advance to
+  help prevent cluttering the main paper text"
+- The driver reported the approved set (D-2, A to H) and that it had no single sketch.
+  **Supervisor (mzargham), verbatim:** "i don't think i need a source map of what was moved from the
+  docs. i do want a computational reproducibility appendix that suffices to reproduce the materials
+  in the paper. i am not sure what G is supposed to be.
+
+  its okay to work on sketching the appendices but i don't want to jam any in for their own sake.
+  their purpose is to build a bridge at an intermediate depth between the paper and cloning the
+  repo."
+- **Disposition:** the sketch is `docs/superpowers/notes/paper-appendices-sketch.md` (each appendix
+  as three tiers: main text, appendix, repository; an appendix with nothing in its middle tier is
+  not written). The changes it implies to the approved scope are drafted as Amendment 1 in
+  `WP10-scope-of-work.md`, not approved. The PM holds the appendix shells, the source map and all
+  paper prose until the amendment is decided; the case module, the bibliography, the build
+  configuration, the notebook archive and Figure 1 continue. One question is open for the
+  supervisor: whether the prior-art review in full (approved Appendix H) remains an appendix.
+- **Driver's correction, for the record:** in chat the driver first described the approved Appendix
+  F as the source map. The approved F is the verification audit and "what remains for a human",
+  with the source map rendered as a table inside it; the approved G is the search's evidence, a
+  stub until WP12.
