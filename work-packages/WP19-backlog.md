@@ -84,3 +84,25 @@ not show. A candidate that a sentence replaces is not put forward. The cubesat t
 (three markers in an empty triangle) is the worked failure; by the same test the first diagram of
 the model spike has content and the ternary plot of the cubesat by groups does not.
 
+## The supervisor on the model diagrams (2026-11-09)
+
+Shown both candidates of the diagram spike. **Verbatim:** "this one i better but also still feels like
+it could benefit from some refinements on the line drawing. maybe a vertical rather than horizontal
+view. broadly speaking i think showing all the parts and how they assemble makes sense since our
+config is larger swapping parts (categorical) or tuning params of parts (continuous). our requirements
+on the other hand land on behavioral subsystems which are a distinct view from the assembly."
+Earlier, on how the judgement is made: "judgements on whether the visuals are fit for purpose is mine
+even if i allow for tailoring/refinement in situ later by the visualization engineer agent".
+
+Disposition: two views of the model, both his to judge from images, refined by a visualization
+engineer agent in the spike folder before any slot is taken:
+
+1. **The assembly view** (candidate 1, refined): every part and how they assemble; the categorical
+   choices (swapping a part) and the continuous ones (tuning a part's parameters) marked as the two
+   kinds of configuration variable, consistently; vertical (top-down) layout; the lines routed
+   cleanly; the ranges kept.
+2. **The behavioural view** (new; candidate 2 is withdrawn): the requirements and what they land on,
+   the behavioural subsystems (power, mass, attitude control), as a view distinct from the assembly;
+   drawn from the model's requirement and satisfy elements and the analysis, not from the
+   calculation dependency graph.
+
