@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 5
+contract_version = 6
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -61,8 +61,9 @@ submodules = [
 solvers = [
   "EPS_FEAS", "EPS_KKT", "GUARD_TOL", "POLISH_STEPS", "SolveResult", "Termination", "TermsResult",
   "assignment_margin", "facet_gap", "facet_objective", "fixed_assignment_bound", "log_mean_exp",
-  "objective_and_grad", "simplex_gap", "single_facet_termination", "solve_lp", "solve_slsqp",
-  "solve_terms", "support_weights",
+  "objective_and_grad", "simplex_gap", "single_facet_termination", "soft_certificate",
+  "soft_hessian", "soft_objective", "soft_weights", "solve_lp", "solve_slsqp", "solve_terms",
+  "support_weights",
 ]
 coordinates = ["alr_basis", "from_frontier_coordinates", "helmert_basis", "to_frontier_coordinates"]
 gaps = ["find_holes", "frontier_targets", "knn_gap_scores", "orient_by_pca"]
@@ -96,11 +97,11 @@ termination_class = "hyperbolic_trade_space.solvers.Termination"
 termination_fields = [
   "status", "reason", "n_iter", "sum_residual", "floor_residual", "offset_residual", "max_gap",
   "bound", "objective_change", "assignment_changes", "n_empty", "gamma", "radius", "eps_kkt",
-  "eps_feas", "guard_tol", "gaps", "shares",
+  "eps_feas", "guard_tol", "gaps", "shares", "min_curvature",
 ]
 termination_statuses = [
-  "certified", "stationary_without_margin", "uncertified", "guard_stop", "iteration_cap",
-  "not_applicable",
+  "certified", "stationary_without_margin", "stationary", "uncertified", "guard_stop",
+  "iteration_cap", "not_applicable",
 ]
 # Per-facet report: the fields of hyperbolic_trade_space.tensions.TensionReport.
 report_class = "hyperbolic_trade_space.tensions.TensionReport"

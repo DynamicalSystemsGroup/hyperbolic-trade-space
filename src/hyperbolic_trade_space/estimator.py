@@ -60,9 +60,16 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         ``solve_terms``; ``K = 1`` is the monomial fit).
     term_temperature : float, default=np.inf
         Softness ``kappa`` of ``Phi_K(u) = (1/kappa) log sum_k exp(kappa (w_k . u - beta_k))``,
-        ``kappa > 0`` or ``np.inf`` (the exact maximum). Used for ``n_terms > 1`` only. The hard
-        ``beta_k`` are kept, so ``max_k x_k <= Phi_K <= max_k x_k + log K / kappa``;
-        the gap is disclosed, not renormalized.
+        ``kappa > 0`` or ``np.inf`` (the exact maximum). Used for ``n_terms > 1`` only. The
+        offsets ``beta_k`` are the supports, so ``max_k x_k <= Phi_K <= max_k x_k + log K / kappa``;
+        the gap is disclosed, not renormalized. A finite ``kappa`` also selects the *soft fit*
+        (with ``facet_step="support"``): every design carries the weights
+        ``softmax_k(kappa x_k)`` on every term, the refit of term ``k`` is the supporting
+        hyperplane centred at the weighted mean of the designs, and the fit minimizes the mean slack
+        of the model it reports, ``-mean_i Phi_K(u_i)``. At the default ``np.inf`` every design has
+        the label of its dominant term, as before. Read ``kappa`` on the scale of ``temperature``:
+        a ``kappa`` far below it merges facets. ``facet_step="tangent"`` ignores ``kappa`` in the
+        fit.
     tol : float, default=1e-10
         Solver tolerance (SLSQP ``ftol``).
     max_iter : int, default=500
@@ -101,13 +108,16 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     objective_ : float
         What the solver minimized: ``J_tau(w)`` at the solution (equals ``beta``, a soft maximum)
         for ``n_terms = 1``; for ``n_terms > 1`` the mean slack
-        ``(1/N) sum_i (beta_k(i) - w_k(i) . u_i)`` of the partition fit. The two are different
-        quantities: to compare fits across ``n_terms`` use ``mean_slack_``.
+        ``(1/N) sum_i (beta_k(i) - w_k(i) . u_i)`` of the partition fit, or, for the soft fit
+        (finite ``term_temperature``), the mean slack ``-mean_i Phi_K(u_i)`` of the soft model.
+        The two are different quantities: to compare fits across ``n_terms`` use ``mean_slack_``.
     mean_slack_ : float
         The mean slack ``mean_i (beta_k(i) - w_k(i) . u_i)`` over the rows with no zero metric,
         with ``k(i)`` the row's facet (``facet_``); defined for every ``n_terms``. At
         ``n_terms = 1`` it is ``beta - mean_i (w . u_i)``. At a fixed ``temperature`` it is
-        comparable across ``n_terms`` (and across restarts); ``objective_`` is not.
+        comparable across ``n_terms`` (and across restarts); ``objective_`` is not. With a finite
+        ``term_temperature`` and ``n_terms > 1`` it is the slack of the reported model,
+        ``-mean_i Phi_K(u_i)``.
     n_iter_ : int
         Solver iterations (at least 1; 1 on the LP-only path).
     basis_ : ndarray of shape (n_features_in_ - 1, n_features_in_)
@@ -116,7 +126,8 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         the same ``B`` is stacked ``K`` times and ``Z`` is the same for every facet.
     facet_ : ndarray of int, shape (n_samples,)
         ``argmax_k (w_k . u - beta_k)`` of each training row (``-1`` for a zero metric); all
-        zeros at ``n_terms = 1``.
+        zeros at ``n_terms = 1``. The dominant term: an analysis of the fitted model, also for the
+        soft fit, which uses weights on every term.
     coefficients_ : ndarray of shape (n_terms,)
         Posynomial coefficients ``exp(-kappa beta_k)`` of
         ``exp(kappa Phi_K) = sum_k c_k prod_j m_j^(kappa w_kj)``; at ``kappa = inf`` the
@@ -131,12 +142,18 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         nothing, see Notes).
     termination_ : Termination
         Stopping record of the chosen run: ``status`` (``"certified"``,
-        ``"stationary_without_margin"``, ``"uncertified"``, ``"guard_stop"``, ``"iteration_cap"``
-        or ``"not_applicable"``), the first-order gaps, the assignment margin and radius, the
-        Corollary bound and the tolerances (``EPS_KKT``, ``EPS_FEAS``, ``GUARD_TOL``). Level 3
-        (conditional local optimality) is for ``n_terms > 1`` with ``facet_step="support"``
-        and no penalty; ``n_terms = 1`` and the degenerate shortcuts record ``"not_applicable"``
-        with the gap of the fitted objective, read only.
+        ``"stationary_without_margin"``, ``"stationary"``, ``"uncertified"``, ``"guard_stop"``,
+        ``"iteration_cap"`` or ``"not_applicable"``), the first-order gaps, the assignment margin
+        and radius, the Corollary bound and the tolerances (``EPS_KKT``, ``EPS_FEAS``,
+        ``GUARD_TOL``). Level 3 (conditional local optimality) is for ``n_terms > 1`` with
+        ``facet_step="support"`` and no penalty; ``n_terms = 1`` and the degenerate shortcuts
+        record ``"not_applicable"`` with the gap of the fitted objective, read only. For the soft
+        fit (finite ``term_temperature``, finite ``temperature``) ``"certified"`` means the
+        weighted gaps are within ``EPS_KKT`` and the Hessian of the soft objective is positive
+        definite on the tangent space of the active face (a strict local minimizer of the soft
+        objective); ``"stationary"`` means the gaps hold and the curvature is not positive;
+        ``min_curvature`` is the smallest curvature (``nan`` otherwise); the margin, radius and
+        bound are ``nan``. A soft fit at ``temperature = inf`` is ``"not_applicable"``.
     conditioning_ : ndarray of shape (n_terms,)
         Smallest eigenvalue of the Hessian of ``J_tau`` at each facet's fit,
         ``tau (U^T diag(p) U - (U^T p)(U^T p)^T)`` with ``p`` the softmax weights over the valid
@@ -313,6 +330,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
                 Uv, K, tau, self.min_exponent, self.penalty, self.alpha,
                 random_state=self.random_state, tol=self.tol, slsqp_max_iter=self.max_iter,
                 facet_step=self.facet_step, n_restarts=self.n_restarts,
+                term_temperature=self.term_temperature,
             )  # fmt: skip
             res, W, betas, n_iter, beta = tr, tr.W, tr.beta, tr.n_iter, tr.objective
             term = tr.termination
@@ -375,9 +393,13 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         with np.errstate(over="ignore"):
             self.coefficients_ = np.exp(-(1.0 if np.isinf(kappa) else kappa) * betas)
         self.facet_share_ = share
-        # mean slack over the valid rows: beta_k(i) - w_k(i) . u_i, k(i) the row's facet
+        # mean slack over the valid rows: beta_k(i) - w_k(i) . u_i, k(i) the row's facet (the
+        # label model);
+        # -mean_i Phi_kappa(u_i) for a finite term temperature (the model the estimator reports)
         lv = lab[valid]
         self.mean_slack_ = float(np.mean(betas[lv] - np.einsum("ij,ij->i", W[lv], Uv)))
+        if K > 1 and np.isfinite(kappa):  # the slack of the reported (soft) model
+            self.mean_slack_ = _solvers.soft_objective(Uv, W, betas, kappa)
         support = np.zeros(n)
         support[valid] = p
         above = log_v[valid] > (_ABOVE_TOL if np.isinf(tau) else 0.0)

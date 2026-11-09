@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 5. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 6. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 5
+contract_version = 6
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -135,7 +135,25 @@ certificate functions; the fitted attributes `termination_` and `conditioning_` 
 `facet_share_`, which exist for every number of terms: at one term `facet_` is all zeros and
 `facet_share_` is `[1.0]`; `mean_slack_` is the mean slack, the quantity to compare across numbers of
 terms, while `objective_` is what the solver minimized); the `Termination` field names and status strings;
-the per-facet report fields of `TensionReport`.
+the per-facet report fields of `TensionReport`. From version 6 the record also carries
+`min_curvature` and the status `"stationary"`, and `solvers` also offers `soft_weights`,
+`soft_objective`, `soft_hessian` and `soft_certificate` (see below).
+
+*The soft fit (version 6, WP17).* A finite `term_temperature` kappa, with `n_terms > 1` and
+`facet_step="support"`, selects the soft fit: every design carries the weights
+`softmax_k(kappa (w_k . u - beta_k))` on every term and the fit minimizes the mean slack of the
+model it reports; at the default `np.inf` the fit is the label fit, unchanged. The word
+`"certified"` then has two meanings, by the kind of fit. Label fit: the assignment is fixed, the
+gaps are within `EPS_KKT` and the margin is positive (conditional local optimality of the fixed
+assignment). Soft fit: every term's weighted gap is within `EPS_KKT` and the Hessian of the soft
+objective is positive definite on the tangent space of the active face (a strict local minimizer of
+the soft objective, the second-order sufficient condition); `"stationary"` is the same gaps with
+curvature not positive (a saddle or a flat direction); `min_curvature` is the smallest curvature
+(`nan` for a label fit); `gamma`, `radius` and `bound` are `nan` for a soft fit. A soft fit at
+`temperature = inf`, with a penalty, or under `facet_step="tangent"` (which ignores kappa) reports
+`"not_applicable"` (the last: the fit is the label fit). `facet_`, the facet shares, the
+contending sets and the elasticities stay the analysis by the dominant term; `mean_slack_` is the
+mean slack of the reported model.
 
 Consumers: the docsite generates its API reference from the numpydoc docstrings of the public names,
 and the paper reads the attributes above; neither imports a name outside this list without an
@@ -268,6 +286,7 @@ the last row of the change log.
 | 3 | 2026-11-09 | Fitted attributes for every number of terms (WP10, cold-reader findings 19 and 20): `facet_`, `coefficients_` and `facet_share_` exist at one term as well (all zeros, `exp(-kappa beta)`, `[1.0]`); `mean_slack_` is added, the mean slack defined for every number of terms, and `objective_` is documented as what the solver minimized. Additive: the pinned fitted attributes grow (floor rule); no existing fitted number changes | both | `WP10-cold-reads-triage.md`, items 19 and 20 (the driver's triage) |
 | 4 | 2026-11-09 | The glossary's schema (WP10 Amendment 4, R-35): the entry fields `aliases` and `avoid` (lists) and the file-level lists `assumed` and `stems` are pinned beside the existing fields (`docs.glossary_entry_field_names`, `docs.glossary_entry_required_field_names`, `docs.glossary_list_field_names`, `docs.glossary_file_key_names`); the Glossary page still renders term and short only. Additive: the pinned lists grow (floor rule) | presentation (the paper reads the same file) | `WP10-decisions.md`, "The supervisor's reading of the abstract, second pass" ("make sure its reflected in our glossary and that we have a documented review technique for jargon checking") |
 | 5 | 2026-11-09 | The tension report's field `exchange_rates` is renamed `elasticities` (WP10 Amendment 4, R-37), with no alias since nothing is released: `package.tensions.report_fields` carries the new name; the code takes the glossary's word. No number changes | both | `WP10-decisions.md`, "The supervisor's reading of the abstract, second pass" ("i believe we define these as elasticities"), and the driver's call on the field |
+| 6 | 2026-11-09 | The soft several-term fit (WP17, R-1, R-7): a finite `term_temperature` selects the fit with a weight on every term for every design; the `Termination` record gains `min_curvature` and the status `"stationary"`; `"certified"` has two meanings (label fit: the fixed assignment; soft fit: the second-order test of the soft objective); `solvers` offers `soft_weights`, `soft_objective`, `soft_hessian`, `soft_certificate`. Additive: the pinned field, status and name lists grow (floor rule); the default (`np.inf`) fit is unchanged, attribute for attribute | technical (the docsite and the paper words follow) | `WP17-scope-of-work.md`, approved by the driver under the mandate on the supervisor's conditional direction and amended on his question ("can we get another certification method for the soft fit") |
 
 ## 15. Consumers: may assume, must not touch
 

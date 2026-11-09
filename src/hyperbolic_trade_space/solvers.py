@@ -13,8 +13,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
+from scipy.linalg import block_diag, eigh, null_space
 from scipy.optimize import linprog, minimize
-from scipy.special import logsumexp
+from scipy.special import logsumexp, softmax
 from sklearn.utils import check_random_state
 
 from .coordinates import helmert_basis
@@ -35,6 +36,10 @@ __all__ = [
     "objective_and_grad",
     "simplex_gap",
     "single_facet_termination",
+    "soft_certificate",
+    "soft_hessian",
+    "soft_objective",
+    "soft_weights",
     "solve_lp",
     "solve_slsqp",
     "solve_terms",
@@ -47,6 +52,9 @@ EPS_FEAS = 1e-9  # feasibility and margin-positivity tolerance
 GUARD_TOL = 1e-12  # the monotone guard rejects an objective increase above this
 POLISH_STEPS = 5  # reduced-Newton steps after each finite-tau facet refit
 _ACTIVE_TOL = 1e-10
+_SOFT_STOP = 1e-10  # the soft alternation stops when the soft objective falls by less than this
+_SOFT_EMPTY = 1e-9  # a term whose weight mass is below this (in rows) is empty
+_SOFT_POLISH_STEPS = 30  # joint reduced-Newton steps after the soft alternation
 
 
 @dataclass(frozen=True)
@@ -600,7 +608,16 @@ class Termination:
         its tolerance. ``"guard_stop"``: an iteration raised the objective by more than
         ``guard_tol`` and the previous state was returned. ``"iteration_cap"``: ``max_iter`` was
         reached. ``"not_applicable"``: ``facet_step="tangent"``, a ``penalty``, or the
-        ``K = 1`` / ``d = 1`` / ``N < K`` shortcut; the gaps are then diagnostics.
+        ``K = 1`` / ``d = 1`` / ``N < K`` shortcut, or a soft fit at ``tau = inf``; the gaps are
+        then diagnostics.
+
+        A *soft* fit (finite ``term_temperature``, weights in place of labels) has two more
+        outcomes and a different meaning of ``"certified"``. ``"certified"``: every term's
+        weighted gap is at most ``eps_kkt`` and ``min_curvature > eps_feas`` (the second-order
+        sufficient condition: a strict local minimizer of the soft objective).
+        ``"stationary"``: the gaps hold and ``min_curvature <= eps_feas`` (a saddle or a flat
+        direction). ``"uncertified"`` as above (a residual or a gap exceeds its tolerance).
+        ``"stationary_without_margin"`` is the label-fit status and never occurs for a soft fit.
     reason : str
         The solver's stop message.
     n_iter : int
@@ -627,9 +644,19 @@ class Termination:
         The tolerances used (``EPS_KKT``, ``EPS_FEAS``, ``GUARD_TOL``).
     gaps, shares : ndarray of shape (K,)
         Per-facet gap (``nan`` for an empty facet) and row share ``|C_k|/N``.
+    min_curvature : float
+        Soft fit only (finite ``term_temperature`` with ``facet_step="support"``, unpenalized):
+        the smallest eigenvalue of the Hessian ``H = D - kappa M`` of the soft objective on the
+        tangent space of the active face (``soft_certificate``). ``nan`` for every other fit.
 
     Notes
     -----
+    For a soft fit there is no assignment: ``bound``, ``gamma`` and ``radius`` are ``nan``
+    (the margin, the stable radius and the fixed-assignment bound are not asserted),
+    ``assignment_changes`` is 0, ``shares`` are the terms' weight masses ``n_k / N``, a term with
+    weight mass below ``1e-9`` rows counts in ``n_empty`` and its gap is ``nan``, and ``gaps`` are
+    the first-order gaps ``G_k`` of the weighted refits.
+
     Level 3 (Proposition 3, conditional local optimality of the fixed assignment) holds for
     ``facet_step="support"`` (step B), unpenalized, with support offsets
     ``beta_k = J_tau(U w_k)``; under step D or a penalty the gap is a diagnostic. The record
@@ -660,6 +687,7 @@ class Termination:
     guard_tol: float
     gaps: np.ndarray
     shares: np.ndarray
+    min_curvature: float = float("nan")
 
 
 @dataclass(frozen=True)
@@ -673,9 +701,11 @@ class TermsResult:
     beta : ndarray of shape (K,)
         Facet offsets ``J_tau(w_k)`` over all rows (each facet is a supporting hyperplane).
     labels : ndarray of shape (N,), dtype int
-        Facet of each row (argmax of ``w_k . u - beta_k``).
+        Facet of each row (argmax of ``w_k . u - beta_k``); for a soft fit the dominant term, an
+        analysis (the fit used weights).
     objective : float
-        Mean slack ``(1/N) sum_i (beta_k(i) - w_k(i) . u_i)``; ``beta`` for ``n_terms = 1``.
+        Mean slack ``(1/N) sum_i (beta_k(i) - w_k(i) . u_i)``; ``beta`` for ``n_terms = 1``; for a
+        soft fit the mean slack of the soft model, ``-mean_i Phi_kappa(u_i)``.
     n_iter : int
         Partition-and-refit iterations performed.
     success : bool
@@ -789,6 +819,323 @@ def single_facet_termination(U, w, beta, p, tau, min_exponent, n_iter, reason, n
     )  # fmt: skip
 
 
+def soft_weights(U, W, beta, kappa):
+    """Weights ``alpha_ik = softmax_k(kappa * (w_k . u_i - beta_k))`` of the soft several-term fit.
+
+    Parameters
+    ----------
+    U : ndarray of shape (N, d)
+        Log metrics (finite).
+    W : ndarray of shape (K, d)
+        Term exponents.
+    beta : ndarray of shape (K,)
+        Term offsets.
+    kappa : float
+        Term temperature, ``kappa > 0`` (finite).
+
+    Returns
+    -------
+    ndarray of shape (N, K)
+        Nonnegative, each row sums to 1.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> U = np.array([[1.0, 0.0], [0.0, 1.0]])
+    >>> a = soft_weights(U, np.eye(2), np.zeros(2), 1.0)
+    >>> a.round(3).tolist(), a.sum(axis=1).round(6).tolist()
+    ([[0.731, 0.269], [0.269, 0.731]], [1.0, 1.0])
+    """
+    return softmax(kappa * (np.asarray(U) @ np.asarray(W).T - np.asarray(beta)), axis=1)
+
+
+def soft_objective(U, W, beta, kappa):
+    """Soft objective ``F = mean_i (-Phi_kappa(u_i))``, the mean slack of the soft model.
+
+    Parameters
+    ----------
+    U : ndarray of shape (N, d)
+        Log metrics (finite).
+    W : ndarray of shape (K, d)
+        Term exponents.
+    beta : ndarray of shape (K,)
+        Term offsets.
+    kappa : float
+        Term temperature, ``kappa > 0`` (finite).
+
+    Returns
+    -------
+    float
+        ``-(1/N) sum_i (1/kappa) log sum_k exp(kappa (w_k . u_i - beta_k))``.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> U = np.array([[1.0, 0.0], [0.0, 1.0]])
+    >>> round(soft_objective(U, np.eye(2), np.zeros(2), 1e6), 6)
+    -1.0
+    """
+    S = np.asarray(U) @ np.asarray(W).T - np.asarray(beta)
+    return float(-np.mean(logsumexp(kappa * S, axis=1)) / kappa)
+
+
+def soft_hessian(U, W, tau, kappa):
+    """Gradient and Hessian ``H = D - kappa M`` of the soft objective in the exponents.
+
+    The offsets are tied to the exponents, ``beta_k = J_tau(U w_k)``. With weights ``alpha``
+    (``soft_weights``), support weights ``p_k`` of term ``k``, ``utilde_k = U^T p_k``,
+    ``v_ik = u_i - utilde_k`` and ``n_k = sum_i alpha_ik``:
+
+    * gradient of term ``k``: ``(n_k / N) (utilde_k - ubar_k)``, ``ubar_k`` the weighted mean of
+      the rows (the gradient of the term's weighted refit, scaled by its weight mass);
+    * ``D = blockdiag((n_k / N) tau Cov_{p_k}(u))``, positive semidefinite;
+    * ``d' M d = mean_i Var_{k ~ alpha_i}(v_ik . d_k)``, positive semidefinite.
+
+    Parameters
+    ----------
+    U : ndarray of shape (N, d)
+        Log metrics (finite).
+    W : ndarray of shape (K, d)
+        Term exponents.
+    tau : float
+        Fit temperature, ``0 < tau < inf``.
+    kappa : float
+        Term temperature, ``0 < kappa < inf``.
+
+    Returns
+    -------
+    g : ndarray of shape (K, d)
+        Gradient of ``F`` with respect to ``W``.
+    D, M : ndarray of shape (K d, K d)
+        The two parts; the Hessian is ``D - kappa M`` (term-major order of ``W.ravel()``).
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> U = np.log(np.array([[1.0, 2.0], [2.0, 1.0], [1.5, 1.5], [1.0, 1.0]]))
+    >>> g, D, M = soft_hessian(U, np.array([[0.7, 0.3], [0.3, 0.7]]), 5.0, 3.0)
+    >>> g.shape, D.shape, bool(np.allclose(M, M.T))
+    ((2, 2), (4, 4), True)
+    """
+    U = np.asarray(U, dtype=float)
+    W = np.asarray(W, dtype=float)
+    N, d = U.shape
+    K = W.shape[0]
+    beta = np.array([log_mean_exp(U @ w, tau) for w in W])
+    P = np.array([support_weights(U @ w, tau) for w in W])  # K x N
+    ut = P @ U  # K x d
+    A = soft_weights(U, W, beta, kappa)
+    n = A.sum(axis=0)
+    g = (n[:, None] * ut - A.T @ U) / N  # (n_k / N)(utilde_k - ubar_k)
+    D = block_diag(
+        *[(n[k] / N) * tau * ((U.T * P[k]) @ U - np.outer(ut[k], ut[k])) for k in range(K)]
+    )
+    V = U[:, None, :] - ut[None, :, :]  # N x K x d
+    M = np.zeros((K * d, K * d))
+    for k in range(K):
+        for q in range(K):
+            wgt = A[:, k] * ((k == q) - A[:, q])
+            M[k * d : (k + 1) * d, q * d : (q + 1) * d] = (V[:, k, :].T * wgt) @ V[:, q, :] / N
+    return g, D, M
+
+
+def _tangent_basis(W, g, min_exponent, tol=1e-6, eps=1e-7):
+    """Orthonormal basis of the tangent space of the active face of the product of simplices.
+
+    Per term, an exponent at its bound whose multiplier ``g_j - nu`` is strictly positive (larger
+    than ``eps``) is fixed; every other exponent is free, with the sum of the free changes zero.
+    An exponent at its bound with a multiplier of zero is kept free (the conservative choice).
+    """
+    K, d = W.shape
+    m = min_exponent
+    blocks = []
+    for k in range(K):
+        nu = float(g[k] @ (W[k] - m)) / (1.0 - d * m)  # the multiplier of the sum constraint
+        free = (W[k] > m + tol) | (g[k] - nu <= eps)
+        E = np.eye(d)[:, free]
+        blocks.append(E @ null_space(np.ones((1, int(free.sum())))))
+    return block_diag(*blocks)
+
+
+def soft_certificate(U, W, tau, kappa, min_exponent=0.0):
+    """Second-order test of a soft fit: the weighted gaps and the smallest curvature.
+
+    Parameters
+    ----------
+    U : ndarray of shape (N, d)
+        Log metrics (finite).
+    W : ndarray of shape (K, d)
+        Term exponents.
+    tau, kappa : float
+        Fit and term temperatures, both finite and positive.
+    min_exponent : float, default=0.0
+        Floor on every exponent.
+
+    Returns
+    -------
+    gap : float
+        ``max_k G_k``, the first-order gaps of the terms' weighted refits (terms with weight mass
+        below ``1e-9`` rows are left out).
+    curvature : float
+        Smallest eigenvalue of ``B' (D - kappa M) B``, ``B`` an orthonormal basis of the tangent
+        space of the active face (``inf`` if the face is a point). If ``gap`` is within
+        ``EPS_KKT`` and the curvature is positive, the point is a strict local minimizer of the
+        soft objective (second-order sufficient condition, Nocedal and Wright, chapter 12).
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> U = np.log(np.array([[1.0, 2.0], [2.0, 1.0], [1.5, 1.5], [1.0, 1.0]]))
+    >>> W = np.array([[0.5, 0.5], [0.5, 0.5]])
+    >>> gap, curvature = soft_certificate(U, W, 5.0, 2.0)
+    >>> bool(gap < 1e-8), bool(np.isfinite(curvature))
+    (True, True)
+    """
+    U = np.asarray(U, dtype=float)
+    W = np.asarray(W, dtype=float)
+    g, D, M = soft_hessian(U, W, tau, kappa)
+    beta = np.array([log_mean_exp(U @ w, tau) for w in W])
+    A = soft_weights(U, W, beta, kappa)
+    n = A.sum(axis=0)
+    gaps = [
+        facet_gap(U, W[k], A[:, k] @ U / n[k], tau, min_exponent)
+        for k in range(W.shape[0])
+        if n[k] >= _SOFT_EMPTY
+    ]
+    gap = float(max(gaps)) if gaps else float("nan")
+    B = _tangent_basis(W, g, min_exponent)
+    if B.shape[1] == 0:
+        return gap, float("inf")
+    return gap, float(eigh(B.T @ (D - kappa * M) @ B, eigvals_only=True)[0])
+
+
+def _soft_polish(U, W, tau, kappa, min_exponent, n_steps=_SOFT_POLISH_STEPS):
+    """Joint reduced-Newton steps on the active face, with the Hessian the certificate tests."""
+    W = W.copy()
+    for _ in range(n_steps):
+        g, D, M = soft_hessian(U, W, tau, kappa)
+        B = _tangent_basis(W, g, min_exponent)
+        if B.shape[1] == 0:
+            break
+        Hr, gr = B.T @ (D - kappa * M) @ B, B.T @ g.ravel()
+        if np.abs(gr).max() < 1e-13 or eigh(Hr, eigvals_only=True)[0] <= 0:
+            break
+        step = (B @ np.linalg.solve(Hr, gr)).reshape(W.shape)
+        beta = np.array([log_mean_exp(U @ w, tau) for w in W])
+        f0, t = soft_objective(U, W, beta, kappa), 1.0
+        while t > 1e-6:
+            W1 = W - t * step
+            b1 = np.array([log_mean_exp(U @ w, tau) for w in W1])
+            if (min_exponent <= W1).all() and soft_objective(U, W1, b1, kappa) <= f0 + 1e-15:
+                break
+            t *= 0.5
+        else:
+            break
+        W = W1
+    return W
+
+
+def _refit_soft(U, A, W, beta, tau, kw):
+    """Refit every term with weights ``A``: a supporting hyperplane centred at the weighted mean."""
+    W, beta, P = W.copy(), beta.copy(), np.full((W.shape[0], U.shape[0]), np.nan)
+    polish = np.isfinite(tau) and not (kw["penalty"] and kw["alpha"] > 0)
+    for k in range(W.shape[0]):
+        nk = A[:, k].sum()
+        if nk < _SOFT_EMPTY:
+            P[k] = support_weights(U @ W[k], tau)
+            continue
+        Uc = U - (A[:, k] @ U) / nk
+        r = solve_slsqp(Uc, tau, **kw)
+        w, p = r.w, r.p
+        if polish:
+            w = _newton_polish(Uc, w, tau, kw["min_exponent"])
+            p = support_weights(U @ w, tau)
+        W[k], beta[k], P[k] = w, log_mean_exp(U @ w, tau), p
+    return W, beta, P
+
+
+def _soft_termination(U, W, beta, P, tau, kappa, min_exponent, n_iter, history, reason, stop, ok):
+    """``Termination`` of a soft run (``ok``: the soft certificate applies)."""
+    N, K = U.shape[0], W.shape[0]
+    A = soft_weights(U, W, beta, kappa)
+    n = A.sum(axis=0)
+    full = n >= _SOFT_EMPTY
+    gaps = np.full(K, np.nan)
+    for k in np.flatnonzero(full):
+        gaps[k] = facet_gap(U, W[k], A[:, k] @ U / n[k], tau, min_exponent, P[k])
+    max_gap = float(np.max(gaps[full])) if full.any() else float("nan")
+    sum_res = float(np.abs(W.sum(axis=1) - 1.0).max())
+    floor_res = float(max(0.0, min_exponent - W.min()))
+    offs = [abs(beta[k] - log_mean_exp(U @ W[k], tau)) for k in np.flatnonzero(full)]
+    curvature = float("nan")
+    if not ok:
+        status = "not_applicable"
+    elif stop == "guard":
+        status = "guard_stop"
+    elif sum_res > EPS_FEAS or floor_res > EPS_FEAS or not max_gap <= EPS_KKT:
+        status = "iteration_cap" if stop == "cap" else "uncertified"
+    else:  # the first- and second-order tests do not depend on how the point was reached
+        _, curvature = soft_certificate(U, W, tau, kappa, min_exponent)
+        status = "certified" if curvature > EPS_FEAS else "stationary"
+    hist = np.asarray(history)
+    return Termination(
+        status, reason, int(n_iter), sum_res, floor_res, float(max(offs, default=0.0)), max_gap,
+        float("nan"), float(abs(hist[-1] - hist[-2])) if hist.size > 1 else float("nan"), 0,
+        int(K - full.sum()), float("nan"), float("nan"), EPS_KKT, EPS_FEAS, GUARD_TOL, gaps,
+        n / N, curvature,
+    )  # fmt: skip
+
+
+def _solve_terms_soft(U, K, tau, kappa, seed, max_iter, kw):
+    """The several-term fit with weights ``softmax_k(kappa score_ik)`` in place of labels.
+
+    The same start and first refit as ``_solve_terms_once``; then the weights come from the
+    current model, each term is refit as the supporting hyperplane centred at its weighted mean
+    (the monotone guard watches the soft objective), and a joint Newton polish on the Hessian of
+    the soft objective follows the alternation.
+    """
+    N, d = U.shape
+    Z = U @ helmert_basis(d).T
+    centers = Z[check_random_state(seed).choice(N, K, replace=False)]
+    labels = np.argmin(((Z[:, None] - centers) ** 2).sum(-1), axis=1)
+    W, beta = np.full((K, d), 1.0 / d), np.zeros(K)
+    W, beta, _, P = _refit(U, labels, W, beta, tau, kw)  # the first refit is hard (step B)
+    obj = soft_objective(U, W, beta, kappa)
+    history, n_iter, stop, message = [obj], 0, "cap", "max_iter reached"
+    while n_iter < max_iter:
+        n_iter += 1
+        A = soft_weights(U, W, beta, kappa)
+        W2, beta2, P2 = _refit_soft(U, A, W, beta, tau, kw)
+        obj2 = soft_objective(U, W2, beta2, kappa)
+        if obj2 > obj + GUARD_TOL:  # monotone guard on the soft objective: reject, stop
+            stop, message = "guard", "no further decrease"
+            break
+        W, beta, P = W2, beta2, P2
+        history.append(obj2)
+        done = obj - obj2 < _SOFT_STOP
+        obj = obj2
+        if done:
+            stop, message = "fixed", "soft objective stationary"
+            break
+    ok = np.isfinite(tau) and kw["penalty"] is None
+    if stop != "guard" and ok:
+        W2 = _soft_polish(U, W, tau, kappa, kw["min_exponent"])
+        beta2 = np.array([log_mean_exp(U @ w, tau) for w in W2])
+        obj2 = soft_objective(U, W2, beta2, kappa)
+        if obj2 <= obj + GUARD_TOL:
+            W, beta, obj = W2, beta2, obj2
+            P = np.array([support_weights(U @ w, tau) for w in W])
+            history.append(obj)
+    term = _soft_termination(
+        U, W, beta, P, tau, kappa, kw["min_exponent"], n_iter, history, message, stop, ok
+    )
+    labels = np.argmax(U @ W.T - beta, axis=1)  # the analysis: the dominant term of each row
+    done = stop != "cap" or term.status in ("certified", "stationary")
+    if done and stop == "cap":
+        message = "max_iter reached; the joint Newton polish met the first-order test"
+    return TermsResult(W, beta, labels, obj, n_iter, done, message, np.array(history), term)
+
+
 def _tls_normal(Uk, w0, min_exponent):
     """Smallest-variance direction of the rows ``Uk`` on the simplex (constrained TLS normal)."""
     S = np.cov(Uk, rowvar=False)
@@ -820,7 +1167,9 @@ def _refit(U, labels, W, beta, tau, kw, tangent=False):
     return W, beta, float(np.mean(beta[labels] - np.sum(W[labels] * U, axis=1))), P
 
 
-def _solve_terms_once(U, K, tau, seed, max_iter, kw, tangent=False):
+def _solve_terms_once(U, K, tau, seed, max_iter, kw, tangent=False, kappa=np.inf):
+    if np.isfinite(kappa) and not tangent:  # weights in place of labels
+        return _solve_terms_soft(U, K, tau, kappa, seed, max_iter, kw)
     N, d = U.shape
     Z = U @ helmert_basis(d).T  # frontier positions; the depth direction 1 is projected out
     centers = Z[check_random_state(seed).choice(N, K, replace=False)]
@@ -866,6 +1215,7 @@ def solve_terms(
     tol=1e-10,
     slsqp_max_iter=500,
     facet_step="support",
+    term_temperature=np.inf,
 ):
     """Fit ``K`` monomial facets by alternating partition and entropic refit.
 
@@ -897,6 +1247,17 @@ def solve_terms(
         act on step B only. The mean slack is *not* monotone under ``"tangent"`` (the guard is
         applied to ``"support"`` only): the iteration stops at a fixed assignment or ``max_iter``
         and returns the lowest-objective iterate seen, so ``history`` need not be non-increasing.
+    term_temperature : float, default=np.inf
+        Softness ``kappa`` of the weights. At ``np.inf`` every row has the label of its dominant
+        facet (the fit above). Finite ``kappa`` (with ``facet_step="support"``) fits the soft
+        model: every row carries the weights ``softmax_k(kappa (w_k . u_i - beta_k))`` on every
+        term, the refit of term ``k`` is the supporting hyperplane centred at the *weighted*
+        mean of the rows, and the objective is the mean slack of the soft model,
+        ``-mean_i Phi_kappa(u_i)`` (``soft_objective``), which the monotone guard watches. The
+        alternation is followed by a joint reduced-Newton polish on the Hessian
+        ``D - kappa M`` (``soft_hessian``). ``labels`` stay the analysis: the dominant term of
+        each row. Read ``kappa`` on the scale of ``tau``; ``kappa`` far below ``tau`` merges facets.
+        ``facet_step="tangent"`` ignores ``kappa``.
 
     Returns
     -------
@@ -966,5 +1327,8 @@ def solve_terms(
             r.success, r.message, np.array([r.beta]), term,
         )  # fmt: skip
     seeds = check_random_state(random_state).randint(0, 2**31 - 1, size=n_restarts)
-    runs = [_solve_terms_once(U, K, tau, s, max_iter, kw, facet_step == "tangent") for s in seeds]
+    kappa = float(term_temperature)
+    runs = [
+        _solve_terms_once(U, K, tau, s, max_iter, kw, facet_step == "tangent", kappa) for s in seeds
+    ]
     return min(runs, key=lambda r: r.objective)
