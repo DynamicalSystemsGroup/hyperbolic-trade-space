@@ -437,3 +437,54 @@ def test_sensitivity_and_refits_on_frozen_primary(primary):
     assert t.loc["baseline", "n_lemma"] == 6
     r = case.category_refits(primary)
     assert r.designs.tolist() == [191, 248, 267]
+
+
+# ---- the cold reads of WP10, round 2: the mean slack across K, the margin scale, PCA, titles ----
+
+
+def test_mean_slack_by_k_reads_the_estimator_and_the_fixed_tau_refit_shares_one_temperature(small):
+    fits = case.k_fits(small, Ks=(1, 2))
+    own = case.mean_slack_by_k(small, fits)
+    assert list(own.columns) == ["K", "tau", "mean_slack_"]
+    assert np.allclose(own.mean_slack_, [f.estimator.mean_slack_ for f in fits.values()])
+    fixed = case.mean_slack_fixed_tau(small, fits)
+    assert (fixed.tau == fits[1].tau).all()
+    assert fixed.mean_slack_.iloc[0] == pytest.approx(own.mean_slack_.iloc[0])
+    assert fixed.mean_slack_.iloc[1] <= fixed.mean_slack_.iloc[0] + 1e-9  # falls with K
+
+
+def test_margin_scale_has_the_multi_facet_fits_only_and_the_median_exceeds_the_margin(small):
+    fits = case.k_fits(small, Ks=(1, 2))
+    table = case.margin_scale(small, fits)
+    assert list(table["K"]) == [2]
+    row = table.iloc[0]
+    assert row["gamma"] > 0 and row["radius"] > 0 and row["radius"] < row["gamma"]
+    assert row["median margin"] >= row["gamma"]
+    assert row["band 1/tau"] == pytest.approx(1.0 / fits[2].tau)
+
+
+def test_pca_directions_are_the_tension_reports_own_principal_directions(small, small_fit):
+    table = case.pca_directions(small, small_fit)
+    rep = case._reports(small, small_fit)[0]
+    assert list(table["direction"]) == [1, 2, 3]
+    assert np.allclose(table["share of spread"], rep.explained_spread[:3])
+    assert table["share of spread"].is_monotonic_decreasing
+    for text in table["leading loadings"]:
+        assert len(text.split(", ")) == 3 and "+" in text.split(", ")[0]
+
+
+def test_panel_titles_count_the_exact_maximum_support_and_outline_exactly_those(small, small_fit):
+    import matplotlib.pyplot as plt
+
+    rep = case._reports(small, small_fit)[0]
+    fig = case.tension_figure(small, small_fit)
+    ax = fig.axes[0]
+    n = rep.n_lemma
+    plural = "s" if n != 1 else ""
+    assert ax.get_title() == (
+        f"facet 1: {rep.lemma_name} ({n} metric{plural} in the exact-maximum support)"
+    )
+    from matplotlib.patches import Rectangle
+
+    assert sum(isinstance(p, Rectangle) for p in ax.patches) == n  # the outlined members
+    plt.close(fig)

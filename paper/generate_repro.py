@@ -63,7 +63,9 @@ def _run(cmd) -> str:
     if exe is None:
         return "not found"
     out = subprocess.run([exe, *cmd[1:]], capture_output=True, text=True, check=False, cwd=ROOT)
-    return (out.stdout or out.stderr).strip().splitlines()[0] if (out.stdout or out.stderr) else ""
+    if out.returncode != 0:
+        return "not available"
+    return out.stdout.strip().splitlines()[0] if out.stdout.strip() else ""
 
 
 def toolchain() -> Md:
@@ -99,7 +101,9 @@ def toolchain() -> Md:
         ["Interpreter of this build", platform.python_version(), "observed when the cell ran"]
     )
     rows.append(["Platform of this build", platform.platform(), "observed when the cell ran"])
-    rows.append(["Commit", _run(["git", "rev-parse", "HEAD"]), "observed when the cell ran"])
+    rows.append(
+        ["Commit", _run(["git", "rev-parse", "HEAD"]), "observed when the cell ran, in a checkout"]
+    )
     return Md(md_table(["Item", "Value", "Pinned by"], rows))
 
 
@@ -134,12 +138,25 @@ def commands() -> Md:
         (
             "uv run python paper/execute_notebooks.py",
             "execute both notebooks from a clean kernel and write the outputs",
-            "exits 0; the outputs are unchanged when the data and the seeds are",
+            "exits 0; the outputs are unchanged when the data and the seeds are: "
+            "`git diff --stat -- paper/paper.ipynb paper/supporting_material.ipynb` then shows "
+            "only the commit and platform lines of the toolchain table, and "
+            "`PAPER_EXECUTE=1 uv run pytest tests/test_paper.py -k clean_kernel` compares every "
+            "other text output of a fresh run with the committed one",
+        ),
+        (
+            "uv run python paper/regenerate_row.py ROW",
+            "regenerate one row of the table in F.4 (ROW is its first column): runs the cells "
+            "that row needs and prints the table or saves the figure, writing nothing in the "
+            "repository",
+            "prints the table, equal to that cell's committed output, or names the figure file",
         ),
         (
             "cd paper && uv run myst build --html",
             "build the paper as a static site, written to paper/_build/html",
-            "exits 0; no error reported",
+            "exits 0, with no error reported; it prints a line that a server started on a local "
+            "port, because the builder renders the pages through a temporary server that stops "
+            "when the build ends",
         ),
     ]
     return Md(md_table(["Command", "What it does", "A pass looks like"], rows))

@@ -474,11 +474,7 @@ def test_case_calls_go_through_the_case_module():
         tree = ast.parse(_src(cell))
         call = _calls(tree)[0]
         name = ast.unparse(call.func)
-        assert name.startswith("case.") or name in {
-            "family_table",
-            "figure1",
-            "candidates_table",
-        }, (cell.id, name)
+        assert name.startswith("case.") or name in {"family_table", "figure1"}, (cell.id, name)
 
 
 def test_paper_cells_have_committed_outputs_without_errors():
@@ -1114,7 +1110,7 @@ def test_cells_whose_output_is_embedded_are_removed_from_the_page():
     with only ``remove-input`` the page showed each of its outputs twice."""
     nb = _nb(PAPER_NB)
     embedded = set(re.findall(r"\{(?:embed|figure)\} #([\w-]+)", _markdown(nb)))
-    assert len(embedded) >= 9
+    assert len(embedded) >= 8  # seven figures and the family table (the candidates moved to D.7)
     cells = {c.id: c for c in _code_cells(nb)}
     for label in embedded:
         assert "remove-cell" in cells[label].metadata.get("tags", []), label
@@ -1123,12 +1119,11 @@ def test_cells_whose_output_is_embedded_are_removed_from_the_page():
         assert re.search(rf":::\{{embed\}} #{label}\n:remove-input: true\n", _markdown(nb)), label
 
 
-def test_candidates_table_scrolls_inside_its_container():
-    """On a phone the wide table scrolls within the column instead of overflowing the page."""
-    cell = next(c for c in _code_cells(_nb(PAPER_NB)) if c.id == "tab-candidates")
-    html = "".join(o["data"]["text/html"] for o in cell.outputs if "data" in o)
-    assert html.startswith('<div style="overflow-x:auto')
-    assert "<table" in html
+def test_candidates_table_is_in_appendix_d_and_the_text_points_to_it():
+    """Change request 14: Table 2 left the main text; its sentence points to D.7."""
+    assert "tab-candidates" not in {c.id for c in _code_cells(_nb(PAPER_NB))}
+    assert "{ref}`Appendix D.7 <appendix-d>`" in _section("Case analysis")
+    assert "tab-D-candidate_designs" in {c.id for c in _cells_of("D")}
 
 
 def test_prior_art_committed_outputs_are_current():
@@ -1482,8 +1477,8 @@ def test_the_variable_and_the_reference_file_exist():
 RESULTS = ROOT / "examples" / "adcs" / "experiments" / "reports" / "sensitivity.json"
 RAW_RESIDUE = re.compile(r"\de-(?:1[3-9]|[2-9]\d)")  # 1e-13 and below, as raw digits
 NUM_CELLS = [
-    "num-nondominated", "num-certificates", "num-temperature", "num-k-sweep", "num-regimes",
-    "num-candidates", "num-predict",
+    "num-nondominated", "num-certificates", "num-margin", "num-temperature", "num-k-sweep",
+    "num-regimes", "num-candidates", "num-predict", "num-recovery", "num-predict-reading",
 ]  # fmt: skip
 
 
@@ -1502,6 +1497,9 @@ def _case_sentences():
     return {
         "num-nondominated": gf.nondominated_sentence(study),
         "num-certificates": gf.certificate_sentence(fits),
+        "num-margin": gf.margin_sentence(study, fits),
+        "num-recovery": gf.recovery_sentence(),
+        "num-predict-reading": gf.predict_reading(case.predict_check(study, reg), reg),
         "num-temperature": gf.temperature_sentence(study, fits[1]),
         "num-k-sweep": gf.k_sweep_sentence(study, fits),
         "num-regimes": gf.regime_sentence(),
@@ -1634,7 +1632,7 @@ def test_every_figure_and_table_is_referenced_from_the_text():
     """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
     body = _markdown(_nb(PAPER_NB))
     floats = re.findall(r"^:::+\{(?:figure|table)\}[^\n]*\n:label: (\S+)", body, re.M)
-    assert len(floats) == 10, floats  # eight figures and two tables
+    assert len(floats) == 9, floats  # eight figures and the family table (candidates: D.7)
     for cell in _nb(PAPER_NB).cells:
         if cell.cell_type != "markdown" or cell.id == "frontmatter":
             continue
@@ -1787,3 +1785,212 @@ def test_the_combination_sentence_says_what_was_looked_at():
     assert "We did not find the combination in the sources reviewed" in s2
     assert "appendix-g" in s2.split("We did not find the combination", 1)[1]
     assert not WORDS_BANNED_IN_PRIOR_ART.search(s2)
+
+
+# ---- the driver's change requests of WP10, round 2 (the cold reads of 2026-11-09) ----------------
+
+
+def _cell_out(nb_path, cell_id: str) -> str:
+    return _out_text(next(c for c in _code_cells(_nb(nb_path)) if c.id == cell_id))
+
+
+def test_cr1_one_definition_of_the_contending_set_and_the_captions_say_it():
+    """(1) The set is the support of the exact-maximum fit; the figures say so and mark it."""
+    text = _markdown(_nb(PAPER_NB))
+    definition = text.split("prf:definition} The n-lemma", 1)[1].split(":::", 1)[0]
+    assert "support (exponents above $10^{-9}$) of the exact-maximum" in definition
+    assert "participation threshold ($10^{-3}$)" in _section("Methods")
+    assert "def-nlemma" in _section("Methods")
+    for cell_id in ("fig-tensions-k3-caption", "fig-regimes-caption"):
+        caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == cell_id))
+        assert "Outlined" in caption or "outlined" in caption, cell_id
+    caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-tensions-k3-caption"))
+    assert "exact-maximum" in caption and "small for some members" in caption
+    k1 = _cell_out(PAPER_NB, "num-k1")
+    assert "exact-maximum fit has a" in k1 and "working-temperature exponents" in k1
+    assert "exact-maximum supports" in _cell_out(PAPER_NB, "num-k-sweep")
+
+
+def test_cr2_the_planted_recovery_is_in_section_9_with_its_table_in_d14():
+    """(2) Does the method recover a known answer, how often, and what the failures are."""
+    import generate_results
+
+    sentence = _cell_out(PAPER_NB, "num-recovery")
+    assert "A known answer" in sentence and "in 16, at the exact maximum" in sentence
+    assert "frontier rows on their thinnest facet" in sentence and "Appendix D.14" in sentence
+    ids = [c.id for c in _nb(PAPER_NB).cells]
+    assert ids.index("sec-case-analysis") < ids.index("num-recovery") < ids.index("fig-plane-k1")
+    cell = _cell_out(SUPPORT_NB, "tab-D-planted_recovery")
+    assert cell == str(generate_results.planted_recovery()), STALE
+    assert re.search(r"\| infinity \| 20 \| 16 of 20 \| 1, 3, 8, 16 \|", cell)
+    assert re.search(r"\| 50 \| 20 \| 16 of 20 \| 1, 3, 8, 16 \|", cell)
+    heads = _headings(_nb(SUPPORT_NB), "###")
+    assert any(h.startswith("D.14 ") for h in heads)
+
+
+def test_cr3_the_target_and_the_band_carry_their_reason_and_the_sensitivity_holds():
+    """(3) One sentence each, with a pointer to D.5, which shows the sets do not change."""
+    assert "10 percent here" in _section("Methods") and "Appendix D.5" in _section("Methods")
+    assert "weighs within a factor $e$" in _section("Definitions")
+    table = _cell_out(SUPPORT_NB, "tab-D-sensitivity_variants")
+    for regime in ("cubesat-primary", "cubesat-stock"):
+        block = table.split(f"Dataset {regime}:", 1)[1].split("Dataset cubesat", 1)[0]
+        rows = {r.split("|")[1].strip(): r.split("|") for r in block.splitlines() if r[:1] == "|"}
+        for variant in ("target fraction halved", "target fraction doubled"):
+            cols = rows[variant]
+            assert cols[6].strip() == cols[9].strip(), (regime, variant)  # n_lemma = shared
+
+
+def test_cr4_5_6_the_facet_share_is_described_and_the_terms_carry_their_clause():
+    """(4) no analogy to explained variance; (5) energy differential; (6) n-lemma."""
+    definitions = _section("Definitions")
+    assert "explained variance" not in definitions.lower()
+    assert "assigned to facet $k$" in definitions and "depends on the band" in definitions
+    assert "the level of a potential relative to the reference surface" in definitions
+    front = _src(_nb(PAPER_NB).cells[0])
+    intro = _section("The decision problem")
+    for text in (front, intro):
+        assert "by analogy with dilemma and trilemma" in " ".join(text.split())
+    assert "its level relative to the surface" in " ".join(front.split())
+
+
+def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_apart():
+    """(7) the nondominated counts are in section 1; (16) the unit level set is not the boundary."""
+    nb = _nb(PAPER_NB)
+    ids = [c.id for c in nb.cells]
+    assert ids.index("num-nondominated") < ids.index("sec-prior-art")
+    assert "number of designs and of metrics" in _section("The decision problem")
+    front = _src(nb.cells[0])
+    assert "not the Pareto" in front and "reference surface" in front and "scales where" in front
+    results = _section("The decision problem").split("**Main results**", 1)[1]
+    first = results.split("2.", 1)[0]
+    assert "not the Pareto boundary" in first and "fitted reference surface" in first
+    sentence = _cell_out(PAPER_NB, "num-nondominated")
+    assert "671 on 10" in sentence and "regenerations of the data under rounding-level" in sentence
+
+
+def test_cr8_the_k_comparison_says_the_temperature_differs_and_d15_fixes_it():
+    """(8) mean slack across K at one temperature; K = 3 is the analyst's choice."""
+    import generate_results
+
+    sentence = _cell_out(PAPER_NB, "num-k-sweep")
+    assert "at the temperatures" in sentence and "refitted at the K = 1 temperature" in sentence
+    assert "Appendix D.15" in sentence
+    assert "the analyst's choice" in _section("Case analysis")
+    cell = _cell_out(SUPPORT_NB, "tab-D-mean_slack_fixed")
+    assert cell == str(generate_results.mean_slack_fixed()), STALE
+    assert "refitted at the K = 1 temperature" in cell
+
+
+def test_cr9_the_margin_and_the_radius_are_read_against_the_band_and_the_median_margin():
+    """(9) one sentence in section 6 and the table in D.8."""
+    import generate_results
+
+    sentence = _cell_out(PAPER_NB, "num-margin")
+    assert "band 1/tau" in sentence and "median best-minus-second-best" in sentence
+    cell = _cell_out(SUPPORT_NB, "tab-D-margin_reading")
+    assert cell == str(generate_results.margin_reading()), STALE
+    ids = [c.id for c in _nb(PAPER_NB).cells]
+    assert ids.index("num-certificates") < ids.index("num-margin") < ids.index("sec-search")
+
+
+def test_cr10_the_discussion_says_what_propose_predict_check_showed_and_did_not():
+    """(10) The easy part passed (the energy differential); the position did not."""
+    ids = [c.id for c in _nb(PAPER_NB).cells]
+    assert ids.index("sec-discussion") < ids.index("num-predict-reading")
+    text = _cell_out(PAPER_NB, "num-predict-reading")
+    assert "It showed that" in text and "It did not show that" in text
+    assert "the easy part" in text and "remains a hypothesis" in text
+
+
+def test_cr11_chaining_with_pca_is_worked_on_the_case_in_d16():
+    """(11) One worked result, in D.16, with a pointer from section 1."""
+    import generate_results
+
+    assert "Appendix D.16" in _section("The decision problem")
+    cell = _cell_out(SUPPORT_NB, "tab-D-pca_chain")
+    assert cell == str(generate_results.pca_chain()), STALE
+    assert "Share of the spread" in cell
+    import paper_stability
+
+    quantities = paper_stability.extra()["quantities"]
+    leading = [n for n in quantities if n.startswith("pca |") and n.endswith("leading metrics")]
+    assert len(leading) == 3 and all(quantities[n]["identical"] for n in leading)
+
+
+def test_cr12_every_hypothesis_label_is_worded_or_explained():
+    """(12) The F and I labels carry their words where first used (A is worded in section 3, R in
+    section 5)."""
+    results = _section("Results")
+    for label, words in {
+        "I10": "first-order conditions", "I11": "convex on every line is convex",
+        "I5": "moment generating functions", "F10": "the maximum is attained",
+        "I4": "log-sum-exp of affine", "F12": "the minimum is attained",
+        "I12": "complementary slackness", "I9": "Cauchy-Schwarz", "I8": "first-order convexity",
+        "F5": "the maximum is attained", "I6": "implies", "A8": "a partition into nonempty cells",
+    }.items():  # fmt: skip
+        first = re.search(rf"\b{label}\b", results)
+        assert first, label
+        assert words in results[max(first.start() - 60, 0) : first.start() + 160], (label, words)
+
+
+def test_cr13_the_first_generated_range_says_what_varies():
+    """(13) The first range of the text is in the sentence of section 1, and it says what varies."""
+    first = _cell_out(PAPER_NB, "num-nondominated")
+    assert re.search(r"\d+ to \d+", first)
+    assert "five regenerations of the data under rounding-level perturbation" in first
+    assert "Appendix D.11" in first
+    for cell in _code_cells(_nb(PAPER_NB)):
+        if cell.id.startswith("num-") and cell.id != "num-nondominated":
+            ids = [c.id for c in _nb(PAPER_NB).cells]
+            if ids.index(cell.id) < ids.index("num-nondominated"):
+                assert not re.search(r"\d to \d", _out_text(cell)), cell.id
+
+
+def test_cr15_appendix_b_says_where_two_statements_share_a_script():
+    """(15) Proposition 3 and Corollary 4 share a file; each entry says so."""
+    text = str(generate_proofs.proofs_solver())
+    assert text.count("**Shared script.**") == 2
+    assert "each proof lists its own steps in the file's order" in text
+    assert "**Shared script.**" not in str(generate_proofs.proofs_fit())
+
+
+def test_cr18_appendix_f_says_how_to_compare_regenerate_and_what_needs_a_checkout():
+    """(18) git checkout, the exact comparison command, one row, and the site build line."""
+    cells = _appendix_cells(_nb(SUPPORT_NB))["F"]
+    prose = "\n".join(_src(c) for c in cells if c.cell_type == "markdown")
+    assert "git checkout" in prose and "skip with a reason" in prose
+    commands = str(generate_repro.commands())
+    assert "git diff --stat -- paper/paper.ipynb paper/supporting_material.ipynb" in commands
+    assert "PAPER_EXECUTE=1 uv run pytest tests/test_paper.py -k clean_kernel" in commands
+    assert "uv run python paper/regenerate_row.py ROW" in commands
+    assert (ROOT / "paper" / "regenerate_row.py").is_file()
+
+
+def test_cr18_regenerate_row_reproduces_the_committed_output_of_a_row():
+    """The script runs the cells a row needs and prints what the committed cell holds."""
+    import regenerate_row
+
+    for row, nb_path in (("tab-A-register", SUPPORT_NB), ("tab-F-commands", SUPPORT_NB)):
+        assert regenerate_row.run(row) is not None
+        assert str(regenerate_row.run(row)).strip() == _cell_out(nb_path, row).strip(), row
+    with pytest.raises(SystemExit):
+        regenerate_row.run("no-such-row")
+
+
+def test_cr18_the_commit_row_says_so_when_there_is_no_checkout(monkeypatch):
+    """Outside a checkout the toolchain table says the commit is not available."""
+    monkeypatch.setattr(generate_repro, "ROOT", Path("/"))
+    assert generate_repro._run(["git", "rev-parse", "HEAD"]) == "not available"
+
+
+def test_the_added_quantities_are_recorded_on_the_same_five_regenerations():
+    """The numbers added after the sensitivity run carry the digits that held on the same data."""
+    record = json.loads((PAPER / "stability_extra.json").read_text(encoding="utf-8"))
+    assert record["seeds"] == [1, 2, 3, 4, 5]
+    assert record["perturbation"]["relative_half_width"] == 1e-12
+    for name, e in record["quantities"].items():
+        if "min" in e:
+            assert e["min"] <= e["committed"] <= e["max"], name
+    groups = {n.split(" | ")[0] for n in record["quantities"]}
+    assert groups == {"kslack", "kslack fixed", "margin", "pca"}

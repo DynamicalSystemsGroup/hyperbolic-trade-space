@@ -462,3 +462,197 @@ def conditioning_diagnostic() -> Md:
             + md_table(["K", "Facet", "`conditioning_` (smallest eigenvalue)"], rows)
         )
     return Md("\n\n".join(parts))
+
+
+# -- D.14: the planted example, twenty tables --------------------------------------------------
+
+RECOVERY_SEEDS = 20
+"""Planted tables for the recovery count (``make_frontier_data``, seeds 0 to 19)."""
+RECOVERY_TAUS = (np.inf, 50.0)
+"""The exact maximum and a working temperature."""
+RECOVERY_ROWS = 400
+"""Rows of each planted table (four metrics, three facets)."""
+RECOVERY_RIGHT = 0.9
+"""A table is recovered when at least this fraction of its frontier rows lie on the right facet."""
+
+
+@cache
+def recovery_runs() -> tuple:
+    """The fit of every planted table at every temperature, as the solver's defaults make it.
+
+    ``HyperbolicTradeSpace(n_terms=3, random_state=0)`` with five restarts, the planted facets
+    matched to the fitted ones by the permutation that minimizes the largest exponent error. A
+    table is recovered when that error is under :data:`OWN_ROWS_TOLERANCE` and at least
+    :data:`RECOVERY_RIGHT` of its frontier rows lie on the right facet.
+
+    Returns
+    -------
+    tuple of dict
+        Per table and temperature: ``seed``, ``tau``, ``rows_on_thinnest`` (frontier rows of the
+        planted facet with fewest), ``error``, ``right``, ``status`` and ``recovered``.
+    """
+    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+
+    out = []
+    for tau in RECOVERY_TAUS:
+        for seed in range(RECOVERY_SEEDS):
+            X, info = make_frontier_data(RECOVERY_ROWS, 4, n_terms=3, random_state=seed)
+            planted = np.asarray(info["exponents"], float)
+            truth, front = np.asarray(info["facet"]), np.asarray(info["frontier_mask"])
+            est = HyperbolicTradeSpace(temperature=tau, n_terms=3, random_state=0).fit(X)
+            fitted = np.atleast_2d(est.exponents_)
+            error, perm = min(
+                (float(np.abs(fitted[list(p)] - planted).max()), p)
+                for p in itertools.permutations(range(3))
+            )
+            back = {fit_k: k for k, fit_k in enumerate(perm)}
+            mapped = np.array([back[f] for f in np.asarray(est.facet_)])
+            right = float((mapped[front] == truth[front]).mean())
+            out.append({
+                "seed": seed, "tau": tau, "error": error, "right": right,
+                "rows_on_thinnest": int(min((front & (truth == k)).sum() for k in range(3))),
+                "status": est.termination_.status,
+                "recovered": error < OWN_ROWS_TOLERANCE and right >= RECOVERY_RIGHT,
+            })  # fmt: skip
+    return tuple(out)
+
+
+def _tau_name(tau) -> str:
+    return "infinity" if np.isinf(tau) else f"{tau:g}"
+
+
+def planted_recovery() -> Md:
+    """Does the fit recover a known answer: twenty planted tables, at two temperatures.
+
+    Returns
+    -------
+    Md
+        The count of tables recovered at each temperature and the tables that were not, with the
+        frontier rows of the thinnest planted facet, the largest exponent error, the share of
+        frontier rows on the right facet and the solver's status.
+    """
+    runs = recovery_runs()
+    summary_rows, failures = [], []
+    for tau in RECOVERY_TAUS:
+        mine = [r for r in runs if r["tau"] == tau]
+        bad = [r for r in mine if not r["recovered"]]
+        summary_rows.append([
+            _tau_name(tau), len(mine), f"{len(mine) - len(bad)} of {len(mine)}",
+            ", ".join(str(r["seed"]) for r in bad) or "none",
+        ])  # fmt: skip
+        failures += [
+            [r["seed"], _tau_name(tau), r["rows_on_thinnest"], f"{r['error']:.2f}",
+             f"{r['right']:.2f}", r["status"]]
+            for r in bad
+        ]  # fmt: skip
+    thin = sorted({r["rows_on_thinnest"] for r in runs if r["recovered"]})
+    return Md(
+        f"Dataset {DATASET_LABELS['planted']}, the generator of Appendix C at {RECOVERY_ROWS} "
+        f"rows, 4 metrics and 3 facets, seeds 0 to {RECOVERY_SEEDS - 1}, the solver's defaults "
+        f"(five restarts, `random_state = 0`). A table is recovered when the largest error of "
+        f"the exponents, after matching fitted to planted facets, is under {OWN_ROWS_TOLERANCE} "
+        f"and at least {RECOVERY_RIGHT:.0%} of its frontier rows lie on the right facet.\n\n"
+        + md_table(["Temperature", "Planted tables", "Recovered", "Seeds not recovered"],
+                   summary_rows)
+        + "\n\nThe tables not recovered, with the frontier rows of their thinnest planted facet "
+        "(a facet needs at least 5 frontier rows, one more than there are metrics, to be "
+        "determined by them), the largest exponent error, the share of frontier rows on the "
+        "right facet and the solver's status:\n\n"
+        + md_table(["Seed", "Temperature", "Frontier rows, thinnest facet", "Largest error",
+                    "Frontier rows on the right facet", "Status"], failures)
+        + f"\n\nEvery table recovered has at least {min(thin)} frontier rows on each planted "
+        "facet. The count of recovered tables is an exact property of the seeded tables and "
+        "the solver; the errors are printed to two digits."
+    )  # fmt: skip
+
+
+# -- D.15: the mean slack at a fixed temperature -------------------------------------------------
+
+
+def mean_slack_fixed() -> Md:
+    """The mean slack of the K-term fits at their own temperatures and at the K = 1 temperature.
+
+    Returns
+    -------
+    Md
+        Per regime: for each K the temperature selected at that K and the mean slack there, the
+        mean slack of the K-term fit refitted at the K = 1 temperature; the digits that held.
+    """
+    parts = []
+    for r in _studies():
+        rows = []
+        for K in (1, 2, 3):
+            tau = stable(f"fit | {r} K={K} | tau selected (raw)", lambda v: f"{v:.1f}")
+            own = stable(f"kslack | {r} | {K} | mean_slack_", lambda v: f"{v:.3f}")
+            fixed = stable(f"kslack fixed | {r} | {K} | mean_slack_", lambda v: f"{v:.3f}")
+            rows.append([K, tau, own, fixed])
+        tau1 = stable(f"fit | {r} K=1 | tau selected (raw)", lambda v: f"{v:.1f}")
+        parts.append(
+            f"{_cite(r)}:\n\n"
+            + md_table(["K", "Temperature selected at this K", "`mean_slack_` there",
+                        f"`mean_slack_` refitted at the K = 1 temperature, {tau1}"], rows)
+        )  # fmt: skip
+    return Md("\n\n".join(parts))
+
+
+# -- D.8 (margin): how to read the size of a margin ------------------------------------------------
+
+
+def margin_reading() -> Md:
+    """The assignment margin and stable radius against the band and the median margin.
+
+    Returns
+    -------
+    Md
+        Per regime and K > 1: the margin, the stable radius, the band 1/tau, and the median over
+        the designs of the gap between best and second-best facet score.
+    """
+    parts = []
+    for r in _studies():
+        rows = []
+        for K in (2, 3):
+            rows.append([
+                K,
+                stable(f"certificate | {r} | {K} | gamma"),
+                stable(f"certificate | {r} | {K} | radius"),
+                stable(f"D k_table | {r} | {K} | band 1/tau"),
+                stable(f"margin | {r} | {K} | median margin", lambda v: f"{v:.3f}"),
+            ])  # fmt: skip
+        parts.append(
+            f"{_cite(r)}:\n\n"
+            + md_table(["K", "Margin (gamma)", "Stable radius", "Band 1/tau",
+                        "Median best-minus-second-best facet score"], rows)
+        )  # fmt: skip
+    return Md("\n\n".join(parts))
+
+
+# -- D.16: chaining with PCA -----------------------------------------------------------------------
+
+
+def pca_chain() -> Md:
+    """Principal directions of the near-frontier chart coordinates, on the primary regime.
+
+    Returns
+    -------
+    Md
+        The share of spread along each of the first three directions and the metrics that load
+        most on it, signed with the largest loading positive; the tension report's own analysis.
+    """
+    study, fits = _study("primary"), _fits("primary")
+    table = case.pca_directions(study, fits[1])
+    rows = []
+    for row in table.itertuples():
+        share = stable(f"pca | primary | {row.direction} | share of spread", lambda v: f"{v:.3f}")
+        loads = []
+        for rank, part in enumerate(row._3.split(", "), 1):
+            name = part.rsplit(" ", 1)[0]
+            value = _signed(
+                stable(f"pca | primary | {row.direction} | loading {rank}", lambda v: f"{v:+.2f}")
+            )
+            loads.append(f"{name} {value}")
+        rows.append([row.direction, share, ", ".join(loads)])
+    return Md(
+        f"{_cite('primary')}, K = 1, designs with |log V| under the band 1/tau:\n\n"
+        + md_table(["Direction", "Share of the spread of the chart coordinates",
+                    "Leading loadings on the metrics"], rows)
+    )  # fmt: skip

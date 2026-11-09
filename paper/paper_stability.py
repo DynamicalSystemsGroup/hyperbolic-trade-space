@@ -27,9 +27,11 @@ from collections.abc import Callable
 from functools import cache
 
 import paper_paths  # noqa: F401  (puts the repository on sys.path)
-from paper_paths import ROOT
+from paper_paths import PAPER, ROOT
 
 SUMMARY = ROOT / "examples" / "adcs" / "experiments" / "reports" / "sensitivity.json"
+EXTRA = PAPER / "stability_extra.json"
+"""The quantities added after the sensitivity run, measured on the same data (stability_extra)."""
 RESIDUE = 1e-12
 """Quantities that move and stay below this are numerical residues, printed as a bound."""
 HOLD_FROM = 4
@@ -44,9 +46,18 @@ def summary() -> dict:
     return json.loads(SUMMARY.read_text(encoding="utf-8"))
 
 
+@cache
+def extra() -> dict:
+    """The committed results file of the added quantities, same layout as :func:`summary`."""
+    return json.loads(EXTRA.read_text(encoding="utf-8"))
+
+
 def entry(name: str) -> dict | None:
-    """The record of a quantity (``committed``, ``min``, ``max``, ``identical``), or ``None``."""
-    return summary()["quantities"].get(name)
+    """The record of a quantity (``committed``, ``min``, ``max``, ``identical``), or ``None``.
+
+    The sensitivity file is read first, then the file of the added quantities.
+    """
+    return summary()["quantities"].get(name) or extra()["quantities"].get(name)
 
 
 def _sig(x: float, p: int) -> str:
@@ -118,7 +129,7 @@ def stable(name: str, orig: Callable[[float], str] | None = None) -> str:
     """
     e = entry(name)
     if e is None or "min" not in e:
-        raise KeyError(f"{name!r} is not in {SUMMARY.name}")
+        raise KeyError(f"{name!r} is not in {SUMMARY.name} or {EXTRA.name}")
     count = _is_count(e)
     orig = _count_text if count else (orig or (lambda v: format(v, ".4g")))
     return format_hold(e["min"], e["max"], orig, count=count, value=e["committed"])

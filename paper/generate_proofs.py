@@ -229,8 +229,16 @@ def _proof(file, lemma, record, res_index, owners, results) -> str:
     body = md_table(
         ["Step", "Kind", "Prose of the step", "Line checked (the script's text) and link"], rows
     )
+    names = " and ".join(_esc(r["name"]) for r in lemma["results"])
+    sharing = (
+        f"**Shared script.** {_esc(names)} are proved by this one file, which numbers its "
+        f"{len(lemma['steps'])} steps in one sequence; each proof lists its own steps in the "
+        f"file's order, so the tags of one skip the steps the other owns.\n\n"
+        if shared
+        else ""
+    )
     return (
-        f'<a id="{_anchor(n, res_index)}"></a>\n\n#### {heading}\n\n'
+        f'<a id="{_anchor(n, res_index)}"></a>\n\n#### {heading}\n\n{sharing}'
         f"**File.** [{file}]({BLOB}/{file}). "
         f"**Statement.** {stated}\n\n"
         f"**Hypotheses** (quoted from the statement): {_hypotheses(lemma)}\n\n"

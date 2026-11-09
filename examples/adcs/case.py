@@ -633,6 +633,119 @@ def certificate_table(fits):
     return pd.DataFrame([{"K": K, **k_terms.certificate(f.estimator)} for K, f in fits.items()])
 
 
+def mean_slack_by_k(study, fits):
+    """The mean slack of each fit, from the estimator's ``mean_slack_``, at each fit's own tau.
+
+    Parameters
+    ----------
+    study : Study
+    fits : dict of int to Fit
+        As returned by :func:`k_fits` (the temperature is re-selected at each K).
+
+    Returns
+    -------
+    pandas.DataFrame
+        Columns ``K``, ``tau`` and ``mean_slack_``. The temperatures differ from row to row, so the
+        rows are not compared like for like; :func:`mean_slack_fixed_tau` does that.
+    """
+    return pd.DataFrame(
+        [{"K": K, "tau": f.tau, "mean_slack_": float(f.estimator.mean_slack_)}
+         for K, f in fits.items()]
+    )  # fmt: skip
+
+
+def mean_slack_fixed_tau(study, fits, tau=None):
+    """The mean slack at K = 1, 2, 3 refitted at one temperature (default: the K = 1 temperature).
+
+    Parameters
+    ----------
+    study : Study
+    fits : dict of int to Fit
+        As returned by :func:`k_fits`; its keys are the K to refit.
+    tau : float, optional
+        The common temperature; default the temperature selected for the smallest K.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Columns ``K``, ``tau`` and ``mean_slack_``; ``mean_slack_`` is comparable across ``K`` at
+        a fixed temperature (``objective_`` is not).
+    """
+    _, k_terms, _ = _lib()
+    tau = fits[min(fits)].tau if tau is None else float(tau)
+    return pd.DataFrame(
+        [{"K": K, "tau": tau,
+          "mean_slack_": float(k_terms.fit_k(study.M, K, tau, study.spec.seed).mean_slack_)}
+         for K in fits]
+    )  # fmt: skip
+
+
+def margin_scale(study, fits):
+    """The assignment margin and stable radius of the multi-facet fits against two scales.
+
+    Parameters
+    ----------
+    study : Study
+    fits : dict of int to Fit
+        As returned by :func:`k_fits`; the K = 1 fit has no competing facet and is left out.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Columns ``K``, ``band 1/tau``, ``gamma`` (the margin), ``radius``, and ``median margin``,
+        the median over the rows of the gap between a row's best and second-best facet score.
+        The margin is read against the band and against the median margin.
+    """
+    rows = []
+    U = np.log(study.M)
+    for K, f in fits.items():
+        if K == 1:
+            continue
+        e = f.estimator
+        top = np.sort(U @ np.atleast_2d(e.exponents_).T - e.log_offset_, axis=1)
+        t = e.termination_
+        rows.append({"K": K, "band 1/tau": f.band, "gamma": float(t.gamma),
+                     "radius": float(t.radius),
+                     "median margin": float(np.median(top[:, -1] - top[:, -2]))})  # fmt: skip
+    return pd.DataFrame(rows)
+
+
+def pca_directions(study, fit, n=3, leading=3):
+    """Principal directions of the near-frontier chart coordinates of the fit (its first facet).
+
+    The tension report already runs a principal component analysis on the chart coordinates ``Z``
+    of the near-frontier designs; this table reads it: the share of the spread along each of the
+    first ``n`` directions and the metrics that load most on it.
+
+    Parameters
+    ----------
+    study : Study
+    fit : Fit
+        A K = 1 fit (the first facet's report is read).
+    n : int, default 3
+        Directions listed.
+    leading : int, default 3
+        Metrics listed per direction.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Columns ``direction``, ``share of spread`` and ``leading loadings``; the overall sign of
+        a direction is arbitrary, so each is signed with its largest loading positive.
+    """
+    rep = _reports(study, fit)[0]
+    rows = []
+    for i in range(min(n, len(rep.explained_spread))):
+        load = np.asarray(rep.tension_loadings[i], float)
+        load = load if load[np.argmax(np.abs(load))] > 0 else -load
+        top = np.argsort(-np.abs(load))[:leading]
+        rows.append({
+            "direction": i + 1, "share of spread": float(rep.explained_spread[i]),
+            "leading loadings": ", ".join(f"{study.names[j]} {load[j]:+.2f}" for j in top),
+        })  # fmt: skip
+    return pd.DataFrame(rows)
+
+
 def _reports(study, fit, band=None, **kw):
     hts, _, _ = _lib()
     band = fit.band if band is None else band
@@ -1176,6 +1289,18 @@ def coordinates_figure(study, fit, band=None):
     return fig
 
 
+def _member_title(rep, who):
+    """A panel title that says what the count counts: the members of the exact-maximum support.
+
+    The panel outlines the contending set (the support of the exact-maximum fit on the facet's
+    rows, the tension report's) on the diagonal; the exponent in each label is the working
+    temperature's, which grades how strongly a member contends and can be small.
+    """
+    n = int(rep.n_lemma)
+    plural = "s" if n != 1 else ""
+    return f"{who}: {rep.lemma_name} ({n} metric{plural} in the exact-maximum support)"
+
+
 def tension_figure(study, fit, band=None):
     """Association among the near-frontier designs, one map per facet.
 
@@ -1195,7 +1320,8 @@ def tension_figure(study, fit, band=None):
     fig, axes = plt.subplots(1, len(reps), figsize=(7 * len(reps), 6.4), squeeze=False)
     plotting.plot_tensions(reps if len(reps) > 1 else reps[0], names=study.names,
                            ax=axes[0] if len(reps) > 1 else axes[0][0])  # fmt: skip
-    for ax in axes[0]:
+    for k, (ax, rep) in enumerate(zip(axes[0], reps, strict=True)):
+        ax.set_title(_member_title(rep, f"facet {k + 1}"), fontsize=9)
         plt.setp(ax.get_xticklabels(), rotation=45, ha="right", fontsize=7)
     fig.tight_layout()
     return fig
@@ -1222,7 +1348,7 @@ def regime_figure(spec=CUBESAT, n_max=None):
         st = load_study(regime, spec, n_max)
         rep = _reports(st, fit_study(st))[0]
         plotting.plot_tensions(rep, names=st.names, ax=ax)
-        ax.set_title(regime + ": " + ax.get_title(), fontsize=9)
+        ax.set_title(_member_title(rep, regime), fontsize=9)
         plt.setp(ax.get_xticklabels(), rotation=40, ha="right", fontsize=7)
     fig.tight_layout()
     return fig
