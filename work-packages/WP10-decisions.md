@@ -566,3 +566,19 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   decided; each ledger entry carries its SymPy form and every script takes it from the ledger; a
   result with no useful SymPy form is declared as a named proposition; the amendment widens WP10's
   files to `derivation/axioms.py` for this. No open decision remains on Amendment 1.
+- **The amendment's defaults, as one item** (nine listed in a popup). **Supervisor (mzargham),
+  verbatim:** "you lumped a lot here. i think they are mostly fine. though make sure the
+  reproducibility appendix is specific about what out pinned tool chain is but it can provide a
+  pointer to the uv.lock and/or toml files required to reproduce. also may be worth awareness that
+  on a mac. assuming we used a linux box to stabilize our tests we may want to go even further to
+  provide a docker image to make this as reproducible as possible. (we have colima locally so we
+  can test the use of a pinned image)". Disposition: the defaults stand as listed, with the pinned
+  toolchain stated specifically in Appendix F (R-30); the container image raised and put as its
+  own question. Process note for the driver: fewer details per defaults item.
+- **A pinned container image.** Driver's question (popup, with the context: notebooks executed on
+  the Mac, CI on ubuntu-24.04 only, platform ties recorded as G-10, Colima 0.8.1 and Docker 28.1.1
+  installed, nothing published before a release): "What role should a pinned container image have
+  in the paper package?" (options: Reference environment now / Optional route now / Later, at the
+  release). **Supervisor (mzargham), verbatim:** "Reference environment now". Disposition:
+  decided; D-13 and R-31; the paper's committed outputs are produced in the container; built and
+  tested locally with Colima; no image published by this package.

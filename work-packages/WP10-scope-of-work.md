@@ -465,6 +465,17 @@ What changes:
     reordered step, and on any broken tag; refreshing the record is an explicit command. Checked by
     tests that alter a copy of a script step, of a prose step, and of the order, and expect the
     checker to fail each time.
+  - R-30 (pinned toolchain, stated): Appendix F states the Python version, the package manager and
+    its version, the versions of the packages the results depend on most directly, and the commit,
+    and points to `uv.lock`, `pyproject.toml` and `.python-version` for the rest; the stated
+    versions are generated from the lock and equal it. Checked by a test.
+  - R-31 (environment of record): a Dockerfile at the repository root (**D-13**, new; WP10 may add
+    it and a `.dockerignore`) with its base image pinned by digest, installing the committed lock;
+    the paper's committed outputs are produced in that container; the container builds and the
+    paper executes in it locally (Colima) before delivery, with the commands and the result in
+    `WP10-review.md`; Appendix F names it as the environment of record and states the known
+    differences outside it (G-10). No image is published by this package. Checked by a test of the
+    Dockerfile's pins (digest present, lock used); the recorded local run; inspection.
 - **Order of work:** the step tagging and the checker come first, by their own bounded
   implementer, before any proof is written in prose.
 - **Dependency added:** C describes the model behind the data the paper uses (the frozen data until
@@ -472,4 +483,5 @@ What changes:
 
 Open decisions: none. Decided by the supervisor (`WP10-decisions.md`): C and D apart; the register as
 an appendix; the proofs step for step with their scripts; cited results as steps in code; results
-may share a script; each cited result's SymPy form declared once in the ledger. Defaults for approval as one item: those listed at the end of the sketch.
+may share a script; each cited result's SymPy form declared once in the ledger; the pinned toolchain
+stated in F; a pinned container image as the environment of record ("Reference environment now"). Defaults for approval as one item: those listed at the end of the sketch.

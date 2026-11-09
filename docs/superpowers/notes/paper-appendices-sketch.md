@@ -44,6 +44,16 @@ And on two results proved in one script:
 "and if too results use the same script they can have the same file reference that should not break
 our addressing scheme for proof steps"
 
+On the defaults, put as one item of nine:
+
+"you lumped a lot here. i think they are mostly fine. though make sure the reproducibility appendix
+is specific about what out pinned tool chain is but it can provide a pointer to the uv.lock and/or
+toml files required to reproduce. also may be worth awareness that on a mac. assuming we used a
+linux box to stabilize our tests we may want to go even further to provide a docker image to make
+this as reproducible as possible. (we have colima locally so we can test the use of a pinned image)"
+
+And on the role of a pinned container image: "Reference environment now".
+
 ## The test each appendix must pass
 
 An appendix exists only if it answers a question that a reader of the paper has and that the main
@@ -218,19 +228,33 @@ Rules that keep them disjoint and complementary:
 
 ### F. Computational reproducibility
 
-- **Reader's question:** how do I regenerate every figure, table and reported number in this paper
-  without first learning the repository?
+- **Job:** let a reader regenerate every figure, table and reported number in the paper, in the
+  same environment the authors used, without first learning the repository.
+- **Reader's question:** what exactly do I run, in what environment, to get what the paper shows?
 - **Main text keeps:** section 11 shrinks to a few sentences: everything is regenerable, the
-  commands are in this appendix, use of the package on one's own table is on the docsite.
-- **Appendix carries:** the environment (the tagged commit, Python version, `uv sync --locked`);
-  one table with a row per figure, table and reported number: the paper item, the single command or
-  function call that produces it, the file it reads, the output it writes; how to rebuild the paper
-  itself; how to run the verification scripts and the test suite, with what a pass looks like; the
-  provenance of each dataset (its ledger entry and hash) and the optional command that regenerates
-  it; expected run times; known platform differences.
-- **Repository keeps:** the code, the tests, the lock file, the ledger.
-- **Check:** a test that every figure and table in the paper has a row, and that every command in
-  the table runs.
+  environment and the commands are in this appendix, use of the package on one's own table is on
+  the docsite.
+- **Appendix carries:**
+  1. **the pinned toolchain, stated specifically** (the supervisor's instruction): the Python
+     version, the package manager and its version, the versions of the packages the results depend
+     on most directly, and the commit; with pointers to the files that pin everything else
+     (`uv.lock`, `pyproject.toml`, `.python-version`), not a copy of them;
+  2. **the environment of record: a pinned container image** (the supervisor's decision,
+     "Reference environment now"): a Dockerfile in the repository with its base image pinned by
+     digest and the locked environment installed inside; the paper's committed numbers and figures
+     are produced in that container; how to build it and run the paper in it; what is known to
+     differ outside it (the tied rows of gap G-10 on other platforms);
+  3. one table with a row per figure, table and reported number: the paper item, the single
+     command or function call that produces it, the file it reads, the output it writes;
+  4. how to rebuild the paper itself; how to run the verification scripts, the proof-map checker
+     and the test suite, with what a pass looks like;
+  5. the provenance of each dataset (its ledger entry and hash) and the optional command that
+     regenerates it; expected run times.
+- **Repository keeps:** the code, the tests, the lock file, the Dockerfile, the ledger.
+- **Check:** a test that every figure and table in the paper has a row and that every command in
+  the table runs; a test that the toolchain stated in the appendix equals what the lock file and
+  the Dockerfile pin; the container built and the paper run in it locally (Colima) before delivery.
+- **Not in this package:** publishing the image to a registry (outward-facing; a release matter).
 
 ### G. Register of prior art
 
@@ -305,3 +329,8 @@ form is declared as a named proposition, and the step that applies it says so.
   and the "differs, extends or adds" field can be tested for presence.
 - The dropped candidates of the long review stay in the repository and are not in G.
 - Section 11 of the main text shrinks; its freed words are not reallocated (the cap is a cap).
+- The container (the supervisor's decision; defaults under it): the environment of record is
+  linux/amd64, the same as the CI runner, with what is observed on other platforms stated beside
+  it; the image installs with `uv sync --locked` from the committed lock; the stated toolchain is
+  generated from the lock and the Dockerfile, not typed. If the amd64 image cannot be run workably
+  on this Mac, that comes back to the supervisor before anything else is chosen.
