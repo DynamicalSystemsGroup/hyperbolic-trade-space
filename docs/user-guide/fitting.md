@@ -56,7 +56,7 @@ print(round(tau, 1))
 
 This synthetic table puts 30 percent of its rows on the planted frontier, hence the target 0.35;
 for real data the default 0.10 is a common start. Use tau of about 3 and above: below that
-`frac_above_` is not monotone in tau. A `ValueError` says when `bounds` does not contain the target.
+`frac_above_` is not monotone in tau. A `ValueError` says when `bounds` misses the target.
 Re-select tau when you change the number of terms.
 
 ## Several terms
@@ -77,18 +77,19 @@ ts = HyperbolicTradeSpace(
 print(ts.exponents_.shape, ts.termination_.status)
 ```
 
-Fitting alternates weights from the current model (sharp: one label each) with a refit, from several
-seeded starts (`n_restarts`, default 5) keeping the best. `assign_facets(X)` reads which facet
+Fitting alternates weights from the current model with a refit, from several seeded starts
+(`n_restarts`, default 5) keeping the best. `assign_facets(X)` reads which facet
 dominates new rows. Options:
 
-- `term_temperature` (kappa, default infinity) rounds the corners where facets meet; a finite kappa
-  leaves the facets unchanged.
+- `term_temperature` (kappa, default infinity) sets the temperature of the soft weights: finite,
+  every design weighs every term; infinity, one label per design. Reported facets are the dominant
+  term.
 - `penalty="reweighted_l1"` with `alpha` pushes small exponents to exact zero, at finite temperature
   only.
 - `facet_step` is `"support"` (default) or `"tangent"`, which is not monotone and carries no
   local-optimality status.
 
-`facet_` gives each training row's dominant facet; `coefficients_` and `facet_share_` the facets' posynomial
+`facet_` gives each training row's dominant facet; `coefficients_` and `facet_share_` the facets'
 coefficients and shares. At one term `facet_` is all zeros and `facet_share_` is `[1.0]`. What the fit
 reports about itself is on the [termination page](termination.md).
 
@@ -96,7 +97,7 @@ reports about itself is on the [termination page](termination.md).
 
 Compare numbers of terms at one fixed temperature, by `mean_slack_`, never by `objective_` and never
 at a temperature re-selected for each K. Add a term while `mean_slack_` still falls by more than the
-variation between restarts. Then resample: a facet whose exponents change between bootstrap resamples
+variation between restarts. Resample: a facet whose exponents change between bootstrap resamples
 or restarts is a splinter, a few designs fitted alone, and K is too large.
 
 ```python {.runnable}
@@ -127,7 +128,7 @@ pays. Over the four resamples the smallest exponent stays within 0.07 to 0.08 at
 `select_temperature` needs a target the fit can reach. With several terms the facets are not
 supporting planes, so `frac_above_` levels off above zero as tau grows (about 0.30 on the table of
 `make_frontier_data(300, 4, n_terms=2, random_state=777)`) and the default target 0.10 raises "not
-bracketed". The message names a target to raise to, a fixed `temperature`, and wider `bounds`. Select
+bracketed". The message names a target, a fixed `temperature`, and wider `bounds`. Select
 tau at K = 1 and hold it fixed, or choose a target above the level-off.
 
 `tension_report` takes its band from the temperature, 1/tau. A facet with fewer than

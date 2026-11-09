@@ -291,9 +291,9 @@ entries:
   - id: 'term-temperature'
     term: 'term temperature'
     symbol: '\kappa'
-    short: 'How sharply the facets meet; larger is a crisp envelope with corners.'
+    short: 'The temperature of the soft weights over the terms in the several-term fit; infinity is the sharp limit of one label per design.'
     register: 'term temperature'
-    formal: 'the softness of the soft maximum over the K terms'
+    formal: 'the softness of the weights softmax_k(kappa score) over the K terms'
     not: 'the fit temperature'
     defined_in: 'L10, A6'
 
@@ -357,7 +357,7 @@ entries:
 
   - id: 'assignment'
     term: 'assignment'
-    short: 'Which facet is active for a design, the one with the largest score; the facet index is a label.'
+    short: 'The dominant term of a design, the one with the largest score; an analysis, since the fit weighs every term against every design.'
     register: 'assignment'
     formal: 'the maximizing term of the posynomial at the design'
     not: 'an identity that survives ties between scores'
