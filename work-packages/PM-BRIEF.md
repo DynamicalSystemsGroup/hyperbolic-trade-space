@@ -101,6 +101,13 @@ ready and by no one else. No AI attribution anywhere. No edit to a test or recor
 weaken a requirement; a test changes only when its requirement changed by a recorded decision.
 Stop and report, do not improvise, when a step would cross one of these.
 
+**Derivation pushes are mechanical (rule of 2026-11-09).** A commit that touches `derivation/`
+is pushed only together with the regenerated Appendix B, and only after
+`uv run pytest -q tests/test_paper.py -k appendix_b` has passed in a clean worktree at the commit to
+be pushed. Every brief to an implementer who touches `derivation/` ends with that test run, and the
+implementer's report carries its output. The PM does not push a commit that touches `derivation/`
+without that output.
+
 ## Read first, in this order
 
 1. `~/.claude/skills/CLAUDE.md` (the decision loop) and `~/.claude/skills/README.md`.
