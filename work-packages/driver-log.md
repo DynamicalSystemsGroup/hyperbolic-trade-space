@@ -280,6 +280,21 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   (3) The check section's new sentence for `num-predict-reading` is honest and stays; its phrase "the easy part"
   is a judgement the subtraction pass reads again.
 
+- **The paper on the data of record (2026-11-10, 04:40; 628df90), the driver's image reads before the reviewer's
+  pass.** The temperature-sweep figure after redraw 2: titled by regime, nine rows ranked by exponent, the fit
+  temperature an outlined column with the exponents printed in it (total mass 0.36, energy balance 0.18, pointing
+  error 0.16, depth of discharge 0.16, settling time 0.14), control effort faint at low temperature and white from
+  25 on, the colourbar named with its white floor; a cold reader sees which metrics the one term trades and that
+  three never enter. Passes. The one-term plane, now total mass against energy balance: a grey cloud with the
+  surface as a line at its outer edge and a few designs beyond; reads as a soft support, not a regression; the
+  trade is less tight to the eye than the old slew-time pair, which is the data's truth. Passes. The three-term
+  tension figure: term 1 (5-lemma: energy balance, total mass, settling time leading) and term 3 (5-lemma: peak
+  slew power 0.61 against pointing error at -1.00) as heatmaps with their contending sets outlined; term 2's panel
+  is the one sentence "Too few near-frontier designs for an association reading: 3 of ten", which says exactly what
+  the decision asked; the blank panel is large and the subtraction pass may shrink it. Titles already say "term".
+  Passes as a candidate. The staged site is rebuilding at 628df90 for the driver's browser pass; Linux dispatched;
+  the watcher's run follows.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
