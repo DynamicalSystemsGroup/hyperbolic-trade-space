@@ -103,3 +103,13 @@ yields fewer than three holes on the new view, the check reports the number it y
 not a failure), and the paper's sentence follows the number; the proposals are not dropped and the criterion is not
 restated. One constant and one sentence of rule in `check_designs.py`, recorded here, the gate re-run. The
 supervisor sees it with the gate's comparison.
+
+**Facts found under the rule (2026-11-10, 01:20; the gate agent via the PM).** WP7 set REACH = 0.35 with no stated
+rule (67eea92, a comment only); on the old slew-time view the smallest reach giving three separated holes was
+0.339, so 0.35 sat just above the method's own minimum; the first-300 nearest distances were min 0.161 and tenth
+percentile 0.444 on the old view (six holes within 0.35, about the second percentile) against min 0.484 and tenth
+percentile 0.717 on the new view (none within 0.35; three separated holes need 0.58); old and new data agree to the
+third decimal on the new view, so the change is the metric swap. The rule adopted: a stated quantile of the pool's
+nearest predicted distances to the 300 most isolated holes, checked on the old view and applied to the new; the
+proposer no longer raises below three proposals; the paper's check sentence follows the count. For the
+supervisor: the earlier 0.35 was a constant that happened to work, which the record now says.
