@@ -39,3 +39,26 @@ trace from their own concern down to the trade the engineers made and back, and 
 reports are the ones a concern cares about; "good enough" is judged by that reading in the view editor (a cold
 reader in the sponsor's persona, P1, navigates from "who cares" to the metrics and says what they learned), not by
 the count of model elements.
+
+**Supervisor (mzargham), verbatim (14:10):** "also at the detailed end of this we do want to explicitly use
+verification cases and track where evidence is logged and track what environments or images were used to produce
+that evidence. insofar as the view editor does not yet support that we should include the gaps in our UX feedback.
+you can read about how i think about this computational engineer stack on this webpage:
+https://dynamicalsystemsgroup.github.io/ADCS-lifecycle-demo/#framework / eventually i expect we'll rework that other
+repo based on what we learn here. but i am maintaining a seperation of concerns. our current work is building a
+model that serves as the numerical case for the HTS research, when we go back to the ADCS-lifecycle demo repo we'll
+be focused on the sysmlv2 model itself and hts will just be a dependency / does that make sense. we're sitting right
+at the intersection of the two projects right now so we need to be a little careful about scope creep. i want the
+model we build here to be the numerical demonstrator for the HTS peice first and just an input to the next major
+revision of the ADCS-lifecycle-demo project"
+
+**Disposition.** Two additions to WP27 and one guard. (1) The detailed end: the model's verification cases are used
+explicitly, each pointing at where its evidence is logged (the ledger entry id, the RECORD.md entry, the test that
+reads it) and at the environment that produced it (the image id of record, or the host when a tolerance branch is
+the evidence); the model carries the pointer, the repository carries the evidence; the trace then runs from a
+stakeholder's concern through requirement and verification case to evidence and environment. (2) Where the view
+editor cannot show that chain (verification cases have no renderer today; no evidence or environment field in its
+tables), the gap goes into the UX researcher's report as a feature request with the reproduction. (3) The guard: the
+model built here is the numerical demonstrator for the method first; what serves only the ADCS-lifecycle-demo's
+revision is written down as a note for that repository (a section of the WP27 review, "for the lifecycle demo"),
+not built here. HTS becomes a dependency of that repository later; nothing here anticipates it.
