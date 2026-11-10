@@ -1431,7 +1431,7 @@ def test_cells_whose_output_is_embedded_are_removed_from_the_page():
     with only ``remove-input`` the page showed each of its outputs twice."""
     nb = _nb(PAPER_NB)
     embedded = set(re.findall(r"\{(?:embed|figure)\} #([\w-]+)", _markdown(nb)))
-    assert len(embedded) >= 5  # four figure cells and the family table (WP19 P-7, P-10, P-6 rev.)
+    assert len(embedded) >= 4  # three figure cells and the family table (WP19 P-5 to P-10 rev.)
     cells = {c.id: c for c in _code_cells(nb)}
     for label in embedded:
         assert "remove-cell" in cells[label].metadata.get("tags", []), label
@@ -1835,7 +1835,7 @@ def test_myst_builds_the_html_site(tmp_path):
     html = work / "_build" / "html"
     page = (html / "index.json").read_text(encoding="utf-8")
     urls = re.findall(r'"url":"(/build/fig[\w.-]+\.png)"[^]]*?enlarge', page)
-    assert len(urls) == 4  # four figure cells (WP19 P-7, P-10, P-6 revised); none for static ones
+    assert len(urls) == 3  # three figure cells (WP19 P-7, P-10, P-5, P-6 revised); static: none
     assert all((html / u.lstrip("/")).is_file() for u in urls)
     support = (html / "supporting-material.json").read_text(encoding="utf-8")
     for label in _subsection_labels():
@@ -2486,7 +2486,7 @@ def test_every_figure_shows_its_smallest_text_at_the_body_small_print_size_at_12
     shows the image (the column is FIGURE_COLUMN_PX wide; an image narrower than it is not
     stretched). Figure 6 was shown at 0.40 of its size and its 7 pt labels were 4 px."""
     images = _figure_images()
-    assert len(images) == 4  # the case's figure cells (WP19 P-7, P-10; P-6 revised: Fig. 3 static)
+    assert len(images) == 3  # the case's figure cells (WP19 P-7, P-10; P-5, P-6 revised: static)
     for name, (data, min_pt) in images.items():
         width, dpi = _png_size_and_dpi(data)
         scale = min(1.0, FIGURE_COLUMN_PX / width)
