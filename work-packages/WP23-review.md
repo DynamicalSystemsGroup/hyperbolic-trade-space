@@ -1497,3 +1497,175 @@ the paper's precision (pass fractions, near-frontier designs excluded, prices 0.
 bands, the elasticities with co-contenders of exponent at least 0.05), except pointing error in the
 primary regime, 95.0 % against the gate's 94.9 % (one design within 1e-6 of the limit, which spike
 B noted). Spike A's table differs where OD10 (a) says it should: the comparison's section 6.
+
+## Close-out acceptance review (work-acceptance, 2026-11-10)
+
+| | |
+|---|---|
+| **Scope of work** | `work-packages/WP23-closeout-scope-of-work.md` (with its amendment line, "during execution") |
+| **Scope approval verified** | 944c564 (2026-11-10 09:44, mzargham's tree): `WP23-decisions.md`, "The close-out scope approved; OD10 (2026-11-10, 09:50; the driver)", "Approved for execution by the driver under the mandate", OD10 = (a); the radius amendment (`paper/generate_results.py`) recorded at f2a6927 |
+| **Work reviewed** | `dev` 944c564...cc0e1c9; the close-out's commits f9a4da8, 499ee63, 4409920, f1101ce, b4d0132, cc0e1c9 (records eb88d40, f2a6927) |
+| **Reviewer** | a fresh agent, worktree `closeoutreview` from origin/dev at cc0e1c9, `uv sync --locked`, on the host (macOS arm64); review only, no repair |
+| **Supervisor (accepts)** | mzargham; the gate's container regression and Linux dispatch are the driver's |
+| **Acceptance record** | the supervisor's verbal acceptance quoted in `WP23-decisions.md` |
+
+**What was run (all on the host, at cc0e1c9).** `uv run pytest -q -m "not slow" -n auto`: 1733 passed, 16
+skipped, 1 xfailed. The slow files of the change with `REQUIRE_OPENSYSML=1` (test_cubesat_model,
+test_cubesat_oracle, test_check_designs, test_v2_data, test_case, test_k_terms_case, test_paper, test_site,
+test_claims_register, test_interface_contract, test_soft_fit): **514 passed, 4 failed, 4 skipped**; the four
+failures are all `tests/test_k_terms_case.py` (`test_k3_fits_and_three_reports[primary|stock]`: `assert
+est.exponents_.shape == (3, 9)` gets `(3, 8)`; `test_certificate_margin_and_radius_columns[primary|stock]`:
+radius 6.95e-05 against the pinned 5.7e-05). The model gates with `REQUIRE_OPENSYSML=1`
+(test_model_checking_v2, test_system_model_v2, test_system_model_v2_r1, test_mutation_v2, test_model_coverage,
+test_diagnostic_pair, test_adcs_enrichment): 174 passed. `coverage.py`: wrote `coverage.md`/`.csv`
+byte-identical to the committed files (sha256 987500abd780 / a0488048fedc; 7 disagreements, as committed).
+The views generator three times into a scratch folder: both `.puml` byte-equal to the committed ones each
+time; `behavioural_view.png` and `assembly_view.png` byte-equal to `paper/figures/fig-*-view.png`.
+`PYTHONPATH=examples/adcs uv run python -m experiments verify`: 39 entries (11 current), 0 drifts; the five
+new entries none dirty, platform macOS-26.5.2-arm64, commit 931dbd8. `ruff check .` clean; `ruff format
+--check .` 323 files formatted; `uv lock --check` clean; `check_vocabulary.py --baseline
+scripts/vocabulary_baseline.toml`: 0 new, 69 known (exit 0; without `--baseline` it exits 1 on the same 69,
+as at 944c564). `tests/test_claims_register.py`: 21 passed; the register 399 rows at 944c564, 402 at
+cc0e1c9 (C405 to C407 new). `case.association_all_pairs`, `case.requirements_table`, `case.design_sets_table`
+and `case.design_sets_placement` re-run in a scratch script; the diagnostic pair regenerated on
+`examples/adcs/data/v2/` to a scratch folder and diffed against `WP23-rounds/gate/k3_record.md`; the v2 data's
+configuration columns, seeds and flags compared to 944c564 (equal on all 2000 designs; only
+`eclipse_reserve_wh` removed). The staged site (`scripts/stage_site.py --serve`) read in the browser pane:
+Appendix C.5, D.3, D.4, D.17, E, the paper's check section and Discussion, `docs/examples.md`; server
+stopped. Renders and screenshots: the session scratchpad's `closeoutreview-renders/`.
+
+**What was looked at.** The behavioural view at 700 px: eight traded metrics, no eclipse-reserve box,
+`PointingErrorRequirement` reads "not satisfied by cubesatBaseline", as its caption's fifth bullet says;
+the assembly view unchanged. The diagnostic pair: eight metric rows, zero rows power margin and peak slew
+power (primary), peak slew power (baseline); the K = 3 primary terms 1 and 2 trade labels against the
+gate's record, as the comparison says. `fig-tau-sweep` (eight rows, the outlined column 38.1, 0.36 / 0.18 /
+0.16 / 0.16 / 0.14) and `fig-planes-k1` against their captions. D.17's two tables and the placement table
+in the page equal the re-run to the printed digits. Appendix E's table in the staged page is typeset by
+MathJax (the table's text holds no `$`; each formula is a MathJax element); in G-3 the `/2` of
+`\tfrac{1}{\tau}\log E e^{...} = \tau\sigma^2\|w\|^2/2` falls onto its own line in the narrow column.
+
+### Deliverables
+
+| ID | Verdict | Evidence |
+|---|---|---|
+| D-11 | met | `cubesat.sysml` 605-618: 0.008495 degree, 0.05922 N·m·s, 2.6 W, 90643.0 USD, each doc naming the ladder row and the share; 6,000 USD/kg labelled illustrative (228); no "PROPOSED", no "20 %", no `budgets.margin`; no `EclipseReserve`; header 18-24 states the reserve's removal and the baseline's failure, 0.0155 against 0.0085 degree, 63.7 % |
+| D-12 | met | the model gates 174 passed; `coverage.py` byte-identical; views at revision 9 (`project.py` `behavioural(..., revision=9)`) byte-equal over three runs and to the paper's copies; `ledger_gate.py` in 499ee63 |
+| D-13 | **not met** | `tests/test_k_terms_case.py` still pins nine metrics (`(3, 9)`) and the nine-metric radii (`MARGIN`): 4 failures under `REQUIRE_OPENSYSML=1` (above). The other listed files carry eight (R-17's grep; test_case, test_cubesat_oracle, test_diagnostic_pair, test_v2_data pass) |
+| D-14 | met | `interface-contract.md` row 15 (the change, the side "technical", the approval 944c564); `contract_version = 15` in both; `case.v2.traded_metrics` eight; v2 headers without the reserve; the row states no manifest key pins the case's flags; `test_interface_contract.py` passes |
+| D-15 | met | the five `@6`/`@5` ledger entries, verify 0 drifts; the data, records, reports, environment files and notebooks regenerated (f1101ce, b4d0132); the docs' numbers read in the page equal the re-run |
+| D-16 | **not met** | the section exists in the form asked (changed conclusions first; files with hashes; numbers with causes; conclusions; section-4 cell list; section 6 for OD10), but it misses moved numbers that now read false: G-2 and G-3 below |
+| D-17 | met | `association_all_pairs`, `requirements_table`, `design_sets_table`, `design_sets_placement` in `case.py`; C.5 row and sentence, D.3 and D.4 sentence, D.17's two tables and the placement table in the staged page; the docs page's "No metric twice" bullet and "Requirements read after the fit" (two generated blocks) |
+| D-18 | met | `sec-case-analysis-5` and `num-predict-reading` state the proposals fail the depth-of-discharge requirement and reached the four-metric frontier by spending the battery; `sec-discussion` "Requirements after the fit", two sentences; C405 to C407; `case-model.md` 178-192; `glossary.yaml` one line; `generate_gaps.py` |
+| D-19 | not checkable (pending) | the executor's record is `WP23-review.md`, "Close-out", not the scope's `WP23-closeout-review.md` (G-5); the checks, the candidates verbatim and the spike reading are there; this review and its dispositions are pending |
+| D-20 | not checkable (pending) | the scope gate is recorded (944c564, eb88d40, f2a6927); the gate's dispositions and the acceptance are not yet due |
+
+### Requirements
+
+| ID | Verdict | Evidence |
+|---|---|---|
+| R-16 | met | the grep finds the four values and 6000 (illustrative); "margin" hits are the power-margin metric only; `coverage.md` lists the four limits; `test_the_four_thresholds_are_the_supervisors_values` passes |
+| R-17 | **not met (as stated)** | the scope's `git grep` returns `experiments/compare.py:269,274` (`ORIENTATION` and `POWER` keep `eclipse_reserve_wh`, so the v1-v2 report can read the frozen frames, which carry it) and the docstring `experiments/cubesat_oracle.py:27` (says the reserve left). The v2 data, the model, `case.py`, `k_terms.py` and `coverage.md` (eight metric rows) are free of it (G-4) |
+| R-18 | met | `cubesat.sysml` 22-24, 606-608, 659, 729; `case-model.md` 185-189: plain, with 63.7 % |
+| R-19 | met | `test_case.py` 81-88 (`dod_ok` in `CUBESAT.flags`; 706 and 780; 131 failures each) passes in the slow run |
+| R-20 | met | 174 passed; views byte-equal three runs; coverage regenerates byte-identical |
+| R-21 | met | `test_interface_contract.py`, `test_v2_data.py` pass |
+| R-22 | met | verify: 39 entries, 0 drifts; the five entries not dirty, the host's platform |
+| R-23 | met | fast suite 1733 passed; ruff check and format clean; lock clean; vocabulary 0 new against its baseline (the tool without the baseline exits 1 on 69 known, unchanged since 944c564) |
+| R-24 | **not met** | the comparison does not list the moved numbers of G-2 (Appendix E) or the stale counts of G-2 (the plane and chart captions), and section 6 omits the differences of G-3 |
+| R-25 | met | re-run: 28 pairs per regime, none at \|Spearman\| ≥ 0.99 (strongest power margin/energy balance 0.982, 0.988); `test_association_step_covers_every_pair_and_names_the_one_axis_pairs` passes; the page's C.5 table is the same 28 rows and D.3, D.4 carry the sentence; the docs bullet reads it |
+| R-26 | met | re-run against spike B sections 1 and 2: pass shares 62.2/67.3, 95.0/63.7, 58.9/90.0, 94.9/95.6, joint 40.8/38.7; excluded 0, 1, 18, 0 (19) of 56 and 2, 42, 1, 1 (43) of 77; exponents 0.164/0.039, 0/0.432, 0.358/0; prices 0.0019 (0.07), 0.012 (0.56), 0.173 (7.9 bands); elasticities settling −1.16 / energy balance +0.86; power margin +0.16 / settling −0.15; power margin +1.40 / settling −1.36: all equal spike B at the paper's precision |
+| R-27 | **not met (narrow)** | the feasible rows equal spike A's F rows; the "all designs" and "requirements met" one-term rows and the primary R three-term row differ as section 6 lists. Not listed: the stock R three-term fit (spike A 0.63 / 0.00 / 0.38 led by energy balance, control effort, total mass; now 0.60 / 0.00 / 0.40 with peak slew power and total mass leading term 3) and every changed placement number (baseline configuration primary R −0.93 in spike A, −0.566 now; stock R −0.26, now −0.030; the candidates likewise; the proposals "not placeable" in spike A, placed now on eight metrics) (G-3) |
+| R-28 | met | the fit of record is `fit_study` on `load_study`'s feasible study; `case.py`'s diff adds `dod_ok` to the flags and a `requirements` dict to the spec, read only by `requirement_mask` in the after-the-fact tables; no threshold in `load_study` or `feasible_mask` |
+| R-29 | met | paper sources changed in five cells: the D-18 cells plus `sec-case-construction-1`, `-1b`, `fig-behavioural-caption`, each listed with its cause in section 4 (observation O-4); Discussion gains two sentences, C406 and C407 marked candidate in `source` and `note`, and the length-ledger row names them CANDIDATE; register and paper tests pass |
+| R-30 | met (this review) | dispositions pending |
+| R-31 | met (as seen) | the staged Appendix E table typesets every formula (MathJax; no `$` in the table text); `test_gaps_table_carries_its_mathematics_intact_into_the_page` passes. The executor's finding 4 above says the opposite (G-5) |
+| R-32 | met | the close-out's commits touch nothing under `src/`, `derivation/`, `examples/adcs/data/*.csv` or `cubesat_tradespace.sysml`; every file is in the radius or the amendment line (below) |
+
+### Definition of good enough
+
+| Item | Verdict | Evidence |
+|---|---|---|
+| R-16 to R-23 hold on the host | not met | R-17 as stated (G-4); the others hold. The slow `test_k_terms_case.py` (D-13) is red on the host, outside R-23's fast suite |
+| The comparison lists every moved number, changed conclusion and the cell list (R-24) | not met | G-2, G-3 |
+| The three tables generated and placed (R-25 to R-27), the fit unchanged in kind (R-28) | not met (narrow) | R-27 (G-3); R-25, R-26, R-28 met |
+| The prose items (R-29, R-31) and the candidates in the review | met | above |
+| The fresh review recorded with every finding disposed (R-30); R-32 | not checkable | this review is recorded; the dispositions are the driver's |
+
+### Non-goals
+
+None touched: nothing under `src/` or `derivation/`; no figure added (seven `paper/figures/*.png` and the
+behavioural view regenerated); the sampling, seeds, configurations and flags equal on all 2000 designs; the
+proposer's filter gained `dod_ok` (4409920), which keeps its training rows at the 706 it had at the gate,
+not a change of what it trains on (O-3); no container run, re-pin, `RECORD.md` or `hts-alt`; the frozen
+data and v1 model untouched; `k3-cubesat.md` deleted and `method.md` re-pointed under the amendment line.
+
+### Outside the scope
+
+`git diff --stat 944c564...cc0e1c9`: 112 files. Attributed: the close-out's own commits (above) touch only
+files of the scope's lists or the amendment line (`paper/generate_results.py`, `generate_findings.py`,
+`length_ledger.toml`, `experiments/check_designs.py`, `experiments/sensitivity.py`, `method.md`, the
+deletion of `k3-cubesat.md`, `test_v2_data.py`, `test_site.py`, `change-register.md`, `test_soft_fit.py`,
+`tests/data/soft_fit_default_reference.npz`), plus `WP23-review.md` (the review record, G-5). The other
+files in the range belong to other packages' commits on `dev`: WP24 (`docs/user-guide/*.md`, `docs/api.md`,
+`scripts/rename_facet.py`, `tests/test_rename_facet.py`, `scripts/check.py`, `WP24-*.md`), WP25
+(`docs/superpowers/notes/spike-{certificates,facet-refit,objective}/*`, `abstraction-gaps.md`,
+`WP25-*.md`), WP26 (`WP26-decisions.md`), the driver (`site/index.html`, `site/paper-map.webp`,
+`PM-BRIEF.md`, `driver-log.md`, `parallel-board.md`). No close-out change is outside its scope and amendment.
+
+- **Out-of-scope changes:** none by the close-out.
+- **Non-goals touched:** none.
+
+### Observations (not counted as failures)
+
+- **O-1.** The primary regime's pointing-error pass share is 94.9 % in the model's doc, `case-model.md` and the
+  decisions, and 95.0 % in D.17 and the docs page (one design within 1e-6 of the limit; the tables read
+  `<=` with tolerance 1e-9). One object, two printed values.
+- **O-2.** The regenerated `experiments/reports/v1-v2-comparison.md` (line 264) still lists
+  `docs/superpowers/notes/k3-cubesat.md`, which f1101ce deleted.
+- **O-3.** The check's future work reads "a proposer that also predicts the feasibility flags", not the
+  scope's "training on the fully feasible rows": the proposer already trains on the 706 feasible rows
+  (C405's note), so the scope's wording would have been false; the change is backed.
+- **O-4.** `paper.ipynb` sources changed in three cells beyond D-18's list, each with its cause in section 4.
+- **O-5.** The association sentence prints "the strongest pair, Dataset cubesat-primary: power margin and
+  energy balance, +0.982; Dataset cubesat-stock: ..." (a label pasted into prose); the docs page names the
+  regimes "aggressive | stock", the paper "primary | stock".
+- **O-6.** The vocabulary tool's exit status is 0 only with its baseline; both before and after the close-out.
+
+### Open decisions (for the driver)
+
+- **G-1. `tests/test_k_terms_case.py` pins nine metrics and the nine-metric radii** (D-13): four slow
+  failures on the host; the CI job that runs the slow files would fail on `main`. Options: accept as is /
+  fix before acceptance / follow-up work package.
+- **G-2. Stale counts the comparison does not list** (D-16, R-24): the paper's `fig-planes-k1-caption`,
+  `fig-planes-k1-lines` and `fig-planes-k3-caption` say "the other seven metrics" (six with eight metrics);
+  `fig-chart-level-caption` says "Z0, the first of eight position coordinates" (seven; the docs page says
+  seven); Appendix E (from `docs/superpowers/notes/abstraction-gaps.md`, outside the close-out's radius)
+  says "on the nine-metric data" (its row G-2), "one of the nine fitted attributes" and "659 of 706 on nine
+  attributes" and "80 of 693 quantities" (its row G-17; `sensitivity.json` now holds 685). Options: accept as is /
+  fix before acceptance / follow-up work package.
+- **G-3. Spike A's differences not all listed** (R-27): the placement table's numbers in the "all designs"
+  and "requirements met" columns and the stock regime's constrained three-term fit differ from spike A
+  without a line in section 6. Options: accept as is / fix before acceptance / follow-up work package.
+- **G-4. R-17's grep is not empty**: `compare.py` keeps the reserve in `ORIENTATION` and `POWER` to read the
+  frozen frames, and `cubesat_oracle.py`'s docstring names it. Options: accept as is / fix before
+  acceptance / follow-up work package.
+- **G-5. The review record**: it is `WP23-review.md`, "Close-out" (and this section), not the scope's
+  `WP23-closeout-review.md`, which the scope's acceptance record names; and its finding 4 says R-31 was not
+  achieved while the staged page typesets Appendix E. Options: accept as is / fix before acceptance /
+  follow-up work package.
+- **G-6. The observations O-1 to O-6, as one item.** Options: accept these as is / pick any to act on.
+
+Pending with the supervisor (not open for this gate): his review of the two candidate Discussion sentences
+(C406, C407); the proposals' future work (the flag-predicting proposer, O-3); his review of the redundancy
+calls A1 and B1.
+
+### Recommendation
+
+Do not recommend acceptance yet, because the slow suite is red on the host (G-1: `test_k_terms_case.py`
+still pins nine metrics), and the paper carries stale counts in four figure captions and Appendix E that
+the comparison does not list (G-2), so D-13, D-16 and R-24 are not met. The model, the data, the
+regeneration, the three tables and the prose stand on the evidence above: the requirements and spike B's
+table reproduce exactly, the Discussion candidates are backed by D.17's tables, and R-31 holds in the
+staged page.
+
+Acceptance is the supervisor's act, recorded as named above. This report does not accept the work.
