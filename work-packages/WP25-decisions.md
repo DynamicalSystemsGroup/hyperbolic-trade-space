@@ -17,3 +17,16 @@ document, with its disposition; (2) drift: the docs and notes say what the code 
 vocabulary tool, the claims register, doctests, and a read of each docs page against the current API and
 defaults); (3) gaps: what exists in the code or the paper with no documentation, listed and either filled or
 scheduled. The repository state is the present; the history is git's. Step 3h on the path (recurring).
+
+## Approval, instance 1 (2026-11-09, 23:20)
+
+By the driver under the mandate (`release-candidate.md`); the record is the scope's "Gate outcomes" line: no open
+decision, the Agent's defaults A1 to A8 accepted as one item, the paper, the derivations, the package and WP23's and
+WP24's surfaces untouched by this instance. The verbatim words are the driver's to add here.
+
+## Instance 1 executed (2026-11-10)
+
+At `dev` 73c5bff: inventory db150fc (346 rows: 144 keep, 169 delete, 33 hold), deletion 09117d8 (169 files), review
+`WP25-review.md`. Checks run after the deletions: the assembled site builds; the fast suite 2 failed, 1816 passed, both
+failures the head's before the package (`C310` in the register; `limitations.md` linking into `paper/`); the vocabulary
+tool's 71 violations identical before and after; doctests 57 passed; `uv lock --check` clean. No undecided row.

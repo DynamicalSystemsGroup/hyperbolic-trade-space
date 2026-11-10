@@ -19,6 +19,9 @@ WP23's data gate, WP24's acceptance, WP16's gate, WP11's rounds, and once before
 to this document: one new line in this note naming the gate, the head and the counts, approved by the driver and
 quoted in `WP25-decisions.md`; the inventory and the review are rewritten to the present each time (A3).
 
+- Instance 1 (WP23 round 1 landed, WP24 approved): 2026-11-10, head 73c5bff; 346 rows, 169 deleted (09117d8), 33 held
+  (WP23's), 144 kept; inventory db150fc; review `WP25-review.md`: 18 drift rows, 9 gap rows.
+
 Sizing at `dev` cc409f8: 622 tracked files. A first pass (each tracked file's basename grepped across every other
 tracked file; it credits a reference to any file sharing the name, so it undercounts) finds under
 `docs/superpowers/notes/` 235 files of which 83 are referenced nowhere (75 of them under `spike-sysml-diagrams/`,
