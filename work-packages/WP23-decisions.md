@@ -344,3 +344,10 @@ set's contending set then stands, the sentence says so; a sentence is not kept b
 striking). Spike A's report stays as the research record with its conditioning rule stated and spike B's caution
 beside it. No second column. **Approved for execution by the driver under the mandate**; the Agent's defaults as
 one item; the container regression and the Linux dispatch are the driver's at the gate.
+
+**Close-out blast radius (2026-11-10, 10:35; the driver, answering the executor directly while the PM's turn was
+blocked).** `paper/generate_results.py` joins the close-out's radius for thin wrappers only: three functions that
+format the case module's association, requirements and design-sets tables for Appendix D, and one sentence each
+in the existing exponents-and-terms and regime-comparison generators; the notebook's cells stay one call each
+through `paper_common`. Option (a) of the executor's three; (b) would put Appendix D tables in Appendix C's
+generator and (c) would break the appendix's one-call rule.
