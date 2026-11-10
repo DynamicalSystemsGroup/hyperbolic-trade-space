@@ -349,6 +349,17 @@ entries:
     not: 'a fitted constant unrelated to the data'
     defined_in: 'L5, Reach and share'
 
+  - id: 'term-share'
+    term: 'term share'
+    symbol: '\mathrm{share}_k'
+    short: 'The fraction of the near-frontier designs in a term''s cell (term_share_): which terms carry most of the frontier; it depends on the band.'
+    register: 'term share'
+    formal: 'the fraction of the near-frontier rows whose cell is term k; returned as term_share_'
+    not: 'the row share, which counts all rows, or a share of a total of metrics'
+    defined_in: 'L5, Reach and share'
+    aliases:
+      - 'term shares'
+
   - id: 'near-frontier-band'
     term: 'near-frontier band'
     symbol: '\lvert\log V\rvert < 1/\tau'
@@ -442,6 +453,17 @@ entries:
       - phrase: 'maximal gap'
         reason: 'the largest term gap over the terms; name it so, and the Termination record field max_gap carries it'
 
+  - id: 'row-share'
+    term: 'row share'
+    symbol: '\lvert C_k\rvert/N'
+    short: 'The fraction of all designs in a term''s cell (the termination record''s shares); it weights the term gaps in the record''s bound.'
+    register: 'row share'
+    formal: 'the number of rows in cell k over N; returned as Termination.shares'
+    not: 'the term share, which counts the near-frontier rows only'
+    defined_in: 'L14, A8'
+    aliases:
+      - 'row shares'
+
   - id: 'assignment-margin'
     term: 'assignment margin'
     symbol: '\gamma'
@@ -520,7 +542,7 @@ entries:
     short: 'A position in the triangle: a metric''s fraction of the total of the three.'
     register: 'share'
     formal: 'c_j = m_j / S, where S is the sum of the three metrics, each in units of its typical size; the three shares sum to one'
-    not: 'a share of a total of designs, or a weight of a term (that is a coefficient of the fit)'
+    not: 'a row share or a term share (fractions of designs), or a weight of a term (that is a coefficient of the fit)'
     defined_in: 'plot_ternary (docstring, Notes)'
     aliases:
       - 'shares'
