@@ -336,6 +336,35 @@ Read tool (image view). The paper's current captions are quoted from `paper/pape
   analysis with new numbers (a non-goal). **No figure**; noted for the supervisor as a possible
   appendix item.
 
+
+### C-d2, caption step 2 (written after the first reads of Figure 3, before the second)
+
+Why: both first readers of Figure 3 (P3, P6) read the bands from the caption correctly, and both were
+left with points above the line ("looks like a fit through the cloud, not an envelope", P6) and an
+opaque "facets 1, 2 drawn". Both are said by the code: `examples/adcs/k_terms._slice` draws a facet's
+line in the plane of two metrics with the other eight held at the median of that facet's
+near-frontier designs, and draws a facet only where it weighs both metrics; designs are coloured by
+the facet whose term is largest for them (`plotting.facet_labels`). So a design can lie above the line
+in this plane and still be inside the surface. The same holds for Figure 2 (one facet).
+
+Caption, step 2 (Figure 3): "Log-metric planes of the K = 3 fit, each a slice: a facet's line holds the
+other eight metrics at the median of that facet's near-frontier designs, so a design can lie above the
+line here and still be inside the surface. Designs are coloured by the facet whose term is largest for
+them; a facet is drawn only where it weighs both plotted metrics; grey: the near-frontier band. In the
+bottom panel peak slew power is set by the discrete choices: with the small or medium wheel it takes
+one value per wheel class and tracker grade (the six horizontal bands); the large wheel's designs form
+the lower cloud."
+
+Caption, step 2 (Figure 2, the same clause): "Log-metric plane of the K = 1 fit (primary regime) in the
+two metrics with the facet's largest exponents. The line is a slice of the surface: the other eight
+metrics are held at the median of the near-frontier designs, so designs off that median fall on either
+side of it; grey: the near-frontier band."
+
+Hypothesis H-d2b: fresh P1 and P6 readers at L-B, given the image and then this caption, no longer
+read the line as a fit through the cloud and say why points lie above it. Figures 5 and 6 add
+"(association: the Pearson correlation of the log-metrics)", the measure `tension_report` uses by
+default and the case does not change.
+
 ---
 
 ## Ready for placement (for the paper stream; R-14: the PM routes them; nothing here edits the notebook)
