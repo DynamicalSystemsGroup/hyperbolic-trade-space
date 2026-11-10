@@ -376,3 +376,13 @@ does not list, the comparison's missing placement numbers, a grep reason, two ro
 gaps are re-checked. The record stays in `WP23-review.md` (one record file per package). R-31: the reviewer saw
 Appendix E typeset on the staged page after the generator change; the fix unit confirms A and E in the browser
 before anything else is done. The container regression and the swap call wait for the re-check.
+
+## The close-out gate (2026-11-10, 12:55; the driver)
+
+The fix-forward is complete at b9d8b80 (the review's G-1 to G-4 and O-1, O-2, O-5 closed; R-31 holds with
+Appendices A and E typeset, no raw math on the page). Linux dispatched on b9d8b80; the Mac watcher's run follows;
+the container regression (the environment of record rebuilt at this head, the gate's regeneration and the paper's
+execution inside it, the exact outputs re-pinned from the container, the robustness image run with the tolerance
+branches) is dispatched as one unit per the supervisor's rule that the container is a gate check. The close-out
+is accepted and the model and data of record stand when all three are green; a changed conclusion, flag or count
+in the container's outputs reopens it.
