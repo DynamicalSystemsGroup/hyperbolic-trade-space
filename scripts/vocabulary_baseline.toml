@@ -1,670 +1,595 @@
 # Known vocabulary violations (check_vocabulary.py). A row is a debt, with an owner;
 # the test fails on a violation not listed here. Remove a row when it is fixed.
+# Reasons carry the WP10 re-triage disposition (work-packages/WP10-vocabulary-review.md):
+# SYNONYM (replace with the glossary term), BASELINE (reason), NEW-TERM (for the driver), FIRST-USE.
+
+[[violation]]
+kind = "avoid"
+file = "docs/api.md"
+phrase = "fitted surface"
+owner = "WP8a docsite stream"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "docs/getting-started.md"
+phrase = "working temperature"
+owner = "WP8a docsite stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "avoid"
 file = "docs/index.md"
 phrase = "exchange rates"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (avoid)"
+reason = "SYNONYM of elasticity: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "docs/theory.md"
+phrase = "constant rate"
+owner = "WP8a docsite stream"
+reason = "SYNONYM of elasticity: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "docs/theory.md"
+phrase = "working temperature"
+owner = "WP8a docsite stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "docs/user-guide/conditioning.md"
+phrase = "fitted surface"
+owner = "WP8a docsite stream"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "docs/user-guide/limitations.md"
+phrase = "learned surface"
+owner = "WP8a docsite stream"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "docs/user-guide/limitations.md"
+phrase = "varying rate"
+owner = "WP8a docsite stream"
+reason = "SYNONYM of elasticity: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "docs/user-guide/limitations.md"
+phrase = "working temperature"
+owner = "WP8a docsite stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "docs/user-guide/tensions.md"
+phrase = "fitted temperature"
+owner = "WP8a docsite stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "docs/user-guide/tensions.md"
+phrase = "working temperature"
+owner = "WP8a docsite stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "docs/user-guide/termination.md"
+phrase = "weighted gap"
+owner = "WP8a docsite stream"
+reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "glossary.yaml"
+phrase = "fitted surface"
+owner = "PM (glossary)"
+reason = "SYNONYM of fitted reference surface: the glossary entry's own wording uses the synonym; the glossary owner amends the entry text (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "glossary.yaml"
+phrase = "working temperature"
+owner = "PM (glossary)"
+reason = "SYNONYM of fit temperature: the glossary entry's own wording uses the synonym; the glossary owner amends the entry text (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/paper.ipynb"
+phrase = "fitted posynomial reference surface"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/paper.ipynb"
+phrase = "fitted surface"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/paper.ipynb"
+phrase = "posynomial surface"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/paper.ipynb"
+phrase = "sample envelope"
+owner = "WP10 paper stream"
+reason = "SYNONYM of supporting envelope: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/paper.ipynb"
+phrase = "selected temperature"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/paper.ipynb"
+phrase = "working temperature"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/supporting_material.ipynb"
+phrase = "explicit radius"
+owner = "WP10 paper stream"
+reason = "SYNONYM of stable radius: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/supporting_material.ipynb"
+phrase = "extension temperature"
+owner = "WP10 paper stream"
+reason = "SYNONYM of term temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/supporting_material.ipynb"
+phrase = "fitted surface"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/supporting_material.ipynb"
+phrase = "maximal gap"
+owner = "WP10 paper stream"
+reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/supporting_material.ipynb"
+phrase = "selected temperature"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/supporting_material.ipynb"
+phrase = "soft maximum temperature"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "paper/supporting_material.ipynb"
+phrase = "working temperature"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "src/hyperbolic_trade_space/estimator.py"
+phrase = "weighted gap"
+owner = "package docstrings"
+reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "weighted gap"
+owner = "package docstrings"
+reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "src/hyperbolic_trade_space/tensions.py"
+phrase = "fitted temperature"
+owner = "package docstrings"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "src/hyperbolic_trade_space/tensions.py"
+phrase = "matching temperature"
+owner = "package docstrings"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "avoid"
+file = "src/hyperbolic_trade_space/tensions.py"
+phrase = "working temperature"
+owner = "package docstrings"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "first-use"
 file = "paper/paper.ipynb"
 phrase = "assignment"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "first-use"
 file = "paper/paper.ipynb"
 phrase = "fit temperature"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "first-use"
 file = "paper/paper.ipynb"
 phrase = "improvement factor"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "first-use"
 file = "paper/paper.ipynb"
 phrase = "level offset"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "first-use"
 file = "paper/paper.ipynb"
 phrase = "position along the frontier"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "first-use"
 file = "paper/paper.ipynb"
 phrase = "term temperature"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
+reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/api.md"
 phrase = "fitted surface"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/examples.md"
 phrase = "power margin"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: a named attribute of the cubesat case (power_margin_w), a proper name of the case (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/getting-started.md"
 phrase = "working temperature"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/index.md"
 phrase = "exchange rate"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of elasticity: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/theory.md"
 phrase = "constant rate"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of elasticity: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/theory.md"
 phrase = "level surface"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/theory.md"
 phrase = "working temperature"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/chart.md"
 phrase = "finite temperature"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: finite qualifies the fit temperature; the glossary entries themselves use the form (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/conditioning.md"
 phrase = "error rate"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: ordinary English: an example of an attribute (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/conditioning.md"
 phrase = "fitted surface"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/fitting.md"
 phrase = "finite temperature"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: finite qualifies the fit temperature; the glossary entries themselves use the form (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/fitting.md"
 phrase = "mean gap"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "NEW-TERM candidate for the driver: mean slack (attribute mean_slack_, 13 reader items ask for it); the page says mean gap (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/fitting.md"
 phrase = "select temperature"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: code identifier select_temperature in a runnable example (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/limitations.md"
 phrase = "finite temperature"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: finite qualifies the fit temperature; the glossary entries themselves use the form (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/limitations.md"
 phrase = "infinite temperature"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: infinite qualifies the fit temperature; the glossary entries themselves use the form (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/limitations.md"
 phrase = "learned surface"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/limitations.md"
 phrase = "varying rate"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of elasticity: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/limitations.md"
 phrase = "working temperature"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/tensions.md"
 phrase = "fitted temperature"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/tensions.md"
 phrase = "infinity program"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: tokenizer artifact of \"tau = infinity program\": the linear program at infinite fit temperature (supporting envelope) (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/tensions.md"
 phrase = "working temperature"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/termination.md"
 phrase = "infinite temperature"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: infinite qualifies the fit temperature; the glossary entries themselves use the form (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/termination.md"
 phrase = "max gap"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: record field max_gap (code identifier or table column header); the prose name is the facet gap (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/termination.md"
 phrase = "median gap"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: ordinary word gap inside the definition of the median margin (termination page) (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/termination.md"
 phrase = "median margin"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: statistic of the assignment margin over rows (record field median_margin), not a second object (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/termination.md"
 phrase = "smallest gap"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: ordinary word gap inside the definition of the assignment margin (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/termination.md"
 phrase = "weighted gap"
 owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
 phrase = "across temperature"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: plural of the fit temperature in a figure caption; fit is implied by the sweep (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
 phrase = "convex envelope"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: ordinary mathematics: a property of V (log-convex), not one of the three frontier objects (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
 phrase = "duality gap"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: standard convex-optimization term (Boyd and Vandenberghe); candidate for the glossary assumed list (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
 phrase = "fitted surface"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
 phrase = "level surface"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: level surfaces of V: the mathematical class of level sets (the \"hyperbolic\" gloss) (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
 phrase = "power margin"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: a named attribute of the cubesat case (power_margin_w), a proper name of the case (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
 phrase = "reference surface"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
 phrase = "row gap"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: ordinary word gap: the per-row score difference whose minimum is the assignment margin (L13) (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
 phrase = "sample envelope"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of supporting envelope: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
 phrase = "selected temperature"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
 phrase = "sided envelope"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: one-sided envelope: ordinary adjective phrase describing a cited method and this method's boundary, no second object (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
 phrase = "working temperature"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/supporting_material.ipynb"
 phrase = "abstraction gap"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "NEW-TERM candidate for the driver: abstraction gap is the object Appendix E registers as G-1.. and the title names; no glossary name (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/supporting_material.ipynb"
 phrase = "assert gap"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: assertion text printed in the generated proof table from derivation/ (a code line) (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/supporting_material.ipynb"
 phrase = "different temperature"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: plural of the fit temperature in a comparison; fit is implied by the sentence (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/supporting_material.ipynb"
 phrase = "duality gap"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: standard convex-optimization term (Boyd and Vandenberghe); candidate for the glossary assumed list (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/supporting_material.ipynb"
 phrase = "explicit radius"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of stable radius: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/supporting_material.ipynb"
 phrase = "extension temperature"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "SYNONYM of term temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "paper/supporting_material.ipynb"
 phrase = "finite temperature"
 owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "fitted surface"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "infinite temperature"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "instance margin"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "level surface"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "lp gap"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "max gap"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "maximal gap"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "maximum temperature"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "objective margin"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "order gap"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "perturbed margin"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "positive margin"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "power margin"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "recovery rate"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "reference surface"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "regression surface"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "row gap"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "selected temperature"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "sided envelope"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "sided surface"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "signomial program"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "summand gap"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "unshifted gap"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "working temperature"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "zero margin"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/estimator.py"
-phrase = "finite temperature"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/estimator.py"
-phrase = "parameter temperature"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/estimator.py"
-phrase = "weighted gap"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/gaps.py"
-phrase = "knn gap"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/plotting.py"
-phrase = "wireframe surface"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
-phrase = "duality gap"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
-phrase = "float temperature"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
-phrase = "max gap"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
-phrase = "order gap"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
-phrase = "recovery rate"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
-phrase = "return gap"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
-phrase = "smallest gap"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
-phrase = "weighted gap"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/tensions.py"
-phrase = "fitted temperature"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/tensions.py"
-phrase = "matching temperature"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/tensions.py"
-phrase = "working temperature"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/tuning.py"
-phrase = "return temperature"
-owner = "package docstrings"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
+reason = "BASELINE: finite qualifies the fit temperature; the glossary entries themselves use the form (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
@@ -676,6 +601,300 @@ reason = "G-18 ledger text (WP21 D-8), regenerated into Appendix E; no glossary 
 [[violation]]
 kind = "stem"
 file = "paper/supporting_material.ipynb"
+phrase = "fitted surface"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "infinite temperature"
+owner = "WP10 paper stream"
+reason = "BASELINE: infinite qualifies the fit temperature; the glossary entries themselves use the form (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "instance margin"
+owner = "WP10 paper stream"
+reason = "BASELINE: assertion text printed in the generated proof table (a code line) (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "level surface"
+owner = "WP10 paper stream"
+reason = "BASELINE: level surfaces of V: the mathematical class of level sets (the \"hyperbolic\" gloss) (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
 phrase = "loss envelope"
 owner = "P1"
 reason = "G-18 ledger text (WP21 D-8), regenerated into Appendix E; no glossary term replaces it"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "lp gap"
+owner = "WP10 paper stream"
+reason = "BASELINE: duality gap of the linear program; standard convex-optimization vocabulary (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "max gap"
+owner = "WP10 paper stream"
+reason = "BASELINE: column header of the generated termination table (record field max_gap) (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "maximal gap"
+owner = "WP10 paper stream"
+reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "maximum temperature"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "objective margin"
+owner = "WP10 paper stream"
+reason = "BASELINE: lemma-script identifier or cell label in a generated table (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "order gap"
+owner = "WP10 paper stream"
+reason = "BASELINE: first-order gap: the definition wording of the facet gap itself (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "perturbed margin"
+owner = "WP10 paper stream"
+reason = "BASELINE: lemma-script identifier printed in the generated proof table (a code line) (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "positive margin"
+owner = "WP10 paper stream"
+reason = "BASELINE: assertion text printed in the generated proof table: the assignment margin is positive (a code line) (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "power margin"
+owner = "WP10 paper stream"
+reason = "BASELINE: a named attribute of the cubesat case (power_margin_w), a proper name of the case (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "recovery rate"
+owner = "WP10 paper stream"
+reason = "BASELINE: ordinary statistic: the share of planted facets recovered in the experiments (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "reference surface"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "regression surface"
+owner = "WP10 paper stream"
+reason = "BASELINE: the cited sources' regression fits, contrasted with this method's envelope (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "row gap"
+owner = "WP10 paper stream"
+reason = "BASELINE: ordinary word gap: the per-row score difference whose minimum is the assignment margin (L13) (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "selected temperature"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "sided envelope"
+owner = "WP10 paper stream"
+reason = "BASELINE: one-sided envelope: ordinary adjective phrase describing a cited method and this method's boundary, no second object (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "sided surface"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "signomial program"
+owner = "WP10 paper stream"
+reason = "BASELINE: cited sources' term, reported in Appendix G not used (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "summand gap"
+owner = "WP10 paper stream"
+reason = "BASELINE: lemma-script identifier printed in the generated proof table (a code line) (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "unshifted gap"
+owner = "WP10 paper stream"
+reason = "BASELINE: proof-step wording: the gap of the unshifted objective, a difference of objective values in L2 (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "working temperature"
+owner = "WP10 paper stream"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "zero margin"
+owner = "WP10 paper stream"
+reason = "BASELINE: margin short for the assignment margin inside the termination levels that define it (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/estimator.py"
+phrase = "finite temperature"
+owner = "package docstrings"
+reason = "BASELINE: finite qualifies the fit temperature; the glossary entries themselves use the form (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/estimator.py"
+phrase = "parameter temperature"
+owner = "package docstrings"
+reason = "BASELINE: numpydoc Parameters entry of a docstring (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/estimator.py"
+phrase = "weighted gap"
+owner = "package docstrings"
+reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/gaps.py"
+phrase = "knn gap"
+owner = "package docstrings"
+reason = "BASELINE: code identifier knn_gap_scores in a docstring (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/plotting.py"
+phrase = "wireframe surface"
+owner = "package docstrings"
+reason = "BASELINE: ordinary plotting term in a docstring (the V = 1 wireframe) (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "duality gap"
+owner = "package docstrings"
+reason = "BASELINE: standard convex-optimization term (Boyd and Vandenberghe); candidate for the glossary assumed list (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "float temperature"
+owner = "package docstrings"
+reason = "BASELINE: numpydoc type line \"tau : float\" in a docstring (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "max gap"
+owner = "package docstrings"
+reason = "BASELINE: record field max_gap (code identifier or table column header); the prose name is the facet gap (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "order gap"
+owner = "package docstrings"
+reason = "BASELINE: first-order gap: the definition wording of the facet gap itself (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "recovery rate"
+owner = "package docstrings"
+reason = "BASELINE: ordinary statistic: the share of planted facets recovered in the experiments (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "return gap"
+owner = "package docstrings"
+reason = "BASELINE: numpydoc Returns entry of a docstring (a variable name) (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "smallest gap"
+owner = "package docstrings"
+reason = "BASELINE: ordinary word gap inside the definition of the assignment margin (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/solvers.py"
+phrase = "weighted gap"
+owner = "package docstrings"
+reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/tensions.py"
+phrase = "fitted temperature"
+owner = "package docstrings"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/tensions.py"
+phrase = "matching temperature"
+owner = "package docstrings"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/tensions.py"
+phrase = "working temperature"
+owner = "package docstrings"
+reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "src/hyperbolic_trade_space/tuning.py"
+phrase = "return temperature"
+owner = "package docstrings"
+reason = "BASELINE: numpydoc Returns entry of a docstring (WP10 re-triage 2026-11-09)"

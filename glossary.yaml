@@ -201,6 +201,14 @@ entries:
         reason: 'the surface models the data underlying the table; the table and its reading are views'
       - phrase: 'models the table'
         reason: 'the surface models the data underlying the table; the table and its reading are views'
+      - phrase: 'fitted surface'
+        reason: 'the fitted reference surface is the one named object; a bare fitted surface leaves open which of the three frontier objects is meant'
+      - phrase: 'learned surface'
+        reason: 'the fitted reference surface is the one named object; learned surface is a second name for it'
+      - phrase: 'posynomial surface'
+        reason: 'the fitted reference surface is the one named object; the posynomial is the fit, the surface is its level V = 1'
+      - phrase: 'fitted posynomial reference surface'
+        reason: 'the surface is named fitted reference surface; the posynomial qualifier adds a second name'
 
   - id: 'supporting-envelope'
     term: 'supporting envelope'
@@ -209,6 +217,9 @@ entries:
     formal: 'the hyperplane of the infinite-temperature fit, found by a linear program'
     not: 'an envelope of the attainable set'
     defined_in: 'L5, I1, G-1'
+    avoid:
+      - phrase: 'sample envelope'
+        reason: 'the envelope of the sample is the supporting envelope; use the glossary name so the three frontier objects stay apart'
 
   - id: 'pareto-boundary'
     term: 'Pareto boundary'
@@ -287,6 +298,17 @@ entries:
     formal: 'the entropic softness of the log-mean-exp'
     not: 'a noise level or a model parameter fitted from the data'
     defined_in: 'L5, A3, G-9'
+    avoid:
+      - phrase: 'working temperature'
+        reason: 'the fit temperature is the one name for tau; working temperature is a second name for it'
+      - phrase: 'fitted temperature'
+        reason: 'the fit temperature is a setting the analyst chooses or selects, not a fitted quantity'
+      - phrase: 'selected temperature'
+        reason: 'the fit temperature is the one name for tau, however it was chosen'
+      - phrase: 'soft maximum temperature'
+        reason: 'the fit temperature is the one name for tau, the entropic softness of the soft maximum'
+      - phrase: 'matching temperature'
+        reason: 'the fit temperature is the one name for tau; the band is 1/tau'
 
   - id: 'term-temperature'
     term: 'term temperature'
@@ -296,6 +318,9 @@ entries:
     formal: 'the softness of the weights softmax_k(kappa score) over the K terms'
     not: 'the fit temperature'
     defined_in: 'L10, A6'
+    avoid:
+      - phrase: 'extension temperature'
+        reason: 'the term temperature (kappa) is the one name for the softness of the weights over the terms'
 
   - id: 'support-weights'
     term: 'support weights'
@@ -338,6 +363,10 @@ entries:
         reason: 'it reads as money; the quantity is a ratio of exponents, the percentage of one metric given up per percentage gained in another, and the theorem that derives it (L7) is named for elasticities'
       - phrase: 'exchange rates'
         reason: 'it reads as money; the quantity is a ratio of exponents, the percentage of one metric given up per percentage gained in another, and the theorem that derives it (L7) is named for elasticities'
+      - phrase: 'constant rate'
+        reason: 'the rate at which one metric trades for another along a facet is the elasticity, constant along a facet'
+      - phrase: 'varying rate'
+        reason: 'the rate at which one metric trades for another is the elasticity, which changes from facet to facet'
 
   - id: 'participation-threshold'
     term: 'participation threshold'
@@ -371,6 +400,11 @@ entries:
     formal: 'the first-order gap of the facet''s refit on the simplex'
     not: 'the distance to the optimum'
     defined_in: 'L12, L3, L4, I8, F12'
+    avoid:
+      - phrase: 'weighted gap'
+        reason: 'the weighted refit of a term in the soft fit has a facet gap G_k; weighted gap is a second name for it'
+      - phrase: 'maximal gap'
+        reason: 'the largest facet gap over the terms; name it so, and the Termination record field max_gap carries it'
 
   - id: 'assignment-margin'
     term: 'assignment margin'
@@ -388,6 +422,9 @@ entries:
     formal: 'gamma divided by twice the largest row norm'
     not: 'a bound on estimation error'
     defined_in: 'L13, I9, R2'
+    avoid:
+      - phrase: 'explicit radius'
+        reason: 'the radius within which score changes keep the assignment is the stable radius'
 
   - id: 'termination-status'
     term: 'termination status'
