@@ -929,6 +929,21 @@ Grouped for the PM's decision at or after the gate:
 - F. The assembly view's composition lines cross two box headers (R3-P3-15); round 4 changed its
   legend, not its layout, and did not say whether the crossings remain.
 
+**The PM's dispositions of A to F (2026-11-10, early; the round cap of four is reached, so each open
+finding gets a disposition here rather than another round).** A: added to the post-gate heatmap redraw
+list (the drawing is `case.tau_sweep_figure`'s, a non-goal of this package): the grey scale's
+resolution near zero, one tau axis for both panels, and the intent sentence to claim exactly what the
+panel shows. B, C and F: one post-gate view-consistency unit on `project.py` and `coverage.py`'s prose
+(the sources drawn as the model's analysis returns them, with the verification case named where it
+differs; one name for the analyst's grouping; the regime names tied to the model's gain boxes in the
+caption; tags at one identifier level; the composition lines routed clear of box headers), run after the
+gate so the committed views are regenerated once more with the paper's figures. D: a one-line
+correction to `round-1/README.md` in that unit (the estimator's messages index terms from 0 in the K = 3
+message and from 1 in the K = 1 message; the README's attribution is checked against the data, not
+assumed). E: by design and recorded as such: the behavioural view is the "what is evaluated" half; the
+thresholds and what each admits are the gate popup's tables, and the configuration variables are the
+assembly view's; no change to the view.
+
 ## Trace table
 
 WP22's trace table, updated for the r2 model (`cubesat_r2.sysml` at `dev`, sha256 `8363152af0b7`,
