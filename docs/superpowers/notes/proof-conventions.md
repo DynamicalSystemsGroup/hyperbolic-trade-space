@@ -156,3 +156,14 @@ Theorem 12.1 with the LICQ of Definition 12.4, and L3 computes the LICQ (the act
 all-ones vector and e_j for each w_j = 0, are independent because A2 leaves some w_k > 0), with a
 negative control (all coordinates zero: dependent). A proof does not lean on a later lemma through a
 textbook (convexity, L4, is not needed for necessity).
+
+## What the lemma scripts are, in the author's words (2026-11-09)
+
+The SymPy scripts substitute for pencil-and-paper mathematics, not for formal verification. The author's
+description: an efficient trade between rigor and friction on the scientific Python stack; pen-and-paper or LaTeX
+proofs are free form with no tool support, proof assistants such as Lean bring domain languages, friction and
+interpretability gaps for the uninitiated, and the scripts sit between ("business casual methods", his phrase, said
+in jest and not for the paper). So the paper and the docs say "machine-checked" or "a derivation checked step by
+step", never "formally verified", "mechanised" or "proved in a proof assistant"; "formal" keeps its Tall-worlds
+sense (the formal object, the formal statement). The one formal prover in the project is Z3, inside the SysML v2
+tooling's model checks (`verify --solve`), and "formal verification" is said only of those.
