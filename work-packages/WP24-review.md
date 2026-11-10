@@ -432,3 +432,147 @@ passed), and `tests/test_docs.py::test_register_phrases_present` fails instead: 
   (`docs/superpowers/notes/abstraction-gaps.md`), `tab-B-proofs-fit` L3.9 (A1, the tool's exempt handling).
 - `docs/superpowers/notes/notation.md`: the register phrase `facet gap` (and its other rows) read by two tests.
 - The docs pages, `site/index.html`, the glossary and the tool's `avoid` and `stems` (push 4).
+
+## Push 4 (the docs pages, the root page, the generated tables' sources, the glossary; the check turned on)
+
+Commits on dev: "WP24 push 4: the word ... leaves the docs, the root page and the generated tables; the glossary turns
+the check on" (the change) and the commit carrying this section (`paper/container/RECORD.md` and this review). Push 3's
+two commits land in the same push, rebased, as the driver decided (`driver-log.md`, 2026-11-10: "push 3 is coherent
+only with push 4; the two land together"). The hashes are in the PM's report (they move with the rebase before the push).
+
+### What changed
+
+- Docs pages (D-11): `docs/api.md` (the fitted attributes `cell_`, `term_share_`; `cell_labels`), `docs/theory.md`,
+  `docs/examples.md` (the ternary section's alt text and two bullets), `docs/user-guide/{chart,fitting,tensions,
+  limitations,termination}.md` (term for the model object, cell for the assignment, the renamed public names
+  `assign_cells`, `refit_step`, `cell_`, `term_share_`, `term gap`). `README.md` and `mkdocs.yml` carried no
+  occurrence and are unchanged.
+- The gloss (A7), on the docs home page, `docs/index.md`, the first use of the term in the docs: "it fits a frontier
+  model in the posynomial invariant form: a sum of monomial terms, where a monomial term (a product of powers of the
+  metrics) is one trade-off." The quilt sentence (A6, optional on the index) is not carried: the page's word budget
+  (250) holds the gloss and not both.
+- `site/index.html`: Figure 1's alt text and caption ("the three terms of the fitted reference surface"; the figure's
+  own labels say "term 1" to "term 3" and "terms laid flat" since push 1), the map's alt text, caption and reading
+  paragraph ("the several-term extension", "the several-term algorithm").
+- Figure (D-10): `three-facets-{light,dark}.png` is `three-terms-{light,dark}.png` (`docs/user-guide/fitting.md`,
+  `tests/test_site.py`). `docs/generated/` is git-ignored: the figure and the compiled glossary page are built at
+  staging (`scripts/build_figures.py` from the page's own name; `scripts/build_generated.py`); nothing committed.
+- `glossary.yaml` (D-1): entries `facet` and `facet gap` removed; `term gap` present (id `term-gap`); the `term` entry's
+  phrase is "monomial term" with `term` as an alias, its `not` carries the polyhedral exclusion in plain words ("a face
+  of the Pareto boundary or of the data's convex hull"), and "facet" is under its `avoid` with the reason; "facet" is in
+  `assumed` with its reason (polyhedral geometry, Boyd and Vandenberghe level, A1); the stem `facet` is out of `stems`;
+  cross-references in `cell`, `n-lemma`, `elasticity`, GP and GGP `not`, `assignment margin`, `stable radius`,
+  `conditioning of the exponents`, `ternary plot`, `share`, `region` rewritten; `defined_in` of `ternary plot` and
+  `region` point at `plot_ternary (docstring, Notes)` (the spike-ternary report pointers, WP25's row). The held patch of
+  the preparation worktree was the base.
+- `scripts/vocabulary_baseline.toml` (D-12): the six reasons reworded ("term gap", "planted terms"); two rows removed
+  because fixed (`docs/user-guide/fitting.md` "mean gap", `paper/paper.ipynb` "across temperature"); no row added.
+- Generated tables' sources: `paper/prior_art.yaml` (the Pareto, DEA and frontier-estimation rows: the word was the
+  model's, not DEA's polyhedral one, so reworded, no marker); `docs/superpowers/notes/abstraction-gaps.md` (the
+  vocabulary, and the test names renamed in push 1; the record paths `spike-facet-refit/` and `dup_facets.py` kept);
+  `paper/generate_proofs.py` (the exempt marker on a declared axiom whose statement uses the polyhedral word: R1 at
+  step L3.9). The tool needed no change (`scripts/check_vocabulary.py` untouched).
+- `claims_register.toml`: 24 docs fragments follow their sentences (C163, C183, C195, C196, C197, C198, C206, C271,
+  C276, C286, C287, C295, C296, C310, C326 to C329, C332, C333, C338, C339, C378, C379); every `note` takes the
+  vocabulary; `glossary:facet` and `glossary:facet-gap` backings are `glossary:term` and `glossary:term-gap`; C001's
+  backing on the spike-ternary report dropped (its `func:` backing on `plot_ternary` stays). Row count unchanged.
+- Tests: `tests/test_site.py` (the map caption pin, the figure name, three comments), `tests/test_build_generated.py`
+  (the register phrase `term gap`). No requirement weakened.
+
+### WP25 drift rows closed in the same edit
+
+| Row | Where | Now |
+|---|---|---|
+| 10 | `chart.md` L112 | "The designs are one colour by default, whatever the number of terms; in `plot_log_plane` and `plot_frontier_surface_3d`, `color="cell"` colours them by cell ... and any other string raises `ValueError`" (plotting.py `_cell_option`) |
+| 13 | `theory.md` L21-22 | "fitting several terms alternates assigning the designs to terms with a separate convex refit of each term" (`solve_terms`) |
+| 14 | `theory.md` L22-23 | "By default (`term_temperature=np.inf`) the package takes the sharp limit of the weights, one label per design, and the labels drive the refit; reading off which term scores a design highest is analysis" |
+| 15 | glossary mean slack | "The mean shortfall of the designs below the fitted reference surface, F(W) = ..., returned as mean_slack_; the several-term fit minimizes it; ..." |
+| 16 | glossary termination status | adds "or stationary (soft fit only)" |
+| 17 | glossary assignment | "Only the soft fit (finite term temperature) weighs every term against every design; at the default the labels drive the refit." |
+
+Two sentences of rows 7 and 9 were rewritten because they carried the word, and say what the code does: `chart.md`
+L60 ("log V is the maximum over terms at the default `term_temperature=inf`") and the Figure 4 caption ("the grey
+strip below it is log V from -1/tau to 0"). Rows 4 to 9 and 12 otherwise stay with WP25-2 unit B.
+
+### R-1: the sentences that keep the word (the A1 list)
+
+The vocabulary tool reads them; each carries `<!-- vocab-exempt: facet -->` in its paragraph:
+
+1. `paper/paper.ipynb`, cell `sec-methods`: R1, "the balanced point lies in the relative interior of a facet of the
+   supporting envelope with positive normal".
+2. `paper/paper.ipynb`, cell `res-L3`: Theorem L3's hypotheses, "R1 for the facet-normal reading".
+3. `paper/supporting_material.ipynb`, cell `tab-B-proofs-fit` (generated): step L3.9, R1's ledger statement, "the
+   relative interior of a facet of the frontier"; the marker is emitted by `paper/generate_proofs.py`.
+
+Outside the tool's corpus, the same polyhedral sense at its source: `derivation/axioms.py` L600, L604, L607 (R1's
+statement, role and failure mode); `derivation/lemma_11_pareto.py` L23 (L11's "the facet that blocks u'");
+`scripts/build_generated.py` L87 (R1 on the verification page). The glossary's own lines: `glossary.yaml` L139 (the
+`avoid` phrase), L595-596 (the `assumed` term and its reason). The rendered pages show the word only in items 1 to 3
+(the browser read below).
+
+### R-2: the grep against the list
+
+`grep -rni facet glossary.yaml paper src tests examples derivation docs/*.md docs/user-guide docs/generated site scripts
+claims_register.toml work-packages/interface-contract.md work-packages/interface-contract.toml README.md` at the head of
+the push, by file:
+
+| File | Lines | On the list as |
+|---|---|---|
+| `glossary.yaml` | 3 | the avoid entry and the assumed term (above) |
+| `derivation/axioms.py`, `derivation/lemma_11_pareto.py`, `scripts/build_generated.py` | 3, 1, 1 | A1 sources (above) |
+| `paper/paper.ipynb`, `paper/supporting_material.ipynb` | the three A1 sentences (source and rendered output lines); the record paths `spike-facet-refit/` (cells `app-D-own`, `app-D-recovery-text`, `tab-E-gaps`) and `dup_facets.py` (`tab-E-gaps`) | A1; record folder and file names |
+| `paper/generate_proofs.py` | 4 | the marker constant, its docstring and its use (A1 handling) |
+| `paper/generate_results.py` | 1 (L419) | the record folder `spike-facet-refit` |
+| `paper/environment_values.toml` | 1 (L57) | a record of the old array key, the reason two hashes are kept (push 1) |
+| `paper/container/RECORD.md` | 17 | past entries (A4); the new entry has none |
+| `paper/BROWSER_NOTES.md` | 7 | a record (`WP24-decisions.md`, 00:35) |
+| `paper/length_ledger.toml` | 27 | the ledger's past rows and push 3's comment block naming what was cut (records of rows; not in this push's blast radius) |
+| `derivation/PROOF_MAP_FINDINGS.md` | 1 (L166) | the supervisor's quotation |
+| `claims_register.toml` | 1 (C394's `source`, "leaves the term/facet naming to WP24") | the record of where the row came from |
+| `tests/test_paper.py`, `tests/test_diagnostic_pair.py` | 5, 1 | negative guards (the word asserted absent) |
+| `work-packages/interface-contract.md` | 5 | the change log's past rows 3, 7, 8, 11, 14 (A4) |
+| `scripts/rename_facet.py`, `tests/test_rename_facet.py`, `scripts/check.py` L60 | 104, 70, 1 | the rename tool, its test and its map line (WP25-2 deletes them) |
+| `src/`, `examples/`, `docs/*.md`, `docs/user-guide/`, `site/`, `README.md`, `work-packages/interface-contract.toml` | 0 | |
+
+`docs/generated/` is git-ignored; in the staged build its glossary page has no occurrence. No remaining line is off
+the list.
+
+### Checks
+
+| Check | Command | Output |
+|---|---|---|
+| R-1, the vocabulary tool | `uv run python scripts/check_vocabulary.py --baseline scripts/vocabulary_baseline.toml` | "0 new violation(s), 69 known", exit 0 |
+| the other violations | `uv run python scripts/check_vocabulary.py` | "69 new violation(s), 0 known" (70 before; none is the word) |
+| R-1 tests | `uv run pytest tests/test_vocabulary.py tests/test_build_generated.py` | passed (in the fast suite) |
+| register (R-8) | `uv run pytest tests/test_claims_register.py` | 21 passed; rows unchanged in number |
+| docs, site, paper, gaps | `uv run pytest -q -n 8 tests/test_paper.py tests/test_gaps.py tests/test_claims_register.py tests/test_build_generated.py tests/test_vocabulary.py tests/test_docs.py tests/test_site.py tests/test_paper_sources.py tests/test_narrative.py` | 342 passed, 4 skipped after the fix of the one vocabulary hit ("log-linear surface" in the DEA row, reworded) |
+| ruff | `uv run ruff check . && uv run ruff format --check .` | "All checks passed!"; "324 files already formatted" |
+| lock | `uv lock --check` | "Resolved 178 packages" |
+| fast suite | `uv run pytest -q -m "not slow" -n auto` | 1744 passed, 16 skipped, 1 xfailed |
+| R-14, the trailer pattern | `git log --format=%B origin/dev..HEAD \| grep -ciE "co-authored-by\|generated with"` | 0 |
+
+The word budgets of `tests/test_site.py` held by tightening, not by raising: `index.md` 239/250, `fitting.md`
+795/800, `chart.md` 596/600, `termination.md` 599/600.
+
+### The regeneration
+
+On the host, per the supervisor's rule of 09:05 (container at the gate only): `tab-A-register`, `tab-B-proofs-fit`,
+`tab-E-gaps`, `tab-G-register` and the paper's `tab-families` changed in words; `tab-B-proofs-solver` unchanged; every
+other cell byte-equal. `paper/container/RECORD.md`, the entry for WP24 push 4. The image was not rebuilt.
+
+### Read as rendered (the staged build, the browser pane at 1280 px)
+
+`uv run python scripts/stage_site.py --serve --port 8811`; the root page, the docs home, theory, API, examples,
+chart, fitting, tensions, limitations, termination, the compiled glossary and the API reference: no occurrence of the
+word, no raw markup, the gloss present on the docs home, "monomial term" on the glossary page. The paper: the word only
+in R1's sentence (and L3's hypotheses), the abstract's gloss present; the supporting material: only L3.9 (A1) and the
+record paths; the marker renders as nothing. Screenshots:
+`/private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/wp24p4-renders/`.
+Seen there and not this push's: Appendix E's HTML table shows raw `$...$` (its committed output had it before).
+
+### Open
+
+- `site/paper-map.webp`, the map on the root page, is a raster from the external review with no source in the
+  repository; its boxes say "Multi-Facet Algorithm", "Number of facets (terms)", "per-facet gap" and "each facet
+  refit". The caption and alt text now say "several-term"; the image itself cannot be regenerated here.
+- The two cold reads (R-16) follow this push.

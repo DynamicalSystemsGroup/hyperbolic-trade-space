@@ -425,6 +425,25 @@ both notebooks copied out; `hts-wp24p3` removed by name.
 
 No number of the paper moved. The environment of record stays `e852cde39180`.
 
+## Host regeneration of six generated tables after the docs and the glossary took the vocabulary (WP24 push 4, 2026-11-10, no container)
+
+No container run, by the supervisor's rule of 2026-11-10, 09:05 (`work-packages/PM-BRIEF.md`, "The container is a gate
+check, not a unit step"): a unit regenerates on the host and the container of record is the driver's regression check at
+the gate. The sources that changed are text: `glossary.yaml` (two entries of the old word gone, `term gap` and the `monomial term`
+entry), `paper/prior_art.yaml`, the gaps ledger `docs/superpowers/notes/abstraction-gaps.md`, and
+`paper/generate_proofs.py`, which now appends the vocabulary tool's exempt marker (an HTML comment, rendered as nothing)
+to a declared axiom whose statement uses the textbook polyhedral word (R1, step L3.9). The image was not rebuilt and
+`e852cde39180` stays the environment of record. The cells were executed on the Mac (macOS, the project's locked
+environment), each from a clean kernel with its notebook's setup cell only, and their outputs written in place
+(execution counts kept): in `paper/supporting_material.ipynb` `tab-A-register`, `tab-B-proofs-fit`, `tab-E-gaps`,
+`tab-G-register` changed and `tab-B-proofs-solver` was unchanged; in `paper/paper.ipynb` `tab-families` changed. Every
+other cell is byte-equal to the commit before. The changes are words only; no number moved.
+
+| command (host) | result |
+|---|---|
+| the six cells, each with its notebook's setup cell, by `nbclient` | five outputs changed in words, one unchanged |
+| `uv run pytest -q -n 8 tests/test_paper.py tests/test_gaps.py tests/test_claims_register.py tests/test_build_generated.py tests/test_vocabulary.py tests/test_docs.py tests/test_site.py tests/test_paper_sources.py tests/test_narrative.py` | 342 passed, 1 failed, 4 skipped before the last rewording of the DEA row; after it and the two cells regenerated again, the vocabulary and paper tests pass (the whole fast suite in `WP24-review.md`, Push 4) |
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes
