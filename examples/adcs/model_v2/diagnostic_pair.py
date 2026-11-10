@@ -15,7 +15,7 @@ round's two tables, the traded-metric list of the coverage table and an output f
   contending set and its n-lemma) and the K = 3 fit per monomial term (its cell's rows and share,
   the contending set, the n-lemma, the leading metrics by exponent, the near-frontier count, the
   reach and the gap), as :func:`case.fit_line`, :func:`case.tension_table`,
-  :func:`case.facet_table` and :func:`case.exponent_table` report them;
+  :func:`case.term_table` and :func:`case.exponent_table` report them;
 * ``coverage.md``, copied from beside the coverage table.
 
 The two regimes are named ``primary`` and ``baseline`` in everything written here; the CaseSpec of
@@ -42,7 +42,6 @@ import csv
 import dataclasses
 import os
 import pathlib
-import re
 import shutil
 import sys
 
@@ -53,7 +52,6 @@ if str(ADCS) not in sys.path:  # the case module lives beside model_v2/ (pytest 
 
 import case  # noqa: E402
 
-TERM = re.compile(r"^facet\b")  # the case tables' column names; a round's record says "term"
 ZERO = 1e-3  # the figure's own threshold for a metric "with w > 1e-3" (case.tau_sweep)
 REGIME = {"primary": "primary", "stock": "baseline"}  # the CaseSpec's key -> the round's word
 FIGURES = {"primary": "heatmap.png", "stock": "heatmap_baseline.png"}
@@ -108,7 +106,7 @@ def round_spec(dataset: pathlib.Path, gains: pathlib.Path, metrics: list[str]) -
 
 
 def _md(df) -> str:
-    cols = [TERM.sub("term", str(c)) for c in df.columns]
+    cols = [str(c) for c in df.columns]
     lines = ["| " + " | ".join(cols) + " |", "|" + "---|" * len(cols)]
     for _, r in df.iterrows():
         lines.append("| " + " | ".join(_cell(v) for v in r) + " |")
@@ -153,16 +151,16 @@ def term_cells(study, fits) -> str:
     import pandas as pd
 
     est = fits[3].estimator
-    sizes = np.bincount(est.facet_, minlength=3)
+    sizes = np.bincount(est.cell_, minlength=3)
     cells = {
-        "term": range(1, 4), "rows": sizes.astype(int), "share": est.facet_share_,
+        "term": range(1, 4), "rows": sizes.astype(int), "share": est.term_share_,
         "reach beta_k": est.log_offset_,
     }  # fmt: skip
     return _md(pd.DataFrame(cells))
 
 
 def term_table(study, fits) -> tuple[str | None, str]:
-    """:func:`case.facet_table` at K = 3 with a note naming the report band.
+    """:func:`case.term_table` at K = 3 with a note naming the report band.
 
     The function's default band is the K = 1 band; when a term's cell has too few near-frontier
     designs there (the report refuses), the table is taken at its other documented default, the
@@ -170,10 +168,10 @@ def term_table(study, fits) -> tuple[str | None, str]:
     no report table and the note carries both refusals. The fit is the same in every case.
     """
     try:
-        return _md(case.facet_table(study, fits, K=3)), f"the K = 1 band 1/tau = {fits[1].band:.4g}"
+        return _md(case.term_table(study, fits, K=3)), f"the K = 1 band 1/tau = {fits[1].band:.4g}"
     except ValueError as first:
         try:
-            table = _md(case.facet_table(study, {3: fits[3]}, K=3))
+            table = _md(case.term_table(study, {3: fits[3]}, K=3))
         except ValueError as second:
             return None, (
                 f"no report: at the K = 1 band 1/tau = {fits[1].band:.4g} it refused ({first}); "
