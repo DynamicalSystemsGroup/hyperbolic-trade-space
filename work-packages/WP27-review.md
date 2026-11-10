@@ -32,6 +32,7 @@ package; the probe script is in the session scratchpad, `wp27probe/probe.py`) an
 | 15 | pointers as `String` attributes declared on the verification def and redefined on each usage (`:>> ledgerEntry = "..."`) | passes; read through the toolkit by `instantiate(<usage>).get("ledgerEntry")` (an `eval` needs the subject bound) | 0 issues; drawn as attribute nodes showing the type only (step 09) | the pointers |
 | 16 | `viewpoint def` framing a concern | passes | not tried | — |
 | 17 | a view exposing `<package>::*` where the package has private imports | passes | draws the imported libraries' members too (958 nodes, step 02) | the stakeholder view exposes each element by name |
+| 18 | `satisfy <concern>.<requirement> by <configuration> { in <parameter> = <measurement>.<parameter>; }`: a satisfy of an existing requirement usage whose `in` parameter is bound in the body (the redefinition forms, `:>> p = ...` in the body, in a new requirement usage or in `satisfy requirement ... by`, fail the strict load: "Redefining feature must have a compatible direction") | passes; the engine evaluates the binding, not the parameter's default: a settling time of 1000 s stated in the body fails the settled requirement, and the agile control effort fails under its own measurement and holds under the baseline's | 0 issues (step 23); the statement is a cell of the Satisfaction matrix under the configuration's column (steps 24, 25) | the two contrasts' verdicts (L-8) |
 
 Cross-file reference works in both parsers: every chosen construct refers to `cubesat.sysml` from the separate
 file, so the additions live in `stakeholders.sysml` and the model's bytes do not move. The two parsers disagree
@@ -50,6 +51,7 @@ twice (rows 10 and 13: the toolkit accepts, the editor rejects); the model uses 
 | L-5 | Tests: WP26's views test loads the three files; `test_stakeholders_file_loads_strictly_and_its_names_resolve` (R-1, negative control), `test_the_trace_from_who_cares_to_every_requirement_is_complete` (R-2), `test_the_rollups_are_illustrative_and_read_by_no_output` (R-7); `tests/test_verification_pointers.py` (R-6: ledger entry exists and is current, RECORD heading exists, the test node collects, the host entry names its platform; negative controls: an unknown entry, a superseded entry, an unknown heading, an unknown image) | 28f7c9c |
 | L-6 | The operator's depth-of-discharge requirement named `eclipseDepthOfDischarge` (row 13 of D-1) | a4cde2f |
 | L-7 | The baseline configuration's verdict on each concern's requirement: twelve `satisfy` / `not satisfy` statements (the pointing error negated), checked by the engine with the model's eleven (23 hold); the Satisfaction matrix shows them (D-4, step 11) | b9c8819 |
+| L-8 | The agile and compact configurations' verdicts on the same twelve requirements (WP27-decisions.md, 16:20): `agileMeasurement` and `compactMeasurement` (their slews integrated as the baseline's is recorded, re-measured by a test within the baseline test's tolerance) and twenty-four statements, the measured requirements binding their `in` parameter to the configuration's measurement (D-1 row 18). The engine checks all 47 statements of the three files and all hold: agile fails the launch budget (93,960 against 90,643 USD), the control effort (0.112 against 0.059 N.m.s) and the peak slew power (7.4 against 2.6 W); compact fails the pointing error (0.008533 against 0.008495 degree). Negative controls: a negated verdict stated as satisfied is false; the agile control effort holds once its binding is the baseline's measurement. The Satisfaction matrix shows the three configurations (D-3, steps 24, 25) | 76b1cbc |
 
 **Held** (judged right, not landed):
 
@@ -82,6 +84,16 @@ newlines: 69,991 characters, sha256 `fc116a037866…`, equal in the page and on 
   case. So "who cares" is read from the row's name, the evidence case from the column.
 - **The requirements table** (step 08), searched for `CubesatStakeholders`: the 12 rows with their declared
   verification. Not shown: the concerns as rows of their own, the stakeholder, the evidence case's pointers.
+- **The Satisfaction matrix with the three configurations** (steps 23 to 25, on the three files at L-8's content,
+  revision 4, 75,542 characters, sha256 `afeaebf9b100…` equal in the page and on disk, Issues (0);
+  `WP27-review/25-satisfaction-matrix-full-width.jpg`): searched for `CubesatStakeholders`, "12 requirements · 3
+  linked elements", the columns `cubesatAgile`, `cubesatBaseline`, `cubesatCompact`, no cell blank. Per column,
+  Declared / Negated declaration: agile 9 / 3 (the launch budget, the control effort, the peak slew power), baseline
+  11 / 1 (the pointing error), compact 11 / 1 (the pointing error), equal to the engine's 36 verdicts. A sponsor
+  reads the three designs side by side: the agile one fails their own low-cost concern and two of the operator's
+  requirements, the compact and baseline ones fail the operator's pointing requirement. The panel says "Links are
+  declarations, not verification results": the check that each declaration holds is the repository's test, not the
+  editor's (the researcher's feature request).
 
 The chain concern → requirement → verification case is readable in the editor; evidence → environment is in the
 model (the pointers, tested) but not shown by the editor's tables or diagram: those gaps go to the researcher's
@@ -179,7 +191,7 @@ The return, verbatim:
 | Point (the reader's words, short) | Disposition |
 |---|---|
 | (d), (f), (g)6: "nothing in front of me shows a verdict"; "Satisfaction matrix: 0 linked elements for these twelve"; the baseline's failure on pointing error learned "by reading a sentence inside a definition, not from the stakeholders view" | **Changed** (b9c8819): each concern's requirement carries the baseline configuration's verdict as a `satisfy` or `not satisfy` statement in `stakeholders.sysml`; the toolkit's engine checks all 23 statements of the three files and all hold; the Satisfaction matrix now shows the twelve rows against `cubesatBaseline`, 11 Declared and the pointing error's Negated declaration (step 11, `WP27-review/11-satisfaction-matrix-verdicts.jpg`). |
-| (g)1 and (g)4, a verdict "for whatever design you are asking me to fund", and the trade between the operator's eclipse slews and the sponsor's life | **To the driver**: verdicts for the agile and compact configurations are WP26's T3 (satisfy statements on the contrasts, gate class); T3 blocks the sponsor's comparison of designs in the editor, not the reading of the baseline. The life-against-slew trade needs `EffectiveLife` traded (G-1, gate). |
+| (g)1 and (g)4, a verdict "for whatever design you are asking me to fund", and the trade between the operator's eclipse slews and the sponsor's life | **Changed** for the verdicts (76b1cbc, L-8; the driver's decision of 16:20): the agile and compact configurations' verdicts on each concern's requirement are in `stakeholders.sysml`, engine-checked, and the Satisfaction matrix shows the three designs side by side (D-3, step 25). **To the driver** for the trade: the life-against-slew trade needs `EffectiveLife` traded (G-1, gate). |
 | (f), (g)2: the thresholds' numbers and the roll-ups' computed values are not on screen | **Held, reason**: the editor shows no attribute values on nodes or in its tables (the researcher's F-1); an attribute usage per configuration for the roll-ups would draw as a node with its type and no number, so it would not answer the reader. The numbers are in the model (the launch budget 90,643 USD in `budgets`' doc; cost to build 216,200 USD and effective life 5.11 years for the baseline, D-2 L-2) and readable once the editor shows values. |
 | (c), (g)3: the cost to build has a formula but no requirement and no check; the unit costs and the cycle-life rule are illustrative | **With the supervisor** (H-2, through the driver): a cost-to-build budget is his number; calibration is written down for the lifecycle demo, not built. |
 | (f), (g)5: the evidence is pointers to a repository the reader cannot open | **By design**: the model carries the pointer, the repository the evidence (WP27-decisions.md, 14:10); the pointers resolve (`tests/test_verification_pointers.py`). That the editor shows neither the pointers' values nor a link is the researcher's feature request. |
@@ -229,6 +241,14 @@ tests/test_interface_contract.py tests/test_verification_pointers.py`: 224 passe
 equals the committed one (no diff); the committed views are the generator's output (test); `check_vocabulary.py`:
 0 new violations (69 exist on the base); `ruff check` clean. No change to `cubesat.sysml`, the
 ledger, the data, the paper or the contract.
+
+At 76b1cbc (L-8): `experiments verify` 0 drifts (49 entries, 11 current); `REQUIRE_OPENSYSML=1 uv run pytest -q -m "not
+slow"` on every fast test file that reads the model (`test_case_model_howto`, `test_check_script`, `test_case`,
+`test_cubesat_oracle`, `test_diagnostic_pair`, `test_model_coverage`, `test_mutation_v2`, `test_model_checking_v2`,
+`test_paper`, `test_system_model_v2`, `test_system_model_v2_r1`, `test_v2_data`, `test_verification_pointers`) with
+`test_interface_contract` and `test_docs`: 498 passed, 4 skipped; `check_vocabulary.py`: 0 new violations (69 on the
+base); `ruff check` and `ruff format --check` clean. No change to `cubesat.sysml`, the ledger, the data, the paper or
+the contract.
 
 ## For the lifecycle demo (written down, not built)
 
