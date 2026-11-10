@@ -144,3 +144,17 @@ Worktrees alive: `wp23case` (unpushed case code), `wp24` (held glossary patch). 
 Rule added this PM (2026-11-10): a glossary entry regenerates Appendix A (`tab-A-register`) in the same push, in the environment of record.
 
 Worktrees alive: `wp24` (held glossary patch) plus the running units' own. Docker: hts-paper e852cde39180 (the environment of record; the driver's container regression at the close-out gate re-pins), hts-alt.
+
+## Packages running or scoped (sixth PM, 2026-11-10, afternoon; the close-out accepted at 657bc41 on three greens)
+
+| Unit | State |
+|---|---|
+| WP26 sequel (the modeller aee1b76f, worktree `wp27model`, tab-23) | pointers moved to the container's @7 entries 331c9e4; the edit set N1, N2, N3 + O-1's 95.0 % committed locally 3ffd8d5; host neutrality run equal to @6 on all five outputs; container re-run (hts-wp26 on 877c42cc10e3, OD1 as amended by the driver at 15:05) equal to @7 on all five, entries @8 written; the PM's call: tab-C-datasets regenerated on the host in the same push ("host-recorded, re-pin at the gate") so dev stays green; H-1 stays held (a cross-file frame breaks the single-file loaders; moving the concerns in-file is gate-sized); then the final apply in tab-23 and the pane idle for D-4; part B (one cold pass per bug, WP26's six and WP27's three) after D-4 |
+| WP27 D-6 (the researcher af1761ae) | done fbee839 (section 6 of the feedback report: Bugs 7-9 with reduced snippets, F-1 to F-5, six screenshots); the "Reproduced" fields of Bugs 1-6 wait for the modeller's cold passes |
+| WP27 D-4 (the P1 cold read in the editor) | after the sequel's push and final apply; its own tab; then the WP27 acceptance review (a fresh reviewer that runs the checks and looks at the view, the table and the matrix; the review names its nine screenshots by file) |
+| WP26 acceptance review | after the sequel lands (a fresh reviewer: the code run, the rendered pair, the six views, the editor's tables) |
+| WP25 instance 3 | scope drafted 0edab7b (OD1 spike-ternary report, OD2 v1-v2 comparison, OD3 N-a; N-b closed); for the driver's approval |
+| WP11 round 2 (depth B six personas; depth C five, P4-C held out per the recorded draw; the stage rebuilt at c6d0fff) | readers running (scratchpad/readers/round2/); then the triage against the key (a triage agent, not a reader or author), the record in WP11-round-1/triage.md as a new round section, change requests to the paper stream as units |
+| 5a. Improvement by subtraction | scoped after the content is complete (after WP11 round 2's change requests land) |
+
+Worktrees alive: `wp27model` (the modeller), `stage` (the staged build, detached). Docker: hts-paper 877c42cc10e3, hts-alt 81e06426f7b3; hts-wp26 removed after its run.
