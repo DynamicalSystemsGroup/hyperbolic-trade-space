@@ -199,9 +199,13 @@ R2_METRIC_REQUIREMENTS = {
     "BatteryPeakPowerRequirement",
 }
 _FLAG_DEFS = set(fz.FLAG_REQUIREMENTS.values())
+# The adopted model's requirement on the band being entered (the slew time's censoring). The checker
+# no longer names or reads it (WP23 D-3: the slew time left the measurement); the revision folds it
+# into SettledRequirement.
+ADOPTED_SLEW_BAND = "SlewBandRequirement"
 REQUIREMENTS = {
     "adopted": {
-        "defs": _FLAG_DEFS | {fz.SLEW_BAND_REQUIREMENT} | METRIC_REQUIREMENTS,
+        "defs": _FLAG_DEFS | {ADOPTED_SLEW_BAND} | METRIC_REQUIREMENTS,
         "satisfy": 9,
         "verified": {
             "ConfigurationVerification": {"PowerRequirement"},
@@ -348,16 +352,18 @@ def test_feasibility_module_has_no_inequality_on_quantities():
 
 
 def test_requirement_names_in_the_checker_exist_in_the_model(v2):
-    """The checker's flag requirements exist in both models; the slew-band requirement it names
-    exists in the adopted model and is folded into SettledRequirement in the revision."""
+    """The checker's flag requirements exist in both models and are the only requirements it
+    names; the adopted model's slew-band requirement is not among them (the slew time left the
+    measurement, WP23 D-3) and the revision folds it into SettledRequirement."""
     defs = set(_kinds(v2.model, "RequirementDefinition"))
     assert set(fz.FLAG_REQUIREMENTS.values()) <= defs
+    assert set(fz._ARGUMENTS) <= set(fz.FLAG_REQUIREMENTS.values())
     if v2.name == "adopted":
-        assert set(fz.FLAG_REQUIREMENTS.values()) | {fz.SLEW_BAND_REQUIREMENT} == (
+        assert set(fz.FLAG_REQUIREMENTS.values()) | {ADOPTED_SLEW_BAND} == (
             defs - METRIC_REQUIREMENTS
         )
     else:
-        assert fz.SLEW_BAND_REQUIREMENT not in defs
+        assert ADOPTED_SLEW_BAND not in defs
         assert set(fz.FLAG_REQUIREMENTS.values()) == defs - R2_METRIC_REQUIREMENTS
 
 
@@ -433,15 +439,14 @@ def test_flag_has_a_negative_control(flag, pool):
     assert not bad.holds and bad.status == "violated" and bad.strength == "witnessed", flag
 
 
-def test_slew_band_requirement_reads_the_censoring(pool):
-    """Adopted model: the slew-band requirement reads the censoring; revision: it is gone with the
-    slew time (WP23 D-1), and the checker has no requirement of that name to verify."""
-    chk, base = pool["checker"], f"{P}::cubesatBaseline"
-    if pool["v2"].name == "adopted":
-        assert chk.slew_band_entered(base, {"censored": False})
-        assert not chk.slew_band_entered(base, {"censored": True})
-    else:
-        assert fz.SLEW_BAND_REQUIREMENT not in _kinds(pool["v2"].model, "RequirementDefinition")
+def test_the_checker_reads_no_slew_band_requirement(pool):
+    """The slew time's censoring left the measurement with the slew time (WP23 D-3), so the checker
+    names no slew-band requirement and translates no `censored` key: the adopted model still
+    declares the requirement (unread), the revision folds it into SettledRequirement."""
+    chk, defs = pool["checker"], _kinds(pool["v2"].model, "RequirementDefinition")
+    assert not hasattr(fz, "SLEW_BAND_REQUIREMENT") and not hasattr(chk, "slew_band_entered")
+    assert "censored" not in {key for _, key, _ in fz._ARGUMENTS.values()}
+    assert (ADOPTED_SLEW_BAND in defs) == (pool["v2"].name == "adopted")
 
 
 # ---------------------------------------------------------------------------------------------

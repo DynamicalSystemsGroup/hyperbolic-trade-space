@@ -1,7 +1,8 @@
 """WP16 D-6: the sensitivity of the paper's conclusions to the step-quantized times.
 
-``settling_time_s`` and ``slew_time_s`` are read off the accepted steps of an adaptive RK45
-integration, so they move by up to 1.3 percent under perturbations of one unit in the last place
+``settling_time_s`` (and ``slew_time_s``, before WP23 G5 left one time metric) was read off the
+accepted steps of an adaptive RK45 integration (the oracle's ``"steps"`` method), so it moves by
+up to 1.3 percent under perturbations of one unit in the last place
 (``work-packages/swap-evidence.md``). This module measures what that does to the paper.
 
 **Regeneration.** Each of the two cubesat datasets (primary: aggressive gain box; baseline: stock
@@ -599,7 +600,7 @@ def _deviation_section(runs_dirs: Mapping[int, Path], committed_dir: Path) -> li
             "and regeneration.", "",
             _md(["column", *[f"seed {s}" for s in devs], "max rel", "max abs"], rows), "",
         ]  # fmt: skip
-        for col in ("settling_time_s", "slew_time_s"):
+        for col in ("settling_time_s",):
             moved = [
                 f"seed {sd}: {int(((t[col] - com[col]).abs() > 0.5).sum())} of {len(t)}"
                 for sd, t in regs.items()

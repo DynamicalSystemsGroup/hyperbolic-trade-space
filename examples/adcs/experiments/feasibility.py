@@ -24,13 +24,11 @@ FLAG_REQUIREMENTS = {
     "power_ok": "PowerRequirement",
     "dod_ok": "DepthOfDischargeRequirement",
 }
-SLEW_BAND_REQUIREMENT = "SlewBandRequirement"  # not a flag: qualifies the slew time
 # requirement definition -> (its `in` parameter, the measurement key, the unit it is read in)
 _ARGUMENTS = {
     "SettledRequirement": ("settlingTime", "settling_time", "SI::s"),
     "MomentumRequirement": ("peakMomentum", "peak_momentum", "SI::N*SI::m*SI::s"),
     "DepthOfDischargeRequirement": ("torqueSquaredIntegral", "torque_squared_integral", None),
-    "SlewBandRequirement": ("censored", "censored", None),
 }
 
 
@@ -69,7 +67,7 @@ class FeasibilityChecker:
         value = measured[key]
         if unit is not None:
             return {param: Quantity(float(value), self._unit(unit))}
-        return {param: bool(value) if key == "censored" else float(value)}
+        return {param: float(value)}
 
     def verify(self, flag_or_requirement: str, subject: str, measured: Mapping | None = None):
         """The raw verdict of one requirement (a flag name or a requirement name)."""
@@ -98,7 +96,3 @@ class FeasibilityChecker:
         if undecided:
             raise RuntimeError(f"requirement verdict undecided for {undecided} on {subject}")
         return {flag: v.holds for flag, v in verdicts.items()}
-
-    def slew_band_entered(self, subject: str, measured: Mapping | None = None) -> bool:
-        """Whether the slew entered the pointing band (its time is not censored)."""
-        return bool(self.verify(SLEW_BAND_REQUIREMENT, subject, measured).holds)

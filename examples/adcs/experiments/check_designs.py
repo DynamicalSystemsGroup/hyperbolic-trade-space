@@ -31,7 +31,7 @@ from .cubesat_oracle import ATTRIBUTE_NAMES, CONFIG_NAMES, SCENARIO_COLUMNS, bui
 
 POOL = 100_000
 REACH = 0.35  # predicted [Z | 2 log V] distance within which a hole counts as reachable
-METRICS = ("slew_time_s", "pointing_error_deg", "control_effort", "total_mass_kg")
+METRICS = ("settling_time_s", "pointing_error_deg", "control_effort", "total_mass_kg")
 LEAD = ("role", "design_id", "name", "seed", *CONFIG_NAMES, *ATTRIBUTE_NAMES)
 FLAGS = ("settled", "momentum_ok", "power_ok", "dod_ok", "torque_saturated_frac")
 
