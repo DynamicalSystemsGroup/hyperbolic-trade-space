@@ -346,6 +346,31 @@ shape and value; `test_soft_fit` passed in the image (exact branch). The environ
 Only `tab-E-gaps` and its two echoes in `paper/supporting_material.ipynb` changed (row G-17 of `abstraction-gaps.md` narrowed
 to the committed record); `paper/paper.ipynb` is byte-equal; the edited ledger file was copied into the container before the run.
 
+## Regeneration of Appendix B after the derivation's rename (WP24 push 2, 2026-11-10, head 90c8848)
+
+The word "facet" left the derivation (WP24 push 2): step text, statements, docstrings and the ledger say "term" for
+the model object and "cell" for the assignment; `lemma_12_facet_gap.py` moved to `lemma_12_term_gap.py`
+(`git mv`); `proof_map_record.json` regenerated with `uv run python -m derivation.proofmap --update` on the Mac.
+R1's statement keeps the textbook word (the tau = infinity polyhedral sense, the scope's A1).
+Steps, each `--network none`, in `hts-*` containers only: `sh paper/container/build.sh` at 90c8848 (35 s, cached
+layers), image `hts-paper` **`e852cde39180`**
+(`sha256:e852cde3918069d255d967fe2fd6f8aa6f7b53d148c84642c905861a447f38a1`), the previous image `9c8a0c616386`
+removed in the same step (`docker rmi`, no container on it); `docker create --name hts-wp24p2 --network none
+hts-paper sh /tmp/run.sh`, the script copied in, `docker start -a`; the notebook copied out with `docker cp`;
+`hts-wp24p2` removed by name.
+
+| command (inside `hts-paper`, `HTS_ENVIRONMENT_OF_RECORD=1`) | wall time | result |
+|---|---|---|
+| `uv run python derivation/run.py` | 9 s | "ALL LEMMAS PASS." |
+| `uv run python -m derivation.proofmap` | 1 s | "PROOF MAP OK: 17 lemma files, 371 tagged steps" |
+| `uv run python paper/paper_common.py` | 3 s | `environment_reference.npz` and `environment_values.toml` unchanged |
+| `uv run python paper/execute_notebooks.py` | 129 s | both notebooks; `paper/paper.ipynb` byte-equal to the commit; in `paper/supporting_material.ipynb` the Appendix B cells (`tab-B-proof-map`, `tab-B-proofs-fit`, `tab-B-proofs-solver`, `tab-B-checker`) in words and the moved file's name, `tab-A-register` the three glossary entries of da2984e (MoE, MoP, launch cost) not yet compiled, `tab-F-toolchain` the build commit |
+| `sh paper/container/build-paper.sh` | 5 s | the site built (a favicon 404 line from the builder's server, no error) |
+| `uv run pytest -q tests/test_paper.py -k appendix_b` | 4 s | 8 passed, 140 deselected |
+| `uv run pytest -q -n 4 tests/test_derivation.py tests/test_proof_map.py tests/test_matches_derivation.py tests/test_claims_register.py` | 77 s | 248 passed |
+
+No number of the paper moved. The environment of record is now `e852cde39180`.
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes
