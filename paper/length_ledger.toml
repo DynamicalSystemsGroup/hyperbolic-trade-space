@@ -290,6 +290,18 @@ words_added = 8
 job = "replaces soft supporting envelope with the plain picture: fitted to the outer edge of the data, not through its middle (CR-1c)"
 reader = "the reader of the abstract alone, 4 of 4 of whom read an envelope as a boundary"
 
+[[abstract.raise]]
+date = "2026-11-09"
+words_added = 9
+job = "glosses energy differential at its first use: the level relative to the surface, by analogy with a potential, not a physical energy (the supervisor's decision, CR-5)"
+reader = "the reader of the abstract alone, 16 of 16 of whom guessed at the term"
+
+[[abstract.raise]]
+date = "2026-11-09"
+words_added = 8
+job = "says PCA and the method are distinct and compose, PCA run on the chart, in place of mirrors the structure of PCA (the supervisor's decision)"
+reader = "the reader of the abstract alone, 7 of 8 of whom took the method for a replacement of PCA"
+
 # Rows: PM-BRIEF ruling 2 (Theorem 11, descent): cell and facet kept apart.
 
 [[raise]]

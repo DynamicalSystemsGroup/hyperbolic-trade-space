@@ -698,7 +698,7 @@ note = "Normative statement of the paper's own position; reading_pass n=1/2: the
 
 [[claim]]
 id = "C045"
-fragment = "Principal component analysis (PCA) is trusted as reproducible and interpretable, but explains"
+fragment = "Principal component analysis (PCA) is trusted as reproducible and interpretable, and explains"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "P"
@@ -710,7 +710,7 @@ note = "reading_pass n=9: source supports dimensionality reduction/interpretabil
 
 [[claim]]
 id = "C046"
-fragment = "variance, not trade-offs. We explain tensions."
+fragment = "interpretable, and explains variance. We explain tensions."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -854,7 +854,7 @@ note = "reading_pass n=9 (reworded to what PCA does: reduces dimensionality, inc
 
 [[claim]]
 id = "C058"
-fragment = "Our implementation mirrors the structure of PCA as an unsupervised learning method for feature engineering"
+fragment = "Like PCA, our method is unsupervised feature engineering; the two answer different questions and compose"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -866,7 +866,7 @@ note = "Transformer with fit/transform/inverse_transform/score_samples under par
 
 [[claim]]
 id = "C059"
-fragment = "and the two chain: {ref}`Appendix D.16 <sub-d-16>` reads the principal directions"
+fragment = "the two answer different questions and compose: {ref}`Appendix D.16 <sub-d-16>` reads the principal directions"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"

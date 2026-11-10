@@ -273,7 +273,7 @@ def test_abstract_and_section_5_say_the_one_facet_fit_is_a_geometric_program():
         "compatible with generalized geometric programming (GGP)",
         "any kernel that keeps that compatibility",
         "elasticities: the percentage of one metric given up per percentage gained in another",
-        "mirrors the structure of PCA as an unsupervised learning method for feature engineering",
+        "Like PCA, our method is unsupervised feature engineering; the two answer",
     ):
         assert phrase in flat, phrase  # fmt: skip
     for gone in (  # R-38: cut from the abstract at the supervisor's direction (the body keeps them)
