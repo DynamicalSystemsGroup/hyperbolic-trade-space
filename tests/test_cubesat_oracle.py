@@ -1,8 +1,11 @@
 """The SysML-backed cubesat oracle and sampler of the v2 generation (WP15 15.4).
 
-* R-9: the output keys equal the frozen ``measure`` keys, in the frozen CSV column order; a
-  configuration outside the model's ranges or with an unknown categorical value raises
-  ``ValueError`` naming the variable; construction names the cause when the runtime cannot start.
+* R-9: the output keys equal the frozen ``measure`` keys less the slew-time columns (WP23 G5: one
+  time metric, nine traded metrics), in the frozen CSV column order; a configuration outside the
+  model's ranges or with an unknown categorical value raises ``ValueError`` naming the variable;
+  construction names the cause when the runtime cannot start.
+* WP16 Amendment 2 and WP23: the settling time of record is the hold time by event detection
+  (``settling_time_method="events"``, the default); ``"steps"`` is the generation before it.
 * R-2: no model constant is copied into the experiment layer, and editing the model changes the
   sampler's draws and the scenario the oracle uses.
 * R-3: the four flags are the verdicts of the model's requirements (not Python inequalities).
@@ -31,7 +34,6 @@ from experiments import compare as cmp
 from experiments import cubesat_oracle as co
 from experiments import definitions as df
 from experiments import exclusion as ex
-from experiments import hold_time as ht
 from experiments import ledger as lg
 from experiments.exclusion import battery_region, classify_region
 
@@ -41,6 +43,8 @@ TEXT = MODEL.read_text()
 RECORDED_FIRST_DESIGNS = pathlib.Path(__file__).parent / "data" / "v2_first_designs_of_record.csv"
 FROZEN_CSV = ADCS / "data" / "adcs_designs_cubesat_gains.csv"
 FLAGS = co.FLAG_NAMES
+# the frozen generation's slew-time columns, which v2 does not produce (WP23 G5)
+SLEW_TIME_COLUMNS = ("slew_time_s", "slew_time_05deg_s")
 
 
 @pytest.fixture(scope="module")
@@ -82,25 +86,35 @@ def test_the_sampler_reproduces_the_frozen_designs(designs):
         np.testing.assert_allclose(designs[c], frozen[c], rtol=1e-8)
 
 
-def test_keys_and_order_equal_the_frozen_measure_on_three_configurations(oracle, designs):
-    """R-9: keys of ``__call__`` equal the keys of ``cubesat_model.measure`` (values agree)."""
+def test_keys_and_order_equal_the_frozen_measure_less_slew_time_on_three_configurations(
+    oracle, designs
+):
+    """R-9: keys of ``__call__`` are the keys of ``cubesat_model.measure`` less the slew-time
+    columns; the values agree, the settling time within the step it was read off (the hold time
+    is the exact last exit, which lies in the step after the last accepted step outside)."""
     frozen = cm.load_model(gain_box="aggressive")
     for _, row in designs.head(3).iterrows():
         cfg = row.to_dict()
         got, want = oracle(cfg), frozen.measure(cfg)
-        assert list(got) == list(want)
+        assert list(got) == [k for k in want if k not in SLEW_TIME_COLUMNS]
+        assert len(co.ATTRIBUTE_NAMES) == 9
         for k, v in want.items():
+            if k in SLEW_TIME_COLUMNS:
+                continue
             if isinstance(v, bool):
                 assert got[k] is v, k
+            elif k == "settling_time_s":
+                assert v <= got[k] <= v + oracle.scenario["max_step_s"], k
             else:
                 assert got[k] == pytest.approx(v, rel=1e-6, abs=1e-9), k
 
 
-def test_evaluate_gives_the_frozen_column_order(oracle, designs):
+def test_evaluate_gives_the_frozen_column_order_less_slew_time(oracle, designs):
     """R-9: ``evaluate`` is the design columns, the measure keys, then the scenario columns."""
     out = oracle.evaluate(designs.head(4))
     frozen = pd.read_csv(FROZEN_CSV, nrows=1)
-    assert list(out.columns) == list(frozen.columns)
+    assert list(out.columns) == [c for c in frozen.columns if c not in SLEW_TIME_COLUMNS]
+    assert not {*out.columns} & {*SLEW_TIME_COLUMNS}
     assert out["design_id"].tolist() == [0, 1, 2, 3]
     assert out[["slew_deg", "t_end_s", "max_step_s"]].iloc[0].tolist() == [30.0, 600.0, 0.5]
     assert tuple(out[list(co.FLAG_NAMES)].dtypes.astype(str)) == ("bool",) * 4
@@ -381,25 +395,23 @@ def test_ledger_ready_record_of_an_excluded_region(oracle, solver):
     assert lg.hash_entry({"x": rec})  # serialisable into the ledger
 
 
-def test_equal_settling_and_slew_times_are_analysed(oracle, designs):
-    """The analysis returns computed attributes only, so a stiff loop that crosses both thresholds
-    in one step (equal settling and slew times) is analysed in one call and both times enter the
-    row exactly as measured."""
+def test_the_measured_settling_time_enters_the_row_unchanged(oracle, designs):
+    """The analysis returns the eight computed attributes only; the settling time is measured,
+    enters the row exactly as measured, and moves no computed attribute."""
     loaded, symbols = oracle._configure([{**designs.iloc[0].to_dict(), "design_id": 0}])
     measured = {
         "torque_squared_integral": 1e-5,
         "peak_torque": 1e-3,
         "peak_momentum": 4e-3,
         "settling_time": 14.398119154048933,
-        "slew_time": 14.398119154048933,
         "control_effort": 1e-2,
         "censored": False,
     }
     got = oracle._analyse(loaded, symbols[0], measured)
-    assert got["settling_time_s"] == got["slew_time_s"] == 14.398119154048933
-    assert list(got) == list(co.ATTRIBUTE_NAMES)
-    distinct = oracle._analyse(loaded, symbols[0], {**measured, "slew_time": 10.0})
-    for k in co.ATTRIBUTE_NAMES[2:]:
+    assert got["settling_time_s"] == 14.398119154048933
+    assert list(got) == list(co.ATTRIBUTE_NAMES) and len(got) == 9
+    distinct = oracle._analyse(loaded, symbols[0], {**measured, "settling_time": 10.0})
+    for k in co.ATTRIBUTE_NAMES[1:]:
         assert got[k] == pytest.approx(distinct[k], rel=1e-12), k
     assert "nextafter" not in pathlib.Path(co.__file__).read_text()
 
@@ -464,25 +476,33 @@ def test_declared_space_excludes_nothing_so_the_first_designs_are_unchanged(tmp_
         np.testing.assert_allclose(got[col], want[col], err_msg=col, **kw)
 
 
-# -- WP16 Amendment 2: the settling time by event detection, behind a switch (off by default) ----
+# -- WP16 Amendment 2, WP23 G5: the settling time by event detection is the measurement of record --
 ROUNDING = 1e-9  # relative: the bound of R-9, the Agent's default the driver accepted
 JITTER_SEEDS = (1, 2, 3, 4, 5)  # the seeds of WP16 D-6 (experiments.sensitivity.SEEDS)
 
 
 @pytest.fixture(scope="module")
-def events_oracle():
-    try:
-        return ht.make_oracle(TEXT, "nominalSlew", "aggressive", settling_time_method="events")
-    except cm.OpenSysMLUnavailable as exc:
-        pytest.fail(f"the opensysml client could not start: {exc}", pytrace=False)
+def events_oracle(oracle):
+    """The default oracle: its settling time is the hold time by event detection."""
+    assert oracle.settling_time_method == "events"
+    return oracle
 
 
-def test_the_settling_time_method_is_steps_unless_asked(oracle):
-    """The switch is off by default: the committed generation's oracle, unchanged."""
-    steps = ht.make_oracle(TEXT, workers=1, connection=oracle.connection)
-    assert type(steps) is co.CubesatOracle
+def test_the_settling_time_method_is_events_unless_asked(oracle, designs):
+    """The default reads the hold time by event detection and records it in ``runtime_info``;
+    ``"steps"`` reads the last accepted step outside the band (the generation before WP23), and
+    the hold time lies in the step after it; an unknown method is a named error."""
+    assert co.SETTLING_METHODS[0] == "events" == oracle.runtime_info["settling_time_method"]
+    steps = co.CubesatOracle(
+        TEXT, workers=1, connection=oracle.connection, settling_time_method="steps"
+    )
+    assert steps.runtime_info["settling_time_method"] == "steps"
+    cfg = designs.iloc[1].to_dict()
+    by_steps, by_events = steps(cfg)["settling_time_s"], oracle(cfg)["settling_time_s"]
+    assert by_steps <= by_events <= by_steps + oracle.scenario["max_step_s"]
+    assert by_events != by_steps
     with pytest.raises(ValueError, match="settling_time_method"):
-        ht.make_oracle(TEXT, settling_time_method="interpolated", connection=oracle.connection)
+        co.CubesatOracle(TEXT, settling_time_method="interpolated", connection=oracle.connection)
 
 
 def test_the_crossing_integration_is_the_simulators_at_the_record_tolerances(oracle, designs):
@@ -498,7 +518,7 @@ def test_the_crossing_integration_is_the_simulators_at_the_record_tolerances(ora
         t_end=sc["t_end_s"], initial_error_deg=sc["slew_deg"], max_step=sc["max_step_s"],
     )  # fmt: skip
     ref = simulate_adcs(sim)
-    sol = ht._solve(sim, 1e-10, 1e-12)
+    sol = co._solve(sim, 1e-10, 1e-12)
     q = sol.y[:4].T / np.linalg.norm(sol.y[:4].T, axis=1, keepdims=True)
     assert np.array_equal(sol.t, ref.t)
     assert np.array_equal(q, ref.q) and np.array_equal(sol.y[4:7].T, ref.omega)
@@ -515,9 +535,9 @@ def test_a_pass_through_the_band_inside_one_step_is_found():
         Q[0, :2] = (-0.8, 0.8)
 
     err_end = np.degrees(2 * 0.2 / np.hypot(0.2, 1.0))
-    t = ht.band_entries([Step()], err_end / 2)
+    t = co.band_entries([Step()], err_end / 2)
     assert len(t) == 1 and 0.0 < t[0] < 0.5
-    assert len(ht.band_entries([Step()], err_end * 1.01)) == 0
+    assert len(co.band_entries([Step()], err_end * 1.01)) == 0
 
 
 @pytest.fixture(scope="module")

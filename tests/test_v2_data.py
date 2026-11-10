@@ -1,8 +1,9 @@
 """The v2 generation (WP15 15.4): files, ledger, reproducibility and the comparison report.
 
 R-11 every file in ``data/`` and ``data/v2/`` has a ledger entry with equal hashes, and the frozen
-files are untouched; R-13 the v2 files have the frozen columns, order and row counts, and the
-predictions entry precedes the check-design simulation; R-14 the first designs of each file
+files are untouched; R-13 the v2 files have the frozen columns less the slew-time columns (WP23
+G5: one time metric), in the frozen order, and the frozen row counts, and the predictions entry
+precedes the check-design simulation; R-14 the first designs of each file
 regenerate within the frozen tolerances and 40 designs regenerated twice are identical; R-15 the
 change register covers every difference beyond tolerance and names no difference that does not
 exist (equality of the generations is not required).
@@ -75,10 +76,19 @@ def _git(*args) -> str | None:
 # ---------------------------------------------------------------------------------------------
 # R-13: the files
 # ---------------------------------------------------------------------------------------------
+def v2_columns(frozen_columns) -> list[str]:
+    """The v2 header a frozen header implies: the slew-time columns out (WP23 G5), the
+    check-design predictions' standard deviation of the time metric on the settling time."""
+    gone = {"slew_time_s", "slew_time_05deg_s"}
+    rename = {"pred_std_slew_time_s": "pred_std_settling_time_s"}
+    return [rename.get(c, c) for c in frozen_columns if c not in gone]
+
+
 @pytest.mark.parametrize("name", sorted(ROWS))
-def test_v2_file_has_the_frozen_columns_in_order_and_the_stated_rows(name):
+def test_v2_file_has_the_frozen_columns_less_slew_time_in_order_and_the_stated_rows(name):
     v2, frozen = pd.read_csv(V2 / name), pd.read_csv(FROZEN / name)
-    assert list(v2.columns) == list(frozen.columns)
+    assert list(v2.columns) == v2_columns(frozen.columns)
+    assert not {c for c in v2.columns if "slew_time" in c}
     assert len(v2) == ROWS[name]
     assert len(frozen) == ROWS[name]
     assert v2["design_id"].tolist() == frozen["design_id"].tolist()
@@ -346,7 +356,7 @@ def test_register_rows_are_parsed_from_the_table(tmp_path):
 def test_the_report_has_every_section_and_includes_the_register_verbatim(tmp_path):
     before = REGISTER.read_text()
     out = tmp_path / "report.md"
-    assert cmp.main(["--root", str(ROOT), "--out", str(out), "--no-runtime"]) == 0
+    assert cmp.main(["--root", str(ROOT), "--out", str(out)]) == 0
     report = out.read_text()
     assert REGISTER.read_text() == before, "the generator rewrote the hand-written register"
     assert before.rstrip() in report
@@ -355,7 +365,6 @@ def test_the_report_has_every_section_and_includes_the_register_verbatim(tmp_pat
         "## Per dataset",
         "## Swap checklist",
         "## Richness conditions on v2",
-        "## Closed-form slew against the ODE",
         "## Exclusion by the solver",
         "## Change register",
     ):
@@ -370,7 +379,7 @@ def test_the_report_has_every_section_and_includes_the_register_verbatim(tmp_pat
 def test_the_committed_report_exists_and_includes_the_register():
     report = REPORT.read_text()
     assert REGISTER.read_text().rstrip() in report
-    assert "Ratio estimate/ODE" in report
+    assert "## Exclusion by the solver" in report
 
 
 def test_the_swap_checklist_finds_the_frozen_consumers():

@@ -2,8 +2,10 @@
 
 ``model_v2/cubesat.sysml`` is the WP22 model since the recorded gate (WP22d, ``WP22-decisions.md``);
 the WP15 file it replaced stays in history only. WP22 added requirement definitions over the traded
-metrics' own quantities, a measured ``slewTime`` and ``peakTorque`` in ``SlewMeasurement``,
-``verify`` objectives for each, and the two views marked in the file. The tests hold the scope's
+metrics' own quantities, a measured ``peakTorque`` in ``SlewMeasurement``, ``verify`` objectives
+for each, and the two views marked in the file. WP23 G5 removes slew time (``SlewTimeRequirement``,
+``SlewBandRequirement`` and the measured ``slewTime``): the case has one time metric, the settling
+time, and the sets below are stated without them. The tests hold the scope's
 guards: the model loads and checks clean (R-8), every covered metric has a requirement and a
 ``verify`` (R-1, R-2), the open metrics are named (R-3), the numeric literals added to the WP15
 model are recorded measurements only (R-4), regenerated designs equal the committed method's
@@ -44,6 +46,15 @@ WP15_REQUIREMENTS = {
     "DepthOfDischargeRequirement",
     "SlewBandRequirement",
 }
+# The slew-time requirements, gone with the slew time (WP23 G5): the band requirement folds with
+# the slew-time requirement into SettledRequirement.
+SLEW_REQUIREMENTS = {"SlewTimeRequirement", "SlewBandRequirement"}
+# The requirement definitions WP22 added, less slew time.
+WP22_REQUIREMENTS = (WP15_REQUIREMENTS - SLEW_REQUIREMENTS) | {
+    "EclipseReserveRequirement",
+    "PowerMarginRequirement",
+    "EnergyBalanceRequirement",
+}
 # The numeric literals of the WP15 model's code (comments and docs removed), read from that file
 # at the gate; WP22 may add recorded measurements only (R-4).
 WP15_LITERALS = frozenset(
@@ -58,10 +69,10 @@ WP15_LITERALS = frozenset(
     }
 )
 
-# The six metrics of the first round, with the requirement def over each one's own quantity.
+# The metrics covered by WP22 (six in its first round; slew time left with WP23 G5), with the
+# requirement def over each one's own quantity.
 COVERED = {
     "settling time": "SettledRequirement",
-    "slew time": "SlewTimeRequirement",
     "power margin": "PowerMarginRequirement",
     "energy balance": "EnergyBalanceRequirement",
     "eclipse reserve": "EclipseReserveRequirement",
@@ -141,43 +152,45 @@ def test_strict_load_self_check_one_package_and_the_two_views_marked(r1):
 def test_numeric_literals_added_are_recorded_measurements_only():
     """R-4: the numeric literals WP22 added to the WP15 code are recorded measurements only.
 
-    The measured slew time (round 1) and the measured control effort of the baseline (round 2).
+    The measured control effort of the baseline (round 2); the measured slew time of round 1
+    left with the slew time (WP23 G5). The literals WP23's model adds (launch cost, thresholds)
+    are pinned by that package's tests, not here.
     """
     number = re.compile(r"(?<![\w.])\d+(?:\.\d+)?(?:[eE][-+]?\d+)?")
     added = set(number.findall(_code(TEXT))) - WP15_LITERALS
-    assert added == {"133.6904772571943", "0.009490621914197469"}
+    assert "0.009490621914197469" in added
+    assert "133.6904772571943" not in added  # the baseline's slew time, gone with slewTime
 
 
 # ---------------------------------------------------------------------------------------------
 # R-1, R-2, R-3: requirements, satisfy, verify; the open metrics named
 # ---------------------------------------------------------------------------------------------
-def test_requirement_defs_are_the_wp15_five_plus_one_per_new_metric(r1):
+def test_requirement_defs_hold_the_wp22_set_and_no_slew_time_requirement(r1):
+    """The WP15 and WP22 requirement definitions less the two slew-time ones (WP23 G5). The
+    definitions WP23's model adds for the four open metrics are pinned by that package's tests."""
     defs = set(_kinds(r1.model, "RequirementDefinition"))
-    assert defs == WP15_REQUIREMENTS | {
-        "SlewTimeRequirement",
-        "EclipseReserveRequirement",
-        "PowerMarginRequirement",
-        "EnergyBalanceRequirement",
-    }
+    assert defs >= WP22_REQUIREMENTS
+    assert not defs & SLEW_REQUIREMENTS
 
 
 def test_each_covered_metric_has_a_verify_in_a_verification_case(r1):
     """R-2: the opensysml client lists the verification cases and what each verifies."""
     verified = _verified(r1.model)
-    assert verified["ConfigurationVerification"] == {"PowerRequirement"}
-    assert verified["SlewVerification"] == {
+    assert "PowerRequirement" in verified["ConfigurationVerification"]
+    assert verified["SlewVerification"] >= {
         "SettledRequirement",
         "MomentumRequirement",
         "DepthOfDischargeRequirement",
-        "SlewBandRequirement",
-        *(COVERED[m] for m in ("slew time", "power margin", "energy balance", "eclipse reserve")),
+        *(COVERED[m] for m in ("power margin", "energy balance", "eclipse reserve")),
     }
-    assert set(COVERED.values()) <= set().union(*verified.values())
+    everything = set().union(*verified.values())
+    assert set(COVERED.values()) <= everything
+    assert not everything & SLEW_REQUIREMENTS
 
 
 def test_every_requirement_is_satisfied_by_the_baseline(r1):
     verdicts = r1.model.verify_satisfaction()
-    assert len(verdicts) == 9
+    assert len(verdicts) >= len(WP22_REQUIREMENTS)  # the seven, plus WP23's additions
     assert all(v.holds and v.status == "holds" and v.engine == "run" for v in verdicts)
     assert r1.model.satisfied()
 
@@ -191,8 +204,9 @@ def test_open_metrics_are_named_in_the_verification_cases_and_nowhere_covered(r1
     assert not set(OPEN) & set(COVERED)
 
 
-def test_baseline_measurement_has_the_recorded_slew_time_and_peak_torque(r1, frozen):
-    """The new measured defaults are the baseline's measured slew (0.5 s step)."""
+def test_baseline_measurement_has_the_recorded_peak_torque_and_control_effort(r1, frozen):
+    """The measured defaults WP22 added are the baseline's measured slew (0.5 s step); the slew
+    time among them left with WP23 G5."""
     cfg = frozen.configure(
         [
             {
@@ -208,8 +222,8 @@ def test_baseline_measurement_has_the_recorded_slew_time_and_peak_torque(r1, fro
     )[0]
     got = _measure_slew(frozen, cfg, t_end=600.0, max_step=0.5)
     read = lambda k, u: r1.read(f"baselineMeasurement.{k}", u)  # noqa: E731
-    assert read("slewTime", "SI::s") == pytest.approx(got["slew_time"], rel=1e-3, abs=0.5)
     assert read("peakTorque", "SI::N*SI::m") == pytest.approx(got["peak_torque"], rel=1e-3)
+    assert "slewTime" not in _code(TEXT)  # the measurement has one time: settlingTime
     # round 2: control effort is a measurement of the slew too (it was an unbound analysis input)
     assert read("controlEffort", "SI::N*SI::m*SI::s") == pytest.approx(
         got["control_effort"], rel=1e-3
@@ -224,7 +238,6 @@ PARAM = {
     "SettledRequirement": "settlingTime",
     "MomentumRequirement": "peakMomentum",
     "DepthOfDischargeRequirement": "torqueSquaredIntegral",
-    "SlewTimeRequirement": "slewTime",
     "EclipseReserveRequirement": "torqueSquaredIntegral",
     "PowerMarginRequirement": "peakTorque",
     "EnergyBalanceRequirement": "torqueSquaredIntegral",
@@ -269,7 +282,6 @@ def test_regenerated_designs_equal_the_frozen_oracle(box, r1, frozen):
             worst = max(worst, _rel(got[name], want[name]))
         args = {
             "settlingTime": Quantity(measured["settling_time"], r1.unit("SI::s")),
-            "slewTime": Quantity(measured["slew_time"], r1.unit("SI::s")),
             "peakTorque": Quantity(measured["peak_torque"], r1.unit("SI::N*SI::m")),
             "peakMomentum": Quantity(measured["peak_momentum"], r1.unit("SI::N*SI::m*SI::s")),
             "torqueSquaredIntegral": measured["torque_squared_integral"],
@@ -279,7 +291,6 @@ def test_regenerated_designs_equal_the_frozen_oracle(box, r1, frozen):
         assert _verdict(loaded, sym, args, "SettledRequirement") == want["settled"]
         assert _verdict(loaded, sym, args, "MomentumRequirement") == want["momentum_ok"]
         assert _verdict(loaded, sym, args, "DepthOfDischargeRequirement") == want["dod_ok"]
-        assert _verdict(loaded, sym, args, "SlewTimeRequirement") == (want["slew_time_s"] < 600.0)
         assert _verdict(loaded, sym, args, "EclipseReserveRequirement") == (
             want["eclipse_reserve_wh"] >= 0
         )
@@ -321,8 +332,9 @@ def test_every_covered_metric_has_a_thick_line_from_its_requirement(project, tmp
     drawn = {(project.short(r), n): ev for r, n, s, ev in facts["rel"] if s == "strong"}
     for metric, req in COVERED.items():
         assert (req, metric) in drawn, (req, metric)
-    assert {n for _, n in drawn} == set(COVERED)
-    assert set(facts["related"]) == set(COVERED)
+    assert {n for _, n in drawn} >= set(COVERED)  # WP23's model adds lines for the four open
+    assert set(facts["related"]) >= set(COVERED)
+    assert "slew time" not in facts["metric_element"]  # one time metric (WP23 G5)
     for metric in OPEN:
         # dashed, and captioned in its own box (round 2)
         assert re.search(
@@ -330,7 +342,6 @@ def test_every_covered_metric_has_a_thick_line_from_its_requirement(project, tmp
         )
     assert behaviour.count("thickness=2") == len(drawn)
     assert "dashed]" not in behaviour  # no dashed or prose-only relation line
-    assert facts["metric_element"]["slew time"] == ("measured", "slewTime")
     # round 2: control effort is a SlewMeasurement attribute, so its source is the measurement
     assert facts["metric_element"]["control effort"] == ("measured", "controlEffort")
     assert facts["origin"]["control effort"] == "measurement"

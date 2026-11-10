@@ -18,7 +18,6 @@ import pandas as pd
 import pytest
 from experiments import cubesat_oracle as co
 from experiments import definitions as df
-from experiments import hold_time as ht
 from experiments import ledger as lg
 
 REPO = pathlib.Path(__file__).resolve().parents[1]
@@ -108,16 +107,17 @@ def test_the_oracles_model_path_is_the_committed_file_the_ledger_hashes():
         assert cur["model_sha256"] == lg.sha256_file(MODEL), name
 
 
-def test_the_events_path_evaluates_the_model_too():
-    """WP16 Amendment 2: with the settling time by event detection, the mutated model still moves
-    the attributes (the check is the same; only the time's reading differs)."""
+def test_the_steps_path_evaluates_the_model_too():
+    """The default oracle reads the settling time by event detection (WP16 Amendment 2, WP23);
+    with the step read-off of the generation before, the mutated model still moves the
+    attributes (the check is the same; only the time's reading differs)."""
     cache: dict[str, co.CubesatOracle] = {}
 
     def make(text: str):
         if text not in cache:
             try:
-                cache[text] = ht.make_oracle(
-                    text, "nominalSlew", "aggressive", settling_time_method="events"
+                cache[text] = co.CubesatOracle(
+                    text, "nominalSlew", "aggressive", workers=1, settling_time_method="steps"
                 )
             except cm.OpenSysMLUnavailable as exc:
                 pytest.fail(f"the opensysml client could not start: {exc}", pytrace=False)
