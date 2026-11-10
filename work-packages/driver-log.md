@@ -12,6 +12,15 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
   "level offset", the term and keep "energy differential" as the analogy named once. The driver's
   recommendation: keep it and gloss it; it carries his reading of V as a potential. Work routes
   around it: the gloss is added either way.
+- (2026-11-09, 19:30) **The abstract's PCA sentence.** Round 1b (four cold readers, abstract only,
+  after CR-1): the regression reading is gone, but all four read the method as an alternative to PCA
+  ("a cleaner alternative to PCA", "replacing PCA-style summaries"). The body says the two chain
+  (main results, item 5; Appendix D.16). Your replacement sentence ("Our implementation mirrors the
+  structure of PCA as an unsupervised learning method for feature engineering") is pinned by test as
+  your wording, so the driver has not touched it. Options: append "and the two chain" (five words,
+  your earlier phrase); or keep the sentence and let the body carry the chaining. The driver's
+  recommendation: the first, since the contrast "explains variance, not trade-offs. We explain
+  tensions." is what readers take as substitution. Non-blocking; the other CR-1b edits proceed.
 
 **Needs him (2026-11-09, 01:14):** his Colima configuration is changed from his original and the
 driver could not restore it. A second container implementer, dispatched by the PM with a brief that
