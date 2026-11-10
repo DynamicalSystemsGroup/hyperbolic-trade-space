@@ -286,6 +286,21 @@ def test_the_register_covers_every_difference_beyond_tolerance_and_none_other():
     assert stale == [], f"register rows that name no existing difference: {stale}"
 
 
+def test_the_frozen_tie_differs_only_in_the_time_columns():
+    """R-5 as amended (WP16 Amendment 2, OD-B, the driver: "differs in the two time columns,
+    listed" with equality elsewhere). The generation of record reads the crossing times by event
+    detection and the frozen generation off the accepted steps, so the time columns may differ
+    from the frozen files by any amount (no tolerance is read off the evidence); the register
+    lists each such difference (the test above). Every other column, the flags, the identifiers
+    and the aggregates agree with the frozen files within the reproducibility tolerances."""
+    times = {*cmp.TIME_COLUMNS, *(f"median[{c}]" for c in cmp.TIME_COLUMNS)}
+    exceeded = cmp.exceeded_differences(ROOT)
+    elsewhere = {
+        d: [x for x in ids if x.split(":", 1)[1] not in times] for d, ids in exceeded.items()
+    }
+    assert all(not v for v in elsewhere.values()), elsewhere
+
+
 ROWS_BY_DATASET = {"primary": 1, "baseline": 1, "check_predictions": 1, "check_designs": 1}
 
 
