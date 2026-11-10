@@ -3882,7 +3882,7 @@ fragment = "gives a per-row label to pass as `color=`."
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_plotting.py::test_surface_k3_and_coordinates_facet_colouring", "func:src/hyperbolic_trade_space/plotting.py::facet_labels"]
+backing = ["test:tests/test_plotting.py::test_surface_k3_one_colour_by_default_and_coordinates_facet_colouring", "func:src/hyperbolic_trade_space/plotting.py::facet_labels"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
