@@ -8,16 +8,7 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 ## Waiting for the supervisor
 
 - (2026-11-09, 18:10; answered 20:40) **The word "energy differential".** Resolved: "Keep it, gloss it" (`WP10-decisions.md`).
-- (2026-11-09, 19:30) **The abstract's PCA sentence.** Round 1b (four cold readers, abstract only,
-  after CR-1): the regression reading is gone, but all four read the method as an alternative to PCA
-  ("a cleaner alternative to PCA", "replacing PCA-style summaries"). The body says the two chain
-  (main results, item 5; Appendix D.16). Your replacement sentence ("Our implementation mirrors the
-  structure of PCA as an unsupervised learning method for feature engineering") is pinned by test as
-  your wording, so the driver has not touched it. Options: append "and the two chain" (five words,
-  your earlier phrase); or keep the sentence and let the body carry the chaining. The driver's
-  recommendation: the first, since the contrast "explains variance, not trade-offs. We explain
-  tensions." is what readers take as substitution. Non-blocking; the other CR-1b edits proceed.
-
+- (2026-11-09, 19:30; answered 20:45) **The abstract's PCA sentence.** Resolved: reword as distinct, complementary and composable (`WP10-decisions.md`).
 - (2026-11-09, 20:20) **Slew time under event detection (WP16 Amendment 2, OD-A).** Event detection removes
   the sub-step part of the slew-time defect but not the grazing case: design 763 goes from 33.4 s to 12.5 s
   because the error grazes the band and leaves it. Options: keep slew time as first entry into the band and

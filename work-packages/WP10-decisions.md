@@ -1138,3 +1138,16 @@ Leave as is. **Supervisor (mzargham), verbatim:** "Keep it, gloss it".
 **Disposition.** "energy differential" stays the term; one clause at its first use in the abstract says what it is
 (the design's level relative to the reference surface, by analogy with a potential, not a physical energy); the
 glossary entry keeps "level offset" as the gloss, not a second name. To the paper stream with CR-1c.
+
+## The abstract's PCA sentence (2026-11-09, 20:45; WP11 rounds 1b and 1c)
+
+**Driver's question (popup):** 7 of 8 cold readers in the last two rounds took the method as an alternative to or
+replacement for PCA; the body says the two chain. Options: Add "and the two chain" / Keep as is / I will reword it.
+**Supervisor (mzargham), verbatim:** "reword to clarify they are distinct and complementary, they can be composed.
+(don't use my words verbatim smooth it to fit the context)"
+
+**Disposition.** The paper stream rewords the sentence so that PCA and this method read as distinct and
+complementary, and composable (one can be run on the other's output), in words that fit the abstract's context; his
+earlier sentence is not kept verbatim; the test pin follows the new wording; the register fragment follows. One
+depth-A re-test afterwards. The opening contrast ("explains variance, not trade-offs. We explain tensions.") is read
+against this: if it still produces "replacement", the stream smooths it in the same unit.
