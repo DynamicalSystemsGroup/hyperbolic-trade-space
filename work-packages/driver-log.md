@@ -243,6 +243,22 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   section by whether it advances the paper's narrative; and a rule for every stream now: when a passage or figure is
   stuck in a loop or cannot be made clear, the next move is to assess removal, not another round.
 
+- **WP23 data gate, the driver's verification in progress (2026-11-10, 02:30; unit pushed at 8507bd9).** Looked
+  at, cold: the gate's primary-regime heatmap (nine rows; settling time carries weight at low temperature and
+  fades; total mass saturates the colourbar cap, the redraw in progress; energy balance, depth of discharge and
+  pointing error carry; control effort white at every temperature), the behavioural view at revision 5 (every
+  traded metric with its requirement, MoE and MoP marks legible, launch cost a derived MoE, the stub to total mass
+  short but visible) and the assembly view (unchanged but for the legend). Read in the K record: primary regime
+  K = 1 at tau 38.1 is a 5-lemma (total mass 0.358, energy balance 0.184, pointing error 0.164, depth of discharge
+  0.158, settling time 0.136; control effort 1e-17); K = 3 at tau 113 separates term 1 (energy balance 0.42, total
+  mass 0.24, settling time 0.18), term 2 (control effort 0.40, settling time 0.37, energy balance 0.19; share
+  0.034) and term 3 (peak slew power 0.61, pointing error 0.23); the baseline regime's K = 1 leads with control
+  effort 0.43. Reading: with slew time gone, one term in the primary regime no longer sees the control trade-off
+  at all; three terms find it in a small term; the case sentence "one facet blends the subsystems' trade-offs into
+  a single tension; three facets separate the contending sets" holds, with a different and arguably sharper
+  content. D-9 quantifies old against new before the swap call; the checks on the head are the watcher's and the
+  Linux run's (dispatched on 8507bd9); the agent's own runs are recorded in the gate README.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
