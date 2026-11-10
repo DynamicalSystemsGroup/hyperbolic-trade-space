@@ -181,7 +181,7 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
-- **PM handovers.** The fourth PM handed over at c622c6e (after the data gate) and the fifth started at 02:30 on the paper's move onto the data of record. The third PM handed over at 01e2d64 (PM-BRIEF.md, "third PM to fourth") after two batches; the fourth PM started from the files at 21:35 on WP23 and the remaining WP19, paper and package units.
+- **PM handovers.** The fifth PM handed over at the close-out gate (PM-BRIEF.md, fifth to sixth; its context had grown past 450k tokens) and the sixth started at 14:55 on the WP26 sequel, WP27, WP25-3, the reader rounds and the subtraction pass. The fourth PM handed over at c622c6e (after the data gate) and the fifth started at 02:30 on the paper's move onto the data of record. The third PM handed over at 01e2d64 (PM-BRIEF.md, "third PM to fourth") after two batches; the fourth PM started from the files at 21:35 on WP23 and the remaining WP19, paper and package units.
 
 - **Glossary wording (the supervisor's vocabulary).** Wording-only fixes approved where three entries use
   synonyms of their own terms (`facet`, `support-weights`: "fitted surface" becomes the entry's own term;
@@ -423,6 +423,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-10 | commit 3ca1b65, tier 2 watcher, this Mac (after the G-1 fix ebce53b, before the rest of the fix-forward) | 2188 passed, 16 skipped, 1 xfailed; all checks | a verdict: the four case tests pass on the Mac after the eight-metric pins; the watcher's run on the gate head b9d8b80 is next; Linux on it in progress; the container regression running in the shared checkout |
 | 2026-11-10 | commit b9d8b80, CI run on ubuntu, three shards (the WP23 close-out with its fix-forward) | fast, slow and docs-paper all green | a verdict: the close-out gate head is green on Linux; the Mac watcher's run on it is next; the container regression's comparison found only the registered CR-2 platform difference beyond last-digit drift (no conclusion, flag or count moved) and is running the suite in the container before its one commit |
 | 2026-11-10 | commit d793a95, tier 2 watcher, this Mac (contains the close-out gate head b9d8b80 and WP26's views file) | 2189 passed, 16 skipped, 1 xfailed; all checks | a verdict: the gate head is green on the Mac and on Linux; the container regression (hts-paper and hts-alt both running) is the third check; the close-out is accepted when it lands |
+| 2026-11-10 | commit 6de8f68, the container regression at the WP23 close-out gate (image hts-paper 877c42cc10e3; hts-alt 81e06426f7b3) | in hts-paper: the gate's regeneration @7 at 0 drifts, the full suite with the exact branches green after three host-recorded references were re-pinned; hts-alt full suite 2187 passed, 0 failed; the comparison: last-digit drift and the registered CR-2 only | a verdict: the gate's third green; the close-out accepted (WP23-decisions.md); Linux dispatched on 6de8f68; the watcher's run follows |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
