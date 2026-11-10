@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import json
 import pathlib
+import re
 import sys
 import warnings
 
@@ -36,6 +37,9 @@ ASSEMBLY_LINETYPE = (
     "polyline"  # skinparam linetype: ortho | polyline (default splines)
 )
 BEHAVIOUR_LINETYPE = "polyline"
+# layout control: blank lines in the analysis box, so that it is tall enough to meet every metric it feeds
+# with its own, separate line (round 3: two lines met at one point; the long diagonals shorten)
+ANALYSIS_BOX_PAD = 14
 SKIN = """skinparam shadowing false
 skinparam defaultFontName SansSerif
 skinparam defaultFontSize 12
@@ -337,7 +341,9 @@ def assembly(m, byid, P):
         and p.get("owner") == P
         and short(p.get("type", "")) == "GainBox"
     ]
-    out.append("  Gains Kp and Kd: one range per dataset (baseline, aggressive)")
+    out.append(
+        "  Gains Kp and Kd: one range per dataset (baseline, aggressive)"
+    )
     for g in ("Kp", "Kd"):
         spans = {
             b: f"{gb(b, g + 'Min')} .. {gb(b, g + 'Max')}"
@@ -592,6 +598,29 @@ def behavioural(m, byid, P):
                 f"{name!r} is traded with no requirement and no verification case doc says so"
             )
 
+    # a requirement whose doc says it is "the same statement as the <other> requirement" says so in its box
+    # (the picture then carries what the caption would otherwise): the first sentence of the doc, then the twin
+    def same_as(r):
+        d = doc_text(byid, r).replace("-", " ").removeprefix("doc ")
+        k = d.find("same statement as the ")
+        if k < 0:
+            return None
+        tail = d[k + len("same statement as the ") :].lower()
+        twin = next(
+            (
+                short(o)
+                for o in reqs
+                if o != r
+                and " ".join(
+                    re.findall(r"[A-Z][a-z]*", short(o))
+                ).lower()
+                in tail
+            ),
+            None,
+        )
+        first = d.split(":")[0].split(". ")[0].strip().rstrip(".")
+        return first, twin
+
     # --- PlantUML ------------------------------------------------------------------------------
     nid = lambda s: (
         "x" + "".join(ch for ch in s.title() if ch.isalnum())
@@ -647,8 +676,12 @@ def behavioural(m, byid, P):
             ver = (
                 ", ".join(sorted(verified_by[r])) or "none in the model"
             )
+            sa = same_as(r)
+            extra = (
+                f"\\n{sa[0]};\\nsame statement as {sa[1]}" if sa else ""
+            )
             return (
-                f'rectangle "**{short(r)}**\\n<<requirement def>>\\n<<satisfy>> {sat}\\n<<verify>> {ver}" '
+                f'rectangle "**{short(r)}**\\n<<requirement def>>\\n<<satisfy>> {sat}\\n<<verify>> {ver}{extra}" '
                 f"as {nid(short(r))} {REQ_COLOUR}"
             )
 
@@ -696,8 +729,9 @@ def behavioural(m, byid, P):
     out.append(f"xNoLine -[hidden]right-> {nid(smets_last)}")
     out.append("")
     n_analysis = sum(v == "analysis" for v in origin.values())
+    pad = "\\n" * ANALYSIS_BOX_PAD
     out.append(
-        f'rectangle "**SlewExperiment**\\n<<analysis def>>\\ncomputes {n_analysis} of the {len(metrics)}\\nmetrics from the\\nconfiguration and the\\nmeasured inputs" as xAnalysis {ANALYSIS_COLOUR}'
+        f'rectangle "**SlewExperiment**\\n<<analysis def>>\\ncomputes {n_analysis} of the {len(metrics)}\\nmetrics from the\\nconfiguration and the\\nmeasured inputs{pad}" as xAnalysis {ANALYSIS_COLOUR}'
     )
     out.append(
         f'rectangle "**SlewMeasurement**\\nmeasured slew:\\nsimulation here;\\nfield data when\\nfielded" as xMeasure {MEASURE_COLOUR}'

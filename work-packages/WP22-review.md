@@ -119,3 +119,55 @@ Both traced all ten metrics to a requirement or an explicit "(no requirement)" a
 
 Result: round 2 does not end the loop. The last round must find nothing that changes a view; R2-1, R2-2 and R2-6
 would change a view. A round 3 is needed (or the supervisor's call that R2-1 is good enough).
+
+## Round 3 (2026-11-09)
+
+**Model change.** None (`cubesat_r1.sysml`, the ledger and every output unchanged; the ledger `verify` reports 19
+entries, 0 drifts; no new entry is needed because no model file or output changed).
+
+**Views (projection script, layout parameters and model-derived text only; no hand-edited output).**
+R2-2: a layout control `ANALYSIS_BOX_PAD` (blank lines in the analysis box) makes the box tall enough that each
+metric it feeds gets its own line; the lines to depth of discharge and eclipse reserve no longer meet at one point.
+R2-1: the same control shortens the long diagonals (the box now spans from the power frame to the mass frame);
+rank, hidden links and ordering were already used in round 2 and were not enough alone. R2-6: a requirement whose
+`doc` says it is "the same statement as the <other> requirement" now says so in its own box, with the doc's first
+sentence ("The slew completes inside the horizon; same statement as SlewBandRequirement"), derived from the model's
+doc text. The assembly view is byte-identical to round 2. Checks: ruff on the changed test and ledger files clean
+(`ruff format` applied to `project.py`); `tests/test_system_model_v2_r1.py`, `test_model_checking_v2.py`,
+`test_system_model_v2.py`, `test_cubesat_model.py`: 132 passed with `REQUIRE_OPENSYSML=1` (equivalence max rel diff 1.8e-16).
+
+### Reviewers (two new fresh contexts, Sonnet, opened the PNGs; persona and depth from `docs/superpowers/notes/reader-grid.md`: P1 accountable decision maker at L-B skim; P3 modeller at L-C careful; each image alone, then with its caption; the caption no longer carries the SlewTime sentence)
+
+| # | Finding | Severity | Disposition |
+|---|---|---|---|
+| R3-1 | R2-2 gone: no overlapping lines seen by either reviewer | | fixed |
+| R3-2 | Long grey arrows to pointing error and total mass remain visible diagonals; P3 could confirm the pointing-error source only by counting 3+7=10 (one grazes SlewMeasurement) | hinders (both) | partly fixed (shorter, none cross another frame's boxes); residual accepted for this package: a per-frame source node would repeat the analysis box and misstate "one analysis"; a reader can follow every line |
+| R3-3 | "same statement as SlewBandRequirement" is now in the picture, but SlewBandRequirement sits in the dashed top group with no connector | hinders (both) | open, one candidate for a round 4: a dashed "same statement" link drawn from the doc relation |
+| R3-4 | Top dashed group far from everything; why PowerRequirement reads no traded metric | hinders | open; caption carries it (the requirement reads inputs of the analysis, not a metric) |
+| R3-5 | No values anywhere; a decision maker reads a coverage map, not a result (P1: blocks) | blocks (P1 only) | out of scope: values are WP22b; a title naming the figure as a coverage map is a presentation-side wording candidate |
+| R3-6 | Figure A legend: "baseline vs aggressive datasets", Kp/Kd undefined, "W*h", SysML stereotypes | hinders | open (A-3, R2-8 family); the presentation side defines these in the caption |
+| R3-7 | Box says "7 of the 10"; P1 counted 11 boxes | hinders (P1) | misread: the picture has 10 metric boxes plus a placeholder; P3 reconciled 3+7=10. Accepted; the placeholder in the mass frame is the likely cause |
+| R3-8 | Stereotype lines repeat in every requirement box; camelCase labels vs lower-case metric names; legend dense | polish | accepted (labels are model identifiers) |
+
+### Stopping verdict against the scope's good enough
+
+R-1 to R-11 hold for the six G2 metrics; two full rounds ran; the four uncovered metrics are named in the model
+and here with the value each needs; the trace table is above. The strict clause ("the last round found nothing
+that changes a view") is not met: R3-3 would change a view. Nothing found in round 3 blocks within the scope
+(the one "blocks", R3-5, is the WP22b values question). The PM's recommendation: stop the loop; R3-3 is a small
+round 4 only if the supervisor wants it. R2-1 is recorded as accepted in part, with the reason in R3-2.
+
+## Gate comparison report (skeleton for R-14; the swap is NOT done)
+
+Old model `examples/adcs/model_v2/cubesat.sysml` (what the committed data and the paper cite) against the new one
+`cubesat_r1.sysml`. To be completed at the gate, in the shape of WP16's data gate.
+
+| Question | Answer to fill at the gate | Evidence |
+|---|---|---|
+| Is the old file byte-unchanged? | | `git diff origin/dev...HEAD -- examples/adcs/model_v2/cubesat.sysml` empty; hash equals the ledger's last old entry |
+| What is identical? | calc defs, the analysis def, ranges, every number of the old model; assembly view text | equivalence test; assembly diff empty |
+| What is added? | `SlewMeasurement.slewTime`, `peakTorque`, `controlEffort` (recorded measurements); `SlewTimeRequirement`, `EclipseReserveRequirement`, `PowerMarginRequirement`, `EnergyBalanceRequirement`; `DepthOfDischargeRequirement` restated; `satisfy` and `verify` for each; docs naming the four open metrics; the two views marked | model diff |
+| Are the outputs equal? | | `v2-primary-r1@2`, `v2-baseline-r1@2` output hashes equal `v2-primary@2`, `v2-baseline@2`; flags and oracle to < 1e-9 |
+| Toolkit gates on both files | | check, lint, `verify --solve` exit codes |
+| What does the swap change for paper and docs? | the model file they cite and the figures | WP22d list |
+| Gate decision | | quoted verbatim in `WP22-decisions.md` |

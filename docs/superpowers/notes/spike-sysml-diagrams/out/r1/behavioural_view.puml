@@ -23,7 +23,7 @@ scale 700 width
 
 package "controls" {
   rectangle "**SettledRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> SlewVerification" as xSettledrequirement #FDEBD0
-  rectangle "**SlewTimeRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> SlewVerification" as xSlewtimerequirement #FDEBD0
+  rectangle "**SlewTimeRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> SlewVerification\nThe slew completes inside the horizon;\nsame statement as SlewBandRequirement" as xSlewtimerequirement #FDEBD0
   rectangle "settling time" as xSettlingTime #E3F1E3
   rectangle "slew time" as xSlewTime #E3F1E3
   rectangle "control effort\n(no requirement)" as xControlEffort #FFFFFF;line:black;line.dashed
@@ -67,7 +67,7 @@ rectangle "requirements with no line to a traded metric" as xNoLine #FFFFFF;line
 }
 xNoLine -[hidden]right-> xTotalMass
 
-rectangle "**SlewExperiment**\n<<analysis def>>\ncomputes 7 of the 10\nmetrics from the\nconfiguration and the\nmeasured inputs" as xAnalysis #E1D8F0
+rectangle "**SlewExperiment**\n<<analysis def>>\ncomputes 7 of the 10\nmetrics from the\nconfiguration and the\nmeasured inputs\n\n\n\n\n\n\n\n\n\n\n\n\n\n" as xAnalysis #E1D8F0
 rectangle "**SlewMeasurement**\nmeasured slew:\nsimulation here;\nfield data when\nfielded" as xMeasure #E4E4E4
 xMeasure -[hidden]right-> xAnalysis
 
