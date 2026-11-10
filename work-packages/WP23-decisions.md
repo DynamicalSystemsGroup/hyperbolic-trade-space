@@ -386,3 +386,18 @@ execution inside it, the exact outputs re-pinned from the container, the robustn
 branches) is dispatched as one unit per the supervisor's rule that the container is a gate check. The close-out
 is accepted and the model and data of record stand when all three are green; a changed conclusion, flag or count
 in the container's outputs reopens it.
+
+## The close-out accepted (2026-11-10, 14:50; the driver under the mandate)
+
+Three greens: Linux on the gate head b9d8b80 (three shards); the Mac watcher on heads after it (2ce3c14, 2d693fe:
+2189 passed, all checks); the container regression at 6de8f68 (image hts-paper 877c42cc10e3: the gate's
+regeneration as @7 entries with 0 drifts; the full suite with the exact branches green after re-pinning three
+host-recorded references and two test corrections; the robustness image hts-alt 2187 passed, 0 failed; the
+comparison with the host run shows last-digit drift and the registered CR-2 platform difference only; no
+conclusion, flag or count of the paper moved; the RECORD entry lists every re-pinned file old and new). **WP23's
+close-out is accepted**: the model carries the supervisor's thresholds, eight traded metrics with contract row 15,
+the data of record at @7, the requirements read after the fit in Appendix D and the docs' case page, the
+association step, and two Discussion candidates for the supervisor. Step 4 (WP16) is complete with it. The two test
+corrections (a zero exponent printed as "below 1e-12" or "0" read as one cell; a generated sentence's stable digits)
+are accepted as corrections of over-tight assertions, recorded in RECORD.md. Linux dispatched on 6de8f68; the
+watcher's run follows; a red there is fixed forward and does not reopen the acceptance unless a number moves.
