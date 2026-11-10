@@ -1170,3 +1170,15 @@ context makes it obvious, "trade-off"; the piece of the surface where one term i
 the surface" or "the trade-off's region" where the geometry is the point; the set of designs scoring highest on a
 term stays "cell" (A8). "Facet share" becomes "term share", "facet gap" "term gap", "several-facet fit" "several-term
 fit" or "posynomial fit". Scope of the rename (prose and glossary only, or the public API too): his, below.
+
+**Driver's question (popup):** how far does the rename go (everything, API included / prose and glossary now, API
+after 0.1 / prose first, API as its own package)? **Supervisor (mzargham), verbatim:** "so i realize its a big change
+but i think its causing more confusion than it is saving. can you do a spike to assess the effort to benefit ratio"
+
+**Disposition.** A spike, bounded to one agent and one report (`docs/superpowers/notes/spike-facet-rename/report.md`):
+effort by surface (mechanical rename, sentence rewrite, public-name rename with contract and tests, derivation
+scripts with Appendix B regenerated, figure labels, claims-register fragments, vocabulary baseline), with counts and
+an estimate in units; benefit from the reader-grid evidence (rounds 1, 1b, 1c, 1d: where "facet" misled and whether
+the figure colouring or the word carried it) and a small cold-read A/B of the same passages with the two
+vocabularies; a semantic check of where "facet" carries geometry that "term" does not; a recommendation with plain
+options for him.
