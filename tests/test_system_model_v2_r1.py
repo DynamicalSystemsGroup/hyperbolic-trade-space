@@ -415,9 +415,37 @@ def test_assembly_alternatives_in_enum_order_and_the_legend_names_what_is_drawn(
         m, byid = project.load(tmp_path / "m.sysml")
         project.assembly(m, byid, P, caption=caption)
     assert any(x.startswith("Kp:") for x in caption) and any(x.startswith("Kd:") for x in caption)
-    assert "baselineGains" not in " ".join(caption) and "aggressiveGains" not in " ".join(caption)
+    # revision 6 (WP23 post-gate view-consistency unit, disposition C): the caption ties each regime
+    # name to the model's gain box (the legend still names neither)
+    kp = next(x for x in caption if x.startswith("Kp:"))
+    assert "baseline regime, baselineGains" in kp and "primary regime, aggressiveGains" in kp
+    # one identifier level in the tags: the swap tags name attributes, as the tune tags do; the
+    # caption gives the enum behind each swap
+    assert "swap </b></back> wheelClass" in assembly and "swap </b></back> grade" in assembly
+    assert "TrackerGrade" not in "".join(x for x in assembly.splitlines() if "swap </b>" in x)
+    assert (
+        "wheelClass (enum WheelClass):" in caption[0] and "grade (enum TrackerGrade):" in caption[1]
+    )
     committed = (VIEWS / "assembly_caption.md").read_text().splitlines()[2:]
     assert committed == [f"- {x}" for x in caption]
+
+
+def test_the_analysis_box_names_what_needs_no_slew_and_the_caption_is_the_committed_one(
+    project, tmp_path
+):
+    """Disposition B: the analysis box names what the analysis returns and what needs no slew."""
+    _, behaviour, facts = _views(project, TEXT, tmp_path)
+    box = next(x for x in behaviour.splitlines() if "as xAnalysis" in x)
+    assert "returns 8 of the 9" in box and "pointing error" in box and "total mass" in box
+    assert "control effort" in box  # the entry passed on as measured
+    cap = facts["caption"]
+    assert (
+        "returns 8 of the 9" in cap[0] and "settling time is read from `SlewMeasurement`" in cap[0]
+    )
+    assert "ConfigurationVerification" in cap[1] and "SlewVerification" in cap[1]
+    assert "coverage.md" in cap[2] and "coverage.md" in cap[3]
+    committed = (VIEWS / "behavioural_caption.md").read_text().splitlines()[2:]
+    assert committed == [f"- {x}" for x in cap]
 
 
 def test_views_change_only_with_what_was_edited_and_are_stable(project, tmp_path):

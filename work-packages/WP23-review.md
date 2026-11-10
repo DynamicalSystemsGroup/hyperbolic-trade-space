@@ -1029,3 +1029,65 @@ what left):
 | eclipse peak load against the pack's peak power | `calc def EclipsePeakLoad`, `calc def BatteryPeakPower` (`environment.batteryDischargeRate` 1.0 1/h, illustrative; round 2) | `BatteryPeakPowerRequirement` (`EclipsePeakLoad(c, peakTorque) <= BatteryPeakPower(c)`) | `SlewVerification.batteryPeakPower` | no column; computable from `peak_slew_power_w`, `battery_wh` and the housekeeping load | holds over the whole declared space by 0.6 W in the corner ("Round 2"); the rate's candidates are in the popup table |
 | launch cost | `calc def LaunchCost` (MoE), `Cubesat.launchCost` | `LaunchBudgetRequirement` (above) | `ConfigurationVerification.launchBudget` | no column (OD2: in the log metrics it is the total mass shifted by a constant) | the MoE on the total mass |
 | slew time | gone (R-5): `SlewTimeRequirement` and `SlewBandRequirement` fold into `SettledRequirement`; the measurement loses `slewTime` and `censored` | — | — | `slew_time_s` and `slew_time_05deg_s` leave with the regeneration (D-4, the contract amendment on `wp23case`) | the closed-form `SlewTimeEstimate` and its parts stay in section 4 as WP15's model-checking evidence ("R-5's check, amended") |
+
+## Post-gate view-consistency unit
+
+The PM's dispositions B, C, D and F of "Rounds: the cold reads and their dispositions", and the
+pair's drawing (`diagnostic_pair.py`). The views are `project.py` revision 6 (the default; revisions
+3 to 5 reproduce the earlier text), regenerated once and rendered by `render.sh` with PlantUML
+1.2026.8 (the committed revision-5 text re-rendered to the committed bytes first, so the recipe is
+the one the views were made with); the paper's two static copies are byte copies.
+
+- **B, sources and verification.** The analysis box now says what the model's analysis returns: 8 of
+  the 9 metrics, the pointing error and the total mass computed from the configuration alone (no
+  slew), the control effort passed on as measured (an `in` returned unchanged); it replaces "computes
+  7 of the 9 ... from the measured inputs", which read as if every entry needed a slew. The
+  configuration-only entries are found from the model (an entry whose expression and calcs read no
+  measured input), not typed. The arrows are unchanged (the control effort's starts at the
+  measurement, where the value is measured; the settling time is read from the measurement and is
+  not returned). The verification cases are the requirement boxes' own second line
+  (`ConfigurationVerification` for the pointing error and the launch budget); the new
+  `views/behavioural_caption.md` states both facts, that the three requirements that read no traded
+  metric stand apart here and are listed under their calc's group in the coupling table, and that
+  the coupling variables and the measured inputs of the analysis are the cells of that table and are
+  not drawn (the view loses nothing the sentence needs by leaving them out). `coverage.py`'s prose
+  (the preamble sentence "Traded metrics", the docstrings, the coupling table's introduction) now
+  says the measurement attributes that the analysis neither takes nor returns, then its return
+  entries in order (an input returned unchanged is one of them), which is the row order, and that a
+  requirement is listed under the group of the calc it reads. `coverage.md` carries the same two
+  sentences by hand-applied substitution; the structural build's two prose lines equal the
+  committed ones, and no verdict, number or magnitude moved (the empirical column was not
+  regenerated: the committed magnitudes are the environment of record's).
+- **C, names.** The analyst's grouping is "the group(s)" in the new captions and in the changed
+  coverage prose ("the three groups of the behavioural view, the analyst's grouping of the metrics");
+  the lane titles keep "(the analyst's grouping)". The assembly caption names each regime with its
+  gain box (`Kp: 0.03 .. 1 (baseline regime, baselineGains); 0.2 .. 2 (primary regime,
+  aggressiveGains)`); the legend names neither. The swap tags now name the attribute, as the tune
+  tags do (`wheelClass`, `grade`), and the caption gives the enum behind each (`wheelClass (enum
+  WheelClass)`), which is the coverage table's name for the decision element. Residual: the coverage
+  table's decision-element column still reads `WheelClass` and `TrackerGrade` for the swaps (its
+  generator and `coverage.csv` are outside this unit).
+- **D.** `round-1/README.md`: the cell with 3 near-frontier designs at the K = 1 band is term 2
+  (181 rows, share 0.034), the cell with 7 at the K = 3 band is term 1, as the K = 3 messages number
+  terms from 0 (`facet 1`, `facet 0`); checked against `k3_record.md`'s cells and the estimator,
+  agreeing with `swap-evidence.md`, "Changed conclusions" 2. The library's K = 1 message carries no
+  index at all (`tensions.py`: an empty prefix), so no K = 1 base is stated.
+- **F.** The composition lines passed within a few pixels of the ReactionWheel and StarTracker
+  headers (a line meets a same-height neighbour with a margin of slope times gap). Revision 6 orders
+  the parts of the row so that the boxes of greatest height are spread with a shorter box between
+  any two; the model's order is kept for the rest. Looked at at 2000 px
+  (`assembly_2000.png`, below) and at 700 px: no line crosses or touches a box header; no crossing
+  remains. The type grows from 9.0 to 9.6 px (the frame is 260 px tall against 245).
+- **The pair.** `diagnostic_pair.py` no longer sets a panel title (`tau_sweep_figure` names the
+  regime) and draws both regimes with one `vmax` (`shared_vmax`, the larger of the two sweeps' tops:
+  0.435 on the data of record); `k3_record.md` states it ("Both heatmaps share one colour scale,
+  from white at 0.001 to 0.435 ..."). The gate folder (`WP23-rounds/gate/`) is not re-rendered; no
+  test pins it. Identifier renames (`facet_table`, `facet_`) are left to WP24.
+
+Renders looked at (session scratchpad, 700 px unless named): before,
+`wp23views-renders/before/assembly_view.png` and `behavioural_view.png`; after,
+`wp23views-renders/after/assembly_view.png` and `behavioural_view.png` (byte-identical to the
+committed ones), `wp23views-renders/zoom/assembly_2000.png` (the crossing check); the pair on
+`examples/adcs/data/v2/*.csv`, `wp23views-renders/pair/heatmap.png` and `heatmap_baseline.png` (both
+panels' scales end at 0.43, both named by regime). The behavioural view's lanes, lines and dashed
+group are as before; the analysis box is wider by one word of text, the type unchanged (9.2 px).

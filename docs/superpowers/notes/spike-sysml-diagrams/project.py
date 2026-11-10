@@ -225,7 +225,7 @@ def constraint_text(byid, req_id: str) -> str:
 # =================================================================================================
 # View 1: the assembly
 # =================================================================================================
-def assembly(m, byid, P, revision=5, caption=None):
+def assembly(m, byid, P, revision=6, caption=None):
     rows = {
         r.id: r.properties | {"@type": r.type} for r in m.query(scope=P)
     }
@@ -257,6 +257,7 @@ def assembly(m, byid, P, revision=5, caption=None):
         if p["@type"] == "EnumerationUsage":
             enum_lits.setdefault(p["owner"], []).append(p["name"])
     selector = {}
+    selector_attr = {}  # revision 6: the swap tag names the attribute, as the tune tags do
     for d in abstract:
         for a in kids(d):
             if (
@@ -264,6 +265,7 @@ def assembly(m, byid, P, revision=5, caption=None):
                 and a.get("type") in enum_lits
             ):
                 selector[d] = a["type"]
+                selector_attr[d] = a["name"]
 
     # continuous variables: defaulted attributes of the root, each placed ONCE in the part definition
     # whose usage binds it (a redefinition `:>> span = Cubesat::panelSpan`); defaulted attributes of
@@ -310,6 +312,34 @@ def assembly(m, byid, P, revision=5, caption=None):
             ):
                 var_at.setdefault(d, []).append(a["name"])
 
+    if revision >= 6:
+        # revision 6: the composition lines are routed clear of the box headers by the order of the
+        # parts in the row. Lines run from the root down to each box's top edge, and a line passes
+        # a neighbour at the same height with a margin of only (slope x gap): the boxes of the
+        # greatest height (the abstract parts and the part with most tags) are spread along the row
+        # with a shorter box between any two, and the shorter boxes keep the model's order.
+        def box_rows(t):
+            n = 1 + (1 if any(p["type"] == t for p in parts) else 0)
+            n += 1 if t in abstract else 0
+            return (
+                n + (1 if t in selector else 0) + len(var_at.get(t, []))
+            )
+
+        kinds_in_order = list(dict.fromkeys(p["type"] for p in parts))
+        tallest = max(box_rows(t) for t in kinds_in_order)
+        tall = [t for t in kinds_in_order if box_rows(t) == tallest]
+        short_ = [t for t in kinds_in_order if box_rows(t) != tallest]
+        slots = [
+            round(k * (len(kinds_in_order) - 1) / max(len(tall) - 1, 1))
+            for k in range(len(tall))
+        ]
+        row = [None] * len(kinds_in_order)
+        for slot, t in zip(slots, tall):
+            row[slot] = t
+        fill = iter(short_)
+        row = [t if t is not None else next(fill) for t in row]
+        parts = sorted(parts, key=lambda p: row.index(p["type"]))
+
     def tag(kind, name):
         word, colour = kind
         return f"  <back:{colour}><b> {word} </b></back> {name}"
@@ -333,7 +363,14 @@ def assembly(m, byid, P, revision=5, caption=None):
         kind = "abstract part def" if defqn in abstract else "part def"
         body = []
         if defqn in selector:
-            body.append(tag(TAG_CATEGORICAL, short(selector[defqn])))
+            body.append(
+                tag(
+                    TAG_CATEGORICAL,
+                    selector_attr[defqn]
+                    if revision >= 6
+                    else short(selector[defqn]),
+                )
+            )
         for v in var_at.get(defqn, []):
             body.append(tag(TAG_CONTINUOUS, v))
         used = ", ".join(p["name"] for p in parts if p["type"] == defqn)
@@ -415,7 +452,14 @@ def assembly(m, byid, P, revision=5, caption=None):
     out.append("  ")
     out.append("  **Levels and ranges** (read from the model)")
     for d, en in sorted(selector.items()):
-        out.append(f"  {short(en)}: {' | '.join(enum_lits[en])}")
+        # revision 6: the swap is named by its attribute, as in its tag; the enum is the type of that
+        # attribute and the coverage table's name for the decision element
+        name = (
+            f"{selector_attr[d]} (enum {short(en)})"
+            if revision >= 6
+            else short(en)
+        )
+        out.append(f"  {name}: {' | '.join(enum_lits[en])}")
     out.append(
         f"  panelSpan: {pr('panelSpanMin')} .. {pr('panelSpanMax')}"
     )
@@ -433,6 +477,7 @@ def assembly(m, byid, P, revision=5, caption=None):
         regime = regime_of_gain_box()
         label = lambda b: (
             f"{regime.get(b.removesuffix('Gains'), b)} regime"
+            + (f", {b}" if revision >= 6 else "")
         )  # noqa: E731
         out.append("  Gains Kp and Kd: one range per regime")
         both = "both regimes"
@@ -538,7 +583,7 @@ class Reads:
         return out
 
 
-def behavioural(m, byid, P, revision=5):
+def behavioural(m, byid, P, revision=6):
     sys.path.insert(0, str(REPO / "examples" / "adcs"))
     import case  # the CaseSpec: the metrics, in order, and their subsystems
 
@@ -643,6 +688,92 @@ def behavioural(m, byid, P, revision=5):
         )
     assert metrics, "the model carries none of the CaseSpec's metrics"
     idx = {n: k for k, (n, _) in enumerate(metrics)}
+
+    # --- what the analysis returns, and which returned entries need no slew ---------------------------
+    # the analysis's `in` parameters other than its subject are the measured inputs; a returned entry
+    # needs the slew when its expression reads one of them, or its calc (or the attribute's) reads
+    # the baseline measurement
+    params = {
+        i
+        for i, e in byid.items()
+        if e["@type"] == "ReferenceUsage"
+        and i.startswith(analysis + "__")
+        and i.count("__") == analysis.count("__") + 1
+        and short(i) not in ("cubesat", "attributes")
+    }
+    entry_root = analysis + "__attributes_pvalue_pa"
+
+    def entry_of(name):
+        kind, ident = METRIC_ELEMENT[name]
+        for i, e in byid.items():
+            if not (
+                i.startswith(entry_root)
+                and i[len(entry_root) :].isdigit()
+            ):
+                continue
+            if (
+                kind == "calc"
+                and e.get("function")
+                and ref(e["function"]) == mcalc[name]
+            ):
+                return i
+            if (
+                kind == "attr"
+                and e["@type"] == "FeatureChainExpression"
+                and e.get("sysx:sourceText", "").split(".")[-1].strip()
+                == ident
+            ):
+                return i
+        return None
+
+    def needs_slew(name):
+        kind, ident = METRIC_ELEMENT[name]
+        if origin[name] == "measurement":
+            return True
+        entry = entry_of(name)
+        reads = (  # the entry's nested expressions have ids beginning with its own
+            [
+                e
+                for i, e in byid.items()
+                if i == entry or i.startswith(entry + "_p")
+            ]
+            if entry
+            else []
+        )
+        if any(
+            e["@type"] == "FeatureReferenceExpression"
+            and e.get("referent")
+            and ref(e["referent"]) in params
+            for e in reads
+        ):
+            return True
+        roots = (
+            {mcalc[name]} | rd.closure(mcalc[name])
+            if kind == "calc"
+            else {rd.cub_attrs[ident]} | rd.direct(rd.cub_attrs[ident])
+        )
+        roots = roots | {c for r in roots for c in rd.closure(r)}
+        return any(rd.measured(r) for r in roots)
+
+    cfg_only = [
+        n
+        for n, _ in metrics
+        if origin[n] == "analysis" and not needs_slew(n)
+    ]
+    # returned = computed by the analysis, or an `in` of the analysis returned unchanged
+    passed = [
+        n
+        for n, _ in metrics
+        if origin[n] == "measurement" and camel(n, False) in a_refs
+    ]
+    returned = [
+        n for n, _ in metrics if origin[n] == "analysis"
+    ] + passed
+    read_only = [
+        n
+        for n, _ in metrics
+        if origin[n] == "measurement" and n not in passed
+    ]
     # calcs the model marks MoE that are not traded themselves: an MoE computed from a traded metric
     # (the launch cost from the total mass), drawn between the requirement that reads it and the
     # metric it reads
@@ -974,9 +1105,23 @@ def behavioural(m, byid, P, revision=5):
     out.append("")
     n_analysis = sum(v == "analysis" for v in origin.values())
     pad = "\\n" * ANALYSIS_BOX_PAD
-    out.append(
-        f'rectangle "**SlewExperiment**\\n<<analysis def>>\\ncomputes {n_analysis} of the {len(metrics)}\\nmetrics from the\\nconfiguration and the\\nmeasured inputs{pad}" as xAnalysis {ANALYSIS_COLOUR}'
-    )
+    if revision >= 6:
+        # the analysis returns the computed entries and the `in` it passes on; what needs no slew
+        # is named in the box (the picture implied every entry needs the measured slew)
+        said = ",\\n".join(cfg_only)
+        passes = ", ".join(passed)
+        box = (
+            f"**SlewExperiment**\\n<<analysis def>>\\nreturns {len(returned)} of the {len(metrics)}"
+            f"\\nmetrics. Computed with\\nno slew, from the\\nconfiguration alone:\\n{said}."
+            f"\\nPassed on as\\nmeasured:\\n{passes}."
+        )
+        out.append(
+            f'rectangle "{box}{pad}" as xAnalysis {ANALYSIS_COLOUR}'
+        )
+    else:
+        out.append(
+            f'rectangle "**SlewExperiment**\\n<<analysis def>>\\ncomputes {n_analysis} of the {len(metrics)}\\nmetrics from the\\nconfiguration and the\\nmeasured inputs{pad}" as xAnalysis {ANALYSIS_COLOUR}'
+        )
     out.append(
         f'rectangle "**SlewMeasurement**\\nmeasured slew:\\nsimulation here;\\nfield data when\\nfielded" as xMeasure {MEASURE_COLOUR}'
     )
@@ -1028,7 +1173,35 @@ def behavioural(m, byid, P, revision=5):
         )
         out.append("end legend")
         out.append("@enduml")
+        cap = []
+        if revision >= 6:
+            ver_of = lambda names: sorted(  # noqa: E731
+                {
+                    c
+                    for n in names
+                    for r, nn, st, ev in rel
+                    if nn == n
+                    for c in verified_by[r]
+                }
+            )
+            cap = [
+                f"The analysis `SlewExperiment` returns {len(returned)} of the {len(metrics)} traded "
+                f"metrics. The {', '.join(read_only)} is read from `SlewMeasurement` and is not "
+                f"returned. The {', '.join(passed)} is an input of the analysis that it returns "
+                "unchanged, so its arrow starts at `SlewMeasurement`, where the value is measured.",
+                f"The {' and the '.join(cfg_only)} are computed from the configuration alone, with "
+                "no slew; their requirements are verified in "
+                f"`{', '.join(ver_of(cfg_only))}`, the others in "
+                f"`{', '.join(sorted({c for r in reqs for c in verified_by[r]} - set(ver_of(cfg_only))))}`.",
+                "The groups are the analyst's grouping of the metrics (the model has no such "
+                "structure); a requirement stands in the group of the metric it reads. The "
+                f"{len(no_line)} requirements that read no traded metric stand apart here; the "
+                "coupling table of `coverage.md` lists each under the group of the calc it reads.",
+                "Not drawn: the coupling variables between the groups and the measured inputs the "
+                "analysis takes. They are the cells of the coupling table of `coverage.md`.",
+            ]
         return "\n".join(out) + "\n", {
+            "caption": cap,
             "rel": rel,
             "rel_all": rel_all,
             "metric_element": METRIC_ELEMENT,
@@ -1102,10 +1275,11 @@ if __name__ == "__main__":
     ap.add_argument(
         "--revision",
         type=int,
-        default=5,
-        choices=(3, 4, 5),
+        default=6,
+        choices=(3, 4, 5, 6),
         help="drawing revision (3: the views committed before WP23's data gate; 4: WP23 round 3; "
-        "5: WP23 round 4, the committed views since the gate)",
+        "5: WP23 round 4, the committed views of the data gate; 6: the post-gate view-consistency "
+        "unit, the committed views since)",
     )
     a = ap.parse_args()
     m, byid = load(pathlib.Path(a.model))
@@ -1122,6 +1296,11 @@ if __name__ == "__main__":
         )
     text, facts = behavioural(m, byid, a.package, a.revision)
     (od / "behavioural_view.puml").write_text(text)
+    if a.revision >= 6:
+        (od / "behavioural_caption.md").write_text(
+            "Sources, verification and groups (read from the model by the views generator):\n\n"
+            + "".join(f"- {line}\n" for line in facts["caption"])
+        )
     if a.facts:
         for r, n, s, ev in facts["rel"]:
             print(f"{short(r):32s} {n:20s} {s:7s} {ev}")

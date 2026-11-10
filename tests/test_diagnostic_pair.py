@@ -64,6 +64,31 @@ def test_the_two_files_and_the_copy_exist(pair):
     assert (out / "coverage.md").read_text() == "# coverage of the test\n"
 
 
+def test_the_two_heatmaps_share_one_colour_scale_and_the_record_says_so(pair):
+    out, _, result = pair
+    record = (out / "k3_record.md").read_text()
+    assert result["vmax"] > dp.case.EXPONENT_FLOOR
+    assert (
+        f"Both heatmaps share one colour scale, from white at 0.001 to {result['vmax']:.3f}"
+        in record
+    )
+
+
+def test_the_shared_top_is_the_larger_of_the_two_figures_own_tops():
+    class Image:
+        def __init__(self, top):
+            self.top = top
+
+        def get_clim(self):
+            return (0.001, self.top)
+
+    class Fig:
+        def __init__(self, top):
+            self.axes = [None, None, type("Ax", (), {"images": [Image(top)]})()]
+
+    assert dp.shared_vmax([Fig(0.25), Fig(0.4), Fig(0.1)]) == 0.4
+
+
 def test_the_metric_list_is_the_coverage_tables_in_its_order(pair):
     out, metrics, result = pair
     assert result["metrics"] == metrics

@@ -22,6 +22,9 @@ hide empty members
 scale 700 width
 
 class "Cubesat\n<<part def>>" as Cubesat #E8EEF7
+class "**ReactionWheel**\n(wheel)\n<<abstract>>" as ReactionWheel {
+  <back:#F6C98B><b> swap </b></back> wheelClass
+}
 class "**Bus**\n(bus)" as Bus {
 }
 class "**SolarPanel**\n(panelPlus, panelMinus)" as SolarPanel {
@@ -30,27 +33,24 @@ class "**SolarPanel**\n(panelPlus, panelMinus)" as SolarPanel {
 class "**Battery**\n(battery)" as Battery {
   <back:#9CC8EE><b> tune </b></back> batteryCapacity
 }
+class "**StarTracker**\n(tracker)\n<<abstract>>" as StarTracker {
+  <back:#F6C98B><b> swap </b></back> grade
+}
 class "**Antenna**\n(antenna)" as Antenna {
 }
 class "**Imu**\n(imu)" as Imu {
-}
-class "**ReactionWheel**\n(wheel)\n<<abstract>>" as ReactionWheel {
-  <back:#F6C98B><b> swap </b></back> WheelClass
-}
-class "**StarTracker**\n(tracker)\n<<abstract>>" as StarTracker {
-  <back:#F6C98B><b> swap </b></back> TrackerGrade
 }
 class "**Controller**\n(controller)" as Controller {
   <back:#9CC8EE><b> tune </b></back> Kp
   <back:#9CC8EE><b> tune </b></back> Kd
 }
+Cubesat *-- ReactionWheel
 Cubesat *-- Bus
 Cubesat *-- SolarPanel
 Cubesat *-- Battery
+Cubesat *-- StarTracker
 Cubesat *-- Antenna
 Cubesat *-- Imu
-Cubesat *-- ReactionWheel
-Cubesat *-- StarTracker
 Cubesat *-- Controller
 class "**SmallWheel**" as SmallWheel {
 }

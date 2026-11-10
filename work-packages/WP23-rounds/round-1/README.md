@@ -95,9 +95,11 @@ K = 1 contending sets at the selected temperatures are in `k3_record.md`: primar
 ## A finding for the record
 
 On the primary regime the K = 3 report (`case.facet_table`, the contending set and tensions per
-term) refuses at both of its documented bands: at the K = 1 band 1/tau = 0.0263 the cell of term 1
-has 3 near-frontier designs, at the K = 3 fit's own band 1/tau = 0.0088 the cell of term 1 has 7,
-against the report's minimum of 10. `k3_record.md` quotes both refusals and gives the K = 3 fit
+term) refuses at both of its documented bands: at the K = 1 band 1/tau = 0.0263 the cell of term 2
+(181 rows, share 0.034) has 3 near-frontier designs, at the K = 3 fit's own band 1/tau = 0.0088
+the cell of term 1 has 7, against the report's minimum of 10 (correction, post-gate: the library's
+K = 3 messages number terms from 0, so the quoted `facet 1: only 3` is term 2 and `facet 0: only 7`
+is term 1; this paragraph read both as term 1). `k3_record.md` quotes both refusals and gives the K = 3 fit
 itself (the exponents per term, the rows and shares of the cells) from the estimator; the report
 table is given for the baseline regime, at the K = 1 band. Nothing was changed to obtain a report;
 the band is a reading parameter, and the modeller and the PM decide how the round reads it.
