@@ -68,6 +68,14 @@ What the sources and the project records support, in the order the paragraph nee
   [@allen1997weights] and Dyson et al. [@dyson2001pitfalls]: read by title only (weights
   restrictions and value judgements; pitfalls and protocols); the paragraph cites them for the
   topics in their titles and says no more.
+- Added 2026-11-10 (the sceptic's register, Appendix G). Multiplicative DEA: Charnes, Cooper,
+  Seiford and Stutz [@charnes1982multiplicative; @charnes1983invariant], read by title only (a
+  multiplicative efficiency model; piecewise Cobb-Douglas envelopments); Banker and Maindiratta
+  [@banker1986piecewise], abstract read (linear programs for piecewise log-linear estimation of
+  efficient production surfaces). The hyperbolic graph measure: Färe, Grosskopf and Lovell
+  [@fare1985measurement], the chapter "Hyperbolic Graph Efficiency Measures" read by abstract
+  (inputs and outputs both freely variable; the technology modelled by its graph). Entries and what
+  was read: `references-verified.md`, "Added for WP11 round 2, the sceptic's register".
 - The points of comparison, from `paper-outline-v1-baseline.md` (addendum), restated as project
   statements. Shared: one-sided envelope; a score per unit (DEA's efficiency score, here the energy
   differential log V); super-efficiency and V above 1; Malmquist and the rerun for a moving

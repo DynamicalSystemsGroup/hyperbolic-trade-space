@@ -5196,3 +5196,75 @@ status = "backed"
 disposition = "keep"
 source = "WP11 round 2, CR-30 (the figure stream's caption for Figure 7)"
 note = "The horizontal axis of Figure 7 is the first principal direction of the near-frontier chart that Appendix D.16 prints with its loadings (case.pca_directions, signed as D.16 signs it); the caption names the three leading loadings by sign and points at D.16 for the numbers, which the axis label generates."
+
+[[claim]]
+id = "C415"
+fragment = "not the hyperbolic graph measure of efficiency of Färe, Grosskopf and Lovell, a measure on the graph of a technology with inputs and outputs both free"
+file = "paper/paper.ipynb"
+anchor = "Prior art, by family"
+kind = "L"
+backing = ["bib:fare1985measurement", "file:docs/superpowers/notes/references-verified.md"]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, PM6 batch 2 (the sceptic's register)"
+note = "The chapter 'Hyperbolic Graph Efficiency Measures' (10.1007/978-94-015-7721-2_5) read by abstract: inputs and outputs both freely variable, the technology modelled by its graph. The clause claims no more than the abstract; the measure's definition (the chapter body) was not read."
+
+[[claim]]
+id = "C416"
+fragment = "centred on the cell's mean log-metric: the term refit ... on the cell's rows alone"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/tensions.py::tension_report", "test:tests/test_tensions.py::test_k3_reports_one_per_term_recover_planted_supports"]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, PM6 batch 2 (CR-15)"
+note = "tension_report at K > 1 solves the tau = inf LP on the rows assigned to the term with their mean subtracted (_report(..., Uk - Uk.mean(0), ...)): min_w max_i w.(u_i - ubar_k) over the cell equals J_inf(U_k w) - ubar_k.w, the term refit f_k restricted to the cell's rows."
+
+[[claim]]
+id = "C417"
+fragment = "The labels are the alternation's weights at infinite term temperature, the limit of the soft weights of"
+file = "paper/paper.ipynb"
+anchor = "The algorithm for several terms"
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/solvers.py::soft_weights", "test:tests/test_soft_fit.py::test_r3_the_limit_kappa_to_infinity_is_the_label_fit", "file:derivation/lemma_16_soft_fit_alternation.py", "file:paper/supporting_material.ipynb"]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, PM6 batch 2 (CR-15)"
+note = "softmax_k(kappa s_ik) at kappa = infinity is one label per design, k(i) = argmax_k s_ik (L16's setting names the infinite-kappa weights a one-label assignment; Appendix B.2: the package uses the sharp limit of the weights); test_r3 shows the finite-kappa fit tending to the label fit."
+
+[[claim]]
+id = "C418"
+fragment = "A design's cell, the term that scores it highest in the fitted model ... is read after the fit"
+file = "paper/paper.ipynb"
+anchor = "The algorithm for several terms"
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/estimator.py::assign_cells", "file:work-packages/interface-contract.md", "glossary:cell"]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, PM6 batch 2 (CR-15)"
+note = "assign_cells(X) is argmax_k (w_k . log m - beta_k) of the fitted model; its doctest shows it equal to cell_, the labels of the returned state."
+
+[[claim]]
+id = "C419"
+fragment = "Refitting a term on its own rows alone, the plain one-term fit on its cell, is ill-posed (observed on planted data"
+file = "paper/paper.ipynb"
+anchor = "The algorithm for several terms"
+kind = "R"
+backing = ["gen:paper/generate_results.py::own_rows_refit", "test:tests/test_paper.py::test_the_claims_of_c1_have_their_true_basis"]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, PM6 batch 2 (CR-15)"
+note = "D.13: the plain K = 1 fit on a term's own rows (solve_slsqp(mine, tau)) recovers 0 of 60 planted terms at both temperatures; the support refit (all rows, centred at the term's mean) recovers 60 of 60."
+
+[[claim]]
+id = "C420"
+fragment = "the refit of record is ... over all rows. The contending set's exact-maximum fit on the cell is ... itself on the cell's rows"
+file = "paper/paper.ipynb"
+anchor = "The algorithm for several terms"
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/solvers.py::_refit", "func:src/hyperbolic_trade_space/tensions.py::tension_report", "file:paper/supporting_material.ipynb"]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, PM6 batch 2 (CR-15)"
+note = "Appendix B.2 step (2): the refit w_k = argmin f_k over all rows with beta_k = J_tau(U w_k) (solvers._refit); the contending set's LP is the same f_k at tau = inf on the cell's rows alone (C416)."

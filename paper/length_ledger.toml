@@ -865,3 +865,27 @@ section = "Case analysis"
 words_added = 10
 job = "the K = 3 paragraph says what Figure 6 shows as redrawn (each term's own line in its own pair), not the bending it no longer draws"
 reader = "the reader who follows the sentence to the figure"
+
+# WP11 round 2, author unit 5 (the third paper author): CR-15 said truthfully, the sceptic's
+# register, CR-26's second difference in Table 1.
+
+[[raise]]
+date = "2026-11-10"
+section = "Prior art, by family"
+words_added = 40
+job = "the DEA paragraph says what the title's word means here (the level curve of V, Section 4) and that it is not Färe, Grosskopf and Lovell's hyperbolic graph measure; Table 1's DEA cell carries both differences (global exponents, not per-unit weights; a band, not extreme units; CR-26)"
+reader = "the sceptic who knows the DEA literature and reads the title as the hyperbolic measure"
+
+[[raise]]
+date = "2026-11-10"
+section = "Definitions"
+words_added = 19
+job = "Definition 6 says what the exact-maximum fit to a cell is as the package computes it (the term refit f_k on the cell's rows alone, centred on the cell's mean), so that it no longer reads as the own-rows refit Section 6 calls ill-posed (CR-15)"
+reader = "the reader who holds Definition 6 against the sentence after Theorem 10"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 80
+job = "Section 6.2 says what the labels are (the alternation's weights at infinite term temperature, the limit of Theorem 10's soft weights, an implementation choice and not an assumption), that the offsets and the soft fit see every design, and that the cell is read after the fit; the sentence after Theorem 10 says which refit is ill-posed (the plain one-term fit on a cell) and which is of record (CR-15)"
+reader = "the reader who held 'not part of the fit' against equation (2) and Theorem 11"

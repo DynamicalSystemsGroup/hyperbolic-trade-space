@@ -161,3 +161,34 @@ were not read.
 - Not entered: `simpson2011trade` (Springer chapter, doi:10.1007/978-0-85729-883-6_7; bibliographic
   record only, no abstract in any machine-readable record; no sentence of the register needs it).
   Re-checked and unchanged: `ross2004multi`, `ross2005tradespace`, `stump2009visual`.
+
+## Added for WP11 round 2, the sceptic's register (2026-11-10, the third paper author)
+
+Each DOI fetched from the Crossref API (`curl -s https://api.crossref.org/works/<doi>`) and resolved
+through `curl -sIL https://doi.org/<doi>` on 2026-11-10. Full texts were not read; the `verified`
+field of each entry says what was read.
+
+- `charnes1982multiplicative`: Charnes, A., Cooper, W. W., Seiford, L., Stutz, J. (1982). "A
+  multiplicative model for efficiency analysis." *Socio-Economic Planning Sciences* 16(5), 223-224.
+  doi:10.1016/0038-0121(82)90029-5. Crossref has no abstract; doi.org reached the Elsevier linkinghub
+  page (200); ScienceDirect refuses an automated read. Read by title only.
+- `charnes1983invariant`: Charnes, A., Cooper, W. W., Seiford, L., Stutz, J. (1983). "Invariant
+  multiplicative efficiency and piecewise Cobb-Douglas envelopments." *Operations Research Letters*
+  2(3), 101-103. doi:10.1016/0167-6377(83)90014-7. As above: read by title only.
+- `banker1986piecewise`: Banker, R. D., Maindiratta, A. (1986). "Piecewise loglinear estimation of
+  efficient production surfaces." *Management Science* 32(1), 126-135. doi:10.1287/mnsc.32.1.126.
+  Crossref abstract read in full (linear programs for piecewise log-linear estimation of efficient
+  production surfaces, derived from postulated properties of the production possibility set; unlike
+  the piecewise linear model of Banker, Charnes and Cooper 1984 it admits increasing marginal
+  products and S-shaped production functions; estimates of technical inefficiency, rates of
+  substitution and transformation, marginal products and returns to scale). doi.org reached the
+  INFORMS page (403 to an automated GET after the redirect).
+- `fare1985measurement`: Färe, R., Grosskopf, S., Lovell, C. A. K. (1985). *The Measurement of
+  Efficiency of Production.* Springer Netherlands (Studies in Productivity Analysis 6).
+  doi:10.1007/978-94-015-7721-2. doi.org reached the Springer landing page (200), whose chapter list
+  includes "Hyperbolic Graph Efficiency Measures" (chapter 10.1007/978-94-015-7721-2_5, pp. 107-130);
+  that chapter's abstract was read on its Springer page: the chapter drops the assumption that
+  either inputs or outputs are given, so inputs and outputs are both freely variable and the
+  technology is modelled by its graph rather than by an input or output correspondence. The
+  chapter body (the measure's definition) was not read; the paper and Appendix G say only what the
+  abstract says.

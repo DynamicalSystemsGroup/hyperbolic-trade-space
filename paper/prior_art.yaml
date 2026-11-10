@@ -67,7 +67,8 @@ entries:
       metrics with homogeneity by the simplex in place of inputs, outputs and a returns-to-scale
       choice; a soft maximum with a temperature, a band and an effective sample size in place of a
       deterministic boundary set by extreme units; one convex program and K refits; coordinates and
-      a pull-back to attribute units in place of a score and a peer set.
+      a pull-back to attribute units in place of a score and a peer set. In short, global exponents
+      per term, not per-unit weights; a band, not extreme units.
     cites: [charnes1978measuring, banker1984some, andersen1993procedure, fare1994productivity, allen1997weights, dyson2001pitfalls]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -75,12 +76,50 @@ entries:
     short:
       does: "Evaluates the relative efficiency of each decision-making unit"
       shares: "A one-sided envelope of the data, a score per unit"
-      differs: "a global named structure, in place of weights obtained unit by unit"
+      differs: "global exponents per term, not per-unit weights; a band, not extreme units"
     nearest: true
     why_not_just: >-
       This is not just DEA: DEA scores each unit against the envelope under weights obtained from the data,
       while the fit learns one set of exponents per term from the whole table and reports where a
       design sits relative to its term and which metrics trade there.
+
+  - id: multiplicative-dea
+    group: Optimization and efficiency analysis
+    family: Multiplicative DEA
+    does: >-
+      A multiplicative efficiency model whose envelopment is piecewise Cobb-Douglas (Charnes, Cooper,
+      Seiford and Stutz, read by title); linear programs for piecewise log-linear estimation of the
+      efficient boundary of production, derived from properties postulated for the production
+      possibility set, which admit increasing marginal products and S-shaped production functions
+      and estimate technical inefficiencies, rates of substitution and transformation, marginal
+      products and returns to scale (Banker and Maindiratta, read by abstract).
+    shares: >-
+      A piecewise log-linear fit to the data from above, each piece a product of powers; a score per
+      unit against it.
+    differs: >-
+      One exponent vector per term, fitted to every design at once under a soft maximum with a
+      temperature and a band, the number of terms the analyst's choice; larger-is-better metrics
+      with homogeneity by the simplex in place of inputs and outputs; coordinates and a pull-back to
+      attribute units in place of a score per unit.
+    cites: [charnes1982multiplicative, charnes1983invariant, banker1986piecewise]
+    section2: false
+
+  - id: hyperbolic-graph-measure
+    group: Optimization and efficiency analysis
+    family: The hyperbolic graph measure of efficiency
+    does: >-
+      Efficiency measures on the graph of a technology, inputs and outputs both freely variable, in
+      place of measures that hold the outputs or the inputs fixed (the chapter "Hyperbolic Graph
+      Efficiency Measures", read by abstract).
+    shares: >-
+      A boundary of a technology, and each unit measured against it with no quantity held fixed:
+      V scores a design against the fitted reference surface with every metric free.
+    differs: >-
+      The title's word names the level curves of V, products of powers of larger-is-better metrics
+      fitted to a table under a soft maximum, not this measure; nothing here scales inputs against
+      outputs.
+    cites: [fare1985measurement]
+    section2: false
 
   - id: production-distance
     group: Optimization and efficiency analysis
