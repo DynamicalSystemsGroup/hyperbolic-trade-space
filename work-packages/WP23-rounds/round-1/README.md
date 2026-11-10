@@ -11,8 +11,9 @@ state what is at zero exponent, and nothing in the model, the data or the fit wa
 
 - Model: `examples/adcs/model_v2/cubesat_r2.sysml` as committed at `af37cb1` (sha256
   `044a47572427e8522fca1e4ccd2e876e2d1dedc8b1f2b3a51f4bbdf8fb546781`, the hash `coverage.md` names).
-- Case code: the branch `wp23case` at `cb14c15`, five local commits on `dev` `62a086a`, not pushed
-  until the regeneration at the gate (the tests that pin the committed v2 data fail until then):
+- Case code: the branch `wp23case`, five local commits on `dev`, not pushed until the regeneration
+  at the gate (`cb14c15` on `62a086a` when the data was generated; rebased after the round to
+  `e7ee99b` on `59c3407`, the three hashed code files byte-identical) (the tests that pin the committed v2 data fail until then):
   the v2 oracle without slew time, the settling time by event detection
   (`CubesatOracle(settling_time_method="events")`, the default), `definitions.V2_MODEL` from the
   environment variable `EXPERIMENTS_MODEL`, `compare.py` on nine metrics, the check designs' metric
