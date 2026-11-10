@@ -598,7 +598,7 @@ note = "Appendix D.16 runs PCA on the near-frontier chart coordinates of the pri
 
 [[claim]]
 id = "C038"
-fragment = "The reach $\\beta_k$ is the support value of the data in direction $w_k$: how far the data extend that way, their largest score along it"
+fragment = "The reach $\\beta_k$ is how far the data extend in direction $w_k$: the soft maximum of their scores along it, the largest score at $\\tau=\\infty$"
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "M"

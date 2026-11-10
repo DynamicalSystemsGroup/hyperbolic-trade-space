@@ -302,3 +302,40 @@ section = "Results"
 words_added = 2
 job = "replaces a few designs with the generated count of designs within the band of a seam, of all the designs"
 reader = "the reader judging how much a margin below the band matters on this case"
+
+# Rows: WP11 round 1b, depth B (CR-3, CR-6, CR-7, CR-8) and claim U05-C009.
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 16
+job = "says beside the negative what the fitted reference surface is for: the level every design's position and level and each facet's elasticities are read from (CR-6)"
+reader = "the skimming reader who understood the negative and not the use (3 of 6)"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 23
+job = "says where facet first appears in the statements that a facet is a piece of the surface and its cell the designs whose largest term it is (CR-3)"
+reader = "the skimming reader who read a facet as a set of designs"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 10
+job = "says the band's weight clause in the fit's own words and cites the lemma step L5.25 that backs it (CR-7, U05-C009)"
+reader = "the reader who did not know why a design weighs anything (3 of 6)"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 11
+job = "gives beta one name, the reach, in Definitions 2 and 7, and says the facet share counts the rows of a facet's cell instead of dominates (CR-8)"
+reader = "the reader who could not tell whether the fitted offset and the reach are one quantity"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 51
+job = "says what the facets give that a clustering with per-cluster correlations does not: fitted exponents as elasticities and a level for every design, the model kept apart from the association figures"
+reader = "the sceptic deciding whether facet separation is more than clusters with different correlation structure"
