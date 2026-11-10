@@ -340,3 +340,25 @@ review loop or cannot be made clear, the next move is to assess its removal agai
 another round of rework. The whole-paper improvement-by-subtraction pass (release-candidate.md, step 5a) runs once
 the content is complete; until then streams do not pad, and they cut where cutting is obvious.
 
+
+## Current state (fourth PM, 2026-11-10, early morning; parallel-board.md's fourth-PM table is the live copy)
+
+Landed this PM (all on dev): WP23 scope fold 0769209; r2 model af37cb1; coverage eae754c, DSM 2620188, platform rule
+dd44575; views rev 3/4/5 (3fcc855, abdb88f, 43e1a7f); round 1 pair 59c3407/29ce58e; round 2 battery (b) 5e436c6/e20db3f;
+round 3 interrogation a93ce10 (no model change); round 4 43e1a7f; thresholds with pass fractions 3483ee9; case prose D-7
+a27191e; cold reads verbatim + trace table 9ab6568; dispositions A-F 6c32981. WP19 redraws 13d1026, 9eb46f7, f46a4ee;
+paper 41c1872, 93d6ecc, 67e9eb3, cc409f8, f969e23, P-11 73c5bff; package defaults 3d6d48a, 0059264 (contract row 11);
+estimator warning 18d0064, 7dff092, 4e39097; support 6d27662, 8849164; docs re-read 0760265, 9e08ae3; fixes 656c3fe;
+WP24 scope 5a8bb5b (approved) + prep 0be3449 (worktree `wp24` holds the glossary patch); WP25 db150fc, 09117d8, f9573fd
+(accepted); heatmap redraw 1 af6948c (redraw 2 running from two cold reads); README status ef281d1.
+
+Running at the handback: the gate unit (agent a006afb15ccda788a, worktree `wp23gate`, branch `wp23gate`: swap, contract
+row 12, views rev 5, ledger_gate.py, REACH set by a stated quantile rule per WP23-decisions.md, regeneration of record in
+hts-paper; its container run had finished and it was copying out and running the check list; one push when green) and
+the heatmap redraw 2 (agent a243a7e97e2465073, worktree `heatmapfig2`). Next after the gate push: the D-9 comparison agent
+(old files in scratchpad/wp23-gate-old/ with SHA256SUMS.txt; the "changed conclusions" section lists the per-term report
+refusal on the primary regime, the settled flag that cannot move, the proposals' count under the REACH rule, the two
+metric redundancies, each with its cause); the driver verifies before the swap; then the post-gate view-consistency unit
+(dispositions B, C, D, F in WP23-review.md), the paper's regeneration on the new ledger in hts-paper (with the heatmap
+caption from WP19-figure-review.md "Heatmap redraw" and the recovery cell silent), WP24 push 1 (and diagnostic_pair.py's
+identifiers in a WP23 unit right after it), the glossary entries MoE/MoP/launch cost with the paper's case section.
