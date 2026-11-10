@@ -507,6 +507,41 @@ def test_r3_data_file_header_dtypes_rows(filename):
     )
 
 
+@pytest.mark.parametrize("filename", list(CASE["v2"]["data"]))
+def test_r3_v2_data_file_header_dtypes_rows(filename):
+    """Amendment 12: the v2 files carry the frozen header less the slew-time columns."""
+    spec = CASE["v2"]["data"][filename]
+    path = ROOT / CASE["v2"]["dir"] / filename
+    assert path.is_file(), msg("R-3", f"v2 data file {path.relative_to(ROOT)} must exist")
+    df = pd.read_csv(path)
+    assert list(df.columns) == list(spec["columns"]), msg(
+        "R-3", f"v2 {filename} header must match the pinned order"
+    )
+    for col, kind in spec["columns"].items():
+        assert _DTYPE_CHECK[kind](df[col]), msg(
+            "R-3", f"v2 {filename}:{col} must be {kind}, found {df[col].dtype}"
+        )
+    assert len(df) == spec["rows"], msg(
+        "R-3", f"v2 {filename} must keep {spec['rows']} rows, found {len(df)}"
+    )
+    frozen = CASE["data"][filename]["columns"]
+    gone = {"slew_time_s", "slew_time_05deg_s"}
+    rename = {"pred_std_slew_time_s": "pred_std_settling_time_s"}
+    assert list(spec["columns"]) == [rename.get(c, c) for c in frozen if c not in gone], msg(
+        "R-3", f"v2 {filename} pins the frozen columns less the slew-time columns, in order"
+    )
+
+
+def test_r3_v2_traded_metrics_are_the_oracles_attribute_names():
+    """Amendment 12: the nine traded metrics of the v2 data are the case oracle's attributes."""
+    oracle = importlib.import_module("experiments.cubesat_oracle")
+    assert list(CASE["v2"]["traded_metrics"]) == list(oracle.ATTRIBUTE_NAMES), msg(
+        "R-3", "case.v2.traded_metrics equals experiments.cubesat_oracle.ATTRIBUTE_NAMES"
+    )
+    assert CASE["v2"]["time_metric"] in CASE["v2"]["traded_metrics"]
+    assert CASE["v2"]["settling_time_method"] == "events"
+
+
 def test_r3_primary_and_stock_files_are_pinned_data():
     assert set(CASE["regime_files"].values()) <= set(CASE["data"]), msg(
         "R-3", "regime files carry data schemas"

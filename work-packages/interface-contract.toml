@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 11
+contract_version = 12
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -587,3 +587,161 @@ tau = "float"
 band = "float"
 n_train = "int"
 
+
+# --- The v2 datasets (WP23 D-4, amendment 12): the frozen headers less the slew-time columns -----
+[case.v2]
+dir = "examples/adcs/data/v2/"
+data_rule = "committed, seeded, ledgered (examples/adcs/experiments/ledger/ledger.jsonl); regenerated only by a package whose scope says so, once, in the container of record"
+traded_metrics = [
+  "settling_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
+  "power_margin_w", "energy_balance_wh", "eclipse_reserve_wh", "peak_slew_power_w", "dod_eclipse",
+]
+time_metric = "settling_time_s"
+settling_time_method = "events"
+
+[case.v2.data."adcs_designs_cubesat_gains.csv"]
+role = "primary regime dataset, v2"
+rows = 1000
+
+[case.v2.data."adcs_designs_cubesat_gains.csv".columns]
+design_id = "int"
+seed = "int"
+wheel_class = "str"
+st_grade = "str"
+panel_span_m = "float"
+battery_wh = "float"
+Kp = "float"
+Kd = "float"
+settling_time_s = "float"
+pointing_error_deg = "float"
+total_mass_kg = "float"
+adcs_mass_kg = "float"
+control_effort = "float"
+power_margin_w = "float"
+energy_balance_wh = "float"
+eclipse_reserve_wh = "float"
+peak_slew_power_w = "float"
+dod_eclipse = "float"
+settled = "bool"
+momentum_ok = "bool"
+torque_saturated_frac = "float"
+power_ok = "bool"
+dod_ok = "bool"
+peak_momentum_nms = "float"
+panel_mass_kg = "float"
+battery_mass_kg = "float"
+generated_power_w = "float"
+available_power_w = "float"
+usable_torque_nm = "float"
+slew_loss_energy_wh = "float"
+slew_deg = "int"
+t_end_s = "int"
+max_step_s = "float"
+
+[case.v2.data."adcs_designs_cubesat.csv"]
+role = "stock (baseline) regime dataset, v2"
+rows = 1000
+
+[case.v2.data."adcs_designs_cubesat.csv".columns]
+design_id = "int"
+seed = "int"
+wheel_class = "str"
+st_grade = "str"
+panel_span_m = "float"
+battery_wh = "float"
+Kp = "float"
+Kd = "float"
+settling_time_s = "float"
+pointing_error_deg = "float"
+total_mass_kg = "float"
+adcs_mass_kg = "float"
+control_effort = "float"
+power_margin_w = "float"
+energy_balance_wh = "float"
+eclipse_reserve_wh = "float"
+peak_slew_power_w = "float"
+dod_eclipse = "float"
+settled = "bool"
+momentum_ok = "bool"
+torque_saturated_frac = "float"
+power_ok = "bool"
+dod_ok = "bool"
+peak_momentum_nms = "float"
+panel_mass_kg = "float"
+battery_mass_kg = "float"
+generated_power_w = "float"
+available_power_w = "float"
+usable_torque_nm = "float"
+slew_loss_energy_wh = "float"
+slew_deg = "int"
+t_end_s = "int"
+max_step_s = "float"
+
+[case.v2.data."check_designs_cubesat.csv"]
+role = "propose-predict-check designs, simulated, v2"
+rows = 6
+
+[case.v2.data."check_designs_cubesat.csv".columns]
+role = "str"
+design_id = "int"
+name = "str"
+seed = "int"
+panel_span_m = "float"
+battery_wh = "float"
+wheel_class = "str"
+st_grade = "str"
+Kp = "float"
+Kd = "float"
+settling_time_s = "float"
+pointing_error_deg = "float"
+total_mass_kg = "float"
+control_effort = "float"
+power_margin_w = "float"
+energy_balance_wh = "float"
+eclipse_reserve_wh = "float"
+peak_slew_power_w = "float"
+dod_eclipse = "float"
+settled = "bool"
+momentum_ok = "bool"
+power_ok = "bool"
+dod_ok = "bool"
+torque_saturated_frac = "float"
+adcs_mass_kg = "float"
+peak_momentum_nms = "float"
+panel_mass_kg = "float"
+battery_mass_kg = "float"
+generated_power_w = "float"
+available_power_w = "float"
+usable_torque_nm = "float"
+slew_loss_energy_wh = "float"
+
+[case.v2.data."check_predictions_cubesat.csv"]
+role = "propose-predict-check predictions, v2"
+rows = 3
+
+[case.v2.data."check_predictions_cubesat.csv".columns]
+role = "str"
+design_id = "int"
+name = "str"
+panel_span_m = "float"
+battery_wh = "float"
+Kp = "float"
+Kd = "float"
+wheel_class = "str"
+st_grade = "str"
+target_z1 = "float"
+target_z2 = "float"
+target_z3 = "float"
+pred_z1 = "float"
+pred_z2 = "float"
+pred_z3 = "float"
+pred_log_v = "float"
+pred_std_settling_time_s = "float"
+pred_std_pointing_error_deg = "float"
+pred_std_control_effort = "float"
+pred_std_total_mass_kg = "float"
+hole_score = "float"
+distance_to_target = "float"
+tau = "float"
+band = "float"
+n_train = "int"

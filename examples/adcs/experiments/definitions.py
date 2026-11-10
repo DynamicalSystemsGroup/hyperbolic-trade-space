@@ -8,7 +8,7 @@ check-design flow.
 
 The model the ``v2`` experiments read is ``V2_MODEL``, the adopted ``model_v2/cubesat.sysml``;
 the environment variable ``EXPERIMENTS_MODEL`` (a path relative to the repository root) points a
-run at another file, such as a round's ``model_v2/cubesat_r2.sysml`` (WP23), with no edit here.
+run at another file, such as a round's revision beside it (WP23's loop), with no edit here.
 The ledger entry records the path and hash of whichever model was read.
 """
 

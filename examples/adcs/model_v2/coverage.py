@@ -31,21 +31,19 @@ Two tables, written to ``views/coverage.md`` and ``views/coverage.csv`` from the
    connectivity: every configuration value feeds a subsystem and reaches a traded metric (the
    structural column of table 1), every metric is read off a subsystem, and the graph is connected.
 
-The empirical column runs the slews through the case's oracle (``experiments.cubesat_oracle``),
-which reads the adopted ``cubesat.sysml``; the revision ``cubesat_r2.sysml`` changes no calculation
-of it (``tests/test_system_model_v2.py`` pins that), so the empirical column of either model is the
-same and the table says which model text the oracle ran. Nothing numeric about the case is typed
-here: ranges, enumerations, the named configurations and every effect are read from the model or
-measured through the oracle. The column names of the dataset (the interface contract's) name the
-oracle's outputs.
+The empirical column runs the slews through the case's oracle (``experiments.cubesat_oracle``)
+on the same model text, and the table says which model text the oracle ran. Nothing numeric about
+the case is typed here: ranges, enumerations, the named configurations and every effect are read
+from the model or measured through the oracle. The column names of the dataset (the interface
+contract's) name the oracle's outputs.
 
     uv run python examples/adcs/model_v2/coverage.py [--model PATH] [--out DIR] [--no-empirical]
 
-Default model: ``cubesat_r2.sysml`` beside this file (the gate swaps the default); default output
-directory: ``views/`` beside this file. Three runs on one machine give byte-identical files; the
-committed files are generated in the container of record (``paper/container/README.md``), because
-the slew's measured quantities, the settling time above all (read on the integrator's time grid),
-differ between platforms beyond the two digits the tables print.
+Default model: ``cubesat.sysml`` beside this file (the adopted model since WP23's data gate);
+default output directory: ``views/`` beside this file. Three runs on one machine give byte-identical
+files; the committed files are generated in the container of record (``paper/container/README.md``),
+because the slew's measured quantities, the settling time above all (read on the integrator's time
+grid), differ between platforms beyond the two digits the tables print.
 """
 
 from __future__ import annotations
@@ -62,8 +60,7 @@ import warnings
 from dataclasses import dataclass, field
 
 HERE = pathlib.Path(__file__).resolve().parent
-DEFAULT_MODEL = HERE / "cubesat_r2.sysml"
-ADOPTED_MODEL = HERE / "cubesat.sysml"
+DEFAULT_MODEL = HERE / "cubesat.sysml"
 DEFAULT_OUT = HERE / "views"
 PACKAGE = "CubesatTradeSpaceV2"
 EFFECT = 1e-9  # relative change below which a metric is said not to move
@@ -480,13 +477,15 @@ class Metric:
 # =================================================================================================
 # The empirical column: one-at-a-time changes through the oracle
 # =================================================================================================
-def empirical(graph: ModelGraph, metrics: list[Metric], elements) -> tuple[dict, str]:
+def empirical(
+    graph: ModelGraph, metrics: list[Metric], elements, model_path: pathlib.Path
+) -> tuple[dict, str]:
     """``{(element, metric): max relative change over the named configurations}`` and a note on
-    which model text the oracle ran."""
+    which model text the oracle ran (the same text the structural column was read from)."""
     sys.path.insert(0, str(HERE.parent))
     from experiments.cubesat_oracle import CubesatOracle
 
-    text = ADOPTED_MODEL.read_text()
+    text = graph.text
     oracles: dict[str, CubesatOracle] = {}
 
     def oracle_for(cfg):
@@ -525,9 +524,9 @@ def empirical(graph: ModelGraph, metrics: list[Metric], elements) -> tuple[dict,
                 rel = abs(b - a) / max(abs(a), 1e-300)
                 effects[(element, m.name)] = max(effects.get((element, m.name), 0.0), rel)
     note = (
-        f"the oracle (`experiments/cubesat_oracle.py`) ran on `{ADOPTED_MODEL.name}` "
-        f"(sha256 {hashlib.sha256(text.encode()).hexdigest()[:12]}); the revision keeps every "
-        f"calculation of it, so the column holds for both"
+        f"the oracle (`experiments/cubesat_oracle.py`) ran on `{model_path.name}` "
+        f"(sha256 {hashlib.sha256(text.encode()).hexdigest()[:12]}), the model text of the "
+        "structural column"
     )
     return effects, note
 
@@ -1022,7 +1021,9 @@ def build(model_path: pathlib.Path, with_empirical: bool = True) -> dict:
     graph = ModelGraph(text)
     metrics = graph.metrics()
     elements = graph.decision_elements()
-    effects, note = empirical(graph, metrics, elements) if with_empirical else ({}, "not run")
+    effects, note = (
+        empirical(graph, metrics, elements, model_path) if with_empirical else ({}, "not run")
+    )
     rows = []
     for element, kind in elements:
         for m in metrics:

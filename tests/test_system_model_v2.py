@@ -25,31 +25,33 @@ from opensysml.values import Quantity
 ADCS_DIR = pathlib.Path(__file__).resolve().parents[1] / "examples" / "adcs"
 MODEL = ADCS_DIR / "model_v2" / "cubesat.sysml"
 TEXT = MODEL.read_text()
-MODEL_R2 = ADCS_DIR / "model_v2" / "cubesat_r2.sysml"
-TEXT_R2 = MODEL_R2.read_text()
 P = "CubesatTradeSpaceV2"
 FAST = {"t_end": 600.0, "max_step": 1.0}  # coarser than the dataset (0.5 s), for tests only
 
-# The adopted model and WP23's round-1 revision (D-1, `cubesat_r2.sysml`) sit side by side until
-# the data gate; every test that reads a model runs on both. What the revision changes is stated
-# once, here: the slew time leaves (WP16: one time metric, the settling time; the slew-time and
-# slew-band requirements fold into SettledRequirement, the measurement loses `slewTime` and
-# `censored`, the scenario loses the sensitivity band), a launch cost (calc `LaunchCost`, the MoE on
-# the total mass) and a part `Budgets` of proposed thresholds enter, and the line cap grows by the
-# four requirement defs, the calc, the part and the MoE/MoP docs it adds. Round 2 (the coupling
-# check, WP23-review.md) adds the battery's discharge rating, the calcs `BatteryPeakPower` and
-# `EclipsePeakLoad` and the requirement that reads them; the cap grows by those.
-MODELS = {"adopted": (MODEL, TEXT), "r2": (MODEL_R2, TEXT_R2)}
+# The model adopted at WP23's data gate (WP23-decisions.md); the WP22 version it replaced is in
+# history at d3018ba, the WP15 version at 2d13465. What WP23 changed against the WP22 version is
+# stated once, here: the slew time left (WP16: one time metric, the settling time; the slew-time
+# and slew-band requirements fold into SettledRequirement, the measurement lost `slewTime` and
+# `censored`, the scenario lost the sensitivity band), a launch cost (calc `LaunchCost`, the MoE on
+# the total mass) and a part `Budgets` of proposed thresholds entered, and the line cap grew by the
+# four requirement defs, the calc, the part and the MoE/MoP docs it added. Round 2 (the coupling
+# check, WP23-review.md) added the battery's discharge rating, the calcs `BatteryPeakPower` and
+# `EclipsePeakLoad` and the requirement that reads them; the cap grew by those.
+# The calc defs of the WP22 version, every one kept with its body (pinned so the set is readable
+# here; the bodies' equality with the frozen oracle is R-6 of test_system_model_v2_r1.py).
+WP22_CALCS = {
+    "AdcsMass", "AvailablePower", "BaseLoad", "DampingRatio", "DepthOfDischarge",
+    "DominantPoleRate", "EclipseDemand", "EclipseReserve", "EnergyBalance", "GeneratedPower",
+    "GravityGradientTorque", "InertiaX", "InertiaY", "InertiaZ", "IsTorqueLimited",
+    "LinearSlewTime", "MassAccounting", "NaturalFrequency", "OrbitPeriod", "PeakSlewPower",
+    "PointingError", "PowerMargin", "SlewLossEnergy", "SlewTimeEstimate", "StructureMass",
+    "TorqueLimitedSlewTime", "UsableWheelTorque",
+}  # fmt: skip
 EXPECT = {
-    "adopted": {"line_cap": 730, "slew_time": True, "calcs": set(), "parts": set()},
-    "r2": {
-        "line_cap": 900,
-        "slew_time": False,
-        "calcs": {"LaunchCost", "BatteryPeakPower", "EclipsePeakLoad"},
-        "parts": {"Budgets"},
-    },
+    "line_cap": 900,
+    "calcs": {"LaunchCost", "BatteryPeakPower", "EclipsePeakLoad"},
+    "parts": {"Budgets"},
 }
-BY_NAME = pytest.mark.parametrize("name", list(MODELS))
 
 SECTIONS = [
     "1. CONFIGURATION SPACE",
@@ -161,25 +163,14 @@ class V2:
         }
 
 
-@pytest.fixture(scope="module", params=list(MODELS))
-def v2(request):
-    """Each v2 model in turn, loaded; a named-cause failure, never a skip, when the client cannot
-    start."""
-    path, text = MODELS[request.param]
+@pytest.fixture(scope="module")
+def v2():
+    """The model, loaded; a named-cause failure, never a skip, when the client cannot start."""
     try:
-        return V2(text, request.param, path)
+        return V2(TEXT)
     except cm.OpenSysMLUnavailable as exc:
         flag = " (REQUIRE_OPENSYSML is set)" if os.environ.get("REQUIRE_OPENSYSML") else ""
         pytest.fail(f"the opensysml client could not start{flag}: {exc}", pytrace=False)
-
-
-@pytest.fixture(scope="module")
-def both():
-    """The two models loaded together, for the tests that compare them."""
-    try:
-        return {name: V2(text, name, path) for name, (path, text) in MODELS.items()}
-    except cm.OpenSysMLUnavailable as exc:
-        pytest.fail(f"the opensysml client could not start: {exc}", pytrace=False)
 
 
 @pytest.fixture(scope="module")
@@ -230,9 +221,9 @@ def test_symbol_kinds_by_query(v2):
     assert {"ReactionWheel", "SmallWheel", "MediumWheel", "LargeWheel"} <= parts
     assert {"StarTracker", "CoarseTracker", "MediumTracker", "FineTracker"} <= parts
     assert {"Cubesat", "Bus", "SolarPanel", "Battery", "Controller", "GainBox"} <= parts
-    assert {"DesignRanges", "Environment", "Scenario"} | EXPECT[v2.name]["parts"] <= parts
+    assert {"DesignRanges", "Environment", "Scenario"} | EXPECT["parts"] <= parts
     calcs = _symbols(v2, "CalculationDefinition")
-    assert EXPECT[v2.name]["calcs"] <= calcs
+    assert EXPECT["calcs"] <= calcs
     assert {
         "MassAccounting",
         "StructureMass",
@@ -261,10 +252,9 @@ def test_symbol_kinds_by_query(v2):
     assert {"cubesatBaseline", "cubesatAgile", "cubesatCompact"} <= usages
 
 
-@BY_NAME
-def test_sections_in_order_each_with_header_and_doc(name):
+def test_sections_in_order_each_with_header_and_doc():
     """R-1: the seven sections appear in the stated order, each followed by a doc comment."""
-    text = MODELS[name][1]
+    text = TEXT
     positions = [text.index(f"// {title}") for title in SECTIONS]
     assert positions == sorted(positions)
     for pos in positions:
@@ -278,30 +268,27 @@ def test_sections_in_order_each_with_header_and_doc(name):
         assert "doc /*" in text[pos:nxt], title
 
 
-@BY_NAME
-def test_marked_region_for_part_15_2_is_filled_in_section_five(name):
+def test_marked_region_for_part_15_2_is_filled_in_section_five():
     """The requirements region is marked once, sits in section 5, and 15.2 filled it."""
-    text = MODELS[name][1]
+    text = TEXT
     assert text.count("// BEGIN 15.2") == 1 and text.count("// END 15.2") == 1
     begin, end = text.index("// BEGIN 15.2"), text.index("// END 15.2")
     assert begin < end and "requirement def" in text[begin:end]
     assert text.index(f"// {SECTIONS[4]}") < begin < text.index(f"// {SECTIONS[5]}")
 
 
-@BY_NAME
-def test_every_constant_has_a_doc_rationale(name):
+def test_every_constant_has_a_doc_rationale():
     """Illustrative-only: constants sit under doc comments, as in the frozen model.
 
-    The length cap was 700 lines for the WP15 model; the WP22 model the gate adopted (four
-    requirements with their verification, the two views marked) is 729 lines, and the cap holds it
-    there: the model stays short (WP22 definition of good). WP23's revision adds four requirement
-    defs, the launch-cost calc, the budgets part and an MoE/MoP doc on each traded metric (round 1,
-    831 lines), then the battery rating, two calcs and the battery peak power requirement (round 2,
-    871 lines); its cap is 900 (``EXPECT``), which holds it where round 2 left it.
+    The length cap was 700 lines for the WP15 model and 730 for the WP22 model (729 lines). WP23
+    added four requirement defs, the launch-cost calc, the budgets part and an MoE/MoP doc on each
+    traded metric (round 1, 831 lines), then the battery rating, two calcs and the battery peak
+    power requirement (round 2, 871 lines); the cap is 900 (``EXPECT``), which holds the model
+    where round 2 left it: the model stays short (WP22 definition of good).
     """
-    text = MODELS[name][1]
+    text = TEXT
     assert text.count("doc /*") >= 18
-    assert len(text.splitlines()) <= EXPECT[name]["line_cap"]
+    assert len(text.splitlines()) <= EXPECT["line_cap"]
 
 
 # ---------------------------------------------------------------------------------------------
@@ -328,11 +315,7 @@ def test_ranges_enums_gain_boxes_and_scenario_agree_with_the_frozen_model(v2, fr
     assert v2.read("nominalSlew.timeStep", "SI::s") == pytest.approx(cm.MAX_STEP)
     assert v2.read("nominalSlew.slewBand", "SI::degree") == pytest.approx(cm.SLEW_BAND_DEG)
     assert v2.read("nominalSlew.settlingFraction") == pytest.approx(0.01)
-    if EXPECT[v2.name]["slew_time"]:
-        sens = v2.read("nominalSlew.slewBandSensitivity", "SI::degree")
-        assert sens == pytest.approx(cm.SLEW_BAND_SENSITIVITY_DEG)
-    else:  # the sensitivity band left with the slew time (WP23 D-1)
-        assert "slewBandSensitivity" not in v2.text
+    assert "slewBandSensitivity" not in v2.text  # left with the slew time (WP23 D-1)
 
 
 def test_wheel_tables_match_the_frozen_model(v2, frozen):
@@ -345,10 +328,9 @@ def test_wheel_tables_match_the_frozen_model(v2, frozen):
     assert got == pytest.approx(frozen.wheel_capacities(), rel=1e-12)
 
 
-@BY_NAME
-def test_edit_a_copy_changes_what_a_query_returns(name):
+def test_edit_a_copy_changes_what_a_query_returns():
     """R-2: editing a range, an enum literal or a scenario value in a copy changes the reads."""
-    text = MODELS[name][1]
+    text = TEXT
     edited = (
         text.replace("panelSpanMax : LengthValue = 1.0 [m]", "panelSpanMax : LengthValue = 1.2 [m]")
         .replace("slewAngle : PlaneAngleValue = 30.0", "slewAngle : PlaneAngleValue = 45.0")
@@ -362,10 +344,9 @@ def test_edit_a_copy_changes_what_a_query_returns(name):
     assert "sharp" in copy.alternatives("StarTracker", "grade")
 
 
-@BY_NAME
-def test_negative_control_broken_copy_fails_the_strict_load(name):
+def test_negative_control_broken_copy_fails_the_strict_load():
     """R-1 negative control: a broken source must not load strictly."""
-    text = MODELS[name][1]
+    text = TEXT
     broken = text.replace("attribute mass : MassValue = 10.0 [kg];", "attribute mass : Nope = 1;")
     assert broken != text
     with pytest.raises(ModelError):
@@ -477,57 +458,36 @@ def test_analysis_with_equal_measured_times_needs_no_workaround(v2):
 
 
 # ---------------------------------------------------------------------------------------------
-# WP23 D-1: the revision beside the adopted model (R-4, R-5 of WP23)
+# WP23 D-1: what the gate's model adds and removes against the WP22 version (R-4, R-5 of WP23)
 # ---------------------------------------------------------------------------------------------
-def _calc_bodies(text: str) -> dict[str, str]:
-    """The ``calc def`` bodies of a model, docs removed and whitespace normalised, by name."""
-    bodies = {}
-    for m in re.finditer(r"^    calc def (\w+) \{\n(.*?)^    \}\n", text, flags=re.S | re.M):
-        body = re.sub(r"doc /\*.*?\*/", "", m.group(2), flags=re.S)
-        bodies[m.group(1)] = " ".join(body.split())
-    return bodies
+def test_the_calc_defs_are_the_wp22_set_plus_the_three_wp23_adds(v2):
+    """WP23 changed no accounting: the calc defs are the WP22 version's (``WP22_CALCS``, every
+    body kept; their agreement with the frozen oracle is R-6 of test_system_model_v2_r1.py) plus
+    the launch cost (round 1) and the battery's peak power and the eclipse peak load (round 2),
+    none of the three traded."""
+    calcs = set(re.findall(r"^    calc def (\w+)", v2.text, flags=re.M))
+    assert calcs == WP22_CALCS | EXPECT["calcs"]
+    assert _symbols(v2, "CalculationDefinition") >= calcs
 
 
-def test_r2_keeps_every_calculation_of_the_adopted_model(both):
-    """The revision changes no accounting: each calc def of the adopted model has the same body in
-    r2 (docs aside), the eight computed attributes agree on the three named configurations, and
-    the revision adds only the launch cost (round 1) and the battery's peak power and the eclipse
-    peak load (round 2), none of them traded."""
-    adopted, r2 = _calc_bodies(both["adopted"].text), _calc_bodies(both["r2"].text)
-    assert set(r2) - set(adopted) == EXPECT["r2"]["calcs"]
-    assert {k: r2[k] for k in adopted} == adopted
-    measured = {
-        "torque_squared_integral": 7.70613052023095e-06,
-        "peak_torque": 0.002,
-        "peak_momentum": 0.00466041037173962,
-        "control_effort": 0.009490621914197469,
-        "censored": False,
-    }
-    for config in ("cubesatBaseline", "cubesatAgile", "cubesatCompact"):
-        a = both["adopted"].experiment(both["adopted"].model, f"{P}::{config}", measured)
-        b = both["r2"].experiment(both["r2"].model, f"{P}::{config}", measured)
-        assert b == pytest.approx(a, rel=1e-12), config
-
-
-def test_r2_slew_time_has_left_the_measurement_and_the_requirements(both):
+def test_slew_time_has_left_the_measurement_and_the_requirements(v2):
     """WP23 R-5 on the model: no slew-time quantity, requirement or censoring remains; the settling
     time is the one time metric and its requirement carries the fold. The closed-form calcs of
     section 4 keep their names (the comparison code reads them)."""
-    text = both["r2"].text
+    text = v2.text
     code = re.sub(r"/\*.*?\*/|//[^\n]*", "", text, flags=re.S)
     assert "slewTime" not in code and "censored" not in code
     assert "SlewTimeRequirement" not in code and "SlewBandRequirement" not in code
     assert "slewBandSensitivity" not in code
-    defs = _symbols(both["r2"], "RequirementDefinition")
+    defs = _symbols(v2, "RequirementDefinition")
     assert "SettledRequirement" in defs and "slew-band requirements" in text
     assert "settlingTime" in text[text.index("part def SlewMeasurement") :]
 
 
-def test_r2_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it(both):
+def test_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it(v2):
     """WP23 R-4: launch cost = rate x total mass at the three named configurations (read from the
     model, nothing typed here), so the ordering by cost is the ordering by mass; the launch budget
     requirement reads it and holds on the baseline."""
-    v2 = both["r2"]
     rate = v2.read("environment.launchRate")
     assert rate > 0
     rows = []
@@ -546,10 +506,9 @@ def test_r2_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it(b
     assert verdict.holds and verdict.status == "holds"
 
 
-def test_r2_proposed_thresholds_are_the_baselines_values_with_the_stated_margin(both):
+def test_proposed_thresholds_are_the_baselines_values_with_the_stated_margin(v2):
     """The four proposed thresholds (illustrative, for the supervisor at the data gate) are each
     the baseline configuration's own value times the one margin the model states."""
-    v2 = both["r2"]
     margin = v2.read("budgets.margin")
     base = f"{P}::cubesatBaseline"
     want = {

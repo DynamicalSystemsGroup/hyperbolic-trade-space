@@ -1,7 +1,7 @@
 """The coverage table of the cubesat model (WP23 D-2; R-1, R-2, R-10).
 
 ``examples/adcs/model_v2/coverage.py`` writes ``views/coverage.md`` and ``views/coverage.csv`` from
-the model (default ``cubesat_r2.sysml`` until the data gate). Checked here: every decision element
+the model (the adopted ``cubesat.sysml``). Checked here: every decision element
 of the assembly view (two swaps, four tunes) has a non-empty row (R-1); every traded metric has a
 requirement that reads its quantity and is marked MoE or MoP (R-2); the coupling graph (the design
 structure matrix of the third table) is connected, every configuration value feeds a subsystem and

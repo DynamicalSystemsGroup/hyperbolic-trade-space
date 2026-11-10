@@ -13,13 +13,12 @@ writes OUTDIR/assembly_view.puml (what a configuration is and how the parts asse
 OUTDIR/behavioural_view.puml (subsystems, requirements, the traded metrics, how the metrics are
 obtained). Revision 2 (2026-11-09): the first slot-2 candidate is withdrawn. Revision 3 (WP23 round
 1): the metric list is the CaseSpec's filtered to the metrics the model carries (the revision
-``cubesat_r2.sysml`` has no slew time); a metric's MoE or MoP mark (the first word of the ``doc`` on
+adopted at WP23's gate has no slew time); a metric's MoE or MoP mark (the first word of the ``doc`` on
 its element) is written in its box; a calc the model marks MoE that is not itself traded (the launch
 cost on the total mass) is drawn as a box between the requirement that reads it and the metric it
 reads. On a model without marks (the adopted ``cubesat.sysml``) the output is unchanged.
-Revision 4 (WP23 round 3, the round-1 cold reads' dispositions; ``--revision 4``, default 3 until the
-data gate swaps the committed views): the legend of each view is cut to what the image needs (the
-colour key; the rest is the caption's, ``INTENT.md``); one colour rule, orange a requirement, green a
+Revision 4 (WP23 round 3, the round-1 cold reads' dispositions; ``--revision 4``): the legend of
+each view is cut to what the image needs (the colour key; the rest is the caption's, ``INTENT.md``); one colour rule, orange a requirement, green a
 traded metric, yellow a derived quantity that is not traded, the MoE or MoP mark by stereotype only;
 the requirement boxes carry the name and only what differs between them (the verification case),
 and a requirement that reads no traded metric carries its constraint in the model's words; the
@@ -27,7 +26,8 @@ requirement-metric relation is a headless line (a shared quantity) and the sourc
 arrowhead (where a metric comes from); the subsystem lanes are titled as the analyst's grouping; the
 assembly legend names the untagged parts as fixed and the gain ranges by regime (read from
 ``experiments/definitions.py``).
-Revision 5 (WP23 round 4, the round-3 cold reads' dispositions; ``--revision 5``): the short line
+Revision 5 (WP23 round 4, the round-3 cold reads' dispositions; the default since the data gate
+swapped the committed views, ``--revision 3`` draws the earlier ones): the short line
 from the launch cost to the total mass (two boxes at one rank) carries the element the two share,
 ``totalMass``, so the chain requirement -> launch cost -> total mass reads at 700 px (a label on the
 requirement's line too would cost the whole figure 0.65 px of type: a label between ranks widens the
@@ -225,7 +225,7 @@ def constraint_text(byid, req_id: str) -> str:
 # =================================================================================================
 # View 1: the assembly
 # =================================================================================================
-def assembly(m, byid, P, revision=3, caption=None):
+def assembly(m, byid, P, revision=5, caption=None):
     rows = {
         r.id: r.properties | {"@type": r.type} for r in m.query(scope=P)
     }
@@ -538,7 +538,7 @@ class Reads:
         return out
 
 
-def behavioural(m, byid, P, revision=3):
+def behavioural(m, byid, P, revision=5):
     sys.path.insert(0, str(REPO / "examples" / "adcs"))
     import case  # the CaseSpec: the metrics, in order, and their subsystems
 
@@ -1102,9 +1102,10 @@ if __name__ == "__main__":
     ap.add_argument(
         "--revision",
         type=int,
-        default=3,
+        default=5,
         choices=(3, 4, 5),
-        help="drawing revision (3: the committed views of the adopted model; 4: WP23 round 3; 5: WP23 round 4)",
+        help="drawing revision (3: the views committed before WP23's data gate; 4: WP23 round 3; "
+        "5: WP23 round 4, the committed views since the gate)",
     )
     a = ap.parse_args()
     m, byid = load(pathlib.Path(a.model))

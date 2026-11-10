@@ -43,7 +43,7 @@ from experiments.exclusion import (
     wheel_region,
 )
 from opensysml.values import Quantity
-from test_system_model_v2 import ATTRIBUTES, MODEL, MODELS, V2, P, _measure_slew, _rel
+from test_system_model_v2 import ATTRIBUTES, MODEL, TEXT, V2, P, _measure_slew, _rel
 
 ADCS_DIR = MODEL.parents[1]
 FAST = {"t_end": 600.0, "max_step": 1.0}
@@ -85,12 +85,11 @@ def with_members(text: str, members: str) -> str:
 # ---------------------------------------------------------------------------------------------
 # fixtures (named failures, never skips)
 # ---------------------------------------------------------------------------------------------
-@pytest.fixture(scope="module", params=list(MODELS))
-def v2(request):
-    """Each v2 model in turn (the adopted model and WP23's revision beside it, ``MODELS``)."""
-    path, text = MODELS[request.param]
+@pytest.fixture(scope="module")
+def v2():
+    """The model (the one adopted at WP23's data gate)."""
     try:
-        return V2(text, request.param, path)
+        return V2(TEXT)
     except cm.OpenSysMLUnavailable as exc:
         pytest.fail(f"the opensysml client could not start: {exc}", pytrace=False)
 
@@ -174,21 +173,14 @@ def _subset(pool, predicate, n):
 # ---------------------------------------------------------------------------------------------
 # R-4: requirements, satisfy, verification defs
 # ---------------------------------------------------------------------------------------------
-# WP22 (adopted at the gate, WP22d): one requirement over each newly covered metric's own quantity,
-# each satisfied by the baseline and verified in the slew verification case.
+# The requirements over the traded metrics' own quantities (none a flag). WP22 (WP22d) added one
+# per newly covered metric; WP23 D-1 folded the slew-time and slew-band requirements into
+# SettledRequirement and gave the four metrics that had none one each (pointing error, control
+# effort, peak slew power, the total mass through the launch cost), each satisfied by the baseline
+# and verified in the case that can decide it (before or after the slew is measured). Round 2 (the
+# coupling check, WP23-review.md) added BatteryPeakPowerRequirement, the pack's rating against the
+# eclipse peak load, verified in the slew case: the pin is the model adopted at the data gate.
 METRIC_REQUIREMENTS = {
-    "SlewTimeRequirement",
-    "EclipseReserveRequirement",
-    "PowerMarginRequirement",
-    "EnergyBalanceRequirement",
-}
-# WP23 D-1 (`cubesat_r2.sysml`): the slew-time and slew-band requirements fold into
-# SettledRequirement, and the four metrics that had none get one (pointing error, control effort,
-# peak slew power, the total mass through the launch cost), each satisfied by the baseline and
-# verified in the case that can decide it (before or after the slew is measured). Round 2 (the
-# coupling check, WP23-review.md) adds BatteryPeakPowerRequirement, the pack's rating against the
-# eclipse peak load, verified in the slew case: the pin follows the round-2 model.
-R2_METRIC_REQUIREMENTS = {
     "EclipseReserveRequirement",
     "PowerMarginRequirement",
     "EnergyBalanceRequirement",
@@ -199,45 +191,29 @@ R2_METRIC_REQUIREMENTS = {
     "BatteryPeakPowerRequirement",
 }
 _FLAG_DEFS = set(fz.FLAG_REQUIREMENTS.values())
-# The adopted model's requirement on the band being entered (the slew time's censoring). The checker
-# no longer names or reads it (WP23 D-3: the slew time left the measurement); the revision folds it
-# into SettledRequirement.
-ADOPTED_SLEW_BAND = "SlewBandRequirement"
+# The WP22 version's requirement on the band being entered (the slew time's censoring): gone with
+# the slew time (WP23 D-1 folded it into SettledRequirement), and the checker neither names nor
+# reads it (WP23 D-3: the slew time left the measurement).
+SLEW_BAND = "SlewBandRequirement"
 REQUIREMENTS = {
-    "adopted": {
-        "defs": _FLAG_DEFS | {ADOPTED_SLEW_BAND} | METRIC_REQUIREMENTS,
-        "satisfy": 9,
-        "verified": {
-            "ConfigurationVerification": {"PowerRequirement"},
-            "SlewVerification": {
-                "SettledRequirement",
-                "MomentumRequirement",
-                "DepthOfDischargeRequirement",
-                "SlewBandRequirement",
-                *METRIC_REQUIREMENTS,
-            },
+    "defs": _FLAG_DEFS | METRIC_REQUIREMENTS,
+    "satisfy": 12,
+    "verified": {
+        "ConfigurationVerification": {
+            "PowerRequirement",
+            "PointingErrorRequirement",
+            "LaunchBudgetRequirement",
         },
-    },
-    "r2": {
-        "defs": _FLAG_DEFS | R2_METRIC_REQUIREMENTS,
-        "satisfy": 12,
-        "verified": {
-            "ConfigurationVerification": {
-                "PowerRequirement",
-                "PointingErrorRequirement",
-                "LaunchBudgetRequirement",
-            },
-            "SlewVerification": {
-                "SettledRequirement",
-                "MomentumRequirement",
-                "DepthOfDischargeRequirement",
-                "EclipseReserveRequirement",
-                "PowerMarginRequirement",
-                "EnergyBalanceRequirement",
-                "ControlEffortRequirement",
-                "PeakSlewPowerRequirement",
-                "BatteryPeakPowerRequirement",
-            },
+        "SlewVerification": {
+            "SettledRequirement",
+            "MomentumRequirement",
+            "DepthOfDischargeRequirement",
+            "EclipseReserveRequirement",
+            "PowerMarginRequirement",
+            "EnergyBalanceRequirement",
+            "ControlEffortRequirement",
+            "PeakSlewPowerRequirement",
+            "BatteryPeakPowerRequirement",
         },
     },
 }
@@ -252,11 +228,10 @@ def _kinds(model, kind):
 
 def test_requirements_are_declared_one_per_flag(v2):
     """R-3/R-4: the four flags are named requirement definitions; the others bound the traded
-    metrics (none of them is a flag): WP22's four with the slew-band requirement in the adopted
-    model, WP23's eight in the revision (``REQUIREMENTS``)."""
+    metrics (none of them is a flag): the eight of ``METRIC_REQUIREMENTS``."""
     defs = set(_kinds(v2.model, "RequirementDefinition"))
     assert set(fz.FLAG_REQUIREMENTS.values()) <= defs
-    assert defs == REQUIREMENTS[v2.name]["defs"]
+    assert defs == REQUIREMENTS["defs"]
 
 
 def test_verification_defs_name_the_requirements_they_verify(v2):
@@ -268,16 +243,16 @@ def test_verification_defs_name_the_requirements_they_verify(v2):
             if q.properties.get("@type") == "SatisfyRequirementUsage":
                 found.add(q.properties["type"].split("::")[-1])
         verified[name] = found
-    assert verified == REQUIREMENTS[v2.name]["verified"]
+    assert verified == REQUIREMENTS["verified"]
     assert set(fz.FLAG_REQUIREMENTS.values()) <= set().union(*verified.values())
-    assert set().union(*verified.values()) == REQUIREMENTS[v2.name]["defs"]
+    assert set().union(*verified.values()) == REQUIREMENTS["defs"]
 
 
 def test_satisfy_statements_hold_on_the_baseline(v2):
-    """R-4: one `satisfy` statement per requirement ties it to the baseline (nine in the adopted
-    model, twelve in the revision after round 2); all hold (engine run)."""
+    """R-4: one `satisfy` statement per requirement ties it to the baseline (twelve since WP23
+    round 2); all hold (engine run)."""
     verdicts = v2.model.verify_satisfaction()
-    assert len(verdicts) == REQUIREMENTS[v2.name]["satisfy"] == len(REQUIREMENTS[v2.name]["defs"])
+    assert len(verdicts) == REQUIREMENTS["satisfy"] == len(REQUIREMENTS["defs"])
     assert all(v.holds and v.status == "holds" for v in verdicts)
     assert {v.engine for v in verdicts} == {"run"}
     assert {v.strength for v in verdicts} == {"observed"}
@@ -285,7 +260,7 @@ def test_satisfy_statements_hold_on_the_baseline(v2):
     satisfy = v2.model.query(
         scope=[P], where={"property": "@type", "operator": "=", "value": "SatisfyRequirementUsage"}
     )
-    assert len(satisfy) >= REQUIREMENTS[v2.name]["satisfy"]
+    assert len(satisfy) >= REQUIREMENTS["satisfy"]
 
 
 def test_baseline_measurement_is_a_recorded_measurement(v2, frozen):
@@ -352,19 +327,14 @@ def test_feasibility_module_has_no_inequality_on_quantities():
 
 
 def test_requirement_names_in_the_checker_exist_in_the_model(v2):
-    """The checker's flag requirements exist in both models and are the only requirements it
-    names; the adopted model's slew-band requirement is not among them (the slew time left the
-    measurement, WP23 D-3) and the revision folds it into SettledRequirement."""
+    """The checker's flag requirements exist in the model and are the only requirements it
+    names; the WP22 version's slew-band requirement is gone (the slew time left the measurement,
+    WP23 D-3; the model folded it into SettledRequirement)."""
     defs = set(_kinds(v2.model, "RequirementDefinition"))
     assert set(fz.FLAG_REQUIREMENTS.values()) <= defs
     assert set(fz._ARGUMENTS) <= set(fz.FLAG_REQUIREMENTS.values())
-    if v2.name == "adopted":
-        assert set(fz.FLAG_REQUIREMENTS.values()) | {ADOPTED_SLEW_BAND} == (
-            defs - METRIC_REQUIREMENTS
-        )
-    else:
-        assert ADOPTED_SLEW_BAND not in defs
-        assert set(fz.FLAG_REQUIREMENTS.values()) == defs - R2_METRIC_REQUIREMENTS
+    assert SLEW_BAND not in defs
+    assert set(fz.FLAG_REQUIREMENTS.values()) == defs - METRIC_REQUIREMENTS
 
 
 @pytest.fixture(scope="module")
@@ -441,12 +411,12 @@ def test_flag_has_a_negative_control(flag, pool):
 
 def test_the_checker_reads_no_slew_band_requirement(pool):
     """The slew time's censoring left the measurement with the slew time (WP23 D-3), so the checker
-    names no slew-band requirement and translates no `censored` key: the adopted model still
-    declares the requirement (unread), the revision folds it into SettledRequirement."""
+    names no slew-band requirement and translates no `censored` key, and the model declares none
+    (folded into SettledRequirement)."""
     chk, defs = pool["checker"], _kinds(pool["v2"].model, "RequirementDefinition")
     assert not hasattr(fz, "SLEW_BAND_REQUIREMENT") and not hasattr(chk, "slew_band_entered")
     assert "censored" not in {key for _, key, _ in fz._ARGUMENTS.values()}
-    assert (ADOPTED_SLEW_BAND in defs) == (pool["v2"].name == "adopted")
+    assert SLEW_BAND not in defs
 
 
 # ---------------------------------------------------------------------------------------------
@@ -502,10 +472,9 @@ def test_claim_literals_are_the_models_own_numbers(v2):
     )
 
 
-@pytest.mark.parametrize("name", list(MODELS))
-def test_mass_claim_restates_the_calc_bodies(name):
+def test_mass_claim_restates_the_calc_bodies():
     """The mass identity is stated over the bodies of MassAccounting and StructureMass (drift guard)."""
-    text = MODELS[name][1]
+    text = TEXT
 
     def body(calc):
         m = re.search(rf"calc def {calc} \{{.*?return : \w+ =(.*?);\s*\}}", text, re.S)

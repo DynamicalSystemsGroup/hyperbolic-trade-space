@@ -1,16 +1,18 @@
 """Tests for the WP22 content of the cubesat SysML model: one model, two views, metrics traced.
 
-``model_v2/cubesat.sysml`` is the WP22 model since the recorded gate (WP22d, ``WP22-decisions.md``);
-the WP15 file it replaced stays in history only. WP22 added requirement definitions over the traded
-metrics' own quantities, a measured ``peakTorque`` in ``SlewMeasurement``, ``verify`` objectives
-for each, and the two views marked in the file. WP23 G5 removes slew time (``SlewTimeRequirement``,
-``SlewBandRequirement`` and the measured ``slewTime``): the case has one time metric, the settling
-time, and the sets below are stated without them. The tests hold the scope's
-guards: the model loads and checks clean (R-8), every covered metric has a requirement and a
-``verify`` (R-1, R-2), the open metrics are named (R-3), the numeric literals added to the WP15
-model are recorded measurements only (R-4), regenerated designs equal the committed method's
-results (R-6), and both views regenerate from the model, change with it, and are the committed
-views (R-9). The toolkit gates (R-8) on this file run in ``test_model_checking_v2.py``.
+``model_v2/cubesat.sysml`` is the model adopted at WP23's data gate (``WP23-decisions.md``); the
+WP22 version it replaced (adopted at WP22d, in history at d3018ba) and the WP15 version (2d13465)
+stay in history only. WP22 added requirement definitions over the traded metrics' own quantities,
+a measured ``peakTorque`` in ``SlewMeasurement``, ``verify`` objectives for each, and the two views
+marked in the file. WP23 G5 removed slew time (``SlewTimeRequirement``, ``SlewBandRequirement``
+and the measured ``slewTime``): the case has one time metric, the settling time, and the sets below
+are stated without them; WP23 D-1 gave the four metrics WP22 left open a requirement each. The
+tests hold the scope's guards: the model loads and checks clean (R-8), every covered metric has a
+requirement and a ``verify`` (R-1, R-2), no traded metric is open (R-3), the numeric literals added
+to the WP15 model are the recorded measurement and the one illustrative constant WP23 typed (R-4),
+regenerated designs equal the committed method's results (R-6), and both views regenerate from the
+model, change with it, and are the committed views (R-9). The toolkit gates (R-8) on this file run
+in ``test_model_checking_v2.py``.
 """
 
 from __future__ import annotations
@@ -69,8 +71,8 @@ WP15_LITERALS = frozenset(
     }
 )
 
-# The metrics covered by WP22 (six in its first round; slew time left with WP23 G5), with the
-# requirement def over each one's own quantity.
+# The traded metrics covered by WP22 (six in its first round; slew time left with WP23 G5), with
+# the requirement def over each one's own quantity.
 COVERED = {
     "settling time": "SettledRequirement",
     "power margin": "PowerMarginRequirement",
@@ -78,8 +80,14 @@ COVERED = {
     "eclipse reserve": "EclipseReserveRequirement",
     "depth of discharge": "DepthOfDischargeRequirement",
 }
-# Traded with no requirement in the model: each needs a bound the configuration does not state.
-OPEN = ["pointing error", "control effort", "total mass", "peak slew power"]
+# The four WP22 left open (each needed a bound the configuration did not state), covered by WP23
+# D-1 on the loop's proposed thresholds (the total mass through its launch-cost MoE).
+WP23_COVERED = {
+    "pointing error": "PointingErrorRequirement",
+    "control effort": "ControlEffortRequirement",
+    "total mass": "LaunchBudgetRequirement",
+    "peak slew power": "PeakSlewPowerRequirement",
+}
 VIEW_SECTIONS = {
     "1. CONFIGURATION SPACE (configuration view)",
     "2. THE CUBESAT (configuration view)",
@@ -149,16 +157,17 @@ def test_strict_load_self_check_one_package_and_the_two_views_marked(r1):
     assert "CONFIGURATION view" in TEXT and "ASSESSMENT view" in TEXT
 
 
-def test_numeric_literals_added_are_recorded_measurements_only():
-    """R-4: the numeric literals WP22 added to the WP15 code are recorded measurements only.
-
-    The measured control effort of the baseline (round 2); the measured slew time of round 1
-    left with the slew time (WP23 G5). The literals WP23's model adds (launch cost, thresholds)
-    are pinned by that package's tests, not here.
+def test_numeric_literals_added_are_the_recorded_measurement_and_the_launch_rate():
+    """R-4: the numeric literals added to the WP15 code are the baseline's measured control effort
+    (WP22 round 2; its measured slew time left with the slew time, WP23 G5) and the illustrative
+    launch rate (WP23 G2, labelled like the model's other constants). WP23's four thresholds are
+    expressions of the baseline's values and the one margin (WP23 R-3), not typed numbers:
+    ``test_system_model_v2.py`` reads them from the model.
     """
     number = re.compile(r"(?<![\w.])\d+(?:\.\d+)?(?:[eE][-+]?\d+)?")
     added = set(number.findall(_code(TEXT))) - WP15_LITERALS
-    assert "0.009490621914197469" in added
+    assert added == {"0.009490621914197469", "6000.0"}
+    assert "launchRate : Real = 6000.0" in _code(TEXT)
     assert "133.6904772571943" not in added  # the baseline's slew time, gone with slewTime
 
 
@@ -166,10 +175,10 @@ def test_numeric_literals_added_are_recorded_measurements_only():
 # R-1, R-2, R-3: requirements, satisfy, verify; the open metrics named
 # ---------------------------------------------------------------------------------------------
 def test_requirement_defs_hold_the_wp22_set_and_no_slew_time_requirement(r1):
-    """The WP15 and WP22 requirement definitions less the two slew-time ones (WP23 G5). The
-    definitions WP23's model adds for the four open metrics are pinned by that package's tests."""
+    """The WP15 and WP22 requirement definitions less the two slew-time ones (WP23 G5), and one
+    per metric WP22 left open (WP23 D-1); the full set is pinned in test_model_checking_v2.py."""
     defs = set(_kinds(r1.model, "RequirementDefinition"))
-    assert defs >= WP22_REQUIREMENTS
+    assert defs >= WP22_REQUIREMENTS | set(WP23_COVERED.values())
     assert not defs & SLEW_REQUIREMENTS
 
 
@@ -184,7 +193,7 @@ def test_each_covered_metric_has_a_verify_in_a_verification_case(r1):
         *(COVERED[m] for m in ("power margin", "energy balance", "eclipse reserve")),
     }
     everything = set().union(*verified.values())
-    assert set(COVERED.values()) <= everything
+    assert set(COVERED.values()) | set(WP23_COVERED.values()) <= everything
     assert not everything & SLEW_REQUIREMENTS
 
 
@@ -195,13 +204,18 @@ def test_every_requirement_is_satisfied_by_the_baseline(r1):
     assert r1.model.satisfied()
 
 
-def test_open_metrics_are_named_in_the_verification_cases_and_nowhere_covered(r1):
-    """R-3: the model says which traded metrics no requirement reads, in the verification docs."""
+def test_no_traded_metric_is_open_and_the_verification_docs_name_each(r1):
+    """R-3 after WP23 D-1: the four metrics WP22 named open in the verification docs each have a
+    requirement now, and the docs name every covered metric (the total mass through the launch
+    cost); no traded metric is left without one."""
     docs = " ".join(re.findall(r"verification def \w+ \{\s*doc /\*(.*?)\*/", TEXT, flags=re.S))
     docs = " ".join(docs.split())
-    for metric in OPEN:
+    for metric in (*COVERED, *WP23_COVERED):
         assert metric in docs, metric
-    assert not set(OPEN) & set(COVERED)
+    assert not set(WP23_COVERED) & set(COVERED)
+    defs = set(_kinds(r1.model, "RequirementDefinition"))
+    assert set(WP23_COVERED.values()) <= defs
+    assert "open" not in docs.lower() or "no requirement" not in docs.lower()
 
 
 def test_baseline_measurement_has_the_recorded_peak_torque_and_control_effort(r1, frozen):
@@ -335,12 +349,15 @@ def test_every_covered_metric_has_a_thick_line_from_its_requirement(project, tmp
     assert {n for _, n in drawn} >= set(COVERED)  # WP23's model adds lines for the four open
     assert set(facts["related"]) >= set(COVERED)
     assert "slew time" not in facts["metric_element"]  # one time metric (WP23 G5)
-    for metric in OPEN:
-        # dashed, and captioned in its own box (round 2)
-        assert re.search(
-            rf'rectangle "{metric}\\n\(no requirement\)" as \w+ [^\n]*line\.dashed', behaviour
-        )
-    assert behaviour.count("thickness=2") == len(drawn)
+    # the four WP22 left open have their line (WP23 D-1): three read the metric's own quantity, the
+    # launch budget reads the launch cost, the MoE drawn as a box between it and the total mass
+    moe = {(project.short(r), n): ev for r, n, s, ev in facts["rel"] if s == "moe"}
+    for metric, req in WP23_COVERED.items():
+        assert (req, metric) in drawn or (req, metric) in moe, (req, metric)
+    assert moe == {("LaunchBudgetRequirement", "total mass"): "LaunchCost"}
+    assert "(no requirement)" not in behaviour  # no dashed box: no open metric remains
+    # the MoE is two thick lines: requirement to launch cost, launch cost to the total mass
+    assert behaviour.count("thickness=2") == len(drawn) + 2 * len(moe)
     assert "dashed]" not in behaviour  # no dashed or prose-only relation line
     # round 2: control effort is a SlewMeasurement attribute, so its source is the measurement
     assert facts["metric_element"]["control effort"] == ("measured", "controlEffort")

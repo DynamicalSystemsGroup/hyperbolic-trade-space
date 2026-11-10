@@ -75,14 +75,15 @@ legend bottom
   **Configuration variables** (each marked once, in the part it belongs to)
   <back:#F6C98B><b> swap </b></back> categorical: a part is swapped for one of its alternatives
   <back:#9CC8EE><b> tune </b></back> continuous: a parameter of a part is tuned within a range
+  no tag: a fixed part (Bus, Antenna, Imu)
   
   **Levels and ranges** (read from the model)
   WheelClass: small | medium | large
   TrackerGrade: coarse | medium | fine
   panelSpan: 0.3 m .. 1 m
   batteryCapacity: 20 W*h .. 200 W*h
-  Gains Kp and Kd: one range per dataset (baseline, aggressive)
-  Kp: 0.03 .. 1 (baseline gains); 0.2 .. 2 (aggressive gains)
-  Kd: 0.3 .. 1.5 (both datasets)
+  Gains Kp and Kd: one range per regime
+  Kp: 0.03 .. 1 (baseline regime); 0.2 .. 2 (primary regime)
+  Kd: 0.3 .. 1.5 (both regimes)
 end legend
 @enduml
