@@ -201,3 +201,31 @@ their verification structure, and the two marked views. It does not support: any
 about configurations other than the regenerated designs and the baseline (WP22c); and the picture's remaining open
 items R3-2 and R3-3, which the loop's strict stopping clause counts and the PM's recommendation accepts. The 22
 undecided rows in `verify --solve` are the unbound baseline chain, the same cause as the old file's 14, not a result.
+
+## WP22d executed (2026-11-10; the swap)
+
+Done as one unit on the gate decision of `WP22-decisions.md`, toolkit v0.12.0, `REQUIRE_OPENSYSML=1`.
+
+- **Moved.** `model_v2/cubesat_r1.sysml` became `model_v2/cubesat.sysml` (`git mv` over the WP15 file, which stays in
+  history only, last at `2d13465`); sha256 `e4c25a256ab1c641bb64b6941e2f9ea723d04121270aeea05af9c9294a9b8ed0`, the
+  file the gate compared, byte for byte. The path is the old one, so `definitions.py` (`V2_MODEL`), `compare.py`,
+  `cubesat_oracle.py`, `feasibility.py` and the tests that open the model needed no edit.
+- **Ledger.** `model_v2/ledger_r1.py` became `ledger_swap.py`, the ledger's own re-run (`definitions.revise`) of the five
+  entries that cited `28dbeeb23cf4`: `v2-primary@3`, `v2-baseline@3` (each also superseding its `-r1@2` round entry),
+  `v2-check-predictions@3`, `v2-check-designs@3`, `scope-sensitivity-shared-subspace-v2@2`, at `ff717ed`, clean tree.
+  Every output is byte-identical to the entry it supersedes (`4dc4ae0b8ebe`, `9450713cd78c`, `5794b7218dd9`,
+  `3e06e69bb345`, `97193d955a73`); no data file changed; `verify`: "24 entries (11 current); 0 drifts".
+  `reports/v1-v2-comparison.md` regenerated.
+- **Views.** `project.py` on the model writes `model_v2/views/{assembly,behavioural}_view.{puml,svg,png}`, byte-identical
+  to the spike's `out/r1/` (kept there as the record); `case-model.md` points at them and its sections table is
+  regenerated. A test checks three runs give the same text and that it is the committed text.
+- **Tests.** Re-pinned to the adopted model: nine requirement defs and `satisfy` statements (`test_model_checking_v2`),
+  section 5's title and the line cap 700 -> 730 (the adopted file is 729 lines; `test_system_model_v2`); the WP22 tests
+  read the single file, with the WP15 requirement defs and numeric literals pinned as sets so R-4 keeps its meaning.
+  Retired: the byte-unchanged guard of R-14 (closed by the gate) and the r1 toolkit test (the same three gates on the
+  same file run in `test_model_checking_v2`).
+- **Paper.** Nothing moves: Appendix C's dataset rows read the frozen files' `adopted-*` entries, which the swap does not
+  touch. In `hts-wp22d` the supporting material re-executed differs only in the toolchain cell's commit (reverted), and
+  `tests/test_paper.py` passed in the image (142 passed, 4 skipped, exact comparisons); the image is removed.
+- **Not done.** The model's header comment still names itself `cubesat_r1.sysml` and says it lives beside the WP15 file;
+  changing it changes the hash the gate compared, so it is left for a decision (a comment-only edit and a re-run).
