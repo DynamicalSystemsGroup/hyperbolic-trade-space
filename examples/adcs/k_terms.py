@@ -1,7 +1,7 @@
 """K = 1, 2, 3 posynomial fits of the two cubesat datasets (WP9, D-6).
 
-Run ``uv run python examples/adcs/k_terms.py``. Same feasibility filter, conditioning and
-temperature selection as ``adcs_trade_study.ipynb``; prints the per-facet record and saves
+Run ``uv run python examples/adcs/k_terms.py``. Feasibility filter, conditioning and
+temperature selection as in the paper; prints the per-facet record and saves
 ``figures/k3_*_<regime>.png``. Nothing is simulated.
 """
 

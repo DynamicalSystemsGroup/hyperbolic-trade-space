@@ -219,7 +219,6 @@ SURFACES: dict[str, Surface] = {
         names_only=(
             "paper/paper.ipynb",
             "paper/supporting_material.ipynb",
-            "examples/adcs/adcs_trade_study.ipynb",
             "claims_register.toml",
         ),
     ),
@@ -236,7 +235,6 @@ SURFACES: dict[str, Surface] = {
         own=(
             "paper/paper.ipynb",
             "paper/supporting_material.ipynb",
-            "examples/adcs/adcs_trade_study.ipynb",
             "paper/length_ledger.toml",
             "paper/prior_art.yaml",
             "tests/test_paper.py",

@@ -390,7 +390,6 @@ def test_the_swap_checklist_finds_the_frozen_consumers():
         "examples/adcs/make_check_designs.py",
         "tests/test_adcs_enrichment.py",
         "tests/test_check_designs.py",
-        "tests/test_notebook.py",
     ):
         assert expected in consumers, expected
     assert not any(f.startswith("examples/adcs/data/") for f in consumers)

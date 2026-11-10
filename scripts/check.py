@@ -91,7 +91,6 @@ PATH_TESTS: list[tuple[str, list[str]]] = [
             "tests/test_case.py",
             "tests/test_k_terms_case.py",
             "tests/test_cubesat_model.py",
-            "tests/test_notebook.py",
         ],
     ),
     ("work-packages/interface-contract.*", ["tests/test_interface_contract.py"]),

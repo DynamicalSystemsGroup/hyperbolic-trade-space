@@ -61,7 +61,6 @@ AREA_OF_FILE = {
     "test_check_designs.py": "Case study (ADCS and CubeSat)",
     "test_cubesat_model.py": "Case study (ADCS and CubeSat)",
     "test_k_terms_case.py": "Case study (ADCS and CubeSat)",
-    "test_notebook.py": "Case study (ADCS and CubeSat)",
     "test_docs.py": "Documentation and site",
     "test_narrative.py": "Documentation and site",
     "test_references.py": "Documentation and site",
