@@ -717,3 +717,37 @@ as Figure 3's redraw is. Caption: "Log-metric plane of the K = 1 fit (primary re
 metrics with the facet's largest exponents. The line is the surface in this slice: the other eight
 metrics are held at the median of the near-frontier designs, so designs off that median fall on
 either side of it." The three lines as the cell `fig-plane-k1-lines` has them.
+
+## Index figure (fourth PM)
+
+Disposition of the principle check (`WP19-decisions.md`): designs in one colour in every pane; the
+chart pane that drew "facets as regions" (tinted vertical bands of Z, exact only with two metrics)
+passes the sentence test as analysis named in its caption or is dropped. Generator
+`paper/figures/figure1.py`; images `figure1.png` and `figure1.svg` beside it, the PNG opened in the
+Read tool before the caption was re-read. The data (`figure1_data`, its pinned hash) are unchanged.
+
+- Designs: one grey (`DESIGN = "0.5"`) in all three panes; the coloured lines, normals and the
+  pane-2 legend (the facets as pieces of the surface) stay: they are the model.
+- The sentence test on the regions pane. The one sentence the tinted bands alone carried: "which
+  facet supports a design is fixed by its position along the frontier, not by its level". The
+  caption would have to add that this holds as bands only with two metrics, and on the index page
+  the tints would be the first thing a visitor sees that reads as groups of designs. **Dropped**: not
+  the pane, the regions. The pane keeps its job in the arc (sheets, the kinked envelope, the
+  chart) and now draws the model in it: the frontier is the one flat line log V = 0, drawn as three
+  coloured pieces laid end to end, the same colours as the surface's pieces in panes 1 and 2, each
+  named above its piece; the designs hang below in grey. Title: "Chart (Z, log V): facets laid
+  flat". Nothing in the pane is analysis, so nothing needs naming as analysis in the caption.
+- Cold sentence (the author's, image alone, before the caption): the same three coloured pieces are
+  a bent surface in the first pane, a kinked line in the second and one flat line in the third,
+  with the grey designs always below them and the black arrow the one step up to the surface.
+- Shows: one trade space three ways; the fitted surface as three facets in metric space, log space
+  and the chart; one design's energy differential as the same arrow in each pane.
+- Does not show: any grouping of designs (none is drawn), what a position Z means with more than two
+  metrics (here it is one coordinate), or any data from the case.
+- Good for: the story arc on the index page: sheets, the kinked envelope, the chart where the
+  frontier is a line.
+- Legibility: unchanged type (10.5 pt base, 9 pt floor), 1640 by 720 px as before.
+- Caption and alt text (`site/index.html`, the file the assembled site copies): the alt text now
+  says the facets are laid end to end along the frontier line and the designs are grey points; the
+  caption adds that the coloured pieces are the three facets of the fitted surface, the same three
+  in each pane.

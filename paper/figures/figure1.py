@@ -3,8 +3,10 @@
 Regenerated from the design spike ``docs/superpowers/notes/spike-figure1/make_schematics.py`` (S4)
 as specified by the supervisor: the first pane is kinked (hyperbolic sheets with sharp corners),
 the second is piecewise linear (the same facets in log space with their normals and one design's
-energy differential), the third is the chart with the frontier as one horizontal line and the facets
-as coloured regions.
+energy differential), the third is the chart with the frontier as one horizontal line, the facets
+laid end to end along it. The designs are one neutral colour in every pane and the facets are the
+coloured pieces of the surface (``work-packages/WP19-decisions.md``: colouring designs by facet is
+the cluster idiom and is not used).
 
 The world is one synthetic ``d = 2`` trade space with an envelope of ``K = 3`` terms in log space,
 ``Phi(u) = max_k (w_k . u - beta_k)``; the frontier is ``Phi = 0`` and the level sets of ``V`` are
@@ -35,6 +37,7 @@ SEED = 20261108
 W = np.array([[0.2, 0.8], [0.5, 0.5], [0.8, 0.2]])  # exponent vectors w_k on the simplex
 BETA = np.array([0.96, 0.30, 0.60])  # reaches beta_k
 FACET_COLORS = CATEGORY_COLORS[:3]
+DESIGN = "0.5"  # the designs, one neutral colour in every pane
 HIGHLIGHT = FRONTIER_COLOR
 LEVEL_COLOR = "0.45"
 LEVELS = (0.5, 0.75, 1.25)
@@ -127,9 +130,8 @@ def data_hash(data=None) -> str:
     return h.hexdigest()
 
 
-def _scatter(ax, xy, f, alpha=0.7, s=9):
-    for k in range(3):
-        ax.scatter(*xy[f == k].T, s=s, color=FACET_COLORS[k], alpha=alpha, lw=0, zorder=3)
+def _scatter(ax, xy, alpha=0.7, s=9):
+    ax.scatter(*xy.T, s=s, color=DESIGN, alpha=alpha, lw=0, zorder=3)
 
 
 def _star(ax, xy):
@@ -150,10 +152,11 @@ def figure1(figsize=(8.2, 3.6)):
         Three panes: the fitted reference surface in metric space (kinked sheets, with the design's
         scaling onto it as the black arrow), the facets
         with their normals and one design's energy differential in log space, and the chart
-        (Z, log V) with the frontier as one horizontal line and the facets as coloured regions.
+        (Z, log V) with the frontier as one horizontal line, its facets laid end to end along it.
+        The designs are one neutral colour in every pane.
     """
     d = figure1_data()
-    u, f, z, logv, i = d["u"], d["facet"], d["Z"], d["logV"], d["design"]
+    u, z, logv, i = d["u"], d["Z"], d["logV"], d["design"]
     us, zs, ls = u[i], z[i], logv[i]
     top = us - ls  # where uniform scaling carries the design onto the frontier
     with plt.rc_context({"font.size": FONT, "axes.titlesize": FONT + 1,
@@ -169,7 +172,7 @@ def figure1(figsize=(8.2, 3.6)):
         box_l = (-2.3, 1.75, -2.1, 2.5)
 
         # pane 1: metric space, the fitted reference surface, hyperbolic sheets with sharp corners
-        _scatter(axm, np.exp(u), f)
+        _scatter(axm, np.exp(u))
         g = np.exp(np.linspace(np.log(0.12), np.log(5.2), 600))
         for lev in LEVELS:
             axm.plot(
@@ -213,7 +216,7 @@ def figure1(figsize=(8.2, 3.6)):
         axm.text(2.3, 2.0, "V > 1: beyond", fontsize=FONT - 1, color=LEVEL_COLOR)
 
         # pane 2: log space, the facets with normals and one design's energy differential
-        _scatter(axl, u, f, alpha=0.55)
+        _scatter(axl, u, alpha=0.55)
         gg = np.linspace(box_l[0], box_l[1], 400)
         axl.plot(gg, envelope_at(gg, ls), color=LEVEL_COLOR, lw=0.9, ls=":", zorder=2)
         for k, (a, b) in enumerate(_visible(box_l)):
@@ -273,11 +276,20 @@ def figure1(figsize=(8.2, 3.6)):
         axl.set_ylabel("log metric 2")
         axl.set_title("Log space:\nsupporting envelope", loc="left")
 
-        # pane 3: the chart (Z, log V): the frontier is one horizontal line, facets are regions
+        # pane 3: the chart (Z, log V): the frontier is one horizontal line, and the facets are
+        # its pieces, laid end to end (the corners of pane 2 are where one piece ends and the next
+        # begins); the designs hang below it in one colour.
         zlim = (z.min() - 0.25, z.max() + 0.25)
         edges = [zlim[0], *d["corners"], zlim[1]]
         for k in range(3):
-            axc.axvspan(edges[k], edges[k + 1], color=FACET_COLORS[k], alpha=0.14, lw=0, zorder=1)
+            axc.plot(
+                [edges[k], edges[k + 1]],
+                [0.0, 0.0],
+                color=FACET_COLORS[k],
+                lw=2.4,
+                zorder=4,
+                solid_capstyle="butt",
+            )
             axc.text(
                 (edges[k] + edges[k + 1]) / 2,
                 0.3,
@@ -287,11 +299,7 @@ def figure1(figsize=(8.2, 3.6)):
                 fontsize=FONT - 1,
                 fontweight="bold",
             )
-        axc.axhline(0.0, color=FRONTIER_COLOR, lw=2.2, zorder=4)
-        for k in range(3):
-            axc.scatter(
-                z[f == k], logv[f == k], s=9, color=FACET_COLORS[k], alpha=0.65, lw=0, zorder=3
-            )
+        _scatter(axc, np.column_stack([z, logv]), alpha=0.65)
         axc.add_patch(
             FancyArrowPatch(
                 (zs, ls),
@@ -318,7 +326,7 @@ def figure1(figsize=(8.2, 3.6)):
         axc.set_ylim(-1.75, 0.5)
         axc.set_xlabel("Z (position along the frontier)")
         axc.set_ylabel("log V")
-        axc.set_title("Chart (Z, log V):\nfacets as regions", loc="left")
+        axc.set_title("Chart (Z, log V):\nfacets laid flat", loc="left")
         axl.legend(handles=[Line2D([], [], color=FACET_COLORS[k], lw=2.0, label=f"facet {k + 1}")
                             for k in range(3)], loc="upper right", frameon=False,
                    fontsize=FONT - 1.5, handlelength=1.2, borderaxespad=0.0,
