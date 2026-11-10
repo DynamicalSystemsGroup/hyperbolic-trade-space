@@ -129,7 +129,7 @@ fixes the order and the item-by-item check below.
   attitude error minus the threshold, located on the dense interpolant: slew time the first entry into the
   band, settling time the last exit above the settling fraction) *(mechanism: default)*, reproducible to rounding.
 - G7. The datasets, the K = 1, 2, 3 record, the check designs and the paper's numbers regenerated on the new
-  model (WP22's `cubesat_r1.sysml`) inside the container of record (`hts-paper`), after the WP22 gate records
+  model (WP22's model, adopted as `model_v2/cubesat.sysml`) inside the container of record (`hts-paper`), after the WP22 gate records
   the model swap.
 - G8. The comparison report at the data gate lists every change with size and cause, and checks the
   conclusions item by item (contending sets, leading metrics, signs of tensions, selected temperatures,
