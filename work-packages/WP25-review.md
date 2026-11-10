@@ -1,112 +1,95 @@
-# WP25 — Review report (second instance, units A and B)
+# WP25 — Review report (third instance)
 
 | | |
 |---|---|
-| **Scope of work** | `work-packages/WP25-2-scope-of-work.md` (approved 2026-11-10, 07:00, by the driver under the mandate; `WP25-decisions.md`, "Instance 2") |
-| **Work reviewed** | `dev` a9e23b2 and the instance's commits: the inventory (D-1), the deletion commit "WP25: 31 files deleted (second instance, unit A)" (D-2), the drift fixes (D-4), this report |
-| **Written by** | unit A, 2026-11-10; the checks below ran in its worktree at the head of the unit. Unit B (2026-11-10, after WP24's last push and the paper unit) completed "Drift", "Gaps" and "Checks" (section "Unit B" below); the reviewer reruns R-1 to R-10 |
+| **Scope of work** | `work-packages/WP25-3-scope-of-work.md` (approved 2026-11-10, 15:50, by the driver under the mandate; `WP25-decisions.md`, "Instance 3": OD1 (b), OD2 (b), OD3 (b)) |
+| **Work reviewed** | `dev` from ca6ce94 (the instance's start; d5d0c3d the head it rebased on before its first push): 6e34f2b (OD1's register and note edits), de3ce61 (the deletion commit), 43a0936, dfc4729, b6c426c, cc30725, 2f1c2d9 (the drift fixes, one per file), the inventory (D-1) and this report |
+| **Written by** | the instance's agent, 2026-11-10; every check below ran in its worktree at the head named in the row; the reviewer reruns R-1 to R-11 |
 
-Rewritten per instance (A3). The first instance's report is at `f9573fd`; the deleted files' last versions are at `a9e23b2`
-(`git show a9e23b2:<path>`).
+Rewritten per instance (A3). The second instance's report is at `ca6ce94` and the first's at `f9573fd`; the deleted
+file's last version is at `b555be7` (`git show b555be7:docs/superpowers/notes/spike-ternary/report.md`).
 
-## Checks (D-5, G4), unit A
+## Deletions (D-2, R-2, R-3, R-4)
+
+One commit, de3ce61, "WP25: 1 file deleted (third instance)": `docs/superpowers/notes/spike-ternary/report.md` (OD1
+(b)). The commit body lists the path with what it no longer did, the R-2 grep (0 by path, 0 by basename over the
+contract, the manifest and `tests/test_interface_contract.py`) and the live surfaces that named it. Before it, in the
+same push, 6e34f2b dropped the 0.071 sentence from `claims_register.toml` C001's note and from `claims-review.md`'s
+row for "a marker is not where V = 1", so no citation dangled; C001 rests on its listed backing (the two
+`tests/test_plotting.py` ternary tests and `plot_ternary`'s Notes).
+
+**OD2 (b) was not applied.** The scope's sizing said `examples/adcs/experiments/reports/v1-v2-comparison.md` is "read
+by no test or page". With the file deleted, the fast suite gave `1 failed, 1740 passed`: the failure is
+`tests/test_v2_data.py::test_the_committed_report_exists_and_includes_the_register` (line 383), which reads the
+committed file through `cmp.REPORT` (the generator's constant, so neither the path grep nor the basename grep sees
+the reference) and asserts that the change register and the solver-exclusion section are in it. The test is outside
+this instance's blast radius (`tests/`; pm5-rules: a test changes only when its requirement changed by a recorded
+decision, and this decision rested on a wrong premise), so the deletion commit was remade without the file and the
+row is held for the PM. Options: (i) the test regenerates the report to a temporary path (`experiments compare --out`,
+as `tests/test_experiments.py` already does) and checks the same content, and the file goes in the next instance's
+deletion commit; (ii) OD2 reverts to (a), the inventory row naming the test as the reader. The R-2 grep for the file is
+in the inventory's first section (0, 0), ready for either.
+
+## Drift (D-3, G2)
+
+Vocabulary tool: `69 new violation(s), 0 known` at ca6ce94 and at the head (not higher). Register, docs, site,
+vocabulary and narrative tests, and the doctests: the lines are under "Checks".
+
+| Row | State | Where, or what the read found |
+|---|---|---|
+| S-1 (C001's note and `claims-review.md` line 74 cite the 0.071 figure) | fixed, 6e34f2b | the sentence dropped from both; C001's `backing` unchanged (two tests, `plot_ternary`); the report deleted in de3ce61 |
+| S-2 (`spike-certificates/README.md` line 106, `run_cubesat.py` line 20 cite `k3-cubesat.md`) | fixed, 43a0936 and dfc4729 | "(deleted; last version at 4409920)" (`git rev-parse --short f1101ce^`); the spike's taus 195.18 and 162.78 stay as its own run's record (A6) |
+| S-3 ("facet" as the model object in the notes `CLAUDE.md` names) | fixed, b6c426c and cc30725 | `proof-conventions.md`: the seven lines (term objective, term-score change, maximizing term(s), identical terms, the several-term fit, each term's gap, nonempty cells and exact term optima). `claims-review.md`: the reviewer's own words on row 74 and in the pointer column of rows 76 and 85; the quoted paper fragments and line 10's quotation keep the word. `figure-review.md`: unchanged (line 7 quotes a caption; lines 70 to 72 discuss the word), per A5 |
+| S-4 (`case-model.md` line 363 cites `docs/clients/python/verification.md`) | fixed, 2f1c2d9 | "the runtime's own `docs/clients/python/verification.md`, not a path in this repository" (A6); `tests/test_case_model_howto.py` passes |
+| S-5 (`CHANGELOG.md` names no package after WP18) | routed: WP8b (the changelog is its deliverable), one unit | the packages to enter: WP19 (figures), WP22, WP23 and its close-out (the model, eight metrics, the data of record at @7), WP24 (the rename), WP25 (the deletions: 169, 31, 28, 1) |
+| S-6 (the nine pages' numbers, read by command, A8) | closed: no number moved | every runnable block of `getting-started.md`, `fitting.md`, `tensions.md`, `termination.md`, `chart.md`, `prediction.md`, `conditioning.md` and `examples.md` run in one namespace per page (as `tests/test_docs.py::test_runnable_blocks_execute` does) and its printed values matched the prose: `getting-started.md` L36 (`trilemma [0 1 2]`, `[0.3 0.37 0.33]`); `fitting.md` L126-128 (0.855, 0.692, 0.664, 0.658; smallest exponent 0.07 to 0.08 at K = 3, 0.00 to 0.07 at K = 4); `tensions.md` L103 (0.351, 0.043); `termination.md` L92 (gamma 0.0020, band 0.02, median margin 0.21). Numbers no block prints, each by a command: `fitting.md` L56 (30 percent on the planted frontier: `info["frontier_mask"].mean()` on `make_frontier_data(300, 3, random_state=0)` is 0.3), L85 (at tau = 50, kappa = 5000 within 0.001 of the infinite-kappa exponents: the page's table `make_frontier_data(400, 4, n_terms=3, random_state=0)`, terms matched by permutation, max difference 0.000000), L131 (`frac_above_` levels off about 0.30: 0.337, 0.31, 0.30, 0.30 at tau 50, 200, 1000, 5000 with `n_terms=2` on the named table); `tensions.md` L55 (band 1/tau, 0.1 at infinite tau: `tensions.py` line 209); `chart.md` L67 (`find_holes` defaults `resolution=50, threshold=2.0`: `gaps.py` line 62); `examples.md` L13 (706 feasible), L16 (0.243 to 0.146, `certified`), L17-20 (72 and 3 percent, peak slew power and control effort, 3 near-frontier designs), the contending sets and `examples/adcs/k_terms.py` on `data/v2/` (44 s; the K = 3 terms' sets are 4, 5 and 5 metrics, the page's "5, 4 and 5" as a list of sizes), the two text blocks against `case.requirements_summary()` and `case.design_sets_summary()` (byte-equal), Figure 7's 193 ringed designs (`plot_frontier_coordinates` rings log V above the default band 0.1: 193 of 706); `README.md` L12 and L19 (the status line, Python 3.12). `prediction.md`, `conditioning.md`: parameters only |
+| S-7 (metric names and counts) | closed, recorded | `grep -n -iE "nine metrics|ten metrics|nine traded|slew time|eclipse reserve|launch cost"` over the docs pages, `README.md`, `glossary.yaml` and `claims_register.toml`: no docs page or the README; the glossary's `launch cost` entry (the term's own entry, WP23 OD2's record) and its MoE `short`; one register note (C-row "rewritten at the WP23 close-out", a record of the change). The eight metric names appear on `examples.md` (46 lines) and `overview.md` (1); no other page names a metric |
+| N-a (`coverage.csv` names the column by the enum type) | routed: WP26's modeller, one unit through the generator (OD3 (b)) | the model tests' pins re-read; after WP27's current round (`WP25-decisions.md`, "Instance 3") |
+| N-b (`paper/length_ledger.toml`, "typed constant") | closed | `grep -n "typed constant" paper/length_ledger.toml` finds line 612 only, WP24 push 3's comment ("typed constant, cut since") |
+| Added by the read: API names on the pages | closed: none stale | every backticked identifier on the docs pages and the README that looks like a package name (an underscore or a trailing underscore) checked against the package's names, the three estimators' parameters and fitted attributes, `Termination`'s and `TensionReport`'s fields and the plotting and gaps signatures: the only unknowns are the `frontier_in_original_units` dict keys (`exponents_orig`, `log_const`), scikit-learn's `return_std` and the tag `positive_only`, and the four termination status strings, all current in `src/` |
+| Added by the read: `tests/test_v2_data.py` line 383 reads OD2's file | routed: the PM (above) | the scope's "read by no test or page" was wrong for this file; the row names the test |
+
+## Gaps (D-3, G3)
+
+| Row | State | Reason, or owner |
+|---|---|---|
+| P-1 (`estimator.EPS_ZERO_EXPONENT`, `estimator.PARTICIPATION_THRESHOLD`, `plotting.CATEGORY_COLORS`, `plotting.DATA_COLOR` on no page) | dropped here, scheduled: the PM (a contract question) | the four are in their modules' `__all__` but not in the manifest's `package.submodule_names` (`estimator = ["HyperbolicTradeSpace"]`; `plotting` lists the eight plot names), so the contract does not pin them and the API page, which lists the pinned surface, should not document them before the floor rule is applied. The PM decides: add them to the manifest in one commit (the floor rule) and then one sentence on the API page (258 of 300 words free; the Fitting page is at 800 of 800), or leave them internal |
+| P-2 (the contract's backticked names on no docs page) | classed: 125 absent of 198 backticked names (the scope's 145 counted plain identifiers; this count includes dotted and file names) | by the section the name first appears in: 40 in the change-control log only (old names, retired pins: `facet_*`, `assign_facets`, `figs`, `panels`, `slew_time_*`, `eclipse_reserve_wh`, `launch_cost`, `exchange_rates`, the figure pins); 20 in section 14 and one other section (names the log retired or renamed: `soft_*`, `term_gap`, `term_record`, `run_regime`, the v2 data keys); 27 in section 7 (the case module and data: `generate_dataset`, `simulate_adcs`, `sample_designs`, the five csv files, `case.v2.*`; the case's page is `examples/adcs/case-model.md` and `examples.md`'s "Run it", and the case module is not the package's public surface); 11 in section 9 (the derivation ledger's interface `derivation.run`, `derivation.axioms` and their names, documented by `derivation/run.py`'s own text and the generated derivations page; not a docsite page); 11 in section 10 (the glossary schema's field names and the config files, documented in `glossary.yaml`'s header); 6 in section 4 (`__all__`, `package.submodule_names`, the certificate functions `simplex_gap`, `assignment_margin`, `fixed_assignment_bound` and `solvers.distinct_terms`: the second instance's dropped `solvers` rows, A7); 2 in section 3 (`__call__`, `design_id`: the evaluation boundary, `case-model.md`); the rest file names (`pyproject.toml`, `pages.yml`, `CHANGELOG.md`, `MAJOR.MINOR.PATCH`). No public package name with no page is left: every pinned top-level and submodule name is on `docs/api.md` (`tests/test_docs.py::test_every_exported_name_appears_in_api`, `::test_submodule_functions_appear_in_api`) |
+| P-3 (the close-out's case functions on `examples.md`) | dropped: the page already says what they add | `examples.md` carries "Requirements read after the fit" (`case.requirements_summary()`, byte-equal to the page) and the three design sets (`case.design_sets_summary()`), and names the association reading's rule ("fewer than the ten an association reading needs, so none is given"); the function names `requirements_table`, `design_sets_table`, `association_all_pairs` are the case's, on `case-model.md` (lines 194, 258); the page is the user's |
+| P-4 (the gate rule and the "host-recorded, re-pin at the gate" marking live in `PM-BRIEF.md` only) | routed: the driver (`paper/container/README.md` and `RECORD.md` are his) | one paragraph in the container README: the container is a gate check, not a unit step; a host unit that re-records a reference marks the file "host-recorded, re-pin at the gate" |
+| P-5 (WP26's `views.sysml`, WP27's `stakeholders.sysml` on no page) | scheduled: WP26 and WP27 at their acceptance | their packages' records name them; a sentence on `case-model.md` is theirs to add |
+
+## Checks (D-5, G4), at the head of this report
 
 | Check | Command | Result |
 |---|---|---|
-| Docs build, the repo's | `uv run python scripts/assemble_site.py --out <tmp> --paper placeholder` | `assembled site in <tmp>`, exit 0 |
-| Fast suite | `uv run pytest -q -m "not slow" -n auto` | `1744 passed, 16 skipped, 1 xfailed`; no failure at the head of the unit |
-| Docs and register tests | `uv run pytest -q tests/test_claims_register.py tests/test_docs.py tests/test_site.py` | `111 passed` (a first reword of `getting-started.md` broke register row C173, which pins "their ratios are the elasticities between the contending"; reworded to keep the fragment and add "with a minus sign") |
-| Vocabulary guard | `uv run python scripts/check_vocabulary.py` | `70 new violation(s), 0 known`; 70 at a9e23b2 before the unit (diffed); a first wording of the overview fix added one stem hit, reworded |
-| Lock | `uv lock --check` | `Resolved 178 packages`, exit 0 |
-| Deletion commit (R-4) | `git show --stat <hash> \| tail -1`; `git show --format=%B -s <hash> \| grep -c '^work-packages/'` | `31 files changed, 1157 deletions(-)`; 31 |
-| Nothing live names a deleted path (R-3) | `for f in $(git diff --name-only --diff-filter=D a9e23b2..HEAD); do git grep -l -F "$f" -- . ':!work-packages/WP25-*'; done \| wc -l` | 0. Basename hits outside the records are same-named files in other places, listed per row in the inventory (`examples/adcs/model_v2/views/`, the diagnostic pair's temporary output) |
-| Contract and tests (R-2) | `git grep -n -F <path or basename> -- work-packages/interface-contract.md work-packages/interface-contract.toml tests/test_interface_contract.py`, per delete row | 0 for all 31 rows, both forms (the inventory's first section) |
-| Inventory (R-1) | the A2 command diffed against the inventory's rows; `grep -ciE "undecided\|tbd\|\?\?" work-packages/WP25-inventory.md` | 198 rows, no difference; 0 |
-| Untouched (R-7) | `git diff --stat a9e23b2..HEAD -- paper src`; `--diff-filter=R` | empty; empty. `derivation/` has one text edit (below), no script |
-| Attribution (R-10) | `git log --format=%B a9e23b2..HEAD \| grep -ciE "co-authored-by\|generated"` | 0 |
+| Site | `uv run python scripts/stage_site.py --paper placeholder` | `Documentation built in 0.97 seconds`, `staged site in <worktree>/_stage`, exit 0 |
+| Fast suite (R-5) | `uv run pytest -q -m "not slow" -n auto` | `1742 passed, 16 skipped, 1 xfailed`, exit 0 (1731 at the second instance; WP27's and WP11's tests since). With `v1-v2-comparison.md` deleted it was `1 failed, 1740 passed` (the test above), which is why the file stays |
+| Mapped tests (R-5) | `uv run python scripts/check.py --changed` (at the OD1 push) | `1 failed, 1740 passed, 16 skipped, 1 xfailed` with `v1-v2-comparison.md` deleted (the failure above), before the deletion commit was remade; the head's suite is the row above |
+| Register, docs, site, vocabulary, narrative tests (R-6) | `uv run pytest -q tests/test_claims_register.py tests/test_docs.py tests/test_site.py tests/test_vocabulary.py tests/test_narrative.py` | `136 passed` (136 at the scope's sizing) |
+| Doctests (R-6) | `uv run pytest -q --doctest-modules src` | `57 passed` |
+| Vocabulary guard (R-6) | `uv run python scripts/check_vocabulary.py` | `69 new violation(s), 0 known` (69 at ca6ce94; `case-model.md`, which it scans, was edited) |
+| Lock, lint (R-6) | `uv lock --check`; `uv run ruff check .`; `uv run ruff format --check .` | `Resolved 178 packages`; `All checks passed!`; `348 files already formatted` |
+| Inventory (R-1) | the A2 command at the head, first column diffed against the Rows table; `grep -ciE "undecided\|tbd\|\?\?" work-packages/WP25-inventory.md` | 209 rows, 0 difference; 0 |
+| Contract and tests (R-2) | `git grep -n -F -e <path> -e <basename> -- work-packages/interface-contract.md work-packages/interface-contract.toml tests/test_interface_contract.py` | 0 and 0 for `spike-ternary/report.md`; 0 and 0 for `v1-v2-comparison.md` (the inventory's first section) |
+| Nothing live names the deleted path (R-3) | `for f in $(git diff --name-only --diff-filter=D d5d0c3d..HEAD); do git grep -l -F "$f" -- . ':!work-packages/WP25-*'; done` | `work-packages/WP18-scope-of-work.md`, `work-packages/WP8a-decisions.md` (records of accepted packages); 0 in every other live file |
+| Deletion commit (R-4) | `git show --stat de3ce61 \| tail -1`; `git show --format=%B -s de3ce61 \| grep -c '^docs/superpowers/notes/spike-ternary/report.md'` | `1 file changed, 155 deletions(-)`; 1 |
+| Untouched (R-7) | `git diff --stat d5d0c3d..HEAD -- paper derivation src examples/adcs/data examples/adcs/model_v2 examples/adcs/experiments/ledger`; `--diff-filter=R` | empty; empty |
+| Non-goals surfaces (R-8) | `git diff --stat d5d0c3d..HEAD -- glossary.yaml work-packages/interface-contract.md work-packages/interface-contract.toml tests/test_interface_contract.py CHANGELOG.md paper/container 'work-packages/WP26*' 'work-packages/WP27*' 'work-packages/WP11*' 'work-packages/WP10*' work-packages/streams mkdocs.yml pyproject.toml uv.lock` | empty. The instance's whole diff: `claims_register.toml` (one line), the three notes, the two spike files, `case-model.md` (two lines), the deleted report, and the four WP25 records |
+| Attribution (R-10) | `git log --format=%B d5d0c3d..HEAD \| grep -ciE "co-authored-by\|generated (with\|by)"` | 0 |
+| Watcher verdict per push (R-10) | the CI run of each push | not in hand at the time of writing; the PM or the reviewer reads it |
+| Numbers written (R-11) | the D-4 commit messages | no number was written on a page: no S-6 number moved; the two hashes written (4409920) come from `git rev-parse --short f1101ce^` |
 
-## Drift (D-3, G2): the first instance's 19 rows, and five found since
+## What remains, and why
 
-| # | Row | State | Where |
-|---|---|---|---|
-| 1 | `getting-started.md` L39-40, the grey band marks points within 0.5 | fixed | "the grey strip under the line is the region up to 0.5 below the frontier in log V" (`plot_log_plane` shades the strip and does not grey the points) |
-| 2 | `getting-started.md` L61-62, ratios are the elasticities | fixed | "with a minus sign" (`elasticities[j, k] = -w_k / w_j`); register row C173's fragment kept |
-| 3 | `overview.md` L13-14, non-negligible weight contends | fixed | positive weight in the exact-maximum fit (tau = inf); a small weight at the fit temperature is weaker participation (glossary: contending set) |
-| 4-6 | `fitting.md` L39-41 (band width), L59 (re-select tau), L99-100 (mean slack picks K) | fixed | unit B, 2132d36: "the designs with |log V| below 1/tau"; "Hold tau fixed across numbers of terms, selected at K = 1"; "`mean_slack_` falls with K by construction, so it cannot choose K alone: add a term only while the resampled exponents stay stable" (register row C402) |
-| 7-9 | `chart.md` L102 (five plots), L60 (soft maximum over terms), L41 and L55-56 (band width) | fixed / closed | 7 fixed in 2132d36 ("six plots", a bullet for `plot_ternary` and `ternary_marker_values`, register row C400); 8 closed by WP24 ("the maximum over terms at the default `term_temperature=inf`", row C295); 9: the caption (L41) already says "log V from -1/tau to 0"; L55-56 fixed in 2132d36 ("the near-frontier band, |log V| below 1/tau") |
-| 10 | `chart.md` L112, the plots draw every facet | closed | WP24: the page says the designs are one colour by default and `color="cell"` colours them by cell, any other string raising `ValueError` |
-| 11 | `termination.md` L47, `iteration_cap` warns | closed | 4e39097: the page says `fit` warns for `uncertified` and `guard_stop`, and `iteration_cap` has its own rule |
-| 12 | `termination.md` L49-53, a soft fit can end `uncertified` | fixed | unit B, 2132d36: "`uncertified`: as above" in the soft-fit list (solvers.py:658-659); `not_applicable` at tau = inf was already in the status list |
-| 13-14 | `theory.md` L21-23, two sentences | closed | WP24: "alternates assigning the designs to terms with a separate convex refit of each term"; "By default (`term_temperature=np.inf`) the package takes the sharp limit ... and the labels drive the refit" |
-| 15-17 | `glossary.yaml` mean slack, termination statuses, assignment | closed | WP24: mean slack "falls with K by construction and cannot choose K"; termination status lists "stationary (soft fit only)"; assignment "Only the soft fit (finite term temperature) weighs every term against every design" (glossary.yaml L425, L468, L484) |
-| 18 | `README.md` status line | closed | ef281d1 |
-| 19 | `derivation/PROOF_MAP_FINDINGS.md` L226, L281, citations of deleted spikes | fixed | "(deleted; last version at 73c5bff)"; text only, no script, no recorded value |
-| N-a | `examples/adcs/model_v2/views/coverage.csv` names the decision-element column by the enum type (`WheelClass`) | routed: PM | WP23 is accepted (db59365); the generator is `examples/adcs/model_v2/`; options: leave the caption's bridge as the intended reading, or rename the column in the generator |
-| N-b | `paper/length_ledger.toml` row at L557, "the earlier radius was a typed constant" | routed: the paper stream | its file |
-| N-c | `tests/test_narrative.py` `RENAMED` map | closed | 9b1152e (WP24 push 2 dropped the map; `grep -n RENAMED tests/test_narrative.py` is empty) |
-| N-d | the six `abstraction-gaps.md` rows read against the data | fixed (e1341e0) | M3 and M5 rerun on `data/v2/`: their numbers held (conditioning 7.09 and 0.0170, 9.03 / 9.26 / 0.273 and 9.28 / 0.214 / 10.1, the M5 changes 0.008 / 0.001 and 0.004 / 0.001); the recipes now name `examples/adcs/data/v2/` and the primary and baseline regimes (key `stock`), and M5 states what it measures. The figures taken from `k3-cubesat.md` (G-1, G-7, G-9, G-11 to G-13, G-16) did not match the data of record and were replaced by `k_terms.py`'s output on `data/v2/` (the same as `tests/test_case.py` `RECORD`); see "Unit B" |
-| N-e | the vocabulary count after A5 | closed | 70 at a9e23b2 and 70 at the head of the unit |
+- `examples/adcs/experiments/reports/v1-v2-comparison.md`: held for the PM (the test, above).
+- The routed rows: S-5 (WP8b), N-a (WP26's modeller, OD3 (b)), P-1 (the PM, the manifest), P-4 (the driver), P-5
+  (WP26 and WP27 at acceptance).
+- Held files, unchanged: `search-prior-art.md` (WP12, unscoped), `streams/P10-review.md` (WP10's acceptance), WP11's
+  round-2 reads (16), WP26's (33) and WP27's (10) files, each the next instance's or its package's.
 
-## Gaps (D-4, G3): the nine rows re-checked
+## Recommendation for the driver
 
-The contract's 124 pinned names grepped over `docs/*.md docs/user-guide/*.md`: 37 absent now (33 at the first instance); the renames of WP24 push 1 account for the difference (`assign_cells`, `cell_`,
-`cell_labels`, `term_gap`, `term_objective`, `term_share_`, `single_term_termination` are new names no page uses yet). `plot_ternary` and
-`ternary_marker_values`: 0 hits in `docs/api.md` and `chart.md` (4 in `examples.md`). No fill in unit A (every page is on
-WP24's list).
-
-| Row | State |
-|---|---|
-| `coordinates` submodule and its four functions | filled: listed in `docs/api.md` beside the other submodules (2132d36) |
-| `solvers` names (19) | dropped with a reason: `docs/api.md` already lists the module and what it holds, and no submodule has a directive on the API reference page (that page renders the nine top-level names); the Theory page and Appendix B describe what the functions compute |
-| `tensions` report fields `association_kind`, `contending_exponents`, `novelty_score`; residuals | filled for the fields: `association_kind` and `contending_exponents` on the Tensions page, `sum_residual`, `floor_residual`, `offset_residual` on the Termination page (2132d36). `novelty_score` is a method of the estimator, not a report field; the Prediction page is its reader, unchanged |
-| `training_log_v_` | filled: one sentence on the Fitting page beside the chart's attributes (2132d36, register row C401) |
-| submodule names `tuning`, `predictive`, `preconditioning` | dropped (stands): the objects are documented through the top-level names |
-| `plot_ternary`, `ternary_marker_values` in `docs/api.md` and `chart.md` | filled (2132d36): the plotting list of `api.md`, and a bullet on the Chart page linking the Examples page's figure (no new figure) |
-| `spike-ternary/report.md` | held: `glossary.yaml` no longer cites it, but `claims_register.toml` C001 (note) and `docs/superpowers/notes/claims-review.md` line 74 cite its Correction for "the largest log V of any design is 0.071", which stands in no other file; delete when both are re-pointed (register: WP24's file; the review note was outside unit B's blast radius) |
-| the three spikes (46 files) | done: the 26 `.txt` and `.csv` outputs deleted in 14a41a4 after G-6 was re-pointed (e1341e0); the 20 READMEs and scripts stay (their "writes" tables name what each script writes) |
-| `streams/P10-review.md` | held: WP10's acceptance (WP10 is a working draft) |
-
-## Unit B (2026-11-10): commits, checks, what remains
-
-Commits on `dev` (rebased on bb51b7e): `e1341e0` (the ledger read against `data/v2/`, G-6 re-pointed, Appendix E rewritten on the host), `14a41a4` (the deletion commit), `2132d36` (the drift rows and the gap fills), and the commit of this report and the inventory's closing section.
-
-### Deletions (D-2, R-2, R-3, R-4)
-
-"WP25: 28 files deleted (second instance, unit B)": the 26 spike outputs (`spike-certificates/` 7, `spike-facet-refit/` 10, `spike-objective/` 9), `scripts/rename_facet.py` and `tests/test_rename_facet.py`; the commit also edits `scripts/check.py` (its map line for the script). The message lists each path and what it no longer did. Held: `spike-ternary/report.md` (reason in the gap table). The citations re-pointed first: G-6 (`oracle.txt` to the README section 3a and `bench_oracle.py`), the only citation of a deleted output by path outside the spike folders; `paper/supporting_material.ipynb` carried it only through the compiled Appendix E table, now rewritten. The READMEs cite the other outputs as what each script writes. `fail_seeds.py` reads `recovery_restarts.csv`, which `bench_c.py` writes first (the README's order).
-
-Appendix E: `tab-E-gaps` rewritten on the host by running that cell with `setup-appendices` in a fresh kernel (`nbclient`, outputs written in place, the way push 4 did; `paper/execute_notebooks.py` runs whole notebooks and was not used). `git diff` of the notebook, cell by cell: cell 73 (`tab-E-gaps`) changed, the other cells byte-equal. No container run (the rule of 2026-11-10 09:05).
-
-### The ledger read against the data of record (N-d)
-
-Rerun on `data/v2/` with `examples/adcs/k_terms.py` (both regimes, seeds 0 to 4, the K = 1, 2, 3 table and the fixed-tau diagnostic) and the M3 and M5 calls. The rows quoted `k3-cubesat.md`, which is the earlier record: tau by K was 38.10, 113.22, 195.18 (primary) and 41.72, 78.75, 162.78 (stock); the data of record gives 38.10, 94.42, 113.22 and 45.68, 71.92, 113.22 (`tests/test_case.py` `RECORD` pins them). Replaced in G-1 (fractions above V = 1), G-7 (smallest near-frontier count of a K = 3 term: 3 and 20), G-9 (tau, band, fractions, rows in a term's own band, mean slack, objective spread), G-10 and G-14 (the baseline K = 3 runs at tau = infinity: gamma 1.1e-16 and objective 0.13579 on all five seeds; at tau = 113.22 objective 0.09269 on all five), G-11 (primary objective 0.14579), G-12 (the K = 1 contending sets: primary total mass, energy balance, pointing error, depth of discharge, settling time; baseline control effort, settling time, power margin, pointing error, energy balance, depth of discharge; "slew time" is not a v2 metric), G-13 (mean slack 0.243 to 0.146 and 0.179 to 0.093) and G-16 (the K = 3 certificates, now equal to `test_k_terms_case.py`'s MARGIN). The rows citing `k3-cubesat.md` for these now cite `k_terms.py` on `data/v2/`. Not changed: G-2's M3 and M5 numbers (they held), G-5, G-17 (just narrowed), and the spike-sourced numbers of G-6, G-7, G-8, G-10 (planted spike tables), G-15, which describe the planted family and the spike runs.
-
-### Checks (D-5, G4), unit B, at the head 2132d36 plus this report
-
-| Check | Command | Result |
-|---|---|---|
-| Deleted paths named outside records (R-3) | `for f in $(git diff --name-only --diff-filter=D origin/dev..HEAD); do git grep -l -F "$f" -- . ':!work-packages/WP25-*'; done \| wc -l` | 1, `work-packages/WP24-review.md` (a record: the line naming `rename_facet.py` and `check.py` L60); 0 elsewhere. 28 paths |
-| Contract and tests (R-2) | `git grep -n -F -e <path> -e <basename> -- work-packages/interface-contract.md work-packages/interface-contract.toml tests/test_interface_contract.py`, per path | 0 for the plain substring; 0 with a filename boundary (`cubesat.csv` as a substring of `adcs_designs_cubesat.csv` is the contract's other file, not a hit) |
-| Inventory (R-1) | the A2 command at the head against the table's first column; `grep -ciE "undecided\|tbd\|\?\?"` | 144 rows at the head; 58 rows of the table are gone (all deleted), 4 new paths now have rows (inventory, closing section); 0 |
-| Fast suite | `uv run pytest -q -m "not slow" -n auto` | `1731 passed, 16 skipped, 1 xfailed` (13 fewer than unit A's 1744: the deleted `test_rename_facet.py`) |
-| Docs, register, site, vocabulary tests | `uv run pytest -q tests/test_claims_register.py tests/test_docs.py tests/test_site.py tests/test_vocabulary.py tests/test_narrative.py` | `112 passed` |
-| Doctests | `uv run pytest -q --doctest-modules src` | `57 passed` |
-| Site | `uv run python scripts/stage_site.py --paper placeholder` | `Documentation built in 1.30 seconds`, exit 0 |
-| Word budgets | `tests/test_site.py::test_word_budgets_hold` (held by tightening) | fitting 800/800, chart 597/600, termination 596/600, tensions 613/700, api 258/300; total 6656/7600 |
-| Vocabulary guard | `uv run python scripts/check_vocabulary.py` | `69 new violation(s), 0 known` (70 at unit A; not higher) |
-| Lock, lint | `uv lock --check`; `uv run ruff check .`; `uv run ruff format --check .` | `Resolved 178 packages`; `All checks passed!`; `323 files already formatted` |
-| Untouched (R-7) | `git diff --stat origin/dev..HEAD -- paper src derivation`; `--diff-filter=R` | `paper/supporting_material.ipynb` only (cell `tab-E-gaps`, the routed regeneration, e1341e0); empty for `src`, `derivation`; no rename |
-| Attribution (R-10) | `git log --format=%B origin/dev..HEAD \| grep -ciE "co-authored-by\|generated"` | 0 for unit B's commits. Over `a9e23b2..HEAD` the unit-A pattern finds 6 lines in others' messages ("regenerated", "docs/generated", "the generated tables"); `grep -ciE "co-authored-by\|generated (with\|by)"` finds 1, "generated by scripts/build_figures.py" in a WP24 message |
-| Watcher verdict per push (R-10) | the CI run of the push | not in hand at the time of writing; the PM or the reviewer reads it |
-
-### What remains, and why
-
-- `spike-ternary/report.md`: held until `claims_register.toml` C001 and `claims-review.md` line 74 stop citing it for the 0.071 figure (a register edit that must keep the claim backed, the figure stands in no other file).
-- Routed from unit A, still open: N-a (`coverage.csv` names the column by the enum type; PM) and N-b (`paper/length_ledger.toml` row at L557; the paper stream).
-- `tests/test_case.py` L278 and `docs/superpowers/notes/k3-cubesat.md` (cited by `paper/supporting_material.ipynb`, `tests/test_case.py` and the paper-sources notes for the earlier K = 3 record) still describe the earlier record as "the record of k3-cubesat.md, as printed", though its numbers differ from `RECORD`'s; the note was outside unit B's blast radius. Options: refresh the note from `k_terms.py` output, or delete it and re-point the two citations to `k_terms.py`.
-- Not read against the data: G-8, G-15 and the spike-sourced figures of G-6, G-7 and G-10 (planted spikes, outside the cubesat data).
-- `docs/examples.md` was not touched (the close-out package's); the paper notebooks' prose and `glossary.yaml` not touched.
-- `streams/P10-review.md`: held for WP10's acceptance.
-
-### Recommendation for the driver
-
-Accept D-1 to D-6 of the second instance as met on the evidence above, with the four open items listed (one held file, N-a, N-b, the `k3-cubesat.md` note) carried to the next instance or named owners. The acceptance record is the driver's, quoted verbatim in `WP25-decisions.md`.
+Accept D-1 to D-6 of the third instance as met on the evidence above, with OD2's file carried as a held row and the
+five routed rows named with their owners. The acceptance record is the driver's, quoted verbatim in
+`WP25-decisions.md`.

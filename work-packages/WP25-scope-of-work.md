@@ -24,6 +24,10 @@ quoted in `WP25-decisions.md`; the inventory and the review are rewritten to the
 - Instance 2 (WP23 accepted at db59365; WP24 at push 2): 2026-11-10, head a9e23b2; scope `WP25-2-scope-of-work.md` (own file:
   it carries its sequencing against WP24); 198 rows, 31 deleted in unit A (the commit "WP25: 31 files deleted (second instance, unit A)"), 29 held,
   138 kept; inventory and review `WP25-inventory.md`, `WP25-review.md`.
+- Instance 3 (the WP23 close-out accepted, WP24 final): 2026-11-10, scoped at fbee839, executed at ca6ce94 to the head of
+  `WP25-review.md`; scope `WP25-3-scope-of-work.md` (own file: the two open file decisions and the survey); 209 rows, 1
+  deleted (de3ce61, `spike-ternary/report.md`), 61 held (WP11's, WP26's and WP27's files, `search-prior-art.md`,
+  `P10-review.md`), 148 kept; OD2's file held for the PM (a test reads it); inventory and review rewritten.
 
 Sizing at `dev` cc409f8: 622 tracked files. A first pass (each tracked file's basename grepped across every other
 tracked file; it credits a reference to any file sharing the name, so it undercounts) finds under

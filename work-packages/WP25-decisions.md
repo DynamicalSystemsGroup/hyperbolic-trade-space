@@ -75,3 +75,16 @@ the WP24-dependent rows after WP24's last push, the 30 round images after WP23's
 
 **Approved for execution by the driver under the mandate**; the Agent's defaults as one item; the paper,
 `derivation/`, `src/`, the data, the model files and the committed numbers untouched (R-7, R-8).
+
+## Instance 3 executed (2026-11-10)
+
+From `dev` ca6ce94: OD1 (b) applied (6e34f2b the register note and `claims-review.md` row, de3ce61 the deletion,
+"WP25: 1 file deleted (third instance)"); the drift fixes S-2 (43a0936, dfc4729), S-3 (b6c426c, cc30725), S-4
+(2f1c2d9); the inventory (209 rows: 148 keep, 61 hold) and the review rewritten. **OD2 (b) not applied:** the
+scope's sizing said `v1-v2-comparison.md` is "read by no test or page", but
+`tests/test_v2_data.py::test_the_committed_report_exists_and_includes_the_register` reads the committed file (through
+`cmp.REPORT`, which no path or basename grep sees) and fails without it; the test is outside the instance's blast
+radius, so the file stays and the row is held for the PM with two options (the test regenerates the report to a
+temporary path and checks the same content, then the file goes in the next instance's deletion commit; or OD2
+reverts to (a), the row naming the test as the reader). OD3 (b) is WP26's unit, not this instance's. The driver's
+acceptance, when given, is quoted here verbatim.
