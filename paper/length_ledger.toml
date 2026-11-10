@@ -59,7 +59,7 @@ reader = "the trade-study practitioner"
 [[raise]]
 date = "2026-11-09"
 section = "Definitions"
-words_added = 18
+words_added = 20
 job = "says in words what the two temperatures do, before they are defined"
 reader = "the trade-study practitioner and the machine-learning reader"
 
@@ -192,7 +192,7 @@ reader = "the reader asking what the case does and does not show"
 [[raise]]
 date = "2026-11-09"
 section = "Future work and final remark"
-words_added = 18
+words_added = 20
 job = "names other cases across the engineering lifecycle, configuration management of a fielded system among them"
 reader = "the reader looking for where the workflow goes next"
 
@@ -283,3 +283,12 @@ date = "2026-11-09"
 words_added = 7
 job = "states the case's finding in the main-results list's words: one facet blends the subsystems' trade-offs, three facets separate the contending sets"
 reader = "the reader of the abstract alone, 3 of 4 of whom read nothing in the old ending"
+
+# Rows: PM-BRIEF ruling 2 (Theorem 11, descent): cell and facet kept apart.
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 20
+job = "says once in the descent theorem that a cell is a set of rows and a facet a piece of the surface, one cell per facet, and names the cell a row is reassigned to"
+reader = "the reader who took facet for a cluster of rows in the descent statement"
