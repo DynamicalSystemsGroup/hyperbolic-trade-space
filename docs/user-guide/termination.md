@@ -40,11 +40,12 @@ print(ts.conditioning_.round(1))
   facets coincide.
 - `uncertified`: assignment fixed, a residual or the gap above tolerance.
 - `guard_stop`: an iteration raised the mean slack by more than `guard_tol`. Not converged.
-- `iteration_cap`: `max_iter` reached. Not converged.
+- `iteration_cap`: alternation cap reached, fit kept; warned only when gap or last objective
+  change exceeds `tol`.
 - `not_applicable`: one term, `facet_step="tangent"`, a `penalty`, one metric, fewer designs than
   facets, or a soft fit at infinite tau.
 
-`fit` warns for `uncertified`, `guard_stop` and `iteration_cap`.
+`fit` warns for `uncertified` and `guard_stop`.
 
 A soft fit weighs every term: no assignment, no margin.
 
@@ -60,7 +61,7 @@ A soft fit weighs every term: no assignment, no margin.
   optimum.
 - `gamma`, `radius`: the margin and stable radius, `nan` at one term.
 - Residuals, `objective_change`, `assignment_changes`, `n_empty`, tolerances: diagnostics.
-- `min_curvature`: soft fit only, the smallest curvature there; `nan` otherwise.
+- `min_curvature`: a soft fit's smallest curvature; `nan` otherwise.
   A soft fit leaves `gamma`, `radius` and `bound` `nan`.
 
 The tolerances are module constants of `hyperbolic_trade_space.solvers`, not parameters: `EPS_KKT` =
@@ -68,7 +69,7 @@ The tolerances are module constants of `hyperbolic_trade_space.solvers`, not par
 
 ## `conditioning_`
 
-The smallest eigenvalue of the restricted Hessian at each facet's fit, over the participating
+The smallest eigenvalue of the restricted Hessian over the participating
 exponents (above 1e-3), one per facet. A small value marks a nearly flat direction (weakly identified exponents). It is `nan` at infinite
 temperature and for a facet with fewer than two participating exponents.
 
@@ -76,7 +77,7 @@ temperature and for a facet with fewer than two participating exponents.
 
 The margin `gamma` is in score units (log metrics), the scale of the band 1/tau; `radius` is
 `gamma / (2R)`, with R the largest norm of a row (u, -1). Compare `gamma` with the median margin,
-the median gap between a design's best and second-best facet score: far below it, a few designs sit
+the median gap between best and second-best facet score: far below it, a few designs sit
 on a seam.
 
 ```python {.runnable}
@@ -87,7 +88,7 @@ top = np.sort(S, axis=1)
 print(t.gamma, 1 / 50.0, np.median(top[:, -1] - top[:, -2]), t.radius)
 ```
 
-On this table at tau = 50, `gamma` is 0.0020 against a band of 0.02 and a median margin of 0.21:
+On this table at tau = 50, `gamma` is 0.0020 against the band 0.02 and the median margin 0.21:
 level 3 holds.
 
 ## What to decide from it

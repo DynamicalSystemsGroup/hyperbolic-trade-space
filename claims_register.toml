@@ -4130,7 +4130,7 @@ note = "status and the warning pinned with a +10 rise; the threshold obj2 > obj 
 
 [[claim]]
 id = "C331"
-fragment = "- `iteration_cap`: `max_iter` reached. Not converged."
+fragment = "- `iteration_cap`: alternation cap reached, fit kept; warned only when gap or last objective"
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
@@ -4138,7 +4138,7 @@ backing = ["test:tests/test_solvers.py::test_iteration_cap_status", "test:tests/
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43; estimator unit 18d0064"
-note = "max_iter reached gives iteration_cap and success False; since 18d0064 the ConvergenceWarning fires only when the max term gap or the last objective change exceeds tol, so 'Not converged.' overstates a cap reached with the fit stationary (a cycle among tied rows); the sentence is the termination page's to narrow"
+note = "the alternation's own cap (solve_terms max_iter) gives iteration_cap and success False; the fit is returned with its gap; since 18d0064 the ConvergenceWarning fires only when the max term gap or the last objective change exceeds tol (a cycle among tied rows is silent); the fragment is the sentence's first line"
 
 [[claim]]
 id = "C332"
