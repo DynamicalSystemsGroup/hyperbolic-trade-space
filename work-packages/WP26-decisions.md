@@ -47,3 +47,10 @@ the issues panel, list the views with their render status, read the requirements
 as data, capture a named view's canvas to an image, export or import the project through the native file dialog.
 Written by the modeller from its step log at the round's end; cited by the researcher's report as the reproduction
 path. Computer-use access is used only for the editor's native file dialogs; the browser pane's tools do the rest.
+
+**Ledger sequencing with the close-out gate (2026-11-10, 13:15; the driver, answering the modeller directly).**
+The container regression at the close-out gate writes the ledger's next entries if it re-pins; the modeller's host
+re-run for byte-identical in-file edits (OD1 b) waits until that regression has landed, then runs against the
+container's re-pinned outputs as the baseline and writes the entries after it, hash-equal or the edits stay held.
+Unit 1 (views.sysml and its parse test) is on dev at d793a95. The harness deliverable is the modeller's, written
+from its step log at the round's end.
