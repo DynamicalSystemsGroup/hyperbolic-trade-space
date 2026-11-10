@@ -48,3 +48,11 @@ Collected from the records; tick each when done or decided.
 
 - Deferred (supervisor, 2026-11-08): docsite references to the paper by stable reference keys (a key registry resolved at build time, like LaTeX labels and refs), added only after the paper and its appendices are stable (post-WP11); until then the docsite carries no citations into the paper.
 - Optionally publish the pinned container image (Dockerfile; WP10 D-13) to a registry (supervisor, WP10: "we can optionally publish it to a registry later"); the paper documents the local build only.
+
+## After 0.1 (recorded during the candidate; not release items)
+
+- `tension_report` at K > 1 refuses at the first term whose near-frontier rows fall below `min_near_frontier`,
+  so the paper's case module gets the other terms' readings by calling it with the guard off and applying the
+  same guard of ten per term itself (the driver's call of 2026-11-10, `driver-log.md`). After 0.1 the public
+  function should return per-term availability itself: a reading for each term that meets the guard and a
+  stated refusal, with the count, for each that does not.
