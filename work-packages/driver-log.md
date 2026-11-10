@@ -427,6 +427,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-10 | commit 6de8f68, CI run on ubuntu | all three shards FAILED at the first step, the attribution check: its grep for "generated with" matched "regenerated with" in the regression's commit body | a false positive, not an attribution line (the whole log has none under a whole-word pattern); the CI grep tightened to whole words at e8abe46 and Linux re-dispatched on it; the regression's acceptance stands |
 | 2026-11-10 | commit 0edab7b, tier 2 watcher, this Mac (contains the regression head 6de8f68 and WP27's first units) | 2196 passed, 16 skipped, 1 xfailed; all checks | a verdict: the regression head is green on the Mac; Linux on e8abe46 (after the sequel) fails one test, tests/test_case_model_howto.py::test_sections_block_is_generated_from_the_model, routed |
 | 2026-11-10 | commit a09fd4e, tier 2 watcher, this Mac | 1 failed, 2195 passed: tests/test_case_model_howto.py (the generated sections block at the model's old line numbers), the same as Linux at e8abe46 | a verdict: one defect from the WP26 sequel's model doc edits, fixed at ca6ce94; Linux re-dispatched on the head after it |
+| 2026-11-10 | commit 0869ecf, CI run on ubuntu, three shards (after the how-to block fix; the WP26 sequel, WP27's first units, the bug passes) | fast, slow and docs-paper all green | a verdict: the sequel's head is green on Linux; the watcher's run on it follows (its 16:22 verdict was the pre-fix head) |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
