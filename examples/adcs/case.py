@@ -1297,16 +1297,40 @@ def _colorbar_ticks(vmin, vmax):
     return [vmin, *inner, vmax], [f"{vmin:g}", *[f"{v:.1f}" for v in inner], f"{vmax:.2f}"]
 
 
+FIT_COLUMN_TOLERANCE = 0.02
+"""A fit temperature within this relative distance of a sweep temperature is drawn as that
+column, outlined, instead of as an inserted column (the two would be pixel-alike)."""
+
+
+def _sweep_with_fit(taus, tau):
+    """The finite sweep temperatures with the fit temperature among them, its index, and
+    whether it was inserted.
+
+    Examples
+    --------
+    >>> _sweep_with_fit([10.0, 20.0, 40.0], 20.3)
+    (array([10., 20., 40.]), 1, False)
+    >>> _sweep_with_fit([10.0, 20.0, 40.0], 25.0)
+    (array([10., 20., 25., 40.]), 2, True)
+    """
+    taus = np.asarray(taus, dtype=float)
+    rel = np.abs(taus - tau) / taus
+    if rel.min() <= FIT_COLUMN_TOLERANCE:
+        return taus, int(rel.argmin()), False
+    taus = np.sort([*taus, tau])
+    return taus, int(np.searchsorted(taus, tau)), True
+
+
 @_legible
-def tau_sweep_figure(study, fit, title=None):
+def tau_sweep_figure(study, fit, title=None, vmax=None):
     """The K = 1 fit against the fit temperature: fraction above V = 1, effective size, exponents.
 
-    The sweep is ``tau_sweep``'s temperatures with ``fit.tau`` added, so the fit temperature is a
-    column of the exponent grid; it is marked on every panel (a vertical line, the outlined column).
-    Rows are ordered by the exponent at the fit temperature, largest at the top. The colour scale
-    runs from ``EXPONENT_FLOOR`` to the largest exponent of the sweep; a cell at or below the
-    floor is white, the first step above it a visible grey, so "zero at every tau" is told from
-    "small".
+    The fit temperature is a column of the exponent grid (``_sweep_with_fit``: the sweep's column
+    within ``FIT_COLUMN_TOLERANCE`` of it, else a column inserted), outlined, its exponents printed
+    in the cells, and marked on the top panels by a vertical line with the effective sample size
+    at it. Rows are ordered by the exponent at that column, largest at the top; rows white there
+    come last, in the study's order. The colour scale runs from ``EXPONENT_FLOOR`` (white at or
+    below it) to ``vmax``; two regimes drawn side by side share one ``vmax``.
 
     Parameters
     ----------
@@ -1315,6 +1339,8 @@ def tau_sweep_figure(study, fit, title=None):
         The K = 1 fit at the fit temperature.
     title : str, optional
         The figure's title; default names the regime (``regime_word``).
+    vmax : float, optional
+        Top of the colour scale; default the largest exponent of the sweep.
 
     Returns
     -------
@@ -1325,9 +1351,8 @@ def tau_sweep_figure(study, fit, title=None):
     hts, _, plotting = _lib()
     plt = _plt()
     spec = study.spec
-    finite = np.unique([*np.geomspace(*spec.tau_bounds, 12), fit.tau])
+    finite, sel, inserted = _sweep_with_fit(np.geomspace(*spec.tau_bounds, 12), fit.tau)
     sweep = tau_sweep(study, taus=[*finite, np.inf])
-    sel = int(np.flatnonzero(np.isclose(sweep.tau, fit.tau))[0])
     fin = sweep[np.isfinite(sweep.tau)]
     W = np.array(
         [
@@ -1337,8 +1362,10 @@ def tau_sweep_figure(study, fit, title=None):
             for t in sweep.tau
         ]
     )
-    order = np.argsort(-W[sel], kind="stable")
+    at_fit = np.where(W[sel] > EXPONENT_FLOOR, W[sel], 0.0)
+    order = np.argsort(-at_fit, kind="stable")
     names = [study.names[i] for i in order]
+    vmax = float(W.max()) if vmax is None else float(vmax)
 
     fig = plt.figure(figsize=(FIGURE_WIDTH_IN, 7.0))
     grid = fig.add_gridspec(2, 2, height_ratios=[1, 1.45])
@@ -1351,28 +1378,42 @@ def tau_sweep_figure(study, fit, title=None):
     )  # fmt: skip
     axes[0].set(xlabel="fit temperature tau", ylabel="fraction of designs above V = 1")
     axes[1].semilogx(fin.tau, fin.n_eff, "o-", color=plotting.DATA_COLOR, ms=4)
+    n_eff = float(fit.estimator.n_eff_)
+    axes[1].annotate(
+        f"n_eff = {n_eff:.0f}", (fit.tau, n_eff), xytext=(6, 10), textcoords="offset points"
+    )
     axes[1].set(xlabel="fit temperature tau", ylabel="effective sample size")
     for ax in axes[:2]:
         ax.axvline(fit.tau, color=plotting.FRONTIER_COLOR, lw=1.5)
 
-    vmax = float(W.max())
     im = axes[2].imshow(
         W[:, order].T, cmap=_exponent_cmap(plt), aspect="auto", vmin=EXPONENT_FLOOR, vmax=vmax
     )
     labels = [f"{t:.0f}" if np.isfinite(t) else "∞ (limit)" for t in sweep.tau]
-    labels[sel] = f"{fit.tau:.1f}"
+    if inserted:
+        labels[sel] = f"{fit.tau:.1f}"
     axes[2].set_xticks(range(len(sweep)), labels, rotation=60)
     axes[2].get_xticklabels()[sel].set_fontweight("bold")
+    axes[2].tick_params(axis="x", pad=6)  # before the long tick: tick_params resets every tick
+    axes[2].xaxis.get_major_ticks()[sel].tick1line.set_markersize(8)  # shows past the ring
     axes[2].set_yticks(range(len(names)), names)
     axes[2].set_xticks(np.arange(len(sweep) + 1) - 0.5, minor=True)
     axes[2].set_yticks(np.arange(len(names) + 1) - 0.5, minor=True)
     axes[2].grid(which="minor", color="white", lw=1)
     axes[2].tick_params(which="minor", length=0)
-    for color, lw, z in (("white", 5, 4), (plotting.FRONTIER_COLOR, 2, 5)):  # a ring on any grey
+    # a ring on any grey, above the grid lines (the axis draws at 1.5: hence the long tick)
+    for color, lw, z in (("white", 5, 2.0), (plotting.FRONTIER_COLOR, 2, 2.1)):
         axes[2].add_patch(Rectangle(
             (sel - 0.5, -0.5), 1, len(names), fill=False, lw=lw, edgecolor=color,
             clip_on=False, zorder=z,
         ))  # fmt: skip
+    for r, w in enumerate(at_fit[order]):
+        if w > 0:
+            dark = (w - EXPONENT_FLOOR) / (vmax - EXPONENT_FLOOR) > 0.45
+            axes[2].text(
+                sel, r, f"{w:.2f}" if w >= 0.005 else "<0.01", ha="center", va="center",
+                color="white" if dark else "black", zorder=3,
+            )  # fmt: skip
     axes[2].set(
         xlabel="fit temperature tau",
         title="K = 1 exponent of each metric; the outlined column is the fit temperature",

@@ -819,3 +819,62 @@ before the caption was written: the session scratchpad's `heatmapfig/primary.png
 - Test: `tests/test_case.py::test_tau_sweep_figure_marks_the_fit_temperature_and_orders_the_rows`
   pins the fit column and its bold label, the row order, the colour scale's ends and the limit
   column's name; no existing pin changed.
+
+### Redraw 2 (two fresh cold reads of redraw 1: a P2 at L-B on the 700 px render, a P4 at L-C on both regimes)
+
+Nothing blocked; both read the top panels' intent off the image. The PM's dispositions, executed
+in `case.tau_sweep_figure` (signature now `tau_sweep_figure(study, fit, title=None, vmax=None)`)
+and looked at by the author at 700 px: the session scratchpad's `heatmapfig/primary2.png` and
+`heatmapfig/baseline2.png` (800 by 700 px; redraw 1's `primary.png` and `baseline.png` kept beside
+them), intents in `heatmapfig/INTENT.md`.
+
+1. The intent and the caption no longer claim insensitivity to tau (the image contradicts it: in
+   the primary regime total mass darkens from 0.18 to 0.22 while control effort lightens from 0.22
+   to 0.14 and their ranks cross; in the baseline regime the energy balance and the depth of
+   discharge switch off and the settling time on near the fit temperature). They claim what the
+   image shows: the support and the order among the carrying metrics, and how each moves with tau.
+2. The exponent is printed (two decimals; "<0.01" below 0.005) inside each non-white cell of the
+   outlined column and nowhere else, white type on the dark cells, so the ranking the row order
+   promises is read there; white cells print nothing.
+3. The effective sample size at the fit temperature is written at the vertical line on the
+   top-right panel ("n_eff = 16" primary, "n_eff = 14" baseline on the current data).
+4. Row order: by the exponent at the outlined column, largest at the top; cells at or below the
+   floor count as zero, so the white rows come last as one block, in the study's (the table's)
+   order; stated in the caption.
+5. `vmax` argument: the top of the colour scale, default the largest exponent of the sweep. The
+   paper's one call draws the primary regime alone, so its scale is its own maximum (0.25 on the
+   current data) and the caption says so. Where both regimes are drawn side by side (WP23's
+   `diagnostic_pair.py`, not this unit's file), both calls must pass one `vmax` (the larger of the
+   two sweeps' maxima) and the pair's caption state it; the docstring says so.
+6. Caption language: "the first grey step is visible" dropped; tau glossed as the temperature of
+   the soft maximum in the fit, V as the invariant value (above 1 is beyond the fitted reference
+   surface), so the coefficient-path idiom is not supplied by the reader.
+7. The ring is drawn above the grid lines and below the axis (zorder 2.0 and 2.1), so the tick
+   under the bold label stays visible. A fit temperature within 2 % of a sweep temperature
+   (`FIT_COLUMN_TOLERANCE`) is drawn as that sweep column, outlined and bold, with the sweep's
+   label; otherwise a column is inserted and labelled with one decimal (`_sweep_with_fit`, with a
+   doctest). On the current data the baseline's 41.7 is drawn as the sweep's 42 column (0.8 %
+   apart; the two columns of redraw 1 were pixel-alike) and the primary's 38.1 is inserted.
+8. The caption says "an exponent at most 0.001 (the glossary's participation threshold)", not
+   "no exponent".
+
+Proposed caption, superseding redraw 1's: "The K = 1 fit against the fit temperature tau (the
+temperature of the soft maximum in the fit), primary regime. Top: the fraction of designs above
+V = 1 (V is the invariant value; above 1 is beyond the fitted reference surface) with the target
+0.1 (dashed), and the effective sample size with its value at the fit temperature; the vertical
+line is the fit temperature, where the fraction first meets the target. Bottom: the K = 1 exponent
+w of each metric at each temperature of the sweep, the last column the tau = infinity limit; rows
+ordered by the exponent at the fit temperature (the outlined column, values printed), white rows
+last in the table's order; a white cell is an exponent at most 0.001 (the glossary's participation
+threshold); the scale tops at the largest exponent of the sweep."
+
+Intent, the grid (superseding): the outlined column read top to bottom is the n-lemma of the K = 1
+fit at the fit temperature, which metrics carry an exponent with the values in rank order and which
+are white, the white rows last; along the rows, which metrics stay in the support across the sweep
+and how the order among the carrying metrics changes with tau. Intent, the top panels: as redraw
+1's, with the effective sample size at the fit temperature written at the line. Shows / does not
+show / good for: as redraw 1's, with "the exponents' values at the fit temperature" added to shows
+and "insensitivity to tau" struck from good for (the figure shows the dependence; it does not
+certify its absence). The test is revised to the new requirements (the bold column within 2 % of
+the fit temperature, the printed values in that column only, white rows last in the study's
+order, the clim's top at `vmax`, the n_eff text); no pin weakened.

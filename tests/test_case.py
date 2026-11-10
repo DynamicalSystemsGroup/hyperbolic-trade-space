@@ -204,23 +204,31 @@ def test_figures_return_figures_and_do_not_save(small, small_fit, tmp_path, monk
 
 def test_tau_sweep_figure_marks_the_fit_temperature_and_orders_the_rows(small, small_fit):
     """The redraw's requirements (WP19-figure-review.md, "Heatmap redraw (fourth PM, after WP23's
-    rounds)"): the fit temperature is a column of the grid and its label is emphasised, rows are
-    ordered by the exponent at that column (largest at the top), the colour scale runs from the
-    floor to the largest exponent of the sweep, and the limit column is named."""
+    rounds)" and its "redraw 2"): the fit temperature is one outlined, bold-labelled column of the
+    grid (the sweep's own column when within 2 %, else inserted), its exponents are printed in
+    that column only, rows are ordered by the exponent there with the white rows last in the
+    study's order, the colour scale runs from the floor to ``vmax``, the limit column is named,
+    and the effective sample size is written at the fit temperature."""
     import matplotlib.pyplot as plt
 
-    fig = case.tau_sweep_figure(small, small_fit, title="a title")
+    fig = case.tau_sweep_figure(small, small_fit, title="a title", vmax=0.5)
     grid = fig.axes[2]
     labels = [t.get_text() for t in grid.get_xticklabels()]
-    assert fig.get_suptitle() == "a title"
-    assert labels[-1] == "∞ (limit)" and f"{small_fit.tau:.1f}" in labels
-    sel = labels.index(f"{small_fit.tau:.1f}")
-    assert grid.get_xticklabels()[sel].get_fontweight() == "bold"
+    bold = [i for i, t in enumerate(grid.get_xticklabels()) if t.get_fontweight() == "bold"]
+    assert fig.get_suptitle() == "a title" and labels[-1] == "∞ (limit)" and len(bold) == 1
+    sel = bold[0]
+    assert abs(float(labels[sel]) - small_fit.tau) <= 0.02 * small_fit.tau + 0.5
     W = grid.images[0].get_array()
     assert W.shape == (len(small.names), len(labels))
-    assert np.all(np.diff(W[:, sel]) <= 0)  # largest exponent at the top row
-    assert np.allclose(np.sort(W[:, sel])[::-1], np.sort(small_fit.estimator.exponents_[0])[::-1])
-    assert grid.images[0].get_clim() == (case.EXPONENT_FLOOR, pytest.approx(W.max()))
+    w = np.where(W[:, sel] > case.EXPONENT_FLOOR, W[:, sel], 0.0)
+    assert np.all(np.diff(w) <= 0)  # largest exponent at the top row
+    rows = [t.get_text() for t in grid.get_yticklabels()]
+    whites = [rows[r] for r in range(len(w)) if w[r] == 0]
+    assert whites == [n for n in small.names if n in whites]  # white rows last, study order
+    printed = [t.get_text() for t in grid.texts]
+    assert len(printed) == int((w > 0).sum()) and all(p[0] in "0<" for p in printed)
+    assert grid.images[0].get_clim() == (case.EXPONENT_FLOOR, 0.5)
+    assert any(t.get_text().startswith("n_eff = ") for t in fig.axes[1].texts)
     assert case.regime_word(small) == "primary"
     plt.close(fig)
 
