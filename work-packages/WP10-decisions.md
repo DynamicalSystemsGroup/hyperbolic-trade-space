@@ -1216,3 +1216,22 @@ in the A/B: nobody said what a monomial is); "n-lemma" for the metrics in tensio
 obvious; "cell" for the designs a term scores highest; the τ = ∞ polyhedral sense is the one place the textbook
 word may stay or become "face" (an agent's default in the scope, for the driver). Work-package records keep their
 wording as written. Step 3g on the path.
+
+## The position on the proof scripts, stated in Appendix B (2026-11-09, 22:45)
+
+**Supervisor (mzargham), verbatim,** on his framing of the scripts ("the sympy scripting is a substitute for pencil
+and paper paper mathematics not for formal verification ... an efficient trade between rigor and friction ...
+pen and paper mathematics (or even latex proofs) are essentially free form ... formal proof assistents like Lean
+... have domain languages lots of friction and interpretability gaps for the uninitiated. we do actually use some
+formal proof tools but they are baked into the sysmlv2 support (the z3 prover)"): "we can summarize in a more
+institutional tone the position i am taking in the appendix containing the proofs"
+
+**Disposition.** A support unit (the supporting notebook's single writer): one paragraph in Appendix B's opening
+("Job" or beside "This appendix carries"), in the paper's register and not his chat words: the derivation scripts
+are a substitute for pencil-and-paper derivation, not formal verification; they sit between free-form proof, which
+no tool checks, and a proof assistant, whose language and friction put the derivation beyond most readers; each
+step is a line of symbolic algebra a reader can run against its sentence, so the trade is rigor for friction on the
+stack the paper already uses; the formal prover in the project is the one inside the system-model tooling (Z3,
+Appendix C's checks), and the word "formal verification" is used only there. A claims-register row; a ledger entry
+stating the job (the reader of Appendix B knows what the scripts do and do not establish); the limitations page of
+the docs carries one sentence pointing to it. No re-test needed.
