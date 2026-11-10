@@ -93,10 +93,10 @@ by a lemma, so the every-axiom-is-used test covers them
 - **I8, inherited** (`INHERITED`, citation required): the first-order convexity inequality
   `f(v) >= f(w) + grad f(w).(v - w)` for a differentiable convex `f` (Boyd and Vandenberghe,
   section 3.1.3). Used by L12 to turn the simplex gap into the objective bound
-  `0 <= f(w) - f* <= G`. Failure mode: a nonconvex facet objective (the penalized refit, the
+  `0 <= f(w) - f* <= G`. Failure mode: a nonconvex term objective (the penalized refit, the
   tangent refit) leaves a gap that certifies stationarity only.
 - **I9, inherited**: Cauchy-Schwarz, `|a.b| <= ||a||_2 ||b||_2` (Horn and Johnson). Used by L13 to
-  bound a facet-score change by the parameter change times `||(u_i, -1)||_2`, which gives the
+  bound a term-score change by the parameter change times `||(u_i, -1)||_2`, which gives the
   explicit stable radius. Failure mode: none for real vectors; the radius is sufficient, not tight.
 - **F12, fallback hypothesis** (`POSITED`, `fallback=True`, as F5 and F10): the minimum `m` of a
   finite family is a symbol with `x_j >= m` for all `j` and `x_{j0} = m` for some `j0`. Used by L12
@@ -104,9 +104,9 @@ by a lemma, so the every-axiom-is-used test covers them
   Failure mode: if `m` is only a lower bound, `G = g.w - m` is an upper bound on the gap.
 - **R2, regularity** (`REGULARITY`, an interpretive condition, not a defect): the assignment margin
   `gamma = min_i [s_{i,k(i)} - max_{k != k(i)} s_{ik}]` is positive, so every row has a unique
-  maximizing facet. Used by L13 and L14. Role: unique maximizing facets and an assignment-stable
+  maximizing term. Used by L13 and L14. Role: unique maximizing terms and an assignment-stable
   neighborhood, so Proposition 3 applies. Failure mode: ridge rows at `tau = infinity` and identical
-  facets give `gamma = 0`; Proposition 3 does not apply and the fit reports
+  terms give `gamma = 0`; Proposition 3 does not apply and the fit reports
   `stationary_without_margin`.
 
 R1's wording follows L3's full simplex KKT (`g_j >= lambda`, `w_j (g_j - lambda) = 0`): the
@@ -115,7 +115,7 @@ geometry does not imply an interior finite-`tau` minimizer.
 
 ## Levels 1, 2, 3 and the lemmas that carry them (WP13)
 
-The multi-facet fit states its guarantees at three levels; each has one lemma script and a
+The several-term fit states its guarantees at three levels; each has one lemma script and a
 termination field. The object each is about is named in the lemma's STATEMENT (the fitted
 reference surface at finite `tau`, the `tau = infinity` supporting envelope; the Pareto boundary is
 related only through L11).
@@ -123,8 +123,8 @@ related only through L11).
 | Level | Statement | Script | Ledger entries | Report field |
 |---|---|---|---|---|
 | 1. Descent | step B does not increase the mean slack `F(W)`; the monotone guard enforces it up to `GUARD_TOL` | L14 (the fixed-assignment expression `F(W) = sum_k (n_k/N) f_k(w_k)`), I7 (solver level) | I7, A2 | `history`, `status = guard_stop` |
-| 2. Numerical stationarity | each facet's gap `G_k = g.w - min_j g_j` is small: `0 <= f_k(w_k) - f_k* <= G_k`, zero iff the simplex KKT holds (L3); `tau = infinity`: the LP duality gap | L12 (Lemma 1) | A2, A3, I1, I8, F12 | `gaps`, `max_gap`, `sum_residual`, `offset_residual` against `EPS_KKT`, `EPS_FEAS` |
-| 3. Conditional local optimality | positive margin: every row's maximizing facet is unique and stable within the radius (L13, Lemma 2); with nonempty facets and exact facet optima the fit is a local minimizer of `F` (Proposition 3); with gaps, `F(W) - F*_fixed <= sum_k (n_k/N) G_k` (Corollary 4) | L13, L14 | F12, I9, R2, A2 | `gamma`, `radius`, `bound`, `status = certified` |
+| 2. Numerical stationarity | each term's gap `G_k = g.w - min_j g_j` is small: `0 <= f_k(w_k) - f_k* <= G_k`, zero iff the simplex KKT holds (L3); `tau = infinity`: the LP duality gap | L12 (Lemma 1) | A2, A3, I1, I8, F12 | `gaps`, `max_gap`, `sum_residual`, `offset_residual` against `EPS_KKT`, `EPS_FEAS` |
+| 3. Conditional local optimality | positive margin: every row's maximizing term is unique and stable within the radius (L13, Lemma 2); with nonempty cells and exact term optima the fit is a local minimizer of `F` (Proposition 3); with gaps, `F(W) - F*_fixed <= sum_k (n_k/N) G_k` (Corollary 4) | L13, L14 | F12, I9, R2, A2 | `gamma`, `radius`, `bound`, `status = certified` |
 
 Level 3 is for step B, unpenalized, with support offsets `beta_k = J_tau(U w_k)`; the tangent step
 and the penalty report `not_applicable`. Fallbacks follow the existing rule: a step that resists
