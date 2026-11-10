@@ -388,6 +388,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-10 | commit e89abee, CI run on ubuntu, three shards (WP24 push 2, the paper unit with G-17 narrowed and Appendix E regenerated, WP25-2 unit A) | fast, slow and docs-paper all green | a verdict: push 2 and the register fix are green on Linux; the two register tests pass |
 | 2026-11-10 | commit 7ee26be, tier 2 watcher, this Mac | 2191 passed, 16 skipped, 1 xfailed; all checks | a verdict: green on the Mac at the same work; both platforms green before WP24 push 3 |
 | 2026-11-10 | WP24 push 3's worktree at f6f0a93 (11 behind dev), the driver's own run while the PM was silent | ruff clean; fast suite 1743 passed, 1 failed: tests/test_docs.py::test_register_phrases_present, "term gap" absent from the docs pages (termination.md still says "facet gap" three times; the generated glossary table and the gaps table carry the word from push 4's sources) | a verdict: push 3 is coherent only with push 4; the two land together after a rebase, so dev never shows the red; push 3 is held in its worktree, not pushed by the driver |
+| 2026-11-10 | commit ee7704e, CI run on ubuntu, three shards (WP24 pushes 3 and 4: the rename complete) | fast, slow and docs-paper all green | a verdict: the rename head is green on Linux; the Mac watcher's run on it is next; the gate's container regression follows the close-out |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
