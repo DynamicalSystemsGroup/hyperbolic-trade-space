@@ -279,3 +279,8 @@ under the mandate; deferred 0; raised 0).
   accepted as one item (A1: "facet" stays only in the τ = ∞ polyhedral sense). Sequenced after WP23's regeneration
   and data gate so each surface is touched once. The supervisor reviews the result at his paper review.
 
+## Amendments by the driver (2026-11-10)
+
+- R-14's check counts the attribution trailers (`Co-Authored-By:` and a "Generated with" line), not the ordinary
+  words "generated" or "regenerated" in commit messages; the reviewer applies the trailer pattern, which is CI's.
+

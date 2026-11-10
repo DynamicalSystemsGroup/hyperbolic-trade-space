@@ -205,3 +205,9 @@ Approved or changed as one item at the scope gate. Each is marked *(default)* wh
 
 The driver decides OD1 under the mandate (it touches the paper's citations, so the paper stream carries any change);
 the rest is the Agent's defaults as one item.
+
+## Gate outcomes
+
+- 2026-11-10, 07:00: approved for execution by the driver under the mandate; the open decision on the cited spike
+  files resolved in `WP25-decisions.md` (README and generator kept, outputs deleted, citations re-pointed first).
+
