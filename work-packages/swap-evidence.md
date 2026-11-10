@@ -1500,3 +1500,58 @@ change with the paper's move (WP16 order step (4)); `examples/adcs/figures/k3_*.
 
 Already updated at the gate: the model's two views (`fig-assembly-view.png`, `fig-behavioural-view.png`
 at revision 5, byte copies), the coverage table, the change register and the v1-v2 comparison report.
+
+### 5. The paper's move onto the data of record
+
+Written by the paper stream at `dev` ea46637 (code, prose) and its regeneration in `hts-paper`
+`f7b7585c7c58` (`paper/container/RECORD.md`, "Regeneration of the paper on the data of record"). The paper
+reads `data/v2/` directly (`CUBESAT.data_dir`, `k_terms.DATA`); the four frozen files under `data/` are
+untouched, because a byte copy over them made `experiments verify` report four drifts on the adopted entries
+(the contract's `case.data_dir` still names `data/`: an amendment for the contract's owner). The `CUBESAT` spec has nine attributes, the four-metric view
+(settling time, pointing error, control effort, total mass) and three association pairs. **The per-term
+mechanism (item 2):** the guard of the library's `tension_report` is bypassed at the call
+(`min_near_frontier=0`) and reapplied per term at ten in `case.py` (`case.term_reports`, with `has_reading`
+and `thin_reason`); every term is reported from the estimator (exponents, cell, share, contending set), and
+a term with fewer than ten near-frontier rows (term 2 of the primary K = 3 fit, 3 at the K = 1 band) has no
+association map: its panel of `fig-tensions-k3` and of `k3_tensions_primary.png` carries "too few
+near-frontier designs for an association reading: 3 of ten", and Appendix D.3 states it under the per-term
+table. The association readings at K = 1 still refuse a thin term. `k_terms.run_regime` and the D-6
+analysis use the same helper.
+
+Every cell whose source or output changed (`paper.ipynb` P, `supporting_material.ipynb` S), with its cause:
+an item of the changed conclusions above (1 to 7), "column change" (the slew time out), "regeneration" (the
+regenerated values), or "prose follows" (a sentence written to the new figure or number).
+
+| cell | what changed | cause |
+|---|---|---|
+| P `num-nondominated` | 659 on 9, 126 on 4; the two-attribute view gone; no count moves under the jitter, so the sentence says what a range would be | 5 |
+| P `num-margin` | margin 0.00121, radius 9.94e-05 to 9.95e-05, band 0.0088, median 0.237 | 3 |
+| P `num-attributes`, `num-datasets` | nine attributes | column change |
+| P `fig-assembly-caption` | the claim that the view draws ranges dropped (they are in C.1); "Shows" says levels | prose follows (revision 6 view) |
+| P `fig-behavioural-caption` | the dashed clause gone (every traded metric is read by a requirement); sources as the revision 6 view draws them | prose follows |
+| P `fig-tau-sweep` (image), `-caption`, `-lines` | nine rows; Redraw 2's caption and lines, "insensitivity to tau" struck | column change; prose follows (WP19 Redraw 2) |
+| P `num-temperature` | n_eff 23.1, fraction 0.092 | 5 |
+| P `num-k1` | the 5-lemma, exponents 0.14 to 0.36 | 1 |
+| P `fig-planes-k1-caption`, `-lines`, `fig-planes-k1.png` | the pair is total mass and energy balance; seven other metrics | 1; prose follows |
+| P `fig-planes-k3-caption`, `fig-planes-k3.png` | slices total mass/energy balance, settling time/control effort, pointing error/peak slew power; the bottom-panel sentence (tracker-grade columns, six bands, the large wheel's cloud) | 3; prose follows |
+| P `fig-chart-level-caption`, `fig-chart-level.png` | eight position coordinates (the axis label computes it) | column change |
+| P `fig-tensions-k3` (image), `-caption`, `-lines` | three panels, term 2 replaced by its reason; caption says so | 2 (the per-term rule) |
+| P `num-k-sweep` | mean slack 0.243, 0.182, 0.146 at 38, 94, 113; fixed 0.13, 0.09; sets of 5, 4, 5; control effort and peak slew power, absent at K = 1, each lead a term (the sharper content of the blend claim, C034, which stands) | 3; 2 |
+| P `fig-regimes` (image), `num-regimes` | 5-lemma and 5-lemma sharing depth of discharge, pointing error, settling time; three pairs | 1; 6; column change |
+| P `num-candidates` | log V -0.197 to -0.153 | 5 |
+| P `sec-case-analysis-5` | the radius rule for both views (0.6222 here, 0.351 on the old view where 0.35 was typed) | 4 |
+| P `num-predict` | band 0.0935, position 1 of 3, errors 0.5 to 1.1 bands | 4 |
+| P `num-predict-reading` | two proposals one configuration; position 1 of 3; all three fail the depth-of-discharge requirement, with the reason | 4 |
+| S `app-C-job`, `app-D-job` | nine attributes; the jitter is in the design variables | column change; prose follows |
+| S `tab-C-evaluation`, `tab-C-attribute_sources`, `tab-C-conditioning`, `tab-C-metric_table` | nine rows or columns | column change |
+| S `tab-C-datasets` | the files are `data/v2/`; ledger entries v2-primary@5, v2-baseline@5 found by hash, their run command, new hashes | regeneration |
+| S `tab-D-temperature_selection`, `tab-D-k_diagnostics`, `tab-D-termination_records`, `tab-D-margin_reading`, `tab-D-mean_slack_fixed`, `tab-D-conditioning_diagnostic` | new temperatures, slack, shares, residues, conditioning | 1; 3; 5 |
+| S `tab-D-exponents_and_facets` | nine-row exponent tables; the per-term table for all three terms with term 2's sentence | 3; 2 |
+| S `tab-D-regime_comparison` | three pairs; the new sets and associations | 6; column change |
+| S `tab-D-sensitivity_variants`, `tab-D-refits_by_category`, `tab-D-candidate_designs`, `tab-D-nondominated`, `tab-D-propose_predict_check`, `tab-D-pca_chain` | new values; one view | 5; 4; column change |
+| S `tab-D-stability` | the D-6 record rerun on the new model (693 quantities, 80 move at the printed precision, every conclusion identical); the head says what moves now and that the regenerations ran on the Mac | regeneration |
+| S `tab-E-gaps` | G-2 and G-17 rows written to the nine-metric facts | column change; regeneration |
+| S `tab-F-toolchain`, `tab-F-reproduction` | the commit and platform of the build; the case's files read from `data/v2/` | regeneration |
+
+Unchanged as D-9 item 7 says: `num-certificates`, `num-recovery` (no stderr, no warning since 18d0064) and
+`tab-D-planted_recovery`, `tab-C-feasibility`, `tab-C-configuration_space`.

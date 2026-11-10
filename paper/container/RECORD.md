@@ -229,6 +229,42 @@ carry them. The frozen files under `examples/adcs/data/` are untouched. The pape
 not regenerated here (WP16 order step (4) and WP19 follow the gate); the tests that compare the
 paper's committed outputs to the data are reported in the unit's report, not changed.
 
+## Regeneration of the paper on the data of record (2026-11-10, head ea46637)
+
+The paper moved onto the data of record (WP16 order step (4), after WP23's swap): the case module reads
+`examples/adcs/data/v2/` (ledger entries @5) directly, the four frozen files under `examples/adcs/data/`
+staying byte-identical (overwriting them broke the ledger's verification of the adopted entries); the case
+spec lost the slew time (nine attributes, one view, three association pairs), and the paper's generators
+read the K = 3 per-term report by `case.term_reports`: the library's guard of ten near-frontier rows is
+bypassed at the `tension_report` call (`min_near_frontier=0`) and reapplied per term at ten in `case.py`
+(`has_reading`, `thin_reason`), so a thin term keeps its fitted row and loses only its association map.
+
+Steps, each `--network none`, in `hts-*` containers only: `sh paper/container/build.sh` at ea46637 (54 s,
+cached layers), image `hts-paper` **`f7b7585c7c58`**
+(`sha256:f7b7585c7c585e50de8b51d23706251b7fa0a09ed818d8d4bd5673ea8d0e6590`), the previous image
+removed in the same step (`3c7cfc8a2e27`, the gate's; and `ca6e52eddb20`, built at an earlier local head of
+this unit that overwrote the frozen files, whose run was discarded); `docker create --name hts-paper-exec --network none hts-paper sh
+/tmp/run.sh`, the script copied in, `docker start -a`; the outputs copied out with `docker cp`;
+`hts-paper-exec` removed by name.
+
+| command (inside `hts-paper`, `HTS_ENVIRONMENT_OF_RECORD=1`) | wall time | result |
+|---|---|---|
+| `uv run python paper/paper_common.py` | 3 s | `environment_reference.npz` and `environment_values.toml` unchanged |
+| `uv run python paper/execute_notebooks.py` | 117 s | both notebooks; every case number equal to the Mac run's at the printed precision |
+| `sh paper/container/build-paper.sh` | 5 s | the site built (three favicon 404 lines from the builder's server, no error) |
+| `uv run python scripts/build_figures.py` | 99 s | `fig-planes-k1`, `fig-planes-k3`, `fig-chart-level`, `fig-nlemma` (bytes only) rewritten; the two model views unchanged |
+| `uv run python examples/adcs/k_terms.py` | 58 s | `examples/adcs/figures/k3_*.png`; the primary K = 3 tension panel of term 2 states its reason (3 of ten) |
+| `uv run pytest -q -n 4` on the paper's test files (`test_paper`, `test_case`, `test_k_terms_case`, `test_notebook`, `test_paper_sources`, `test_paper_static_figures`, `test_narrative`, `test_claims_register`, `test_sensitivity`, `test_gaps`, and `test_experiments`, `test_v2_data`, `test_interface_contract` for the untouched frozen files and the ledger) | 200 s | 465 passed, 4 skipped |
+
+What changed against the committed values is the data's change, read at the gate: the comparison of old and
+new (D-9, `work-packages/swap-evidence.md`, the gate section) separates the column change from the
+regenerated data, and its part 5 lists each cell of the paper that moved with its cause. The jitter record
+`examples/adcs/experiments/reports/sensitivity.json` (D-6) was rewritten on the Mac from five regenerations
+on the WP23 model (19 min): every listed conclusion is identical, the settling time moves by at most 1e-6 s,
+and the ranges also hold the difference between the Mac and the environment of record. The recovery cells
+(`num-recovery`, `tab-D-planted_recovery`) carry no stderr stream and no warning (18d0064); their sentence is
+unchanged. The environment of record is now `f7b7585c7c58`.
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes
