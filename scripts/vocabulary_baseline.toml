@@ -32,13 +32,6 @@ reason = "found at the first run of the tool; triage per vocabulary-review.md (f
 [[violation]]
 kind = "first-use"
 file = "paper/paper.ipynb"
-phrase = "invariant value"
-owner = "WP10 paper stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
-
-[[violation]]
-kind = "first-use"
-file = "paper/paper.ipynb"
 phrase = "level offset"
 owner = "WP10 paper stream"
 reason = "found at the first run of the tool; triage per vocabulary-review.md (first-use)"
@@ -208,13 +201,6 @@ reason = "found at the first run of the tool; triage per vocabulary-review.md (s
 kind = "stem"
 file = "docs/user-guide/termination.md"
 phrase = "infinite temperature"
-owner = "WP8a docsite stream"
-reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
-
-[[violation]]
-kind = "stem"
-file = "docs/user-guide/termination.md"
-phrase = "largest gap"
 owner = "WP8a docsite stream"
 reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
 
@@ -680,3 +666,16 @@ phrase = "return temperature"
 owner = "package docstrings"
 reason = "found at the first run of the tool; triage per vocabulary-review.md (stem)"
 
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "fitted envelope"
+owner = "P1"
+reason = "G-18 ledger text (WP21 D-8), regenerated into Appendix E; no glossary term replaces it"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "loss envelope"
+owner = "P1"
+reason = "G-18 ledger text (WP21 D-8), regenerated into Appendix E; no glossary term replaces it"

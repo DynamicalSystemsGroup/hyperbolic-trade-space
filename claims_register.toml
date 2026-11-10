@@ -4827,3 +4827,21 @@ status = "backed"
 disposition = "keep"
 source = "WP21 D-4 to D-7 (docs)"
 note = "Responsibility statement for the downstream inversion; see the prediction page."
+
+[[claim]]
+id = "C386"
+fragment = "Term aggregation: sum by default, or mean; the formula is the sum."
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "S"
+backing = [
+  "file:work-packages/interface-contract.md",
+  "test:tests/test_interface_contract.py::test_r1_term_aggregation_keyword_pinned",
+  "test:tests/test_estimator.py::test_term_aggregation_default_and_params_roundtrip",
+  "test:tests/test_estimator.py::test_term_aggregation_mean_shifts_score_by_log_k_over_kappa",
+  "lemma:L10.20",
+]
+status = "backed"
+disposition = "keep"
+source = "WP21 D-1, cleanup unit"
+note = "Definition 3. Interface contract version 9: the keyword term_aggregation takes sum (default) or mean, stored verbatim and validated in fit; the formula in the definition is the sum, the mean subtracts log K / kappa (L10.20)."
