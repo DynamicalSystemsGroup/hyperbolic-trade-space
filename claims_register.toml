@@ -4845,3 +4845,67 @@ status = "backed"
 disposition = "keep"
 source = "WP21 D-1, cleanup unit"
 note = "Definition 3. Interface contract version 9: the keyword term_aggregation takes sum (default) or mean, stored verbatim and validated in fit; the formula in the definition is the sum, the mean subtracts log K / kappa (L10.20)."
+
+[[claim]]
+id = "C387"
+fragment = "The lemma scripts are a substitute for pencil-and-paper derivation, not formal verification"
+file = "paper/supporting_material.ipynb"
+anchor = "Appendix B. Proofs, step for step with their scripts"
+kind = "S"
+backing = [
+  "func:derivation/run.py::run_chain",
+  "test:tests/test_derivation.py::test_no_phantom_axioms",
+  "test:tests/test_paper.py::test_appendix_b_lines_resolve_to_the_scripts_text",
+  "file:docs/superpowers/notes/proof-conventions.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10-decisions, the position on the proof scripts (2026-11-09)"
+note = "what the scripts are: plain SymPy run as a chain (run_chain), each step a tagged line the appendix resolves to; proof-conventions.md 'What the lemma scripts are' fixes the words: machine-checked, never formally verified"
+
+[[claim]]
+id = "C388"
+fragment = "each step is one line of symbolic algebra that the reader can run against its sentence"
+file = "paper/supporting_material.ipynb"
+anchor = "Appendix B. Proofs, step for step with their scripts"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_every_step_tag_of_the_record_appears_once_in_a_proof_and_none_is_empty",
+  "test:tests/test_paper.py::test_appendix_b_lines_resolve_to_the_scripts_text",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10-decisions, the position on the proof scripts (2026-11-09)"
+note = "every tagged step of the record appears once in a proof with its sentence, and each line the appendix prints is the script's text"
+
+[[claim]]
+id = "C389"
+fragment = "The formal prover in this work is the Z3 solver behind the requirement checks of the case's system model"
+file = "paper/supporting_material.ipynb"
+anchor = "Appendix B. Proofs, step for step with their scripts"
+kind = "S"
+backing = [
+  "func:examples/adcs/experiments/toolkit.py::verify_solve",
+  "func:examples/adcs/experiments/exclusion.py::solver_available",
+  "test:tests/test_model_checking_v2.py::test_claim_holds_with_recorded_evidence",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10-decisions, the position on the proof scripts (2026-11-09)"
+note = "verify --solve runs the system model's requirement checks through the solve engine (z3 on PATH, from the case group); the recorded claims hold under it; no other prover is imported"
+
+[[claim]]
+id = "C390"
+fragment = "The lemma scripts replace pencil-and-paper derivation, not formal verification"
+file = "docs/user-guide/limitations.md"
+anchor = "Limitations"
+kind = "S"
+backing = [
+  "func:derivation/run.py::run_chain",
+  "test:tests/test_derivation.py::test_no_phantom_axioms",
+  "file:docs/superpowers/notes/proof-conventions.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP10-decisions, the position on the proof scripts (2026-11-09)"
+note = "the docs' one sentence on the position, pointing to Appendix B of the paper (C387)"

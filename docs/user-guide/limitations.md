@@ -32,9 +32,8 @@ no sampling error.
 a recognizable dilemma is for you. A tension is a binding constraint, not a correlation, and
 negative association near the surface is partly a closure effect.
 
-**Local fits.** A multi-term fit is a local optimum chosen among seeded restarts. On 20 planted seeds
-($K = 3$, $d = 4$, $N = 400$) it recovers the planted facets in 16 or 17; failures are facets with
-five or six frontier rows. More restarts do not cure this; a larger sample can help.
+**Local fits.** A multi-term fit is a local optimum chosen among seeded restarts. A facet with few
+frontier rows can be missed; more restarts do not cure this, a larger sample can help.
 
 **Novelty is not preference.** V - 1 says how far a design lies beyond the fitted reference surface, not that
 it is wanted, feasible or safe.
@@ -46,4 +45,6 @@ space, and inverting a level into a bounded outcome is yours ([Predicting](predi
 metric does. It is unrelated to PCA in hyperbolic space [@chami2021horopca].
 
 Machine checks confirm that formulas follow from stated conditions and that the code agrees with
-them. Whether the conditions suit your problem is for you to judge.
+them. Whether the conditions suit your problem is for you to judge. The lemma scripts replace
+pencil-and-paper derivation, not formal verification; [Appendix B of the paper](../../../paper/) states
+what they do and do not establish.

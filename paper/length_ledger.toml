@@ -31,6 +31,9 @@ total = 5900
 "Future work and final remark" = 170
 "Acknowledgments and process" = 73
 "Works cited" = 3
+# The supporting material is outside the count (words_by_section reads the paper only); the entry
+# below admits rows that record what is added to Appendix B and why.
+"Appendix B" = 0
 
 # Rows: the tickets of 2026-11-09 on sections 4 and 6 (the supervisor's, WP10-decisions.md).
 # Each row: date, section, words_added, job, reader.
@@ -512,3 +515,12 @@ section = "Case analysis"
 words_added = 28
 job = "the K = 3 association and regimes captions name each heatmap as an analysis of the designs assigned to a facet (its cell) and not of the model (WP19 principle check, Figures 5 and 6)"
 reader = "the reader who took the association cells for the model's structure"
+
+# Row: WP10-decisions.md, "The position on the proof scripts, stated in Appendix B" (2026-11-09).
+
+[[raise]]
+date = "2026-11-09"
+section = "Appendix B"
+words_added = 132
+job = "states what the lemma scripts do and do not establish: a substitute for pencil-and-paper derivation between free-form proof and a proof assistant, each step a line the reader can run, and not formal verification, which is said only of the Z3 checks of the case's system model"
+reader = "the reader of Appendix B deciding what a checked step buys"
