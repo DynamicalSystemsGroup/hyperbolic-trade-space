@@ -33,7 +33,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP18 R-5"
-note = "A numbered marker is a term's exponent vector, where that term's V is largest for a fixed total; V also depends on the total. The plot_ternary doctest and Notes; spike-ternary report, Correction (2026-11-09): the largest log V of any design is 0.071, and the labels above V = 1 were V relative to the average mix."
+note = "A numbered marker is a term's exponent vector, where that term's V is largest for a fixed total; V also depends on the total. The plot_ternary doctest and Notes state the identity; the two ternary tests pin it."
 
 [[claim]]
 id = "C002"
