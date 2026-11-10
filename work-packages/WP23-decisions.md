@@ -24,3 +24,23 @@ Adding metrics is a problem change; proposing them is the loop's work.
 
 Approved as one item, with `launch_cost` struck (OD2) and `SlewBandRequirement` folding with `SlewTimeRequirement`
 into `SettledRequirement` as drafted.
+
+## OD3 to OD6, the four thresholds (2026-11-09, 21:10)
+
+**Driver's question (popup):** who sets the thresholds for pointing error, control effort, peak slew power and total
+mass (with launch cost as its MoE)? Options: Loop proposes, you approve / I give values now / MoEs, no bounds.
+**Supervisor (mzargham), verbatim:** "Loop proposes, you approve".
+
+**Disposition.** The modeller loop proposes an illustrative threshold for each of the four from the baseline
+configuration (the baseline's value with a stated margin, or a stated rationale), labelled illustrative like the
+model's other constants; the four values go to the supervisor at the data gate, one popup, before the swap; the
+requirements are built on the proposed values during the loop so the views and the coverage table are complete, and
+re-pinned to his values if he changes them.
+
+## Scope gate (2026-11-09, 21:10)
+
+No open decision remains (OD1 to OD8 above; OD9 is not a decision: his direction of 2026-11-09 covers conclusion
+changes from dropping slew time, "expect changes of this order", so the gate lists and explains moves). **Approved
+for execution by the driver under the mandate**, with the draft amended to these decisions (no `launch_cost`
+column; launch cost the MoE on mass with a launch-budget requirement; thresholds proposed by the loop and approved
+by the supervisor at the gate). The supervisor accepts the delivery at the data gate.

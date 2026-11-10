@@ -229,3 +229,11 @@ Good enough is met, **no open item remains unresolved**, and the supervisor has 
 - **OD7. Metrics beyond the ten less slew time plus launch cost.** Options: none beyond them / he names them / the loop
   proposes candidates the model already computes, each added only on his decision at the gate.
 - **OD8. The Agent's defaults list**, approved or changed as one item.
+
+## Gate outcomes
+
+- 2026-11-09, 21:10: approved for execution by the driver under the mandate; every open decision resolved in
+  `WP23-decisions.md` (the supervisor's answers verbatim: launch cost is the MoE on mass with no new column;
+  thresholds proposed by the loop, approved by him at the data gate; OD7 and OD8 the driver's). The draft is amended
+  to those decisions in the first execution commit. The supervisor accepts at the data gate.
+
