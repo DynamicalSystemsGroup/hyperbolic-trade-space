@@ -170,3 +170,58 @@ frozen data untouched until the gate):
   (R-2), every label is legible at 700 px and nothing overlaps; the assembly view is the adopted
   model's (the configuration space is unchanged). The views stay out of `examples/adcs/model_v2/views/`
   until the gate.
+
+## R-5's check, amended
+
+The closed-form calcs of section 4, `TorqueLimitedSlewTime`, `LinearSlewTime`, `SlewTimeEstimate` and
+`IsTorqueLimited`, stay in the scenario section as the model-checking evidence of WP15: they estimate
+the time the slew takes to enter the band, a physical quantity of the scenario, not a traded metric, a
+measurement or a requirement, and the comparison code reads them by name. R-5's grep for `SlewTime` is
+therefore read over the measurement (`SlewMeasurement`), the requirements (section 5) and the
+experiment's outputs (`SlewExperiment`), where it finds nothing (`test_r2_slew_time_has_left_the_
+measurement_and_the_requirements`), and not over section 4. The PM has recorded this reading for the
+driver.
+
+## Glossary entries (unit 3): drafted, held
+
+Three entries were drafted for `glossary.yaml` in the file's own style (`moe`, `mop`, `launch-cost`;
+the text below) and withdrawn before commit: the vocabulary tool reads the paper notebooks, `docs/*.md`,
+`docs/user-guide/*.md`, `site/index.html`, `README.md` and the `src/` docstrings, and none of those
+uses the three terms yet (the case prose of `examples/adcs/case-model.md`, D-7, is not in the tool's
+corpus), so each entry is a `dead-entry` violation and `tests/test_vocabulary.py`'s repository guard
+goes red. The entries go in with the first prose use in the corpus (the paper's case section after the
+gate, or a docs page), or with a baseline row owned by WP23 if the PM prefers them in now; the tool
+also reports two violations already on `dev` before this round (`src/hyperbolic_trade_space/plotting.py`,
+"fitted surface", an `avoid` and a `stem`; commit 3d6d48a), not this package's.
+
+```yaml
+  - id: 'moe'
+    term: 'MoE'
+    short: 'Measure of effectiveness: a measure of how well a system serves its purpose that a stakeholder states without knowing the design; here the pointing error and the launch cost.'
+    register: 'MoE'
+    formal: 'a metric a stakeholder states on the system in use, independent of the design'
+    not: 'an MoP, which measures the system''s performance under the engineer''s scenario'
+    defined_in: 'cubesat_r2.sysml (the mark in the doc of the metric''s element); WP23-review.md'
+    aliases:
+      - 'MoEs'
+      - 'measure of effectiveness'
+
+  - id: 'mop'
+    term: 'MoP'
+    short: 'Measure of performance: a measure of a system''s performance under the scenario the engineer states; here the settling time, the total mass, the control effort, the power margin, the energy balance, the eclipse reserve, the peak slew power, the depth of discharge.'
+    register: 'MoP'
+    formal: 'a metric of the system''s performance under a stated scenario'
+    not: 'an MoE, which a stakeholder states without knowing the design'
+    defined_in: 'cubesat_r2.sysml (the mark in the doc of the metric''s element); WP23-review.md'
+    aliases:
+      - 'MoPs'
+      - 'measure of performance'
+
+  - id: 'launch-cost'
+    term: 'launch cost'
+    short: 'The launch rate, an illustrative USD per kilogram, times the total mass; the MoE the model ties to the total mass, read by the launch-budget requirement; not a traded metric and not a dataset column.'
+    register: 'launch cost'
+    formal: 'rate times total mass, increasing in mass'
+    not: 'a traded metric or a dataset column; a cited launch price'
+    defined_in: 'cubesat_r2.sysml (calc def LaunchCost, LaunchBudgetRequirement); WP23-decisions.md OD1, OD2'
+```
