@@ -108,3 +108,80 @@ fitted attributes, are read off the accepted steps of the adaptive integration a
 - **Tolerances.** `torque_saturated_frac`: absolute 0.01, no relative term, in every test that
   compares it. The two time columns keep their absolute allowance until D-6 gives the evidence to
   set it.
+
+## Amendment 2 (2026-11-09, drafted by the PM for the driver's approval)
+
+Status: DRAFT; approved only by the driver's recorded approval in `WP16-decisions.md`. Nothing below is executed before then.
+
+**Why.** Amendment 1's spike (`work-packages/swap-evidence.md`, "Sensitivity of the conclusions to the
+step-quantized times") found `settling_time_s` and `slew_time_s` read off the accepted steps of the RK45
+integration (`adcs_sim.simulate_adcs`; `_last_outside` and `_first_inside` in
+`experiments/cubesat_oracle.py`): under a relative 1e-12 jitter they move by up to 0.49 s, and design 763's
+slew time jumps from 33.44 s to 12.53 s where its error trajectory grazes the band. The supervisor, verbatim:
+"event detection and regenerate. i also want to note that i do expect changes of this order of complexity due
+to the sysmlv2 model refactor. there may be others. focus on ensuring the integrity of the process so we can
+justify or bound our claims relative to the methods and data we have." The driver's disposition (same record)
+fixes the order and the item-by-item check below.
+
+**New goals.**
+
+- G6. The simulator reads the two crossing times by event detection (scipy `solve_ivp` events on the
+  attitude error minus the threshold, located on the dense interpolant: slew time the first entry into the
+  band, settling time the last exit above the settling fraction) *(mechanism: default)*, reproducible to rounding.
+- G7. The datasets, the K = 1, 2, 3 record, the check designs and the paper's numbers regenerated on the new
+  model (WP22's `cubesat_r1.sysml`) inside the container of record (`hts-paper`), after the WP22 gate records
+  the model swap.
+- G8. The comparison report at the data gate lists every change with size and cause, and checks the
+  conclusions item by item (contending sets, leading metrics, signs of tensions, selected temperatures,
+  certificates, check outcomes, counts, feasibility flags); R-4's stop condition applies. G4 is unchanged:
+  the frozen generation stays the cited comparison.
+
+**Order** (the driver's disposition: "WP22's model with the event-detection change in the simulator, the
+ledger's new version; then the v2 regeneration; then the gate and the swap; then the paper's regeneration in
+the container"): (1) event detection in the simulator and a new ledger version on the WP22 model; (2) the v2
+regeneration; (3) the data gate and the swap; (4) the paper's regeneration in the container.
+
+| ID | Deliverable | Serves |
+|---|---|---|
+| D-7 | Event-detected times in `adcs_sim.py` and the oracle's read-off, with their tests | G6 |
+| D-8 | New ledger entries (`@n+1`, not dirty, naming commit, platform, image id) and `examples/adcs/data/v2/*` regenerated in `hts-paper`; the K = 1, 2, 3 record (`k_terms.py`), check designs and container record (`paper/container/RECORD.md`, `tests/data/v2_first_designs_of_record.csv`) | G7 |
+| D-9 | The comparison report, generated into `swap-evidence.md` (new section), and the gate decision in `WP16-decisions.md` | G8 |
+
+| ID | Requirement | Checked by |
+|---|---|---|
+| R-8 | Event-detected times are continuous where the step-read ones jumped: design 763 under the five seeds of D-6 moves by rounding only | a test on design 763 |
+| R-9 | Under the 1e-12 perturbation of D-6, both times move by at most rounding (relative 1e-9 *(default)*) on the six check designs | a perturbation test |
+| R-10 | The ledger carries the new version; the container record names the image id; no entry dirty | the ledger test; `RECORD.md` |
+| R-11 | The report lists every change with size and cause and each conclusion of G8 as identical or changed | generated; the driver's inspection |
+| R-12 | The mutation check (D-1, `tests/test_mutation_v2.py`) passes on the new model | the test |
+
+**Non-goals.** No change to the physics other than how the crossing time is read (the saturation fraction
+stays step-based with its 0.01 tolerance); no change to sampling, seeds or scenario constants; no edit to the
+accepted records of WP7, WP9, WP13; nothing moves before the WP22 gate decision is recorded.
+
+**Dependencies.** The WP22 gate (model swap recorded); the container of record `hts-paper`
+(`paper/container/README.md`); Docker limits: `hts-*` names only, nothing under `~/.colima` or `~/.docker`, no
+`--platform linux/amd64`.
+
+**Good enough.** D-7 to D-9 delivered; R-8 to R-12 and R-6 pass; the swap made if R-4 is not met, held and
+taken to the supervisor with the record if it is.
+
+**Blast radius.** `examples/adcs/adcs_sim.py`, `examples/adcs/experiments/cubesat_oracle.py`, their tests
+(`tests/test_cubesat_oracle.py`, `tests/test_cubesat_model.py`, a new event-detection test), the ledger module
+and `ledger.jsonl`, `examples/adcs/data/v2/*`, `k_terms.py` and the check-design generators, the paper's
+generators (`paper/generate_results.py` and the ones that read the data), `RECORD.md`, the record test data,
+`swap-evidence.md`; Appendix C and F text only through the paper stream.
+
+**Agent's defaults.** The event mechanism above; the rounding bound of R-9; the report as a new section of
+`swap-evidence.md`; the new ledger ids follow `ledger.rerun` (`<id>@<n>`).
+
+**Open decisions (for the driver).**
+
+- **OD-A.** Event detection removes the sub-step part but not the grazing (a trajectory touching the band
+  within rounding still flips the first entry). Is the grazing discontinuity reported as the remaining part of
+  gap G-17 in the abstraction-gaps ledger, as the driver began — options: yes, G-17 narrowed to the grazing
+  case with the new measurement / no, the definition of slew time changes (for instance a hold time) and
+  that is taken to the supervisor.
+- **OD-B.** The frozen datasets' tie test (R-5) can no longer hold within 0.5 s in the two time columns
+  (design 763 alone differs by about 20 s) — options: a tolerance set from the regenerated evidence / the tie
+  states "differs in the two time columns, listed" and asserts equality elsewhere.
