@@ -43,7 +43,7 @@ from experiments.exclusion import (
     wheel_region,
 )
 from opensysml.values import Quantity
-from test_system_model_v2 import ATTRIBUTES, MODEL, TEXT, V2, P, _measure_slew, _rel
+from test_system_model_v2 import ATTRIBUTES, MODEL, MODELS, V2, P, _measure_slew, _rel
 
 ADCS_DIR = MODEL.parents[1]
 FAST = {"t_end": 600.0, "max_step": 1.0}
@@ -85,10 +85,12 @@ def with_members(text: str, members: str) -> str:
 # ---------------------------------------------------------------------------------------------
 # fixtures (named failures, never skips)
 # ---------------------------------------------------------------------------------------------
-@pytest.fixture(scope="module")
-def v2():
+@pytest.fixture(scope="module", params=list(MODELS))
+def v2(request):
+    """Each v2 model in turn (the adopted model and WP23's revision beside it, ``MODELS``)."""
+    path, text = MODELS[request.param]
     try:
-        return V2(TEXT)
+        return V2(text, request.param, path)
     except cm.OpenSysMLUnavailable as exc:
         pytest.fail(f"the opensysml client could not start: {exc}", pytrace=False)
 
@@ -180,6 +182,57 @@ METRIC_REQUIREMENTS = {
     "PowerMarginRequirement",
     "EnergyBalanceRequirement",
 }
+# WP23 D-1 (`cubesat_r2.sysml`): the slew-time and slew-band requirements fold into
+# SettledRequirement, and the four metrics that had none get one (pointing error, control effort,
+# peak slew power, the total mass through the launch cost), each satisfied by the baseline and
+# verified in the case that can decide it (before or after the slew is measured).
+R2_METRIC_REQUIREMENTS = {
+    "EclipseReserveRequirement",
+    "PowerMarginRequirement",
+    "EnergyBalanceRequirement",
+    "PointingErrorRequirement",
+    "ControlEffortRequirement",
+    "PeakSlewPowerRequirement",
+    "LaunchBudgetRequirement",
+}
+_FLAG_DEFS = set(fz.FLAG_REQUIREMENTS.values())
+REQUIREMENTS = {
+    "adopted": {
+        "defs": _FLAG_DEFS | {fz.SLEW_BAND_REQUIREMENT} | METRIC_REQUIREMENTS,
+        "satisfy": 9,
+        "verified": {
+            "ConfigurationVerification": {"PowerRequirement"},
+            "SlewVerification": {
+                "SettledRequirement",
+                "MomentumRequirement",
+                "DepthOfDischargeRequirement",
+                "SlewBandRequirement",
+                *METRIC_REQUIREMENTS,
+            },
+        },
+    },
+    "r2": {
+        "defs": _FLAG_DEFS | R2_METRIC_REQUIREMENTS,
+        "satisfy": 11,
+        "verified": {
+            "ConfigurationVerification": {
+                "PowerRequirement",
+                "PointingErrorRequirement",
+                "LaunchBudgetRequirement",
+            },
+            "SlewVerification": {
+                "SettledRequirement",
+                "MomentumRequirement",
+                "DepthOfDischargeRequirement",
+                "EclipseReserveRequirement",
+                "PowerMarginRequirement",
+                "EnergyBalanceRequirement",
+                "ControlEffortRequirement",
+                "PeakSlewPowerRequirement",
+            },
+        },
+    },
+}
 
 
 def _kinds(model, kind):
@@ -190,13 +243,12 @@ def _kinds(model, kind):
 
 
 def test_requirements_are_declared_one_per_flag(v2):
-    """R-3/R-4: the four flags are named requirement definitions; a fifth qualifies the slew time.
-
-    The other four bound the metrics WP22 covers (none of them is a flag).
-    """
+    """R-3/R-4: the four flags are named requirement definitions; the others bound the traded
+    metrics (none of them is a flag): WP22's four with the slew-band requirement in the adopted
+    model, WP23's seven in the revision (``REQUIREMENTS``)."""
     defs = set(_kinds(v2.model, "RequirementDefinition"))
     assert set(fz.FLAG_REQUIREMENTS.values()) <= defs
-    assert defs == {*fz.FLAG_REQUIREMENTS.values(), fz.SLEW_BAND_REQUIREMENT, *METRIC_REQUIREMENTS}
+    assert defs == REQUIREMENTS[v2.name]["defs"]
 
 
 def test_verification_defs_name_the_requirements_they_verify(v2):
@@ -208,23 +260,16 @@ def test_verification_defs_name_the_requirements_they_verify(v2):
             if q.properties.get("@type") == "SatisfyRequirementUsage":
                 found.add(q.properties["type"].split("::")[-1])
         verified[name] = found
-    assert verified == {
-        "ConfigurationVerification": {"PowerRequirement"},
-        "SlewVerification": {
-            "SettledRequirement",
-            "MomentumRequirement",
-            "DepthOfDischargeRequirement",
-            "SlewBandRequirement",
-            *METRIC_REQUIREMENTS,
-        },
-    }
+    assert verified == REQUIREMENTS[v2.name]["verified"]
     assert set(fz.FLAG_REQUIREMENTS.values()) <= set().union(*verified.values())
+    assert set().union(*verified.values()) == REQUIREMENTS[v2.name]["defs"]
 
 
 def test_satisfy_statements_hold_on_the_baseline(v2):
-    """R-4: nine `satisfy` statements tie the requirements to the baseline; all hold (engine run)."""
+    """R-4: one `satisfy` statement per requirement ties it to the baseline (nine in the adopted
+    model, eleven in the revision); all hold (engine run)."""
     verdicts = v2.model.verify_satisfaction()
-    assert len(verdicts) == 9
+    assert len(verdicts) == REQUIREMENTS[v2.name]["satisfy"] == len(REQUIREMENTS[v2.name]["defs"])
     assert all(v.holds and v.status == "holds" for v in verdicts)
     assert {v.engine for v in verdicts} == {"run"}
     assert {v.strength for v in verdicts} == {"observed"}
@@ -232,7 +277,7 @@ def test_satisfy_statements_hold_on_the_baseline(v2):
     satisfy = v2.model.query(
         scope=[P], where={"property": "@type", "operator": "=", "value": "SatisfyRequirementUsage"}
     )
-    assert len(satisfy) >= 9
+    assert len(satisfy) >= REQUIREMENTS[v2.name]["satisfy"]
 
 
 def test_baseline_measurement_is_a_recorded_measurement(v2, frozen):
@@ -275,7 +320,7 @@ def test_negative_control_satisfy_fails_on_an_out_of_range_part(v2):
     requirement tinyPower : PowerRequirement;
     satisfy tinyPower by tinySat;
     """
-    m = v2.connection.load_from_content(with_members(TEXT, members), strict=True)  # loads clean
+    m = v2.connection.load_from_content(with_members(v2.text, members), strict=True)  # loads clean
     verdicts = m.verify_satisfaction()
     assert [v.holds for v in verdicts].count(False) == 1
     bad = next(v for v in verdicts if not v.holds)
@@ -299,11 +344,17 @@ def test_feasibility_module_has_no_inequality_on_quantities():
 
 
 def test_requirement_names_in_the_checker_exist_in_the_model(v2):
+    """The checker's flag requirements exist in both models; the slew-band requirement it names
+    exists in the adopted model and is folded into SettledRequirement in the revision."""
     defs = set(_kinds(v2.model, "RequirementDefinition"))
-    assert (
-        set(fz.FLAG_REQUIREMENTS.values()) | {fz.SLEW_BAND_REQUIREMENT}
-        == defs - METRIC_REQUIREMENTS
-    )
+    assert set(fz.FLAG_REQUIREMENTS.values()) <= defs
+    if v2.name == "adopted":
+        assert set(fz.FLAG_REQUIREMENTS.values()) | {fz.SLEW_BAND_REQUIREMENT} == (
+            defs - METRIC_REQUIREMENTS
+        )
+    else:
+        assert fz.SLEW_BAND_REQUIREMENT not in defs
+        assert set(fz.FLAG_REQUIREMENTS.values()) == defs - R2_METRIC_REQUIREMENTS
 
 
 @pytest.fixture(scope="module")
@@ -379,9 +430,14 @@ def test_flag_has_a_negative_control(flag, pool):
 
 
 def test_slew_band_requirement_reads_the_censoring(pool):
+    """Adopted model: the slew-band requirement reads the censoring; revision: it is gone with the
+    slew time (WP23 D-1), and the checker has no requirement of that name to verify."""
     chk, base = pool["checker"], f"{P}::cubesatBaseline"
-    assert chk.slew_band_entered(base, {"censored": False})
-    assert not chk.slew_band_entered(base, {"censored": True})
+    if pool["v2"].name == "adopted":
+        assert chk.slew_band_entered(base, {"censored": False})
+        assert not chk.slew_band_entered(base, {"censored": True})
+    else:
+        assert fz.SLEW_BAND_REQUIREMENT not in _kinds(pool["v2"].model, "RequirementDefinition")
 
 
 # ---------------------------------------------------------------------------------------------
@@ -400,11 +456,11 @@ def test_claim_holds_with_recorded_evidence(claim, v2, solver, capsys):
 
 
 @pytest.mark.parametrize("claim", sorted(CLAIM_CONTROLS))
-def test_claim_negative_control_is_violated_with_a_witness(claim, solver):
+def test_claim_negative_control_is_violated_with_a_witness(claim, v2, solver):
     """R-5: a false variant of each claim is `violated`, witnessed, with a counterexample."""
     old, new = CLAIM_CONTROLS[claim]
-    assert TEXT.count(old) == 1, claim
-    m = cm.get_connection().load_from_content(TEXT.replace(old, new), strict=True)
+    assert v2.text.count(old) == 1, claim
+    m = cm.get_connection().load_from_content(v2.text.replace(old, new), strict=True)
     v = m.verify_constraint(f"{P}::{claim}", engine="solve", question="holds")
     assert (v.status, v.strength) == ("violated", "witnessed"), f"claim {claim}: {v.status}"
     assert v.witness, claim
@@ -413,8 +469,8 @@ def test_claim_negative_control_is_violated_with_a_witness(claim, solver):
 def test_claim_literals_are_the_models_own_numbers(v2):
     """The claims restate the accounting with literals; each literal is tied to its source here."""
     k = ex._Constants(v2.model, P)
-    start = TEXT.index("constraint def MassAccountingIdentity")
-    claims = TEXT[start : TEXT.index("// END 15.2")]
+    start = v2.text.index("constraint def MassAccountingIdentity")
+    claims = v2.text[start : v2.text.index("// END 15.2")]
     num = lambda pattern: float(re.search(pattern, claims).group(1))  # noqa: E731
     assert num(r"([\d.]+) \[W/m\] \* s1") == pytest.approx(k.generation_per_span(), rel=1e-9)
     assert num(r"- ([\d.]+) \[W\] - t > ") == pytest.approx(k.env("housekeepingLoad", "SI::W"))
@@ -437,14 +493,16 @@ def test_claim_literals_are_the_models_own_numbers(v2):
     )
 
 
-def test_mass_claim_restates_the_calc_bodies():
+@pytest.mark.parametrize("name", list(MODELS))
+def test_mass_claim_restates_the_calc_bodies(name):
     """The mass identity is stated over the bodies of MassAccounting and StructureMass (drift guard)."""
+    text = MODELS[name][1]
 
     def body(calc):
-        m = re.search(rf"calc def {calc} \{{.*?return : \w+ =(.*?);\s*\}}", TEXT, re.S)
+        m = re.search(rf"calc def {calc} \{{.*?return : \w+ =(.*?);\s*\}}", text, re.S)
         return " ".join(m.group(1).split()).replace("c.wheelCount", "3.0")
 
-    claim = TEXT[TEXT.index("constraint def MassAccountingIdentity") :]
+    claim = text[text.index("constraint def MassAccountingIdentity") :]
     claim = " ".join(claim[: claim.index("}")].split())
     assert body("MassAccounting") in claim
     assert body("StructureMass") in claim
@@ -453,7 +511,7 @@ def test_mass_claim_restates_the_calc_bodies():
 def test_a_claim_no_engine_reaches_is_recorded_with_its_reason(v2, solver):
     """R-5: a claim that invokes a calc def is undecided on every engine; the reason is recorded."""
     members = "constraint def MassPositiveByCalc { in c : Cubesat; MassAccounting(c) > 0.0 [kg] }"
-    m = v2.connection.load_from_content(with_members(TEXT, members), strict=True)
+    m = v2.connection.load_from_content(with_members(v2.text, members), strict=True)
     for engine in ("smt", "solve", "check", "auto"):
         v = m.verify_constraint(f"{P}::MassPositiveByCalc", engine=engine, question="holds")
         assert v.status == "undecided", f"{engine}: {v.status}"
@@ -511,7 +569,7 @@ EXCLUSION_CASES = [
 @pytest.fixture(scope="module")
 def classified(v2, solver):
     regions = [c[0] for c in EXCLUSION_CASES]
-    return classify_regions(MODEL, regions, connection=v2.connection)
+    return classify_regions(v2.path, regions, connection=v2.connection)
 
 
 @pytest.mark.parametrize("i", range(len(EXCLUSION_CASES)))
@@ -537,8 +595,9 @@ def test_exclusion_thresholds_agree_with_the_arithmetic(v2, solver):
     floor = (k.env("housekeepingLoad", "SI::W") + lo + 0.9) * k.env("eclipseDuration", "SI::h")
     floor /= k.env("maxDepthOfDischarge")
     assert floor == pytest.approx(26.6)
-    just_below = classify_region(MODEL, battery_region((20, floor - 0.01), tracker_w=(lo, lo)))
-    just_above = classify_region(MODEL, battery_region((floor + 0.01, 200), tracker_w=(lo, lo)))
+    model = v2.path
+    just_below = classify_region(model, battery_region((20, floor - 0.01), tracker_w=(lo, lo)))
+    just_above = classify_region(model, battery_region((floor + 0.01, 200), tracker_w=(lo, lo)))
     assert (just_below.verdict, just_above.verdict) == ("excluded", "all-feasible")
     small = k.alternatives("ReactionWheel", "wheelClass")["small"]
     tau = k.alt_value(small, "maxTorque", "SI::N*SI::m")
@@ -546,35 +605,37 @@ def test_exclusion_thresholds_agree_with_the_arithmetic(v2, solver):
     limit = h * h / (tau * math.radians(k.num(f"{P}::nominalSlew.slewAngle", "SI::degree")))
     assert limit == pytest.approx(0.6366, abs=1e-4)
     edge = (limit - 0.001, limit + 0.001)
-    assert classify_region(MODEL, wheel_region("small", (0.18, edge[0]))).verdict == "all-feasible"
-    assert classify_region(MODEL, wheel_region("small", (edge[1], 0.9))).verdict == "excluded"
+    assert classify_region(model, wheel_region("small", (0.18, edge[0]))).verdict == "all-feasible"
+    assert classify_region(model, wheel_region("small", (edge[1], 0.9))).verdict == "excluded"
 
 
-def test_slew_energy_bound_moves_the_all_feasible_boundary(solver):
+def test_slew_energy_bound_moves_the_all_feasible_boundary(v2, solver):
     """A stated slew energy range enters the condition: 29 to 200 Wh is all feasible at zero energy,
     mixed when up to 1 Wh of slew loss is allowed, and 40 to 200 Wh is all feasible at 2 Wh."""
-    assert classify_region(MODEL, battery_region((29, 200))).verdict == "all-feasible"
+    model = v2.path
+    assert classify_region(model, battery_region((29, 200))).verdict == "all-feasible"
     assert (
-        classify_region(MODEL, battery_region((29, 200), slew_energy_wh=(0, 1))).verdict == "mixed"
+        classify_region(model, battery_region((29, 200), slew_energy_wh=(0, 1))).verdict == "mixed"
     )
     assert (
-        classify_region(MODEL, battery_region((40, 200), slew_energy_wh=(0, 2))).verdict
+        classify_region(model, battery_region((40, 200), slew_energy_wh=(0, 2))).verdict
         == "all-feasible"
     )
 
 
-def test_negative_controls_of_the_exclusion_helper(solver, monkeypatch):
+def test_negative_controls_of_the_exclusion_helper(v2, solver, monkeypatch):
     """A feasible region is not excluded; malformed input is refused; no solver is a named error."""
-    assert not classify_region(MODEL, battery_region((100, 200))).excluded
+    model = v2.path
+    assert not classify_region(model, battery_region((100, 200))).excluded
     with pytest.raises(ValueError, match="empty interval"):
         battery_region((26, 20))
     with pytest.raises(ValueError, match="unknown wheel class"):
-        classify_region(MODEL, wheel_region("huge", (0.2, 0.3)))
+        classify_region(model, wheel_region("huge", (0.2, 0.3)))
     with pytest.raises(ValueError, match="matches 0 times"):
-        ex.model_variant(TEXT, {"no such literal": "x"})
+        ex.model_variant(v2.text, {"no such literal": "x"})
     monkeypatch.setattr(shutil, "which", lambda name: None)
     with pytest.raises(ex.SolverUnavailable, match="z3"):
-        classify_region(MODEL, battery_region((20, 26)))
+        classify_region(model, battery_region((20, 26)))
 
 
 VARIANTS = {
@@ -603,19 +664,19 @@ VARIANTS = {
 def test_model_variants_are_excluded_before_simulation(name, v2, solver):
     """A variant whose design space holds no feasible configuration is excluded; others are kept."""
     edits, expect_excluded = VARIANTS[name]
-    got = ex.classify_variant(MODEL, edits, connection=v2.connection)
+    got = ex.classify_variant(v2.path, edits, connection=v2.connection)
     assert ex.variant_excluded(got) is expect_excluded, [(c.region.name, c.verdict) for c in got]
 
 
 def test_the_unedited_model_is_a_kept_variant(v2, solver):
-    got = classify_regions(MODEL, ex.design_space_regions(), connection=v2.connection)
+    got = classify_regions(v2.path, ex.design_space_regions(), connection=v2.connection)
     assert [c.verdict for c in got] == ["all-feasible", "mixed"] and not ex.variant_excluded(got)
 
 
 def test_exclusion_record_is_a_ledger_ready_dict(v2, solver):
     """The record names the region, the claim, the engine, the verdict, the strength and the witness."""
     edits = VARIANTS["depth of discharge 0.03"][0]
-    got = ex.classify_variant(MODEL, edits, connection=v2.connection)
+    got = ex.classify_variant(v2.path, edits, connection=v2.connection)
     excluded = next(c for c in got if c.excluded)
     rec = ex.exclusion_record(excluded, variant=edits, note="variant")
     assert json.loads(json.dumps(rec)) == rec  # JSON round trip: it can enter a ledger entry
@@ -625,7 +686,7 @@ def test_exclusion_record_is_a_ledger_ready_dict(v2, solver):
     assert "implies" in rec["claim"] and rec["witness_violation"] and rec["variant"] == edits
     assert "unsatisfiable" in rec["reason"] and rec["basis"].startswith("exact accounting")
     assert len(rec["model_sha256"]) == 64
-    kept = ex.exclusion_record(classify_region(MODEL, battery_region((20, 200))))
+    kept = ex.exclusion_record(classify_region(v2.path, battery_region((20, 200))))
     assert kept["excluded"] is False and kept["verdict"] == "mixed"
 
 
@@ -633,7 +694,7 @@ def test_exclusion_record_is_a_ledger_ready_dict(v2, solver):
 def test_dod_flag_agrees_with_the_excluded_battery_region(pool, measured, solver):
     """Every sampled design in a battery region the solver excludes simulates dod_ok False."""
     region = battery_region((20, 26))
-    assert classify_region(MODEL, region, connection=pool["v2"].connection).excluded
+    assert classify_region(pool["v2"].path, region, connection=pool["v2"].connection).excluded
     designs = _subset(pool, lambda d: 20 <= d["battery_wh"] <= 26, 4)
     for d, m in zip(designs, measured([int(d["design_id"]) for d in designs]), strict=True):
         flags = pool["checker"].flags(pool["symbols"][int(d["design_id"])], m)
@@ -644,7 +705,8 @@ def test_dod_flag_agrees_with_the_all_feasible_battery_region(pool, measured, so
     """With the slew loss bounded by 2 Wh, every sampled design from 40 Wh up simulates dod_ok True."""
     region = battery_region((40, 200), slew_energy_wh=(0, 2))
     assert (
-        classify_region(MODEL, region, connection=pool["v2"].connection).verdict == "all-feasible"
+        classify_region(pool["v2"].path, region, connection=pool["v2"].connection).verdict
+        == "all-feasible"
     )
     designs = _subset(pool, lambda d: d["battery_wh"] >= 40, 6)
     for d, m in zip(designs, measured([int(d["design_id"]) for d in designs]), strict=True):
@@ -654,7 +716,7 @@ def test_dod_flag_agrees_with_the_all_feasible_battery_region(pool, measured, so
 
 def test_power_flag_agrees_with_the_solver_on_span_regions(pool, v2, solver):
     """Panels in the excluded span region are power_ok False; panels over the range are True."""
-    assert classify_region(MODEL, power_region((0.05, 0.15)), connection=v2.connection).excluded
+    assert classify_region(v2.path, power_region((0.05, 0.15)), connection=v2.connection).excluded
     spans = [0.05, 0.1, 0.15]
     designs = [
         {**pool["designs"][0], "design_id": 20000 + i, "panel_span_m": s}
@@ -664,7 +726,7 @@ def test_power_flag_agrees_with_the_solver_on_span_regions(pool, v2, solver):
     chk = fz.FeasibilityChecker(loaded, P)
     assert [chk.flags(s)["power_ok"] for s in symbols] == [False] * 3
     assert (
-        classify_region(MODEL, power_region(), connection=v2.connection).verdict == "all-feasible"
+        classify_region(v2.path, power_region(), connection=v2.connection).verdict == "all-feasible"
     )
     rows = _subset(pool, lambda d: True, 20)
     assert all(
@@ -676,7 +738,7 @@ def test_momentum_flag_agrees_with_the_excluded_wheel_region(pool, measured, v2,
     """Small wheel, inertia 0.70 to 0.90 kg m^2 on the 30 degree slew: excluded; each sampled
     design in the region simulates momentum_ok False."""
     assert classify_region(
-        MODEL, wheel_region("small", (0.70, 0.90)), connection=v2.connection
+        v2.path, wheel_region("small", (0.70, 0.90)), connection=v2.connection
     ).excluded
     designs = _in_inertia(pool, "small", 0.70, 0.90, 6)
     for d, m in zip(designs, measured([int(d["design_id"]) for d in designs]), strict=True):
@@ -709,7 +771,7 @@ def test_momentum_closed_form_is_optimistic_against_the_ode(pool, measured, v2, 
     statement about the approximation (OD2), `excluded` is the confirmed direction.
     """
     region = wheel_region("small", (0.18, 0.60))
-    assert classify_region(MODEL, region, connection=v2.connection).verdict == "all-feasible"
+    assert classify_region(v2.path, region, connection=v2.connection).verdict == "all-feasible"
     designs = _in_inertia(pool, "small", 0.18, 0.60, 8)
     meas = measured([int(d["design_id"]) for d in designs])
     flags = [
@@ -756,8 +818,9 @@ def test_run_sweep_over_the_measured_energy_integral_reproduces_the_accounting(v
         "peakTorque": Quantity(0.002, unit("SI::N*SI::m")),
         "peakMomentum": Quantity(0.004, unit("SI::N*SI::m*SI::s")),
         "controlEffort": Quantity(0.1, unit("SI::N*SI::m*SI::s")),
-        "censored": False,
     }
+    if "in censored" in v2.text:  # the adopted model's analysis takes the slew censoring
+        named["censored"] = False
     table = v2.model.run_sweep(
         f"{P}::SlewExperiment",
         {"torqueSquaredIntegral": (0.0, 1.0e-3, 2.5e-4)},
@@ -788,18 +851,18 @@ def test_self_check_holds_with_the_region_filled(v2):
     assert v2.model.self_check().status == "holds" and v2.model.ok
 
 
-def test_toolkit_check_passes_on_v2(toolkit_bin):
-    out = toolkit_bin.check(MODEL)
+def test_toolkit_check_passes_on_v2(toolkit_bin, v2):
+    out = toolkit_bin.check(v2.path)
     assert out.returncode == 0, out.stderr[-500:]
 
 
-def test_toolkit_lint_reports_no_errors_or_warnings_on_v2(toolkit_bin):
-    summary = toolkit_bin.lint(MODEL)["summary"]
+def test_toolkit_lint_reports_no_errors_or_warnings_on_v2(toolkit_bin, v2):
+    summary = toolkit_bin.lint(v2.path)["summary"]
     assert summary["errors"] == 0 and summary["warnings"] == 0, summary
 
 
-def test_toolkit_verify_solve_runs_on_v2(toolkit_bin, solver):
-    out = toolkit_bin.verify_solve(MODEL)
+def test_toolkit_verify_solve_runs_on_v2(toolkit_bin, v2, solver):
+    out = toolkit_bin.verify_solve(v2.path)
     assert out.returncode == 0, out.stdout[-500:] + out.stderr[-500:]
     assert "0 violated" in out.stdout
 
