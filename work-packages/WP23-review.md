@@ -358,6 +358,117 @@ is one step of the integrator's grid, below the measurement's resolution; the ta
 "the battery moves the settling time" rests on the baseline and compact configurations (relative
 changes 2.4e-3 and 1.2e-3 of record, 0.43 s and 0.08 s), not on the agile one.
 
+## Round 3: the three metrics that never bind
+
+The driver's focus from round 1: in the primary regime's K = 1 fit the power margin, the eclipse
+reserve and the peak slew power have exponent zero at every temperature of the sweep (round 1's
+`heatmap.png` and `k3_record.md`: 1.45e-17, 0 and 0 at the selected tau 38.1; in the baseline regime
+only the peak slew power is at zero across tau, the power margin contends there with 0.178), and the
+coverage table shows the gains, the battery and the panel span moving neither the peak slew power nor
+the power margin at the three named configurations. Interrogated before any change, from the model
+and the round-1 data (1000 designs per regime; 706 feasible in the primary regime, 780 in the
+baseline), with the model's own constants.
+
+**(a) Do the design ranges ever make power scarce?** No, at the slew's peak; yes, in eclipse energy,
+and the flag already removes those designs.
+
+- Power margin over the 1000 designs of the primary regime: minimum 6.57 W, first percentile 7.64,
+  median 28.5, maximum 68.0 W; none below its requirement's zero (`power_ok` 1.000 in both regimes);
+  none within 10 % of it. The three smallest margins are large wheels with the fine tracker at 0.30
+  to 0.31 m of span (available power 11.2 W, peak slew power 6.1 to 6.3 W). The margin follows the
+  panel span alone: Spearman 0.99 with the span, 0.04 with the battery, 0.01 with either gain; a
+  straight line on the span explains 98 % of its variance. The generated power runs from 24.5 W at
+  0.3 m to 81.7 W at 1.0 m against a housekeeping load of 12 W and a peak slew draw of 1.3 to 7.4 W.
+- Eclipse reserve: minimum -2.59 Wh, fifth percentile -1.47, median 10.5, maximum 52.0 Wh; 13.1 % of
+  designs negative, and those are exactly the `dod_ok` failures, because the reserve
+  (0.3 C - D) and the depth of discharge (D / C) are the same inequality against their thresholds;
+  5.0 % of designs sit within 1.05 Wh above zero. Among the feasible designs it is a function of the
+  battery capacity and the tracker grade: the eclipse demand D is 7.98 to 8.68 Wh (the base load of
+  13.3 to 14.4 W over 0.6 h; the slew loss energy at most 0.55 % of it), so the reserve is
+  0.3 C less about 8.3 Wh; Spearman 1.00 with the battery, below 0.05 with everything else.
+- Together (small panel, small battery, aggressive gains): the gains enter neither quantity
+  measurably (|Spearman| at most 0.03; the slew energy is below 0.55 % of the eclipse demand), the
+  battery does not enter the margin (0.04) and the span does not enter the reserve (0.03); each
+  quantity is driven by one tune. The corner (0.30 m, 20 Wh, Kp 2) has a margin of about 6.6 W and a
+  reserve of about -2.3 Wh: power at the slew's peak is never scarce in the declared ranges; eclipse
+  energy is, for packs below 26.6 to 28.9 Wh by tracker grade, and the flag removes those designs before the fit.
+
+**(b) Is the slew power-limited anywhere?** In a thin corner. The usable torque falls below the class
+cap in 3.2 % of designs (10.3 % of the large-wheel designs), all with a span of at most 0.341 m: the
+large wheel's cap of 10 mN.m needs 15 W of available power (3 x 5e4 x 1e-4), which 0.34 m of span
+supplies; the medium cap needs 0.6 W and the small 13.5 mW, always available. Read back from the peak
+slew power, the peak torque sits at the class cap in 96.8 % of the primary regime's designs and at
+the power-limited usable torque in the other 3.2 %, unsaturated in none; in the baseline regime
+90.4 %, 1.9 % and 7.7 % unsaturated (large wheels at the box's low gains: 24.8 % of them never reach
+the cap). The wheel's torque cap is the limit; the power cap takes over only for large wheels below
+0.34 m of span.
+
+**(c) Are the three defined so that nothing in the configuration space moves them?** Two are
+carried by another traded metric and one is a step function of the swaps.
+
+- Peak slew power is the tracker's power plus the idle wheels (0.9 W) plus 5e4 x peakTorque^2. With
+  the peak torque at the class cap it takes one value per wheel class and tracker grade: 1.3045,
+  1.8045, 2.4045 W (small); 1.5, 2.0, 2.6 W (medium); 6.3, 6.8, 7.4 W (large). In the data every
+  medium and small cell has exactly one value and only the large-wheel cells vary (the power-limited
+  corner): 41 distinct values in the primary regime's 1000 designs, 34 among the feasible 706. A
+  class constant plus a class constant: a step function of the two swaps, flat inside each of the
+  nine cells, and across the cells ordered as the total mass is (Spearman 0.87 among the feasible
+  designs; the heavy wheel draws the power).
+- Power margin and energy balance are both affine in the generated power, which is proportional to
+  the span (Pearson 0.986 and 0.999 with the generated power; between them Spearman 0.98, Pearson of
+  the logs 0.96): a near-collinear pair, one instantaneous at the slew's peak in sunlight, one
+  integrated over the orbit.
+- Eclipse reserve and depth of discharge are one quantity: Spearman -0.9994 over the feasible designs,
+  -1.0000 within a tracker grade.
+
+**The n-lemma reading of each zero exponent** (for the case prose, D-7; `docs/theory.md`,
+"Elasticities and the n-lemma": the K = 1 fit is one monomial term, a hyperplane in log-metric space,
+whose exponents are the sparse solution of a linear program at tau = infinity and its soft version at
+the fit temperature; a metric carries weight only where it trades against the others at the
+frontier).
+
+- *Eclipse reserve*: zero because the depth of discharge carries it. Given the tracker, the two are
+  monotone functions of one capacity, so they cannot both contend; the fit gives the depth of
+  discharge 0.158 and the reserve 0 (primary), 0.012 and 3.7e-4 (baseline). A collinearity in the
+  data, not an absence of binding: the reserve binds as a flag on 13 % of the designs before the fit.
+- *Power margin*: zero in the primary regime because the energy balance carries it (0.184); both are
+  affine in the generated power. In the baseline regime the fit carries the power margin (0.178)
+  and nearly drops the energy balance (0.019). Which of a near-collinear pair carries the weight is
+  the linear program's choice, and that it changes between the regimes is the sign of the
+  collinearity. At K = 3 in the baseline regime the two sit in different terms (term 2 power margin
+  0.083; terms 1 and 3 energy balance 0.074 and 0.347).
+- *Peak slew power*: zero at K = 1 because one hyperplane over all nine cells can use no elasticity
+  from a metric that is flat inside each cell, and across the cells the metric orders the designs as
+  the total mass does, which has the largest exponent (0.358). At K = 3 it leads a term in both
+  regimes (primary term 3: 0.612; baseline term 2: 0.428, in a 6-lemma with the pointing error, the
+  total mass, the power margin, the settling time and the depth of discharge): with three terms one
+  cell is the large-wheel designs, where the 5 W draw trades against the settling time (Spearman
+  -0.63 with it among the feasible designs: the large wheels slew fastest and draw most).
+
+**Model change in round 3: none.** The rule was to change the model only where the system's purpose
+justifies it, never for texture.
+
+- A realistic power budget the system would have: the margin as defined leaves out the battery's
+  recharge in sunlight (the eclipse demand over the 0.945 h sunlit arc, 8.4 to 9.2 W). Taking it into
+  the margin would subtract a near-constant (the demand depends on the tracker, not on the span or
+  the battery), turn 3.1 % of the feasible designs negative (large wheels at small spans) and leave
+  the margin collinear with the energy balance as before: it would move no exponent for a reason the
+  system has. Listed with the peak charge rate (round 2) as a candidate for the supervisor at the
+  gate (OD7), not made.
+- A saturation the system would have: the model has both, the class cap and the power cap through
+  `UsableWheelTorque`, and the data shows which binds where (b). Nothing to add.
+- The two collinearities are findings about the traded-metric set (two metrics for one eclipse
+  quantity; two for one generated power), which is the contract's and the supervisor's to change
+  (OD7, the gate), not the loop's.
+
+Consequences for the record: the model is round 2's, so the coverage table, the coupling matrix and
+the committed views of the round stand as unit 1 of this round left them (regenerated in `hts-paper`
+on this model); the toolkit gates (R-11) were re-run on it: `REQUIRE_OPENSYSML=1 uv run pytest -q tests/test_model_checking_v2.py tests/test_system_model_v2.py tests/test_system_model_v2_r1.py tests/test_model_coverage.py`, 185 passed. One number for the supervisor's
+threshold popup: the proposed peak-slew-power limit of 2.4 W (the baseline's 2.0 W times 1.2) fails
+every large-wheel design, the medium wheel with the fine tracker (2.6 W) and the small wheel with the
+fine tracker by 4.5 mW (2.4045 W): 56.4 % of the primary regime's feasible designs; it enters no
+dataset column.
+
 ## R-5's check, amended
 
 The closed-form calcs of section 4, `TorqueLimitedSlewTime`, `LinearSlewTime`, `SlewTimeEstimate` and
