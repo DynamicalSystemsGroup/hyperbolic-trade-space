@@ -59,3 +59,8 @@ supervisor: accepted as listed.
 **Decision:** WP24 accepted, final when G-1 lands and the Mac watcher is green on the rename head (Linux is green
 on ee7704e). Both cold readers (depth A and depth B) took "monomial term" as a product of powers of the metrics
 and put the contending metrics on the term; no number moved under the rename.
+
+**WP24 final (2026-11-10, 14:45).** The changelog line landed at c3c1ce3 and the Mac watcher is green at 2ce3c14
+(2189 passed, all checks), a head after it; Linux was green on the rename head ee7704e. **Accepted by the driver
+under the mandate.** The word "facet" remains only in the three marked polyhedral sentences, the decision records
+and the supervisor's quotations.
