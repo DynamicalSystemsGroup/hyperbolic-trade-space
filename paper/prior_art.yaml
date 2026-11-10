@@ -242,18 +242,48 @@ entries:
     section2: false
 
   # --- Systems engineering practice and decision analysis -------------------------------------
+  - id: mdao
+    group: Systems engineering practice and decision analysis
+    family: Multidisciplinary design analysis and optimization (MDAO)
+    does: >-
+      Couples the disciplinary analyses of a design through shared coupling variables and solves
+      the coupled system inside an optimizer: a survey of the field by its conceptual components,
+      a classification of its architectures by problem formulation and decomposition strategy, a
+      diagram standard for them (the XDSM, which extends the design structure matrix with process
+      flow), a framework that solves the coupled models and computes their coupled derivatives,
+      and a textbook treatment; each run returns an optimum of a stated objective under
+      constraints.
+    shares: >-
+      The setting of the case, a design loop in which a configuration is evaluated by coupled
+      disciplinary models into attributes and the design variables are chosen against several
+      objectives; the case's coupling table is a design structure matrix.
+    differs: >-
+      MDAO drives the evaluations toward an optimum; this method fits the table the evaluations
+      leave behind and reports the trade-offs they exercised, with one exponent vector per
+      monomial term and a level for every design, whatever produced the table. It does not search,
+      couple disciplines or need derivatives; an MDAO run is one way to fill the table.
+    cites: [sobieszczanski1997multidisciplinary, martins2013multidisciplinary, lambe2012extensions, gray2019openmdao, martins2021engineering]
+    section2: true
+    # Section 2's table prints these phrases; each is an extract of the field of the same name
+    # (a test checks it). Appendix G prints the full sentences.
+    short:
+      does: "solves the coupled system inside an optimizer"
+      shares: "a configuration is evaluated by coupled disciplinary models into attributes"
+      differs: "this method fits the table the evaluations leave behind"
+
   - id: tradespace
     group: Systems engineering practice and decision analysis
     family: Tradespace exploration
     does: >-
-      Value-focused broad exploration of design alternatives, user-guided samplers and linked
-      visualization with the Pareto frontier displayed, and tradespace exploration for resilient
-      systems.
+      Value-focused broad exploration of design alternatives, a design-by-shopping interface in
+      which the decision-maker forms a preference by viewing many good designs, user-guided
+      samplers and linked visualization with the Pareto frontier displayed, and tradespace
+      exploration for resilient systems.
     shares: >-
       The setting, a table of evaluated designs.
     differs: >-
       These explore and display; this method fits and reports a coordinate system and a score.
-    cites: [ross2004multi, ross2005tradespace, ross2010revisiting, stump2009visual, spero2014tradespace]
+    cites: [ross2004multi, ross2005tradespace, ross2010revisiting, stump2003design, simpson2008visual, stump2009visual, spero2014tradespace]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
     # (a test checks it). Appendix G prints the full sentences.

@@ -129,3 +129,35 @@ PDFs by the derivation implementer (text extracted with pdftotext), not taken fr
   KKT conditions (12.34). Status: numbers confirmed against the chapter text; the copy is not the
   publisher's, so the page numbers (the theorem is on page 333 in that copy) are to be confirmed by
   the author against the printed second edition.
+
+## Added for P-11 (2026-11-09, MDAO and trade-space exploration in the prior art)
+
+Each DOI fetched from the Crossref API and resolved through doi.org on 2026-11-09 (the literature
+agent's record; the `verified` field of each entry names where its abstract was read). Full texts
+were not read.
+
+- `sobieszczanski1997multidisciplinary`: Sobieszczanski-Sobieski, J., Haftka, R. T. (1997).
+  "Multidisciplinary aerospace design optimization: survey of recent developments." *Structural
+  Optimization* 14(1), 1-23. doi:10.1007/BF01197554. Abstract from the NTRS record of the AIAA/NASA-TM version.
+- `martins2013multidisciplinary`: Martins, J. R. R. A., Lambe, A. B. (2013). "Multidisciplinary design
+  optimization: a survey of architectures." *AIAA Journal* 51(9), 2049-2075. doi:10.2514/1.J051895.
+  Abstract via OpenAlex (the publisher's page refuses an automated read).
+- `lambe2012extensions`: Lambe, A. B., Martins, J. R. R. A. (2012). "Extensions to the design structure
+  matrix for the description of multidisciplinary design, analysis, and optimization processes."
+  *Structural and Multidisciplinary Optimization* 46(2), 273-284. doi:10.1007/s00158-012-0763-y.
+  Abstract from the authors' bibliography page.
+- `gray2019openmdao`: Gray, J. S., Hwang, J. T., Martins, J. R. R. A., Moore, K. T., Naylor, B. A. (2019).
+  "OpenMDAO: an open-source framework for multidisciplinary design, analysis, and optimization."
+  *Structural and Multidisciplinary Optimization* 59(4), 1075-1104. doi:10.1007/s00158-019-02211-z.
+  Abstract via Semantic Scholar.
+- `martins2021engineering`: Martins, J. R. R. A., Ning, A. (2021). *Engineering Design Optimization.*
+  Cambridge University Press. doi:10.1017/9781108980647. Publisher's description read.
+- `stump2003design`: Stump, G. M., Yukish, M., Simpson, T. W., Harris, E. N. (2003). "Design space
+  visualization and its application to a design by shopping paradigm." ASME IDETC/CIE 2003, DAC,
+  795-804. doi:10.1115/DETC2003/DAC-48785. Crossref abstract read.
+- `simpson2008visual`: Simpson, T., Spencer, D., Yukish, M., Stump, G. (2008). "Visual steering commands
+  and test problems to support research in trade space exploration." 12th AIAA/ISSMO MAO Conference,
+  AIAA 2008-6085. doi:10.2514/6.2008-6085. Abstract via OpenAlex.
+- Not entered: `simpson2011trade` (Springer chapter, doi:10.1007/978-0-85729-883-6_7; bibliographic
+  record only, no abstract in any machine-readable record; no sentence of the register needs it).
+  Re-checked and unchanged: `ross2004multi`, `ross2005tradespace`, `stump2009visual`.

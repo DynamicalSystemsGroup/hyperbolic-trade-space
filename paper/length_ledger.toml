@@ -524,3 +524,13 @@ section = "Appendix B"
 words_added = 132
 job = "states what the lemma scripts do and do not establish: a substitute for pencil-and-paper derivation between free-form proof and a proof assistant, each step a line the reader can run, and not formal verification, which is said only of the Z3 checks of the case's system model"
 reader = "the reader of Appendix B deciding what a checked step buys"
+
+# Row: P-11 (WP10-decisions.md, "MDAO in the prior art"): the MDAO family enters Table 1 and
+# Appendix G (tables, not counted) and the uses sentence of Section 1 cites it.
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 13
+job = "names multidisciplinary design analysis and optimization as the setting of the design-optimization use and cites the family (WP10 'MDAO in the prior art', P-11)"
+reader = "the MDAO practitioner placing the method beside the tools they use"
