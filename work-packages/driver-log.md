@@ -271,6 +271,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-09 | commit 77844c5, tier 2 watcher, this Mac | 2166 passed, 16 skipped, 1 xfailed; all checks | a verdict: green through the WP16 trial commits; later heads (redraws, glossary entries, unit 8) pending; Linux dispatched on the handover head 01e2d64 |
 | 2026-11-09 | commit 01e2d64, CI run on ubuntu, three shards (the handover head: redraws, glossary entries, unit 8, WP16 switch) | fast, slow and docs-paper all green | a verdict: everything through the third PM's last landing passes on Linux |
 | 2026-11-09 | commit 9eb46f7, tier 2 watcher, this Mac | 2166 passed, 16 skipped, 1 xfailed; all checks | a verdict: green through the fourth PM's first WP23 units; the staged site rebuilt at 3fcc855 for the supervisor's browser |
+| 2026-11-09 | commit c0f43f2, tier 2 watcher, this Mac (WP23 round 1 units, the plotting default, the glossary entries) | 2166 passed, 16 skipped, 1 xfailed; all checks | a verdict: green through WP23 round 1; Linux dispatched on the round 2 head (2620188 and after) as the batch gate |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
