@@ -23,8 +23,9 @@ package CubesatViews {
     }
     view alternatives : GeneralView {
         doc /* The swaps and tunes of the configuration space: the two categorical design variables
-               (WheelClass, TrackerGrade) with the concrete wheel and tracker each literal selects,
-               and the ranges and gain boxes of the four continuous ones. */
+               (the swaps `wheelClass` and `grade`, whose enumerations WheelClass and TrackerGrade
+               name the concrete wheel and tracker each literal selects), and the ranges and gain
+               boxes of the four continuous ones. */
         filter @SysML::PartDefinition or @SysML::EnumerationDefinition;
         expose CubesatTradeSpaceV2::WheelClass;
         expose CubesatTradeSpaceV2::TrackerGrade;

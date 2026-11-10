@@ -20,8 +20,8 @@ The intents, quoted:
 - **I4** (WP26, the supervisor): the model "conformant, intuitive, interpretable and aligned with our intents", using
   "the sysmlv2 affordances without requiring open ended exploration of text".
 
-Counts: **landed 8** (5 in `views.sysml`; N1 to N3 in `cubesat.sysml`, landed in the sequel), **held 1**, **gate 6**, and
-4 observations with no change.
+Counts: **landed 8** (5 in `views.sysml`; N1 to N3 in `cubesat.sysml`, landed in the sequel), **held 1**, **gate 5**, and
+3 observations with no change (as the tables below hold them).
 
 ## What was applied, and the state at the end
 
@@ -38,7 +38,10 @@ Counts: **landed 8** (5 in `views.sysml`; N1 to N3 in `cubesat.sysml`, landed in
   checks the model's own elements are the same with the views as without them. Negative controls: a misspelt
   exposed name fails the strict load ("unresolved reference"); `find` of an absent name returns None.
 
-## The views, as rendered (D-1 (a), R-4)
+## The views, as rendered at the round's revision (D-1 (a), R-4)
+
+Read at the round's applied text, editor revision 6 (`cubesat.sysml` at b9d8b80 with `views.sysml`), not at the head: the
+sequel's in-file edits and WP27's `stakeholders.sysml` came after this reading.
 
 | View | Kind | Shows (as rendered) | Step |
 |---|---|---|---|
@@ -103,7 +106,7 @@ statements one for one.
 |---|---|---|---|---|
 | T1 | The configuration space is explicit in the editor once views expose it: the parts and the tunes' bindings (`assembly`), the swaps under their enumerations (`alternatives`), what each named configuration redefines (`configurations`) | I1 | landed (`views.sysml`) | steps 09, 18, 19 |
 | T2 | The metric space reads in the editor as where the metrics live (`metricCarriers`) and the requirements with their satisfy and verify links (`requirements`, table, matrix) | I1, I2 | landed (`views.sysml`) | steps 12, 14-16, 21 |
-| T3 | Only the baseline carries `satisfy` statements, so the traceability matrix has one column: the agile and compact configurations, the corners of the space, show no verdict against any requirement | I1, I2 | gate | sketch: `satisfy` / `not satisfy` each of the eleven requirements by `cubesatAgile` and `cubesatCompact`, each verdict computed by the model's own requirement (with their measured slews as recorded measurements, as for the baseline). Satisfy relations are read by the coverage table and the generator |
+| T3 | Only the baseline carries `satisfy` statements, so the traceability matrix has one column: the agile and compact configurations, the corners of the space, show no verdict against any requirement | I1, I2 | gate | sketch: `satisfy` / `not satisfy` each of the eleven requirements by `cubesatAgile` and `cubesatCompact`, each verdict computed by the model's own requirement (with their measured slews as recorded measurements, as for the baseline). Satisfy relations are read by the coverage table and the generator. Met for the twelve concern requirements by WP27's 73b4e89 (`stakeholders.sysml`: the two contrasts' slews recorded, their verdicts bound to them and engine-checked; the Satisfaction matrix shows the three configurations); the model's own eleven `baseline...` requirements still carry the baseline's statements only |
 | T4 | The baseline states none of its tuned values: it takes `Cubesat`'s defaults, so in `configurations` it shows only its wheel and tracker, as if it tuned nothing, while agile and compact show span, capacity and gains | I1 | gate | sketch: restate `:>> panelSpan default = 0.6 [m]; :>> batteryCapacity default = 80.0 [W*h];` and the controller's gains in `cubesatBaseline` (equal values); configuration values are read by the oracle and the tests |
 | T5 | The MoE and MoP marks are the first word of a `doc`; the editor shows docs on requirement defs but not on attributes or calcs, so in the editor the marks are invisible on the metrics themselves | I2, I4 | gate | sketch: SysML metadata (`metadata def MoE; metadata def MoP;` and `#MoP attribute totalMass ...`), which a view editor and a query can read as data; the coverage table and the generator read the doc mark today |
 | T6 | The calc chain from configuration to metric (I3's coupling variables) is not drawn by the editor: calcs are invoked inside expressions, which it does not draw as relationships | I3 | observation | `metrics` shows 32 boxes and no edge (step 20); the coverage table and our behavioural view remain where the graph is read |

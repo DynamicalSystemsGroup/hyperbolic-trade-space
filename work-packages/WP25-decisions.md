@@ -71,7 +71,8 @@ the WP24-dependent rows after WP24's last push, the 30 round images after WP23's
   repository state is the present.
 - **OD3** (`coverage.csv` names the decision element by enum type where the view's tags name the attribute): (b).
   One object, one name: routed to WP26's modeller as one unit through the generator, the model tests' pins re-read,
-  after WP27's current round.
+  after WP27's current round. Landed at 6c8481a: the swaps named `wheelClass` and `grade` through `coverage.py`, the
+  committed views regenerated, the pins re-read.
 
 **Approved for execution by the driver under the mandate**; the Agent's defaults as one item; the paper,
 `derivation/`, `src/`, the data, the model files and the committed numbers untouched (R-7, R-8).

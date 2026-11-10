@@ -86,7 +86,8 @@ newlines: 69,991 characters, sha256 `fc116a037866…`, equal in the page and on 
   verification. Not shown: the concerns as rows of their own, the stakeholder, the evidence case's pointers.
 - **The Satisfaction matrix with the three configurations** (steps 23 to 25, on the three files at L-8's content,
   revision 4, 75,542 characters, sha256 `afeaebf9b100…` equal in the page and on disk, Issues (0);
-  `WP27-review/25-satisfaction-matrix-full-width.jpg`): searched for `CubesatStakeholders`, "12 requirements · 3
+  `WP27-review/24-satisfaction-matrix-three-configurations.jpg` is the matrix read as data in the split layout,
+  `WP27-review/25-satisfaction-matrix-full-width.jpg` the same matrix at full width): searched for `CubesatStakeholders`, "12 requirements · 3
   linked elements", the columns `cubesatAgile`, `cubesatBaseline`, `cubesatCompact`, no cell blank. Per column,
   Declared / Negated declaration: agile 9 / 3 (the launch budget, the control effort, the peak slew power), baseline
   11 / 1 (the pointing error), compact 11 / 1 (the pointing error), equal to the engine's 36 verdicts. A sponsor
@@ -103,15 +104,16 @@ report (D-6) as feature requests.
 
 A fresh reader in the sponsor's persona (P1 of `docs/superpowers/notes/reader-grid.md`), no repository access, the
 stakeholder view's image first (step 09's screenshot), then its own tab on the project's recovery at revision 10
-(the pushed head 05fbd3c). The prompt, verbatim:
+(the pushed head 05fbd3c). The prompt, verbatim, with the browser tools' names elided as "[the browser tools]" in
+square brackets (the three elisions are the only changes):
 
-> You are a cold reader. You have no access to any repository, record or file except the one image named below, and you use only the built-in browser pane (the mcp__Claude_Browser__* tools) in a tab you create yourself. Do not open, read or search any other file or website.
+> You are a cold reader. You have no access to any repository, record or file except the one image named below, and you use only the built-in browser pane ([the browser tools]) in a tab you create yourself. Do not open, read or search any other file or website.
 >
 > Who you are: an accountable decision maker, the sponsor of a small satellite project. You have domain judgement and very little time; you do not do mathematics beyond what a budget review needs; you fund the project and sign off the design. What you want to know: what trades against what in this design, and whether you would trust the reading the engineers give you.
 >
 > Step 1, the image first. Open with the Read tool exactly this one file and say in your own words what it shows, before anything else: /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/view-editor/wp27/09-stakeholders-view.jpg
 >
-> Step 2, the tool. Create a NEW browser tab (mcp__Claude_Browser__tabs_create, then navigate in that tab; never act in any other tab, there is one that belongs to someone else) and open https://openmbee-view-editor.vercel.app/app . If the landing page offers "Restore recovery" for a project called "cubesat", click Restore and wait about 8 seconds; if it offers only "New project", stop and report that. Emulate a 1600 x 1000 viewport (mcp__Claude_Browser__resize_window) so the diagram is readable. You are READ ONLY: never click "Apply source", "Discard", "New project", never type in the source pane, never import or export. Use the Explorer's Views list (click the view named "stakeholders"; use the diagram layout and zoom to read node texts; you may read node texts from the page with read_page or get_page_text when the image is small), the "Requirements table" and the "Traceability matrix" (search for "CubesatStakeholders" in them; choose Relationship = Verification in the matrix), and the model tree. Your task: starting from "who cares" (the stakeholders and their concerns), follow the model down to the quantities the engineers trade and how each is checked, as far as the tool lets you. Spend the time a busy sponsor would, about 20 minutes of clicking. Take a screenshot at each thing you looked at and say in one line what it was. Close your tab at the end (tabs_close on your own tab id only).
+> Step 2, the tool. Create a NEW browser tab ([the browser tools' new-tab call], then navigate in that tab; never act in any other tab, there is one that belongs to someone else) and open https://openmbee-view-editor.vercel.app/app . If the landing page offers "Restore recovery" for a project called "cubesat", click Restore and wait about 8 seconds; if it offers only "New project", stop and report that. Emulate a 1600 x 1000 viewport ([the browser tools' viewport call]) so the diagram is readable. You are READ ONLY: never click "Apply source", "Discard", "New project", never type in the source pane, never import or export. Use the Explorer's Views list (click the view named "stakeholders"; use the diagram layout and zoom to read node texts; you may read node texts from the page with read_page or get_page_text when the image is small), the "Requirements table" and the "Traceability matrix" (search for "CubesatStakeholders" in them; choose Relationship = Verification in the matrix), and the model tree. Your task: starting from "who cares" (the stakeholders and their concerns), follow the model down to the quantities the engineers trade and how each is checked, as far as the tool lets you. Spend the time a busy sponsor would, about 20 minutes of clicking. Take a screenshot at each thing you looked at and say in one line what it was. Close your tab at the end (tabs_close on your own tab id only).
 >
 > Step 3, your return, in your own words, no ratings: (a) what the image showed you, before you clicked anything; (b) what each stakeholder cares about, as the model states it; (c) for each concern, which engineering trade or requirement bears on it, and where you found that; (d) whether you would trust this reading, and why or why not; (e) where you got lost or stopped, naming the screen and what you expected; (f) what you could not find (for example where a measurement's evidence comes from, or what the numbers are); (g) what you would ask the engineers next. Return this as your final message, verbatim as you wrote it, with the list of screens you looked at.
 
@@ -198,6 +200,21 @@ The return, verbatim:
 | (a), (e) screens 3, 4, 9, 12-13, 17 and the "draft pending / Working..." flash while read-only; (g)7 | **To the researcher** (the editor's): sent by message with the screen numbers for its report. |
 | (f): the metrics and alternatives views not reached | **No change**: the reader ran out of time on screen 17; the views render (WP26 steps 09, 20). |
 | (b): what each stakeholder cares about | **No change**: read as the model states it. |
+
+### WP26's gate-class findings against the sponsor's reading (the non-goal; to the driver)
+
+Whether each of WP26's gate-class findings blocks the sponsor's reading, read against the P1 return. **T3** (verdicts
+only on the baseline): it blocked the comparison of designs the reader asked for ((g)1) and is met for the twelve
+concern requirements by 73b4e89 (L-8): the Satisfaction matrix shows the three configurations; the model's own eleven
+`baseline...` requirements still carry the baseline's statements only, which the sponsor's path does not read. **T5**
+(the MoE and MoP marks invisible in the editor): does not block; the reader named the traded quantities from the
+requirement texts and never needed to tell a measure of effectiveness from a measure of performance. **N5** (two
+requirement docs describe the generated picture): does not block; the reader quoted the requirement docs and read
+their statements, though the clause "the behavioural view draws it with no line" is a sentence a sponsor cannot place.
+**N6** (no short ids; the baseline requirements undocumented): does not block the path the reader took, since the
+twelve concern rows name `concern::requirement` and the defs' docs are on the requirements view; it is the one of the
+four that would have helped: the reader's screen 8 saw the Identifier and Documentation columns blank for the twelve
+rows, and short ids on the defs would fill the Identifier column. The record of the four is the driver's.
 
 ## D-5. The sponsor-facing prose: none, by the negative-edit test
 

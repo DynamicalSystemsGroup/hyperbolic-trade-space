@@ -75,6 +75,7 @@ a flag (`WP23-closeout-scope-of-work.md`).
 | D-2 | The feedback report, `work-packages/WP26-view-editor-feedback.md`: what worked well; what did not; bugs (title, numbered steps from the editor's landing page, expected, observed, screenshot, whether the modeller reproduced it); workarounds; suggestions; with the screenshots it cites copied to `work-packages/WP26-view-editor-feedback/` *(default)* so the report travels whole | G3 |
 | D-3 | The step log and screenshots: `scratchpad/view-editor/wp26/steps.md` and one screenshot per step beside it (not committed; the PM's review reads them) | G1, G2, G3 |
 | D-4 | The decision records, `work-packages/WP26-decisions.md`: the scope gate, OD1, the milestone calls, the driver's go for any gate-class change, the supervisor's acceptance, verbatim | all |
+| D-5 | The minimal harness for the editor loops, `docs/superpowers/notes/view-editor-harness.md` (added by the supervisor's amendment, `WP26-decisions.md`, 13:10): load a source file verbatim into the project with length and checksum, apply and read the issues panel, list the views with their render status, read the requirements table and the traceability matrix as data, capture a view to an image, export or import the project; written by the modeller from its step log at the round's end and cited by the researcher's report as the reproduction path | G1, G3 |
 
 ## Requirements
 
