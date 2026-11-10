@@ -7,6 +7,19 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- (2026-11-09, 23:20) **WP23, coming to you at the data gate (proceeds overnight on my verification per
+  "Proceed, I review after"):** the four illustrative thresholds proposed by the loop, each 20 % above the baseline
+  configuration: pointing error 0.0186 deg; control effort 0.0114 N·m·s; peak slew power 2.4 W; launch budget
+  95,698 USD (15.95 kg at an illustrative 6,000 USD/kg); plus a battery discharge-rate requirement of 1 C from
+  round 2 (the battery swap was assessed and not taken: its couplings were already present). Round 1 facts: with
+  the new model, events and nine metrics, the metrics with zero exponent at every temperature went from four to
+  three in the primary regime (settling time now carries weight) and from two to one in the baseline regime; the
+  three that never bind (power margin, eclipse reserve, peak slew power) share one cause found by the coverage
+  table: the reaction wheels saturate at the three named configurations, so gains, battery and panel do not move
+  peak slew power or power margin. Round 3 interrogates that (ranges, saturation, metric definitions) and changes
+  the model only where the system's purpose justifies it. One changed conclusion for your decision at the gate: on
+  the round-1 primary regime the K = 3 per-term report refuses (one term's cell has 3 to 7 near-frontier rows
+  against the report's minimum of 10); the fit is reported from exponents and shares, nothing loosened.
 - (2026-11-09, 18:10; answered 20:40) **The word "energy differential".** Resolved: "Keep it, gloss it" (`WP10-decisions.md`).
 - (2026-11-09, 19:30; answered 20:45) **The abstract's PCA sentence.** Resolved: reword as distinct, complementary and composable (`WP10-decisions.md`).
 - (2026-11-09, 20:20; answered 20:55) **Slew time under event detection.** Resolved: one time metric, the settling time (hold time); slew time leaves the traded metrics (`WP16-decisions.md`).
