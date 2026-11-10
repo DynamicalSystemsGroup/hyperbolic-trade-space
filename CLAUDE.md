@@ -58,6 +58,10 @@ with doctests.
 - Claims: every claim a reader can rely on is backed (a lemma step, a generated value, a test, a
   verified source) or is narrowed or dropped; no caveats added to prove it. Register and mechanism:
   `docs/superpowers/notes/claims-review.md`. Keep the model, the fit and the analysis apart in prose.
+- Negative edits are welcome, even preferred: the marginal-value test (does this earn its place) applies to every
+  piece of content, prose, figures, tables, code and notes, and it is applied to what is already there, not only to
+  additions; asking it only of additions still grows without bound. A unit that deletes is a good unit; each
+  deletion states what the content no longer did.
 - Reviews run the thing: a reviewer of any delivery runs the code, analyses the data it produces, and looks at the
   rendered result (plots, notebooks, docs pages, the paper) in a browser or as an image, with screenshots in the
   record; reading code and prose alone is not a review. A stderr line on a rendered page, a plot that does not say

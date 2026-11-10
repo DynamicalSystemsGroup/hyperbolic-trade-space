@@ -316,3 +316,11 @@ rendered page, a figure that does not show what its caption says, a page that do
 that differs from the table: these are found by looking and running, and a review that could not have found them
 is returned.
 
+## Negative edits are welcome, even preferred (the supervisor's standing order, 2026-11-09, 23:05)
+
+The marginal-value test, does this earn its place, applies to every piece of content (prose, figures, tables, code,
+notes, records) and to what already exists, not only to what a unit would add: a test asked only of additions still
+grows without bound. Every stream is asked, at each unit, what it can delete; a unit whose diff is net negative is
+a good unit; each deletion names in its commit what the content no longer did. The length ledger records removals
+as well as additions. Reviewers return a unit that added where it could have cut.
+

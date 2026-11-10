@@ -203,6 +203,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   thing), `PM-BRIEF.md` (same title) and the driver's memory; the PM told. The warning leak of Section 9 is the case
   that taught it: three reviews read the cell and none looked at the page.
 
+- **Standing order (2026-11-09, 23:05), the supervisor verbatim:** "another standing order is that negative edits
+  are welcome even preferred. the marginal value of content covers prose and figures and really any content. it is
+  not just for whether something should be added that still leads to unbounde growth but should also be applied
+  regarding whether to delete something". Recorded in `CLAUDE.md`, `PM-BRIEF.md` and the driver's memory; the PM
+  told; the length ledger records removals.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
