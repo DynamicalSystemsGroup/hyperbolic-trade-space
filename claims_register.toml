@@ -582,7 +582,7 @@ note = "The same statement as the main-results item it replaces, in the glossary
 
 [[claim]]
 id = "C037"
-fragment = "PCA and the fit are chained: the principal directions of the near-frontier chart read the trade-offs the sampling exercised, a reading and not a result"
+fragment = "PCA run on the near-frontier chart reads the trade-offs the sampling exercised, a reading and not a result"
 file = "paper/paper.ipynb"
 anchor = "The decision problem"
 kind = "R"
@@ -617,13 +617,14 @@ file = "paper/paper.ipynb"
 anchor = "Discussion"
 kind = "M"
 backing = [
+  "lemma:L14",
   "lemma:L17",
   "glossary:termination-status",
 ]
 status = "backed"
 disposition = "keep"
-source = "WP21 D-6, finding A1"
-note = "L17: where the first-order conditions hold and the Hessian is positive definite on the tangent space, the point is a strict local minimizer of the soft objective; nothing in it speaks to designs outside the table."
+source = "WP21 D-6, finding A1; WP11 round 2, CR-14"
+note = "The sentence now cites the result for each kind of fit. L14 (Proposition 3 and Corollary 1): for a sharp fit with a positive margin the fixed assignment is a local minimizer of the mean slack. L17: where the first-order conditions hold and the Hessian is positive definite on the tangent space, the point is a strict local minimizer of the soft objective; nothing in it speaks to designs outside the table."
 
 [[claim]]
 id = "C040"
@@ -1285,7 +1286,7 @@ note = "L5.24 gives J_inf = max_i w.u_i; the epigraph LP is what solve_lp implem
 
 [[claim]]
 id = "C094"
-fragment = "At finite $\\tau$ one term is a geometric program, convex after the change of variables $x=e^{w}$"
+fragment = "At finite $\\tau$ one term is a geometric program in $x=e^{w}$, whose convex form is the problem in $w$"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -4769,7 +4770,7 @@ note = "Responsibility statement for the downstream inversion; see the predictio
 
 [[claim]]
 id = "C386"
-fragment = "Term aggregation: sum by default, or mean; the formula is the sum."
+fragment = "Term aggregation: the formula is the sum; the package's mean subtracts the constant $(\\log K)/\\kappa$ from every level and changes neither exponents nor offsets."
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "S"
@@ -5115,3 +5116,49 @@ status = "backed"
 disposition = "keep"
 source = "WP23 close-out, D-18 and OD10 (a): CANDIDATE sentence 2 of 2 for the supervisor's review"
 note = "candidate, pending the supervisor's review; on the feasible set's conditioning: primary, the three sets share the contending set; baseline, all designs swap depth of discharge for total mass and the requirement-constrained set swaps power margin for energy balance (Spearman 0.988); spike A's own-rows conditioning had shown a changed set, a conditioning artefact (spike B, section 4)"
+
+[[claim]]
+id = "C408"
+fragment = "For a sharp fit, certified means that the assignment is fixed, the residuals and the term gaps are within tolerance, no cell is empty and the margin is positive"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "S"
+backing = [
+  "func:src/hyperbolic_trade_space/solvers.py::Termination",
+  "test:tests/test_estimator.py::test_termination_record_for_k_terms",
+  "file:work-packages/interface-contract.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, CR-14"
+note = "The stopping declaration defines certified for the sharp kind in the termination record's words (Appendix D.8, C148): assignment fixed, residuals and gaps within tolerance, no empty cell, positive margin; the test pins the status with max_gap <= EPS_KKT and zero assignment changes."
+
+[[claim]]
+id = "C409"
+fragment = "for two metrics with identical columns the objective is flat along their swap"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "M"
+backing = [
+  "lemma:L4.12",
+  "lemma:L4",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, CR-12"
+note = "L4's second derivative of J_tau along a direction v is (tau/2) sum_i sum_l p_i p_l (s_i - s_l)^2 with s_i = v . u_i (the double sum of L4.10 to L4.12). Along the swap v = e_j - e_j' of two identical columns every s_i is zero, so the curvature is zero: a one-line consequence of the formula, not a tagged step of its own."
+
+[[claim]]
+id = "C410"
+fragment = "In two metrics its level curves are $m_1^{w_1}m_2^{w_2}=\\text{const}$, the rectangular hyperbola $m_1m_2=\\text{const}$ when $w_1=w_2$"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "M"
+backing = [
+  "lemma:L1.4",
+  "glossary:invariant-value",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, CR-29"
+note = "L1.4: V = prod_j m_j^{w_j}; a level curve V = c in two metrics is m_1^{w_1} m_2^{w_2} = c, and with w_1 = w_2 = 1/2 (A2) it is m_1 m_2 = c^2, a rectangular hyperbola. Algebra on the definition; no new claim."

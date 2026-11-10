@@ -10,11 +10,13 @@ from __future__ import annotations
 import case
 import numpy as np
 from paper_common import Md, appendix_link
-from paper_stability import entry, stable, summary
+from paper_stability import entry, format_hold, stable, summary
 from paper_terms import aligned
 
+_C7 = appendix_link("sub-c-7", "Appendix C.7")
 _D3 = appendix_link("sub-d-3", "Appendix D.3")
 _D5 = appendix_link("sub-d-5", "Appendix D.5")
+_D8 = appendix_link("sub-d-8", "Appendix D.8")
 _D11 = appendix_link("sub-d-11", "Appendix D.11")
 _D14 = appendix_link("sub-d-14", "Appendix D.14")
 _D15 = appendix_link("sub-d-15", "Appendix D.15")
@@ -55,10 +57,15 @@ def nondominated_sentence(study) -> Md:
     """
     df = case.nondominated_counts(study).sort_values("columns")
     n = int(df["of"].iloc[0])
-    parts = [
-        f"{stable(f'nondominated | {study.regime} | {r.view} | nondominated')} on {int(r.columns)}"
-        for r in df.itertuples()
-    ]
+    spec = study.spec
+    parts = []
+    for r in df.itertuples():
+        count = stable(f"nondominated | {study.regime} | {r.view} | nondominated")
+        if r.view in spec.views:  # a named view: its attributes, named
+            names = _and(spec.short[a] for a in spec.views[r.view])
+            parts.append(f"{count} on {int(r.columns)} attributes ({names})")
+        else:
+            parts.append(f"{count} on {int(r.columns)}, all of them")
     runs = _NUMBER_WORDS.get(len(summary()["seeds"]), len(summary()["seeds"]))
     if any(" to " in p for p in parts):
         tail = (
@@ -70,10 +77,7 @@ def nondominated_sentence(study) -> Md:
             f"(counts that hold over {runs} regenerations of the data under rounding-level "
             f"perturbation; a number that moves over them is printed as a range, {_D11})"
         )
-    return Md(
-        f"Of {n} feasible cubesat designs, the nondominated sets hold {_and(parts)} attributes "
-        f"{tail}."
-    )
+    return Md(f"Of {n} feasible cubesat designs, the nondominated set holds {_and(parts)} {tail}.")
 
 
 def attributes_sentence(study) -> Md:
@@ -314,8 +318,8 @@ def recovery_sentence() -> Md:
         else f"the failures differ between the temperatures ({_D14})"
     )
     return Md(
-        f"**A known answer.** On {n} planted tables ({gr.RECOVERY_ROWS} rows, 4 metrics) "
-        f"the fit recovers all three terms to within {gr.OWN_ROWS_TOLERANCE} in {temps}; {tail}."
+        f"**A known answer.** On the {n} planted tables the fit recovers all three terms to "
+        f"within {gr.OWN_ROWS_TOLERANCE} in {temps}; {tail}."
     )
 
 
@@ -465,10 +469,77 @@ def predict_reading(table, reg) -> Md:
     )
 
 
+SWAP_SET = ("pointing error", "peak slew power")
+"""The metrics the swapped parts, the tracker grade and the wheel class, step (the bottom panel
+of the K = 3 planes figure: columns and bands; Appendix C.2): a term led by two of them trades
+across the swapped parts' alternatives rather than along one continuous trade."""
+
+
+def elasticity_sentence(study, fits) -> Md:
+    """One elasticity read as a number from a term's exponents (Theorem 5), and the term whose
+    two leading metrics the swaps set.
+
+    The pair is the K = 1 fit's two heaviest metrics (the pair the K = 1 plane draws); the term is
+    the K = 3 term that carries the largest exponent of the heavier one. The number is
+    ``-w_i / w_j``: the percent of the heavier metric given up per percent gained in the other,
+    printed to the digits that hold over the regenerated datasets.
+    """
+    r = study.regime
+    _, ft, _, labels = aligned(r, study, fits)
+    rep1 = case._reports(study, fits[1])[0]
+    order = np.argsort(-rep1.exponents)
+    a, b = study.names[order[0]], study.names[order[1]]
+    ja, jb = study.names.index(a), study.names.index(b)
+    W = np.atleast_2d(fits[3].estimator.exponents_)
+    live = int(np.argmax(W[:, ja]))
+    k = labels[live]
+    ratio = float(W[live, jb] / W[live, ja])
+    ea = entry(f"D exponents K=3 | {r} | {a} | term {k}")
+    eb = entry(f"D exponents K=3 | {r} | {b} | term {k}")
+    one = lambda v: f"{v:.1f}"  # noqa: E731
+    text = (
+        format_hold(eb["min"] / ea["max"], eb["max"] / ea["min"], one, value=ratio)
+        if ea and eb and ea["min"] > 0
+        else one(ratio)
+    )
+    swaps = []
+    for row in ft.itertuples(index=False):
+        leaders = [x.rsplit(" ", 1)[0] for x in str(row._4).split(", ")[:2]]
+        if all(m in SWAP_SET for m in leaders):
+            swaps.append(f"Term {int(row.term)}'s two leading metrics, {_and(leaders)},")
+    tail = (
+        " "
+        + " ".join(
+            f"{head} are stepped by the swaps of the tracker grade and the wheel class (the "
+            "bottom panel of the K = 3 planes), so its elasticity is read across the swapped "
+            "parts' alternatives rather than along one continuous trade."
+            for head in swaps
+        )
+        if swaps
+        else ""
+    )
+    return Md(
+        f"On term {k} the elasticity between {a} and {b} is -{text}: along the term, one percent "
+        f"gained in {b} is {text} percent given up in {a}, a number an association cannot "
+        f"give.{tail}"
+    )
+
+
 def planted_sentence() -> Md:
-    """The planted example's size."""
+    """The two planted tables of the case sections, each with its job: the worked example of
+    Appendix C.7 (its termination record is D.8's) and the twenty tables the case analysis fits
+    (D.14), drawn by the same generator. The n-lemma figure's three-metric table is the third,
+    named by the text that precedes this sentence.
+    """
+    import generate_results as gr
     from generate_model import planted_table
 
     X, info = planted_table()
     k, d = np.asarray(info["exponents"]).shape
-    return Md(f"The planted table has {len(X)} rows, {d} metrics and {k} planted terms.")
+    runs = gr.recovery_runs()
+    n = len([r for r in runs if r["tau"] == gr.RECOVERY_TAUS[0]])
+    return Md(
+        f"The worked example of {_C7} has {len(X)} rows, {d} metrics and {k} planted terms (its "
+        f"termination record is in {_D8}); the {n} tables of {gr.RECOVERY_ROWS} rows that the "
+        f"case analysis fits come from the same generator ({_D14})."
+    )

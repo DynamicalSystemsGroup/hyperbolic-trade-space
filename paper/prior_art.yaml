@@ -42,7 +42,7 @@ entries:
     # (a test checks it). Appendix G prints the full sentences.
     short:
       does: "Returns a nondominated set of designs"
-      shares: "the weights act as a trade-off"
+      shares: "A maximizer of a weighted geometric mean with positive exponents is Pareto-efficient"
       differs: "Returns no coordinate system and no exponents"
     nearest: true
     why_not_just: >-
@@ -75,7 +75,7 @@ entries:
     short:
       does: "Evaluates the relative efficiency of each decision-making unit"
       shares: "A one-sided envelope of the data, a score per unit"
-      differs: "One exponent vector per term"
+      differs: "a global named structure, in place of weights obtained unit by unit"
     nearest: true
     why_not_just: >-
       This is not just DEA: DEA scores each unit against the envelope under weights obtained from the data,
