@@ -1,6 +1,6 @@
 /*
  * cubesat_r2.sysml -- the ILLUSTRATIVE 12U-class cubesat trade space, as one readable model with
- * two views (WP22), revised in WP23 (the model-realism loop, round 1). It is the candidate that
+ * two views (WP22), revised in WP23 (the model-realism loop, rounds 1 and 2). It is the candidate that
  * replaces the adopted cubesat.sysml at WP23's data gate; until then the two files sit side by
  * side. The WP15 model is in history at 2d13465; every accounting calculation of it is kept here
  * as it was. What WP23 changes: every traded metric is marked as a measure of effectiveness (MoE)
@@ -11,7 +11,10 @@
  * configuration's value and a stated margin (part `budgets`, illustrative, for the supervisor at
  * the data gate); the slew time leaves (one time metric, the settling time; WP16's decision), its
  * requirements folding into SettledRequirement; the measurement states the inputs the simulator
- * reads.
+ * reads. Round 2 (the coupling check): the battery's own rating enters, a continuous discharge
+ * rate whose product with the capacity is the pack's peak power, and a requirement reads it
+ * against the eclipse peak load (housekeeping plus the peak slew power), so the battery capacity
+ * is tied to the slew's peak draw through the model's own calcs; no new configuration variable.
  *
  * This is documentation of a demonstration, not an engineering model. Every number is
  * illustrative: chosen for plausibility at cubesat scale (public component classes), never
@@ -210,6 +213,11 @@ package CubesatTradeSpaceV2 {
         attribute gravityGradientOffset : PlaneAngleValue = 1.7453292519943296e-3 [rad];   // 0.1 degree
         attribute panelArealDensity : SurfaceDensityValue = 2.5 [kg/m**2];
         attribute batterySpecificEnergy : Real = 140.0;   // Wh/kg
+        doc /* Battery rating (illustrative, WP23 round 2): a continuous discharge rating of 1 C,
+               the pack delivering its capacity in one hour, the plain rating of a small-satellite
+               lithium-ion pack; the pack's peak power is this rate times its capacity, so an 80 Wh
+               pack delivers 80 W and a 20 Wh pack 20 W. Not a cited rating. */
+        attribute batteryDischargeRate : Real = 1.0;   // 1/h (C-rate)
         doc /* Launch (illustrative): a launch price of 6000 USD per kilogram to low Earth orbit, a
                round figure at the order of magnitude of published small-satellite rideshare list
                prices; not a cited price (WP23 OD1). The launch cost is this rate times the total
@@ -291,9 +299,10 @@ package CubesatTradeSpaceV2 {
            proportional to panel area; the power left after the housekeeping and tracker loads is
            what the wheels can use, and it caps the usable torque. Energy: the slew loss energy is
            c times the integral of |tau|^2 dt (measured, section 6); the eclipse demand adds the
-           base load over the eclipse; depth of discharge is demand over capacity. Cost: the
-           launch cost is the launch rate times the total mass. Each calc that is a traded metric
-           carries its MoE or MoP mark in its own doc. */
+           base load over the eclipse; depth of discharge is demand over capacity; the pack's
+           peak power is its discharge rating times its capacity, read against the eclipse peak
+           load. Cost: the launch cost is the launch rate times the total mass. Each calc that is
+           a traded metric carries its MoE or MoP mark in its own doc. */
     calc def MassAccounting {
         in c : Cubesat;
         return : MassValue = c.bus.mass + c.battery.mass + c.panelPlus.mass + c.panelMinus.mass
@@ -394,6 +403,20 @@ package CubesatTradeSpaceV2 {
         in peakTorque : TorqueValue;
         return : PowerValue = GeneratedPower(c) - environment.housekeepingLoad
             - PeakSlewPower(c, peakTorque);
+    }
+    calc def BatteryPeakPower {
+        doc /* The power the pack can deliver at its continuous discharge rating: the discharge rate
+               times the capacity (W). Not a traded metric: the battery peak power requirement
+               reads it against the eclipse peak load. */
+        in c : Cubesat;
+        return : PowerValue = environment.batteryDischargeRate * c.battery.capacity / 1.0 [h];
+    }
+    calc def EclipsePeakLoad {
+        doc /* The load the battery alone carries at the peak of a slew in eclipse, where the panels
+               give nothing: the housekeeping load plus the peak slew power. Not a traded metric. */
+        in c : Cubesat;
+        in peakTorque : TorqueValue;
+        return : PowerValue = environment.housekeepingLoad + PeakSlewPower(c, peakTorque);
     }
     // Principal inertia (kg m^2) of the box bus, two thin-plate panels offset along Y (centre at
     // Ly/2 + span/2) and a disc antenna offset along Z, by the parallel-axis theorem.
@@ -536,10 +559,12 @@ package CubesatTradeSpaceV2 {
            its calc. WP23 completes the set: the slew-time and slew-band requirements fold into
            SettledRequirement (one time metric, the settling time), and the four metrics that had
            no requirement get one, pointing error, control effort, peak slew power, and the total
-           mass through the launch cost, each with a threshold proposed in `budgets` below. Every
-           threshold is a value this model states: zero for a margin, a balance or a reserve, the
-           maximum depth of discharge of the environment, the horizon of the nominal slew, or a
-           proposed budget derived from the baseline configuration's own value. */
+           mass through the launch cost, each with a threshold proposed in `budgets` below; round 2
+           adds the battery peak power requirement, the pack's rating against the eclipse peak
+           load. Every threshold is a value this model states: zero for a margin, a balance or a
+           reserve, the maximum depth of discharge of the environment, the horizon of the nominal
+           slew, a proposed budget derived from the baseline configuration's own value, or the
+           pack's own rated power. */
     part def SlewMeasurement {
         doc /* A measurement of one slew: the quantities the requirements and the experiment read.
                The simulator (adcs_sim.simulate_adcs) reads these inputs of the configuration:
@@ -645,6 +670,16 @@ package CubesatTradeSpaceV2 {
         in peakTorque : TorqueValue default = baselineMeasurement.peakTorque;
         require constraint { PeakSlewPower(c, peakTorque) <= budgets.peakSlewPowerLimit }
     }
+    requirement def BatteryPeakPowerRequirement {
+        doc /* The pack can carry a slew in eclipse: the eclipse peak load (the housekeeping load plus
+               the peak slew power) is within the battery's peak power, its discharge rating times
+               its capacity (WP23 round 2: the battery's own rating ties the capacity to the slew's
+               peak draw). It needs the measured peak torque and bounds no traded metric by itself,
+               so the behavioural view draws it with no line, like the power requirement. */
+        subject c : Cubesat;
+        in peakTorque : TorqueValue default = baselineMeasurement.peakTorque;
+        require constraint { EclipsePeakLoad(c, peakTorque) <= BatteryPeakPower(c) }
+    }
     requirement def LaunchBudgetRequirement {
         doc /* The configuration launches within the proposed budget: the launch cost (the MoE on
                the traded metric `total mass`) is within budgets.launchBudget. It reads the
@@ -685,6 +720,7 @@ package CubesatTradeSpaceV2 {
     requirement baselinePointingError : PointingErrorRequirement;
     requirement baselineControlEffort : ControlEffortRequirement;
     requirement baselinePeakSlewPower : PeakSlewPowerRequirement;
+    requirement baselineBatteryPeakPower : BatteryPeakPowerRequirement;
     requirement baselineLaunchBudget : LaunchBudgetRequirement;
     requirement baselineEclipseReserve : EclipseReserveRequirement;
     requirement baselinePowerMargin : PowerMarginRequirement;
@@ -696,6 +732,7 @@ package CubesatTradeSpaceV2 {
     satisfy baselinePointingError by cubesatBaseline;
     satisfy baselineControlEffort by cubesatBaseline;
     satisfy baselinePeakSlewPower by cubesatBaseline;
+    satisfy baselineBatteryPeakPower by cubesatBaseline;
     satisfy baselineLaunchBudget by cubesatBaseline;
     satisfy baselineEclipseReserve by cubesatBaseline;
     satisfy baselinePowerMargin by cubesatBaseline;
@@ -716,8 +753,10 @@ package CubesatTradeSpaceV2 {
         doc /* After the slew is measured: what needs the measured quantities. Each objective below
                verifies the requirement on a traded metric's own quantity: settling time, control
                effort, eclipse reserve, power margin, energy balance, peak slew power, depth of
-               discharge; the momentum requirement reads the measured peak momentum, which is not
-               traded. With ConfigurationVerification, every traded metric has a requirement. */
+               discharge; the momentum requirement reads the measured peak momentum, and the
+               battery peak power requirement the pack's rating against the eclipse peak load,
+               neither traded. With ConfigurationVerification, every traded metric has a
+               requirement. */
         subject c : Cubesat;
         objective {
             verify requirement settled : SettledRequirement;
@@ -725,6 +764,7 @@ package CubesatTradeSpaceV2 {
             verify requirement depthOfDischarge : DepthOfDischargeRequirement;
             verify requirement controlEffort : ControlEffortRequirement;
             verify requirement peakSlewPower : PeakSlewPowerRequirement;
+            verify requirement batteryPeakPower : BatteryPeakPowerRequirement;
             verify requirement eclipseReserve : EclipseReserveRequirement;
             verify requirement powerMargin : PowerMarginRequirement;
             verify requirement energyBalance : EnergyBalanceRequirement;

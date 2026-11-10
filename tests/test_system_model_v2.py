@@ -36,11 +36,18 @@ FAST = {"t_end": 600.0, "max_step": 1.0}  # coarser than the dataset (0.5 s), fo
 # slew-band requirements fold into SettledRequirement, the measurement loses `slewTime` and
 # `censored`, the scenario loses the sensitivity band), a launch cost (calc `LaunchCost`, the MoE on
 # the total mass) and a part `Budgets` of proposed thresholds enter, and the line cap grows by the
-# four requirement defs, the calc, the part and the MoE/MoP docs it adds.
+# four requirement defs, the calc, the part and the MoE/MoP docs it adds. Round 2 (the coupling
+# check, WP23-review.md) adds the battery's discharge rating, the calcs `BatteryPeakPower` and
+# `EclipsePeakLoad` and the requirement that reads them; the cap grows by those.
 MODELS = {"adopted": (MODEL, TEXT), "r2": (MODEL_R2, TEXT_R2)}
 EXPECT = {
     "adopted": {"line_cap": 730, "slew_time": True, "calcs": set(), "parts": set()},
-    "r2": {"line_cap": 850, "slew_time": False, "calcs": {"LaunchCost"}, "parts": {"Budgets"}},
+    "r2": {
+        "line_cap": 900,
+        "slew_time": False,
+        "calcs": {"LaunchCost", "BatteryPeakPower", "EclipsePeakLoad"},
+        "parts": {"Budgets"},
+    },
 }
 BY_NAME = pytest.mark.parametrize("name", list(MODELS))
 
@@ -288,8 +295,9 @@ def test_every_constant_has_a_doc_rationale(name):
     The length cap was 700 lines for the WP15 model; the WP22 model the gate adopted (four
     requirements with their verification, the two views marked) is 729 lines, and the cap holds it
     there: the model stays short (WP22 definition of good). WP23's revision adds four requirement
-    defs, the launch-cost calc, the budgets part and an MoE/MoP doc on each traded metric; its cap
-    is 850 (``EXPECT``), which holds it where round 1 left it.
+    defs, the launch-cost calc, the budgets part and an MoE/MoP doc on each traded metric (round 1,
+    831 lines), then the battery rating, two calcs and the battery peak power requirement (round 2,
+    871 lines); its cap is 900 (``EXPECT``), which holds it where round 2 left it.
     """
     text = MODELS[name][1]
     assert text.count("doc /*") >= 18
@@ -483,7 +491,8 @@ def _calc_bodies(text: str) -> dict[str, str]:
 def test_r2_keeps_every_calculation_of_the_adopted_model(both):
     """The revision changes no accounting: each calc def of the adopted model has the same body in
     r2 (docs aside), the eight computed attributes agree on the three named configurations, and
-    the revision adds only the launch cost."""
+    the revision adds only the launch cost (round 1) and the battery's peak power and the eclipse
+    peak load (round 2), none of them traded."""
     adopted, r2 = _calc_bodies(both["adopted"].text), _calc_bodies(both["r2"].text)
     assert set(r2) - set(adopted) == EXPECT["r2"]["calcs"]
     assert {k: r2[k] for k in adopted} == adopted

@@ -80,11 +80,11 @@ coupling,controls,controls,SlewMeasurement (adcs_sim.simulate_adcs); GravityGrad
 coupling,controls,power and energy,peakTorque; torqueSquaredIntegral
 coupling,controls,metrics read off,settling time; pointing error; control effort
 coupling,controls,requirements read off,ControlEffortRequirement; MomentumRequirement; PointingErrorRequirement; SettledRequirement
-coupling,power and energy,power and energy,panelMinus.area; panelPlus.area; panelMinus.mass; panelPlus.mass; battery.mass; GeneratedPower; BaseLoad; AvailablePower; UsableWheelTorque; SlewLossEnergy; EclipseDemand; DepthOfDischarge; EclipseReserve; OrbitPeriod; EnergyBalance; PeakSlewPower; PowerMargin
+coupling,power and energy,power and energy,panelMinus.area; panelPlus.area; panelMinus.mass; panelPlus.mass; battery.mass; GeneratedPower; BaseLoad; AvailablePower; UsableWheelTorque; SlewLossEnergy; EclipseDemand; DepthOfDischarge; EclipseReserve; OrbitPeriod; EnergyBalance; PeakSlewPower; PowerMargin; BatteryPeakPower; EclipsePeakLoad
 coupling,power and energy,controls,panelPlus.mass; usableWheelTorque
 coupling,power and energy,mass,battery.mass; panelMinus.mass; panelPlus.mass
 coupling,power and energy,metrics read off,power margin; energy balance; eclipse reserve; peak slew power; depth of discharge
-coupling,power and energy,requirements read off,DepthOfDischargeRequirement; EclipseReserveRequirement; EnergyBalanceRequirement; PeakSlewPowerRequirement; PowerMarginRequirement; PowerRequirement
+coupling,power and energy,requirements read off,BatteryPeakPowerRequirement; DepthOfDischargeRequirement; EclipseReserveRequirement; EnergyBalanceRequirement; PeakSlewPowerRequirement; PowerMarginRequirement; PowerRequirement
 coupling,mass,mass,MassAccounting; StructureMass; LaunchCost; InertiaX; InertiaY; InertiaZ
 coupling,mass,controls,InertiaX; InertiaY; InertiaZ; structureMass
 coupling,mass,metrics read off,total mass

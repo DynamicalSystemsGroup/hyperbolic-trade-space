@@ -30,6 +30,7 @@ comment, or is the model's `1.0 [unit]` normalisation idiom):
 |---|---|---|
 | `6000.0` USD/kg | `environment.launchRate` | a round figure at the order of magnitude of published small-satellite rideshare list prices to low Earth orbit; not a cited price (OD1: illustrative) |
 | `1.2` | `budgets.margin` | the one 20 % margin above the baseline's value, for all four thresholds |
+| `1.0` 1/h (round 2) | `environment.batteryDischargeRate` | a continuous discharge rating of 1 C, the pack delivering its capacity in one hour, the plain rating of a small-satellite lithium-ion pack; the pack's peak power is this rate times its capacity (`BatteryPeakPower`); not a cited rating. Where it binds: "Round 2" below |
 
 Where each proposed threshold binds over the declared ranges (read from the model's named configurations
 and its ranges; a finding, not a tuning):
@@ -170,6 +171,132 @@ frozen data untouched until the gate):
   (R-2), every label is legible at 700 px and nothing overlaps; the assembly view is the adopted
   model's (the configuration space is unchanged). The views stay out of `examples/adcs/model_v2/views/`
   until the gate.
+
+## Round 2: the battery coupling
+
+The supervisor's input (`WP23-decisions.md`, 22:05 and 22:15): "maybe we should have 2 to 3 battery
+options with different weights, storage capacities, peak charge rate and peak power" so that the model
+"provides a fully coupled set of paths from the config values to the metrics of interest without
+missing anything that is obviously coupled"; "fully coupled" meaning a connected graph of coupling
+variables between subsystems, not all-to-all. The round assessed three options from the model and the
+physics it already states (a battery's own ratings; no new physics), then decided on the evidence.
+
+**What the battery reaches today** (`coverage.md`, tables 1 and 3). `batteryCapacity` feeds the power
+subsystem alone, through `battery.capacity`; from there the pack mass `battery.mass` (the capacity over
+the specific energy) is a coupling variable into the mass accounting, so the capacity reaches the total
+mass and the launch cost; the capacity is read by `EclipseDemand`, `DepthOfDischarge` and
+`EclipseReserve`, so it reaches the depth of discharge and the eclipse reserve; through the structure
+mass and the inertias it reaches the slew, so the settling time and the control effort (relative
+changes 5.9e-3 and 1.9e-3 at a 10 % change) and, structurally, the peak torque and so the power margin
+and the peak slew power (empirically 0: the wheels saturate; "Coverage findings"). What the model did
+not state: the pack's own ratings. A battery delivers at most its rated power; in eclipse it alone
+carries the housekeeping load and the slew's peak draw. That path, capacity to the slew's peak draw,
+is the obviously coupled one that was missing.
+
+**The three options.**
+
+- (a) *A battery swap*: two or three alternatives, each with a mass, a capacity, a peak charge rate and
+  a peak power. Couples: the swap reaches the total mass and the launch cost (mass), the depth of
+  discharge and the eclipse reserve (capacity), and the rating requirement (peak power), the same
+  metric set the capacity tune reaches today, since the pack mass already follows from the capacity
+  through the specific energy; the new information is one specific energy per alternative, which the
+  data would see as three levels of the mass-to-capacity ratio in place of one. Costs: a categorical
+  configuration column (the contract's `contract_version` + 1 for an added column; the sampler in
+  `cubesat_model.py`; the oracle's `configure`; the CaseSpec's covariates in `case.py`; the paper's
+  configuration-space slots, "two swaps, four tunes" becoming three and the assembly view redrawn);
+  the case-code stream and WP19's slot decisions, not this package's loop.
+- (b) *A derived battery peak power with a requirement*: the pack's peak power is a discharge rating
+  (a C-rate, 1/h) times the capacity, and a requirement reads the eclipse peak load (the housekeeping
+  load plus the peak slew power) against it. Couples: the capacity to the slew's peak draw through
+  the model's own calcs (`battery.capacity` -> `BatteryPeakPower`; `peakTorque` from the controls ->
+  `PeakSlewPower` -> `EclipsePeakLoad`; the requirement reads both). No new column, no change to the
+  dataset, the flags, the contract or the paper's slots; one new constant with its rationale.
+- (c) *Both*: (a)'s costs plus (b).
+
+**Decision: (b).** The general test is that every configuration value has its obviously coupled paths
+to the metrics present in the model. The battery's paths to the metrics are present (mass and launch
+cost, depth of discharge, eclipse reserve, the slew through the pack mass); the one missing coupling
+was the pack's rating against the slew's peak draw, and that is a bound on quantities the model already
+computes, which one rating closes with no new column. (a) adds a column and its downstream costs for a
+coupling the metrics already carry; it changes the configuration space rather than the evaluation of
+it, which is a problem change for the supervisor at the gate, not a round of the loop.
+
+**Implemented in `cubesat_r2.sysml`** (round 2; the adopted model and the frozen data untouched):
+`environment.batteryDischargeRate = 1.0` (1/h; the literal in the thresholds table above);
+`calc def BatteryPeakPower` (rate times capacity, W) and `calc def EclipsePeakLoad` (housekeeping plus
+`PeakSlewPower`), neither traded; `BatteryPeakPowerRequirement` (`EclipsePeakLoad(c, peakTorque) <=
+BatteryPeakPower(c)`, the measured peak torque as its `in`), satisfied by the baseline and verified in
+`SlewVerification`. Twelve `satisfy` statements, all holding (engine `run`). The model is 871 lines;
+the r2 pins of `tests/test_system_model_v2.py` carry the two calcs and a cap of 900.
+
+**Where it binds** (read from the model; a finding, not a tuning). Pack peak power at 1 C: baseline
+80 W, agile 140 W, compact 40 W. Eclipse peak load at the recorded baseline torque: 14.0, 14.6 and
+13.5 W; at each class's maximum torque: 14.0, 19.4 and 13.3 W. The largest load the declared space
+allows is 19.4 W (fine tracker 1.5 W, idle wheels 0.9 W, housekeeping 12 W, a large wheel saturating
+at 10 mN.m: 5 W of loss) and the smallest pack is 20 Wh, 20 W: the requirement holds over the whole
+declared space, by 0.6 W in that corner. A pack rated 0.5 C would need 38.8 Wh for the same corner
+(19.4 W over 0.5 1/h). The rating is not set to bind: 1 C is the plain continuous rating; what it says
+is that the smallest packs of the range carry the most agile slews with little to spare, and the
+coverage table shows the path. None of this enters the dataset.
+
+**Left for the gate (OD7).** The second rating the supervisor named, the peak charge rate: a charge
+acceptance (a C-rate times the capacity) against the array's sunlit surplus (`GeneratedPower -
+BaseLoad`) would tie the capacity to the panel span through a requirement, binding where a small pack
+meets large panels (a 20 Wh pack at 0.5 C accepts 10 W against a surplus of up to 67 W at 1.0 m
+panels). It bounds no traded metric and adds a second rating constant; it is listed here as a
+candidate for his decision, not added in the loop.
+
+**The coupling table** (unit 1; `coverage.md`, third table; `coverage.py`, `Coupling` and
+`SUBSYSTEM_OF`). The design structure matrix of the MDAO literature (XDSM form): the configuration
+values feed the subsystems' calcs, the subsystems exchange named coupling variables, the metrics and
+the requirements are read off the subsystems. The three subsystems are the behavioural view's
+(`controls`, `power and energy`, `mass`); which calc belongs to which is the analyst's decomposition,
+stated once in `coverage.py`; every cell is read from the model. Read from the table:
+
+- Configuration values to subsystems: `WheelClass` feeds the controls (`momentumCapacity`, that is
+  `wheel.maxMomentum`), the power subsystem (`wheel.maxTorque`) and the mass accounting
+  (`wheel.mass`); `TrackerGrade` the three likewise (`tracker.accuracy`, `tracker.power`,
+  `tracker.mass`); `panelSpan` the power subsystem (`panelPlus.span`, `panelMinus.span`), the mass
+  accounting (`panelPlus.span`, the inertia's geometry) and the slew (`panelPlus.span`, a simulator
+  input); `batteryCapacity` the power subsystem alone (`battery.capacity`); `Kp` and `Kd` the controls
+  alone (`controller.Kp`, `controller.Kd`).
+- Coupling variables between subsystems: controls to power and energy, `peakTorque` and
+  `torqueSquaredIntegral` (the measured slew into `PeakSlewPower`, `PowerMargin`, `EclipsePeakLoad`
+  and `SlewLossEnergy`); power and energy to controls, `usableWheelTorque` (the torque cap the slew
+  reads) and `panelPlus.mass`; power and energy to mass, `battery.mass`, `panelPlus.mass`,
+  `panelMinus.mass`; mass to controls, `structureMass` and `InertiaX`, `InertiaY`, `InertiaZ`
+  (the slew's inputs and the gravity-gradient torque). Mass feeds the power subsystem nothing and the
+  controls feed the mass accounting nothing: the mass accounting reads configuration attributes only.
+- Metrics read off: controls, settling time, pointing error, control effort; power and energy, power
+  margin, energy balance, eclipse reserve, peak slew power, depth of discharge; mass, total mass
+  (with the launch cost, its MoE). Requirements read off each subsystem likewise, twelve in all.
+- Connectivity (the test `tests/test_model_coverage.py`): every configuration value feeds at least
+  one subsystem and reaches at least one traded metric (by the structural column of table 1: the
+  swaps, the panel span and the battery reach all nine; `Kp` eight, not the total mass; `Kd` seven,
+  not the total mass or the pointing error); every metric is read off a subsystem; the graph of
+  configuration values, subsystems and metrics is connected (18 nodes, 25 edges); no configuration
+  value reaches nothing. The controls and the power subsystem feed each other (cells on both sides
+  of the diagonal); the model resolves that loop in one pass, since the torque cap is a quantity of
+  the configuration computed before the slew and the peak torque is read after it.
+- The matrix is coarser than table 1: a subsystem two configuration values feed does not pass each of
+  them to every metric it reads off (the gains reach the controls, not the mass accounting through
+  them), so the per-metric reach is table 1's structural column, and the matrix states which
+  subsystems exchange which variables. The coupling variables are pinned by name in the test
+  (`EXPECTED_COUPLING`), so a model change that adds or removes one is seen.
+
+**The views of round 2** (`work-packages/WP23-rounds/round-2/`, `INTENT.md`): the assembly view's
+PlantUML is byte for byte round 1's (no configuration variable added); the behavioural view differs by
+one box, `BatteryPeakPowerRequirement` in the dashed group of requirements with no line to a traded
+metric (it bounds the eclipse peak load by the pack's rating, like the power requirement bounds the
+available power), satisfied by the baseline and verified in `SlewVerification`. Read from the image:
+every label legible at 700 px, nothing overlaps, the three subsystems and their metrics as in round 1.
+The views generator is unchanged.
+
+**Tests touched.** `tests/test_model_coverage.py` (unit 1: the connectivity tests, the three-table
+CSV); `tests/test_system_model_v2.py` (the r2 pins: the calcs `BatteryPeakPower` and
+`EclipsePeakLoad`, the line cap 900). `tests/test_model_checking_v2.py` pins the r2 requirement defs,
+the `satisfy` count (eleven in round 1, twelve now) and the `SlewVerification` set; it is outside this
+unit's files, an item for the PM.
 
 ## R-5's check, amended
 
