@@ -32,6 +32,7 @@ def test_every_mapped_test_file_exists():
         ("scripts/assemble_site.py", "tests/test_build_generated.py"),
         ("src/hyperbolic_trade_space/estimator.py", "tests/test_estimator.py"),
         ("examples/adcs/experiments/runner.py", "tests/test_experiments.py"),
+        ("examples/adcs/model_v2/diagnostic_pair.py", "tests/test_diagnostic_pair.py"),
         ("work-packages/interface-contract.toml", "tests/test_interface_contract.py"),
         ("glossary.yaml", "tests/test_build_generated.py"),
         ("Dockerfile", "tests/test_container.py"),

@@ -80,6 +80,7 @@ PATH_TESTS: list[tuple[str, list[str]]] = [
             "tests/test_mutation_v2.py",
             "tests/test_v2_data.py",
             "tests/test_model_coverage.py",
+            "tests/test_diagnostic_pair.py",
         ],
     ),
     (
