@@ -160,3 +160,13 @@ folder is the record of the gate at its commit, which its README says. G-10 is f
 **Decision:** WP23 accepted, final when G-3, G-5 and G-7 land (three small units, one push each), recorded here
 with their hashes. The supervisor's items (the four thresholds, the two redundancies, the proposals' feasibility)
 stay under "Waiting for the supervisor".
+
+## Two calls on the gap units (2026-11-10, 06:35; the driver)
+
+- G-3: revision 7 of the behavioural view (type size, the legend's kinds, the `totalMass` label, the derived-from
+  line) gets one fresh cold read, image first, by a P3 reader before WP23 is final; the author's own check is not a
+  review (the standing order of 2026-11-09). If nothing blocks, WP23 is final at that hash.
+- G-17's new clause cites the settling time's 1.5e-10 relative move from a decision record. A decision record is
+  not a generated value: either the gaps generator computes that number from the data of record in the container
+  (then it is a generated value and may be printed) or the clause is narrowed to no number ("moves at the rounding
+  level under the integrator's jitter"). The stream chooses; no number from a record.
