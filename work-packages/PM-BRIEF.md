@@ -231,8 +231,15 @@ by agent id; finish their current unit, start nothing new under the old plan):
 - `wp19` (ab45ac93cf19c12c5): DONE at 141653c, 3cd2722: Figure 3 redrawn without facet colouring (paper/figures/planes.py)
   and Figure 4 redrawn as Z0 against log V (chart_level.py), both passed fresh reads; P-6 and P-7 revised in
   WP19-figure-review.md, to be placed by the paper stream (float count 10); the principle check over every figure, paper
-  and docs, is recorded as findings only and awaits the supervisor's dispositions (sent to the driver); all on current
-  data, WP23 regenerates them; the Figure 7 Z1/Z2 label defect is a case.py item for WP23.
+  and docs, is recorded as findings; the dispositions are in WP19-decisions.md (0dab2e9 and the commit after it), and
+  they are WP19's remaining units for the fourth PM, on current data to settle the design (WP23 regenerates all of it):
+  paper Figure 2 (the K = 1 plane) redrawn with planes.py; paper Figures 5 and 6 keep the drawing, their captions name
+  the cells as analysis of the assigned designs; the index three-pane figure: designs in one colour, the regions pane
+  passes the sentence test as named analysis or is dropped; docs Figures 2, 3, 6 as the paper's 3, 5, 6; docs Figure 8
+  (the planted ternary): the supervisor says "Recolour", designs to one neutral colour, markers unchanged. A separate
+  small package unit, outside WP19, with a contract amendment if needed: the package default of `plot_log_plane` for
+  K > 1 becomes one colour with the facet lines, assignment colouring an explicit documented option. The Figure 7
+  Z1/Z2 label defect is a case.py item for WP23.
 - `wp16` (ae763977995a7ace5): DONE at 6a07783: the hold time by event detection in a new module
   `examples/adcs/experiments/hold_time.py` (`HoldTimeOracle`, `make_oracle(..., settling_time_method="steps"|"events")`,
   default "steps"; the ledger hashes cubesat_oracle.py, so it is untouched); the first regeneration trial recorded in
