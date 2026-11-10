@@ -58,6 +58,10 @@ with doctests.
 - Claims: every claim a reader can rely on is backed (a lemma step, a generated value, a test, a
   verified source) or is narrowed or dropped; no caveats added to prove it. Register and mechanism:
   `docs/superpowers/notes/claims-review.md`. Keep the model, the fit and the analysis apart in prose.
+- Reviews run the thing: a reviewer of any delivery runs the code, analyses the data it produces, and looks at the
+  rendered result (plots, notebooks, docs pages, the paper) in a browser or as an image, with screenshots in the
+  record; reading code and prose alone is not a review. A stderr line on a rendered page, a plot that does not say
+  what its caption says, a page that does not build: these are found by looking, not by reading.
 - Figures: every figure earns its place or goes; judged as rendered by a visual loop (cold read,
   the sentence test, ink as data, legibility, shows and does not show):
   `docs/superpowers/notes/figure-review.md`.

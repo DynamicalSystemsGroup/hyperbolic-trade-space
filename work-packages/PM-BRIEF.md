@@ -306,3 +306,13 @@ folders whose result is recorded, raw reader reports after triage, superseded re
 nothing reads), the records of the gates kept; drift closed between docs, glossary and code; gaps listed. Every
 stream also leaves no scratch behind in the tree when its unit lands.
 
+## Reviews run the thing (the supervisor's standing order, 2026-11-09, 23:00)
+
+Every reviewer the PM dispatches, for any unit, runs the code, analyses the data it produces and looks at the rendered
+result (plots as images, notebooks and docs pages in a browser, the staged paper), and puts the screenshots or the
+images it looked at in the review record; reading the code and the prose is not a review. The PM's acceptance of a
+unit names what was run, what data was looked at and which rendered pages or figures were seen. A stderr line on a
+rendered page, a figure that does not show what its caption says, a page that does not build, a number in prose
+that differs from the table: these are found by looking and running, and a review that could not have found them
+is returned.
+

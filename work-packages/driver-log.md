@@ -197,6 +197,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   stands. Routed to the PM as two units (estimator with a test; paper cell regenerated in the container with the
   guard test). Nothing needed from the supervisor.
 
+- **Standing order (2026-11-09, 23:00), the supervisor verbatim:** "add a standing order to review with
+  screenshots/browser and to make sure your PM reviewers are not just reading code and prose but actually running
+  code, analyzing data and looking at render plots, and web pages". Recorded in `CLAUDE.md` (Reviews run the
+  thing), `PM-BRIEF.md` (same title) and the driver's memory; the PM told. The warning leak of Section 9 is the case
+  that taught it: three reviews read the cell and none looked at the page.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
