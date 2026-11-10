@@ -796,6 +796,10 @@ sentence reads the count from the file). `make_check_designs.py`, the frozen gen
 is unchanged (its 0.35 produced the frozen file). Scripts of the derivation above:
 `reach_probe.py`, `reach_dist.py`, `reach_rule.py` in the session scratch, not committed.
 
+## Data gate: the comparison (D-9)
+
+The comparison of old v2 against new v2 (the files, every moved number with its cause, every conclusion identical or changed, the slot list) is `work-packages/swap-evidence.md`, section "WP23 data gate: old v2 (WP22 model, slew time, step-read settling time) against new v2 (WP23 model, nine metrics, event-detected settling time)"; its "Changed conclusions" list comes first there.
+
 ## Glossary entries (unit 3): drafted, held
 
 Three entries were drafted for `glossary.yaml` in the file's own style (`moe`, `mop`, `launch-cost`;

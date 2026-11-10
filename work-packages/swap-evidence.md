@@ -1171,3 +1171,332 @@ band (up to one step, 0.5 s), which moves its participation at one K = 3 facet i
 change moves the proposer's chart. The supervisor has since made the hold time (the settling time) the case's one time
 metric and moved the regeneration after WP23 (`WP16-decisions.md`), so these conclusions are superseded by that
 regeneration's data gate.
+
+## WP23 data gate: old v2 (WP22 model, slew time, step-read settling time) against new v2 (WP23 model, nine metrics, event-detected settling time)
+
+Written 2026-11-10 by the comparison stream of WP23 (D-9, R-13) at `dev` 8507bd9. Old files: the
+committed state at `dev` 71a5f74, kept outside the repository in the session scratch folder
+`wp23-gate-old/` with `SHA256SUMS.txt`; their four datasets are byte-equal to the frozen generation
+under `examples/adcs/data/` that the paper reads (`4dc4ae0b8ebe`, `9450713cd78c`, `5794b7218dd9`,
+`3e06e69bb345`), so "old" below is also "the paper as committed". New files: the regeneration of
+record in `hts-paper` `3c7cfc8a2e27` at 2b2e94e (`work-packages/WP23-rounds/gate/README.md`,
+`paper/container/RECORD.md`). Every number here was computed by a script kept in the session
+scratch folder `wp23cmp/` (not committed): `files_compare.py` (parts 1 and 2; output
+`files_compare.md`), `conclusions.py` (part 3: `case.py` at 8507bd9, defaults unchanged, on three
+configurations; `conclusions.json`, rendered by `render.py` into `conclusions.md`),
+`mac_remeasure.py` and `mac_flags.py` (the named rows re-measured on this Mac with the oracle of
+record; `mac_remeasure.md`), `reach_check.py` (the proposer's rule replayed on three views;
+`reach_check.md`). The three configurations of `conclusions.py` separate the causes: **old10**, the
+old files with the paper's ten-metric `CUBESAT` spec (the paper's numbers as committed); **old9**,
+the old files with the nine-metric spec (the column change alone: slew time out, the four-metric
+view of the check carrying the settling time, the three slew-time association pairs gone);
+**new9**, the new files with the nine-metric spec (the regeneration of record). A quantity equal
+in old9 and new9 but not in old10 moved because of the column change; a quantity that differs
+between old9 and new9 moved because of the regenerated data (the event-detected settling time and
+the platform of record).
+
+### Changed conclusions (read first)
+
+Each item: what the paper prints today, what the new data gives, and the cause.
+
+1. **The K = 1 contending sets are 5-lemmas, not 6-lemmas, in both regimes.** Primary regime: total
+   mass, slew time, energy balance, control effort, pointing error, depth of discharge (6) becomes
+   total mass, energy balance, pointing error, depth of discharge, settling time (5); the leading
+   metric changes from slew time (0.240) to total mass (0.358). Baseline regime: control effort,
+   slew time, power margin, settling time, pointing error, eclipse reserve (6) becomes control
+   effort, settling time, power margin, pointing error, depth of discharge (5); control effort leads
+   both (0.430, 0.432). Cause: the column change (old9 and new9 agree on every set and on every
+   exponent to three decimals). The selected temperature at K = 1 is 38.1 in the primary regime
+   in all three configurations; in the baseline regime 41.7 becomes 45.7 (column change).
+2. **The per-term report refuses on the primary regime at K = 3, at both documented bands.** At the
+   K = 1 band (1/tau = 0.0262) term 2's cell (181 rows, share 0.034) has 3 near-frontier rows; at
+   the K = 3 fit's own band (0.0088) term 1's cell has 7 and term 2's 1; the report's guard is 10.
+   The library's message numbers terms from 0 (`facet 1: only 3 near-frontier rows`, `facet 0:
+   only 7`), which `k3_record.md` read as term 1 at both bands; the counts above are from the
+   estimator's assignments (`conclusions.py`, `near_at_k1_band`, `near_at_own_band`). It refuses on
+   old9 too (2 rows and 8 rows), so the cause is the column change, not the regeneration. Nothing
+   was loosened: the fit is reported from the estimator (exponents per term, cells, shares, the
+   certificate), as `k3_record.md` reports it. Consequence for the paper: `num-k-sweep` (the
+   sentence reads `facet_table`), `fig-tensions-k3` (`case.tension_figure` at the K = 1 band) and
+   Appendix D.3 cannot be generated on the new primary data as the cells stand; the K = 2 report
+   does not refuse (13 near-frontier rows in the smaller cell).
+3. **The K = 3 fits change in both regimes.** Primary: terms with contending sets of 6, 6 and 7
+   metrics and shares 0.089, 0.133, 0.778 become three terms led by energy balance (0.416, with
+   total mass 0.240 and settling time 0.185), control effort (0.397, with settling time 0.367 and
+   energy balance 0.193) and peak slew power (0.612, with pointing error 0.227), shares 0.241,
+   0.034, 0.724 (reported from the exponents, item 2). Baseline: sets of 6, 7 and 5 become 5, 6 and
+   4; term 3's leading metric changes from energy balance (0.355) to control effort (0.353, energy
+   balance 0.347); shares 0.077, 0.590, 0.333 become 0.118, 0.451, 0.431. Cause: the column change
+   for the sets and the leading metrics (old9 equals new9 in every set); the event-detected settling
+   time for the shares (old9 to new9: baseline 0.500 to 0.451 and 0.375 to 0.431, primary by at most
+   0.017), the same size as the shares' spread under the 1e-12 jitter of WP16 D-6 above. The
+   selected temperatures at K = 2 and 3 move with the columns: primary 113.2 and 195.2 become 94.4
+   and 113.2; baseline 78.8 and 162.8 become 71.9 and 113.2.
+4. **The check changes in kind.** Old: three proposals on the slew-time view at WP7's reach 0.35,
+   three distinct designs, log V within the band for 3 of 3 and position for 0 of 3 (position
+   errors 1.4 to 3.1 bands), `dod_ok` False for 2 of 3. New: three proposals on the settling-time
+   view at the reach of the stated rule (0.6222, the 2nd percentile of the pool's nearest predicted
+   distances to the 300 most isolated holes; the rule replayed here returns 0.3510 on the old view
+   and 0.6222 on the new data, and the files' three distances on each: `reach_check.md`), two of
+   them one configuration (proposal_1 and proposal_3: medium wheel, fine tracker, 0.3037 m, 25.4
+   Wh, Kp 1.78, Kd 0.50; the regressor tau 15.37 becomes 10.69, the band 0.065 becomes 0.094),
+   log V within the band for 3 of 3 and **position within the band for 1 of 3** (proposal_2 at
+   0.51 bands; the other two rows are the one design at 1.05 bands), `dod_ok` **False for 3 of
+   3**. Cause of the new proposals: the view change and the rule (CR-3); cause of the coincidence:
+   the regenerated data, since the rule on the old data with the new view admits three holes
+   mapped to three distinct pool designs (42750, 37780, 50305 at 0.5798, 0.5843, 0.5514) and on the
+   new data the third hole's nearest pool design is 37780 again (0.5552). What `dod_ok` False on all
+   three means for the check section: the proposer trains on the rows that are settled, within the
+   momentum budget and power-positive (`feasible_primary`, as WP7 did) and the chart has no
+   depth-of-discharge axis, so it proposes at the small end of the battery range (22 to 25 Wh),
+   where the model's depth-of-discharge requirement is violated; the paper's sentences
+   (`num-predict`, `num-predict-reading`: "did not show that it places the position (0 of 3)")
+   change, and whether a proposal that fails a requirement of the model counts as a check is the
+   supervisor's reading, not the gate's.
+5. **Counts and values the paper prints, moved.** Nondominated: 671 of 706 on 10 attributes
+   becomes 659 on 9; the four-metric view 146 becomes 126 (the view now carries the settling time);
+   the two-attribute view (settling time and slew time, 8) no longer exists; baseline 732 on 10
+   becomes 725 on 9 and 157 becomes 152. Effective sample size at K = 1: 16.2 becomes 23.1
+   (primary; column change), 14.5 becomes 14.6 (baseline). Near-frontier designs at K = 1: 51
+   becomes 56, 103 becomes 77. Mean slack: 0.204, 0.138, 0.117 becomes 0.243, 0.182, 0.146
+   (primary); 0.131, 0.106, 0.093 becomes 0.179, 0.142, 0.093 (baseline); refitted at the K = 1
+   temperature 0.090, 0.053 becomes 0.132, 0.088 and 0.068, 0.033 becomes 0.114, 0.046. Candidates:
+   0 of 3 beyond the surface in every configuration; their log V move from -0.115, -0.072, -0.144 to
+   -0.197, -0.153, -0.171 and their ranks from 0.59 to 0.77 to 0.53 to 0.62 (column change).
+6. **Two association signs are not stable, the rest hold.** Primary (settling time, pointing
+   error): +0.18 (+0.20) becomes +0.03 (+0.15), and old9 gives -0.03 (+0.11): the Pearson value is
+   a residue whose sign moves with the data; baseline (settling time, total mass): -0.12 (-0.02)
+   becomes -0.12 (+0.04): the Spearman sign changes. Every other reported sign is identical;
+   (settling time, total mass) in the primary regime moves from -0.54 (-0.34) to -0.50 (-0.50);
+   the three slew-time pairs cease to exist.
+7. **Unchanged:** the certificate statuses (`not_applicable`, `certified`, `certified` in both
+   regimes); the feasibility flags and the feasible sets (706 and 780; no design's flag changed);
+   the settled flag that cannot move (verified below); the two metric redundancies (Spearman among
+   the feasible designs, old and new: eclipse reserve with depth of discharge -0.9994 in both
+   regimes; power margin with energy balance +0.9824 primary and +0.9880 baseline), which stand as
+   readings for the supervisor's decision on the metric set (WP23 OD7).
+
+### 1. The files
+
+| dataset | old sha256 | new sha256 | rows | columns old / new | out | in |
+|---|---|---|---|---|---|---|
+| `data/v2/adcs_designs_cubesat_gains.csv` (primary) | `4dc4ae0b8ebe` | `0bc823ceaf51` | 1000 | 35 / 33 | `slew_time_s`, `slew_time_05deg_s` | none |
+| `data/v2/adcs_designs_cubesat.csv` (baseline) | `9450713cd78c` | `4ec7514e9ac5` | 1000 | 35 / 33 | the same two | none |
+| `data/v2/check_predictions_cubesat.csv` | `5794b7218dd9` | `6b65b2843a99` | 3 | 25 / 25 | `pred_std_slew_time_s` | `pred_std_settling_time_s` |
+| `data/v2/check_designs_cubesat.csv` | `3e06e69bb345` | `b6facc345c68` | 6 | 34 / 32 | the same two | none |
+| `data/scope-sensitivity/scope_sensitivity_v2.csv` | `97193d955a73` | `3e0d7df6cab8` | 20 | 35 / 33 | the same two | none |
+| `tests/data/v2_first_designs_of_record.csv` | `1943d76cb2a6` | `894277fb237c` | 20 | 35 / 33 | the same two | none |
+| `model_v2/views/coverage.csv` | `2213a8a1a03e` | `494b10e96198` | 92 | 8 / 8 | none | none |
+
+Ledger: 29 entries old, 34 new; the five added (`v2-primary@5` superseding `@4`, `v2-baseline@5`,
+`v2-check-predictions@5`, `v2-check-designs@5`, `scope-sensitivity-shared-subspace-v2@4`
+superseding `@3`) carry the new outputs' hashes above, `model_sha256` `fb1dbd061610` (the WP23
+model; the superseded entries carry `0a0b4a4b64d1`, the WP22 model), commit 2b2e94e, `git_dirty`
+False, platform `Linux-6.8.0-50-generic-aarch64-with-glibc2.41`, image `3c7cfc8a2e27`. The old
+`@4` entries were made on this Mac (macOS arm64) at 6ed13ed with the bytes of `@2` (2d13465).
+
+### 2. Every moved number, column by column
+
+**The two 1000-design tables.** Design ids, seeds and categorical values agree on every row. Of
+the 32 shared columns, 24 are identical in both tables: the four configuration columns, pointing
+error, total mass, ADCS mass, power margin, peak slew power, the four flags, the panel and battery
+masses, generated and available power, usable torque, and the three scenario columns. The eight
+that move, with the generation's tolerance (primary: rtol 1e-3; baseline: rtol 1e-4; settling time
+within 0.5 s; saturated fraction rtol 0.1 and 0.02):
+
+| column | primary: rows moved / beyond tolerance, largest move (id) | baseline: rows moved / beyond, largest move (id) | cause |
+|---|---|---|---|
+| `settling_time_s` | 976 / 0; +0.499 s (93), relative 0.030 (858); mean +0.142 s | 978 / 0; +0.498 s (16), relative 0.030 (787); mean +0.208 s | the read-off (below) |
+| `control_effort` | 669 / 0; 1.4e-5 (973), relative 7.4e-5 (515) | 282 / 1; 1.2e-5 (466), relative 1.2e-4 (488) | the platform's accepted steps (below) |
+| `torque_saturated_frac` | 514 / 3; 0.0095 (23), relative 0.133 (781) | 168 / 35; 0.0071 (360), relative 0.185 (354) | the platform's accepted steps (CR-2) |
+| `peak_momentum_nms` | 122 / 0; relative 3.3e-5 | 59 / 0; relative 1.5e-5 | the same steps (a cumulative sum over them) |
+| `slew_loss_energy_wh` | 655 / 0; relative 7.3e-5 | 272 / 0; relative 2.3e-5 | the same steps (the torque-squared integral) |
+| `energy_balance_wh`, `eclipse_reserve_wh`, `dod_eclipse` | 59, 129, 116 / 0; relative at most 1.9e-7 | 7, 27, 23 / 0; at most 8.8e-8 | the slew loss energy enters them; at the CSV's ninth digit |
+
+*The settling time.* It is later in 976 of 1000 primary and 978 of 1000 baseline designs, never
+earlier, by at most 0.4993 s (less than one integration step, `max_step_s` 0.5 in both files), and
+equal on the 24 and 22 designs at the horizon (600 s). Mechanism: the old read-off took the last
+accepted step at which the error was outside the band (`_last_outside`); the event-detected time is
+the last exit itself, which lies inside the step after that point (`crossing_times`, `hold_time`:
+the dense RK45 solution at rtol 1e-13, WP16 D-7). Re-measured on this Mac with the oracle of record
+(`mac_remeasure.md`), the event-detected time equals the container's on all 14 re-measured dataset
+rows to 8e-7 s and on the three candidates to the ninth digit, and exceeds the Mac's own step
+read-off by 0.000 to 0.499 s: the read-off is the whole cause.
+
+*The control effort, and the saturated fraction.* Both are sums over the accepted steps of
+`simulate_adcs` (the trapezoid of |torque|; the share of steps at the cap), whose code is unchanged
+since the old files' commit (`git diff 2d13465 HEAD -- examples/adcs/adcs_sim.py` is empty; the
+event detection runs a second integration for the times only). The accepted-step sequence differs
+between the Mac (old files) and the container (linux/arm64): every row whose saturated fraction
+moved also has a control-effort move (514 of 514 primary, 168 of 168 baseline; Spearman 0.78 and
+0.79 between the sizes of the two moves), and the candidates isolate the platform from the code:
+with their exact inputs the Mac now reproduces the old file's control effort and saturated fraction
+to all nine digits for all three, while the container's differ (saturated fraction 0.02691 to
+0.02763 and 0.1184 to 0.1203 on two of them; control effort by 6e-8 relative). The one baseline row
+beyond tolerance, design 488 (medium wheel, medium tracker, Kp 0.718, Kd 0.359), moves by 1.2e-4
+relative against the baseline entry's rtol 1e-4, ten times tighter than the primary's 1e-3; the
+moves are the same size in both regimes (99th percentile 4.8e-5 and 4.4e-5), so the tolerance, not
+the row, is why one crosses. The dataset rows re-measured on the Mac from the CSV's nine-digit
+inputs differ from the old file by the same order (control effort up to 8.7e-5 relative, saturated
+fraction up to 0.009): a rounding of 1e-9 in the inputs moves the step sequence as the 1e-12 jitter
+of D-6 did, so that part of the re-measurement is a rounding test, not a platform test, and the
+candidates are the platform test. Neither column is fitted; the three primary rows beyond the
+saturation tolerance (54, 161, 781, large wheels at 0.02 to 0.03) and 25 of the 35 baseline rows
+have saturated fractions below 0.09, where one or two accepted steps out of a few hundred are a
+tenth of the value.
+
+**The feasibility flags.** Primary: settled 976 True / 24 False, momentum_ok 812 / 188, power_ok
+1000 / 0, dod_ok 869 / 131; baseline: 978 / 22, 919 / 81, 1000 / 0, 869 / 131; identical old and
+new, and no design's flag changed (`files_compare.md`; `mac_flags.py` found no flag difference on the
+re-measured rows either). The settled flag cannot move: `settled` equals `settling_time_s < 600`
+on every new row, the largest settled settling time is 594.9 s (primary) and 598.2 s (baseline), no
+design lies within 0.5 s below the horizon in either file, and the read-off moves a time by less
+than 0.5 s and never earlier.
+
+**The check predictions** (3 rows): every numeric column differs, because the rows are new
+proposals (item 4): the configurations (old: medium/fine 0.337 m 21.7 Wh Kp 0.74 Kd 0.32;
+small/fine 0.313 m 22.1 Wh Kp 1.06 Kd 1.12; large/fine 0.301 m 199.9 Wh Kp 0.51 Kd 1.16; new:
+medium/fine 0.3037 m 25.40 Wh Kp 1.782 Kd 0.505, twice, and medium/fine 0.3001 m 21.96 Wh Kp 0.835
+Kd 0.313), the targets, predictions, scores (3.40, 3.32, 3.27 to 4.85, 4.85, 4.83), distances
+(0.348, 0.340, 0.327 to 0.587, 0.579, 0.555), tau 15.37 to 10.69, band 0.0651 to 0.0935; `n_train`
+706 and the tracker grade (fine) are the same. **The check designs** (6 rows): the three candidates
+reproduce with the settling time later by 0.087, 0.089 and 0.078 s and the saturated fraction moved
+on two (platform; every other column identical to nine digits); the three proposal rows are the new
+designs, so all 24 numeric columns of theirs move and `dod_ok` on the row named proposal_3 reads
+True then False (a different design). **The scope-sensitivity table** (20 rows): settling time
+later by up to 0.389 s, control effort by up to 2e-5 relative, saturated fraction by up to 0.0024,
+nothing beyond tolerance, flags identical. **The first-20 recording**: only the settling time moves
+(19 rows, up to +0.46 s); control effort and saturated fraction are identical on all 20 (the
+container's and the Mac's steps agree on these designs). **The coverage table**: 4 of 736 cells,
+all `max_relative_change` of the settling-time row of a decision element: TrackerGrade 1.7e-2 to
+2.1e-2, batteryCapacity 9.1e-3 to 3.1e-3, Kp 9.4e-2 to 9.3e-2, Kd 2.1e-1 to 2.2e-1; every
+structural and empirical verdict unchanged.
+
+Moved in all: 8 columns of each 1000-design table (3,240 and 1,816 row values), 19 numeric
+columns and one categorical of the predictions (all 3 rows), 24 numeric columns and one flag of the
+check designs (3 to 6 rows each), 5 columns of the scope table, 1 of the first-20 recording, 4
+coverage cells; beyond tolerance: 3 + 35 saturated-fraction rows and 1 control-effort row, and
+every column of the proposal rows (CR-2 to CR-4).
+
+### 3. The conclusions, item by item
+
+Computed by `case.py` (`load_study`, `k_fits`, `tension_table`, `facet_table`,
+`certificate_table`, `mean_slack_by_k`, `mean_slack_fixed_tau`, `association_table`,
+`regime_comparison`, `nondominated_counts`, `candidate_table`, `fit_regressor`, `predict_check`)
+with the spec's defaults (target 0.10, bounds (3, 1000), seed 0). "Identical" means equal at the
+precision the paper prints (sets and names exactly; temperatures to one decimal; associations to
+two; counts exactly; shares and slack to three decimals).
+
+**Primary regime** (706 feasible of 1000 in every configuration).
+
+| item | old10 (the paper) | old9 (columns only) | new9 (the gate) | verdict, cause |
+|---|---|---|---|---|
+| K = 1 tau, band, frac above, n_eff | 38.1, 0.0262, 0.096, 16.2 | 38.1, 0.0262, 0.091, 23.1 | 38.1, 0.0262, 0.092, 23.1 | tau identical; n_eff changed (columns); frac moved 0.004 |
+| K = 1 contending set (n-lemma; near-frontier) | total mass, slew time, energy balance, control effort, pointing error, depth of discharge (6; 51) | total mass, energy balance, pointing error, depth of discharge, settling time (5; 56) | the same as old9 (5; 56) | changed (columns) |
+| K = 1 leading metrics | slew time 0.240, control effort 0.197, energy balance 0.190 | total mass 0.358, energy balance 0.184, pointing error 0.164 | the same as old9 | changed (columns) |
+| K = 2, K = 3 tau | 113.2, 195.2 | 94.4, 113.2 | 94.4, 113.2 | changed (columns) |
+| K = 2 per term: sets (n-lemma), leading, shares | 7 and 7; control effort 0.365 / peak slew power 0.515; 0.371, 0.629 | 5 and 5; peak slew power 0.583 / settling time 0.363; 0.828, 0.172 | 5 and 5; peak slew power 0.582 / settling time 0.364; 0.800, 0.200 | sets and leading changed (columns); shares moved 0.028 (data) |
+| K = 3 per term: report | sets of 6, 6, 7; leading control effort 0.429 / energy balance 0.434 / peak slew power 0.380 | refused at both bands (2 and 8 rows) | refused at both bands (3 and 7 rows) | changed (columns); item 2 |
+| K = 3 per term from the estimator: leading, cells, shares | as above; 201, 188, 317 rows; 0.089, 0.133, 0.778 | energy balance 0.415 / control effort 0.396 / peak slew power 0.612; 162, 181, 363; 0.258, 0.032, 0.710 | energy balance 0.416 / control effort 0.397 / peak slew power 0.612; 162, 181, 363; 0.241, 0.034, 0.724 | leading changed (columns); shares moved 0.017 (data) |
+| certificate K = 1, 2, 3 | not_applicable, certified, certified | the same | the same | identical; residues: gap 1.1e-14 to 3.3e-15, margin 0.00022 to 0.00121, radius 1.8e-5 to 1.0e-4 |
+| mean slack K = 1, 2, 3 (own tau; at the K = 1 tau) | 0.204, 0.138, 0.117 (0.090, 0.053) | 0.243, 0.182, 0.146 (0.131, 0.087) | 0.243, 0.182, 0.146 (0.132, 0.088) | changed (columns) |
+| settling time, total mass | -0.54 (-0.34) | -0.43 (-0.43) | -0.50 (-0.50) | sign identical; values moved (both causes) |
+| pointing error, control effort | -0.36 (-0.48) | -0.35 (-0.49) | -0.36 (-0.50) | sign identical; Spearman moved 0.02 |
+| settling time, pointing error | +0.18 (+0.20) | -0.03 (+0.11) | +0.03 (+0.15) | Pearson sign not stable (item 6) |
+| slew time pairs (3) | -0.48 (-0.33), -0.87 (-0.83), +0.91 (+0.88) | none | none | cease to exist (columns) |
+| nondominated: all; four metrics; two times | 671 of 706 on 10; 146 on 4 (0.207); 8 on 2 | 660 on 9; 125 on 4 (0.177); view gone | 659 on 9; 126 on 4 (0.179); view gone | changed (columns; then 1 by data) |
+| candidates: log V; beyond; ranks | -0.115, -0.072, -0.144; 0; 0.59 to 0.77 | -0.197, -0.152, -0.172; 0; 0.53 to 0.62 | -0.197, -0.153, -0.171; 0; 0.53 to 0.62 | beyond identical; values changed (columns) |
+| regressor tau, band | 15.37, 0.0651 | (no check: the recorded predictions are on the other view) | 10.69, 0.0935 | changed (view) |
+| check: log V pass; position pass; position errors | 3 of 3; 0 of 3; 1.35, 2.21, 3.09 bands | - | 3 of 3; 1 of 3; 1.05, 0.51, 1.05 bands | changed in kind (item 4) |
+| proposals' distance to target against the reach | 0.348, 0.340, 0.327 within 0.35 (typed) | - | 0.587, 0.579, 0.555 within 0.6222 (the rule) | changed (the rule and the view) |
+
+**Baseline regime** (780 feasible of 1000 in every configuration; `case.py` keys it `stock`).
+
+| item | old10 (the paper) | old9 (columns only) | new9 (the gate) | verdict, cause |
+|---|---|---|---|---|
+| K = 1 tau, band, frac above, n_eff | 41.7, 0.0240, 0.104, 14.5 | 45.7, 0.0219, 0.103, 13.7 | 45.7, 0.0219, 0.104, 14.6 | tau changed (columns); n_eff 14.5 to 14.6 (13.7 in old9: both causes) |
+| K = 1 contending set (n-lemma; near-frontier) | control effort, slew time, power margin, settling time, pointing error, eclipse reserve (6; 103) | control effort, settling time, power margin, pointing error, depth of discharge (5; 76) | the same set (5; 77) | changed (columns) |
+| K = 1 leading metrics | control effort 0.430, slew time 0.332, power margin 0.176 | control effort 0.432, settling time 0.318, power margin 0.170 | control effort 0.432, settling time 0.319, power margin 0.178 | leader identical; second changed (columns) |
+| K = 2, K = 3 tau | 78.8, 162.8 | 71.9, 113.2 | 71.9, 113.2 | changed (columns) |
+| K = 2 per term: sets, leading, shares | 5 and 5; energy balance 0.357 / control effort 0.487; 0.694, 0.306 | 4 and 5; control effort 0.364 / control effort 0.509; 0.571, 0.429 | 4 and 5; control effort 0.363 / control effort 0.508; 0.562, 0.438 | changed (columns); shares moved 0.009 (data) |
+| K = 3 per term: sets (n-lemma) | 6, 7, 5 (report at the K = 1 band) | 5, 6, 4 | 5, 6, 4 | changed (columns) |
+| K = 3 leading per term | control effort 0.488 / peak slew power 0.359 / energy balance 0.355 | control effort 0.509 / peak slew power 0.431 / control effort 0.353 | control effort 0.507 / peak slew power 0.428 / control effort 0.353 | term 3's leader changed (columns; energy balance 0.347 second) |
+| K = 3 cells, shares | 284, 149, 347; 0.077, 0.590, 0.333 | 251, 184, 345; 0.125, 0.500, 0.375 | 251, 184, 345; 0.118, 0.451, 0.431 | cells changed (columns); shares moved up to 0.056 (data) |
+| certificate K = 1, 2, 3 | not_applicable, certified, certified | the same | the same | identical; residues: margin 0.0015 to 9e-5, radius 1.2e-4 to 7.7e-6 |
+| mean slack K = 1, 2, 3 (own tau; at the K = 1 tau) | 0.131, 0.106, 0.093 (0.068, 0.033) | 0.180, 0.142, 0.093 (0.114, 0.046) | 0.179, 0.142, 0.093 (0.114, 0.046) | changed (columns) |
+| settling time, total mass | -0.12 (-0.02) | -0.08 (+0.07) | -0.12 (+0.04) | Spearman sign not stable (item 6) |
+| pointing error, control effort | -0.70 (-0.77) | -0.63 (-0.70) | -0.65 (-0.70) | sign identical; values moved (columns) |
+| settling time, pointing error | +0.69 (+0.75) | +0.63 (+0.71) | +0.66 (+0.71) | sign identical; values moved (columns) |
+| slew time pairs (3) | -0.10 (-0.03), -0.96 (-0.95), +0.99 (+0.99) | none | none | cease to exist (columns) |
+| nondominated: all; four metrics; two times | 732 of 780 on 10; 157 on 4 (0.201); 2 on 2 | 724 on 9; 150 on 4 (0.192); gone | 725 on 9; 152 on 4 (0.195); gone | changed (columns; then 1 and 2 by data) |
+
+**The regime sentence** (`num-regimes`, from `regime_comparison`): "a 6-lemma and a 6-lemma
+sharing 3 metrics (control effort, pointing error, slew time)" becomes "a 5-lemma and a 5-lemma
+sharing 3 metrics (depth of discharge, pointing error, settling time); the primary regime alone
+has energy balance and total mass, the baseline regime alone control effort and power margin". **The redundancies**: identical old and new (item 7),
+because neither column moved. **The settled flag**: part 2.
+
+### 4. The slots whose axis or metric set changes with the swap
+
+`paper/paper.ipynb` (cell ids by `nbformat`; the notebook was not edited):
+
+- `num-attributes` (54), `num-datasets` (59): "ten attributes" and "carries 10 attributes" become nine.
+- `fig-tau-sweep` (61) with `fig-tau-sweep-caption` and `-lines` (62, 63): the heatmap's rows are the
+  spec's attributes (ten to nine; the slew-time row goes); the gate's drawing is
+  `WP23-rounds/gate/heatmap.png`.
+- `num-temperature` (64): n_eff 16.2 becomes 23.1; the band and tau stand.
+- `num-k1` (71): the 6-lemma becomes the 5-lemma of item 1, exponents 0.09 to 0.24 become 0.14 to 0.36.
+- `fig-planes-k1-caption` and `-lines` (72, 73) and the static `paper/figures/fig-planes-k1.png`
+  (`paper/figures/planes.py`): the K = 1 plane is the two heaviest metrics of the term, slew time and
+  control effort today; on the new data total mass and energy balance.
+- `fig-planes-k3-caption` and `-lines` (75, 76) and `fig-planes-k3.png`: the three slices are each
+  term's two heaviest metrics (today control effort with slew time, energy balance with control
+  effort, peak slew power with total mass; new: energy balance with total mass, control effort with
+  settling time, peak slew power with pointing error); the caption's sentence on the bottom panel
+  (peak slew power) follows the new panel; `fig-chart-level` (77, 78) and `fig-chart-level.png`:
+  the chart of the nine-metric K = 3 fit; the caption's "the first of nine position coordinates"
+  becomes eight.
+- `fig-tensions-k3` (79) with (80, 81): the per-term heatmaps' metric lists (nine); on the primary
+  regime the generator refuses at the K = 1 band (item 2).
+- `num-k-sweep` (82) and `sec-case-analysis-3` (83): the mean slack values, the K = 3 n-lemmas and
+  the "absent from the K = 1 set" metrics; the sentence reads `facet_table` and refuses on the
+  primary regime (item 2).
+- `fig-regimes` (84) with (85, 86) and `num-regimes` (87): `case.regime_figure` draws the spec's
+  association pairs (six today, three without the slew time) and the two contending sets.
+- `num-candidates` (90): the log V range -0.144 to -0.072 becomes -0.197 to -0.153; the ranks.
+- `num-predict` (94), `num-predict-reading` (96): 0 of 3 positions becomes 1 of 3; the band 0.0651
+  becomes 0.0935; the position errors 1.4 to 3.1 bands become 0.5 to 1.1; two proposals one design.
+- `num-nondominated` (6): the counts of item 5 and the views (the two-attribute view goes).
+- `num-certificates` (48), `num-margin` (49): statuses stand; the residues printed as bounds move.
+- `fig-behavioural-caption` (56): the image is already the WP23 view (8507bd9); its text still says
+  "dashed: a metric traded with no requirement on it (control effort, pointing error, peak slew
+  power, total mass)", which the WP23 model's four requirements make stale; `fig-assembly-caption`
+  (53): the image is updated, the text to be read against it.
+
+`paper/supporting_material.ipynb`: Appendix C's attribute tables (`tab-C-evaluation` 20,
+`tab-C-attribute_sources` 21, `tab-C-metric_table` 27, `tab-C-datasets` 29: `generate_model.py`
+still lists `slew_time_s` with its source `cubesat_model.py`); every Appendix D table
+(`tab-D-temperature_selection` 35, `tab-D-k_diagnostics` 37, `tab-D-exponents_and_facets` 39 (the
+exponent columns lose a row; the per-term table refuses on the primary regime), `tab-D-regime_comparison`
+41 (the three slew-time pairs go), `tab-D-sensitivity_variants` 43, `tab-D-refits_by_category` 45,
+`tab-D-candidate_designs` 47, `tab-D-termination_records` 49, `tab-D-margin_reading` 51,
+`tab-D-nondominated` 53, `tab-D-propose_predict_check` 55, `tab-D-stability` 57 (reads
+`examples/adcs/experiments/reports/sensitivity.json`, whose quantities include the slew-time pairs and
+the two-attribute view: the D-6 regeneration must be re-run on the new data and spec for the
+`stable()` ranges), `tab-D-conditioning_diagnostic` 59, `tab-D-own_rows_refit` 61,
+`tab-D-mean_slack_fixed` 67, `tab-D-pca_chain` 70); `tab-E-gaps` (73: G-17 names the slew time's
+grazing); Appendix F's tables (`tab-F-commands` 81, `tab-F-reproduction` 83: the data hashes and
+ledger ids). Also `paper/environment_values.toml` and `environment_reference.npz` (the
+`v2_first_designs_rows` values of the environment of record) and `paper/paper_stability.py`'s
+docstring (names `slew_time_s`).
+
+`docs/examples.md`: the prose ("Ten attributes ... slew time", the 6-lemma with slew time, "contending
+sets of 6, 6 and 7 metrics", "78 percent", "the other two are built on control effort, slew time
+and energy balance", "mean slack falls from 0.204 ... to 0.117") and the two generated figures
+`adcs-tensions` (ten metrics, six outlined) and `adcs-coordinates` ("nine position coordinates",
+"212 ringed designs"); no other docs page names the slew time. `examples/adcs/k_terms.py` and
+`case.py`'s `CUBESAT` spec (ten attributes, the two views, six pairs) are the paper's inputs and
+change with the paper's move (WP16 order step (4)); `examples/adcs/figures/k3_*.png` are its outputs.
+
+Already updated at the gate: the model's two views (`fig-assembly-view.png`, `fig-behavioural-view.png`
+at revision 5, byte copies), the coverage table, the change register and the v1-v2 comparison report.
