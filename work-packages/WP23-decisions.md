@@ -70,3 +70,15 @@ slew), and the metrics are read off the subsystems; the test is connectivity, ev
 least one metric and every metric reached, with the coupling variables between subsystems named as the MDAO
 literature names them (a design structure matrix or XDSM reading). The MDAO paper unit (P-11) and this table cite
 the same family.
+
+## The data gate overnight (2026-11-09, 22:30)
+
+**Driver's question (popup):** how should WP23's data gate behave while he sleeps (it needs his approval of the four
+illustrative thresholds and then the swap)? Options: Proceed, I review after / Regenerate, hold the swap / Wait for
+me. **Supervisor (mzargham), verbatim:** "Proceed, I review after".
+
+**Disposition.** The loop regenerates on the proposed thresholds and the swap is made at the gate on the driver's
+verification (the comparison report with every moved number and changed conclusion explained; both platforms
+green); the four values and the report go under "Waiting for the supervisor" in the driver log for his review on
+waking; if he changes a value the gate re-runs with it. Downstream re-tests (reader rounds at depths B and C, the
+figure redraws on the new data) proceed on the swapped model.
