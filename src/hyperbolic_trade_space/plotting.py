@@ -49,8 +49,6 @@ PARTICIPATION = 1e-3  # a term participates in a metric above this exponent (ten
 
 __all__ = [
     "BAND_COLOR",
-    "CATEGORY_COLORS",
-    "DATA_COLOR",
     "FRONTIER_COLOR",
     "HOLE_COLOR",
     "TENSION_CMAP",

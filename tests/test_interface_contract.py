@@ -244,6 +244,14 @@ def test_r1_tolerances_pinned():
         assert getattr(solvers, name) == value, msg("R-1", f"solvers.{name} must equal {value!r}")
 
 
+def test_r1_estimator_constants_pinned():
+    estimator = importlib.import_module(f"{PKG['import_name']}.estimator")
+    for name, value in PKG["estimator"]["constants"].items():
+        assert getattr(estimator, name) == value, msg(
+            "R-1", f"estimator.{name} must equal {value!r}"
+        )
+
+
 def test_r1_certificate_signatures_exact():
     solvers = importlib.import_module(f"{PKG['import_name']}.solvers")
     for fn, names in PKG["signatures"]["solvers"].items():

@@ -36,5 +36,9 @@ Submodules are used by import path:
 - `hyperbolic_trade_space.plotting`: `plot_tensions`, `plot_log_plane`, `plot_frontier_surface_3d`,
   `plot_frontier_coordinates`, `plot_v_by_variable`, `plot_ternary`, `ternary_marker_values`,
   `cell_labels`.
+- `hyperbolic_trade_space.estimator`: `EPS_ZERO_EXPONENT` (`1e-12`), an exponent at or below it is
+  numerically zero, so `score_samples` reads a zero metric there as `0 log 0 := 0`;
+  `PARTICIPATION_THRESHOLD` (`1e-3`), an exponent above it participates, the threshold of
+  `tension_report` and of `conditioning_`.
 - `hyperbolic_trade_space.solvers`: the multi-term solver, the `Termination` record and the
   certificate functions, with `min_curvature` for a fit at a finite term temperature, the soft fit ([Reading termination](user-guide/termination.md)).

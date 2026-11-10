@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 15. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 16. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 15
+contract_version = 16
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -132,7 +132,9 @@ public names of `__all__` (floor, section 2); the importable submodules (section
 the importable names (manifest `package.submodule_names`), including the certificate functions
 `simplex_gap`, `term_gap`, `assignment_margin`, `fixed_assignment_bound`, the `Termination` record
 and the tolerances `EPS_FEAS`, `EPS_KKT`, `GUARD_TOL`, `POLISH_STEPS`; the parameter names of the four
-certificate functions; the fitted attributes `termination_` and `conditioning_` (and
+certificate functions; from version 16 the `estimator` constants `EPS_ZERO_EXPONENT` and
+`PARTICIPATION_THRESHOLD` (values in `package.estimator.constants`); the fitted attributes
+`termination_` and `conditioning_` (and
 `exponents_`, `log_offset_`, `training_log_v_`; from version 3 also `mean_slack_`, `cell_`, `coefficients_`,
 `term_share_`, which exist for every number of terms: at one term `cell_` is all zeros and
 `term_share_` is `[1.0]`; `mean_slack_` is the mean slack, the quantity to compare across numbers of
@@ -172,6 +174,13 @@ the number of distinct terms of the returned model: exponent vectors within
 It equals K on a fit whose terms are all different and falls below K where terms repeat; it is `1` at
 one term and in the degenerate shortcuts, and `-1` on a record built without the exponents. It is read
 only: no other field, status or number changes.
+
+*The estimator's constants (version 16, WP25-3 P-1).* `estimator` also offers `EPS_ZERO_EXPONENT`
+(`1e-12`): an exponent at or below it is numerically zero, so `score_samples` reads a zero metric
+there as `0 log 0 := 0`; and `PARTICIPATION_THRESHOLD` (`1e-3`): an exponent above it participates,
+the default `threshold` of `tension_report` and the participating set of `conditioning_`. The
+paper sources cite both by name. `plotting.CATEGORY_COLORS` and `plotting.DATA_COLOR` are not in
+`plotting.__all__`: row 11 is the plotting surface and the palette is internal.
 
 Consumers: the docsite generates its API reference from the numpydoc docstrings of the public names,
 and the paper reads the attributes above; neither imports a name outside this list without an
@@ -326,6 +335,7 @@ the last row of the change log.
 | 13 | 2026-11-10 | The case reads the data of record (WP23's swap, ea46637): `case.data_dir` changes from `examples/adcs/data/` to `examples/adcs/data/v2/`, where the paper's case module (`CUBESAT.data_dir`, `k_terms.DATA`) now reads; the frozen generation under `examples/adcs/data/` stays the cited comparison and is untouched, so its directory is pinned as the new `case.frozen_data_dir = "examples/adcs/data/"` and the `case.data` file manifests are asserted there. Not additive: one pinned field changes its value (a pinned path moves, which needs an amendment, section 14), with one key added to keep the frozen files pinned. No file moves and no committed number changes | technical (the paper and docs already read the v2 data) | the driver under the mandate, 2026-11-10; WP23's swap, `WP23-decisions.md` |
 | 14 | 2026-11-10 | The word "facet" goes (WP24 push 1; the supervisor's "Everything before 0.1", `WP10-decisions.md`, "The word facet"). The scope (D-7, R-3) names version 11; rows 12 and 13 landed before this one, so it is 14. The pinned names of the model object and of the assignment are renamed, with no alias and no deprecation period (pre-0.1, nothing released; the deprecation clause of this section is not invoked). Estimator: fitted attributes `facet_` to `cell_` and `facet_share_` to `term_share_`; method `assign_facets` to `assign_cells`; constructor keyword `facet_step` to `refit_step` (values `"support"`, `"tangent"` unchanged). `solvers`: `facet_gap` to `term_gap` (parameters `["U", "w", "ubar", "tau", "min_exponent", "p"]` unchanged), `facet_objective` to `term_objective`, `single_facet_termination` to `single_term_termination`. `plotting`: `facet_labels` to `cell_labels` (labels `"cell 1" .. "cell K"`); the option value `color="facet"` of row 11 becomes `color="cell"`; the tension heatmaps' panel prefix `"facet k: "` becomes `"term k: "`. `datasets`: the `info` key `"facet"` to `"term"`. Case (`case.signatures.k_terms`): `facet_record` to `term_record`, parameters unchanged. Figures (section 8): `k_terms.py` no longer writes `examples/adcs/figures/k3_*.png`, which coloured the designs by cell (the idiom `figure-review.md` forbids) and which nothing read; the six files are deleted, `run_regime` loses `figs` and `make_figures` (now `["regime", "seeds", "n_max", "verbose"]`) and returns no `figs` or `panels`; the nine `NN_name.png` pins, whose files went with the case notebook (4bd6bac), leave `case.figures.files` too, which is now empty, with `patterns`, `produced_by_numbered`, `produced_by_k3` and `read_only_for` removed and the R-4 test asserting the directory holds exactly the pinned files. Non-additive: pinned names and a pinned signature change and pinned figures are removed; no fitted number, no figure content of the paper or docsite and no data file changes (the regenerated tables and reports differ in text only) | both | `WP24-scope-of-work.md`, gate outcome 2026-11-09 22:50 (the driver under the mandate); `WP24-decisions.md`; the k3 figures' deletion, the PM's brief for WP24 push 1 (2026-11-10) |
 | 15 | 2026-11-10 | Eight traded metrics (the WP23 close-out, `WP23-closeout-scope-of-work.md`, D-14; the supervisor's "if the redundancy is a modelling issue then you clean it up", `WP23-decisions.md`, "The two metric redundancies", and the driver's call A1 on `WP23-rounds/spike-redundancy.md`): the eclipse reserve's requirement restated the depth-of-discharge requirement (0.3 C - D >= 0 is D / C <= 0.3), so its calc and requirement leave the model, `eclipse_reserve_wh` leaves the v2 headers of `case.v2.data` (the three files that carried it; the predictions never did) and `case.v2.traded_metrics` is eight. The case's feasibility flags gain `dod_ok` (`case.CUBESAT.flags` in `examples/adcs/case.py`; no manifest key pins the case's flags, so none changes here): the 131 depth-of-discharge failures per regime left the fit through the reserve's positivity and now leave through the flag, and the feasible sets stay 706 and 780. `case.v2.data_rule` reads the supervisor's rule of 2026-11-10, 09:05 (`PM-BRIEF.md`, "The container is a gate check, not a unit step"): the v2 files regenerate on the host; the container of record re-pins the exact outputs at the gate. Not additive: a pinned list shrinks and pinned headers lose a column. The frozen files and their `case.data` manifests are unchanged | technical (the paper's and the docs' numbers regenerate in the same package) | `WP23-closeout-scope-of-work.md`, approved by the driver under the mandate at 944c564 (`WP23-decisions.md`, "The close-out scope approved; OD10") |
+| 16 | 2026-11-10 | The estimator's two module constants (WP25-3 gap P-1; the paper sources cite them): `estimator` also offers `EPS_ZERO_EXPONENT` (`1e-12`: an exponent at or below it is numerically zero, so a zero metric there scores `0 log 0 := 0`) and `PARTICIPATION_THRESHOLD` (`1e-3`: an exponent above it participates; the default `threshold` of `tension_report` and the participating set of `conditioning_`), pinned by name in `package.submodule_names.estimator` and by value in `package.estimator.constants`; `docs/api.md` says the same in one line each. `plotting.CATEGORY_COLORS` and `plotting.DATA_COLOR` leave `plotting.__all__`: never pinned (row 11 is the plotting surface), internal; the imports by name (`examples/adcs/case.py`, `paper/figures/`) are unchanged. Additive on the manifest (floor rule); no number changes | both (the API page; the package's `__all__`) | the driver's decision on WP25-3's P-1, `driver-log.md`, "PM6's batch 2" (2026-11-10, 17:10) |
 
 ## 15. Consumers: may assume, must not touch
 

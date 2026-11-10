@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 15
+contract_version = 16
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -76,7 +76,7 @@ preconditioning = ["LogAffinePreconditioner", "frontier_in_original_units"]
 predictive = ["TradeSpaceRegressor"]
 tensions = ["TensionReport", "tension_report"]
 tuning = ["select_temperature"]
-estimator = ["HyperbolicTradeSpace"]
+estimator = ["EPS_ZERO_EXPONENT", "HyperbolicTradeSpace", "PARTICIPATION_THRESHOLD"]
 
 # Parameter names of the WP13 certificate functions (floor on names; signatures exact).
 [package.signatures.solvers]
@@ -119,6 +119,13 @@ EPS_FEAS = 1e-9
 EPS_KKT = 1e-8
 GUARD_TOL = 1e-12
 POLISH_STEPS = 5
+
+# The estimator's module constants (version 16, WP25-3 P-1): an exponent at or below
+# EPS_ZERO_EXPONENT is numerically zero (0 log 0 := 0 in score_samples); an exponent above
+# PARTICIPATION_THRESHOLD participates (tension_report's default threshold; conditioning_).
+[package.estimator.constants]
+EPS_ZERO_EXPONENT = 1e-12
+PARTICIPATION_THRESHOLD = 1e-3
 
 # The documented source of the generated API reference (OD2).
 [package.docstrings]
