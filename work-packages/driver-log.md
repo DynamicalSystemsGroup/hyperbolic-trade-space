@@ -310,6 +310,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   gate of the path and once before the PR, by the driver's dispatch, not per unit. `PM-BRIEF.md` "Verification in
   tiers" amended; the PM told.
 
+- **Browser pass of the staged site at the rename head ee7704e (2026-11-10, 09:40; the driver).** The paper page
+  carries "facet" twice, both in R1's polyhedral sentences (the marked exemption), "n-lemma" eleven times, no
+  warning or stderr text; the root page carries no "facet"; the unsourced paper map is still on the root page
+  (its removal unit is queued). The rename reads as one vocabulary on the rendered pages; the R-16 cold reads and
+  the WP24 review are the PM's next units, and the gate's container regression is the driver's after the
+  close-out lands.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
