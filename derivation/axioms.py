@@ -72,8 +72,8 @@ _gj = sp.IndexedBase("g")  # F12: the family g_j whose minimum is m
 _mmin = sp.Symbol("m", real=True)
 _j0 = sp.Symbol("j0", integer=True)
 _gamma = sp.Symbol("gamma", real=True)  # R2: the assignment margin
-_Mrow = sp.IndexedBase("Mx")  # R2: M_i, the maximum score of row i over the facets
-_srow = sp.IndexedBase("sfix")  # R2: s_i,k(i), the score of row i on its maximizing facet
+_Mrow = sp.IndexedBase("Mx")  # R2: M_i, the maximum score of row i over the terms
+_srow = sp.IndexedBase("sfix")  # R2: s_i,k(i), the score of row i on its maximizing term
 _PV, _DV = sp.symbols("v_primal v_dual", real=True)  # I1: the optimal LP primal and dual values
 _MSUM = sp.Symbol("Mgf_sum", real=True)  # I5: the MGF of the independent sum
 _MG1 = sp.Function("Mgf1")  # I5: the single-variable MGF, applied at tau w_j
@@ -335,7 +335,7 @@ AXIOMS = {
         POSITED,
         "the cells C_1..C_K partition the N rows: every row lies in exactly one cell "
         "(chi_ki = 1 when row i is in cell k, sum_k chi_ki = 1, chi_ki >= 0), and the cell "
-        "counts n_k = sum_i chi_ki are at least 1 (every facet is nonempty)",
+        "counts n_k = sum_i chi_ki are at least 1 (every cell is nonempty)",
         relation=(
             sp.Eq(sp.Sum(_chi[_k, _i], (_k, 1, _S.K)), 1),
             _GE(_chi[_k, _i], 0, evaluate=False),
@@ -417,7 +417,7 @@ AXIOMS = {
         "f(v) >= f(w) + grad f(w).(v - w) for all feasible v, w",
         citation="Boyd & Vandenberghe, Convex Optimization, section 3.1.3",
         role="turns the simplex first-order gap into an objective-error bound: "
-        "0 <= f(w) - f* <= G, so a reported gap certifies how far a facet refit is from optimal",
+        "0 <= f(w) - f* <= G, so a reported gap certifies how far a term refit is from optimal",
         failure_mode="for a nonconvex objective (the penalized refit, a tangent refit) the "
         "inequality fails and a small gap certifies only first-order stationarity",
         relation=(_GE(_f_v, _f_w + _gdv, evaluate=False),),
@@ -427,7 +427,7 @@ AXIOMS = {
         INHERITED,
         "Cauchy-Schwarz inequality: for real vectors a and b, |a.b| <= ||a||_2 ||b||_2",
         citation="Horn & Johnson, Matrix Analysis, the Cauchy-Schwarz inequality",
-        role="bounds the change of a facet score by the norm of the parameter change times the "
+        role="bounds the change of a term score by the norm of the parameter change times the "
         "norm of the augmented design vector, which gives the explicit assignment-stable radius "
         "gamma / (2 max_i ||(u_i, -1)||_2)",
         failure_mode="none for real vectors in a Euclidean space; the radius is sufficient, not "
@@ -488,7 +488,7 @@ AXIOMS = {
         citation="Boyd & Vandenberghe, Convex Optimization, section 5.5.2 (complementary "
         "slackness)",
         role="gives the termwise zero p_i (M - s_i) = 0 that turns the LP duality gap into the "
-        "simplex gap G of a facet at tau = infinity",
+        "simplex gap G of a term at tau = infinity",
         failure_mode="holds for an optimal primal-dual pair (and by construction for any p "
         "supported on the active rows); for a p with weight on a non-active row the gap is not G",
         relation=(
@@ -512,14 +512,14 @@ AXIOMS = {
         "(standard form, problem (3)), section 2.3 (g1 = g2 as g1/g2 = 1) and section 2.5 "
         "(logarithmic change of variables, problem (6)); read in the authors' PDF "
         "https://web.stanford.edu/~boyd/papers/pdf/gp_tutorial.pdf",
-        role="names the one-facet fit as a geometric program: L4 shows that its objective is a "
+        role="names the one-term fit as a geometric program: L4 shows that its objective is a "
         "posynomial in x = exp(w) and its simplex constraints are monomial, so the fit is a "
         "geometric program in standard form and the problem in w is its convex form",
         failure_mode="holds for a program that meets all three premises; a negative coefficient, "
         "an exponent that depends on x, or a constraint that is not a posynomial bounded by one "
         "or a monomial equal to one leaves the program outside the class. It says nothing of "
-        "several facets, where each design counts against its nearest facet (a minimum over "
-        "facets): that fit is not a geometric program as a whole",
+        "several terms, where each design counts against its nearest term (a minimum over "
+        "terms): that fit is not a geometric program as a whole",
         relation=(sp.Equivalent(sp.And(_GP_OBJ, _GP_EQ, _GP_INEQ), _GP_STD),),
         objects=(
             ("objective", _GP_OBJ),
@@ -617,16 +617,16 @@ AXIOMS = {
         "R2",
         REGULARITY,
         "positive assignment margin: gamma = min_i [s_i,k(i) - max_{k != k(i)} s_ik] > 0, where "
-        "s_ik = w_k.u_i - beta_k, so every row has a unique maximizing facet",
-        role="gives unique maximizing facets and an assignment-stable neighborhood (radius "
-        "gamma / (2 max_i ||(u_i, -1)||_2)) on which the multi-facet objective equals its "
-        "fixed-assignment expression, so Proposition 3 applies: a fit whose facets are exactly "
-        "optimal is a local minimizer, and with gap-bounded facets the approximate-certificate "
+        "s_ik = w_k.u_i - beta_k, so every row has a unique maximizing term",
+        role="gives unique maximizing terms and an assignment-stable neighborhood (radius "
+        "gamma / (2 max_i ||(u_i, -1)||_2)) on which the several-term objective equals its "
+        "fixed-assignment expression, so Proposition 3 applies: a fit whose terms are exactly "
+        "optimal is a local minimizer, and with gap-bounded terms the approximate-certificate "
         "corollary bounds the remaining improvement",
-        failure_mode="ridge rows: a frontier row on two facet planes has margin zero at tau = "
-        "infinity, and duplicate facets give identical scores; the neighborhood is then empty, "
+        failure_mode="ridge rows: a frontier row on two term planes has margin zero at tau = "
+        "infinity, and duplicate terms give identical scores; the neighborhood is then empty, "
         "Proposition 3 does not apply, and termination reports stationary_without_margin: the "
-        "fit is first-order stationary per facet (levels 1 and 2) with no local-optimality claim",
+        "fit is first-order stationary per term (levels 1 and 2) with no local-optimality claim",
         relation=(_GT(_gamma, 0, evaluate=False), sp.Eq(_Mrow[_i], _srow[_i])),
     ),
     # -------------------------------------------------- FALLBACK HYPOTHESES (L5, L10)

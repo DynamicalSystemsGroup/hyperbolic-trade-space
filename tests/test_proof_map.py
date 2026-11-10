@@ -581,7 +581,7 @@ def test_L14_regrouping_needs_the_partition_relation_A8(chain_ctx):
             lambda r: r.update(deductions=dict(r["deductions"], dominance_gains=sp.true)),
             "L11 FAIL",
         ),
-        ("lemma_12_facet_gap", "L12", lambda r: r.update(support_zero=sp.Integer(1)), "L12 FAIL"),
+        ("lemma_12_term_gap", "L12", lambda r: r.update(support_zero=sp.Integer(1)), "L12 FAIL"),
         ("lemma_14_assignment_stable", "L14", lambda r: r.update(F_regroup=1), "L14 FAIL"),
     ],
 )
@@ -671,7 +671,7 @@ def test_every_hypothesis_of_the_statements_is_listed_in_the_record():
         "lemma_14_assignment_stable.py",
         "dfk",
     ) in listed
-    assert ("lemma_13_margin.py", "delta") in listed and ("lemma_12_facet_gap.py", "c_nn") in listed
+    assert ("lemma_13_margin.py", "delta") in listed and ("lemma_12_term_gap.py", "c_nn") in listed
     for lemma in rec.values():
         for h in lemma["hypotheses"]:
             assert h["sign"] in ("positive", "nonnegative") and h["claim"].strip()
@@ -703,13 +703,13 @@ def test_the_four_dependencies_are_declared_by_import_and_applied_by_steps():
     assert imported == {
         "lemma_04_convexity.py": {"L3_RESULT": "lemma_03_gradient_kkt"},
         "lemma_07_elasticities.py": {"L1_RESULT": "lemma_01_homogeneity"},
-        "lemma_12_facet_gap.py": {"L4_RESULT": "lemma_04_convexity"},
+        "lemma_12_term_gap.py": {"L4_RESULT": "lemma_04_convexity"},
         "lemma_14_assignment_stable.py": {
-            "L12_RESULT": "lemma_12_facet_gap",
+            "L12_RESULT": "lemma_12_term_gap",
             "L13_RESULT": "lemma_13_margin",
         },
         "lemma_15_descent.py": {
-            "L12_RESULT": "lemma_12_facet_gap",
+            "L12_RESULT": "lemma_12_term_gap",
             "L14_RESULT": "lemma_14_assignment_stable",
         },
     }
@@ -718,7 +718,7 @@ def test_the_four_dependencies_are_declared_by_import_and_applied_by_steps():
         "lemma_01_homogeneity.py",
         "lemma_03_gradient_kkt.py",
         "lemma_04_convexity.py",
-        "lemma_12_facet_gap.py",
+        "lemma_12_term_gap.py",
         "lemma_13_margin.py",
         "lemma_14_assignment_stable.py",
     }
@@ -768,10 +768,10 @@ def test_a_result_of_a_later_lemma_cannot_be_imported(scratch):
         "lemma_04_convexity.py",
         "from derivation.lemma_03_gradient_kkt import L3_RESULT",
         "from derivation.lemma_03_gradient_kkt import L3_RESULT\n"
-        "from derivation.lemma_12_facet_gap import L12_RESULT",
+        "from derivation.lemma_12_term_gap import L12_RESULT",
     )
     code, out = run_checker(scratch)
-    assert code != 0 and "lemma_12_facet_gap is not earlier in the chain" in out
+    assert code != 0 and "lemma_12_term_gap is not earlier in the chain" in out
 
 
 def test_an_imported_result_that_no_step_applies_fails(scratch):
@@ -823,7 +823,7 @@ def test_a_proved_result_used_on_an_untagged_line_fails(scratch):
     assert code != 0 and "proved result L3_RESULT used on an untagged line" in out
 
 
-# ---------------------- the one-facet fit is a geometric program (L4.14 to L4.24)
+# ---------------------- the one-term fit is a geometric program (L4.14 to L4.24)
 
 from derivation.axioms import I13  # noqa: E402
 from derivation.sumtools import posynomial_term  # noqa: E402
@@ -843,8 +843,8 @@ def test_I13_is_an_inherited_entry_citing_the_sections_read():
     for part in ("Boyd, Kim, Vandenberghe & Hassibi", "section 2.2", "section 2.5", "2007"):
         assert part in I13.citation
     assert (
-        "several facets" in I13.failure_mode
-    )  # the entry itself does not claim the multi-facet fit
+        "several terms" in I13.failure_mode
+    )  # the entry itself does not claim the several-term fit
 
 
 def test_I13_concludes_a_geometric_program_only_when_all_three_premises_hold():

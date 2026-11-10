@@ -6,7 +6,7 @@ What this proves (symbolic d, n; w on the simplex, tau > 0):
   Hence beta = J_tau(w*) shifts by c and w* is unchanged (the minimizer of J + c).
 
 What this does NOT prove: that w* exists or is unique (L3/L4, R1), nor any statement for
-non-uniform (per-metric) shifts, which change the facet (spec section 4, item 6).
+non-uniform (per-metric) shifts, which change the term (spec section 4, item 6).
 
 Route: Sum linearity / constant factoring (sumtools.linear), substitution of the simplex
 equation, log space. The step log(e^{tau c} X) = tau c + log X needs X > 0; X is a sum of

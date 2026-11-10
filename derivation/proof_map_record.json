@@ -990,8 +990,8 @@
      ],
      "results": [],
      "prose": "I13: a posynomial objective, monomial equality and monomial inequalities make the",
-     "code": "assert I13.entails([sp.Equivalent(I13.obj('objective'), sp.true if posy else sp.false), sp.Equivalent(I13.obj('equalities'), sp.true if mono_eq else sp.false), sp.Equivalent(I13.obj('inequalities'), sp.true if mono_ineq else sp.false)], I13.obj('conclusion')), 'L4 FAIL: the one-facet fit is not a geometric program in standard form'",
-     "fingerprint": "babaaca3cf299f19fa02b664e6fc1fcbf92da5e0a5386fde7e88747db0da9cd0",
+     "code": "assert I13.entails([sp.Equivalent(I13.obj('objective'), sp.true if posy else sp.false), sp.Equivalent(I13.obj('equalities'), sp.true if mono_eq else sp.false), sp.Equivalent(I13.obj('inequalities'), sp.true if mono_ineq else sp.false)], I13.obj('conclusion')), 'L4 FAIL: the one-term fit is not a geometric program in standard form'",
+     "fingerprint": "a1bbbdc5c2b8dfa00bedf29f403ab4ae08780535b802b40abe0e994812884b31",
      "result": "convexity of the soft-maximum objective (second directional derivative = tau Var_p)"
     }
    ]
@@ -2475,7 +2475,7 @@
     }
    ]
   },
-  "lemma_12_facet_gap.py": {
+  "lemma_12_term_gap.py": {
    "number": 12,
    "axioms_used": [
     "A2",
@@ -2507,7 +2507,7 @@
    ],
    "results": [
     {
-     "name": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds",
+     "name": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds",
      "steps": [
       1,
       2,
@@ -2556,7 +2556,7 @@
      "prose": "A2: the weight families v and w on the simplex are nonnegative",
      "code": "vn, wn = (A2.nonneg_base('vn'), A2.nonneg_base('wn'))",
      "fingerprint": "49aadbf556892716f6f3a762c2ae43acc07fc7e70548676f34a1c01d8c9fe762",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.2",
@@ -2568,7 +2568,7 @@
      "prose": "F12: the slacks gm_j = g_j - m are nonnegative",
      "code": "gm = F12.nonneg_base('gm')",
      "fingerprint": "12a6e3d05989eb7c068f6777ffbf1d9b53f7aa518c5f93d3edc579d68fd3d3c5",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.3",
@@ -2580,7 +2580,7 @@
      "prose": "A2: sum_j v_j = 1 gives g.v - m = sum_j v_j (g_j - m)",
      "code": "gv_minus_m = A2.rewrite(linear(sp.Sum(vn[j] * (gm[j] + m), lim) - m), rename={w: vn})",
      "fingerprint": "77b74632d7e177ef5436b061e8a16d732c7bb7ccff8bd02c10657d38a56dbb1c",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.4",
@@ -2592,7 +2592,7 @@
      "prose": "A2: sum_j w_j = 1 gives lambda - m = w.g - m = sum_j w_j (g_j - m) = G",
      "code": "lam_minus_m = A2.rewrite(linear(sp.Sum(wn[j] * (gm[j] + m), lim) - m), rename={w: wn})",
      "fingerprint": "bdd314e425c2a51f666c73ca343ae3a6cdaa2c73052421418338e7e13e123a8d",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.5",
@@ -2604,7 +2604,7 @@
      "prose": "I8 at v = v*: the slack a = f* - f(w) - g.(v* - w) is >= 0",
      "code": "a_nn = I8.slack_symbol('a_nn')",
      "fingerprint": "4a39bdc1315136229ab03826e4b9aeea064fa643261fc6ba83c67bfb0adb0877",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.6",
@@ -2616,7 +2616,7 @@
      "prose": "I8: the slack equation gives f* = f(w) + g.(v* - w) + a",
      "code": "f_star = sp.solve(sp.Eq(I8.slack_expr(f_v=fs, f_w=fw, g_dv=gvs - gw), a_nn), fs)[0]",
      "fingerprint": "60620ce0b21a862029dd9bc069c82b4e29a35afda81df811bd84440ccd42779c",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.7",
@@ -2628,7 +2628,7 @@
      "prose": "F12: step 2 at v = v*: the slack b = g.v* - m is >= 0",
      "code": "b_nn = F12.nonneg_symbol('b_nn')",
      "fingerprint": "787b1795a9cafd932be7bd61ed1b9d9108eddd0bda140cb0547474ece15a5f54",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.8",
@@ -2640,7 +2640,7 @@
      "prose": "I12: complementary slackness p_i (M - s_i) = 0 applied to each summand: the sum is 0",
      "code": "support_zero = I12.rewrite(support).doit()",
      "fingerprint": "71c1af0c399fa8889011edf042d207afdb5226eca0c2195282601ccb3c277acf",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.9",
@@ -2650,7 +2650,7 @@
      "prose": "exact two-metric LP: primal and dual values and gaps at an optimal pair and off it",
      "code": "lp = dict(primal_at_optimum=f_lp(w_opt), dual_at_optimum=dual(p_opt), gap_at_optimum=f_lp(w_opt) - dual(p_opt), f_star=f_lp(w_opt), f_off_optimum=f_lp(w_off), gap_off_optimum=f_lp(w_off) - dual(p_off), active_off=Uc * w_off)",
      "fingerprint": "2b6e4a9a7ede7be5f0eb8415125fbb6e4fbc64e6e515c0535df1186349b43244",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.10",
@@ -2662,7 +2662,7 @@
      "prose": "by L4: J_tau is convex along every line, so f = J_tau - linear is convex",
      "code": "convex = L4_RESULT.holds(ctx, 'convex') and second_linear == 0",
      "fingerprint": "4a19318942d1ca39c75657bf3578cebd21fcfcfdd1899841384e1f992d80cf21",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.11",
@@ -2674,7 +2674,7 @@
      "prose": "L4 established that J_tau is convex along every line",
      "code": "assert L4_RESULT.holds(ctx, 'convex'), 'L12 FAIL: L4 convexity of J_tau not established'",
      "fingerprint": "adfb86643166081acaea7a761b179592c005a9c6d5fd6ed4abb4fd09adeae9eb",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.12",
@@ -2684,7 +2684,7 @@
      "prose": "the linear part has second directional derivative 0",
      "code": "assert r['second_linear'] == 0, 'L12 FAIL: the linear part has a nonzero second derivative'",
      "fingerprint": "71e9d0a347b7e5ec9ded4c1e57960974ad443bc7e732c829e3796b9abe776f7b",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.13",
@@ -2694,7 +2694,7 @@
      "prose": "hence f_k = J_tau - linear is convex",
      "code": "assert r['convex'] is True, 'L12 FAIL: f_k is not convex'",
      "fingerprint": "2a99cd346e7a3690a0201bb77aac4333f5669174a385761ee9d4dd108e7b72b3",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.14",
@@ -2704,7 +2704,7 @@
      "prose": "g.v - m = sum_j v_j (g_j - m) on the simplex",
      "code": "assert sp.simplify(r['gv_minus_m'] - r['gv_rhs']) == 0, 'L12 FAIL: g.v - m != sum_j v_j (g_j - m)'",
      "fingerprint": "f5268aa9bc5fb709b9941fb81094cddd074a394b0533ba76f554719bcb12e227",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.15",
@@ -2714,7 +2714,7 @@
      "prose": "every summand v_j (g_j - m) is >= 0, so g.v >= m on the simplex",
      "code": "assert r['gap_nonneg'] is True, 'L12 FAIL: sum_j v_j (g_j - m) is not nonnegative'",
      "fingerprint": "1d64564e707f8333a506b38b6d7d5d3b6260b5564ac336559ba41291f4b0f0ea",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.16",
@@ -2726,7 +2726,7 @@
      "prose": "F12: the bound is attained at the vertex e_j0: g.e_j0 = g_j0 = m",
      "code": "assert sp.simplify(att.subs(*F12.rule(1)) - r['m']) == 0, 'L12 FAIL: g.e_{j0} != m'",
      "fingerprint": "8c5d75991a8e87e7f22fcb637f8849154f71eb35fe34aedbe4fda76821470950",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.17",
@@ -2736,7 +2736,7 @@
      "prose": "G = g.w - m = sum_j w_j (g_j - m)",
      "code": "assert sp.simplify(r['G_expr'] - sp.Sum(r['wn'][j] * r['gm'][j], lim)) == 0",
      "fingerprint": "5c390eb961f201dcb51af6e7ebf0dd17b3c7d93130c4e9890c8bf90419e68bbd",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.18",
@@ -2746,7 +2746,7 @@
      "prose": "lambda - min g = w.g - m = G",
      "code": "assert sp.simplify(r['lam_minus_m'] - r['G_expr']) == 0, 'L12 FAIL: lambda - min g != G (lambda = w.g)'",
      "fingerprint": "2c8065cdc92a120575d4388b7cc257e3737f5e781e1d53cebf19615c0a26d346",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.19",
@@ -2756,7 +2756,7 @@
      "prose": "nonnegative terms that sum to 0: a + r = 0 gives a = -r",
      "code": "assert r['zero_sol'] == [-r['r_t']], 'L12 FAIL: a + r = 0 does not give a = -r'",
      "fingerprint": "917a7de4acfdeb9dbb5ee4f77953197ccfe6fd0b2842ab555fbc0937a5ceaf21",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.20",
@@ -2766,7 +2766,7 @@
      "prose": "with r >= 0, a = -r is <= 0",
      "code": "assert (-r['r_t']).is_nonpositive is True",
      "fingerprint": "23218977641c8e3772cd7fec33327eab97cfd036fb7c908fbc61c042c3fb8a10",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.21",
@@ -2776,7 +2776,7 @@
      "prose": "a >= 0 and a <= 0 force a = 0: G = 0 only if every term w_j (g_j - m) is 0",
      "code": "assert r['a_t'].is_nonnegative is True and r['kkt_squeeze'] == sp.FiniteSet(0), 'L12 FAIL: termwise vanishing not forced'",
      "fingerprint": "8ae06d51f6e212201f591efdd71fce6b538b5491507a0a59c877e800844d8fae",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.22",
@@ -2786,7 +2786,7 @@
      "prose": "G - (f(w) - f*) = a + b, the I8 slack plus the minimum slack",
      "code": "assert sp.simplify(r['chain_slack']) == 0, 'L12 FAIL: G - (f - f*) != a + b'",
      "fingerprint": "f3b06f7d0d61c0738e2b950f595a68137f604c6ad613f5b143deb9c6c9f1c2b1",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.23",
@@ -2796,7 +2796,7 @@
      "prose": "a >= 0 (I8) and b >= 0 (step 2), so G - (f(w) - f*) >= 0",
      "code": "assert r['chain_nonneg'] is True, 'L12 FAIL: a + b is not nonnegative'",
      "fingerprint": "d26704aea83a443c1dc5479c9dd0cd91de34804b2f04c9bd92e135f3802e102a",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.24",
@@ -2806,7 +2806,7 @@
      "prose": "f(w) - f* >= 0 because f* is the minimum",
      "code": "assert r['lower_nonneg'] is True, 'L12 FAIL: f(w) - f* >= 0 not carried'",
      "fingerprint": "80fe1da3060605c5a11e37262bbb8c198ae7580e2a6436b7c75aac561b4302c4",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.25",
@@ -2816,7 +2816,7 @@
      "prose": "swapping the finite sums: sum_j w_j (U^T p)_j = sum_i p_i (w.u_i)",
      "code": "assert r['swap_equal'] is True, 'L12 FAIL: sum_j w_j (U^T p)_j != sum_i p_i (w.u_i)'",
      "fingerprint": "449476f5e2406f3a44001eb734d491a4adc0b732f84fa281e31f4863ac36d2ae",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.26",
@@ -2826,7 +2826,7 @@
      "prose": "p on the active rows with sum_i p_i = 1: sum_i p_i (M - s_i) = M - sum_i p_i s_i",
      "code": "assert sp.simplify(sr - (M - sp.Sum(p[i] * sp.Sum(w[j] * u[i, j], lim), (i, 1, n)))) == 0, 'L12 FAIL: sum_i p_i (M - s_i) != M - sum_i p_i s_i'",
      "fingerprint": "a056c00301282cdad2541ce44fc471637aa019f81e98fbe75d5f436d7832d315",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.27",
@@ -2838,7 +2838,7 @@
      "prose": "I12: the sum vanishes termwise, so sum_i p_i s_i = M",
      "code": "assert sp.solve(sp.Eq(sr.subs(r['ps'], X), I12.rewrite(r['support_zero'])), X) == [M], 'L12 FAIL: sum_i p_i s_i != M on the active rows'",
      "fingerprint": "1d9877cadd89cd2218be0dac12c7d76aa66d581fc059385f048177a9a33fbee0",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.28",
@@ -2848,7 +2848,7 @@
      "prose": "g.w = sum_i p_i s_i - ubar.w (swap) = M - ubar.w = f(w) at tau = infinity",
      "code": "assert sp.simplify(gw.subs(r['lhs_swap'], r['ps']).subs(r['ps'], M) - (M - r['ubw'])) == 0, 'L12 FAIL: g.w != M - ubar.w'",
      "fingerprint": "11f1804adc2b45730300390b615b541a4de947cf7d7580cdab366cfbf7d7af7c",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.29",
@@ -2858,7 +2858,7 @@
      "prose": "with sum_i p_i = 1 the centred (U_c^T p)_j is sum_i p_i u_ij - ubar_j",
      "code": "assert sp.simplify(uc - (sp.Sum(p[i] * u[i, j], (i, 1, n)) - r['ubj'][j])) == 0, 'L12 FAIL: centred (U_c^T p)_j'",
      "fingerprint": "05ead86ed3bd37fef44a4388bf4a4808f4627258ec9ef7370495b6ee9e534bee",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.30",
@@ -2868,7 +2868,7 @@
      "prose": "g.w splits into sum_j w_j (U^T p)_j minus the centring term ubar.w",
      "code": "assert split.has(r['ubj']), 'L12 FAIL: centring term lost'",
      "fingerprint": "c9da8b8c69cedeaf3c7339368ae8f88ac05b6be85b77ed88599931de6839a980",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.31",
@@ -2878,7 +2878,7 @@
      "prose": "the LP gap is the primal objective minus the dual objective",
      "code": "assert lp['gap_at_optimum'] == lp['primal_at_optimum'] - lp['dual_at_optimum'], 'L12 FAIL: LP gap is not primal minus dual'",
      "fingerprint": "e41551eb541795a24955849ca52af443e33240fe01598d9c41de3fc7bba4c29b",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.32",
@@ -2890,7 +2890,7 @@
      "prose": "I1: at an optimal primal-dual pair the values coincide, so the LP duality gap is 0",
      "code": "assert sp.simplify(I1.rewrite(I1.obj('primal') - I1.obj('dual'))) == 0 and lp['gap_at_optimum'] == 0, 'L12 FAIL: LP duality gap at the optimal pair is not 0'",
      "fingerprint": "04ac6cd2090162b69d2769cb7a90ea45ca4410073d64cabaa10829283077defe",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     },
     {
      "tag": "L12.33",
@@ -2900,7 +2900,7 @@
      "prose": "off the optimum 0 <= f - f* <= G holds on the exact two-metric LP",
      "code": "assert 0 <= lp['f_off_optimum'] - lp['f_star'] <= lp['gap_off_optimum'], 'L12 FAIL: 0 <= f - f* <= G violated off the optimum'",
      "fingerprint": "bf94662f735efdde2e7f39cc269d0eb85437ea9fb154bed5828888e0e3f0bbcf",
-     "result": "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+     "result": "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
     }
    ]
   },
@@ -2916,19 +2916,19 @@
      "symbol": "delta",
      "kind": "symbol",
      "sign": "nonnegative",
-     "claim": "every facet score changes by at most delta"
+     "claim": "every term score changes by at most delta"
     },
     {
      "symbol": "a1",
      "kind": "symbol",
      "sign": "nonnegative",
-     "claim": "every facet score changes by at most delta"
+     "claim": "every term score changes by at most delta"
     },
     {
      "symbol": "a2",
      "kind": "symbol",
      "sign": "nonnegative",
-     "claim": "every facet score changes by at most delta"
+     "claim": "every term score changes by at most delta"
     },
     {
      "symbol": "c",
@@ -2984,7 +2984,7 @@
    ],
    "results": [
     {
-     "name": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius",
+     "name": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius",
      "steps": [
       1,
       2,
@@ -3014,10 +3014,10 @@
       "F12"
      ],
      "results": [],
-     "prose": "F12: gamma <= s_ik(i) - s_il for every row and facet, so the slack rest is >= 0",
+     "prose": "F12: gamma <= s_ik(i) - s_il for every row and term, so the slack rest is >= 0",
      "code": "rest = F12.slack_symbol('rest')",
-     "fingerprint": "fa739b8fc4d4c0bb125f73bcbb24939cf6237954b79c14d0c9af8a84ce0a55ed",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "fingerprint": "89c9a6ca914d451dcc38050873a6fc8706bf084ce47c648b6ff5fcca1ded712b",
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.2",
@@ -3029,7 +3029,7 @@
      "prose": "I9 (Cauchy-Schwarz): |Delta theta . u~| <= ||Delta theta|| ||u~||, with slack cs >= 0",
      "code": "cs = I9.slack_symbol('cs')",
      "fingerprint": "bf50aef347c194f9d2b336d8f153d17b631c38655dd1db9d3f7d27bc81b65e31",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.3",
@@ -3041,7 +3041,7 @@
      "prose": "R2: the margin gamma is positive",
      "code": "g_ = R2.positive_symbol('g_')",
      "fingerprint": "a8140b614ac7e444da3150133c7b9a338e7b85c875a2d9723bb05e5e5385ded0",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.4",
@@ -3051,17 +3051,17 @@
      "prose": "a parameter change moves the score by Delta theta_k . (u_i, -1)",
      "code": "assert sp.simplify(r['score_change_slack']) == 0, 'L13 FAIL: change of the score is not Delta theta . (u, -1)'",
      "fingerprint": "86e2f183f55b859ed90491157e82cfca8a7abfdefdc5e2eba3efbe5f100be644",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.5",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the new gap to facet l is (gamma - 2 delta) + rest + a1 + a2",
+     "prose": "the new gap to term l is (gamma - 2 delta) + rest + a1 + a2",
      "code": "assert sp.simplify(r['margin_slack']) == 0, 'L13 FAIL: new gap != (gamma - 2 delta) + rest + a1 + a2'",
-     "fingerprint": "7ae7061ee7caa2454639476c8d48adff74e43d04b96151960a05c3ea201a39aa",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "fingerprint": "c1f68335581efd60a1bd22dff0dc5930d4b80353e169959d7d53ac9e1dd0fecb",
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.6",
@@ -3071,17 +3071,17 @@
      "prose": "the slacks rest + a1 + a2 are nonnegative (F12 and |e| <= delta)",
      "code": "assert r['margin_nonneg'] is True, 'L13 FAIL: the slacks rest + a1 + a2 are not nonnegative'",
      "fingerprint": "472dc961a820ec6384e4cb56c3908d24034ddeba341511382aae676d86c3e407",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.7",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the new gap is positive when 2 delta < gamma: each maximizing facet is unchanged",
+     "prose": "the new gap is positive when 2 delta < gamma: each maximizing term is unchanged",
      "code": "assert r['margin_positive'] is True, 'L13 FAIL: the new gap is not positive when 2 delta < gamma'",
-     "fingerprint": "67a9f60d7e157db93e2b725d469977a387e028b7bd63ed35e72d999f2af42cfd",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "fingerprint": "640e72432241aa391e0f9a43b06b522fe419247d8f0ca67225afc28c0b2ce6da",
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.8",
@@ -3091,7 +3091,7 @@
      "prose": "r U - ||Delta|| ||u~|| = a U + ||Delta|| b with a, b >= 0 (r = max norm, U = max norm)",
      "code": "assert sp.simplify(r['bound_slack']) == 0, 'L13 FAIL: r U - ||Delta|| ||u~|| != a U + ||Delta|| b'",
      "fingerprint": "15aad94bd3e0d660f6e55673b7456cfa3335e8092b5ee6572da80aceba731cdc",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.9",
@@ -3101,7 +3101,7 @@
      "prose": "the Cauchy-Schwarz chain slack a U + ||Delta|| b is nonnegative",
      "code": "assert r['bound_nonneg'] is True, 'L13 FAIL: Cauchy-Schwarz chain slack is not nonnegative'",
      "fingerprint": "e2aacbdec3498fc0a1bca9e174d42c5189f9b5801e89f7a912fdf9dfb89f31dc",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.10",
@@ -3111,7 +3111,7 @@
      "prose": "with the Cauchy-Schwarz slack (I9), delta - |Delta theta . u~| is nonnegative",
      "code": "assert r['cs_chain_nonneg'] is True, 'L13 FAIL: delta - |Delta theta . u~| is not nonnegative'",
      "fingerprint": "a23e45a6e97d1564ee45fe1ba393bf6c4c75f2df130a986ca1d83a037f89f60f",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.11",
@@ -3121,7 +3121,7 @@
      "prose": "2 r U < gamma exactly when r < gamma / (2 U): the stable radius",
      "code": "assert r['radius_set'] == sp.Interval.open(-sp.oo, r['g_'] / (2 * r['U_'])), 'L13 FAIL: 2 r U < gamma is not r < gamma / (2 U)'",
      "fingerprint": "2380a2ddb59c2d7c71a1a74eb48aca153454726024ae333f7bd6d55f095260cd",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.12",
@@ -3131,17 +3131,17 @@
      "prose": "R2: gamma > 0, so the radius gamma / (2 U) is positive: the neighborhood is nonempty",
      "code": "assert (r['g_'] / (2 * r['U_'])).is_positive is True, 'L13 FAIL: the stable radius is not positive'",
      "fingerprint": "2495f783c3f70fef8a434511b08f932a34692be643627945185dc5d993e14245",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.13",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "exact instance (d = 2): margin 1 and maximizing facets (1, 2)",
+     "prose": "exact instance (d = 2): margin 1 and maximizing terms (1, 2)",
      "code": "assert num['margin'] == 1 and num['labels'] == (1, 2), 'L13 FAIL: instance margin or labels'",
-     "fingerprint": "dc07ad5866c8db981d27ba0c2a9cef9741b0d98a600f936cf3a9b973297a5ed4",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "fingerprint": "c75881c7277f09974b2ba38378754b383b2d208ffa4833e82b165c52c3e80117",
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.14",
@@ -3151,7 +3151,7 @@
      "prose": "exact instance: the labels are unchanged by the perturbation",
      "code": "assert num['labels_perturbed'] == num['labels'], 'L13 FAIL: labels changed inside the stable radius'",
      "fingerprint": "7a9ff38cdd366c40d230238a462b539e37bd20640aa693dbd8787152fc771081",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.15",
@@ -3161,7 +3161,7 @@
      "prose": "exact instance: the perturbation has norm r, inside the radius gamma / (2 U)",
      "code": "assert all((sp.simplify(x - num['r']) == 0 for x in num['norms'])) and num['r'] < num['radius'], 'L13 FAIL: the instance perturbation is not inside the radius'",
      "fingerprint": "78881276bc35cd9bd69a18eeaac455ec826f090e22ac3e297a5d2c13079f86ff",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.16",
@@ -3171,7 +3171,7 @@
      "prose": "exact instance: 2 delta < gamma holds",
      "code": "assert 2 * num['delta'] < num['margin'], 'L13 FAIL: 2 delta < gamma not met by the instance'",
      "fingerprint": "800c158f894382260707be48ac4a1f825cdcc712bd2343d87842920c0b7303d3",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     },
     {
      "tag": "L13.17",
@@ -3181,7 +3181,7 @@
      "prose": "exact instance: the new margin is at least gamma - 2 delta and positive",
      "code": "assert bool(num['perturbed_margin'] >= num['margin'] - 2 * num['delta']) and bool(num['perturbed_margin'] > 0), 'L13 FAIL: perturbed margin below gamma - 2 delta'",
      "fingerprint": "1bab094ae410d085d43534f8ffb9555a9e1b0ff627020745f75e5b62a54805c2",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing terms; stable radius"
     }
    ]
   },
@@ -3200,7 +3200,7 @@
     }
    ],
    "proved_results_imported": {
-    "L12_RESULT": "lemma_12_facet_gap",
+    "L12_RESULT": "lemma_12_term_gap",
     "L13_RESULT": "lemma_13_margin"
    },
    "proved_results_exported": [
@@ -3356,9 +3356,9 @@
      "results": [
       "L12_RESULT"
      ],
-     "prose": "by L12 (Lemma 1): 0 <= f_k(w_k) - f_k* <= G_k for every facet",
+     "prose": "by L12 (Lemma 1): 0 <= f_k(w_k) - f_k* <= G_k for every term",
      "code": "assert L12_RESULT.holds(ctx, 'chain_nonneg') and L12_RESULT.holds(ctx, 'lower_nonneg'), 'L14 FAIL: Lemma 1 (0 <= f - f* <= G) not established'",
-     "fingerprint": "1fb1cd1aaa28036b541727ad9d93d09064195f9ff656d08220d3f59aefbf93fa",
+     "fingerprint": "de07ec470371894610980a1b57894994f684dc62468588bfad5cb95d8dab8eba",
      "result": "Approximate-certificate corollary"
     },
     {
@@ -3366,9 +3366,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "per facet, sum_i (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) by a Fubini swap",
-     "code": "assert r['regroup_swap_equal'] is True, 'L14 FAIL: per-facet regrouping is not a Fubini swap of the double sum'",
-     "fingerprint": "8b061e4393384bd83013a838a093bd66fcede0d5947f1046123c572faa548b58",
+     "prose": "per term, sum_i (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) by a Fubini swap",
+     "code": "assert r['regroup_swap_equal'] is True, 'L14 FAIL: per-term regrouping is not a Fubini swap of the double sum'",
+     "fingerprint": "0491952969765083d4dd82175e973960c358f90ff5756bc7fdb7b649a4dfe4ec",
      "result": "Proposition 3"
     },
     {
@@ -3436,9 +3436,9 @@
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "each term share_k (f_k' - f_k) is >= 0 (exact facet optima), so W is a local minimum",
+     "prose": "each term share_k (f_k' - f_k) is >= 0 (exact term optima), so W is a local minimum",
      "code": "assert r['local_min_nonneg'] is True, \"L14 FAIL: sum_k share_k (f_k' - f_k) is not nonnegative\"",
-     "fingerprint": "6a8c3e58d231ca8e13a9d9faa5c687cac47a901a322f7831ef0a119881356d62",
+     "fingerprint": "32012c33ca7893d54f53f75c369f85fa43658d58a2668b2ba7db22d79a860a71",
      "result": "Proposition 3"
     },
     {
@@ -3471,7 +3471,7 @@
    ],
    "hypotheses": [],
    "proved_results_imported": {
-    "L12_RESULT": "lemma_12_facet_gap",
+    "L12_RESULT": "lemma_12_term_gap",
     "L14_RESULT": "lemma_14_assignment_stable"
    },
    "proved_results_exported": [],
@@ -3481,7 +3481,7 @@
    ],
    "results": [
     {
-     "name": "descent (Level 1): reassignment and facet refit do not increase the mean slack",
+     "name": "descent (Level 1): reassignment and term refit do not increase the mean slack",
      "steps": [
       1,
       2,
@@ -3513,7 +3513,7 @@
      "prose": "A8: the membership family chi_ki, the cell counts n_k and the number N of rows",
      "code": "chi, ncell, N = (A8.obj('membership'), A8.obj('count'), A8.obj('rows'))",
      "fingerprint": "fd2c3a89647c066da37bc2b627e04adc487c851af7607c596ea7b3b84ce0a13a",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.2",
@@ -3522,10 +3522,10 @@
       "F12"
      ],
      "results": [],
-     "prose": "F12: r_ki = s_ki - m_i >= 0 for every row i and facet k, with equality at k*(i)",
+     "prose": "F12: r_ki = s_ki - m_i >= 0 for every row i and term k, with equality at k*(i)",
      "code": "r = F12.nonneg_base('r')",
-     "fingerprint": "3f66199c633cca70bd14897f71ba996172d27593c6679893b5e89d53383894fe",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "fingerprint": "12dc8cea3ac36165ade5f225c0c6b7d6bd7869b3c929fce86ba5d957f73d86ec",
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.3",
@@ -3537,7 +3537,7 @@
      "prose": "A8: sum_k chi_ki = 1, so row i's slack on its own cell is m_i + sum_k chi_ki r_ki",
      "code": "row_split = sp.simplify(A8.rewrite(linear(row_now), only=(0,)) - (mrow[i] + row_drop))",
      "fingerprint": "7cc7c66d737d90fa91108430e59d4be974f093ee8adf38fbc7ed087c1b13fb3c",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.4",
@@ -3546,10 +3546,10 @@
       "F12"
      ],
      "results": [],
-     "prose": "F12: the slack of row i on its maximizing facet k*(i) is m_i, the least over facets",
+     "prose": "F12: the slack of row i on its maximizing term k*(i) is m_i, the least over terms",
      "code": "on_maximizing = F12.rewrite(sx[kstar], rename={sp.IndexedBase('g'): sx, sp.Symbol('j0', integer=True): kstar, sp.Symbol('m', real=True): mrow[i]})",
-     "fingerprint": "9d8eeb31ddcc95b5a0ddf9b3a1f983bb5750240898e2b2a5d4182dc17689b4a9",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "fingerprint": "7523b881901f7891df23c757b4db95712a88050720497a2520ddf4876ef125d3",
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.5",
@@ -3561,7 +3561,7 @@
      "prose": "A8: the new membership chi'_ki >= 0 and the new cell counts n'_k",
      "code": "chip, ncellp = (A8.nonneg_base('chip'), sp.IndexedBase('ncellp'))",
      "fingerprint": "c1cb1bd65e0136a7f127e2164b415f7df765caf584f86101dbafd92088fbcd00",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.6",
@@ -3573,7 +3573,7 @@
      "prose": "A8 on the new cells: share'_k = n'_k / N = sum_i chi'_ki / N >= 0",
      "code": "share = A8.rewrite(ncellp[k] / N, only=(2,), rename=new_cells)",
      "fingerprint": "e7d0905ef101993236a3a918db1dfff4a097fc4f157a6aaa60342d1cbcbfebdd",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.7",
@@ -3585,7 +3585,7 @@
      "prose": "by L14: on any partition of the rows, F = sum_k share_k f_k(w_k)",
      "code": "partition_identity = L14_RESULT.holds(ctx, 'partition_identity')",
      "fingerprint": "f5c6dec8b35b05fab9459f99db2ae0c59115c29d693b39d8d47b5c77fd1aab09",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.8",
@@ -3597,7 +3597,7 @@
      "prose": "by L12: a minimizing refit has e_k = f'_k(w_k) - f'_k* >= 0",
      "code": "e = L12_RESULT.family(ctx, 'lower_nonneg', 'e')",
      "fingerprint": "d143879b56c69df6a6365f2dce34ef01c5c2315e72d90fbbc3b03516d9041537",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.9",
@@ -3607,17 +3607,17 @@
      "prose": "the slack of row i on its own cell splits as m_i + sum_k chi_ki r_ki (A8)",
      "code": "assert r['row_split'] == 0, 'L15 FAIL: the row slack does not split as m_i + sum_k chi_ki r_ki'",
      "fingerprint": "ac755b4f28bc64ceecf2e3bb9dac37d2a4ad96c3f1a448e56c36464bbf59bbc9",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.10",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the slack on the maximizing facet is the least slack m_i (F12)",
-     "code": "assert r['on_maximizing'] == 0, \"L15 FAIL: the maximizing facet's slack is not m_i\"",
-     "fingerprint": "8532253dcca2d9ecdd04c15393760c46b48331787b5660b8e4c9e3e8369eedf2",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "prose": "the slack on the maximizing term is the least slack m_i (F12)",
+     "code": "assert r['on_maximizing'] == 0, \"L15 FAIL: the maximizing term's slack is not m_i\"",
+     "fingerprint": "f31b5cbd9b11e1ccc5df030e4fdc0f9987de71c6fc56a184af40319772e3454f",
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.11",
@@ -3627,7 +3627,7 @@
      "prose": "F(current) - F(reassigned) = (1/N) sum_i sum_k chi_ki r_ki",
      "code": "assert r['reassign_diff'] == 0, 'L15 FAIL: F(current) - F(reassigned) != the mean of chi r'",
      "fingerprint": "7569170640b706a2de2defb64036e9cb2cb67ee79c0827a02e7c6c3b306f59a0",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.12",
@@ -3637,7 +3637,7 @@
      "prose": "each term chi_ki r_ki / N is >= 0, so reassignment does not increase F",
      "code": "assert r['reassign_nonneg'] is True, 'L15 FAIL: the reassignment drop is not nonnegative'",
      "fingerprint": "6c6aa4b219d8913886fdea587c74a38d7592b5b1df7dab6d92643b5c728b3127",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.13",
@@ -3647,7 +3647,7 @@
      "prose": "by L14: F = sum_k share_k f_k(w_k) holds on the new cells",
      "code": "assert r['partition_identity'] is True, \"L15 FAIL: L14's cell identity is not established\"",
      "fingerprint": "213731082432a1d78e1a542c0780da8cd1b31115b9204badd765380557d8a3d0",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.14",
@@ -3657,17 +3657,17 @@
      "prose": "F(reassigned) - F(refit) = sum_k share'_k (f'_k(w_k) - f'_k(w+_k))",
      "code": "assert r['refit_diff'] == 0, \"L15 FAIL: F(reassigned) - F(refit) != sum_k share'_k e_k\"",
      "fingerprint": "07f02f4387db7c510fb77b760eeda2ab53b0d719dd254ff36edc14fd774371fb",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.15",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "each term share'_k e_k is >= 0 (L12), so the facet refit does not increase F",
+     "prose": "each term share'_k e_k is >= 0 (L12), so the term refit does not increase F",
      "code": "assert r['refit_nonneg'] is True, 'L15 FAIL: the refit drop is not nonnegative'",
-     "fingerprint": "f167b135f3520b7f8b89045f02f6267c791aaade0f5e1fd910e0224faaaeb01d",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "fingerprint": "aa6c3ad5284fe00489c4dba4e6a9f3cc721a653d98d6be76670ae17a82123b5b",
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     },
     {
      "tag": "L15.16",
@@ -3677,7 +3677,7 @@
      "prose": "F(current) - F(refit) = drop + refit drop, both >= 0: F is non-increasing",
      "code": "assert r['total'] == 0 and r['nonincreasing'] is True, 'L15 FAIL: F(current) - F(refit) is not the sum of the two nonnegative drops'",
      "fingerprint": "633d28674e98c280f1c68e74b1c67e91a4ba065eb67ffa927db792cb18601b52",
-     "result": "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+     "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
     }
    ]
   },
@@ -4922,7 +4922,7 @@
   "A5": "609be841e2ccc85ccd4624dc475db44c6b619320b17194fb2830c2acfdfc2178",
   "A6": "b4e9169cb918769755c22e58ebd125a3758cfc34ef8321e888706702fa68ea85",
   "A7": "3cac58f1a30ea24d5c5efa98fe2879d2a53a05245f13cf432171d024be85ac0b",
-  "A8": "1c5a34480f33644ce5042c4144ff0b5eceba403713d8e2563eeeed9096e57d39",
+  "A8": "389380704cda88e2bd2b27c9f1e25117bc58f48eca099f01b7a92f46d75901e6",
   "I1": "8b586c084eb8dee64759cb2b187b056f7a64c6d86fdd5ee20468c5037a4c94e9",
   "I2": "8a2ea26085831e28ff069c9120c7b09010c92a1a33fec2ccfadaab1815a35be1",
   "I3": "95ec5356e211c64f420236cea6c8092289ca4c8492edb9e7af2c684e9e6e7bf9",
@@ -4940,7 +4940,7 @@
   "I15": "4aacdaf3b5cfeba77d4de2f4ae041a267baae11ffa435f93ad67e9553714255d",
   "I16": "3a6b8998c00ccc585ef8354f5bd57e0e96d8802ab71ab90021806038fd6f2275",
   "R1": "b38653c84f3e4f29bd37d548018ad6a1556b8f3c246977f4b7aba50f455c344f",
-  "R2": "b15ed265e27c49ab47fb9424ad6b6cb807964bdf79810a3cf078ec1befbb1bc8",
+  "R2": "34fd20a2aa64a3052f7422bcd38f6cf565ab91657e3cefde37a005032796fc40",
   "F5": "2b7224349cd656ed5f398c4834e6f572187f4d7d78fbd70c1ae142002943eebe",
   "F10": "819cd496db56cb66f86da0877ea25aa572726dc6524c90d0bbb1e5db2ceca8fa",
   "F12": "3dc48e3e67897ec0e472617824fbbc897625922da2b1bba2da82f285eb0f936a"

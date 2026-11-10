@@ -23,7 +23,7 @@ I11 (inherited, Boyd and Vandenberghe 3.1.1 and 3.1.4) closes the convexity argu
 nonnegativity of the second directional derivative at an arbitrary point in an arbitrary direction
 is convexity.
 
-The geometric program (L4.14 to L4.24).  With x_j = exp(w_j) the fit of ONE facet,
+The geometric program (L4.14 to L4.24).  With x_j = exp(w_j) the fit of ONE term,
 minimize J_tau(w) over the simplex, is a geometric program in standard form (Boyd, Kim,
 Vandenberghe and Hassibi 2007, I13), and the problem in w is its convex form:
   * exp(tau w.u_i) = prod_j x_j^(tau u_ij) (L4.16), so the objective (1/n) sum_i prod_j
@@ -34,9 +34,9 @@ Vandenberghe and Hassibi 2007, I13), and the problem in w is its convex form:
   * the logarithm of the objective in w is tau J_tau(w) (L4.22), which L4.13 shows convex, so the
     problem in w is the convex form of this program (L4.23); I13 concludes that it is a geometric
     program in standard form (L4.24).
-Not claimed: the fit of SEVERAL facets is not a geometric program as a whole (each design counts
-against its nearest facet, a minimum over facets, and the objective is neither a posynomial nor
-convex); each facet's refit with its assigned rows is a program of the one-facet kind.
+Not claimed: the fit of SEVERAL terms is not a geometric program as a whole (each design counts
+against its nearest term, a minimum over terms, and the objective is neither a posynomial nor
+convex); each term's refit with its assigned rows is a program of the one-term kind.
 
 Real-valuedness: the sign argument needs w.u_i and v.u_i real.  That is A1 (u = log m with
 m > 0 is real) with w, v real vectors; the IndexedBases u, w, v of the shared namespace carry
@@ -193,7 +193,7 @@ def verify(ctx):
     ), "L4 FAIL: convexity does not follow from the sign of the second derivative"
     ctx["L4"]["convex"] = True
 
-    # ---- the one-facet fit is a geometric program in x = exp(w) (I13)
+    # ---- the one-term fit is a geometric program in x = exp(w) (I13)
     d, j = S.d, S.j
     lim = (j, 1, d)
     # [L4.14] A2: the exponents satisfy w_j >= 0, so they are real and x_j = exp(w_j) is positive
@@ -235,7 +235,7 @@ def verify(ctx):
     # [L4.23] the problem in w (minimize log f0(exp w) = tau J_tau(w)) is convex, by L4.13
     assert ctx["L4"]["convex"] is True, "L4 FAIL: the convex form is not convex"
     # [L4.24] I13: a posynomial objective, monomial equality and monomial inequalities make the
-    # one-facet fit a geometric program in standard form
+    # one-term fit a geometric program in standard form
     assert I13.entails(
         [
             sp.Equivalent(I13.obj("objective"), sp.true if posy else sp.false),
@@ -243,6 +243,6 @@ def verify(ctx):
             sp.Equivalent(I13.obj("inequalities"), sp.true if mono_ineq else sp.false),
         ],
         I13.obj("conclusion"),
-    ), "L4 FAIL: the one-facet fit is not a geometric program in standard form"
+    ), "L4 FAIL: the one-term fit is not a geometric program in standard form"
     ctx["L4"]["geometric_program"] = True
     L4_RESULT.certify(ctx)

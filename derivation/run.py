@@ -31,7 +31,7 @@ CHAIN_NAMES = [
     "lemma_09_pullback",
     "lemma_10_extension",
     "lemma_11_pareto",
-    "lemma_12_facet_gap",
+    "lemma_12_term_gap",
     "lemma_13_margin",
     "lemma_14_assignment_stable",
     "lemma_15_descent",

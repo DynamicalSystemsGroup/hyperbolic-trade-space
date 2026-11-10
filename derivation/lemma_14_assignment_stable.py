@@ -1,13 +1,13 @@
 """L14 (Proposition 3 and the approximate-certificate corollary) - assignment-stable local
 optimality, step B.
 
-Setting.  K facets with exponents w_k on the simplex, cells C_1..C_K a partition of the N rows,
+Setting.  K terms with exponents w_k on the simplex, cells C_1..C_K a partition of the N rows,
 n_k = |C_k|, reaches beta_k = J_tau(U w_k), mean slack
 F(W) = (1/N) sum_i (beta_k(i) - w_k(i).u_i) for the unpenalized step-B objective.  f_k(w) =
-J_tau(U w) - ubar_k.w (ubar_k the mean of the rows of C_k) is the facet refit of L12.
+J_tau(U w) - ubar_k.w (ubar_k the mean of the rows of C_k) is the term refit of L12.
 
 What this proves (symbolic d, n_k, K; plain SymPy):
-  1. Per-facet regrouping: sum_{i in C_k} (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k), at
+  1. Per-term regrouping: sum_{i in C_k} (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k), at
      symbolic n_k (the cell's rows listed 1..n_k).  Sum linearity leaves a double sum that
      equals its mirror by a Fubini swap (L3's ``sum_swap_equal``).  Since beta_k = J_tau(U w_k),
      beta_k - w_k.ubar_k = f_k(w_k).
@@ -18,53 +18,53 @@ What this proves (symbolic d, n_k, K; plain SymPy):
      F(W) = sum_k share_k f_k(w_k), and beta_k = J_tau(U w_k) is the reach itself.
   3. The full objective (1/N) sum_i min_k (beta_k - w_k.u_i) equals the fixed-assignment
      expression on the assignment-stable neighborhood: R2 (positive margin) and L13 keep k(i)
-     the unique maximizing facet of every row, so the max score of row i is its score on k(i)
+     the unique maximizing term of every row, so the max score of row i is its score on k(i)
      and the termwise difference vanishes.
-  4. Proposition 3.  Hypotheses (ledger): R2 positive margin; every facet nonempty (n_k >= 1, so
-     share_k >= 0 and ubar_k is defined); every w_k minimizes f_k over the simplex (exact facet
+  4. Proposition 3.  Hypotheses (ledger): R2 positive margin; every cell nonempty (n_k >= 1, so
+     share_k >= 0 and ubar_k is defined); every w_k minimizes f_k over the simplex (exact term
      optima, so f_k(w'_k) - f_k(w_k) >= 0); beta_k = J_tau(U w_k) (step B, unpenalized).  Then
      F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k)) is a sum of nonnegative terms: a local
      minimizer on the neighborhood.
   5. The approximate-certificate corollary.  F(W) - F*_fixed = sum_k share_k (f_k(w_k) - f_k*)
-     (the fixed-assignment objective is separable, so its minimum is the sum of the facet
+     (the fixed-assignment objective is separable, so its minimum is the sum of the term
      minima), and L12 gives f_k(w_k) - f_k* <= G_k termwise, so
      F(W) - F*_fixed <= sum_k share_k G_k: a sum of nonnegative terms share_k (G_k - (f_k - f_k*)).
 
-What this does NOT prove: global optimality or global convergence of the multi-facet problem; any
+What this does NOT prove: global optimality or global convergence of the several-term problem; any
 statement for the tangent refit (step D), the sparsity penalty or a freely varying beta_k, where
-hypothesis beta_k = J_tau(U w_k) or exact facet optimality fails; that R2 holds for a given fit
-(a ridge row or duplicate facets make it fail).
+hypothesis beta_k = J_tau(U w_k) or exact term optimality fails; that R2 holds for a given fit
+(a ridge row or duplicate terms make it fail).
 """
 
 import sympy as sp
 
 from derivation.axioms import A8, R2
-from derivation.lemma_12_facet_gap import L12_RESULT
+from derivation.lemma_12_term_gap import L12_RESULT
 from derivation.lemma_13_margin import L13_RESULT
 from derivation.licence import hypothesis_base
 from derivation.results import ProvedResult
 from derivation.sumtools import fuse, linear, push_in, sum_swap_equal
 
 TITLE = (
-    "assignment-stable local optimality of the multi-facet fit "
+    "assignment-stable local optimality of the several-term fit "
     "(Proposition 3, approximate-certificate corollary)"
 )
 STATEMENT = (
     "Level 3 is for step B, unpenalized, with reaches beta_k = J_tau(U w_k) only. "
-    "Per facet, sum_{i in C_k} (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) = n_k f_k(w_k), "
+    "Per term, sum_{i in C_k} (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) = n_k f_k(w_k), "
     "n_k = |C_k|, so "
     "the mean slack is F(W) = sum_k (n_k/N) f_k(w_k). Proposition 3: if the margin is positive "
-    "(R2), every facet is nonempty and every w_k minimizes f_k, then on the assignment-stable "
+    "(R2), every cell is nonempty and every w_k minimizes f_k, then on the assignment-stable "
     "neighborhood of the fitted reference surface (finite tau, Phi = 0, V > 1 possible; or the "
     "tau = inf supporting envelope) F(W') - F(W) = sum_k (n_k/N) (f_k(w'_k) - f_k(w_k)) >= 0, a "
     "local minimizer. The approximate-certificate corollary: F(W) - F*_fixed <= "
-    "sum_k (n_k/N) G_k with G_k the facet gaps of L12 (nonnegative sums)"
+    "sum_k (n_k/N) G_k with G_k the term gaps of L12 (nonnegative sums)"
 )
 AXIOMS_USED = ["A8", "R2"]
 L14_RESULT = ProvedResult("L14", STATEMENT)  # taken by L15
 # Two results share this file (the step tags run in one sequence; each step is owned by one result).
 # Hypotheses of the statement (each quotes it): the symbols that carry a sign stand for these.
-EXACT_FACET_OPTIMUM = hypothesis_base("dfk", "nonnegative", "every w_k minimizes f_k")
+EXACT_TERM_OPTIMUM = hypothesis_base("dfk", "nonnegative", "every w_k minimizes f_k")
 PROOF_RESULTS = (
     ("Proposition 3", (1, 2, 3, 4, 5, 6, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18)),
     ("Approximate-certificate corollary", (8, 10, 19, 20)),
@@ -91,7 +91,7 @@ def derive(ctx):
     w = S.w
     lim = (j, 1, d)
 
-    # 1. per-facet regrouping at symbolic cell size n_k
+    # 1. per-term regrouping at symbolic cell size n_k
     nk = S.n  # the cell size, a symbolic positive integer (A0)
     beta = sp.Symbol("beta_k", real=True)
 
@@ -113,7 +113,7 @@ def derive(ctx):
         sp.simplify(A8.rewrite(by_rows, only=(0,)) - sp.Sum(h[i], (i, 1, N))),
         len(fuse(push_in(by_rows)).limits),
     )
-    gc = sp.IndexedBase("gc")  # gc[k, i]: the slack of row i on facet k
+    gc = sp.IndexedBase("gc")  # gc[k, i]: the slack of row i on term k
     row_major = sp.Sum(sp.Sum(chi[k, i] * gc[k, i], (k, 1, K)), (i, 1, N))
     cell_major = sp.Sum(sp.Sum(chi[k, i] * gc[k, i], (i, 1, N)), (k, 1, K))
     # [L14.3] the sum over rows of the slack on the row's own cell is the sum over the cells
@@ -141,7 +141,7 @@ def derive(ctx):
     share = lambda x: A8.rewrite(ncell[x] / N, only=(2,))  # noqa: E731
 
     fold = sp.IndexedBase("fold")
-    dfk = EXACT_FACET_OPTIMUM  # f_k(w'_k) = f_k(w_k) + dfk_k, dfk_k >= 0 (exact optimum)
+    dfk = EXACT_TERM_OPTIMUM  # f_k(w'_k) = f_k(w_k) + dfk_k, dfk_k >= 0 (exact optimum)
     local_min_slack = sp.simplify(
         linear(
             sp.Sum(share(k) * (fold[k] + dfk[k]), (k, 1, K)) - sp.Sum(share(k) * fold[k], (k, 1, K))
@@ -187,13 +187,13 @@ def verify(ctx):
     assert L13_RESULT.holds(ctx, "margin_positive"), (
         "L14 FAIL: no assignment-stable neighborhood (R2 positive margin, L13)"
     )
-    # [L14.10] by L12 (Lemma 1): 0 <= f_k(w_k) - f_k* <= G_k for every facet
+    # [L14.10] by L12 (Lemma 1): 0 <= f_k(w_k) - f_k* <= G_k for every term
     assert L12_RESULT.holds(ctx, "chain_nonneg") and L12_RESULT.holds(ctx, "lower_nonneg"), (
         "L14 FAIL: Lemma 1 (0 <= f - f* <= G) not established"
     )
-    # [L14.11] per facet, sum_i (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) by a Fubini swap
+    # [L14.11] per term, sum_i (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) by a Fubini swap
     assert r["regroup_swap_equal"] is True, (
-        "L14 FAIL: per-facet regrouping is not a Fubini swap of the double sum"
+        "L14 FAIL: per-term regrouping is not a Fubini swap of the double sum"
     )
     # [L14.12] A8: every row lies in one cell (sum_k chi_ki = 1): the row sum is unchanged
     assert r["rows_to_cells"] == (0, 2), "L14 FAIL: the rows are not partitioned over the cells"
@@ -211,7 +211,7 @@ def verify(ctx):
     assert sp.simplify(r["local_min_slack"]) == 0, (
         "L14 FAIL: F(W') - F(W) != sum_k share_k (f_k(w'_k) - f_k(w_k))"
     )
-    # [L14.18] each term share_k (f_k' - f_k) is >= 0 (exact facet optima), so W is a local minimum
+    # [L14.18] each term share_k (f_k' - f_k) is >= 0 (exact term optima), so W is a local minimum
     assert r["local_min_nonneg"] is True, "L14 FAIL: sum_k share_k (f_k' - f_k) is not nonnegative"
     # [L14.19] sum share G - sum share (f - f*) = sum share (G - (f - f*))
     assert sp.simplify(r["cor_slack"]) == 0, (

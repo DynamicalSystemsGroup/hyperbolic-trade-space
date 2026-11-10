@@ -860,9 +860,9 @@ def test_L6_statement_is_the_restricted_population_identity():
     assert "A5" in L6.AXIOMS_USED
 
 
-# --- WP13 (E-1): L12 facet gap, L13 margin, L14 assignment-stable local optimality ---
+# --- WP13 (E-1): L12 term gap, L13 margin, L14 assignment-stable local optimality ---
 _WP13 = {
-    12: "lemma_12_facet_gap",
+    12: "lemma_12_term_gap",
     13: "lemma_13_margin",
     14: "lemma_14_assignment_stable",
 }
@@ -1088,9 +1088,9 @@ def test_L15_is_followed_by_L16_and_states_level_one_exactly():
     mod = _il.import_module("derivation.lemma_15_descent")
     assert CHAIN_NAMES[-3:-1] == ["lemma_15_descent", "lemma_16_soft_fit_alternation"]
     assert mod.STATEMENT == (
-        "Level 1 (descent), step B unpenalized: reassigning every row to its maximizing facet "
-        "does not increase the mean slack F, and refitting each facet to a minimizer of its "
-        "convex facet objective does not increase F; so F is non-increasing along accepted "
+        "Level 1 (descent), step B unpenalized: reassigning every row to its maximizing term "
+        "does not increase the mean slack F, and refitting each term to a minimizer of its "
+        "convex term objective does not increase F; so F is non-increasing along accepted "
         "iterations."
     )
     assert set(mod.AXIOMS_USED) == {"A8", "F12"}

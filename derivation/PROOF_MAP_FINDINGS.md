@@ -141,15 +141,15 @@ unchanged. Only the ledger fingerprint of I10 changed.
 
 Level 1 (accepted iterations do not increase the mean slack F) had neither a badge nor a script.
 `lemma_15_descent.py` (L15, 16 steps) scripts it for step B unpenalized: reassignment to the
-maximizing facet does not increase F (F12 min representation, A8 partition; `F(current) -
-F(reassigned) = (1/N) sum_i sum_k chi_ki r_ki`, nonnegative terms), and a minimizing facet refit
+maximizing term does not increase F (F12 min representation, A8 partition; `F(current) -
+F(reassigned) = (1/N) sum_i sum_k chi_ki r_ki`, nonnegative terms), and a minimizing term refit
 does not increase F (L14's cell identity, L12's `f - f* >= 0`; `F(reassigned) - F(refit) = sum_k
 share'_k e_k`, nonnegative terms). Its STATEMENT is new; no existing `TITLE` or `STATEMENT`
 changed. L14 now exports `L14_RESULT` (certified at the end of its `verify`, with the fact
 `partition_identity` added to its context); no L14 step changed. Steps by kind: tagged A8 (L15.1,
 3, 5, 6), F12 (L15.2, 4), by a proved result (L15.7 from L14, L15.8 from L12), computed (L15.9 to
 L15.16). Not proved, stated in the docstring: convergence, nonemptiness of cells after
-reassignment (an accepted iteration is one that keeps every facet nonempty, as A8 requires).
+reassignment (an accepted iteration is one that keeps every cell nonempty, as A8 requires).
 
 | Pin | Before | After | Why |
 |---|---|---|---|
@@ -161,7 +161,7 @@ reassignment (an accepted iteration is one that keeps every facet nonempty, as A
 
 No negative control was removed; new controls for L15 are in `test_derivation.py`.
 
-## 10. The one-facet fit is a geometric program: L4.14 to L4.24 (WP10, the supervisor's reading of the abstract)
+## 10. The one-term fit is a geometric program: L4.14 to L4.24 (WP10, the supervisor's reading of the abstract)
 
 The supervisor found "the fit is convex for one facet and an alternation of convex fits for several"
 obtuse and asked for it through geometric programming (`work-packages/WP10-decisions.md`, "The
@@ -201,9 +201,9 @@ the ledger and to `AXIOMS_USED`).
 
 Statement extended on the supervisor's instruction: none. `TITLE` and `STATEMENT` of L4 are
 unchanged; the module docstring ("What this proves") gained the paragraph "The geometric program",
-which also says what is not claimed (the several-facet fit is not a geometric program as a whole:
-each design counts against its nearest facet, a minimum over facets; each facet's refit is a program
-of the one-facet kind). The clause "equivalently a geometric program in exp(w)" was not added to the
+which also says what is not claimed (the several-term fit is not a geometric program as a whole:
+each design counts against its nearest term, a minimum over terms; each term's refit is a program
+of the one-term kind). The clause "equivalently a geometric program in exp(w)" was not added to the
 statement, to keep L12's imported `L4_RESULT` and every quotation of it as they were; the driver may
 ask for it.
 
@@ -249,7 +249,7 @@ Three points for the reader of the statement (none changes it):
    on W (same minimizers); with E left out the bound still holds (E >= 0) but equality at the
    weights' own model needs it. The direction of the inequality is the one the spike states.
 2. In (iii) the object that is a generalized posynomial is the exponential of the objective (the
-   program minimizes its logarithm, as L4.22 does for one facet).
+   program minimizes its logarithm, as L4.22 does for one term).
 3. Clause (i) is proved for the K cyclic shifts of the terms (a symmetry subgroup that suffices to
    put the mean at every position); the invariance of F is scripted for those shifts, not for every
    permutation. That "a convex symmetric F is, at the all-equal point, no larger than at W" is the

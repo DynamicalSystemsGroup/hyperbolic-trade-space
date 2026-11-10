@@ -184,7 +184,7 @@ def verify(ctx):
     assert r["low_remainder_nonneg"] is True, "L11 FAIL: sum_j w_j gam_j is not nonnegative"
     # [L11.12] hence w.delta >= eps > 0 whenever every delta_j >= eps
     assert r["low_positive"] is True, "L11 FAIL: eps + nonnegative sum is not > 0"
-    # 5. K > 1: the facet inequality chain leaves only theta_k0 . delta = 0
+    # 5. K > 1: the term inequality chain leaves only theta_k0 . delta = 0
     # [L11.13] K > 1: theta_k0.delta >= 0 and x0 + theta_k0.delta <= x0 force theta_k0.delta = 0
     assert r["squeeze"] == sp.FiniteSet(0), "L11 FAIL: theta_k0.delta is not forced to 0"
     k0 = sp.Symbol("k0", integer=True)

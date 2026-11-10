@@ -1,7 +1,7 @@
-"""L12 (Lemma 1) - the simplex first-order gap of a facet refit bounds its suboptimality.
+"""L12 (Lemma 1) - the simplex first-order gap of a term refit bounds its suboptimality.
 
-Setting.  The facet refit of step B is f_k(w) = J_tau(U w) - ubar_k . w on the simplex (ubar_k the
-mean log-metric vector of the rows assigned to facet k).  J_tau - linear is convex (L4).  Write
+Setting.  The term refit of step B is f_k(w) = J_tau(U w) - ubar_k . w on the simplex (ubar_k the
+mean log-metric vector of the rows assigned to term k).  J_tau - linear is convex (L4).  Write
 g = grad f_k(w) and G(w) = max_{v in simplex} g.(w - v) = g.w - min_j g_j.
 
 What this proves (symbolic d, plain SymPy):
@@ -30,7 +30,7 @@ Hypotheses (ledger).  A2 (simplex), F12 (min representation: no symbolic-d min
 in SymPy, as F5 and F10), I8 (first-order convexity inequality, cited), I1 (LP duality at
 tau = infinity).
 
-What this does NOT prove: that the fitted facet is globally optimal (G is a certificate, G = 0 is
+What this does NOT prove: that the fitted term is globally optimal (G is a certificate, G = 0 is
 optimality), anything for the penalized objective or the tangent refit (their f is not this f), or
 the finite-tau formula at tau = infinity (there the gap needs the LP duals).
 """
@@ -45,13 +45,13 @@ from derivation.sumtools import fuse, linear, push_in, sum_swap_equal
 from derivation.sumtools import piece_in_range as delta_branch
 from derivation.symbols import J0
 
-TITLE = "facet first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
+TITLE = "term first-order gap: 0 <= f(w) - f* <= G, G = 0 iff the simplex KKT holds"
 STATEMENT = (
-    "For the facet refit f(w) = J_tau(U w) - ubar_k.w on the simplex (convex by L4), g = grad f(w) "
+    "For the term refit f(w) = J_tau(U w) - ubar_k.w on the simplex (convex by L4), g = grad f(w) "
     "and G = g.w - min_j g_j = sum_j w_j (g_j - min g) >= 0, with G = 0 iff w_j (g_j - min g) = 0 "
     "for every j (L3's simplex KKT: g_j >= lambda, w_j (g_j - lambda) = 0, lambda = w.g); and "
     "0 <= f(w) - f* <= G. For the fitted reference surface (finite tau, Phi = 0, V > 1 possible) "
-    "this is the stopping certificate of a facet; for the tau = inf supporting envelope, with the "
+    "this is the stopping certificate of a term; for the tau = inf supporting envelope, with the "
     "LP duals p, G is the LP duality gap (I1)"
 )
 AXIOMS_USED = ["A2", "I1", "I8", "I12", "F12"]

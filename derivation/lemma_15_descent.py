@@ -1,17 +1,17 @@
 """L15 (Level 1) - descent: one accepted iteration of the unpenalized step B does not raise F.
 
-Setting.  As in L14: K facets with exponents w_k on the simplex, reaches beta_k = J_tau(U w_k),
-cells C_1..C_K a partition of the N rows (the membership family chi of A8), slack of row i on facet
+Setting.  As in L14: K terms with exponents w_k on the simplex, reaches beta_k = J_tau(U w_k),
+cells C_1..C_K a partition of the N rows (the membership family chi of A8), slack of row i on term
 k s_ki = beta_k - w_k.u_i, and the mean slack F(W) = (1/N) sum_i s_{k(i) i}.  One iteration is
-(i) reassign every row to its maximizing facet, which is the facet of least slack, then (ii) refit
-each facet to a minimizer of its convex facet objective f_k (L12's setting) on the new cells.
+(i) reassign every row to its maximizing term, which is the term of least slack, then (ii) refit
+each term to a minimizer of its convex term objective f_k (L12's setting) on the new cells.
 
 What this proves (symbolic K, N; plain SymPy):
   1. Reassignment (i).  Write m_i = min_k s_ki, so r_ki = s_ki - m_i >= 0 with equality at the
-     maximizing facet (F12, the min representation).  Because every row lies in one cell
+     maximizing term (F12, the min representation).  Because every row lies in one cell
      (sum_k chi_ki = 1, A8), the current mean slack is (1/N) sum_i m_i + (1/N) sum_i sum_k chi_ki
      r_ki, and the reassigned mean slack is (1/N) sum_i m_i (the slack of row i on its maximizing
-     facet is m_i).  So F(current) - F(reassigned) = (1/N) sum_i sum_k chi_ki r_ki, a sum of
+     term is m_i).  So F(current) - F(reassigned) = (1/N) sum_i sum_k chi_ki r_ki, a sum of
      nonnegative terms.
   2. Refit (ii).  On the new cells (A8 again, now with membership chi'), L14's identity gives
      F = sum_k share'_k f'_k(w_k) with share'_k = n'_k/N >= 0.  A refit w+_k that minimizes f'_k
@@ -22,21 +22,21 @@ What this proves (symbolic K, N; plain SymPy):
 
 What this does NOT prove: that F converges, that the limit is a local or global minimizer, or any
 statement for the penalized objective or the tangent refit (step D), where beta_k is not the reach
-J_tau(U w_k) or the refit is not an exact facet minimizer; that every cell stays nonempty
-after reassignment (A8 requires it: an iteration that empties a facet is not an accepted one).
+J_tau(U w_k) or the refit is not an exact term minimizer; that every cell stays nonempty
+after reassignment (A8 requires it: an iteration that empties a cell is not an accepted one).
 """
 
 import sympy as sp
 
 from derivation.axioms import A8, F12
-from derivation.lemma_12_facet_gap import L12_RESULT
+from derivation.lemma_12_term_gap import L12_RESULT
 from derivation.lemma_14_assignment_stable import L14_RESULT
 from derivation.sumtools import linear
 
-TITLE = "descent (Level 1): reassignment and facet refit do not increase the mean slack"
+TITLE = "descent (Level 1): reassignment and term refit do not increase the mean slack"
 STATEMENT = (
-    "Level 1 (descent), step B unpenalized: reassigning every row to its maximizing facet does "
-    "not increase the mean slack F, and refitting each facet to a minimizer of its convex facet "
+    "Level 1 (descent), step B unpenalized: reassigning every row to its maximizing term does "
+    "not increase the mean slack F, and refitting each term to a minimizer of its convex term "
     "objective does not increase F; so F is non-increasing along accepted iterations."
 )
 AXIOMS_USED = ["A8", "F12"]
@@ -49,15 +49,15 @@ def derive(ctx):
     chi, ncell, N = A8.obj("membership"), A8.obj("count"), A8.obj("rows")
 
     # 1. reassignment (i): m_i = min_k s_ki, r_ki = s_ki - m_i, one row at a time
-    mrow = sp.IndexedBase("mrow")  # m_i, the least slack of row i over the facets
-    # [L15.2] F12: r_ki = s_ki - m_i >= 0 for every row i and facet k, with equality at k*(i)
+    mrow = sp.IndexedBase("mrow")  # m_i, the least slack of row i over the terms
+    # [L15.2] F12: r_ki = s_ki - m_i >= 0 for every row i and term k, with equality at k*(i)
     r = F12.nonneg_base("r")
     row_now = sp.Sum(chi[k, i] * (mrow[i] + r[k, i]), (k, 1, K))
     row_drop = sp.Sum(chi[k, i] * r[k, i], (k, 1, K))
     # [L15.3] A8: sum_k chi_ki = 1, so row i's slack on its own cell is m_i + sum_k chi_ki r_ki
     row_split = sp.simplify(A8.rewrite(linear(row_now), only=(0,)) - (mrow[i] + row_drop))
     sx, kstar = sp.IndexedBase("sx"), sp.Symbol("kstar", integer=True)
-    # [L15.4] F12: the slack of row i on its maximizing facet k*(i) is m_i, the least over facets
+    # [L15.4] F12: the slack of row i on its maximizing term k*(i) is m_i, the least over terms
     on_maximizing = F12.rewrite(
         sx[kstar],
         rename={
@@ -83,7 +83,7 @@ def derive(ctx):
     partition_identity = L14_RESULT.holds(ctx, "partition_identity")
     # [L15.8] by L12: a minimizing refit has e_k = f'_k(w_k) - f'_k* >= 0
     e = L12_RESULT.family(ctx, "lower_nonneg", "e")
-    fnew = sp.IndexedBase("fnew")  # f'_k(w_k), the facet objective on the new cells at the old fit
+    fnew = sp.IndexedBase("fnew")  # f'_k(w_k), the term objective on the new cells at the old fit
     F_cells = sp.Sum(share * fnew[k], (k, 1, K))
     F_refit = sp.Sum(share * (fnew[k] - e[k]), (k, 1, K))
     refit_diff = sp.simplify(linear(F_cells - F_refit) - linear(sp.Sum(share * e[k], (k, 1, K))))
@@ -109,8 +109,8 @@ def verify(ctx):
     r = ctx["L15"]
     # [L15.9] the slack of row i on its own cell splits as m_i + sum_k chi_ki r_ki (A8)
     assert r["row_split"] == 0, "L15 FAIL: the row slack does not split as m_i + sum_k chi_ki r_ki"
-    # [L15.10] the slack on the maximizing facet is the least slack m_i (F12)
-    assert r["on_maximizing"] == 0, "L15 FAIL: the maximizing facet's slack is not m_i"
+    # [L15.10] the slack on the maximizing term is the least slack m_i (F12)
+    assert r["on_maximizing"] == 0, "L15 FAIL: the maximizing term's slack is not m_i"
     # [L15.11] F(current) - F(reassigned) = (1/N) sum_i sum_k chi_ki r_ki
     assert r["reassign_diff"] == 0, "L15 FAIL: F(current) - F(reassigned) != the mean of chi r"
     # [L15.12] each term chi_ki r_ki / N is >= 0, so reassignment does not increase F
@@ -119,7 +119,7 @@ def verify(ctx):
     assert r["partition_identity"] is True, "L15 FAIL: L14's cell identity is not established"
     # [L15.14] F(reassigned) - F(refit) = sum_k share'_k (f'_k(w_k) - f'_k(w+_k))
     assert r["refit_diff"] == 0, "L15 FAIL: F(reassigned) - F(refit) != sum_k share'_k e_k"
-    # [L15.15] each term share'_k e_k is >= 0 (L12), so the facet refit does not increase F
+    # [L15.15] each term share'_k e_k is >= 0 (L12), so the term refit does not increase F
     assert r["refit_nonneg"] is True, "L15 FAIL: the refit drop is not nonnegative"
     # [L15.16] F(current) - F(refit) = drop + refit drop, both >= 0: F is non-increasing
     assert r["total"] == 0 and r["nonincreasing"] is True, (
