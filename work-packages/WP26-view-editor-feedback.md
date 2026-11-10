@@ -262,6 +262,19 @@ Observed: Issues (3): "Duplicate of other owned member name" at the two `verify`
 Reproduced: met once. Workaround: rename one requirement usage so the two verified features have different names; the text then
 applied with 0 issues. Suggestion: name the member in the message and the line of the earlier declaration.
 
+### Bug 10. Recovery clash between two tabs: the message does not say which copy wins
+
+Steps:
+1. Open `/app` in a first browser tab, restore the project's recovery and apply the loading recipe's source.
+2. Open `/app` in a second tab of the same browser and click "Restore recovery" for the same project.
+3. Return to the first tab and look at the header.
+
+Expected: a message that says which copy is kept and what a retry does.
+Observed: "Recovery could not be saved. Your current project is unchanged. Another tab changed local recovery. Retry to
+inspect its saved copy before continuing." with a "Retry recovery" button (`recovery-clash-wording.jpg`). The editor caught
+the clash, which is good; the wording leaves unclear whether the saved copy or the tab's copy is kept after a retry.
+Reproduced: met once. Suggestion: name the two copies with their last-saved times and say which one "Retry recovery" keeps.
+
 ### Feature requests: what the chain needs and the editor cannot show
 
 For each, steps 1 to 3 are the loading recipe with the second session's source (the model, a file of stakeholders and
@@ -294,6 +307,30 @@ although the editor draws bindings elsewhere (`assembly-tall-column.jpg`).
 verification definitions or usages with the same message, "Rendering unavailable". The Overview tree draws them as
 boxes with their attributes and `verify` edges, which was the workaround; a dedicated rendering would show the case, its
 subject, its objective's verifies and its attribute values (F-1) in one place.
+
+## 7. A cold reader's first use
+
+A reader with no background in the model, in the role of a sponsor, used the editor read-only for about twenty minutes to
+follow a stakeholder concern down to the quantity traded and how it is checked. These are the reader's observations of the
+editor, from the reader's own account; no screenshots of them were kept, so none is cited.
+
+1. **The layout button swaps rather than toggles.** The first click on a toolbar layout button hid the diagram and showed
+   only the source: "I expected a layout toggle, not a swap."
+2. **The stakeholders diagram at fit-to-window is unreadable**, even the top row; the same as item 7 of section 2.
+3. **Clicking a requirement row in the Requirements table seemed to do nothing for a few seconds.** Then the layout split,
+   the model tree opened to the element and the source scrolled. The reader expected a detail card beside the table.
+4. **Selecting an element in the model tree highlighted it and moved nothing else.** The reader expected the source or an
+   inspector to follow, and did not find "Show Inspector".
+5. **Clicking the `metrics` view still showed the requirements view** in the pane at one point (a click that did not take,
+   or a lag; not established).
+6. **A transient "draft pending" with no edit.** While the reader only read, the diagram header briefly read "Applied
+   revision · draft pending" and the toolbar "Working..." with Apply source lit, then returned to "Source applied". The
+   reader had typed nothing: "made me nervous that I had changed something." The same transient was seen right after an apply in
+   another session.
+
+Suggestions: a layout control that shows both panes by default and labels what each button does; a detail card or
+inspector that opens on selection in the table and the tree; a short note ("rendering...") instead of "draft pending" when
+nothing was edited.
 
 A note on what was not the editor's doing: during the session the browser tab was twice changed by something outside the
 editor (once navigated to an unrelated local page, once clicked in); these are not reported as bugs.
