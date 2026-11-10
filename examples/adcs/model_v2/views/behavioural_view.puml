@@ -14,7 +14,7 @@ skinparam PackageBackgroundColor #F7F7F7
 skinparam PackageBorderColor #909090
 skinparam LegendBackgroundColor white
 skinparam LegendBorderColor #909090
-skinparam nodesep 8
+skinparam nodesep 16
 skinparam ranksep 12
 hide circle
 hide empty members
@@ -61,7 +61,7 @@ package "mass (the analyst's grouping)" {
   rectangle "total mass\n<<MoP>>\ntotalMass" as xTotalMass #E3F1E3
 }
 xLaunchbudgetrequirement -[hidden]-> xTotalMass
-rectangle "requirements reading no traded metric" as xNoLine #FFFFFF;line:gray;line.dashed;text:gray {
+rectangle "requirements that read no traded metric" as xNoLine #FFFFFF;line:gray;line.dashed {
   rectangle "**BatteryPeakPowerRequirement**\nEclipsePeakLoad(c, peakTorque) <= BatteryPeakPower(c)\nSlewVerification" as xBatterypeakpowerrequirement #FDEBD0
   rectangle "**MomentumRequirement**\npeakMomentum <= c.momentumCapacity\nSlewVerification" as xMomentumrequirement #FDEBD0
   rectangle "**PowerRequirement**\nc.availablePower > 0.0 [W]\nConfigurationVerification" as xPowerrequirement #FDEBD0
@@ -79,7 +79,7 @@ xDepthofdischargerequirement -[#B5541C,thickness=2]- xDepthOfDischarge
 xEclipsereserverequirement -[#B5541C,thickness=2]- xEclipseReserve
 xEnergybalancerequirement -[#B5541C,thickness=2]- xEnergyBalance
 xLaunchbudgetrequirement -[#B5541C,thickness=2]- xLaunchcost
-xLaunchcost -[#B5541C,thickness=2]right- xTotalMass
+xLaunchcost -[#B5541C,thickness=2]right- xTotalMass : totalMass
 xPeakslewpowerrequirement -[#B5541C,thickness=2]- xPeakSlewPower
 xPointingerrorrequirement -[#B5541C,thickness=2]- xPointingError
 xPowermarginrequirement -[#B5541C,thickness=2]- xPowerMargin

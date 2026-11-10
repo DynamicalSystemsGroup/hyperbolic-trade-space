@@ -405,7 +405,19 @@ def test_assembly_alternatives_in_enum_order_and_the_legend_names_what_is_drawn(
         assert [next(a for a in order if f"**{a}**" in x) for x in declared] == order
     legend = assembly[assembly.index("legend bottom") :]
     assert "baselineGains" not in legend and "aggressiveGains" not in legend
-    assert "Kp:" in legend and "Kd:" in legend
+    # revision 5 (WP23 round 4): the legend keeps the tag keys; the levels and ranges, the gain
+    # ranges by regime among them, are the caption's, written by the generator from the model
+    assert "swap" in legend and "tune" in legend and "untagged" in legend
+    assert "Kp:" not in legend and "Kd:" not in legend
+    caption: list = []
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        m, byid = project.load(tmp_path / "m.sysml")
+        project.assembly(m, byid, P, caption=caption)
+    assert any(x.startswith("Kp:") for x in caption) and any(x.startswith("Kd:") for x in caption)
+    assert "baselineGains" not in " ".join(caption) and "aggressiveGains" not in " ".join(caption)
+    committed = (VIEWS / "assembly_caption.md").read_text().splitlines()[2:]
+    assert committed == [f"- {x}" for x in caption]
 
 
 def test_views_change_only_with_what_was_edited_and_are_stable(project, tmp_path):

@@ -11,6 +11,11 @@ in history), the outputs move: the slew-time columns leave (WP23 G5) and the set
 by event detection (WP16 Amendment 2 D-7), so the script prints each output hash, old and new,
 and requires nothing of them; the comparison of old and new is the gate's report (WP23 D-9).
 
+The five entries are one unit run in one tree, so each entry's ``git_dirty`` excludes the unit's
+five outputs and the ledger (``runner.run`` excludes only the entry's own output: run that way, the
+second entry onward would be marked dirty by the first's regenerated file; R-12 asks for none
+dirty).
+
     REQUIRE_OPENSYSML=1 PYTHONPATH=examples/adcs \
         uv run python examples/adcs/model_v2/ledger_gate.py --image <image id> [--dry]
 """
@@ -44,6 +49,22 @@ def declared(exp, entries, image: str):
     return dataclasses.replace(run, inputs={**dict(run.inputs), "note": NOTE.format(image=image)})
 
 
+def run_one(run):
+    """``runner.run`` for one declaration, the clean-tree rule over the unit's five outputs."""
+    (cell,) = run.expand()
+    if cell.id in {e["id"] for e in lg.read(lg.LEDGER_PATH)}:
+        raise lg.LedgerError(f"entry {cell.id} exists; the ledger is append-only")
+    own = [lg.LEDGER_PATH, *(lg.REPO_ROOT / e.output for e in ORDER)]
+    return runner._run_cell(
+        cell,
+        df.resolve_oracle(run.oracle),
+        df.resolve_sampler(run.sampler),
+        lg.REPO_ROOT,
+        lg.LEDGER_PATH,
+        own,
+    )
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--image", required=True, help="the hts-paper image id the run is made in")
@@ -56,13 +77,7 @@ def main(argv=None) -> int:
         print(run.id, "supersedes", list(run.supersedes), "output was", prev["output_sha256"][:12])
         if a.dry:
             continue
-        (entry,) = runner.run(
-            run,
-            df.resolve_oracle(run.oracle),
-            df.resolve_sampler(run.sampler),
-            lg.REPO_ROOT,
-            lg.LEDGER_PATH,
-        )
+        entry = run_one(run)
         print(
             run.id,
             "model",

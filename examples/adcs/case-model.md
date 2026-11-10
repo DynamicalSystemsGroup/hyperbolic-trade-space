@@ -99,9 +99,9 @@ for each traded metric, the requirement that reads it, or none, and where the me
 
 ## From the assembly to the dataset: measures of effectiveness and measures of performance
 
-This section reads the WP23 revision of the model, `model_v2/cubesat_r2.sysml`, which replaces
-`cubesat.sysml` at the package's data gate (`work-packages/WP23-scope-of-work.md`); until then the
-two files sit side by side and the section table above is the adopted file's. The chain is short.
+This section reads the model `model_v2/cubesat.sysml` as adopted at the package's data gate
+(`work-packages/WP23-scope-of-work.md`, G8; the version it replaced is in history at d3018ba, and
+the section table above is this file's). The chain is short.
 A configuration is what the assembly view shows: two swaps (the wheel class, the star-tracker
 grade) and four tunes (the panel span, the battery capacity, the gains Kp and Kd). The assessment
 turns a configuration into nine traded metrics: the slew is integrated once and measured, the
@@ -151,7 +151,7 @@ Mass and cost.
   constants, not a cited price. The launch cost is the stakeholder's measure on the mass and the
   quantity its requirement reads; the total mass stays the traded metric and the dataset gains no
   column (`WP23-decisions.md`, OD1 and OD2;
-  `tests/test_system_model_v2.py::test_r2_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it`).
+  `tests/test_system_model_v2.py::test_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it`).
 
 ### The requirements and what each reads
 
@@ -176,7 +176,7 @@ model's own: the loop proposed one rule for all four, so that none is tuned to a
 figure, each threshold the baseline configuration's own value with a 20 % margin (`budgets.margin`,
 1.2), the allowance an engineer carries on a budget at an early phase. They are pending the
 supervisor's approval at the data gate and are read from the model by
-`tests/test_system_model_v2.py::test_r2_proposed_thresholds_are_the_baselines_values_with_the_stated_margin`:
+`tests/test_system_model_v2.py::test_proposed_thresholds_are_the_baselines_values_with_the_stated_margin`:
 a pointing error of 0.018642 degree, a control effort of 0.011389 N.m.s, a peak slew power of
 2.4 W and a launch budget of 95,698.29 USD (15.950 kg at the rate) (`WP23-review.md`, "Proposed
 thresholds"). The battery's discharge rating is proposed likewise: a continuous rating of 1 C
