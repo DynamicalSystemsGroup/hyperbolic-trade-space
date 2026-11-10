@@ -396,20 +396,12 @@ def test_root_index_is_thin_and_has_the_cards():
     assert "prefers-color-scheme: dark" in text
     assert "Start wherever suits you" in text
     low = text.lower()
-    order = [
-        low.index(k) for k in ("<h2>why</h2>", "<h2>what</h2>", "<h2>how</h2>", 'class="cards"')
-    ]
-    assert order == sorted(order), "order: why, what, how, cards"
-    assert (
-        "A map of the mathematics: assumptions, the single-term core, the chart and its uses, "
-        "the several-term extension, the open questions"
-    ) in text
+    order = [low.index(k) for k in ("<h2>why</h2>", "<h2>what</h2>", 'class="cards"')]
+    assert order == sorted(order), "order: why, what, cards"
     for needle in ("scikit-learn", "unsupervised", "feature engineering", "pca"):
         assert needle in low, needle
     for banned in ("sympy", "worked example", "chatgpt", "openai"):
         assert banned not in low, banned
-    figure = [h for h in html_links(SITE / "index.html") if h.endswith(".webp")]
-    assert figure and all((SITE / h).is_file() for h in figure)
     hrefs = html_links(SITE / "index.html")
     for href in ("paper/", "docs/", "docs/api-reference/"):
         assert href in hrefs
@@ -417,8 +409,7 @@ def test_root_index_is_thin_and_has_the_cards():
     assert "New card" in text
     assert '<link rel="icon" href="data:,">' in text  # D6: no /favicon.ico request, no 404
     assert '<link rel="icon" href="data:,">' in (SITE / "paper" / "index.html").read_text()
-    # R1: the map is a plain link to its full-size file and may use a wide screen's width
-    assert re.search(r'<a href="paper-map\.webp">\s*<img[^>]*src="paper-map\.webp"', text)
+    # R1: a wide figure may use a wide screen's width
     assert "min(94vw" in text and "figure.wide" in text
     # R2: the install command breaks between words, never inside one
     assert "break-all" not in text and "anywhere" not in text
@@ -542,7 +533,6 @@ def test_assembled_layout(assembled):
     for rel in ("index.html", "docs/index.html", "paper/index.html"):
         assert (assembled / rel).is_file(), rel
     assert (assembled / "index.html").read_text() == (SITE / "index.html").read_text()
-    assert (assembled / "paper-map.webp").is_file()
     for name in sorted(BUILT_IMAGES):
         assert (assembled / name).stat().st_size > 10_000, name
     assert (assembled / "figure1.png").read_bytes() == (
@@ -818,7 +808,7 @@ def test_each_figure_is_produced_by_the_code_shown_above_it(tmp_path):
     assert embedded == on_pages
 
 
-# ---- the index page's images: Why, What, How --------------------------------------------------
+# ---- the index page's images: Why, What --------------------------------------------------
 
 WHY_ALT = (
     "A triangle of three metrics. Evaluated designs are dots placed by which metric they favour; "
@@ -868,12 +858,12 @@ def _index_figures():
 def test_index_has_a_figure_each_for_why_what_and_how_in_that_order():
     text = (SITE / "index.html").read_text()
     figures = _index_figures()
-    assert [f["class"].split()[0] if f["class"] else "" for f in figures] == ["why", "wide", "wide"]
+    assert [f["class"].split()[0] if f["class"] else "" for f in figures] == ["why", "wide"]
     srcs = [f["img"][0][0] for f in figures]
-    assert srcs == ["why-regions-light.png", "figure1.png", "paper-map.webp"]
-    sections = [text.index(f"<h2>{h}</h2>") for h in ("Why", "What", "How")]
+    assert srcs == ["why-regions-light.png", "figure1.png"]
+    sections = [text.index(f"<h2>{h}</h2>") for h in ("Why", "What")]
     assert sections == sorted(sections)
-    for h, f in zip(("Why", "What", "How"), figures, strict=True):
+    for h, f in zip(("Why", "What"), figures, strict=True):
         start = text.index(f"<h2>{h}</h2>")
         assert text.index(f["img"][0][0], start) < (
             text.index("<h2>", start + 5) if "<h2>" in text[start + 5 :] else len(text)
@@ -883,11 +873,11 @@ def test_index_has_a_figure_each_for_why_what_and_how_in_that_order():
 
 def test_index_images_have_alt_text_captions_and_full_size_links():
     figures = _index_figures()
-    why, what, how = figures
+    why, what = figures
     assert [a for a in why["a"]] == ["why-regions-light.png", "why-regions-dark.png"]
     assert [i[0] for i in why["img"]] == ["why-regions-light.png", "why-regions-dark.png"]
     assert all(alt == WHY_ALT for _, alt in why["img"])
-    assert what["a"] == ["figure1.png"] and how["a"] == ["paper-map.webp"]
+    assert what["a"] == ["figure1.png"]
     for f in figures:
         assert all(alt and len(alt) > 60 for _, alt in f["img"]), "alt text names what is shown"
         assert len(f["cap"].strip()) > 40

@@ -4500,66 +4500,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "The report's tension directions equal orient_by_pca of the near-frontier chart coordinates; the test asserts it"
 
 [[claim]]
-id = "C362"
-fragment = "The foundation box is the invariant form: a weighted geometric mean"
-file = "site/index.html"
-anchor = ""
-kind = "M"
-backing = ["lemma:L1", "glossary:invariant-value"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "V(km)=kV(m); weighted geometric mean per the glossary"
-
-[[claim]]
-id = "C363"
-fragment = "V of the metrics, whose level V = 1 is the fitted reference surface and whose logarithm is the"
-file = "site/index.html"
-anchor = ""
-kind = "M"
-backing = ["lemma:L1", "glossary:fitted-reference-surface", "glossary:energy-differential"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "log V = w.u - beta (L1); V=1 is the fitted reference surface (Definition 1, glossary)"
-
-[[claim]]
-id = "C364"
-fragment = "energy differential. The single-term core fits the weights and an offset to your designs as"
-file = "site/index.html"
-anchor = ""
-kind = "M"
-backing = ["lemma:L3", "lemma:L4", "lemma:L5"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "K=1 fit of exponents on the simplex and an offset is a convex program (L4), with KKT (L3) and log-mean-exp (L5)"
-
-[[claim]]
-id = "C365"
-fragment = "one convex problem. Four boxes use that fit: the chart (each design becomes a position along"
-file = "site/index.html"
-anchor = ""
-kind = "M"
-backing = ["lemma:L8", "lemma:L7", "lemma:L6", "lemma:L9"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Chart (L8), elasticities along a term (L7), Gaussian noise correction (L6), pull-back (L9); the fragment is the map's structural description"
-
-[[claim]]
-id = "C366"
-fragment = "correction for noise, and the pull-back to your raw attributes. The lower boxes extend the"
-file = "site/index.html"
-anchor = ""
-kind = "M"
-backing = ["lemma:L6", "lemma:L9", "lemma:L10", "lemma:L11", "lemma:L12", "lemma:L13", "lemma:L14", "lemma:L15", "lemma:L17"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Noise correction L6, pull-back L9, several terms L10, Pareto relation L11, algorithm guarantees L12-L15 and L17 (the paper states none is global)"
-
-[[claim]]
 id = "C367"
 fragment = "A scikit-learn-compatible estimator for the frontier, with an invertible log-ratio chart,"
 file = "site/index.html"
