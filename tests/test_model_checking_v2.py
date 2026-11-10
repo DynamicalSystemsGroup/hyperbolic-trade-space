@@ -185,7 +185,9 @@ METRIC_REQUIREMENTS = {
 # WP23 D-1 (`cubesat_r2.sysml`): the slew-time and slew-band requirements fold into
 # SettledRequirement, and the four metrics that had none get one (pointing error, control effort,
 # peak slew power, the total mass through the launch cost), each satisfied by the baseline and
-# verified in the case that can decide it (before or after the slew is measured).
+# verified in the case that can decide it (before or after the slew is measured). Round 2 (the
+# coupling check, WP23-review.md) adds BatteryPeakPowerRequirement, the pack's rating against the
+# eclipse peak load, verified in the slew case: the pin follows the round-2 model.
 R2_METRIC_REQUIREMENTS = {
     "EclipseReserveRequirement",
     "PowerMarginRequirement",
@@ -194,6 +196,7 @@ R2_METRIC_REQUIREMENTS = {
     "ControlEffortRequirement",
     "PeakSlewPowerRequirement",
     "LaunchBudgetRequirement",
+    "BatteryPeakPowerRequirement",
 }
 _FLAG_DEFS = set(fz.FLAG_REQUIREMENTS.values())
 REQUIREMENTS = {
@@ -213,7 +216,7 @@ REQUIREMENTS = {
     },
     "r2": {
         "defs": _FLAG_DEFS | R2_METRIC_REQUIREMENTS,
-        "satisfy": 11,
+        "satisfy": 12,
         "verified": {
             "ConfigurationVerification": {
                 "PowerRequirement",
@@ -229,6 +232,7 @@ REQUIREMENTS = {
                 "EnergyBalanceRequirement",
                 "ControlEffortRequirement",
                 "PeakSlewPowerRequirement",
+                "BatteryPeakPowerRequirement",
             },
         },
     },
@@ -245,7 +249,7 @@ def _kinds(model, kind):
 def test_requirements_are_declared_one_per_flag(v2):
     """R-3/R-4: the four flags are named requirement definitions; the others bound the traded
     metrics (none of them is a flag): WP22's four with the slew-band requirement in the adopted
-    model, WP23's seven in the revision (``REQUIREMENTS``)."""
+    model, WP23's eight in the revision (``REQUIREMENTS``)."""
     defs = set(_kinds(v2.model, "RequirementDefinition"))
     assert set(fz.FLAG_REQUIREMENTS.values()) <= defs
     assert defs == REQUIREMENTS[v2.name]["defs"]
@@ -267,7 +271,7 @@ def test_verification_defs_name_the_requirements_they_verify(v2):
 
 def test_satisfy_statements_hold_on_the_baseline(v2):
     """R-4: one `satisfy` statement per requirement ties it to the baseline (nine in the adopted
-    model, eleven in the revision); all hold (engine run)."""
+    model, twelve in the revision after round 2); all hold (engine run)."""
     verdicts = v2.model.verify_satisfaction()
     assert len(verdicts) == REQUIREMENTS[v2.name]["satisfy"] == len(REQUIREMENTS[v2.name]["defs"])
     assert all(v.holds and v.status == "holds" for v in verdicts)

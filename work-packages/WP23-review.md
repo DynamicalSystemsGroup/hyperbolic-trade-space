@@ -294,9 +294,15 @@ The views generator is unchanged.
 
 **Tests touched.** `tests/test_model_coverage.py` (unit 1: the connectivity tests, the three-table
 CSV); `tests/test_system_model_v2.py` (the r2 pins: the calcs `BatteryPeakPower` and
-`EclipsePeakLoad`, the line cap 900). `tests/test_model_checking_v2.py` pins the r2 requirement defs,
-the `satisfy` count (eleven in round 1, twelve now) and the `SlewVerification` set; it is outside this
-unit's files, an item for the PM.
+`EclipsePeakLoad`, the line cap 900); `tests/test_model_checking_v2.py` (the r2 pins follow the
+round-2 model: the requirement set, `satisfy` twelve, the `SlewVerification` set; the PM's
+authorization, option (i) of the round-2 report).
+
+**Legibility finding for the gate's figure redraw** (the PM's note; not fixed here). The round-1
+heatmap draws the total mass's K = 1 exponent, 0.358, above the colourbar's cap of 0.30 as saturated
+black, so the cap hides the largest value on the figure; the drawing is `case.tau_sweep_figure`'s,
+read-only for WP23 (non-goals: no figure in `paper/`), so the cap is an item for the redraw after the
+data gate (WP19): a cap at or above the largest exponent, or a scale that states its clipping.
 
 ## R-5's check, amended
 
