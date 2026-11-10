@@ -146,20 +146,6 @@ reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-tr
 [[violation]]
 kind = "avoid"
 file = "paper/supporting_material.ipynb"
-phrase = "explicit radius"
-owner = "WP10 paper stream"
-reason = "SYNONYM of stable radius: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "paper/supporting_material.ipynb"
-phrase = "extension temperature"
-owner = "WP10 paper stream"
-reason = "SYNONYM of term temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "paper/supporting_material.ipynb"
 phrase = "fitted surface"
 owner = "WP10 paper stream"
 reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
@@ -569,20 +555,6 @@ file = "paper/supporting_material.ipynb"
 phrase = "duality gap"
 owner = "WP10 paper stream"
 reason = "BASELINE: standard convex-optimization term (Boyd and Vandenberghe); candidate for the glossary assumed list (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "explicit radius"
-owner = "WP10 paper stream"
-reason = "SYNONYM of stable radius: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "extension temperature"
-owner = "WP10 paper stream"
-reason = "SYNONYM of term temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"

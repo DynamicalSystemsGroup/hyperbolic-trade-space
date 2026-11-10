@@ -305,7 +305,7 @@ AXIOMS = {
     "A6": Axiom(
         "A6",
         POSITED,
-        "the extension temperature is positive, kappa > 0, and each of the K terms has "
+        "the term temperature is positive, kappa > 0, and each of the K terms has "
         "exponents theta_k on the simplex",
         relation=(
             _S.simplex_theta,

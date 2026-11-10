@@ -14,7 +14,7 @@ What this proves (symbolic d, plain SymPy):
      slacks a1 = e_ik(i) + delta >= 0, a2 = delta - e_il >= 0 it is (gamma - 2 delta) + rest + a1
      + a2: at least gamma - 2 delta, and positive when 2 delta < gamma (positive-symbol algebra,
      the L11 device).  So the maximizing facet of every row is unchanged and unique.
-  3. Explicit radius.  I9 (Cauchy-Schwarz): |Delta theta_k . u~_i| <= ||Delta theta_k||_2
+  3. Stable radius.  I9 (Cauchy-Schwarz): |Delta theta_k . u~_i| <= ||Delta theta_k||_2
      ||u~_i||_2 <= r U with r = max_k ||Delta theta_k||_2, U = max_i ||u~_i||_2 (U >= 1 because the
      last component is -1).  So delta = r U, and 2 r U < gamma is r < gamma / (2 U), solved for r.
   4. One confined exact instance (d = 2, two facets, two rows): a perturbation of norm 0.9 times
@@ -36,7 +36,7 @@ from derivation.licence import hypothesis_symbol
 from derivation.results import ProvedResult
 from derivation.sumtools import linear
 
-TITLE = "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+TITLE = "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
 STATEMENT = (
     "Facet scores s_ik = w_k.u_i - beta_k = theta_k.(u_i, -1), the energy differential (log V) of "
     "design i against facet k; margin gamma = min_i [s_i,k(i) - max_{k != k(i)} s_ik] > 0 (R2). "

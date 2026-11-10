@@ -2984,7 +2984,7 @@
    ],
    "results": [
     {
-     "name": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius",
+     "name": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius",
      "steps": [
       1,
       2,
@@ -3017,7 +3017,7 @@
      "prose": "F12: gamma <= s_ik(i) - s_il for every row and facet, so the slack rest is >= 0",
      "code": "rest = F12.slack_symbol('rest')",
      "fingerprint": "fa739b8fc4d4c0bb125f73bcbb24939cf6237954b79c14d0c9af8a84ce0a55ed",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.2",
@@ -3029,7 +3029,7 @@
      "prose": "I9 (Cauchy-Schwarz): |Delta theta . u~| <= ||Delta theta|| ||u~||, with slack cs >= 0",
      "code": "cs = I9.slack_symbol('cs')",
      "fingerprint": "bf50aef347c194f9d2b336d8f153d17b631c38655dd1db9d3f7d27bc81b65e31",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.3",
@@ -3041,7 +3041,7 @@
      "prose": "R2: the margin gamma is positive",
      "code": "g_ = R2.positive_symbol('g_')",
      "fingerprint": "a8140b614ac7e444da3150133c7b9a338e7b85c875a2d9723bb05e5e5385ded0",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.4",
@@ -3051,7 +3051,7 @@
      "prose": "a parameter change moves the score by Delta theta_k . (u_i, -1)",
      "code": "assert sp.simplify(r['score_change_slack']) == 0, 'L13 FAIL: change of the score is not Delta theta . (u, -1)'",
      "fingerprint": "86e2f183f55b859ed90491157e82cfca8a7abfdefdc5e2eba3efbe5f100be644",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.5",
@@ -3061,7 +3061,7 @@
      "prose": "the new gap to facet l is (gamma - 2 delta) + rest + a1 + a2",
      "code": "assert sp.simplify(r['margin_slack']) == 0, 'L13 FAIL: new gap != (gamma - 2 delta) + rest + a1 + a2'",
      "fingerprint": "7ae7061ee7caa2454639476c8d48adff74e43d04b96151960a05c3ea201a39aa",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.6",
@@ -3071,7 +3071,7 @@
      "prose": "the slacks rest + a1 + a2 are nonnegative (F12 and |e| <= delta)",
      "code": "assert r['margin_nonneg'] is True, 'L13 FAIL: the slacks rest + a1 + a2 are not nonnegative'",
      "fingerprint": "472dc961a820ec6384e4cb56c3908d24034ddeba341511382aae676d86c3e407",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.7",
@@ -3081,7 +3081,7 @@
      "prose": "the new gap is positive when 2 delta < gamma: each maximizing facet is unchanged",
      "code": "assert r['margin_positive'] is True, 'L13 FAIL: the new gap is not positive when 2 delta < gamma'",
      "fingerprint": "67a9f60d7e157db93e2b725d469977a387e028b7bd63ed35e72d999f2af42cfd",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.8",
@@ -3091,7 +3091,7 @@
      "prose": "r U - ||Delta|| ||u~|| = a U + ||Delta|| b with a, b >= 0 (r = max norm, U = max norm)",
      "code": "assert sp.simplify(r['bound_slack']) == 0, 'L13 FAIL: r U - ||Delta|| ||u~|| != a U + ||Delta|| b'",
      "fingerprint": "15aad94bd3e0d660f6e55673b7456cfa3335e8092b5ee6572da80aceba731cdc",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.9",
@@ -3101,7 +3101,7 @@
      "prose": "the Cauchy-Schwarz chain slack a U + ||Delta|| b is nonnegative",
      "code": "assert r['bound_nonneg'] is True, 'L13 FAIL: Cauchy-Schwarz chain slack is not nonnegative'",
      "fingerprint": "e2aacbdec3498fc0a1bca9e174d42c5189f9b5801e89f7a912fdf9dfb89f31dc",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.10",
@@ -3111,7 +3111,7 @@
      "prose": "with the Cauchy-Schwarz slack (I9), delta - |Delta theta . u~| is nonnegative",
      "code": "assert r['cs_chain_nonneg'] is True, 'L13 FAIL: delta - |Delta theta . u~| is not nonnegative'",
      "fingerprint": "a23e45a6e97d1564ee45fe1ba393bf6c4c75f2df130a986ca1d83a037f89f60f",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.11",
@@ -3121,7 +3121,7 @@
      "prose": "2 r U < gamma exactly when r < gamma / (2 U): the stable radius",
      "code": "assert r['radius_set'] == sp.Interval.open(-sp.oo, r['g_'] / (2 * r['U_'])), 'L13 FAIL: 2 r U < gamma is not r < gamma / (2 U)'",
      "fingerprint": "2380a2ddb59c2d7c71a1a74eb48aca153454726024ae333f7bd6d55f095260cd",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.12",
@@ -3131,7 +3131,7 @@
      "prose": "R2: gamma > 0, so the radius gamma / (2 U) is positive: the neighborhood is nonempty",
      "code": "assert (r['g_'] / (2 * r['U_'])).is_positive is True, 'L13 FAIL: the stable radius is not positive'",
      "fingerprint": "2495f783c3f70fef8a434511b08f932a34692be643627945185dc5d993e14245",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.13",
@@ -3141,7 +3141,7 @@
      "prose": "exact instance (d = 2): margin 1 and maximizing facets (1, 2)",
      "code": "assert num['margin'] == 1 and num['labels'] == (1, 2), 'L13 FAIL: instance margin or labels'",
      "fingerprint": "dc07ad5866c8db981d27ba0c2a9cef9741b0d98a600f936cf3a9b973297a5ed4",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.14",
@@ -3151,7 +3151,7 @@
      "prose": "exact instance: the labels are unchanged by the perturbation",
      "code": "assert num['labels_perturbed'] == num['labels'], 'L13 FAIL: labels changed inside the stable radius'",
      "fingerprint": "7a9ff38cdd366c40d230238a462b539e37bd20640aa693dbd8787152fc771081",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.15",
@@ -3161,7 +3161,7 @@
      "prose": "exact instance: the perturbation has norm r, inside the radius gamma / (2 U)",
      "code": "assert all((sp.simplify(x - num['r']) == 0 for x in num['norms'])) and num['r'] < num['radius'], 'L13 FAIL: the instance perturbation is not inside the radius'",
      "fingerprint": "78881276bc35cd9bd69a18eeaac455ec826f090e22ac3e297a5d2c13079f86ff",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.16",
@@ -3171,7 +3171,7 @@
      "prose": "exact instance: 2 delta < gamma holds",
      "code": "assert 2 * num['delta'] < num['margin'], 'L13 FAIL: 2 delta < gamma not met by the instance'",
      "fingerprint": "800c158f894382260707be48ac4a1f825cdcc712bd2343d87842920c0b7303d3",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     },
     {
      "tag": "L13.17",
@@ -3181,7 +3181,7 @@
      "prose": "exact instance: the new margin is at least gamma - 2 delta and positive",
      "code": "assert bool(num['perturbed_margin'] >= num['margin'] - 2 * num['delta']) and bool(num['perturbed_margin'] > 0), 'L13 FAIL: perturbed margin below gamma - 2 delta'",
      "fingerprint": "1bab094ae410d085d43534f8ffb9555a9e1b0ff627020745f75e5b62a54805c2",
-     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; explicit radius"
+     "result": "assignment margin: score changes below gamma/2 keep the maximizing facets; stable radius"
     }
    ]
   },
@@ -4920,7 +4920,7 @@
   "A3": "65d0fcf5da56d281a0c32fb309272a0b4c0a0e9bfcc80dfa13351393ba6e90b9",
   "A4": "629119beec6b1d353d371e20ebcf1c15937cf07c81e93185e7c876c4e8dfb777",
   "A5": "609be841e2ccc85ccd4624dc475db44c6b619320b17194fb2830c2acfdfc2178",
-  "A6": "f4135618da2cc786c580982891a2545c705781c763825100bb3936308f7aad91",
+  "A6": "b4e9169cb918769755c22e58ebd125a3758cfc34ef8321e888706702fa68ea85",
   "A7": "3cac58f1a30ea24d5c5efa98fe2879d2a53a05245f13cf432171d024be85ac0b",
   "A8": "1c5a34480f33644ce5042c4144ff0b5eceba403713d8e2563eeeed9096e57d39",
   "I1": "8b586c084eb8dee64759cb2b187b056f7a64c6d86fdd5ee20468c5037a4c94e9",
