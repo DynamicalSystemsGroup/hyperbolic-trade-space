@@ -42,3 +42,22 @@ named as analysis in the caption or not drawn. Every current figure, paper and d
   position coordinate, labelled as having no meaning alone. Cold sentence: the chart puts every design at a
   position along the surface and a level below it; the surface is a soft support that a few designs exceed. That is
   the abstract's sentence drawn, so it earns its place if the caption says it. Passes as a candidate.
+
+## The principle check over every figure (2026-11-09, 21:20; findings at 3cd2722; the driver's dispositions)
+
+- Paper Figure 2 (planes at K = 1, designs labelled "facet 1"): the membership idiom in one-facet form; redraw with
+  the same generator as Figure 3 (grey designs, the surface, the band).
+- Paper Figures 5 and 6 (tension heatmaps, the drawing he liked): keep the drawing; the caption names the cells as
+  analysis of the designs assigned to each facet.
+- The index page's three-pane figure (designs coloured by facet in every pane; a chart pane drawing "facets as
+  regions", exact only for two metrics): designs in one colour; the regions pane passes the sentence test as
+  analysis named in its caption or is dropped. The index figure is the high-level story arc he asked for; it keeps
+  that job.
+- Docs Figure 2 (three facets, the cluster idiom) and docs Figures 3 and 6: as the paper's 3, 5 and 6.
+- The package default: `plot_log_plane` colours designs by facet for K > 1, which draws the idiom by default for
+  every user. The default becomes one colour with the facet lines drawn; colouring by assignment stays available
+  as an explicit option, documented as analysis. A small package unit outside WP19 (WP21's successor or WP8b's
+  punch list), with the interface contract amended if it names the function's behaviour.
+- Docs Figure 8 (the planted ternary he called great; near-frontier designs coloured by facet): his to judge; put
+  to him as one popup.
+- No issue: the paper's Figure 1 (the n-lemma ternary), the two views, docs 1, 4, 5, 7.
