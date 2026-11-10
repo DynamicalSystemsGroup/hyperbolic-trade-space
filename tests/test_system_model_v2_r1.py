@@ -51,9 +51,9 @@ WP15_REQUIREMENTS = {
 # The slew-time requirements, gone with the slew time (WP23 G5): the band requirement folds with
 # the slew-time requirement into SettledRequirement.
 SLEW_REQUIREMENTS = {"SlewTimeRequirement", "SlewBandRequirement"}
-# The requirement definitions WP22 added, less slew time.
+# The requirement definitions WP22 added, less slew time and less the eclipse reserve's (WP22 added
+# it; the WP23 close-out removed it with its calc: it restated the depth-of-discharge requirement).
 WP22_REQUIREMENTS = (WP15_REQUIREMENTS - SLEW_REQUIREMENTS) | {
-    "EclipseReserveRequirement",
     "PowerMarginRequirement",
     "EnergyBalanceRequirement",
 }
@@ -71,13 +71,12 @@ WP15_LITERALS = frozenset(
     }
 )
 
-# The traded metrics covered by WP22 (six in its first round; slew time left with WP23 G5), with
-# the requirement def over each one's own quantity.
+# The traded metrics covered by WP22 (six in its first round; slew time left with WP23 G5, the
+# eclipse reserve with the WP23 close-out), with the requirement def over each one's own quantity.
 COVERED = {
     "settling time": "SettledRequirement",
     "power margin": "PowerMarginRequirement",
     "energy balance": "EnergyBalanceRequirement",
-    "eclipse reserve": "EclipseReserveRequirement",
     "depth of discharge": "DepthOfDischargeRequirement",
 }
 # The four WP22 left open (each needed a bound the configuration did not state), covered by WP23
@@ -160,13 +159,14 @@ def test_strict_load_self_check_one_package_and_the_two_views_marked(r1):
 def test_numeric_literals_added_are_the_recorded_measurement_and_the_launch_rate():
     """R-4: the numeric literals added to the WP15 code are the baseline's measured control effort
     (WP22 round 2; its measured slew time left with the slew time, WP23 G5) and the illustrative
-    launch rate (WP23 G2, labelled like the model's other constants). WP23's four thresholds are
-    expressions of the baseline's values and the one margin (WP23 R-3), not typed numbers:
-    ``test_system_model_v2.py`` reads them from the model.
+    launch rate (WP23 G2, labelled like the model's other constants), and the supervisor's four
+    thresholds (the WP23 close-out, ``WP23-decisions.md``, "The four thresholds"): 0.008495
+    degree, 0.05922 N.m.s, 2.6 W and 90,643 USD, each with its doc in ``budgets``;
+    ``test_system_model_v2.py`` reads them through the toolkit.
     """
     number = re.compile(r"(?<![\w.])\d+(?:\.\d+)?(?:[eE][-+]?\d+)?")
     added = set(number.findall(_code(TEXT))) - WP15_LITERALS
-    assert added == {"0.009490621914197469", "6000.0"}
+    assert added == {"0.009490621914197469", "6000.0", "0.008495", "0.05922", "2.6", "90643.0"}
     assert "launchRate : Real = 6000.0" in _code(TEXT)
     assert "133.6904772571943" not in added  # the baseline's slew time, gone with slewTime
 
@@ -190,7 +190,7 @@ def test_each_covered_metric_has_a_verify_in_a_verification_case(r1):
         "SettledRequirement",
         "MomentumRequirement",
         "DepthOfDischargeRequirement",
-        *(COVERED[m] for m in ("power margin", "energy balance", "eclipse reserve")),
+        *(COVERED[m] for m in ("power margin", "energy balance")),
     }
     everything = set().union(*verified.values())
     assert set(COVERED.values()) | set(WP23_COVERED.values()) <= everything
@@ -252,7 +252,6 @@ PARAM = {
     "SettledRequirement": "settlingTime",
     "MomentumRequirement": "peakMomentum",
     "DepthOfDischargeRequirement": "torqueSquaredIntegral",
-    "EclipseReserveRequirement": "torqueSquaredIntegral",
     "PowerMarginRequirement": "peakTorque",
     "EnergyBalanceRequirement": "torqueSquaredIntegral",
 }
@@ -275,7 +274,7 @@ def _designs(frozen_box: str, n: int = 6, seed: int = 3):
 
 @pytest.mark.parametrize("box", ["baseline", "aggressive"])
 def test_regenerated_designs_equal_the_frozen_oracle(box, r1, frozen):
-    """R-6: the analysis (eight attributes), the flags and the new requirements' verdicts agree.
+    """R-6: the analysis (seven attributes), the flags and the new requirements' verdicts agree.
 
     Same seed, both gain boxes. Attributes: the model's analysis equals the frozen oracle to 1e-9;
     the four flags the model's requirements decide equal the frozen flags; each new requirement's
@@ -305,9 +304,6 @@ def test_regenerated_designs_equal_the_frozen_oracle(box, r1, frozen):
         assert _verdict(loaded, sym, args, "SettledRequirement") == want["settled"]
         assert _verdict(loaded, sym, args, "MomentumRequirement") == want["momentum_ok"]
         assert _verdict(loaded, sym, args, "DepthOfDischargeRequirement") == want["dod_ok"]
-        assert _verdict(loaded, sym, args, "EclipseReserveRequirement") == (
-            want["eclipse_reserve_wh"] >= 0
-        )
         assert _verdict(loaded, sym, args, "PowerMarginRequirement") == (
             want["power_margin_w"] >= 0
         )
@@ -439,15 +435,20 @@ def test_the_analysis_box_names_what_needs_no_slew_and_the_caption_is_the_commit
     """Disposition B: the analysis box names what the analysis returns and what needs no slew."""
     _, behaviour, facts = _views(project, TEXT, tmp_path)
     box = next(x for x in behaviour.splitlines() if "as xAnalysis" in x)
-    assert "returns 8 of 9" in box and "pointing error" in box and "total mass" in box
+    assert "returns 7 of 8" in box and "pointing error" in box and "total mass" in box
     # the control effort and the settling time come from the measurement (disposition G3-P2-6)
     assert "control effort\\n(passed on)" in box and "settling time\\n(not returned)" in box
     cap = facts["caption"]
     assert (
-        "returns 8 of the 9" in cap[0] and "settling time is read from `SlewMeasurement`" in cap[0]
+        "returns 7 of the 8" in cap[0] and "settling time is read from `SlewMeasurement`" in cap[0]
     )
     assert "ConfigurationVerification" in cap[1] and "SlewVerification" in cap[1]
     assert "coverage.md" in cap[2] and "coverage.md" in cap[3]
+    # revision 9 (the WP23 close-out): the negated satisfy is drawn and named, not read as satisfied
+    assert "`cubesatBaseline` satisfies every requirement but `PointingErrorRequirement`" in cap[4]
+    assert facts["fails"][f"{P}__PointingErrorRequirement"] == {"cubesatBaseline"}
+    box = next(x for x in behaviour.splitlines() if "**PointingErrorRequirement**" in x)
+    assert "not satisfied by cubesatBaseline" in box
     committed = (VIEWS / "behavioural_caption.md").read_text().splitlines()[2:]
     assert committed == [f"- {x}" for x in cap]
 

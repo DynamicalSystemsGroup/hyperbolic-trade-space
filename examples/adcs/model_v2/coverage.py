@@ -75,7 +75,6 @@ METRIC_COLUMNS = {
     "control effort": "control_effort",
     "power margin": "power_margin_w",
     "energy balance": "energy_balance_wh",
-    "eclipse reserve": "eclipse_reserve_wh",
     "peak slew power": "peak_slew_power_w",
     "depth of discharge": "dod_eclipse",
 }
@@ -420,6 +419,17 @@ class ModelGraph:
                                     return r, f"reads c.{chain[1]} = {short(c)}(c), the MoE", c
         return None, "none", None
 
+    def limit_of(self, requirement: str) -> str:
+        """The threshold a requirement reads from part ``budgets``, as the model states it (the
+        WP23 close-out: the supervisor's four values), or ``-`` for a bound of another kind."""
+        for e in self.inside(requirement):
+            text = e.get("sysx:sourceText", "").replace(" ", "")
+            if e["@type"] == "FeatureChainExpression" and text.startswith("budgets."):
+                attr = text.split(".", 1)[1]
+                value = self.byid.get(f"{self.pre}Budgets__{attr}_pvalue", {})
+                return f"{text} = {value.get('sysx:sourceText', '?').strip()}"
+        return "-"
+
     def verified_in(self, requirement: str) -> list[str]:
         out = []
         for v in self.kinds("VerificationCaseDefinition"):
@@ -557,7 +567,6 @@ SUBSYSTEM_OF = {
         "SlewLossEnergy",
         "EclipseDemand",
         "DepthOfDischarge",
-        "EclipseReserve",
         "OrbitPeriod",
         "EnergyBalance",
         "PeakSlewPower",
@@ -1054,6 +1063,7 @@ def build(model_path: pathlib.Path, with_empirical: bool = True) -> dict:
                 "kind": m.kind,
                 "requirement": short(req) if req else "none",
                 "how": how,
+                "limit": graph.limit_of(req) if req else "-",
                 "verified_in": ", ".join(graph.verified_in(req)) if req else "none",
             }
         )
@@ -1158,13 +1168,14 @@ def render_md(result: dict) -> str:
         "",
         "## Traded metric -> MoE or MoP, requirement, verification",
         "",
-        "| traded metric | mark | element | requirement that reads it | how | verified in |",
-        "|---|---|---|---|---|---|",
+        "| traded metric | mark | element | requirement that reads it | how | limit (part budgets) "
+        "| verified in |",
+        "|---|---|---|---|---|---|---|",
     ]
     for t in result["table2"]:
         out.append(
             f"| {t['metric']} | {t['mark']} | {t['element']} ({t['kind']}) | {t['requirement']} | "
-            f"{t['how']} | {t['verified_in']} |"
+            f"{t['how']} | {t['limit']} | {t['verified_in']} |"
         )
     out += ["", *render_coupling_md(result["coupling"], result["elements"]), ""]
     return "\n".join(out)
@@ -1272,7 +1283,9 @@ def render_csv(result: dict) -> str:
                 _yn(r["agree"]),
             ]
         )
-    w.writerow(["table", "metric", "mark", "element", "kind", "requirement", "how", "verified_in"])
+    w.writerow(
+        ["table", "metric", "mark", "element", "kind", "requirement", "how", "limit", "verified_in"]
+    )
     for t in result["table2"]:
         w.writerow(
             [
@@ -1283,6 +1296,7 @@ def render_csv(result: dict) -> str:
                 t["kind"],
                 t["requirement"],
                 t["how"],
+                t["limit"],
                 t["verified_in"],
             ]
         )

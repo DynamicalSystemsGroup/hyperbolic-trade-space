@@ -36,12 +36,15 @@ FAST = {"t_end": 600.0, "max_step": 1.0}  # coarser than the dataset (0.5 s), fo
 # the total mass) and a part `Budgets` of proposed thresholds entered, and the line cap grew by the
 # four requirement defs, the calc, the part and the MoE/MoP docs it added. Round 2 (the coupling
 # check, WP23-review.md) added the battery's discharge rating, the calcs `BatteryPeakPower` and
-# `EclipsePeakLoad` and the requirement that reads them; the cap grew by those.
+# `EclipsePeakLoad` and the requirement that reads them; the cap grew by those. The close-out
+# (WP23-closeout-scope-of-work.md, D-11): the eclipse reserve's calc and requirement left (its
+# requirement was the depth-of-discharge requirement restated), and the four thresholds became the
+# supervisor's literal values.
 # The calc defs of the WP22 version, every one kept with its body (pinned so the set is readable
 # here; the bodies' equality with the frozen oracle is R-6 of test_system_model_v2_r1.py).
 WP22_CALCS = {
     "AdcsMass", "AvailablePower", "BaseLoad", "DampingRatio", "DepthOfDischarge",
-    "DominantPoleRate", "EclipseDemand", "EclipseReserve", "EnergyBalance", "GeneratedPower",
+    "DominantPoleRate", "EclipseDemand", "EnergyBalance", "GeneratedPower",
     "GravityGradientTorque", "InertiaX", "InertiaY", "InertiaZ", "IsTorqueLimited",
     "LinearSlewTime", "MassAccounting", "NaturalFrequency", "OrbitPeriod", "PeakSlewPower",
     "PointingError", "PowerMargin", "SlewLossEnergy", "SlewTimeEstimate", "StructureMass",
@@ -62,16 +65,15 @@ SECTIONS = [
     "6. THE EXPERIMENT",
     "7. NAMED CONFIGURATIONS",
 ]
-# The eight attributes the experiment computes, in order, with the unit each is read in. The
-# settling time and the slew time are measured, not computed: the oracle takes them from the
-# measurement, so the analysis neither receives nor returns them.
+# The seven attributes the experiment computes (the eclipse reserve left at the close-out), in
+# order, with the unit each is read in. The settling time is measured, not computed: the oracle
+# takes it from the measurement, so the analysis neither receives nor returns it.
 ATTRIBUTES = [
     ("pointing_error_deg", "SI::degree"),
     ("total_mass_kg", "SI::kg"),
     ("control_effort", "SI::N*SI::m*SI::s"),
     ("power_margin_w", "SI::W"),
     ("energy_balance_wh", "SI::W*SI::h"),
-    ("eclipse_reserve_wh", "SI::W*SI::h"),
     ("peak_slew_power_w", "SI::W"),
     ("dod_eclipse", None),
 ]
@@ -232,7 +234,8 @@ def test_symbol_kinds_by_query(v2):
         "AvailablePower",
     } <= calcs
     assert {"UsableWheelTorque", "SlewLossEnergy", "EclipseDemand", "DepthOfDischarge"} <= calcs
-    assert {"EclipseReserve", "EnergyBalance", "PeakSlewPower", "PowerMargin"} <= calcs
+    assert {"EnergyBalance", "PeakSlewPower", "PowerMargin"} <= calcs
+    assert "EclipseReserve" not in calcs  # the close-out: the depth of discharge carries it
     assert {"InertiaX", "InertiaY", "InertiaZ", "PointingError"} <= calcs
     assert {
         "TorqueLimitedSlewTime",
@@ -499,48 +502,46 @@ def test_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it(v2):
         rows.append((mass, cost))
     assert rows == sorted(rows) and rows[0][1] < rows[1][1] < rows[2][1]
     budget = v2.read("budgets.launchBudget")
-    assert budget == pytest.approx(v2.read("budgets.margin") * rows[1][1], rel=1e-12)
+    assert budget == pytest.approx(rate * 15.107, abs=1.0)  # 90,643 USD: 15.107 kg at the rate
     verdict = v2.model.verify_requirement(
         f"{P}::LaunchBudgetRequirement", subject=f"{P}::cubesatBaseline"
     )
     assert verdict.holds and verdict.status == "holds"
 
 
-def test_proposed_thresholds_are_the_baselines_values_with_the_stated_margin(v2):
-    """The four proposed thresholds (illustrative, for the supervisor at the data gate) are each
-    the baseline configuration's own value times the one margin the model states."""
-    margin = v2.read("budgets.margin")
-    base = f"{P}::cubesatBaseline"
+def test_the_four_thresholds_are_the_supervisors_values(v2):
+    """The four thresholds are the supervisor's choice from the loop's ladder (WP23-decisions.md,
+    "The four thresholds", and "Keep 0.0085 deg"), literal values in ``budgets`` read through the
+    toolkit: 0.008495 degree, 0.05922 N.m.s, 2.6 W and 90,643 USD. The baseline configuration
+    meets three of them and fails the pointing-error requirement (0.0155 against 0.0085 degree),
+    which the model states with a negated ``satisfy``."""
     want = {
-        "pointingErrorLimit": (
-            v2.value(v2.model.eval(f"{P}::PointingError({base})"), "SI::degree"),
-            "SI::degree",
-        ),
-        "controlEffortLimit": (
-            v2.read("baselineMeasurement.controlEffort", "SI::N*SI::m*SI::s"),
-            "SI::N*SI::m*SI::s",
-        ),
-        "peakSlewPowerLimit": (
-            v2.value(
-                v2.model.eval(f"{P}::PeakSlewPower({base}, {P}::baselineMeasurement.peakTorque)"),
-                "SI::W",
-            ),
-            "SI::W",
-        ),
-        "launchBudget": (v2.value(v2.model.instantiate(base).get("launchCost")), None),
+        "pointingErrorLimit": (0.008495, "SI::degree"),
+        "controlEffortLimit": (0.05922, "SI::N*SI::m*SI::s"),
+        "peakSlewPowerLimit": (2.6, "SI::W"),
+        "launchBudget": (90643.0, None),
     }
-    for limit, (baseline, unit) in want.items():
-        assert v2.read(f"budgets.{limit}", unit) == pytest.approx(margin * baseline, rel=1e-12), (
-            limit
-        )
+    for limit, (value, unit) in want.items():
+        assert v2.read(f"budgets.{limit}", unit) == pytest.approx(value, rel=1e-12), limit
+    assert "margin" not in re.sub(
+        r"/\*.*?\*/|//[^\n]*",
+        "",
+        v2.text[v2.text.index("part def Budgets") : v2.text.index("part budgets")],
+        flags=re.S,
+    )
+    base = f"{P}::cubesatBaseline"
     for requirement in (
-        "PointingErrorRequirement",
         "ControlEffortRequirement",
         "PeakSlewPowerRequirement",
         "LaunchBudgetRequirement",
     ):
         v = v2.model.verify_requirement(f"{P}::{requirement}", subject=base)
         assert v.holds and v.engine == "run", requirement
+    v = v2.model.verify_requirement(f"{P}::PointingErrorRequirement", subject=base)
+    assert v.status == "violated" and not v.holds
+    pointing = v2.value(v2.model.eval(f"{P}::PointingError({base})"), "SI::degree")
+    assert pointing == pytest.approx(0.015535, rel=1e-4) and pointing > 0.008495
+    assert "not satisfy baselinePointingError by cubesatBaseline;" in v2.text
 
 
 # ---------------------------------------------------------------------------------------------

@@ -7,14 +7,21 @@
  * or a measure of performance (MoP) in a `doc` on its element; a launch cost (a calc of the total
  * mass, increasing in mass) is the MoE that ties the total mass to a launch-budget requirement;
  * the four metrics that had no requirement (pointing error, control effort, peak slew power, total
- * mass through the launch cost) each have one, with a threshold PROPOSED from the baseline
- * configuration's value and a stated margin (part `budgets`, illustrative, for the supervisor at
- * the data gate); the slew time leaves (one time metric, the settling time; WP16's decision), its
- * requirements folding into SettledRequirement; the measurement states the inputs the simulator
+ * mass through the launch cost) each have one, at the threshold the supervisor chose from the
+ * loop's ladder (part `budgets`; WP23-decisions.md, "The four thresholds"); the slew time leaves
+ * (one time metric, the settling time; WP16's decision), its requirements folding into
+ * SettledRequirement; the measurement states the inputs the simulator
  * reads. Round 2 (the coupling check): the battery's own rating enters, a continuous discharge
  * rate whose product with the capacity is the pack's peak power, and a requirement reads it
  * against the eclipse peak load (housekeeping plus the peak slew power), so the battery capacity
  * is tied to the slew's peak draw through the model's own calcs; no new configuration variable.
+ * The close-out (WP23-closeout-scope-of-work.md): the eclipse reserve leaves, its calc and its
+ * requirement with it, because its requirement was the depth-of-discharge requirement restated
+ * (0.3 C - D >= 0 is D / C <= 0.3); the depth of discharge is the one metric and the one
+ * requirement on the eclipse energy, and eight metrics are traded. The baseline configuration
+ * fails the pointing-error requirement: its pointing error is 0.0155 degree against a limit of
+ * 0.0085 degree, so section 5 states `not satisfy` for it; 63.7 % of the baseline regime's feasible
+ * designs pass that requirement.
  *
  * This is documentation of a demonstration, not an engineering model. Every number is
  * illustrative: chosen for plausibility at cubesat scale (public component classes), never
@@ -35,14 +42,14 @@
  * alternatives (categorical variables), the parameters (continuous variables), the named
  * configurations. The ASSESSMENT view is sections 3 to 6: the calculations, the scenario, the
  * requirements and verification cases, and the experiment, that say how a configuration is
- * assessed and how each traded metric (the nine of the case study) traces back to this model.
+ * assessed and how each traded metric (the eight of the case study) traces back to this model.
  * Each section header below carries the name of its view. The chain read from the elements: a
  * configuration variable feeds a calc def or the measured slew; the experiment returns the calc as
  * the metric, or the measurement passes it on; a requirement def states the bound on the same calc
  * or measured quantity (or, for the total mass, on the launch cost computed from it); a
- * verification case verifies the requirement. The nine traded metrics: settling time, pointing
- * error, total mass, control effort, power margin, energy balance, eclipse reserve, peak slew
- * power, depth of discharge. Each is marked MoE or MoP in the `doc` of its element (the first word
+ * verification case verifies the requirement. The eight traded metrics: settling time, pointing
+ * error, total mass, control effort, power margin, energy balance, peak slew power, depth of
+ * discharge. Each is marked MoE or MoP in the `doc` of its element (the first word
  * of the doc): an MoE is a measure a stakeholder states without knowing the design (how well the
  * payload points; what the launch costs); an MoP is a measure of the system's performance under
  * the scenario the engineer states. Every one has a requirement that reads its own quantity.
@@ -368,14 +375,6 @@ package CubesatTradeSpaceV2 {
         in slewEnergy : EnergyValue;
         return : Real = EclipseDemand(c, slewEnergy) / c.battery.capacity;
     }
-    calc def EclipseReserve {
-        doc /* MoP: the energy left in the battery above the allowed depth of discharge after the
-               eclipse demand (the traded metric `eclipse reserve`). */
-        in c : Cubesat;
-        in slewEnergy : EnergyValue;
-        return : EnergyValue = environment.maxDepthOfDischarge * c.battery.capacity
-            - EclipseDemand(c, slewEnergy);
-    }
     calc def OrbitPeriod {
         return : TimeValue = 2.0 * 3.141592653589793 [rad] / environment.orbitalRate;
     }
@@ -544,7 +543,7 @@ package CubesatTradeSpaceV2 {
     // 5. REQUIREMENTS, SATISFACTION AND VERIFICATION (assessment view; 15.2, WP22)
     // ==========================================================================================
     doc /* The four feasibility flags (settled, momentum_ok, power_ok, dod_ok) as named
-           requirements, one requirement on every traded metric's own quantity, the proposed
+           requirements, one requirement on every traded metric's own quantity, the four
            thresholds, `satisfy` statements tying each requirement to the baseline, `verification
            def`s naming what each verifies, and claims over every in-range configuration. */
     // BEGIN 15.2
@@ -554,17 +553,17 @@ package CubesatTradeSpaceV2 {
            `in` parameter that the runner binds by name (a Quantity, or a Real for the integral of
            |tau|^2). The defaults of those parameters are the recorded measurement of the baseline
            (below), so the `satisfy` statements are checkable without a runner. WP22 added one
-           requirement over each of eclipse reserve, power margin and energy balance (the calc the
-           experiment returns as the metric) and restated the depth-of-discharge requirement over
-           its calc. WP23 completes the set: the slew-time and slew-band requirements fold into
+           requirement over each of power margin and energy balance (the calc the experiment
+           returns as the metric) and restated the depth-of-discharge requirement over its calc;
+           its requirement over the eclipse reserve, the same inequality, left at the close-out.
+           WP23 completes the set: the slew-time and slew-band requirements fold into
            SettledRequirement (one time metric, the settling time), and the four metrics that had
            no requirement get one, pointing error, control effort, peak slew power, and the total
-           mass through the launch cost, each with a threshold proposed in `budgets` below; round 2
-           adds the battery peak power requirement, the pack's rating against the eclipse peak
-           load. Every threshold is a value this model states: zero for a margin, a balance or a
-           reserve, the maximum depth of discharge of the environment, the horizon of the nominal
-           slew, a proposed budget derived from the baseline configuration's own value, or the
-           pack's own rated power. */
+           mass through the launch cost, each with the supervisor's threshold in `budgets` below;
+           round 2 adds the battery peak power requirement, the pack's rating against the eclipse
+           peak load. Every threshold is a value this model states: zero for a margin or a balance, the
+           maximum depth of discharge of the environment, the horizon of the nominal slew, a
+           budget the supervisor chose, or the pack's own rated power. */
     part def SlewMeasurement {
         doc /* A measurement of one slew: the quantities the requirements and the experiment read.
                The simulator (adcs_sim.simulate_adcs) reads these inputs of the configuration:
@@ -596,21 +595,28 @@ package CubesatTradeSpaceV2 {
         :>> torqueSquaredIntegral = 7.70613052023095e-06;
     }
     part def Budgets {
-        doc /* PROPOSED thresholds (WP23, illustrative, for the supervisor at the data gate): each is
-               the baseline configuration's own value with one margin, 20 %, for all four, so that
-               no threshold is tuned to one metric or to a figure; a margin of this size is the
-               early-phase allowance an engineer carries on a budget. The baseline's values: a
-               pointing error of 0.015535 degree, a control effort of 0.0094906 N.m.s, a peak slew
-               power of 2.0 W, a launch cost of 79,749 USD (13.291 kg at 6000 USD/kg); the limits
-               are 1.2 times each. The values are read from the model, never typed here; if the
-               supervisor gives other values they replace these expressions by literals. */
-        attribute margin : Real = 1.2;
-        attribute pointingErrorLimit : PlaneAngleValue = margin * PointingError(cubesatBaseline);
-        attribute controlEffortLimit : AngularMomentumValue =
-            margin * baselineMeasurement.controlEffort;
-        attribute peakSlewPowerLimit : PowerValue =
-            margin * PeakSlewPower(cubesatBaseline, baselineMeasurement.peakTorque);
-        attribute launchBudget : Real = margin * LaunchCost(cubesatBaseline);   // USD
+        doc /* The four thresholds, the supervisor's choice from the loop's ladder (WP23-decisions.md,
+               "The four thresholds", 2026-11-10; the ladder is WP23-review.md, "Proposed
+               thresholds, revised for the gate popup"). Each limit is a literal; its doc names the
+               ladder row and the share of the feasible designs it admits (primary / baseline
+               regime). The baseline configuration's own values stay the record of the baseline:
+               pointing error 0.015535 degree, control effort 0.0094906 N.m.s, peak slew power
+               2.0 W, launch cost 79,749 USD (13.291 kg). */
+        attribute pointingErrorLimit : PlaneAngleValue = 0.008495 [degree] {
+            doc /* 0.0085 degree, the row that admits 95 % of the primary regime (94.9 % / 63.7 %),
+                   kept knowing that the baseline configuration (0.015535 degree) fails it ("Keep
+                   0.0085 deg", 2026-11-10, 08:55). */
+        }
+        attribute controlEffortLimit : AngularMomentumValue = 0.05922 [N*m*s] {
+            doc /* 0.059 N.m.s, the row that admits 90 % of the baseline regime (58.9 % / 90.0 %). */
+        }
+        attribute peakSlewPowerLimit : PowerValue = 2.6 [W] {
+            doc /* 2.6 W, the row that admits every small and medium wheel (62.2 % / 67.3 %). */
+        }
+        attribute launchBudget : Real = 90643.0 {   // USD
+            doc /* 90,643 USD, 15.107 kg at the illustrative 6,000 USD/kg, the row that admits 95 %
+                   (94.9 % / 95.6 %). */
+        }
     }
     part budgets : Budgets;
 
@@ -648,14 +654,15 @@ package CubesatTradeSpaceV2 {
         }
     }
     requirement def PointingErrorRequirement {
-        doc /* The payload points within the proposed pointing limit: the pointing error (the
-               traded metric `pointing error`, an MoE) is within budgets.pointingErrorLimit. It
-               reads the configuration only. */
+        doc /* The payload points within the pointing limit: the pointing error (the traded metric
+               `pointing error`, an MoE) is within budgets.pointingErrorLimit. It reads the
+               configuration only. The baseline configuration fails it (0.0155 against 0.0085
+               degree). */
         subject c : Cubesat;
         require constraint { PointingError(c) <= budgets.pointingErrorLimit }
     }
     requirement def ControlEffortRequirement {
-        doc /* The slew asks no more of the wheels than the proposed effort budget: the control
+        doc /* The slew asks no more of the wheels than the effort budget: the control
                effort (the traded metric `control effort`, measured) is within
                budgets.controlEffortLimit. */
         subject c : Cubesat;
@@ -663,7 +670,7 @@ package CubesatTradeSpaceV2 {
         require constraint { controlEffort <= budgets.controlEffortLimit }
     }
     requirement def PeakSlewPowerRequirement {
-        doc /* The slew draws no more than the proposed power budget at its peak: the peak slew
+        doc /* The slew draws no more than the power budget at its peak: the peak slew
                power (the traded metric `peak slew power`) is within budgets.peakSlewPowerLimit.
                It needs the measured peak torque. */
         subject c : Cubesat;
@@ -681,20 +688,11 @@ package CubesatTradeSpaceV2 {
         require constraint { EclipsePeakLoad(c, peakTorque) <= BatteryPeakPower(c) }
     }
     requirement def LaunchBudgetRequirement {
-        doc /* The configuration launches within the proposed budget: the launch cost (the MoE on
+        doc /* The configuration launches within the launch budget: the launch cost (the MoE on
                the traded metric `total mass`) is within budgets.launchBudget. It reads the
                configuration only. */
         subject c : Cubesat;
         require constraint { c.launchCost <= budgets.launchBudget }
-    }
-    requirement def EclipseReserveRequirement {
-        doc /* The battery keeps a reserve through the eclipse: the eclipse reserve (the traded
-               metric `eclipse reserve`) is not negative. */
-        subject c : Cubesat;
-        in torqueSquaredIntegral : Real default = baselineMeasurement.torqueSquaredIntegral;
-        require constraint {
-            EclipseReserve(c, SlewLossEnergy(torqueSquaredIntegral)) >= 0.0 [W*h]
-        }
     }
     requirement def PowerMarginRequirement {
         doc /* The panels cover the loads at the peak of the slew: the power margin (the traded
@@ -722,19 +720,18 @@ package CubesatTradeSpaceV2 {
     requirement baselinePeakSlewPower : PeakSlewPowerRequirement;
     requirement baselineBatteryPeakPower : BatteryPeakPowerRequirement;
     requirement baselineLaunchBudget : LaunchBudgetRequirement;
-    requirement baselineEclipseReserve : EclipseReserveRequirement;
     requirement baselinePowerMargin : PowerMarginRequirement;
     requirement baselineEnergyBalance : EnergyBalanceRequirement;
     satisfy baselineSettled by cubesatBaseline;
     satisfy baselineMomentum by cubesatBaseline;
     satisfy baselinePower by cubesatBaseline;
     satisfy baselineDepthOfDischarge by cubesatBaseline;
-    satisfy baselinePointingError by cubesatBaseline;
+    // the baseline configuration fails the pointing-error requirement (0.0155 against 0.0085 degree)
+    not satisfy baselinePointingError by cubesatBaseline;
     satisfy baselineControlEffort by cubesatBaseline;
     satisfy baselinePeakSlewPower by cubesatBaseline;
     satisfy baselineBatteryPeakPower by cubesatBaseline;
     satisfy baselineLaunchBudget by cubesatBaseline;
-    satisfy baselineEclipseReserve by cubesatBaseline;
     satisfy baselinePowerMargin by cubesatBaseline;
     satisfy baselineEnergyBalance by cubesatBaseline;
 
@@ -752,10 +749,9 @@ package CubesatTradeSpaceV2 {
     verification def SlewVerification {
         doc /* After the slew is measured: what needs the measured quantities. Each objective below
                verifies the requirement on a traded metric's own quantity: settling time, control
-               effort, eclipse reserve, power margin, energy balance, peak slew power, depth of
-               discharge; the momentum requirement reads the measured peak momentum, and the
-               battery peak power requirement the pack's rating against the eclipse peak load,
-               neither traded. With ConfigurationVerification, every traded metric has a
+               effort, power margin, energy balance, peak slew power, depth of discharge; the
+               momentum requirement reads the measured peak momentum, and the battery peak power
+               requirement the pack's rating against the eclipse peak load, neither traded. With ConfigurationVerification, every traded metric has a
                requirement. */
         subject c : Cubesat;
         objective {
@@ -765,7 +761,6 @@ package CubesatTradeSpaceV2 {
             verify requirement controlEffort : ControlEffortRequirement;
             verify requirement peakSlewPower : PeakSlewPowerRequirement;
             verify requirement batteryPeakPower : BatteryPeakPowerRequirement;
-            verify requirement eclipseReserve : EclipseReserveRequirement;
             verify requirement powerMargin : PowerMarginRequirement;
             verify requirement energyBalance : EnergyBalanceRequirement;
         }
@@ -819,9 +814,9 @@ package CubesatTradeSpaceV2 {
            design variables are its features). The Python runner integrates the slew and hands in
            the measured quantities the accounting needs: the integral of |tau|^2 (N^2.m^2.s), the
            peak torque, the peak wheel momentum and the control effort (integral of |tau|, N.m.s).
-           The nine traded metrics are the settling time and the eight attributes this analysis
+           The eight traded metrics are the settling time and the seven attributes this analysis
            returns, in this order: pointing error, total mass, control effort, power margin,
-           energy balance, eclipse reserve, peak slew power, eclipse depth of discharge. The
+           energy balance, peak slew power, eclipse depth of discharge. The
            settling time is measured, not computed: it goes from the measurement into the output
            row unchanged (it is also the input of the settled requirement of section 5), so it is
            neither an input nor an entry of this return tuple. The peak momentum, measured and not
@@ -838,7 +833,6 @@ package CubesatTradeSpaceV2 {
             PointingError(cubesat), cubesat.totalMass, controlEffort,
             PowerMargin(cubesat, peakTorque),
             EnergyBalance(cubesat, SlewLossEnergy(torqueSquaredIntegral)),
-            EclipseReserve(cubesat, SlewLossEnergy(torqueSquaredIntegral)),
             PeakSlewPower(cubesat, peakTorque),
             DepthOfDischarge(cubesat, SlewLossEnergy(torqueSquaredIntegral)));
     }

@@ -179,9 +179,11 @@ def _subset(pool, predicate, n):
 # effort, peak slew power, the total mass through the launch cost), each satisfied by the baseline
 # and verified in the case that can decide it (before or after the slew is measured). Round 2 (the
 # coupling check, WP23-review.md) added BatteryPeakPowerRequirement, the pack's rating against the
-# eclipse peak load, verified in the slew case: the pin is the model adopted at the data gate.
+# eclipse peak load, verified in the slew case: the pin is the model adopted at the data gate. The
+# close-out (WP23-closeout-scope-of-work.md, D-11) removed EclipseReserveRequirement (the
+# depth-of-discharge requirement restated) and states that the baseline configuration fails the
+# pointing-error requirement at the supervisor's 0.0085 degree (a negated ``satisfy``).
 METRIC_REQUIREMENTS = {
-    "EclipseReserveRequirement",
     "PowerMarginRequirement",
     "EnergyBalanceRequirement",
     "PointingErrorRequirement",
@@ -197,7 +199,8 @@ _FLAG_DEFS = set(fz.FLAG_REQUIREMENTS.values())
 SLEW_BAND = "SlewBandRequirement"
 REQUIREMENTS = {
     "defs": _FLAG_DEFS | METRIC_REQUIREMENTS,
-    "satisfy": 12,
+    "satisfy": 11,
+    "not satisfied by the baseline": {"PointingErrorRequirement"},
     "verified": {
         "ConfigurationVerification": {
             "PowerRequirement",
@@ -208,7 +211,6 @@ REQUIREMENTS = {
             "SettledRequirement",
             "MomentumRequirement",
             "DepthOfDischargeRequirement",
-            "EclipseReserveRequirement",
             "PowerMarginRequirement",
             "EnergyBalanceRequirement",
             "ControlEffortRequirement",
@@ -249,11 +251,18 @@ def test_verification_defs_name_the_requirements_they_verify(v2):
 
 
 def test_satisfy_statements_hold_on_the_baseline(v2):
-    """R-4: one `satisfy` statement per requirement ties it to the baseline (twelve since WP23
-    round 2); all hold (engine run)."""
+    """R-4: one `satisfy` statement per requirement ties it to the baseline (eleven since the WP23
+    close-out); all hold (engine run). The pointing-error one is negated, ``not satisfy``: the
+    model states that the baseline configuration fails that requirement (0.0155 against 0.0085
+    degree), and the engine finds the statement true."""
     verdicts = v2.model.verify_satisfaction()
     assert len(verdicts) == REQUIREMENTS["satisfy"] == len(REQUIREMENTS["defs"])
     assert all(v.holds and v.status == "holds" for v in verdicts)
+    negated = {v.element for v in verdicts if v.element.startswith("not satisfy")}
+    assert negated == {"not satisfy baselinePointingError by cubesatBaseline"}
+    for req in REQUIREMENTS["not satisfied by the baseline"]:
+        v = v2.model.verify_requirement(f"{P}::{req}", subject=f"{P}::cubesatBaseline")
+        assert v.status == "violated" and not v.holds, req
     assert {v.engine for v in verdicts} == {"run"}
     assert {v.strength for v in verdicts} == {"observed"}
     assert v2.model.satisfied()
@@ -786,7 +795,7 @@ def test_run_analysis_with_the_measured_slew_equals_the_frozen_oracle(sample20, 
 
 def test_run_sweep_over_the_measured_energy_integral_reproduces_the_accounting(v2):
     """R-7: a grid sweep of SlewExperiment over the integral of |tau|^2 reproduces the Python-side
-    energy accounting (eclipse depth of discharge, the tenth attribute) on every grid row.
+    energy accounting (eclipse depth of discharge, the last attribute) on every grid row.
 
     The design variables are features of the subject, which `run_sweep` does not range over; the
     sweepable input is the Real `torqueSquaredIntegral` (probe 6: a range cannot bind a quantity).
@@ -818,7 +827,7 @@ def test_run_sweep_over_the_measured_energy_integral_reproduces_the_accounting(v
         tsi = float(row.inputs["torqueSquaredIntegral"])
         energy_wh = k.env("wheelLossCoefficient") * tsi / 3600.0
         want = (load * k.env("eclipseDuration", "SI::h") + energy_wh) / cap
-        got = v2.value(row.outputs["attributes"][7])
+        got = v2.value(row.outputs["attributes"][6])
         assert got == pytest.approx(want, rel=1e-9), (base, tsi)
 
 

@@ -37,7 +37,6 @@ METRICS = [
     "control effort",
     "power margin",
     "energy balance",
-    "eclipse reserve",
     "peak slew power",
     "depth of discharge",
 ]
@@ -61,7 +60,7 @@ def structural(coverage):
         pytest.fail(f"the opensysml client could not start: {exc}", pytrace=False)
 
 
-METRICS_HEADER = "table,metric,mark,element,kind,requirement,how,verified_in\n"
+METRICS_HEADER = "table,metric,mark,element,kind,requirement,how,limit,verified_in\n"
 COUPLING_HEADER = "table,from,to,variables\n"
 
 
@@ -150,8 +149,25 @@ def test_the_gains_do_not_reach_the_mass_and_kd_does_not_reach_the_pointing_erro
 # ---------------------------------------------------------------------------------------------
 # R-2: every traded metric has a requirement on its quantity and is marked MoE or MoP
 # ---------------------------------------------------------------------------------------------
-def test_traded_metrics_are_the_nine_of_the_case(structural):
+def test_traded_metrics_are_the_eight_of_the_case(structural):
+    """The eight traded metrics (the eclipse reserve left at the WP23 close-out)."""
     assert [m.name for m in structural["metrics"]] == METRICS
+
+
+def test_the_four_thresholds_are_listed_with_their_requirements(structural):
+    """R-16 of the WP23 close-out: the table lists the supervisor's four values, read from the
+    model's ``budgets`` part beside the requirement that reads each."""
+    limits = {t["metric"]: t["limit"] for t in structural["table2"]}
+    assert limits == {
+        "settling time": "-",
+        "pointing error": "budgets.pointingErrorLimit = 0.008495 [degree]",
+        "total mass": "budgets.launchBudget = 90643.0",
+        "control effort": "budgets.controlEffortLimit = 0.05922 [N*m*s]",
+        "power margin": "-",
+        "energy balance": "-",
+        "peak slew power": "budgets.peakSlewPowerLimit = 2.6 [W]",
+        "depth of discharge": "-",
+    }
 
 
 def test_every_traded_metric_has_a_requirement_that_reads_it_and_a_mark(structural):

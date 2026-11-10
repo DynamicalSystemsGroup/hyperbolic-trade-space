@@ -35,6 +35,10 @@ layout); the group of requirements that read no
 traded metric is titled in those words, in the body's black; the assembly legend keeps the two tag
 keys and the untagged rule, and the levels and ranges go to the caption (``assembly_caption.md``,
 written beside the views, still read from the model).
+Revision 9 (WP23 close-out, the default): a negated ``satisfy`` (``not satisfy R by X``, the model's
+statement that the configuration X fails the requirement R; the baseline configuration and the
+pointing-error requirement) is read apart from the satisfied ones: the requirement's box says
+"not satisfied by X" and the caption names it; earlier revisions read every ``satisfy`` as satisfied.
 """
 
 from __future__ import annotations
@@ -583,7 +587,7 @@ class Reads:
         return out
 
 
-def behavioural(m, byid, P, revision=8):
+def behavioural(m, byid, P, revision=9):
     sys.path.insert(0, str(REPO / "examples" / "adcs"))
     import case  # the CaseSpec: the metrics, in order, and their subsystems
 
@@ -607,13 +611,17 @@ def behavioural(m, byid, P, revision=8):
         if t["@type"] == "FeatureTyping":
             typing[ref(t["typedFeature"])] = ref(t["type"])
     satisfied_by = {r: set() for r in reqs}
+    fails_by = {
+        r: set() for r in reqs
+    }  # revision 9: the negated satisfy statements
     for e in byid.values():
         if e["@type"] == "SatisfyRequirementUsage":
             req_usage = ref(e["subsets"])
             if typing.get(req_usage) in satisfied_by:
-                satisfied_by[typing[req_usage]].add(
-                    short(ref(e["subject"]))
-                )
+                negated = revision >= 9 and e.get("isNegated")
+                (fails_by if negated else satisfied_by)[
+                    typing[req_usage]
+                ].add(short(ref(e["subject"])))
     verified_by = {r: set() for r in reqs}
     for vid, v in byid.items():
         if v["@type"] == "VerificationCaseDefinition":
@@ -948,7 +956,14 @@ def behavioural(m, byid, P, revision=8):
     # revision 4: what every requirement box shares is said once in the caption; a box carries only
     # what differs between the requirements (the verification case, the satisfying configuration)
     sat_differs = (
-        len({tuple(sorted(v)) for v in satisfied_by.values()}) > 1
+        len(
+            {
+                tuple(sorted(v))
+                for r, v in satisfied_by.items()
+                if not fails_by[r]
+            }
+        )
+        > 1
     )
     ver_differs = (
         len({tuple(sorted(v)) for v in verified_by.values()}) > 1
@@ -974,6 +989,11 @@ def behavioural(m, byid, P, revision=8):
             lines.append(
                 "satisfied by "
                 + (", ".join(sorted(satisfied_by[r])) or "none")
+            )
+        if fails_by[r]:
+            # revision 9: the model states that this configuration fails the requirement
+            lines.append(
+                "not satisfied by " + ", ".join(sorted(fails_by[r]))
             )
         sa = same_as(r)
         if sa:
@@ -1254,6 +1274,17 @@ def behavioural(m, byid, P, revision=8):
                 "Not drawn: the coupling variables between the groups and the measured inputs the "
                 "analysis takes. They are the cells of the coupling table of `coverage.md`.",
             ]
+            if revision >= 9 and any(fails_by.values()):
+                failing = sorted(
+                    {x for v in fails_by.values() for x in v}
+                )
+                cap.append(
+                    f"`{', '.join(failing)}` satisfies every requirement but "
+                    + " and ".join(
+                        f"`{short(r)}`" for r in reqs if fails_by[r]
+                    )
+                    + ", which the model states it fails (`not satisfy`)."
+                )
             if revision >= 7:
                 cap.append(
                     "A metric marked MoE is a measure of effectiveness, one a stakeholder states "
@@ -1272,6 +1303,7 @@ def behavioural(m, byid, P, revision=8):
             "metrics": metrics,
             "origin": origin,
             "satisfied": satisfied_by,
+            "fails": fails_by,
             "verified": verified_by,
         }
     out.append("legend bottom")
@@ -1336,11 +1368,11 @@ if __name__ == "__main__":
     ap.add_argument(
         "--revision",
         type=int,
-        default=8,
-        choices=(3, 4, 5, 6, 7, 8),
+        default=9,
+        choices=(3, 4, 5, 6, 7, 8, 9),
         help="drawing revision (3: the views committed before WP23's data gate; 4: WP23 round 3; "
         "5: WP23 round 4, the committed views of the data gate; 6: the post-gate view-consistency "
-        "unit; 7: the G-3 blocks of the behavioural view; 8: the analysis box's one line, the committed views since)",
+        "unit; 7: the G-3 blocks of the behavioural view; 8: the analysis box's one line; 9: the negated satisfy (the WP23 close-out), the committed views since)",
     )
     a = ap.parse_args()
     m, byid = load(pathlib.Path(a.model))
