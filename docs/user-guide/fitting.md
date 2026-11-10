@@ -149,8 +149,8 @@ plot_log_plane(ts2, X2)
 ```
 
 <figure markdown>
-![Designs in the log plane of two metrics with the frontier drawn as a bent line made of three facets, each coloured differently, and a grey band below it.](../generated/figures/three-facets-light.png#only-light)
-![Designs in the log plane of two metrics with the frontier drawn as a bent line made of three facets, each coloured differently, and a grey band below it.](../generated/figures/three-facets-dark.png#only-dark)
+![Designs in the log plane of two metrics, all in one colour, with the frontier drawn as one black bent line, the envelope of three straight term lines, and a grey band below it.](../generated/figures/three-facets-light.png#only-light)
+![Designs in the log plane of two metrics, all in one colour, with the frontier drawn as one black bent line, the envelope of three straight term lines, and a grey band below it.](../generated/figures/three-facets-dark.png#only-dark)
 <figcaption>Figure 2. Three facets fitted to two metrics: each facet is a straight line in log space, and the frontier is their envelope.</figcaption>
 </figure>
 
