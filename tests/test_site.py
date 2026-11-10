@@ -892,7 +892,7 @@ def test_index_images_have_alt_text_captions_and_full_size_links():
         assert all(alt and len(alt) > 60 for _, alt in f["img"]), "alt text names what is shown"
         assert len(f["cap"].strip()) > 40
     assert "black arrow" in what["img"][0][1] and "black arrow" in what["cap"]
-    assert "coloured dots are at the frontier" in why["cap"]
+    assert "the larger dots are nearest the frontier" in why["cap"]
     for f in figures:  # plain links: each figure's link is the file the image shows
         assert [i[0] for i in f["img"]] == f["a"]
     # in the dark scheme the light twin is hidden (and the dark one shown), by CSS alone
