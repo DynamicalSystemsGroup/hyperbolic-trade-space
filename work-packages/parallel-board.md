@@ -65,21 +65,25 @@ A stream with no package behind it is not started until the package is scoped an
 | P11 | Verification in tiers (`docs/superpowers/notes/verification-strategy.md`): `slow` markers on every test over about five seconds; `scripts/check.py` with the path-to-tests map and `--changed`; the tests that build the site or write shared files in one xdist group; the CI workflow in shards; the fast suite under three minutes | `scripts/check.py`, `tests/conftest.py`, marker lines in `tests/*.py`, `.github/workflows/test.yml` (the driver adds `pytest-xdist` to `pyproject.toml` and the lock) | the fast suite itself; the full suite once | the driver's dependency change | = WP20: 04a3471, 78f5e1c, fix-forward 5775220; R-3 closed; accepted pending tier 2 |
 | D1 | Reader grid, round one, on the docsite and the root page (the driver runs it: the answer key stays with him) | `work-packages/WP11-round-1.md` | none (read only) | none | the driver, next |
 | D2 | Version 0.1.0 and the reviewer's guide in sittings | `pyproject.toml`, `uv.lock`, the guide | lock check | P9 | the driver |
-| B1 | WP19, the paper's figures: slots, figures, narration | (scoped when it starts) | | the supervisor's two gates | backlog |
-| B2 | WP16, the data swap | (scoped, held) | | the supervisor's choice on the step-read times | held |
+| B1 | WP19, the paper's figures: slots, figures, narration | `work-packages/WP19-slots.md`, `WP19-figure-review.md`, `paper/figures/*.py`, `scripts/build_figures.py`; placement through P1 | build_figures, paper figure tests | WP22 views | executing (see the packages table) |
+| B2 | WP16, the data swap | (Amendment 2 drafted f7d180d) | | the driver's approval of Amendment 2; WP22d done | awaiting approval |
 
 Shared files with a single owner: `glossary.yaml` (P2; other streams send entries to the PM),
 `work-packages/interface-contract.*` (P7 until its amendment lands), `paper/paper.ipynb` (P1),
 the docs pages (P6), `pyproject.toml` and `uv.lock` (the driver).
 
-## Packages running or scoped (PM, latest)
+## Packages running or scoped (PM, latest; third PM, 2026-11-09 night)
 
 | Package | State |
 |---|---|
-| WP17 Linux soft-fit | informative message 14f7100, fix 6a8abd5 (shares allowance for tied rows); Linux run on 6a8abd5 or later to be dispatched |
-| WP21 (assessment response) | approved; code D-1/D-2/D-3/D-5/D-8 pushed (5b55870..3a552c6); paper sentences 3d7d149; docs 8752903; open: Theorem 11 / support gloss, abstract tests pin R-38 wording (see report) |
-| WP22 (system model views) | approved; rounds 1-3 pushed (bc71cfe, c5502ff, 9fc3952); stop recommended, round 4 optional (SlewBand link); the swap is a gate, not done |
-| WP19 (figures) | scope drafted (7735343), awaits approval |
+| WP17 Linux soft-fit | closed: Linux run 42727700605 on 62085bb green in all three shards (seed 3 case passes on amd64); recorded by the driver in `driver-log.md` |
+| WP21 (assessment response) | code, paper and docs pushed earlier; Theorem 11 cell/facet wording 18dd8b6 (ruling 2); claims U08-C040, U09-C038 8a7e583 and U05-C009 backed by L5.25 3ff2e67, cited 4f63628 (ruling 3); G-18 in the glossary's words 73a8435 (ruling 4) |
+| WP10 Amendments 4 and 5 (paper stream, P1) | abstract CR-1b 85733c1 (cap 200 to 210 by ledger entry); CR-3, CR-6, CR-7, CR-8, Corollary enumerated, Section 9 sceptic sentence 4f63628; R-36 paper vocabulary 9d5d3fd; running: CR-1c and the placement of the three WP19 candidates |
+| WP10 Amendment 4 R-36 (vocabulary) | P3 re-triage by stem 6b5d582; avoid lists and baseline 8c9d0a2; derivation-side fixes cce0ac5; running: docs and docstring fixes (docsvocab, held for 7 register fragments, now released), support unit 4 (A3 wording, gaps ledger, Corollary 1 in generate_proofs, app-D-5, generate_results); for the driver: the glossary's own wording in three entries, nine new-term candidates, `reach` and `cell` entries |
+| WP22 (system model views) | gate report 10cde31, 264f1b8; gate decision swap 9c444e3 (driver); WP22d executed ff717ed + 6ed13ed (cubesat.sysml is the adopted model, views at `examples/adcs/model_v2/views/`, ledger @3 entries, outputs byte-identical, paper unchanged); running: header comment fix with ledger re-run; R3-2, R3-3 accepted, no round 4 |
+| WP19 (figures) | executing (approved 7f162c6): slot list 20496d7; recipes 4c91675; n-lemma generator 009e96e; reads and record 19a/19b c6b318b (n-lemma ternary, assembly view, behavioural view passed their cold reads with captions, ready for placement); running: copy step for the view images, then 19c to 19e |
+| WP16 (data swap) | Amendment 2 drafted f7d180d, waits for the driver's approval (OD-A grazing as gap G-17 narrowed or a redefinition; OD-B the frozen tie test's two time columns; defaults as one item); the blast radius includes `examples/adcs/experiments/cubesat_oracle.py` where the times are read |
 | WP8b | approved; version step and reviewer's guide are the driver's |
-| Housekeeping | d7d9919, 811d260 (vocabulary baseline, register row C386) |
+| Housekeeping | d7d9919, 811d260 (vocabulary baseline, register row C386); incident: 3ff2e67 was pushed before its appendix_b run at that exact commit (passed at its child; the head verified by tier 2); the stream was told to rebase, run, push as separate commands |
 
+File ownership added this batch: the stream that changes a registered sentence owns that row's `fragment` in `claims_register.toml` and nothing else in it; `paper/supporting_material.ipynb`, its generators and `derivation/` are one writer (the support stream) in this batch.
