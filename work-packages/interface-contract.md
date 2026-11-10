@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 10. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 11. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 10
+contract_version = 11
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -309,6 +309,7 @@ the last row of the change log.
 | 8 | 2026-11-09 | The values at the ternary plot's markers (WP18, supervisor's request): `plotting` also offers `ternary_marker_values(estimator, X, names=None) -> pandas.DataFrame`, one row per numbered marker of `plot_ternary(..., lines=True)` (marker shape, number, the facet's exponent vector as shares, and V attained there as a fraction of the highest marker's V; `attrs["levels"]` holds the equal-V levels), computed by the code that draws the lines and markers. Additive: the pinned `plotting` list grows (floor rule); `plot_ternary`'s signature is unchanged and its figure is unchanged | technical (the docsite and the paper words follow) | `WP18-decisions.md`, supervisor, "this one is great but make sure the prose is clear about the values attained at the square, star and triangle points marked" |
 | 9 | 2026-11-09 | The term aggregation keyword (WP21 D-1, D-2): `HyperbolicTradeSpace` gains `term_aggregation` (`"sum"` default, `"mean"`), stored verbatim and validated in `fit`; manifest `package.estimator.term_aggregation_default` and `term_aggregation_values`. Additive; the default is today's behaviour, so no committed number changes | technical (the docsite and the paper words follow) | `external-assessment-2026-11-09/triage.md`, the supervisor on A4: "really the package should support both setups ... in practice these should be keyword based." |
 | 10 | 2026-11-09 | The distinct-terms count (WP21 D-5): the `Termination` record gains `n_distinct_terms` (exponent vectors within `solvers.DISTINCT_TERMS_DISTANCE` count as one); `solvers` offers `distinct_terms` and `DISTINCT_TERMS_DISTANCE`. Additive: the pinned field and name lists grow (floor rule); no other field and no committed number changes | technical (the docs K-sweep example and the paper's D.15 show it beside the slack) | `external-assessment-2026-11-09/triage.md`, finding A3, accepted by the driver under the mandate; `WP21-scope-of-work.md` D-5 |
+| 11 | 2026-11-09 | The designs' colour in the plots (`WP19-decisions.md`, the principle check's package item; the supervisor's "Recolour" for docs Figure 8): colouring designs by the term that scores them highest is the cluster idiom and is no plot's default. `plot_ternary` gains a trailing keyword, `plot_ternary(estimator, X=None, names=None, groups=None, lines=False, near=0.2, ax=None, scheme="auto", color=None) -> Axes`: by default the designs are one neutral colour (the near-frontier ones larger); `color="facet"` colours the near-frontier designs by the term that scores each highest (its cell), an analysis of the fit; the region tints, the numbered exponent-vector markers and the lines of equal V are unchanged, so `ternary_marker_values` (row 8) is unchanged. `plot_log_plane` and `plot_frontier_surface_3d` (pinned by name only; signatures unchanged) likewise draw the designs in one colour for any number of terms, with the term lines or the envelope surface as the model, and take `color="facet"` for the cell. Every existing call runs unchanged; the rendered figures change as stated | technical (the docsite and the paper words follow) | the driver under the mandate (`WP19-decisions.md`, the principle check's package item; the supervisor's "Recolour") |
 
 ## 15. Consumers: may assume, must not touch
 

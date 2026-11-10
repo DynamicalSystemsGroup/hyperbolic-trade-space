@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 10
+contract_version = 11
 
 [package]
 import_name = "hyperbolic_trade_space"

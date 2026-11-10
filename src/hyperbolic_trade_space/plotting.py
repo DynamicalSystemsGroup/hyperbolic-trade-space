@@ -13,9 +13,9 @@ Visual vocabulary (module constants, shared by every function)
 * **Targets** (frontier points to aim for): open markers (no fill, black edge).
 * **Data and categories**: the first colour of one qualitative, colour-blind-safe palette
   (``CATEGORY_COLORS``) for plain data, successive colours for categories. The designs are one
-  colour by default whatever the number of facets: the facets are pieces of the fitted surface
-  and are drawn as such. ``color="facet"`` colours the designs by the facet whose term scores
-  each highest (``facet_labels``), an analysis of the fit and not its structure.
+  colour by default whatever the number of terms: a monomial term is a piece of the fitted
+  reference surface and is drawn as such. ``color="facet"`` colours the designs by the term
+  that scores each highest, its cell (``facet_labels``): an analysis of the fit, not its structure.
 * **Ternary plot** (``plot_ternary``): the shares of a total among three metrics (or three groups
   of metrics) as a triangle; a facet's exponent vector is a marker (its own shape, numbered), the
   regions are tinted by the facet that dominates, and the facets use the palette's colours.
@@ -241,10 +241,12 @@ def plot_frontier_surface_3d(estimator, X=None, z_index=None, grid=25, color=Non
         Metric drawn on the vertical axis; default the one with the largest exponent.
     grid : int, default=25
         Grid points per horizontal axis.
-    color : array-like of shape (n_samples,), default=None
-        Optional categories for the points. Without it, near-frontier points are grey; for
-        ``n_terms > 1`` points are coloured by facet and the surface is the lowest facet plane
-        (the envelope ``Phi_K = 0``).
+    color : array-like of shape (n_samples,) or "facet", default=None
+        By default the points are one colour (``DATA_COLOR``), those in the near-frontier band
+        grey, for any number of terms; the surface is the lowest term plane (the envelope
+        ``Phi_K = 0``), the model. An array of categories colours the points from
+        ``CATEGORY_COLORS`` with a legend. ``"facet"`` colours each point by the term that
+        scores it highest, its cell (``facet_labels``): an analysis of the fit, not the model.
     ax : Axes3D, default=None
         Must be a 3-D axes when given.
 
@@ -293,9 +295,7 @@ def plot_frontier_surface_3d(estimator, X=None, z_index=None, grid=25, color=Non
     if X is not None:
         band = _band(estimator, None)
         near = estimator.score_samples(X) >= -band
-        if len(W) > 1 and (color is None or isinstance(color, str)):
-            color = facet_labels(estimator, X)
-        cols, cats = _point_colors(color, len(X), near)
+        cols, cats = _point_colors(_facet_option(estimator, X, color), len(X), near)
         ax.scatter(X[:, x], X[:, y], X[:, z], c=cols, s=10)
         _category_legend(ax, cats)
     ax.set_xlabel(f"m{x}")

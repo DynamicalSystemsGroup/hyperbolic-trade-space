@@ -198,11 +198,19 @@ def test_log_plane_colour_by_facet_is_an_explicit_option():
         P.plot_log_plane(hts, X, color="red")
 
 
-def test_surface_k3_and_coordinates_facet_colouring():
+def test_surface_k3_one_colour_by_default_and_coordinates_facet_colouring():
+    # WP19-decisions.md (the principle check): the designs in one colour, the envelope surface
+    # as the model; colouring by the term that scores each highest is the explicit option.
     X, hts = _k3(3)
     ax = P.plot_frontier_surface_3d(hts, X)
     assert ax.name == "3d" and len(ax.collections) >= 2
-    assert "facet 1" in _texts(ax) and "red" not in _texts(ax)
+    assert "facet" not in _texts(ax) and "red" not in _texts(ax)
+    neutral = {matplotlib.colors.to_hex(P.DATA_COLOR), matplotlib.colors.to_hex(P.BAND_COLOR)}
+    assert _design_colours(ax) <= neutral and len(_design_colours(ax)) == 2
+    ax = P.plot_frontier_surface_3d(hts, X, color="facet")
+    assert "facet 1" in _texts(ax) and len(_design_colours(ax)) >= 2
+    with pytest.raises(ValueError, match="facet"):
+        P.plot_frontier_surface_3d(hts, X, color="red")
     Z = hts.transform(X)
     ax = P.plot_frontier_coordinates(Z[:, :-1], Z[:, -1], color=P.facet_labels(hts, X))
     assert "facet 1" in _texts(ax) and "red" not in _texts(ax)
