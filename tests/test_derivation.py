@@ -353,6 +353,29 @@ def test_L5_fails_loudly_when_limit_wrong():
         mods[5].verify(ctx)
 
 
+def test_L5_band_weight_ratio_numerically():
+    """L5.25 at numbers: softmax weights of the LME terms, one design on the surface (log V = 0);
+    every design with |log V| <= 1/tau weighs within a factor e of it, and one outside does not."""
+    import numpy as np
+
+    rng = np.random.default_rng(5)
+    for tau in (0.5, 3.0, 38.1):
+        g = np.concatenate([[0.0], rng.uniform(-1 / tau, 1 / tau, 200), [1 / tau, -1 / tau]])
+        p = np.exp(tau * g) / np.exp(tau * g).sum()
+        ratio = p[1:] / p[0]
+        np.testing.assert_allclose(ratio, np.exp(tau * g[1:]), rtol=1e-12)
+        assert np.all(ratio <= np.e * (1 + 1e-12)) and np.all(ratio >= (1 - 1e-12) / np.e)
+        outside = np.exp(tau * 1.5 / tau)  # log V = 1.5 / tau, outside the band
+        assert outside > np.e
+
+
+def test_L5_fails_loudly_when_band_ratio_wrong():
+    ctx, mods = _run_lemmas(5)
+    ctx["L5"]["band_range"] = sp.Interval(sp.exp(-2), sp.exp(2))
+    with pytest.raises(AssertionError, match="L5 FAIL"):
+        mods[5].verify(ctx)
+
+
 def test_L7_fails_loudly_when_elasticity_wrong():
     ctx, mods = _run_lemmas(1, 7)
     ctx["L7"]["x_sol"] = -ctx["L7"]["x_sol"]  # +w_k/w_j: wrong sign

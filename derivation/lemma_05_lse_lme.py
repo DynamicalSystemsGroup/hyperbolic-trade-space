@@ -18,6 +18,12 @@ What this proves (symbolic n):
      limits computed by sympy.limit in derive and recorded (mimics symproof
      library/topology.py continuous_at_point: limit computed outside the assertion, verify
      asserts the equality limit - value == 0).
+  6. Band weights: in the soft maximum a design weighs p_i = e^{tau g_i} / Z, with g_i = log V_i
+     (its score minus the reach) and Z the normalizer shared by every weight. Against a design on
+     the surface (g_0 = 0) the ratio is p_i / p_0 = e^{tau g_i}, whose range over the band
+     |g_i| <= 1/tau is [1/e, e]: the ratio increases in g_i (its derivative tau e^{tau g_i} is
+     positive, tau > 0 by A3), so the band's endpoints -1/tau and 1/tau bound it. A design inside
+     the band weighs within a factor e of one on the surface.
 
 Max representation (FALLBACK F5, listed in the ledger): sympy has no symbolic-n max, so the
 maximum is the symbol M with hypotheses s_i <= M for all i and s_{i0} = M for some
@@ -45,7 +51,8 @@ from derivation.sumtools import linear
 TITLE = "LSE = LME + log(n)/tau; mean <= LME <= max; tau limits"
 STATEMENT = (
     "LSE = LME + (log n)/tau; LSE - max >= 0 (strict for n >= 2); lim_{tau->inf} LME = max; "
-    "lim_{tau->0} LME = mean; mean <= LME <= max"
+    "lim_{tau->0} LME = mean; mean <= LME <= max; inside the band |log V| <= 1/tau a design's "
+    "weight is within a factor e of one on the surface"
 )
 # I1, I2 and I3 are recorded remarks (see docstring), no step of this lemma consumes them; F5 is the
 # max representation fallback; A3 licenses the logarithms and the sign of tau.
@@ -113,6 +120,13 @@ def derive(ctx):
     lim_lower = sp.limit(lower_bound, tau, sp.oo)
     lim_upper = sp.limit(upper_bound, tau, sp.oo)
 
+    # 6. band weights p_i = e^{tau g_i} / Z, g_i = log V_i; the reference g_0 = 0 is on the surface
+    g = sp.Symbol("g", real=True)  # log V of a design: its score minus the reach
+    Z = sp.Symbol("Z")  # the normalizer sum_l e^{tau g_l}, common to every weight
+    band_ratio = sp.simplify((sp.exp(tau * g) / Z) / (sp.exp(tau * 0) / Z))
+    band_slope = sp.diff(band_ratio, g)  # positive: the ratio increases in g
+    band_range = sp.Interval(band_ratio.subs(g, -1 / tau), band_ratio.subs(g, 1 / tau))
+
     # remarks recorded, not proved here and not consumed by a step (I1, I2, I3: cited context)
     consistency_remark = (
         "I2: the sample LME -> rho_tau(w) a.s. (SLLN); as tau->0 it tends to E[w.u]."
@@ -150,6 +164,10 @@ def derive(ctx):
         "slack": slack,
         "other": other,
         "k2": k2,
+        "band_g": g,
+        "band_ratio": band_ratio,
+        "band_slope": band_slope,
+        "band_range": band_range,
         "consistency_remark": consistency_remark,
         "lp_duality_remark": lp_duality_remark,
         "support_function_remark": support_function_remark,
@@ -209,3 +227,9 @@ def verify(ctx):
     assert sp.simplify(r["lim_lower"] - r["max_symbol"]) == 0, "L5 FAIL: lower bound limit != max"
     # [L5.24] the upper squeeze bound M tends to M, so lim_{tau->inf} LME = max
     assert sp.simplify(r["lim_upper"] - r["max_symbol"]) == 0, "L5 FAIL: upper bound limit != max"
+    # [L5.25] A3: a design weighs e^{tau log V} times one on the surface, in [1/e, e] in the band
+    assert (
+        r["band_ratio"] == sp.exp(A3.positive(tau) * r["band_g"])
+        and r["band_slope"].is_positive is True
+        and r["band_range"] == sp.Interval(sp.exp(-1), sp.E)
+    ), "L5 FAIL: band weight ratio not within a factor e"

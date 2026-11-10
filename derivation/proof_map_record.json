@@ -1036,7 +1036,8 @@
       21,
       22,
       23,
-      24
+      24,
+      25
      ]
     }
    ],
@@ -1295,6 +1296,18 @@
      "prose": "the upper squeeze bound M tends to M, so lim_{tau->inf} LME = max",
      "code": "assert sp.simplify(r['lim_upper'] - r['max_symbol']) == 0, 'L5 FAIL: upper bound limit != max'",
      "fingerprint": "7dd5887752fd39b10de58bcf04fe5335da329f93a39a9c865bf8fb058012df83",
+     "result": "LSE = LME + log(n)/tau; mean <= LME <= max; tau limits"
+    },
+    {
+     "tag": "L5.25",
+     "kind": "axiom",
+     "applies": [
+      "A3"
+     ],
+     "results": [],
+     "prose": "A3: a design weighs e^{tau log V} times one on the surface, in [1/e, e] in the band",
+     "code": "assert r['band_ratio'] == sp.exp(A3.positive(tau) * r['band_g']) and r['band_slope'].is_positive is True and (r['band_range'] == sp.Interval(sp.exp(-1), sp.E)), 'L5 FAIL: band weight ratio not within a factor e'",
+     "fingerprint": "1a41133d2b0c7db75eee967480ffec9ee4e579239743aa31131e1b96229e05e5",
      "result": "LSE = LME + log(n)/tau; mean <= LME <= max; tau limits"
     }
    ]
