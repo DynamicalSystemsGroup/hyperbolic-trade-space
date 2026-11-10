@@ -455,3 +455,11 @@ Rules applied this PM beyond the brief: every agent reads `scratchpad/pm5-rules.
 Appendix A in the same push; records a test or the paper reads take the vocabulary (A5 as amended), decision records and
 quotations keep theirs; a dispatch blocks the PM's turn until the agent returns, so long units report at milestones by
 message and the PM keeps dispatches short where it can.
+
+**References the exact branches read are the container's (2026-11-10, 13:30).** A host unit that must re-record a
+reference an environment-of-record test reads exactly (the soft-fit reference, a pinned certificate value, the
+sensitivity record) re-records only the arrays its change affects, leaves the rest untouched, and marks the file
+"host-recorded, re-pin at the gate" in its commit; the gate's container regression re-pins them. The close-out's host
+re-recording rewrote the planted soft-fit arrays it did not need to touch and the gate caught it (47 exact-branch
+failures in the container, all of this kind).
+
