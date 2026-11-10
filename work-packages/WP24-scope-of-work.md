@@ -271,3 +271,11 @@ Approved or changed as one item at the scope gate. Each is marked *(default)* wh
 None. Every item was resolved through the decision loop (decided by the supervisor before this draft: the drop, its
 reach "Everything before 0.1", the vocabulary; decided here as Agent's defaults: one item, A1 to A10, for the driver
 under the mandate; deferred 0; raised 0).
+
+## Gate outcomes
+
+- 2026-11-09, 22:50: approved for execution by the driver under the mandate; no open decision (the supervisor's
+  "Everything before 0.1" and the vocabulary are recorded in `WP10-decisions.md`); the Agent's defaults A1 to A10
+  accepted as one item (A1: "facet" stays only in the τ = ∞ polyhedral sense). Sequenced after WP23's regeneration
+  and data gate so each surface is touched once. The supervisor reviews the result at his paper review.
+
