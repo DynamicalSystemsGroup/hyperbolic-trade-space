@@ -118,6 +118,50 @@ Change request CR-1b (paper stream; the supervisor's sentences kept, the smalles
 - Re-test at depth A (the same four personas) once it lands; the depth-B re-test runs now on the
   current build, since CR-2 has landed (main results in the glossary's words; item 5, PCA chained).
 
+### Round 1b, depth B (six readers, skim of the current build 7f162c6: headings, main results, statements, captions, figure images)
+
+Reports in the driver's scratchpad (`readers/round1b/P{1..6}-B.md`); slice `readers/round1b/slice-B.md`.
+
+- Held: no reader believes the surface is the Pareto boundary or that the method picks a design;
+  elasticities read correctly by 6 of 6 (three in their own words, "exchange rate"); the hedged
+  statements raise trust in 4 of 6 ("makes me trust it more than the usual method paper"); 6 of 6
+  would read on, selectively (P1 and P2 to Sections 8 to 11, P4 and P5 to Sections 5 and 6, P6 to
+  Section 2, Appendix G and Section 9). The "w = ..." boxes of Figures 5 and 6 are now read from the
+  caption (CR-4's clause landed). Figure 1 is read as the temperature selection by 4 of 6; Figure 2
+  remains the anchor for the practitioners; Figure 3's kink is where two readers first believed the
+  facets mean more than a colouring.
+- Not landed (CR-3 stays open): a facet is still read as a set of designs by P1 ("a sub-group of
+  designs"), half so by P2 and P4 ("one plane, i.e. one family of designs"; "one hyperplane or cluster");
+  P3 and P6 read it as a piece of the surface from Figure 3's bent line. The statements still carry no
+  sentence saying what a facet is where the word first appears.
+- New, CR-6 (statements, Definition 1 or the main-results lead): 3 of 6 (P1, P4, P6) understood that
+  the reference surface is not the Pareto boundary and then did not know what it is for ("I understood
+  the negative but not what I am supposed to do with a surface that is not the frontier"; "made it sound
+  like a quantile"). One positive clause is owed where the negative stands: the reference surface is
+  the level from which every design's position and level, and each facet's elasticities, are read.
+- New, CR-7 (Definition 4): the band sentence "in the soft maximum a design inside it weighs within a
+  factor e of one on the surface" lost 3 of 6 (P1, P2, P3: "I do not know what a soft maximum is or why
+  a design 'weighs' anything"). Say it in the fit's own words (the fit counts a design inside the band
+  almost as much as one on the surface) or move the weight clause to the remark that the new lemma
+  step (U05-C009) backs.
+- New, CR-8 (Definitions 2 and 7; glossary): β is "a fitted offset" in Definition 2 and "the reach, the
+  support value of the data in direction w_k" in Definition 7; P3 and P5 could not tell whether these
+  are one quantity. One object, one name: the glossary's term for β at both places, and "support value"
+  glossed or dropped. P5 also asks in what sense a facet "dominates" a design (Definition 7): use the
+  cell wording of ruling 2 (the facet whose term is largest for that design).
+- To WP19 as evidence (CR-4 holds): Figure 4 least helpful for 2 of 6 ("I saw clusters by colour but
+  took nothing from it I could repeat"); Figure 7 least helpful for 2 of 6 and read by all as
+  "predictions matched measurements for three proposed designs" with no sense of what was proposed,
+  why there are two panels, or what a bad position would look like. Figure 3's bottom panel shows a
+  metric quantised into horizontal bands; P3 and P6 inferred a discrete design variable and noted that
+  nothing they read says so: a caption clause naming the discrete alternative behind the bands.
+- Observation for the paper stream's judgement, not a forced edit: P6 (the sceptic) will decide at
+  Section 9 whether "facets separate contending sets that one facet blends" is a finding or a
+  restatement of "clusters have different correlation structure", which Figures 5 and 6 (association
+  heatmaps) make them suspect. Section 9 should say what the facets give that a clustering with
+  per-cluster correlations does not: the fitted exponents and elasticities per facet are the model's
+  reading; the heatmaps are the analysis. Keep the two apart in that section's prose.
+
 ## Next
 
 Re-test the L-A and L-B cells after CR-1 to CR-3 land; then the L-C and L-D cells (main text; with
