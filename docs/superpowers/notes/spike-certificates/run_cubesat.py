@@ -17,7 +17,8 @@ from k_terms import DATA, REGIMES, load_metrics, select_tau  # noqa: E402
 
 from hyperbolic_trade_space.solvers import solve_terms  # noqa: E402
 
-# recorded taus (docs/superpowers/notes/k3-cubesat.md); recomputed below if --select is given
+# the taus of the spike's own run, recorded in docs/superpowers/notes/k3-cubesat.md (deleted; last
+# version at 4409920); recomputed below if --select is given
 RECORDED = {"primary": {1: 38.10, 3: 195.18}, "stock": {1: 41.72, 3: 162.78}}
 rows = []
 for regime in REGIMES:
