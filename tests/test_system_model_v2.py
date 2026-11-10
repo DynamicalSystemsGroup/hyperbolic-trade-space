@@ -766,25 +766,102 @@ def test_the_rollups_are_illustrative_and_read_by_no_output(who_cares):
     assert life["cubesatCompact"] < life["cubesatBaseline"] < life["cubesatAgile"]
 
 
+CONTRAST_NEGATED = {  # WP27-decisions.md (16:20): the contrasts' verdicts, as the engine finds them
+    "not satisfy lowCost::launchBudget by cubesatAgile",
+    "not satisfy pointingAndSlewing::controlEffort by cubesatAgile",
+    "not satisfy powerAndEnergy::peakSlewPower by cubesatAgile",
+    "not satisfy pointingAndSlewing::pointingError by cubesatCompact",
+}
+
+
 def test_the_baselines_verdict_on_each_concern_is_checked_by_the_engine(who_cares):
     """WP27 D-4 (the sponsor saw no verdict in the stakeholder layer): each concern's requirement
     carries the baseline configuration's verdict as a ``satisfy`` or ``not satisfy`` statement in
     ``stakeholders.sysml``; the toolkit's engine checks every statement of the three files (eleven
-    of the model, twelve of the concerns) and all hold, the pointing-error ones negated; stating
-    the pointing-error verdict as satisfied is false (negative control)."""
+    of the model, twelve per named configuration of the concerns) and all hold, the baseline's
+    pointing-error ones negated; stating the baseline's pointing-error verdict as satisfied is
+    false (negative control)."""
     verdicts = who_cares.verify_satisfaction()
-    assert len(verdicts) == 11 + 12
+    assert len(verdicts) == 11 + 3 * 12
     assert all(v.holds and v.status == "holds" and v.engine == "run" for v in verdicts)
     negated = {v.element for v in verdicts if v.element.startswith("not satisfy")}
-    assert negated == {
-        "not satisfy baselinePointingError by cubesatBaseline",
-        "not satisfy pointingAndSlewing::pointingError by cubesatBaseline",
-    }
+    assert (
+        negated
+        == {
+            "not satisfy baselinePointingError by cubesatBaseline",
+            "not satisfy pointingAndSlewing::pointingError by cubesatBaseline",
+        }
+        | CONTRAST_NEGATED
+    )
     flipped = STAKEHOLDERS.read_text().replace(
-        "not satisfy pointingAndSlewing.pointingError", "satisfy pointingAndSlewing.pointingError"
+        "not satisfy pointingAndSlewing.pointingError by cubesatBaseline",
+        "satisfy pointingAndSlewing.pointingError by cubesatBaseline",
     )
     wrong = cm.get_connection().load_from_content(TEXT + "\n" + flipped, strict=True)
     bad = [v for v in wrong.verify_satisfaction() if not v.holds]
     assert [v.element for v in bad] == [
         "satisfy pointingAndSlewing::pointingError by cubesatBaseline"
     ]
+
+
+CONTRASTS = {  # the model's two contrasts, as the oracle configures them (section 7 of the model)
+    "agile": {"panel_span_m": 0.8, "battery_wh": 140.0, "wheel_class": "large",
+              "st_grade": "fine", "Kp": 1.5, "Kd": 1.2},
+    "compact": {"panel_span_m": 0.35, "battery_wh": 40.0, "wheel_class": "small",
+                "st_grade": "coarse", "Kp": 0.25, "Kd": 0.4},
+}  # fmt: skip
+
+
+@pytest.mark.parametrize("name", sorted(CONTRASTS))
+def test_the_contrasts_measurements_are_recorded_measurements(who_cares, frozen, name):
+    """The measurement each contrast's verdicts bind (``agileMeasurement``,
+    ``compactMeasurement`` in ``stakeholders.sysml``) is its slew integrated as the baseline's was
+    recorded (600 s horizon, 0.5 s step), within the reproducibility tolerance the baseline's
+    own test states (rtol 1e-3, times within 0.5 s)."""
+    cfg = frozen.configure([{"design_id": 0, **CONTRASTS[name]}])[0]
+    got = _measure_slew(frozen, cfg, t_end=600.0, max_step=0.5)
+    assert got["censored"] is False
+
+    def read(k, unit=None):
+        value = who_cares.eval(f"{S}::{name}Measurement.{k}")
+        return float(value.in_unit(who_cares.eval(f"1.0 [{unit}]").unit) if unit else value)
+
+    rtol = 1e-3
+    momentum = "SI::N*SI::m*SI::s"
+    assert read("settlingTime", "SI::s") == pytest.approx(got["settling_time"], rel=rtol, abs=0.5)
+    assert read("peakTorque", "SI::N*SI::m") == pytest.approx(got["peak_torque"], rel=rtol)
+    assert read("peakMomentum", momentum) == pytest.approx(got["peak_momentum"], rel=rtol)
+    assert read("controlEffort", momentum) == pytest.approx(got["control_effort"], rel=rtol)
+    assert read("torqueSquaredIntegral") == pytest.approx(got["torque_squared_integral"], rel=rtol)
+
+
+def test_the_contrasts_verdicts_rest_on_their_own_measurements(who_cares):
+    """WP27-decisions.md (16:20): the agile and compact configurations' verdicts on each concern's
+    requirement, engine-checked. A requirement that reads a measured quantity defaults to the
+    baseline's measurement, so each such statement binds its ``in`` parameter to the contrast's
+    recorded measurement; the engine evaluates the binding, not the default: the agile control
+    effort verdict, negated with the agile measurement, holds as ``satisfy`` once the binding is
+    the baseline's (the slew the default would have read), and stating a negated verdict as
+    satisfied is false (negative controls)."""
+    verdicts = who_cares.verify_satisfaction()
+    contrasts = [
+        v for v in verdicts if v.element.endswith(("by cubesatAgile", "by cubesatCompact"))
+    ]
+    assert len(contrasts) == 2 * 12
+    assert all(v.holds for v in contrasts)
+    assert {v.element for v in contrasts if v.element.startswith("not ")} == CONTRAST_NEGATED
+    stk = STAKEHOLDERS.read_text()
+    negated = "not satisfy pointingAndSlewing.controlEffort by cubesatAgile {"
+    assert stk.count(negated) == 1
+    flipped = stk.replace(negated, negated[len("not ") :])
+    wrong = cm.get_connection().load_from_content(TEXT + "\n" + flipped, strict=True)
+    assert [v.element for v in wrong.verify_satisfaction() if not v.holds] == [
+        "satisfy pointingAndSlewing::controlEffort by cubesatAgile"
+    ]
+    rebound = flipped.replace(
+        "in controlEffort = agileMeasurement.controlEffort;",
+        "in controlEffort = baselineMeasurement.controlEffort;",
+    )
+    assert rebound != flipped
+    other = cm.get_connection().load_from_content(TEXT + "\n" + rebound, strict=True)
+    assert all(v.holds for v in other.verify_satisfaction())

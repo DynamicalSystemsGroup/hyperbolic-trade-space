@@ -6,7 +6,8 @@
  * Read top to bottom:
  *   1. who cares       two stakeholders: a sponsor (price) and an operator (performance in operation)
  *   2. their needs     concerns framing the cubesat, each held by its stakeholder and decomposed into
- *                      the engineers' requirements of cubesat.sysml that serve it
+ *                      the engineers' requirements of cubesat.sysml that serve it; the verdict of
+ *                      each named configuration on each of those requirements, engine-checked
  *   3. roll-ups        the sponsor's measures derived from the engineers': the launch cost (in the
  *                      model), and two ILLUSTRATIVE roll-ups, cost to build and effective life
  *   4. evidence        verification cases that verify the concerns' requirements and point at where
@@ -108,6 +109,93 @@ package CubesatStakeholders {
     satisfy powerAndEnergy.peakSlewPower by cubesatBaseline;
     satisfy powerAndEnergy.batteryPeakPower by cubesatBaseline;
     satisfy powerAndEnergy.eclipseDepthOfDischarge by cubesatBaseline;
+
+    // The two contrasts' verdicts on the same requirements, as the model computes them on each
+    // configuration's own slew (the engine checks each statement). A requirement that reads a
+    // measured quantity has the baseline's measurement as its default, so each such statement
+    // binds the `in` parameter to the configuration's recorded measurement below. The agile
+    // configuration fails the launch budget (93,960 against 90,643 USD), the control effort
+    // (0.112 against 0.059 N.m.s) and the peak slew power (7.4 against 2.6 W): the sponsor's low
+    // cost and two of the operator's requirements. The compact configuration fails the pointing
+    // error (0.008533 against 0.008495 degree), the operator's pointing concern.
+    part agileMeasurement : SlewMeasurement {
+        doc /* The agile configuration's slew integrated by adcs_sim.simulate_adcs (600 s horizon,
+               0.5 s step, 30 degree slew), recorded as the baseline's is in cubesat.sysml, to
+               reproduce the verdicts below. A test re-measures it. */
+        :>> settlingTime = 14.035843742103072 [s];
+        :>> peakTorque = 0.01 [N*m];
+        :>> peakMomentum = 0.055687526518579916 [N*m*s];
+        :>> controlEffort = 0.1117208500927503 [N*m*s];
+        :>> torqueSquaredIntegral = 0.0010405792882731359;
+    }
+    part compactMeasurement : SlewMeasurement {
+        doc /* The compact configuration's slew, integrated and recorded as the agile one's. */
+        :>> settlingTime = 71.5888092670763 [s];
+        :>> peakTorque = 0.0003 [N*m];
+        :>> peakMomentum = 0.006933607071907376 [N*m*s];
+        :>> controlEffort = 0.020091285377954803 [N*m*s];
+        :>> torqueSquaredIntegral = 5.839661452972206e-06;
+    }
+    not satisfy lowCost.launchBudget by cubesatAgile;
+    satisfy longLife.depthOfDischarge by cubesatAgile {
+        in torqueSquaredIntegral = agileMeasurement.torqueSquaredIntegral;
+    }
+    satisfy pointingAndSlewing.pointingError by cubesatAgile;
+    satisfy pointingAndSlewing.settled by cubesatAgile {
+        in settlingTime = agileMeasurement.settlingTime;
+    }
+    not satisfy pointingAndSlewing.controlEffort by cubesatAgile {
+        in controlEffort = agileMeasurement.controlEffort;
+    }
+    satisfy pointingAndSlewing.momentum by cubesatAgile {
+        in peakMomentum = agileMeasurement.peakMomentum;
+    }
+    satisfy powerAndEnergy.power by cubesatAgile;
+    satisfy powerAndEnergy.powerMargin by cubesatAgile {
+        in peakTorque = agileMeasurement.peakTorque;
+    }
+    satisfy powerAndEnergy.energyBalance by cubesatAgile {
+        in torqueSquaredIntegral = agileMeasurement.torqueSquaredIntegral;
+    }
+    not satisfy powerAndEnergy.peakSlewPower by cubesatAgile {
+        in peakTorque = agileMeasurement.peakTorque;
+    }
+    satisfy powerAndEnergy.batteryPeakPower by cubesatAgile {
+        in peakTorque = agileMeasurement.peakTorque;
+    }
+    satisfy powerAndEnergy.eclipseDepthOfDischarge by cubesatAgile {
+        in torqueSquaredIntegral = agileMeasurement.torqueSquaredIntegral;
+    }
+    satisfy lowCost.launchBudget by cubesatCompact;
+    satisfy longLife.depthOfDischarge by cubesatCompact {
+        in torqueSquaredIntegral = compactMeasurement.torqueSquaredIntegral;
+    }
+    not satisfy pointingAndSlewing.pointingError by cubesatCompact;
+    satisfy pointingAndSlewing.settled by cubesatCompact {
+        in settlingTime = compactMeasurement.settlingTime;
+    }
+    satisfy pointingAndSlewing.controlEffort by cubesatCompact {
+        in controlEffort = compactMeasurement.controlEffort;
+    }
+    satisfy pointingAndSlewing.momentum by cubesatCompact {
+        in peakMomentum = compactMeasurement.peakMomentum;
+    }
+    satisfy powerAndEnergy.power by cubesatCompact;
+    satisfy powerAndEnergy.powerMargin by cubesatCompact {
+        in peakTorque = compactMeasurement.peakTorque;
+    }
+    satisfy powerAndEnergy.energyBalance by cubesatCompact {
+        in torqueSquaredIntegral = compactMeasurement.torqueSquaredIntegral;
+    }
+    satisfy powerAndEnergy.peakSlewPower by cubesatCompact {
+        in peakTorque = compactMeasurement.peakTorque;
+    }
+    satisfy powerAndEnergy.batteryPeakPower by cubesatCompact {
+        in peakTorque = compactMeasurement.peakTorque;
+    }
+    satisfy powerAndEnergy.eclipseDepthOfDischarge by cubesatCompact {
+        in torqueSquaredIntegral = compactMeasurement.torqueSquaredIntegral;
+    }
 
     // ==========================================================================================
     // 3. ROLL-UPS: the sponsor's measures from the engineers' (illustrative, read by no output)
