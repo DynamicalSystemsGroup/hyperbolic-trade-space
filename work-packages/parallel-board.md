@@ -158,3 +158,17 @@ Worktrees alive: `wp24` (held glossary patch) plus the running units' own. Docke
 | 5a. Improvement by subtraction | scoped after the content is complete (after WP11 round 2's change requests land) |
 
 Worktrees alive: `wp27model` (the modeller), `stage` (the staged build, detached). Docker: hts-paper 877c42cc10e3, hts-alt 81e06426f7b3; hts-wp26 removed after its run.
+
+### Sixth PM, batch 3 (2026-11-10, evening)
+
+| Unit | State |
+|---|---|
+| WP26 acceptance review | 2d2a81b (13 met; 5 gaps); the driver's dispositions d617dad; fixes G-4, G-5 landed 05f8a2a; accepted when the driver records it |
+| WP27 acceptance review | 3e22533 (11 met, R-10 in part); fixes G-1, G-2, the elision 05f8a2a; G-3 and Bug 10 in the feedback report 8f4e10b; H-2 the supervisor's |
+| WP27 units after D-4 | b9c8819 (the baseline's verdicts on the concern requirements), 73b4e89 (agile and compact verdicts, their own measurements bound; engine-checked, negative controls), 6c8481a (WP25-3 OD3 (b): coverage swaps named wheelClass, grade) |
+| WP25-3 | accepted (OD2 closed by (a): the test regenerates the comparison, fdd6d25, 5a3ee03; head 1d9fae1); P-1 contract amendment 16 done 2bbdf3b; P-4 the driver's 64c66b3 |
+| WP11 round 2, the paper | CR-9..14, 16 3e3378c; CR-17..22, 24..27, 29 7c75408; CR-23, 28 acb8c45; captions and lines for Figures 1, 4, 5, 6, 7 e165c7f; CR-15 (the driver's option (i)), the sceptic's register (Appendix G: multiplicative DEA, the hyperbolic graph measure; Section 2's clause), CR-26's second difference 59105bb; figures CR-30..34 f517875 (three cold reads pass) |
+| WP11 docs loop | DCR-1..9 8715f28..44cb75e (glossary: term share, row share; Appendix A regenerated, host-recorded); the register re-pinned 37b1339 (13 rows; C323, C329 dropped) |
+| Next | the maths-check unit (P5's seven questions, the derivation stream); the 5a scope for the driver; WP11 round 3 (re-test of the cells that found something, neighbours, a rotating third) on the staged build after the maths unit; the P6-B confirmation read on an unused brief at the end |
+
+Worktrees alive: `wp27model` (the modeller's, idle), `stage`. Docker: hts-paper 877c42cc10e3, hts-alt. Note for a fresh worktree staging the site: the myst article-theme prerender fails on `/_public/` assets unless the main checkout's `paper/_build/templates` is copied in (two authors met it); a pin of the theme version is for the driver.
