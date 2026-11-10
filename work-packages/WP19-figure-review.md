@@ -89,3 +89,189 @@ changed the reading.
   requirement and says that requirements group by subsystem; a P3 modeller at L-B says that each
   orange line ties a requirement to the metric it reads. Fails if a reader cannot find the metrics
   without a requirement or takes the lines for data flow.
+
+---
+
+## Reads, tests and dispositions (after the recipes at 4c91675; candidate image at 009e96e)
+
+Images given to readers (copies with neutral names in the session scratchpad, byte-identical to the
+committed images; SHA-1 shown): `figure-A.png` = `paper/figures/fig-nlemma.png` at 009e96e (201d8b9);
+`figure-B.png` = `docs/superpowers/notes/spike-sysml-diagrams/out/r1/assembly_view.png` at 9fc3952
+(11a449d); `figure-C.png` = `.../out/r1/behavioural_view.png` at 9fc3952 (82e5587). Each reader opened
+the one PNG with the Read tool (image view), answered, then was sent the caption. My own judgements
+(tests 3 and 4) were made from the same PNGs opened in the Read tool, and from copies resampled to the
+700 px column (`col700-A.png`, `col700-C.png`; B is 699 px native). Browser check: not done. The
+built-in browser shows a local file only as a static snapshot it cannot act on, and a local server
+could not be started in this environment (uv refused an unrelated egg-info outside the project); the
+column check is therefore the resampled image in the image view, a limit recorded here.
+
+### C-a5: the n-lemma on the simplex
+
+Read 1, P2 practitioner, L-B. Image alone: "It plots three 'facets' as markers in a triangle whose
+corners are metric 1, 2 and 3. Each facet has a weight vector w, and a ring marks a 'planted' (known)
+answer." Take-away: "the method sorts each tradeoff into a single metric binding alone (corner), a
+two-way dilemma (edge), or a three-way trilemma (interior). It also seems to check this against known
+answers: each planted ring sits close to its recovered marker (facet 2's ring is slightly offset)."
+Position: "the share of weight on each metric (barycentric coordinates). On an edge, one metric has
+weight 0." Unclear: "what 'facet', 'exponent vector' and 'planted' mean in practice ... The footer line
+'1.00, 1.00, 1.00 (all of it: d = 3)' is cryptic. Facet 1 and facet 3 labels read like duplicates. No
+decoration." With caption: "Changed: 'facet' is a piece of the fitted surface, the weights are its
+exponent vector, and the open ring is the planted truth ... Still unclear: 'n-lemma' and
+'exact-maximum fit' are undefined for a practitioner; facet 2's ring is visibly offset from its marker,
+so I can't tell if that is fine; the footer ... should say 'weight carried by these metrics'."
+
+Read 2, P5 optimization reader, L-C. Image alone: "the 2-simplex of exponent vectors w (nonnegative,
+summing to 1) over three metrics, with corners, edges and interior marking how many metrics get
+nonzero weight ... I read this as a recovery test." "The face a marker sits in gives the support of w,
+meaning which metrics are active and trade off at that facet." Unclear: "'Facet' is never defined ...
+'Planted' is unexplained ... Marker 2 is visibly offset from its circle ... The '1.00, 1.00, 1.00' line
+is cryptic ... The sum of w for facet 2 is 0.99, a rounding artifact ... Nothing here ties w to the
+geometric program." With caption: "'Facet' is now defined ... the open ring is the planted truth ...
+That makes marker 2's offset a visible recovery error, not a drawing flaw ... The '1.00, 1.00, 1.00'
+line is explained." Still unclear: "'Exact-maximum fit' is undefined here ... a fitted point lying
+exactly on a face boundary is a measure-zero event."
+
+Five tests. (1) Cold read: both readers reached the intended takeaway from the image alone (face to
+n-lemma; recovery of the planted vectors); neither took a marker for a design; P5 named the support.
+H-a5 holds (P2 stated the corner/edge/interior reading; the edge facets' metrics are named in the key).
+(2) Sentence test: passes, narrowly. The sentence states the rule; the image let a reader with no
+convex analysis place a facet by eye and see the fit land on the planted answer, which the sentence
+does not give. (3) Ink: the triangle and key carry the content; about a fifth of the frame is margin;
+no label covers a marker. (4) Legible at the 700 px column (`col700-A.png`): every label readable, the
+smallest about 9 px tall; light scheme only (the paper has no dark scheme). (5) Lines below.
+Friction, triaged: the footer "1.00, 1.00, 1.00" (both readers) is resolved by the caption's last
+sentence (both said so): caption, no redraw. "Exact-maximum fit" and "n-lemma" are defined in
+Definition 5 beside the figure (L-C), so not a figure fix. Facet 2's offset is a true recovery error
+(fitted 0.44 against planted 0.50 on metric 1 at τ = 50; the exact-maximum support is the planted
+trilemma), which P5 read correctly from the caption. P5's measure-zero point is answered by the fit:
+the exact-maximum fit has exact zeros (the tension report's support), stated in the caption.
+**Disposition: keep, with the caption. Ready for placement.**
+
+### C-b1: the assembly view
+
+Read 1, P3 modeller, L-B. Image alone: "a SysML-style block diagram of a 'Cubesat' part definition ...
+with design variables marked on parts and a legend listing their levels and ranges." Take-away: "the
+design space is defined by a small number of explicit knobs on a spacecraft model. Two kinds are
+marked: 'swap' (categorical choice among variants) and 'tune' (continuous parameter in a range)."
+Named: WheelClass, TrackerGrade; panelSpan, batteryCapacity, Kp, Kd with ranges; "Bus, Antenna and Imu
+are fixed." Unclear: "'Dataset' (baseline vs aggressive) is not explained ... Whether the swaps
+interact with the tuned parameters ... Units for Kp and Kd ... The legend text is small but legible.
+Nothing looks like decoration." With caption: resolves the notation and "dataset"; "The legend says
+'baseline' where the caption says 'stock', so the labels don't match."
+
+Read 2, P1 decision maker, L-B. Image alone: "a structure diagram of a 'Cubesat' satellite design,
+showing its parts and which ones are the design choices ... the design space is 2 categorical choices
+plus about 4 continuous ones." Could change: "wheel class and tracker grade, and set panel size,
+battery capacity and the controller gains within the ranges shown. Bus, antenna and IMU are fixed."
+Unclear: "SysML-like 'part def', 'abstract' ... The tiny text is hard to read. The diamond and arrow
+notation is not explained." With caption: notation decoded; "The caption calls the second regime
+'stock' and the figure says 'baseline', so I would unify those two words"; still unclear "what 'SysML
+v2' is and why it matters, the small text, and where the trade-offs appear."
+
+Five tests. (1) Both readers named the two swapped parts and all four tuned parameters from the image
+alone and read a configuration as parts chosen plus parameters tuned: H-b1 holds. (2) Sentence test:
+passes; the image adds where each variable sits in the assembly and which parts are fixed, which both
+readers took and the sentence does not give. (3) Ink: compact; the legend box is about a third of the
+frame and carries the levels and ranges. (4) 699 px native, at the column without scaling; the
+smallest text (stereotypes) is small, legible for P3, "hard to read" for P1; not redrawn (a phone is
+not the target, and the labels that carry the intent, swap/tune and the names, are larger).
+(5) Lines below. Friction, triaged: the regime words. The model and the image say "baseline" and
+"aggressive"; the paper says "primary regime (aggressive controller gains)" and "stock gains (the
+baseline)". Caption fix: name both as the paper does. R-11: the assembly view carries no analyst's
+reading (spike report, revision 2); text identity over three runs is WP22's check at 9fc3952, not
+rerun here (PlantUML and Java are system tools). **Disposition: keep, with the caption. Ready for
+placement.**
+
+### C-b2: the behavioural view
+
+Read 1, P1 decision maker, L-B. Image alone: "a systems-model diagram ... It links requirements
+(orange boxes) to the quantities they constrain (green boxes), grouped by subsystem, with two sources
+... feeding the quantities." Take-away: "most quantities we care about (settling time, slew time,
+energy balance, power margin, depth of discharge, eclipse reserve) have a requirement tied to them.
+Several others (control effort, pointing error, peak slew power, total mass) have none. They are
+tradable, but nothing pins them. Three requirements (slew band, power, momentum) don't map to any
+quantity. The whole thing hangs together traceably, which builds some trust." Unclear: "'traded
+metric', 'satisfy/verify' stereotypes, 'cubesatBaseline', and the odd note that SlewTimeRequirement
+repeats SlewBandRequirement ... The text is small ... I'm not sure what '7 of the 10 metrics' counts."
+With caption: "explains the 'traded metric' idea ... the seven-of-ten count"; still "'SysML v2',
+'satisfy', 'verify' and 'cubesatBaseline' mean nothing to me ... I can't check the 'seven' from the
+picture ... The text is small."
+
+Read 2, P3 modeller, L-B. Image alone: "a SysML-style diagram mapping requirements (orange boxes) to
+quantities called metrics (green boxes), grouped by subsystem, with two sources feeding the metrics."
+Named the same six with a requirement, the four without, three requirements with no metric, the
+analysis computing seven of ten. Lines: "Orange arrows: a requirement reads a metric, and the label is
+the shared quantity. Grey arrows: where metrics come from ... Dashed boxes: metrics nobody requires."
+Unclear: "'traded metric', 'CaseSpec' ... The 'same statement as SlewBandRequirement' note is cryptic.
+The legend text is small and dense. The grey and lilac arrow distinction is hard to follow." With
+caption: settles "traded metric", the seven-of-ten split, the dashed and top boxes; still unclear "How
+a requirement 'reads' a metric in the method ... Which source feeds which metric ... The cryptic 'same
+statement' note ... The legend, which is small and dense." (Process note: this reader also sent its
+answer to another agent id by message; it received no other read, so the read stands.)
+
+Five tests. (1) Both readers found the four metrics with no requirement and the subsystem grouping
+from the image alone; P3 read the orange lines as a requirement reading a metric: H-b2 holds. (2)
+Sentence test: passes; the image adds the grouping by subsystem, the requirements with no traded
+metric and where each metric comes from (the chain from model to metric the supervisor asked for),
+all taken by both readers. (3) Ink: dense but data; the dashed top box and the legend take about a
+quarter. (4) 700 px native; the box text and legend are small (all readers) but read correctly; not
+redrawn here. (5) Lines below. Friction, triaged: the "same statement as SlewBandRequirement" note
+(three readers across C) and the SysML stereotypes are in the model's projection (WP22's files, not
+this package's): a finding for the model stream, not a caption. **Disposition: keep, with the caption.
+Ready for placement**, with the finding passed to WP22 (drop or explain the same-statement note; the
+stereotype lines «satisfy»/«verify» could go from the paper's version).
+
+---
+
+## Ready for placement (for the paper stream; R-14: the PM routes them; nothing here edits the notebook)
+
+Common to all three: they are static images, so they enter as figure directives on the image file,
+not as `fig-` code cells (the cell test admits only `case.` calls). The paper stream also owns: the
+float counts in `tests/test_paper.py` (`len(floats) == 8` in the reference test and `>= 8` in the
+remove-cell test become 11 if all three are placed), the length-ledger rows for each caption and its
+three lines, a `{numref}` from the text to each, and the vocabulary check on the captions.
+
+### P-1. The n-lemma on the simplex (S-a5), in Section 4 after Definition 5 (`def-nlemma`)
+
+Image `paper/figures/fig-nlemma.png` at 009e96e, generated by `paper/figures/nlemma.py`
+(`uv run python scripts/build_figures.py` regenerates it byte-identically).
+
+    :::{figure} figures/fig-nlemma.png
+    :label: fig-nlemma
+    The n-lemma on the simplex, for three metrics (a synthetic table with three planted facets). A facet is one piece of the fitted surface; its exponent vector is a point of the triangle, drawn beside the planted one (open ring). The face that holds the point names the facet's n-lemma: a corner, one metric binds alone; an edge, a dilemma of the two metrics at its ends; the interior, a trilemma. The n-lemma printed is the support of the exact-maximum fit, not read off the marker. With more than three metrics a triangle is one face of a larger simplex, and the weight the three carry is printed (here all of it).
+    :::
+
+Three lines. Shows: each facet's exponent vector as a point of the simplex, in the face that names
+its n-lemma, beside the planted vector the fit recovers. Does not show: designs, their levels or the
+surface; with more than three metrics, anything beyond the three drawn. Good for: reading by eye how
+many and which metrics contend on a facet before the case's association maps.
+
+### P-2. The assembly view (S-b1), in Section 8 after its first paragraph
+
+Image `docs/superpowers/notes/spike-sysml-diagrams/out/r1/assembly_view.png` at 9fc3952 (WP22d is
+moving it to the model's documentation folder; the paper takes it from there, see question Q-1).
+
+    :::{figure} figures/fig-assembly-view.png
+    :label: fig-assembly
+    The assembly view of the cubesat model: its parts and how they assemble (filled diamond: part of; open arrow: an alternative of an abstract part). A configuration swaps a part for one of its alternatives (swap: the wheel class, the tracker grade) and tunes a parameter of a part within a range (tune: panel span, battery capacity and the controller gains Kp and Kd, whose ranges differ between the baseline regime, stock gains, and the primary regime, aggressive gains). Every name and range is read from the SysML v2 model.
+    :::
+
+Three lines. Shows: every part of the cubesat and how it assembles, the two kinds of configuration
+variable and their levels and ranges, read from the model. Does not show: the physics, the
+attributes and metrics a configuration is evaluated into, or which configurations were sampled or are
+feasible. Good for: mapping the case's design variables onto one's own system model.
+
+### P-3. The behavioural view (S-b2), in Section 8 after the regimes paragraph
+
+Image `.../out/r1/behavioural_view.png` at 9fc3952 (same note as P-2).
+
+    :::{figure} figures/fig-behavioural-view.png
+    :label: fig-behavioural
+    The behavioural view of the cubesat model: its requirements by functional subsystem (controls, power and energy, mass), an orange line from each to the traded metric it reads (the ten metrics are what the trade study trades), and grey lines from what supplies each metric: the analysis computes seven from the configuration, the measured slew supplies the controls metrics. Dashed: a metric traded with no requirement on it (control effort, pointing error, peak slew power, total mass); top: requirements that read no traded metric. Names are read from the SysML v2 model; the placement of a requirement in a subsystem is the analyst's reading.
+    :::
+
+Three lines. Shows: which traded metrics a requirement reads, grouped by functional subsystem, which
+are traded with no requirement on them, and what supplies each. Does not show: requirement
+thresholds or which designs pass them, the conditioning or the fit; the subsystem of a requirement is
+the analyst's reading. Good for: tracing each traded metric back to the model's requirements and
+seeing which trades no requirement constrains.
