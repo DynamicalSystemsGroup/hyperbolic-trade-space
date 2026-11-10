@@ -621,8 +621,8 @@ AXIOMS = {
         role="gives unique maximizing facets and an assignment-stable neighborhood (radius "
         "gamma / (2 max_i ||(u_i, -1)||_2)) on which the multi-facet objective equals its "
         "fixed-assignment expression, so Proposition 3 applies: a fit whose facets are exactly "
-        "optimal is a local minimizer, and with gap-bounded facets Corollary 4 bounds the "
-        "remaining improvement",
+        "optimal is a local minimizer, and with gap-bounded facets the approximate-certificate "
+        "corollary bounds the remaining improvement",
         failure_mode="ridge rows: a frontier row on two facet planes has margin zero at tau = "
         "infinity, and duplicate facets give identical scores; the neighborhood is then empty, "
         "Proposition 3 does not apply, and termination reports stationary_without_margin: the "

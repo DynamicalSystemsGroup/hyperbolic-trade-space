@@ -1,4 +1,5 @@
-"""L14 (Proposition 3 and Corollary 4) - assignment-stable local optimality, step B.
+"""L14 (Proposition 3 and the approximate-certificate corollary) - assignment-stable local
+optimality, step B.
 
 Setting.  K facets with exponents w_k on the simplex, cells C_1..C_K a partition of the N rows,
 n_k = |C_k|, reaches beta_k = J_tau(U w_k), mean slack
@@ -24,10 +25,10 @@ What this proves (symbolic d, n_k, K; plain SymPy):
      optima, so f_k(w'_k) - f_k(w_k) >= 0); beta_k = J_tau(U w_k) (step B, unpenalized).  Then
      F(W') - F(W) = sum_k share_k (f_k(w'_k) - f_k(w_k)) is a sum of nonnegative terms: a local
      minimizer on the neighborhood.
-  5. Corollary 4.  F(W) - F*_fixed = sum_k share_k (f_k(w_k) - f_k*) (the fixed-assignment
-     objective is separable, so its minimum is the sum of the facet minima), and L12 gives
-     f_k(w_k) - f_k* <= G_k termwise, so F(W) - F*_fixed <= sum_k share_k G_k: a sum of
-     nonnegative terms share_k (G_k - (f_k - f_k*)).
+  5. The approximate-certificate corollary.  F(W) - F*_fixed = sum_k share_k (f_k(w_k) - f_k*)
+     (the fixed-assignment objective is separable, so its minimum is the sum of the facet
+     minima), and L12 gives f_k(w_k) - f_k* <= G_k termwise, so
+     F(W) - F*_fixed <= sum_k share_k G_k: a sum of nonnegative terms share_k (G_k - (f_k - f_k*)).
 
 What this does NOT prove: global optimality or global convergence of the multi-facet problem; any
 statement for the tangent refit (step D), the sparsity penalty or a freely varying beta_k, where
@@ -44,7 +45,10 @@ from derivation.licence import hypothesis_base
 from derivation.results import ProvedResult
 from derivation.sumtools import fuse, linear, push_in, sum_swap_equal
 
-TITLE = "assignment-stable local optimality of the multi-facet fit (Proposition 3, Corollary 4)"
+TITLE = (
+    "assignment-stable local optimality of the multi-facet fit "
+    "(Proposition 3, approximate-certificate corollary)"
+)
 STATEMENT = (
     "Level 3 is for step B, unpenalized, with reaches beta_k = J_tau(U w_k) only. "
     "Per facet, sum_{i in C_k} (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) = n_k f_k(w_k), "
@@ -53,8 +57,8 @@ STATEMENT = (
     "(R2), every facet is nonempty and every w_k minimizes f_k, then on the assignment-stable "
     "neighborhood of the fitted reference surface (finite tau, Phi = 0, V > 1 possible; or the "
     "tau = inf supporting envelope) F(W') - F(W) = sum_k (n_k/N) (f_k(w'_k) - f_k(w_k)) >= 0, a "
-    "local minimizer. Corollary 4: F(W) - F*_fixed <= sum_k (n_k/N) G_k with G_k the facet gaps "
-    "of L12 (nonnegative sums)"
+    "local minimizer. The approximate-certificate corollary: F(W) - F*_fixed <= "
+    "sum_k (n_k/N) G_k with G_k the facet gaps of L12 (nonnegative sums)"
 )
 AXIOMS_USED = ["A8", "R2"]
 L14_RESULT = ProvedResult("L14", STATEMENT)  # taken by L15
@@ -63,7 +67,7 @@ L14_RESULT = ProvedResult("L14", STATEMENT)  # taken by L15
 EXACT_FACET_OPTIMUM = hypothesis_base("dfk", "nonnegative", "every w_k minimizes f_k")
 PROOF_RESULTS = (
     ("Proposition 3", (1, 2, 3, 4, 5, 6, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18)),
-    ("Corollary 4", (8, 10, 19, 20)),
+    ("Approximate-certificate corollary", (8, 10, 19, 20)),
 )
 
 
@@ -146,7 +150,8 @@ def derive(ctx):
     )
     local_min_nonneg = sp.Sum(share(k) * dfk[k], (k, 1, K)).is_nonnegative
 
-    # 5. Corollary 4: F - F* = sum share (f - f*), bound by sum share G termwise
+    # 5. The approximate-certificate corollary: F - F* = sum share (f - f*), bounded termwise
+    # by sum share G
     fk = sp.IndexedBase("fk")
     fstar = sp.IndexedBase("fstar")
     # [L14.8] by L12: G_k - (f_k - f_k*) >= 0, so G_k = (f_k - f_k*) + slackG_k with slackG_k >= 0

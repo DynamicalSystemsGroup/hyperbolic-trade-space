@@ -1982,7 +1982,7 @@ note = "tangent step, penalty, single facet and soft fit at tau=inf all asserted
 
 [[claim]]
 id = "C152"
-fragment = "The record also holds the maximal gap, the Corollary bound, the margin, the stable radius and the shares."
+fragment = "The record also holds the largest facet gap, the Corollary bound, the margin, the stable radius and the shares."
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"

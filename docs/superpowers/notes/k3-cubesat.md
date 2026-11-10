@@ -13,7 +13,7 @@ within the tolerance 0.01 with no warning.
 
 Each fit's stopping record (`termination_`) supplies the last five columns of the summary tables:
 the largest facet first-order gap G_k, the status, the assignment margin gamma, the stable radius
-and the Corollary 4 bound on the objective's distance to the fixed-assignment optimum. Status
+and the approximate-certificate bound (L14) on the objective's distance to the fixed-assignment optimum. Status
 "certified" means the assignment is fixed, the feasibility residuals are within tolerance, the gap
 is at most 1e-8 and gamma is positive. At K = 1 the solver takes the single-facet shortcut: status
 "not applicable", no margin or radius, and the gap is a diagnostic of the one facet's fit

@@ -27,13 +27,6 @@ reason = "SYNONYM of fitted reference surface: replace with the glossary term (W
 [[violation]]
 kind = "avoid"
 file = "paper/supporting_material.ipynb"
-phrase = "maximal gap"
-owner = "WP10 paper stream"
-reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "paper/supporting_material.ipynb"
 phrase = "working temperature"
 owner = "WP10 paper stream"
 reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
@@ -303,13 +296,6 @@ file = "paper/supporting_material.ipynb"
 phrase = "max gap"
 owner = "WP10 paper stream"
 reason = "BASELINE: column header of the generated termination table (record field max_gap) (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "maximal gap"
-owner = "WP10 paper stream"
-reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"

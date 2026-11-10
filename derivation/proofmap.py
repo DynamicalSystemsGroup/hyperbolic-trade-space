@@ -11,8 +11,9 @@ file; each proof step is one line of it, carrying a tag comment::
 
 * The address of a step is its file and its tag (``lemma_02_shift.py`` and ``L2.1``). Tags are
   ``L<n>.<k>`` with ``n`` the lemma's number, ``k`` = 1, 2, ... without gaps, in the order the
-  steps appear in the file. A file may hold two results (L14: Proposition 3 and Corollary 4); it
-  declares ``PROOF_RESULTS = (("Proposition 3", (1, 2, 3)), ...)``, step numbers that partition the
+  steps appear in the file. A file may hold two results (L14: Proposition 3 and the
+  approximate-certificate corollary); it declares
+  ``PROOF_RESULTS = (("Proposition 3", (1, 2, 3)), ...)``, step numbers that partition the
   file's steps, and each step is owned by one result.
 * A step is of one of two kinds, found from its line, never declared apart from it:
   *by a declared axiom* (the line applies a ledger entry that the file imports by name from

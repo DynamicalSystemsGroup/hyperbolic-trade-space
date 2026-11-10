@@ -516,7 +516,7 @@ def assignment_margin(U, W, beta):
 
 
 def fixed_assignment_bound(U, W, labels, tau, min_exponent=0.0, P=None):
-    """Fixed-assignment objective ``F`` and the Corollary 4 bound ``sum_k |C_k|/N G_k``.
+    """Fixed-assignment objective ``F`` and the approximate-certificate bound ``sum_k |C_k|/N G_k``.
 
     Parameters
     ----------
@@ -666,8 +666,8 @@ class Termination:
     max_gap : float
         ``max_k G_k`` over the nonempty facets.
     bound : float
-        Corollary 4: ``sum_k |C_k|/N G_k``, a bound on ``F(W) - F*_fixed`` for the assignment of
-        this run (not across restarts).
+        The approximate-certificate corollary (L14): ``sum_k |C_k|/N G_k``, a bound on
+        ``F(W) - F*_fixed`` for the assignment of this run (not across restarts).
     objective_change : float
         Absolute change of the objective at the last accepted step (``nan`` with none).
     assignment_changes : int

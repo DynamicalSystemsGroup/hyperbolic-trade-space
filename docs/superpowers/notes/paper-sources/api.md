@@ -96,7 +96,7 @@ Corollary 4, L14). Its fields:
   violation of the `min_exponent` floor, and $\max_k|\beta_k-J_\tau(Uw_k)|$.
 - `max_gap`, `gaps`, `shares`: the largest facet gap $G_k$ (the LP duality gap at $\tau=\infty$),
   the gap of every facet (`nan` for an empty one) and the row share $n_k/N$ of every facet.
-- `bound`: the Corollary 4 bound $\sum_k\frac{n_k}{N}G_k$ on $F(W)-F^*_{\rm fixed}$, for the
+- `bound`: the approximate-certificate bound (L14) $\sum_k\frac{n_k}{N}G_k$ on $F(W)-F^*_{\rm fixed}$, for the
   assignment of this run.
 - `objective_change`, `assignment_changes`, `n_empty`: the change of the mean slack at the last
   accepted step, the rows whose argmax differs from the returned label, and the empty facets.

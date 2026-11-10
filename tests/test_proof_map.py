@@ -129,12 +129,18 @@ def test_ledger_fingerprints_are_stable_text_hashes():
 
 
 def test_a_result_sharing_a_file_owns_its_own_steps():
-    """L14 proves Proposition 3 and Corollary 4 in one file: one tag sequence, two owners."""
+    """L14 proves Proposition 3 and the approximate-certificate corollary in one file: one tag
+    sequence, two owners."""
     lemma = _record()["lemmas"]["lemma_14_assignment_stable.py"]
     owners = {s["tag"]: s["result"] for s in lemma["steps"]}
-    assert set(owners.values()) == {"Proposition 3", "Corollary 4"}
+    assert set(owners.values()) == {"Proposition 3", "Approximate-certificate corollary"}
     assert len({s["tag"] for s in lemma["steps"]}) == len(lemma["steps"])
-    assert owners["L14.19"] == owners["L14.20"] == owners["L14.10"] == "Corollary 4"
+    assert (
+        owners["L14.19"]
+        == owners["L14.20"]
+        == owners["L14.10"]
+        == "Approximate-certificate corollary"
+    )
     assert owners["L14.11"] == "Proposition 3"
 
 

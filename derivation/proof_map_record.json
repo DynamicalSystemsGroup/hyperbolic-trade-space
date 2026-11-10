@@ -3233,7 +3233,7 @@
      ]
     },
     {
-     "name": "Corollary 4",
+     "name": "Approximate-certificate corollary",
      "steps": [
       8,
       10,
@@ -3335,7 +3335,7 @@
      "prose": "by L12: G_k - (f_k - f_k*) >= 0, so G_k = (f_k - f_k*) + slackG_k with slackG_k >= 0",
      "code": "slackG = L12_RESULT.family(ctx, 'chain_nonneg', 'slackG')",
      "fingerprint": "e0c356394e4c63a035af21d3a575e6bcb922b68fb50438ae46b987628646659b",
-     "result": "Corollary 4"
+     "result": "Approximate-certificate corollary"
     },
     {
      "tag": "L14.9",
@@ -3359,7 +3359,7 @@
      "prose": "by L12 (Lemma 1): 0 <= f_k(w_k) - f_k* <= G_k for every facet",
      "code": "assert L12_RESULT.holds(ctx, 'chain_nonneg') and L12_RESULT.holds(ctx, 'lower_nonneg'), 'L14 FAIL: Lemma 1 (0 <= f - f* <= G) not established'",
      "fingerprint": "1fb1cd1aaa28036b541727ad9d93d09064195f9ff656d08220d3f59aefbf93fa",
-     "result": "Corollary 4"
+     "result": "Approximate-certificate corollary"
     },
     {
      "tag": "L14.11",
@@ -3449,7 +3449,7 @@
      "prose": "sum share G - sum share (f - f*) = sum share (G - (f - f*))",
      "code": "assert sp.simplify(r['cor_slack']) == 0, 'L14 FAIL: sum share G - sum share (f - f*) != sum share (G - (f - f*))'",
      "fingerprint": "be0f409ade9f082d95cf532b58030b2cb255af0e7e6c7453580363158c82eb5b",
-     "result": "Corollary 4"
+     "result": "Approximate-certificate corollary"
     },
     {
      "tag": "L14.20",
@@ -3459,7 +3459,7 @@
      "prose": "each term share_k (G_k - (f_k - f_k*)) is >= 0 (L12): F(W) - F*_fixed <= sum share G",
      "code": "assert r['cor_nonneg'] is True, 'L14 FAIL: sum_k share_k (G_k - (f_k - f_k*)) not nonnegative'",
      "fingerprint": "13c9df737b831dcde9335890d981a03e2c643af78b04ba09aea7d65d205c8666",
-     "result": "Corollary 4"
+     "result": "Approximate-certificate corollary"
     }
    ]
   },
