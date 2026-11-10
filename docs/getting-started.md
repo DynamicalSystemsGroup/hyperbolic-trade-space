@@ -36,8 +36,8 @@ print(report.exponents.round(2))
 The output is `trilemma [0 1 2]` and then `[0.3  0.37 0.33]`.
 
 The idea is easiest to see with two of the metrics, where the model is a line. In the log plane of
-metrics 0 and 1 the designs lie on or just beyond a straight frontier, and the grey band marks those
-within 0.5 of it in log V:
+metrics 0 and 1 the designs lie on or just beyond a straight frontier, and the grey strip under the line
+is the region up to 0.5 below the frontier in log V:
 
 ```python {.runnable}
 from hyperbolic_trade_space.plotting import plot_log_plane
@@ -59,7 +59,7 @@ plot_log_plane(ts2, X2, band=0.5)
 contend at the edge of the table: here all three, an n-lemma with n = 3, which the report names a
 trilemma. The set is found from the data and not chosen in advance. `report.exponents` are the
 fitted weights at the fit temperature; their ratios are the elasticities between the contending
-metrics (`report.elasticities`).
+metrics, with a minus sign (`report.elasticities`).
 
 The fitted object has more to give. `ts.score_samples(X)` is the log of V for each design, the energy
 differential to the fitted reference surface: negative inside, positive beyond. `ts.transform(X)`
