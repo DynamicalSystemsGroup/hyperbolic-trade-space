@@ -183,7 +183,7 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
-- **PM handovers.** The third PM handed over at 01e2d64 (PM-BRIEF.md, "third PM to fourth") after two batches; the fourth PM started from the files at 21:35 on WP23 and the remaining WP19, paper and package units.
+- **PM handovers.** The fourth PM handed over at c622c6e (after the data gate) and the fifth started at 02:30 on the paper's move onto the data of record. The third PM handed over at 01e2d64 (PM-BRIEF.md, "third PM to fourth") after two batches; the fourth PM started from the files at 21:35 on WP23 and the remaining WP19, paper and package units.
 
 - **Glossary wording (the supervisor's vocabulary).** Wording-only fixes approved where three entries use
   synonyms of their own terms (`facet`, `support-weights`: "fitted surface" becomes the entry's own term;
@@ -327,6 +327,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-10 | commit 9130208, CI run on ubuntu, three shards (the three guard fixes, WP25's deletions, P-11, the Appendix B position) | fast, slow and docs-paper all green | a verdict: both platforms green at the head before the gate unit; the coverage table, the register, the Figure 2 rename and the limitations page all pass on Linux |
 | 2026-11-10 | commit a27191e, tier 2 watcher, this Mac (WP23 D-7 case prose) | 2166 passed, 16 skipped, 1 xfailed; all checks | a verdict: green; the gate unit (regeneration with the reach rule) is the next head to verify on both platforms |
 | 2026-11-10 | commit 8507bd9, CI run on ubuntu, three shards (the WP23 gate unit: swap, contract 12, reach rule, regeneration of record) | fast, slow and docs-paper all green | a verdict: the gate head is green on Linux; the Mac watcher's run on it is next; the swap call waits on D-9 |
+| 2026-11-10 | commit 241c63d, tier 2 watcher, this Mac (contains the WP23 gate unit 8507bd9 and the heatmap redraw 2) | 2166 passed, 16 skipped, 1 xfailed; all checks; lock; lemmas; proof map; 0 drifts; attribution 0 | a verdict: the gate head is green on both platforms; the WP23 swap is final (WP23-decisions.md) |
 
 ## Overruled or corrected (kept so the pattern is visible)
 

@@ -137,3 +137,7 @@ generators `num-k-sweep`, `fig-tensions-k3` and Appendix D.3 are adapted to per-
 "one term blends the subsystems' trade-offs into a single tension; three terms separate the contending sets" is
 read from the exponents and stands with sharper content: one term in the primary regime no longer sees the control
 trade-off at all (control effort 1e-17); three terms find it in a term of its own. For the supervisor's review.
+
+**The swap is final (2026-11-10, 02:45).** The Mac tier 2 watcher is green on 241c63d (2166 passed, all checks),
+a head that contains the gate unit 8507bd9; Linux was green on 8507bd9 in three shards. The WP23 model is the model
+of record, the nine-metric datasets the data of record; the paper moves onto them (the fifth PM's first unit).
