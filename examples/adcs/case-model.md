@@ -360,8 +360,8 @@ documentation section it rests on, whether this example uses it, why, and the pr
 statement. Probe numbers are those of `experiments/probes/probe-record.md`; `experiments/probes.py`
 re-runs them against the live runtime, and `tests/test_model_checking_v2.py::test_probe_still_holds`
 fails by probe name when a recorded result no longer holds. Documentation sections are those of the
-runtime's Python client (`docs/clients/python/verification.md`, and the client README, "The
-service") and of the toolkit (README and `CLI.md`).
+runtime's Python client (the runtime's own `docs/clients/python/verification.md`, not a path in
+this repository, and the client README, "The service") and of the toolkit (README and `CLI.md`).
 
 <!-- toolkit:begin -->
 | capability | documentation section | used | why | probe |
