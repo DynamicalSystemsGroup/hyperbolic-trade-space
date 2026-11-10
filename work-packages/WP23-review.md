@@ -157,3 +157,16 @@ frozen data untouched until the gate):
   engine `run`, observed), toolkit `check` exit 0, `lint` 0 errors 0 warnings, `verify --solve` exit 0
   with 0 violated. `tests/test_system_model_v2.py` and `tests/test_model_checking_v2.py` are
   parametrized over the two models.
+- The two views of r2 (D-5, D-6): `work-packages/WP23-rounds/round-1/` (`assembly_view`,
+  `behavioural_view`, `.puml`, `.svg`, `.png`; the intent of each in `INTENT.md`), by the views
+  generator revised (revision 3): the metric list is the CaseSpec's filtered to the metrics the model
+  carries (r2 has no slew time), each metric's box carries its MoE or MoP mark, and a calc the model
+  marks MoE that is not itself traded (the launch cost) is drawn between the requirement that reads
+  it and the metric it reads. A strong line now means the requirement invokes the metric's own calc
+  (or the calc of its attribute), not a calc the metric's calc invokes: on r2 the old rule would have
+  drawn `PeakSlewPowerRequirement` to the power margin because `PowerMargin` calls `PeakSlewPower`.
+  On the adopted model the generator's output is byte for byte the committed views, so the pinned
+  views test stands. Read from the image: the behavioural view has no dashed "no requirement" box
+  (R-2), every label is legible at 700 px and nothing overlaps; the assembly view is the adopted
+  model's (the configuration space is unchanged). The views stay out of `examples/adcs/model_v2/views/`
+  until the gate.

@@ -1,0 +1,104 @@
+@startuml
+left to right direction
+skinparam linetype polyline
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 12
+skinparam ClassBackgroundColor white
+skinparam ClassBorderColor #404040
+skinparam ClassAttributeIconSize 0
+skinparam ArrowColor #404040
+skinparam RectangleBackgroundColor white
+skinparam RectangleBorderColor #404040
+skinparam PackageBackgroundColor #F7F7F7
+skinparam PackageBorderColor #909090
+skinparam LegendBackgroundColor white
+skinparam LegendBorderColor #909090
+skinparam nodesep 8
+skinparam ranksep 36
+hide circle
+hide empty members
+
+scale 700 width
+
+package "controls" {
+  rectangle "**SettledRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> SlewVerification" as xSettledrequirement #FDEBD0
+  rectangle "**ControlEffortRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> SlewVerification" as xControleffortrequirement #FDEBD0
+  rectangle "**PointingErrorRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> ConfigurationVerification" as xPointingerrorrequirement #FDEBD0
+  rectangle "settling time\n<<MoP>>" as xSettlingTime #E3F1E3
+  rectangle "control effort\n<<MoP>>" as xControlEffort #E3F1E3
+  rectangle "pointing error\n<<MoE>>" as xPointingError #E3F1E3
+}
+xSettledrequirement -[hidden]right-> xControleffortrequirement
+xControleffortrequirement -[hidden]right-> xPointingerrorrequirement
+xSettlingTime -[hidden]right-> xControlEffort
+xControlEffort -[hidden]right-> xPointingError
+xSettledrequirement -[hidden]-> xSettlingTime
+package "power and energy" {
+  rectangle "**PowerMarginRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> SlewVerification" as xPowermarginrequirement #FDEBD0
+  rectangle "**EnergyBalanceRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> SlewVerification" as xEnergybalancerequirement #FDEBD0
+  rectangle "**EclipseReserveRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> SlewVerification" as xEclipsereserverequirement #FDEBD0
+  rectangle "**PeakSlewPowerRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> SlewVerification" as xPeakslewpowerrequirement #FDEBD0
+  rectangle "**DepthOfDischargeRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> SlewVerification" as xDepthofdischargerequirement #FDEBD0
+  rectangle "power margin\n<<MoP>>" as xPowerMargin #E3F1E3
+  rectangle "energy balance\n<<MoP>>" as xEnergyBalance #E3F1E3
+  rectangle "eclipse reserve\n<<MoP>>" as xEclipseReserve #E3F1E3
+  rectangle "peak slew power\n<<MoP>>" as xPeakSlewPower #E3F1E3
+  rectangle "depth of discharge\n<<MoP>>" as xDepthOfDischarge #E3F1E3
+}
+xPowermarginrequirement -[hidden]right-> xEnergybalancerequirement
+xEnergybalancerequirement -[hidden]right-> xEclipsereserverequirement
+xEclipsereserverequirement -[hidden]right-> xPeakslewpowerrequirement
+xPeakslewpowerrequirement -[hidden]right-> xDepthofdischargerequirement
+xPowerMargin -[hidden]right-> xEnergyBalance
+xEnergyBalance -[hidden]right-> xEclipseReserve
+xEclipseReserve -[hidden]right-> xPeakSlewPower
+xPeakSlewPower -[hidden]right-> xDepthOfDischarge
+xPowermarginrequirement -[hidden]-> xPowerMargin
+package "mass" {
+  rectangle "**LaunchBudgetRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> ConfigurationVerification" as xLaunchbudgetrequirement #FDEBD0
+  rectangle "launch cost\n<<MoE>>\nLaunchCost" as xLaunchcost #FFF4C2
+  rectangle "total mass\n<<MoP>>" as xTotalMass #E3F1E3
+}
+xLaunchbudgetrequirement -[hidden]-> xTotalMass
+rectangle "requirements with no line to a traded metric" as xNoLine #FFFFFF;line:gray;line.dashed;text:gray {
+  rectangle "**MomentumRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> SlewVerification" as xMomentumrequirement #FDEBD0
+  rectangle "**PowerRequirement**\n<<requirement def>>\n<<satisfy>> cubesatBaseline\n<<verify>> ConfigurationVerification" as xPowerrequirement #FDEBD0
+  xMomentumrequirement -[hidden]right-> xPowerrequirement
+}
+xNoLine -[hidden]right-> xTotalMass
+
+rectangle "**SlewExperiment**\n<<analysis def>>\ncomputes 7 of the 9\nmetrics from the\nconfiguration and the\nmeasured inputs\n\n\n\n\n\n\n\n\n\n\n\n\n\n" as xAnalysis #E1D8F0
+rectangle "**SlewMeasurement**\nmeasured slew:\nsimulation here;\nfield data when\nfielded" as xMeasure #E4E4E4
+xMeasure -[hidden]right-> xAnalysis
+
+xControleffortrequirement -[#B5541C,thickness=2]-> xControlEffort : controlEffort
+xDepthofdischargerequirement -[#B5541C,thickness=2]-> xDepthOfDischarge : DepthOfDischarge
+xEclipsereserverequirement -[#B5541C,thickness=2]-> xEclipseReserve : EclipseReserve
+xEnergybalancerequirement -[#B5541C,thickness=2]-> xEnergyBalance : EnergyBalance
+xLaunchbudgetrequirement -[#B5541C,thickness=2]-> xLaunchcost : LaunchCost
+xLaunchcost -[#B5541C,thickness=2]-> xTotalMass : totalMass
+xPeakslewpowerrequirement -[#B5541C,thickness=2]-> xPeakSlewPower : PeakSlewPower
+xPointingerrorrequirement -[#B5541C,thickness=2]-> xPointingError : PointingError
+xPowermarginrequirement -[#B5541C,thickness=2]-> xPowerMargin : PowerMargin
+xSettledrequirement -[#B5541C,thickness=2]-> xSettlingTime : settlingTime
+xSettlingTime <-[#6B6B6B]- xMeasure
+xPointingError <-[#6B6B6B]- xAnalysis
+xTotalMass <-[#6B6B6B]- xAnalysis
+xControlEffort <-[#6B6B6B]- xMeasure
+xPowerMargin <-[#6B6B6B]- xAnalysis
+xEnergyBalance <-[#6B6B6B]- xAnalysis
+xEclipseReserve <-[#6B6B6B]- xAnalysis
+xPeakSlewPower <-[#6B6B6B]- xAnalysis
+xDepthOfDischarge <-[#6B6B6B]- xAnalysis
+
+legend bottom
+  **Requirement - metric** (orange line, requirement to metric; the shared quantity on the line)
+  every line: the requirement and the metric read the same calc or measured quantity
+  <<MoE>> / <<MoP>>: the model's mark on each traded metric, a measure of effectiveness (a stakeholder's) or of performance (the engineer's scenario)
+  yellow: an MoE the model computes from a traded metric; the requirement reads the MoE and the MoE reads the metric (two lines)
+  green: a requirement reads the metric (every traded metric has one)
+  **Source** (grey line): from the analysis def (lilac) or from the measurement of the slew (grey)
+  Requirement placement in a subsystem is the analyst's reading (CaseSpec groups metrics)
+end legend
+@enduml

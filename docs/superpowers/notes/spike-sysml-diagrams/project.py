@@ -10,8 +10,13 @@ Typed here: layout parameters, colours, and the analyst's subsystem for a requir
     uv run python project.py MODEL.sysml OUTDIR [--package NAME]
 
 writes OUTDIR/assembly_view.puml (what a configuration is and how the parts assemble) and
-OUTDIR/behavioural_view.puml (subsystems, requirements, the ten traded metrics, how the metrics are
-obtained). Revision 2 (2026-11-09): the first slot-2 candidate is withdrawn.
+OUTDIR/behavioural_view.puml (subsystems, requirements, the traded metrics, how the metrics are
+obtained). Revision 2 (2026-11-09): the first slot-2 candidate is withdrawn. Revision 3 (WP23 round
+1): the metric list is the CaseSpec's filtered to the metrics the model carries (the revision
+``cubesat_r2.sysml`` has no slew time); a metric's MoE or MoP mark (the first word of the ``doc`` on
+its element) is written in its box; a calc the model marks MoE that is not itself traded (the launch
+cost on the total mass) is drawn as a box between the requirement that reads it and the metric it
+reads. On a model without marks (the adopted ``cubesat.sysml``) the output is unchanged.
 """
 
 from __future__ import annotations
@@ -87,8 +92,28 @@ def camel(metric: str, upper: bool) -> str:
     return head + "".join(w.title() for w in words[1:])
 
 
+def plain_name(ident: str) -> str:
+    """``LaunchCost`` -> ``launch cost`` (the inverse of ``camel``)."""
+    return re.sub(r"(?<!^)(?=[A-Z])", " ", ident).lower()
+
+
 REQ_COLOUR = "#FDEBD0"
 COVERED_COLOUR = "#E3F1E3"  # a metric some requirement reads
+MOE_COLOUR = "#FFF4C2"  # an MoE the model computes from a traded metric, read by a requirement
+MARKS = ("MoE", "MoP")
+
+
+def mark_of(byid, element_id: str) -> str | None:
+    """``MoE`` or ``MoP`` when the element's own doc begins with it (the model's mark)."""
+    word = (
+        doc_text(byid, element_id)
+        .removeprefix("doc ")
+        .split(":")[0]
+        .strip()
+    )
+    return word if word in MARKS else None
+
+
 ANALYSIS_COLOUR = (
     "#E1D8F0"  # the analysis def: its own colour, shared with no metric
 )
@@ -511,26 +536,70 @@ def behavioural(m, byid, P):
     }
 
     # --- where each metric comes from: the element of the model that carries the metric's name ------
-    origin, mcalc, METRIC_ELEMENT = {}, {}, {}
-    for name, _ in metrics:
+    # a CaseSpec metric the model has no element for is not traded by this model (the revision of
+    # WP23 has no slew time) and leaves the list
+    origin, mcalc, METRIC_ELEMENT, mark, element_of = {}, {}, {}, {}, {}
+    for name, _ in list(metrics):
         calc_id, attr_id = pre + camel(name, True), camel(name, False)
         if calc_id in rd.calcs and calc_id in a_inv:
             kind, ident = "calc", camel(name, True)
             origin[name], mcalc[name] = "analysis", calc_id
+            element_of[name] = calc_id
         elif attr_id in rd.cub_attrs and attr_id in a_chain:
             kind, ident = "attr", attr_id
             origin[name], mcalc[name] = "analysis", None
+            element_of[name] = rd.cub_attrs[attr_id]
         elif attr_id in meas_attrs:
             kind, ident = "measured", attr_id
             origin[name], mcalc[name] = "measurement", None
+            element_of[name] = pre + "SlewMeasurement__" + attr_id
         elif attr_id in a_refs:
             kind, ident = "input", attr_id
             origin[name], mcalc[name] = "measurement", None
+            element_of[name] = pre + "SlewMeasurement__" + attr_id
         else:
-            raise AssertionError(
-                f"the model has no element named {calc_id} / {attr_id} for the metric {name!r}"
-            )
+            metrics = [m for m in metrics if m[0] != name]
+            continue
         METRIC_ELEMENT[name] = (kind, ident)
+        mark[name] = (
+            mark_of(byid, element_of[name])
+            if element_of[name] in byid
+            else None
+        )
+    assert metrics, "the model carries none of the CaseSpec's metrics"
+    idx = {n: k for k, (n, _) in enumerate(metrics)}
+    # calcs the model marks MoE that are not traded themselves: an MoE computed from a traded metric
+    # (the launch cost from the total mass), drawn between the requirement that reads it and the
+    # metric it reads
+    moe_calcs = {
+        c: (
+            short(c),
+            [
+                n
+                for n, (k, ident) in METRIC_ELEMENT.items()
+                if (
+                    k == "attr"
+                    and rd.cub_attrs[ident]
+                    in {
+                        rd.cub_attrs[
+                            e.get("sysx:sourceText", "")
+                            .split(".")[-1]
+                            .strip()
+                        ]
+                        for e in rd.inside(c)
+                        if e["@type"] == "FeatureChainExpression"
+                        and e.get("sysx:sourceText", "")
+                        .split(".")[-1]
+                        .strip()
+                        in rd.cub_attrs
+                    }
+                )
+                or (k == "calc" and mcalc[n] in rd.direct(c))
+            ],
+        )
+        for c in rd.calcs
+        if mark_of(byid, c) == "MoE" and c not in set(mcalc.values())
+    }
 
     # metric -> the calcs it reads directly / transitively
     def m_direct(name):
@@ -557,7 +626,17 @@ def behavioural(m, byid, P):
             same = []
             if kind == "measured" and ident in rmeas:
                 same.append(ident)
-            same += [short(c) for c in sorted(rdir & m_direct(name))]
+            # strong: the requirement invokes the metric's own calc, or the calc that computes the
+            # metric's attribute (MassAccounting for total mass); not a calc the metric's calc
+            # invokes (PowerMargin calls PeakSlewPower, and the peak-slew-power requirement is not
+            # a bound on the power margin)
+            if kind == "calc":
+                own = {mcalc[name]}
+            elif kind == "attr":
+                own = rd.direct(rd.cub_attrs[ident])
+            else:
+                own = set()
+            same += [short(c) for c in sorted(rdir & own)]
             if same:
                 rel.append((r, name, "strong", ", ".join(same)))
                 continue
@@ -567,12 +646,18 @@ def behavioural(m, byid, P):
                 continue
             if PROSE_NAME.get(name) and PROSE_NAME[name] in rdoc:
                 rel.append((r, name, "prose", "prose"))
+        # the requirement reads an MoE calc that reads the metric: a line through the MoE box
+        for c, (cname, reads) in moe_calcs.items():
+            if c in rdir:
+                for name in reads:
+                    rel.append((r, name, "moe", cname))
 
     # a requirement is placed in a subsystem by every relation it has (rel_all), but a line is drawn only
-    # where the requirement reads the metric itself (strong). A shared upstream calc is not a bound on the
-    # metric (PowerMargin calls PeakSlewPower, and no requirement bounds the peak slew power).
+    # where the requirement reads the metric itself (strong) or the MoE computed from it (moe). A shared
+    # upstream calc is not a bound on the metric (PowerMargin calls PeakSlewPower, and no requirement
+    # bounds the peak slew power).
     rel_all = rel
-    rel = [x for x in rel_all if x[2] == "strong"]
+    rel = [x for x in rel_all if x[2] in ("strong", "moe")]
 
     def req_subsystem(r):
         votes = [dict(metrics)[n] for rr, n, _, _ in rel if rr == r]
@@ -634,7 +719,6 @@ def behavioural(m, byid, P):
         "",
     ]
     bands = list(order)
-    idx = {n: k for k, (n, _) in enumerate(metrics)}
     # layout: subsystems fed by the measurement come first, so the measurement box sits beside them and
     # the analysis box beside the rest; no source arrow then crosses another subsystem
     bands = sorted(
@@ -691,14 +775,21 @@ def behavioural(m, byid, P):
             out.append(
                 f'  rectangle "no requirement def\\nlands on this subsystem" as {nid("none" + s)} #FFFFFF;line:gray;line.dashed;text:gray'
             )
+        # an MoE box in the subsystem of the metric it reads
+        for c, (cname, reads) in moe_calcs.items():
+            if any(dict(metrics)[n] == s for n in reads):
+                out.append(
+                    f'  rectangle "{plain_name(cname)}\\n<<MoE>>\\n{cname}" as {nid(cname)} {MOE_COLOUR}'
+                )
         for n in smets:
+            label = f"{n}\\n<<{mark[n]}>>" if mark.get(n) else n
             if n in related:
                 out.append(
-                    f'  rectangle "{n}" as {nid(n)} {COVERED_COLOUR}'
+                    f'  rectangle "{label}" as {nid(n)} {COVERED_COLOUR}'
                 )
             else:
                 out.append(
-                    f'  rectangle "{n}\\n(no requirement)" as {nid(n)} #FFFFFF;line:black;line.dashed'
+                    f'  rectangle "{label}\\n(no requirement)" as {nid(n)} #FFFFFF;line:black;line.dashed'
                 )
         out.append("}")
         # order inside the subsystem: the requirements with a line above those without; metrics top to bottom
@@ -738,13 +829,29 @@ def behavioural(m, byid, P):
     )
     out.append("xMeasure -[hidden]right-> xAnalysis")
     out.append("")
+    drawn_moe = set()
     for r, n, strength, ev in rel:
         if strength == "strong":
             out.append(
                 f"{nid(short(r))} -[#{RELATION_COLOUR[1:]},thickness=2]-> {nid(n)} : {ev}"
             )
+        elif strength == "moe":
+            # requirement -> the MoE box (once per requirement and MoE) -> the metric it reads
+            if (r, ev) not in drawn_moe:
+                out.append(
+                    f"{nid(short(r))} -[#{RELATION_COLOUR[1:]},thickness=2]-> {nid(ev)} : {ev}"
+                )
+                drawn_moe.add((r, ev))
+            if (ev, n) not in drawn_moe:
+                kind, ident = METRIC_ELEMENT[n]
+                out.append(
+                    f"{nid(ev)} -[#{RELATION_COLOUR[1:]},thickness=2]-> {nid(n)} : {ident}"
+                )
+                drawn_moe.add((ev, n))
         else:
-            raise AssertionError("only strong relations are drawn")
+            raise AssertionError(
+                "only strong and moe relations are drawn"
+            )
     for name, _ in metrics:
         src = "xAnalysis" if origin[name] == "analysis" else "xMeasure"
         out.append(f"{nid(name)} <-[#{SOURCE_COLOUR[1:]}]- {src}")
@@ -756,12 +863,26 @@ def behavioural(m, byid, P):
     out.append(
         "  every line: the requirement and the metric read the same calc or measured quantity"
     )
+    if any(mark.values()):
+        out.append(
+            "  <<MoE>> / <<MoP>>: the model's mark on each traded metric, a measure of effectiveness"
+            " (a stakeholder's) or of performance (the engineer's scenario)"
+        )
+    if moe_calcs:
+        out.append(
+            "  yellow: an MoE the model computes from a traded metric; the requirement reads the MoE"
+            " and the MoE reads the metric (two lines)"
+        )
+    unrelated = [n for n, _ in metrics if n not in related]
     out.append(
         '  green: a requirement reads the metric; dashed, "no requirement": traded, no requirement reads it'
+        if unrelated
+        else "  green: a requirement reads the metric (every traded metric has one)"
     )
-    out.append(
-        "  (the model names each of those as open in its verification cases)"
-    )
+    if unrelated:
+        out.append(
+            "  (the model names each of those as open in its verification cases)"
+        )
     out.append(
         "  **Source** (grey line): from the analysis def (lilac) or from the measurement of the slew (grey)"
     )
