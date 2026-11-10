@@ -52,24 +52,24 @@ Cubesat *-- Imu
 Cubesat *-- ReactionWheel
 Cubesat *-- StarTracker
 Cubesat *-- Controller
-class "**LargeWheel**" as LargeWheel {
+class "**SmallWheel**" as SmallWheel {
 }
 class "**MediumWheel**" as MediumWheel {
 }
-class "**SmallWheel**" as SmallWheel {
+class "**LargeWheel**" as LargeWheel {
 }
 class "**CoarseTracker**" as CoarseTracker {
 }
-class "**FineTracker**" as FineTracker {
-}
 class "**MediumTracker**" as MediumTracker {
 }
-ReactionWheel <|-- LargeWheel
-ReactionWheel <|-- MediumWheel
+class "**FineTracker**" as FineTracker {
+}
 ReactionWheel <|-- SmallWheel
+ReactionWheel <|-- MediumWheel
+ReactionWheel <|-- LargeWheel
 StarTracker <|-- CoarseTracker
-StarTracker <|-- FineTracker
 StarTracker <|-- MediumTracker
+StarTracker <|-- FineTracker
 
 legend bottom
   **Configuration variables** (each marked once, in the part it belongs to)
@@ -81,7 +81,8 @@ legend bottom
   TrackerGrade: coarse | medium | fine
   panelSpan: 0.3 m .. 1 m
   batteryCapacity: 20 W*h .. 200 W*h
-  baselineGains: Kp 0.03 .. 1, Kd 0.3 .. 1.5
-  aggressiveGains: Kp 0.2 .. 2, Kd 0.3 .. 1.5
+  Gains Kp and Kd: one range per dataset (baseline, aggressive)
+  Kp: 0.03 .. 1 (baseline gains); 0.2 .. 2 (aggressive gains)
+  Kd: 0.3 .. 1.5 (both datasets)
 end legend
 @enduml

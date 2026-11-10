@@ -76,3 +76,46 @@ and runs them into the same paths: `v2-primary-r1` (output sha256 `4dc4ae0b8e...
 no change to either CSV. Nothing is superseded: the old entries stay current and cite the old model until
 the gate. The check-design pair (100000-design pool) was not re-run in round 1; it reads the primary
 dataset, which is unchanged.
+
+## Round 2 (2026-11-09)
+
+**Model change.** `SlewMeasurement.controlEffort` (integral of |tau| over the slew, N.m.s) added to
+`cubesat_r1.sysml` with the baseline's recorded measurement 0.009490621914197469 N.m.s (re-measured by a test,
+rel 1e-3); `SlewExperiment`'s `in controlEffort` now defaults to `baselineMeasurement.controlEffort`. A measurement,
+not a threshold (R-4: the numeric-literal test now allows exactly the two recorded measurements). The analysis still
+returns it unchanged, so outputs are identical.
+
+**Views (projection script).** B-1: subsystems fed by the measurement come first and the requirements with no line
+leave the frames (one separate dashed group), so the frames are short and the two analysis-fed outliers (pointing
+error, total mass) sit next to the analysis box; B-2: control effort now traces to `SlewMeasurement`; B-3: the
+analysis box is lilac, green is only covered metrics; B-4: each dashed box reads "(no requirement)"; B-5: the
+no-line requirements are one group apart; A-2: alternatives in enum order (derived from the enum literal each part
+def binds); A-1: one Kp and one Kd line, no instance names. Reviewer round 2 additions applied: the analysis box
+says "computes 7 of the 10 metrics" (it said "eight attributes", seven arrows drawn); the legend says green for
+covered; gains described as one range per dataset instead of "gain box".
+
+**Checks.** ruff on changed files clean (the spike script is outside ruff's configured scope; it was reformatted by
+`ruff format`, which makes its diff large); `tests/test_system_model_v2_r1.py` (15, incl. toolkit check/lint/verify
+--solve, equivalence on both gain boxes, three-run determinism, mutation), `test_model_checking_v2.py`,
+`test_system_model_v2.py`, `test_cubesat_model.py` (117) pass with `REQUIRE_OPENSYSML=1`. Ledger: `v2-primary-r1@2`
+and `v2-baseline-r1@2` supersede the round-1 entries (the model file changed in place, which verify would report as
+drift); output hashes `4dc4ae0b8ebe` and `9450713cd78c`, equal to `v2-primary@2` and `v2-baseline@2`; `verify`: 0
+drifts, no data file changed.
+
+### Reviewers (two fresh contexts, Sonnet, opened the PNGs; P1 decision maker at skim depth, P3 modeller at careful depth; each image alone, then with its caption; captions in the scratchpad)
+
+Both traced all ten metrics to a requirement or an explicit "(no requirement)" and a source. Round-1 blocks gone.
+
+| # | Finding | Severity | Disposition |
+|---|---|---|---|
+| R2-1 | Lines from SlewExperiment to pointing error and total mass are still long diagonals along the right edge (both reviewers) | hinders | open: shorter than round 1 and no longer round the frames; a reader can follow them. Round 3 candidate: per-frame source node |
+| R2-2 | SlewExperiment lines to depth of discharge and eclipse reserve nearly overlap at the box | hinders | open, round 3 |
+| R2-3 | Dashed group at the top reads as orphaned; PowerRequirement outside the power frame | hinders | caption carries it; wording of the frame title is a round-3 candidate |
+| R2-4 | Box said "eight attributes", seven arrows | hinders | fixed (computes 7 of the 10) |
+| R2-5 | Legend "gain box" and two Kp ranges unexplained | blocks (P3) | fixed (one range per dataset) |
+| R2-6 | The SlewTimeRequirement-equals-horizon sentence is only in the caption; no counterpart in the picture | hinders | open; add to legend in round 3 |
+| R2-7 | No bound values, no conditioning step, no link from Figure A variables to Figure B metrics | hinders | out of scope: values are WP22b; the link is the model's own trace table above |
+| R2-8 | Fixed parts untagged; FineTracker line near Controller; W*h notation | polish | A-3 still open |
+
+Result: round 2 does not end the loop. The last round must find nothing that changes a view; R2-1, R2-2 and R2-6
+would change a view. A round 3 is needed (or the supervisor's call that R2-1 is good enough).

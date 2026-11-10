@@ -13,6 +13,7 @@ writes OUTDIR/assembly_view.puml (what a configuration is and how the parts asse
 OUTDIR/behavioural_view.puml (subsystems, requirements, the ten traded metrics, how the metrics are
 obtained). Revision 2 (2026-11-09): the first slot-2 candidate is withdrawn.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -28,10 +29,12 @@ warnings.simplefilter("ignore")
 REPO = pathlib.Path(__file__).resolve().parents[4]
 
 # ---- layout parameters (PlantUML / Graphviz controls; no model content) ------------------------
-COLUMN_WIDTH = 700                      # px, the paper's column; PlantUML `scale N width`
+COLUMN_WIDTH = 700  # px, the paper's column; PlantUML `scale N width`
 ASSEMBLY_DIRECTION = "top to bottom direction"
 BEHAVIOUR_DIRECTION = "left to right direction"
-ASSEMBLY_LINETYPE = "polyline"             # skinparam linetype: ortho | polyline (default splines)
+ASSEMBLY_LINETYPE = (
+    "polyline"  # skinparam linetype: ortho | polyline (default splines)
+)
 BEHAVIOUR_LINETYPE = "polyline"
 SKIN = """skinparam shadowing false
 skinparam defaultFontName SansSerif
@@ -52,17 +55,25 @@ hide circle
 hide empty members
 """
 # the two kinds of configuration variable: one tag style, one colour each, used nowhere else
-TAG_CATEGORICAL = ("swap", "#F6C98B")   # a part is replaced by one of its alternatives
-TAG_CONTINUOUS = ("tune", "#9CC8EE")    # a parameter of a part takes a value in a range
+TAG_CATEGORICAL = (
+    "swap",
+    "#F6C98B",
+)  # a part is replaced by one of its alternatives
+TAG_CONTINUOUS = (
+    "tune",
+    "#9CC8EE",
+)  # a parameter of a part takes a value in a range
 
 # ---- behavioural view: the model's element for a traded metric is found by the metric's own name ----
 # kind: calc = a calc def the analysis returns; attr = a Cubesat attribute the analysis returns;
 #       input = an analysis `in` parameter returned unchanged; measured = a SlewMeasurement quantity.
 # the analyst's reading, used only where the model leaves a requirement with no related metric:
 # the subsystem the requirement lands on (CaseSpec groups metrics, not requirements)
-ANALYST_SUBSYSTEM = {"MomentumRequirement": "controls"}
 # name used in the model's prose for a measured quantity, to find documentary relations
-PROSE_NAME = {"slew time": "slew time", "settling time": "settling time"}
+PROSE_NAME = {
+    "slew time": "slew time",
+    "settling time": "settling time",
+}
 
 
 def camel(metric: str, upper: bool) -> str:
@@ -70,7 +81,14 @@ def camel(metric: str, upper: bool) -> str:
     words = metric.split()
     head = words[0].title() if upper else words[0]
     return head + "".join(w.title() for w in words[1:])
+
+
 REQ_COLOUR = "#FDEBD0"
+COVERED_COLOUR = "#E3F1E3"  # a metric some requirement reads
+ANALYSIS_COLOUR = (
+    "#E1D8F0"  # the analysis def: its own colour, shared with no metric
+)
+MEASURE_COLOUR = "#E4E4E4"
 RELATION_COLOUR = "#B5541C"
 SOURCE_COLOUR = "#6B6B6B"
 
@@ -110,8 +128,19 @@ def doc_text(byid, prefix_id: str) -> str:
     """Prose of the `doc` comments directly under an element (its id plus a numbered suffix)."""
     out = []
     for i, e in byid.items():
-        if e["@type"] == "Documentation" and i.startswith(prefix_id + "__") and "__" not in i[len(prefix_id) + 2:]:
-            out.append(" ".join(e.get("sysx:sourceText", "").replace("/*", " ").replace("*/", " ").split()))
+        if (
+            e["@type"] == "Documentation"
+            and i.startswith(prefix_id + "__")
+            and "__" not in i[len(prefix_id) + 2 :]
+        ):
+            out.append(
+                " ".join(
+                    e.get("sysx:sourceText", "")
+                    .replace("/*", " ")
+                    .replace("*/", " ")
+                    .split()
+                )
+            )
     return " ".join(out)
 
 
@@ -119,16 +148,31 @@ def doc_text(byid, prefix_id: str) -> str:
 # View 1: the assembly
 # =================================================================================================
 def assembly(m, byid, P):
-    rows = {r.id: r.properties | {"@type": r.type} for r in m.query(scope=P)}
-    kids = lambda owner: [p for p in rows.values() if p.get("owner") == owner]  # noqa: E731
+    rows = {
+        r.id: r.properties | {"@type": r.type} for r in m.query(scope=P)
+    }
+    kids = lambda owner: [
+        p for p in rows.values() if p.get("owner") == owner
+    ]  # noqa: E731
     cub = f"{P}::Cubesat"
-    default_attrs = {ref(e["featureWithValue"]) for e in byid.values()
-                     if e["@type"] == "FeatureValue" and e.get("isDefault")}
+    default_attrs = {
+        ref(e["featureWithValue"])
+        for e in byid.values()
+        if e["@type"] == "FeatureValue" and e.get("isDefault")
+    }
     parts = [p for p in kids(cub) if p["@type"] == "PartUsage"]
-    abstract = {p["@id"] for p in rows.values() if p["@type"] == "PartDefinition" and p.get("isAbstract") == "true"}
+    abstract = {
+        p["@id"]
+        for p in rows.values()
+        if p["@type"] == "PartDefinition"
+        and p.get("isAbstract") == "true"
+    }
     alts: dict = {}
     for p in rows.values():
-        if p["@type"] == "PartDefinition" and p.get("general") in abstract:
+        if (
+            p["@type"] == "PartDefinition"
+            and p.get("general") in abstract
+        ):
             alts.setdefault(p["general"], []).append(p["name"])
     enum_lits: dict = {}
     for p in rows.values():
@@ -137,38 +181,69 @@ def assembly(m, byid, P):
     selector = {}
     for d in abstract:
         for a in kids(d):
-            if a["@type"] == "AttributeUsage" and a.get("type") in enum_lits:
+            if (
+                a["@type"] == "AttributeUsage"
+                and a.get("type") in enum_lits
+            ):
                 selector[d] = a["type"]
 
     # continuous variables: defaulted attributes of the root, each placed ONCE in the part definition
     # whose usage binds it (a redefinition `:>> span = Cubesat::panelSpan`); defaulted attributes of
     # other part definitions that are bound from the root are the same variable, not new ones.
-    var_at: dict = {}                   # part def qualified name -> [variable names]
-    bound_names: dict = {}              # part def -> redefined feature names (span, capacity)
-    root_vars = [p for p in kids(cub) if p["@type"] == "AttributeUsage" and jid(p["@id"]) in default_attrs]
+    var_at: dict = {}  # part def qualified name -> [variable names]
+    bound_names: dict = {}  # part def -> redefined feature names (span, capacity)
+    root_vars = [
+        p
+        for p in kids(cub)
+        if p["@type"] == "AttributeUsage"
+        and jid(p["@id"]) in default_attrs
+    ]
     for v in root_vars:
         vid = jid(v["@id"])
         for e in byid.values():
-            if e["@type"] in ("FeatureReferenceExpression", "FeatureChainExpression") \
-                    and e.get("referent") and ref(e["referent"]) == vid:
+            if (
+                e["@type"]
+                in (
+                    "FeatureReferenceExpression",
+                    "FeatureChainExpression",
+                )
+                and e.get("referent")
+                and ref(e["referent"]) == vid
+            ):
                 parts_of = e["@id"].split("__")
                 if len(parts_of) > 3 and parts_of[1] == "Cubesat":
-                    usage = next((p for p in parts if p["name"] == parts_of[2]), None)
-                    if usage and v["name"] not in var_at.setdefault(usage["type"], []):
+                    usage = next(
+                        (p for p in parts if p["name"] == parts_of[2]),
+                        None,
+                    )
+                    if usage and v["name"] not in var_at.setdefault(
+                        usage["type"], []
+                    ):
                         var_at[usage["type"]].append(v["name"])
-                        bound_names.setdefault(usage["type"], set()).add(parts_of[3].split("_pvalue")[0])
+                        bound_names.setdefault(
+                            usage["type"], set()
+                        ).add(parts_of[3].split("_pvalue")[0])
     for d in {p["type"] for p in parts}:
         for a in kids(d):
-            if a["@type"] == "AttributeUsage" and jid(a["@id"]) in default_attrs \
-                    and a["name"] not in bound_names.get(d, set()):
+            if (
+                a["@type"] == "AttributeUsage"
+                and jid(a["@id"]) in default_attrs
+                and a["name"] not in bound_names.get(d, set())
+            ):
                 var_at.setdefault(d, []).append(a["name"])
 
     def tag(kind, name):
         word, colour = kind
         return f"  <back:{colour}><b> {word} </b></back> {name}"
 
-    out = ["@startuml", ASSEMBLY_DIRECTION, f"skinparam linetype {ASSEMBLY_LINETYPE}",
-           SKIN.format(nodesep=12, ranksep=34), f"scale {COLUMN_WIDTH} width", ""]
+    out = [
+        "@startuml",
+        ASSEMBLY_DIRECTION,
+        f"skinparam linetype {ASSEMBLY_LINETYPE}",
+        SKIN.format(nodesep=12, ranksep=34),
+        f"scale {COLUMN_WIDTH} width",
+        "",
+    ]
     out.append('class "Cubesat\\n<<part def>>" as Cubesat #E8EEF7')
     declared: set = set()
 
@@ -196,30 +271,90 @@ def assembly(m, byid, P):
         t = p["type"]
         if f"Cubesat *-- {short(t)}" not in out:
             out.append(f"Cubesat *-- {short(t)}")
+
+    def literal_rank(t, alt):
+        """Position of the enum literal the alternative's part def binds (``:>> grade = TrackerGrade::fine``)."""
+        lits = [short(x) for x in enum_lits.get(selector.get(t), [])]
+        pre_alt = f"{P}::{alt}".replace("::", "__") + "__"
+        for i, e in byid.items():
+            if i.startswith(pre_alt) and i.endswith(
+                "_pvalue_preferent"
+            ):
+                lit = short(ref(e["memberElement"]))
+                if lit in lits:
+                    return lits.index(lit)
+        return len(lits)
+
+    ordered = {
+        p["type"]: sorted(
+            alts.get(p["type"], []),
+            key=lambda a, t=p["type"]: (literal_rank(t, a), a),
+        )
+        for p in parts
+    }
     for p in parts:
         t = p["type"]
-        for a in sorted(alts.get(t, [])):
+        for a in ordered[t]:
             define(f"{P}::{a}", False)
     for p in parts:
         t = p["type"]
-        for a in sorted(alts.get(t, [])):
+        for a in ordered[t]:
             out.append(f"{short(t)} <|-- {a}")
 
     pr = lambda n: fmt(m.eval(f"{P}::designRanges.{n}"))  # noqa: E731
     gb = lambda inst, n: fmt(m.eval(f"{P}::{inst}.{n}"))  # noqa: E731
     out.append("")
     out.append("legend bottom")
-    out.append("  **Configuration variables** (each marked once, in the part it belongs to)")
-    out.append(tag(TAG_CATEGORICAL, "categorical: a part is swapped for one of its alternatives"))
-    out.append(tag(TAG_CONTINUOUS, "continuous: a parameter of a part is tuned within a range"))
+    out.append(
+        "  **Configuration variables** (each marked once, in the part it belongs to)"
+    )
+    out.append(
+        tag(
+            TAG_CATEGORICAL,
+            "categorical: a part is swapped for one of its alternatives",
+        )
+    )
+    out.append(
+        tag(
+            TAG_CONTINUOUS,
+            "continuous: a parameter of a part is tuned within a range",
+        )
+    )
     out.append("  ")
     out.append("  **Levels and ranges** (read from the model)")
     for d, en in sorted(selector.items()):
         out.append(f"  {short(en)}: {' | '.join(enum_lits[en])}")
-    out.append(f"  panelSpan: {pr('panelSpanMin')} .. {pr('panelSpanMax')}")
-    out.append(f"  batteryCapacity: {pr('batteryCapacityMin')} .. {pr('batteryCapacityMax')}")
-    for inst in ("baselineGains", "aggressiveGains"):
-        out.append(f"  {inst}: Kp {gb(inst, 'KpMin')} .. {gb(inst, 'KpMax')}, Kd {gb(inst, 'KdMin')} .. {gb(inst, 'KdMax')}")
+    out.append(
+        f"  panelSpan: {pr('panelSpanMin')} .. {pr('panelSpanMax')}"
+    )
+    out.append(
+        f"  batteryCapacity: {pr('batteryCapacityMin')} .. {pr('batteryCapacityMax')}"
+    )
+    boxes = [
+        short(p["@id"])
+        for p in rows.values()
+        if p["@type"] == "PartUsage"
+        and p.get("owner") == P
+        and short(p.get("type", "")) == "GainBox"
+    ]
+    out.append("  Gains Kp and Kd: one range per dataset (baseline, aggressive)")
+    for g in ("Kp", "Kd"):
+        spans = {
+            b: f"{gb(b, g + 'Min')} .. {gb(b, g + 'Max')}"
+            for b in boxes
+        }
+        if len(set(spans.values())) == 1:
+            out.append(
+                f"  {g}: {next(iter(spans.values()))} (both datasets)"
+            )
+        else:
+            out.append(
+                f"  {g}: "
+                + "; ".join(
+                    f"{v} ({b.removesuffix('Gains')} gains)"
+                    for b, v in spans.items()
+                )
+            )
     out.append("end legend")
     out.append("@enduml")
     return "\n".join(out) + "\n"
@@ -235,14 +370,26 @@ class Reads:
     def __init__(self, byid, P):
         self.byid, self.P = byid, P
         self.pre = P.replace("::", "__") + "__"
-        self.calcs = {i for i, e in byid.items() if e["@type"] == "CalculationDefinition"}
-        self.cub_attrs = {short(i): i for i, e in byid.items()
-                          if e["@type"] == "AttributeUsage" and e["@id"].startswith(self.pre + "Cubesat__")
-                          and e["@id"].count("__") == self.pre.count("__") + 1}
+        self.calcs = {
+            i
+            for i, e in byid.items()
+            if e["@type"] == "CalculationDefinition"
+        }
+        self.cub_attrs = {
+            short(i): i
+            for i, e in byid.items()
+            if e["@type"] == "AttributeUsage"
+            and e["@id"].startswith(self.pre + "Cubesat__")
+            and e["@id"].count("__") == self.pre.count("__") + 1
+        }
         self._direct: dict = {}
 
     def inside(self, root_id):
-        return [e for i, e in self.byid.items() if i.startswith((root_id + "__", root_id + "_pvalue"))]
+        return [
+            e
+            for i, e in self.byid.items()
+            if i.startswith((root_id + "__", root_id + "_pvalue"))
+        ]
 
     def direct(self, root_id) -> set:
         """Calc defs invoked inside root_id, plus those behind a Cubesat attribute it reads (c.availablePower)."""
@@ -250,10 +397,16 @@ class Reads:
             return self._direct[root_id]
         found = set()
         for e in self.inside(root_id):
-            if e["@type"] == "InvocationExpression" and e.get("function") and ref(e["function"]) in self.calcs:
+            if (
+                e["@type"] == "InvocationExpression"
+                and e.get("function")
+                and ref(e["function"]) in self.calcs
+            ):
                 found.add(ref(e["function"]))
             elif e["@type"] == "FeatureChainExpression":
-                last = e.get("sysx:sourceText", "").split(".")[-1].strip()
+                last = (
+                    e.get("sysx:sourceText", "").split(".")[-1].strip()
+                )
                 if last in self.cub_attrs:
                     found |= self.direct(self.cub_attrs[last])
         self._direct[root_id] = found
@@ -284,13 +437,20 @@ def behavioural(m, byid, P):
     import case  # the CaseSpec: the metrics, in order, and their subsystems
 
     spec = case.CUBESAT
-    metrics = [(spec.short[a], spec.subsystems[a]) for a in spec.attributes]
+    metrics = [
+        (spec.short[a], spec.subsystems[a]) for a in spec.attributes
+    ]
     order = list(spec.subsystem_order)
     pre = P.replace("::", "__") + "__"
     rd = Reads(byid, P)
 
     # --- the model's requirement, satisfy, verify and analysis elements -------------------------
-    reqs = sorted(i for i, e in byid.items() if e["@type"] == "RequirementDefinition" and ref(e["owner"]) == pre[:-2])
+    reqs = sorted(
+        i
+        for i, e in byid.items()
+        if e["@type"] == "RequirementDefinition"
+        and ref(e["owner"]) == pre[:-2]
+    )
     typing = {}
     for t in byid.values():
         if t["@type"] == "FeatureTyping":
@@ -300,19 +460,49 @@ def behavioural(m, byid, P):
         if e["@type"] == "SatisfyRequirementUsage":
             req_usage = ref(e["subsets"])
             if typing.get(req_usage) in satisfied_by:
-                satisfied_by[typing[req_usage]].add(short(ref(e["subject"])))
+                satisfied_by[typing[req_usage]].add(
+                    short(ref(e["subject"]))
+                )
     verified_by = {r: set() for r in reqs}
     for vid, v in byid.items():
         if v["@type"] == "VerificationCaseDefinition":
             for e in byid.values():
-                if e["@type"] == "RequirementUsage" and e["@id"].startswith(vid + "__") and typing.get(e["@id"]) in verified_by:
+                if (
+                    e["@type"] == "RequirementUsage"
+                    and e["@id"].startswith(vid + "__")
+                    and typing.get(e["@id"]) in verified_by
+                ):
                     verified_by[typing[e["@id"]]].add(short(vid))
-    analysis = next(i for i, e in byid.items() if e["@type"] == "AnalysisCaseDefinition")
-    a_inv = {ref(e["function"]) for e in rd.inside(analysis) if e["@type"] == "InvocationExpression" and e.get("function")}
-    a_chain = {e.get("sysx:sourceText", "").split(".")[-1].strip() for e in rd.inside(analysis) if e["@type"] == "FeatureChainExpression"}
-    a_refs = {short(ref(e["referent"])) for e in rd.inside(analysis) if e["@type"] == "FeatureReferenceExpression" and e.get("referent")}
-    a_text = doc_text(byid, pre[:-2]).replace("-", " ")   # the package-level prose of section 6
-    meas_attrs = {short(i) for i, e in byid.items() if e["@type"] == "AttributeUsage" and i.startswith(pre + "SlewMeasurement__")}
+    analysis = next(
+        i
+        for i, e in byid.items()
+        if e["@type"] == "AnalysisCaseDefinition"
+    )
+    a_inv = {
+        ref(e["function"])
+        for e in rd.inside(analysis)
+        if e["@type"] == "InvocationExpression" and e.get("function")
+    }
+    a_chain = {
+        e.get("sysx:sourceText", "").split(".")[-1].strip()
+        for e in rd.inside(analysis)
+        if e["@type"] == "FeatureChainExpression"
+    }
+    a_refs = {
+        short(ref(e["referent"]))
+        for e in rd.inside(analysis)
+        if e["@type"] == "FeatureReferenceExpression"
+        and e.get("referent")
+    }
+    a_text = doc_text(byid, pre[:-2]).replace(
+        "-", " "
+    )  # the package-level prose of section 6
+    meas_attrs = {
+        short(i)
+        for i, e in byid.items()
+        if e["@type"] == "AttributeUsage"
+        and i.startswith(pre + "SlewMeasurement__")
+    }
 
     # --- where each metric comes from: the element of the model that carries the metric's name ------
     origin, mcalc, METRIC_ELEMENT = {}, {}, {}
@@ -324,14 +514,16 @@ def behavioural(m, byid, P):
         elif attr_id in rd.cub_attrs and attr_id in a_chain:
             kind, ident = "attr", attr_id
             origin[name], mcalc[name] = "analysis", None
-        elif attr_id in a_refs:
-            kind, ident = "input", attr_id
-            origin[name], mcalc[name] = "measurement", None
         elif attr_id in meas_attrs:
             kind, ident = "measured", attr_id
             origin[name], mcalc[name] = "measurement", None
+        elif attr_id in a_refs:
+            kind, ident = "input", attr_id
+            origin[name], mcalc[name] = "measurement", None
         else:
-            raise AssertionError(f"the model has no element named {calc_id} / {attr_id} for the metric {name!r}")
+            raise AssertionError(
+                f"the model has no element named {calc_id} / {attr_id} for the metric {name!r}"
+            )
         METRIC_ELEMENT[name] = (kind, ident)
 
     # metric -> the calcs it reads directly / transitively
@@ -350,7 +542,7 @@ def behavioural(m, byid, P):
         return s
 
     # --- relations requirement - metric, with the evidence for each -------------------------------
-    rel = []   # (req, metric, strength, evidence)
+    rel = []  # (req, metric, strength, evidence)
     for r in reqs:
         rdir, rcl, rmeas = rd.direct(r), rd.closure(r), rd.measured(r)
         rdoc = doc_text(byid, r).replace("-", " ")
@@ -377,57 +569,146 @@ def behavioural(m, byid, P):
     rel = [x for x in rel_all if x[2] == "strong"]
 
     def req_subsystem(r):
-        votes = [dict(metrics)[n] for rr, n, _, _ in rel_all if rr == r]
-        if votes:
-            return max(order, key=lambda s: votes.count(s))
-        return ANALYST_SUBSYSTEM.get(short(r), "unassigned")
+        votes = [dict(metrics)[n] for rr, n, _, _ in rel if rr == r]
+        return (
+            max(order, key=lambda s: votes.count(s)) if votes else None
+        )
 
     band = {r: req_subsystem(r) for r in reqs}
+    no_line = sorted(
+        r for r in reqs if band[r] is None
+    )  # the requirements no traded metric reads
     related = {n for _, n, _, _ in rel}
     # a metric with no requirement is open: the model says so itself, in a verification case's doc
-    ver_docs = " ".join(doc_text(byid, vid) for vid, v in byid.items() if v["@type"] == "VerificationCaseDefinition")
+    ver_docs = " ".join(
+        doc_text(byid, vid)
+        for vid, v in byid.items()
+        if v["@type"] == "VerificationCaseDefinition"
+    )
     ver_docs = " ".join(ver_docs.replace("-", " ").split())
     for name, _ in metrics:
         if name not in related:
-            assert name in ver_docs, f"{name!r} is traded with no requirement and no verification case doc says so"
+            assert name in ver_docs, (
+                f"{name!r} is traded with no requirement and no verification case doc says so"
+            )
 
     # --- PlantUML ------------------------------------------------------------------------------
-    nid = lambda s: "x" + "".join(ch for ch in s.title() if ch.isalnum())  # noqa: E731
-    out = ["@startuml", BEHAVIOUR_DIRECTION, f"skinparam linetype {BEHAVIOUR_LINETYPE}",
-           SKIN.format(nodesep=8, ranksep=36), f"scale {COLUMN_WIDTH} width", ""]
-    bands = order + (["unassigned"] if "unassigned" in band.values() else [])
+    nid = lambda s: (
+        "x" + "".join(ch for ch in s.title() if ch.isalnum())
+    )  # noqa: E731
+    out = [
+        "@startuml",
+        BEHAVIOUR_DIRECTION,
+        f"skinparam linetype {BEHAVIOUR_LINETYPE}",
+        SKIN.format(nodesep=8, ranksep=36),
+        f"scale {COLUMN_WIDTH} width",
+        "",
+    ]
+    bands = list(order)
+    idx = {n: k for k, (n, _) in enumerate(metrics)}
+    # layout: subsystems fed by the measurement come first, so the measurement box sits beside them and
+    # the analysis box beside the rest; no source arrow then crosses another subsystem
+    bands = sorted(
+        bands,
+        key=lambda s: (
+            -sum(
+                origin[n] == "measurement"
+                for n, sub in metrics
+                if sub == s
+            )
+        ),
+    )
     for s in bands:
         out.append(f'package "{s}" {{')
-        idx = {n: k for k, (n, _) in enumerate(metrics)}
-        smets = sorted((n for n, sub in metrics if sub == s),
-                       key=lambda n: (n not in related, origin[n] != "measurement", idx[n]))
-        first = lambda r: min((smets.index(n) for rr, n, _, _ in rel if rr == r and n in smets), default=99)  # noqa: E731
+        smets = sorted(
+            (n for n, sub in metrics if sub == s),
+            key=lambda n: (
+                n not in related,
+                origin[n] != "measurement",
+                idx[n],
+            ),
+        )
+        first = lambda r: min(
+            (
+                smets.index(n)
+                for rr, n, _, _ in rel
+                if rr == r and n in smets
+            ),
+            default=99,
+        )  # noqa: E731
         sreqs = sorted((r for r in reqs if band[r] == s), key=first)
-        anchors = []
-        for r in sreqs:
-            sat = ", ".join(sorted(satisfied_by[r])) or "none in the model"
-            ver = ", ".join(sorted(verified_by[r])) or "none in the model"
-            lands = "" if any(rr == r for rr, _, _, _ in rel) else "\\n**no line to a traded metric**"
-            out.append(f'  rectangle "**{short(r)}**\\n<<requirement def>>\\n<<satisfy>> {sat}\\n<<verify>> {ver}{lands}" as {nid(short(r))} {REQ_COLOUR}')
-            anchors.append(nid(short(r)))
+        with_line = [r for r in sreqs]
+
+        def req_box(r):
+            sat = (
+                ", ".join(sorted(satisfied_by[r]))
+                or "none in the model"
+            )
+            ver = (
+                ", ".join(sorted(verified_by[r])) or "none in the model"
+            )
+            return (
+                f'rectangle "**{short(r)}**\\n<<requirement def>>\\n<<satisfy>> {sat}\\n<<verify>> {ver}" '
+                f"as {nid(short(r))} {REQ_COLOUR}"
+            )
+
+        for r in with_line:
+            out.append("  " + req_box(r))
         if not sreqs:
-            out.append(f'  rectangle "no requirement def\\nlands on this subsystem" as {nid("none" + s)} #FFFFFF;line:gray;line.dashed;text:gray')
-            anchors.append(nid("none" + s))
+            out.append(
+                f'  rectangle "no requirement def\\nlands on this subsystem" as {nid("none" + s)} #FFFFFF;line:gray;line.dashed;text:gray'
+            )
         for n in smets:
-            style = "#E3F1E3" if n in related else "#FFFFFF;line:black;line.dashed"
-            out.append(f'  rectangle "{n}" as {nid(n)} {style}')
+            if n in related:
+                out.append(
+                    f'  rectangle "{n}" as {nid(n)} {COVERED_COLOUR}'
+                )
+            else:
+                out.append(
+                    f'  rectangle "{n}\\n(no requirement)" as {nid(n)} #FFFFFF;line:black;line.dashed'
+                )
         out.append("}")
-        for a in anchors[:1]:
-            for n in smets:
-                out.append(f"{a} -[hidden]-> {nid(n)}")
+        # order inside the subsystem: the requirements with a line above those without; metrics top to bottom
+        stack = [nid(short(r)) for r in with_line] + (
+            [nid("none" + s)] if not sreqs else []
+        )
+        for u, v in zip(stack, stack[1:]):
+            out.append(f"{u} -[hidden]right-> {v}")
+        smets_last = smets[-1] if smets else None
+        for u, v in zip(smets, smets[1:]):
+            out.append(f"{nid(u)} -[hidden]right-> {nid(v)}")
+        if stack and smets:
+            out.append(f"{stack[0]} -[hidden]-> {nid(smets[0])}")
+    out.append(
+        f'rectangle "requirements with no line to a traded metric" as xNoLine #FFFFFF;line:gray;line.dashed;text:gray {{'
+    )
+    for r in no_line:
+        sat = ", ".join(sorted(satisfied_by[r])) or "none in the model"
+        ver = ", ".join(sorted(verified_by[r])) or "none in the model"
+        out.append(
+            f'  rectangle "**{short(r)}**\\n<<requirement def>>\\n<<satisfy>> {sat}\\n<<verify>> {ver}" as {nid(short(r))} {REQ_COLOUR}'
+        )
+    for u, v in zip(no_line, no_line[1:]):
+        out.append(
+            f"  {nid(short(u))} -[hidden]right-> {nid(short(v))}"
+        )
+    out.append("}")
+    out.append(f"xNoLine -[hidden]right-> {nid(smets_last)}")
     out.append("")
-    out.append('rectangle "**SlewExperiment**\\n<<analysis def>>\\nreturns eight\\nattributes from the\\nconfiguration and the\\nmeasured inputs" as xAnalysis #D5F0DC')
-    out.append('rectangle "**SlewMeasurement**\\nmeasured slew:\\nsimulation here;\\nfield data when\\nfielded" as xMeasure #EEEEEE')
-    out.append("xMeasure -[hidden]down-> xAnalysis")
+    n_analysis = sum(v == "analysis" for v in origin.values())
+    out.append(
+        f'rectangle "**SlewExperiment**\\n<<analysis def>>\\ncomputes {n_analysis} of the {len(metrics)}\\nmetrics from the\\nconfiguration and the\\nmeasured inputs" as xAnalysis {ANALYSIS_COLOUR}'
+    )
+    out.append(
+        f'rectangle "**SlewMeasurement**\\nmeasured slew:\\nsimulation here;\\nfield data when\\nfielded" as xMeasure {MEASURE_COLOUR}'
+    )
+    out.append("xMeasure -[hidden]right-> xAnalysis")
     out.append("")
     for r, n, strength, ev in rel:
         if strength == "strong":
-            out.append(f"{nid(short(r))} -[#{RELATION_COLOUR[1:]},thickness=2]-> {nid(n)} : {ev}")
+            out.append(
+                f"{nid(short(r))} -[#{RELATION_COLOUR[1:]},thickness=2]-> {nid(n)} : {ev}"
+            )
         else:
             raise AssertionError("only strong relations are drawn")
     for name, _ in metrics:
@@ -435,16 +716,38 @@ def behavioural(m, byid, P):
         out.append(f"{nid(name)} <-[#{SOURCE_COLOUR[1:]}]- {src}")
     out.append("")
     out.append("legend bottom")
-    out.append("  **Requirement - metric** (orange line, requirement to metric; the shared quantity on the line)")
-    out.append("  every line: the requirement and the metric read the same calc or measured quantity")
-    out.append("  green metric: a requirement reads it; dashed white: traded, no requirement reads it")
-    out.append("  (the model names each dashed white metric as open in its verification cases)")
-    out.append("  **Source** (grey): from the analysis def, or from the measurement of the slew")
-    out.append("  Requirement placement in a subsystem is the analyst's reading (CaseSpec groups metrics)")
+    out.append(
+        "  **Requirement - metric** (orange line, requirement to metric; the shared quantity on the line)"
+    )
+    out.append(
+        "  every line: the requirement and the metric read the same calc or measured quantity"
+    )
+    out.append(
+        '  green: a requirement reads the metric; dashed, "no requirement": traded, no requirement reads it'
+    )
+    out.append(
+        "  (the model names each of those as open in its verification cases)"
+    )
+    out.append(
+        "  **Source** (grey line): from the analysis def (lilac) or from the measurement of the slew (grey)"
+    )
+    out.append(
+        "  Requirement placement in a subsystem is the analyst's reading (CaseSpec groups metrics)"
+    )
     out.append("end legend")
     out.append("@enduml")
-    return "\n".join(out) + "\n", {"rel": rel, "rel_all": rel_all, "metric_element": METRIC_ELEMENT, "related": related, "reqs": reqs, "band": band, "metrics": metrics,
-                                    "origin": origin, "satisfied": satisfied_by, "verified": verified_by}
+    return "\n".join(out) + "\n", {
+        "rel": rel,
+        "rel_all": rel_all,
+        "metric_element": METRIC_ELEMENT,
+        "related": related,
+        "reqs": reqs,
+        "band": band,
+        "metrics": metrics,
+        "origin": origin,
+        "satisfied": satisfied_by,
+        "verified": verified_by,
+    }
 
 
 if __name__ == "__main__":
@@ -452,7 +755,11 @@ if __name__ == "__main__":
     ap.add_argument("model")
     ap.add_argument("outdir")
     ap.add_argument("--package", default="CubesatTradeSpaceV2")
-    ap.add_argument("--facts", action="store_true", help="print the derived relations")
+    ap.add_argument(
+        "--facts",
+        action="store_true",
+        help="print the derived relations",
+    )
     a = ap.parse_args()
     m, byid = load(pathlib.Path(a.model))
     od = pathlib.Path(a.outdir)
@@ -464,5 +771,13 @@ if __name__ == "__main__":
         for r, n, s, ev in facts["rel"]:
             print(f"{short(r):32s} {n:20s} {s:7s} {ev}")
         for r in facts["reqs"]:
-            print(short(r), "band:", facts["band"][r], "satisfy:", sorted(facts["satisfied"][r]), "verify:", sorted(facts["verified"][r]))
+            print(
+                short(r),
+                "band:",
+                facts["band"][r],
+                "satisfy:",
+                sorted(facts["satisfied"][r]),
+                "verify:",
+                sorted(facts["verified"][r]),
+            )
     print("ok")

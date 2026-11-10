@@ -154,10 +154,13 @@ def test_the_old_model_is_unchanged_and_r1_only_adds_to_its_accounting():
 
 
 def test_numeric_literals_added_are_recorded_measurements_only():
-    """R-4: the only numeric literal the r1 code adds to the old code is the measured slew time."""
+    """R-4: the numeric literals r1 adds to the old code are recorded measurements, no threshold.
+
+    The measured slew time (round 1) and the measured control effort of the baseline (round 2).
+    """
     number = re.compile(r"(?<![\w.])\d+(?:\.\d+)?(?:[eE][-+]?\d+)?")
     added = set(number.findall(_code(R1_TEXT))) - set(number.findall(_code(OLD_TEXT)))
-    assert added == {"133.6904772571943"}
+    assert added == {"133.6904772571943", "0.009490621914197469"}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -222,6 +225,10 @@ def test_baseline_measurement_has_the_recorded_slew_time_and_peak_torque(r1, fro
     read = lambda k, u: r1.read(f"baselineMeasurement.{k}", u)  # noqa: E731
     assert read("slewTime", "SI::s") == pytest.approx(got["slew_time"], rel=1e-3, abs=0.5)
     assert read("peakTorque", "SI::N*SI::m") == pytest.approx(got["peak_torque"], rel=1e-3)
+    # round 2: control effort is a measurement of the slew too (it was an unbound analysis input)
+    assert read("controlEffort", "SI::N*SI::m*SI::s") == pytest.approx(
+        got["control_effort"], rel=1e-3
+    )
 
 
 # ---------------------------------------------------------------------------------------------
@@ -353,11 +360,60 @@ def test_every_covered_metric_has_a_thick_line_from_its_requirement(project, tmp
     assert {n for _, n in drawn} == set(COVERED)
     assert set(facts["related"]) == set(COVERED)
     for metric in OPEN:
-        assert f'rectangle "{metric}" as' in behaviour
-        assert f'"{metric}"' in behaviour and "line.dashed" in behaviour
+        # dashed, and captioned in its own box (round 2)
+        assert re.search(
+            rf'rectangle "{metric}\\n\(no requirement\)" as \w+ [^\n]*line\.dashed', behaviour
+        )
     assert behaviour.count("thickness=2") == len(drawn)
     assert "dashed]" not in behaviour  # no dashed or prose-only relation line
     assert facts["metric_element"]["slew time"] == ("measured", "slewTime")
+    # round 2: control effort is a SlewMeasurement attribute, so its source is the measurement
+    assert facts["metric_element"]["control effort"] == ("measured", "controlEffort")
+    assert facts["origin"]["control effort"] == "measurement"
+
+
+def test_the_picture_reads_cold_requirements_apart_sources_distinct_no_long_detours(
+    project, tmp_path
+):
+    """Round 2 (reviewer B-1, B-3, B-4, B-5): what a reader sees in the behavioural view's text."""
+    _, behaviour, facts = _views(project, R1_TEXT, tmp_path)
+    # requirements with no line are in one separate group, not among those with lines
+    group = behaviour[
+        behaviour.index("as xNoLine") : behaviour.index("\n}\n", behaviour.index("as xNoLine"))
+    ]
+    no_line = {project.short(r) for r in facts["reqs"]} - {
+        project.short(r) for r, *_ in facts["rel"]
+    }
+    assert no_line and all(f"**{r}**" in group for r in no_line)
+    for r, *_ in facts["rel"]:
+        assert f"**{project.short(r)}**" not in group
+    # the analysis box has a colour no metric box has
+    covered, analysis = project.COVERED_COLOUR, project.ANALYSIS_COLOUR
+    assert covered != analysis and "xAnalysis " + analysis in behaviour
+    assert behaviour.count(analysis) == 1
+    # each source arrow ends at a metric of the subsystem it sits beside: one analysis box, one
+    # measurement box, eleven edges at most (no arrow from a source to a package)
+    assert behaviour.count("<-[#6B6B6B]-") == len(facts["metrics"])
+
+
+def test_assembly_alternatives_in_enum_order_and_the_legend_names_what_is_drawn(project, tmp_path):
+    """Round 2 (A-1, A-2): alternatives follow the enum; the legend names nothing absent."""
+    assembly, _, _ = _views(project, R1_TEXT, tmp_path)
+    for abstract, order in (
+        ("ReactionWheel", ["SmallWheel", "MediumWheel", "LargeWheel"]),
+        ("StarTracker", ["CoarseTracker", "MediumTracker", "FineTracker"]),
+    ):
+        lines = [x for x in assembly.splitlines() if x.startswith(f"{abstract} <|--")]
+        assert [x.split("-- ")[1] for x in lines] == order
+        declared = [
+            x
+            for x in assembly.splitlines()
+            if x.startswith("class") and any(f"**{a}**" in x for a in order)
+        ]
+        assert [next(a for a in order if f"**{a}**" in x) for x in declared] == order
+    legend = assembly[assembly.index("legend bottom") :]
+    assert "baselineGains" not in legend and "aggressiveGains" not in legend
+    assert "Kp:" in legend and "Kd:" in legend
 
 
 def test_views_change_only_with_what_was_edited_and_are_stable(project, tmp_path):

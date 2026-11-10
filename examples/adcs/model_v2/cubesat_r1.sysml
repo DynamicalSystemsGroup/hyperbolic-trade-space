@@ -493,6 +493,7 @@ package CubesatTradeSpaceV2 {
         attribute slewTime : TimeValue;   // first time the attitude error is inside the slew band
         attribute peakTorque : TorqueValue;
         attribute peakMomentum : AngularMomentumValue;
+        attribute controlEffort : AngularMomentumValue;   // integral of |tau| over the slew, N.m.s
         attribute torqueSquaredIntegral : Real;   // N^2 m^2 s
         attribute censored : Boolean;
     }
@@ -503,6 +504,7 @@ package CubesatTradeSpaceV2 {
         :>> slewTime = 133.6904772571943 [s];
         :>> peakTorque = 0.002 [N*m];
         :>> peakMomentum = 0.00466041037173962 [N*m*s];
+        :>> controlEffort = 0.009490621914197469 [N*m*s];
         :>> torqueSquaredIntegral = 7.70613052023095e-06;
         :>> censored = false;
     }
@@ -688,7 +690,7 @@ package CubesatTradeSpaceV2 {
         in torqueSquaredIntegral : Real;
         in peakTorque : TorqueValue;
         in peakMomentum : AngularMomentumValue;
-        in controlEffort : AngularMomentumValue;
+        in controlEffort : AngularMomentumValue default = baselineMeasurement.controlEffort;
         in censored : Boolean;
         return attributes = (
             PointingError(cubesat), cubesat.totalMass, controlEffort,
