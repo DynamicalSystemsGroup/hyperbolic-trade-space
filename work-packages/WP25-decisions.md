@@ -59,3 +59,19 @@ is. One paper unit, before the deletions, so the citations never dangle.
 **Approved for execution by the driver under the mandate** (no other open decision; the Agent's defaults as one
 item; R-2 has the contract and its test in the grep before any file goes). Sequencing as drafted: the free rows now,
 the WP24-dependent rows after WP24's last push, the 30 round images after WP23's final acceptance.
+
+## Instance 3 (2026-11-10, 15:50; scope `WP25-3-scope-of-work.md`, 0edab7b): the driver's decisions, approved
+
+- **OD1** (`spike-ternary/report.md`, held because the register's C001 note cites its "0.071" figure, measured on the
+  v1 table and stated on no page): (b). The report is deleted; the register note and `claims-review.md` line 74
+  drop the 0.071 sentence; C001 rests on its listed backing (two tests and `plot_ternary`'s Notes). A figure no page
+  uses is not regenerated to keep a note alive.
+- **OD2** (`v1-v2-comparison.md`, 50 kB, regenerated on demand, read by no test or page): (b). Deleted; the hash rows
+  in RECORD.md and the gate README stay as history; `experiments compare` regenerates it when a reader wants it. The
+  repository state is the present.
+- **OD3** (`coverage.csv` names the decision element by enum type where the view's tags name the attribute): (b).
+  One object, one name: routed to WP26's modeller as one unit through the generator, the model tests' pins re-read,
+  after WP27's current round.
+
+**Approved for execution by the driver under the mandate**; the Agent's defaults as one item; the paper,
+`derivation/`, `src/`, the data, the model files and the committed numbers untouched (R-7, R-8).

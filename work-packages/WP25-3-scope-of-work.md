@@ -295,3 +295,6 @@ The driver decides OD1 to OD3 under the mandate; the rest is the Agent's default
 ## Gate outcomes
 
 - None yet.
+- 2026-11-10, 15:50: approved for execution by the driver under the mandate; OD1 (b), OD2 (b), OD3 (b) in
+  `WP25-decisions.md`; the Agent's defaults accepted as one item.
+
