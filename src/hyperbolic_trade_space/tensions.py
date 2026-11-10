@@ -5,8 +5,8 @@ The model is built to find *tensions*, not variance. PCA picks the directions of
 smallest upper extent, the binding constraint among larger-is-better metrics. The
 report reads that structure at three levels, all for the K = 1 fit (one tension; several regional
 tensions are the K > 1 extension, below, and a deflation search for successive tensions is a
-research question). At K > 1 the same three levels are read once per facet, on the rows assigned to
-that facet (``assign_facets``), and a list of K
+research question). At K > 1 the same three levels are read once per term, on the rows assigned to
+that term (``assign_cells``), and a list of K
 reports is returned:
 
 1. **Participation and elasticities.** Metrics with ``w_j > threshold`` participate, the rest are
@@ -26,8 +26,8 @@ Limits, stated here because the report cannot state them for you: a *tension* is
 constraint, a *correlation* is only a co-movement; near the frontier ``w . u`` is almost
 constant, so the **closure effect** forces some negative association among participating metrics
 even where no designer ever traded them; the result depends on the ``band``; and K = 1 finds
-one facet (at K > 1 each facet's contending set is the ``tau = inf`` LP support on that facet's rows
-centred on their mean, as in the facet refit, since the raw rows of one facet do not enclose the
+one term (at K > 1 each term's contending set is the ``tau = inf`` LP support on that term's rows
+centred on their mean, as in the term refit, since the raw rows of one term do not enclose the
 origin and the uncentred LP returns vertex artefacts).
 """
 
@@ -141,8 +141,8 @@ def tension_report(
     Returns
     -------
     TensionReport or list of TensionReport
-        One report at ``n_terms = 1``; at ``n_terms = K > 1`` a list of K, one per facet, each on
-        the rows assigned to that facet with the facet's exponents, near-frontier rows
+        One report at ``n_terms = 1``; at ``n_terms = K > 1`` a list of K, one per term, each on
+        the rows assigned to that term with the term's exponents, near-frontier rows
         (``|Phi_K| < band``), tension directions and loadings (through ``basis_[k]``).
 
     Raises
@@ -151,7 +151,7 @@ def tension_report(
         If ``association`` is unknown or fewer than ``min_near_frontier`` rows are near the
         frontier; the message gives the ``band`` (and the fit temperature that matches it, since the
         default band is ``1 / tau``) that would hold ``min_near_frontier`` rows; at K > 1 it names
-        the facet.
+        the term.
 
     Warns
     -----
@@ -177,7 +177,7 @@ def tension_report(
     >>> rep.lemma_name, rep.contending_set.tolist(), rep.tension_directions.shape
     ('trilemma', [0, 1, 2], (2, 2))
 
-    At ``n_terms = 3`` there is one report per facet:
+    At ``n_terms = 3`` there is one report per term:
 
     >>> W = [[.5, .5, 0, 0], [0, .5, .5, 0], [0, 0, .5, .5]]
     >>> X, _ = make_frontier_data(900, 4, exponents=W, n_terms=3, random_state=0)
@@ -217,12 +217,12 @@ def tension_report(
     K = estimator.exponents_.shape[0]
     if K == 1:
         return _report(U, Zf, lvf, estimator.exponents_[0], U, estimator.basis_, *args, "")
-    lab = estimator.assign_facets(X)[finite]
+    lab = estimator.assign_cells(X)[finite]
     reports = []
     for k in range(K):
         r = lab == k
         Uk, wk, Bk = U[r], estimator.exponents_[k], estimator.basis_[k]
-        reports.append(_report(Uk, Zf[r], lvf[r], wk, Uk - Uk.mean(0), Bk, *args, f"facet {k}: "))
+        reports.append(_report(Uk, Zf[r], lvf[r], wk, Uk - Uk.mean(0), Bk, *args, f"term {k}: "))
     return reports
 
 
@@ -252,19 +252,19 @@ def _report(U, Zf, lvf, w, U_lp, basis, band, min_near_frontier, threshold, asso
     if d > 1 and n_near < min_near_frontier:
         have = np.sort(np.abs(lvf))
         if have.size >= min_near_frontier:
-            # the smallest band that holds min_near_frontier rows of this facet (strict inequality)
+            # the smallest band that holds min_near_frontier rows of this term (strict inequality)
             need = float(np.nextafter(float(f"{have[min_near_frontier - 1]:.2g}"), np.inf))
             if need <= have[min_near_frontier - 1]:
                 need = float(f"{have[min_near_frontier - 1] * 1.1:.2g}")
             hint = (
                 f"use a larger band, band={need:g} (the smallest round band with "
-                f"{min_near_frontier} rows on this facet), or fit at temperature={1.0 / need:.3g} "
+                f"{min_near_frontier} rows on this term), or fit at temperature={1.0 / need:.3g} "
                 f"(the band is 1/temperature), or "
                 f"lower min_near_frontier"
             )
         else:
             hint = (
-                f"this facet owns only {have.size} usable rows; lower min_near_frontier to "
+                f"this term owns only {have.size} usable rows; lower min_near_frontier to "
                 f"{max(have.size, 2)}, use a larger band, or fit with fewer terms"
             )
         raise ValueError(

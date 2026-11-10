@@ -166,8 +166,8 @@ def _design_colours(ax):
 
 
 def test_log_plane_k3_draws_envelope_and_designs_in_one_colour_by_default():
-    # WP19-decisions.md (the principle check): the default is one colour with the facet lines
-    # drawn as the model; colouring designs by facet is the cluster idiom and an explicit option.
+    # WP19-decisions.md (the principle check): the default is one colour with the term lines
+    # drawn as the model; colouring designs by cell is the cluster idiom and an explicit option.
     X, hts = _k3(2)
     ax = P.plot_log_plane(hts, X)
     g, y = ax.lines[0].get_data()
@@ -178,60 +178,60 @@ def test_log_plane_k3_draws_envelope_and_designs_in_one_colour_by_default():
     assert np.all(phi[np.isfinite(phi)] <= 1e-9) and np.isfinite(y).all() and len(u) == 300
     assert _design_colours(ax) == {matplotlib.colors.to_hex(P.DATA_COLOR)}
     labels = [t.get_text() for t in ax.get_legend().get_texts()]
-    assert "facet" not in " ".join(labels).lower()
+    assert not any(w in " ".join(labels).lower() for w in ("term", "cell"))
     assert any("frontier" in lab for lab in labels) and any("band" in lab for lab in labels)
     assert "red" not in _texts(ax)
 
 
-def test_log_plane_colour_by_facet_is_an_explicit_option():
+def test_log_plane_colour_by_cell_is_an_explicit_option():
     X, hts = _k3(2)
-    ax = P.plot_log_plane(hts, X, color="facet")
+    ax = P.plot_log_plane(hts, X, color="cell")
     labels = [t.get_text() for t in ax.get_legend().get_texts()]
-    # platform drift may relabel or empty a facet (WP9 post-review fix 2): test the set only
-    assert set(labels) <= {f"facet {k + 1}" for k in range(3)} and len(labels) >= 2
+    # platform drift may relabel or empty a term (WP9 post-review fix 2): test the set only
+    assert set(labels) <= {f"cell {k + 1}" for k in range(3)} and len(labels) >= 2
     assert len(_design_colours(ax)) == len(labels)
     assert matplotlib.colors.to_hex(P.FRONTIER_COLOR) in colors_of(ax)  # the model is still drawn
     X1, _ = make_frontier_data(80, 2, random_state=0)
-    ax1 = P.plot_log_plane(HyperbolicTradeSpace().fit(X1), X1, color="facet")
-    assert [t.get_text() for t in ax1.get_legend().get_texts()] == ["facet 1"]
-    with pytest.raises(ValueError, match="facet"):
+    ax1 = P.plot_log_plane(HyperbolicTradeSpace().fit(X1), X1, color="cell")
+    assert [t.get_text() for t in ax1.get_legend().get_texts()] == ["cell 1"]
+    with pytest.raises(ValueError, match="cell"):
         P.plot_log_plane(hts, X, color="red")
 
 
-def test_surface_k3_one_colour_by_default_and_coordinates_facet_colouring():
+def test_surface_k3_one_colour_by_default_and_coordinates_cell_colouring():
     # WP19-decisions.md (the principle check): the designs in one colour, the envelope surface
     # as the model; colouring by the term that scores each highest is the explicit option.
     X, hts = _k3(3)
     ax = P.plot_frontier_surface_3d(hts, X)
     assert ax.name == "3d" and len(ax.collections) >= 2
-    assert "facet" not in _texts(ax) and "red" not in _texts(ax)
+    assert "term" not in _texts(ax) and "cell" not in _texts(ax) and "red" not in _texts(ax)
     neutral = {matplotlib.colors.to_hex(P.DATA_COLOR), matplotlib.colors.to_hex(P.BAND_COLOR)}
     assert _design_colours(ax) <= neutral and len(_design_colours(ax)) == 2
-    ax = P.plot_frontier_surface_3d(hts, X, color="facet")
-    assert "facet 1" in _texts(ax) and len(_design_colours(ax)) >= 2
-    with pytest.raises(ValueError, match="facet"):
+    ax = P.plot_frontier_surface_3d(hts, X, color="cell")
+    assert "cell 1" in _texts(ax) and len(_design_colours(ax)) >= 2
+    with pytest.raises(ValueError, match="cell"):
         P.plot_frontier_surface_3d(hts, X, color="red")
     Z = hts.transform(X)
-    ax = P.plot_frontier_coordinates(Z[:, :-1], Z[:, -1], color=P.facet_labels(hts, X))
-    assert "facet 1" in _texts(ax) and "red" not in _texts(ax)
+    ax = P.plot_frontier_coordinates(Z[:, :-1], Z[:, -1], color=P.cell_labels(hts, X))
+    assert "cell 1" in _texts(ax) and "red" not in _texts(ax)
 
 
 def test_plot_tensions_list_of_reports_side_by_side():
     axs = P.plot_tensions([make_report(), make_report()], names=["a", "b", "c"])
-    assert len(axs) == 2 and axs[1].get_title().startswith("facet 2: dilemma")
+    assert len(axs) == 2 and axs[1].get_title().startswith("term 2: dilemma")
     assert isinstance(P.plot_tensions(make_report()), Axes)
 
 
-def test_log_plane_k3_draws_facet_only_where_it_has_weight_on_both_metrics():
+def test_log_plane_k3_draws_term_only_where_it_has_weight_on_both_metrics():
     hts = HyperbolicTradeSpace(n_terms=2, temperature=np.inf)
-    hts.exponents_ = np.array([[0.5, 0.5], [0.0005, 1.0]])  # facet 2 below the threshold on m0
+    hts.exponents_ = np.array([[0.5, 0.5], [0.0005, 1.0]])  # term 2 below the threshold on m0
     hts.log_offset_ = np.array([0.0, -50.0])  # would dominate the envelope if it were drawn
     hts.n_features_in_ = 2
     X = np.exp(np.random.default_rng(0).normal(size=(40, 2)))
     ax = P.plot_log_plane(hts, X, color=np.arange(40) % 2)
     g, y = ax.lines[0].get_data()
-    assert np.allclose(y, (0.0 - 0.5 * g) / 0.5)  # facet 1's line only
-    hts.exponents_ = np.array([[0.0005, 1.0], [1.0, 0.0005]])  # no facet has weight on both
+    assert np.allclose(y, (0.0 - 0.5 * g) / 0.5)  # term 1's line only
+    hts.exponents_ = np.array([[0.0005, 1.0], [1.0, 0.0005]])  # no term has weight on both
     assert len(P.plot_log_plane(hts, X, color=np.arange(40) % 2).lines) == 0
 
 
@@ -239,7 +239,7 @@ def test_log_plane_k1_unchanged_by_the_envelope_rule():
     X, _ = make_frontier_data(80, 2, random_state=0)
     ax = P.plot_log_plane(HyperbolicTradeSpace().fit(X), X)
     assert len(ax.lines) == 1 and ax.get_legend() is not None
-    assert "facet" not in _texts(ax)
+    assert "term" not in _texts(ax) and "cell" not in _texts(ax)
     assert _design_colours(ax) == {matplotlib.colors.to_hex(P.DATA_COLOR)}
 
 
@@ -279,33 +279,33 @@ def _by_gid(ax, prefix):
     return {int(a.get_gid().rsplit("-", 1)[1]): a for a in found}
 
 
-def test_ternary_designs_are_one_neutral_colour_by_default_and_by_facet_on_request(planted3):
+def test_ternary_designs_are_one_neutral_colour_by_default_and_by_cell_on_request(planted3):
     # WP19-decisions.md, docs Figure 8: the supervisor's "Recolour". The designs go to one neutral
     # colour; the region tints and the numbered markers are unchanged; colouring the near-frontier
-    # designs by their assigned facet is analysis, kept as the explicit option ``color="facet"``.
+    # designs by their cell is analysis, kept as the explicit option ``color="cell"``.
     import inspect
 
     X, ts = planted3
     assert inspect.signature(P.plot_ternary).parameters["color"].default is None
     dots = matplotlib.colors.to_hex(P._TERN_SCHEMES["light"]["dots"])
-    facet_cols = {matplotlib.colors.to_hex(c) for c in P._ternary_colours(ts.exponents_).values()}
+    term_cols = {matplotlib.colors.to_hex(c) for c in P._ternary_colours(ts.exponents_).values()}
     plain = P.plot_ternary(ts, X, scheme="light")  # with X and no lines: the designs only
     assert _design_colours(plain) == {dots}
     n_near = int((np.abs(ts.score_samples(X)) < 0.2).sum())
     assert 0 < n_near < len(X)
     sizes = {float(np.unique(c.get_sizes())[0]) for c in _scatters(plain)}
     assert len(sizes) == 2  # the near-frontier designs are still set apart by size, not colour
-    by_facet = P.plot_ternary(ts, X, scheme="light", color="facet")
-    assert _design_colours(by_facet) - {dots} <= facet_cols
-    assert len(_design_colours(by_facet) - {dots}) >= 2
-    for ax in (plain, by_facet):  # the region tints are the same picture either way
+    by_cell = P.plot_ternary(ts, X, scheme="light", color="cell")
+    assert _design_colours(by_cell) - {dots} <= term_cols
+    assert len(_design_colours(by_cell) - {dots}) >= 2
+    for ax in (plain, by_cell):  # the region tints are the same picture either way
         assert len(ax.images) == 1
-    assert np.array_equal(plain.images[0].get_array(), by_facet.images[0].get_array())
-    with pytest.raises(ValueError, match="facet"):
+    assert np.array_equal(plain.images[0].get_array(), by_cell.images[0].get_array())
+    with pytest.raises(ValueError, match="cell"):
         P.plot_ternary(ts, X, color="red")
     lined = P.plot_ternary(ts, X, lines=True, scheme="light")
     stars = _by_gid(lined, "ternary-star-")
-    assert {matplotlib.colors.to_hex(s.get_facecolor()[0]) for s in stars.values()} == facet_cols
+    assert {matplotlib.colors.to_hex(s.get_facecolor()[0]) for s in stars.values()} == term_cols
 
 
 @pytest.mark.slow
@@ -327,7 +327,7 @@ def test_ternary_markers_sit_at_the_exponent_vectors(planted3):
 
 def test_ternary_fixed_total_identity_and_peak(planted3):
     """log V = log S + max_k (a_k + sum_j w_kj log c_j) at shares of the total, to 1e-10, and
-    facet k's piece is largest among all shares at c = w_k."""
+    term k's piece is largest among all shares at c = w_k."""
     X, ts = planted3
     fit = P._ternary_geometry(ts, X)
     W = fit["W"]
@@ -409,8 +409,8 @@ def test_ternary_groups_sum_the_exponents_exactly():
 
 
 def test_ternary_marker_values_equal_an_independent_recomputation(planted3):
-    """V at a facet's exponent vector at a fixed total, from first principles (the soft maximum is
-    the hard maximum over facets here: log V = log S + max_k(a_k + w_k . log c)), as a fraction of
+    """V at a term's exponent vector at a fixed total, from first principles (the soft maximum is
+    the hard maximum over terms here: log V = log S + max_k(a_k + w_k . log c)), as a fraction of
     the highest marker's; one row reads 1.00; the levels are those the lines are drawn at."""
     X, ts = planted3
     table = P.ternary_marker_values(ts, X, names=["p", "q", "r"])

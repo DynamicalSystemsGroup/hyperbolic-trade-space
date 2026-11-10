@@ -283,10 +283,10 @@ def quantities(data_dir: Path | str) -> dict:
 
     Returns a mapping ``name -> value`` (floats, ints, bools, strings), names of the form
     ``group | row | column``. Groups: ``sentence`` (the paper's generated sentences, verbatim),
-    ``contending`` (contending sets), ``leading`` (each facet's leading metrics), ``tension``
+    ``contending`` (contending sets), ``leading`` (each term's leading metrics), ``tension``
     (association signs and values), ``tau``, ``certificate``, ``regime``, ``nondominated``,
     ``candidate``, ``predict`` (and ``predict, committed checks``), and the Appendix D tables
-    (``D k_table``, ``D exponents``, ``D facets``, ``D tau_sweep``, ``D sensitivity``,
+    (``D k_table``, ``D exponents``, ``D terms``, ``D tau_sweep``, ``D sensitivity``,
     ``D refits``).
     """
     case, gf = _paper_modules()
@@ -320,32 +320,28 @@ def quantities(data_dir: Path | str) -> dict:
             q[f"fit | {r} K={K} | tau selected (raw)"] = float(f[K].tau)
         for K in (1, 3):
             tt = case.tension_table(st, f[K], band=base.band)
-            ft = case.facet_table(st, f, K=K, band=base.band)
+            ft = case.term_table(st, f, K=K, band=base.band)
             for _, row in tt.iterrows():
-                q[f"contending | {r} K={K} facet {int(row['facet'])} | set"] = row["contending set"]
-                q[f"contending | {r} K={K} facet {int(row['facet'])} | n_lemma"] = int(
-                    row["n_lemma"]
-                )
+                q[f"contending | {r} K={K} term {int(row['term'])} | set"] = row["contending set"]
+                q[f"contending | {r} K={K} term {int(row['term'])} | n_lemma"] = int(row["n_lemma"])
             for _, row in ft.iterrows():
                 lead = [s.rsplit(" ", 1)[0] for s in row["largest exponents"].split(", ")]
-                q[f"leading | {r} K={K} facet {int(row['facet'])} | metrics"] = ", ".join(lead)
-        # facets of K = 2 and 3 compared without their labels (a permutation is not a change)
+                q[f"leading | {r} K={K} term {int(row['term'])} | metrics"] = ", ".join(lead)
+        # terms of K = 2 and 3 compared without their labels (a permutation is not a change)
         for K in (2, 3):
-            ft = case.facet_table(st, f, K=K, band=base.band)
+            ft = case.term_table(st, f, K=K, band=base.band)
             sets = sorted(
                 f"{row['contending set']} / "
                 + ", ".join(x.rsplit(" ", 1)[0] for x in row["largest exponents"].split(", "))
                 for _, row in ft.iterrows()
             )
-            q[f"contending | {r} K={K} facets as an unlabelled set | sets"] = " ;; ".join(sets)
+            q[f"contending | {r} K={K} terms as an unlabelled set | sets"] = " ;; ".join(sets)
         q.update(_flat(f"certificate | {r}", case.certificate_table(f), key="K"))
         q.update(_flat(f"nondominated | {r}", case.nondominated_counts(st), key="view"))
         q.update(_flat(f"D k_table | {r}", case.k_table(st, f), key="K"))
         q.update(_flat(f"D exponents K=1 | {r}", case.exponent_table(st, f[1]), key="metric"))
         q.update(_flat(f"D exponents K=3 | {r}", case.exponent_table(st, f[3]), key="metric"))
-        q.update(
-            _flat(f"D facets K=3 | {r}", case.facet_table(st, {1: f[1], 3: f[3]}), key="facet")
-        )
+        q.update(_flat(f"D terms K=3 | {r}", case.term_table(st, {1: f[1], 3: f[3]}), key="term"))
         q.update(_flat(f"D tau_sweep | {r}", case.tau_sweep(st)))
         q.update(_flat(f"D sensitivity | {r}", case.sensitivity_table(st), key="variant"))
         q.update(_flat(f"D refits | {r}", case.category_refits(st), key="wheel_class"))
@@ -378,7 +374,7 @@ def quantities(data_dir: Path | str) -> dict:
     q["sentence | temperature | band"] = float(fits["primary"][1].band)
     cert = case.certificate_table(fits["primary"])
     cert = cert[cert["K"] > 1]
-    q["sentence | K sweep | largest facet gap"] = float(cert["max gap"].max())
+    q["sentence | K sweep | largest term gap"] = float(cert["max gap"].max())
     q["sentence | K sweep | smallest margin"] = float(cert["gamma"].min())
     q["sentence | K sweep | smallest radius"] = float(cert["radius"].min())
     q.update(_flat("predict", pc, key="proposal"))
@@ -448,8 +444,8 @@ def _same(a, b) -> bool:
 
 
 CONCLUSIONS = (
-    ("the contending sets (K = 1, both regimes; each facet at K = 3)", ("contending |",)),
-    ("each facet's leading metrics", ("leading |",)),
+    ("the contending sets (K = 1, both regimes; each term at K = 3)", ("contending |",)),
+    ("each term's leading metrics", ("leading |",)),
     ("the signs of the tensions (the reported pairs, both regimes)", ("tension |",)),
     ("the selected temperatures (K = 1, 2, 3, both regimes)", ("tau |",)),
     ("the certificate statuses (K = 1, 2, 3, both regimes)", ("certificate |",)),
@@ -667,7 +663,7 @@ def report(
         "measurements). Every table of Appendix D and every generated sentence of the case "
         "sections was computed, and each quantity is compared at the precision the paper prints "
         "it (tables at four significant digits, temperatures at one decimal, sentences "
-        "verbatim). The facets of K = 2 and K = 3 are compared as labelled and, separately, as "
+        "verbatim). The terms of K = 2 and K = 3 are compared as labelled and, separately, as "
         "an unlabelled set.", "",
     ]  # fmt: skip
     if runtime_s is not None:

@@ -15,8 +15,8 @@ import case
 import numpy as np
 from generate_model import DATASET_LABELS, PLANTED, planted_table
 from paper_common import Md, frame_table, md_table
-from paper_facets import aligned
 from paper_stability import residue_bound, stable, stable_frame, summary
+from paper_terms import aligned
 
 
 def _cite(regime) -> str:
@@ -45,20 +45,20 @@ def _t(df, prefix, key=None):
     return frame_table(stable_frame(df, prefix, key))
 
 
-def _facets(regime, ft):
-    """The K = 3 facet table with each moving quantity stated as the datasets allow.
+def _terms(regime, ft):
+    """The K = 3 term table with each moving quantity stated as the datasets allow.
 
-    ``ft`` carries the stored facet labels (:func:`paper_facets.aligned`). The leading exponents
+    ``ft`` carries the stored term labels (:func:`paper_terms.aligned`). The leading exponents
     are named in the order they hold in every dataset; their values are those of the exponent
     table, to the digits that held.
     """
-    table = stable_frame(ft, f"D facets K=3 | {regime}", "facet")
+    table = stable_frame(ft, f"D terms K=3 | {regime}", "term")
     three = lambda v: f"{v:.3f}"  # noqa: E731
     for i, text in enumerate(table["largest exponents"]):
-        label = int(ft["facet"].iloc[i])
+        label = int(ft["term"].iloc[i])
         pairs = [part.rsplit(" ", 1)[0] for part in text.split(", ")]
         table.iat[i, table.columns.get_loc("largest exponents")] = ", ".join(
-            f"{name} " + stable(f"D exponents K=3 | {regime} | {name} | facet {label}", three)
+            f"{name} " + stable(f"D exponents K=3 | {regime} | {name} | term {label}", three)
             for name in pairs
         )
     return table
@@ -93,8 +93,8 @@ def k_diagnostics() -> Md:
     return Md("\n\n".join(parts))
 
 
-def exponents_and_facets() -> Md:
-    """Exponents per metric at K = 1 and K = 3, and the facet tables, per regime.
+def exponents_and_terms() -> Md:
+    """Exponents per metric at K = 1 and K = 3, and the term tables, per regime.
 
     Returns
     -------
@@ -109,8 +109,8 @@ def exponents_and_facets() -> Md:
             + _t(case.exponent_table(s, k1), f"D exponents K=1 | {r}", "metric")
             + f"\n\n{_cite(r)}, K = 3:\n\n"
             + _t(exp3, f"D exponents K=3 | {r}", "metric")
-            + f"\n\n{_cite(r)}, K = 3, per facet:\n\n"
-            + frame_table(_facets(r, ft3))
+            + f"\n\n{_cite(r)}, K = 3, per term:\n\n"
+            + frame_table(_terms(r, ft3))
             + _thin_terms(ft3)
         )  # fmt: skip
     return Md("\n\n".join(parts))
@@ -123,7 +123,7 @@ def _thin_terms(ft) -> str:
     only the association reading, which needs the rows, is not made (``case.has_reading``).
     """
     out = ""
-    for label, n in zip(ft["facet"], ft["near-frontier"], strict=True):
+    for label, n in zip(ft["term"], ft["near-frontier"], strict=True):
         if int(n) < case.MIN_NEAR_FRONTIER:
             reason = case.thin_reason(n)
             out += (
@@ -153,8 +153,8 @@ def termination_records() -> Md:
     Returns
     -------
     Md
-        Status, largest facet gap, margin, radius and the Corollary bound, as printed by the code,
-        and the planted facets' recovery (largest exponent deviation after matching facets).
+        Status, largest term gap, margin, radius and the Corollary bound, as printed by the code,
+        and the planted terms' recovery (largest exponent deviation after matching terms).
     """
     import k_terms
 
@@ -172,7 +172,7 @@ def termination_records() -> Md:
         planted_rec[col] = [residue_bound(v) for v in planted_rec[col]]
     parts.append(f"Dataset {DATASET_LABELS['planted']}, temperature {PLANTED_TAU:g}:\n\n"
                  + frame_table(planted_rec))  # fmt: skip
-    parts.append(md_table(["Planted facets", "Largest exponent deviation after matching facets"],
+    parts.append(md_table(["Planted terms", "Largest exponent deviation after matching terms"],
                           [[len(P), dev]]))  # fmt: skip
     return Md("\n\n".join(parts))
 
@@ -292,8 +292,8 @@ def _names():
 # -- D.11: stability of the conclusions under rounding-level jitter ----------------------------
 
 CONCLUSIONS = (
-    ("the contending sets (K = 1 and each facet at K = 3)", ("contending |",), ""),
-    ("each facet's leading metrics", ("leading |",), ""),
+    ("the contending sets (K = 1 and each term at K = 3)", ("contending |",), ""),
+    ("each term's leading metrics", ("leading |",), ""),
     ("the signs of the reported tensions", ("tension |",), "sign"),
     ("the fit temperatures, to the printed 0.1", ("tau |",), ""),
     ("the certificate statuses", ("certificate |",), "| status"),
@@ -334,13 +334,13 @@ def _moving_rows():
             for kind in ("pearson", "spearman")
         ]
         groups += [
-            (f"facet {k} share, K = 3, {r}", f"D facets K=3 | {r} | {k} | share", four)
+            (f"term {k} share, K = 3, {r}", f"D terms K=3 | {r} | {k} | share", four)
             for k in (1, 2, 3)
         ]
         groups += [
             (f"{what}, K = {K}, {r}", f"certificate | {r} | {K} | {col}", four)
             for K in (2, 3)
-            for what, col in (("largest facet gap", "max gap"), ("margin", "gamma"),
+            for what, col in (("largest term gap", "max gap"), ("margin", "gamma"),
                               ("radius", "radius"))
         ]  # fmt: skip
     rows = []
@@ -404,24 +404,24 @@ def stability() -> Md:
 
 
 OWN_ROWS_SEEDS = 20
-"""Planted tables for the own-rows comparison (the spike's twenty seeds, three facets each)."""
+"""Planted tables for the own-rows comparison (the spike's twenty seeds, three terms each)."""
 OWN_ROWS_TOLERANCE = 0.05
-"""A facet is recovered when its largest exponent error is within this."""
+"""A term is recovered when its largest exponent error is within this."""
 
 
 def own_rows_refit() -> Md:
-    """The refit of a facet on its own rows against the support refit, given the true labels.
+    """The refit of a term on its own rows against the support refit, given the true labels.
 
-    Planted tables of 400 rows, 4 metrics and 3 facets (``make_frontier_data``, seeds 0 to 19)
-    are fitted once per facet with the true labels given, so the alternation plays no part: the
-    plain ``K = 1`` fit on the facet's own rows, and the support refit that the solver uses (the
-    fit of all rows with the log-metrics centred at the facet's mean). The same comparison is
+    Planted tables of 400 rows, 4 metrics and 3 terms (``make_frontier_data``, seeds 0 to 19)
+    are fitted once per term with the true labels given, so the alternation plays no part: the
+    plain ``K = 1`` fit on the term's own cell, and the support refit that the solver uses (the
+    fit of all rows with the log-metrics centred at the term's mean). The same comparison is
     ``docs/superpowers/notes/spike-facet-refit/bench_oracle.py`` (methods A and B).
 
     Returns
     -------
     Md
-        Per temperature: the facets, the facets each refit recovers to within
+        Per temperature: the terms, the terms each refit recovers to within
         :data:`OWN_ROWS_TOLERANCE` and the largest exponent error of each.
     """
     from hyperbolic_trade_space import make_frontier_data
@@ -432,7 +432,7 @@ def own_rows_refit() -> Md:
         err = {"own": [], "support": []}
         for seed in range(OWN_ROWS_SEEDS):
             X, info = make_frontier_data(400, 4, n_terms=3, random_state=seed)
-            U, lab = np.log(X), np.asarray(info["facet"])
+            U, lab = np.log(X), np.asarray(info["term"])
             for k, planted in enumerate(np.asarray(info["exponents"])):
                 mine = U[lab == k]
                 w_own = solve_slsqp(mine, tau).w
@@ -452,7 +452,7 @@ def own_rows_refit() -> Md:
         + md_table(
             [
                 "Temperature",
-                "Planted facets",
+                "Planted terms",
                 "Own-rows refit recovers",
                 "Largest error, own rows",
                 "Support refit recovers",
@@ -464,12 +464,12 @@ def own_rows_refit() -> Md:
 
 
 def conditioning_diagnostic() -> Md:
-    """The conditioning of the exponents, ``conditioning_``, per regime, K and facet.
+    """The conditioning of the exponents, ``conditioning_``, per regime, K and term.
 
     Returns
     -------
     Md
-        The smallest eigenvalue of the restricted Hessian of the objective at each facet's fit, to
+        The smallest eigenvalue of the restricted Hessian of the objective at each term's fit, to
         two digits: a small value flags a nearly flat direction (weak identifiability of the
         exponents); a read-only diagnostic of the estimator.
     """
@@ -482,7 +482,7 @@ def conditioning_diagnostic() -> Md:
         ]
         parts.append(
             f"{_cite(r)}:\n\n"
-            + md_table(["K", "Facet", "`conditioning_` (smallest eigenvalue)"], rows)
+            + md_table(["K", "Term", "`conditioning_` (smallest eigenvalue)"], rows)
         )
     return Md("\n\n".join(parts))
 
@@ -494,25 +494,25 @@ RECOVERY_SEEDS = 20
 RECOVERY_TAUS = (np.inf, 50.0)
 """The exact maximum and a working temperature."""
 RECOVERY_ROWS = 400
-"""Rows of each planted table (four metrics, three facets)."""
+"""Rows of each planted table (four metrics, three terms)."""
 RECOVERY_RIGHT = 0.9
-"""A table is recovered when at least this fraction of its frontier rows lie on the right facet."""
+"""A table is recovered when at least this fraction of its frontier rows lie on the right term."""
 
 
 @cache
 def recovery_runs() -> tuple:
     """The fit of every planted table at every temperature, as the solver's defaults make it.
 
-    ``HyperbolicTradeSpace(n_terms=3, random_state=0)`` with five restarts, the planted facets
+    ``HyperbolicTradeSpace(n_terms=3, random_state=0)`` with five restarts, the planted terms
     matched to the fitted ones by the permutation that minimizes the largest exponent error. A
     table is recovered when that error is under :data:`OWN_ROWS_TOLERANCE` and at least
-    :data:`RECOVERY_RIGHT` of its frontier rows lie on the right facet.
+    :data:`RECOVERY_RIGHT` of its frontier rows lie on the right term.
 
     Returns
     -------
     tuple of dict
         Per table and temperature: ``seed``, ``tau``, ``rows_on_thinnest`` (frontier rows of the
-        planted facet with fewest), ``error``, ``right``, ``status``, ``max_gap`` (the largest
+        planted term with fewest), ``error``, ``right``, ``status``, ``max_gap`` (the largest
         term gap at termination), ``tol`` (the solver tolerance it is read against) and
         ``recovered``.
     """
@@ -523,7 +523,7 @@ def recovery_runs() -> tuple:
         for seed in range(RECOVERY_SEEDS):
             X, info = make_frontier_data(RECOVERY_ROWS, 4, n_terms=3, random_state=seed)
             planted = np.asarray(info["exponents"], float)
-            truth, front = np.asarray(info["facet"]), np.asarray(info["frontier_mask"])
+            truth, front = np.asarray(info["term"]), np.asarray(info["frontier_mask"])
             est = HyperbolicTradeSpace(temperature=tau, n_terms=3, random_state=0).fit(X)
             fitted = np.atleast_2d(est.exponents_)
             error, perm = min(
@@ -531,7 +531,7 @@ def recovery_runs() -> tuple:
                 for p in itertools.permutations(range(3))
             )
             back = {fit_k: k for k, fit_k in enumerate(perm)}
-            mapped = np.array([back[f] for f in np.asarray(est.facet_)])
+            mapped = np.array([back[f] for f in np.asarray(est.cell_)])
             right = float((mapped[front] == truth[front]).mean())
             out.append({
                 "seed": seed, "tau": tau, "error": error, "right": right,
@@ -552,7 +552,7 @@ def planted_recovery() -> Md:
     """Does the fit recover a known answer: twenty planted tables, at two temperatures.
 
     Only what is the same on every platform is printed. At the exact maximum a row of the frontier
-    can lie on two facet planes (gap G-10), so the status a failing fit stops with and its error
+    can lie on two term planes (gap G-10), so the status a failing fit stops with and its error
     values follow the platform's tie-breaking and are not printed; at temperature 50 the status
     and the errors are the same on macOS arm64 and Linux amd64 and are printed.
 
@@ -560,9 +560,9 @@ def planted_recovery() -> Md:
     -------
     Md
         The count of tables recovered at each temperature and, for each table not recovered at
-        either, the frontier rows of its thinnest planted facet, whether it was recovered at the
+        either, the frontier rows of its thinnest planted term, whether it was recovered at the
         exact maximum and at temperature 50, and at temperature 50 the solver's status, the largest
-        exponent error and the share of frontier rows on the right facet.
+        exponent error and the share of frontier rows on the right term.
     """
     runs = recovery_runs()
     hot, warm = RECOVERY_TAUS
@@ -588,24 +588,24 @@ def planted_recovery() -> Md:
     cap_above = sum(r["status"] == "iteration_cap" and r["max_gap"] >= tol for r in runs)
     return Md(
         f"Dataset {DATASET_LABELS['planted']}, the generator of Appendix C at {RECOVERY_ROWS} "
-        f"rows, 4 metrics and 3 facets, seeds 0 to {RECOVERY_SEEDS - 1}, the solver's defaults "
+        f"rows, 4 metrics and 3 terms, seeds 0 to {RECOVERY_SEEDS - 1}, the solver's defaults "
         f"(five restarts, `random_state = 0`). A table is recovered when the largest error of "
-        f"the exponents, after matching fitted to planted facets, is under {OWN_ROWS_TOLERANCE} "
-        f"and at least {RECOVERY_RIGHT:.0%} of its frontier rows lie on the right facet.\n\n"
+        f"the exponents, after matching fitted to planted terms, is under {OWN_ROWS_TOLERANCE} "
+        f"and at least {RECOVERY_RIGHT:.0%} of its frontier rows lie on the right term.\n\n"
         + md_table(["Temperature", "Planted tables", "Recovered", "Seeds not recovered"],
                    summary_rows)
-        + "\n\nThe tables not recovered, with the frontier rows of their thinnest planted facet "
-        "(a facet needs at least 5 frontier rows, one more than there are metrics, to be "
+        + "\n\nThe tables not recovered, with the frontier rows of their thinnest planted term "
+        "(a term needs at least 5 frontier rows, one more than there are metrics, to be "
         "determined by them), whether each was recovered at the exact maximum and at temperature "
         f"{warm:g}, and at temperature {warm:g} the solver's status, the largest exponent error "
-        "and the share of frontier rows on the right facet:\n\n"
-        + md_table(["Seed", "Frontier rows, thinnest facet", "Recovered at the exact maximum",
+        "and the share of frontier rows on the right term:\n\n"
+        + md_table(["Seed", "Frontier rows, thinnest term", "Recovered at the exact maximum",
                     f"Recovered at temperature {warm:g}", f"Status at {warm:g}",
-                    f"Largest error at {warm:g}", f"Frontier rows on the right facet at {warm:g}"],
+                    f"Largest error at {warm:g}", f"Frontier rows on the right term at {warm:g}"],
                    failures)
         + "\n\nAt the exact maximum the fit of each of these tables stops without a margin "
         "(`stationary_without_margin`) or at the iteration cap, depending on the platform, "
-        "and its errors move with it, so neither is printed: a frontier row on two facet planes "
+        "and its errors move with it, so neither is printed: a frontier row on two term planes "
         "ties at the exact maximum and the platform's argmax and linear-program vertex choice "
         "resolve the tie (gap G-10). Whichever status a fit stopped with, its largest term gap "
         f"at termination was below `tol` ({tol:g}) in {below} of the {len(runs)} fits (level 2, "
@@ -615,7 +615,7 @@ def planted_recovery() -> Md:
         f"and the seeds: {len(runs) // len(RECOVERY_TAUS) - len(seeds)} of {RECOVERY_SEEDS} "
         "tables were recovered, and the seeds above failed, at both temperatures on macOS arm64 "
         f"and on Linux amd64. Every table recovered has at least {min(thin)} frontier rows on "
-        f"each planted facet. At temperature {warm:g} the status and the errors, printed to two "
+        f"each planted term. At temperature {warm:g} the status and the errors, printed to two "
         "digits, were the same on both platforms."
     )  # fmt: skip
 
@@ -659,7 +659,7 @@ def margin_reading() -> Md:
     -------
     Md
         Per regime and K > 1: the margin, the stable radius, the band 1/tau, and the median over
-        the designs of the gap between best and second-best facet score.
+        the designs of the gap between best and second-best term score.
     """
     parts = []
     for r in _studies():
@@ -675,7 +675,7 @@ def margin_reading() -> Md:
         parts.append(
             f"{_cite(r)}:\n\n"
             + md_table(["K", "Margin (gamma)", "Stable radius", "Band 1/tau",
-                        "Median best-minus-second-best facet score"], rows)
+                        "Median best-minus-second-best term score"], rows)
         )  # fmt: skip
     return Md("\n\n".join(parts))
 

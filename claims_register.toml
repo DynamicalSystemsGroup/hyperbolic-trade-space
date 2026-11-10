@@ -1422,7 +1422,7 @@ fragment = "*One facet at $K=1$:* constant elasticities; $K>1$ is built."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
-backing = ["lemma:L7.5", "test:tests/test_estimator.py::test_k_terms_recovers_planted_facets", "test:tests/test_estimator.py::test_n_terms_above_one_is_implemented"]
+backing = ["lemma:L7.5", "test:tests/test_estimator.py::test_k_terms_recovers_planted_terms", "test:tests/test_estimator.py::test_n_terms_above_one_is_implemented"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1674,7 +1674,7 @@ fragment = "Beyond one facet, K > 1 is built"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_estimator.py::test_n_terms_above_one_is_implemented", "test:tests/test_estimator.py::test_k_terms_recovers_planted_facets"]
+backing = ["test:tests/test_estimator.py::test_n_terms_above_one_is_implemented", "test:tests/test_estimator.py::test_k_terms_recovers_planted_terms"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1906,7 +1906,7 @@ backing = ["test:tests/test_soft_fit.py::test_r6_analysis_stays_analysis", "file
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "facet_ is argmax over the fitted scores, analysis not part of the model; contract: facet_ stays the analysis by the dominant term"
+note = "cell_ is argmax over the fitted scores, analysis not part of the model; contract: cell_ stays the analysis by the dominant term"
 
 [[claim]]
 id = "C146"
@@ -1950,7 +1950,7 @@ fragment = "`stationary_without_margin`: the same with a zero margin or an empty
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:tests/test_estimator.py::test_termination_record_for_k_terms", "test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_facets"]
+backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:tests/test_estimator.py::test_termination_record_for_k_terms", "test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_terms"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2350,7 +2350,7 @@ backing = ["test:tests/test_estimator.py::test_attributes_exist_for_every_k_and_
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "exponents_, facet_, coefficients_, facet_share_ exist at K=1 and K>1"
+note = "exponents_, cell_, coefficients_, term_share_ exist at K=1 and K>1"
 
 [[claim]]
 id = "C183"
@@ -2530,7 +2530,7 @@ backing = ["test:tests/test_soft_fit.py::test_r2_the_default_is_the_explicit_inf
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Default term_temperature is inf (sharp); facet_ is one argmax label per design"
+note = "Default term_temperature is inf (sharp); cell_ is one argmax label per design"
 
 [[claim]]
 id = "C198"
@@ -2542,7 +2542,7 @@ backing = ["test:tests/test_soft_fit.py::test_r6_analysis_stays_analysis", "glos
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "test pins facet_ as argmax of the fitted scores, computed from the model (analysis)"
+note = "test pins cell_ as argmax of the fitted scores, computed from the model (analysis)"
 
 [[claim]]
 id = "C199"
@@ -2634,7 +2634,7 @@ fragment = "terms there is one contending set per facet, and elasticities vary b
 file = "docs/theory.md"
 anchor = ""
 kind = "M"
-backing = ["test:tests/test_tensions.py::test_k3_reports_one_per_facet_recover_planted_supports", "glossary:contending-set"]
+backing = ["test:tests/test_tensions.py::test_k3_reports_one_per_term_recover_planted_supports", "glossary:contending-set"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -2718,7 +2718,7 @@ fragment = "minimization [@candes2008enhancing]: the sparsity option, `penalty=\
 file = "docs/further-reading.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_solvers.py::test_reweighted_l1_gives_exact_zeros_on_planted_sparse_facet", "test:tests/test_estimator.py::test_penalty_gives_exact_zero_exponents_at_the_estimator"]
+backing = ["test:tests/test_solvers.py::test_reweighted_l1_gives_exact_zeros_on_planted_sparse_term", "test:tests/test_estimator.py::test_penalty_gives_exact_zero_exponents_at_the_estimator"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -3594,7 +3594,7 @@ fragment = "At K > 1 the function returns a list of K reports, one per facet, ea
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_tensions.py::test_k3_reports_one_per_facet_recover_planted_supports", "test:tests/test_tensions.py::test_k1_is_a_single_report_and_facet_error_names_facet"]
+backing = ["test:tests/test_tensions.py::test_k3_reports_one_per_term_recover_planted_supports", "test:tests/test_tensions.py::test_k1_is_a_single_report_and_term_error_names_term"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -3606,7 +3606,7 @@ fragment = "dominates. A facet with fewer than `min_near_frontier` (default 10) 
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_tensions.py::test_k3_reports_one_per_facet_recover_planted_supports", "test:tests/test_tensions.py::test_k1_is_a_single_report_and_facet_error_names_facet", "test:tests/test_tensions.py::test_too_few_near_frontier_raises"]
+backing = ["test:tests/test_tensions.py::test_k3_reports_one_per_term_recover_planted_supports", "test:tests/test_tensions.py::test_k1_is_a_single_report_and_term_error_names_term", "test:tests/test_tensions.py::test_too_few_near_frontier_raises"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -3714,7 +3714,7 @@ fragment = "For a multi-term fit, log V is the soft maximum over facets, and `im
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_estimator.py::test_k_terms_improvement_factors_use_assigned_facet", "test:tests/test_estimator.py::test_k_terms_round_trip_and_scores"]
+backing = ["test:tests/test_estimator.py::test_k_terms_improvement_factors_use_assigned_term", "test:tests/test_estimator.py::test_k_terms_round_trip_and_scores"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -3882,7 +3882,7 @@ fragment = "gives a per-row label to pass as `color=`."
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_plotting.py::test_surface_k3_one_colour_by_default_and_coordinates_facet_colouring", "func:src/hyperbolic_trade_space/plotting.py::facet_labels"]
+backing = ["test:tests/test_plotting.py::test_surface_k3_one_colour_by_default_and_coordinates_cell_colouring", "func:src/hyperbolic_trade_space/plotting.py::cell_labels"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -4054,7 +4054,7 @@ backing = ["test:tests/test_solvers.py::test_terms_monotone_history_and_stops", 
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "descent holds up to guard_tol 1e-12 and not under facet_step='tangent' (status not_applicable); mean_slack_ defined at every K is pinned"
+note = "descent holds up to guard_tol 1e-12 and not under refit_step='tangent' (status not_applicable); mean_slack_ defined at every K is pinned"
 
 [[claim]]
 id = "C325"
@@ -4110,7 +4110,7 @@ fragment = "At infinite temperature this happens when a frontier row lies on two
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_facets", "test:tests/test_solvers.py::test_r1_planted_certificates"]
+backing = ["test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_terms", "test:tests/test_solvers.py::test_r1_planted_certificates"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -4206,7 +4206,7 @@ fragment = "1e-8, `EPS_FEAS` = 1e-9, `GUARD_TOL` = 1e-12, `POLISH_STEPS` = 5."
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_solvers.py::test_default_path_has_no_warnings_and_constants", "test:tests/test_solvers.py::test_polish_never_increases_the_facet_objective_and_closes_the_gap", "test:tests/test_estimator.py::test_constants_are_reexported"]
+backing = ["test:tests/test_solvers.py::test_default_path_has_no_warnings_and_constants", "test:tests/test_solvers.py::test_polish_never_increases_the_term_objective_and_closes_the_gap", "test:tests/test_estimator.py::test_constants_are_reexported"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -4218,7 +4218,7 @@ fragment = "exponents (above 1e-3), one per facet. A small value marks a nearly 
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_estimator.py::test_conditioning_per_facet_and_nan_cases"]
+backing = ["test:tests/test_estimator.py::test_conditioning_per_term_and_nan_cases"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -4230,7 +4230,7 @@ fragment = "temperature and for a facet with fewer than two participating expone
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_estimator.py::test_conditioning_per_facet_and_nan_cases"]
+backing = ["test:tests/test_estimator.py::test_conditioning_per_term_and_nan_cases"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -4254,7 +4254,7 @@ fragment = "The margin `gamma` is in score units (log metrics), the scale of the
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_facets"]
+backing = ["test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_terms"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -4266,7 +4266,7 @@ fragment = "`gamma / (2R)`, with R the largest norm of a row (u, -1). Compare `g
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "M"
-backing = ["lemma:L13.11", "test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_facets"]
+backing = ["lemma:L13.11", "test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_terms"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -4458,7 +4458,7 @@ fragment = "What trades against what depends on where a design sits."
 file = "site/index.html"
 anchor = ""
 kind = "M"
-backing = ["lemma:L7", "lemma:L10", "test:tests/test_site.py::test_why_labels_come_from_the_exponents", "test:tests/test_site.py::test_why_regions_partition_the_triangle_and_there_are_three_facets"]
+backing = ["lemma:L7", "lemma:L10", "test:tests/test_site.py::test_why_labels_come_from_the_exponents", "test:tests/test_site.py::test_why_regions_partition_the_triangle_and_there_are_three_terms"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -4951,7 +4951,7 @@ backing = [
   "gen:examples/adcs/case.py::thin_reason",
   "gen:paper/generate_results.py::_thin_terms",
   "test:tests/test_case.py::test_thin_term_is_reported_from_the_estimator_and_gets_its_reason",
-  "test:tests/test_case.py::test_k3_facets_equal_the_primary_record",
+  "test:tests/test_case.py::test_k3_terms_equal_the_primary_record",
 ]
 status = "backed"
 disposition = "keep"
@@ -4967,12 +4967,12 @@ kind = "R"
 backing = [
   "gen:paper/generate_findings.py::k_sweep_sentence",
   "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-  "test:tests/test_case.py::test_k3_facets_equal_the_primary_record",
+  "test:tests/test_case.py::test_k3_terms_equal_the_primary_record",
 ]
 status = "backed"
 disposition = "keep"
 source = "swap-evidence part 5 (num-k-sweep); part 6 finding 3 leaves the term/facet naming to WP24"
-note = "the metrics in a K = 3 contending set and not in the K = 1 set that are a term's largest exponent: control effort (term 2, 0.397) and peak slew power (term 3, 0.612) on the primary data; the sentence is computed from the fits and its committed output is pinned as current; the facet test pins peak slew power leading the largest term"
+note = "the metrics in a K = 3 contending set and not in the K = 1 set that are a term's largest exponent: control effort (term 2, 0.397) and peak slew power (term 3, 0.612) on the primary data; the sentence is computed from the fits and its committed output is pinned as current; the term test pins peak slew power leading the largest term"
 
 [[claim]]
 id = "C395"

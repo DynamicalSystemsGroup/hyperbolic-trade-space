@@ -55,7 +55,7 @@ def select_temperature(X, target_frac_above=0.10, bounds=(1e-1, 1e4), tol=0.01, 
     ValueError
         If the target is not bracketed by the fits at ``bounds``. The message gives the fractions at
         both ends and what to try (a target within the achieved range, a fixed
-        ``temperature``, wider ``bounds``). For ``n_terms > 1`` the facets are not supporting planes
+        ``temperature``, wider ``bounds``). For ``n_terms > 1`` the terms are not supporting planes
         (rows can lie above them),
         so ``frac_above_`` levels off above zero as ``tau`` grows and the default target 0.10
         may be out of reach.
@@ -99,7 +99,7 @@ def select_temperature(X, target_frac_above=0.10, bounds=(1e-1, 1e4), tol=0.01, 
             if n_terms > 1:
                 what = f"raise the target to about {lo_f + 0.02:.2f} or more"
                 why = (
-                    f"with n_terms={n_terms} the facets are not supporting planes (rows can lie "
+                    f"with n_terms={n_terms} the terms are not supporting planes (rows can lie "
                     f"above them), so frac_above_ levels off near {lo_f:.2f} as tau grows"
                 )
             else:

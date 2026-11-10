@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 13
+contract_version = 14
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -60,15 +60,15 @@ submodules = [
 [package.submodule_names]
 solvers = [
   "DISTINCT_TERMS_DISTANCE", "EPS_FEAS", "EPS_KKT", "GUARD_TOL", "POLISH_STEPS", "SolveResult", "Termination", "TermsResult",
-  "assignment_margin", "distinct_terms", "facet_gap", "facet_objective", "fixed_assignment_bound", "log_mean_exp",
-  "objective_and_grad", "simplex_gap", "single_facet_termination", "soft_certificate",
+  "assignment_margin", "distinct_terms", "fixed_assignment_bound", "log_mean_exp",
+  "objective_and_grad", "simplex_gap", "single_term_termination", "soft_certificate",
   "soft_hessian", "soft_objective", "soft_weights", "solve_lp", "solve_slsqp", "solve_terms",
-  "support_weights",
+  "support_weights", "term_gap", "term_objective",
 ]
 coordinates = ["alr_basis", "from_frontier_coordinates", "helmert_basis", "to_frontier_coordinates"]
 gaps = ["find_holes", "frontier_targets", "knn_gap_scores", "orient_by_pca"]
 plotting = [
-  "facet_labels", "plot_frontier_coordinates", "plot_frontier_surface_3d", "plot_log_plane",
+  "cell_labels", "plot_frontier_coordinates", "plot_frontier_surface_3d", "plot_log_plane",
   "plot_tensions", "plot_ternary", "plot_v_by_variable", "ternary_marker_values",
 ]
 datasets = ["make_configured_frontier_data", "make_frontier_data"]
@@ -81,17 +81,17 @@ estimator = ["HyperbolicTradeSpace"]
 # Parameter names of the WP13 certificate functions (floor on names; signatures exact).
 [package.signatures.solvers]
 simplex_gap = ["g", "w", "min_exponent"]
-facet_gap = ["U", "w", "ubar", "tau", "min_exponent", "p"]
+term_gap = ["U", "w", "ubar", "tau", "min_exponent", "p"]
 assignment_margin = ["U", "W", "beta"]
 fixed_assignment_bound = ["U", "W", "labels", "tau", "min_exponent", "P"]
 
 # Fitted attributes and methods the paper reads.
 [package.estimator]
 class = "HyperbolicTradeSpace"
-fitted_attributes = ["exponents_", "log_offset_", "training_log_v_", "termination_", "conditioning_", "mean_slack_", "facet_", "coefficients_", "facet_share_"]
+fitted_attributes = ["exponents_", "log_offset_", "training_log_v_", "termination_", "conditioning_", "mean_slack_", "cell_", "coefficients_", "term_share_"]
 methods = [
   "fit", "fit_transform", "transform", "inverse_transform", "score_samples", "invariant_value",
-  "improvement_factors", "level_set", "novelty_score", "project", "assign_facets",
+  "improvement_factors", "level_set", "novelty_score", "project", "assign_cells",
 ]
 # Constructor keyword of the term aggregation (version 9, WP21 D-1): default and the values fit accepts.
 term_aggregation_default = "sum"
@@ -106,7 +106,7 @@ termination_statuses = [
   "certified", "stationary_without_margin", "stationary", "uncertified", "guard_stop",
   "iteration_cap", "not_applicable",
 ]
-# Per-facet report: the fields of hyperbolic_trade_space.tensions.TensionReport.
+# Per-term report: the fields of hyperbolic_trade_space.tensions.TensionReport.
 report_class = "hyperbolic_trade_space.tensions.TensionReport"
 report_fields = [
   "participating", "exponents", "elasticities", "association", "association_kind",
@@ -171,7 +171,7 @@ data_dir = "examples/adcs/data/v2/"   # amendment 13: the data of record the cas
 frozen_data_dir = "examples/adcs/data/"   # amendment 13: the frozen generation, the cited comparison; holds the files of case.data
 data_rule = "committed, seeded; regenerated only by a package whose scope says so"
 producing_command = "uv run python examples/adcs/k_terms.py"
-smoke_run = "k_terms.run_regime(regime, seeds=[0], figs=<tmp dir>, verbose=False)"
+smoke_run = "k_terms.run_regime(regime, seeds=[0], verbose=False)"
 
 [case.regime_files]
 primary = "adcs_designs_cubesat_gains.csv"
@@ -183,9 +183,9 @@ make_conditioner = ["attrs"]
 fit_k = ["M", "K", "tau", "seed"]
 select_tau = ["M", "K", "target"]
 reports = ["est", "M", "band"]
-facet_record = ["est", "reps", "rows"]
+term_record = ["est", "reps", "rows"]
 certificate = ["est"]
-run_regime = ["regime", "seeds", "n_max", "figs", "make_figures", "verbose"]
+run_regime = ["regime", "seeds", "n_max", "verbose"]
 main = ["argv"]
 
 [case.signatures.generate_dataset]
@@ -215,18 +215,8 @@ main = ["argv"]
 [case.figures]
 dir = "examples/adcs/figures/"
 format = "png"
-patterns = ["^[0-9]{2}_[a-z0-9_]+\\.png$", "^k3_[a-z_]+_(primary|stock)\\.png$"]
-produced_by_numbered = "examples/adcs/adcs_trade_study.ipynb"
-produced_by_k3 = "uv run python examples/adcs/k_terms.py"
-read_only_for = "presentation"
-files = [
-  "01_two_designs.png", "02_tau_sweep.png", "03_frontier_surfaces.png", "04_log_planes.png",
-  "05_coordinates_holes.png", "06_tension_association.png", "07_v_by_category.png",
-  "08_predict_check.png", "09_regime_comparison.png",
-  "k3_frontier_coordinates_primary.png", "k3_frontier_coordinates_stock.png",
-  "k3_log_planes_primary.png", "k3_log_planes_stock.png",
-  "k3_tensions_primary.png", "k3_tensions_stock.png",
-]
+# amendment 14: no committed figure; the directory holds exactly these files (none)
+files = []
 
 [derivation]
 entry_cmd = "uv run python derivation/run.py"

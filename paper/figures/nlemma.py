@@ -1,12 +1,12 @@
 """The n-lemma on the simplex: a candidate figure for Section 4 (WP19, slot S-a5).
 
-For three metrics the simplex of exponent vectors is a triangle. A facet's exponent vector is a
-point of it, and the smallest face holding that point is the facet's contending set: a corner is
+For three metrics the simplex of exponent vectors is a triangle. A term's exponent vector is a
+point of it, and the smallest face holding that point is the term's contending set: a corner is
 one binding metric, an edge a dilemma of the two metrics at its ends, the interior a trilemma
 (assumption A2 and Definition 5 of the paper). The figure fits a synthetic table of three
-metrics with three planted facets, two on edges and one inside, and draws each fitted exponent
-vector beside the planted one. The n-lemma printed for each facet is the tension report's (the
-support of the exact-maximum fit on the facet's rows), not read off the marker.
+metrics with three planted terms, two on edges and one inside, and draws each fitted exponent
+vector beside the planted one. The n-lemma printed for each term is the tension report's (the
+support of the exact-maximum fit on the term's cell), not read off the marker.
 
 Run ``uv run python paper/figures/nlemma.py`` to write ``fig-nlemma.png`` beside this file.
 """
@@ -28,7 +28,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 PLANTED = [[0.0, 0.35, 0.65], [0.5, 0.25, 0.25], [0.7, 0.3, 0.0]]
 TABLE = {"n_samples": 900, "n_features": 3, "n_terms": 3, "random_state": 0}
 FIT = {"n_terms": 3, "temperature": 50.0, "random_state": 0}
-BAND = 0.1  # near-frontier rows of each facet for the tension report
+BAND = 0.1  # near-frontier rows of each term for the tension report
 NAMES = ("metric 1", "metric 2", "metric 3")
 SQ3 = np.sqrt(3.0) / 2.0
 INK = "#1c1c1c"
@@ -42,14 +42,14 @@ def xy(w):
 
 
 def nlemma_data():
-    """The fitted and planted exponent vectors and each facet's contending set.
+    """The fitted and planted exponent vectors and each term's contending set.
 
     Returns
     -------
     dict
-        ``fitted`` (K, 3) and ``planted`` (K, 3) exponent vectors, matched facet by facet;
+        ``fitted`` (K, 3) and ``planted`` (K, 3) exponent vectors, matched term by term;
         ``support`` a list of index arrays (the exact-maximum support); ``lemma`` the names;
-        ``weight`` (K,) the weight each facet's exponents carry on the three metrics drawn.
+        ``weight`` (K,) the weight each term's exponents carry on the three metrics drawn.
     """
     from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data, tension_report
 
@@ -76,7 +76,7 @@ def _members(support):
 
 
 def nlemma_figure(data=None, figsize=(6.4, 3.9)):
-    """Draw the triangle of exponent vectors with its faces named and the facets placed."""
+    """Draw the triangle of exponent vectors with its faces named and the terms placed."""
     d = nlemma_data() if data is None else data
     fig = plt.figure(figsize=figsize)
     ax = fig.add_axes([0.0, 0.0, 0.6, 1.0])
@@ -88,7 +88,7 @@ def nlemma_figure(data=None, figsize=(6.4, 3.9)):
     ax.fill(corners[:, 0], corners[:, 1], color=FACE, zorder=0)
     ax.plot(*np.vstack([corners, corners[:1]]).T, color="0.55", lw=2.2, zorder=1)
     ax.scatter(*corners.T, s=26, color=INK, zorder=3)
-    # Corner names; the top one says what a facet at a corner would be.
+    # Corner names; the top one says what a term at a corner would be.
     places = [(0, 0.04, "bottom", f"{NAMES[0]}\n(corner: it binds alone)"),
               (0, -0.035, "top", NAMES[1]), (0, -0.035, "top", NAMES[2])]  # fmt: skip
     for (x, y), (dx, dy, va, text) in zip(corners, places, strict=True):
@@ -111,11 +111,11 @@ def nlemma_figure(data=None, figsize=(6.4, 3.9)):
         ax.text(x, y, str(k + 1), ha="center", va="center", fontsize=7, color="white",
                 weight="bold", zorder=6)  # fmt: skip
 
-    # The key: one line per facet, its exponents, its n-lemma and the weight drawn.
+    # The key: one line per term, its exponents, its n-lemma and the weight drawn.
     tx = fig.add_axes([0.62, 0.0, 0.38, 1.0])
     tx.set_axis_off()
     y = 0.84
-    tx.text(0.0, y + 0.08, "Each facet's exponent vector", fontsize=9.5, weight="bold", color=INK)
+    tx.text(0.0, y + 0.08, "Each term's exponent vector", fontsize=9.5, weight="bold", color=INK)
     for k, w in enumerate(d["fitted"]):
         col = CATEGORY_COLORS[k]
         tx.scatter([0.03], [y - 0.035], s=95, color=col, transform=tx.transAxes, clip_on=False)
@@ -124,7 +124,7 @@ def nlemma_figure(data=None, figsize=(6.4, 3.9)):
         what = f"{d['lemma'][k]} of {_members(d['support'][k])}"
         if len(d["support"][k]) == 3:
             what = f"{d['lemma'][k]} of all three"
-        tx.text(0.1, y, f"facet {k + 1}: {what}", fontsize=9, color=INK, va="center")
+        tx.text(0.1, y, f"term {k + 1}: {what}", fontsize=9, color=INK, va="center")
         tx.text(0.1, y - 0.07, "w = (" + ", ".join(f"{v:.2f}" for v in w) + ")", fontsize=8.5,
                 color="0.3", va="center")  # fmt: skip
         y -= 0.17

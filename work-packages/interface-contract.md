@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 13. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 14. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,14 +27,14 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 13
+contract_version = 14
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
 package.version_changed_by = "WP8b"
 package.public_names = ["HyperbolicTradeSpace", "LogAffinePreconditioner", "TradeSpaceRegressor", "__version__", "frontier_in_original_units", "make_configured_frontier_data", "make_frontier_data", "select_temperature", "tension_report"]
 package.submodules = ["plotting", "gaps", "solvers", "coordinates", "datasets", "preconditioning", "predictive", "tensions", "tuning", "estimator"]
-package.estimator.fitted_attributes = ["exponents_", "log_offset_", "training_log_v_", "termination_", "conditioning_", "mean_slack_", "facet_", "coefficients_", "facet_share_"]
+package.estimator.fitted_attributes = ["exponents_", "log_offset_", "training_log_v_", "termination_", "conditioning_", "mean_slack_", "cell_", "coefficients_", "term_share_"]
 package.estimator.term_aggregation_default = "sum"
 package.estimator.term_aggregation_values = ["sum", "mean"]
 boundary.oracle.status = "pinned_at_WP15_acceptance"
@@ -130,19 +130,19 @@ and is not part of this contract.
 Pinned: import name `hyperbolic_trade_space`; distribution name `hyperbolic-trade-space`; the
 public names of `__all__` (floor, section 2); the importable submodules (section 2); per submodule
 the importable names (manifest `package.submodule_names`), including the certificate functions
-`simplex_gap`, `facet_gap`, `assignment_margin`, `fixed_assignment_bound`, the `Termination` record
+`simplex_gap`, `term_gap`, `assignment_margin`, `fixed_assignment_bound`, the `Termination` record
 and the tolerances `EPS_FEAS`, `EPS_KKT`, `GUARD_TOL`, `POLISH_STEPS`; the parameter names of the four
 certificate functions; the fitted attributes `termination_` and `conditioning_` (and
-`exponents_`, `log_offset_`, `training_log_v_`; from version 3 also `mean_slack_`, `facet_`, `coefficients_`,
-`facet_share_`, which exist for every number of terms: at one term `facet_` is all zeros and
-`facet_share_` is `[1.0]`; `mean_slack_` is the mean slack, the quantity to compare across numbers of
+`exponents_`, `log_offset_`, `training_log_v_`; from version 3 also `mean_slack_`, `cell_`, `coefficients_`,
+`term_share_`, which exist for every number of terms: at one term `cell_` is all zeros and
+`term_share_` is `[1.0]`; `mean_slack_` is the mean slack, the quantity to compare across numbers of
 terms, while `objective_` is what the solver minimized); the `Termination` field names and status strings;
-the per-facet report fields of `TensionReport`. From version 6 the record also carries
+the per-term report fields of `TensionReport`. From version 6 the record also carries
 `min_curvature` and the status `"stationary"`, and `solvers` also offers `soft_weights`,
 `soft_objective`, `soft_hessian` and `soft_certificate` (see below).
 
 *The soft fit (version 6, WP17).* A finite `term_temperature` kappa, with `n_terms > 1` and
-`facet_step="support"`, selects the soft fit: every design carries the weights
+`refit_step="support"`, selects the soft fit: every design carries the weights
 `softmax_k(kappa (w_k . u - beta_k))` on every term and the fit minimizes the mean slack of the
 model it reports; at the default `np.inf` the fit is the label fit, unchanged. The word
 `"certified"` then has two meanings, by the kind of fit. Label fit: the assignment is fixed, the
@@ -152,8 +152,8 @@ objective is positive definite on the tangent space of the active face (a strict
 the soft objective, the second-order sufficient condition); `"stationary"` is the same gaps with
 curvature not positive (a saddle or a flat direction); `min_curvature` is the smallest curvature
 (`nan` for a label fit); `gamma`, `radius` and `bound` are `nan` for a soft fit. A soft fit at
-`temperature = inf`, with a penalty, or under `facet_step="tangent"` (which ignores kappa) reports
-`"not_applicable"` (the last: the fit is the label fit). `facet_`, the facet shares, the
+`temperature = inf`, with a penalty, or under `refit_step="tangent"` (which ignores kappa) reports
+`"not_applicable"` (the last: the fit is the label fit). `cell_`, the term shares, the
 contending sets and the elasticities stay the analysis by the dominant term; `mean_slack_` is the
 mean slack of the reported model.
 
@@ -195,7 +195,7 @@ contract text and the package's top-level names contain no modeling-tool word or
 The case code lives under `examples/adcs/` and is importable through the `pythonpath` of
 `pyproject.toml` (`.`, `src`, `examples/adcs`). Pinned modules and functions, with parameter names
 (manifest `case.signatures`): `k_terms` (`load_metrics`, `make_conditioner`, `fit_k`, `select_tau`,
-`reports`, `facet_record`, `certificate`, `run_regime`, `main`; attribute `REGIMES`), `generate_dataset`
+`reports`, `term_record`, `certificate`, `run_regime`, `main`; attribute `REGIMES`), `generate_dataset`
 (`generate`, `generate_cubesat`, `main`), `design_space` (`sample_designs`, `evaluate_design`),
 `cubesat_model` (`measure`, `sample_designs`), `adcs_sim` (`simulate_adcs`, `run_step_response`,
 `make_config`), `make_check_designs` (`feasible_primary`, `predict`, `simulate`, `main`).
@@ -221,11 +221,10 @@ by a package whose scope says so, which updates this manifest in the same commit
 
 ## 8. R-4 Figures
 
-Figures the presentation layer embeds are PNG files in `examples/adcs/figures/`, named `NN_name.png`
-(from the case notebook) or `k3_<kind>_<regime>.png` (from `uv run python examples/adcs/k_terms.py`).
-The fifteen files existing today are listed in the manifest (`case.figures.files`). The presentation
-layer treats figures as read-only inputs and never writes there. Figures are committed; the paper is
-committed executed (supervisor, `WP14-decisions.md`, OD1).
+The case commits no figure since version 14: `examples/adcs/figures/` holds exactly the files of
+`case.figures.files`, which is empty (the case notebook's `NN_name.png` went with the notebook, and
+`k_terms.py` no longer writes `k3_<kind>_<regime>.png`). The paper's and the docsite's figures are
+built by their own generators. The paper is committed executed (supervisor, `WP14-decisions.md`, OD1).
 
 ## 9. R-5 Derivation ledger and generated pages
 
@@ -323,6 +322,7 @@ the last row of the change log.
 | 11 | 2026-11-09 | The designs' colour in the plots (`WP19-decisions.md`, the principle check's package item; the supervisor's "Recolour" for docs Figure 8): colouring designs by the term that scores them highest is the cluster idiom and is no plot's default. `plot_ternary` gains a trailing keyword, `plot_ternary(estimator, X=None, names=None, groups=None, lines=False, near=0.2, ax=None, scheme="auto", color=None) -> Axes`: by default the designs are one neutral colour (the near-frontier ones larger); `color="facet"` colours the near-frontier designs by the term that scores each highest (its cell), an analysis of the fit; the region tints, the numbered exponent-vector markers and the lines of equal V are unchanged, so `ternary_marker_values` (row 8) is unchanged. `plot_log_plane` and `plot_frontier_surface_3d` (pinned by name only; signatures unchanged) likewise draw the designs in one colour for any number of terms, with the term lines or the envelope surface as the model, and take `color="facet"` for the cell. Every existing call runs unchanged; the rendered figures change as stated | technical (the docsite and the paper words follow) | the driver under the mandate (`WP19-decisions.md`, the principle check's package item; the supervisor's "Recolour") |
 | 12 | 2026-11-10 | One time metric (WP23 G5, D-4; the supervisor, `WP16-decisions.md`: "One: settling time"): the v2 datasets lose `slew_time_s` and `slew_time_05deg_s`, their headers are pinned (`case.v2.data`, the frozen columns less those two, in the frozen order), the traded metrics of the v2 data are the nine of `case.v2.traded_metrics`, the settling time is read by event detection (`case.v2.settling_time_method = "events"`, WP16 Amendment 2 D-7), and the check-design predictions carry `pred_std_settling_time_s`. No `launch_cost` column (`WP23-decisions.md`, OD2). The frozen files and their `case.data` manifests are unchanged | technical (the paper's figures and numbers that used slew time regenerate in their own stream after the data gate; the docs follow) | the driver under the mandate, recorded in `WP23-decisions.md` at the data gate |
 | 13 | 2026-11-10 | The case reads the data of record (WP23's swap, ea46637): `case.data_dir` changes from `examples/adcs/data/` to `examples/adcs/data/v2/`, where the paper's case module (`CUBESAT.data_dir`, `k_terms.DATA`) now reads; the frozen generation under `examples/adcs/data/` stays the cited comparison and is untouched, so its directory is pinned as the new `case.frozen_data_dir = "examples/adcs/data/"` and the `case.data` file manifests are asserted there. Not additive: one pinned field changes its value (a pinned path moves, which needs an amendment, section 14), with one key added to keep the frozen files pinned. No file moves and no committed number changes | technical (the paper and docs already read the v2 data) | the driver under the mandate, 2026-11-10; WP23's swap, `WP23-decisions.md` |
+| 14 | 2026-11-10 | The word "facet" goes (WP24 push 1; the supervisor's "Everything before 0.1", `WP10-decisions.md`, "The word facet"). The scope (D-7, R-3) names version 11; rows 12 and 13 landed before this one, so it is 14. The pinned names of the model object and of the assignment are renamed, with no alias and no deprecation period (pre-0.1, nothing released; the deprecation clause of this section is not invoked). Estimator: fitted attributes `facet_` to `cell_` and `facet_share_` to `term_share_`; method `assign_facets` to `assign_cells`; constructor keyword `facet_step` to `refit_step` (values `"support"`, `"tangent"` unchanged). `solvers`: `facet_gap` to `term_gap` (parameters `["U", "w", "ubar", "tau", "min_exponent", "p"]` unchanged), `facet_objective` to `term_objective`, `single_facet_termination` to `single_term_termination`. `plotting`: `facet_labels` to `cell_labels` (labels `"cell 1" .. "cell K"`); the option value `color="facet"` of row 11 becomes `color="cell"`; the tension heatmaps' panel prefix `"facet k: "` becomes `"term k: "`. `datasets`: the `info` key `"facet"` to `"term"`. Case (`case.signatures.k_terms`): `facet_record` to `term_record`, parameters unchanged. Figures (section 8): `k_terms.py` no longer writes `examples/adcs/figures/k3_*.png`, which coloured the designs by cell (the idiom `figure-review.md` forbids) and which nothing read; the six files are deleted, `run_regime` loses `figs` and `make_figures` (now `["regime", "seeds", "n_max", "verbose"]`) and returns no `figs` or `panels`; the nine `NN_name.png` pins, whose files went with the case notebook (4bd6bac), leave `case.figures.files` too, which is now empty, with `patterns`, `produced_by_numbered`, `produced_by_k3` and `read_only_for` removed and the R-4 test asserting the directory holds exactly the pinned files. Non-additive: pinned names and a pinned signature change and pinned figures are removed; no fitted number, no figure content of the paper or docsite and no data file changes (the regenerated tables and reports differ in text only) | both | `WP24-scope-of-work.md`, gate outcome 2026-11-09 22:50 (the driver under the mandate); `WP24-decisions.md`; the k3 figures' deletion, the PM's brief for WP24 push 1 (2026-11-10) |
 
 ## 15. Consumers: may assume, must not touch
 

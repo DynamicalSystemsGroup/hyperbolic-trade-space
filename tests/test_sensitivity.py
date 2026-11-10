@@ -84,7 +84,7 @@ def test_column_deviation_on_two_synthetic_tables():
 def test_comparison_separates_printed_change_from_exact_change():
     committed = {
         "tau | primary K=1 | tau selected (printed .1f)": "49.3",
-        "contending | primary K=1 facet 1 | set": "a, b",
+        "contending | primary K=1 term 1 | set": "a, b",
         "D k_table | primary | 1 | objective_": 0.123456,
         "D k_table | primary | 2 | objective_": 0.5,
         "predict | proposal_1 | outcome": "log V pass, position miss",
@@ -99,14 +99,14 @@ def test_comparison_separates_printed_change_from_exact_change():
     assert not same_printed["printed change"] and not same_printed["identical"]
     assert same_printed["min"] == 0.123456 and same_printed["max"] == 0.123457
     assert t.loc["D k_table | primary | 2 | objective_", "printed change"]
-    assert t.loc["contending | primary K=1 facet 1 | set", "identical"]
-    assert t.loc["contending | primary K=1 facet 1 | set", "runs equal"] == 2
-    assert not t.loc["contending | primary K=1 facet 1 | set", "numeric"]
+    assert t.loc["contending | primary K=1 term 1 | set", "identical"]
+    assert t.loc["contending | primary K=1 term 1 | set", "runs equal"] == 2
+    assert not t.loc["contending | primary K=1 term 1 | set", "numeric"]
 
 
 def test_verdicts_name_the_conclusion_that_differs():
     committed = {
-        "contending | primary K=1 facet 1 | set": "a, b",
+        "contending | primary K=1 term 1 | set": "a, b",
         "tension | primary | x, y | pearson sign": "-",
         "tension | primary | x, y | pearson": -0.30,
         "predict | proposal_1 | outcome": "log V pass, position miss",
@@ -116,11 +116,11 @@ def test_verdicts_name_the_conclusion_that_differs():
     tension = next(i for i in ver.index if i.startswith("the signs of the tensions"))
     assert ver.loc[tension, "identical"]  # the value moved, the sign did not
     assert ver.loc[next(i for i in ver.index if "contending" in i), "identical"]
-    runs["2"]["contending | primary K=1 facet 1 | set"] = "a, c"
+    runs["2"]["contending | primary K=1 term 1 | set"] = "a, c"
     ver = sens.verdicts(sens.compare_runs(committed, runs)).set_index("conclusion")
     bad = ver[~ver["identical"]]
     assert any("contending sets" in i for i in bad.index)
-    assert any("contending | primary K=1 facet 1 | set" in q for q in bad["differing"].sum())
+    assert any("contending | primary K=1 term 1 | set" in q for q in bad["differing"].sum())
 
 
 def _sha_tree(root: Path) -> dict:

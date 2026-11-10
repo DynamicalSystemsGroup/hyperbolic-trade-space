@@ -11,15 +11,11 @@ import pytest
 pytestmark = pytest.mark.slow
 
 SCRIPT = Path(k_terms.__file__)
-FIGS = ("log_planes", "frontier_coordinates", "tensions")
 
 
 @pytest.fixture(scope="module", params=list(k_terms.REGIMES))
-def result(request, tmp_path_factory):
-    out = k_terms.run_regime(
-        request.param, seeds=[0], figs=tmp_path_factory.mktemp("figs"), verbose=False
-    )
-    return request.param, out
+def result(request):
+    return request.param, k_terms.run_regime(request.param, seeds=[0], verbose=False)
 
 
 @pytest.mark.slow
@@ -28,8 +24,8 @@ def test_k3_fits_and_three_reports(result):
     est, reps = out["fits"][3], out["reports"][3]
     assert est.exponents_.shape == (3, 9)
     assert len(reps) == 3 and len(out["reports"][1]) == 1 and len(out["reports"][2]) == 2
-    assert np.isclose(est.facet_share_.sum(), 1.0)
-    assert (np.bincount(est.facet_, minlength=3) > 0).all()
+    assert np.isclose(est.term_share_.sum(), 1.0)
+    assert (np.bincount(est.cell_, minlength=3) > 0).all()
     assert all(r.n_lemma == len(r.contending_set) >= 1 for r in reps)
     assert list(out["diag"].K) == [1, 2, 3] and list(out["fixed_diag"].K) == [1, 2, 3]
     assert out["diag"].objective_.is_monotonic_decreasing
@@ -67,31 +63,11 @@ def test_certificate_margin_and_radius_columns(result):
         gamma, radius = MARGIN[regime, K]
         assert row.gamma == pytest.approx(gamma, abs=5e-7)
         assert row.radius == pytest.approx(radius, abs=5e-7)
-    # the per-facet gap column of the K = 3 record is the termination record's gaps
+    # the per-term gap column of the K = 3 record is the termination record's gaps
     est = out["fits"][3]
     assert np.allclose(out["record"]["gap G_k"], est.termination_.gaps)
     assert (out["record"]["gap G_k"] < 1e-12).all()
     assert (out["stab"].status == "certified").all()
-
-
-def test_every_facet_is_drawn_in_some_panel(result):
-    _, out = result
-    drawn = {f for n in out["panels"] for f in n["facets drawn"]}
-    assert drawn == {1, 2, 3}
-    assert len(out["panels"]) <= 3
-
-
-def test_figures_written(result):
-    regime, out = result
-    for name in FIGS:
-        assert (out["figs"] / f"k3_{name}_{regime}.png").stat().st_size > 0
-
-
-def test_committed_figures_exist_if_script_was_run():
-    paths = [k_terms.FIGS / f"k3_{n}_{r}.png" for n in FIGS for r in k_terms.REGIMES]
-    if not any(p.exists() for p in paths):
-        pytest.skip("k_terms.py has not been run")
-    assert all(p.exists() and p.stat().st_size > 0 for p in paths)
 
 
 def test_no_word_red_in_script():

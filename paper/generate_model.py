@@ -1,7 +1,7 @@
 """Appendix C: the case's model, how the table of metrics came to be.
 
 Everything here describes the pipeline up to the method's input and nothing the method computes:
-no exponent, temperature, value of V, facet, reach or share appears in any table (R-26). The tables
+no exponent, temperature, value of V, term, reach or share appears in any table (R-26). The tables
 are produced from the case module's spec and data by calls into ``case``; none is typed. Datasets
 are named once, by the labels of :data:`DATASET_LABELS`, which the tables of Appendix D cite.
 """
@@ -23,9 +23,9 @@ LEDGER = ROOT / "examples" / "adcs" / "experiments" / "ledger" / "ledger.jsonl"
 DATASET_LABELS = {
     "primary": "cubesat-primary",
     "stock": "cubesat-stock",
-    "planted": "planted-3-facet",
+    "planted": "planted-3-term",
 }
-# The planted example: a synthetic table with known facets (how it is generated, not fitted).
+# The planted example: a synthetic table with known terms (how it is generated, not fitted).
 PLANTED = {
     "n_samples": 900,
     "n_features": 4,
@@ -260,20 +260,20 @@ def datasets(spec=None) -> Md:
 
 
 def planted_example() -> Md:
-    """How the planted table is generated: the generator's arguments and the planted facets.
+    """How the planted table is generated: the generator's arguments and the planted terms.
 
     Returns
     -------
     Md
-        The settings of :data:`PLANTED` and the planted exponents, one row per facet.
+        The settings of :data:`PLANTED` and the planted exponents, one row per term.
     """
     p = PLANTED
     settings = md_table(
         ["Argument of make_frontier_data", "Value"],
         [[k, v] for k, v in p.items() if k != "exponents"],
     )
-    facets = md_table(
-        ["Planted facet", *[f"metric {j + 1}" for j in range(p["n_features"])]],
-        [[f"facet {k + 1}", *w] for k, w in enumerate(p["exponents"])],
+    terms = md_table(
+        ["Planted term", *[f"metric {j + 1}" for j in range(p["n_features"])]],
+        [[f"term {k + 1}", *w] for k, w in enumerate(p["exponents"])],
     )
-    return Md(f"Dataset {_label('planted')}:\n\n" + settings + "\n\n" + facets)
+    return Md(f"Dataset {_label('planted')}:\n\n" + settings + "\n\n" + terms)

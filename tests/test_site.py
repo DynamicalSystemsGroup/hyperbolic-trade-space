@@ -919,7 +919,7 @@ def why_fit():
     return bsf, bsf.fit_why()
 
 
-def test_why_regions_partition_the_triangle_and_there_are_three_facets(why_fit):
+def test_why_regions_partition_the_triangle_and_there_are_three_terms(why_fit):
     import numpy as np
 
     bsf, fit = why_fit

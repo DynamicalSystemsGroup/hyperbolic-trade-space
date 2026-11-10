@@ -118,7 +118,7 @@ def test_penalty_validation_and_alpha_zero_exact():
     np.testing.assert_array_equal(lp.w, solve_lp(U).w)
 
 
-def test_reweighted_l1_gives_exact_zeros_on_planted_sparse_facet():
+def test_reweighted_l1_gives_exact_zeros_on_planted_sparse_term():
     # d=4, planted exponents [0.6, 0.4, 0, 0], noisy frontier, tau=20, alpha=0.01 (R-11)
     X, _ = make_frontier_data(300, 4, exponents=[0.6, 0.4, 0, 0], noise=0.1, random_state=0)
     U = np.log(X)
@@ -173,7 +173,7 @@ def test_terms_k1_equals_slsqp_and_degenerate():
     ref = solve_slsqp(U, 20.0)
     np.testing.assert_array_equal(one.W[0], ref.w)
     assert one.beta[0] == ref.beta and one.objective == ref.beta and (one.labels == 0).all()
-    few = solve_terms(U[:2], 3, 20.0)  # fewer rows than facets: the K=1 fit repeated
+    few = solve_terms(U[:2], 3, 20.0)  # fewer rows than terms: the K=1 fit repeated
     assert few.W.shape == (3, 3)
     single = solve_terms(U[:, :1], 2, 20.0)  # d = 1
     np.testing.assert_array_equal(single.W, [[1.0], [1.0]])
@@ -190,9 +190,9 @@ def test_terms_deterministic_and_sparse():
     assert s.W.shape == (3, 4) and np.allclose(s.W.sum(axis=1), 1.0)
 
 
-# ------------------------------------------------ WP9 Amendment 1: the facet step
-def test_default_facet_step_is_unchanged_literals():
-    # stored from the pre-amendment code: the default path must not change (facet order is
+# ------------------------------------------------ WP9 Amendment 1: the term step
+def test_default_term_step_is_unchanged_literals():
+    # stored from the pre-amendment code: the default path must not change (term order is
     # arbitrary, so the rows are compared sorted)
     X, _ = make_frontier_data(400, 4, n_terms=3, random_state=0)
     r = solve_terms(np.log(X), 3, np.inf, random_state=0)
@@ -201,41 +201,41 @@ def test_default_facet_step_is_unchanged_literals():
                     [0.21154331, 0.33382619, 0.24539256, 0.20923794],
                     [0.12557359, 0.23657699, 0.13115001, 0.50669941]])  # fmt: skip
     np.testing.assert_allclose(r.W[np.argsort(r.W[:, 0])], ref[np.argsort(ref[:, 0])], atol=1e-7)
-    same = solve_terms(np.log(X), 3, np.inf, random_state=0, facet_step="support")
+    same = solve_terms(np.log(X), 3, np.inf, random_state=0, refit_step="support")
     np.testing.assert_array_equal(same.W, r.W)
 
 
-def test_facet_step_validated():
-    with pytest.raises(ValueError, match="facet_step"):
-        solve_terms(_planted_k3(), 3, 50.0, facet_step="best")
+def test_term_step_validated():
+    with pytest.raises(ValueError, match="refit_step"):
+        solve_terms(_planted_k3(), 3, 50.0, refit_step="best")
 
 
 @pytest.mark.slow
 @pytest.mark.parametrize("tau,seed", [(np.inf, 0), (np.inf, 2), (50.0, 0), (50.0, 4)])
-def test_tangent_recovers_planted_facets(tau, seed):
+def test_tangent_recovers_planted_terms(tau, seed):
     X, info = make_frontier_data(400, 4, n_terms=3, random_state=seed)
-    fm, facet = info["frontier_mask"], info["facet"]
-    assert np.bincount(facet[fm], minlength=3).min() >= 5  # identifiability: >= d + 1 per facet
-    r = solve_terms(np.log(X), 3, tau, random_state=0, facet_step="tangent")
+    fm, term = info["frontier_mask"], info["term"]
+    assert np.bincount(term[fm], minlength=3).min() >= 5  # identifiability: >= d + 1 per term
+    r = solve_terms(np.log(X), 3, tau, random_state=0, refit_step="tangent")
     C = np.abs(r.W[:, None] - info["exponents"][None]).sum(-1)
     rows, cols = linear_sum_assignment(C)
     assert np.abs(r.W[rows] - info["exponents"][cols]).max() < 0.05
     perm = dict(zip(rows, cols, strict=True))
-    assert (np.array([perm[k] for k in r.labels]) == facet)[fm].mean() >= 0.9
+    assert (np.array([perm[k] for k in r.labels]) == term)[fm].mean() >= 0.9
 
 
 def test_tangent_keeps_best_iterate_and_is_deterministic():
     U = _planted_k3()
-    a = solve_terms(U, 3, 50.0, n_restarts=1, random_state=1, facet_step="tangent")
-    b = solve_terms(U, 3, 50.0, n_restarts=1, random_state=1, facet_step="tangent")
+    a = solve_terms(U, 3, 50.0, n_restarts=1, random_state=1, refit_step="tangent")
+    b = solve_terms(U, 3, 50.0, n_restarts=1, random_state=1, refit_step="tangent")
     np.testing.assert_array_equal(a.W, b.W)
     assert a.objective == pytest.approx(a.history.min())  # not monotone: the best is returned
 
 
 def test_tangent_falls_back_to_support_without_enough_near_rows():
-    U = _planted_k3(n=12)  # at most a few rows per facet: fewer than d + 1 = 5 near rows
+    U = _planted_k3(n=12)  # at most a few rows per term: fewer than d + 1 = 5 near rows
     sup = solve_terms(U, 3, np.inf, random_state=3)
-    tan = solve_terms(U, 3, np.inf, random_state=3, facet_step="tangent")
+    tan = solve_terms(U, 3, np.inf, random_state=3, refit_step="tangent")
     np.testing.assert_allclose(tan.W, sup.W, atol=1e-9)
     assert tan.objective == pytest.approx(sup.objective, abs=1e-9)  # ties in labels are not tested
 
@@ -253,9 +253,9 @@ from hyperbolic_trade_space.solvers import (  # noqa: E402
     POLISH_STEPS,
     Termination,
     assignment_margin,
-    facet_gap,
     fixed_assignment_bound,
     simplex_gap,
+    term_gap,
 )
 
 INF = np.inf
@@ -271,7 +271,7 @@ def _planted_fit(seed, tau):
     return _FITS[seed, tau]
 
 
-def _facet_optimum(U, ubar, tau, m=0.0):
+def _term_optimum(U, ubar, tau, m=0.0):
     """Independent minimizer of f_k(w) = J_tau(Uw) - ubar.w: best of Dirichlet-started SLSQP,
     polished; at tau = inf the LP on the centred rows."""
     Uc = U - ubar
@@ -312,19 +312,19 @@ def test_simplex_gap_formula():
 @pytest.mark.parametrize("kind", ["interior", "boundary", "floor"])
 def test_gap_is_zero_at_the_optimum_and_bounds_suboptimality(kind):
     U, ubar, tau, m = _gap_case(kind)
-    w, fstar = _facet_optimum(U, ubar, tau, m)
+    w, fstar = _term_optimum(U, ubar, tau, m)
     if kind == "interior":
         assert w.min() > 1e-3
     elif kind == "boundary":
         assert w[2] < 1e-9  # inactive coordinate with g_j > lambda
     else:
         assert w[2] == pytest.approx(m, abs=1e-12)
-    assert facet_gap(U, w, ubar, tau, m) < EPS_KKT
+    assert term_gap(U, w, ubar, tau, m) < EPS_KKT
     rng = np.random.default_rng(5)
     d = U.shape[1]
     for v in m + (1 - d * m) * rng.dirichlet(np.ones(d) * 0.7, size=300):
         f = log_mean_exp(U @ v, tau) - ubar @ v
-        G = facet_gap(U, v, ubar, tau, m)
+        G = term_gap(U, v, ubar, tau, m)
         assert f - fstar >= -1e-10 and f - fstar <= G + 1e-10
 
 
@@ -345,23 +345,23 @@ def test_lp_gap_equals_duality_gap_and_uniform_ties_is_a_valid_bound():
         )  # fmt: skip
         dual = -res.fun
         primal = float(np.max(Uc @ lp.w))
-        gap = facet_gap(U, lp.w, ubar, INF, p=lp.p)
+        gap = term_gap(U, lp.w, ubar, INF, p=lp.p)
         assert gap == pytest.approx(primal - dual, abs=1e-12)
-        assert facet_gap(U, lp.w, ubar, INF) == pytest.approx(gap, abs=1e-12)  # p from an LP solve
-        uniform = facet_gap(U, lp.w, ubar, INF, p=support_weights(U @ lp.w, INF))
+        assert term_gap(U, lp.w, ubar, INF) == pytest.approx(gap, abs=1e-12)  # p from an LP solve
+        uniform = term_gap(U, lp.w, ubar, INF, p=support_weights(U @ lp.w, INF))
         assert uniform >= gap - 1e-12  # valid (weak duality), not tighter than the LP duals
         w = 0.7 * lp.w + 0.3 / 4  # a non-optimal point: the bound still holds
-        assert facet_gap(U, w, ubar, INF) >= np.max(Uc @ w) - primal - 1e-12
+        assert term_gap(U, w, ubar, INF) >= np.max(Uc @ w) - primal - 1e-12
 
 
-def test_assignment_margin_values_and_duplicate_facets():
+def test_assignment_margin_values_and_duplicate_terms():
     U = np.array([[0.0, 0.0], [1.0, 0.0], [0.0, 1.0]])
     W = np.array([[1.0, 0.0], [0.0, 1.0]])
     gamma, radius = assignment_margin(U, W, np.zeros(2))
     assert gamma == 0.0 and radius == 0.0  # row 0 ties
     gamma, radius = assignment_margin(U + 0.5 * np.array([1.0, -1.0]) * 0, W, np.array([0.0, 0.4]))
     assert gamma == pytest.approx(0.4) and radius == pytest.approx(0.4 / (2 * np.sqrt(2.0)))
-    dup = np.array([[0.3, 0.7], [0.3, 0.7]])  # two identical facets: every row ties
+    dup = np.array([[0.3, 0.7], [0.3, 0.7]])  # two identical terms: every row ties
     assert assignment_margin(U, dup, np.zeros(2))[0] == 0.0
     t = S._termination(U, dup, np.zeros(2), np.zeros(3, int), np.full((2, 3), np.nan), INF, 0.0,
                        2, np.array([0.0]), "x", "fixed", True)  # fmt: skip
@@ -400,7 +400,7 @@ def test_corollary_bound_on_every_planted_fit(tau):
         for k in range(3):
             rows = r.labels == k
             ubar = U[rows].mean(0)
-            _, fk = _facet_optimum(U, ubar, tau)
+            _, fk = _term_optimum(U, ubar, tau)
             fstar += rows.sum() / N * fk
             fixed += rows.sum() / N * (log_mean_exp(U @ r.W[k], tau) - ubar @ r.W[k])
         assert fixed == pytest.approx(r.objective, abs=1e-12)  # the mean slack is F(W)
@@ -437,7 +437,7 @@ def test_r1_planted_certificates(tau):
         assert zero_margin == []
 
 
-def test_polish_never_increases_the_facet_objective_and_closes_the_gap():
+def test_polish_never_increases_the_term_objective_and_closes_the_gap():
     U, r = _planted_fit(0, 50.0)
     for k in range(3):
         ubar = U[r.labels == k].mean(0)
@@ -446,7 +446,7 @@ def test_polish_never_increases_the_facet_objective_and_closes_the_gap():
         w1 = S._newton_polish(Uc, w0, 50.0)
         f0, f1 = log_mean_exp(Uc @ w0, 50.0), log_mean_exp(Uc @ w1, 50.0)
         assert f1 <= f0 + 1e-15
-        assert facet_gap(U, w0, ubar, 50.0) > 1e-8 > facet_gap(U, w1, ubar, 50.0)
+        assert term_gap(U, w0, ubar, 50.0) > 1e-8 > term_gap(U, w1, ubar, 50.0)
         assert w1.sum() == pytest.approx(1.0) and (w1 >= 0).all()
     assert POLISH_STEPS == 5 and GUARD_TOL == 1e-12
 
@@ -483,7 +483,7 @@ def test_guard_stop_returns_the_consistent_previous_state(monkeypatch):
 
 def test_not_applicable_statuses():
     U = _planted_k3()
-    assert solve_terms(U, 3, 50.0, facet_step="tangent", random_state=0).termination.status == (
+    assert solve_terms(U, 3, 50.0, refit_step="tangent", random_state=0).termination.status == (
         "not_applicable"
     )
     for kw in ({"penalty": "reweighted_l1", "alpha": 0.05}, {"penalty": "reweighted_l1"}):
@@ -505,7 +505,7 @@ def test_default_path_has_no_warnings_and_constants():
 
 
 def test_margin_and_radius_are_nan_at_one_term_not_infinite():
-    """No competing facet: the margin is undefined (nan), as the Termination docstring and the
+    """No competing term: the margin is undefined (nan), as the Termination docstring and the
     Termination page say (WP10 item 22)."""
     import math
 

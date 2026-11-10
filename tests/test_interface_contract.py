@@ -549,14 +549,12 @@ def test_r3_primary_and_stock_files_are_pinned_data():
 
 
 @pytest.fixture(scope="module")
-def smoke(tmp_path_factory):
+def smoke():
     import time
 
     k_terms = importlib.import_module("k_terms")
     t0 = time.perf_counter()
-    out = k_terms.run_regime(
-        CASE["regimes"][0], seeds=[0], figs=tmp_path_factory.mktemp("figs"), verbose=False
-    )
+    out = k_terms.run_regime(CASE["regimes"][0], seeds=[0], verbose=False)
     return out, time.perf_counter() - t0
 
 
@@ -577,30 +575,14 @@ FIG = CASE["figures"]
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
 
-@pytest.mark.parametrize("name", FIG["files"])
-def test_r4_pinned_figure_is_a_valid_png(name):
-    path = ROOT / FIG["dir"] / name
-    assert path.is_file(), msg(
-        "R-4", f"figure {path.relative_to(ROOT)} must exist (read-only for presentation)"
+def test_r4_figure_directory_holds_exactly_the_pinned_files():
+    on_disk = sorted(p.name for p in (ROOT / FIG["dir"]).glob(f"*.{FIG['format']}"))
+    assert on_disk == sorted(FIG["files"]), msg(
+        "R-4", f"{FIG['dir']} holds {on_disk}; the manifest pins {FIG['files']}"
     )
-    assert any(re.match(p, name) for p in FIG["patterns"]), msg(
-        "R-4", f"{name} must match a pinned naming pattern"
-    )
-    with path.open("rb") as fh:
-        assert fh.read(8) == PNG_SIGNATURE, msg("R-4", f"{name} must be a valid PNG")
-
-
-def test_r4_directory_holds_only_pinned_naming_and_producers_exist():
-    for path in (ROOT / FIG["dir"]).glob("*.png"):
-        assert any(re.match(p, path.name) for p in FIG["patterns"]), msg(
-            "R-4", f"{path.name} does not match the pinned figure naming {FIG['patterns']}"
-        )
-    assert (ROOT / FIG["produced_by_numbered"]).is_file(), msg(
-        "R-4", "the notebook producing 01_ to 09_ exists"
-    )
-    assert FIG["produced_by_k3"] == CASE["producing_command"], msg(
-        "R-4", "k3 figures come from the producing command"
-    )
+    for name in FIG["files"]:
+        with (ROOT / FIG["dir"] / name).open("rb") as fh:
+            assert fh.read(8) == PNG_SIGNATURE, msg("R-4", f"{name} must be a valid PNG")
     script = ROOT / CASE["producing_command"].rsplit(" ", 1)[1]
     assert script.is_file() and '__name__ == "__main__"' in script.read_text(encoding="utf-8"), msg(
         "R-4", "the producing script has a CLI entry"

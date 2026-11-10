@@ -1,4 +1,4 @@
-"""Figure 4 redrawn (WP19, slot S-d3): the chart as position against level, with no facet colouring.
+"""Figure 4 redrawn (WP19, slot S-d3): the chart as position against level, with no cell colouring.
 
 The chart rewrites each design as a position along the surface ``Z`` and a level ``log V`` (the
 energy differential). In the plane of the first position coordinate and the level the surface of

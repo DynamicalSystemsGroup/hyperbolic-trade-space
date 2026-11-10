@@ -259,13 +259,13 @@ def test_deterministic_frozen_and_validation():
         tension_report(HyperbolicTradeSpace(), X)
 
 
-# ---- K > 1: one report per facet (WP9 R-4) -------------------------------------------------
+# ---- K > 1: one report per term (WP9 R-4) -------------------------------------------------
 _PLANTED = [[0.5, 0.5, 0, 0], [0, 0.5, 0.5, 0], [0, 0, 0.5, 0.5]]
 
 
 @pytest.mark.slow
 @pytest.mark.parametrize("seed", [0, 1, 2])
-def test_k3_reports_one_per_facet_recover_planted_supports(seed):
+def test_k3_reports_one_per_term_recover_planted_supports(seed):
     X, _ = make_frontier_data(1500, 4, exponents=_PLANTED, n_terms=3, random_state=seed)
     est = HyperbolicTradeSpace(n_terms=3, temperature=20.0, random_state=0).fit(X)
     reps = tension_report(est, X)
@@ -275,19 +275,19 @@ def test_k3_reports_one_per_facet_recover_planted_supports(seed):
     assert sorted(r.contending_set.tolist() for r in reps) == [[0, 1], [1, 2], [2, 3]]
 
 
-def test_k1_is_a_single_report_and_facet_error_names_facet():
+def test_k1_is_a_single_report_and_term_error_names_term():
     X, _ = make_frontier_data(300, 3, random_state=0)
     assert isinstance(
         tension_report(HyperbolicTradeSpace(temperature=INF).fit(X), X), TensionReport
     )
     X, _ = make_frontier_data(900, 4, exponents=_PLANTED, n_terms=3, random_state=0)
     est = HyperbolicTradeSpace(n_terms=3, temperature=20.0, random_state=0).fit(X)
-    with pytest.raises(ValueError, match="facet 0"):
+    with pytest.raises(ValueError, match="term 0"):
         tension_report(est, X, min_near_frontier=10**6)
 
 
 def test_first_report_at_several_terms_names_a_workable_band():
-    """WP10 item 21: the default band 1/tau leaves a facet with too few rows on this table; the
+    """WP10 item 21: the default band 1/tau leaves a term with too few rows on this table; the
     message names a band (and the matching temperature) that works."""
     import re
 
@@ -298,10 +298,10 @@ def test_first_report_at_several_terms_names_a_workable_band():
     with pytest.raises(ValueError, match="near-frontier rows") as err:
         tension_report(est, X)
     msg = str(err.value)
-    assert "facet" in msg and "larger band" in msg and "temperature=" in msg
+    assert "term" in msg and "larger band" in msg and "temperature=" in msg
     band = float(re.search(r"band=([0-9.e-]+)", msg).group(1))
-    # the named band holds min_near_frontier rows on the named facet
-    k = int(re.search(r"facet (\d+)", msg).group(1))
+    # the named band holds min_near_frontier rows on the named term
+    k = int(re.search(r"term (\d+)", msg).group(1))
     _, lv = est._coordinates(X)
-    mine = est.assign_facets(X) == k
+    mine = est.assign_cells(X) == k
     assert (np.abs(lv[mine & np.isfinite(lv)]) < band).sum() >= 10

@@ -33,13 +33,11 @@ __all__ = [
     "TermsResult",
     "assignment_margin",
     "distinct_terms",
-    "facet_gap",
-    "facet_objective",
     "fixed_assignment_bound",
     "log_mean_exp",
     "objective_and_grad",
     "simplex_gap",
-    "single_facet_termination",
+    "single_term_termination",
     "soft_certificate",
     "soft_hessian",
     "soft_objective",
@@ -48,13 +46,15 @@ __all__ = [
     "solve_slsqp",
     "solve_terms",
     "support_weights",
+    "term_gap",
+    "term_objective",
 ]
 
 _TIE_TOL = 1e-12
 EPS_KKT = 1e-8  # first-order gap tolerance of the stopping declaration
 EPS_FEAS = 1e-9  # feasibility and margin-positivity tolerance
 GUARD_TOL = 1e-12  # the monotone guard rejects an objective increase above this
-POLISH_STEPS = 5  # reduced-Newton steps after each finite-tau facet refit
+POLISH_STEPS = 5  # reduced-Newton steps after each finite-tau term refit
 _ACTIVE_TOL = 1e-10
 DISTINCT_TERMS_DISTANCE = 1e-3  # exponent vectors closer than this (Euclidean) are one term
 _SOFT_STOP = 1e-10  # the soft alternation stops when the soft objective falls by less than this
@@ -397,8 +397,8 @@ def simplex_gap(g, w, min_exponent=0.0):
     return float(g @ np.asarray(w, dtype=float) - _dual_value(g, min_exponent))
 
 
-def facet_objective(U, w, ubar, tau):
-    """Facet refit objective ``f_k(w) = J_tau(U w) - ubar . w``.
+def term_objective(U, w, ubar, tau):
+    """Term refit objective ``f_k(w) = J_tau(U w) - ubar . w``.
 
     Parameters
     ----------
@@ -407,7 +407,7 @@ def facet_objective(U, w, ubar, tau):
     w : ndarray of shape (d,)
         Exponents on the simplex.
     ubar : ndarray of shape (d,)
-        Mean log metric of the facet's rows.
+        Mean log metric of the term's cell.
     tau : float
         Temperature, ``tau > 0`` or ``np.inf``.
 
@@ -419,14 +419,14 @@ def facet_objective(U, w, ubar, tau):
     --------
     >>> import numpy as np
     >>> U = np.array([[0.0, 1.0], [1.0, 0.0]])
-    >>> round(facet_objective(U, np.array([0.5, 0.5]), U.mean(0), np.inf), 6)
+    >>> round(term_objective(U, np.array([0.5, 0.5]), U.mean(0), np.inf), 6)
     0.0
     """
     return float(log_mean_exp(U @ w, tau) - np.asarray(ubar) @ w)
 
 
-def facet_gap(U, w, ubar, tau, min_exponent=0.0, p=None):
-    """First-order gap ``G_k`` of the facet refit ``f_k`` at ``w`` (Lemma 1).
+def term_gap(U, w, ubar, tau, min_exponent=0.0, p=None):
+    """First-order gap ``G_k`` of the term refit ``f_k`` at ``w`` (Lemma 1).
 
     Parameters
     ----------
@@ -435,14 +435,14 @@ def facet_gap(U, w, ubar, tau, min_exponent=0.0, p=None):
     w : ndarray of shape (d,)
         Feasible exponents.
     ubar : ndarray of shape (d,)
-        Mean log metric of the facet's rows.
+        Mean log metric of the term's cell.
     tau : float
         Temperature, ``tau > 0`` or ``np.inf``.
     min_exponent : float, default=0.0
         Floor on every exponent.
     p : ndarray of shape (N,), optional
         Used at ``tau = inf`` only: dual weights (a point of the simplex). Default: the dual of
-        the facet's linear program, re-solved. At finite ``tau`` the softmax weights are used.
+        the term's linear program, re-solved. At finite ``tau`` the softmax weights are used.
 
     Returns
     -------
@@ -458,9 +458,9 @@ def facet_gap(U, w, ubar, tau, min_exponent=0.0, p=None):
     --------
     >>> import numpy as np
     >>> U = np.array([[1.0, 0.0], [0.0, 1.0]])
-    >>> round(facet_gap(U, np.array([0.5, 0.5]), U.mean(0), 5.0), 12)
+    >>> round(term_gap(U, np.array([0.5, 0.5]), U.mean(0), 5.0), 12)
     0.0
-    >>> round(facet_gap(U, np.array([0.5, 0.5]), U.mean(0), np.inf), 12)
+    >>> round(term_gap(U, np.array([0.5, 0.5]), U.mean(0), np.inf), 12)
     0.0
     """
     U = np.asarray(U, dtype=float)
@@ -470,7 +470,7 @@ def facet_gap(U, w, ubar, tau, min_exponent=0.0, p=None):
         if p is None:
             p = solve_lp(U - ubar, min_exponent).p
         g = U.T @ np.asarray(p) - ubar
-        return float(facet_objective(U, w, ubar, tau) - _dual_value(g, min_exponent))
+        return float(term_objective(U, w, ubar, tau) - _dual_value(g, min_exponent))
     g = U.T @ support_weights(U @ w, tau) - ubar
     return simplex_gap(g, w, min_exponent)
 
@@ -483,15 +483,15 @@ def assignment_margin(U, W, beta):
     U : ndarray of shape (N, d)
         Log metrics.
     W : ndarray of shape (K, d)
-        Facet exponents.
+        Term exponents.
     beta : ndarray of shape (K,)
-        Facet offsets.
+        Term offsets.
 
     Returns
     -------
     gamma : float
         ``min_i [s_{i k(i)} - max_{k != k(i)} s_{ik}]`` with ``s = U W^T - beta``: zero when a row
-        ties between two facets (for example two identical facets). ``inf`` for ``K = 1``.
+        ties between two terms (for example two identical terms). ``inf`` for ``K = 1``.
     radius : float
         ``gamma / (2 max_i ||(u_i, -1)||_2)``: any perturbation of every ``(w_k, beta_k)`` of
         Euclidean norm below it changes each score by less than ``gamma / 2``, so the
@@ -523,7 +523,7 @@ def fixed_assignment_bound(U, W, labels, tau, min_exponent=0.0, P=None):
     U : ndarray of shape (N, d)
         Log metrics.
     W : ndarray of shape (K, d)
-        Facet exponents.
+        Term exponents.
     labels : ndarray of shape (N,), dtype int
         Assignment ``C_k = {i : labels[i] = k}``.
     tau : float
@@ -531,14 +531,14 @@ def fixed_assignment_bound(U, W, labels, tau, min_exponent=0.0, P=None):
     min_exponent : float, default=0.0
         Floor on every exponent.
     P : ndarray of shape (K, N), optional
-        Dual weights per facet (rows of ``nan`` for an empty facet), used at ``tau = inf``.
+        Dual weights per term (rows of ``nan`` for an empty term), used at ``tau = inf``.
 
     Returns
     -------
     bound : float
-        ``sum_k |C_k|/N G_k`` over the nonempty facets: ``F(W) - F*_fixed <= bound``.
+        ``sum_k |C_k|/N G_k`` over the nonempty terms: ``F(W) - F*_fixed <= bound``.
     gaps : ndarray of shape (K,)
-        ``G_k``, ``nan`` for an empty facet.
+        ``G_k``, ``nan`` for an empty term.
     F : float
         ``sum_k |C_k|/N f_k(w_k)``, equal to the mean slack of the returned fit.
 
@@ -558,8 +558,8 @@ def fixed_assignment_bound(U, W, labels, tau, min_exponent=0.0, P=None):
     gaps, F = np.full(K, np.nan), 0.0
     for k in np.flatnonzero(shares):
         ubar = U[labels == k].mean(axis=0)
-        gaps[k] = facet_gap(U, W[k], ubar, tau, min_exponent, None if P is None else P[k])
-        F += shares[k] * facet_objective(U, W[k], ubar, tau)
+        gaps[k] = term_gap(U, W[k], ubar, tau, min_exponent, None if P is None else P[k])
+        F += shares[k] * term_objective(U, W[k], ubar, tau)
     return float(np.nansum(shares * gaps)), gaps, float(F)
 
 
@@ -632,27 +632,27 @@ def distinct_terms(W, distance=DISTINCT_TERMS_DISTANCE):
 
 @dataclass(frozen=True, eq=False)
 class Termination:
-    """Stopping record of a multi-facet fit: the three levels of guarantee, with tolerances.
+    """Stopping record of a several-term fit: the three levels of guarantee, with tolerances.
 
     Attributes
     ----------
     status : str
         ``"certified"``: the assignment is fixed (zero assignment changes), the feasibility
-        residuals are at most ``eps_feas``, ``max_gap <= eps_kkt``, no facet is empty and the
+        residuals are at most ``eps_feas``, ``max_gap <= eps_kkt``, no term is empty and the
         margin is positive (``gamma > eps_feas``). ``"stationary_without_margin"``: the same with
-        ``gamma <= eps_feas`` (a row ties between facets, for example two identical facets) or an
-        empty facet. ``"uncertified"``: the assignment is fixed but a residual or the gap exceeds
+        ``gamma <= eps_feas`` (a row ties between terms, for example two identical terms) or an
+        empty term. ``"uncertified"``: the assignment is fixed but a residual or the gap exceeds
         its tolerance. ``"guard_stop"``: an iteration raised the objective by more than
         ``guard_tol`` and the previous state was returned. ``"iteration_cap"``: ``max_iter`` was
         reached with the assignment still changing; ``max_gap`` and ``objective_change`` say
         whether the terms were stationary and the objective had stopped moving (a cycle among
-        tied rows). ``"not_applicable"``: ``facet_step="tangent"``, a ``penalty``, or the
+        tied rows). ``"not_applicable"``: ``refit_step="tangent"``, a ``penalty``, or the
         ``K = 1`` / ``d = 1`` / ``N < K`` shortcut, or a soft fit at ``tau = inf``; the gaps are
         then diagnostics.
 
         A *soft* fit (finite ``term_temperature``, weights in place of labels) has two more
         outcomes and a different meaning of ``"certified"``. ``"certified"``: every term's
-        facet gap is at most ``eps_kkt`` and ``min_curvature > eps_feas`` (the second-order
+        term gap is at most ``eps_kkt`` and ``min_curvature > eps_feas`` (the second-order
         sufficient condition: a strict local minimizer of the soft objective).
         ``"stationary"``: the gaps hold and ``min_curvature <= eps_feas`` (a saddle or a flat
         direction). ``"uncertified"`` as above (a residual or a gap exceeds its tolerance).
@@ -664,9 +664,9 @@ class Termination:
     sum_residual, floor_residual : float
         ``max_k |1.w_k - 1|`` and ``max_k max(0, min_exponent - min_j w_kj)``.
     offset_residual : float
-        ``max_k |beta_k - J_tau(U w_k)|`` over the nonempty facets.
+        ``max_k |beta_k - J_tau(U w_k)|`` over the nonempty terms.
     max_gap : float
-        ``max_k G_k`` over the nonempty facets.
+        ``max_k G_k`` over the nonempty terms.
     bound : float
         The approximate-certificate corollary (L14): ``sum_k |C_k|/N G_k``, a bound on
         ``F(W) - F*_fixed`` for the assignment of this run (not across restarts).
@@ -676,15 +676,15 @@ class Termination:
         Rows whose returned label trails the maximum score under ``(W, beta)`` by more than
         ``EPS_FEAS`` (exact ties are not changes).
     n_empty : int
-        Facets with no assigned row (their gap is ``nan`` and their share 0).
+        Terms with no assigned row (their gap is ``nan`` and their share 0).
     gamma, radius : float
         Assignment margin and the explicit stable radius (``assignment_margin``).
     eps_kkt, eps_feas, guard_tol : float
         The tolerances used (``EPS_KKT``, ``EPS_FEAS``, ``GUARD_TOL``).
     gaps, shares : ndarray of shape (K,)
-        Per-facet gap (``nan`` for an empty facet) and row share ``|C_k|/N``.
+        Per-term gap (``nan`` for an empty term) and row share ``|C_k|/N``.
     min_curvature : float
-        Soft fit only (finite ``term_temperature`` with ``facet_step="support"``, unpenalized):
+        Soft fit only (finite ``term_temperature`` with ``refit_step="support"``, unpenalized):
         the smallest eigenvalue of the Hessian ``H = D - kappa M`` of the soft objective on the
         tangent space of the active face (``soft_certificate``). ``nan`` for every other fit.
     n_distinct_terms : int
@@ -701,12 +701,12 @@ class Termination:
     the first-order gaps ``G_k`` of the weighted refits.
 
     Level 3 (Proposition 3, conditional local optimality of the fixed assignment) holds for
-    ``facet_step="support"`` (step B), unpenalized, with support offsets
+    ``refit_step="support"`` (step B), unpenalized, with support offsets
     ``beta_k = J_tau(U w_k)``; under step D or a penalty the gap is a diagnostic. The record
     describes the returned run's own fixed assignment, not the choice among restarts.
 
     ``gamma`` and ``radius`` are ``nan`` (not ``inf``) at ``K = 1`` and in the degenerate shortcuts.
-    The margin is the smallest gap by which a row's facet beats the runner-up; with one facet there
+    The margin is the smallest gap by which a row's term beats the runner-up; with one term there
     is no runner-up, so the margin does not exist. ``inf`` would assert a guarantee (no perturbation
     can change an assignment) that was never examined, and a minimum over an empty set is undefined,
     so ``nan`` is the honest value and the documentation says the same.
@@ -741,11 +741,11 @@ class TermsResult:
     Attributes
     ----------
     W : ndarray of shape (K, d)
-        Facet exponent vectors on the simplex.
+        Term exponent vectors on the simplex.
     beta : ndarray of shape (K,)
-        Facet offsets ``J_tau(w_k)`` over all rows (each facet is a supporting hyperplane).
+        Term offsets ``J_tau(w_k)`` over all rows (each term is a supporting hyperplane).
     labels : ndarray of shape (N,), dtype int
-        Facet of each row (argmax of ``w_k . u - beta_k``); for a soft fit the dominant term, an
+        Cell of each row (argmax of ``w_k . u - beta_k``); for a soft fit the dominant term, an
         analysis (the fit used weights).
     objective : float
         Mean slack ``(1/N) sum_i (beta_k(i) - w_k(i) . u_i)``; ``beta`` for ``n_terms = 1``; for a
@@ -785,7 +785,7 @@ def _termination(
     max_gap = float(np.max(gaps[full])) if full.any() else float("nan")
     S = U @ W.T - beta
     # a label counts as changed only when its score trails the maximum by more than EPS_FEAS;
-    # exact ties (a row on two facet planes) resolve differently across platforms
+    # exact ties (a row on two term planes) resolve differently across platforms
     changes = int((S.max(axis=1) - S[np.arange(N), labels] > EPS_FEAS).sum())
     gamma, radius = assignment_margin(U, W, beta)
     sum_res = float(np.abs(W.sum(axis=1) - 1.0).max())
@@ -813,8 +813,8 @@ def _termination(
     )  # fmt: skip
 
 
-def single_facet_termination(U, w, beta, p, tau, min_exponent, n_iter, reason, n_terms=1):
-    """``"not_applicable"`` record of a single-facet fit (``K = 1`` and the degenerate shortcuts).
+def single_term_termination(U, w, beta, p, tau, min_exponent, n_iter, reason, n_terms=1):
+    """``"not_applicable"`` record of a one-term fit (``K = 1`` and the degenerate shortcuts).
 
     Parameters
     ----------
@@ -833,7 +833,7 @@ def single_facet_termination(U, w, beta, p, tau, min_exponent, n_iter, reason, n
     reason : str
         Solver message.
     n_terms : int, default=1
-        Requested ``K``; the other ``K - 1`` facets repeat the fit and count as empty.
+        Requested ``K``; the other ``K - 1`` terms repeat the fit and count as empty.
 
     Returns
     -------
@@ -844,14 +844,14 @@ def single_facet_termination(U, w, beta, p, tau, min_exponent, n_iter, reason, n
     --------
     >>> import numpy as np
     >>> U = np.array([[1.0, 0.0], [0.0, 1.0]])
-    >>> t = single_facet_termination(
+    >>> t = single_term_termination(
     ...     U, np.array([0.5, 0.5]), 0.5, np.array([0.5, 0.5]),
     ...     np.inf, 0.0, 1, "ok")
     >>> t.status, round(t.max_gap, 9)
     ('not_applicable', 0.0)
     """
     U = np.asarray(U, dtype=float)
-    gap = facet_gap(U, w, np.zeros(U.shape[1]), tau, min_exponent, p)
+    gap = term_gap(U, w, np.zeros(U.shape[1]), tau, min_exponent, p)
     gaps = np.full(n_terms, np.nan)
     gaps[0] = gap
     shares = np.zeros(n_terms)
@@ -1027,7 +1027,7 @@ def _tangent_basis(W, g, min_exponent, tol=1e-6, eps=1e-7):
 
 
 def soft_certificate(U, W, tau, kappa, min_exponent=0.0):
-    """Second-order test of a soft fit: the facet gaps and the smallest curvature.
+    """Second-order test of a soft fit: the term gaps and the smallest curvature.
 
     Parameters
     ----------
@@ -1067,7 +1067,7 @@ def soft_certificate(U, W, tau, kappa, min_exponent=0.0):
     A = soft_weights(U, W, beta, kappa)
     n = A.sum(axis=0)
     gaps = [
-        facet_gap(U, W[k], A[:, k] @ U / n[k], tau, min_exponent)
+        term_gap(U, W[k], A[:, k] @ U / n[k], tau, min_exponent)
         for k in range(W.shape[0])
         if n[k] >= _SOFT_EMPTY
     ]
@@ -1131,7 +1131,7 @@ def _soft_termination(U, W, beta, P, tau, kappa, min_exponent, n_iter, history, 
     full = n >= _SOFT_EMPTY
     gaps = np.full(K, np.nan)
     for k in np.flatnonzero(full):
-        gaps[k] = facet_gap(U, W[k], A[:, k] @ U / n[k], tau, min_exponent, P[k])
+        gaps[k] = term_gap(U, W[k], A[:, k] @ U / n[k], tau, min_exponent, P[k])
     max_gap = float(np.max(gaps[full])) if full.any() else float("nan")
     sum_res = float(np.abs(W.sum(axis=1) - 1.0).max())
     floor_res = float(max(0.0, min_exponent - W.min()))
@@ -1220,14 +1220,14 @@ def _refit(U, labels, W, beta, tau, kw, tangent=False):
     # the polish acts on the unpenalized step-B refit at finite tau only
     polish = np.isfinite(tau) and not tangent and not (kw["penalty"] and kw["alpha"] > 0)
     for k in np.unique(labels):
-        # centering on the facet's mean makes J_tau(Uc w) = J_tau(U w) - mean_k(U) . w
+        # centering on the term's mean makes J_tau(Uc w) = J_tau(U w) - mean_k(U) . w
         Uc = U - U[labels == k].mean(0)
         r = solve_slsqp(Uc, tau, **kw)
         w, p = r.w, r.p  # p: softmax weights, or the LP duals at tau = inf
         if polish:
             w = _newton_polish(Uc, w, tau, kw["min_exponent"])
             p = support_weights(U @ w, tau)
-        if tangent:  # rows of the facet within the band of the support plane (step B)
+        if tangent:  # rows of the term within the band of the support plane (step B)
             near = (labels == k) & (log_mean_exp(U @ w, tau) - U @ w < band)
             if near.sum() > U.shape[1]:
                 w = _tls_normal(U[near], w, kw["min_exponent"])
@@ -1283,22 +1283,22 @@ def solve_terms(
     random_state=None,
     tol=1e-10,
     slsqp_max_iter=500,
-    facet_step="support",
+    refit_step="support",
     term_temperature=np.inf,
     aggregation="sum",
 ):
-    """Fit ``K`` monomial facets by alternating partition and entropic refit.
+    """Fit ``K`` monomial terms by alternating partition and entropic refit.
 
     Parameters
     ----------
     U : ndarray of shape (N, d)
         Log metrics (finite).
     n_terms : int
-        Number of facets ``K >= 1``.
+        Number of terms ``K >= 1``.
     tau : float
-        Temperature of every facet's fit, ``tau > 0`` or ``np.inf``.
+        Temperature of every term's fit, ``tau > 0`` or ``np.inf``.
     min_exponent, penalty, alpha, tol
-        Passed to ``solve_slsqp`` for every facet.
+        Passed to ``solve_slsqp`` for every term.
     n_restarts : int, default=5
         Initializations (seeds drawn from ``random_state``); the lowest objective is kept.
     max_iter : int, default=50
@@ -1306,10 +1306,10 @@ def solve_terms(
     random_state : int, RandomState or None
         Seed.
     slsqp_max_iter : int, default=500
-        SLSQP iteration cap per facet fit.
-    facet_step : {"support", "tangent"}, default="support"
-        Per-facet step. ``"support"`` (step B, below) is the default and the monotone one.
-        ``"tangent"`` (step D) replaces ``w_k`` by the smallest-variance direction of the facet's
+        SLSQP iteration cap per term fit.
+    refit_step : {"support", "tangent"}, default="support"
+        Per-term step. ``"support"`` (step B, below) is the default and the monotone one.
+        ``"tangent"`` (step D) replaces ``w_k`` by the smallest-variance direction of the term's
         near-frontier rows (its own rows within ``1/tau`` of its support plane; ``0.1`` at
         ``tau = inf``), a constrained total-least-squares normal on the simplex, when there are at
         least ``d + 1`` such rows, and keeps step B's ``w_k`` otherwise; ``beta_k`` is the support
@@ -1319,15 +1319,15 @@ def solve_terms(
         and returns the lowest-objective iterate seen, so ``history`` need not be non-increasing.
     term_temperature : float, default=np.inf
         Softness ``kappa`` of the weights. At ``np.inf`` every row has the label of its dominant
-        facet (the fit above). Finite ``kappa`` (with ``facet_step="support"``) fits the soft
+        term (the fit above). Finite ``kappa`` (with ``refit_step="support"``) fits the soft
         model: every row carries the weights ``softmax_k(kappa (w_k . u_i - beta_k))`` on every
         term, the refit of term ``k`` is the supporting hyperplane centred at the *weighted*
         mean of the rows, and the objective is the mean slack of the soft model,
         ``-mean_i Phi_kappa(u_i)`` (``soft_objective``), which the monotone guard watches. The
         alternation is followed by a joint reduced-Newton polish on the Hessian
         ``D - kappa M`` (``soft_hessian``). ``labels`` stay the analysis: the dominant term of
-        each row. Read ``kappa`` on the scale of ``tau``; ``kappa`` far below ``tau`` merges facets.
-        ``facet_step="tangent"`` ignores ``kappa``.
+        each row. Read ``kappa`` on the scale of ``tau``; ``kappa`` far below ``tau`` merges terms.
+        ``refit_step="tangent"`` ignores ``kappa``.
     aggregation : {"sum", "mean"}, default="sum"
         Term aggregation of the soft model. The fit is carried out on the sum form (the weights,
         Hessian and certificate are the same for both: ``Phi`` differs by the constant
@@ -1341,13 +1341,13 @@ def solve_terms(
     Notes
     -----
     Partition-and-refit in the style of the max-affine scheme of Magnani and Boyd (2009).
-    Refitting a facet by the plain ``K = 1`` fit (minimize ``J_tau`` on the facet's own rows) is
-    ill-posed: the rows of one facet lie in a cone of the Helmert chart that does not enclose the
+    Refitting a term by the plain ``K = 1`` fit (minimize ``J_tau`` on the term's own cell) is
+    ill-posed: the rows of one cell lie in a cone of the Helmert chart that does not enclose the
     origin, so ``w`` tilts to a simplex vertex (checked: the linear program on the true rows of a
-    planted ``K = 3``, ``d = 4`` frontier returns vertices, not the planted exponents). The facet
+    planted ``K = 3``, ``d = 4`` frontier returns vertices, not the planted exponents). The term
     is therefore fitted as a supporting hyperplane: ``w_k`` minimizes
     ``J_tau(U w) - mean_k(U) . w`` over *all* rows, which is ``solve_slsqp`` on ``U`` centered at
-    the facet's mean; ``beta_k = J_tau(U w_k)``. The objective is the mean slack
+    the term's mean; ``beta_k = J_tau(U w_k)``. The objective is the mean slack
     ``(1/N) sum_i (beta_{k(i)} - w_{k(i)} . u_i)``, which both steps decrease (refit by convexity,
     reassignment to ``argmax_k (w_k . u - beta_k)`` by the choice of the largest score); a guard
     additionally rejects any iteration whose objective increased and returns the previous state.
@@ -1355,16 +1355,16 @@ def solve_terms(
     ``d = 1``, ``N < K``, where the ``K = 1`` solution is repeated) it returns exactly the
     ``solve_slsqp`` result, with ``objective = beta``.
 
-    Step D (``facet_step="tangent"``) is the evidence-driven alternative measured in the research
-    spikes; the objective is not monotone under it (see ``facet_step``). Recovery rate on the
+    Step D (``refit_step="tangent"``) is the evidence-driven alternative measured in the research
+    spikes; the objective is not monotone under it (see ``refit_step``). Recovery rate on the
     planted data, ``make_frontier_data(400, 4, n_terms=3, random_state=s)``, ``s = 0..19`` (every
-    facet has at least ``d + 1`` frontier rows), estimator defaults, ``random_state=0``, five
+    term has at least ``d + 1`` frontier rows), estimator defaults, ``random_state=0``, five
     restarts, pass = exponent error below 0.05 after matching and at least 90% of the frontier rows
-    on the right facet: ``"support"`` 16/20 at ``tau = inf`` (fails: seeds 1, 3, 8, 16) and 16/20 at
+    on the right term: ``"support"`` 16/20 at ``tau = inf`` (fails: seeds 1, 3, 8, 16) and 16/20 at
     ``tau = 50`` (fails: 1, 3, 8, 16); ``"tangent"`` 16/20 at ``tau = inf`` (fails: 1, 3, 8, 16)
-    and 17/20 at ``tau = 50`` (fails: 1, 3, 16). Seeds 1, 3 and 16 have a facet with only 5 or 6
-    frontier rows (``d + 1 = 5``): identifiable, but a thin facet leaves local optima that no
-    restart escaped. Seed 8 is a local optimum with a well-populated facet (11 frontier rows).
+    and 17/20 at ``tau = 50`` (fails: 1, 3, 16). Seeds 1, 3 and 16 have a term with only 5 or 6
+    frontier rows (``d + 1 = 5``): identifiable, but a thin term leaves local optima that no
+    restart escaped. Seed 8 is a local optimum with a well-populated term (11 frontier rows).
 
     Initialization: ``K`` random rows are the centers and every row takes its nearest center in
     the Helmert coordinates ``Z = U B^T``. K-means on the near-frontier rows of the ``K = 1`` fit
@@ -1386,15 +1386,15 @@ def solve_terms(
     U = np.asarray(U, dtype=float)
     N, d = U.shape
     K = int(n_terms)
-    if facet_step not in ("support", "tangent"):
-        raise ValueError(f"facet_step must be 'support' or 'tangent', got {facet_step!r}")
+    if refit_step not in ("support", "tangent"):
+        raise ValueError(f"refit_step must be 'support' or 'tangent', got {refit_step!r}")
     kw = {
         "min_exponent": min_exponent, "penalty": penalty, "alpha": alpha, "tol": tol,
         "max_iter": slsqp_max_iter,
     }  # fmt: skip
     if K == 1 or d == 1 or N < K:
         r = solve_slsqp(U, tau, **kw)
-        term = single_facet_termination(
+        term = single_term_termination(
             U, r.w, r.beta, r.p, tau, min_exponent, r.n_iter, r.message, K
         )
         return TermsResult(
@@ -1404,10 +1404,10 @@ def solve_terms(
     seeds = check_random_state(random_state).randint(0, 2**31 - 1, size=n_restarts)
     kappa = float(term_temperature)
     runs = [
-        _solve_terms_once(U, K, tau, s, max_iter, kw, facet_step == "tangent", kappa) for s in seeds
+        _solve_terms_once(U, K, tau, s, max_iter, kw, refit_step == "tangent", kappa) for s in seeds
     ]
     best = min(runs, key=lambda r: r.objective)
-    shift = aggregation_shift(K, kappa, aggregation) if facet_step == "support" else 0.0
+    shift = aggregation_shift(K, kappa, aggregation) if refit_step == "support" else 0.0
     if shift:
         best = replace(best, objective=best.objective + shift, history=best.history + shift)
     return best

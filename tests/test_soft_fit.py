@@ -58,9 +58,9 @@ def _record(est):
     t = est.termination_
     d = {
         "exponents_": est.exponents_, "log_offset_": est.log_offset_,
-        "objective_": est.objective_, "mean_slack_": est.mean_slack_, "facet_": est.facet_,
+        "objective_": est.objective_, "mean_slack_": est.mean_slack_, "cell_": est.cell_,
         "support_weights_": est.support_weights_, "n_iter_": est.n_iter_,
-        "facet_share_": est.facet_share_, "conditioning_": est.conditioning_,
+        "term_share_": est.term_share_, "conditioning_": est.conditioning_,
         "status": t.status, "reason": t.reason, "gaps": t.gaps, "shares": t.shares,
     }  # fmt: skip
     d.update({"term_" + f: getattr(t, f) for f in TERM_NUM})
@@ -69,7 +69,7 @@ def _record(est):
 
 def _same(key, got, ref):
     got, ref = np.asarray(got), np.asarray(ref)
-    if ref.dtype.kind in "US" or key.split("/")[-1] in ("facet_", "status"):
+    if ref.dtype.kind in "US" or key.split("/")[-1] in ("cell_", "status"):
         assert np.array_equal(got, ref), f"{key}: recorded {_show(ref)} observed {_show(got)}"
     elif EXACT:
         same = np.array_equal(got, ref, equal_nan=True)
@@ -84,7 +84,7 @@ def reference():
 
 
 def _match_to_recording(W, ref_exponents):
-    """The recorded facet matched to each fitted facet, by exponent vector (as the paper does)."""
+    """The recorded term matched to each fitted term, by exponent vector (as the paper does)."""
     r, col = linear_sum_assignment(np.abs(W[:, None, :] - ref_exponents[None]).sum(-1))
     to_ref = np.empty(len(r), int)
     to_ref[r] = col
@@ -93,36 +93,36 @@ def _match_to_recording(W, ref_exponents):
 
 @pytest.mark.parametrize("name", list(_cases()))
 def test_r2_default_planted_fits_equal_the_recording(name, reference):
-    """The default fit equals the recording: exactly on its platform, matched by facet off it.
+    """The default fit equals the recording: exactly on its platform, matched by term off it.
 
     The recording was made in the linux/arm64 container of record (``RECORDED_ON``). The tau = inf
-    fit is a linear program whose solution, and the numbering of the facets it finds, follow the
-    platform's maths library: another platform finds the same facets in another order (and then a
-    different ``facet_`` array), so a bit-identical comparison there fails without any change in
+    fit is a linear program whose solution, and the numbering of the terms it finds, follow the
+    platform's maths library: another platform finds the same terms in another order (and then a
+    different ``cell_`` array), so a bit-identical comparison there fails without any change in
     the method.
-    Off that platform (and outside the environment of record), for tau = inf only, the fitted facets
+    Off that platform (and outside the environment of record), for tau = inf only, the fitted terms
     are first matched to the recorded ones by exponent vector, as the paper's tables do; then the
     exponents and offsets agree within ``TOL_FIT`` (no wider), the labels agree after the matching
-    except on rows whose two best scores tie within ``EPS_FEAS``, and the facet-indexed arrays
+    except on rows whose two best scores tie within ``EPS_FEAS``, and the term-indexed arrays
     follow the matching. The planted table itself differs by rounding between platforms (the maths
-    library), and a row on two facet planes is then labelled either way. The label-derived arrays
-    therefore carry the tolerance that the tie allows and no more: ``facet_share_`` (taken from
-    ``facet_``) within 0.01 per relabelled row, and the termination ``shares`` (taken from the
-    solver's own last labels, which can differ from ``facet_`` on a tied row) within ``1/N`` per
+    library), and a row on two term planes is then labelled either way. The label-derived arrays
+    therefore carry the tolerance that the tie allows and no more: ``term_share_`` (taken from
+    ``cell_``) within 0.01 per relabelled row, and the termination ``shares`` (taken from the
+    solver's own last labels, which can differ from ``cell_`` on a tied row) within ``1/N`` per
     tied row, plus 1e-12 each. The ``gaps`` stay within 1e-12.
     Cause of the failure this replaces (seed 3, linux/amd64): ``shares`` was compared with the
-    ``facet_share_`` allowance, which counts the rows relabelled in ``facet_``; the solver's
-    labels moved a tied row that ``facet_`` did not, so ``shares`` differed by 1/N = 0.0025
-    against an allowance of 1e-12 with no change in the fitted facets. One-ulp perturbations of
+    ``term_share_`` allowance, which counts the rows relabelled in ``cell_``; the solver's
+    labels moved a tied row that ``cell_`` did not, so ``shares`` differed by 1/N = 0.0025
+    against an allowance of 1e-12 with no change in the fitted terms. One-ulp perturbations of
     the table reproduce it (25 of 30 on the previous test) and pass with this allowance.
     The quantities of the final steps of a degenerate linear program are not compared off the
     recording's platform; the exact list is ``RELAXED_SKIP``: ``status``, ``reason``, ``n_iter_``,
     ``term_n_iter``, ``term_objective_change`` and ``support_weights_``. They differ between
-    platforms while the fitted facets agree (gap G-10). Every other quantity keeps its comparison
+    platforms while the fitted terms agree (gap G-10). Every other quantity keeps its comparison
     above.
     """
     X, K, tau, step = _cases()[name]
-    est = HyperbolicTradeSpace(n_terms=K, temperature=tau, facet_step=step, random_state=0).fit(X)
+    est = HyperbolicTradeSpace(n_terms=K, temperature=tau, refit_step=step, random_state=0).fit(X)
     _compare_planted(name, est, X, relaxed=not EXACT and np.isinf(tau), reference=reference)
 
 
@@ -150,27 +150,27 @@ def _compare_planted(name, est, X, relaxed, reference):
     rec = _record(est)
     if relaxed:
         to_ref = _match_to_recording(est.exponents_, reference[f"{name}/exponents_"])
-        back = np.argsort(to_ref)  # back[j]: the fitted facet matched to recorded facet j
-        n_relabelled = int((to_ref[est.facet_] != reference[f"{name}/facet_"]).sum())
+        back = np.argsort(to_ref)  # back[j]: the fitted term matched to recorded term j
+        n_relabelled = int((to_ref[est.cell_] != reference[f"{name}/cell_"]).sum())
         U = est._log_metrics(X, reset=False)
         top = np.sort(U @ est.exponents_.T - est.log_offset_, axis=1)[:, -2:]
         if top.shape[1] < 2:  # one term: no row is on two planes
             top = np.full((len(X), 2), np.inf) * np.array([-1.0, 1.0])
-        n_tied = int((top[:, 1] - top[:, 0] <= S.EPS_FEAS).sum())  # rows on two facet planes
+        n_tied = int((top[:, 1] - top[:, 0] <= S.EPS_FEAS).sum())  # rows on two term planes
     for k, v in rec.items():
         ref = reference[f"{name}/{k}"]
         if relaxed and k in RELAXED_SKIP:
             continue
-        if relaxed and k in ("exponents_", "log_offset_", "facet_share_", "shares", "gaps"):
+        if relaxed and k in ("exponents_", "log_offset_", "term_share_", "shares", "gaps"):
             tol = TOL_FIT if k in ("exponents_", "log_offset_") else 1e-12
-            if k == "facet_share_":
+            if k == "term_share_":
                 tol += 0.01 * n_relabelled
             elif k == "shares":
                 tol += n_tied / len(X)
             _close(f"{name}/{k}", np.asarray(v)[back], ref, tol, " (after matching by exponent)")
         elif relaxed and k == "objective_":
             _close(f"{name}/{k}", v, ref, TOL_FIT)
-        elif relaxed and k == "facet_":
+        elif relaxed and k == "cell_":
             differ = to_ref[np.asarray(v)] != np.asarray(ref)
             if differ.any():
                 tie = top[differ, 1] - top[differ, 0]
@@ -211,9 +211,9 @@ def test_r2_the_default_is_the_explicit_infinity_and_leaves_one_term_alone():
     for k, v in _record(one).items():
         np.testing.assert_array_equal(_record(soft)[k], v)
     # the tangent step ignores kappa in the fit
-    t0 = HyperbolicTradeSpace(n_terms=3, temperature=50.0, facet_step="tangent", random_state=0)
+    t0 = HyperbolicTradeSpace(n_terms=3, temperature=50.0, refit_step="tangent", random_state=0)
     t1 = HyperbolicTradeSpace(
-        n_terms=3, temperature=50.0, facet_step="tangent", term_temperature=50.0, random_state=0
+        n_terms=3, temperature=50.0, refit_step="tangent", term_temperature=50.0, random_state=0
     )
     assert np.array_equal(t0.fit(X).exponents_, t1.fit(X).exponents_)
 
@@ -223,14 +223,14 @@ TAU = 50.0
 
 
 def _recovered(est, info):
-    """The spike's criterion: error < 0.05 after matching, 90% of frontier rows on their facet."""
+    """The spike's criterion: error < 0.05 after matching, 90% of frontier rows on their term."""
     T = np.asarray(info["exponents"])
     r, col = linear_sum_assignment(np.abs(est.exponents_[:, None, :] - T[None]).sum(-1))
     err = float(np.abs(est.exponents_[r] - T[col]).max())
     m = dict(zip(r, col, strict=True))
-    lab = np.array([m[k] for k in est.facet_])
+    lab = np.array([m[k] for k in est.cell_])
     fm = np.asarray(info["frontier_mask"], bool)
-    return err < 0.05 and (lab[fm] == np.asarray(info["facet"])[fm]).mean() >= 0.9
+    return err < 0.05 and (lab[fm] == np.asarray(info["term"])[fm]).mean() >= 0.9
 
 
 @pytest.fixture(scope="module")
@@ -287,9 +287,9 @@ def test_r6_analysis_stays_analysis(bench):
     for X, _, _, soft in bench[:6]:
         U = np.log(X)
         np.testing.assert_array_equal(
-            soft.facet_, np.argmax(U @ soft.exponents_.T - soft.log_offset_, axis=1)
+            soft.cell_, np.argmax(U @ soft.exponents_.T - soft.log_offset_, axis=1)
         )
-        assert soft.facet_share_.sum() == pytest.approx(1.0)
+        assert soft.term_share_.sum() == pytest.approx(1.0)
 
 
 @pytest.mark.slow
@@ -307,8 +307,8 @@ def test_r3_the_limit_kappa_to_infinity_is_the_label_fit():
     soft = HyperbolicTradeSpace(term_temperature=5000.0, **kw).fit(X)
     r, col = linear_sum_assignment(np.abs(soft.exponents_[:, None] - hard.exponents_[None]).sum(-1))
     perm = np.empty(3, int)
-    perm[r] = col  # soft facet -> the matching hard facet
-    assert (perm[soft.facet_] == hard.facet_).mean() > 0.99
+    perm[r] = col  # soft term -> the matching hard term
+    assert (perm[soft.cell_] == hard.cell_).mean() > 0.99
 
 
 # ------------------------------------------------------------------------------------ certificate

@@ -14,14 +14,14 @@ import check_vocabulary as cv  # noqa: E402
 
 GLOSSARY = """
 entries:
-  - id: 'facet'
-    term: 'facet'
+  - id: 'tile'
+    term: 'tile'
     short: 'One monomial piece of the fitted surface.'
-    register: 'facet'
+    register: 'tile'
     formal: 'one term'
     not: 'a cluster'
     aliases:
-      - 'facets'
+      - 'tiles'
   - id: 'elasticity'
     term: 'elasticity'
     short: 'The percentage given up per percentage gained.'
@@ -41,14 +41,14 @@ assumed:
   - term: 'convex program'
     reason: 'Boyd and Vandenberghe'
 stems:
-  - 'facet'
+  - 'tile'
   - 'temperature'
   - 'program'
 """
 
 CLEAN_PAPER = [
     "---\ntitle: T\nabstract: |\n  A fit uses elasticity.\n---\n\n## Method\n\n"
-    "A **facet** is one piece. The elasticity is read along each facet, at the fit "
+    "A **tile** is one piece. The elasticity is read along each tile, at the fit "
     "temperature as a convex program, with the fit temperature fixed.",
 ]
 
@@ -63,7 +63,7 @@ def make_tree(tmp_path, paper=None, docs=None, glossary=GLOSSARY, html=None):
     nb = {"cells": cells, "metadata": {}, "nbformat": 4, "nbformat_minor": 5}
     (tmp_path / "paper" / "paper.ipynb").write_text(json.dumps(nb), encoding="utf-8")
     (tmp_path / "docs").mkdir()
-    for name, text in (docs or {"index.md": "# Home\n\nThe facet and the elasticity.\n"}).items():
+    for name, text in (docs or {"index.md": "# Home\n\nThe tile and the elasticity.\n"}).items():
         (tmp_path / "docs" / name).write_text(text, encoding="utf-8")
     if html is not None:
         (tmp_path / "site").mkdir()
@@ -86,7 +86,7 @@ def test_clean_fixture_passes(tmp_path, capsys):
 
 
 def test_avoid_variant_fails(tmp_path):
-    root = make_tree(tmp_path, docs={"a.md": "# A\n\nAt what exchange rate do we trade a facet?\n"})
+    root = make_tree(tmp_path, docs={"a.md": "# A\n\nAt what exchange rate do we trade a tile?\n"})
     assert ("avoid", "exchange rate") in kinds(root)
     assert run(root) == 1
 
@@ -99,7 +99,7 @@ def test_avoid_variant_in_html_and_notebook_markdown_output(tmp_path):
 def test_code_math_and_citations_are_skipped(tmp_path):
     text = (
         "# A\n\n```python\nexchange rate = 1\n```\n\nSee `exchange rate`, $exchange rate$, "
-        "[@exchange2020] and the facet.\n"
+        "[@exchange2020] and the tile.\n"
     )
     root = make_tree(tmp_path, docs={"a.md": text})
     assert kinds(root) == set()
@@ -107,7 +107,7 @@ def test_code_math_and_citations_are_skipped(tmp_path):
 
 def test_exempt_marker_exempts_the_phrase_in_its_paragraph_only(tmp_path):
     text = (
-        "# A\n\nThe source says <!-- vocab-exempt: exchange rate --> exchange rate for a facet.\n\n"
+        "# A\n\nThe source says <!-- vocab-exempt: exchange rate --> exchange rate for a tile.\n\n"
         "Here it is the exchange rate again.\n"
     )
     root = make_tree(tmp_path, docs={"a.md": text})
@@ -133,22 +133,22 @@ def test_unresolved_stem_phrase_fails(tmp_path):
 
 def test_resolved_stem_phrases_pass(tmp_path):
     text = (
-        "# A\n\nThe fit temperature, a convex program, each facet and the facets; "
-        "one facet; the temperature.\n"
+        "# A\n\nThe fit temperature, a convex program, each tile and the tiles; "
+        "one tile; the temperature.\n"
     )
     root = make_tree(tmp_path, docs={"a.md": text})
     assert kinds(root) == set()
 
 
 def test_undefined_first_use_fails_and_definition_cues_pass(tmp_path):
-    bare = ["## M\n\nThe elasticity along a facet is read off.\n\nThe fit temperature is fixed.\n"]
+    bare = ["## M\n\nThe elasticity along a tile is read off.\n\nThe fit temperature is fixed.\n"]
     root = make_tree(tmp_path, paper=bare)
     assert ("first-use", "elasticity") in kinds(root)
-    assert ("first-use", "facet") in kinds(root)
+    assert ("first-use", "tile") in kinds(root)
     assert run(root) == 1
     glossed = [
         "## M\n\nThe *elasticity* (the percentage given up per percentage gained) along a "
-        "facet, see {numref}`Section %s <sect-x>`; the fit temperature, a knob, is fixed.\n"
+        "tile, see {numref}`Section %s <sect-x>`; the fit temperature, a knob, is fixed.\n"
     ]
     root2 = make_tree(tmp_path / "g", paper=glossed) if (tmp_path / "g").mkdir() is None else None
     assert not [v for v in cv.analyse(root2)["violations"] if v.kind == "first-use"]
@@ -156,8 +156,8 @@ def test_undefined_first_use_fails_and_definition_cues_pass(tmp_path):
 
 def test_first_use_rule_ignores_the_abstract(tmp_path):
     paper = [
-        "---\ntitle: T\nabstract: |\n  The elasticity of a facet.\n---\n\n## M\n\n"
-        "A **facet**, an **elasticity**, a **fit temperature**.\n"
+        "---\ntitle: T\nabstract: |\n  The elasticity of a tile.\n---\n\n## M\n\n"
+        "A **tile**, an **elasticity**, a **fit temperature**.\n"
     ]
     root = make_tree(tmp_path, paper=paper)
     assert not [v for v in cv.analyse(root)["violations"] if v.kind == "first-use"]
@@ -165,18 +165,18 @@ def test_first_use_rule_ignores_the_abstract(tmp_path):
 
 def test_dead_entry_fails(tmp_path):
     root = make_tree(
-        tmp_path, docs={"a.md": "# A\n\nThe facet only.\n"}, paper=["## M\n\nA **facet**.\n"]
+        tmp_path, docs={"a.md": "# A\n\nThe tile only.\n"}, paper=["## M\n\nA **tile**.\n"]
     )
     found = kinds(root)
     assert ("dead-entry", "elasticity") in found
     assert ("dead-entry", "fit-temperature") in found
-    assert ("dead-entry", "facet") not in found
+    assert ("dead-entry", "tile") not in found
     assert run(root) == 1
 
 
 def test_appendix_a_notation_table_does_not_count_as_a_use(tmp_path):
     root = make_tree(
-        tmp_path, docs={"a.md": "# A\n\nThe facet only.\n"}, paper=["## M\n\nA **facet**.\n"]
+        tmp_path, docs={"a.md": "# A\n\nThe tile only.\n"}, paper=["## M\n\nA **tile**.\n"]
     )
     sm = {
         "cells": [
@@ -191,7 +191,7 @@ def test_appendix_a_notation_table_does_not_count_as_a_use(tmp_path):
 
 
 def test_baseline_hides_known_violations_only(tmp_path, capsys):
-    root = make_tree(tmp_path, docs={"a.md": "# A\n\nThe exchange rate and a facet.\n"})
+    root = make_tree(tmp_path, docs={"a.md": "# A\n\nThe exchange rate and a tile.\n"})
     base = tmp_path / "base.toml"
     base.write_text(cv.emit_baseline(cv.analyse(root)["violations"]), encoding="utf-8")
     assert run(root, "--baseline", str(base)) == 0

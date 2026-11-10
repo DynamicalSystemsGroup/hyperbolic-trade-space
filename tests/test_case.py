@@ -137,11 +137,11 @@ def test_certificate_table_matches_termination(small):
     assert c.status.iloc[1] == fits[2].estimator.termination_.status
 
 
-def test_facet_and_tension_tables_small(small):
+def test_term_and_tension_tables_small(small):
     fits = case.k_fits(small, Ks=(1, 2))
     band = 0.08
-    f = case.facet_table(small, fits, K=2, band=band)
-    assert list(f.facet) == [1, 2] and f.share.between(0, 1).all()
+    f = case.term_table(small, fits, K=2, band=band)
+    assert list(f.term) == [1, 2] and f.share.between(0, 1).all()
     assert f["rows"].sum() == N and (f["n_lemma"] >= 1).all()
     assert np.allclose(f["gap G_k"], fits[2].estimator.termination_.gaps)
     t = case.tension_table(small, fits[1], band=band)
@@ -275,7 +275,7 @@ def test_nondominated_counts_on_frozen_primary(primary):
     assert t.share.round(3).tolist() == [0.933, 0.178]
 
 
-# the record of k3-cubesat.md, as printed: tau, objective_, frac_above_, facet rows, gamma, radius
+# the record of k3-cubesat.md, as printed: tau, objective_, frac_above_, term rows, gamma, radius
 RECORD = {
     "primary": {
         1: (38.10, 0.2434, 0.092, [706]),
@@ -306,7 +306,7 @@ def test_k_sweep_equals_the_record(regime, request):
         assert r.tau == pytest.approx(tau, abs=0.006)
         assert r.objective_ == pytest.approx(obj, abs=6e-5)
         assert r.frac_above_ == pytest.approx(frac, abs=6e-4)
-        assert sorted(r["facet rows"]) == sorted(rows)
+        assert sorted(r["term rows"]) == sorted(rows)
     assert t.loc[1, "max gap"] == pytest.approx(GAP_K1[regime], rel=0.05)
     assert t.loc[1, "status"] == "not_applicable"
     for K in (2, 3):
@@ -316,8 +316,8 @@ def test_k_sweep_equals_the_record(regime, request):
         assert r.radius == pytest.approx(MARGIN[regime, K][1], abs=5e-7)
 
 
-def test_k3_facets_equal_the_primary_record(primary, primary_fits):
-    f = case.facet_table(primary, primary_fits, K=3)
+def test_k3_terms_equal_the_primary_record(primary, primary_fits):
+    f = case.term_table(primary, primary_fits, K=3)
     assert sorted(f["rows"]) == [162, 181, 363]
     assert sorted(f.share.round(3)) == [0.034, 0.241, 0.724]
     assert sorted(f["n_lemma"]) == [4, 5, 5]
@@ -431,7 +431,7 @@ def test_swapping_the_spec_changes_the_behaviour():
 def test_a_second_table_runs_without_cubesat_edits(tmp_path):
     rng = np.random.default_rng(7)
     n = 200
-    u = rng.dirichlet([2.0, 2.0, 2.0], n)  # points under a planted facet w.x = 1
+    u = rng.dirichlet([2.0, 2.0, 2.0], n)  # points under a planted term w.x = 1
     slack = np.exp(-rng.exponential(0.3, n))
     A = pd.DataFrame(u * slack[:, None] * 5 + 0.05, columns=["fuel", "range", "cost"])
     A["ok"] = True
@@ -491,7 +491,7 @@ def test_the_module_import_in_process_is_cheap():
 def test_docstrings_run_and_are_numpydoc():
     assert doctest.testmod(case, optionflags=doctest.ELLIPSIS).failed == 0
     for name in (
-        "load_study", "fit_study", "k_sweep", "k_table", "facet_table", "tension_table",
+        "load_study", "fit_study", "k_sweep", "k_table", "term_table", "tension_table",
         "nondominated_counts", "regime_comparison", "predict_check", "candidate_table",
         "log_plane_figure", "feasible_mask",
     ):  # fmt: skip
@@ -521,7 +521,7 @@ def test_mean_slack_by_k_reads_the_estimator_and_the_fixed_tau_refit_shares_one_
     assert fixed.mean_slack_.iloc[1] <= fixed.mean_slack_.iloc[0] + 1e-9  # falls with K
 
 
-def test_margin_scale_has_the_multi_facet_fits_only_and_the_median_exceeds_the_margin(small):
+def test_margin_scale_has_the_multi_term_fits_only_and_the_median_exceeds_the_margin(small):
     fits = case.k_fits(small, Ks=(1, 2))
     table = case.margin_scale(small, fits)
     assert list(table["K"]) == [2]

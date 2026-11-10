@@ -250,7 +250,7 @@ def test_keywords_name_no_tool_or_library():
         assert not set(re.split(r"[\s-]+", k.lower())) & set(TOOL_NAMES), k
 
 
-def test_abstract_and_section_5_say_the_one_facet_fit_is_a_geometric_program():
+def test_abstract_and_section_5_say_the_one_term_fit_is_a_geometric_program():
     """The surface is posynomial (the abstract says "a fitted posynomial reference surface", the
     supervisor's reading of 2026-11-09) and section 5 keeps one cited sentence that the invariant is
     a generalized posynomial; one facet is a geometric program (convex after the log change of
@@ -985,9 +985,9 @@ def _current(committed: str, fresh: str, what: str) -> None:
         )
 
 
-_FACET_NUMBERED = (
+_TERM_NUMBERED = (
     ("tab-D-k_diagnostics", "k_diagnostics"),
-    ("tab-D-exponents_and_facets", "exponents_and_facets"),
+    ("tab-D-exponents_and_terms", "exponents_and_terms"),
     ("tab-D-termination_records", "termination_records"),
     ("tab-D-conditioning_diagnostic", "conditioning_diagnostic"),
 )
@@ -1001,14 +1001,14 @@ def _cells_of_table(text: str) -> list[str]:
 
 
 @pytest.mark.slow
-def test_facet_numbered_tables_are_current():
+def test_term_numbered_tables_are_current():
     """The tables whose rows follow the facet numbering: exact in the environment of record,
     elsewhere the same cells in whatever order the facets are numbered (gap G-10)."""
     import generate_results
 
-    exact = exact_only("facet_numbered_tables")
+    exact = exact_only("term_numbered_tables")
     by_id = {c.id: c for c in _code_cells(_nb(SUPPORT_NB))}
-    for cid, fn in _FACET_NUMBERED:
+    for cid, fn in _TERM_NUMBERED:
         committed, fresh = _out_text(by_id[cid]), str(getattr(generate_results, fn)())
         if exact:
             assert committed == fresh, f"{cid}: {STALE}"
@@ -1016,46 +1016,46 @@ def test_facet_numbered_tables_are_current():
             assert _cells_of_table(committed) == _cells_of_table(fresh), f"{cid}: {STALE}"
 
 
-def _permute_live_facets(monkeypatch, perm):
-    """Make ``case`` return the K = 3 facets in the order ``perm`` (live facet j is old perm[j])."""
+def _permute_live_terms(monkeypatch, perm):
+    """Make ``case`` return the K = 3 terms in the order ``perm`` (live term j is old perm[j])."""
     import case
 
-    exp, fac, kt = case.exponent_table, case.facet_table, case.k_table
+    exp, fac, kt = case.exponent_table, case.term_table, case.k_table
 
     def exponent_table(study, fit):
         t = exp(study, fit)
-        cols = [c for c in t.columns if c.startswith("facet ")]
+        cols = [c for c in t.columns if c.startswith("term ")]
         if len(cols) != 3:
             return t
         out = t.copy()
         for j, old in enumerate(perm):
-            out[f"facet {j + 1}"] = t[cols[old]].to_numpy()
+            out[f"term {j + 1}"] = t[cols[old]].to_numpy()
         return out
 
-    def facet_table(study, fits, K=3, band=None):
+    def term_table(study, fits, K=3, band=None):
         t = fac(study, fits, K=K, band=band)
         if K != 3:
             return t
         out = t.iloc[list(perm)].reset_index(drop=True)
-        out["facet"] = range(1, 4)
+        out["term"] = range(1, 4)
         return out
 
     def k_table(study, fits):
         t = kt(study, fits)
         for i in range(len(t)):
-            if len(t.iloc[i]["facet rows"]) == 3:
-                for col in ("facet rows", "facet shares"):
+            if len(t.iloc[i]["term rows"]) == 3:
+                for col in ("term rows", "term shares"):
                     v = list(t.iloc[i][col])
                     t.iat[i, t.columns.get_loc(col)] = [v[old] for old in perm]
         return t
 
     monkeypatch.setattr(case, "exponent_table", exponent_table)
-    monkeypatch.setattr(case, "facet_table", facet_table)
+    monkeypatch.setattr(case, "term_table", term_table)
     monkeypatch.setattr(case, "k_table", k_table)
 
 
 @pytest.mark.skipif(not os.environ.get("PAPER_EXECUTE"), reason="set PAPER_EXECUTE=1 (about 40 s)")
-def test_a_different_facet_order_gives_the_same_tables_d2_d3_d8_and_the_sentence(monkeypatch):
+def test_a_different_term_order_gives_the_same_tables_d2_d3_d8_and_the_sentence(monkeypatch):
     """Facets are matched to the committed labels by exponent vector, never by index (G-11)."""
     import itertools
 
@@ -1063,7 +1063,7 @@ def test_a_different_facet_order_gives_the_same_tables_d2_d3_d8_and_the_sentence
     import generate_results as gr
 
     def everything():
-        out = [str(gr.exponents_and_facets()), str(gr.k_diagnostics())]
+        out = [str(gr.exponents_and_terms()), str(gr.k_diagnostics())]
         for r in ("primary", "stock"):
             out.append(str(gf.k_sweep_sentence(gr._study(r), gr._fits(r))))
         return out
@@ -1073,15 +1073,15 @@ def test_a_different_facet_order_gives_the_same_tables_d2_d3_d8_and_the_sentence
         if perm == (0, 1, 2):
             continue
         with monkeypatch.context() as m:
-            _permute_live_facets(m, perm)
-            assert everything() == base, f"facet order {perm} changes a table"
+            _permute_live_terms(m, perm)
+            assert everything() == base, f"term order {perm} changes a table"
 
 
 def test_the_match_follows_the_stored_exponent_vectors_for_any_stored_order():
     """The label of a live facet is that of the stored facet nearest by L1 distance, one to one."""
     import itertools
 
-    import paper_facets as pf
+    import paper_terms as pf
 
     for regime in ("primary", "stock"):
         names = sorted({k.split(" | ")[2] for k in generate_stored() if f"K=3 | {regime} |" in k})
@@ -1127,7 +1127,7 @@ def test_planted_table_agrees_with_the_reference_values():
     np.testing.assert_allclose(X, ref, rtol=entry["values_rtol"], atol=entry["values_atol"])
 
 
-def test_planted_example_is_reproducible_and_has_known_facets():
+def test_planted_example_is_reproducible_and_has_known_terms():
     X, info = generate_model.planted_table()
     X2, _ = generate_model.planted_table()
     assert (X == X2).all()
@@ -1268,7 +1268,7 @@ def test_figure1_files_exist_and_the_data_hash_is_pinned():
                 data[key], ref[f"figure1_{key}"], rtol=entry["values_rtol"],
                 atol=entry["values_atol"], err_msg=key,
             )  # fmt: skip
-        assert (data["facet"] == ref["figure1_facet"]).all()
+        assert (data["term"] == ref["figure1_term"]).all()
         assert data["design"] == int(ref["figure1_design"])
 
 
@@ -1282,9 +1282,9 @@ def test_figure1_has_three_panes_with_the_registers_words_and_writes_nothing(tmp
         titles = [ax.get_title(loc="left") for ax in fig.axes]
         assert len(fig.axes) == 3
         assert "fitted reference surface" in titles[0]
-        assert "supporting envelope" in titles[1] and "facets" in titles[2]
+        assert "supporting envelope" in titles[1] and "terms" in titles[2]
         words = " ".join(t.get_text() for ax in fig.axes for t in ax.texts)
-        assert "energy" in words and "differential" in words and "facet 1" in words
+        assert "energy" in words and "differential" in words and "term 1" in words
     finally:
         plt.close(fig)
     assert list(tmp_path.iterdir()) == []
@@ -1954,18 +1954,16 @@ def test_generated_sentences_quote_the_ranges_from_the_results_file(case_sentenc
     # WP23 data gate (D-9 item 5): no count moves on the nine-metric data; the sentence then
     # says that a number that moves is printed as a range
     assert moved or "is printed as a range" in nd
-    cert = str(
-        case_sentences["num-certificates"]
-    )  # the largest facet gap moved here from the sweep
+    cert = str(case_sentences["num-certificates"])  # the largest term gap moved here from the sweep
     gap = q["certificate | primary | 2 | max gap"]
     if max(abs(gap["min"]), abs(gap["max"])) < 1e-12:
-        assert "facet gap below 1e-12" in cert
-    # the facet shares moved from the sentence to the facets table of Appendix D (D.3), where each
+        assert "term gap below 1e-12" in cert
+    # the term shares moved from the sentence to the terms table of Appendix D (D.3), where each
     # is printed to the digits that hold over the datasets, never the committed value alone
-    facets = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-exponents_and_facets")
+    facets = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-exponents_and_terms")
     primary = _out_text(facets).split("Dataset cubesat-stock", 1)[0]
     for k in (1, 2, 3):
-        name = f"D facets K=3 | primary | {k} | share"
+        name = f"D terms K=3 | primary | {k} | share"
         e = q[name]
         shown = stable(name)
         assert shown in primary, name
@@ -2142,7 +2140,7 @@ def test_conditioning_symbol_is_not_set_as_mathematics():
     assert "$conditioning_$" not in text and "`conditioning_`" in text
 
 
-def test_regime_names_a_gain_box_dataset_and_the_facets_are_facets():
+def test_regime_names_a_gain_box_dataset_and_the_terms_are_terms():
     """C-4: 'regime' only for the two gain boxes; no 'three regimes' in the paper or its tables."""
     text = _all_rendered_text().lower()
     assert "three regimes" not in text and "regimes of the facet" not in text
@@ -2306,7 +2304,7 @@ def test_cr3_the_target_and_the_band_carry_their_reason_and_the_sensitivity_hold
             assert cols[6].strip() == cols[9].strip(), (regime, variant)  # n_lemma = shared
 
 
-def test_cr4_5_6_the_facet_share_is_described_and_the_terms_carry_their_clause():
+def test_cr4_5_6_the_term_share_is_described_and_the_terms_carry_their_clause():
     """(4) no analogy to explained variance; (5) energy differential; (6) n-lemma."""
     definitions = _section("Definitions")
     assert "explained variance" not in definitions.lower()

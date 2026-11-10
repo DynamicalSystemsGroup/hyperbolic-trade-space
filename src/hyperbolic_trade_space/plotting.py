@@ -14,11 +14,11 @@ Visual vocabulary (module constants, shared by every function)
 * **Data and categories**: the first colour of one qualitative, colour-blind-safe palette
   (``CATEGORY_COLORS``) for plain data, successive colours for categories. The designs are one
   colour by default whatever the number of terms: a monomial term is a piece of the fitted
-  reference surface and is drawn as such. ``color="facet"`` colours the designs by the term
-  that scores each highest, its cell (``facet_labels``): an analysis of the fit, not its structure.
+  reference surface and is drawn as such. ``color="cell"`` colours the designs by the term
+  that scores each highest, its cell (``cell_labels``): an analysis of the fit, not its structure.
 * **Ternary plot** (``plot_ternary``): the shares of a total among three metrics (or three groups
-  of metrics) as a triangle; a facet's exponent vector is a marker (its own shape, numbered), the
-  regions are tinted by the facet that dominates, and the facets use the palette's colours.
+  of metrics) as a triangle; a term's exponent vector is a marker (its own shape, numbered), the
+  regions are tinted by the term that dominates, and the terms use the palette's colours.
 * **Tension** (``plot_tensions``): a diverging map (``TENSION_CMAP``), negative association
   (tension) to positive (aligned); the contending set is outlined in black.
 
@@ -45,7 +45,7 @@ HOLE_COLOR = "#D55E00"
 CATEGORY_COLORS = ("#0072B2", "#E69F00", "#009E73", "#CC79A7", "#56B4E9", "#F0E442")
 DATA_COLOR = CATEGORY_COLORS[0]
 TENSION_CMAP = "PuOr"
-PARTICIPATION = 1e-3  # a facet participates in a metric above this exponent (tension report's)
+PARTICIPATION = 1e-3  # a term participates in a metric above this exponent (tension report's)
 
 __all__ = [
     "BAND_COLOR",
@@ -54,7 +54,7 @@ __all__ = [
     "FRONTIER_COLOR",
     "HOLE_COLOR",
     "TENSION_CMAP",
-    "facet_labels",
+    "cell_labels",
     "plot_frontier_coordinates",
     "plot_frontier_surface_3d",
     "plot_log_plane",
@@ -111,24 +111,24 @@ def _category_legend(ax, cats_pal):
     ax.legend(handles=handles, frameon=False)
 
 
-def facet_labels(estimator, X):
-    """Facet of each row of ``X`` as ``"facet 1" .. "facet K"``, for ``color=``.
+def cell_labels(estimator, X):
+    """Cell of each row of ``X`` as ``"cell 1" .. "cell K"``, for ``color=``.
 
-    The label is the facet whose term scores the row highest (``assign_facets``): an analysis of
-    the fit. It is what ``color="facet"`` draws.
+    The label is the term that scores the row highest (``assign_cells``): an analysis of
+    the fit. It is what ``color="cell"`` draws.
     """
-    return np.array([f"facet {k + 1}" for k in estimator.assign_facets(X)])
+    return np.array([f"cell {k + 1}" for k in estimator.assign_cells(X)])
 
 
-def _facet_option(estimator, X, color):
-    """``color`` as the plots take it: ``"facet"`` becomes the facet labels; other strings raise."""
+def _cell_option(estimator, X, color):
+    """``color`` as the plots take it: ``"cell"`` becomes the cell labels; other strings raise."""
     if isinstance(color, str):
-        if color != "facet":
+        if color != "cell":
             raise ValueError(
-                "color accepts an array of categories, one per design, or the string 'facet' "
-                "(the facet whose term scores each design highest)"
+                "color accepts an array of categories, one per design, or the string 'cell' "
+                "(the term that scores each design highest)"
             )
-        return facet_labels(estimator, X)
+        return cell_labels(estimator, X)
     return color
 
 
@@ -150,16 +150,16 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None):
         Fitted on two metrics.
     X : array-like of shape (n_samples, 2)
         Positive metrics to scatter (typically the training data).
-    color : array-like of shape (n_samples,) or "facet", default=None
+    color : array-like of shape (n_samples,) or "cell", default=None
         By default the designs are one colour (``DATA_COLOR``) for any number of terms; the
-        facets are the pieces of the black line. An array of categories colours the designs
-        from ``CATEGORY_COLORS`` with a legend. ``"facet"`` colours each design by the facet
-        whose term scores it highest (``facet_labels``), legend ``facet 1 .. facet K``: an
+        terms are the pieces of the black line. An array of categories colours the designs
+        from ``CATEGORY_COLORS`` with a legend. ``"cell"`` colours each design by its cell, the term
+        that scores it highest (``cell_labels``), legend ``cell 1 .. cell K``: an
         analysis of the fit (the assignment), not a part of the model.
     band : float, default=None
         Band width in ``log V``; default ``1/tau`` (``0.1`` at ``tau = inf``). For ``n_terms > 1``
-        the black line is the envelope ``Phi_K = 0`` (the hard maximum of the facet lines) and the
-        band the strip down to ``Phi_K = -band``; a facet is drawn only where it has weight on
+        the black line is the envelope ``Phi_K = 0`` (the hard maximum of the term lines) and the
+        band the strip down to ``Phi_K = -band``; a term is drawn only where it has weight on
         both plotted metrics (exponents above ``PARTICIPATION``), and no envelope is drawn if none.
     ax : matplotlib Axes, default=None
 
@@ -184,11 +184,11 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None):
     if np.any(X <= 0):
         raise ValueError("plot_log_plane needs strictly positive metrics")
     u = np.log(X)
-    color = _facet_option(estimator, X, color)
+    color = _cell_option(estimator, X, color)
     b = _band(estimator, band)
     ax = _axes(ax)
     if len(W) > 1:
-        # envelope Phi_K = 0: the lowest facet line m1(m0), over facets that bound m1 from above
+        # envelope Phi_K = 0: the lowest term line m1(m0), over terms that bound m1 from above
         g, ok = np.linspace(u[:, 0].min(), u[:, 0].max(), 200), W.min(axis=1) > PARTICIPATION
 
         def edge(s):
@@ -241,12 +241,12 @@ def plot_frontier_surface_3d(estimator, X=None, z_index=None, grid=25, color=Non
         Metric drawn on the vertical axis; default the one with the largest exponent.
     grid : int, default=25
         Grid points per horizontal axis.
-    color : array-like of shape (n_samples,) or "facet", default=None
+    color : array-like of shape (n_samples,) or "cell", default=None
         By default the points are one colour (``DATA_COLOR``), those in the near-frontier band
         grey, for any number of terms; the surface is the lowest term plane (the envelope
         ``Phi_K = 0``), the model. An array of categories colours the points from
-        ``CATEGORY_COLORS`` with a legend. ``"facet"`` colours each point by the term that
-        scores it highest, its cell (``facet_labels``): an analysis of the fit, not the model.
+        ``CATEGORY_COLORS`` with a legend. ``"cell"`` colours each point by the term that
+        scores it highest, its cell (``cell_labels``): an analysis of the fit, not the model.
     ax : Axes3D, default=None
         Must be a 3-D axes when given.
 
@@ -281,7 +281,7 @@ def plot_frontier_surface_3d(estimator, X=None, z_index=None, grid=25, color=Non
     gx = np.linspace(*(np.log([lo[x], hi[x]]) if lo is not None else (-1, 1)), grid)
     gy = np.linspace(*(np.log([lo[y], hi[y]]) if lo is not None else (-1, 1)), grid)
     GX, GY = np.meshgrid(gx, gy)
-    # the lowest facet plane over the facets that bound m_z from above (one plane at K = 1)
+    # the lowest term plane over the terms that bound m_z from above (one plane at K = 1)
     GZ = np.min(
         [(bk[k] - W[k, x] * GX - W[k, y] * GY) / W[k, z] for k in range(len(W)) if W[k, z] > 0],
         axis=0,
@@ -295,7 +295,7 @@ def plot_frontier_surface_3d(estimator, X=None, z_index=None, grid=25, color=Non
     if X is not None:
         band = _band(estimator, None)
         near = estimator.score_samples(X) >= -band
-        cols, cats = _point_colors(_facet_option(estimator, X, color), len(X), near)
+        cols, cats = _point_colors(_cell_option(estimator, X, color), len(X), near)
         ax.scatter(X[:, x], X[:, y], X[:, z], c=cols, s=10)
         _category_legend(ax, cats)
     ax.set_xlabel(f"m{x}")
@@ -318,7 +318,7 @@ def plot_frontier_coordinates(Z, log_v, color=None, holes=None, targets=None, ba
     log_v : array-like of shape (n_samples,)
     color : array-like of shape (n_samples,), default=None
         Optional categories, coloured from ``CATEGORY_COLORS``. For ``K > 1`` pass
-        ``facet_labels(estimator, X)`` to colour by facet (``log V = 0`` is already the envelope).
+        ``cell_labels(estimator, X)`` to colour by cell (``log V = 0`` is already the envelope).
     holes : array-like of shape (n_holes, n_metrics - 1), default=None
         Hole locations, drawn red.
     targets : array-like of shape (n_targets, n_metrics - 1), default=None
@@ -464,7 +464,7 @@ def _annotation_color(rgba):
 
 
 def plot_tensions(report, names=None, ax=None):
-    """One heatmap per report: a list of reports (one per facet at ``K > 1``) goes side by side.
+    """One heatmap per report: a list of reports (one per term at ``K > 1``) goes side by side.
 
     Returns the ``Axes`` for a single report and a list of ``Axes`` for a list; ``ax`` is then a
     sequence of axes. See ``_tension_panel`` for what each panel draws.
@@ -474,7 +474,7 @@ def plot_tensions(report, names=None, ax=None):
     axs = ax if ax is not None else _plt().subplots(1, len(report), squeeze=False)[1][0]
     out = [_tension_panel(r, names, a) for r, a in zip(report, axs, strict=True)]
     for k, a in enumerate(out):
-        a.set_title(f"facet {k + 1}: {a.get_title()}")
+        a.set_title(f"term {k + 1}: {a.get_title()}")
     return out
 
 
@@ -553,7 +553,7 @@ def _tension_panel(report, names=None, ax=None):
 # ---- the ternary plot -------------------------------------------------------------------------
 
 _SQ3 = np.sqrt(3.0) / 2.0
-_TERN_BIG = 0.12  # an exponent above this makes its metric part of the trade-off a facet names
+_TERN_BIG = 0.12  # an exponent above this makes its metric part of the trade-off a term names
 _TERN_FIGSIZE = (6.4, 6.1)  # inches, when the function makes the figure
 _TERN_REF = 7.0 * 1.08 / 1.07  # axes width (in) at which the label sizes below are stated
 _TERN_LABEL_SIZES = (15.0, 14.5, 14.0)  # points at the reference width; the largest that fits
@@ -595,7 +595,7 @@ def _ternary_scheme(scheme):
 
 
 def _ternary_says(w, names):
-    """The trade-off a facet with exponent vector ``w`` names, in words, read from its exponents."""
+    """The trade-off a term with exponent vector ``w`` names, in words, read from its exponents."""
     big = [j for j in np.argsort(-w) if w[j] > _TERN_BIG]
     if len(big) >= len(w):
         return "all three trade"
@@ -605,7 +605,7 @@ def _ternary_says(w, names):
 
 
 def _ternary_colours(W):
-    """Facet colours: a facet that trades all three metrics is amber, the others blue, green, ..."""
+    """Term colours: a term that trades all three metrics is amber, the others blue, green, ..."""
     W = np.atleast_2d(W)
     rest = iter(c for c in CATEGORY_COLORS if c != _TERN_AMBER)
     tri = int(np.argmax(W.min(axis=1)))
@@ -637,7 +637,7 @@ def _ternary_shares(fit, s):
 
 
 def _ternary_region_of(fit, s, top, left, right):
-    """The binding facet at barycentric positions: argmax_k a_k + s * sum_j w_kj log c_j."""
+    """The binding term at barycentric positions: argmax_k a_k + s * sum_j w_kj log c_j."""
     W = fit["W"]
     a = W @ fit["colmean"] - fit["beta"]
     c = np.stack([top, left, right], axis=-1)
@@ -664,7 +664,7 @@ def _ternary_regions(fit, s, n=500):
 
 
 def _ternary_peak(fit, s):
-    """The highest of the facets' own peaks (log V less the level), at their exponent vectors."""
+    """The highest of the terms' own peaks (log V less the level), at their exponent vectors."""
     W = fit["W"]
     a = W @ fit["colmean"] - fit["beta"]
     logw = np.log(np.clip(W, 1e-300, None))
@@ -675,7 +675,7 @@ def _ternary_peak(fit, s):
 
 
 def _ternary_marker_logv(fit, s):
-    """log V (less the level) of the fit at each facet's exponent vector, in the lines' units:
+    """log V (less the level) of the fit at each term's exponent vector, in the lines' units:
     the same ``g`` the regions and lines are drawn from, evaluated at the marker positions."""
     W = fit["W"]
     a = W @ fit["colmean"] - fit["beta"]
@@ -725,9 +725,9 @@ def _ternary_box(ax, text, size, ink, plate, edge):
 
 
 def _ternary_labels(fit, comp, s, ax, ink, plate, col, names, scale=1.0):
-    """Draw each facet's label inside its own region and return ``{facet: text artist}``.
+    """Draw each term's label inside its own region and return ``{term: text artist}``.
 
-    The rule reads the fit. On a fine grid of the triangle the region of facet k is where
+    The rule reads the fit. On a fine grid of the triangle the region of term k is where
     ``k = argmax_k w_k . p - beta_k``. A label's box (its extent as the renderer measures it, in
     plane units, plus a margin) is placed only where it lies wholly in its region, so it crosses
     neither a border with another region nor an edge of the triangle: the feasible centres are the
@@ -783,13 +783,13 @@ def _ternary_labels(fit, comp, s, ax, ink, plate, col, names, scale=1.0):
                 out[k] = best[1]
                 break
         else:
-            raise RuntimeError(f"no room for the label of facet {k} inside its region")
+            raise RuntimeError(f"no room for the label of term {k} inside its region")
     return out
 
 
 def _ternary_parts(W, names, groups):
     """Corner names and the exponents on them: the metrics themselves (``d = 3``) or, with
-    ``groups``, each facet's exponents summed within three groups (exact: exponents add)."""
+    ``groups``, each term's exponents summed within three groups (exact: exponents add)."""
     d = W.shape[1]
     names = [f"metric {j + 1}" for j in range(d)] if names is None else [str(n) for n in names]
     if len(names) != d:
@@ -812,7 +812,7 @@ def _ternary_parts(W, names, groups):
 def ternary_marker_values(estimator, X, names=None):
     """The values attained at the numbered markers of ``plot_ternary(..., lines=True)``.
 
-    One row per marker: its shape and number, the facet's exponent vector (the shares of the total
+    One row per marker: its shape and number, the term's exponent vector (the shares of the total
     at which the marker sits, one column per metric) and the value of V attained there, in the
     units of the equal-V lines: a fraction of the highest marker's value, so that row reads 1.00.
     It is computed by the code that draws the lines and the markers.
@@ -887,12 +887,12 @@ def plot_ternary(
     scheme="auto",
     color=None,
 ):
-    """Shares of a total among three metrics, as a triangle: where the facets dominate and peak.
+    """Shares of a total among three metrics, as a triangle: where the terms dominate and peak.
 
     A position in the triangle is a set of shares of a total among three metrics (the corner of a
-    metric is all the total in that metric). Each facet's exponent vector sums to one, so it is a
-    point of the triangle (a numbered marker of its own shape), and it is where that facet's V is
-    largest at a fixed total. With the table ``X`` the triangle is tinted by region, the facet
+    metric is all the total in that metric). Each term's exponent vector sums to one, so it is a
+    point of the triangle (a numbered marker of its own shape), and it is where that term's V is
+    largest at a fixed total. With the table ``X`` the triangle is tinted by region, the term
     that dominates there, and the designs are points. A region is an analysis of the fit, not a
     label on a design. V also depends on the total, so a marker is not where V = 1.
 
@@ -910,8 +910,8 @@ def plot_ternary(
         ``groups``. Default ``"metric 1"``, ``"metric 2"``, ``"metric 3"``.
     groups : dict, default=None
         Three groups as ``{group name: members}``, members being metric names (from ``names``) or
-        column indices, together using every metric once. Each facet's exponents are summed within
-        the group, which is exact, so the triangle shows where the facet's weight lies. The
+        column indices, together using every metric once. Each term's exponents are summed within
+        the group, which is exact, so the triangle shows where the term's weight lies. The
         grouping is the analyst's choice. Not combined with ``X`` or ``lines``.
     lines : bool, default=False
         Overlay lines of equal V at a fixed total (at 0.97 down to 0.3 of the highest peak) and
@@ -924,15 +924,15 @@ def plot_ternary(
         equal aspect.
     scheme : {"auto", "light", "dark"}, default="auto"
         The ink and tints. ``"auto"`` follows the label colour of the active Matplotlib style.
-    color : {None, "facet"}, default=None
-        ``None`` draws every design in the scheme's neutral colour. ``"facet"`` colours the
-        near-frontier designs by the facet whose term scores each highest (``assign_facets``):
+    color : {None, "cell"}, default=None
+        ``None`` draws every design in the scheme's neutral colour. ``"cell"`` colours the
+        near-frontier designs by the term that scores each highest (``assign_cells``):
         an analysis of the fit, not a part of the model, which the tints and markers draw.
 
     Returns
     -------
     matplotlib.axes.Axes
-        The artists carry ids: ``ternary-star-k`` (the marker of facet k), ``ternary-star-label-k``
+        The artists carry ids: ``ternary-star-k`` (the marker of term k), ``ternary-star-label-k``
         and, with ``X``, ``ternary-label-k`` (the region's words).
 
     See Also
@@ -943,7 +943,7 @@ def plot_ternary(
     -----
     The barycentric projection is ``x = right + top / 2``, ``y = sqrt(3) / 2 * top``. With the
     typical size of a metric divided out and S the sum of the three, ``log V = log S + max_k
-    (a_k + sum_j w_kj log c_j)`` for shares ``c``, so at a fixed total facet k peaks at ``c = w_k``.
+    (a_k + sum_j w_kj log c_j)`` for shares ``c``, so at a fixed total term k peaks at ``c = w_k``.
 
     Examples
     --------
@@ -967,9 +967,9 @@ def plot_ternary(
         raise ValueError("groups= draws the exponent markers only; omit X and lines")
     if lines and X is None:
         raise ValueError("lines= needs the table X")
-    by_facet = isinstance(color, str) and color == "facet"
-    if color is not None and not by_facet:
-        raise ValueError("color is None (one neutral colour) or 'facet' (the assigned facet)")
+    by_cell = isinstance(color, str) and color == "cell"
+    if color is not None and not by_cell:
+        raise ValueError("color is None (one neutral colour) or 'cell' (the assigned cell)")
     sch = _TERN_SCHEMES[_ternary_scheme(scheme)]
     ink = sch["ink"]
     col = _ternary_colours(Wt)
@@ -990,7 +990,7 @@ def plot_ternary(
         s = 1.0 if lines else fit["spread"]
         comp = _ternary_shares(fit, s)
         logv = np.asarray(estimator.score_samples(np.asarray(X, float)), float)
-        facet = np.asarray(estimator.assign_facets(np.asarray(X, float)))
+        cell = np.asarray(estimator.assign_cells(np.asarray(X, float)))
         near_mask = np.abs(logv) < near
         x, y, top, left, right, inside = _ternary_grid(900)
         g, f = np.zeros(top.shape, int), np.full(top.shape, np.nan)
@@ -1020,8 +1020,8 @@ def plot_ternary(
             linewidths=0,
             zorder=2,
         )
-        near_groups = [(near_mask & (facet == k), col[k]) for k in range(K)]
-        for mk, c in near_groups if by_facet else [(near_mask, sch["dots"])]:
+        near_groups = [(near_mask & (cell == k), col[k]) for k in range(K)]
+        for mk, c in near_groups if by_cell else [(near_mask, sch["dots"])]:
             ax.scatter(
                 px[mk],
                 py[mk],

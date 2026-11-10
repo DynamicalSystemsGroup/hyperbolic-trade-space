@@ -38,7 +38,7 @@ _WARN_STATUSES = ("guard_stop", "uncertified")  # "iteration_cap" warns on its o
 
 
 class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
-    """Posynomial invariant form: learn the shape of a design trade space (K monomial facets).
+    """Posynomial invariant form: learn the shape of a design trade space (K monomial terms).
 
     Fits ``V(m) = prod_j m_j^{w_j} / e^{beta}`` to strictly positive, larger-is-better metrics so
     that ``V <= 1`` is the attainable region and ``V = 1`` the frontier, by minimizing the
@@ -56,19 +56,19 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Chart basis: Helmert (orthonormal rows) or additive log-ratio
         (invertible, not orthonormal; last metric is the reference).
     n_terms : int, default=1
-        Number of monomial facets ``K`` (``K > 1`` is the posynomial frontier, fitted by
+        Number of monomial terms ``K`` (``K > 1`` is the posynomial frontier, fitted by
         ``solve_terms``; ``K = 1`` is the monomial fit).
     term_temperature : float, default=np.inf
         Softness ``kappa`` of ``Phi_K(u) = (1/kappa) log sum_k exp(kappa (w_k . u - beta_k))``,
         ``kappa > 0`` or ``np.inf`` (the exact maximum). Used for ``n_terms > 1`` only. The
         offsets ``beta_k`` are the supports, so ``max_k x_k <= Phi_K <= max_k x_k + log K / kappa``;
         the gap is disclosed, not renormalized. A finite ``kappa`` also selects the *soft fit*
-        (with ``facet_step="support"``): every design carries the weights
+        (with ``refit_step="support"``): every design carries the weights
         ``softmax_k(kappa x_k)`` on every term, the refit of term ``k`` is the supporting
         hyperplane centred at the weighted mean of the designs, and the fit minimizes the mean slack
         of the model it reports, ``-mean_i Phi_K(u_i)``. At the default ``np.inf`` every design has
         the label of its dominant term, as before. Read ``kappa`` on the scale of ``temperature``:
-        a ``kappa`` far below it merges facets. ``facet_step="tangent"`` ignores ``kappa`` in the
+        a ``kappa`` far below it merges terms. ``refit_step="tangent"`` ignores ``kappa`` in the
         fit.
     term_aggregation : {"sum", "mean"}, default="sum"
         How the K terms are aggregated when ``term_temperature`` is finite. ``"sum"`` (the default)
@@ -95,14 +95,14 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     alpha : float, default=0.0
         Penalty weight, ``alpha >= 0``; 0 leaves the fit unchanged.
     random_state : int, RandomState instance or None, default=None
-        Seed for the facet initializations (``n_terms > 1`` only).
+        Seed for the term initializations (``n_terms > 1`` only).
     n_restarts : int, default=5
         Number of seeded initializations of the ``n_terms > 1`` alternation; the lowest mean
         slack is kept. More restarts help against local optima (see the limitations page).
-    facet_step : {"support", "tangent"}, default="support"
-        Per-facet step of the ``n_terms > 1`` alternation (see
+    refit_step : {"support", "tangent"}, default="support"
+        Per-term step of the ``n_terms > 1`` alternation (see
         ``solve_terms``): ``"support"`` is the supporting
-        hyperplane tightest on the facet's rows, which keeps the mean slack monotone;
+        hyperplane tightest on the term's cell, which keeps the mean slack monotone;
         ``"tangent"`` fits the near-frontier rows' tangent plane, which is not monotone. No effect
         for ``n_terms = 1``.
 
@@ -111,11 +111,11 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     exponents_ : ndarray of shape (n_terms, n_features_in_)
         Fitted exponents ``w_k`` on the simplex.
     log_offset_ : ndarray of shape (n_terms,)
-        The offsets ``beta_k = J_tau(w_k)`` (for ``n_terms > 1`` over all rows: each facet is a
+        The offsets ``beta_k = J_tau(w_k)`` (for ``n_terms > 1`` over all rows: each term is a
         supporting hyperplane).
     support_weights_ : ndarray of shape (n_samples,)
         Softmax weights ``p`` at the solution (LP duals at ``tau = inf``); zero for rows with a
-        zero metric. For ``n_terms > 1`` each facet's weights on its own rows, scaled by its row
+        zero metric. For ``n_terms > 1`` each term's weights on its cell, scaled by its row
         share (sum 1).
     n_eff_ : float
         Effective number of supporting rows, ``1 / sum p_i^2``.
@@ -129,7 +129,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         The two are different quantities: to compare fits across ``n_terms`` use ``mean_slack_``.
     mean_slack_ : float
         The mean slack ``mean_i (beta_k(i) - w_k(i) . u_i)`` over the rows with no zero metric,
-        with ``k(i)`` the row's facet (``facet_``); defined for every ``n_terms``. At
+        with ``k(i)`` the row's cell (``cell_``); defined for every ``n_terms``. At
         ``n_terms = 1`` it is ``beta - mean_i (w . u_i)``. At a fixed ``temperature`` it is
         comparable across ``n_terms`` (and across restarts); ``objective_`` is not. With a finite
         ``term_temperature`` and ``n_terms > 1`` it is the slack of the reported model,
@@ -139,8 +139,8 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     basis_ : ndarray of shape (n_features_in_ - 1, n_features_in_)
         Chart matrix ``B`` (``Z = log(X) @ B.T``). For ``n_terms > 1`` the shape is
         ``(n_terms, n_features_in_ - 1, n_features_in_)``: the chart does not depend on ``w``, so
-        the same ``B`` is stacked ``K`` times and ``Z`` is the same for every facet.
-    facet_ : ndarray of int, shape (n_samples,)
+        the same ``B`` is stacked ``K`` times and ``Z`` is the same for every term.
+    cell_ : ndarray of int, shape (n_samples,)
         ``argmax_k (w_k . u - beta_k)`` of each training row (``-1`` for a zero metric); all
         zeros at ``n_terms = 1``. The dominant term: an analysis of the fitted model, also for the
         soft fit, which uses weights on every term.
@@ -148,9 +148,9 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Posynomial coefficients ``exp(-kappa beta_k)`` of
         ``exp(kappa Phi_K) = sum_k c_k prod_j m_j^(kappa w_kj)``; at ``kappa = inf`` the
         convention ``kappa = 1`` gives ``exp(-beta_k)``.
-    facet_share_ : ndarray of shape (n_terms,)
+    term_share_ : ndarray of shape (n_terms,)
         Share of the near-frontier training rows (``|log V| < band``,
-        ``band = 1 / temperature``, or 0.1 at ``tau = inf``) assigned to each facet; zeros if
+        ``band = 1 / temperature``, or 0.1 at ``tau = inf``) assigned to each term; zeros if
         there are none; ``[1.0]`` at ``n_terms = 1``.
     training_log_v_ : ndarray of shape (n_samples,)
         ``log V`` of the training rows (``-inf`` for rows with a zero metric on a participating
@@ -162,21 +162,21 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         ``"iteration_cap"`` or ``"not_applicable"``), the first-order gaps, the assignment margin
         and radius, the Corollary bound and the tolerances (``EPS_KKT``, ``EPS_FEAS``,
         ``GUARD_TOL``). Level 3 (conditional local optimality) is for ``n_terms > 1`` with
-        ``facet_step="support"`` and no penalty; ``n_terms = 1`` and the degenerate shortcuts
+        ``refit_step="support"`` and no penalty; ``n_terms = 1`` and the degenerate shortcuts
         record ``"not_applicable"`` with the gap of the fitted objective, read only. For the soft
         fit (finite ``term_temperature``, finite ``temperature``) ``"certified"`` means the
-        facet gaps are within ``EPS_KKT`` and the Hessian of the soft objective is positive
+        term gaps are within ``EPS_KKT`` and the Hessian of the soft objective is positive
         definite on the tangent space of the active face (a strict local minimizer of the soft
         objective); ``"stationary"`` means the gaps hold and the curvature is not positive;
         ``min_curvature`` is the smallest curvature (``nan`` otherwise); the margin, radius and
         bound are ``nan``. A soft fit at ``temperature = inf`` is ``"not_applicable"``.
     conditioning_ : ndarray of shape (n_terms,)
-        Smallest eigenvalue of the Hessian of ``J_tau`` at each facet's fit,
+        Smallest eigenvalue of the Hessian of ``J_tau`` at each term's fit,
         ``tau (U^T diag(p) U - (U^T p)(U^T p)^T)`` with ``p`` the softmax weights over the valid
         rows, restricted to the simplex tangent space and to the participating exponents
         (``w_j > PARTICIPATION_THRESHOLD``). Small values flag a nearly flat direction (weak
         identifiability of the exponents). ``nan`` at ``temperature = inf`` (the objective is not
-        twice differentiable) and for a facet with fewer than two participating exponents. A
+        twice differentiable) and for a term with fewer than two participating exponents. A
         read-only diagnostic.
     n_features_in_ : int
         Number of metrics seen in ``fit``.
@@ -194,7 +194,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     continuous extension of a monomial: ``log V = sum_{j: w_j > EPS_ZERO_EXPONENT} w_j log m_j -
     beta`` with ``0 log 0 := 0``, so a zero metric on a numerically zero exponent leaves
     ``log V`` finite and a zero metric on a participating exponent gives ``V = 0``,
-    ``log V = -inf`` (for ``n_terms > 1`` each facet's score follows the same rule). Negative
+    ``log V = -inf`` (for ``n_terms > 1`` each term's score follows the same rule). Negative
     values raise ``ValueError``. Grounding: homogeneity and the invariant form, the offset, gradient
     and support weights, convexity, log-mean-exp, the noise offset, elasticities and improvement
     factors, and the chart, each derived in the documentation.
@@ -222,14 +222,14 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     >>> bool(np.allclose(hts.inverse_transform(hts.transform(X)), X))
     True
 
-    Three facets:
+    Three terms:
 
     >>> X, info = make_frontier_data(400, 4, n_terms=3, random_state=0)
     >>> est = HyperbolicTradeSpace(
     ...     n_terms=3, temperature=np.inf, random_state=0).fit(X)
     >>> est.exponents_.shape, est.basis_.shape
     ((3, 4), (3, 3, 4))
-    >>> bool(np.isclose(est.facet_share_.sum(), 1.0))
+    >>> bool(np.isclose(est.term_share_.sum(), 1.0))
     True
     >>> bool(np.allclose(
     ...     np.sort(est.exponents_, axis=0),
@@ -250,7 +250,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         penalty=None,
         alpha=0.0,
         random_state=None,
-        facet_step="support",
+        refit_step="support",
         n_restarts=5,
     ):
         self.temperature = temperature
@@ -264,7 +264,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         self.penalty = penalty
         self.alpha = alpha
         self.random_state = random_state
-        self.facet_step = facet_step
+        self.refit_step = refit_step
         self.n_restarts = n_restarts
 
     def __sklearn_tags__(self):
@@ -304,8 +304,8 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         check_random_state(self.random_state)
         if not (isinstance(self.n_restarts, numbers.Integral) and self.n_restarts >= 1):
             raise ValueError(f"n_restarts must be an integer >= 1, got {self.n_restarts!r}")
-        if self.facet_step not in ("support", "tangent"):
-            raise ValueError(f"facet_step must be 'support' or 'tangent', got {self.facet_step!r}")
+        if self.refit_step not in ("support", "tangent"):
+            raise ValueError(f"refit_step must be 'support' or 'tangent', got {self.refit_step!r}")
 
     def _log_metrics(self, X, reset):
         X = validate_data(self, X, reset=reset, dtype=np.float64)
@@ -351,7 +351,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
             tr = _solvers.solve_terms(
                 Uv, K, tau, self.min_exponent, self.penalty, self.alpha,
                 random_state=self.random_state, tol=self.tol, slsqp_max_iter=self.max_iter,
-                facet_step=self.facet_step, n_restarts=self.n_restarts,
+                refit_step=self.refit_step, n_restarts=self.n_restarts,
                 term_temperature=self.term_temperature,
                 aggregation=self.term_aggregation,
             )  # fmt: skip
@@ -385,7 +385,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
             if d == 1 or nv == 1:
                 res = None
             W, betas = np.tile(w, (K, 1)), np.full(K, beta)
-            term = _solvers.single_facet_termination(
+            term = _solvers.single_term_termination(
                 Uv, w, beta, p, tau, self.min_exponent, n_iter, reason, K
             )
         if res is not None and term.status == "iteration_cap":
@@ -423,12 +423,12 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
                     p[m] = _solvers.support_weights(Uv[m] @ W[k], tau) * m.sum() / nv
             share = np.bincount(lab[near], minlength=K) / max(near.sum(), 1)
         else:
-            share = np.ones(1)  # the single facet owns every near-frontier row
-        self.facet_ = lab
+            share = np.ones(1)  # the single term owns every near-frontier row
+        self.cell_ = lab
         with np.errstate(over="ignore"):
             self.coefficients_ = np.exp(-(1.0 if np.isinf(kappa) else kappa) * betas)
-        self.facet_share_ = share
-        # mean slack over the valid rows: beta_k(i) - w_k(i) . u_i, k(i) the row's facet (the
+        self.term_share_ = share
+        # mean slack over the valid rows: beta_k(i) - w_k(i) . u_i, k(i) the row's term (the
         # label model);
         # -mean_i Phi_kappa(u_i) for a finite term temperature (the model the estimator reports)
         lv = lab[valid]
@@ -450,7 +450,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         return self
 
     def _conditioning(self, Uv, tau):
-        """Smallest eigenvalue of each facet's restricted Hessian of ``J_tau`` (read only)."""
+        """Smallest eigenvalue of each term's restricted Hessian of ``J_tau`` (read only)."""
         W = self.exponents_
         out = np.full(W.shape[0], np.nan)
         if np.isinf(tau):
@@ -476,7 +476,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         return logsumexp(kappa * S, axis=1) / kappa - shift
 
     def _zero_limit_scores(self, U):
-        """Per-facet scores of rows with a zero metric: ``0 log 0 := 0`` below EPS_ZERO_EXPONENT."""
+        """Per-term scores of rows with a zero metric: ``0 log 0 := 0`` below EPS_ZERO_EXPONENT."""
         W, b = self.exponents_, self.log_offset_
         part = W > EPS_ZERO_EXPONENT  # (K, d)
         zero = -np.inf == U  # (n, d)
@@ -692,8 +692,8 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         out[V == 0] = np.nan
         return out
 
-    def assign_facets(self, X):
-        """Facet of each row: ``argmax_k (w_k . log m - beta_k)``.
+    def assign_cells(self, X):
+        """Cell of each row: ``argmax_k (w_k . log m - beta_k)``.
 
         Parameters
         ----------
@@ -703,7 +703,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         Returns
         -------
         ndarray of int, shape (n_samples,)
-            Index in ``[0, n_terms)`` of the facet that attains the maximum; ``-1`` for rows with
+            Index in ``[0, n_terms)`` of the term that attains the maximum; ``-1`` for rows with
             a zero metric. All zeros when ``n_terms = 1``.
 
         Examples
@@ -711,7 +711,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         >>> from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
         >>> X, _ = make_frontier_data(150, 4, n_terms=3, random_state=0)
         >>> est = HyperbolicTradeSpace(n_terms=3, random_state=0).fit(X)
-        >>> bool((est.assign_facets(X) == est.facet_).all())
+        >>> bool((est.assign_cells(X) == est.cell_).all())
         True
         """
         check_is_fitted(self)
@@ -745,7 +745,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         check_is_fitted(self)
         U = self._log_metrics(X, reset=False)
         log_v = self._chart(U)[1]
-        w = self.exponents_[np.maximum(self._assign(U), 0)]  # exponents of the assigned facet
+        w = self.exponents_[np.maximum(self._assign(U), 0)]  # exponents of the assigned term
         out = np.full(w.shape, np.inf)
         pos = w > 1e-12  # exponents below 1e-12 are numerically zero (solver noise)
         with np.errstate(divide="ignore", invalid="ignore", over="ignore"):

@@ -10,8 +10,8 @@ from __future__ import annotations
 import case
 import numpy as np
 from paper_common import Md, appendix_link
-from paper_facets import aligned
 from paper_stability import stable, summary
+from paper_terms import aligned
 
 _D11 = appendix_link("sub-d-11", "Appendix D.11")
 _D14 = appendix_link("sub-d-14", "Appendix D.14")
@@ -128,11 +128,11 @@ def k1_sentence(study, fit) -> Md:
 
 
 def k_sweep_sentence(study, fits) -> Md:
-    """Mean slack by K at each K's temperature and at one temperature, and the K = 3 facets.
+    """Mean slack by K at each K's temperature and at one temperature, and the K = 3 terms.
 
     The mean slack is the estimator's ``mean_slack_``; the temperature is re-selected at each K,
     so the first comparison is not like for like and the second holds the temperature at K = 1's.
-    The facet shares, gaps, margins and radii are Appendix D's tables (D.3, D.8, D.15).
+    The term shares, gaps, margins and radii are Appendix D's tables (D.3, D.8, D.15).
     """
     r = study.regime
     three = lambda v: f"{v:.3f}"  # noqa: E731
@@ -161,7 +161,7 @@ def k_sweep_sentence(study, fits) -> Md:
         f"The mean slack falls from {own[1]} at K = 1 to {own[2]} at K = 2 and {own[3]} at "
         f"K = 3, at the temperatures {tau[1]}, {tau[2]} and {tau[3]}; refitted at the K = 1 "
         f"temperature it falls to {fixed[2]} and {fixed[3]} ({_D15}). The "
-        f"K = 3 facets have contending sets (exact-maximum supports) of {_and(ft['n_lemma'])} "
+        f"K = 3 terms have contending sets (exact-maximum supports) of {_and(ft['n_lemma'])} "
         f"metrics; {absent}."
     )
 
@@ -178,12 +178,12 @@ def certificate_sentence(fits) -> Md:
     ks = _and(int(k) for k in multi["K"])
     return Md(
         f"On the primary regime the solver declares the status "
-        f"{_and(sorted(set(multi['status'])))} at K = {ks}, with the largest facet gap {gap}."
+        f"{_and(sorted(set(multi['status'])))} at K = {ks}, with the largest term gap {gap}."
     )
 
 
 def designs_on_a_seam(study, fit) -> tuple[int, int]:
-    """The designs whose best-minus-second-best facet score is below the band 1/tau, and all.
+    """The designs whose best-minus-second-best term score is below the band 1/tau, and all.
 
     A margin below the band shows only that at least one design is within the band of a seam;
     this is the count. On the primary data at K = 3 three gaps lie within 4 per cent of the band,
@@ -200,7 +200,7 @@ def margin_sentence(study, fits) -> Md:
     """How to read the size of the margin and the stable radius, with this case's values.
 
     The margin and the radius are read against the band 1/tau and against the median gap between
-    a design's best and second-best facet score (Appendix D.8); the designs within the band of a
+    a design's best and second-best term score (Appendix D.8); the designs within the band of a
     seam are counted (:func:`designs_on_a_seam`).
     """
     r, K = study.regime, max(fits)
@@ -237,13 +237,13 @@ def recovery_sentence() -> Md:
             for g, t in zip(good, gr.RECOVERY_TAUS, strict=True)
         )
     tail = (
-        f"the {len(rows)} failures have {_and(rows)} frontier rows on their thinnest facet ({_D14})"
+        f"the {len(rows)} failures have {_and(rows)} frontier rows on their thinnest term ({_D14})"
         if same
         else f"the failures differ between the temperatures ({_D14})"
     )
     return Md(
         f"**A known answer.** On {n} planted tables ({gr.RECOVERY_ROWS} rows, 4 metrics) "
-        f"the fit recovers all three facets to within {gr.OWN_ROWS_TOLERANCE} in {temps}; {tail}."
+        f"the fit recovers all three terms to within {gr.OWN_ROWS_TOLERANCE} in {temps}; {tail}."
     )
 
 
@@ -343,4 +343,4 @@ def planted_sentence() -> Md:
 
     X, info = planted_table()
     k, d = np.asarray(info["exponents"]).shape
-    return Md(f"The planted table has {len(X)} rows, {d} metrics and {k} planted facets.")
+    return Md(f"The planted table has {len(X)} rows, {d} metrics and {k} planted terms.")

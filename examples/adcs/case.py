@@ -474,7 +474,7 @@ def fit_study(study, K=1, target=None):
     ----------
     study : Study
     K : int, default 1
-        Number of facets; ``K = 1`` is the monomial frontier.
+        Number of terms; ``K = 1`` is the monomial frontier.
     target : float, optional
         Target ``frac_above_``; default ``spec.target_frac``.
 
@@ -496,7 +496,7 @@ def fit_study(study, K=1, target=None):
 
 
 def exponent_table(study, fit):
-    """The exponent of each metric at the fitted frontier, K = 1 or per facet.
+    """The exponent of each metric at the fitted frontier, K = 1 or per term.
 
     Parameters
     ----------
@@ -506,10 +506,10 @@ def exponent_table(study, fit):
     Returns
     -------
     pandas.DataFrame
-        One row per metric; one column ``exponent w`` (K = 1) or ``facet k`` per facet.
+        One row per metric; one column ``exponent w`` (K = 1) or ``term k`` per term.
     """
     W = np.atleast_2d(fit.estimator.exponents_)
-    cols = ["exponent w"] if len(W) == 1 else [f"facet {k + 1}" for k in range(len(W))]
+    cols = ["exponent w"] if len(W) == 1 else [f"term {k + 1}" for k in range(len(W))]
     return pd.DataFrame(W.T, index=study.names, columns=cols).rename_axis("metric").reset_index()
 
 
@@ -677,8 +677,8 @@ def k_table(study, fits):
     Returns
     -------
     pandas.DataFrame
-        Columns ``K``, ``tau``, ``band 1/tau``, ``objective_``, ``frac_above_``, ``facet rows``,
-        ``facet shares``, ``max gap``, ``status``, ``gamma`` (margin), ``radius``, ``bound``.
+        Columns ``K``, ``tau``, ``band 1/tau``, ``objective_``, ``frac_above_``, ``term rows``,
+        ``term shares``, ``max gap``, ``status``, ``gamma`` (margin), ``radius``, ``bound``.
     """
     _, k_terms, _ = _lib()
     return k_terms.summary({K: f.estimator for K, f in fits.items()}, study.M)
@@ -701,7 +701,7 @@ def k_sweep(study, Ks=(1, 2, 3)):
 
 
 def certificate_table(fits):
-    """Certificate columns of the fits: status, largest facet gap, margin, radius, bound.
+    """Certificate columns of the fits: status, largest term gap, margin, radius, bound.
 
     Parameters
     ----------
@@ -764,19 +764,19 @@ def mean_slack_fixed_tau(study, fits, tau=None):
 
 
 def margin_scale(study, fits):
-    """The assignment margin and stable radius of the multi-facet fits against two scales.
+    """The assignment margin and stable radius of the several-term fits against two scales.
 
     Parameters
     ----------
     study : Study
     fits : dict of int to Fit
-        As returned by :func:`k_fits`; the K = 1 fit has no competing facet and is left out.
+        As returned by :func:`k_fits`; the K = 1 fit has no competing term and is left out.
 
     Returns
     -------
     pandas.DataFrame
         Columns ``K``, ``band 1/tau``, ``gamma`` (the margin), ``radius``, and ``median margin``,
-        the median over the rows of the gap between a row's best and second-best facet score.
+        the median over the rows of the gap between a row's best and second-best term score.
         The margin is read against the band and against the median margin.
     """
     rows = []
@@ -794,7 +794,7 @@ def margin_scale(study, fits):
 
 
 def pca_directions(study, fit, n=3, leading=3):
-    """Principal directions of the near-frontier chart coordinates of the fit (its first facet).
+    """Principal directions of the near-frontier chart coordinates of the fit (its first term).
 
     The tension report already runs a principal component analysis on the chart coordinates ``Z``
     of the near-frontier designs; this table reads it: the share of the spread along each of the
@@ -804,7 +804,7 @@ def pca_directions(study, fit, n=3, leading=3):
     ----------
     study : Study
     fit : Fit
-        A K = 1 fit (the first facet's report is read).
+        A K = 1 fit (the first term's report is read).
     n : int, default 3
         Directions listed.
     leading : int, default 3
@@ -916,7 +916,7 @@ def _sorted_contending(rep, names):
 
 
 def tension_table(study, fit, band=None):
-    """Per facet: the contending set (largest exponent first) and the facts of its report.
+    """Per term: the contending set (largest exponent first) and the facts of its report.
 
     Parameters
     ----------
@@ -928,22 +928,22 @@ def tension_table(study, fit, band=None):
     Returns
     -------
     pandas.DataFrame
-        Columns ``facet``, ``n_lemma``, ``near-frontier``, ``contending set``,
+        Columns ``term``, ``n_lemma``, ``near-frontier``, ``contending set``,
         ``largest exponents``.
     """
     _, k_terms, _ = _lib()
     rows = []
     for k, rep in enumerate(_all_terms(study, fit, band)):
         rows.append({
-            "facet": k + 1, "n_lemma": rep.n_lemma, "near-frontier": rep.n_near_frontier,
+            "term": k + 1, "n_lemma": rep.n_lemma, "near-frontier": rep.n_near_frontier,
             "contending set": ", ".join(_sorted_contending(rep, study.names)),
             "largest exponents": k_terms.top(study.names, rep.exponents, 3),
         })  # fmt: skip
     return pd.DataFrame(rows)
 
 
-def facet_table(study, fits, K=3, band=None):
-    """One row of facts per facet of the K-term fit, with the facet's first-order gap.
+def term_table(study, fits, K=3, band=None):
+    """One row of facts per term of the K-term fit, with the term's first-order gap.
 
     Parameters
     ----------
@@ -958,7 +958,7 @@ def facet_table(study, fits, K=3, band=None):
     Returns
     -------
     pandas.DataFrame
-        Columns ``facet``, ``rows``, ``contending set``, ``n_lemma``, ``largest exponents``,
+        Columns ``term``, ``rows``, ``contending set``, ``n_lemma``, ``largest exponents``,
         ``near-frontier``, ``reach beta_k``, ``share``, ``gap G_k``.
     """
     _, k_terms, _ = _lib()
@@ -966,15 +966,15 @@ def facet_table(study, fits, K=3, band=None):
     est = fit.estimator
     if band is None:
         band = fits[1].band if 1 in fits else fit.band
-    sizes = np.bincount(est.facet_, minlength=K) if K > 1 else [len(study.M)]
+    sizes = np.bincount(est.cell_, minlength=K) if K > 1 else [len(study.M)]
     out = []
     for k, rep in enumerate(_all_terms(study, fit, band)):
         out.append({
-            "facet": k + 1, "rows": int(sizes[k]),
+            "term": k + 1, "rows": int(sizes[k]),
             "contending set": ", ".join(_sorted_contending(rep, study.names)),
             "n_lemma": rep.n_lemma, "largest exponents": k_terms.top(study.names, rep.exponents),
             "near-frontier": rep.n_near_frontier, "reach beta_k": float(est.log_offset_[k]),
-            "share": float(est.facet_share_[k]) if K > 1 else 1.0,
+            "share": float(est.term_share_[k]) if K > 1 else 1.0,
             "gap G_k": float(est.termination_.gaps[k]),
         })  # fmt: skip
     return pd.DataFrame(out)
@@ -1506,7 +1506,7 @@ def tau_sweep_figure(study, fit, title=None, vmax=None):
 
 @_legible
 def log_plane_figure(study, fit, band=None):
-    """Log-plane slices of the fit, one per pair of each facet's two largest exponents.
+    """Log-plane slices of the fit, one per pair of each term's two largest exponents.
 
     Parameters
     ----------
@@ -1519,14 +1519,14 @@ def log_plane_figure(study, fit, band=None):
     Returns
     -------
     matplotlib.figure.Figure
-        Panel titles name the facets drawn.
+        Panel titles name the terms drawn.
     """
     hts, k_terms, plotting = _lib()
     plt = _plt()
     est, M = fit.estimator, study.M
     band = fit.band if band is None else band
     U = np.log(M)
-    labels = plotting.facet_labels(est, M)
+    labels = plotting.cell_labels(est, M)
     pairs = k_terms.slice_pairs(est)
     fig, axes = plt.subplots(len(pairs), 1, figsize=(FIGURE_WIDTH_IN, 4.6 * len(pairs)),
                              squeeze=False)  # fmt: skip
@@ -1540,7 +1540,7 @@ def log_plane_figure(study, fit, band=None):
             lim(lo - 0.1 * (hi - lo), hi + 0.1 * (hi - lo))
         ax.set_xlabel(_wrap("log of the " + cond_label(study, study.attrs[j]), 80))
         ax.set_ylabel(_wrap("log of the " + cond_label(study, study.attrs[k]), 44))
-        noun = "facet" if len(keep) == 1 else "facets"
+        noun = "term" if len(keep) == 1 else "terms"
         names = ", ".join(str(f + 1) for f in keep)
         ax.set_title(
             f"{study.names[j]} and {study.names[k]}\n{noun} {names} drawn",
@@ -1551,7 +1551,7 @@ def log_plane_figure(study, fit, band=None):
 
 @_legible
 def coordinates_figure(study, fit, band=None):
-    """Position along the frontier: two pairs of chart coordinates, shaded by facet.
+    """Position along the frontier: two pairs of chart coordinates, shaded by cell.
 
     Parameters
     ----------
@@ -1568,7 +1568,7 @@ def coordinates_figure(study, fit, band=None):
     band = fit.band if band is None else band
     chart = fit.estimator.transform(study.M)
     Z, logv = chart[:, :-1], chart[:, -1]
-    labels = plotting.facet_labels(fit.estimator, study.M) if fit.K > 1 else _colors(study)
+    labels = plotting.cell_labels(fit.estimator, study.M) if fit.K > 1 else _colors(study)
     fig, axes = plt.subplots(2, 1, figsize=(FIGURE_WIDTH_IN, 8.4))
     for ax, c in zip(axes, [(0, 1), (0, 2)], strict=True):
         if max(c) >= Z.shape[1]:
@@ -1585,7 +1585,7 @@ def coordinates_figure(study, fit, band=None):
 def _member_title(rep, who):
     """A panel title that says what the count counts: the members of the exact-maximum support.
 
-    The panel outlines the contending set (the support of the exact-maximum fit on the facet's
+    The panel outlines the contending set (the support of the exact-maximum fit on the term's
     rows, the tension report's) on the diagonal; the exponent in each label is the working
     temperature's, which grades how strongly a member contends and can be small.
     """

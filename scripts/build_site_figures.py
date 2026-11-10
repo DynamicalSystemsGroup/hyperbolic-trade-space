@@ -3,11 +3,11 @@
     uv run python scripts/build_site_figures.py [--out DIR] [--lines]
 
 The triangle is the positions of three metrics, shaded by the trade-off that binds there. The
-table is the package's planted three-facet table, the fit is the package's own estimator, and the
-regions are exact: the facet k that binds at a position is the argmax over k of
+table is the package's planted three-term table, the fit is the package's own estimator, and the
+regions are exact: the term k that binds at a position is the argmax over k of
 ``w_k . p - beta_k``.
 Every word on the figure is read from the fitted exponents (nothing is hand-placed): the colour
-of a region follows from which facet trades all three metrics, its label names the metrics whose
+of a region follows from which term trades all three metrics, its label names the metrics whose
 exponents are large, and the label sits where the region holds few designs.
 
 The triangle is drawn by the package's own ``plot_ternary`` (plain Matplotlib, the barycentric
@@ -19,8 +19,8 @@ backgrounds and with the colours of the root page's two schemes.
 ``--lines`` (off by default, and off everywhere on the site) overlays lines of equal V at a fixed
 total: the shares are ``c_j = (m_j / typical_j)^(1/s) / L`` with ``s = 1`` and ``L`` their sum, the
 function drawn is ``f(c) = max_k (a_k + s * sum_j w_kj log c_j)`` with
-``a_k = w_k . colmean - beta_k``, and each facet's exponent vector ``w_k`` is a star in the facet's
-colour, exactly where that facet's V peaks at a fixed total.
+``a_k = w_k . colmean - beta_k``, and each term's exponent vector ``w_k`` is a star in the term's
+colour, exactly where that term's V peaks at a fixed total.
 """
 
 from __future__ import annotations
@@ -50,12 +50,12 @@ colours, shares, regions = _tern._ternary_colours, _tern._ternary_shares, _tern.
 
 
 def says(w):
-    """The trade-off a facet with exponent vector ``w`` names, in words, read from its exponents."""
+    """The trade-off a term with exponent vector ``w`` names, in words, read from its exponents."""
     return _tern._ternary_says(np.asarray(w, float), NAMES)
 
 
 def fit_why():
-    """The planted table and its three-facet fit: the data, exponents, offsets, facets, log V."""
+    """The planted table and its three-term fit: the data, exponents, offsets, cells, log V."""
     from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
 
     X, _ = make_frontier_data(N_ROWS, N_METRICS, n_terms=N_TERMS, random_state=DATA_SEED)
@@ -65,7 +65,7 @@ def fit_why():
         **_tern._ternary_geometry(ts, X),
         "X": X,
         "estimator": ts,
-        "facet": np.asarray(ts.facet_),
+        "cell": np.asarray(ts.cell_),
         "logv": np.asarray(ts.score_samples(X), float),
     }
 
@@ -111,7 +111,7 @@ def main(argv=None):
     parser.add_argument(
         "--lines",
         action="store_true",
-        help="overlay lines of equal V at a fixed total, with each facet's exponent vector as a "
+        help="overlay lines of equal V at a fixed total, with each term's exponent vector as a "
         "star (off by default)",
     )
     args = parser.parse_args(argv)

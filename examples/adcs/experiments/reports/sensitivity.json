@@ -118,581 +118,329 @@
    "max": 7.144739807e-17,
    "min": 0.0
   },
-  "D exponents K=3 | primary | control effort | facet 1": {
+  "D exponents K=3 | primary | control effort | term 1": {
    "committed": 2.832880121e-17,
    "identical": false,
    "max": 9.336844681e-17,
    "min": 0.0
   },
-  "D exponents K=3 | primary | control effort | facet 2": {
+  "D exponents K=3 | primary | control effort | term 2": {
    "committed": 0.3966702007,
    "identical": false,
    "max": 0.3966702561,
    "min": 0.3966698497
   },
-  "D exponents K=3 | primary | control effort | facet 3": {
+  "D exponents K=3 | primary | control effort | term 3": {
    "committed": 0.0,
    "identical": false,
    "max": 3.055180715e-16,
    "min": 0.0
   },
-  "D exponents K=3 | primary | depth of discharge | facet 1": {
+  "D exponents K=3 | primary | depth of discharge | term 1": {
    "committed": 0.07252907481,
    "identical": false,
    "max": 0.07252907482,
    "min": 0.07252907481
   },
-  "D exponents K=3 | primary | depth of discharge | facet 2": {
+  "D exponents K=3 | primary | depth of discharge | term 2": {
    "committed": 1.460507147e-16,
    "identical": false,
    "max": 2.547199597e-16,
    "min": 0.0
   },
-  "D exponents K=3 | primary | depth of discharge | facet 3": {
+  "D exponents K=3 | primary | depth of discharge | term 3": {
    "committed": 0.02380315424,
    "identical": false,
    "max": 0.02380315428,
    "min": 0.02380315424
   },
-  "D exponents K=3 | primary | eclipse reserve | facet 1": {
+  "D exponents K=3 | primary | eclipse reserve | term 1": {
    "committed": 0.0,
    "identical": false,
    "max": 4.880867262e-17,
    "min": 0.0
   },
-  "D exponents K=3 | primary | eclipse reserve | facet 2": {
+  "D exponents K=3 | primary | eclipse reserve | term 2": {
    "committed": 0.0,
    "identical": false,
    "max": 4.262558882e-17,
    "min": 0.0
   },
-  "D exponents K=3 | primary | eclipse reserve | facet 3": {
+  "D exponents K=3 | primary | eclipse reserve | term 3": {
    "committed": 1.944829304e-17,
    "identical": false,
    "max": 1.944829304e-17,
    "min": 0.0
   },
-  "D exponents K=3 | primary | energy balance | facet 1": {
+  "D exponents K=3 | primary | energy balance | term 1": {
    "committed": 0.4156308587,
    "identical": false,
    "max": 0.4156308588,
    "min": 0.4156308587
   },
-  "D exponents K=3 | primary | energy balance | facet 2": {
+  "D exponents K=3 | primary | energy balance | term 2": {
    "committed": 0.192772871,
    "identical": false,
    "max": 0.192772871,
    "min": 0.1927724817
   },
-  "D exponents K=3 | primary | energy balance | facet 3": {
+  "D exponents K=3 | primary | energy balance | term 3": {
    "committed": 2.373066883e-17,
    "identical": false,
    "max": 2.373066883e-17,
    "min": 0.0
   },
-  "D exponents K=3 | primary | peak slew power | facet 1": {
+  "D exponents K=3 | primary | peak slew power | term 1": {
    "committed": 4.471759157e-17,
    "identical": false,
    "max": 9.801490051e-17,
    "min": 0.0
   },
-  "D exponents K=3 | primary | peak slew power | facet 2": {
+  "D exponents K=3 | primary | peak slew power | term 2": {
    "committed": 0.0,
    "identical": false,
    "max": 3.575613804e-16,
    "min": 0.0
   },
-  "D exponents K=3 | primary | peak slew power | facet 3": {
+  "D exponents K=3 | primary | peak slew power | term 3": {
    "committed": 0.6123152559,
    "identical": false,
    "max": 0.6123152559,
    "min": 0.6123152558
   },
-  "D exponents K=3 | primary | pointing error | facet 1": {
+  "D exponents K=3 | primary | pointing error | term 1": {
    "committed": 0.08654365202,
    "identical": false,
    "max": 0.08654365202,
    "min": 0.08654365198
   },
-  "D exponents K=3 | primary | pointing error | facet 2": {
+  "D exponents K=3 | primary | pointing error | term 2": {
    "committed": 0.04362188096,
    "identical": false,
    "max": 0.04362240988,
    "min": 0.04362185096
   },
-  "D exponents K=3 | primary | pointing error | facet 3": {
+  "D exponents K=3 | primary | pointing error | term 3": {
    "committed": 0.2265022458,
    "identical": false,
    "max": 0.2265022458,
    "min": 0.2265022458
   },
-  "D exponents K=3 | primary | power margin | facet 1": {
+  "D exponents K=3 | primary | power margin | term 1": {
    "committed": 2.070229573e-17,
    "identical": false,
    "max": 7.46124461e-17,
    "min": 0.0
   },
-  "D exponents K=3 | primary | power margin | facet 2": {
+  "D exponents K=3 | primary | power margin | term 2": {
    "committed": 0.0,
    "identical": false,
    "max": 4.965685036e-17,
    "min": 0.0
   },
-  "D exponents K=3 | primary | power margin | facet 3": {
+  "D exponents K=3 | primary | power margin | term 3": {
    "committed": 0.02492008372,
    "identical": false,
    "max": 0.02492008375,
    "min": 0.02492008372
   },
-  "D exponents K=3 | primary | settling time | facet 1": {
+  "D exponents K=3 | primary | settling time | term 1": {
    "committed": 0.1848448627,
    "identical": false,
    "max": 0.1848448627,
    "min": 0.1848448626
   },
-  "D exponents K=3 | primary | settling time | facet 2": {
+  "D exponents K=3 | primary | settling time | term 2": {
    "committed": 0.3669350473,
    "identical": false,
    "max": 0.366935216,
    "min": 0.3669350243
   },
-  "D exponents K=3 | primary | settling time | facet 3": {
+  "D exponents K=3 | primary | settling time | term 3": {
    "committed": 0.05314453101,
    "identical": false,
    "max": 0.05314453102,
    "min": 0.05314453101
   },
-  "D exponents K=3 | primary | total mass | facet 1": {
+  "D exponents K=3 | primary | total mass | term 1": {
    "committed": 0.2404515518,
    "identical": false,
    "max": 0.2404515518,
    "min": 0.2404515518
   },
-  "D exponents K=3 | primary | total mass | facet 2": {
+  "D exponents K=3 | primary | total mass | term 2": {
    "committed": 3.934504614e-17,
    "identical": false,
    "max": 5.863099863e-17,
    "min": 0.0
   },
-  "D exponents K=3 | primary | total mass | facet 3": {
+  "D exponents K=3 | primary | total mass | term 3": {
    "committed": 0.05931472931,
    "identical": false,
    "max": 0.05931472938,
    "min": 0.05931472929
   },
-  "D exponents K=3 | stock | control effort | facet 1": {
+  "D exponents K=3 | stock | control effort | term 1": {
    "committed": 0.5070946504,
    "identical": false,
    "max": 0.5070946504,
    "min": 0.5070945165
   },
-  "D exponents K=3 | stock | control effort | facet 2": {
+  "D exponents K=3 | stock | control effort | term 2": {
    "committed": 0.0,
    "identical": false,
    "max": 1.157408706e-16,
    "min": 0.0
   },
-  "D exponents K=3 | stock | control effort | facet 3": {
+  "D exponents K=3 | stock | control effort | term 3": {
    "committed": 0.3530070356,
    "identical": false,
    "max": 0.3530070356,
    "min": 0.3530068852
   },
-  "D exponents K=3 | stock | depth of discharge | facet 1": {
+  "D exponents K=3 | stock | depth of discharge | term 1": {
    "committed": 0.00220558935,
    "identical": false,
    "max": 0.00220558935,
    "min": 0.002205583659
   },
-  "D exponents K=3 | stock | depth of discharge | facet 2": {
+  "D exponents K=3 | stock | depth of discharge | term 2": {
    "committed": 0.06496773393,
    "identical": false,
    "max": 0.06496773397,
    "min": 0.0649677339
   },
-  "D exponents K=3 | stock | depth of discharge | facet 3": {
+  "D exponents K=3 | stock | depth of discharge | term 3": {
    "committed": 0.01618913742,
    "identical": false,
    "max": 0.01618914485,
    "min": 0.01618913553
   },
-  "D exponents K=3 | stock | eclipse reserve | facet 1": {
+  "D exponents K=3 | stock | eclipse reserve | term 1": {
    "committed": 4.528811435e-17,
    "identical": false,
    "max": 1.618690842e-16,
    "min": 1.780535392e-17
   },
-  "D exponents K=3 | stock | eclipse reserve | facet 2": {
+  "D exponents K=3 | stock | eclipse reserve | term 2": {
    "committed": 1.016956673e-17,
    "identical": false,
    "max": 2.696899432e-17,
    "min": 0.0
   },
-  "D exponents K=3 | stock | eclipse reserve | facet 3": {
+  "D exponents K=3 | stock | eclipse reserve | term 3": {
    "committed": 0.0,
    "identical": false,
    "max": 1.32287728e-16,
    "min": 0.0
   },
-  "D exponents K=3 | stock | energy balance | facet 1": {
+  "D exponents K=3 | stock | energy balance | term 1": {
    "committed": 0.07359000364,
    "identical": false,
    "max": 0.07359004946,
    "min": 0.07359000364
   },
-  "D exponents K=3 | stock | energy balance | facet 2": {
+  "D exponents K=3 | stock | energy balance | term 2": {
    "committed": 4.324765874e-17,
    "identical": false,
    "max": 4.324765874e-17,
    "min": 0.0
   },
-  "D exponents K=3 | stock | energy balance | facet 3": {
+  "D exponents K=3 | stock | energy balance | term 3": {
    "committed": 0.3472233896,
    "identical": false,
    "max": 0.3472235419,
    "min": 0.3472233717
   },
-  "D exponents K=3 | stock | peak slew power | facet 1": {
+  "D exponents K=3 | stock | peak slew power | term 1": {
    "committed": 0.0,
    "identical": true,
    "max": 0.0,
    "min": 0.0
   },
-  "D exponents K=3 | stock | peak slew power | facet 2": {
+  "D exponents K=3 | stock | peak slew power | term 2": {
    "committed": 0.4277066517,
    "identical": false,
    "max": 0.4277066519,
    "min": 0.4277066516
   },
-  "D exponents K=3 | stock | peak slew power | facet 3": {
+  "D exponents K=3 | stock | peak slew power | term 3": {
    "committed": 0.0,
    "identical": false,
    "max": 4.298217881e-16,
    "min": 0.0
   },
-  "D exponents K=3 | stock | pointing error | facet 1": {
+  "D exponents K=3 | stock | pointing error | term 1": {
    "committed": 0.04910899982,
    "identical": false,
    "max": 0.04910900524,
    "min": 0.04910897795
   },
-  "D exponents K=3 | stock | pointing error | facet 2": {
+  "D exponents K=3 | stock | pointing error | term 2": {
    "committed": 0.1903557594,
    "identical": false,
    "max": 0.1903557595,
    "min": 0.1903557594
   },
-  "D exponents K=3 | stock | pointing error | facet 3": {
+  "D exponents K=3 | stock | pointing error | term 3": {
    "committed": 0.006116956211,
    "identical": false,
    "max": 0.006116981219,
    "min": 0.006116857787
   },
-  "D exponents K=3 | stock | power margin | facet 1": {
+  "D exponents K=3 | stock | power margin | term 1": {
    "committed": 4.850541018e-17,
    "identical": false,
    "max": 5.394574397e-17,
    "min": 0.0
   },
-  "D exponents K=3 | stock | power margin | facet 2": {
+  "D exponents K=3 | stock | power margin | term 2": {
    "committed": 0.08261329074,
    "identical": false,
    "max": 0.08261329077,
    "min": 0.08261329071
   },
-  "D exponents K=3 | stock | power margin | facet 3": {
+  "D exponents K=3 | stock | power margin | term 3": {
    "committed": 7.449570186e-17,
    "identical": false,
    "max": 7.449570186e-17,
    "min": 0.0
   },
-  "D exponents K=3 | stock | settling time | facet 1": {
+  "D exponents K=3 | stock | settling time | term 1": {
    "committed": 0.3680007568,
    "identical": false,
    "max": 0.3680008451,
    "min": 0.3680007568
   },
-  "D exponents K=3 | stock | settling time | facet 2": {
+  "D exponents K=3 | stock | settling time | term 2": {
    "committed": 0.07333315798,
    "identical": false,
    "max": 0.07333315799,
    "min": 0.07333315797
   },
-  "D exponents K=3 | stock | settling time | facet 3": {
+  "D exponents K=3 | stock | settling time | term 3": {
    "committed": 0.2774634812,
    "identical": false,
    "max": 0.2774635703,
    "min": 0.2774634812
   },
-  "D exponents K=3 | stock | total mass | facet 1": {
+  "D exponents K=3 | stock | total mass | term 1": {
    "committed": 0.0,
    "identical": false,
    "max": 4.183043601e-16,
    "min": 0.0
   },
-  "D exponents K=3 | stock | total mass | facet 2": {
+  "D exponents K=3 | stock | total mass | term 2": {
    "committed": 0.1610234062,
    "identical": false,
    "max": 0.1610234063,
    "min": 0.1610234061
   },
-  "D exponents K=3 | stock | total mass | facet 3": {
+  "D exponents K=3 | stock | total mass | term 3": {
    "committed": 0.0,
    "identical": false,
    "max": 2.514524607e-16,
    "min": 0.0
-  },
-  "D facets K=3 | primary | 1 | contending set": {
-   "identical": true
-  },
-  "D facets K=3 | primary | 1 | gap G_k": {
-   "committed": 2.47024623e-15,
-   "identical": false,
-   "max": 6.217248938e-15,
-   "min": 4.996003611e-16
-  },
-  "D facets K=3 | primary | 1 | largest exponents": {
-   "identical": true
-  },
-  "D facets K=3 | primary | 1 | n_lemma": {
-   "committed": 5,
-   "identical": true,
-   "max": 5.0,
-   "min": 5.0
-  },
-  "D facets K=3 | primary | 1 | near-frontier": {
-   "committed": 21,
-   "identical": true,
-   "max": 21.0,
-   "min": 21.0
-  },
-  "D facets K=3 | primary | 1 | reach beta_k": {
-   "committed": 0.4952282913,
-   "identical": false,
-   "max": 0.4952282913,
-   "min": 0.4952282913
-  },
-  "D facets K=3 | primary | 1 | rows": {
-   "committed": 162,
-   "identical": true,
-   "max": 162.0,
-   "min": 162.0
-  },
-  "D facets K=3 | primary | 1 | share": {
-   "committed": 0.2413793103,
-   "identical": true,
-   "max": 0.2413793103,
-   "min": 0.2413793103
-  },
-  "D facets K=3 | primary | 2 | contending set": {
-   "identical": true
-  },
-  "D facets K=3 | primary | 2 | gap G_k": {
-   "committed": 1.776356839e-15,
-   "identical": false,
-   "max": 7.993605777e-15,
-   "min": 6.106226635e-16
-  },
-  "D facets K=3 | primary | 2 | largest exponents": {
-   "identical": true
-  },
-  "D facets K=3 | primary | 2 | n_lemma": {
-   "committed": 4,
-   "identical": true,
-   "max": 4.0,
-   "min": 4.0
-  },
-  "D facets K=3 | primary | 2 | near-frontier": {
-   "committed": 3,
-   "identical": true,
-   "max": 3.0,
-   "min": 3.0
-  },
-  "D facets K=3 | primary | 2 | reach beta_k": {
-   "committed": 0.5663907861,
-   "identical": false,
-   "max": 0.5663908835,
-   "min": 0.5663906979
-  },
-  "D facets K=3 | primary | 2 | rows": {
-   "committed": 181,
-   "identical": true,
-   "max": 181.0,
-   "min": 181.0
-  },
-  "D facets K=3 | primary | 2 | share": {
-   "committed": 0.03448275862,
-   "identical": true,
-   "max": 0.03448275862,
-   "min": 0.03448275862
-  },
-  "D facets K=3 | primary | 3 | contending set": {
-   "identical": true
-  },
-  "D facets K=3 | primary | 3 | gap G_k": {
-   "committed": 3.28903571e-15,
-   "identical": false,
-   "max": 7.438494265e-15,
-   "min": 9.992007222e-16
-  },
-  "D facets K=3 | primary | 3 | largest exponents": {
-   "identical": true
-  },
-  "D facets K=3 | primary | 3 | n_lemma": {
-   "committed": 5,
-   "identical": true,
-   "max": 5.0,
-   "min": 5.0
-  },
-  "D facets K=3 | primary | 3 | near-frontier": {
-   "committed": 73,
-   "identical": true,
-   "max": 73.0,
-   "min": 73.0
-  },
-  "D facets K=3 | primary | 3 | reach beta_k": {
-   "committed": 0.5449506722,
-   "identical": false,
-   "max": 0.5449506722,
-   "min": 0.5449506722
-  },
-  "D facets K=3 | primary | 3 | rows": {
-   "committed": 363,
-   "identical": true,
-   "max": 363.0,
-   "min": 363.0
-  },
-  "D facets K=3 | primary | 3 | share": {
-   "committed": 0.724137931,
-   "identical": true,
-   "max": 0.724137931,
-   "min": 0.724137931
-  },
-  "D facets K=3 | stock | 1 | contending set": {
-   "identical": true
-  },
-  "D facets K=3 | stock | 1 | gap G_k": {
-   "committed": 1.026956298e-15,
-   "identical": false,
-   "max": 1.554312234e-14,
-   "min": 1.026956298e-15
-  },
-  "D facets K=3 | stock | 1 | largest exponents": {
-   "identical": true
-  },
-  "D facets K=3 | stock | 1 | n_lemma": {
-   "committed": 5,
-   "identical": true,
-   "max": 5.0,
-   "min": 5.0
-  },
-  "D facets K=3 | stock | 1 | near-frontier": {
-   "committed": 20,
-   "identical": true,
-   "max": 20.0,
-   "min": 20.0
-  },
-  "D facets K=3 | stock | 1 | reach beta_k": {
-   "committed": 0.3014172642,
-   "identical": false,
-   "max": 0.3014172642,
-   "min": 0.3014171915
-  },
-  "D facets K=3 | stock | 1 | rows": {
-   "committed": 251,
-   "identical": true,
-   "max": 251.0,
-   "min": 251.0
-  },
-  "D facets K=3 | stock | 1 | share": {
-   "committed": 0.1176470588,
-   "identical": true,
-   "max": 0.1176470588,
-   "min": 0.1176470588
-  },
-  "D facets K=3 | stock | 2 | contending set": {
-   "identical": true
-  },
-  "D facets K=3 | stock | 2 | gap G_k": {
-   "committed": 3.136380045e-15,
-   "identical": false,
-   "max": 7.410738689e-15,
-   "min": 3.136380045e-15
-  },
-  "D facets K=3 | stock | 2 | largest exponents": {
-   "identical": true
-  },
-  "D facets K=3 | stock | 2 | n_lemma": {
-   "committed": 6,
-   "identical": true,
-   "max": 6.0,
-   "min": 6.0
-  },
-  "D facets K=3 | stock | 2 | near-frontier": {
-   "committed": 52,
-   "identical": true,
-   "max": 52.0,
-   "min": 52.0
-  },
-  "D facets K=3 | stock | 2 | reach beta_k": {
-   "committed": 0.5950645811,
-   "identical": false,
-   "max": 0.5950645811,
-   "min": 0.595064581
-  },
-  "D facets K=3 | stock | 2 | rows": {
-   "committed": 184,
-   "identical": true,
-   "max": 184.0,
-   "min": 184.0
-  },
-  "D facets K=3 | stock | 2 | share": {
-   "committed": 0.4509803922,
-   "identical": true,
-   "max": 0.4509803922,
-   "min": 0.4509803922
-  },
-  "D facets K=3 | stock | 3 | contending set": {
-   "identical": true
-  },
-  "D facets K=3 | stock | 3 | gap G_k": {
-   "committed": 4.718447855e-16,
-   "identical": false,
-   "max": 2.581268532e-15,
-   "min": 4.718447855e-16
-  },
-  "D facets K=3 | stock | 3 | largest exponents": {
-   "identical": true
-  },
-  "D facets K=3 | stock | 3 | n_lemma": {
-   "committed": 4,
-   "identical": true,
-   "max": 4.0,
-   "min": 4.0
-  },
-  "D facets K=3 | stock | 3 | near-frontier": {
-   "committed": 50,
-   "identical": true,
-   "max": 50.0,
-   "min": 50.0
-  },
-  "D facets K=3 | stock | 3 | reach beta_k": {
-   "committed": 0.2969557281,
-   "identical": false,
-   "max": 0.2969558236,
-   "min": 0.2969556394
-  },
-  "D facets K=3 | stock | 3 | rows": {
-   "committed": 345,
-   "identical": true,
-   "max": 345.0,
-   "min": 345.0
-  },
-  "D facets K=3 | stock | 3 | share": {
-   "committed": 0.431372549,
-   "identical": true,
-   "max": 0.431372549,
-   "min": 0.431372549
   },
   "D k_table | primary | 1 | band 1/tau": {
    "committed": 0.0262,
@@ -705,12 +453,6 @@
    "identical": false,
    "max": 8.696155549e-06,
    "min": 8.696150304e-06
-  },
-  "D k_table | primary | 1 | facet rows": {
-   "identical": true
-  },
-  "D k_table | primary | 1 | facet shares": {
-   "identical": true
   },
   "D k_table | primary | 1 | frac_above_": {
    "committed": 0.09206798867,
@@ -751,6 +493,12 @@
    "max": 38.1,
    "min": 38.1
   },
+  "D k_table | primary | 1 | term rows": {
+   "identical": true
+  },
+  "D k_table | primary | 1 | term shares": {
+   "identical": true
+  },
   "D k_table | primary | 2 | band 1/tau": {
    "committed": 0.0106,
    "identical": true,
@@ -762,12 +510,6 @@
    "identical": false,
    "max": 8.296007884e-15,
    "min": 1.773762126e-15
-  },
-  "D k_table | primary | 2 | facet rows": {
-   "identical": true
-  },
-  "D k_table | primary | 2 | facet shares": {
-   "identical": true
   },
   "D k_table | primary | 2 | frac_above_": {
    "committed": 0.09490084986,
@@ -808,6 +550,12 @@
    "max": 94.42,
    "min": 94.42
   },
+  "D k_table | primary | 2 | term rows": {
+   "identical": true
+  },
+  "D k_table | primary | 2 | term shares": {
+   "identical": true
+  },
   "D k_table | primary | 3 | band 1/tau": {
    "committed": 0.0088,
    "identical": true,
@@ -819,12 +567,6 @@
    "identical": false,
    "max": 5.834725212e-15,
    "min": 1.549201434e-15
-  },
-  "D k_table | primary | 3 | facet rows": {
-   "identical": true
-  },
-  "D k_table | primary | 3 | facet shares": {
-   "identical": true
   },
   "D k_table | primary | 3 | frac_above_": {
    "committed": 0.09915014164,
@@ -865,6 +607,12 @@
    "max": 113.22,
    "min": 113.22
   },
+  "D k_table | primary | 3 | term rows": {
+   "identical": true
+  },
+  "D k_table | primary | 3 | term shares": {
+   "identical": true
+  },
   "D k_table | stock | 1 | band 1/tau": {
    "committed": 0.0219,
    "identical": true,
@@ -876,12 +624,6 @@
    "identical": false,
    "max": 1.285544579e-05,
    "min": 1.285433095e-05
-  },
-  "D k_table | stock | 1 | facet rows": {
-   "identical": true
-  },
-  "D k_table | stock | 1 | facet shares": {
-   "identical": true
   },
   "D k_table | stock | 1 | frac_above_": {
    "committed": 0.1038461538,
@@ -922,6 +664,12 @@
    "max": 45.68,
    "min": 45.68
   },
+  "D k_table | stock | 1 | term rows": {
+   "identical": true
+  },
+  "D k_table | stock | 1 | term shares": {
+   "identical": true
+  },
   "D k_table | stock | 2 | band 1/tau": {
    "committed": 0.0139,
    "identical": true,
@@ -933,12 +681,6 @@
    "identical": false,
    "max": 5.614383602e-15,
    "min": 2.96258744e-15
-  },
-  "D k_table | stock | 2 | facet rows": {
-   "identical": true
-  },
-  "D k_table | stock | 2 | facet shares": {
-   "identical": true
   },
   "D k_table | stock | 2 | frac_above_": {
    "committed": 0.1,
@@ -979,6 +721,12 @@
    "max": 71.92,
    "min": 71.92
   },
+  "D k_table | stock | 2 | term rows": {
+   "identical": true
+  },
+  "D k_table | stock | 2 | term shares": {
+   "identical": true
+  },
   "D k_table | stock | 3 | band 1/tau": {
    "committed": 0.0088,
    "identical": true,
@@ -990,12 +738,6 @@
    "identical": false,
    "max": 7.13044296e-15,
    "min": 1.279033859e-15
-  },
-  "D k_table | stock | 3 | facet rows": {
-   "identical": true
-  },
-  "D k_table | stock | 3 | facet shares": {
-   "identical": true
   },
   "D k_table | stock | 3 | frac_above_": {
    "committed": 0.09358974359,
@@ -1035,6 +777,12 @@
    "identical": true,
    "max": 113.22,
    "min": 113.22
+  },
+  "D k_table | stock | 3 | term rows": {
+   "identical": true
+  },
+  "D k_table | stock | 3 | term shares": {
+   "identical": true
   },
   "D refits | primary | large | contending set": {
    "identical": true
@@ -2500,6 +2248,258 @@
    "max": 205.0889022,
    "min": 205.0889022
   },
+  "D terms K=3 | primary | 1 | contending set": {
+   "identical": true
+  },
+  "D terms K=3 | primary | 1 | gap G_k": {
+   "committed": 2.47024623e-15,
+   "identical": false,
+   "max": 6.217248938e-15,
+   "min": 4.996003611e-16
+  },
+  "D terms K=3 | primary | 1 | largest exponents": {
+   "identical": true
+  },
+  "D terms K=3 | primary | 1 | n_lemma": {
+   "committed": 5,
+   "identical": true,
+   "max": 5.0,
+   "min": 5.0
+  },
+  "D terms K=3 | primary | 1 | near-frontier": {
+   "committed": 21,
+   "identical": true,
+   "max": 21.0,
+   "min": 21.0
+  },
+  "D terms K=3 | primary | 1 | reach beta_k": {
+   "committed": 0.4952282913,
+   "identical": false,
+   "max": 0.4952282913,
+   "min": 0.4952282913
+  },
+  "D terms K=3 | primary | 1 | rows": {
+   "committed": 162,
+   "identical": true,
+   "max": 162.0,
+   "min": 162.0
+  },
+  "D terms K=3 | primary | 1 | share": {
+   "committed": 0.2413793103,
+   "identical": true,
+   "max": 0.2413793103,
+   "min": 0.2413793103
+  },
+  "D terms K=3 | primary | 2 | contending set": {
+   "identical": true
+  },
+  "D terms K=3 | primary | 2 | gap G_k": {
+   "committed": 1.776356839e-15,
+   "identical": false,
+   "max": 7.993605777e-15,
+   "min": 6.106226635e-16
+  },
+  "D terms K=3 | primary | 2 | largest exponents": {
+   "identical": true
+  },
+  "D terms K=3 | primary | 2 | n_lemma": {
+   "committed": 4,
+   "identical": true,
+   "max": 4.0,
+   "min": 4.0
+  },
+  "D terms K=3 | primary | 2 | near-frontier": {
+   "committed": 3,
+   "identical": true,
+   "max": 3.0,
+   "min": 3.0
+  },
+  "D terms K=3 | primary | 2 | reach beta_k": {
+   "committed": 0.5663907861,
+   "identical": false,
+   "max": 0.5663908835,
+   "min": 0.5663906979
+  },
+  "D terms K=3 | primary | 2 | rows": {
+   "committed": 181,
+   "identical": true,
+   "max": 181.0,
+   "min": 181.0
+  },
+  "D terms K=3 | primary | 2 | share": {
+   "committed": 0.03448275862,
+   "identical": true,
+   "max": 0.03448275862,
+   "min": 0.03448275862
+  },
+  "D terms K=3 | primary | 3 | contending set": {
+   "identical": true
+  },
+  "D terms K=3 | primary | 3 | gap G_k": {
+   "committed": 3.28903571e-15,
+   "identical": false,
+   "max": 7.438494265e-15,
+   "min": 9.992007222e-16
+  },
+  "D terms K=3 | primary | 3 | largest exponents": {
+   "identical": true
+  },
+  "D terms K=3 | primary | 3 | n_lemma": {
+   "committed": 5,
+   "identical": true,
+   "max": 5.0,
+   "min": 5.0
+  },
+  "D terms K=3 | primary | 3 | near-frontier": {
+   "committed": 73,
+   "identical": true,
+   "max": 73.0,
+   "min": 73.0
+  },
+  "D terms K=3 | primary | 3 | reach beta_k": {
+   "committed": 0.5449506722,
+   "identical": false,
+   "max": 0.5449506722,
+   "min": 0.5449506722
+  },
+  "D terms K=3 | primary | 3 | rows": {
+   "committed": 363,
+   "identical": true,
+   "max": 363.0,
+   "min": 363.0
+  },
+  "D terms K=3 | primary | 3 | share": {
+   "committed": 0.724137931,
+   "identical": true,
+   "max": 0.724137931,
+   "min": 0.724137931
+  },
+  "D terms K=3 | stock | 1 | contending set": {
+   "identical": true
+  },
+  "D terms K=3 | stock | 1 | gap G_k": {
+   "committed": 1.026956298e-15,
+   "identical": false,
+   "max": 1.554312234e-14,
+   "min": 1.026956298e-15
+  },
+  "D terms K=3 | stock | 1 | largest exponents": {
+   "identical": true
+  },
+  "D terms K=3 | stock | 1 | n_lemma": {
+   "committed": 5,
+   "identical": true,
+   "max": 5.0,
+   "min": 5.0
+  },
+  "D terms K=3 | stock | 1 | near-frontier": {
+   "committed": 20,
+   "identical": true,
+   "max": 20.0,
+   "min": 20.0
+  },
+  "D terms K=3 | stock | 1 | reach beta_k": {
+   "committed": 0.3014172642,
+   "identical": false,
+   "max": 0.3014172642,
+   "min": 0.3014171915
+  },
+  "D terms K=3 | stock | 1 | rows": {
+   "committed": 251,
+   "identical": true,
+   "max": 251.0,
+   "min": 251.0
+  },
+  "D terms K=3 | stock | 1 | share": {
+   "committed": 0.1176470588,
+   "identical": true,
+   "max": 0.1176470588,
+   "min": 0.1176470588
+  },
+  "D terms K=3 | stock | 2 | contending set": {
+   "identical": true
+  },
+  "D terms K=3 | stock | 2 | gap G_k": {
+   "committed": 3.136380045e-15,
+   "identical": false,
+   "max": 7.410738689e-15,
+   "min": 3.136380045e-15
+  },
+  "D terms K=3 | stock | 2 | largest exponents": {
+   "identical": true
+  },
+  "D terms K=3 | stock | 2 | n_lemma": {
+   "committed": 6,
+   "identical": true,
+   "max": 6.0,
+   "min": 6.0
+  },
+  "D terms K=3 | stock | 2 | near-frontier": {
+   "committed": 52,
+   "identical": true,
+   "max": 52.0,
+   "min": 52.0
+  },
+  "D terms K=3 | stock | 2 | reach beta_k": {
+   "committed": 0.5950645811,
+   "identical": false,
+   "max": 0.5950645811,
+   "min": 0.595064581
+  },
+  "D terms K=3 | stock | 2 | rows": {
+   "committed": 184,
+   "identical": true,
+   "max": 184.0,
+   "min": 184.0
+  },
+  "D terms K=3 | stock | 2 | share": {
+   "committed": 0.4509803922,
+   "identical": true,
+   "max": 0.4509803922,
+   "min": 0.4509803922
+  },
+  "D terms K=3 | stock | 3 | contending set": {
+   "identical": true
+  },
+  "D terms K=3 | stock | 3 | gap G_k": {
+   "committed": 4.718447855e-16,
+   "identical": false,
+   "max": 2.581268532e-15,
+   "min": 4.718447855e-16
+  },
+  "D terms K=3 | stock | 3 | largest exponents": {
+   "identical": true
+  },
+  "D terms K=3 | stock | 3 | n_lemma": {
+   "committed": 4,
+   "identical": true,
+   "max": 4.0,
+   "min": 4.0
+  },
+  "D terms K=3 | stock | 3 | near-frontier": {
+   "committed": 50,
+   "identical": true,
+   "max": 50.0,
+   "min": 50.0
+  },
+  "D terms K=3 | stock | 3 | reach beta_k": {
+   "committed": 0.2969557281,
+   "identical": false,
+   "max": 0.2969558236,
+   "min": 0.2969556394
+  },
+  "D terms K=3 | stock | 3 | rows": {
+   "committed": 345,
+   "identical": true,
+   "max": 345.0,
+   "min": 345.0
+  },
+  "D terms K=3 | stock | 3 | share": {
+   "committed": 0.431372549,
+   "identical": true,
+   "max": 0.431372549,
+   "min": 0.431372549
+  },
   "candidate | fast_effort_hungry | log V": {
    "committed": -0.197287925,
    "identical": false,
@@ -2752,88 +2752,88 @@
   "certificate | stock | 3 | status": {
    "identical": true
   },
-  "contending | primary K=1 facet 1 | n_lemma": {
+  "contending | primary K=1 term 1 | n_lemma": {
    "committed": 5,
    "identical": true,
    "max": 5.0,
    "min": 5.0
   },
-  "contending | primary K=1 facet 1 | set": {
+  "contending | primary K=1 term 1 | set": {
    "identical": true
   },
-  "contending | primary K=2 facets as an unlabelled set | sets": {
+  "contending | primary K=2 terms as an unlabelled set | sets": {
    "identical": true
   },
-  "contending | primary K=3 facet 1 | n_lemma": {
+  "contending | primary K=3 term 1 | n_lemma": {
    "committed": 5,
    "identical": true,
    "max": 5.0,
    "min": 5.0
   },
-  "contending | primary K=3 facet 1 | set": {
+  "contending | primary K=3 term 1 | set": {
    "identical": true
   },
-  "contending | primary K=3 facet 2 | n_lemma": {
+  "contending | primary K=3 term 2 | n_lemma": {
    "committed": 4,
    "identical": true,
    "max": 4.0,
    "min": 4.0
   },
-  "contending | primary K=3 facet 2 | set": {
+  "contending | primary K=3 term 2 | set": {
    "identical": true
   },
-  "contending | primary K=3 facet 3 | n_lemma": {
+  "contending | primary K=3 term 3 | n_lemma": {
    "committed": 5,
    "identical": true,
    "max": 5.0,
    "min": 5.0
   },
-  "contending | primary K=3 facet 3 | set": {
+  "contending | primary K=3 term 3 | set": {
    "identical": true
   },
-  "contending | primary K=3 facets as an unlabelled set | sets": {
+  "contending | primary K=3 terms as an unlabelled set | sets": {
    "identical": true
   },
-  "contending | stock K=1 facet 1 | n_lemma": {
+  "contending | stock K=1 term 1 | n_lemma": {
    "committed": 5,
    "identical": true,
    "max": 5.0,
    "min": 5.0
   },
-  "contending | stock K=1 facet 1 | set": {
+  "contending | stock K=1 term 1 | set": {
    "identical": true
   },
-  "contending | stock K=2 facets as an unlabelled set | sets": {
+  "contending | stock K=2 terms as an unlabelled set | sets": {
    "identical": true
   },
-  "contending | stock K=3 facet 1 | n_lemma": {
+  "contending | stock K=3 term 1 | n_lemma": {
    "committed": 5,
    "identical": true,
    "max": 5.0,
    "min": 5.0
   },
-  "contending | stock K=3 facet 1 | set": {
+  "contending | stock K=3 term 1 | set": {
    "identical": true
   },
-  "contending | stock K=3 facet 2 | n_lemma": {
+  "contending | stock K=3 term 2 | n_lemma": {
    "committed": 6,
    "identical": true,
    "max": 6.0,
    "min": 6.0
   },
-  "contending | stock K=3 facet 2 | set": {
+  "contending | stock K=3 term 2 | set": {
    "identical": true
   },
-  "contending | stock K=3 facet 3 | n_lemma": {
+  "contending | stock K=3 term 3 | n_lemma": {
    "committed": 4,
    "identical": true,
    "max": 4.0,
    "min": 4.0
   },
-  "contending | stock K=3 facet 3 | set": {
+  "contending | stock K=3 term 3 | set": {
    "identical": true
   },
-  "contending | stock K=3 facets as an unlabelled set | sets": {
+  "contending | stock K=3 terms as an unlabelled set | sets": {
    "identical": true
   },
   "fit | primary K=1 | band": {
@@ -2920,28 +2920,28 @@
    "max": 113.2193013,
    "min": 113.2193013
   },
-  "leading | primary K=1 facet 1 | metrics": {
+  "leading | primary K=1 term 1 | metrics": {
    "identical": true
   },
-  "leading | primary K=3 facet 1 | metrics": {
+  "leading | primary K=3 term 1 | metrics": {
    "identical": true
   },
-  "leading | primary K=3 facet 2 | metrics": {
+  "leading | primary K=3 term 2 | metrics": {
    "identical": true
   },
-  "leading | primary K=3 facet 3 | metrics": {
+  "leading | primary K=3 term 3 | metrics": {
    "identical": true
   },
-  "leading | stock K=1 facet 1 | metrics": {
+  "leading | stock K=1 term 1 | metrics": {
    "identical": true
   },
-  "leading | stock K=3 facet 1 | metrics": {
+  "leading | stock K=3 term 1 | metrics": {
    "identical": true
   },
-  "leading | stock K=3 facet 2 | metrics": {
+  "leading | stock K=3 term 2 | metrics": {
    "identical": true
   },
-  "leading | stock K=3 facet 3 | metrics": {
+  "leading | stock K=3 term 3 | metrics": {
    "identical": true
   },
   "nondominated | primary | all attributes | columns": {
@@ -3373,7 +3373,7 @@
   "sentence | K = 1 contending | text": {
    "identical": true
   },
-  "sentence | K sweep | largest facet gap": {
+  "sentence | K sweep | largest term gap": {
    "committed": 6.952771692e-15,
    "identical": false,
    "max": 1.226796442e-14,

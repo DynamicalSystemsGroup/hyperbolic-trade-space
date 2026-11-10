@@ -43,16 +43,16 @@ def _frontier_mask(n, fraction, rng):
     return mask
 
 
-def _identifiable(mask, facet, log_v, noise, d, rng):
-    """Put at least ``d + 1`` frontier rows on every planted facet (extra rows, drawn from rng)."""
-    for k in range(int(facet.max()) + 1):
-        own = facet == k
+def _identifiable(mask, term, log_v, noise, d, rng):
+    """Put at least ``d + 1`` frontier rows on every planted term (extra rows, drawn from rng)."""
+    for k in range(int(term.max()) + 1):
+        own = term == k
         extra = np.flatnonzero(own & ~mask)
         need = d + 1 - int((own & mask).sum())
         if need > 0:
             if need > extra.size:
                 raise ValueError(
-                    f"facet {k} has {own.sum()} rows, fewer than n_features + 1 = {d + 1}; "
+                    f"term {k} has {own.sum()} rows, fewer than n_features + 1 = {d + 1}; "
                     "increase n_samples"
                 )
             pick = rng.permutation(extra)[:need]
@@ -95,7 +95,7 @@ def make_frontier_data(
     random_state : int, RandomState or None, default=None
         Seed.
     n_terms : int, default=1
-        Number of planted monomials K. ``1`` reproduces the single-facet frontier exactly; ``K > 1``
+        Number of planted monomials K. ``1`` reproduces the one-term frontier exactly; ``K > 1``
         plants the envelope ``Phi(u) = max_k (w_k . u - beta)`` and puts ``log V = Phi(u)``.
 
     Returns
@@ -105,16 +105,16 @@ def make_frontier_data(
     info : dict
         Keys ``exponents`` (shape ``(d,)`` at K = 1, ``(K, d)`` otherwise), ``log_offset``,
         ``basis`` (ILR chart), ``frontier_mask``, ``Z``, ``log_v``, ``noise``, ``interior_scale``;
-        for ``n_terms > 1`` also ``facet``, an integer array of shape ``(n_samples,)`` holding
-        ``argmax_k w_k . log x`` (the facet each row lies on or under).
+        for ``n_terms > 1`` also ``term``, an integer array of shape ``(n_samples,)`` holding
+        ``argmax_k w_k . log x`` (the term each row lies on or under).
 
     Notes
     -----
-    For ``n_terms > 1`` every planted facet gets at least ``n_features + 1`` frontier rows
-    (identifiability: a facet with fewer frontier rows than dimensions is not determined by them).
-    If a facet falls short after the draw, further rows of that facet, chosen by the seeded
+    For ``n_terms > 1`` every planted term gets at least ``n_features + 1`` frontier rows
+    (identifiability: a term with fewer frontier rows than dimensions is not determined by them).
+    If a term falls short after the draw, further rows of that term, chosen by the seeded
     generator, are moved onto the frontier (so the frontier fraction can slightly exceed
-    ``frontier_fraction``); a facet with too few rows overall raises ``ValueError``.
+    ``frontier_fraction``); a term with too few rows overall raises ``ValueError``.
 
     ``Z ~ N(0, I)`` and the rows are mapped back through the ILR chart; the frontier is
     identifiable when the Z-hull of the frontier rows contains 0. For K > 1 the
@@ -127,7 +127,7 @@ def make_frontier_data(
     >>> X.shape, bool((X > 0).all()), round(float(info["exponents"].sum()), 6)
     ((200, 3), True, 1.0)
     >>> X, info = make_frontier_data(200, 4, n_terms=3, random_state=0)
-    >>> info["exponents"].shape, int(info["facet"].max()) < 3
+    >>> info["exponents"].shape, int(info["term"].max()) < 3
     ((3, 4), True)
     """
     if n_samples < 1 or n_features < 1 or n_terms < 1:
@@ -152,8 +152,8 @@ def make_frontier_data(
         U = from_frontier_coordinates(Z, log_v, w, log_offset, B)
     else:
         base = Z @ np.linalg.pinv(B).T
-        facet, top = (base @ w.T).argmax(axis=1), (base @ w.T).max(axis=1)
-        _identifiable(mask, facet, log_v, noise, d, rng)
+        term, top = (base @ w.T).argmax(axis=1), (base @ w.T).max(axis=1)
+        _identifiable(mask, term, log_v, noise, d, rng)
         U = base + (log_v + log_offset - top)[:, None]
     X = np.exp(U)
     info = {
@@ -167,7 +167,7 @@ def make_frontier_data(
         "interior_scale": float(interior_scale),
     }
     if n_terms > 1:
-        info["facet"] = facet
+        info["term"] = term
     return X, info
 
 
