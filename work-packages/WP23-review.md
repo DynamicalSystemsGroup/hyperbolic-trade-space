@@ -1358,3 +1358,69 @@ The G-3 view unit: dispositions G3-P2-1, G3-P2-2, G3-P2-3, G3-P2-5, G3-P2-6 and 
 **Paper caption.** `paper/paper.ipynb`, cell `fig-behavioural-caption`: nothing it says is stale ("yellow: derived, not traded" still holds); the paper stream may add "a dashed line joins the launch cost to the total mass it is computed from" (the paper stream's, not made here).
 
 Renders looked at (session scratchpad `wp23view7-renders/`, 700 px): `before/behavioural_view.png` (revision 6); `exp/e1.png` to `e3.png` (the layouts tried: no second lines, wrapped statements side by side, stacked); `gen7/behavioural_view.png` (the generator's output, byte-identical to the committed image) and `after/behavioural_view.png`; `r6check/` (the revision-6 recipe check).
+
+## G-3: P3 cold read of revision 7 (2026-11-10)
+
+The driver's acceptance condition: one fresh P3 cold read (a modeller at depth L-C), image before caption, of the committed revision-7 views, `examples/adcs/model_v2/views/behavioural_view.png` (700 x 1341) and `assembly_view.png` (700 x 260), with their caption files. The reader was a fresh general-purpose subagent (sonnet) in its own context; it was given the persona and depth, the two images, the two caption files and the return format, and no record, model, earlier read or brief. The prompt is the revision-6 P3 prompt verbatim with the file paths pointed at the committed revision-7 files (session scratchpad `g3reads-prompts/prompt-P3-L-C-rev7.txt`; the return is `p3-rev7.txt` beside it). The return is quoted as written. This section changes no view.
+
+### Return, verbatim
+
+> RECALL:
+> Assembly view. Before the caption: a Cubesat part definition built from nine parts (diamond-ended lines mean "composed of"). ReactionWheel and StarTracker are abstract, each with three specialisations (hollow-triangle arrows). Orange "swap" tags mark categorical choices (wheelClass, grade). Blue "tune" tags mark continuous parameters (panelSpan, batteryCapacity, Kp/Kd). Bus, Antenna and Imu are fixed. After the caption: same, plus the actual levels and ranges (wheelClass small/medium/large, panelSpan 0.3-1 m, Kp and Kd ranges per regime). The caption supplies the numbers the figure lacks.
+>
+> Behavioural view. Before the caption: requirements (peach boxes, bold name plus the verification they belong to) joined by solid rust lines to metrics (green boxes). The metrics are grouped into "controls", "power and energy" and "mass". A grey box (SlewMeasurement) and a purple box (SlewExperiment) feed values into the metrics through grey arrows. One yellow metric (launch cost) hangs from total mass by a dashed line. Three requirements sit in a dashed box at the top because they read no traded metric. After the caption: the purple analysis returns 8 of 9 metrics. Control effort goes through the analysis unchanged, so its arrow starts at the measurement. Settling time is read from the measurement and not returned. MoE means a stakeholder-stated effectiveness measure and MoP means an engineer's scenario performance measure. The groups are the analyst's own, not model structure. The dashed line joins a derived quantity to what it is computed from.
+>
+> SENTENCE:
+> Assembly: "A Cubesat is composed of nine parts, of which a few carry swappable categorical choices (swap) or tunable continuous parameters (tune)."
+> Behavioural: "Requirements read metrics, and an analysis and a measurement supply the metric values, with the metrics grouped by theme."
+>
+> FRICTION:
+> Assembly view, at 700 px the fonts are readable. Specific issues:
+> - The diagram never says which of the swap/tune items are the actual design variables for the evaluation. The legend says "configuration variables", which is clear enough, but the figure gives no ranges. I only got them from the caption. A reader of the figure alone sees tune panelSpan with no range or units.
+> - Kp and Kd both sit under Controller with no sign that they have regime-dependent ranges. The caption says "one range per regime" but the figure shows no regimes.
+> - The meaning of the parenthesised lowercase names, e.g. "ReactionWheel (wheel)", is not explained. They look like usage names. "<<part def>>" appears only on Cubesat and the others are not labelled as part defs or usages. The arrow-type difference (filled diamond vs hollow triangle) is not in the legend. A SysML reader will know it; a non-SysML modeller may not.
+> - "SolarPanel (panelPlus, panelMinus)" has two usage names and the meaning of that is not explained.
+>
+> Behavioural view, at 700 px the box body text is small but readable. The SlewExperiment box text is tiny and dense, and the legend is small. Specific issues:
+> - The legend's "computed from" swatch is a dotted line, while in the figure the line is a short dashed segment (launch cost to total mass). They are distinguishable but the legend sample is faint. The line is also very short, so I almost took it for a stub or a border.
+> - Arrow semantics: "value comes from" arrows point from the metric toward... actually the arrowheads sit at the metric end, with the tail at the source. I read this correctly only through the legend. Reading the figure alone, I would have taken the arrows as "analysis consumes metric".
+> - The arrows from SlewExperiment fan out and cross the group frames, and the one to pointing error runs a long diagonal. I could not tell from the arrows alone which metrics the experiment does not return; the box text states it in prose ("No slew for pointing error, total mass") but the arrows' absence is the real signal. Pointing error does get an arrow from SlewExperiment, which seems to contradict "no slew for pointing error". The caption explains that the analysis returns it from the configuration alone, but this is confusing.
+> - "SlewMeasurement" arrows go to control effort and settling time. The box text says control effort is "passed on" by SlewExperiment, but SlewExperiment has no arrow to control effort. The text reads as a contradiction until the caption is read.
+> - The requirement names carry "SlewVerification" or "ConfigurationVerification" as a subtitle. This is never explained in the figure, and the caption only says which requirements are verified where. I took it for a type or class name at first.
+> - The yellow "derived, not traded" box is also marked <<MoE>>, while the green traded ones are mostly MoP, and pointing error (green) is also MoE. So colour does not map to MoE/MoP, only the stereotype does. The legend does not explain MoE/MoP, abbreviations that appear only in the caption.
+> - The line from LaunchBudgetRequirement to launch cost is a solid requirement-reads-metric line, but launch cost is the derived, not-traded metric. This conflicts with the legend wording, where the solid line is "requirement reads metric" and the box is "derived, not traded". It is not obvious why launch cost is a requirement target but not traded.
+> - The top dashed box has a title but is not in the legend. The "(the analyst's grouping)" frames are explained only in the caption.
+> - "peakTorque", "c.momentumCapacity" and the other expressions in the top box cannot be parsed without the model.
+>
+> FINDINGS:
+> 1. [blocks] The "value comes from" arrows read as consumption unless the legend is read, and the arrowhead points at the metric, which is the destination of the value. Needs a clearer direction cue or label. Behavioural view.
+> 2. [blocks] The SlewExperiment box says "control effort (passed on)" but no arrow runs from it to control effort, and the box also says "No slew for pointing error" while an arrow does run to pointing error. The text and the arrows look contradictory without the caption. Behavioural view.
+> 3. [changes the view] MoE and MoP appear on every metric but are defined only in the caption, not the legend. The colours do not track them: green holds both MoP and MoE, and yellow is MoE. Add them to the legend, or state that colour means traded and the stereotype means kind. Behavioural view.
+> 4. [changes the view] "SlewVerification" and "ConfigurationVerification" under each requirement are unexplained in the figure. Say what they are (the verification each requirement is checked in), and consider a legend entry. Behavioural view.
+> 5. [changes the view] The dashed "computed from" line is very short and the legend sample is faint at 700 px. Behavioural view.
+> 6. [changes the view] The solid line from LaunchBudgetRequirement to the yellow "derived, not traded" launch cost conflicts with how the legend words the colours. A reader asks how a requirement reads a metric that is not traded. Behavioural view.
+> 7. [changes the view] The assembly figure shows no ranges or units. The caption holds them (wheelClass levels, panelSpan 0.3-1 m, regime-dependent Kp/Kd). A modeller needs them at hand; put the key ranges in the figure or tie the caption to the tags. Assembly view.
+> 8. [changes the view] The SysML notation is unexplained: filled diamond for composition, hollow triangle for specialisation, "(usage)" names in parentheses, "<<abstract>>", and the two usage names on SolarPanel. Add them to the legend, or one line in the caption. Assembly view.
+> 9. [note] The SlewExperiment box text is small and dense at 700 px, though it can be read. Behavioural view.
+> 10. [note] Metric-group frames and the top dashed box are explained only in the caption; "analyst's grouping" in the frame titles carries most of it. Behavioural view.
+> 11. [note] The assembly view otherwise reads well at 700 px: the swap/tune tags, the legend and the fixed-part note are all legible. Assembly view.
+
+### Dispositions of the G3r7-P3 findings
+
+The test for [blocks] is the driver's: a reader taking the view for something it is not, or unable to read a label or legend entry at 700 px. The reader tagged findings 1 and 2 [blocks]; neither meets that test, as below. The reader read every label and legend entry at 700 px (its friction notes only that the analysis box and the legend are small).
+
+- **G3r7-P3-1.** Reader tag [blocks]; does not block: no change. The reader read the arrows correctly through the legend ("value comes from"), which is in the image; the view was not taken for something it is not.
+- **G3r7-P3-2.** Reader tag [blocks]; does not block: deferred to WP25 / the subtraction pass. The box text, the arrows and the caption agree (the analysis returns pointing error and total mass without a slew; control effort is measured, passed on unchanged), but "No slew for pointing error, total mass" beside "returns 8 of 9" reads as "not returned" until the caption is read. The change it needs, one line of wording in the analysis box in `docs/superpowers/notes/spike-sysml-diagrams/project.py` (behavioural view): say these two are returned without a slew, and keep the two measurement entries. The wording was already changed in revision 7 (G3-P2-6) and is not fully closed by it.
+- **G3r7-P3-3.** No change: the caption defines MoE and MoP in one generated sentence (revision 7); the legend is the colours and line kinds only, and the stereotype is the model's own mark.
+- **G3r7-P3-4.** No change: as G3-P3-9; the verification names are the model's and the caption states which requirements are verified in each.
+- **G3r7-P3-5.** No change: the legend sample is a heavy dashed glyph and the line is dashed at thickness 3; the reader saw the line and named it "computed from", the legend's word. It is short because the two boxes are adjacent.
+- **G3r7-P3-6.** No change: the requirement's line to the launch cost is a requirement line (a requirement reads a derived quantity), as the legend's line kind says; the dashed line and the caption say what the launch cost is computed from. The view is not taken for something it is not.
+- **G3r7-P3-7.** No change, by design: as G3-P3-6; levels and ranges are in the caption, and the Controller box cannot carry two regime ranges without the range text that round 4 removed.
+- **G3r7-P3-8.** No change: as G3-P3-5; the notation is standard SysML and the reader's own sentence read swap and tune and composition correctly. The assembly view is unchanged in revision 7.
+- **G3r7-P3-9.** No change: the smallest type is 12.5 px at 700 px (pinned by test); the reader read the box.
+- **G3r7-P3-10.** No change: the frame titles and the caption carry the grouping, as G3-P3-10.
+- **G3r7-P3-11.** No change: a confirmation.
+
+**Count.** 11 findings as the reader tagged them (2 [blocks], 6 [changes the view], 3 [note]).
+
+**Nothing blocks WP23.** The one view change worth making (G3r7-P3-2, analysis box wording in `project.py`) is deferred to WP25 / the subtraction pass.
