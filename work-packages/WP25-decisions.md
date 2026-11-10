@@ -93,3 +93,10 @@ acceptance, when given, is quoted here verbatim.
 requirement `tests/test_v2_data.py` pinned, so that test joined the instance's radius for this one change (fdd6d25): it
 regenerates the comparison to a temporary path and checks the same content; `v1-v2-comparison.md` deleted in a second
 deletion commit (5a3ee03), the hash rows in `RECORD.md` and the gate README kept as history.
+
+**Instance 3 accepted by the driver (2026-11-10, 16:55, at 1d9fae1):** "Accepted. Both deletions verified: no live
+surface cites `spike-ternary/report.md` or `v1-v2-comparison.md` by path (the hits are the hash rows kept as history
+and `compare.py`'s default output name, which the regenerating test now uses with `--out`); `tests/test_v2_data.py`
+passes on this Mac (28 passed); the Linux run on 1d9fae1 is dispatched and the watcher's verdict follows. The
+remaining 61 hold rows are the fourth instance's inventory." The driver notes for the next instance: OD2's sizing
+missed a reader because `cmp.REPORT` is a constant, not a path; the inventory's grep now lists constant names too.
