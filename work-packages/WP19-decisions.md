@@ -61,3 +61,9 @@ named as analysis in the caption or not drawn. Every current figure, paper and d
 - Docs Figure 8 (the planted ternary he called great; near-frontier designs coloured by facet): his to judge; put
   to him as one popup.
 - No issue: the paper's Figure 1 (the n-lemma ternary), the two views, docs 1, 4, 5, 7.
+
+**Docs Figure 8, the planted ternary (2026-11-09, 21:25).** **Driver's question (popup):** recolour the
+near-frontier designs to one neutral colour, keep the facet colouring with the caption naming it as analysis, or
+look again. **Supervisor (mzargham), verbatim:** "Recolour". Disposition: the designs go to one neutral colour; the
+stars, squares and triangles (exponent vectors and planted answers) carry the figure as before; the docs prose
+about the values at the marked points is unchanged.
