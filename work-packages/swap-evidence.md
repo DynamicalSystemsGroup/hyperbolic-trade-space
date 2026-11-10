@@ -1676,3 +1676,9 @@ its table, and every regenerated figure shows what its caption says, with the na
     this is the record's history (CR-3). Cutting it would stop nothing for the reader.
 13. Does not block (legibility). `tab-C-datasets` is 1976 px wide in an 822 px column; it scrolls in its box and
     the hashes are off-screen until scrolled (`supp-C6-C7.jpg`).
+14. Blocks on Linux (the driver's dispatch on 628df90, 4a04e72; added by the PM). `tests/test_soft_fit.py::
+    test_r2_default_cubesat_fits_equal_the_recording[primary]` and `[stock]`: the WP17 R-2 recording of the default
+    cubesat fits (`tests/data/soft_fit_default_reference.npz`) is the old data's, and the case now reads the data of
+    record (the recorded K = 2 tau 113.2 against 94.4 observed). A miss of the unit's slot list: the recording reads
+    the case data but is not a paper cell. Fixed forward by its own unit (the recording regenerated in `hts-paper`
+    f7b7585c7c58 on the data of record).

@@ -109,13 +109,16 @@ Worktrees alive: `wp23case` (unpushed case code), `wp24` (held glossary patch). 
 
 | Unit | State |
 |---|---|
-| 1. The paper onto the data of record (paper stream; worktree `paper`, branch `paper-wp23`) | local c30af53 (data move, nine-attribute spec, Figure 2 pair, Figure 3 slices, Redraw 2 caption, view captions, check section, D-6 jitter); building the per-term part (PM's call: the guard of ten applied per term in the case module through the public API, no src change), then the container regeneration (hts-paper rebuilt, 3c7cfc8a2e27 removed), records, pins, one push |
+| 1. The paper onto the data of record (paper stream) | done ea46637, 628df90 (the case reads `data/v2/` directly; the frozen copies untouched; hts-paper f7b7585c7c58, 3c7cfc8a2e27 removed; the per-term K = 3 report by the case module's guard of ten; 48 cells, listed in swap-evidence part 5); reviewed 3f87eb5 (part 6: 13 findings, one blocking: `num-margin` moves under restart shift; plus 14, the soft-fit recording, from Linux) |
+| 1c. Paper fix-forward (findings 1, 2, 4, 5, 6, 8, 9, 10, 12 of part 6; the MoE/MoP sentence in Section 8 with its ledger row; register rows for the new claims; one container run) | dispatched |
+| 1s. The soft-fit recording regenerated in hts-paper on the data of record (test_soft_fit R-2; finding 14) | dispatched; hash to the driver for the Linux re-dispatch |
+| 1d. Contract row 13 (`case.data_dir` = data/v2; `frozen_data_dir` pins the frozen generation) | done a45b10f |
 | 2. WP23 view-consistency (B, C, D, F; diagnostic_pair.py's title and shared vmax) | done 0fab294 (views revision 6; the paper's two byte copies; record in WP23-review.md) |
-| 1b. docs/examples.md and its two generated figures onto the new numbers | after unit 1 |
-| 1r. Reviewer of unit 1 (tests, every figure as image, the staged paper in the browser, screenshots) | after unit 1's push |
+| 1b. docs/examples.md onto the new numbers | done 5dac142 (the figures regenerate from the page's blocks; nothing committed under docs/generated) |
+| 1r. Reviewer of unit 1 | done 3f87eb5 (67 screenshots in scratchpad/paperreview-renders/) |
 | 3. WP24 push 1 onward (worktree `wp24` holds the glossary patch); diagnostic_pair.py identifiers in a WP23 unit after push 1; glossary MoE/MoP/launch cost with the case section; WP25's drift rows in the docs push | after unit 1 |
-| 4. WP23 acceptance review (work-acceptance, fresh reviewer that runs the code and looks at the pair and the views) | after unit 1 |
-| 5. The WP7 notebook `examples/adcs/adcs_trade_study.ipynb` and figures 01-09 on the old data | question to the driver (regenerate / delete / hold for WP25) |
+| 4. WP23 acceptance review | done f5a63c2 (27 met, 12 not met in part or as stated, 1 not checkable; gaps G-1 to G-10 for the driver; recommends acceptance with the gaps noted) |
+| 5. The WP7 notebook, tests/test_notebook.py and figures 01-09 deleted (the driver's decision) | dispatched (second pass: the five live references widened into the one commit) |
 | 6. WP25 next instance | at the next gate |
 
-Worktrees alive: `paper` (unpushed c30af53), `wp24` (held glossary patch). Docker: hts-paper 3c7cfc8a2e27 (until unit 1 rebuilds it), hts-alt.
+Worktrees alive: `wp24` (held glossary patch) plus the running units' own. Docker: hts-paper f7b7585c7c58 (the environment of record), hts-alt.
