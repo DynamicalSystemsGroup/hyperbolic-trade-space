@@ -233,6 +233,8 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-09 | commit bde5362, tier 2 watcher, clean worktree, this Mac (after the WP22d swap ff717ed, 6ed13ed, d3018ba) | 2166 passed, 16 skipped, 1 xfailed, 0 failed; all checks; lock; lemmas; proof map; 0 drifts; attribution 0 | a verdict: the swap is green on both platforms (Linux 1b496d3 above); WP22d accepted as the adopted model; Linux dispatched on 7ffb719 for the paper placements and the docs vocabulary |
 | 2026-11-09 | commit 7ffb719, CI run on ubuntu, three shards (the paper placements 8abb16a, docs vocabulary, WP23 scope draft) | fast, slow and docs-paper all green | a verdict: the figure placements and the vocabulary units pass on Linux |
 | 2026-11-09 | commit 77844c5, tier 2 watcher, this Mac | 2166 passed, 16 skipped, 1 xfailed; all checks | a verdict: green through the WP16 trial commits; later heads (redraws, glossary entries, unit 8) pending; Linux dispatched on the handover head 01e2d64 |
+| 2026-11-09 | commit 01e2d64, CI run on ubuntu, three shards (the handover head: redraws, glossary entries, unit 8, WP16 switch) | fast, slow and docs-paper all green | a verdict: everything through the third PM's last landing passes on Linux |
+| 2026-11-09 | commit 9eb46f7, tier 2 watcher, this Mac | 2166 passed, 16 skipped, 1 xfailed; all checks | a verdict: green through the fourth PM's first WP23 units; the staged site rebuilt at 3fcc855 for the supervisor's browser |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
