@@ -202,6 +202,29 @@ def test_figures_return_figures_and_do_not_save(small, small_fit, tmp_path, monk
     assert list(tmp_path.iterdir()) == []
 
 
+def test_tau_sweep_figure_marks_the_fit_temperature_and_orders_the_rows(small, small_fit):
+    """The redraw's requirements (WP19-figure-review.md, "Heatmap redraw (fourth PM, after WP23's
+    rounds)"): the fit temperature is a column of the grid and its label is emphasised, rows are
+    ordered by the exponent at that column (largest at the top), the colour scale runs from the
+    floor to the largest exponent of the sweep, and the limit column is named."""
+    import matplotlib.pyplot as plt
+
+    fig = case.tau_sweep_figure(small, small_fit, title="a title")
+    grid = fig.axes[2]
+    labels = [t.get_text() for t in grid.get_xticklabels()]
+    assert fig.get_suptitle() == "a title"
+    assert labels[-1] == "∞ (limit)" and f"{small_fit.tau:.1f}" in labels
+    sel = labels.index(f"{small_fit.tau:.1f}")
+    assert grid.get_xticklabels()[sel].get_fontweight() == "bold"
+    W = grid.images[0].get_array()
+    assert W.shape == (len(small.names), len(labels))
+    assert np.all(np.diff(W[:, sel]) <= 0)  # largest exponent at the top row
+    assert np.allclose(np.sort(W[:, sel])[::-1], np.sort(small_fit.estimator.exponents_[0])[::-1])
+    assert grid.images[0].get_clim() == (case.EXPONENT_FLOOR, pytest.approx(W.max()))
+    assert case.regime_word(small) == "primary"
+    plt.close(fig)
+
+
 def test_sensitivity_table_has_the_variants_and_the_baseline_shares_all(primary):
     t = case.sensitivity_table(primary)
     spec = primary.spec

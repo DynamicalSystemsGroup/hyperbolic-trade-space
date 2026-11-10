@@ -767,3 +767,55 @@ are named as what they are, the correlation of the log-metrics among the near-fr
   contending set; grey, metrics that do not participate." The page's word budget (650) left one word
   of room, so the table's name left the caption (the prose above names it) and the caption is at the
   budget exactly.
+
+## Heatmap redraw (fourth PM, after WP23's rounds)
+
+The paper's `fig-tau-sweep` (Figure 1, C-c1 above), redrawn in `case.tau_sweep_figure` on the
+current frozen data to settle the design; WP23's regeneration redraws it on the new data, and the
+committed `paper/figures/fig-tau-sweep.png` is written by the notebook's execution, not here. The
+items executed are the round-1 and round-3 cold readers' findings on the drawing (`WP23-review.md`,
+"Round 4", item 4, and the PM's disposition of group A). Renders looked at by the author at 700 px
+before the caption was written: the session scratchpad's `heatmapfig/primary.png` and
+`heatmapfig/baseline.png` (800 by 700 px), with the intent sentences in `heatmapfig/INTENT.md`.
+
+- What changed in the drawing: the colourbar is named ("exponent w (white: at most 0.001)") and its
+  scale runs from the floor 0.001 to the largest exponent of the sweep (0.25 primary, 0.43
+  baseline on the current data), no fixed cap; a cell at or below 0.001 (the participation
+  threshold) is white and the first step above it is a visible grey, so "zero at every tau" is
+  told from "small" (the baseline's fades of the energy balance and the depth of discharge, 0.002
+  to 0.04, now read); the fit temperature is a column of the grid (added to the sweep's twelve
+  temperatures and the limit), outlined by a white-under-black ring and labelled with one decimal
+  in bold, and marked on the top panels by a vertical line of the same black; rows are ordered by
+  the exponent at the fit temperature, largest at the top; the last column is "∞ (limit)"; the
+  three axes share one label, "fit temperature tau" (the glossary's one name for tau; "selected
+  temperature" is on its avoid list, so the figure and this record say "fit temperature"); the
+  target line is dashed and labelled "target 0.1"; the figure's title names the regime
+  (`regime_word`: "primary" or "baseline"; a `title` argument overrides it). Signature:
+  `tau_sweep_figure(study, fit, title=None)`.
+- Intent, the grid: the outlined column read top to bottom is the n-lemma of the K = 1 fit at the
+  fit temperature, which metrics carry an exponent in rank order and which are white at every
+  temperature; along the rows the exponents move little, so the reading does not hang on tau.
+- Intent, the top panels: the fit temperature is where the fraction above V = 1 first falls to the
+  target 0.1, and by then the effective sample size has collapsed from hundreds of designs to tens.
+  Kept: the shape of the curves (the collapse over one decade and the plateau after) is what makes
+  the choice read as a rule and places the exponents' stability where the sample has thinned; the
+  C-c1 reads connected the bar to the crossing from the image alone.
+- Shows: which metrics carry the K = 1 exponent at each fit temperature of the sweep and their
+  rank at the fit temperature; where the fit temperature sits on the fraction-above curve and what
+  effective sample it leaves.
+- Does not show: fit quality, the frontier or the designs near it, any K > 1 fit, why a metric has
+  no exponent (carried by another metric, or a step function of the swaps: the n-lemma reading is
+  the text's), nor the small values apart (the scale is linear; 0.002 and 0.03 are both the
+  lightest greys).
+- Good for: reading the n-lemma at the fit temperature and checking that it does not hang on the
+  choice of tau; seeing what the fit temperature costs in effective sample.
+- Proposed caption (three lines; the paper stream places it): "The K = 1 fit against the fit
+  temperature tau, primary regime. Top: the fraction of designs above V = 1 with the target 0.1
+  (dashed) and the effective sample size; the vertical line is the fit temperature, where the
+  fraction first meets the target. Bottom: the K = 1 exponent w of each metric at each temperature
+  of the sweep, the last column the tau = infinity limit, rows ordered by the exponent at the fit
+  temperature (the outlined column); a white cell is an exponent at most 0.001 and the first grey
+  step is visible, so a white row is a metric with no exponent at any temperature."
+- Test: `tests/test_case.py::test_tau_sweep_figure_marks_the_fit_temperature_and_orders_the_rows`
+  pins the fit column and its bold label, the row order, the colour scale's ends and the limit
+  column's name; no existing pin changed.

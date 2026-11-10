@@ -1252,50 +1252,138 @@ def cond_label(study, a):
     return f"conditioned {s.short[a]} ({inv}{s.units[a]}; larger is better)"
 
 
+_REGIME_WORDS = {"stock": "baseline"}
+"""The regime key of a CaseSpec and the word a figure prints for it (WP23: "primary regime" and
+"baseline regime" are the two names; the key ``stock`` stays in the data files)."""
+
+EXPONENT_FLOOR = 1e-3
+"""An exponent at or below this is drawn white in the sweep figure (the participation threshold)."""
+
+
+def regime_word(study):
+    """The name of a study's regime as a figure prints it.
+
+    Parameters
+    ----------
+    study : Study
+
+    Returns
+    -------
+    str
+        ``"baseline"`` for the key ``stock``; otherwise the key itself.
+
+    Examples
+    --------
+    >>> from types import SimpleNamespace
+    >>> regime_word(SimpleNamespace(regime="stock"))
+    'baseline'
+    >>> regime_word(SimpleNamespace(regime="primary"))
+    'primary'
+    """
+    return _REGIME_WORDS.get(study.regime, study.regime)
+
+
+def _exponent_cmap(plt):
+    """Greys from a visible light grey to black, white below the floor."""
+    from matplotlib.colors import LinearSegmentedColormap
+
+    greys = plt.get_cmap("Greys")(np.linspace(0.3, 1.0, 256))
+    return LinearSegmentedColormap.from_list("exponent", greys).with_extremes(under="white")
+
+
+def _colorbar_ticks(vmin, vmax):
+    """The ends of the colour scale and the round values between them, clear of the ends."""
+    inner = [v for v in np.arange(0.1, vmax, 0.1) if min(v - vmin, vmax - v) > 0.08 * vmax]
+    return [vmin, *inner, vmax], [f"{vmin:g}", *[f"{v:.1f}" for v in inner], f"{vmax:.2f}"]
+
+
 @_legible
-def tau_sweep_figure(study, fit):
-    """Fraction above V = 1, effective size and exponents across temperature.
+def tau_sweep_figure(study, fit, title=None):
+    """The K = 1 fit against the fit temperature: fraction above V = 1, effective size, exponents.
+
+    The sweep is ``tau_sweep``'s temperatures with ``fit.tau`` added, so the fit temperature is a
+    column of the exponent grid; it is marked on every panel (a vertical line, the outlined column).
+    Rows are ordered by the exponent at the fit temperature, largest at the top. The colour scale
+    runs from ``EXPONENT_FLOOR`` to the largest exponent of the sweep; a cell at or below the
+    floor is white, the first step above it a visible grey, so "zero at every tau" is told from
+    "small".
 
     Parameters
     ----------
     study : Study
     fit : Fit
-        The selected K = 1 fit (marked on the first two panels).
+        The K = 1 fit at the fit temperature.
+    title : str, optional
+        The figure's title; default names the regime (``regime_word``).
 
     Returns
     -------
     matplotlib.figure.Figure
     """
+    from matplotlib.patches import Rectangle
+
     hts, _, plotting = _lib()
     plt = _plt()
-    sweep = tau_sweep(study)
+    spec = study.spec
+    finite = np.unique([*np.geomspace(*spec.tau_bounds, 12), fit.tau])
+    sweep = tau_sweep(study, taus=[*finite, np.inf])
+    sel = int(np.flatnonzero(np.isclose(sweep.tau, fit.tau))[0])
     fin = sweep[np.isfinite(sweep.tau)]
-    fig = plt.figure(figsize=(FIGURE_WIDTH_IN, 6.6))
-    grid = fig.add_gridspec(2, 2, height_ratios=[1, 1.35])
-    axes = [fig.add_subplot(grid[0, 0]), fig.add_subplot(grid[0, 1]), fig.add_subplot(grid[1, :])]
-    axes[0].semilogx(fin.tau, fin.frac_above, "o-", color=plotting.DATA_COLOR)
-    axes[0].axhline(study.spec.target_frac, color=plotting.FRONTIER_COLOR, lw=0.8)
-    axes[0].set(xlabel="temperature tau", ylabel="fraction above V = 1")
-    axes[1].semilogx(fin.tau, fin.n_eff, "o-", color=plotting.DATA_COLOR)
-    axes[1].set(xlabel="temperature tau", ylabel="effective sample size")
-    for ax in axes[:2]:
-        ax.axvline(fit.tau, color=plotting.BAND_COLOR, lw=3)
     W = np.array(
         [
-            hts.HyperbolicTradeSpace(temperature=t, random_state=study.spec.seed)
+            hts.HyperbolicTradeSpace(temperature=t, random_state=spec.seed)
             .fit(study.M)
             .exponents_[0]
             for t in sweep.tau
         ]
     )
-    im = axes[2].imshow(W.T, cmap="Greys", aspect="auto", vmin=0, vmax=0.3)
-    axes[2].set_xticks(
-        range(len(sweep)), [f"{t:.0f}" if np.isfinite(t) else "inf" for t in sweep.tau],
-        rotation=60,
+    order = np.argsort(-W[sel], kind="stable")
+    names = [study.names[i] for i in order]
+
+    fig = plt.figure(figsize=(FIGURE_WIDTH_IN, 7.0))
+    grid = fig.add_gridspec(2, 2, height_ratios=[1, 1.45])
+    axes = [fig.add_subplot(grid[0, 0]), fig.add_subplot(grid[0, 1]), fig.add_subplot(grid[1, :])]
+    axes[0].semilogx(fin.tau, fin.frac_above, "o-", color=plotting.DATA_COLOR, ms=4)
+    axes[0].axhline(spec.target_frac, color=plotting.FRONTIER_COLOR, lw=0.8, ls="--")
+    axes[0].annotate(
+        f"target {spec.target_frac:g}", (fin.tau.iloc[-1], spec.target_frac),
+        xytext=(0, 3), textcoords="offset points", ha="right", va="bottom",
     )  # fmt: skip
-    axes[2].set_yticks(range(len(study.names)), study.names)
-    axes[2].set(xlabel="tau")
-    fig.colorbar(im, ax=axes[2])
+    axes[0].set(xlabel="fit temperature tau", ylabel="fraction of designs above V = 1")
+    axes[1].semilogx(fin.tau, fin.n_eff, "o-", color=plotting.DATA_COLOR, ms=4)
+    axes[1].set(xlabel="fit temperature tau", ylabel="effective sample size")
+    for ax in axes[:2]:
+        ax.axvline(fit.tau, color=plotting.FRONTIER_COLOR, lw=1.5)
+
+    vmax = float(W.max())
+    im = axes[2].imshow(
+        W[:, order].T, cmap=_exponent_cmap(plt), aspect="auto", vmin=EXPONENT_FLOOR, vmax=vmax
+    )
+    labels = [f"{t:.0f}" if np.isfinite(t) else "∞ (limit)" for t in sweep.tau]
+    labels[sel] = f"{fit.tau:.1f}"
+    axes[2].set_xticks(range(len(sweep)), labels, rotation=60)
+    axes[2].get_xticklabels()[sel].set_fontweight("bold")
+    axes[2].set_yticks(range(len(names)), names)
+    axes[2].set_xticks(np.arange(len(sweep) + 1) - 0.5, minor=True)
+    axes[2].set_yticks(np.arange(len(names) + 1) - 0.5, minor=True)
+    axes[2].grid(which="minor", color="white", lw=1)
+    axes[2].tick_params(which="minor", length=0)
+    for color, lw, z in (("white", 5, 4), (plotting.FRONTIER_COLOR, 2, 5)):  # a ring on any grey
+        axes[2].add_patch(Rectangle(
+            (sel - 0.5, -0.5), 1, len(names), fill=False, lw=lw, edgecolor=color,
+            clip_on=False, zorder=z,
+        ))  # fmt: skip
+    axes[2].set(
+        xlabel="fit temperature tau",
+        title="K = 1 exponent of each metric; the outlined column is the fit temperature",
+    )
+    ticks, ticklabels = _colorbar_ticks(EXPONENT_FLOOR, vmax)
+    cbar = fig.colorbar(im, ax=axes[2], extend="min", ticks=ticks, pad=0.02)
+    cbar.set_ticklabels(ticklabels)
+    cbar.set_label("exponent w (white: at most 0.001)")
+    fig.suptitle(
+        title or f"The K = 1 fit against the fit temperature tau, {regime_word(study)} regime"
+    )
     fig.tight_layout()
     return fig
 
