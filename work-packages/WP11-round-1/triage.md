@@ -184,6 +184,25 @@ Reports in the driver's scratchpad (`readers/round1c/P{1,3,5,6}-A.md`).
 
 Note (2026-11-09, 21:00): figure numbers in the records above are those of the build before 8abb16a; the three WP19 placements renumber every earlier figure by +3 (old Figure 1 is Figure 4, old Figure 2 is Figure 5, and so on).
 
+### Round 1d (abstract, depth A, after unit 7 at 35b3df6: the energy gloss and the PCA rewording; P1, P3, P5, P6)
+
+Reports in the driver's scratchpad (`readers/round1d/P{1,3,5,6}-A.md`).
+
+- Resolved: PCA is no longer read as replaced (P1: "It does not replace PCA; the authors say the two answer
+  different questions and can be used together"; P6 names the composition as a testable claim); "energy
+  differential" is read through its gloss by 3 of 4 (P3 "a slack from the surface", P5 "a potential-like scalar",
+  P6 "the residual"); the finding, "facet", the elasticities and "not a regression" hold from round 1c. All four
+  read on.
+- Remaining, not held for anyone: "a soft support" (3 of 4: "I do not know what soft buys me", "the phrase is doing
+  a lot of work without a definition"); P1 cannot tell the outer edge of the data from the Pareto boundary;
+  "reversible chart" unclear to P3 and P5 (a coordinate map, invertible, but of what dimension).
+- CR-1d (one clause, the driver's own sentence): "a soft support, not a regression" becomes "a soft support that a
+  few designs may exceed, not a regression". It says what soft buys in the reader's terms (P3 guessed exactly this)
+  and separates the edge from the boundary for P1. "Reversible chart" is left to Definition 5; the L-C test says
+  whether the body answers it.
+- Stop: after CR-1d the abstract rests for the supervisor's own review. Every wrong reading of the key (W1 to W4)
+  is gone at depth A; what remains are concept words whose definitions belong in the body.
+
 ## Next
 
 Re-test the L-A and L-B cells after CR-1 to CR-3 land; then the L-C and L-D cells (main text; with
