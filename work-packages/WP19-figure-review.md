@@ -878,3 +878,315 @@ and "insensitivity to tau" struck from good for (the figure shows the dependence
 certify its absence). The test is revised to the new requirements (the bold column within 2 % of
 the fit temperature, the printed values in that column only, white rows last in the study's
 order, the clim's top at `vmax`, the n_eff text); no pin weakened.
+
+---
+
+## Round 2 (WP11 CR-30 to CR-34)
+
+Requests: `WP11` round 2 change requests CR-30 to CR-34 (the paper's Figures 7, 4, 6, 5 and 1 in the
+numbering at c6d0fff). Generators owned here: `paper/figures/planes.py` (Figures 5 and 6),
+`paper/figures/chart_level.py` (Figure 7); images regenerated on the host from the data of record
+(`examples/adcs/data/v2/`, read through `case.load_study("primary")`; nothing regenerates the data) by
+`uv run python scripts/build_figures.py`. Captions and the three lines live in `paper/paper.ipynb` (the
+paper stream's); the proposals below are for the PM to route. Figures 4 and 1 are caption only, no
+image changes (Figure 4's image is the notebook's `case.tau_sweep_figure` cell; Figure 1's generator
+is untouched and its regenerated image is pixel-identical to the committed one, which is kept).
+
+Readers: three fresh general-purpose agents (two on Sonnet, one on the parent model), no repository
+access, no other read; each opened one PNG with a neutral name, answered on the image alone, then
+got the proposed caption by message and answered again. Images read, SHA-1: `figure-L.png` =
+`fig-planes-k1.png` (48858ef), `figure-M.png` = `fig-planes-k3.png` (180ea27), `figure-N.png` =
+`fig-chart-level.png` (dcd5533). After the reads one change was made to the two planes figures, the
+removal of the near-frontier band and its legend entry (triage below); the committed images are
+`fig-planes-k1.png` 087e783, `fig-planes-k3.png` e344908 (the same drawings; the legend placement also counts the line as ink, so it covers neither designs nor line) and
+`fig-chart-level.png` dcd5533 (byte-identical to the one read).
+
+### CR-33, Figure 5 (`fig-plane-1`, `fig-planes-k1.png`): redrawn
+
+- Problem (the request): four readers could not see the outer edge the abstract promises and
+  concluded the slice cannot confirm or deny the fit.
+- Why the old drawing could not show it: the line is the surface sliced at the median of the other
+  six metrics; a design whose other metrics differ from that median falls on either side of the line
+  wherever its level is, so the cloud spills past the line and the line reads as a fit through it.
+- Design: the designs are two greys. Dark: the designs whose other six metrics, weighed by the
+  term's exponents, lie within 0.1 (in log V) of the median the line is drawn at
+  (`planes._near_median`, `NEAR_TOL = 0.1`), so for them the line is the surface to within 0.1 in
+  log V; light: the rest. One hue, two intensities, by a stated criterion of the slice; no colouring
+  by term or cell. The legend goes to the panel corner whose box covers the fewest designs
+  (`_place_legend`). Data check (host, data of record): 197 of 706 designs are dark; 33 of them lie
+  above the line (30 have V > 1; the fit leaves 0.092 of all designs above V = 1 by its target), the
+  farthest 0.72 vertical units; of the 509 light designs 201 lie above the line. Slope of the line
+  -1.94.
+- Hypothesis H-33: a practitioner at depth B, image alone, says the dark designs stop at the line
+  while the light ones lie on either side, and after the caption says why. Fails if the reader
+  reads the line as a trend through the cloud after the caption.
+- Sentence: "At K = 1 total mass and energy balance trade along one line, and the designs the slice
+  is drawn for stop at it."
+
+Read (P2 practitioner, L-B, Sonnet). Image alone: "(a) A scatter of designs in two log-scale
+metrics, total mass (x, inverse kg) and energy balance (y, Wh), both larger-is-better, with a
+diagonal black line running down across the cloud's upper right and a faint band along it. (b) The
+best designs sit along a trade-off boundary between mass and energy balance, and designs with
+otherwise median performance on the other six metrics lie mostly on or inside that boundary. (c)
+Dark points are designs whose other six metrics are near the median (within 0.1 in log V). Light
+points are all the other designs. The black line is labelled 'the surface in this slice', which I
+read as a fitted frontier or trade-off boundary seen in this two-metric slice. The grey band is
+'near-frontier', but it is so thin along the line that I can barely see it. (d) Unclear: what 'V'
+is, what 'surface' means and how it was fitted, and how wide the near-frontier band is. The title
+('total mass and energy balance') gives no claim. Dark points have no visible pattern against light
+ones, so the point of the highlighting is lost. A few points lie beyond the line (upper right,
+light), which contradicts a frontier unless the line is not a true bound. The legend overlaps the
+data at lower left." With the caption: "Yes, the caption says what the image shows: the two metrics,
+the line as a slice of the fitted surface, and the dark/light split. ... What changed: the dark
+points are now 'designs near the median on the other six metrics', which the caption says reach the
+line and stop there. That matches what I see. I had read the line as a frontier that bounds the
+cloud, so I wrongly counted the points beyond it as a contradiction. The caption's 'a few beyond
+it', tied to the temperature setting, explains them. The line is now a slice of a surface, with
+slope as elasticity. Still unclear: what V is (the fit's overall score, I guess), 'weighed by their
+exponents', 'temperature', and 'primary regime'. The near-frontier band is not explained and is
+barely visible. The caption is long and dense for a plot reader."
+
+Five tests. (1) The reader's own claim from the image alone, (b), is the sentence ("designs with
+otherwise median performance on the other six metrics lie mostly on or inside that boundary"), even
+while (d) said the highlighting's point was lost; with the caption the reading settled on the line
+as the surface in a slice and the points beyond it as the temperature's doing: H-33 holds, narrowly
+on the image alone and fully with the caption. (2) Sentence test: the slope is a number the text can
+state; that the designs the slice is drawn for stop at the line while the rest spill past it is what
+the image adds: pass. (3) Ink: the cloud and the line; the band was under two pixels and read as
+"barely visible" (removed, below); the legend covers a few light designs at lower left, the corner
+with the fewest. (4) Legible at 800 px (9 pt labels). (5) Lines below. Friction, triaged: V,
+"temperature", "primary regime" are the text's (Section 5 and the regimes paragraph); the band
+clause had nothing to point at (the fourth PM's note above) and the band is now not drawn; the
+caption's length is the paper stream's to trim. **Disposition: redrawn; passes. Ready for placement.**
+
+Proposed caption (Figure 5): "Log-metric plane of the K = 1 fit (primary regime) in its two
+heaviest metrics, total mass and energy balance; the slope of the line is their elasticity. The line
+is the surface in this slice: the other six metrics are held at the median of the near-frontier
+designs. Dark: the designs whose other six metrics, weighed by their exponents, lie within 0.1 of
+that median, so for them the line is the surface to within 0.1 in log V; they reach the line and
+stop there, a few beyond it (the fit sets its temperature so that a tenth of all designs lie above
+V = 1). Light: the other designs, which fall on either side of the line wherever their level is."
+
+Three lines. Shows: the designs in the plane of the term's two heaviest metrics, the term's line
+there, and that the designs near the slice's median stop at it. Does not show: the other six metrics
+(a light design above the line can be inside the surface) or the Pareto boundary. Good for: seeing
+the one-term trade-off as a line with a slope, and the line as the edge of the designs it is drawn
+for.
+
+### CR-32, Figure 6 (`fig-plane-3`, `fig-planes-k3.png`): redrawn
+
+- Problem (the request): five readers saw two straight streaks in the top panel that the caption
+  does not name; two saw no kink in any panel.
+- The streaks, checked against the model and the data of record: `adcs_sim.py` clips the wheel
+  torque at the usable torque and integrates its magnitude into the control effort
+  (`case-model.md`: "the integral of the wheel torque magnitude over the slew"). A slew at the
+  torque limit for its whole settling time therefore has control effort = usable torque x settling
+  time, a line of slope one in the raw logs, one per wheel class (one usable torque each). On the
+  data: 86 of the 191 small-wheel designs and 62 of the 248 medium-wheel designs have that ratio
+  within 2 % of one (means 1.007 and 1.000, standard deviations 0.009 and 0.011); the large wheel has
+  3 of 267. Those designs are the two streaks (small: settling times 72 to 506 s; medium: 21 to
+  132 s). The model backs the caption's sentence; no number enters the caption.
+- The kink: `k_terms._slice` draws a term only where it weighs both plotted metrics, and the pairs
+  are each term's two heaviest (`slice_pairs`); on the data of record none of the three pairs is
+  weighed by a second term, so each panel holds one line and no panel can show two terms meeting.
+  The old caption's "one straight segment per term" and the "Shows" line's "kink where two meet"
+  described a drawing that was not there. The panels now say what they are: each title names its
+  term ("term 1: settling time and control effort"), the legend says "the term's line in this
+  slice", and the in-cloud "term k" annotation is gone (it returns only where a panel holds two
+  terms). Not done: a panel of a pair two terms share (settling time and energy balance, terms 1 and
+  2), which would draw the kink; that is a new pair outside the case's rule and a question for the
+  paper stream, not this request.
+- The two greys as Figure 5 (per term: the median of that term's near-frontier cell). Dark counts
+  220, 235 and 674 of 706 in the three panels (term 3 puts 0.161 of its weight on its other six
+  metrics, so almost every design is within 0.1 of its median); dark designs above the line: 9, 12
+  and 27 (at most 0.35 vertical units).
+- Hypothesis H-32: a data scientist at depth B (the reader most at home with the cluster idiom),
+  image alone, does not call a term a group of designs, and after the caption says what the streaks
+  are and that no panel shows the surface bending.
+- Sentence: "Each term trades its own pair of metrics along its own line: settling time against
+  control effort, total mass against energy balance, pointing error against peak slew power."
+
+Read (P4 data scientist, L-B, parent model). Image alone: "(a) Three scatter panels, each a 2-D
+log-log slice of a design population on a pair of conditioned metrics, with a straight line and a
+thin grey band laid over the cloud. (b) The claim it would support: in each metric pair, the best
+designs pile up against a straight line in log space, so a product-of-powers (monomial) model
+describes the frontier of this design population. (c) A 'term' appears to be one pair of metrics
+that trade against each other, each term getting its own fitted line; the three panels are three
+such pairs. Why those pairs are grouped as 'terms' is not visible. (d) The two diagonal streaks in
+the top panel look like one-parameter families: subsets of designs where only one knob is varied
+and both metrics scale together, so they trace a line (a sweep or a shared sub-component). They run
+roughly perpendicular to the frontier line, which suggests they are sweeps that move along the
+frontier rather than designs on it. (e) Dark points: designs whose other six metrics sit near the
+median, so these panels are close to a true 2-D slice for them. Light points: everyone else,
+projected. Black line: the term's fitted frontier in this slice. The grey band: a tolerance region
+near the frontier. (f) Unclear: what 'near-frontier band' means numerically; why panel 3 is
+quantised into horizontal rows and why most of its points sit far below the line; the legend hides
+in panel 2 only; the slanted upper-left of panel 1 where the line leaves the data. Decoration: the
+band is almost invisible and adds little." With the caption: "Yes, the caption describes what is
+drawn, and it corrects my reading in three places. A 'term' is not a metric pair; it is one of K = 3
+terms of a posynomial fit, and each panel shows the plane of that term's two heaviest metrics, so
+the pairs are chosen by the fit, not by the author. The line is the term's own line in that slice
+with the other six metrics pinned at a median, not a fitted 2-D frontier, and it coincides with the
+surface only for the dark points. The streaks are physics, torque-limited slews at constant torque,
+one per wheel class, not design sweeps; the caption also explains the quantised rows in panel 3. No
+panel shows bending: the caption says so explicitly, and I saw none. Still unclear: what 'weighed
+by the term's exponents' means for the 0.1 distance, what 'cell' is, and the grey band is still
+unexplained."
+
+Five tests. (1) The reader never called a term a group of designs (image: "one pair of metrics that
+trade against each other, each term getting its own fitted line"; caption: "one of K = 3 terms of a
+posynomial fit"); the streaks and the absent kink were read as the caption says: H-32 holds. (2)
+Sentence test: the three slopes are numbers; the streaks, the bands and the dark designs stopping
+at each line are what the image adds: pass. (3) Ink: the band removed (below); the legend in the
+emptiest corner (panel 2's lower left, which the reader found odd but which covers no design);
+"the slanted upper-left of panel 1 where the line leaves the data" is the term's line beyond the
+designs, kept as the line's extent (0.1 of the range of padding, as before). (4) Legible at 800 px.
+(5) Lines below. Friction, triaged: "cell" is glossed in the caption now ("the designs the term
+scores highest"); "weighed by the term's exponents" is the criterion and stays, worded as the
+caption below has it. **Disposition: redrawn; passes. Ready for placement.**
+
+Proposed caption (Figure 6): "Log-metric planes of the K = 3 fit, one per term in the plane of its
+two heaviest metrics; the black line is the term's line in that slice, the other six metrics held at
+the median of the near-frontier designs in the term's cell (the designs the term scores highest).
+Dark: the designs whose other six metrics, weighed by the term's exponents, lie within 0.1 of that
+median, so for them the line is the surface to within 0.1 in log V (in the bottom panel nearly all:
+term 3 puts little weight on its other six metrics); light: the rest. None of the three pairs drawn
+is weighed by a second term, so no panel shows two terms meeting. In the top panel the two straight
+streaks are torque-limited slews: the wheel runs at its usable torque for the whole settling time,
+so the control effort is that torque times the settling time, one streak per wheel class (small and
+medium; the large wheel is rarely at its limit). In the bottom panel the tracker grade places the
+pointing error in three groups: two narrow columns (coarse at the left, then medium) and a wide
+band for the fine grade; with the small or medium wheel peak slew power takes one value per wheel
+class and tracker grade (the six horizontal bands); the large wheel's designs form the lower cloud."
+
+Three lines. Shows: each term's slope in the plane of its two heaviest metrics, with the designs
+near its slice's median stopping at its line. Does not show: the surface bending where terms meet
+(no drawn pair is weighed by two terms), any grouping of designs, or metrics outside the drawn
+pair. Good for: seeing each term's trade-off as its own line with its own slope in its own pair of
+metrics.
+
+### CR-30, Figure 7 (`fig-chart-3`, `fig-chart-level.png`): redrawn (the first branch)
+
+- Problem (the request): eight readers took nothing from the horizontal axis ("Z0, the first of
+  seven position coordinates, meaningless alone") and the figure's job did not survive.
+- The two designs and the hypothesis each serves. (A) The horizontal axis earns its place: the
+  position measured along the first principal direction of the near-frontier chart, the one
+  Appendix D.16 reads (`case._reports(study, fit1)[0].tension_directions[0]`, the tension report's
+  analysis of the K = 1 band, signed as D.16 signs it; the chart coordinates Z do not depend on the
+  fit, checked: identical at K = 1 and K = 3, so the direction serves the K = 3 chart); hypothesis: a
+  reader says what the axis is and reads the level apart from it, and the image adds where along
+  the main trade-off the designs reach the surface and where they fall deepest inside. (B) The level
+  distribution alone (a histogram of log V with the surface at 0 and the band); hypothesis: a reader
+  says most designs are within 0.2 of the surface, a tenth above, a tail to -1. Both were drawn on
+  the data of record (the session scratchpad's `wp11-figs/out/chart-A.png`, `chart-B.png`). (B)
+  fails the sentence test: that sentence carries all of it. (A) went to the read.
+- The axis label is generated from the report: "position along the surface: the chart's direction
+  of most spread among the near-frontier designs (44% of it); to the right, better total mass and
+  control effort; worse pointing error" (the three leading loadings, as D.16 lists them, split by
+  sign; every metric is conditioned larger-is-better).
+- Sentence: "Against position the surface is one flat line, log V = 0; along the direction of most
+  spread the designs reach it over the whole range and fall deepest inside in the middle of it."
+
+Read (P2 practitioner, L-B, Sonnet). Image alone: "(a) A scatter of roughly 600 grey dots
+('designs') plotted by position along a horizontal axis against 'log V', with a black line at 0
+labelled 'the surface' and a thin grey 'near-frontier band' just under it. Most dots sit between 0
+and -0.3, and a few fall as low as -1.0. (b) The claim it would support is that most candidate
+designs lie close to the frontier surface. A minority lie well inside it, and the spread is largely
+sideways along the surface. (c) The horizontal axis is a coordinate along the surface. It is the
+direction of greatest spread among near-frontier designs, and it holds 44% of that spread. Right
+means better total mass and control effort but worse pointing error. Moving a point right makes it
+a different trade-off, trading pointing error for mass and control effort. It does not make the
+design better overall. (d) The black line is the frontier (surface) itself, where log V = 0. A
+point's depth below it is how far inside the frontier the design sits. A deeper point is more
+dominated, meaning it is worse across the board. Whether the depth is a ratio or a log-distance is
+not clear to me. (e) The unclear parts are what V is, what the axis units are, and how wide the band
+is. The band is barely distinguishable from the line. The y-axis label is wordy. Nothing looks like
+pure decoration. The legend is fine." With the caption: "Yes, the caption says what the image shows.
+It names the quantity (log V, the energy differential), the axis (position along the near-frontier
+spread direction) and the flat surface at 0. What changed in my reading: The horizontal axis is now
+clearly a principal direction taken from the sampled designs, not from the model. It is a
+data-derived coordinate. Height is now 'level'. A design above the line lies beyond the surface.
+Before, I read depth below the line as dominated by the frontier. The caption says a point can sit
+above it. It also tells me the surface is a model fit (K = 3). What stays unclear: What 'energy
+differential' means, and whether V is a ratio. The units of log V and of the axis. How the
+near-frontier band is defined. It is still barely visible next to the line. Whether points above
+the line are errors or genuine extrapolation, and whether that is good or bad. The '44%' is on the
+axis label but not in the caption."
+
+Five tests. (1) From the image alone the reader said what the axis is and what moving along it does
+("a different trade-off ... not better overall"), read the line as the surface and the height as
+the depth inside, and separated the two ("the spread is largely sideways along the surface"): the
+hypothesis of (A) holds; the caption moved "dominated" to "level" and named the axis as analysis.
+(2) Sentence test: the flat surface and the whole-range reach are the image's; pass. (3) Ink: all
+data; the band is a visible strip here (0.026 on a range of 1.1) and stays. (4) Legible at 800 px;
+the axis label is two lines. (5) Lines below. Friction, triaged: "energy differential" and V are
+the text's (Section 3); the "44%" is generated on the axis and the caption points to D.16 for the
+number rather than hand-typing it. **Disposition: redrawn; passes. Ready for placement.**
+
+Proposed caption (Figure 7): "The chart of the K = 3 fit: each design's level log V, the energy
+differential, against its position along the surface. The position is measured along the direction
+in which the near-frontier designs spread the most, the first principal direction of the
+near-frontier chart ({ref}`Appendix D.16 <sub-d-16>` gives its share of the spread and its
+loadings; to the right, better total mass and control effort, worse pointing error), a reading of
+the sampled designs and not part of the model. The surface is the flat line log V = 0 whatever the
+position; grey: the near-frontier band; a design above the line lies beyond the surface."
+
+Three lines. Shows: each design's level against its position along the direction of most spread,
+the surface as the flat line log V = 0; where along that direction the designs reach the surface
+and where they fall deepest inside. Does not show: terms, any grouping, or the other six directions
+of position. Good for: reading a design's level apart from where it sits along the main trade-off.
+
+### CR-31, Figure 4 (`fig-tau`): caption only
+
+The rule as applied, checked in the package: `select_temperature(..., tol=0.01)` bisects until the
+fraction above V = 1 is within `tol` of the target (0.10), which is how the fit temperature 38.1 has
+0.092 (the generated sentence). The caption's "where the fraction first meets the target" is not
+the rule. "Primary regime" is met here four figures before it is defined, so it is glossed.
+Proposed caption, the two clauses changed and nothing else: "The K = 1 fit against the fit
+temperature tau (the temperature of the soft maximum in the fit), primary regime (aggressive
+controller gains; the stock regime is the second panel of {numref}`Figure %s <fig-regimes-1>`).
+Top: the fraction of designs above V = 1 (V is the invariant value; above 1 is beyond the fitted
+reference surface) with the target 0.1 (dashed), and the effective sample size with its value at
+the fit temperature; the vertical line is the fit temperature, the temperature at which the fraction
+is within 0.01 of the target (a convention, {numref}`Section %s <sect-method>`). Bottom: [unchanged]."
+The section reference is the paper stream's to point at the section that states the convention.
+Three lines: unchanged. No image change; no read.
+
+### CR-34, Figure 1 (`fig-nlemma`): caption only, a clause dropped
+
+The clause "The n-lemma printed is the support of the exact-maximum fit, not read off the marker"
+did no work on this figure: every marker sits in the face its printed n-lemma names (term 1 on the
+2-3 edge, a dilemma of 2 and 3; term 2 inside, a trilemma; term 3 on the 1-2 edge, a dilemma of 1
+and 2), so the caveat warned of a disagreement the reader cannot find, with two unglossed words.
+Dropped (the request's second branch). What the marker is goes into the sentence that introduces it.
+Proposed caption: "The n-lemma on the simplex, for three metrics (a synthetic table with three
+planted terms). A term is one piece of the fitted reference surface; its exponent vector at the fit
+temperature is a point of the triangle, drawn beside the planted one (open ring). The face that
+holds the point names the term's n-lemma: a corner, one metric binds alone; an edge, a dilemma of
+the two metrics at its ends; the interior, a trilemma. With more than three metrics a triangle is
+one face of a larger simplex, and the weight the three carry is printed (here all of it)." Three
+lines: unchanged. No image change (the generator is untouched; its regenerated image is
+pixel-identical to the committed one); no read.
+
+### The band in the planes (after the reads)
+
+All three readers of this round, and the readers of the C-d2 redraw and the fourth PM's note on
+Figure 2, called the near-frontier band in the log-metric planes invisible or decoration: at 1/tau
+= 0.026 in log V on a vertical range of five to six it is under two pixels at 800 px. It is not
+drawn in `planes.py` any more and its legend entry is gone; the proposed captions above do not
+mention it. The chart keeps it (a visible strip). The images read (48858ef, 180ea27) and the images
+committed (087e783, e344908) differ in that and the legend position alone.
+
+### For the paper stream (the PM routes)
+
+1. The sentence in the K = 3 paragraph, "{numref}`Figure %s <fig-plane-3>` shows the surface
+   bending where terms meet", describes a drawing the figure does not hold (no drawn pair is weighed
+   by two terms); the figure shows each term's own line in its own pair. Option if the bend is
+   wanted drawn: a panel of a pair two terms share (settling time and energy balance, terms 1 and 2),
+   a new slice outside `slice_pairs`' rule.
+2. The same sentence's "shows each design's level read apart from its position along the surface"
+   still holds for Figure 7.
+3. Captions and three lines above for Figures 5, 6, 7 (redrawn) and 4, 1 (caption only); the
+   paper's cell `fig-plane-k1` legend/caption clause about the grey band has nothing to point at.
+4. Figure 7's caption cites Appendix D.16 for the direction's share and loadings instead of
+   hand-typing the 44 %.
