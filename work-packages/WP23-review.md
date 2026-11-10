@@ -1091,3 +1091,141 @@ committed ones), `wp23views-renders/zoom/assembly_2000.png` (the crossing check)
 `examples/adcs/data/v2/*.csv`, `wp23views-renders/pair/heatmap.png` and `heatmap_baseline.png` (both
 panels' scales end at 0.43, both named by regime). The behavioural view's lanes, lines and dashed
 group are as before; the analysis box is wider by one word of text, the type unchanged (9.2 px).
+
+## Acceptance review (work-acceptance, 2026-11-10)
+
+| | |
+|---|---|
+| **Scope of work** | `work-packages/WP23-scope-of-work.md` (decisions folded in at 0769209) |
+| **Scope approval verified** | `WP23-decisions.md`, "Scope gate (2026-11-09, 21:10)": "**Approved for execution by the driver under the mandate**, with the draft amended to these decisions"; the scope's gate line: "2026-11-09, 21:10: approved for execution by the driver under the mandate" (59f83ac) |
+| **Work reviewed** | `dev` from 7ffb719 to ff5eb39, the commits labelled WP23 (af37cb1 to 0fab294); ea46637 and 628df90 (the paper's move) are WP16's order step (4), their own unit, and are not reviewed here |
+| **Supervisor (accepts)** | mzargham; the acceptance is the driver's under his mandate ("Proceed, I review after") |
+| **Acceptance record** | the supervisor's (here the driver's) verbal acceptance, quoted verbatim in `WP23-decisions.md`, after this review |
+
+Run by a fresh reviewer in worktree `wp23accept` (origin/dev ff5eb39, `uv sync --locked`). Every
+check below was run now; renders and regenerations went to the session scratchpad
+`wp23accept-renders/`, never into the repository.
+
+### Deliverables
+
+| ID | Verdict | Evidence |
+|---|---|---|
+| D-1 | met | `examples/adcs/model_v2/cubesat.sysml` (871 lines; `cubesat_r2.sysml` gone after the swap, as scoped): `launchRate = 6000.0` (l. 225), `calc def LaunchCost` rate times total mass (l. 320-325), `LaunchBudgetRequirement` (l. 683), MoE/MoP as the first word of each metric's `doc` (ten marks, l. 281-584), the four new requirements, `SettledRequirement` with the fold, the measurement's simulator inputs listed in `coverage.md` |
+| D-2 | met | `coverage.py`, `views/coverage.{md,csv}`, `tests/test_model_coverage.py`; `uv run python examples/adcs/model_v2/coverage.py --out <scratch>/coverage-full` (17 s, "7 disagreement(s)") is byte-identical to the committed `coverage.md` and `coverage.csv` on this Mac; `--no-empirical` runs too |
+| D-3 | met | `cubesat_oracle.py`, `definitions.py`, `compare.py` changed (D-3 commits 7b9f05e, d60b1ea, 8b29bfa); the oracle has no slew-time output (grep: the docstring only). The three listed generator files `cubesat_model.py`, `generate_dataset.py`, `make_check_designs.py` are unchanged: they make the frozen data (G-8) |
+| D-4 | met | amendment row 12 in `interface-contract.md` (slew-time columns out, no `launch_cost`, nine traded metrics, the approval named); `contract_version = 12`; the v2 header has no slew-time column |
+| D-5 | met | `examples/adcs/model_v2/views/{assembly,behavioural}_view.{puml,svg,png}` and the two caption files, `project.py` revision 6. Looked at both PNGs at 700 px: the assembly view marks the two swaps and four tunes once each and agrees with `assembly_caption.md` (levels, ranges, the gain box of each regime); no composition line crosses a header. The behavioural view has the nine metrics, each with its requirement line, seven arrows from `SlewExperiment` and the control effort's from `SlewMeasurement`, as `behavioural_caption.md` says; the mass chain requirement, launch cost, `totalMass`, total mass is readable; the dashed group is the three requirements that read no traded metric |
+| D-6 | not met (in part) | `WP23-rounds/round-{1,3,4}/` hold the five files; `round-2/` holds the views and `INTENT.md` only, no heatmap, `coverage.md` or `k3_record.md` (G-4). The gate pair regenerated now (`diagnostic_pair.py ... --out <scratch>/wp23accept-renders/`, 40 s) reads the same as `gate/k3_record.md` on the K = 1 sets, the zero sets and every printed exponent, and differs where later units changed the code (G-9) |
+| D-7 | not met (in part) | `examples/adcs/case-model.md`, "From the assembly to the dataset ..." with its five subsections, present; the glossary entries for MoE, MoP and launch cost are drafted in this record and not in `glossary.yaml` (G-6) |
+| D-8 | met | ledger: `v2-primary@5`, `v2-baseline@5`, `v2-check-predictions@5`, `v2-check-designs@5`, `scope-sensitivity-shared-subspace-v2@4`, commit 2b2e94e, not dirty (`gate/README.md`); `PYTHONPATH=examples/adcs uv run python -m experiments verify`: "34 entries (11 current); 0 drifts"; `paper/container/RECORD.md` names `3c7cfc8a2e27`; `tests/data/v2_first_designs_of_record.csv` regenerated |
+| D-9 | met | `swap-evidence.md`, "WP23 data gate: old v2 ... against new v2": changed conclusions first, every moved column with its cause, the conclusions item by item, the slot list (its section 4) |
+| D-10 | met | this file: the four rounds, the cold reads by reference to `round-{1,3}/cold-reads.md` with dispositions, the K = 1 and K = 3 readings, the trace table, the zero exponents explained (n-lemma reading); the texture record is short of R-9 (G-5) |
+
+### Requirements
+
+| ID | Verdict | Evidence |
+|---|---|---|
+| R-1 | met | `uv run pytest -q -m "not slow" tests/test_cubesat_model.py tests/test_cubesat_oracle.py tests/test_check_designs.py tests/test_v2_data.py tests/test_experiments.py tests/test_model_coverage.py tests/test_system_model_v2_r1.py tests/test_diagnostic_pair.py tests/test_interface_contract.py -n auto`: "258 passed in 89.95s"; `coverage.md` table 1: six rows, none empty in either column |
+| R-2 | met | same run (`test_every_traded_metric_has_a_requirement_that_reads_it_and_a_mark`); `coverage.md` table 2; the behavioural view, looked at: no dashed "no requirement" box |
+| R-3 | met | the model diff 7ffb719...HEAD outside comments and docs adds the literals `1.0` (1/h), `6000.0`, `1.2` and the `1.0 [unit]` normalisation, each traced in "Proposed thresholds" above |
+| R-4 | met | `REQUIRE_OPENSYSML=1 uv run pytest -q tests/test_model_checking_v2.py tests/test_system_model_v2.py`: "90 passed", among them `test_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it` (three named configurations) |
+| R-5 | not met as stated | `grep -rn "slew_time\|SlewTime" examples/adcs/model_v2/cubesat.sysml examples/adcs/data/v2`: nothing in the data; seven model lines, the section-4 calcs `TorqueLimitedSlewTime`, `LinearSlewTime`, `SlewTimeEstimate`; `grep` of `cubesat_model.py` finds `slew_time_s` and `slew_time_05deg_s` in `measure` (l. 444, 469: the frozen generator). Met under the reading "R-5's check, amended" (measurement, requirements and experiment clean; `test_slew_time_has_left_the_measurement_and_the_requirements` passes), which the PM recorded for the driver; no driver ruling on it is recorded (G-1) |
+| R-6 | met | the 258-test run includes `test_interface_contract.py` and `test_v2_data.py` |
+| R-7 | not met as stated | WP23's commits touch nothing under `src/` or `derivation/`, no frozen data, `case.py` or `k_terms.py`, and under `docs/` only `project.py`; under `paper/` they touch `container/RECORD.md` and also `figures/fig-assembly-view.png` and `fig-behavioural-view.png` (8507bd9, authorized by the PM at the push and stated in `gate/README.md`; again in 0fab294) (G-2) |
+| R-8 | not met (in part) | rounds 1 and 3 were cold read by a fresh P2 and P3 (`round-1/cold-reads.md`, `round-3/cold-reads.md`, findings verbatim with dispositions); rounds 2 and 4 and the post-gate revision 6 of the views were not (G-3) |
+| R-9 | not met (in part) | every zero exponent has a stated reason (round 3; `case-model.md`, "The texture hypothesis ..."); there is no "Texture" section recording the heatmap before (the frozen `fig-tau-sweep`) and after, and the prose states the outcome on the round-1 data "not a result of record" although the gate shows the same zero sets on the data of record (G-5) |
+| R-10 | met | the 258-test run (`test_model_coverage.py`, `test_system_model_v2_r1.py`); my two regenerations of the table equal the committed bytes |
+| R-11 | met | the R-4 run with `REQUIRE_OPENSYSML=1`: 90 passed |
+| R-12 | met | as D-8 |
+| R-13 | met | D-9 read by the driver: `WP23-decisions.md`, "The data gate: the comparison read, two calls (2026-11-10, 02:25)" and "The swap is final (2026-11-10, 02:45)" |
+| R-14 | not checkable (vocabulary); met (claims) | the claims reading above ("Case prose (D-7): claims") backs every row; `uv run python scripts/check_vocabulary.py` reports 70 violations, none in a WP23 file, because `case-model.md` is outside the tool's corpus; the tool run with `--root` on a scratch tree holding `glossary.yaml` and the case prose reports two `stem` findings in it, "launch rate" and "power margin" (G-7) |
+| R-15 | met at the gate | `uv run ruff check .`: "All checks passed!"; `uv run ruff format --check .`: "323 files already formatted"; `uv lock --check`: resolves; Linux green on 8507bd9 and the Mac watcher green on 241c63d (`WP23-decisions.md`, 02:45). At ff5eb39 the full suite on this Mac: "2 failed, 2225 passed, 16 skipped, 1 xfailed", both failures outside WP23 (G-10) |
+
+### Definition of good enough
+
+| Item | Verdict | Evidence |
+|---|---|---|
+| Coverage table complete (R-1, R-10) | met | R-1, R-10 |
+| Every metric's requirement or MoE in the model; no dashed box (R-2, R-3, R-4) | met | R-2 to R-4; the behavioural view looked at |
+| The four proposed thresholds with rationale for the popup, with candidate metrics (OD3 to OD7) | met | "Proposed thresholds" and "Proposed thresholds, revised for the gate popup"; OD7 candidates (peak charge rate, recharge in the power margin, the battery swap) in "Round 2" and "Round 3"; the popup is pending the supervisor |
+| Slew time out, the fold, contract amended, its test passing (R-5, R-6) | not met as stated | R-6 met; R-5 met only under the amended reading (G-1) |
+| At least two rounds; last cold reads clean, or the cap reached with each open finding disposed | met | four rounds, the cap; open findings A to F disposed by the PM ("Rounds: the cold reads ..."), B, C, D, F executed in the post-gate unit |
+| Regenerated once in `hts-paper`; D-9 complete; changed conclusions resolved or with the driver (R-12, R-13) | met | R-12, R-13 |
+| Texture outcome and each zero explained in review and prose (R-9) | not met (in part) | G-5 |
+| R-7, R-11, R-14, R-15 hold | not met (in part) | R-11 and R-15 met; R-7 (G-2); R-14 vocabulary not checkable (G-7) |
+
+### Outside the scope
+
+- **Out-of-scope changes (WP23's own commits):** `examples/adcs/experiments/check_designs.py`
+  (8b29bfa; the reach rule 0fab21a, which the driver's decision names), `feasibility.py` and
+  `sensitivity.py` (8b29bfa, D-3's column change), `tests/test_check_script.py` (59c3407),
+  `tests/test_diagnostic_pair.py` (new, beside D-6), the two paper figures (G-2). Every other file in
+  `git diff --stat 7ffb719...HEAD` over the model, experiments, v2 data, contract and tests that WP23
+  did not write belongs to other units (ea46637 and 628df90: WP16 order step (4), the paper's move,
+  its own unit and left there; af6948c, 241c63d: WP19's heatmap redraw; 0be3449: WP24; 18d0064,
+  3d6d48a, 0059264, 4b5a539, 73c14e5, 9e08ae3: library and docs units) (G-8).
+- **Non-goals touched:** the paper (two binary figures, byte copies of the regenerated views; no
+  prose or number) (G-2). Untouched: `src/`, `derivation/`, the fit; the swap was made at the
+  recorded gate; no constant chosen for the heatmap (round 3 changed none); thresholds labelled
+  proposed; frozen data, `case.py`, `k_terms.py` (by WP23); `adcs_sim.py`, sampling and seeds; WP22c
+  and the search.
+
+### Observations
+
+- The gate folder is a record of the gate run and no longer what the generator gives at head (G-9).
+- The full suite's two failures at ff5eb39 are the paper move's (G-10); 4a04e72 on `dev` already
+  routes them.
+- "Coverage table, platform stability" says the Mac differs from the committed table in one magnitude;
+  on the data of record the Mac regeneration today is byte-identical to the committed table.
+
+### Open decisions (for the driver)
+
+Each gap with the three dispositions: accept as is (with a reason) / fix before acceptance / follow-up
+work package.
+
+- **G-1.** R-5's literal check fails (the model's section-4 `SlewTime` calc names; the frozen
+  generator `cubesat_model.py` still measures slew time); the amended reading is the PM's, with no
+  driver ruling recorded. Affects good enough (slew time out).
+- **G-2.** Non-goal and R-7: WP23 changed `paper/figures/fig-assembly-view.png` and
+  `fig-behavioural-view.png` (8507bd9, PM-authorized at the push; 0fab294). Affects good enough (R-7).
+- **G-3.** R-8: no P2/P3 cold read of rounds 2 and 4 or of the views' post-gate revision 6; the
+  committed views were read only by their author.
+- **G-4.** D-6: `round-2/` has no heatmap, `coverage.md` or `k3_record.md`.
+- **G-5.** R-9: no before-and-after texture record in this review; the case prose's outcome paragraph
+  stays on the round-1 data "not a result of record" after the gate. Affects good enough (R-9).
+- **G-6.** D-7: the glossary entries MoE, MoP and launch cost are held, not in `glossary.yaml`; no
+  decision on holding them is recorded.
+- **G-7.** R-14: the vocabulary tool does not read `case-model.md`; run on it from a scratch root it
+  reports two `stem` findings ("launch rate", "power margin"). Affects good enough (R-14).
+- **G-8.** Out of scope: the five WP23-written files outside the blast radius named above; D-3's
+  three generator files unchanged.
+- **G-9.** Observation: `WP23-rounds/gate/` differs from a regeneration at head (the shared colour
+  scale sentence, the redrawn heatmap, a per-term K = 3 report table where the gate record says it
+  refused, exponent noise at 1e-17; the gate copy of `coverage.md` lacks the post-gate prose).
+- **G-10.** Observation, not WP23's: `tests/test_soft_fit.py::test_r2_default_cubesat_fits_equal_the_recording[primary]`
+  and `[stock]` (slow) fail at head, the K = 2 tau recorded 113.2 against 94.4 observed, since ea46637
+  made the nine-metric data the default; routed in 4a04e72.
+
+Recorded decisions pending the supervisor, not reopened here (`driver-log.md`, "Waiting for the
+supervisor"): the four thresholds and the discharge rate (the popup tables above); the two metric
+redundancies (eclipse reserve with depth of discharge; power margin with energy balance); whether
+proposals that fail a model requirement count as check designs.
+
+### Gap dispositions
+
+| Gap | Disposition | Reason or follow-up |
+|---|---|---|
+| G-1 to G-10 | open: the driver's | |
+
+### Recommendation
+
+Recommend acceptance with the listed gaps noted, because every deliverable that carries the case
+exists and runs as recorded here (the model, the coverage table reproduced byte for byte, the views
+looked at against their captions, the ledger at 0 drifts, the gate comparison read and decided) and
+no gap moves a number or a conclusion of record; the gaps are literal checks the record replaced by
+readings (G-1, G-2), cold reads and folder contents short of R-8 and D-6 (G-3, G-4), and record and
+prose items (G-5 to G-7); four of them touch good-enough items and need the driver's disposition
+first (G-1, G-2, G-5, G-7).
+
+Acceptance is the supervisor's act (here the driver's under his mandate), recorded in
+`WP23-decisions.md`. This report does not accept the work.
