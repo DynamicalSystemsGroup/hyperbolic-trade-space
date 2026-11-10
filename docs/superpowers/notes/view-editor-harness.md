@@ -96,3 +96,31 @@ unreadable; the node texts of section 4 are the record of what a view shows.
 The header's "Download project" and "Open" (and the landing page's "Open files or project") go through the
 operating system's file dialog, which the browser tools cannot drive; WP26 grants computer use for that dialog only.
 Not exercised in the round: the source pane route of section 2 was enough.
+
+## 8. What the second round taught (WP27)
+
+- **One tab per project.** The editor keeps one recovery record (IndexedDB `sysml-view-recovery`, store
+  `recovery`) for all tabs. When a second tab restores the same project, the first tab's next save fails with
+  "Recovery could not be saved ... Another tab changed local recovery", and a later restore returns the older text
+  (WP27 steps 11 and 12). Before handing the project to another reader, apply the final text last, then check the
+  record: it holds the applied text and its `savedAt` time.
+
+  ```js
+  const db = await new Promise((ok) => { const q = indexedDB.open("sysml-view-recovery"); q.onsuccess = () => ok(q.result); });
+  const all = await new Promise((ok) => { const r = db.transaction("recovery").objectStore("recovery").getAll(); r.onsuccess = () => ok(r.result); });
+  JSON.stringify(all).includes("<a line only the final text has>");
+  ```
+
+- **Wait for the apply to finish.** A large text takes 10 to 25 s to apply; the header reads "Working..." and the
+  diagram "Applied revision · draft pending" meanwhile, and a large view (hundreds of nodes) takes about 20 s to
+  draw while the previous view stays on the canvas. Read the issues and the revision only when the status reads
+  "Source applied" (§3).
+- **Two parsers.** The editor rejects some text the toolkit's strict load accepts: a `verify` in a verification
+  usage's objective whose name the typing definition already uses, and two `verify` statements naming same-named
+  features. Run both checks (§3 and the repository's model tests) on every new construct; the WP27 review's parse
+  table (D-1) lists what both accept.
+- **Expose by name.** `expose P::*` on a package that imports privately draws the imported libraries too; expose each
+  element (and `element::*` for its members) instead.
+- **Pointers and verdicts read in the tables.** A verification case's attribute values are not shown anywhere; its
+  `verify` statements appear as "Declared verification" and matrix cells. A `satisfy` or `not satisfy` statement
+  appears in the Satisfaction matrix ("Declared" or "Negated declaration"), which is where a reader finds a verdict.
