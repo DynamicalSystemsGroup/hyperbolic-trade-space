@@ -104,3 +104,18 @@ writer at a time (the support stream); Appendix B is regenerated in a stream-nam
 | WP25 (tidiness, first instance) | done: db150fc inventory (346 rows), 09117d8 (169 files deleted), f9573fd review (drift list for WP24's docs push; 9 gaps) |
 
 Worktrees alive: `wp23case` (unpushed case code), `wp24` (held glossary patch). All others removed.
+
+## Packages running or scoped (fifth PM, 2026-11-10, morning; the swap final at 827f02a)
+
+| Unit | State |
+|---|---|
+| 1. The paper onto the data of record (paper stream; worktree `paper`, branch `paper-wp23`) | local c30af53 (data move, nine-attribute spec, Figure 2 pair, Figure 3 slices, Redraw 2 caption, view captions, check section, D-6 jitter); building the per-term part (PM's call: the guard of ten applied per term in the case module through the public API, no src change), then the container regeneration (hts-paper rebuilt, 3c7cfc8a2e27 removed), records, pins, one push |
+| 2. WP23 view-consistency (B, C, D, F; diagnostic_pair.py's title and shared vmax) | done 0fab294 (views revision 6; the paper's two byte copies; record in WP23-review.md) |
+| 1b. docs/examples.md and its two generated figures onto the new numbers | after unit 1 |
+| 1r. Reviewer of unit 1 (tests, every figure as image, the staged paper in the browser, screenshots) | after unit 1's push |
+| 3. WP24 push 1 onward (worktree `wp24` holds the glossary patch); diagnostic_pair.py identifiers in a WP23 unit after push 1; glossary MoE/MoP/launch cost with the case section; WP25's drift rows in the docs push | after unit 1 |
+| 4. WP23 acceptance review (work-acceptance, fresh reviewer that runs the code and looks at the pair and the views) | after unit 1 |
+| 5. The WP7 notebook `examples/adcs/adcs_trade_study.ipynb` and figures 01-09 on the old data | question to the driver (regenerate / delete / hold for WP25) |
+| 6. WP25 next instance | at the next gate |
+
+Worktrees alive: `paper` (unpushed c30af53), `wp24` (held glossary patch). Docker: hts-paper 3c7cfc8a2e27 (until unit 1 rebuilds it), hts-alt.
