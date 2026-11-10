@@ -3794,7 +3794,7 @@ note = "principal axes; mask uses only masked rows"
 
 [[claim]]
 id = "C303"
-fragment = "Figure 5. The chart with holes: the red points are grid positions far from every design, candidates for white space."
+fragment = "Figure 5. The chart with holes: the orange squares are grid positions far from every design, candidates for white space."
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "R"
