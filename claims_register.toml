@@ -520,7 +520,7 @@ note = "Section 3 defines the evaluation as a black box to the method (a simulat
 
 [[claim]]
 id = "C033"
-fragment = "It is fitted to the outer edge of the data, not through its middle: a soft support, not a regression"
+fragment = "It is fitted to the outer edge of the data, not through its middle: a soft support that a few designs may exceed, not a regression"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"

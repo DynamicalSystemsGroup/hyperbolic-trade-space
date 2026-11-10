@@ -302,6 +302,12 @@ words_added = 8
 job = "says PCA and the method are distinct and compose, PCA run on the chart, in place of mirrors the structure of PCA (the supervisor's decision)"
 reader = "the reader of the abstract alone, 7 of 8 of whom took the method for a replacement of PCA"
 
+[[abstract.raise]]
+date = "2026-11-09"
+words_added = 6
+job = "says which side of the data the soft support sits on and that a few designs may exceed it (CR-1d)"
+reader = "the reader of the abstract alone who asked which side the surface sits on"
+
 # Rows: PM-BRIEF ruling 2 (Theorem 11, descent): cell and facet kept apart.
 
 [[raise]]
@@ -440,3 +446,27 @@ section = "Case construction"
 words_added = 14
 job = "refers to the two model views from the text of Section 8 (WP19 P-2, P-3)"
 reader = "the reader of the case construction"
+
+# Rows: WP19 P-4 to P-10 (19c, 19d): the three lines under each kept figure, the new captions; the
+# chart and predict-check figures and their captions left the body (cuts, no row).
+
+[[raise]]
+date = "2026-11-09"
+section = "Case construction"
+words_added = 62
+job = "says what the temperature figure shows, does not show and is good for (the figure-review rule, WP19 P-4)"
+reader = "the reader deciding what to take from the temperature figure"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 132
+job = "says what the K = 1 plane, the K = 3 association and the regimes figures show, do not show and are good for (WP19 P-5, P-8, P-9)"
+reader = "the reader deciding what to take from each case figure"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 24
+job = "new captions: the plane's line is a slice of the surface at the median of the other metrics, association is the Pearson correlation of the log-metrics, w is the fitted exponent (WP19 P-5, P-8, P-9), net of the two removed figures"
+reader = "the reader who read the plane as the whole surface and asked what association means"
