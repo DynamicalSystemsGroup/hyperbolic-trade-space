@@ -502,3 +502,13 @@ section = "Case analysis"
 words_added = 18
 job = "the K = 3 paragraph refers to the chart figure and says what the planes show (the surface bending where facets meet) in place of 'their envelope' (WP19 P-6 and P-7 revised)"
 reader = "the reader of the case analysis"
+
+# Row: WP19 principle check (WP19-decisions.md, "Paper Figures 5 and 6"): the association captions
+# name their cells as analysis of the designs assigned to each facet; the drawing is kept.
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 28
+job = "the K = 3 association and regimes captions name each heatmap as an analysis of the designs assigned to a facet (its cell) and not of the model (WP19 principle check, Figures 5 and 6)"
+reader = "the reader who took the association cells for the model's structure"
