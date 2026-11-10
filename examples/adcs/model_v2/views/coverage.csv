@@ -63,3 +63,30 @@ metrics,energy balance,MoP,EnergyBalance,calc,EnergyBalanceRequirement,invokes E
 metrics,eclipse reserve,MoP,EclipseReserve,calc,EclipseReserveRequirement,invokes EclipseReserve,SlewVerification
 metrics,peak slew power,MoP,PeakSlewPower,calc,PeakSlewPowerRequirement,invokes PeakSlewPower,SlewVerification
 metrics,depth of discharge,MoP,DepthOfDischarge,calc,DepthOfDischargeRequirement,invokes DepthOfDischarge,SlewVerification
+table,from,to,variables
+coupling,WheelClass,controls,momentumCapacity (wheel.maxMomentum)
+coupling,WheelClass,power and energy,wheel.maxTorque
+coupling,WheelClass,mass,wheel.mass
+coupling,TrackerGrade,controls,tracker.accuracy
+coupling,TrackerGrade,power and energy,tracker.power
+coupling,TrackerGrade,mass,tracker.mass
+coupling,panelSpan,controls,panelPlus.span
+coupling,panelSpan,power and energy,panelMinus.span; panelPlus.span
+coupling,panelSpan,mass,panelPlus.span
+coupling,batteryCapacity,power and energy,battery.capacity
+coupling,Kp,controls,controller.Kp
+coupling,Kd,controls,controller.Kd
+coupling,controls,controls,SlewMeasurement (adcs_sim.simulate_adcs); GravityGradientTorque; PointingError
+coupling,controls,power and energy,peakTorque; torqueSquaredIntegral
+coupling,controls,metrics read off,settling time; pointing error; control effort
+coupling,controls,requirements read off,ControlEffortRequirement; MomentumRequirement; PointingErrorRequirement; SettledRequirement
+coupling,power and energy,power and energy,panelMinus.area; panelPlus.area; panelMinus.mass; panelPlus.mass; battery.mass; GeneratedPower; BaseLoad; AvailablePower; UsableWheelTorque; SlewLossEnergy; EclipseDemand; DepthOfDischarge; EclipseReserve; OrbitPeriod; EnergyBalance; PeakSlewPower; PowerMargin
+coupling,power and energy,controls,panelPlus.mass; usableWheelTorque
+coupling,power and energy,mass,battery.mass; panelMinus.mass; panelPlus.mass
+coupling,power and energy,metrics read off,power margin; energy balance; eclipse reserve; peak slew power; depth of discharge
+coupling,power and energy,requirements read off,DepthOfDischargeRequirement; EclipseReserveRequirement; EnergyBalanceRequirement; PeakSlewPowerRequirement; PowerMarginRequirement; PowerRequirement
+coupling,mass,mass,MassAccounting; StructureMass; LaunchCost; InertiaX; InertiaY; InertiaZ
+coupling,mass,controls,InertiaX; InertiaY; InertiaZ; structureMass
+coupling,mass,metrics read off,total mass
+coupling,mass,requirements read off,LaunchBudgetRequirement
+coupling,connectivity,connected,18 nodes; 25 edges; unfed: none; unreached: none

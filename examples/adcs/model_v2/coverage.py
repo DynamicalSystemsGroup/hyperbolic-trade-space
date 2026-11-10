@@ -20,6 +20,17 @@ Two tables, written to ``views/coverage.md`` and ``views/coverage.csv`` from the
    own quantity (its calc, its measurement attribute, or the attribute through the MoE calc that
    reads it); the verification case is the one whose objective verifies that requirement.
 
+3. **Coupling between subsystems, as a design structure matrix.** The configuration values feed the
+   subsystems' calcs; the subsystems exchange named coupling variables (the pack mass from the power
+   subsystem to the mass accounting, the inertia and the structure mass from the mass accounting to
+   the slew, the usable torque from the power subsystem to the slew, the peak torque and the
+   integral of the squared torque from the slew back to the power subsystem); the metrics and the
+   requirements are read off the subsystems. The three subsystems are the CaseSpec's (the
+   behavioural view's); the placement of each calc in one of them is the analyst's decomposition,
+   stated once in ``SUBSYSTEM_OF``; every edge is read from the model (``Coupling``). The test is
+   connectivity: every configuration value feeds a subsystem and reaches a traded metric (the
+   structural column of table 1), every metric is read off a subsystem, and the graph is connected.
+
 The empirical column runs the slews through the case's oracle (``experiments.cubesat_oracle``),
 which reads the adopted ``cubesat.sysml``; the revision ``cubesat_r2.sysml`` changes no calculation
 of it (``tests/test_system_model_v2.py`` pins that), so the empirical column of either model is the
@@ -519,6 +530,488 @@ def empirical(graph: ModelGraph, metrics: list[Metric], elements) -> tuple[dict,
 
 
 # =================================================================================================
+# The coupling graph: configuration values -> subsystem calcs -> coupling variables -> metrics
+# =================================================================================================
+# The analyst's decomposition of the model into the CaseSpec's three subsystems (the behavioural
+# view's), named here once: each calc def, each computed attribute of a part def (``Part.attr``) and
+# the slew measurement (the simulator, ``SlewMeasurement``) belongs to one subsystem. Everything
+# else about the graph is read from the model: which configuration attribute each calc reads, which
+# calc or measured quantity each calc takes from another subsystem (the coupling variables, named as
+# the model names them), and which metric and requirement is read off each subsystem. A calc the
+# metrics and requirements reach that is not placed here stops the build by name. The constants
+# (the environment, the scenario, the budgets, the fixed parts bus, antenna and IMU) are not nodes.
+SUBSYSTEM_OF = {
+    "controls": {"SlewMeasurement", "GravityGradientTorque", "PointingError"},
+    "power and energy": {
+        "SolarPanel.area",
+        "SolarPanel.mass",
+        "Battery.mass",
+        "GeneratedPower",
+        "BaseLoad",
+        "AvailablePower",
+        "UsableWheelTorque",
+        "SlewLossEnergy",
+        "EclipseDemand",
+        "DepthOfDischarge",
+        "EclipseReserve",
+        "OrbitPeriod",
+        "EnergyBalance",
+        "PeakSlewPower",
+        "PowerMargin",
+        "BatteryPeakPower",
+        "EclipsePeakLoad",
+    },
+    "mass": {
+        "MassAccounting",
+        "StructureMass",
+        "AdcsMass",
+        "LaunchCost",
+        "InertiaX",
+        "InertiaY",
+        "InertiaZ",
+    },
+}
+CONSTANT_PARTS = ("environment", "nominalSlew", "budgets")
+MEASUREMENT = "SlewMeasurement"
+SIMULATOR = "adcs_sim.simulate_adcs"
+
+
+class Coupling:
+    """The directed graph of the model's evaluation, read through ``ModelGraph``.
+
+    Nodes: the configuration values (``("config", name)``), the calcs (``("calc", Name)``), the
+    computed attributes of the parts (``("part", usage, attr)``), the slew measurement
+    (``("measurement",)``), the traded metrics (``("metric", name)``) and the requirements
+    (``("req", Name)``). An edge ``(source, node)`` carries the set of names under which ``node``
+    reads ``source`` (``wheel.mass``, ``structureMass``, ``peakTorque``, ``InertiaX``): the model's
+    own names for the quantities, which are the coupling variables when the two ends sit in
+    different subsystems.
+    """
+
+    def __init__(self, graph: ModelGraph, metrics: list[Metric]):
+        self.g = graph
+        self.edges: dict[tuple, set[str]] = {}
+        self.visited: set = set()
+        self.nodes: set[tuple] = set()
+        g = graph
+        self.cubesat_attrs = {short(a): a for a in g.children(g.cubesat, "AttributeUsage")}
+        self.in_params: dict[str, list[tuple[str, str]]] = {}  # calc id -> [(name, type id)]
+        for i, e in g.byid.items():
+            if e["@type"] in (
+                "CalculationDefinition",
+                "RequirementDefinition",
+                "AnalysisCaseDefinition",
+            ):
+                self.in_params[i] = [
+                    (short(ref(f)), g.typing.get(ref(f)))
+                    for f in e.get("ownedFeature", [])
+                    if g.byid.get(ref(f), {}).get("direction") == "in"
+                ]
+        # the measurement: the simulator reads the stated inputs
+        self.nodes.add(("measurement",))
+        for name in g.measurement_inputs():
+            self.read(self.resolve_chain(name, None), ("measurement",), self.label(name))
+        # the metrics, from the analysis's return entries and the measurement
+        analysis = next(iter(g.kinds("AnalysisCaseDefinition")))
+        env = {p: ("measured", p) for p, t in self.in_params[analysis] if t != g.cubesat}
+        tuple_root = analysis + "__attributes_pvalue"
+        entries = {}
+        for m in metrics:
+            if m.kind == "measured":
+                self.read(("measured", short(m.element)), ("metric", m.name), short(m.element))
+        for i in g.byid:
+            if re.fullmatch(re.escape(tuple_root) + r"_pa\d+", i):
+                entries[int(i.rsplit("_pa", 1)[1])] = i
+        by_element = {m.element: m for m in metrics}
+        for _, entry in sorted(entries.items()):
+            e = g.byid[entry]
+            if e["@type"] == "InvocationExpression":
+                calc = ref(e["function"])
+                self.invoke(entry, ("metric", by_element[calc].name), None, env)
+            elif e["@type"] == "FeatureChainExpression":
+                attr = f"{g.cubesat}__{e['sysx:sourceText'].split('.')[-1].strip()}"
+                m = by_element[attr]
+                self.read(
+                    self.resolve_chain(e["sysx:sourceText"], None), ("metric", m.name), short(attr)
+                )
+            elif e["@type"] == "FeatureReferenceExpression":
+                name = short(ref(e["referent"]))
+                m = by_element[f"{g.pre}{MEASUREMENT}__{name}"]
+                self.read(("measured", name), ("metric", m.name), name)
+        # the requirements: the constraint, with the `in` parameters bound by their defaults
+        for r in g.kinds("RequirementDefinition"):
+            env = {}
+            for p, t in self.in_params[r]:
+                if t == g.cubesat:
+                    continue
+                default = g.byid.get(f"{r}__{p}_pvalue", {}).get("sysx:sourceText", "")
+                src = self.resolve_chain(default, None) if default else None
+                env[p] = src
+            for c in g.children(r, "ConstraintUsage"):
+                self.walk(c, ("req", short(r)), (r, None), env)
+        self.subsystem = {n: self.place(n) for n in self.nodes}
+
+    # -- recording --------------------------------------------------------------------------------
+    def read(self, source, node, label: str) -> None:
+        if source is None:
+            return
+        self.nodes.add(node)
+        if source[0] not in ("config", "measured"):
+            self.nodes.add(source)
+        self.edges.setdefault((source, node), set()).add(label)
+
+    def place(self, node) -> str | None:
+        if node[0] == "calc":
+            name = node[1]
+        elif node[0] == "part":
+            name = f"{short(self.g.parts[node[1]])}.{node[2]}"
+        elif node[0] == "measurement":
+            name = MEASUREMENT
+        else:
+            return None
+        for s, members in SUBSYSTEM_OF.items():
+            if name in members:
+                return s
+        raise KeyError(
+            f"{name} is reached by a metric or a requirement but belongs to no subsystem"
+        )
+
+    # -- the walk ----------------------------------------------------------------------------
+    def calc_params(self, calc: str) -> list[tuple[str, str]]:
+        return self.in_params.get(calc, [])
+
+    def invoke(self, inv: str, into, context, env: dict):
+        """An invocation of a calc: bind its parameters from the arguments, visit it, and return
+        its node (the caller reads it under the calc's name)."""
+        g = self.g
+        calc = ref(g.byid[inv]["function"])
+        node = ("calc", short(calc))
+        bound = {}
+        for k, (p, t) in enumerate(self.calc_params(calc)):
+            if t == g.cubesat:
+                continue
+            arg = f"{inv}_pa{k}"
+            bound[p] = self.resolve_arg(arg, context, env) if arg in g.byid else None
+        self.visit_calc(calc, bound)
+        if into is not None:
+            self.read(node, into, short(calc))
+        return node
+
+    def resolve_arg(self, arg: str, context, env: dict):
+        g = self.g
+        e = g.byid[arg]
+        kind = e["@type"]
+        if (
+            kind == "InvocationExpression"
+            and g.byid.get(ref(e.get("function")), {}).get("@type") == "CalculationDefinition"
+        ):
+            return self.invoke(arg, None, context, env)
+        if kind == "FeatureReferenceExpression" and e.get("referent"):
+            name = short(ref(e["referent"]))
+            if name in env:
+                return env[name]
+            return self.resolve_chain(name, context)
+        if kind == "FeatureChainExpression":
+            return self.resolve_chain(e.get("sysx:sourceText", ""), context)
+        return None
+
+    def visit_calc(self, calc: str, env: dict) -> None:
+        key = (calc, tuple(sorted((k, v) for k, v in env.items() if v is not None)))
+        if key in self.visited:
+            return
+        self.visited.add(key)
+        node = ("calc", short(calc))
+        self.nodes.add(node)
+        for p, src in env.items():
+            if src is not None:
+                self.read(src, node, self.source_label(src, p))
+        for f in self.g.byid[calc].get("ownedFeature", []):
+            if self.g.byid.get(ref(f), {}).get("direction") == "out":
+                self.walk(ref(f) + "_pvalue", node, (calc, None), env)
+
+    def visit_part_attr(self, usage: str, attr: str) -> None:
+        node = ("part", usage, attr)
+        if node in self.visited:
+            return
+        self.visited.add(node)
+        self.nodes.add(node)
+        definition = self.g.parts[usage]
+        self.walk(f"{definition}__{attr}_pvalue", node, (definition, usage), {})
+
+    def walk(self, root: str, into, context, env: dict) -> None:
+        """The reads of the expression under ``root``, attributed to ``into``."""
+        g = self.g
+        if root not in g.byid:
+            return
+        elements = [*g.inside(root), g.byid[root]]
+        invocations = [
+            e["@id"]
+            for e in elements
+            if e["@type"] == "InvocationExpression"
+            and g.byid.get(ref(e.get("function")), {}).get("@type") == "CalculationDefinition"
+        ]
+        outer = [
+            i for i in invocations if not any(i.startswith(j + "_") for j in invocations if j != i)
+        ]
+        for i in outer:
+            self.invoke(i, into, context, env)
+        chains = [e for e in elements if e["@type"] == "FeatureChainExpression"]
+        chain_ids = [e["@id"] for e in chains]
+
+        def under(i: str, roots) -> bool:
+            return any(i.startswith(r + "_") for r in roots)
+
+        for e in chains:
+            i = e["@id"]
+            if under(i, outer) or under(i, [c for c in chain_ids if c != i]):
+                continue
+            text = e.get("sysx:sourceText", "")
+            self.read(self.resolve_chain(text, context), into, self.label(text))
+        for e in elements:
+            if e["@type"] != "FeatureReferenceExpression" or not e.get("referent"):
+                continue
+            i = e["@id"]
+            if under(i, outer) or under(i, chain_ids):
+                continue
+            target = ref(e["referent"])
+            if not target.startswith(g.pre):
+                continue  # a unit or a library function
+            name = short(target)
+            if name in env:
+                if env[name] is not None:
+                    self.read(env[name], into, self.source_label(env[name], name))
+                continue
+            t = g.byid.get(target, {})
+            if t.get("@type") != "AttributeUsage":
+                continue
+            label = f"{context[1]}.{name}" if context and context[1] else name
+            self.read(self.resolve_chain(name, context), into, label)
+
+    # -- resolving a name to its source ------------------------------------------------------------
+    @staticmethod
+    def source_label(src, fallback: str) -> str:
+        """The model's name for a bound source: a calc's name, a part attribute's path, or the
+        measured quantity's name."""
+        if src[0] == "calc":
+            return src[1]
+        if src[0] == "part":
+            return f"{src[1]}.{src[2]}"
+        return fallback
+
+    def label(self, text: str) -> str:
+        """The model's name for a read: the chain without its subject; a Cubesat attribute that
+        only renames a part's attribute (``momentumCapacity = wheel.maxMomentum``) carries it."""
+        names = [t.strip() for t in text.replace(" ", "").split(".") if t.strip()]
+        if names and names[0] in ("c", "cubesat", "self") and len(names) > 1:
+            names = names[1:]
+        if len(names) == 1 and names[0] in self.cubesat_attrs:
+            attr = self.cubesat_attrs[names[0]]
+            if self.g.has_value(attr):
+                body = [*self.g.inside(attr + "_pvalue"), self.g.byid[attr + "_pvalue"]]
+                if not any(e["@type"] == "InvocationExpression" for e in body):
+                    chains = [e for e in body if e["@type"] == "FeatureChainExpression"]
+                    if chains:
+                        return f"{names[0]} ({chains[0]['sysx:sourceText'].strip()})"
+        return ".".join(names)
+
+    def resolve_chain(self, text: str, context):
+        """The source a chain reads: a configuration value, a calc, a computed part attribute, a
+        measured quantity, or None for a constant."""
+        g = self.g
+        names = [
+            t.strip() for t in text.replace(" ", "").replace("::", ".").split(".") if t.strip()
+        ]
+        if not names:
+            return None
+        if names[0] in CONSTANT_PARTS:
+            return None
+        if names[0] == "baselineMeasurement":
+            return ("measured", names[1]) if len(names) > 1 else None
+        if names[0] == "Cubesat" and len(names) > 1:
+            names = names[1:]
+        if names[0] not in g.parts and names[0] not in self.cubesat_attrs:
+            if len(names) > 1 and (names[1] in g.parts or names[1] in self.cubesat_attrs):
+                names = names[1:]
+            elif context is not None and context[1] is not None:
+                names = [context[1], *names]  # a bare attribute inside a part def: its usage
+            else:
+                return None
+        if names[0] in g.parts:
+            if len(names) < 2:
+                return None
+            usage, attr = names[0], names[1]
+            definition = g.parts[usage]
+            feature = f"{definition}__{attr}"
+            if feature not in g.byid:
+                return None
+            if definition in g.swaps:
+                return ("config", short(g.swaps[definition]))
+            bound = f"{g.cubesat}__{usage}__{attr}"
+            if g.redefines.get(bound) == feature and g.has_value(bound):
+                refs = [
+                    short(ref(x["referent"]))
+                    for x in [*g.inside(bound + "_pvalue"), g.byid[bound + "_pvalue"]]
+                    if x["@type"] == "FeatureReferenceExpression" and x.get("referent")
+                ]
+                tunes = [r for r in refs if r in g.root_tunes]
+                return ("config", tunes[0]) if tunes else None
+            if g.is_default(feature):
+                return ("config", attr)
+            if self.is_computed(feature):
+                self.visit_part_attr(usage, attr)
+                return ("part", usage, attr)
+            return None
+        attr = self.cubesat_attrs[names[0]]
+        if names[0] in g.root_tunes:
+            return ("config", names[0])
+        if not g.has_value(attr):
+            return None
+        body = [*g.inside(attr + "_pvalue"), g.byid[attr + "_pvalue"]]
+        for e in body:
+            if (
+                e["@type"] == "InvocationExpression"
+                and g.byid.get(ref(e.get("function")), {}).get("@type") == "CalculationDefinition"
+            ):
+                calc = ref(e["function"])
+                self.visit_calc(calc, {})
+                return ("calc", short(calc))
+        for e in body:
+            if e["@type"] == "FeatureChainExpression":
+                return self.resolve_chain(e.get("sysx:sourceText", ""), None)
+        return None
+
+    def is_computed(self, feature: str) -> bool:
+        """A part-def attribute whose value reads another attribute of the model (not only units
+        and literals) or invokes a calc."""
+        g = self.g
+        for e in [*g.inside(feature + "_pvalue"), g.byid[feature + "_pvalue"]]:
+            fn = g.byid.get(ref(e.get("function")), {}) if e.get("function") else {}
+            if e["@type"] == "InvocationExpression" and fn.get("@type") == "CalculationDefinition":
+                return True
+            if e["@type"] == "FeatureReferenceExpression" and e.get("referent"):
+                t = g.byid.get(ref(e["referent"]), {})
+                owner = ref(t.get("owner"))
+                if t.get("@type") == "AttributeUsage" and owner not in (g.pre + "Environment",):
+                    return True
+        return False
+
+    # -- the design structure matrix ---------------------------------------------------------
+    def node_name(self, node) -> str:
+        if node[0] == "calc":
+            return node[1]
+        if node[0] == "part":
+            return f"{node[1]}.{node[2]}"
+        if node[0] == "measurement":
+            return f"{MEASUREMENT} ({SIMULATOR})"
+        return str(node[1])
+
+    def line(self, node) -> int:
+        g = self.g
+        if node[0] == "calc":
+            return g.byid[g.pre + node[1]].get("sysx:sourceLine", 0)
+        if node[0] == "part":
+            return g.byid[f"{g.parts[node[1]]}__{node[2]}"].get("sysx:sourceLine", 0)
+        return 0
+
+    def dsm(
+        self, configs: list[str], subsystems: list[str], metrics: list[str], structural: dict
+    ) -> dict:
+        """Cells of the design structure matrix and the connectivity test.
+
+        ``structural`` is table 1's structural column, ``{(configuration value, metric): bool}``:
+        the metrics a configuration value reaches are read from it (the calc-level walk), since a
+        subsystem that two configuration values feed does not pass every one of them to every
+        metric it reads off (the gains reach the controls, not the mass accounting).
+        """
+        members = {
+            s: sorted(
+                (n for n in self.nodes if self.subsystem.get(n) == s),
+                key=lambda n: (self.line(n), self.node_name(n)),
+            )
+            for s in subsystems
+        }
+        cells: dict[tuple[str, str], set[str]] = {}
+        read_off_metrics: dict[str, list[str]] = {s: [] for s in subsystems}
+        read_off_reqs: dict[str, set[str]] = {s: set() for s in subsystems}
+        for (src, dst), labels in self.edges.items():
+            s_sub = "controls" if src[0] == "measured" else self.subsystem.get(src)
+            if dst[0] == "metric":
+                if s_sub is not None:
+                    read_off_metrics[s_sub].append(dst[1])
+                continue
+            if dst[0] == "req":
+                if s_sub is not None:
+                    read_off_reqs[s_sub].add(dst[1])
+                continue
+            d_sub = self.subsystem.get(dst)
+            if src[0] == "config":
+                cells.setdefault((src[1], d_sub), set()).update(labels)
+            elif s_sub is not None and d_sub is not None and s_sub != d_sub:
+                cells.setdefault((s_sub, d_sub), set()).update(labels)
+        for s in subsystems:
+            read_off_metrics[s] = [m for m in metrics if m in read_off_metrics[s]]
+        # connectivity over configuration values, subsystems and metrics
+        succ: dict[str, set[str]] = {}
+        for (a, b), labels in cells.items():
+            if labels:
+                succ.setdefault(a, set()).add(b)
+        for s in subsystems:
+            for m in read_off_metrics[s]:
+                succ.setdefault(s, set()).add(m)
+        nodes = [*configs, *subsystems, *metrics]
+
+        feeds = {c: [s for s in subsystems if cells.get((c, s))] for c in configs}
+        reached = {c: [m for m in metrics if structural.get((c, m))] for c in configs}
+        undirected: dict[str, set[str]] = {n: set() for n in nodes}
+        for a, bs in succ.items():
+            for b in bs:
+                undirected[a].add(b)
+                undirected[b].add(a)
+        seen, stack = {nodes[0]}, [nodes[0]]
+        while stack:
+            x = stack.pop()
+            for y in undirected[x]:
+                if y not in seen:
+                    seen.add(y)
+                    stack.append(y)
+        n_edges = sum(len(v) for v in succ.values())
+        return {
+            "subsystems": subsystems,
+            "members": {s: [self.node_name(n) for n in members[s]] for s in subsystems},
+            "cells": {k: sorted(v) for k, v in cells.items()},
+            "metrics_read_off": read_off_metrics,
+            "requirements_read_off": {s: sorted(v) for s, v in read_off_reqs.items()},
+            "feeds": feeds,
+            "reached": reached,
+            "unreached_metrics": [m for m in metrics if not any(m in r for r in reached.values())],
+            "unfed": [c for c in configs if not feeds[c]],
+            "connected": seen == set(nodes),
+            "n_nodes": len(nodes),
+            "n_edges": n_edges,
+        }
+
+
+def coupling(graph: ModelGraph, metrics: list[Metric], elements, structural: dict) -> dict:
+    """The design structure matrix of the model, with the CaseSpec's subsystem order."""
+    sys.path.insert(0, str(HERE.parent))
+    import case
+
+    spec = case.CUBESAT
+    order = list(spec.subsystem_order)
+    if set(order) != set(SUBSYSTEM_OF):
+        raise ValueError(f"the subsystems {sorted(SUBSYSTEM_OF)} are not the CaseSpec's {order}")
+    c = Coupling(graph, metrics)
+    out = c.dsm([e for e, _ in elements], order, [m.name for m in metrics], structural)
+    # the subsystem each metric is read off agrees with the CaseSpec's placement of the metric
+    by_name = {spec.short[a]: spec.subsystems[a] for a in spec.attributes}
+    for s in order:
+        for m in out["metrics_read_off"][s]:
+            if by_name.get(m, s) != s:
+                raise ValueError(f"{m} is read off {s} but the CaseSpec places it in {by_name[m]}")
+    return out
+
+
+# =================================================================================================
 # The tables
 # =================================================================================================
 def build(model_path: pathlib.Path, with_empirical: bool = True) -> dict:
@@ -565,6 +1058,12 @@ def build(model_path: pathlib.Path, with_empirical: bool = True) -> dict:
         "metrics": metrics,
         "rows": rows,
         "table2": table2,
+        "coupling": coupling(
+            graph,
+            metrics,
+            elements,
+            {(r["decision_element"], r["metric"]): r["structural"] for r in rows},
+        ),
         "empirical_note": note,
         "measurement_inputs": graph.measurement_inputs(),
     }
@@ -651,8 +1150,78 @@ def render_md(result: dict) -> str:
             f"| {t['metric']} | {t['mark']} | {t['element']} ({t['kind']}) | {t['requirement']} | "
             f"{t['how']} | {t['verified_in']} |"
         )
-    out.append("")
+    out += ["", *render_coupling_md(result["coupling"], result["elements"]), ""]
     return "\n".join(out)
+
+
+def render_coupling_md(c: dict, elements) -> list[str]:
+    """The design structure matrix: rows feed columns."""
+    subs = c["subsystems"]
+    head = ["## Coupling between subsystems (a design structure matrix)", ""]
+    head += [
+        "Rows feed columns, in the form of the design structure matrix of the MDAO literature (an "
+        "XDSM without its process line). A configuration row names the configuration attributes "
+        "the column subsystem's calcs read, as the model names them; a subsystem row names the "
+        "coupling variables the column subsystem reads from it; the diagonal names the subsystem's "
+        "own calcs (the measurement is the simulator); the last two columns name the traded "
+        "metrics and the requirements read off each subsystem. The subsystems are the three of the "
+        "behavioural view; which calc belongs to which is the analyst's decomposition "
+        "(`SUBSYSTEM_OF` in `coverage.py`); every cell is read from the model. The constants of "
+        "the environment, the scenario, the budgets and the fixed parts (bus, antenna, IMU) are "
+        "not shown.",
+        "",
+        "| feeds &rarr; | " + " | ".join(subs) + " | metrics read off | requirements read off |",
+        "|---|" + "---|" * (len(subs) + 2),
+    ]
+    rows = []
+    for element, kind in elements:
+        cells = [", ".join(c["cells"].get((element, s), [])) or "&nbsp;" for s in subs]
+        rows.append(f"| {element} ({kind}) | " + " | ".join(cells) + " | &nbsp; | &nbsp; |")
+    for s in subs:
+        cells = []
+        for s2 in subs:
+            if s2 == s:
+                cells.append("*" + ", ".join(c["members"][s]) + "*")
+            else:
+                cells.append(", ".join(c["cells"].get((s, s2), [])) or "&nbsp;")
+        rows.append(
+            f"| **{s}** | "
+            + " | ".join(cells)
+            + f" | {', '.join(c['metrics_read_off'][s]) or '&nbsp;'}"
+            + f" | {', '.join(c['requirements_read_off'][s]) or '&nbsp;'} |"
+        )
+    n_metrics = sum(len(c["metrics_read_off"][s]) for s in subs)
+    feeds = "; ".join(
+        f"{e} feeds {', '.join(c['feeds'][e])} and reaches {len(c['reached'][e])} of "
+        f"{n_metrics} metrics"
+        for e, _ in elements
+    )
+    tail = [
+        "",
+        "Connectivity: "
+        + (
+            "every configuration value feeds at least one subsystem"
+            if not c["unfed"]
+            else "configuration values feeding no subsystem: " + ", ".join(c["unfed"])
+        )
+        + " and reaches at least one traded metric by the structural column of the first table ("
+        + feeds
+        + "); "
+        + (
+            "every traded metric is read off a subsystem"
+            if not c["unreached_metrics"]
+            else "metrics no configuration value reaches: " + ", ".join(c["unreached_metrics"])
+        )
+        + "; the graph of configuration values, subsystems and metrics "
+        + ("is connected" if c["connected"] else "is NOT connected")
+        + f" ({c['n_nodes']} nodes, {c['n_edges']} edges).",
+        "",
+        "The controls and the power subsystem feed each other (cells on both sides of the "
+        "diagonal): the usable wheel torque is a quantity of the configuration, computed before "
+        "the slew, and the peak torque and the integral of the squared torque are read after it, "
+        "so the model resolves the loop in one pass, with no fixed-point iteration.",
+    ]
+    return head + rows + tail
 
 
 def render_csv(result: dict) -> str:
@@ -698,6 +1267,31 @@ def render_csv(result: dict) -> str:
                 t["verified_in"],
             ]
         )
+    c = result["coupling"]
+    w.writerow(["table", "from", "to", "variables"])
+    for element, _ in result["elements"]:
+        for s in c["subsystems"]:
+            if c["cells"].get((element, s)):
+                w.writerow(["coupling", element, s, "; ".join(c["cells"][(element, s)])])
+    for s in c["subsystems"]:
+        w.writerow(["coupling", s, s, "; ".join(c["members"][s])])
+        for s2 in c["subsystems"]:
+            if s2 != s and c["cells"].get((s, s2)):
+                w.writerow(["coupling", s, s2, "; ".join(c["cells"][(s, s2)])])
+        w.writerow(["coupling", s, "metrics read off", "; ".join(c["metrics_read_off"][s])])
+        w.writerow(
+            ["coupling", s, "requirements read off", "; ".join(c["requirements_read_off"][s])]
+        )
+    w.writerow(
+        [
+            "coupling",
+            "connectivity",
+            "connected" if c["connected"] else "not connected",
+            f"{c['n_nodes']} nodes; {c['n_edges']} edges; "
+            f"unfed: {'; '.join(c['unfed']) or 'none'}; "
+            f"unreached: {'; '.join(c['unreached_metrics']) or 'none'}",
+        ]
+    )
     return buf.getvalue()
 
 

@@ -35,3 +35,23 @@ Simulator inputs stated on the measurement: structureMass, bus.bodyLength, bus.b
 | eclipse reserve | MoP | EclipseReserve (calc) | EclipseReserveRequirement | invokes EclipseReserve | SlewVerification |
 | peak slew power | MoP | PeakSlewPower (calc) | PeakSlewPowerRequirement | invokes PeakSlewPower | SlewVerification |
 | depth of discharge | MoP | DepthOfDischarge (calc) | DepthOfDischargeRequirement | invokes DepthOfDischarge | SlewVerification |
+
+## Coupling between subsystems (a design structure matrix)
+
+Rows feed columns, in the form of the design structure matrix of the MDAO literature (an XDSM without its process line). A configuration row names the configuration attributes the column subsystem's calcs read, as the model names them; a subsystem row names the coupling variables the column subsystem reads from it; the diagonal names the subsystem's own calcs (the measurement is the simulator); the last two columns name the traded metrics and the requirements read off each subsystem. The subsystems are the three of the behavioural view; which calc belongs to which is the analyst's decomposition (`SUBSYSTEM_OF` in `coverage.py`); every cell is read from the model. The constants of the environment, the scenario, the budgets and the fixed parts (bus, antenna, IMU) are not shown.
+
+| feeds &rarr; | controls | power and energy | mass | metrics read off | requirements read off |
+|---|---|---|---|---|---|
+| WheelClass (swap) | momentumCapacity (wheel.maxMomentum) | wheel.maxTorque | wheel.mass | &nbsp; | &nbsp; |
+| TrackerGrade (swap) | tracker.accuracy | tracker.power | tracker.mass | &nbsp; | &nbsp; |
+| panelSpan (tune) | panelPlus.span | panelMinus.span, panelPlus.span | panelPlus.span | &nbsp; | &nbsp; |
+| batteryCapacity (tune) | &nbsp; | battery.capacity | &nbsp; | &nbsp; | &nbsp; |
+| Kp (tune) | controller.Kp | &nbsp; | &nbsp; | &nbsp; | &nbsp; |
+| Kd (tune) | controller.Kd | &nbsp; | &nbsp; | &nbsp; | &nbsp; |
+| **controls** | *SlewMeasurement (adcs_sim.simulate_adcs), GravityGradientTorque, PointingError* | peakTorque, torqueSquaredIntegral | &nbsp; | settling time, pointing error, control effort | ControlEffortRequirement, MomentumRequirement, PointingErrorRequirement, SettledRequirement |
+| **power and energy** | panelPlus.mass, usableWheelTorque | *panelMinus.area, panelPlus.area, panelMinus.mass, panelPlus.mass, battery.mass, GeneratedPower, BaseLoad, AvailablePower, UsableWheelTorque, SlewLossEnergy, EclipseDemand, DepthOfDischarge, EclipseReserve, OrbitPeriod, EnergyBalance, PeakSlewPower, PowerMargin* | battery.mass, panelMinus.mass, panelPlus.mass | power margin, energy balance, eclipse reserve, peak slew power, depth of discharge | DepthOfDischargeRequirement, EclipseReserveRequirement, EnergyBalanceRequirement, PeakSlewPowerRequirement, PowerMarginRequirement, PowerRequirement |
+| **mass** | InertiaX, InertiaY, InertiaZ, structureMass | &nbsp; | *MassAccounting, StructureMass, LaunchCost, InertiaX, InertiaY, InertiaZ* | total mass | LaunchBudgetRequirement |
+
+Connectivity: every configuration value feeds at least one subsystem and reaches at least one traded metric by the structural column of the first table (WheelClass feeds controls, power and energy, mass and reaches 9 of 9 metrics; TrackerGrade feeds controls, power and energy, mass and reaches 9 of 9 metrics; panelSpan feeds controls, power and energy, mass and reaches 9 of 9 metrics; batteryCapacity feeds power and energy and reaches 9 of 9 metrics; Kp feeds controls and reaches 8 of 9 metrics; Kd feeds controls and reaches 7 of 9 metrics); every traded metric is read off a subsystem; the graph of configuration values, subsystems and metrics is connected (18 nodes, 25 edges).
+
+The controls and the power subsystem feed each other (cells on both sides of the diagonal): the usable wheel torque is a quantity of the configuration, computed before the slew, and the peak torque and the integral of the squared torque are read after it, so the model resolves the loop in one pass, with no fixed-point iteration.

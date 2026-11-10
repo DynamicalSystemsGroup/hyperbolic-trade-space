@@ -3,11 +3,13 @@
 ``examples/adcs/model_v2/coverage.py`` writes ``views/coverage.md`` and ``views/coverage.csv`` from
 the model (default ``cubesat_r2.sysml`` until the data gate). Checked here: every decision element
 of the assembly view (two swaps, four tunes) has a non-empty row (R-1); every traded metric has a
-requirement that reads its quantity and is marked MoE or MoP (R-2); the committed table equals a
-fresh generation and three runs are byte-identical (R-10). The structural checks run on every test
-run; the empirical column needs the slews, so the full regeneration is a ``slow`` test. Fixtures
-FAIL
-by name, never skip, when the opensysml client cannot start.
+requirement that reads its quantity and is marked MoE or MoP (R-2); the coupling graph (the design
+structure matrix of the third table) is connected, every configuration value feeds a subsystem and
+every metric is read off one, and the coupling variables between the subsystems are the model's
+named quantities (G1, G3; the supervisor's connected-graph reading, ``WP23-decisions.md``); the
+committed table equals a fresh generation and three runs are byte-identical (R-10). The structural
+checks run on every test run; the empirical column needs the slews, so the full regeneration is a
+``slow`` test. Fixtures FAIL by name, never skip, when the opensysml client cannot start.
 """
 
 from __future__ import annotations
@@ -57,15 +59,27 @@ def structural(coverage):
         pytest.fail(f"the opensysml client could not start: {exc}", pytrace=False)
 
 
+METRICS_HEADER = "table,metric,mark,element,kind,requirement,how,verified_in\n"
+COUPLING_HEADER = "table,from,to,variables\n"
+
+
 def _committed_rows() -> tuple[list[dict], list[dict]]:
-    """The committed CSV's two tables as lists of dicts."""
+    """The committed CSV's first two tables as lists of dicts."""
     text = (VIEWS / "coverage.csv").read_text()
-    blocks = text.split("table,metric,mark,element,kind,requirement,how,verified_in\n")
-    assert len(blocks) == 2, "the CSV has the two tables"
+    blocks = text.split(METRICS_HEADER)
+    assert len(blocks) == 2, "the CSV has the metrics table once"
     one = list(csv.DictReader(io.StringIO(blocks[0])))
-    header = "table,metric,mark,element,kind,requirement,how,verified_in\n"
-    two = list(csv.DictReader(io.StringIO(header + blocks[1])))
+    rest = blocks[1].split(COUPLING_HEADER)
+    assert len(rest) == 2, "the CSV has the coupling table once"
+    two = list(csv.DictReader(io.StringIO(METRICS_HEADER + rest[0])))
     return one, [{k: v for k, v in t.items() if k != "table"} for t in two]
+
+
+def _committed_coupling() -> list[dict]:
+    """The committed CSV's third table (the design structure matrix) as a list of dicts."""
+    text = (VIEWS / "coverage.csv").read_text()
+    block = text.split(COUPLING_HEADER)[1]
+    return list(csv.DictReader(io.StringIO(COUPLING_HEADER + block)))
 
 
 # ---------------------------------------------------------------------------------------------
@@ -150,6 +164,75 @@ def test_every_traded_metric_has_a_requirement_that_reads_it_and_a_mark(structur
     assert marks["pointing error"] == "MoE" and marks["total mass"] == "MoP"
     total = next(t for t in structural["table2"] if t["metric"] == "total mass")
     assert total["requirement"] == "LaunchBudgetRequirement" and "LaunchCost" in total["how"]
+
+
+# ---------------------------------------------------------------------------------------------
+# G1, G3: the coupling graph (configuration values -> subsystems -> metrics) is connected
+# ---------------------------------------------------------------------------------------------
+SUBSYSTEMS = ["controls", "power and energy", "mass"]
+# The coupling variables between the subsystems, as the model names them (WP23-review.md,
+# "Round 2"): a change in the model that adds or removes one is seen here by name.
+EXPECTED_COUPLING = {
+    ("controls", "power and energy"): ["peakTorque", "torqueSquaredIntegral"],
+    ("power and energy", "controls"): ["panelPlus.mass", "usableWheelTorque"],
+    ("power and energy", "mass"): ["battery.mass", "panelMinus.mass", "panelPlus.mass"],
+    ("mass", "controls"): ["InertiaX", "InertiaY", "InertiaZ", "structureMass"],
+}
+
+
+def test_every_configuration_value_feeds_a_subsystem_and_the_graph_is_connected(structural):
+    """The supervisor's test (WP23-decisions.md, 22:15): a connected graph, not all-to-all. Every
+    configuration value feeds at least one subsystem's calcs and reaches at least one traded
+    metric; every traded metric is read off a subsystem; the graph is connected."""
+    c = structural["coupling"]
+    assert c["subsystems"] == SUBSYSTEMS
+    assert c["unfed"] == [] and c["unreached_metrics"] == []
+    assert c["connected"]
+    for element in SWAPS | TUNES:
+        assert c["feeds"][element], f"{element} feeds no subsystem"
+        assert c["reached"][element], f"{element} reaches no traded metric"
+    # the battery feeds the power subsystem alone; the gains feed the controls alone
+    assert c["feeds"]["batteryCapacity"] == ["power and energy"]
+    assert c["feeds"]["Kp"] == c["feeds"]["Kd"] == ["controls"]
+
+
+def test_every_traded_metric_is_read_off_one_subsystem(structural):
+    c = structural["coupling"]
+    read_off = [m for s in SUBSYSTEMS for m in c["metrics_read_off"][s]]
+    assert sorted(read_off) == sorted(METRICS)
+    assert c["metrics_read_off"]["mass"] == ["total mass"]
+    assert c["metrics_read_off"]["controls"] == [
+        "settling time",
+        "pointing error",
+        "control effort",
+    ]
+
+
+def test_coupling_variables_between_subsystems_are_the_models_named_quantities(structural):
+    """The cells off the diagonal name the quantities one subsystem reads from another, as the
+    model names them; the configuration rows name the configuration attributes each subsystem
+    reads (a tune reaches a subsystem through the part attribute bound to it)."""
+    c = structural["coupling"]
+    off_diagonal = {k: v for k, v in c["cells"].items() if k[0] in SUBSYSTEMS}
+    assert off_diagonal == EXPECTED_COUPLING
+    assert c["cells"][("batteryCapacity", "power and energy")] == ["battery.capacity"]
+    assert c["cells"][("WheelClass", "mass")] == ["wheel.mass"]
+    assert c["cells"][("TrackerGrade", "controls")] == ["tracker.accuracy"]
+    assert c["cells"][("panelSpan", "mass")] == ["panelPlus.span"]  # the inertia's geometry
+
+
+def test_every_requirement_is_read_off_a_subsystem(structural):
+    c = structural["coupling"]
+    reqs = sorted(r for s in SUBSYSTEMS for r in c["requirements_read_off"][s])
+    assert len(reqs) == len(set(reqs)) and len(reqs) >= 11
+    assert {t["requirement"] for t in structural["table2"]} <= set(reqs)
+
+
+def test_committed_coupling_table_equals_a_fresh_generation(coverage, structural):
+    rows = _committed_coupling()
+    fresh = coverage.render_csv(structural).split(COUPLING_HEADER)[1]
+    assert rows == list(csv.DictReader(io.StringIO(COUPLING_HEADER + fresh)))
+    assert rows[-1]["to"] == "connected"
 
 
 # ---------------------------------------------------------------------------------------------
