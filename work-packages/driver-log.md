@@ -295,6 +295,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   Passes as a candidate. The staged site is rebuilding at 628df90 for the driver's browser pass; Linux dispatched;
   the watcher's run follows.
 
+- **Browser pass of the staged paper at 628df90 (2026-11-10, 04:50; the driver, localhost:8000/paper/).** The page
+  renders; no "Warning", "Traceback" or stderr text anywhere on it (counts 0, 0); ten captions (Table 1 and
+  Figures 1 to 9) in the new numbering, Figure 5 the one-term plane in total mass and energy balance with its
+  caption stating that the other seven metrics are held at the near-frontier median; Section 9 opens with the
+  5-lemma sentence on the data of record (total mass, energy balance, pointing error, depth of discharge and
+  settling time, exponents 0.14 to 0.36); the abstract is the rested one. One defect found by Linux, not by the
+  page: the WP17 R-2 cubesat recording is the old data's (routed). The desktop width is the one that matters; not
+  checked at phone width by design.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
