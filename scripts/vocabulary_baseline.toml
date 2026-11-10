@@ -6,13 +6,6 @@
 [[violation]]
 kind = "avoid"
 file = "glossary.yaml"
-phrase = "fitted surface"
-owner = "PM (glossary)"
-reason = "SYNONYM of fitted reference surface: the glossary entry's own wording uses the synonym; the glossary owner amends the entry text (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "glossary.yaml"
 phrase = "working temperature"
 owner = "PM (glossary)"
 reason = "SYNONYM of fit temperature: the glossary entry's own wording uses the synonym; the glossary owner amends the entry text (WP10 re-triage 2026-11-09)"

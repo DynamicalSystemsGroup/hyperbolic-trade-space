@@ -1015,11 +1015,11 @@ def test_L14_verifies_at_symbolic_d_nk_K_with_declared_axioms():
     assert ctx["L14"]["nk"].is_integer and not ctx["L14"]["nk"].is_number
 
 
-def test_L14_statement_scopes_level_three_to_step_b_unpenalized_support_offsets():
+def test_L14_statement_scopes_level_three_to_step_b_unpenalized_reaches():
     _, mods = _run_wp13(12, 13, 14)
     s = mods[14].STATEMENT
     assert "Level 3" in s and "step B" in s and "unpenalized" in s
-    assert "beta_k = J_tau(U w_k)" in s and "support offsets" in s
+    assert "beta_k = J_tau(U w_k)" in s and "reaches beta_k" in s
     assert "n_k (beta_k - w_k.ubar_k)" in s
     assert "F(W') - F(W) = sum_k (n_k/N) (f_k(w'_k) - f_k(w_k)) >= 0" in s
     assert "F(W) - F*_fixed" in s and "sum_k (n_k/N) G_k" in s

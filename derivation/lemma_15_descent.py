@@ -1,6 +1,6 @@
 """L15 (Level 1) - descent: one accepted iteration of the unpenalized step B does not raise F.
 
-Setting.  As in L14: K facets with exponents w_k on the simplex, offsets beta_k = J_tau(U w_k),
+Setting.  As in L14: K facets with exponents w_k on the simplex, reaches beta_k = J_tau(U w_k),
 cells C_1..C_K a partition of the N rows (the membership family chi of A8), slack of row i on facet
 k s_ki = beta_k - w_k.u_i, and the mean slack F(W) = (1/N) sum_i s_{k(i) i}.  One iteration is
 (i) reassign every row to its maximizing facet, which is the facet of least slack, then (ii) refit
@@ -21,8 +21,8 @@ What this proves (symbolic K, N; plain SymPy):
      sequence of accepted iterates is non-increasing in F.
 
 What this does NOT prove: that F converges, that the limit is a local or global minimizer, or any
-statement for the penalized objective or the tangent refit (step D), where the offsets are not
-beta_k = J_tau(U w_k) or the refit is not an exact facet minimizer; that every cell stays nonempty
+statement for the penalized objective or the tangent refit (step D), where beta_k is not the reach
+J_tau(U w_k) or the refit is not an exact facet minimizer; that every cell stays nonempty
 after reassignment (A8 requires it: an iteration that empties a facet is not an accepted one).
 """
 

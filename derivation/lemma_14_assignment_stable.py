@@ -1,7 +1,7 @@
 """L14 (Proposition 3 and Corollary 4) - assignment-stable local optimality, step B.
 
 Setting.  K facets with exponents w_k on the simplex, cells C_1..C_K a partition of the N rows,
-n_k = |C_k|, offsets beta_k = J_tau(U w_k) (the support offset), mean slack
+n_k = |C_k|, reaches beta_k = J_tau(U w_k), mean slack
 F(W) = (1/N) sum_i (beta_k(i) - w_k(i).u_i) for the unpenalized step-B objective.  f_k(w) =
 J_tau(U w) - ubar_k.w (ubar_k the mean of the rows of C_k) is the facet refit of L12.
 
@@ -14,7 +14,7 @@ What this proves (symbolic d, n_k, K; plain SymPy):
      is the declared relation A8 (a membership family chi_ki with sum_k chi_ki = 1, n_k = sum_i
      chi_ki >= 1), applied by import; the swap of the row and cell sums is Fubini (L3's
      ``sum_swap_equal``) and the cell sum is n_k f_k(w_k).  With share_k = n_k/N it gives
-     F(W) = sum_k share_k f_k(w_k), and beta_k = J_tau(U w_k) is the support offset itself.
+     F(W) = sum_k share_k f_k(w_k), and beta_k = J_tau(U w_k) is the reach itself.
   3. The full objective (1/N) sum_i min_k (beta_k - w_k.u_i) equals the fixed-assignment
      expression on the assignment-stable neighborhood: R2 (positive margin) and L13 keep k(i)
      the unique maximizing facet of every row, so the max score of row i is its score on k(i)
@@ -30,7 +30,7 @@ What this proves (symbolic d, n_k, K; plain SymPy):
      nonnegative terms share_k (G_k - (f_k - f_k*)).
 
 What this does NOT prove: global optimality or global convergence of the multi-facet problem; any
-statement for the tangent refit (step D), the sparsity penalty or freely varying offsets, where
+statement for the tangent refit (step D), the sparsity penalty or a freely varying beta_k, where
 hypothesis beta_k = J_tau(U w_k) or exact facet optimality fails; that R2 holds for a given fit
 (a ridge row or duplicate facets make it fail).
 """
@@ -46,7 +46,7 @@ from derivation.sumtools import fuse, linear, push_in, sum_swap_equal
 
 TITLE = "assignment-stable local optimality of the multi-facet fit (Proposition 3, Corollary 4)"
 STATEMENT = (
-    "Level 3 is for step B, unpenalized, with support offsets beta_k = J_tau(U w_k) only. "
+    "Level 3 is for step B, unpenalized, with reaches beta_k = J_tau(U w_k) only. "
     "Per facet, sum_{i in C_k} (beta_k - w_k.u_i) = n_k (beta_k - w_k.ubar_k) = n_k f_k(w_k), "
     "n_k = |C_k|, so "
     "the mean slack is F(W) = sum_k (n_k/N) f_k(w_k). Proposition 3: if the margin is positive "
