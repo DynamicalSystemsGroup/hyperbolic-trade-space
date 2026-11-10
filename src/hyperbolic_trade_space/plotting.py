@@ -12,7 +12,10 @@ Visual vocabulary (module constants, shared by every function)
 * **Holes** (white space found by ``hyperbolic_trade_space.gaps``): red (``HOLE_COLOR``).
 * **Targets** (frontier points to aim for): open markers (no fill, black edge).
 * **Data and categories**: the first colour of one qualitative, colour-blind-safe palette
-  (``CATEGORY_COLORS``) for plain data, successive colours for categories.
+  (``CATEGORY_COLORS``) for plain data, successive colours for categories. The designs are one
+  colour by default whatever the number of facets: the facets are pieces of the fitted surface
+  and are drawn as such. ``color="facet"`` colours the designs by the facet whose term scores
+  each highest (``facet_labels``), an analysis of the fit and not its structure.
 * **Ternary plot** (``plot_ternary``): the shares of a total among three metrics (or three groups
   of metrics) as a triangle; a facet's exponent vector is a marker (its own shape, numbered), the
   regions are tinted by the facet that dominates, and the facets use the palette's colours.
@@ -109,8 +112,24 @@ def _category_legend(ax, cats_pal):
 
 
 def facet_labels(estimator, X):
-    """Facet of each row of ``X`` as ``"facet 1" .. "facet K"``, for ``color=`` (``K > 1``)."""
+    """Facet of each row of ``X`` as ``"facet 1" .. "facet K"``, for ``color=``.
+
+    The label is the facet whose term scores the row highest (``assign_facets``): an analysis of
+    the fit. It is what ``color="facet"`` draws.
+    """
     return np.array([f"facet {k + 1}" for k in estimator.assign_facets(X)])
+
+
+def _facet_option(estimator, X, color):
+    """``color`` as the plots take it: ``"facet"`` becomes the facet labels; other strings raise."""
+    if isinstance(color, str):
+        if color != "facet":
+            raise ValueError(
+                "color accepts an array of categories, one per design, or the string 'facet' "
+                "(the facet whose term scores each design highest)"
+            )
+        return facet_labels(estimator, X)
+    return color
 
 
 def _fitted_chart(estimator, d_required=None):
@@ -131,9 +150,12 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None):
         Fitted on two metrics.
     X : array-like of shape (n_samples, 2)
         Positive metrics to scatter (typically the training data).
-    color : array-like of shape (n_samples,), default=None
-        Optional categories, coloured from ``CATEGORY_COLORS``. For ``n_terms > 1`` the default
-        (or ``"facet"``) colours by facet, legend ``facet 1 .. facet K``.
+    color : array-like of shape (n_samples,) or "facet", default=None
+        By default the designs are one colour (``DATA_COLOR``) for any number of terms; the
+        facets are the pieces of the black line. An array of categories colours the designs
+        from ``CATEGORY_COLORS`` with a legend. ``"facet"`` colours each design by the facet
+        whose term scores it highest (``facet_labels``), legend ``facet 1 .. facet K``: an
+        analysis of the fit (the assignment), not a part of the model.
     band : float, default=None
         Band width in ``log V``; default ``1/tau`` (``0.1`` at ``tau = inf``). For ``n_terms > 1``
         the black line is the envelope ``Phi_K = 0`` (the hard maximum of the facet lines) and the
@@ -162,8 +184,7 @@ def plot_log_plane(estimator, X, color=None, band=None, ax=None):
     if np.any(X <= 0):
         raise ValueError("plot_log_plane needs strictly positive metrics")
     u = np.log(X)
-    if len(W) > 1 and (color is None or isinstance(color, str)):
-        color = facet_labels(estimator, X)
+    color = _facet_option(estimator, X, color)
     b = _band(estimator, band)
     ax = _axes(ax)
     if len(W) > 1:
@@ -856,7 +877,15 @@ def ternary_marker_values(estimator, X, names=None):
 
 
 def plot_ternary(
-    estimator, X=None, names=None, groups=None, lines=False, near=0.2, ax=None, scheme="auto"
+    estimator,
+    X=None,
+    names=None,
+    groups=None,
+    lines=False,
+    near=0.2,
+    ax=None,
+    scheme="auto",
+    color=None,
 ):
     """Shares of a total among three metrics, as a triangle: where the facets dominate and peak.
 
@@ -874,7 +903,7 @@ def plot_ternary(
     X : array-like of shape (n_samples, 3), default=None
         The table of strictly positive metrics (the fitted table). When given, the triangle is
         tinted by region, each region is named in words read from the exponents, and the designs
-        are drawn: those within ``near`` of the frontier in their facet's colour, the rest grey.
+        are drawn as points in one neutral colour, those within ``near`` of the frontier larger.
         Without it only the exponent markers are drawn.
     names : sequence of str, default=None
         One name per metric of the estimator: the corners (``d = 3``) or the members of
@@ -889,12 +918,16 @@ def plot_ternary(
         the exponent markers. The shares are then plain shares of the total; without ``lines``
         they are spread by a power so that the designs fill the triangle.
     near : float, default=0.2
-        Designs with ``|log V| < near`` are drawn in their facet's colour.
+        Designs with ``|log V| < near`` are drawn larger and opaque; the rest small and faint.
     ax : matplotlib.axes.Axes, default=None
         Axes to draw in; a new figure is made when ``None``. The axes are switched off and given
         equal aspect.
     scheme : {"auto", "light", "dark"}, default="auto"
         The ink and tints. ``"auto"`` follows the label colour of the active Matplotlib style.
+    color : {None, "facet"}, default=None
+        ``None`` draws every design in the scheme's neutral colour. ``"facet"`` colours the
+        near-frontier designs by the facet whose term scores each highest (``assign_facets``):
+        an analysis of the fit, not a part of the model, which the tints and markers draw.
 
     Returns
     -------
@@ -934,6 +967,9 @@ def plot_ternary(
         raise ValueError("groups= draws the exponent markers only; omit X and lines")
     if lines and X is None:
         raise ValueError("lines= needs the table X")
+    by_facet = isinstance(color, str) and color == "facet"
+    if color is not None and not by_facet:
+        raise ValueError("color is None (one neutral colour) or 'facet' (the assigned facet)")
     sch = _TERN_SCHEMES[_ternary_scheme(scheme)]
     ink = sch["ink"]
     col = _ternary_colours(Wt)
@@ -984,13 +1020,13 @@ def plot_ternary(
             linewidths=0,
             zorder=2,
         )
-        for k in range(K):
-            mk = near_mask & (facet == k)
+        near_groups = [(near_mask & (facet == k), col[k]) for k in range(K)]
+        for mk, c in near_groups if by_facet else [(near_mask, sch["dots"])]:
             ax.scatter(
                 px[mk],
                 py[mk],
                 s=30,
-                color=col[k],
+                color=c,
                 linewidths=0.6,
                 edgecolors=sch["plate"],
                 zorder=3,

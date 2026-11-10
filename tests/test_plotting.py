@@ -149,7 +149,25 @@ def _texts(ax):
     return " ".join(out).lower()
 
 
-def test_log_plane_k3_draws_envelope_and_facet_legend():
+def _scatters(ax):
+    """The scatter collections (the designs); not the band's filled polygon or a contour set."""
+    from matplotlib.collections import PathCollection
+
+    return [c for c in ax.collections if isinstance(c, PathCollection)]
+
+
+def _design_colours(ax):
+    """Distinct face colours of the designs, as hex."""
+    return {
+        matplotlib.colors.to_hex(c)
+        for coll in _scatters(ax)
+        for c in np.atleast_2d(coll.get_facecolor())
+    }
+
+
+def test_log_plane_k3_draws_envelope_and_designs_in_one_colour_by_default():
+    # WP19-decisions.md (the principle check): the default is one colour with the facet lines
+    # drawn as the model; colouring designs by facet is the cluster idiom and an explicit option.
     X, hts = _k3(2)
     ax = P.plot_log_plane(hts, X)
     g, y = ax.lines[0].get_data()
@@ -158,11 +176,26 @@ def test_log_plane_k3_draws_envelope_and_facet_legend():
     phi = np.max(np.outer(g, W[:, 0]) + np.outer(y, W[:, 1]) - b, axis=1)
     assert matplotlib.colors.to_hex(P.FRONTIER_COLOR) in colors_of(ax)
     assert np.all(phi[np.isfinite(phi)] <= 1e-9) and np.isfinite(y).all() and len(u) == 300
+    assert _design_colours(ax) == {matplotlib.colors.to_hex(P.DATA_COLOR)}
+    labels = [t.get_text() for t in ax.get_legend().get_texts()]
+    assert "facet" not in " ".join(labels).lower()
+    assert any("frontier" in lab for lab in labels) and any("band" in lab for lab in labels)
+    assert "red" not in _texts(ax)
+
+
+def test_log_plane_colour_by_facet_is_an_explicit_option():
+    X, hts = _k3(2)
+    ax = P.plot_log_plane(hts, X, color="facet")
     labels = [t.get_text() for t in ax.get_legend().get_texts()]
     # platform drift may relabel or empty a facet (WP9 post-review fix 2): test the set only
     assert set(labels) <= {f"facet {k + 1}" for k in range(3)} and len(labels) >= 2
-    assert "red" not in _texts(ax)
-    assert P.plot_log_plane(hts, X, color="facet").get_legend() is not None
+    assert len(_design_colours(ax)) == len(labels)
+    assert matplotlib.colors.to_hex(P.FRONTIER_COLOR) in colors_of(ax)  # the model is still drawn
+    X1, _ = make_frontier_data(80, 2, random_state=0)
+    ax1 = P.plot_log_plane(HyperbolicTradeSpace().fit(X1), X1, color="facet")
+    assert [t.get_text() for t in ax1.get_legend().get_texts()] == ["facet 1"]
+    with pytest.raises(ValueError, match="facet"):
+        P.plot_log_plane(hts, X, color="red")
 
 
 def test_surface_k3_and_coordinates_facet_colouring():
@@ -198,6 +231,8 @@ def test_log_plane_k1_unchanged_by_the_envelope_rule():
     X, _ = make_frontier_data(80, 2, random_state=0)
     ax = P.plot_log_plane(HyperbolicTradeSpace().fit(X), X)
     assert len(ax.lines) == 1 and ax.get_legend() is not None
+    assert "facet" not in _texts(ax)
+    assert _design_colours(ax) == {matplotlib.colors.to_hex(P.DATA_COLOR)}
 
 
 def test_tension_annotations_contrast_with_their_cell():
@@ -234,6 +269,35 @@ def planted3():
 def _by_gid(ax, prefix):
     found = ax.findobj(lambda a: re.fullmatch(prefix + r"\d+", a.get_gid() or "") is not None)
     return {int(a.get_gid().rsplit("-", 1)[1]): a for a in found}
+
+
+def test_ternary_designs_are_one_neutral_colour_by_default_and_by_facet_on_request(planted3):
+    # WP19-decisions.md, docs Figure 8: the supervisor's "Recolour". The designs go to one neutral
+    # colour; the region tints and the numbered markers are unchanged; colouring the near-frontier
+    # designs by their assigned facet is analysis, kept as the explicit option ``color="facet"``.
+    import inspect
+
+    X, ts = planted3
+    assert inspect.signature(P.plot_ternary).parameters["color"].default is None
+    dots = matplotlib.colors.to_hex(P._TERN_SCHEMES["light"]["dots"])
+    facet_cols = {matplotlib.colors.to_hex(c) for c in P._ternary_colours(ts.exponents_).values()}
+    plain = P.plot_ternary(ts, X, scheme="light")  # with X and no lines: the designs only
+    assert _design_colours(plain) == {dots}
+    n_near = int((np.abs(ts.score_samples(X)) < 0.2).sum())
+    assert 0 < n_near < len(X)
+    sizes = {float(np.unique(c.get_sizes())[0]) for c in _scatters(plain)}
+    assert len(sizes) == 2  # the near-frontier designs are still set apart by size, not colour
+    by_facet = P.plot_ternary(ts, X, scheme="light", color="facet")
+    assert _design_colours(by_facet) - {dots} <= facet_cols
+    assert len(_design_colours(by_facet) - {dots}) >= 2
+    for ax in (plain, by_facet):  # the region tints are the same picture either way
+        assert len(ax.images) == 1
+    assert np.array_equal(plain.images[0].get_array(), by_facet.images[0].get_array())
+    with pytest.raises(ValueError, match="facet"):
+        P.plot_ternary(ts, X, color="red")
+    lined = P.plot_ternary(ts, X, lines=True, scheme="light")
+    stars = _by_gid(lined, "ternary-star-")
+    assert {matplotlib.colors.to_hex(s.get_facecolor()[0]) for s in stars.values()} == facet_cols
 
 
 @pytest.mark.slow
