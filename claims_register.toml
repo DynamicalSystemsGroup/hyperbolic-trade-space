@@ -2126,7 +2126,7 @@ note = "Fit of the frontier model (exponents, offset) pinned by recovery/invaria
 
 [[claim]]
 id = "C164"
-fragment = "It then tells you which metrics contend, at what exchange"
+fragment = "It then tells you which metrics contend, with what"
 file = "docs/index.md"
 anchor = ""
 kind = "S"
@@ -2138,7 +2138,7 @@ note = "Contending set recovers planted support; elasticities R[j,k] = -w_k/w_j 
 
 [[claim]]
 id = "C165"
-fragment = "rate, where each design sits relative to the fitted reference surface"
+fragment = "elasticity, where each design sits relative to the fitted reference surface"
 file = "docs/index.md"
 anchor = ""
 kind = "S"
@@ -2234,7 +2234,7 @@ note = "set recovered from the data (tau=inf LP) without being supplied"
 
 [[claim]]
 id = "C173"
-fragment = "fitted weights at the working temperature; their ratios are the elasticities between the contending"
+fragment = "fitted weights at the fit temperature; their ratios are the elasticities between the contending"
 file = "docs/getting-started.md"
 anchor = ""
 kind = "M"
@@ -2318,7 +2318,7 @@ note = "helmert basis is (d-1,d) for d 2..8; d=1 handled; arbitrary d shown over
 
 [[claim]]
 id = "C180"
-fragment = "[`frontier_in_original_units`](user-guide/conditioning.md), a function: the fitted surface as a"
+fragment = "[`frontier_in_original_units`](user-guide/conditioning.md), a function: the fitted reference surface as a"
 file = "docs/api.md"
 anchor = ""
 kind = "S"
@@ -2594,7 +2594,7 @@ note = "L1.7 log V = w.u - beta, so V<1 / V>1 are the sides of the surface; V-1 
 
 [[claim]]
 id = "C203"
-fragment = "the level surface is flat in log space, so moving along it trades"
+fragment = "The surface $w\\cdot u=\\beta$ is flat in log space, so moving along it trades"
 file = "docs/theory.md"
 anchor = ""
 kind = "M"
@@ -2954,7 +2954,7 @@ note = "Test pins log m = (o log(X+shift) - offset)/scale; the log-affine family
 
 [[claim]]
 id = "C233"
-fragment = "`frontier_in_original_units`, which reports the fitted surface back in the units you started with."
+fragment = "`frontier_in_original_units`, which reports the fitted reference surface back in the units you started with."
 file = "docs/user-guide/conditioning.md"
 anchor = ""
 kind = "S"
@@ -4346,7 +4346,7 @@ note = "Glossary: contending set = support of the exponents at infinite temperat
 
 [[claim]]
 id = "C349"
-fragment = "0, and graded participation at a working temperature."
+fragment = "0, and graded participation at a fit temperature."
 file = "docs/user-guide/limitations.md"
 anchor = ""
 kind = "M"
