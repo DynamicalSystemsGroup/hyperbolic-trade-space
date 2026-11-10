@@ -186,6 +186,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP28 scope approved (2026-11-10, 18:55; start 1277210).** The subtraction pass (step 5a) starts now rather than
+  after WP11's round 3: its re-test is round 3 (OD1 (b)); appendices judged by their depth's job, Appendix F out
+  (OD2 (b)); a figure that serves no sentence of the story goes (OD3 (a)); the supervisor's fixed figures are rows
+  for him, never cut here (OD4 (b)); ceilings drop with the cuts (OD5 (a)); the cut list is gated by the driver
+  before any cut lands (OD6 (a)); the key at version 4. Recorded verbatim in WP28-decisions.md.
+
 - **PM6's batch 2 (2026-11-10, 17:10; dev at 64c66b3).** OD2: the PM's call stands and WP25-3 is accepted
   (WP25-decisions.md). CR-15 (the fit without membership against the sharp fit of record): option (i) as the
   truthful statement, and the sentence is amended to say it, no change of record: the sharp fit's labels are the
@@ -461,6 +467,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-10 | commit de3ce61, tier 2 watcher, this Mac (after the how-to fix; WP25-3's first deletion) | 2197 passed, 16 skipped, 1 xfailed; all checks; attribution 0 under the whole-word pattern | a verdict: the Mac is green again after the one defect; the watcher continues on the later heads |
 | 2026-11-10 | commit acb8c45, this Mac and the driver's own editor tab (WP26 and WP27 acceptance reviews) | 46 model, pointer and coverage tests passed; verify 0 drifts; coverage byte-identical; verdict tests 2 passed (47 verdicts, negative control); editor: 75,542 characters sha afeaebf9b100, Issues (0), stakeholders view 54 nodes / 26 edges, matrix 34 requirements, 3 configurations, 6 negated | a verdict: both reviews' readings reproduced; WP26 accepted on G-4 and G-5 landing, WP27 on G-1 to G-3 and the elision (dispositions in the decision files); screenshots WP27-review/driver-check-*.jpg |
 | 2026-11-10 | commit 44cb75e, tier 2 watcher, this Mac; then 05f8a2a, this Mac (the WP26 and WP27 acceptance fixes) | the watcher: 1 failed, tests/test_claims_register.py::test_the_register_holds (DCR-3's glossary rewording moved 13 pinned rows), fixed by the docs stream at 37b1339; at 05f8a2a the model, pointer, coverage and claims tests 67 passed; every gap fix present (read) | a verdict: WP26 and WP27 accepted (decision files); the register defect was caught by the watcher and fixed in the same batch; Linux dispatched on 05f8a2a |
+| 2026-11-10 | commit d427011, CI run on ubuntu, three shards (WP26 and WP27 fixes, the docs DCRs, the register re-pin, the paper's CR units) | fast, slow and docs-paper all green | a verdict: the batch is green on Linux; the watcher green on 05f8a2a (2200 passed) |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
