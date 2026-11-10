@@ -172,6 +172,17 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   WP22b gap visible; earns its place in Section 8; the "same statement as SlewBandRequirement" note is cryptic (two
   readers and the driver agree) and is his to word. All three placed as candidates for his review and revise loop.
 
+- **Disk use (2026-11-09, 21:50; the supervisor: "one thing i noticed is that we're eating up a lot of space. are
+  we cleaning up environments/images or are they proliferating").** Found: 45 git worktrees under the scratchpad
+  (27 GB, most from finished streams), 17 untagged ~2 GB Docker images left by our rebuilds of hts-paper, hts-alt
+  and earlier hts images, 26.7 GB of Docker build cache, an 18 GB uv cache. Done by the driver: 34 worktrees
+  removed (older than 40 minutes, clean, fully merged into origin/dev); the six live ones kept (27 GB to 4.2 GB).
+  Rule given to the PM for PM-BRIEF: a worktree is removed as soon as its unit is pushed; one image per stream,
+  the previous image id removed when hts-paper or hts-alt is rebuilt; no venv in a worktree that runs no tests.
+  Docker image removal and the two cache prunes: the supervisor approved "Both" (build cache and uv cache); the
+  driver's Docker removals were blocked by its permission classifier as irreversible deletions, so the exact
+  commands were handed to him to run.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
