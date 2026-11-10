@@ -2240,7 +2240,8 @@ def test_cr2_the_planted_recovery_is_in_section_9_with_its_table_in_d14():
     assert "A known answer" in sentence and "in 16, at the exact maximum" in sentence
     assert "frontier rows on their thinnest facet" in sentence and "Appendix D.14" in sentence
     ids = [c.id for c in _nb(PAPER_NB).cells]
-    assert ids.index("sec-case-analysis") < ids.index("num-recovery") < ids.index("fig-plane-k1")
+    figure = ids.index("fig-planes-k1-caption")  # Figure 2, a static directive (WP19 P-5 revised)
+    assert ids.index("sec-case-analysis") < ids.index("num-recovery") < figure
     cell = _cell_out(SUPPORT_NB, "tab-D-planted_recovery")
     _current(cell, str(generate_results.planted_recovery()), "planted_recovery")
     assert re.search(r"\| infinity \| 20 \| 16 of 20 \| 1, 3, 8, 16 \|", cell)
