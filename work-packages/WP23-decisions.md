@@ -333,3 +333,14 @@ configuration (0.0155 against 0.0085 degree). Options: keep / 0.0136 / 0.0118. *
 verbatim:** "Keep 0.0085 deg". Disposition: the model keeps it; the case prose and the model's doc say the
 baseline configuration fails the pointing-error requirement; the baseline regime's pass fraction (63.7 %) is
 stated with it.
+
+## The close-out scope approved; OD10 (2026-11-10, 09:50; the driver)
+
+`WP23-closeout-scope-of-work.md` (bcc7d26). **OD10, which conditioning the constrained-against-unconstrained table
+uses:** (a). Comparing fits across design sets requires the same coordinates, so the feasible set's conditioning
+is applied to every set; spike A's constrained rows are recomputed under it, the comparison lists the differences
+from the spike's own-rows numbers, and the Discussion candidate follows the recomputed table (if the constrained
+set's contending set then stands, the sentence says so; a sentence is not kept because a spike's artefact made it
+striking). Spike A's report stays as the research record with its conditioning rule stated and spike B's caution
+beside it. No second column. **Approved for execution by the driver under the mandate**; the Agent's defaults as
+one item; the container regression and the Linux dispatch are the driver's at the gate.

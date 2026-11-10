@@ -239,3 +239,9 @@ candidate Discussion sentences (D-18, D-19); the proposals' feasibility under "W
 `driver-log.md`, applied here as the driver's call of 08:45 (keep them as check designs, say it plainly, training on
 fully feasible rows as future work); his review of the redundancy calls (A1, B1) at his review, as the 08:20 record
 says.
+
+## Gate outcomes
+
+- 2026-11-10, 09:50: approved for execution by the driver under the mandate; OD10 resolved as (a), the feasible
+  set's conditioning applied to every set, in `WP23-decisions.md`; the Agent's defaults accepted as one item.
+
