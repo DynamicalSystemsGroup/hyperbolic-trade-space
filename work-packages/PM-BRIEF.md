@@ -298,3 +298,11 @@ fresh PM is handed over from the files before performance drops, on the same han
 morning's. For the driver the same rules, and a periodic check of the PM's turnaround and concurrency
 as the signal.
 
+## Repository tidiness (the supervisor's standing direction, 2026-11-09)
+
+The repository state is the present; the history is git's job. At each gate of the path and once before the PR, the
+PM scopes a small tidiness instance (WP25-decisions.md, "Origin") for the driver's approval: cruft deleted (spike
+folders whose result is recorded, raw reader reports after triage, superseded reports, retired scripts, outputs
+nothing reads), the records of the gates kept; drift closed between docs, glossary and code; gaps listed. Every
+stream also leaves no scratch behind in the tree when its unit lands.
+
