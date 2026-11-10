@@ -82,6 +82,42 @@ or that the case validates the method on hardware.
   offset" the term and "energy differential" the analogy named once. The driver's recommendation:
   the first, since the term carries his reading of V as a potential and the gloss can be one clause.
 
+## Round 1b (re-test of the abstract, depth A, after CR-1 landed at 60b1576; staged build 7f162c6)
+
+Four readers (P1 decision maker, P3 systems engineer, P5 ML practitioner, P6 sceptical neighbour),
+abstract only, cold, reports in the driver's scratchpad (`readers/round1b/P{1,3,5,6}-A.md`).
+
+- Gone: the surface read as a regression (0 of 4; all four now state it is not a regression and
+  not the Pareto boundary). The elasticity reading is correct in all four and every reader
+  would read on. No reader believes the method picks a design.
+- Still wrong (W4 of the key): 4 of 4 read the method as an alternative to PCA ("a cleaner
+  alternative to PCA", "replacing PCA-style summaries", "as an alternative to PCA" twice). The
+  key says kin and chained, not a substitute. The current wording that produces it is the
+  opening contrast ("explains variance, not trade-offs. We explain tensions.") followed by
+  "mirrors the structure of PCA", which says kin but not chained; CR-1's "kin and chained" clause
+  did not land.
+- Not stated: the finding. The closing clause "a single facet gives one tension, several separate
+  sets" was named as confusing by 3 of 4 ("the ending told me little"). CR-1 asked for the finding
+  in the case sentence; it landed too compressed to be read.
+- Confusing in 4 of 4: "the table and its reading are views" (the supervisor's reading; needs its
+  object, a model, named) and "energy differential" (CR-5, with the supervisor).
+- Asked for by P5 and P6: what "soft supporting envelope" is mathematically. No change: the
+  abstract carries the words and Definition 1 the mathematics; a depth-C re-test will say
+  whether the definition answers it.
+
+Change request CR-1b (paper stream; the supervisor's sentences kept, the smallest edit to each):
+
+- The PCA sentence says chained as well as kin: "Our implementation mirrors the structure of
+  PCA as an unsupervised learning method for feature engineering, and the two chain." (his earlier
+  wording "the two chain", which the main-results list already carries as item 5).
+- "the table and its reading are views" names its object: "the table and its reading are views
+  of that model."
+- The case sentence carries the finding in the main-results list's own words, which Section 9
+  backs: "On a cubesat model coupling power, mass and attitude control, one facet blends the
+  subsystems' trade-offs into a single tension; three facets separate the contending sets."
+- Re-test at depth A (the same four personas) once it lands; the depth-B re-test runs now on the
+  current build, since CR-2 has landed (main results in the glossary's words; item 5, PCA chained).
+
 ## Next
 
 Re-test the L-A and L-B cells after CR-1 to CR-3 land; then the L-C and L-D cells (main text; with
