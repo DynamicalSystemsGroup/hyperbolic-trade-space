@@ -1882,6 +1882,23 @@ Docs (`docs/examples.md`): eight attributes; the "No metric twice" bullet; the n
 metrics, seven position coordinates); the ternary limit (an eight-metric case). The figures rebuild
 from the data.
 
+Added after the acceptance review (its G-2 and O-5; the fix-forward): `fig-planes-k1-caption`,
+`fig-planes-k1-lines` and `fig-planes-k3-caption` ("the other seven metrics" to six: a plane shows two
+of the eight) and `fig-chart-level-caption` ("the first of eight position coordinates" to seven: d
+metrics give d − 1 position coordinates), markdown only, for the reserve's removal; `tab-E-gaps` (its
+rows G-2 and G-17 read the eight-metric data: "eight-metric data", "eight fitted attributes", "659 of
+706 on eight attributes", "74 of 685 quantities" not identical at the printed precision, counted from
+`sensitivity.json` by `sensitivity._fmt`'s rule, the same rule that gives 80 of 693 on the gate's
+file; M3 and M5 re-measured: the stock regime's K = 3 conditioning 9.28, 0.214, 10.1 to 9.32, 0.228,
+10.2, and at τ/2 and 2τ the stock fit keeps six participants, not seven and six; the primary's numbers
+unchanged), from `docs/superpowers/notes/abstraction-gaps.md`; `tab-C-metric_associations`,
+`tab-D-exponents_and_terms`, `tab-D-regime_comparison` (the association sentence names the regimes as
+the paper does, "primary regime", "stock regime", not the dataset labels; the driver's decision on
+O-5). Those four output cells were re-executed on the host and spliced; every other cell of
+`supporting_material.ipynb` is byte-equal. Docs: the regimes "primary | stock" in both generated
+blocks and "the primary regime's table (aggressive controller gains)" in the opening paragraph, for
+the same decision.
+
 ### 5. What the regeneration is not
 
 No change to `src/`, `derivation/`, the frozen `examples/adcs/data/*.csv` or the v1 model. The
@@ -1910,3 +1927,37 @@ swaps power margin for energy balance (Spearman 0.988 over the feasible designs)
 regime, and the three-term fit of the constrained set is what moves (the peak-slew/pointing term
 covers it). The Discussion's candidate follows this table, not the spike's: the requirements cut
 designs (19 of 56 and 43 of 77 near-frontier designs), not what the frontier trades.
+
+**Added after the acceptance review (its G-3).** The rest of what differs from spike A, each with
+spike A's value, the recomputed value (`case.design_sets_table`, `case.design_sets_placement` at
+ebd7dfe's data) and the cause.
+
+| item | spike A | close-out | cause |
+|---|---|---|---|
+| stock, requirements met, three-term fit (term: two largest exponents; share) | energy balance 0.36, control effort 0.28 (0.63) / control effort 0.44, settling time 0.30 (0.00) / total mass 0.27, pointing error 0.21 (0.38) | control effort 0.293, energy balance 0.272 (0.60) / control effort 0.461, settling time 0.300 (0.00) / peak slew power 0.356, total mass 0.216 (0.40) | the conditioning rule (OD10 (a)); the third term gains peak slew power ahead of total mass |
+| placement, "all designs" column | read on U9 (nine metrics, positivity only): baseline configuration −0.46 primary, −0.07 stock; fast_effort_hungry −0.20, −0.14; precise_heavy_sensor −0.15, +0.02; light_slow −0.18, −0.34 | read on U8 (all 1000 designs, eight metrics) in the feasible set's conditioning: −0.499, −0.075; −0.166, −0.125; −0.125, +0.031; −0.147, −0.356 | the set (U9 against U8: the reserve left the metrics) and the conditioning rule |
+| placement, "requirements met" column | baseline configuration −0.93 primary (rank 0.00), −0.26 stock (0.27); fast_effort_hungry −1.42 (0.00), −0.40 (0.10); precise_heavy_sensor −1.06 (0.00), −0.31 (0.20); light_slow −0.07 (0.65), −0.24 (0.32) | −0.566 (share below 0.01), −0.030 (0.80); −0.257 (0.22), −0.196 (0.38); −0.191 (0.36), −0.131 (0.51); −0.227 (0.27), −0.420 (0.15) | the conditioning rule: spike A re-conditioned the 288 and 302 rows, so the large-wheel candidates fell outside the constrained set's range ("seven times further off"); in the feasible set's conditioning in the primary regime they sit 0.04 to 0.06 below their feasible-fit level |
+| placement, the proposals | "not placeable" (a nine-metric fit's conditioning refuses a non-positive reserve) | placed in every column: primary −0.543 / −0.570 / −0.591 (proposals 1 and 3), −0.630 / −0.660 / −0.688 (proposal 2); stock −1.034 / −1.146 / −1.503, −0.843 / −0.956 / −1.362; flagged as failing the flags (`dod_ok`) | the eight metrics (the reserve left), so the conditioning accepts them |
+
+The "feasible" column equals spike A's F column at its printed digits for every design (for example
+the baseline configuration −0.52 and −0.06; spike A printed K = 1 / K = 3, the table prints K = 1
+with the band count and the share below). The reading above stands: in one conditioning the
+requirements-met fit places the candidates near where the feasible fit does, and spike A's
+extrapolation remark (rank 0.00 for the large wheels) was the re-conditioning.
+
+### 7. Two notes from the acceptance review (G-4, O-1)
+
+**R-17's grep (G-4).** `experiments/compare.py` keeps `eclipse_reserve_wh` in `ORIENTATION` and
+`POWER` on purpose: the v1-v2 report reads the frozen v1 frames, which carry the column; a comment at
+the lists now says so. `experiments/cubesat_oracle.py`'s docstring names the reserve only to say the
+oracle's output leaves it out (lines 25 to 27), which is the data of record; the file is hashed by
+the ledger (`code` of the v2 entries), so it changes only with a regeneration and is left as is.
+
+**The pointing-error pass share (O-1).** 95.0 % (D.17, the docs page) is exact for the model's limit:
+671 of the 706 feasible primary designs have a pointing error at or below 0.008495 degree (95.04 %).
+94.9 % (the model's doc in `cubesat.sysml`, `case-model.md`, `WP23-decisions.md`) is the share at the
+ladder's unrounded 95th percentile, 0.0084945 degree (linear interpolation), which admits 670 (94.90 %):
+one design, at 0.00849489 degree, lies between the percentile and the rounded limit. The generated
+tables keep the exact share; `cubesat.sysml` is ledger-hashed and not changed here, and
+`case-model.md` is outside this unit's files: making them print 95.0 % is a later edit (the model's
+doc at its next regeneration).

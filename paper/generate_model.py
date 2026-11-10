@@ -285,24 +285,26 @@ def _associations(regime):
 
 
 def _one_axis_sentence() -> str:
-    """The association step's outcome in one sentence, from the data (C.5, D.3, D.4)."""
+    """The association step's outcome in one sentence, from the data (C.5, D.3, D.4).
+
+    Each regime is named as the paper names it in prose ("primary regime", "stock regime"), not by
+    its dataset label.
+    """
     named = {r: case.one_axis_pairs(_associations(r)) for r in case.CUBESAT.regimes}
     strongest = {r: _associations(r).iloc[0] for r in case.CUBESAT.regimes}
     tops = "; ".join(
-        f"Dataset {DATASET_LABELS[r]}: {s['metric a']} and {s['metric b']}, {s['spearman']:+.3f}"
+        f"{r} regime, {s['metric a']} and {s['metric b']}, {s['spearman']:+.3f}"
         for r, s in strongest.items()
     )
     if not any(named.values()):
         return (
             f"No pair of traded metrics reaches |Spearman| {case.ONE_AXIS:g} over the feasible "
             f"designs, so no pair is read as one axis and every exponent is read on its own; the "
-            f"strongest pair, {tops}. A pair at or above {case.ONE_AXIS:g} would be named one axis "
+            f"strongest pair: {tops}. A pair at or above {case.ONE_AXIS:g} would be named one axis "
             "and its two exponents read summed per term."
         )
     pairs = "; ".join(
-        f"Dataset {DATASET_LABELS[r]}: " + ", ".join(f"{a} and {b}" for a, b in p)
-        for r, p in named.items()
-        if p
+        f"{r} regime: " + ", ".join(f"{a} and {b}" for a, b in p) for r, p in named.items() if p
     )
     return (
         f"Pairs at |Spearman| {case.ONE_AXIS:g} or above, read as one axis with their two "

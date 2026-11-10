@@ -257,6 +257,8 @@ def frozen_consumers(root: Path) -> dict[str, list[str]]:
 
 
 # -- the richness conditions (WP4b R-13 (a) to (e), R-14) ----------------------------------------
+# eclipse_reserve_wh stays in ORIENTATION and POWER: the frozen v1 frames this report reads carry it
+# (the data of record has eight metrics without it, WP23 close-out).
 ORIENTATION = {
     "settling_time_s": -1,
     "pointing_error_deg": -1,

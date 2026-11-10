@@ -678,7 +678,7 @@ def _docs_block(first_line):
     return text[start : text.index("```", start)].rstrip("\n")
 
 
-DOCS_LABELS = {"primary": "aggressive", "stock": "stock"}
+DOCS_LABELS = {"primary": "primary", "stock": "stock"}  # the regimes as the paper names them
 
 
 def test_the_docs_requirements_block_is_the_case_modules():

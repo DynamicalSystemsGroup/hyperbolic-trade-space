@@ -8,7 +8,7 @@ control effort, power margin, energy balance, peak slew power, depth of discharg
 mass. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`.
 In this design loop the simulation measures the attributes, and a fielded system's measured attributes would enter the same table and the same fit.
 
-The aggressive-gains table has 706 feasible designs. With the fit temperature chosen by `select_temperature` for a tenth of the
+The primary regime's table (aggressive controller gains) has 706 feasible designs. With the fit temperature chosen by `select_temperature` for a tenth of the
 designs above V = 1:
 
 - **One term.** The tension report finds a contending set (metrics that trade off) of five metrics (total mass, energy balance,
@@ -69,7 +69,7 @@ the near-frontier designs it excludes and a price at the one-term frontier, in b
 ```text
 # case.requirements_summary()
 requirement      pass             near excluded   price, bands
-(aggressive | stock)
+(primary | stock)
 peak slew power  62.2 | 67.3 %    0/56 | 2/77     0 | 0
 pointing error   95.0 | 63.7 %    1/56 | 42/77    0.07 | 0.56
 control effort   58.9 | 90.0 %    18/56 | 1/77    0 | 7.92
@@ -81,11 +81,11 @@ Refitted on three design sets in one conditioning, the one-term contending set b
 
 ```text
 # case.design_sets_summary()
-aggressive, all designs (1000): total mass, energy balance, pointing
-  error, depth of discharge, settling time
-aggressive, feasible (706): total mass, energy balance, pointing error,
+primary, all designs (1000): total mass, energy balance, pointing error,
   depth of discharge, settling time
-aggressive, requirements met (288): total mass, energy balance, pointing
+primary, feasible (706): total mass, energy balance, pointing error,
+  depth of discharge, settling time
+primary, requirements met (288): total mass, energy balance, pointing
   error, depth of discharge, settling time
 stock, all designs (1000): control effort, settling time, power margin,
   pointing error, total mass

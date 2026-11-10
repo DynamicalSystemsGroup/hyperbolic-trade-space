@@ -255,13 +255,12 @@ The three hand-written candidates are identical in both generations by construct
 | `tests/test_legacy_oracle.py` | adcs_designs.csv |
 | `tests/test_mutation_v2.py` | adcs_designs_cubesat_gains.csv |
 
-**Records and documentation that cite them** (37)
+**Records and documentation that cite them** (36)
 
 | file | frozen files named |
 |---|---|
 | `docs/superpowers/notes/abstraction-gaps.md` | adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv |
 | `docs/superpowers/notes/adcs-tensions-probe.md` | adcs_designs.csv, adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv |
-| `docs/superpowers/notes/k3-cubesat.md` | adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv |
 | `docs/superpowers/notes/system-model-tidy.md` | adcs_designs.csv, adcs_designs_cubesat.csv, adcs_designs_cubesat_gains.csv, check_designs_cubesat.csv, check_predictions_cubesat.csv |
 | `docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md` | adcs_designs.csv |
 | `work-packages/WP10-claims-review.md` | adcs_designs_cubesat_gains.csv |
