@@ -753,6 +753,49 @@ experiment's outputs (`SlewExperiment`), where it finds nothing (`test_r2_slew_t
 measurement_and_the_requirements`), and not over section 4. The PM has recorded this reading for the
 driver.
 
+## REACH: the rule and the value (the data gate, 2026-11-10)
+
+The gate's first regeneration stopped in `check_designs.Proposer.draw`: on the settling-time
+four-metric view (D-3 replaced `slew_time_s` by `settling_time_s` in `check_designs.METRICS`) no
+hole among the 300 most isolated has a seeded configuration predicted within REACH = 0.35, the
+constant WP7 typed for the slew-time view (67eea92, `make_check_designs.py`, "predicted
+[Z | 2 log V] distance within which a hole counts as reachable"; WP7's scope, review and decisions
+state no rule for it). The same holds on the old primary data with the new view (the nearest pool
+design is at 0.481 there, 0.484 on the regenerated data), so the view change moved the numbers,
+not the regeneration. The driver's decision (`WP23-decisions.md`, "The proposer's reach on the
+settling-time view"): the reach is set by a stated rule, a quantile of the pool's nearest predicted
+distances to the holes the method reads, checked on the old view; never by the number that makes
+the method produce three proposals.
+
+**The rule.** A hole counts as reachable when a seeded configuration is predicted within the reach
+of it; the reach admits the nearest few per cent of the isolated holes. The reach is the 2nd
+percentile (`REACH_QUANTILE = 0.02`) of the nearest predicted `[Z | 2 log V]` distances from the
+seeded pool (100,000 designs, seed 20261108) to the 300 most isolated holes of the view in use
+(`HOLES = 300`, the holes the method reads), computed from the data at run time (so the value of
+record is the container's own, not a number typed from this Mac).
+
+**The check on the old slew-time view** (old primary data, the committed `@4` proposals' view, on
+this Mac): the nearest predicted distances of the 300 holes have minimum 0.161, 10th percentile
+0.444 and median 0.644; six holes lie within 0.35; the 2nd percentile is **0.351**, and the three
+separated holes it admits are at 0.348, 0.340 and 0.327, the committed proposals' distances
+(0.3478, 0.3399, 0.3265). The 1st percentile returns 0.340 (three holes, one at 0.161), the 3rd
+0.362, the 5th 0.388. So the 2nd percentile is the rule WP7 used in effect, and 0.35 was not
+arbitrary with respect to it.
+
+**The value on the settling-time view** (regenerated primary data, this Mac; the run of record's
+own value is in `WP23-rounds/gate/README.md`): the 300 nearest distances have minimum 0.484, 10th
+percentile 0.717 and median 0.867; the 2nd percentile is **0.622**, and it admits three separated
+holes at 0.587, 0.579 and 0.555 (hole scores 4.85, 4.85, 4.83). The 1st percentile (0.579) would
+admit two. On both views the proposals sit close to the reach: the holes the method reads are the
+most isolated, and the nearest reachable ones are, by the rule, a few per cent of them.
+
+**In the code.** `check_designs.py` carries `REACH_QUANTILE` and `HOLES` with the rule in one
+comment; the proposer returns the reachable, separated holes it finds, up to the count asked, and
+prints the reach and the count (fewer than asked is a result, not a failure; the paper's check
+sentence reads the count from the file). `make_check_designs.py`, the frozen generation's script,
+is unchanged (its 0.35 produced the frozen file). Scripts of the derivation above:
+`reach_probe.py`, `reach_dist.py`, `reach_rule.py` in the session scratch, not committed.
+
 ## Glossary entries (unit 3): drafted, held
 
 Three entries were drafted for `glossary.yaml` in the file's own style (`moe`, `mop`, `launch-cost`;

@@ -15,8 +15,9 @@ The flow mirrors ``make_check_designs.py`` (WP7), as two ledgered experiments:
     with the ``v2`` cubesat oracle and lays the columns out as the frozen check-design file.
 
 Only the estimator names pinned by the WP14 contract are used. The ranges, enumerations and
-scenario come from the model through ``CubesatOracle``; the method parameters (pool size, reach,
-hole finder settings) are the frozen script's and sit in this file.
+scenario come from the model through ``CubesatOracle``; the method parameters (pool size, hole
+finder settings) are the frozen script's and sit in this file; the reach is set by the rule stated
+at WP23's data gate (``REACH_QUANTILE``, below), where the frozen script typed a constant.
 """
 
 from __future__ import annotations
@@ -30,7 +31,15 @@ from . import ledger as lg
 from .cubesat_oracle import ATTRIBUTE_NAMES, CONFIG_NAMES, SCENARIO_COLUMNS, build, build_sampler
 
 POOL = 100_000
-REACH = 0.35  # predicted [Z | 2 log V] distance within which a hole counts as reachable
+# The reach: a hole counts as reachable when a seeded configuration is predicted within it, in
+# [Z | 2 log V] distance. WP7 typed 0.35 for the slew-time view with no stated rule; the rule stated
+# at WP23's data gate (WP23-decisions.md, "The proposer's reach on the settling-time view") is the
+# 2nd percentile of the nearest predicted distances from the pool to the HOLES most isolated holes
+# of the view in use, computed from the data at run time (on the slew-time view it returns 0.351,
+# the value WP7 used in effect). The proposer returns the reachable, separated holes it finds, up
+# to the count asked, and prints how many: fewer is a result, not a failure.
+REACH_QUANTILE = 0.02
+HOLES = 300  # the most isolated holes the proposer reads
 METRICS = ("settling_time_s", "pointing_error_deg", "control_effort", "total_mass_kg")
 LEAD = ("role", "design_id", "name", "seed", *CONFIG_NAMES, *ATTRIBUTE_NAMES)
 FLAGS = ("settled", "momentum_ok", "power_ok", "dod_ok", "torque_saturated_frac")
@@ -117,9 +126,9 @@ class Proposer:
         Z_data = chart[:, :-1]
         holes, scores = find_holes(Z_data, resolution=30, threshold=2.0)
 
-        # Holes are candidates, not verdicts: take the most isolated (up to 300) whose best
-        # configuration in the seeded pool is predicted within REACH of (Z_hole, 0), then n of them
-        # separated by 1.5 median nearest-neighbour distances.
+        # Holes are candidates, not verdicts: take the most isolated (up to HOLES) whose best
+        # configuration in the seeded pool is predicted within the reach of (Z_hole, 0), then n of
+        # them separated by 1.5 median nearest-neighbour distances.
         nn = cKDTree(Z_data).query(Z_data, k=2)[0][:, 1]
         sep = 1.5 * float(np.median(nn))
         rng = np.random.default_rng(int(seed))
@@ -135,20 +144,26 @@ class Proposer:
         )
         Zp, lvp = reg.predict_coordinates(_features(pool, ranges, levels))
         lvp = np.ravel(lvp)
-        chosen, best_i, best_d, chosen_scores = [], [], [], []
-        for h, sc in zip(holes[:300], scores[:300], strict=False):
+        nearest = []  # per isolated hole: the index of the nearest pool design and its distance
+        for h in holes[:HOLES]:
             dist = np.sqrt(((Zp - h) ** 2).sum(axis=1) + (2 * lvp) ** 2)
             i = int(np.argmin(dist))
-            if dist[i] > REACH or any(np.linalg.norm(h - c) <= sep for c in chosen):
+            nearest.append((i, float(dist[i])))
+        reach = float(np.quantile([d for _, d in nearest], REACH_QUANTILE))
+        chosen, best_i, best_d, chosen_scores = [], [], [], []
+        for h, sc, (i, d) in zip(holes[:HOLES], scores[:HOLES], nearest, strict=True):
+            if d > reach or any(np.linalg.norm(h - c) <= sep for c in chosen):
                 continue
             chosen.append(h)
             best_i.append(i)
-            best_d.append(float(dist[i]))
+            best_d.append(d)
             chosen_scores.append(float(sc))
             if len(chosen) == n:
                 break
-        if len(chosen) < n:
-            raise RuntimeError(f"fewer than {n} reachable, separated holes; raise REACH")
+        print(
+            f"reach {reach:.4f} (quantile {REACH_QUANTILE} of the nearest predicted distances of"
+            f" the {len(nearest)} most isolated holes); {len(chosen)} of {n} proposals"
+        )
 
         rows = []
         for k, h in enumerate(chosen):
