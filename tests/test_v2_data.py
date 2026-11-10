@@ -34,7 +34,6 @@ FROZEN = ADCS / "data"
 V2 = FROZEN / "v2"
 LEDGER = ADCS / "experiments" / "ledger" / "ledger.jsonl"
 REGISTER = ADCS / "experiments" / "reports" / cmp.REGISTER
-REPORT = ADCS / "experiments" / "reports" / cmp.REPORT
 # the commit from which the frozen CSVs must be unchanged (the WP15 scope's start)
 START = "fc2363e"
 ROWS = {
@@ -380,8 +379,11 @@ def test_the_report_has_every_section_and_includes_the_register_verbatim(tmp_pat
     assert "`tests/test_cubesat_model.py`" in report  # a frozen consumer, found by grep
 
 
-def test_the_committed_report_exists_and_includes_the_register():
-    report = REPORT.read_text()
+def test_the_regenerated_report_includes_the_register(tmp_path):
+    # The report is not committed (WP25 instance 3, OD2): the generator regenerates it on demand.
+    out = tmp_path / "report.md"
+    assert cmp.main(["--root", str(ROOT), "--out", str(out)]) == 0
+    report = out.read_text()
     assert REGISTER.read_text().rstrip() in report
     assert "## Exclusion by the solver" in report
 
