@@ -2,34 +2,33 @@
 
 ## A cubesat trade study across power, mass and attitude control
 
-The worked case is a cubesat model coupling power, mass and attitude control: bus, antenna, inertial unit,
-controller, wheel and tracker alternatives, solar panel and battery. Eight attributes are compared under two controller-gain settings: settling time, pointing error,
-control effort, power margin, energy balance, peak slew power, depth of discharge and total
-mass. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`.
-In this design loop the simulation measures the attributes, and a fielded system's measured attributes would enter the same table and the same fit.
+The worked case is a cubesat model coupling power, mass and attitude control. Eight attributes are
+compared under two controller-gain settings: settling time, pointing error, control effort, power margin, energy balance, peak slew power, depth of discharge and total
+mass. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`. In this
+design loop a simulation measures the attributes; a fielded system's measured attributes would enter
+the same table and fit.
 
-The primary regime's table (aggressive controller gains) has 706 feasible designs. With the fit temperature chosen by `select_temperature` for a tenth of the
-designs above V = 1:
+The primary regime's table (aggressive controller gains) has 706 feasible designs. With the fit temperature chosen by `select_temperature` for a tenth of designs
+above V = 1:
 
 - **One term.** The tension report finds a contending set (metrics that trade off) of five metrics (total mass, energy balance,
   pointing error, depth of discharge, settling time): a 5-lemma, found from the data, not chosen beforehand.
-- **Three terms.** The mean slack falls from 0.243 at one term to 0.146 at three, and the status is
-  `certified`. The three monomial terms have contending sets of 5, 4 and 5 metrics. The largest holds
-  72 percent of the near-frontier share and is the only one containing peak slew power; the smallest term
-  holds 3 percent and is the only one containing control effort. Its cell holds 3 near-frontier designs, fewer than the
-  ten an association reading needs, so none is given.
+- **Three terms.** At the one-term temperature (`case.mean_slack_fixed_tau`) the mean slack falls
+  from 0.243 to 0.132 at two terms and 0.088 at three, status `certified`. The three terms have
+  contending sets of 5, 4 and 5 metrics and term shares of 17, 10 and 73 percent of the near-frontier
+  designs: the largest alone contains peak slew power, the smallest alone contains control effort,
+  and the other is the one-term contending set.
 - **A second table.** The stock-gains table gives a different one-term
   contending set, so the finding depends on the regime.
 - **No metric twice.** No pair of the eight metrics reaches a rank correlation of 0.99 over the
   feasible designs, so each exponent is read on its own.
 
-These are observations of the fit, not explanations. Reading them in physical terms is the
-engineer's work.
+These are observations of the fit, not explanations; the physical reading is the engineer's work.
 
 ## The one-term fit, drawn
 
-The case module in `examples/adcs/case.py` runs the study from the committed table. These blocks
-draw the tension report and the first two chart coordinates of the one-term fit:
+`examples/adcs/case.py` runs the study from the committed table; these blocks draw the one-term
+fit's tension report and first two chart coordinates:
 
 ```python {.runnable}
 import sys
@@ -120,7 +119,7 @@ plot_ternary(ts, X, lines=True)
 <figcaption>Figure 8. Designs by shares of three metrics: regions, numbered exponent vectors, lines of equal V.</figcaption>
 </figure>
 
-How to read this plot:
+Reading it:
 
 - A corner is the whole total in one metric; an edge splits it between two.
 - A numbered marker is a term's exponent vector, where that term's V is largest for a fixed total.
@@ -136,20 +135,23 @@ print(values.round(2).to_string(index=False))
 print("lines at", values.attrs["levels"])
 ```
 
-Key: a row is a marker, its shares of the total, and V there as a fraction of the highest marker's V.
+Each row is a marker, its shares of the total, and V there as a fraction of the highest marker's V.
 
-Limits: three parts only; the analyst's choice of metrics can flatter the result; the triangle is for reading, not measuring distance; an eight-metric case does not separate in three, so none is drawn for the cubesat.
+Limits: three parts only; the choice of metrics can flatter the result; it is for reading, not measuring distance; eight metrics do not separate in three, so none is drawn for the cubesat.
 
 ## Run it
 
-The code, data and figures are in the repository under
-[`examples/adcs/`](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/tree/main/examples/adcs/):
-the design space and evaluation model, the committed seeded datasets, the figures, and
-`k_terms.py`, which reproduces the one-, two- and three-term fits:
+[`examples/adcs/`](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/tree/main/examples/adcs/)
+holds the design space, the evaluation model, the seeded datasets, the figures and
+`k_terms.py`, which fits one, two and three terms to each regime:
 
 ```bash
 uv run python examples/adcs/k_terms.py
 ```
 
-The same steps apply to any table of designs: condition, `select_temperature`, fit, then read the
-[tension report](user-guide/tensions.md) and the [termination record](user-guide/termination.md).
+Per regime it prints a per-K summary at a temperature re-selected per K (columns `tau`, `band 1/tau`,
+`objective_`, equal here to `mean_slack_`, `frac_above_`, `term rows`, `term shares`, `max gap`,
+`status`, `gamma`, `radius`, `bound`), the per-term record (contending set, largest exponents,
+near-frontier designs, reach, share, gap), the same two at the one-term temperature (the comparison
+above) and a seed check at three terms. A fit's record is `fit.estimator.termination_`, read on the
+[termination page](user-guide/termination.md).
