@@ -21,6 +21,8 @@ quoted in `WP25-decisions.md`; the inventory and the review are rewritten to the
 
 - Instance 1 (WP23 round 1 landed, WP24 approved): 2026-11-10, head 73c5bff; 346 rows, 169 deleted (09117d8), 33 held
   (WP23's), 144 kept; inventory db150fc; review `WP25-review.md`: 18 drift rows, 9 gap rows.
+- Instance 2 (WP23 accepted at db59365; WP24 at push 2): 2026-11-10, head a9e23b2; scope `WP25-2-scope-of-work.md` (own file:
+  it carries its sequencing against WP24); 198 rows, 31 deleted in unit A (70be9ce), 29 held, 138 kept; inventory b117aec.
 
 Sizing at `dev` cc409f8: 622 tracked files. A first pass (each tracked file's basename grepped across every other
 tracked file; it credits a reference to any file sharing the name, so it undercounts) finds under
