@@ -104,11 +104,22 @@ def test_r2_default_planted_fits_equal_the_recording(name, reference):
     are first matched to the recorded ones by exponent vector, as the paper's tables do; then the
     exponents and offsets agree within ``TOL_FIT`` (no wider), the labels agree after the matching
     except on rows whose two best scores tie within ``EPS_FEAS``, and the facet-indexed arrays
-    follow the matching (the shares within 0.01 per relabelled row). The quantities of the final
-    steps of a degenerate linear program are not compared off the recording's platform
-    (``RELAXED_SKIP``: the status and reason, the iteration counts, the last objective change and
-    the support weights); they differ between platforms while the fitted facets agree (gap G-10).
-    Every other quantity keeps its comparison above.
+    follow the matching. The planted table itself differs by rounding between platforms (the maths
+    library), and a row on two facet planes is then labelled either way. The label-derived arrays
+    therefore carry the tolerance that the tie allows and no more: ``facet_share_`` (taken from
+    ``facet_``) within 0.01 per relabelled row, and the termination ``shares`` (taken from the
+    solver's own last labels, which can differ from ``facet_`` on a tied row) within ``1/N`` per
+    tied row, plus 1e-12 each. The ``gaps`` stay within 1e-12.
+    Cause of the failure this replaces (seed 3, linux/amd64): ``shares`` was compared with the
+    ``facet_share_`` allowance, which counts the rows relabelled in ``facet_``; the solver's
+    labels moved a tied row that ``facet_`` did not, so ``shares`` differed by 1/N = 0.0025
+    against an allowance of 1e-12 with no change in the fitted facets. One-ulp perturbations of
+    the table reproduce it (25 of 30 on the previous test) and pass with this allowance.
+    The quantities of the final steps of a degenerate linear program are not compared off the
+    recording's platform; the exact list is ``RELAXED_SKIP``: ``status``, ``reason``, ``n_iter_``,
+    ``term_n_iter``, ``term_objective_change`` and ``support_weights_``. They differ between
+    platforms while the fitted facets agree (gap G-10). Every other quantity keeps its comparison
+    above.
     """
     X, K, tau, step = _cases()[name]
     est = HyperbolicTradeSpace(n_terms=K, temperature=tau, facet_step=step, random_state=0).fit(X)
@@ -141,22 +152,27 @@ def _compare_planted(name, est, X, relaxed, reference):
         to_ref = _match_to_recording(est.exponents_, reference[f"{name}/exponents_"])
         back = np.argsort(to_ref)  # back[j]: the fitted facet matched to recorded facet j
         n_relabelled = int((to_ref[est.facet_] != reference[f"{name}/facet_"]).sum())
+        U = est._log_metrics(X, reset=False)
+        top = np.sort(U @ est.exponents_.T - est.log_offset_, axis=1)[:, -2:]
+        if top.shape[1] < 2:  # one term: no row is on two planes
+            top = np.full((len(X), 2), np.inf) * np.array([-1.0, 1.0])
+        n_tied = int((top[:, 1] - top[:, 0] <= S.EPS_FEAS).sum())  # rows on two facet planes
     for k, v in rec.items():
         ref = reference[f"{name}/{k}"]
         if relaxed and k in RELAXED_SKIP:
             continue
         if relaxed and k in ("exponents_", "log_offset_", "facet_share_", "shares", "gaps"):
             tol = TOL_FIT if k in ("exponents_", "log_offset_") else 1e-12
-            if k in ("facet_share_", "shares"):
+            if k == "facet_share_":
                 tol += 0.01 * n_relabelled
+            elif k == "shares":
+                tol += n_tied / len(X)
             _close(f"{name}/{k}", np.asarray(v)[back], ref, tol, " (after matching by exponent)")
         elif relaxed and k == "objective_":
             _close(f"{name}/{k}", v, ref, TOL_FIT)
         elif relaxed and k == "facet_":
             differ = to_ref[np.asarray(v)] != np.asarray(ref)
             if differ.any():
-                U = est._log_metrics(X, reset=False)
-                top = np.sort(U @ est.exponents_.T - est.log_offset_, axis=1)[:, -2:]
                 tie = top[differ, 1] - top[differ, 0]
                 assert (tie <= S.EPS_FEAS).all(), (
                     f"{name}/{k}: {int(differ.sum())} rows relabelled after matching, rows "
