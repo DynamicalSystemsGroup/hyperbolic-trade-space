@@ -477,7 +477,7 @@ note = "Appendix F.2; RECORD.md: Pins: Node.js v24.22.2 linux-arm64 tarball, sha
 
 [[claim]]
 id = "C030"
-fragment = "a fielded system's measured attributes would enter the same table and the same fit"
+fragment = "a fielded system's measured attributes would enter the same table and fit"
 file = "docs/examples.md"
 anchor = ""
 kind = "S"
@@ -2246,15 +2246,15 @@ note = "L7 elasticities are ratios of exponents along a term; test pins report.e
 
 [[claim]]
 id = "C174"
-fragment = "`ts.score_samples(X)` is the log of V for each design, the energy"
+fragment = "`ts.score_samples(X)` is, for each design, the log of V, the invariant value"
 file = "docs/getting-started.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples", "lemma:L1", "glossary:energy-differential"]
+backing = ["test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples", "lemma:L1", "glossary:energy-differential", "glossary:invariant-value"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "last chart column equals score_samples; log V = w.u - beta by L1"
+note = "last chart column equals score_samples; log V = w.u - beta by L1; the sentence names V the invariant value and log V the level relative to the surface (the energy differential)"
 
 [[claim]]
 id = "C175"
@@ -3266,7 +3266,7 @@ note = "n_eff_ = 1/sum p^2 asserted; sweeps from N toward d."
 
 [[claim]]
 id = "C259"
-fragment = "term and the mean slack at several, so it is not comparable across numbers of terms."
+fragment = "the soft maximum at one term and the mean slack at several, so it is not comparable across numbers of terms"
 file = "docs/user-guide/fitting.md"
 anchor = ""
 kind = "S"
@@ -3326,15 +3326,15 @@ note = "frontier_fraction default 0.3 pinned (mask.sum()==150 of 500); I confirm
 
 [[claim]]
 id = "C264"
-fragment = "Fitting alternates weights from the current model with a refit, from several seeded starts"
+fragment = "Fitting alternates weights from the current model with a refit, from `n_restarts` seeded"
 file = "docs/user-guide/fitting.md"
 anchor = ""
 kind = "S"
-backing = ["lemma:L15", "test:tests/test_solvers.py::test_terms_monotone_history_and_stops", "test:tests/test_estimator.py::test_k_terms_zero_rows_and_determinism"]
+backing = ["lemma:L15", "test:tests/test_solvers.py::test_terms_monotone_history_and_stops", "test:tests/test_soft_fit.py::test_r1_the_soft_objective_never_rises_across_the_history", "test:tests/test_estimator.py::test_k_terms_zero_rows_and_determinism"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Alternation of assignment and refit with nonincreasing history; seeded restarts deterministic."
+note = "Alternation of assignment and refit with nonincreasing history (hard fit: argmax relabel then per-term refit; soft fit: softmax weights); seeded restarts deterministic. Absorbs C323, whose sentence left the termination page."
 
 [[claim]]
 id = "C265"
@@ -4022,31 +4022,19 @@ note = "K>1, K=1, tangent, penalty and degenerate fits all end with a terminatio
 
 [[claim]]
 id = "C322"
-fragment = "At one term the fit is a convex program and its answer is the"
-file = "docs/user-guide/termination.md"
+fragment = "At one term it solves a convex problem and returns the minimizer"
+file = "docs/user-guide/fitting.md"
 anchor = ""
 kind = "M"
 backing = ["lemma:L4", "lemma:L12.13", "test:tests/test_solvers.py::test_terms_k1_equals_slsqp_and_degenerate"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "f_k = J_tau - linear is convex (L12.13, from L4) on the simplex; K=1 fit equals the SLSQP solve; minimizer up to solver tolerance"
-
-[[claim]]
-id = "C323"
-fragment = "With several terms it alternates between weights from the current model and refitting each"
-file = "docs/user-guide/termination.md"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_solvers.py::test_terms_monotone_history_and_stops", "test:tests/test_soft_fit.py::test_r1_the_soft_objective_never_rises_across_the_history"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "hard fit: argmax relabel then per-term refit until the assignment is fixed; soft fit uses softmax weights; the sentence's weights are labels in the hard case"
+note = "f_k = J_tau - linear is convex (L12.13, from L4) on the simplex; K=1 fit equals the SLSQP solve; minimizer up to solver tolerance. Re-pointed from the termination page, whose opening sentence was removed."
 
 [[claim]]
 id = "C324"
-fragment = "no step made the mean slack worse (`mean_slack_`, defined at every number of terms)."
+fragment = "Descent: no step made the mean slack worse (`mean_slack_`)."
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
@@ -4105,18 +4093,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "L13.11 radius gamma/(2U) keeps every row's maximizing term, that is every design's assignment"
 
 [[claim]]
-id = "C329"
-fragment = "At infinite temperature this happens when a frontier row lies on two term planes or two"
-file = "docs/user-guide/termination.md"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_terms", "test:tests/test_solvers.py::test_r1_planted_certificates"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "gamma=0 exactly for a tied row or identical terms (pinned); zero-margin seeds only at tau=inf, none at tau=50"
-
-[[claim]]
 id = "C330"
 fragment = "- `guard_stop`: an iteration raised the mean slack by more than `guard_tol`. Not converged."
 file = "docs/user-guide/termination.md"
@@ -4154,7 +4130,7 @@ note = "one term, tangent, penalty, one metric, fewer designs than terms and sof
 
 [[claim]]
 id = "C333"
-fragment = "- `bound`: the share-weighted sum of term gaps, bounding the distance from the fixed-assignment"
+fragment = "- `bound`: the row-share-weighted sum of term gaps, bounding the distance from the fixed-assignment"
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "M"
@@ -4162,7 +4138,7 @@ backing = ["lemma:L14.20", "test:tests/test_solvers.py::test_corollary_bound_on_
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "bound = sum_k share_k G_k >= F(W) - F*_fixed (Corollary 4), asserted on every planted fit; fixed assignment of this run, not across restarts"
+note = "bound = sum_k share_k G_k >= F(W) - F*_fixed (Corollary 4) with share_k the row share; asserted on every planted fit; fixed assignment of this run, not across restarts"
 
 [[claim]]
 id = "C334"
@@ -4214,7 +4190,7 @@ note = "EPS_KKT 1e-8, EPS_FEAS 1e-9 (default-path test); GUARD_TOL 1e-12 and POL
 
 [[claim]]
 id = "C338"
-fragment = "exponents (above 1e-3), one per term. A small value marks a nearly flat direction (weakly identified exponents). It is `nan` at infinite"
+fragment = "exponents (above 1e-3), one per term. A small value marks a nearly flat direction. It is `nan` at infinite"
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
@@ -4238,7 +4214,7 @@ note = "nan at tau=inf and for a term with one participating exponent (d=1 case)
 
 [[claim]]
 id = "C340"
-fragment = "A small value marks a nearly flat direction (weakly identified exponents)."
+fragment = "A small value marks a nearly flat direction."
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "M"
@@ -4246,11 +4222,11 @@ backing = ["lemma:L17.5", "test:tests/test_estimator.py::test_conditioning_drops
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "the Hessian of J_tau is tau times a weighted covariance (L17.5), so a small eigenvalue is a nearly flat direction; 'weakly identified' is the interpretation, illustrated by the collinear-metrics test"
+note = "the Hessian of J_tau is tau times a weighted covariance (L17.5), so a small eigenvalue is a nearly flat direction; the collinear-metrics test shows it. The page no longer adds the 'weakly identified exponents' reading."
 
 [[claim]]
 id = "C341"
-fragment = "The margin `gamma` is in score units (log metrics), the scale of the band 1/tau; `radius` is"
+fragment = "The margin `gamma` is in score units (log metrics), the scale of the band 1/tau."
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
@@ -4262,15 +4238,15 @@ note = "gamma is a gap between scores w.u - beta with u = log metrics; the 1/tau
 
 [[claim]]
 id = "C342"
-fragment = "`gamma / (2R)`, with R the largest norm of a row (u, -1). Compare `gamma` with the median margin,"
-file = "docs/user-guide/termination.md"
-anchor = ""
+fragment = "The stable radius is gamma divided by twice the largest norm of a row of the log-metrics with a final entry of minus one"
+file = "paper/supporting_material.ipynb"
+anchor = "D.8 The solver's termination records"
 kind = "M"
 backing = ["lemma:L13.11", "test:tests/test_solvers.py::test_assignment_margin_values_and_duplicate_terms"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "radius = gamma/(2U), U the largest norm of (u,-1) (L13.11); values test pins 0.4/(2 sqrt 2); median-margin comparison is advice"
+note = "radius = gamma/(2U), U the largest norm of (u,-1) (L13.11); values test pins 0.4/(2 sqrt 2). Re-pointed from the termination page, which no longer states the formula; the glossary entry stable-radius states it too."
 
 [[claim]]
 id = "C343"
