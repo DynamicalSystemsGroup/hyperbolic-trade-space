@@ -42,7 +42,7 @@ case.tension_figure(study, fit)
 <figure markdown>
 ![Heatmap of the association among ten conditioned metrics near the frontier; six metrics are outlined as the contending set.](generated/figures/adcs-tensions-light.png#only-light)
 ![Heatmap of the association among ten conditioned metrics near the frontier; six metrics are outlined as the contending set.](generated/figures/adcs-tensions-dark.png#only-dark)
-<figcaption>Figure 6. The tension report of the one-term fit to the aggressive-gains table. The six outlined metrics are the contending set; grey labels mark metrics that do not participate.</figcaption>
+<figcaption>Figure 6. The tension report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, metrics that do not participate.</figcaption>
 </figure>
 
 ```python {.runnable}

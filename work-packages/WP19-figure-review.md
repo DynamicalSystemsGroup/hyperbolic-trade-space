@@ -751,3 +751,19 @@ Read tool before the caption was re-read. The data (`figure1_data`, its pinned h
   says the facets are laid end to end along the frontier line and the designs are grey points; the
   caption adds that the coloured pieces are the three facets of the fitted surface, the same three
   in each pane.
+
+## Docs Figures 3 and 6, the tension heatmaps (fourth PM)
+
+Disposition of the principle check: keep the drawing; the caption names the cells as analysis. Both
+docs figures are K = 1 (`tension_report(ts, X)` on a one-term fit in `docs/user-guide/tensions.md`;
+`case.fit_study(study, K=1)` in `docs/examples.md`), so there is no assignment to name; the cells
+are named as what they are, the correlation of the log-metrics among the near-frontier designs
+(`TensionReport.association`).
+
+- Docs Figure 3 (`tensions.md`): the caption already says "association is the correlation of the
+  log-metrics near the frontier". Unchanged.
+- Docs Figure 6 (`examples.md`): the caption named only the outlines. Now: "The tension report of
+  the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the
+  contending set; grey, metrics that do not participate." The page's word budget (650) left one word
+  of room, so the table's name left the caption (the prose above names it) and the caption is at the
+  budget exactly.
