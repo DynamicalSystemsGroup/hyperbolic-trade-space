@@ -605,28 +605,34 @@ def test_baseline_reads_as_documented(v2):
 # WP26 R-4: the views a SysML v2 view editor draws, in their own file beside the model
 # ---------------------------------------------------------------------------------------------
 VIEWS = ADCS_DIR / "model_v2" / "views.sysml"
+STAKEHOLDERS = ADCS_DIR / "model_v2" / "stakeholders.sysml"  # WP27: the stakeholder view exposes it
+S = "CubesatStakeholders"
 
 
 def test_views_file_loads_with_the_model_and_every_exposed_name_resolves(v2):
-    """WP26 R-4: ``views.sysml`` applied after ``cubesat.sysml`` as one model loads strictly; it
+    """WP26 R-4: ``views.sysml`` applied after ``cubesat.sysml`` (and, since WP27, after
+    ``stakeholders.sysml``, which its stakeholder view exposes) as one model loads strictly; it
     declares one package of views and nothing else; every name a view exposes is an element of
     the model; and the model's own elements are the same with the views as without them."""
     views = VIEWS.read_text()
     assert re.findall(r"^package\s+(\w+)", views, flags=re.M) == ["CubesatViews"]
     assert P not in re.findall(r"^package\s+(\w+)", views, flags=re.M)
-    both = v2.connection.load_from_content(TEXT + "\n" + views, strict=True)
+    both = v2.connection.load_from_content(
+        TEXT + "\n" + STAKEHOLDERS.read_text() + "\n" + views, strict=True
+    )
     assert both.ok
     assert not [d for d in both.diagnostics if d.severity == "error"]
     declared = re.findall(r"^\s*view\s+(\w+)\s*:\s*(\w+)\s*\{", views, flags=re.M)
     assert {n for n, _ in declared} == {
-        "assembly", "alternatives", "configurations", "metrics", "requirements", "metricCarriers"
+        "assembly", "alternatives", "configurations", "metrics", "requirements", "metricCarriers",
+        "stakeholders",
     }  # fmt: skip
     assert {k for _, k in declared} <= {"GeneralView", "InterconnectionView"}
     for name, _ in declared:
         assert both.find(f"CubesatViews::{name}") is not None, name
     # each exposed name without its ``::*`` (members of) suffix: the model's package or an element
     exposed = re.findall(r"^\s*expose\s+([\w:]+?)(?:::\*)?;", views, flags=re.M)
-    assert exposed and all(e == P or e.startswith(f"{P}::") for e in exposed)
+    assert exposed and all(e == P or e.startswith((f"{P}::", f"{S}::")) for e in exposed)
     for e in sorted(set(exposed)):
         assert both.find(e) is not None, e
 
@@ -641,3 +647,120 @@ def test_views_file_loads_with_the_model_and_every_exposed_name_resolves(v2):
         }  # fmt: skip
 
     assert names(both) == names(v2.model)
+
+
+# ---------------------------------------------------------------------------------------------
+# WP27 R-1, R-2, R-7: who cares (stakeholders.sysml), the trace, the roll-ups read by no output
+# ---------------------------------------------------------------------------------------------
+REQUIREMENT_DEFS = {
+    "SettledRequirement", "MomentumRequirement", "PowerRequirement",
+    "DepthOfDischargeRequirement", "PointingErrorRequirement", "ControlEffortRequirement",
+    "PeakSlewPowerRequirement", "BatteryPeakPowerRequirement", "LaunchBudgetRequirement",
+    "PowerMarginRequirement", "EnergyBalanceRequirement",
+}  # fmt: skip
+STAKEHOLDER_PARTS = {"sponsor": "Sponsor", "operator": "Operator"}
+
+
+@pytest.fixture(scope="module")
+def who_cares(v2):
+    """``cubesat.sysml`` with ``stakeholders.sysml`` and ``views.sysml``, loaded strictly."""
+    text = TEXT + "\n" + STAKEHOLDERS.read_text() + "\n" + VIEWS.read_text()
+    return v2.connection.load_from_content(text, strict=True)
+
+
+def _concerns(model) -> dict[str, list[tuple[str, str]]]:
+    """Each concern usage with its requirement usages: (name, the requirement def typing it)."""
+    out = {}
+    for q in model.query(
+        scope=[S], where={"property": "@type", "operator": "=", "value": "ConcernUsage"}
+    ):
+        reqs = []
+        for ch in model.find(q.id).children():
+            if ch.kind == "requirementUsage":
+                (typing,) = [s for s in ch.facts().specializations if s.kind == "typing"]
+                reqs.append((ch.name, typing.target_id.split("::")[-1]))
+        out[q.id.split("::")[-1]] = reqs
+    return out
+
+
+def test_stakeholders_file_loads_strictly_and_its_names_resolve(who_cares):
+    """WP27 R-1: the three files load as one model strictly; the stakeholders, the concerns, the
+    verification cases, the roll-ups and the stakeholder view are found; a misspelt name fails."""
+    assert who_cares.ok
+    for name in ("sponsor", "operator", "lowCost", "longLife", "pointingAndSlewing",
+                 "powerAndEnergy", "configurationEvidence", "slewEvidence", "CostToBuild",
+                 "EffectiveLife", "EvidenceCase"):  # fmt: skip
+        assert who_cares.find(f"{S}::{name}") is not None, name
+    assert who_cares.find("CubesatViews::stakeholders") is not None
+    broken = STAKEHOLDERS.read_text().replace(
+        "verify lowCost.launchBudget;", "verify lowCost.launchBudgt;"
+    )
+    with pytest.raises(ModelError, match="launchBudgt"):
+        cm.get_connection().load_from_content(TEXT + "\n" + broken, strict=True)
+
+
+def test_the_trace_from_who_cares_to_every_requirement_is_complete(who_cares):
+    """WP27 R-2: every concern is held by a stakeholder (bound to the sponsor or the operator) and
+    is decomposed into at least one requirement; every one of the model's eleven requirement defs
+    serves at least one concern (so every traded metric's requirement reaches one); and every
+    requirement a concern holds is verified by a verification case with evidence pointers."""
+    stk = STAKEHOLDERS.read_text()
+    concerns = _concerns(who_cares)
+    assert set(concerns) == {"lowCost", "longLife", "pointingAndSlewing", "powerAndEnergy"}
+    holder = r"concern\s+(\w+)\s*:\s*\w+\s*\{.*?stakeholder\s*:>>\s*s\s*=\s*(\w+);"
+    held_by = dict(re.findall(holder, stk, flags=re.S))
+    assert set(held_by) == set(concerns)
+    assert set(held_by.values()) == set(STAKEHOLDER_PARTS)
+    for part, kind in STAKEHOLDER_PARTS.items():
+        assert who_cares.find(f"{S}::{part}").facts().type.resolved_id == f"{S}::{kind}"
+    assert all(reqs for reqs in concerns.values())
+    served = {d for reqs in concerns.values() for _, d in reqs}
+    assert served == REQUIREMENT_DEFS == _symbols_in(who_cares, P, "RequirementDefinition")
+    verified = set(re.findall(r"^\s*verify\s+(\w+)\.(\w+);", stk, flags=re.M))
+    held = {(c, r) for c, reqs in concerns.items() for r, _ in reqs}
+    assert verified == held, held ^ verified
+
+
+def _symbols_in(model, package: str, kind: str) -> set[str]:
+    return {
+        q.properties["name"]
+        for q in model.query(
+            scope=[package], where={"property": "@type", "operator": "=", "value": kind}
+        )
+    }
+
+
+def test_the_rollups_are_illustrative_and_read_by_no_output(who_cares):
+    """WP27 R-7: each roll-up's doc says illustrative and names what it rolls up; no roll-up name
+    appears in the oracle, the coverage table, the view generator, the data or the contract; the
+    roll-ups evaluate on the named configurations (cost to build rises with the agile corner's
+    larger wheels and finer tracker; effective life rises with the battery capacity)."""
+    stk = STAKEHOLDERS.read_text()
+    for calc, rolls_up in (("CostToBuild", "unit costs"), ("EffectiveLife", "depth of discharge")):
+        body = stk[stk.index(f"calc def {calc}") :]
+        doc = " ".join(body[body.index("doc /*") : body.index("*/")].split())
+        assert doc.startswith("doc /* Illustrative roll-up"), calc
+        assert rolls_up in doc, calc
+    names = ("CostToBuild", "EffectiveLife", "UnitCosts", "BatteryLife", "unitCosts", "batteryLife")
+    root = ADCS_DIR.parents[1]
+    readers = [
+        *ADCS_DIR.glob("*.py"), *(ADCS_DIR / "experiments").glob("*.py"),
+        ADCS_DIR / "model_v2" / "coverage.py",
+        root / "docs" / "superpowers" / "notes" / "spike-sysml-diagrams" / "project.py",
+        root / "work-packages" / "interface-contract.toml",
+        *(p for p in (ADCS_DIR / "data").rglob("*") if p.suffix in {".csv", ".json"}),
+    ]  # fmt: skip
+    for path in readers:
+        text = path.read_text(errors="ignore")
+        assert not [n for n in names if re.search(rf"\b{n}\b", text)], path
+    cost = {
+        c: who_cares.eval(f"{S}::CostToBuild({P}::{c})")[0]
+        for c in ("cubesatCompact", "cubesatBaseline", "cubesatAgile")
+    }
+    assert cost["cubesatCompact"] < cost["cubesatBaseline"] < cost["cubesatAgile"]
+    slew = f"{P}::SlewLossEnergy({P}::baselineMeasurement.torqueSquaredIntegral)"
+    life = {
+        c: who_cares.eval(f"{S}::EffectiveLife({P}::{c}, {slew})")[0]
+        for c in ("cubesatCompact", "cubesatBaseline", "cubesatAgile")
+    }
+    assert life["cubesatCompact"] < life["cubesatBaseline"] < life["cubesatAgile"]

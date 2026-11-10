@@ -3,7 +3,9 @@
  * beside the model, so the model's bytes (and the hash the ledger records) do not move for a view.
  * Load it after cubesat.sysml, as one applied model. Each view exposes the model's own elements
  * and names, in its `doc`, the intent it shows, quoted from the supervisor's recorded words
- * (WP22-decisions.md, WP23-decisions.md).
+ * (WP22-decisions.md, WP23-decisions.md, WP27-decisions.md). The stakeholder view exposes
+ * stakeholders.sysml, so the three files are applied together: cubesat.sysml, stakeholders.sysml,
+ * views.sysml.
  */
 package CubesatViews {
     private import StandardViewDefinitions::*;
@@ -80,5 +82,31 @@ package CubesatViews {
         expose CubesatTradeSpaceV2::SlewMeasurement::*;
         expose CubesatTradeSpaceV2::Budgets;
         expose CubesatTradeSpaceV2::Budgets::*;
+    }
+
+    // ------------------------------------------------------------------------------------------
+    // Who cares: the stakeholders, their concerns and the evidence (stakeholders.sysml)
+    // ------------------------------------------------------------------------------------------
+    view stakeholders : GeneralView {
+        doc /* "who cares" (WP27, the supervisor: "to trace all the back to "who cares" via this
+               tool"): the sponsor and the operator, the concerns each holds, the engineers'
+               requirements each concern is decomposed into, the verification cases that verify
+               them with the pointers to their evidence, and the sponsor's roll-ups. */
+        expose CubesatStakeholders::sponsor;
+        expose CubesatStakeholders::operator;
+        expose CubesatStakeholders::lowCost;
+        expose CubesatStakeholders::lowCost::*;
+        expose CubesatStakeholders::longLife;
+        expose CubesatStakeholders::longLife::*;
+        expose CubesatStakeholders::pointingAndSlewing;
+        expose CubesatStakeholders::pointingAndSlewing::*;
+        expose CubesatStakeholders::powerAndEnergy;
+        expose CubesatStakeholders::powerAndEnergy::*;
+        expose CubesatStakeholders::configurationEvidence;
+        expose CubesatStakeholders::configurationEvidence::*;
+        expose CubesatStakeholders::slewEvidence;
+        expose CubesatStakeholders::slewEvidence::*;
+        expose CubesatStakeholders::CostToBuild;
+        expose CubesatStakeholders::EffectiveLife;
     }
 }
