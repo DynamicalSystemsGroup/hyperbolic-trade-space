@@ -81,3 +81,15 @@ check as `tests/test_verification_pointers.py`, with the gate checklist gaining 
 pointers in the same unit); the "for the lifecycle demo" section in the WP26 report or its own file. The same
 modeller executes; G1 (what parses) and the separate file may start before the close-out's regression lands, since
 they regenerate nothing; the held in-file edits and the ledger re-run wait for it.
+
+## The P1 cold read's item for the driver (2026-11-10, 16:20)
+
+The sponsor-persona reader asked for "a verdict for whatever design you are asking me to fund" and for the trade
+between the operator's eclipse slews and the sponsor's life; the review routes the verdicts for the agile and compact
+configurations to WP26's gate-class T3 (satisfy statements on the two contrasts). **Decision:** do it now as a WP27
+unit under WP26's amended OD1: the agile and compact configurations get their `satisfy` and `not satisfy` statements
+on each concern's requirement, checked by the engine as the baseline's were (b9c8819), so the editor's matrix shows a
+verdict per named configuration and the sponsor can compare the three designs. It is a model text change with
+byte-identical outputs: the host neutrality run, then the container ledger re-run hash-equal to @8, landing as the
+next entries; otherwise held. The trade between the eclipse slews and the pack's life is the tensions table's row,
+read against the concerns in the review; the cost-to-build budget (H-2) stays the supervisor's.
