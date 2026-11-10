@@ -25,10 +25,10 @@ jobs:
           fetch-depth: 0
       - name: No AI attribution lines in commit messages (project rule)
         run: |
-          hits=$(git log --format=%B | grep -ciE 'co-authored-by|generated with' || true)
+          hits=$(git log --format=%B | grep -ciE '\bco-authored-by\b|\bgenerated with\b|🤖' || true)
           if [ "$hits" != "0" ]; then
             echo "::error::$hits commit message(s) carry an AI attribution line; the project forbids them."
-            git log --format='%h %s%n%b' | grep -iE -B2 'co-authored-by|generated with' || true
+            git log --format='%h %s%n%b' | grep -iE -B2 '\bco-authored-by\b|\bgenerated with\b|🤖' || true
             exit 1
           fi
       # uv reads .python-version itself; setup-uv has no python-version-file input.
