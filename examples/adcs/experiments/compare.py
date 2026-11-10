@@ -5,9 +5,10 @@
 columns; the agreement of design ids, seeds, categorical values and flags; the maximum relative
 difference per column on the shared design ids; quantiles and flag shares side by side. It adds
 the swap checklist (the files that read the frozen CSVs, from a grep), the WP4b richness
-conditions (a) to (e) on both generations (reported, no pass requirement), the closed-form slew
-against the ODE on a sample (OD2) and the solver's exclusion summary from the ledger. The
-hand-written ``reports/change-register.md`` is included verbatim; this module never writes it.
+conditions (a) to (e) on both generations (reported, no pass requirement) and the solver's
+exclusion summary from the ledger. The hand-written ``reports/change-register.md`` is included
+verbatim; this module never writes it. The columns the two generations do not share (the frozen
+slew-time columns, which v2 lost with WP23 G5) are reported per dataset as differing columns.
 
 The difference ids (``<dataset>:<column>``, ``<dataset>:share[<flag>]``,
 ``<dataset>:median[<column>]``, ``<dataset>:ids``, ``<dataset>:columns``) are what the register's
@@ -50,7 +51,8 @@ V2_ENTRY = {
 }
 IDENTITY = ("design_id", "seed", "wheel_class", "st_grade", "role", "name")
 FLAGS = ("settled", "momentum_ok", "power_ok", "dod_ok")
-TIME_COLUMNS = ("settling_time_s", "slew_time_s", "slew_time_05deg_s")
+# the time column read off an adaptive integration (one since WP23 G5: the settling time)
+TIME_COLUMNS = ("settling_time_s",)
 SATURATION = "torque_saturated_frac"
 SHARE_TOL = 0.01  # a flag share moving by more than this (absolute) is a difference
 # the aggressive-box reproducibility test (WP4b), used where a frozen entry records no tolerance
@@ -257,7 +259,6 @@ def frozen_consumers(root: Path) -> dict[str, list[str]]:
 # -- the richness conditions (WP4b R-13 (a) to (e), R-14) ----------------------------------------
 ORIENTATION = {
     "settling_time_s": -1,
-    "slew_time_s": -1,
     "pointing_error_deg": -1,
     "total_mass_kg": -1,
     "control_effort": -1,
@@ -330,8 +331,7 @@ def richness(df: pd.DataFrame, seed: int = 0, n_boot: int = 100) -> dict:
             and any(frac[x] >= 0.90 and med[x] >= 0.05 for x in POWER)
         ),
         "c": (
-            min(a.loc["settling_time_s", "total_mass_kg"], a.loc["slew_time_s", "total_mass_kg"])
-            <= -0.30
+            a.loc["settling_time_s", "total_mass_kg"] <= -0.30
             and len([w for w, c in wheel_near.items() if c >= 10]) >= 2
         ),
         "d": min(pairs.values()) <= -0.30,
@@ -354,7 +354,6 @@ def richness(df: pd.DataFrame, seed: int = 0, n_boot: int = 100) -> dict:
         "med": med,
         "wheel_near": wheel_near,
         "settling_mass": float(a.loc["settling_time_s", "total_mass_kg"]),
-        "slew_mass": float(a.loc["slew_time_s", "total_mass_kg"]),
         "power_pair": min(pairs.items(), key=lambda kv: kv[1]),
         "settling_effort": float(a.loc["settling_time_s", "control_effort"]),
         "pointing_effort": float(a.loc["pointing_error_deg", "control_effort"]),
@@ -364,47 +363,6 @@ def richness(df: pd.DataFrame, seed: int = 0, n_boot: int = 100) -> dict:
         "settling_ratio": float(tim["small"] / tim["large"]),
         "conditions": conditions,
     }
-
-
-# -- the closed-form slew against the ODE (OD2) --------------------------------------------------
-def closed_form_vs_ode(root: Path, n: int = 40) -> dict:
-    """The model's ``SlewTimeEstimate`` against the ODE slew time of the first ``n`` v2 designs."""
-    from .cubesat_oracle import PACKAGE, CubesatOracle
-
-    p = paths(root)
-    frame = pd.read_csv(p["v2"] / DATASETS["primary"]).head(n)
-    text = (Path(root) / ADCS / "model_v2" / "cubesat.sysml").read_text()
-    oracle = CubesatOracle(text, "nominalSlew", "aggressive", workers=1)
-    rows = [r.to_dict() for _, r in frame.iterrows()]
-    est, limited = [], []
-    for i in range(0, len(rows), 20):
-        loaded, symbols = oracle._configure(rows[i : i + 20])
-        for sym in symbols:
-            e = loaded.eval(f"{PACKAGE}::SlewTimeEstimate({sym}, {PACKAGE}::nominalSlew)")
-            est.append(_first_value(loaded, e, "SI::s"))
-            t = loaded.eval(f"{PACKAGE}::IsTorqueLimited({sym}, {PACKAGE}::nominalSlew)")
-            limited.append(bool(t[0] if isinstance(t, list) else t))
-    ode = frame["slew_time_s"].to_numpy(float)
-    est = np.array(est)
-    ratio = est / ode
-    err = np.abs(ratio - 1.0)
-    limited = np.array(limited)
-    return {
-        "n": len(frame),
-        "ratio": (float(ratio.min()), float(np.median(ratio)), float(ratio.max())),
-        "median_err": float(np.median(err)),
-        "max_err": float(err.max()),
-        "n_limited": int(limited.sum()),
-        "median_err_limited": float(np.median(err[limited])) if limited.any() else None,
-        "median_err_linear": float(np.median(err[~limited])) if (~limited).any() else None,
-        "censored": int((ode >= frame["t_end_s"].to_numpy(float) - 1e-9).sum()),
-    }
-
-
-def _first_value(model, out, unit: str) -> float:
-    from .cubesat_oracle import _quantity_value
-
-    return _quantity_value(model, out, unit)
 
 
 # -- the report ----------------------------------------------------------------------------------
@@ -487,7 +445,7 @@ def _dataset_section(c: DatasetComparison) -> list[str]:
 def _richness_section(frozen: dict, v2: dict) -> list[str]:
     L = [
         "WP4b R-13 conditions (a) to (e) and R-14 on the feasible designs (settled, power_ok, "
-        "momentum_ok, all ten attributes positive), conditioned by hand as in the probe, "
+        "momentum_ok, all nine attributes positive), conditioned by hand as in the probe, "
         "`HyperbolicTradeSpace` at tau = infinity and at the working tau (frac above about 0.10); "
         "100 bootstrap resamples, seed 0. Reported; no pass is required of v2.",
         "",
@@ -495,7 +453,7 @@ def _richness_section(frozen: dict, v2: dict) -> list[str]:
     names = {
         "a": "(a) contending set at tau = inf: size >= 3, mass and a power attribute >= 0.05",
         "b": "(b) bootstrap support of mass and a power attribute >= 90 %, median >= 0.05",
-        "c": "(c) agility against mass <= -0.30; >= 2 wheel classes with >= 10 near-frontier rows",
+        "c": "(c) settling time against mass <= -0.30; >= 2 wheel classes with >= 10 near rows",
         "d": "(d) a power or energy tension <= -0.30",
         "e": "(e) settling-effort, pointing-effort, pointing-mass <= -0.30; settling-pointing >= 0",
         "R-14": "R-14 torque binds: saturation ratio small/large >= 3, settling ratio >= 1.25",
@@ -522,7 +480,6 @@ def _richness_section(frozen: dict, v2: dict) -> list[str]:
             ("frac above", "frac_above"),
             ("near-frontier rows", "n_near"),
             ("settling-mass association", "settling_mass"),
-            ("slew-mass association", "slew_mass"),
             ("settling-effort", "settling_effort"),
             ("pointing-effort", "pointing_effort"),
             ("pointing-mass", "pointing_mass"),
@@ -646,7 +603,7 @@ def _entries_section(entries: list[dict]) -> list[str]:
     )
 
 
-def build_report(root: Path, runtime: bool = True) -> str:
+def build_report(root: Path) -> str:
     root = Path(root)
     p = paths(root)
     entries = lg.read(p["ledger"])
@@ -720,30 +677,6 @@ def build_report(root: Path, runtime: bool = True) -> str:
         L += _richness_section(frozen_r, v2_r)
     except ImportError as exc:
         L += [f"The estimator could not be imported ({exc}); not evaluated.", ""]
-    L += ["## Closed-form slew against the ODE (OD2)", ""]
-    if runtime and (p["v2"] / DATASETS["primary"]).exists():
-        try:
-            r = closed_form_vs_ode(root)
-            L += [
-                "The model's `SlewTimeEstimate` (the larger of the bang-bang and the dominant-pole "
-                f"time to the 1 degree band) against the ODE slew time of the first {r['n']} v2 "
-                f"primary designs ({r['censored']} censored at the horizon). Ratio estimate/ODE: "
-                f"min {r['ratio'][0]:.2f}, median {r['ratio'][1]:.2f}, max {r['ratio'][2]:.2f}. "
-                f"Relative error: median {r['median_err']:.1%}, max {r['max_err']:.1%}; "
-                f"torque-limited "
-                f"in {r['n_limited']} of {r['n']} (median error {_pct(r['median_err_limited'])}), "
-                f"linear in {r['n'] - r['n_limited']} "
-                f"(median error {_pct(r['median_err_linear'])}). "
-                "The ODE is the measurement of record; the closed form serves model checking.",
-                "",
-            ]
-        except Exception as exc:  # the runtime is needed here only
-            L += [
-                f"The runtime could not evaluate the closed form: {type(exc).__name__}: {exc}",
-                "",
-            ]
-    else:
-        L += ["Not evaluated (no runtime requested, or no v2 primary file).", ""]
     L += ["## Exclusion by the solver", ""]
     L += _exclusion_section(lg.current(entries))
     L += ["## Change register", "", "<!-- change-register:begin -->"]
@@ -753,19 +686,14 @@ def build_report(root: Path, runtime: bool = True) -> str:
     return re.sub(r"\n{3,}", "\n\n", "\n".join(L)) + "\n"
 
 
-def _pct(x) -> str:
-    return "-" if x is None else f"{x:.1%}"
-
-
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="experiments compare", description=__doc__.splitlines()[0])
     ap.add_argument("--root", type=Path, default=lg.REPO_ROOT)
     ap.add_argument("--out", type=Path, default=None)
-    ap.add_argument("--no-runtime", action="store_true", help="skip the closed-form comparison")
     a = ap.parse_args(argv)
     p = paths(a.root)
     out = a.out or p["reports"] / REPORT
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(build_report(a.root, runtime=not a.no_runtime))
+    out.write_text(build_report(a.root))
     print(f"wrote {out}")
     return 0

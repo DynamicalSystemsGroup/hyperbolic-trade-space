@@ -5,19 +5,25 @@ and ``resolve_sampler``, so importing this module needs no runtime. Part 15.4 ru
 experiments: ``experiments/cubesat_oracle.py`` has the ``build(experiment)`` and
 ``build_sampler(experiment)`` factories; ``experiments/check_designs.py`` has those of the
 check-design flow.
+
+The model the ``v2`` experiments read is ``V2_MODEL``, the adopted ``model_v2/cubesat.sysml``;
+the environment variable ``EXPERIMENTS_MODEL`` (a path relative to the repository root) points a
+run at another file, such as a round's ``model_v2/cubesat_r2.sysml`` (WP23), with no edit here.
+The ledger entry records the path and hash of whichever model was read.
 """
 
 from __future__ import annotations
 
 import dataclasses
 import importlib
+import os
 from collections.abc import Callable
 
 from .experiment import AdoptedSpec, Experiment
 
 ADCS = "examples/adcs"
 V2_DIR = f"{ADCS}/data/v2"
-V2_MODEL = f"{ADCS}/model_v2/cubesat.sysml"
+V2_MODEL = os.environ.get("EXPERIMENTS_MODEL") or f"{ADCS}/model_v2/cubesat.sysml"
 V2_CODE = (
     f"{ADCS}/experiments/cubesat_oracle.py",
     f"{ADCS}/experiments/feasibility.py",
@@ -118,7 +124,12 @@ V2: tuple[Experiment, ...] = (
         inputs={
             "stage": "predict: fit on the feasible v2 primary designs, propose; nothing measured",
             "primary": f"{V2_DIR}/adcs_designs_cubesat_gains.csv",
-            "metrics": ["slew_time_s", "pointing_error_deg", "control_effort", "total_mass_kg"],
+            "metrics": [
+                "settling_time_s",
+                "pointing_error_deg",
+                "control_effort",
+                "total_mass_kg",
+            ],
             "pool": 100000,
             "reach": 0.35,
         },
