@@ -7,6 +7,11 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- **For his eye, not blocking (2026-11-10, 17:10):** CR-15's sentence in Section 6.2 is amended by the driver's
+  call (the sharp fit's labels are the alternation's weights at infinite term temperature; the cell is read after
+  the fit); the readers found the old sentence contradicted equation (2). The call keeps his fit-versus-analysis
+  distinction; he may word it otherwise.
+
 - (2026-11-10, 14:45) **A cost-to-build budget for the sponsor's "lowCost" concern (WP27, held item H-2).** The
   model now carries an illustrative cost to build (158.5k / 216.2k / 407.6k USD for the compact, baseline and agile
   configurations, from the parts) beside the launch cost; a requirement on it needs a budget only you can set. Options:
@@ -180,6 +185,29 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   (811d260, d7d9919) are the fix-forward, to be confirmed by the next verdict.
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
+
+- **PM6's batch 2 (2026-11-10, 17:10; dev at 64c66b3).** OD2: the PM's call stands and WP25-3 is accepted
+  (WP25-decisions.md). CR-15 (the fit without membership against the sharp fit of record): option (i) as the
+  truthful statement, and the sentence is amended to say it, no change of record: the sharp fit's labels are the
+  alternation's weights at infinite term temperature (Theorem 10, the limit of the soft weights; an implementation
+  choice of the fit, not an assumption that a design belongs to one term), the offsets and the soft fit see every
+  design, and the cell (which term scores a design highest in the fitted model, Definition 6) is read after the fit.
+  P5-C's question is answered by saying exactly what the code does (`tensions.py`: the contending set is the
+  infinite-temperature LP support on the term's rows); the paper says that and nothing else. Recorded under "for
+  his eye" below, since the sentence carries his distinction between fit and analysis. The sceptic's register:
+  add the two families (multiplicative DEA; the hyperbolic graph measure) to Appendix G, each with a resolved DOI,
+  and one clause in Section 2's DEA paragraph that says what the title's word means here and that it is not the
+  hyperbolic graph measure; the entries earn their place because the title's word collides. The seven
+  mathematics questions: one maths-check unit to the derivation stream; for each, the outcome is one of "true as
+  stated, cite the step", "the statement narrowed (a hypothesis added, a label corrected)", or "a scripted step
+  added only if elementary" (finite termination of the sharp alternation qualifies if the step is a page; ties
+  checked); (f) is a numerical check of R1 on the case before "5-lemma" is printed, as a test; new mathematics
+  stays a non-goal. Energy differential (item 1) and the abstract (item 2) are closed by his earlier decisions
+  (keep it, gloss it; the abstract is his hand). P6-B: a fresh reader on an unused brief wording, as the triager
+  asks. P-1: `EPS_ZERO_EXPONENT` and `PARTICIPATION_THRESHOLD` enter the manifest and the API page by a contract
+  amendment, since the paper sources cite them; `CATEGORY_COLORS` and `DATA_COLOR` leave `plotting.__all__`
+  (internal; contract row 11 is the plotting surface). P-4 done at 64c66b3. The answer key is version 4 (one
+  word; WP11-decisions.md).
 
 - **PM handovers.** The fifth PM handed over at the close-out gate (PM-BRIEF.md, fifth to sixth; its context had grown past 450k tokens) and the sixth started at 14:55 on the WP26 sequel, WP27, WP25-3, the reader rounds and the subtraction pass. The fourth PM handed over at c622c6e (after the data gate) and the fifth started at 02:30 on the paper's move onto the data of record. The third PM handed over at 01e2d64 (PM-BRIEF.md, "third PM to fourth") after two batches; the fourth PM started from the files at 21:35 on WP23 and the remaining WP19, paper and package units.
 
