@@ -362,3 +362,46 @@ metric redundancies, each with its cause); the driver verifies before the swap; 
 (dispositions B, C, D, F in WP23-review.md), the paper's regeneration on the new ledger in hts-paper (with the heatmap
 caption from WP19-figure-review.md "Heatmap redraw" and the recovery cell silent), WP24 push 1 (and diagnostic_pair.py's
 identifiers in a WP23 unit right after it), the glossary entries MoE/MoP/launch cost with the paper's case section.
+
+## Handover (fourth PM to fifth, 2026-11-10, morning; written at the data gate, before the driver's swap call)
+
+State on dev (head at the time of writing: after 7db9fdf, the D-9 comparison, and 241c63d, the heatmap redraw 2):
+WP23 has run its four rounds, its regeneration of record (8507bd9: `cubesat.sysml` is the WP23 model, the WP22 file in
+history at d3018ba; contract amendment 12, version 12; views at revision 5; `ledger_gate.py`; the proposer's REACH by a
+stated rule, q = 0.02 of the 300 most isolated holes' nearest predicted distances, 0.6222 in the container; image
+hts-paper 3c7cfc8a2e27 at 2b2e94e; ledger v2-primary@5, v2-baseline@5, v2-check-predictions@5, v2-check-designs@5,
+scope-sensitivity-shared-subspace-v2@4, 0 drifts) and its data-gate comparison (D-9, `swap-evidence.md`, "WP23 data
+gate ...", read-first subsection "Changed conclusions"). Linux green on 8507bd9 in all three shards. **The swap call is
+the driver's and was pending at this handover**; the fifth PM acts on it, not before.
+
+What the comparison says the swap changes in kind (the fifth PM's first inputs): at K = 1 the primary regime's term is no
+longer slew time against control effort but total mass (0.358) against energy balance (0.184), a 5-lemma in both regimes
+(the column change alone does it); the primary regime's K = 3 per-term report refuses at both documented bands (a thin
+term, 181 rows, share 0.034), so `num-k-sweep`, `fig-tensions-k3` and Appendix D.3 cannot be generated on the new primary
+data as the cells stand (the driver has the options: report K = 3 from the estimator and draw tensions at K = 1 and 2; or
+a third documented band stated as a choice); the proposals are 3 of 3, two the same configuration, all three dod_ok
+False; the settled flag cannot move; the two metric redundancies (eclipse reserve with depth of discharge, power margin
+with energy balance) are readings for the supervisor (OD7); counts and shares move as listed there.
+
+Order after the swap call: (1) the paper's regeneration on the new ledger in `hts-paper` (the paper stream, one writer
+of `paper/paper.ipynb` and `supporting_material.ipynb`): the slot list of the comparison's section 4 by cell id; Figure 2's
+anchor pair; the tau-sweep caption from `WP19-figure-review.md` "Redraw 2"; the recovery cell silent (18d0064); the
+check section's sentence following the proposals' count; every moved number in the paper listed with its cause; (2) the
+post-gate view-consistency unit (dispositions B, C, D, F in `WP23-review.md`, "Rounds: the cold reads"), and in
+`diagnostic_pair.py` drop the panel title and pass one shared `vmax` to both heatmap calls; (3) the four thresholds and
+the comparison report to the supervisor on waking (the popup table in `WP23-review.md`, "Proposed thresholds, revised
+for the gate popup"); (4) WP24 push 1 onward (worktree `wp24` holds the glossary patch; `diagnostic_pair.py`'s
+identifiers in a WP23 unit right after push 1; CHANGELOG gets the vocabulary); (5) the glossary entries MoE, MoP, launch
+cost with the paper's case section (dead-entry rule); (6) WP23's acceptance review (`work-acceptance`, a fresh reviewer
+that runs the code and looks at the rendered pair and views) once the paper is regenerated; (7) WP25's next instance at
+the next gate. Known small items: `round-1/README.md` misreads the library's 0-based term index (fix in the
+view-consistency unit); the view-consistency unit also routes the composition lines clear of box headers.
+
+Rules the fourth PM applied beyond the brief: every agent reads `scratchpad/pm4-rules.md` (worktree, blast radius,
+push, no attribution, hygiene, reporting); cold reads are fresh P2/P3 proxies, image first, two per round, their reports
+quoted verbatim into the round folder with dispositions; the PM keeps its own context small by taking tables, writing
+verbatim records to scratch files for a records agent, and doing only glue itself (register rows, a README line, the
+brief and the board).
+
+Agents at the handover: none running. Worktrees: `wp24` only. Docker: hts-paper 3c7cfc8a2e27 (the environment of
+record), hts-alt; no hts container.
