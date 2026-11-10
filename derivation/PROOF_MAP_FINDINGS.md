@@ -223,7 +223,7 @@ updated instead). `test_paper.py` Appendix B tests go stale until the paper is r
 One new lemma script, `lemma_16_soft_fit_alternation.py` (L16, 49 tagged steps), appended to
 `CHAIN_NAMES`; the numbers of the existing lemmas are unchanged, and no `TITLE` or `STATEMENT` of an
 existing lemma changed (every existing step keeps its fingerprint; the record gained L16 and two
-ledger entries only). Source: `docs/superpowers/notes/spike-ggp-fit/report.md`, findings 2 and 3.
+ledger entries only). Source: `docs/superpowers/notes/spike-ggp-fit/report.md` (deleted; last version at 73c5bff), findings 2 and 3.
 
 Statement, as given by the PM, unchanged: with weights alpha_ik = softmax_k(kappa score_ik) from
 the current model, (i) a convex program symmetric in the terms attains its minimum with all terms
@@ -278,7 +278,7 @@ concave function, and every computed fact of L16 falsified in turn.
 One new lemma script, `lemma_17_soft_fit_certificate.py` (L17, 52 tagged steps), appended to
 `CHAIN_NAMES` (the numbers and statements of L1 to L16 are unchanged; every existing step keeps its
 fingerprint, the record gained L17 and one ledger entry, I16). Source: the soft-fit spike's report
-and its addendum (`docs/superpowers/notes/spike-soft-fit/`).
+and its addendum (`docs/superpowers/notes/spike-soft-fit/`, deleted; last version at 73c5bff).
 
 Statement, as given by the PM, unchanged: at a feasible point of the soft-weight fit where the
 first-order (KKT) conditions hold, if the Hessian H = D - kappa M of the soft objective is positive
