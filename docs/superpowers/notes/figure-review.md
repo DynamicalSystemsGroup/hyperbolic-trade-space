@@ -63,3 +63,12 @@ docs pages must not break at phone width, but their figure text need not be read
 
 `work-packages/<package>-figure-review.md`: per figure, the recipe, the cold reads verbatim, the five
 tests, the disposition, and the image path and commit it was judged at.
+
+## No borrowed idiom with a false analogy (the supervisor, 2026-11-09)
+
+A figure borrows no drawing idiom that carries an analogy the method does not make. The case that taught it:
+designs coloured by the facet whose term scores them highest is the scikit-learn cluster idiom, and readers took
+"facet" to mean "cluster" (`work-packages/WP19-decisions.md`). What a figure shows of the model (the surface, the
+band, the facet lines) is drawn as the model; what it shows of the analysis (assignment, shares) is named as
+analysis in the caption or not drawn. Checked once for every figure, paper and docs, and at every new candidate.
+
