@@ -172,6 +172,9 @@ frozen data untouched until the gate):
   model's (the configuration space is unchanged). The views stay out of `examples/adcs/model_v2/views/`
   until the gate.
 
+The round's cold reads, verbatim with each finding's disposition: `WP23-rounds/round-1/cold-reads.md`
+("Rounds: the cold reads and their dispositions" below).
+
 ## Round 2: the battery coupling
 
 The supervisor's input (`WP23-decisions.md`, 22:05 and 22:15): "maybe we should have 2 to 3 battery
@@ -496,6 +499,9 @@ overlaps. The naming rule: "primary" and "baseline" regime throughout the round'
 `k3_record.md` and `heatmap_stock.png` still say "stock" because `case.py`'s CaseSpec keys the
 baseline regime so and `diagnostic_pair.py` prints that key, both outside this round's blast radius
 (an item for the PM).
+
+The round's cold reads, verbatim with each finding's disposition: `WP23-rounds/round-3/cold-reads.md`
+("Rounds: the cold reads and their dispositions" below).
 
 ## Round 4: the round-3 dispositions
 
@@ -832,3 +838,132 @@ No row is broader than its backing and none is unbacked. Two sentences were narr
 writing: the slew angle is read from the model (30 degrees, `nominalSlew.slewAngle`), and the
 hypothesis is cited to where the supervisor's words are quoted (`WP23-scope-of-work.md`, Purpose),
 not to the decisions file, which does not carry them.
+
+## Rounds: the cold reads and their dispositions
+
+The cold reads of the loop (R-8: a fresh P2 proxy at L-B and a fresh P3 proxy at L-C per round,
+image before caption, never reused across rounds) are quoted verbatim, each finding with its
+disposition and where it was executed, in `WP23-rounds/round-1/cold-reads.md` (17 P2 and 20 P3
+findings) and `WP23-rounds/round-3/cold-reads.md` (22 P2 and 17 P3 findings). Round 2 had no cold
+read of its own: it changed the model (the battery's rating) and the coverage table, and its views
+were read in round 3. Round 4 had none: it executed round 3's dispositions and was checked by its
+author at 700 px ("Round 4" above). The K = 1 and K = 3 readings of each round are
+`k3_record.md` in the round's folder; the data are round 1's in every round, since no
+dataset-facing part of the model changed after round 1 (`round-4/README.md`).
+
+**Round 1** (the views of `cubesat_r2.sysml` by the generator's revision 3; the heatmap pair and
+the record on the round-1 datasets). One blocking finding, the P2's: the heatmap had no written
+intent, so the loop's first test could not be run on it; closed in round 3, whose `INTENT.md`
+carries the heatmap's sentence. Both readers found the behavioural view's legend illegible at
+700 px (6.9 px of type), the P3 that green carried an MoE and an MoP while yellow carried the other
+MoE, the P2 that the lanes drew the analyst's grouping as model structure and that the two
+requirements without a metric named no quantity, and both that five names were in use for the two
+datasets. These changed the views in round 3 (`abdb88f`): the legend cut to the colour key and the
+rest moved to the caption; one colour rule with MoE or MoP by stereotype only; the requirement
+boxes reduced to the name and the verification case; the requirements that read no traded metric
+carrying their `require constraint`; the requirement-metric line headless; the lanes titled as the
+analyst's grouping; the untagged parts named as fixed; the gain ranges per regime; "primary regime"
+and "baseline regime" the two names. Deferred, with the reason: every finding on the heatmap's own
+drawing (the colourbar unnamed, the total-mass row clipped at the cap of 0.30, the selected tau
+not on the grid, V and the 0.1 line unexplained, the two axis titles) belongs to
+`case.tau_sweep_figure`, read-only for this package, and goes to the redraw after the gate (the list
+in "Round 4", item 4). Interrogated rather than drawn: the P3's observation that the three metrics
+at zero exponent include the two columns carrying every coverage star, and the P2's question
+whether the MoPs at zero are constraints, became round 3's work (`a93ce10`). The K = 1 reading:
+in the primary regime a 5-lemma at tau 38.1 (total mass 0.358, energy balance 0.184, pointing error
+0.164, depth of discharge 0.158, settling time 0.136) with the power margin, the eclipse reserve and
+the peak slew power at zero at every tau; in the baseline regime a 5-lemma at tau 45.7 (control
+effort 0.432, settling time 0.319, power margin 0.178, pointing error 0.039, depth of discharge
+0.012) with the peak slew power alone at zero. The K = 3 reading: in the primary regime the peak
+slew power leads term 3 (0.612; 363 rows, share 0.724) and the per-term report refuses at both of
+its bands (3 and 7 near-frontier rows in a cell against its minimum of 10; the fit itself is
+given); in the baseline regime, at the K = 1 band, three terms of 5, 6 and 4 metrics, the peak slew
+power leading term 2 (0.428).
+
+**Round 3** (the views by revision 4, the pair regenerated on the same data, the model unchanged
+since round 2). Nothing blocked. The P3 missed the mass chain cold: the line requirement -> launch
+cost -> total mass was a stub of about 5 px, the one place the view departs from
+one-requirement-one-metric. The P2 could not read the dashed group's grey title and asked why the
+pointing error is the one MoE; both found the heatmap's regime unnamed on the image (with
+`heatmap_stock.png` beside it, still "stock"), the colourbar unnamed and the selected tau absent
+from the grid; the P2 found the assembly legend to be 45 % of the frame. These changed the views in
+round 4 (`43e1a7f`): the launch-cost line labelled `totalMass` and lengthened, the dashed title in
+black, the MoE/MoP rule a caption item, the assembly legend cut to the tag keys with the levels and
+ranges in `assembly_caption.md`, the baseline heatmap renamed `heatmap_baseline.png` with each panel
+titled by its regime and the record's headings in the two names, and the tau = infinity column
+named in the caption. Deferred, with the reason as in round 1: the heatmap's drawing (the
+colourbar, the tau marker, the cap, the row order, the top panels' intent, the two axis titles),
+listed in "Round 4", item 4 for the post-gate redraw. The readings of K = 1 and K = 3 are round
+1's, on the same data and the same fit (round 4's record differs from round 3's in one heading
+word), with the n-lemma reading of each zero exponent written in round 3: the eclipse reserve is
+carried by the depth of discharge (one quantity), the power margin by the energy balance (both
+affine in the generated power; the fit carries the other in the baseline regime), and the peak
+slew power is a step function of the two swaps that one monomial term cannot use and that K = 3
+gives a term of its own in both regimes.
+
+**Open findings** (no disposition in the record; the tables name each by reader and number).
+Grouped for the PM's decision at or after the gate:
+
+- A. Heatmap items not in the post-gate redraw list: the grey scale's resolution near zero (a cell
+  at 0.03 reads as white, so the control effort's fade cannot be seen: R1-P2-7, R3-P2-15); the
+  horizontal mismatch between the log axis above and the equal-width columns below (R1-P2-6); the
+  intent sentence's tau dependence (the panel shows the settling time weakening and the energy
+  balance strengthening with tau, which the intent does not claim: R3-P3-7).
+- B. The behavioural view against the model's other records: the total mass and the pointing error
+  drawn from `SlewExperiment` while verified in `ConfigurationVerification`, the configuration-only
+  entries not distinguished (R1-P3-13, R3-P2-7); `coverage.md`'s "passes through" and "traded
+  metrics" sentences against the view's sources and the row order (R1-P3-12, R1-P3-16); the three
+  requirements that read no traded metric placed in the coupling table's subsystems and in the
+  view's dashed group (R3-P3-9); the coupling variables and the measurement-to-analysis path drawn
+  in neither view (R3-P3-10).
+- C. Names: "the analyst's grouping", "subsystems" and "lanes" for one object (R3-P3-11); "primary
+  regime" and "baseline regime" against the model's `aggressiveGains` and `baselineGains`, which the
+  caption does not name (R3-P3-13); the swap tags naming enum types and the tune tags naming
+  attributes (R3-P3-14).
+- D. `round-1/README.md` attributes both per-term report refusals to "term 1" while the estimator's
+  messages say "facet 1" and "facet 0" (R1-P3-5); the index base is stated nowhere in the round
+  record (WP24 renames the word; it does not settle the base).
+- E. What the behavioural view does not show, by design: thresholds, units, directions and the
+  configuration variables (R1-P2-15, R3-P2-8); the record answers with the threshold tables for the
+  gate popup and the coverage table's first table, and records no decision on the view.
+- F. The assembly view's composition lines cross two box headers (R3-P3-15); round 4 changed its
+  legend, not its layout, and did not say whether the crossings remain.
+
+## Trace table
+
+WP22's trace table, updated for the r2 model (`cubesat_r2.sysml` at `dev`, sha256 `8363152af0b7`,
+the file `coverage.md` names; the swap to `cubesat.sysml` is the gate's). One row per traded metric:
+the model element that defines it with its mark, the decision elements that reach it (the coverage
+table's structural column, with the empirical disagreements starred), the requirement that reads it
+with its threshold and its verification case, how it leaves the model (the measurement, or
+`SlewExperiment`'s return tuple, whose entries are numbered in the model's order), the dataset
+column of the round-1 tables (the committed v2 header less `slew_time_s` and `slew_time_05deg_s`;
+the contract amendment is D-4, on the `wp23case` branch until the regeneration), and where the paper
+reads it. The paper today reads the frozen ten-metric data (`examples/adcs/data/*.csv`, `case.py`'s
+CaseSpec): the K = 1 sweep (`fig-tau-sweep`), the K = 3 readings (`fig-tensions-k3`) and the two
+regimes (`fig-regimes`) over all ten attributes, and the propose-predict-check (`fig-predict-check`)
+over the four-metric view (slew time, pointing error, control effort, total mass); every reading on
+the nine-metric data is "after the paper's regeneration" (WP16 order step (4), WP19).
+
+| Traded metric | Defined by (mark) | Reached by (structural; `*` empirical no) | Requirement (threshold; value taken from) | Verified in | Leaves the model as | Dataset column | Where the paper reads it |
+|---|---|---|---|---|---|---|---|
+| settling time | `SlewMeasurement.settlingTime` (MoP): the hold time, the last exit from the settling band by event detection (WP16 D-7) | all six | `SettledRequirement` (`settlingTime < nominalSlew.horizon`, 600 s; the scenario's horizon) | `SlewVerification.settled` | measured; passes from the measurement to the output row, neither an input nor an entry of the return tuple | `settling_time_s` (and the flag `settled`) | `fig-tau-sweep`, `fig-tensions-k3`, `fig-regimes` on the frozen data; in the four-metric view and the check: after the paper's regeneration (the view carries the slew time today) |
+| pointing error | `calc def PointingError` (MoE): the root-sum-square of the steady error and the tracker floor | all but Kd | `PointingErrorRequirement` (`PointingError(c) <= budgets.pointingErrorLimit`; proposed, the baseline's 0.015535 degree times 1.2 = 0.018642 degree; the gate popup's candidates in "Proposed thresholds, revised") | `ConfigurationVerification.pointingError` | return entry 1, `PointingError(cubesat)` (configuration only) | `pointing_error_deg` | the three figures and the check on the frozen data; after the paper's regeneration |
+| total mass | `Cubesat.totalMass` (MoP), `calc def MassAccounting`; its MoE `calc def LaunchCost` = `environment.launchRate` (6000 USD/kg, illustrative) times the total mass | WheelClass, TrackerGrade, panelSpan, batteryCapacity (not the gains) | `LaunchBudgetRequirement` (`c.launchCost <= budgets.launchBudget`; proposed, the baseline's 79,749 USD times 1.2 = 95,698 USD, 15.950 kg at the rate; candidates in "Proposed thresholds, revised") | `ConfigurationVerification.launchBudget` | return entry 2, `cubesat.totalMass` (configuration only); the launch cost is not returned (OD2) | `total_mass_kg`; no launch-cost column | the three figures and the check on the frozen data; after the paper's regeneration |
+| control effort | `SlewMeasurement.controlEffort` (MoP): the integral of \|tau\| over the slew, N.m.s | all six | `ControlEffortRequirement` (`controlEffort <= budgets.controlEffortLimit`; proposed, the baseline's recorded 0.0094906 N.m.s times 1.2 = 0.011389 N.m.s; the revised reading shows it admits 2.3 % of the primary regime's feasible designs; candidates in "Proposed thresholds, revised") | `SlewVerification.controlEffort` | measured; `SlewExperiment`'s `in controlEffort`, return entry 3 unchanged | `control_effort` | the three figures and the check on the frozen data; after the paper's regeneration |
+| power margin | `calc def PowerMargin` (MoP): the generated power less the housekeeping load and the peak slew power | all six; `*` batteryCapacity, Kp, Kd (the wheels saturate at the class cap at the three named configurations) | `PowerMarginRequirement` (`PowerMargin(c, peakTorque) >= 0.0 [W]`; zero) | `SlewVerification.powerMargin` | return entry 4, `PowerMargin(cubesat, peakTorque)` (needs the measured peak torque) | `power_margin_w` | `fig-tau-sweep`, `fig-tensions-k3`, `fig-regimes` on the frozen data; after the paper's regeneration |
+| energy balance | `calc def EnergyBalance` (MoP): over one orbit, the sunlit supply less the base load and the slew loss | all six | `EnergyBalanceRequirement` (`EnergyBalance(c, SlewLossEnergy(torqueSquaredIntegral)) >= 0.0 [W*h]`; zero) | `SlewVerification.energyBalance` | return entry 5 (needs the measured `torqueSquaredIntegral`) | `energy_balance_wh` | as the power margin |
+| eclipse reserve | `calc def EclipseReserve` (MoP): the energy above the allowed depth of discharge after the eclipse demand | all six | `EclipseReserveRequirement` (`EclipseReserve(c, SlewLossEnergy(torqueSquaredIntegral)) >= 0.0 [W*h]`; zero) | `SlewVerification.eclipseReserve` | return entry 6 | `eclipse_reserve_wh` | as the power margin |
+| peak slew power | `calc def PeakSlewPower` (MoP): the tracker's power, the idle wheels and the wheel loss at the peak torque | all six; `*` panelSpan, batteryCapacity, Kp, Kd (the same cause) | `PeakSlewPowerRequirement` (`PeakSlewPower(c, peakTorque) <= budgets.peakSlewPowerLimit`; proposed, the baseline's 2.0 W times 1.2 = 2.4 W in the model; the driver's ruling: the popup offers the step's own values, 2.0 W and 2.4045 W, with pass fractions) | `SlewVerification.peakSlewPower` | return entry 7, `PeakSlewPower(cubesat, peakTorque)` | `peak_slew_power_w` | as the power margin |
+| depth of discharge | `calc def DepthOfDischarge` (MoP): the eclipse demand with the slew loss over the capacity | all six | `DepthOfDischargeRequirement` (`DepthOfDischarge(c, SlewLossEnergy(torqueSquaredIntegral)) <= environment.maxDepthOfDischarge`; 0.3, the environment's) | `SlewVerification.depthOfDischarge` | return entry 8 | `dod_eclipse` (and the flag `dod_ok`) | as the power margin |
+
+Not traded, for the trace to close (the requirements the behavioural view draws with no line, and
+what left):
+
+| Quantity | Defined by | Requirement | Verified in | Dataset | Note |
+|---|---|---|---|---|---|
+| available power | `calc def AvailablePower`, `Cubesat.availablePower` | `PowerRequirement` (`c.availablePower > 0.0 [W]`) | `ConfigurationVerification.power` | the flag `power_ok` (and `available_power_w`) | holds for every design of both round-1 datasets ("Round 3" (a)) |
+| peak momentum | `SlewMeasurement.peakMomentum` | `MomentumRequirement` (`peakMomentum <= c.momentumCapacity`) | `SlewVerification.momentum` | the flag `momentum_ok` (and `peak_momentum_nms`) | measured, not used by any return entry |
+| eclipse peak load against the pack's peak power | `calc def EclipsePeakLoad`, `calc def BatteryPeakPower` (`environment.batteryDischargeRate` 1.0 1/h, illustrative; round 2) | `BatteryPeakPowerRequirement` (`EclipsePeakLoad(c, peakTorque) <= BatteryPeakPower(c)`) | `SlewVerification.batteryPeakPower` | no column; computable from `peak_slew_power_w`, `battery_wh` and the housekeeping load | holds over the whole declared space by 0.6 W in the corner ("Round 2"); the rate's candidates are in the popup table |
+| launch cost | `calc def LaunchCost` (MoE), `Cubesat.launchCost` | `LaunchBudgetRequirement` (above) | `ConfigurationVerification.launchBudget` | no column (OD2: in the log metrics it is the total mass shifted by a constant) | the MoE on the total mass |
+| slew time | gone (R-5): `SlewTimeRequirement` and `SlewBandRequirement` fold into `SettledRequirement`; the measurement loses `slewTime` and `censored` | — | — | `slew_time_s` and `slew_time_05deg_s` leave with the regeneration (D-4, the contract amendment on `wp23case`) | the closed-form `SlewTimeEstimate` and its parts stay in section 4 as WP15's model-checking evidence ("R-5's check, amended") |
