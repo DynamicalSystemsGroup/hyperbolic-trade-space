@@ -1,5 +1,0 @@
-60a61,62
-> class "**XLWheel**" as XLWheel {
-> }
-69a72
-> ReactionWheel <|-- XLWheel
