@@ -127,9 +127,12 @@ Worktrees alive: `wp23case` (unpushed case code), `wp24` (held glossary patch). 
 | WP23 final | db59365 (behavioural view revision 8; the driver's acceptance a5acf86) |
 | G-3 P3 read of revision 7 | b0a9a92 (11 findings; one wording item fixed as revision 8) |
 | WP25 instance 2 | approved 0af70c1; unit A done 0c8ba52..c37197c (inventory 198 rows: 138 keep, 31 delete, 29 hold; 31 files deleted; 4 drift rows fixed; review rewritten); unit B after WP24's last push and the paper's re-pointing of the spike citations |
-| Paper unit: the register's committed output (Linux red at bd017dc on two test_paper register tests), G-17 narrowed, the spike citations re-pointed; one container run | dispatched; WP24 push 3 starts from its head |
-| Test that rewrites `examples/adcs/experiments/reports/v1-v2-comparison.md` in place (dirties the watcher) | dispatched |
+| Paper unit: G-17 narrowed to what sensitivity.json backs; Appendix E regenerated | done ba5a0cb, 7ee26be (the Linux register failures at bd017dc were the stale Appendix A after da2984e's glossary entries, fixed by push 2's regeneration 27dab4d; spike citations: none at an output except gap row G-6's `oracle.txt`, re-pointed by WP25-2 unit B with the deletions) |
+| Test writing `v1-v2-comparison.md` in place | already fixed at 17e6019; fast and slow suites leave porcelain empty; the watcher's dirty tree has another cause (the driver's) |
+| WP24 push 3 (the notebooks' prose, the abstract gloss, the quilt sentence, register fragments, pins, ledger; supporting material regenerated; WP24-review.md pushes 2 and 3) | dispatched |
 | WP24 pushes 3 and 4 (push 4: R1's polyhedral "facet" rows in Appendix B need `generate_proofs.py` to emit the exempt marker), then the R-16 cold reads and the WP24 review (WP24-review.md f30a3ac holds the push-1 evidence; each push appends) | next |
 | 6. WP25 next instance | at the next gate |
+
+Rule added this PM (2026-11-10): a glossary entry regenerates Appendix A (`tab-A-register`) in the same push, in the environment of record.
 
 Worktrees alive: `wp24` (held glossary patch) plus the running units' own. Docker: hts-paper e852cde39180 (the environment of record), hts-alt.
