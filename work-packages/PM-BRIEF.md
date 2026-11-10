@@ -209,8 +209,8 @@ heatmap direction), `WP16-decisions.md` (hold time; one time metric, slew time l
 colouring; the figure principle in `docs/superpowers/notes/figure-review.md`), `WP10-decisions.md` (energy differential
 glossed; PCA distinct, complementary, composable). 0.1 waits for WP23.
 
-Agents the third PM left running (each in `scratchpad/pm-worktrees/<name>`; their reports go to the PM that resumes them
-by agent id; finish their current unit, start nothing new under the old plan):
+Agents of the third PM (each in `scratchpad/pm-worktrees/<name>`; all have stopped with their units pushed; a fresh
+agent per new unit is the norm, or resume one by its id):
 - `paper` (a6741b00a48cdba4d), single writer of paper/paper.ipynb prose, length ledger, generate_findings.py, the
   register rows whose sentence it changes: DONE through unit 8. Unit 7 35b3df6 (energy differential glossed; PCA
   distinct and composable; the opening contrast no longer reads as replacement). Unit 8 e238560: WP19 P-4..P-10 placed
@@ -226,8 +226,12 @@ by agent id; finish their current unit, start nothing new under the old plan):
 - `support` (a4fa6b7ef20ce9a72), single writer of derivation/, proof_map_record.json, paper/supporting_material.ipynb and
   its generators, abstraction-gaps.md, glossary.yaml this batch: unit 5 = glossary wording fixes, entries cell, reach,
   near-frontier band, effective sample size, certificate, mean slack; "support offsets" -> reach in L14/L15 with
-  Appendix B regenerated (container hts-support): DONE 73c14e5; unit 6 = app-D-5 with register C152; "Corollary 4"
-  referred to by name: running at the handover.
+  Appendix B regenerated (container hts-support): DONE 73c14e5; unit 6 DONE 4b5a539: the corollary is "the
+  approximate-certificate corollary" in derivation, tests, solvers, docs and method.md's ledger row; D.8 says "largest
+  facet gap" with register C152; Appendix B and E regenerated. Left as they are, for the fourth PM's judgement:
+  paper-sources/method.md and docs/api.md line 91 use the "Lemma 1, Lemma 2, Proposition 3, Corollary 4" scheme pinned by
+  test_paper_sources; historical spike, spec and PROOF_MAP_FINDINGS records; claim C333's note. Every agent of the third
+  PM has now stopped; none is running.
 - `wp19` (ab45ac93cf19c12c5): DONE at 141653c, 3cd2722: Figure 3 redrawn without facet colouring (paper/figures/planes.py)
   and Figure 4 redrawn as Z0 against log V (chart_level.py), both passed fresh reads; P-6 and P-7 revised in
   WP19-figure-review.md, to be placed by the paper stream (float count 10); the principle check over every figure, paper
