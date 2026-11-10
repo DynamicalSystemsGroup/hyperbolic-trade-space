@@ -182,6 +182,8 @@ Reports in the driver's scratchpad (`readers/round1c/P{1,3,5,6}-A.md`).
 - Stop rule for the abstract: after CR-1c lands, one more depth-A pass; if the only remaining confusions
   are the two items held for the supervisor, the abstract rests until he is back.
 
+Note (2026-11-09, 21:00): figure numbers in the records above are those of the build before 8abb16a; the three WP19 placements renumber every earlier figure by +3 (old Figure 1 is Figure 4, old Figure 2 is Figure 5, and so on).
+
 ## Next
 
 Re-test the L-A and L-B cells after CR-1 to CR-3 land; then the L-C and L-D cells (main text; with
