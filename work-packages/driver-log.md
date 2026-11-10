@@ -7,11 +7,7 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
-- (2026-11-09, 18:10) **The word "energy differential".** Every reader of round 1 guessed at it. Options:
-  keep it and gloss it in one clause at first use in the abstract; or make the glossary's other name,
-  "level offset", the term and keep "energy differential" as the analogy named once. The driver's
-  recommendation: keep it and gloss it; it carries his reading of V as a potential. Work routes
-  around it: the gloss is added either way.
+- (2026-11-09, 18:10; answered 20:40) **The word "energy differential".** Resolved: "Keep it, gloss it" (`WP10-decisions.md`).
 - (2026-11-09, 19:30) **The abstract's PCA sentence.** Round 1b (four cold readers, abstract only,
   after CR-1): the regression reading is gone, but all four read the method as an alternative to PCA
   ("a cleaner alternative to PCA", "replacing PCA-style summaries"). The body says the two chain

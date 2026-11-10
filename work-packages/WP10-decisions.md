@@ -1128,3 +1128,13 @@ file). The push hold on `origin/main` remains until the supervisor lifts it.
   configuration management of a fielded system among them. Statements of scope and intent, not
   claims; the glossary's words. The docs' Home page says the two uses in one sentence.
 
+
+## The word "energy differential" (2026-11-09, 20:40; CR-5 of WP11 round 1)
+
+**Driver's question (popup):** every cold reader so far (16 of 16 across three rounds) guessed at "energy
+differential"; the glossary's other name for log V is "level offset". Options: Keep it, gloss it / Level offset /
+Leave as is. **Supervisor (mzargham), verbatim:** "Keep it, gloss it".
+
+**Disposition.** "energy differential" stays the term; one clause at its first use in the abstract says what it is
+(the design's level relative to the reference surface, by analogy with a potential, not a physical energy); the
+glossary entry keeps "level offset" as the gloss, not a second name. To the paper stream with CR-1c.
