@@ -45,3 +45,21 @@ traded metric, a coverage check that every swap and tune reaches at least one me
 views re-read cold each round, and the interface contract amended if the dataset's columns change. WP16 Amendment 2
 keeps its event-detection work but its regeneration step waits for WP23's model, so the datasets and the paper's
 numbers regenerate once. Step 3f in `release-candidate.md`.
+
+**Supervisor (mzargham), verbatim (2026-11-09, 20:50), reviewing Figure 1's exponent heatmap and the behavioural view
+together:** "reviewing this and this together it seems pretty clear we need to refine out sysmlv2 model so our trade
+space actually matches what the model is trying to accomplish this means a bunch more metrics explicitly included but
+tied to our actual requirements. / the whole thing is actually pretty simple: a space of configs on one side (how its
+constructed) and a space of metrics on the other (how its evaluated). that clarity is why we wanted a sysmlv2 model in
+the first place. once thats done we should see more texture int the grayscale plot attached"
+
+**Disposition, for WP23's scope.** The two pictures are the package's diagnostic pair, read from either side of the
+seam: the heatmap (the K = 1 exponent of each metric across τ) shows four metrics at zero at every temperature
+(settling time, power margin, eclipse reserve, peak slew power), so the fitted facet never trades them; the
+behavioural view shows which traded metrics no requirement reads. Definition of good: the configuration space (how
+the system is constructed: the assembly view's swaps and tunes) and the metric space (how it is evaluated: MoEs and
+MoPs tied to the model's requirements) are each explicit in the model, and the trade space matches what the model is
+trying to accomplish: more metrics included, each tied to a requirement. His expectation, "more texture" in the
+heatmap after regeneration, is the hypothesis the regenerated figure checks; it is not a target the model is tuned to
+(a metric at zero exponent in one facet is a legitimate reading, the n-lemma, when it is explained). Model, fit and
+analysis stay apart: the model changes, the fit is re-run as is, the analysis reads the result.
