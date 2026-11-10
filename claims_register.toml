@@ -360,7 +360,7 @@ note = "Section 6.2; a connective: the box states the conditions under which the
 
 [[claim]]
 id = "C022"
-fragment = "For a soft fit, certified means that the second-order test holds ... and stationary that the term gaps hold and the curvature is not positive"
+fragment = "for a soft fit, certified means that the second-order test holds ... and stationary that the term gaps hold and the curvature is not positive"
 file = "paper/paper.ipynb"
 anchor = "The algorithm for several terms"
 kind = "S"

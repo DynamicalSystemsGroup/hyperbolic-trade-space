@@ -10,9 +10,11 @@ from __future__ import annotations
 import case
 import numpy as np
 from paper_common import Md, appendix_link
-from paper_stability import stable, summary
+from paper_stability import entry, stable, summary
 from paper_terms import aligned
 
+_D3 = appendix_link("sub-d-3", "Appendix D.3")
+_D5 = appendix_link("sub-d-5", "Appendix D.5")
 _D11 = appendix_link("sub-d-11", "Appendix D.11")
 _D14 = appendix_link("sub-d-14", "Appendix D.14")
 _D15 = appendix_link("sub-d-15", "Appendix D.15")
@@ -98,16 +100,46 @@ def datasets_sentence(primary, stock) -> Md:
     )
 
 
+def _about(n: float) -> str:
+    """A count to the nearest five, for a reading ("about 25")."""
+    return str(int(5 * round(float(n) / 5)))
+
+
+def _target_variants_keep_the_set(study) -> bool:
+    """Whether the K = 1 contending set is the baseline's with the target halved and doubled."""
+    t = case.sensitivity_table(study).set_index("variant")
+    sets = {v: set(s.strip() for s in t.loc[v, "contending set"].split(",")) for v in t.index}
+    base = sets["baseline"]
+    return all(sets[v] == base for v in ("target fraction halved", "target fraction doubled"))
+
+
 def temperature_sentence(study, fit) -> Md:
-    """The fit temperature and what it leaves above V = 1."""
+    """The fit temperature and what it leaves above V = 1; what the effective sample size counts.
+
+    The second sentence reads the effective sample size (the glossary's definition: the inverse
+    sum of squares of the support weights, so the designs the soft maximum weighs as if equally)
+    and says whether the contending set holds with the target fraction halved and doubled (D.5);
+    the digits that hold are D.11's.
+    """
     r = study.regime
     frac = stable(f"fit | {r} K=1 | frac_above_", lambda v: f"{v:.3f}")
     n_eff = stable(f"fit | {r} K=1 | n_eff_", lambda v: f"{v:.1f}")
     band = stable("sentence | temperature | band", lambda v: f"{v:.4f}")
+    about = _about(fit.estimator.n_eff_)
+    holds = (
+        "holds with the target fraction halved or doubled"
+        if _target_variants_keep_the_set(study)
+        else "changes with the target fraction halved or doubled"
+    )
     return Md(
         f"The fit temperature is tau = {fit.tau:.1f}: a fraction {frac} of "
         f"designs lies above V = 1 (the target is {study.spec.target_frac:.2f}), the band "
-        f"1/tau is {band} and the effective sample size is {n_eff} designs."
+        f"1/tau is {band} and the effective sample size is {n_eff} designs. The effective "
+        f"sample size is the inverse sum of squares of the support weights, the softmax weights "
+        f"of the designs in the fit: the designs the soft maximum weighs as if equally, so the "
+        f"exponents at the fit temperature rest on about "
+        f"{about} of the {len(study.M)} designs; the contending set {holds} ({_D5}); the digits "
+        f"that hold are in {_D11}."
     )
 
 
@@ -166,6 +198,35 @@ def k_sweep_sentence(study, fits) -> Md:
     )
 
 
+def terms_sentence(study, fits) -> Md:
+    """Each K = 3 term without an association map, with what the main text relies on for it:
+    its contending set, its leading exponent and its near-frontier count; then the term shares.
+
+    The numbers are D.3's rows (``aligned``), printed to the digits that hold.
+    """
+    r = study.regime
+    ft = aligned(r, study, fits)[1]
+    two = lambda v: f"{v:.2f}"  # noqa: E731
+    parts = []
+    for row in ft.itertuples(index=False):
+        if row._5 >= case.MIN_NEAR_FRONTIER:  # near-frontier
+            continue
+        k = int(row.term)
+        lead = str(row._4).split(", ")[0].rsplit(" ", 1)[0]  # largest exponents
+        near = stable(f"D terms K=3 | {r} | {k} | near-frontier")
+        w = stable(f"D exponents K=3 | {r} | {lead} | term {k}", two)
+        names = [s.strip() for s in str(row._2).split(",")]  # contending set
+        parts.append(
+            f"Term {k} has no association map ({near} near-frontier designs of the "
+            f"{_NUMBER_WORDS[case.MIN_NEAR_FRONTIER]} the reading needs); its contending set is "
+            f"{_and(names)}, led by {lead} at {w}."
+        )
+    shares = _and(stable(f"D terms K=3 | {r} | {int(k)} | share", two) for k in ft["term"])
+    terms = _and(int(k) for k in ft["term"])
+    head = " ".join(parts) + " " if parts else "Every term has an association map; "
+    return Md(f"{head}The term shares are {shares} for terms {terms} ({_D3}).")
+
+
 def certificate_sentence(fits) -> Md:
     """What the solver declares for K > 1 on the primary regime (section 6, Numerical)."""
     t = case.certificate_table(fits)
@@ -176,8 +237,10 @@ def certificate_sentence(fits) -> Md:
     ]
     gap = gaps[0] if len(set(gaps)) == 1 else _and(gaps)
     ks = _and(int(k) for k in multi["K"])
+    soft = [not np.isinf(fits[int(k)].estimator.term_temperature) for k in multi["K"]]
+    kind = "soft" if all(soft) else "sharp" if not any(soft) else "sharp and soft"
     return Md(
-        f"On the primary regime the solver declares the status "
+        f"On the primary regime the fits of record are {kind}; the solver declares the status "
         f"{_and(sorted(set(multi['status'])))} at K = {ks}, with the largest term gap {gap}."
     )
 
@@ -206,6 +269,13 @@ def margin_sentence(study, fits) -> Md:
     r, K = study.regime, max(fits)
     four = lambda v: format(v, ".4g")  # noqa: E731
     n, N = designs_on_a_seam(study, fits[K])
+    times = f"{float(f'{fits[K].band / fits[K].estimator.termination_.radius:.1g}'):g}"
+    held = [entry(f"contending | {r} K={K} term {k} | set") for k in range(1, K + 1)]
+    sets = (
+        f"the contending sets themselves hold under rounding-level jitter ({_D11})"
+        if held and all(e is not None and e.get("identical") for e in held)
+        else f"whether the contending sets hold under rounding-level jitter is read in {_D11}"
+    )
     return Md(
         f"At K = {K} the margin is {stable(f'certificate | {r} | {K} | gamma', four)} and the "
         f"stable radius {stable(f'certificate | {r} | {K} | radius', four)}, against a band 1/tau "
@@ -213,7 +283,9 @@ def margin_sentence(study, fits) -> Md:
         f"best-minus-second-best score of "
         f"{stable(f'margin | {r} | {K} | median margin', lambda v: f'{v:.3f}')}: a margin below "
         f"the band puts at least one design within the band of a seam, here {n} of the {N}, and "
-        f"the certificate covers changes under the radius only."
+        f"the certificate covers changes under the radius only. For the {_NUMBER_WORDS[K]}-term "
+        f"split: the local optimality certified covers changes about {times} times smaller than "
+        f"the band, so which term those {n} designs fall to is not a finding; {sets}."
     )
 
 
@@ -247,8 +319,37 @@ def recovery_sentence() -> Md:
     )
 
 
+def _straddling_pair(regs, sets):
+    """The strongest-associated pair of traded metrics, when it is the same pair in both regimes
+    and has one metric in each regime's own part of the contending set: ``((x, y), {regime:
+    spearman})`` with ``x`` in the first regime's own part, else ``None``.
+
+    The association is Spearman over the feasible designs (``case.association_all_pairs``,
+    the table of D.3 and D.4).
+    """
+    a, b = regs
+    strongest = {}
+    for r in regs:
+        row = case.association_all_pairs(case.load_study(r)).iloc[0]
+        strongest[r] = (frozenset((row["metric a"], row["metric b"])), float(row["spearman"]))
+    pair = strongest[a][0]
+    if strongest[b][0] != pair:
+        return None
+    own_a, own_b = pair & (sets[a] - sets[b]), pair & (sets[b] - sets[a])
+    if len(own_a) != 1 or len(own_b) != 1:
+        return None
+    return (next(iter(own_a)), next(iter(own_b))), {r: strongest[r][1] for r in regs}
+
+
 def regime_sentence() -> Md:
-    """The contending sets of the two regimes through the identical pipeline."""
+    """The contending sets of the two regimes through the identical pipeline.
+
+    Where the strongest-associated pair of traded metrics has one member in each regime's own
+    part of the set, the sentence names the pair with its association and counts it as one when
+    it says what each regime alone has (the text before it says why: Theorem 3 gives convexity,
+    not strict convexity, so the split of an exponent between two metrics that move together is
+    not read as a finding).
+    """
     t = case.regime_comparison().set_index("quantity")
     regs = list(case.CUBESAT.regimes)
     sets = {r: set(s.strip() for s in t.loc["contending set", r].split(",")) for r in regs}
@@ -257,12 +358,26 @@ def regime_sentence() -> Md:
     ga, gb = spec.subsystems_of(sets[a]), spec.subsystems_of(sets[b])
     only = [g for g in ga if g not in gb]
     point = f": {_span(only)} enters only in the {a} regime" if only else ""
+    own_a, own_b = sets[a] - sets[b], sets[b] - sets[a]
+    pair = _straddling_pair(regs, sets)
+    if pair:
+        (x, y), rho = pair
+        own_a, own_b = own_a - {x}, own_b - {y}
+        middle = (
+            f"; {x} and {y}, one in each regime's own part, are the strongest-associated pair "
+            f"of traded metrics (Spearman {rho[a]:+.2f} and {rho[b]:+.2f} over the feasible "
+            f"designs, {_D3}); counting them as one, the {a} regime alone has "
+            f"{_and(sorted(own_a))}, the {b} regime alone {_and(sorted(own_b))}"
+        )
+    else:
+        middle = (
+            f"; the {a} regime alone has {_and(sorted(own_a))}, the {b} regime alone "
+            f"{_and(sorted(own_b))}"
+        )
     return Md(
         f"The regimes return a {t.loc['n_lemma', a]}-lemma and a {t.loc['n_lemma', b]}-lemma "
-        f"sharing {len(sets[a] & sets[b])} metrics ({_and(sorted(sets[a] & sets[b]))}); "
-        f"the {a} regime alone has {_and(sorted(sets[a] - sets[b]))}, the {b} regime alone "
-        f"{_and(sorted(sets[b] - sets[a]))}. The {b} set spans "
-        f"{_span(gb)}{point}."
+        f"sharing {len(sets[a] & sets[b])} metrics ({_and(sorted(sets[a] & sets[b]))})"
+        f"{middle}. The {b} set spans {_span(gb)}{point}."
     )
 
 

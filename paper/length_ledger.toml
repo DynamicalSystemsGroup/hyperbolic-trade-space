@@ -641,3 +641,69 @@ section = "Discussion"
 words_added = 155
 job = "the generated check reading states spike A's finding on the proposals (the four-metric frontier reached by spending the battery, their batteries and depths of discharge) and the future work, in place of a clause the close-out made untrue; and the two CANDIDATE sentences on the requirements read after the fit, for the supervisor's review (claims C406, C407)"
 reader = "the trade-study practitioner deciding how to use the fit beside a set of requirements"
+
+# Rows: WP11 round 2, the author stream's unit 1 (change requests CR-9 to CR-14 and CR-16). Each
+# generated sentence that grew is listed with the cell that prints it.
+
+[[raise]]
+date = "2026-11-10"
+section = "The decision problem"
+words_added = 14
+job = "places the fitted reference surface at the outer edge of the data, not through its middle, in the first main result, which cites Theorem 1 for the invariant value and Definition 1 for the three objects (CR-9)"
+reader = "the reader of the main results who had the surface fitted through the table"
+
+[[raise]]
+date = "2026-11-10"
+section = "Definitions"
+words_added = 25
+job = "states in the n-lemma definition which set the reading uses: the contending set names the n-lemma, the exponents at the fit temperature give the elasticities, and a member below the participation threshold contends in the limit (CR-12)"
+reader = "the reader deciding which set to report when an outlined metric is grey and an unoutlined one carries 0.02"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 13
+job = "says in Theorem 10 the step from the symmetry of a convex program to the non-convexity of the fit, in L16's words: a fit with distinct terms is lower than the all-equal point (CR-16)"
+reader = "the reader who stopped at the theorem's so"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 57
+job = "says that the fits of record are sharp and defines certified for a sharp fit from the termination record beside the soft definition, with the results that apply to each (CR-14); the generated status sentence (num-certificates) names the kind"
+reader = "the user reading a returned fit's status against the theorems"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 41
+job = "the generated margin sentence (num-margin) ends with the reading of a margin below the band for the three-term split: the certified local optimality covers changes about seventy times smaller than the band, and the contending sets' stability is D.11's (CR-13)"
+reader = "the reader who could not tell whether the margin is good, bad or routine"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 68
+job = "the generated temperature sentence (num-temperature) says what the effective sample size counts and what its value means for the exponents, with the sensitivity (D.5) and the digits that hold (D.11) (CR-10)"
+reader = "the ten readers who stopped on the effective sample size"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 51
+job = "a generated sentence (num-terms-k3) prints what the main text relies on for the term without an association map: its contending set, its leading exponent and its near-frontier count, and the term shares (CR-11)"
+reader = "the reader who met a placeholder where a headline term's reading should be"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 84
+job = "says what the fit can and cannot tell apart between two metrics that move together (convex, not strictly, Theorem 3) and that the regimes are compared with such a pair counted as one; the generated regimes sentence (num-regimes) names the pair with its association and counts it so (CR-12)"
+reader = "the seven readers who called the regimes' difference a swap of names"
+
+[[raise]]
+date = "2026-11-10"
+section = "Discussion"
+words_added = 13
+job = "cites in the three-claims paragraph the result that applies to the fit of record's kind: Proposition 3 and Corollary 1 for a sharp fit, Theorem 12 for a soft one (CR-14)"
+reader = "the reader checking the certificate claim against the theorem it rests on"
