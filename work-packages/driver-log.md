@@ -7,6 +7,12 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- (2026-11-10, 14:45) **A cost-to-build budget for the sponsor's "lowCost" concern (WP27, held item H-2).** The
+  model now carries an illustrative cost to build (158.5k / 216.2k / 407.6k USD for the compact, baseline and agile
+  configurations, from the parts) beside the launch cost; a requirement on it needs a budget only you can set. Options:
+  a budget that admits the baseline (above 216.2k USD, stated illustrative); a budget below the agile configuration so
+  the concern binds the wheel and tracker choice; or no budget, the cost to build an MoE with no bound. Non-blocking;
+  the concern is traced either way.
 - (2026-11-10, 08:45; answered 08:55) **The pointing-error threshold and the baseline.** Resolved: "Keep 0.0085 deg"; the case says the baseline fails it (`WP23-decisions.md`).
 - (2026-11-10, 08:35; answered 08:50) **The paper's Discussion and the requirements reading.** Resolved: the fit of record stays unconstrained by the thresholds; the cuts are after-the-fact analysis in Appendix D and the repo; one or two sentences in the Discussion (`WP23-decisions.md`).
 - (2026-11-10, 02:25) **Do proposals that fail a model requirement count as check designs?** Under the stated
