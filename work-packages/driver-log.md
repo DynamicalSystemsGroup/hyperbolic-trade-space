@@ -340,6 +340,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-10 | commit a27191e, tier 2 watcher, this Mac (WP23 D-7 case prose) | 2166 passed, 16 skipped, 1 xfailed; all checks | a verdict: green; the gate unit (regeneration with the reach rule) is the next head to verify on both platforms |
 | 2026-11-10 | commit 8507bd9, CI run on ubuntu, three shards (the WP23 gate unit: swap, contract 12, reach rule, regeneration of record) | fast, slow and docs-paper all green | a verdict: the gate head is green on Linux; the Mac watcher's run on it is next; the swap call waits on D-9 |
 | 2026-11-10 | commit 241c63d, tier 2 watcher, this Mac (contains the WP23 gate unit 8507bd9 and the heatmap redraw 2) | 2166 passed, 16 skipped, 1 xfailed; all checks; lock; lemmas; proof map; 0 drifts; attribution 0 | a verdict: the gate head is green on both platforms; the WP23 swap is final (WP23-decisions.md) |
+| 2026-11-10 | commit c622c6e, tier 2 watcher, this Mac (the fifth-PM handover head; the suite now 2223 tests after WP23's additions) | 2223 passed, 16 skipped, 1 xfailed; all checks; 29 min | a verdict: green; the paper's regeneration unit is the next head of consequence |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
