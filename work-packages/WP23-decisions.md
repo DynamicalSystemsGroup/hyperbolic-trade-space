@@ -178,3 +178,7 @@ that one line of box text (generator, views, the paper's byte copy); WP23 is fin
 700 px check, a one-line wording change needing no further cold read. The arrows finding (read backwards, then
 right through the legend in the image) is no change. With this, every gap of the acceptance review is disposed and
 **WP23 is accepted**; the supervisor's three items stay under "Waiting for the supervisor".
+
+**WP23 final hash: db59365** (revision 8 of the behavioural view; the analysis box reads "returns 8 of 9 metrics,
+computed with no slew: pointing error, total mass"; the paper's byte copy updated). Accepted by the driver under the
+mandate, 2026-11-10, 07:25.
