@@ -1431,7 +1431,7 @@ def test_cells_whose_output_is_embedded_are_removed_from_the_page():
     with only ``remove-input`` the page showed each of its outputs twice."""
     nb = _nb(PAPER_NB)
     embedded = set(re.findall(r"\{(?:embed|figure)\} #([\w-]+)", _markdown(nb)))
-    assert len(embedded) >= 6  # five figures and the family table (WP19 P-7, P-10 removed two)
+    assert len(embedded) >= 5  # four figure cells and the family table (WP19 P-7, P-10, P-6 rev.)
     cells = {c.id: c for c in _code_cells(nb)}
     for label in embedded:
         assert "remove-cell" in cells[label].metadata.get("tags", []), label
@@ -1835,7 +1835,7 @@ def test_myst_builds_the_html_site(tmp_path):
     html = work / "_build" / "html"
     page = (html / "index.json").read_text(encoding="utf-8")
     urls = re.findall(r'"url":"(/build/fig[\w.-]+\.png)"[^]]*?enlarge', page)
-    assert len(urls) == 5  # the case's five figures (WP19 P-7, P-10); static ones have none
+    assert len(urls) == 4  # four figure cells (WP19 P-7, P-10, P-6 revised); none for static ones
     assert all((html / u.lstrip("/")).is_file() for u in urls)
     support = (html / "supporting-material.json").read_text(encoding="utf-8")
     for label in _subsection_labels():
@@ -2023,7 +2023,7 @@ def test_every_figure_and_table_is_referenced_from_the_text():
     """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
     body = _markdown(_nb(PAPER_NB))
     floats = re.findall(r"^:::+\{(?:figure|table)\}[^\n]*\n:label: (\S+)", body, re.M)
-    assert len(floats) == 9, floats  # eight figures (WP19 P-1 to P-10) and the family table
+    assert len(floats) == 10, floats  # nine figures (WP19 P-1 to P-10 revised) and the family table
     for cell in _nb(PAPER_NB).cells:
         if cell.cell_type != "markdown" or cell.id == "frontmatter":
             continue
@@ -2486,7 +2486,7 @@ def test_every_figure_shows_its_smallest_text_at_the_body_small_print_size_at_12
     shows the image (the column is FIGURE_COLUMN_PX wide; an image narrower than it is not
     stretched). Figure 6 was shown at 0.40 of its size and its 7 pt labels were 4 px."""
     images = _figure_images()
-    assert len(images) == 5  # WP19 P-7 and P-10 removed two
+    assert len(images) == 4  # the case's figure cells (WP19 P-7, P-10; P-6 revised: Fig. 3 static)
     for name, (data, min_pt) in images.items():
         width, dpi = _png_size_and_dpi(data)
         scale = min(1.0, FIGURE_COLUMN_PX / width)

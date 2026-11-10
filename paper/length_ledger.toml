@@ -470,3 +470,35 @@ section = "Case analysis"
 words_added = 24
 job = "new captions: the plane's line is a slice of the surface at the median of the other metrics, association is the Pearson correlation of the log-metrics, w is the fitted exponent (WP19 P-5, P-8, P-9), net of the two removed figures"
 reader = "the reader who read the plane as the whole surface and asked what association means"
+
+# Rows: WP19 P-6 revised and P-7 revised (the supervisor's verdict on Figures 3 and 4): the K = 3
+# planes redrawn without facet colouring and the chart redrawn as position against level, both
+# placed as static figures with the review's captions and their three lines.
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 86
+job = "captions the redrawn K = 3 planes (WP19 P-6 revised): the black line is the surface in a slice, one straight segment per facet, the other metrics held at a median, the discrete bands of the bottom panel, net of the caption it replaces"
+reader = "the reader who took a facet for a group of designs"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 55
+job = "captions the chart redrawn as position against level (WP19 P-7 revised): the surface is the flat line log V = 0 and a design's level is read apart from its position"
+reader = "the reader asking what the chart separates"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 106
+job = "says what the K = 3 planes and the chart show, do not show and are good for (the figure-review rule, WP19 P-6 and P-7 revised)"
+reader = "the reader deciding what to take from each case figure"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 18
+job = "the K = 3 paragraph refers to the chart figure and says what the planes show (the surface bending where facets meet) in place of 'their envelope' (WP19 P-6 and P-7 revised)"
+reader = "the reader of the case analysis"
