@@ -49,9 +49,8 @@ Rewritten per instance (A3). The first instance's report is at `f9573fd`; the de
 
 ## Gaps (D-4, G3): the nine rows re-checked
 
-The contract's 124 pinned names grepped over `docs/*.md docs/user-guide/*.md`: 37 absent now (33 at the first instance; the
-four more are the renamed `assign_cells`, `cell_`, `cell_labels`, `term_gap`, `term_objective`, `term_share_`,
-`single_term_termination` replacing their old names, which were absent too and are not in the count). `plot_ternary` and
+The contract's 124 pinned names grepped over `docs/*.md docs/user-guide/*.md`: 37 absent now (33 at the first instance); the renames of WP24 push 1 account for the difference (`assign_cells`, `cell_`,
+`cell_labels`, `term_gap`, `term_objective`, `term_share_`, `single_term_termination` are new names no page uses yet). `plot_ternary` and
 `ternary_marker_values`: 0 hits in `docs/api.md` and `chart.md` (4 in `examples.md`). No fill in unit A (every page is on
 WP24's list).
 
