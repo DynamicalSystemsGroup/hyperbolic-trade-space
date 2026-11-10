@@ -141,3 +141,22 @@ trade-off at all (control effort 1e-17); three terms find it in a term of its ow
 **The swap is final (2026-11-10, 02:45).** The Mac tier 2 watcher is green on 241c63d (2166 passed, all checks),
 a head that contains the gate unit 8507bd9; Linux was green on 8507bd9 in three shards. The WP23 model is the model
 of record, the nine-metric datasets the data of record; the paper moves onto them (the fifth PM's first unit).
+
+## Acceptance review (f5a63c2): the driver's gap dispositions (2026-11-10, 05:20)
+
+The review recommends acceptance with ten gaps. Dispositions: G-1 the amended reading of R-5 is accepted (the
+model's section-4 `SlewTime` names are closed-form calcs; the frozen generator keeps its outputs by the scope's
+non-goal). G-2 the two paper view copies, authorized at the push, are a recorded exception, not a drift. G-3 is a
+real gap: two fresh P2 and P3 cold reads of the committed views at revision 6, image first, before acceptance is
+final. G-4 is closed by subtraction: round 2's pair is not regenerated; round 3 and the gate carry the record. G-5
+is a real gap: the before-and-after texture record is D-9's "Changed conclusions" item on the zero-exponent sets
+(it stays unchanged: three metrics in the primary regime, one in the baseline) and the review cites it; the case
+prose's outcome paragraph is rewritten on the data of record in the paper's next prose unit. G-6: the decision is
+the one recorded with the PM on 2026-11-10, 03:20: an entry is added when the corpus uses its term; MoE and MoP
+enter with the paper's Section 8 sentence. G-7 is a real gap: `case-model.md` joins the vocabulary tool's corpus and
+its two stem findings are fixed. G-8 the files outside the blast radius are accepted as recorded. G-9 the gate
+folder is the record of the gate at its commit, which its README says. G-10 is fixed at 126e1ea.
+
+**Decision:** WP23 accepted, final when G-3, G-5 and G-7 land (three small units, one push each), recorded here
+with their hashes. The supervisor's items (the four thresholds, the two redundancies, the proposals' feasibility)
+stay under "Waiting for the supervisor".
