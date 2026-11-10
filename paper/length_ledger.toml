@@ -284,6 +284,12 @@ words_added = 7
 job = "states the case's finding in the main-results list's words: one facet blends the subsystems' trade-offs, three facets separate the contending sets"
 reader = "the reader of the abstract alone, 3 of 4 of whom read nothing in the old ending"
 
+[[abstract.raise]]
+date = "2026-11-09"
+words_added = 8
+job = "replaces soft supporting envelope with the plain picture: fitted to the outer edge of the data, not through its middle (CR-1c)"
+reader = "the reader of the abstract alone, 4 of 4 of whom read an envelope as a boundary"
+
 # Rows: PM-BRIEF ruling 2 (Theorem 11, descent): cell and facet kept apart.
 
 [[raise]]
@@ -377,3 +383,48 @@ section = "Discussion"
 words_added = 1
 job = "puts the glossary's term in place of a synonym, one object one name (R-36)"
 reader = "the reader matching each name to its glossary entry"
+
+# Rows: WP19 placements (work-packages/WP19-figure-review.md, "Ready for placement"): each figure's
+# caption, its three lines (shows; does not show; good for) and the sentence that refers to it.
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 117
+job = "captions the n-lemma figure (WP19 P-1): how a facet's exponent vector sits on the simplex and which face names its n-lemma"
+reader = "the reader meeting n-lemma as a word and wanting the picture"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 64
+job = "says what the n-lemma figure shows, does not show and is good for (the figure-review rule, WP19 P-1)"
+reader = "the reader deciding what to take from the figure"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 10
+job = "refers to the n-lemma figure from the text after Definition 5 (WP19 P-1)"
+reader = "the reader of the definitions"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case construction"
+words_added = 192
+job = "captions the assembly view and the behavioural view of the cubesat model (WP19 P-2, P-3): parts and configuration variables; requirements, traded metrics and their sources"
+reader = "the modeller mapping the case onto a system model"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case construction"
+words_added = 124
+job = "says what the two model views show, do not show and are good for (the figure-review rule, WP19 P-2, P-3)"
+reader = "the reader deciding what to take from each view"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case construction"
+words_added = 14
+job = "refers to the two model views from the text of Section 8 (WP19 P-2, P-3)"
+reader = "the reader of the case construction"

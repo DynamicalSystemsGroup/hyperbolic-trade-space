@@ -1835,7 +1835,7 @@ def test_myst_builds_the_html_site(tmp_path):
     html = work / "_build" / "html"
     page = (html / "index.json").read_text(encoding="utf-8")
     urls = re.findall(r'"url":"(/build/fig[\w.-]+\.png)"[^]]*?enlarge', page)
-    assert len(urls) == 8
+    assert len(urls) == 7  # the case's seven figures; the static WP19 figures need no enlarge link
     assert all((html / u.lstrip("/")).is_file() for u in urls)
     support = (html / "supporting-material.json").read_text(encoding="utf-8")
     for label in _subsection_labels():
@@ -2023,7 +2023,7 @@ def test_every_figure_and_table_is_referenced_from_the_text():
     """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
     body = _markdown(_nb(PAPER_NB))
     floats = re.findall(r"^:::+\{(?:figure|table)\}[^\n]*\n:label: (\S+)", body, re.M)
-    assert len(floats) == 8, floats  # seven figures and the family table (candidates: D.7)
+    assert len(floats) == 11, floats  # ten figures (WP19 P-1 to P-3) and the family table
     for cell in _nb(PAPER_NB).cells:
         if cell.cell_type != "markdown" or cell.id == "frontmatter":
             continue
