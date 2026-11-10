@@ -72,18 +72,20 @@ Shared files with a single owner: `glossary.yaml` (P2; other streams send entrie
 `work-packages/interface-contract.*` (P7 until its amendment lands), `paper/paper.ipynb` (P1),
 the docs pages (P6), `pyproject.toml` and `uv.lock` (the driver).
 
-## Packages running or scoped (PM, latest; third PM, 2026-11-09 night)
+## Packages running or scoped (PM, latest; third PM, 2026-11-09, late night; the supervisor is back)
 
 | Package | State |
 |---|---|
-| WP17 Linux soft-fit | closed: Linux run 42727700605 on 62085bb green in all three shards (seed 3 case passes on amd64); recorded by the driver in `driver-log.md` |
-| WP21 (assessment response) | code, paper and docs pushed earlier; Theorem 11 cell/facet wording 18dd8b6 (ruling 2); claims U08-C040, U09-C038 8a7e583 and U05-C009 backed by L5.25 3ff2e67, cited 4f63628 (ruling 3); G-18 in the glossary's words 73a8435 (ruling 4) |
-| WP10 Amendments 4 and 5 (paper stream, P1) | abstract CR-1b 85733c1 (cap 200 to 210 by ledger entry); CR-3, CR-6, CR-7, CR-8, Corollary enumerated, Section 9 sceptic sentence 4f63628; R-36 paper vocabulary 9d5d3fd; running: CR-1c and the placement of the three WP19 candidates |
-| WP10 Amendment 4 R-36 (vocabulary) | P3 re-triage by stem 6b5d582; avoid lists and baseline 8c9d0a2; derivation-side fixes cce0ac5; running: docs and docstring fixes (docsvocab, held for 7 register fragments, now released), support unit 4 (A3 wording, gaps ledger, Corollary 1 in generate_proofs, app-D-5, generate_results); for the driver: the glossary's own wording in three entries, nine new-term candidates, `reach` and `cell` entries |
-| WP22 (system model views) | gate report 10cde31, 264f1b8; gate decision swap 9c444e3 (driver); WP22d executed ff717ed + 6ed13ed (cubesat.sysml is the adopted model, views at `examples/adcs/model_v2/views/`, ledger @3 entries, outputs byte-identical, paper unchanged); running: header comment fix with ledger re-run; R3-2, R3-3 accepted, no round 4 |
-| WP19 (figures) | executing (approved 7f162c6): slot list 20496d7; recipes 4c91675; n-lemma generator 009e96e; reads and record 19a/19b c6b318b (n-lemma ternary, assembly view, behavioural view passed their cold reads with captions, ready for placement); running: copy step for the view images, then 19c to 19e |
-| WP16 (data swap) | Amendment 2 drafted f7d180d, waits for the driver's approval (OD-A grazing as gap G-17 narrowed or a redefinition; OD-B the frozen tie test's two time columns; defaults as one item); the blast radius includes `examples/adcs/experiments/cubesat_oracle.py` where the times are read |
+| WP17 Linux soft-fit | closed: Linux 62085bb green in all three shards |
+| WP10 (paper stream, P1) | abstract 85733c1, CR-1c + WP19 placements 8abb16a (218 words by ledger); CR-3/6/7/8, Corollary, Section 9 4f63628; R-36 9d5d3fd; running: unit 7 (energy differential glossed; PCA distinct, complementary, composable; WP10-decisions.md), unit 8 (WP19 P-4..P-10 except Figure 3) |
+| WP10 R-36 vocabulary | re-triage 6b5d582, 8c9d0a2; derivation cce0ac5; docs 7be42ee; support bde5362; running: support unit 5 (glossary wording and six entries, reach in L14/L15), unit 6 (C152 with app-D-5; Corollary by name) |
+| WP21 | rulings 2-4 landed (18dd8b6, 8a7e583, 3ff2e67, 73a8435); nothing open |
+| WP22 | gate report 10cde31/264f1b8; decision swap 9c444e3; WP22d ff717ed, 6ed13ed, header d3018ba (model hash 0a0b4a4b64d1..., ledger @4, 0 drifts); WP22b/c folded into WP23 |
+| WP19 | good enough reached 20496d7..da6662f (3 placed, Figures 4 and 7 dropped, captions); re-opened by the supervisor (WP19-decisions.md): Figure 3 redraw without facet colouring, Figure 4 sentence test, principle check over all figures (report first); all figures regenerate after WP23 |
+| WP16 | Amendment 2 approved 7eaf468; unit 0 3d152c3; A/B reverted on the R-4 stop (K = 3 contending sets move with event-detected settling time; trial recorded in swap-evidence.md); now: settling time only, default-off switch; the regeneration and data gate move to WP23 |
+| WP23 (model-realism loop) | scope drafted 7ffb719, awaits the driver's triage and the supervisor's OD1..OD8 |
 | WP8b | approved; version step and reviewer's guide are the driver's |
-| Housekeeping | d7d9919, 811d260 (vocabulary baseline, register row C386); incident: 3ff2e67 was pushed before its appendix_b run at that exact commit (passed at its child; the head verified by tier 2); the stream was told to rebase, run, push as separate commands |
 
-File ownership added this batch: the stream that changes a registered sentence owns that row's `fragment` in `claims_register.toml` and nothing else in it; `paper/supporting_material.ipynb`, its generators and `derivation/` are one writer (the support stream) in this batch.
+File ownership rules added this PM: the stream that changes a registered sentence owns that row's `fragment` in
+`claims_register.toml` and nothing else in it; `paper/supporting_material.ipynb`, its generators and `derivation/` have one
+writer at a time (the support stream); Appendix B is regenerated in a stream-named `hts-<stream>` image, removed after.

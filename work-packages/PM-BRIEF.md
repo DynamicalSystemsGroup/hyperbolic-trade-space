@@ -202,31 +202,47 @@ state lives in files, so a handover is: this brief, `parallel-board.md` with its
 the `WPn-decisions.md` files, `driver-log.md`, and the outgoing PM's one-page note of what its
 agents are doing. The outgoing PM finishes the agents it has running and starts nothing new.
 
-## Current state at the handover (second PM to third, 2026-11-09, evening; parallel-board.md is the live copy)
+## Current state at the handover (third PM to fourth, 2026-11-09, late night; parallel-board.md is the live copy)
 
-Streams (state; hash; open item; owner):
-- P1 paper prose: done through CR-1..3 (60b1576, 5518240), WP21 sentences (3d7d149), App. F paragraph (792daa8), framing sentences (36718d3); open: items 1 to 3 below; owner: paper stream (single writer of paper/paper.ipynb prose).
-- P2 vocabulary tool 9a3156e; baseline cleaned d7d9919; owner P2 (glossary.yaml).
-- P3 vocabulary reading b7df6be, 62a677e: 1337 rule-based items; open: item 5 below.
-- P4/P5 claims: register tool 4cb61c0; 328 rows landed 7bba8ed (10 dropped for fragment mismatch, listed in WP10-claims-review.md); generated-notebook claims unregistered (a checker finding).
-- P6 docs: 3dbac94, 0fb09ab, 183397d, 8752903; owner docs stream.
-- P8 figures: ce87711 table, applied abd6c11 (desktop width only browser-checked).
-- P10 container: accepted on regeneration 03189c5, d66c106, 25dba3c; hts-paper/hts-alt; Docker limits stand.
-- P11 = WP20: 04a3471, 78f5e1c, fix-forward 5775220; accepted pending tier 2.
-- WP17 Linux soft-fit: 14f7100, 6a8abd5; Linux run 42727700605 on 62085bb dispatched; read it first.
-- WP21: code 5b55870..3a552c6, paper 3d7d149, docs 8752903 (accepted pending tier 2).
-- WP22: rounds 1-3 bc71cfe, c5502ff, 9fc3952; stop recommended; optional round 4 (dashed same-statement link SlewBand/SlewTime); the model swap is a recorded gate with the comparison report skeleton in WP22-review.md, not done.
-- WP19: approved (7f162c6); not started; inputs: the two model views, WP11 CR-4 evidence.
-- WP8b: approved; version 0.1.0, reviewer's guide and reference keys are the driver's.
-- WP16 (data swap): unblocked after WP22 (event detection); amendment to its scope owed to the driver.
+The supervisor is back. His directions of tonight are verbatim in `WP22-decisions.md` ("The model-realism loop" and the
+heatmap direction), `WP16-decisions.md` (hold time; one time metric, slew time leaves), `WP19-decisions.md` (no facet
+colouring; the figure principle in `docs/superpowers/notes/figure-review.md`), `WP10-decisions.md` (energy differential
+glossed; PCA distinct, complementary, composable). 0.1 waits for WP23.
 
-Dispatched rulings of the driver (to run, none started):
-1. Abstract (paper stream): keep "mirrors the structure of PCA" and do not re-add "chain"; amend tests/test_paper.py case-sentence assertion (drop the bans on "three facets", "one facet reports"; keep "ten attributes", "controller-gain"); case sentence: "On a cubesat model coupling power, mass and attitude control, one facet blends the subsystems' trade-offs into a single tension; three facets separate the contending sets."; "the table and its reading are views of that model"; hold the 200-word cap by cutting words that do no work, else raise it with a length-ledger entry and say so in the commit.
-2. Theorem 11 statement ("reassigning each row to its maximizing facet lowers or keeps F ... a partition into nonempty cells"): say "cell" for a set of rows and "facet" for a piece of the surface, once where first used; mathematics unchanged (paper stream).
-3. U05-C009: back the band-weight sentence with one lemma step (softmax ratio p_i/p_0 = e^{tau s_i} <= e when |s_i| <= 1/tau) in the lemma owning the soft maximum, Appendix B regenerated and its test passed in the same push; U08-C040: narrow to what L11 proves, drop "only", say the converse is not claimed; U09-C038: the generator (paper/generate_findings.py) prints the count, no "a few".
-4. G-18 generated Appendix E: map "fitted envelope" and "loss envelope" to glossary terms in the generator (paper/generate_gaps.py or the ledger source), regenerate in the container; a distinct object gets a proposed glossary entry for the driver, not a new name; then remove the two baseline rows (owner P1).
-5. P3 re-triage: one agent, one pass over the 1337 items grouped by stem with counts, act on stems that are synonyms of glossary terms, baseline the rest with a one-line reason per stem; the table in work-packages/WP10-vocabulary-review.md is the deliverable.
-Also waiting: the driver records the PCA readback (4 of 4 read it as an alternative) for the supervisor; CR-5 (energy differential) is held for the supervisor; WP20 R-3 is closed.
+Agents the third PM left running (each in `scratchpad/pm-worktrees/<name>`; their reports go to the PM that resumes them
+by agent id; finish their current unit, start nothing new under the old plan):
+- `paper` (a6741b00a48cdba4d), single writer of paper/paper.ipynb prose, length ledger, generate_findings.py, the
+  register rows whose sentence it changes: unit 7 = the two WP10 decisions above (hash to the driver for a depth-A pass);
+  unit 8 = WP19 P-4..P-10 placement except Figure 3's caption (awaits the redraw).
+- `support` (a4fa6b7ef20ce9a72), single writer of derivation/, proof_map_record.json, paper/supporting_material.ipynb and
+  its generators, abstraction-gaps.md, glossary.yaml this batch: unit 5 = glossary wording fixes, entries cell, reach,
+  near-frontier band, effective sample size, certificate, mean slack; "support offsets" -> reach in L14/L15 with
+  Appendix B regenerated (container hts-support); unit 6 = app-D-5 with register C152; "Corollary 4" referred to by name.
+- `wp19` (ab45ac93cf19c12c5): Figure 3 (fig-plane-k3) redraw without facet colouring, re-read; Figure 4 (chart) sentence
+  test; the principle check over every figure, paper and docs, reported before change; on current data only.
+- `wp16` (ae763977995a7ace5): event detection for the settling time only (hold time = last exit), default-off switch so
+  dev stays green; the first regeneration trial recorded in swap-evidence.md; the regeneration itself HELD for WP23.
+- `wp23scope` (a2f46545b2fd2ee30): done; `WP23-scope-of-work.md` at 7ffb719 awaits the driver's triage and the
+  supervisor's answers to OD1..OD8 (OD2, a finding: cost proportional to mass is the same log column shifted).
+
+Landed this PM (all on dev): rulings 1-5 (85733c1, 18dd8b6, 8a7e583, 3ff2e67, 73a8435, 6b5d582, 8c9d0a2); CR-3/6/7/8,
+Corollary enumerated, Section 9 sentence 4f63628; CR-1c and the three WP19 placements 8abb16a; R-36 vocabulary 9d5d3fd,
+cce0ac5, 7be42ee, bde5362; WP22 gate report 10cde31/264f1b8, decision 9c444e3 (driver), WP22d ff717ed/6ed13ed/d3018ba
+(cubesat.sysml adopted, views at examples/adcs/model_v2/views/, ledger @4, outputs byte-identical); WP19 to its good
+enough 20496d7..da6662f (then re-opened by the supervisor's verdict); WP16 Amendment 2 drafted f7d180d, approved 7eaf468,
+unit 0 3d152c3, units A/B pushed and reverted (f5ed834/77844c5, a1b898e/fd73da8) on the R-4 stop, now superseded.
+
+Rules the third PM added (in `parallel-board.md`): the stream that changes a registered sentence owns that row's
+`fragment` in claims_register.toml and nothing else there; one writer for supporting_material.ipynb and derivation/ at a
+time; Appendix B regeneration is done in a stream-named `hts-<stream>` image removed afterwards (36 s build, 80 s run);
+rebase, run, push as separate commands (one incident: 3ff2e67 pushed before its appendix_b run at that commit).
+
+Next for the fourth PM: take the agents' final reports and the driver's decisions on WP23; when WP23 is approved, run it
+as the scope says (rounds in their own worktree; the regeneration once, in hts-paper, with WP16's event detection; the
+data gate comparison listing every moved number with its cause); after the gate, the paper's regeneration (paper stream
+and support stream idle meanwhile), the WP19 figures redrawn on the new data, the slot list re-read; a Linux dispatch is
+the driver's, per batch. Known items: Figure 7's generator labels Z1 for Z2 (case.py, regenerate time); the triage and
+reader records cite the old figure numbers; the glossary's `energy-differential` entry may need the gloss wording.
 
 ## Escalation (2026-11-09, the supervisor)
 
