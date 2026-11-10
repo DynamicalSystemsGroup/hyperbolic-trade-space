@@ -1962,11 +1962,11 @@ fragment = "`uncertified`, `guard_stop` and `iteration_cap`: level 1 only, repor
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
-backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:tests/test_solvers.py::test_iteration_cap_status", "test:tests/test_solvers.py::test_guard_stop_returns_the_consistent_previous_state", "test:tests/test_estimator.py::test_convergence_warning_keyed_to_iteration_cap"]
+backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:tests/test_solvers.py::test_iteration_cap_status", "test:tests/test_solvers.py::test_guard_stop_returns_the_consistent_previous_state", "test:tests/test_estimator.py::test_convergence_warning_at_the_cap_while_the_objective_still_moves", "test:tests/test_estimator.py::test_iteration_cap_warns_only_when_not_stationary_to_tol"]
 status = "backed"
 disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "statuses pinned and warned (reported apart from certified); 'level 1 only' is documentation, not asserted; uncertified status itself has no named test"
+source = "P5 claims pass, WP10 Amendment 5 R-43; estimator unit 18d0064"
+note = "statuses pinned and reported apart from certified; since 18d0064 iteration_cap warns only when the max term gap or the last objective change exceeds tol (silent otherwise, status still recorded); 'level 1 only' is documentation, not asserted; uncertified status itself has no named test"
 
 [[claim]]
 id = "C151"
@@ -4134,11 +4134,11 @@ fragment = "- `iteration_cap`: `max_iter` reached. Not converged."
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_solvers.py::test_iteration_cap_status", "test:tests/test_estimator.py::test_convergence_warning_keyed_to_iteration_cap"]
+backing = ["test:tests/test_solvers.py::test_iteration_cap_status", "test:tests/test_estimator.py::test_iteration_cap_warns_only_when_not_stationary_to_tol", "test:tests/test_estimator.py::test_a_cycle_among_tied_rows_at_the_cap_is_silent"]
 status = "backed"
 disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "max_iter reached gives iteration_cap, success False, and a ConvergenceWarning"
+source = "P5 claims pass, WP10 Amendment 5 R-43; estimator unit 18d0064"
+note = "max_iter reached gives iteration_cap and success False; since 18d0064 the ConvergenceWarning fires only when the max term gap or the last objective change exceeds tol, so 'Not converged.' overstates a cap reached with the fit stationary (a cycle among tied rows); the sentence is the termination page's to narrow"
 
 [[claim]]
 id = "C332"
