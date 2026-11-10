@@ -43,6 +43,12 @@ RESIZE = {"adcs-tensions": 6.3}
 # beside the module (WP19's n-lemma candidate). The index page's three-pane figure has its own
 # command (``uv run python paper/figures/figure1.py``) and is not rebuilt here: its SVG's ids vary.
 PAPER_FIGURES = ("nlemma",)
+# The model's two views, drawn by the model's own projection (PlantUML, a system tool) and committed
+# beside the model; the paper takes byte-identical copies (published path in paper/figures: source).
+MODEL_VIEWS = {
+    "fig-assembly-view.png": "examples/adcs/model_v2/views/assembly_view.png",
+    "fig-behavioural-view.png": "examples/adcs/model_v2/views/behavioural_view.png",
+}
 
 # What differs between the schemes: the style that is applied, and the colour of "black". The
 # dark scheme leaves ``text.color`` alone: the heatmap's cell values are drawn in it, on cells that
@@ -185,7 +191,9 @@ def build_paper(modules=PAPER_FIGURES):
                 importlib.import_module(f"figures.{name}").main()
     finally:
         sys.path[:] = sys_path
-    return list(modules)
+    for name, source in MODEL_VIEWS.items():
+        (ROOT / "paper" / "figures" / name).write_bytes((ROOT / source).read_bytes())
+    return [*modules, *MODEL_VIEWS]
 
 
 def main(argv=None):

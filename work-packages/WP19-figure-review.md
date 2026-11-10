@@ -216,10 +216,15 @@ metric and where each metric comes from (the chain from model to metric the supe
 all taken by both readers. (3) Ink: dense but data; the dashed top box and the legend take about a
 quarter. (4) 700 px native; the box text and legend are small (all readers) but read correctly; not
 redrawn here. (5) Lines below. Friction, triaged: the "same statement as SlewBandRequirement" note
-(three readers across C) and the SysML stereotypes are in the model's projection (WP22's files, not
+(both readers of C) and the SysML stereotypes are in the model's projection (WP22's files, not
 this package's): a finding for the model stream, not a caption. **Disposition: keep, with the caption.
-Ready for placement**, with the finding passed to WP22 (drop or explain the same-statement note; the
-stereotype lines «satisfy»/«verify» could go from the paper's version).
+Ready for placement.**
+
+Note for the supervisor's review (the PM's ruling on Q-2: the WP22 loop is closed by the driver and the
+caption carries the figure): the readers stalled on the "same statement as SlewBandRequirement" note
+inside the SlewTimeRequirement box (both readers of this view) and on the
+«satisfy» and «verify» lines, which a decision maker cannot read. Options for a later round of the
+model's projection: drop or explain the note; leave the stereotype lines out of the paper's version.
 
 ---
 
@@ -248,8 +253,10 @@ many and which metrics contend on a facet before the case's association maps.
 
 ### P-2. The assembly view (S-b1), in Section 8 after its first paragraph
 
-Image `docs/superpowers/notes/spike-sysml-diagrams/out/r1/assembly_view.png` at 9fc3952 (WP22d is
-moving it to the model's documentation folder; the paper takes it from there, see question Q-1).
+Image `paper/figures/fig-assembly-view.png`: a byte-identical copy of the model's view
+`examples/adcs/model_v2/views/assembly_view.png` (WP22d, ff717ed; identical to the read image at
+9fc3952, SHA-1 11a449d), made by `uv run python scripts/build_figures.py` and checked by
+`tests/test_paper_static_figures.py`.
 
     :::{figure} figures/fig-assembly-view.png
     :label: fig-assembly
@@ -263,7 +270,9 @@ feasible. Good for: mapping the case's design variables onto one's own system mo
 
 ### P-3. The behavioural view (S-b2), in Section 8 after the regimes paragraph
 
-Image `.../out/r1/behavioural_view.png` at 9fc3952 (same note as P-2).
+Image `paper/figures/fig-behavioural-view.png`: a byte-identical copy of
+`examples/adcs/model_v2/views/behavioural_view.png` (WP22d, ff717ed; identical to the read image,
+SHA-1 82e5587), made and checked as P-2.
 
     :::{figure} figures/fig-behavioural-view.png
     :label: fig-behavioural
