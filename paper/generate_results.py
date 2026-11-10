@@ -377,8 +377,7 @@ def stability() -> Md:
     head = (
         "The control effort and the saturated fraction are sums over the accepted steps of an "
         "adaptive integration and the settling time is detected on its dense solution, so a "
-        f"relative change of {eps:g} in a design variable moves the control effort by up to two "
-        "parts in ten thousand and the settling time by about a microsecond (gap G-17). Datasets "
+        f"relative change of {eps:g} in a design variable moves them (gap G-17). Datasets "
         f"{cites} and the six check designs were regenerated {n} times with `Kp`, `Kd`, the "
         "panel span and the battery capacity of every design multiplied by 1 + e, e uniform in "
         f"[-{eps:g}, {eps:g}], and every quantity this paper reports was recomputed ({n_all} "

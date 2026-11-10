@@ -2227,7 +2227,7 @@ def test_cr1_one_definition_of_the_contending_set_and_the_captions_say_it():
         caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == cell_id))
         assert "Outlined" in caption or "outlined" in caption, cell_id
     caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-tensions-k3-caption"))
-    assert "exact-maximum" in caption and "small for some members" in caption
+    assert "exact-maximum" in caption and "so an outlined metric can be grey" in caption
     k1 = _cell_out(PAPER_NB, "num-k1")
     assert "exact-maximum fit has a" in k1 and "exponents at the fit temperature" in k1
     assert "exact-maximum supports" in _cell_out(PAPER_NB, "num-k-sweep")
@@ -2362,6 +2362,20 @@ def test_cr9_the_margin_and_the_radius_are_read_against_the_band_and_the_median_
     _current(cell, str(generate_results.margin_reading()), "margin_reading")
     ids = [c.id for c in _nb(PAPER_NB).cells]
     assert ids.index("num-certificates") < ids.index("num-margin") < ids.index("sec-search")
+
+
+def test_the_proposers_radius_is_the_stated_rule_of_the_check_designs():
+    """Section 9 states the rule that sets the radius; the proposer runs it; no value is typed."""
+    import paper_paths  # noqa: F401  (examples/adcs on the path)
+    from experiments import check_designs
+
+    text = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "sec-case-analysis-5"))
+    assert check_designs.REACH_QUANTILE == 0.02 and check_designs.HOLES == 300
+    assert (
+        "a radius that a stated rule sets from the data: the 2nd percentile of the pool's nearest "
+        "predicted distances to the 300 most isolated holes"
+    ) in text
+    assert not re.search(r"\d\.\d{2,}", text)  # the value is the data's, not typed
 
 
 def test_cr10_the_discussion_says_what_propose_predict_check_showed_and_did_not():

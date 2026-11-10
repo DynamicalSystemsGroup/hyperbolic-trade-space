@@ -577,3 +577,17 @@ section = "Discussion"
 words_added = 40
 job = "states that two proposals are one configuration and that all three fail the depth-of-discharge requirement, with the reason"
 reader = "the supervisor deciding whether a proposal that fails a model requirement counts as a check"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 39
+job = "explains the behavioural view's MoE and MoP marks where the view appears, and says which supplier draws which of the metrics' lines (seven from the analysis, two from the measured slew) as the image counts them"
+reader = "the reader of the behavioural view who meets the marks and counts the lines"
+
+[[raise]]
+date = "2026-11-10"
+section = "Discussion"
+words_added = 5
+job = "gives the duplicate proposal its antecedent and says that the three proposals checked are two designs"
+reader = "the reader weighing how much the check shows"

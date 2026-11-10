@@ -186,8 +186,9 @@ def designs_on_a_seam(study, fit) -> tuple[int, int]:
     """The designs whose best-minus-second-best facet score is below the band 1/tau, and all.
 
     A margin below the band shows only that at least one design is within the band of a seam;
-    this is the count. On the committed primary data at K = 3 the nearest gap is about 9 per
-    cent of the band away from it, so the count does not move with rounding-level jitter.
+    this is the count. On the primary data at K = 3 three gaps lie within 4 per cent of the band,
+    so the count is the winning restart's: 11 in the fit of record, 10 with the restart order
+    shifted (``paper/environment_values.toml``, ``[perturbation]``).
     """
     e = fit.estimator
     scores = np.log(study.M) @ np.atleast_2d(e.exponents_).T - e.log_offset_
@@ -312,9 +313,13 @@ def predict_reading(table, reg) -> Md:
     checks = pd.read_csv(spec.data_dir / spec.checks_file)
     dod = int(checks.loc[checks["role"] == "proposal", "dod_ok"].sum())
     k = n - configs + 1
+    words = lambda v: _NUMBER_WORDS.get(v, v)  # noqa: E731
     same = (
-        f" {_NUMBER_WORDS.get(k, k).capitalize()} of them are one configuration." if k > 1 else ""
+        f" {words(k).capitalize()} of the {words(n)} proposals are one configuration."
+        if k > 1
+        else ""
     )
+    designs = f" of {words(configs)} designs" if configs < n else ""
     fail = (
         f" {'All' if dod == 0 else f'{n - dod} of the'} {n} fail the model's depth-of-discharge "
         "requirement: the proposer trains on the designs that settle, stay within the momentum "
@@ -327,7 +332,7 @@ def predict_reading(table, reg) -> Md:
         "the energy differential of a proposal "
         f"within its band ({lv} of {n}), the easy part. It did not show that it places the "
         f"position along the frontier ({z} of {n}).{fail} "
-        f"{_NUMBER_WORDS.get(n, n).capitalize()} proposals illustrate and do not estimate a rate. "
+        f"{words(n).capitalize()} proposals{designs} illustrate and do not estimate a rate. "
         "A predicted crossing of V = 1 remains a hypothesis."
     )
 

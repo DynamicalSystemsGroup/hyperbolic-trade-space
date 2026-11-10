@@ -24,6 +24,7 @@
 # | SHA-256 of the planted table, of Figure 1's data | C datasets, Figure 1       | float hashes                                              | listed: planted_table_sha256, figure1_data_hash (existing) |
 # | facet numbering, order of facet sizes and shares | D.2 k_diagnostics, D.3 exponents_and_facets, D.8 termination_records, D.12 conditioning_diagnostic, num-k-sweep | facet numbers are labels (G-10): the restart that wins decides them; restart order moves them | listed: facet_numbered_tables |
 # | per-fit margin and status at finite tau          | D.8, margin_reading, num-certificates | smooth optimum, margin 1e-4 to 1e-2: unchanged by the perturbation | none |
+# | designs within the band of a seam at K = 3       | num-margin ("here 11 of the 706") | a count at a threshold: in the fit of record two designs' best-minus-second-best gaps are 4 per cent of the band below it and one 3 per cent above; the restart-shifted fit (--restarts 7) is another optimum (term 3's exponents differ) and counts 10; the sentence's claim, at least one design, holds in both | listed: moves_under_restart_shift |
 # | exponents of the jittered fits                   | D.3, D.11 (stable())       | printed only to the digits that held under 1e-12 jitter   | none (existing) |
 # | step counts, iteration counts                    | none printed               | the iteration cap appears only as the D.14 status above   | none |
 # | figures' data                                    | Figure 1 (hash, listed); the case figures are not compared byte for byte | | none |
@@ -79,7 +80,8 @@ saturation_atol = 0.01
 # when only the BLAS thread count changes. Each name is in the audit table above: the facet-numbered
 # tables and sentence are listed values (facet_numbered_tables); D.14 and its sentence print the
 # outcome of failing, multi-modal fits for random_state = 0, identical on macOS arm64 and Linux
-# amd64 (CI runs 42611285270 and 42611824421) but dependent on which restart wins.
+# amd64 (CI runs 42611285270 and 42611824421) but dependent on which restart wins; num-margin
+# counts the designs at a threshold of the winning restart's fit (its row in the audit table).
 [perturbation]
 moves_under_restart_shift = [
   "D planted_recovery",
@@ -89,4 +91,5 @@ moves_under_restart_shift = [
   "D conditioning_diagnostic",
   "sentence num-recovery",
   "sentence num-k-sweep",
+  "sentence num-margin",
 ]

@@ -4909,3 +4909,149 @@ status = "backed"
 disposition = "keep"
 source = "WP10-decisions, the position on the proof scripts (2026-11-09)"
 note = "the docs' one sentence on the position, pointing to Appendix B of the paper (C387)"
+
+[[claim]]
+id = "C391"
+fragment = "within a radius that a stated rule sets from the data: the 2nd percentile of the pool's nearest predicted distances to the 300 most isolated holes"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "func:examples/adcs/experiments/check_designs.py::Proposer",
+  "test:tests/test_paper.py::test_the_proposers_radius_is_the_stated_rule_of_the_check_designs",
+]
+status = "backed"
+disposition = "keep"
+source = "swap-evidence part 6, finding 4 (the paper's fix-forward)"
+note = "Proposer.draw computes the reach as the REACH_QUANTILE (0.02) quantile of the nearest predicted distances of the HOLES (300) most isolated holes, at run time; the test pins both constants and the sentence, and that no value is typed in it. The values (0.6222 here, 0.351 on the slew-time view) are not printed: no committed record holds them (CR-3 of change-register.md states them)."
+
+[[claim]]
+id = "C392"
+fragment = "A term with fewer than ten near-frontier designs has no map; a sentence in its place says so"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "R"
+backing = [
+  "gen:examples/adcs/case.py::tension_figure",
+  "func:examples/adcs/case.py::has_reading",
+  "test:tests/test_case.py::test_thin_term_is_reported_from_the_estimator_and_gets_its_reason",
+]
+status = "backed"
+disposition = "keep"
+source = "swap-evidence part 5 item 2 (the per-term rule); part 6, finding 7"
+note = "MIN_NEAR_FRONTIER = 10 is applied per term (has_reading); tension_figure draws a map only for a term that meets it and sets the thin term's title and reason above the next map; the test finds '3 of ten' among the figure's texts"
+
+[[claim]]
+id = "C393"
+fragment = "too few near-frontier designs for an association reading: {int(n_near)} of ten"
+file = "examples/adcs/case.py"
+anchor = "def thin_reason"
+kind = "R"
+backing = [
+  "gen:examples/adcs/case.py::thin_reason",
+  "gen:paper/generate_results.py::_thin_terms",
+  "test:tests/test_case.py::test_thin_term_is_reported_from_the_estimator_and_gets_its_reason",
+  "test:tests/test_case.py::test_k3_facets_equal_the_primary_record",
+]
+status = "backed"
+disposition = "keep"
+source = "swap-evidence part 5 item 2 (the per-term rule)"
+note = "the sentence Figure 5 and Appendix D.3 print for term 2 of the primary K = 3 fit: its near-frontier count is 3 (the test pins the counts 3, 21, 73 and the sentence '3 of ten')"
+
+[[claim]]
+id = "C394"
+fragment = "each lead a term of their own"
+file = "paper/generate_findings.py"
+anchor = "def k_sweep_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::k_sweep_sentence",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+  "test:tests/test_case.py::test_k3_facets_equal_the_primary_record",
+]
+status = "backed"
+disposition = "keep"
+source = "swap-evidence part 5 (num-k-sweep); part 6 finding 3 leaves the term/facet naming to WP24"
+note = "the metrics in a K = 3 contending set and not in the K = 1 set that are a term's largest exponent: control effort (term 2, 0.397) and peak slew power (term 3, 0.612) on the primary data; the sentence is computed from the fits and its committed output is pinned as current; the facet test pins peak slew power leading the largest term"
+
+[[claim]]
+id = "C395"
+fragment = "are sums over the accepted steps of an ... adaptive integration and the settling time is detected on its dense solution"
+file = "paper/generate_results.py"
+anchor = "def stability"
+kind = "S"
+backing = [
+  "func:examples/adcs/experiments/cubesat_oracle.py::_settling_time",
+  "test:tests/test_cubesat_oracle.py::test_the_settling_time_method_is_events_unless_asked",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "swap-evidence part 6, finding 5 (the stability head)"
+note = "G-17: the settling time is event-detected on the dense solution; control effort and the saturated fraction are sums over accepted steps. The magnitudes the head printed before (two parts in ten thousand, a microsecond) were dropped: no committed record holds the attributes' movement."
+
+[[claim]]
+id = "C396"
+fragment = "The regenerations ran on the ... authors' machine and the committed data in the environment of record, so a range also ... holds the two platforms' difference"
+file = "paper/generate_results.py"
+anchor = "def stability"
+kind = "R"
+backing = [
+  "gen:paper/generate_results.py::stability",
+  "test:tests/test_paper.py::test_appendix_d_has_the_stability_subsection_and_section_9_points_to_it",
+  "test:tests/test_sensitivity.py::test_the_results_file_committed_values_equal_the_committed_case_results",
+  "file:paper/container/RECORD.md",
+]
+status = "backed"
+disposition = "keep"
+source = "swap-evidence part 5 (tab-D-stability)"
+note = "RECORD.md, 'Regeneration of the paper on the data of record': sensitivity.json rewritten on the Mac from five regenerations; the committed value of each quantity (the container's) is inside its range (test_sensitivity)"
+
+[[claim]]
+id = "C397"
+fragment = "It showed that the regressor places ... within its band ({lv} of {n}), the easy part. It did not show that it places the ... position along the frontier ({z} of {n})."
+file = "paper/generate_findings.py"
+anchor = "def predict_reading"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::predict_reading",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+  "test:tests/test_case.py::test_predict_check_within_the_band",
+]
+status = "backed"
+disposition = "keep"
+source = "swap-evidence part 5 (num-predict-reading)"
+note = "3 of 3 energy differentials within the band (pinned by test_predict_check_within_the_band) and 1 of 3 positions (the generated count, pinned as current; D.10)"
+
+[[claim]]
+id = "C398"
+fragment = "proposals are one configuration. ... illustrate and do not estimate a rate"
+file = "paper/generate_findings.py"
+anchor = "def predict_reading"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::predict_reading",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+  "file:examples/adcs/data/v2/check_predictions_cubesat.csv",
+]
+status = "backed"
+disposition = "keep"
+source = "swap-evidence part 6, finding 2"
+note = "two of the three proposals (proposal_1, proposal_3) are one configuration in the predictions file (CR-3); the count of distinct configurations is computed from the file, so the sentence says three proposals of two designs"
+
+[[claim]]
+id = "C399"
+fragment = "fail the model's depth-of-discharge ... requirement: the proposer trains on the designs that settle, stay within the momentum ... budget and keep positive power"
+file = "paper/generate_findings.py"
+anchor = "def predict_reading"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::predict_reading",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+  "file:examples/adcs/data/v2/check_designs_cubesat.csv",
+  "func:examples/adcs/experiments/check_designs.py::Proposer",
+]
+status = "backed"
+disposition = "keep"
+source = "swap-evidence part 5 (num-predict-reading)"
+note = "dod_ok is False for the three proposal rows of the check file; Proposer.feasible_primary keeps the designs that settle, meet the momentum budget and keep positive power, with no depth-of-discharge filter"
