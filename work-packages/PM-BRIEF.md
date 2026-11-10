@@ -202,22 +202,31 @@ state lives in files, so a handover is: this brief, `parallel-board.md` with its
 the `WPn-decisions.md` files, `driver-log.md`, and the outgoing PM's one-page note of what its
 agents are doing. The outgoing PM finishes the agents it has running and starts nothing new.
 
-## Current state at the handover (2026-11-09, 15:35)
+## Current state at the handover (second PM to third, 2026-11-09, evening; parallel-board.md is the live copy)
 
-- Streams pushed and awaiting the driver's tier 2 verdict: P2 vocabulary tool (9a3156e), P4 claims
-  register (4cb61c0), P7 marker values (0a18b5b), P9 LICENSE, changelog, punch list (fde5fc0,
-  ce80b39), P8 first record and Figure 7 candidates (fb8fbe1; verdicts withdrawn by the supervisor,
-  reassessment by intent pending).
-- Running under the outgoing PM, to be finished by it: P1 (paper text: section 4 narration, section
-  6 skim path, soft-fit wording), P6 (docs text: soft-fit wording, Examples page: cubesat triangle
-  dropped, marker-values table), P8 (reassessment by intent).
-- Ready, for the fresh PM to scope and launch: P10 (container of record, hard Colima limits), P11
-  (verification tooling), P3 (vocabulary reading, fan-out), P5 (claim extraction, fan-out), P1r
-  (reader tests when P1's first pass is pushed). Then the follow-ups of P2 and P4: the first full
-  passes (the baseline of known violations with owners; the claims register's coverage).
-- Red on Linux at f7e5055: three soft-fit tests exact across platforms (owner: WP17); fix forward.
-- Open with the supervisor, none blocking: the step-read times (WP16); the docsite figures after
-  the reassessment; WP19's slot gate later.
+Streams (state; hash; open item; owner):
+- P1 paper prose: done through CR-1..3 (60b1576, 5518240), WP21 sentences (3d7d149), App. F paragraph (792daa8), framing sentences (36718d3); open: items 1 to 3 below; owner: paper stream (single writer of paper/paper.ipynb prose).
+- P2 vocabulary tool 9a3156e; baseline cleaned d7d9919; owner P2 (glossary.yaml).
+- P3 vocabulary reading b7df6be, 62a677e: 1337 rule-based items; open: item 5 below.
+- P4/P5 claims: register tool 4cb61c0; 328 rows landed 7bba8ed (10 dropped for fragment mismatch, listed in WP10-claims-review.md); generated-notebook claims unregistered (a checker finding).
+- P6 docs: 3dbac94, 0fb09ab, 183397d, 8752903; owner docs stream.
+- P8 figures: ce87711 table, applied abd6c11 (desktop width only browser-checked).
+- P10 container: accepted on regeneration 03189c5, d66c106, 25dba3c; hts-paper/hts-alt; Docker limits stand.
+- P11 = WP20: 04a3471, 78f5e1c, fix-forward 5775220; accepted pending tier 2.
+- WP17 Linux soft-fit: 14f7100, 6a8abd5; Linux run 42727700605 on 62085bb dispatched; read it first.
+- WP21: code 5b55870..3a552c6, paper 3d7d149, docs 8752903 (accepted pending tier 2).
+- WP22: rounds 1-3 bc71cfe, c5502ff, 9fc3952; stop recommended; optional round 4 (dashed same-statement link SlewBand/SlewTime); the model swap is a recorded gate with the comparison report skeleton in WP22-review.md, not done.
+- WP19: approved (7f162c6); not started; inputs: the two model views, WP11 CR-4 evidence.
+- WP8b: approved; version 0.1.0, reviewer's guide and reference keys are the driver's.
+- WP16 (data swap): unblocked after WP22 (event detection); amendment to its scope owed to the driver.
+
+Dispatched rulings of the driver (to run, none started):
+1. Abstract (paper stream): keep "mirrors the structure of PCA" and do not re-add "chain"; amend tests/test_paper.py case-sentence assertion (drop the bans on "three facets", "one facet reports"; keep "ten attributes", "controller-gain"); case sentence: "On a cubesat model coupling power, mass and attitude control, one facet blends the subsystems' trade-offs into a single tension; three facets separate the contending sets."; "the table and its reading are views of that model"; hold the 200-word cap by cutting words that do no work, else raise it with a length-ledger entry and say so in the commit.
+2. Theorem 11 statement ("reassigning each row to its maximizing facet lowers or keeps F ... a partition into nonempty cells"): say "cell" for a set of rows and "facet" for a piece of the surface, once where first used; mathematics unchanged (paper stream).
+3. U05-C009: back the band-weight sentence with one lemma step (softmax ratio p_i/p_0 = e^{tau s_i} <= e when |s_i| <= 1/tau) in the lemma owning the soft maximum, Appendix B regenerated and its test passed in the same push; U08-C040: narrow to what L11 proves, drop "only", say the converse is not claimed; U09-C038: the generator (paper/generate_findings.py) prints the count, no "a few".
+4. G-18 generated Appendix E: map "fitted envelope" and "loss envelope" to glossary terms in the generator (paper/generate_gaps.py or the ledger source), regenerate in the container; a distinct object gets a proposed glossary entry for the driver, not a new name; then remove the two baseline rows (owner P1).
+5. P3 re-triage: one agent, one pass over the 1337 items grouped by stem with counts, act on stems that are synonyms of glossary terms, baseline the rest with a one-line reason per stem; the table in work-packages/WP10-vocabulary-review.md is the deliverable.
+Also waiting: the driver records the PCA readback (4 of 4 read it as an alternative) for the supervisor; CR-5 (energy differential) is held for the supervisor; WP20 R-3 is closed.
 
 ## Escalation (2026-11-09, the supervisor)
 
