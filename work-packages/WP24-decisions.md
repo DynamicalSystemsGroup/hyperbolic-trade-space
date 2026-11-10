@@ -33,3 +33,12 @@ citation row in `derivation/PROOF_MAP_FINDINGS.md` pushed by WP25-2 without an A
 the file is a findings record not compiled into Appendix B as the record shows, and the paper unit's container run
 runs the Appendix B test, which settles it; a failure there is fixed forward. The `coverage.csv` column names
 staying as enum types with the caption as the bridge: accepted as the PM's call.
+
+**Pushes 3 and 4 landed together (9df7483, 1b1249d, a2e6bd5, ee7704e; 2026-11-10, 09:30).** The vocabulary tool
+reads no "facet" outside the three marked polyhedral sentences; the paper's output cells are byte-equal after the
+rename (no number moved); the docs home glosses "a monomial term (a product of powers of the metrics) is one
+trade-off". Linux dispatched on ee7704e. Two items from push 4, the driver's calls: (1) `site/paper-map.webp` on
+the root page is a raster from the external review with no source in the repository and stale words in the
+image; it goes (negative edit; a map with a source may return as a candidate for the supervisor's review), the
+root page's caption and alt text with it. (2) Appendix E's HTML table shows raw `$...$` math on the staged page:
+fixed in the close-out's paper regeneration (a rendering defect on staging, not published).
