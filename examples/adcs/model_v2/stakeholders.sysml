@@ -178,7 +178,7 @@ package CubesatStakeholders {
             verify pointingAndSlewing.pointingError;
             verify powerAndEnergy.power;
         }
-        :>> ledgerEntry = "v2-primary@7";
+        :>> ledgerEntry = "v2-primary@8";
         :>> recordEntry = "Container regression at the WP23 close-out gate (2026-11-10, image 877c42cc10e3, head 61cef31)";
         :>> testNode = "tests/test_cubesat_oracle.py::test_the_flags_come_from_the_requirements_not_from_python";
         :>> environment = "877c42cc10e3";
@@ -200,7 +200,7 @@ package CubesatStakeholders {
             verify powerAndEnergy.batteryPeakPower;
             verify powerAndEnergy.eclipseDepthOfDischarge;
         }
-        :>> ledgerEntry = "v2-primary@7";
+        :>> ledgerEntry = "v2-primary@8";
         :>> recordEntry = "Container regression at the WP23 close-out gate (2026-11-10, image 877c42cc10e3, head 61cef31)";
         :>> testNode = "tests/test_case.py::test_feasible_mask_counts_on_frozen_data";
         :>> environment = "877c42cc10e3";
