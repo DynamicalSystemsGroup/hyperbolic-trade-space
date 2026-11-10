@@ -89,7 +89,9 @@ class Proposer:
     def feasible_primary(self) -> pd.DataFrame:
         df = pd.read_csv(self.primary)
         attrs = list(ATTRIBUTE_NAMES)
-        ok = df.settled & df.power_ok & df.momentum_ok & (df[attrs] > 0).all(axis=1)
+        # dod_ok since the WP23 close-out: the depth-of-discharge failures left the training rows
+        # through the eclipse reserve's positivity until the reserve left the metric set
+        ok = df.settled & df.power_ok & df.momentum_ok & df.dod_ok & (df[attrs] > 0).all(axis=1)
         return df[ok].reset_index(drop=True)
 
     def draw(self, n: int, seed: int) -> pd.DataFrame:

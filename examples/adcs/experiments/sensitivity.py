@@ -212,7 +212,7 @@ def table_differences(a: pd.DataFrame, b: pd.DataFrame) -> dict:
     """What differs between two datasets besides the numbers: rows, flags, feasibility, labels."""
     out = {"rows": (len(a), len(b))}
     out["flag cells changed"] = int(sum((a[c] != b[c]).sum() for c in FLAG_COLUMNS if c in a))
-    feas = [c for c in ("settled", "power_ok", "momentum_ok") if c in a]
+    feas = [c for c in ("settled", "power_ok", "momentum_ok", "dod_ok") if c in a]
     ma, mb = a[feas].all(axis=1), b[feas].all(axis=1)
     out["feasible designs changed"] = int((ma != mb).sum())
     text = [c for c in ("wheel_class", "st_grade") if c in a]
