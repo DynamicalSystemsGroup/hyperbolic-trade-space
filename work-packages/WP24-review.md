@@ -412,6 +412,19 @@ read the "Register phrases" list of `docs/superpowers/notes/notation.md`, which 
 `paper/prior_art.yaml`) and the two record paths. Screenshots: `/private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/wp24p3-renders/` (`paper-abstract-gloss.jpg`,
 `paper-preliminaries-quilt.jpg`, `paper-definitions-7-9.jpg`, `paper-L15-L12.jpg`, `supporting-toc-B2-D3.jpg`).
 
+### Records a test reads
+
+On the PM's direction (option 1, under the driver's rule of 06:35, "the same rule for any other record a test reads"),
+`docs/superpowers/notes/notation.md`, the paper's notation source, takes the vocabulary by A2's semantics; no quotation
+in it carried the word and it has no R1 sentence. Lines changed (numbers as after): 34 to 38 (exponent vector, n-lemma
+size, reach, term share and its code name, the row "facet k; term k" now "term k" with "term; monomial term; monomial"
+and the patch reading), 44, 45, 53 to 61 (conditioning, elasticity, the assignment row "cell of design i" with
+`cell_`, `assign_cells(X)`, the term gap row with `term_gap`, the bound, the margin, the radius, the status, the
+levels), 65, 67, the "Words" paragraph (69 to 75), 83, the register phrase `term gap` (98) and 125 ("A term of the fit
+is a term, never a regime"). `grep -ci facet` on the note: 0. The two paper tests then pass (`-k register_phrases`: 2
+passed), and `tests/test_docs.py::test_register_phrases_present` fails instead: the docs pages (push 4) still say
+"facet gap" (`docs/user-guide/termination.md` lines 25, 52, 60). Put to the PM.
+
 ### Left for push 4 or for the PM
 
 - Generated tables still carrying the word, from sources outside this push: `tab-families` and `tab-G-register`
