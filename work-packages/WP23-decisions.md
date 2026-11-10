@@ -217,3 +217,28 @@ from the model's definitions and the data of record, what a model clean-up would
 outcome would look like in the full case analysis (Appendix D and the docs' case pages), and a recommendation with
 plain options. The paper's narrative is kept tight: whatever is chosen lands in the full case analysis, not as a
 new thread of the paper.
+
+## Requirements and the trade study: two research spikes (2026-11-10, 08:05)
+
+**Driver's popup on the proposals that fail the depth-of-discharge requirement** (keep and say it / train on
+feasible rows / drop). **Supervisor (mzargham), verbatim:** "i want us to do the trade study with and without the
+data for the infeasible designs. again these are research spikes to decide how we want to present the models in
+the paper. in practice requirements analysis may result in changes to the requirements themselves. the trades in
+the metrics can help inform that. we don't want to over complicate our paper but our case is exploratory and we're
+learning the various ways HTS can help us. my gut is that we want to see the model fit without the requirements
+imposed then see how it changes if we had preimposed the requirements. this is also akin to looking at
+constrained versus unconstained optimization. i am headed to take my daughter to school so you should continue in
+autonomous model but do some guided research spikes to make sense of how our HTS model helps us with trade studies
+including different ways of using it alongside a set of threshold requirements; including how it might help us if
+the requirements are deemed infeaible. might we use it to justify a request to relax a requirement"
+
+**Disposition.** Two spikes, the driver's, read-only on the repository, one report each under
+`work-packages/WP23-rounds/spikes/`: (A) the fit with and without the infeasible designs (all designs; the
+feasible set; the set that also passes his four thresholds), K = 1 and K = 3 in both regimes, what changes and how
+to present it as constrained against unconstrained in the full case analysis; (B) the fitted model alongside
+threshold requirements: what the elasticities say about the cost of meeting each requirement at the frontier, which
+requirements exclude the near-frontier designs, whether a set of requirements is jointly infeasible on the
+frontier, and the form of a case for relaxing one, with worked numbers from the data of record. The proposals'
+question is answered through (A): the check designs are read in both settings. Both spikes feed the full case
+analysis (Appendix D, the docs' case pages); the paper's narrative stays tight, with at most one candidate
+paragraph for the supervisor's review.
