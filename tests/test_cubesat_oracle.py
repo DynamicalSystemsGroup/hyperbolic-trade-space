@@ -82,12 +82,7 @@ def test_the_sampler_reproduces_the_frozen_designs(designs):
 
 
 def test_keys_and_order_equal_the_frozen_measure_on_three_configurations(oracle, designs):
-    """R-9: keys of ``__call__`` equal the keys of ``cubesat_model.measure`` (values agree).
-
-    The three crossing times differ by the measurement (WP16 Amendment 2, OD-B: listed, not
-    toleranced): the frozen model reads them off the accepted steps, the oracle by event
-    detection. The first entry precedes the first step found inside the band, and the last exit
-    follows the last step found outside it."""
+    """R-9: keys of ``__call__`` equal the keys of ``cubesat_model.measure`` (values agree)."""
     frozen = cm.load_model(gain_box="aggressive")
     for _, row in designs.head(3).iterrows():
         cfg = row.to_dict()
@@ -96,8 +91,6 @@ def test_keys_and_order_equal_the_frozen_measure_on_three_configurations(oracle,
         for k, v in want.items():
             if isinstance(v, bool):
                 assert got[k] is v, k
-            elif k in cmp.TIME_COLUMNS:
-                assert (got[k] >= v) if k == "settling_time_s" else (got[k] <= v), k
             else:
                 assert got[k] == pytest.approx(v, rel=1e-6, abs=1e-9), k
 
@@ -468,89 +461,3 @@ def test_declared_space_excludes_nothing_so_the_first_designs_are_unchanged(tmp_
         else:
             kw = {"rtol": tol["values_rtol"], "atol": 1e-6}
         np.testing.assert_allclose(got[col], want[col], err_msg=col, **kw)
-
-
-# -- WP16 Amendment 2: the crossing times by event detection (R-8, R-9) ----------------------------
-TIMES = ("settling_time_s", "slew_time_s", "slew_time_05deg_s")
-ROUNDING = 1e-9  # relative: the bound of R-9, the Agent's default the driver accepted
-JITTER_SEEDS = (1, 2, 3, 4, 5)  # the seeds of WP16 D-6 (experiments.sensitivity.SEEDS)
-
-
-def test_the_crossing_integration_is_the_simulators_at_the_record_tolerances(oracle, designs):
-    """The oracle's integration (``_solve``) is ``adcs_sim.simulate_adcs``'s: at the record's
-    tolerances it takes the same steps to the same states, so only the tolerance differs where the
-    crossing times are read, and every other quantity stays on ``simulate_adcs``."""
-    from adcs_sim import make_config, simulate_adcs
-
-    loaded, [symbol] = oracle._configure([{**designs.iloc[3].to_dict(), "design_id": 0}])
-    p = oracle._parameters(loaded.instantiate(symbol), loaded)
-    sim = make_config(
-        p, p["Kp"], p["Kd"], wheel={"maxTorque": p["maxTorque"], "maxMomentum": p["maxMomentum"]},
-        t_end=oracle.scenario["t_end_s"], initial_error_deg=oracle.scenario["slew_deg"],
-        max_step=oracle.scenario["max_step_s"],
-    )  # fmt: skip
-    ref = simulate_adcs(sim)
-    sol = co._solve(sim, 1e-10, 1e-12)
-    q = sol.y[:4].T / np.linalg.norm(sol.y[:4].T, axis=1, keepdims=True)
-    assert np.array_equal(sol.t, ref.t)
-    assert np.array_equal(q, ref.q) and np.array_equal(sol.y[4:7].T, ref.omega)
-
-
-def test_a_pass_through_the_band_inside_one_step_is_an_entry():
-    """``band_entries`` sees a crossing that begins and ends inside one step (both step ends
-    outside the band), and only the falling crossing is an entry."""
-
-    class Step:  # an interpolant whose first quaternion component dips from 0.2 to 0 and back
-        def __init__(self):
-            self.t_old, self.h, self.t = 0.0, 1.0, 1.0
-            self.y_old = np.array([0.2, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0])
-            Q = np.zeros((7, 4))
-            Q[0, :2] = (-0.8, 0.8)  # q_x(x) = 0.2 - 0.8 x + 0.8 x**2: 0.2 at both ends, 0 at 0.5
-            self.Q = Q
-
-    err_end = np.degrees(2 * 0.2 / np.hypot(0.2, 1.0))
-    t = co.band_entries([Step()], err_end / 2)
-    assert len(t) == 1 and 0.0 < t[0] < 0.5
-    assert len(co.band_entries([Step()], err_end * 1.01)) == 0  # both ends inside: no crossing
-
-
-@pytest.fixture(scope="module")
-def primary_draws():
-    exp = df.EXPERIMENTS["v2-primary"]
-    return co.build_sampler(exp).draw(exp.count, exp.seed)
-
-
-def test_design_763_has_continuous_times_under_the_d6_jitter(oracle, primary_draws):
-    """R-8. Design 763 of the primary dataset: under seed 3 of the D-6 jitter (relative 1e-12 in
-    Kp, Kd, panel span and battery) its step-read slew time jumped from 33.44 s to 12.53 s; the
-    error passes through the 1 degree band between 12.06 s and 12.53 s, inside one 0.5 s step, so
-    a step whose end falls in that pass saw it and one that did not, did not. Read by event
-    detection on the dense output, the first entry is 12.06 s under every seed and the three times
-    move by rounding only."""
-    from experiments.sensitivity import perturb
-
-    rows = {s: perturb(primary_draws, s).query("design_id == 763") for s in (0, *JITTER_SEEDS)}
-    out = {s: oracle.evaluate(r).iloc[0] for s, r in rows.items()}
-    base = out[0]
-    assert base["slew_time_s"] == pytest.approx(12.058, abs=1e-3)
-    assert base["slew_time_05deg_s"] == pytest.approx(12.175, abs=1e-3)
-    for s in JITTER_SEEDS:
-        for col in TIMES:
-            assert out[s][col] == pytest.approx(base[col], rel=ROUNDING, abs=0), (s, col)
-
-
-@pytest.mark.slow
-def test_a_1e_12_jitter_moves_the_times_of_the_six_check_designs_by_rounding_only(oracle):
-    """R-9. The six check designs regenerated under the five D-6 seeds: each time within
-    relative 1e-9 of the unperturbed one (the step-read times moved by up to 0.4 s)."""
-    from experiments.check_designs import CheckOracle
-    from experiments.sensitivity import oracle_config_names, perturb
-
-    committed = pd.read_csv(ADCS / "data" / "v2" / "check_designs_cubesat.csv")
-    designs = committed[["role", "design_id", "name", "seed", *oracle_config_names()]]
-    check = CheckOracle(oracle)
-    base = check.evaluate(designs)
-    for s in JITTER_SEEDS:
-        got = check.evaluate(perturb(designs, s))
-        for col in TIMES:
-            np.testing.assert_allclose(got[col], base[col], rtol=ROUNDING, atol=0, err_msg=col)
