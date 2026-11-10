@@ -413,6 +413,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-10 | commit bb51b7e, tier 2 watcher, this Mac (contains the rename head ee7704e and the root-page map removal) | 2191 passed, 16 skipped, 1 xfailed; all checks | a verdict: the rename is green on both platforms (Linux ee7704e); WP24's one remaining condition is the changelog line (G-1) |
 | 2026-11-10 | commit b4d0132, CI run on ubuntu, three shards (the WP23 close-out) | fast and docs-paper green; slow FAILED: four tests of tests/test_k_terms_case.py (the nine-metric pins and radii) | a verdict that matches the data-gate review's G-1 exactly; the fix-forward unit carries it; re-dispatch on its hash |
 | 2026-11-10 | commit eb88d40, tier 2 watcher, this Mac (before the close-out push) | 2178 passed; all checks | a verdict: green at the head before the close-out; its run on the close-out head is next |
+| 2026-11-10 | commit cc0e1c9, tier 2 watcher, this Mac (the close-out head plus the board) | 4 failed, 2184 passed: the four nine-metric tests of test_k_terms_case.py, the same as Linux | a verdict: both platforms agree on the one defect; fixed at ebce53b; the watcher's next head and a Linux dispatch after the fix unit completes |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
