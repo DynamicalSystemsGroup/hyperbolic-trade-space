@@ -30,3 +30,18 @@ At `dev` 73c5bff: inventory db150fc (346 rows: 144 keep, 169 delete, 33 hold), d
 `WP25-review.md`. Checks run after the deletions: the assembled site builds; the fast suite 2 failed, 1816 passed, both
 failures the head's before the package (`C310` in the register; `limitations.md` linking into `paper/`); the vocabulary
 tool's 71 violations identical before and after; doctests 57 passed; `uv lock --check` clean. No undecided row.
+
+## First instance accepted (2026-11-10, 00:35; the driver under the mandate)
+
+Delivery: db150fc (the inventory, 346 rows), 09117d8 (169 files deleted in one commit), f9573fd (the review: checks
+run after the deletions, 18 drift rows, 9 gap rows). The driver's check: the deletions are 154 files under
+`docs/superpowers/notes` (the spike folders whose results are in decision records: sysml-diagrams 107, ternary 30,
+facet-rename 4, figure-candidates 4, soft-fit 3, figure1 3, ggp-fit 2, external-review 1), the 14 raw reader
+reports of WP11 round 1 (`triage.md` kept) and the superseded PM handover file (`PM-BRIEF.md` holds the current
+one); every note `CLAUDE.md` names is present; no deleted basename is referenced from `CLAUDE.md`, `README.md`,
+`mkdocs.yml`, the docs pages, the paper, the tests, the scripts or the package (grep 0); the watcher is green at
+the head after the deletions. **Accepted.** The driver's words for D-6: "WP25 instance 1 accepted: the inventory
+has no undecided row, the 169 deletions are in one commit that lists them, nothing live references a deleted file,
+and the checks are green after them; the drift and gap rows pass to WP24's docs push and the next instance." One
+follow-up: WP24's scope cites the facet-rename spike by its last commit (d1efdfe), since the report now lives in
+history.

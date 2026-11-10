@@ -7,6 +7,17 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- (2026-11-10, 00:35) **Two findings of WP23 round 3 for your decision at the gate (the gate proceeds; these
+  come with the threshold popup).** (1) The metric set carries two redundancies the data make plain: eclipse reserve
+  and depth of discharge are one quantity (Spearman -0.9994; the reserve 0.3C - D and the ratio D/C are the same
+  inequality), and power margin and energy balance are both affine in the generated power (log correlation 0.96:
+  one carries the exponent, which one switches between regimes). Options when you are back: keep both of each pair
+  as the model's MoPs and let the fit show it; or drop one of each (seven traded metrics); or keep the pairs and
+  state the redundancy in the case prose as a reading. (2) The proposed peak-slew-power limit of 2.4 W (20 % above
+  the baseline) fails 56.4 % of the feasible primary designs, because peak slew power is a step function of the
+  wheel class and tracker grade (41 distinct values); a percentage margin on a step is not a threshold. The driver
+  has asked the loop to propose the limit on the step's own terms (the value that admits the baseline's wheel
+  class, with the pass fraction of each candidate shown) so the popup shows you what each choice admits.
 - (2026-11-09, 23:20) **WP23, coming to you at the data gate (proceeds overnight on my verification per
   "Proceed, I review after"):** the four illustrative thresholds proposed by the loop, each 20 % above the baseline
   configuration: pointing error 0.0186 deg; control effort 0.0114 N·m·s; peak slew power 2.4 W; launch budget
