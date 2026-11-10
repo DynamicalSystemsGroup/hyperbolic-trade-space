@@ -22,7 +22,7 @@ def result(request):
 def test_k3_fits_and_three_reports(result):
     _, out = result
     est, reps = out["fits"][3], out["reports"][3]
-    assert est.exponents_.shape == (3, 9)
+    assert est.exponents_.shape == (3, 8)  # the eight traded metrics (WP23 close-out)
     assert len(reps) == 3 and len(out["reports"][1]) == 1 and len(out["reports"][2]) == 2
     assert np.isclose(est.term_share_.sum(), 1.0)
     assert (np.bincount(est.cell_, minlength=3) > 0).all()
@@ -42,10 +42,11 @@ def test_tau_reselected_at_each_k_holds_the_fraction(result):
     assert out["fixed_diag"].frac_above_.iloc[-1] > 0.25
 
 
-# margin gamma and stable radius of the re-selected fits, as printed (six decimals)
+# margin gamma and stable radius of the re-selected fits, as printed (six decimals), on the
+# eight-metric data of record (WP23 close-out; the radius scales with the number of metrics)
 MARGIN = {
-    ("primary", 2): (0.000697, 0.000057), ("primary", 3): (0.001213, 0.000100),
-    ("stock", 2): (0.001413, 0.000120), ("stock", 3): (0.000091, 0.000008),
+    ("primary", 2): (0.000697, 0.000069), ("primary", 3): (0.001212, 0.000121),
+    ("stock", 2): (0.001413, 0.000133), ("stock", 3): (0.000350, 0.000033),
 }  # fmt: skip
 
 
