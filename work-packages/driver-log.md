@@ -22,6 +22,13 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
   recommendation: the first, since the contrast "explains variance, not trade-offs. We explain
   tensions." is what readers take as substitution. Non-blocking; the other CR-1b edits proceed.
 
+- (2026-11-09, 20:20) **Slew time under event detection (WP16 Amendment 2, OD-A).** Event detection removes
+  the sub-step part of the slew-time defect but not the grazing case: design 763 goes from 33.4 s to 12.5 s
+  because the error grazes the band and leaves it. Options: keep slew time as first entry into the band and
+  report the grazing case as gap G-17 narrowed (what the driver chose for now); or redefine slew time as a
+  hold time (first entry after which the error stays inside), which changes a measured quantity's meaning and
+  is yours. Non-blocking; the regeneration runs with the first.
+
 **Needs him (2026-11-09, 01:14):** his Colima configuration is changed from his original and the
 driver could not restore it. A second container implementer, dispatched by the PM with a brief that
 allowed restarting Colima, set `rosetta: false` in `~/.colima/default/colima.yaml` at 00:46 and
@@ -158,6 +165,28 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   watcher's verdict on abd6c11 (2 failed: the claims-register and vocabulary guards tripping on
   moved fragments and new words) shows the new mechanical checks working; the commits that followed
   (811d260, d7d9919) are the fix-forward, to be confirmed by the next verdict.
+
+## The driver's calls of 2026-11-09, evening (for the supervisor's review)
+
+- **Glossary wording (the supervisor's vocabulary).** Wording-only fixes approved where three entries use
+  synonyms of their own terms (`facet`, `support-weights`: "fitted surface" becomes the entry's own term;
+  `contending-set`: "working temperature" becomes the glossary's term); no meaning changes. Two entries added
+  because the paper's statements already use them as fixed terms and one object needs one name: `cell` (the set of
+  rows assigned to one facet; A8, L15) and `reach` (β_k, how far the data extend in a facet's direction, the soft
+  maximum of their scores; L5), and the derivation text's "support offsets" for β (L14, L15) becomes the same name.
+  Added likewise, with definitions taken from the paper's own definition boxes and no new meaning: `near-frontier
+  band` (Definition 4), `effective sample size` (Figure 1), `certificate` (Theorem 12), `mean slack` (Theorem 11).
+  Deferred to the supervisor: "tension" (kept as a plain word), "soft fit", "pull-back", "abstraction gap".
+- **WP19 candidates, the driver's own image reads (cold, image before caption).** The n-lemma ternary: a triangle
+  whose corners are the three metrics, edges labelled as dilemmas of their endpoints, the interior a trilemma, the
+  three facets' exponent vectors as numbered markers on the planted answers: one look says what an n-lemma is and
+  where a facet's exponents put it; earns its place beside Definition 6. The assembly view: a cubesat of eight parts,
+  two swapped among three alternatives, four tuned in ranges, levels and ranges read from the model: the "part
+  swapping and param tuning" framing in one picture; earns its place in Section 8. The behavioural view:
+  requirements on the left pointing at the metric each reads, metrics grouped by subsystem, the four traded metrics
+  with no requirement dashed, sources on the right: the logical train from requirement to metric to source, and the
+  WP22b gap visible; earns its place in Section 8; the "same statement as SlewBandRequirement" note is cryptic (two
+  readers and the driver agree) and is his to word. All three placed as candidates for his review and revise loop.
 
 ## Verification snapshots by the driver
 

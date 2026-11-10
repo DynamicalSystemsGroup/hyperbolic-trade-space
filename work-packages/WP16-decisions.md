@@ -90,3 +90,23 @@ you believe i will expect"); the calls below are the driver's, for his review at
   useful for a trade study over part swapping and parameter tuning against a handful of metrics,
   with claims justified or bounded by the methods and data.
 
+
+## Amendment 2 approved (2026-11-09, 20:20; the driver under the mandate, for the supervisor's review)
+
+Draft at f7d180d (`WP16-scope-of-work.md`, "Amendment 2"), on the adopted model `cubesat.sysml` (the WP22 swap,
+`WP22-decisions.md`). The supervisor's direction it executes: "event detection and regenerate" (above); he expects
+changes of this order from the model refactor.
+
+- **OD-A** (event detection removes the sub-step part of the slew-time defect but not the grazing case; design 763
+  goes from 33.4 s to 12.5 s): report it as gap G-17 narrowed to the grazing case. No redefinition of slew time (a
+  hold time) now: that changes a measured quantity's meaning and is his call; it goes under "Waiting for the
+  supervisor" in the driver log with the design-763 evidence.
+- **OD-B** (the frozen tie test R-5 cannot hold within 0.5 s in the two time columns): state what is true: "differs
+  in the two time columns, listed" with equality elsewhere. No tolerance read off the regenerated evidence: a bound
+  chosen from the data it has to pass is tuning to the test.
+- **Agent's defaults** accepted as one item: `solve_ivp` events on error minus threshold (slew time the first entry
+  into the band, settling time the last exit), rounding bound rel 1e-9, a new section of `swap-evidence.md`, ledger
+  ids `<id>@<n>`. The draft's `cubesat_r1.sysml` references become `cubesat.sysml` on execution.
+- Good enough as drafted; the regenerated datasets, the K = 1, 2, 3 record and the paper's numbers regenerate in the
+  `hts-paper` container with their tests passing in the same push; a Linux dispatch at the gate; the data-gate
+  comparison (old against new numbers, every moved number listed with its cause) is the delivery I verify.
