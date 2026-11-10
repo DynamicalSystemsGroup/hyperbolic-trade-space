@@ -365,6 +365,84 @@ read the line as a fit through the cloud and say why points lie above it. Figure
 "(association: the Pearson correlation of the log-metrics)", the measure `tension_report` uses by
 default and the case does not change.
 
+
+### 19c and 19d reads, tests and dispositions (after the recipes at 3ef0851 and cc8013f)
+
+Images given (copies with neutral names, byte-identical, SHA-1 prefix): `figure-D.png` = `fig-tau-sweep.png`
+(94eca94), `figure-E.png` = `fig-plane-k1.png` (c8b828c), `figure-F.png` = `fig-plane-k3.png` (aee7fdc),
+`figure-G.png` = `fig-tensions-k3.png` (e98910f), `figure-H.png` = `fig-regimes.png` (18e4fbd), all as
+committed at 03189c5. I opened each one in the Read tool (native width 783 to 792 px, about the paper's
+column) for tests 3 and 4. Light scheme only, which is all the paper has. Process note: two readers
+(Figure E, P1, and the P3 reader of C-b2 earlier) also sent their answer to another agent by message.
+They received nothing from it, so their reads stand.
+
+**C-c1, Figure 1 (P2 L-B, P1 L-B).** P2, image alone: "The grey bar at tau of about 40 looks like a
+chosen or recommended operating point, where the fraction crosses the 0.1 line ... [the bottom panel]
+changes little after the bar"; unclear "the colourbar has no label". P1, image alone: "The grey line at
+tau about 40 looks like the chosen value, sitting where the fraction crosses the 0.1 line. But there is
+no text saying how or why. The heatmap suggests the weights barely depend on tau". With caption, both:
+the bottom panel is the exponents; the bar is "where the fraction first meets the target, so the choice
+is not arbitrary" (P2); "the result does not depend much on the setting" (P1). Still unclear to both:
+why 0.1, why an effective sample of about 10 is acceptable, what V is. Those are the text's job, not
+the figure's. Tests: (1) H-c1 holds for both; (2) the exponent path and the crossing are visible facts
+the sentence only asserts: pass; (3) dense, all data; (4) legible at native width. **Keep as is.**
+
+**C-d1, Figure 2 (P1 L-B, P2 L-B).** P1, image alone: "Slew time and control effort pull against each
+other ... I'd treat it as a rough frontier, not a hard limit." P2: "this is a fitted trade-off line
+through design samples ... Most points sit below the line, so I suspect it is an upper bound or
+envelope". With caption: the band is identified; P1: "the caption implies several panels but I see
+one"; both still ask why points lie above the line. Tests: (1) H-d1 holds (both named the two metrics
+and the trade); (2) pass (the anchor); (3) and (4) pass. Friction: the line read as a trend through
+the cloud, the same as in Figure 3. **Caption**: step 2, the slice clause, tested on Figure 3 below,
+where it removed exactly this reading. Figure 2 was not re-read with it.
+
+**C-d2, Figure 3 (P3 L-B, P6 L-B; then fresh P6 L-B, P1 L-B on caption step 2).** Step 1, the band
+clause. P3: the bands mean "peak slew power takes only a few discrete values ... (probably a discrete
+design choice or a few operating modes)". With caption: "The bottom bands now make sense: six bands come
+from wheel class and tracker grade". P6, image alone: "Many points sit above the line in the top panel,
+so it looks like a fit through the cloud, not an envelope". With caption: "The bottom-panel bands are
+now explained. They come from discrete design choices". Still: "Points far above the line ... look odd
+for a frontier. Perhaps ... only projections"; "'Drawn' in the panel titles is still opaque". Step 2,
+the slice clause, fresh readers. P6, image alone: "Points above it must mean the line is a smooth
+approximation, not a hard envelope." With caption: "The lines are not frontiers of these two metrics.
+They are slices of one K = 3 posynomial surface ... So points above a line are not violations ... That
+removes my 'smooth approximation or regression' worry." P1, image alone: "Points above or beyond the
+line would be designs that beat the fitted boundary". With caption: "A point above a line can still be
+inside the surface, because its other metrics differ. That removes my worry that points above the line
+mean the fit failed." Still unclear to both: why facets 1 and 2 are drawn while three colours appear;
+P6 calls the claim "unfalsifiable from this picture alone". Tests: (1) H-d2 and H-d2b hold; (2) the
+bend and the bands are visible facts: pass; (3) pass; (4) the bottom panel's axis labels are long but
+legible. **Caption step 2. Ready for placement.**
+
+**C-d4, Figure 5 (P5 L-C, P2 L-B).** P5, image alone: "Negative cells (orange) are tradeoffs ... Facet
+3 puts pointing error against peak slew power at -0.96"; outlines "look like a diagonal accent".
+With caption: "The outlined diagonal cells mark the contending set ... w is the fitted exponent ...
+That explains the outlined cells with tiny w". P2, image alone: "Pairs in tension: settling time vs
+control effort (-0.93 in facet 1) ... The pattern shifts between facets". With caption: "Outlined cells
+are the contending set ... w is a fitted exponent". Both still ask "Which statistic 'association' is,
+for example Pearson or Spearman" and what "6-lemma" means (Definition 5 at L-C). Tests: (1) H-d4 holds;
+(2) pass; (3) dense, all data; (4) cell numbers legible at native width; the figure is tall (three
+panels). Not resized: the supervisor's "you can resize it but don't rework it" leaves that to him.
+**Caption: add the association clause. Ready for placement.**
+
+**C-d5, Figure 6 (P1 L-B, P6 L-B; caption with the "w" clause).** P1, image alone: the two panels
+differ "in which metrics are picked and their weights. Primary: slew time, pointing error, mass,
+control effort, energy balance and depth of discharge. Stock: settling time, slew time, pointing error,
+control effort, power margin and eclipse reserve"; and "the method seems to pick a few representative
+metrics and drop redundant ones". P6, image alone: "The boxed ones look like one representative per
+cluster, so I read this as a redundancy-pruning step". With caption: P6 says "w is a fitted model
+parameter, not a selection weight ... aggressive gains move which metrics contend ... That is a finding
+beyond correlation"; P1 says "the trade-off structure changes with gain regime". Both still ask what
+"association" is. Tests: (1) H-d5 holds (each named metrics in one set and not the other); the
+"representative per cluster" reading from the image alone is a near-wrong belief, and the caption
+moved both readers off it; (2) pass; (3) and (4) as Figure 5. **Caption: the "w" clause (CR-4) and the
+association clause. Ready for placement.**
+
+**C-d3 (Figure 4) and C-d7 (Figure 7): dropped by the sentence test** (recipes above), with the WP11
+evidence of round 1 and round 1b. No read was spent.
+
+**C-d6 and C-e1: no figure** (recipes above).
+
 ---
 
 ## Ready for placement (for the paper stream; R-14: the PM routes them; nothing here edits the notebook)
@@ -423,3 +501,46 @@ are traded with no requirement on them, and what supplies each. Does not show: r
 thresholds or which designs pass them, the conditioning or the fit; the subsystem of a requirement is
 the analyst's reading. Good for: tracing each traded metric back to the model's requirements and
 seeing which trades no requirement constrains.
+
+### P-4 to P-10 (19c and 19d): caption changes and removals, all in the paper's figure directives
+
+Floats after P-1 to P-10: seven figures (n-lemma, assembly, behavioural, temperature sweep, planes
+K = 1, planes K = 3, tensions K = 3, regimes = eight figures) plus the family table: **nine floats**, not
+the eight the tests count now. The two removed figure cells (`fig-chart-k3`, `fig-predict-check`) also
+leave Appendix F.4, so its generated rows need regenerating, and the text's `{numref}`s to
+`fig-chart-3` and `fig-predict-check-1` need replacing.
+
+- **P-4, Figure 1 (`fig-tau`): no change.** Three lines. Shows: the fraction above V = 1 and the
+  effective sample against τ, the target and the selected τ, and each metric's exponent along τ. Does not
+  show: whether the selected τ suits any other purpose, the fit's quality, the K > 1 fits. Good for:
+  seeing that the temperature is chosen by a rule and that the exponents hardly depend on it.
+- **P-5, Figure 2 (`fig-plane-1`), new caption:** "Log-metric plane of the K = 1 fit (primary regime) in
+  the two metrics with the facet's largest exponents. The line is a slice of the surface: the other
+  eight metrics are held at the median of the near-frontier designs, so designs off that median fall on
+  either side of it; grey: the near-frontier band." Three lines. Shows: the designs in the plane of the
+  facet's two heaviest metrics and the facet's line there. Does not show: the other eight metrics (a
+  design above the line here can be inside the surface) or the Pareto boundary. Good for: seeing the
+  one-facet trade-off as a line with a slope.
+- **P-6, Figure 3 (`fig-plane-3`), new caption:** the step-2 caption of C-d2 above, verbatim. Three
+  lines. Shows: three slices of the K = 3 surface, the kink where two facets meet, and the designs by
+  their largest facet. Does not show: that a facet is a set of designs; any metric outside the drawn
+  pair. Good for: seeing that the surface bends and different pairs trade on different facets.
+- **P-7, Figure 4 (`fig-chart-3`): remove the figure and its cell.** The sentence it carried, for the
+  K = 3 paragraph if the stream wants it: "Designs dominated by different facets occupy different regions
+  of the chart's position." The facet shares are in Appendix D.3.
+- **P-8, Figure 5 (`fig-tensions-3`), new caption:** "Association (the Pearson correlation of the
+  log-metrics) among the near-frontier designs of each K = 3 facet (negative: tension). Outlined: the
+  contending set, the support of the exact-maximum fit; w is the fitted exponent, small for some
+  members." Three lines. Shows: which metrics trade on each facet and the contending set with its
+  exponents. Does not show: causation, the exponents' uncertainty, designs. Good for: naming what trades
+  against what on each facet.
+- **P-9, Figure 6 (`fig-regimes-1`), new caption:** "The two regimes: association (the Pearson
+  correlation of the log-metrics) among near-frontier designs at K = 1, primary (aggressive controller
+  gains) above, stock (stock gains) below; outlined: the contending set; w is the fitted exponent of each
+  metric." Three lines. Shows: the contending sets and associations of the two regimes side by side.
+  Does not show: the K = 3 facets, or a selection of representative metrics (the outlines are the
+  metrics that trade, not a pruning). Good for: seeing that the controller gains change what trades.
+- **P-10, Figure 7 (`fig-predict-check-1`): remove the figure and its cell.** The generated sentence
+  `num-predict` stays and carries the finding (levels predicted within the band for 3 of 3, positions
+  for 0 of 3). The Appendix D.10 table keeps the numbers. Defect, if the figure is ever restored: the
+  bottom panel plots Z2 with a "Z1" axis label (`case.predict_check_figure`).
