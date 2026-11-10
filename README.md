@@ -9,8 +9,8 @@ Pareto frontier, together with an invertible coordinate chart (position along th
 log V, the energy differential to it). It is a scikit-learn-compatible unsupervised estimator, with
 SymPy-verified derivations and an ADCS trade-study case.
 
-Status: WP0 (setup) complete; the package code arrives in later work packages. See
-`work-packages/README.md` for the plan and `docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md`
+Status: a 0.1 release candidate in preparation on `dev`. See `work-packages/README.md` for the
+packages and their state and `docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md`
 for the design.
 
 ## Quickstart
