@@ -62,3 +62,11 @@ tables), the gap goes into the UX researcher's report as a feature request with 
 model built here is the numerical demonstrator for the method first; what serves only the ADCS-lifecycle-demo's
 revision is written down as a note for that repository (a section of the WP27 review, "for the lifecycle demo"),
 not built here. HTS becomes a dependency of that repository later; nothing here anticipates it.
+
+**His framework page, read (the DEER layers of the engineering record):** Declaration (architecture and
+requirements in SysML v2), Execution (scenarios, behavioural models and analysis pipelines in a Git repository),
+Evidence (datasets from measurements, simulations and analyses in append-only stores, each tagged with its Git
+SHA), Realization (cloud infrastructure and Docker images in an artifact registry); contradictory evidence is
+expected. WP27's scope uses these words for the chain: a verification case (Declaration) names its analysis
+(Execution), its evidence record (Evidence: the ledger entry and its hash) and the image that produced it
+(Realization). The page names no trade studies or HTS; that is the separation he keeps.
