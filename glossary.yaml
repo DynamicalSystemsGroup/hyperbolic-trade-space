@@ -250,10 +250,10 @@ entries:
   - id: 'energy-differential'
     term: 'energy differential'
     symbol: '\log V'
-    short: 'The log of the invariant value, relative to the fitted reference surface; negative inside, positive beyond; returned by score_samples.'
+    short: 'The log of the invariant value: a design''s level relative to the fitted reference surface, by analogy with a potential (level offset); negative inside, positive beyond; returned by score_samples.'
     register: 'energy differential'
     formal: 'the potential evaluated at the design, a path-independent difference'
-    not: 'a Euclidean distance'
+    not: 'a physical energy or a Euclidean distance'
     defined_in: 'L1, L2, L13'
 
   - id: 'level-offset'
