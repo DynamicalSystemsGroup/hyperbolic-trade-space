@@ -84,7 +84,7 @@ or that the case validates the method on hardware.
 
 ## Round 1b (re-test of the abstract, depth A, after CR-1 landed at 60b1576; staged build 7f162c6)
 
-Four readers (P1 decision maker, P3 systems engineer, P5 ML practitioner, P6 sceptical neighbour),
+Four readers (P1 the accountable decision maker, P3 the modeller, P5 the optimization reader, P6 the sceptical neighbour),
 abstract only, cold, reports in the driver's scratchpad (`readers/round1b/P{1,3,5,6}-A.md`).
 
 - Gone: the surface read as a regression (0 of 4; all four now state it is not a regression and
