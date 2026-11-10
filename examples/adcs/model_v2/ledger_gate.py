@@ -1,4 +1,4 @@
-r"""WP23's data gate in the ledger: re-run the five entries that cite the model, in the container.
+r"""WP23's data gate in the ledger: re-run the five entries that cite the model.
 
 At the recorded gate (``work-packages/WP23-decisions.md``) the WP23 model became ``cubesat.sysml``;
 the WP22 version it replaced stays in history only (d3018ba). Five current entries cited the WP22
@@ -16,14 +16,22 @@ five outputs and the ledger (``runner.run`` excludes only the entry's own output
 second entry onward would be marked dirty by the first's regenerated file; R-12 asks for none
 dirty).
 
+The WP23 close-out (``WP23-closeout-scope-of-work.md``, D-15) re-ran the same five entries (``@6``,
+``scope-sensitivity-shared-subspace-v2@5``) on the model without the eclipse reserve and with the
+supervisor's four thresholds, on the host under the supervisor's rule of 2026-11-10 ("The container
+is a gate check, not a unit step", ``PM-BRIEF.md``): ``--host`` writes the close-out's note, which
+names the platform (the entry's ``platform`` field records it too); the container of record re-pins
+the exact outputs at the gate.
+
     REQUIRE_OPENSYSML=1 PYTHONPATH=examples/adcs \
-        uv run python examples/adcs/model_v2/ledger_gate.py --image <image id> [--dry]
+        uv run python examples/adcs/model_v2/ledger_gate.py (--image <image id> | --host) [--dry]
 """
 
 from __future__ import annotations
 
 import argparse
 import dataclasses
+import platform
 import sys
 
 from experiments import definitions as df
@@ -36,6 +44,12 @@ NOTE = (
     " the settling time by event detection; regenerated in the container of record hts-paper"
     " (image {image})"
 )
+HOST_NOTE = (
+    "WP23 close-out: the eclipse reserve out of the model (its requirement restated the"
+    " depth-of-discharge requirement; eight traded metrics), the supervisor's four thresholds"
+    " literal in budgets; regenerated on the host ({where}) under the rule that the container"
+    " is a gate check; the container of record re-pins the exact outputs at the gate"
+)
 ORDER = (
     *(df.EXPERIMENTS[k] for k in ("v2-primary", "v2-baseline")),
     *(df.EXPERIMENTS[k] for k in ("v2-check-predictions", "v2-check-designs")),
@@ -43,10 +57,16 @@ ORDER = (
 )
 
 
-def declared(exp, entries, image: str):
-    """``exp`` as the gate's re-run of its current entry, the note naming the image."""
+def declared(exp, entries, image: str | None):
+    """``exp`` as the gate's re-run of its current entry, the note naming the image (the gate) or
+    the host's platform (the close-out, ``image`` None)."""
     run = df.revise(exp, entries)
-    return dataclasses.replace(run, inputs={**dict(run.inputs), "note": NOTE.format(image=image)})
+    note = (
+        NOTE.format(image=image)
+        if image
+        else HOST_NOTE.format(where=f"{platform.system()} {platform.machine()}")
+    )
+    return dataclasses.replace(run, inputs={**dict(run.inputs), "note": note})
 
 
 def run_one(run):
@@ -67,7 +87,9 @@ def run_one(run):
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--image", required=True, help="the hts-paper image id the run is made in")
+    where = ap.add_mutually_exclusive_group(required=True)
+    where.add_argument("--image", help="the hts-paper image id the run is made in")
+    where.add_argument("--host", action="store_true", help="the close-out's run on the host")
     ap.add_argument("--dry", action="store_true", help="print the plan, run nothing")
     a = ap.parse_args(argv)
     for exp in ORDER:

@@ -15,7 +15,7 @@ the accounting, the attributes and the feasibility are computed:
   (``settling_time_method="events"``, the default; ``"steps"`` reads it off the accepted steps,
   the generation before WP23);
 * **account**: the model's ``analysis def SlewExperiment`` takes the measured quantities and
-  returns the eight attributes it computes (the settling time is measured and passes into the
+  returns the seven attributes it computes (the settling time is measured and passes into the
   row unchanged);
 * **feasibility**: the four flags are the verdicts of the model's named requirements
   (``feasibility.FeasibilityChecker``, engine ``run``, evidence ``observed``). They are
@@ -23,7 +23,8 @@ the accounting, the attributes and the feasibility are computed:
   (``exclusion.py``) is recorded by ``build`` in the ledger entry.
 
 The output keys are those of the frozen ``cubesat_model.measure`` less the slew-time columns
-(``slew_time_s``, ``slew_time_05deg_s``; the case has one time metric, WP23 G5), in the frozen
+(``slew_time_s``, ``slew_time_05deg_s``; the case has one time metric, WP23 G5) and the eclipse
+reserve (``eclipse_reserve_wh``; the WP23 close-out), in the frozen
 CSV column order, followed by the scenario columns ``slew_deg``, ``t_end_s``, ``max_step_s`` that
 ``evaluate`` appends. Construction fails with ``cubesat_model.OpenSysMLUnavailable`` (a named
 cause) when the runtime cannot start.
@@ -68,7 +69,8 @@ from .runner import LogUniformSampler
 
 PACKAGE = "CubesatTradeSpaceV2"
 CONFIG_NAMES = ("panel_span_m", "battery_wh", "wheel_class", "st_grade", "Kp", "Kd")
-# the nine traded metrics (WP23 G5: one time metric, the settling time)
+# the eight traded metrics (WP23 G5: one time metric, the settling time; the close-out: the eclipse
+# reserve left, its requirement being the depth-of-discharge requirement restated)
 ATTRIBUTE_NAMES = (
     "settling_time_s",
     "pointing_error_deg",
@@ -76,12 +78,11 @@ ATTRIBUTE_NAMES = (
     "control_effort",
     "power_margin_w",
     "energy_balance_wh",
-    "eclipse_reserve_wh",
     "peak_slew_power_w",
     "dod_eclipse",
 )
 FLAG_NAMES = ("settled", "momentum_ok", "power_ok", "dod_ok")
-# the model's analysis returns the eight attributes it computes in this order, each read in this
+# the model's analysis returns the seven attributes it computes in this order, each read in this
 # unit; the settling time is measured and enters the row from the measurement
 _COMPUTED_NAMES = ATTRIBUTE_NAMES[1:]
 _COMPUTED_UNITS = (
@@ -90,11 +91,11 @@ _COMPUTED_UNITS = (
     "SI::N*SI::m*SI::s",
     "SI::W",
     "SI::W*SI::h",
-    "SI::W*SI::h",
     "SI::W",
     None,
 )
-# the keys of the frozen ``cubesat_model.measure`` less the slew-time columns, in order
+# the keys of the frozen ``cubesat_model.measure`` less the slew-time and eclipse-reserve columns,
+# in order
 OUTPUT_NAMES = (
     "settling_time_s",
     "pointing_error_deg",
@@ -103,7 +104,6 @@ OUTPUT_NAMES = (
     "control_effort",
     "power_margin_w",
     "energy_balance_wh",
-    "eclipse_reserve_wh",
     "peak_slew_power_w",
     "dod_eclipse",
     "settled",
@@ -525,7 +525,7 @@ class CubesatOracle:
         }
 
     def _analyse(self, loaded, symbol: str, measured: dict) -> dict:
-        """The nine attributes by name: eight from the model's analysis, the settling time measured.
+        """Eight attributes by name: seven from the model's analysis, the settling time measured.
 
         The settling time is measured, not computed; the analysis neither receives nor returns
         it, and it enters the row unchanged.

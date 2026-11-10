@@ -20,7 +20,7 @@ Examples
 --------
 >>> study = load_study("primary", n_max=60)
 >>> study.M.shape
-(60, 9)
+(60, 8)
 """
 
 from __future__ import annotations
@@ -135,23 +135,22 @@ class CaseSpec:
 
 _ATTRS = (
     "settling_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
-    "power_margin_w", "energy_balance_wh", "eclipse_reserve_wh", "peak_slew_power_w", "dod_eclipse",
+    "power_margin_w", "energy_balance_wh", "peak_slew_power_w", "dod_eclipse",
 )  # fmt: skip
 _NAMES = (
     "settling time", "pointing error", "total mass", "control effort",
-    "power margin", "energy balance", "eclipse reserve", "peak slew power", "depth of discharge",
+    "power margin", "energy balance", "peak slew power", "depth of discharge",
 )  # fmt: skip
 _SUBSYSTEMS = (
     "controls", "controls", "mass", "controls",
     "power and energy", "power and energy", "power and energy", "power and energy",
-    "power and energy",
 )  # fmt: skip
-_UNITS = ("s", "deg", "kg", "torque.s, proxy", "W", "Wh", "Wh", "W", "fraction")
-_ORIENT = (-1, -1, -1, -1, +1, +1, +1, -1, -1)
+_UNITS = ("s", "deg", "kg", "torque.s, proxy", "W", "Wh", "W", "fraction")
+_ORIENT = (-1, -1, -1, -1, +1, +1, -1, -1)
 
 CUBESAT = CaseSpec(
     name="cubesat attitude determination and control",
-    data_dir=HERE / "data" / "v2",  # the data of record (ledger entries @5, WP23)
+    data_dir=HERE / "data" / "v2",  # the data of record (ledger entries @6, the WP23 close-out)
     regimes={"primary": "adcs_designs_cubesat_gains.csv", "stock": "adcs_designs_cubesat.csv"},
     attributes=_ATTRS,
     short=dict(zip(_ATTRS, _NAMES, strict=True)),
@@ -162,7 +161,9 @@ CUBESAT = CaseSpec(
         "st_grade": ("coarse", "medium", "fine"),
     },
     design_vars=("panel_span_m", "battery_wh", "Kp", "Kd"),
-    flags=("settled", "power_ok", "momentum_ok"),
+    # dod_ok joined at the WP23 close-out: the depth-of-discharge failures left the fit through the
+    # eclipse reserve's positivity until the reserve left the metric set
+    flags=("settled", "power_ok", "momentum_ok", "dod_ok"),
     views={
         "four metrics": (
             "settling_time_s",

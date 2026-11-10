@@ -1,7 +1,8 @@
 """The SysML-backed cubesat oracle and sampler of the v2 generation (WP15 15.4).
 
 * R-9: the output keys equal the frozen ``measure`` keys less the slew-time columns (WP23 G5: one
-  time metric, nine traded metrics), in the frozen CSV column order; a configuration outside the
+  time metric) and the eclipse reserve (the WP23 close-out: eight traded metrics), in the frozen
+  CSV column order; a configuration outside the
   model's ranges or with an unknown categorical value raises ``ValueError`` naming the variable;
   construction names the cause when the runtime cannot start.
 * WP16 Amendment 2 and WP23: the settling time of record is the hold time by event detection
@@ -45,6 +46,9 @@ FROZEN_CSV = ADCS / "data" / "adcs_designs_cubesat_gains.csv"
 FLAGS = co.FLAG_NAMES
 # the frozen generation's slew-time columns, which v2 does not produce (WP23 G5)
 SLEW_TIME_COLUMNS = ("slew_time_s", "slew_time_05deg_s")
+# the frozen columns the v2 oracle does not write: the slew times (WP23 G5) and the eclipse reserve
+# (the WP23 close-out: its requirement restated the depth-of-discharge requirement)
+DROPPED_COLUMNS = (*SLEW_TIME_COLUMNS, "eclipse_reserve_wh")
 
 
 @pytest.fixture(scope="module")
@@ -96,10 +100,10 @@ def test_keys_and_order_equal_the_frozen_measure_less_slew_time_on_three_configu
     for _, row in designs.head(3).iterrows():
         cfg = row.to_dict()
         got, want = oracle(cfg), frozen.measure(cfg)
-        assert list(got) == [k for k in want if k not in SLEW_TIME_COLUMNS]
-        assert len(co.ATTRIBUTE_NAMES) == 9
+        assert list(got) == [k for k in want if k not in DROPPED_COLUMNS]
+        assert len(co.ATTRIBUTE_NAMES) == 8
         for k, v in want.items():
-            if k in SLEW_TIME_COLUMNS:
+            if k in DROPPED_COLUMNS:
                 continue
             if isinstance(v, bool):
                 assert got[k] is v, k
@@ -113,8 +117,8 @@ def test_evaluate_gives_the_frozen_column_order_less_slew_time(oracle, designs):
     """R-9: ``evaluate`` is the design columns, the measure keys, then the scenario columns."""
     out = oracle.evaluate(designs.head(4))
     frozen = pd.read_csv(FROZEN_CSV, nrows=1)
-    assert list(out.columns) == [c for c in frozen.columns if c not in SLEW_TIME_COLUMNS]
-    assert not {*out.columns} & {*SLEW_TIME_COLUMNS}
+    assert list(out.columns) == [c for c in frozen.columns if c not in DROPPED_COLUMNS]
+    assert not {*out.columns} & {*DROPPED_COLUMNS}
     assert out["design_id"].tolist() == [0, 1, 2, 3]
     assert out[["slew_deg", "t_end_s", "max_step_s"]].iloc[0].tolist() == [30.0, 600.0, 0.5]
     assert tuple(out[list(co.FLAG_NAMES)].dtypes.astype(str)) == ("bool",) * 4
@@ -372,7 +376,7 @@ def test_flags_observe_the_excluded_battery_region(oracle, designs, solver):
     assert classify_region(TEXT, battery_region((20, 26)), connection=oracle.connection).excluded
     out = oracle.evaluate(_in_battery(designs, 20.0, 26.0, 6, seed=1))
     assert not out["dod_ok"].any(), out[["battery_wh", "dod_eclipse", "dod_ok"]]
-    assert (out["eclipse_reserve_wh"] <= 0).all()
+    assert (out["dod_eclipse"] > 0.3).all()  # the depth of discharge above the allowed 0.3
 
 
 def test_flags_observe_the_all_feasible_battery_region(oracle, designs, solver):
@@ -396,7 +400,7 @@ def test_ledger_ready_record_of_an_excluded_region(oracle, solver):
 
 
 def test_the_measured_settling_time_enters_the_row_unchanged(oracle, designs):
-    """The analysis returns the eight computed attributes only; the settling time is measured,
+    """The analysis returns the seven computed attributes only; the settling time is measured,
     enters the row exactly as measured, and moves no computed attribute."""
     loaded, symbols = oracle._configure([{**designs.iloc[0].to_dict(), "design_id": 0}])
     measured = {
@@ -408,7 +412,7 @@ def test_the_measured_settling_time_enters_the_row_unchanged(oracle, designs):
     }
     got = oracle._analyse(loaded, symbols[0], measured)
     assert got["settling_time_s"] == 14.398119154048933
-    assert list(got) == list(co.ATTRIBUTE_NAMES) and len(got) == 9
+    assert list(got) == list(co.ATTRIBUTE_NAMES) and len(got) == 8
     distinct = oracle._analyse(loaded, symbols[0], {**measured, "settling_time": 10.0})
     for k in co.ATTRIBUTE_NAMES[1:]:
         assert got[k] == pytest.approx(distinct[k], rel=1e-12), k

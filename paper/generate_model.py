@@ -66,7 +66,6 @@ PRODUCERS = {
     "control_effort": ("adcs_sim.py", "simulate_adcs", "measured: on the integrated slew"),
     "power_margin_w": ("cubesat_tradespace.sysml", "PowerMargin", "computed: accounting"),
     "energy_balance_wh": ("cubesat_tradespace.sysml", "EnergyBalance", "computed: accounting"),
-    "eclipse_reserve_wh": ("cubesat_tradespace.sysml", "EclipseReserve", "computed: accounting"),
     "peak_slew_power_w": ("cubesat_tradespace.sysml", "PeakSlewPower", "computed: accounting"),
     "dod_eclipse": ("cubesat_tradespace.sysml", "DepthOfDischarge", "computed: accounting"),
 }

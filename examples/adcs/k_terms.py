@@ -24,13 +24,13 @@ DATA = HERE / "data" / "v2"  # the data of record (WP23)
 REGIMES = {"primary": "adcs_designs_cubesat_gains.csv", "stock": "adcs_designs_cubesat.csv"}
 ATTRS = [
     "settling_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
-    "power_margin_w", "energy_balance_wh", "eclipse_reserve_wh", "peak_slew_power_w", "dod_eclipse",
+    "power_margin_w", "energy_balance_wh", "peak_slew_power_w", "dod_eclipse",
 ]  # fmt: skip
 SHORT = dict(zip(ATTRS, [
     "settling time", "pointing error", "total mass", "control effort",
-    "power margin", "energy balance", "eclipse reserve", "peak slew power", "depth of discharge",
+    "power margin", "energy balance", "peak slew power", "depth of discharge",
 ], strict=True))  # fmt: skip
-ORIENT = dict(zip(ATTRS, [-1, -1, -1, -1, +1, +1, +1, -1, -1], strict=True))
+ORIENT = dict(zip(ATTRS, [-1, -1, -1, -1, +1, +1, -1, -1], strict=True))
 WHEELS, TRACKERS = ["small", "medium", "large"], ["coarse", "medium", "fine"]
 DESIGN_VARS = ["panel_span_m", "battery_wh", "Kp", "Kd"]
 NAMES = [SHORT[a] for a in ATTRS]
@@ -53,7 +53,7 @@ def make_conditioner(attrs):
 def load_metrics(path, n_max=None):
     """Feasible rows of a dataset (the notebook's filter) and their conditioned metrics."""
     raw = pd.read_csv(path)
-    ok = raw.settled & raw.power_ok & raw.momentum_ok & (raw[ATTRS] > 0).all(axis=1)
+    ok = raw.settled & raw.power_ok & raw.momentum_ok & raw.dod_ok & (raw[ATTRS] > 0).all(axis=1)
     feasible = raw[ok].reset_index(drop=True)
     if n_max:
         feasible = feasible.iloc[:n_max]

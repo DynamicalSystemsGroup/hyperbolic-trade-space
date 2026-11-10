@@ -60,13 +60,13 @@ def test_subsystem_mapping_is_data_and_covers_every_attribute():
     assert set(spec.subsystems) == set(spec.attributes)
     assert set(spec.subsystem_order) == set(spec.subsystems.values())
     counts = {g: list(spec.subsystems.values()).count(g) for g in spec.subsystem_order}
-    assert counts == {"controls": 3, "power and energy": 5, "mass": 1}
+    assert counts == {"controls": 3, "power and energy": 4, "mass": 1}
     assert spec.subsystems_of(["total mass", "pointing error"]) == ["controls", "mass"]
     assert spec.subsystems_of(["settling time"]) == ["controls"]
 
 
 def test_load_study_filters_and_conditions(small):
-    assert small.M.shape == (N, 9) and (small.M > 0).all()
+    assert small.M.shape == (N, 8) and (small.M > 0).all()
     assert len(small.raw) == 1000 and len(small.feasible) == N
     assert small.feasible.settled.all() and small.feasible.momentum_ok.all()
     assert small.names[0] == "settling time" and small.names[-1] == "depth of discharge"
@@ -75,20 +75,32 @@ def test_load_study_filters_and_conditions(small):
 
 
 def test_feasible_mask_counts_on_frozen_data(primary, stock):
+    """R-19 of the WP23 close-out: ``dod_ok`` is a flag of the case, and the feasible sets stay 706
+    and 780 (the eclipse reserve's positivity removed exactly the ``dod_ok`` failures, 131 per
+    regime, before the reserve left the metric set)."""
+    assert "dod_ok" in case.CUBESAT.flags
     assert len(primary.feasible) == 706 and len(stock.feasible) == 780
     assert int(case.feasible_mask(primary.raw).sum()) == 706
+    for study in (primary, stock):
+        assert int((~study.raw.dod_ok).sum()) == 131
 
 
 def test_feasibility_table_cascade(primary):
     t = case.feasibility_table(primary)
-    assert list(t.condition) == ["settled", "power_ok", "momentum_ok", "all attributes positive"]
+    assert list(t.condition) == [
+        "settled",
+        "power_ok",
+        "momentum_ok",
+        "dod_ok",
+        "all attributes positive",
+    ]
     assert t.remaining.iloc[-1] == 706 and t.remaining.is_monotonic_decreasing
     assert t["removed in this order"].sum() == 1000 - 706
 
 
 def test_conditioning_table(small):
     t = case.conditioning_table(small)
-    assert list(t.index) == small.names and len(t) == 9
+    assert list(t.index) == small.names and len(t) == 8
     assert set(t.orientation) == {"reciprocal", "direct"}
     assert np.allclose(t["m min"], small.M.min(axis=0))
 
@@ -423,7 +435,7 @@ def test_swapping_the_spec_changes_the_behaviour():
     assert list(t.view) == ["all attributes", "one"]
     only_stock = case.with_spec(regimes={"stock": "adcs_designs_cubesat.csv"})
     assert list(case.regime_comparison(only_stock, n_max=N).columns) == ["quantity", "stock"]
-    assert case.CUBESAT.flags == ("settled", "power_ok", "momentum_ok")  # the original is frozen
+    assert case.CUBESAT.flags == ("settled", "power_ok", "momentum_ok", "dod_ok")  # frozen
     with pytest.raises(AttributeError):
         case.CUBESAT.flags = ()
 

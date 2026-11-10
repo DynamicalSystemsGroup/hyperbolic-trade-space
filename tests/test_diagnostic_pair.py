@@ -1,7 +1,7 @@
 """The diagnostic pair of a WP23 round (`examples/adcs/model_v2/diagnostic_pair.py`, D-6).
 
 Runs the script on a short slice of the committed v2 data with the slew-time columns dropped (the
-round's header: the nine traded metrics, no slew time) and a coverage table of its own, into a
+round's header: the traded metrics, no slew time) and a coverage table of its own, into a
 temporary folder.
 """
 
@@ -110,9 +110,10 @@ def test_the_metric_list_is_the_coverage_tables_in_its_order(pair):
     assert headers and all("facet" not in h for h in headers)
 
 
-def test_the_committed_coverage_table_names_nine_metrics_the_spec_knows():
+def test_the_committed_coverage_table_names_eight_metrics_the_spec_knows():
+    """Eight since the WP23 close-out (the eclipse reserve left the model)."""
     metrics = dp.metrics_from_coverage(COVERAGE)
-    assert len(metrics) == 9 and "slew time" not in metrics
+    assert len(metrics) == 8 and "slew time" not in metrics and "eclipse reserve" not in metrics
     spec = dp.round_spec(V2 / "adcs_designs_cubesat.csv", V2 / "adcs_designs_cubesat_gains.csv",
                          metrics)  # fmt: skip
     assert [spec.short[a] for a in spec.attributes] == metrics

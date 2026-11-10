@@ -279,15 +279,25 @@ SUPPORT_TOL = 1e-3
 TARGET_FRAC_ABOVE = 0.10
 
 
-def richness(df: pd.DataFrame, seed: int = 0, n_boot: int = 100) -> dict:
-    """The hand version of the WP4b probe on a cubesat frame (as ``tests/test_adcs_enrichment``)."""
+def richness(
+    df: pd.DataFrame, seed: int = 0, n_boot: int = 100, attrs: list[str] | None = None
+) -> dict:
+    """The hand version of the WP4b probe on a cubesat frame (as ``tests/test_adcs_enrichment``).
+
+    ``attrs`` are the attributes read (default: those of ``ORIENTATION`` the frame carries); the
+    report passes the attributes both frames carry, so the frozen and the v2 frames are read on
+    one metric set (the eclipse reserve left the v2 data at the WP23 close-out). The feasible rows
+    pass the four flags (``dod_ok`` with them since the close-out; on the frozen frames it removes
+    exactly the rows the reserve's positivity removed) and have every attribute positive.
+    """
     from hyperbolic_trade_space import HyperbolicTradeSpace
     from hyperbolic_trade_space import solvers as S
 
-    attrs = list(ORIENTATION)
-    ok = df.settled & df.power_ok & df.momentum_ok & (df[attrs] > 0).all(axis=1)
+    attrs = [a for a in ORIENTATION if a in df.columns] if attrs is None else list(attrs)
+    power = [a for a in POWER if a in attrs]
+    ok = df.settled & df.power_ok & df.momentum_ok & df.dod_ok & (df[attrs] > 0).all(axis=1)
     f = df[ok].reset_index(drop=True)
-    U = np.column_stack([o * np.log(f[a].to_numpy(float)) for a, o in ORIENTATION.items()])
+    U = np.column_stack([ORIENTATION[a] * np.log(f[a].to_numpy(float)) for a in attrs])
     U = (U - U.mean(axis=0)) / U.std(axis=0)
     w_inf = dict(zip(attrs, S.solve_lp(U, 0.0).w, strict=True))
     X = np.exp(U)
@@ -314,21 +324,21 @@ def richness(df: pd.DataFrame, seed: int = 0, n_boot: int = 100) -> dict:
     tim = f.groupby("wheel_class")["settling_time_s"].median()
     pairs = {
         (p, q): float(assoc.loc[p, q])
-        for p in POWER
+        for p in power
         for q in attrs
-        if p != q and (q not in POWER or attrs.index(p) < attrs.index(q))
+        if p != q and (q not in power or attrs.index(p) < attrs.index(q))
     }
     a = assoc
     conditions = {
         "a": (
             len([x for x in attrs if w_inf[x] > SUPPORT_TOL]) >= 3
             and w_inf["total_mass_kg"] >= 0.05
-            and max(w_inf[x] for x in POWER) >= 0.05
+            and max(w_inf[x] for x in power) >= 0.05
         ),
         "b": (
             frac["total_mass_kg"] >= 0.90
             and med["total_mass_kg"] >= 0.05
-            and any(frac[x] >= 0.90 and med[x] >= 0.05 for x in POWER)
+            and any(frac[x] >= 0.90 and med[x] >= 0.05 for x in power)
         ),
         "c": (
             a.loc["settling_time_s", "total_mass_kg"] <= -0.30
@@ -362,6 +372,7 @@ def richness(df: pd.DataFrame, seed: int = 0, n_boot: int = 100) -> dict:
         "sat_ratio": float(sat["small"] / sat["large"]) if sat["large"] > 0 else float("inf"),
         "settling_ratio": float(tim["small"] / tim["large"]),
         "conditions": conditions,
+        "attrs": attrs,
     }
 
 
@@ -445,7 +456,8 @@ def _dataset_section(c: DatasetComparison) -> list[str]:
 def _richness_section(frozen: dict, v2: dict) -> list[str]:
     L = [
         "WP4b R-13 conditions (a) to (e) and R-14 on the feasible designs (settled, power_ok, "
-        "momentum_ok, all nine attributes positive), conditioned by hand as in the probe, "
+        "momentum_ok, dod_ok, every attribute positive), read on the attributes both frames carry "
+        "(eight since the eclipse reserve left the v2 data), conditioned by hand as in the probe, "
         "`HyperbolicTradeSpace` at tau = infinity and at the working tau (frac above about 0.10); "
         "100 bootstrap resamples, seed 0. Reported; no pass is required of v2.",
         "",
@@ -506,7 +518,7 @@ def _richness_section(frozen: dict, v2: dict) -> list[str]:
                     _fmt(a["frac"][x], 2),
                     _fmt(b["frac"][x], 2),
                 ]
-                for x in ORIENTATION
+                for x in b["attrs"]
             ],
         )
         L.append(
@@ -672,8 +684,10 @@ def build_report(root: Path) -> str:
         for regime in ("primary", "baseline"):
             f2 = p["v2"] / DATASETS[regime]
             if f2.exists():
-                frozen_r[regime] = richness(pd.read_csv(p["frozen"] / DATASETS[regime]))
-                v2_r[regime] = richness(pd.read_csv(f2))
+                old, new = pd.read_csv(p["frozen"] / DATASETS[regime]), pd.read_csv(f2)
+                both = [a for a in ORIENTATION if a in old.columns and a in new.columns]
+                frozen_r[regime] = richness(old, attrs=both)
+                v2_r[regime] = richness(new, attrs=both)
         L += _richness_section(frozen_r, v2_r)
     except ImportError as exc:
         L += [f"The estimator could not be imported ({exc}); not evaluated.", ""]

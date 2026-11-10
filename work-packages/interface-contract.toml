@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 14
+contract_version = 15
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -580,12 +580,13 @@ n_train = "int"
 
 
 # --- The v2 datasets (WP23 D-4, amendment 12): the frozen headers less the slew-time columns -----
+# --- and, since amendment 15 (the WP23 close-out), less eclipse_reserve_wh: eight traded metrics ----
 [case.v2]
 dir = "examples/adcs/data/v2/"
-data_rule = "committed, seeded, ledgered (examples/adcs/experiments/ledger/ledger.jsonl); regenerated only by a package whose scope says so, once, in the container of record"
+data_rule = "committed, seeded, ledgered (examples/adcs/experiments/ledger/ledger.jsonl); regenerated only by a package whose scope says so, once, on the host with the suite's tolerance branches; the container of record re-pins the exact outputs at the gate"
 traded_metrics = [
   "settling_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
-  "power_margin_w", "energy_balance_wh", "eclipse_reserve_wh", "peak_slew_power_w", "dod_eclipse",
+  "power_margin_w", "energy_balance_wh", "peak_slew_power_w", "dod_eclipse",
 ]
 time_metric = "settling_time_s"
 settling_time_method = "events"
@@ -610,7 +611,6 @@ adcs_mass_kg = "float"
 control_effort = "float"
 power_margin_w = "float"
 energy_balance_wh = "float"
-eclipse_reserve_wh = "float"
 peak_slew_power_w = "float"
 dod_eclipse = "float"
 settled = "bool"
@@ -649,7 +649,6 @@ adcs_mass_kg = "float"
 control_effort = "float"
 power_margin_w = "float"
 energy_balance_wh = "float"
-eclipse_reserve_wh = "float"
 peak_slew_power_w = "float"
 dod_eclipse = "float"
 settled = "bool"
@@ -689,7 +688,6 @@ total_mass_kg = "float"
 control_effort = "float"
 power_margin_w = "float"
 energy_balance_wh = "float"
-eclipse_reserve_wh = "float"
 peak_slew_power_w = "float"
 dod_eclipse = "float"
 settled = "bool"
