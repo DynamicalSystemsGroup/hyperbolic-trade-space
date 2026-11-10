@@ -1,8 +1,6 @@
 # Reading `termination_` and `conditioning_`
 
-Every fit records how it stopped. At one term the fit is a convex program and its answer is the
-minimizer. With several terms it alternates between weights from the current model and refitting each
-term.
+Every fit records how it stopped.
 
 ```python {.runnable}
 from hyperbolic_trade_space import (
@@ -21,7 +19,7 @@ print(ts.conditioning_.round(1))
 
 ## The three levels
 
-1. Descent: no step made the mean slack worse (`mean_slack_`, defined at every number of terms).
+1. Descent: no step made the mean slack worse (`mean_slack_`).
 2. Numerical stationarity: no first-order improvement is left. The term gap G_k measures what
    remains.
 3. Conditional local optimality: if no design sits exactly on a seam between terms, small changes
@@ -36,8 +34,7 @@ print(ts.conditioning_.round(1))
 - `certified`: assignment fixed, residuals within `eps_feas`, `max_gap` within `eps_kkt`, no empty
   cell, margin positive: all three levels.
 - `stationary_without_margin`: the same, with margin at most `eps_feas` or an empty cell. Levels 1
-  and 2. At infinite temperature this happens when a frontier row lies on two term planes or two
-  terms coincide.
+  and 2.
 - `uncertified`: assignment fixed, a residual or the gap above tolerance.
 - `guard_stop`: an iteration raised the mean slack by more than `guard_tol`. Not converged.
 - `iteration_cap`: alternation cap reached, fit kept; warned only when gap or last objective
@@ -56,9 +53,10 @@ A soft fit weighs every term: no assignment, no margin.
 
 ## The fields
 
-- `status`, `reason`, `n_iter`; `max_gap`, `gaps` (`nan` for an empty cell) and `shares`.
+- `status`, `reason`, `n_iter`; `max_gap`, `gaps` (`nan` for an empty cell) and `shares`, the
+  row shares, each cell's fraction of all designs (`term_share_` counts near-frontier designs only).
 - `n_distinct_terms`: terms whose exponent vectors differ by more than 1e-3.
-- `bound`: the share-weighted sum of term gaps, bounding the distance from the fixed-assignment
+- `bound`: the row-share-weighted sum of term gaps, bounding the distance from the fixed-assignment
   optimum.
 - `gamma`, `radius`: the margin and stable radius, `nan` at one term.
 - `sum_residual`, `floor_residual`, `offset_residual`, `objective_change`, `assignment_changes`, `n_empty`, tolerances: diagnostics.
@@ -71,15 +69,15 @@ The tolerances are module constants of `hyperbolic_trade_space.solvers`, not par
 ## `conditioning_`
 
 The smallest eigenvalue of the restricted Hessian over the participating
-exponents (above 1e-3), one per term. A small value marks a nearly flat direction (weakly identified exponents). It is `nan` at infinite
+exponents (above 1e-3), one per term. A small value marks a nearly flat direction. It is `nan` at infinite
 temperature and for a term with fewer than two participating exponents.
 
 ## How small is a small margin
 
-The margin `gamma` is in score units (log metrics), the scale of the band 1/tau; `radius` is
-`gamma / (2R)`, with R the largest norm of a row (u, -1). Compare `gamma` with the median margin,
-the median gap between best and second-best term score: far below it, a few designs sit
-on a seam.
+The margin `gamma` is in score units (log metrics), the scale of the band 1/tau. Level 3 holds
+whenever `gamma` is positive, as the status says. The median margin, the median gap between a design's best and
+second-best term score, says how typical the tightest design is: a `gamma` far below it means a few
+designs sit near a seam and most do not; those few are the ones to watch under resampling.
 
 ```python {.runnable}
 import numpy as np
@@ -89,8 +87,8 @@ top = np.sort(S, axis=1)
 print(t.gamma, 1 / 50.0, np.median(top[:, -1] - top[:, -2]), t.radius)
 ```
 
-On this table at tau = 50, `gamma` is 0.0020 against the band 0.02 and the median margin 0.21:
-level 3 holds.
+On this table at tau = 50, `gamma` is 0.0020 and the median margin 0.21: level 3 holds, and the
+tightest design sits a hundredfold nearer a seam than the typical one.
 
 ## What to decide from it
 
