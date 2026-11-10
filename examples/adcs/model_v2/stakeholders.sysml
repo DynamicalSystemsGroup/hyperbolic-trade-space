@@ -79,8 +79,9 @@ package CubesatStakeholders {
     }
     concern powerAndEnergy : PerformanceConcern {
         doc /* The cubesat's power and energy hold up through an orbit and through a slew in
-               eclipse. The depth-of-discharge requirement serves this concern and the sponsor's
-               long life both: the trace says so, not the requirement. */
+               eclipse. The depth-of-discharge requirement serves this concern (as the eclipse
+               depth of discharge) and the sponsor's long life both: the trace says so, not the
+               requirement. */
         subject :>> c;
         stakeholder :>> s = operator;
         requirement power : PowerRequirement;
@@ -88,7 +89,7 @@ package CubesatStakeholders {
         requirement energyBalance : EnergyBalanceRequirement;
         requirement peakSlewPower : PeakSlewPowerRequirement;
         requirement batteryPeakPower : BatteryPeakPowerRequirement;
-        requirement depthOfDischarge : DepthOfDischargeRequirement;
+        requirement eclipseDepthOfDischarge : DepthOfDischargeRequirement;
     }
 
     // ==========================================================================================
@@ -198,7 +199,7 @@ package CubesatStakeholders {
             verify powerAndEnergy.energyBalance;
             verify powerAndEnergy.peakSlewPower;
             verify powerAndEnergy.batteryPeakPower;
-            verify powerAndEnergy.depthOfDischarge;
+            verify powerAndEnergy.eclipseDepthOfDischarge;
         }
         :>> ledgerEntry = "v2-primary@6";
         :>> recordEntry = "Regeneration of the v2 data at WP23's data gate (2026-11-10, head 2b2e94e)";
