@@ -492,7 +492,7 @@ _DTYPE_CHECK = {
 @pytest.mark.parametrize("filename", list(CASE["data"]))
 def test_r3_data_file_header_dtypes_rows(filename):
     spec = CASE["data"][filename]
-    path = ROOT / CASE["data_dir"] / filename
+    path = ROOT / CASE["frozen_data_dir"] / filename
     assert path.is_file(), msg("R-3", f"data file {path.relative_to(ROOT)} must exist")
     df = pd.read_csv(path)
     assert list(df.columns) == list(spec["columns"]), msg(

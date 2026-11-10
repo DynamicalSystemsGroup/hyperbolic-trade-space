@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 12. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 13. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 12
+contract_version = 13
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -202,7 +202,9 @@ The case code lives under `examples/adcs/` and is importable through the `python
 
 Regimes: `primary` is `adcs_designs_cubesat_gains.csv`, `stock` is `adcs_designs_cubesat.csv`.
 
-Data files in `examples/adcs/data/`, each with its exact header and dtype classes (int, float, bool,
+Data files in `examples/adcs/data/` (the frozen generation, manifest `case.frozen_data_dir`, the cited
+comparison; the case module reads the data of record under `case.data_dir = "examples/adcs/data/v2/"`
+since version 13), each with its exact header and dtype classes (int, float, bool,
 str) in the manifest (`case.data`): `adcs_designs_cubesat_gains.csv` (primary), `adcs_designs_cubesat.csv`
 (baseline), `adcs_designs.csv`, `check_designs_cubesat.csv`, `check_predictions_cubesat.csv`. The
 files are committed and seeded; only a package whose scope says so regenerates them, and it updates
@@ -320,6 +322,7 @@ the last row of the change log.
 | 10 | 2026-11-09 | The distinct-terms count (WP21 D-5): the `Termination` record gains `n_distinct_terms` (exponent vectors within `solvers.DISTINCT_TERMS_DISTANCE` count as one); `solvers` offers `distinct_terms` and `DISTINCT_TERMS_DISTANCE`. Additive: the pinned field and name lists grow (floor rule); no other field and no committed number changes | technical (the docs K-sweep example and the paper's D.15 show it beside the slack) | `external-assessment-2026-11-09/triage.md`, finding A3, accepted by the driver under the mandate; `WP21-scope-of-work.md` D-5 |
 | 11 | 2026-11-09 | The designs' colour in the plots (`WP19-decisions.md`, the principle check's package item; the supervisor's "Recolour" for docs Figure 8): colouring designs by the term that scores them highest is the cluster idiom and is no plot's default. `plot_ternary` gains a trailing keyword, `plot_ternary(estimator, X=None, names=None, groups=None, lines=False, near=0.2, ax=None, scheme="auto", color=None) -> Axes`: by default the designs are one neutral colour (the near-frontier ones larger); `color="facet"` colours the near-frontier designs by the term that scores each highest (its cell), an analysis of the fit; the region tints, the numbered exponent-vector markers and the lines of equal V are unchanged, so `ternary_marker_values` (row 8) is unchanged. `plot_log_plane` and `plot_frontier_surface_3d` (pinned by name only; signatures unchanged) likewise draw the designs in one colour for any number of terms, with the term lines or the envelope surface as the model, and take `color="facet"` for the cell. Every existing call runs unchanged; the rendered figures change as stated | technical (the docsite and the paper words follow) | the driver under the mandate (`WP19-decisions.md`, the principle check's package item; the supervisor's "Recolour") |
 | 12 | 2026-11-10 | One time metric (WP23 G5, D-4; the supervisor, `WP16-decisions.md`: "One: settling time"): the v2 datasets lose `slew_time_s` and `slew_time_05deg_s`, their headers are pinned (`case.v2.data`, the frozen columns less those two, in the frozen order), the traded metrics of the v2 data are the nine of `case.v2.traded_metrics`, the settling time is read by event detection (`case.v2.settling_time_method = "events"`, WP16 Amendment 2 D-7), and the check-design predictions carry `pred_std_settling_time_s`. No `launch_cost` column (`WP23-decisions.md`, OD2). The frozen files and their `case.data` manifests are unchanged | technical (the paper's figures and numbers that used slew time regenerate in their own stream after the data gate; the docs follow) | the driver under the mandate, recorded in `WP23-decisions.md` at the data gate |
+| 13 | 2026-11-10 | The case reads the data of record (WP23's swap, ea46637): `case.data_dir` changes from `examples/adcs/data/` to `examples/adcs/data/v2/`, where the paper's case module (`CUBESAT.data_dir`, `k_terms.DATA`) now reads; the frozen generation under `examples/adcs/data/` stays the cited comparison and is untouched, so its directory is pinned as the new `case.frozen_data_dir = "examples/adcs/data/"` and the `case.data` file manifests are asserted there. Not additive: one pinned field changes its value (a pinned path moves, which needs an amendment, section 14), with one key added to keep the frozen files pinned. No file moves and no committed number changes | technical (the paper and docs already read the v2 data) | the driver under the mandate, 2026-11-10; WP23's swap, `WP23-decisions.md` |
 
 ## 15. Consumers: may assume, must not touch
 

@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 12
+contract_version = 13
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -167,7 +167,8 @@ pythonpath = [".", "src", "examples/adcs"]
 modules = ["k_terms", "generate_dataset", "design_space", "cubesat_model", "adcs_sim", "make_check_designs"]
 regimes = ["primary", "stock"]
 regime_attribute = "k_terms.REGIMES"
-data_dir = "examples/adcs/data/"
+data_dir = "examples/adcs/data/v2/"   # amendment 13: the data of record the case module reads
+frozen_data_dir = "examples/adcs/data/"   # amendment 13: the frozen generation, the cited comparison; holds the files of case.data
 data_rule = "committed, seeded; regenerated only by a package whose scope says so"
 producing_command = "uv run python examples/adcs/k_terms.py"
 smoke_run = "k_terms.run_regime(regime, seeds=[0], figs=<tmp dir>, verbose=False)"
