@@ -650,7 +650,7 @@ class Termination:
 
         A *soft* fit (finite ``term_temperature``, weights in place of labels) has two more
         outcomes and a different meaning of ``"certified"``. ``"certified"``: every term's
-        weighted gap is at most ``eps_kkt`` and ``min_curvature > eps_feas`` (the second-order
+        facet gap is at most ``eps_kkt`` and ``min_curvature > eps_feas`` (the second-order
         sufficient condition: a strict local minimizer of the soft objective).
         ``"stationary"``: the gaps hold and ``min_curvature <= eps_feas`` (a saddle or a flat
         direction). ``"uncertified"`` as above (a residual or a gap exceeds its tolerance).
@@ -1025,7 +1025,7 @@ def _tangent_basis(W, g, min_exponent, tol=1e-6, eps=1e-7):
 
 
 def soft_certificate(U, W, tau, kappa, min_exponent=0.0):
-    """Second-order test of a soft fit: the weighted gaps and the smallest curvature.
+    """Second-order test of a soft fit: the facet gaps and the smallest curvature.
 
     Parameters
     ----------

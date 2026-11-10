@@ -29,7 +29,7 @@ $\log V=w\cdot u-\beta=0$, using the log-mean-exp (entropic) soft maximum of $w\
 designs. With one term this is a convex program. Three objects answer to the word frontier, and the
 text names them:
 
-- the **fitted reference surface**, V = 1 at the working temperature tau; it is smooth, so a few
+- the **fitted reference surface**, V = 1 at the fit temperature tau; it is smooth, so a few
   designs lie beyond it;
 - the **supporting envelope**, the same fit at tau = infinity: the exact maximum, a linear program,
   with no design above it;
@@ -54,8 +54,8 @@ either way. Holes in the $Z$ plane are candidates for white space.
 
 ## Elasticities and the n-lemma
 
-On the surface $w\cdot u=\beta$, the level surface is flat in log space, so moving along it trades
-the contending metrics at constant rates:
+The surface $w\cdot u=\beta$ is flat in log space, so moving along it trades
+the contending metrics at constant elasticities:
 
 $$
 \frac{\mathrm{d}\log m_j}{\mathrm{d}\log m_k}=-\frac{w_k}{w_j}.
@@ -63,7 +63,7 @@ $$
 
 The metrics with positive weight at tau = infinity are the contending set, and its size n is the
 n-lemma (a dilemma is n = 2, a trilemma n = 3). It is found from the data and not assumed: the fit at
-tau = infinity is a linear program whose solution is generically sparse. At a finite working
+tau = infinity is a linear program whose solution is generically sparse. At a finite fit
 temperature a small weight means weak participation, set by a participation threshold. With K
 terms there is one contending set per facet, and elasticities vary between facets.
 

@@ -38,12 +38,12 @@ plot_tensions(report, names=["m0", "m1", "m2"])
 exponents above 1e-9). `n_lemma` is its size and `lemma_name` names it: monolemma, dilemma,
 trilemma, then an n-lemma. The set is found, not assumed: a facet of the achievable region on which
 exactly n metrics contend. The report solves the tau = infinity program itself, independent of the
-fitted temperature. `min_exponent` must be 0 for this reading, because a positive floor masks the
+fit temperature. `min_exponent` must be 0 for this reading, because a positive floor masks the
 sparsity; the report warns when the estimator was fitted with a floor.
 
 ## Participation and elasticities
 
-At the working temperature the exponents are smoothed, so a small one means weak participation, not
+At the fit temperature the exponents are smoothed, so a small one means weak participation, not
 membership. `participating` marks metrics whose exponent exceeds the participation threshold
 (`threshold`, default 1e-3); an exponent at or below 1e-12 is numerically zero. `elasticities[j, k]`
 is the elasticity along the surface: the percentage change of metric j per percentage change of

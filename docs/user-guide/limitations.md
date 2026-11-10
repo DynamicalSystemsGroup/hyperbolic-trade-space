@@ -12,7 +12,7 @@ number of terms represents them. A hole is an opportunity only if the trade spac
 **One term has one tension.** A single term has constant elasticities and finds one tension, at
 its balanced point. Away from that point a design can score below 1 while locally on the frontier. If the balanced point sits on a vertex or
 edge of the weights' simplex, exponents are not unique and some elasticities are undefined. For
-regionally varying rates fit [several terms](fitting.md).
+regionally varying elasticities fit [several terms](fitting.md).
 
 **The surface is not the Pareto boundary.** The fitted reference surface and the supporting envelope
 are determined by the sample you give; the Pareto boundary is a property of the system. A maximizer
@@ -28,7 +28,7 @@ samples, such as grids, are not independent observations: the exponents describe
 no sampling error.
 
 **Contending sets are a reading.** The set is exact at infinite temperature with `min_exponent` at
-0, and graded participation at a working temperature. Whether what contends is
+0, and graded participation at a fit temperature. Whether what contends is
 a recognizable dilemma is for you. A tension is a binding constraint, not a correlation, and
 negative association near the surface is partly a closure effect.
 
@@ -36,7 +36,7 @@ negative association near the surface is partly a closure effect.
 ($K = 3$, $d = 4$, $N = 400$) it recovers the planted facets in 16 or 17; failures are facets with
 five or six frontier rows. More restarts do not cure this; a larger sample can help.
 
-**Novelty is not preference.** V - 1 says how far a design lies beyond the learned surface, not that
+**Novelty is not preference.** V - 1 says how far a design lies beyond the fitted reference surface, not that
 it is wanted, feasible or safe.
 
 **Prediction is conditional.** A prediction inherits the surrogate's error and the fitted trade

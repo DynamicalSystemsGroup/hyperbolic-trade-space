@@ -5,90 +5,6 @@
 
 [[violation]]
 kind = "avoid"
-file = "docs/api.md"
-phrase = "fitted surface"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "docs/getting-started.md"
-phrase = "working temperature"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "docs/index.md"
-phrase = "exchange rates"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of elasticity: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "docs/theory.md"
-phrase = "constant rate"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of elasticity: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "docs/theory.md"
-phrase = "working temperature"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "docs/user-guide/conditioning.md"
-phrase = "fitted surface"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "docs/user-guide/limitations.md"
-phrase = "learned surface"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "docs/user-guide/limitations.md"
-phrase = "varying rate"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of elasticity: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "docs/user-guide/limitations.md"
-phrase = "working temperature"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "docs/user-guide/tensions.md"
-phrase = "fitted temperature"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "docs/user-guide/tensions.md"
-phrase = "working temperature"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "docs/user-guide/termination.md"
-phrase = "weighted gap"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
 file = "glossary.yaml"
 phrase = "fitted surface"
 owner = "PM (glossary)"
@@ -145,34 +61,6 @@ reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-tr
 
 [[violation]]
 kind = "avoid"
-file = "src/hyperbolic_trade_space/estimator.py"
-phrase = "weighted gap"
-owner = "package docstrings"
-reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "src/hyperbolic_trade_space/solvers.py"
-phrase = "weighted gap"
-owner = "package docstrings"
-reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "src/hyperbolic_trade_space/tensions.py"
-phrase = "fitted temperature"
-owner = "package docstrings"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "src/hyperbolic_trade_space/tensions.py"
-phrase = "matching temperature"
-owner = "package docstrings"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
 file = "src/hyperbolic_trade_space/tensions.py"
 phrase = "working temperature"
 owner = "package docstrings"
@@ -208,52 +96,10 @@ reason = "FIRST-USE: a glossary term met in the paper before its definition cue;
 
 [[violation]]
 kind = "stem"
-file = "docs/api.md"
-phrase = "fitted surface"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
 file = "docs/examples.md"
 phrase = "power margin"
 owner = "WP8a docsite stream"
 reason = "BASELINE: a named attribute of the cubesat case (power_margin_w), a proper name of the case (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "docs/getting-started.md"
-phrase = "working temperature"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "docs/index.md"
-phrase = "exchange rate"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of elasticity: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "docs/theory.md"
-phrase = "constant rate"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of elasticity: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "docs/theory.md"
-phrase = "level surface"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "docs/theory.md"
-phrase = "working temperature"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
@@ -268,13 +114,6 @@ file = "docs/user-guide/conditioning.md"
 phrase = "error rate"
 owner = "WP8a docsite stream"
 reason = "BASELINE: ordinary English: an example of an attribute (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "docs/user-guide/conditioning.md"
-phrase = "fitted surface"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
@@ -313,45 +152,10 @@ reason = "BASELINE: infinite qualifies the fit temperature; the glossary entries
 
 [[violation]]
 kind = "stem"
-file = "docs/user-guide/limitations.md"
-phrase = "learned surface"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "docs/user-guide/limitations.md"
-phrase = "varying rate"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of elasticity: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "docs/user-guide/limitations.md"
-phrase = "working temperature"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "docs/user-guide/tensions.md"
-phrase = "fitted temperature"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
 file = "docs/user-guide/tensions.md"
 phrase = "infinity program"
 owner = "WP8a docsite stream"
 reason = "BASELINE: tokenizer artifact of \"tau = infinity program\": the linear program at infinite fit temperature (supporting envelope) (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "docs/user-guide/tensions.md"
-phrase = "working temperature"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
@@ -387,13 +191,6 @@ file = "docs/user-guide/termination.md"
 phrase = "smallest gap"
 owner = "WP8a docsite stream"
 reason = "BASELINE: ordinary word gap inside the definition of the assignment margin (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "docs/user-guide/termination.md"
-phrase = "weighted gap"
-owner = "WP8a docsite stream"
-reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
@@ -677,13 +474,6 @@ reason = "BASELINE: numpydoc Parameters entry of a docstring (WP10 re-triage 202
 
 [[violation]]
 kind = "stem"
-file = "src/hyperbolic_trade_space/estimator.py"
-phrase = "weighted gap"
-owner = "package docstrings"
-reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
 file = "src/hyperbolic_trade_space/gaps.py"
 phrase = "knn gap"
 owner = "package docstrings"
@@ -744,27 +534,6 @@ file = "src/hyperbolic_trade_space/solvers.py"
 phrase = "smallest gap"
 owner = "package docstrings"
 reason = "BASELINE: ordinary word gap inside the definition of the assignment margin (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/solvers.py"
-phrase = "weighted gap"
-owner = "package docstrings"
-reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/tensions.py"
-phrase = "fitted temperature"
-owner = "package docstrings"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "src/hyperbolic_trade_space/tensions.py"
-phrase = "matching temperature"
-owner = "package docstrings"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"

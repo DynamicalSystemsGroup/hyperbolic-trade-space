@@ -8,7 +8,7 @@ arbitrary: `d` metrics and `d - 1` chart coordinates.
 
 - [`LogAffinePreconditioner`](user-guide/conditioning.md), a transformer: attributes to
   larger-is-better metrics, invertible.
-- [`frontier_in_original_units`](user-guide/conditioning.md), a function: the fitted surface as a
+- [`frontier_in_original_units`](user-guide/conditioning.md), a function: the fitted reference surface as a
   monomial in raw attributes.
 - [`HyperbolicTradeSpace`](user-guide/fitting.md), a transformer: fits the surface and gives the
   chart of position and log V. Fitted attributes for every number of terms include `exponents_`,

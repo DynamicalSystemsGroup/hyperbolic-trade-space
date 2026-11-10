@@ -5,7 +5,7 @@ attributes: kilograms, dollars, error rates, counts, some of them better when sm
 attributes to metrics is yours to choose, because it is part of the question you ask: a stable fitted
 direction answers that question as conditioned and is not a context-free discovery. The package
 supplies `LogAffinePreconditioner`, which implements the family of maps the method allows, and
-`frontier_in_original_units`, which reports the fitted surface back in the units you started with.
+`frontier_in_original_units`, which reports the fitted reference surface back in the units you started with.
 
 ```python {.runnable}
 import numpy as np

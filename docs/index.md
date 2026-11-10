@@ -2,8 +2,8 @@
 
 `hyperbolic_trade_space` learns the shape of a design trade space from evaluated designs. Give it a
 table of designs, each scored on several metrics where larger is better, and it fits a frontier
-model in the posynomial invariant form. It then tells you which metrics contend, at what exchange
-rate, where each design sits relative to the fitted reference surface, and where the table has gaps.
+model in the posynomial invariant form. It then tells you which metrics contend, with what
+elasticity, where each design sits relative to the fitted reference surface, and where the table has gaps.
 
 The workflow serves design optimization and configuration management: choosing among configurations, and tracking a configuration's evaluation against the fitted reference surface.
 

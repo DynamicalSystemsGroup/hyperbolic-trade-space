@@ -48,7 +48,7 @@ print(ts.conditioning_.round(1))
 
 A soft fit weighs every term: no assignment, no margin.
 
-- `certified`: weighted gaps within `eps_kkt` and `min_curvature` above `eps_feas`, a strict local
+- `certified`: facet gaps within `eps_kkt` and `min_curvature` above `eps_feas`, a strict local
   minimizer of the soft objective.
 - `stationary`: the gaps hold, the curvature does not: a saddle or a flat direction.
 

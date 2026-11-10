@@ -159,7 +159,7 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         ``facet_step="support"`` and no penalty; ``n_terms = 1`` and the degenerate shortcuts
         record ``"not_applicable"`` with the gap of the fitted objective, read only. For the soft
         fit (finite ``term_temperature``, finite ``temperature``) ``"certified"`` means the
-        weighted gaps are within ``EPS_KKT`` and the Hessian of the soft objective is positive
+        facet gaps are within ``EPS_KKT`` and the Hessian of the soft objective is positive
         definite on the tangent space of the active face (a strict local minimizer of the soft
         objective); ``"stationary"`` means the gaps hold and the curvature is not positive;
         ``min_curvature`` is the smallest curvature (``nan`` otherwise); the margin, radius and

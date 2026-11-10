@@ -62,7 +62,7 @@ class TensionReport:
     Attributes
     ----------
     participating : ndarray of bool, shape (d,)
-        ``exponents > threshold`` at the working temperature.
+        ``exponents > threshold`` at the fit temperature.
     exponents : ndarray of shape (d,)
         Working-temperature exponents ``w`` (the estimator's ``exponents_[0]``).
     elasticities : ndarray of shape (d, d)
@@ -127,14 +127,14 @@ def tension_report(
         Fitted estimator.
     X : array-like of shape (n_samples, n_features)
         Metrics (nonnegative); rows with a zero metric are ignored. The ``tau = inf`` LP is solved
-        on the log of these rows, independent of the fitted temperature and ``min_exponent``.
+        on the log of these rows, independent of the fit temperature and ``min_exponent``.
     band : float, optional
         Near-frontier rows are those with ``|log V| < band``. Default ``1 / tau`` for finite
         ``tau`` and 0.1 at ``tau = inf``.
     min_near_frontier : int, default=10
         Fewer near-frontier rows raises ``ValueError``.
     threshold : float, default=1e-3
-        Exponents above this participate at the working temperature.
+        Exponents above this participate at the fit temperature.
     association : {"pearson", "spearman"}, default="pearson"
         Association measure for the log-metrics of near-frontier rows.
 
@@ -149,7 +149,7 @@ def tension_report(
     ------
     ValueError
         If ``association`` is unknown or fewer than ``min_near_frontier`` rows are near the
-        frontier; the message gives the ``band`` (and the matching ``temperature``, since the
+        frontier; the message gives the ``band`` (and the fit temperature that matches it, since the
         default band is ``1 / tau``) that would hold ``min_near_frontier`` rows; at K > 1 it names
         the facet.
 
