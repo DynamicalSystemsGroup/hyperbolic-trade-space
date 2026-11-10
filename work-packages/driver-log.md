@@ -7,6 +7,13 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- (2026-11-10, 08:35) **Does the paper's Discussion carry the requirements reading?** Spike B
+  (`WP23-rounds/spikes/spike-B-requirements-and-the-fit.md`) shows the fit prices a requirement at the frontier and
+  can ground a request to relax one, with teeth in the baseline regime and against relaxing in the primary. The
+  full case analysis takes the table (Appendix D, the docs' case page). For the paper: D1 one short paragraph after
+  "Three claims" (one more topic); D2 one sentence in "Three claims" pointing to Appendix D; D3 nothing. The
+  driver's recommendation: D2, since the narrative is to stay tight and the appendix carries the numbers.
+  Non-blocking; the appendix table lands either way.
 - (2026-11-10, 02:25) **Do proposals that fail a model requirement count as check designs?** Under the stated
   reach rule the proposer returns three proposals on the settling-time view; two are one configuration; all three
   sit at the small end of the battery range (22 to 25 Wh) and fail the depth-of-discharge requirement, because the

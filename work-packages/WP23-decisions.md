@@ -263,3 +263,24 @@ paragraph for the supervisor's review.
   so the datasets and the paper regenerate once more, not twice; spikes A and B read the nine-metric data of record
   and their findings carry over (the reserve carries no exponent in the fits of record). B1 lands in the same
   paper regeneration. The supervisor sees both at his review; this is the driver's call under his rule.
+
+## Spike B, requirements and the fit (2026-11-10, 08:35; `WP23-rounds/spikes/spike-B-requirements-and-the-fit.md`)
+
+The answer to "might we use it to justify a request to relax a requirement": yes, in a bounded form. The fit prices a
+requirement at the frontier (the elasticities of the contending metrics along the surface, and which near-frontier
+designs the requirement excludes), so a request carries three numbers: what meeting the requirement costs at the
+frontier in the other metrics, how many near-frontier designs a relaxation admits, and how much the best attainable
+contending metric improves among them. On the case: the four thresholds are not jointly infeasible on the frontier
+(66 % of the primary band and 44 % of the baseline band pass all four); the argument has teeth in the baseline
+regime (pointing error 0.0085 degree excludes 42 of 77 near-frontier designs; relaxing to 0.0118 admits 24 more and
+improves the best attainable control effort by 41 %) and argues against relaxing in the primary regime (control
+effort excludes 18 of 56 but the surface does not trade it; relaxing moves one other metric by 8 %). The method
+does not say a requirement is wrong; it says what it costs on this table's fitted frontier. A caution for spike A:
+hold the conditioning and the temperature fixed when comparing design sets, or the comparison shows conditioning
+artefacts.
+
+**The driver's calls.** The full case analysis takes the one table (requirements by regime: limit, pass fraction,
+band designs excluded, K = 1 exponent, price against the band, the two largest elasticities, a joint row) in
+Appendix D and the docs' case page, in the close-out regeneration; no figure (the table says what the ladder figure
+would). The paper's Discussion is the supervisor's: options D1 (one short paragraph), D2 (one sentence pointing to
+Appendix D), D3 (nothing); recorded under "Waiting for the supervisor" with the driver's recommendation, D2.
