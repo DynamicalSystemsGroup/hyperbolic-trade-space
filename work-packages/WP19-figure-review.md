@@ -443,6 +443,86 @@ evidence of round 1 and round 1b. No read was spent.
 
 **C-d6 and C-e1: no figure** (recipes above).
 
+
+---
+
+## After the supervisor's verdict on Figures 3 and 4 (`WP19-decisions.md`, 2026-11-09 20:55)
+
+The new principle in `figure-review.md`: no borrowed idiom with a false analogy; the model is drawn as
+the model, and the analysis is named as analysis or not drawn. This **supersedes** C-d2's caption steps
+(P-6) and C-d3's drop (P-7), which are kept above as history. All candidates below are drawn on the
+current committed data to settle the design only; WP23 (slew time leaves the metrics) regenerates
+every case figure.
+
+### C-d2 redraw 1: Figure 3 without facet colouring (recipe, before any read)
+
+- Generator: `paper/figures/planes.py` (`fig-planes-k3.png`). It reads the case's data through
+  `case.py` and uses its slice (`k_terms._slice`); `case.py` itself is unchanged. Designs are one
+  neutral grey. In each slice the surface is the black line (the lowest facet line, as the package
+  draws it), with each facet named on its own segment, plus the near-frontier band. There is no
+  legend by facet and no outline of near-frontier designs: the sentence does not need them.
+- Intended takeaway: the surface bends; each straight piece of it is a facet; different pairs of
+  metrics trade on different pieces; the bottom panel's bands are discrete choices.
+- Sentence: "At K = 3 the surface bends: each facet is one straight piece of it, and different pairs
+  trade on different pieces."
+- Caption: "Log-metric planes of the K = 3 fit, each a slice: the black line is the surface in the
+  plane of two metrics, one straight segment per facet (named on it), with the other eight metrics held
+  at the median of that facet's near-frontier designs, so a design can lie above the line here and
+  still be inside the surface; grey: the near-frontier band. In the bottom panel peak slew power is set
+  by the discrete choices: with the small or medium wheel it takes one value per wheel class and
+  tracker grade (the six horizontal bands); the large wheel's designs form the lower cloud."
+- Hypothesis H-d2r: fresh P1 and P4 readers at L-B (P4 is the reader most at home with the cluster
+  idiom), image first, call a facet a piece or segment of the line or surface and not a group of
+  designs. Fails if either calls a facet a group or cluster of designs.
+
+### C-d3 redraw 1: Figure 4 as position against level (sentence test result, recipe, before any read)
+
+- Sentence test against the ruling: the chart has one sentence that no log-metric plane carries,
+  "in the chart the surface is one flat line, log V = 0, whatever a design's position: level is read
+  apart from position". A scratch drawing of Z0 against log V (opened:
+  `scratchpad/wp19/chart-z-logv.png`) shows it, and also something the sentence does not give: where
+  along the surface the designs reach it, and where they lie deep inside. **So a redraw, not a drop.**
+- Generator: `paper/figures/chart_level.py` (`fig-chart-level.png`): Z0 against log V, designs grey,
+  the surface as the line log V = 0, the near-frontier band; no facet colouring.
+- Intended takeaway: the chart flattens the surface; a design's level (its energy differential) is
+  its height below the line, read apart from its position; many designs sit at the surface across the
+  range of positions, and a deep tail lies inside at one end.
+- Sentence: "In the chart the surface is the flat line log V = 0, and each design's level is read apart
+  from its position along it."
+- Caption: "The chart of the K = 3 fit: each design's position along the surface (Z0, the first of
+  nine position coordinates, meaningless alone) against its level log V, the energy differential. The
+  surface is the flat line log V = 0; grey: the near-frontier band; a design above the line lies beyond
+  the surface."
+- Hypothesis H-d3r: P2 and P4 readers at L-B, image first, say the black line is the surface and a
+  design's vertical distance from it is its level, independent of where it sits left to right. Fails
+  if either reads Z0 as a metric or the line as a fit through the points.
+
+### The principle check, once, on every current figure (findings only; nothing changed beyond Figures 3 and 4)
+
+Each image was opened in the Read tool: paper `paper/figures/*.png`; index `paper/figures/figure1.png`;
+docs `scratchpad/wp19/docsfigs/*-light.png`, built by `scripts/build_figures.py` at 363019f with the
+docs unchanged since.
+
+| Figure | Finding | Proposed disposition |
+|---|---|---|
+| Paper Fig. 1, temperature sweep | The model (exponents along τ) is drawn as the model; the selection diagnostics are named. No borrowed idiom. | Keep. |
+| Paper Fig. 2, planes K = 1 | The designs are one colour, but the legend labels them "facet 1", the facet-membership idiom in a one-facet form; the line is a slice. | Redraw with `planes.py` (designs as "designs", the segment named), the same function as Figure 3. Not done; for the supervisor. |
+| Paper Fig. 3, planes K = 3 | The cluster idiom (the ruling). | Redrawn: C-d2 redraw 1. |
+| Paper Fig. 4, chart K = 3 | The cluster idiom; draws no model. | Redrawn: C-d3 redraw 1. |
+| Paper Fig. 5, tensions per facet | The rows of each panel are the designs the analysis assigns to the facet. The cells are a correlation matrix, a statistics idiom read as "negative = trade-off", and the package states that closure forces some negative association among participating metrics (`tensions.py`, `closure_note`). The model's part (contending set, w) is on the outlines and labels. | Keep the drawing (liked). The caption names the cells as analysis: "association among the designs the analysis assigns to facet k", not "of each facet". Not done; for the supervisor. |
+| Paper Fig. 6, regimes | The same correlation idiom, at K = 1 (no assignment). | The same caption naming; keep. |
+| Paper Fig. 7, predict-check (dropped) | No facet idiom. Defect for WP23 (`case.py`): the bottom panel plots Z2 with a "Z1" axis label (`case.predict_check_figure` sets no labels). | Stays dropped; the defect goes to WP23. |
+| n-lemma ternary (P-1) | The coloured markers are facets' exponent vectors (the model); no design is coloured. | Keep. |
+| Assembly and behavioural views (P-2, P-3) | SysML's own notation for its own model; no borrowed analogy. | Keep. |
+| Index three-pane figure (`figure1.png`) | Designs coloured by facet in all three panes, and "facets as regions" of the chart: the cluster idiom on the index page. The coloured facet lines and normals are the model. | Redraw the designs in one colour and keep the coloured lines. A third pane with the facets as regions of Z is exact only at d = 2, so it is named as analysis or dropped. For the supervisor (index page, not the paper). |
+| Docs Fig. 1, first fit | One colour, the line and the band as the model. | Keep. |
+| Docs Fig. 2, three facets (fitting page) | Designs coloured by facet: the cluster idiom. This is the default of `plotting.plot_log_plane` for K > 1, so the package's plotting example teaches it. | Redraw in one colour with the segments named; consider changing the package default (an API change, outside WP19). For the supervisor. |
+| Docs Fig. 3 and Fig. 6, tension heatmaps | As paper Figure 5 and 6: the correlation idiom. | Same naming in the captions. |
+| Docs Fig. 4, log plane | One colour; model as model. | Keep. |
+| Docs Fig. 5, chart holes | The analysis (hole positions) drawn and named in the caption. | Keep. |
+| Docs Fig. 7, adcs coordinates | One colour, near-frontier ringed, coverage only (WP8a caption). | Keep. |
+| Docs Fig. 8, planted ternary ("this one is great") | Regions tinted by the dominating facet (an analysis the plot's documentation names). Near-frontier designs are coloured by facet: the cluster idiom on the designs. | His figure. Option: designs in one colour, regions kept and named as analysis. For the supervisor; not changed. |
+
 ---
 
 ## Ready for placement (for the paper stream; R-14: the PM routes them; nothing here edits the notebook)

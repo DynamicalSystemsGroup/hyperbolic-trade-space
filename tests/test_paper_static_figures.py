@@ -16,5 +16,5 @@ def test_model_views_in_the_paper_equal_the_models_views():
 
 
 def test_the_nlemma_figure_is_committed_beside_its_generator():
-    assert "nlemma" in build_figures.PAPER_FIGURES
+    assert {"nlemma", "planes", "chart_level"} <= set(build_figures.PAPER_FIGURES)
     assert (ROOT / "paper" / "figures" / "fig-nlemma.png").stat().st_size > 10_000

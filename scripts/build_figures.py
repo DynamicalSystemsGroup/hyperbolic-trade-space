@@ -40,9 +40,11 @@ _DPI = 110
 # Figures drawn wider than the column are redrawn at this width in inches (labels keep their size).
 RESIZE = {"adcs-tensions": 6.3}
 # The paper's static figures: the modules of ``paper/figures/`` whose ``main()`` writes the image
-# beside the module (WP19's n-lemma candidate). The index page's three-pane figure has its own
-# command (``uv run python paper/figures/figure1.py``) and is not rebuilt here: its SVG's ids vary.
-PAPER_FIGURES = ("nlemma",)
+# beside the module (WP19's candidates: the n-lemma, Figure 3 and Figure 4 redrawn without facet
+# colouring; the last two read the case's committed data and are regenerated with WP23's). The
+# index page's three-pane figure has its own command (``uv run python paper/figures/figure1.py``)
+# and is not rebuilt here: its SVG's ids vary from run to run.
+PAPER_FIGURES = ("nlemma", "planes", "chart_level")
 # The model's two views, drawn by the model's own projection (PlantUML, a system tool) and committed
 # beside the model; the paper takes byte-identical copies (published path in paper/figures: source).
 MODEL_VIEWS = {
