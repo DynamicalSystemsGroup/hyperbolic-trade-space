@@ -64,21 +64,22 @@ Each item is paired with what was tried; bugs with steps are in section 3 and wo
 11. The pane's screenshot lags one action behind; the page text was read as the record instead.
 
 A cold reader (no background in the model, in the role of a sponsor) used the editor read-only for about twenty minutes and met
-these (the reader's own words in quotes; no screenshots of them were kept):
+these (the reader's own words in quotes, from its account of where it got lost; no screenshots of them were kept):
 
-12. The first click on a toolbar layout button hid the diagram and showed only the source: "I expected a layout toggle, not a
-    swap." Tried the other two layout buttons to get the diagram back.
-13. The stakeholders diagram at fit-to-window was unreadable, even the top row (as item 7). Tried zooming; the page text was
-    then read from the nodes.
-14. Clicking a requirement row in the Requirements table seemed to do nothing for a few seconds; then the layout split, the model
-    tree opened to the element and the source scrolled. The reader expected a detail card beside the table.
-15. Selecting an element in the model tree highlighted it and moved nothing else; the reader expected the source or an inspector to
-    follow and did not find "Show Inspector".
-16. Clicking the `metrics` view once left the requirements view in the pane (a click that did not take, or a lag; not
-    established). Clicked again.
-17. While the reader only clicked and typed nothing, the diagram header briefly read "Applied revision · draft pending" and the
-    toolbar "Working..." with Apply source lit, then returned to "Source applied": "made me nervous that I had changed
-    something." The same transient followed every restore and apply in the other passes.
+12. The first click on a toolbar layout button hid the diagram and showed only the source: "I expected a layout toggle, not
+    a swap." Nothing tried is recorded; the reader moved on.
+13. The stakeholders diagram at fit-to-window was unreadable: "I expected to read at least the top row." The reader zoomed in
+    three steps and read the node texts from the page.
+14. Clicking a requirement row in the Requirements table seemed to do nothing for a few seconds: "I expected a detail card to open
+    beside the table." The layout then split, the model tree opened to the element and the source scrolled; the reader found
+    that useful but "not where a sponsor looks".
+15. Selecting an element in the model tree highlighted it and moved nothing else: "I expected the source or an inspector to
+    follow." The "Show Inspector" button existed; the reader did not get to it.
+16. The reader asked for the `metrics` view and still had the requirements view when the time ran out. Nothing tried again is
+    recorded; the reader ran out of time.
+17. While the reader typed nothing, the diagram header briefly read "Applied revision · draft pending" and the toolbar
+    "Working..." with Apply source lit, then returned to "Source applied": it "made me nervous that I had changed something".
+    Nothing tried is recorded; the reader left it. The same transient followed restores and applies in the other passes.
 
 ## 3. Bugs
 
