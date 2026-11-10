@@ -162,6 +162,26 @@ Reports in the driver's scratchpad (`readers/round1b/P{1..6}-B.md`); slice `read
   per-cluster correlations does not: the fitted exponents and elasticities per facet are the model's
   reading; the heatmaps are the analysis. Keep the two apart in that section's prose.
 
+### Round 1c (abstract, depth A, after CR-1b landed at 85733c1; four readers P1, P3, P5, P6)
+
+Reports in the driver's scratchpad (`readers/round1c/P{1,3,5,6}-A.md`).
+
+- Landed: the finding is read (P1: "a single-facet fit smears three subsystems' trade-offs into one,
+  while a three-facet fit pulls them apart"; P3 and P6 restate it); "facet" is now guessed right by 4 of 4
+  (one term of the posynomial, a face of the surface), where round 1b had it as a cluster; the regression
+  reading stays gone; elasticities right in 4 of 4; 4 of 4 read on.
+- Held for the supervisor (unchanged): PCA read as an alternative or replacement by 3 of 4; "energy
+  differential" questioned by 4 of 4 ("the physics word made me wonder").
+- New, CR-1c (the driver's own clause from CR-1, not the supervisor's wording, so free to change): "It is a
+  soft supporting envelope of the data, not a regression" confused 4 of 4 next to "models the data ...
+  not the Pareto boundary": an envelope sounds like a boundary (P3), the two sentences read as
+  contradictory (P5: "if it models the data rather than the boundary, I do not see why the elasticities
+  should be trade-off rates"), "soft" is unexplained (P1, P6), which side it sits on is unsaid (P6). Replace
+  with the plain picture: "It is fitted to the outer edge of the data, not through its middle: a soft
+  support, not a regression." The body defines "soft" (the temperature); the abstract need not.
+- Stop rule for the abstract: after CR-1c lands, one more depth-A pass; if the only remaining confusions
+  are the two items held for the supervisor, the abstract rests until he is back.
+
 ## Next
 
 Re-test the L-A and L-B cells after CR-1 to CR-3 land; then the L-C and L-D cells (main text; with
