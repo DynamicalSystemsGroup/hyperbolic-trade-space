@@ -46,7 +46,7 @@ shown.
 
 Each item is paired with what was tried; bugs with steps are in section 3 and workarounds in section 4.
 
-1. A red banner from an earlier session stays after a clean apply (Bug 1).
+1. A red banner from an earlier session stays after a clean apply (Bug 1; not seen again in a cold pass on a fresh source).
 2. The restored recovery held a condensed older copy of the project, not the latest saved text (Bug 2).
 3. A project holds one file; no way to add a second file inside the editor (Bug 3).
 4. A view whose filter admits a case definition draws nothing and prints a long list of messages (Bug 4).
@@ -65,7 +65,16 @@ Each item is paired with what was tried; bugs with steps are in section 3 and wo
 
 ## 3. Bugs
 
-"Reproduced" below means seen again in the session on a later apply or view; no bug was re-run in a separate, cold pass, and each says what was and was not repeated.
+Each bug was re-run in a cold pass at the end: a second look from the landing page, in the same browser and workspace.
+"New project" opened no dialog from the restored workspace, so the cold pass replaced the project's source with a small
+model of 1,254 characters (the minimal model below) instead of the large one, with a second toolkit loading it strictly
+with no error (`cold-base-applied.jpg`: Issues (1), a warning that a package named `Views` has the name of a standard library
+package, which is right). Where a bug was first met on the large model, that is stated. Each "Reproduced" line says the result.
+
+The minimal model: `part def Sat { part a : Wheel; part b : Wheel; part c : Wheel; }`, `part sat1 : Sat { part :>> a : SmallWheel; part :>> b : SmallWheel; }`,
+`calc def Mass`, `analysis def Run`, `requirement def R1`, `verification def V { objective { verify requirement r1 : R1; } }`,
+`verification def W` with an empty objective, and `concern c1 : C { requirement r1 : R1; }` and `concern c2` the same, in a
+package `Demo`, with views in a package `Views`.
 
 ### Bug 1. Stale red banner after a clean apply
 
@@ -78,7 +87,7 @@ Steps:
 Expected: after an apply with 0 issues, the banner is cleared or reflects the current state.
 Observed: the banner "Exploration source correspondence is outside the applied project." remains under "Saved recovery"
 while the Issues panel reads "No issues in the current applied model." and Issues (0) (`stale-banner.jpg`). It stayed in every later screenshot. It also appeared directly after restoring (`recovery-condensed-copy.jpg`), before anything was applied.
-Reproduced: seen again on every later apply and view in the session (22 steps). The root cause was not established (the banner may belong to
+Reproduced: seen again on every later apply and view in the first session (22 steps); in the cold pass it did NOT reproduce: no red banner after a restore or after a clean apply (`cold-base-applied.jpg`). The banner may therefore depend on the earlier project state it was restored from. The root cause was not established (the banner may belong to
 an earlier "Explore model" attempt, or to the project's recovery record).
 
 ### Bug 2. Restored recovery was an older, condensed copy
@@ -92,7 +101,7 @@ Expected: the text most recently applied or saved for that project (51,749 bytes
 Observed: the pane held a 38,252-character copy, starting at `package` with the header comment missing and doc comments
 shortened (`recovery-condensed-copy.jpg`). Notes: that copy came from an earlier session in which the text was retyped; it may be
 correct behaviour that recovery holds what was saved last. The landing page does not say what the recovery contains
-(length, last-saved time), so a user cannot tell it is not the file they expect. Reproduced: not separately; seen on the
+(length, last-saved time), so a user cannot tell it is not the file they expect. Reproduced in a new form (`cold-recovery-restore.jpg`): the restore held the text of an earlier revision (69,901 characters), not the text applied last (71,008 characters), because the save after that apply had failed with Bug 10's message; the revision counter also restarts at 1 after a restore. First seen on the
 first restore, and later restores (which held the user's own 56,092-character unapplied edit) behaved as expected.
 
 ### Bug 3. No way to add a second file to a project in the editor
@@ -104,7 +113,7 @@ Steps:
 Expected: an entry to add a file (the model and its views are two files in the author's repository).
 Observed: the menu offers only "Narrow Explorer" and "Widen Explorer" (`no-add-file.jpg`). The Files list shows one file.
 The only route to add content is to join the files into one text (done here) or "Open files or project", which imports.
-Reproduced: seen again in later steps (the project header reads "1 files · revision N · local browser workspace").
+Reproduced in the cold pass (`cold-explorer-menu.jpg`): the Explorer panel options show only Narrow and Widen Explorer. (The project header reads "1 files · revision N · local browser workspace").
 
 ### Bug 4. A view whose filter admits a case definition draws nothing
 
@@ -125,7 +134,7 @@ list of lines of the form "calc def <Name> holds no case; a case rendering does 
 (`verification-no-renderer.jpg`, expected the two verification definitions). Changing the filter to
 `@SysML::CalculationDefinition` only drew 32 nodes and 0 edges (the 29 calculation definitions plus the two verification
 and one analysis definitions, which are also calculations by inheritance), so the filter works as a workaround for drawing,
-but only partially (see section 4). Reproduced: seen for two different views (filters admitting calculation-and-analysis and verification cases); a cold re-run was not done.
+but only partially (see section 4). Reproduced in the cold pass (`cold-case-filter.jpg`) with `view caseFilter : GeneralView { filter @SysML::CalculationDefinition or @SysML::AnalysisCaseDefinition; expose Demo::*; }`: "Rendering unavailable. The case representation has no renderer in this foundation." and "calc def Demo::Mass holds no case; a case rendering does not show it".
 
 ### Bug 5. Inherited parts missing when a view exposes a usage
 
@@ -141,7 +150,7 @@ Expected: the usage drawn with all nine parts, as the part definition is.
 Observed: three nodes, no edges: `cubesatBaseline` with its attributes, and only the two redefined parts (`wheel`,
 `tracker`); the seven inherited parts are not drawn (`inherited-parts-missing.jpg`). Exposing the part definition
 `CubesatTradeSpaceV2::Cubesat` drew all nine (`assembly-tall-column.jpg`), so the model is not at fault.
-Reproduced: seen in the first apply; after changing the view to expose the part definition the parts appeared; a cold re-run was not done.
+Reproduced in the cold pass (`cold-inherited-parts.jpg`) with `view inherited : InterconnectionView { expose Demo::sat1; }`: 3 nodes (`sat1`, `a : SmallWheel`, `b : SmallWheel`); the inherited `c : Wheel` is not drawn.
 
 ### Bug 6. `expose X` behaves differently by representation
 
@@ -156,7 +165,7 @@ Expected: `expose X` means the same element set in each representation.
 Observed: with a filter, `Cubesat` was drawn bare; in the Overview tree the same `expose Cubesat` drew all 23 members
 (`expose-overview-tree.jpg` shows the result after narrowing it to the intended members). We did not find a statement of
 this difference in the editor.
-Reproduced: seen at two revisions of the source (3 and 5); not repeated in a dedicated pass, and the snippet above is a
+Reproduced in the cold pass: `view filtered : GeneralView { filter @SysML::PartDefinition; expose Demo::Sat; }` drew 1 node, `Sat` bare (`cold-expose-filtered.jpg`); `view tree : GeneralView { expose Demo::Sat; }` drew an Overview tree of 4 nodes and 3 edges, `Sat` with `a`, `b`, `c` (`cold-expose-tree.jpg`). Earlier, seen at two revisions of the large model's views. The snippet above was a
 reduction of the session's views, so if it does not show the difference the session's views are the reproduction.
 
 ## 4. Workarounds
@@ -228,16 +237,17 @@ Expected: the package's own elements (about twenty).
 Observed: 958 nodes and 1,770 edges: the members the package imports privately (the scalar-value library, the whole
 model package, the standard view definitions, the SysML and KerML metamodel) are drawn as well, and the canvas is
 unreadable (`expose-star-imports.jpg`). The package's own elements are among them.
-Reproduced: met once. Workaround: expose each element by name (`expose Probe::element;`). Suggestion: `::*` should list
+Reproduced in the cold pass (`cold-expose-star.jpg`) with `package Probe { private import Demo::*; private import StandardViewDefinitions::*; part p : Sat; view star : GeneralView { expose Probe::*; } }`: 666 nodes and 1,399 edges, including scalar-value, KerML and standard view definition elements; about 20 s, with "Working..." and the previous view shown meanwhile. Workaround: expose each element by name (`expose Probe::element;`). Suggestion: `::*` should list
 the members a package owns, not those it imports privately, or the view's documentation should say so.
 
 ### Bug 8. A `verify` in a typed verification usage's objective is rejected as a duplicate inherited name
 
 Steps:
-1. Apply the loading recipe's source with a concern `affordable` holding a requirement usage
-   `launchBudget : LaunchBudgetRequirement`, and a verification usage
-   `costEvidence : ConfigurationVerification` whose objective states `verify affordable.launchBudget;`, where the
-   verification definition's own objective already has a member named `launchBudget`.
+1. Apply the minimal model plus
+   `package Bug8 { private import Demo::*; verification ev : V { objective { verify c1.r1; } } }`, where `V`'s objective
+   already holds `verify requirement r1 : R1`. (The first session's lines were
+   `verification costEvidence : ConfigurationVerification { objective { verify affordable.launchBudget; } ... }` against
+   that definition's own `verify requirement launchBudget`.)
 2. Click "Apply source".
 
 Expected: the text applies (a second SysML v2 toolkit loaded the same text in strict mode with no error).
@@ -245,21 +255,23 @@ Observed: two errors "model.sysml:964 Duplicate of inherited member name 'launch
 "from", with no owner named), "Source has errors; the last applied model is retained", Issues (2)
 (`duplicate-inherited-member.jpg`). A `verify` takes the name of the feature it verifies, so it collides with the
 definition's member of that name.
-Reproduced: met once; the same verification usage typed by a new definition with its own objective applied with 0 issues.
+Reproduced in the cold pass (`cold-inherited-dup.jpg`): "error model.sysml:42 Duplicate of inherited member name 'r1' from", again ending after "from", then "Source has errors; the last applied model is retained". The same verification usage typed by a new definition with its own objective applied with 0 issues in the first session.
 Suggestion: if the rule is intended, complete the message with the owner and say how to avoid it; if not, a verify
 member in a usage's objective should not clash with the typing definition's member.
 
 ### Bug 9. Two `verify` statements naming same-named features in one objective: "Duplicate of other owned member name"
 
 Steps:
-1. Apply the loading recipe's source with two concerns that each hold a requirement usage named `depthOfDischarge`, and a
-   verification usage whose objective states `verify first.depthOfDischarge; verify second.depthOfDischarge;`.
+1. Apply the minimal model plus
+   `package Bug9 { private import Demo::*; verification ev2 : W { objective { verify c1.r1; verify c2.r1; } } }`,
+   where `c1` and `c2` each hold a requirement usage `r1`. (The first session's lines were
+   `verify longLife.depthOfDischarge; verify powerAndEnergy.depthOfDischarge;` in one objective.)
 2. Click "Apply source".
 
 Expected: the text applies (the same second toolkit accepted it).
 Observed: Issues (3): "Duplicate of other owned member name" at the two `verify` lines, with no member named
 (`duplicate-owned-member.jpg`); the last applied model is retained.
-Reproduced: met once. Workaround: rename one requirement usage so the two verified features have different names; the text then
+Reproduced in the cold pass (`cold-owned-dup.jpg`): "error model.sysml:42 Duplicate of other owned member name" twice, with no member named. Workaround: rename one requirement usage so the two verified features have different names; the text then
 applied with 0 issues. Suggestion: name the member in the message and the line of the earlier declaration.
 
 ### Bug 10. Recovery clash between two tabs: the message does not say which copy wins
@@ -273,7 +285,7 @@ Expected: a message that says which copy is kept and what a retry does.
 Observed: "Recovery could not be saved. Your current project is unchanged. Another tab changed local recovery. Retry to
 inspect its saved copy before continuing." with a "Retry recovery" button (`recovery-clash-wording.jpg`). The editor caught
 the clash, which is good; the wording leaves unclear whether the saved copy or the tab's copy is kept after a retry.
-Reproduced: met once. Suggestion: name the two copies with their last-saved times and say which one "Retry recovery" keeps.
+Reproduced: not re-run cold; its effect was seen again in the cold pass of Bug 2, where a recovery save had failed with this message and the restore then held an older text. Suggestion: name the two copies with their last-saved times and say which one "Retry recovery" keeps.
 
 ### Feature requests: what the chain needs and the editor cannot show
 
