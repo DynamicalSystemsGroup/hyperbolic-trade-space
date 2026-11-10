@@ -23,7 +23,8 @@ The attributes to read first:
 - `frac_above_`: the fraction of designs beyond V = 1.
 - `n_eff_`: how many designs carry the fit.
 - `objective_` and `mean_slack_`: `objective_` is what the solver minimized, the soft maximum at one
-  term and the mean slack at several, so it is not comparable across numbers of terms.
+  term and the mean slack at several, so it is not comparable across numbers of terms (at one
+  term they coincide when the log-metrics are centred, as the cubesat's are).
   `mean_slack_` is the mean shortfall below the fitted reference surface, defined at
   every number of terms; compare fits with it, at a fixed temperature.
 - `termination_` and `conditioning_`: how the fit stopped and how well its exponents are identified
@@ -54,7 +55,7 @@ print(round(tau, 1))
 ```
 
 This synthetic table puts 30 percent of its rows on the planted frontier, hence the target 0.35;
-for real data the default 0.10 is a common start. Use tau of about 3 and above: below that
+for real data start at the default 0.10. Use tau of 3 and above: below that
 `frac_above_` is not monotone in tau.
 Hold tau fixed across numbers of terms, selected at K = 1.
 
@@ -76,8 +77,8 @@ ts = HyperbolicTradeSpace(
 print(ts.exponents_.shape, ts.termination_.status)
 ```
 
-Fitting alternates weights from the current model with a refit, from several seeded starts
-(`n_restarts`, default 5) keeping the best. `assign_cells(X)` reads the cell of new
+Fitting alternates weights from the current model with a refit, from `n_restarts` seeded
+starts (default 5), keeping the best. `assign_cells(X)` reads the cell of new
 rows. Options:
 
 - `term_temperature` (kappa, term temperature, default infinity): infinity, one label per design;
@@ -91,41 +92,46 @@ rows. Options:
   local-optimality status.
 
 `cell_` gives each training row's cell; `coefficients_` and `term_share_` the terms' coefficients
-and shares. At one term `cell_` is all zeros and `term_share_` is
-`[1.0]`. What the fit
-reports about itself is on the [termination page](termination.md).
+and term shares. At one term `cell_` is all zeros and `term_share_` is
+`[1.0]`.
 
 ## Choosing K, the temperature and the band
 
 Compare numbers of terms at one fixed temperature, by `mean_slack_`, never by `objective_` and never
 at a temperature re-selected for each K. `mean_slack_` falls with K by construction, so it cannot choose
-K alone: add a term only while the resampled exponents stay stable. Resample: a term whose exponents change between bootstrap resamples
-or restarts is a splinter, a few designs fitted alone, and K is too large.
+K alone: a term whose exponents change between bootstrap resamples or restarts is a splinter, a
+few designs fitted alone, and K is too large.
 
 ```python {.runnable}
-import numpy as np
-from hyperbolic_trade_space import (
-    HyperbolicTradeSpace,
-    make_frontier_data,
-)
+import sys
 
-X, info = make_frontier_data(400, 4, n_terms=3, random_state=0)
+import numpy as np
+from hyperbolic_trade_space import HyperbolicTradeSpace
+
+sys.path.insert(0, "examples/adcs")
+import case
+
+study = case.load_study("primary")
+M, tau = study.M, case.fit_study(study, K=1).tau
 rng = np.random.default_rng(0)
 for K in (1, 2, 3, 4):
     fit = lambda A, s: HyperbolicTradeSpace(
-        n_terms=K, temperature=50.0, random_state=s
+        n_terms=K, temperature=tau, random_state=s
     ).fit(A)
-    ms = fit(X, 0).mean_slack_
-    W = [
-        fit(X[rng.choice(400, 400)], s).exponents_.min()
-        for s in range(4)
-    ]
-    print(K, round(ms, 3), np.round(W, 2))
+    ref = fit(M, 0)
+    moved = np.zeros(K)
+    for s in range(3):
+        W = fit(M[rng.choice(len(M), len(M))], s).exponents_
+        d = np.abs(W[:, None] - ref.exponents_).sum(axis=2)
+        moved = np.maximum(moved, d.min(axis=0))
+    print(K, round(ref.mean_slack_, 3), np.round(moved, 2))
 ```
 
-The mean slack falls from 0.855 at K = 1 to 0.692, 0.664 and 0.658: the third term is the last that
-pays. Over the four resamples the smallest exponent stays within 0.07 to 0.08 at K = 3 and ranges from
-0.00 to 0.07 at K = 4: the fourth term changes with the sample.
+On the cubesat table of the [examples](../examples.md), where terms leave metrics out, the
+mean slack falls from 0.243 at K = 1 to 0.132, 0.088 and 0.07. The last column, per term: its
+exponent vector's distance to the nearest resampled term, the largest over three resamples (summed
+absolute differences, at most 2). Through K = 3 no term moves more than 0.31; at K = 4 two move by
+0.51 and 0.7: K = 4 is too large.
 
 `select_temperature` needs a target the fit can reach. With several terms the term planes are not
 supporting planes, so `frac_above_` levels off above zero as tau grows (about 0.30 on the table of
@@ -153,8 +159,6 @@ plot_log_plane(ts2, X2)
 ![Designs in the log plane of two metrics, all in one colour, with the frontier drawn as one black bent line, the envelope of three straight term lines, and a grey band below it.](../generated/figures/three-terms-dark.png#only-dark)
 <figcaption>Figure 2. Three terms fitted to two metrics: each term is a straight line in log space, and the frontier is their envelope.</figcaption>
 </figure>
-
-Kernel expansions that stay inside geometric programming are documented, not built.
 
 ## Synthetic data
 
