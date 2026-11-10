@@ -31,6 +31,7 @@ from experiments import compare as cmp
 from experiments import cubesat_oracle as co
 from experiments import definitions as df
 from experiments import exclusion as ex
+from experiments import hold_time as ht
 from experiments import ledger as lg
 from experiments.exclusion import battery_region, classify_region
 
@@ -461,3 +462,113 @@ def test_declared_space_excludes_nothing_so_the_first_designs_are_unchanged(tmp_
         else:
             kw = {"rtol": tol["values_rtol"], "atol": 1e-6}
         np.testing.assert_allclose(got[col], want[col], err_msg=col, **kw)
+
+
+# -- WP16 Amendment 2: the settling time by event detection, behind a switch (off by default) ----
+ROUNDING = 1e-9  # relative: the bound of R-9, the Agent's default the driver accepted
+JITTER_SEEDS = (1, 2, 3, 4, 5)  # the seeds of WP16 D-6 (experiments.sensitivity.SEEDS)
+
+
+@pytest.fixture(scope="module")
+def events_oracle():
+    try:
+        return ht.make_oracle(TEXT, "nominalSlew", "aggressive", settling_time_method="events")
+    except cm.OpenSysMLUnavailable as exc:
+        pytest.fail(f"the opensysml client could not start: {exc}", pytrace=False)
+
+
+def test_the_settling_time_method_is_steps_unless_asked(oracle):
+    """The switch is off by default: the committed generation's oracle, unchanged."""
+    steps = ht.make_oracle(TEXT, workers=1, connection=oracle.connection)
+    assert type(steps) is co.CubesatOracle
+    with pytest.raises(ValueError, match="settling_time_method"):
+        ht.make_oracle(TEXT, settling_time_method="interpolated", connection=oracle.connection)
+
+
+def test_the_crossing_integration_is_the_simulators_at_the_record_tolerances(oracle, designs):
+    """``_solve`` is ``adcs_sim.simulate_adcs``'s integration: at the record's tolerances it takes
+    the same steps to the same states; only the tolerance differs where the hold time is read."""
+    from adcs_sim import make_config, simulate_adcs
+
+    loaded, [symbol] = oracle._configure([{**designs.iloc[3].to_dict(), "design_id": 0}])
+    p = oracle._parameters(loaded.instantiate(symbol), loaded)
+    sc = oracle.scenario
+    sim = make_config(
+        p, p["Kp"], p["Kd"], wheel={"maxTorque": p["maxTorque"], "maxMomentum": p["maxMomentum"]},
+        t_end=sc["t_end_s"], initial_error_deg=sc["slew_deg"], max_step=sc["max_step_s"],
+    )  # fmt: skip
+    ref = simulate_adcs(sim)
+    sol = ht._solve(sim, 1e-10, 1e-12)
+    q = sol.y[:4].T / np.linalg.norm(sol.y[:4].T, axis=1, keepdims=True)
+    assert np.array_equal(sol.t, ref.t)
+    assert np.array_equal(q, ref.q) and np.array_equal(sol.y[4:7].T, ref.omega)
+
+
+def test_a_pass_through_the_band_inside_one_step_is_found():
+    """``band_entries`` finds a crossing that begins and ends inside one step (both ends outside
+    the band); only the falling crossing is an entry."""
+
+    class Step:  # q_x(x) = 0.2 - 0.8 x + 0.8 x**2: 0.2 at both ends, 0 at x = 0.5
+        t_old, h, t = 0.0, 1.0, 1.0
+        y_old = np.array([0.2, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0])
+        Q = np.zeros((7, 4))
+        Q[0, :2] = (-0.8, 0.8)
+
+    err_end = np.degrees(2 * 0.2 / np.hypot(0.2, 1.0))
+    t = ht.band_entries([Step()], err_end / 2)
+    assert len(t) == 1 and 0.0 < t[0] < 0.5
+    assert len(ht.band_entries([Step()], err_end * 1.01)) == 0
+
+
+@pytest.fixture(scope="module")
+def primary_draws():
+    exp = df.EXPERIMENTS["v2-primary"]
+    return co.build_sampler(exp).draw(exp.count, exp.seed)
+
+
+def test_events_hold_time_is_continuous_at_design_763_and_its_neighbours(
+    events_oracle, primary_draws
+):
+    """R-8 for the hold time. Design 763 (and 762, 764) under the five D-6 jitters (relative
+    1e-12 in Kp, Kd, panel span, battery): the settling time by event detection moves by rounding
+    only. Design 763's step-read slew time jumped (33.44 s to 12.53 s under seed 3) because its
+    error passes through the 1 degree band inside one 0.5 s step, between 12.06 s and 12.53 s.
+    For the last exit that pass is an early entry and changes nothing; what could move the hold
+    time is a brief return above the threshold inside one step, which the interpolant's roots
+    find as well. The default path is untouched."""
+    from experiments.sensitivity import perturb
+
+    ids = (762, 763, 764)
+    out = {
+        s: events_oracle.evaluate(perturb(primary_draws, s).query("design_id in @ids"))
+        for s in (0, *JITTER_SEEDS)
+    }
+    for s in JITTER_SEEDS:
+        np.testing.assert_allclose(
+            out[s]["settling_time_s"], out[0]["settling_time_s"], rtol=ROUNDING, atol=0
+        )
+    # the hold time is the last exit, so it does not precede the last step found outside
+    steps = pd.read_csv(ADCS / "data" / "v2" / "adcs_designs_cubesat_gains.csv").set_index(
+        "design_id"
+    )
+    assert (
+        out[0].set_index("design_id")["settling_time_s"] >= steps.loc[list(ids)].settling_time_s
+    ).all()
+
+
+@pytest.mark.slow
+def test_events_hold_time_of_the_six_check_designs_moves_by_rounding_only(events_oracle):
+    """R-9 for the hold time: the six check designs under the five D-6 jitters, each settling
+    time within relative 1e-9 of the unperturbed one (the step-read ones moved by up to 0.4 s)."""
+    from experiments.check_designs import CheckOracle
+    from experiments.sensitivity import oracle_config_names, perturb
+
+    committed = pd.read_csv(ADCS / "data" / "v2" / "check_designs_cubesat.csv")
+    designs = committed[["role", "design_id", "name", "seed", *oracle_config_names()]]
+    check = CheckOracle(events_oracle)
+    base = check.evaluate(designs)
+    for s in JITTER_SEEDS:
+        got = check.evaluate(perturb(designs, s))
+        np.testing.assert_allclose(
+            got["settling_time_s"], base["settling_time_s"], rtol=ROUNDING, atol=0
+        )

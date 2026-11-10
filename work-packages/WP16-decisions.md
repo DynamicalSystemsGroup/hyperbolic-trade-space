@@ -133,3 +133,20 @@ dataset loses a column (nine metrics), so the interface contract is amended in W
 into the Settled requirement in the model; the paper's figures and numbers that used slew time (Figure 2's plane
 among them) regenerate with everything else, once, after WP23's model. WP16 Amendment 2's event detection computes
 the settling time only; gap G-17 closes rather than narrows, since the grazing quantity is no longer measured.
+
+## Event detection, the build detail (2026-11-10; typed by the WP16 stream for the PM)
+
+- **Mechanism, as built** (evidence: `swap-evidence.md`, "Amendment 2, first regeneration trial"): the crossing time
+  is the falling root of the degree-8 polynomial that RK45's dense interpolant gives on each accepted step (all roots,
+  so a pass through the band inside one step is found; `solve_ivp` events would miss it), read on a second
+  integration of the same dynamics at rtol 1e-13, atol 1e-16, every other quantity staying on `simulate_adcs` at rtol
+  1e-10. Under the D-6 jitter the times move by at most 1.5e-10 relative (5e-8 at the record tolerance). This departs
+  from the accepted default (events at the step ends on the record integration) in both respects.
+- **PM's acceptance:** accepted on that evidence as how the part is built, recorded for the driver's review.
+- **As landed now:** the settling time only (the hold time: the last exit from the band of the model's settling
+  fraction), behind `experiments.hold_time.make_oracle(..., settling_time_method="events")` (`HoldTimeOracle`, a
+  subclass); the default `"steps"` returns the unchanged `CubesatOracle`. The event path is a separate module because
+  the ledger hashes `cubesat_oracle.py`: any edit to it, even a switch that is off, drifts the five current v2 entries.
+  So every committed value, the ledger's hashes and the first-20 test are unchanged; the slew times stay read off the
+  steps until WP23 removes the column. The regeneration (units B and C) is held until WP23's model lands; it moves the
+  path into the oracle.

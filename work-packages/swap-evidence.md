@@ -1128,3 +1128,46 @@ almost three when a trajectory grazes the band.
 
 These findings are for the supervisor under the stop condition of R-4 (the wording of the
 conclusions that change is his to judge); nothing was interpreted away here.
+
+## Amendment 2, first regeneration trial (not committed), 2026-11-10
+
+Typed by the WP16 stream. Code at f5ed834 (event detection for the settling time and both slew times; reverted by
+77844c5 when the trial stopped), tooling at a1b898e (`rerun_events.py`, reverted by fd73da8). Image `hts-wp16`,
+id `sha256:a21ce70142b0dd108601e0903f689e8f15d9f2a3c65506ee693d02a42e6176bb`, linux/arm64, built at a1b898e and
+removed afterwards. Primary and baseline regenerated (entries `v2-primary@5`, clean, and `v2-baseline@5`, dirty
+because the primary output was uncommitted in the container); the run stopped at `v2-check-predictions@5`. Nothing
+was committed to the data or the ledger. The analysis ran on the Mac with `sensitivity.quantities` on the image's two
+datasets, the committed predictions and the six committed check designs re-measured with the new oracle. Scratch
+evidence kept: `/private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/wp16-scratch/` (`gen1/` CSVs and ledger, `cmp/report.txt`, `cmp/quantities.json`, `gen.log`).
+
+**Mechanism.** On each accepted RK45 step the dense interpolant makes `|q_vec|^2 - s^2 |q|^2` a degree-8
+polynomial; its falling roots are the entries into the band, including a pass through the band that begins and ends
+inside one step (a sign test at step ends, as `solve_ivp` events do, misses it). Times are read on a second
+integration of the same dynamics at rtol 1e-13, atol 1e-16; every other quantity stays on `simulate_adcs` (rtol
+1e-10). Under the D-6 jitter (1e-12) the times move by at most 1.5e-10 relative (5e-8 at the record tolerance).
+Design 763: its error passes through the 1 degree band between 12.06 s and 12.53 s, inside one 0.5 s step; the first
+entry is 12.058 s under every seed (not a graze).
+
+**Data against the committed files.** Settling time up to 0.50 s later (976 of 1000 rows, primary); slew time up to
+0.5 s earlier, design 763 by 21.4 s and one more design by more than 0.5 s; `slew_time_05deg_s` up to 76.7 s
+(in-step passes through the 0.5 degree band). Other columns differ by platform rounding within their tolerances
+(`torque_saturated_frac` at most 0.0095). No flag changed in either dataset.
+
+| conclusion | committed against trial |
+|---|---|
+| contending sets at K = 1, both regimes | identical |
+| contending sets at K = 3, primary | changed: facet 1 loses settling time (6 to 5 metrics); facet 3 same set |
+| contending sets at K = 3, stock | changed: facets renumbered (G-10) and the 7-metric facet gains settling time (7 to 8) |
+| each facet's leading metrics | primary identical; stock the same three triples, renumbered |
+| signs of the six tensions; selected temperatures; certificate statuses | identical |
+| check designs' outcomes (committed proposals, re-measured) | identical: three times log V pass, position miss |
+| check-design proposer at REACH 0.35 on the trial primary | 2 of 3 reachable holes (the committed distances were 0.327 to 0.348) |
+| nondominated counts | ten metrics 671 of 706 identical; four metrics 146 to 145, stock 157 to 158 |
+| feasibility flags | identical, all 2000 designs |
+| numbers moved | primary n_eff 16.2 to 15.5, near-frontier 51 to 57 (stock 103 to 106), association values by up to 0.04 |
+
+**Cause.** The settling time read as the last exit is systematically later than the last step found outside the
+band (up to one step, 0.5 s), which moves its participation at one K = 3 facet in each regime; the slew metric's
+change moves the proposer's chart. The supervisor has since made the hold time (the settling time) the case's one time
+metric and moved the regeneration after WP23 (`WP16-decisions.md`), so these conclusions are superseded by that
+regeneration's data gate.
