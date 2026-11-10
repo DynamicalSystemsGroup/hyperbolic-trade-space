@@ -17,7 +17,7 @@ package.
   `inverse_transform`, `score_samples`), the frontier chart (Helmert and additive-log-ratio
   coordinates) and the entropic (log-mean-exp) soft maximum (WP2).
 - The K = 1 (monomial) fit with its solvers, and tests under scikit-learn's estimator checks (WP2).
-- The several-term (K > 1) posynomial fit with sharp facet assignment, a mean-slack objective and
+- The several-term (K > 1) posynomial fit with sharp term assignment, a mean-slack objective and
   a sparsity option (WP9), and the fit with soft weights (WP17).
 - Certificates and a stopping declaration printed by a fit (WP13).
 - Conditioning and analysis tools: `LogAffinePreconditioner`, `frontier_in_original_units`,

@@ -145,7 +145,7 @@ other stream writes any of these files while the package executes (the superviso
 
 - Glossary and tool: `glossary.yaml`, `scripts/vocabulary_baseline.toml`, `docs/generated/glossary.md`
   (`scripts/check_vocabulary.py` only if the τ = ∞ handling of A1 needs it).
-- Paper: `paper/paper.ipynb`, `paper/supporting_material.ipynb`, `paper/*.py` (including the rename of
+- Paper: `paper/prior_art.yaml` (amended 2026-11-10, the driver, `WP24-decisions.md`), `paper/paper.ipynb`, `paper/supporting_material.ipynb`, `paper/*.py` (including the rename of
   `paper_facets.py`), `paper/figures/*.py`, `paper/figures/*.png`, `paper/environment_values.toml`,
   `paper/length_ledger.toml`, `paper/environment_reference.npz` only if the regeneration rewrites it unchanged in value,
   `paper/container/RECORD.md`; `claims_register.toml` (fragments, anchors and references of the sentences changed).
@@ -252,6 +252,7 @@ Approved or changed as one item at the scope gate. Each is marked *(default)* wh
   spike counted them with `work-packages`; the spike folder is WP25's to delete once its result is recorded here
   *(default)*.
   Amended 2026-11-10 (the driver, `WP24-decisions.md`): `docs/superpowers/notes/paper-sources/*.md` are the paper's source text and take the vocabulary; decision records and quotations keep theirs.
+  Amended 2026-11-10 (the driver): notes rendered into the paper, such as `docs/superpowers/notes/abstraction-gaps.md`, take the vocabulary.
 - **A6. "Quilt" once.** The supervisor's "quilt of trade-offs" replaces the Preliminaries' "A term, a monomial and a
   facet are one object" sentence: the fitted surface is a quilt of trade-offs, each monomial term one patch, flat in
   log space, meeting its neighbours at the ridges; the docsite index may carry the same sentence; "quilt" and "patch"
