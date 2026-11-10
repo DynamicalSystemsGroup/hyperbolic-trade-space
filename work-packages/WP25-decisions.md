@@ -90,6 +90,6 @@ reverts to (a), the row naming the test as the reader). OD3 (b) is WP26's unit, 
 acceptance, when given, is quoted here verbatim.
 
 **OD2 closed by the PM (2026-11-10, after the executor's report):** the driver's recorded decision changed the
-requirement `tests/test_v2_data.py` pinned, so that test joined the instance's radius for this one change (8fa1e13): it
+requirement `tests/test_v2_data.py` pinned, so that test joined the instance's radius for this one change (fdd6d25): it
 regenerates the comparison to a temporary path and checks the same content; `v1-v2-comparison.md` deleted in a second
-deletion commit (ec1fe9c), the hash rows in `RECORD.md` and the gate README kept as history.
+deletion commit (5a3ee03), the hash rows in `RECORD.md` and the gate README kept as history.

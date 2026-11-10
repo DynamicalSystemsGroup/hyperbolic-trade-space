@@ -26,8 +26,8 @@ held the file and put two options to the PM; the PM ruled that the driver's reco
 regenerated on demand) changed the requirement that test pinned, so the test joined the radius for this one change: it is
 now `test_the_regenerated_report_includes_the_register`, which runs `experiments compare --out <tmp>` (as the slow test
 above it does) and checks the same content (the register included verbatim, the solver-exclusion section); the unused
-`REPORT` constant went with it; nothing else in the file changed (8fa1e13). Then the deletion commit "WP25: 1 file
-deleted (third instance, OD2)" (ec1fe9c) listed the file with what it no longer did; the hash rows in
+`REPORT` constant went with it; nothing else in the file changed (fdd6d25). Then the deletion commit "WP25: 1 file
+deleted (third instance, OD2)" (5a3ee03) listed the file with what it no longer did; the hash rows in
 `paper/container/RECORD.md` and `WP23-rounds/gate/README.md` stay as history (A9); last version f517875. R-2 grep 0, 0
 (the inventory's first section).
 
@@ -74,7 +74,7 @@ vocabulary and narrative tests, and the doctests: the lines are under "Checks".
 | Inventory (R-1) | the A2 command at the head, first column diffed against the Rows table; `grep -ciE "undecided\|tbd\|\?\?" work-packages/WP25-inventory.md` | 209 rows, 0 difference; 0 |
 | Contract and tests (R-2) | `git grep -n -F -e <path> -e <basename> -- work-packages/interface-contract.md work-packages/interface-contract.toml tests/test_interface_contract.py` | 0 and 0 for `spike-ternary/report.md`; 0 and 0 for `v1-v2-comparison.md` (the inventory's first section) |
 | Nothing live names the deleted path (R-3) | `for f in $(git diff --name-only --diff-filter=D d5d0c3d..HEAD); do git grep -l -F "$f" -- . ':!work-packages/WP25-*'; done` | `spike-ternary/report.md`: `work-packages/WP18-scope-of-work.md`, `work-packages/WP8a-decisions.md`; `v1-v2-comparison.md`: `paper/container/RECORD.md`, `work-packages/WP23-rounds/gate/README.md` (the hash rows), `WP10-decisions.md`, `WP15-scope-of-work.md`, `WP23-review.md`, `driver-log.md`, `swap-evidence.md`, `streams/P10-review.md` (all records); 0 in every other live file |
-| Deletion commit (R-4) | `git show --stat de3ce61 \| tail -1`; `git show --format=%B -s de3ce61 \| grep -c '^docs/superpowers/notes/spike-ternary/report.md'` | `1 file changed, 155 deletions(-)`; 1. The second deletion commit, ec1fe9c: `1 file changed, 498 deletions(-)`; 1 |
+| Deletion commit (R-4) | `git show --stat de3ce61 \| tail -1`; `git show --format=%B -s de3ce61 \| grep -c '^docs/superpowers/notes/spike-ternary/report.md'` | `1 file changed, 155 deletions(-)`; 1. The second deletion commit, 5a3ee03: `1 file changed, 498 deletions(-)`; 1 |
 | Untouched (R-7) | `git diff --stat d5d0c3d..HEAD -- paper derivation src examples/adcs/data examples/adcs/model_v2 examples/adcs/experiments/ledger`; `--diff-filter=R` | empty; empty |
 | Non-goals surfaces (R-8) | `git diff --stat d5d0c3d..HEAD -- glossary.yaml work-packages/interface-contract.md work-packages/interface-contract.toml tests/test_interface_contract.py CHANGELOG.md paper/container 'work-packages/WP26*' 'work-packages/WP27*' 'work-packages/WP11*' 'work-packages/WP10*' work-packages/streams mkdocs.yml pyproject.toml uv.lock` | empty. The instance's whole diff: `claims_register.toml` (one line), the three notes, the two spike files, `case-model.md` (two lines), the deleted report, and the four WP25 records |
 | Attribution (R-10) | `git log --format=%B d5d0c3d..HEAD \| grep -ciE "co-authored-by\|generated (with\|by)"` | 0 |
