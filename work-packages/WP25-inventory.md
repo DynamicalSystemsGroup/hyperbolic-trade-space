@@ -307,3 +307,17 @@ and the same with the basename. Counts of matching lines (0 means no pin):
 | `work-packages/external-assessment-2026-11-09/verification.json` | keep | `assessment.md` (cited by `paper/supporting_material.ipynb`) sends its reader to this file for "exact outcomes and numerical comparisons"; `WP21-scope-of-work.md` lists it as evidence; 2.6 kB; deleting leaves a cited document with a dangling pointer. Revisit when `assessment.md` goes |  |
 | `work-packages/external-review-2026-11.md` | keep | the outside review the abstraction-gaps ledger cites (E-10): `WP10-decisions.md`, `work-packages/README.md` |  |
 | `work-packages/streams/P10-review.md` | hold: WP10 acceptance | named by no file (`WP10-decisions.md` mentions P10); folded into `WP10-review.md` or deleted when WP10 is finally accepted (WP10 is a working draft) |  |
+
+## Unit B, at the head (R-1 rerun)
+
+The A2 command rerun at the head gives 144 rows. Compared with the 198 above: 58 are gone (unit A's 31 deletions, unit B's 26
+outputs, and `site/paper-map.webp` removed by bb51b7e), and four paths are new since a9e23b2. The rows that changed:
+
+| Path | Disposition |
+|---|---|
+| the 26 `.txt` and `.csv` outputs of `spike-certificates/`, `spike-facet-refit/`, `spike-objective/` (held above) | deleted in "WP25: 28 files deleted (second instance, unit B)", with `scripts/rename_facet.py` and `tests/test_rename_facet.py`; the READMEs and generator scripts stay (the decision of 2026-11-10 07:00) |
+| `docs/superpowers/notes/spike-ternary/report.md` (scheduled above) | hold: `claims_register.toml` C001 (note) and `docs/superpowers/notes/claims-review.md` line 74 cite its Correction for the largest log V of 0.071, which stands in no other file; deleted by the instance that re-points both (the register is WP24's file, the review note is not in unit B's blast radius) |
+| `work-packages/WP23-closeout-scope-of-work.md` (new) | keep: the scope of the WP23 close-out, an executing package (`WP23-decisions.md` names it) |
+| `work-packages/WP23-rounds/spike-redundancy.md`, `spikes/spike-A-with-and-without-infeasible.md`, `spikes/spike-B-requirements-and-the-fit.md` (new) | keep: read by the close-out's scope and `WP23-decisions.md`; decide at the instance after the close-out is accepted |
+
+No row is undecided: `grep -ciE "undecided|tbd|\?\?"` returns 0.

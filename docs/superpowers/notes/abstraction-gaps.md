@@ -60,7 +60,7 @@ code).
   $s=0..4$, `HyperbolicTradeSpace(temperature=tau).fit`; error = largest absolute exponent
   deviation from the planted vector; median over seeds.
 - **M3.** `HyperbolicTradeSpace(temperature=tau, n_terms=K, random_state=0).fit(M)` at the
-  re-selected $\tau$ of `docs/superpowers/notes/k3-cubesat.md`; read `termination_`,
+  re-selected $\tau$ of `examples/adcs/k_terms.py` ($113.22$ at $K=3$ in both regimes); read `termination_`,
   `conditioning_` and `exponents_`.
 - **M4.** `make_frontier_data(400, 4, exponents=[0.6,0.4,0,0], noise=0.05, random_state=0)`; fit
   with `temperature=20, penalty="reweighted_l1", alpha=0.01`; set metric 4 to 0 in a random 10% or
