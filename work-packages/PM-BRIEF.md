@@ -222,10 +222,18 @@ by agent id; finish their current unit, start nothing new under the old plan):
   test; the principle check over every figure, paper and docs, reported before change; on current data only.
 - `wp16` (ae763977995a7ace5): event detection for the settling time only (hold time = last exit), default-off switch so
   dev stays green; the first regeneration trial recorded in swap-evidence.md; the regeneration itself HELD for WP23.
-- `wp23scope` (a2f46545b2fd2ee30): done; `WP23-scope-of-work.md` at 7ffb719 awaits the driver's triage and the
-  supervisor's answers to OD1..OD8 (OD2, a finding: cost proportional to mass is the same log column shifted).
+- `wp23scope` (a2f46545b2fd2ee30): done; `WP23-scope-of-work.md` at 7ffb719. **WP23 is approved for execution** (the
+  gate line in the scope; the supervisor's answers verbatim in `WP23-decisions.md`, b0e12db). The fourth PM folds the
+  answers into the scope in the first execution commit: OD1/OD2 "MoE on mass, no new column" (total mass stays the traded
+  MoP; launch cost = illustrative rate x mass as the MoE with a launch-budget requirement; the `launch_cost` column is
+  struck; the contract changes only by the slew-time column); OD3..OD6 "loop proposes, he approves" (illustrative
+  thresholds from the baseline with a stated margin, built during the loop; the four values to him at the data gate in
+  one popup through the driver); OD7 the loop proposes candidate metrics the model already computes, added only on his
+  decision at the gate; OD8 defaults approved with `launch_cost` struck; OD9 is not a decision. WP23 is the next package
+  to start, from the files, by the fourth PM.
 
-Landed this PM (all on dev): rulings 1-5 (85733c1, 18dd8b6, 8a7e583, 3ff2e67, 73a8435, 6b5d582, 8c9d0a2); CR-3/6/7/8,
+Also landed: paper unit 7 35b3df6 (energy differential glossed; PCA distinct and composable); WP22d accepted by the
+driver (663ead7: green on the Mac at bde5362; Linux dispatched on 7ffb719). Landed this PM (all on dev): rulings 1-5 (85733c1, 18dd8b6, 8a7e583, 3ff2e67, 73a8435, 6b5d582, 8c9d0a2); CR-3/6/7/8,
 Corollary enumerated, Section 9 sentence 4f63628; CR-1c and the three WP19 placements 8abb16a; R-36 vocabulary 9d5d3fd,
 cce0ac5, 7be42ee, bde5362; WP22 gate report 10cde31/264f1b8, decision 9c444e3 (driver), WP22d ff717ed/6ed13ed/d3018ba
 (cubesat.sysml adopted, views at examples/adcs/model_v2/views/, ledger @4, outputs byte-identical); WP19 to its good
