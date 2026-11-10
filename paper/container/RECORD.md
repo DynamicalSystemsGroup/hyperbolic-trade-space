@@ -283,6 +283,34 @@ kept. The file holds 1274 arrays as before (1273 and the field `recorded_on` = l
 | `uv run pytest -q tests/test_soft_fit.py` in `hts-paper` (a fresh container, the new file copied in), `HTS_ENVIRONMENT_OF_RECORD=1`, exact branch | 195 s: 58 passed |
 | the same on the Mac, tolerance branch, slow tests included | 203 s: 58 passed |
 
+## Regeneration after the review of the paper's move (2026-11-10, head 2155775)
+
+The paper's fix-forward after the review (`work-packages/swap-evidence.md` part 6, dispositions in part 7). Steps,
+each `--network none`, in `hts-*` containers only: `sh paper/container/build.sh` at 2155775 (the local head, on `dev` as 5270bf2 after the rebase; `tab-F-toolchain` prints it) (32 s, cached
+layers), image `hts-paper` **`8e91e07fb08f`**
+(`sha256:8e91e07fb08fe61dc3c2dd95b465a686ea249a5f731aef9dc26d3efcf2f1ac6b`), the previous image `f7b7585c7c58`
+removed in the same step (`docker rmi`, no container on it); `docker create --name hts-paper1c --network none
+hts-paper sh /tmp/run.sh`, the script copied in, `docker start -a`; the outputs copied out with `docker cp`;
+`hts-paper1c` removed by name.
+
+| command (inside `hts-paper`, `HTS_ENVIRONMENT_OF_RECORD=1`) | wall time | result |
+|---|---|---|
+| `uv run python paper/paper_common.py` | 3 s | `environment_reference.npz` and `environment_values.toml` unchanged |
+| `uv run python paper/execute_notebooks.py` | 118 s | both notebooks; outputs changed only in `num-predict-reading`, `fig-tensions-k3`, `tab-D-stability`, `tab-F-toolchain` (the commit) |
+| `sh paper/container/build-paper.sh` | 4 s | the site built (three favicon 404 lines from the builder's server, no error) |
+| `uv run python scripts/build_figures.py` | 100 s | no paper figure but `fig-tensions-k3.png` changed; the two model views byte-equal to the committed copies |
+| `uv run pytest -q -n 4` on `test_paper`, `test_case`, `test_k_terms_case`, `test_paper_sources`, `test_paper_static_figures`, `test_narrative`, `test_claims_register`, `test_sensitivity` | 137 s | 257 passed, 4 skipped (the gated ones) |
+| `PAPER_EXECUTE=1 uv run pytest -q tests/test_paper.py -k "perturbation or clean_kernel or facet_order"` | 400 s | 4 passed (the perturbation test with `num-margin` listed; the clean-kernel test byte-equal) |
+
+What changed: `num-predict-reading` (the antecedent, three proposals of two designs); the D.11 head (the jitter's
+magnitudes dropped: no committed record holds the attributes' movement); `fig-tensions-k3` (the thin term's title
+and sentence above term 3's map, 60 px where its panel took about 250, figure 1360 px tall from 1480);
+`tab-F-toolchain` (the build commit). No number of the paper moved. `num-margin` is unchanged (11 of the 706 in the
+fit of record) and is now listed under `[perturbation].moves_under_restart_shift` with its audit line. The
+environment of record is now `8e91e07fb08f`. The soft-fit recording above (made in `f7b7585c7c58`) was re-checked in
+it after the rebase: `uv run pytest -q -n 4 tests/test_soft_fit.py` with the recording and the test of `dev` 4bd6bac
+copied in, exact branch, 81 s: 58 passed (container `hts-paper1c-sf`, removed).
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes

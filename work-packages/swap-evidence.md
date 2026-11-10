@@ -1682,3 +1682,44 @@ its table, and every regenerated figure shows what its caption says, with the na
     record (the recorded K = 2 tau 113.2 against 94.4 observed). A miss of the unit's slot list: the recording reads
     the case data but is not a paper cell. Fixed forward by its own unit (the recording regenerated in `hts-paper`
     f7b7585c7c58 on the data of record).
+
+### 7. Dispositions of the review's findings
+
+Written by the paper stream at `dev` 5270bf2 (code, prose; built locally as 2155775) and f8877b2 (regenerated in `hts-paper` `8e91e07fb08f`,
+`paper/container/RECORD.md`, "Regeneration after the review of the paper's move").
+
+1. Done (listed). `num-margin`'s count is a count at a threshold: in the fit of record two designs' best-minus-second-best
+   gaps lie 4 per cent of the band below it and one 3 per cent above; the restart-shifted fit (`--restarts 7`) is another
+   optimum (term 3's exponents differ) and counts 10. Both satisfy the sentence's claim (at least one design within the
+   band of a seam). A bound or range could not be printed from the fit of record alone, so `sentence num-margin` is in
+   `[perturbation].moves_under_restart_shift` with an audit row in `paper/environment_values.toml`, and the docstring of
+   `designs_on_a_seam` (which said the count does not move) states it. Mac: the perturbation test failed before on
+   `num-margin` only and passes after; it passes in the image.
+2. Done. "Two of the three proposals are one configuration."; "Three proposals of two designs illustrate and do not
+   estimate a rate." (the count of designs computed from the predictions file).
+3. Left: WP24's (the facet/term naming); no new use of "facet" in prose.
+4. Done (narrowed). The typed 0.6222 and 0.351 are gone; the sentence states the rule ("a radius that a stated rule
+   sets from the data: the 2nd percentile of the pool's nearest predicted distances to the 300 most isolated holes");
+   `test_the_proposers_radius_is_the_stated_rule_of_the_check_designs` pins the rule's constants in `check_designs.py`
+   and that no value is typed. With 12, the parenthesis on the slew-time view is cut.
+5. Done (dropped). "by up to two parts in ten thousand and the settling time by about a microsecond" is out of the D.11
+   head: `sensitivity.json` holds no attribute movement and the regenerated datasets are not committed (the scratch
+   regenerations give 1.46e-4 relative and 1e-6 s at most). G-17's evidence column in `abstraction-gaps.md` still
+   prints "1.5×10⁻⁴ relative" with `sensitivity.json` as its source: for the gap ledger's owner.
+6. Done. "three groups: two narrow columns (coarse at the left, then medium) and a wide band for the fine grade".
+7. Done. The thin term has no row of its own: its title and sentence stand above term 3's map (60 px against about 250),
+   `case.tension_figure`; the caption says "a sentence in its place says so".
+8. Done. "w is the exponent at the fit temperature, grey below the participation threshold, so an outlined metric can
+   be grey"; `test_cr1` pins the new words.
+9. Done. "nor the values off the outlined column, where close exponents share a grey".
+10. Done. "the measured slew supplies the settling time and the control effort, which the analysis passes on, and the
+    analysis computes the other seven".
+11. Left: `k_terms.py` and its figures are another unit's.
+12. Done with 4.
+13. Left: not a requirement at phone width.
+14. Left: the soft-fit unit's.
+
+Additions: Section 8 names MoE and MoP once (length ledger row, Case construction, 39 words with finding 10's caption
+words); claims register rows C391 to C399 (the radius rule, the thin term's caption and sentence, the per-term leaders of
+`num-k-sweep`, the stability head's two facts, the check reading's 3 of 3 and 1 of 3, the duplicate proposal, the
+depth-of-discharge failures).
