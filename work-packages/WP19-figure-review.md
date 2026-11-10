@@ -366,7 +366,7 @@ read the line as a fit through the cloud and say why points lie above it. Figure
 default and the case does not change.
 
 
-### 19c and 19d reads, tests and dispositions (after the recipes at 3ef0851 and cc8013f)
+### 19c and 19d reads, tests and dispositions (after the recipes at a6f0dfe and c399dd1)
 
 Images given (copies with neutral names, byte-identical, SHA-1 prefix): `figure-D.png` = `fig-tau-sweep.png`
 (94eca94), `figure-E.png` = `fig-plane-k1.png` (c8b828c), `figure-F.png` = `fig-plane-k3.png` (aee7fdc),
@@ -504,9 +504,9 @@ seeing which trades no requirement constrains.
 
 ### P-4 to P-10 (19c and 19d): caption changes and removals, all in the paper's figure directives
 
-Floats after P-1 to P-10: seven figures (n-lemma, assembly, behavioural, temperature sweep, planes
-K = 1, planes K = 3, tensions K = 3, regimes = eight figures) plus the family table: **nine floats**, not
-the eight the tests count now. The two removed figure cells (`fig-chart-k3`, `fig-predict-check`) also
+Floats after P-1 to P-10: eight figures (n-lemma, assembly view, behavioural view, temperature
+sweep, planes K = 1, planes K = 3, tensions K = 3, regimes) plus the family table, so **nine floats**,
+where the tests count eight now. The two removed figure cells (`fig-chart-k3`, `fig-predict-check`) also
 leave Appendix F.4, so its generated rows need regenerating, and the text's `{numref}`s to
 `fig-chart-3` and `fig-predict-check-1` need replacing.
 

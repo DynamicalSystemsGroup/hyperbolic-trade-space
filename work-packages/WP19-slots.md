@@ -104,3 +104,19 @@ loses nothing; nothing is drawn), **open** (sentence test first in its subpackag
 
 Slots with a candidate to make or read: S-a5, S-b1, S-b2 (new); S-c1, S-d1, S-d2, S-d4, S-d5 (keep);
 S-d3, S-d6, S-d7, S-e1 (open). No figure: S-a1 (supervisor), S-a2, S-a3, S-a4, S-a6, S-a7, S-c2, S-d8.
+
+## Outcomes (stage 2 and 3; the record is `WP19-figure-review.md`)
+
+| Slot | Outcome |
+|---|---|
+| S-a5 | Candidate passed (two reads); ready for placement as P-1. |
+| S-b1, S-b2 | Passed (two reads each); ready as P-2, P-3 (copies of the model's views in `paper/figures/`). |
+| S-c1 | Kept as is (two reads); P-4. |
+| S-d1 | Kept; caption gains the slice clause (P-5). |
+| S-d2 | Kept; caption gains the band clause and the slice clause, two caption steps, four reads (P-6). |
+| S-d3 | Dropped by the sentence test with the WP11 evidence; sentence kept (P-7). |
+| S-d4 | Kept; caption gains the association clause (two reads; P-8). |
+| S-d5 | Kept; caption gains the "w" clause and the association clause (two reads; P-9). |
+| S-d6 | No figure (sentence test: the form of the dropped cubesat triangle). |
+| S-d7 | Dropped by the sentence test: the image conveys "matched", the finding says positions missed; the generated sentence stays (P-10). |
+| S-e1 | No figure (a resampling analysis is not in the paper; the grouped form is dropped). |
