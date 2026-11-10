@@ -1,0 +1,65 @@
+table,decision_element,kind,metric,structural,empirical,max_relative_change,agree
+coverage,WheelClass,swap,settling time,yes,yes,2.344e+01,yes
+coverage,WheelClass,swap,pointing error,yes,yes,1.826e-05,yes
+coverage,WheelClass,swap,total mass,yes,yes,9.195e-02,yes
+coverage,WheelClass,swap,control effort,yes,yes,2.880e-01,yes
+coverage,WheelClass,swap,power margin,yes,yes,1.088e-01,yes
+coverage,WheelClass,swap,energy balance,yes,yes,3.556e-04,yes
+coverage,WheelClass,swap,eclipse reserve,yes,yes,4.205e-04,yes
+coverage,WheelClass,swap,peak slew power,yes,yes,6.751e-01,yes
+coverage,WheelClass,swap,depth of discharge,yes,yes,1.620e-03,yes
+coverage,TrackerGrade,swap,settling time,yes,yes,1.722e-02,yes
+coverage,TrackerGrade,swap,pointing error,yes,yes,1.215e+01,yes
+coverage,TrackerGrade,swap,total mass,yes,yes,4.789e-02,yes
+coverage,TrackerGrade,swap,control effort,yes,yes,1.792e-02,yes
+coverage,TrackerGrade,swap,power margin,yes,yes,3.275e-02,yes
+coverage,TrackerGrade,swap,energy balance,yes,yes,1.199e-01,yes
+coverage,TrackerGrade,swap,eclipse reserve,yes,yes,7.463e-02,yes
+coverage,TrackerGrade,swap,peak slew power,yes,yes,3.833e-01,yes
+coverage,TrackerGrade,swap,depth of discharge,yes,yes,7.629e-02,yes
+coverage,panelSpan,tune,settling time,yes,yes,1.276e-01,yes
+coverage,panelSpan,tune,pointing error,yes,yes,1.822e-04,yes
+coverage,panelSpan,tune,total mass,yes,yes,8.685e-03,yes
+coverage,panelSpan,tune,control effort,yes,yes,1.611e-01,yes
+coverage,panelSpan,tune,power margin,yes,yes,1.872e-01,yes
+coverage,panelSpan,tune,energy balance,yes,yes,4.189e-01,yes
+coverage,panelSpan,tune,eclipse reserve,yes,yes,8.209e-05,yes
+coverage,panelSpan,tune,peak slew power,yes,no,0.000e+00,no
+coverage,panelSpan,tune,depth of discharge,yes,yes,3.163e-04,yes
+coverage,batteryCapacity,tune,settling time,yes,yes,5.852e-03,yes
+coverage,batteryCapacity,tune,pointing error,yes,yes,9.939e-07,yes
+coverage,batteryCapacity,tune,total mass,yes,yes,6.386e-03,yes
+coverage,batteryCapacity,tune,control effort,yes,yes,1.869e-03,yes
+coverage,batteryCapacity,tune,power margin,yes,no,0.000e+00,no
+coverage,batteryCapacity,tune,energy balance,yes,yes,7.801e-07,yes
+coverage,batteryCapacity,tune,eclipse reserve,yes,yes,2.985e-01,yes
+coverage,batteryCapacity,tune,peak slew power,yes,no,0.000e+00,no
+coverage,batteryCapacity,tune,depth of discharge,yes,yes,9.091e-02,yes
+coverage,Kp,tune,settling time,yes,yes,9.432e-02,yes
+coverage,Kp,tune,pointing error,yes,yes,8.786e-02,yes
+coverage,Kp,tune,total mass,no,no,0.000e+00,yes
+coverage,Kp,tune,control effort,yes,yes,9.258e-02,yes
+coverage,Kp,tune,power margin,yes,no,0.000e+00,no
+coverage,Kp,tune,energy balance,yes,yes,3.784e-05,yes
+coverage,Kp,tune,eclipse reserve,yes,yes,4.473e-05,yes
+coverage,Kp,tune,peak slew power,yes,no,0.000e+00,no
+coverage,Kp,tune,depth of discharge,yes,yes,1.724e-04,yes
+coverage,Kd,tune,settling time,yes,yes,2.094e-01,yes
+coverage,Kd,tune,pointing error,no,no,0.000e+00,yes
+coverage,Kd,tune,total mass,no,no,0.000e+00,yes
+coverage,Kd,tune,control effort,yes,yes,8.092e-02,yes
+coverage,Kd,tune,power margin,yes,no,0.000e+00,no
+coverage,Kd,tune,energy balance,yes,yes,3.353e-05,yes
+coverage,Kd,tune,eclipse reserve,yes,yes,3.964e-05,yes
+coverage,Kd,tune,peak slew power,yes,no,0.000e+00,no
+coverage,Kd,tune,depth of discharge,yes,yes,1.527e-04,yes
+table,metric,mark,element,kind,requirement,how,verified_in
+metrics,settling time,MoP,settlingTime,measured,SettledRequirement,reads the measured settlingTime,SlewVerification
+metrics,pointing error,MoE,PointingError,calc,PointingErrorRequirement,invokes PointingError,ConfigurationVerification
+metrics,total mass,MoP,totalMass,attribute,LaunchBudgetRequirement,"reads c.launchCost = LaunchCost(c), the MoE",ConfigurationVerification
+metrics,control effort,MoP,controlEffort,measured,ControlEffortRequirement,reads the measured controlEffort,SlewVerification
+metrics,power margin,MoP,PowerMargin,calc,PowerMarginRequirement,invokes PowerMargin,SlewVerification
+metrics,energy balance,MoP,EnergyBalance,calc,EnergyBalanceRequirement,invokes EnergyBalance,SlewVerification
+metrics,eclipse reserve,MoP,EclipseReserve,calc,EclipseReserveRequirement,invokes EclipseReserve,SlewVerification
+metrics,peak slew power,MoP,PeakSlewPower,calc,PeakSlewPowerRequirement,invokes PeakSlewPower,SlewVerification
+metrics,depth of discharge,MoP,DepthOfDischarge,calc,DepthOfDischargeRequirement,invokes DepthOfDischarge,SlewVerification
