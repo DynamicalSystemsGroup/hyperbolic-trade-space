@@ -57,6 +57,10 @@
  * SysML v2 cannot integrate the ODE, so the measured quantities enter the experiment as `in`
  * parameters. Section 4 carries a closed-form approximation for model checking.
  *
+ * The views a SysML v2 view editor draws (the assembly, the alternatives, the named
+ * configurations, the calcs, where the metrics live, the requirements with their satisfy and
+ * verify links) are declared in views.sysml beside this file and applied after it as one model.
+ *
  * How a Python caller reads this model (opensysml client; `m = conn.load_from_content(text,
  * strict=True)`; P = "CubesatTradeSpaceV2"). No number below is copied into Python:
  *   ranges, gain boxes, scenario numbers, constants
@@ -547,23 +551,20 @@ package CubesatTradeSpaceV2 {
            thresholds, `satisfy` statements tying each requirement to the baseline, `verification
            def`s naming what each verifies, and claims over every in-range configuration. */
     // BEGIN 15.2
-    doc /* Feasibility is stated here and verified, not computed in Python. Four requirements, one
-           per flag the experiment reports: settled, momentum_ok, power_ok, dod_ok. A requirement
-           takes a Cubesat as its subject and, where it needs a measured quantity of the slew, an
-           `in` parameter that the runner binds by name (a Quantity, or a Real for the integral of
-           |tau|^2). The defaults of those parameters are the recorded measurement of the baseline
-           (below), so the `satisfy` statements are checkable without a runner. WP22 added one
-           requirement over each of power margin and energy balance (the calc the experiment
-           returns as the metric) and restated the depth-of-discharge requirement over its calc;
-           its requirement over the eclipse reserve, the same inequality, left at the close-out.
-           WP23 completes the set: the slew-time and slew-band requirements fold into
-           SettledRequirement (one time metric, the settling time), and the four metrics that had
-           no requirement get one, pointing error, control effort, peak slew power, and the total
-           mass through the launch cost, each with the supervisor's threshold in `budgets` below;
-           round 2 adds the battery peak power requirement, the pack's rating against the eclipse
-           peak load. Every threshold is a value this model states: zero for a margin or a balance, the
+    doc /* Feasibility is stated here and verified, not computed in Python. Eleven requirements.
+           Four are the flags the experiment reports: settled, momentum_ok, power_ok, dod_ok; the
+           settled and depth-of-discharge ones read the settling time and the depth of discharge.
+           Six more each read a traded metric's own quantity: pointing error, control effort, peak
+           slew power, power margin, energy balance, and the total mass through the launch cost;
+           so every one of the eight traded metrics has a requirement. The eleventh, the battery
+           peak power requirement, reads the pack's rating against the eclipse peak load. A
+           requirement takes a Cubesat as its subject and, where it needs a measured quantity of
+           the slew, an `in` parameter that the runner binds by name (a Quantity, or a Real for
+           the integral of |tau|^2). The defaults of those parameters are the recorded measurement
+           of the baseline (below), so the `satisfy` statements are checkable without a runner.
+           Every threshold is a value this model states: zero for a margin or a balance, the
            maximum depth of discharge of the environment, the horizon of the nominal slew, a
-           budget the supervisor chose, or the pack's own rated power. */
+           limit in `budgets`, or the pack's own rated power. */
     part def SlewMeasurement {
         doc /* A measurement of one slew: the quantities the requirements and the experiment read.
                The simulator (adcs_sim.simulate_adcs) reads these inputs of the configuration:
@@ -603,7 +604,7 @@ package CubesatTradeSpaceV2 {
                pointing error 0.015535 degree, control effort 0.0094906 N.m.s, peak slew power
                2.0 W, launch cost 79,749 USD (13.291 kg). */
         attribute pointingErrorLimit : PlaneAngleValue = 0.008495 [degree] {
-            doc /* 0.0085 degree, the row that admits 95 % of the primary regime (94.9 % / 63.7 %),
+            doc /* 0.0085 degree, the row that admits 95 % of the primary regime (95.0 % / 63.7 %),
                    kept knowing that the baseline configuration (0.015535 degree) fails it ("Keep
                    0.0085 deg", 2026-11-10, 08:55). */
         }
@@ -751,8 +752,8 @@ package CubesatTradeSpaceV2 {
                verifies the requirement on a traded metric's own quantity: settling time, control
                effort, power margin, energy balance, peak slew power, depth of discharge; the
                momentum requirement reads the measured peak momentum, and the battery peak power
-               requirement the pack's rating against the eclipse peak load, neither traded. With ConfigurationVerification, every traded metric has a
-               requirement. */
+               requirement the pack's rating against the eclipse peak load, neither traded. With
+               ConfigurationVerification, every traded metric has a requirement. */
         subject c : Cubesat;
         objective {
             verify requirement settled : SettledRequirement;

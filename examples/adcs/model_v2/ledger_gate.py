@@ -25,8 +25,17 @@ driver's container regression re-runs the same five entries in ``hts-paper`` (``
 ``scope-sensitivity-shared-subspace-v2@6``) and re-pins the exact outputs: ``--image`` writes the
 gate's note naming the image. The data gate's note (the ``@5`` entries) stays as ``DATA_GATE_NOTE``.
 
+WP26 (``WP26-decisions.md``, OD1 (b) as amended 2026-11-10, 15:05) re-runs the same five entries
+in the container of record after the close-out gate's (``@8``,
+``scope-sensitivity-shared-subspace-v2@7``), on edits to ``cubesat.sysml`` that leave every output
+byte-identical (docs and comments read in a SysML v2 view editor, and WP23's O-1: the pointing
+limit's primary share printed as 95.0 %): ``--image <id> --wp26`` writes its note; each output's
+hash must equal the hash of the entry it supersedes, or the edits revert and the entries are not
+kept. A host run (``--host --wp26``, in a throwaway tree) is the neutrality evidence before it.
+
     REQUIRE_OPENSYSML=1 PYTHONPATH=examples/adcs \
-        uv run python examples/adcs/model_v2/ledger_gate.py (--image <image id> | --host) [--dry]
+        uv run python examples/adcs/model_v2/ledger_gate.py \
+        (--image <image id> | --host) [--wp26] [--dry]
 """
 
 from __future__ import annotations
@@ -58,6 +67,11 @@ HOST_NOTE = (
     " literal in budgets; regenerated on the host ({where}) under the rule that the container"
     " is a gate check; the container of record re-pins the exact outputs at the gate"
 )
+WP26_NOTE = (
+    "WP26: edits to cubesat.sysml that leave every output byte-identical (docs and comments read"
+    " in a SysML v2 view editor; WP23's O-1, the pointing limit's primary share 95.0 %);"
+    " regenerated {where}; each output's hash equal to the hash of the entry it supersedes"
+)
 ORDER = (
     *(df.EXPERIMENTS[k] for k in ("v2-primary", "v2-baseline")),
     *(df.EXPERIMENTS[k] for k in ("v2-check-predictions", "v2-check-designs")),
@@ -65,15 +79,22 @@ ORDER = (
 )
 
 
-def declared(exp, entries, image: str | None):
+def declared(exp, entries, image: str | None, wp26: bool = False):
     """``exp`` as the gate's re-run of its current entry, the note naming the image (the gate) or
-    the host's platform (the close-out, ``image`` None)."""
+    the host's platform (the close-out, or WP26's re-run with ``wp26``; ``image`` None)."""
     run = df.revise(exp, entries)
-    note = (
-        NOTE.format(image=image)
-        if image
-        else HOST_NOTE.format(where=f"{platform.system()} {platform.machine()}")
-    )
+    host = f"{platform.system()} {platform.machine()}"
+    if wp26:
+        where = (
+            f"in the container of record hts-paper (image {image})"
+            if image
+            else f"on the host ({host})"
+        )
+        note = WP26_NOTE.format(where=where)
+    elif image:
+        note = NOTE.format(image=image)
+    else:
+        note = HOST_NOTE.format(where=host)
     return dataclasses.replace(run, inputs={**dict(run.inputs), "note": note})
 
 
@@ -98,12 +119,13 @@ def main(argv=None) -> int:
     where = ap.add_mutually_exclusive_group(required=True)
     where.add_argument("--image", help="the hts-paper image id the run is made in")
     where.add_argument("--host", action="store_true", help="the close-out's run on the host")
+    ap.add_argument("--wp26", action="store_true", help="WP26's re-run note")
     ap.add_argument("--dry", action="store_true", help="print the plan, run nothing")
     a = ap.parse_args(argv)
     for exp in ORDER:
         entries = lg.read(lg.LEDGER_PATH)
         prev = lg.latest(entries, exp.id)
-        run = declared(exp, entries, a.image)
+        run = declared(exp, entries, a.image, a.wp26)
         print(run.id, "supersedes", list(run.supersedes), "output was", prev["output_sha256"][:12])
         if a.dry:
             continue
