@@ -182,3 +182,19 @@ right through the legend in the image) is no change. With this, every gap of the
 **WP23 final hash: db59365** (revision 8 of the behavioural view; the analysis box reads "returns 8 of 9 metrics,
 computed with no slew: pointing error, total mass"; the paper's byte copy updated). Accepted by the driver under the
 mandate, 2026-11-10, 07:25.
+
+## The four thresholds (2026-11-10, 07:55; the supervisor, from the pass-fraction tables in `WP23-review.md`)
+
+**Driver's popup, four questions with the candidates and the share of feasible designs each admits (primary /
+baseline).** **Supervisor (mzargham), verbatim:** peak slew power "2.6 W, all small and medium"; pointing error
+"0.0085 deg, admits 95 % of primary"; control effort "0.059 N.m.s, admits 90 % of baseline"; launch budget
+"90,643 USD (15.11 kg, admits 95 %)".
+
+**Disposition.** The model's four requirements take these values (PeakSlewPowerRequirement 2.6 W, admitting every
+small and medium wheel and no saturating large wheel, 62.2 % / 67.3 %; PointingErrorRequirement 0.008495 degree,
+94.9 % / 63.7 %; ControlEffortRequirement 0.05922 N·m·s, 58.9 % / 90.0 %; LaunchBudgetRequirement 90,643 USD at
+the illustrative 6,000 USD/kg, 15.107 kg, 94.9 % / 95.6 %), each labelled as his choice from the loop's ladder and
+no longer "illustrative 20 %". The datasets do not change (the four are requirements read against the metrics,
+not feasibility flags of the generation); the model, its toolkit gates, the views, the coverage table, the case
+prose's threshold sentences and the register rows regenerate in the container in one unit; the gate's pass
+fractions are the recorded reading of what each admits.

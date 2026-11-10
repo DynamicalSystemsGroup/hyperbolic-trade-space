@@ -16,17 +16,7 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
   train the proposer on the fully feasible rows (a method change to the check, scoped); or drop the proposals and
   keep the three hand-written candidates. The driver's recommendation: the first for 0.1, said plainly, with the
   second recorded as future work. Non-blocking; the paper's sentences follow whatever you choose.
-- (2026-11-10, 00:35) **Two findings of WP23 round 3 for your decision at the gate (the gate proceeds; these
-  come with the threshold popup).** (1) The metric set carries two redundancies the data make plain: eclipse reserve
-  and depth of discharge are one quantity (Spearman -0.9994; the reserve 0.3C - D and the ratio D/C are the same
-  inequality), and power margin and energy balance are both affine in the generated power (log correlation 0.96:
-  one carries the exponent, which one switches between regimes). Options when you are back: keep both of each pair
-  as the model's MoPs and let the fit show it; or drop one of each (seven traded metrics); or keep the pairs and
-  state the redundancy in the case prose as a reading. (2) The proposed peak-slew-power limit of 2.4 W (20 % above
-  the baseline) fails 56.4 % of the feasible primary designs, because peak slew power is a step function of the
-  wheel class and tracker grade (41 distinct values); a percentage margin on a step is not a threshold. The driver
-  has asked the loop to propose the limit on the step's own terms (the value that admits the baseline's wheel
-  class, with the pass fraction of each candidate shown) so the popup shows you what each choice admits.
+- (2026-11-10, 00:35; the thresholds answered 07:55) **Two findings of WP23 round 3.** The four thresholds are his (`WP23-decisions.md`); the two metric redundancies and the proposals' feasibility are being put to him now.
 - (2026-11-09, 23:20) **WP23, coming to you at the data gate (proceeds overnight on my verification per
   "Proceed, I review after"):** the four illustrative thresholds proposed by the loop, each 20 % above the baseline
   configuration: pointing error 0.0186 deg; control effort 0.0114 N·m·s; peak slew power 2.4 W; launch budget
@@ -371,7 +361,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-10 | commits 4bd6bac and af1cb88, tier 2 watcher; commit 50a6600, CI on ubuntu | Mac 10 failed (test_interface_contract R-4: the nine pinned case figures and their producing notebook must exist); Linux fast shard the same, slow and docs-paper green | a verdict: the WP7 notebook deletion (the driver's negative-edit call) removed figures the interface contract pins without an amendment; fix forward as contract version 14 retiring R-4's pinned set, routed to the PM; rule added: the contract and its test are in every deletion unit's grep |
 | 2026-11-10 | head e953e2b, the driver's own run of tests/test_interface_contract.py | 90 passed | a verdict on the red: the ten R-4 failures end at 5b01248 (WP24 push 1 carried contract amendment 14 retiring the pinned case figures); the watcher's reds at af1cb88 and 4ed805f are heads before it; the driver's note to the PM that two commits were missing from origin was wrong and withdrawn |
 | 2026-11-10 | commit bd017dc, CI run on ubuntu, three shards (WP24 push 1, the fix-forward, the gap units) | fast FAILED: test_paper register committed output not current, cr18 regenerate-row; slow and docs-paper green | a verdict with two findings: the register's committed output or a regenerated row is stale or platform-moved after push 1; routed to the stream before push 3. The watcher: its worktree is dirtied every run by a test that rewrites examples/adcs/experiments/reports/v1-v2-comparison.md, which blocked Mac verdicts since 06:38; the watcher now resets its worktree before each head (watch_dev2.sh) and the test is routed for a fix |
-| 2026-11-10 | commit 1addf79, tier 2 watcher (hardened), this Mac (after WP24 push 1 and the fix-forward; before push 2) | 2191 passed, 16 skipped, 1 xfailed; all checks | a verdict: green on the Mac, so the two paper register tests red on Linux at bd017dc are platform-sensitive, not stale: the environment-of-record rule applies (the paper unit interrogating); Linux on 1a04bb7 (push 2) in progress |
+| 2026-11-10 | commit 1addf79, tier 2 watcher (hardened), this Mac (after WP24 push 1 and the fix-forward; before push 2) | 2191 passed, 16 skipped, 1 xfailed; all checks | a verdict: green on the Mac; the PM showed the Linux red at bd017dc was a stale committed Appendix A table (the glossary entries landed without recompiling it), fixed by push 2's container run at 27dab4d, an ancestor of this head and not of bd017dc; the driver's "platform-sensitive" reading was wrong; Linux on 1a04bb7 (push 2) in progress |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
