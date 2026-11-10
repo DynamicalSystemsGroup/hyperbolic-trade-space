@@ -1,7 +1,7 @@
 # WP10 Amendment 4, R-36: the vocabulary review (stream P3)
 
 Run on the pinned commit `78f5e1cf984d4589a9232717023f408358c25803` (`git cat-file -t` gives commit). Record of the one full reading of everything a reader can reach,
-under `docs/superpowers/notes/vocabulary-review.md` ("The reading", "Triage"). Nothing was edited: dispositions are recorded, not applied.
+under `docs/superpowers/notes/vocabulary-review.md` ("The reading", "Triage"). Nothing was edited: dispositions are recorded, not applied. The per-item dispositions are superseded by the section "Re-triage by stem (2026-11-09)".
 
 ## How the reading was run
 
@@ -266,16 +266,186 @@ densest paragraphs
 | 53 | docs/api-reference.md | 0.0 |
 | 54 | paper/supporting_material.ipynb :: front matter | 0.0 |
 
-## Item counts by disposition
+## Re-triage by stem (2026-11-09)
 
-| Disposition | Items |
-|---|---|
-| no change | 382 |
-| amend glossary entry | 337 |
-| glossary term | 304 |
-| plain words | 297 |
-| add to avoid | 17 |
-| total | 1337 |
+Stream P3, one pass, the driver's ruling 5 (`PM-BRIEF.md`, "Dispatched rulings"). **Supersedes** the per-item triage of this file: the rule-assigned `**Disposition: ...**` tag on each of the 1337 items below, the section "Item counts by disposition" (382 / 337 / 304 / 297 / 17) and the "Routing table" (items routed to P1 and P6). The readers' verbatim lists (Lists 1, 2, 3a, 3b of every unit) and "To the driver" are kept unchanged; their dispositions are read from this table now, not from the item tags.
+
+What the 1337 are. They are the readers' items, not a tool output: `uv run python scripts/check_vocabulary.py` lists 97 findings at the pinned commit (the 97 rows of `scripts/vocabulary_baseline.toml`, all with the generic reason "found at the first run of the tool"). This pass therefore has two inputs, grouped by stem: (A) the tool's findings, one row per phrase, with the files; (B) the 1337 readers' items, one row per stem or class, with counts, every item in exactly one row (the counts of table B sum to 1337). A stem is the phrase the tool flags, or for the readers' items the term the reader names (List 2: the glossary term named; Lists 1 and 3a: the term concerned; List 3b: sentences, one row). Counts in table A are findings, one per file and phrase (the tool reports each phrase once per file).
+
+Dispositions, one per row. **SYNONYM of X**: the phrase names an object the glossary already names X; the fix is "replace with X" in the files shown, and the phrase is added to X's `avoid` list in `glossary.yaml` so the tool keeps flagging it until the owners fix it. **BASELINE**: stays, with the reason; the tool's rows carry the reason in `scripts/vocabulary_baseline.toml`. **NEW-TERM candidate**: an object with no glossary name; not coined here, listed for the driver. **FIRST-USE**: a glossary term the paper uses before its definition cue (not a synonym; the paper stream defines or cross-references it). Routing: paper stream (`paper/*.ipynb`), docs stream (`docs/`, `README.md`, `site/`, and the docstrings that become the API reference), glossary owner (text of `glossary.yaml` itself), driver, none.
+
+Totals. Table A (the tool's findings): 66 stems; table B (the readers' 1337 items): 69 rows. SYNONYM rows: 21 in A (three are partly baselined by file), 46 in B. BASELINE rows: 35 in A, 14 in B. NEW-TERM candidates: 2 in A, 9 in B (overlapping: "mean gap" is mean slack). FIRST-USE: 6. Excluded (owned by P1): 2.
+
+File names in the tables: `paper` = paper/paper.ipynb, `supp` = paper/supporting_material.ipynb, `ug/` = docs/user-guide/, `src/` = src/hyperbolic_trade_space/, `glossary.yaml` = the glossary itself, other names are pages of `docs/`; a number in brackets is the count of items in that file (table B).
+
+### Table A. The tool's findings by stem
+
+| stem | count | files | disposition | glossary term or reason | routed to |
+|---|---|---|---|---|---|
+| constant rate | 1 | theory.md | SYNONYM | elasticity (replace) | docs stream |
+| exchange rate(s) | 1 | index.md | SYNONYM | elasticity (replace); already an avoid entry | docs stream |
+| varying rate | 1 | ug/limitations.md | SYNONYM | elasticity (replace) | docs stream |
+| maximal gap | 1 | supp | SYNONYM | facet gap (replace) | paper stream |
+| weighted gap | 3 | ug/termination.md, src/solvers.py, src/estimator.py | SYNONYM | facet gap (replace) | docs stream |
+| fitted temperature | 2 | src/tensions.py, ug/tensions.md | SYNONYM | fit temperature (replace) | docs stream |
+| matching temperature | 1 | src/tensions.py | SYNONYM | fit temperature (replace) | docs stream |
+| maximum temperature | 1 | supp | SYNONYM | fit temperature (replace) | paper stream |
+| selected temperature | 2 | paper, supp | SYNONYM | fit temperature (replace) | paper stream |
+| soft maximum temperature | 1 | supp | SYNONYM | fit temperature (replace) | paper stream |
+| working temperature | 8 | ug/tensions.md, paper, supp, getting-started.md, src/tensions.py, +3 | SYNONYM | fit temperature (replace); the glossary entry contending-set (field not) uses it too: the glossary owner amends that text | docs stream + paper stream + glossary owner |
+| fitted posynomial reference surface | 1 | paper | SYNONYM | fitted reference surface (replace) | paper stream |
+| fitted surface | 5 | paper, api.md, supp, glossary.yaml, ug/conditioning.md | SYNONYM | fitted reference surface (replace); the glossary entry facet (short, formal) uses it too: the glossary owner amends that text | docs stream + paper stream + glossary owner |
+| learned surface | 1 | ug/limitations.md | SYNONYM | fitted reference surface (replace) | docs stream |
+| posynomial surface | 1 | paper | SYNONYM | fitted reference surface (replace) | paper stream |
+| reference surface | 2 | paper, supp | SYNONYM | fitted reference surface (replace) | paper stream |
+| sided surface | 1 | supp | SYNONYM | fitted reference surface (replace) | paper stream |
+| explicit radius | 1 | supp | SYNONYM | stable radius (replace) | paper stream |
+| sample envelope | 1 | paper | SYNONYM | supporting envelope (replace) | paper stream |
+| extension temperature | 1 | supp | SYNONYM | term temperature (replace) | paper stream |
+| abstraction gap | 1 | supp | NEW-TERM candidate for the driver | abstraction gap is the object Appendix E registers as G-1.. and the title names; no glossary name | driver |
+| mean gap | 1 | ug/fitting.md | NEW-TERM candidate for the driver | mean slack (attribute mean_slack_, 13 reader items ask for it); the page says mean gap | driver |
+| assignment | 1 | paper | FIRST-USE | a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use | paper stream |
+| fit temperature | 1 | paper | FIRST-USE | a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use | paper stream |
+| improvement factor | 1 | paper | FIRST-USE | a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use | paper stream |
+| level offset | 1 | paper | FIRST-USE | a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use | paper stream |
+| position along the frontier | 1 | paper | FIRST-USE | a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use | paper stream |
+| term temperature | 1 | paper | FIRST-USE | a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use | paper stream |
+| across temperature | 1 | paper | BASELINE | plural of the fit temperature in a figure caption; fit is implied by the sweep | none |
+| assert gap | 1 | supp | BASELINE | assertion text printed in the generated proof table from derivation/ (a code line) | none |
+| convex envelope | 1 | paper | BASELINE | ordinary mathematics: a property of V (log-convex), not one of the three frontier objects | none |
+| different temperature | 1 | supp | BASELINE | plural of the fit temperature in a comparison; fit is implied by the sentence | none |
+| duality gap | 3 | src/solvers.py, paper, supp | BASELINE | standard convex-optimization term (Boyd and Vandenberghe); candidate for the glossary assumed list | none |
+| error rate | 1 | ug/conditioning.md | BASELINE | ordinary English: an example of an attribute | none |
+| finite temperature | 5 | supp, ug/chart.md, ug/fitting.md, src/estimator.py, ug/limitations.md | BASELINE | finite qualifies the fit temperature; the glossary entries themselves use the form | none |
+| float temperature | 1 | src/solvers.py | BASELINE | numpydoc type line "tau : float" in a docstring | none |
+| infinite temperature | 3 | supp, ug/termination.md, ug/limitations.md | BASELINE | infinite qualifies the fit temperature; the glossary entries themselves use the form | none |
+| infinity program | 1 | ug/tensions.md | BASELINE | tokenizer artifact of "tau = infinity program": the linear program at infinite fit temperature (supporting envelope) | none |
+| instance margin | 1 | supp | BASELINE | assertion text printed in the generated proof table (a code line) | none |
+| knn gap | 1 | src/gaps.py | BASELINE | code identifier knn_gap_scores in a docstring | none |
+| level surface | 3 | paper, theory.md, supp | SYNONYM (docs/theory.md) / BASELINE (paper, supp) | fitted reference surface for theory.md ("the level surface is flat" means V = 1); in the paper "level surfaces of V" is the mathematical class of level sets (the hyperbolic gloss), kept | docs stream |
+| lp gap | 1 | supp | BASELINE | duality gap of the linear program; standard convex-optimization vocabulary | none |
+| max gap | 3 | ug/termination.md, src/solvers.py, supp | BASELINE | record field max_gap (code identifier, table column header); the prose name is the facet gap | none |
+| median gap | 1 | ug/termination.md | BASELINE | ordinary word gap inside the definition of the median margin (termination page) | none |
+| median margin | 1 | ug/termination.md | BASELINE | statistic of the assignment margin over rows (record field median_margin), not a second object | none |
+| objective margin | 1 | supp | BASELINE | lemma-script identifier or cell label in a generated table | none |
+| order gap | 2 | src/solvers.py, supp | BASELINE | first-order gap: the definition wording of the facet gap itself | none |
+| parameter temperature | 1 | src/estimator.py | BASELINE | numpydoc Parameters entry of a docstring | none |
+| perturbed margin | 1 | supp | BASELINE | lemma-script identifier printed in the generated proof table (a code line) | none |
+| positive margin | 1 | supp | BASELINE | assertion text printed in the generated proof table: the assignment margin is positive (a code line) | none |
+| power margin | 3 | examples.md, paper, supp | BASELINE | a named attribute of the cubesat case (power_margin_w), a proper name of the case | none |
+| recovery rate | 2 | src/solvers.py, supp | BASELINE | ordinary statistic: the share of planted facets recovered in the experiments | none |
+| regression surface | 1 | supp | BASELINE | the cited sources' regression fits, contrasted with this method's envelope | none |
+| return gap | 1 | src/solvers.py | BASELINE | numpydoc Returns entry of a docstring (a variable name) | none |
+| return temperature | 1 | src/tuning.py | BASELINE | numpydoc Returns entry of a docstring | none |
+| row gap | 2 | paper, supp | BASELINE | ordinary word gap: the per-row score difference whose minimum is the assignment margin (L13) | none |
+| select temperature | 1 | ug/fitting.md | BASELINE | code identifier select_temperature in a runnable example | none |
+| sided envelope | 2 | paper, supp | BASELINE | one-sided envelope: ordinary adjective phrase describing a cited method and this method's boundary, no second object | none |
+| signomial program | 1 | supp | BASELINE | cited sources' term, reported in Appendix G not used | none |
+| smallest gap | 2 | ug/termination.md, src/solvers.py | BASELINE | ordinary word gap inside the definition of the assignment margin | none |
+| summand gap | 1 | supp | BASELINE | lemma-script identifier printed in the generated proof table (a code line) | none |
+| unshifted gap | 1 | supp | BASELINE | proof-step wording: the gap of the unshifted objective, a difference of objective values in L2 | none |
+| wireframe surface | 1 | src/plotting.py | BASELINE | ordinary plotting term in a docstring (the V = 1 wireframe) | none |
+| zero margin | 1 | supp | BASELINE | margin short for the assignment margin inside the termination levels that define it | none |
+| fitted envelope | 1 | supp | EXCLUDED | row owned by P1 (G-18 regeneration); not touched here | paper stream (P1) |
+| loss envelope | 1 | supp | EXCLUDED | row owned by P1 (G-18 regeneration); not touched here | paper stream (P1) |
+
+### Table B. The readers' 1337 items by stem
+
+L2 rows are the items of List 2 grouped by the glossary term the reader named (336 items: 304 "glossary term", 29 "no change" in source reports, 3 "add to avoid"); the phrase to replace is in the quoted sentence of the unit's List 2. L1/3a rows group Lists 1 and 3a (697 items) by the term concerned; L3b is one row.
+
+| stem | count | files | disposition | glossary term or reason | routed to |
+|---|---|---|---|---|---|
+| L2: fit temperature | 25 | supp (11), paper (6), api.md (2), theory.md (2), +3 | SYNONYM of fit temperature | 22 replace the reader-named phrase with the term; 3 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: fitted reference surface | 22 | paper (8), supp (4), examples.md (2), ug/chart.md (2), +5 | SYNONYM of fitted reference surface | 21 replace the reader-named phrase with the term; 1 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: exponent vector | 22 | supp (12), paper (5), theory.md (2), examples.md, +2 | SYNONYM of exponent vector | 20 replace the reader-named phrase with the term; 2 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: supporting envelope | 18 | paper (7), supp (6), ug/tensions.md (2), ug/fitting.md (2), +1 | SYNONYM of supporting envelope | 15 replace the reader-named phrase with the term; 3 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: invariant value | 16 | supp (5), paper (4), ug/overview.md (2), examples.md, +4 | SYNONYM of invariant value | 11 replace the reader-named phrase with the term; 5 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: assignment | 15 | supp (9), ug/fitting.md (3), paper (3) | SYNONYM of assignment | 15 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: log-metrics | 13 | supp (4), paper (3), ug/fitting.md (2), api.md, +3 | SYNONYM of log-metrics | 12 replace the reader-named phrase with the term; 1 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: contending set | 12 | paper (5), supp (4), ug/overview.md, ug/limitations.md, +1 | SYNONYM of contending set | 11 replace the reader-named phrase with the term; 1 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: position along the frontier | 12 | paper (3), supp (2), ug/prediction.md (2), ug/chart.md (2), +3 | SYNONYM of position along the frontier | 12 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: term temperature | 12 | supp (5), paper (4), theory.md, ug/termination.md, +1 | SYNONYM of term temperature | 11 replace the reader-named phrase with the term; 1 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: energy differential | 11 | supp (5), api.md, ug/tensions.md, ug/chart.md, +3 | SYNONYM of energy differential | 10 replace the reader-named phrase with the term; 1 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: termination status | 11 | paper (5), supp (2), api.md, examples.md, +2 | SYNONYM of termination status | 11 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: number of terms | 11 | supp (4), paper (3), further-reading.md, ug/fitting.md, +2 | SYNONYM of number of terms | 10 replace the reader-named phrase with the term; 1 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: chart | 11 | paper (5), ug/chart.md (2), supp (2), ug/prediction.md, +1 | SYNONYM of chart | 8 replace the reader-named phrase with the term; 3 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: number of designs | 11 | paper (7), supp (4) | SYNONYM of number of designs | 11 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | paper stream |
+| L2: Pareto boundary | 9 | supp (4), paper (3), further-reading.md, ug/overview.md | SYNONYM of Pareto boundary | 4 replace the reader-named phrase with the term; 5 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: novelty | 9 | paper (3), ug/prediction.md, theory.md, ug/fitting.md, +3 | SYNONYM of novelty | 9 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: assignment margin | 9 | supp (5), ug/termination.md (3), paper | SYNONYM of assignment margin | 9 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: frontier | 8 | paper (3), site/index.html (2), ug/tensions.md, ug/chart.md, +1 | SYNONYM of fitted reference surface, supporting envelope or Pareto boundary (whichever is meant) | 8 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: facet gap | 7 | supp (6), ug/termination.md | SYNONYM of facet gap | 7 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: support weights | 7 | supp (6), paper | SYNONYM of support weights | 7 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | paper stream |
+| L2: conditioning | 6 | paper (2), api.md, ug/prediction.md, ug/conditioning.md, +1 | SYNONYM of conditioning | 6 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: improvement factor | 5 | supp (3), paper, ug/overview.md | SYNONYM of improvement factor | 4 replace the reader-named phrase with the term; 1 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: n-lemma | 5 | paper (2), ug/tensions.md, ug/overview.md, site/index.html | SYNONYM of n-lemma | 5 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: metrics | 5 | supp (3), getting-started.md, index.md | SYNONYM of metrics | 5 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: white space | 4 | api.md, supp, ug/chart.md, paper | SYNONYM of white space | 4 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: monomial | 4 | supp, README.md, paper, getting-started.md | SYNONYM of monomial | 4 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: numerically zero | 4 | supp (2), ug/tensions.md, ug/fitting.md | SYNONYM of numerically zero | 4 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: conditioning of the exponents | 4 | supp (2), ug/termination.md, ug/limitations.md | SYNONYM of conditioning of the exponents | 4 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: configuration | 4 | supp (2), paper, api-reference.md | SYNONYM of configuration | 4 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: elasticity | 3 | api.md, ug/tensions.md, ug/limitations.md | SYNONYM of elasticity | 3 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream |
+| L2: geometric program | 3 | paper, ug/fitting.md, supp | SYNONYM of geometric program | 2 replace the reader-named phrase with the term; 1 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: facet | 3 | theory.md, paper, supp | SYNONYM of facet | 3 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: stable radius | 3 | supp (3) | SYNONYM of stable radius | 3 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | paper stream |
+| L2: generalized posynomial | 2 | further-reading.md, supp | SYNONYM of generalized posynomial | 0 replace the reader-named phrase with the term; 2 sit in sentences that report a source or are already avoided | docs stream + paper stream |
+| L2: posynomial | 2 | paper, supp | SYNONYM of posynomial | 2 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | paper stream |
+| L2: participation threshold | 2 | ug/tensions.md, api-reference.md | SYNONYM of participation threshold | 2 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream |
+| L2: (no term named) | 2 | README.md, ug/fitting.md | BASELINE | reader found no term that would serve | docs stream |
+| L2: generalized geometric program | 1 | further-reading.md | SYNONYM of generalized geometric program | 0 replace the reader-named phrase with the term; 1 sit in sentences that report a source or are already avoided | docs stream |
+| L2: number of metrics | 1 | README.md | SYNONYM of number of metrics | 1 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | docs stream |
+| L2: level offset | 1 | paper | SYNONYM of level offset | 1 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | paper stream |
+| L2: attributes | 1 | paper | SYNONYM of attributes | 1 replace the reader-named phrase with the term; 0 sit in sentences that report a source or are already avoided | paper stream |
+| L1/3a: working / selected / soft-maximum temperature | 11 | paper (4), supp (2), getting-started.md (2), ug/limitations.md (2), +1 | SYNONYM of fit temperature | the unit uses a second name; replace it (the sentences are in the unit lists) | docs stream + paper stream |
+| L1/3a: sharp / soft weights, hard-support, exact-maximum fit | 10 | paper (5), supp (2), ug/tensions.md, theory.md, +1 | SYNONYM of supporting envelope or term temperature (finite/infinite) | the unit uses a second name; replace it (the sentences are in the unit lists) | docs stream + paper stream |
+| L1/3a: fitted / posynomial / bare surface | 15 | paper (5), supp (2), ug/prediction.md (2), ug/conditioning.md (2), +4 | SYNONYM of fitted reference surface | the unit uses a second name; replace it (the sentences are in the unit lists) | docs stream + paper stream |
+| L1/3a: exchange rate | 1 | ug/overview.md | SYNONYM of elasticity | the unit uses a second name; replace it (the sentences are in the unit lists) | docs stream |
+| L1/3a: extension temperature | 2 | supp (2) | SYNONYM of term temperature | the unit uses a second name; replace it (the sentences are in the unit lists) | paper stream |
+| L1/3a: mean slack | 25 | supp (15), paper (5), ug/termination.md (2), api.md, +2 | NEW-TERM candidate | the fit objective compared across numbers of terms (attribute mean_slack_); no glossary name, "slack of what" unsaid | driver |
+| L1/3a: tension | 21 | paper (8), site/index.html (3), examples.md (2), ug/overview.md (2), +6 | NEW-TERM candidate | the package reports tensions (tension_report, contending set plus elasticities); the word is used as a noun with no entry | driver |
+| L1/3a: refit / alternation | 17 | supp (11), paper (5), theory.md | BASELINE (method wording, ordinary) | the K-term fitting loop (assign, refit); method wording, used as such throughout | none |
+| L1/3a: planted frontier / facets | 16 | paper (5), supp (4), api.md (2), examples.md (2), +2 | BASELINE (experiment wording) | synthetic data with a known frontier (make_frontier_data); a code and experiment term | none |
+| L1/3a: near-frontier (designs, band) | 13 | paper (9), supp (2), examples.md, ug/tensions.md | NEW-TERM candidate | designs within the band of the fitted reference surface; the glossary uses the phrase inside other entries only | driver |
+| L1/3a: cell | 9 | supp (7), ug/tensions.md, paper | NEW-TERM candidate (ruled: cell vs facet in Theorem 11) | the set of rows assigned to a facet (driver ruling 2: say "cell" for a set of rows, "facet" for a piece of the surface) | driver |
+| L1/3a: pull-back | 9 | paper (3), supp (3), site/index.html (2), ug/conditioning.md | NEW-TERM candidate | the inverse of the chart into attribute units; the chart entry says reversible | driver |
+| L1/3a: band 1/tau | 9 | supp (5), paper (3), getting-started.md | NEW-TERM candidate | the band \|log V\| < 1/tau around V = 1; named in the glossary entry fit temperature but has no entry | driver |
+| L1/3a: soft fit | 6 | paper (3), supp (2), api.md | NEW-TERM candidate | the several-term fit at finite term temperature; used as a name on 9 units, glossary says only "finite term temperature" | driver |
+| L1/3a: effective sample size | 6 | paper (2), ug/termination.md, ug/fitting.md, ug/limitations.md, +1 | NEW-TERM candidate | N_eff of the support weights (n_eff_); defined in the support weights entry text only | driver |
+| L1/3a: facet score | 5 | supp (3), paper, ug/termination.md | BASELINE (defined in L13 text) | the score theta_k.u - beta_k of a design on a facet; used in the margin definitions | none |
+| L1/3a: balanced point | 3 | paper, supp, ug/limitations.md | BASELINE (one section) | the Pareto point with equal weights in the tension direction; one section | none |
+| L1/3a: certificate | 3 | paper (2), supp | NEW-TERM candidate | the termination record's certified / stationary outcomes; the glossary has termination status, not the certificate | driver |
+| L1/3a: frontier row / frontier design | 1 | supp | BASELINE (falls under the frontier row of the L2 table) | a row on or near the frontier; frontier alone is already the glossary's ambiguous everyday word | none |
+| L1/3a: cited-source vocabulary | 51 | supp (32), paper (11), further-reading.md (8) | BASELINE | terms of the sources a prior-art or Appendix G sentence reports (DEA, CoDa, Malmquist, Cobb-Douglas, kernel PCA); reported, not used | none |
+| L1/3a: code identifiers | 77 | supp (39), paper (9), ug/termination.md (5), ug/prediction.md (4), +12 | BASELINE | identifiers and attributes that the API reference documents (min_curvature, orient_by_pca, n_eff_, ...); code, not prose | none |
+| L1/3a: symbols and proof labels | 128 | supp (78), paper (36), README.md (4), ug/chart.md (3), +6 | BASELINE | math symbols (tau, kappa, u, V, Z, gamma) and lemma, axiom, ledger and step labels (L12, A5, F12, R2); the glossary symbol field and Appendix A tie the symbols, the appendices define the labels | none |
+| L1/3a: standard vocabulary | 60 | paper (29), supp (10), ug/fitting.md (5), theory.md (3), +8 | BASELINE | standard at the assumed reader level or in scikit-learn (kernel, Hessian, KKT, simplex, softmax, Pareto, regressor, seed); candidates for the glossary assumed list are named in the notes below | none |
+| L1/3a: case-study domain words | 30 | paper (13), supp (13), examples.md (2), README.md, +1 | BASELINE | cubesat, ADCS and flight-dynamics words of the worked case (Appendix C, D, docs/examples.md); proper nouns of the case | none |
+| L1: single-use undefined phrase | 76 | paper (23), supp (22), ug/fitting.md (5), ug/limitations.md (5), +10 | BASELINE | one-off phrases and undefined short words (sliver, net sum, the table, conservative); each stays in its unit's List 1 for the owner's own reading, no recurring stem | none |
+| L3a: single-use plain-word suggestion | 93 | paper (25), supp (21), ug/fitting.md (8), ug/tensions.md (7), +11 | BASELINE | one-off jargon with a reader's plain-word suggestion; no glossary conflict, each stays in its unit's List 3a for the owner's own reading | none |
+| L3b: three or more terms in one sentence | 304 | supp (116), paper (94), ug/chart.md (10), ug/fitting.md (9), +14 | BASELINE | density is a property of a sentence, not of a stem; definitions, statements and proof steps where the terms are the content; the introductory-page cases stay in the unit lists | none |
+
+### Notes to the table
+
+**Synonym stems, by owner** (target term in brackets; the sentence is in the unit named by the file).
+- Docs stream: `exchange rate(s)` docs/index.md, `constant rate` docs/theory.md, `varying rate` docs/user-guide/limitations.md [elasticity]; `fitted surface` docs/api.md and docs/user-guide/conditioning.md, `learned surface` docs/user-guide/limitations.md, `level surface` docs/theory.md [fitted reference surface]; `working temperature` getting-started, theory, limitations, tensions pages, `fitted temperature` docs/user-guide/tensions.md [fit temperature]; `weighted gap` docs/user-guide/termination.md [facet gap]. Docstrings in `src/` (same stream): `working temperature`, `fitted temperature`, `matching temperature` in tensions.py [fit temperature], `weighted gap` in estimator.py and solvers.py [facet gap].
+- Paper stream: `fitted posynomial reference surface` (the abstract), `posynomial surface`, `fitted surface` (Open questions Q4), `reference surface`, `sided surface` [fitted reference surface]; `sample envelope` ("the sample's envelope", Q4) [supporting envelope]; `selected temperature`, `working temperature`, `soft maximum temperature`, `maximum temperature` [fit temperature]; `extension temperature` [term temperature]; `explicit radius` (a lemma title of L13) [stable radius]; `maximal gap` [facet gap]. Several of these sit in generated Appendix text (the lemma titles and axiom wording come from `derivation/`), so the fix is at the source script.
+- Glossary owner: the glossary's own wording uses two of the synonyms, so the tool flags `glossary.yaml` itself and the Appendix A and Glossary page built from it: `fitted surface` in the entries `facet` (short, formal) and `support-weights` (short), `working temperature` in `contending-set` (field `not`). Changing an entry's wording is a definition change and not done here.
+- The abstract and Theorem 11 are under driver rulings 1 and 2 (`PM-BRIEF.md`); the abstract's `fitted posynomial reference surface` row is for the same paper-stream edit.
+
+**New-term candidates for the driver** (not coined). Items are across Lists 1 and 3a; units in brackets.
+1. mean slack: the fit objective compared across numbers of terms (`mean_slack_`), "slack of what" unsaid; 25 items, 13 units; the tool's `mean gap` (docs/user-guide/fitting.md) is the same object.
+2. tension: reported by `tension_report` (contending set with elasticities) and used as a noun; 21 items, 12 units.
+3. band: the region |log V| < 1/tau around V = 1, named only inside the fit temperature entry; 9 items, with near-frontier design (13 items) as its member.
+4. soft fit: the several-term fit at finite term temperature, used as a name on 9 units; 6 items.
+5. certificate: the outcome record of the soft-fit second-order test; 3 items, 9 units mention it.
+6. effective sample size (`n_eff_`): of the support weights; 6 items.
+7. pull-back: the inverse of the chart into attribute units; 9 items.
+8. cell: a set of rows assigned to one facet (driver ruling 2); 9 items.
+9. abstraction gap: the object Appendix E registers as G-1 and following, and its title names; one tool finding.
+Candidates for the glossary `assumed` list rather than `entries`: duality gap (Boyd and Vandenberghe; three tool findings).
+
+**Tool state.** After the alias and avoid edits the tool lists every finding of table A and no other; each is a baseline row with the disposition in its reason, so `tests/test_vocabulary.py` stays green on `dev` for the other streams. Fixing a phrase at its owner makes its row stale, which the tool reports ("stale baseline rows"), and the owner removes it.
 
 # The readings and dispositions
 
@@ -2758,170 +2928,9 @@ none
 none
 
 
-## Routing table
+## Routing table (superseded)
 
-| Routed to | Unit | Item (opening words) | Disposition recorded |
-|---|---|---|---|
-| P6 | 1. docs/api.md | "`hyperbolic_trade_space.solvers`: the multi-term solver, the `Termination` record and the certificate functio... | amend glossary entry |
-| P6 | 1. docs/api.md | "with `min_curvature` for a soft fit" Glossary: fit temperature (finite); conditioning of the exponents (curva... | glossary term |
-| P6 | 1. docs/api.md | "`hyperbolic_trade_space.solvers`: the multi-term solver, the `Termination` record and the certificate functio... | no change |
-| P1 | 4. paper/paper.ipynb :: Definitions | "The reach $\beta_k$ is the support value of the data in direction $w_k$." Terms: reach, support value. Neithe... | no change |
-| P1 | 4. paper/paper.ipynb :: Definitions | "The facet share is the fraction of near-frontier designs that facet $k$ dominates; it shows which facets carr... | amend glossary entry |
-| P1 | 4. paper/paper.ipynb :: Definitions | "Working-temperature exponents grade the members, and a member can carry a small one." Terms: working-temperat... | amend glossary entry |
-| P1 | 4. paper/paper.ipynb :: Definitions | "The contending set of facet $k$ is the support (exponents above $10^{-9}$) of the exact-maximum ($\tau=\infty... | amend glossary entry |
-| P1 | 4. paper/paper.ipynb :: Definitions | "The near-frontier band is $/\log V/<1/\tau$: in the soft maximum a design inside it weighs within a factor $e... | amend glossary entry |
-| P1 | 4. paper/paper.ipynb :: Definitions | "designs of equal $V$ stand at the same level" Terms: level. Used as a noun throughout ("levels", "level relat... | amend glossary entry |
-| P1 | 4. paper/paper.ipynb :: Definitions | "and $\log V$, the energy differential, is a design's level relative to the reference surface $V=1$: negative ... | glossary term |
-| P1 | 4. paper/paper.ipynb :: Definitions | "The contending set of facet $k$ is the support (exponents above $10^{-9}$) of the exact-maximum ($\tau=\infty... | glossary term |
-| P1 | 4. paper/paper.ipynb :: Definitions | "The reach $\beta_k$ is the support value of the data in direction $w_k$." Glossary: "supporting envelope" (a ... | glossary term |
-| P1 | 4. paper/paper.ipynb :: Definitions | "Where several trade-offs are active at once, the model is a sum of such terms, one per facet." Glossary: "pos... | glossary term |
-| P1 | 4. paper/paper.ipynb :: Definitions | "On facet $k$ the tangent space $\{v:w_k\cdot v=0\}$ trades contending metrics at constant $V$; the normal $w_... | glossary term |
-| P1 | 4. paper/paper.ipynb :: Definitions | "$Z=Bu$, with $BB^\top=I$ and $B\mathbf 1=0$, is the position along the frontier, free of overall scale." Glos... | glossary term |
-| P1 | 4. paper/paper.ipynb :: Definitions | "contending set" / "contending metrics": plain words "the metrics that matter on this facet".... | plain words |
-| P1 | 4. paper/paper.ipynb :: Definitions | "support (exponents above $10^{-9}$)": plain words "the metrics with positive weight".... | plain words |
-| P1 | 4. paper/paper.ipynb :: Definitions | "reach": plain words "how far the data extends in that direction".... | plain words |
-| P1 | 4. paper/paper.ipynb :: Definitions | "ascent direction" / "steepest ascent": plain words "uphill direction".... | plain words |
-| P1 | 4. paper/paper.ipynb :: Definitions | "near-frontier band": plain words "the designs close to the surface".... | plain words |
-| P1 | 4. paper/paper.ipynb :: Definitions | "grade the members": plain words "rank the members by weight".... | plain words |
-| P1 | 4. paper/paper.ipynb :: Definitions | "The contending set of facet $k$ is the support (exponents above $10^{-9}$) of the exact-maximum ($\tau=\infty... | no change |
-| P1 | 4. paper/paper.ipynb :: Definitions | "$V_K(m)=\big(\sum_{k=1}^{K}c_k\prod_j m_j^{\kappa w_{kj}}\big)^{1/\kappa}$ with $w_k\in\Delta$ and $c_k=e^{-\... | no change |
-| P1 | 4. paper/paper.ipynb :: Definitions | "The facet share is the fraction of near-frontier designs that facet $k$ dominates; it shows which facets carr... | no change |
-| P1 | 4. paper/paper.ipynb :: Definitions | "The near-frontier band is $/\log V/<1/\tau$: in the soft maximum a design inside it weighs within a factor $e... | no change |
-| P1 | 4. paper/paper.ipynb :: Definitions | "The chart separates where a design sits along the surface from its energy differential, how far it is from th... | no change |
-| P1 | 4. paper/paper.ipynb :: Definitions | "On facet $k$ the tangent space $\{v:w_k\cdot v=0\}$ trades contending metrics at constant $V$; the normal $w_... | no change |
-| P6 | 6. docs/examples.md | "The tension report finds a contending set of six metrics (total mass, slew time, energy balance, control effo... | amend glossary entry |
-| P6 | 6. docs/examples.md | "The mean slack falls from 0.204 at one term to 0.117 at three, and the status is `certified`." Term: mean sla... | amend glossary entry |
-| P6 | 6. docs/examples.md | "The largest facet holds 78 percent of the near-frontier share and is the only one containing total mass and p... | amend glossary entry |
-| P6 | 6. docs/examples.md | "This block fits a planted table and draws it with lines of equal V:" Term: planted table. Not defined; make_f... | amend glossary entry |
-| P6 | 6. docs/examples.md | "The same steps apply to any table of designs: condition, `select_temperature`, fit, then read the [tension re... | amend glossary entry |
-| P6 | 6. docs/examples.md | "With the temperature selected for a tenth of the designs above V = 1:" Glossary term: fit temperature.... | glossary term |
-| P6 | 6. docs/examples.md | "V also depends on the total, so a marker is not where V = 1." Glossary terms: invariant value (for V) and fit... | glossary term |
-| P6 | 6. docs/examples.md | "The same steps apply to any table of designs: condition, `select_temperature`, fit, then read the [tension re... | glossary term |
-| P6 | 6. docs/examples.md | "Figure 7. The 706 feasible designs by their first two position coordinates; the ringed designs lie nearest th... | glossary term |
-| P6 | 6. docs/examples.md | "The largest facet holds 78 percent of the near-frontier share and is the only one containing total mass and p... | glossary term |
-| P6 | 6. docs/examples.md | "Exponents add over groups exactly: a facet's weight on a subsystem is a sum." Glossary term: exponent vector ... | glossary term |
-| P6 | 6. docs/examples.md | "The aggressive-gains table has 706 feasible designs. With the temperature selected..." / "Ten attributes are ... | plain words |
-| P6 | 6. docs/examples.md | "This block fits a planted table and draws it with lines of equal V:" : "planted" would be served by "syntheti... | plain words |
-| P6 | 6. docs/examples.md | "...and can be cherry-picked; the triangle is for reading, not for measuring distance;" : "cherry-picked" woul... | plain words |
-| P6 | 6. docs/examples.md | "The tension report finds a contending set of six metrics" : "contending set" would be served by "the metrics ... | plain words |
-| P6 | 6. docs/examples.md | "A numbered marker is a facet's exponent vector, where that facet's V is largest for a fixed total." (facet, e... | no change |
-| P6 | 6. docs/examples.md | "The mean slack falls from 0.204 at one term to 0.117 at three, and the status is `certified`." (slack, term, ... | no change |
-| P6 | 6. docs/examples.md | "The largest facet holds 78 percent of the near-frontier share and is the only one containing total mass and p... | no change |
-| P6 | 6. docs/examples.md | "The tension report finds a contending set of six metrics (total mass, slew time, energy balance, control effo... | no change |
-| P6 | 6. docs/examples.md | "A region is where one facet dominates, named by the metrics that trade there: an analysis of the fit, not a l... | no change |
-| P1 | 7. paper/paper.ipynb :: Methods | "The fit asks for the positive combination of log-metrics along which the data have the smallest upper extent,... | glossary term |
-| P1 | 7. paper/paper.ipynb :: Methods | "(ii) ... fitting at a finite $\kappa$ is the soft fit of {numref}`Section %s <sect-results>`, which does chan... | glossary term |
-| P1 | 7. paper/paper.ipynb :: Methods | "entropic soft maximum": "smooth maximum". The paper's own definition (log-mean-exp) follows at once.... | plain words |
-| P6 | 10. docs/user-guide/chart.md | "For a multi-term fit, log V is the soft maximum over facets, and `improvement_factors` uses each row's active... | amend glossary entry |
-| P6 | 10. docs/user-guide/chart.md | "For a multi-term fit, log V is the soft maximum over facets, and `improvement_factors` uses each row's active... | no change |
-| P6 | 11. docs/theory.md | "using the log-mean-exp (entropic) soft maximum of $w\cdot u$ over the designs." Term: soft maximum. Plain wor... | plain words |
-| P6 | 11. docs/theory.md | "The fit chooses $w$ and an offset $\beta$ so that the data lie on or below the surface $\log V=w\cdot u-\beta... | no change |
-| P6 | 13. docs/user-guide/termination.md | "`not_applicable`: one term, `facet_step="tangent"`, a `penalty`, one metric, fewer designs than facets, or a ... | amend glossary entry |
-| P6 | 13. docs/user-guide/termination.md | "`min_curvature`: soft fit only, the smallest curvature on the active face; `nan` otherwise." Term: conditioni... | glossary term |
-| P6 | 13. docs/user-guide/termination.md | "A soft fit (finite `term_temperature`) has no assignment, so no margin:" Term: term temperature. "Soft fit" i... | glossary term |
-| P6 | 13. docs/user-guide/termination.md | "`not_applicable`: one term, `facet_step="tangent"`, a `penalty`, one metric, fewer designs than facets, or a ... | no change |
-| P6 | 13. docs/user-guide/termination.md | "`min_curvature`: soft fit only, the smallest curvature on the active face; `nan` otherwise." Terms: soft fit,... | no change |
-| P6 | 14. docs/user-guide/fitting.md | "`objective_` and `mean_slack_`: `objective_` is what the solver minimized, the soft maximum at one term and t... | amend glossary entry |
-| P6 | 14. docs/user-guide/fitting.md | "`objective_` and `mean_slack_`: `objective_` is what the solver minimized, the soft maximum at one term and t... | no change |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "The invariant value scales with the metrics (L1), and shifting every log-metric by a constant moves the offse... | amend glossary entry |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "**Derived.** *Hypotheses.* A1, A2, A3; $w\in\Delta$." Terms: A3, Delta. A3 is never stated (A1 and A2 are glo... | amend glossary entry |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "**Derived.** *Hypotheses.* A2; R1 for the facet-normal reading; $w$ minimizes $J_\tau$ on $\Delta$." Terms: R... | amend glossary entry |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "Balanced hard-support geometry does not imply an interior minimizer at finite $\tau$." Terms: "balanced hard-... | amend glossary entry |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "$\nabla J_\tau=U^\top p$, $p=\mathrm{softmax}(\tau Uw)$. With $g=\nabla J_\tau(w)$, $\lambda=w\cdot g$: $g_j\... | no change |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "**Derived.** *Hypotheses.* A3; F5 (the maximum is attained)." Terms: F5, N, s_i. The labels are not defined, ... | amend glossary entry |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "**Derived.** *Hypotheses.* A2, A3, A5, I5 (moment generating functions multiply); a population identity, with... | amend glossary entry |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "**Derived.** *Hypotheses.* A7; I6 ($QQ^\top=I$ implies $Q^\top Q=I$)." Terms: A7, Z, B, Q. The Helmert-type m... | amend glossary entry |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "**Derived.** *Hypotheses.* A2, A4: $\log m_j=\alpha_j\log(a_j+s_j)+b_j$, $\alpha_j\neq0$." Terms: s_j, alpha_... | amend glossary entry |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "**Derived.** *Hypotheses.* A1, A6; F10 (the maximum is attained) for the limit." Terms: A6, F10. Undefined la... | amend glossary entry |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "$\Phi_K(u+c\mathbf 1)=\Phi_K(u)+c$; $\Phi_1=w_1\cdot u-\beta_1$; $\max_kx_k\le\Phi_K\le\max_kx_k+(\log K)/\ka... | amend glossary entry |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "A maximizer of $V$ is weakly efficient in all $d$ metrics, and efficient when every $w_j>0$; at $K>1$, $\kapp... | amend glossary entry |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "For $u'=u+\delta$, $\delta\ge0$, the gain $\sum_jw_j\delta_j$ is a sum of nonnegative terms; take the contrap... | no change |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "Simplex exponents turn the shift into $c$ in every term; the bounds are the squeeze of {prf:ref}`thm-lme`; ea... | amend glossary entry |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "**Derived.** *Hypotheses.* A1, A2; $w_j\neq0$; the frontier is the hyperplane $\{w\cdot u=\beta\}$." Term: fa... | glossary term |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "Improving metric $j$ alone by $V^{-1/w_j}$, or every metric by $1/V$, reaches $V=1$." Term: improvement facto... | glossary term |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "$Z(u+c\mathbf 1)=Z(u)$ and $u=B^\top Z+\frac1d(\mathbf 1^\top u)\mathbf 1$: the map between $u$ and (position... | glossary term |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "A maximizer of $V$ is weakly efficient in all $d$ metrics, and efficient when every $w_j>0$; at $K>1$, $\kapp... | glossary term |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "With several terms, $V_K$ is the $1/\kappa$ power of a posynomial and its logarithm lies within $(\log K)/\ka... | add to avoid |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "$\frac{d^2}{dt^2}J_\tau(w+tv)/_0=\tau\mathrm{Var}_p(v\cdot u)\ge0$: $J_\tau$ is convex, not claimed strictly.... | glossary term |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "Two results say what the fitted numbers mean: the soft maximum of Gaussian noise has a closed form (L6), and ... | glossary term |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "$J_\tau(w;U+c\mathbf 1^\top)=J_\tau(w;U)+c$: $\beta$ moves by $c$ and $w^*$ is unchanged." together with "the... | plain words |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "That only the log-convex part of a front is reached by some $w$ is our statement, not a cited one.": "log-con... | plain words |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "**Derived.** *Hypotheses.* A2, A3, A5, I5 (moment generating functions multiply); a population identity, with... | plain words |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "$Z(u+c\mathbf 1)=Z(u)$ and $u=B^\top Z+\frac1d(\mathbf 1^\top u)\mathbf 1$: the map between $u$ and (position... | plain words |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "The chart is a reversible rewriting of the log-metrics (L8), and under log-affine conditioning the pull-back ... | plain words |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "Balanced hard-support geometry does not imply an interior minimizer at finite $\tau$.": "balanced hard-suppor... | plain words |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "The one-facet fit has simplex optimality conditions (L3), is convex (L4), and uses the log-mean-exp, which di... | no change |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "Two results say what the fitted numbers mean: the soft maximum of Gaussian noise has a closed form (L6), and ... | no change |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "The chart is a reversible rewriting of the log-metrics (L8), and under log-affine conditioning the pull-back ... | no change |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "With several terms, $V_K$ is the $1/\kappa$ power of a posynomial and its logarithm lies within $(\log K)/\ka... | no change |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "A maximizer of $V$ is weakly efficient in all $d$ metrics, and efficient when every $w_j>0$; at $K>1$, $\kapp... | no change |
-| P1 | 16. paper/paper.ipynb :: The fit and its geometry | "Simplex exponents turn the shift into $c$ in every term; the bounds are the squeeze of {prf:ref}`thm-lme`; ea... | no change |
-| P6 | 23. docs/user-guide/limitations.md | "A very high tau rests the fit on a few extreme designs; below tau of about 3 the soft maximum approaches the ... | no change |
-| P1 | 24. paper/paper.ipynb :: The decision problem | "The several-facet fit, not convex in the terms, has three levels of guarantee and a stopping declaration ({pr... | no change |
-| P1 | 24. paper/paper.ipynb :: The decision problem | "The several-facet fit, not convex in the terms, has three levels of guarantee and a stopping declaration ({pr... | glossary term |
-| P1 | 24. paper/paper.ipynb :: The decision problem | "The several-facet fit, not convex in the terms, has three levels of guarantee and a stopping declaration ({pr... | plain words |
-| P1 | 24. paper/paper.ipynb :: The decision problem | "The several-facet fit, not convex in the terms, has three levels of guarantee and a stopping declaration ({pr... | plain words |
-| P1 | 25. paper/paper.ipynb :: Results | "The one-facet fit comes first: the invariant value and its shift (L1, L2), the fit as a convex program (L3 to... | no change |
-| P1 | 25. paper/paper.ipynb :: Results | "The several-facet fit is not convex; it has three levels of guarantee (L16, L15, L12 to L14) and, for a soft ... | no change |
-| P1 | 25. paper/paper.ipynb :: Results | "The sentences between the boxes say what the next result is for." Term: "boxes". Nothing in the unit says wha... | amend glossary entry |
-| P1 | 25. paper/paper.ipynb :: Results | "Whether the hypotheses suit a table is a human judgment ({numref}`Section %s <sect-discussion>`)." Terms: "hy... | amend glossary entry |
-| P1 | 25. paper/paper.ipynb :: Results | "The one-facet fit comes first: the invariant value and its shift (L1, L2), the fit as a convex program (L3 to... | glossary term |
-| P1 | 25. paper/paper.ipynb :: Results | "The several-facet fit is not convex; it has three levels of guarantee (L16, L15, L12 to L14) and, for a soft ... | glossary term |
-| P1 | 25. paper/paper.ipynb :: Results | "Whether the hypotheses suit a table is a human judgment ({numref}`Section %s <sect-discussion>`)." Term: "hyp... | plain words |
-| P1 | 25. paper/paper.ipynb :: Results | "The one-facet fit comes first: the invariant value and its shift (L1, L2), the fit as a convex program (L3 to... | no change |
-| P1 | 25. paper/paper.ipynb :: Results | "The several-facet fit is not convex; it has three levels of guarantee (L16, L15, L12 to L14) and, for a soft ... | no change |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "Every facet is fitted against every design: the model is $\Phi_K$ ({prf:ref}`thm-extension`), each offset $\b... | amend glossary entry |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "With weights $\alpha_{ik}=\mathrm{softmax}_k(\kappa\,s_{ik})$ from the current model: (i) a convex program sy... | add to avoid |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "**Derived.** *Hypotheses.* A1, A2, A3, A6; I14 (Jensen); I15 (generalized posynomial)." Terms: A1-A8, F12, R2... | add to avoid |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "Refitting a facet on its own rows is ill-posed (observed on planted data, {ref}`Appendix D.13 <sub-d-13>`)." ... | amend glossary entry |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "**Derived.** *Hypotheses.* A8 (a partition into nonempty cells); F12 (the minimum is attained); step B, unpen... | amend glossary entry |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "**Derived.** *Hypotheses.* R2 ($\gamma>0$); F12; I9 (Cauchy-Schwarz)." Term: gamma. The Glossary defines the ... | amend glossary entry |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "On the assignment-stable neighbourhood, with offsets $\beta'_k=J_\tau(Uw'_k)$, $F(W')-F(W)=\sum_k\frac{n_k}{N... | amend glossary entry |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "Soft-fit certificate: at a feasible point of the soft-weight fit where the first-order (KKT) conditions hold,... | no change |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "At K = 3 the margin is 0.00022 to 0.0019 and the stable radius 1.8e-05 to 0.00016, against a band 1/tau of 0.... | amend glossary entry |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "On the primary regime the solver declares the status certified at K = 2 and 3, with the largest facet gap bel... | amend glossary entry |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "The sharp weights give one label per design, $k(i)=\arg\max_ks_{ik}$, $s_{ik}=w_k\cdot u_i-\beta_k$; with $n_... | glossary term |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "Which facet dominates a design is analysis of the fitted model, not part of the fit (steps: {ref}`Appendix B.... | glossary term |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "The package fits with sharp weights at the default term temperature (infinity) and with soft weights at a fin... | glossary term |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "The sharp-weight fit meets three levels of guarantee, none global: descent (L15), numerical stationarity by t... | glossary term |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "**The stopping declaration.** Each returned fit carries the levels it meets ({ref}`Appendix D.8 <sub-d-8>`)."... | glossary term |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "On the primary regime the solver declares the status certified at K = 2 and 3, with the largest facet gap bel... | glossary term |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "Reassignment gives each row the least of its slacks; the refit minimizes a convex $f_k$ of which the previous... | glossary term |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "At K = 3 the margin is 0.00022 to 0.0019 and the stable radius 1.8e-05 to 0.00016, against a band 1/tau of 0.... | glossary term |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "each offset $\beta_k=J_\tau(Uw_k)$ is the support over all rows" Term: supporting envelope. "Support over all... | glossary term |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "Refitting a facet on its own rows is ill-posed (observed on planted data, {ref}`Appendix D.13 <sub-d-13>`)." ... | plain words |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "Cyclic shifts of the terms and Jensen's inequality give (i) and (ii); (iii) is a product of powers of posynom... | plain words |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "On the primary regime the solver declares the status certified at K = 2 and 3, with the largest facet gap bel... | plain words |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "At K = 3 the margin is 0.00022 to 0.0019 and the stable radius 1.8e-05 to 0.00016, against a band 1/tau of 0.... | plain words |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "One accepted iteration does not raise the mean slack $F$: reassigning each row to its maximizing facet lowers... | plain words |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "Soft-fit certificate: at a feasible point of the soft-weight fit where the first-order (KKT) conditions hold,... | plain words |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "The package fits with sharp weights at the default term temperature (infinity) and with soft weights at a fin... | no change |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "The sharp-weight fit meets three levels of guarantee, none global: descent (L15), numerical stationarity by t... | no change |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "At K = 3 the margin is 0.00022 to 0.0019 and the stable radius 1.8e-05 to 0.00016, against a band 1/tau of 0.... | no change |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "Soft-fit certificate: at a feasible point of the soft-weight fit where the first-order (KKT) conditions hold,... | no change |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "If every facet score changes by at most $\delta$ with $2\delta<\gamma$, each row's maximizing facet is unchan... | no change |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "With $g=\nabla f_k(w)$, the facet gap is $G_k(w)=g\cdot w-\min_jg_j=\sum_jw_j(g_j-\min_lg_l)\ge0$, and $0\le ... | no change |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "For a soft fit, certified means that the second-order test holds ({prf:ref}`thm-certificate`), and stationary... | no change |
-| P1 | 28. paper/paper.ipynb :: The algorithm for several facets | "**Derived.** *Hypotheses.* A8 (a partition into nonempty cells); F12 (the minimum is attained); step B, unpen... | no change |
-| P1 | 30. paper/paper.ipynb :: Prior art, by family | "Our boundary is a soft maximum with a temperature, a band and an effective sample size, not a boundary set by... | no change |
-| P1 | 30. paper/paper.ipynb :: Prior art, by family | "Our boundary is a soft maximum with a temperature, a band and an effective sample size, not a boundary set by... | no change |
-| P1 | 30. paper/paper.ipynb :: Prior art, by family | "Our boundary is a soft maximum with a temperature, a band and an effective sample size, not a boundary set by... | no change |
-| P1 | 30. paper/paper.ipynb :: Prior art, by family | "The model class and refit scheme come from geometric programming and max-affine fitting [@boyd2007tutorial; @... | no change |
-| P1 | 30. paper/paper.ipynb :: Prior art, by family | Table cell "A smooth soft maximum over a simplex-constrained geometric mean". Terms: soft maximum, simplex, ge... | no change |
-| P1 | 32. paper/paper.ipynb :: Search of the design space (preliminary) | "Outward monotonicity is stated for the exact maximum and not for the soft one; neither has a lemma here." Ter... | no change |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Q3: identifiability of the active metrics under finite, biased observations." Terms: active metrics, identifi... | amend glossary entry |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Four questions are not established ({ref}`Appendix E <appendix-e>` records them as gaps G-14, G-11, G-12 and ... | amend glossary entry |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Q1: global convergence of the alternation, not pursued." Terms: the alternation. The Glossary does not define... | amend glossary entry |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Q2: statistical consistency under noise and refitting." Terms: refitting. The Glossary has no entry for it. I... | amend glossary entry |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Q4: conditions under which the fitted surface recovers the Pareto boundary and not the sample's envelope." Te... | glossary term |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Q3: identifiability of the active metrics under finite, biased observations." Term: contending set. "Active m... | glossary term |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Q3: identifiability of the active metrics under finite, biased observations." Terms: number of designs, fit t... | glossary term |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Q1: global convergence of the alternation, not pursued." Plain words: "whether the back-and-forth fitting ste... | plain words |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Q2: statistical consistency under noise and refitting." Plain words: "whether the estimates settle on the tru... | plain words |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Q3: identifiability of the active metrics under finite, biased observations." Plain words: "whether the data ... | plain words |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Q4: conditions under which the fitted surface recovers the Pareto boundary and not the sample's envelope." Te... | no change |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Q3: identifiability of the active metrics under finite, biased observations." Terms: identifiability, active ... | no change |
-| P1 | 36. paper/paper.ipynb :: Open questions | "Q2: statistical consistency under noise and refitting." Terms: statistical consistency, noise, refitting.... | no change |
+The per-item routing table of 160 rows (items routed to P1 and P6) is superseded by the "Routed to" column of the re-triage by stem above; the routing is by stream (paper, docs), not by package.
 
 ## To the driver (readers' reports of a clash touching a term's meaning)
 
