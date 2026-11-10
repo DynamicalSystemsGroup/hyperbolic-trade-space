@@ -551,3 +551,45 @@ also reports two violations already on `dev` before this round (`src/hyperbolic_
     not: 'a traded metric or a dataset column; a cited launch price'
     defined_in: 'cubesat_r2.sysml (calc def LaunchCost, LaunchBudgetRequirement); WP23-decisions.md OD1, OD2'
 ```
+
+## Case prose (D-7): claims
+
+The section "From the assembly to the dataset: measures of effectiveness and measures of
+performance" of `examples/adcs/case-model.md` (R-14), read with the register of
+`docs/superpowers/notes/claims-review.md`: each claim a reader could rely on, its kind and its
+backing. Definitions (the metrics in their disciplines' words, the MoE/MoP rule) and statements of
+intent (the hypothesis, the proposed thresholds marked proposed) are not claims and are not
+listed. Vocabulary: the section uses "monomial term", "term", "cell" and "n-lemma" and no
+"facet"; the vocabulary tool's corpus does not include `case-model.md` (`read_corpus` in
+`scripts/check_vocabulary.py`: the paper notebooks, `docs/*.md`, `docs/user-guide/*.md`,
+`site/index.html`, `README.md`, the `src/` docstrings), so the three glossary entries above stay
+held: added now they would each be a `dead-entry` and `tests/test_vocabulary.py` would go red;
+they enter with the paper's case section after the gate.
+
+| Claim (fragment) | Kind | Backing | Verdict |
+|---|---|---|---|
+| "Two MoEs (the pointing error and the launch cost) and eight MoPs" | S | the `doc` marks in `cubesat_r2.sysml`; "MoE/MoP classification" above; `coverage.md`, second table | backed |
+| "Each metric is read by a requirement on its own quantity and verified in a verification case" | S | `coverage.md`, second table; `tests/test_model_coverage.py::test_every_traded_metric_has_a_requirement_that_reads_it_and_a_mark` | backed |
+| "computed by event detection as the last exit from the band, so a slew that never holds inside the band has the horizon as its settling time" | S | the `doc` of `SlewMeasurement.settlingTime` and of `SettledRequirement` in `cubesat_r2.sysml`; WP16 D-7 (the measurement change lands with the regeneration); today's read-off is `_last_outside` in `experiments/cubesat_oracle.py`, the same quantity on the integrator's grid ("Coverage table, platform stability" above) | backed |
+| "the slew time ... left the traded metrics with WP16's decision" | S | `WP16-decisions.md`, "Slew time under event detection" ("One: settling time"); `tests/test_system_model_v2.py::test_r2_slew_time_has_left_the_measurement_and_the_requirements` | backed |
+| "the launch rate times the total mass, increasing in mass ... the dataset gains no column" | S | `calc def LaunchCost`; `tests/test_system_model_v2.py::test_r2_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it`; `WP23-decisions.md` OD1, OD2 | backed |
+| "The first four are the flags of the dataset, the verdicts of named requirements" | S | `experiments/feasibility.py` (`settled`, `momentum_ok`, `power_ok`, `dod_ok` to their requirement defs); the requirements table of the section against `cubesat_r2.sysml` section 5 | backed |
+| "each threshold the baseline configuration's own value with a 20 % margin ... 0.018642 degree, 0.011389 N.m.s, 2.4 W, 95,698.29 USD (15.950 kg at the rate)" | R | `part budgets : Budgets` (`margin = 1.2`); `tests/test_system_model_v2.py::test_r2_proposed_thresholds_are_the_baselines_values_with_the_stated_margin`; "Proposed thresholds" above (the control-effort and peak-slew-power limits read the baseline's recorded measurement, so the regeneration can move them; the prose states them as proposed and read from the model) | backed |
+| "a continuous rating of 1 C ... the pack delivering its capacity in one hour" | S | `environment.batteryDischargeRate = 1.0` (1/h), `calc def BatteryPeakPower`; "Round 2" above (the rationale is marked illustrative, not a cited rating) | backed |
+| "None of these thresholds enters the dataset: the four flags stay what they are ... cannot move a fit" | S | the dataset's flag columns are the four of `feasibility.py`; "Proposed thresholds" above, last paragraph | backed |
+| "Every swap and tune reaches at least one traded metric in both columns, and every traded metric is reached: ... all nine, Kp eight ... Kd seven" | R | `coverage.md`, first table and "Connectivity"; `tests/test_model_coverage.py::test_no_decision_element_row_is_empty_structurally`, `test_no_decision_element_row_is_empty_empirically`, `test_the_gains_do_not_reach_the_mass_and_kd_does_not_reach_the_pointing_error` | backed |
+| "Seven cells disagree between the columns, with one cause: ... the wheel class's maximum, because the power cap does not bind there" | R | `coverage.md`, "Disagreements"; "Coverage findings" above; `EXPECTED_DISAGREEMENTS` in `tests/test_model_coverage.py` | backed |
+| "the design structure matrix of multidisciplinary design analysis and optimization (MDAO), the family the paper names ... the XDSM of Lambe and Martins" | L | the paper's related-families table names MDAO with `sobieszczanski1997multidisciplinary`; `lambe2012extensions` in `docs/references.bib` (verified 2026-11-09, DOI resolved); `coverage.md`, third table's preamble | backed |
+| "The graph of configuration values, subsystems and metrics is connected, and the controls and the power subsystem feed each other, a loop the model resolves in one pass" | R | `coverage.md`, "Connectivity" and its last paragraph; `tests/test_model_coverage.py::test_every_configuration_value_feeds_a_subsystem_and_the_graph_is_connected`, `test_coupling_variables_between_subsystems_are_the_models_named_quantities` | backed |
+| "no metric, threshold or constant of the model was chosen because it moves the heatmap, and the fit runs unchanged" | S | `WP23-scope-of-work.md`, non-goals; "Model change in round 3: none" above; R-7's seam (`src/` untouched) | backed |
+| "In the primary regime three metrics carry no exponent at any fit temperature of the sweep: ... in the baseline regime the peak slew power alone" | R | round 1's `heatmap.png` and `k3_record.md` (`WP23-rounds/round-1/`); "Round 3" above, first paragraph; marked in the prose as round 3's reading on the round-1 data, not a result of record | backed |
+| "the K = 1 fit is one monomial term, a hyperplane in log-metric space, and a metric carries weight only where it trades against the others at the frontier: the contending set is found from the data" | M | `docs/theory.md`, "Elasticities and the n-lemma" (L3: the fit at tau = infinity is a linear program with a sparse solution; glossary `contending-set`, `n-lemma`) | backed |
+| "Given the tracker grade, both are monotone functions of the one battery capacity ... one quantity to the fit ... the fit gave the depth of discharge the weight ... the two requirements are the same inequality" | R | `calc def EclipseReserve` and `DepthOfDischarge` (the reserve is `maxDepthOfDischarge * capacity - demand`, the depth `demand / capacity`); "Round 3" (a) and the n-lemma reading above (Spearman -0.9994 over the feasible designs; the depth of discharge 0.158 and the reserve 0 in the primary regime, round-1 data) | backed |
+| "Both are affine in the generated power, which is proportional to the panel span ... it changed between the regimes (the energy balance in the primary regime, the power margin in the baseline regime)" | R | `calc def PowerMargin`, `EnergyBalance`, `GeneratedPower`; "Round 3" (c) and the n-lemma reading above (energy balance 0.184 and power margin 0 in the primary regime; 0.019 and 0.178 in the baseline regime, round-1 data) | backed |
+| "With the peak torque at the wheel class's maximum it takes one value per wheel class and tracker grade ... orders the designs as the total mass does ... With three terms (K = 3) it leads a term in both regimes" | R | `calc def PeakSlewPower` (tracker power plus idle wheels plus 5e4 x peakTorque^2); "Round 3" (b) and (c) and the n-lemma reading above (one value per medium and small cell; Spearman 0.87 with the total mass among the feasible designs; K = 3 term leads 0.612 primary, 0.428 baseline; round-1 data) | backed |
+| "round 3 changed none" (the model) | S | "Model change in round 3: none" above; the committed views and coverage table of the round stand | backed |
+
+No row is broader than its backing and none is unbacked. Two sentences were narrowed while
+writing: the slew angle is read from the model (30 degrees, `nominalSlew.slewAngle`), and the
+hypothesis is cited to where the supervisor's words are quoted (`WP23-scope-of-work.md`, Purpose),
+not to the decisions file, which does not carry them.

@@ -79,13 +79,13 @@ What to take from each section:
   approximation of the slew for model checking. The integration of the slew itself is in Python
   (`adcs_sim.simulate_adcs`), because the model language cannot integrate the equations of motion.
 - **Requirements.** Feasibility as named requirements (`settled`, `momentum_ok`, `power_ok`,
-  `dod_ok` are their verdicts), one requirement over each of four more traded metrics (slew time,
-  power margin, energy balance, eclipse reserve), `satisfy` statements tying them to the baseline,
-  verification definitions naming what each verifies and the four traded metrics no requirement
-  reads, and claims over every in-range configuration.
+  `dod_ok` are their verdicts), the requirements over the other traded metrics, `satisfy`
+  statements tying them to the baseline, verification definitions naming what each verifies, and
+  claims over every in-range configuration. Which quantity each requirement reads is the table of
+  the next section.
 - **The experiment.** `analysis def SlewExperiment` takes the configuration and the measured slew
-  quantities and returns the attributes the model computes. The settling time and the slew time
-  are measured, not computed, and pass into the row from the measurement.
+  quantities and returns the attributes the model computes. The measured quantities are not
+  computed; they pass into the row from the measurement.
 - **Named configurations.** The baseline and two contrasts (agile, compact).
 
 The model has two views, generated from its elements and committed in `model_v2/views/`
@@ -96,6 +96,168 @@ for each traded metric, the requirement that reads it, or none, and where the me
 (the analysis or the measured slew). The generator is
 `docs/superpowers/notes/spike-sysml-diagrams/project.py` (`render.sh` there draws the SVG and PNG);
 `tests/test_system_model_v2_r1.py` checks that the committed text is its output on this file.
+
+## From the assembly to the dataset: measures of effectiveness and measures of performance
+
+This section reads the WP23 revision of the model, `model_v2/cubesat_r2.sysml`, which replaces
+`cubesat.sysml` at the package's data gate (`work-packages/WP23-scope-of-work.md`); until then the
+two files sit side by side and the section table above is the adopted file's. The chain is short.
+A configuration is what the assembly view shows: two swaps (the wheel class, the star-tracker
+grade) and four tunes (the panel span, the battery capacity, the gains Kp and Kd). The assessment
+turns a configuration into nine traded metrics: the slew is integrated once and measured, the
+accounting calcs are evaluated, and the experiment returns the metrics as one row of the dataset,
+with the four flags beside them. Each metric is marked in the model as a measure of effectiveness
+(MoE) or a measure of performance (MoP), by one rule stated in the model's top comment: an MoE is a
+measure a stakeholder states without knowing the design; an MoP is a measure of the system's
+performance under the scenario the engineer states. Two MoEs (the pointing error and the launch
+cost) and eight MoPs: the stakeholders ask for a payload that points and a launch they can afford;
+everything else is how the design performs under the engineer's slew and orbit. Each metric is read
+by a requirement on its own quantity and verified in a verification case (`model_v2/views/coverage.md`,
+second table; `tests/test_model_coverage.py::test_every_traded_metric_has_a_requirement_that_reads_it_and_a_mark`).
+
+### The traded metrics in their disciplines' words
+
+Control (the attitude loop under the nominal slew, a 30 degree slew with a 600 s horizon).
+
+- **Settling time** (MoP, measured): the hold time, the first time after which the pointing error
+  stays inside the settling band, a fraction of the slew's initial error; computed by event detection
+  as the last exit from the band, so a slew that never holds inside the band has the horizon as its
+  settling time. It is the case's one time metric: the slew time (first entry into a band) left the
+  traded metrics with WP16's decision (`WP16-decisions.md`, "Slew time under event detection").
+- **Pointing error** (MoE, a calc of the configuration): how well the payload points, the
+  root-sum-square of the steady attitude error under the disturbance and gravity-gradient torques
+  (the torque over Kp) and the star tracker's accuracy.
+- **Control effort** (MoP, measured): the integral of the wheel torque magnitude over the slew,
+  in N.m.s; what the slew asks of the wheels.
+
+Power and energy (the panels, the battery and the loads under the stated orbit and eclipse).
+
+- **Power margin** (MoP): the generated power left after the housekeeping load and the peak slew
+  power, at the peak of the slew in sunlight.
+- **Energy balance** (MoP): over one orbit, the energy the panels supply in sunlight less the base
+  load over the orbit and the slew's loss energy.
+- **Eclipse reserve** (MoP): the energy left in the battery above the allowed depth of discharge
+  after the eclipse demand (the base load over the eclipse plus the slew's loss energy).
+- **Depth of discharge** (MoP): the eclipse demand over the battery capacity.
+- **Peak slew power** (MoP): the electrical draw at the peak of the slew, the tracker's power plus
+  the idle wheels plus the wheels' loss at the peak torque.
+
+Mass and cost.
+
+- **Total mass** (MoP): the launch mass of the configuration, the sum of the bus, battery, panels,
+  antenna, wheels, tracker and IMU masses.
+- **Launch cost** (MoE, not traded): the launch rate times the total mass, increasing in mass. The
+  rate (6000 USD per kilogram) is an illustrative constant labelled like the model's other
+  constants, not a cited price. The launch cost is the stakeholder's measure on the mass and the
+  quantity its requirement reads; the total mass stays the traded metric and the dataset gains no
+  column (`WP23-decisions.md`, OD1 and OD2;
+  `tests/test_system_model_v2.py::test_r2_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it`).
+
+### The requirements and what each reads
+
+| requirement | reads | bound | where the bound comes from |
+|---|---|---|---|
+| `SettledRequirement` (the flag `settled`) | the measured settling time | below the slew's horizon | the scenario |
+| `MomentumRequirement` (`momentum_ok`) | the measured peak momentum | within the wheel's momentum capacity | the wheel class |
+| `PowerRequirement` (`power_ok`) | the available power | positive | the accounting |
+| `DepthOfDischargeRequirement` (`dod_ok`) | the depth of discharge | within the environment's allowed depth | the environment |
+| `EclipseReserveRequirement` | the eclipse reserve | not negative | zero |
+| `PowerMarginRequirement` | the power margin | not negative | zero |
+| `EnergyBalanceRequirement` | the energy balance | not negative | zero |
+| `PointingErrorRequirement` | the pointing error | within `budgets.pointingErrorLimit` | proposed (below) |
+| `ControlEffortRequirement` | the measured control effort | within `budgets.controlEffortLimit` | proposed |
+| `PeakSlewPowerRequirement` | the peak slew power | within `budgets.peakSlewPowerLimit` | proposed |
+| `LaunchBudgetRequirement` | the launch cost (the MoE on the total mass) | within `budgets.launchBudget` | proposed |
+| `BatteryPeakPowerRequirement` | the eclipse peak load (housekeeping plus the peak slew power) | within the pack's peak power, its discharge rating times its capacity | the battery's rating (below) |
+
+The first four are the flags of the dataset, the verdicts of named requirements on each simulated
+configuration. The four thresholds marked proposed are not the supervisor's values and not the
+model's own: the loop proposed one rule for all four, so that none is tuned to a metric or to a
+figure, each threshold the baseline configuration's own value with a 20 % margin (`budgets.margin`,
+1.2), the allowance an engineer carries on a budget at an early phase. They are pending the
+supervisor's approval at the data gate and are read from the model by
+`tests/test_system_model_v2.py::test_r2_proposed_thresholds_are_the_baselines_values_with_the_stated_margin`:
+a pointing error of 0.018642 degree, a control effort of 0.011389 N.m.s, a peak slew power of
+2.4 W and a launch budget of 95,698.29 USD (15.950 kg at the rate) (`WP23-review.md`, "Proposed
+thresholds"). The battery's discharge rating is proposed likewise: a continuous rating of 1 C
+(`environment.batteryDischargeRate`, 1.0 per hour), the pack delivering its capacity in one hour,
+the plain rating of a small-satellite lithium-ion pack and not a cited one (`WP23-review.md`,
+"Round 2"). None of these thresholds enters the dataset: the four flags stay what they are, so a
+threshold changes the model's statement, the views and the coverage table, and cannot move a fit.
+
+### Coverage: every swap and tune reaches a metric
+
+The coverage table (`model_v2/views/coverage.md` and `.csv`, generated from the model by
+`model_v2/coverage.py`) states, for each decision element and each traded metric, whether the model
+has a path from the metric back to the element and whether a one-at-a-time change of the element
+at the three named configurations moves the metric. Every swap and tune reaches at least one
+traded metric in both columns, and every traded metric is reached: the two swaps, the panel span
+and the battery reach all nine, Kp eight (not the total mass: the mass accounting has no gain in
+it) and Kd seven (not the total mass or the pointing error, whose closed form has Kp alone)
+(`tests/test_model_coverage.py::test_no_decision_element_row_is_empty_structurally`,
+`test_no_decision_element_row_is_empty_empirically`,
+`test_the_gains_do_not_reach_the_mass_and_kd_does_not_reach_the_pointing_error`). Seven cells
+disagree between the columns, with one cause: the power margin and the peak slew power read the
+measured peak torque, which at all three named configurations is the wheel class's maximum, because
+the power cap does not bind there; the model allows the effect, the three configurations do not
+show it (`WP23-review.md`, "Coverage findings").
+
+The table's third part is the coupling between subsystems, in the form of the design structure
+matrix of multidisciplinary design analysis and optimization (MDAO), the family the paper names
+beside this method; the form is the XDSM of Lambe and Martins (`lambe2012extensions` in
+`docs/references.bib`) without its process line. Rows feed columns: the configuration values feed
+the three subsystems of the behavioural view (controls; power and energy; mass), the subsystems
+exchange named coupling variables (the measured peak torque and the torque-squared integral from
+the controls to the power subsystem; the usable wheel torque and the panel mass back; the battery
+and panel masses into the mass accounting; the structure mass and the inertias from the mass
+accounting to the controls), and the metrics and requirements are read off the subsystems. The
+graph of configuration values, subsystems and metrics is connected, and the controls and the power
+subsystem feed each other, a loop the model resolves in one pass because the usable torque is a
+quantity of the configuration computed before the slew and the peak torque is read after it
+(`tests/test_model_coverage.py::test_every_configuration_value_feeds_a_subsystem_and_the_graph_is_connected`,
+`test_coupling_variables_between_subsystems_are_the_models_named_quantities`).
+
+### The texture hypothesis and what the fit returned
+
+The hypothesis (the supervisor's, quoted in `WP23-scope-of-work.md`, Purpose): once the configuration space and the metric
+space are each explicit and joined by requirements, the K = 1 exponent heatmap across the fit
+temperature shows more texture, more metrics carrying weight. It is a hypothesis the regenerated
+figure checks after the data gate, never a target: no metric, threshold or constant of the model
+was chosen because it moves the heatmap, and the fit runs unchanged on whatever the model produces
+(`WP23-scope-of-work.md`, non-goals).
+
+What the fit returned in round 3, on the round-1 data (the regeneration moves these values; what
+follows is their reading, not a result of record). In the primary regime three metrics carry no
+exponent at any fit temperature of the sweep: the power margin, the eclipse reserve and the peak
+slew power; in the baseline regime the peak slew power alone (`WP23-review.md`, "Round 3"). The
+K = 1 fit is one monomial term, a hyperplane in log-metric space, and a metric carries weight
+only where it trades against the others at the frontier: the contending set is found from the
+data (`docs/theory.md`, "Elasticities and the n-lemma"). Read that way, each zero has a reason in
+the metric set rather than in the configuration space.
+
+- The eclipse reserve is carried by the depth of discharge. Given the tracker grade, both are
+  monotone functions of the one battery capacity (the reserve is the allowed depth times the
+  capacity less the eclipse demand; the depth of discharge is the demand over the capacity), so
+  they are one quantity to the fit and cannot both contend; the fit gave the depth of discharge the
+  weight. The reserve binds on the data before the fit, as the `dod_ok` flag, and the two
+  requirements are the same inequality.
+- The power margin is carried by the energy balance. Both are affine in the generated power, which
+  is proportional to the panel span: one is instantaneous at the slew's peak in sunlight, the other
+  integrated over the orbit. Which of the pair carries the weight is the linear program's choice,
+  and it changed between the regimes (the energy balance in the primary regime, the power margin in
+  the baseline regime), which is the sign of the collinearity.
+- The peak slew power is a step function of the two swaps. With the peak torque at the wheel class's
+  maximum it takes one value per wheel class and tracker grade, so it is flat inside each cell of the
+  design space those swaps cut, and across the cells it orders the designs as the total mass does
+  (the heavy wheel draws the power). One hyperplane over all the cells can use no elasticity from a
+  metric that is flat inside each, and the ordering across them is the total mass's. With three
+  terms (K = 3) it leads a term in both regimes, the cell of the large-wheel designs, where the
+  draw trades against the settling time.
+
+None of this is a change to the model (round 3 changed none: `WP23-review.md`, "Model change in
+round 3"), and none of it says whether the texture is good or bad; it says what the metric set
+contains, two pairs that are one quantity each and one metric that steps with the swaps, and that
+is the supervisor's to change at the gate, not the loop's.
 
 ## Running an experiment and reading the ledger
 
