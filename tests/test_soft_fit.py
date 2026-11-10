@@ -70,9 +70,10 @@ def _record(est):
 def _same(key, got, ref):
     got, ref = np.asarray(got), np.asarray(ref)
     if ref.dtype.kind in "US" or key.split("/")[-1] in ("facet_", "status"):
-        assert np.array_equal(got, ref), key
+        assert np.array_equal(got, ref), f"{key}: recorded {_show(ref)} observed {_show(got)}"
     elif EXACT:
-        assert np.array_equal(got, ref, equal_nan=True), key
+        same = np.array_equal(got, ref, equal_nan=True)
+        assert same, f"{key} (exact): recorded {_show(ref)} observed {_show(got)}"
     elif not key.endswith(("n_iter_", "term_n_iter", "reason")):
         np.testing.assert_allclose(got, ref, rtol=1e-12, atol=1e-12, equal_nan=True, err_msg=key)
 
@@ -114,6 +115,26 @@ def test_r2_default_planted_fits_equal_the_recording(name, reference):
     _compare_planted(name, est, X, relaxed=not EXACT and np.isinf(tau), reference=reference)
 
 
+def _show(a):
+    return np.array2string(np.asarray(a), precision=17, threshold=60, max_line_width=110)
+
+
+def _close(key, got, ref, atol, note=""):
+    """Assert ``got`` within ``atol`` of ``ref``; the message names the quantity and both values."""
+    got, ref = np.asarray(got, float), np.asarray(ref, float)
+    if got.shape != ref.shape:
+        raise AssertionError(f"{key}{note}: shape {got.shape} observed vs {ref.shape} recorded")
+    diff = np.abs(got - ref)
+    both_nan = np.isnan(got) & np.isnan(ref)
+    bad = ~both_nan & ~(diff <= atol)
+    if bad.any():
+        raise AssertionError(
+            f"{key}{note}: max abs difference {np.nanmax(np.where(both_nan, 0, diff)):.3e} > "
+            f"{atol:.1e} at {np.argwhere(bad).tolist()[:10]}\n"
+            f"recorded: {_show(ref)}\nobserved: {_show(got)}"
+        )
+
+
 def _compare_planted(name, est, X, relaxed, reference):
     rec = _record(est)
     if relaxed:
@@ -128,17 +149,20 @@ def _compare_planted(name, est, X, relaxed, reference):
             tol = TOL_FIT if k in ("exponents_", "log_offset_") else 1e-12
             if k in ("facet_share_", "shares"):
                 tol += 0.01 * n_relabelled
-            np.testing.assert_allclose(
-                np.asarray(v)[back], ref, rtol=0, atol=tol, equal_nan=True, err_msg=f"{name}/{k}"
-            )
+            _close(f"{name}/{k}", np.asarray(v)[back], ref, tol, " (after matching by exponent)")
         elif relaxed and k == "objective_":
-            np.testing.assert_allclose(v, ref, rtol=0, atol=TOL_FIT, err_msg=f"{name}/{k}")
+            _close(f"{name}/{k}", v, ref, TOL_FIT)
         elif relaxed and k == "facet_":
             differ = to_ref[np.asarray(v)] != np.asarray(ref)
             if differ.any():
                 U = est._log_metrics(X, reset=False)
                 top = np.sort(U @ est.exponents_.T - est.log_offset_, axis=1)[:, -2:]
-                assert (top[differ, 1] - top[differ, 0] <= S.EPS_FEAS).all(), f"{name}/{k}"
+                tie = top[differ, 1] - top[differ, 0]
+                assert (tie <= S.EPS_FEAS).all(), (
+                    f"{name}/{k}: {int(differ.sum())} rows relabelled after matching, rows "
+                    f"{np.flatnonzero(differ).tolist()[:20]}; gap of the two best scores "
+                    f"{_show(tie)} > EPS_FEAS {S.EPS_FEAS:.1e} on some"
+                )
         else:
             _same(f"{name}/{k}", v, ref)
 
