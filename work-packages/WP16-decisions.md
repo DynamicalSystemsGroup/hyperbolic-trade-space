@@ -110,3 +110,15 @@ changes of this order from the model refactor.
 - Good enough as drafted; the regenerated datasets, the K = 1, 2, 3 record and the paper's numbers regenerate in the
   `hts-paper` container with their tests passing in the same push; a Linux dispatch at the gate; the data-gate
   comparison (old against new numbers, every moved number listed with its cause) is the delivery I verify.
+
+## Slew time under event detection (2026-11-09, 20:50; OD-A of Amendment 2, put to the supervisor)
+
+**Driver's question (popup):** event detection removes the sub-step part of the defect but not the grazing case
+(design 763: 33.4 s to 12.5 s). Options: First entry (as approved) / Hold time / Decide in WP23. **Supervisor
+(mzargham), verbatim:** "we want the hold time one but its really the "settling time" in control laguage"
+
+**Disposition (pending one clarification):** the quantity wanted is the hold time, which in control language is the
+settling time: the first time after which the pointing error stays inside the band. The case model already names a
+settling time (event detection computes it as the last exit from the band, the same quantity) and a slew time (first
+entry into the band, the grazing-prone one). Whether the case keeps two time metrics or one is a dataset-column
+question and goes to the supervisor next, then into WP23's scope.
