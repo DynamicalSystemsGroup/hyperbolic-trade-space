@@ -421,3 +421,14 @@ brief and the board).
 
 Agents at the handover: none running. Worktrees: `wp24` only. Docker: hts-paper 3c7cfc8a2e27 (the environment of
 record), hts-alt; no hts container.
+
+## The container is a gate check, not a unit step (the supervisor, 2026-11-10, 09:05)
+
+"i don't think we should be blocking on this. we have robustness tests in place around the environments/containers
+so you can relegate this to an occasional regression test rather than blocking on it." From now: a unit that
+regenerates data, figures or notebook outputs does so on the host (the Mac) with the suite's tolerance branches, and
+pushes; no unit waits for a container run. The container of record is a regression check the driver dispatches at
+each gate of the path and once before the PR: regenerate in `hts-paper`, re-pin the exact outputs the
+environment-of-record tests read, run the `hts-alt` robustness image, record in RECORD.md. Lemma changes still
+regenerate Appendix B in the same push, on the host. Linux CI per batch stays as it is.
+

@@ -296,6 +296,20 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   page: the WP17 R-2 cubesat recording is the old data's (routed). The desktop width is the one that matters; not
   checked at phone width by design.
 
+- **Standing guidance (2026-11-10, 09:05), the supervisor verbatim, on the driver's estimate:** "if your error rate
+  was zero i'd be concerned. you are a stochastic machine and zero error would imply cheating. legitimate mistakes
+  produce by good faith work caught by effective controls is much more realistic" / "the narrative was always
+  anticipated to churn. the research itself is the material in the repo, the runs, the data, model tuning, the
+  interrogation of assumptions, and interpretation of findings. the git history and repo state are the real meat;
+  the paper is a human consuming view tailored to convey a message and allow (and motivate) a reader (human or
+  machine) to successfully dig deeper into the materials." / "i don't think we should be blocking on this. we have
+  robustness tests in place around the environments/containers so you can relegate this to an occasional
+  regression test rather than blocking on it". Disposition: the container of record is no longer in every unit's
+  path. Units regenerate on the host (the Mac) and push; the exact-equality branches run only in the container;
+  the container regression (regenerate in `hts-paper`, re-pin the exact outputs, run `hts-alt`) is one run per
+  gate of the path and once before the PR, by the driver's dispatch, not per unit. `PM-BRIEF.md` "Verification in
+  tiers" amended; the PM told.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
