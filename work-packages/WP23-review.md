@@ -568,6 +568,174 @@ which `pyproject.toml` excludes from `ruff check .` (a throwaway-spike folder ke
 reproducibility), so a run on its explicit path reads `docs/ruff.toml`'s 72 columns and reports the
 file's pre-existing long lines (134 before this round); `ruff format` leaves it unchanged.
 
+## Proposed thresholds, revised for the gate popup (the step's own terms; pass fractions)
+
+The driver's ruling on round 3's finding: a 20 % margin on a step function is not a threshold; before
+the gate the loop proposes the peak-slew-power limit on the step's own terms (the value that admits the
+baseline's wheel class and tracker grade, and one step up), with the pass fraction of feasible designs
+for each candidate, and the same pass-fraction column for the other three thresholds; the popup shows
+what each choice admits and chooses nothing. This section is that reading. Nothing below is
+preferred over anything else; the supervisor chooses.
+
+**Data and definitions.** The round-1 datasets on the r2 model, 1000 designs per regime:
+`adcs_designs_cubesat_gains.csv` (primary regime; sha256
+`336288e57a2329ad5d573b4696efa27589ce8c2aec571a30853d605e55126693`) and `adcs_designs_cubesat.csv`
+(baseline regime; sha256 `4cb65a2ffde19f9f17596859d91e599294dae4428bf8a15cc0dc9632921956d2`), in the
+session scratchpad's `wp23-round-1/`. A design is feasible when its four flags hold (`settled`,
+`momentum_ok`, `power_ok`, `dod_ok`): 706 of the primary regime's designs, 780 of the baseline regime's.
+The pass fraction of a candidate is the share of the feasible designs whose metric is at or below it
+(the requirements' `<=`, with an absolute tolerance of 1e-9 for floating-point ties on the cell
+values), by regime. The baseline configuration is read from `cubesat_r2.sysml` (the swap has not
+landed; `cubesat.sysml` on `dev` is the WP22 model, last touched at d3018ba): medium wheels, medium
+tracker, 0.6 m of span, 80 Wh, Kp 0.03 and Kd 0.3; its values are those of the round-1 table
+(pointing error 0.015535 degree, control effort 0.0094906 N.m.s, peak slew power 2.0 W, total mass
+13.2914 kg, 79,749 USD at 6000 USD/kg). The script is
+`scratchpad/wp23-thresholds/thresholds_pass_fractions.py` (not in the repository), run as
+`uv run --project <repo> python -I thresholds_pass_fractions.py <the wp23-round-1 folder>`; it
+prints the hashes and every number of this section.
+
+**Why the round-1 data serve.** The regeneration of record changes only the settling time's read-off,
+by at most one integration step (0.5 s), so the pointing error, the control effort, the peak slew
+power and the total mass of every design are unchanged and so are the fractions below, provided the
+feasible set is. In both datasets `settled` is `settling_time < 600 s` (checked), the largest settling
+time among the settled designs is 594.9 s (primary) and 598.2 s (baseline), and 24 (primary) and 22
+(baseline) designs sit at the horizon: no design is within 0.5 s of the horizon on the settled side,
+so a shift of one step moves no flag, and the feasible sets stand.
+
+**Peak slew power: the ladder of the nine cells.** With the peak torque at the wheel class's cap the
+metric takes one value per (wheel class, tracker grade) cell, so a candidate is a cell value and it
+admits whole cells. The value that admits the baseline's cell is 2.0 W; one step up is 2.4045 W. In the
+primary regime every small- and medium-wheel design sits on its cell value and no large-wheel design
+falls below 6.3 W (the power-limited corner of round 3 (b) lowers the large wheel's value, never below
+its coarse-tracker cell); in the baseline regime 24.8 % of the large-wheel designs never reach the cap
+(round 3 (b)), so 5 to 7 of the 262 feasible large-wheel designs fall below 2.6 W and the cumulative
+fractions at 6.3 and 6.8 W count 135 and 207 of them. Round 1's 2.4 W sits between steps: it admits
+the same designs as 2.0 W in the primary regime (43.6 %; the small wheel with the fine tracker fails
+by 4.5 mW) and 46.7 % in the baseline regime.
+
+| Candidate (cell it admits) | Pass, primary | Pass, baseline | Admits (feasible designs) |
+|---|---|---|---|
+| 1.3045 W (small wheel, coarse tracker) | 10.5 % | 10.9 % | small/coarse only |
+| 1.5 W (medium wheel, coarse tracker) | 22.9 % | 23.6 % | adds medium/coarse |
+| 1.8045 W (small wheel, medium tracker) | 32.7 % | 35.0 % | adds small/medium |
+| **2.0 W** (medium wheel, medium tracker: the baseline's cell) | 43.6 % | 46.0 % | small and medium wheels with the coarse or medium tracker; no fine tracker, no large wheel |
+| **2.4045 W** (small wheel, fine tracker: one step up) | 50.4 % | 55.0 % | adds small/fine (and 5 unsaturated large-wheel designs in the baseline regime); still no medium/fine, no saturating large wheel |
+| 2.6 W (medium wheel, fine tracker) | 62.2 % | 67.3 % | every small and medium wheel; no saturating large wheel |
+| 6.3 W (large wheel, coarse tracker) | 76.3 % | 83.7 % | adds large/coarse (and the power-limited large-wheel designs) |
+| 6.8 W (large wheel, medium tracker) | 89.2 % | 92.9 % | adds large/medium |
+| 7.4 W (large wheel, fine tracker) | 100.0 % | 100.0 % | every cell |
+
+**Pointing error.** The baseline's own value, 0.015535 degree, admits every feasible design of the
+primary regime (its largest is 0.00864 degree: the aggressive gain box holds the steady error to a
+fifth of the baseline's, round 1) and 99.0 % of the baseline regime's (the eight excluded are
+coarse-tracker designs at the lowest gains, Kp at most 0.0345, up to 0.01726 degree); +10 % admits
+all but one, +20 % and +50 % admit all. The 90 % and 95 % values are therefore tighter than the
+baseline's: in the primary regime 0.00842 and 0.00849 degree, inside the coarse tracker's own range
+(0.00834 to 0.00864), so they exclude part of the coarse tracker and nothing else; in the baseline
+regime 0.0118 and 0.0136 degree, which cut through every cell (the gains, not the tracker, set the
+error there).
+
+| Candidate | Value | Pass, primary | Pass, baseline | Admits |
+|---|---|---|---|---|
+| baseline | 0.015535 degree | 100.0 % | 99.0 % | every cell in full in the primary regime; 96 to 98 % of each coarse-tracker cell in the baseline regime |
+| +10 % | 0.017089 degree | 100.0 % | 99.9 % | all but one medium/coarse design |
+| +20 % (round 1) | 0.018642 degree | 100.0 % | 100.0 % | every feasible design |
+| +50 % | 0.023303 degree | 100.0 % | 100.0 % | every feasible design |
+| admits 90 % (primary) | 0.008422 degree | 89.9 % | 60.8 % | medium and fine trackers in full; 69 to 75 % of each coarse-tracker cell (baseline regime: 20 to 31 % of the coarse cells, 72 to 83 % of the others) |
+| admits 95 % (primary) | 0.008495 degree | 94.9 % | 63.7 % | medium and fine trackers in full; 85 to 86 % of each coarse-tracker cell |
+| admits 90 % (baseline) | 0.011814 degree | 100.0 % | 90.0 % | every primary design; 85 to 95 % of each cell in the baseline regime |
+| admits 95 % (baseline) | 0.013561 degree | 100.0 % | 95.0 % | every primary design; 91 to 99 % of each cell in the baseline regime |
+
+**Control effort.** Round 1 left this one to be read from the data; read, the baseline-anchored
+candidates exclude the primary regime. The baseline configuration sits at the lower corner of the
+baseline gain box (Kp 0.03, Kd 0.3), and the control effort (the integral of |tau| over the slew)
+grows with the gains: the feasible primary designs run from 0.0086 to 0.345 N.m.s (median 0.050),
+the baseline regime's from 0.0020 to 0.173 N.m.s (median 0.019). So the baseline's 0.0094906 N.m.s
+admits 0.6 % of the primary regime's feasible designs and 26.2 % of the baseline regime's; round 1's
+0.011389 N.m.s admits 2.3 % and 32.6 %; +50 % admits 5.2 % and 40.6 %. None of these admits any cell
+in full in either regime. The 90 % and 95 % values cut across all nine cells and lean on the wheel
+class: at 0.0592 N.m.s (the baseline regime's 90 %) the primary regime keeps 77 to 85 % of each
+small-wheel cell and 38 to 42 % of each large-wheel cell (the large wheels slew hardest).
+
+| Candidate | Value (N.m.s) | Pass, primary | Pass, baseline | Admits |
+|---|---|---|---|---|
+| baseline | 0.009491 | 0.6 % | 26.2 % | no cell in full; primary: 4 designs (3 small-wheel, 1 medium/fine); baseline: 18 to 42 % of each cell |
+| +10 % | 0.010440 | 1.3 % | 29.1 % | no cell in full; primary: 9 designs, none with a large wheel |
+| +20 % (round 1) | 0.011389 | 2.3 % | 32.6 % | no cell in full; primary: 16 designs, 1 with a large wheel; baseline: 22 to 48 % of each cell |
+| +50 % | 0.014236 | 5.2 % | 40.6 % | no cell in full; primary: 37 designs; baseline: 29 to 62 % of each cell |
+| admits 90 % (primary) | 0.13079 | 89.9 % | 99.1 % | primary: small/fine in full, 75 to 99 % of the other cells; baseline: all but 7 designs |
+| admits 95 % (primary) | 0.16618 | 94.9 % | 99.7 % | primary: every small-wheel cell in full, 85 to 98 % of the others; baseline: all but 2 designs |
+| admits 90 % (baseline) | 0.05922 | 58.9 % | 90.0 % | primary: 77 to 85 % of the small-wheel cells, 53 to 68 % medium, 38 to 42 % large |
+| admits 95 % (baseline) | 0.07710 | 70.1 % | 95.0 % | primary: 89 to 90 % small, 64 to 77 % medium, 51 to 62 % large |
+
+**Total mass, through the launch cost at 6000 USD/kg.** The mass is set by the swaps and the two
+continuous tunes; the baseline's 13.2914 kg (79,749 USD) admits 40.1 % (primary) and 39.0 %
+(baseline): no large-wheel design (the lightest is 13.33 kg), and the medium wheel with the fine
+tracker at 16 % and 13 %. At +10 % (14.62 kg, 87,723 USD) every small-wheel cell and the medium
+wheel with the coarse or medium tracker pass in full and the large wheel passes by tracker grade (82,
+67, 36 %); at +20 % (round 1's 15.95 kg, 95,698 USD) every cell passes in full except the large wheel
+with the fine tracker at 95 % (the heavy corner of round 1's reading); +50 % admits all. The 90 % and
+95 % values are 14.79 to 14.83 kg (88,758 to 88,970 USD) and 15.07 to 15.11 kg (90,423 to
+90,643 USD), where only the large-wheel cells are cut.
+
+| Candidate | Value | Pass, primary | Pass, baseline | Admits |
+|---|---|---|---|---|
+| baseline | 13.2914 kg = 79,749 USD | 40.1 % | 39.0 % | no large wheel; small/coarse 96 %, small/medium 94 %, medium/coarse 76 %, medium/medium 55 %, small/fine 52 %, medium/fine 16 % (primary) |
+| +10 % | 14.6205 kg = 87,723 USD | 85.6 % | 86.7 % | small wheels and medium/coarse, medium/medium in full; medium/fine 96 %; large/coarse 82 %, large/medium 67 %, large/fine 36 % |
+| +20 % (round 1) | 15.9497 kg = 95,698 USD | 99.4 % | 99.5 % | every cell in full but large/fine at 95 % |
+| +50 % | 19.9371 kg = 119,623 USD | 100.0 % | 100.0 % | every feasible design (the heaviest is 16.06 kg) |
+| admits 90 % (primary) | 14.8283 kg = 88,970 USD | 89.9 % | 90.8 % | small wheels and medium/coarse, medium/medium in full; medium/fine 99 %; large/coarse 90 %, large/medium 79 %, large/fine 49 % |
+| admits 95 % (primary) | 15.1072 kg = 90,643 USD | 94.9 % | 95.6 % | small and medium wheels in full; large/coarse 95 %, large/medium 93 %, large/fine 70 % |
+| admits 90 % (baseline) | 14.7930 kg = 88,758 USD | 89.1 % | 90.0 % | as the row above it, with large/coarse 89 %, large/medium 76 %, large/fine 47 % |
+| admits 95 % (baseline) | 15.0705 kg = 90,423 USD | 94.2 % | 95.0 % | small and medium wheels in full; large/coarse 95 %, large/medium 91 %, large/fine 67 % |
+
+**Battery discharge rate.** The requirement (`BatteryPeakPowerRequirement`) reads the eclipse peak
+load, the housekeeping load plus the peak slew power (`EclipsePeakLoad`), against the pack's peak
+power, the discharge rate times the capacity (`BatteryPeakPower`). The columns to compute it exist:
+`peak_slew_power_w` (which already carries the tracker's power and the idle wheels, as `PeakSlewPower`
+is defined) and `battery_wh`, with the housekeeping load 12 W from the model
+(`environment.housekeepingLoad`). Over the feasible designs the eclipse peak load runs from 13.3 to
+19.4 W and the smallest pack is 26.9 Wh (the depth-of-discharge floor removes the smaller ones).
+
+| Rate | Pack peak power | Pass, primary | Pass, baseline | Admits |
+|---|---|---|---|---|
+| 0.5 C | 0.5 W per Wh | 93.6 % | 95.3 % | fails 45 (primary) and 37 (baseline) feasible designs, all with packs of at most 37.4 Wh and medium or large wheels |
+| 1 C (round 2) | 1 W per Wh | 100.0 % | 100.0 % | every feasible design, by 0.6 W in the corner (round 2) |
+| 2 C | 2 W per Wh | 100.0 % | 100.0 % | every feasible design |
+
+**The popup table** (metric, candidate, pass fraction of feasible designs in the primary and the
+baseline regime, what it admits; the 90 % and 95 % rows carry the primary regime's value and both
+regimes' fractions at it; the regime-specific values are in the tables above):
+
+| Metric | Candidate | Pass, primary | Pass, baseline | What it admits |
+|---|---|---|---|---|
+| peak slew power | 2.0 W (the baseline's cell) | 43.6 % | 46.0 % | small and medium wheels with the coarse or medium tracker; no fine tracker, no large wheel |
+| peak slew power | 2.4045 W (one step up) | 50.4 % | 55.0 % | adds the small wheel with the fine tracker; no medium/fine, no saturating large wheel |
+| pointing error | 0.015535 degree (baseline) | 100.0 % | 99.0 % | everything but 8 coarse-tracker designs at the lowest gains |
+| pointing error | 0.017089 degree (+10 %) | 100.0 % | 99.9 % | everything but 1 design |
+| pointing error | 0.018642 degree (+20 %) | 100.0 % | 100.0 % | every feasible design |
+| pointing error | 0.023303 degree (+50 %) | 100.0 % | 100.0 % | every feasible design |
+| pointing error | 0.008422 degree (admits 90 %) | 89.9 % | 60.8 % | medium and fine trackers in full; part of the coarse tracker |
+| pointing error | 0.008495 degree (admits 95 %) | 94.9 % | 63.7 % | medium and fine trackers in full; 85 % of the coarse tracker |
+| control effort | 0.009491 N.m.s (baseline) | 0.6 % | 26.2 % | 4 primary designs; no cell in full in either regime |
+| control effort | 0.010440 N.m.s (+10 %) | 1.3 % | 29.1 % | 9 primary designs; no cell in full |
+| control effort | 0.011389 N.m.s (+20 %) | 2.3 % | 32.6 % | 16 primary designs; no cell in full |
+| control effort | 0.014236 N.m.s (+50 %) | 5.2 % | 40.6 % | 37 primary designs; no cell in full |
+| control effort | 0.13079 N.m.s (admits 90 %) | 89.9 % | 99.1 % | all cells in part, small wheels nearly in full, large/medium at 75 % |
+| control effort | 0.16618 N.m.s (admits 95 %) | 94.9 % | 99.7 % | small wheels in full; 85 to 98 % of the medium and large cells |
+| total mass | 13.2914 kg = 79,749 USD (baseline) | 40.1 % | 39.0 % | no large wheel; medium/fine at 16 % |
+| total mass | 14.6205 kg = 87,723 USD (+10 %) | 85.6 % | 86.7 % | small wheels in full; large wheel by tracker 82 / 67 / 36 % |
+| total mass | 15.9497 kg = 95,698 USD (+20 %) | 99.4 % | 99.5 % | every cell in full but large/fine at 95 % |
+| total mass | 19.9371 kg = 119,623 USD (+50 %) | 100.0 % | 100.0 % | every feasible design |
+| total mass | 14.8283 kg = 88,970 USD (admits 90 %) | 89.9 % | 90.8 % | small wheels in full; large wheel by tracker 90 / 79 / 49 % |
+| total mass | 15.1072 kg = 90,643 USD (admits 95 %) | 94.9 % | 95.6 % | small and medium wheels in full; large wheel by tracker 95 / 93 / 70 % |
+| battery discharge rate | 0.5 C | 93.6 % | 95.3 % | fails packs of at most 37.4 Wh with medium or large wheels |
+| battery discharge rate | 1 C | 100.0 % | 100.0 % | every feasible design |
+| battery discharge rate | 2 C | 100.0 % | 100.0 % | every feasible design |
+
+None of these thresholds enters a dataset column; the four flags stay what they are, so no choice
+moves a fit.
+
 ## R-5's check, amended
 
 The closed-form calcs of section 4, `TorqueLimitedSlewTime`, `LinearSlewTime`, `SlewTimeEstimate` and
