@@ -33,3 +33,12 @@ the PR. The supervisor's words on the grid and the personas ("Use these six") ar
   `e72f3eeac76089d8657add60ac1b7553ac8fcfd022cc6cb0b69fb050931ad638`. Round 1 begins with the L-A and L-B cells of all six personas on the staged paper at
   20fa550, the stable part of the paper while the narration and figure passes run.
 
+
+- **2026-11-10, 16:00. The answer key, version 3**, fixed by the driver before the held-out reads of round 2 and
+  kept out of the repository: the word is monomial term, never facet (W7 reads "exponents or terms"); the case has
+  eight traded metrics on the model of record with the settling time by event detection and launch cost as the
+  measure of effectiveness on mass; the finding reads "one term blends the subsystems' trade-offs into a single
+  tension; three terms separate the contending sets"; the propose-predict-check numbers and the proposals'
+  depth-of-discharge failure; the four requirements read after the fit, cutting designs and not trades; the
+  baseline failing the pointing-error requirement; the case called exploratory with the author's thresholds. SHA-256
+  of the file: `2c1f9672ebd634429b820e4940edd39632c9d29963e4190c955567b2bcc993da`. Version 2's lines marked "key stale" by round 2's triager are read against version 3.
