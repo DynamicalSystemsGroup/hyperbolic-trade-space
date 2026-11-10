@@ -111,14 +111,20 @@ Worktrees alive: `wp23case` (unpushed case code), `wp24` (held glossary patch). 
 |---|---|
 | 1. The paper onto the data of record (paper stream) | done ea46637, 628df90 (the case reads `data/v2/` directly; the frozen copies untouched; hts-paper f7b7585c7c58, 3c7cfc8a2e27 removed; the per-term K = 3 report by the case module's guard of ten; 48 cells, listed in swap-evidence part 5); reviewed 3f87eb5 (part 6: 13 findings, one blocking: `num-margin` moves under restart shift; plus 14, the soft-fit recording, from Linux) |
 | 1c. Paper fix-forward (findings 1, 2, 4, 5, 6, 8, 9, 10, 12 of part 6; the MoE/MoP sentence in Section 8 with its ledger row; register rows for the new claims; one container run) | dispatched |
-| 1s. The soft-fit recording regenerated in hts-paper on the data of record (test_soft_fit R-2; finding 14) | dispatched; hash to the driver for the Linux re-dispatch |
+| 1s. The soft-fit recording on the data of record | done 126e1ea (58 passed on the Mac and in the image) |
 | 1d. Contract row 13 (`case.data_dir` = data/v2; `frozen_data_dir` pins the frozen generation) | done a45b10f |
 | 2. WP23 view-consistency (B, C, D, F; diagnostic_pair.py's title and shared vmax) | done 0fab294 (views revision 6; the paper's two byte copies; record in WP23-review.md) |
 | 1b. docs/examples.md onto the new numbers | done 5dac142 (the figures regenerate from the page's blocks; nothing committed under docs/generated) |
 | 1r. Reviewer of unit 1 | done 3f87eb5 (67 screenshots in scratchpad/paperreview-renders/) |
 | 3. WP24 push 1 onward (worktree `wp24` holds the glossary patch); diagnostic_pair.py identifiers in a WP23 unit after push 1; glossary MoE/MoP/launch cost with the case section; WP25's drift rows in the docs push | after unit 1 |
 | 4. WP23 acceptance review | done f5a63c2 (27 met, 12 not met in part or as stated, 1 not checkable; gaps G-1 to G-10 for the driver; recommends acceptance with the gaps noted) |
-| 5. The WP7 notebook, tests/test_notebook.py and figures 01-09 deleted (the driver's decision) | dispatched (second pass: the five live references widened into the one commit) |
+| 5. The WP7 notebook, tests/test_notebook.py and figures 01-09 deleted | done 4bd6bac; left dev red on the contract's R-4 pins until amendment 14 (WP24 push 1) retired them |
+| WP23 gap units (the driver's acceptance conditions) | G-3 reads 8d49ab9 (three blocks on the behavioural view: type size, legend, totalMass label: revision 7 unit dispatched); G-5, G-7, G-17 acb20ce (Appendix E regenerated in 9c8a0c616386) |
+| Glossary entries MoE, MoP, launch cost | done da2984e |
+| WP23 `diagnostic_pair.py` identifiers (dev red on its test since 204e7c3) | dispatched |
+| WP24 push 1 (src, contract row 14, tests, case code, generators; container run) | done 204e7c3, 5b01248 (image 9c8a0c616386); open: test_narrative's RENAMED map vs method.md identifiers (driver) |
+| WP24 push 2 (derivation, proof map, Appendix B in the container) | dispatched |
+| WP24 pushes 3 and 4, then the R-16 cold reads and WP24-review.md; WP25 instance 2 at WP23's final acceptance | next |
 | 6. WP25 next instance | at the next gate |
 
-Worktrees alive: `wp24` (held glossary patch) plus the running units' own. Docker: hts-paper f7b7585c7c58 (the environment of record), hts-alt.
+Worktrees alive: `wp24` (held glossary patch) plus the running units' own. Docker: hts-paper 9c8a0c616386 (the environment of record until push 2 rebuilds it), hts-alt.

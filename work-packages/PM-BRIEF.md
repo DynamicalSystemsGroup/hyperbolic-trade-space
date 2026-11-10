@@ -317,6 +317,11 @@ folders whose result is recorded, raw reader reports after triage, superseded re
 nothing reads), the records of the gates kept; drift closed between docs, glossary and code; gaps listed. Every
 stream also leaves no scratch behind in the tree when its unit lands.
 
+**Deletions check the contract first (the driver's rule of 2026-11-10, after 4bd6bac).** Before any file leaves the
+tree, the deletion unit's grep includes `work-packages/interface-contract.md`, `interface-contract.toml` and
+`tests/test_interface_contract.py`: a file the contract pins goes only with the amendment that retires its pin, in the
+same push (the nine WP7 figures were pinned by R-4 and their deletion left `dev` red until amendment 14).
+
 ## Reviews run the thing (the supervisor's standing order, 2026-11-09, 23:00)
 
 Every reviewer the PM dispatches, for any unit, runs the code, analyses the data it produces and looks at the rendered
