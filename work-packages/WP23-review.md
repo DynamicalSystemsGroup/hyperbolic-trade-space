@@ -1717,3 +1717,33 @@ table reproduce exactly, the Discussion candidates are backed by D.17's tables, 
 staged page.
 
 Acceptance is the supervisor's act, recorded as named above. This report does not accept the work.
+
+### Re-check after the fix-forward (work-acceptance step 5: the review rerun, 2026-11-10, head b9d8b80)
+
+A fresh unit (worktree `closeoutrecheck` from origin/dev at b9d8b80, on the host, macOS arm64) re-ran the
+review's evidence against the state at head. Reviewed, not repaired.
+
+| item | state | evidence run now |
+|---|---|---|
+| **G-1** `test_k_terms_case.py` nine metrics | closed | `REQUIRE_OPENSYSML=1 uv run pytest -q tests/test_k_terms_case.py` (slow included): 7 passed. `k_terms.py` on `data/v2/` prints, per the test's pins: primary K = 2 gamma 0.000697 radius 0.000069, K = 3 0.001212 / 0.000121; stock K = 2 0.001413 / 0.000133, K = 3 0.000350 / 0.000033; the test pins `exponents_.shape == (3, 8)` and the same six-decimal pairs |
+| **G-2** stale counts | closed | the four caption cells (`fig-planes-k1-caption`, `fig-planes-k1-lines`, `fig-planes-k3-caption`, `fig-chart-level-caption`) read "the other six metrics" (three cells) and "the first of seven position coordinates"; `abstraction-gaps.md` has no "nine" left, row G-2 reads "eight-metric data", row G-17 "eight fitted attributes", "659 of 706 on eight attributes", "74 of 685 quantities"; `sensitivity.json` holds 685 quantities and the printed-precision rule (committed, min and max equal at `.4g`) gives 74 not equal; the staged Appendix E text holds both phrases and no "nine-metric", "nine fitted" or "nine attributes" |
+| **R-31** (Appendix A and E typeset) | holds | staged site (`stage_site.py`, served on 127.0.0.1:8791 after port 8765 was found taken by another process), browser pane at its desktop width, light scheme: `document.body.innerText` holds 0 `$` characters; 937 math elements; Appendix A's table and Appendix E's rows G-2, G-3, G-4 render as typeset formulas (screenshots: pane only for E; a file for A) |
+| **G-3** spike A's differences | closed | section 6 of the comparison read against spike A's tables: the stock requirements-met three-term fit, the placement "all designs" and "requirements met" columns and the proposals each carry spike A's value, the recomputed value and the cause; `case.design_sets_placement()` run now prints every listed close-out value (for example primary baseline configuration -0.499 / -0.516 / -0.566, stock -0.075 / -0.057 / -0.030; proposals placed in every column), and its feasible column equals spike A's F column at spike A's printed digits (-0.52, -0.20, -0.15, -0.17; -0.06, -0.20, -0.06, -0.38) |
+| **G-4** R-17's grep | open as stated, explained | `git grep -n "EclipseReserve\|eclipse_reserve" examples/adcs/model_v2 examples/adcs/data/v2 examples/adcs/case.py examples/adcs/k_terms.py examples/adcs/experiments/*.py` still returns `compare.py:260, 271, 276` (the comment and the frozen-frame lists) and `cubesat_oracle.py:27` (the docstring saying the output leaves the reserve out). Section 7 of the comparison states why (the v1 frames carry the column; the oracle file is ledger-hashed). The model, `data/v2`, `case.py`, `k_terms.py` are free of it. Whether the scope's R-17 is met as worded is the driver's call, as recorded in G-4's options |
+| **G-5** record location and finding 4 | superseded | the fix-forward's R-31 note supersedes finding 4 (R-31 holds, above); the record stays `WP23-review.md`, not `WP23-closeout-review.md` as the scope's acceptance record names: a naming difference only |
+| **O-1** 94.9 % and 95.0 % | explained, not changed | section 7: 671 of 706 at the limit 0.008495 degree (95.04 %); 670 at the unrounded percentile 0.0084945 degree (94.90 %); the model doc and `case-model.md` still print 94.9 % |
+| **O-2** `k3-cubesat.md` in the v1-v2 report | closed | `grep -n k3-cubesat examples/adcs/experiments/reports/v1-v2-comparison.md` returns nothing |
+| **O-3, O-4, O-6** | unchanged | as in the review; the vocabulary tool exits 1 without its baseline (69 violations) and 0 with it |
+| **O-5** label pasted into prose; "aggressive" against "primary" | closed | the association sentence reads "primary regime, power margin and energy balance, +0.982; stock regime, ... +0.988" (no "Dataset cubesat-primary" in prose; the remaining "Dataset cubesat-..." strings are the generated reports' dataset headers); `docs/examples.md` prints "(primary | stock)" and its opening says "the primary regime's table (aggressive controller gains)"; `paper.ipynb` names "aggressive controller gains (the primary regime)" |
+
+Checks (host, head b9d8b80):
+
+- `uv run pytest -q -m "not slow" -n auto`: 1733 passed, 16 skipped, 1 xfailed.
+- `PYTHONPATH=examples/adcs uv run python -m experiments verify`: 39 entries (11 current), 0 drifts.
+- `uv run python scripts/check_vocabulary.py`: 69 violations, exit 1 (no baseline); with `--baseline scripts/vocabulary_baseline.toml`: 0 new, 69 known, exit 0.
+- `uv run pytest -q tests/test_claims_register.py tests/test_paper.py tests/test_gaps.py tests/test_docs.py tests/test_site.py -n auto`: 280 passed, 4 skipped.
+- `uv run ruff check .`: all checks passed; `uv run ruff format --check .`: 324 files already formatted; `uv lock --check`: resolved, clean.
+
+**Recommendation (re-check):** recommend acceptance with the listed gaps noted. D-13, D-16 and R-24 now hold and the slow suite is green; the one item open as worded is G-4 (R-17's grep is not empty, two files kept on purpose and explained), with O-1's two printed values (94.9 % in the model doc, 95.0 % in the tables) explained and left for the model's next regeneration.
+
+Acceptance is the supervisor's act, recorded as named above. This report does not accept the work.
