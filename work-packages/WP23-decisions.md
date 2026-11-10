@@ -198,3 +198,22 @@ no longer "illustrative 20 %". The datasets do not change (the four are requirem
 not feasibility flags of the generation); the model, its toolkit gates, the views, the coverage table, the case
 prose's threshold sentences and the register rows regenerate in the container in one unit; the gate's pass
 fractions are the recorded reading of what each admits.
+
+## The two metric redundancies (2026-11-10, 08:00)
+
+**Driver's popup:** eclipse reserve and depth of discharge are one quantity; power margin and energy balance are
+both affine in the generated power. Options: keep all nine and state it / drop one of each pair / drop one pair
+only. **Supervisor (mzargham), verbatim:** "if the redundancy is a modelling issue then you clean it up. otherwise
+i think the correct version in the full case is to try identifying the redundancy and simplying the analysis to be
+an outcome of the analysis. do a short research spike to see which makes more sense. note that putting this in
+the full case analysis is not the same as forcing into the paper narrative which we're trying to keep tight"
+
+**Disposition.** A short spike, one agent, one report (`work-packages/WP23-rounds/spike-redundancy.md`), per pair:
+is the redundancy a modelling issue (two metrics or requirements defined from one quantity, or a power model
+linear in one tune with constant loads, which a cleaner model would not have) or a property of the system in its
+ranges that the analysis should identify and simplify as an outcome (the association reading at ±1, the exponents
+splitting across collinear columns, a stated step of the case analysis that merges them)? For each: the evidence
+from the model's definitions and the data of record, what a model clean-up would change, what the analysis
+outcome would look like in the full case analysis (Appendix D and the docs' case pages), and a recommendation with
+plain options. The paper's narrative is kept tight: whatever is chosen lands in the full case analysis, not as a
+new thread of the paper.
