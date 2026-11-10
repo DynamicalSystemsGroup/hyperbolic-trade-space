@@ -371,6 +371,12 @@ hts-paper sh /tmp/run.sh`, the script copied in, `docker start -a`; the notebook
 
 No number of the paper moved. The environment of record is now `e852cde39180`.
 
+The two commits were rebased onto dev before the push: 90c8848 is the first of them on dev, and the
+image was not rebuilt: the rebase brought no change to `derivation/`, `paper/*.py`, `src/` or the notebooks (only the
+behavioural view's files, its paper copy and `diagnostic_pair.py`, which no notebook cell executes), so the outputs
+stand; `tab-F-toolchain` keeps 90c8848, the tree the outputs came from. `paper/supporting_material.ipynb` alone was
+copied out.
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes
