@@ -1182,3 +1182,17 @@ an estimate in units; benefit from the reader-grid evidence (rounds 1, 1b, 1c, 1
 the figure colouring or the word carried it) and a small cold-read A/B of the same passages with the two
 vocabularies; a semantic check of where "facet" carries geometry that "term" does not; a recommendation with plain
 options for him.
+
+## MDAO in the prior art (2026-11-09, 22:05)
+
+**Supervisor (mzargham), verbatim:** "one thing i am pretty sure you don't have is the MDAO literature in your lit
+review which given our case example is a design optimization needs to be included"
+
+**Disposition (the driver).** A paper unit: a row of Table 1 (Section 2) and entries of Appendix G for
+multidisciplinary design analysis and optimization (MDAO) and the trade-space exploration literature that sits with
+it, in the register's own columns (what each family produces, what we share, how we differ, where to read it); every
+reference with a resolved DOI or stable URL before it enters `docs/references.bib` (R-43, the claims rule); the
+sentence in Section 1 or 10 that names design optimization and configuration management as uses (his direction of
+2026-11-09) cites the family. Candidates for the search, to be verified, not assumed: Sobieszczanski-Sobieski and
+Haftka (1997, survey), Martins and Lambe (2013, architectures), Gray et al. (2019, OpenMDAO), Martins and Ning (2021,
+the textbook), Ross and Hastings (tradespace exploration), Simpson et al. (trade-space visualization).

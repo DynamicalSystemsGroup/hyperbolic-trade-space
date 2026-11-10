@@ -44,3 +44,18 @@ changes from dropping slew time, "expect changes of this order", so the gate lis
 for execution by the driver under the mandate**, with the draft amended to these decisions (no `launch_cost`
 column; launch cost the MoE on mass with a launch-budget requirement; thresholds proposed by the loop and approved
 by the supervisor at the gate). The supervisor accepts the delivery at the data gate.
+
+## Supervisor input for the coupling check (2026-11-09, 22:05)
+
+**Supervisor (mzargham), verbatim** (while reading a stale staged build of the paper): "while i look at it and think
+hey "maybe we should have 2 to 3 battery options with different weights, storage capacities, peak charge rate and
+peak power, etc" in order to make sure our sysmlv2 model provides a fully coupled set of paths from the config values
+to the metrics of interest without missing anything that is obviously coupled. i realize i may just be looking at an
+out of date model."
+
+**Disposition (the driver).** Into WP23's first round as an input to the coverage and coupling table (G1, G3): the
+battery is today a tuned continuous capacity (20 to 200 Wh) with no mass or power-rate coupling of its own; the loop
+assesses 2 to 3 battery alternatives (swap) each carrying mass, capacity, peak charge rate and peak power, so that
+one configuration choice reaches total mass and launch cost, energy balance, eclipse reserve and peak slew power
+through the model's own calcs; the general test behind it: every configuration value has its obviously coupled paths
+to the metrics present in the model, and the table says so. The loop reports what it adopted and why.
