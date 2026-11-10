@@ -150,6 +150,8 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **PM handovers.** The third PM handed over at 01e2d64 (PM-BRIEF.md, "third PM to fourth") after two batches; the fourth PM started from the files at 21:35 on WP23 and the remaining WP19, paper and package units.
+
 - **Glossary wording (the supervisor's vocabulary).** Wording-only fixes approved where three entries use
   synonyms of their own terms (`facet`, `support-weights`: "fitted surface" becomes the entry's own term;
   `contending-set`: "working temperature" becomes the glossary's term); no meaning changes. Two entries added
@@ -218,6 +220,8 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-09 | commit 62085bb, CI run 42727700605, ubuntu, three shards | fast, slow and docs-paper all green | a verdict: the soft-fit planted3 seed-3 case passes on Linux after 6a8abd5 (termination shares carry the tie allowance); both platforms green at the handover head |
 | 2026-11-09 | commit 1b496d3, CI run on ubuntu, three shards (includes the WP22d swap ff717ed and 6ed13ed, the paper CR push 4f63628, WP19 19a/19b) | fast, slow and docs-paper all green | a verdict: the swap and the depth-B change requests pass on Linux; the Mac tier 2 verdict on the swap commits is pending (watcher green on 9d5d3fd, 2166 passed, the head before the swap) |
 | 2026-11-09 | commit bde5362, tier 2 watcher, clean worktree, this Mac (after the WP22d swap ff717ed, 6ed13ed, d3018ba) | 2166 passed, 16 skipped, 1 xfailed, 0 failed; all checks; lock; lemmas; proof map; 0 drifts; attribution 0 | a verdict: the swap is green on both platforms (Linux 1b496d3 above); WP22d accepted as the adopted model; Linux dispatched on 7ffb719 for the paper placements and the docs vocabulary |
+| 2026-11-09 | commit 7ffb719, CI run on ubuntu, three shards (the paper placements 8abb16a, docs vocabulary, WP23 scope draft) | fast, slow and docs-paper all green | a verdict: the figure placements and the vocabulary units pass on Linux |
+| 2026-11-09 | commit 77844c5, tier 2 watcher, this Mac | 2166 passed, 16 skipped, 1 xfailed; all checks | a verdict: green through the WP16 trial commits; later heads (redraws, glossary entries, unit 8) pending; Linux dispatched on the handover head 01e2d64 |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
