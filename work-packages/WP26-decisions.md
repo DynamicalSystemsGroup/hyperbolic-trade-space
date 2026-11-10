@@ -54,3 +54,12 @@ re-run for byte-identical in-file edits (OD1 b) waits until that regression has 
 container's re-pinned outputs as the baseline and writes the entries after it, hash-equal or the edits stay held.
 Unit 1 (views.sysml and its parse test) is on dev at d793a95. The harness deliverable is the modeller's, written
 from its step log at the round's end.
+
+**OD1 (b) amended (2026-11-10, 15:05; the driver).** Now that the entries of record are the container's (@7, image
+877c42cc10e3), a host re-run cannot reproduce their bytes (the platform step difference registered as CR-2), so a
+host re-run can no longer land an in-file model edit. The rule becomes: a byte-identical in-file edit lands through
+a container re-run of the five ledger entries only (`ledger_gate.py --image`, about ten minutes in `hts-paper`, a
+container named hts-<stream>, removed after) on the edited model, each output hash equal to the @7 hash, the entries
+landing as the next numbers with the WP26 note; otherwise the edit reverts to held. A host run with no entries
+written remains the cheap evidence of neutrality before the container run. The modeller's unit runs it; the
+driver's gate regression is unaffected.
