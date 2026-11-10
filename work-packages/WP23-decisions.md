@@ -82,3 +82,24 @@ verification (the comparison report with every moved number and changed conclusi
 green); the four values and the report go under "Waiting for the supervisor" in the driver log for his review on
 waking; if he changes a value the gate re-runs with it. Downstream re-tests (reader rounds at depths B and C, the
 figure redraws on the new data) proceed on the swapped model.
+
+## The proposer's reach on the settling-time view (2026-11-10, 00:50; the driver, under "Proceed, I review after")
+
+The gate's regeneration stopped at the check designs: `check_designs.Proposer.draw` finds fewer than three
+reachable, separated holes with REACH = 0.35, the constant WP7 set for the slew-time view; the proposer's
+four-metric view now carries the settling time (D-3), and the same failure occurs on the old data with the new
+view, so it is the view change, not the new data. The PM's options: raise REACH to the smallest round value that
+yields three proposals (0.6); re-derive it by WP7's own rule if the record states one; drop the proposals and keep
+the three hand-written check designs (a paper change); restate the criterion relative to the pool (a method change).
+
+**Decision.** REACH is set by a stated rule, not by the number that makes the method produce output. First, WP7's
+record: if it states how 0.35 was set, apply that rule to the new view and record the value. If it states none, the
+rule is defined now and recorded: the reach is a stated quantile of the pool's nearest predicted distances to the
+holes on the view in use (the agent names the quantile from what REACH means in the check, the radius within which a
+seeded configuration is close enough to be proposed), and the rule is checked on the old slew-time view: a rule that
+returns about 0.35 there is the rule WP7 used in effect; a rule that does not shows 0.35 was arbitrary, and the
+paper's check section then says the radius is a chosen constant, set by the stated rule, for both views. If the rule
+yields fewer than three holes on the new view, the check reports the number it yields (two proposals are a result,
+not a failure), and the paper's sentence follows the number; the proposals are not dropped and the criterion is not
+restated. One constant and one sentence of rule in `check_designs.py`, recorded here, the gate re-run. The
+supervisor sees it with the gate's comparison.
