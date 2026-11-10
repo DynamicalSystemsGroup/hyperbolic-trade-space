@@ -85,3 +85,7 @@ three files fetched from the raw URL at acb8c45) the source is 75,542 characters
 other three gaps are accepted as they are. The round did what the supervisor asked: the model read in the editor with
 every view rendering, in-file edits byte-identical in outputs, and a feedback report the editor's author can act on
 (ten bugs with reproductions, five feature requests)."
+
+**Accepted by the driver (2026-11-10, 18:20, at 05f8a2a).** G-4 and G-5 landed in 05f8a2a (the scope's D-5 row, the counts
+line, `views.sysml`'s swap names, the table's label); the model, pointer, coverage and claims tests pass at the head
+(67 passed). **Driver, verbatim:** "WP26 accepted."

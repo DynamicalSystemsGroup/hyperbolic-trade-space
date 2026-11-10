@@ -117,3 +117,7 @@ to an evidence case with its ledger entry, record section, test and image, and t
 is stated and engine-checked, the one failure (pointing error) visible in the matrix. What the sponsor still cannot
 see on screen, the dollar and year figures, is the editor's F-1, not the model's. H-2 (a cost-to-build budget) stays
 with the supervisor."
+
+**Accepted by the driver (2026-11-10, 18:20, at 05f8a2a).** G-1, G-2 and the elision landed in 05f8a2a (step 24's screenshot,
+the N5/N6/T3/T5 paragraph in D-4, "[the browser tools]"), G-3 in 8f4e10b (F-5 with steps; Bug 10 reproduced); the
+model tests pass at the head. **Driver, verbatim:** "WP27 accepted. H-2 stays open with the supervisor."
