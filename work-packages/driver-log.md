@@ -143,6 +143,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   of requirements, subsystems and the ten traded metrics, with the gaps shown honestly) are
   candidates for WP19 with their recipes; the gap list is WP22's first input.
 
+- 2026-11-09, 19:15: WP19 (figures by section) scoped by the PM in the template, no open decisions,
+  approved by the driver under the mandate; candidates are placed when they pass the figure review,
+  each with purpose and hypothesis, for the supervisor's review-and-revise on his return. The
+  watcher's verdict on abd6c11 (2 failed: the claims-register and vocabulary guards tripping on
+  moved fragments and new words) shows the new mechanical checks working; the commits that followed
+  (811d260, d7d9919) are the fix-forward, to be confirmed by the next verdict.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |

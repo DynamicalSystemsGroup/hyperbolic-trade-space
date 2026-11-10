@@ -108,3 +108,7 @@ Good enough is met, **no open item remains unresolved**, and the supervisor has 
 ## Open decisions (for the supervisor)
 
 None. Every item was resolved through the decision loop (the direction is quoted above); his review on return can change any slot or figure.
+
+## Gate outcomes
+
+- 2026-11-09: approved for execution by the driver under the mandate; no open decision remained; the supervisor reviews every slot and figure on his return. Recorded in `driver-log.md`.
