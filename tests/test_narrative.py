@@ -127,14 +127,6 @@ def test_conditions_table_quotes_ledger_role_and_failure_mode():
 
 
 # ---------------------------------------------------- implementation pointers (R-3)
-# The preserved sources are records and keep their wording (WP24 A5); a name the package renamed
-# since is resolved through its rename (interface contract, amendment 14), never left dangling.
-RENAMED = {
-    "facet_objective": "term_objective",
-    "facet_gap": "term_gap",
-    "single_facet_termination": "single_term_termination",
-    "assign_facets": "assign_cells",
-}
 
 
 def test_referenced_functions_exist():
@@ -142,10 +134,10 @@ def test_referenced_functions_exist():
     found = 0
     modules = {"solvers": solvers, "coordinates": coordinates, "datasets": datasets}
     for mod, name in re.findall(r"`(solvers|coordinates|datasets)\.(\w+)`", text):
-        assert hasattr(modules[mod], RENAMED.get(name, name)), f"{mod}.{name}"
+        assert hasattr(modules[mod], name), f"{mod}.{name}"
         found += 1
     for name in re.findall(r"`HyperbolicTradeSpace\.(\w+)`", text):
-        assert hasattr(HyperbolicTradeSpace, RENAMED.get(name, name)) or name in {
+        assert hasattr(HyperbolicTradeSpace, name) or name in {
             "exponents_",
             "log_offset_",
             "termination_",

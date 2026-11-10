@@ -251,6 +251,7 @@ Approved or changed as one item at the scope gate. Each is marked *(default)* wh
 - **A5. `docs/superpowers/notes/` are records** (spike reports, reviews, process notes) and keep their wording, as the
   spike counted them with `work-packages`; the spike folder is WP25's to delete once its result is recorded here
   *(default)*.
+  Amended 2026-11-10 (the driver, `WP24-decisions.md`): `docs/superpowers/notes/paper-sources/*.md` are the paper's source text and take the vocabulary; decision records and quotations keep theirs.
 - **A6. "Quilt" once.** The supervisor's "quilt of trade-offs" replaces the Preliminaries' "A term, a monomial and a
   facet are one object" sentence: the fitted surface is a quilt of trade-offs, each monomial term one patch, flat in
   log space, meeting its neighbours at the ridges; the docsite index may carry the same sentence; "quilt" and "patch"
