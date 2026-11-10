@@ -681,6 +681,32 @@ def test_paper_cells_have_committed_outputs_without_errors():
             assert not [o for o in cell.outputs if o.output_type == "error"], cell.id
 
 
+_WARNING_TEXT = re.compile(r"\w*Warning\b|warnings\.warn|did not converge")
+
+
+def test_committed_outputs_carry_no_stderr_or_warning():
+    """No executed cell of either notebook carries a stderr stream or a warning's text: a
+    solver's termination status is a fact for a table's status column, not a line on the page
+    (driver-log, 2026-11-09, the D.14 recovery cell)."""
+    problems = []
+    for path in (PAPER_NB, SUPPORT_NB):
+        for cell in _code_cells(_nb(path)):
+            for out in cell.outputs:
+                if out.output_type == "stream":
+                    text = "".join(out.get("text", ""))
+                else:
+                    data = out.get("data", {})
+                    text = "".join(data.get("text/markdown", "")) + "".join(
+                        data.get("text/plain", "")
+                    )
+                found = _WARNING_TEXT.search(text)
+                if out.get("name") == "stderr":
+                    problems.append(f"{path.name}:{cell.id} has a stderr stream")
+                elif found:
+                    problems.append(f"{path.name}:{cell.id} prints {found.group(0)!r}")
+    assert not problems, (problems, STALE)
+
+
 def test_figures_have_numbered_self_contained_captions():
     """R-4: each figure and table cell is embedded in a directive with a label and a caption."""
     nb = _nb(PAPER_NB)

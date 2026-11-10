@@ -157,6 +157,34 @@ hts- family differs.
 No image or container outside the hts- family was created, started, stopped or removed; no `colima` command was issued
 and `~/.colima` was not touched.
 
+## Regeneration of the recovery cells (the iteration-cap warning, 2026-11-09)
+
+The committed output of the D.14 recovery cell (`tab-D-planted_recovery`) and of the Section 9 sentence that
+reads the same fits (`num-recovery`) carried one stderr line, the estimator's ConvergenceWarning at the
+alternation's iteration cap (driver-log, "A warning leaks into the rendered paper"). Two changes preceded
+the regeneration: the estimator warns at the cap only when the max term gap or the last objective change
+exceeds `tol` (18d0064), and D.14's closing paragraph reports the platform-stable status counts (the gap
+of every fit against `tol`; the cap count itself differs by platform and stays unprinted, as the audit in
+`paper/environment_values.toml` says). A test now asserts that no committed output of either notebook
+carries a stderr stream or a warning's text (`tests/test_paper.py::test_committed_outputs_carry_no_stderr_or_warning`).
+
+Steps, each `--network none`, in `hts-*` containers only: `sh paper/container/build.sh` at 04df5c3 (the head
+carrying the generator and the test, before the regenerated outputs were committed), image `hts-paper`
+`57a0f23716f4`; the previous image `92e878ce9d68` removed in the same step; `docker run --name hts-exec
+hts-paper sh -c "uv run python paper/paper_common.py && uv run python paper/execute_notebooks.py && sh
+paper/container/build-paper.sh"` (2 min 22 s); both notebooks copied out with `docker cp`; `hts-exec`
+removed by name. Only the outputs of the two recovery cells were taken into the committed notebooks.
+
+| item | result |
+|---|---|
+| the 40 fits of D.14 inside the image (seeds 0 to 19, tau = infinity and 50) | at the exact maximum seed 3 stops at the iteration cap (50 rounds, max term gap 6.7e-16), seeds 1, 8 and 16 `stationary_without_margin`; every other fit `certified`; the largest term gap of every fit is below `tol` (1e-10); no warning is raised |
+| the same fits on the Mac (arm64, no flag) | no fit reaches the cap (seeds 1, 3, 8 and 16 `stationary_without_margin` at the exact maximum); every gap below `tol`; the printed sentence is identical, as designed |
+| `tab-D-planted_recovery` | the stderr stream gone; the tables unchanged (16 of 20 at both temperatures, seeds 1, 3, 8, 16); the closing paragraph carries the counts (40 of 40 below `tol`, none at the cap with a gap at or above it) |
+| `num-recovery` (paper.ipynb) | the stderr stream gone; the sentence byte-identical |
+| every other executed cell | text identical; two figure cells of the paper differ in PNG bytes (encoder) and five sentence cells in output metadata only, the build-environment table in its commit; none taken |
+| `uv run pytest -q tests/test_paper.py` on the Mac (slow included), no flag | 1 failed, 142 passed, 4 skipped (89 s): the failure is `test_cr2`'s `ids.index("fig-plane-k1")`, a cell id the paper stream renamed in cc409f8 (WP19 P-5) before this unit; its D.14 and sentence assertions, run by hand against the committed cells (`_current`, the row patterns, `in 16, at the exact maximum`), all hold; the new stderr test passes |
+| `uv run pytest -q tests/test_claims_register.py` | 1 failed, 20 passed: C150 cites `test_convergence_warning_keyed_to_iteration_cap`, removed by 18d0064 (the estimator unit's row to mend) |
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes

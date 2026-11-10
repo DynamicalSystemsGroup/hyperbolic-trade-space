@@ -492,7 +492,9 @@ def recovery_runs() -> tuple:
     -------
     tuple of dict
         Per table and temperature: ``seed``, ``tau``, ``rows_on_thinnest`` (frontier rows of the
-        planted facet with fewest), ``error``, ``right``, ``status`` and ``recovered``.
+        planted facet with fewest), ``error``, ``right``, ``status``, ``max_gap`` (the largest
+        term gap at termination), ``tol`` (the solver tolerance it is read against) and
+        ``recovered``.
     """
     from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
 
@@ -515,6 +517,8 @@ def recovery_runs() -> tuple:
                 "seed": seed, "tau": tau, "error": error, "right": right,
                 "rows_on_thinnest": int(min((front & (truth == k)).sum() for k in range(3))),
                 "status": est.termination_.status,
+                "max_gap": float(est.termination_.max_gap),
+                "tol": float(est.tol),
                 "recovered": error < OWN_ROWS_TOLERANCE and right >= RECOVERY_RIGHT,
             })  # fmt: skip
     return tuple(out)
@@ -559,6 +563,9 @@ def planted_recovery() -> Md:
         for s in seeds
     ]  # fmt: skip
     thin = sorted({r["rows_on_thinnest"] for r in runs if r["recovered"]})
+    tol = {r["tol"] for r in runs}.pop()
+    below = sum(r["max_gap"] < tol for r in runs)
+    cap_above = sum(r["status"] == "iteration_cap" and r["max_gap"] >= tol for r in runs)
     return Md(
         f"Dataset {DATASET_LABELS['planted']}, the generator of Appendix C at {RECOVERY_ROWS} "
         f"rows, 4 metrics and 3 facets, seeds 0 to {RECOVERY_SEEDS - 1}, the solver's defaults "
@@ -580,12 +587,16 @@ def planted_recovery() -> Md:
         "(`stationary_without_margin`) or at the iteration cap, depending on the platform, "
         "and its errors move with it, so neither is printed: a frontier row on two facet planes "
         "ties at the exact maximum and the platform's argmax and linear-program vertex choice "
-        "resolve the tie (gap G-10). What does not depend on the platform is the count and the "
-        f"seeds: {len(runs) // len(RECOVERY_TAUS) - len(seeds)} of {RECOVERY_SEEDS} tables were "
-        "recovered, and the seeds above failed, at both temperatures on macOS arm64 and on Linux "
-        f"amd64. Every table recovered has at least {min(thin)} frontier rows on each planted "
-        f"facet. At temperature {warm:g} the status and the errors, printed to two digits, were "
-        "the same on both platforms."
+        "resolve the tie (gap G-10). Whichever status a fit stopped with, its largest term gap "
+        f"at termination was below `tol` ({tol:g}) in {below} of the {len(runs)} fits (level 2, "
+        "numerical stationarity, L12), so a stop at the iteration cap is the labels not settling "
+        f"and not a term left unsolved; {cap_above or 'none'} of the fits stopped at the cap with "
+        "a gap at or above `tol`. What does not depend on the platform is the count "
+        f"and the seeds: {len(runs) // len(RECOVERY_TAUS) - len(seeds)} of {RECOVERY_SEEDS} "
+        "tables were recovered, and the seeds above failed, at both temperatures on macOS arm64 "
+        f"and on Linux amd64. Every table recovered has at least {min(thin)} frontier rows on "
+        f"each planted facet. At temperature {warm:g} the status and the errors, printed to two "
+        "digits, were the same on both platforms."
     )  # fmt: skip
 
 
