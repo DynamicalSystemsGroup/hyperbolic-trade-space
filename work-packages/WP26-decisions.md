@@ -32,3 +32,18 @@ the coverage table's hash line join the blast radius. A doc edit that improves t
 point of the package and must not wait on a data gate it cannot affect; the hash equality is the proof it did not.
 The `view` package lives in its own file. **Approved for execution by the driver under the mandate**; the two agents
 deploy; the Agent's defaults as one item.
+
+## Computer-use access and a minimal harness (2026-11-10, 13:10)
+
+**Supervisor (mzargham), verbatim:** "i just saw and gave a claude subprocess access to my computer in a manner that
+should support the modeling and UX work. if we need to we can build minimum viable harness for managing the view
+editor work loops since that needs to pass through reading from and writing to the view editor not by editing
+text and code files."
+
+**Disposition.** WP26 gains one deliverable: a minimal harness for the editor loops in the repository
+(`docs/superpowers/notes/view-editor-harness.md`, with its snippets, or `scripts/view_editor/` if more than a page):
+load a source file verbatim into a named project file (the chunked insert with length and checksum), apply and read
+the issues panel, list the views with their render status, read the requirements table and the traceability matrix
+as data, capture a named view's canvas to an image, export or import the project through the native file dialog.
+Written by the modeller from its step log at the round's end; cited by the researcher's report as the reproduction
+path. Computer-use access is used only for the editor's native file dialogs; the browser pane's tools do the rest.
