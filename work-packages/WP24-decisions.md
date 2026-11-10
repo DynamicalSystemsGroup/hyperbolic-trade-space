@@ -26,3 +26,10 @@ test reads. No map.
 `docs/superpowers/notes/paper-sources/*.md` take the vocabulary by identifier and word edits, and both test maps
 are dropped. Decision records (`WPn-decisions.md`, the supervisor's quotations, `PROOF_MAP_FINDINGS.md` section 10)
 keep their wording. R1's polyhedral "facet" in Appendix B carries the exempt marker (push 4).
+
+**Push 2 landed (a5c67f2, 27dab4d, 9b1152e, a9e23b2; 2026-11-10, 07:20).** Linux dispatched on the head after it
+(c37197c and the board) with the two paper register tests known red until the paper unit. On 7fad5ff (a text-only
+citation row in `derivation/PROOF_MAP_FINDINGS.md` pushed by WP25-2 without an Appendix B regeneration): no revert;
+the file is a findings record not compiled into Appendix B as the record shows, and the paper unit's container run
+runs the Appendix B test, which settles it; a failure there is fixed forward. The `coverage.csv` column names
+staying as enum types with the caption as the bridge: accepted as the PM's call.
