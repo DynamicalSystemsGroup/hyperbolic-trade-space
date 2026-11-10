@@ -63,6 +63,23 @@ Each item is paired with what was tried; bugs with steps are in section 3 and wo
     around 800 px shows only a thumbnail (`inherited-parts-missing.jpg`). A 1600 x 1000 viewport was used from then on.
 11. The pane's screenshot lags one action behind; the page text was read as the record instead.
 
+A cold reader (no background in the model, in the role of a sponsor) used the editor read-only for about twenty minutes and met
+these (the reader's own words in quotes; no screenshots of them were kept):
+
+12. The first click on a toolbar layout button hid the diagram and showed only the source: "I expected a layout toggle, not a
+    swap." Tried the other two layout buttons to get the diagram back.
+13. The stakeholders diagram at fit-to-window was unreadable, even the top row (as item 7). Tried zooming; the page text was
+    then read from the nodes.
+14. Clicking a requirement row in the Requirements table seemed to do nothing for a few seconds; then the layout split, the model
+    tree opened to the element and the source scrolled. The reader expected a detail card beside the table.
+15. Selecting an element in the model tree highlighted it and moved nothing else; the reader expected the source or an inspector to
+    follow and did not find "Show Inspector".
+16. Clicking the `metrics` view once left the requirements view in the pane (a click that did not take, or a lag; not
+    established). Clicked again.
+17. While the reader only clicked and typed nothing, the diagram header briefly read "Applied revision · draft pending" and the
+    toolbar "Working..." with Apply source lit, then returned to "Source applied": "made me nervous that I had changed
+    something." The same transient followed every restore and apply in the other passes.
+
 ## 3. Bugs
 
 Each bug was re-run in a cold pass at the end: a second look from the landing page, in the same browser and workspace.
@@ -210,10 +227,13 @@ verification chain (how a requirement is verified and by what evidence), which i
 7. **An add-file entry in the Explorer's menu** (Bug 3), so a model and its views stay in separate files as in a repository.
 8. **Draw inherited members of a usage, or say why not** (Bug 5), and **document how `expose X` differs across
    representations** (Bug 6).
-9. **A readable layout for tall interconnection views** (item 7): a two-column or grid layout, or fit-to-width with a legible
+9. **A readable layout for tall interconnection views** (item 7, item 13): a two-column or grid layout, or fit-to-width with a legible
    minimum text size.
 10. **A responsive layout below about 1000 px** (item 10): collapsing the explorer and source pane by default would make a
     narrow pane usable.
+11. **A layout control that shows both panes by default** and labels what each button does (items 12, 13); **a detail card or
+    inspector that opens on selection in the table and the tree** (items 14, 15); **a short "rendering..." note instead of "draft
+    pending"** when nothing was edited (item 17).
 
 ## 6. A second session: the chain from stakeholder concern to evidence
 
@@ -277,15 +297,15 @@ applied with 0 issues. Suggestion: name the member in the message and the line o
 ### Bug 10. Recovery clash between two tabs: the message does not say which copy wins
 
 Steps:
-1. Open `/app` in a first browser tab, restore the project's recovery and apply the loading recipe's source.
-2. Open `/app` in a second tab of the same browser and click "Restore recovery" for the same project.
-3. Return to the first tab and look at the header.
+1. Open `/app` in a first browser tab, click "Restore recovery" on the project's landing page and apply the loading recipe's source.
+2. Open `/app` in a second tab of the same browser; click "Restore recovery" (or create a project) for the same project.
+3. Return to the first tab, make an edit and click "Apply source" (the failed save shows after an apply), and look at the header.
 
 Expected: a message that says which copy is kept and what a retry does.
 Observed: "Recovery could not be saved. Your current project is unchanged. Another tab changed local recovery. Retry to
 inspect its saved copy before continuing." with a "Retry recovery" button (`recovery-clash-wording.jpg`). The editor caught
 the clash, which is good; the wording leaves unclear whether the saved copy or the tab's copy is kept after a retry.
-Reproduced: not re-run cold; its effect was seen again in the cold pass of Bug 2, where a recovery save had failed with this message and the restore then held an older text. Suggestion: name the two copies with their last-saved times and say which one "Retry recovery" keeps.
+Reproduced: yes. The same message appeared whenever a second tab restored or created the project; in the cold passes and in two further readers' tabs; its effect is the new form of Bug 2 (the restore then held an older text). Suggestion: name the two copies with their last-saved times and say which one "Retry recovery" keeps.
 
 ### Feature requests: what the chain needs and the editor cannot show
 
@@ -315,34 +335,13 @@ concern with its `stakeholder` parameter. Expected: an edge from the stakeholder
 (`stakeholder :>> s = sponsor`). Observed: the parameter is drawn, the binding is not (`concern-view-no-values.jpg`),
 although the editor draws bindings elsewhere (`assembly-tall-column.jpg`).
 
-**F-5. Render verification usages that carry pointers.** The renderer gap of Bug 4 extends to a view filtering
-verification definitions or usages with the same message, "Rendering unavailable". The Overview tree draws them as
-boxes with their attributes and `verify` edges, which was the workaround; a dedicated rendering would show the case, its
-subject, its objective's verifies and its attribute values (F-1) in one place.
-
-## 7. A cold reader's first use
-
-A reader with no background in the model, in the role of a sponsor, used the editor read-only for about twenty minutes to
-follow a stakeholder concern down to the quantity traded and how it is checked. These are the reader's observations of the
-editor, from the reader's own account; no screenshots of them were kept, so none is cited.
-
-1. **The layout button swaps rather than toggles.** The first click on a toolbar layout button hid the diagram and showed
-   only the source: "I expected a layout toggle, not a swap."
-2. **The stakeholders diagram at fit-to-window is unreadable**, even the top row; the same as item 7 of section 2.
-3. **Clicking a requirement row in the Requirements table seemed to do nothing for a few seconds.** Then the layout split,
-   the model tree opened to the element and the source scrolled. The reader expected a detail card beside the table.
-4. **Selecting an element in the model tree highlighted it and moved nothing else.** The reader expected the source or an
-   inspector to follow, and did not find "Show Inspector".
-5. **Clicking the `metrics` view still showed the requirements view** in the pane at one point (a click that did not take,
-   or a lag; not established).
-6. **A transient "draft pending" with no edit.** While the reader only read, the diagram header briefly read "Applied
-   revision · draft pending" and the toolbar "Working..." with Apply source lit, then returned to "Source applied". The
-   reader had typed nothing: "made me nervous that I had changed something." The same transient was seen right after an apply in
-   another session.
-
-Suggestions: a layout control that shows both panes by default and labels what each button does; a detail card or
-inspector that opens on selection in the table and the tree; a short note ("rendering...") instead of "draft pending" when
-nothing was edited.
+**F-5. Render verification usages that carry pointers.** Steps: 4. Click the view `stakeholders` (Overview tree), whose
+source exposes a verification usage `<name> : EvidenceCase` that carries four `String` pointer attributes; 5. Find the
+usage's node. Expected: a rendering of the case that shows the case, its subject, its objective's `verify` links and its
+attribute values, in one place. Observed: the usage is drawn as a box with attribute nodes that show the type only, and one
+`verify` node per requirement (`concern-view-no-values.jpg`); a view that filters verification definitions gives "Rendering
+unavailable" as in Bug 4. In the requirements table a verification usage with pointers and no objective of its own adds no row
+(Bug 4's workaround of the Overview tree is what was used).
 
 A note on what was not the editor's doing: during the session the browser tab was twice changed by something outside the
 editor (once navigated to an unrelated local page, once clicked in); these are not reported as bugs.
