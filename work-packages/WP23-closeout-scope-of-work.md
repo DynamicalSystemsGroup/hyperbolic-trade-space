@@ -255,4 +255,5 @@ says.
   filters, the hidden dependency of the A1 call), `docs/superpowers/notes/paper-sources/method.md` and the deletion of
   `docs/superpowers/notes/k3-cubesat.md` (the brief's call on the stale K record), `tests/test_v2_data.py`,
   `tests/test_site.py` (the examples page's word budget, 650 to 720, its job stated) and
-  `examples/adcs/experiments/reports/change-register.md` (CR-5).
+  `examples/adcs/experiments/reports/change-register.md` (CR-5), `tests/test_soft_fit.py` (the comment on the
+  re-recorded reference) and `tests/data/soft_fit_default_reference.npz`.

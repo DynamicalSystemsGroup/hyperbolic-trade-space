@@ -49,19 +49,28 @@ def gap_rows(path=LEDGER) -> list[dict]:
 MATH = re.compile(r"\$([^$]+)\$")
 
 
+_PUNCT = re.compile(r"\\([!-/:-@\[-`{-~])")
+
+
 def math_role(text: str) -> str:
-    r"""Inline ``$...$`` as the MyST ``{math}`` role, which a notebook's Markdown output typesets.
+    r"""Inline ``$...$`` kept intact through the Markdown-to-HTML step of the page.
 
-    A pipe inside the mathematics (the ledger escapes it as ``\|`` for its own table) becomes
-    ``\vert``, so no pipe is left to split a cell of the pipe table.
+    The table reaches the page as HTML (``paper_common.Md``, markdown-it), which reads the
+    mathematics as Markdown: ``_`` and ``*`` as emphasis, a backslash before punctuation (``\,``,
+    ``\{``) as an escape, ``|`` as a cell border. Inside each ``$...$`` those are escaped so the
+    HTML carries the mathematics as written and the page typesets it; a pipe becomes ``\vert``.
 
-    >>> print(math_role(r"a $\|s\|<1$ b"))
-    a {math}`\vert s\vert <1` b
+    >>> print(math_role(r"a $\|s\|<1$ and $J_\tau\,x$ b"))
+    a $\vert s\vert <1$ and $J\_\tau\\,x$ b
     """
-    return MATH.sub(
-        lambda m: "{math}`" + m.group(1).replace("\\|", "\\vert ").replace("|", "\\vert ") + "`",
-        text,
-    )
+
+    def safe(m):
+        body = m.group(1).replace("\\|", "|").replace("|", "\\vert ")
+        body = _PUNCT.sub(lambda p: "\\\\" + p.group(1), body)
+        body = body.replace("_", "\\_").replace("*", "\\*")
+        return "$" + body + "$"
+
+    return MATH.sub(safe, text)
 
 
 def gaps_table() -> Md:

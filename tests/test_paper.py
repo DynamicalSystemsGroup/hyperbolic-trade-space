@@ -824,14 +824,22 @@ def test_gaps_committed_output_is_current():
     assert _out_text(cell) == str(generate_gaps.gaps_table()), STALE
 
 
-def test_gaps_table_carries_no_unrendered_math():
-    """R-31 of the WP23 close-out: Appendix E's mathematics is the ``{math}`` role, which the staged
-    page typesets; no ``$...$`` pair is left in the table, and no pipe inside a role splits a
-    cell."""
-    text = str(generate_gaps.gaps_table())
-    assert not re.search(r"\$[^$]+\$", text)
-    roles = re.findall(r"\{math\}`([^`]*)`", text)
-    assert roles and not [r for r in roles if "|" in r]
+def test_gaps_table_carries_its_mathematics_intact_into_the_page():
+    """R-31 of the WP23 close-out: the page shows the table's HTML (``paper_common.Md``), and every
+    ``$...$`` of the ledger's columns reaches it as written (a pipe as ``\\vert``), so the page
+    typesets it; the Markdown step makes no emphasis of an underscore inside one."""
+    import html
+
+    from paper_common import Md
+
+    cols = ("Formal object", "Bridging assumption", "What cannot be proved",
+            "Sensitivity evidence", "Interpretive consequence")  # fmt: skip
+    spans = [m for r in generate_gaps.gap_rows() for c in cols
+             for m in re.findall(r"\$[^$]+\$", r[c])]  # fmt: skip
+    page = html.unescape(Md(generate_gaps.gaps_table())._repr_html_())
+    assert spans and "<em>" not in page
+    missing = [s for s in spans if s.replace("\\|", "|").replace("|", "\\vert ") not in page]
+    assert not missing, missing[:3]
 
 
 # -- F: the pinned toolchain is generated from the lock

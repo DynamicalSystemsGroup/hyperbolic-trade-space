@@ -1434,3 +1434,66 @@ The one line the P3 cold read of revision 7 left open, executed in `docs/superpo
 **Type.** The smallest type at 700 px is 12.512 px (the SVG's font sizes are 12.512 and 14.597 only), as in revision 7; nothing shrunk, the image is 700 x 1341 as before. Only the behavioural `.puml` line changed; the caption is byte-identical. The assembly view's sources, images and caption, and `fig-assembly-view.png`, are byte-identical. `paper/figures/fig-behavioural-view.png` is a byte copy of the new image. Looked at at 700 px with the image viewer: the box reads "returns 8 of 9 metrics, computed with no slew: pointing error, total mass", then the measurement's two entries.
 
 Renders (session scratchpad `wp23view8-renders/`, 700 px): `before/behavioural_view.png` (revision 7), `r7check/` (the recipe check), `gen8/` (the generator's output, byte-identical to the committed files), `behavioural_view.png` (after).
+
+## Close-out (the WP23 close-out's executor, 2026-11-10)
+
+Scope `WP23-closeout-scope-of-work.md` (approved 944c564; OD10 = (a)). Commits on `dev`: f9a4da8 (the
+model and its gates), 499ee63 (eight metrics in the case code, `dod_ok` a flag, contract row 15),
+4409920 (`dod_ok` in the proposer's and the sensitivity run's filters), f1101ce (the host
+regeneration and the records), b4d0132 (the tables, the association step, the prose), then this
+section, the comparison and the Appendix E change.
+
+**What was run, on the host (macOS arm64), with wall times.** `ledger_gate.py --host` 221 s (the
+run of record; two earlier runs discarded and the tree restored, `swap-evidence.md`, "WP23
+close-out", section 1); the first-20 recording 11 s; `coverage.py` 16 s; the views generator and
+PlantUML (revision 9) a few seconds; `experiments compare` 5 s and `verify` (39 entries, 11
+current, 0 drifts); `experiments.sensitivity regenerate` 18 min and `analyse` 3 min;
+`paper/stability_extra.py` 3 min; `scripts/build_figures.py` 81 s; `paper/execute_notebooks.py`
+140 s; the soft-fit reference re-recorded by the test's routine (about 60 s). Checks: the fast suite
+(1733 passed); the slow files of the change with `REQUIRE_OPENSYSML=1` (test_case,
+test_cubesat_oracle, test_v2_data, test_paper, the model tests, test_soft_fit, test_site, the
+contract and the register: 607 passed, then the soft-fit pair after its recording); ruff check and
+format, `uv lock --check`, the vocabulary tool with its baseline (0 new) clean.
+
+**What was looked at.** The behavioural view at 700 px (revision 9: the eclipse reserve's boxes
+gone, the pointing-error requirement's box reads "not satisfied by cubesatBaseline"; the assembly
+view unchanged, byte-equal); the regenerated figures as images (`fig-tau-sweep`: eight metric rows,
+the zero rows power margin and peak slew power; `fig-tensions-k3`, `fig-regimes`); the staged
+supporting material (D.17's text and tables, Appendix E) and `docs/examples.md` in the browser
+pane. Renders: the session scratchpad's `closeout-renders/`.
+
+**Findings of the executor, for the reviewer.**
+
+1. Under the feasible set's conditioning (OD10 (a)) the requirement-constrained set keeps the
+   feasible set's one-term contending set in the primary regime and swaps power margin for energy
+   balance in the stock regime; spike A's changed set was the re-conditioning (the comparison,
+   section 6). The Discussion candidate says so.
+2. The proposer's training rows had the same hidden dependency on the reserve's positivity as the
+   case's fit (811 rows without it); `dod_ok` joined its filter before the run of record.
+3. The radius of the certificate scales with the number of metrics; the stock K = 3 assignment moved
+   by 1 to 3 rows and the primary's terms 1 and 2 traded labels (no sentence reads a term number).
+4. **Not achieved: R-31.** Appendix E's mathematics still shows as raw `$...$` on the staged page.
+   The page shows each table's HTML, made by `paper_common.Md._repr_html_` (markdown-it), and the
+   site typesets no mathematics inside a notebook's HTML output; Appendix A's register table shows
+   the same raw `$c$`. The generator now carries every `$...$` intact through that step (229 spans,
+   no emphasis made of an underscore; `tests/test_paper.py::test_gaps_table_carries_its_mathematics_intact_into_the_page`),
+   which is necessary and not sufficient. The rest needs `paper/paper_common.py` (outside the
+   radius) or a renderer the lock does not hold: the question is the PM's.
+
+**The two candidate Discussion sentences, verbatim, for the supervisor** (`sec-discussion`, the
+paragraph "Requirements after the fit"; register rows C406, C407):
+
+> Fitting first and reading the requirements after is the unconstrained-then-constrained reading of
+> a trade study: Appendix D.17 prices each of the model's four requirements at the fitted frontier
+> and counts the near-frontier designs it excludes.
+
+> With every design set conditioned as the fit of record is, removing the infeasible designs or
+> imposing the four requirements before the fit changes the one-term contending set by at most one
+> of its five metrics, so on this case pre-imposing the requirements does not change what the
+> frontier trades.
+
+**The two spike tables against the spikes' numbers.** Spike B's requirements table reproduces at
+the paper's precision (pass fractions, near-frontier designs excluded, prices 0.07, 0.56 and 7.9
+bands, the elasticities with co-contenders of exponent at least 0.05), except pointing error in the
+primary regime, 95.0 % against the gate's 94.9 % (one design within 1e-6 of the limit, which spike
+B noted). Spike A's table differs where OD10 (a) says it should: the comparison's section 6.

@@ -1723,3 +1723,190 @@ Additions: Section 8 names MoE and MoP once (length ledger row, Case constructio
 words); claims register rows C391 to C399 (the radius rule, the thin term's caption and sentence, the per-term leaders of
 `num-k-sweep`, the stability head's two facts, the check reading's 3 of 3 and 1 of 3, the duplicate proposal, the
 depth-of-discharge failures).
+
+## WP23 close-out: nine metrics against eight (the supervisor's thresholds, the eclipse reserve out, `dod_ok` a flag), one regeneration on the host
+
+Old: `dev` at bf2a83c (the data gate's `@5` entries, made in the container `hts-paper`, model
+`fb1dbd061610`). New: `dev` at b4d0132 (`@6` entries made on the host, macOS arm64, model
+`13c10e1c5ef5`; `WP23-closeout-scope-of-work.md`, D-15, D-16). Written by the close-out's executor
+from `git show bf2a83c:<path>` against the committed files; every number below is read from those
+two trees.
+
+### Changed conclusions (read first)
+
+1. **No conclusion of the paper changes.** The data's sampling, seeds, scenario constants, designs and
+   flags are unchanged on all 2000 designs; the eclipse reserve leaves the metric set and `dod_ok`
+   enters the case's flags, which together remove the same 131 designs per regime as before (706
+   and 780 feasible). The one-term fits (temperatures, objectives, contending sets, near-frontier
+   counts 56 and 77; the primary's exponents to the printed digits, the stock's within 3e-04) are
+   unchanged; the three-term fits keep their term types, with the stock regime's assignment moving
+   by 1 to 3 rows per term and the primary's terms 1 and 2 trading labels (G-10; no prose reads a
+   term's number).
+2. **Counts that say "nine" say "eight"** (the attributes, the metrics of the nondominated count, the
+   behavioural view's caption, Appendix C's tables). The stock regime's nondominated set on all
+   attributes falls from 725 to 724 of 780 (one metric fewer can only shrink it); the primary's
+   stays 659.
+3. **The certificate's stable radius moves** (it scales with the number of metrics): primary K = 2
+   from 5.72e-05 to 6.95e-05, primary K = 3 from 9.94e-05 to 1.21e-04; the stock K = 3 margin from
+   9.1e-05 to 3.5e-04 with its radius, the assignment having moved. Statuses stay `certified`.
+4. **The sentence on the proposals changes in kind**: the check reading now says that they reached the
+   four-metric frontier by spending the battery and fail the depth-of-discharge requirement (spike A),
+   with a flag-predicting proposer as future work; the earlier clause on the training rows went.
+5. **New readings, not moved ones**: the association step (no pair at |Spearman| 0.99; strongest
+   power margin and energy balance, 0.982 and 0.988), the requirements read after the fit and the
+   three design sets (Appendix D.17); under one conditioning (OD10 (a)) the requirements change the
+   one-term contending set by at most one metric, against spike A's own-rows reading (section 6).
+
+### 1. The files
+
+| file | old sha256 (first 12) | new sha256 (first 12) |
+|---|---|---|
+| `examples/adcs/model_v2/cubesat.sysml` | `fb1dbd061610` | `13c10e1c5ef5` |
+| `examples/adcs/data/v2/adcs_designs_cubesat_gains.csv` (`v2-primary@6`) | `0bc823ceaf51` | `d601d82833b6` |
+| `examples/adcs/data/v2/adcs_designs_cubesat.csv` (`v2-baseline@6`) | `4ec7514e9ac5` | `9d1f4849ba46` |
+| `examples/adcs/data/v2/check_predictions_cubesat.csv` (`v2-check-predictions@6`) | `6b65b2843a99` | `48493bf3f6e6` |
+| `examples/adcs/data/v2/check_designs_cubesat.csv` (`v2-check-designs@6`) | `b6facc345c68` | `e3f22d93c7d7` |
+| `examples/adcs/data/scope-sensitivity/scope_sensitivity_v2.csv` (`scope-sensitivity-shared-subspace-v2@5`) | `3e0d7df6cab8` | `fd46402c2f61` |
+| `examples/adcs/experiments/ledger/ledger.jsonl` | `266dc9b6eea1` | `4508e1770176` |
+| `tests/data/v2_first_designs_of_record.csv` | `894277fb237c` | `81241be0b883` |
+| `tests/data/soft_fit_default_reference.npz` | `7011617302f7` | `eaa4f647baeb` |
+| `examples/adcs/model_v2/views/coverage.md` / `.csv` | `3b730b298d88` / `494b10e96198` | `987500abd780` / `a0488048fedc` |
+| `examples/adcs/model_v2/views/behavioural_view.puml` | `c4617a968930` | `2a1b0c9336b0` |
+| `examples/adcs/experiments/reports/v1-v2-comparison.md` | `cd52c45a1cbc` | `1a4264f81854` |
+| `examples/adcs/experiments/reports/change-register.md` | `273e4318e183` | `e8969c16fd8f` |
+| `examples/adcs/experiments/reports/sensitivity.json` | `1fc844ed6d27` | `469bbf138a7a` |
+| `paper/stability_extra.json` | `ceae76fbb442` | `82bf1d401168` |
+| `paper/paper.ipynb` / `paper/supporting_material.ipynb` | `0eddd5ed4f78` / `5cccd2be6d09` | `53f401409388` / `33dcb0f73991` |
+
+The five ledger entries: none dirty, platform `macOS-26.5.2-arm64-arm-64bit`, `git_commit` 931dbd8
+(the pre-rebase hash of 4409920; the trees of the hashed code files are equal), times 15:49 to 15:51
+UTC, the note naming the close-out and the host. `PYTHONPATH=examples/adcs uv run python -m
+experiments verify`: 39 entries (11 current), 0 drifts. Wall times: `ledger_gate.py --host` 221 s
+(run three times: the first two were discarded, below), the first-20 recording 11 s, `coverage.py`
+16 s, `experiments.sensitivity regenerate` 18 min, `analyse` 3 min, `stability_extra.py` 3 min,
+`build_figures.py` 81 s, the two notebooks 140 s.
+
+Two runs were discarded before the run of record, both with the ledger and data restored to the
+committed state: the first because the executor edited `case.py` in the tree while it ran (two
+entries marked dirty); the second because `check_designs.Proposer` trained on 811 rows, not 706: its
+filter (settled, power_ok, momentum_ok, every traded metric positive) had relied on the reserve's
+positivity to drop the depth-of-discharge failures, a second hidden dependency of the A1 call, fixed
+by `dod_ok` in its filter (4409920) before the run of record.
+
+### 2. Every moved number, column by column
+
+**The two 1000-design tables.** `eclipse_reserve_wh` gone (cause: the reserve's calc left the model,
+D-11; CR-5). Every other column inside the reproducibility tolerances of the frozen files; against
+the gate's container files (old) the host's values differ in `control_effort` (445 primary, 161
+baseline rows above 1e-6 relative; largest 7.4e-05 and 1.2e-04), `torque_saturated_frac` (514, 168;
+largest 0.13 and 0.23 relative, 0.009 absolute), `peak_momentum_nms` (12, 3; largest 3.3e-05) and
+`slew_loss_energy_wh` (232, 69; largest 7.3e-05). Cause: the platform (the adaptive integrator's
+accepted steps differ between the container and the Mac, the gate's CR-2); the host's files are back
+inside tolerance of the frozen Mac files, so the gate's CR-2 is retired. The settling time, the flags,
+the categorical values and every accounting column are equal to `%.9g` on all 2000 designs.
+
+**The check predictions and designs.** The same three proposals (two configurations) at the reach
+0.6222, as at the gate; predicted coordinates and scores differ by at most 5e-05 relative, the
+simulated rows as the tables above (control effort 2e-06 absolute, saturated fraction 0.004). Cause:
+the platform. `eclipse_reserve_wh` gone from the designs file.
+
+**The first-20 recording and the scope-sensitivity file.** As the tables: the reserve's column gone,
+the platform's differences in the step-summed columns.
+
+**The case's records** (old: the nine-metric fit on the gate's data; new: the eight-metric fit).
+
+| quantity | old | new | cause |
+|---|---|---|---|
+| feasible designs | 706, 780 | 706, 780 | `dod_ok` removes the 131 per regime the reserve's positivity removed (Appendix C.3 gains a `dod_ok` row: 131 fail, 105 and 117 removed; "all attributes positive" now removes 0) |
+| K = 1 tau, objective, frac above | 38.10, 0.2434, 0.092; 45.68, 0.1786, 0.104 | equal | the reserve carried no exponent at K = 1 |
+| K = 1 contending sets, exponents | as recorded | primary equal to the printed digits; stock within 3e-04 (pointing error 0.03924 to 0.03927, depth of discharge 0.01163 to 0.01195; the reserve's 0.00037 gone) | the reserve's small stock exponent redistributed |
+| K = 1 stock gap (single-term diagnostic) | 1.29e-05 | 1.24e-05 | the metric set |
+| K = 3 primary terms | rows 162 / 181 / 363, shares 0.24 / 0.03 / 0.72; the thin term is term 2 | equal as a set; terms 1 and 2 trade labels in D.2 and D.3, the thin term is now term 1 | the restart that wins (G-10); no sentence reads a term's number |
+| K = 3 stock terms | rows 251 / 184 / 345; frac above 0.0936; peak slew power 0.428 | 253 / 185 / 342; 0.0910; 0.424 | the metric set: a row near a seam moves |
+| stable radius K = 2 / K = 3 primary; K = 2 stock | 5.72e-05 / 9.94e-05; 1.195e-04 | 6.95e-05 / 1.21e-04; 1.327e-04 | the radius scales with the dimension |
+| margin / radius K = 3 stock | 9.1e-05 / 7.7e-06 | 3.5e-04 / 3.3e-05 | the assignment moved (row above) |
+| zero sets across tau | primary: power margin, eclipse reserve, peak slew power; stock: peak slew power | primary: power margin, peak slew power; stock: peak slew power | the reserve left |
+| nondominated on all attributes | 659 of 706 (9); 725 of 780 (9) | 659 (8); 724 (8) | one attribute fewer |
+| D.1 temperature sweep, stock | metrics with w > 1e-3: 8, 7, 7, 7 | 7, 6, 6, 6 (n_eff 370.2, 147.6, 45.02, 16.68) | the reserve contended at low tau |
+| D.5 robust scaler | primary tau 54.77, 6-lemma with the reserve; stock tau 65.68 | 78.75 both; the reserve's place taken by depth of discharge | the reserve's log-IQR scale entered the robust conditioning |
+| D.6 large-wheel refit | 7-lemma with the reserve | 6-lemma | the reserve left |
+| D.4 stock associations | settling-mass -0.12 (+0.04); pointing-effort -0.65 (-0.70); settling-pointing +0.66 (+0.71) | -0.10 (+0.05); -0.63 (-0.69); +0.63 (+0.70) | the report's association is read in the fit's coordinates over all metrics |
+| D.12 conditioning diagnostic, K = 3 | 9, 9.3; 0.21 | 9.3, 9; 0.23 | the term labels (G-10) and the metric set |
+| D.16 PCA directions | 0.437, 0.238, 0.173 with the reserve loading | 0.444, 0.238, 0.159; depth of discharge in its place | the reserve left the chart |
+| D.10 propose-predict-check | 0.0484, 1.05 | 0.04836, 1.055 | printed digits under the regenerated stability record |
+
+### 3. The conclusions, item by item
+
+- Contending sets (K = 1, both regimes; each term at K = 3): unchanged in membership and order.
+- Leaders: unchanged (total mass 0.358; control effort 0.432; at K = 3 peak slew power 0.612 primary,
+  0.424 stock against 0.428).
+- K = 3 term types: unchanged in both regimes; the thin term (3 near-frontier designs, primary)
+  remains thin.
+- Zero sets: the reserve leaves the primary's; nothing enters.
+- Temperatures: unchanged at every K in both regimes.
+- Certificates: all `certified` at K = 2, 3; gaps below 1e-12; radii and the stock K = 3 margin move
+  (section 2).
+- Check outcomes: unchanged (energy differential within the band 3 of 3, position 1 of 3); the
+  proposals still fail `dod_ok`, now said with spike A's reading.
+- Counts: feasible 706 and 780; near-frontier 56 and 77; nondominated 659 and 724 (725 before).
+- Flags: `settled`, `momentum_ok`, `power_ok`, `dod_ok` equal on every design; `dod_ok` is now one of
+  the case's flags (`case.CUBESAT.flags`).
+- The thresholds move no flag: they are requirements read after the fit, not feasibility flags.
+
+### 4. The paper's and the docs' slots, by cell id, with cause
+
+Paper (`paper/paper.ipynb`): `num-attributes`, `num-datasets`, `num-nondominated` (nine to eight);
+`sec-case-construction-1` (eight MoPs to seven) and `fig-behavioural-caption` (eight metrics; the
+analysis computes six; the negated satisfy said) for the reserve's removal; `sec-case-construction-1b`
+(the four requirements and the baseline's failure of the pointing-error requirement, 63.7 %),
+`sec-case-analysis-5` (the proposals' sentence), `sec-discussion` (the two candidate sentences) and
+`num-predict-reading` (spike A's finding) for D-18; `num-margin` (the radius); `num-k-sweep` (term
+labels); `fig-tau-sweep`, `fig-tensions-k3`, `fig-regimes` and the static figures `fig-planes-k1`,
+`fig-planes-k3`, `fig-chart-level`, `fig-nlemma`, `fig-behavioural-view` (redrawn without the
+reserve).
+
+Supporting material: `app-C-job`, `tab-C-evaluation`, `tab-C-attribute_sources`,
+`tab-C-conditioning`, `tab-C-metric_table` (the reserve's row gone); `tab-C-feasibility` (the
+`dod_ok` row); `tab-C-datasets` (the `@6` entries and hashes); new `app-C-5-associations`,
+`tab-C-metric_associations`; `tab-D-temperature_selection`, `tab-D-k_diagnostics`,
+`tab-D-exponents_and_terms` (and the association sentence), `tab-D-regime_comparison` (and the
+sentence), `tab-D-sensitivity_variants`, `tab-D-refits_by_category`, `tab-D-termination_records`,
+`tab-D-margin_reading`, `tab-D-nondominated`, `tab-D-propose_predict_check`, `tab-D-stability`,
+`tab-D-conditioning_diagnostic`, `tab-D-pca_chain` (section 2's causes); new `app-D-req`,
+`tab-D-requirements_at_the_frontier`, `app-D-req-sets`, `tab-D-design_sets_comparison` (D.17);
+`tab-E-gaps` (the mathematics as the `{math}` role, R-31); `tab-F-toolchain` (the platform of the
+build, the host) and `tab-F-reproduction` (the new table functions listed).
+
+Docs (`docs/examples.md`): eight attributes; the "No metric twice" bullet; the new section
+"Requirements read after the fit" (two generated text blocks); the alt texts and caption (eight
+metrics, seven position coordinates); the ternary limit (an eight-metric case). The figures rebuild
+from the data.
+
+### 5. What the regeneration is not
+
+No change to `src/`, `derivation/`, the frozen `examples/adcs/data/*.csv` or the v1 model. The
+exact-equality branches (the container of record, `HTS_ENVIRONMENT_OF_RECORD=1`) are not re-pinned
+here: the first-20 recording, the soft-fit reference (now `recorded_on` darwin arm64), the
+environment reference and `RECORD.md` are the driver's container regression at the gate.
+
+### 6. OD10 (a): spike A's own-rows numbers against the feasible set's conditioning
+
+Spike A conditioned each design set on its own rows; the close-out applies the feasible set's
+conditioning to every set (`case.design_sets`, the temperature rule the same, each set's
+temperature selected on its rows). Only the "all designs" and "requirements met" rows can differ
+(the feasible rows are the fit of record in both).
+
+| regime, set | spike A (own rows) | close-out (feasible set's conditioning) |
+|---|---|---|
+| primary, all designs (U8) | tau 38.1; total mass 0.324, energy balance 0.221, pointing error 0.160; set total mass, energy balance, pointing error, settling time, depth of discharge | tau 31.8; total mass 0.357, energy balance 0.181, pointing error 0.163; the feasible set's order |
+| primary, requirements met (R) | tau 65.7; **pointing error 0.296, peak slew power 0.240, total mass 0.158**; a 6-lemma with peak slew power and power margin; zero: energy balance, eclipse reserve; K = 3 shares 0.70 / 0.20 / 0.10 led by pointing error | tau 65.7; **total mass 0.357, energy balance 0.184, pointing error 0.177**; the feasible set's 5-lemma; zero: control effort, power margin, peak slew power; K = 3 every term led by peak slew power and pointing error (0.09 / 0.18 / 0.73) |
+| stock, all designs (U8) | tau 31.8; control effort 0.407, settling time 0.310, power margin 0.205; set control effort, settling time, power margin, pointing error, total mass | tau 29.0; 0.414, 0.334, 0.190; the same set |
+| stock, requirements met (R) | tau 31.8; power margin 0.215, control effort 0.205, total mass 0.188; a 6-lemma; zero: energy balance, eclipse reserve, peak slew power | tau 54.8; control effort 0.441, settling time 0.305, energy balance 0.212; control effort, settling time, energy balance, pointing error, depth of discharge; zero: total mass, power margin, peak slew power |
+
+Reading: the constrained set's changed contending set in spike A (pointing error against peak slew
+power, primary) was the re-conditioning of the 288 rows, as spike B's section 4 found; in one
+conditioning the constrained set keeps the feasible set's contending set in the primary regime and
+swaps power margin for energy balance (Spearman 0.988 over the feasible designs) in the stock
+regime, and the three-term fit of the constrained set is what moves (the peak-slew/pointing term
+covers it). The Discussion's candidate follows this table, not the spike's: the requirements cut
+designs (19 of 56 and 43 of 77 near-frontier designs), not what the frontier trades.
