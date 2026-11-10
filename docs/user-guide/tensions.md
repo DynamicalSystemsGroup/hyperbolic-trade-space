@@ -35,7 +35,7 @@ plot_tensions(report, names=["m0", "m1", "m2"])
 ## The contending set and the n-lemma
 
 `contending_set` holds the metrics with positive exponent in the exact-maximum fit (tau = infinity,
-exponents above 1e-9). `n_lemma` is its size and `lemma_name` names it: monolemma, dilemma,
+exponents above 1e-9). `contending_exponents` are their exponents, `n_lemma` is its size and `lemma_name` names it: monolemma, dilemma,
 trilemma, then an n-lemma. The set is found, not assumed: n is read from the fitted exponents, not
 chosen before the fit. The report solves the tau = infinity program itself, independent of the
 fit temperature. `min_exponent` must be 0 for this reading, because a positive floor masks the
@@ -54,7 +54,7 @@ describes a feature of the fitted model, not a causal exchange.
 
 For designs with absolute log V below `band` (by default 1/tau, or 0.1 at infinite tau),
 `association` is the Pearson or Spearman correlation of the log-metrics: negative is traded, positive
-is aligned. Near the surface the weighted sum of log-metrics is almost constant, so a binding
+is aligned; `association_kind` says which. Near the surface the weighted sum of log-metrics is almost constant, so a binding
 constraint produces negative association even where no designer traded the metrics (`closure_note`
 says so). Treat association as evidence only together with the exponents and the directions.
 

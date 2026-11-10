@@ -41,8 +41,6 @@ plot_log_plane(ts2, X2)
 <figcaption>Figure 4. One term in the log plane: the line is V = 1; the grey strip below it is log V from -1/tau to 0.</figcaption>
 </figure>
 
-With three metrics the position can also be read as shares of a total: see the [ternary plot](../examples.md#three-metrics-as-shares-of-a-total).
-
 ## Reading log V
 
 V is a factor of improvement: doubling every metric doubles V. Three methods read it:
@@ -53,7 +51,7 @@ V is a factor of improvement: doubling every metric doubles V. Three methods rea
   (`inf` where the exponent is numerically zero).
 
 At a finite temperature some training designs lie beyond V = 1 by construction, so a score is
-meaningful relative to the band of width 1/tau. Compare `tau * log V` and the rank of log V among
+meaningful relative to the near-frontier band, |log V| below 1/tau. Compare `tau * log V` and the rank of log V among
 training scores, not V - 1 alone. A score beyond the surface is not a verdict that the design is
 wanted, feasible or safe.
 
@@ -72,7 +70,7 @@ candidates for white space (`hyperbolic_trade_space.gaps`):
   maps back to metrics and, with a preconditioner, to attributes.
 - `orient_by_pca(Z, mask=None)`: rotates to the principal axes of the masked rows.
 
-The holes of a three-metric fit, marked on the chart:
+Holes of a three-metric fit:
 
 ```python {.runnable}
 from hyperbolic_trade_space.gaps import find_holes
@@ -99,13 +97,15 @@ The surface is also log-convex, so structure that is not log-convex is invisible
 
 ## Plots
 
-`hyperbolic_trade_space.plotting` provides five plots:
+`hyperbolic_trade_space.plotting` provides six plots:
 
 - `plot_log_plane`: two metrics, the data, the frontier and its band.
 - `plot_frontier_surface_3d`: three metrics, the frontier surface.
 - `plot_frontier_coordinates`: the chart, with optional holes and targets.
 - `plot_v_by_variable`: log V against a configuration variable.
 - `plot_tensions`: the tension report as a heatmap.
+- `plot_ternary`: three metrics as shares of a total, with the region each term dominates
+  ([example](../examples.md#three-metrics-as-shares-of-a-total)); `ternary_marker_values` gives V at its markers.
 
 Each accepts an optional `ax` and returns a matplotlib `Axes`; nothing calls `plt.show()`. They share
 one colour vocabulary, declared as module constants (`FRONTIER_COLOR`, `BAND_COLOR`, `HOLE_COLOR`,

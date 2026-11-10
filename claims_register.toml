@@ -4994,3 +4994,47 @@ status = "backed"
 disposition = "keep"
 source = "swap-evidence part 5 (num-predict-reading)"
 note = "dod_ok is False for the three proposal rows of the check file; Proposer.feasible_primary keeps the designs that settle, meet the momentum budget and keep positive power, with no depth-of-discharge filter"
+
+[[claim]]
+id = "C400"
+fragment = "`plot_ternary`: three metrics as shares of a total, with the region each term dominates"
+file = "docs/user-guide/chart.md"
+anchor = ""
+kind = "S"
+backing = [
+  "func:src/hyperbolic_trade_space/plotting.py::plot_ternary",
+  "func:src/hyperbolic_trade_space/plotting.py::ternary_marker_values",
+  "test:tests/test_plotting.py::test_ternary_regions_partition_the_triangle",
+  "test:tests/test_plotting.py::test_ternary_marker_table_matches_the_drawn_markers_and_levels",
+]
+status = "backed"
+disposition = "keep"
+source = "WP25-2 unit B, gap fill"
+note = "the plot tints the triangle by the dominating term (regions partition it) and ternary_marker_values returns V at the markers it draws"
+
+[[claim]]
+id = "C401"
+fragment = "`training_log_v_` is log V of the training rows."
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_k_terms_round_trip_and_scores"]
+status = "backed"
+disposition = "keep"
+source = "WP25-2 unit B, gap fill"
+note = "training_log_v_ equals the last chart column of transform(X) on the training table"
+
+[[claim]]
+id = "C402"
+fragment = "Hold tau fixed across numbers of terms, selected at K = 1."
+file = "docs/user-guide/fitting.md"
+anchor = ""
+kind = "S"
+backing = [
+  "test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized",
+  "glossary:mean-slack",
+]
+status = "backed"
+disposition = "keep"
+source = "WP25-2 unit B, drift row 5"
+note = "mean_slack_ is comparable across n_terms at a fixed temperature (estimator docstring); the same page says to select tau at K = 1 and compare at one fixed tau"

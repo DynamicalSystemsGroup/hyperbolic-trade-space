@@ -29,7 +29,7 @@ The attributes to read first:
 - `termination_` and `conditioning_`: how the fit stopped and how well its exponents are identified
   ([termination page](termination.md)).
 
-The chart's basis, offsets and support weights are `basis_`, `log_offset_` and `support_weights_`.
+The chart's basis, offsets and support weights are `basis_`, `log_offset_` and `support_weights_`. `training_log_v_` is log V of the training rows.
 Keep `min_exponent` (a floor on every exponent) at 0 to
 read the contending set, and choose `coordinates` as `"ilr"` or `"alr"`.
 
@@ -37,8 +37,8 @@ read the contending set, and choose `coordinates` as `"ilr"` or `"alr"`.
 
 `temperature` is tau, how hard the maximum is. Infinity (`np.inf`) is the exact maximum, a linear
 program giving the supporting envelope: no design lies above it. A finite tau gives the fitted
-reference surface with a band of near-frontier designs of width 1/tau, and a few designs beyond
-V = 1. Tau is in units of inverse log-spread, so it depends on the conditioning.
+reference surface with a near-frontier band, the designs with |log V| below 1/tau, and a few designs
+beyond V = 1. Tau is in units of inverse log-spread, so it depends on the conditioning.
 
 `select_temperature` picks tau so that a target fraction of designs lies above V = 1:
 
@@ -56,7 +56,7 @@ print(round(tau, 1))
 This synthetic table puts 30 percent of its rows on the planted frontier, hence the target 0.35;
 for real data the default 0.10 is a common start. Use tau of about 3 and above: below that
 `frac_above_` is not monotone in tau.
-Re-select tau when you change the number of terms.
+Hold tau fixed across numbers of terms, selected at K = 1.
 
 ## Several terms
 
@@ -98,8 +98,8 @@ reports about itself is on the [termination page](termination.md).
 ## Choosing K, the temperature and the band
 
 Compare numbers of terms at one fixed temperature, by `mean_slack_`, never by `objective_` and never
-at a temperature re-selected for each K. Add a term while `mean_slack_` still falls by more than the
-variation between restarts. Resample: a term whose exponents change between bootstrap resamples
+at a temperature re-selected for each K. `mean_slack_` falls with K by construction, so it cannot choose
+K alone: add a term only while the resampled exponents stay stable. Resample: a term whose exponents change between bootstrap resamples
 or restarts is a splinter, a few designs fitted alone, and K is too large.
 
 ```python {.runnable}
@@ -130,14 +130,13 @@ pays. Over the four resamples the smallest exponent stays within 0.07 to 0.08 at
 `select_temperature` needs a target the fit can reach. With several terms the term planes are not
 supporting planes, so `frac_above_` levels off above zero as tau grows (about 0.30 on the table of
 `make_frontier_data(300, 4, n_terms=2, random_state=777)`) and the default target 0.10 raises "not
-bracketed". Select
-tau at K = 1 and hold it fixed, or choose a target above the level-off.
+bracketed". Choose a target above the level-off.
 
 `tension_report` takes its band from the temperature, 1/tau. A term whose cell has fewer than
 `min_near_frontier` designs in the band raises, and the message names the `band`, and the matching
 `temperature`, that holds enough.
 
-With two metrics the terms can be drawn in the log plane:
+Two metrics, drawn in the log plane:
 
 ```python {.runnable}
 from hyperbolic_trade_space.plotting import plot_log_plane

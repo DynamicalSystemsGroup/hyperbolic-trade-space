@@ -28,10 +28,13 @@ arbitrary: `d` metrics and `d - 1` chart coordinates.
 
 Submodules are used by import path:
 
+- `hyperbolic_trade_space.coordinates`: `helmert_basis`, `alr_basis`, `to_frontier_coordinates`,
+  `from_frontier_coordinates`, the chart's bases and its two maps ([fitting](user-guide/fitting.md)).
 - `hyperbolic_trade_space.gaps`: `knn_gap_scores`, `find_holes`, `frontier_targets`, `orient_by_pca`
   ([chart](user-guide/chart.md)).
 - `hyperbolic_trade_space.tensions`: `TensionReport`, the object `tension_report` returns.
 - `hyperbolic_trade_space.plotting`: `plot_tensions`, `plot_log_plane`, `plot_frontier_surface_3d`,
-  `plot_frontier_coordinates`, `plot_v_by_variable`, `cell_labels`.
+  `plot_frontier_coordinates`, `plot_v_by_variable`, `plot_ternary`, `ternary_marker_values`,
+  `cell_labels`.
 - `hyperbolic_trade_space.solvers`: the multi-term solver, the `Termination` record and the
   certificate functions, with `min_curvature` for a fit at a finite term temperature, the soft fit ([Reading termination](user-guide/termination.md)).

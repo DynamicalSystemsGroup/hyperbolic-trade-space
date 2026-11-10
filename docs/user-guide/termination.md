@@ -2,7 +2,7 @@
 
 Every fit records how it stopped. At one term the fit is a convex program and its answer is the
 minimizer. With several terms it alternates between weights from the current model and refitting each
-term; the record says which of three levels it meets.
+term.
 
 ```python {.runnable}
 from hyperbolic_trade_space import (
@@ -52,6 +52,7 @@ A soft fit weighs every term: no assignment, no margin.
 - `certified`: term gaps within `eps_kkt` and `min_curvature` above `eps_feas`, a strict local
   minimizer of the soft objective.
 - `stationary`: the gaps hold, the curvature does not: a saddle or a flat direction.
+- `uncertified`: as above.
 
 ## The fields
 
@@ -60,7 +61,7 @@ A soft fit weighs every term: no assignment, no margin.
 - `bound`: the share-weighted sum of term gaps, bounding the distance from the fixed-assignment
   optimum.
 - `gamma`, `radius`: the margin and stable radius, `nan` at one term.
-- Residuals, `objective_change`, `assignment_changes`, `n_empty`, tolerances: diagnostics.
+- `sum_residual`, `floor_residual`, `offset_residual`, `objective_change`, `assignment_changes`, `n_empty`, tolerances: diagnostics.
 - `min_curvature`: a soft fit's smallest curvature; `nan` otherwise.
   A soft fit leaves `gamma`, `radius` and `bound` `nan`.
 
