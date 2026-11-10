@@ -10,8 +10,9 @@ designs lies, and where the table is empty.
 The package answers with tensions, not variance. PCA finds the directions in which the data spread;
 this method finds the positive combination of the metrics along which the data stop, the binding
 constraint among metrics that are all better when larger. The answer is one weight per metric, the
-weights sum to one, and the metrics with non-negligible weight are the ones that contend. They are
-found from the data, so you need not know in advance which dilemma or trilemma your problem holds.
+weights sum to one, and the metrics with positive weight in the exact-maximum fit (tau = inf)
+are the ones that contend; a small weight at the fit temperature is weaker
+participation. They are found from the data, so you need not know in advance which dilemma or trilemma your problem holds.
 
 The weights define a score V, a weighted geometric mean of the metrics. After a one-time
 normalization V = 1 is the fitted reference surface, V below 1 is inside it and V above 1 is beyond
