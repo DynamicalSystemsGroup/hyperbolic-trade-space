@@ -594,13 +594,6 @@ reason = "BASELINE: finite qualifies the fit temperature; the glossary entries t
 [[violation]]
 kind = "stem"
 file = "paper/supporting_material.ipynb"
-phrase = "fitted envelope"
-owner = "P1"
-reason = "G-18 ledger text (WP21 D-8), regenerated into Appendix E; no glossary term replaces it"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
 phrase = "fitted surface"
 owner = "WP10 paper stream"
 reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
@@ -625,13 +618,6 @@ file = "paper/supporting_material.ipynb"
 phrase = "level surface"
 owner = "WP10 paper stream"
 reason = "BASELINE: level surfaces of V: the mathematical class of level sets (the \"hyperbolic\" gloss) (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "loss envelope"
-owner = "P1"
-reason = "G-18 ledger text (WP21 D-8), regenerated into Appendix E; no glossary term replaces it"
 
 [[violation]]
 kind = "stem"
