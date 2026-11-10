@@ -826,3 +826,42 @@ section = "Reproducibility and your own case"
 words_added = 15
 job = "Section 11 names the docsite page to start from (Getting started: install and a first fit) and that the user guide takes over (CR-28)"
 reader = "the three readers who could not start from the text"
+
+# WP11 round 2, author unit 4: the figure stream's captions and three lines (WP19 round 2, CR-30 to
+# CR-34) placed. Cut, no row: Figure 1's caption lost 13 (the clause on the printed n-lemma, which
+# warned of a disagreement the figure does not show, CR-34).
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 22
+job = "Figure 4's caption states the temperature rule as applied (within 0.01 of the target, the convention of Section 5) and glosses 'primary regime' at its first use (CR-31)"
+reader = "the ten readers who asked why 0.1 and the two who met 'regime' before Figure 9"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 87
+job = "Figure 5's caption and lines say what the two greys are (the designs near the slice's median, which stop at the line) and that the slope is the elasticity, for the redrawn figure (CR-33)"
+reader = "the four readers who could not see the outer edge in the slice"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 105
+job = "Figure 6's caption and lines say what the panels show as drawn (each term's own line in its own pair, no panel with two terms meeting) and what the two streaks are (torque-limited slews, one per wheel class), for the redrawn figure (CR-32)"
+reader = "the five readers who saw unnamed streaks and the two who saw no kink"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 78
+job = "Figure 7's caption and lines name the horizontal axis (the first principal direction of the near-frontier chart, a reading and not the model) and the band (the K = 1 band at every K), for the redrawn figure (CR-30, CR-23)"
+reader = "the eight readers who took nothing from the horizontal axis"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 10
+job = "the K = 3 paragraph says what Figure 6 shows as redrawn (each term's own line in its own pair), not the bending it no longer draws"
+reader = "the reader who follows the sentence to the figure"

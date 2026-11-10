@@ -5162,3 +5162,61 @@ status = "backed"
 disposition = "keep"
 source = "WP11 round 2, CR-29"
 note = "L1.4: V = prod_j m_j^{w_j}; a level curve V = c in two metrics is m_1^{w_1} m_2^{w_2} = c, and with w_1 = w_2 = 1/2 (A2) it is m_1 m_2 = c^2, a rectangular hyperbola. Algebra on the definition; no new claim."
+
+[[claim]]
+id = "C411"
+fragment = "the temperature at which the fraction is within 0.01 of the target"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "S"
+backing = [
+  "func:src/hyperbolic_trade_space/tuning.py::select_temperature",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, CR-31 (the figure stream's caption for Figure 4)"
+note = "select_temperature(X, target_frac_above=0.10, ..., tol=0.01) bisects until the fraction above V = 1 is within tol of the target; the caption states the rule as applied, which is how the fit temperature leaves 0.092 against the target 0.10."
+
+[[claim]]
+id = "C412"
+fragment = "the two straight streaks are torque-limited slews: the wheel runs at its usable torque for the whole settling time, so the control effort is that torque times the settling time"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = [
+  "func:examples/adcs/adcs_sim.py::simulate_adcs",
+  "file:work-packages/WP19-figure-review.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, CR-32 (the figure stream's caption for Figure 6)"
+note = "adcs_sim.py clips the wheel torque at the usable torque and integrates its magnitude over the slew into the control effort, so a slew at the limit for its whole settling time has control effort = usable torque x settling time, a line of slope one in the raw logs per wheel class; the figure review's data check on the data of record found those designs to be the two streaks (small and medium wheel; 3 of 267 large-wheel designs)."
+
+[[claim]]
+id = "C413"
+fragment = "the designs whose other six metrics, weighed by their exponents, lie within 0.1 of that median, so for them the line is the surface to within 0.1 in log V"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = [
+  "func:paper/figures/planes.py::_near_median",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, CR-33 (the figure stream's caption for Figure 5; Figure 6's caption applies the criterion per term by reference)"
+note = "planes._near_median with NEAR_TOL = 0.1 selects the dark designs: those whose other metrics, weighed by the term's exponents, move them at most 0.1 in log V off the slice the line is drawn at."
+
+[[claim]]
+id = "C414"
+fragment = "to the right, better total mass and control effort, worse pointing error"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "R"
+backing = [
+  "gen:paper/generate_results.py::pca_chain",
+  "test:tests/test_paper.py::test_cr11_chaining_with_pca_is_worked_on_the_case_in_d16",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 round 2, CR-30 (the figure stream's caption for Figure 7)"
+note = "The horizontal axis of Figure 7 is the first principal direction of the near-frontier chart that Appendix D.16 prints with its loadings (case.pca_directions, signed as D.16 signs it); the caption names the three leading loadings by sign and points at D.16 for the numbers, which the axis label generates."
