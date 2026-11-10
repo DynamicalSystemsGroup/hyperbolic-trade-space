@@ -212,11 +212,17 @@ glossed; PCA distinct, complementary, composable). 0.1 waits for WP23.
 Agents the third PM left running (each in `scratchpad/pm-worktrees/<name>`; their reports go to the PM that resumes them
 by agent id; finish their current unit, start nothing new under the old plan):
 - `paper` (a6741b00a48cdba4d), single writer of paper/paper.ipynb prose, length ledger, generate_findings.py, the
-  register rows whose sentence it changes: unit 7 = the two WP10 decisions above (hash to the driver for a depth-A pass);
-  unit 8 = WP19 P-4..P-10 placement except Figure 3's caption (awaits the redraw), with CR-1d bundled (the abstract's
-  "a soft support, not a regression" becomes "a soft support that a few designs may exceed, not a regression"; sent to
-  the stream; if its report shows CR-1d not done, it is the fourth PM's first paper unit; no re-test after it, then the
-  abstract rests for the supervisor).
+  register rows whose sentence it changes: DONE through unit 8. Unit 7 35b3df6 (energy differential glossed; PCA
+  distinct and composable; the opening contrast no longer reads as replacement). Unit 8 e238560: WP19 P-4..P-10 placed
+  except Figure 3's caption (chart and predict-check figures removed, their sentences kept; new captions for the K = 1
+  plane, the associations, the regimes; the shows/does-not-show/good-for lines in a cell under each kept figure; Appendix
+  F.4 regenerated locally; 9 floats) and CR-1d (the abstract is 239 words, every raise a ledger row; it now rests for the
+  supervisor). Next paper units for the fourth PM: place the revised P-6 (fig-planes-k3.png) and P-7 (fig-chart-level.png)
+  from WP19-figure-review.md at 3cd2722 and apply the driver's dispositions of the principle check (0dab2e9); check the
+  new Figure 5 caption's "grey: the near-frontier band" against the image (the stream saw no grey band on the K = 1 plane:
+  the figure's owner redraws or the caption drops the clause); the glossary's `energy-differential` entry wants the gloss
+  "its level relative to the fitted reference surface, by analogy with a potential (level offset)" and "a physical
+  energy" in its `not` field (glossary owner).
 - `support` (a4fa6b7ef20ce9a72), single writer of derivation/, proof_map_record.json, paper/supporting_material.ipynb and
   its generators, abstraction-gaps.md, glossary.yaml this batch: unit 5 = glossary wording fixes, entries cell, reach,
   near-frontier band, effective sample size, certificate, mean slack; "support offsets" -> reach in L14/L15 with
