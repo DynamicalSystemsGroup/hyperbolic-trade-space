@@ -327,3 +327,9 @@ first and reading the requirements after is the unconstrained-then-constrained r
 requirements changes the contending set while removing the infeasible designs does not; Appendix D prices each
 requirement at the frontier. Nothing more of the options enters the paper. This resolves the Discussion item
 under "Waiting for the supervisor".
+
+**The pointing-error threshold stands (2026-11-10, 08:55).** **Driver's popup:** it excludes the baseline
+configuration (0.0155 against 0.0085 degree). Options: keep / 0.0136 / 0.0118. **Supervisor (mzargham),
+verbatim:** "Keep 0.0085 deg". Disposition: the model keeps it; the case prose and the model's doc say the
+baseline configuration fails the pointing-error requirement; the baseline regime's pass fraction (63.7 %) is
+stated with it.

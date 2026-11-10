@@ -7,15 +7,7 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
-- (2026-11-10, 08:45) **Your pointing-error threshold excludes the baseline configuration.** You chose 0.008495
-  degree (admits 95 % of the primary regime); the baseline configuration's pointing error is 0.015535 degree, so
-  the case's own baseline fails the requirement, and the baseline regime passes only 63.7 %. Spike A found it
-  while reading the baseline in the constrained fit. Options: keep it (the baseline is then a design that fails a
-  requirement, which the case can say); or 0.013561 degree (admits 95 % of the baseline regime, 100 % of the
-  primary; the baseline passes); or 0.011814 degree (admits 90 % of the baseline regime). The close-out unit builds
-  on your value until you say otherwise; changing it later is one constant and one regeneration. Also for you, with
-  the Discussion option above: the paper's one sentence from spike A, the driver recommends "Pre-imposing the four
-  requirements changes the contending set; removing the infeasible designs does not."
+- (2026-11-10, 08:45; answered 08:55) **The pointing-error threshold and the baseline.** Resolved: "Keep 0.0085 deg"; the case says the baseline fails it (`WP23-decisions.md`).
 - (2026-11-10, 08:35; answered 08:50) **The paper's Discussion and the requirements reading.** Resolved: the fit of record stays unconstrained by the thresholds; the cuts are after-the-fact analysis in Appendix D and the repo; one or two sentences in the Discussion (`WP23-decisions.md`).
 - (2026-11-10, 02:25) **Do proposals that fail a model requirement count as check designs?** Under the stated
   reach rule the proposer returns three proposals on the settling-time view; two are one configuration; all three
