@@ -57,6 +57,7 @@ PATH_TESTS: list[tuple[str, list[str]]] = [
     ),
     ("site/*", ["tests/test_site.py", "tests/test_narrative.py"]),
     ("mkdocs.yml", ["tests/test_site.py", "tests/test_docs.py"]),
+    ("scripts/rename_facet.py", ["tests/test_rename_facet.py"]),
     (
         "scripts/*",
         ["tests/test_site.py", "tests/test_build_generated.py", "tests/test_check_script.py"],
