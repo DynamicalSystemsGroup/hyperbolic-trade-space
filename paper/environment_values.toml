@@ -53,7 +53,8 @@ text_rtol = 1e-3  # the tables print four significant digits
 
 [values.figure1_data_hash]
 reason = """maths library (the operating system's, not the processor): the SHA-256 of Figure 1's
-data arrays is f9d7219d... on macOS and 4040cb8e... on Linux (amd64 CI and arm64 alike)"""
+data arrays is d3a29d79... on macOS and ec68f512... in the image (the key "term" since WP24, which
+was "facet": with the old key the same arrays give the earlier f9d7219d... and 4040cb8e...)"""
 elsewhere = """tests/test_paper.py::test_figure1_files_exist_and_the_data_hash_is_pinned compares the
 data arrays (u, logV, Z, corners, W, BETA) with the reference arrays within values_rtol and
 values_atol, and the term labels and the highlighted design index exactly"""

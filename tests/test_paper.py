@@ -1247,8 +1247,8 @@ def test_appendix_b_committed_output_is_current():
 
 # -- Figure 1
 
-# exact only in the environment of record (the image): macOS gives f9d7219d..., the maths library
-FIGURE1_HASH = "4040cb8e22895e224c69322ad14290b81771aeae3a6addf46102ba7b00527a21"
+# exact only in the environment of record (the image): macOS gives d3a29d79..., the maths library
+FIGURE1_HASH = "ec68f512678834a904ff18c5ed78e59db197851b4e2f93091959079a44f79e45"
 
 
 def test_figure1_files_exist_and_the_data_hash_is_pinned():
@@ -2238,7 +2238,7 @@ def test_cr2_the_planted_recovery_is_in_section_9_with_its_table_in_d14():
 
     sentence = _cell_out(PAPER_NB, "num-recovery")
     assert "A known answer" in sentence and "in 16, at the exact maximum" in sentence
-    assert "frontier rows on their thinnest facet" in sentence and "Appendix D.14" in sentence
+    assert "frontier rows on their thinnest term" in sentence and "Appendix D.14" in sentence
     ids = [c.id for c in _nb(PAPER_NB).cells]
     figure = ids.index("fig-planes-k1-caption")  # Figure 2, a static directive (WP19 P-5 revised)
     assert ids.index("sec-case-analysis") < ids.index("num-recovery") < figure

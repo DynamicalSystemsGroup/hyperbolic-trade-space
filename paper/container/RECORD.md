@@ -311,6 +311,36 @@ environment of record is now `8e91e07fb08f`. The soft-fit recording above (made 
 it after the rebase: `uv run pytest -q -n 4 tests/test_soft_fit.py` with the recording and the test of `dev` 4bd6bac
 copied in, exact branch, 81 s: 58 passed (container `hts-paper1c-sf`, removed).
 
+## Regeneration after the rename of the model object's names (WP24 push 1, 2026-11-10, head 541efcd)
+
+The word "facet" left the package, the case code and the paper's generators (WP24 push 1, interface-contract
+amendment 14): the generated table headers, keys and figure labels say "term" (and "cell" for the assignment).
+Steps, each `--network none`, in `hts-*` containers only: `sh paper/container/build.sh` at 541efcd (the local
+head; `tab-F-toolchain` prints it) (31 s, cached layers), image `hts-paper` **`9c8a0c616386`**
+(`sha256:9c8a0c61638691f5374ec857604eabfc0f960aeef3a48a10caaf622082c779bc`), the previous image `8e91e07fb08f`
+removed in the same step (`docker rmi`, no container on it); `docker create --name hts-wp24 --network none
+hts-paper sh /tmp/run.sh`, the script copied in, `docker start -a`; the outputs copied out with `docker cp`;
+`hts-wp24` removed by name, then created again for Figure 1 and the two corrected test pins, and removed.
+
+| command (inside `hts-paper`, `HTS_ENVIRONMENT_OF_RECORD=1`) | wall time | result |
+|---|---|---|
+| `uv run python paper/paper_common.py` | 3 s | `environment_reference.npz`: the array `figure1_facet` is now `figure1_term`, its bytes and the other eight arrays' unchanged; `environment_values.toml` not rewritten |
+| `uv run python paper/execute_notebooks.py` | 116 s | both notebooks; 4 output cells of the paper and 12 of the supporting material change in words only (no numeric token moves), and `tab-F-toolchain` in the build commit |
+| `sh paper/container/build-paper.sh` | 5 s | the site built |
+| `uv run python scripts/build_figures.py` | 98 s | `fig-planes-k3` (the segment labels "term 1" to "term 3") and `fig-nlemma` (its key) rewritten; the other figures and the two model views unchanged |
+| `uv run python paper/figures/figure1.py` | | `figure1.png` and `figure1.svg` (labels "term k", the third pane "terms laid flat") |
+| Figure 1's data hash | | `ec68f512...`, pinned; with the old key name the same arrays give `4040cb8e...`, the earlier pin, so the data are unchanged |
+| `uv run pytest -q -n 4` on `test_paper`, `test_case`, `test_k_terms_case`, `test_paper_sources`, `test_paper_static_figures`, `test_narrative`, `test_claims_register`, `test_sensitivity`, `test_interface_contract`, `test_soft_fit` | 222 s | 399 passed, 1 failed, 4 skipped: the failure was a pin of the generated recovery sentence still reading "facet", corrected and re-run below |
+| `uv run pytest -q tests/test_paper.py -k "figure1 or cr2_the_planted"` with the corrected pins | 20 s | 4 passed |
+| `PAPER_EXECUTE=1 uv run pytest -q tests/test_paper.py -k "perturbation or clean_kernel or term_order"` | 406 s | 4 passed |
+
+No number of the paper moved. The jitter record `examples/adcs/experiments/reports/sensitivity.json` was not re-run
+(its regeneration is the oracle's): its keys were renamed and the file re-serialized as the writer writes it (sorted
+keys); every number and every string value is equal under the rename, and `test_sensitivity`'s comparison of its
+committed column with the live case results passed in the image. `tests/data/soft_fit_default_reference.npz` has its
+94 keys `.../facet_` and `.../facet_share_` renamed `.../cell_` and `.../term_share_`, all 1274 arrays equal in dtype,
+shape and value; `test_soft_fit` passed in the image (exact branch). The environment of record is now `9c8a0c616386`.
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes
