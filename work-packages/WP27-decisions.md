@@ -32,3 +32,10 @@ constructs against the toolkit's strict load and the editor), and uses what pars
 traded metric goes through the data gate; concerns, stakeholders and traces that leave the outputs byte-identical
 land under WP26's rule. The paper's narrative takes none of it; the case prose and the docs' case page carry the
 sponsor-facing reading if the round shows it earns its place.
+
+**Supervisor (mzargham), verbatim, a minute later:** "it will help us determine whether our model is "useful" / "good
+enough"". **Disposition:** this is WP27's definition of good: the case model is useful when a sponsor can follow the
+trace from their own concern down to the trade the engineers made and back, and when the tensions the method
+reports are the ones a concern cares about; "good enough" is judged by that reading in the view editor (a cold
+reader in the sponsor's persona, P1, navigates from "who cares" to the metrics and says what they learned), not by
+the count of model elements.
