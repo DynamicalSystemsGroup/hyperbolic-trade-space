@@ -20,8 +20,10 @@ The WP23 close-out (``WP23-closeout-scope-of-work.md``, D-15) re-ran the same fi
 ``scope-sensitivity-shared-subspace-v2@5``) on the model without the eclipse reserve and with the
 supervisor's four thresholds, on the host under the supervisor's rule of 2026-11-10 ("The container
 is a gate check, not a unit step", ``PM-BRIEF.md``): ``--host`` writes the close-out's note, which
-names the platform (the entry's ``platform`` field records it too); the container of record re-pins
-the exact outputs at the gate.
+names the platform (the entry's ``platform`` field records it too). At the close-out gate the
+driver's container regression re-runs the same five entries in ``hts-paper`` (``@7``,
+``scope-sensitivity-shared-subspace-v2@6``) and re-pins the exact outputs: ``--image`` writes the
+gate's note naming the image. The data gate's note (the ``@5`` entries) stays as ``DATA_GATE_NOTE``.
 
     REQUIRE_OPENSYSML=1 PYTHONPATH=examples/adcs \
         uv run python examples/adcs/model_v2/ledger_gate.py (--image <image id> | --host) [--dry]
@@ -38,11 +40,17 @@ from experiments import definitions as df
 from experiments import ledger as lg
 from experiments import runner
 
-NOTE = (
+DATA_GATE_NOTE = (  # the data gate's run (the @5 entries, 2026-11-10)
     "WP23 data gate: the WP23 model adopted as cubesat.sysml (the slew time out, every traded"
     " metric marked MoE or MoP and tied to a requirement, launch cost the MoE on the total mass);"
     " the settling time by event detection; regenerated in the container of record hts-paper"
     " (image {image})"
+)
+NOTE = (
+    "WP23 close-out gate: the host run's entries (the eclipse reserve out of the model, eight"
+    " traded metrics, the supervisor's four thresholds literal in budgets) re-run in the container"
+    " of record hts-paper (image {image}) by the driver's container regression, which re-pins the"
+    " exact outputs"
 )
 HOST_NOTE = (
     "WP23 close-out: the eclipse reserve out of the model (its requirement restated the"
