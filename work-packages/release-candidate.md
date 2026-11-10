@@ -59,6 +59,7 @@ the release; the PDF export later.
 | 3h | Repository tidiness (WP25, recurring; the supervisor's direction of 2026-11-09, 22:20): cruft deleted (history keeps it), drift between docs, glossary and code closed, gaps listed; one small instance at each gate and one before the PR | each gate |
 | 4 | The data swap (WP16): event detection (its regeneration runs once, after 3f) for the time attributes (the supervisor, 2026-11-09), the datasets, the K = 1, 2, 3 record and the paper's numbers regenerated on the new model inside the container of record, every change listed at the gate | 3e, 3b |
 | 5 | Readability and correctness loops over the reader grid (WP11, the driver scopes): context-gapped reads, triage, revision, re-test; browser passes | 3, 4 |
+| 5a | Improvement by subtraction (the supervisor's direction of 2026-11-09, 23:10): once the content is complete, one disciplined pass over the whole paper and the docs asking of every figure, argument and section whether it advances the narrative; what does not, goes; anything stuck in a loop or that cannot be made clear is assessed for removal rather than reworked again | 3f, 3g, 4, 5 |
 | 6 | Release candidate (WP8b, the driver scopes): version, license file, changelog, the archive cleared, stable reference keys from the docsite into the paper, the punch list, the reviewer's guide in sittings | 2, 5 |
 | 7 | The PR from `dev` to `main` | 6 |
 

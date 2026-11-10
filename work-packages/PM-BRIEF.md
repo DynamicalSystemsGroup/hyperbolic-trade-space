@@ -324,3 +324,8 @@ grows without bound. Every stream is asked, at each unit, what it can delete; a 
 a good unit; each deletion names in its commit what the content no longer did. The length ledger records removals
 as well as additions. Reviewers return a unit that added where it could have cut.
 
+**Stuck means assess removal (the supervisor, 2026-11-09, 23:10).** When a passage, figure or argument is stuck in a
+review loop or cannot be made clear, the next move is to assess its removal against the paper's narrative, not
+another round of rework. The whole-paper improvement-by-subtraction pass (release-candidate.md, step 5a) runs once
+the content is complete; until then streams do not pad, and they cut where cutting is obvious.
+

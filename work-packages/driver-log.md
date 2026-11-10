@@ -209,6 +209,16 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   regarding whether to delete something". Recorded in `CLAUDE.md`, `PM-BRIEF.md` and the driver's memory; the PM
   told; the length ledger records removals.
 
+- **Clarification (2026-11-09, 23:10), the supervisor verbatim:** "i will eventually have to rewrite the abstract by
+  hand so don't stress about that specifically. i mean more like making sure we're not jamming in plots or
+  arguments for their ownsake that don't advance the narrative of the paper. we got a bit bloated early n and i want
+  a disciplined improvement by subtraction pass once we have have complete content. or if something is stuck in a
+  loop or cannot be made clear rather than agonize assess removal". Disposition: no cut pass on the abstract (his to
+  rewrite by hand; it rests as is); a whole-paper improvement-by-subtraction pass is a step of the path (5a), run
+  once the content is complete (after WP23's regeneration and the rename), judging every figure, argument and
+  section by whether it advances the paper's narrative; and a rule for every stream now: when a passage or figure is
+  stuck in a loop or cannot be made clear, the next move is to assess removal, not another round.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
