@@ -301,8 +301,8 @@ def how_to_read(path=RECORD) -> Md:
         f"links to its entry.\n\n"
         f"There is no kind for an argument made only in prose. A step that SymPy cannot derive "
         f"is an explicit hypothesis or an entry of the ledger. Two results may share a file "
-        f"(L14 proves Proposition 3 and Corollary 4): each names the same file and owns its own "
-        f"steps. The appendix has two parts:\n\n{parts}\n\n"
+        f"(L14 proves Proposition 3 and its corollary, the approximate certificate): each names "
+        f"the same file and owns its own steps. The appendix has two parts:\n\n{parts}\n\n"
         f"What the correspondence establishes: every step of the prose has exactly one line of "
         f"code, the lines are in the order of the prose, every computed line passes, and neither "
         f"a line nor a sentence can change without the checker reporting the step. What it "
@@ -369,7 +369,7 @@ def proofs_solver(path=RECORD) -> Md:
     -------
     Md
         As :func:`proofs_fit`, for L12 to the record's last result (L14 is Proposition 3 and
-        Corollary 4; L17 is the soft-fit certificate).
+        its corollary, the approximate certificate; L17 is the soft-fit certificate).
     """
     return _part(range(PARTS[1][1], 10_000), path)
 

@@ -2390,7 +2390,8 @@ def test_cr13_the_first_generated_range_says_what_varies():
 
 
 def test_cr15_appendix_b_says_where_two_statements_share_a_script():
-    """(15) Proposition 3 and Corollary 4 share a file; each entry says so."""
+    """(15) Proposition 3 and its corollary (the approximate certificate) share a file; each entry
+    says so."""
     text = str(generate_proofs.proofs_solver())
     assert text.count("**Shared script.**") == 2
     assert "each proof lists its own steps in the file's order" in text

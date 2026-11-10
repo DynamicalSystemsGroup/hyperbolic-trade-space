@@ -41,20 +41,6 @@ reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2
 [[violation]]
 kind = "avoid"
 file = "paper/supporting_material.ipynb"
-phrase = "selected temperature"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "paper/supporting_material.ipynb"
-phrase = "soft maximum temperature"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "paper/supporting_material.ipynb"
 phrase = "working temperature"
 owner = "WP10 paper stream"
 reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
@@ -335,13 +321,6 @@ reason = "SYNONYM of facet gap: replace with the glossary term (WP10 re-triage 2
 [[violation]]
 kind = "stem"
 file = "paper/supporting_material.ipynb"
-phrase = "maximum temperature"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
 phrase = "objective margin"
 owner = "WP10 paper stream"
 reason = "BASELINE: lemma-script identifier or cell label in a generated table (WP10 re-triage 2026-11-09)"
@@ -401,13 +380,6 @@ file = "paper/supporting_material.ipynb"
 phrase = "row gap"
 owner = "WP10 paper stream"
 reason = "BASELINE: ordinary word gap: the per-row score difference whose minimum is the assignment margin (L13) (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "selected temperature"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"

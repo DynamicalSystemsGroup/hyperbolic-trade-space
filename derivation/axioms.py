@@ -281,7 +281,7 @@ AXIOMS = {
     "A3": Axiom(
         "A3",
         POSITED,
-        "the soft-maximum temperature is positive: tau > 0",
+        "the fit temperature is positive: tau > 0",
         relation=(_GT(_S.tau, 0, evaluate=False),),
     ),
     "A4": Axiom(

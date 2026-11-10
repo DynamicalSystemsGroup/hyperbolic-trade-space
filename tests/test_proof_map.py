@@ -262,8 +262,8 @@ def test_a_changed_ledger_entry_fails(scratch):
     edit(
         scratch,
         "axioms.py",
-        "the soft-maximum temperature is positive: tau > 0",
-        "the soft-maximum temperature is nonnegative: tau >= 0",
+        "the fit temperature is positive: tau > 0",
+        "the fit temperature is nonnegative: tau >= 0",
     )
     code, out = run_checker(scratch)
     assert code != 0 and "axioms.py A3" in out and "ledger entry" in out

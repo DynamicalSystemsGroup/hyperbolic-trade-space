@@ -277,7 +277,7 @@ CONCLUSIONS = (
     ("the contending sets (K = 1 and each facet at K = 3)", ("contending |",), ""),
     ("each facet's leading metrics", ("leading |",), ""),
     ("the signs of the reported tensions", ("tension |",), "sign"),
-    ("the selected temperatures, to the printed 0.1", ("tau |",), ""),
+    ("the fit temperatures, to the printed 0.1", ("tau |",), ""),
     ("the certificate statuses", ("certificate |",), "| status"),
     ("the pass or miss of each check design", ("predict |", "predict, committed checks |"),
      "outcome"),
