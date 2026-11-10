@@ -8,8 +8,8 @@ Each cell: `structural / empirical`. Structural: a path in the model from the me
 
 | decision element | kind | settling time | pointing error | total mass | control effort | power margin | energy balance | peak slew power | depth of discharge |
 |---|---|---|---|---|---|---|---|---|---|
-| WheelClass | swap | yes / yes (2.3e+01) | yes / yes (1.8e-05) | yes / yes (9.2e-02) | yes / yes (2.9e-01) | yes / yes (1.1e-01) | yes / yes (3.6e-04) | yes / yes (6.8e-01) | yes / yes (1.6e-03) |
-| TrackerGrade | swap | yes / yes (2.1e-02) | yes / yes (1.2e+01) | yes / yes (4.8e-02) | yes / yes (1.8e-02) | yes / yes (3.3e-02) | yes / yes (1.2e-01) | yes / yes (3.8e-01) | yes / yes (7.6e-02) |
+| wheelClass | swap | yes / yes (2.3e+01) | yes / yes (1.8e-05) | yes / yes (9.2e-02) | yes / yes (2.9e-01) | yes / yes (1.1e-01) | yes / yes (3.6e-04) | yes / yes (6.8e-01) | yes / yes (1.6e-03) |
+| grade | swap | yes / yes (2.1e-02) | yes / yes (1.2e+01) | yes / yes (4.8e-02) | yes / yes (1.8e-02) | yes / yes (3.3e-02) | yes / yes (1.2e-01) | yes / yes (3.8e-01) | yes / yes (7.6e-02) |
 | panelSpan | tune | yes / yes (1.3e-01) | yes / yes (1.8e-04) | yes / yes (8.7e-03) | yes / yes (1.6e-01) | yes / yes (1.9e-01) | yes / yes (4.2e-01) | yes / no (0.0e+00) * | yes / yes (3.2e-04) |
 | batteryCapacity | tune | yes / yes (3.1e-03) | yes / yes (9.9e-07) | yes / yes (6.4e-03) | yes / yes (1.9e-03) | yes / no (0.0e+00) * | yes / yes (7.8e-07) | yes / no (0.0e+00) * | yes / yes (9.1e-02) |
 | Kp | tune | yes / yes (9.3e-02) | yes / yes (8.8e-02) | no / no (0.0e+00) | yes / yes (9.3e-02) | yes / no (0.0e+00) * | yes / yes (3.8e-05) | yes / no (0.0e+00) * | yes / yes (1.7e-04) |
@@ -41,8 +41,8 @@ Rows feed columns, in the form of the design structure matrix of the MDAO litera
 
 | feeds &rarr; | controls | power and energy | mass | metrics read off | requirements read off |
 |---|---|---|---|---|---|
-| WheelClass (swap) | momentumCapacity (wheel.maxMomentum) | wheel.maxTorque | wheel.mass | &nbsp; | &nbsp; |
-| TrackerGrade (swap) | tracker.accuracy | tracker.power | tracker.mass | &nbsp; | &nbsp; |
+| wheelClass (swap) | momentumCapacity (wheel.maxMomentum) | wheel.maxTorque | wheel.mass | &nbsp; | &nbsp; |
+| grade (swap) | tracker.accuracy | tracker.power | tracker.mass | &nbsp; | &nbsp; |
 | panelSpan (tune) | panelPlus.span | panelMinus.span, panelPlus.span | panelPlus.span | &nbsp; | &nbsp; |
 | batteryCapacity (tune) | &nbsp; | battery.capacity | &nbsp; | &nbsp; | &nbsp; |
 | Kp (tune) | controller.Kp | &nbsp; | &nbsp; | &nbsp; | &nbsp; |
@@ -51,6 +51,6 @@ Rows feed columns, in the form of the design structure matrix of the MDAO litera
 | **power and energy** | panelPlus.mass, usableWheelTorque | *panelMinus.area, panelPlus.area, panelMinus.mass, panelPlus.mass, battery.mass, GeneratedPower, BaseLoad, AvailablePower, UsableWheelTorque, SlewLossEnergy, EclipseDemand, DepthOfDischarge, OrbitPeriod, EnergyBalance, PeakSlewPower, PowerMargin, BatteryPeakPower, EclipsePeakLoad* | battery.mass, panelMinus.mass, panelPlus.mass | power margin, energy balance, peak slew power, depth of discharge | BatteryPeakPowerRequirement, DepthOfDischargeRequirement, EnergyBalanceRequirement, PeakSlewPowerRequirement, PowerMarginRequirement, PowerRequirement |
 | **mass** | InertiaX, InertiaY, InertiaZ, structureMass | &nbsp; | *MassAccounting, StructureMass, LaunchCost, InertiaX, InertiaY, InertiaZ* | total mass | LaunchBudgetRequirement |
 
-Connectivity: every configuration value feeds at least one subsystem and reaches at least one traded metric by the structural column of the first table (WheelClass feeds controls, power and energy, mass and reaches 8 of 8 metrics; TrackerGrade feeds controls, power and energy, mass and reaches 8 of 8 metrics; panelSpan feeds controls, power and energy, mass and reaches 8 of 8 metrics; batteryCapacity feeds power and energy and reaches 8 of 8 metrics; Kp feeds controls and reaches 7 of 8 metrics; Kd feeds controls and reaches 6 of 8 metrics); every traded metric is read off a subsystem; the graph of configuration values, subsystems and metrics is connected (17 nodes, 24 edges).
+Connectivity: every configuration value feeds at least one subsystem and reaches at least one traded metric by the structural column of the first table (wheelClass feeds controls, power and energy, mass and reaches 8 of 8 metrics; grade feeds controls, power and energy, mass and reaches 8 of 8 metrics; panelSpan feeds controls, power and energy, mass and reaches 8 of 8 metrics; batteryCapacity feeds power and energy and reaches 8 of 8 metrics; Kp feeds controls and reaches 7 of 8 metrics; Kd feeds controls and reaches 6 of 8 metrics); every traded metric is read off a subsystem; the graph of configuration values, subsystems and metrics is connected (17 nodes, 24 edges).
 
 The controls and the power subsystem feed each other (cells on both sides of the diagonal): the usable wheel torque is a quantity of the configuration, computed before the slew, and the peak torque and the integral of the squared torque are read after it, so the model resolves the loop in one pass, with no fixed-point iteration.

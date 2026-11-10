@@ -28,7 +28,7 @@ from _env import of_record
 ADCS_DIR = pathlib.Path(__file__).resolve().parents[1] / "examples" / "adcs"
 MODEL_DIR = ADCS_DIR / "model_v2"
 VIEWS = MODEL_DIR / "views"
-SWAPS = {"WheelClass", "TrackerGrade"}
+SWAPS = {"wheelClass", "grade"}  # the swaps by their selecting attribute, as the view tags them
 TUNES = {"panelSpan", "batteryCapacity", "Kp", "Kd"}
 METRICS = [
     "settling time",
@@ -234,8 +234,8 @@ def test_coupling_variables_between_subsystems_are_the_models_named_quantities(s
     off_diagonal = {k: v for k, v in c["cells"].items() if k[0] in SUBSYSTEMS}
     assert off_diagonal == EXPECTED_COUPLING
     assert c["cells"][("batteryCapacity", "power and energy")] == ["battery.capacity"]
-    assert c["cells"][("WheelClass", "mass")] == ["wheel.mass"]
-    assert c["cells"][("TrackerGrade", "controls")] == ["tracker.accuracy"]
+    assert c["cells"][("wheelClass", "mass")] == ["wheel.mass"]
+    assert c["cells"][("grade", "controls")] == ["tracker.accuracy"]
     assert c["cells"][("panelSpan", "mass")] == ["panelPlus.span"]  # the inertia's geometry
 
 

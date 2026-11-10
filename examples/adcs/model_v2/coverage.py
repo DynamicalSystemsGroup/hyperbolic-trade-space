@@ -3,9 +3,10 @@
 Two tables, written to ``views/coverage.md`` and ``views/coverage.csv`` from the model:
 
 1. **Decision element x traded metric.** The decision elements are the configuration variables the
-   assembly view marks: the swaps (an abstract part whose alternatives an enumeration selects:
-   ``WheelClass``, ``TrackerGrade``) and the tunes (an attribute stated with ``default``:
-   ``panelSpan``, ``batteryCapacity``, ``Kp``, ``Kd``). The *structural* column walks the model
+   assembly view marks: the swaps (an abstract part whose alternatives an enumeration selects,
+   named by the selecting attribute as the assembly view's tags name it: ``wheelClass``,
+   ``grade``) and the tunes (an attribute stated with ``default``: ``panelSpan``,
+   ``batteryCapacity``, ``Kp``, ``Kd``). The *structural* column walks the model
    through the opensysml client, from each traded metric (the analysis's return entry, or the
    measurement attribute the analysis neither takes nor returns) back through the calc definitions
    it invokes, the attributes those read on the configuration, the redefinitions that bind a
@@ -80,8 +81,8 @@ METRIC_COLUMNS = {
 }
 # the oracle's configuration keys for the model's decision elements
 ORACLE_KEYS = {
-    "WheelClass": "wheel_class",
-    "TrackerGrade": "st_grade",
+    "wheelClass": "wheel_class",
+    "grade": "st_grade",
     "panelSpan": "panel_span_m",
     "batteryCapacity": "battery_wh",
     "Kp": "Kp",
@@ -140,11 +141,13 @@ class ModelGraph:
             if e["@type"] == "PartDefinition" and e.get("isAbstract")
         }
         self.enums = {i for i, e in self.byid.items() if e["@type"] == "EnumerationDefinition"}
-        self.swaps = {}  # abstract part def id -> enumeration def id (the selector)
+        self.swaps = {}  # abstract part def id -> enumeration def id (the selector's type)
+        self.selectors = {}  # abstract part def id -> the selecting attribute's id (its name)
         for d in self.abstract:
             for a in self.children(d, "AttributeUsage"):
                 if self.typing.get(a) in self.enums:
                     self.swaps[d] = self.typing[a]
+                    self.selectors[d] = a
         self.root_tunes = {
             short(a) for a in self.children(self.cubesat, "AttributeUsage") if self.is_default(a)
         }
@@ -232,9 +235,9 @@ class ModelGraph:
         if owner in self.swaps and feature in {
             self.redefines[r] for r in self.redefined_by.get(feature, ())
         }:
-            return {short(self.swaps[owner])}  # the alternatives redefine it: the swap
+            return {self.swap_name(owner)}  # the alternatives redefine it: the swap
         if owner in self.swaps:
-            return {short(self.swaps[owner])}
+            return {self.swap_name(owner)}
         return set()
 
     def expr_deps(self, root: str, definition: str, usage: str | None, seen: set) -> set[str]:
@@ -438,10 +441,15 @@ class ModelGraph:
                     out.append(short(v))
         return sorted(set(out))
 
+    def swap_name(self, definition: str) -> str:
+        """A swap's name: its selecting attribute's (``wheelClass``, ``grade``), as the assembly
+        view's tags name it; the enumeration is that attribute's type."""
+        return short(self.selectors[definition])
+
     def decision_elements(self) -> list[tuple[str, str]]:
-        """(name, kind) for the swaps (by selector enumeration) then the tunes, in model order."""
+        """(name, kind) for the swaps (by selecting attribute) then the tunes, in model order."""
         swaps = [
-            (short(self.swaps[self.parts[p]]), "swap")
+            (self.swap_name(self.parts[p]), "swap")
             for p in self.parts
             if self.parts[p] in self.swaps
         ]
@@ -473,8 +481,11 @@ class ModelGraph:
             }
         return out
 
-    def literals(self, enum: str) -> list[str]:
-        return [c.name for c in self.model.find(f"{self.package}::{enum}").children()]
+    def literals(self, swap: str) -> list[str]:
+        """The levels of a swap named as ``decision_elements`` names it: the literals of its
+        selecting attribute's enumeration."""
+        (enum,) = {self.swaps[d] for d, a in self.selectors.items() if short(a) == swap}
+        return [c.name for c in self.model.find(f"{self.package}::{short(enum)}").children()]
 
 
 @dataclass
@@ -858,7 +869,7 @@ class Coupling:
             if feature not in g.byid:
                 return None
             if definition in g.swaps:
-                return ("config", short(g.swaps[definition]))
+                return ("config", g.swap_name(definition))
             bound = f"{g.cubesat}__{usage}__{attr}"
             if g.redefines.get(bound) == feature and g.has_value(bound):
                 refs = [

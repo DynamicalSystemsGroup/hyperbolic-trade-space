@@ -1,20 +1,20 @@
 table,decision_element,kind,metric,structural,empirical,max_relative_change,agree
-coverage,WheelClass,swap,settling time,yes,yes,2.3e+01,yes
-coverage,WheelClass,swap,pointing error,yes,yes,1.8e-05,yes
-coverage,WheelClass,swap,total mass,yes,yes,9.2e-02,yes
-coverage,WheelClass,swap,control effort,yes,yes,2.9e-01,yes
-coverage,WheelClass,swap,power margin,yes,yes,1.1e-01,yes
-coverage,WheelClass,swap,energy balance,yes,yes,3.6e-04,yes
-coverage,WheelClass,swap,peak slew power,yes,yes,6.8e-01,yes
-coverage,WheelClass,swap,depth of discharge,yes,yes,1.6e-03,yes
-coverage,TrackerGrade,swap,settling time,yes,yes,2.1e-02,yes
-coverage,TrackerGrade,swap,pointing error,yes,yes,1.2e+01,yes
-coverage,TrackerGrade,swap,total mass,yes,yes,4.8e-02,yes
-coverage,TrackerGrade,swap,control effort,yes,yes,1.8e-02,yes
-coverage,TrackerGrade,swap,power margin,yes,yes,3.3e-02,yes
-coverage,TrackerGrade,swap,energy balance,yes,yes,1.2e-01,yes
-coverage,TrackerGrade,swap,peak slew power,yes,yes,3.8e-01,yes
-coverage,TrackerGrade,swap,depth of discharge,yes,yes,7.6e-02,yes
+coverage,wheelClass,swap,settling time,yes,yes,2.3e+01,yes
+coverage,wheelClass,swap,pointing error,yes,yes,1.8e-05,yes
+coverage,wheelClass,swap,total mass,yes,yes,9.2e-02,yes
+coverage,wheelClass,swap,control effort,yes,yes,2.9e-01,yes
+coverage,wheelClass,swap,power margin,yes,yes,1.1e-01,yes
+coverage,wheelClass,swap,energy balance,yes,yes,3.6e-04,yes
+coverage,wheelClass,swap,peak slew power,yes,yes,6.8e-01,yes
+coverage,wheelClass,swap,depth of discharge,yes,yes,1.6e-03,yes
+coverage,grade,swap,settling time,yes,yes,2.1e-02,yes
+coverage,grade,swap,pointing error,yes,yes,1.2e+01,yes
+coverage,grade,swap,total mass,yes,yes,4.8e-02,yes
+coverage,grade,swap,control effort,yes,yes,1.8e-02,yes
+coverage,grade,swap,power margin,yes,yes,3.3e-02,yes
+coverage,grade,swap,energy balance,yes,yes,1.2e-01,yes
+coverage,grade,swap,peak slew power,yes,yes,3.8e-01,yes
+coverage,grade,swap,depth of discharge,yes,yes,7.6e-02,yes
 coverage,panelSpan,tune,settling time,yes,yes,1.3e-01,yes
 coverage,panelSpan,tune,pointing error,yes,yes,1.8e-04,yes
 coverage,panelSpan,tune,total mass,yes,yes,8.7e-03,yes
@@ -57,12 +57,12 @@ metrics,energy balance,MoP,EnergyBalance,calc,EnergyBalanceRequirement,invokes E
 metrics,peak slew power,MoP,PeakSlewPower,calc,PeakSlewPowerRequirement,invokes PeakSlewPower,budgets.peakSlewPowerLimit = 2.6 [W],SlewVerification
 metrics,depth of discharge,MoP,DepthOfDischarge,calc,DepthOfDischargeRequirement,invokes DepthOfDischarge,-,SlewVerification
 table,from,to,variables
-coupling,WheelClass,controls,momentumCapacity (wheel.maxMomentum)
-coupling,WheelClass,power and energy,wheel.maxTorque
-coupling,WheelClass,mass,wheel.mass
-coupling,TrackerGrade,controls,tracker.accuracy
-coupling,TrackerGrade,power and energy,tracker.power
-coupling,TrackerGrade,mass,tracker.mass
+coupling,wheelClass,controls,momentumCapacity (wheel.maxMomentum)
+coupling,wheelClass,power and energy,wheel.maxTorque
+coupling,wheelClass,mass,wheel.mass
+coupling,grade,controls,tracker.accuracy
+coupling,grade,power and energy,tracker.power
+coupling,grade,mass,tracker.mass
 coupling,panelSpan,controls,panelPlus.span
 coupling,panelSpan,power and energy,panelMinus.span; panelPlus.span
 coupling,panelSpan,mass,panelPlus.span
