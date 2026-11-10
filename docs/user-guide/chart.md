@@ -38,7 +38,7 @@ plot_log_plane(ts2, X2)
 <figure markdown>
 ![Designs in the log plane of two metrics, a straight frontier line, and a grey band of near-frontier designs below it.](../generated/figures/log-plane-light.png#only-light)
 ![Designs in the log plane of two metrics, a straight frontier line, and a grey band of near-frontier designs below it.](../generated/figures/log-plane-dark.png#only-dark)
-<figcaption>Figure 4. One facet in the log plane: the line is V = 1, and the band below it has width 1/tau.</figcaption>
+<figcaption>Figure 4. One term in the log plane: the line is V = 1; the grey strip below it is log V from -1/tau to 0.</figcaption>
 </figure>
 
 With three metrics the position can also be read as shares of a total: see the [ternary plot](../examples.md#three-metrics-as-shares-of-a-total).
@@ -57,8 +57,8 @@ meaningful relative to the band of width 1/tau. Compare `tau * log V` and the ra
 training scores, not V - 1 alone. A score beyond the surface is not a verdict that the design is
 wanted, feasible or safe.
 
-For a multi-term fit, log V is the soft maximum over facets, and `improvement_factors` uses each
-row's active facet.
+For a multi-term fit, log V is the maximum over terms at the default `term_temperature=inf`, and
+`improvement_factors` uses each row's assigned term.
 
 ## Holes and white space
 
@@ -109,5 +109,6 @@ The surface is also log-convex, so structure that is not log-convex is invisible
 
 Each accepts an optional `ax` and returns a matplotlib `Axes`; nothing calls `plt.show()`. They share
 one colour vocabulary, declared as module constants (`FRONTIER_COLOR`, `BAND_COLOR`, `HOLE_COLOR`,
-`TENSION_CMAP`). For a multi-term fit the plots draw every facet, and `facet_labels(estimator, X)`
-gives a per-row label to pass as `color=`.
+`TENSION_CMAP`). The designs are one colour by default, whatever the number of terms; in
+`plot_log_plane` and `plot_frontier_surface_3d`, `color="cell"` colours them by cell, the term that
+scores each highest (`cell_labels(estimator, X)`), and any other string raises `ValueError`.

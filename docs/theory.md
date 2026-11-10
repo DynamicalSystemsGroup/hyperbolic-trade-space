@@ -17,10 +17,11 @@ $$
 Because the weights sum to one, $V(\lambda m)=\lambda V(m)$: doubling every metric doubles V. So V
 reads as a factor of improvement, which is what "invariant" refers to. A sum of such products, a
 posynomial, extends one term to K terms and keeps the programs inside geometric programming. The
-model is a root of that sum, so the surface V = 1 is where the posynomial equals one. Fitting one facet is a geometric program (GP), solved as
-a convex program after the logarithmic change of variables; fitting several facets alternates weights from
-the current model with one program for all terms. The package takes the sharp limit of the weights, one
-label per design; which facet dominates a design is analysis of the fitted model, not part of the fit.
+model is a root of that sum, so the surface V = 1 is where the posynomial equals one. Fitting one term is a geometric program (GP), solved as
+a convex program after the logarithmic change of variables; fitting several terms alternates assigning
+the designs to terms with a separate convex refit of each term. By default (`term_temperature=np.inf`)
+the package takes the sharp limit of the weights, one label per design, and the labels drive the refit;
+reading off which term scores a design highest is analysis of the fitted model, not part of the fit.
 
 ## V = 1 is the fitted reference surface
 
@@ -65,7 +66,7 @@ The metrics with positive weight at tau = infinity are the contending set, and i
 n-lemma (a dilemma is n = 2, a trilemma n = 3). It is found from the data and not assumed: the fit at
 tau = infinity is a linear program whose solution is generically sparse. At a finite fit
 temperature a small weight means weak participation, set by a participation threshold. With K
-terms there is one contending set per facet, and elasticities vary between facets.
+terms there is one contending set per term, and elasticities vary between terms.
 
 ## What the model assumes
 

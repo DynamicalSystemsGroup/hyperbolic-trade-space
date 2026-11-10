@@ -2,7 +2,7 @@
 
 Every fit records how it stopped. At one term the fit is a convex program and its answer is the
 minimizer. With several terms it alternates between weights from the current model and refitting each
-facet; the record says which of three levels it meets.
+term; the record says which of three levels it meets.
 
 ```python {.runnable}
 from hyperbolic_trade_space import (
@@ -22,42 +22,42 @@ print(ts.conditioning_.round(1))
 ## The three levels
 
 1. Descent: no step made the mean slack worse (`mean_slack_`, defined at every number of terms).
-2. Numerical stationarity: no first-order improvement is left. The facet gap G_k measures what
+2. Numerical stationarity: no first-order improvement is left. The term gap G_k measures what
    remains.
-3. Conditional local optimality: if no design sits exactly on a seam between facets, small changes
-   to the facets cannot change which facet dominates which design, so the fixed assignment is optimal.
-   The assignment margin is the smallest gap by which a row's facet beats the runner-up; the stable
-   radius is the perturbation provably leaving every facet unchanged.
+3. Conditional local optimality: if no design sits exactly on a seam between terms, small changes
+   to the terms cannot change any design's assignment, so the fixed assignment is optimal. The
+   assignment margin is the smallest gap by which a row's term beats the runner-up; the stable
+   radius is the perturbation provably leaving every design's assignment unchanged.
 
 ## Statuses
 
 `termination_.status` is one of:
 
 - `certified`: assignment fixed, residuals within `eps_feas`, `max_gap` within `eps_kkt`, no empty
-  facet, margin positive: all three levels.
-- `stationary_without_margin`: the same, with margin at most `eps_feas` or an empty facet. Levels 1
-  and 2. At infinite temperature this happens when a frontier row lies on two facet planes or two
-  facets coincide.
+  cell, margin positive: all three levels.
+- `stationary_without_margin`: the same, with margin at most `eps_feas` or an empty cell. Levels 1
+  and 2. At infinite temperature this happens when a frontier row lies on two term planes or two
+  terms coincide.
 - `uncertified`: assignment fixed, a residual or the gap above tolerance.
 - `guard_stop`: an iteration raised the mean slack by more than `guard_tol`. Not converged.
 - `iteration_cap`: alternation cap reached, fit kept; warned only when gap or last objective
   change exceeds `tol`.
-- `not_applicable`: one term, `facet_step="tangent"`, a `penalty`, one metric, fewer designs than
-  facets, or a soft fit at infinite tau.
+- `not_applicable`: one term, `refit_step="tangent"`, a `penalty`, one metric, fewer designs than
+  terms, or a soft fit at infinite tau.
 
 `fit` warns for `uncertified` and `guard_stop`.
 
 A soft fit weighs every term: no assignment, no margin.
 
-- `certified`: facet gaps within `eps_kkt` and `min_curvature` above `eps_feas`, a strict local
+- `certified`: term gaps within `eps_kkt` and `min_curvature` above `eps_feas`, a strict local
   minimizer of the soft objective.
 - `stationary`: the gaps hold, the curvature does not: a saddle or a flat direction.
 
 ## The fields
 
-- `status`, `reason`, `n_iter`; `max_gap`, `gaps` (`nan` for an empty facet) and `shares`.
+- `status`, `reason`, `n_iter`; `max_gap`, `gaps` (`nan` for an empty cell) and `shares`.
 - `n_distinct_terms`: terms whose exponent vectors differ by more than 1e-3.
-- `bound`: the share-weighted sum of facet gaps, bounding the distance from the fixed-assignment
+- `bound`: the share-weighted sum of term gaps, bounding the distance from the fixed-assignment
   optimum.
 - `gamma`, `radius`: the margin and stable radius, `nan` at one term.
 - Residuals, `objective_change`, `assignment_changes`, `n_empty`, tolerances: diagnostics.
@@ -70,14 +70,14 @@ The tolerances are module constants of `hyperbolic_trade_space.solvers`, not par
 ## `conditioning_`
 
 The smallest eigenvalue of the restricted Hessian over the participating
-exponents (above 1e-3), one per facet. A small value marks a nearly flat direction (weakly identified exponents). It is `nan` at infinite
-temperature and for a facet with fewer than two participating exponents.
+exponents (above 1e-3), one per term. A small value marks a nearly flat direction (weakly identified exponents). It is `nan` at infinite
+temperature and for a term with fewer than two participating exponents.
 
 ## How small is a small margin
 
 The margin `gamma` is in score units (log metrics), the scale of the band 1/tau; `radius` is
 `gamma / (2R)`, with R the largest norm of a row (u, -1). Compare `gamma` with the median margin,
-the median gap between best and second-best facet score: far below it, a few designs sit
+the median gap between best and second-best term score: far below it, a few designs sit
 on a seam.
 
 ```python {.runnable}

@@ -12,7 +12,7 @@ arbitrary: `d` metrics and `d - 1` chart coordinates.
   monomial in raw attributes.
 - [`HyperbolicTradeSpace`](user-guide/fitting.md), a transformer: fits the surface and gives the
   chart of position and log V. Fitted attributes for every number of terms include `exponents_`,
-  `facet_`, `coefficients_`, `facet_share_`, `objective_` (what the solver minimized) and
+  `cell_`, `coefficients_`, `term_share_`, `objective_` (what the solver minimized) and
   `mean_slack_` (the mean slack, to compare fits across numbers of terms).
 - [`select_temperature`](user-guide/fitting.md), a function: chooses the temperature by a target
   fraction above V = 1.
@@ -32,6 +32,6 @@ Submodules are used by import path:
   ([chart](user-guide/chart.md)).
 - `hyperbolic_trade_space.tensions`: `TensionReport`, the object `tension_report` returns.
 - `hyperbolic_trade_space.plotting`: `plot_tensions`, `plot_log_plane`, `plot_frontier_surface_3d`,
-  `plot_frontier_coordinates`, `plot_v_by_variable`, `facet_labels`.
+  `plot_frontier_coordinates`, `plot_v_by_variable`, `cell_labels`.
 - `hyperbolic_trade_space.solvers`: the multi-term solver, the `Termination` record and the
   certificate functions, with `min_curvature` for a fit at a finite term temperature, the soft fit ([Reading termination](user-guide/termination.md)).

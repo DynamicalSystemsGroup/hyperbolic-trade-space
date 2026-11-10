@@ -97,13 +97,6 @@ reason = "BASELINE: finite qualifies the fit temperature; the glossary entries t
 [[violation]]
 kind = "stem"
 file = "docs/user-guide/fitting.md"
-phrase = "mean gap"
-owner = "WP8a docsite stream"
-reason = "NEW-TERM candidate for the driver: mean slack (attribute mean_slack_, 13 reader items ask for it); the page says mean gap (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "docs/user-guide/fitting.md"
 phrase = "select temperature"
 owner = "WP8a docsite stream"
 reason = "BASELINE: code identifier select_temperature in a runnable example (WP10 re-triage 2026-11-09)"
@@ -141,7 +134,7 @@ kind = "stem"
 file = "docs/user-guide/termination.md"
 phrase = "max gap"
 owner = "WP8a docsite stream"
-reason = "BASELINE: record field max_gap (code identifier or table column header); the prose name is the facet gap (WP10 re-triage 2026-11-09)"
+reason = "BASELINE: record field max_gap (code identifier or table column header); the prose name is the term gap (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
@@ -163,13 +156,6 @@ file = "docs/user-guide/termination.md"
 phrase = "smallest gap"
 owner = "WP8a docsite stream"
 reason = "BASELINE: ordinary word gap inside the definition of the assignment margin (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/paper.ipynb"
-phrase = "across temperature"
-owner = "WP10 paper stream"
-reason = "BASELINE: plural of the fit temperature in a figure caption; fit is implied by the sweep (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
@@ -309,7 +295,7 @@ kind = "stem"
 file = "paper/supporting_material.ipynb"
 phrase = "order gap"
 owner = "WP10 paper stream"
-reason = "BASELINE: first-order gap: the definition wording of the facet gap itself (WP10 re-triage 2026-11-09)"
+reason = "BASELINE: first-order gap: the definition wording of the term gap itself (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
@@ -337,7 +323,7 @@ kind = "stem"
 file = "paper/supporting_material.ipynb"
 phrase = "recovery rate"
 owner = "WP10 paper stream"
-reason = "BASELINE: ordinary statistic: the share of planted facets recovered in the experiments (WP10 re-triage 2026-11-09)"
+reason = "BASELINE: ordinary statistic: the share of planted terms recovered in the experiments (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
@@ -456,21 +442,21 @@ kind = "stem"
 file = "src/hyperbolic_trade_space/solvers.py"
 phrase = "max gap"
 owner = "package docstrings"
-reason = "BASELINE: record field max_gap (code identifier or table column header); the prose name is the facet gap (WP10 re-triage 2026-11-09)"
+reason = "BASELINE: record field max_gap (code identifier or table column header); the prose name is the term gap (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "src/hyperbolic_trade_space/solvers.py"
 phrase = "order gap"
 owner = "package docstrings"
-reason = "BASELINE: first-order gap: the definition wording of the facet gap itself (WP10 re-triage 2026-11-09)"
+reason = "BASELINE: first-order gap: the definition wording of the term gap itself (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
 file = "src/hyperbolic_trade_space/solvers.py"
 phrase = "recovery rate"
 owner = "package docstrings"
-reason = "BASELINE: ordinary statistic: the share of planted facets recovered in the experiments (WP10 re-triage 2026-11-09)"
+reason = "BASELINE: ordinary statistic: the share of planted terms recovered in the experiments (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"

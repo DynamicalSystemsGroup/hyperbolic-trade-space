@@ -33,7 +33,7 @@ entries:
       L11), and the weights act as a trade-off.
     differs: >-
       Returns no coordinate system and no exponents: a nondominated set says which designs survive,
-      the fit says what trades against what, with one exponent vector per facet, a band of
+      the fit says what trades against what, with one exponent vector per term, a band of
       near-boundary designs and an effective sample size. Dominance is a hard comparison, the fit
       a soft maximum. Identification from a table, not generation of designs.
     cites: [miettinen1999nonlinear, ehrgott2005multicriteria, zitzler1999multiobjective, deb2002fast]
@@ -47,7 +47,7 @@ entries:
     nearest: true
     why_not_just: >-
       This is not just a Pareto front: a front is the set of designs that no other design dominates,
-      while the fit returns a reference surface with coordinates, and for each facet the exponents
+      while the fit returns a reference surface with coordinates, and for each term the exponents
       that give the elasticities between metrics.
 
   - id: dea
@@ -62,8 +62,8 @@ entries:
       A one-sided envelope of the data, a score per unit, scores beyond the boundary (V above 1)
       and a boundary that moves between data sets.
     differs: >-
-      One exponent vector per facet, a global named structure, in place of weights obtained unit by
-      unit; piecewise log-linear facets with constant elasticities within a facet; larger-is-better
+      One exponent vector per term, a global named structure, in place of weights obtained unit by
+      unit; a surface that is piecewise log-linear, with constant elasticities within a term; larger-is-better
       metrics with homogeneity by the simplex in place of inputs, outputs and a returns-to-scale
       choice; a soft maximum with a temperature, a band and an effective sample size in place of a
       deterministic boundary set by extreme units; one convex program and K refits; coordinates and
@@ -75,12 +75,12 @@ entries:
     short:
       does: "Evaluates the relative efficiency of each decision-making unit"
       shares: "A one-sided envelope of the data, a score per unit"
-      differs: "One exponent vector per facet"
+      differs: "One exponent vector per term"
     nearest: true
     why_not_just: >-
       This is not just DEA: DEA scores each unit against the envelope under weights obtained from the data,
-      while the fit learns one set of exponents per facet from the whole table and reports where a
-      design sits on the facet and which metrics trade there.
+      while the fit learns one set of exponents per term from the whole table and reports where a
+      design sits relative to its term and which metrics trade there.
 
   - id: production-distance
     group: Optimization and efficiency analysis
@@ -118,7 +118,7 @@ entries:
       A one-sided criterion on log-linear residuals.
     differs: >-
       A smooth soft maximum over a simplex-constrained geometric mean in place of a shifted
-      intercept, and K facets.
+      intercept, and K terms.
     cites: [aigner1968estimating, afriat1972efficiency, richmond1974estimating, greene1980maximum, aigner1977formulation, battese1992frontier]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name

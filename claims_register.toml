@@ -29,12 +29,11 @@ backing = [
   "test:tests/test_plotting.py::test_ternary_fixed_total_identity_and_peak",
   "test:tests/test_plotting.py::test_ternary_markers_sit_at_the_exponent_vectors",
   "func:src/hyperbolic_trade_space/plotting.py::plot_ternary",
-  "file:docs/superpowers/notes/spike-ternary/report.md",
 ]
 status = "backed"
 disposition = "keep"
 source = "WP18 R-5"
-note = "A numbered marker is a facet's exponent vector, where that facet's V is largest for a fixed total; V also depends on the total. The plot_ternary doctest and Notes; spike-ternary report, Correction (2026-11-09): the largest log V of any design is 0.071, and the labels above V = 1 were V relative to the average mix."
+note = "A numbered marker is a term's exponent vector, where that term's V is largest for a fixed total; V also depends on the total. The plot_ternary doctest and Notes; spike-ternary report, Correction (2026-11-09): the largest log V of any design is 0.071, and the labels above V = 1 were V relative to the average mix."
 
 [[claim]]
 id = "C002"
@@ -64,7 +63,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP10, tickets of 2026-11-09"
-note = "L1: log V = w.u - beta, so V is constant where w.u is; L7: the tangent step along a facet; Definition 8 (ascent direction)."
+note = "L1: log V = w.u - beta, so V is constant where w.u is; L7: the tangent step along a term; Definition 8 (ascent direction)."
 
 [[claim]]
 id = "C004"
@@ -206,7 +205,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP10, tickets of 2026-11-09"
-note = "Section 5, assumption ii. Interface contract version 6: a finite term_temperature selects the soft fit; the default np.inf fit is unchanged. The bound for given facets is L10."
+note = "Section 5, assumption ii. Interface contract version 6: a finite term_temperature selects the soft fit; the default np.inf fit is unchanged. The bound for given terms is L10."
 
 [[claim]]
 id = "C013"
@@ -230,7 +229,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP10, tickets of 2026-11-09"
-note = "Section 6 opening: the boxes it names, L1 to L11 as stated; 'not convex' for the several-facet fit is L16 part (i); the three levels are L15, L12 to L14; the certificate is L17."
+note = "Section 6 opening: the boxes it names, L1 to L11 as stated; 'not convex' for the several-term fit is L16 part (i); the three levels are L15, L12 to L14; the certificate is L17."
 
 [[claim]]
 id = "C014"
@@ -557,13 +556,13 @@ file = "paper/paper.ipynb"
 anchor = "The decision problem"
 kind = "M"
 backing = [
-  "glossary:facet",
+  "glossary:term",
   "lemma:L16",
 ]
 status = "backed"
 disposition = "keep"
 source = "WP11 round 1, CR-1 and CR-3"
-note = "A facet is a term of the posynomial, a flat piece of the surface in log space; designs are labelled to it (L16), and are not its members."
+note = "A term of the posynomial is a flat piece of the surface in log space; designs are labelled to it (L16), and are not its members."
 
 [[claim]]
 id = "C036"
@@ -742,7 +741,7 @@ backing = ["lemma:L10.9", "lemma:L4.13", "lemma:L4.24", "test:tests/test_solvers
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "L10.9 K=1 is a monomial; L4.13 convex, L4.24 geometric program (one facet). 'solved directly' only loosely pinned by SLSQP-vs-LP agreement"
+note = "L10.9 K=1 is a monomial; L4.13 convex, L4.24 geometric program (one term). 'solved directly' only loosely pinned by SLSQP-vs-LP agreement"
 
 [[claim]]
 id = "C049"
@@ -886,7 +885,7 @@ backing = ["lemma:L4.23", "lemma:L4.24", "glossary:geometric-program"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "L4.14-L4.24: with x=exp(w) the one-facet fit is a GP in standard form, convex in w by L4.13/L4.23."
+note = "L4.14-L4.24: with x=exp(w) the one-term fit is a GP in standard form, convex in w by L4.13/L4.23."
 
 [[claim]]
 id = "C061"
@@ -1030,7 +1029,7 @@ backing = ["test:tests/test_estimator.py::test_fit_invariants", "test:tests/test
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "exponents_ has shape (K,d), one simplex point per facet, fitted from the whole table (contract fitted_attributes lists exponents_)"
+note = "exponents_ has shape (K,d), one simplex point per term, fitted from the whole table (contract fitted_attributes lists exponents_)"
 
 [[claim]]
 id = "C073"
@@ -1038,11 +1037,11 @@ fragment = "Our surface is piecewise log-linear, with constant elasticities with
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
-backing = ["lemma:L7.5", "lemma:L10.9", "lemma:L10.18", "lemma:L10.19", "glossary:facet", "glossary:elasticity"]
+backing = ["lemma:L7.5", "lemma:L10.9", "lemma:L10.18", "lemma:L10.19", "glossary:term", "glossary:elasticity"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "each facet is one monomial (log-linear, L10.19) with elasticity -w_k/w_j independent of the point (L7.5); piecewise exactly as kappa->inf (L10.18), within (log K)/kappa otherwise (L10.16)"
+note = "each term is one monomial (log-linear, L10.19) with elasticity -w_k/w_j independent of the point (L7.5); piecewise exactly as kappa->inf (L10.18), within (log K)/kappa otherwise (L10.16)"
 
 [[claim]]
 id = "C074"
@@ -1078,7 +1077,7 @@ backing = ["lemma:L4", "test:tests/test_solvers.py::test_slsqp_agrees_with_lp", 
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "one convex program per facet (L4; K=1 fit equals the single program) and K facet refits in the alternation; the joint several-facet fit is not convex (L16), so read 'one program, K refits' as the sentence does; pull-back test pins the original-unit frontier"
+note = "one convex program per term (L4; K=1 fit equals the single program) and K term refits in the alternation; the joint several-term fit is not convex (L16), so read 'one program, K refits' as the sentence does; pull-back test pins the original-unit frontier"
 
 [[claim]]
 id = "C077"
@@ -1426,7 +1425,7 @@ backing = ["lemma:L7.5", "test:tests/test_estimator.py::test_k_terms_recovers_pl
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "elasticity -w_k/w_j constant along a facet (L7.5); K>1 implemented and recovers planted facets"
+note = "elasticity -w_k/w_j constant along a term (L7.5); K>1 implemented and recovers planted terms"
 
 [[claim]]
 id = "C106"
@@ -1462,7 +1461,7 @@ backing = ["lemma:L1.7", "lemma:L10"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "L1.7: log V = w.u - beta so gradient in log space is w, the facet normal; L10 for per-facet terms"
+note = "L1.7: log V = w.u - beta so gradient in log space is w, the term's normal; L10 for one normal per term"
 
 [[claim]]
 id = "C109"
@@ -1510,7 +1509,7 @@ backing = ["lemma:L7.5", "glossary:elasticity"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Elasticity is the derivative along the fitted facet (L7.5); glossary not-clause: not a causal exchange or intervention effect; 'sampled designs' is the scope of the fit"
+note = "Elasticity is the derivative along the fitted term (L7.5); glossary not-clause: not a causal exchange or intervention effect; 'sampled designs' is the scope of the fit"
 
 [[claim]]
 id = "C113"
@@ -1618,7 +1617,7 @@ backing = ["lemma:L10.9"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "K=1 is one monomial/facet (L10.9); 'several regional tensions need K>1' follows from K being the number of facets (Definition 3), scope"
+note = "K=1 is one monomial term (L10.9); 'several regional tensions need K>1' follows from K being the number of terms (Definition 3), scope"
 
 [[claim]]
 id = "C122"
@@ -1678,7 +1677,7 @@ backing = ["test:tests/test_estimator.py::test_n_terms_above_one_is_implemented"
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "n_terms=2 fits exponents_ of shape (2,3); K=3 recovers planted facets"
+note = "n_terms=2 fits exponents_ of shape (2,3); K=3 recovers planted terms"
 
 [[claim]]
 id = "C127"
@@ -1750,7 +1749,7 @@ backing = ["test:tests/test_solvers.py::test_corollary_bound_on_every_planted_fi
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Offsets use LME of full U@w_k for each facet; the linear part uses the facet's own rows; test pins the all-rows offset."
+note = "Offsets use LME of full U@w_k for each term; the linear part uses the term's own rows; test pins the all-rows offset."
 
 [[claim]]
 id = "C133"
@@ -1954,7 +1953,7 @@ backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:test
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "seed-1 case pins stationary_without_margin; the empty-facet test only asserts status != certified, not the label; levels mapping is documentation"
+note = "seed-1 case pins stationary_without_margin; the empty-cell test only asserts status != certified, not the label; levels mapping is documentation"
 
 [[claim]]
 id = "C150"
@@ -1978,7 +1977,7 @@ backing = ["func:src/hyperbolic_trade_space/solvers.py::Termination", "test:test
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "tangent step, penalty, single facet and soft fit at tau=inf all asserted not_applicable; 'gaps are diagnostics' is in the docstring and test_estimator K=1 case (finite max_gap)"
+note = "tangent step, penalty, single term and soft fit at tau=inf all asserted not_applicable; 'gaps are diagnostics' is in the docstring and test_estimator K=1 case (finite max_gap)"
 
 [[claim]]
 id = "C152"
@@ -2114,7 +2113,7 @@ note = "Planted frontier exponents and offset are recovered from evaluated desig
 
 [[claim]]
 id = "C163"
-fragment = "model in the posynomial invariant form. It then tells you which metrics contend"
+fragment = "It then tells you which metrics contend, with what"
 file = "docs/index.md"
 anchor = ""
 kind = "S"
@@ -2242,7 +2241,7 @@ backing = ["lemma:L7", "test:tests/test_tensions.py::test_exponents_and_elastici
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "L7 elasticities are ratios of exponents along a facet; test pins report.elasticities against report.exponents; ratios of working-tau weights as elasticities assumed from L7, not separately stepped at finite tau"
+note = "L7 elasticities are ratios of exponents along a term; test pins report.elasticities against report.exponents; ratios of working-tau weights as elasticities assumed from L7, not separately stepped at finite tau"
 
 [[claim]]
 id = "C174"
@@ -2354,7 +2353,7 @@ note = "exponents_, cell_, coefficients_, term_share_ exist at K=1 and K>1"
 
 [[claim]]
 id = "C183"
-fragment = "`facet_`, `coefficients_`, `facet_share_`, `objective_` (what the solver minimized) and"
+fragment = "`cell_`, `coefficients_`, `term_share_`, `objective_` (what the solver minimized) and"
 file = "docs/api.md"
 anchor = ""
 kind = "S"
@@ -2498,7 +2497,7 @@ note = "V_K is the 1/kappa power of the posynomial (L10.7, glossary), so V=1 iff
 
 [[claim]]
 id = "C195"
-fragment = "Fitting one facet is a geometric program (GP), solved as"
+fragment = "Fitting one term is a geometric program (GP), solved as"
 file = "docs/theory.md"
 anchor = ""
 kind = "M"
@@ -2510,7 +2509,7 @@ note = "L4.17-L4.24: posynomial objective, monomial equality/inequalities, conve
 
 [[claim]]
 id = "C196"
-fragment = "fitting several facets alternates weights from"
+fragment = "fitting several terms alternates assigning the designs to terms with a separate convex refit of each term"
 file = "docs/theory.md"
 anchor = ""
 kind = "M"
@@ -2518,11 +2517,11 @@ backing = ["lemma:L16.49", "lemma:L16.48", "lemma:L15.16"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Weights from the current model fixed gives one GGP over all terms (L16.48-49); sharp-label reassign-then-refit is L15; the alternation loop itself is the algorithm"
+note = "Sharp-label reassign-then-refit, one convex refit per term on its cell, is L15 (descent); with the weights from the current model fixed, the fit of all terms is one GGP (L16.48-49), which the package does not solve jointly"
 
 [[claim]]
 id = "C197"
-fragment = "The package takes the sharp limit of the weights, one"
+fragment = "the package takes the sharp limit of the weights, one label per design"
 file = "docs/theory.md"
 anchor = ""
 kind = "S"
@@ -2534,7 +2533,7 @@ note = "Default term_temperature is inf (sharp); cell_ is one argmax label per d
 
 [[claim]]
 id = "C198"
-fragment = "which facet dominates a design is analysis of the fitted model, not part of the fit."
+fragment = "reading off which term scores a design highest is analysis of the fitted model, not part of the fit."
 file = "docs/theory.md"
 anchor = ""
 kind = "S"
@@ -2542,7 +2541,7 @@ backing = ["test:tests/test_soft_fit.py::test_r6_analysis_stays_analysis", "glos
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "test pins cell_ as argmax of the fitted scores, computed from the model (analysis)"
+note = "test pins cell_ as argmax of the fitted scores, computed from the model (analysis); at the default term_temperature=inf the labels drive the refit (the sentence before)"
 
 [[claim]]
 id = "C199"
@@ -2630,7 +2629,7 @@ note = "Test: weights on free metrics below half the members' weights; participa
 
 [[claim]]
 id = "C206"
-fragment = "terms there is one contending set per facet, and elasticities vary between facets."
+fragment = "terms there is one contending set per term, and elasticities vary between terms."
 file = "docs/theory.md"
 anchor = ""
 kind = "M"
@@ -2638,7 +2637,7 @@ backing = ["test:tests/test_tensions.py::test_k3_reports_one_per_term_recover_pl
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "K=3 returns one report per facet recovering planted supports; per-facet elasticities follow from L7.5 with facet-specific w"
+note = "K=3 returns one report per term recovering planted supports; per-term elasticities follow from L7.5 with term-specific w"
 
 [[claim]]
 id = "C207"
@@ -3410,7 +3409,7 @@ note = "n_lemma = support size, names monolemma/dilemma/trilemma/n-lemma pinned"
 
 [[claim]]
 id = "C271"
-fragment = "The set is found, not assumed: a facet of the achievable region on which"
+fragment = "The set is found, not assumed: n is read from the fitted exponents, not"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "M"
@@ -3470,7 +3469,7 @@ note = "d log m_j/d log m_k = -w_k/w_j along F; code entry [j,k]=-w_k/w_j assert
 
 [[claim]]
 id = "C276"
-fragment = "metric k, constant on a facet and `nan`"
+fragment = "metric k, constant within a term and `nan`"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "M"
@@ -3478,7 +3477,7 @@ backing = ["lemma:L7.5", "test:tests/test_tensions.py::test_exponents_and_elasti
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "ratio of exponents is constant on a facet (L7.5); nan rows tested"
+note = "ratio of exponents is constant on a term (L7.5); nan rows tested"
 
 [[claim]]
 id = "C277"
@@ -3590,7 +3589,7 @@ note = "allclose of components and evr with orient_by_pca on same rows"
 
 [[claim]]
 id = "C286"
-fragment = "At K > 1 the function returns a list of K reports, one per facet, each on the rows that facet"
+fragment = "At K > 1 the function returns a list of K reports, one per term, each on the rows of that term's"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
@@ -3598,11 +3597,11 @@ backing = ["test:tests/test_tensions.py::test_k3_reports_one_per_term_recover_pl
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "list of K reports, one per facet on its assigned rows (slow-marked test)"
+note = "list of K reports, one per term on the rows of its cell (slow-marked test)"
 
 [[claim]]
 id = "C287"
-fragment = "dominates. A facet with fewer than `min_near_frontier` (default 10) near-frontier rows raises"
+fragment = "cell. A term whose cell has fewer than `min_near_frontier` (default 10) near-frontier rows raises"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
@@ -3610,7 +3609,7 @@ backing = ["test:tests/test_tensions.py::test_k3_reports_one_per_term_recover_pl
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "default 10 asserted (n_near >= 10), ValueError names facet and min_near_frontier"
+note = "default 10 asserted (n_near >= 10), ValueError names the term and min_near_frontier"
 
 [[claim]]
 id = "C288"
@@ -3698,7 +3697,7 @@ note = "inf at exponent below 1e-12 asserted"
 
 [[claim]]
 id = "C295"
-fragment = "For a multi-term fit, log V is the soft maximum over facets"
+fragment = "For a multi-term fit, log V is the maximum over terms at the default"
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
@@ -3706,11 +3705,11 @@ backing = ["test:tests/test_matches_derivation.py::test_L10_phi_k_bounds_shift_a
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "score_samples == (1/kappa) log sum exp(kappa x_k), within (log K)/kappa of the max (the entropic sum over K facets, not mean)"
+note = "at the default term_temperature=inf score_samples is the maximum of the term scores; for finite kappa it is (1/kappa) log sum exp(kappa x_k), within (log K)/kappa of the max (L10.15, L10.16)"
 
 [[claim]]
 id = "C296"
-fragment = "For a multi-term fit, log V is the soft maximum over facets, and `improvement_factors` uses each"
+fragment = "and `improvement_factors` uses each row's assigned term."
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
@@ -3718,7 +3717,7 @@ backing = ["test:tests/test_estimator.py::test_k_terms_improvement_factors_use_a
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "improvement factor of the assigned facet lands on V=1; soft max as C015"
+note = "the improvement factor of the assigned term lands on V=1"
 
 [[claim]]
 id = "C297"
@@ -3878,7 +3877,7 @@ note = "FRONTIER_COLOR, BAND_COLOR, TENSION_CMAP used and asserted; HOLE_COLOR u
 
 [[claim]]
 id = "C310"
-fragment = "gives a per-row label to pass as `color=`."
+fragment = "colours them by cell, the term that scores each highest"
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
@@ -3886,7 +3885,7 @@ backing = ["test:tests/test_plotting.py::test_surface_k3_one_colour_by_default_a
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "labels 'facet k' per row passed as color= and shown"
+note = "color='cell' colours the designs by cell_labels (the term that scores each highest); the default is one colour"
 
 [[claim]]
 id = "C311"
@@ -4042,7 +4041,7 @@ backing = ["test:tests/test_solvers.py::test_terms_monotone_history_and_stops", 
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "hard fit: argmax relabel then per-facet refit until the assignment is fixed; soft fit uses softmax weights; the sentence's weights are labels in the hard case"
+note = "hard fit: argmax relabel then per-term refit until the assignment is fixed; soft fit uses softmax weights; the sentence's weights are labels in the hard case"
 
 [[claim]]
 id = "C324"
@@ -4070,7 +4069,7 @@ note = "level 2 is the gap G within eps_kkt; L12: G=0 iff the simplex KKT holds,
 
 [[claim]]
 id = "C326"
-fragment = "The facet gap G_k measures what"
+fragment = "The term gap G_k measures what"
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "M"
@@ -4082,7 +4081,7 @@ note = "G_k bounds the remaining suboptimality f_k - f_k* from above (0<=f-f*<=G
 
 [[claim]]
 id = "C327"
-fragment = "if no design sits exactly on a seam between facets, small changes"
+fragment = "if no design sits exactly on a seam between terms, small changes"
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "M"
@@ -4090,11 +4089,11 @@ backing = ["lemma:L13.7", "lemma:L13.12", "test:tests/test_solvers.py::test_marg
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "no row on a seam = positive margin (R2); L13: score changes below gamma/2 keep every maximizing facet; 'small' is relative to gamma"
+note = "no row on a seam = positive margin (R2); L13: score changes below gamma/2 keep every maximizing term; 'small' is relative to gamma"
 
 [[claim]]
 id = "C328"
-fragment = "is the perturbation provably leaving every facet unchanged."
+fragment = "is the perturbation provably leaving every design's assignment unchanged."
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "M"
@@ -4102,11 +4101,11 @@ backing = ["lemma:L13.7", "lemma:L13.11", "test:tests/test_solvers.py::test_marg
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "L13.11 radius gamma/(2U) keeps every row's maximizing facet (assignment); 'leaving every facet unchanged' is loose wording for the assignment"
+note = "L13.11 radius gamma/(2U) keeps every row's maximizing term, that is every design's assignment"
 
 [[claim]]
 id = "C329"
-fragment = "At infinite temperature this happens when a frontier row lies on two facet planes or two"
+fragment = "At infinite temperature this happens when a frontier row lies on two term planes or two"
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
@@ -4114,7 +4113,7 @@ backing = ["test:tests/test_solvers.py::test_assignment_margin_values_and_duplic
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "gamma=0 exactly for a tied row or identical facets (pinned); zero-margin seeds only at tau=inf, none at tau=50"
+note = "gamma=0 exactly for a tied row or identical terms (pinned); zero-margin seeds only at tau=inf, none at tau=50"
 
 [[claim]]
 id = "C330"
@@ -4142,7 +4141,7 @@ note = "the alternation's own cap (solve_terms max_iter) gives iteration_cap and
 
 [[claim]]
 id = "C332"
-fragment = "- `not_applicable`: one term, `facet_step=\"tangent\"`, a `penalty`, one metric, fewer designs than"
+fragment = "- `not_applicable`: one term, `refit_step=\"tangent\"`, a `penalty`, one metric, fewer designs than"
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
@@ -4150,11 +4149,11 @@ backing = ["test:tests/test_solvers.py::test_not_applicable_statuses", "test:tes
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "one term, tangent, penalty, one metric, fewer designs than facets and soft at tau=inf are each asserted not_applicable"
+note = "one term, tangent, penalty, one metric, fewer designs than terms and soft at tau=inf are each asserted not_applicable"
 
 [[claim]]
 id = "C333"
-fragment = "- `bound`: the share-weighted sum of facet gaps, bounding the distance from the fixed-assignment"
+fragment = "- `bound`: the share-weighted sum of term gaps, bounding the distance from the fixed-assignment"
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "M"
@@ -4214,7 +4213,7 @@ note = "EPS_KKT 1e-8, EPS_FEAS 1e-9 (default-path test); GUARD_TOL 1e-12 and POL
 
 [[claim]]
 id = "C338"
-fragment = "exponents (above 1e-3), one per facet. A small value marks a nearly flat direction (weakly identified exponents). It is `nan` at infinite"
+fragment = "exponents (above 1e-3), one per term. A small value marks a nearly flat direction (weakly identified exponents). It is `nan` at infinite"
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
@@ -4222,11 +4221,11 @@ backing = ["test:tests/test_estimator.py::test_conditioning_per_term_and_nan_cas
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "shape (n_terms,) positive per facet; nan at tau=inf pinned"
+note = "shape (n_terms,) positive per term; nan at tau=inf pinned"
 
 [[claim]]
 id = "C339"
-fragment = "temperature and for a facet with fewer than two participating exponents."
+fragment = "temperature and for a term with fewer than two participating exponents."
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
@@ -4234,7 +4233,7 @@ backing = ["test:tests/test_estimator.py::test_conditioning_per_term_and_nan_cas
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "nan at tau=inf and for a facet with one participating exponent (d=1 case) pinned; fewer-than-two in d>1 only by code"
+note = "nan at tau=inf and for a term with one participating exponent (d=1 case) pinned; fewer-than-two in d>1 only by code"
 
 [[claim]]
 id = "C340"
@@ -4282,7 +4281,7 @@ backing = ["lemma:L7", "lemma:L3"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "L7: elasticities -w_k/w_j constant on the facet; L3 balanced KKT gives the balanced point"
+note = "L7: elasticities -w_k/w_j constant on the term; L3 balanced KKT gives the balanced point"
 
 [[claim]]
 id = "C344"
@@ -4462,7 +4461,7 @@ backing = ["lemma:L7", "lemma:L10", "test:tests/test_site.py::test_why_labels_co
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Each facet has its own exponents (L7 elasticities along a facet, L10 sum of facets); the why-figure test pins that regions and labels follow the fitted exponents"
+note = "Each term has its own exponents (L7 elasticities along a term, L10 sum of terms); the why-figure test pins that regions and labels follow the fitted exponents"
 
 [[claim]]
 id = "C359"
@@ -4474,7 +4473,7 @@ backing = ["lemma:L3", "glossary:n-lemma", "test:tests/test_tensions.py::test_co
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "n-lemma = support of the exponent vector of a facet (L3 simplex optimality, sparse at tau=inf); the test recovers planted supports; the glossary defines it"
+note = "n-lemma = support of the exponent vector of a term (L3 simplex optimality, sparse at tau=inf); the test recovers planted supports; the glossary defines it"
 
 [[claim]]
 id = "C360"
@@ -4546,7 +4545,7 @@ backing = ["lemma:L8", "lemma:L7", "lemma:L6", "lemma:L9"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Chart (L8), elasticities along a facet (L7), Gaussian noise correction (L6), pull-back (L9); the fragment is the map's structural description"
+note = "Chart (L8), elasticities along a term (L7), Gaussian noise correction (L6), pull-back (L9); the fragment is the map's structural description"
 
 [[claim]]
 id = "C366"
@@ -4558,7 +4557,7 @@ backing = ["lemma:L6", "lemma:L9", "lemma:L10", "lemma:L11", "lemma:L12", "lemma
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Noise correction L6, pull-back L9, several facets L10, Pareto relation L11, algorithm guarantees L12-L15 and L17 (the paper states none is global)"
+note = "Noise correction L6, pull-back L9, several terms L10, Pareto relation L11, algorithm guarantees L12-L15 and L17 (the paper states none is global)"
 
 [[claim]]
 id = "C367"
@@ -4695,7 +4694,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP21 D-4 to D-7 (docs)"
-note = "mean_slack_ is the mean gap between facet and design on the fitted table, defined at every number of terms."
+note = "mean_slack_ is the mean shortfall below the fitted reference surface on the fitted table, defined at every number of terms."
 
 [[claim]]
 id = "C377"
@@ -4714,7 +4713,7 @@ note = "The certificate is a statement about the objective at the returned point
 
 [[claim]]
 id = "C378"
-fragment = "A facet reported as a `monolemma` is a cap: one metric binds on the rows that facet dominates"
+fragment = "A term reported as a `monolemma` is a cap: one metric binds on the rows of its cell"
 file = "docs/user-guide/tensions.md"
 anchor = "A cap can hide a slope"
 kind = "S"
@@ -4725,11 +4724,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP21 D-4 to D-7 (docs)"
-note = "n_lemma is the size of the contending set of the facet's rows; one metric is a monolemma."
+note = "n_lemma is the size of the contending set of the term's cell; one metric is a monolemma."
 
 [[claim]]
 id = "C379"
-fragment = "One term blends cap and slope into a dilemma that fits neither; two terms return the cap and the slope as separate facets, at a fraction of the mean slack"
+fragment = "One term blends cap and slope into a dilemma that fits neither; two terms return the cap and the slope as separate terms, at a fraction of the mean slack"
 file = "docs/user-guide/tensions.md"
 anchor = "A cap can hide a slope"
 kind = "R"
@@ -4740,7 +4739,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP21 D-4 to D-7 (docs)"
-note = "The planted cap-plus-slope table of the runnable block (seed 0, 300 rows, tail of about 1/7): K = 1 gives mean slack 0.351 and a dilemma, K = 2 gives 0.043 with a monolemma facet and a dilemma facet; the block asserts a monolemma facet and a threefold fall of the mean slack. One table, not a rate."
+note = "The planted cap-plus-slope table of the runnable block (seed 0, 300 rows, tail of about 1/7): K = 1 gives mean slack 0.351 and a dilemma, K = 2 gives 0.043 with a monolemma term and a dilemma term; the block asserts a monolemma term and a threefold fall of the mean slack. One table, not a rate."
 
 [[claim]]
 id = "C380"

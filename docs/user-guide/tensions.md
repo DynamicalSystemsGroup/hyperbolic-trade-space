@@ -36,8 +36,8 @@ plot_tensions(report, names=["m0", "m1", "m2"])
 
 `contending_set` holds the metrics with positive exponent in the exact-maximum fit (tau = infinity,
 exponents above 1e-9). `n_lemma` is its size and `lemma_name` names it: monolemma, dilemma,
-trilemma, then an n-lemma. The set is found, not assumed: a facet of the achievable region on which
-exactly n metrics contend. The report solves the tau = infinity program itself, independent of the
+trilemma, then an n-lemma. The set is found, not assumed: n is read from the fitted exponents, not
+chosen before the fit. The report solves the tau = infinity program itself, independent of the
 fit temperature. `min_exponent` must be 0 for this reading, because a positive floor masks the
 sparsity; the report warns when the estimator was fitted with a floor.
 
@@ -47,7 +47,7 @@ At the fit temperature the exponents are smoothed, so a small one means weak par
 membership. `participating` marks metrics whose exponent exceeds the participation threshold
 (`threshold`, default 1e-3); an exponent at or below 1e-12 is numerically zero. `elasticities[j, k]`
 is the elasticity along the surface: the percentage change of metric j per percentage change of
-metric k, constant on a facet and `nan` where metric j does not participate. It
+metric k, constant within a term and `nan` where metric j does not participate. It
 describes a feature of the fitted model, not a causal exchange.
 
 ## Association among near-frontier designs
@@ -71,13 +71,13 @@ along the surface is the set of trade-offs the designs exercised.
 
 ## With several terms
 
-At K > 1 the function returns a list of K reports, one per facet, each on the rows that facet
-dominates. A facet with fewer than `min_near_frontier` (default 10) near-frontier rows raises
+At K > 1 the function returns a list of K reports, one per term, each on the rows of that term's
+cell. A term whose cell has fewer than `min_near_frontier` (default 10) near-frontier rows raises
 `ValueError`; widen `band` or lower `min_near_frontier`.
 
 ## A cap can hide a slope
 
-A facet reported as a `monolemma` is a cap: one metric binds on the rows that facet dominates. It does
+A term reported as a `monolemma` is a cap: one metric binds on the rows of its cell. It does
 not say the design space has no trade-off. Here the planted frontier is flat for low m0 and falls
 beyond, and the tail has few rows:
 
@@ -100,11 +100,11 @@ assert two.mean_slack_ < one.mean_slack_ / 3
 ```
 
 One term blends cap and slope into a dilemma that fits neither; two terms return the cap and the slope
-as separate facets, at a fraction of the mean slack (0.043 against 0.351). Conversely, a cap on a table that
+as separate terms, at a fraction of the mean slack (0.043 against 0.351). Conversely, a cap on a table that
 never reaches the slope is all the report can show.
 
 ## What it cannot say
 
-Each report describes one facet and so one tension, depends on the band, and is a statement about
+Each report describes one term and so one tension, depends on the band, and is a statement about
 the sampled table: tensions the sampling never exercised cannot appear. Whether a contending set is
 a recognizable dilemma is for the engineer to decide.

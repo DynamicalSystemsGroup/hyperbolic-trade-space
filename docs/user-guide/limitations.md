@@ -3,7 +3,7 @@
 The model is a map, not the territory. These limits change what you do with a result.
 
 **Conditioning defines the question.** The exponents describe the conditioned metrics. Moving the
-reference or the scale of one metric changes which facet is tangent. Refit under a second reasonable
+reference or the scale of one metric changes which term is tangent. Refit under a second reasonable
 conditioning and report what moves ([Conditioning](conditioning.md)).
 
 **The surface is log-convex.** Dents, holes and disconnected regions are invisible to it, and no
@@ -32,7 +32,7 @@ no sampling error.
 a recognizable dilemma is for you. A tension is a binding constraint, not a correlation, and
 negative association near the surface is partly a closure effect.
 
-**Local fits.** A multi-term fit is a local optimum chosen among seeded restarts. A facet with few
+**Local fits.** A multi-term fit is a local optimum chosen among seeded restarts. A trade-off with few
 frontier rows can be missed; more restarts do not cure this, a larger sample can help.
 
 **Novelty is not preference.** V - 1 says how far a design lies beyond the fitted reference surface, not that

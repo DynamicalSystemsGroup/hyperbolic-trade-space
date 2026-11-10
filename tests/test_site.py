@@ -402,7 +402,7 @@ def test_root_index_is_thin_and_has_the_cards():
     assert order == sorted(order), "order: why, what, how, cards"
     assert (
         "A map of the mathematics: assumptions, the single-term core, the chart and its uses, "
-        "the multi-facet extension, the open questions"
+        "the several-term extension, the open questions"
     ) in text
     for needle in ("scikit-learn", "unsupervised", "feature engineering", "pca"):
         assert needle in low, needle
@@ -780,7 +780,7 @@ def test_figures_are_few_captioned_and_in_both_colour_schemes():
         assert [i for i, _ in bf.page_figures(page)] == sorted(i for i, _ in bf.page_figures(page))
     assert 1 <= len(names) <= bf.MAX_FIGURES == 8
     assert len(set(names)) == len(names)
-    assert {"first-fit", "three-facets", "tension-report", "log-plane", "chart-holes"} <= set(names)
+    assert {"first-fit", "three-terms", "tension-report", "log-plane", "chart-holes"} <= set(names)
     assert any(n.startswith("adcs-") for n in names), "an example from the case, on the frozen data"
 
 
@@ -927,7 +927,7 @@ def test_why_regions_partition_the_triangle_and_there_are_three_terms(why_fit):
     pts, reg = bsf.regions(fit, fit["spread"], n=120)
     assert np.allclose(pts.sum(axis=1), 1.0) and (pts > 0).all()  # inside the triangle
     assert set(np.unique(reg)) == {0, 1, 2}, "three regions, every one non-empty"
-    # exact: each position is in the region of the facet that is the largest affine piece there
+    # exact: each position is in the region of the term that is the largest affine piece there
     a = fit["W"] @ fit["colmean"] - fit["beta"]
     g = a + fit["spread"] * (np.log(pts) @ fit["W"].T)
     assert (g.argmax(axis=1) == reg).all()
@@ -973,7 +973,7 @@ def test_why_figure_files_have_the_expected_size_and_no_overlay_by_default(tmp_p
             assert im.size == (round(bsf.FIGSIZE[0] * bsf.DPI), round(bsf.FIGSIZE[1] * bsf.DPI))
             assert im.mode == "RGBA" and im.getpixel((2, 2))[3] == 0, "transparent background"
         assert path.stat().st_size > 30_000, scheme
-    # the default draws no line and no star; the option adds them (stars: one per facet)
+    # the default draws no line and no star; the option adds them (stars: one per term)
     import matplotlib.pyplot as plt
 
     fig = bsf.draw(fit, "light")
@@ -988,7 +988,7 @@ def test_why_figure_files_have_the_expected_size_and_no_overlay_by_default(tmp_p
 
 
 def test_why_lines_overlay_is_the_fixed_total_function(why_fit):
-    """Option on: at the total fixed, facet k's exponent vector is where its own piece peaks."""
+    """Option on: at the total fixed, term k's exponent vector is where its own piece peaks."""
     import numpy as np
 
     bsf, fit = why_fit

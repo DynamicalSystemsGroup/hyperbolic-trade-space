@@ -79,17 +79,17 @@ plot_ternary(ts, X, lines=True)
 ```
 
 <figure markdown>
-![A triangle whose corners are three metrics, tinted in three regions by the facet that dominates, with designs as points, a numbered marker for each facet's exponent vector, and lines of equal V closing around each marker.](generated/figures/ternary-planted-light.png#only-light)
-![A triangle whose corners are three metrics, tinted in three regions by the facet that dominates, with designs as points, a numbered marker for each facet's exponent vector, and lines of equal V closing around each marker.](generated/figures/ternary-planted-dark.png#only-dark)
+![A triangle whose corners are three metrics, tinted in three regions by the term that is largest there, with designs as points, a numbered marker for each term's exponent vector, and lines of equal V closing around each marker.](generated/figures/ternary-planted-light.png#only-light)
+![A triangle whose corners are three metrics, tinted in three regions by the term that is largest there, with designs as points, a numbered marker for each term's exponent vector, and lines of equal V closing around each marker.](generated/figures/ternary-planted-dark.png#only-dark)
 <figcaption>Figure 8. Designs by shares of three metrics: regions, numbered exponent vectors, lines of equal V.</figcaption>
 </figure>
 
 How to read this plot:
 
 - A corner is the whole total in one metric; an edge splits it between two.
-- A numbered marker is a facet's exponent vector, where that facet's V is largest for a fixed total.
+- A numbered marker is a term's exponent vector, where that term's V is largest for a fixed total.
   V, the invariant value, also depends on the total, so a marker is not where V = 1.
-- A region is where one facet dominates, named by the metrics that trade there: an analysis of the
+- A region is where one term is the largest, named by the metrics that trade there: an analysis of the
   fit, not a label on a design.
 
 ```python {.runnable}

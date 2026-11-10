@@ -31,6 +31,10 @@ PARTS = (
 """Name, first and last lemma of each part; the last of the final part is the record's last."""
 KIND_ORDER = ("computed", "axiom", "result")
 _SPECIAL = re.compile(r"([\\`*_<>\[\]$])")  # the pipe is escaped by the table writer
+POLYHEDRAL_MARK = "<!-- vocab-exempt: facet -->"
+"""The vocabulary tool's exempt marker for a declared axiom that says "facet" in its polyhedral
+sense (a maximal face: R1's relative interior of a facet), where the textbook word stays (WP24,
+A1). It renders as nothing."""
 
 
 def _esc(text: str) -> str:
@@ -156,9 +160,10 @@ def _kind_text(step, lemma, file, owners, results) -> str:
             cite = f" [{_esc(entry.citation)}]" if entry.citation else ""
             where = _import_lines(file).get(name)
             at = f"; declared at {_link(file, where)}" if where else ""
+            mark = f" {POLYHEDRAL_MARK}" if re.search(r"\bfacet", entry.statement) else ""
             parts.append(
                 f"by declared axiom **{name}** ({entry.tag.lower()}): "
-                f"{_esc(entry.statement)}{cite}{at}"
+                f"{_esc(entry.statement)}{cite}{at}{mark}"
             )
     else:
         for key in step["results"]:

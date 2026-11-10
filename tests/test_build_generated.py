@@ -117,7 +117,7 @@ REGISTER_PHRASES = (
     "Pareto boundary",
     "energy differential",
     "level offset",
-    "facet gap",
+    "term gap",
     "assignment margin",
     "stable radius",
     "participation threshold",

@@ -24,8 +24,8 @@ The attributes to read first:
 - `n_eff_`: how many designs carry the fit.
 - `objective_` and `mean_slack_`: `objective_` is what the solver minimized, the soft maximum at one
   term and the mean slack at several, so it is not comparable across numbers of terms.
-  `mean_slack_` is the mean gap between facet and design, defined at every number of terms; compare
-  fits with it, at a fixed temperature.
+  `mean_slack_` is the mean shortfall below the fitted reference surface, defined at
+  every number of terms; compare fits with it, at a fixed temperature.
 - `termination_` and `conditioning_`: how the fit stopped and how well its exponents are identified
   ([termination page](termination.md)).
 
@@ -60,8 +60,8 @@ Re-select tau when you change the number of terms.
 
 ## Several terms
 
-One term is one flat facet in log space with constant elasticities. When the rates vary by region,
-fit `n_terms=K` facets, where you choose K:
+One term is flat in log space, with constant elasticities. When the rates vary by region, fit
+`n_terms=K` terms, where you choose K:
 
 ```python {.runnable}
 from hyperbolic_trade_space import (
@@ -77,28 +77,29 @@ print(ts.exponents_.shape, ts.termination_.status)
 ```
 
 Fitting alternates weights from the current model with a refit, from several seeded starts
-(`n_restarts`, default 5) keeping the best. `assign_facets(X)` reads which facet
-dominates new rows. Options:
+(`n_restarts`, default 5) keeping the best. `assign_cells(X)` reads the cell of new
+rows. Options:
 
 - `term_temperature` (kappa, term temperature, default infinity): infinity, one label per design;
-  finite, every design weighs every term. Read kappa on the scale of tau: far below it, facets
+  finite, every design weighs every term. Read kappa on the scale of tau: far below it, terms
   merge. At tau = 50, kappa = 5000 is within 0.001 of the infinite-kappa exponents.
 - `term_aggregation`: `"sum"` (default) or `"mean"`, which subtracts log K / kappa; with the sum, a
   repeated term shifts the soft maximum by log 2 / kappa.
 - `penalty="reweighted_l1"` with `alpha` pushes small exponents to exact zero, at finite temperature
   only.
-- `facet_step` is `"support"` (default) or `"tangent"`, which is not monotone and carries no
+- `refit_step` is `"support"` (default) or `"tangent"`, which is not monotone and carries no
   local-optimality status.
 
-`facet_` gives each training row's dominant facet; `coefficients_` and `facet_share_` the facets'
-coefficients and shares. At one term `facet_` is all zeros and `facet_share_` is `[1.0]`. What the fit
+`cell_` gives each training row's cell; `coefficients_` and `term_share_` the terms' coefficients
+and shares. At one term `cell_` is all zeros and `term_share_` is
+`[1.0]`. What the fit
 reports about itself is on the [termination page](termination.md).
 
 ## Choosing K, the temperature and the band
 
 Compare numbers of terms at one fixed temperature, by `mean_slack_`, never by `objective_` and never
 at a temperature re-selected for each K. Add a term while `mean_slack_` still falls by more than the
-variation between restarts. Resample: a facet whose exponents change between bootstrap resamples
+variation between restarts. Resample: a term whose exponents change between bootstrap resamples
 or restarts is a splinter, a few designs fitted alone, and K is too large.
 
 ```python {.runnable}
@@ -124,19 +125,19 @@ for K in (1, 2, 3, 4):
 
 The mean slack falls from 0.855 at K = 1 to 0.692, 0.664 and 0.658: the third term is the last that
 pays. Over the four resamples the smallest exponent stays within 0.07 to 0.08 at K = 3 and ranges from
-0.00 to 0.07 at K = 4: the fourth facet changes with the sample.
+0.00 to 0.07 at K = 4: the fourth term changes with the sample.
 
-`select_temperature` needs a target the fit can reach. With several terms the facets are not
+`select_temperature` needs a target the fit can reach. With several terms the term planes are not
 supporting planes, so `frac_above_` levels off above zero as tau grows (about 0.30 on the table of
 `make_frontier_data(300, 4, n_terms=2, random_state=777)`) and the default target 0.10 raises "not
 bracketed". Select
 tau at K = 1 and hold it fixed, or choose a target above the level-off.
 
-`tension_report` takes its band from the temperature, 1/tau. A facet with fewer than
+`tension_report` takes its band from the temperature, 1/tau. A term whose cell has fewer than
 `min_near_frontier` designs in the band raises, and the message names the `band`, and the matching
 `temperature`, that holds enough.
 
-With two metrics the facets can be drawn in the log plane:
+With two metrics the terms can be drawn in the log plane:
 
 ```python {.runnable}
 from hyperbolic_trade_space.plotting import plot_log_plane
@@ -149,14 +150,14 @@ plot_log_plane(ts2, X2)
 ```
 
 <figure markdown>
-![Designs in the log plane of two metrics, all in one colour, with the frontier drawn as one black bent line, the envelope of three straight term lines, and a grey band below it.](../generated/figures/three-facets-light.png#only-light)
-![Designs in the log plane of two metrics, all in one colour, with the frontier drawn as one black bent line, the envelope of three straight term lines, and a grey band below it.](../generated/figures/three-facets-dark.png#only-dark)
-<figcaption>Figure 2. Three facets fitted to two metrics: each facet is a straight line in log space, and the frontier is their envelope.</figcaption>
+![Designs in the log plane of two metrics, all in one colour, with the frontier drawn as one black bent line, the envelope of three straight term lines, and a grey band below it.](../generated/figures/three-terms-light.png#only-light)
+![Designs in the log plane of two metrics, all in one colour, with the frontier drawn as one black bent line, the envelope of three straight term lines, and a grey band below it.](../generated/figures/three-terms-dark.png#only-dark)
+<figcaption>Figure 2. Three terms fitted to two metrics: each term is a straight line in log space, and the frontier is their envelope.</figcaption>
 </figure>
 
 Kernel expansions that stay inside geometric programming are documented, not built.
 
 ## Synthetic data
 
-`make_frontier_data` plants a frontier, with `n_terms=K` for K facets; `make_configured_frontier_data`
+`make_frontier_data` plants a frontier, with `n_terms=K` for K terms; `make_configured_frontier_data`
 also returns configuration variables. Both are seeded and used throughout these pages.
