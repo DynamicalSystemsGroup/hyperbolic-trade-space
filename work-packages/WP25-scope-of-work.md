@@ -226,4 +226,6 @@ item, A1 to A8, for the driver under the mandate; deferred 0; raised 0).
 
 ## Gate outcomes
 
-- (none yet)
+- 2026-11-09, 23:20: approved for execution by the driver under the mandate; no open decision; the Agent's defaults
+  A1 to A8 accepted as one item; governing rule: negative edits (the supervisor's standing order); the paper, the
+  derivations, the package and WP23's and WP24's surfaces untouched by this instance; recurs at each later gate.
