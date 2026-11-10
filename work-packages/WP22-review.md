@@ -157,17 +157,47 @@ that changes a view") is not met: R3-3 would change a view. Nothing found in rou
 (the one "blocks", R3-5, is the WP22b values question). The PM's recommendation: stop the loop; R3-3 is a small
 round 4 only if the supervisor wants it. R2-1 is recorded as accepted in part, with the reason in R3-2.
 
-## Gate comparison report (skeleton for R-14; the swap is NOT done)
+## Gate comparison report (R-14; the swap is NOT done)
 
 Old model `examples/adcs/model_v2/cubesat.sysml` (what the committed data and the paper cite) against the new one
-`cubesat_r1.sysml`. To be completed at the gate, in the shape of WP16's data gate.
+`cubesat_r1.sysml`, in the shape of WP16's data gate. Evidence produced 2026-11-09 in a clean worktree at `3cd4c5a`
+(`dev`), pinned toolkit v0.12.0, `REQUIRE_OPENSYSML=1`.
 
-| Question | Answer to fill at the gate | Evidence |
+| Question | Answer | Evidence |
 |---|---|---|
-| Is the old file byte-unchanged? | | `git diff origin/dev...HEAD -- examples/adcs/model_v2/cubesat.sysml` empty; hash equals the ledger's last old entry |
-| What is identical? | calc defs, the analysis def, ranges, every number of the old model; assembly view text | equivalence test; assembly diff empty |
-| What is added? | `SlewMeasurement.slewTime`, `peakTorque`, `controlEffort` (recorded measurements); `SlewTimeRequirement`, `EclipseReserveRequirement`, `PowerMarginRequirement`, `EnergyBalanceRequirement`; `DepthOfDischargeRequirement` restated; `satisfy` and `verify` for each; docs naming the four open metrics; the two views marked | model diff |
-| Are the outputs equal? | | `v2-primary-r1@2`, `v2-baseline-r1@2` output hashes equal `v2-primary@2`, `v2-baseline@2`; flags and oracle to < 1e-9 |
-| Toolkit gates on both files | | check, lint, `verify --solve` exit codes |
-| What does the swap change for paper and docs? | the model file they cite and the figures | WP22d list |
-| Gate decision | | quoted verbatim in `WP22-decisions.md` |
+| Is the old file byte-unchanged? | Yes. Last change to it is WP15's commit `2d13465`; nothing since. Its sha256 equals the ledger's last old entries. | `git log --oneline -1 -- .../cubesat.sysml` gives `2d13465`; `git diff origin/dev -- .../cubesat.sysml` empty; `shasum -a 256` gives `28dbeeb23cf4...`, equal to `model_sha256` of `v2-primary@2`, `v2-baseline@2`, `v2-check-predictions@2`, `v2-check-designs@2` and `scope-sensitivity-shared-subspace-v2`. The new file is `e4c25a256ab1...`, equal to `model_sha256` of `v2-primary-r1@2` and `v2-baseline-r1@2` |
+| What is identical? | Carried over unchanged: every calc def (accounting, power, energy, inertia, pointing, slew closed form), the analysis def `SlewExperiment` (its eight returned attributes), all ranges and enums, the named configurations, `SettledRequirement`, `MomentumRequirement`, `PowerRequirement`, `SlewBandRequirement`, the existing `satisfy` and `verify` elements, every number of the old model. Assembly view text identical to the old one | 114 differing diff lines in all (see added/restated); equivalence tests below; the assembly diff test in `test_system_model_v2_r1.py` passes |
+| What is added? | `SlewMeasurement.slewTime`, `peakTorque`, `controlEffort` (recorded baseline measurements, the only two numeric literals added besides thresholds); `SlewTimeRequirement`, `EclipseReserveRequirement`, `PowerMarginRequirement`, `EnergyBalanceRequirement`; a `satisfy` by `cubesatBaseline` and a `verify` objective in `SlewVerification` for each of the four; `doc` on the two verification cases naming the four open metrics; the two views marked by header comments (sections kept) | `diff cubesat.sysml cubesat_r1.sysml`: 22 undecided constraint rows in `verify --solve` against 14 (the added ones) |
+| What is restated? | `DepthOfDischargeRequirement` now reads `DepthOfDischarge(...) <= maxDepthOfDischarge` (was an inline `EclipseDemand(...) <= maxDepthOfDischarge * capacity`); `SlewExperiment`'s `in controlEffort` defaults to `baselineMeasurement.controlEffort`; the file's header comment and section headers name the views | the restated verdict equals the old one at every checked configuration (test) |
+| Are the outputs equal? | Yes. Regenerated outputs are byte-identical; analysis outputs equal the old v2 model's, flags equal the frozen flags | `v2-primary-r1@2` output `4dc4ae0b8ebe` = `v2-primary@2`; `v2-baseline-r1@2` `9450713cd78c` = `v2-baseline@2`; 132 passed in 110 s (`test_system_model_v2_r1.py`, `test_model_checking_v2.py`, `test_system_model_v2.py`, `test_cubesat_model.py`); printed "[equivalence] eight computed attributes, 5 configs: max rel diff 1.83e-16 (dod_eclipse)" and "accounting, 8 configs: max rel diff 0.00e+00"; the oracle test requires < 1e-9; ledger `verify`: "19 entries (13 current); 0 drifts", exit 0 |
+| Toolkit gates on both files | Both pass, same exit codes. The new file has 8 more constraint rows, all undecided (none violated) | via `experiments.toolkit.locate()`: `cubesat.sysml` check 0, lint errors 0 warnings 0 (6 infos), `verify --solve` 0 ("0 satisfied, 0 violated, 14 undecided"); `cubesat_r1.sysml` check 0, lint errors 0 warnings 0 (6 infos), `verify --solve` 0 ("0 satisfied, 0 violated, 22 undecided"). The test `test_toolkit_check_lint_and_verify_solve_pass_on_r1` runs the same three on r1 (needs the pinned binary; installed here) |
+| What does the swap change for paper and docs? | The paper notebooks and generators do not name `cubesat.sysml` or `model_v2` (grep of `paper/`: none); they read the ledger (`paper/generate_model.py` takes each dataset's entry, command and hash from `ledger.jsonl`), so the paper's provenance rows change only by the entry id and model hash. The rest is in the lists below | WP22d list below |
+| Gate decision | To be recorded by the driver in `WP22-decisions.md` | quoted verbatim there |
+
+**WP22d: what the swap touches (by kind of change).**
+- Path (one constant or sentence): `examples/adcs/experiments/definitions.py` (`V2_MODEL`, the experiments' `model_path`),
+  `compare.py` (reads the model text), `cubesat_oracle.py` and `feasibility.py` (docstrings and the file they read),
+  `examples/adcs/case-model.md` (4 references; the how-to text), `scripts/check.py` (the changed-path to test map).
+- Tests that pin or open the model: `test_system_model_v2.py`, `test_model_checking_v2.py`, `test_mutation_v2.py`,
+  `test_cubesat_oracle.py`, `test_v2_data.py`, `test_case_model_howto.py`, `test_paper.py` (a docstring only); each
+  opens the old file and would open the new one; the model-hash assertions would be re-pinned to the new hash.
+- Hash pinned: the ledger gets new entries superseding the five old ones that cite `28dbeeb23cf4` (the `-r1@2` entries
+  already carry `e4c25a256ab1` and the same output hashes, so the paper's data hashes do not move); `ledger_r1.py` is retired.
+- Regenerated (no figure changes expected): `paper/generate_model.py` provenance rows and, through them, Appendix C and
+  F tables and `paper/supporting_material.ipynb`; `experiments/reports/v1-v2-comparison.md` and `change-register.md`
+  (cite the file). `work-packages/interface-contract.{md,toml}` names the folder, not the file.
+- Folder: `cubesat_r1.sysml` would be renamed or become `cubesat.sysml` and the old file kept in history only; the
+  views generator `out/r1/` becomes the model's views.
+- WP16 Amendment 2 (event detection and regeneration on the new model) adds, on top, a regeneration of the datasets
+  with event-detected slew times, so the data hashes, the fits and the paper's numbers move; it is a data gate, not a
+  path change.
+
+**PM's reading.** The evidence supports: the old file is untouched and its hash is the one the ledger holds; the new
+file passes the same strict load, check, lint and `verify --solve` as the old one; on the regenerated designs of both
+datasets the new model returns the old model's outputs (byte-identical output files, analysis agreement to 1.8e-16,
+flags and verdicts equal), so adopting it moves no committed number; it adds six metrics' worth of requirement and
+verification structure and the two marked views. It does not support: any claim that the four uncovered metrics
+(pointing error, control effort, total mass, peak slew power) are bounded (their thresholds are WP22b); any claim
+about configurations other than the regenerated designs and the baseline (WP22c); and the picture's remaining open
+items R3-2 and R3-3, which the loop's strict stopping clause counts and the PM's recommendation accepts. The 22
+undecided rows in `verify --solve` are the unbound baseline chain, the same cause as the old file's 14, not a result.
