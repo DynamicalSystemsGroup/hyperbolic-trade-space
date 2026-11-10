@@ -70,3 +70,14 @@ SHA), Realization (cloud infrastructure and Docker images in an artifact registr
 expected. WP27's scope uses these words for the chain: a verification case (Declaration) names its analysis
 (Execution), its evidence record (Evidence: the ledger entry and its hash) and the image that produced it
 (Realization). The page names no trade studies or HTS; that is the separation he keeps.
+
+## Scope approved (2026-11-10, 14:20; the driver)
+
+`WP27-scope-of-work.md` (7941c63): seven goals, eight non-goals (the lifecycle demo's features among them), eight
+deliverables, twelve requirements, no open decision. **Approved for execution by the driver under the mandate**; the
+Agent's defaults accepted as one item: the additions in a separate `stakeholders.sysml` where cross-file references
+parse in both parsers (the model's bytes and the ledger hash fixed), else in-file under WP26's OD1 (b); the pointer
+check as `tests/test_verification_pointers.py`, with the gate checklist gaining one line (a gate re-run updates the
+pointers in the same unit); the "for the lifecycle demo" section in the WP26 report or its own file. The same
+modeller executes; G1 (what parses) and the separate file may start before the close-out's regression lands, since
+they regenerate nothing; the held in-file edits and the ledger re-run wait for it.

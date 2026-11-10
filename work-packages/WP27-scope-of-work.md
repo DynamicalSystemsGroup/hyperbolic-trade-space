@@ -215,3 +215,9 @@ One item for the driver's approval. Each is marked *(default)* where it appears,
 None. The trace check found no problem-level item: every goal, non-goal, deliverable and check traces to the
 supervisor's words or their dispositions in `WP27-decisions.md`, to WP26's recorded rules, or to the Agent's defaults
 above, which go to the driver as one item.
+
+## Gate outcomes
+
+- 2026-11-10, 14:20: approved for execution by the driver under the mandate; no open decision; the Agent's defaults
+  accepted as one item (`WP27-decisions.md`).
+
