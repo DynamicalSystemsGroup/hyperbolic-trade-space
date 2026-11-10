@@ -16,13 +16,7 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
   on your value until you say otherwise; changing it later is one constant and one regeneration. Also for you, with
   the Discussion option above: the paper's one sentence from spike A, the driver recommends "Pre-imposing the four
   requirements changes the contending set; removing the infeasible designs does not."
-- (2026-11-10, 08:35) **Does the paper's Discussion carry the requirements reading?** Spike B
-  (`WP23-rounds/spikes/spike-B-requirements-and-the-fit.md`) shows the fit prices a requirement at the frontier and
-  can ground a request to relax one, with teeth in the baseline regime and against relaxing in the primary. The
-  full case analysis takes the table (Appendix D, the docs' case page). For the paper: D1 one short paragraph after
-  "Three claims" (one more topic); D2 one sentence in "Three claims" pointing to Appendix D; D3 nothing. The
-  driver's recommendation: D2, since the narrative is to stay tight and the appendix carries the numbers.
-  Non-blocking; the appendix table lands either way.
+- (2026-11-10, 08:35; answered 08:50) **The paper's Discussion and the requirements reading.** Resolved: the fit of record stays unconstrained by the thresholds; the cuts are after-the-fact analysis in Appendix D and the repo; one or two sentences in the Discussion (`WP23-decisions.md`).
 - (2026-11-10, 02:25) **Do proposals that fail a model requirement count as check designs?** Under the stated
   reach rule the proposer returns three proposals on the settling-time view; two are one configuration; all three
   sit at the small end of the battery range (22 to 25 Wh) and fail the depth-of-discharge requirement, because the

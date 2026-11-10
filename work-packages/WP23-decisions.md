@@ -308,3 +308,22 @@ requirement); training the proposer on the fully feasible rows is future work. S
 comparison holds the conditioning and the temperature rule fixed, as the spike did. The paper's sentence is the
 supervisor's (with the Discussion option); the driver recommends the short one: "Pre-imposing the four requirements
 changes the contending set; removing the infeasible designs does not."
+
+## The supervisor on the spikes' presentation (2026-11-10, 08:50)
+
+**Supervisor (mzargham), verbatim:** "my take is that with and without the requirements enforced is interpretable
+as constrained versus unconstrained optimization and that i'd lean toward fitting without threshold requirement,
+then treat the cuts along the requirements as an after the fact analysis. we can keep that in repo but we should
+restrict how much the paper covers this since the case is just for numerical experiments to show the method, its
+scope drift to get too far into the options in how we use it in detail. a sentence or two in the dicussion suffices
+since it will be backed up by our research records in the repo"
+
+**Disposition.** The fit of record stays the fit on the feasible set (the generation's flags; no threshold
+requirement imposed before the fit), as it is today. The cuts along the four requirements are after-the-fact
+analysis: spike B's requirements table and spike A's constrained-against-unconstrained table live in Appendix D and
+the docs' case page, with the spike reports as the research record in the repository. The paper's Discussion
+carries one or two sentences, drafted by the paper stream as candidates for his review, in the spirit of: fitting
+first and reading the requirements after is the unconstrained-then-constrained reading; pre-imposing the four
+requirements changes the contending set while removing the infeasible designs does not; Appendix D prices each
+requirement at the frontier. Nothing more of the options enters the paper. This resolves the Discussion item
+under "Waiting for the supervisor".
