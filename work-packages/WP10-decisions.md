@@ -1196,3 +1196,23 @@ sentence in Section 1 or 10 that names design optimization and configuration man
 2026-11-09) cites the family. Candidates for the search, to be verified, not assumed: Sobieszczanski-Sobieski and
 Haftka (1997, survey), Martins and Lambe (2013, architectures), Gray et al. (2019, OpenMDAO), Martins and Ning (2021,
 the textbook), Ross and Hastings (tradespace exploration), Simpson et al. (trade-space visualization).
+
+**Driver's question (popup), with the spike's evidence** (`docs/superpowers/notes/spike-facet-rename/report.md`,
+d1efdfe: across 18 abstract-only reads no reader took a facet for a set of designs; the 7 cluster readings came at
+depth B from the facet-coloured figures and two membership phrases; the A/B placed the tension in the model 4 of 4
+under either vocabulary; the rename buys the glossary's one-object-one-name rule). Options: Keep facet, fix the
+phrases / Prose now, API after 0.1 / Everything before 0.1 / Prose now, API as its own package. **Supervisor
+(mzargham), verbatim:** "Everything before 0.1".
+
+**Disposition.** A new package, WP24 (the vocabulary rename), scoped by the PM for the driver's approval: "facet"
+leaves the glossary, the paper, the docs, the derivations (Appendix B regenerated), the figures and captions, the
+claims-register fragments and test pins, and the package's public names (`facet_share_` to `term_share_`,
+`facet_gap` to `term_gap`, `assign_facets`, `facet_labels`, `facet_step`, `single_facet_termination`,
+`facet_objective`, `by_facet` renamed in the same spirit) with a non-additive interface-contract amendment and no
+deprecation shims; one stream owns it and it lands after the executing packages' units or rebased onto them, in one
+push per surface with the regenerations in the same push. Vocabulary: "monomial term", shortened to "term" where
+unambiguous, glossed at first use in the abstract and the docs as a product of powers of the metrics (the executive
+in the A/B: nobody said what a monomial is); "n-lemma" for the metrics in tension within a term; "trade-off" where
+obvious; "cell" for the designs a term scores highest; the τ = ∞ polyhedral sense is the one place the textbook
+word may stay or become "face" (an agent's default in the scope, for the driver). Work-package records keep their
+wording as written. Step 3g on the path.

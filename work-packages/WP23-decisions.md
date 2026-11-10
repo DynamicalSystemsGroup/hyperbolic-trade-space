@@ -59,3 +59,14 @@ assesses 2 to 3 battery alternatives (swap) each carrying mass, capacity, peak c
 one configuration choice reaches total mass and launch cost, energy balance, eclipse reserve and peak slew power
 through the model's own calcs; the general test behind it: every configuration value has its obviously coupled paths
 to the metrics present in the model, and the table says so. The loop reports what it adopted and why.
+
+**Supervisor (mzargham), verbatim (22:15), on "fully coupled":** "by the way i don't mean fully coupled like all to
+all, i just meant connect graph. think of this in terms of the coupling variables between subsystems in the MDAO lit"
+
+**Disposition.** The coverage and coupling table is a graph, not a matrix of everything against everything:
+configuration values feed subsystem calculations, subsystems exchange named coupling variables (mass to launch cost
+and to the slew dynamics; power generated and stored to the energy balance and the peak power available to the
+slew), and the metrics are read off the subsystems; the test is connectivity, every configuration value reaching at
+least one metric and every metric reached, with the coupling variables between subsystems named as the MDAO
+literature names them (a design structure matrix or XDSM reading). The MDAO paper unit (P-11) and this table cite
+the same family.
