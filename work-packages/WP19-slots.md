@@ -113,8 +113,8 @@ S-d3, S-d6, S-d7, S-e1 (open). No figure: S-a1 (supervisor), S-a2, S-a3, S-a4, S
 | S-b1, S-b2 | Passed (two reads each); ready as P-2, P-3 (copies of the model's views in `paper/figures/`). |
 | S-c1 | Kept as is (two reads); P-4. |
 | S-d1 | Kept; caption gains the slice clause (P-5). |
-| S-d2 | Superseded by the supervisor's ruling (no facet colouring): redrawn without it (`paper/figures/planes.py`); reads in the record. The caption steps are history. |
-| S-d3 | Superseded: the sentence test under the ruling found one sentence the chart alone carries (position against level); redrawn as Z0 against log V (`paper/figures/chart_level.py`); reads in the record. |
+| S-d2 | Superseded by the supervisor's ruling (no facet colouring): redrawn without it (`paper/figures/planes.py`); passed two reads (P-6 revised). The caption steps are history. |
+| S-d3 | Superseded: the sentence test under the ruling found one sentence the chart alone carries (position against level); redrawn as Z0 against log V (`paper/figures/chart_level.py`); passed two reads (P-7 revised). |
 | S-d4 | Kept; caption gains the association clause (two reads; P-8). |
 | S-d5 | Kept; caption gains the "w" clause and the association clause (two reads; P-9). |
 | S-d6 | No figure (sentence test: the form of the dropped cubesat triangle). |
