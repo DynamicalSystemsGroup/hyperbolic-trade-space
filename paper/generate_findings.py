@@ -89,13 +89,13 @@ def datasets_sentence(primary, stock) -> Md:
 
 
 def temperature_sentence(study, fit) -> Md:
-    """The selected temperature and what it leaves above V = 1."""
+    """The fit temperature and what it leaves above V = 1."""
     r = study.regime
     frac = stable(f"fit | {r} K=1 | frac_above_", lambda v: f"{v:.3f}")
     n_eff = stable(f"fit | {r} K=1 | n_eff_", lambda v: f"{v:.1f}")
     band = stable("sentence | temperature | band", lambda v: f"{v:.4f}")
     return Md(
-        f"The selected temperature is tau = {fit.tau:.1f}: a fraction {frac} of "
+        f"The fit temperature is tau = {fit.tau:.1f}: a fraction {frac} of "
         f"designs lies above V = 1 (the target is {study.spec.target_frac:.2f}), the band "
         f"1/tau is {band} and the effective sample size is {n_eff} designs."
     )
@@ -113,7 +113,7 @@ def k1_sentence(study, fit) -> Md:
     return Md(
         f"At K = 1 the exact-maximum fit has a {len(names)}-lemma across "
         f"{_span(study.spec.subsystems_of(names))}: {_and(names)} contend, with "
-        f"working-temperature exponents from {two(low)} to {two(high)}."
+        f"exponents at the fit temperature from {two(low)} to {two(high)}."
     )
 
 

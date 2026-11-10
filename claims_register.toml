@@ -68,7 +68,7 @@ note = "L1: log V = w.u - beta, so V is constant where w.u is; L7: the tangent s
 
 [[claim]]
 id = "C004"
-fragment = "designs of equal V stand at the same level, and log V, the energy differential, is a design's level relative to the reference surface V=1: negative inside, positive beyond"
+fragment = "designs of equal V stand at the same level, and log V, the energy differential, is a design's level relative to the fitted reference surface V=1: negative inside, positive beyond"
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "M"
@@ -1586,7 +1586,7 @@ note = "Test runs a planted second table through load_study, fit_study, tables a
 
 [[claim]]
 id = "C119"
-fragment = "The fitted surface is a log-convex envelope."
+fragment = "The fitted reference surface is a log-convex envelope."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"

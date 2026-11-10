@@ -339,3 +339,41 @@ section = "Case analysis"
 words_added = 51
 job = "says what the facets give that a clustering with per-cluster correlations does not: fitted exponents as elasticities and a level for every design, the model kept apart from the association figures"
 reader = "the sceptic deciding whether facet separation is more than clusters with different correlation structure"
+
+# Rows: vocabulary fixes of the P3 re-triage (WP10 Amendment 4 R-36): each puts the glossary's term
+# (fitted reference surface, supporting envelope, fit temperature) in place of a synonym.
+
+[[raise]]
+date = "2026-11-09"
+section = "The decision problem"
+words_added = 3
+job = "puts the glossary's term in place of a synonym, one object one name (R-36)"
+reader = "the reader matching each name to its glossary entry"
+
+[[raise]]
+date = "2026-11-09"
+section = "Definitions"
+words_added = 4
+job = "puts the glossary's term in place of a synonym, one object one name (R-36)"
+reader = "the reader matching each name to its glossary entry"
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 4
+job = "puts the glossary's term in place of a synonym, one object one name (R-36)"
+reader = "the reader matching each name to its glossary entry"
+
+[[raise]]
+date = "2026-11-09"
+section = "Case analysis"
+words_added = 2
+job = "puts the glossary's term in place of a synonym, one object one name (R-36)"
+reader = "the reader matching each name to its glossary entry"
+
+[[raise]]
+date = "2026-11-09"
+section = "Discussion"
+words_added = 1
+job = "puts the glossary's term in place of a synonym, one object one name (R-36)"
+reader = "the reader matching each name to its glossary entry"

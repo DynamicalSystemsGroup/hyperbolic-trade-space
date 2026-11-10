@@ -2201,7 +2201,7 @@ def test_cr1_one_definition_of_the_contending_set_and_the_captions_say_it():
     caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-tensions-k3-caption"))
     assert "exact-maximum" in caption and "small for some members" in caption
     k1 = _cell_out(PAPER_NB, "num-k1")
-    assert "exact-maximum fit has a" in k1 and "working-temperature exponents" in k1
+    assert "exact-maximum fit has a" in k1 and "exponents at the fit temperature" in k1
     assert "exact-maximum supports" in _cell_out(PAPER_NB, "num-k-sweep")
 
 
@@ -2284,7 +2284,7 @@ def test_cr4_5_6_the_facet_share_is_described_and_the_terms_carry_their_clause()
     # WP11 round 1b CR-8: the share counts the rows of a facet's cell (ruling 2), not "dominates"
     assert "in the cell of facet $k$" in definitions and "depends on the band" in definitions
     assert "dominates" not in definitions
-    assert "the level of a potential relative to the reference surface" in definitions
+    assert "the level of a potential relative to the fitted reference surface" in definitions
     front = _src(_nb(PAPER_NB).cells[0])
     intro = _section("The decision problem")
     for text in (front, intro):

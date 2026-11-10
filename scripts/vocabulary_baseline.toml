@@ -110,41 +110,6 @@ reason = "SYNONYM of fitted reference surface: replace with the glossary term (W
 
 [[violation]]
 kind = "avoid"
-file = "paper/paper.ipynb"
-phrase = "fitted surface"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "paper/paper.ipynb"
-phrase = "posynomial surface"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "paper/paper.ipynb"
-phrase = "sample envelope"
-owner = "WP10 paper stream"
-reason = "SYNONYM of supporting envelope: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "paper/paper.ipynb"
-phrase = "selected temperature"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
-file = "paper/paper.ipynb"
-phrase = "working temperature"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "avoid"
 file = "paper/supporting_material.ipynb"
 phrase = "fitted surface"
 owner = "WP10 paper stream"
@@ -223,13 +188,6 @@ reason = "FIRST-USE: a glossary term met in the paper before its definition cue;
 [[violation]]
 kind = "first-use"
 file = "paper/paper.ipynb"
-phrase = "fit temperature"
-owner = "WP10 paper stream"
-reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "first-use"
-file = "paper/paper.ipynb"
 phrase = "improvement factor"
 owner = "WP10 paper stream"
 reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
@@ -245,13 +203,6 @@ reason = "FIRST-USE: a glossary term met in the paper before its definition cue;
 kind = "first-use"
 file = "paper/paper.ipynb"
 phrase = "position along the frontier"
-owner = "WP10 paper stream"
-reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "first-use"
-file = "paper/paper.ipynb"
-phrase = "term temperature"
 owner = "WP10 paper stream"
 reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
 
@@ -468,13 +419,6 @@ reason = "BASELINE: standard convex-optimization term (Boyd and Vandenberghe); c
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
-phrase = "fitted surface"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fitted reference surface: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/paper.ipynb"
 phrase = "level surface"
 owner = "WP10 paper stream"
 reason = "BASELINE: level surfaces of V: the mathematical class of level sets (the \"hyperbolic\" gloss) (WP10 re-triage 2026-11-09)"
@@ -503,30 +447,9 @@ reason = "BASELINE: ordinary word gap: the per-row score difference whose minimu
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
-phrase = "sample envelope"
-owner = "WP10 paper stream"
-reason = "SYNONYM of supporting envelope: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/paper.ipynb"
-phrase = "selected temperature"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/paper.ipynb"
 phrase = "sided envelope"
 owner = "WP10 paper stream"
 reason = "BASELINE: one-sided envelope: ordinary adjective phrase describing a cited method and this method's boundary, no second object (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/paper.ipynb"
-phrase = "working temperature"
-owner = "WP10 paper stream"
-reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
