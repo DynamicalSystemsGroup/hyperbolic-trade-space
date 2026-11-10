@@ -367,6 +367,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-10 | commit c622c6e, tier 2 watcher, this Mac (the fifth-PM handover head; the suite now 2223 tests after WP23's additions) | 2223 passed, 16 skipped, 1 xfailed; all checks; 29 min | a verdict: green; the paper's regeneration unit is the next head of consequence |
 | 2026-11-10 | commit 628df90, CI run on ubuntu, three shards (the paper on the data of record) | fast and docs-paper green; slow FAILED: test_soft_fit R-2 default cubesat fits against the recording (primary, stock) | a verdict with one finding: the WP17 R-2 recording of the cubesat fits is the old data's and was not in the unit's slot list; routed as a fix-forward unit (regenerate in hts-paper); re-dispatch after |
 | 2026-11-10 | commit 628df90, tier 2 watcher, this Mac (the paper on the data of record) | 2 failed, 2225 passed: the same two soft-fit recording cases as Linux; all other checks green | a verdict: the recording was the old data's on both platforms; fixed forward at 126e1ea (re-recorded in hts-paper); Linux re-dispatched on the head after it |
+| 2026-11-10 | commit 126e1ea, CI run on ubuntu, three shards (the soft-fit recording on the data of record) | fast, slow and docs-paper all green | a verdict: the paper on the data of record is green on Linux with the recording fixed; the watcher's red at f5a63c2 is the pre-fix head; Linux dispatched on the fix-forward head (50a6600, with the notebook deletion) |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
