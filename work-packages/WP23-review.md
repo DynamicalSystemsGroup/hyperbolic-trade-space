@@ -1424,3 +1424,13 @@ The test for [blocks] is the driver's: a reader taking the view for something it
 **Count.** 11 findings as the reader tagged them (2 [blocks], 6 [changes the view], 3 [note]).
 
 **Nothing blocks WP23.** The one view change worth making (G3r7-P3-2, analysis box wording in `project.py`) is deferred to WP25 / the subtraction pass.
+
+## Behavioural view, revision 8 (G3r7-P3-2)
+
+The one line the P3 cold read of revision 7 left open, executed in `docs/superpowers/notes/spike-sysml-diagrams/project.py` (`--revision 8`, now the default; revisions 3 to 7 reproduce the earlier text), the driver's decision (b) of 2026-11-10. Recipe checked first: the committed revision-7 `behavioural_view.puml` and `assembly_view.puml`, re-rendered by `render.sh`, gave the committed PNG and SVG bytes (all four identical).
+
+**The line.** Before: "metrics. No slew / for pointing error, / total mass." Now: "metrics, computed / with no slew: / pointing error, / total mass." Beside "returns 8 of 9" it now reads as returned, computed without a slew; the two measurement entries ("control effort (passed on) and settling time (not returned)") are unchanged, and no line is longer than 19 characters. The generator still finds the two names from the model.
+
+**Type.** The smallest type at 700 px is 12.512 px (the SVG's font sizes are 12.512 and 14.597 only), as in revision 7; nothing shrunk, the image is 700 x 1341 as before. Only the behavioural `.puml` line changed; the caption is byte-identical. The assembly view's sources, images and caption, and `fig-assembly-view.png`, are byte-identical. `paper/figures/fig-behavioural-view.png` is a byte copy of the new image. Looked at at 700 px with the image viewer: the box reads "returns 8 of 9 metrics, computed with no slew: pointing error, total mass", then the measurement's two entries.
+
+Renders (session scratchpad `wp23view8-renders/`, 700 px): `before/behavioural_view.png` (revision 7), `r7check/` (the recipe check), `gen8/` (the generator's output, byte-identical to the committed files), `behavioural_view.png` (after).

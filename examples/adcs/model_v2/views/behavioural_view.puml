@@ -70,7 +70,7 @@ rectangle "requirements that read no traded metric" as xNoLine #FFFFFF;line:gray
 }
 xLaunchbudgetrequirement -[hidden]right-> xNoLine
 
-rectangle "**SlewExperiment**\n<<analysis def>>\nreturns 8 of 9\nmetrics. No slew\nfor pointing error,\ntotal mass.\nFrom the\nmeasurement:\ncontrol effort\n(passed on) and\nsettling time\n(not returned).\n\n\n\n\n\n\n\n\n\n\n\n\n\n" as xAnalysis #E1D8F0
+rectangle "**SlewExperiment**\n<<analysis def>>\nreturns 8 of 9\nmetrics, computed\nwith no slew:\npointing error,\ntotal mass.\nFrom the\nmeasurement:\ncontrol effort\n(passed on) and\nsettling time\n(not returned).\n\n\n\n\n\n\n\n\n\n\n\n\n\n" as xAnalysis #E1D8F0
 rectangle "**SlewMeasurement**\nmeasured slew:\nsimulation here;\nfield data when\nfielded" as xMeasure #E4E4E4
 xMeasure -[hidden]right-> xAnalysis
 

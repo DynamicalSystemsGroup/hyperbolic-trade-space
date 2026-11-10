@@ -583,7 +583,7 @@ class Reads:
         return out
 
 
-def behavioural(m, byid, P, revision=7):
+def behavioural(m, byid, P, revision=8):
     sys.path.insert(0, str(REPO / "examples" / "adcs"))
     import case  # the CaseSpec: the metrics, in order, and their subsystems
 
@@ -1126,6 +1126,13 @@ def behavioural(m, byid, P, revision=7):
             f"**SlewExperiment**\\n<<analysis def>>\\nreturns {len(returned)} of {len(metrics)}"
             f"\\nmetrics. No slew\\nfor {said}.\\nFrom the\\nmeasurement:\\n{from_meas}."
         )
+        if revision >= 8:
+            # revision 8 (G3r7-P3-2): "No slew for" read as "not returned"; say they are returned,
+            # computed from the configuration without a slew
+            box = (
+                f"**SlewExperiment**\\n<<analysis def>>\\nreturns {len(returned)} of {len(metrics)}"
+                f"\\nmetrics, computed\\nwith no slew:\\n{said}.\\nFrom the\\nmeasurement:\\n{from_meas}."
+            )
         out.append(
             f'rectangle "{box}{pad}" as xAnalysis {ANALYSIS_COLOUR}'
         )
@@ -1329,11 +1336,11 @@ if __name__ == "__main__":
     ap.add_argument(
         "--revision",
         type=int,
-        default=7,
-        choices=(3, 4, 5, 6, 7),
+        default=8,
+        choices=(3, 4, 5, 6, 7, 8),
         help="drawing revision (3: the views committed before WP23's data gate; 4: WP23 round 3; "
         "5: WP23 round 4, the committed views of the data gate; 6: the post-gate view-consistency "
-        "unit; 7: the G-3 blocks of the behavioural view, the committed views since)",
+        "unit; 7: the G-3 blocks of the behavioural view; 8: the analysis box's one line, the committed views since)",
     )
     a = ap.parse_args()
     m, byid = load(pathlib.Path(a.model))
