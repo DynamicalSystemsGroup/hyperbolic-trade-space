@@ -1,6 +1,7 @@
 """Estimator behaviour: recovery, invariants, shape tests, chart, novelty, edges, composition."""
 
 import warnings
+from dataclasses import replace
 
 import numpy as np
 import pandas as pd
@@ -557,15 +558,66 @@ def _one_warning(est, X, pattern):
         est.fit(X)
     cw = [w for w in rec if issubclass(w.category, ConvergenceWarning)]
     assert len(cw) == 1 and pattern in str(cw[0].message), [str(w.message) for w in rec]
-    assert "max facet gap" in str(cw[0].message)
+    assert "max term gap" in str(cw[0].message)
+    return str(cw[0].message)
 
 
-def test_convergence_warning_keyed_to_iteration_cap(monkeypatch):
+def test_convergence_warning_at_the_cap_while_the_objective_still_moves(monkeypatch):
+    # one partition-and-refit round: every term is stationary on its rows (the gap is at machine
+    # precision) but the assignment step is still moving rows and the objective still falls
     real = _solvers.solve_terms
     monkeypatch.setattr(_solvers, "solve_terms", lambda *a, **k: real(*a, max_iter=1, **k))
     X, est = _k3(1)
-    _one_warning(est, X, "iteration_cap")
-    assert est.termination_.status == "iteration_cap"
+    msg = _one_warning(est, X, "iteration_cap")
+    t = est.termination_
+    assert t.status == "iteration_cap" and t.max_gap <= est.tol < t.objective_change
+    assert f"{t.max_gap:.2e}" in msg and f"{t.objective_change:.2e}" in msg
+    assert f"tol {est.tol:g}" in msg
+
+
+@pytest.mark.parametrize(
+    ("gap", "change", "warns"),
+    [(1e-15, 1e-16, False), (1e-15, 1e-5, True), (1e-5, 1e-16, True), (float("nan"), 0.0, True)],
+)
+def test_iteration_cap_warns_only_when_not_stationary_to_tol(monkeypatch, gap, change, warns):
+    # a run stopped at the cap is silent when the terms are stationary and the objective had
+    # stopped moving, both to within tol; the status and the gap are recorded either way
+    real = _solvers.solve_terms
+
+    def capped(*a, **k):
+        r = real(*a, **k)
+        t = replace(r.termination, status="iteration_cap", max_gap=gap, objective_change=change)
+        return replace(r, success=False, message="max_iter reached", termination=t)
+
+    monkeypatch.setattr(_solvers, "solve_terms", capped)
+    X, est = _k3(1, tol=1e-10)
+    if warns:
+        msg = _one_warning(est, X, "iteration_cap")
+        assert "tol 1e-10" in msg
+    else:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            est.fit(X)
+    t = est.termination_
+    assert t.status == "iteration_cap" and t.objective_change == change
+    assert t.max_gap == gap or (np.isnan(gap) and np.isnan(t.max_gap))
+
+
+def test_a_cycle_among_tied_rows_at_the_cap_is_silent():
+    # on macOS this table reaches the cap (50 rounds) with the objective constant over the last
+    # rounds and no row trailing its best term beyond EPS_FEAS: rows that tie exactly between two
+    # terms change label at each round; where the ties resolve into a fixed assignment the fit
+    # is certified; either way the fit is stationary and nothing is reported as a failure
+    X, _ = make_frontier_data(400, 4, n_terms=3, random_state=57)
+    est = HyperbolicTradeSpace(n_terms=3, temperature=INF, random_state=1)
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        est.fit(X)
+    t = est.termination_
+    assert t.status in ("iteration_cap", "certified", "stationary_without_margin")
+    assert t.max_gap <= est.tol and t.assignment_changes == 0
+    if t.status == "iteration_cap":
+        assert t.n_iter == 50 and t.objective_change <= est.tol
 
 
 def test_convergence_warning_keyed_to_guard_stop(monkeypatch):

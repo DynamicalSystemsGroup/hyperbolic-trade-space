@@ -34,7 +34,7 @@ __all__ = [
 _ABOVE_TOL = 1e-9  # V > 1 + tol counts as "above the frontier" at tau = inf
 EPS_ZERO_EXPONENT = 1e-12  # an exponent at or below this is numerically zero: 0 * log 0 := 0
 PARTICIPATION_THRESHOLD = 1e-3  # exponents above this participate (tension_report's threshold)
-_WARN_STATUSES = ("iteration_cap", "guard_stop", "uncertified")
+_WARN_STATUSES = ("guard_stop", "uncertified")  # "iteration_cap" warns on its own rule, see fit
 
 
 class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
@@ -81,9 +81,15 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         exactly that constant. No effect at ``term_temperature = inf`` or ``n_terms = 1``.
         Validated in ``fit``.
     tol : float, default=1e-10
-        Solver tolerance (SLSQP ``ftol``).
+        Solver tolerance (SLSQP ``ftol``); also the threshold of the iteration-cap warning
+        (see ``max_iter``).
     max_iter : int, default=500
-        Maximum SLSQP iterations (per facet fit for ``n_terms > 1``).
+        Maximum SLSQP iterations of each term's fit. The ``n_terms > 1`` alternation has its
+        own cap (50 partition-and-refit rounds, ``solve_terms``'s ``max_iter``). Reaching it
+        means the assignment step was still moving rows, possibly cycling among rows that tie
+        between terms while every term is already stationary on its rows. The fit is kept, with
+        status ``"iteration_cap"`` and its gap in ``termination_``; ``fit`` warns only when
+        that gap or the last change of the objective exceeds ``tol``.
     penalty : {None, "reweighted_l1"}, default=None
         Sparsity option for the exponents (see ``solve_slsqp``); acts at finite ``temperature``.
     alpha : float, default=0.0
@@ -382,10 +388,22 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
             term = _solvers.single_facet_termination(
                 Uv, w, beta, p, tau, self.min_exponent, n_iter, reason, K
             )
-        if res is not None and (not res.success or term.status in _WARN_STATUSES):
+        if res is not None and term.status == "iteration_cap":
+            # the alternation stopped at its cap: silent when every term is stationary on its
+            # rows and the objective had stopped moving, both to within tol (the assignment step
+            # cycles among rows that tie between terms); the status and the gap are recorded
+            if not (term.max_gap <= self.tol and term.objective_change <= self.tol):
+                warnings.warn(
+                    "iteration cap reached before the fit was stationary to tol "
+                    f"{self.tol:g} (max term gap {term.max_gap:.2e}, last objective change "
+                    f"{term.objective_change:.2e}); termination status 'iteration_cap'",
+                    ConvergenceWarning,
+                    stacklevel=2,
+                )
+        elif res is not None and (not res.success or term.status in _WARN_STATUSES):
             warnings.warn(
                 f"solver did not converge: {term.reason}; termination status {term.status!r}, "
-                f"max facet gap {term.max_gap:.2e}",
+                f"max term gap {term.max_gap:.2e}",
                 ConvergenceWarning,
                 stacklevel=2,
             )

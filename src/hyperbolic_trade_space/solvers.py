@@ -644,7 +644,9 @@ class Termination:
         empty facet. ``"uncertified"``: the assignment is fixed but a residual or the gap exceeds
         its tolerance. ``"guard_stop"``: an iteration raised the objective by more than
         ``guard_tol`` and the previous state was returned. ``"iteration_cap"``: ``max_iter`` was
-        reached. ``"not_applicable"``: ``facet_step="tangent"``, a ``penalty``, or the
+        reached with the assignment still changing; ``max_gap`` and ``objective_change`` say
+        whether the terms were stationary and the objective had stopped moving (a cycle among
+        tied rows). ``"not_applicable"``: ``facet_step="tangent"``, a ``penalty``, or the
         ``K = 1`` / ``d = 1`` / ``N < K`` shortcut, or a soft fit at ``tau = inf``; the gaps are
         then diagnostics.
 
