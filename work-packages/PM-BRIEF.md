@@ -432,3 +432,26 @@ each gate of the path and once before the PR: regenerate in `hts-paper`, re-pin 
 environment-of-record tests read, run the `hts-alt` robustness image, record in RECORD.md. Lemma changes still
 regenerate Appendix B in the same push, on the host. Linux CI per batch stays as it is.
 
+
+
+## Handover (fifth PM, 2026-11-10, midday; parallel-board.md's fifth-PM table is the live copy)
+
+Landed this PM (all on dev): the paper onto the data of record (ea46637, 628df90; reviewed 3f87eb5; fix-forward 50a6600;
+the soft-fit recording 126e1ea); WP23 accepted and final at db59365 (acceptance review f5a63c2; gap units 8d49ab9,
+acb20ce, c70e3ef, b0a9a92, db59365; view-consistency 0fab294; diagnostic_pair 3ad66fe; glossary entries da2984e; G-17
+7ee26be); the WP7 notebook deleted 4bd6bac (and the rule: deletions check the contract first); WP24 pushes 1 to 4
+(204e7c3, 5b01248, a5c67f2..a9e23b2, 9df7483, 1b1249d, a2e6bd5, ee7704e) with its review b15c13a (gaps G-1 to G-5 for the
+driver); WP25-2 (scope faa67fb, units A and B through ca73d21); the paper map off the root page bb51b7e; the close-out
+scope bcc7d26 (approved 944c564, OD10 = (a)).
+
+Running at the handover: the close-out executor (one host regeneration under the rule "the container is a gate check";
+the data-gate comparison; the analysis tables; the prose; then the fresh data-gate review; then the driver's container
+regression and Linux) and the supervisor's side unit (the view editor). Open for the next PM: the WP24 gaps' dispositions
+(driver); `k3-cubesat.md` (stale K record; the close-out refreshes it or re-points its citations); the held
+`spike-ternary/report.md` (C001's backing) and N-a, N-b for WP25-3; the supervisor's review of the close-out's two
+Discussion candidates; the subtraction pass (release-candidate.md step 5a) once the close-out lands.
+
+Rules applied this PM beyond the brief: every agent reads `scratchpad/pm5-rules.md`; a glossary entry regenerates
+Appendix A in the same push; records a test or the paper reads take the vocabulary (A5 as amended), decision records and
+quotations keep theirs; a dispatch blocks the PM's turn until the agent returns, so long units report at milestones by
+message and the PM keeps dispatches short where it can.

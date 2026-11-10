@@ -129,10 +129,15 @@ Worktrees alive: `wp23case` (unpushed case code), `wp24` (held glossary patch). 
 | WP25 instance 2 | approved 0af70c1; unit A done 0c8ba52..c37197c (inventory 198 rows: 138 keep, 31 delete, 29 hold; 31 files deleted; 4 drift rows fixed; review rewritten); unit B after WP24's last push and the paper's re-pointing of the spike citations |
 | Paper unit: G-17 narrowed to what sensitivity.json backs; Appendix E regenerated | done ba5a0cb, 7ee26be (the Linux register failures at bd017dc were the stale Appendix A after da2984e's glossary entries, fixed by push 2's regeneration 27dab4d; spike citations: none at an output except gap row G-6's `oracle.txt`, re-pointed by WP25-2 unit B with the deletions) |
 | Test writing `v1-v2-comparison.md` in place | already fixed at 17e6019; fast and slow suites leave porcelain empty; the watcher's dirty tree has another cause (the driver's) |
-| WP24 push 3 (the notebooks' prose, the abstract gloss, the quilt sentence, register fragments, pins, ledger; supporting material regenerated; WP24-review.md pushes 2 and 3) | dispatched |
+| WP24 push 3 (notebooks' prose; notation.md takes the vocabulary) and push 4 (docs, site, glossary, baseline, tool marker, prior_art.yaml, abstraction-gaps.md) | done 9df7483, 1b1249d, a2e6bd5, ee7704e (regenerated on the host under the new rule; vocabulary tool exit 0, 69 known; fast suite 1744) |
+| WP24 R-16 cold reads and acceptance review | done b15c13a (36 met, 2 not met: R-13 narrowly, abstraction-gaps.md edited beyond A5; neither reader blocks: both say a monomial term is a product of powers of the metrics and the contending set belongs to the term; gaps G-1 to G-5 for the driver; recommends acceptance with the gaps noted) |
+| Root page: the paper map (unsourced raster) removed with its How section | done bb51b7e (C362-C366 dropped with their sentences) |
+| WP25-2 unit B | done e1341e0, 14a41a4, 2132d36, ca73d21 (28 files deleted; G-6 re-pointed; the gap ledger read against data/v2; fitting/chart/termination drift closed; 5 gap fills; held: spike-ternary/report.md (C001's backing); open: k3-cubesat.md stale K record (routed to the close-out), N-a, N-b) |
+| WP23 close-out (scope bcc7d26, approved 944c564; OD10 = (a) the feasible set's conditioning for every set) | dispatched: one host regeneration, the data-gate comparison, the analysis tables, the prose; the fresh data-gate review; then the driver's container regression and Linux |
+| Side unit (the supervisor): the SysML v2 model in the OpenMBEE view editor, read-only, screenshots and a report under scratchpad/view-editor/ | dispatched |
 | WP24 pushes 3 and 4 (push 4: R1's polyhedral "facet" rows in Appendix B need `generate_proofs.py` to emit the exempt marker), then the R-16 cold reads and the WP24 review (WP24-review.md f30a3ac holds the push-1 evidence; each push appends) | next |
 | 6. WP25 next instance | at the next gate |
 
 Rule added this PM (2026-11-10): a glossary entry regenerates Appendix A (`tab-A-register`) in the same push, in the environment of record.
 
-Worktrees alive: `wp24` (held glossary patch) plus the running units' own. Docker: hts-paper e852cde39180 (the environment of record), hts-alt.
+Worktrees alive: `wp24` (held glossary patch) plus the running units' own. Docker: hts-paper e852cde39180 (the environment of record; the driver's container regression at the close-out gate re-pins), hts-alt.
