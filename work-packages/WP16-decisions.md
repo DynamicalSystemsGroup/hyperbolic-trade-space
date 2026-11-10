@@ -122,3 +122,14 @@ settling time: the first time after which the pointing error stays inside the ba
 settling time (event detection computes it as the last exit from the band, the same quantity) and a slew time (first
 entry into the band, the grazing-prone one). Whether the case keeps two time metrics or one is a dataset-column
 question and goes to the supervisor next, then into WP23's scope.
+
+**Driver's question (popup):** with the hold time being the settling time, does the case keep two time metrics or
+one? Options: One: settling time / Two, redefined / Two, as now. **Supervisor (mzargham), verbatim:** "One: settling
+time".
+
+**Disposition.** Slew time leaves the traded metrics; settling time (the hold time: the first time after which the
+pointing error stays inside the band, computed by event detection as the last exit) is the case's time metric. The
+dataset loses a column (nine metrics), so the interface contract is amended in WP23 and the SlewTime requirement folds
+into the Settled requirement in the model; the paper's figures and numbers that used slew time (Figure 2's plane
+among them) regenerate with everything else, once, after WP23's model. WP16 Amendment 2's event detection computes
+the settling time only; gap G-17 closes rather than narrows, since the grazing quantity is no longer measured.

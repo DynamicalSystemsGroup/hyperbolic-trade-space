@@ -9,12 +9,7 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 - (2026-11-09, 18:10; answered 20:40) **The word "energy differential".** Resolved: "Keep it, gloss it" (`WP10-decisions.md`).
 - (2026-11-09, 19:30; answered 20:45) **The abstract's PCA sentence.** Resolved: reword as distinct, complementary and composable (`WP10-decisions.md`).
-- (2026-11-09, 20:20) **Slew time under event detection (WP16 Amendment 2, OD-A).** Event detection removes
-  the sub-step part of the slew-time defect but not the grazing case: design 763 goes from 33.4 s to 12.5 s
-  because the error grazes the band and leaves it. Options: keep slew time as first entry into the band and
-  report the grazing case as gap G-17 narrowed (what the driver chose for now); or redefine slew time as a
-  hold time (first entry after which the error stays inside), which changes a measured quantity's meaning and
-  is yours. Non-blocking; the regeneration runs with the first.
+- (2026-11-09, 20:20; answered 20:55) **Slew time under event detection.** Resolved: one time metric, the settling time (hold time); slew time leaves the traded metrics (`WP16-decisions.md`).
 
 **Needs him (2026-11-09, 01:14):** his Colima configuration is changed from his original and the
 driver could not restore it. A second container implementer, dispatched by the PM with a brief that
