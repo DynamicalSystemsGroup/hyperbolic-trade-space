@@ -268,6 +268,18 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   content. D-9 quantifies old against new before the swap call; the checks on the head are the watcher's and the
   Linux run's (dispatched on 8507bd9); the agent's own runs are recorded in the gate README.
 
+- **Calls of 2026-11-10, 03:05 (the fifth PM's first table).** (1) The per-term mechanism for the K = 3 report: the
+  PM's call stands (the paper's generators call `tension_report` with the guard off and the case module applies the
+  same guard of ten per term in one helper; the number and the band unchanged; the thin term's panel is its
+  one-sentence reason with the estimator's count). A package item for after 0.1 or WP24's docs push: the public
+  report should return per-term availability itself rather than refuse at the first thin term; recorded as a
+  backlog row, not done now. (2) The WP7 case-study notebook `examples/adcs/adcs_trade_study.ipynb` with its nine
+  figures: it reads the frozen copies, names slew time 22 times, carries the old data's outputs and no docs page
+  links it. Deleted now as a small unit with its test (`tests/test_notebook.py`) and figures, under the negative-edit
+  order and WP25's rule; the frozen generation files stay, since the paper cites them; history keeps the notebook.
+  (3) The check section's new sentence for `num-predict-reading` is honest and stays; its phrase "the easy part"
+  is a judgement the subtraction pass reads again.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
