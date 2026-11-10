@@ -1555,3 +1555,124 @@ regenerated values), or "prose follows" (a sentence written to the new figure or
 
 Unchanged as D-9 item 7 says: `num-certificates`, `num-recovery` (no stderr, no warning since 18d0064) and
 `tab-D-planted_recovery`, `tab-C-feasibility`, `tab-C-configuration_space`.
+
+### 6. Review of the paper's move (fresh reviewer)
+
+Reviewed 2026-11-10 at `dev` ff5eb39 (the unit's commits ea46637 and 628df90, and the driver's image reads
+after them), in a worktree from `origin/dev` with `uv sync --locked`. Nothing in the tree was changed but this
+part. Screenshots and figure copies are in the session scratch folder `paperreview-renders/` (not committed),
+named below.
+
+**Run.**
+
+- `uv run pytest -q -n auto` on `test_paper`, `test_case`, `test_k_terms_case`, `test_notebook`,
+  `test_paper_sources`, `test_paper_static_figures`, `test_narrative`, `test_claims_register`,
+  `test_sensitivity`, `test_gaps` (no marker deselects slow tests): 298 passed, 4 skipped. The skips are the
+  gated ones: three need `PAPER_EXECUTE=1`, one `PAPER_BUILD=1` with Node 22.
+- The three `PAPER_EXECUTE=1` tests, run here on the Mac (the unit's record names no run of them): 1 passed
+  (`test_a_different_facet_order_...`), 2 failed. `test_generated_tables_do_not_move_under_platform_perturbation`:
+  `sentence num-margin` moves with the restart order (finding 1). `test_notebooks_execute_from_a_clean_kernel_...`:
+  `tab-C-datasets` differs only in the planted table's hash (Mac `c127dd4c...`, committed `b17d4f8f...` from the
+  container); that hash is unchanged since before the unit, and Appendix F.2 confines exact comparisons to the
+  environment of record, so this one is the platform, not the move.
+- `PYTHONPATH=examples/adcs uv run python -m experiments verify`: 34 entries (11 current), 0 drifts.
+- `uv run python scripts/check_vocabulary.py`: 70 violations, 0 known: 14 in `src/` docstrings, 41 in the two
+  paper notebooks, 14 in `docs/`, 1 in `glossary.yaml`. The same check at ea46637^ gives 71; the unit
+  introduced none and removed one ('across temperature').
+- Both notebooks' output cells (18 and 37 outputs): no `stderr` stream, no error output, no `Warning`, no
+  `Traceback`.
+- `uv run python scripts/stage_site.py --serve` built the docs and both paper pages (port 8765 was held by
+  another process; served on 8779) and was stopped afterwards. Console: debug messages only, no error.
+- The two view PNGs are byte copies of `examples/adcs/model_v2/views/{assembly,behavioural}_view.png` at 0fab294
+  (views generator revision 6).
+
+**Figures, cold sentence first, then the caption and lines read against it.**
+
+| figure (file in `paperreview-renders/`) | cold sentence from the image alone | verdict |
+|---|---|---|
+| `paper-fig-tau-sweep.png` | The fraction above V = 1 and the effective sample fall as tau grows; at the marked tau = 38.1 (n_eff = 23) the K = 1 exponent sits on five metrics led by total mass (0.36), the same five at every tau, control effort dropping out above about 25. | Caption claims what the image shows: exponents printed in the outlined column, n_eff at the line, white rows last, scale top 0.36 = the sweep's largest (D.1: 0.3587). Finding 9 on the lines. |
+| `paper-fig-planes-k1.png` | Designs in the log total mass, log energy balance plane, a wide cloud crossed by one straight line with many designs above it. | Pair is total mass and energy balance; the caption's slice sentence explains the designs above the line. Passes. |
+| `paper-fig-planes-k3.png` | Three slices, one straight labelled segment each (facet 1, 2, 3); the bottom slice is discrete: a tight left column, a middle group, a wide right band, and two levels of bands. | Passes except finding 6 (the "three columns" sentence). |
+| `paper-fig-chart-level.png` | Most designs lie below the flat line log V = 0 at every Z0; a few reach or cross it. | Passes; "first of eight" is right for nine metrics. |
+| `paper-fig-tensions-k3.png` | Two correlation matrices of the nine metrics with a five-cell outlined set each, and between them a panel holding only "Too few near-frontier designs for an association reading: 3 of ten". | Two term panels and the thin term's sentence, as the caption says. Findings 7 and 8. |
+| `paper-fig-regimes.png` | The two regimes outline different five-metric sets: total mass and energy balance only in primary, control effort and power margin only in stock; three shared. | Matches `num-regimes` and D.4. Passes. |
+| `paper-fig-nlemma.png` | Three exponent vectors on a triangle, each in a corner, edge or interior face beside its planted ring. | Bytes only changed; passes. |
+| `paper-fig-assembly-view.png` | The cubesat's part tree with swap tags on wheel and tracker and tune tags on panel, battery and controller. | Caption no longer claims ranges are drawn. Passes. |
+| `paper-fig-behavioural-view.png` | Requirements grouped by subsystem, each with an orange line to one green traded metric; a measured-slew box and an analysis box supply the metrics; three requirements at top read none. | The dashed clause is gone. Finding 10. |
+| `adcs-k3_*.png` (six) | Scatter planes and position planes with designs coloured by facet; per-term tension matrices with term 2 empty. | Not in the paper. Finding 11. |
+
+`figure1.png`, `fig-chart-k3.png` and `fig-predict-check.png` were not changed by the unit and are not on the paper
+page; not judged.
+
+**Pages seen** (browser pane, 1280 px wide, dark scheme; then 375 px). Paper: `paper-00-abstract.jpg` to
+`paper-24-12-13-14.jpg` (every section; case construction and case analysis screen by screen, `paper-09` to
+`paper-22`). Supporting material: `supp-A.jpg`, `supp-B.jpg`, `supp-C-C1.jpg`, `supp-C2.jpg`, `supp-C4.jpg`,
+`supp-C6-C7.jpg`, `supp-D-D1.jpg`, `supp-D2-D3a.jpg`, `supp-D3b-term2-sentence.jpg`, `supp-D4-D5.jpg`,
+`supp-D6-D7.jpg`, `supp-D9-D10.jpg`, `supp-D11.jpg`, `supp-D12-D13.jpg`, `supp-D14.jpg`, `supp-D15-D16.jpg`,
+`supp-E.jpg`, `supp-F-F1.jpg`, `supp-F4.jpg`, `supp-G.jpg`; the full page text of both pages,
+`page-text-paper-1280.txt` and `page-text-supporting-material-1280.txt`. Phone: `mobile375-paper-top.jpg`,
+`mobile375-paper-fig8.jpg`. Mathematics rendered, no raw markup, no stderr or warning text, every paper figure
+present at 725 px (the two views at their native 700 px) with its caption. At 375 px the page does not scroll
+sideways (tables scroll in their boxes); figure text is small there, which is not a requirement.
+
+Numbers in prose against their tables, all equal: 659 and 126 (D.9; 725 and 152 for stock); n_eff 23.1 and 56
+near-frontier designs (D.4, D.5); the K = 1 5-lemma and exponents 0.14 to 0.36 (D.3: 0.1363 to 0.3577); the K = 3
+shares 0.241, 0.034, 0.724 and sets of 5, 4, 5 (D.2, D.3); control effort and peak slew power leading terms 2 and
+3 (D.3: 0.397, 0.612); margin 0.00121, radius 9.94e-05 to 9.95e-05, band 0.0088, median 0.237 (D.8); mean slack
+0.243, 0.182, 0.146 at 38, 94, 113 and 0.13, 0.09 refitted (D.2, D.15: 0.132, 0.088); candidates -0.197 to -0.153
+(D.7); the check 3 of 3 and 1 of 3, errors 0.5 to 1.1 bands, band 0.0935 (D.10: 0.506 to 1.05; 0.0484 / 0.517).
+The reach 0.6222 has no table (finding 4).
+
+**Findings.** One finding blocks (a failing gated test). Otherwise the pages build, every number in prose equals
+its table, and every regenerated figure shows what its caption says, with the narrowings below.
+
+1. Blocks (a failing test). `num-margin`: with the restart order shifted (`paper_perturb.py --restarts 7`) the
+   sentence's count "here 11 of the 706" becomes "here 10 of the 706"; every other number in it holds.
+   `num-margin` is not in `[perturbation].moves_under_restart_shift` of `paper/environment_values.toml`, so
+   `test_generated_tables_do_not_move_under_platform_perturbation` fails. The count is printed exactly although
+   it moves: print it as the range over restart orders, or bound it, or move the name to the list with its audit
+   line; which is the paper stream's call.
+2. Does not block (wording, claim). `num-predict-reading`: the paragraph opens "Two of them are one
+   configuration." with no antecedent (it stands in section 10, a section after the proposals), as the builder
+   reported; and it closes "Three proposals illustrate and do not estimate a rate" although two of the three
+   are one design (D.10 rows proposal_1 and proposal_3 identical): two distinct designs were checked.
+3. Does not block (vocabulary). One object, two names on adjacent figures: the unit's new text says "term"
+   (`fig-tensions-k3` caption, lines and panel titles; D.3's "Term 2: ..." sentence; the tail of `num-k-sweep`),
+   while `fig-planes-k3` labels the same pieces "facet 1, 2, 3", D.3's table heads its column "facet", and
+   `num-k-sweep` says both in one sentence ("The K = 3 facets have contending sets ...; control effort and peak
+   slew power ... each lead a term of their own"). No new sentence uses "facet".
+4. Does not block (claim backing). `sec-case-analysis-5`: the reach values 0.6222 and 0.351 are typed in a
+   markdown cell; no generated value, test or claims-register entry pins them (their source is CR-3 of
+   `change-register.md` and the comment in `experiments/check_designs.py`).
+5. Does not block (claim backing). `tab-D-stability` head (`paper/generate_results.py`): "moves the control effort
+   by up to two parts in ten thousand and the settling time by about a microsecond". The settling-time bound is
+   in `paper/container/RECORD.md` ("at most 1e-6 s"); the control-effort figure is in no committed record found
+   (`sensitivity.json` holds the reported quantities, not attribute movement; CR-2's 1.2e-4 is the platform
+   difference, not the jitter).
+6. Does not block (caption narrower than the image). `fig-planes-k3-caption`: "the tracker grade places the
+   pointing error in three columns" and "both metrics are set mostly by the discrete choices". The image shows a
+   tight coarse column and a medium group, but the fine grade spreads over about 1.5 log units of pointing error
+   (0.4 to 1.9): a band, not a column. Narrow to three groups with the fine grade's spread wide.
+7. Does not block (ink is data; candidate cut). `fig-tensions-k3.png`: term 2's empty panel takes about a third
+   of the figure's height (about 500 px at page width) to carry one sentence that the caption and D.3 already
+   carry. Dropping the panel would stop nothing.
+8. Does not block (wording). `fig-tensions-k3-caption` "w is the fitted exponent, small for some members": on the
+   new data term 3's member energy balance prints w=0.00 in grey (D.3: below 1e-12) while the non-members power
+   margin and depth of discharge print 0.02; "small" undersells zero, and a cold reader sees an outlined grey
+   label beside unoutlined black ones.
+9. Does not block (wording). `fig-tau-sweep-lines`: "nor the small values apart off the outlined column (the
+   scale is linear)" does not parse.
+10. Does not block (caption against image). `fig-behavioural-caption` says the analysis "returns the rest" (seven
+   grey lines leave the analysis box), while the box in the image reads "returns 8 of the 9 metrics ... Passed on
+   as measured: control effort" and the control effort's line comes from the slew measurement. Consistent in
+   substance; a cold reader counts seven against eight.
+11. Does not block the paper. `examples/adcs/figures/k3_log_planes_*.png` and `k3_frontier_coordinates_*.png`,
+    regenerated by the unit through `k_terms.py`, colour designs by facet ("colour: facet"), the cluster idiom
+    `figure-review.md` forbids; `k3_tensions_primary.png`'s title says "per facet" over panels that say "term",
+    and term 2's title sits above the other two. They are read by `docs/superpowers/notes/k3-cubesat.md` and the
+    interface contract, not by the paper.
+12. Does not block (candidate cut). `sec-case-analysis-5`'s parenthesis "on the earlier view with the slew time
+    the rule gives 0.351, where 0.35 had been typed with no rule": the paper's reader never meets the earlier view;
+    this is the record's history (CR-3). Cutting it would stop nothing for the reader.
+13. Does not block (legibility). `tab-C-datasets` is 1976 px wide in an 822 px column; it scrolls in its box and
+    the hashes are off-screen until scrolled (`supp-C6-C7.jpg`).
