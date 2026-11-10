@@ -323,6 +323,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   (your note of 2026-11-09 that the high-level images may belong in the index), it returns as a candidate with a
   sourced figure.
 
+- **WP23 close-out pushed (2026-11-10, 12:05; eb88d40..b4d0132), the driver's first checks.** Linux dispatched
+  on b4d0132. Spot checks on the pulled head: the primary dataset has 32 columns and no eclipse-reserve column; the
+  model carries the supervisor's four thresholds verbatim (pointingErrorLimit 0.008495 degree, controlEffortLimit
+  0.05922 N·m·s, peakSlewPowerLimit 2.6 W, launchBudget 90,643 USD); the executor reports the fast suite green
+  (1733), the ledger at @6 with 0 drifts, the vocabulary tool clean. The comparison (D-16) and the review section
+  follow; the container regression and the swap call are the driver's after them.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
