@@ -42,3 +42,20 @@ the root page is a raster from the external review with no source in the reposit
 image; it goes (negative edit; a map with a source may return as a candidate for the supervisor's review), the
 root page's caption and alt text with it. (2) Appendix E's HTML table shows raw `$...$` math on the staged page:
 fixed in the close-out's paper regeneration (a rendering defect on staging, not published).
+
+## Acceptance review (b15c13a): the driver's gap dispositions (2026-11-10, 10:20)
+
+36 requirements met, R-13 not met narrowly; five gaps. G-1 `CHANGELOG.md` line 20 still says "sharp facet
+assignment": fix before acceptance (one small unit; the changelog is a reader surface by the driver's call). G-2
+`abstraction-gaps.md` took the vocabulary: accepted, since it renders as Appendix E; A5 is amended to read "the
+paper's source texts, `paper-sources/*.md` and the notes rendered into the paper (`abstraction-gaps.md`)". G-3 the
+six cell-coloured case figures, `save_figures` and their tests deleted in push 1: accepted and the decision
+recorded now as the driver's, under the figure principle (they drew the cluster idiom) and the negative-edit
+order (nothing read them; the principle check's finding 11); contract row 14 covers the pins. G-4 the drift rows
+closed in push 4 and `prior_art.yaml` reworded: accepted; the blast-radius list is amended to name
+`prior_art.yaml` (its generated tables carried the word). G-5 observations and the cold-read findings for the
+supervisor: accepted as listed.
+
+**Decision:** WP24 accepted, final when G-1 lands and the Mac watcher is green on the rename head (Linux is green
+on ee7704e). Both cold readers (depth A and depth B) took "monomial term" as a product of powers of the metrics
+and put the contending metrics on the term; no number moved under the rename.
