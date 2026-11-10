@@ -159,6 +159,17 @@ changed, the tests of the files changed, and the Appendix B test with the append
 any change under `derivation/`). The full suite and the browser passes run afterwards on `dev`; a
 red head is fixed forward within the hour. Nothing waits uncommitted or unpushed.
 
+**Disk and worktree hygiene (the driver's rule of 2026-11-09, after the supervisor noticed disk use:
+45 worktrees, 27 GB; 17 untagged images).** (1) A worktree is removed (`git worktree remove`, then
+`git worktree prune`) by the stream that made it as soon as its unit is pushed; at most one worktree
+per running stream; a worktree that holds unpushed commits (a unit that cannot be green apart from a
+later regeneration) is named in the board with its branch and hash until it lands. (2) One image per
+stream, named `hts-<stream>`, removed after the unit; when `hts-paper` or `hts-alt` is rebuilt, the
+previous image id is removed in the same step so no untagged layer set is left; never a prune command
+that could touch images or containers we did not create. (3) No `.venv` in a worktree unless the unit
+runs tests there; a read-only or prose unit works in the shared checkout's environment (`uv run
+--project <repo>`) or in a worktree without syncing. (4) No scratch left in the tree when a unit lands.
+
 ## Verification in tiers (2026-11-09, the supervisor's direction)
 
 The supervisor: "i think you should design a strategy to be employed by our PM that helps keep us

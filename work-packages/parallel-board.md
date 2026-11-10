@@ -89,3 +89,18 @@ the docs pages (P6), `pyproject.toml` and `uv.lock` (the driver).
 File ownership rules added this PM: the stream that changes a registered sentence owns that row's `fragment` in
 `claims_register.toml` and nothing else in it; `paper/supporting_material.ipynb`, its generators and `derivation/` have one
 writer at a time (the support stream); Appendix B is regenerated in a stream-named `hts-<stream>` image, removed after.
+
+## Packages running or scoped (fourth PM, 2026-11-10, early; the supervisor signed off for the night: "Proceed, I review after")
+
+| Package | State |
+|---|---|
+| WP23 (model-realism loop) | scope folded 0769209; r2 model af37cb1; coverage eae754c, DSM 2620188, platform rule dd44575 (table produced in hts-paper; exact equality only under HTS_ENVIRONMENT_OF_RECORD); views rev 3 3fcc855, rev 4 abdb88f; round 1 pair 59c3407/29ce58e (zero exponents: power margin, eclipse reserve, peak slew power); round 2 battery (b) 5e436c6/e20db3f; round 3 interrogation a93ce10 (no model change; n-lemma readings written); round-3 cold reads next; then the gate unit. Case code (slew time out, settling time by events) is LOCAL on worktree `wp23case`, branch `wp23case`, head e7ee99b (5 commits): lands with the regeneration push. Contract amendment row 12 drafted in that branch |
+| WP19 remaining redraws | done: 13d1026, 9eb46f7, f46a4ee (figures); 41c1872, 93d6ecc, cc409f8 (paper placements P-5/P-6/P-7, captions); docs re-read 0760265, 9e08ae3 |
+| Package default (plot_log_plane, plot_ternary, plot_frontier_surface_3d one colour; color="facet" the option) | done: 3d6d48a, 0059264 (contract row 11) |
+| Paper P-11 (MDAO prior art) | done 73c5bff; references verified (scratchpad/mdao-references.md, 11 DOIs) |
+| Estimator iteration-cap warning | done 18d0064; register mend 7dff092, 656c3fe (C310) |
+| Support: stderr test, D.14 regenerated in hts-paper 57a0f23716f4, Appendix B position paragraph | done 6d27662, 8849164; limitations link fixed 656c3fe |
+| WP24 (the word facet) | scope 5a8bb5b approved; preparation 0be3449 (rename script, dry-run counts); lands after WP23's gate; worktree `wp24` holds the glossary patch |
+| WP25 (tidiness, first instance) | done: db150fc inventory (346 rows), 09117d8 (169 files deleted), f9573fd review (drift list for WP24's docs push; 9 gaps) |
+
+Worktrees alive: `wp23case` (unpushed case code), `wp24` (held glossary patch). All others removed.
