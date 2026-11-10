@@ -879,7 +879,8 @@ stops on a fixed assignment with no empty cell:
 
 At $\tau=\infty$ the four zero-margin seeds are the four recovery failures of step B below: a
 frontier row lies on two term planes. The case-study record
-(`docs/superpowers/notes/k3-cubesat.md`) carries the same columns for the cubesat fits.
+(`docs/superpowers/notes/k3-cubesat.md`, in history at bf2a83c; the record of record is printed by
+`examples/adcs/k_terms.py`) carries the same columns for the cubesat fits.
 
 | Formula | Implementation | Cross-check |
 |---|---|---|
@@ -959,7 +960,8 @@ exponents are recovered to 0.05 in 16 or 17 of 20 seeds for either step and eith
 planted terms with only five or six frontier rows, trapped in local optima, and one seed with a
 well-populated term (see the measured recovery above). At $N=600$ with half the rows on the
 frontier the rate was 19 or 20 of 20. (ii) The cubesat record
-(`docs/superpowers/notes/k3-cubesat.md`) reports the $K=1,2,3$ fits on two datasets. The mean
+(`docs/superpowers/notes/k3-cubesat.md`, in history at bf2a83c; the record of record is printed by
+`examples/adcs/k_terms.py`) reports the $K=1,2,3$ fits on two datasets. The mean
 slack at $K=3$ is 0.117 against 0.204 at $K=1$ in the primary regime (0.093 against 0.131 in the stock regime), at a temperature re-selected at each $K$; the $K=3$ objective agrees across five seeds to
 within $2\times10^{-6}$ in the primary regime, and in the stock regime one seed of five reaches a worse optimum (0.114 against 0.093). (iii) The temperature is re-selected at each $K$ by
 the $K=1$ criterion, a tenth of the designs above $V=1$: $\tau$ is 38.1, 113 and 195 at $K=1,2,3$ in the primary regime and `frac_above_` is 0.096, 0.096 and 0.098. Reusing the $K=1$ $\tau$ instead raises the fraction (0.096, 0.261, 0.382), because each term is a supporting hyperplane at that $\tau$ but the envelope is the maximum over terms; that table is kept in the record as a diagnostic. Whether the target fraction should differ by $K$ is open. (iv) The sliver: refitting a term on its own rows tilts to a simplex vertex on the planted data

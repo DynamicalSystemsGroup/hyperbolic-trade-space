@@ -28,7 +28,9 @@ TERM_NUM = (
     "objective_change", "assignment_changes", "n_empty", "gamma", "radius", "eps_kkt",
     "eps_feas", "guard_tol",
 )  # fmt: skip
-# The reference was recorded in the environment of record (linux/arm64 container) and carries its
+# The reference was recorded in the environment of record (linux/arm64 container), then re-recorded
+# on the host (macOS arm64) at the WP23 close-out, whose data changed the cubesat fits; the driver's
+# container regression re-records it at the gate. It carries its
 # platform as the array "recorded_on" = (sys.platform, platform.machine()). Exact (bit-identical)
 # equality is asserted there and in the environment of record; elsewhere the floats agree within
 # 1e-12 (tests/_env.py), and the tau = inf planted fits within the stated tolerances.

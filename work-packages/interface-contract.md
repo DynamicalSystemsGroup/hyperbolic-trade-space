@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 14. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 15. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose

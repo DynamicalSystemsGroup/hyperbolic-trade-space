@@ -79,7 +79,11 @@ def _git(*args) -> str | None:
 def v2_columns(frozen_columns) -> list[str]:
     """The v2 header a frozen header implies: the slew-time columns out (WP23 G5), the
     check-design predictions' standard deviation of the time metric on the settling time."""
-    gone = {"slew_time_s", "slew_time_05deg_s"}
+    gone = {
+        "slew_time_s",
+        "slew_time_05deg_s",
+        "eclipse_reserve_wh",
+    }  # the reserve: the WP23 close-out
     rename = {"pred_std_slew_time_s": "pred_std_settling_time_s"}
     return [rename.get(c, c) for c in frozen_columns if c not in gone]
 
