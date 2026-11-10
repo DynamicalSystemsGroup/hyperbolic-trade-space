@@ -19,3 +19,10 @@ exist; the note is a record (A5) and cites four old names. Decision: (b), the id
 recorded as an amendment of A5: a record keeps its wording, but a code identifier is not wording, and a map that
 keeps old names alive in a test is the drift the package exists to remove. The same rule for any other record a
 test reads. No map.
+
+**Push 2's question, the same seam on quoted statements (06:45).** `tests/test_narrative.py` requires
+`docs/superpowers/notes/paper-sources/method.md` to quote the ledger's R2 word for word, and the ledger now says
+"term". Decision: (2). The paper-sources notes are the paper's source text, not decision records, so A5 is amended:
+`docs/superpowers/notes/paper-sources/*.md` take the vocabulary by identifier and word edits, and both test maps
+are dropped. Decision records (`WPn-decisions.md`, the supervisor's quotations, `PROOF_MAP_FINDINGS.md` section 10)
+keep their wording. R1's polyhedral "facet" in Appendix B carries the exempt marker (push 4).
