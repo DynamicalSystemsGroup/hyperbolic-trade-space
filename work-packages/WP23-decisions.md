@@ -359,3 +359,13 @@ conditioning artefact spike B warned of; the Discussion candidate therefore says
 designs, not what the frontier trades, and the "with and without" reading is: neither removing the infeasible
 designs nor pre-imposing the thresholds changes the trades the frontier reports. For the supervisor's review with
 the close-out's comparison.
+
+**R-31, mathematics inside notebook HTML outputs (2026-11-10, 12:20; the driver).** The site typesets no
+mathematics inside a notebook's HTML output, so Appendices A and E show raw `$...$` spans. Not (b): a visible
+rendering defect in two appendices is not accepted into the candidate when it is cheap to fix; not (c): the
+one-call-per-table-cell convention stays. First the no-dependency path: `paper_common.py`'s `Md._repr_html_`
+emits each span in the theme's own math markup (what the built page uses for Markdown math, checked in the
+built HTML), and the result is verified rendered in the browser; if the theme does not typeset it there, (a):
+`latex2mathml` (pure Python, no transitive weight) converts the spans to MathML at render time, and the driver
+makes the `pyproject.toml` and `uv.lock` change on the executor's request. One small unit after the data-gate
+review; Appendix A's register table takes the same path.
