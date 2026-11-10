@@ -213,7 +213,10 @@ Agents the third PM left running (each in `scratchpad/pm-worktrees/<name>`; thei
 by agent id; finish their current unit, start nothing new under the old plan):
 - `paper` (a6741b00a48cdba4d), single writer of paper/paper.ipynb prose, length ledger, generate_findings.py, the
   register rows whose sentence it changes: unit 7 = the two WP10 decisions above (hash to the driver for a depth-A pass);
-  unit 8 = WP19 P-4..P-10 placement except Figure 3's caption (awaits the redraw).
+  unit 8 = WP19 P-4..P-10 placement except Figure 3's caption (awaits the redraw), with CR-1d bundled (the abstract's
+  "a soft support, not a regression" becomes "a soft support that a few designs may exceed, not a regression"; sent to
+  the stream; if its report shows CR-1d not done, it is the fourth PM's first paper unit; no re-test after it, then the
+  abstract rests for the supervisor).
 - `support` (a4fa6b7ef20ce9a72), single writer of derivation/, proof_map_record.json, paper/supporting_material.ipynb and
   its generators, abstraction-gaps.md, glossary.yaml this batch: unit 5 = glossary wording fixes, entries cell, reach,
   near-frontier band, effective sample size, certificate, mean slack; "support offsets" -> reach in L14/L15 with
