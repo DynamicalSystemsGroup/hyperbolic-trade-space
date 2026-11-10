@@ -1,0 +1,100 @@
+@startuml
+left to right direction
+skinparam linetype polyline
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 12
+skinparam ClassBackgroundColor white
+skinparam ClassBorderColor #404040
+skinparam ClassAttributeIconSize 0
+skinparam ArrowColor #404040
+skinparam RectangleBackgroundColor white
+skinparam RectangleBorderColor #404040
+skinparam PackageBackgroundColor #F7F7F7
+skinparam PackageBorderColor #909090
+skinparam LegendBackgroundColor white
+skinparam LegendBorderColor #909090
+skinparam nodesep 8
+skinparam ranksep 12
+hide circle
+hide empty members
+
+scale 700 width
+
+package "controls (the analyst's grouping)" {
+  rectangle "**SettledRequirement**\nSlewVerification" as xSettledrequirement #FDEBD0
+  rectangle "**ControlEffortRequirement**\nSlewVerification" as xControleffortrequirement #FDEBD0
+  rectangle "**PointingErrorRequirement**\nConfigurationVerification" as xPointingerrorrequirement #FDEBD0
+  rectangle "settling time\n<<MoP>>\nsettlingTime" as xSettlingTime #E3F1E3
+  rectangle "control effort\n<<MoP>>\ncontrolEffort" as xControlEffort #E3F1E3
+  rectangle "pointing error\n<<MoE>>\nPointingError" as xPointingError #E3F1E3
+}
+xSettledrequirement -[hidden]right-> xControleffortrequirement
+xControleffortrequirement -[hidden]right-> xPointingerrorrequirement
+xSettlingTime -[hidden]right-> xControlEffort
+xControlEffort -[hidden]right-> xPointingError
+xSettledrequirement -[hidden]-> xSettlingTime
+package "power and energy (the analyst's grouping)" {
+  rectangle "**PowerMarginRequirement**\nSlewVerification" as xPowermarginrequirement #FDEBD0
+  rectangle "**EnergyBalanceRequirement**\nSlewVerification" as xEnergybalancerequirement #FDEBD0
+  rectangle "**EclipseReserveRequirement**\nSlewVerification" as xEclipsereserverequirement #FDEBD0
+  rectangle "**PeakSlewPowerRequirement**\nSlewVerification" as xPeakslewpowerrequirement #FDEBD0
+  rectangle "**DepthOfDischargeRequirement**\nSlewVerification" as xDepthofdischargerequirement #FDEBD0
+  rectangle "power margin\n<<MoP>>\nPowerMargin" as xPowerMargin #E3F1E3
+  rectangle "energy balance\n<<MoP>>\nEnergyBalance" as xEnergyBalance #E3F1E3
+  rectangle "eclipse reserve\n<<MoP>>\nEclipseReserve" as xEclipseReserve #E3F1E3
+  rectangle "peak slew power\n<<MoP>>\nPeakSlewPower" as xPeakSlewPower #E3F1E3
+  rectangle "depth of discharge\n<<MoP>>\nDepthOfDischarge" as xDepthOfDischarge #E3F1E3
+}
+xPowermarginrequirement -[hidden]right-> xEnergybalancerequirement
+xEnergybalancerequirement -[hidden]right-> xEclipsereserverequirement
+xEclipsereserverequirement -[hidden]right-> xPeakslewpowerrequirement
+xPeakslewpowerrequirement -[hidden]right-> xDepthofdischargerequirement
+xPowerMargin -[hidden]right-> xEnergyBalance
+xEnergyBalance -[hidden]right-> xEclipseReserve
+xEclipseReserve -[hidden]right-> xPeakSlewPower
+xPeakSlewPower -[hidden]right-> xDepthOfDischarge
+xPowermarginrequirement -[hidden]-> xPowerMargin
+package "mass (the analyst's grouping)" {
+  rectangle "**LaunchBudgetRequirement**\nConfigurationVerification" as xLaunchbudgetrequirement #FDEBD0
+  rectangle "launch cost\n<<MoE>>\nLaunchCost" as xLaunchcost #FFF4C2
+  rectangle "total mass\n<<MoP>>\ntotalMass" as xTotalMass #E3F1E3
+}
+xLaunchbudgetrequirement -[hidden]-> xTotalMass
+rectangle "requirements reading no traded metric" as xNoLine #FFFFFF;line:gray;line.dashed;text:gray {
+  rectangle "**BatteryPeakPowerRequirement**\nEclipsePeakLoad(c, peakTorque) <= BatteryPeakPower(c)\nSlewVerification" as xBatterypeakpowerrequirement #FDEBD0
+  rectangle "**MomentumRequirement**\npeakMomentum <= c.momentumCapacity\nSlewVerification" as xMomentumrequirement #FDEBD0
+  rectangle "**PowerRequirement**\nc.availablePower > 0.0 [W]\nConfigurationVerification" as xPowerrequirement #FDEBD0
+  xBatterypeakpowerrequirement -[hidden]-> xMomentumrequirement
+  xMomentumrequirement -[hidden]-> xPowerrequirement
+}
+xLaunchbudgetrequirement -[hidden]right-> xNoLine
+
+rectangle "**SlewExperiment**\n<<analysis def>>\ncomputes 7 of the 9\nmetrics from the\nconfiguration and the\nmeasured inputs\n\n\n\n\n\n\n\n\n\n\n\n\n\n" as xAnalysis #E1D8F0
+rectangle "**SlewMeasurement**\nmeasured slew:\nsimulation here;\nfield data when\nfielded" as xMeasure #E4E4E4
+xMeasure -[hidden]right-> xAnalysis
+
+xControleffortrequirement -[#B5541C,thickness=2]- xControlEffort
+xDepthofdischargerequirement -[#B5541C,thickness=2]- xDepthOfDischarge
+xEclipsereserverequirement -[#B5541C,thickness=2]- xEclipseReserve
+xEnergybalancerequirement -[#B5541C,thickness=2]- xEnergyBalance
+xLaunchbudgetrequirement -[#B5541C,thickness=2]- xLaunchcost
+xLaunchcost -[#B5541C,thickness=2]right- xTotalMass
+xPeakslewpowerrequirement -[#B5541C,thickness=2]- xPeakSlewPower
+xPointingerrorrequirement -[#B5541C,thickness=2]- xPointingError
+xPowermarginrequirement -[#B5541C,thickness=2]- xPowerMargin
+xSettledrequirement -[#B5541C,thickness=2]- xSettlingTime
+xSettlingTime <-[#6B6B6B]- xMeasure
+xPointingError <-[#6B6B6B]- xAnalysis
+xTotalMass <-[#6B6B6B]- xAnalysis
+xControlEffort <-[#6B6B6B]- xMeasure
+xPowerMargin <-[#6B6B6B]- xAnalysis
+xEnergyBalance <-[#6B6B6B]- xAnalysis
+xEclipseReserve <-[#6B6B6B]- xAnalysis
+xPeakSlewPower <-[#6B6B6B]- xAnalysis
+xDepthOfDischarge <-[#6B6B6B]- xAnalysis
+
+legend bottom
+  orange: requirement; green: traded metric; yellow: derived, not traded
+end legend
+@enduml

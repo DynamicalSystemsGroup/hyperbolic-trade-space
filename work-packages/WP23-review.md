@@ -469,6 +469,34 @@ every large-wheel design, the medium wheel with the fine tracker (2.6 W) and the
 fine tracker by 4.5 mW (2.4045 W): 56.4 % of the primary regime's feasible designs; it enters no
 dataset column.
 
+**The views of round 3** (`work-packages/WP23-rounds/round-3/`, `INTENT.md`, which now carries
+what the legend carried and an intent sentence for the heatmap). The generator's revision 4
+(`project.py --revision 4`; the default stays 3 and reproduces the committed views of the adopted
+model byte for byte, `tests/test_system_model_v2_r1.py`, 14 passed) applies the round-1 cold reads'
+dispositions: the legend cut to the colour key; one colour rule (orange requirement, green traded
+metric, yellow derived and not traded) with MoE/MoP by stereotype only; the requirement boxes
+reduced to the name and the verification case (the `requirement def`, `satisfy cubesatBaseline`
+boilerplate, the same in every box, moved to the caption; the generator prints the satisfying
+configuration again if the model makes them differ); the three requirements that read no traded
+metric carry their `require constraint` in the model's words; the requirement-metric line is
+headless (a shared quantity) and only the source arrows have heads; the lanes are titled as the
+analyst's grouping; the assembly legend names the untagged parts as fixed and gives the gain ranges
+per regime (primary, baseline; the regime of each gain box read from `experiments/definitions.py`).
+
+Legibility, measured rather than judged: the first revision-4 render put the type at 5.8 px at
+700 px (round 2: 6.9 px, which the cold reads called illegible), because the orphan group laid out
+diagonally at the top right and the mass lane's extra rank made the natural width about 1450 px.
+Three layout changes, tested on the PlantUML text and then put in the generator, bring it to 9.3 px:
+the element a requirement reads is written in the metric's box (its calc or measured attribute, as
+table 2 of `coverage.md` names it) and the line carries no label, so the ranks sit closer; the
+launch-cost box sits at the metrics' rank beside the total mass (a same-rank line), so the mass
+lane adds no rank; the orphan group hangs off the last lane and spans the lanes' width. The assembly
+view's type is 9.0 px. Both images were read at native resolution after the render; nothing
+overlaps. The naming rule: "primary" and "baseline" regime throughout the round's records and views;
+`k3_record.md` and `heatmap_stock.png` still say "stock" because `case.py`'s CaseSpec keys the
+baseline regime so and `diagnostic_pair.py` prints that key, both outside this round's blast radius
+(an item for the PM).
+
 ## R-5's check, amended
 
 The closed-form calcs of section 4, `TorqueLimitedSlewTime`, `LinearSlewTime`, `SlewTimeEstimate` and

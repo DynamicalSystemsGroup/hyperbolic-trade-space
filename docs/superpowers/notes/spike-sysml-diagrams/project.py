@@ -17,6 +17,16 @@ obtained). Revision 2 (2026-11-09): the first slot-2 candidate is withdrawn. Rev
 its element) is written in its box; a calc the model marks MoE that is not itself traded (the launch
 cost on the total mass) is drawn as a box between the requirement that reads it and the metric it
 reads. On a model without marks (the adopted ``cubesat.sysml``) the output is unchanged.
+Revision 4 (WP23 round 3, the round-1 cold reads' dispositions; ``--revision 4``, default 3 until the
+data gate swaps the committed views): the legend of each view is cut to what the image needs (the
+colour key; the rest is the caption's, ``INTENT.md``); one colour rule, orange a requirement, green a
+traded metric, yellow a derived quantity that is not traded, the MoE or MoP mark by stereotype only;
+the requirement boxes carry the name and only what differs between them (the verification case),
+and a requirement that reads no traded metric carries its constraint in the model's words; the
+requirement-metric relation is a headless line (a shared quantity) and the source lines keep the one
+arrowhead (where a metric comes from); the subsystem lanes are titled as the analyst's grouping; the
+assembly legend names the untagged parts as fixed and the gain ranges by regime (read from
+``experiments/definitions.py``).
 """
 
 from __future__ import annotations
@@ -173,10 +183,41 @@ def doc_text(byid, prefix_id: str) -> str:
     return " ".join(out)
 
 
+def regime_of_gain_box() -> dict:
+    """``{"aggressive": "primary", "baseline": "baseline"}``: the regime each gain box samples, read
+    from the experiment definitions (``v2-primary`` samples the aggressive box); the box's own name
+    when the definitions cannot be read."""
+    try:
+        sys.path.insert(0, str(REPO / "examples" / "adcs"))
+        from experiments import definitions
+
+        return {
+            e.gain_box: e.id.removeprefix("v2-")
+            for e in definitions.V2
+            if e.id in ("v2-primary", "v2-baseline")
+        }
+    except Exception:
+        return {}
+
+
+def constraint_text(byid, req_id: str) -> str:
+    """The requirement's ``require constraint { ... }`` in the model's own words (the braces' content)."""
+    for i, e in byid.items():
+        if e["@type"] == "ConstraintUsage" and i.startswith(
+            req_id + "__"
+        ):
+            text = " ".join(e.get("sysx:sourceText", "").split())
+            if "{" in text and "}" in text:
+                return text[
+                    text.index("{") + 1 : text.rindex("}")
+                ].strip()
+    return ""
+
+
 # =================================================================================================
 # View 1: the assembly
 # =================================================================================================
-def assembly(m, byid, P):
+def assembly(m, byid, P, revision=3):
     rows = {
         r.id: r.properties | {"@type": r.type} for r in m.query(scope=P)
     }
@@ -349,6 +390,13 @@ def assembly(m, byid, P):
             "continuous: a parameter of a part is tuned within a range",
         )
     )
+    if revision >= 4:
+        fixed = [
+            short(d)
+            for d in dict.fromkeys(p["type"] for p in parts)
+            if d not in selector and not var_at.get(d)
+        ]
+        out.append(f"  no tag: a fixed part ({', '.join(fixed)})")
     out.append("  ")
     out.append("  **Levels and ranges** (read from the model)")
     for d, en in sorted(selector.items()):
@@ -366,24 +414,31 @@ def assembly(m, byid, P):
         and p.get("owner") == P
         and short(p.get("type", "")) == "GainBox"
     ]
-    out.append(
-        "  Gains Kp and Kd: one range per dataset (baseline, aggressive)"
-    )
+    if revision >= 4:
+        regime = regime_of_gain_box()
+        label = lambda b: (
+            f"{regime.get(b.removesuffix('Gains'), b)} regime"
+        )  # noqa: E731
+        out.append("  Gains Kp and Kd: one range per regime")
+        both = "both regimes"
+    else:
+        label = lambda b: f"{b.removesuffix('Gains')} gains"  # noqa: E731
+        out.append(
+            "  Gains Kp and Kd: one range per dataset (baseline, aggressive)"
+        )
+        both = "both datasets"
     for g in ("Kp", "Kd"):
         spans = {
             b: f"{gb(b, g + 'Min')} .. {gb(b, g + 'Max')}"
             for b in boxes
         }
         if len(set(spans.values())) == 1:
-            out.append(
-                f"  {g}: {next(iter(spans.values()))} (both datasets)"
-            )
+            out.append(f"  {g}: {next(iter(spans.values()))} ({both})")
         else:
             out.append(
                 f"  {g}: "
                 + "; ".join(
-                    f"{v} ({b.removesuffix('Gains')} gains)"
-                    for b, v in spans.items()
+                    f"{v} ({label(b)})" for b, v in spans.items()
                 )
             )
     out.append("end legend")
@@ -463,7 +518,7 @@ class Reads:
         return out
 
 
-def behavioural(m, byid, P):
+def behavioural(m, byid, P, revision=3):
     sys.path.insert(0, str(REPO / "examples" / "adcs"))
     import case  # the CaseSpec: the metrics, in order, and their subsystems
 
@@ -714,13 +769,14 @@ def behavioural(m, byid, P):
         "@startuml",
         BEHAVIOUR_DIRECTION,
         f"skinparam linetype {BEHAVIOUR_LINETYPE}",
-        SKIN.format(nodesep=8, ranksep=36),
+        SKIN.format(nodesep=8, ranksep=36 if revision < 4 else 12),
         f"scale {COLUMN_WIDTH} width",
         "",
     ]
     bands = list(order)
     # layout: subsystems fed by the measurement come first, so the measurement box sits beside them and
     # the analysis box beside the rest; no source arrow then crosses another subsystem
+    last_stack_head = None
     bands = sorted(
         bands,
         key=lambda s: (
@@ -731,8 +787,42 @@ def behavioural(m, byid, P):
             )
         ),
     )
+    # revision 4: what every requirement box shares is said once in the caption; a box carries only
+    # what differs between the requirements (the verification case, the satisfying configuration)
+    sat_differs = (
+        len({tuple(sorted(v)) for v in satisfied_by.values()}) > 1
+    )
+    ver_differs = (
+        len({tuple(sorted(v)) for v in verified_by.values()}) > 1
+    )
+
+    def req_box_r4(r, with_constraint=False):
+        lines = [f"**{short(r)}**"]
+        if with_constraint:
+            lines.append(constraint_text(byid, r))
+        if ver_differs:
+            lines.append(
+                ", ".join(sorted(verified_by[r]))
+                or "verified: none in the model"
+            )
+        if sat_differs:
+            lines.append(
+                "satisfied by "
+                + (", ".join(sorted(satisfied_by[r])) or "none")
+            )
+        sa = same_as(r)
+        if sa:
+            lines += [f"{sa[0]};", f"same statement as {sa[1]}"]
+        body = "\\n".join(lines)
+        return f'rectangle "{body}" as {nid(short(r))} {REQ_COLOUR}'
+
+    lane = (
+        (lambda s: f"{s} (the analyst's grouping)")
+        if revision >= 4
+        else (lambda s: s)
+    )  # noqa: E731
     for s in bands:
-        out.append(f'package "{s}" {{')
+        out.append(f'package "{lane(s)}" {{')
         smets = sorted(
             (n for n, sub in metrics if sub == s),
             key=lambda n: (
@@ -770,7 +860,9 @@ def behavioural(m, byid, P):
             )
 
         for r in with_line:
-            out.append("  " + req_box(r))
+            out.append(
+                "  " + (req_box_r4(r) if revision >= 4 else req_box(r))
+            )
         if not sreqs:
             out.append(
                 f'  rectangle "no requirement def\\nlands on this subsystem" as {nid("none" + s)} #FFFFFF;line:gray;line.dashed;text:gray'
@@ -783,6 +875,23 @@ def behavioural(m, byid, P):
                 )
         for n in smets:
             label = f"{n}\\n<<{mark[n]}>>" if mark.get(n) else n
+            if revision >= 4:
+                # the element the requirement reads (the metric's calc or measured attribute), in
+                # the box; the line then carries no label and the ranks sit closer
+                read = sorted(
+                    {
+                        ev
+                        for rr, nn, st, ev in rel
+                        if nn == n and st == "strong"
+                    }
+                    | {
+                        METRIC_ELEMENT[n][1]
+                        for rr, nn, st, ev in rel
+                        if nn == n and st == "moe"
+                    }
+                )
+                if read:
+                    label += "\\n" + ", ".join(read)
             if n in related:
                 out.append(
                     f'  rectangle "{label}" as {nid(n)} {COVERED_COLOUR}'
@@ -803,21 +912,34 @@ def behavioural(m, byid, P):
             out.append(f"{nid(u)} -[hidden]right-> {nid(v)}")
         if stack and smets:
             out.append(f"{stack[0]} -[hidden]-> {nid(smets[0])}")
+        last_stack_head = stack[0] if stack else last_stack_head
+    group_title = (
+        "requirements reading no traded metric"
+        if revision >= 4
+        else "requirements with no line to a traded metric"
+    )
     out.append(
-        f'rectangle "requirements with no line to a traded metric" as xNoLine #FFFFFF;line:gray;line.dashed;text:gray {{'
+        f'rectangle "{group_title}" as xNoLine #FFFFFF;line:gray;line.dashed;text:gray {{'
     )
     for r in no_line:
+        if revision >= 4:
+            out.append("  " + req_box_r4(r, with_constraint=True))
+            continue
         sat = ", ".join(sorted(satisfied_by[r])) or "none in the model"
         ver = ", ".join(sorted(verified_by[r])) or "none in the model"
         out.append(
             f'  rectangle "**{short(r)}**\\n<<requirement def>>\\n<<satisfy>> {sat}\\n<<verify>> {ver}" as {nid(short(r))} {REQ_COLOUR}'
         )
+    chain = "-[hidden]->" if revision >= 4 else "-[hidden]right->"
     for u, v in zip(no_line, no_line[1:]):
-        out.append(
-            f"  {nid(short(u))} -[hidden]right-> {nid(short(v))}"
-        )
+        out.append(f"  {nid(short(u))} {chain} {nid(short(v))}")
     out.append("}")
-    out.append(f"xNoLine -[hidden]right-> {nid(smets_last)}")
+    if revision >= 4 and last_stack_head:
+        # the group hangs off the last lane's first requirement: it then spans the lanes' width
+        # and adds no rank; the lanes' width is what the column scales
+        out.append(f"{last_stack_head} -[hidden]right-> xNoLine")
+    else:
+        out.append(f"xNoLine -[hidden]right-> {nid(smets_last)}")
     out.append("")
     n_analysis = sum(v == "analysis" for v in origin.values())
     pad = "\\n" * ANALYSIS_BOX_PAD
@@ -830,22 +952,29 @@ def behavioural(m, byid, P):
     out.append("xMeasure -[hidden]right-> xAnalysis")
     out.append("")
     drawn_moe = set()
+    head = (
+        "-" if revision >= 4 else "->"
+    )  # a shared quantity has no direction; a source does
+    tag = (lambda ev: "") if revision >= 4 else (lambda ev: f" : {ev}")  # noqa: E731
     for r, n, strength, ev in rel:
         if strength == "strong":
             out.append(
-                f"{nid(short(r))} -[#{RELATION_COLOUR[1:]},thickness=2]-> {nid(n)} : {ev}"
+                f"{nid(short(r))} -[#{RELATION_COLOUR[1:]},thickness=2]{head} {nid(n)}{tag(ev)}"
             )
         elif strength == "moe":
             # requirement -> the MoE box (once per requirement and MoE) -> the metric it reads
             if (r, ev) not in drawn_moe:
                 out.append(
-                    f"{nid(short(r))} -[#{RELATION_COLOUR[1:]},thickness=2]-> {nid(ev)} : {ev}"
+                    f"{nid(short(r))} -[#{RELATION_COLOUR[1:]},thickness=2]{head} {nid(ev)}{tag(ev)}"
                 )
                 drawn_moe.add((r, ev))
             if (ev, n) not in drawn_moe:
                 kind, ident = METRIC_ELEMENT[n]
+                # revision 4: the MoE box sits at the metrics' rank, beside the metric it reads
+                # (a same-rank line), so the mass lane adds no rank to the layout
+                side = "right" if revision >= 4 else ""
                 out.append(
-                    f"{nid(ev)} -[#{RELATION_COLOUR[1:]},thickness=2]-> {nid(n)} : {ident}"
+                    f"{nid(ev)} -[#{RELATION_COLOUR[1:]},thickness=2]{side}{head} {nid(n)}{tag(ident)}"
                 )
                 drawn_moe.add((ev, n))
         else:
@@ -856,6 +985,25 @@ def behavioural(m, byid, P):
         src = "xAnalysis" if origin[name] == "analysis" else "xMeasure"
         out.append(f"{nid(name)} <-[#{SOURCE_COLOUR[1:]}]- {src}")
     out.append("")
+    if revision >= 4:
+        out.append("legend bottom")
+        out.append(
+            "  orange: requirement; green: traded metric; yellow: derived, not traded"
+        )
+        out.append("end legend")
+        out.append("@enduml")
+        return "\n".join(out) + "\n", {
+            "rel": rel,
+            "rel_all": rel_all,
+            "metric_element": METRIC_ELEMENT,
+            "related": related,
+            "reqs": reqs,
+            "band": band,
+            "metrics": metrics,
+            "origin": origin,
+            "satisfied": satisfied_by,
+            "verified": verified_by,
+        }
     out.append("legend bottom")
     out.append(
         "  **Requirement - metric** (orange line, requirement to metric; the shared quantity on the line)"
@@ -915,12 +1063,21 @@ if __name__ == "__main__":
         action="store_true",
         help="print the derived relations",
     )
+    ap.add_argument(
+        "--revision",
+        type=int,
+        default=3,
+        choices=(3, 4),
+        help="drawing revision (3: the committed views of the adopted model; 4: WP23 round 3)",
+    )
     a = ap.parse_args()
     m, byid = load(pathlib.Path(a.model))
     od = pathlib.Path(a.outdir)
     od.mkdir(parents=True, exist_ok=True)
-    (od / "assembly_view.puml").write_text(assembly(m, byid, a.package))
-    text, facts = behavioural(m, byid, a.package)
+    (od / "assembly_view.puml").write_text(
+        assembly(m, byid, a.package, a.revision)
+    )
+    text, facts = behavioural(m, byid, a.package, a.revision)
     (od / "behavioural_view.puml").write_text(text)
     if a.facts:
         for r, n, s, ev in facts["rel"]:
