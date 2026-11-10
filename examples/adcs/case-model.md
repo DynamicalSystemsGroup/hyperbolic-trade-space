@@ -141,13 +141,14 @@ Power and energy (the panels, the battery and the loads under the stated orbit a
 - **Depth of discharge** (MoP): the eclipse demand over the battery capacity.
 - **Peak slew power** (MoP): the electrical draw at the peak of the slew, the tracker's power plus
   the idle wheels plus the wheels' loss at the peak torque.
+<!-- vocab-exempt: power margin -->
 
 Mass and cost.
 
 - **Total mass** (MoP): the launch mass of the configuration, the sum of the bus, battery, panels,
   antenna, wheels, tracker and IMU masses.
-- **Launch cost** (MoE, not traded): the launch rate times the total mass, increasing in mass. The
-  rate (6000 USD per kilogram) is an illustrative constant labelled like the model's other
+- **Launch cost** (MoE, not traded): the total mass times a price per kilogram, increasing in mass. The
+  price (6000 USD per kilogram) is an illustrative constant labelled like the model's other
   constants, not a cited price. The launch cost is the stakeholder's measure on the mass and the
   quantity its requirement reads; the total mass stays the traded metric and the dataset gains no
   column (`WP23-decisions.md`, OD1 and OD2;
@@ -169,6 +170,7 @@ Mass and cost.
 | `PeakSlewPowerRequirement` | the peak slew power | within `budgets.peakSlewPowerLimit` | proposed |
 | `LaunchBudgetRequirement` | the launch cost (the MoE on the total mass) | within `budgets.launchBudget` | proposed |
 | `BatteryPeakPowerRequirement` | the eclipse peak load (housekeeping plus the peak slew power) | within the pack's peak power, its discharge rating times its capacity | the battery's rating (below) |
+<!-- vocab-exempt: power margin -->
 
 The first four are the flags of the dataset, the verdicts of named requirements on each simulated
 configuration. The four thresholds marked proposed are not the supervisor's values and not the
@@ -201,6 +203,7 @@ disagree between the columns, with one cause: the power margin and the peak slew
 measured peak torque, which at all three named configurations is the wheel class's maximum, because
 the power cap does not bind there; the model allows the effect, the three configurations do not
 show it (`WP23-review.md`, "Coverage findings").
+<!-- vocab-exempt: power margin -->
 
 The table's third part is the coupling between subsystems, in the form of the design structure
 matrix of multidisciplinary design analysis and optimization (MDAO), the family the paper names
@@ -226,14 +229,21 @@ figure checks after the data gate, never a target: no metric, threshold or const
 was chosen because it moves the heatmap, and the fit runs unchanged on whatever the model produces
 (`WP23-scope-of-work.md`, non-goals).
 
-What the fit returned in round 3, on the round-1 data (the regeneration moves these values; what
-follows is their reading, not a result of record). In the primary regime three metrics carry no
-exponent at any fit temperature of the sweep: the power margin, the eclipse reserve and the peak
-slew power; in the baseline regime the peak slew power alone (`WP23-review.md`, "Round 3"). The
+What the fit returned on the data of record (the regenerated dataset of the data gate:
+`WP23-rounds/gate/k3_record.md`; `swap-evidence.md`, "Changed conclusions"). In the primary regime
+three metrics carry no exponent at any fit temperature of the sweep: the power margin, the eclipse
+reserve and the peak slew power; in the baseline regime the peak slew power alone, the same zero
+sets the round-1 data gave. The K = 1 contending set is a 5-lemma in both regimes: total mass
+(0.358), energy balance, pointing error, depth of discharge and settling time in the primary regime;
+control effort (0.432), settling time, power margin, pointing error and depth of discharge in the
+baseline regime. At K = 3 the peak slew power leads a term in both regimes: 0.612 in the primary
+regime (the term of 363 of 706 designs) and 0.428 in the baseline regime (a 6-lemma of 184 of 780
+designs). The
 K = 1 fit is one monomial term, a hyperplane in log-metric space, and a metric carries weight
 only where it trades against the others at the frontier: the contending set is found from the
 data (`docs/theory.md`, "Elasticities and the n-lemma"). Read that way, each zero has a reason in
 the metric set rather than in the configuration space.
+<!-- vocab-exempt: power margin -->
 
 - The eclipse reserve is carried by the depth of discharge. Given the tracker grade, both are
   monotone functions of the one battery capacity (the reserve is the allowed depth times the
@@ -253,11 +263,11 @@ the metric set rather than in the configuration space.
   metric that is flat inside each, and the ordering across them is the total mass's. With three
   terms (K = 3) it leads a term in both regimes, the cell of the large-wheel designs, where the
   draw trades against the settling time.
+<!-- vocab-exempt: power margin -->
 
-None of this is a change to the model (round 3 changed none: `WP23-review.md`, "Model change in
-round 3"), and none of it says whether the texture is good or bad; it says what the metric set
-contains, two pairs that are one quantity each and one metric that steps with the swaps, and that
-is the supervisor's to change at the gate, not the loop's.
+None of this is a change to the model, and none of it says whether the texture is good or bad; it
+says what the metric set contains: two pairs that are one quantity each and one metric that steps
+with the swaps.
 
 ## Running an experiment and reading the ledger
 

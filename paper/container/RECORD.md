@@ -341,6 +341,11 @@ committed column with the live case results passed in the image. `tests/data/sof
 94 keys `.../facet_` and `.../facet_share_` renamed `.../cell_` and `.../term_share_`, all 1274 arrays equal in dtype,
 shape and value; `test_soft_fit` passed in the image (exact branch). The environment of record is now `9c8a0c616386`.
 
+## Regeneration of Appendix E after the narrowing of row G-17 (2026-11-10, image 9c8a0c616386, head 541efcd)
+
+Only `tab-E-gaps` and its two echoes in `paper/supporting_material.ipynb` changed (row G-17 of `abstraction-gaps.md` narrowed
+to the committed record); `paper/paper.ipynb` is byte-equal; the edited ledger file was copied into the container before the run.
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes

@@ -29,8 +29,9 @@ Reports without failing: once-used terms (entries and assumed terms used exactly
 
 Reads: the Markdown cells and Markdown outputs (generated tables and sentences) of
 ``paper/paper.ipynb`` and ``paper/supporting_material.ipynb``, ``docs/*.md``,
-``docs/user-guide/*.md``, ``site/index.html``, ``README.md``, the docstrings under ``src/``, and
-the ``short``/``formal``/``not`` fields of ``glossary.yaml``. Skips code, math, citation keys,
+``docs/user-guide/*.md``, ``site/index.html``, ``README.md``,
+``examples/adcs/case-model.md``, the docstrings under ``src/``, and the
+``short``/``formal``/``not`` fields of ``glossary.yaml``. Skips code, math, citation keys,
 link targets and work-packages records.
 
 A sentence that reports a source in the source's own words is exempted for that phrase by a marker
@@ -259,6 +260,8 @@ def read_corpus(root: Path) -> list[Para]:
         paras += read_html(root, "site/index.html")
     if (root / "README.md").is_file():
         paras += read_markdown(root, "README.md")
+    if (root / "examples/adcs/case-model.md").is_file():
+        paras += read_markdown(root, "examples/adcs/case-model.md")
     paras += read_docstrings(root)
     return paras
 
