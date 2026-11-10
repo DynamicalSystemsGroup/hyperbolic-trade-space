@@ -4980,7 +4980,7 @@ note = "two of the three proposals (proposal_1, proposal_3) are one configuratio
 
 [[claim]]
 id = "C399"
-fragment = "fail the model's depth-of-discharge ... requirement: the proposer trains on the designs that settle, stay within the momentum ... budget and keep positive power"
+fragment = "They reached the four-metric frontier they were aimed at ... by spending the battery ... fail the model's ... depth-of-discharge requirement"
 file = "paper/generate_findings.py"
 anchor = "def predict_reading"
 kind = "R"
@@ -4988,12 +4988,12 @@ backing = [
   "gen:paper/generate_findings.py::predict_reading",
   "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
   "file:examples/adcs/data/v2/check_designs_cubesat.csv",
-  "func:examples/adcs/experiments/check_designs.py::Proposer",
+  "file:examples/adcs/data/v2/check_predictions_cubesat.csv",
 ]
 status = "backed"
 disposition = "keep"
-source = "swap-evidence part 5 (num-predict-reading)"
-note = "dod_ok is False for the three proposal rows of the check file; Proposer.feasible_primary keeps the designs that settle, meet the momentum budget and keep positive power, with no depth-of-discharge filter"
+source = "swap-evidence part 5 (num-predict-reading); the WP23 close-out, spike A (WP23-rounds/spikes/spike-A-with-and-without-infeasible.md)"
+note = "rewritten at the WP23 close-out: the measured log V of the proposals on the four-metric view (predict_check) lies within the regressor's band of V = 1; their batteries (22 and 25 Wh) and depths of discharge (0.34 and 0.39) and dod_ok False are read from the check file; the earlier clause on the training rows went (the proposer's rows already excluded the depth-of-discharge failures, through the eclipse reserve's positivity and now through dod_ok)"
 
 [[claim]]
 id = "C400"
@@ -5038,3 +5038,80 @@ status = "backed"
 disposition = "keep"
 source = "WP25-2 unit B, drift row 5"
 note = "mean_slack_ is comparable across n_terms at a fixed temperature (estimator docstring); the same page says to select tau at K = 1 and compare at one fixed tau"
+
+[[claim]]
+id = "C403"
+fragment = "the baseline configuration fails the pointing-error requirement (0.0155 against 0.0085 degree), which 63.7 % of the baseline regime's feasible designs pass"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "R"
+backing = [
+  "test:tests/test_system_model_v2.py::test_the_four_thresholds_are_the_supervisors_values",
+  "test:tests/test_case.py::test_requirements_table_prices_each_requirement_as_spike_b",
+  "gen:paper/generate_results.py::requirements_at_the_frontier",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP23 close-out, D-18 (the supervisor: \"Keep 0.0085 deg\")"
+note = "the model's PointingError of cubesatBaseline is 0.015535 degree, the limit 0.008495 (budgets.pointingErrorLimit), and the engine verifies `not satisfy`; the baseline regime's pass fraction is requirements_table's 0.637"
+
+[[claim]]
+id = "C404"
+fragment = "The proposals fail the depth-of-discharge requirement: they reached the four-metric frontier by spending the battery"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::predict_reading",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+  "file:examples/adcs/data/v2/check_designs_cubesat.csv",
+]
+status = "backed"
+disposition = "keep"
+source = "WP23 close-out, D-18; spike A"
+note = "the check section's pointer to the Discussion's generated reading (C399): dod_ok is False for the three proposal rows, their batteries are 22 and 25 Wh, and their measured log V on the four-metric view is within the band of V = 1"
+
+[[claim]]
+id = "C405"
+fragment = "a proposer that also predicts ... the feasibility flags, and proposes only designs predicted to meet them, is future work"
+file = "paper/generate_findings.py"
+anchor = "def predict_reading"
+kind = "S"
+backing = ["func:examples/adcs/experiments/check_designs.py::Proposer"]
+status = "backed"
+disposition = "keep"
+source = "WP23 close-out, D-18 (the driver's call of 08:45, training on the fully feasible rows as future work)"
+note = "a statement of scope: Proposer fits the regressor on the four-metric view and has no flag model; its training rows are already the feasible ones (706), so the future work is a proposer that predicts the flags"
+
+[[claim]]
+id = "C406"
+fragment = "Fitting first and reading the requirements after is the unconstrained-then-constrained reading of a trade study"
+file = "paper/paper.ipynb"
+anchor = "Discussion"
+kind = "S"
+backing = [
+  "func:examples/adcs/case.py::requirements_table",
+  "test:tests/test_case.py::test_requirements_table_prices_each_requirement_as_spike_b",
+]
+status = "backed"
+disposition = "keep"
+source = "WP23 close-out, D-18: CANDIDATE sentence 1 of 2 for the supervisor's review (the supervisor, 2026-11-10 08:50)"
+note = "candidate, pending the supervisor's review; Appendix D.17 prices each requirement at the K = 1 frontier and counts the near-frontier designs it excludes"
+
+[[claim]]
+id = "C407"
+fragment = "removing the infeasible designs or imposing the four requirements before the fit changes the one-term contending set by at most one of its five metrics"
+file = "paper/paper.ipynb"
+anchor = "Discussion"
+kind = "R"
+backing = [
+  "func:examples/adcs/case.py::design_sets_table",
+  "gen:paper/generate_results.py::design_sets_comparison",
+  "test:tests/test_case.py::test_the_docs_design_sets_block_is_the_case_modules",
+  "test:tests/test_case.py::test_design_sets_share_the_feasible_conditioning",
+]
+status = "backed"
+disposition = "keep"
+source = "WP23 close-out, D-18 and OD10 (a): CANDIDATE sentence 2 of 2 for the supervisor's review"
+note = "candidate, pending the supervisor's review; on the feasible set's conditioning: primary, the three sets share the contending set; baseline, all designs swap depth of discharge for total mass and the requirement-constrained set swaps power margin for energy balance (Spearman 0.988); spike A's own-rows conditioning had shown a changed set, a conditioning artefact (spike B, section 4)"

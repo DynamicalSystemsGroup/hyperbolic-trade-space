@@ -3,8 +3,8 @@
 ## A cubesat trade study across power, mass and attitude control
 
 The worked case is a cubesat model coupling power, mass and attitude control: bus, antenna, inertial unit,
-controller, wheel and tracker alternatives, solar panel and battery. Nine attributes are compared under two controller-gain settings: settling time, pointing error,
-control effort, power margin, energy balance, eclipse reserve, peak slew power, depth of discharge and total
+controller, wheel and tracker alternatives, solar panel and battery. Eight attributes are compared under two controller-gain settings: settling time, pointing error,
+control effort, power margin, energy balance, peak slew power, depth of discharge and total
 mass. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`.
 In this design loop the simulation measures the attributes, and a fielded system's measured attributes would enter the same table and the same fit.
 
@@ -20,6 +20,8 @@ designs above V = 1:
   ten an association reading needs, so none is given.
 - **A second table.** The stock-gains table gives a different one-term
   contending set, so the finding depends on the regime.
+- **No metric twice.** No pair of the eight metrics reaches a rank correlation of 0.99 over the
+  feasible designs, so each exponent is read on its own.
 
 These are observations of the fit, not explanations. Reading them in physical terms is the
 engineer's work.
@@ -41,8 +43,8 @@ case.tension_figure(study, fit)
 ```
 
 <figure markdown>
-![Heatmap of the association among nine conditioned metrics near the frontier; five metrics are outlined as the contending set.](generated/figures/adcs-tensions-light.png#only-light)
-![Heatmap of the association among nine conditioned metrics near the frontier; five metrics are outlined as the contending set.](generated/figures/adcs-tensions-dark.png#only-dark)
+![Heatmap of the association among eight conditioned metrics near the frontier; five metrics are outlined as the contending set.](generated/figures/adcs-tensions-light.png#only-light)
+![Heatmap of the association among eight conditioned metrics near the frontier; five metrics are outlined as the contending set.](generated/figures/adcs-tensions-dark.png#only-dark)
 <figcaption>Figure 6. The tension report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, metrics that do not participate.</figcaption>
 </figure>
 
@@ -56,8 +58,42 @@ plot_frontier_coordinates(chart[:, :-1], chart[:, -1])
 <figure markdown>
 ![The 706 feasible designs in the plane of the first two position coordinates Z0 and Z1, with the designs nearest the frontier ringed in black.](generated/figures/adcs-coordinates-light.png#only-light)
 ![The 706 feasible designs in the plane of the first two position coordinates Z0 and Z1, with the designs nearest the frontier ringed in black.](generated/figures/adcs-coordinates-dark.png#only-dark)
-<figcaption>Figure 7. The 706 feasible designs by Z0 and Z1, the first two of eight position coordinates, meaningless alone; 193 ringed designs lie nearest the frontier. It shows coverage, not the frontier.</figcaption>
+<figcaption>Figure 7. The 706 feasible designs by Z0 and Z1, the first two of seven position coordinates, meaningless alone; 193 ringed designs lie nearest the frontier. It shows coverage, not the frontier.</figcaption>
 </figure>
+
+## Requirements read after the fit
+
+The fit ignores the model's four threshold requirements. Read after it, each has a pass share,
+the near-frontier designs it excludes and a price at the one-term frontier, in band widths:
+
+```text
+# case.requirements_summary()
+requirement      pass             near excluded   price, bands
+(aggressive | stock)
+peak slew power  62.2 | 67.3 %    0/56 | 2/77     0 | 0
+pointing error   95.0 | 63.7 %    1/56 | 42/77    0.07 | 0.56
+control effort   58.9 | 90.0 %    18/56 | 1/77    0 | 7.92
+total mass       94.9 | 95.6 %    0/56 | 1/77     0 | 0
+all jointly      40.8 | 38.7 %    19/56 | 43/77
+```
+
+Refitted on three design sets in one conditioning, the one-term contending set barely moves:
+
+```text
+# case.design_sets_summary()
+aggressive, all designs (1000): total mass, energy balance, pointing
+  error, depth of discharge, settling time
+aggressive, feasible (706): total mass, energy balance, pointing error,
+  depth of discharge, settling time
+aggressive, requirements met (288): total mass, energy balance, pointing
+  error, depth of discharge, settling time
+stock, all designs (1000): control effort, settling time, power margin,
+  pointing error, total mass
+stock, feasible (780): control effort, settling time, power margin,
+  pointing error, depth of discharge
+stock, requirements met (302): control effort, settling time, energy
+  balance, pointing error, depth of discharge
+```
 
 ## Three metrics as shares of a total
 
@@ -102,7 +138,7 @@ print("lines at", values.attrs["levels"])
 
 Key: a row is a marker, its shares of the total, and V there as a fraction of the highest marker's V.
 
-Limits: three parts only; the analyst's choice of metrics can flatter the result; the triangle is for reading, not measuring distance; a nine-metric case does not separate in three, so none is drawn for the cubesat.
+Limits: three parts only; the analyst's choice of metrics can flatter the result; the triangle is for reading, not measuring distance; an eight-metric case does not separate in three, so none is drawn for the cubesat.
 
 ## Run it
 

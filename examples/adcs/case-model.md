@@ -56,13 +56,13 @@ the file.
 <!-- sections:begin -->
 | section | title | lines |
 |---|---|---|
-| 1 | CONFIGURATION SPACE (configuration view): what can be chosen | 80 to 180 |
-| 2 | THE CUBESAT (configuration view): composition and environment | 182 to 292 |
-| 3 | ACCOUNTING (assessment view): mass, power, energy, inertia, pointing | 294 to 466 |
-| 4 | SCENARIOS (assessment view): the slew, and a closed-form approximation of it | 468 to 542 |
-| 5 | REQUIREMENTS, SATISFACTION AND VERIFICATION (assessment view; 15.2, WP22) | 544 to 814 |
-| 6 | THE EXPERIMENT (assessment view): configuration and measured slew in, attributes out | 816 to 845 |
-| 7 | NAMED CONFIGURATIONS (configuration view) | 847 to 870 |
+| 1 | CONFIGURATION SPACE (configuration view): what can be chosen | 87 to 187 |
+| 2 | THE CUBESAT (configuration view): composition and environment | 189 to 299 |
+| 3 | ACCOUNTING (assessment view): mass, power, energy, inertia, pointing | 301 to 465 |
+| 4 | SCENARIOS (assessment view): the slew, and a closed-form approximation of it | 467 to 541 |
+| 5 | REQUIREMENTS, SATISFACTION AND VERIFICATION (assessment view; 15.2, WP22) | 543 to 809 |
+| 6 | THE EXPERIMENT (assessment view): configuration and measured slew in, attributes out | 811 to 839 |
+| 7 | NAMED CONFIGURATIONS (configuration view) | 841 to 864 |
 <!-- sections:end -->
 
 What to take from each section:
@@ -73,14 +73,15 @@ What to take from each section:
   reads all of it from here; no range, literal or constant is copied into Python.
 - **The cubesat.** The composition (panels, battery, wheel, tracker, controller) and the
   environment (eclipse, loads).
-- **Accounting.** One `calc def` per accounting quantity: masses, power, energy balance, eclipse
-  reserve, pointing error, depth of discharge. Each constant has a `doc` rationale beside it.
+- **Accounting.** One `calc def` per accounting quantity: masses, power, energy balance, pointing
+  error, depth of discharge. Each constant has a `doc` rationale beside it.
 - **Scenarios.** The nominal slew as a named part (angle, horizon, step, bands), and a closed-form
   approximation of the slew for model checking. The integration of the slew itself is in Python
   (`adcs_sim.simulate_adcs`), because the model language cannot integrate the equations of motion.
 - **Requirements.** Feasibility as named requirements (`settled`, `momentum_ok`, `power_ok`,
   `dod_ok` are their verdicts), the requirements over the other traded metrics, `satisfy`
-  statements tying them to the baseline, verification definitions naming what each verifies, and
+  statements tying them to the baseline (a negated one, `not satisfy`, for the pointing-error
+  requirement, which the baseline configuration fails), verification definitions naming what each verifies, and
   claims over every in-range configuration. Which quantity each requirement reads is the table of
   the next section.
 - **The experiment.** `analysis def SlewExperiment` takes the configuration and the measured slew
@@ -104,13 +105,13 @@ This section reads the model `model_v2/cubesat.sysml` as adopted at the package'
 the section table above is this file's). The chain is short.
 A configuration is what the assembly view shows: two swaps (the wheel class, the star-tracker
 grade) and four tunes (the panel span, the battery capacity, the gains Kp and Kd). The assessment
-turns a configuration into nine traded metrics: the slew is integrated once and measured, the
+turns a configuration into eight traded metrics: the slew is integrated once and measured, the
 accounting calcs are evaluated, and the experiment returns the metrics as one row of the dataset,
 with the four flags beside them. Each metric is marked in the model as a measure of effectiveness
 (MoE) or a measure of performance (MoP), by one rule stated in the model's top comment: an MoE is a
 measure a stakeholder states without knowing the design; an MoP is a measure of the system's
 performance under the scenario the engineer states. Two MoEs (the pointing error and the launch
-cost) and eight MoPs: the stakeholders ask for a payload that points and a launch they can afford;
+cost) and seven MoPs: the stakeholders ask for a payload that points and a launch they can afford;
 everything else is how the design performs under the engineer's slew and orbit. Each metric is read
 by a requirement on its own quantity and verified in a verification case (`model_v2/views/coverage.md`,
 second table; `tests/test_model_coverage.py::test_every_traded_metric_has_a_requirement_that_reads_it_and_a_mark`).
@@ -136,9 +137,11 @@ Power and energy (the panels, the battery and the loads under the stated orbit a
   power, at the peak of the slew in sunlight.
 - **Energy balance** (MoP): over one orbit, the energy the panels supply in sunlight less the base
   load over the orbit and the slew's loss energy.
-- **Eclipse reserve** (MoP): the energy left in the battery above the allowed depth of discharge
-  after the eclipse demand (the base load over the eclipse plus the slew's loss energy).
-- **Depth of discharge** (MoP): the eclipse demand over the battery capacity.
+- **Depth of discharge** (MoP): the eclipse demand (the base load over the eclipse plus the slew's
+  loss energy) over the battery capacity. It is the one metric and the one requirement on the
+  eclipse energy: the eclipse reserve, the energy left above the allowed depth of discharge, left
+  the model at the WP23 close-out, because its requirement (a reserve not negative) was the
+  depth-of-discharge requirement restated (`WP23-rounds/spike-redundancy.md`, pair 1).
 - **Peak slew power** (MoP): the electrical draw at the peak of the slew, the tracker's power plus
   the idle wheels plus the wheels' loss at the peak torque.
 <!-- vocab-exempt: power margin -->
@@ -162,30 +165,33 @@ Mass and cost.
 | `MomentumRequirement` (`momentum_ok`) | the measured peak momentum | within the wheel's momentum capacity | the wheel class |
 | `PowerRequirement` (`power_ok`) | the available power | positive | the accounting |
 | `DepthOfDischargeRequirement` (`dod_ok`) | the depth of discharge | within the environment's allowed depth | the environment |
-| `EclipseReserveRequirement` | the eclipse reserve | not negative | zero |
 | `PowerMarginRequirement` | the power margin | not negative | zero |
 | `EnergyBalanceRequirement` | the energy balance | not negative | zero |
-| `PointingErrorRequirement` | the pointing error | within `budgets.pointingErrorLimit` | proposed (below) |
-| `ControlEffortRequirement` | the measured control effort | within `budgets.controlEffortLimit` | proposed |
-| `PeakSlewPowerRequirement` | the peak slew power | within `budgets.peakSlewPowerLimit` | proposed |
-| `LaunchBudgetRequirement` | the launch cost (the MoE on the total mass) | within `budgets.launchBudget` | proposed |
+| `PointingErrorRequirement` | the pointing error | within `budgets.pointingErrorLimit`, 0.008495 degree | the supervisor's choice (below) |
+| `ControlEffortRequirement` | the measured control effort | within `budgets.controlEffortLimit`, 0.05922 N.m.s | the supervisor's choice |
+| `PeakSlewPowerRequirement` | the peak slew power | within `budgets.peakSlewPowerLimit`, 2.6 W | the supervisor's choice |
+| `LaunchBudgetRequirement` | the launch cost (the MoE on the total mass) | within `budgets.launchBudget`, 90,643 USD | the supervisor's choice |
 | `BatteryPeakPowerRequirement` | the eclipse peak load (housekeeping plus the peak slew power) | within the pack's peak power, its discharge rating times its capacity | the battery's rating (below) |
 <!-- vocab-exempt: power margin -->
 
 The first four are the flags of the dataset, the verdicts of named requirements on each simulated
-configuration. The four thresholds marked proposed are not the supervisor's values and not the
-model's own: the loop proposed one rule for all four, so that none is tuned to a metric or to a
-figure, each threshold the baseline configuration's own value with a 20 % margin (`budgets.margin`,
-1.2), the allowance an engineer carries on a budget at an early phase. They are pending the
-supervisor's approval at the data gate and are read from the model by
-`tests/test_system_model_v2.py::test_proposed_thresholds_are_the_baselines_values_with_the_stated_margin`:
-a pointing error of 0.018642 degree, a control effort of 0.011389 N.m.s, a peak slew power of
-2.4 W and a launch budget of 95,698.29 USD (15.950 kg at the rate) (`WP23-review.md`, "Proposed
-thresholds"). The battery's discharge rating is proposed likewise: a continuous rating of 1 C
-(`environment.batteryDischargeRate`, 1.0 per hour), the pack delivering its capacity in one hour,
-the plain rating of a small-satellite lithium-ion pack and not a cited one (`WP23-review.md`,
-"Round 2"). None of these thresholds enters the dataset: the four flags stay what they are, so a
-threshold changes the model's statement, the views and the coverage table, and cannot move a fit.
+configuration; `dod_ok` is also one of the case's feasibility flags (`case.CUBESAT.flags`), so the
+depth-of-discharge failures leave the fit by name. The four thresholds are the supervisor's choice
+from the loop's ladder of pass fractions (`WP23-decisions.md`, "The four thresholds"), literal values
+in `budgets` with the share of the feasible designs each admits (primary / baseline regime): a peak
+slew power of 2.6 W (62.2 % / 67.3 %, every small and medium wheel), a pointing error of 0.008495
+degree (94.9 % / 63.7 %), a control effort of 0.05922 N.m.s (58.9 % / 90.0 %) and a launch budget
+of 90,643 USD, 15.107 kg at the illustrative 6,000 USD per kilogram (94.9 % / 95.6 %); they are read from the model by
+`tests/test_system_model_v2.py::test_the_four_thresholds_are_the_supervisors_values`. The baseline
+configuration fails the pointing-error requirement: its pointing error is 0.0155 degree against
+0.0085 degree, and 63.7 % of the baseline regime's feasible designs pass it ("Keep 0.0085 deg",
+`WP23-decisions.md`); the model states the failure as `not satisfy baselinePointingError by
+cubesatBaseline`, which the engine checks true. The battery's discharge rating is proposed: a
+continuous rating of 1 C (`environment.batteryDischargeRate`, 1.0 per hour), the pack delivering its
+capacity in one hour, the plain rating of a small-satellite lithium-ion pack and not a cited one
+(`WP23-review.md`, "Round 2"). None of these thresholds enters the dataset or the fit: the fit of
+record is the fit on the feasible designs, and the case reads the four requirements after it
+(`case.requirements_table`, `case.design_sets_table`; Appendix D.17 of the supporting material).
 
 ### Coverage: every swap and tune reaches a metric
 
@@ -194,8 +200,8 @@ The coverage table (`model_v2/views/coverage.md` and `.csv`, generated from the 
 has a path from the metric back to the element and whether a one-at-a-time change of the element
 at the three named configurations moves the metric. Every swap and tune reaches at least one
 traded metric in both columns, and every traded metric is reached: the two swaps, the panel span
-and the battery reach all nine, Kp eight (not the total mass: the mass accounting has no gain in
-it) and Kd seven (not the total mass or the pointing error, whose closed form has Kp alone)
+and the battery reach all eight, Kp seven (not the total mass: the mass accounting has no gain in
+it) and Kd six (not the total mass or the pointing error, whose closed form has Kp alone)
 (`tests/test_model_coverage.py::test_no_decision_element_row_is_empty_structurally`,
 `test_no_decision_element_row_is_empty_empirically`,
 `test_the_gains_do_not_reach_the_mass_and_kd_does_not_reach_the_pointing_error`). Seven cells
@@ -229,15 +235,15 @@ figure checks after the data gate, never a target: no metric, threshold or const
 was chosen because it moves the heatmap, and the fit runs unchanged on whatever the model produces
 (`WP23-scope-of-work.md`, non-goals).
 
-What the fit returned on the data of record (the regenerated dataset of the data gate:
-`WP23-rounds/gate/k3_record.md`; `swap-evidence.md`, "Changed conclusions"). In the primary regime
-three metrics carry no exponent at any fit temperature of the sweep: the power margin, the eclipse
-reserve and the peak slew power; in the baseline regime the peak slew power alone, the same zero
-sets the round-1 data gave. The K = 1 contending set is a 5-lemma in both regimes: total mass
+What the fit returned on the data of record (the eight-metric regeneration of the WP23 close-out;
+`swap-evidence.md`, "WP23 close-out"). In the primary regime two metrics carry no exponent at any
+fit temperature of the sweep: the power margin and the peak slew power; in the baseline regime the
+peak slew power alone (the eclipse reserve, zero in the primary regime before, left the metric
+set). The K = 1 contending set is a 5-lemma in both regimes: total mass
 (0.358), energy balance, pointing error, depth of discharge and settling time in the primary regime;
 control effort (0.432), settling time, power margin, pointing error and depth of discharge in the
 baseline regime. At K = 3 the peak slew power leads a term in both regimes: 0.612 in the primary
-regime (the term of 363 of 706 designs) and 0.428 in the baseline regime (a 6-lemma of 184 of 780
+regime (the term of 363 of 706 designs) and 0.424 in the baseline regime (a 6-lemma of 185 of 780
 designs). The
 K = 1 fit is one monomial term, a hyperplane in log-metric space, and a metric carries weight
 only where it trades against the others at the frontier: the contending set is found from the
@@ -245,17 +251,13 @@ data (`docs/theory.md`, "Elasticities and the n-lemma"). Read that way, each zer
 the metric set rather than in the configuration space.
 <!-- vocab-exempt: power margin -->
 
-- The eclipse reserve is carried by the depth of discharge. Given the tracker grade, both are
-  monotone functions of the one battery capacity (the reserve is the allowed depth times the
-  capacity less the eclipse demand; the depth of discharge is the demand over the capacity), so
-  they are one quantity to the fit and cannot both contend; the fit gave the depth of discharge the
-  weight. The reserve binds on the data before the fit, as the `dod_ok` flag, and the two
-  requirements are the same inequality.
 - The power margin is carried by the energy balance. Both are affine in the generated power, which
   is proportional to the panel span: one is instantaneous at the slew's peak in sunlight, the other
   integrated over the orbit. Which of the pair carries the weight is the linear program's choice,
   and it changed between the regimes (the energy balance in the primary regime, the power margin in
-  the baseline regime), which is the sign of the collinearity.
+  the baseline regime). The case's association step (`case.association_all_pairs`) reads the pair
+  at Spearman 0.982 and 0.988 over the feasible designs, below the 0.99 at which it would name them
+  one axis and sum their exponents, so each is read on its own.
 - The peak slew power is a step function of the two swaps. With the peak torque at the wheel class's
   maximum it takes one value per wheel class and tracker grade, so it is flat inside each cell of the
   design space those swaps cut, and across the cells it orders the designs as the total mass does
@@ -265,9 +267,10 @@ the metric set rather than in the configuration space.
   draw trades against the settling time.
 <!-- vocab-exempt: power margin -->
 
-None of this is a change to the model, and none of it says whether the texture is good or bad; it
-says what the metric set contains: two pairs that are one quantity each and one metric that steps
-with the swaps.
+None of this says whether the texture is good or bad; it says what the metric set contains: one
+pair near one quantity and one metric that steps with the swaps. The pair that was one quantity,
+the eclipse reserve and the depth of discharge, was a modelling issue and left the model with the
+reserve (the WP23 close-out).
 
 ## Running an experiment and reading the ledger
 

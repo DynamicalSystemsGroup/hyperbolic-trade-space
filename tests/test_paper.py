@@ -824,6 +824,16 @@ def test_gaps_committed_output_is_current():
     assert _out_text(cell) == str(generate_gaps.gaps_table()), STALE
 
 
+def test_gaps_table_carries_no_unrendered_math():
+    """R-31 of the WP23 close-out: Appendix E's mathematics is the ``{math}`` role, which the staged
+    page typesets; no ``$...$`` pair is left in the table, and no pipe inside a role splits a
+    cell."""
+    text = str(generate_gaps.gaps_table())
+    assert not re.search(r"\$[^$]+\$", text)
+    roles = re.findall(r"\{math\}`([^`]*)`", text)
+    assert roles and not [r for r in roles if "|" in r]
+
+
 # -- F: the pinned toolchain is generated from the lock
 
 
@@ -2337,7 +2347,7 @@ def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_ap
     first = results.split("2.", 1)[0]
     assert "not the Pareto boundary" in first and "fitted reference surface" in first
     sentence = _cell_out(PAPER_NB, "num-nondominated")
-    assert "659 on 9" in sentence and "regenerations of the data under rounding-level" in sentence
+    assert "659 on 8" in sentence and "regenerations of the data under rounding-level" in sentence
 
 
 def test_cr8_the_k_comparison_says_the_temperature_differs_and_d15_fixes_it():

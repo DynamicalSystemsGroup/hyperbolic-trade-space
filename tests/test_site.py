@@ -63,7 +63,7 @@ BUDGETS = {
     "user-guide/termination.md": 600,
     "user-guide/limitations.md": 500,
     "api.md": 300,
-    "examples.md": 650,
+    "examples.md": 720,  # 650 until the WP23 close-out: its requirements read after the fit (70)
     "theory.md": 700,
     "further-reading.md": 300,
 }

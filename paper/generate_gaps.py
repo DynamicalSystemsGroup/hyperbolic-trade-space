@@ -46,8 +46,26 @@ def gap_rows(path=LEDGER) -> list[dict]:
     return rows
 
 
+MATH = re.compile(r"\$([^$]+)\$")
+
+
+def math_role(text: str) -> str:
+    r"""Inline ``$...$`` as the MyST ``{math}`` role, which a notebook's Markdown output typesets.
+
+    A pipe inside the mathematics (the ledger escapes it as ``\|`` for its own table) becomes
+    ``\vert``, so no pipe is left to split a cell of the pipe table.
+
+    >>> print(math_role(r"a $\|s\|<1$ b"))
+    a {math}`\vert s\vert <1` b
+    """
+    return MATH.sub(
+        lambda m: "{math}`" + m.group(1).replace("\\|", "\\vert ").replace("|", "\\vert ") + "`",
+        text,
+    )
+
+
 def gaps_table() -> Md:
-    """The table of Appendix E: one row per gap.
+    """The table of Appendix E: one row per gap, its mathematics typeset (:func:`math_role`).
 
     Returns
     -------
@@ -57,4 +75,5 @@ def gaps_table() -> Md:
     rows = gap_rows()
     cols = ("Formal object", "Bridging assumption", "What cannot be proved",
             "Sensitivity evidence", "Interpretive consequence")  # fmt: skip
-    return Md(md_table(["Gap", *cols], [[r["id"], *(r[c] for c in cols)] for r in rows]))
+    body = [[r["id"], *(math_role(r[c]) for c in cols)] for r in rows]
+    return Md(md_table(["Gap", *cols], body))

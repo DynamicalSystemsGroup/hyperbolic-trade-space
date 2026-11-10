@@ -1,7 +1,9 @@
 """WP10 D-4: the case module (``examples/adcs/case.py``) that the paper calls.
 
-Fast tests run each function on a small sample; the record tests run the frozen data and compare
-with ``docs/superpowers/notes/k3-cubesat.md`` and the paper's nondominated counts.
+Fast tests run each function on a small sample; the record tests run the data of record and compare
+with the K record that ``examples/adcs/k_terms.py`` prints (pinned below; the older note
+``docs/superpowers/notes/k3-cubesat.md``, ten metrics, left at the WP23 close-out and is in history
+at bf2a83c) and the paper's nondominated counts.
 """
 
 import doctest
@@ -19,6 +21,7 @@ import pytest
 pytestmark = pytest.mark.slow
 
 N = 150  # small sample: the first N feasible designs
+ADCS = Path(__file__).resolve().parents[1] / "examples" / "adcs"
 
 
 @pytest.fixture(scope="module")
@@ -287,7 +290,9 @@ def test_nondominated_counts_on_frozen_primary(primary):
     assert t.share.round(3).tolist() == [0.933, 0.178]
 
 
-# the record of k3-cubesat.md, as printed: tau, objective_, frac_above_, term rows, gamma, radius
+# the K record on the eight-metric data of record (the WP23 close-out), as k_terms.py prints it:
+# tau, objective_, frac_above_, term rows; then gamma and radius (the radius scales with the number
+# of metrics, so it moved when the eclipse reserve left; the stock K = 3 assignment moved by 3 rows)
 RECORD = {
     "primary": {
         1: (38.10, 0.2434, 0.092, [706]),
@@ -297,14 +302,14 @@ RECORD = {
     "stock": {
         1: (45.68, 0.1786, 0.104, [780]),
         2: (71.92, 0.1417, 0.100, [454, 326]),
-        3: (113.22, 0.0927, 0.094, [251, 184, 345]),
+        3: (113.22, 0.0927, 0.091, [253, 185, 342]),
     },
 }
 MARGIN = {
-    ("primary", 2): (0.000697, 0.000057), ("primary", 3): (0.001213, 0.000100),
-    ("stock", 2): (0.001413, 0.000120), ("stock", 3): (0.000091, 0.000008),
+    ("primary", 2): (0.0006969, 0.0000695), ("primary", 3): (0.0012124, 0.0001209),
+    ("stock", 2): (0.0014127, 0.0001327), ("stock", 3): (0.0003498, 0.0000329),
 }  # fmt: skip
-GAP_K1 = {"primary": 8.7e-6, "stock": 1.29e-5}
+GAP_K1 = {"primary": 8.7e-6, "stock": 1.24e-5}
 
 
 @pytest.mark.slow
@@ -568,3 +573,124 @@ def test_panel_titles_count_the_exact_maximum_support_and_outline_exactly_those(
 
     assert sum(isinstance(p, Rectangle) for p in ax.patches) == n  # the outlined members
     plt.close(fig)
+
+
+# ---- after the fit: associations, requirements, design sets (the WP23 close-out) --------------
+
+
+@pytest.mark.parametrize("regime", ["primary", "stock"])
+def test_association_step_covers_every_pair_and_names_the_one_axis_pairs(regime, request):
+    """R-25: 28 pairs of the eight traded metrics; the named set is the pairs at |Spearman| >= 0.99
+    (none on the data of record: the power margin and the energy balance stay below, 0.982 and
+    0.988), and the summed reading has nothing to sum."""
+    study = request.getfixturevalue(regime)
+    t = case.association_all_pairs(study)
+    assert len(t) == 28 and case.ONE_AXIS == 0.99
+    assert {frozenset(p) for p in zip(t["metric a"], t["metric b"], strict=True)} == {
+        frozenset((a, b)) for i, a in enumerate(study.names) for b in study.names[i + 1 :]
+    }
+    named = case.one_axis_pairs(t)
+    assert named == [
+        (a, b) for a, b, s in zip(t["metric a"], t["metric b"], t["spearman"], strict=True)
+        if abs(s) >= 0.99
+    ]  # fmt: skip
+    assert named == []
+    top = t.iloc[0]
+    assert {top["metric a"], top["metric b"]} == {"power margin", "energy balance"}
+    assert 0.98 < top["spearman"] < 0.99
+    assert case.summed_exponents(study, case.fit_study(study), named).empty
+
+
+def test_requirements_are_the_models_budgets():
+    """The case's four thresholds are the literals of the model's part ``budgets``."""
+    import re
+
+    text = (ADCS / "model_v2" / "cubesat.sysml").read_text()
+    lit = {
+        name: float(v)
+        for name, v in re.findall(r"attribute (\w+Limit|launchBudget) : \w+ = ([\d.]+)", text)
+    }
+    rate = float(re.search(r"launchRate : Real = ([\d.]+)", text).group(1))
+    req = {a: lim for a, (lim, _) in case.CUBESAT.requirements.items()}
+    assert req == {
+        "peak_slew_power_w": lit["peakSlewPowerLimit"],
+        "pointing_error_deg": lit["pointingErrorLimit"],
+        "control_effort": lit["controlEffortLimit"],
+        "total_mass_kg": lit["launchBudget"] / rate,
+    }
+
+
+def test_requirements_table_prices_each_requirement_as_spike_b(primary, primary_fits, stock,
+                                                                stock_fits):  # fmt: skip
+    """R-26: the pass fractions, the near-frontier designs excluded and the prices of spike B
+    (`WP23-rounds/spikes/spike-B-requirements-and-the-fit.md`, sections 1 and 2)."""
+    p = case.requirements_table(primary, primary_fits[1]).set_index("requirement")
+    s = case.requirements_table(stock, stock_fits[1]).set_index("requirement")
+    assert p["pass (feasible)"].round(3).tolist() == [0.622, 0.950, 0.589, 0.949, 0.408]
+    assert s["pass (feasible)"].round(3).tolist() == [0.673, 0.637, 0.900, 0.956, 0.387]
+    assert p["near-frontier excluded"].tolist() == ["0 of 56", "1 of 56", "18 of 56", "0 of 56",
+                                                    "19 of 56"]  # fmt: skip
+    assert s["near-frontier excluded"].tolist() == ["2 of 77", "42 of 77", "1 of 77", "1 of 77",
+                                                    "43 of 77"]  # fmt: skip
+    assert p.loc["pointing error", "price (log V)"] == pytest.approx(0.0019, abs=1e-4)
+    assert s.loc["pointing error", "price (bands)"] == pytest.approx(0.56, abs=0.01)
+    assert s.loc["control effort", "price (bands)"] == pytest.approx(7.9, abs=0.05)
+    assert p.loc["control effort", "price (log V)"] == 0.0  # zero exponent: no price at K = 1
+    assert s.loc["control effort", "largest elasticities"] == (
+        "power margin +1.40; settling time -1.36"
+    )
+
+
+@pytest.mark.slow
+def test_design_sets_share_the_feasible_conditioning():
+    """R-27, OD10 (a): three sets per regime in the feasible set's conditioning; sizes; the
+    one-term contending set of the constrained set against the feasible set's."""
+    sets = {r: case.design_sets(r) for r in case.CUBESAT.regimes}
+    t = case.design_sets_table(sets=sets).set_index(["regime", "set"])
+    assert t["designs"].tolist() == [1000, 706, 288, 1000, 780, 302]
+    for by_set in sets.values():
+        conds = {id(st.conditioner) for st, _ in by_set.values()}
+        assert len(conds) == 1  # one conditioning for every set
+    feasible = t.loc[("primary", "feasible"), "contending set"]
+    assert t.loc[("primary", "requirements met"), "contending set"] == feasible
+    place = case.design_sets_placement(sets=sets)
+    assert len(place) == 14 and set(place["design"]) >= {"baseline configuration", "proposal_2"}
+    base = place[place.design == "baseline configuration"]
+    assert not base["meets the requirements"].any()  # it fails the pointing-error requirement
+
+
+@pytest.mark.slow
+def test_the_baseline_configuration_is_the_oracles():
+    """The case's record of the baseline configuration is what the v2 oracle measures."""
+    from experiments import cubesat_oracle as co
+
+    text = (ADCS / "model_v2" / "cubesat.sysml").read_text()
+    oracle = co.CubesatOracle(text, "nominalSlew", "baseline", workers=1)
+    base = case.CUBESAT.baseline_configuration
+    got = oracle({k: base[k] for k in co.CONFIG_NAMES})
+    for k in (*co.ATTRIBUTE_NAMES, *co.FLAG_NAMES):
+        assert got[k] == pytest.approx(base[k], rel=1e-6), k
+
+
+def _docs_block(first_line):
+    text = (ADCS.parents[1] / "docs" / "examples.md").read_text()
+    start = text.index("```text\n" + first_line + "\n") + len("```text\n" + first_line + "\n")
+    return text[start : text.index("```", start)].rstrip("\n")
+
+
+DOCS_LABELS = {"primary": "aggressive", "stock": "stock"}
+
+
+def test_the_docs_requirements_block_is_the_case_modules():
+    """The docs' case page prints ``requirements_summary`` (R-26), generated, not typed."""
+    assert _docs_block("# case.requirements_summary()") == case.requirements_summary(
+        labels=DOCS_LABELS
+    )
+
+
+@pytest.mark.slow
+def test_the_docs_design_sets_block_is_the_case_modules():
+    """The docs' case page prints ``design_sets_summary`` (R-27), generated, not typed."""
+    assert _docs_block("# case.design_sets_summary()") == case.design_sets_summary(
+        labels=DOCS_LABELS
+    )

@@ -103,6 +103,8 @@ class CaseSpec:
     seed: int = 0
     subsystems: dict = field(default_factory=dict)
     subsystem_order: tuple = ()
+    requirements: dict = field(default_factory=dict)
+    baseline_configuration: dict = field(default_factory=dict)
 
     @property
     def names(self):
@@ -182,6 +184,37 @@ CUBESAT = CaseSpec(
     predictions_file="check_predictions_cubesat.csv",
     subsystems=dict(zip(_ATTRS, _SUBSYSTEMS, strict=True)),
     subsystem_order=("controls", "power and energy", "mass"),
+    # the model's four threshold requirements (cubesat.sysml, part budgets; the supervisor's values,
+    # WP23-decisions.md, "The four thresholds"), each read as attribute <= limit; the launch budget
+    # 90,643 USD is the total mass at the model's illustrative 6,000 USD/kg
+    requirements={
+        "peak_slew_power_w": (2.6, "W"),
+        "pointing_error_deg": (0.008495, "degree"),
+        "control_effort": (0.05922, "N.m.s"),
+        "total_mass_kg": (90643.0 / 6000.0, "kg"),
+    },
+    # the model's baseline configuration (cubesatBaseline: 0.6 m, 80 Wh, medium wheels, medium
+    # tracker, Kp 0.03, Kd 0.3) as the v2 oracle measures it in the baseline gain box
+    baseline_configuration={
+        "panel_span_m": 0.6,
+        "battery_wh": 80.0,
+        "wheel_class": "medium",
+        "st_grade": "medium",
+        "Kp": 0.03,
+        "Kd": 0.3,
+        "settling_time_s": 180.24208428988604,
+        "pointing_error_deg": 0.015534921289205101,
+        "total_mass_kg": 13.29142857142857,
+        "control_effort": 0.009490621914197469,
+        "power_margin_w": 34.9764016,
+        "energy_balance_wh": 24.945381826675046,
+        "peak_slew_power_w": 2.0,
+        "dod_eclipse": 0.10350133786988198,
+        "settled": True,
+        "momentum_ok": True,
+        "power_ok": True,
+        "dod_ok": True,
+    },
     ranges={
         "panel_span_m": (0.3, 1.0),
         "battery_wh": (20.0, 200.0),
@@ -1006,6 +1039,356 @@ def association_table(study, fit, pairs=None):
         rows.append({"metric a": a, "metric b": b, "pearson": float(rep.association[i, j]),
                      "spearman": float(rep_s.association[i, j])})  # fmt: skip
     return pd.DataFrame(rows)
+
+
+# ---- after the fit: every pair's association, the requirements, the design sets (WP23 close-out)
+ONE_AXIS = 0.99
+"""|Spearman| at or above which two traded metrics are read as one axis (the redundancy rule of
+``WP23-rounds/spike-redundancy.md``, option B1): the pair's exponents are then summed per term."""
+REQUIREMENT_TOL = 1e-9
+"""Absolute slack of a requirement read as ``attribute <= limit`` (the limits' float round trip)."""
+CO_CONTENDER = 0.05
+"""Smallest exponent of a metric that :func:`requirements_table` prices against (as spike B did):
+below it the elasticity, a ratio of exponents, is large and says little."""
+
+
+def association_all_pairs(study):
+    """The association of every pair of traded metrics over the feasible designs.
+
+    Spearman and Pearson of the conditioned log metrics (larger is better, so a positive value
+    means the two improve together) over all the study's designs, not only the near-frontier ones.
+    A pair at ``|Spearman| >= ONE_AXIS`` is named one axis: the data cannot tell the two apart, and
+    the exponent reading sums the pair per term (:func:`summed_exponents`).
+
+    Parameters
+    ----------
+    study : Study
+
+    Returns
+    -------
+    pandas.DataFrame
+        One row per pair (``d (d - 1) / 2`` rows), columns ``metric a``, ``metric b``,
+        ``spearman``, ``pearson``, ``one axis``; strongest first.
+    """
+    U = np.log(study.M)
+    rho = pd.DataFrame(U).rank().corr().to_numpy()
+    r = np.corrcoef(U.T)
+    names, rows = study.names, []
+    for i in range(len(names)):
+        for j in range(i + 1, len(names)):
+            rows.append({"metric a": names[i], "metric b": names[j],
+                         "spearman": float(rho[i, j]), "pearson": float(r[i, j]),
+                         "one axis": bool(abs(rho[i, j]) >= ONE_AXIS)})  # fmt: skip
+    out = pd.DataFrame(rows)
+    order = np.argsort(-out["spearman"].abs().to_numpy(), kind="stable")
+    return out.iloc[order].reset_index(drop=True)
+
+
+def one_axis_pairs(table):
+    """The pairs an :func:`association_all_pairs` table names one axis, as ``(a, b)`` tuples."""
+    named = table[table["one axis"]]
+    return list(zip(named["metric a"], named["metric b"], strict=True))
+
+
+def summed_exponents(study, fit, pairs):
+    """The exponent reading of named one-axis pairs: each pair's exponents summed per term.
+
+    Parameters
+    ----------
+    study : Study
+    fit : Fit
+    pairs : sequence of (str, str)
+        Usually :func:`one_axis_pairs`; empty when no pair is named.
+
+    Returns
+    -------
+    pandas.DataFrame
+        One row per pair and term: ``pair``, ``term``, ``exponent a``, ``exponent b``, ``sum``.
+        Empty (with those columns) when ``pairs`` is empty.
+    """
+    W = np.atleast_2d(fit.estimator.exponents_)
+    rows = []
+    for a, b in pairs:
+        i, j = study.names.index(a), study.names.index(b)
+        for k, w in enumerate(W):
+            rows.append({"pair": f"{a} + {b}", "term": k + 1, "exponent a": float(w[i]),
+                         "exponent b": float(w[j]), "sum": float(w[i] + w[j])})  # fmt: skip
+    return pd.DataFrame(rows, columns=["pair", "term", "exponent a", "exponent b", "sum"])
+
+
+def requirement_mask(df, spec=CUBESAT, only=None):
+    """Rows of ``df`` that meet the case's threshold requirements (each ``attribute <= limit``).
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+    spec : CaseSpec
+    only : str, optional
+        One attribute of ``spec.requirements``; default all of them jointly.
+    """
+    ok = pd.Series(True, index=df.index)
+    for a, (limit, _) in spec.requirements.items():
+        if only is None or a == only:
+            ok &= df[a] <= limit + REQUIREMENT_TOL
+    return ok
+
+
+def requirements_table(study, fit):
+    """Each threshold requirement read after the fit, at the fitted K = 1 frontier.
+
+    The fit is the fit of record (on the feasible designs, no requirement imposed before it). Per
+    requirement: its limit, the share of the feasible designs that pass it, how many of the
+    near-frontier designs (``|log V| < 1/tau``) it excludes, the metric's K = 1 exponent ``w_i``,
+    the price of meeting it at the frontier and the two largest elasticities. The price is
+    ``w_i * t / s_i`` in log V for the median excluded near-frontier design, ``t`` the log of its
+    value over the limit and ``s_i`` the metric's log scale in the conditioning, stated also in
+    band widths. The elasticity of attribute ``k`` along the surface is
+    ``-(w_i o_i / s_i) / (w_k o_k / s_k)`` (``o`` the orientation): the percent change in ``k``
+    per percent change in ``i`` with the level held, read for the metrics ``k`` with ``w_k`` at
+    least :data:`CO_CONTENDER`; a metric at zero exponent has no price and no elasticity at
+    K = 1. The last row reads the requirements jointly.
+
+    Parameters
+    ----------
+    study : Study
+        The feasible designs of one regime (:func:`load_study`).
+    fit : Fit
+        Its K = 1 fit.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Columns ``requirement``, ``limit``, ``pass (feasible)``, ``near-frontier excluded``,
+        ``K = 1 exponent``, ``price (log V)``, ``price (bands)``, ``largest elasticities``.
+    """
+    spec, feas, names = study.spec, study.feasible, study.names
+    pre = study.preconditioner
+    o, s = np.asarray(pre.orientation_, float), np.asarray(pre.log_scale_, float)
+    w = np.atleast_2d(fit.estimator.exponents_)[0]
+    near = np.abs(fit.estimator.score_samples(study.M)) < fit.band
+    n_near, rows = int(near.sum()), []
+    for a, (limit, unit) in spec.requirements.items():
+        i = list(study.attrs).index(a)
+        ok = requirement_mask(feas, spec, only=a).to_numpy()
+        excl = near & ~ok
+        row = {"requirement": spec.short[a], "limit": f"{limit:.5g} {unit}",
+               "pass (feasible)": float(ok.mean()),
+               "near-frontier excluded": f"{int(excl.sum())} of {n_near}",
+               "K = 1 exponent": float(w[i])}  # fmt: skip
+        if w[i] <= EXPONENT_FLOOR or not excl.any():
+            row |= {"price (log V)": 0.0, "price (bands)": 0.0,
+                    "largest elasticities": "none at K = 1 (exponent 0)" if w[i] <= EXPONENT_FLOOR
+                    else "none excluded"}  # fmt: skip
+        else:
+            t = float(np.median(np.log(feas.loc[excl, a].to_numpy() / limit)))
+            price = float(w[i] * t / s[i])
+            el = {names[k]: -(w[i] * o[i] / s[i]) / (w[k] * o[k] / s[k])
+                  for k in range(len(w)) if k != i and w[k] >= CO_CONTENDER}  # fmt: skip
+            top = sorted(el.items(), key=lambda kv: -abs(kv[1]))[:2]
+            row |= {"price (log V)": price, "price (bands)": price / fit.band,
+                    "largest elasticities": "; ".join(f"{n} {v:+.2f}" for n, v in top)}  # fmt: skip
+        rows.append(row)
+    ok = requirement_mask(feas, spec).to_numpy()
+    rows.append({"requirement": "all jointly", "limit": "", "pass (feasible)": float(ok.mean()),
+                 "near-frontier excluded": f"{int((near & ~ok).sum())} of {n_near}",
+                 "K = 1 exponent": np.nan, "price (log V)": np.nan, "price (bands)": np.nan,
+                 "largest elasticities": ""})  # fmt: skip
+    return pd.DataFrame(rows)
+
+
+DESIGN_SETS = ("all designs", "feasible", "requirements met")
+"""The three design sets of :func:`design_sets_table`: every design, the feasible ones (the fit of
+record) and the feasible ones that also meet the threshold requirements (the constrained set)."""
+
+
+def _set_studies(regime, spec=CUBESAT):
+    """The three design sets of a regime, each conditioned by the feasible set's conditioner.
+
+    One conditioning for every set (``WP23-decisions.md``, OD10 (a)): the comparison is made in
+    the coordinates of the fit of record, so a difference between the sets' fits is the rows',
+    not a re-scaling's.
+    """
+    base = load_study(regime, spec)
+    cond = base.conditioner
+    cols = [f"metrics__{a}" for a in base.attrs]
+    rows = {
+        "all designs": base.raw,
+        "feasible": base.feasible,
+        "requirements met": base.feasible[requirement_mask(base.feasible, spec)],
+    }
+    out = {}
+    for name, df in rows.items():
+        df = df.reset_index(drop=True)
+        M = cond.transform(df)[cols].to_numpy()
+        out[name] = Study(spec, regime, base.raw, df, base.attrs, M, cond)
+    return out
+
+
+def _zero_set(study, taus=None):
+    """Metrics at zero exponent (at most ``EXPONENT_FLOOR``) at every temperature of the sweep."""
+    hts, _, _ = _lib()
+    taus = [*np.geomspace(*study.spec.tau_bounds, 12), np.inf] if taus is None else taus
+    W = np.array([hts.HyperbolicTradeSpace(temperature=t, random_state=study.spec.seed)
+                  .fit(study.M).exponents_[0] for t in taus])  # fmt: skip
+    return [study.names[j] for j in range(W.shape[1]) if (W[:, j] <= EXPONENT_FLOOR).all()]
+
+
+def design_sets(regime, spec=CUBESAT):
+    """The three design sets of a regime with their K = 1 and K = 3 fits.
+
+    The conditioning is the feasible set's for every set (OD10 (a)); the temperature rule
+    (``spec.target_frac`` above V = 1) is the same rule for every set and selects each set's
+    temperature on its own rows.
+
+    Returns
+    -------
+    dict of str to (Study, dict of int to Fit)
+    """
+    return {name: (st, {K: fit_study(st, K) for K in (1, 3)})
+            for name, st in _set_studies(regime, spec).items()}  # fmt: skip
+
+
+def design_sets_table(spec=CUBESAT, sets=None):
+    """Constrained against unconstrained: the fit on each design set, per regime.
+
+    Parameters
+    ----------
+    spec : CaseSpec
+    sets : dict, optional
+        ``{regime: design_sets(regime)}``, to reuse fits; computed when omitted.
+
+    Returns
+    -------
+    pandas.DataFrame
+        One row per regime and set: ``designs``, ``tau``, the one-term ``contending set`` and
+        ``leading exponents``, the ``zero set`` (zero exponent at every temperature of the sweep),
+        and the three-term fit's terms (largest two exponents of each, with its share).
+    """
+    _, k_terms, _ = _lib()
+    sets = sets or {r: design_sets(r, spec) for r in spec.regimes}
+    rows = []
+    for regime, by_set in sets.items():
+        for name, (st, fits) in by_set.items():
+            f1, f3 = fits[1], fits[3]
+            rep = _all_terms(st, f1)[0]
+            W3 = np.atleast_2d(f3.estimator.exponents_)
+            terms = " | ".join(
+                f"{k_terms.top(st.names, W3[k], 2)} ({f3.estimator.term_share_[k]:.2f})"
+                for k in range(len(W3))
+            )
+            w1 = np.ravel(f1.estimator.exponents_)
+            rows.append({"regime": regime, "set": name, "designs": len(st.M), "tau": f1.tau,
+                         "contending set": ", ".join(_sorted_contending(rep, st.names)),
+                         "leading exponents": k_terms.top(st.names, w1, 3),
+                         "zero set": ", ".join(_zero_set(st)) or "none",
+                         "three terms (share)": terms})  # fmt: skip
+    return pd.DataFrame(rows)
+
+
+def design_sets_placement(spec=CUBESAT, sets=None):
+    """Where the baseline configuration and the check designs sit in each set's K = 1 fit.
+
+    Each design is conditioned by the feasible set's conditioner (OD10 (a)) and scored by each
+    set's fit: its log V, the same in band widths of that fit, and the share of the set's own
+    designs below it.
+
+    Parameters
+    ----------
+    spec : CaseSpec
+    sets : dict, optional
+        As for :func:`design_sets_table`.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Columns ``regime``, ``design``, ``passes the flags``, ``meets the requirements``, then per
+        set ``fit on <set>``: ``log V (bands, share below)``.
+    """
+    sets = sets or {r: design_sets(r, spec) for r in spec.regimes}
+    designs = [{"name": "baseline configuration", **spec.baseline_configuration}]
+    if spec.checks_file:
+        checks = pd.read_csv(Path(spec.data_dir) / spec.checks_file)
+        designs += checks.to_dict("records")
+    rows = []
+    for regime, by_set in sets.items():
+        cond = next(iter(by_set.values()))[0].conditioner
+        cols = [f"metrics__{a}" for a in spec.attributes]
+        for d in designs:
+            df = pd.DataFrame([d])
+            for c in (*spec.covariates, *spec.design_vars):
+                if c not in df:
+                    df[c] = spec.covariates[c][0] if c in spec.covariates else 0.0
+            M = cond.transform(df)[cols].to_numpy()
+            flags = all(bool(d.get(f, True)) for f in spec.flags)
+            row = {"regime": regime, "design": d["name"], "passes the flags": flags,
+                   "meets the requirements": bool(requirement_mask(df, spec).iloc[0])}  # fmt: skip
+            for name, (_, fits) in by_set.items():
+                e = fits[1].estimator
+                lv = float(e.score_samples(M)[0])
+                below = float((e.training_log_v_ < lv).mean())
+                row[f"fit on {name}"] = f"{lv:+.3f} ({lv * fits[1].tau:+.1f}, {below:.2f})"
+            rows.append(row)
+    return pd.DataFrame(rows)
+
+
+def requirements_summary(spec=CUBESAT, labels=None):
+    """:func:`requirements_table` of every regime as plain text lines of at most 72 characters.
+
+    One line per requirement: the pass fractions, the near-frontier designs excluded and the
+    price in band widths, regimes side by side (``a | b``), at the docs' precision.
+
+    Parameters
+    ----------
+    spec : CaseSpec
+    labels : dict, optional
+        Regime names to print; default the regime keys.
+
+    Returns
+    -------
+    str
+    """
+    labels = labels or {r: r for r in spec.regimes}
+    tables = []
+    for r in spec.regimes:
+        st = load_study(r, spec)
+        tables.append(requirements_table(st, fit_study(st)))
+    price = lambda x: "0" if abs(x) < 5e-3 else f"{x:.2f}"  # noqa: E731
+    head = " | ".join(labels[r] for r in spec.regimes)
+    lines = [f"{'requirement':<17}{'pass':<17}{'near excluded':<16}price, bands", f"({head})"]
+    for rows in zip(*(t.itertuples(index=False) for t in tables), strict=True):
+        name = rows[0][0]
+        share = " | ".join(f"{100 * x[2]:.1f}" for x in rows) + " %"
+        near = " | ".join(x[3].replace(" of ", "/") for x in rows)
+        cost = "" if np.isnan(rows[0][5]) else " | ".join(price(x[6]) for x in rows)
+        lines.append(f"{name:<17}{share:<17}{near:<16}{cost}".rstrip())
+    return "\n".join(lines)
+
+
+def design_sets_summary(spec=CUBESAT, labels=None, sets=None):
+    """:func:`design_sets_table`'s sizes and one-term contending sets as text of at most 72
+    characters a line.
+
+    Parameters
+    ----------
+    spec : CaseSpec
+    labels : dict, optional
+        Regime names to print; default the regime keys.
+    sets : dict, optional
+        As for :func:`design_sets_table`.
+
+    Returns
+    -------
+    str
+    """
+    import textwrap
+
+    labels = labels or {r: r for r in spec.regimes}
+    t = design_sets_table(spec, sets)
+    out = []
+    for row in t.itertuples(index=False):
+        text = f"{labels[row.regime]}, {row.set} ({row.designs}): {row[4]}"
+        out += textwrap.wrap(text, 72, subsequent_indent="  ")
+    return "\n".join(out)
 
 
 def regime_comparison(spec=CUBESAT, n_max=None):

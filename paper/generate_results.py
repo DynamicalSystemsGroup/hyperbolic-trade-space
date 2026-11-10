@@ -13,7 +13,7 @@ from functools import cache
 
 import case
 import numpy as np
-from generate_model import DATASET_LABELS, PLANTED, planted_table
+from generate_model import DATASET_LABELS, PLANTED, _associations, _one_axis_sentence, planted_table
 from paper_common import Md, frame_table, md_table
 from paper_stability import residue_bound, stable, stable_frame, summary
 from paper_terms import aligned
@@ -112,8 +112,9 @@ def exponents_and_terms() -> Md:
             + f"\n\n{_cite(r)}, K = 3, per term:\n\n"
             + frame_table(_terms(r, ft3))
             + _thin_terms(ft3)
+            + _summed_text(r, _fits(r))
         )  # fmt: skip
-    return Md("\n\n".join(parts))
+    return Md("\n\n".join(parts) + "\n\n" + _one_axis_sentence())
 
 
 def _thin_terms(ft) -> str:
@@ -144,7 +145,7 @@ def regime_comparison() -> Md:
     table = regime_table()
     # The dataset file names and sizes are Appendix C's; this table keeps what the method found.
     table = table[~table["quantity"].isin(["dataset", "feasible n"])]
-    return Md(f"Datasets {cites}:\n\n" + frame_table(table))
+    return Md(f"Datasets {cites}:\n\n" + frame_table(table) + "\n\n" + _one_axis_sentence())
 
 
 def termination_records() -> Md:
@@ -710,3 +711,74 @@ def pca_chain() -> Md:
         + md_table(["Direction", "Share of the spread of the chart coordinates",
                     "Leading loadings on the metrics"], rows)
     )  # fmt: skip
+
+
+# ---- the WP23 close-out: associations of every pair, the requirements, the design sets ----------
+def _summed_text(regime, fits) -> str:
+    """The summed exponent reading of the named pairs, or nothing when none is named."""
+    pairs = case.one_axis_pairs(_associations(regime))
+    if not pairs:
+        return ""
+    s = _study(regime)
+    parts = [frame_table(case.summed_exponents(s, fits[K], pairs), floatfmt=".3f") for K in (1, 3)]
+    return f"\n\n{_cite(regime)}, named pairs summed per term (K = 1, K = 3):\n\n" + "\n\n".join(
+        parts
+    )
+
+
+def requirements_at_the_frontier() -> Md:
+    """The four threshold requirements read after the fit of record, per dataset.
+
+    Returns
+    -------
+    Md
+        ``case.requirements_table`` on the K = 1 fit of each dataset: the limit, the share of the
+        feasible designs that pass it, the near-frontier designs it excludes, the exponent, the
+        price at the frontier (log V and band widths) and the two largest elasticities; a last row
+        reads the four jointly.
+    """
+    parts = []
+    for r, s in _studies().items():
+        t = case.requirements_table(s, _fits(r)[1]).copy()
+        t["pass (feasible)"] = [f"{100 * x:.1f} %" for x in t["pass (feasible)"]]
+        for col, fmt in (("K = 1 exponent", ".3f"), ("price (log V)", ".4f"),
+                         ("price (bands)", ".2f")):  # fmt: skip
+            t[col] = ["" if np.isnan(x) else format(0.0 if abs(x) < 5e-5 else x, fmt)
+                      for x in t[col]]  # fmt: skip
+        parts.append(f"{_cite(r)}:\n\n" + frame_table(t))
+    return Md("\n\n".join(parts))
+
+
+@cache
+def _design_sets():
+    return {r: case.design_sets(r) for r in case.CUBESAT.regimes}
+
+
+def design_sets_comparison() -> Md:
+    """Constrained against unconstrained: the fit on all designs, the feasible ones, and the
+    feasible ones that meet the four requirements, per dataset, in one conditioning.
+
+    Returns
+    -------
+    Md
+        ``case.design_sets_table`` (size, temperature, the one-term contending set and leading
+        exponents, the zero set, the three terms with their shares) and
+        ``case.design_sets_placement`` (the baseline configuration and the check designs scored
+        by each set's one-term fit: log V, in band widths, and the share of the set's designs
+        below it).
+    """
+    sets = _design_sets()
+    fits_t = case.design_sets_table(sets=sets).copy()
+    fits_t["regime"] = [DATASET_LABELS[r] for r in fits_t["regime"]]
+    fits_t["tau"] = [f"{x:.1f}" for x in fits_t["tau"]]
+    fits_t = fits_t.rename(columns={"regime": "dataset"})
+    place = case.design_sets_placement(sets=sets).copy()
+    place["regime"] = [DATASET_LABELS[r] for r in place["regime"]]
+    place = place.rename(columns={"regime": "dataset"})
+    cites = ", ".join(DATASET_LABELS[r] for r in case.CUBESAT.regimes)
+    return Md(
+        f"Datasets {cites}. The fit on each design set:\n\n"
+        + frame_table(fits_t)
+        + "\n\nThe baseline configuration and the check designs in each set's one-term fit, "
+        "log V (in band widths, share of the set's designs below):\n\n" + frame_table(place)
+    )

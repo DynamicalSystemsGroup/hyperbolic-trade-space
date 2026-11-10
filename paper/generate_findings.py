@@ -299,8 +299,9 @@ def predict_reading(table, reg) -> Md:
 
     Reads the same table as :func:`predict_check_sentence`, and the recorded predictions and the
     measured check designs of the spec for what the proposals are: how many distinct
-    configurations, and how many meet the model's depth-of-discharge requirement (``dod_ok``),
-    which the proposer's training rows (the spec's feasibility flags) do not filter on.
+    configurations, how many meet the model's depth-of-discharge requirement (``dod_ok``), their
+    batteries and depths of discharge, and where they sit on the four-metric view (spike A of the
+    WP23 close-out: they reached that frontier by spending the battery).
     """
     import pandas as pd
 
@@ -311,7 +312,8 @@ def predict_reading(table, reg) -> Md:
     preds = pd.read_csv(spec.data_dir / spec.predictions_file)
     configs = len(preds[list(spec.design_vars) + list(spec.covariates)].drop_duplicates())
     checks = pd.read_csv(spec.data_dir / spec.checks_file)
-    dod = int(checks.loc[checks["role"] == "proposal", "dod_ok"].sum())
+    props = checks[checks["role"] == "proposal"]
+    dod = int(props["dod_ok"].sum())
     k = n - configs + 1
     words = lambda v: _NUMBER_WORDS.get(v, v)  # noqa: E731
     same = (
@@ -320,10 +322,21 @@ def predict_reading(table, reg) -> Md:
         else ""
     )
     designs = f" of {words(configs)} designs" if configs < n else ""
+    band = float((table["difference"] / table["|diff| / band"]).iloc[0])
+    lo, hi = spec.ranges["battery_wh"]
+    far = float(table["measured log V"].abs().max())
+    where = "inside" if far < band else "against"
+    joined = lambda xs, f: " and ".join(f.format(x) for x in sorted(set(xs)))  # noqa: E731
     fail = (
-        f" {'All' if dod == 0 else f'{n - dod} of the'} {n} fail the model's depth-of-discharge "
-        "requirement: the proposer trains on the designs that settle, stay within the momentum "
-        "budget and keep positive power, and its chart has no depth-of-discharge axis."
+        " They reached the four-metric frontier they were aimed at by spending the battery: "
+        f"their measured log V is within {far:.3f} of V = 1, {where} the band {band:.3f}; "
+        "their batteries are "
+        f"{joined(props['battery_wh'].round(0), '{:.0f}')} Wh, at the bottom of the {lo:g} to "
+        f"{hi:g} Wh range, and {'all' if dod == 0 else f'{n - dod} of the'} {n} fail the model's "
+        "depth-of-discharge requirement (depth of discharge "
+        f"{joined(props['dod_eclipse'].round(2), '{:.2f}')}). The proposer's chart is the "
+        "four-metric view, which has no depth-of-discharge axis; a proposer that also predicts "
+        "the feasibility flags, and proposes only designs predicted to meet them, is future work."
         if dod < n
         else ""
     )

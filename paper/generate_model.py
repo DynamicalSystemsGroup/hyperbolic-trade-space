@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from functools import cache
 
 import case
 import numpy as np
@@ -276,3 +277,63 @@ def planted_example() -> Md:
         [[f"term {k + 1}", *w] for k, w in enumerate(p["exponents"])],
     )
     return Md(f"Dataset {_label('planted')}:\n\n" + settings + "\n\n" + terms)
+
+
+@cache
+def _associations(regime):
+    return case.association_all_pairs(case.load_study(regime))
+
+
+def _one_axis_sentence() -> str:
+    """The association step's outcome in one sentence, from the data (C.5, D.3, D.4)."""
+    named = {r: case.one_axis_pairs(_associations(r)) for r in case.CUBESAT.regimes}
+    strongest = {r: _associations(r).iloc[0] for r in case.CUBESAT.regimes}
+    tops = "; ".join(
+        f"Dataset {DATASET_LABELS[r]}: {s['metric a']} and {s['metric b']}, {s['spearman']:+.3f}"
+        for r, s in strongest.items()
+    )
+    if not any(named.values()):
+        return (
+            f"No pair of traded metrics reaches |Spearman| {case.ONE_AXIS:g} over the feasible "
+            f"designs, so no pair is read as one axis and every exponent is read on its own; the "
+            f"strongest pair, {tops}. A pair at or above {case.ONE_AXIS:g} would be named one axis "
+            "and its two exponents read summed per term."
+        )
+    pairs = "; ".join(
+        f"Dataset {DATASET_LABELS[r]}: " + ", ".join(f"{a} and {b}" for a, b in p)
+        for r, p in named.items()
+        if p
+    )
+    return (
+        f"Pairs at |Spearman| {case.ONE_AXIS:g} or above, read as one axis with their two "
+        f"exponents summed per term: {pairs}."
+    )
+
+
+def metric_associations() -> Md:
+    """Every pair of traded metrics over the feasible designs, both datasets side by side.
+
+    Returns
+    -------
+    Md
+        The association step of the case analysis (``case.association_all_pairs``): Spearman and
+        Pearson of the conditioned log metrics, pairs at ``|Spearman| >= case.ONE_AXIS`` named
+        one axis; then the outcome in one sentence.
+    """
+    regimes = list(case.CUBESAT.regimes)
+    tables = {r: _associations(r).set_index(["metric a", "metric b"]) for r in regimes}
+    first = tables[regimes[0]]
+    rows = []
+    for a, b in first.index:
+        row = [a, b]
+        for r in regimes:
+            x = tables[r].loc[(a, b)]
+            row += [f"{x['spearman']:+.3f}", f"{x['pearson']:+.3f}"]
+        named = [DATASET_LABELS[r] for r in regimes if tables[r].loc[(a, b), "one axis"]]
+        row.append(", ".join(named) or "no")
+        rows.append(row)
+    headers = ["metric a", "metric b"]
+    for r in regimes:
+        headers += [f"Spearman, {DATASET_LABELS[r]}", f"Pearson, {DATASET_LABELS[r]}"]
+    headers.append("one axis")
+    return Md(md_table(headers, rows) + "\n\n" + _one_axis_sentence())

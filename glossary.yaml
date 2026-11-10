@@ -548,7 +548,7 @@ entries:
 
   - id: 'mop'
     term: 'MoP'
-    short: 'Measure of performance: a measure of a system''s performance under the scenario the engineer states; here the settling time, the total mass, the control effort, the power margin, the energy balance, the eclipse reserve, the peak slew power, the depth of discharge.'
+    short: 'Measure of performance: a measure of a system''s performance under the scenario the engineer states; here the settling time, the total mass, the control effort, the power margin, the energy balance, the peak slew power, the depth of discharge.'
     register: 'MoP'
     formal: 'a metric of the system''s performance under a stated scenario'
     not: 'an MoE, which a stakeholder states without knowing the design'

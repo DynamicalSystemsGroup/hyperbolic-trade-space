@@ -617,3 +617,27 @@ section = "Methods"
 words_added = 2
 job = "names the several-term fit as what alternates the weights, where a word swap would say that several terms alternate (WP24 push 3)"
 reader = "the reader who must not take a term for a step of the algorithm"
+
+# Rows of the WP23 close-out (WP23-closeout-scope-of-work.md, D-18; the supervisor's "a sentence or
+# two in the dicussion suffices" and "Keep 0.0085 deg", WP23-decisions.md).
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 67
+job = "states the model's four threshold requirements and, plainly, that the baseline configuration fails the pointing-error requirement with the share of designs that pass it, and says where the requirements are read after the fit (Appendix D.17); the figure caption counts eight metrics"
+reader = "the systems engineer who reads the model's requirements and the trade-study practitioner"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 4
+job = "the check section says plainly that the proposals fail the depth-of-discharge requirement and reached the four-metric frontier by spending the battery"
+reader = "the reader of propose, predict, check"
+
+[[raise]]
+date = "2026-11-10"
+section = "Discussion"
+words_added = 155
+job = "the generated check reading states spike A's finding on the proposals (the four-metric frontier reached by spending the battery, their batteries and depths of discharge) and the future work, in place of a clause the close-out made untrue; and the two CANDIDATE sentences on the requirements read after the fit, for the supervisor's review (claims C406, C407)"
+reader = "the trade-study practitioner deciding how to use the fit beside a set of requirements"

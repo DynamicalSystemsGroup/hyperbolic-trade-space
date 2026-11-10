@@ -245,3 +245,14 @@ says.
 - 2026-11-10, 09:50: approved for execution by the driver under the mandate; OD10 resolved as (a), the feasible
   set's conditioning applied to every set, in `WP23-decisions.md`; the Agent's defaults accepted as one item.
 
+- 2026-11-10, during execution: the blast radius is amended to name `paper/generate_results.py`, the home of every
+  Appendix D table (the driver's decision on the executor's question, relayed by the PM: "(a). paper/generate_results.py
+  is the home of every Appendix D table, so the three thin wrappers ... and the one sentence each in exponents_and_terms
+  and regime_comparison go there; the scope's blast radius is amended to name it"). Under the same reading the executor
+  also touched, and names here for the reviewer: `paper/generate_findings.py` (the generated text of
+  `num-predict-reading`, D-18's cell), `paper/length_ledger.toml` (the length ledger the scope's prose rows need),
+  `examples/adcs/experiments/check_designs.py` and `experiments/sensitivity.py` (`dod_ok` joins their feasibility
+  filters, the hidden dependency of the A1 call), `docs/superpowers/notes/paper-sources/method.md` and the deletion of
+  `docs/superpowers/notes/k3-cubesat.md` (the brief's call on the stale K record), `tests/test_v2_data.py`,
+  `tests/test_site.py` (the examples page's word budget, 650 to 720, its job stated) and
+  `examples/adcs/experiments/reports/change-register.md` (CR-5).
