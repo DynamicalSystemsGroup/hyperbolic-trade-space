@@ -265,6 +265,24 @@ and the ranges also hold the difference between the Mac and the environment of r
 (`num-recovery`, `tab-D-planted_recovery`) carry no stderr stream and no warning (18d0064); their sentence is
 unchanged. The environment of record is now `f7b7585c7c58`.
 
+## Re-recording of the default cubesat fits on the data of record (2026-11-10, head 69d20fe)
+
+`tests/data/soft_fit_default_reference.npz` held the four default cubesat fits (primary and stock, K = 2 and 3) of the old data;
+since ea46637 the case reads `examples/adcs/data/v2/` (the recorded K = 2 primary tau was 113.2, the fit gives 94.4), so
+`test_r2_default_cubesat_fits_equal_the_recording[primary]` and `[stock]` failed on the Linux run at 628df90. The image is
+unchanged, `hts-paper` `f7b7585c7c58` (`git log -1` inside prints ea46637).
+
+Command: `docker create --name hts-softfit --network none -e HTS_ENVIRONMENT_OF_RECORD=1 hts-paper uv run python /tmp/rec_cubesat.py`,
+the script copied in, `docker start -a` (66 s), the result copied out with `docker cp`, the container removed. The script runs the
+test's own routine (`case.load_study`, `case.fit_study(K)`, `_record` of `tests/test_soft_fit.py`) for the four fits and writes
+their 112 arrays; these replace the cubesat arrays of the file, and the 43 planted fits (which do not read the case data) are
+kept. The file holds 1274 arrays as before (1273 and the field `recorded_on` = linux, aarch64). The test is unchanged.
+
+| check | result |
+|---|---|
+| `uv run pytest -q tests/test_soft_fit.py` in `hts-paper` (a fresh container, the new file copied in), `HTS_ENVIRONMENT_OF_RECORD=1`, exact branch | 195 s: 58 passed |
+| the same on the Mac, tolerance branch, slow tests included | 203 s: 58 passed |
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes
