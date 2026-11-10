@@ -45,7 +45,7 @@ twice (rows 10 and 13: the toolkit accepts, the editor rejects); the model uses 
 |---|---|---|
 | L-1 | `examples/adcs/model_v2/stakeholders.sysml`: the sponsor (price) and the operator (performance in operation) as parts typed by `Sponsor` and `Operator`; concern defs `PriceConcern`, `PerformanceConcern` (subject the cubesat, stakeholder); four concerns, each held by its stakeholder and holding the engineers' requirements that serve it: `lowCost` (launch budget), `longLife` (depth of discharge), `pointingAndSlewing` (pointing error, settled, control effort, momentum), `powerAndEnergy` (power, power margin, energy balance, peak slew power, battery peak power, eclipse depth of discharge). Every one of the model's eleven requirement defs serves at least one concern; the depth-of-discharge requirement serves both stakeholders | 28f7c9c, a4cde2f |
 | L-2 | The roll-ups, each `doc` beginning "Illustrative roll-up" and naming its inputs: `CostToBuild` (illustrative unit costs on the parts the configuration swaps and tunes: 158,500 / 216,200 / 407,600 USD for the compact, baseline and agile configurations) and `EffectiveLife` (the depth of discharge by an illustrative cycle-life rule, 10,000 cycles at 0.3, one cycle per orbit: 2.65 / 5.11 / 8.57 years with the baseline's recorded slew); the launch cost is the model's own (71,944 / 79,749 / 93,960 USD). Read by no output (R-7, tested) | 28f7c9c |
-| L-3 | The evidence cases: `EvidenceCase` (subject the cubesat; `ledgerEntry`, `recordEntry`, `testNode`, `environment`) and two usages, `configurationEvidence` (as `ConfigurationVerification`: launch budget, pointing error, power) and `slewEvidence` (as `SlewVerification`: the other eight), each verifying the concerns' requirements and pointing at `v2-primary@6`, the RECORD.md section of the data gate's regeneration, its test, and the host | 28f7c9c |
+| L-3 | The evidence cases: `EvidenceCase` (subject the cubesat; `ledgerEntry`, `recordEntry`, `testNode`, `environment`) and two usages, `configurationEvidence` (as `ConfigurationVerification`: launch budget, pointing error, power) and `slewEvidence` (as `SlewVerification`: the other eight), each verifying the concerns' requirements and pointing at the current entry (`v2-primary@8` since the sequel), the RECORD.md section of the close-out gate's container regression, its test, and the image of record `877c42cc10e3` | 28f7c9c, 331c9e4, sequel |
 | L-4 | `views.sysml`: the view `stakeholders` (GeneralView exposing the stakeholders, the concerns with their members, the evidence cases with theirs, the roll-ups); `views.sysml` is now applied after `stakeholders.sysml` | 28f7c9c |
 | L-5 | Tests: WP26's views test loads the three files; `test_stakeholders_file_loads_strictly_and_its_names_resolve` (R-1, negative control), `test_the_trace_from_who_cares_to_every_requirement_is_complete` (R-2), `test_the_rollups_are_illustrative_and_read_by_no_output` (R-7); `tests/test_verification_pointers.py` (R-6: ledger entry exists and is current, RECORD heading exists, the test node collects, the host entry names its platform; negative controls: an unknown entry, a superseded entry, an unknown heading, an unknown image) | 28f7c9c |
 | L-6 | The operator's depth-of-discharge requirement named `eclipseDepthOfDischarge` (row 13 of D-1) | a4cde2f |
@@ -54,17 +54,17 @@ twice (rows 10 and 13: the toolkit accepts, the editor rejects); the model uses 
 
 | ID | Change | Why held |
 |---|---|---|
-| H-1 | The requirement defs of `cubesat.sysml` each `frame` the concern they serve (D-1 row 5), so the trace is stated where the requirement is | in-file: waits for WP26's held edits and one host re-run after the gate's container regression (OD1 (b)); the separate file states the same trace now |
+| H-1 | The requirement defs of `cubesat.sysml` each `frame` the concern they serve (D-1 row 5), so the trace is stated where the requirement is | a frame in `cubesat.sysml` would refer across files to `stakeholders.sysml`'s concerns, and the oracle, the coverage table and the view generator load the model file alone; landing it means moving the concerns into `cubesat.sysml`, a gate-sized change. The separate file states the same trace now |
 | H-2 | A requirement on the cost to build (the sponsor's `lowCost` has a requirement on the launch cost only) | needs a budget the supervisor chooses; none is invented |
-| H-3 | Evidence cases for the baseline regime's dataset (`v2-baseline@6`) and the check experiments | one evidence entry per verification case is enough to show the chain; more on the driver's word |
+| H-3 | Evidence cases for the baseline regime's dataset (`v2-baseline@8`) and the check experiments | one evidence entry per verification case is enough to show the chain; more on the driver's word |
 
 **Gate** (anything an output reads; not landed):
 
 | ID | Change | Gate |
 |---|---|---|
 | G-1 | The cost to build or the effective life as a traded metric | a new metric: the contract (`interface-contract.md` §14) and a regeneration |
-| G-2 | The pointers name `v2-primary@6`, a host entry; when the close-out gate's container regression supersedes it, the pointer moves in the same unit (`tests/test_verification_pointers.py` fails until it does), and the record entry then names that regeneration's RECORD.md section | one line in the gate checklist (WP27-decisions.md, scope gate) |
-| G-3 | Today the record pointer names the data gate's section (the container regeneration of the same experiments at `@5`): RECORD.md has no section for the host `@6` run | settled by G-2 at the gate |
+| G-2 | When a gate's re-run supersedes the entry a pointer names, the pointer moves in the same unit (`tests/test_verification_pointers.py` fails until it does). Done twice: to `v2-primary@7` after the close-out gate's container regression (331c9e4, record entry its RECORD.md section, environment `877c42cc10e3`), and to `v2-primary@8` with WP26's container re-run | one line in the gate checklist (WP27-decisions.md, scope gate) |
+| G-3 | The record pointer named the data gate's section while the current entry was the host `@6` run (RECORD.md has no section for host runs) | settled: it names the close-out gate's container regression, the record of the image the current entries were run in |
 
 ## D-3. The trace as the editor shows it
 
@@ -136,5 +136,5 @@ What the round met that serves the ADCS-lifecycle-demo's revision rather than th
 - D-4, the P1 cold read: a fresh reader with its own tab, prompted as the scope's defaults say; not started by the
   modeller (the PM's to dispatch).
 - D-5, the sponsor-facing prose: not drafted; decided after D-4.
-- WP26's held in-file edits, the ledger re-run, the bug reproductions of the WP26 report: wait for the close-out
-  gate's container regression (the PM's instruction).
+- The bug reproductions (one cold pass per bug, WP26's six and WP27's three): after the P1 reader (the PM's word).
+  WP26's held in-file edits and the ledger re-run landed in the sequel (`WP26-model-changes.md`).

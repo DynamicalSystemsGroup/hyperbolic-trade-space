@@ -20,7 +20,8 @@ The intents, quoted:
 - **I4** (WP26, the supervisor): the model "conformant, intuitive, interpretable and aligned with our intents", using
   "the sysmlv2 affordances without requiring open ended exploration of text".
 
-Counts: **landed 5** (all in `views.sysml`), **held 4**, **gate 6**, and 4 observations with no change.
+Counts: **landed 8** (5 in `views.sysml`; N1 to N3 in `cubesat.sysml`, landed in the sequel), **held 1**, **gate 6**, and
+4 observations with no change.
 
 ## What was applied, and the state at the end
 
@@ -89,9 +90,9 @@ statements one for one.
 
 | # | Finding | Intent | Class | Change and evidence |
 |---|---|---|---|---|
-| N1 | Section 5's package doc reads as a history ("Four requirements, one per flag ... WP22 added ... WP23 completes the set ... round 2 adds") while the section holds eleven requirements; a reader must add up the history to learn what is there | I2, I4 | held | restated as what is there: four flag requirements, six more on a traded metric's own quantity, the battery peak power one; same facts, no history (diff below). Checked: coverage table differs only in its hash lines; 216 of 217 model tests pass, the one failing being the ledger-hash pin (`test_mutation_v2.py::test_the_oracles_model_path_is_the_committed_file_the_ledger_hashes`, expected until the re-run); the committed views are the generator's output (byte-equal). Held by the driver's word: lands with a host re-run against the container regression's entries |
-| N2 | `SlewVerification`'s doc has one 149-character line (the file's other lines are at most 100) | I4 | held | rewrapped (diff below); checks as N1 |
-| N3 | The model's header names its two views but not the views a view editor draws | I4 | held | three comment lines pointing to `views.sysml` (diff below); checks as N1 |
+| N1 | Section 5's package doc reads as a history ("Four requirements, one per flag ... WP22 added ... WP23 completes the set ... round 2 adds") while the section holds eleven requirements; a reader must add up the history to learn what is there | I2, I4 | landed (sequel) | restated as what is there: four flag requirements, six more on a traded metric's own quantity, the battery peak power one; same facts, no history (diff below). Checked: coverage table differs only in its hash lines; 216 of 217 model tests pass, the one failing being the ledger-hash pin (`test_mutation_v2.py::test_the_oracles_model_path_is_the_committed_file_the_ledger_hashes`, expected until the re-run); the committed views are the generator's output (byte-equal). Landed in the sequel through the container re-run of the five entries (OD1 (b) as amended; below) |
+| N2 | `SlewVerification`'s doc has one 149-character line (the file's other lines are at most 100) | I4 | landed (sequel) | rewrapped (diff below); checks as N1 |
+| N3 | The model's header names its two views but not the views a view editor draws | I4 | landed (sequel) | three comment lines pointing to `views.sysml` (diff below); checks as N1 |
 | N4 | Docs carry project-process references that do no work for a reader of the model: "(illustrative, WP23 round 2)", "(WP23 OD1)", "(WP16)", "the supervisor's choice from the loop's ladder (WP23-decisions.md ...)", "(WP23)"; 11 mentions of a work package below the header, read in the editor's Documentation column | I4 | held | not drafted this round; the proposal: each doc states the fact and its basis (a public class, a threshold's rule), the history stays in the decision records. Two of these docs are read by the generator (the requirement docs, `project.py`), so their edits are gate class; the constants' docs are held class |
 | N5 | Two requirement docs describe our generated picture: `PowerRequirement`'s and `BatteryPeakPowerRequirement`'s "so the behavioural view draws it with no line"; a model element's doc should say what the element states, not how a picture draws it | I4 | gate | the generator reads requirement docs (`project.py`, `doc_text` on each requirement): drop the clause at the next data gate and regenerate the views |
 | N6 | The requirements table's Identifier column is "—" for all 22 requirements, and the Documentation column is "—" for the 11 baseline requirements (they are bare usages) | I2, I4 | gate | sketch: short ids on the defs, e.g. `requirement def <'R-PE'> PointingErrorRequirement`, and a one-line doc on each baseline requirement only if it says something the def does not (else none: a doc that repeats the def does no work). Requirement elements are read by the coverage table and the generator |
@@ -114,11 +115,23 @@ statements one for one.
 | A1 | `expose X` under a `filter` draws X alone (steps 10, 20); in an Overview tree with no filter it draws X with all its members (rev 5 of `metricCarriers` drew Cubesat's 23 members); `expose X::*` draws the members without X (step 19's first version) | I4 | landed (`views.sysml`) | `configurations` and `metricCarriers` expose an element and its `::*` together, with no filter; `metricCarriers` exposes Cubesat's two metric attributes by name |
 | A2 | The requirements table and the traceability matrix read `satisfy`, `not satisfy` and `verify` straight from the model, with the baseline's failing requirement shown as a negated link: the model's statement of feasibility is browsable without reading text | I2, I4 | observation | steps 14-16 |
 
-## The held in-file diff (N1, N2, N3)
+## The in-file diff (N1, N2, N3), landed in the sequel
 
-Byte-identical outputs are the condition for landing; the checks above passed on this diff. It lands after the
-container regression's entries are on `dev`, through one host re-run of the five entries against them (the driver,
-2026-11-10), or stays held.
+Byte-identical outputs are the condition for landing. The diff below landed with WP23's O-1 (the pointing limit's
+primary share printed as 95.0 %: 671 of 706 feasible designs at 0.008495 degree on the data of record; the launch
+budget's 94.9 %, 670 of 706, is correct and stays), under OD1 (b) as amended (2026-11-10, 15:05: a host re-run
+cannot reproduce the container's bytes, so an in-file edit lands through a container re-run), on the edited model
+(sha256 `65ecd7a7e731`):
+
+- **Neutrality on the host** (a throwaway tree; its entries discarded): each output equal to its host `@6` hash:
+  `d601d82833b6` (primary), `9d1f4849ba46` (baseline), `48493bf3f6e6` (check predictions), `e3f22d93c7d7` (check
+  designs), `fd46402c2f61` (shared subspace).
+- **The container re-run** (`hts-paper` `877c42cc10e3`, container `hts-wp26`, `--network none`, removed after;
+  `ledger_gate.py --image 877c42cc10e3 --wp26`): each output equal to its `@7` hash: `a43ccc557bc6`, `10ae79a224b5`,
+  `6b65b2843a99`, `5b47f53b4d7b`, `d16ae3648c40`; the entries `v2-primary@8`, `v2-baseline@8`,
+  `v2-check-predictions@8`, `v2-check-designs@8`, `scope-sensitivity-shared-subspace-v2@7`, `git_dirty` False;
+  no data file changed. The supplementary notebook's table of datasets prints the current entries and moved with
+  them (host-recorded, re-pin at the gate).
 
 ```diff
 diff --git a/examples/adcs/model_v2/cubesat.sysml b/examples/adcs/model_v2/cubesat.sysml
