@@ -330,6 +330,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   (1733), the ledger at @6 with 0 drifts, the vocabulary tool clean. The comparison (D-16) and the review section
   follow; the container regression and the swap call are the driver's after them.
 
+- **Close-out images read cold by the driver (2026-11-10, 12:10; b4d0132).** The temperature-sweep figure now has
+  eight rows (the eclipse reserve gone), the same five carrying metrics at the outlined fit temperature (total mass
+  0.36, energy balance 0.18, pointing error 0.16, depth of discharge 0.16, settling time 0.14), control effort faint
+  at low temperature, two rows white throughout. Passes. The behavioural view: eight traded metrics each with its
+  requirement, the eclipse reserve gone, the pointing-error box stating "not satisfied by cubesatBaseline" as the
+  supervisor decided, launch cost the derived MoE under total mass, the legend complete; a cold reader sees every
+  requirement read a metric and one requirement the baseline fails. Passes. The comparison and the review follow.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
