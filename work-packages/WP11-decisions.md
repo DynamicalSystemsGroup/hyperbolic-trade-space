@@ -42,3 +42,9 @@ the PR. The supervisor's words on the grid and the personas ("Use these six") ar
   depth-of-discharge failure; the four requirements read after the fit, cutting designs and not trades; the
   baseline failing the pointing-error requirement; the case called exploratory with the author's thresholds. SHA-256
   of the file: `2c1f9672ebd634429b820e4940edd39632c9d29963e4190c955567b2bcc993da`. Version 2's lines marked "key stale" by round 2's triager are read against version 3.
+
+**Answer key version 4 (2026-11-10, 17:05).** Version 3 with one word: S7's "exchange rates" is now "elasticities",
+the word the key's own header fixed at version 2. Nothing else changed. SHA-256 of the file held outside the
+repository: `aee912f94a17834bc3a99cee591660c9c491d7bf5ee83b3d5a482e314c9f2a0c`. The round-2 "key stale" lines resolve as: S4 (terms, the cell an analysis reading) and S6 (eight
+metrics; 659 of 706 nondominated on eight; a 5-lemma) were already version 3's text, so the readers' statements are
+"stated"; S7's line is version 4's; the nine figures stay uncounted.

@@ -39,6 +39,15 @@ cached when the image was built). A named container lets you copy the regenerate
 Outside this container, tied rows of gap G-10 may differ on other platforms; the values exact only
 in the environment of record are listed in `paper/environment_values.toml`.
 
+## The container is a gate check, not a unit step
+
+Units run on the host and re-record only the reference arrays their change affects, marking each such file
+"host-recorded, re-pin at the gate" in its commit message. The container run (this image and the alternative image
+`hts-alt`) is dispatched by the driver at gates only: accepted packages, releases and corrections to published
+material. At a gate every host-recorded reference is re-pinned from the container before the gate is called green,
+and the ledger entries of record are the container's (`HTS_ENVIRONMENT_OF_RECORD=1` selects the exact branches of
+the tests, which hold only there). A unit does not wait for the container.
+
 ## What is committed from the container
 
 The committed exact values are the container's (the supervisor's decision recorded in
