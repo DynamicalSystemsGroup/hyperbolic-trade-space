@@ -372,7 +372,16 @@ stated rule, q = 0.02 of the 300 most isolated holes' nearest predicted distance
 hts-paper 3c7cfc8a2e27 at 2b2e94e; ledger v2-primary@5, v2-baseline@5, v2-check-predictions@5, v2-check-designs@5,
 scope-sensitivity-shared-subspace-v2@4, 0 drifts) and its data-gate comparison (D-9, `swap-evidence.md`, "WP23 data
 gate ...", read-first subsection "Changed conclusions"). Linux green on 8507bd9 in all three shards. **The swap call is
-the driver's and was pending at this handover**; the fifth PM acts on it, not before.
+the driver's: made after this section was first written (`WP23-decisions.md`, latest): the swap is accepted on the
+comparison and the Linux verdict, final when the Mac tier 2 verdict on 8507bd9 is green (a red Mac reopens the call);
+otherwise the WP23 model and the nine-metric data are the record and the paper moves onto them. The K = 3 per-term
+report on the primary regime: the fit is reported from the estimator (three terms, exponents, cells, shares,
+certificate); the association reading is drawn per term where the rows meet the guard of ten, and the thin term's panel
+is replaced by its reason in one sentence ("too few near-frontier designs for an association reading: n of ten"); no
+third band, no K = 2 substitution; `num-k-sweep`, `fig-tensions-k3` and Appendix D.3 adapt to per-term availability;
+the case claim is read from the exponents. The proposals' feasibility (dod_ok False on all three) is the supervisor's,
+under Waiting in the driver log; the paper's check sentences are written to the data as it is and that sentence is
+marked for him.**
 
 What the comparison says the swap changes in kind (the fifth PM's first inputs): at K = 1 the primary regime's term is no
 longer slew time against control effort but total mass (0.358) against energy balance (0.184), a 5-lemma in both regimes
@@ -383,16 +392,18 @@ a third documented band stated as a choice); the proposals are 3 of 3, two the s
 False; the settled flag cannot move; the two metric redundancies (eclipse reserve with depth of discharge, power margin
 with energy balance) are readings for the supervisor (OD7); counts and shares move as listed there.
 
-Order after the swap call: (1) the paper's regeneration on the new ledger in `hts-paper` (the paper stream, one writer
+Order (the fifth PM's units, in this order): (1) the paper's regeneration on the new ledger in `hts-paper` (the paper stream, one writer
 of `paper/paper.ipynb` and `supporting_material.ipynb`): the slot list of the comparison's section 4 by cell id; Figure 2's
 anchor pair; the tau-sweep caption from `WP19-figure-review.md` "Redraw 2"; the recovery cell silent (18d0064); the
-check section's sentence following the proposals' count; every moved number in the paper listed with its cause; (2) the
+check section's sentence following the proposals' count; every moved number in the paper listed with its cause; the per-term availability rule above; (2) WP24 push 1
+onward, right after the paper lands (worktree `wp24` holds the glossary patch; `diagnostic_pair.py`'s identifiers in a
+WP23 unit after push 1; CHANGELOG gets the vocabulary); (3) the
 post-gate view-consistency unit (dispositions B, C, D, F in `WP23-review.md`, "Rounds: the cold reads"), and in
-`diagnostic_pair.py` drop the panel title and pass one shared `vmax` to both heatmap calls; (3) the four thresholds and
-the comparison report to the supervisor on waking (the popup table in `WP23-review.md`, "Proposed thresholds, revised
-for the gate popup"); (4) WP24 push 1 onward (worktree `wp24` holds the glossary patch; `diagnostic_pair.py`'s
-identifiers in a WP23 unit right after push 1; CHANGELOG gets the vocabulary); (5) the glossary entries MoE, MoP, launch
-cost with the paper's case section (dead-entry rule); (6) WP23's acceptance review (`work-acceptance`, a fresh reviewer
+`diagnostic_pair.py` drop the panel title and pass one shared `vmax` to both heatmap calls; (4) WP25's drift rows (the docs pages
+against the current API and defaults, listed in `WP25-review.md`) in WP24's docs push; (5) the glossary entries MoE, MoP,
+launch cost with the paper's case section (dead-entry rule); the thresholds popup (`WP23-review.md`, "Proposed
+thresholds, revised for the gate popup") and the comparison report go to the supervisor on waking through the driver;
+(6) WP23's acceptance review (`work-acceptance`, a fresh reviewer
 that runs the code and looks at the rendered pair and views) once the paper is regenerated; (7) WP25's next instance at
 the next gate. Known small items: `round-1/README.md` misreads the library's 0-based term index (fix in the
 view-consistency unit); the view-consistency unit also routes the composition lines clear of box headers.
