@@ -242,3 +242,24 @@ frontier, and the form of a case for relaxing one, with worked numbers from the 
 question is answered through (A): the check designs are read in both settings. Both spikes feed the full case
 analysis (Appendix D, the docs' case pages); the paper's narrative stays tight, with at most one candidate
 paragraph for the supervisor's review.
+
+## The redundancy spike's answer and the driver's calls (2026-11-10, 08:20; `WP23-rounds/spike-redundancy.md`)
+
+- **Eclipse reserve and depth of discharge: a modelling issue.** Both calcs are functions of the same two
+  quantities (capacity C and eclipse demand D: D/C and 0.3·C − D, the 0.3 baked into the metric), and the two
+  requirements are the same inequality on every one of the 2,000 designs. Clean-up, option A1: depth of discharge
+  stays the traded metric and its requirement; the eclipse-reserve calc and requirement leave the model; eight
+  traded metrics; contract amendment; one regeneration of the datasets and the paper's numbers; and the hidden
+  dependency the spike found is honoured: `dod_ok` enters the case's flags, since today the 131 failing designs
+  leave the fit only through the reserve's positivity.
+- **Power margin and energy balance: a property of the system in its ranges**, two distinct power-budget quantities
+  sharing one source (generated power, linear in panel span with constant loads per cell), exact only within a
+  wheel-and-tracker cell and ordering oppositely at a named pair of designs. Analysis outcome, option B1: the case
+  reports the association of every pair of traded metrics over the feasible designs, names pairs at |Spearman| ≥
+  0.99 as one axis (the eclipse pair would have passed, the power pair does not at 0.98), and the exponent reading
+  sums a named pair per term; it lives in Appendix C.5, D.3 and D.4 and one sentence of the docs' case page; no
+  model, data or contract change; the paper's narrative unchanged.
+- **Sequencing.** A1 rides with the thresholds unit as one model change and one regeneration after WP24 push 4,
+  so the datasets and the paper regenerate once more, not twice; spikes A and B read the nine-metric data of record
+  and their findings carry over (the reserve carries no exponent in the fits of record). B1 lands in the same
+  paper regeneration. The supervisor sees both at his review; this is the driver's call under his rule.
