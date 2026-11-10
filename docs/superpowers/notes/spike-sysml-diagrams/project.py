@@ -583,7 +583,7 @@ class Reads:
         return out
 
 
-def behavioural(m, byid, P, revision=6):
+def behavioural(m, byid, P, revision=7):
     sys.path.insert(0, str(REPO / "examples" / "adcs"))
     import case  # the CaseSpec: the metrics, in order, and their subsystems
 
@@ -923,7 +923,9 @@ def behavioural(m, byid, P, revision=6):
         # revision 5: nodesep is the gap between boxes at one rank (the launch cost and the
         # total mass): 16 gives their line room for its label; height, not width, pays for it
         SKIN.format(
-            nodesep=16 if revision >= 5 else 8,
+            nodesep=(24 if revision >= 7 else 16)
+            if revision >= 5
+            else 8,
             ranksep=36 if revision < 4 else 12,
         ),
         f"scale {COLUMN_WIDTH} width",
@@ -955,7 +957,14 @@ def behavioural(m, byid, P, revision=6):
     def req_box_r4(r, with_constraint=False):
         lines = [f"**{short(r)}**"]
         if with_constraint:
-            lines.append(constraint_text(byid, r))
+            c_text = constraint_text(byid, r)
+            if revision >= 7:
+                # revision 7: the statement breaks before its comparison, so a box is no wider than
+                # its name and the three boxes of the group stand side by side in the column
+                c_text = re.sub(
+                    r" (<=|>=|==|<|>) ", r"\\n\1 ", c_text, count=1
+                )
+            lines.append(c_text)
         if ver_differs:
             lines.append(
                 ", ".join(sorted(verified_by[r]))
@@ -1105,7 +1114,22 @@ def behavioural(m, byid, P, revision=6):
     out.append("")
     n_analysis = sum(v == "analysis" for v in origin.values())
     pad = "\\n" * ANALYSIS_BOX_PAD
-    if revision >= 6:
+    if revision >= 7:
+        # revision 7: the box says what the analysis returns and where the rest comes from, in
+        # lines short enough that the box does not set the width of the view (G3-P2-6, P3-3)
+        said = ",\\n".join(cfg_only)
+        from_meas = " and\\n".join(
+            [f"{n}\\n(passed on)" for n in passed]
+            + [f"{n}\\n(not returned)" for n in read_only]
+        )
+        box = (
+            f"**SlewExperiment**\\n<<analysis def>>\\nreturns {len(returned)} of {len(metrics)}"
+            f"\\nmetrics. No slew\\nfor {said}.\\nFrom the\\nmeasurement:\\n{from_meas}."
+        )
+        out.append(
+            f'rectangle "{box}{pad}" as xAnalysis {ANALYSIS_COLOUR}'
+        )
+    elif revision >= 6:
         # the analysis returns the computed entries and the `in` it passes on; what needs no slew
         # is named in the box (the picture implied every entry needs the measured slew)
         said = ",\\n".join(cfg_only)
@@ -1154,8 +1178,12 @@ def behavioural(m, byid, P, revision=6):
                 # revision 4: the MoE box sits at the metrics' rank, beside the metric it reads
                 # (a same-rank line), so the mass lane adds no rank to the layout
                 side = "right" if revision >= 4 else ""
+                # revision 7: this line is not a requirement reading a metric (the MoE is computed
+                # from the metric); it is dashed, and the legend names the kind
+                style = "dashed," if revision >= 7 else ""
+                width = 3 if revision >= 7 else 2
                 out.append(
-                    f"{nid(ev)} -[#{RELATION_COLOUR[1:]},thickness=2]{side}{head} {nid(n)}{moe_tag(ident)}"
+                    f"{nid(ev)} -[#{RELATION_COLOUR[1:]},{style}thickness={width}]{side}{head} {nid(n)}{moe_tag(ident)}"
                 )
                 drawn_moe.add((ev, n))
         else:
@@ -1168,12 +1196,31 @@ def behavioural(m, byid, P, revision=6):
     out.append("")
     if revision >= 4:
         out.append("legend bottom")
-        out.append(
-            "  orange: requirement; green: traded metric; yellow: derived, not traded"
-        )
+        if revision >= 7:
+            # revision 7 (G3-P2-2, P3-2, P3-1): every colour and every line kind the drawing uses,
+            # in the fewest words; the rest is the caption's
+            out.append(
+                f"  <back:{REQ_COLOUR}> requirement </back> <back:{COVERED_COLOUR}> traded metric </back>"
+                f" <back:{MOE_COLOUR}> derived, not traded </back>"
+            )
+            out.append(
+                f"  <back:{ANALYSIS_COLOUR}> analysis </back> <back:{MEASURE_COLOUR}> measurement </back>"
+            )
+            out.append(
+                f"  <color:{RELATION_COLOUR}>━━</color> requirement reads metric"
+                f"   <color:{RELATION_COLOUR}>┅┅┅</color> computed from"
+                f"   <color:{SOURCE_COLOUR}>──▶</color> value comes from"
+            )
+        else:
+            out.append(
+                "  orange: requirement; green: traded metric; yellow: derived, not traded"
+            )
         out.append("end legend")
         out.append("@enduml")
         cap = []
+        moes = [n for n, _ in metrics if mark.get(n) == "MoE"] + [
+            plain_name(short(c)) for c in moe_calcs
+        ]
         if revision >= 6:
             ver_of = lambda names: sorted(  # noqa: E731
                 {
@@ -1200,6 +1247,13 @@ def behavioural(m, byid, P, revision=6):
                 "Not drawn: the coupling variables between the groups and the measured inputs the "
                 "analysis takes. They are the cells of the coupling table of `coverage.md`.",
             ]
+            if revision >= 7:
+                cap.append(
+                    "A metric marked MoE is a measure of effectiveness, one a stakeholder states "
+                    f"without knowing the design (here the {' and the '.join(moes)}); a metric marked "
+                    "MoP is a measure of performance under the engineer's scenario (here the others). "
+                    "The dashed line joins a derived quantity to the metric it is computed from.",
+                )
         return "\n".join(out) + "\n", {
             "caption": cap,
             "rel": rel,
@@ -1275,11 +1329,11 @@ if __name__ == "__main__":
     ap.add_argument(
         "--revision",
         type=int,
-        default=6,
-        choices=(3, 4, 5, 6),
+        default=7,
+        choices=(3, 4, 5, 6, 7),
         help="drawing revision (3: the views committed before WP23's data gate; 4: WP23 round 3; "
         "5: WP23 round 4, the committed views of the data gate; 6: the post-gate view-consistency "
-        "unit, the committed views since)",
+        "unit; 7: the G-3 blocks of the behavioural view, the committed views since)",
     )
     a = ap.parse_args()
     m, byid = load(pathlib.Path(a.model))

@@ -14,7 +14,7 @@ skinparam PackageBackgroundColor #F7F7F7
 skinparam PackageBorderColor #909090
 skinparam LegendBackgroundColor white
 skinparam LegendBorderColor #909090
-skinparam nodesep 16
+skinparam nodesep 24
 skinparam ranksep 12
 hide circle
 hide empty members
@@ -62,15 +62,15 @@ package "mass (the analyst's grouping)" {
 }
 xLaunchbudgetrequirement -[hidden]-> xTotalMass
 rectangle "requirements that read no traded metric" as xNoLine #FFFFFF;line:gray;line.dashed {
-  rectangle "**BatteryPeakPowerRequirement**\nEclipsePeakLoad(c, peakTorque) <= BatteryPeakPower(c)\nSlewVerification" as xBatterypeakpowerrequirement #FDEBD0
-  rectangle "**MomentumRequirement**\npeakMomentum <= c.momentumCapacity\nSlewVerification" as xMomentumrequirement #FDEBD0
-  rectangle "**PowerRequirement**\nc.availablePower > 0.0 [W]\nConfigurationVerification" as xPowerrequirement #FDEBD0
+  rectangle "**BatteryPeakPowerRequirement**\nEclipsePeakLoad(c, peakTorque)\n<= BatteryPeakPower(c)\nSlewVerification" as xBatterypeakpowerrequirement #FDEBD0
+  rectangle "**MomentumRequirement**\npeakMomentum\n<= c.momentumCapacity\nSlewVerification" as xMomentumrequirement #FDEBD0
+  rectangle "**PowerRequirement**\nc.availablePower\n> 0.0 [W]\nConfigurationVerification" as xPowerrequirement #FDEBD0
   xBatterypeakpowerrequirement -[hidden]-> xMomentumrequirement
   xMomentumrequirement -[hidden]-> xPowerrequirement
 }
 xLaunchbudgetrequirement -[hidden]right-> xNoLine
 
-rectangle "**SlewExperiment**\n<<analysis def>>\nreturns 8 of the 9\nmetrics. Computed with\nno slew, from the\nconfiguration alone:\npointing error,\ntotal mass.\nPassed on as\nmeasured:\ncontrol effort.\n\n\n\n\n\n\n\n\n\n\n\n\n\n" as xAnalysis #E1D8F0
+rectangle "**SlewExperiment**\n<<analysis def>>\nreturns 8 of 9\nmetrics. No slew\nfor pointing error,\ntotal mass.\nFrom the\nmeasurement:\ncontrol effort\n(passed on) and\nsettling time\n(not returned).\n\n\n\n\n\n\n\n\n\n\n\n\n\n" as xAnalysis #E1D8F0
 rectangle "**SlewMeasurement**\nmeasured slew:\nsimulation here;\nfield data when\nfielded" as xMeasure #E4E4E4
 xMeasure -[hidden]right-> xAnalysis
 
@@ -79,7 +79,7 @@ xDepthofdischargerequirement -[#B5541C,thickness=2]- xDepthOfDischarge
 xEclipsereserverequirement -[#B5541C,thickness=2]- xEclipseReserve
 xEnergybalancerequirement -[#B5541C,thickness=2]- xEnergyBalance
 xLaunchbudgetrequirement -[#B5541C,thickness=2]- xLaunchcost
-xLaunchcost -[#B5541C,thickness=2]right- xTotalMass : totalMass
+xLaunchcost -[#B5541C,dashed,thickness=3]right- xTotalMass : totalMass
 xPeakslewpowerrequirement -[#B5541C,thickness=2]- xPeakSlewPower
 xPointingerrorrequirement -[#B5541C,thickness=2]- xPointingError
 xPowermarginrequirement -[#B5541C,thickness=2]- xPowerMargin
@@ -95,6 +95,8 @@ xPeakSlewPower <-[#6B6B6B]- xAnalysis
 xDepthOfDischarge <-[#6B6B6B]- xAnalysis
 
 legend bottom
-  orange: requirement; green: traded metric; yellow: derived, not traded
+  <back:#FDEBD0> requirement </back> <back:#E3F1E3> traded metric </back> <back:#FFF4C2> derived, not traded </back>
+  <back:#E1D8F0> analysis </back> <back:#E4E4E4> measurement </back>
+  <color:#B5541C>━━</color> requirement reads metric   <color:#B5541C>┅┅┅</color> computed from   <color:#6B6B6B>──▶</color> value comes from
 end legend
 @enduml

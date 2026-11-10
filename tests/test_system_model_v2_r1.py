@@ -356,9 +356,11 @@ def test_every_covered_metric_has_a_thick_line_from_its_requirement(project, tmp
         assert (req, metric) in drawn or (req, metric) in moe, (req, metric)
     assert moe == {("LaunchBudgetRequirement", "total mass"): "LaunchCost"}
     assert "(no requirement)" not in behaviour  # no dashed box: no open metric remains
-    # the MoE is two thick lines: requirement to launch cost, launch cost to the total mass
-    assert behaviour.count("thickness=2") == len(drawn) + 2 * len(moe)
-    assert "dashed]" not in behaviour  # no dashed or prose-only relation line
+    # the MoE is two lines: requirement to launch cost (a requirement line, thickness 2) and launch
+    # cost to the total mass (revision 7: dashed, a derived-from line, not a requirement line)
+    assert behaviour.count("thickness=2") == len(drawn) + len(moe)
+    assert behaviour.count("dashed,thickness=3") == len(moe)
+    assert "dashed]" not in behaviour  # no other dashed or prose-only relation line
     # round 2: control effort is a SlewMeasurement attribute, so its source is the measurement
     assert facts["metric_element"]["control effort"] == ("measured", "controlEffort")
     assert facts["origin"]["control effort"] == "measurement"
@@ -382,7 +384,8 @@ def test_the_picture_reads_cold_requirements_apart_sources_distinct_no_long_deto
     # the analysis box has a colour no metric box has
     covered, analysis = project.COVERED_COLOUR, project.ANALYSIS_COLOUR
     assert covered != analysis and "xAnalysis " + analysis in behaviour
-    assert behaviour.count(analysis) == 1
+    boxes = [x for x in behaviour.splitlines() if x.lstrip().startswith("rectangle")]
+    assert sum(analysis in x for x in boxes) == 1  # the legend's swatch is not a box
     # each source arrow ends at a metric of the subsystem it sits beside: one analysis box, one
     # measurement box, eleven edges at most (no arrow from a source to a package)
     assert behaviour.count("<-[#6B6B6B]-") == len(facts["metrics"])
@@ -436,8 +439,9 @@ def test_the_analysis_box_names_what_needs_no_slew_and_the_caption_is_the_commit
     """Disposition B: the analysis box names what the analysis returns and what needs no slew."""
     _, behaviour, facts = _views(project, TEXT, tmp_path)
     box = next(x for x in behaviour.splitlines() if "as xAnalysis" in x)
-    assert "returns 8 of the 9" in box and "pointing error" in box and "total mass" in box
-    assert "control effort" in box  # the entry passed on as measured
+    assert "returns 8 of 9" in box and "pointing error" in box and "total mass" in box
+    # the control effort and the settling time come from the measurement (disposition G3-P2-6)
+    assert "control effort\\n(passed on)" in box and "settling time\\n(not returned)" in box
     cap = facts["caption"]
     assert (
         "returns 8 of the 9" in cap[0] and "settling time is read from `SlewMeasurement`" in cap[0]
@@ -446,6 +450,29 @@ def test_the_analysis_box_names_what_needs_no_slew_and_the_caption_is_the_commit
     assert "coverage.md" in cap[2] and "coverage.md" in cap[3]
     committed = (VIEWS / "behavioural_caption.md").read_text().splitlines()[2:]
     assert committed == [f"- {x}" for x in cap]
+
+
+def test_the_legend_names_every_colour_and_line_kind_and_the_type_has_a_floor(project, tmp_path):
+    """G-3 blocks (revision 7): the legend carries each colour and line kind drawn; the caption the
+    MoE rule; the smallest type of the committed view at its 700 px width is the paper's 12.5 px."""
+    _, behaviour, facts = _views(project, TEXT, tmp_path)
+    legend = behaviour[behaviour.index("legend bottom") :]
+    for colour in (
+        project.REQ_COLOUR,
+        project.COVERED_COLOUR,
+        project.MOE_COLOUR,
+        project.ANALYSIS_COLOUR,
+        project.MEASURE_COLOUR,
+    ):
+        assert f"<back:{colour}>" in legend, colour
+    for kind in ("requirement reads metric", "computed from", "value comes from"):
+        assert kind in legend, kind
+    assert project.RELATION_COLOUR in legend and project.SOURCE_COLOUR in legend
+    assert "A metric marked MoE is a measure of effectiveness" in "".join(facts["caption"])
+    assert "pointing error and the launch cost" in "".join(facts["caption"])
+    svg = (VIEWS / "behavioural_view.svg").read_text()
+    sizes = [float(s) for s in re.findall(r'font-size="([0-9.]+)"', svg)]
+    assert min(sizes) >= 12.5, min(sizes)
 
 
 def test_views_change_only_with_what_was_edited_and_are_stable(project, tmp_path):
