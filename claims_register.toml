@@ -1658,11 +1658,11 @@ note = "Contract states the source of attributes is a black box (simulator, test
 
 [[claim]]
 id = "C125"
-fragment = "the package documentation is the user's guide"
+fragment = "the docsite's Getting started page (install and a first fit) is where to begin, and its user guide takes over from there"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
-backing = ["file:docs/user-guide/overview.md", "test:tests/test_docs.py::test_runnable_blocks_exist_where_the_guide_promises_them"]
+backing = ["file:docs/getting-started.md", "file:docs/user-guide/overview.md", "test:tests/test_docs.py::test_runnable_blocks_exist_where_the_guide_promises_them"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"

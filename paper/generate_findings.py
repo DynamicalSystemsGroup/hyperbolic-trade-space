@@ -19,6 +19,7 @@ _D5 = appendix_link("sub-d-5", "Appendix D.5")
 _D8 = appendix_link("sub-d-8", "Appendix D.8")
 _D11 = appendix_link("sub-d-11", "Appendix D.11")
 _D14 = appendix_link("sub-d-14", "Appendix D.14")
+_E = appendix_link("appendix-e", "Appendix E")
 _D15 = appendix_link("sub-d-15", "Appendix D.15")
 
 
@@ -229,6 +230,21 @@ def terms_sentence(study, fits) -> Md:
     terms = _and(int(k) for k in ft["term"])
     head = " ".join(parts) + " " if parts else "Every term has an association map; "
     return Md(f"{head}The term shares are {shares} for terms {terms} ({_D3}).")
+
+
+def k_temperatures_sentence(study, fits) -> Md:
+    """Each K's own fit temperature and band, selected by the one rule, and which band the figures
+    and the association reading use (the K = 1 band at every K, gap G-9)."""
+    r = study.regime
+    Ks = sorted(fits)
+    taus = [stable(f"fit | {r} K={K} | tau selected (raw)", lambda v: f"{v:.0f}") for K in Ks]
+    bands = [stable(f"D k_table | {r} | {K} | band 1/tau", lambda v: f"{v:.4f}") for K in Ks]
+    return Md(
+        f"Each K selects its own fit temperature by the one rule, the target fraction above V = 1: "
+        f"tau = {_and(taus)} at K = {_and(Ks)}, with bands 1/tau of {_and(bands)}; the figures of "
+        f"this section and the association reading use the K = 1 band at every K (gap G-9, "
+        f"{_E})."
+    )
 
 
 def certificate_sentence(fits) -> Md:

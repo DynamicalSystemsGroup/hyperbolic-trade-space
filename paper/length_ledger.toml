@@ -803,3 +803,26 @@ section = "Case analysis"
 words_added = 16
 job = "the proposals paragraph's first sentence says its job: a check of the regressor, not an estimate of a rate (CR-24)"
 reader = "the three readers who asked why three proposals sit in the Results"
+
+# WP11 round 2, author unit 3 (CR-23 and CR-28).
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 62
+job = "a generated sentence (num-k-temperatures) where the K = 3 fit is introduced gives each fit of record's temperature and band, says that each K selects its own by the one rule, and which band the section's figures and the association reading use (CR-23)"
+reader = "the five readers who could not reconcile the bands or tell which temperature produced the chart"
+
+[[raise]]
+date = "2026-11-10"
+section = "Methods"
+words_added = 14
+job = "the conditioning paragraph names where the case's rule is (Appendix C.4) and where the guide is (the docsite's Conditioning page) (CR-28)"
+reader = "the three readers who asked for a house rule for conditioning"
+
+[[raise]]
+date = "2026-11-10"
+section = "Reproducibility and your own case"
+words_added = 15
+job = "Section 11 names the docsite page to start from (Getting started: install and a first fit) and that the user guide takes over (CR-28)"
+reader = "the three readers who could not start from the text"

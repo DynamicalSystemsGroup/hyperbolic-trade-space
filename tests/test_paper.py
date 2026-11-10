@@ -1919,7 +1919,7 @@ RAW_RESIDUE = re.compile(r"\de-(?:1[3-9]|[2-9]\d)")  # 1e-13 and below, as raw d
 NUM_CELLS = [
     "num-nondominated", "num-certificates", "num-margin", "num-temperature", "num-k-sweep",
     "num-regimes", "num-candidates", "num-predict", "num-recovery", "num-predict-reading",
-    "num-terms-k3", "num-elasticity",
+    "num-terms-k3", "num-elasticity", "num-k-temperatures",
 ]  # fmt: skip
 
 
@@ -1948,6 +1948,7 @@ def _case_sentences():
         "num-predict": gf.predict_check_sentence(case.predict_check(study, reg), reg),
         "num-terms-k3": gf.terms_sentence(study, fits),
         "num-elasticity": gf.elasticity_sentence(study, fits),
+        "num-k-temperatures": gf.k_temperatures_sentence(study, fits),
     }
 
 
