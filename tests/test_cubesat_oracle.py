@@ -405,7 +405,6 @@ def test_the_measured_settling_time_enters_the_row_unchanged(oracle, designs):
         "peak_momentum": 4e-3,
         "settling_time": 14.398119154048933,
         "control_effort": 1e-2,
-        "censored": False,
     }
     got = oracle._analyse(loaded, symbols[0], measured)
     assert got["settling_time_s"] == 14.398119154048933

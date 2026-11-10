@@ -3,8 +3,8 @@
 ``CubesatOracle`` satisfies ``experiments.oracle.Oracle`` for the v2 model
 (``model_v2/cubesat.sysml``). Nothing about the case is copied here: the design ranges, the
 enumerations and their alternatives, the gain box, the scenario (slew angle, horizon, step, the
-band, the settling fraction) and every accounting constant are read from the model, which is
-also where the accounting, the attributes and the feasibility are computed:
+settling fraction) and every accounting constant are read from the model, which is also where
+the accounting, the attributes and the feasibility are computed:
 
 * **configure**: each design becomes a ``Cubesat`` part of the loaded model (one load per chunk);
 * **measure**: the unchanged ``adcs_sim.simulate_adcs`` integrates the slew (SysML cannot), on the
@@ -200,7 +200,6 @@ class ModelReader:
                 "slew_deg": r(f"{name}.slewAngle", "SI::degree"),
                 "t_end_s": r(f"{name}.horizon", "SI::s"),
                 "max_step_s": r(f"{name}.timeStep", "SI::s"),
-                "band_deg": r(f"{name}.slewBand", "SI::degree"),
                 "settling_fraction": r(f"{name}.settlingFraction"),
             }
         except Exception as exc:
@@ -512,7 +511,6 @@ class CubesatOracle:
 
     def _measure_slew(self, params: dict) -> dict:
         """Integrate the slew with ``adcs_sim.simulate_adcs`` (the measurement of record)."""
-        sc = self.scenario
         sim = self._sim_config(params)
         res = simulate_adcs(sim)
         summ = res.summary()
@@ -524,7 +522,6 @@ class CubesatOracle:
             "settling_time": self._settling_time(sim, res),
             "control_effort": summ["control_effort"],
             "torque_saturated_frac": summ["torque_saturated_frac"],
-            "censored": bool(not np.any(_attitude_error_deg(res) < sc["band_deg"])),
         }
 
     def _analyse(self, loaded, symbol: str, measured: dict) -> dict:
@@ -539,7 +536,6 @@ class CubesatOracle:
             "peakTorque": Quantity(measured["peak_torque"], u("SI::N*SI::m")),
             "peakMomentum": Quantity(measured["peak_momentum"], u("SI::N*SI::m*SI::s")),
             "controlEffort": Quantity(measured["control_effort"], u("SI::N*SI::m*SI::s")),
-            "censored": measured["censored"],
         }
         out = loaded.run_analysis(
             f"{PACKAGE}::SlewExperiment", subject=symbol, named_arguments=args
