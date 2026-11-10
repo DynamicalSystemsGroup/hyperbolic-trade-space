@@ -311,6 +311,12 @@ words_added = 6
 job = "says which side of the data the soft support sits on and that a few designs may exceed it (CR-1d)"
 reader = "the reader of the abstract alone who asked which side the surface sits on"
 
+[[abstract.raise]]
+date = "2026-11-10"
+words_added = 8
+job = "glosses monomial term at its first use as a product of powers of the metrics (WP24 A7), where the abstract said facet"
+reader = "the executive reader of the abstract alone, who said nobody had told him what a monomial is (the spike)"
+
 # Rows: PM-BRIEF ruling 2 (Theorem 11, descent): cell and facet kept apart.
 
 [[raise]]
@@ -554,7 +560,7 @@ reader = "the cold reader of Figure 1 who must read the grid without the text"
 date = "2026-11-10"
 section = "Case analysis"
 words_added = 58
-job = "states the rule that sets the proposer's radius and that the earlier radius was a typed constant"
+job = "states the rule that sets the proposer's radius"
 reader = "the reader judging whether the proposals were chosen by a rule or tuned"
 
 [[raise]]
@@ -591,3 +597,23 @@ section = "Discussion"
 words_added = 5
 job = "gives the duplicate proposal its antecedent and says that the three proposals checked are two designs"
 reader = "the reader weighing how much the check shows"
+
+# Rows: WP24 push 3, the word "facet" leaves the paper's prose (term for the model object, cell for
+# the assignment; WP24-scope-of-work.md, A2, A6, A7). Removed in the same push (cuts need no row;
+# recorded here): the Preliminaries' "A term, a monomial and a facet are one object: ..." and "We say
+# facet for the geometry and term for the algebra" (they explained the old word; the quilt sentence
+# of A6 takes their place, net -2 in "Preliminaries and notation"); "a facet:" in the posynomial
+# definition and the clause "those whose largest term is facet k's" in the share's definition (the
+# cell, defined in the posynomial definition, already says it; -8 in "Definitions"). Added without a
+# row (within the section's ceiling): "monomial" before the body's first "term" (+1, "The decision
+# problem"), "scores ... highest" for "dominates" (+1, "Results"), "the near-frontier designs in that
+# term's cell" for "that facet's near-frontier designs" in the K = 3 planes caption (+3, "Case
+# analysis"). The job row of 2026-11-10 on the proposer's radius no longer names the clause on the
+# typed constant, cut since.
+
+[[raise]]
+date = "2026-11-10"
+section = "Methods"
+words_added = 2
+job = "names the several-term fit as what alternates the weights, where a word swap would say that several terms alternate (WP24 push 3)"
+reader = "the reader who must not take a term for a step of the algorithm"

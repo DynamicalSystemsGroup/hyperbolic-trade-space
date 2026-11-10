@@ -115,7 +115,7 @@ note = "A statement of what the term does not mean (glossary not-clauses), not a
 
 [[claim]]
 id = "C007"
-fragment = "Where several trade-offs are active at once, the model is a sum of such terms, one per facet"
+fragment = "Where several trade-offs are active at once, the model is a sum of such terms, one per trade-off"
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "M"
@@ -129,7 +129,7 @@ note = "e^(kappa Phi_K) is a posynomial in m, the sum of K monomials; Definition
 
 [[claim]]
 id = "C008"
-fragment = "Two temperatures say how soft each maximum is, over designs and over facets; at infinity each is exact"
+fragment = "Two temperatures say how soft each maximum is, over designs and over terms; at infinity each is exact"
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "M"
@@ -210,7 +210,7 @@ note = "Section 5, assumption ii. Interface contract version 6: a finite term_te
 
 [[claim]]
 id = "C013"
-fragment = "The one-facet fit comes first: the invariant value and its shift (L1, L2), the fit as a convex program (L3 to L5)"
+fragment = "The one-term fit comes first: the invariant value and its shift (L1, L2), the fit as a convex program (L3 to L5)"
 file = "paper/paper.ipynb"
 anchor = "Results"
 kind = "M"
@@ -265,7 +265,7 @@ note = "Section 6.1; LSE = LME + (log N)/tau."
 
 [[claim]]
 id = "C016"
-fragment = "the soft maximum of Gaussian noise has a closed form (L6), and along a facet the exponents are elasticities and give the improvement factors to V=1 (L7)"
+fragment = "the soft maximum of Gaussian noise has a closed form (L6), and along a term the exponents are elasticities and give the improvement factors to V=1 (L7)"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -314,7 +314,7 @@ note = "Section 6.1; the converse is stated as not claimed in the L11 box."
 id = "C019"
 fragment = "The package fits with sharp weights at the default term temperature (infinity) and with soft weights at a finite one; a soft fit is certified by the second-order test"
 file = "paper/paper.ipynb"
-anchor = "The algorithm for several facets"
+anchor = "The algorithm for several terms"
 kind = "S"
 backing = [
   "file:work-packages/interface-contract.md",
@@ -330,9 +330,9 @@ note = "Section 6.2; WP17 R-1, R-7; the test is L17."
 
 [[claim]]
 id = "C020"
-fragment = "The sharp-weight fit meets three levels of guarantee, none global: descent (L15), numerical stationarity by the facet gap (L12) and local optimality where the margin is positive (L13, L14)"
+fragment = "The sharp-weight fit meets three levels of guarantee, none global: descent (L15), numerical stationarity by the term gap (L12) and local optimality where the margin is positive (L13, L14)"
 file = "paper/paper.ipynb"
-anchor = "The algorithm for several facets"
+anchor = "The algorithm for several terms"
 kind = "M"
 backing = [
   "lemma:L15",
@@ -349,7 +349,7 @@ note = "Section 6.2; as stated in their boxes."
 id = "C021"
 fragment = "At a finite term temperature a second-order test certifies a strict local minimizer (L17)"
 file = "paper/paper.ipynb"
-anchor = "The algorithm for several facets"
+anchor = "The algorithm for several terms"
 kind = "M"
 backing = [
   "lemma:L17",
@@ -361,9 +361,9 @@ note = "Section 6.2; a connective: the box states the conditions under which the
 
 [[claim]]
 id = "C022"
-fragment = "For a soft fit, certified means that the second-order test holds ... and stationary that the facet gaps hold and the curvature is not positive"
+fragment = "For a soft fit, certified means that the second-order test holds ... and stationary that the term gaps hold and the curvature is not positive"
 file = "paper/paper.ipynb"
-anchor = "The algorithm for several facets"
+anchor = "The algorithm for several terms"
 kind = "S"
 backing = [
   "file:work-packages/interface-contract.md",
@@ -381,7 +381,7 @@ note = "Section 6.2; interface contract version 6 ('certified' has two meanings;
 id = "C023"
 fragment = "Soft-fit certificate: at a feasible point of the soft-weight fit where the first-order (KKT) conditions hold"
 file = "paper/paper.ipynb"
-anchor = "The algorithm for several facets"
+anchor = "The algorithm for several terms"
 kind = "M"
 backing = [
   "lemma:L17",
@@ -536,7 +536,7 @@ note = "The fit takes the entropic soft maximum of the scores over the designs (
 
 [[claim]]
 id = "C034"
-fragment = "one facet blends the subsystems' trade-offs into a single tension; three facets separate the contending sets"
+fragment = "one term blends the subsystems' trade-offs into a single tension; three terms separate the contending sets"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "R"
@@ -552,7 +552,7 @@ note = "On the primary regime the K = 1 fit reports one contending set and the K
 
 [[claim]]
 id = "C035"
-fragment = "Each facet, a piece of the surface and not a set of designs, names the metrics that contend on it"
+fragment = "Each monomial term, a piece of the surface and not a set of designs, names the metrics that contend on it"
 file = "paper/paper.ipynb"
 anchor = "The decision problem"
 kind = "M"
@@ -878,7 +878,7 @@ note = "D.16 reads principal directions of the near-frontier chart (cell tab-D-p
 
 [[claim]]
 id = "C060"
-fragment = "The one-facet fit is a geometric program, convex in the logarithmic variables"
+fragment = "The one-term fit is a geometric program, convex in the logarithmic variables"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -938,7 +938,7 @@ note = "706 designs: nondominated 7-8 on 2, 145-146 on 4, 671 on 10 attributes; 
 
 [[claim]]
 id = "C065"
-fragment = "while the fit returns an exponent vector per facet, a band of near-frontier designs and an effective sample size"
+fragment = "while the fit returns an exponent vector per term, a band of near-frontier designs and an effective sample size"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -1022,7 +1022,7 @@ note = "rows 20 and 21: abstracts give weights restrictions arising from applica
 
 [[claim]]
 id = "C072"
-fragment = "We fit one exponent vector per facet, a global named structure"
+fragment = "We fit one exponent vector per term, a global named structure"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -1034,7 +1034,7 @@ note = "exponents_ has shape (K,d), one simplex point per facet, fitted from the
 
 [[claim]]
 id = "C073"
-fragment = "Our facets are piecewise log-linear with constant elasticities within a facet"
+fragment = "Our surface is piecewise log-linear, with constant elasticities within a term"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1286,7 +1286,7 @@ note = "L5.24 gives J_inf = max_i w.u_i; the epigraph LP is what solve_lp implem
 
 [[claim]]
 id = "C094"
-fragment = "At finite $\\tau$ one facet is a geometric program, convex after the change of variables $x=e^{w}$"
+fragment = "At finite $\\tau$ one term is a geometric program, convex after the change of variables $x=e^{w}$"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1322,7 +1322,7 @@ note = "reading_pass.yaml n=37 boyd2007tutorial verdict supported (sect. 5.3 gen
 
 [[claim]]
 id = "C097"
-fragment = "Several facets alternate weights with one program for all terms"
+fragment = "The several-term fit alternates weights with one program for all terms"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1418,7 +1418,7 @@ note = "no predict attribute asserted; TradeSpaceRegressor composes a regressor 
 
 [[claim]]
 id = "C105"
-fragment = "*One facet at $K=1$:* constant elasticities; $K>1$ is built."
+fragment = "*One term at $K=1$:* constant elasticities; $K>1$ is built."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -1430,7 +1430,7 @@ note = "elasticity -w_k/w_j constant along a facet (L7.5); K>1 implemented and r
 
 [[claim]]
 id = "C106"
-fragment = "facets are fitted at $\\kappa=\\infty$ with kinks on the ridges"
+fragment = "terms are fitted at $\\kappa=\\infty$ with kinks on the ridges"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -1454,7 +1454,7 @@ note = "max_k x_k <= Phi_K <= max_k x_k + (log K)/kappa"
 
 [[claim]]
 id = "C108"
-fragment = "on each facet the normal is an ascent direction in log space"
+fragment = "on each term the normal is an ascent direction in log space"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1670,7 +1670,7 @@ note = "Docs has a user-guide section (mkdocs nav User guide, docs/user-guide/*.
 
 [[claim]]
 id = "C126"
-fragment = "Beyond one facet, K > 1 is built"
+fragment = "Beyond one term, K > 1 is built"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -1742,7 +1742,7 @@ note = "register_table builds the table from glossary.yaml; tests check rows equ
 
 [[claim]]
 id = "C132"
-fragment = "every facet is fitted against every design, each offset"
+fragment = "every term is fitted against every design, each offset"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
@@ -1910,7 +1910,7 @@ note = "cell_ is argmax over the fitted scores, analysis not part of the model; 
 
 [[claim]]
 id = "C146"
-fragment = "which facet dominates a design is analysis of the fitted model"
+fragment = "which term scores a design highest is analysis of the fitted model"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "P"
@@ -1934,7 +1934,7 @@ note = "SysML model, evaluation code (adcs_sim.py, cubesat_model.py) read by the
 
 [[claim]]
 id = "C148"
-fragment = "`certified`: the assignment is fixed, residuals and gaps are within tolerance, no facet is empty and the margin is positive; levels 1 to 3 hold."
+fragment = "`certified`: the assignment is fixed, residuals and gaps are within tolerance, no cell is empty and the margin is positive; levels 1 to 3 hold."
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
@@ -1946,7 +1946,7 @@ note = "Termination docstring and contract define certified as stated; test pins
 
 [[claim]]
 id = "C149"
-fragment = "`stationary_without_margin`: the same with a zero margin or an empty facet; levels 1 and 2 only."
+fragment = "`stationary_without_margin`: the same with a zero margin or an empty cell; levels 1 and 2 only."
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
@@ -1970,7 +1970,7 @@ note = "statuses pinned and reported apart from certified; since 18d0064 iterati
 
 [[claim]]
 id = "C151"
-fragment = "`not_applicable`: a penalty, the tangent step or a single facet; the gaps are diagnostics."
+fragment = "`not_applicable`: a penalty, the tangent step or a single term; the gaps are diagnostics."
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
@@ -1982,7 +1982,7 @@ note = "tangent step, penalty, single facet and soft fit at tau=inf all asserted
 
 [[claim]]
 id = "C152"
-fragment = "The record also holds the largest facet gap, the Corollary bound, the margin, the stable radius and the shares."
+fragment = "The record also holds the largest term gap, the Corollary bound, the margin, the stable radius and the shares."
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
@@ -1994,7 +1994,7 @@ note = "the Termination fields (max_gap, bound, gamma, radius, shares) are the c
 
 [[claim]]
 id = "C153"
-fragment = "says that refitting a facet on its own rows is ill-posed"
+fragment = "says that refitting a term on its own rows is ill-posed"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "R"
@@ -2030,7 +2030,7 @@ note = "definitions pinned (mean_slack_ at K=1 and K>1, objective_ = soft max at
 
 [[claim]]
 id = "C156"
-fragment = "The tension report runs a principal component analysis on the chart coordinates Z of a facet's near-frontier designs."
+fragment = "The tension report runs a principal component analysis on the chart coordinates Z of the near-frontier designs in a term's cell."
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"

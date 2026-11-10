@@ -34,7 +34,7 @@ from _env import ENV_VAR, REFERENCE_FILE, VALUES_FILE, exact_only, listed
 # exact only there (``_current``), and elsewhere the reproducible content, which is the text with
 # its numbers within the tolerance stated for it. Every generated table of the paper and its
 # appendices is checked BEFORE it is committed for quantities that depend on ties at the exact
-# maximum (termination statuses, margins near 1e-16, errors on tied facets), on step counts of an
+# maximum (termination statuses, margins near 1e-16, errors on tied terms), on step counts of an
 # adaptive solver (settling or slew times, saturated fractions, iteration counts) or on hashes of
 # floats: such a quantity is either not printed or listed as exact-only in
 # environment_values.toml with its reason. The gated test
@@ -253,15 +253,16 @@ def test_keywords_name_no_tool_or_library():
 def test_abstract_and_section_5_say_the_one_term_fit_is_a_geometric_program():
     """The surface is posynomial (the abstract says "a fitted posynomial reference surface", the
     supervisor's reading of 2026-11-09) and section 5 keeps one cited sentence that the invariant is
-    a generalized posynomial; one facet is a geometric program (convex after the log change of
-    variables, L4.14 to L4.24); several facets alternate weights with one program for all terms
-    (R-39: no design is assigned to a facet in the fit). Nothing says
-    the several-facet fit is itself a convex program or a GGP. The abstract (the supervisor's
+    a generalized posynomial; one term is a geometric program (convex after the log change of
+    variables, L4.14 to L4.24); the several-term fit alternates weights with one program for all
+    terms (R-39: no design is assigned to a cell in the fit). Nothing says
+    the several-term fit is itself a convex program or a GGP. The abstract (the supervisor's
     reading of 2026-11-09, R-38) says it plainly: a single n-lemma fits a monomial, which
     transforms into a convex program; with several active trades the model is a posynomial,
     compatible with generalized geometric programming (GGP); any kernel that keeps that
     compatibility generalizes the method. It does not say the several-term fit is a GGP or
-    convex, and says nothing of assigning designs to facets."""
+    convex, and says nothing of assigning designs to cells. WP24 (A7): the first use of "monomial
+    term" is glossed as a product of powers of the metrics, and the old word is gone."""
     nb = _nb(PAPER_NB)
     fm = yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"]
     flat = " ".join(fm.split())
@@ -274,6 +275,7 @@ def test_abstract_and_section_5_say_the_one_term_fit_is_a_geometric_program():
         "any kernel that keeps that compatibility",
         "elasticities: the percentage of one metric given up per percentage gained in another",
         "Like PCA, our method is unsupervised feature engineering; the two answer",
+        "Each monomial term (a product of powers of the metrics) reports its contending metrics",
     ):
         assert phrase in flat, phrase  # fmt: skip
     for gone in (  # R-38: cut from the abstract at the supervisor's direction (the body keeps them)
@@ -287,6 +289,7 @@ def test_abstract_and_section_5_say_the_one_term_fit_is_a_geometric_program():
     ):
         assert gone not in flat, gone  # fmt: skip
     assert "several-term" not in flat and "several facets" not in flat
+    assert "facet" not in flat.lower() and flat.index("monomial term") < flat.index("monomial,")
     methods = _section("Methods")
     for phrase in (
         "geometric program",
@@ -342,7 +345,7 @@ def test_the_case_is_described_as_power_mass_and_attitude_control():
     fm = " ".join(yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"].split())
     assert "cubesat model coupling power, mass and attitude control" in fm
     assert len(re.findall(r"cubesat", fm)) == 1  # one sentence: the case and what it shows
-    for count in ("ten attributes", "controller-gain"):  # PM-BRIEF ruling 1: facets may be counted
+    for count in ("ten attributes", "controller-gain"):  # PM-BRIEF ruling 1: terms may be counted
         assert count not in fm, count  # fmt: skip
     prose = _markdown(nb) + _markdown(_nb(SUPPORT_NB))
     assert "attitude determination and control system" not in prose
@@ -918,7 +921,7 @@ def test_c_defines_the_dataset_labels_and_names_each_dataset_once():
 
 
 def test_c_contains_no_fitted_quantity():
-    """R-26: no exponent fitted, temperature, value of V, facet found, reach or share in C."""
+    """R-26: no exponent fitted, temperature, value of V, term found, reach or share in C."""
     for c in _cells_of("C"):
         text = _out_text(c)
         assert not FITTED_WORDS.search(text), (c.id, FITTED_WORDS.search(text).group(0))
@@ -1002,8 +1005,8 @@ def _cells_of_table(text: str) -> list[str]:
 
 @pytest.mark.slow
 def test_term_numbered_tables_are_current():
-    """The tables whose rows follow the facet numbering: exact in the environment of record,
-    elsewhere the same cells in whatever order the facets are numbered (gap G-10)."""
+    """The tables whose rows follow the term numbering: exact in the environment of record,
+    elsewhere the same cells in whatever order the terms are numbered (gap G-10)."""
     import generate_results
 
     exact = exact_only("term_numbered_tables")
@@ -1056,7 +1059,7 @@ def _permute_live_terms(monkeypatch, perm):
 
 @pytest.mark.skipif(not os.environ.get("PAPER_EXECUTE"), reason="set PAPER_EXECUTE=1 (about 40 s)")
 def test_a_different_term_order_gives_the_same_tables_d2_d3_d8_and_the_sentence(monkeypatch):
-    """Facets are matched to the committed labels by exponent vector, never by index (G-11)."""
+    """Terms are matched to the committed labels by exponent vector, never by index (G-11)."""
     import itertools
 
     import generate_findings as gf
@@ -1078,7 +1081,7 @@ def test_a_different_term_order_gives_the_same_tables_d2_d3_d8_and_the_sentence(
 
 
 def test_the_match_follows_the_stored_exponent_vectors_for_any_stored_order():
-    """The label of a live facet is that of the stored facet nearest by L1 distance, one to one."""
+    """The label of a live term is that of the stored term nearest by L1 distance, one to one."""
     import itertools
 
     import paper_terms as pf
@@ -1800,7 +1803,7 @@ def test_simplifying_assumptions_are_named_where_made_and_taken_up_in_future_wor
     """R-6: the named assumptions of the supervisor's rule appear in Methods and in Section 12."""
     methods, future = _section("Methods"), _section("Future work and final remark")
     for marker in (
-        "One facet",
+        "One term",
         "Sharp weights",
         "analyst chooses",
         "Small $K$",
@@ -1808,7 +1811,7 @@ def test_simplifying_assumptions_are_named_where_made_and_taken_up_in_future_wor
         "log-convex envelope",
     ):
         assert marker.lower() in methods.lower(), marker
-    later = ("beyond one facet", "sharp weights", "analyst's k", "small k", "log-affine")
+    later = ("beyond one term", "sharp weights", "analyst's k", "small k", "log-affine")
     later += ("log-convex envelope", "continuous variables", "illustrative hardware")
     for marker in later:
         assert marker in future.lower(), marker
@@ -1960,8 +1963,8 @@ def test_generated_sentences_quote_the_ranges_from_the_results_file(case_sentenc
         assert "term gap below 1e-12" in cert
     # the term shares moved from the sentence to the terms table of Appendix D (D.3), where each
     # is printed to the digits that hold over the datasets, never the committed value alone
-    facets = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-exponents_and_terms")
-    primary = _out_text(facets).split("Dataset cubesat-stock", 1)[0]
+    terms = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-exponents_and_terms")
+    primary = _out_text(terms).split("Dataset cubesat-stock", 1)[0]
     for k in (1, 2, 3):
         name = f"D terms K=3 | primary | {k} | share"
         e = q[name]
@@ -2087,15 +2090,15 @@ def test_appendix_b_shows_every_result_of_the_record_with_derived_counts():
     assert f"{results} results in {len(record)} files and {steps} steps" in text
     last = max(lem["number"] for lem in record.values())  # derived from the record, never typed
     assert f"(L12 to L{last})" in text and "L15. descent" in _proof_text()
-    heading = f"### B.2 The several-facet fit and its levels of guarantee (L12 to L{last})"
+    heading = f"### B.2 The several-term fit and its levels of guarantee (L12 to L{last})"
     assert heading in _src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-B-2"))
 
 
 def test_the_claims_of_c1_have_their_true_basis():
-    """C-1: facets unchanged under smoothing is by construction; outward monotonicity is Open; the
+    """C-1: terms unchanged under smoothing is by construction; outward monotonicity is Open; the
     principal directions are a reading; the own-rows refit points to its number in Appendix D."""
     methods = _section("Methods")
-    assert "by construction" in methods and "leaves the facets unchanged" in methods
+    assert "by construction" in methods and "leaves the terms unchanged" in methods
     assert not re.search(r"unchanged \(\{prf:ref\}`thm-extension`\)", methods)
     search = _section("Search of the design space")
     assert "**Open.** Outward monotonicity" in search
@@ -2111,7 +2114,7 @@ def test_the_claims_of_c1_have_their_true_basis():
 
 @pytest.mark.slow
 def test_appendix_d_prints_the_conditioning_diagnostic():
-    """G-4: the column `conditioning_` is printed per regime, K and facet."""
+    """G-4: the column `conditioning_` is printed per regime, K and term."""
     cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-conditioning_diagnostic")
     assert "`conditioning_`" in _out_text(cell)
     assert _out_text(cell) == str(generate_results.conditioning_diagnostic())
@@ -2260,7 +2263,7 @@ def test_generated_tables_do_not_move_under_platform_perturbation(tmp_path):
 
     A run with one BLAS thread and a run with four must agree with the plain run exactly; a run
     with the restart order permuted (``random_state`` shifted) may move only the names listed under
-    ``[perturbation]`` in ``paper/environment_values.toml`` (the facet-numbered tables and the
+    ``[perturbation]`` in ``paper/environment_values.toml`` (the term-numbered tables and the
     multi-modal D.14), each of which the audit table there explains.
     """
     allowed = set(tomllib.loads(VALUES_FILE.read_text(encoding="utf-8"))["perturbation"][
@@ -2308,8 +2311,8 @@ def test_cr4_5_6_the_term_share_is_described_and_the_terms_carry_their_clause():
     """(4) no analogy to explained variance; (5) energy differential; (6) n-lemma."""
     definitions = _section("Definitions")
     assert "explained variance" not in definitions.lower()
-    # WP11 round 1b CR-8: the share counts the rows of a facet's cell (ruling 2), not "dominates"
-    assert "in the cell of facet $k$" in definitions and "depends on the band" in definitions
+    # WP11 round 1b CR-8: the share counts the rows of a term's cell (ruling 2), not "dominates"
+    assert "in the cell of term $k$" in definitions and "depends on the band" in definitions
     assert "dominates" not in definitions
     assert "the level of a potential relative to the fitted reference surface" in definitions
     front = _src(_nb(PAPER_NB).cells[0])

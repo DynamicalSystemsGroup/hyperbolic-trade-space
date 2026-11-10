@@ -402,6 +402,29 @@ The register's committed output (`tab-A-register`) is current here and on the Ma
 was a stale output (da2984e added three glossary entries without compiling Appendix A: 51 rows committed, 54 entries),
 compiled in the push 2 run above (27dab4d); no row differs across platforms. No number of the paper moved.
 
+## Regeneration after the paper's prose took the vocabulary (WP24 push 3, 2026-11-10, image e852cde39180, head 3a66e78)
+
+The word "facet" left the prose of both notebooks (WP24 push 3): "term" or "monomial term" for the model object,
+"cell" for the designs a term scores highest, the abstract's gloss of "monomial term" and the Preliminaries' quilt
+sentence; the two tau = infinity sentences of R1 keep the textbook word with the vocabulary tool's exempt marker. The
+image was not rebuilt (no change to `src/`, `paper/*.py` or the derivation since 90c8848). Steps, `--network none`,
+`HTS_ENVIRONMENT_OF_RECORD=1`: `docker create --name hts-wp24p3 --network none hts-paper sh /tmp/run.sh`, the files
+changed since 90c8848 that the paper or the tests read copied in with `docker cp` (both notebooks,
+`claims_register.toml`, `paper/length_ledger.toml`, `tests/test_paper.py`, and the files of the units since: the gaps
+ledger, the behavioural view's files and its paper copy, `diagnostic_pair.py`, the three paper-sources notes,
+`tests/test_narrative.py`, `tests/test_system_model_v2_r1.py`, `derivation/PROOF_MAP_FINDINGS.md`), `docker start -a`;
+both notebooks copied out; `hts-wp24p3` removed by name.
+
+| command (inside `hts-paper`) | wall time | result |
+|---|---|---|
+| `uv run python paper/paper_common.py` | 3 s | `environment_reference.npz` and `environment_values.toml` unchanged |
+| `uv run python paper/execute_notebooks.py` | 115 s | both notebooks; every output cell byte-equal to the commit (the Markdown cells carry the change); `tab-F-toolchain` keeps 90c8848 |
+| `sh paper/container/build-paper.sh` | 5 s | the site built (a favicon 404 line from the builder's server, no error) |
+| `uv run pytest -q -n 4 tests/test_paper.py tests/test_paper_sources.py tests/test_narrative.py tests/test_claims_register.py tests/test_paper_static_figures.py` | 74 s | 187 passed, 2 failed, 4 skipped: the two failures are `test_register_phrases_are_used_in_the_body` and `test_register_phrases_are_used_in_the_main_text_itself`, which read the register phrase `facet gap` from `docs/superpowers/notes/notation.md` (outside the push; the paper says "term gap"); the Appendix B tests pass, so 7fad5ff's row is settled |
+| `PAPER_EXECUTE=1 uv run pytest -q tests/test_paper.py -k "perturbation or clean_kernel or term_order"` | 411 s | 4 passed |
+
+No number of the paper moved. The environment of record stays `e852cde39180`.
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes
