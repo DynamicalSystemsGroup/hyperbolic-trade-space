@@ -342,7 +342,7 @@ def test_the_case_is_described_as_power_mass_and_attitude_control():
     fm = " ".join(yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"].split())
     assert "cubesat model coupling power, mass and attitude control" in fm
     assert len(re.findall(r"cubesat", fm)) == 1  # one sentence: the case and what it shows
-    for count in ("ten attributes", "controller-gain", "three facets", "one facet reports"):
+    for count in ("ten attributes", "controller-gain"):  # PM-BRIEF ruling 1: facets may be counted
         assert count not in fm, count  # fmt: skip
     prose = _markdown(nb) + _markdown(_nb(SUPPORT_NB))
     assert "attitude determination and control system" not in prose
@@ -601,10 +601,19 @@ def test_register_phrases_are_used_in_the_body():
 
 
 @needs_prose
+def abstract_cap() -> int:
+    """The abstract's cap: 200 words plus the ledger's ``[[abstract.raise]]`` rows."""
+    abstract = _ledger().get("abstract", {"cap": 200})
+    return abstract["cap"] + sum(r["words_added"] for r in abstract.get("raise", []))
+
+
 def test_abstract_within_200_words():
-    """R-13 L-A (hook, active with the prose)."""
+    """R-13 L-A (hook, active with the prose); a raise is a ledger row with its job."""
     fm = yaml.safe_load(_src(_nb(PAPER_NB).cells[0]).split("---")[1])
-    assert len(fm["abstract"].split()) <= 200
+    assert _ledger()["abstract"]["cap"] == 200
+    for row in _ledger()["abstract"].get("raise", []):
+        assert set(row) == {"date", "words_added", "job", "reader"}, row
+    assert len(fm["abstract"].split()) <= abstract_cap()
 
 
 @needs_prose
@@ -1734,7 +1743,7 @@ def test_reader_depth_anchors_are_all_present():
     on the index page); L-B headings, the main-results list and the statements; L-D pointers."""
     nb = _nb(PAPER_NB)
     fm = yaml.safe_load(_src(nb.cells[0]).split("---")[1])
-    assert fm["title"] and len(fm["abstract"].split()) <= 200
+    assert fm["title"] and len(fm["abstract"].split()) <= abstract_cap()
     first = " ".join(_src(c) for c in nb.cells[: [c.id for c in nb.cells].index("sec-prior-art")])
     for phrase in ("chart", "reversible", "position along the surface"):  # in words, no picture
         assert phrase in first, phrase

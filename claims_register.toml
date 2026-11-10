@@ -536,7 +536,7 @@ note = "The fit takes the entropic soft maximum of the scores over the designs (
 
 [[claim]]
 id = "C034"
-fragment = "a single facet gives one tension, several separate sets"
+fragment = "one facet blends the subsystems' trade-offs into a single tension; three facets separate the contending sets"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "R"

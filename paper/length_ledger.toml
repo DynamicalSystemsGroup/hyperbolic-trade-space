@@ -264,3 +264,22 @@ section = "Discussion"
 words_added = 92
 job = "keeps three claims apart in one paragraph (the certificate, the description of this table, usefulness outside it), and says designed samples are not independent observations (findings A1 and A7)"
 reader = "the decision-maker and the analyst deciding what a certified fit licenses"
+
+# The abstract's own cap (tests/test_paper.py::abstract_cap): 200 words plus the rows below.
+# PM-BRIEF ruling 1 (WP11 round 1b, CR-1b): no word of the rest of the abstract does no work; each
+# is the supervisor's, pinned by a test or a claims-register fragment, so the cap is raised.
+
+[abstract]
+cap = 200
+
+[[abstract.raise]]
+date = "2026-11-09"
+words_added = 3
+job = "names the object the table and its reading are views of, the model, which 4 of 4 readers missed"
+reader = "the reader of the abstract alone"
+
+[[abstract.raise]]
+date = "2026-11-09"
+words_added = 7
+job = "states the case's finding in the main-results list's words: one facet blends the subsystems' trade-offs, three facets separate the contending sets"
+reader = "the reader of the abstract alone, 3 of 4 of whom read nothing in the old ending"
