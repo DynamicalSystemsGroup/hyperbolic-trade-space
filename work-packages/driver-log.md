@@ -7,6 +7,15 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- (2026-11-10, 02:25) **Do proposals that fail a model requirement count as check designs?** Under the stated
+  reach rule the proposer returns three proposals on the settling-time view; two are one configuration; all three
+  sit at the small end of the battery range (22 to 25 Wh) and fail the depth-of-discharge requirement, because the
+  proposer trains on the settled, momentum-safe, power-positive rows (as WP7 did) and the chart has no
+  depth-of-discharge axis. The log V claim holds for 3 of 3 and the position claim now for 1 of 3 (was 0 of 3).
+  Options: keep them as check designs and let the section say the proposer does not see the feasibility flag; or
+  train the proposer on the fully feasible rows (a method change to the check, scoped); or drop the proposals and
+  keep the three hand-written candidates. The driver's recommendation: the first for 0.1, said plainly, with the
+  second recorded as future work. Non-blocking; the paper's sentences follow whatever you choose.
 - (2026-11-10, 00:35) **Two findings of WP23 round 3 for your decision at the gate (the gate proceeds; these
   come with the threshold popup).** (1) The metric set carries two redundancies the data make plain: eclipse reserve
   and depth of discharge are one quantity (Spearman -0.9994; the reserve 0.3C - D and the ratio D/C are the same

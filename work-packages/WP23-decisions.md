@@ -113,3 +113,27 @@ third decimal on the new view, so the change is the metric swap. The rule adopte
 nearest predicted distances to the 300 most isolated holes, checked on the old view and applied to the new; the
 proposer no longer raises below three proposals; the paper's check sentence follows the count. For the
 supervisor: the earlier 0.35 was a constant that happened to work, which the record now says.
+
+## The data gate: the comparison read, two calls (2026-11-10, 02:25; the driver under "Proceed, I review after")
+
+D-9 is `work-packages/swap-evidence.md`, "WP23 data gate: old v2 ... against new v2", read by the driver; its method
+separates causes (old data at ten metrics, old data at nine, new data at nine). Every moved number has a cause: the
+column change (slew time out) changes the contending sets and the leaders; the event-detected settling time moves
+the K = 3 shares by at most the jitter's size; flags, feasible sets and certificate statuses are unchanged.
+
+**The swap.** Accepted on the comparison and the Linux verdict (8507bd9 green in three shards); the Mac tier 2
+verdict on the same head is owed before the call is final (the watcher's worktree had gone dirty and was cleaned at
+02:20). A red Mac reopens the call. With it, the WP23 model is the model of record, the nine-metric datasets are the
+data of record, and the paper moves onto them.
+
+**The per-term report on the primary regime at K = 3 (the PM's question).** The report refuses because one term
+(share 0.034) has fewer near-frontier rows than its guard of ten; it refuses on the old data at nine metrics too, so
+the cause is the column change. Decision: the fit is reported from the estimator (three terms, their exponents, cells,
+shares and certificate: the model's contending sets exist for all three), and the association reading (the
+analysis, which needs rows) is drawn per term where the rows meet the guard, with the thin term's panel replaced by
+its reason in one sentence ("too few near-frontier designs for an association reading: n of ten"). No third band
+(a loosened band is a tuning), no K = 2 in its place (a substitution would add where the rule says cut). The
+generators `num-k-sweep`, `fig-tensions-k3` and Appendix D.3 are adapted to per-term availability. The case claim
+"one term blends the subsystems' trade-offs into a single tension; three terms separate the contending sets" is
+read from the exponents and stands with sharper content: one term in the primary regime no longer sees the control
+trade-off at all (control effort 1e-17); three terms find it in a term of its own. For the supervisor's review.
