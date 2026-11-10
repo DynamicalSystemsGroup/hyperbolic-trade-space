@@ -226,6 +226,116 @@ inside the SlewTimeRequirement box (both readers of this view) and on the
 «satisfy» and «verify» lines, which a decision maker cannot read. Options for a later round of the
 model's projection: drop or explain the note; leave the stereotype lines out of the paper's version.
 
+
+---
+
+## 19c, 19d, 19e: recipes and sentence-test verdicts (written before any read of this round)
+
+Images: the committed outputs `paper/figures/fig-*.png` (last regenerated at 03189c5), opened in the
+Read tool (image view). The paper's current captions are quoted from `paper/paper.ipynb` at 125360f.
+
+### C-c1: Figure 1, the temperature sweep (S-c1); keep, read
+
+- Intended takeaway: the temperature is chosen where the fraction of designs above V = 1 reaches the
+  target; the effective sample shrinks as τ grows; the exponents change little across τ, so the
+  reading does not hang on the choice.
+- Sentence: "The selected τ puts the target fraction of designs above V = 1, at the cost of a small
+  effective sample, and the exponents move little across τ."
+- Hypothesis H-c1: a P2 reader at L-B says from the image that the vertical bar marks a chosen
+  temperature where the top-left curve crosses its line, and that the exponents' pattern holds across
+  τ; a P1 reader at L-B says a setting was chosen by a rule. Fails if neither connects the bar to the
+  crossing.
+- Caption: unchanged.
+
+### C-d1: Figure 2, planes at K = 1 (S-d1); keep, read
+
+- Intended takeaway: designs fall along a downward line: slew time is traded for control effort; the
+  facet's line is the reference surface in this plane.
+- Sentence: "At K = 1 slew time and control effort trade along one line."
+- Hypothesis H-d1: P1 and P2 at L-B name the two metrics and the downward trade-off from the image
+  alone. Caption: unchanged.
+
+### C-d2: Figure 3, planes at K = 3 (S-d2); caption clause, read
+
+- Intended takeaway: with three facets the surface bends; different facets carry different pairs;
+  the bottom panel's bands are the discrete alternatives, not noise.
+- Data check for the clause (`case.load_study("primary").feasible`, grouped by `wheel_class` and
+  `st_grade`): with the small or the medium wheel, peak slew power takes one value per wheel class and
+  tracker grade (six values: 1.30, 1.50, 1.80, 2.00, 2.40, 2.60 W); with the large wheel it varies
+  (5.5 to 7.4 W). So the six horizontal bands at the top of the bottom panel are those six
+  combinations, and the low cloud is the large wheel.
+- Caption (current, plus the clause): "Log-metric planes of the K = 3 fit with the near-frontier band;
+  designs coloured by facet, lines the facets. In the bottom panel peak slew power is set by the
+  discrete choices: with the small or medium wheel it takes one value per wheel class and tracker grade
+  (the six horizontal bands); the large wheel's designs form the lower cloud."
+- Hypothesis H-d2: P3 and P6 at L-B, after the caption, attribute the bands to the wheel and tracker
+  choices and do not infer an unnamed variable; from the image alone at least one says the lines bend
+  or differ between facets.
+
+### C-d3: Figure 4, the chart at K = 3 (S-d3); sentence test, then drop
+
+- Intended takeaway: designs of different facets occupy different regions of the chart's position.
+- Sentence: "Designs dominated by different facets occupy different regions of the chart's position."
+- Evidence already in: round 1, 4 of 6 readers "coloured dots on unexplained Z coordinates"; round 1b,
+  least helpful for 2 of 6, "I saw clusters by colour but took nothing from it I could repeat". The
+  image (opened): three colours overlap heavily in both panels; the regions are not separable by eye;
+  the coordinates have no meaning alone.
+- Verdict: the sentence carries all a reader took; a caption cannot make overlapping clouds separate,
+  and a redraw would need a new intent (no coordinate of the chart has a meaning a reader can name).
+  **Drop; the sentence stays** (the paper stream decides whether the sentence enters the K = 3
+  paragraph; the facet shares are in Appendix D.3). No new read is spent on it.
+
+### C-d4: Figure 5, tensions at K = 3 (S-d4); keep, read
+
+- Intended takeaway: each facet trades a different set of metrics (orange cells: tension), and the
+  outlined diagonal cells are its contending set; w grades each member.
+- Sentence: as the slot list.
+- Hypothesis H-d4: P5 at L-C and P2 at L-B, after the caption, read negative association as tension,
+  the outlines as the contending set and w as the fitted exponent, and name one pair in tension on one
+  facet. Caption: unchanged (its "w" clause landed before WP11 round 1b).
+
+### C-d5: Figure 6, the two regimes (S-d5); caption clause, read
+
+- Intended takeaway: the two regimes' contending sets differ (mass contends with aggressive gains,
+  not with stock gains), so the gains change what trades.
+- Caption (current, plus the "w" clause CR-4 asks for): "The two regimes: association among
+  near-frontier designs at K = 1, primary (aggressive controller gains) above, stock (stock gains)
+  below; outlined: the contending set; w is the fitted exponent of each metric."
+- Hypothesis H-d5: P1 and P6 at L-B, after the caption, say the outlined sets differ between the
+  panels and name one metric in one set and not the other.
+
+### C-d6: the ternary on the shared metrics (S-d6); sentence test, no figure
+
+- Sentence: "On the three metrics both regimes share, the one-facet fit sits between the three
+  facets: one facet blends what three separate."
+- Verdict: **no figure**. Drawn, it is five markers in an otherwise empty triangle with their weights
+  in a legend, the form of the docs' cubesat triangle that the supervisor called "pretty vacuous"
+  and of which `figure-review.md` makes the worked failure; the sentence and Figures 5 and 6 carry the
+  point. Nothing is drawn.
+
+### C-d7: Figure 7, predicted against measured (S-d7); sentence test, then drop
+
+- Intended takeaway (the paper's own finding, generated sentence `num-predict`): the regressor
+  predicts each proposal's level within its band for 3 of 3, but its position within the band for 0 of
+  3 (errors 1.4 to 3.1 bands).
+- The image (opened): open circles and diamonds sit a fraction of a unit apart on axes spanning four
+  units, so every pair looks close; nothing in the image gives the band as a scale, and the level, the
+  part the regressor gets right, is not drawn. The bottom panel's vertical axis reads "Z1" while it
+  plots Z2 (a defect in `case.predict_check_figure`, passed to the PM).
+- Evidence already in: round 1, "could not tell good from bad" (4 of 6); round 1b, all six read
+  "predictions matched measurements", which is the opposite of the finding for position.
+- Verdict: the figure conveys a belief the text contradicts; a caption cannot rescale it, and a
+  redraw belongs to `examples/adcs/case.py` (outside this package's files). **Drop; the generated
+  sentence `num-predict` stays** and the Appendix D.10 table carries the numbers. No new read.
+
+### C-e1: stability of the several-term fit (S-e1); sentence test, no figure
+
+- The appendix's stability results are tables (D.11 jitter, D.12 conditioning, D.13 refit on a
+  facet's rows); no resampling of the K = 3 fit exists in the paper. The spike's 40-resample triangle
+  is the grouped (by subsystem) form, which is dropped, and an ungrouped version would add a new
+  analysis with new numbers (a non-goal). **No figure**; noted for the supervisor as a possible
+  appendix item.
+
 ---
 
 ## Ready for placement (for the paper stream; R-14: the PM routes them; nothing here edits the notebook)
