@@ -33,7 +33,9 @@ print(report.lemma_name, report.contending_set)
 print(report.exponents.round(2))
 ```
 
-The output is `trilemma [0 1 2]` and then `[0.3  0.37 0.33]`.
+The output is `trilemma [0 1 2]` and then `[0.3  0.37 0.33]`. `temperature`, the one parameter
+set, is tau, how hard the maximum is; the band of near-frontier designs has width 1/tau
+([choosing the temperature](user-guide/fitting.md#choosing-the-temperature)).
 
 The idea is easiest to see with two of the metrics, where the model is a line. In the log plane of
 metrics 0 and 1 the designs lie on or just beyond a straight frontier, and the grey strip under the line
@@ -61,9 +63,9 @@ trilemma. The set is found from the data and not chosen in advance. `report.expo
 fitted weights at the fit temperature; their ratios are the elasticities between the contending
 metrics, with a minus sign (`report.elasticities`).
 
-The fitted object has more to give. `ts.score_samples(X)` is the log of V for each design, the energy
-differential to the fitted reference surface: negative inside, positive beyond. `ts.transform(X)`
-is the chart, `d - 1` position coordinates plus that log V, and `ts.inverse_transform` undoes it.
+The fitted object has more to give. `ts.score_samples(X)` is, for each design, the log of V, the
+invariant value: a weighted geometric mean of the metrics, 1 on the fitted reference surface, so
+negative inside and positive beyond. `ts.transform(X)` is the chart, `d - 1` position coordinates plus that log V, and `ts.inverse_transform` undoes it.
 
 ## Your own data
 
