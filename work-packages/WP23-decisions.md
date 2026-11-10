@@ -284,3 +284,27 @@ band designs excluded, K = 1 exponent, price against the band, the two largest e
 Appendix D and the docs' case page, in the close-out regeneration; no figure (the table says what the ladder figure
 would). The paper's Discussion is the supervisor's: options D1 (one short paragraph), D2 (one sentence pointing to
 Appendix D), D3 (nothing); recorded under "Waiting for the supervisor" with the driver's recommendation, D2.
+
+## Spike A, the fit with and without the infeasible designs (2026-11-10, 08:45; `WP23-rounds/spikes/spike-A-with-and-without-infeasible.md`)
+
+The reading: removing the infeasible designs changes the fit little (the flag failures lie inside the surface in
+the primary regime; in the baseline regime they cut the frontier's ends and the set narrows from seven to five with
+the same leaders); imposing the four requirements changes it a lot: the requirement-constrained set (288 / 302
+designs, no large wheel) drops the designs that carried one trade and promotes another, the one the unconstrained
+one-term fit had blended away (the primary regime's one-term fit becomes pointing error 0.30 against peak slew
+power 0.24). In both regimes the constrained set keeps the feasible fit's highest level: the requirements cut the
+frontier's flanks, not its top. Two facts for the close-out: a nine-metric fit of all designs is impossible because
+the eclipse reserve is a signed slack at or below zero on the 131 depth-of-discharge failures (a second reason it
+leaves the model); and the proposals reached the four-metric frontier they were aimed at by spending the battery,
+so they are infeasible by depth of discharge and sit below the eight-metric surface.
+
+**The driver's calls.** The full case analysis takes one merged table (a new Appendix D section: the three design
+sets per regime, their sizes, the one-term contending set and leaders, the three-term term types, the zero set,
+and where the baseline configuration and the check designs sit), in the close-out regeneration; no figure (the
+table says it; a log-plane figure of the constrained against the unconstrained surface is a candidate for the
+subtraction pass to weigh, not placed). The proposals stay as check designs with the check section saying plainly
+what spike A found (they reached the four-metric frontier by spending the battery and fail the depth-of-discharge
+requirement); training the proposer on the fully feasible rows is future work. Spike B's caution holds: the
+comparison holds the conditioning and the temperature rule fixed, as the spike did. The paper's sentence is the
+supervisor's (with the Discussion option); the driver recommends the short one: "Pre-imposing the four requirements
+changes the contending set; removing the infeasible designs does not."
