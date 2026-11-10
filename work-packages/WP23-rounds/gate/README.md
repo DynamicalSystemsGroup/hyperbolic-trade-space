@@ -129,6 +129,14 @@ unit; `cubesat_wp22.sysml` is the model they were made with).
 - The first 20 designs of record: 33 columns (the frozen 35 less the two slew times), the
   container's rows, compared byte for byte in the container only.
 
+## One addition beyond the scope's paper exception
+
+`paper/figures/fig-assembly-view.png` and `paper/figures/fig-behavioural-view.png` are in this
+unit's commit: `tests/test_paper_static_figures.py` defines them as byte copies of the model's
+views (`build_figures.MODEL_VIEWS`, the copy step of `scripts/build_figures.py`), so the
+regenerated views at revision 5 cannot land green without them. Binary files only, copied by that
+step; no prose and no number under `paper/` changed. The PM authorized the addition at the push.
+
 ## Checks after the regeneration
 
 `PYTHONPATH=examples/adcs uv run python -m experiments verify`: 34 entries (11 current), 0 drifts,
