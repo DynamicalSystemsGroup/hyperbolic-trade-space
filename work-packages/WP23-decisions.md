@@ -170,3 +170,11 @@ stay under "Waiting for the supervisor".
   not a generated value: either the gaps generator computes that number from the data of record in the container
   (then it is a generated value and may be printed) or the clause is narrowed to no number ("moves at the rounding
   level under the integrator's jitter"). The stream chooses; no number from a record.
+
+**G-3 closed; WP23 final at revision 8 (2026-11-10, 07:10).** The fresh P3 read of revision 7 (b0a9a92) read every
+label and legend entry; one finding is on the drawing: the analysis box's line "No slew for pointing error, total
+mass" beside "returns 8 of 9" reads as "not returned" until the caption. Decision: (b), a revision-8 unit fixes
+that one line of box text (generator, views, the paper's byte copy); WP23 is final at that hash on the author's
+700 px check, a one-line wording change needing no further cold read. The arrows finding (read backwards, then
+right through the legend in the image) is no change. With this, every gap of the acceptance review is disposed and
+**WP23 is accepted**; the supervisor's three items stay under "Waiting for the supervisor".
