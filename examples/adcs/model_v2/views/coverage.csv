@@ -8,7 +8,7 @@ coverage,WheelClass,swap,energy balance,yes,yes,3.6e-04,yes
 coverage,WheelClass,swap,eclipse reserve,yes,yes,4.2e-04,yes
 coverage,WheelClass,swap,peak slew power,yes,yes,6.8e-01,yes
 coverage,WheelClass,swap,depth of discharge,yes,yes,1.6e-03,yes
-coverage,TrackerGrade,swap,settling time,yes,yes,1.7e-02,yes
+coverage,TrackerGrade,swap,settling time,yes,yes,2.1e-02,yes
 coverage,TrackerGrade,swap,pointing error,yes,yes,1.2e+01,yes
 coverage,TrackerGrade,swap,total mass,yes,yes,4.8e-02,yes
 coverage,TrackerGrade,swap,control effort,yes,yes,1.8e-02,yes
@@ -26,7 +26,7 @@ coverage,panelSpan,tune,energy balance,yes,yes,4.2e-01,yes
 coverage,panelSpan,tune,eclipse reserve,yes,yes,8.2e-05,yes
 coverage,panelSpan,tune,peak slew power,yes,no,0.0e+00,no
 coverage,panelSpan,tune,depth of discharge,yes,yes,3.2e-04,yes
-coverage,batteryCapacity,tune,settling time,yes,yes,9.1e-03,yes
+coverage,batteryCapacity,tune,settling time,yes,yes,3.1e-03,yes
 coverage,batteryCapacity,tune,pointing error,yes,yes,9.9e-07,yes
 coverage,batteryCapacity,tune,total mass,yes,yes,6.4e-03,yes
 coverage,batteryCapacity,tune,control effort,yes,yes,1.9e-03,yes
@@ -35,7 +35,7 @@ coverage,batteryCapacity,tune,energy balance,yes,yes,7.8e-07,yes
 coverage,batteryCapacity,tune,eclipse reserve,yes,yes,3.0e-01,yes
 coverage,batteryCapacity,tune,peak slew power,yes,no,0.0e+00,no
 coverage,batteryCapacity,tune,depth of discharge,yes,yes,9.1e-02,yes
-coverage,Kp,tune,settling time,yes,yes,9.4e-02,yes
+coverage,Kp,tune,settling time,yes,yes,9.3e-02,yes
 coverage,Kp,tune,pointing error,yes,yes,8.8e-02,yes
 coverage,Kp,tune,total mass,no,no,0.0e+00,yes
 coverage,Kp,tune,control effort,yes,yes,9.3e-02,yes
@@ -44,7 +44,7 @@ coverage,Kp,tune,energy balance,yes,yes,3.8e-05,yes
 coverage,Kp,tune,eclipse reserve,yes,yes,4.5e-05,yes
 coverage,Kp,tune,peak slew power,yes,no,0.0e+00,no
 coverage,Kp,tune,depth of discharge,yes,yes,1.7e-04,yes
-coverage,Kd,tune,settling time,yes,yes,2.1e-01,yes
+coverage,Kd,tune,settling time,yes,yes,2.2e-01,yes
 coverage,Kd,tune,pointing error,no,no,0.0e+00,yes
 coverage,Kd,tune,total mass,no,no,0.0e+00,yes
 coverage,Kd,tune,control effort,yes,yes,8.1e-02,yes

@@ -185,6 +185,50 @@ removed by name. Only the outputs of the two recovery cells were taken into the 
 | `uv run pytest -q tests/test_paper.py` on the Mac (slow included), no flag | 1 failed, 142 passed, 4 skipped (89 s): the failure is `test_cr2`'s `ids.index("fig-plane-k1")`, a cell id the paper stream renamed in cc409f8 (WP19 P-5) before this unit; its D.14 and sentence assertions, run by hand against the committed cells (`_current`, the row patterns, `in 16, at the exact maximum`), all hold; the new stderr test passes |
 | `uv run pytest -q tests/test_claims_register.py` | 1 failed, 20 passed: C150 cites `test_convergence_warning_keyed_to_iteration_cap`, removed by 18d0064 (the estimator unit's row to mend) |
 
+## Regeneration of the v2 data at WP23's data gate (2026-11-10, head 2b2e94e)
+
+The v2 datasets, the check designs, the scope-sensitivity table, the coverage table and the first-20
+recording were regenerated once in `hts-paper` on the WP23 model (`cubesat.sysml`, sha256
+`fb1dbd061610...`, adopted at the gate; the slew time out, the settling time by event detection,
+WP16 D-7 and WP23 D-3). The full account, with the hash of every regenerated file old and new and the
+five ledger entries, is `work-packages/WP23-rounds/gate/README.md`; the hand-written cause of each
+difference beyond tolerance is `examples/adcs/experiments/reports/change-register.md` (CR-1 to CR-4);
+the comparison of old and new (D-9) is the gate section of `work-packages/swap-evidence.md`.
+
+Steps, each `--network none`, in `hts-*` containers only: `sh paper/container/build.sh` at 2b2e94e
+(30 s, cached layers), image `hts-paper` **`3c7cfc8a2e27`**
+(`sha256:3c7cfc8a2e27081f14c793e5b88dbe62cda271dc29137435d7187ffe8f5dca4e`), the previous image
+`c798757482d7` (built at the superseded head 110bdd4, whose run reproduced the same primary and
+baseline bytes and stopped at the check predictions) removed in the same step; `docker create --name
+hts-wp23gate --network none -e EXPERIMENTS_WORKERS=3 hts-paper sh /tmp/run1.sh 3c7cfc8a2e27`, the
+script copied in, `docker start -a`; the outputs copied out with `docker cp`; a second container of
+the same name, same image, with those outputs copied in, for the steps after the first script's
+here-document recording failed (the oracle's spawned workers cannot import a `<stdin>` main module);
+`hts-wp23gate` removed by name.
+
+| command (inside `hts-paper`, `--network none`, `HTS_ENVIRONMENT_OF_RECORD=1`) | wall time | result |
+|---|---|---|
+| `uv run python examples/adcs/model_v2/ledger_gate.py --image 3c7cfc8a2e27` | 459 s | RECORD: `v2-primary@5`, `v2-baseline@5`, `v2-check-predictions@5`, `v2-check-designs@5`, `scope-sensitivity-shared-subspace-v2@4`; `git_dirty` False in all five; the proposer printed `reach 0.6222 ...; 3 of 3 proposals` |
+| `uv run python examples/adcs/model_v2/coverage.py` | 22 s | `views/coverage.{md,csv}` from `cubesat.sysml`; every verdict unchanged, four settling-time magnitudes moved |
+| the first 20 v2 designs by the test's own runner call (`/tmp/record20.py`) | 11 s | `tests/data/v2_first_designs_of_record.csv`, 33 columns, output `894277fb237c...` |
+| `uv run python examples/adcs/model_v2/diagnostic_pair.py ... --out work-packages/WP23-rounds/gate` | 26 s | the gate's pair; zero-exponent sets as rounds 1 to 4 |
+| `uv run python -m experiments compare` | 5 s | the report (re-run on the host after the register was written) |
+| `uv run python -m experiments verify` | seconds | RECORD: `34 entries (11 current); 0 drifts` |
+
+What changed against the committed files (the gate's reading; the comparison agent's D-9 section is
+the record): the slew-time columns left all four v2 files and the first-20 recording (35 to 33
+columns); the settling time, now event-detected, stays within 0.5 s of the frozen value on all 2000
+designs (largest relative 0.03); `torque_saturated_frac` differs beyond its tolerance in 3 primary
+and 35 baseline rows and `control_effort` in one baseline row (the container's integrator steps
+against the Mac's, as the first-20 row of the earlier regeneration above); the flags, ids, seeds and
+categorical values are equal on every design; the three check predictions are new proposals on the
+settling-time view with the reach set by the rule recorded in `WP23-decisions.md` (the 2nd
+percentile of the pool's nearest predicted distances to the 300 most isolated holes, 0.6222 here;
+the typed 0.35 of WP7 admitted none on this view), two of them one configuration; the check designs
+carry them. The frozen files under `examples/adcs/data/` are untouched. The paper's numbers were
+not regenerated here (WP16 order step (4) and WP19 follow the gate); the tests that compare the
+paper's committed outputs to the data are reported in the unit's report, not changed.
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes
