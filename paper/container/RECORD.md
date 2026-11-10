@@ -377,6 +377,31 @@ behavioural view's files, its paper copy and `diagnostic_pair.py`, which no note
 stand; `tab-F-toolchain` keeps 90c8848, the tree the outputs came from. `paper/supporting_material.ipynb` alone was
 copied out.
 
+## Regeneration of Appendix E after row G-17 dropped the decision record's number (WP25-2, 2026-11-10, image e852cde39180, head ba5a0cb)
+
+Row G-17 of `abstraction-gaps.md` cited a relative move of the settling time under the jitter from
+`work-packages/WP16-decisions.md`, a decision record; no committed generated file holds that move (the jitter record
+`examples/adcs/experiments/reports/sensitivity.json` holds the quantities built on the settling time, not the time), so
+the clause now says what the record holds: the settling time's regimes, the signs of its tensions and its Spearman
+correlations are identical in all five regenerations. The image was not rebuilt (no change to `src/`, `paper/*.py` or
+the derivation since 90c8848). Steps, `--network none`, `HTS_ENVIRONMENT_OF_RECORD=1`: `docker create --name hts-paperreg`,
+the files changed on dev since 90c8848 that the paper or the tests read copied in with `docker cp` (the edited ledger,
+both notebooks, the behavioural view's files and its paper copy, `diagnostic_pair.py`, the three paper-sources notes,
+`tests/test_narrative.py`, `tests/test_system_model_v2_r1.py`), `docker start -a`; the notebook copied out;
+`hts-paperreg` removed by name.
+
+| command (inside `hts-paper`) | wall time | result |
+|---|---|---|
+| `uv run python paper/paper_common.py` | 3 s | `environment_reference.npz` and `environment_values.toml` unchanged |
+| `uv run python paper/execute_notebooks.py` | 223 s | both notebooks; `paper/paper.ipynb` byte-equal to the commit; in `paper/supporting_material.ipynb` only `tab-E-gaps` (row G-17) |
+| `sh paper/container/build-paper.sh` | 8 s | the site built (a favicon 404 line from the builder's server, no error) |
+| `uv run pytest -q tests/test_paper.py tests/test_gaps.py tests/test_claims_register.py` | 104 s | 189 passed, 4 skipped |
+
+The register's committed output (`tab-A-register`) is current here and on the Mac: the Linux failure at bd017dc of
+`test_register_committed_output_is_current` and `test_cr18_regenerate_row_reproduces_the_committed_output_of_a_row`
+was a stale output (da2984e added three glossary entries without compiling Appendix A: 51 rows committed, 54 entries),
+compiled in the push 2 run above (27dab4d); no row differs across platforms. No number of the paper moved.
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes
