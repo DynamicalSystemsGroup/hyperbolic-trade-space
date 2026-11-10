@@ -1015,10 +1015,14 @@ _TERM_NUMBERED = (
 
 
 def _cells_of_table(text: str) -> list[str]:
-    """The cells of every table row, whitespace-normalised and sorted: the order-free content."""
-    return sorted(
-        c.strip() for line in text.splitlines() if line[:1] == "|" for c in line.split("|")
-    )
+    """The cells of every table row, whitespace-normalised and sorted: the order-free content.
+
+    Off the environment of record a zero exponent is a residue of the platform's arithmetic (an
+    exact 0 in the image, 2e-17 on the Mac), printed ``0`` or ``below 1e-12`` (``paper_stability``,
+    ``RESIDUE``); both read zero, so the cells compare equal here.
+    """
+    cells = (c.strip() for line in text.splitlines() if line[:1] == "|" for c in line.split("|"))
+    return sorted("0" if c == "below 1e-12" else c for c in cells)
 
 
 @pytest.mark.slow
@@ -1992,9 +1996,14 @@ def test_generated_sentences_quote_the_ranges_from_the_results_file(case_sentenc
             e["max"], ".4g"
         ):  # the share moves at the print format
             assert shown != format(e["committed"], ".4g"), name
+    # the effective sample size is printed to the digits that hold at one decimal; the committed
+    # value alone appears only when the regenerations agree with it at that format
     temp = str(case_sentences["num-temperature"])
-    n_eff = q["fit | primary K=1 | n_eff_"]
-    assert f"{n_eff['committed']:.1f}" not in temp or n_eff["min"] == n_eff["max"]
+    name = "fit | primary K=1 | n_eff_"
+    n_eff = q[name]
+    assert stable(name, lambda v: f"{v:.1f}") in temp, name
+    if f"{n_eff['min']:.1f}" != f"{n_eff['max']:.1f}":  # moves at the print format
+        assert f"{n_eff['committed']:.1f}" not in temp
 
 
 @pytest.mark.slow

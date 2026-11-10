@@ -45,7 +45,7 @@ def test_tau_reselected_at_each_k_holds_the_fraction(result):
 # margin gamma and stable radius of the re-selected fits, as printed (six decimals), on the
 # eight-metric data of record (WP23 close-out; the radius scales with the number of metrics)
 MARGIN = {
-    ("primary", 2): (0.000697, 0.000069), ("primary", 3): (0.001212, 0.000121),
+    ("primary", 2): (0.000697, 0.000069), ("primary", 3): (0.001213, 0.000121),
     ("stock", 2): (0.001413, 0.000133), ("stock", 3): (0.000350, 0.000033),
 }  # fmt: skip
 

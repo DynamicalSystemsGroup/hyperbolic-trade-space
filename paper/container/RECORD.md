@@ -444,6 +444,106 @@ other cell is byte-equal to the commit before. The changes are words only; no nu
 | the six cells, each with its notebook's setup cell, by `nbclient` | five outputs changed in words, one unchanged |
 | `uv run pytest -q -n 8 tests/test_paper.py tests/test_gaps.py tests/test_claims_register.py tests/test_build_generated.py tests/test_vocabulary.py tests/test_docs.py tests/test_site.py tests/test_paper_sources.py tests/test_narrative.py` | 342 passed, 1 failed, 4 skipped before the last rewording of the DEA row; after it and the two cells regenerated again, the vocabulary and paper tests pass (the whole fast suite in `WP24-review.md`, Push 4) |
 
+## Container regression at the WP23 close-out gate (2026-11-10, image 877c42cc10e3, head 61cef31)
+
+The driver's regression under the rule of 2026-11-10 ("The container is a gate check, not a unit step",
+`PM-BRIEF.md`): the close-out's host regeneration (ledger `@6`, f1101ce and after) regenerated in the container of
+record, the exact outputs the environment-of-record tests read re-pinned from it, the robustness image run on the
+committed tree. Steps, each `--network none`, in `hts-*` containers only: `sh paper/container/build.sh` at 61cef31
+(the local head: the `ledger_gate.py` note commit, on `dev` as 4b5dc46 after the driver's rebase; the container's
+history, `tab-F-toolchain` and the five ledger entries name 61cef31) (36 s, cached layers), image `hts-paper`
+**`877c42cc10e3`** (`sha256:877c42cc10e3873c1619564c4e30287cfcdee0544fa15ec1a1fcbd8c7e99e75d`), the previous image
+`e852cde39180` removed after the build (`docker rmi`, no container on it); `docker create --name hts-gate-regression
+--network none -e REQUIRE_OPENSYSML=1 -e PYTHONPATH=examples/adcs -e EXPERIMENTS_WORKERS=3 hts-paper sleep infinity`,
+the scripts copied in, each step by `docker exec` (the copied-in `.claude/` lock directory removed first so the tree
+is clean: untracked files count as dirty); the outputs copied out with `docker cp`; `hts-gate-regression` removed by
+name. `git log -1` inside prints 61cef31; `git status` before the run is clean. The session scratchpad keeps the old
+files, the scripts and every log.
+
+| command (inside `hts-paper`, `HTS_ENVIRONMENT_OF_RECORD=1`) | wall time | result |
+|---|---|---|
+| `uv run python examples/adcs/model_v2/ledger_gate.py --image 877c42cc10e3` | 492 s | RECORD: `v2-primary@7`, `v2-baseline@7`, `v2-check-predictions@7`, `v2-check-designs@7`, `scope-sensitivity-shared-subspace-v2@6`; `git_dirty` False in all five; the proposer printed `reach 0.6222 (quantile 0.02 of the nearest predicted distances of the 300 most isolated holes); 3 of 3 proposals` |
+| `uv run python examples/adcs/model_v2/coverage.py` | 17 s | `views/coverage.{md,csv}` byte-equal to the commit |
+| the first 20 v2 designs by the test's own runner call (`/tmp/record20.py`) | 10 s | `tests/data/v2_first_designs_of_record.csv`, output `ba2457d3e031...` |
+| every fit of the soft-fit reference by the test's own routines (`/tmp/rec_softfit_all.py`, below) | 44 s | `tests/data/soft_fit_default_reference.npz`: 1274 arrays as before, `recorded_on` = linux, aarch64 |
+| `uv run python -m experiments compare` | 5 s | the report; re-run on the host after CR-2 returned to the register (below) |
+| `uv run python -m experiments verify` | 1 s | RECORD: `44 entries (11 current); 0 drifts` |
+| `uv run python -m experiments.sensitivity regenerate --out /tmp/sens --workers 3` | 2252 s | the five regenerations (7.2 to 8.3 min each) |
+| `uv run python -m experiments.sensitivity analyse --out /tmp/sens --json .../sensitivity.json --md /tmp/sens/generated-section.md` | 205 s | `sensitivity.json`; "Every listed conclusion is identical across the regenerations and to the committed data"; the generated section kept in the scratchpad, not the repository |
+| `uv run python paper/stability_extra.py /tmp/sens` | 193 s | `paper/stability_extra.json` |
+| `uv run python paper/paper_common.py` | 3 s | `environment_reference.npz` and `environment_values.toml` unchanged |
+| `uv run python paper/execute_notebooks.py` | 157 s, then 172 s | both notebooks, twice: on the host's jitter record, then on the regenerated one (the committed outputs are the second run's) |
+| `sh paper/container/build-paper.sh` | 5 s | the site built (three favicon 404 lines from the builder's server, no error) |
+| `uv run python scripts/build_figures.py` | 87 s | `fig-planes-k1`, `fig-planes-k3`, `fig-chart-level`, `fig-nlemma` rewritten, pixel-equal to the commit (bytes differ: the PNG encoder); the two model views byte-equal |
+| `uv run python paper/figures/figure1.py` | 4 s | `figure1.png` byte-equal; `figure1.svg` differs in matplotlib's path ids only |
+| `uv run python examples/adcs/k_terms.py` | 47 s | the K record printed: primary K = 1 tau 38.10, contending set total mass, energy balance, pointing error, depth of discharge, settling time; stock K = 1 tau 45.68, control effort, settling time, power margin, pointing error, depth of discharge (as the close-out's host record); primary K = 3 margin 0.001213 |
+| `uv run pytest -q -n 4` (the whole suite, exact branches), first run, before the three re-pins below | 540 s | 47 failed, 2140 passed, 17 skipped, 1 xfailed: 43 planted soft-fit cases, the K = 3 margin pin, the jitter record's committed column, and two tree-state checks (`test_frozen_csvs_unchanged_in_git`, `test_the_frozen_csv_is_not_touched`: the regenerated v2 files were uncommitted inside the image) |
+| `PAPER_EXECUTE=1 uv run pytest -q tests/test_paper.py -k "perturbation or clean_kernel or term_order"` | 408 s | 4 passed |
+| `uv run pytest -q -n 4 tests/test_soft_fit.py` after the re-recording | 105 s | 58 passed |
+| `uv run pytest -q tests/test_k_terms_case.py` with the re-pinned margin | 61 s | 7 passed |
+| `uv run pytest -q tests/test_sensitivity.py` on the regenerated record | 54 s | 12 passed |
+| `uv run pytest -q -n 4` on `test_paper`, `test_narrative`, `test_claims_register`, `test_case`, `test_paper_sources`, `test_paper_static_figures` on the second notebook execution | 199 s | 1 failed, 241 passed, 4 skipped: `test_generated_sentences_quote_the_ranges_from_the_results_file` (corrected below); the host's tolerance run of the same files also failed `test_term_numbered_tables_are_current` (corrected below); after the corrections the two tests: 3 passed, 1 skipped in the image (51 s) and on the host (40 s) |
+| `uv run pytest -q -n 4` on `test_experiments`, `test_legacy_oracle`, `test_v2_data`, `test_container`, `test_k_terms_case`, `test_sensitivity`, `test_paper`, re-run in the image on this commit's tree (8a732ed: its history bundle fetched and `git reset` to it, the working tree unchanged) | 254 s | RECORD: 97 passed, 1 skipped (the two tree-state checks among them) |
+
+**Three references the host units had re-recorded, re-pinned from the container** (the suite's first run in the image:
+47 failed; the same lesson three times: a host unit re-recorded a reference that only the container should pin).
+
+| reference | old provenance (host) | new provenance (container) | the difference |
+|---|---|---|---|
+| `tests/data/soft_fit_default_reference.npz` (`recorded_on` darwin, arm64 to linux, aarch64) | the close-out's host re-recording (f1101ce) rewrote all 47 fits, among them the 43 planted fits it did not need to touch (they read no case data), so the exact branch failed in the image on 43 planted cases at 1e-16 | every fit re-recorded in `hts-paper` by the test's own routines (`_cases()` fitted as `test_r2_default_planted_fits_equal_the_recording` does, the four cubesat fits as `test_r2_default_cubesat_fits_equal_the_recording` does, `_record`; `/tmp/rec_softfit_all.py`, 44 s) | 1274 arrays as before; the planted fits move at the last digits except `planted3_K3_tauinf_support`, a degenerate tau = infinity linear program whose final steps follow the platform (`status`, `reason`, 47 iterations, one row's `cell_`: gap G-10, the quantities `RELAXED_SKIP` names); the cubesat fits within 1.3e-4 absolute (the conditioning), exponents within 2.3e-7; 58 passed in the image (exact) and on the host (tolerance) |
+| `tests/test_k_terms_case.py`, `MARGIN[("primary", 3)]` | the fix-forward G-1 (ebce53b) pinned the host's printed margin 0.001212 (abs 5e-7) | the image prints 0.001213 (`k_terms.py` above); the pin takes it | 0.001212 to 0.001213; 7 passed in the image and on the host, on the re-pinned data |
+| `examples/adcs/experiments/reports/sensitivity.json`, `paper/stability_extra.json` | the close-out's host run (five regenerations on the Mac, 18 min; f1101ce): its committed column was the host's case results, 2.6e-5 relative from the container's on one K = 1 exponent (rel 1e-6 asked) | the five regenerations, the analysis and the extra file in `hts-paper` (37.5 min, 205 s, 193 s; `EXPERIMENTS_WORKERS=3`), then both notebooks executed again on them | every listed conclusion identical across the regenerations and to the committed data; 203 of 492 committed values move (the largest 3.7e-4 relative), no integer, string or verdict; seven `identical` flags False to True (the committed data and the regenerations now share the platform); 12 passed in the image and on the host |
+
+Two assertions of `tests/test_paper.py` were corrected on the way, not pins: `_cells_of_table` (the tolerance branch of
+`test_term_numbered_tables_are_current`) now reads `below 1e-12` and `0` as the same cell, since a zero exponent is an
+exact 0 in the image and 2e-17 on the Mac and the generator prints the residue text only for a nonzero residue
+(`residue_bound`); and `test_generated_sentences_quote_the_ranges_from_the_results_file` asked that the committed
+effective sample size never be printed when the regenerations differ at any digit, where the sentence prints the digits
+that hold at one decimal (`stable(name, .1f)`, "23.1" with the regenerations at 23.09868232 and 23.09868233); it now
+asserts the stable text and, when the regenerations differ at that format, the absence of the committed value.
+
+**What the container's regeneration changed against the committed host run** (the comparison of old and new from the files
+kept in the scratchpad; the four flags equal on every design, the feasible counts 706 and 780 unchanged, no conclusion of
+the paper or of the jitter record moved):
+
+| file | old sha256 (the commit) | new sha256 (the container) | the difference |
+|---|---|---|---|
+| `examples/adcs/data/v2/adcs_designs_cubesat_gains.csv` | `d601d82833b60bd4db8ede22082bbedc1cf9dcf79a89a7e998ba98ead52910c5` | `a43ccc557bc6a572be315309fbe5f5b101df504fb38c2a2692f12ba15c4c1e2f` | settling time within 1e-6 s (9 rows); `torque_saturated_frac` 514 rows, up to 0.0095 absolute; `control_effort` up to 7.4e-5 relative; energy balance, depth of discharge, peak momentum, slew-loss energy at 1e-5 relative or below |
+| `examples/adcs/data/v2/adcs_designs_cubesat.csv` | `9d1f4849ba461b409e74604eef8e77985915551c80e9d3be9783f0adc119feef` | `10ae79a224b5a0b370927d2419ca238e634d25f434a044385f920a3c1a77ee74` | as above: `torque_saturated_frac` 168 rows, up to 0.0071 absolute; `control_effort` up to 1.2e-4 relative; the rest at 1e-5 or below |
+| `examples/adcs/data/v2/check_predictions_cubesat.csv` | `48493bf3f6e6a3566a447dc0bc8a45b12cb7a6761089411c8383e878ffe92605` | `6b65b2843a99cf2b3510f791ab956e664a0ac488a94881cb606ead27d2522b39` | byte-identical to the data gate's `@5` output (`6b65b2843a99`); against the host's, every predicted coordinate within 1e-5 relative |
+| `examples/adcs/data/v2/check_designs_cubesat.csv` | `e3f22d93c7d783068b3c578d56798010ce6e1edabf8868cce54a234adfb13919` | `5b47f53b4d7b5e53a738915b9d4c44e887139948c5bf15720abda536c8b82d9a` | `torque_saturated_frac` 4 rows, up to 0.0036 absolute; the rest at 2e-5 relative or below |
+| `examples/adcs/data/scope-sensitivity/scope_sensitivity_v2.csv` | `fd46402c2f617ff8af341fa753d05a839fef27538e905a982d574ea53373f502` | `d16ae3648c402c615a03f99d14a85e38405ad28781580b7d3cd838dd5d51e522` | `torque_saturated_frac` 15 rows, up to 0.0024 absolute; the rest at 2e-5 or below |
+| `tests/data/v2_first_designs_of_record.csv` | `81241be0b88321ab09e8dd031aec7f1162fcf5fedc084703aa17951a0ae9e159` | `ba2457d3e031d754a2e4f2838b17908fd39cdfa0dfe82be87cbe1695ef8d99c2` | `torque_saturated_frac` 12 rows, up to 0.0046 absolute; the rest at 5e-5 or below |
+| `examples/adcs/experiments/ledger/ledger.jsonl` | `4508e1770176998088b3a9d4441ced667c114e96c2c33db425e245657701638b` | `b5a1f83be514b184b58f155d21f5ade1cfe971ea53c58eab99a61e7445db7a47` | the five entries appended (`git_commit` 61cef31, platform `Linux-6.8.0-50-generic-aarch64-with-glibc2.41`) |
+| `examples/adcs/experiments/reports/change-register.md` | `e8969c16fd8f761a6fca697c875c536d972698c37e16db64214d4654b5ec438f` | `f84899df3733880babc46ff47d27740b043c7c1c0fd38c00632c6e794ccafb18` | CR-2 returned; the header and the close-out-gate finding |
+| `examples/adcs/experiments/reports/v1-v2-comparison.md` | `44c832dda15befd24f6301e66ed621f5c2615757f4416de06e496d18a6b4dc5e` | `e0d766c3434741bfaa762619d5b5aa4c7ef0191ed16a168bc04f50a9aceb77a4` | the `@7` entries; `primary:torque_saturated_frac`, `baseline:torque_saturated_frac`, `baseline:control_effort` beyond tolerance |
+| `examples/adcs/experiments/reports/sensitivity.json` | `469bbf138a7a8bf041c66ea17bff2269105a9e9d1602d01c06b1f5e26297f266` | `d561cbb130da8106659e329b309d06660c3769f306e35df81f7293909feef4fa` | 685 quantities as before; 203 committed values move, the largest 3.7e-4 relative (proposal 2's ||dZ||), 25 above 1e-4, none above 1e-3; no integer, string or verdict moved; seven `identical` flags False to True (the three proposals' predicted log V and one K = 3 zero exponent: the committed data and the regenerations now share the platform) |
+| `paper/stability_extra.json` | `82bf1d401168a82908403265d5427179aca92c4814933cd5185d3177993179bd` | `21b8245490eb3c804fa48a8bd932f064908a8f6921d102a2c01b0c778dda506b` | 31 quantities as before; 19 committed values move, the largest 1e-5 relative (the stock K = 3 median margin) |
+| `tests/data/soft_fit_default_reference.npz` | `eaa4f647baebf41f2e7c13b389ab81eb715a30774acfa002c8f8fbe5c9299e73` | `52e55f7e7add8a9440bdfe014f082b2fc8720b349660c97be0779f884d2f9d0b` | every fit re-recorded (below); `recorded_on` linux, aarch64 |
+| `tests/test_k_terms_case.py` | `eedd0f79461282c14eaac112fa868ad2ef5867ef69c227e74a7ea5ec9d699ee0` | `bf7bd4422eba5540d86cc19792abb3e3f40bc0a3be37ccc50427b38c1d775f2c` | `MARGIN[("primary", 3)]` 0.001212 to 0.001213 (below) |
+| `paper/paper.ipynb` | `60f25a55d3600eb603a61a2a0404fdf52af1190ea5ce6cc2c9bc47c3f2310d75` | `9f11a534dafd3cff8d4a71908c56ec2e0c914989768b5c3d04d35b38e079070d` | `num-margin` (the stable radius 0.000121 to 0.0001209: the digits that held); the PNG bytes of `fig-tau-sweep`, `fig-tensions-k3`, `fig-regimes` (pixel-equal but 12 pixels of the tau sweep); no other output |
+| `paper/supporting_material.ipynb` | `a4e65d7e1d636acda70c946c9d62a0338cd9e9d5555d6fb829bd738b7a8a4824` | `b95db6bfdc503ad958c914cea7f33e280d3cf2303e8fcffe2e6c4c6b24dc6e1a` | `tab-C-datasets` (the `@7` entries and hashes; the planted table's digest back to the container's `b17d4f8f...`), `tab-D-k_diagnostics`, `tab-D-termination_records`, `tab-D-margin_reading`, `tab-D-exponents_and_terms` (a zero exponent printed 0 for "below 1e-12"), `tab-D-propose_predict_check` (1.055 to 1.05, 0.04836 to 0.0484: three digits held), `tab-D-stability` (243 numbers move at all, was 250; the radius row of K = 3 is the stock regime's, the primary's now holds its digits), `tab-F-toolchain` (Node v24.22.2, Python 3.12.16, the platform, the commit) |
+| `paper/figures/fig-chart-level.png` | `cbe75c8bb3cfa5a11f6ec34ca6ca0adb9cc63ddca249313a473ea2c444e19f3f` | `04e70d2b94f1191c5c36d22e753d9592992068d00d6ef7540e226112d71b0120` | pixel-equal; bytes by the encoder |
+| `paper/figures/fig-nlemma.png` | `7b56fe6da2c9ee54effd7253dd92ef3db2bba4fbdcfbcdc554c2bff58bda31b9` | `5a906f8dcc6a5b3680ea240081250934723a9489ff5c911ee01b20bae42cc9a6` | pixel-equal; bytes by the encoder |
+| `paper/figures/fig-planes-k1.png` | `81988245d062eb1be71fb68cd44f95b2b931b3431fe6756c9b6a0b0570b06320` | `915d146c7039d003c1e2e8fbbea3d03f0ae9e31cf2ada1cab53ef59fd7a077ed` | pixel-equal; bytes by the encoder |
+| `paper/figures/fig-planes-k3.png` | `4eda5d1f177fc587946c2c73c60c6ef702b24cffc6fe6313b5d65d65a2a4fa4d` | `294031005645ed567e7b8e670605ecf31d87efdb402f645aa695617d13c93aa1` | 4 pixels at antialiasing; bytes by the encoder |
+| `paper/figures/fig-regimes.png` | `6297e6788451370e41f0ddac5c73f3228a2d2ef772ec016e1ad87516000c10de` | `4d3bec0b1735d0d8ff169eff8b772c267205d387fd454c8bf0dc501ba6f600a0` | pixel-equal; bytes by the encoder |
+| `paper/figures/fig-tau-sweep.png` | `5f8eada246242a1d76e4cc281ef15230f10d37943dfb4a1b01258023669386bc` | `d386b27c65c2e7540807078eb824f42081e5b4a2e92d4d6d9279a8f40f9397fb` | 12 pixels at antialiasing; bytes by the encoder |
+| `paper/figures/fig-tensions-k3.png` | `037e262b8b5c71a4fd84648923702681c4f2423ddd2393a46f72b58937a81a9a` | `26f613b2651e2f28047ebab88ee67ef51d1d7b5559078a68b88d11626bb4e52f` | pixel-equal; bytes by the encoder |
+| `paper/figures/figure1.svg` | `a47d820757e7cc1691b1a151773144b4fdae95784afacbbbc0200ccf0091d114` | `fcc42833d9f5bb4d56df6cb7b072a8bb0a2ef54bae8d1f393f36b4bd45cec3aa` | matplotlib's path ids only |
+
+**CR-2 returned.** Against the frozen Mac files the container's two 1000-design tables exceed the reproducibility
+tolerance on `torque_saturated_frac` in 3 primary and 35 baseline rows and on `control_effort` in 1 baseline row, the same
+designs with the same largest differences as the data gate's container run (designs 781, 354 and 488; the adaptive
+integrator's accepted steps differ between the platforms). The register had retired CR-2 at the host run and said the
+row returns if the container's rows exceed again; it is back, covering those three ids, and `compare` was re-run on the
+host so the committed report embeds it (`verify` 0 drifts; the register tests pass on the host and in the image).
+`check_predictions@7` is byte-identical to the data gate's `@5` output. Not regenerated here: the model's views
+(PlantUML on the host) and `docs/examples.md`'s numbers (the docs tests read them within tolerance). The environment of
+record is now `877c42cc10e3`.
+
+**The robustness image** (`hts-alt` 81e06426f7b3, Ubuntu 24.04, the same `uv.lock`, `HTS_ENVIRONMENT_OF_RECORD=0`): a container `hts-alt-gate` from the image, this commit's history bundle fetched and the tree reset to it (the lock is unchanged since the image's head d66c106, so its environment is the locked one), the full suite with the tolerance branches, `uv run pytest -q -n 4` on 8a732ed (`git status` clean): RECORD: **2187 passed, 17 skipped, 1 xfailed, 0 failed** in 735 s. `hts-alt-gate` removed by name afterwards; the image untouched.
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes
