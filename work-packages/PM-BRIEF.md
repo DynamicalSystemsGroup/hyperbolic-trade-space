@@ -220,11 +220,17 @@ by agent id; finish their current unit, start nothing new under the old plan):
 - `support` (a4fa6b7ef20ce9a72), single writer of derivation/, proof_map_record.json, paper/supporting_material.ipynb and
   its generators, abstraction-gaps.md, glossary.yaml this batch: unit 5 = glossary wording fixes, entries cell, reach,
   near-frontier band, effective sample size, certificate, mean slack; "support offsets" -> reach in L14/L15 with
-  Appendix B regenerated (container hts-support); unit 6 = app-D-5 with register C152; "Corollary 4" referred to by name.
-- `wp19` (ab45ac93cf19c12c5): Figure 3 (fig-plane-k3) redraw without facet colouring, re-read; Figure 4 (chart) sentence
-  test; the principle check over every figure, paper and docs, reported before change; on current data only.
-- `wp16` (ae763977995a7ace5): event detection for the settling time only (hold time = last exit), default-off switch so
-  dev stays green; the first regeneration trial recorded in swap-evidence.md; the regeneration itself HELD for WP23.
+  Appendix B regenerated (container hts-support): DONE 73c14e5; unit 6 = app-D-5 with register C152; "Corollary 4"
+  referred to by name: running at the handover.
+- `wp19` (ab45ac93cf19c12c5): DONE at 141653c, 3cd2722: Figure 3 redrawn without facet colouring (paper/figures/planes.py)
+  and Figure 4 redrawn as Z0 against log V (chart_level.py), both passed fresh reads; P-6 and P-7 revised in
+  WP19-figure-review.md, to be placed by the paper stream (float count 10); the principle check over every figure, paper
+  and docs, is recorded as findings only and awaits the supervisor's dispositions (sent to the driver); all on current
+  data, WP23 regenerates them; the Figure 7 Z1/Z2 label defect is a case.py item for WP23.
+- `wp16` (ae763977995a7ace5): DONE at 6a07783: the hold time by event detection in a new module
+  `examples/adcs/experiments/hold_time.py` (`HoldTimeOracle`, `make_oracle(..., settling_time_method="steps"|"events")`,
+  default "steps"; the ledger hashes cubesat_oracle.py, so it is untouched); the first regeneration trial recorded in
+  swap-evidence.md; the mechanism acceptance in WP16-decisions.md; the regeneration itself is WP23's.
 - `wp23scope` (a2f46545b2fd2ee30): done; `WP23-scope-of-work.md` at 7ffb719. **WP23 is approved for execution** (the
   gate line in the scope; the supervisor's answers verbatim in `WP23-decisions.md`, b0e12db). The fourth PM folds the
   answers into the scope in the first execution commit: OD1/OD2 "MoE on mass, no new column" (total mass stays the traded
