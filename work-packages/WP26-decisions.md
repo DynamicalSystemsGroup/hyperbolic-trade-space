@@ -63,3 +63,25 @@ container named hts-<stream>, removed after) on the edited model, each output ha
 landing as the next numbers with the WP26 note; otherwise the edit reverts to held. A host run with no entries
 written remains the cheap evidence of neutrality before the container run. The modeller's unit runs it; the
 driver's gate regression is unaffected.
+
+## Acceptance review (2d2a81b) and the driver's dispositions (2026-11-10, 18:05, at acb8c45)
+
+The driver re-ran the review's checks: 46 model, pointer and coverage tests pass on this Mac; `experiments verify`
+49 entries, 0 drifts; `coverage.py` regenerates `views/coverage.md` and `coverage.csv` byte-identical (its seven
+disagreements are the table's documented findings, unchanged); in the driver's own editor tab (a new project, the
+three files fetched from the raw URL at acb8c45) the source is 75,542 characters, sha256 `afeaebf9b100…`, applied at
+"Issues (0)", every view in the Views list; the `stakeholders` view 54 nodes and 26 edges; screenshots
+`WP27-review/driver-check-*.jpg`.
+
+| Gap | Disposition | Reason |
+|---|---|---|
+| G-1 | accept as is | the step log is the record of the milestone calls; this paragraph points at it |
+| G-2 | accept as is | the prose names O-1 and history keeps the hunk; the diff block is a quotation, not the record |
+| G-3 | accept as is | the three files moved as consequences of the `@8` entries, hash-equal; the rule allows it |
+| G-4 | fix before acceptance | amend the scope's deliverables table with the harness note (one row); the contract is amended, never drifted |
+| G-5 | fix before acceptance | the counts line reads 5 and 3; the `alternatives` doc names the swaps `wheelClass` and `grade` as the coverage table does (one object, one name); the "as rendered" table is labelled as the round's revision |
+
+**Driver, verbatim:** "WP26 is accepted when G-4 and G-5 land and the fast model tests are green at that head; the
+other three gaps are accepted as they are. The round did what the supervisor asked: the model read in the editor with
+every view rendering, in-file edits byte-identical in outputs, and a feedback report the editor's author can act on
+(ten bugs with reproductions, five feature requests)."

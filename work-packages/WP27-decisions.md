@@ -93,3 +93,27 @@ verdict per named configuration and the sponsor can compare the three designs. I
 byte-identical outputs: the host neutrality run, then the container ledger re-run hash-equal to @8, landing as the
 next entries; otherwise held. The trade between the eclipse slews and the pack's life is the tensions table's row,
 read against the concerns in the review; the cost-to-build budget (H-2) stays the supervisor's.
+
+## Acceptance review (3e22533) and the driver's dispositions (2026-11-10, 18:05, at acb8c45)
+
+The driver re-ran the review's checks (the same run as WP26's, recorded there): the strict load of the three files,
+the who-cares trace, the pointer tests, the verdict engine (47 verdicts hold, the baseline's pointing error negated,
+the negative control false; `tests/test_system_model_v2.py -k verdict`, 2 passed), 0 drifts, the coverage table
+byte-identical; in the driver's own tab the Satisfaction matrix shows 34 requirements, the three configurations as the
+linked elements, the twelve concern requirements declared or negated as the model states (`WP27-review/
+driver-check-satisfaction-matrix.jpg`).
+
+| Gap | Disposition | Reason |
+|---|---|---|
+| G-1 | fix before acceptance | step 24's screenshot copied into `WP27-review/` (the review cites it) |
+| G-2 | fix before acceptance | one paragraph in D-4's dispositions: whether T3, T5, N5, N6 block the sponsor's reading, as the non-goal asks |
+| G-3 | fix before acceptance | F-5 gets numbered steps, expected, observed and a screenshot, or moves to the suggestions section as what it is |
+| G-4 | accept as is | the harness note's §8 and the sequel's shared commit are record edits; nothing of WP27 under `paper/` |
+| Observations | the quoted prompt's tool names are elided as "[the browser tools]" with the elision marked (the rule on model names in documents); the rest accepted as they are (the K = 3 term is outside the scope's default; `recordEntry` as the review's G-3 settles it) | |
+
+**Driver, verbatim:** "WP27 is accepted when G-1 to G-3 and the elision land; the model now answers the supervisor's
+question in the editor: every concern traces to a stakeholder, every requirement to a concern, every held requirement
+to an evidence case with its ledger entry, record section, test and image, and the baseline's verdict on each concern
+is stated and engine-checked, the one failure (pointing error) visible in the matrix. What the sponsor still cannot
+see on screen, the dollar and year figures, is the editor's F-1, not the model's. H-2 (a cost-to-build budget) stays
+with the supervisor."
