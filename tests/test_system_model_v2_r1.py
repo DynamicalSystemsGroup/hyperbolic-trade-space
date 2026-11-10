@@ -1,19 +1,18 @@
-"""Tests for the r1 cubesat SysML model (WP22 round 1): one model, two views, metrics traced.
+"""Tests for the WP22 content of the cubesat SysML model: one model, two views, metrics traced.
 
-``model_v2/cubesat_r1.sysml`` lives beside ``cubesat.sysml``, which the committed data and the paper
-cite and which these tests leave untouched. Round 1 adds requirement definitions over the traded
+``model_v2/cubesat.sysml`` is the WP22 model since the recorded gate (WP22d, ``WP22-decisions.md``);
+the WP15 file it replaced stays in history only. WP22 added requirement definitions over the traded
 metrics' own quantities, a measured ``slewTime`` and ``peakTorque`` in ``SlewMeasurement``,
 ``verify`` objectives for each, and the two views marked in the file. The tests hold the scope's
 guards: the model loads and checks clean (R-8), every covered metric has a requirement and a
-``verify`` (R-1, R-2), the open metrics are named (R-3), thresholds are values the model already
-states (R-4),
-the old model is unchanged (R-14), regenerated designs equal the committed method's results (R-6)
-and both views regenerate from the model and change with it (R-9).
+``verify`` (R-1, R-2), the open metrics are named (R-3), the numeric literals added to the WP15
+model are recorded measurements only (R-4), regenerated designs equal the committed method's
+results (R-6), and both views regenerate from the model, change with it, and are the committed
+views (R-9). The toolkit gates (R-8) on this file run in ``test_model_checking_v2.py``.
 """
 
 from __future__ import annotations
 
-import hashlib
 import importlib.util
 import os
 import pathlib
@@ -22,25 +21,42 @@ import warnings
 
 import cubesat_model as cm
 import pytest
-from experiments import toolkit
-from experiments.exclusion import solver_available
 from opensysml.values import Quantity
 from test_system_model_v2 import (
     ADCS_DIR,
     ATTRIBUTES,
+    TEXT,
     V2,
     P,
     _measure_slew,
     _rel,
 )
-from test_system_model_v2 import (
-    MODEL as OLD_MODEL,
-)
 
-R1 = ADCS_DIR / "model_v2" / "cubesat_r1.sysml"
-R1_TEXT = R1.read_text()
-OLD_TEXT = OLD_MODEL.read_text()
+# The views generator (WP22's spike, kept there as the record) and the committed views it writes.
 PROJECT = ADCS_DIR.parents[1] / "docs/superpowers/notes/spike-sysml-diagrams/project.py"
+VIEWS = ADCS_DIR / "model_v2" / "views"
+# The requirement definitions of the WP15 model (sha256 28dbeeb23cf4..., commit 2d13465), which
+# the swap replaced; WP22 added one per newly covered metric.
+WP15_REQUIREMENTS = {
+    "PowerRequirement",
+    "SettledRequirement",
+    "MomentumRequirement",
+    "DepthOfDischargeRequirement",
+    "SlewBandRequirement",
+}
+# The numeric literals of the WP15 model's code (comments and docs removed), read from that file
+# at the gate; WP22 may add recorded measurements only (R-4).
+WP15_LITERALS = frozenset(
+    {
+        *("0.0", "2.0e-6", "7.70613052023095e-06", "0.0003", "1.13e-3", "1.7453292519943296e-3"),
+        *("0.002", "0.00466041037173962", "0.010", "0.01", "0.03", "0.030", "0.1", "0.100"),
+        *("0.12", "0.15", "0.2", "0.226", "0.25", "0.28", "0.3", "0.340", "0.34", "0.35", "0.4"),
+        *("0.5", "0.60", "0.6", "0.7", "0.8", "0.9", "0.90", "1.0", "1.2", "1.5", "2.0", "2"),
+        *("2.5", "3", "3.0", "3.141592653589793", "4.0", "8.0", "10.0", "12.0", "16.0", "20.0"),
+        *("26.5", "30.0", "40.0", "80.0", "81.627336", "140.0", "180.0", "180.1904772571943"),
+        *("200.0", "600.0", "1361.0", "3600.0", "5.0e4"),
+    }
+)
 
 # The six metrics of the first round, with the requirement def over each one's own quantity.
 COVERED = {
@@ -66,19 +82,12 @@ VIEW_SECTIONS = {
 
 @pytest.fixture(scope="module")
 def r1():
+    """The model (the fixture keeps its round-1 name)."""
     try:
-        return V2(R1_TEXT)
+        return V2(TEXT)
     except cm.OpenSysMLUnavailable as exc:
         flag = " (REQUIRE_OPENSYSML is set)" if os.environ.get("REQUIRE_OPENSYSML") else ""
         pytest.fail(f"the opensysml client could not start{flag}: {exc}", pytrace=False)
-
-
-@pytest.fixture(scope="module")
-def old():
-    try:
-        return V2(OLD_TEXT)
-    except cm.OpenSysMLUnavailable as exc:
-        pytest.fail(f"the opensysml client could not start: {exc}", pytrace=False)
 
 
 @pytest.fixture(scope="module")
@@ -87,14 +96,6 @@ def frozen():
         return cm.load_model()
     except cm.OpenSysMLUnavailable as exc:
         pytest.fail(f"the opensysml client could not start: {exc}", pytrace=False)
-
-
-@pytest.fixture(scope="module")
-def toolkit_bin():
-    try:
-        return toolkit.locate()
-    except FileNotFoundError as exc:
-        pytest.fail(str(exc), pytrace=False)
 
 
 def _kinds(model, kind):
@@ -122,53 +123,37 @@ def _code(text: str) -> str:
 
 
 # ---------------------------------------------------------------------------------------------
-# the model loads and checks clean; the two views are marked; the old model is untouched
+# the model loads and checks clean; the two views are marked
 # ---------------------------------------------------------------------------------------------
 def test_strict_load_self_check_one_package_and_the_two_views_marked(r1):
-    """The r1 model loads strictly, holds its self check, and names its two views."""
+    """The model loads strictly, holds its self check, and names its two views."""
     assert r1.model.ok
     assert not [d for d in r1.model.diagnostics if d.severity == "error"]
     assert r1.model.self_check().status == "holds"
-    assert len(re.findall(r"^package\s", R1_TEXT, flags=re.M)) == 1
-    headers = re.findall(r"^    // (\d\. [^\n:]*)", R1_TEXT, flags=re.M)
+    assert len(re.findall(r"^package\s", TEXT, flags=re.M)) == 1
+    headers = re.findall(r"^    // (\d\. [^\n:]*)", TEXT, flags=re.M)
     assert len(headers) == 7
     for want in VIEW_SECTIONS:
         assert any(h.startswith(want) for h in headers), want
-    assert "CONFIGURATION view" in R1_TEXT and "ASSESSMENT view" in R1_TEXT
-
-
-def test_the_old_model_is_unchanged_and_r1_only_adds_to_its_accounting():
-    """R-14: the old file is what the ledger recorded; r1 keeps every calc def body as it was."""
-    from experiments import ledger as lg
-
-    entries = [
-        e
-        for e in lg.read(lg.LEDGER_PATH)
-        if e.get("model_path") == "examples/adcs/model_v2/cubesat.sysml"
-    ]
-    assert entries[-1]["model_sha256"] == hashlib.sha256(OLD_MODEL.read_bytes()).hexdigest()
-    old_calcs = re.findall(r"calc def \w+ \{.*?\n    \}", _code(OLD_TEXT), flags=re.S)
-    assert len(old_calcs) >= 20
-    for calc in old_calcs:
-        assert calc in _code(R1_TEXT)
+    assert "CONFIGURATION view" in TEXT and "ASSESSMENT view" in TEXT
 
 
 def test_numeric_literals_added_are_recorded_measurements_only():
-    """R-4: the numeric literals r1 adds to the old code are recorded measurements, no threshold.
+    """R-4: the numeric literals WP22 added to the WP15 code are recorded measurements only.
 
     The measured slew time (round 1) and the measured control effort of the baseline (round 2).
     """
     number = re.compile(r"(?<![\w.])\d+(?:\.\d+)?(?:[eE][-+]?\d+)?")
-    added = set(number.findall(_code(R1_TEXT))) - set(number.findall(_code(OLD_TEXT)))
+    added = set(number.findall(_code(TEXT))) - WP15_LITERALS
     assert added == {"133.6904772571943", "0.009490621914197469"}
 
 
 # ---------------------------------------------------------------------------------------------
 # R-1, R-2, R-3: requirements, satisfy, verify; the open metrics named
 # ---------------------------------------------------------------------------------------------
-def test_requirement_defs_are_the_old_five_plus_one_per_new_metric(r1, old):
+def test_requirement_defs_are_the_wp15_five_plus_one_per_new_metric(r1):
     defs = set(_kinds(r1.model, "RequirementDefinition"))
-    assert defs == set(_kinds(old.model, "RequirementDefinition")) | {
+    assert defs == WP15_REQUIREMENTS | {
         "SlewTimeRequirement",
         "EclipseReserveRequirement",
         "PowerMarginRequirement",
@@ -199,7 +184,7 @@ def test_every_requirement_is_satisfied_by_the_baseline(r1):
 
 def test_open_metrics_are_named_in_the_verification_cases_and_nowhere_covered(r1):
     """R-3: the model says which traded metrics no requirement reads, in the verification docs."""
-    docs = " ".join(re.findall(r"verification def \w+ \{\s*doc /\*(.*?)\*/", R1_TEXT, flags=re.S))
+    docs = " ".join(re.findall(r"verification def \w+ \{\s*doc /\*(.*?)\*/", TEXT, flags=re.S))
     docs = " ".join(docs.split())
     for metric in OPEN:
         assert metric in docs, metric
@@ -262,26 +247,24 @@ def _designs(frozen_box: str, n: int = 6, seed: int = 3):
 
 
 @pytest.mark.parametrize("box", ["baseline", "aggressive"])
-def test_regenerated_designs_equal_the_frozen_oracle_and_the_old_model(box, r1, old, frozen):
+def test_regenerated_designs_equal_the_frozen_oracle(box, r1, frozen):
     """R-6: the analysis (eight attributes), the flags and the new requirements' verdicts agree.
 
-    Same seed, both gain boxes. Attributes: the r1 analysis equals the frozen oracle to 1e-9 and
-    the old v2 model exactly; the four flags the r1 requirements decide equal the frozen flags; each
-    new requirement's verdict equals an independent Python reading of the frozen attribute.
+    Same seed, both gain boxes. Attributes: the model's analysis equals the frozen oracle to 1e-9;
+    the four flags the model's requirements decide equal the frozen flags; each new requirement's
+    verdict equals an independent Python reading of the frozen attribute. (Equality with the WP15
+    model was shown at the gate; ``WP22-review.md``, gate comparison report.)
     """
     designs = _designs(box)
     loaded, symbols = r1.configure(designs)
-    old_loaded, old_symbols = old.configure(designs)
     frozen_cfgs = frozen.configure(designs)
     ms = r1.model.eval(f"{P}::nominalSlew.horizon")
     assert float(r1.value(ms, "SI::s")) == 600.0
     worst = 0.0
-    for sym, osym, cfg in zip(symbols, old_symbols, frozen_cfgs, strict=True):
+    for sym, cfg in zip(symbols, frozen_cfgs, strict=True):
         measured = _measure_slew(frozen, cfg, t_end=600.0, max_step=0.5)
         want = frozen.measure(cfg)
         got = r1.experiment(loaded, sym, measured)
-        was = old.experiment(old_loaded, osym, measured)
-        assert got == was  # identical to the old model: nothing in the analysis changed
         for name, _ in ATTRIBUTES:
             worst = max(worst, _rel(got[name], want[name]))
         args = {
@@ -296,9 +279,6 @@ def test_regenerated_designs_equal_the_frozen_oracle_and_the_old_model(box, r1, 
         assert _verdict(loaded, sym, args, "SettledRequirement") == want["settled"]
         assert _verdict(loaded, sym, args, "MomentumRequirement") == want["momentum_ok"]
         assert _verdict(loaded, sym, args, "DepthOfDischargeRequirement") == want["dod_ok"]
-        assert _verdict(loaded, sym, args, "DepthOfDischargeRequirement") == _verdict(
-            old_loaded, osym, args, "DepthOfDischargeRequirement"
-        )
         assert _verdict(loaded, sym, args, "SlewTimeRequirement") == (want["slew_time_s"] < 600.0)
         assert _verdict(loaded, sym, args, "EclipseReserveRequirement") == (
             want["eclipse_reserve_wh"] >= 0
@@ -310,22 +290,6 @@ def test_regenerated_designs_equal_the_frozen_oracle_and_the_old_model(box, r1, 
             want["energy_balance_wh"] >= 0
         )
     assert worst < 1e-9, worst
-
-
-# ---------------------------------------------------------------------------------------------
-# R-8: the toolkit gates, with the pinned binary
-# ---------------------------------------------------------------------------------------------
-def test_toolkit_check_lint_and_verify_solve_pass_on_r1(toolkit_bin):
-    assert toolkit_bin.check(R1).returncode == 0
-    summary = toolkit_bin.lint(R1)["summary"]
-    assert summary["errors"] == 0 and summary["warnings"] == 0, summary
-    if not solver_available():
-        pytest.fail(
-            "the solve engine needs z3 or cvc5 on PATH (`uv run` provides z3)", pytrace=False
-        )
-    out = toolkit_bin.verify_solve(R1)
-    assert out.returncode == 0, out.stdout[-500:] + out.stderr[-500:]
-    assert "0 violated" in out.stdout
 
 
 # ---------------------------------------------------------------------------------------------
@@ -353,7 +317,7 @@ def _views(project, text: str, tmp_path: pathlib.Path):
 
 def test_every_covered_metric_has_a_thick_line_from_its_requirement(project, tmp_path):
     """R-1: the relation is read from the model; each covered metric has one, the open ones none."""
-    _, behaviour, facts = _views(project, R1_TEXT, tmp_path)
+    _, behaviour, facts = _views(project, TEXT, tmp_path)
     drawn = {(project.short(r), n): ev for r, n, s, ev in facts["rel"] if s == "strong"}
     for metric, req in COVERED.items():
         assert (req, metric) in drawn, (req, metric)
@@ -376,7 +340,7 @@ def test_the_picture_reads_cold_requirements_apart_sources_distinct_no_long_deto
     project, tmp_path
 ):
     """Round 2 (reviewer B-1, B-3, B-4, B-5): what a reader sees in the behavioural view's text."""
-    _, behaviour, facts = _views(project, R1_TEXT, tmp_path)
+    _, behaviour, facts = _views(project, TEXT, tmp_path)
     # requirements with no line are in one separate group, not among those with lines
     group = behaviour[
         behaviour.index("as xNoLine") : behaviour.index("\n}\n", behaviour.index("as xNoLine"))
@@ -398,7 +362,7 @@ def test_the_picture_reads_cold_requirements_apart_sources_distinct_no_long_deto
 
 def test_assembly_alternatives_in_enum_order_and_the_legend_names_what_is_drawn(project, tmp_path):
     """Round 2 (A-1, A-2): alternatives follow the enum; the legend names nothing absent."""
-    assembly, _, _ = _views(project, R1_TEXT, tmp_path)
+    assembly, _, _ = _views(project, TEXT, tmp_path)
     for abstract, order in (
         ("ReactionWheel", ["SmallWheel", "MediumWheel", "LargeWheel"]),
         ("StarTracker", ["CoarseTracker", "MediumTracker", "FineTracker"]),
@@ -418,11 +382,11 @@ def test_assembly_alternatives_in_enum_order_and_the_legend_names_what_is_drawn(
 
 def test_views_change_only_with_what_was_edited_and_are_stable(project, tmp_path):
     """R-9: an added alternative changes the assembly only, an added requirement the behaviour."""
-    a0, b0, _ = _views(project, R1_TEXT, tmp_path)
-    again = _views(project, R1_TEXT, tmp_path)
+    a0, b0, _ = _views(project, TEXT, tmp_path)
+    again = _views(project, TEXT, tmp_path)
     assert (a0, b0) == again[:2]
     alt = (
-        R1_TEXT.rstrip()[:-1]
+        TEXT.rstrip()[:-1]
         + "\n    part def XLWheel :> ReactionWheel {\n"
         + (
             "        :>> wheelClass = WheelClass::large;\n        :>> maxTorque = 0.010 [N*m];\n"
@@ -431,9 +395,21 @@ def test_views_change_only_with_what_was_edited_and_are_stable(project, tmp_path
     )
     a1, b1, _ = _views(project, alt, tmp_path)
     assert a1 != a0 and "XLWheel" in a1 and b1 == b0
-    req = R1_TEXT.rstrip()[:-1] + (
+    req = TEXT.rstrip()[:-1] + (
         "\n    requirement def MassRequirement {\n        subject c : Cubesat;\n"
         "        require constraint { c.totalMass < 20.0 [kg] }\n    }\n}\n"
     )
     a2, b2, _ = _views(project, req, tmp_path)
     assert a2 == a0 and b2 != b0 and "MassRequirement" in b2
+
+
+def test_committed_views_are_the_generators_output_on_the_model(project, tmp_path):
+    """R-9: three runs give the same text, and it is the committed views of the model."""
+    runs = [_views(project, TEXT, tmp_path)[:2] for _ in range(3)]
+    assert runs[0] == runs[1] == runs[2]
+    assembly, behaviour = runs[0]
+    assert (VIEWS / "assembly_view.puml").read_text() == assembly
+    assert (VIEWS / "behavioural_view.puml").read_text() == behaviour
+    for name in ("assembly_view", "behavioural_view"):
+        for ext in ("svg", "png"):
+            assert (VIEWS / f"{name}.{ext}").stat().st_size > 0, f"{name}.{ext}"

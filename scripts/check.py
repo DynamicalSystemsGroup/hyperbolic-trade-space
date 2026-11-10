@@ -75,6 +75,7 @@ PATH_TESTS: list[tuple[str, list[str]]] = [
         "examples/adcs/model_v2/*",
         [
             "tests/test_system_model_v2.py",
+            "tests/test_system_model_v2_r1.py",
             "tests/test_model_checking_v2.py",
             "tests/test_mutation_v2.py",
             "tests/test_v2_data.py",

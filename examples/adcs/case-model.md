@@ -56,13 +56,13 @@ the file.
 <!-- sections:begin -->
 | section | title | lines |
 |---|---|---|
-| 1 | CONFIGURATION SPACE: what can be chosen | 49 to 149 |
-| 2 | THE CUBESAT: composition and environment | 151 to 247 |
-| 3 | ACCOUNTING: mass, power, energy, inertia, pointing | 249 to 382 |
-| 4 | SCENARIOS: the slew, and a closed-form approximation of it | 384 to 454 |
-| 5 | REQUIREMENTS, SATISFACTION AND VERIFICATION (15.2) | 456 to 588 |
-| 6 | THE EXPERIMENT: configuration and measured slew in, attributes out | 590 to 621 |
-| 7 | NAMED CONFIGURATIONS | 623 to 646 |
+| 1 | CONFIGURATION SPACE (configuration view): what can be chosen | 63 to 163 |
+| 2 | THE CUBESAT (configuration view): composition and environment | 165 to 261 |
+| 3 | ACCOUNTING (assessment view): mass, power, energy, inertia, pointing | 263 to 396 |
+| 4 | SCENARIOS (assessment view): the slew, and a closed-form approximation of it | 398 to 468 |
+| 5 | REQUIREMENTS, SATISFACTION AND VERIFICATION (assessment view; 15.2, WP22) | 470 to 670 |
+| 6 | THE EXPERIMENT (assessment view): configuration and measured slew in, attributes out | 672 to 703 |
+| 7 | NAMED CONFIGURATIONS (configuration view) | 705 to 728 |
 <!-- sections:end -->
 
 What to take from each section:
@@ -79,12 +79,23 @@ What to take from each section:
   approximation of the slew for model checking. The integration of the slew itself is in Python
   (`adcs_sim.simulate_adcs`), because the model language cannot integrate the equations of motion.
 - **Requirements.** Feasibility as named requirements (`settled`, `momentum_ok`, `power_ok`,
-  `dod_ok` are their verdicts), `satisfy` statements tying them to the baseline, verification
-  definitions naming what each verifies, and claims over every in-range configuration.
+  `dod_ok` are their verdicts), one requirement over each of four more traded metrics (slew time,
+  power margin, energy balance, eclipse reserve), `satisfy` statements tying them to the baseline,
+  verification definitions naming what each verifies and the four traded metrics no requirement
+  reads, and claims over every in-range configuration.
 - **The experiment.** `analysis def SlewExperiment` takes the configuration and the measured slew
   quantities and returns the attributes the model computes. The settling time and the slew time
   are measured, not computed, and pass into the row from the measurement.
 - **Named configurations.** The baseline and two contrasts (agile, compact).
+
+The model has two views, generated from its elements and committed in `model_v2/views/`
+(PlantUML text, SVG and PNG). The assembly view (`assembly_view`) shows what a configuration is:
+the parts, the alternatives swapped for a categorical variable and the parameters tuned for a
+continuous one. The behavioural view (`behavioural_view`) shows how a configuration is assessed:
+for each traded metric, the requirement that reads it, or none, and where the metric comes from
+(the analysis or the measured slew). The generator is
+`docs/superpowers/notes/spike-sysml-diagrams/project.py` (`render.sh` there draws the SVG and PNG);
+`tests/test_system_model_v2_r1.py` checks that the committed text is its output on this file.
 
 ## Running an experiment and reading the ledger
 

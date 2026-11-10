@@ -172,6 +172,16 @@ def _subset(pool, predicate, n):
 # ---------------------------------------------------------------------------------------------
 # R-4: requirements, satisfy, verification defs
 # ---------------------------------------------------------------------------------------------
+# WP22 (adopted at the gate, WP22d): one requirement over each newly covered metric's own quantity,
+# each satisfied by the baseline and verified in the slew verification case.
+METRIC_REQUIREMENTS = {
+    "SlewTimeRequirement",
+    "EclipseReserveRequirement",
+    "PowerMarginRequirement",
+    "EnergyBalanceRequirement",
+}
+
+
 def _kinds(model, kind):
     return {
         q.properties["name"]: q
@@ -180,10 +190,13 @@ def _kinds(model, kind):
 
 
 def test_requirements_are_declared_one_per_flag(v2):
-    """R-3/R-4: the four flags are named requirement definitions; a fifth qualifies the slew time."""
+    """R-3/R-4: the four flags are named requirement definitions; a fifth qualifies the slew time.
+
+    The other four bound the metrics WP22 covers (none of them is a flag).
+    """
     defs = set(_kinds(v2.model, "RequirementDefinition"))
     assert set(fz.FLAG_REQUIREMENTS.values()) <= defs
-    assert defs == {*fz.FLAG_REQUIREMENTS.values(), fz.SLEW_BAND_REQUIREMENT}
+    assert defs == {*fz.FLAG_REQUIREMENTS.values(), fz.SLEW_BAND_REQUIREMENT, *METRIC_REQUIREMENTS}
 
 
 def test_verification_defs_name_the_requirements_they_verify(v2):
@@ -202,15 +215,16 @@ def test_verification_defs_name_the_requirements_they_verify(v2):
             "MomentumRequirement",
             "DepthOfDischargeRequirement",
             "SlewBandRequirement",
+            *METRIC_REQUIREMENTS,
         },
     }
     assert set(fz.FLAG_REQUIREMENTS.values()) <= set().union(*verified.values())
 
 
 def test_satisfy_statements_hold_on_the_baseline(v2):
-    """R-4: five `satisfy` statements tie the requirements to the baseline; all hold (engine run)."""
+    """R-4: nine `satisfy` statements tie the requirements to the baseline; all hold (engine run)."""
     verdicts = v2.model.verify_satisfaction()
-    assert len(verdicts) == 5
+    assert len(verdicts) == 9
     assert all(v.holds and v.status == "holds" for v in verdicts)
     assert {v.engine for v in verdicts} == {"run"}
     assert {v.strength for v in verdicts} == {"observed"}
@@ -218,7 +232,7 @@ def test_satisfy_statements_hold_on_the_baseline(v2):
     satisfy = v2.model.query(
         scope=[P], where={"property": "@type", "operator": "=", "value": "SatisfyRequirementUsage"}
     )
-    assert len(satisfy) >= 5
+    assert len(satisfy) >= 9
 
 
 def test_baseline_measurement_is_a_recorded_measurement(v2, frozen):
@@ -286,7 +300,10 @@ def test_feasibility_module_has_no_inequality_on_quantities():
 
 def test_requirement_names_in_the_checker_exist_in_the_model(v2):
     defs = set(_kinds(v2.model, "RequirementDefinition"))
-    assert set(fz.FLAG_REQUIREMENTS.values()) | {fz.SLEW_BAND_REQUIREMENT} == defs
+    assert (
+        set(fz.FLAG_REQUIREMENTS.values()) | {fz.SLEW_BAND_REQUIREMENT}
+        == defs - METRIC_REQUIREMENTS
+    )
 
 
 @pytest.fixture(scope="module")
