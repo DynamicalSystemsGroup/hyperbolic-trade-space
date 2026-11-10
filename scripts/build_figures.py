@@ -11,6 +11,10 @@ synthetic data, or the case module on the committed data. Every page's blocks ru
 scheme (the light pass and the dark pass differ only in the matplotlib style and the frontier
 colour), so the two images of a figure show the same picture. Default output is
 ``docs/generated/figures/`` (git-ignored, inside the docsite's ``docs_dir``).
+
+The paper's static figures (those drawn by a module of ``paper/figures/`` rather than by a cell of a
+notebook) are regenerated in place by the same run: see :data:`PAPER_FIGURES`. ``--docs-only``
+skips them.
 """
 
 from __future__ import annotations
@@ -35,6 +39,10 @@ _SIZE = (7.0, 4.2)  # inches; width fits a 46 rem column at 100 dpi
 _DPI = 110
 # Figures drawn wider than the column are redrawn at this width in inches (labels keep their size).
 RESIZE = {"adcs-tensions": 6.3}
+# The paper's static figures: the modules of ``paper/figures/`` whose ``main()`` writes the image
+# beside the module (WP19's n-lemma candidate). The index page's three-pane figure has its own
+# command (``uv run python paper/figures/figure1.py``) and is not rebuilt here: its SVG's ids vary.
+PAPER_FIGURES = ("nlemma",)
 
 # What differs between the schemes: the style that is applied, and the colour of "black". The
 # dark scheme leaves ``text.color`` alone: the heatmap's cell values are drawn in it, on cells that
@@ -162,16 +170,38 @@ def build(out=DEFAULT_OUT, docs=DOCS):
     return written
 
 
+def build_paper(modules=PAPER_FIGURES):
+    """Regenerate the paper's static figures beside their modules in ``paper/figures/``."""
+    import importlib
+
+    import matplotlib
+
+    matplotlib.use("Agg")
+    sys_path = list(sys.path)
+    sys.path[:0] = [str(ROOT / "paper"), str(ROOT / "src")]
+    try:
+        for name in modules:
+            with contextlib.redirect_stdout(io.StringIO()):
+                importlib.import_module(f"figures.{name}").main()
+    finally:
+        sys.path[:] = sys_path
+    return list(modules)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--out", default=str(DEFAULT_OUT), help="output directory")
+    parser.add_argument("--docs-only", action="store_true", help="skip the paper's static figures")
     args = parser.parse_args(argv)
     try:
         written = build(args.out)
+        paper = [] if args.docs_only else build_paper()
     except Exception as exc:
         print(f"build_figures: FAILED: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
     print(f"built {len(written)} images in {args.out}")
+    if paper:
+        print(f"regenerated the paper's static figures: {', '.join(paper)}")
     return 0
 
 
