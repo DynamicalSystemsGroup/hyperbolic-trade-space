@@ -162,22 +162,37 @@ def certificate_sentence(fits) -> Md:
     )
 
 
+def designs_on_a_seam(study, fit) -> tuple[int, int]:
+    """The designs whose best-minus-second-best facet score is below the band 1/tau, and all.
+
+    A margin below the band shows only that at least one design is within the band of a seam;
+    this is the count. On the committed primary data at K = 3 the nearest gap is about 9 per
+    cent of the band away from it, so the count does not move with rounding-level jitter.
+    """
+    e = fit.estimator
+    scores = np.log(study.M) @ np.atleast_2d(e.exponents_).T - e.log_offset_
+    top = np.sort(scores, axis=1)
+    return int(np.sum(top[:, -1] - top[:, -2] < fit.band)), len(top)
+
+
 def margin_sentence(study, fits) -> Md:
     """How to read the size of the margin and the stable radius, with this case's values.
 
     The margin and the radius are read against the band 1/tau and against the median gap between
-    a design's best and second-best facet score (Appendix D.8).
+    a design's best and second-best facet score (Appendix D.8); the designs within the band of a
+    seam are counted (:func:`designs_on_a_seam`).
     """
     r, K = study.regime, max(fits)
     four = lambda v: format(v, ".4g")  # noqa: E731
+    n, N = designs_on_a_seam(study, fits[K])
     return Md(
         f"At K = {K} the margin is {stable(f'certificate | {r} | {K} | gamma', four)} and the "
         f"stable radius {stable(f'certificate | {r} | {K} | radius', four)}, against a band 1/tau "
         f"of {stable(f'D k_table | {r} | {K} | band 1/tau', lambda v: f'{v:.4f}')} and a median "
         f"best-minus-second-best score of "
         f"{stable(f'margin | {r} | {K} | median margin', lambda v: f'{v:.3f}')}: a margin below "
-        f"the band puts a few designs on a seam, and the certificate covers changes under the "
-        f"radius only."
+        f"the band puts at least one design within the band of a seam, here {n} of the {N}, and "
+        f"the certificate covers changes under the radius only."
     )
 
 

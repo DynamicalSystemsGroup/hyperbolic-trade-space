@@ -292,3 +292,13 @@ section = "Results"
 words_added = 20
 job = "says once in the descent theorem that a cell is a set of rows and a facet a piece of the surface, one cell per facet, and names the cell a row is reassigned to"
 reader = "the reader who took facet for a cluster of rows in the descent statement"
+
+# Rows: PM-BRIEF ruling 3 (claims U09-C038 and U08-C040). The margin sentence gains the count of
+# designs within the band of a seam; the L11 sketch's narrowed sentence is shorter, so the net is 2.
+
+[[raise]]
+date = "2026-11-09"
+section = "Results"
+words_added = 2
+job = "replaces a few designs with the generated count of designs within the band of a seam, of all the designs"
+reader = "the reader judging how much a margin below the band matters on this case"
