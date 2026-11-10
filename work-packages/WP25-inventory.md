@@ -1,4 +1,4 @@
-# WP25 — Inventory (third instance, at `dev` de3ce61)
+# WP25 — Inventory (third instance, at the head after OD2's deletion; first written at `dev` de3ce61)
 
 One row per tracked file outside the live set (A1), each with one disposition: keep (its reader named), delete (what
 the content no longer did; the same line is in the deletion commit's message), or hold (the package it waits for and
@@ -11,8 +11,8 @@ and the second's (198 rows) at `ca6ce94`, in git.
 `work-packages/{README,PM-BRIEF,release-candidate,parallel-board,driver-log,release-punch-list,swap-evidence,
 interface-contract}.*`; the scope, decisions and review of every package not yet accepted (WP8a, WP8b, WP10, WP11,
 WP12, WP15, WP16, WP17, WP18, WP19, WP20, WP21, WP22, WP25, WP26, WP27: WP23 and WP24 left the list, accepted; WP26 and
-WP27 joined); and this inventory. 285 paths (`docs/generated/glossary.md` is in the navigation but generated, not
-tracked). Tracked files at the head: 493; rows below: 209.
+WP27 joined); and this inventory. 284 paths (`docs/generated/glossary.md` is in the navigation but generated, not
+tracked; `v1-v2-comparison.md` left the set when deleted). Tracked files at the head: 492; rows below: 209.
 
 **The command (A2), run at the repository root; it prints one line per row: path, live files naming the path, live
 files naming only the basename.** Rerun at the head and diff the first column against the table under "Rows" (R-1).
@@ -45,14 +45,15 @@ done
   C001 note and `claims-review.md` line 74 dropped the 0.071 sentence first (6e34f2b), then the file was deleted in
   de3ce61 ("WP25: 1 file deleted (third instance)"); its last version is at b555be7. The records that cite it
   (`WP18-scope-of-work.md`, `WP8a-decisions.md`) keep the name, which now points into history.
-- `examples/adcs/experiments/reports/v1-v2-comparison.md` (OD2 (b): delete) **stays, held for the PM.** The scope's
-  sizing said "read by no test or page"; `tests/test_v2_data.py::test_the_committed_report_exists_and_includes_the_register`
-  (line 383) reads the committed file through `cmp.REPORT` (a reference neither the path grep nor the basename grep
-  sees) and fails without it (the fast suite with the file deleted: 1 failed, 1740 passed). The test is outside this
-  instance's blast radius (`tests/`), so the decision's premise is wrong and the file cannot go without a test change:
-  the PM routes it (the test regenerates the report to a temporary path and checks the same content, then the file
-  goes in the next instance's deletion commit; or OD2 reverts to (a) and the row names the test as the reader). The
-  file is in the live set (`examples/adcs/`), so it is not a row below.
+- `examples/adcs/experiments/reports/v1-v2-comparison.md` went (OD2 (b)), in a second deletion commit of this
+  instance. The scope's sizing said "read by no test or page", but `tests/test_v2_data.py` read the committed file
+  through `cmp.REPORT` (a reference neither the path grep nor the basename grep sees) and failed without it; the PM
+  ruled (OD2 closed by option (a) of the executor's report) that the driver's decision changed the requirement that test
+  pinned, so the test now regenerates the comparison to a temporary path and checks the same content
+  (`test_the_regenerated_report_includes_the_register`), and the file went in the same push. Its last version is at
+  f517875; the hash rows in `paper/container/RECORD.md` and `WP23-rounds/gate/README.md` stay as history (A9);
+  `uv run python -m experiments compare` regenerates it. The file was in the live set (`examples/adcs/`), so it was
+  not a row; the rows that named it as a reader were rewritten from the command rerun after the deletion.
 - `work-packages/WP23-rounds/round-1/generation-ledger.jsonl`, re-read once against @7: it holds the two entries of
   the first v2 generation (`v2-primary`, `v2-baseline`; `round-1/README.md` names it as the ledger of the run);
   rounds 2 to 4 regenerated nothing (`round-4/README.md`); the data of record is the @7 entries of
@@ -67,8 +68,8 @@ done
 - `docs/superpowers/notes/view-editor-harness.md` is WP26's note (Non-goals): keep, read by `WP26-decisions.md`,
   `WP27-scope-of-work.md` and `parallel-board.md`.
 
-**Counts.** 209 rows: 148 keep, 61 hold, 0 delete at the head (the one delete row of this instance,
-`spike-ternary/report.md`, is gone and so no longer a row). Held rows: 16 of WP11, 33 of WP26, 10 of WP27,
+**Counts.** 209 rows: 148 keep, 61 hold, 0 delete at the head (the instance's two deleted files,
+`spike-ternary/report.md` and OD2's `v1-v2-comparison.md`, are gone and so no longer rows). Held rows: 16 of WP11, 33 of WP26, 10 of WP27,
 `search-prior-art.md` (WP12), `streams/P10-review.md` (WP10's acceptance).
 
 ## Contract and tests (R-2): the grep before any file goes
@@ -79,7 +80,7 @@ work-packages/interface-contract.toml tests/test_interface_contract.py`. Counts 
 | File | path | basename | Live surfaces naming the path (`git grep -l -F <path> -- . ':!work-packages/WP25-*'`) |
 |---|---|---|---|
 | `docs/superpowers/notes/spike-ternary/report.md` (deleted, de3ce61) | 0 | 0 | `docs/superpowers/notes/claims-review.md` (re-pointed in 6e34f2b); `work-packages/WP18-scope-of-work.md`, `work-packages/WP8a-decisions.md` (records, kept). The basename `report.md` hits elsewhere are other files (`spike-ggp-fit`, `spike-container-platform`, the tests' temporary output) |
-| `examples/adcs/experiments/reports/v1-v2-comparison.md` (OD2; held, see above) | 0 | 0 | `paper/container/RECORD.md`, `work-packages/WP23-rounds/gate/README.md` (the hash rows), `WP10-decisions.md`, `WP15-scope-of-work.md`, `WP23-review.md`, `driver-log.md`, `swap-evidence.md`, `streams/P10-review.md` (records); by basename `examples/adcs/experiments/compare.py` (the generator's `REPORT`); by neither, `tests/test_v2_data.py` line 383 (`cmp.REPORT`) |
+| `examples/adcs/experiments/reports/v1-v2-comparison.md` (OD2 (b); deleted in the second deletion commit) | 0 | 0 | `paper/container/RECORD.md`, `work-packages/WP23-rounds/gate/README.md` (the hash rows), `WP10-decisions.md`, `WP15-scope-of-work.md`, `WP23-review.md`, `driver-log.md`, `swap-evidence.md`, `streams/P10-review.md` (records); by basename `examples/adcs/experiments/compare.py` (the generator's `REPORT`); by neither, `tests/test_v2_data.py` (`cmp.REPORT`; the test now regenerates the report, same push) |
 
 ## Rows
 
@@ -141,7 +142,7 @@ work-packages/interface-contract.toml tests/test_interface_contract.py`. Counts 
 | `docs/superpowers/notes/spike-objective/objectives.py` | keep | the README is cited by path from `paper/supporting_material.ipynb`; the script regenerates the spike's outputs (decision of 2026-11-10 07:00) |
 | `docs/superpowers/notes/spike-sysml-diagrams/project.py` | keep | the generator of the model's views: `examples/adcs/case-model.md`, `tests/test_system_model_v2_r1.py` (WP23 is accepted at db59365; the file is read by a test) |
 | `docs/superpowers/notes/spike-sysml-diagrams/render.sh` | keep | the render recipe `examples/adcs/case-model.md` names |
-| `docs/superpowers/notes/system-model-tidy.md` | keep | `examples/adcs/experiments/reports/v1-v2-comparison.md`, `work-packages/README.md` |
+| `docs/superpowers/notes/system-model-tidy.md` | keep | `work-packages/README.md` |
 | `docs/superpowers/notes/view-editor-harness.md` | keep | WP26's note (Non-goals); read by `work-packages/WP26-decisions.md`, `work-packages/WP27-scope-of-work.md`, `work-packages/parallel-board.md` |
 | `mkdocs.yml` | keep | `scripts/assemble_site.py`, `tests/test_site.py` |
 | `pyproject.toml` | keep | uv, the build and CI |
@@ -153,11 +154,11 @@ work-packages/interface-contract.toml tests/test_interface_contract.py`. Counts 
 | `work-packages/WP1-decisions.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP1-review.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP1-scope-of-work.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
-| `work-packages/WP10-claims-review.md` | keep | a record of WP10, WP11, WP14 or WP19 read by `examples/adcs/experiments/reports/v1-v2-comparison.md`, `work-packages/WP10-scope-of-work.md`, `work-packages/parallel-board.md` |
+| `work-packages/WP10-claims-review.md` | keep | a record of WP10, WP11, WP14 or WP19 read by `work-packages/WP10-scope-of-work.md`, `work-packages/parallel-board.md` |
 | `work-packages/WP10-cold-reads-triage.md` | keep | a record of WP10, WP11, WP14 or WP19 read by `work-packages/driver-log.md`, `work-packages/interface-contract.md` |
 | `work-packages/WP10-reading-pass.md` | keep | a record of WP10, WP11, WP14 or WP19 read by `paper/generate_reading_pass.py`, `paper/reading_pass.yaml` |
 | `work-packages/WP10-review-2.md` | keep | a record of WP10, WP11, WP14 or WP19 read by `work-packages/README.md`, `work-packages/WP10-decisions.md`, `work-packages/WP10-scope-of-work.md` (+1) |
-| `work-packages/WP10-vocabulary-review.md` | keep | a record of WP10, WP11, WP14 or WP19 read by `examples/adcs/experiments/reports/v1-v2-comparison.md`, `scripts/vocabulary_baseline.toml`, `work-packages/WP10-scope-of-work.md` (+1) |
+| `work-packages/WP10-vocabulary-review.md` | keep | a record of WP10, WP11, WP14 or WP19 read by `scripts/vocabulary_baseline.toml`, `work-packages/WP10-scope-of-work.md` (+1) |
 | `work-packages/WP11-round-1/round2-docs-reads/R1.md` | hold: WP11 (running package; next instance) | round 2's raw reader reports (depths B and C, 31fedfc) and the task readers' reports (fdab633), after triage (e76f520, 308dc5a): WP11's (Non-goals); their deletion after triage, as round 1's, is WP11's to decide at its acceptance or the next instance's |
 | `work-packages/WP11-round-1/round2-docs-reads/R2.md` | hold: WP11 (running package; next instance) | round 2's raw reader reports (depths B and C, 31fedfc) and the task readers' reports (fdab633), after triage (e76f520, 308dc5a): WP11's (Non-goals); their deletion after triage, as round 1's, is WP11's to decide at its acceptance or the next instance's |
 | `work-packages/WP11-round-1/round2-docs-reads/R3.md` | hold: WP11 (running package; next instance) | round 2's raw reader reports (depths B and C, 31fedfc) and the task readers' reports (fdab633), after triage (e76f520, 308dc5a): WP11's (Non-goals); their deletion after triage, as round 1's, is WP11's to decide at its acceptance or the next instance's |
@@ -180,21 +181,21 @@ work-packages/interface-contract.toml tests/test_interface_contract.py`. Counts 
 | `work-packages/WP13-scope-of-work.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP14-decisions.md` | keep | the record of an accepted package (A1); read by `work-packages/WP8a-scope-of-work.md`, `work-packages/interface-contract.md` |
 | `work-packages/WP14-review.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
-| `work-packages/WP14-scope-of-work.md` | keep | the record of an accepted package (A1); read by `examples/adcs/experiments/reports/v1-v2-comparison.md` |
+| `work-packages/WP14-scope-of-work.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP19-backlog.md` | keep | a record of WP10, WP11, WP14 or WP19 read by `work-packages/WP10-decisions.md` |
 | `work-packages/WP19-figure-review.md` | keep | a record of WP10, WP11, WP14 or WP19 read by `paper/length_ledger.toml`, `work-packages/WP19-scope-of-work.md` |
 | `work-packages/WP19-slots.md` | keep | a record of WP10, WP11, WP14 or WP19 read by `work-packages/WP19-scope-of-work.md`, `work-packages/parallel-board.md` |
 | `work-packages/WP2-decisions.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP2-review.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP2-scope-of-work.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
-| `work-packages/WP23-closeout-scope-of-work.md` | keep | the record of an accepted package (A1); read by `examples/adcs/experiments/reports/change-register.md`, `examples/adcs/experiments/reports/v1-v2-comparison.md`, `examples/adcs/model_v2/cubesat.sysml` (+7) |
+| `work-packages/WP23-closeout-scope-of-work.md` | keep | the record of an accepted package (A1); read by `examples/adcs/experiments/reports/change-register.md`, `examples/adcs/model_v2/cubesat.sysml` (+7) |
 | `work-packages/WP23-decisions.md` | keep | the record of an accepted package (A1); read by `examples/adcs/model_v2/ledger_gate.py` |
-| `work-packages/WP23-review.md` | keep | the record of an accepted package (A1); read by `examples/adcs/experiments/reports/v1-v2-comparison.md`, `examples/adcs/model_v2/coverage.py` |
-| `work-packages/WP23-rounds/gate/README.md` | keep | the gate's record (`WP23-rounds/gate/README.md`, the data gate): `examples/adcs/experiments/reports/change-register.md`, `examples/adcs/experiments/reports/v1-v2-comparison.md`, `paper/container/RECORD.md` (+1) |
+| `work-packages/WP23-review.md` | keep | the record of an accepted package (A1); read by `examples/adcs/model_v2/coverage.py` |
+| `work-packages/WP23-rounds/gate/README.md` | keep | the gate's record (`WP23-rounds/gate/README.md`, the data gate): `examples/adcs/experiments/reports/change-register.md`, `paper/container/RECORD.md` (+1) |
 | `work-packages/WP23-rounds/gate/coverage.md` | keep | the gate's record (`WP23-rounds/gate/README.md`, the data gate): `examples/adcs/case-model.md`, `examples/adcs/model_v2/coverage.py`, `examples/adcs/model_v2/diagnostic_pair.py` (+6) |
 | `work-packages/WP23-rounds/gate/heatmap.png` | keep | the gate's record (`WP23-rounds/gate/README.md`, the data gate): `examples/adcs/model_v2/diagnostic_pair.py`, `tests/test_diagnostic_pair.py`, `work-packages/WP23-review.md` (+2) |
 | `work-packages/WP23-rounds/gate/heatmap_baseline.png` | keep | the gate's record (`WP23-rounds/gate/README.md`, the data gate): `examples/adcs/model_v2/diagnostic_pair.py`, `tests/test_diagnostic_pair.py`, `work-packages/WP23-review.md` |
-| `work-packages/WP23-rounds/gate/k3_record.md` | keep | the gate's record (`WP23-rounds/gate/README.md`, the data gate): `examples/adcs/case-model.md`, `examples/adcs/experiments/reports/v1-v2-comparison.md`, `examples/adcs/model_v2/diagnostic_pair.py` (+4) |
+| `work-packages/WP23-rounds/gate/k3_record.md` | keep | the gate's record (`WP23-rounds/gate/README.md`, the data gate): `examples/adcs/case-model.md`, `examples/adcs/model_v2/diagnostic_pair.py` (+4) |
 | `work-packages/WP23-rounds/round-1/INTENT.md` | keep | a round record of WP23's cold reads, quoted by `WP23-review.md` and `swap-evidence.md` |
 | `work-packages/WP23-rounds/round-1/README.md` | keep | a round record of WP23's cold reads, quoted by `WP23-review.md` and `swap-evidence.md` |
 | `work-packages/WP23-rounds/round-1/cold-reads.md` | keep | a round record of WP23's cold reads, quoted by `WP23-review.md` and `swap-evidence.md` |
@@ -211,8 +212,8 @@ work-packages/interface-contract.toml tests/test_interface_contract.py`. Counts 
 | `work-packages/WP23-rounds/round-4/assembly_caption.md` | keep | a round record of WP23's cold reads, quoted by `WP23-review.md` and `swap-evidence.md` |
 | `work-packages/WP23-rounds/round-4/coverage.md` | keep | a round record of WP23's cold reads, quoted by `WP23-review.md` and `swap-evidence.md` |
 | `work-packages/WP23-rounds/round-4/k3_record.md` | keep | a round record of WP23's cold reads, quoted by `WP23-review.md` and `swap-evidence.md` |
-| `work-packages/WP23-rounds/spike-redundancy.md` | keep | the close-out's record: `examples/adcs/experiments/reports/v1-v2-comparison.md`; `spike-B` is named by `WP23-closeout-scope-of-work.md`, `spike-redundancy.md` by `case-model.md` and contract row 15 |
-| `work-packages/WP23-rounds/spikes/spike-A-with-and-without-infeasible.md` | keep | the close-out's record: `examples/adcs/experiments/reports/v1-v2-comparison.md`; `spike-B` is named by `WP23-closeout-scope-of-work.md`, `spike-redundancy.md` by `case-model.md` and contract row 15 |
+| `work-packages/WP23-rounds/spike-redundancy.md` | keep | the close-out's record: `examples/adcs/case-model.md`, `examples/adcs/case.py`, `work-packages/interface-contract.md`; `spike-B` is named by `WP23-closeout-scope-of-work.md`, `spike-redundancy.md` by `case-model.md` and contract row 15 |
+| `work-packages/WP23-rounds/spikes/spike-A-with-and-without-infeasible.md` | keep | the close-out's record: `claims_register.toml`; `spike-B` is named by `WP23-closeout-scope-of-work.md`, `spike-redundancy.md` by `case-model.md` and contract row 15 |
 | `work-packages/WP23-rounds/spikes/spike-B-requirements-and-the-fit.md` | keep | the close-out's record: `tests/test_case.py`; `spike-B` is named by `WP23-closeout-scope-of-work.md`, `spike-redundancy.md` by `case-model.md` and contract row 15 |
 | `work-packages/WP23-scope-of-work.md` | keep | the record of an accepted package (A1); read by `examples/adcs/case-model.md` |
 | `work-packages/WP24-decisions.md` | keep | the record of an accepted package (A1); read by `work-packages/interface-contract.md` |
@@ -268,19 +269,19 @@ work-packages/interface-contract.toml tests/test_interface_contract.py`. Counts 
 | `work-packages/WP3-scope-of-work.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP4-decisions.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP4-review.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
-| `work-packages/WP4-scope-of-work.md` | keep | the record of an accepted package (A1); read by `examples/adcs/experiments/reports/v1-v2-comparison.md` |
-| `work-packages/WP4b-decisions.md` | keep | the record of an accepted package (A1); read by `examples/adcs/experiments/reports/v1-v2-comparison.md`, `tests/test_adcs_enrichment.py` |
-| `work-packages/WP4b-review.md` | keep | the record of an accepted package (A1); read by `examples/adcs/experiments/reports/v1-v2-comparison.md` |
-| `work-packages/WP4b-scope-of-work.md` | keep | the record of an accepted package (A1); read by `examples/adcs/experiments/reports/v1-v2-comparison.md` |
+| `work-packages/WP4-scope-of-work.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
+| `work-packages/WP4b-decisions.md` | keep | the record of an accepted package (A1); read by `tests/test_adcs_enrichment.py` |
+| `work-packages/WP4b-review.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
+| `work-packages/WP4b-scope-of-work.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP5-decisions.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP5-review.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP5-scope-of-work.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP6-decisions.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP6-review.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP6-scope-of-work.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
-| `work-packages/WP7-decisions.md` | keep | the record of an accepted package (A1); read by `examples/adcs/experiments/reports/v1-v2-comparison.md` |
-| `work-packages/WP7-review.md` | keep | the record of an accepted package (A1); read by `examples/adcs/experiments/reports/v1-v2-comparison.md` |
-| `work-packages/WP7-scope-of-work.md` | keep | the record of an accepted package (A1); read by `examples/adcs/experiments/reports/v1-v2-comparison.md` |
+| `work-packages/WP7-decisions.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
+| `work-packages/WP7-review.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
+| `work-packages/WP7-scope-of-work.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP8-decisions.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md`, `work-packages/WP8a-decisions.md`, `work-packages/WP8a-scope-of-work.md` (+1) |
 | `work-packages/WP8-scope-of-work.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP8a-driver-browser-pass.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md`, `work-packages/WP8a-decisions.md`, `work-packages/driver-log.md` |
@@ -288,11 +289,12 @@ work-packages/interface-contract.toml tests/test_interface_contract.py`. Counts 
 | `work-packages/WP8a-review-amendment2.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md` |
 | `work-packages/WP9-decisions.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md`, `work-packages/WP10-decisions.md` |
 | `work-packages/WP9-review.md` | keep | the record of an accepted package (A1); read by `paper/supporting_material.ipynb` |
-| `work-packages/WP9-scope-of-work.md` | keep | the record of an accepted package (A1); read by `examples/adcs/experiments/reports/v1-v2-comparison.md` |
+| `work-packages/WP9-scope-of-work.md` | keep | the record of an accepted package (A1); read by `work-packages/README.md`, `work-packages/WP10-decisions.md` |
 | `work-packages/external-assessment-2026-11-09/assessment.md` | keep | `paper/supporting_material.ipynb`, `WP21-scope-of-work.md` |
 | `work-packages/external-assessment-2026-11-09/triage.md` | keep | the triage of the outside assessment: `WP21-scope-of-work.md`, `WP19-scope-of-work.md` |
 | `work-packages/external-assessment-2026-11-09/verification.json` | keep | `assessment.md` (cited by `paper/supporting_material.ipynb`) sends its reader to this file for "exact outcomes and numerical comparisons"; `WP21-scope-of-work.md` lists it as evidence; 2.6 kB; deleting leaves a cited document with a dangling pointer. Revisit when `assessment.md` goes |
 | `work-packages/external-review-2026-11.md` | keep | the outside review the abstraction-gaps ledger cites (E-10): `WP10-decisions.md`, `work-packages/README.md` |
 | `work-packages/streams/P10-review.md` | hold: WP10 acceptance | named by no file (`WP10-decisions.md` mentions P10); folded into `WP10-review.md` or deleted when WP10 is finally accepted (WP10 is a working draft) |
 
-Every row above carries one disposition; the R-1 grep over this file returns 0.
+Every row above carries one disposition; the R-1 grep over this file returns 0. The 18 rows that named the deleted
+`v1-v2-comparison.md` as a reader now name their other readers, as the command rerun after the deletion lists them.

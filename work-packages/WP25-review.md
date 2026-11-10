@@ -18,17 +18,18 @@ same push, 6e34f2b dropped the 0.071 sentence from `claims_register.toml` C001's
 row for "a marker is not where V = 1", so no citation dangled; C001 rests on its listed backing (the two
 `tests/test_plotting.py` ternary tests and `plot_ternary`'s Notes).
 
-**OD2 (b) was not applied.** The scope's sizing said `examples/adcs/experiments/reports/v1-v2-comparison.md` is "read
-by no test or page". With the file deleted, the fast suite gave `1 failed, 1740 passed`: the failure is
-`tests/test_v2_data.py::test_the_committed_report_exists_and_includes_the_register` (line 383), which reads the
-committed file through `cmp.REPORT` (the generator's constant, so neither the path grep nor the basename grep sees
-the reference) and asserts that the change register and the solver-exclusion section are in it. The test is outside
-this instance's blast radius (`tests/`; pm5-rules: a test changes only when its requirement changed by a recorded
-decision, and this decision rested on a wrong premise), so the deletion commit was remade without the file and the
-row is held for the PM. Options: (i) the test regenerates the report to a temporary path (`experiments compare --out`,
-as `tests/test_experiments.py` already does) and checks the same content, and the file goes in the next instance's
-deletion commit; (ii) OD2 reverts to (a), the inventory row naming the test as the reader. The R-2 grep for the file is
-in the inventory's first section (0, 0), ready for either.
+**OD2 (b), applied in a second deletion commit after the PM's ruling.** The scope's sizing said
+`examples/adcs/experiments/reports/v1-v2-comparison.md` is "read by no test or page". With the file deleted, the fast
+suite gave `1 failed, 1740 passed`: `tests/test_v2_data.py::test_the_committed_report_exists_and_includes_the_register`
+read the committed file through `cmp.REPORT` (the generator's constant, so neither grep saw the reference). The executor
+held the file and put two options to the PM; the PM ruled that the driver's recorded decision (the report is deleted and
+regenerated on demand) changed the requirement that test pinned, so the test joined the radius for this one change: it is
+now `test_the_regenerated_report_includes_the_register`, which runs `experiments compare --out <tmp>` (as the slow test
+above it does) and checks the same content (the register included verbatim, the solver-exclusion section); the unused
+`REPORT` constant went with it; nothing else in the file changed (8fa1e13). Then the deletion commit "WP25: 1 file
+deleted (third instance, OD2)" (ec1fe9c) listed the file with what it no longer did; the hash rows in
+`paper/container/RECORD.md` and `WP23-rounds/gate/README.md` stay as history (A9); last version f517875. R-2 grep 0, 0
+(the inventory's first section).
 
 ## Drift (D-3, G2)
 
@@ -47,7 +48,7 @@ vocabulary and narrative tests, and the doctests: the lines are under "Checks".
 | N-a (`coverage.csv` names the column by the enum type) | routed: WP26's modeller, one unit through the generator (OD3 (b)) | the model tests' pins re-read; after WP27's current round (`WP25-decisions.md`, "Instance 3") |
 | N-b (`paper/length_ledger.toml`, "typed constant") | closed | `grep -n "typed constant" paper/length_ledger.toml` finds line 612 only, WP24 push 3's comment ("typed constant, cut since") |
 | Added by the read: API names on the pages | closed: none stale | every backticked identifier on the docs pages and the README that looks like a package name (an underscore or a trailing underscore) checked against the package's names, the three estimators' parameters and fitted attributes, `Termination`'s and `TensionReport`'s fields and the plotting and gaps signatures: the only unknowns are the `frontier_in_original_units` dict keys (`exponents_orig`, `log_const`), scikit-learn's `return_std` and the tag `positive_only`, and the four termination status strings, all current in `src/` |
-| Added by the read: `tests/test_v2_data.py` line 383 reads OD2's file | routed: the PM (above) | the scope's "read by no test or page" was wrong for this file; the row names the test |
+| Added by the read: `tests/test_v2_data.py` read OD2's file | closed: the PM's ruling, the test regenerates the report (above) | the scope's "read by no test or page" was wrong for this file |
 
 ## Gaps (D-3, G3)
 
@@ -64,25 +65,24 @@ vocabulary and narrative tests, and the doctests: the lines are under "Checks".
 | Check | Command | Result |
 |---|---|---|
 | Site | `uv run python scripts/stage_site.py --paper placeholder` | `Documentation built in 0.97 seconds`, `staged site in <worktree>/_stage`, exit 0 |
-| Fast suite (R-5) | `uv run pytest -q -m "not slow" -n auto` | `1742 passed, 16 skipped, 1 xfailed`, exit 0 (1731 at the second instance; WP27's and WP11's tests since). With `v1-v2-comparison.md` deleted it was `1 failed, 1740 passed` (the test above), which is why the file stays |
+| Fast suite (R-5) | `uv run pytest -q -m "not slow" -n auto` | `1742 passed, 16 skipped, 1 xfailed`, exit 0 (the same count: one test replaced one) at the head after OD2's deletion; `1742 passed, 16 skipped, 1 xfailed` before it (1731 at the second instance; WP27's and WP11's tests since). With the file deleted and the test unchanged it was `1 failed, 1740 passed` |
 | Mapped tests (R-5) | `uv run python scripts/check.py --changed` (at the OD1 push) | `1 failed, 1740 passed, 16 skipped, 1 xfailed` with `v1-v2-comparison.md` deleted (the failure above), before the deletion commit was remade; the head's suite is the row above |
 | Register, docs, site, vocabulary, narrative tests (R-6) | `uv run pytest -q tests/test_claims_register.py tests/test_docs.py tests/test_site.py tests/test_vocabulary.py tests/test_narrative.py` | `136 passed` (136 at the scope's sizing) |
 | Doctests (R-6) | `uv run pytest -q --doctest-modules src` | `57 passed` |
-| Vocabulary guard (R-6) | `uv run python scripts/check_vocabulary.py` | `69 new violation(s), 0 known` (69 at ca6ce94; `case-model.md`, which it scans, was edited) |
+| Vocabulary guard (R-6) | `uv run python scripts/check_vocabulary.py` | `69 new violation(s), 0 known` (69 at ca6ce94; `case-model.md`, which it scans, was edited); 69 again after OD2's deletion |
 | Lock, lint (R-6) | `uv lock --check`; `uv run ruff check .`; `uv run ruff format --check .` | `Resolved 178 packages`; `All checks passed!`; `348 files already formatted` |
 | Inventory (R-1) | the A2 command at the head, first column diffed against the Rows table; `grep -ciE "undecided\|tbd\|\?\?" work-packages/WP25-inventory.md` | 209 rows, 0 difference; 0 |
 | Contract and tests (R-2) | `git grep -n -F -e <path> -e <basename> -- work-packages/interface-contract.md work-packages/interface-contract.toml tests/test_interface_contract.py` | 0 and 0 for `spike-ternary/report.md`; 0 and 0 for `v1-v2-comparison.md` (the inventory's first section) |
-| Nothing live names the deleted path (R-3) | `for f in $(git diff --name-only --diff-filter=D d5d0c3d..HEAD); do git grep -l -F "$f" -- . ':!work-packages/WP25-*'; done` | `work-packages/WP18-scope-of-work.md`, `work-packages/WP8a-decisions.md` (records of accepted packages); 0 in every other live file |
-| Deletion commit (R-4) | `git show --stat de3ce61 \| tail -1`; `git show --format=%B -s de3ce61 \| grep -c '^docs/superpowers/notes/spike-ternary/report.md'` | `1 file changed, 155 deletions(-)`; 1 |
+| Nothing live names the deleted path (R-3) | `for f in $(git diff --name-only --diff-filter=D d5d0c3d..HEAD); do git grep -l -F "$f" -- . ':!work-packages/WP25-*'; done` | `spike-ternary/report.md`: `work-packages/WP18-scope-of-work.md`, `work-packages/WP8a-decisions.md`; `v1-v2-comparison.md`: `paper/container/RECORD.md`, `work-packages/WP23-rounds/gate/README.md` (the hash rows), `WP10-decisions.md`, `WP15-scope-of-work.md`, `WP23-review.md`, `driver-log.md`, `swap-evidence.md`, `streams/P10-review.md` (all records); 0 in every other live file |
+| Deletion commit (R-4) | `git show --stat de3ce61 \| tail -1`; `git show --format=%B -s de3ce61 \| grep -c '^docs/superpowers/notes/spike-ternary/report.md'` | `1 file changed, 155 deletions(-)`; 1. The second deletion commit, ec1fe9c: `1 file changed, 498 deletions(-)`; 1 |
 | Untouched (R-7) | `git diff --stat d5d0c3d..HEAD -- paper derivation src examples/adcs/data examples/adcs/model_v2 examples/adcs/experiments/ledger`; `--diff-filter=R` | empty; empty |
 | Non-goals surfaces (R-8) | `git diff --stat d5d0c3d..HEAD -- glossary.yaml work-packages/interface-contract.md work-packages/interface-contract.toml tests/test_interface_contract.py CHANGELOG.md paper/container 'work-packages/WP26*' 'work-packages/WP27*' 'work-packages/WP11*' 'work-packages/WP10*' work-packages/streams mkdocs.yml pyproject.toml uv.lock` | empty. The instance's whole diff: `claims_register.toml` (one line), the three notes, the two spike files, `case-model.md` (two lines), the deleted report, and the four WP25 records |
 | Attribution (R-10) | `git log --format=%B d5d0c3d..HEAD \| grep -ciE "co-authored-by\|generated (with\|by)"` | 0 |
 | Watcher verdict per push (R-10) | the CI run of each push | not in hand at the time of writing; the PM or the reviewer reads it |
-| Numbers written (R-11) | the D-4 commit messages | no number was written on a page: no S-6 number moved; the two hashes written (4409920) come from `git rev-parse --short f1101ce^` |
+| Numbers written (R-11) | the D-4 commit messages | no number was written on a page: no S-6 number moved; the hash written (4409920) comes from `git rev-parse --short f1101ce^` |
 
 ## What remains, and why
 
-- `examples/adcs/experiments/reports/v1-v2-comparison.md`: held for the PM (the test, above).
 - The routed rows: S-5 (WP8b), N-a (WP26's modeller, OD3 (b)), P-1 (the PM, the manifest), P-4 (the driver), P-5
   (WP26 and WP27 at acceptance).
 - Held files, unchanged: `search-prior-art.md` (WP12, unscoped), `streams/P10-review.md` (WP10's acceptance), WP11's
@@ -90,6 +90,6 @@ vocabulary and narrative tests, and the doctests: the lines are under "Checks".
 
 ## Recommendation for the driver
 
-Accept D-1 to D-6 of the third instance as met on the evidence above, with OD2's file carried as a held row and the
+Accept D-1 to D-6 of the third instance as met on the evidence above, with the
 five routed rows named with their owners. The acceptance record is the driver's, quoted verbatim in
 `WP25-decisions.md`.
