@@ -304,6 +304,60 @@ black, so the cap hides the largest value on the figure; the drawing is `case.ta
 read-only for WP23 (non-goals: no figure in `paper/`), so the cap is an item for the redraw after the
 data gate (WP19): a cap at or above the largest exponent, or a scale that states its clipping.
 
+## Coverage table, platform stability
+
+The Linux run on `dev` (1501c53) failed `tests/test_model_coverage.py::test_committed_table_equals_a_full_regeneration_three_times`:
+three Linux regenerations agreed with each other and not with the committed `coverage.md`. Interrogated
+in `hts-paper` (image `57a0f23716f4`, linux/arm64, the worktree copied into a container `hts-wp23r3`
+and removed after): the container's table against the committed one (generated on the Mac) differs
+in four cells of the empirical column's magnitudes and in no yes/no, no structural cell, no
+disagreement, no row of the metrics or the coupling tables.
+
+| cell | committed (Mac) | container | raw cause |
+|---|---|---|---|
+| WheelClass -> settling time | 2.344e+01 | 2.341e+01 | settling times differ by up to 0.4 s between platforms (agile, large wheel: 342.97 s against 342.56 s) |
+| panelSpan -> settling time | 1.276e-01 | 1.277e-01 | the same |
+| batteryCapacity -> settling time | 5.852e-03 | 9.132e-03 | the agile configuration's settling time 14.0358 s against 14.0359 s, its battery-changed one 13.954 s against 13.908 s: a 0.05 s effect read on a grid that moves by that much |
+| batteryCapacity -> energy balance | 7.801e-07 | 7.799e-07 | the raw energy balances differ by 2e-10 relative; a relative change of 7.8e-07 between two such values carries that noise in its fourth digit |
+
+The cause. The settling time is `res.t[outside[-1]]`, the time of the last sample of the RK45 grid at
+which the error exceeds the settling fraction (`experiments/cubesat_oracle.py`, `_last_outside`); the
+grid is the adaptive step controller's, whose step sizes follow error estimates that differ between
+the platforms' maths libraries in their last bits, so the sample times differ by up to a step
+(`adcs_sim` states it: "settling time is quantized by `max_step`"). The raw differences over the 21
+slews behind the column: settling time up to 4.9e-3 relative (0.4 s); control effort 1.6e-5; energy
+balance, eclipse reserve and depth of discharge below 9e-10; pointing error, total mass, power margin
+and peak slew power exactly 0 (configuration-only quantities, and the peak torque is the wheel
+class's clipped maximum on both). Not a tie, not an ordering, not a one-at-a-time effect near the
+1e-9 bound: the seven zero cells are exactly zero on both platforms and the smallest non-zero effect
+(7.8e-07) is three orders above it, so the yes/no pattern and the disagreements are platform-stable;
+what is not stable is a relative change between two settling times, which can differ in its first
+digit when the effect of a 10 % tune (0.05 s on the agile configuration) is the size of the grid's
+own movement.
+
+The fix, in two parts, neither a tolerance. (1) Printing: the CSV printed the magnitudes to four
+significant digits (`.3e`), beyond their stability for the slew's quantities (the three cells of the
+fourth digit); it now prints two, as the Markdown table did, and the table's note states what the
+settling time's column means (an order of magnitude, not a value). (2) The environment-of-record
+rule (`paper/container/README.md`, `tests/_env.py`): the committed `coverage.md` and `coverage.csv` are
+the container's, regenerated inside `hts-paper` `57a0f23716f4` on the model as round 2 left it
+(two container runs byte-identical), committed with this section; the test asserts byte equality
+only under `HTS_ENVIRONMENT_OF_RECORD=1` (the image sets it) and elsewhere asserts the structure:
+the rows and columns, every structural cell, the empirical yes/no pattern and the disagreements, the
+metrics table and the coupling table byte for byte, and prints the magnitudes that differ without
+asserting them. Run: in the container with the variable set, 14 passed; in the container with it
+unset, the structural path, no differing magnitude; on the Mac, 35 passed (with
+`tests/test_check_script.py`), one differing magnitude printed (`batteryCapacity -> settling time`:
+9.1e-03 of record, 5.9e-03 here); on the Mac with the variable forced to 1 the exact assertion
+fails on that cell, as the rule expects off the record. `exact_only` was not used because it needs a
+name in `paper/environment_values.toml`, a file outside this package's blast radius; `of_record()`
+is the test's switch, as in `tests/test_soft_fit.py`; listing the table there is an item for the PM.
+
+What the cell means for the modeller: the battery's effect on the agile configuration's settling time
+is one step of the integrator's grid, below the measurement's resolution; the table's statement
+"the battery moves the settling time" rests on the baseline and compact configurations (relative
+changes 2.4e-3 and 1.2e-3 of record, 0.43 s and 0.08 s), not on the agile one.
+
 ## R-5's check, amended
 
 The closed-form calcs of section 4, `TorqueLimitedSlewTime`, `LinearSlewTime`, `SlewTimeEstimate` and

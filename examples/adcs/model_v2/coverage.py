@@ -42,7 +42,10 @@ oracle's outputs.
     uv run python examples/adcs/model_v2/coverage.py [--model PATH] [--out DIR] [--no-empirical]
 
 Default model: ``cubesat_r2.sysml`` beside this file (the gate swaps the default); default output
-directory: ``views/`` beside this file. Three runs on one machine give byte-identical files.
+directory: ``views/`` beside this file. Three runs on one machine give byte-identical files; the
+committed files are generated in the container of record (``paper/container/README.md``), because
+the slew's measured quantities, the settling time above all (read on the integrator's time grid),
+differ between platforms beyond the two digits the tables print.
 """
 
 from __future__ import annotations
@@ -1112,7 +1115,16 @@ def render_md(result: dict) -> str:
                 cell += " *"
             cells.append(cell)
         out.append(f"| {element} | {kind} | " + " | ".join(cells) + " |")
-    out += ["", f"Empirical column: {result['empirical_note']}.", ""]
+    out += [
+        "",
+        f"Empirical column: {result['empirical_note']}. The magnitudes are printed to two "
+        "significant digits: a relative change of a quantity the slew measures differs between "
+        "platforms in its fourth digit, and the settling time, read on the integrator's own time "
+        "grid (`adcs_sim`: quantized by the step), differs by up to a step, so a relative change "
+        "in its column is an order of magnitude, not a value; the committed magnitudes are the "
+        "environment of record's (`paper/container/README.md`).",
+        "",
+    ]
     findings = [r for r in result["rows"] if r["agree"] is False]
     out.append(
         "Disagreements (findings): "
@@ -1240,7 +1252,7 @@ def render_csv(result: dict) -> str:
         ]
     )
     for r in result["rows"]:
-        rel = "" if r["max_relative_change"] is None else f"{r['max_relative_change']:.3e}"
+        rel = "" if r["max_relative_change"] is None else f"{r['max_relative_change']:.1e}"
         w.writerow(
             [
                 "coverage",

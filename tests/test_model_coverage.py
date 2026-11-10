@@ -18,10 +18,12 @@ import csv
 import importlib.util
 import io
 import pathlib
+import re
 import sys
 
 import cubesat_model as cm
 import pytest
+from _env import of_record
 
 ADCS_DIR = pathlib.Path(__file__).resolve().parents[1] / "examples" / "adcs"
 MODEL_DIR = ADCS_DIR / "model_v2"
@@ -257,13 +259,54 @@ def test_three_structural_runs_are_byte_identical(coverage, structural):
     assert runs[0] == runs[1] == coverage.render_md(structural)
 
 
+MAGNITUDE = re.compile(r"\(\d\.\de[+-]\d\d\)")
+
+
+def _without_magnitudes(md: str) -> str:
+    return MAGNITUDE.sub("(#)", md)
+
+
+def _rows_without_magnitudes(csv_text: str) -> list[dict]:
+    rows = list(csv.DictReader(io.StringIO(csv_text.split(METRICS_HEADER)[0])))
+    return [{k: v for k, v in r.items() if k != "max_relative_change"} for r in rows]
+
+
 @pytest.mark.slow
 def test_committed_table_equals_a_full_regeneration_three_times(coverage):
-    """R-10 in full: three regenerations with the empirical column are byte-identical and equal
-    the committed files."""
+    """R-10 in full: three regenerations with the empirical column are byte-identical to each
+    other on any platform. The committed files are the environment of record's (regenerated
+    inside ``hts-paper``; WP23-review.md, "Coverage table, platform stability"): there the
+    regeneration equals them byte for byte. Elsewhere the structure is asserted, the rows and
+    columns, every structural cell, the empirical yes/no pattern and the disagreements (the
+    recorded cause leaves them platform-stable: the cells at exactly zero are configuration-only
+    quantities at a saturated torque; the smallest non-zero effect, 7.8e-07, is three orders
+    above the threshold and the platforms differ in such a quantity below 1e-9), the metrics
+    table and the coupling table; the magnitudes are printed where they
+    differ and not asserted, because the settling time is read on the integrator's time grid and
+    its relative changes at a 10 % tune are order-of-magnitude statements."""
     results = [coverage.build(coverage.DEFAULT_MODEL, with_empirical=True) for _ in range(3)]
     mds = [coverage.render_md(r) for r in results]
     csvs = [coverage.render_csv(r) for r in results]
     assert mds[0] == mds[1] == mds[2] and csvs[0] == csvs[1] == csvs[2]
-    assert (VIEWS / "coverage.md").read_text() == mds[0]
-    assert (VIEWS / "coverage.csv").read_text() == csvs[0]
+    committed_md = (VIEWS / "coverage.md").read_text()
+    committed_csv = (VIEWS / "coverage.csv").read_text()
+    if of_record():
+        assert committed_md == mds[0]
+        assert committed_csv == csvs[0]
+        return
+    assert _without_magnitudes(committed_md) == _without_magnitudes(mds[0])
+    assert _rows_without_magnitudes(committed_csv) == _rows_without_magnitudes(csvs[0])
+    assert committed_csv.split(METRICS_HEADER)[1] == csvs[0].split(METRICS_HEADER)[1]
+    fresh = {
+        (r["decision_element"], r["metric"]): f"{r['max_relative_change']:.1e}"
+        for r in results[0]["rows"]
+    }
+    differing = []
+    for r in csv.DictReader(io.StringIO(committed_csv.split(METRICS_HEADER)[0])):
+        here = fresh[(r["decision_element"], r["metric"])]
+        if r["max_relative_change"] != here:
+            differing.append((r["decision_element"], r["metric"], r["max_relative_change"], here))
+    print(
+        "magnitudes that differ from the environment of record (committed, here): "
+        + ("; ".join(f"{e} -> {m}: {a}, {b}" for e, m, a, b in differing) or "none")
+    )
