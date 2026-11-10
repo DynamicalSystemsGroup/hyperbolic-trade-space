@@ -1151,3 +1151,22 @@ complementary, and composable (one can be run on the other's output), in words t
 earlier sentence is not kept verbatim; the test pin follows the new wording; the register fragment follows. One
 depth-A re-test afterwards. The opening contrast ("explains variance, not trade-offs. We explain tensions.") is read
 against this: if it still produces "replacement", the stream smooths it in the same unit.
+
+## The word "facet" (2026-11-09, 21:55; the supervisor's proposal)
+
+**Supervisor (mzargham), verbatim:** "on wording i want to propose we drop the use of the term "facet" and stick to
+"monomial term", "n-lemma", and if obvious from context we can call it a "trade-off". facet even without the color
+coding semantically brings to mind the wrong concept. our model uses monomial terms kernels representing trade-offs,
+and our solver finds a quilt of of trade-offs that explain a design space where all the metrics are strictly positive
+values with bigger is better."
+
+**Sizing by the driver (grep, case-insensitive):** paper 1099 occurrences, docs 1153, glossary 36 (two entries,
+`facet` and `facet gap`), derivation 213, examples 247, tests 320, src 254 (public names among them: `facet_share_`,
+`facet_gap`, `assign_facets`, `facet_labels`, `facet_step`, `single_facet_termination`, `facet_objective`,
+`by_facet`), interface contract 13 mentions, work-packages 2281 (records; left as written). Mapping the driver
+proposes: the model object (a term of the posynomial) is the "monomial term", shortened to "term" where the
+sentence leaves no doubt; the metrics in tension within a term are its "n-lemma" (the contending set); where the
+context makes it obvious, "trade-off"; the piece of the surface where one term is the maximum is "the term's piece of
+the surface" or "the trade-off's region" where the geometry is the point; the set of designs scoring highest on a
+term stays "cell" (A8). "Facet share" becomes "term share", "facet gap" "term gap", "several-facet fit" "several-term
+fit" or "posynomial fit". Scope of the rename (prose and glossary only, or the public API too): his, below.
