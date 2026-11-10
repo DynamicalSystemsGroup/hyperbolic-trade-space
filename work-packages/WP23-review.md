@@ -497,6 +497,77 @@ overlaps. The naming rule: "primary" and "baseline" regime throughout the round'
 baseline regime so and `diagnostic_pair.py` prints that key, both outside this round's blast radius
 (an item for the PM).
 
+## Round 4: the round-3 dispositions
+
+The round-3 cold reads (a fresh P2 and a fresh P3) found nothing that blocks. The model is unchanged
+(round 2's); the round executes the PM's five dispositions on the views, the pair generator and the
+names, and records what each cold-read finding was and what changed. The folder is
+`work-packages/WP23-rounds/round-4/` (`INTENT.md`, `README.md`); the generator is
+`project.py --revision 5` (the default stays 3 and reproduces the committed views of the adopted
+model byte for byte; revision 4 reproduces round 3's text byte for byte: `tests/test_system_model_v2_r1.py`,
+14 passed).
+
+**1. The behavioural view's mass chain.** Finding: the chain requirement -> launch cost -> total mass
+was carried by a stub of about 5 px between two stacked boxes, and a cold reader missed it. Three
+drawings were measured at 700 px by the type they leave (the SVG's font size; round 3: 9.3 px):
+a label on each of the two lines, 8.6 px, because a label on a line between ranks widens the whole
+layout; the two boxes side by side (an extra rank), 7.0 px; a label on the short line only, 9.2 px.
+Changed: the line from the launch cost to the total mass carries the element the two share,
+`totalMass`, and the gap between boxes at one rank (PlantUML `nodesep`) is 16 for revision 5 (8 in
+round 3), which lengthens that line to about 30 px with the label beside it and costs height (910 px
+against 867), not width; the requirement's line to the launch-cost box stays unlabelled, since it
+lands on the box that names `LaunchCost`. The dashed group's title: finding, light grey at what
+read as the smallest type; measured, it was body size already (9.3 px, bold) in grey `#808080`.
+Changed: "requirements that read no traded metric", in black. The P2's question why the pointing
+error is the one «MoE» among the metrics: the MoE/MoP rule in one caption item of `INTENT.md` (the
+model's rule, with the pointing error and the launch cost as its two instances), nothing on the
+image.
+
+**2. The assembly view.** Finding: the text legend was about 45 % of the frame. Changed: the legend
+keeps the two tag keys and the untagged rule ("untagged: fixed (Bus, Antenna, Imu)"); the levels and
+ranges are the caption's, as the behavioural view's legend was moved in round 3; the generator still
+reads them from the model and writes them beside the views as `assembly_caption.md`, which
+`INTENT.md` carries (the frame is 245 px tall against 357; the type is 9.0 px as before, the width
+being the boxes'). "Nine parts in eight kinds": the intent now says eight boxes and names the pair
+(panelPlus, panelMinus, both in the solar panel's box). The renderer can draw two boxes, but a box is
+a kind (`part def`) and the tune `panelSpan` is one variable bound to both usages, marked once; two
+boxes would carry the tag twice or on one of two identical boxes, against the legend's own rule, so
+the drawing stays at eight and the words agree with it.
+
+**3. One name for each dataset.** "Primary regime" and "baseline regime" (the scope's words) in
+everything WP23 writes. Changed in `diagnostic_pair.py`: the baseline heatmap is
+`heatmap_baseline.png`; the record's regime headings and the script's printed lines say "baseline
+regime" (the CaseSpec key `stock` is `case.py`'s and read-only; a map `REGIME` turns the key into
+the word at the point of writing); each heatmap panel is titled with its regime ("K = 1 exponent of
+each metric across tau, primary regime"), set on the figure `case.tau_sweep_figure` returns (a
+`Figure`; the heatmap is its third axes), the function itself untouched. `tests/test_diagnostic_pair.py`
+follows the file name and asserts the two headings and that "stock" is not in the record (4 passed).
+The assembly caption and `INTENT.md` use the two names; `INTENT.md` says in one clause that the
+heatmap's last column is the tau = infinity limit.
+
+**4. Heatmap redraw, after the gate.** The round-3 cold readers' findings on the heatmap's own
+drawing belong to `case.tau_sweep_figure` (read-only for WP23; the paper's `fig-tau-sweep`) and are
+listed here, in their words, for the post-gate figure unit (with round 2's note on the cap):
+
+- the colourbar is unnamed (it is the K = 1 exponent w);
+- the selected tau is marked on the two top panels and not on the grid;
+- the total-mass row is clipped at 0.30 (its exponent is 0.358; round 2's note: a cap at or above
+  the largest exponent, or a scale that states its clipping);
+- the row order (the rows are in the CaseSpec's attribute order, which the figure does not say);
+- the top panels' intent (the fraction above V = 1 and the effective sample size against tau: the
+  figure does not say what they are for beside the grid);
+- the two axis titles ("temperature tau" on the panels, "tau" on the grid: one name).
+
+**5. Round 4 regenerated.** Both views with `INTENT.md`; the heatmaps and `k3_record.md` regenerated
+from the round-1 tables (unchanged since round 1, `README.md` there says why: no dataset-facing part
+of the model changed in rounds 2 to 4, so no regeneration was run); the record differs from round 3's
+in the one heading word. Checks as run: `uv run pytest -q tests/test_system_model_v2_r1.py
+tests/test_diagnostic_pair.py tests/test_check_script.py`; `ruff check` and `ruff format` on
+`diagnostic_pair.py` and its test clean; `project.py` sits under `docs/superpowers/notes/spike-*`,
+which `pyproject.toml` excludes from `ruff check .` (a throwaway-spike folder kept for
+reproducibility), so a run on its explicit path reads `docs/ruff.toml`'s 72 columns and reports the
+file's pre-existing long lines (134 before this round); `ruff format` leaves it unchanged.
+
 ## R-5's check, amended
 
 The closed-form calcs of section 4, `TorqueLimitedSlewTime`, `LinearSlewTime`, `SlewTimeEstimate` and

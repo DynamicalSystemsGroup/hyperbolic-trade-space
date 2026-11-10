@@ -7,14 +7,19 @@ round's two tables, the traded-metric list of the coverage table and an output f
 * ``heatmap.png``: :func:`case.tau_sweep_figure` on the primary regime (the aggressive gain box):
   the fraction above V = 1 and the effective sample size against tau, and each metric's K = 1
   exponent across tau, the drawing of the paper's ``fig-tau-sweep``;
-* ``heatmap_stock.png``: the same drawing on the baseline regime (the stock gain box), so a metric
-  at zero exponent can be read against both gain boxes;
+* ``heatmap_baseline.png``: the same drawing on the baseline regime (the baseline gain box), so a
+  metric at zero exponent can be read against both gain boxes; each heatmap is titled with its
+  regime;
 * ``k3_record.md``: per regime, the K = 1 fit (temperature, fraction above, effective size, the
   contending set and its n-lemma) and the K = 3 fit per monomial term (its cell's rows and share,
   the contending set, the n-lemma, the leading metrics by exponent, the near-frontier count, the
   reach and the gap), as :func:`case.fit_line`, :func:`case.tension_table`,
   :func:`case.facet_table` and :func:`case.exponent_table` report them;
 * ``coverage.md``, copied from beside the coverage table.
+
+The two regimes are named ``primary`` and ``baseline`` in everything written here; the CaseSpec of
+``case.py`` keys the baseline regime ``stock``, and that key is mapped to the word at the point of
+writing (:data:`REGIME`), never changed.
 
 The fit is ``case.py``'s and nothing here changes it: :func:`case.load_study` filters and
 conditions the table, :func:`case.k_fits` re-selects the temperature at each K by the
@@ -49,6 +54,8 @@ import case  # noqa: E402
 
 TERM = re.compile(r"^facet\b")  # the case tables' column names; a round's record says "term"
 ZERO = 1e-3  # the figure's own threshold for a metric "with w > 1e-3" (case.tau_sweep)
+REGIME = {"primary": "primary", "stock": "baseline"}  # the CaseSpec's key -> the round's word
+FIGURES = {"primary": "heatmap.png", "stock": "heatmap_baseline.png"}
 
 
 def metrics_from_coverage(path: pathlib.Path) -> list[str]:
@@ -172,7 +179,7 @@ def regime_record(study, fits) -> list[str]:
     """The K = 1 and K = 3 readings of one regime, as the case functions report them."""
     table, band_note = term_table(study, fits)
     lines = [
-        f"### {study.regime} regime ({study.spec.regimes[study.regime]}): "
+        f"### {REGIME[study.regime]} regime ({study.spec.regimes[study.regime]}): "
         f"{len(study.M)} feasible of {len(study.raw)} designs",
         "",
         "Fit lines (temperature re-selected at each K by the fraction-above criterion):",
@@ -224,10 +231,16 @@ def write_pair(dataset, gains, coverage, out) -> dict:
         "",
     ]
     zero = {}
-    for regime, figure in (("primary", "heatmap.png"), ("stock", "heatmap_stock.png")):
+    for regime, figure in FIGURES.items():
         study = case.load_study(regime, spec)
         fits = case.k_fits(study, Ks=(1, 3))
         fig = case.tau_sweep_figure(study, fits[1])
+        # the heatmap panel (the third axes; the fourth is its colourbar) is titled with the regime
+        fig.axes[2].set_title(
+            f"K = 1 exponent of each metric across tau, {REGIME[regime]} regime",
+            fontsize=case.FIGURE_MIN_FONT_PT,
+        )
+        fig.tight_layout()
         fig.savefig(out / figure, dpi=case.FIGURE_DPI)
         case._plt().close(fig)
         record += regime_record(study, fits)
@@ -249,7 +262,7 @@ def main(argv: list[str] | None = None) -> int:
     result = write_pair(a.dataset, a.gains, a.coverage, a.out)
     print(f"metrics: {', '.join(result['metrics'])}")
     for regime, names in result["zero_across_tau"].items():
-        print(f"{regime}: at zero exponent across tau: {', '.join(names) or 'none'}")
+        print(f"{REGIME[regime]} regime: at zero exponent across tau: {', '.join(names) or 'none'}")
     return 0
 
 

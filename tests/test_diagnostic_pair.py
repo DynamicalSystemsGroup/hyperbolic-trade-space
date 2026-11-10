@@ -59,7 +59,7 @@ def pair(tmp_path_factory):
 def test_the_two_files_and_the_copy_exist(pair):
     out, _, _ = pair
     assert (out / "heatmap.png").stat().st_size > 1000
-    assert (out / "heatmap_stock.png").stat().st_size > 1000
+    assert (out / "heatmap_baseline.png").stat().st_size > 1000
     assert (out / "k3_record.md").exists()
     assert (out / "coverage.md").read_text() == "# coverage of the test\n"
 
@@ -76,6 +76,10 @@ def test_the_metric_list_is_the_coverage_tables_in_its_order(pair):
         names = [line.split("|")[1].strip() for line in t.strip().splitlines()[2:]]
         assert names == metrics
     assert "slew time" not in record
+    # the two regimes are "primary" and "baseline" in the record; the CaseSpec's key "stock" is not
+    assert "### primary regime (gains.csv)" in record
+    assert "### baseline regime (dataset.csv)" in record
+    assert "stock" not in record
     # the record's own tables say "term"; the package's refusal messages, quoted verbatim, may not
     headers = [line for line in record.splitlines() if line.startswith("| metric |")]
     assert headers and all("facet" not in h for h in headers)

@@ -27,6 +27,14 @@ requirement-metric relation is a headless line (a shared quantity) and the sourc
 arrowhead (where a metric comes from); the subsystem lanes are titled as the analyst's grouping; the
 assembly legend names the untagged parts as fixed and the gain ranges by regime (read from
 ``experiments/definitions.py``).
+Revision 5 (WP23 round 4, the round-3 cold reads' dispositions; ``--revision 5``): the short line
+from the launch cost to the total mass (two boxes at one rank) carries the element the two share,
+``totalMass``, so the chain requirement -> launch cost -> total mass reads at 700 px (a label on the
+requirement's line too would cost the whole figure 0.65 px of type: a label between ranks widens the
+layout); the group of requirements that read no
+traded metric is titled in those words, in the body's black; the assembly legend keeps the two tag
+keys and the untagged rule, and the levels and ranges go to the caption (``assembly_caption.md``,
+written beside the views, still read from the model).
 """
 
 from __future__ import annotations
@@ -217,7 +225,7 @@ def constraint_text(byid, req_id: str) -> str:
 # =================================================================================================
 # View 1: the assembly
 # =================================================================================================
-def assembly(m, byid, P, revision=3):
+def assembly(m, byid, P, revision=3, caption=None):
     rows = {
         r.id: r.properties | {"@type": r.type} for r in m.query(scope=P)
     }
@@ -396,7 +404,14 @@ def assembly(m, byid, P, revision=3):
             for d in dict.fromkeys(p["type"] for p in parts)
             if d not in selector and not var_at.get(d)
         ]
-        out.append(f"  no tag: a fixed part ({', '.join(fixed)})")
+        untagged = (
+            "untagged: fixed"
+            if revision >= 5
+            else "no tag: a fixed part"
+        )
+        out.append(f"  {untagged} ({', '.join(fixed)})")
+    # revision 5: the levels and ranges are the caption's; the legend keeps the tag keys
+    legend_end = len(out) if revision >= 5 else None
     out.append("  ")
     out.append("  **Levels and ranges** (read from the model)")
     for d, en in sorted(selector.items()):
@@ -441,6 +456,11 @@ def assembly(m, byid, P, revision=3):
                     f"{v} ({label(b)})" for b, v in spans.items()
                 )
             )
+    if legend_end is not None:
+        ranges = [line.strip() for line in out[legend_end + 2 :]]
+        if caption is not None:
+            caption.extend(ranges)
+        del out[legend_end:]
     out.append("end legend")
     out.append("@enduml")
     return "\n".join(out) + "\n"
@@ -769,7 +789,12 @@ def behavioural(m, byid, P, revision=3):
         "@startuml",
         BEHAVIOUR_DIRECTION,
         f"skinparam linetype {BEHAVIOUR_LINETYPE}",
-        SKIN.format(nodesep=8, ranksep=36 if revision < 4 else 12),
+        # revision 5: nodesep is the gap between boxes at one rank (the launch cost and the
+        # total mass): 16 gives their line room for its label; height, not width, pays for it
+        SKIN.format(
+            nodesep=16 if revision >= 5 else 8,
+            ranksep=36 if revision < 4 else 12,
+        ),
         f"scale {COLUMN_WIDTH} width",
         "",
     ]
@@ -913,13 +938,19 @@ def behavioural(m, byid, P, revision=3):
         if stack and smets:
             out.append(f"{stack[0]} -[hidden]-> {nid(smets[0])}")
         last_stack_head = stack[0] if stack else last_stack_head
-    group_title = (
-        "requirements reading no traded metric"
-        if revision >= 4
-        else "requirements with no line to a traded metric"
-    )
+    if revision >= 5:
+        group_title = "requirements that read no traded metric"
+        group_text = ""  # the body's black: the title is read with the lane titles
+    elif revision >= 4:
+        group_title, group_text = (
+            "requirements reading no traded metric",
+            ";text:gray",
+        )
+    else:
+        group_title = "requirements with no line to a traded metric"
+        group_text = ";text:gray"
     out.append(
-        f'rectangle "{group_title}" as xNoLine #FFFFFF;line:gray;line.dashed;text:gray {{'
+        f'rectangle "{group_title}" as xNoLine #FFFFFF;line:gray;line.dashed{group_text} {{'
     )
     for r in no_line:
         if revision >= 4:
@@ -956,6 +987,11 @@ def behavioural(m, byid, P, revision=3):
         "-" if revision >= 4 else "->"
     )  # a shared quantity has no direction; a source does
     tag = (lambda ev: "") if revision >= 4 else (lambda ev: f" : {ev}")  # noqa: E731
+    # revision 5: the MoE box and the metric it reads sit at one rank, joined by a short line that
+    # was missed cold; it carries the element the two share (totalMass). The requirement's line to
+    # the MoE box stays unlabelled: a label between ranks widens the whole layout (0.65 px of type)
+    # and the box it lands on names the element (LaunchCost).
+    moe_tag = (lambda ev: f" : {ev}") if revision >= 5 else tag  # noqa: E731
     for r, n, strength, ev in rel:
         if strength == "strong":
             out.append(
@@ -974,7 +1010,7 @@ def behavioural(m, byid, P, revision=3):
                 # (a same-rank line), so the mass lane adds no rank to the layout
                 side = "right" if revision >= 4 else ""
                 out.append(
-                    f"{nid(ev)} -[#{RELATION_COLOUR[1:]},thickness=2]{side}{head} {nid(n)}{tag(ident)}"
+                    f"{nid(ev)} -[#{RELATION_COLOUR[1:]},thickness=2]{side}{head} {nid(n)}{moe_tag(ident)}"
                 )
                 drawn_moe.add((ev, n))
         else:
@@ -1067,16 +1103,22 @@ if __name__ == "__main__":
         "--revision",
         type=int,
         default=3,
-        choices=(3, 4),
-        help="drawing revision (3: the committed views of the adopted model; 4: WP23 round 3)",
+        choices=(3, 4, 5),
+        help="drawing revision (3: the committed views of the adopted model; 4: WP23 round 3; 5: WP23 round 4)",
     )
     a = ap.parse_args()
     m, byid = load(pathlib.Path(a.model))
     od = pathlib.Path(a.outdir)
     od.mkdir(parents=True, exist_ok=True)
+    caption: list = []
     (od / "assembly_view.puml").write_text(
-        assembly(m, byid, a.package, a.revision)
+        assembly(m, byid, a.package, a.revision, caption)
     )
+    if a.revision >= 5:
+        (od / "assembly_caption.md").write_text(
+            "Levels and ranges (read from the model by the views generator):\n\n"
+            + "".join(f"- {line}\n" for line in caption)
+        )
     text, facts = behavioural(m, byid, a.package, a.revision)
     (od / "behavioural_view.puml").write_text(text)
     if a.facts:
