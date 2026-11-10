@@ -764,3 +764,27 @@ def test_the_rollups_are_illustrative_and_read_by_no_output(who_cares):
         for c in ("cubesatCompact", "cubesatBaseline", "cubesatAgile")
     }
     assert life["cubesatCompact"] < life["cubesatBaseline"] < life["cubesatAgile"]
+
+
+def test_the_baselines_verdict_on_each_concern_is_checked_by_the_engine(who_cares):
+    """WP27 D-4 (the sponsor saw no verdict in the stakeholder layer): each concern's requirement
+    carries the baseline configuration's verdict as a ``satisfy`` or ``not satisfy`` statement in
+    ``stakeholders.sysml``; the toolkit's engine checks every statement of the three files (eleven
+    of the model, twelve of the concerns) and all hold, the pointing-error ones negated; stating
+    the pointing-error verdict as satisfied is false (negative control)."""
+    verdicts = who_cares.verify_satisfaction()
+    assert len(verdicts) == 11 + 12
+    assert all(v.holds and v.status == "holds" and v.engine == "run" for v in verdicts)
+    negated = {v.element for v in verdicts if v.element.startswith("not satisfy")}
+    assert negated == {
+        "not satisfy baselinePointingError by cubesatBaseline",
+        "not satisfy pointingAndSlewing::pointingError by cubesatBaseline",
+    }
+    flipped = STAKEHOLDERS.read_text().replace(
+        "not satisfy pointingAndSlewing.pointingError", "satisfy pointingAndSlewing.pointingError"
+    )
+    wrong = cm.get_connection().load_from_content(TEXT + "\n" + flipped, strict=True)
+    bad = [v for v in wrong.verify_satisfaction() if not v.holds]
+    assert [v.element for v in bad] == [
+        "satisfy pointingAndSlewing::pointingError by cubesatBaseline"
+    ]

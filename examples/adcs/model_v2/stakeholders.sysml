@@ -92,6 +92,23 @@ package CubesatStakeholders {
         requirement eclipseDepthOfDischarge : DepthOfDischargeRequirement;
     }
 
+    // The baseline configuration's verdict on each concern's requirements, as the model computes them
+    // (the toolkit's engine checks each statement; they restate, per concern, the satisfy statements
+    // of cubesat.sysml): the baseline fails the pointing-error requirement (0.0155 against 0.0085
+    // degree), so the operator's pointing concern is not met by it.
+    satisfy lowCost.launchBudget by cubesatBaseline;
+    satisfy longLife.depthOfDischarge by cubesatBaseline;
+    not satisfy pointingAndSlewing.pointingError by cubesatBaseline;
+    satisfy pointingAndSlewing.settled by cubesatBaseline;
+    satisfy pointingAndSlewing.controlEffort by cubesatBaseline;
+    satisfy pointingAndSlewing.momentum by cubesatBaseline;
+    satisfy powerAndEnergy.power by cubesatBaseline;
+    satisfy powerAndEnergy.powerMargin by cubesatBaseline;
+    satisfy powerAndEnergy.energyBalance by cubesatBaseline;
+    satisfy powerAndEnergy.peakSlewPower by cubesatBaseline;
+    satisfy powerAndEnergy.batteryPeakPower by cubesatBaseline;
+    satisfy powerAndEnergy.eclipseDepthOfDischarge by cubesatBaseline;
+
     // ==========================================================================================
     // 3. ROLL-UPS: the sponsor's measures from the engineers' (illustrative, read by no output)
     // ==========================================================================================
