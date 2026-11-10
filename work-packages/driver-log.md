@@ -183,6 +183,20 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   driver's Docker removals were blocked by its permission classifier as irreversible deletions, so the exact
   commands were handed to him to run.
 
+- **A warning leaks into the rendered paper (2026-11-09, 22:55; the supervisor saw it in Section 9 of the staged
+  build and asked whether it is handled).** The committed output of the recovery cell (Appendix D.14, 20 planted
+  tables across `RECOVERY_TAUS`) carries one stderr line from `paper/generate_results.py:505`: "ConvergenceWarning:
+  solver did not converge: max_iter reached; termination status 'iteration_cap', max facet gap 6.66e-16". Reading:
+  the several-term alternation hit `max_iter` (500) while the facet gap was at machine precision, so the fit is
+  numerically stationary (the level 2 certificate, Lemma 1) and the words "did not converge" overstate it; the
+  alternation's assignment step cycled, the per-term fits had converged. Two defects, neither a result: (1) the
+  estimator warns on the iteration cap alone; it should warn only when the facet gap is above `tol`, and otherwise
+  record the status ("iteration_cap", gap certified) without a warning; (2) the paper's executed cells must carry no
+  stderr; a test asserts it over the committed outputs, and the recovery table's `status` column (already there)
+  carries the fact; the sentence in Section 9 or D.14 reports the status counts. The claim "16 of 20 within 0.05"
+  stands. Routed to the PM as two units (estimator with a test; paper cell regenerated in the container with the
+  guard test). Nothing needed from the supervisor.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
