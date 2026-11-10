@@ -22,3 +22,13 @@ output goes through the data gate after the close-out; a change that leaves ever
 freely, verified by the toolkit gates and the ledger at 0 drifts); the researcher's is
 `work-packages/WP26-view-editor-feedback.md`, written for the editor's author. One browser, one driver: the
 researcher observes through milestones, screenshots and short interviews.
+
+## Scope approved; OD1 (2026-11-10, 12:40; the driver)
+
+`WP26-scope-of-work.md` (74b2402). **OD1, in-file changes to `cubesat.sysml` that leave every output byte-identical:**
+(b). They land this round through one host re-run of the five ledger entries at the round's end (`@7`, with a WP26
+note); each output's hash must equal its `@6` hash, or the change reverts to held; the ledger, the gate's note and
+the coverage table's hash line join the blast radius. A doc edit that improves the model's readability is the
+point of the package and must not wait on a data gate it cannot affect; the hash equality is the proof it did not.
+The `view` package lives in its own file. **Approved for execution by the driver under the mandate**; the two agents
+deploy; the Agent's defaults as one item.

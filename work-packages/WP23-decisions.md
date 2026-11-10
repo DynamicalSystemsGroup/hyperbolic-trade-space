@@ -369,3 +369,10 @@ built HTML), and the result is verified rendered in the browser; if the theme do
 `latex2mathml` (pure Python, no transitive weight) converts the spans to MathML at render time, and the driver
 makes the `pyproject.toml` and `uv.lock` change on the executor's request. One small unit after the data-gate
 review; Appendix A's register table takes the same path.
+
+**Close-out data-gate review (ebd7dfe; 2026-11-10, 12:40).** 29 met, 8 not met, 3 not checkable; the PM fixes
+forward without asking (defects against stated requirements: a nine-metric test file, stale counts the comparison
+does not list, the comparison's missing placement numbers, a grep reason, two roundings and a naming), then the
+gaps are re-checked. The record stays in `WP23-review.md` (one record file per package). R-31: the reviewer saw
+Appendix E typeset on the staged page after the generator change; the fix unit confirms A and E in the browser
+before anything else is done. The container regression and the swap call wait for the re-check.

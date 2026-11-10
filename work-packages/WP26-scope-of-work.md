@@ -183,3 +183,9 @@ One item for the driver's approval. Each is marked *(default)* where it appears.
   five ledger entries on the host at the round's end (`ledger_gate.py --host`, entries `@7` with a WP26 note), each
   output's hash required equal to its `@6` hash (a change that moves one is reverted to held); the ledger,
   `ledger_gate.py`'s note and the coverage table's hash line join the blast radius.
+
+## Gate outcomes
+
+- 2026-11-10, 12:40: approved for execution by the driver under the mandate; OD1 resolved as (b) in
+  `WP26-decisions.md`; the Agent's defaults accepted as one item.
+
