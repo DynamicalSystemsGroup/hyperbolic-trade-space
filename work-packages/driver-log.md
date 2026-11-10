@@ -317,6 +317,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   the WP24 review are the PM's next units, and the gate's container regression is the driver's after the
   close-out lands.
 
+- **For the supervisor's eye (2026-11-10, 10:30), not a decision:** the root page lost its "How" section with the
+  unsourced paper map (bb51b7e): the paragraph walked the map's boxes, so it went with it under the negative-edit
+  order. The root page keeps "Why" with the planted ternary. If you want the story-arc gloss back on the root page
+  (your note of 2026-11-09 that the high-level images may belong in the index), it returns as a candidate with a
+  sourced figure.
+
 ## Verification snapshots by the driver
 
 | Date | Tree | Result | Reading |
