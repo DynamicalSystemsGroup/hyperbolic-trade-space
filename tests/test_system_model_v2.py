@@ -599,3 +599,45 @@ def test_baseline_reads_as_documented(v2):
     inst = v2.model.instantiate(f"{P}::cubesatBaseline")
     assert v2.value(inst.get("totalMass"), "SI::kg") == pytest.approx(13.29142857142857, rel=1e-12)
     assert math.isclose(v2.value(inst.get("usableWheelTorque"), "SI::N*SI::m"), 0.002)
+
+
+# ---------------------------------------------------------------------------------------------
+# WP26 R-4: the views a SysML v2 view editor draws, in their own file beside the model
+# ---------------------------------------------------------------------------------------------
+VIEWS = ADCS_DIR / "model_v2" / "views.sysml"
+
+
+def test_views_file_loads_with_the_model_and_every_exposed_name_resolves(v2):
+    """WP26 R-4: ``views.sysml`` applied after ``cubesat.sysml`` as one model loads strictly; it
+    declares one package of views and nothing else; every name a view exposes is an element of
+    the model; and the model's own elements are the same with the views as without them."""
+    views = VIEWS.read_text()
+    assert re.findall(r"^package\s+(\w+)", views, flags=re.M) == ["CubesatViews"]
+    assert P not in re.findall(r"^package\s+(\w+)", views, flags=re.M)
+    both = v2.connection.load_from_content(TEXT + "\n" + views, strict=True)
+    assert both.ok
+    assert not [d for d in both.diagnostics if d.severity == "error"]
+    declared = re.findall(r"^\s*view\s+(\w+)\s*:\s*(\w+)\s*\{", views, flags=re.M)
+    assert {n for n, _ in declared} == {
+        "assembly", "alternatives", "configurations", "metrics", "requirements", "metricCarriers"
+    }  # fmt: skip
+    assert {k for _, k in declared} <= {"GeneralView", "InterconnectionView"}
+    for name, _ in declared:
+        assert both.find(f"CubesatViews::{name}") is not None, name
+    # each exposed name without its ``::*`` (members of) suffix: the model's package or an element
+    exposed = re.findall(r"^\s*expose\s+([\w:]+?)(?:::\*)?;", views, flags=re.M)
+    assert exposed and all(e == P or e.startswith(f"{P}::") for e in exposed)
+    for e in sorted(set(exposed)):
+        assert both.find(e) is not None, e
+
+    def names(model):
+        return {
+            q.properties["name"]
+            for kind in ("PartDefinition", "PartUsage", "RequirementDefinition",
+                         "RequirementUsage", "CalculationDefinition")
+            for q in model.query(
+                scope=[P], where={"property": "@type", "operator": "=", "value": kind}
+            )
+        }  # fmt: skip
+
+    assert names(both) == names(v2.model)
