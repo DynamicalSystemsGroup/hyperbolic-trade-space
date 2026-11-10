@@ -31,3 +31,14 @@ named as analysis in the caption or not drawn. Every current figure, paper and d
 - Figure 4 (S-d3): the sentence test stands (C-d3): if the chart has a sentence it alone can carry (the chart
   separates position along the surface from level: one picture of Z against log V), it is redrawn to show that
   with no facet colouring; otherwise it is dropped.
+
+**The driver's image reads of the redraws (2026-11-09, 21:15; 141653c; candidates for his judgement).**
+- Figure 3 redrawn (`fig-planes-k3.png`): grey designs, the surface as black segments labelled by facet, the band
+  as a thin strip; the kink in the middle panel is the picture's content. Cold sentence: the surface in each
+  slice is one segment per facet, bending where two facets meet; designs sit on either side of it. The cluster
+  idiom is gone; what is drawn is the model. Passes as a candidate.
+- Figure 4 redrawn as position against level (`fig-chart-level.png`): the surface is the line log V = 0, the
+  designs hang below it, a few sit just above, the band a thin strip under the line; the x-axis is the first
+  position coordinate, labelled as having no meaning alone. Cold sentence: the chart puts every design at a
+  position along the surface and a level below it; the surface is a soft support that a few designs exceed. That is
+  the abstract's sentence drawn, so it earns its place if the caption says it. Passes as a candidate.
