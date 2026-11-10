@@ -351,3 +351,11 @@ format the case module's association, requirements and design-sets tables for Ap
 in the existing exponents-and-terms and regime-comparison generators; the notebook's cells stay one call each
 through `paper_common`. Option (a) of the executor's three; (b) would put Appendix D tables in Appendix C's
 generator and (c) would break the appendix's one-call rule.
+
+**Close-out finding under OD10 (a) (2026-11-10, 11:50; the executor's milestone).** With one conditioning for every
+design set, the requirement-constrained set's one-term contending set is the same as the feasible set's in the
+primary regime and differs by one metric in the baseline regime. Spike A's striking constrained fit was the
+conditioning artefact spike B warned of; the Discussion candidate therefore says that the four requirements cut
+designs, not what the frontier trades, and the "with and without" reading is: neither removing the infeasible
+designs nor pre-imposing the thresholds changes the trades the frontier reports. For the supervisor's review with
+the close-out's comparison.
