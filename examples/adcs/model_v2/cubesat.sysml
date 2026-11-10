@@ -1,7 +1,7 @@
 /*
- * cubesat_r1.sysml -- WP22 round 1: the ILLUSTRATIVE 12U-class cubesat trade space, as one readable
- * model with two views. It lives beside cubesat.sysml (WP15), which stays what the committed data and the
- * paper cite until the recorded gate; every number and calculation of cubesat.sysml is kept as it was.
+ * cubesat.sysml -- the ILLUSTRATIVE 12U-class cubesat trade space, as one readable model with two
+ * views (WP22). It replaced the WP15 model at the recorded gate (9c444e3); that version is in
+ * history at 2d13465, and every number and calculation of it is kept here as it was.
  *
  * This is documentation of a demonstration, not an engineering model. Every number is
  * illustrative: chosen for plausibility at cubesat scale (public component classes), never

@@ -227,5 +227,8 @@ Done as one unit on the gate decision of `WP22-decisions.md`, toolkit v0.12.0, `
 - **Paper.** Nothing moves: Appendix C's dataset rows read the frozen files' `adopted-*` entries, which the swap does not
   touch. In `hts-wp22d` the supporting material re-executed differs only in the toolchain cell's commit (reverted), and
   `tests/test_paper.py` passed in the image (142 passed, 4 skipped, exact comparisons); the image is removed.
-- **Not done.** The model's header comment still names itself `cubesat_r1.sysml` and says it lives beside the WP15 file;
-  changing it changes the hash the gate compared, so it is left for a decision (a comment-only edit and a re-run).
+- **Header corrected (the PM's option a).** The header comment named the file `cubesat_r1.sysml` living beside the WP15
+  file; three comment lines now say what the file is (WP15 version in history at `2d13465`, gate `9c444e3`). New sha256
+  `0a0b4a4b64d1504c2eb0d408ecba2542240c40d6c2c5fb7567daa2473b1963ef`. `ledger_swap.py` re-ran the same five (`@4`, and
+  `scope-sensitivity-shared-subspace-v2@3`), outputs byte-identical, no data file changed; `verify`: "29 entries (11
+  current); 0 drifts". The views' text does not carry the header and is unchanged; the paper carries no model hash.
