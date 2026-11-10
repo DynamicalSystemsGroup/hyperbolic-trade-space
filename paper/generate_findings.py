@@ -47,8 +47,9 @@ _NUMBER_WORDS = {
 def nondominated_sentence(study) -> Md:
     """Nondominated counts of the study's table on each view, with what a range means.
 
-    The sentence stands in section 1, where the first range appears, so it says what a range is:
-    the spread of the count over the regenerations of the data under rounding-level perturbation.
+    The sentence stands in section 1, before any other number of the case, so it says what a range
+    is: the spread of a number over the regenerations of the data under rounding-level
+    perturbation; when no count moves, it says so and what a range would mean.
     """
     df = case.nondominated_counts(study).sort_values("columns")
     n = int(df["of"].iloc[0])
@@ -56,11 +57,20 @@ def nondominated_sentence(study) -> Md:
         f"{stable(f'nondominated | {study.regime} | {r.view} | nondominated')} on {int(r.columns)}"
         for r in df.itertuples()
     ]
-    runs = len(summary()["seeds"])
+    runs = _NUMBER_WORDS.get(len(summary()["seeds"]), len(summary()["seeds"]))
+    if any(" to " in p for p in parts):
+        tail = (
+            f"(a range is the spread over {runs} regenerations of the data under rounding-level "
+            f"perturbation, {_D11})"
+        )
+    else:
+        tail = (
+            f"(counts that hold over {runs} regenerations of the data under rounding-level "
+            f"perturbation; a number that moves over them is printed as a range, {_D11})"
+        )
     return Md(
         f"Of {n} feasible cubesat designs, the nondominated sets hold {_and(parts)} attributes "
-        f"(a range is the spread over {_NUMBER_WORDS.get(runs, runs)} regenerations of the data "
-        f"under rounding-level perturbation, {_D11})."
+        f"{tail}."
     )
 
 
@@ -137,12 +147,22 @@ def k_sweep_sentence(study, fits) -> Md:
     union = set().union(*sets)
     k1 = set(_contending(study, fits[1]))
     new = sorted(union - k1)
+    leads = [x.split(", ")[0].rsplit(" ", 1)[0] for x in ft["largest exponents"]]
+    led = [m for m in new if m in leads]
+    verb = "leads a term of its own" if len(led) == 1 else "each lead a term of their own"
+    if not new:
+        absent = "none is absent from the K = 1 set"
+    elif led == new:
+        absent = f"{_and(new)}, absent from the K = 1 set, {verb}"
+    else:
+        absent = f"{_and(new)} {'is' if len(new) == 1 else 'are'} absent from the K = 1 set"
+        absent += f", and {_and(led)} {verb}" if led else ""
     return Md(
         f"The mean slack falls from {own[1]} at K = 1 to {own[2]} at K = 2 and {own[3]} at "
         f"K = 3, at the temperatures {tau[1]}, {tau[2]} and {tau[3]}; refitted at the K = 1 "
         f"temperature it falls to {fixed[2]} and {fixed[3]} ({_D15}). The "
         f"K = 3 facets have contending sets (exact-maximum supports) of {_and(ft['n_lemma'])} "
-        f"metrics; {_and(new) if new else 'none'} are absent from the K = 1 set."
+        f"metrics; {absent}."
     )
 
 
@@ -276,17 +296,39 @@ def predict_check_sentence(table, reg) -> Md:
 def predict_reading(table, reg) -> Md:
     """What propose, predict, check showed and did not, for the Discussion.
 
-    Reads the same table as :func:`predict_check_sentence`; the position errors are that's.
+    Reads the same table as :func:`predict_check_sentence`, and the recorded predictions and the
+    measured check designs of the spec for what the proposals are: how many distinct
+    configurations, and how many meet the model's depth-of-discharge requirement (``dod_ok``),
+    which the proposer's training rows (the spec's feasibility flags) do not filter on.
     """
+    import pandas as pd
+
+    spec = case.CUBESAT
     n = len(table)
     lv = int(table["log V within band"].sum())
     z = int(table["Z within band"].sum())
+    preds = pd.read_csv(spec.data_dir / spec.predictions_file)
+    configs = len(preds[list(spec.design_vars) + list(spec.covariates)].drop_duplicates())
+    checks = pd.read_csv(spec.data_dir / spec.checks_file)
+    dod = int(checks.loc[checks["role"] == "proposal", "dod_ok"].sum())
+    k = n - configs + 1
+    same = (
+        f" {_NUMBER_WORDS.get(k, k).capitalize()} of them are one configuration." if k > 1 else ""
+    )
+    fail = (
+        f" {'All' if dod == 0 else f'{n - dod} of the'} {n} fail the model's depth-of-discharge "
+        "requirement: the proposer trains on the designs that settle, stay within the momentum "
+        "budget and keep positive power, and its chart has no depth-of-discharge axis."
+        if dod < n
+        else ""
+    )
     return Md(
-        f"**What propose, predict, check showed.** It showed that the regressor places the "
-        f"energy differential of a proposal within its band ({lv} of {n}), the easy part. It did "
-        f"not show that it places the position along the frontier ({z} of {n}), and {n} "
-        f"proposals illustrate and do not estimate a rate. A predicted crossing of V = 1 remains "
-        f"a hypothesis."
+        f"**What propose, predict, check showed.**{same} It showed that the regressor places "
+        "the energy differential of a proposal "
+        f"within its band ({lv} of {n}), the easy part. It did not show that it places the "
+        f"position along the frontier ({z} of {n}).{fail} "
+        f"{_NUMBER_WORDS.get(n, n).capitalize()} proposals illustrate and do not estimate a rate. "
+        "A predicted crossing of V = 1 remains a hypothesis."
     )
 
 

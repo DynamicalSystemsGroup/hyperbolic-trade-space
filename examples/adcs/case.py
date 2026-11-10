@@ -20,7 +20,7 @@ Examples
 --------
 >>> study = load_study("primary", n_max=60)
 >>> study.M.shape
-(60, 10)
+(60, 9)
 """
 
 from __future__ import annotations
@@ -134,24 +134,24 @@ class CaseSpec:
 
 
 _ATTRS = (
-    "settling_time_s", "slew_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
+    "settling_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
     "power_margin_w", "energy_balance_wh", "eclipse_reserve_wh", "peak_slew_power_w", "dod_eclipse",
 )  # fmt: skip
 _NAMES = (
-    "settling time", "slew time", "pointing error", "total mass", "control effort",
+    "settling time", "pointing error", "total mass", "control effort",
     "power margin", "energy balance", "eclipse reserve", "peak slew power", "depth of discharge",
 )  # fmt: skip
 _SUBSYSTEMS = (
-    "controls", "controls", "controls", "mass", "controls",
+    "controls", "controls", "mass", "controls",
     "power and energy", "power and energy", "power and energy", "power and energy",
     "power and energy",
 )  # fmt: skip
-_UNITS = ("s", "s", "deg", "kg", "torque.s, proxy", "W", "Wh", "Wh", "W", "fraction")
-_ORIENT = (-1, -1, -1, -1, -1, +1, +1, +1, -1, -1)
+_UNITS = ("s", "deg", "kg", "torque.s, proxy", "W", "Wh", "Wh", "W", "fraction")
+_ORIENT = (-1, -1, -1, -1, +1, +1, +1, -1, -1)
 
 CUBESAT = CaseSpec(
     name="cubesat attitude determination and control",
-    data_dir=HERE / "data",
+    data_dir=HERE / "data" / "v2",  # the data of record (ledger entries @5, WP23)
     regimes={"primary": "adcs_designs_cubesat_gains.csv", "stock": "adcs_designs_cubesat.csv"},
     attributes=_ATTRS,
     short=dict(zip(_ATTRS, _NAMES, strict=True)),
@@ -164,17 +164,18 @@ CUBESAT = CaseSpec(
     design_vars=("panel_span_m", "battery_wh", "Kp", "Kd"),
     flags=("settled", "power_ok", "momentum_ok"),
     views={
-        "four metrics": ("slew_time_s", "pointing_error_deg", "control_effort", "total_mass_kg"),
-        "settling time and slew time": ("settling_time_s", "slew_time_s"),
+        "four metrics": (
+            "settling_time_s",
+            "pointing_error_deg",
+            "control_effort",
+            "total_mass_kg",
+        ),
     },
     view="four metrics",
     association_pairs=(
         ("settling time", "total mass"),
-        ("slew time", "total mass"),
         ("pointing error", "control effort"),
         ("settling time", "pointing error"),
-        ("slew time", "control effort"),
-        ("settling time", "slew time"),
     ),
     checks_file="check_designs_cubesat.csv",
     predictions_file="check_predictions_cubesat.csv",
@@ -828,11 +829,85 @@ def pca_directions(study, fit, n=3, leading=3):
     return pd.DataFrame(rows)
 
 
-def _reports(study, fit, band=None, **kw):
+MIN_NEAR_FRONTIER = 10
+"""The guard of the association reading: the near-frontier rows a term needs (the library's 10)."""
+
+
+def term_reports(estimator, M, band, **kw):
+    """Every term's tension report, the guard of ten applied per term and not over all terms.
+
+    The library's ``tension_report`` refuses a fit at K > 1 when any one term has fewer than
+    ``min_near_frontier`` near-frontier rows. The fit itself (exponents, cells, shares, the
+    contending sets on each term's rows) exists for every term, and only the association
+    reading needs the rows, so the report is called with the library's guard set to zero and
+    the same guard, :data:`MIN_NEAR_FRONTIER`, is applied here term by term (:func:`has_reading`);
+    the band is the one given, never widened.
+
+    Parameters
+    ----------
+    estimator : HyperbolicTradeSpace
+        A fitted estimator.
+    M : array of shape (n, d)
+        Its metrics.
+    band : float
+        The near-frontier band.
+    **kw
+        Passed to ``tension_report`` (``association``).
+
+    Returns
+    -------
+    list of TensionReport
+        One per term; a term without the rows carries an association it does not stand behind,
+        which :func:`has_reading` tells apart and no caller reads.
+    """
     hts, _, _ = _lib()
-    band = fit.band if band is None else band
-    r = hts.tension_report(fit.estimator, study.M, band=band, **kw)
+    r = hts.tension_report(estimator, M, band=band, min_near_frontier=0, **kw)
     return r if isinstance(r, list) else [r]
+
+
+def has_reading(rep) -> bool:
+    """Whether a term's near-frontier rows meet the guard of the association reading."""
+    return rep.n_near_frontier >= MIN_NEAR_FRONTIER
+
+
+def thin_reason(n_near: int) -> str:
+    """The one sentence that replaces the association reading of a term without the rows.
+
+    >>> thin_reason(3)
+    'too few near-frontier designs for an association reading: 3 of ten'
+    """
+    return f"too few near-frontier designs for an association reading: {int(n_near)} of ten"
+
+
+def _all_terms(study, fit, band=None, **kw):
+    """Every term's report at the band (default the fit's), the guard applied per term."""
+    return term_reports(fit.estimator, study.M, fit.band if band is None else band, **kw)
+
+
+def _reports(study, fit, band=None, **kw):
+    """The reports for an association reading: every term must meet the guard, else it refuses."""
+    reps = _all_terms(study, fit, band, **kw)
+    for k, rep in enumerate(reps):
+        if not has_reading(rep):
+            raise ValueError(f"term {k + 1}: {thin_reason(rep.n_near_frontier)}")
+    return reps
+
+
+def term_tension_panels(reps, names, axes, plotting, who="term"):
+    """One association panel per term on ``axes``; a term without the rows gets its reason.
+
+    The panel of a thin term is left empty but for the sentence of :func:`thin_reason`, so the
+    figure keeps one row per term and says why one is not drawn.
+    """
+    for k, (ax, rep) in enumerate(zip(axes, reps, strict=True)):
+        if has_reading(rep):
+            plotting.plot_tensions(rep, names=names, ax=ax)
+            ax.set_title(_member_title(rep, f"{who} {k + 1}"))
+        else:
+            ax.set_axis_off()
+            ax.set_title(_member_title(rep, f"{who} {k + 1}"))
+            ax.text(0.5, 0.5, _wrap(thin_reason(rep.n_near_frontier), 40).capitalize(), ha="center",
+                    va="center", transform=ax.transAxes)  # fmt: skip
 
 
 def _sorted_contending(rep, names):
@@ -858,7 +933,7 @@ def tension_table(study, fit, band=None):
     """
     _, k_terms, _ = _lib()
     rows = []
-    for k, rep in enumerate(_reports(study, fit, band)):
+    for k, rep in enumerate(_all_terms(study, fit, band)):
         rows.append({
             "facet": k + 1, "n_lemma": rep.n_lemma, "near-frontier": rep.n_near_frontier,
             "contending set": ", ".join(_sorted_contending(rep, study.names)),
@@ -893,7 +968,7 @@ def facet_table(study, fits, K=3, band=None):
         band = fits[1].band if 1 in fits else fit.band
     sizes = np.bincount(est.facet_, minlength=K) if K > 1 else [len(study.M)]
     out = []
-    for k, rep in enumerate(_reports(study, fit, band)):
+    for k, rep in enumerate(_all_terms(study, fit, band)):
         out.append({
             "facet": k + 1, "rows": int(sizes[k]),
             "contending set": ", ".join(_sorted_contending(rep, study.names)),
@@ -1521,7 +1596,10 @@ def _member_title(rep, who):
 
 @_legible
 def tension_figure(study, fit, band=None):
-    """Association among the near-frontier designs, one map per facet.
+    """Association among the near-frontier designs, one map per term.
+
+    A term whose near-frontier rows do not meet the guard (:func:`has_reading`) gets the sentence
+    of :func:`thin_reason` in place of its map.
 
     Parameters
     ----------
@@ -1535,13 +1613,12 @@ def tension_figure(study, fit, band=None):
     """
     _, _, plotting = _lib()
     plt = _plt()
-    reps = _reports(study, fit, band)
-    fig, axes = plt.subplots(len(reps), 1, figsize=(FIGURE_WIDTH_IN, 6.8 * len(reps)),
-                             squeeze=False)  # fmt: skip
-    plotting.plot_tensions(reps if len(reps) > 1 else reps[0], names=study.names,
-                           ax=axes[:, 0] if len(reps) > 1 else axes[0][0])  # fmt: skip
-    for k, (ax, rep) in enumerate(zip(axes[:, 0], reps, strict=True)):
-        ax.set_title(_member_title(rep, f"facet {k + 1}"))
+    reps = _all_terms(study, fit, band)
+    heights = [6.8 if has_reading(r) else 1.2 for r in reps]
+    fig, axes = plt.subplots(len(reps), 1, figsize=(FIGURE_WIDTH_IN, sum(heights)),
+                             squeeze=False, gridspec_kw={"height_ratios": heights})  # fmt: skip
+    term_tension_panels(reps, study.names, axes[:, 0], plotting)
+    for ax in axes[:, 0]:
         plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
     fig.tight_layout()
     return fig

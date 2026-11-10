@@ -61,7 +61,6 @@ def _label(regime):
 # A test checks that each name occurs in its file; nothing here is a number.
 PRODUCERS = {
     "settling_time_s": ("adcs_sim.py", "simulate_adcs", "measured: on the integrated slew"),
-    "slew_time_s": ("cubesat_model.py", "slew_time", "measured: on the integrated slew"),
     "pointing_error_deg": ("cubesat_model.py", "pointing_error_deg", "computed: pointing budget"),
     "total_mass_kg": ("cubesat_tradespace.sysml", "MassAccounting", "computed: accounting"),
     "control_effort": ("adcs_sim.py", "simulate_adcs", "measured: on the integrated slew"),
@@ -205,11 +204,26 @@ def _sha256(path) -> str:
 
 
 def _ledger(path=LEDGER):
-    """The experiment ledger's entries by output path (empty if the ledger is absent)."""
+    """The experiment ledger's entries by output hash, the latest of equal hashes (empty if absent).
+
+    A file is found by its hash, so a byte copy of a ledger output names the entry too.
+    """
     if not path.exists():
         return {}
     entries = [json.loads(ln) for ln in path.read_text(encoding="utf-8").splitlines() if ln.strip()]
-    return {e["output_path"]: e for e in entries if e.get("output_path")}
+    return {e["output_sha256"]: e for e in entries if e.get("output_sha256")}
+
+
+def _command(entry, rel) -> str:
+    """The command of a ledger entry, or the ledger's own run of it when the entry records none."""
+    if not entry:
+        return "none"
+    command = entry.get("inputs", {}).get("command")
+    if command:
+        return command
+    base = entry["id"].split("@")[0]
+    run = f"PYTHONPATH=examples/adcs uv run python -m experiments run {base} --supersede"
+    return run if entry["output_path"] == rel else f"{run}, then a byte copy to {rel}"
 
 
 def datasets(spec=None) -> Md:
@@ -226,14 +240,13 @@ def datasets(spec=None) -> Md:
     rows = []
     for r, f in spec.regimes.items():
         path = spec.data_dir / f
-        rel = f"examples/adcs/data/{f}"
+        rel = path.resolve().relative_to(ROOT).as_posix()
         raw = pd.read_csv(path)
-        entry = ledger.get(rel, {})
+        digest = _sha256(path)
+        entry = ledger.get(digest, {})
         rows.append([
-            _label(r), r, rel, entry.get("id", "none"),
-            entry.get("inputs", {}).get("command", "none"), len(raw),
-            int(case.feasible_mask(raw, spec).sum()), _sha256(path),
-            entry.get("output_sha256", "none"),
+            _label(r), r, rel, entry.get("id", "none"), _command(entry, rel), len(raw),
+            int(case.feasible_mask(raw, spec).sum()), digest, entry.get("output_sha256", "none"),
         ])  # fmt: skip
     X, _ = planted_table()
     call = "make_frontier_data(" + ", ".join(f"{k}={v}" for k, v in PLANTED.items()) + ")"

@@ -111,8 +111,26 @@ def exponents_and_facets() -> Md:
             + _t(exp3, f"D exponents K=3 | {r}", "metric")
             + f"\n\n{_cite(r)}, K = 3, per facet:\n\n"
             + frame_table(_facets(r, ft3))
+            + _thin_terms(ft3)
         )  # fmt: skip
     return Md("\n\n".join(parts))
+
+
+def _thin_terms(ft) -> str:
+    """One sentence per term whose near-frontier designs miss the guard of the association reading.
+
+    The row of such a term stands: its exponents, cell, share and contending set are the fit's;
+    only the association reading, which needs the rows, is not made (``case.has_reading``).
+    """
+    out = ""
+    for label, n in zip(ft["facet"], ft["near-frontier"], strict=True):
+        if int(n) < case.MIN_NEAR_FRONTIER:
+            reason = case.thin_reason(n)
+            out += (
+                f"\n\nTerm {int(label)}: {reason}; its row above is the fit's, and it has no "
+                "association map."
+            )
+    return out
 
 
 def regime_comparison() -> Md:
@@ -303,7 +321,7 @@ def _moving_rows():
     for r in case.CUBESAT.regimes:
         groups += [
             (f"nondominated, {v}, {r}", f"nondominated | {r} | {v} | nondominated", None)
-            for v in ("four metrics", "settling time and slew time")
+            for v in case.CUBESAT.views
         ]
         groups += [
             (f"fraction above V = 1, K = 1, {r}", f"fit | {r} K=1 | frac_above_", four),
@@ -357,16 +375,19 @@ def stability() -> Md:
     cites = " and ".join(DATASET_LABELS[r] for r in case.CUBESAT.regimes)
     moving = [e for e in s["quantities"].values() if "min" in e and not e["identical"]]
     head = (
-        "The settling time and the slew time are read off the accepted steps of an adaptive "
-        f"integration, so a relative change of {eps:g} in a design variable can move them by up "
-        "to half a second, and by much more where the error trajectory grazes the settling band "
-        f"(gap G-17). Datasets {cites} and the six check designs were regenerated {n} "
-        "times with `Kp`, `Kd`, the panel span and the battery capacity of every design "
-        f"multiplied by 1 + e, e uniform in [-{eps:g}, {eps:g}], and every quantity this paper "
-        f"reports was recomputed ({n_all} quantities, of which {len(moving)} numbers move at "
-        "all). A quantity that moves is printed in this paper to the digits that held in all "
-        f"{n + 1} datasets (the committed one and the {n} regenerated), as a range where not "
-        "even two digits did, and as a bound where it is a numerical residue."
+        "The control effort and the saturated fraction are sums over the accepted steps of an "
+        "adaptive integration and the settling time is detected on its dense solution, so a "
+        f"relative change of {eps:g} in a design variable moves the control effort by up to two "
+        "parts in ten thousand and the settling time by about a microsecond (gap G-17). Datasets "
+        f"{cites} and the six check designs were regenerated {n} times with `Kp`, `Kd`, the "
+        "panel span and the battery capacity of every design multiplied by 1 + e, e uniform in "
+        f"[-{eps:g}, {eps:g}], and every quantity this paper reports was recomputed ({n_all} "
+        f"quantities, of which {len(moving)} numbers move at all). The regenerations ran on the "
+        "authors' machine and the committed data in the environment of record, so a range also "
+        "holds the two platforms' difference. A quantity that moves is printed in this paper to "
+        f"the digits that held in all {n + 1} datasets (the committed one and the {n} "
+        "regenerated), as a range where not even two digits did, and as a bound where it is a "
+        "numerical residue."
     )
     verdict = md_table(
         ["Conclusion", "Quantities compared", f"Across the committed data and {n} regenerations"],

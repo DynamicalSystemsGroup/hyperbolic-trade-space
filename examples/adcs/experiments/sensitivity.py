@@ -450,7 +450,7 @@ def _same(a, b) -> bool:
 CONCLUSIONS = (
     ("the contending sets (K = 1, both regimes; each facet at K = 3)", ("contending |",)),
     ("each facet's leading metrics", ("leading |",)),
-    ("the signs of the tensions (the six reported pairs, both regimes)", ("tension |",)),
+    ("the signs of the tensions (the reported pairs, both regimes)", ("tension |",)),
     ("the selected temperatures (K = 1, 2, 3, both regimes)", ("tau |",)),
     ("the certificate statuses (K = 1, 2, 3, both regimes)", ("certificate |",)),
     ("the regime comparison", ("regime |", "sentence | regime")),
@@ -576,7 +576,7 @@ def _headline(name: str) -> bool:
 
 
 def _deviation_section(runs_dirs: Mapping[int, Path], committed_dir: Path) -> list[str]:
-    lines = ["### Deviation of the ten fitted attributes from the committed data", ""]
+    lines = ["### Deviation of the attributes from the committed data", ""]
     for f, title in (
         (PRIMARY_FILE, "Primary (1000 designs)"),
         (BASELINE_FILE, "Baseline (1000 designs)"),
@@ -742,7 +742,7 @@ def main(argv=None) -> int:
     a.add_argument("--out", type=Path, required=True)
     a.add_argument("--md", type=Path, default=None, help="write the generated section here")
     a.add_argument("--runtime-s", type=float, default=None)
-    a.add_argument("--committed", type=Path, default=DATA_ROOT)
+    a.add_argument("--committed", type=Path, default=V2_DATA)
     a.add_argument(
         "--json",
         type=Path,

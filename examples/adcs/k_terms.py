@@ -21,31 +21,29 @@ from hyperbolic_trade_space import (
     HyperbolicTradeSpace,
     LogAffinePreconditioner,
     select_temperature,
-    tension_report,
 )
 from hyperbolic_trade_space.plotting import (
     PARTICIPATION,
     facet_labels,
     plot_frontier_coordinates,
     plot_log_plane,
-    plot_tensions,
 )
 
 HERE = Path(__file__).resolve().parent
-DATA, FIGS = HERE / "data", HERE / "figures"
+DATA, FIGS = HERE / "data" / "v2", HERE / "figures"  # the data of record (WP23)
 REGIMES = {"primary": "adcs_designs_cubesat_gains.csv", "stock": "adcs_designs_cubesat.csv"}
 ATTRS = [
-    "settling_time_s", "slew_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
+    "settling_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
     "power_margin_w", "energy_balance_wh", "eclipse_reserve_wh", "peak_slew_power_w", "dod_eclipse",
 ]  # fmt: skip
 SHORT = dict(zip(ATTRS, [
-    "settling time", "slew time", "pointing error", "total mass", "control effort",
+    "settling time", "pointing error", "total mass", "control effort",
     "power margin", "energy balance", "eclipse reserve", "peak slew power", "depth of discharge",
 ], strict=True))  # fmt: skip
 UNITS = dict(zip(ATTRS, [
-    "s", "s", "deg", "kg", "torque.s, proxy", "W", "Wh", "Wh", "W", "fraction",
+    "s", "deg", "kg", "torque.s, proxy", "W", "Wh", "Wh", "W", "fraction",
 ], strict=True))  # fmt: skip
-ORIENT = dict(zip(ATTRS, [-1, -1, -1, -1, -1, +1, +1, +1, -1, -1], strict=True))
+ORIENT = dict(zip(ATTRS, [-1, -1, -1, -1, +1, +1, +1, -1, -1], strict=True))
 WHEELS, TRACKERS = ["small", "medium", "large"], ["coarse", "medium", "fine"]
 DESIGN_VARS = ["panel_span_m", "battery_wh", "Kp", "Kd"]
 NAMES = [SHORT[a] for a in ATTRS]
@@ -95,9 +93,15 @@ def select_tau(M, K, target=0.10):
 
 
 def reports(est, M, band=None):
-    """List of per-facet TensionReports (a one-element list at K = 1)."""
-    r = tension_report(est, M, band=band)
-    return r if isinstance(r, list) else [r]
+    """List of per-term TensionReports (a one-element list at K = 1), the guard per term.
+
+    ``case.term_reports``: every term is reported from the estimator; the association reading of
+    a term without ten near-frontier rows is not drawn (``case.has_reading``).
+    """
+    import case
+
+    band = (1 / float(est.temperature)) if band is None else band
+    return case.term_reports(est, M, band)
 
 
 def top(names, w, n=3):
@@ -215,8 +219,12 @@ def save_figures(regime, est, M, reps, tau, figs=FIGS, band=None):
     fig.savefig(figs / f"k3_frontier_coordinates_{regime}.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
 
+    import case
+
+    from hyperbolic_trade_space import plotting
+
     fig, axes = plt.subplots(1, 3, figsize=(21, 7))
-    plot_tensions(reps, names=NAMES, ax=axes)
+    case.term_tension_panels(reps, NAMES, axes, plotting)
     for ax in axes:
         plt.setp(ax.get_xticklabels(), rotation=45, ha="right", fontsize=6)
         plt.setp(ax.get_yticklabels(), fontsize=6)

@@ -534,3 +534,46 @@ section = "The decision problem"
 words_added = 13
 job = "names multidisciplinary design analysis and optimization as the setting of the design-optimization use and cites the family (WP10 'MDAO in the prior art', P-11)"
 reader = "the MDAO practitioner placing the method beside the tools they use"
+
+# Rows: the paper's move onto the data of record (WP23's swap, 2026-11-10; swap-evidence.md, the gate
+# section, part 5). Removed in the same move, net of the rows below (cuts need no row; recorded here):
+# the behavioural caption's dashed clause (no traded metric is left without a requirement in the WP23
+# model) and its "which trades no requirement constrains" (-), the assembly caption's claim that the
+# view draws the ranges (now a pointer to Appendix C.1), the two-attribute view's count from the
+# nondominated sentence, the slew time from the K = 1 and regime sentences (shorter sets), and the
+# heatmap lines' "the exponents hardly depend on it" (the image shows they do).
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 142
+job = "the heatmap's caption and three lines of figure review redraw 2: what the top and bottom panels draw, the row order, the white cells and the scale, and no claim that tau does not matter"
+reader = "the cold reader of Figure 1 who must read the grid without the text"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 58
+job = "states the rule that sets the proposer's radius and that the earlier radius was a typed constant"
+reader = "the reader judging whether the proposals were chosen by a rule or tuned"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 22
+job = "says why one K = 3 term has no association map (too few near-frontier designs) and what the figure then shows"
+reader = "the reader of Figure 5 who sees a panel replaced by a sentence"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 27
+job = "names the metrics of the K = 1 plane and the bottom K = 3 panel's columns and bands, and the term leaders absent at K = 1"
+reader = "the reader matching each plotted axis and term to the text"
+
+[[raise]]
+date = "2026-11-10"
+section = "Discussion"
+words_added = 40
+job = "states that two proposals are one configuration and that all three fail the depth-of-discharge requirement, with the reason"
+reader = "the supervisor deciding whether a proposal that fails a model requirement counts as a check"

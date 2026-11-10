@@ -26,6 +26,7 @@ except ImportError:  # run as a script from paper/figures
     from planes import DESIGN, INK, _case
 
 HERE = pathlib.Path(__file__).resolve().parent
+_WORDS = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine"}
 
 
 def chart_level_figure(study=None, fit=None, band=None):
@@ -42,7 +43,9 @@ def chart_level_figure(study=None, fit=None, band=None):
     ax.axhspan(-band, 0.0, color="0.75", alpha=0.6, linewidth=0, zorder=1)
     ax.axhline(0.0, color=INK, lw=1.6, zorder=3)
     ax.scatter(z0, logv, s=12, color=DESIGN, linewidth=0, zorder=2)
-    ax.set_xlabel("Z0: position along the surface (first of nine coordinates, no meaning alone)")
+    n = chart.shape[1] - 1  # position coordinates: one fewer than the metrics
+    ax.set_xlabel(f"Z0: position along the surface (first of {_WORDS.get(n, n)} coordinates, "
+                  "no meaning alone)")  # fmt: skip
     ax.set_ylabel("log V: level\n(0 on the surface, negative inside)")
     handles = [
         Line2D([], [], marker="o", ls="", color=DESIGN, label="designs"),

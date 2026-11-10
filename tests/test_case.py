@@ -55,22 +55,23 @@ def stock_fits(stock):
 
 
 def test_subsystem_mapping_is_data_and_covers_every_attribute():
-    """Each attribute has one subsystem in the spec; the model's grouping is 4 + 5 + 1."""
+    """Each attribute has one subsystem in the spec; the model's grouping is 3 + 5 + 1."""
     spec = case.CUBESAT
     assert set(spec.subsystems) == set(spec.attributes)
     assert set(spec.subsystem_order) == set(spec.subsystems.values())
     counts = {g: list(spec.subsystems.values()).count(g) for g in spec.subsystem_order}
-    assert counts == {"controls": 4, "power and energy": 5, "mass": 1}
-    assert spec.subsystems_of(["total mass", "slew time"]) == ["controls", "mass"]
+    assert counts == {"controls": 3, "power and energy": 5, "mass": 1}
+    assert spec.subsystems_of(["total mass", "pointing error"]) == ["controls", "mass"]
     assert spec.subsystems_of(["settling time"]) == ["controls"]
 
 
 def test_load_study_filters_and_conditions(small):
-    assert small.M.shape == (N, 10) and (small.M > 0).all()
+    assert small.M.shape == (N, 9) and (small.M > 0).all()
     assert len(small.raw) == 1000 and len(small.feasible) == N
     assert small.feasible.settled.all() and small.feasible.momentum_ok.all()
     assert small.names[0] == "settling time" and small.names[-1] == "depth of discharge"
-    assert "metrics__slew_time_s" in small.conditioner.get_feature_names_out()
+    assert "metrics__settling_time_s" in small.conditioner.get_feature_names_out()
+    assert "metrics__slew_time_s" not in small.conditioner.get_feature_names_out()
 
 
 def test_feasible_mask_counts_on_frozen_data(primary, stock):
@@ -87,7 +88,7 @@ def test_feasibility_table_cascade(primary):
 
 def test_conditioning_table(small):
     t = case.conditioning_table(small)
-    assert list(t.index) == small.names and len(t) == 10
+    assert list(t.index) == small.names and len(t) == 9
     assert set(t.orientation) == {"reciprocal", "direct"}
     assert np.allclose(t["m min"], small.M.min(axis=0))
 
@@ -162,7 +163,7 @@ def test_nondominated_mask():
 
 def test_nondominated_counts_small(small):
     t = case.nondominated_counts(small)
-    assert list(t.view) == ["all attributes", "four metrics", "settling time and slew time"]
+    assert list(t.view) == ["all attributes", "four metrics"]
     assert (t["of"] == N).all() and t.nondominated.is_monotonic_decreasing
     assert t.nondominated.min() >= 1
 
@@ -170,7 +171,7 @@ def test_nondominated_counts_small(small):
 def test_view_study_columns(small):
     v = case.view_study(small)
     assert v.M.shape == (N, 4) and v.names == [
-        "slew time", "pointing error", "control effort", "total mass",
+        "settling time", "pointing error", "control effort", "total mass",
     ]  # fmt: skip
     assert v.preconditioner.n_features_in_ == 4
 
@@ -269,29 +270,29 @@ def test_scaler_option_changes_the_conditioning_and_is_standard_by_default(small
 
 def test_nondominated_counts_on_frozen_primary(primary):
     t = case.nondominated_counts(primary).set_index("view")
-    assert t.nondominated.tolist() == [671, 146, 8]
+    assert t.nondominated.tolist() == [659, 126]
     assert (t["of"] == 706).all()
-    assert t.share.round(3).tolist() == [0.950, 0.207, 0.011]
+    assert t.share.round(3).tolist() == [0.933, 0.178]
 
 
 # the record of k3-cubesat.md, as printed: tau, objective_, frac_above_, facet rows, gamma, radius
 RECORD = {
     "primary": {
-        1: (38.10, 0.2036, 0.096, [706]),
-        2: (113.22, 0.1384, 0.096, [332, 374]),
-        3: (195.18, 0.1173, 0.098, [201, 188, 317]),
+        1: (38.10, 0.2434, 0.092, [706]),
+        2: (94.42, 0.1823, 0.095, [414, 292]),
+        3: (113.22, 0.1458, 0.099, [162, 181, 363]),
     },
     "stock": {
-        1: (41.72, 0.1312, 0.104, [780]),
-        2: (78.75, 0.1059, 0.092, [390, 390]),
-        3: (162.78, 0.0929, 0.094, [284, 149, 347]),
+        1: (45.68, 0.1786, 0.104, [780]),
+        2: (71.92, 0.1417, 0.100, [454, 326]),
+        3: (113.22, 0.0927, 0.094, [251, 184, 345]),
     },
 }
 MARGIN = {
-    ("primary", 2): (0.000830, 0.000068), ("primary", 3): (0.000220, 0.000018),
-    ("stock", 2): (0.001575, 0.000126), ("stock", 3): (0.001487, 0.000119),
+    ("primary", 2): (0.000697, 0.000057), ("primary", 3): (0.001213, 0.000100),
+    ("stock", 2): (0.001413, 0.000120), ("stock", 3): (0.000091, 0.000008),
 }  # fmt: skip
-GAP_K1 = {"primary": 4.7e-6, "stock": 1.8e-5}
+GAP_K1 = {"primary": 8.7e-6, "stock": 1.29e-5}
 
 
 @pytest.mark.slow
@@ -317,35 +318,54 @@ def test_k_sweep_equals_the_record(regime, request):
 
 def test_k3_facets_equal_the_primary_record(primary, primary_fits):
     f = case.facet_table(primary, primary_fits, K=3)
-    assert sorted(f["rows"]) == [188, 201, 317]
-    assert sorted(f.share.round(3)) == [0.089, 0.133, 0.778]
-    assert sorted(f["n_lemma"]) == [6, 6, 7]
-    assert sorted(f["near-frontier"]) == [17, 33, 126]
+    assert sorted(f["rows"]) == [162, 181, 363]
+    assert sorted(f.share.round(3)) == [0.034, 0.241, 0.724]
+    assert sorted(f["n_lemma"]) == [4, 5, 5]
+    assert sorted(f["near-frontier"]) == [3, 21, 73]
     assert (f["gap G_k"] < 1e-12).all()
     big = f.loc[f.share.idxmax()]
-    assert big["contending set"].startswith("peak slew power, total mass, pointing error")
-    assert big["largest exponents"].startswith("peak slew power 0.380")
+    assert big["contending set"].startswith("peak slew power, pointing error")
+    assert big["largest exponents"].startswith("peak slew power 0.612")
+
+
+def test_thin_term_is_reported_from_the_estimator_and_gets_its_reason(primary, primary_fits):
+    """WP23 data gate: the guard of ten is applied per term, the thin term's reading replaced."""
+    import matplotlib.pyplot as plt
+
+    fit, band = primary_fits[3], primary_fits[1].band
+    reps = case.term_reports(fit.estimator, primary.M, band)
+    assert len(reps) == 3 and case.MIN_NEAR_FRONTIER == 10
+    thin = [r for r in reps if not case.has_reading(r)]
+    assert [r.n_near_frontier for r in thin] == [3]
+    assert case.thin_reason(thin[0].n_near_frontier) == (
+        "too few near-frontier designs for an association reading: 3 of ten"
+    )
+    with pytest.raises(ValueError, match="3 of ten"):
+        case._reports(primary, fit, band)
+    fig = case.tension_figure(primary, fit, band=band)
+    texts = [t.get_text().lower() for ax in fig.axes for t in ax.texts]
+    assert any("3 of ten" in t.replace("\n", " ") for t in texts)
+    plt.close(fig)
 
 
 def test_k1_contending_set_equals_the_record(primary, primary_fits, stock, stock_fits):
     p = case.tension_table(primary, primary_fits[1]).iloc[0]
     assert p["contending set"] == (
-        "total mass, slew time, energy balance, control effort, pointing error, depth of discharge"
+        "total mass, energy balance, pointing error, depth of discharge, settling time"
     )
-    assert p.n_lemma == 6 and p["near-frontier"] == 51
+    assert p.n_lemma == 5 and p["near-frontier"] == 56
     s = case.tension_table(stock, stock_fits[1]).iloc[0]
     assert set(s["contending set"].split(", ")) == {
-        "control effort", "slew time", "power margin", "settling time", "pointing error",
-        "eclipse reserve",
+        "control effort", "settling time", "power margin", "pointing error", "depth of discharge",
     }  # fmt: skip
-    assert s["near-frontier"] == 103
+    assert s["near-frontier"] == 77
 
 
 def test_regime_comparison_on_frozen_data():
     t = case.regime_comparison().set_index("quantity")
     assert t.loc["feasible n", "primary"] == "706 (191 / 248 / 267)"
-    assert t.loc["band 1/tau, near-frontier designs", "primary"] == "0.0262, 51"
-    assert t.loc["band 1/tau, near-frontier designs", "stock"] == "0.0240, 103"
+    assert t.loc["band 1/tau, near-frontier designs", "primary"] == "0.0262, 56"
+    assert t.loc["band 1/tau, near-frontier designs", "stock"] == "0.0219, 77"
 
 
 # ---- candidates and propose-predict-check -----------------------------------------------------
@@ -367,14 +387,14 @@ def test_candidates_are_scored(primary, primary_fits):
 def test_refit_reproduces_the_recorded_predictions(primary, regressor):
     t = case.proposals_table(primary, regressor)
     assert len(t) == 3 and (t["max |recorded - refit|"] < 1e-6).all()
-    assert regressor.tau == pytest.approx(15.37, abs=0.01)
+    assert regressor.tau == pytest.approx(10.69, abs=0.01)
 
 
 def test_predict_check_within_the_band(primary, regressor):
     t = case.predict_check(primary, regressor)
     assert list(t.proposal) == ["proposal_1", "proposal_2", "proposal_3"]
     assert t["log V within band"].all() and (t["|diff| / band"] < 1).all()
-    assert (t["difference"] < 0).all()  # measured log V below predicted for all three
+    assert (t["difference"] > 0).all()  # measured log V above predicted for all three
 
 
 def test_white_space_targets(primary):
@@ -398,7 +418,7 @@ def test_swapping_the_spec_changes_the_behaviour():
     default = case.load_study("primary", n_max=None)
     lax = case.load_study("primary", case.with_spec(flags=("settled",)))
     assert len(lax.feasible) > len(default.feasible)
-    views = case.with_spec(views={"one": ("slew_time_s",)})
+    views = case.with_spec(views={"one": ("settling_time_s",)})
     t = case.nondominated_counts(case.load_study("primary", views, n_max=100))
     assert list(t.view) == ["all attributes", "one"]
     only_stock = case.with_spec(regimes={"stock": "adcs_designs_cubesat.csv"})
@@ -482,7 +502,7 @@ def test_docstrings_run_and_are_numpydoc():
 def test_sensitivity_and_refits_on_frozen_primary(primary):
     t = case.sensitivity_table(primary).set_index("variant")
     assert t.loc["baseline", "tau"] == pytest.approx(38.0961, rel=1e-4)  # the K = 1 record
-    assert t.loc["baseline", "n_lemma"] == 6
+    assert t.loc["baseline", "n_lemma"] == 5
     r = case.category_refits(primary)
     assert r.designs.tolist() == [191, 248, 267]
 
@@ -530,7 +550,7 @@ def test_panel_titles_count_the_exact_maximum_support_and_outline_exactly_those(
     n = rep.n_lemma
     plural = "s" if n != 1 else ""
     assert ax.get_title() == (
-        f"facet 1: {rep.lemma_name} ({n} metric{plural} in the exact-maximum support)"
+        f"term 1: {rep.lemma_name} ({n} metric{plural} in the exact-maximum support)"
     )
     from matplotlib.patches import Rectangle
 

@@ -230,7 +230,7 @@ def test_the_results_file_is_written_deterministically_and_guarded(tmp_path):
 
 @pytest.fixture(scope="module")
 def recomputed():
-    return sens.quantities(DATA)
+    return sens.quantities(DATA / "v2")  # the data of record the paper reads (WP23)
 
 
 @pytest.mark.slow

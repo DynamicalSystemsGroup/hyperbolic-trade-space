@@ -1951,7 +1951,9 @@ def test_generated_sentences_quote_the_ranges_from_the_results_file(case_sentenc
         lo, hi = int(e["min"]), int(e["max"])
         moved += lo != hi
         assert (f"{lo} to {hi}" if lo != hi else f"{lo} on") in nd, name
-    assert moved, "no count moves: the sentence would quote no range"
+    # WP23 data gate (D-9 item 5): no count moves on the nine-metric data; the sentence then
+    # says that a number that moves is printed as a range
+    assert moved or "is printed as a range" in nd
     cert = str(
         case_sentences["num-certificates"]
     )  # the largest facet gap moved here from the sweep
@@ -2334,7 +2336,7 @@ def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_ap
     first = results.split("2.", 1)[0]
     assert "not the Pareto boundary" in first and "fitted reference surface" in first
     sentence = _cell_out(PAPER_NB, "num-nondominated")
-    assert "671 on 10" in sentence and "regenerations of the data under rounding-level" in sentence
+    assert "659 on 9" in sentence and "regenerations of the data under rounding-level" in sentence
 
 
 def test_cr8_the_k_comparison_says_the_temperature_differs_and_d15_fixes_it():
@@ -2406,7 +2408,9 @@ def test_cr12_every_hypothesis_label_is_worded_or_explained():
 def test_cr13_the_first_generated_range_says_what_varies():
     """(13) The first range of the text is in the sentence of section 1, and it says what varies."""
     first = _cell_out(PAPER_NB, "num-nondominated")
-    assert re.search(r"\d+ to \d+", first)
+    # WP23 data gate (D-9 item 5): on the nine-metric data no nondominated count moves, so the
+    # sentence prints no range and says what a range would be; a count that moves is a range.
+    assert re.search(r"\d+ to \d+", first) or "is printed as a range" in first
     assert "five regenerations of the data under rounding-level perturbation" in first
     assert "Appendix D.11" in first
     for cell in _code_cells(_nb(PAPER_NB)):

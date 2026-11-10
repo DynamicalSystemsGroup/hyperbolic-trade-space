@@ -31,7 +31,7 @@ READS = {
     "generate_proofs": "derivation/proof_map_record.json",
     "generate_reading_pass": "paper/reading_pass.yaml",
 }
-CASE_DATA = "examples/adcs/data/ (the regimes' CSV files named by the case module)"
+CASE_DATA = "examples/adcs/data/v2/ (the regimes' CSV files named by the case module)"
 
 
 def locked_packages(path=LOCK) -> dict[str, str]:

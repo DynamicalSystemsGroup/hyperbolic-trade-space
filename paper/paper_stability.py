@@ -1,10 +1,11 @@
 """The paper prints nothing to a precision at which it is not reproducible (WP10, WP16 D-6).
 
-``settling_time_s`` and ``slew_time_s`` are read off the accepted steps of an adaptive integration,
-so a rounding-level change in a design variable moves some of what the case reports in the last
-digits. ``examples/adcs/experiments/sensitivity.py`` regenerates the data five times under
-perturbations of one part in 10^12 and writes the committed results file read here: per quantity
-the committed value and the range over the six datasets. The generators take their numbers through
+``settling_time_s`` is detected on the dense solution of an adaptive integration whose accepted
+steps also sum ``control_effort`` and ``torque_saturated_frac``, so a rounding-level change in a
+design variable moves some of what the case reports in the last digits.
+``examples/adcs/experiments/sensitivity.py`` regenerates the data five times under perturbations of
+one part in 10^12 and writes the committed results file read here: per quantity the committed value
+and the range over the six datasets. The generators take their numbers through
 this module, so a printed quantity carries only the digits that held in all six datasets, or its
 range, in the shorter of the printed format and two digits more than held, where not even
 two digits did, and a numerical residue is a bound.
