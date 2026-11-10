@@ -836,3 +836,223 @@ loop).
 - The header's "the three-pane figure has left the paper's body" holds; the paper now has nine
   figures, which the key does not count and need not.
 - Unchanged and still right: S1 to S3, S5, S8, S9, the depths' jobs, W1 to W8.
+
+## Docs loop, round 2 (three task readers on the staged site at c6d0fff)
+
+Triage of 2026-11-10 (D-6). Three fresh readers, one task each, on the staged site at c6d0fff
+(the root page, the docsite, the paper) with a clean worktree of the repository at the same
+commit: install and run a first fit (R1); read a tension report and choose K (R2); read a
+termination record and say whether the fit converged (R3). Reports verbatim in
+`round2-docs-reads/` (committed first, fdab633), with the tasks and models in its README. The
+docs pages are unchanged between c6d0fff and the head of `dev` at the triage (ca6ce94). Every
+passage a reader quoted was checked against the page, and every command a reader ran was re-run
+in a worktree of `dev`: the first fit, the Termination page's example and its margin check,
+`examples/adcs/k_terms.py`, `case.fit_study` at K = 1 and K = 3, and the Fitting page's K recipe
+on the cubesat table. Every number the three readers report replicates to the digits they give.
+
+The docs loop has no answer key of its own; the four things a package user must leave with are
+the brief's: the method does not pick a design; what a sharp fit's certificate says; what K
+means; what the termination record's fields say.
+
+### Per reader: the task, and what the reader believed at the end
+
+| Reader | Task done | What the reader believed at the end | Against the docs and the package |
+|---|---|---|---|
+| R1 (install, first fit) | Yes. `uv sync`; the Getting started snippet in a file; output `trilemma [0 1 2]`, `[0.3 0.37 0.33]`; the two-metric plot saved. Read the fit as: all three metrics contend, exponents nearly equal, elasticities near -1 pairwise, most designs inside the surface (mean log V -0.67, 108 of 300 beyond). | "It does not choose a design for you"; conditioning is a separate step; "it describes the data you give it"; "makes no claims on the page about uncertainty"; "not a prediction or optimization engine for new designs". | All correct. The last holds for the estimator (no `predict`); the user guide's prediction page composes a regressor for that question, on a page the reader did not open. The one thing the reader left unchecked (whether 108 of 300 beyond V = 1 is expected) is expected: the synthetic table puts 30 percent of its rows on the planted frontier (Fitting page); `frac_above_` = 0.360 replicates. No wrong belief. |
+| R2 (tension report, choose K) | Yes. K = 3 for the primary table, with reasons (mean slack at fixed tau 0.243, 0.132, 0.088, 0.070; ten resamples at K = 3 return the same three families of terms, at K = 4 two terms share one participating set in 6 of 10; every K = 3 cell at fixed tau has 27, 17 and 118 near-frontier designs); K = 2 named as the cautious alternative; held loosely, with the reasons. | K is "the analyst's choice, never selected by the fit"; the certificate "is about a local optimum of the solver, not about the data being right"; tensions are "observations of the fit, not explanations"; association near the surface is partly closure; the fit "assigns each design to a term (cell)". | All correct. "Assigns each design to a term" is what the package's default sharp fit does (`cell_`); the glossary's entry "assignment: an analysis, since the fit weighs every term against every design" is the paper triage's open item 3 (the fit stated without membership), not a reader's error. No wrong belief. |
+| R3 (termination record) | Yes. "The fit converged, by the package's own criteria, to a local optimum", from the K = 3 cubesat record: `certified`, `assignment_changes = 0`, `n_empty = 0`, `max_gap` 4.1e-15 against `eps_kkt` 1e-8, residuals 0, `gamma` 0.0012 > 0, `n_distinct_terms = 3`, five seeds agreeing. | Certified means the three levels, "a local optimum of the objective, not of other restarts"; `bound` bounds the distance from the fixed-assignment optimum; the one-term record "does not certify anything" and the convex program is what to rely on; a soft fit "means designs are weighted across terms instead of hard-assigned"; whether it holds outside the table "is not something the certificate says". | All correct, field by field against the `Termination` docstring. One step is the page's, not the reader's: to judge the margin the reader compared `gamma` with the band 1/tau (0.0012 against 0.0088) because the page puts `gamma` "on the scale of the band" first, and says it did not compute the median margin the page's rule names (0.237 on this fit; replicated). No wrong belief. |
+
+No reader believes the method picks a design, that certified means a global optimum, that the
+fit chooses K, or anything about a record field that the docstring does not say. All three
+tasks were done from the pages alone.
+
+### Defects (counted at once)
+
+1. **The Examples page's K comparison is the one the Fitting page forbids.** Examples, "Three
+   terms": "The mean slack falls from 0.243 at one term to 0.146 at three, and the status is
+   `certified`." Fitting, "Choosing K": "Compare numbers of terms at one fixed temperature, by
+   `mean_slack_`, never by `objective_` and never at a temperature re-selected for each K."
+   Replicated: 0.243 is at tau 38.10 and 0.146 at tau 113.22, each re-selected for its K
+   (`k_terms.py`, `case.fit_study`); at the K = 1 temperature the mean slack is 0.243, 0.132,
+   0.088 (the script's own "DIAGNOSTIC, fixed tau" block). The same bullet's "72 percent", "3
+   percent" and "3 near-frontier designs, fewer than the ten an association reading needs" are
+   also the re-selected fit's; at fixed tau the three cells hold 27, 17 and 118 near-frontier
+   designs and every term has a reading. R2: "I expected the Examples page's headline comparison
+   to be the fixed-temperature one (0.243 → 0.088), or to say why it is not." DCR-1.
+2. **The Fitting page's K recipe gives no signal on the case's own table.** Fitting, "Choosing K":
+   "add a term only while the resampled exponents stay stable", measured in the page's block as
+   `exponents_.min()` over resamples. On the cubesat table the smallest exponent is 0.000 at K =
+   1, 2, 3 and 4 in every resample (replicated: four resamples each), because some metric is
+   always excluded; the Tensions page says sparsity is the normal case. One reader found it; it
+   counts because the run shows it. R2: "The recipe as written gave me no signal; I had to invent
+   a substitute." DCR-2.
+3. **`shares`: one word, three quantities.** The record's `shares` is the row share |C_k|/N
+   (`Termination` docstring); the Termination page lists it under "The fields" with no
+   definition. `term_share_`, the Examples page's "near-frontier share" and `k_terms.py`'s "term
+   shares" are the share of the near-frontier rows. The glossary's "share" is a metric's share of
+   a total in the ternary plot. On the K = 3 cubesat fit the record's `shares` are [0.256, 0.229,
+   0.514] and `term_share_` is [0.034, 0.241, 0.724]. R3: "Same name, two quantities." DCR-3; the
+   glossary's part to the PM.
+4. **The Termination page's margin rule points two ways.** "How small is a small margin":
+   "Compare `gamma` with the median margin ... far below it, a few designs sit on a seam", then
+   the page's example, "`gamma` is 0.0020 against the band 0.02 and the median margin 0.21: level
+   3 holds", where `gamma` is a hundredfold below the median. On the cubesat K = 3 fit `gamma` is
+   0.0012 against a median margin of 0.237 (replicated). The rule and its example cannot both be
+   read as written; R3 read the band instead. DCR-4.
+5. **The script prints "mean slack" under a column headed `objective_`.** Examples, "Run it":
+   `k_terms.py` "reproduces the one-, two- and three-term fits", and the page's "mean slack ...
+   0.243 ... 0.146" are the script's `objective_` column. For the sharp fit at K > 1 `objective_`
+   equals `mean_slack_`; at K = 1 it is the soft maximum, which on this table equals the mean
+   slack only because the conditioning's standard scaler centres the log-metrics (mean of u . w
+   is 3e-15; replicated). R2: "my K=1 fit had objective_ 0.243374 and mean_slack_ 0.2434,
+   identical to four digits, which left me unsure which number I was looking at." DCR-5.
+
+### Friction replicated in two of three readers
+
+- **V, and log V, met before any definition** (three of three). Getting started, "Reading the
+  output": "`ts.score_samples(X)` is the log of V for each design, the energy differential to the
+  fitted reference surface": V is not said on the page. R1: "I read score_samples as a signed
+  distance, in log terms"; R2: "met before any definition; guessed"; R3: "V seems to be a design's
+  score relative to the fitted surface (1 on the surface, above 1 beyond it)". All three guessed
+  it right; the glossary has it (invariant value). DCR-6.
+- **The temperature, where first met** (two of three). Getting started passes `temperature=20.0`
+  and says only "at the fit temperature". R1: "never explained on this page"; R3, from the Fitting
+  page's sentence: "I took it on faith". DCR-7.
+- **What `k_terms.py` prints, and where the record is** (two of three). Examples, "Run it": run
+  the script, "then read the tension report and the termination record". The script prints
+  summary tables with its own column heads. R2 guessed "reach beta_k", "gap G_k", "gamma",
+  "radius", "bound", "certified" and still "only half" understands two; R3: "the script prints
+  summary tables ... rather than the record object itself. To see the actual record I had to work
+  out ... that `fit.estimator.termination_` would give it." DCR-8.
+- **"Posynomial" where first met** (two of three). The root page: "applies a posynomial invariant
+  form to learn the shape of a trade space"; R3: "not defined where I met it on the landing page";
+  R1, on the docs home's "a sum of monomial terms": "partly explains it". DCR-9.
+- **n-lemma, trilemma** (three of three guessed it, three of three guessed right: "n metrics are
+  in mutual tension"). Logged, no request: the Getting started sentence does its job.
+
+### Friction reported once (logged, not acted on)
+
+- R1: two install routes (the root page's `pip install git+...`; Getting started's clone and
+  `uv sync`), "and I had to pick one"; the page says `uv run python first_fit.py` and never says
+  to make the file; "the package's own example data" against a synthetic generator (the task's
+  wording; the case is on the Examples page, which R1 did not open).
+- R2: a 404 at `docs/glossary/`, the reader's own guess (the link is `docs/generated/glossary/`
+  and no page links the guessed path); what "ilr" and "alr" change (the Chart page, not opened);
+  at fixed tau with several terms `frac_above_` rises to 0.26 against the 0.10 target, "which the
+  Fitting page warns is normal with several terms but which I cannot judge".
+- R3: Getting started never mentions `termination_`, and the one-term record shows `max_gap`
+  8.7e-6 against `eps_kkt` 1e-8 with `status` `not_applicable`; the docstring says the gaps are
+  then diagnostics, the page's `not_applicable` bullet does not (replicated; one reader).
+  `conditioning_` "small" with no scale (0.27 beside 9.26 and 9.03 on the K = 3 fit). KKT, term
+  gap, restricted Hessian and seam are "optimization vocabulary I don't have"; the reader
+  reconstructed each from the page.
+
+### Preferences logged
+
+- R1 would start from a real table rather than a generator (the case is one page away).
+- R2 asks for "a stability check in the Fitting page that works for sparse exponents (set
+  recurrence or term duplication across resamples)": folded into DCR-2's constraint, since the
+  page's own criterion (a term that changes between resamples is a splinter) is kept and only its
+  measure changes.
+- R3 would have the Examples page "print `termination_` directly after 'Run it'": DCR-8.
+
+### Contradictions
+
+None between the three readers; their tasks do not overlap. One for the harness, not the docs:
+"the package's example" named two things to two readers (the synthetic first fit; the cubesat).
+R1 took the first, R2 and R3 the second and said so. The next round's task wording names the
+page.
+
+### Change requests (DCR-1 onward; each names a page and a passage, a problem and a constraint; local or structural; target)
+
+- **DCR-1** (Examples, "Three terms" bullet). Structural; the docs stream. Passage: "The mean
+  slack falls from 0.243 at one term to 0.146 at three, and the status is `certified`. ... The
+  largest holds 72 percent of the near-frontier share ... the smallest term holds 3 percent ...
+  Its cell holds 3 near-frontier designs, fewer than the ten an association reading needs, so none
+  is given." Problem: the comparison is between fits at temperatures re-selected per K, which the
+  Fitting page's rule forbids, and the "fewer than ten" sentence is a consequence of that
+  re-selection (at the K = 1 temperature the cells hold 27, 17 and 118 near-frontier designs).
+  Constraint: the bullet reports the K comparison the Fitting page asks for (mean slack at the K
+  = 1 temperature: 0.243, 0.132, 0.088, from `case.mean_slack_fixed_tau`, which exists and is
+  unused by the page), and the three terms' sets and shares at that temperature; if the
+  re-selected fit stays on the page, one sentence says what it is for and that its numbers are not
+  the comparison; the paper's Section 9 numbers are the paper stream's (CR-23 holds them) and
+  nothing here changes the paper.
+- **DCR-2** (Fitting, "Choosing K, the temperature and the band", the resample block and the two
+  sentences after it). Structural; the docs stream. Passage: "add a term only while the resampled
+  exponents stay stable" and the block's `exponents_.min()`, with "the smallest exponent stays
+  within 0.07 to 0.08 at K = 3 and ranges from 0.00 to 0.07 at K = 4". Problem: the measure is
+  identically zero whenever a metric is excluded, which the Tensions page calls the normal case,
+  so the recipe gives no signal on the Examples page's own table (0.000 at every K in every
+  resample). Constraint: the page's criterion stays (a term whose exponents change between
+  resamples is a splinter); its measure is one that is not zero under sparsity, read per term
+  (each term's participating set across resamples, or the change of each term's exponent vector;
+  `n_distinct_terms` already counts terms that coincide), shown on a table where sparsity occurs;
+  the synthetic numbers may stay as the dense case; no new result or rule for K.
+- **DCR-3** (Termination, "The fields", the `shares` bullet; the glossary's "share"). Local for
+  the page, to the docs stream; the glossary entry to the PM. Passage: "`status`, `reason`,
+  `n_iter`; `max_gap`, `gaps` (`nan` for an empty cell) and `shares`." Problem: `shares` is the
+  only field on the page without a definition, and the same word names the near-frontier share on
+  the Examples page (`term_share_`) and a metric's share of a total in the glossary. Constraint:
+  the page says what the record's `shares` is (the share of all designs in each term's cell, the
+  docstring's |C_k|/N) and that `term_share_` is the share of the near-frontier designs; the
+  glossary's question (one name per quantity: the record's row share, the estimator's
+  near-frontier share, the ternary share of a total) is the PM's, and a glossary entry
+  regenerates Appendix A in the same push.
+- **DCR-4** (Termination, "How small is a small margin"). Local; the docs stream. Passage:
+  "Compare `gamma` with the median margin, the median gap between best and second-best term score:
+  far below it, a few designs sit on a seam." and "On this table at tau = 50, `gamma` is 0.0020
+  against the band 0.02 and the median margin 0.21: level 3 holds." Problem: the rule says far
+  below the median is a warning and the example, a hundredfold below the median, is read as
+  holding; a reader took the band as the comparison instead. Constraint: one reading that the
+  example satisfies, stated so that a user can apply it to their own record (level 3 holds
+  whenever `gamma` is positive, as the status says; the median says how typical the tightest
+  design is; what a user does with a `gamma` far below the median, in one sentence); the
+  cubesat K = 3 record (`gamma` 0.0012, median 0.237) must read the same way as the page's
+  example; no new claim about the certificate.
+- **DCR-5** (Examples, "Run it"; `examples/adcs/k_terms.py`, the `summary` table's `objective_`
+  column). Local; the page to the docs stream, the script to its owner by the PM (not a docs
+  file). Passage: the page's "mean slack ... 0.243 ... 0.146" against the script's column head
+  `objective_`. Problem: the page's number is printed under the name the Fitting page says never
+  to compare by; the two coincide here for reasons the pages do not give. Constraint: the table
+  the page points to prints `mean_slack_` under that name; the Fitting page's `objective_`
+  bullet, or the estimator's docstring, may say in one clause that the two coincide at K = 1 when
+  the log-metrics are centred, which the case's conditioning does.
+- **DCR-6** (Getting started, "Reading the output", the `score_samples` sentence). Local; the docs
+  stream. Passage: "`ts.score_samples(X)` is the log of V for each design, the energy differential
+  to the fitted reference surface: negative inside, positive beyond." Problem: V is not defined
+  on the page and three of three readers guessed it. Constraint: one clause in the glossary's
+  words (V, the invariant value, a weighted geometric mean of the metrics, 1 on the fitted
+  reference surface), before "log of V"; no new term.
+- **DCR-7** (Getting started, "A first fit", `temperature=20.0`). Local; the docs stream.
+  Passage: `HyperbolicTradeSpace(temperature=20.0).fit(X)` and, later, "the fitted weights at the
+  fit temperature". Problem: the one parameter the snippet sets is not said on the page; two
+  readers guessed it. Constraint: one clause where the parameter first appears (tau, how hard the
+  maximum is; a band of near-frontier designs of width 1/tau), with the pointer to the Fitting
+  page's "Choosing the temperature"; nothing about how to choose it moves up.
+- **DCR-8** (Examples, "Run it"). Local; the docs stream. Passage: "`k_terms.py`, which
+  reproduces the one-, two- and three-term fits ... then read the tension report and the
+  termination record". Problem: the script prints summary tables with its own column heads
+  ("reach beta_k", "gap G_k", "bound", "term shares") and not the record; two readers guessed the
+  heads and one had to find `fit.estimator.termination_` from an earlier block. Constraint: the
+  paragraph says what the script prints (the per-K summary and its columns, the per-term record,
+  the fixed-temperature diagnostic, the seed check) and gives the one line that returns the
+  record of a fit from the page's own objects (`fit.estimator.termination_`), with the
+  Termination page as the place its fields are read; no new output.
+- **DCR-9** (the root page, the subtitle). Local; the docs stream (`site/index.html`). Passage:
+  "An unsupervised learning method which applies a posynomial invariant form to learn the shape
+  of a trade space from evaluated designs." Problem: the method's name is the only term on the
+  page not said in plain words; the docs home says it one click later. Constraint: one clause
+  of the docs home's words (a sum of terms, each a product of powers of the metrics) in the
+  subtitle or the paragraph below it; nothing else on the root page changes.
+
+### For the PM
+
+- The glossary's "share" (DCR-3): three quantities under one word; the entry is the PM's.
+- DCR-1 and the paper's CR-23 describe the same fits (the Examples page's three-term paragraph
+  mirrors the paper's Section 9 numbers at re-selected temperatures); the docs follow the Fitting
+  page's rule whatever the paper decides, and the two streams should land their sentences knowing
+  of each other.
+- `k_terms.py` (DCR-5) is under `examples/adcs/`, not a docs-stream file.
+- The next round's task wording names the page ("the first fit on the Getting started page";
+  "the cubesat study on the Examples page").
