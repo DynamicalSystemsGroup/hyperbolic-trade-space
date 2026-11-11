@@ -2462,7 +2462,7 @@ note = "solve_terms and Termination pinned in the solvers contract list"
 
 [[claim]]
 id = "C192"
-fragment = "Because the weights sum to one, $V(\\lambda m)=\\lambda V(m)$: doubling every metric doubles V."
+fragment = "Because the weights sum to one, $V(\\lambda m)=\\lambda V(m)$: [doubling every metric doubles V](paper:thm-invariant)."
 file = "docs/theory.md"
 anchor = ""
 kind = "M"
@@ -2498,7 +2498,7 @@ note = "V_K is the 1/kappa power of the posynomial (L10.7, glossary), so V=1 iff
 
 [[claim]]
 id = "C195"
-fragment = "Fitting one term is a geometric program (GP), solved as"
+fragment = "Fitting one term is a geometric program (GP), [solved as"
 file = "docs/theory.md"
 anchor = ""
 kind = "M"
@@ -4538,7 +4538,7 @@ note = "Exponent vectors within DISTINCT_TERMS_DISTANCE = 1e-3 (Euclidean, singl
 
 [[claim]]
 id = "C375"
-fragment = "`certified` is the first: a local optimum of the objective, not of other restarts"
+fragment = "[`certified`](paper:thm-certificate) is the first: a local optimum of the objective, not of other restarts"
 file = "docs/user-guide/termination.md"
 anchor = "What to decide from it"
 kind = "M"

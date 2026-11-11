@@ -78,3 +78,7 @@ the changelog when it is accepted; G-4 (Figure 1's panel text at phone width) ac
 require the paper's figures to read on a phone ("i don't need the paper to be fully readable on a phone"); G-5 fix: the
 scope's "22 boxes" corrected visibly to the list's count; G-6 accept as is: the status line says DRAFT by the scope
 convention, the approval being the recorded act, not an edit to the line.
+
+### Claims register after the D-6 citations (2026-11-11)
+
+`tests/test_claims_register.py::test_the_register_holds` failed on `dev` for C192, C195 (`docs/theory.md`) and C375 (`docs/user-guide/termination.md`): cfbad4f's `paper:key` citations rewrote the three sentences the rows quote. The fragments now read the new text (C192 "[doubling every metric doubles V](paper:thm-invariant)", C195 "...(GP), [solved as", C375 "[`certified`](paper:thm-certificate) is the first: ..."). Each claim, kind, backing and disposition are unchanged: a link adds no claim. `uv run pytest -q tests/test_claims_register.py tests/test_site.py -k "not slow"`: 52 passed, 1 skipped.
