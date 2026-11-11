@@ -96,3 +96,41 @@ terms real by the splinter check and the certificate), the search recorded as a 
 shows; if one is found it is the candidate and the one-region figure may stand beside it as the realistic case; if
 none is found, the constructed figure stays to show the more complex setting and the one-region real figure joins
 it. He chooses on the cold reads.
+
+## Close units (eighth PM)
+
+Implementer's record, one entry per unit. Worktree `wp28close` from origin/dev 089cef0.
+
+### U1. S-3, "Cut to a pointer" (the supervisor's word, S-3 above)
+
+- **Done.** Figure 9 (`fig-regimes`) goes: code cell, caption cell, lines cell, and `paper/figures/fig-regimes.png`.
+  Section 9 (`sec-case-analysis-3b`) now points to "Appendix D.4" in place of "(Figure 9)"; the gloss "; the stock
+  regime is the second panel of Figure 9" left Figure 4's caption. `case.regime_figure()` stays in the case module
+  (non-goal). No register row quoted the dropped sentences (grep of `claims_register.toml`: none).
+- **Ledger.** The `[[cut]]` row exists now: the header says what it is, `ledger_ceilings()` subtracts cut rows, and
+  `test_each_ledger_row_names_a_job_a_reader_and_a_section_of_the_paper` checks their fields. Measured with the
+  tests' own counter, the cut is 113 words, not the list's 114: Case analysis -103, Case construction -10 (Figure 4's
+  caption is in Case construction); so two rows, each lowering its section's ceiling by what left (OD5 (a)); the
+  counts after are Case analysis 1,722 and Case construction 1,146; the paper total 9,959 to 9,846.
+- **Tests changed under R-10, citing the supervisor's word "Cut to a pointer", none weakened beyond it:**
+  `test_regime_names_a_gain_box_dataset_and_the_terms_are_terms` (the `fig-regimes` label exemption leaves the
+  regular expression: the label is gone, so the check is stricter by that), `test_cr1_one_definition_...` (the
+  `fig-regimes-caption` leaves the "Outlined" tuple), and three counts that counted the figure
+  (`..._removed_from_the_page` 4 to 3, `..._referenced_from_the_text` 10 to 9, `..._smallest_text_...` 3 to 2).
+- **Re-record.** `paper/execute_notebooks.py` ran on the host (3 min). Re-recorded: only Appendix F.4
+  (`tab-F-reproduction`, the row of `fig-regimes` leaves). Everything else the run changed (host platform, Node and
+  interpreter lines, the commit line, four numeric outputs at the last digits, the repeated PNG bytes of the two
+  host-rendered figures) was put back to the committed bytes; nothing an exact-equality branch reads was
+  re-recorded, so no file is marked "host-recorded" beyond that: the driver's container regression at the gate
+  re-pins as before.
+- **Cold check (what was compared).** The removed figure (saved at
+  `/private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/s3/fig-regimes-old.png`)
+  carried, per regime, the 8 by 8 Pearson matrix among the near-frontier designs with the contending set outlined and
+  each metric's K = 1 exponent w. D.4 (`tab-D-regime_comparison`) carries: both contending sets by name (primary:
+  total mass, energy balance, pointing error, depth of discharge, settling time; stock: control effort, settling
+  time, power margin, pointing error, depth of discharge; the same two five-sets as the outlines), the band and the
+  near-frontier counts, and three pair associations (settling time with total mass, pointing error with control
+  effort, settling time with pointing error), each in both regimes. It does not carry the full matrices or the
+  exponents w; the full association table over the feasible designs is Appendix C.5's, the exponents are D.3's
+  (`tab-D-exponents_and_terms`). So the sets and the pair tensions the text relies on are in D.4; the all-pairs
+  picture is not (that is what "pointer" gives up).

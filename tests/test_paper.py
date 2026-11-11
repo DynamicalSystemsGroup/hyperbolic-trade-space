@@ -475,13 +475,20 @@ def _ledger() -> dict:
 
 
 def ledger_ceilings() -> tuple[int, dict[str, int]]:
-    """The total ceiling and each section's: the baseline plus the rows that raise it."""
+    """The total ceiling and each section's: the baseline plus the rows that raise it, less the
+    cut rows (a cut lowers the ceiling to the count after, OD5 (a) of WP28)."""
     ledger = _ledger()
     rows = ledger.get("raise", [])
+    cuts = ledger.get("cut", [])
     sections = dict(ledger["baseline"]["sections"])
     for row in rows:
         sections[row["section"]] = sections[row["section"]] + row["words_added"]
-    return ledger["baseline"]["total"] + sum(r["words_added"] for r in rows), sections
+    for row in cuts:
+        sections[row["section"]] = sections[row["section"]] - row["words_removed"]
+    total = ledger["baseline"]["total"]
+    return total + sum(r["words_added"] for r in rows) - sum(
+        r["words_removed"] for r in cuts
+    ), sections
 
 
 def rendered_words(text: str) -> int:
@@ -567,6 +574,12 @@ def test_each_ledger_row_names_a_job_a_reader_and_a_section_of_the_paper():
         job = row["job"].strip().rstrip(".").lower()
         assert len(job.split()) >= 4 and job not in NOT_A_JOB, row
         assert not job.startswith(("to fit the text", "fit the text")), row
+    for row in ledger.get("cut", []):  # a cut row records what left and what it no longer did
+        assert set(row) == {"date", "section", "words_removed", "no_longer_did", "authority"}, row
+        datetime.date.fromisoformat(str(row["date"]))
+        assert row["section"] in ledger["baseline"]["sections"], row
+        assert isinstance(row["words_removed"], int) and row["words_removed"] > 0, row
+        assert len(row["no_longer_did"].split()) >= 4 and len(row["authority"].split()) >= 2, row
 
 
 def test_generated_sentences_are_counted_not_excluded():
@@ -1526,7 +1539,7 @@ def test_cells_whose_output_is_embedded_are_removed_from_the_page():
     with only ``remove-input`` the page showed each of its outputs twice."""
     nb = _nb(PAPER_NB)
     embedded = set(re.findall(r"\{(?:embed|figure)\} #([\w-]+)", _markdown(nb)))
-    assert len(embedded) >= 4  # three figure cells and the family table (WP19 P-5 to P-10 rev.)
+    assert len(embedded) >= 3  # two figure cells and the family table (Figure 9 went: S-3, R-10)
     cells = {c.id: c for c in _code_cells(nb)}
     for label in embedded:
         assert "remove-cell" in cells[label].metadata.get("tags", []), label
@@ -2127,7 +2140,7 @@ def test_every_figure_and_table_is_referenced_from_the_text():
     """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
     body = _markdown(_nb(PAPER_NB))
     floats = re.findall(r"^:::+\{(?:figure|table)\}[^\n]*\n:label: (\S+)", body, re.M)
-    assert len(floats) == 10, floats  # nine figures (WP19 P-1 to P-10 revised) and the family table
+    assert len(floats) == 9, floats  # eight figures (Figure 9 went: S-3, R-10) and the family table
     for cell in _nb(PAPER_NB).cells:
         if cell.cell_type != "markdown" or cell.id == "frontmatter":
             continue
@@ -2224,7 +2237,9 @@ def test_regime_names_a_gain_box_dataset_and_the_terms_are_terms():
     assert "three regimes" not in text and "regimes of the facet" not in text
     assert "different contending sets" in _section("Case analysis")
     for section in ("Methods", "Case analysis"):
-        prose = re.sub(r"fig-regimes[\w-]*|two (gain )?regimes", "", _section(section).lower())
+        # Figure 9 (fig-regimes) went at the supervisor's word "Cut to a pointer" (S-3, R-10,
+        # WP28-decisions.md): its label is gone from the text, so its exemption goes with it.
+        prose = re.sub(r"two (gain )?regimes", "", _section(section).lower())
         assert "regimes" not in prose, section
     notation = (NOTES / "notation.md").read_text()
     register = notation.split("## Register phrases", 1)[1].split("## Forbidden phrases", 1)[0]
@@ -2299,7 +2314,9 @@ def test_cr1_one_definition_of_the_contending_set_and_the_captions_say_it():
     assert "support (exponents above $10^{-9}$) of the exact-maximum" in definition
     assert "participation threshold ($10^{-3}$)" in _section("Methods")
     assert "def-nlemma" in _section("Methods")
-    for cell_id in ("fig-tensions-k3-caption", "fig-regimes-caption"):
+    # fig-regimes-caption left with Figure 9 at the supervisor's word "Cut to a pointer" (S-3,
+    # R-10, WP28-decisions.md).
+    for cell_id in ("fig-tensions-k3-caption",):
         caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == cell_id))
         assert "Outlined" in caption or "outlined" in caption, cell_id
     caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-tensions-k3-caption"))
@@ -2610,7 +2627,7 @@ def test_every_figure_shows_its_smallest_text_at_the_body_small_print_size_at_12
     shows the image (the column is FIGURE_COLUMN_PX wide; an image narrower than it is not
     stretched). Figure 6 was shown at 0.40 of its size and its 7 pt labels were 4 px."""
     images = _figure_images()
-    assert len(images) == 3  # the case's figure cells (WP19 P-7, P-10; P-5, P-6 revised: static)
+    assert len(images) == 2  # the case's figure cells (WP19 P-7, P-10; Figure 9 went: S-3, R-10)
     for name, (data, min_pt) in images.items():
         width, dpi = _png_size_and_dpi(data)
         scale = min(1.0, FIGURE_COLUMN_PX / width)

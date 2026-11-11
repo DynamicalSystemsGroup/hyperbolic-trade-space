@@ -6,7 +6,9 @@
 # included, builder labels excluded) but against the ceiling kept here, not a fixed cap. A section's
 # ceiling is its baseline plus the words_added of the rows that name it; the total's ceiling is the
 # total baseline plus every row. Growth is admitted by its job and refused without one: a row says
-# what the added words do and for which reader. A cut needs no row.
+# what the added words do and for which reader. A cut lowers the ceiling to the count after (WP28
+# OD5 (a)): a [[cut]] row says the date, the section, words_removed, what the content no longer did
+# and the authority that cut it. The ceiling is the baseline plus the raise rows less the cut rows.
 #
 # Baseline: the rendered counts of the paper at 2026-11-09 after the three-pane figure left the body
 # (5,927 words before; the figure's caption and the sentence that pointed at it came out, 27 net, in
@@ -959,3 +961,20 @@ section = "Case construction"
 words_added = 6
 job = "Figure 3's caption says which way each measured metric goes (the settling time directly to the table, the control effort through the analysis) and that the analysis returns seven of the eight, so its counts agree with the box read from the model (WP28 CR-41)"
 reader = "the reader who could not reconcile the caption's counts with the box's '7 of 8'"
+
+# Cuts: WP28 (the supervisor's rulings on the cut list, WP28-decisions.md).
+# Each row: date, section, words_removed, no_longer_did, authority.
+
+[[cut]]
+date = "2026-11-10"
+section = "Case analysis"
+words_removed = 103
+no_longer_did = "Figure 9 (the two regimes' associations and contending sets) repeated what Appendix D.4 tabulates, and no sentence of the abstract or Section 1 needs the comparison; Section 9 points to D.4"
+authority = "the supervisor, S-3: 'Cut to a pointer'"
+
+[[cut]]
+date = "2026-11-10"
+section = "Case construction"
+words_removed = 10
+no_longer_did = "Figure 4's caption pointed to the stock regime as the second panel of a figure that is gone"
+authority = "the supervisor, S-3: 'Cut to a pointer'"
