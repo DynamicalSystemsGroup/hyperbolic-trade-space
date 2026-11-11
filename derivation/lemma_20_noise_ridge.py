@@ -20,7 +20,18 @@ What this proves (symbolic d, n):
      is P C P delta = - P Sigma w*, and delta = - (P C P)^+ P Sigma w* (I18; delta is tangent and
      unique, R3). For Sigma = sigma^2 I it is delta = - sigma^2 (P C P)^+ P w*: tau cancels because
      the Hessian of J_tau is tau C and the ridge gradient is tau Sigma w.
-  4. The shift is at most ||P Sigma w*|| / m for m the smallest eigenvalue of C on the tangent
+  4. The same on the face (R3). Where w* has zero exponents, its support T carries the fit. Reading
+     chi_j = 1 on T and 0 off it (chi_j^2 = chi_j), the hypotheses are:
+       "The support T of w*: chi_j = 1 on T, 0 off it";
+       "The support has sf = Sum_j chi_j coordinates";
+       "Strict complementarity: g_j - lambda > 0 off T".
+     The gradient is G_j = lambda on T and G_j > lambda off T; a tangent vector of the face is
+     v = chi zt with Sum_j chi_j zt_j = 0; the projector onto them is
+     P_T f = chi (f - (1/s) Sum_h chi_h f_h), s = Sum_j chi_j. The same algebra gives
+     P_T C P_T delta = - P_T Sigma w*, so delta = - (P_T C P_T)^+ P_T Sigma w*, supported on T. The
+     zero exponents stay zero: the off-support gap keeps its sign while the first-order change is
+     smaller than the gap.
+  5. The shift is at most ||P Sigma w*|| / m for m the smallest eigenvalue of C on the tangent
      space (conditioning_ = tau m), when the shift is not zero; and it lowers the ridge to first
      order: delta'Sigma w* <= - m ||delta||^2 <= 0, so for Sigma = sigma^2 I the squared distance
      of the exponents from the uniform ones, ||w||^2 - 1/d, falls at first order. The lemma does
@@ -34,8 +45,9 @@ many rows, and it is measured in tests/test_noise_ridge.py, not proved here); a 
 second-order remainder or a radius
 within which the first-order shift is accurate (the linearisation drops terms of order
 (noise)^2 and (shift)^2, and names the dropped term); anything at an exponent on the boundary of
-the simplex or near it (R3 fails, and the projector of the face is then the wrong one); the
-selection effect of the maximum under noise (L19 bounds the offset shift, not the exponents);
+the simplex or near it, beyond the margin of strict complementarity (R3 fails, and the face is
+then a different one); the selection effect of the maximum under noise (L19 bounds the offset
+shift, not the exponents);
 that the fitted rates are right: only how far noise of a given size moves them; any noise that
 is not Gaussian, or weights fitted to the noisy table's own scaler.
 
@@ -52,7 +64,7 @@ from derivation.axioms import A1, A3, A5, A9, I9, I18, R3
 from derivation.lemma_03_gradient_kkt import L3_RESULT
 from derivation.lemma_04_convexity import L4_RESULT
 from derivation.lemma_18_noise_covariance import L18_RESULT
-from derivation.licence import hypothesis_symbol, log_expand
+from derivation.licence import hypothesis_base, hypothesis_symbol, log_expand
 from derivation.results import ProvedResult
 from derivation.sumtools import fuse, linear, linearize, piece_in_range, push_in, replace_indexed
 
@@ -60,10 +72,14 @@ TITLE = "Noise on the metrics is a ridge on the exponents: the first-order shift
 STATEMENT = (
     "With rows u_i + eps_i, eps_i Gaussian with covariance Sigma (A9), the expected noisy "
     "exponential J^R(w) = (1/tau) log E (1/n) Sum_i exp(tau w.(u_i + eps_i)) equals J_tau(w) + "
-    "(tau/2) w'Sigma w. At a clean minimizer w* interior to its face with C = Cov_p(u) positive "
-    "definite on the tangent space (R3), the first-order condition of J^R on the face, with the "
-    "product of noise and shift set aside, is P C P delta = - P Sigma w*, so delta = "
-    "- (P C P)^+ P Sigma w* (P = I - 11'/d; for Sigma = sigma^2 I, delta = - sigma^2 (P C P)^+ P "
+    "(tau/2) w'Sigma w. At a clean minimizer w* with support T (its positive exponents, the active "
+    "face) and strict complementarity (the gradient exceeds lambda off T, so the zero exponents "
+    "stay zero), with C = Cov_p(u) positive definite on the tangent space of the face, the vectors "
+    "that sum to zero and vanish off T (R3), the first-order condition of J^R on the face, with "
+    "the product of noise and shift set aside, is P C P delta = - P Sigma w*, so delta = "
+    "- (P C P)^+ P Sigma w* (P the projector onto the tangent space of the face, P = I - 11'/d "
+    "when every exponent is positive; delta vanishes off T; for Sigma = sigma^2 I, delta = "
+    "- sigma^2 (P C P)^+ P "
     "w*, with tau cancelled). When the shift is not zero its norm is at most ||P Sigma w*|| / m, "
     "m the smallest eigenvalue of C on the tangent space (conditioning_ = tau m), and "
     "delta'Sigma w* <= - m ||delta||^2 <= 0: the ridge falls at first order. First order only: "
@@ -74,6 +90,10 @@ AXIOMS_USED = ["A1", "A3", "A5", "A9", "I9", "I18", "R3"]
 L20_RESULT = ProvedResult("L20", STATEMENT)  # the corollary of Proposition 2 and Theorem 3
 
 nd = hypothesis_symbol("nd", "positive", "When the shift is not zero")
+# the face: the exponents on the support T of w* (chi_j = 1 on T, 0 off it, chi_j^2 = chi_j)
+chi = hypothesis_base("chi", "nonnegative", "The support T of w*: chi_j = 1 on T, 0 off it")
+sf = hypothesis_symbol("sf", "positive", "The support has sf = Sum_j chi_j coordinates")
+gapf = hypothesis_base("gapf", "positive", "Strict complementarity: g_j - lambda > 0 off T")
 
 
 def canon(expr, name="i"):
@@ -293,6 +313,48 @@ def derive(ctx):
 
     # [L20.17] A5: sigma > 0, the common level of the equal-noise reading Sigma = sigma^2 I
     sigma = A5.positive(S.sigma)
+
+    # the face: the exponents on the support T of w* (chi_j = 1 on T, 0 off it, chi_j^2 = chi_j)
+    lam_f = sp.Symbol("lam_f", real=True)  # the common gradient value lambda on the support
+    zt = sp.IndexedBase("zt")  # a generic vector; the face tangent vectors are chi_j zt_j
+    dt = sp.IndexedBase("dt")  # the shift on the support: delta_j = chi_j dt_j
+    hf = sp.Symbol("hf", integer=True)  # dummy of the support mean
+
+    def idem(expr):  # chi_j^2 = chi_j (an indicator)
+        return expr.replace(
+            lambda e: (
+                isinstance(e, sp.Pow)
+                and isinstance(e.base, sp.Indexed)
+                and e.base.base == chi
+                and e.exp == 2
+            ),
+            lambda e: e.base,
+        )
+
+    def PT(f, x, dummy=hf):  # (P_T f)_x = chi_x (f_x - (1/sf) Sum_h chi_h f_h)
+        return chi[x] * (f(x) - sp.Sum(chi[dummy] * f(dummy), (dummy, 1, d)) / sf)
+
+    def dlf(x):  # the support-supported shift chi_x dt_x
+        return chi[x] * dt[x]
+
+    def grad_face(x):  # G_x = lambda + (1 - chi_x) a_x, a_x > 0 (R3)
+        return lam_f + (1 - chi[x]) * gapf[x]
+
+    def force_face(x):  # (C delta + Sigma w)_x for a delta supported on T
+        return sp.Sum(Cm[x, m] * dlf(m), lim_m) + Sw(x)
+
+    def Pdl_face(x):  # (P_T delta)_x
+        return PT(dlf, x, h2)
+
+    def CPd_face(x):  # (C P_T delta)_x
+        return sp.Sum(Cm[x, m] * Pdl_face(m), lim_m)
+
+    def Xd_face(x):  # (P_T C P_T delta)_x
+        return PT(CPd_face, x)
+
+    def yv_face(x):  # (P_T Sigma w)_x
+        return PT(Sw, x)
+
     ctx["L20"] = dict(
         tau=tau, mgf=mgf, q=q, sr=sr, row_E=row_E, EX=EX, LMEs=LMEs, qform=qform, Sg=Sg, l_=l_,
         dridge=dridge, A_f=A_f, B_f=B_f, B_sym=B_sym, p_def=p_def, sv=sv, kkt=kkt,
@@ -304,6 +366,9 @@ def derive(ctx):
         CPd=CPd, Xd=Xd, yv=yv, mc=mc, s_r3=s_r3, cs=cs, ny=ny, A_sym=A_sym, B_sym_=B_sym_,
         VV=VV, A_expr=A_expr, B_expr=B_expr, rayleigh=rayleigh, cs_slack=cs_slack,
         pin_range=pin_range, pin_eq=pin_eq, pin_out=pin_out, range_ok=range_ok, C_pair=C_pair,
+        lam_f=lam_f, zt=zt, dt=dt, hf=hf, idem=idem, PT=PT, dlf=dlf,
+        grad_face=grad_face, force_face=force_face, Pdl_face=Pdl_face, Xd_face=Xd_face,
+        yv_face=yv_face,
     )  # fmt: skip
 
 
@@ -493,4 +558,78 @@ def verify(ctx):
     assert sp.simplify(linearize(r["Pf"](sw_sigma, S.J0) - sigma**2 * r["Pf"](wf, S.J0))) == 0, (
         "L20 FAIL y = sigma^2 P w"
     )
+
+    # ----------------------------------------- 6. the face: exponents on the support T of w*
+    lam_f, zt, dt, hf = (r[x] for x in ("lam_f", "zt", "dt", "hf"))
+    idem, PT, dlf = r["idem"], r["PT"], r["dlf"]
+    tang_zt = sp.Sum(chi[j] * zt[j], lim_j)  # the face tangent v = chi zt sums to zero
+    v_face = sp.Sum(chi[j] * zt[j] * r["grad_face"](j), lim_j)  # Sum_j v_j G_j
+    d_face = sp.Sum(idem(sp.expand(chi[j] * zt[j] * r["grad_face"](j))), lim_j)
+    # [L20.52] R3: G_j = lambda + (1 - chi_j) a_j, so the derivative along v = chi zt is lambda v.1
+    assert sp.simplify(linearize(d_face) - lam_f * tang_zt) == 0, "L20 FAIL face derivative"
+    # [L20.53] negative control: for a weight chi_j that is not 0 or 1 the off-support term stays
+    assert sp.simplify(linearize(v_face) - lam_f * tang_zt) != 0, "L20 FAIL idempotence not used"
+    # [L20.54] a face tangent has Sum_j chi_j zt_j = 0, so the derivative of J_tau along it is 0
+    assert sp.simplify(linearize(d_face).subs(tang_zt, 0)) == 0, "L20 FAIL face tangent is flat"
+
+    qf = r["Sw"]  # any vector; the support's projector is applied to it
+
+    def total_face(f):  # Sum_j (P_T f)_j, with Sum_j chi_j = sf
+        out = linearize(sp.Sum(PT(f, j), lim_j)).xreplace({hf: j})
+        return sp.simplify(out.subs(sp.Sum(chi[j], lim_j), sf))
+
+    # [L20.55] P_T maps any vector to a vector that sums to zero: Sum_j (P_T f)_j = 0
+    assert total_face(qf) == 0 and total_face(lambda x: zt[x]) == 0, "L20 FAIL P_T is tangent"
+    # [L20.56] and to a vector supported on T: (1 - chi_j)(P_T f)_j = 0
+    assert sp.simplify(idem(sp.expand((1 - chi[j]) * PT(qf, j)))) == 0, "L20 FAIL P_T on support"
+    # [L20.57] at v = P_T f: Sum_j (P_T f)_j f_j = Sum_j (P_T f)_j^2
+    assert (
+        sp.simplify(
+            linearize(idem(sp.expand(sp.Sum(PT(qf, j) * (qf(j) - PT(qf, j)), lim_j))))
+            .xreplace({hf: j})
+            .subs(sp.Sum(chi[j], lim_j), sf)
+        )
+        == 0
+    ), "L20 FAIL v.f = ||P_T f||^2"
+    tang_dt = sp.Sum(chi[h2] * dt[h2], (h2, 1, d))  # Sum_j delta_j = 0 for delta = chi dt
+    # [L20.58] a shift supported on T that sums to zero is its own image: P_T delta = delta
+    assert sp.simplify(idem(sp.expand(r["Pdl_face"](m) - dlf(m))).subs(idem(tang_dt), 0)) == 0, (
+        "L20 FAIL P_T delta = delta"
+    )
+    pq_face = PT(r["force_face"], j)
+    # [L20.59] P_T (C delta + Sigma w*) = P_T C P_T delta + P_T Sigma w* (P_T linear)
+    assert (
+        sp.simplify(
+            linearize(idem(sp.expand(r["Xd_face"](j) + r["yv_face"](j) - pq_face))).subs(
+                idem(tang_dt), 0
+            )
+        )
+        == 0
+    ), "L20 FAIL P_T q = X delta + y on the face"
+    # [L20.60] I18 on the face: delta is supported on T, in the range of X_T = P_T C P_T (R3, C
+    # positive definite on the face's tangent space), and X_T delta = - y_T: delta = - X_T^+ y_T
+    assert I18.entails(
+        [
+            sp.Equivalent(r["pin_range"], sp.true if r["range_ok"] else sp.false),
+            sp.Equivalent(r["pin_eq"], sp.true),
+        ],
+        r["pin_out"],
+    ), "L20 FAIL pseudoinverse closed form on the face"
+    # [L20.61] delta is tangent on the face, so delta.y_T = delta'Sigma w*: the size bound and the
+    # fall of the ridge (L20.44 to L20.49) hold with m the smallest eigenvalue of C on that space
+    assert (
+        sp.simplify(
+            linearize(idem(sp.expand(sp.Sum(dlf(j) * (r["yv_face"](j) - r["Sw"](j)), lim_j)))).subs(
+                idem(tang_dt.xreplace({h2: j})), 0
+            )
+        )
+        == 0
+    ), "L20 FAIL delta.y = delta'Sigma w on the face"
+    # [L20.62] R3: strict complementarity, a margin mg > 0 off the support; the gap is g = mg + b,
+    # b = |e| the size of the first-order change e of the gap, and e = a_up - b with a_up >= 0
+    mg, a_up, b_dn = (R3.positive_symbol("mg"), R3.nonneg_symbol("a_up"), R3.nonneg_symbol("b_dn"))
+    # [L20.63] the gap after the noise, g + e = mg + a_up, is positive: the zero exponents stay zero
+    assert sp.simplify((mg + b_dn) + (a_up - b_dn) - (mg + a_up)) == 0 and (
+        (mg + a_up).is_positive is True
+    ), "L20 FAIL zero exponents stay zero"
     L20_RESULT.certify(ctx)

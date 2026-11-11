@@ -5860,6 +5860,24 @@
      "kind": "symbol",
      "sign": "positive",
      "claim": "When the shift is not zero"
+    },
+    {
+     "symbol": "chi",
+     "kind": "family",
+     "sign": "nonnegative",
+     "claim": "The support T of w*: chi_j = 1 on T, 0 off it"
+    },
+    {
+     "symbol": "sf",
+     "kind": "symbol",
+     "sign": "positive",
+     "claim": "The support has sf = Sum_j chi_j coordinates"
+    },
+    {
+     "symbol": "gapf",
+     "kind": "family",
+     "sign": "positive",
+     "claim": "Strict complementarity: g_j - lambda > 0 off T"
     }
    ],
    "proved_results_imported": {
@@ -5933,7 +5951,19 @@
       48,
       49,
       50,
-      51
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63
      ]
     }
    ],
@@ -6485,6 +6515,130 @@
      "code": "assert sp.simplify(linearize(r['Pf'](sw_sigma, S.J0) - sigma ** 2 * r['Pf'](wf, S.J0))) == 0, 'L20 FAIL y = sigma^2 P w'",
      "fingerprint": "444c3bc36a9ef9fe9dc677edaba984c84e17e0b364551d601179e0df009c5885",
      "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.52",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "R3: G_j = lambda + (1 - chi_j) a_j, so the derivative along v = chi zt is lambda v.1",
+     "code": "assert sp.simplify(linearize(d_face) - lam_f * tang_zt) == 0, 'L20 FAIL face derivative'",
+     "fingerprint": "91dabcf34566cd0b97a64d114b6c2fc6a380bca01384cc49b50a034b28140340",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.53",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "negative control: for a weight chi_j that is not 0 or 1 the off-support term stays",
+     "code": "assert sp.simplify(linearize(v_face) - lam_f * tang_zt) != 0, 'L20 FAIL idempotence not used'",
+     "fingerprint": "030012a09fcbd4636c87b6fdf266b12b5eed83bcf4081a594af99cbf6f056be5",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.54",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "a face tangent has Sum_j chi_j zt_j = 0, so the derivative of J_tau along it is 0",
+     "code": "assert sp.simplify(linearize(d_face).subs(tang_zt, 0)) == 0, 'L20 FAIL face tangent is flat'",
+     "fingerprint": "afc96da5b1a3d5dee50c43f40a05e8d9b4aa0ed353679e867bf67bc32e0289d5",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.55",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "P_T maps any vector to a vector that sums to zero: Sum_j (P_T f)_j = 0",
+     "code": "assert total_face(qf) == 0 and total_face(lambda x: zt[x]) == 0, 'L20 FAIL P_T is tangent'",
+     "fingerprint": "ee1f5f7e67bbc65e6fd6e9cea71e7138736a3e6c530f9323ece5a493c003daf0",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.56",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "and to a vector supported on T: (1 - chi_j)(P_T f)_j = 0",
+     "code": "assert sp.simplify(idem(sp.expand((1 - chi[j]) * PT(qf, j)))) == 0, 'L20 FAIL P_T on support'",
+     "fingerprint": "3fcf191d3488cc70ad2143d81d979e62a5aa6282b7c215f13b864c3e9821d16e",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.57",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "at v = P_T f: Sum_j (P_T f)_j f_j = Sum_j (P_T f)_j^2",
+     "code": "assert sp.simplify(linearize(idem(sp.expand(sp.Sum(PT(qf, j) * (qf(j) - PT(qf, j)), lim_j)))).xreplace({hf: j}).subs(sp.Sum(chi[j], lim_j), sf)) == 0, 'L20 FAIL v.f = ||P_T f||^2'",
+     "fingerprint": "795b63de62d42839f745afc24f3431f1768e6c8e8d1e86d3bc27c3554b28fae7",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.58",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "a shift supported on T that sums to zero is its own image: P_T delta = delta",
+     "code": "assert sp.simplify(idem(sp.expand(r['Pdl_face'](m) - dlf(m))).subs(idem(tang_dt), 0)) == 0, 'L20 FAIL P_T delta = delta'",
+     "fingerprint": "ba0f428eba9be444fdcc5a4beff0e4ae33e370cc7aadf2feba92a88b1cd9bb06",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.59",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "P_T (C delta + Sigma w*) = P_T C P_T delta + P_T Sigma w* (P_T linear)",
+     "code": "assert sp.simplify(linearize(idem(sp.expand(r['Xd_face'](j) + r['yv_face'](j) - pq_face))).subs(idem(tang_dt), 0)) == 0, 'L20 FAIL P_T q = X delta + y on the face'",
+     "fingerprint": "38f5751063ea46116d09a79e979f3a12d94faa0ac2fd355afc970eb776b03635",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.60",
+     "kind": "axiom",
+     "applies": [
+      "I18"
+     ],
+     "results": [],
+     "prose": "I18 on the face: delta is supported on T, in the range of X_T = P_T C P_T (R3, C",
+     "code": "assert I18.entails([sp.Equivalent(r['pin_range'], sp.true if r['range_ok'] else sp.false), sp.Equivalent(r['pin_eq'], sp.true)], r['pin_out']), 'L20 FAIL pseudoinverse closed form on the face'",
+     "fingerprint": "82cc10008937863731c442c68d56315360a74fd1f777bb192965292135a6d2eb",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.61",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "delta is tangent on the face, so delta.y_T = delta'Sigma w*: the size bound and the",
+     "code": "assert sp.simplify(linearize(idem(sp.expand(sp.Sum(dlf(j) * (r['yv_face'](j) - r['Sw'](j)), lim_j)))).subs(idem(tang_dt.xreplace({h2: j})), 0)) == 0, \"L20 FAIL delta.y = delta'Sigma w on the face\"",
+     "fingerprint": "a5d8e3614e5d468a818effff033ffdbd29fd7e1097bd827e1ea93597389b2e5b",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.62",
+     "kind": "axiom",
+     "applies": [
+      "R3"
+     ],
+     "results": [],
+     "prose": "R3: strict complementarity, a margin mg > 0 off the support; the gap is g = mg + b,",
+     "code": "mg, a_up, b_dn = (R3.positive_symbol('mg'), R3.nonneg_symbol('a_up'), R3.nonneg_symbol('b_dn'))",
+     "fingerprint": "2f950e5566e7e948e9885f144ff23d4b55066dc8da64a8e8da151bd7f0d946c2",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.63",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the gap after the noise, g + e = mg + a_up, is positive: the zero exponents stay zero",
+     "code": "assert sp.simplify(mg + b_dn + (a_up - b_dn) - (mg + a_up)) == 0 and (mg + a_up).is_positive is True, 'L20 FAIL zero exponents stay zero'",
+     "fingerprint": "bc1218a5333720ec585694812090e59ffb65354502bb05a764acb2c4d899b1c0",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
     }
    ]
   }
@@ -6521,7 +6675,7 @@
   "I17": "d75389b0139c6cd92f77192960e67c933a2f5e2a7c1946758312aff69fedda70",
   "I18": "c0676e59a644e1f97181cfb538f3cfd8fc95331818d450927b934f05ce5595fa",
   "R1": "b38653c84f3e4f29bd37d548018ad6a1556b8f3c246977f4b7aba50f455c344f",
-  "R3": "362a75af3444ee173f8a96e3c2697e3f8ae37f746c14ebce9a838dee75368bde",
+  "R3": "6d447767f300a1d1d250e5ece4a5bff5176993c8b22022cf773e7a16353d2e58",
   "R2": "34fd20a2aa64a3052f7422bcd38f6cf565ab91657e3cefde37a005032796fc40",
   "F5": "2b7224349cd656ed5f398c4834e6f572187f4d7d78fbd70c1ae142002943eebe",
   "F10": "819cd496db56cb66f86da0877ea25aa572726dc6524c90d0bbb1e5db2ceca8fa",

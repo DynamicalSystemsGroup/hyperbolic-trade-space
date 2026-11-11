@@ -733,15 +733,15 @@ AXIOMS = {
         "the fit is read, the coordinates outside it have g_j > lambda (strict complementarity, "
         "so a small perturbation of the problem leaves them at zero), and the covariance C = "
         "Cov_p(u) of the softmax weights at w* is positive definite on the tangent space "
-        "{v : sum_j v_j = 0} of the face: v'Cv >= m ||v||^2 with m > 0, m the smallest "
+        "{v : sum_j v_j = 0, v_j = 0 off the support} of the face (every vector that sums to "
+        "zero when all exponents are positive): v'Cv >= m ||v||^2 with m > 0, m the smallest "
         "eigenvalue of C there (conditioning_ = tau m)",
         role="lets the first-order condition be read on the face, makes the shift unique, and "
         "gives its size: the shift is at most ||P Sigma w*|| / m",
-        failure_mode="when a coordinate sits at the boundary of the simplex (w*_j = 0) or close "
-        "to it, the projector of the full simplex is the wrong one and the formula can send an "
-        "exponent below zero, which the constrained fit would not do; when strict "
-        "complementarity fails the face changes with the noise; when m is near zero the shift "
-        "is large and the first-order reading is outside its range",
+        failure_mode="when a coordinate sits close to the boundary of the simplex without being "
+        "at it, or strict complementarity fails, the face changes with the noise and the "
+        "formula can send an exponent below zero, which the constrained fit would not do; when m "
+        "is near zero the shift is large and the first-order reading is outside its range",
         relation=(_GE(_RQ, _M3 * _VV, evaluate=False), _GT(_M3, 0, evaluate=False)),
     ),
     "R2": Axiom(

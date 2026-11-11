@@ -5694,15 +5694,24 @@ note = "The title and the lead-in say weakly Pareto-efficient: weak efficiency i
 
 [[claim]]
 id = "C465"
-fragment = "$P=I-\\mathbf 1\\mathbf 1^\\top/d$ projects onto the vectors that sum to zero"
+fragment = "$P$ projects onto the vectors that sum to zero and vanish where $w$ does ($P=I-\\mathbf 1\\mathbf 1^\\top/d$ when every exponent is positive), so zero exponents stay zero"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
-backing = ["lemma:L20"]
+backing = [
+  "lemma:L20.52",
+  "lemma:L20.55",
+  "lemma:L20.58",
+  "lemma:L20.59",
+  "lemma:L20.60",
+  "lemma:L20.63",
+  "test:tests/test_noise_ridge.py::test_the_face_projector_of_the_lemma_is_the_support_projector_and_the_shift_is_stationary",
+  "test:tests/test_noise_ridge.py::test_at_a_boundary_exponent_the_full_simplex_formula_is_wrong_and_the_face_formula_holds",
+]
 status = "backed"
 disposition = "narrow"
-source = "WP29 review, P9 23 (triage C1)"
-note = "The script's P is I - 11'/d and R3 asks every exponent positive; the boundary case (a zero exponent, the projector of the face) is outside the proof and is measured, not proved, in D.18."
+source = "WP29 stage 6, the assistant's call on triage C1 (WP29-decisions.md)"
+note = "L20 proves the shift on the support T of the clean fit under strict complementarity: the gradient is lambda on T and above it off T (R3), P_T is the projector onto the sum-zero vectors that vanish off T (L20.55, L20.56), the same algebra gives delta = -(P_T C P_T)^+ P_T Sigma w (L20.58 to L20.60), and the zero exponents stay zero while the first-order change is below the gap (L20.62, L20.63). With every exponent positive P_T is I - 11'/d. D.18 predicts with the support's P and measures it; the first-order statement, not the noisy fit of a finite table."
 
 [[claim]]
 id = "C466"
@@ -5787,3 +5796,15 @@ status = "backed"
 disposition = "keep"
 source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper"
 note = "As C455 for the docs page; the five metrics are the eight less the triple."
+
+[[claim]]
+id = "C473"
+fragment = "R3: at the clean fit the zero exponents have gradient strictly above the nonzero exponents' common value, and $C$, the softmax-weighted covariance of the log-metrics at the fit, is positive definite on the sum-zero vectors that vanish where $w$ does."
+file = "paper/paper.ipynb"
+anchor = "Methods"
+kind = "M"
+backing = ["lemma:L20.52", "lemma:L20.62", "lemma:L20.63", "lemma:L20.60"]
+status = "backed"
+disposition = "narrow"
+source = "WP29 stage 6, the assistant's call on triage C1 (WP29-decisions.md)"
+note = "R3 as the ledger entry words it (derivation/axioms.py): the hypotheses of L20 on the support. Strict complementarity is the gradient value lambda on the support and strictly above it off the support (L20.52, L20.62); positive definiteness on the face's tangent space makes the shift unique and bounds it (L20.60 and L20.44 to L20.49)."

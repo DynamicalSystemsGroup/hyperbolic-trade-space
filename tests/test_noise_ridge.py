@@ -1,14 +1,16 @@
 """Planted-data tests for L20: noise on the metrics is a ridge on the exponents.
 
 L20 proves, for symbolic d and n, the ridge identity and the first-order shift
-delta = -(P C P)^+ P Sigma w* of the exponents (P the projector of the tangent space of the active
-face, C the softmax-weighted covariance at the clean fit). These tests check the statement on
-planted frontier data of the spike `work-packages/WP23-rounds/spikes/spike-E-noise/
-check2_noise_is_ridge.py` (N = 20000, d = 4, w* = (.4, .3, .2, .1), the data of seed 0 and the
-log-normal noise of seed 1), reproduce its numbers, and record where the formula stops holding:
-at an exponent on the boundary of the simplex and at a temperature where the noisy fit no longer
-follows the ridge. The ridge minimiser is the fit of the clean table with the ridge added; the
-noisy fit is the package's fit of the noisy table. Nothing here says the fitted rates are right.
+delta = -(P C P)^+ P Sigma w* of the exponents on the support of the clean fit (P the projector of
+the tangent space of the active face, the vectors that sum to zero and vanish off the support, C
+the softmax-weighted covariance at the clean fit; P = I - 11'/d when every exponent is positive).
+These tests check the statement on planted frontier data of the spike
+`work-packages/WP23-rounds/spikes/spike-E-noise/check2_noise_is_ridge.py` (N = 20000, d = 4,
+w* = (.4, .3, .2, .1), the data of seed 0 and the log-normal noise of seed 1), reproduce its
+numbers, and record where the formula stops holding: at an exponent on the boundary of the simplex
+and at a temperature where the noisy fit no longer follows the ridge. The ridge minimiser is the
+fit of the clean table with the ridge added; the noisy fit is the package's fit of the noisy
+table. Nothing here says the fitted rates are right.
 """
 
 import copy
@@ -16,8 +18,10 @@ import importlib
 
 import numpy as np
 import pytest
+import sympy as sp
 from scipy.optimize import minimize
 
+from derivation import lemma_20_noise_ridge as face
 from derivation.run import run_chain
 from hyperbolic_trade_space import HyperbolicTradeSpace
 from hyperbolic_trade_space import coordinates as coords
@@ -108,6 +112,7 @@ def _reverify(ctx, **changed):
 def test_L20_statement_says_what_it_claims_and_no_more():
     mod = importlib.import_module("derivation.lemma_20_noise_ridge")
     assert "- (P C P)^+ P Sigma w*" in mod.STATEMENT
+    assert "strict complementarity" in mod.STATEMENT and "vanishes off T" in mod.STATEMENT
     assert "First order only" in mod.STATEMENT and "no bound on the remainder" in mod.STATEMENT
     assert "no statement that the noisy fit" in mod.STATEMENT
     doc = " ".join((mod.__doc__ or "").split())
@@ -123,15 +128,27 @@ def test_L20_statement_says_what_it_claims_and_no_more():
         ("pair_matrix_sign", "L20 FAIL pair form is v'C delta"),
         ("range_not_ok", "L20 FAIL pseudoinverse closed form"),
         ("wrong_norm_bound", "L20 FAIL Cauchy-Schwarz chain"),
+        ("chi_not_idempotent", "L20 FAIL face derivative"),
+        ("projector_wrong_size", "L20 FAIL P_T is tangent"),
+        ("shift_not_on_support", "L20 FAIL P_T delta = delta"),
     ],
 )
 def test_L20_negative_controls_a_wrong_statement_fails_its_step(chain, change, match):
     r = chain["L20"]
+    S = chain["S"]
     changes = {
         "B_sym_not_symmetric": {"B_sym": r["B_f"]},
         "pair_matrix_sign": {"pair_matrix": -r["pair_matrix"]},
         "range_not_ok": {"range_ok": False},
         "wrong_norm_bound": {"cs_slack": r["cs_slack"] + r["mc"]},
+        "chi_not_idempotent": {"idem": lambda e: e},
+        "projector_wrong_size": {
+            "PT": lambda f, x, dummy=r["hf"]: (
+                face.chi[x]
+                * (f(x) - sp.Sum(face.chi[dummy] * f(dummy), (dummy, 1, S.d)) / (face.sf + 1))
+            )
+        },
+        "shift_not_on_support": {"Pdl_face": lambda x: r["dlf"](x) + 1},
     }[change]
     with pytest.raises(AssertionError, match=match):
         _reverify(chain, **changes)
@@ -297,3 +314,31 @@ def test_when_the_noise_overcomes_the_complementarity_margin_neither_formula_hol
     full = w + first_order(U, w, tau, Sigma)
     assert np.abs(face - ridge_min).max() > 10 * FIRST_ORDER_TOL
     assert np.abs(full - ridge_min).max() > 10 * FIRST_ORDER_TOL
+
+
+def test_the_face_projector_of_the_lemma_is_the_support_projector_and_the_shift_is_stationary(
+    boundary_data,
+):
+    """L20.52 to L20.61 on a planted fit with a zero exponent: P_T = chi (I - chi chi'/s) chi is
+    the projector onto the vectors that sum to zero and vanish off the support, the shift lies on
+    the support and sums to zero, and it solves the face condition v'(C delta + Sigma w) = 0 for
+    every face tangent v (a basis of them); the full-simplex condition is not met by it."""
+    X, U = boundary_data
+    tau, sigma = 5.0, 0.10
+    w = fit(X, tau).exponents_[0]
+    chi = (w > 1e-3).astype(float)
+    assert chi.tolist() == [1, 1, 1, 0]
+    s = chi.sum()
+    P_T = np.diag(chi) @ (np.eye(4) - np.outer(chi, chi) / s) @ np.diag(chi)
+    assert np.allclose(P_T @ P_T, P_T) and np.allclose(P_T, P_T.T)
+    assert np.allclose(np.ones(4) @ P_T, 0) and np.allclose(P_T @ np.diag(1 - chi), 0)
+    Sigma = sigma**2 * np.eye(4)
+    C = softmax_covariance(U, w, tau)
+    delta = first_order(U, w, tau, Sigma, active=w > 1e-3)
+    assert delta[3] == 0 and abs(delta.sum()) < 1e-12 and np.allclose(P_T @ delta, delta)
+    force = C @ delta + Sigma @ w
+    tangents = np.array([[1.0, -1, 0, 0], [0, 1, -1, 0]])  # a basis of the face's tangent space
+    assert np.abs(tangents @ force).max() < 1e-10
+    assert np.allclose(P_T @ force, 0, atol=1e-10)
+    full_tangents = np.vstack([tangents, [0, 0, 1.0, -1]])  # moving the zero exponent as well
+    assert np.abs(full_tangents @ force).max() > 1e-4

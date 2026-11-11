@@ -1043,3 +1043,17 @@ section = "Case analysis"
 words_added = 11
 job = "Figure 5's caption says what an empty panel means (the supervisor's 'leaving the first term off the picture feels wrong to me', WP19-decisions.md): the sentence 'has no map; a sentence in its place says so' (17 words) becomes 'is drawn without cells, and a line in its panel gives the count: too few designs for a correlation' (28 words); the panel of the term with too few near-frontier designs is now drawn like the others"
 reader = "the reader of Figure 5 who sees a panel with a title, metrics and outlines but no colours"
+
+[[raise]]
+date = "2026-11-11"
+section = "Methods"
+words_added = 14
+job = "WP29 stage 6, the assistant's call on triage C1 (WP29-decisions.md): R3 states strict complementarity and the support's tangent space (the sum-zero vectors that vanish where w does) in place of 'every exponent positive', because the case's fits of record carry zero exponents and L20 now proves the shift on the support (steps L20.52 to L20.63)"
+reader = "the expert reader who checks R3 against the script and the practitioner whose fit has zero exponents"
+
+[[raise]]
+date = "2026-11-11"
+section = "Results"
+words_added = 16
+job = "WP29 stage 6, the assistant's call on triage C1: Corollary 1 states P as the projector onto the sum-zero vectors that vanish where w does (the sum-zero projector when every exponent is positive) and that the zero exponents stay zero, the claim L20 proves on the support under strict complementarity"
+reader = "the expert reader who checks the box against the script, and the practitioner applying the shift to a fit with zero exponents"
