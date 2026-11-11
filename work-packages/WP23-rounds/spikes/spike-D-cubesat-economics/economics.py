@@ -1,3 +1,4 @@
+# ruff: noqa: E501, SIM115, E731, B023, B007
 """Spike D: per-part pricing curves, the fleet totals and the budget band for the case model.
 
 Run from the repository root:
