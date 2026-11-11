@@ -734,3 +734,12 @@ user's path or goes (the negative-edit test applied to placement, not only to ex
 fresh reader per persona is dropped at their arrival surface with their need and asked to find what they need, timed
 in steps, reporting where they got lost and what they skipped; the round repeats on the fixed surfaces. The
 package-user tests (U1 to U4) carry the wayfinding question in their protocol too.
+
+**Added the same hour, verbatim:** "do not bloat the repo to meet this requirement. human (and machine) attention is
+scarce. more is not always better, and where does end up being a lot of content assume the user drills down into it
+naturally don;t just hit them in the face with a ton of info. they will just bounce off". So signposting is done by
+subtraction and layering, not by adding pages or banners: a first screen is a few lines that route, not a directory;
+whom-it-is-for is one sentence, not a section; depth is reached by drilling down (a link, a fold, an appendix, the
+repository), never by stacking it on the landing surface; every signposting unit is net neutral or net negative in
+words on the surface it touches, with the ledger and budgets showing it; the journeys map is a working note for the
+builders, not a page for users.
