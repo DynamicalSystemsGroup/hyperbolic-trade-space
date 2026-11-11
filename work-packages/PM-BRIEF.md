@@ -464,6 +464,22 @@ re-recording rewrote the planted soft-fit arrays it did not need to touch and th
 failures in the container, all of this kind).
 
 
+## Bigger candidate edits run the full lifecycle (standing order, 2026-11-10, 22:30)
+
+The supervisor, on the noise question and the model revision: "deploy research spike agents before deciding
+whether/what to build, then build, then quality control, then integrate, then review again"; and "integrate this into
+the modeling revision spike that goes through research, modeling, quality control, integration then reviewing the
+cascade consequences and resolving them before we get a final clean merged state. patter as with the other bigger
+(candidate) edits". So any candidate edit that is more than a narrowing or a placement (a new result, a model change,
+a figure rebuilt from new data) runs six stages, each named in its scope: (1) a research spike by agents that read
+and write a readout with plain options and no change to the product; (2) the driver decides whether and what to
+build (the supervisor where it is his); (3) build; (4) quality control (tests, lemma scripts, cold reads as the content
+demands); (5) integrate (paper, docs, register, key, model views); (6) review the cascade: every number, figure and
+sentence the change moves is found and resolved before the final clean merged state, and the acceptance review runs
+the thing. Open tracks under it: A the noise result (from Proposition 2), B the model revision (the three
+requirements that read no traded metric; the fleet-size variable and per-part pricing curves; the cost-to-build
+budget calibrated by a commercial-economics spike), and the real-3-lemma ternary figure loop.
+
 ## Handover (sixth PM, 2026-11-10, night; parallel-board.md's sixth-PM tables are the live copy)
 
 Landed this PM (all on dev): the WP26 sequel under OD1 as amended (in-file edits hash-equal to the container's @7 through a

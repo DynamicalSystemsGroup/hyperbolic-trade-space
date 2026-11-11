@@ -69,5 +69,8 @@ with doctests.
 - Figures: every figure earns its place or goes; judged as rendered by a visual loop (cold read,
   the sentence test, ink as data, legibility, shows and does not show):
   `docs/superpowers/notes/figure-review.md`.
+- Bigger candidate edits (a new result, a model change, a figure from new data) run six stages, each named in the
+  scope: research spike, decide, build, quality control, integrate, review the cascade to a clean merged state
+  (`work-packages/PM-BRIEF.md`, "Bigger candidate edits run the full lifecycle").
 - Site framing: Tall's three worlds, glass-box seams, machine verification vs human validation
   (`docs/superpowers/notes/presentation-framing.md`).
