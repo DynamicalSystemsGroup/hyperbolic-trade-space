@@ -60,8 +60,8 @@ For a multi-term fit, log V is the maximum over terms at the default `term_tempe
 
 ## Holes and white space
 
-Plot the position coordinates and the designs spread over the trade space; gaps in that picture are
-candidates for white space (`hyperbolic_trade_space.gaps`):
+Gaps in the designs' spread over the position coordinates are candidates for white space
+(`hyperbolic_trade_space.gaps`):
 
 - `knn_gap_scores(Z, k=5)`: mean distance to the k nearest neighbours, normalized by its median.
 - `find_holes(Z, resolution=50, threshold=2.0)`: grid points inside the convex hull of Z that sit far
@@ -70,7 +70,7 @@ candidates for white space (`hyperbolic_trade_space.gaps`):
   maps back to metrics and, with a preconditioner, to attributes.
 - `orient_by_pca(Z, mask=None)`: rotates to the principal axes of the masked rows.
 
-Holes of a three-metric fit:
+Holes of a three-metric fit, most isolated first:
 
 ```python {.runnable}
 from hyperbolic_trade_space.gaps import find_holes
@@ -79,6 +79,7 @@ X3, _ = make_frontier_data(300, 3, random_state=0)
 ts3 = HyperbolicTradeSpace(temperature=20.0).fit(X3)
 chart3 = ts3.transform(X3)
 holes, scores = find_holes(chart3[:, :-1], resolution=30, threshold=3.0)
+print(len(holes), scores[:3].round(2))
 ```
 
 A hole is a candidate and not a verdict. An empty region can be an opportunity, a categorical
