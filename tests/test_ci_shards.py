@@ -41,3 +41,12 @@ def test_every_shard_keeps_the_provisioning():
     ):
         assert needle in text, needle
     assert "uv sync --locked" in text
+
+
+def test_windows_runs_the_fast_and_slow_shards_at_every_dispatch_and_not_on_push():
+    job = WF["jobs"]["windows"]
+    assert job["strategy"]["matrix"]["shard"] == ["fast", "slow"]
+    assert "if" not in job or "inputs.windows" in job["if"]
+    triggers = WF.get("on", WF.get(True))
+    assert "push" not in triggers
+    assert triggers["workflow_dispatch"]["inputs"]["windows"]["default"] is True

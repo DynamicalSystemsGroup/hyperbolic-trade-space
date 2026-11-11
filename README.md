@@ -15,6 +15,9 @@ uv sync          # reproducible environment from uv.lock (Python 3.12)
 uv run pytest    # tests
 ```
 
+Environment: Python 3.12 from `uv.lock`. The fast and slow test shards run on Linux and Windows; the
+paper build runs on Linux and macOS.
+
 ## Layout
 
 - `src/hyperbolic_trade_space/` — the package

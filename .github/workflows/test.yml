@@ -1,13 +1,14 @@
 name: Tests
 
-# Manual dispatch only (the driver dispatches once per batch of pushes; verification in tiers).
+# Manual dispatch only (the driver dispatches once per batch of pushes, at the gates; verification in
+# tiers). A dispatch runs the Linux matrix and the Windows fast and slow shards; pushes run nothing.
 on:
   workflow_dispatch:
     inputs:
       windows:
-        description: "Also run the Windows job (WP34 spike)"
+        description: "Also run the Windows fast and slow shards"
         type: boolean
-        default: false
+        default: true
 
 env:
   # The modules that build the site, the docs and the paper (they share generated files).
@@ -99,8 +100,9 @@ jobs:
 
   windows:
     name: windows (${{ matrix.shard }})
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.windows }}
+    if: ${{ inputs.windows }}
     # The docs-paper shard stays on Linux and macOS (WP34 stage 2 decision).
+    # Windows runs the fast and slow shards at every gate dispatch.
     strategy:
       fail-fast: false
       matrix:
@@ -144,9 +146,7 @@ jobs:
         run: |
           v=$(grep -A1 '^name = "opensysml"' uv.lock | grep '^version' | cut -d'"' -f2)
           echo "version=$v" >> "$GITHUB_OUTPUT"
-      # The spike reads what breaks; a failed provision is data, not a stop.
       - name: Provision the pinned sysml-toolkit
-        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch
