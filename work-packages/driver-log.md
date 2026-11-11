@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Incident (2026-11-11, 11:20):** an agent of the tenth PM is editing `paper/paper.ipynb` in the main checkout (the
+  P9/P10 narrowings), against the one-writer-per-worktree rule; the assistant's rebase was refused by the unstaged
+  change and the file was left untouched; the PM is told to move the work to a worktree without losing it and restate
+  the rule. The assistant's own commits touch only the records and are pushed.
+- **WP29 stage 6 (11:20):** the P9/P10 triage approved; the C1 call (the corollary on the support under strict
+  complementarity, the face step added to L20, or the box narrowed to interior fits) recorded in WP29-decisions.md and
+  listed for the supervisor's review, since it decides what the corollary claims at a boundary.
+
 - **Personas P9 and P10 (2026-11-11, 10:40; the supervisor, verbatim in reader-grid.md).** The mathematical-presentation
   reviewers, expert (correctness and precision against the lemma scripts) and novice (following the thread; the
   formatting; never correctness), read and triaged as a pair under his balance rule; a pass before the final reader
