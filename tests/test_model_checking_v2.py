@@ -50,13 +50,14 @@ ADCS_DIR = MODEL.parents[1]
 FAST = {"t_end": 600.0, "max_step": 1.0}
 PROBE_RECORD = ADCS_DIR / "experiments" / "probes" / "probe-record.md"
 
-# The four claims the model states (section 5) with the answer recorded for each: engine ``solve``,
+# The five claims the model states (section 5; the fifth, the battery peak power requirement's, is WP30's) with the answer recorded for each: engine ``solve``,
 # question ``holds``, status and evidence strength. A claim an engine does not reach is recorded in
 # UNREACHED with the reason, and is asserted undecided.
 CLAIMS = {
     "MassAccountingIdentity": ("holds", "proved"),
     "GeneratedPowerMonotoneInSpan": ("holds", "proved"),
     "PowerRequirementHoldsInRange": ("holds", "proved"),
+    "BatteryPeakPowerRequirementHoldsInRange": ("holds", "proved"),
     "SmallBatteryViolatesDepthOfDischarge": ("holds", "proved"),
 }
 # A false variant of each claim (text edit) and the answer the solver must give: ``violated``.
@@ -67,6 +68,7 @@ CLAIM_CONTROLS = {
     ),
     "GeneratedPowerMonotoneInSpan": ("<= 81.627336 [W/m] * s2)", "> 81.627336 [W/m] * s2)"),
     "PowerRequirementHoldsInRange": ("- t > 0.0 [W])", "- t > 20.0 [W])"),
+    "BatteryPeakPowerRequirementHoldsInRange": ("tau <= 0.010 [N*m])", "tau <= 0.020 [N*m])"),
     "SmallBatteryViolatesDepthOfDischarge": ("cap <= 26.5 [W*h]", "cap <= 28.0 [W*h]"),
 }
 UNREACHED = {
@@ -362,7 +364,13 @@ def sample20(pool, measured):
                 "symbol": sym,
                 "measured": m,
                 "flags": pool["checker"].flags(sym, m),
-                "frozen": pool["frozen"].measure(cfg, **FAST),
+                "frozen": {
+                    **pool["frozen"].measure(cfg, **FAST),
+                    # WP30: the frozen model has no momentum headroom, the wheel class capacity over
+                    # the peak momentum measured (the inverse of WP4b's utilisation)
+                    "momentum_headroom": pool["frozen"].sim_params(cfg)["maxMomentum"]
+                    / m["peak_momentum"],
+                },
             }
         )
     return rows
@@ -480,6 +488,31 @@ def test_claim_literals_are_the_models_own_numbers(v2):
     assert num(r"cap >= ([\d.]+) \[W\*h\]") == pytest.approx(
         k.num(f"{P}::designRanges.batteryCapacityMin", "SI::W*SI::h")
     )
+
+
+def test_battery_peak_power_claim_literals_are_the_models_own_numbers(v2):
+    """WP30: the claim that the battery peak power requirement holds in range restates the calcs
+    ``BatteryPeakPower`` and ``EclipsePeakLoad`` over scalar features; each literal is tied to its
+    source in the model (the discharge rate, the housekeeping load, the idle wheels, the wheel
+    loss, the largest wheel torque, the tracker and battery ranges)."""
+    k = ex._Constants(v2.model, P)
+    start = v2.text.index("constraint def BatteryPeakPowerRequirementHoldsInRange")
+    claim = " ".join(v2.text[start : v2.text.index("constraint def SmallBattery")].split())
+    num = lambda pattern: float(re.search(pattern, claim).group(1))  # noqa: E731
+    assert num(r"implies \(([\d.]+) \* cap") == pytest.approx(k.env("batteryDischargeRate"))
+    assert num(r">= ([\d.]+) \[W\] \+ t") == pytest.approx(k.env("housekeepingLoad", "SI::W"))
+    assert num(r"\+ ([\d.]+) \* [\d.]+ \[W\]") == pytest.approx(k.baseline("wheelCount"))
+    assert num(r"\+ [\d.]+ \* ([\d.]+) \[W\]") == pytest.approx(k.env("wheelIdlePower", "SI::W"))
+    assert num(r"\+ ([\d.e+]+) \[W/\(N\*m\)\*\*2\]") == pytest.approx(k.env("wheelLossCoefficient"))
+    lo, hi = k.tracker_power_range()
+    assert num(r"t >= ([\d.]+) \[W\]") == pytest.approx(lo)
+    assert num(r"t <= ([\d.]+) \[W\]") == pytest.approx(hi)
+    assert num(r"cap >= ([\d.]+) \[W\*h\]") == pytest.approx(
+        k.num(f"{P}::designRanges.batteryCapacityMin", "SI::W*SI::h")
+    )
+    wheels = k.alternatives("ReactionWheel", "wheelClass").values()
+    torques = [k.alt_value(w, "maxTorque", "SI::N*SI::m") for w in wheels]
+    assert num(r"tau <= ([\d.]+) \[N\*m\]") == pytest.approx(max(torques))
 
 
 def test_mass_claim_restates_the_calc_bodies():

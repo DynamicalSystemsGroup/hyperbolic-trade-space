@@ -52,7 +52,7 @@ WP22_CALCS = {
 }  # fmt: skip
 EXPECT = {
     "line_cap": 900,
-    "calcs": {"LaunchCost", "BatteryPeakPower", "EclipsePeakLoad"},
+    "calcs": {"LaunchCost", "BatteryPeakPower", "EclipsePeakLoad", "MomentumHeadroom"},
     "parts": {"Budgets"},
 }
 
@@ -65,9 +65,10 @@ SECTIONS = [
     "6. THE EXPERIMENT",
     "7. NAMED CONFIGURATIONS",
 ]
-# The seven attributes the experiment computes (the eclipse reserve left at the close-out), in
-# order, with the unit each is read in. The settling time is measured, not computed: the oracle
-# takes it from the measurement, so the analysis neither receives nor returns it.
+# The eight attributes the experiment computes (the eclipse reserve left at the close-out; the
+# momentum headroom joined at WP30, stage 3a), in order, with the unit each is read in. The
+# settling time is measured, not computed: the oracle takes it from the measurement, so the
+# analysis neither receives nor returns it.
 ATTRIBUTES = [
     ("pointing_error_deg", "SI::degree"),
     ("total_mass_kg", "SI::kg"),
@@ -76,6 +77,7 @@ ATTRIBUTES = [
     ("energy_balance_wh", "SI::W*SI::h"),
     ("peak_slew_power_w", "SI::W"),
     ("dod_eclipse", None),
+    ("momentum_headroom", None),
 ]
 
 
@@ -148,7 +150,7 @@ class V2:
         return loaded, [f"Configurations::cfg_{int(d['design_id'])}" for d in designs]
 
     def experiment(self, model, symbol: str, measured: dict) -> dict:
-        """Run the model's analysis on a configuration; the eight computed attributes by name."""
+        """Run the model's analysis on a configuration; the computed attributes by name."""
         unit = self.unit
         args = {
             "torqueSquaredIntegral": measured["torque_squared_integral"],
@@ -425,6 +427,11 @@ def test_analysis_reproduces_the_frozen_attributes(v2, frozen, sample, capsys):
     for sym, cfg in zip(symbols, old, strict=True):
         measured = _measure_slew(frozen, cfg)
         want = frozen.measure(cfg, **FAST)
+        # the frozen model has no momentum headroom: it is the wheel class capacity over the peak
+        # momentum measured here (the inverse of the utilisation, WP4b), so it is compared as that
+        want["momentum_headroom"] = (
+            frozen.sim_params(cfg)["maxMomentum"] / measured["peak_momentum"]
+        )
         got = v2.experiment(loaded, sym, measured)
         assert list(got) == [name for name, _ in ATTRIBUTES]
         for name, _ in ATTRIBUTES:
@@ -433,7 +440,7 @@ def test_analysis_reproduces_the_frozen_attributes(v2, frozen, sample, capsys):
                 worst, worst_key = diff, name
     with capsys.disabled():
         print(
-            f"\n[equivalence] eight computed attributes, 5 configs: "
+            f"\n[equivalence] nine traded metrics less the measured settling time, 5 configs: "
             f"max rel diff {worst:.2e} ({worst_key})"
         )
     assert worst < 1e-9
@@ -463,11 +470,12 @@ def test_analysis_with_equal_measured_times_needs_no_workaround(v2):
 # ---------------------------------------------------------------------------------------------
 # WP23 D-1: what the gate's model adds and removes against the WP22 version (R-4, R-5 of WP23)
 # ---------------------------------------------------------------------------------------------
-def test_the_calc_defs_are_the_wp22_set_plus_the_three_wp23_adds(v2):
+def test_the_calc_defs_are_the_wp22_set_plus_the_adds(v2):
     """WP23 changed no accounting: the calc defs are the WP22 version's (``WP22_CALCS``, every
     body kept; their agreement with the frozen oracle is R-6 of test_system_model_v2_r1.py) plus
     the launch cost (round 1) and the battery's peak power and the eclipse peak load (round 2),
-    none of the three traded."""
+    none of the three traded, and WP30's momentum headroom, the ninth traded metric (D-1 (a) of
+    spike C, WP30-decisions.md)."""
     calcs = set(re.findall(r"^    calc def (\w+)", v2.text, flags=re.M))
     assert calcs == WP22_CALCS | EXPECT["calcs"]
     assert _symbols(v2, "CalculationDefinition") >= calcs

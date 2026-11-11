@@ -18,8 +18,12 @@
  * The close-out (WP23-closeout-scope-of-work.md): the eclipse reserve leaves, its calc and its
  * requirement with it, because its requirement was the depth-of-discharge requirement restated
  * (0.3 C - D >= 0 is D / C <= 0.3); the depth of discharge is the one metric and the one
- * requirement on the eclipse energy, and eight metrics are traded. The baseline configuration
- * fails the pointing-error requirement: its pointing error is 0.0155 degree against a limit of
+ * requirement on the eclipse energy. WP30 (Track B, stage 3a) adds the momentum headroom, the wheel's
+ * momentum capacity over the slew's peak momentum, as the ninth traded metric (a MoP, controls):
+ * the momentum requirement read no traded metric before, and the headroom is the quantity it
+ * bounds (WP30-decisions.md, "Scope gate"; the driver's D-1 (a) and the supervisor's "Confirm" in
+ * WP23-rounds/spikes/spike-C-requirements-no-traded-metric/decisions.md). Nine metrics are traded.
+ * The baseline configuration fails the pointing-error requirement: its pointing error is 0.0155 degree against a limit of
  * 0.0085 degree, so section 5 states `not satisfy` for it; 63.7 % of the baseline regime's feasible
  * designs pass that requirement.
  *
@@ -42,14 +46,14 @@
  * alternatives (categorical variables), the parameters (continuous variables), the named
  * configurations. The ASSESSMENT view is sections 3 to 6: the calculations, the scenario, the
  * requirements and verification cases, and the experiment, that say how a configuration is
- * assessed and how each traded metric (the eight of the case study) traces back to this model.
+ * assessed and how each traded metric (the nine of the case study) traces back to this model.
  * Each section header below carries the name of its view. The chain read from the elements: a
  * configuration variable feeds a calc def or the measured slew; the experiment returns the calc as
  * the metric, or the measurement passes it on; a requirement def states the bound on the same calc
  * or measured quantity (or, for the total mass, on the launch cost computed from it); a
- * verification case verifies the requirement. The eight traded metrics: settling time, pointing
+ * verification case verifies the requirement. The nine traded metrics: settling time, pointing
  * error, total mass, control effort, power margin, energy balance, peak slew power, depth of
- * discharge. Each is marked MoE or MoP in the `doc` of its element (the first word
+ * discharge, momentum headroom. Each is marked MoE or MoP in the `doc` of its element (the first word
  * of the doc): an MoE is a measure a stakeholder states without knowing the design (how well the
  * payload points; what the launch costs); an MoP is a measure of the system's performance under
  * the scenario the engineer states. Every one has a requirement that reads its own quantity.
@@ -407,6 +411,15 @@ package CubesatTradeSpaceV2 {
         return : PowerValue = GeneratedPower(c) - environment.housekeepingLoad
             - PeakSlewPower(c, peakTorque);
     }
+    calc def MomentumHeadroom {
+        doc /* MoP: the wheel's momentum capacity over the peak wheel momentum of the slew (the traded
+               metric `momentum headroom`), 1 where the peak momentum just reaches the capacity and
+               above 1 where the wheel keeps reserve; the inverse of the momentum utilisation. The
+               peak momentum is measured; the capacity is the wheel class's. */
+        in c : Cubesat;
+        in peakMomentum : AngularMomentumValue;
+        return : Real = c.momentumCapacity / peakMomentum;
+    }
     calc def BatteryPeakPower {
         doc /* The power the pack can deliver at its continuous discharge rating: the discharge rate
                times the capacity (W). Not a traded metric: the battery peak power requirement
@@ -555,8 +568,9 @@ package CubesatTradeSpaceV2 {
            Four are the flags the experiment reports: settled, momentum_ok, power_ok, dod_ok; the
            settled and depth-of-discharge ones read the settling time and the depth of discharge.
            Six more each read a traded metric's own quantity: pointing error, control effort, peak
-           slew power, power margin, energy balance, and the total mass through the launch cost;
-           so every one of the eight traded metrics has a requirement. The eleventh, the battery
+           slew power, power margin, energy balance, and the total mass through the launch cost; the
+           momentum requirement reads the momentum headroom; so every one of the nine traded
+           metrics has a requirement. The eleventh, the battery
            peak power requirement, reads the pack's rating against the eclipse peak load. A
            requirement takes a Cubesat as its subject and, where it needs a measured quantity of
            the slew, an `in` parameter that the runner binds by name (a Quantity, or a Real for
@@ -632,10 +646,12 @@ package CubesatTradeSpaceV2 {
         require constraint { settlingTime < nominalSlew.horizon }
     }
     requirement def MomentumRequirement {
-        doc /* The peak wheel momentum stays within the wheel class capacity (`momentum_ok`). */
+        doc /* The peak wheel momentum stays within the wheel class capacity (`momentum_ok`): the
+               momentum headroom (the traded metric `momentum headroom`, measured peak momentum
+               against the wheel class capacity) is at least 1. */
         subject c : Cubesat;
         in peakMomentum : AngularMomentumValue default = baselineMeasurement.peakMomentum;
-        require constraint { peakMomentum <= c.momentumCapacity }
+        require constraint { MomentumHeadroom(c, peakMomentum) >= 1.0 }
     }
     requirement def PowerRequirement {
         doc /* The panels cover the housekeeping and tracker loads (`power_ok`); it reads the
@@ -750,9 +766,10 @@ package CubesatTradeSpaceV2 {
     verification def SlewVerification {
         doc /* After the slew is measured: what needs the measured quantities. Each objective below
                verifies the requirement on a traded metric's own quantity: settling time, control
-               effort, power margin, energy balance, peak slew power, depth of discharge; the
-               momentum requirement reads the measured peak momentum, and the battery peak power
-               requirement the pack's rating against the eclipse peak load, neither traded. With
+               effort, power margin, energy balance, peak slew power, depth of discharge, momentum
+               headroom; the battery peak power requirement reads the pack's rating against the
+               eclipse peak load, not traded (the power requirement, verified before the slew, is not
+               either). With
                ConfigurationVerification, every traded metric has a requirement. */
         subject c : Cubesat;
         objective {
@@ -774,7 +791,8 @@ package CubesatTradeSpaceV2 {
            Constants: generated power per metre of span 81.627336 W/m (flux 1361 W/m^2 times the
            efficiency product 0.08820 times two wings of chord 0.34 m); housekeeping 12 W; idle
            wheels 3 x 0.3 W; eclipse 0.6 h; depth of discharge 0.3; span 0.3 to 1.0 m; tracker power
-           0.4 to 1.5 W; battery 20 to 200 Wh. */
+           0.4 to 1.5 W; battery 20 to 200 Wh; battery rating 1.0 per hour; wheel loss 5.0e4 W per (N.m)^2;
+           peak wheel torque at most 0.010 N.m. */
     constraint def MassAccountingIdentity {
         doc /* The total mass less the structure mass is the panels plus the antenna. */
         in c : Cubesat;
@@ -797,6 +815,19 @@ package CubesatTradeSpaceV2 {
         (s >= 0.3 [m] and s <= 1.0 [m] and t >= 0.4 [W] and t <= 1.5 [W])
             implies (81.627336 [W/m] * s - 12.0 [W] - t > 0.0 [W])
     }
+    constraint def BatteryPeakPowerRequirementHoldsInRange {
+        doc /* Over the whole battery, tracker and wheel-torque range the pack's rated power covers
+               the eclipse peak load (housekeeping, tracker, three idle wheels and the wheel loss at
+               the peak torque, at most 0.010 N.m): `BatteryPeakPowerRequirement` holds for every
+               in-range configuration, 20 W against at most 19.4 W. */
+        in cap : EnergyValue;
+        in t : PowerValue;
+        in tau : TorqueValue;
+        (cap >= 20.0 [W*h] and t >= 0.4 [W] and t <= 1.5 [W] and tau >= 0.0 [N*m]
+            and tau <= 0.010 [N*m])
+            implies (1.0 * cap / 1.0 [h] >= 12.0 [W] + t + 3.0 * 0.3 [W]
+                + 5.0e4 [W/(N*m)**2] * tau * tau)
+    }
     constraint def SmallBatteryViolatesDepthOfDischarge {
         doc /* A battery below the eclipse base load floor (26.6 Wh at the coarse tracker) fails
                `dod_ok` for every tracker and every non-negative slew energy. */
@@ -815,13 +846,13 @@ package CubesatTradeSpaceV2 {
            design variables are its features). The Python runner integrates the slew and hands in
            the measured quantities the accounting needs: the integral of |tau|^2 (N^2.m^2.s), the
            peak torque, the peak wheel momentum and the control effort (integral of |tau|, N.m.s).
-           The eight traded metrics are the settling time and the seven attributes this analysis
+           The nine traded metrics are the settling time and the eight attributes this analysis
            returns, in this order: pointing error, total mass, control effort, power margin,
-           energy balance, peak slew power, eclipse depth of discharge. The
+           energy balance, peak slew power, eclipse depth of discharge, momentum headroom. The
            settling time is measured, not computed: it goes from the measurement into the output
            row unchanged (it is also the input of the settled requirement of section 5), so it is
-           neither an input nor an entry of this return tuple. The peak momentum, measured and not
-           used by an attribute, is the input of the momentum requirement. The launch cost is not
+           neither an input nor an entry of this return tuple. The peak momentum, measured, is the input
+           of the momentum headroom and of the momentum requirement. The launch cost is not
            returned: it is the MoE on the total mass, read by its requirement. Flags are not
            returned here. */
     analysis def SlewExperiment {
@@ -835,7 +866,8 @@ package CubesatTradeSpaceV2 {
             PowerMargin(cubesat, peakTorque),
             EnergyBalance(cubesat, SlewLossEnergy(torqueSquaredIntegral)),
             PeakSlewPower(cubesat, peakTorque),
-            DepthOfDischarge(cubesat, SlewLossEnergy(torqueSquaredIntegral)));
+            DepthOfDischarge(cubesat, SlewLossEnergy(torqueSquaredIntegral)),
+            MomentumHeadroom(cubesat, peakMomentum));
     }
 
     // ==========================================================================================

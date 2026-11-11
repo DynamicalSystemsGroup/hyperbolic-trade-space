@@ -69,8 +69,9 @@ from .runner import LogUniformSampler
 
 PACKAGE = "CubesatTradeSpaceV2"
 CONFIG_NAMES = ("panel_span_m", "battery_wh", "wheel_class", "st_grade", "Kp", "Kd")
-# the eight traded metrics (WP23 G5: one time metric, the settling time; the close-out: the eclipse
-# reserve left, its requirement being the depth-of-discharge requirement restated)
+# the nine traded metrics (WP23 G5: one time metric, the settling time; the close-out: the eclipse
+# reserve left, its requirement being the depth-of-discharge requirement restated; WP30: the
+# momentum headroom joined, the wheel's momentum capacity over the slew's peak momentum)
 ATTRIBUTE_NAMES = (
     "settling_time_s",
     "pointing_error_deg",
@@ -80,9 +81,10 @@ ATTRIBUTE_NAMES = (
     "energy_balance_wh",
     "peak_slew_power_w",
     "dod_eclipse",
+    "momentum_headroom",
 )
 FLAG_NAMES = ("settled", "momentum_ok", "power_ok", "dod_ok")
-# the model's analysis returns the seven attributes it computes in this order, each read in this
+# the model's analysis returns the eight attributes it computes in this order, each read in this
 # unit; the settling time is measured and enters the row from the measurement
 _COMPUTED_NAMES = ATTRIBUTE_NAMES[1:]
 _COMPUTED_UNITS = (
@@ -93,9 +95,10 @@ _COMPUTED_UNITS = (
     "SI::W*SI::h",
     "SI::W",
     None,
+    None,
 )
 # the keys of the frozen ``cubesat_model.measure`` less the slew-time and eclipse-reserve columns,
-# in order
+# in order, with the momentum headroom after the depth of discharge
 OUTPUT_NAMES = (
     "settling_time_s",
     "pointing_error_deg",
@@ -106,6 +109,7 @@ OUTPUT_NAMES = (
     "energy_balance_wh",
     "peak_slew_power_w",
     "dod_eclipse",
+    "momentum_headroom",
     "settled",
     "momentum_ok",
     "torque_saturated_frac",
@@ -525,7 +529,7 @@ class CubesatOracle:
         }
 
     def _analyse(self, loaded, symbol: str, measured: dict) -> dict:
-        """Eight attributes by name: seven from the model's analysis, the settling time measured.
+        """Nine attributes by name: eight from the model's analysis, the settling time measured.
 
         The settling time is measured, not computed; the analysis neither receives nor returns
         it, and it enters the row unchanged.
