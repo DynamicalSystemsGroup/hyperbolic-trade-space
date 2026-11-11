@@ -276,3 +276,14 @@ trade with a shared metric, the strongest on the search table; B (settling time,
 the alternative. One redraw of A and B on the cold readers' notes (outlined lighter fills so the regions read as the
 model's, a key for contours, dots and markers, labels clear of the markers) and one fresh cold read precede the
 supervisor's choice among A, the one-region real figure and the planted Figure 6.
+
+**S-5 redraw (d84b9f9, cold read f3efed4; the driver, 2026-11-11, 03:30):** the fresh reader would put A in a document
+(two interior regions, each a named pair trade, the pairs different). One more bounded iteration before the morning,
+limited to the reader's resolvable points: the key in plain words (a point is a design by its shares of the three
+metrics; thin lines join designs of equal V; the dashed line is where the leading term changes; a numbered marker is
+a term's exponent vector; the two marker shapes are the two terms), the dashed boundary in a colour that is not the
+contours' on the dark render, the callout boxes clear of the dots and the dashed line, the star not clipped in B. Not
+addressed, by the supervisor's own rule against over-tuning: the hill reading of nested contours, the tints, the dot
+sizes. No third iteration; he chooses on what the second shows. Note for his glance: the label-size change in
+`plot_ternary` re-wraps one label of the planted Figure 6 (two lines to four) and re-renders the root page's two
+"why regions" images; the drawings are otherwise the same.
