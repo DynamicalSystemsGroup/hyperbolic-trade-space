@@ -1883,3 +1883,21 @@ does not say what a position in the triangle means; (2) nested rings with the do
 where they run together; (5) star versus diamond unexplained; (6) the dashed line runs along or exits at the triangle edge; (7) A's open contour bands
 in the blue region are styled like the closed rings; (8) the two dot sizes are hard to see. Not yet addressed; the redraw iteration ended at d84b9f9
 as the driver bounded it to one.
+
+### S-5 final iteration of A and B (ninth PM; the driver's bounded last round)
+
+Three points, from the fresh cold read (`WP19-cold-reads-s5b/reader3.md`); the hill reading, the tints and the dot sizes were left alone. Script and images only
+(`docs/superpowers/notes/figure-candidates/ternary_cubesat_textured.py`, `ternary-cubesat-textured-{A,B}-{light,dark}.png`); `plotting.py` untouched.
+
+- The key says what the marks are, checked against `plot_ternary`: a design sits at its shares of the three metrics, each metric scaled by its typical size (`_ternary_shares`
+  at s = 1); thin lines are equal invariant value V (the glossary's term) at a fixed total, 0.3 to 0.97 of the peak; the dashed line is where the leading term changes; the
+  marker's shape and number name the term (star term 1, diamond term 2, by `_TERN_MARKERS`), it sits at the term's exponent vector, where that term's V peaks at a fixed total.
+  Star and diamond each have a key row, in the term's colour.
+- The dashed border is drawn in its own colour (burnt orange on light, amber on dark), distinct from the ink of the thin lines.
+- The callouts moved out of the triangle, beside the apex, joined to their term's marker by a thin line in the term's colour, so they cover no dots, contours or dashed line.
+  The named pair trades are unchanged; the text is wrapped on two lines. B's star is not clipped (the whole star is drawn, `clip_on=False`); it sits at the
+  depth-of-discharge corner because that term's exponent vector is almost all depth of discharge, so its arm touches the triangle's edge; the marker was not moved, since its place is the datum.
+
+Shows / Does not show (A and B): as in the redraw iteration, plus: a design's position is its scaled shares, and the marker of a term is where that term's V peaks. Still does not
+show that the designs fall in groups, the values of V on the lines, or the cause of the split. Not addressed by decision: the ring-and-dots hill reading, the tints, the dot sizes,
+A's open bands in the blue region, the dashed line exiting at the corner.

@@ -77,8 +77,14 @@ def triple_study(regime, names):
     )
 
 
+# the dashed border in a colour of its own: the thin lines are ink
+BORDER = {"light": "#c2410c", "dark": "#ffb347"}
+MARKER_NAMES = {"*": "star", "D": "diamond"}
+
+
 def draw_borders_and_key(ax, est, M, scheme):
-    """A line where the leading term changes, and the key."""
+    """A line where the leading term changes, the callouts moved to open
+    space, and the key."""
     import numpy as np
     from matplotlib.lines import Line2D
 
@@ -89,21 +95,62 @@ def draw_borders_and_key(ax, est, M, scheme):
     reg[inside] = plotting._ternary_region_of(
         fit, 1.0, top[inside], left[inside], right[inside]
     )[0]
+    edge = BORDER[scheme]
     for k in range(1, len(fit["W"])):
         ax.contour(
             x,
             y,
             reg,
             levels=[k - 0.5],
-            colors=[sch["ink"]],
-            linewidths=2.2,
+            colors=[edge],
+            linewidths=2.6,
             linestyles=[(0, (6, 3))],
             zorder=4.5,
         )
     ink = sch["ink"]
+    W = est.exponents_
+    col = plotting._ternary_colours(W)
+
+    # callouts: out of the triangle, beside the apex, joined to the
+    # marker of the term they name by a thin line in its colour
+    side = {"left": 0.0, "right": 0.0}
+    for k in range(len(W)):
+        gid = f"ternary-label-{k}"
+        t = ax.findobj(lambda a, g=gid: a.get_gid() == g)
+        if not t:
+            continue
+        t = t[0]
+        sx, sy = plotting._ternary_project(*W[k])
+        words = " ".join(t.get_text().split())
+        for cut in (" against ",):
+            words = words.replace(cut, "\nagainst ")
+        if "\n" not in words and len(words) > 24:
+            words = words.replace(" alone", "\nalone")
+        t.set_text(words)
+        which = "left" if sx < 0.5 else "right"
+        cx = {"left": 0.06, "right": 0.94}[which]
+        cy = 0.80 - side[which]
+        side[which] += 0.2
+        t.set_position((cx, cy))
+        t.set_fontsize(14)
+        t.set_ha("center")
+        t.set_va("center")
+        ax.annotate(
+            "",
+            xy=(sx, sy),
+            xytext=(cx, cy),
+            textcoords="data",
+            arrowprops={
+                "arrowstyle": "-",
+                "color": col[k],
+                "lw": 1.6,
+                "shrinkA": 24,
+                "shrinkB": 9,
+            },
+            zorder=3.5,
+        )
+
     keys = [
-        Line2D([], [], color=ink, lw=1.0),
-        Line2D([], [], color=ink, lw=2.2, ls=(0, (6, 3))),
         Line2D(
             [],
             [],
@@ -113,23 +160,34 @@ def draw_borders_and_key(ax, est, M, scheme):
             mfc=sch["dots"],
             mec=sch["plate"],
         ),
-        Line2D(
-            [],
-            [],
-            marker="D",
-            ls="",
-            ms=9,
-            mfc="none",
-            mec=ink,
-            mew=1.4,
-        ),
+        Line2D([], [], color=ink, lw=1.0),
+        Line2D([], [], color=edge, lw=2.6, ls=(0, (6, 3))),
     ]
     text = [
-        "lines of equal V (0.3 to 0.97 of the peak)",
-        "where the leading term changes",
-        "designs (larger: near the frontier)",
-        "numbered marker: a term's exponent vector",
+        "a design, placed by its shares of the three metrics\n"
+        "(each scaled by its typical size); larger: near the frontier",
+        "thin lines: equal invariant value V at a fixed total\n"
+        "(0.3 to 0.97 of the peak)",
+        "dashed line: where the leading term changes",
     ]
+    for k in range(len(W)):
+        m = plotting._TERN_MARKERS[k % len(plotting._TERN_MARKERS)][0]
+        keys.append(
+            Line2D(
+                [],
+                [],
+                marker=m,
+                ls="",
+                ms=11,
+                mfc=col[k],
+                mec=ink,
+                mew=1.2,
+            )
+        )
+        text.append(
+            f"{MARKER_NAMES.get(m, m)}: term {k + 1}'s exponent vector"
+            " (where its V peaks)"
+        )
     leg = ax.legend(
         keys,
         text,
@@ -139,8 +197,9 @@ def draw_borders_and_key(ax, est, M, scheme):
         fontsize=11,
         frameon=False,
         labelcolor=ink,
-        handlelength=1.8,
+        handlelength=2.2,
         borderaxespad=2.6,
+        labelspacing=0.7,
     )
     leg.set_zorder(10)
 
