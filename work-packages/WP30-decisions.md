@@ -48,3 +48,10 @@ model's hash after the regeneration; under OD2 (a) the outputs do not move, so t
 that proves hash-equal outputs against the new model hash (the WP26 precedent), not a second regeneration. The
 answer key's version 5 is the driver's and is written when the data of record land. The check designs draw a fleet
 size, as decided (3b question 4).
+
+**Gap 2 ordering (2026-11-11, 02:55; the driver):** option B. The record's proof is container to container: step 14
+runs the container on the placeholder model (@10, shared @9), and a second `--image <id> --wp30 values` run (@11,
+shared @10) follows once the supervisor's values land, proving the outputs hash-equal against the new model hash.
+Eight minutes buy the proof the wording claims; host-to-container last-digit drift is not a proof. The morning ladder
+for the unit-cost limit is read from the with-launch table (3b question 1): at one unit the 450,000 placeholder admits
+about 41 percent of the baseline regime's feasible designs with launch included, not the spike's 91 percent.

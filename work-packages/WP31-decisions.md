@@ -57,3 +57,16 @@ held, so the additions were paid for by deletions: the `conditioning_` bullet (a
 nothing about K; C431 dropped), the sentence restating the sweeps at large K (C439 dropped; the printed sweeps show it),
 the closing sentence of the large-K section (repeated the methods), and the clause on the mean slack's continued fall
 in the planted paragraph. C451 merged into C430.
+
+## Acceptance (2026-11-11, 02:55; at 1d26560)
+
+The four reader defects are fixed (378e8c6) with the page's budget held by four deletions, each recorded; the three
+readers' returns are in the record verbatim (`WP31-task-readers/`); a fresh reviewer photographed the page at 1280
+and 375 pixels, light and dark, to files, and found no defect; the driver's own pass in his browser tab: the page
+opens with what the methods can and cannot say, the temperature recipe stands before the first block that needs it,
+the helpers carry no assertion, the two worked examples follow, and the closing section names the PCA elbow once and
+says where the analogy stops ("K has no ceiling and the mean slack no floor"); no horizontal scroll at the pane's
+width. The supervisor's three asks are met: methods and examples both, the question answered for a user, the elbow
+named without being leaned on.
+
+**Driver, verbatim:** "WP31 accepted at 1d26560; the changelog line follows."
