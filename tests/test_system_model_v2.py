@@ -519,9 +519,9 @@ def test_the_calc_defs_are_the_wp22_set_plus_the_adds(v2):
     body kept; their agreement with the frozen oracle is R-6 of test_system_model_v2_r1.py) plus
     the launch cost (round 1) and the battery's peak power and the eclipse peak load (round 2),
     none of the three traded, WP30's momentum headroom, the ninth traded metric (D-1 (a) of
-    spike C, WP30-decisions.md), the battery peak power ratio (traded with the available power, "No floating requirements"),
-        and the cost model of WP30 stage 3b (spike D; the unit cost and
-    the fleet cost are the tenth and eleventh traded metrics, OD1 (a))."""
+    spike C, WP30-decisions.md), the battery peak power ratio (traded with the available power,
+    "No floating requirements"), and the cost model of WP30 stage 3b (spike D; the unit cost and
+    the fleet cost are traded metrics, OD1 (a))."""
     calcs = set(re.findall(r"^    calc def (\w+)", v2.text, flags=re.M))
     assert calcs == WP22_CALCS | EXPECT["calcs"]
     assert _symbols(v2, "CalculationDefinition") >= calcs
