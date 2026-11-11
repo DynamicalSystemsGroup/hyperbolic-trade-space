@@ -55,3 +55,17 @@ shared @10) follows once the supervisor's values land, proving the outputs hash-
 Eight minutes buy the proof the wording claims; host-to-container last-digit drift is not a proof. The morning ladder
 for the unit-cost limit is read from the with-launch table (3b question 1): at one unit the 450,000 placeholder admits
 about 41 percent of the baseline regime's feasible designs with launch included, not the spike's 91 percent.
+
+## The supervisor's values (2026-11-11, 09:50; the ladders in his pane, the desk research explained)
+
+Asked for the unit cost limit after the correspondence to the sources was explained, he said, verbatim: "we should
+find away to account for the fact that our price point is a lower bound. i think we can probably just be clear in the
+requirement itself what aspects of cost are included and what is excluded. rather than trying to force every
+concievable concept into every model we just need to be explicit about what our model does and does not cover and
+insure it is interpretable and useful as such. a full costing would require these other subsystems to be accounted
+for." **Disposition:** the two cost requirements and the pricing calcs in the model state their coverage in their own
+text: included, the attitude-control, power and structure parts at vendor-bracketed prices, an assembly, integration
+and test line, and launch at the wholesale per-kilogram rate; excluded, communications, the payload interface, flight
+software, a test campaign beyond the assembly line, the launch slot minimum and any broker's fee; the figure is a lower
+bound on a full costing, and the requirement reads it as such. The same sentence appears where the docs and the paper
+name the cost metrics. The sponsor's stakeholder view carries it as the concern's note. His values follow.
