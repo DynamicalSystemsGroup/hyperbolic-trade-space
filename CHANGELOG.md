@@ -36,14 +36,41 @@ package.
   (WP14).
 - The case study (a SysML-modelled illustrative cubesat attitude-control design space): the
   simulation port, design space, seeded dataset, the SysML v2 model with an experiment ledger,
-  and the experiments module (WP4, WP4b, WP15). The swap onto the new data generation (WP16) is held at the time of writing and is not recorded as changed.
+  and the experiments module (WP4, WP4b, WP15).
 - The paper as an executed notebook (mystmd), with a supporting-material notebook of
   computationally verifiable appendices and a container definition (`Dockerfile`) for the
   environment of record (WP10).
+- The estimator keyword `term_aggregation` (`"sum"` default, `"mean"`), the count `n_distinct_terms`
+  on the termination record, and the bound stated for both aggregations (WP21).
+- The case model in two views, configuration and assessment, in one SysML v2 model: requirements,
+  verification cases and a trace from configuration variables to assessed attributes to the traded
+  metrics (WP22); the model-realism loop that added total mass with launch cost as its measure of
+  effectiveness, so every design choice reaches at least one metric (WP23).
+- The case model read in the OpenMBEE view editor, with a harness note for loading and reading it
+  there (WP26), and a stakeholder layer: two stakeholders, one tied to price and one to
+  performance in the operational life, their concerns traced to the requirements and the
+  metrics (WP27).
+- Figures chosen by section, each with the purpose it serves and what it does not show (WP19).
+- Developer tooling for verification in tiers: a fast test suite, a path-to-tests map
+  (`scripts/check.py`), parallel workers and a sharded Linux run (WP20).
 - `LICENSE` (MIT, copyright 2026 Dynamical Systems Group) and this changelog.
 
 ### Changed
 
+- The case study moves onto the model of record: the nine-attribute datasets, the settling time by
+  event detection, and the K = 1, 2, 3 record and the paper's numbers regenerated on them inside
+  the container of record; every moved number is listed with its cause in
+  `work-packages/swap-evidence.md`, and the earlier data stays as the cited comparison (WP16,
+  WP23).
+- The word "facet" is gone from every surface, including the package's public names: the model's
+  objects are monomial terms (term assignment, distinct terms, per-term shares), the paper, the
+  docs, the glossary, the derivations and the interface contract follow (WP24).
+- Improvement by subtraction: one pass over the paper and the docs removed figures, arguments and
+  paragraphs that did not advance the narrative, each deletion recorded with what it no longer
+  did (WP28); repository tidiness passes removed unused files and closed drift between the docs,
+  the glossary and the code (WP25).
+- The response to the independent assessment: the paper and docs keep three claims apart
+  (certificate, observed geometry, usefulness outside the observations) (WP21).
 - The fit's formal statements made exact in the derivations and the ledger, following the
   response to the external review (WP13).
 
