@@ -1872,3 +1872,14 @@ Engineer's plausibility reading, top ten rows of the search table (one sentence 
 8. stock, settling time / total mass / depth of discharge, K = 2: settling and mass share the wheel class while depth of discharge leads alone elsewhere; plausible, not striking.
 9. stock, settling time / pointing error / total mass, K = 3: the gains set both slew speed and steady error, and mass enters through the wheel; believable, with three regions that differ only in which pairs of the three lead.
 10. primary, settling time / control effort / depth of discharge, K = 3: the row-6 gain trade split into three regions, two of which name the same set, so the third region adds little an engineer would act on.
+
+### S-5 redrawn A and B: fresh cold read (ninth PM)
+
+One fresh reader (Sonnet), images only; return verbatim in `work-packages/WP19-cold-reads-s5b/reader3.md`. Would put A (light) in a document: both regions are
+interior, each a named pair trade, the pairs differ; B shows a change from trade-off to a single attribute ("alone"), not two trade-offs, and its star sits
+half clipped at the corner. Remaining defects in order: (1) the key uses terms the reader cannot resolve (V, leading term, exponent vector, frontier) and
+does not say what a position in the triangle means; (2) nested rings with the dot cloud invite a hill or density reading, tints read as groups of designs;
+(3) callout boxes cover dots and contours (in B they sit on the dashed line); (4) dark: dashed boundary and contours are both white, the boundary is lost
+where they run together; (5) star versus diamond unexplained; (6) the dashed line runs along or exits at the triangle edge; (7) A's open contour bands
+in the blue region are styled like the closed rings; (8) the two dot sizes are hard to see. Not yet addressed; the redraw iteration ended at d84b9f9
+as the driver bounded it to one.
