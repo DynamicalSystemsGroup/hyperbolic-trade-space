@@ -175,7 +175,7 @@ def _lme(x, tau):
 
 
 def _cell(kind, n, v, tau, reps, seed):
-    """(shift, its standard error, lower, L6 bound, E max z, v sqrt(2 log n)) for one cell."""
+    """(shift, its standard error, 0, L6 bound, E max z, v sqrt(2 log n)) for one cell."""
     rng = np.random.default_rng(seed)
     s = np.zeros(n) if kind == "surface" else -rng.exponential(1.0, n)
     z = v * rng.standard_normal((reps, n))
@@ -183,7 +183,7 @@ def _cell(kind, n, v, tau, reps, seed):
     return (
         per.mean(),
         per.std(ddof=1) / np.sqrt(reps),
-        s.mean() - _lme(s, tau),
+        0.0,  # the lower bound: the shift is nonnegative
         tau * v**2 / 2,
         z.max(axis=1).mean(),
         v * np.sqrt(2 * np.log(n)),
@@ -229,7 +229,7 @@ def test_L19_the_bound_is_not_tight():
 
 
 def test_L19_negative_controls_a_reversed_or_shifted_bound_fails():
-    # reversed: "the shift is at most mean - LME" is false where the lower bound is below the shift
+    # reversed: "the shift is at most 0" is false: the shift is positive at tau = 1
     shift, se, lower, l6, _, _ = _cell("surface", 1000, 0.2, 1, 400, 3)
     assert shift > lower + 10 * se
     # tau-shifted: tau v^2 / 8 in place of tau v^2 / 2 is violated where the L6 branch is active

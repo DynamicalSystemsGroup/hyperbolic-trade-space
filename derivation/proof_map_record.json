@@ -5299,7 +5299,7 @@
    ],
    "results": [
     {
-     "name": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)",
+     "name": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)",
      "steps": [
       1,
       2,
@@ -5341,7 +5341,10 @@
       38,
       39,
       40,
-      41
+      41,
+      42,
+      43,
+      44
      ]
     }
    ],
@@ -5356,7 +5359,7 @@
      "prose": "A3: tau > 0",
      "code": "tau = A3.positive(S.tau)",
      "fingerprint": "caa2d3d23da5d49ff9ed43dcb06f6ea981c7e42d31fec14edbba55e6eaff1a49",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.2",
@@ -5368,7 +5371,7 @@
      "prose": "A11: one row's noise z ~ N(0, v^2) with v > 0",
      "code": "Zrow, v = (A11.obj('noise'), A11.rule(0)[0])",
      "fingerprint": "d759eb9a60b500fafa2eb1a39cf69d775bb95c18699a4bd8202886f5191a374a",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.3",
@@ -5380,7 +5383,7 @@
      "prose": "F19: the noise draws z_i, real, bounded above by their maximum Zm",
      "code": "zi, Zm = F19.rule(0)",
      "fingerprint": "556110c5f8e93df1c5b75f09b0f0e7db394c07121e6942756b3b43ae66825d5b",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.4",
@@ -5392,7 +5395,7 @@
      "prose": "F19: the maximum is attained: z_{i0} = Zm for some i0",
      "code": "z_top = F19.rule(1)[0]",
      "fingerprint": "f56183839d045ff2d8588b0a3735ec318f9df770d71660180b82ccb181a41bef",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.5",
@@ -5402,7 +5405,7 @@
      "prose": "the tangent line e^x >= 1 + x: the minimum of e^x - 1 - x over R is 0",
      "code": "tangent_min = sp.calculus.util.minimum(sp.exp(x) - 1 - x, x, sp.S.Reals)",
      "fingerprint": "e75ddad2e6c136e23c57a255885a3604d4f79bd4ccb486d84b48923ece4a21f9",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.6",
@@ -5413,55 +5416,83 @@
       "F5"
      ],
      "results": [],
-     "prose": "A3, F5, F19: real scores and draws license the logarithm: the floor is mean_x",
-     "code": "floor_x = log_expand(sp.log(tangent_sum / n), A3, F5, F19) / tau",
-     "fingerprint": "f70891bc93d4dc8c35fd534625e5acf23f7e395d7632c1a6ad95217a74d59583",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "A3, F5, F19: the logarithm is licensed: shift = (1/tau) log Sum p_i e^{tau z_i}",
+     "code": "shift_form = log_expand(sp.log(Tx / n) - sp.log(Ts / n), A3, F5, F19) / tau",
+     "fingerprint": "a3c971696bd7d2c1d1e867ed8667f2d7a71492b0f428a650164e6d546aafafa8",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.7",
-     "kind": "computed",
-     "applies": [],
+     "kind": "axiom",
+     "applies": [
+      "A3",
+      "F19",
+      "F5"
+     ],
      "results": [],
-     "prose": "A11: E z_i = 0",
-     "code": "Ez = E(Zrow)",
-     "fingerprint": "ce42ea4429cc78f8f7dd9fed33e7597c9c57d1cd81384d5624835679f3e93c52",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "A3, F5, F19: the same shift written with the softmax weights p_i of the clean scores",
+     "code": "shift_target = log_expand(sp.log(linear(sp.Sum(p * sp.exp(tau * z[i]), lim)).subs(Tk, Ts)), A3, F5, F19) / tau",
+     "fingerprint": "f40e361b183e74a053b6b8f65879411dfa3cbb28a753e44d7af3281ddb8f871f",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.8",
      "kind": "axiom",
      "applies": [
-      "I17"
+      "A3",
+      "F19",
+      "F5"
      ],
      "results": [],
-     "prose": "I17: E is monotone, so LME(x) >= mean(x) pointwise gives E LME(x) >= E mean(x)",
-     "code": "lower_step = I17.entails([sp.Symbol('jx_X_le_Y_almost_surely')], sp.Symbol('jx_EX_le_EY'))",
-     "fingerprint": "bc292e92d99ffb4d0cf44736ed06c60a1937eb5c27da5dbe36d375bdc9ebbd8f",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "A3, F5, F19: the tangent-line floor of that logarithm is tau zbar",
+     "code": "floor_x = log_expand(sp.log(tangent_sum), A3, F5, F19) / tau",
+     "fingerprint": "a37175094744bbe3f37323c1f71f6169f3c8d6529b151494c3154b0630da9d0f",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.9",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "A11: E exp(tau z_i) = exp(tau^2 v^2 / 2), the L6 value",
-     "code": "mgf_row = sp.simplify(E(sp.exp(tau * Zrow)))",
-     "fingerprint": "3fb2b7856ea8d301fc88cb86227372fd51035edbe8eba79fa6fc0873aaacd63d",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "A11: E z_i = 0, so E zbar = Sum_i p_i E z_i = 0",
+     "code": "Ez = E(Zrow)",
+     "fingerprint": "fe3e52ebbcc00a11f5faa6f522bdc53837a9ca1dd08c3185c1951ef1bdff9d17",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.10",
+     "kind": "axiom",
+     "applies": [
+      "I17"
+     ],
+     "results": [],
+     "prose": "I17: E is monotone, so LME(x) - LME(s) >= zbar pointwise gives Delta >= E zbar = 0",
+     "code": "lower_step = I17.entails([sp.Symbol('jx_X_le_Y_almost_surely')], sp.Symbol('jx_EX_le_EY'))",
+     "fingerprint": "789553523040e3c8726969c27d1ff472e4e13a8591f904e974f7b0e3d42d5946",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
+    },
+    {
+     "tag": "L19.11",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "A11: E exp(tau z_i) = exp(tau^2 v^2 / 2), the L6 value",
+     "code": "mgf_row = sp.simplify(E(sp.exp(tau * Zrow)))",
+     "fingerprint": "3d6d767cfdf6a9bf783edcd22a1bce266b85c2ef0f9b2bd34d02ef1a1bedcee0",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
+    },
+    {
+     "tag": "L19.12",
      "kind": "computed",
      "applies": [],
      "results": [],
      "prose": "A11: the term i of E[(1/n) Sum exp(tau (s_i + z_i))] is exp(tau s_i) exp(tau^2 v^2/2)",
      "code": "term_E = sp.simplify(E(sp.exp(tau * (s[i] + Zrow))))",
-     "fingerprint": "4c60c97b40d532ff27d7e747dd3acdd51e923a3aefe1b20be32791efed04a599",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "d2577898f4fd4601a9d9062c8b500773efd4a69ee677f6f3a7f9624ce6f7b8c3",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
-     "tag": "L19.11",
+     "tag": "L19.13",
      "kind": "axiom",
      "applies": [
       "I17"
@@ -5469,11 +5500,11 @@
      "results": [],
      "prose": "I17: Jensen for f = -log: the slack E(-log X) + log(E X) of the row average X",
      "code": "slack = I17.slack_expr(jx_f_of_mean=-sp.log(EX), jx_mean_of_f=-elog)",
-     "fingerprint": "8c335e39215b267524daf577a7ed38e9d87ecd9b5f153fab5c7812d7028b99aa",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "499601f96035abb75b4e8967aefca9c0f68c573d41b6b192d32916b3c1d0c747",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
-     "tag": "L19.12",
+     "tag": "L19.14",
      "kind": "axiom",
      "applies": [
       "I17"
@@ -5481,11 +5512,11 @@
      "results": [],
      "prose": "I17: the Jensen slack J is nonnegative",
      "code": "J = I17.slack_symbol('J')",
-     "fingerprint": "c0a3601a4ece2f394f054eb816f2de043689408921b80f210956b1d260fa6578",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "36ca89ee182a4ece40def81c3ee4cb0a7c4c1002e17ced3ef43c3c1352c2af29",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
-     "tag": "L19.13",
+     "tag": "L19.15",
      "kind": "axiom",
      "applies": [
       "A3",
@@ -5495,11 +5526,11 @@
      "results": [],
      "prose": "A3, F5, F19: the logarithm is licensed: E LME(s + z) = LME(s) + tau v^2/2 - J/tau",
      "code": "first_gap = sp.simplify(log_expand(elog_value, A3, F5, F19) / tau - (LMEs + tau * v ** 2 / 2 - J / tau))",
-     "fingerprint": "34925fcddd5a927cff46007f7bfc1553031a5a0b3fdd68f1f48b3790ec8196cf",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "a9518bb2ccc5679522ab6117f78b095fe373437895b29459fee6e06c765687fd",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
-     "tag": "L19.14",
+     "tag": "L19.16",
      "kind": "axiom",
      "applies": [
       "F19"
@@ -5507,11 +5538,11 @@
      "results": [],
      "prose": "F19: the slack Zm - z_i of z_i <= Zm is nonnegative",
      "code": "slack_i = F19.nonneg_symbol('slack_i')",
-     "fingerprint": "53523d474988a4b82272ac993801a216cfef778137533027ed29d41bcb5175a4",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "0ac97d76bf057d421825ef12c30fdd383d7b5f2a65507cd50c9c38ee0b38cfe7",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
-     "tag": "L19.15",
+     "tag": "L19.17",
      "kind": "axiom",
      "applies": [
       "A3"
@@ -5519,11 +5550,11 @@
      "results": [],
      "prose": "A3: with slack_i >= 0 (F19), -tau slack_i <= 0: each term <= e^(tau s_i) e^(tau Zm)",
      "code": "sign_ok = (-A3.positive(tau) * slack_i).is_nonpositive",
-     "fingerprint": "062e8e217a961481b980fbfeac01ca1793d4abf176bf7999dea4729253fcc00d",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "18552b17170a74b839af50763330e0acafb1d8a5f08291f74b1fc794021bc87d",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
-     "tag": "L19.16",
+     "tag": "L19.18",
      "kind": "axiom",
      "applies": [
       "A3",
@@ -5533,11 +5564,11 @@
      "results": [],
      "prose": "A3, F5, F19: the sum bound T_x <= exp(tau Zm) T_s gives LME(x) <= LME(s) + Zm",
      "code": "max_gap = sp.simplify(log_expand(sp.log(sp.exp(tau * Zm) * Ts / n), A3, F5, F19) / tau - (Zm + LMEs))",
-     "fingerprint": "24900fc33e89f81326b850355cc8f17a415beef8c716e6e784950ea35a9152e5",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "174b3dc5fc5de02c0496aaa75e6809ea6ffc14dab45f2cda0d2b67af7a160143",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
-     "tag": "L19.17",
+     "tag": "L19.19",
      "kind": "axiom",
      "applies": [
       "I17"
@@ -5545,11 +5576,11 @@
      "results": [],
      "prose": "I17: E is monotone, so LME(x) <= LME(s) + Zm gives E LME(x) <= LME(s) + E Zm",
      "code": "upper_step = I17.entails([sp.Symbol('jx_X_le_Y_almost_surely')], sp.Symbol('jx_EX_le_EY'))",
-     "fingerprint": "c433fe9560470bc42d06c43cb5d70b9445a0ad4ef7bbd7541a9b16549ba9f250",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "dd1b3d3659e8450423e452829fc9225b6c1d59fd68c3a815b9abf1c0d9453434",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
-     "tag": "L19.18",
+     "tag": "L19.20",
      "kind": "axiom",
      "applies": [
       "I17"
@@ -5557,11 +5588,11 @@
      "results": [],
      "prose": "I17: Jensen for the convex exp: exp(lam E Zm) <= E exp(lam Zm); slack >= 0",
      "code": "jensen_exp = I17.slack_expr(jx_f_of_mean=sp.exp(lam * EZm), jx_mean_of_f=Eexp)",
-     "fingerprint": "675a4d7e34810a80c11b136bc45993f37cddcd5e86635a2eb383468acdece738",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "781ff9712caa4484e09916d57706803dc75e2d7e1ae6a28f2b309dfc232a9e98",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
-     "tag": "L19.19",
+     "tag": "L19.21",
      "kind": "axiom",
      "applies": [
       "F19"
@@ -5569,11 +5600,11 @@
      "results": [],
      "prose": "F19: the term i0 of Sum_i exp(lam z_i) is exp(lam Zm)",
      "code": "top_term = sp.exp(lam * z_top).subs(*F19.rule(1))",
-     "fingerprint": "25c9ac01240f8d1e52ecf8254bfb23fc0b30185817fd071ddedf583b51300909",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "196f219da4d7bae6fd28b851d26b057480ecdfaed4ac01651997bd1199beb632",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
-     "tag": "L19.20",
+     "tag": "L19.22",
      "kind": "axiom",
      "applies": [
       "F19"
@@ -5581,21 +5612,21 @@
      "results": [],
      "prose": "F19: a second term exp(lam z_k) over a real draw is positive",
      "code": "other_term = sp.exp(lam * F19.real_base('zr')[sp.Symbol('k2', integer=True)])",
-     "fingerprint": "dbbaaefe7d61df4790ec4b94f963fb109c9eb3c8ce553f697a25e0f6ed019996",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "4ea621d3a514865390ec8e8bd15afd0d3ad367eaa7815a1b07aab05e6c98a0b4",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
-     "tag": "L19.21",
+     "tag": "L19.23",
      "kind": "computed",
      "applies": [],
      "results": [],
      "prose": "A11: E exp(lam z_i) = exp(lam^2 v^2/2), so E Sum_i exp(lam z_i) = n exp(lam^2 v^2/2)",
      "code": "union = n * sp.simplify(E(sp.exp(lam * Zrow)))",
-     "fingerprint": "654327aad63769ac26910e9ae0e783917079cf574daefec362630e5cc036ae94",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "0293bda0fad15330c2ef8d24ed93af31940168f2911cf893ee256231ae223b7e",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
-     "tag": "L19.22",
+     "tag": "L19.24",
      "kind": "axiom",
      "applies": [
       "A3",
@@ -5605,198 +5636,208 @@
      "results": [],
      "prose": "A3, F5, F19: log of the union bound n exp(lam^2 v^2/2) is log n + lam^2 v^2/2",
      "code": "chernoff = sp.simplify(log_expand(sp.log(union), A3, F5, F19) - (sp.log(n) + lam ** 2 * v ** 2 / 2))",
-     "fingerprint": "19bd514c1832a46833a2b551a58f23903c63dc1e0d769e17c6cf4ad24009867f",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
-    },
-    {
-     "tag": "L19.23",
-     "kind": "computed",
-     "applies": [],
-     "results": [],
-     "prose": "the minimum of e^x - 1 - x over R is 0: e^x >= 1 + x",
-     "code": "assert r['tangent_min'] == 0, 'L19 FAIL tangent line'",
-     "fingerprint": "a053de0dde0b427118132d460eeda5dc1b9d1b18d1c442adfc0a3cc636fdb153",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
-    },
-    {
-     "tag": "L19.24",
-     "kind": "computed",
-     "applies": [],
-     "results": [],
-     "prose": "LME(s + z) >= mean(s + z): the tangent-line floor equals the mean",
-     "code": "assert sp.simplify(r['floor_x'] - r['mean_x']) == 0, 'L19 FAIL floor'",
-     "fingerprint": "7692de572e2e9f85c137265fca2722fb3d3d2e16bbd0bcf40b18dac6a867e61d",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "f616638ac7b5b898dbb9e87d1002ae2fc52b88331662661cd40a728111121fff",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.25",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "E z_i = 0, so E mean(s + z) = mean(s)",
-     "code": "assert r['Ez'] == 0 and sp.simplify(r['mean_of_E'] - r['mean_s']) == 0, 'L19 FAIL mean'",
-     "fingerprint": "b194ed3d969a26933b2f9020ba6a25be85f2338d1bc24b62510d2f7076ddb102",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "the minimum of e^x - 1 - x over R is 0: e^x >= 1 + x",
+     "code": "assert r['tangent_min'] == 0, 'L19 FAIL tangent line'",
+     "fingerprint": "79c1d8de8e51e15ea52612d0cbc241657c8fdc73eb3daef27a16894da88b6e42",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.26",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "E is monotone, so E LME(s + z) >= mean(s): the lower bound",
-     "code": "assert r['lower_step'] is True, 'L19 FAIL lower step'",
-     "fingerprint": "be7ae6b7780e52fcb801513181e575ce8e86f8609420c82fc6942240ad2265c2",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "LME(s + z) - LME(s) equals (1/tau) log Sum_i p_i e^{tau z_i}",
+     "code": "assert sp.simplify(sp.expand(r['shift_form'] - r['shift_target'], power_exp=True)) == 0, 'L19 FAIL shift form'",
+     "fingerprint": "da54fc9760e4039ef535033ef5b2e9fa9d63ce6a173002d044dff445dadbe75c",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.27",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the row moment generating function is the L6 value exp(tau^2 v^2 / 2)",
-     "code": "assert sp.simplify(r['mgf_row'] - sp.exp(tau ** 2 * v ** 2 / 2)) == 0, 'L19 FAIL row MGF'",
-     "fingerprint": "11537dfbf393f2c740b6471b89d623d17ff7e0821e3d24184aa041b17a6d5bea",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "the tangent-line floor of the logarithm equals zbar: the shift is at least zbar",
+     "code": "assert sp.simplify(r['floor_x'] - r['zbar']) == 0, 'L19 FAIL floor'",
+     "fingerprint": "9d8b174cf8d189ab0d4762b4b46a0adc0e6ed80fe57af8eb6448c57763ac0df5",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.28",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the term i of E X is exp(tau s_i) exp(tau^2 v^2 / 2)",
-     "code": "assert sp.simplify(r['term_E'] - sp.exp(tau * S.s[S.i]) * sp.exp(tau ** 2 * v ** 2 / 2)) == 0, 'L19 FAIL term of E X'",
-     "fingerprint": "02b90288b76a96dc8f97c9564c362a6b77838317c6d21c361dda29520e023382",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "E z_i = 0, so E zbar = 0",
+     "code": "assert r['Ez'] == 0 and r['Ezbar'].doit() == 0, 'L19 FAIL mean'",
+     "fingerprint": "3177e17f3506b261e4447100341a40b099dc8353d356308f8b7c5eb860397b7a",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.29",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "Jensen: E LME(s + z) = LME(s) + tau v^2/2 - J/tau with the slack J >= 0",
-     "code": "assert r['first_gap'] == 0, 'L19 FAIL Jensen with the L6 value'",
-     "fingerprint": "ff9a1a8674355b7040cdf23db0eeb75228d070bc9b2e158a5dae96f1d8568fe9",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "E is monotone, so Delta >= E zbar = 0: the lower bound",
+     "code": "assert r['lower_step'] is True, 'L19 FAIL lower step'",
+     "fingerprint": "4c61780fb4b04d3af0b079b7e882880d054cf78defb1c1cd1111fea1ef01697f",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.30",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the shifted term is exp(tau s_i) exp(tau Zm) exp(-tau slack_i)",
-     "code": "assert r['term_shift'] == 0, 'L19 FAIL shifted term'",
-     "fingerprint": "f2801cc452555c19415a16448233268903393509c5f30030c72460eaa60e053f",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "the row moment generating function is the L6 value exp(tau^2 v^2 / 2)",
+     "code": "assert sp.simplify(r['mgf_row'] - sp.exp(tau ** 2 * v ** 2 / 2)) == 0, 'L19 FAIL row MGF'",
+     "fingerprint": "d8bc66d3f04de5b0823752bda39ed6d2ed2a8c519dd2aaa51bf53f6c2247f397",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.31",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "exp(y) <= 1 exactly when y <= 0",
-     "code": "assert r['term_le_one'] == sp.Interval(-sp.oo, 0), 'L19 FAIL exp(y) <= 1 iff y <= 0'",
-     "fingerprint": "1f6ed220f64e6ed829eddb57734d1d9e611ff9df065b486015106140619a7a90",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "the term i of E X is exp(tau s_i) exp(tau^2 v^2 / 2)",
+     "code": "assert sp.simplify(r['term_E'] - sp.exp(tau * S.s[S.i]) * sp.exp(tau ** 2 * v ** 2 / 2)) == 0, 'L19 FAIL term of E X'",
+     "fingerprint": "8990b410216333ccced15920e27020dbc055af59e8a95832a1702d06d683c548",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.32",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "each shifted term is at most exp(tau s_i) exp(tau Zm): -tau slack_i <= 0",
-     "code": "assert r['sign_ok'] is True, 'L19 FAIL sign of the shifted exponent'",
-     "fingerprint": "ea7716957a02455b3cc4e98e41e28985b8e67475ddcb47644b9c85355039c4ee",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "Jensen: E LME(s + z) = LME(s) + tau v^2/2 - J/tau with the slack J >= 0",
+     "code": "assert r['first_gap'] == 0, 'L19 FAIL Jensen with the L6 value'",
+     "fingerprint": "f4654805b22cdc279c66063bd36b39327f142d4f824efa86b9a64573cce12e46",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.33",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "LME(s + z) <= LME(s) + Zm: the sum bound and the logarithm",
-     "code": "assert r['max_gap'] == 0, 'L19 FAIL LME(x) <= LME(s) + Zm'",
-     "fingerprint": "a963bf5c7dc4033fd2dc4b629baa5ef80096967bc89e6917aae63fd2d02acf99",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "the shifted term is exp(tau s_i) exp(tau Zm) exp(-tau slack_i)",
+     "code": "assert r['term_shift'] == 0, 'L19 FAIL shifted term'",
+     "fingerprint": "eef8ea7106a40f6bc101829d990a2cd41ca0487dfa647d6cbcc88b23c6b67933",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.34",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "E is monotone, so E LME(s + z) <= LME(s) + E max z: the second upper bound",
-     "code": "assert r['upper_step'] is True, 'L19 FAIL upper step'",
-     "fingerprint": "a0bafb2ad10045a21f97b84858f686690f47719834da57b1b5d42871a50cb69f",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "exp(y) <= 1 exactly when y <= 0",
+     "code": "assert r['term_le_one'] == sp.Interval(-sp.oo, 0), 'L19 FAIL exp(y) <= 1 iff y <= 0'",
+     "fingerprint": "fc337b3bdeee999a3e86d5ef2509472fd2cc9282a9e66c826c2744cc7b41cff5",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.35",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "Jensen for exp: the slack Eexp - exp(lam E Zm) is the nonnegative difference",
-     "code": "assert r['jensen_exp'] == sp.Symbol('Eexp', real=True) - sp.exp(lam * sp.Symbol('EZm', real=True)), 'L19 FAIL Jensen for exp'",
-     "fingerprint": "9a2a0ac6f467c1c1c832f22ca85fda16ffa4dd6c7cb18c6edace68e8d71eef1a",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "each shifted term is at most exp(tau s_i) exp(tau Zm): -tau slack_i <= 0",
+     "code": "assert r['sign_ok'] is True, 'L19 FAIL sign of the shifted exponent'",
+     "fingerprint": "6db495d6649118e689bc8d2d25b9c7f8f45b71c521b6443d229304fd6fef191d",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.36",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "exp(lam Zm) <= Sum_i exp(lam z_i): the term i0 is exp(lam Zm)",
-     "code": "assert r['top_term'] == sp.exp(lam * r['Zm']), 'L19 FAIL top term'",
-     "fingerprint": "8b32b35f6516c25bdb9db9fc00933c10dc1471c0d5f4186a3fd7b062abd1129d",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "LME(s + z) <= LME(s) + Zm: the sum bound and the logarithm",
+     "code": "assert r['max_gap'] == 0, 'L19 FAIL LME(x) <= LME(s) + Zm'",
+     "fingerprint": "3470f2a724c4d5693d02a380d06e198c471dc41121d224f86e58d1594b403943",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.37",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the other terms are positive, so the sum is at least the top term",
-     "code": "assert r['other_term'].is_positive is True, 'L19 FAIL positivity of the other terms'",
-     "fingerprint": "7ac6f86d486389eb2c8e664d331e1353cfa9df291b71cd0fef9d75db5f4fd220",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "E is monotone, so E LME(s + z) <= LME(s) + E max z: the second upper bound",
+     "code": "assert r['upper_step'] is True, 'L19 FAIL upper step'",
+     "fingerprint": "6adc06be224c6d095934673db0017f0e6ee2beaab4a3ae793ec99b3083c67ca9",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.38",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "log of n exp(lam^2 v^2 / 2) is log n + lam^2 v^2 / 2: lam E Zm <= log n + lam^2 v^2/2",
-     "code": "assert r['chernoff'] == 0, 'L19 FAIL Chernoff exponent'",
-     "fingerprint": "326c8c9d9217abed2957b5c2d067d5231426ce8c2da4ec13d7020a04b7bdc63f",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "Jensen for exp: the slack Eexp - exp(lam E Zm) is the nonnegative difference",
+     "code": "assert r['jensen_exp'] == sp.Symbol('Eexp', real=True) - sp.exp(lam * sp.Symbol('EZm', real=True)), 'L19 FAIL Jensen for exp'",
+     "fingerprint": "3d62da1b47af3032b2b9b1d2716c07bec79307a8c9339f8073db63301de42cf2",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.39",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the minimiser of log(n)/lam + lam v^2/2 is sqrt(2 log n)/v, with positive curvature",
-     "code": "assert sp.simplify(r['lam_star'] - sp.sqrt(2 * ln) / v) == 0 and r['curvature'].is_positive is True, 'L19 FAIL minimiser'",
-     "fingerprint": "d962f49061d93b8ada9e32af0e468857d69cc014dbef7cfad7b3faff11c40376",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "exp(lam Zm) <= Sum_i exp(lam z_i): the term i0 is exp(lam Zm)",
+     "code": "assert r['top_term'] == sp.exp(lam * r['Zm']), 'L19 FAIL top term'",
+     "fingerprint": "92e3a424e74cff39f751a0e96839231d7954d47492ce05639dcb29579e240b25",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.40",
      "kind": "computed",
      "applies": [],
      "results": [],
-     "prose": "the minimum is v sqrt(2 log n): E max z <= v sqrt(2 log n)",
-     "code": "assert sp.simplify(r['g_min'].subs(ln, ln_n) - v * sp.sqrt(2 * ln_n)) == 0, 'L19 FAIL minimum'",
-     "fingerprint": "04ef0fe06c5145b17aa9d03e6f862e9e38c1a5ebc6204ca2bb9fe62d974908f7",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "prose": "the other terms are positive, so the sum is at least the top term",
+     "code": "assert r['other_term'].is_positive is True, 'L19 FAIL positivity of the other terms'",
+     "fingerprint": "25e114854cfdb3d343d71d7187bf503d8e2e463a8d3a03243aa283bace6112eb",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     },
     {
      "tag": "L19.41",
      "kind": "computed",
      "applies": [],
      "results": [],
+     "prose": "log of n exp(lam^2 v^2 / 2) is log n + lam^2 v^2 / 2: lam E Zm <= log n + lam^2 v^2/2",
+     "code": "assert r['chernoff'] == 0, 'L19 FAIL Chernoff exponent'",
+     "fingerprint": "68c5df0f04c060a2f1bad547b9912d3239cef03b6232ecb6880544924460643e",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
+    },
+    {
+     "tag": "L19.42",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the minimiser of log(n)/lam + lam v^2/2 is sqrt(2 log n)/v, with positive curvature",
+     "code": "assert sp.simplify(r['lam_star'] - sp.sqrt(2 * ln) / v) == 0 and r['curvature'].is_positive is True, 'L19 FAIL minimiser'",
+     "fingerprint": "54ff30d70a45404cb73fb3c2b1e097976f533f9180f9aa09efaafb3ebefb3ec8",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
+    },
+    {
+     "tag": "L19.43",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the minimum is v sqrt(2 log n): E max z <= v sqrt(2 log n)",
+     "code": "assert sp.simplify(r['g_min'].subs(ln, ln_n) - v * sp.sqrt(2 * ln_n)) == 0, 'L19 FAIL minimum'",
+     "fingerprint": "3afa8f8467a132f78b0f053028e439066fbbdb6d782222f0ab1a8977ad374eb1",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
+    },
+    {
+     "tag": "L19.44",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
      "prose": "tau v^2/2 and v sqrt(2 log n) cross at tau* = 2 sqrt(2 log n) / v",
      "code": "assert sp.simplify(r['tau_star'] - 2 * sp.sqrt(2 * ln) / v) == 0, 'L19 FAIL crossover'",
-     "fingerprint": "d6ca45e82aa75d15d52ff87ac6f4d545304651dc3c19ce90da82880da8d195cf",
-     "result": "Noise shift of the soft maximum: mean - LME <= shift <= min(tau v^2/2, E max z)"
+     "fingerprint": "84594e09e161851b870911e8b86938df277bfc658243185cf77c072778522019",
+     "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     }
    ]
   }
