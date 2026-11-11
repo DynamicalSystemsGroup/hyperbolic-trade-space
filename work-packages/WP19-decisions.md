@@ -67,3 +67,17 @@ near-frontier designs to one neutral colour, keep the facet colouring with the c
 look again. **Supervisor (mzargham), verbatim:** "Recolour". Disposition: the designs go to one neutral colour; the
 stars, squares and triangles (exponent vectors and planted answers) carry the figure as before; the docs prose
 about the values at the marked points is unchanged.
+
+## The tension heatmap's missing term (2026-11-11, 12:10; the supervisor, verbatim, on the K = 3 tension figure)
+
+"leaving the first term off the picture feels wrong to me." (The figure draws terms 2 and 3 and replaces term 1's
+panel with the line "Too few near-frontier designs for an association reading: 3 of ten".)
+
+**The assistant's call.** Every term is drawn. A term whose cell holds too few near-frontier designs for a correlation
+gets its panel like the others: its title with the n-lemma count, its metrics with their exponents, the contending set
+outlined, and the correlation cells left empty (no colour, no number) with the reason written inside the panel in one
+line ("3 near-frontier designs; no association reading"). The fix goes in the plotting function that draws the per-term
+panels, so it holds for any fit, with a test on a planted case that has a thin term; contract row 11 unchanged (no
+signature change); the paper's and the docs' renders regenerate from the same function; a cold read of the redrawn
+figure image first, then the caption says what an empty panel means. It lands before the WP30 regeneration so the
+regenerated figure inherits it; the thin term after the regeneration is whatever the data give.
