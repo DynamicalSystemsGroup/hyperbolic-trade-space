@@ -35,3 +35,14 @@ and the glossary's "mean slack cannot choose K" made consistent with the page). 
 large-K limit shows "the stable radius shrinks, the n-lemmas fragment"; the readout's sweep shows no radius trend, so
 the page rightly omits both; the driver's line was wrong on the data and is withdrawn; the page says what the sweep
 shows and nothing more.
+
+**Task readers (c8909e7), the driver (2026-11-11, 02:30):** the two planted readers chose K0 and the cubesat reader
+said what the page says (no break), with every number reproduced; the page does its job. Before acceptance the four
+defects the readers found are fixed as one unit: (1) a temperature recipe for the reader's own table using the
+package's own `select_temperature` (the case helper is not installable), with the statement that the K comparison
+holds the temperature fixed at the one selected at K = 1; (2) glosses or glossary links on the page for slack, the
+band, the cell and the certificate radius, with a scale for "thin"; (3) the `sweep` helper's assertion removed (a
+page example does not assert on a borderline number); (4) the repository-root note beside the `sys.path` line. The
+three returns are committed verbatim (the readers are resumed to write them to files) beside the triage, as every
+reader round's are; the rebuilt page is photographed by the reviewer to files, light and dark, and the driver's own
+pass follows. Then acceptance and the changelog line.

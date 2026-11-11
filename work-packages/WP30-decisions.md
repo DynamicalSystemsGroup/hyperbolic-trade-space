@@ -37,3 +37,14 @@ model developer may start the build."
 - **(3) (a).** The model's line cap rises to 1,150 with the reason in the record (eleven traded metrics and a cost
   section); no trimming of the model's docs for the cap's sake.
 - **(4) (a).** The check designs draw fleet sizes as the scope says, so the pricing metrics are exercised by the checks.
+
+**Gate checklist (450c65b), the driver (2026-11-11, 02:30):** the nine gaps are preparation units for the model
+developer and the PM, to land before the supervisor's values arrive: a WP30 mode in `ledger_gate.py` for the
+regeneration's entries; the ladder script (`WP30-rounds/cost-ladders.md` from a script on the regenerated data, per
+regime and fleet size); named commands for the sensitivity and the K = 1, 2, 3 records; the container README's
+paragraph on the ledger re-run inside `hts-paper`; the entry numbers read from `ledger.jsonl` before the run, not
+inferred; the contract amendment numbered at the head when it lands. On gap 2: the supervisor's values change the
+model's hash after the regeneration; under OD2 (a) the outputs do not move, so the gate ends with a container re-run
+that proves hash-equal outputs against the new model hash (the WP26 precedent), not a second regeneration. The
+answer key's version 5 is the driver's and is written when the data of record land. The check designs draw a fleet
+size, as decided (3b question 4).
