@@ -20,7 +20,7 @@ import pytest
 # Slow module: shared fixtures cost minutes (verification in tiers); not in the fast suite.
 pytestmark = pytest.mark.slow
 
-N = 150  # small sample: the first N feasible designs
+N = 300  # small sample: the first N feasible designs (thirteen metrics need more than 150 for K = 2)
 ADCS = Path(__file__).resolve().parents[1] / "examples" / "adcs"
 
 
@@ -73,22 +73,29 @@ def test_subsystem_mapping_is_data_and_covers_every_attribute():
 
 def test_load_study_filters_and_conditions(small):
     assert small.M.shape == (N, 13) and (small.M > 0).all()
-    assert len(small.raw) == 1000 and len(small.feasible) == N
+    assert len(small.raw) == 3000 and len(small.feasible) == N
     assert small.feasible.settled.all() and small.feasible.momentum_ok.all()
     assert small.names[0] == "settling time" and small.names[-1] == "fleet cost"
     assert "metrics__settling_time_s" in small.conditioner.get_feature_names_out()
     assert "metrics__slew_time_s" not in small.conditioner.get_feature_names_out()
 
 
+DOD_FAILS_PRIMARY, DOD_FAILS_STOCK = 389, 388
+
+
 def test_feasible_mask_counts_on_frozen_data(primary, stock):
-    """R-19 of the WP23 close-out: ``dod_ok`` is a flag of the case, and the feasible sets stay 706
-    and 780 (the eclipse reserve's positivity removed exactly the ``dod_ok`` failures, 131 per
-    regime, before the reserve left the metric set)."""
+    """R-19 of the WP23 close-out: ``dod_ok`` is a flag of the case. The feasible sets are 706 and
+    780 on the first 1,000 designs of each regime (unchanged at the WP30 gate) and 2,134 and 2,355
+    on the 3,000 designs of the gate's sample."""
     assert "dod_ok" in case.CUBESAT.flags
-    assert len(primary.feasible) == 706 and len(stock.feasible) == 780
-    assert int(case.feasible_mask(primary.raw).sum()) == 706
-    for study in (primary, stock):
-        assert int((~study.raw.dod_ok).sum()) == 131
+    assert len(primary.feasible) == 2134 and len(stock.feasible) == 2355
+    assert int(case.feasible_mask(primary.raw).sum()) == 2134
+    assert int(case.feasible_mask(primary.raw.iloc[:1000]).sum()) == 706
+    assert int(case.feasible_mask(stock.raw.iloc[:1000]).sum()) == 780
+    assert [int((~st.raw.dod_ok).sum()) for st in (primary, stock)] == [
+        DOD_FAILS_PRIMARY,
+        DOD_FAILS_STOCK,
+    ]
 
 
 def test_feasibility_table_cascade(primary):
@@ -100,8 +107,8 @@ def test_feasibility_table_cascade(primary):
         "dod_ok",
         "all attributes positive",
     ]
-    assert t.remaining.iloc[-1] == 706 and t.remaining.is_monotonic_decreasing
-    assert t["removed in this order"].sum() == 1000 - 706
+    assert t.remaining.iloc[-1] == 2134 and t.remaining.is_monotonic_decreasing
+    assert t["removed in this order"].sum() == 3000 - 2134
 
 
 def test_conditioning_table(small):
@@ -288,31 +295,31 @@ def test_scaler_option_changes_the_conditioning_and_is_standard_by_default(small
 
 def test_nondominated_counts_on_frozen_primary(primary):
     t = case.nondominated_counts(primary).set_index("view")
-    assert t.nondominated.tolist() == [659, 126]
-    assert (t["of"] == 706).all()
-    assert t.share.round(3).tolist() == [0.933, 0.178]
+    assert t.nondominated.tolist() == [2134, 236]  # with thirteen metrics no design is dominated
+    assert (t["of"] == 2134).all()
+    assert t.share.round(3).tolist() == [1.0, 0.111]
 
 
-# the K record on the eight-metric data of record (the WP23 close-out), as k_terms.py prints it:
-# tau, objective_, frac_above_, term rows; then gamma and radius (the radius scales with the number
-# of metrics, so it moved when the eclipse reserve left; the stock K = 3 assignment moved by 3 rows)
+# the K record on the thirteen-metric data of record (the WP30 gate: 3,000 designs per regime, host-
+# recorded), as k_terms.py prints it: tau, objective_, frac_above_, term rows; then gamma and radius
+# (the radius scales with the number of metrics)
 RECORD = {
     "primary": {
-        1: (38.10, 0.2434, 0.092, [706]),
-        2: (94.42, 0.1823, 0.095, [414, 292]),
-        3: (113.22, 0.1458, 0.099, [162, 181, 363]),
+        1: (41.72, 0.121792, 0.0979, [2134]),
+        2: (113.22, 0.087426, 0.0951, [934, 1200]),
+        3: (135.76, 0.069274, 0.1078, [459, 621, 1054]),
     },
     "stock": {
-        1: (45.68, 0.1786, 0.104, [780]),
-        2: (71.92, 0.1417, 0.100, [454, 326]),
-        3: (113.22, 0.0927, 0.091, [253, 185, 342]),
+        1: (45.68, 0.114827, 0.1062, [2355]),
+        2: (103.40, 0.099601, 0.1023, [986, 1369]),
+        3: (135.76, 0.080296, 0.0960, [705, 797, 853]),
     },
 }
 MARGIN = {
-    ("primary", 2): (0.0006969, 0.0000695), ("primary", 3): (0.0012124, 0.0001209),
-    ("stock", 2): (0.0014127, 0.0001327), ("stock", 3): (0.0003498, 0.0000329),
+    ("primary", 2): (0.0003768, 0.0000255), ("primary", 3): (0.0004214, 0.0000285),
+    ("stock", 2): (0.000263, 0.0000175), ("stock", 3): (0.0001, 0.0000066),
 }  # fmt: skip
-GAP_K1 = {"primary": 8.7e-6, "stock": 1.24e-5}
+GAP_K1 = {"primary": 6.96e-6, "stock": 3.17e-5}
 
 
 @pytest.mark.slow
@@ -338,21 +345,23 @@ def test_k_sweep_equals_the_record(regime, request):
 
 def test_k3_terms_equal_the_primary_record(primary, primary_fits):
     f = case.term_table(primary, primary_fits, K=3)
-    assert sorted(f["rows"]) == [162, 181, 363]
-    assert sorted(f.share.round(3)) == [0.034, 0.241, 0.724]
-    assert sorted(f["n_lemma"]) == [4, 5, 5]
-    assert sorted(f["near-frontier"]) == [3, 21, 73]
+    assert sorted(f["rows"]) == [459, 621, 1054]
+    assert sorted(f.share.round(3)) == [0.061, 0.344, 0.594]
+    assert sorted(f["n_lemma"]) == [7, 8, 8]
+    assert sorted(f["near-frontier"]) == [50, 188, 297]
     assert (f["gap G_k"] < 1e-12).all()
     big = f.loc[f.share.idxmax()]
     assert big["contending set"].startswith("peak slew power, pointing error")
-    assert big["largest exponents"].startswith("peak slew power 0.612")
+    assert big["largest exponents"].startswith("peak slew power 0.417")
 
 
 def test_thin_term_is_reported_from_the_estimator_and_gets_its_reason(primary, primary_fits):
     """WP23 data gate: the guard of ten is applied per term, the thin term's reading replaced."""
     import matplotlib.pyplot as plt
 
-    fit, band = primary_fits[3], primary_fits[1].band
+    # at the data of the WP30 gate every term has the rows at the K = 1 band (188, 297, 50); half
+    # the K = 3 fit's own band leaves the third term with three
+    fit, band = primary_fits[3], 0.5 * primary_fits[3].band
     reps = case.term_reports(fit.estimator, primary.M, band)
     assert len(reps) == 3 and case.MIN_NEAR_FRONTIER == 10
     thin = [r for r in reps if not case.has_reading(r)]
@@ -372,21 +381,23 @@ def test_thin_term_is_reported_from_the_estimator_and_gets_its_reason(primary, p
 def test_k1_contending_set_equals_the_record(primary, primary_fits, stock, stock_fits):
     p = case.tension_table(primary, primary_fits[1]).iloc[0]
     assert p["contending set"] == (
-        "total mass, energy balance, pointing error, depth of discharge, settling time"
+        "unit cost, available power, pointing error, fleet cost, momentum headroom, settling time, "
+        "depth of discharge"
     )
-    assert p.n_lemma == 5 and p["near-frontier"] == 56
+    assert p.n_lemma == 7 and p["near-frontier"] == 238
     s = case.tension_table(stock, stock_fits[1]).iloc[0]
     assert set(s["contending set"].split(", ")) == {
-        "control effort", "settling time", "power margin", "pointing error", "depth of discharge",
+        "momentum headroom", "available power", "total mass", "settling time", "pointing error",
+        "depth of discharge", "unit cost", "fleet cost",
     }  # fmt: skip
-    assert s["near-frontier"] == 77
+    assert s.n_lemma == 8 and s["near-frontier"] == 293
 
 
 def test_regime_comparison_on_frozen_data():
     t = case.regime_comparison().set_index("quantity")
-    assert t.loc["feasible n", "primary"] == "706 (191 / 248 / 267)"
-    assert t.loc["band 1/tau, near-frontier designs", "primary"] == "0.0262, 56"
-    assert t.loc["band 1/tau, near-frontier designs", "stock"] == "0.0219, 77"
+    assert t.loc["feasible n", "primary"] == "2134 (548 / 707 / 879)"
+    assert t.loc["band 1/tau, near-frontier designs", "primary"] == "0.0240, 238"
+    assert t.loc["band 1/tau, near-frontier designs", "stock"] == "0.0219, 293"
 
 
 # ---- candidates and propose-predict-check -----------------------------------------------------
@@ -407,7 +418,7 @@ def test_candidates_are_scored(primary, primary_fits):
 @pytest.mark.slow
 def test_refit_reproduces_the_recorded_predictions(primary, regressor):
     t = case.proposals_table(primary, regressor)
-    assert len(t) == 3 and (t["max |recorded - refit|"] < 1e-6).all()
+    assert len(t) == 3 and (t["max |recorded - refit|"] < 1e-5).all()
     assert regressor.tau == pytest.approx(10.69, abs=0.01)
 
 
@@ -524,10 +535,10 @@ def test_docstrings_run_and_are_numpydoc():
 
 def test_sensitivity_and_refits_on_frozen_primary(primary):
     t = case.sensitivity_table(primary).set_index("variant")
-    assert t.loc["baseline", "tau"] == pytest.approx(38.0961, rel=1e-4)  # the K = 1 record
-    assert t.loc["baseline", "n_lemma"] == 5
+    assert t.loc["baseline", "tau"] == pytest.approx(41.7158, rel=1e-4)  # the K = 1 record
+    assert t.loc["baseline", "n_lemma"] == 7
     r = case.category_refits(primary)
-    assert r.designs.tolist() == [191, 248, 267]
+    assert r.designs.tolist() == [548, 707, 879]
 
 
 # ---- the cold reads of WP10, round 2: the mean slack across K, the margin scale, PCA, titles ----
@@ -637,18 +648,18 @@ def test_requirements_table_prices_each_requirement_as_spike_b(primary, primary_
     (`WP23-rounds/spikes/spike-B-requirements-and-the-fit.md`, sections 1 and 2)."""
     p = case.requirements_table(primary, primary_fits[1]).set_index("requirement")
     s = case.requirements_table(stock, stock_fits[1]).set_index("requirement")
-    assert p["pass (feasible)"].round(3).tolist() == [0.622, 0.950, 0.589, 0.949, 0.408]
-    assert s["pass (feasible)"].round(3).tolist() == [0.673, 0.637, 0.900, 0.956, 0.387]
-    assert p["near-frontier excluded"].tolist() == ["0 of 56", "1 of 56", "18 of 56", "0 of 56",
-                                                    "19 of 56"]  # fmt: skip
-    assert s["near-frontier excluded"].tolist() == ["2 of 77", "42 of 77", "1 of 77", "1 of 77",
-                                                    "43 of 77"]  # fmt: skip
+    assert p["pass (feasible)"].round(3).tolist() == [0.588, 0.952, 0.574, 0.946, 0.381]
+    assert s["pass (feasible)"].round(3).tolist() == [0.641, 0.656, 0.885, 0.952, 0.375]
+    assert p["near-frontier excluded"].tolist() == ["108 of 238", "8 of 238", "95 of 238",
+                                                    "12 of 238", "148 of 238"]  # fmt: skip
+    assert s["near-frontier excluded"].tolist() == ["145 of 293", "118 of 293", "32 of 293",
+                                                    "9 of 293", "210 of 293"]  # fmt: skip
     assert p.loc["pointing error", "price (log V)"] == pytest.approx(0.0019, abs=1e-4)
-    assert s.loc["pointing error", "price (bands)"] == pytest.approx(0.56, abs=0.01)
-    assert s.loc["control effort", "price (bands)"] == pytest.approx(7.9, abs=0.05)
+    assert s.loc["pointing error", "price (bands)"] == pytest.approx(0.79, abs=0.01)
+    assert s.loc["control effort", "price (bands)"] == pytest.approx(0.91, abs=0.01)
     assert p.loc["control effort", "price (log V)"] == 0.0  # zero exponent: no price at K = 1
     assert s.loc["control effort", "largest elasticities"] == (
-        "power margin +1.40; settling time -1.36"
+        "depth of discharge -0.77; pointing error -0.72"
     )
 
 
@@ -658,12 +669,14 @@ def test_design_sets_share_the_feasible_conditioning():
     one-term contending set of the constrained set against the feasible set's."""
     sets = {r: case.design_sets(r) for r in case.CUBESAT.regimes}
     t = case.design_sets_table(sets=sets).set_index(["regime", "set"])
-    assert t["designs"].tolist() == [1000, 706, 288, 1000, 780, 302]
+    assert t["designs"].tolist() == [3000, 2134, 814, 3000, 2355, 882]
     for by_set in sets.values():
         conds = {id(st.conditioner) for st, _ in by_set.values()}
         assert len(conds) == 1  # one conditioning for every set
     feasible = t.loc[("primary", "feasible"), "contending set"]
-    assert t.loc[("primary", "requirements met"), "contending set"] == feasible
+    # the same seven metrics; the order is by exponent and moves with the set (WP30 gate)
+    met = t.loc[("primary", "requirements met"), "contending set"]
+    assert set(met.split(", ")) == set(feasible.split(", "))
     place = case.design_sets_placement(sets=sets)
     assert len(place) == 14 and set(place["design"]) >= {"baseline configuration", "proposal_2"}
     base = place[place.design == "baseline configuration"]

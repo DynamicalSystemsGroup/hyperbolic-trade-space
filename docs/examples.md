@@ -50,31 +50,34 @@ the near-frontier designs it excludes and a price at the one-term frontier, in b
 
 ```text
 # case.requirements_summary()
-requirement      pass             near excluded   price, bands
+requirement      pass             near excluded       price, bands
 (primary | stock)
-peak slew power  62.2 | 67.3 %    0/56 | 2/77     0 | 0
-pointing error   95.0 | 63.7 %    1/56 | 42/77    0.07 | 0.56
-control effort   58.9 | 90.0 %    18/56 | 1/77    0 | 7.92
-total mass       94.9 | 95.6 %    0/56 | 1/77     0 | 0
-all jointly      40.8 | 38.7 %    19/56 | 43/77
+peak slew power  58.8 | 64.1 %    108/238 | 145/293   0 | 0
+pointing error   95.2 | 65.6 %    8/238 | 118/293     0.08 | 0.79
+control effort   57.4 | 88.5 %    95/238 | 32/293     0 | 0.91
+total mass       94.6 | 95.2 %    12/238 | 9/293      0.24 | 1.55
+all jointly      38.1 | 37.5 %    148/238 | 210/293
 ```
 
 Refitted on three design sets in one conditioning, the one-term contending set barely moves:
 
 ```text
 # case.design_sets_summary()
-primary, all designs (1000): total mass, energy balance, pointing error,
-  depth of discharge, settling time
-primary, feasible (706): total mass, energy balance, pointing error,
-  depth of discharge, settling time
-primary, requirements met (288): total mass, energy balance, pointing
-  error, depth of discharge, settling time
-stock, all designs (1000): control effort, settling time, power margin,
-  pointing error, total mass
-stock, feasible (780): control effort, settling time, power margin,
-  pointing error, depth of discharge
-stock, requirements met (302): control effort, settling time, energy
-  balance, pointing error, depth of discharge
+primary, all designs (3000): unit cost, available power, pointing error,
+  fleet cost, momentum headroom, settling time, depth of discharge
+primary, feasible (2134): unit cost, available power, pointing error,
+  fleet cost, momentum headroom, settling time, depth of discharge
+primary, requirements met (814): momentum headroom, settling time,
+  available power, unit cost, pointing error, fleet cost, depth of
+  discharge
+stock, all designs (3000): available power, momentum headroom, total
+  mass, unit cost, pointing error, settling time, fleet cost, depth of
+  discharge
+stock, feasible (2355): momentum headroom, available power, total mass,
+  settling time, pointing error, depth of discharge, unit cost, fleet
+  cost
+stock, requirements met (882): momentum headroom, settling time,
+  available power, unit cost, total mass, pointing error
 ```
 
 ## Three metrics as shares of a total

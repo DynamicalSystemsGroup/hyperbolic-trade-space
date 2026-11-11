@@ -20,7 +20,7 @@ Examples
 --------
 >>> study = load_study("primary", n_max=60)
 >>> study.M.shape
-(60, 11)
+(60, 13)
 """
 
 from __future__ import annotations
@@ -1358,13 +1358,13 @@ def requirements_summary(spec=CUBESAT, labels=None):
         tables.append(requirements_table(st, fit_study(st)))
     price = lambda x: "0" if abs(x) < 5e-3 else f"{x:.2f}"  # noqa: E731
     head = " | ".join(labels[r] for r in spec.regimes)
-    lines = [f"{'requirement':<17}{'pass':<17}{'near excluded':<16}price, bands", f"({head})"]
+    lines = [f"{'requirement':<17}{'pass':<17}{'near excluded':<20}price, bands", f"({head})"]
     for rows in zip(*(t.itertuples(index=False) for t in tables), strict=True):
         name = rows[0][0]
         share = " | ".join(f"{100 * x[2]:.1f}" for x in rows) + " %"
         near = " | ".join(x[3].replace(" of ", "/") for x in rows)
         cost = "" if np.isnan(rows[0][5]) else " | ".join(price(x[6]) for x in rows)
-        lines.append(f"{name:<17}{share:<17}{near:<16}{cost}".rstrip())
+        lines.append(f"{name:<17}{share:<17}{near:<20}{cost}".rstrip())
     return "\n".join(lines)
 
 
