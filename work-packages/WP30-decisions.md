@@ -181,3 +181,18 @@ per requirement, whether its metric participates in the fit, is one axis with an
 is the analysis outcome he asked the redundancy to be. Same gate, same cascade; the paper's body says in one sentence
 that two of the thirteen do not participate and why, the detail in Appendix C and D. Listed for his review as the
 implementation of his word.
+
+## Sampling (2026-11-11, 12:25; the supervisor, verbatim)
+
+"remember you can sample more designs if you need to this paper is about decision analysis and is not assuming iid
+samples or really anything about the sampling strategy. we eventually need to think about how sampling strategies
+play into the broader optimization loop but we can reduce that to a sentence or two in the section about search."
+
+**The assistant's call.** The WP30 regeneration samples more designs per regime so that thin terms carry enough
+near-frontier designs for an association reading (the K = 3 term 1 had 3): the model developer times the oracle per
+thousand designs and the gate draws the largest round number that keeps the regeneration within the hour, 3,000 per
+regime as the default, the same seed discipline, the check designs as before. The paper says in Section 8 that the
+sample is a design choice of the case and that the method assumes nothing about how the designs were drawn, and
+Section 7 (the search) gets the sentence or two he names on how the sampling strategy enters the broader optimisation
+loop, with a ledger raise row quoting him; the "effective sample size" and every number of record move with the
+regeneration as they would anyway. The thin-term panel fix (WP19-decisions.md) stands regardless, for any fit.
