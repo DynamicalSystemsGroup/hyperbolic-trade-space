@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Renders for the supervisor (2026-11-11, 15:50; his words):** "the next time it makes sense inflow, give me a clean
+  render because i like to be able to see the progress as your work advances". Standing practice: at each milestone
+  that changes what he sees (the gate's push, the cascade's paper and docs units, the figure rebuilds, the final round),
+  the assistant rebuilds the `stage` worktree at that head, serves it on 8791, and tells him the head it is built from
+  and what changed on the pages; a tick update names the current stage head.
+
 - **The twelfth PM's batch 1 (2026-11-11, 14:10; head e10a4f1):** WP25-5 executed (50 files, two megabytes; thirteen page
   renders held because a review cites them by name); the corollary's five wording items landed (net minus one word,
   a ledger cut row); the Windows job gains the slow shard; the release checklist and the reviewer's guide skeleton
