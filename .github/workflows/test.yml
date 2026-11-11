@@ -98,8 +98,13 @@ jobs:
           esac
 
   windows:
-    name: windows (fast)
+    name: windows (${{ matrix.shard }})
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.windows }}
+    # The docs-paper shard stays on Linux and macOS (WP34 stage 2 decision).
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [fast, slow]
     defaults:
       run:
         shell: bash
@@ -145,7 +150,16 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch
-      - name: Test (fast)
+      - name: Test (${{ matrix.shard }})
         env:
           REQUIRE_OPENSYSML: "1"
-        run: uv run pytest -q -n auto --dist loadgroup -m "not slow"
+          SHARD: ${{ matrix.shard }}
+        run: |
+          opts="-q -n auto --dist loadgroup"
+          case "$SHARD" in
+            fast) uv run pytest $opts -m "not slow" ;;
+            slow)
+              ignores=""
+              for m in $DOCS_MODULES; do ignores="$ignores --ignore=$m"; done
+              uv run pytest $opts -m slow $ignores ;;
+          esac
