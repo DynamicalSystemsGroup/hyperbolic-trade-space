@@ -62,7 +62,7 @@ The driver's decisions:
 **Driver, verbatim:** "The cut list is approved with X-1 and X-2 to the docs stream, X-3 executed by me under the
 contract's ownership, X-4 kept, and S-1 to S-10 held for the supervisor. The fifteen kept rows are kept."
 
-**X-3 executed by the driver (this commit):** the README's description is the pointer sentence of the row; what the
+**X-3 executed by the driver (712a59f; the record at 1bd0ecc preceded the edit, whose first attempt failed before touching a file):** the README's description is the pointer sentence of the row; what the
 content no longer did: it described the method a second time, in older words than the Home page, and called the unit
 level set "the Pareto frontier", which Definition 1 and the abstract deny; register rows C369, C370, C371 removed
 with the paragraph; `prose_words` 162 to 98.
