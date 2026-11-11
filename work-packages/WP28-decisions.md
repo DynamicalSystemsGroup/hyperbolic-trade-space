@@ -190,3 +190,15 @@ Implementer's record, one entry per unit. Worktree `wp28close` from origin/dev 0
 - **The conditioning page pointer: yes**, one sentence on `conditioning.md` pointing at the diagnostic on the
   termination page, since a user looks for conditioning where it is taught.
 - **Contract row 12's "nine":** historically right (the close-out took the set to eight at row 15); no change.
+
+## Acceptance review, second pass (30b0e78 at 18c258c) and the driver's dispositions (2026-11-10, 23:50)
+
+| Gap | Disposition | Reason |
+|---|---|---|
+| G-2 (register rows added for added sentences) | accept as is | the rows back the sentences the supervisor's rulings and the re-test's units added; R-6's letter guards cut prose, and no row names cut prose |
+| G-5 (Appendix D +153, termination.md +133, Results +38) | accept as is | each growth is the supervisor's own ruling (S-10, "keep and clarify why it matters") or a re-test narrowing, with its ledger raise row or budget line; recorded, not hidden |
+| G-6 (R-13's letter; the one paper cut unread by a fresh reader) | fix before acceptance | one narrow confirm read (a fresh reader on Sonnet) of Section 9 and Appendix D.4 at the head: what the regime comparison tells them and where they found it; recorded in WP28-retest.md |
+| G-3, G-4 (the out-of-scope units; the observations as one item) | accept as is, except O-7 | O-7 (the docs `conditioning_` block relies on `min_exponent=0.1` unexplained): fix before acceptance, one clause on the page or the default used; O-8 ("+0.99" against the 0.99 threshold) is a WP25-4 row |
+
+The driver's own browser pass at 18c258c (a scratch worktree staged on this Mac) follows and is recorded in the
+driver log; acceptance is written here when the confirm read, O-7 and that pass are in.
