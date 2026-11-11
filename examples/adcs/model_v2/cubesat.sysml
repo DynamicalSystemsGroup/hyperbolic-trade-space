@@ -22,7 +22,16 @@
  * momentum capacity over the slew's peak momentum, as the ninth traded metric (a MoP, controls):
  * the momentum requirement read no traded metric before, and the headroom is the quantity it
  * bounds (WP30-decisions.md, "Scope gate"; the driver's D-1 (a) and the supervisor's "Confirm" in
- * WP23-rounds/spikes/spike-C-requirements-no-traded-metric/decisions.md). Nine metrics are traded.
+ * WP23-rounds/spikes/spike-C-requirements-no-traded-metric/decisions.md). WP30 stage 3b adds the cost model
+ * (WP23-rounds/spikes/spike-D-cubesat-economics; WP30-decisions.md, "Scope gate"): the fleet size
+ * `fleetSize`, a seventh design variable (1 to 30 satellites, real in the model and read as a
+ * count); per-part pricing curves, each a fixed share of the single-unit price plus a Wright
+ * learning curve in the fleet size, so a part's total grows with the fleet at a decreasing rate
+ * and its unit cost falls; assembly, integration and test as a part of its own; the launch rate
+ * 7,000 USD/kg; and two more traded metrics, the unit cost and the fleet cost (the unit cost
+ * times the fleet size), each with a requirement. The model prices the manufacturing and launch
+ * of a fleet of identical satellites per unit; it models nothing of the fleet's communication,
+ * range or networking. Eleven metrics are traded.
  * The baseline configuration fails the pointing-error requirement: its pointing error is 0.0155 degree against a limit of
  * 0.0085 degree, so section 5 states `not satisfy` for it; 63.7 % of the baseline regime's feasible
  * designs pass that requirement.
@@ -46,14 +55,14 @@
  * alternatives (categorical variables), the parameters (continuous variables), the named
  * configurations. The ASSESSMENT view is sections 3 to 6: the calculations, the scenario, the
  * requirements and verification cases, and the experiment, that say how a configuration is
- * assessed and how each traded metric (the nine of the case study) traces back to this model.
+ * assessed and how each traded metric (the eleven of the case study) traces back to this model.
  * Each section header below carries the name of its view. The chain read from the elements: a
  * configuration variable feeds a calc def or the measured slew; the experiment returns the calc as
  * the metric, or the measurement passes it on; a requirement def states the bound on the same calc
  * or measured quantity (or, for the total mass, on the launch cost computed from it); a
- * verification case verifies the requirement. The nine traded metrics: settling time, pointing
+ * verification case verifies the requirement. The eleven traded metrics: settling time, pointing
  * error, total mass, control effort, power margin, energy balance, peak slew power, depth of
- * discharge, momentum headroom. Each is marked MoE or MoP in the `doc` of its element (the first word
+ * discharge, momentum headroom, unit cost, fleet cost. Each is marked MoE or MoP in the `doc` of its element (the first word
  * of the doc): an MoE is a measure a stakeholder states without knowing the design (how well the
  * payload points; what the launch costs); an MoP is a measure of the system's performance under
  * the scenario the engineer states. Every one has a requirement that reads its own quantity.
@@ -94,11 +103,13 @@ package CubesatTradeSpaceV2 {
     // ==========================================================================================
     // 1. CONFIGURATION SPACE (configuration view): what can be chosen
     // ==========================================================================================
-    doc /* The six design variables. Two are categorical (WheelClass, TrackerGrade), each an
+    doc /* The seven design variables. Two are categorical (WheelClass, TrackerGrade), each an
            enumeration whose literals select a concrete alternative of an abstract part with its
            attribute table. Four are continuous (panel span, battery capacity, gains Kp and Kd),
            each with a range sampled log-uniformly; the gains have two boxes, baseline and
-           aggressive. Ranges are the model's; the sampler in Python reads them from here. */
+           aggressive. The seventh is the fleet size (WP30), a count from 1 to 30 sampled
+           uniformly on the integers by a generator of its own. Ranges are the model's; the
+           sampler in Python reads them from here. */
     enum def WheelClass { small; medium; large; }
     enum def TrackerGrade { coarse; medium; fine; }
 
@@ -161,11 +172,17 @@ package CubesatTradeSpaceV2 {
 
     part def DesignRanges {
         doc /* Ranges (illustrative): panel span 0.3 to 1.0 m per wing (two wings; chord 0.34 m
-               so total area 0.2 to 0.68 m^2); battery 20 to 200 Wh. */
+               so total area 0.2 to 0.68 m^2); battery 20 to 200 Wh; fleet size 1 to 30. */
         attribute panelSpanMin : LengthValue = 0.3 [m];
         attribute panelSpanMax : LengthValue = 1.0 [m];
         attribute batteryCapacityMin : EnergyValue = 20.0 [W*h];
         attribute batteryCapacityMax : EnergyValue = 200.0 [W*h];
+        doc /* The fleet size (WP30): 1 to 30 identical satellites, a real number in the model
+               (the pricing curves of section 3 are posynomials in it, which need real exponents)
+               and read as a count. Spike D's sources state learning bands to 50 units and cases
+               of 2 to 8; 30 reads as a small constellation, beyond it the guidance thins. */
+        attribute fleetSizeMin : Real = 1.0;
+        attribute fleetSizeMax : Real = 30.0;
     }
     part designRanges : DesignRanges;
 
@@ -233,11 +250,15 @@ package CubesatTradeSpaceV2 {
                lithium-ion pack; the pack's peak power is this rate times its capacity, so an 80 Wh
                pack delivers 80 W and a 20 Wh pack 20 W. Not a cited rating. */
         attribute batteryDischargeRate : Real = 1.0;   // 1/h (C-rate)
-        doc /* Launch (illustrative): a launch price of 6000 USD per kilogram to low Earth orbit, a
-               round figure at the order of magnitude of published small-satellite rideshare list
-               prices; not a cited price (WP23 OD1). The launch cost is this rate times the total
-               mass, so a lighter configuration is cheaper to launch and a heavier one dearer. */
-        attribute launchRate : Real = 6000.0;   // USD/kg
+        doc /* Launch (WP30, spike D section 3, D-1): 7000 USD per kilogram to low Earth orbit, the
+               2026 small-satellite rideshare rate (spike D's sources 19 to 21; the 6000 of WP23 was
+               the 2024 to early 2025 figure). The launch cost of one satellite is this rate times
+               its total mass, so a lighter configuration is cheaper to launch and a heavier one
+               dearer; a fleet pays it once per satellite, linear in the fleet size. A rideshare
+               booking has a 50 kg minimum slot (350,000 USD): a fleet of one to three satellites
+               of this class pays that slot, four or more pay the linear rate. The minimum is a
+               note here, not a limit and not a `max` in the cost (it is not a posynomial). */
+        attribute launchRate : Real = 7000.0;   // USD/kg
     }
     part environment : Environment;
 
@@ -281,6 +302,7 @@ package CubesatTradeSpaceV2 {
         // Design variables (defaults are the baseline configuration).
         attribute panelSpan : LengthValue default = 0.6 [m];
         attribute batteryCapacity : EnergyValue default = 80.0 [W*h];
+        attribute fleetSize : Real default = 1.0;   // satellites in the fleet (WP30); 1 to 30
         part bus : Bus;
         part panelPlus : SolarPanel { :>> span = Cubesat::panelSpan; }
         part panelMinus : SolarPanel { :>> span = Cubesat::panelSpan; }
@@ -296,7 +318,7 @@ package CubesatTradeSpaceV2 {
             doc /* MoP: the launch mass of the configuration (the traded metric `total mass`); the
                    launch cost, the MoE on it, is LaunchCost below. */
         }
-        attribute launchCost : Real = LaunchCost(self);   // USD; the MoE on the total mass
+        attribute launchCost : Real = LaunchCost(self);   // USD per satellite; the MoE on the total mass
         attribute structureMass : MassValue = StructureMass(self);
         attribute adcsMass : MassValue = AdcsMass(self);
         attribute momentumCapacity : AngularMomentumValue = wheel.maxMomentum;
@@ -316,8 +338,11 @@ package CubesatTradeSpaceV2 {
            c times the integral of |tau|^2 dt (measured, section 6); the eclipse demand adds the
            base load over the eclipse; depth of discharge is demand over capacity; the pack's
            peak power is its discharge rating times its capacity, read against the eclipse peak
-           load. Cost: the launch cost is the launch rate times the total mass. Each calc that is
-           a traded metric carries its MoE or MoP mark in its own doc. */
+           load. Cost: the launch cost of one satellite is the launch rate times the total mass;
+           the cost of a fleet of `fleetSize` satellites is the sum of the pricing curves of the
+           parts, the assembly line and the launch, and the unit cost is that over the fleet size
+           (the cost model, after the launch cost). Each calc that is a traded metric carries its
+           MoE or MoP mark in its own doc. */
     calc def MassAccounting {
         in c : Cubesat;
         return : MassValue = c.bus.mass + c.battery.mass + c.panelPlus.mass + c.panelMinus.mass
@@ -338,6 +363,153 @@ package CubesatTradeSpaceV2 {
                the launch budget requirement reads this cost. */
         in c : Cubesat;
         return : Real = environment.launchRate * (c.totalMass / 1.0 [kg]);
+    }
+    // ------------------------------------------------------------------------------------------
+    // The cost model (WP30; spike D: WP23-rounds/spikes/spike-D-cubesat-economics)
+    // ------------------------------------------------------------------------------------------
+    doc /* The cost model prices the manufacturing and launch of a fleet of identical satellites,
+           per unit: the fleet enters only as the variable `fleetSize` and the fleet cost. It
+           models nothing of the fleet's communication, range, fidelity or networking. Every part
+           (and the assembly, integration and test line) has a single-unit price relation u_p(x)
+           in the configuration x and a pricing curve in the fleet size n:
+               total_p(n; x) = u_p(x) [ f_p + (1 - f_p) n^(1 - b_p) ],  b_p = -log2(s_p),
+           a fixed base (the share f_p of the single-unit price, paid once per fleet) plus a
+           Wright cumulative-average learning curve of slope s_p (the average unit cost of n units
+           is u_p n^(-b_p)). The total grows with n at a decreasing rate and the unit cost falls;
+           at n = 1 the total is u_p(x). Every term is a posynomial in (n, x) because the exponent
+           1 - b_p is a positive constant, so the cost model is geometric-programming compatible.
+           The prices are illustrative and calibrated to ballpark (spike D's 29 sources, opened
+           2026-11-10); the shares and slopes are choices, not findings (spike D, section 3). */
+    part def Prices {
+        doc /* Single-unit prices (USD), n = 1. The bus block is the case's bus 60,000, antenna
+               15,000 and IMU 5,000. Updated from the case's earlier roll-up by the economics
+               spike (E-1): panels 250,000 USD/m^2 (was 150,000; mid-range of the catalogue), a
+               battery 150 USD/Wh (was 50; catalogue range 30 to 250), the star tracker's accuracy
+               term 150,000 USD.arcsec (was 300,000; a 2 arcsec class unit is then 80,000 USD);
+               assembly, integration and test 100,000 USD (new; about 40 percent of the baseline's
+               parts). The wheel relation (8,000 plus 2,000,000 per N.m of peak torque, three
+               wheels) is unchanged. */
+        attribute bus : Real = 60000.0;
+        attribute antenna : Real = 15000.0;
+        attribute imu : Real = 5000.0;
+        attribute panelPerArea : Real = 250000.0;        // USD/m^2
+        attribute batteryPerEnergy : Real = 150.0;       // USD/(W.h)
+        attribute wheelBase : Real = 8000.0;
+        attribute wheelPerTorque : Real = 2.0e6;         // USD/(N.m)
+        attribute trackerBase : Real = 5000.0;
+        attribute trackerPerFineness : Real = 150000.0;  // USD.arcsec
+        attribute assembly : Real = 100000.0;
+    }
+    part prices : Prices;
+    part def PricingCurves {
+        doc /* The fixed share f_p and the learning slope s_p of each part's curve (spike D,
+               section 3; choices, not findings). Slope 0.95 is the community's flat default for
+               small lots, 0.90 the band for 11 to 50 units: 0.95 for the precision parts (wheels,
+               tracker: bearings, optics and calibration per unit) and 0.90 for the others
+               (integrated avionics, repetitive cell layup, cells bought in lots, assembly labour).
+               The fixed share is the engineering, tooling, qualification and procedures paid once
+               per fleet: 0.30 for the bus block, 0.15 for panels and wheels, 0.10 for the battery,
+               0.20 for the tracker, 0.50 for assembly, integration and test (fixtures and the test
+               campaign). */
+        attribute busShare : Real = 0.30;
+        attribute busSlope : Real = 0.90;
+        attribute panelShare : Real = 0.15;
+        attribute panelSlope : Real = 0.90;
+        attribute batteryShare : Real = 0.10;
+        attribute batterySlope : Real = 0.90;
+        attribute wheelShare : Real = 0.15;
+        attribute wheelSlope : Real = 0.95;
+        attribute trackerShare : Real = 0.20;
+        attribute trackerSlope : Real = 0.95;
+        attribute assemblyShare : Real = 0.50;
+        attribute assemblySlope : Real = 0.90;
+    }
+    part pricing : PricingCurves;
+
+    calc def PartTotal {
+        doc /* The total price (USD) of a part for a fleet of n: the single-unit price times the
+               fixed share plus the learning share times n^(1 - b), b = -log2(slope), written with
+               the natural logarithm (ln 2 = 0.6931471805599453). Nondecreasing and concave in n
+               for a slope in (0, 1) and a share in [0, 1); at n = 1 it is the single-unit price. */
+        in unitPrice : Real;
+        in fixedShare : Real;
+        in slope : Real;
+        in n : Real;
+        return : Real = unitPrice * (fixedShare
+            + (1.0 - fixedShare) * n ** (1.0 + ln(slope) / 0.6931471805599453));
+    }
+    calc def PanelPrice {
+        in c : Cubesat;
+        return : Real = prices.panelPerArea
+            * ((c.panelPlus.area + c.panelMinus.area) / 1.0 [m**2]);
+    }
+    calc def BatteryPrice {
+        in c : Cubesat;
+        return : Real = prices.batteryPerEnergy * (c.battery.capacity / 1.0 [W*h]);
+    }
+    calc def WheelPrice {
+        in c : Cubesat;
+        return : Real = c.wheelCount * (prices.wheelBase
+            + prices.wheelPerTorque * (c.wheel.maxTorque / 1.0 [N*m]));
+    }
+    calc def TrackerPrice {
+        in c : Cubesat;
+        return : Real = prices.trackerBase
+            + prices.trackerPerFineness / (c.tracker.accuracy / 1.0 [SI::arcsec]);
+    }
+    calc def BusTotal {
+        in c : Cubesat;
+        return : Real = PartTotal(prices.bus + prices.antenna + prices.imu, pricing.busShare,
+            pricing.busSlope, c.fleetSize);
+    }
+    calc def PanelTotal {
+        in c : Cubesat;
+        return : Real = PartTotal(PanelPrice(c), pricing.panelShare, pricing.panelSlope,
+            c.fleetSize);
+    }
+    calc def BatteryTotal {
+        in c : Cubesat;
+        return : Real = PartTotal(BatteryPrice(c), pricing.batteryShare, pricing.batterySlope,
+            c.fleetSize);
+    }
+    calc def WheelTotal {
+        in c : Cubesat;
+        return : Real = PartTotal(WheelPrice(c), pricing.wheelShare, pricing.wheelSlope,
+            c.fleetSize);
+    }
+    calc def TrackerTotal {
+        in c : Cubesat;
+        return : Real = PartTotal(TrackerPrice(c), pricing.trackerShare, pricing.trackerSlope,
+            c.fleetSize);
+    }
+    calc def AssemblyTotal {
+        doc /* Assembly, integration and test: a line of its own, 100,000 USD for one satellite,
+               half of it fixed (procedures, fixtures, the test campaign). */
+        in c : Cubesat;
+        return : Real = PartTotal(prices.assembly, pricing.assemblyShare, pricing.assemblySlope,
+            c.fleetSize);
+    }
+    calc def FleetBuildCost {
+        doc /* The cost to build the fleet (USD): the parts and the assembly line, without the
+               launch. */
+        in c : Cubesat;
+        return : Real = BusTotal(c) + PanelTotal(c) + BatteryTotal(c) + WheelTotal(c)
+            + TrackerTotal(c) + AssemblyTotal(c);
+    }
+    calc def FleetCost {
+        doc /* MoE: the cost to build and launch the fleet (USD), the traded metric `fleet cost`:
+               the build cost of the parts and the assembly line plus the launch of every
+               satellite at the launch rate times its mass. Nondecreasing in the fleet size, at a
+               decreasing rate on the build part and linear on the launch part. */
+        in c : Cubesat;
+        return : Real = FleetBuildCost(c) + c.fleetSize * c.launchCost;
+    }
+    calc def UnitCost {
+        doc /* MoE: the cost per satellite to build and launch the fleet (USD), the traded metric
+               `unit cost`: the fleet cost over the fleet size, read at the configuration's own
+               fleet size. Falls as the fleet grows. */
+        in c : Cubesat;
+        return : Real = FleetCost(c) / c.fleetSize;
     }
     calc def GeneratedPower {
         in c : Cubesat;
@@ -564,14 +736,15 @@ package CubesatTradeSpaceV2 {
            thresholds, `satisfy` statements tying each requirement to the baseline, `verification
            def`s naming what each verifies, and claims over every in-range configuration. */
     // BEGIN 15.2
-    doc /* Feasibility is stated here and verified, not computed in Python. Eleven requirements.
+    doc /* Feasibility is stated here and verified, not computed in Python. Thirteen requirements.
            Four are the flags the experiment reports: settled, momentum_ok, power_ok, dod_ok; the
            settled and depth-of-discharge ones read the settling time and the depth of discharge.
            Six more each read a traded metric's own quantity: pointing error, control effort, peak
            slew power, power margin, energy balance, and the total mass through the launch cost; the
-           momentum requirement reads the momentum headroom; so every one of the nine traded
-           metrics has a requirement. The eleventh, the battery
-           peak power requirement, reads the pack's rating against the eclipse peak load. A
+           momentum requirement reads the momentum headroom; the unit cost and the fleet cost have
+           one each, with placeholder limits (section 5, `budgets`); so every one of the eleven
+           traded metrics has a requirement. The battery
+           peak power requirement, the eleventh, reads the pack's rating against the eclipse peak load. A
            requirement takes a Cubesat as its subject and, where it needs a measured quantity of
            the slew, an `in` parameter that the runner binds by name (a Quantity, or a Real for
            the integral of |tau|^2). The defaults of those parameters are the recorded measurement
@@ -610,7 +783,9 @@ package CubesatTradeSpaceV2 {
         :>> torqueSquaredIntegral = 7.70613052023095e-06;
     }
     part def Budgets {
-        doc /* The four thresholds, the supervisor's choice from the loop's ladder (WP23-decisions.md,
+        doc /* The cost limits of WP30 (the unit cost and the fleet cost) are PLACEHOLDERS until the
+               supervisor gives his values (WP30-decisions.md, OD3 and OD5); the launch budget is
+               restated at the new launch rate pending his confirmation (OD4). The four thresholds, the supervisor's choice from the loop's ladder (WP23-decisions.md,
                "The four thresholds", 2026-11-10; the ladder is WP23-review.md, "Proposed
                thresholds, revised for the gate popup"). Each limit is a literal; its doc names the
                ladder row and the share of the feasible designs it admits (primary / baseline
@@ -628,9 +803,24 @@ package CubesatTradeSpaceV2 {
         attribute peakSlewPowerLimit : PowerValue = 2.6 [W] {
             doc /* 2.6 W, the row that admits every small and medium wheel (62.2 % / 67.3 %). */
         }
-        attribute launchBudget : Real = 90643.0 {   // USD
-            doc /* 90,643 USD, 15.107 kg at the illustrative 6,000 USD/kg, the row that admits 95 %
-                   (94.9 % / 95.6 %). */
+        attribute launchBudget : Real = 105770.0 {   // USD, per satellite
+            doc /* 105,770 USD, 15.11 kg at the 7,000 USD/kg of WP30 (D-1): the supervisor's budget
+                   was the mass of the row that admits 95 % (94.9 % / 95.6 %), 15.107 kg, stated in
+                   USD at the earlier 6,000 USD/kg as 90,643; restated here at the same mass and
+                   the new rate, PENDING HIS CONFIRMATION (OD4 (a); (b) would keep 90,643 USD,
+                   12.95 kg). */
+        }
+        attribute unitCostLimit : Real = 450000.0 {   // USD per satellite, read at its own fleet size
+            doc /* PLACEHOLDER, not the supervisor's value (WP30 OD3, OD5): 450,000 USD per
+                   satellite to build and launch, the top of spike D's range for the unit build
+                   cost (300,000 to 450,000 USD). The requirement is a verdict only (OD2 (a)): the
+                   limit does not enter the feasibility flags. His value replaces this one from the
+                   ladder of the regenerated data (WP30-rounds/cost-ladders.md). */
+        }
+        attribute fleetCostLimit : Real = 3.0e6 {   // USD, the fleet's, with its size free
+            doc /* PLACEHOLDER, not the supervisor's value (WP30 OD3, OD5): 3,000,000 USD to build
+                   and launch the fleet, the order of the baseline configuration at ten satellites
+                   (2,857,334 USD). A verdict only (OD2 (a)). His value replaces this one. */
         }
     }
     part budgets : Budgets;
@@ -711,6 +901,23 @@ package CubesatTradeSpaceV2 {
         subject c : Cubesat;
         require constraint { c.launchCost <= budgets.launchBudget }
     }
+    requirement def UnitCostRequirement {
+        doc /* The configuration costs within the unit cost limit to build and launch, per
+               satellite, at its own fleet size: the unit cost (the traded metric `unit cost`, an
+               MoE) is within budgets.unitCostLimit. It reads the configuration only. The limit is
+               a placeholder until the supervisor's value (WP30 OD3, OD5); the requirement is a
+               verdict and does not enter the feasibility flags (OD2 (a)). */
+        subject c : Cubesat;
+        require constraint { UnitCost(c) <= budgets.unitCostLimit }
+    }
+    requirement def FleetCostRequirement {
+        doc /* The fleet costs within the fleet cost limit to build and launch, with its size
+               free: the fleet cost (the traded metric `fleet cost`, an MoE) is within
+               budgets.fleetCostLimit. It reads the configuration only. The limit is a placeholder
+               until the supervisor's value (WP30 OD3, OD5); a verdict only (OD2 (a)). */
+        subject c : Cubesat;
+        require constraint { FleetCost(c) <= budgets.fleetCostLimit }
+    }
     requirement def PowerMarginRequirement {
         doc /* The panels cover the loads at the peak of the slew: the power margin (the traded
                metric `power margin`) is not negative. It needs the measured peak torque. */
@@ -737,6 +944,8 @@ package CubesatTradeSpaceV2 {
     requirement baselinePeakSlewPower : PeakSlewPowerRequirement;
     requirement baselineBatteryPeakPower : BatteryPeakPowerRequirement;
     requirement baselineLaunchBudget : LaunchBudgetRequirement;
+    requirement baselineUnitCost : UnitCostRequirement;
+    requirement baselineFleetCost : FleetCostRequirement;
     requirement baselinePowerMargin : PowerMarginRequirement;
     requirement baselineEnergyBalance : EnergyBalanceRequirement;
     satisfy baselineSettled by cubesatBaseline;
@@ -749,18 +958,23 @@ package CubesatTradeSpaceV2 {
     satisfy baselinePeakSlewPower by cubesatBaseline;
     satisfy baselineBatteryPeakPower by cubesatBaseline;
     satisfy baselineLaunchBudget by cubesatBaseline;
+    satisfy baselineUnitCost by cubesatBaseline;
+    satisfy baselineFleetCost by cubesatBaseline;
     satisfy baselinePowerMargin by cubesatBaseline;
     satisfy baselineEnergyBalance by cubesatBaseline;
 
     verification def ConfigurationVerification {
         doc /* Before simulation: what the configuration alone decides. The power requirement, and
-               the requirements on the two traded metrics that depend on the configuration only:
-               the pointing error, and the total mass through the launch cost. */
+               the requirements on the traded metrics that depend on the configuration only:
+               the pointing error, the total mass through the launch cost, and the unit cost and
+               the fleet cost. */
         subject c : Cubesat;
         objective {
             verify requirement power : PowerRequirement;
             verify requirement pointingError : PointingErrorRequirement;
             verify requirement launchBudget : LaunchBudgetRequirement;
+            verify requirement unitCost : UnitCostRequirement;
+            verify requirement fleetCost : FleetCostRequirement;
         }
     }
     verification def SlewVerification {
@@ -846,9 +1060,11 @@ package CubesatTradeSpaceV2 {
            design variables are its features). The Python runner integrates the slew and hands in
            the measured quantities the accounting needs: the integral of |tau|^2 (N^2.m^2.s), the
            peak torque, the peak wheel momentum and the control effort (integral of |tau|, N.m.s).
-           The nine traded metrics are the settling time and the eight attributes this analysis
+           The eleven traded metrics are the settling time, the eight attributes this analysis
            returns, in this order: pointing error, total mass, control effort, power margin,
-           energy balance, peak slew power, eclipse depth of discharge, momentum headroom. The
+           energy balance, peak slew power, eclipse depth of discharge, momentum headroom, and the
+           unit cost and the fleet cost, each returned by an analysis of its own below (they read
+           the configuration only, at its own fleet size). The
            settling time is measured, not computed: it goes from the measurement into the output
            row unchanged (it is also the input of the settled requirement of section 5), so it is
            neither an input nor an entry of this return tuple. The peak momentum, measured, is the input
@@ -868,6 +1084,22 @@ package CubesatTradeSpaceV2 {
             PeakSlewPower(cubesat, peakTorque),
             DepthOfDischarge(cubesat, SlewLossEnergy(torqueSquaredIntegral)),
             MomentumHeadroom(cubesat, peakMomentum));
+    }
+    analysis def UnitCostExperiment {
+        doc /* The traded metric `unit cost` (MoE): the cost per satellite to build and launch the
+               configuration's fleet, at its own fleet size. It needs no slew. It is an analysis
+               of its own because an analysis's result refuses two equal entries and the unit cost
+               equals the fleet cost at a fleet of one satellite, so the pair cannot be returned
+               together. */
+        subject cubesat : Cubesat;
+        return attributes = (UnitCost(cubesat));
+    }
+    analysis def FleetCostExperiment {
+        doc /* The traded metric `fleet cost` (MoE): the cost to build and launch the
+               configuration's fleet, at its own fleet size. It needs no slew (see
+               UnitCostExperiment for why it is an analysis of its own). */
+        subject cubesat : Cubesat;
+        return attributes = (FleetCost(cubesat));
     }
 
     // ==========================================================================================

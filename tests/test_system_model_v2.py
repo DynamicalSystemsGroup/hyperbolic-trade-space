@@ -51,8 +51,29 @@ WP22_CALCS = {
     "TorqueLimitedSlewTime", "UsableWheelTorque",
 }  # fmt: skip
 EXPECT = {
-    "line_cap": 900,
-    "calcs": {"LaunchCost", "BatteryPeakPower", "EclipsePeakLoad", "MomentumHeadroom"},
+    "line_cap": 1150,
+    "calcs": {
+        "LaunchCost",
+        "BatteryPeakPower",
+        "EclipsePeakLoad",
+        "MomentumHeadroom",
+        # WP30 stage 3b, the cost model (section 3): the pricing curve, the single-unit prices that
+        # read the configuration, each part's total, the fleet's build cost, the two traded costs
+        "PartTotal",
+        "PanelPrice",
+        "BatteryPrice",
+        "WheelPrice",
+        "TrackerPrice",
+        "BusTotal",
+        "PanelTotal",
+        "BatteryTotal",
+        "WheelTotal",
+        "TrackerTotal",
+        "AssemblyTotal",
+        "FleetBuildCost",
+        "FleetCost",
+        "UnitCost",
+    },
     "parts": {"Budgets"},
 }
 
@@ -245,7 +266,11 @@ def test_symbol_kinds_by_query(v2):
         "SlewTimeEstimate",
         "IsTorqueLimited",
     } <= calcs
-    assert _symbols(v2, "AnalysisCaseDefinition") == {"SlewExperiment"}
+    # the slew experiment, and the two cost analyses (WP30: an analysis's result refuses equal
+    # entries and the unit cost equals the fleet cost at one satellite)
+    assert _symbols(v2, "AnalysisCaseDefinition") == {
+        "SlewExperiment", "UnitCostExperiment", "FleetCostExperiment",
+    }  # fmt: skip
     usages = _symbols(v2, "PartUsage")
     assert {
         "designRanges",
@@ -288,8 +313,12 @@ def test_every_constant_has_a_doc_rationale():
     The length cap was 700 lines for the WP15 model and 730 for the WP22 model (729 lines). WP23
     added four requirement defs, the launch-cost calc, the budgets part and an MoE/MoP doc on each
     traded metric (round 1, 831 lines), then the battery rating, two calcs and the battery peak
-    power requirement (round 2, 871 lines); the cap is 900 (``EXPECT``), which holds the model
-    where round 2 left it: the model stays short (WP22 definition of good).
+    power requirement (round 2, 871 lines); the cap was 900 there, which held the model where
+    round 2 left it. WP30 stage 3a took it to 898 (the momentum headroom) and stage 3b added the
+    cost model the scope (G3 to G5) asks for: the fleet size, six per-part pricing curves with
+    their prices and shares, the fleet and unit costs, two requirements and two analyses (about
+    230 lines, most of them the rationale of each price and curve); the cap is 1150
+    (``EXPECT``): the model stays one readable file (WP22 definition of good).
     """
     text = TEXT
     assert text.count("doc /*") >= 18
@@ -474,8 +503,9 @@ def test_the_calc_defs_are_the_wp22_set_plus_the_adds(v2):
     """WP23 changed no accounting: the calc defs are the WP22 version's (``WP22_CALCS``, every
     body kept; their agreement with the frozen oracle is R-6 of test_system_model_v2_r1.py) plus
     the launch cost (round 1) and the battery's peak power and the eclipse peak load (round 2),
-    none of the three traded, and WP30's momentum headroom, the ninth traded metric (D-1 (a) of
-    spike C, WP30-decisions.md)."""
+    none of the three traded, WP30's momentum headroom, the ninth traded metric (D-1 (a) of
+    spike C, WP30-decisions.md), and the cost model of WP30 stage 3b (spike D; the unit cost and
+    the fleet cost are the tenth and eleventh traded metrics, OD1 (a))."""
     calcs = set(re.findall(r"^    calc def (\w+)", v2.text, flags=re.M))
     assert calcs == WP22_CALCS | EXPECT["calcs"]
     assert _symbols(v2, "CalculationDefinition") >= calcs
@@ -510,7 +540,9 @@ def test_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it(v2):
         rows.append((mass, cost))
     assert rows == sorted(rows) and rows[0][1] < rows[1][1] < rows[2][1]
     budget = v2.read("budgets.launchBudget")
-    assert budget == pytest.approx(rate * 15.107, abs=1.0)  # 90,643 USD: 15.107 kg at the rate
+    # 105,770 USD: 15.11 kg at the rate (the supervisor's mass of 15.107 kg, restated at 7,000
+    # USD/kg from 90,643 USD at 6,000, pending his confirmation: WP30 OD4 (a))
+    assert budget == pytest.approx(rate * 15.11, abs=1.0)
     verdict = v2.model.verify_requirement(
         f"{P}::LaunchBudgetRequirement", subject=f"{P}::cubesatBaseline"
     )
@@ -520,14 +552,15 @@ def test_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it(v2):
 def test_the_four_thresholds_are_the_supervisors_values(v2):
     """The four thresholds are the supervisor's choice from the loop's ladder (WP23-decisions.md,
     "The four thresholds", and "Keep 0.0085 deg"), literal values in ``budgets`` read through the
-    toolkit: 0.008495 degree, 0.05922 N.m.s, 2.6 W and 90,643 USD. The baseline configuration
+    toolkit: 0.008495 degree, 0.05922 N.m.s, 2.6 W and the launch budget (90,643 USD at 6,000
+    USD/kg, restated at WP30 as 105,770 USD at 7,000 USD/kg, OD4 (a)). The baseline configuration
     meets three of them and fails the pointing-error requirement (0.0155 against 0.0085 degree),
     which the model states with a negated ``satisfy``."""
     want = {
         "pointingErrorLimit": (0.008495, "SI::degree"),
         "controlEffortLimit": (0.05922, "SI::N*SI::m*SI::s"),
         "peakSlewPowerLimit": (2.6, "SI::W"),
-        "launchBudget": (90643.0, None),
+        "launchBudget": (105770.0, None),
     }
     for limit, (value, unit) in want.items():
         assert v2.read(f"budgets.{limit}", unit) == pytest.approx(value, rel=1e-12), limit
@@ -665,6 +698,7 @@ REQUIREMENT_DEFS = {
     "DepthOfDischargeRequirement", "PointingErrorRequirement", "ControlEffortRequirement",
     "PeakSlewPowerRequirement", "BatteryPeakPowerRequirement", "LaunchBudgetRequirement",
     "PowerMarginRequirement", "EnergyBalanceRequirement",
+    "UnitCostRequirement", "FleetCostRequirement",
 }  # fmt: skip
 STAKEHOLDER_PARTS = {"sponsor": "Sponsor", "operator": "Operator"}
 
@@ -709,7 +743,7 @@ def test_stakeholders_file_loads_strictly_and_its_names_resolve(who_cares):
 
 def test_the_trace_from_who_cares_to_every_requirement_is_complete(who_cares):
     """WP27 R-2: every concern is held by a stakeholder (bound to the sponsor or the operator) and
-    is decomposed into at least one requirement; every one of the model's eleven requirement defs
+    is decomposed into at least one requirement; every one of the model's thirteen requirement defs
     serves at least one concern (so every traded metric's requirement reaches one); and every
     requirement a concern holds is verified by a verification case with evidence pointers."""
     stk = STAKEHOLDERS.read_text()
@@ -744,7 +778,7 @@ def test_the_rollups_are_illustrative_and_read_by_no_output(who_cares):
     roll-ups evaluate on the named configurations (cost to build rises with the agile corner's
     larger wheels and finer tracker; effective life rises with the battery capacity)."""
     stk = STAKEHOLDERS.read_text()
-    for calc, rolls_up in (("CostToBuild", "unit costs"), ("EffectiveLife", "depth of discharge")):
+    for calc, rolls_up in (("CostToBuild", "cost model"), ("EffectiveLife", "depth of discharge")):
         body = stk[stk.index(f"calc def {calc}") :]
         doc = " ".join(body[body.index("doc /*") : body.index("*/")].split())
         assert doc.startswith("doc /* Illustrative roll-up"), calc
@@ -776,6 +810,7 @@ def test_the_rollups_are_illustrative_and_read_by_no_output(who_cares):
 
 CONTRAST_NEGATED = {  # WP27-decisions.md (16:20): the contrasts' verdicts, as the engine finds them
     "not satisfy lowCost::launchBudget by cubesatAgile",
+    "not satisfy lowCost::unitCost by cubesatAgile",
     "not satisfy pointingAndSlewing::controlEffort by cubesatAgile",
     "not satisfy powerAndEnergy::peakSlewPower by cubesatAgile",
     "not satisfy pointingAndSlewing::pointingError by cubesatCompact",
@@ -785,12 +820,12 @@ CONTRAST_NEGATED = {  # WP27-decisions.md (16:20): the contrasts' verdicts, as t
 def test_the_baselines_verdict_on_each_concern_is_checked_by_the_engine(who_cares):
     """WP27 D-4 (the sponsor saw no verdict in the stakeholder layer): each concern's requirement
     carries the baseline configuration's verdict as a ``satisfy`` or ``not satisfy`` statement in
-    ``stakeholders.sysml``; the toolkit's engine checks every statement of the three files (eleven
-    of the model, twelve per named configuration of the concerns) and all hold, the baseline's
+    ``stakeholders.sysml``; the toolkit's engine checks every statement of the three files (thirteen
+    of the model, fourteen per named configuration of the concerns) and all hold, the baseline's
     pointing-error ones negated; stating the baseline's pointing-error verdict as satisfied is
     false (negative control)."""
     verdicts = who_cares.verify_satisfaction()
-    assert len(verdicts) == 11 + 3 * 12
+    assert len(verdicts) == 13 + 3 * 14
     assert all(v.holds and v.status == "holds" and v.engine == "run" for v in verdicts)
     negated = {v.element for v in verdicts if v.element.startswith("not satisfy")}
     assert (
@@ -855,7 +890,7 @@ def test_the_contrasts_verdicts_rest_on_their_own_measurements(who_cares):
     contrasts = [
         v for v in verdicts if v.element.endswith(("by cubesatAgile", "by cubesatCompact"))
     ]
-    assert len(contrasts) == 2 * 12
+    assert len(contrasts) == 2 * 14
     assert all(v.holds for v in contrasts)
     assert {v.element for v in contrasts if v.element.startswith("not ")} == CONTRAST_NEGATED
     stk = STAKEHOLDERS.read_text()
