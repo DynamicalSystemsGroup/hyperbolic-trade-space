@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Second main-checkout incident (2026-11-11, 11:45).** The S-5 paper-and-root-page unit is editing eleven files in
+  the main checkout; told the PM: the agent finishes, commits only its own files and pushes, then every unit starts
+  with `git worktree add` named in its brief (first rule of pm5-rules.md); the assistant's records go through a
+  temporary worktree meanwhile, as this commit does. The PM's first batch report and the deliverables grid are overdue
+  (nothing since 10:20) and chased.
+
 - **The supervisor's view was stale (2026-11-11, 12:15).** His two comments of the hour (the floating requirements in
   the behavioural view; term 1 missing from the K = 3 tension figure) were made on the staged site at af9ffea. Checked
   at the head: both stand there too (the revision that removes the box is in flight; the tension figure's static image
@@ -653,6 +659,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-11 | commit 7dece3a staged from a scratch worktree on this Mac (the assistant's browser pass of the two-panel docs unit fa2c66e and the root page) | the Examples page: the two-panel figure A and B with one key, Figure 6's caption naming B's single-metric region, the search paragraph present; the root page: the planted story figure present beside the existing "why regions" image (its removal and the caption and phone-link fixes are the tenth PM's queued unit) | a verdict: the docs unit renders as the reviewer said; the three decided fixes follow; the watcher green on 301b7ac; Linux on 7dece3a in progress |
 | 2026-11-11 | commit 8b5c4f4 (WP29 landed: L18 to L20, the noise-ridge corollary between L6 and L7, D.18's injected-noise table, G-3, G-11, G-12 revised, the glossary's ridge and active face, register C459 to C463), checked at 1814496 on this Mac | the lemma chain ALL LEMMAS PASS; the proof map OK (20 lemma files); tests/test_noise_ridge.py, the register and the paper's noise, register, ledger and Appendix B tests 72 passed; ruff and format clean at the head; the corollary's box read: hypotheses named (R3, first order), the closed form with the conditioning map, the bound carrying tau, the sentence that it says how far noise moves the exponents and not whether the rates are right | a verdict: WP29 stages 3 to 5 hold as placed; stage 6 is the P9 and P10 pass and the reviewer's rendered look, then acceptance; Linux dispatched on 1814496 |
 | 2026-11-11 | commit 1814496, CI run on ubuntu, three shards, and the tier 2 watcher on this Mac (WP29 landed; the two-panel docs unit; the records) | Linux all green; the watcher 2285 passed, 17 skipped, 2 xfailed; all checks | a verdict: both platforms green on the head that carries the three noise lemmas and the corollary |
+| 2026-11-11 | commit 4b7ca4a, tier 2 watcher, this Mac (the review list's rows; the records) | 2285 passed, 17 skipped, 2 xfailed; all checks | a verdict: green |
 
 ## Overruled or corrected (kept so the pattern is visible)
 
