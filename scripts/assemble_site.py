@@ -1,6 +1,6 @@
 """Assemble the static site: root index, MkDocs docsite under ``docs/``, paper slot.
 
-    uv run python scripts/assemble_site.py [--out DIR]
+    uv run python scripts/assemble_site.py [--out DIR] [--paper placeholder]
 
 Default output is ``_site/``. Steps: write the generated pages (``build_generated``: the
 glossary into ``docs/generated/`` for the docsite, derivations and verification into
@@ -8,8 +8,10 @@ glossary into ``docs/generated/`` for the docsite, derivations and verification 
 ``mkdocs build --strict -d <out>/docs``, copy ``site/index.html`` to ``<out>/index.html`` (with
 the paper's ``figure1.png`` and the Why image from ``build_site_figures``) and
 build the paper slot through ``build_paper``: the real paper (``myst build --html`` in ``paper/``,
-copied from ``paper/_build/html``) when it builds, the placeholder page when it does not or when
-``--paper placeholder`` is given. Any other error stops the build with a non-zero exit. The
+copied from ``paper/_build/html``). The command line is strict: a paper that does not build, or
+writes no ``index.html``, exits non-zero naming the failure and the flag; ``--paper placeholder`` is
+the only way to get the placeholder page. (The function ``assemble(paper="auto")`` keeps its
+fall-back for callers.) Any other error stops the build with a non-zero exit. The
 docsite's figures (``build_figures``) are built before MkDocs reads ``docs/``.
 """
 
@@ -184,9 +186,10 @@ def main(argv=None):
     )
     parser.add_argument(
         "--paper",
-        choices=("auto", "placeholder"),
-        default="auto",
-        help="build the real paper when it builds (default) or always use the placeholder",
+        choices=("strict", "placeholder"),
+        default="strict",
+        help="build the real paper and fail when it does not build (default), or use the "
+        "placeholder page in its place",
     )
     args = parser.parse_args(argv)
     try:

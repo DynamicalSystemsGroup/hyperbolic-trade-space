@@ -482,6 +482,22 @@ def test_stage_site_placeholder_flag_still_stages(tmp_path, monkeypatch, capsys)
     )
 
 
+def test_assemble_site_command_line_is_strict_by_default(tmp_path, monkeypatch, capsys):
+    _fake_assemble(tmp_path, monkeypatch, built_ok=False)
+    out = tmp_path / "site"
+    assert assemble_site.main(["--out", str(out)]) == 1  # the default is strict
+    err = capsys.readouterr().err
+    assert "FAILED" in err and "paper did not build" in err and "--paper placeholder" in err
+    assert not (out / "paper" / "index.html").exists()
+
+
+def test_assemble_site_placeholder_flag_still_assembles(tmp_path, monkeypatch, capsys):
+    _fake_assemble(tmp_path, monkeypatch, built_ok=False)
+    out = tmp_path / "site"
+    assert assemble_site.main(["--out", str(out), "--paper", "placeholder"]) == 0
+    assert (out / "paper" / "index.html").read_text() == "<html>placeholder</html>"
+
+
 def test_run_paper_build_reports_failure_without_raising(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(assemble_site, "paper_command", lambda: ["false"])
     assert assemble_site.run_paper_build("/paper", paper_dir=tmp_path) is False
