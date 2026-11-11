@@ -95,3 +95,12 @@ numbers and a statement of what 1,000,000 USD buys for 25 satellites of this cla
 arithmetic before either cost value is set; the WP30 build continues on placeholders; the gate waits for the values
 (OD5 (b)). The unit cost limit of 350,000 USD is held until the recalibration, since it was chosen on the old
 calibration.
+
+**The driver's first read of his two pages (10:15), recorded before the spike:** keeptrack.space (satellite cost
+deep dive) prices cubesats from the same EnduroSat slides the spike used as source 28 (a 1U bus about 25,000 USD with
+a 70,000 launch; a 6U bus over 200,000 with a 450,000 launch) and a 100 kg smallsat at about 700,000 USD on Transporter
+in 2026; spacenexus.us (launch cost comparison, as of October 2026) gives Transporter at 350,000 USD per 50 kg
+minimum, 7,000 USD/kg in 2026 rising 500 USD/kg a year, Falcon 9 dedicated at 74 million, Electron at about 9.2
+million average revenue per launch. Neither page prices a 12U cubesat or a fleet. The recalibration spike (D2) runs
+on 2026 sources first; its readout, with the baseline priced at 1 to 30 units and what 1,000,000 USD buys for 25
+satellites in 2026, goes to him before either value is set.
