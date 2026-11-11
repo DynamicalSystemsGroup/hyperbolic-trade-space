@@ -6,6 +6,8 @@ What this proves (for symbolic d, all w on the simplex):
   * V(m / V(m)) = 1: dividing by V puts the point on the frontier (the invariant form).
   * Corollary: with the offset beta, m~ = m e^{-beta} gives V(m~) = e^{-beta} V(m), so
     log V = w.u - beta and V(m~) = 1 exactly when V(m) = e^{beta}.
+  The script's V is the geometric mean (the beta = 0 case); the identity holds for any beta, and
+  the paper's Definition 2 scales V by e^{-beta}, so that log V = w.u - beta there.
 
 What this does NOT prove: anything about how w or beta are fitted (L3-L5), or non-simplex
 exponents (the degree of homogeneity would then be sum_j w_j, not 1).

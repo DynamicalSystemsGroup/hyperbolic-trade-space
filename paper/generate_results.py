@@ -809,7 +809,9 @@ def injected_noise() -> Md:
         "of this experiment (`examples/adcs/noise_injection.py`): each raw attribute is multiplied "
         "by exp(delta z), z standard normal, the table is conditioned again and refitted at the "
         "clean fit's temperature, and the measured columns are over eight draws. The predicted "
-        "shift is the corollary's, on the active face, with the noise of each metric "
-        "delta divided by the log spread of its attribute. What the table shows belongs to the fit "
-        "and the conditioning together.\n\n" + md_table(list(noise_injection.COLUMNS), rows)
+        "shift is the corollary's formula on the active face: proved for a fit with every exponent "
+        "positive, measured and not proved for a fit with a zero exponent. The noise of each "
+        "metric is delta divided by the log spread of its attribute. What the table shows belongs "
+        "to the fit and the conditioning together.\n\n"
+        + md_table(list(noise_injection.COLUMNS), rows)
     )

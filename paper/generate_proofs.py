@@ -183,13 +183,41 @@ def _anchor(number: int, index: int = 0) -> str:
     return f"proof-l{number}" + (f"-{index + 1}" if index else "")
 
 
+@cache
+def _box_hypotheses_by_lemma() -> dict[int, str]:
+    """The hypotheses line of each box of the paper that ends its title with ``(Ln)``."""
+    cells = json.loads((ROOT / "paper" / "paper.ipynb").read_text(encoding="utf-8"))["cells"]
+    out: dict[int, str] = {}
+    for cell in cells:
+        text = "".join(cell["source"])
+        m = re.match(
+            r":::\{prf:\w+\} .*\(L(\d+)\)\n:label: .*\n\*\*Derived\.\*\* \*Hypotheses\.\* (.*)",
+            text,
+        )
+        if m:
+            line = re.sub(r"\{prf:ref\}`[^`]*`", "an earlier result", m.group(2))
+            line = re.sub(r"\{ref\}`([^<`]*?)\s*<[^>]*>`", r"\1", line)
+            line = re.sub(r"<!--.*?-->", "", line).strip().rstrip(".")
+            out.setdefault(int(m.group(1)), line)
+    return out
+
+
+def _box_hypotheses(number: int) -> str | None:
+    """The hypotheses the paper's box states for lemma ``number``, if it has one."""
+    return _box_hypotheses_by_lemma().get(number)
+
+
 def _hypotheses(lemma) -> str:
     """The quoted hypotheses of the statement, one line per claim with the symbols that carry it."""
     by_claim: dict[str, list[str]] = {}
     for h in lemma["hypotheses"]:
         by_claim.setdefault(h["claim"], []).append(f"{h['symbol']} ({h['sign']})")
     if not by_claim:
-        return "none beyond the declared axioms below."
+        box = _box_hypotheses(lemma["number"])
+        if box is None:
+            return "none beyond the declared axioms below."
+        mark = f" {POLYHEDRAL_MARK}" if re.search(r"\bfacet", box) else ""
+        return f"{_esc(box)}{mark} (the paper's box; the script declares the axioms below)."
     return "; ".join(
         f"{_esc(claim)} (carried by the symbols {', '.join(syms)})"
         for claim, syms in by_claim.items()

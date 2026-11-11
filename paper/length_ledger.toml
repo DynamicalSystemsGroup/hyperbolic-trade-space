@@ -1015,3 +1015,17 @@ section = "Results"
 words_added = 201
 job = "the noise-ridge corollary (L20) between L6 and L7, one box with its sketch and script pointer, and the lead-in sentence of L6 and L7 naming it: Gaussian noise on the conditioned metrics adds a ridge to the objective and moves the exponents to first order by a stated amount that the conditioning bounds, the result that touches the paper's reading of the exponents; the supervisor, WP29-decisions.md (the glance): 'okay this sounds like a good addition'"
 reader = "the reader of the main-results list who asks, after the exponents are elasticities, how far noise of a given size moves them, and the practitioner whose own fit shows a small `conditioning_`"
+
+[[raise]]
+date = "2026-11-11"
+section = "Methods"
+words_added = 14
+job = "WP29 review, triage of the expert (P9) and novice (P10) reads (work-packages/WP29-review/P9-P10-triage.md, C1, C6, R1 and S10), net of the cuts named here: R1 is made well-formed (an optimal dual weight vector; the facet of the convex hull of the rows) and loses its subgradient sentence and its finite-temperature remark, which the axiom ledger and Appendix B carry; R3, used by Corollary 1 and listed nowhere, gets its clause; the sentence on zeros says what the fit does with a row that has a zero metric; (vi) loses a convexity-of-later-optimization clause no script backs"
+reader = "the expert reader who checks the hypotheses of Corollary 1 and Theorem 2 against the scripts, and the novice who met R1 before p existed"
+
+[[raise]]
+date = "2026-11-11"
+section = "Results"
+words_added = 129
+job = "WP29 review, triage of the expert (P9) and novice (P10) reads, net of the cuts named here: the opening roadmap of L-numbers (each group's lead-in names the same results) and the L12 statement of the duality gap at tau = infinity with its sketch clause are deleted, and the F-codes leave the boxes for one clause of the lead-in; what is added narrows or backs the boxes (Corollary 1 to interior fits and to the expected noisy objective; L11 to weak efficiency with its two words defined; L16 (i) to an instance; Corollary 2 to its true hypotheses; the margin sentence to score units), defines the symbols the boxes used undefined (LSE and LME in L5, the fixed-weight objective in L16, slack, accepted), and mends the thread of L8 (the chart (Z, log V) is a bijection)"
+reader = "the expert reader (P9) who checks each box against its script, and the novice reader (P10) who stopped on undefined symbols and on two numbering systems; the balance rule of reader-grid.md holds, no box gained a hypothesis the novice must follow"

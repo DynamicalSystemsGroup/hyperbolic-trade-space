@@ -289,7 +289,7 @@ def margin_sentence(study, fits) -> Md:
     r, K = study.regime, max(fits)
     four = lambda v: format(v, ".4g")  # noqa: E731
     n, N = designs_on_a_seam(study, fits[K])
-    times = f"{float(f'{fits[K].band / fits[K].estimator.termination_.radius:.1g}'):g}"
+    times = f"{float(f'{fits[K].band / (fits[K].estimator.termination_.gamma / 2):.2g}'):g}"
     held = [entry(f"contending | {r} K={K} term {k} | set") for k in range(1, K + 1)]
     sets = (
         f"the contending sets themselves hold under rounding-level jitter ({_D11})"
@@ -304,8 +304,9 @@ def margin_sentence(study, fits) -> Md:
         f"{stable(f'margin | {r} | {K} | median margin', lambda v: f'{v:.3f}')}: a margin below "
         f"the band puts at least one design within the band of a seam, here {n} of the {N}, and "
         f"the certificate covers changes under the radius only. For the {_NUMBER_WORDS[K]}-term "
-        f"split: the local optimality certified covers changes about {times} times smaller than "
-        f"the band, so which term those {n} designs fall to is not a finding; {sets}."
+        f"split: the local optimality certified covers changes of the term scores under half the "
+        f"margin, about {times} times smaller than the band, so which term those {n} designs "
+        f"fall to is not a finding; {sets}."
     )
 
 

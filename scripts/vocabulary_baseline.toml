@@ -41,13 +41,6 @@ reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-tr
 [[violation]]
 kind = "first-use"
 file = "paper/paper.ipynb"
-phrase = "assignment"
-owner = "WP10 paper stream"
-reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "first-use"
-file = "paper/paper.ipynb"
 phrase = "improvement factor"
 owner = "WP10 paper stream"
 reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
@@ -163,13 +156,6 @@ file = "paper/paper.ipynb"
 phrase = "convex envelope"
 owner = "WP10 paper stream"
 reason = "BASELINE: ordinary mathematics: a property of V (log-convex), not one of the three frontier objects (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/paper.ipynb"
-phrase = "duality gap"
-owner = "WP10 paper stream"
-reason = "BASELINE: standard convex-optimization term (Boyd and Vandenberghe); candidate for the glossary assumed list (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"

@@ -208,30 +208,6 @@ source = "WP10, tickets of 2026-11-09"
 note = "Section 5, assumption ii. Interface contract version 6: a finite term_temperature selects the soft fit; the default np.inf fit is unchanged. The bound for given terms is L10."
 
 [[claim]]
-id = "C013"
-fragment = "The one-term fit comes first: the invariant value and its shift (L1, L2), the fit as a convex program (L3 to L5)"
-file = "paper/paper.ipynb"
-anchor = "Results"
-kind = "M"
-backing = [
-  "lemma:L1",
-  "lemma:L2",
-  "lemma:L3",
-  "lemma:L4",
-  "lemma:L5",
-  "lemma:L16",
-  "lemma:L15",
-  "lemma:L12",
-  "lemma:L13",
-  "lemma:L14",
-  "lemma:L17",
-]
-status = "backed"
-disposition = "keep"
-source = "WP10, tickets of 2026-11-09"
-note = "Section 6 opening: the boxes it names, L1 to L11 as stated; 'not convex' for the several-term fit is L16 part (i); the three levels are L15, L12 to L14; the certificate is L17."
-
-[[claim]]
 id = "C014"
 fragment = "shifting every log-metric by a constant moves the offset by that constant and leaves the exponents unchanged"
 file = "paper/paper.ipynb"
@@ -296,7 +272,7 @@ note = "Section 6.1."
 
 [[claim]]
 id = "C018"
-fragment = "V_K is the 1/kappa power of a posynomial and its logarithm lies within (log K)/kappa of its largest term (L10); a maximizer of V is Pareto-efficient, and the converse is not claimed (L11)"
+fragment = "V_K is the 1/kappa power of a posynomial and its logarithm lies within (log K)/kappa of its largest term (L10); a maximizer of V is weakly Pareto-efficient, and the converse is not claimed (L11)"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -305,9 +281,9 @@ backing = [
   "lemma:L11",
 ]
 status = "backed"
-disposition = "keep"
+disposition = "narrow"
 source = "WP10, tickets of 2026-11-09"
-note = "Section 6.1; the converse is stated as not claimed in the L11 box."
+note = "Section 6.1; weakly efficient in general, efficient when every exponent is positive (L11.17, L11.19, step 5 for K > 1); the converse is stated as not claimed in the L11 box."
 
 [[claim]]
 id = "C019"
@@ -1201,18 +1177,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "Scope/intent: interface contract 'Black box' paragraph (line 114) states exactly this; the pipeline is by the contract"
 
 [[claim]]
-id = "C087"
-fragment = "so the method stays relevant as tools move or where scoring comes from physical systems or human judgment"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "P"
-backing = ["reading", "file:work-packages/interface-contract.md"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Design rationale and forecast ('stays relevant'), the author's judgment; the contract backs the three sources of attributes; not marked as judgment in the prose"
-
-[[claim]]
 id = "C088"
 fragment = "The formal results are properties of mathematical objects, conditioned on assumptions that we cannot certify for a given table of designs"
 file = "paper/paper.ipynb"
@@ -1250,7 +1214,7 @@ note = "gaps_table columns are formal object, bridging assumption, what cannot b
 
 [[claim]]
 id = "C091"
-fragment = "The supporting envelope is the $\\tau=\\infty$ fit, which none exceeds."
+fragment = "The supporting envelope is the $\\tau=\\infty$ fit, which none of the table's designs exceeds."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1346,7 +1310,7 @@ note = "select_temperature hits the target frac_above_ within 0.01; the case use
 
 [[claim]]
 id = "C099"
-fragment = "Zeros are tolerated in data and masked in the fit, negative values are rejected"
+fragment = "A row with a zero metric is left out of the fit, and $N$ counts the other rows; negative values are rejected"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -1354,7 +1318,7 @@ backing = ["test:tests/test_estimator.py::test_zero_metric_row", "test:tests/tes
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "zero row: exponents unchanged, support weight 0, score -inf; negatives raise 'Negative values in data' in fit and transform"
+note = "zero row: exponents unchanged, support weight 0, score -inf, excluded from the objective (the fit counts only rows with no zero metric); negatives raise 'Negative values in data' in fit and transform"
 
 [[claim]]
 id = "C100"
@@ -4698,7 +4662,7 @@ note = "Responsibility statement for the downstream inversion; see the predictio
 
 [[claim]]
 id = "C386"
-fragment = "Term aggregation: the formula is the sum; the package's mean subtracts the constant $(\\log K)/\\kappa$ from every level and changes neither exponents nor offsets."
+fragment = "the package's mean ($\\kappa=\\infty$: the maximum) subtracts the constant $(\\log K)/\\kappa$ from every level and changes neither exponents nor minimizers"
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "S"
@@ -4710,7 +4674,7 @@ backing = [
   "lemma:L10.20",
 ]
 status = "backed"
-disposition = "keep"
+disposition = "narrow"
 source = "WP21 D-1, cleanup unit"
 note = "Definition 3. Interface contract version 9: the keyword term_aggregation takes sum (default) or mean, stored verbatim and validated in fit; the formula in the definition is the sum, the mean subtracts log K / kappa (L10.20)."
 
@@ -5163,7 +5127,7 @@ note = "The chapter 'Hyperbolic Graph Efficiency Measures' (10.1007/978-94-015-7
 
 [[claim]]
 id = "C416"
-fragment = "centred on the cell's mean log-metric: the term refit ... on the cell's rows alone"
+fragment = "centred on the cell's mean log-metric: $f_k$ of equation (2) on the cell's rows alone"
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "S"
@@ -5211,7 +5175,7 @@ note = "D.13: the plain K = 1 fit on a term's own rows (solve_slsqp(mine, tau)) 
 
 [[claim]]
 id = "C420"
-fragment = "the refit of record is ... over all rows. The contending set's exact-maximum fit on the cell is ... itself on the cell's rows"
+fragment = "The contending set uses $f_k$ at $\\tau=\\infty$ on the cell's rows alone"
 file = "paper/paper.ipynb"
 anchor = "The algorithm for several terms"
 kind = "S"
@@ -5672,7 +5636,7 @@ note = "The norm bound tau ||P Sigma w|| / conditioning_ (conditioning_ is tau t
 
 [[claim]]
 id = "C461"
-fragment = "An attribute with relative error delta_j enters with sigma_j=delta_j/s_j"
+fragment = "noise moves the exponents by a ridge (L20, with L18 for $\\Sigma$)"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -5683,11 +5647,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP29 placement"
-note = "Under log-affine conditioning with a_j = 0 and a multiplicative error, the conditioned noise has sigma_j = delta_j / s_j, s_j the log spread (L18, s_j a definition by the convention of standardising)."
+note = "L18 turns a relative error into a level of the conditioned noise (sigma_j = delta_j / s_j under log-affine conditioning with a_j = 0 and a multiplicative error) and gives the covariance form of the cumulant that L20 uses; the box no longer states the conversion."
 
 [[claim]]
 id = "C462"
-fragment = "it says how far noise moves the exponents, not whether the rates are right"
+fragment = "It is the shift of the minimizer of the expected noisy objective, not of one noisy fit, and it does not say whether the rates are right"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -5714,3 +5678,51 @@ status = "backed"
 disposition = "keep"
 source = "WP29 placement (OD4: the injection table is the corollary's demonstration)"
 note = "Eight draws per cell, seeds 100 to 107; the noise is injected into noise-free data of record; the 5 and 10 percent cells are outside the formula's range and are not read as confirmation."
+
+[[claim]]
+id = "C464"
+fragment = "A maximizer of $V$ over a set $S$ is weakly efficient (no design of $S$ is better in every metric), and efficient (none is at least as good in every metric and better in one) when every $w_j>0$"
+file = "paper/paper.ipynb"
+anchor = "The fit and its geometry"
+kind = "M"
+backing = ["lemma:L11.17", "lemma:L11.19"]
+status = "backed"
+disposition = "narrow"
+source = "WP29 review, P9 31 (triage R9)"
+note = "The title and the lead-in say weakly Pareto-efficient: weak efficiency is the general statement, strict efficiency needs every w_j > 0 (K = 1) or an active term with every exponent positive (K > 1, kappa = infinity; step 5 of the script)."
+
+[[claim]]
+id = "C465"
+fragment = "$P=I-\\mathbf 1\\mathbf 1^\\top/d$ projects onto the vectors that sum to zero"
+file = "paper/paper.ipynb"
+anchor = "The fit and its geometry"
+kind = "M"
+backing = ["lemma:L20"]
+status = "backed"
+disposition = "narrow"
+source = "WP29 review, P9 23 (triage C1)"
+note = "The script's P is I - 11'/d and R3 asks every exponent positive; the boundary case (a zero exponent, the projector of the face) is outside the proof and is measured, not proved, in D.18."
+
+[[claim]]
+id = "C466"
+fragment = "is at most $\\lVert P\\Sigma w\\rVert/m$, $m$ the smallest eigenvalue of $C$ on that space, and lowers $w^\\top\\Sigma w$, in the equal case $\\lVert w\\rVert^2$"
+file = "paper/paper.ipynb"
+anchor = "The fit and its geometry"
+kind = "M"
+backing = ["lemma:L20", "test:tests/test_noise_ridge.py::test_the_noisy_fit_no_longer_follows_the_ridge_at_large_tau_and_noise"]
+status = "backed"
+disposition = "narrow"
+source = "WP29 review, P9 24 (triage C3)"
+note = "The script proves delta'Sigma w <= -m ||delta||^2 <= 0 (the ridge falls to first order) and, for Sigma = sigma^2 I, that ||w||^2 falls; tau cancels from the bound, conditioning_ = tau m is the package name."
+
+[[claim]]
+id = "C467"
+fragment = "$w_k\\in\\Delta$ arbitrary; $\\beta_k=J_\\tau(Uw_k)$; cells held at $W$'s"
+file = "paper/paper.ipynb"
+anchor = "The algorithm for several terms"
+kind = "M"
+backing = ["lemma:L14.19", "lemma:L14.20"]
+status = "backed"
+disposition = "narrow"
+source = "WP29 review, P9 39 (triage R17)"
+note = "The corollary needs the partition (A8), the reaches beta_k = J_tau(U w_k) and the term gap of L12; it needs neither R2 nor minimality of w_k."

@@ -2183,7 +2183,7 @@ def test_section_6_names_the_three_levels_and_has_level_1_as_a_derived_block():
         assert name in text, name
     block = next(b for b in _blocks() if "(L15)" in b[1])
     assert block[2] == "thm-descent" and "**Derived.**" in block[3]
-    for hypothesis in ("step B", "unpenalized", "support offsets"):
+    for hypothesis in ("each term refit by", "unpenalized", "support offsets"):
         assert hypothesis in block[3], hypothesis
     assert "lemma_15_descent.py" in text
     abstract = yaml.safe_load(_src(_nb(PAPER_NB).cells[0]).split("---")[1])["abstract"]
@@ -2641,7 +2641,7 @@ def test_cr12_every_hypothesis_label_is_worded_or_explained():
         "I10": "first-order conditions", "I11": "convex on every line is convex",
         "I5": "moment generating functions", "F10": "the maximum is attained",
         "I4": "log-sum-exp of affine", "F12": "the minimum is attained",
-        "I12": "complementary slackness", "I9": "Cauchy-Schwarz", "I8": "first-order convexity",
+        "I9": "Cauchy-Schwarz", "I8": "first-order convexity",
         "F5": "the maximum is attained", "I6": "implies", "A8": "a partition into nonempty cells",
     }.items():  # fmt: skip
         first = re.search(rf"\b{label}\b", results)
