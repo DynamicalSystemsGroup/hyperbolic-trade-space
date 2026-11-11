@@ -214,7 +214,7 @@ Triage of 2026-11-10. Eleven fresh readers on the staged paper at c6d0fff (nine 
 for the earlier "facet"; the eight-metric data of record): six personas at depth B (headings, the
 main-results list, the boxed statements with proofs withheld, the figures and their captions) and
 five at depth C (the whole main text, appendices withheld). Reports verbatim in `round2-reads/`
-(committed first, 1c67568); the slices and prompts are described in its README. Marked against
+(committed first, 1c67568; deleted at WP25-5, in git at 8eda7e6); the slices and prompts are described in its README. Marked against
 answer key version 2, held outside the repository; the triager confirmed its SHA-256 before
 reading: `e72f3eeac76089d8657add60ac1b7553ac8fcfd022cc6cb0b69fb050931ad638`. Where the key's
 facts predate WP23 and WP24, the statement is marked "key stale" rather than the reader wrong; the
@@ -843,7 +843,7 @@ Triage of 2026-11-10 (D-6). Three fresh readers, one task each, on the staged si
 (the root page, the docsite, the paper) with a clean worktree of the repository at the same
 commit: install and run a first fit (R1); read a tension report and choose K (R2); read a
 termination record and say whether the fit converged (R3). Reports verbatim in
-`round2-docs-reads/` (committed first, fdab633), with the tasks and models in its README. The
+`round2-docs-reads/` (committed first, fdab633; deleted at WP25-5, in git at 8eda7e6), with the tasks and models in its README. The
 docs pages are unchanged between c6d0fff and the head of `dev` at the triage (ca6ce94). Every
 passage a reader quoted was checked against the page, and every command a reader ran was re-run
 in a worktree of `dev`: the first fit, the Termination page's example and its margin check,

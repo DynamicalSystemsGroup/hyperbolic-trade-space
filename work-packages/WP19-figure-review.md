@@ -1193,6 +1193,8 @@ committed (087e783, e344908) differ in that and the legend position alone.
 
 ## S-5 alternative: a real 3-lemma from the data of record (WP28, the supervisor's loop)
 
+The candidate files this section and the next one name (`docs/superpowers/notes/figure-candidates/` trilemma and textured renders and their two scripts) were deleted at WP25-5 (fifth instance); they are in git at 8eda7e6. `triple_search.py` stays.
+
 Origin, the supervisor's words, verbatim, said of the docs' planted ternary (Examples, Figure 6): "can we
 rebuild the figure from a trilemma using data from the ADCS model? i like this figure a lot and i lean
 towards keeping it but if the issue is that it feels made up we can do a real 3-lemma. don't swap in a new
@@ -1303,7 +1305,7 @@ The K = 3 fit of the triple was tried and does not draw: `plot_ternary` finds no
 label (its exponent vector is 0.02, 0.94, 0.03, a sliver at the pointing-error corner), so the
 three-region form of Figure 6 is not available from this triple.
 
-![candidate](../docs/superpowers/notes/figure-candidates/ternary-cubesat-trilemma-light.png)
+(The candidate image was deleted at WP25-5; it is in git at 8eda7e6.)
 
 - Shows: the 706 primary designs by shares of settling time, pointing error and total mass; the one-term
   fit's exponent vector inside the triangle, with lines of equal V closing around it: on these three,
@@ -1837,7 +1839,7 @@ The supervisor chooses.
 ### S-5 redraw iteration of A and B (ninth PM; the driver's decision: C dropped, A the candidate, B the alternative)
 
 Decision: C (pointing error / energy balance / depth of discharge) is dropped, because each of its three regions is a single-metric term, so no region shows
-a trade-off. Its two images stay in `docs/superpowers/notes/figure-candidates/` because the cold-read returns above name them; the script skips C.
+a trade-off. Its two images were kept while the cold-read returns above named them and were deleted at WP25-5; the script skips C.
 
 What changed (A and B redrawn, light and dark, `docs/superpowers/notes/figure-candidates/ternary-cubesat-textured-{A,B}-{light,dark}.png`):
 
@@ -1917,3 +1919,90 @@ unless stated.
 
 Not addressed, by the supervisor's rule against over-tuning: the hill reading, the tints, the dot sizes. Candidate C is dropped (each of its regions is a
 single-metric term).
+
+## Cold reads of two figure edits (merged at WP25-5)
+
+Two one-reader cold reads, folded here verbatim from `WP19-cold-reads-fig1/cold-read-1.md` and `WP19-cold-reads-thin-term/cold-read-1.md` (deleted at WP25-5 with the images they name, `fig-nlemma.png`, `paper-page-dark.jpg`, `thin-term-figure.png` and the three `paper-1100-*` renders; all in git at 8eda7e6). Heading levels are lowered one step.
+
+## Cold read of the redrawn Figure 1 (planted rings and their legend entry removed)
+
+Reader: one fresh Sonnet agent, image only (`fig-nlemma.png`), neutral brief: say what it shows, what each element
+means, what looks missing, odd or ambiguous, and what a caption should answer; at most 300 words.
+
+Reader's report, verbatim:
+
+**What it shows.** A triangle (a 2-simplex) with corners labelled metric 1 (top, "corner: it binds alone"), metric 2 (bottom left) and metric 3 (bottom right). The edges are labelled "dilemma of 1 and 2", "1 and 3" and "2 and 3". The interior is labelled "trilemma". Three numbered dots (blue 1, orange 2, green 3) are placed in it. A right-hand panel, "Each term's exponent vector", lists:
+- term 1: dilemma of 2 and 3, w = (0.00, 0.35, 0.65). It sits on the bottom edge.
+- term 2: trilemma of all three, w = (0.44, 0.27, 0.28). It sits in the interior.
+- term 3: dilemma of 1 and 2, w = (0.70, 0.30, 0.00). It sits on the left edge.
+
+A footer says "Weight on these three metrics: 1.00, 1.00, 1.00 (all of it: d = 3)".
+
+**Reading.** Each term of the posynomial has exponents that sum to 1. Its position is barycentric: a corner means it depends on one metric alone, an edge on two, the interior on all three. "Binds" and "dilemma/trilemma" mean the term couples that many metrics.
+
+**Odd or ambiguous.**
+- The footer is cryptic. 1.00, 1.00, 1.00 appears to be each term's weights summing to 1, but it reads as per-metric totals. Summing the columns instead gives 1.14, 0.92, 0.93, so the footer is not that.
+- Only the metric 1 corner is annotated. Corners 2 and 3 are not, and the "binds alone" label is jargon.
+- Dot 3 sits on the left edge and dot 1 on the bottom edge. Dot 3 is slightly off the exact edge position for 0.70/0.30.
+- The right edge, "1 and 3", has no dot.
+- The legend gives no direction convention (which corner means weight 1).
+- "Weight" (footer) and "exponent" (title) name the same quantity.
+- Nothing says where the metrics come from, or whether this is one model with three terms (K = 3) or three separate models.
+- The figure does not say which dilemma is "hard".
+- The bottom third of the canvas is empty.
+
+**What a caption should answer.**
+- What the triangle is (the space of exponent vectors, summing to 1), and what position means.
+- That the three terms are the terms of one fitted posynomial.
+- What "binds" means: the metric whose term sets the frontier.
+- Why edges are dilemmas and the interior is a trilemma.
+- What the reader should take away: more terms, richer trade-off structure.
+- Whether the values are illustrative or fitted.
+
+Reading (the assistant): the rings are not missed; no question concerns a second marker. The footer's three equal
+numbers (each term's weights on the three metrics) read as per-metric totals: raised to the supervisor, not edited here.
+
+## Cold read of the redrawn K = 3 tension figure (one fresh Sonnet reader, image only, neutral brief)
+
+Brief: read the image and nothing else; say what it shows panel by panel, what each element means, what looks
+missing, odd or ambiguous, and what a caption should answer; at most 300 words. Image: `thin-term-figure.png`.
+The first draft put the sentence over the diagonal outlines; this read is of the redrawn figure (sentence lower
+left, clear of the outlines).
+
+Reader's report, verbatim:
+
+(1) The figure has three stacked heatmaps, one per posynomial term (term 1, 2, 3). Each is an 8x8 matrix over the same eight metrics: settling time, pointing error, total mass, control effort, power margin, energy balance, peak slew power, depth of discharge. Cell colour is an "association" between metrics, running from -1 (brown/orange, labelled tension) through 0 (near white) to +1 (dark purple). Each axis label carries a weight w.
+- Term 1 ("4-lemma, 4 metrics in the exact-maximum support") is blank apart from four black outlined squares on the diagonal. An in-panel sentence says "3 near-frontier designs; no association reading".
+- Term 2 ("5-lemma, 5 metrics") is fully coloured and annotated. Diagonal entries are 1.00. Off-diagonal values include settling time vs peak slew power -0.85, total mass vs peak slew power +0.85, and power margin vs energy balance +0.96.
+- Term 3 ("5-lemma") is also fully coloured. Notable values: pointing error vs peak slew power -1.00, and power margin vs energy balance 0.99.
+
+(2) Black outlined squares mark the diagonal cells of metrics in that term's support. Their w values are non-zero, and the weights in each panel sum to about 1. Term 1 has 4 outlines and terms 2 and 3 have 5 each, matching the titles. Grey labels are metrics with w=0.00, so they are not in the support, but their rows and columns are still coloured in terms 2 and 3. The number in each cell is the association value.
+
+(3) Problems:
+- "Association" is never defined: correlation, or something else? It is unclear what is being correlated, and across which designs.
+- "4-lemma" and "5-lemma" are opaque.
+- Term 1 is empty, so its 4-metric support is shown with no data; the term-1 weights add little there.
+- The colour scale is shared but the panels are independent. Nothing says whether they should be compared.
+- Grey-label cells still carry values, so it is unclear whether they matter.
+- Term 3 shows a -1.00 value, which looks suspicious, as does 0.99.
+- The meaning of "near-frontier" and of "exact-maximum support" is unexplained.
+
+(4) The caption should answer:
+- What is "association", and how is it computed?
+- What are the terms and the weights w?
+- What is "lemma-k"?
+- Why does term 1 have no reading?
+- What do the outlined squares mean?
+- What do the grey labels mean?
+- Should the three panels be compared?
+
+Disposition: the empty panel with its line was read as intended (no cell values, outlines kept, the count stated);
+the reader asks only for the caption to say what the empty panel means, which it now does. The other questions
+(association, n-lemma, near-frontier) are answered by the existing caption and the text it sits in.
+
+### Rendered paper page (Figure 8 of the built page; 1100 px, light and dark)
+
+`paper-1100-light-panel.jpg`, `paper-1100-dark-panel.jpg`: term 1 drawn with its title, metrics and exponents, the four
+outlines and empty cells, and the line "3 near-frontier designs; no association reading" lower left; terms 2 and 3
+unchanged. `paper-1100-light-caption.jpg`: the caption with its new last sentence. The figure keeps its white plate on
+the dark page, as before.

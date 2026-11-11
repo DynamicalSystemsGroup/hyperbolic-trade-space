@@ -576,7 +576,7 @@ In flight or held at the handover: the acceptance reviewer (agent `ab43496ec9ac4
 paper's words per section beside the units), R-8, R-10, R-11's tests, R-14's fast suite, R-15 on the changed pages, and
 fills R-13 from `WP28-retest.md` 052e8ee); the figure loop for S-5, the real 3-lemma ternary, stopped by the driver
 mid-run on the model rule: worktree `fig-trilemma` at afdb222 holds staged, uncommitted candidate files
-(`docs/superpowers/notes/figure-candidates/ternary-cubesat-trilemma-{light,dark}.png`, `ternary_cubesat_trilemma.py`)
+(the trilemma candidate files, deleted at WP25-5; in git at 8eda7e6)
 and an edited `WP19-figure-review.md`; restart on Sonnet from the worktree's state, read its scratch first (the agent
 was last renaming a module that clashed with stdlib `enum`); the `stage` worktree at af9ffea serving 127.0.0.1:8791
 (pid in `scratchpad/wp28/retest/server.pid`), with the symlinks `stage/reading`, `stage/checkouts` and

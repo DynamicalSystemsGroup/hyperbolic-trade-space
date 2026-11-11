@@ -1235,3 +1235,5 @@ stack the paper already uses; the formal prover in the project is the one inside
 Appendix C's checks), and the word "formal verification" is used only there. A claims-register row; a ledger entry
 stating the job (the reader of Appendix B knows what the scripts do and do not establish); the limitations page of
 the docs carries one sentence pointing to it. No re-test needed.
+
+- **2026-11-11. `streams/P10-review.md` deleted at WP25-5 (the assistant's call 6): WP10 is accepted as a structure and its record is `WP10-review-2.md`.**
