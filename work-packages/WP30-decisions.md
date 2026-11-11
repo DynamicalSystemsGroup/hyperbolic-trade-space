@@ -204,3 +204,9 @@ rate puts 3,000 above 75 minutes, the count is 2,000. The container's two runs r
 regenerated data, not the regeneration itself. `SAMPLE_PER_REGIME`, the two contract rows and `SAMPLE` in
 `test_v2_data.py` carry the count. The model's line cap of 1,200 is accepted with its reason recorded; the wheel
 relation 4,000 + 2.0e6 USD/(N·m) as the developer set it, with its source.
+
+**Sample size, final (2026-11-11, 13:50; the assistant):** 2,000 designs per regime, the first 1,000 the old sample. The
+timing could not be made clean: 300 designs on nine workers had not finished after fifteen minutes with the machine at
+a load of 60 to 150 (the gate runner's rebase and its nine-minute suite, the agents, the oracle itself), so the rule's
+fallback applies; the regeneration's own wall time per regime, run with nothing else in parallel, becomes the measured
+rate of record for the next gate. Listed for the supervisor's review with the reason.
