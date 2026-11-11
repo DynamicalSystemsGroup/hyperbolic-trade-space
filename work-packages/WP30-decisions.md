@@ -150,3 +150,15 @@ what the assessment does not scope (communications, payload interface, flight so
 launch slot minimum, broker fees). The same two numbers and their relation appear in the stakeholder layer's sponsor
 concern, Appendix C and the docs case page; the class note stands (a 1U series below 40,000 USD a unit; larger series
 dearer).
+
+**The supervisor, verbatim (2026-11-11, 10:35), on what the base prices exclude:** "* Payloads and Instruments: The
+base prices above cover the satellite "bus" (structure, power, radios, and computer) and launch, not specialized
+scientific sensors, cameras, or custom electronics. Adding heavy instrumentation will increase the per-unit cost.
+* Testing and Operations: You will also need to budget for environmental testing (vibration and thermal-vacuum
+chambers), licensing, and a ground station network to talk to your 25 satellites once they are in orbit".
+**Disposition:** the coverage statement's exclusion list reads, in this order: the payload and its instruments
+(sensors, cameras, custom electronics); communications and the payload interface; flight software; environmental
+testing beyond the assembly line (vibration, thermal vacuum); licensing; a ground station network and operations; the
+launch slot minimum and broker fees. The 2,000,000 USD allowance inside the 8,000,000 full budget is described as
+covering these; the requirement's text says the covered cost is the bus (structure, power, computer and radios in the
+bus block), the attitude-control parts, assembly and wholesale launch.
