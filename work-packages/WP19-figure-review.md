@@ -1190,3 +1190,200 @@ committed (087e783, e344908) differ in that and the legend position alone.
    paper's cell `fig-plane-k1` legend/caption clause about the grey band has nothing to point at.
 4. Figure 7's caption cites Appendix D.16 for the direction's share and loadings instead of
    hand-typing the 44 %.
+
+## S-5 alternative: a real 3-lemma from the data of record (WP28, the supervisor's loop)
+
+Origin, the supervisor's words, verbatim, said of the docs' planted ternary (Examples, Figure 6): "can we
+rebuild the figure from a trilemma using data from the ADCS model? i like this figure a lot and i lean
+towards keeping it but if the issue is that it feels made up we can do a real 3-lemma. don't swap in a new
+figure but do a loop to build an alternative". Nothing on the page changes in this loop; the supervisor
+chooses afterwards.
+
+### Where a 3-lemma is, by the code's rule
+
+The rule (`tensions.py`): a contending set is the support of the exact-maximum (`tau = inf`) exponents,
+at K = 1 on the whole table, at K > 1 on each term's rows centred on their mean. The data of record is
+`examples/adcs/data/v2`, read through `case.load_study` (primary 706 feasible designs, stock 780).
+
+- **The fits of record have no 3-lemma.** The K = 3 fits of record (`case.k_fits`, temperature re-selected
+  per K, certified on both regimes) have contending sets of 4, 5 and 5 metrics (primary) and 5, 6 and 4
+  (stock); the K = 1 contending set is 5 metrics on each regime. No term's support is exactly three.
+- **Three-metric sub-tables mostly are 3-lemmas.** For each of the 56 triples of the eight metrics, on
+  each regime, the triple's three attributes are conditioned alone with the case's conditioning (per
+  column: the sub-table equals the three columns of the eight-metric table, checked on all 112) and fitted
+  with `case.fit_study` (the temperature for a tenth of designs above V = 1, the case's seed). Support of
+  the K = 1 exact-maximum exponents, primary: 39 triples of 3, 14 of 2, 3 of 1; stock: 36 of 3, 15 of 2,
+  5 of 1. 35 triples are 3-lemmas on both regimes. At K = 1 the certificate is `not_applicable` (one
+  term); the table gives the K = 3 fit of each triple (certified wherever its temperature could be
+  selected; on 1 primary and 10 stock triples the fraction-above target is not reached and no K = 3 fit
+  is made).
+- **Against the limits line.** "Eight metrics do not separate in three" is about the eight-metric fit:
+  its contending sets are of four to six metrics, so no ternary draws it. It stands. The triples refine
+  it, they do not contradict it: a 3-lemma here is a fit of a different, three-column model that leaves
+  the other five metrics out, and the scan shows that most triples give one. Which triple is drawn is
+  the analyst's choice, the page's other limit ("the choice of metrics can flatter the result"), and the
+  scan is the evidence for it.
+- **The triple drawn: settling time, pointing error, total mass**, primary regime. Chosen as the triple
+  with support 3 on both regimes whose smallest exact-maximum exponent is largest among the triples
+  inside the page's one-term contending set (0.226 primary, 0.239 stock; the only larger one over all
+  triples, pointing error, total mass and power margin at 0.243, leaves that set), and whose K = 3 fit
+  has three terms of support 3, certified. Primary: temperature 10.69, exact-maximum exponents 0.226,
+  0.304, 0.470; working exponents 0.288, 0.285, 0.427; 57 near-frontier designs (the guard of ten holds);
+  K = 3 on the triple certified. Stock: 0.239, 0.272, 0.489; K = 3 certified, supports 3/3/3.
+
+The 56 triples (support in bold when 3; exponents in the order of the triple):
+
+| triple | primary: support | primary: exact-maximum exponents | primary: K = 3 on the triple | stock: support | stock: exact-maximum exponents | stock: K = 3 on the triple |
+|---|---|---|---|---|---|---|
+| settling time, pointing error, total mass | **3** | 0.23 / 0.30 / 0.47 | certified, supports 3/3/3 | **3** | 0.24 / 0.27 / 0.49 | certified, supports 3/3/3 |
+| settling time, pointing error, control effort | **3** | 0.31 / 0.26 / 0.44 | certified, supports 3/2/3 | **3** | 0.42 / 0.03 / 0.55 | certified, supports 3/3/3 |
+| settling time, pointing error, power margin | **3** | 0.43 / 0.07 / 0.50 | certified, supports 2/3/2 | **3** | 0.24 / 0.11 / 0.65 | certified, supports 3/3/3 |
+| settling time, pointing error, energy balance | **3** | 0.34 / 0.06 / 0.60 | certified, supports 2/3/2 | **3** | 0.09 / 0.10 / 0.81 | certified, supports 3/3/3 |
+| settling time, pointing error, peak slew power | **3** | 0.08 / 0.21 / 0.70 | certified, supports 3/2/3 | **3** | 0.07 / 0.23 / 0.71 | certified, supports 3/2/3 |
+| settling time, pointing error, depth of discharge | **3** | 0.35 / 0.07 / 0.58 | certified, supports 2/3/2 | 2 | 0.00 / 0.15 / 0.85 | certified, supports 3/2/3 |
+| settling time, total mass, control effort | 2 | 0.53 / 0.00 / 0.47 | certified, supports 2/3/2 | 2 | 0.43 / 0.00 / 0.57 | certified, supports 2/2/2 |
+| settling time, total mass, power margin | **3** | 0.21 / 0.49 / 0.30 | certified, supports 3/3/3 | **3** | 0.14 / 0.45 / 0.41 | certified, supports 3/3/2 |
+| settling time, total mass, energy balance | **3** | 0.35 / 0.29 / 0.36 | certified, supports 3/3/3 | **3** | 0.11 / 0.41 / 0.48 | certified, supports 3/3/3 |
+| settling time, total mass, peak slew power | 2 | 0.11 / 0.00 / 0.89 | certified, supports 2/2/1 | **3** | 0.15 / 0.02 / 0.82 | not reached |
+| settling time, total mass, depth of discharge | **3** | 0.16 / 0.49 / 0.35 | certified, supports 3/3/3 | **3** | 0.23 / 0.51 / 0.26 | certified, supports 2/2/3 |
+| settling time, control effort, power margin | **3** | 0.37 / 0.41 / 0.23 | certified, supports 3/3/3 | **3** | 0.36 / 0.48 / 0.16 | certified, supports 3/3/3 |
+| settling time, control effort, energy balance | **3** | 0.35 / 0.39 / 0.26 | certified, supports 3/3/3 | **3** | 0.35 / 0.47 / 0.18 | certified, supports 3/3/3 |
+| settling time, control effort, peak slew power | **3** | 0.30 / 0.33 / 0.37 | certified, supports 2/2/2 | 2 | 0.43 / 0.57 / 0.00 | certified, supports 2/1/2 |
+| settling time, control effort, depth of discharge | **3** | 0.41 / 0.41 / 0.18 | certified, supports 3/3/3 | 2 | 0.43 / 0.57 / 0.00 | certified, supports 2/2/3 |
+| settling time, power margin, energy balance | 2 | 0.50 / 0.00 / 0.50 | certified, supports 2/1/2 | 2 | 0.08 / 0.00 / 0.92 | certified, supports 2/2/2 |
+| settling time, power margin, peak slew power | **3** | 0.46 / 0.25 / 0.29 | certified, supports 2/3/3 | **3** | 0.15 / 0.09 / 0.76 | certified, supports 1/3/2 |
+| settling time, power margin, depth of discharge | **3** | 0.43 / 0.39 / 0.17 | certified, supports 3/3/3 | **3** | 0.28 / 0.56 / 0.17 | certified, supports 3/3/3 |
+| settling time, energy balance, peak slew power | **3** | 0.44 / 0.28 / 0.27 | certified, supports 2/3/2 | **3** | 0.14 / 0.12 / 0.74 | certified, supports 3/1/3 |
+| settling time, energy balance, depth of discharge | **3** | 0.37 / 0.49 / 0.14 | certified, supports 3/3/3 | **3** | 0.22 / 0.64 / 0.14 | certified, supports 2/3/3 |
+| settling time, peak slew power, depth of discharge | **3** | 0.57 / 0.31 / 0.12 | certified, supports 3/3/3 | **3** | 0.13 / 0.85 / 0.02 | certified, supports 2/1/2 |
+| pointing error, total mass, control effort | **3** | 0.40 / 0.41 / 0.19 | certified, supports 3/2/3 | **3** | 0.35 / 0.15 / 0.50 | certified, supports 3/2/2 |
+| pointing error, total mass, power margin | **3** | 0.24 / 0.44 / 0.32 | certified, supports 2/3/3 | **3** | 0.24 / 0.46 / 0.30 | certified, supports 3/3/2 |
+| pointing error, total mass, energy balance | **3** | 0.18 / 0.35 / 0.47 | certified, supports 2/3/3 | **3** | 0.23 / 0.43 / 0.34 | certified, supports 3/3/3 |
+| pointing error, total mass, peak slew power | 2 | 0.23 / 0.00 / 0.77 | certified, supports 1/2/2 | 2 | 0.23 / 0.00 / 0.77 | not reached |
+| pointing error, total mass, depth of discharge | **3** | 0.20 / 0.51 / 0.30 | certified, supports 1/3/3 | **3** | 0.19 / 0.47 / 0.34 | certified, supports 3/3/3 |
+| pointing error, control effort, power margin | **3** | 0.37 / 0.25 / 0.38 | certified, supports 3/3/3 | **3** | 0.31 / 0.48 / 0.21 | certified, supports 3/3/3 |
+| pointing error, control effort, energy balance | **3** | 0.32 / 0.22 / 0.46 | certified, supports 3/3/3 | **3** | 0.27 / 0.42 / 0.31 | certified, supports 2/3/2 |
+| pointing error, control effort, peak slew power | **3** | 0.24 / 0.01 / 0.75 | certified, supports 3/2/3 | **3** | 0.24 / 0.09 / 0.67 | certified, supports 3/3/2 |
+| pointing error, control effort, depth of discharge | **3** | 0.65 / 0.21 / 0.14 | certified, supports 3/3/3 | **3** | 0.40 / 0.56 / 0.04 | certified, supports 2/3/3 |
+| pointing error, power margin, energy balance | 2 | 0.03 / 0.00 / 0.97 | certified, supports 2/2/2 | 2 | 0.03 / 0.00 / 0.97 | certified, supports 2/2/2 |
+| pointing error, power margin, peak slew power | **3** | 0.24 / 0.08 / 0.68 | certified, supports 2/2/3 | **3** | 0.24 / 0.06 / 0.69 | certified, supports 2/2/3 |
+| pointing error, power margin, depth of discharge | **3** | 0.12 / 0.25 / 0.63 | certified, supports 2/3/3 | **3** | 0.08 / 0.29 / 0.63 | certified, supports 3/3/3 |
+| pointing error, energy balance, peak slew power | **3** | 0.24 / 0.09 / 0.67 | certified, supports 3/3/2 | **3** | 0.24 / 0.06 / 0.69 | certified, supports 2/3/3 |
+| pointing error, energy balance, depth of discharge | **3** | 0.10 / 0.42 / 0.48 | certified, supports 2/3/3 | **3** | 0.03 / 0.75 / 0.22 | certified, supports 2/3/3 |
+| pointing error, peak slew power, depth of discharge | **3** | 0.23 / 0.77 / 0.00 | certified, supports 2/1/3 | **3** | 0.23 / 0.77 / 0.00 | certified, supports 3/2/1 |
+| total mass, control effort, power margin | 2 | 0.54 / 0.00 / 0.46 | certified, supports 2/2/3 | 2 | 0.55 / 0.00 / 0.45 | certified, supports 2/3/2 |
+| total mass, control effort, energy balance | 2 | 0.47 / 0.00 / 0.53 | certified, supports 2/2/2 | 2 | 0.48 / 0.00 / 0.52 | certified, supports 2/3/2 |
+| total mass, control effort, peak slew power | 1 | 0.00 / 0.00 / 1.00 | certified, supports 1/2/1 | 1 | 0.00 / 0.00 / 1.00 | certified, supports 1/1/1 |
+| total mass, control effort, depth of discharge | **3** | 0.54 / 0.03 / 0.44 | certified, supports 3/1/3 | **3** | 0.51 / 0.03 / 0.45 | certified, supports 1/3/3 |
+| total mass, power margin, energy balance | 2 | 0.47 / 0.00 / 0.53 | certified, supports 2/2/2 | 2 | 0.48 / 0.00 / 0.52 | certified, supports 2/2/2 |
+| total mass, power margin, peak slew power | 2 | 0.54 / 0.46 / 0.00 | certified, supports 1/2/2 | 2 | 0.55 / 0.45 / 0.00 | not reached |
+| total mass, power margin, depth of discharge | **3** | 0.52 / 0.22 / 0.26 | certified, supports 1/3/3 | **3** | 0.49 / 0.25 / 0.26 | certified, supports 1/2/3 |
+| total mass, energy balance, peak slew power | 2 | 0.47 / 0.53 / 0.00 | certified, supports 1/2/2 | 2 | 0.48 / 0.52 / 0.00 | not reached |
+| total mass, energy balance, depth of discharge | **3** | 0.48 / 0.33 / 0.19 | certified, supports 3/3/1 | **3** | 0.46 / 0.29 / 0.24 | certified, supports 3/1/2 |
+| total mass, peak slew power, depth of discharge | 2 | 0.60 / 0.00 / 0.40 | certified, supports 2/1/1 | 2 | 0.59 / 0.00 / 0.41 | certified, supports 1/2/1 |
+| control effort, power margin, energy balance | 2 | 0.30 / 0.00 / 0.70 | certified, supports 2/2/2 | 2 | 0.48 / 0.00 / 0.52 | certified, supports 2/2/2 |
+| control effort, power margin, peak slew power | 1 | 0.00 / 0.00 / 1.00 | certified, supports 1/3/2 | 1 | 0.00 / 0.00 / 1.00 | not reached |
+| control effort, power margin, depth of discharge | **3** | 0.28 / 0.69 / 0.03 | certified, supports 1/3/3 | **3** | 0.36 / 0.54 / 0.10 | certified, supports 2/3/1 |
+| control effort, energy balance, peak slew power | **3** | 0.19 / 0.77 / 0.04 | certified, supports 1/3/2 | **3** | 0.43 / 0.47 / 0.09 | not reached |
+| control effort, energy balance, depth of discharge | **3** | 0.19 / 0.73 / 0.08 | certified, supports 1/3/3 | **3** | 0.25 / 0.67 / 0.09 | certified, supports 2/1/2 |
+| control effort, peak slew power, depth of discharge | 1 | 0.00 / 1.00 / 0.00 | certified, supports 1/1/1 | 1 | 0.00 / 1.00 / 0.00 | not reached |
+| power margin, energy balance, peak slew power | 2 | 0.00 / 0.38 / 0.62 | certified, supports 2/2/1 | 1 | 0.00 / 0.00 / 1.00 | not reached |
+| power margin, energy balance, depth of discharge | 2 | 0.00 / 0.75 / 0.25 | certified, supports 2/2/1 | 2 | 0.00 / 0.76 / 0.24 | certified, supports 2/1/1 |
+| power margin, peak slew power, depth of discharge | **3** | 0.20 / 0.75 / 0.05 | certified, supports 1/1/1 | 1 | 0.00 / 1.00 / 0.00 | not reached |
+| energy balance, peak slew power, depth of discharge | **3** | 0.26 / 0.70 / 0.04 | not reached | **3** | 0.35 / 0.37 / 0.28 | not reached |
+
+### The candidate
+
+`docs/superpowers/notes/figure-candidates/ternary-cubesat-trilemma-{light,dark}.png`, made by
+`uv run python docs/superpowers/notes/figure-candidates/ternary_cubesat_trilemma.py` (the same
+`plot_ternary(..., lines=True)` as Figure 6, one neutral colour for designs, the docs' light and dark
+schemes from `scripts/build_figures.py`; it prints the contending set and `ternary_marker_values`: one
+marker, shares 0.29, 0.29, 0.43, V 1.0). It draws the K = 1 fit of the triple, the fit the rule reads.
+The K = 3 fit of the triple was tried and does not draw: `plot_ternary` finds no room for term 1's
+label (its exponent vector is 0.02, 0.94, 0.03, a sliver at the pointing-error corner), so the
+three-region form of Figure 6 is not available from this triple.
+
+![candidate](../docs/superpowers/notes/figure-candidates/ternary-cubesat-trilemma-light.png)
+
+- Shows: the 706 primary designs by shares of settling time, pointing error and total mass; the one-term
+  fit's exponent vector inside the triangle, with lines of equal V closing around it: on these three,
+  all three trade.
+- Does not show: regions (one term, one tint), a dilemma or an edge marker to compare with; the other
+  five metrics; that most triples would give the same picture; why near-frontier designs lie all over
+  the triangle (V depends on the total as well as the shares).
+- Good for: seeing a real interior exponent vector and the closed lines of the 3-lemma case, with the
+  case's own metric names.
+
+Proposed caption (given to the readers): "Cubesat designs of the primary regime (706 feasible designs,
+simulated) by shares of a total among settling time, pointing error and total mass, each conditioned so
+that larger is better, with the one-term fit on these three metrics: the numbered marker is its exponent
+vector, the lines are lines of equal V. The fit puts a positive exponent on each of the three metrics, so
+all three trade."
+
+### Cold reads (two fresh readers, image first)
+
+Readers: two fresh general-purpose agents, one Sonnet, one Opus, no repository access; each opened
+`figure-A.png` (the candidate, light, SHA-1 c0508b9) and answered, then `figure-B.png` (Figure 6 as the
+page's block draws it, light, SHA-1 32f1ace) and answered, then got both captions (A's above; B's the
+page's, "Figure 6. Designs by shares of three metrics: regions, numbered exponent vectors, lines of
+equal V."), then the sentence test and the choice for a page whose job is to show how to read a
+three-metric trade-off and why. Returns verbatim.
+
+Reader 1 (Sonnet):
+
+> 1. Figure A is a ternary triangle with vertices "favours settling time", "favours pointing error" and "favours total mass". Grey dots (two sizes) are designs placed by shares of the three metrics. One starred marker, numbered 1 and labelled "all three trade", sits near the centre inside nested closed contours that flatten toward the edges. I can tell the fit's optimum is interior and that designs are spread across the whole triangle, denser toward the bottom edge and corners. I cannot tell the contour values, what the two dot sizes mean, or how the shares are computed.
+>
+> 2. Figure B is the same kind of triangle, with vertices "favours metric 1", "metric 2" and "metric 3". It is split into three coloured regions, each with a numbered marker. Orange is "all three trade", with marker 3 near the upper middle. Blue is "metric 3 trades against metric 1", with marker 1 near the right edge. Green is "metric 3 trades against metric 2", with marker 2 on the bottom edge near the right corner. Contours are open curves plus small closed loops, not nested rings. I can tell the character of the fit differs by region, and that markers 1 and 2 sit at or near the boundary, so one metric is effectively left out there. I cannot tell what the metrics are, what the marker numbers refer to (different fits? different exponent vectors?), what the contour values are, or why the regions are cut where they are.
+>
+> 3. A: The image matches its caption. There is one marker, the label "all three trade", and nested rings of equal V. The caption added the domain and sample size, and the claim that a positive exponent on each metric means all three trade. That makes the interior star meaningful, since an interior optimum means every metric pulls. It did not change what I saw; it explained why the star's position and the rings' shape matter.
+> B: The image shows regions, three numbered markers and contour lines, which is what the caption lists. The caption is an inventory and does not say what the figure is for, so it changed nothing in my reading. It does not explain "metric 1/2/3", why there are three markers, or what the regions are partitioned by. "Exponent vectors" is jargon the image does not support, since the markers look like points. A's caption speaks of a single one-term fit, while B shows three markers, which does not fit the idea of one exponent vector.
+>
+> 4. A: "On a three-metric triangle, an interior optimum with nested closed lines of equal V means all three metrics trade." The sentence carries the point. Dropping the figure would lose the sight of the nesting, the designs scattered around the optimum, and how contours flatten toward the edges. That is the intuition for reading position on the triangle.
+> B: "Where the optimum sits on the triangle tells you which metrics trade, and the answer can differ by region." This is a claim the figure supports but, with anonymous metrics and undefined markers, does not demonstrate. Dropping the figure would lose the picture of regime boundaries and of optima pinned to an edge or corner. That matters only if the page then explains the regimes.
+>
+> 5. I would keep A alone for the page's stated job, because it teaches the reading. It has concrete axes, one marker, nested contours, and a caption that says what an interior optimum means for the trade-off. B is richer: it shows the regime changing across the triangle and an optimum sitting on an edge, so it would be a useful second figure for "when does a metric stop trading". As it stands it is not self-explanatory, because the metrics are anonymous, the regions are undefined, and the caption is only an inventory. Keep B only if its labels and caption are fixed so that it follows A as the "what if not all three trade" case.
+
+Reader 2 (Opus):
+
+> 1. Figure A is a triangle plot. Its corners are labelled "favours settling time", "favours pointing error" and "favours total mass". Grey dots in two sizes cover the whole triangle, and nested closed curves ring a starred point "1" labelled "all three trade", which sits slightly below and right of the centre. What I take from it: something peaks inside the triangle, near the middle, and the designs spread over every mix of the three. What I can't tell: what the curves are levels of, what the two dot sizes mean, whether near a corner is good or bad, what "trade" means, and why the whole triangle is shaded one colour.
+>
+> 2. Figure B is the same kind of triangle with generic corners: "favours metric 1/2/3". It is split into three shaded regions. "All three trade" (orange, left and top) has a square marker 3 with closed rings around it. "Metric 3 trades against metric 1" (blue, right edge) has a star 1 right at the edge. "Metric 3 trades against metric 2" (green, bottom) has a diamond 2 on the bottom edge. The curves are closed only around marker 3; elsewhere they open out to the edges. What I take from it: where the marker sits decides the regime. Inside the triangle, all three trade and the curves close. On an edge, only two trade and the curves run out to that edge. What I can't tell: whether the three markers are three fits, three datasets or three hypotheses; why the same dots are drawn under all three; what the curves are levels of; and which set of curves belongs to which marker.
+>
+> 3. A: yes, the image shows what the caption says, and the caption changed a lot. It told me the curves are lines of equal V, the star is the fitted exponent vector, the dots are 706 simulated feasible designs, and every metric is larger-is-better. It also told me the claim: all three exponents are positive, so all three trade, which is why the marker is inside. It still doesn't explain the two dot sizes, and "shares of a total" is unclear. Is the share the metric value or the exponent weight? B: only in part. The caption gives the vocabulary (regions, numbered exponent vectors, lines of equal V), but it doesn't say what the regions are regions of. I take them to be where an exponent vector falls. It doesn't say whether markers 1 to 3 are real fits or illustrations, or which curves go with which marker. The caption added names for the parts but no claim. The image's own labels carry more than the caption does.
+>
+> 4. A, the sentence: "For the 706 simulated designs, the one-term fit gives a positive exponent to settling time, pointing error and total mass, so its exponent vector lies inside the triangle and all three metrics trade." A reader who drops the figure loses only a little: the closed level curves around an interior point, and the spread of designs over the whole triangle. Neither is needed to understand the sentence, and the sentence alone can't teach anyone to read the triangle. B, the sentence: "Where the exponent vector falls on the triangle tells you the regime: inside, all three metrics trade and lines of equal V close around it; on an edge, one exponent is zero, only two metrics trade, and the lines open out to that edge." A reader who drops the figure loses the regions themselves and the contrast between closed and open curves, which is hard to picture from words alone. That is the figure's real content.
+>
+> 5. I would keep both, in order: B first to teach the reading, then A to show it applied. B is the only one that shows why position on the triangle matters. It sets the interior regime against the two edge regimes and closed curves against open ones, and that contrast is the "how and why". A alone shows a single case with nothing to compare it with. A gives the real result with real metric names, though, and its caption makes a specific claim. If only one can stay, keep B, because the page's job is teaching the reading. For B to earn its place, its caption must say what the three markers are (illustrative or fitted) and that the regions mark where an exponent vector falls. Without that, a cold reader can't tell what the regions and markers mean.
+
+### Tests and reading of the reads
+
+1. Cold read: both readers read A as an interior optimum ringed by closed lines with designs over the
+   whole triangle, before the caption; both read B as regions with edge and interior markers, and
+   neither could tell from B what the three markers are. 2. Sentence test: A passes narrowly (reader 2:
+   "loses only a little"; reader 1: loses the nesting and the flattening toward the edges); B passes on
+   the contrast of closed against open lines, which only it draws. 3. Ink: A's one tint carries nothing
+   (reader 2 asked why the triangle is shaded one colour); its lines and designs are data. 4. Legible:
+   read at the docs' column width, light; the dark image was looked at by the author (labels and lines
+   legible on the dark tint). 5. Lines above. The principle check: no facet colouring in either. Both
+   readers found B's caption an inventory that does not say what the markers are; that is a finding on
+   Figure 6 as it stands, outside this loop's scope (the page does not change here).
+
+### For the supervisor's choice
+
+The candidate beside the planted figure: `docs/superpowers/notes/figure-candidates/ternary-cubesat-trilemma-light.png`
+(the candidate) and `docs/generated/figures/ternary-planted-light.png` (Figure 6, from
+`uv run python scripts/build_figures.py --docs-only`). Reader 1 keeps the candidate alone; reader 2 keeps
+both, the planted first, and the planted if only one.
+
+- Keep the planted figure (Figure 6 as it is).
+- Swap to the candidate.
+- Both: the planted figure for the reading, the candidate as the cubesat case.
+
+### Restart check (the loop's closing pass)
+
+The generator re-run from a clean checkout reproduces the light image byte for byte (SHA-1 c0508b9, the image the
+readers saw) and prints the same contending set, exponents and marker; both PNGs were viewed again after the
+re-run: the light labels, lines and designs read; on the dark tint the label, the lines and the grey designs read and
+the three corner names are pale but legible. One round of cold reads (two readers) was run; no change to the image
+followed, since the readers' open points (two dot sizes, the shares) belong to `plot_ternary`, shared with Figure 6,
+and are outside this loop.
