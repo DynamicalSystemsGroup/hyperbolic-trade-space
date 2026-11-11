@@ -172,3 +172,25 @@ Worktrees alive: `wp27model` (the modeller), `stage` (the staged build, detached
 | Next | the maths-check unit (P5's seven questions, the derivation stream); the 5a scope for the driver; WP11 round 3 (re-test of the cells that found something, neighbours, a rotating third) on the staged build after the maths unit; the P6-B confirmation read on an unused brief at the end |
 
 Worktrees alive: `wp27model` (the modeller's, idle), `stage`. Docker: hts-paper 877c42cc10e3, hts-alt. Note for a fresh worktree staging the site: the myst article-theme prerender fails on `/_public/` assets unless the main checkout's `paper/_build/templates` is copied in (two authors met it); a pin of the theme version is for the driver.
+
+## Seventh PM (2026-11-10, night; WP28 from its first unit; rotated to a smaller model at the end)
+
+| Unit | State |
+|---|---|
+| Unit 0, the centring clause | fbeede5 |
+| WP28 D-1 inventory (56 readers, 122 units) | 2461344, d803daf |
+| WP28 D-2 cut list; approval | 68d240f; 1bd0ecc |
+| Cuts X-1, X-2 (docs stream), X-3 (driver) | 87b0f37, af9ffea, 712a59f |
+| Paper held items (d), (e); orphan files | dbb18e3; 9216154 |
+| D-5 = WP11 round 3 (returns; record + CR-35..41) | 334fb32; 052e8ee |
+| CR-35..41 (paper stream) | b0d14a4, 4dee363, c12e5bc, 91369c2, e70585f, 6b858fc, 95d77b4 |
+| Docs fix-forward G-1, O-3 | db8d8bd, afdb222 |
+| Acceptance review, first pass (reviewer kept: worktrees `wp28review`, `wp28review-start`) | 6322c15; R-13 and the re-check pending the S-3 and S-10 units |
+| WP25-4 scope (approved: OD1 a, OD2 b, OD3 b) | 325e2e3; runs after WP28's acceptance |
+| WP8b Amendment 1 + WP8b-decisions.md | d4db0e5; for the driver (OD-A1, OD-A2) |
+| Track B spike B1 (three requirements) | 17847cb; B2 (economics) and the scope next |
+| Figure loop S-5 (real 3-lemma) | stopped mid-run; worktree `fig-trilemma` holds the candidate; restart |
+| Track A noise spike | to scope |
+
+Worktrees alive: `wp27model` (idle, tab-23), `stage` (af9ffea, port 8791), `wp28review`, `wp28review-start`, `fig-trilemma`.
+

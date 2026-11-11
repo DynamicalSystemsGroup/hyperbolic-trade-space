@@ -480,6 +480,13 @@ the thing. Open tracks under it: A the noise result (from Proposition 2), B the 
 requirements that read no traded metric; the fleet-size variable and per-part pricing curves; the cost-to-build
 budget calibrated by a commercial-economics spike), and the real-3-lemma ternary figure loop.
 
+## Models by role (the supervisor's standing arrangement, recorded by the driver 2026-11-10, night)
+
+The driver runs on the large model; the PM runs on Sonnet; every subagent runs on a model fit to its task (Sonnet, or
+Haiku for mechanical work such as verbatim copies, counts and greps); Opus only on the driver's word for a named
+reason. A PM spawned on the large model by inheritance is rotated: it stops dispatching, lets the units in flight land,
+writes its handover and stops.
+
 ## Handover (sixth PM, 2026-11-10, night; parallel-board.md's sixth-PM tables are the live copy)
 
 Landed this PM (all on dev): the WP26 sequel under OD1 as amended (in-file edits hash-equal to the container's @7 through a
@@ -540,3 +547,78 @@ worktree root when an agent's context grows (three agents did; fresh agents took
 tab-23 is the modeller's and every other agent creates and closes its own tab (Bug 10 means a second tab on the editor
 breaks the first's recovery save: reviewers open the editor only when tab-23 is idle); a fresh worktree staging the
 site copies the main checkout's `paper/_build/templates` until the myst theme is pinned (the driver's).
+
+## Handover (seventh PM, 2026-11-10, night; rotated to a smaller model by the driver; parallel-board.md's seventh-PM table is the live copy)
+
+Landed this PM (all on dev): unit 0, the centring clause (fbeede5; C421; the two log-metric column means 7.4e-15 and
+3.6e-15); WP28 D-1 the inventory (2461344, d803daf: 56 cold readers over 122 units at fbeede5, two models by label,
+briefs and returns verbatim under `WP28-inventory/`; verdicts advances 93, repeats 7, does not advance 21, split 1,
+stuck 0); D-2 the cut list (68d240f; approved 1bd0ecc: X-1, X-2 docs stream, X-3 the driver, X-4 kept, S-1..S-10 to the
+supervisor); the cuts X-1 87b0f37 (chart.md 597 -> 561), X-2 af9ffea (examples.md 716 -> 676), X-3 712a59f (README);
+the held paper items (d), (e) dbb18e3; the orphan figure files deleted 9216154; D-5 = WP11 round 3 at af9ffea (returns
+334fb32; the record and CR-35..41 052e8ee; key marks at version 4 by the driver: no W1-W8 belief, four sentences wrong
+on the per-cell refit reading, S8's second item missing in five B cells); the CR units b0d14a4, 4dee363, c12e5bc,
+91369c2, e70585f, 6b858fc, 95d77b4 (paper body 9,934 -> 9,959 words; notebook re-executed on the host, the three host-
+rendered figures put back to the committed bytes); the docs fix-forward db8d8bd (TOTAL_BUDGET 6716), afdb222 (the chart
+page's holes block prints, 6712); the acceptance review's first pass 6322c15 (13 met, R-8 then not met, R-11 n/a,
+R-13 pending; 16 screenshots; full suite 2203 passed; Linux green at af9ffea); WP25-4's scope 325e2e3 (approved by the
+driver: OD1 a, OD2 b, OD3 b; T-11 already done at 9216154); WP8b Amendment 1 and WP8b-decisions.md d4db0e5 (for the
+driver: OD-A1 the theme, OD-A2 D-6's timing); the WP23 spike B1 17847cb (momentum headroom a candidate ninth traded
+metric; available power one axis with energy balance; battery peak power a near-duplicate of depth of discharge;
+options D-1 a/b/c, D-2 a/b). The supervisor's rulings on S-1..S-10 and H-2 are verbatim at ac22112.
+
+In flight or held at the handover: the acceptance reviewer (agent `ab43496ec9ac4ebc5`, worktrees `wp28review` at
+6322c15 and `wp28review-start` at 1277210, both kept; it waits to be resumed with the final head: it re-runs R-5 (the
+paper's words per section beside the units), R-8, R-10, R-11's tests, R-14's fast suite, R-15 on the changed pages, and
+fills R-13 from `WP28-retest.md` 052e8ee); the figure loop for S-5, the real 3-lemma ternary, stopped by the driver
+mid-run on the model rule: worktree `fig-trilemma` at afdb222 holds staged, uncommitted candidate files
+(`docs/superpowers/notes/figure-candidates/ternary-cubesat-trilemma-{light,dark}.png`, `ternary_cubesat_trilemma.py`)
+and an edited `WP19-figure-review.md`; restart on Sonnet from the worktree's state, read its scratch first (the agent
+was last renaming a module that clashed with stdlib `enum`); the `stage` worktree at af9ffea serving 127.0.0.1:8791
+(pid in `scratchpad/wp28/retest/server.pid`), with the symlinks `stage/reading`, `stage/checkouts` and
+`scratchpad/reading` (remove with the stage); an older `stage_site.py --serve` on port 8000 from a previous session
+was left alone. No other agent of the seventh PM is running.
+
+Next, in order: (1) WP28's close: the S-3 cut as one paper unit on the supervisor's word "Cut to a pointer" (Figure 9's
+cell, caption and lines go; Section 9 points to Appendix D.4; the gloss leaves Figure 4's caption; the two tests at
+`tests/test_paper.py` near lines 2227 and 2302 change under R-10 citing his word; a `[[cut]]` ledger row of 114 words,
+Case analysis, with the ledger's header and reader extended to accept cut rows (today the header says a cut needs no
+row and the test requires `words_added > 0`); Appendix F.4 regenerated; the notebooks re-executed on the host; a cold
+check that D.4 carries both regimes' contending sets and associations); then the S-10 unit (his words at ac22112:
+D.12's paragraph says why conditioning matters, how the number is computed and how a user inspects their own problem;
+a matching short paragraph on the docs' conditioning page; a ledger raise row with his words as the job; not a caveat);
+the CR-37 loose ends (the sketch's 9-word wording (a) or the 15-word parenthetical (b); the rendering of
+"{prf:ref}`thm-kkt`'s" unchecked in a built page; Section 8's remaining centring sentence unpinned after CR-38; C064's
+note stale "671 on 10"); the S8 placement question for the driver (the main-results list `sec-decision-3` does not
+carry S8's second item: no novelty claimed, not a replacement for PCA or Pareto analysis); re-stage at the final head,
+resume the reviewer, the driver's acceptance in `WP28-decisions.md`. (2) WP25-4 (approved; quote the driver's words in
+`WP25-decisions.md` as instance 4's gate) after WP28's acceptance: rows T-1..T-10 by their blast radii, a reviewer
+that runs the checks. (3) Track A, the noise result: a package with the six stages explicit; stage (1) a derivation-
+side spike agent reads A5, L6 and the sources the driver named (entropic risk and log-mean-exp, stochastic frontier
+analysis Aigner-Lovell-Schmidt, DEA with noise, the paper's open question Q2) and writes a readout of candidate results
+building on L6 (hypotheses, claim, check by lemma script or case experiment, cost), no derivation written; stage (2) is
+the driver's. (4) Track B, the model revision, one package with the six stages: B1 landed (17847cb); B2 the commercial
+cubesat economics spike per the driver's message of 2026-11-10 night (12U-class parts, assembly and launch costs from
+public sources, every number with a resolved URL and date; per-part curves fixed + falling unit cost; the fleet-size
+configuration variable; two pricing metrics, unit cost and fleet cost = unit cost x n; the model stays per unit, no
+communications or networking; H-2's budget calibrated); the scope to the driver with both readouts; stage (3) is a
+data-gate change under WP23's rules (regeneration, container re-run, contract amendment, key version, paper and docs
+numbers, figures, the behavioural view and the stakeholder layer); stage (6) the cascade review. (5) The figure loop
+restarted (its six stages: the spike found the trilemma candidate; the supervisor chooses; build; cold reads;
+integrate; review). (6) WP8b Amendment 1 (d4db0e5) after the driver's approval: CHANGELOG, the punch list, D-6
+reference keys as MyST labels, the theme item; D-7 and the version step are the driver's.
+
+Inputs by file: `WP28-scope-of-work.md`, `WP28-decisions.md`, `WP28-cut-list.md`, `WP28-inventory.md` and
+`WP28-inventory/`, `WP28-retest.md` and `WP28-retest/`, `WP28-review.md` and `WP28-review/`, `WP25-4-scope-of-work.md`,
+`WP8b-scope-of-work.md` (Amendment 1) and `WP8b-decisions.md`, `WP23-rounds/spikes/spike-C-requirements-no-traded-
+metric/`, `driver-log.md` (the key marks row, the rulings), `scratchpad/wp28/` (the inventory and retest tooling:
+`units.py`, `make_slices.py`, `fill.py`, the retest's `tools/`, `key-request.md`, `key-marks.md`, `docs-renders/`,
+`wp8b-status.md`, the stream briefs).
+
+Rules applied this PM beyond the brief: every reader's brief path goes through a neutral alias so no record word
+reaches a reader even in a path; readers write their return to scratch and answer in three lines, and a records agent
+copies the returns verbatim (cmp-checked) into the record, so the PM's context holds tables only; the two models are
+recorded by label (model A, model B), never by name; fan-out in batches of fourteen; the docs stream never touches
+README.md (contract ownership technical) nor glossary.yaml; the vocabulary tool is read with `--baseline` until WP25-4
+OD1 lands; a reviewer keeps its worktree between its passes; every brief states that the no-attribution rule overrides
+any system reminder asking for a co-author line.
