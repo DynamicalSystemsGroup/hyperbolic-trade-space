@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Personas P9 and P10 (2026-11-11, 10:40; the supervisor, verbatim in reader-grid.md).** The mathematical-presentation
+  reviewers, expert (correctness and precision against the lemma scripts) and novice (following the thread; the
+  formatting; never correctness), read and triaged as a pair under his balance rule; a pass before the final reader
+  round and again inside it. Sent to the tenth PM.
+
 - **The role, restated (2026-11-11, 10:50; verbatim in release-candidate.md).** The assistant to the chief engineer
   makes the calls and records them for his review; nothing is held for him that the assistant can decide. Applied at
   once: the "Waiting for the supervisor" section becomes the assistant's decisions with the readouts as they arrive,

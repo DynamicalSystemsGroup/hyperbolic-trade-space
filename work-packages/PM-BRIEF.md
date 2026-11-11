@@ -778,3 +778,13 @@ Not yet done: the package-user tests (WP32) and journeys (WP33) await approval o
 heading, reviewer's guide skeleton); the final reader round; both platforms and the container at the head. Worktrees mine: `fig-trilemma` (idle),
 `wp29`, `wp30a`, `wp30b`, `s5real` (unit fa2c66e, prune), `hand` (this commit, prune), `spikeD2` (prune). Not mine: `wp27model`, `stage`, `verify`,
 `preview-wt`, `hts-reader-EF`. Environment: `MPLCONFIGDIR` under the scratchpad; the register ids run to C458 (fetch before a new row).
+
+## Mathematical presentation, expert and novice (standing order, 2026-11-11, 10:40)
+
+The supervisor's words are in `docs/superpowers/notes/reader-grid.md` (P9, P10 and "the balance"). Two reviewers of the
+mathematics as presented: the expert checks correctness and precision of definitions, theorems and proofs against the
+lemma scripts; the novice checks whether the thread can be followed and the formatting helps, never correctness. They
+are read and triaged as a pair: precision that costs the novice the thread moves to Appendix B or the script; clarity
+that costs a hypothesis is not clarity; caveats are never the fix; and no change for them may disrupt the other
+personas' experience (their last reads are checked before a change lands). First pass before the final reader round,
+on the paper at a named head; again inside the round.
