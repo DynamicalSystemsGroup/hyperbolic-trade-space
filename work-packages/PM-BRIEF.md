@@ -688,3 +688,19 @@ driver's). Also: the register ids run to C447; a new row takes the next free id 
 Lessons: briefs that name a file ("the page that teaches conditioning") need the file checked (the executor chose the
 termination page, rightly); an agent that edits sentences cited by the register must run `tests/test_claims_register.py`;
 a watcher built on a git-log grep matches old commits: use `<hash>..origin/dev`.
+
+## The case serves the paper at a high level (standing order, 2026-11-11, 09:40)
+
+The supervisor, verbatim: "another thing i want you to be careful about in the paper is not to force more content than
+we need from the model into the paper. recall that the model although we've put a lot of effort into making it
+realistic enough to produce interesting and relevant results is just synthetic case designed to show of the model.
+our had requirement is that it is realistic enough to keep collaborators from the space industry interested. we know
+that if its not realistic it will be distracting. part of the benefit of our approach is that the paper can give a
+high level description in service of showing the HTS model working and then more detail can appear in the appendix
+covering the model and the full model itself is in the repo (which means a sufficiently interested engineer can pull
+it and play around with it)." So: every change to the case model (the revision's ninth metric, the cost model, the
+fleet variable) enters the paper's body as the sentence or two the method's demonstration needs and no more; the
+detail goes to Appendix C; the full model stays in the repository and is pointed to. The marginal-value test on case
+content in the body is strict. The two new reader personas (P7 the new-space systems engineer, P8 the new-space
+executive; `docs/superpowers/notes/reader-grid.md`) are the review pair for every case-model change and judge the
+hard requirement: realistic enough to keep a space-industry collaborator interested, and honest where it is a toy.

@@ -46,6 +46,8 @@ what a person sees, and cannot read past its depth); L-E and L-F readers work in
 | P4 | The machine-learning practitioner | notation anchored on scikit-learn; "similar feel to PCA"; "unsupervised learning / feature engineering" | PCA, scikit-learn, pipelines | where this sits beside PCA and how to use it |
 | P5 | The optimization reader | "multivariate calculus, linear algebra, convex optimization"; Boyd and Vandenberghe | convex analysis, geometric programming | to check the mathematics and the algorithm's claims |
 | P6 | The sceptical neighbour | "we don't want to be told this is just X where X is some existing work" | deep knowledge of one adjacent method (Pareto, DEA, frontier analysis) | to decide whether this is new to them or a renaming |
+| P7 | The new-space systems engineer | the supervisor, 2026-11-11: "a systems engineer from a blue origin or spacex, someone who really knows how these things get built"; "more like our modeler or a quality engineer" | ten or more years building and flying hardware at a vertically integrated launch-and-satellite company: requirements to test to flight, mass and power budgets, vendor parts and in-house parts, qualification campaigns, what a bus actually costs and how long it takes; reads a SysML model and a data table without help; impatient with a case that is not how things get built | to see whether the case's choices, numbers, couplings and requirements are how a real program behaves, where the model is a toy and says so, and what they would change before trusting the trade reading on their own program |
+| P8 | The new-space executive | the supervisor, 2026-11-11: "an execute from such a company"; "the other is more like our sponsor" | runs a program or a business line at such a company: budgets per satellite and per fleet, schedule, launch procurement, what the board asks; reads a figure and a sentence of numbers, not a derivation; decides with incomplete information and is accountable for it | to know whether the method would change a decision they make, what it costs them to adopt, whether the case's economics and verdicts read sanely to someone who buys launches and parts, and what the method does not tell them |
 
 ## The grid: which cells are tested
 
@@ -60,8 +62,20 @@ cells are plausible and sampled less often; blank cells are not tested.
 | P4 ML practitioner | core | core | core | edge | core | core |
 | P5 optimization reader | edge | core | core | core | edge | |
 | P6 sceptical neighbour | core | core | core | core | | |
+| P7 new-space systems engineer | edge | core | core | core | edge | core |
+| P8 new-space executive | core | core | edge | | | |
 
-Twenty-four core cells and six edge cells.
+Thirty core cells and nine edge cells (P7 and P8 added 2026-11-11).
+
+**P7 and P8, how they are built (2026-11-11).** The companies are not named in any brief or record; the personas'
+characteristics are backed out of the public shape of such companies: vertically integrated, hardware-rich, fast
+iteration, in-house manufacture of most subsystems, launch bought or flown in-house, programs priced per unit and per
+fleet, a culture that trusts test data over models. P7 reads at depths B to F with the case model, Appendix C and the
+model in the repository or the editor in front of them; P8 reads at depths A and B, the case narrative, the figures,
+the stakeholder layer and the verdicts. They are the review pair for every change to the case model (the model
+revision's stage 6 review first) and join the reader rounds from the next round on. Their standing question is the
+supervisor's hard requirement: is the case realistic enough to keep a collaborator from the space industry interested,
+and where it is not, does it say so.
 
 ## Three roles that never share context
 
