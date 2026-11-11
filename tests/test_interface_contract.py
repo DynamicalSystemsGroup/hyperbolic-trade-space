@@ -536,22 +536,52 @@ def test_r3_v2_data_file_header_dtypes_rows(filename):
     frozen = CASE["data"][filename]["columns"]
     gone = {"slew_time_s", "slew_time_05deg_s", "eclipse_reserve_wh"}
     rename = {"pred_std_slew_time_s": "pred_std_settling_time_s"}
-    assert list(spec["columns"]) == [rename.get(c, c) for c in frozen if c not in gone], msg(
+    # amendment 20 (WP30): the available power moves from the auxiliary columns into the attribute
+    # block, which gains four more columns after the depth of discharge, and the fleet size follows
+    # the last gain (Kd), or the last categorical (st_grade) in the predictions
+    expected = []
+    for c in frozen:
+        if c in gone or c == "available_power_w":
+            continue
+        expected.append(rename.get(c, c))
+        if c == ("st_grade" if filename == "check_predictions_cubesat.csv" else "Kd"):
+            expected.append("fleet_size")
+        if c == "dod_eclipse":
+            expected += [
+                "momentum_headroom",
+                "available_power_w",
+                "battery_peak_power_ratio",
+                "unit_cost_usd",
+                "fleet_cost_usd",
+            ]
+    assert list(spec["columns"]) == expected, msg(
         "R-3",
-        f"v2 {filename} pins the frozen columns less the slew-time and eclipse-reserve columns",
+        f"v2 {filename} pins the frozen columns less the slew-time and eclipse-reserve columns, "
+        "with the fleet size and the five metrics of amendment 20",
     )
 
 
 def test_r3_v2_traded_metrics_are_the_oracles_attribute_names():
     """Amendment 12: the traded metrics of the v2 data are the case oracle's attributes (eight
-    since amendment 15, the WP23 close-out)."""
-    assert len(CASE["v2"]["traded_metrics"]) == 8
+    since amendment 15, the WP23 close-out; thirteen since amendment 20, WP30)."""
+    assert len(CASE["v2"]["traded_metrics"]) == 13
     oracle = importlib.import_module("experiments.cubesat_oracle")
     assert list(CASE["v2"]["traded_metrics"]) == list(oracle.ATTRIBUTE_NAMES), msg(
         "R-3", "case.v2.traded_metrics equals experiments.cubesat_oracle.ATTRIBUTE_NAMES"
     )
     assert CASE["v2"]["time_metric"] in CASE["v2"]["traded_metrics"]
     assert CASE["v2"]["settling_time_method"] == "events"
+
+
+def test_r3_v2_regime_files_pin_the_sample_the_definitions_draw():
+    """Amendment 20 ("Sampling", WP30): the rows of the two regime files are the count of their
+    ledger definitions, one number in the code (``SAMPLE_PER_REGIME``) and one in the manifest."""
+    definitions = importlib.import_module("experiments.definitions")
+    for regime_file in CASE["regime_files"].values():
+        assert CASE["v2"]["data"][regime_file]["rows"] == definitions.SAMPLE_PER_REGIME, msg(
+            "R-3", f"v2 {regime_file} rows equal experiments.definitions.SAMPLE_PER_REGIME"
+        )
+    assert "fleet_size" in importlib.import_module("experiments.cubesat_oracle").CONFIG_NAMES
 
 
 def test_r3_primary_and_stock_files_are_pinned_data():

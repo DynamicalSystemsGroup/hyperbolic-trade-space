@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 19
+contract_version = 20
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -590,20 +590,23 @@ n_train = "int"
 
 
 # --- The v2 datasets (WP23 D-4, amendment 12): the frozen headers less the slew-time columns -----
-# --- and, since amendment 15 (the WP23 close-out), less eclipse_reserve_wh: eight traded metrics ----
+# --- and, since amendment 15 (the WP23 close-out), less eclipse_reserve_wh: eight traded metrics; ----
+# --- since amendment 20 (WP30): thirteen traded metrics, the fleet size, 1,250 designs per regime ----
 [case.v2]
 dir = "examples/adcs/data/v2/"
 data_rule = "committed, seeded, ledgered (examples/adcs/experiments/ledger/ledger.jsonl); regenerated only by a package whose scope says so, once, on the host with the suite's tolerance branches; the container of record re-pins the exact outputs at the gate"
 traded_metrics = [
   "settling_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
   "power_margin_w", "energy_balance_wh", "peak_slew_power_w", "dod_eclipse",
+  "momentum_headroom", "available_power_w", "battery_peak_power_ratio",
+  "unit_cost_usd", "fleet_cost_usd",
 ]
 time_metric = "settling_time_s"
 settling_time_method = "events"
 
 [case.v2.data."adcs_designs_cubesat_gains.csv"]
 role = "primary regime dataset, v2"
-rows = 1000
+rows = 1250
 
 [case.v2.data."adcs_designs_cubesat_gains.csv".columns]
 design_id = "int"
@@ -614,6 +617,7 @@ panel_span_m = "float"
 battery_wh = "float"
 Kp = "float"
 Kd = "float"
+fleet_size = "float"
 settling_time_s = "float"
 pointing_error_deg = "float"
 total_mass_kg = "float"
@@ -623,6 +627,11 @@ power_margin_w = "float"
 energy_balance_wh = "float"
 peak_slew_power_w = "float"
 dod_eclipse = "float"
+momentum_headroom = "float"
+available_power_w = "float"
+battery_peak_power_ratio = "float"
+unit_cost_usd = "float"
+fleet_cost_usd = "float"
 settled = "bool"
 momentum_ok = "bool"
 torque_saturated_frac = "float"
@@ -632,7 +641,6 @@ peak_momentum_nms = "float"
 panel_mass_kg = "float"
 battery_mass_kg = "float"
 generated_power_w = "float"
-available_power_w = "float"
 usable_torque_nm = "float"
 slew_loss_energy_wh = "float"
 slew_deg = "int"
@@ -641,7 +649,7 @@ max_step_s = "float"
 
 [case.v2.data."adcs_designs_cubesat.csv"]
 role = "stock (baseline) regime dataset, v2"
-rows = 1000
+rows = 1250
 
 [case.v2.data."adcs_designs_cubesat.csv".columns]
 design_id = "int"
@@ -652,6 +660,7 @@ panel_span_m = "float"
 battery_wh = "float"
 Kp = "float"
 Kd = "float"
+fleet_size = "float"
 settling_time_s = "float"
 pointing_error_deg = "float"
 total_mass_kg = "float"
@@ -661,6 +670,11 @@ power_margin_w = "float"
 energy_balance_wh = "float"
 peak_slew_power_w = "float"
 dod_eclipse = "float"
+momentum_headroom = "float"
+available_power_w = "float"
+battery_peak_power_ratio = "float"
+unit_cost_usd = "float"
+fleet_cost_usd = "float"
 settled = "bool"
 momentum_ok = "bool"
 torque_saturated_frac = "float"
@@ -670,7 +684,6 @@ peak_momentum_nms = "float"
 panel_mass_kg = "float"
 battery_mass_kg = "float"
 generated_power_w = "float"
-available_power_w = "float"
 usable_torque_nm = "float"
 slew_loss_energy_wh = "float"
 slew_deg = "int"
@@ -692,6 +705,7 @@ wheel_class = "str"
 st_grade = "str"
 Kp = "float"
 Kd = "float"
+fleet_size = "float"
 settling_time_s = "float"
 pointing_error_deg = "float"
 total_mass_kg = "float"
@@ -700,6 +714,11 @@ power_margin_w = "float"
 energy_balance_wh = "float"
 peak_slew_power_w = "float"
 dod_eclipse = "float"
+momentum_headroom = "float"
+available_power_w = "float"
+battery_peak_power_ratio = "float"
+unit_cost_usd = "float"
+fleet_cost_usd = "float"
 settled = "bool"
 momentum_ok = "bool"
 power_ok = "bool"
@@ -710,7 +729,6 @@ peak_momentum_nms = "float"
 panel_mass_kg = "float"
 battery_mass_kg = "float"
 generated_power_w = "float"
-available_power_w = "float"
 usable_torque_nm = "float"
 slew_loss_energy_wh = "float"
 
@@ -728,6 +746,7 @@ Kp = "float"
 Kd = "float"
 wheel_class = "str"
 st_grade = "str"
+fleet_size = "float"
 target_z1 = "float"
 target_z2 = "float"
 target_z3 = "float"
