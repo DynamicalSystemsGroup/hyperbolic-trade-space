@@ -129,3 +129,13 @@ for twenty-five satellites is 40,000 each with launch, which buys two baseline 1
   budget restated at his admitted mass: 15.11 kg at 7,000 USD/kg = 105,770 USD.
 - The requirements' coverage statement as decided (included, excluded, a lower bound). The gate runs on these values;
   no placeholder remains.
+
+**Fleet cost limit, the supervisor, verbatim (2026-11-11, 10:25):** "okay i was pushing you too hard on price but
+that's also pretty realistic. i think its worth noting that the 1u series could get below that price point but its
+pretty optimized. larger series would be notably more expensive like the 6u series. i was originally thinking maybe
+an 8 million budget now that you've tried to get the prices down". **Value: 8,000,000 USD** on the covered fleet cost
+(build and launch, the fleet size free from 1 to 30); on the earlier ladder it admits about 93 percent of the baseline
+regime's feasible designs at their own fleet size, and the baseline's own 25-satellite fleet (about 6.7 million on the
+2026 central prices) clears it. This replaces the assistant's 6,000,000 call, which is withdrawn from the review list's
+first row (his number stands, not a call against it). His note on classes goes into the requirement's coverage text:
+the figure is for this 12U class; a 1U series can sit below 40,000 USD a unit, larger series are dearer.
