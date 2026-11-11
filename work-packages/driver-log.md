@@ -7,6 +7,12 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- **For the morning (2026-11-11, 03:10): the ternary figure.** The choice among the redrawn candidate A (pointing error,
+  total mass, control effort at K = 2: two regions, each a named pair trade), the one-region real figure (settling
+  time, pointing error, total mass) and the planted Figure 6, with B as the alternative; images side by side, the
+  cold readers' words beside them (`WP19-figure-review.md`, the S-5 round). The driver's reading: A answers his ask
+  for a real example with texture.
+
 - **For the morning (2026-11-10, 23:05):** a glance at the two noise results chosen from the Track A readout (A3: L6
   with a noise covariance and the conditioning as the map from measurement error to the noise the fit sees, with a
   cubesat injection table; A1: a two-regime upper bound on the noise shift of the soft maximum) before they are placed

@@ -266,3 +266,13 @@ changes the objective". One claim, one place.
   164 passed, 4 skipped, 1 failed: `test_the_register_holds` on C192, C195 and C375, fragments not found in
   `docs/theory.md` and `docs/user-guide/termination.md` at origin/dev e5d7c7b (a docs-side drift, also failing with my
   change stashed; not mine to touch); vocabulary baseline 0 new.
+
+**S-5, the textured search (8297df5; cold reads 588bb3d; the driver, 2026-11-11, 03:10):** the search over 56 triples
+per regime at K = 1, 2, 3 finds real texture: 55 fits with two regions and one with three, all needing K >= 2.
+Candidate C (pointing error, energy balance, depth of discharge, K = 3) is dropped: its three regions are each a
+single-metric term, so no region shows a trade-off; a figure that is legible and empty does not earn its place.
+Candidate A (pointing error, total mass, control effort, K = 2) is the candidate: two regions, each a named pair
+trade with a shared metric, the strongest on the search table; B (settling time, control effort, depth of discharge)
+the alternative. One redraw of A and B on the cold readers' notes (outlined lighter fills so the regions read as the
+model's, a key for contours, dots and markers, labels clear of the markers) and one fresh cold read precede the
+supervisor's choice among A, the one-region real figure and the planted Figure 6.
