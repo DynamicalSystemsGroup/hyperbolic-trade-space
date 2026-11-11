@@ -896,3 +896,10 @@ section = "Results"
 words_added = 42
 job = "Theorem 2's hypothesis says what step L3.9 uses (w_j > 0 at the finite-temperature minimizer, R1's relation there), since R1's exact-maximum geometry does not imply it; Theorem 12's statement says which face its tangent space belongs to (positive-multiplier bounds fixed, the rest free, a space containing the critical cone), so no strict complementarity is assumed, and its sketch names the derivation steps (L17.12, L17.13) and the exact instance as their check, not as the derivation (the maths-check unit of WP11 round 2, items (b), (c), (d))"
 reader = "the mathematician who checks each box against the step it cites"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 47
+job = "the sentence after the conditioning says that the conditioning of record centres each log-metric (the standard scaler), so that at K = 1 the fit's objective of equation (2) is that of equation (1), and that on uncentred log-metrics the two differ by a linear term and need not share a minimizer (the maths-check unit of WP11 round 2, item (a); WP28's narrowing before the inventory)"
+reader = "the mathematician who sets K = 1 in equation (2) and holds it against equation (1)"

@@ -5268,3 +5268,15 @@ status = "backed"
 disposition = "keep"
 source = "WP11 round 2, PM6 batch 2 (CR-15)"
 note = "Appendix B.2 step (2): the refit w_k = argmin f_k over all rows with beta_k = J_tau(U w_k) (solvers._refit); the contending set's LP is the same f_k at tau = inf on the cell's rows alone (C416)."
+
+[[claim]]
+id = "C421"
+fragment = "This conditioning centres each log-metric (the standard scaler), so at ... is that of equation (1); on uncentred log-metrics the two differ by the linear term ... and need not share a minimizer"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "M"
+backing = ["lemma:L14.14", "lemma:L14.15", "func:src/hyperbolic_trade_space/preconditioning.py::LogAffinePreconditioner", "func:examples/adcs/case.py::conditioner_for", "glossary:conditioning", "glossary:log-metrics"]
+status = "backed"
+disposition = "keep"
+source = "WP28 (a), the maths-check unit of WP11 round 2, item (a)"
+note = "L14.14 and L14.15 at K = 1 (one cell, n_1 = N, share 1): F(W) = f_1(w) = J_tau(Uw) - ubar.w with ubar the column mean of U; under A2 the weights sum to one, and with ubar = 0 the linear term vanishes for every w, so equation (2) is equation (1); with ubar != 0 the minimizers of J_tau and of J_tau - ubar.w differ in general. The case's conditioning is LogAffinePreconditioner with scaler='standard' (sklearn StandardScaler on the log-attributes; case.conditioner_for); on the data of record max_j |mean_i log M_ij| = 7.4e-15 (primary, N = 706) and 3.6e-15 (stock, N = 780), computed with case.load_study on 2026-11-10."
