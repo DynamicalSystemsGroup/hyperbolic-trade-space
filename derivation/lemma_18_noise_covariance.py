@@ -28,6 +28,7 @@ import sympy as sp
 from sympy.stats import E, variance
 
 from derivation.axioms import A3, A4, A5, A9, A10
+from derivation.results import ProvedResult
 from derivation.sumtools import linear
 
 TITLE = "Gaussian cumulant with a noise covariance; the conditioning maps error to noise"
@@ -41,6 +42,7 @@ STATEMENT = (
     "spread; to first order delta_j is a relative error"
 )
 AXIOMS_USED = ["A3", "A4", "A5", "A9", "A10"]
+L18_RESULT = ProvedResult("L18", STATEMENT)  # taken by L20
 
 
 def derive(ctx):
@@ -152,3 +154,4 @@ def verify(ctx):
     )
     # [L18.21] first order: log(1 + e) = e + O(e^2), a relative error e is a log-error e
     assert sp.simplify(r["first_order"] - r["e"]) == 0, "L18 FAIL first-order relative error"
+    L18_RESULT.certify(ctx)

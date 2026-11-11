@@ -712,6 +712,11 @@ def test_the_four_dependencies_are_declared_by_import_and_applied_by_steps():
             "L12_RESULT": "lemma_12_term_gap",
             "L14_RESULT": "lemma_14_assignment_stable",
         },
+        "lemma_20_noise_ridge.py": {
+            "L3_RESULT": "lemma_03_gradient_kkt",
+            "L4_RESULT": "lemma_04_convexity",
+            "L18_RESULT": "lemma_18_noise_covariance",
+        },
     }
     exported = {f for f, lem in rec.items() if lem["proved_results_exported"]}
     assert exported == {
@@ -721,6 +726,8 @@ def test_the_four_dependencies_are_declared_by_import_and_applied_by_steps():
         "lemma_12_term_gap.py",
         "lemma_13_margin.py",
         "lemma_14_assignment_stable.py",
+        "lemma_18_noise_covariance.py",
+        "lemma_20_noise_ridge.py",
     }
     for fname, names in imported.items():
         applied = {n for st in rec[fname]["steps"] if st["kind"] == "result" for n in st["results"]}

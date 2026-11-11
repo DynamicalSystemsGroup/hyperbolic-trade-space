@@ -4996,7 +4996,9 @@
    ],
    "hypotheses": [],
    "proved_results_imported": {},
-   "proved_results_exported": [],
+   "proved_results_exported": [
+    "L18_RESULT"
+   ],
    "imports": [
     "A10",
     "A3",
@@ -5840,6 +5842,651 @@
      "result": "Noise shift of the soft maximum: 0 <= shift <= min(tau v^2/2, E max z)"
     }
    ]
+  },
+  "lemma_20_noise_ridge.py": {
+   "number": 20,
+   "axioms_used": [
+    "A1",
+    "A3",
+    "A5",
+    "A9",
+    "I18",
+    "I9",
+    "R3"
+   ],
+   "hypotheses": [
+    {
+     "symbol": "nd",
+     "kind": "symbol",
+     "sign": "positive",
+     "claim": "When the shift is not zero"
+    }
+   ],
+   "proved_results_imported": {
+    "L18_RESULT": "lemma_18_noise_covariance",
+    "L3_RESULT": "lemma_03_gradient_kkt",
+    "L4_RESULT": "lemma_04_convexity"
+   },
+   "proved_results_exported": [
+    "L20_RESULT"
+   ],
+   "imports": [
+    "A1",
+    "A3",
+    "A5",
+    "A9",
+    "I18",
+    "I9",
+    "R3"
+   ],
+   "results": [
+    {
+     "name": "Noise on the metrics is a ridge on the exponents: the first-order shift",
+     "steps": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51
+     ]
+    }
+   ],
+   "steps": [
+    {
+     "tag": "L20.1",
+     "kind": "axiom",
+     "applies": [
+      "A3"
+     ],
+     "results": [],
+     "prose": "A3: tau > 0",
+     "code": "tau = A3.positive(S.tau)",
+     "fingerprint": "2d64fbc370684adfabbe08f785bbb9b8c71b56d9e469a1539608e73a484f6d61",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.2",
+     "kind": "result",
+     "applies": [],
+     "results": [
+      "L18_RESULT"
+     ],
+     "prose": "L18: the moment generating function of w.eps at tau is exp(tau^2 q / 2), q = w'Sigma w",
+     "code": "mgf, q = L18_RESULT.take(ctx, 'mgf', 'q')",
+     "fingerprint": "8ca2bd163fd2225a04beb966cd5edae6259add786937509d2192ed4dd7693182",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.3",
+     "kind": "axiom",
+     "applies": [
+      "A1"
+     ],
+     "results": [],
+     "prose": "A1: the scores w.u_i are real, represented by the real family s_r",
+     "code": "sr = A1.real_base('s_r')",
+     "fingerprint": "1c38eae71324a32228c4d743345331863c45d504e57b3c8872eceff1795ba784",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.4",
+     "kind": "axiom",
+     "applies": [
+      "A9"
+     ],
+     "results": [],
+     "prose": "A9: one row's noise w.eps has the centred normal law of the Gaussian vector",
+     "code": "Xr = A9.obj('lin')",
+     "fingerprint": "247c4fbd9a51981a65d190f8133e7c63cceb0816a65c8b9a802a367ab2ea1734",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.5",
+     "kind": "axiom",
+     "applies": [
+      "A9"
+     ],
+     "results": [],
+     "prose": "A9: q = Sum_j Sum_l w_j Sigma_jl w_l, the quadratic form of the covariance",
+     "code": "_q_def, qform = A9.rule(0)",
+     "fingerprint": "10119f6025d35c773f4c8930ac8892792e05490c6ab0ffaca230e33bc47f5b18",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.6",
+     "kind": "axiom",
+     "applies": [
+      "A9"
+     ],
+     "results": [],
+     "prose": "A9: the covariance is symmetric, Sigma_lj = Sigma_jl",
+     "code": "sym_from, sym_to = A9.rule(2)",
+     "fingerprint": "94ba6037a63df69fea20b238153119a032d6e5dd3213d090a2b52236e1bc02f7",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.7",
+     "kind": "axiom",
+     "applies": [
+      "A9"
+     ],
+     "results": [],
+     "prose": "A9: the entries Sigma_jl of the covariance",
+     "code": "Sg = A9.obj('cov')",
+     "fingerprint": "9503d7cb1e1e2203369db8ad4c0c24eac6200c87b62eda79fa1600c3b650dece",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.8",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "A9: with Sigma_lj = Sigma_jl, the renamed second term is the first",
+     "code": "B_sym = B_renamed.xreplace({sym_from: sym_to})",
+     "fingerprint": "4ee677bc02f1a9ca29d70ed0a87764de20f42c4563f69834c9fcb746cfedc171",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.9",
+     "kind": "result",
+     "applies": [],
+     "results": [
+      "L3_RESULT"
+     ],
+     "prose": "L3: the softmax weights p, the scores v.u_i, the balanced KKT G_j = lambda, and the",
+     "code": "p_def, sv, kkt, dsimplex = L3_RESULT.take(ctx, 'p_def', 'sv', 'KKT', 'dsimplex')",
+     "fingerprint": "1a3542a7aee631442b19a6b1a961b52396ed68229a1076a06019439bb9aa7c1d",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.10",
+     "kind": "result",
+     "applies": [],
+     "results": [
+      "L4_RESULT"
+     ],
+     "prose": "L4: the second derivative of J_tau(w + t v) at t = 0, tau Var_p(v.u)",
+     "code": "L4_d2 = L4_RESULT.take(ctx, 'd2')",
+     "fingerprint": "08606643d68438ff6fb64b1032bb5bf32c6b9ad75dce0e72c1f4ef9ee8c74877",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.11",
+     "kind": "axiom",
+     "applies": [
+      "R3"
+     ],
+     "results": [],
+     "prose": "R3: m > 0, the smallest eigenvalue of C on the tangent space",
+     "code": "mc = R3.positive_symbol('m_c')",
+     "fingerprint": "7c144a13871ef960ecae35012effc28cc8d5fe0eb7c91025a905a3e3e5b3d73a",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.12",
+     "kind": "axiom",
+     "applies": [
+      "R3"
+     ],
+     "results": [],
+     "prose": "R3: the Rayleigh bound delta'C delta - m ||delta||^2 = s1 >= 0",
+     "code": "s_r3 = R3.nonneg_symbol('s_r3')",
+     "fingerprint": "510257bd21b2245f8aaaac4353df215481b5e5e49a341674b19d3d2e70f35e5c",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.13",
+     "kind": "axiom",
+     "applies": [
+      "I9"
+     ],
+     "results": [],
+     "prose": "I9: the Cauchy-Schwarz slack ||delta|| ||y|| - |delta.y| = cs >= 0",
+     "code": "cs = I9.slack_symbol('cs')",
+     "fingerprint": "5ff33ab8400e9e1f3f8bbe7da2c646e35780397cb50b23b26caed39f32017bc7",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.14",
+     "kind": "axiom",
+     "applies": [
+      "R3"
+     ],
+     "results": [],
+     "prose": "R3: the Rayleigh slack delta'C delta - m ||delta||^2, nonnegative",
+     "code": "rayleigh = R3.slack_expr(rq_form=A_sym, m_curv=mc, vv_norm2=nd ** 2)",
+     "fingerprint": "1d1af6fcc33639959d0e30d213f5c19f0fc3cb88c8d0ad63df328c3934cc504a",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.15",
+     "kind": "axiom",
+     "applies": [
+      "I9"
+     ],
+     "results": [],
+     "prose": "I9: the Cauchy-Schwarz gap ||delta|| ||y|| - |delta.y|, nonnegative",
+     "code": "cs_gap = I9.slack_expr(a_dot_b=B_sym_, norm_a=nd, norm_b=ny)",
+     "fingerprint": "81de1f014c5407118b4cac5b77709359acaf91f1933495a30d59c124bc178a59",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.16",
+     "kind": "axiom",
+     "applies": [
+      "I18"
+     ],
+     "results": [],
+     "prose": "I18: if delta is in the range of X = P C P and X delta = - y, then delta = - X^+ y",
+     "code": "pin_range, pin_eq, pin_out = (I18.obj('range'), I18.obj('equation'), I18.obj('conclusion'))",
+     "fingerprint": "c3e1cae873b95019a88a3bed566b61db3e99ba163f8b1cc50cc3241b035b4388",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.17",
+     "kind": "axiom",
+     "applies": [
+      "A5"
+     ],
+     "results": [],
+     "prose": "A5: sigma > 0, the common level of the equal-noise reading Sigma = sigma^2 I",
+     "code": "sigma = A5.positive(S.sigma)",
+     "fingerprint": "640689aefdc916cc16b72ecc801289a142846da4e39b838ea8ff78bf602bae1c",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.18",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "one row: E exp(tau (s_i + w.eps)) = exp(tau s_i) exp(tau^2 q / 2)",
+     "code": "assert sp.simplify(r['row_E'] - sp.exp(tau * sr[i]) * mgf) == 0, 'L20 FAIL row expectation'",
+     "fingerprint": "a2f7001bbb33452a7cf41e0745f93de8682de0713b7a40c74ac84495d3720d9f",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.19",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the expected noisy average is exp(tau^2 q / 2) times the clean average",
+     "code": "assert sp.simplify(r['EX'] - mgf * sp.Sum(sp.exp(tau * sr[i]), lim_i) / n) == 0, 'L20 FAIL expected noisy average'",
+     "fingerprint": "3fad7d6610190728e693968dc625b99eb811cffa8897de2084610c57a6d64a1e",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.20",
+     "kind": "axiom",
+     "applies": [
+      "A1",
+      "A3",
+      "A9"
+     ],
+     "results": [],
+     "prose": "the logarithm of the expectation is J_tau + tau q / 2: the ridge identity",
+     "code": "assert sp.simplify(log_expand(sp.log(r['EX']), A1, A3, A9) / tau - (r['LMEs'] + tau * q / 2)) == 0, 'L20 FAIL ridge identity'",
+     "fingerprint": "be7744bec19c71dddf8058dc47602bdcd8b5126bdc35b4c2aeb6f85c6e7baced",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.21",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the ridge derivative along v is (tau/2) Sum_jl Sigma_jl (v_j w_l + v_l w_j)",
+     "code": "assert sp.simplify(dsum.function - (r['A_f'] + r['B_f'])) == 0, 'L20 FAIL ridge derivative'",
+     "fingerprint": "de74e994f7d3c6a28587fc148870bb0621cbc3c6c63a13e15ce298c8f014ba3b",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.22",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the second term equals the first (Sigma symmetric): the derivative is tau v'Sigma w",
+     "code": "assert r['B_sym'] == r['A_f'], 'L20 FAIL ridge gradient is tau Sigma w'",
+     "fingerprint": "7b95e9ecfd59db3c3df36908f4a9022839dd264b79fb1f34daba40ab9c70fbde",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.23",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "L4: the mixed derivative along (delta, v) with delta = v is L4's second derivative",
+     "code": "assert sp.simplify(linearize(r['mixed_vv']) - linearize(r['L4_d2'])) == 0, 'L20 FAIL mixed derivative against L4'",
+     "fingerprint": "c6f7ba3f5335e0feacbafb4523a83ecdb869fe62499eff08e91a793974f03c57",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.24",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the mixed second derivative is tau Cov_p(v.u, delta.u)",
+     "code": "assert sp.simplify(linearize(r['mixed']) - tau * linearize(r['cov_dir'])) == 0, 'L20 FAIL mixed derivative is tau Cov'",
+     "fingerprint": "63f7733140ec30cf05971e22623fd8669ef9d12a50d7cd036ccaf2e60f88fd31",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.25",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the softmax weights satisfy sum_i p_i = 1",
+     "code": "assert sp.simplify(linearize(sp.Sum(r['p_def'](L_), (L_, 1, n))) - S.p_normalized.rhs) == 0, 'L20 FAIL softmax not normalized'",
+     "fingerprint": "bd57de0096ab9e93757fed128a417c182b87036df2309d052ff615f141bb8c28",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.26",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "with sum_i p_i = 1: 2 Cov_p(s1, s2) = Sum_i Sum_k p_i p_k (s1_i - s1_k)(s2_i - s2_k)",
+     "code": "assert sp.simplify(r['pair_norm'] - sp.expand(canon(r['cov_abs'], 'l'))) == 0, 'L20 FAIL pair form of the covariance'",
+     "fingerprint": "e19d7a56cdb40d46b343536a38ff439ce964e786ee69111cb226c009525cf3d4",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.27",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "negative control: without sum_i p_i = 1 the identity fails, so it is used",
+     "code": "assert sp.simplify(r['pair_unnorm'] - sp.expand(canon(r['cov_abs'], 'l'))) != 0, 'L20 FAIL normalization not load-bearing'",
+     "fingerprint": "d8c4059acd3fc9990f20e2507f54e24c98b7373e41b32e809dd64bd30dcbdebf",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.28",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the abstract identity at the softmax weights and the scores v.u, delta.u",
+     "code": "assert inst(r['cov_abs']) == r['cov_dir'] and inst(r['pair_abs']) == r['pair_dir'], 'L20 FAIL instance of the covariance identity'",
+     "fingerprint": "cf2cf3a83536cb7931312e4d06f7404d569027f5aae32f06bae04738b7d7b710",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.29",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "v.u_i - v.u_k = Sum_j v_j (u_ij - u_kj), likewise for delta",
+     "code": "assert sp.simplify(linearize(r['sv'](ls) - r['sv'](k) - r['dsv'])) == 0 and sp.simplify(linearize(sp.Sum(u[ls, j] * dl[j], lim_j) - sp.Sum(u[k, j] * dl[j], lim_j) - r['dsd_j'])) == 0, 'L20 FAIL differences of scores'",
+     "fingerprint": "510ae283be67197af9678d2c2c3f75e8534c95ae9e12d1c395306bf78147def5",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.30",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the pair form of Cov_p(v.u, delta.u) is v'C delta with C_jm = (1/2) Sum_ik p_i p_k",
+     "code": "assert same_sum(fubini_form(r['vCd']), fubini_form(r['pair_matrix'])), \"L20 FAIL pair form is v'C delta\"",
+     "fingerprint": "e9451fe9bc2a08a932bccafa4b1dd3d573f82ce7f0aca38a0d32516c7a963a11",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.31",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "C is symmetric: C_jm = C_mj",
+     "code": "assert sp.simplify(r['C_pair'](j, m) - r['C_pair'](m, j)) == 0, 'L20 FAIL C not symmetric'",
+     "fingerprint": "ceed38fbce7b47b676e7505c5bd8966a2b1f3d149861885eb85d72acf98c3b15",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.32",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the derivative of J_tau along v at w* is Sum_j v_j G_j (Fubini, as L3)",
+     "code": "assert same_sum(fubini_form(sp.Sum(r['p_def'](i) * r['sv'](i), lim_i)), fubini_form(sp.Sum(v[j] * Gj, lim_j))), 'L20 FAIL derivative along v is v.G'",
+     "fingerprint": "b8afedba1871a5a708addfb543b56c1d40eb2333fa7e3c7f97d555b83e7c193d",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.33",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "with G_j = lambda for every j (L3) and Sum_j v_j = 0 on the tangent space: v.G = 0",
+     "code": "assert sp.simplify(linear(sp.Sum(v[j] * lam, lim_j)).subs(dsimplex, 0)) == 0, 'L20 FAIL v.G on the tangent space'",
+     "fingerprint": "7c50e90e6029e7841421dad2b4aacb5171fc26bf8800a187662a322cb001e746",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.34",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "negative control: for v = 1, off the tangent space, Sum_j lambda = d lambda is not 0",
+     "code": "assert sp.simplify(sp.Sum(lam, lim_j).doit()) != 0, 'L20 FAIL tangency not load-bearing'",
+     "fingerprint": "2f646429c75811945ab37cca83fa8b4c42a6abcf94d8295271d57194c3fbd180",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.35",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the ridge derivative at w* + delta is tau v'Sigma w* + tau v'Sigma delta; the second",
+     "code": "assert sp.simplify(linearize(ridge_at_shift) - tau * linearize(vSw) - tau * linearize(vSd)) == 0, 'L20 FAIL ridge at the shifted point'",
+     "fingerprint": "4d5fca7bbf0a5a457b342e2c39fd70acb7d246ac427398670dbb68e77049ab4c",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.36",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "first order: tau (v'C delta + v'Sigma w*) = tau Sum_j v_j (C delta + Sigma w*)_j",
+     "code": "assert sp.simplify(linearize(r['vCd_abs']) + linearize(vSw) - linearize(sp.Sum(v[j] * r['force'](j), lim_j))) == 0, 'L20 FAIL force form of the condition'",
+     "fingerprint": "f73cbffad040fa1fb070a6337d12dce34bd5b8a19903b8a92d15f8e90a7c3a6b",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.37",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "P maps into the tangent space: Sum_j (P q)_j = 0",
+     "code": "assert total_zero(q_) == 0, 'L20 FAIL P q is tangent'",
+     "fingerprint": "c51101d7139929cfc927b54a21e6e9d28d6ede0e4ed5db98d2528a6562e0245d",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.38",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "v = P q is tangent, and Sum_j (P q)_j q_j = Sum_j (P q)_j^2",
+     "code": "assert sp.simplify(linearize(sp.Sum(Pq(j) * (q_(j) - Pq(j)), lim_j)).xreplace({h: j})) == 0, \"L20 FAIL v'q = ||P q||^2 at v = P q\"",
+     "fingerprint": "28286bcaa01957995f24c73bda1862c22dda00f10b046e989cb70cf68d4ac2d4",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.39",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "||P q||^2 = 0 for a real vector forces P q = 0",
+     "code": "assert sp.solve(sp.Eq(z0 ** 2, 0), z0) == [0], 'L20 FAIL zero norm'",
+     "fingerprint": "52c60005ea84b10ebebab7bab1a638c333405d3f8938fc6955664017f429e8d7",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.40",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "delta is tangent (Sum_j delta_j = 0), so P delta = delta",
+     "code": "assert sp.simplify((r['Pdl'](m) - dl[m]).subs(tang2, 0)) == 0, 'L20 FAIL P delta = delta'",
+     "fingerprint": "0f6d939ccbf3fd14c962492d65961a43fc52525ea56963f0d548b9804ecacc3a",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.41",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "P q = P C delta + P Sigma w* = P C P delta + y (P linear, P delta = delta)",
+     "code": "assert sp.simplify(linearize((r['Xd'](j) + r['yv'](j) - Pq(j)).subs(tang2, 0))) == 0, 'L20 FAIL P q = X delta + y'",
+     "fingerprint": "99bcc5d85bdc23f0670f0c13b3d7fabb97840df5e6f996a6220ecb3ffe6dddda",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.42",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "y = P Sigma w* is tangent: Sum_j y_j = 0",
+     "code": "assert total_zero(r['Sw']) == 0, 'L20 FAIL y tangent'",
+     "fingerprint": "3894d6a8272e6e6159005100b2c1fb04b221889c9a8907aa10d8725fda0e1a10",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.43",
+     "kind": "axiom",
+     "applies": [
+      "I18"
+     ],
+     "results": [],
+     "prose": "I18: delta is tangent, in the range of X (R3), and X delta = - y: delta = - X^+ y",
+     "code": "assert I18.entails([sp.Equivalent(r['pin_range'], sp.true if r['range_ok'] else sp.false), sp.Equivalent(r['pin_eq'], sp.true if eq_ok else sp.false)], r['pin_out']), 'L20 FAIL pseudoinverse closed form'",
+     "fingerprint": "fdfca168cb52008991b6321b6e3b5f8475c8d7392fb0da2e7afd3f20c34e3e65",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.44",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the condition tested on v = delta (tangent): delta'C delta + delta'Sigma w* = 0",
+     "code": "assert sp.simplify(linearize(r['A_expr']) + linearize(r['B_expr']) - linearize(sp.Sum(dl[j] * r['force'](j), lim_j))) == 0, 'L20 FAIL condition at v = delta'",
+     "fingerprint": "6386eb2e650cc232fb863f91337b67f5af72b47854f9290e318f3fd4b53d0a8c",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.45",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "R3: delta'C delta = m ||delta||^2 + s, s >= 0",
+     "code": "assert sp.simplify(A_val - (mc * nd ** 2 + s_r3)) == 0, 'L20 FAIL Rayleigh bound'",
+     "fingerprint": "963f27ee46403ee17fbc5d3331139e5a6fc4a7e99882ecad646c0b65a733a0f7",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.46",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "delta is tangent, so delta'y = delta'Sigma w* (y = P Sigma w*)",
+     "code": "assert sp.simplify(linearize(sp.Sum(dl[j] * (r['yv'](j) - r['Sw'](j)), lim_j)).subs(tang, 0)) == 0, \"L20 FAIL delta.y = delta'Sigma w\"",
+     "fingerprint": "18fbb37e942abffc5bf79b2b5dc122ff452e70e72b4645db0ef1703e1ff6f53b",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.47",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "I9: ||delta|| ||y|| - |delta.y| = cs >= 0 with delta.y = - (m ||delta||^2 + s)",
+     "code": "assert sp.simplify(gap - (nd * ny - mc * nd ** 2 - s_r3)) == 0, 'L20 FAIL Cauchy-Schwarz chain'",
+     "fingerprint": "5ae1b9499653fb854d42f0460c0c10a833df54eff860b4e2ea8f019def734bd4",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.48",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "hence ||y|| / m - ||delta|| = (s + cs) / (m ||delta||) >= 0: ||delta|| <= ||y|| / m",
+     "code": "assert sp.simplify(ny_sol / mc - nd - (s_r3 + cs) / (mc * nd)) == 0 and ((s_r3 + cs) / (mc * nd)).is_nonnegative is True, 'L20 FAIL norm bound'",
+     "fingerprint": "8c28cdead754fb49e32089642afad829dfe357f45c338b2d788da68e00b8e9e9",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.49",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "and delta'Sigma w* = - m ||delta||^2 - s <= 0: the ridge falls at first order",
+     "code": "assert sp.simplify(B_val + mc * nd ** 2 + s_r3) == 0 and B_val.is_nonpositive is True, 'L20 FAIL ridge falls'",
+     "fingerprint": "a86447c497b9aa6ceb8794b2a08f4b4764cf27d1bd0e31e1fbb179b4381dea94",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.50",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "Sigma = sigma^2 I: (Sigma w)_x = sigma^2 w_x",
+     "code": "assert sp.simplify(piece_in_range(pw, S) - sigma ** 2 * w[S.J0]) == 0, 'L20 FAIL Sigma w'",
+     "fingerprint": "e0aa59b0f5a026e96ffae5dd9c20f8cfaf9d07d386f433d6305fad86a12ac5a3",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    },
+    {
+     "tag": "L20.51",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "hence y = sigma^2 P w*: P is linear",
+     "code": "assert sp.simplify(linearize(r['Pf'](sw_sigma, S.J0) - sigma ** 2 * r['Pf'](wf, S.J0))) == 0, 'L20 FAIL y = sigma^2 P w'",
+     "fingerprint": "444c3bc36a9ef9fe9dc677edaba984c84e17e0b364551d601179e0df009c5885",
+     "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
+    }
+   ]
   }
  },
  "ledger": {
@@ -5852,7 +6499,7 @@
   "A6": "b4e9169cb918769755c22e58ebd125a3758cfc34ef8321e888706702fa68ea85",
   "A7": "3cac58f1a30ea24d5c5efa98fe2879d2a53a05245f13cf432171d024be85ac0b",
   "A8": "389380704cda88e2bd2b27c9f1e25117bc58f48eca099f01b7a92f46d75901e6",
-  "A9": "23c38c228de4507cfc4c141984f636f9ee40049a8554364244e5e4c3199bc354",
+  "A9": "62cd46911f8e187089c9c3dfd80882e89c8961568a932639d0a7c2fd2132d782",
   "A10": "b7d82a094adecfc80e95276efeb84afb49697932e6578d402178f423eca7c7de",
   "A11": "15746bf237340b907b8b1eec8a19f3bfbd645d1bde757774ce37fbbba47c121e",
   "I1": "8b586c084eb8dee64759cb2b187b056f7a64c6d86fdd5ee20468c5037a4c94e9",
@@ -5872,7 +6519,9 @@
   "I15": "4aacdaf3b5cfeba77d4de2f4ae041a267baae11ffa435f93ad67e9553714255d",
   "I16": "3a6b8998c00ccc585ef8354f5bd57e0e96d8802ab71ab90021806038fd6f2275",
   "I17": "d75389b0139c6cd92f77192960e67c933a2f5e2a7c1946758312aff69fedda70",
+  "I18": "c0676e59a644e1f97181cfb538f3cfd8fc95331818d450927b934f05ce5595fa",
   "R1": "b38653c84f3e4f29bd37d548018ad6a1556b8f3c246977f4b7aba50f455c344f",
+  "R3": "362a75af3444ee173f8a96e3c2697e3f8ae37f746c14ebce9a838dee75368bde",
   "R2": "34fd20a2aa64a3052f7422bcd38f6cf565ab91657e3cefde37a005032796fc40",
   "F5": "2b7224349cd656ed5f398c4834e6f572187f4d7d78fbd70c1ae142002943eebe",
   "F10": "819cd496db56cb66f86da0877ea25aa572726dc6524c90d0bbb1e5db2ceca8fa",

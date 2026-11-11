@@ -39,6 +39,7 @@ CHAIN_NAMES = [
     "lemma_17_soft_fit_certificate",
     "lemma_18_noise_covariance",
     "lemma_19_noise_shift_bound",
+    "lemma_20_noise_ridge",
 ]
 
 

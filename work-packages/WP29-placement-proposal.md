@@ -5,7 +5,149 @@ lemmas, tests and Appendix B tables are on branch `wp29` and not on `dev`. If he
 Appendix B table are deleted as one unit. Kept apart throughout: the **model** (the noise-free soft maximum), the **fit**
 (the estimator on a finite noisy table), the **analysis** (what a reader concludes).
 
-## The two statements, in words
+## Revision after the supervisor's glance (2026-11-11; prepared by the derivation agent, not applied)
+
+His disposition (WP29-decisions.md, the glance): not two lemma boxes but **one corollary**, after Proposition 2 and
+Theorem 3, that accounts for noise where the paper reads. This section supersedes P1 below (the two boxes) and the
+"May" and "May not" lists where they differ; P2 to P6 stand except as noted. Built on the branch: `derivation/
+lemma_20_noise_ridge.py` (L20, 51 tagged steps; imports L3, L4 and L18 by their proved results), the ledger entries R3
+(the clean fit interior to its face, well conditioned there) and I18 (the pseudoinverse), A9 given its symmetry relation,
+`tests/test_noise_ridge.py` (28 tests). L18 stays as the supporting lemma (it now exports `L18_RESULT`); L19 stays in
+Appendix B only, no box.
+
+### Where the box goes
+
+Proposition 2 of the rendered paper is the Gaussian cumulant (L6, `prop-cumulant`: the second `prf:proposition` after L2);
+Theorem 3 is the convexity of the fit (L4, `thm-convex`: the third `prf:theorem` after L1 and L3). Both stand before
+`res-L7` in `paper/paper.ipynb`, so the corollary is a new markdown cell **`res-L20` between `res-L6` and `res-L7`**,
+label `cor-noise-ridge`, and its sketch cites `prop-cumulant`, `thm-convex` and `thm-kkt`. Text proposed (the shift is
+written Delta w in the paper, because L18 already uses delta_j for a relative measurement error; the script's `dl` is
+the same object):
+
+> **Corollary (Noise moves the exponents by a ridge, L20).** *Derived. Hypotheses.* A1, A3, A5 (Sigma = sigma^2 I) or A9
+> (a covariance Sigma), I9, I18; R3 (the clean fit is interior to its face and C is positive definite on the face's
+> tangent space); the noise small and the result first order.
+> Gaussian noise with covariance Sigma on the conditioned metrics adds a ridge to the objective, J_tau(w) + (tau/2)
+> w'Sigma w, and to first order moves the exponents by Delta w = - (P C P)^+ P Sigma w, in the equal case
+> Delta w = - sigma^2 (P C P)^+ P w. Here C is the softmax-weighted covariance of the log-metrics at the fit, P projects
+> onto the tangent space of the active face, and an attribute with relative measurement error delta_j enters as
+> sigma_j = delta_j / s_j, s_j its log spread (L18). The shift is at most tau ||P Sigma w|| / `conditioning_`, and it
+> lowers ||w||^2. It says how far noise of a given size moves the exponents, not whether the rates are right.
+> *Sketch.* The expected noisy objective is J_tau plus the ridge ({prf:ref}`prop-cumulant`, row by row); the Hessian of
+> J_tau is tau C ({prf:ref}`thm-convex`) and its gradient on the face vanishes ({prf:ref}`thm-kkt`); setting the ridge
+> gradient against tau C Delta w on the tangent space gives the closed form.
+> *Script:* `derivation/lemma_20_noise_ridge.py`; Appendix B, L20.
+
+Notes on the box. (1) "Toward uniform" is in norm: ||w||^2 falls at first order (L20.49: `delta'Sigma w <= -m
+||delta||^2 <= 0`); the lemma does not say each exponent moves toward 1/d, and for a C that is not a multiple of the
+identity some do not. (2) The size is stated in `conditioning_` terms: that diagnostic is tau times the smallest
+eigenvalue m of C on the tangent space, so the bound is tau ||P Sigma w|| / `conditioning_`. (3) The box never says
+"unbiased", "consistent" or "correct rates"; G-11 stays open.
+
+### The demonstration (Appendix D), as injected noise on noise-free data of record
+
+Header text (replaces the P3 header, same two sentences): the data of record carry no noise of their own; the noise is
+injected as a design choice of this experiment, each raw attribute multiplied by exp(delta z); what the table shows
+belongs to the fit and the conditioning together. Columns, per regime and delta: `conditioning_` (one value per regime),
+the first-order shift predicted by L20 (largest component, on the active face, Sigma = diag((delta / s_j)^2), L18), the
+shift measured (largest component of the mean over the script's eight draws), and the draw-to-draw spread; the
+contending-set Jaccard column stays; the L6 columns and the offset-shift column of P3 are **dropped** (they served the
+L19 reading, which is now in Appendix B only; their numbers stay in `tests/test_noise_lemmas.py`). A scratch computation
+on the branch's code (`examples/adcs/noise_injection.py`'s draws and case; **not yet a generated value of the repository**,
+the Appendix D cell must generate it):
+
+| regime, `conditioning_` | delta (%) | predicted largest shift | measured, mean of 8 draws | spread of the draws |
+|---|---|---|---|---|
+| primary, 7.09 | 0.5 | 0.003 | 0.005 | 0.012 |
+| | 2 | 0.047 | 0.071 | 0.043 |
+| | 5 | 0.292 | 0.275 | 0.098 |
+| | 10 | 1.168 | 0.304 | 0.067 |
+| stock, 0.017 | 0.5 | 0.022 | 0.032 | 0.047 |
+| | 2 | 0.348 | 0.102 | 0.068 |
+| | 5 | 2.174 | 0.136 | 0.035 |
+| | 10 | 8.694 | 0.147 | 0.043 |
+
+What the table licenses, and no more: at 0.5 and 2 percent (primary) and 0.5 percent (stock) the predicted and measured
+shifts agree within the spread of the draws; the stock regime, whose `conditioning_` is 400 times smaller, moves about
+seven times as far at 0.5 percent, so the direction "larger where `conditioning_` is smaller" is borne out, the ratio of
+the movements is not the inverse ratio of the diagnostic (the bound is an upper bound). Where the predicted shift exceeds
+the smallest active exponent (primary from 5 percent: 0.29 against 0.136; stock from 2 percent: 0.35 against 0.012 to
+0.04) the formula is outside its range and the measured shift saturates because the contending set changes (a new exponent
+enters; the table's Jaccard column says so); the primary 5 percent agreement (0.292 against 0.275) is not read as a
+confirmation. Two further limits the Appendix D text states: the conditioning is refitted on the noisy table, which L18 does
+not cover (it assumes a fixed scaler: at 10 percent on total mass, spread 0.066, the noise itself inflates the spread), and
+eight draws is a small sample. A second row of evidence for the surrogate itself is in the tests: on planted frontier data
+(d = 4, N = 20000) the first-order formula is within 3e-4 of the minimiser of J + ridge in all nine cells of sigma in
+{0.05, 0.10, 0.20} and tau in {5, 20, 50} (largest 2.94e-4), and the package's fit of the noisy table lies nearer that
+minimiser than the clean fit does at tau = 5 (0.0006 against 0.0020 at sigma 0.10; 0.0013 against 0.0065 at 0.20), but
+**not at tau = 50 and sigma = 0.20** (0.0078 against 0.0067), where the surrogate (a logarithm of an expectation) no
+longer describes the noisy table; the cause is not established.
+
+### The gaps rows (revised)
+
+- **G-3** (L6 against a finite sample). Keep the row. Add to "what is claimed": the equal-noise reading is generalised to
+  a covariance (L18), and the effect of that noise on the exponents is the corollary (L20), to first order. "What cannot
+  be proved" gains: the noisy fit of a finite table landing at the minimiser of the expected objective (L20 proves the
+  ridge identity for the expected exponential, a logarithm of an expectation; the gap to the expectation of the logarithm
+  is a Jensen gap, measured, not proved). Evidence: `tests/test_noise_ridge.py::test_the_noisy_fit_tracks_the_ridge_at_small_tau`
+  and `..._no_longer_follows_the_ridge_at_large_tau_and_noise`. Reading: unchanged ("a population quantity approached
+  with N"), plus one clause: the offset's own bound is L19, Appendix B.
+- **G-11** (Q2, consistency). Stays open and says so. Add one sentence to "what is claimed": L20 gives the first-order
+  size of the movement of the exponents under Gaussian noise of known covariance, a bias at a stated noise level, not a
+  consistency or unbiasedness statement. Evidence: the nine-cell test (`test_first_order_formula_is_within_3e_4_of_the_ridge_minimiser`)
+  and M2's table. Reading: "a movement of the stated size under the stated noise; the rates are not certified."
+- **G-12** (Q3, identifiability). Add under "what it does not show": a metric's presence in the contending set is a
+  property of the sample, the conditioning and the noise together, and the L20 shift is large where `conditioning_` is
+  small, which is where presence is least identified; and the formula does not hold at an exponent on the boundary of the
+  simplex (`test_at_a_boundary_exponent_...`: the full-simplex projector sends a zero exponent to 0.014 where the
+  constrained fit keeps it at zero; the formula on the face agrees to 2e-5) nor once the noise lifts a boundary exponent
+  off zero (`test_when_the_noise_overcomes_the_complementarity_margin_...`). Reading: the contending set, `conditioning_`
+  and the injected-noise table are read together.
+- The **held A2 row** proposed in P4 is **withdrawn**: A2 is now the corollary, with a lemma; no separate row.
+
+### Does a main-results clause earn its place?
+
+The list has seven items; item 2 says the one-term fit's exponents are elasticities. The corollary answers the question a
+reader of that item asks next, how far noise moves them, and is the one result that touches the paper's reading of the
+exponents. The marginal-value test, applied also to what is there: a clause costs about twenty words and replaces
+nothing; omitting it leaves the corollary visible only in the Results section and Appendix B. Candidate wording, appended
+to item 2 and left to the paper stream to adopt or drop: "; to first order, noise on the metrics shifts the exponents by a
+ridge the conditioning bounds ({prf:ref}`cor-noise-ridge`)". The paper stream decides from the rendered list and the
+length ledger.
+
+### What the revised corollary does not claim, and a check of the formula
+
+The statement of the corollary is the lemma's STATEMENT: first order (the product of noise and shift is set aside and
+named; no bound on the remainder), an interior solution on the active face with strict complementarity, small noise,
+Gaussian noise, a fixed scaler; no statement that the noisy fit of a finite table lands at the minimiser of the ridge
+objective; no statement that the fitted rates are right.
+
+The supervisor's formula, checked against my own derivation (L20) and the numbers: **delta = -sigma^2 (P C P)^+ P w is
+correct** as stated for Sigma = sigma^2 I (sign, the factor sigma^2, tau cancelled: the Hessian of J_tau is tau C and the
+ridge gradient tau Sigma w), the sign confirmed by the nine-cell test; the general form is -(P C P)^+ P Sigma w. Four
+refinements the corollary carries, none changing his formula: (1) "toward uniform" is true of ||w||^2 (the shift lowers
+the ridge), not coordinate by coordinate; (2) "large exactly where `conditioning_` is small" is an upper bound,
+||delta|| <= tau ||P Sigma w|| / `conditioning_` (the diagnostic is tau times the smallest eigenvalue of C on the tangent
+space, so the tau reappears here), and the shift is large only when the ridge force has a component along the weak
+direction; (3) P is the projector of the active face, as he wrote, not of the full simplex: at a boundary exponent the
+full-simplex projector gives a spurious exponent (tested); (4) the quantity minimised is the logarithm of an expected
+exponential, which the noisy fit approaches at small tau and not at tau = 50 with sigma = 0.20 (tested, cause not
+established).
+
+### Cascade (additions to the list below)
+
+Lemma count 19 to 20 in the paper and docs (`tests/test_build_generated.py` already reads 20 on the branch; two
+chain-membership expectations in `tests/test_proof_map.py` gained L18's and L20's proved-result imports and exports);
+ledger entries R3, I18
+and A9's new relation in the docs' ledger count and `docs/superpowers/notes` copies; `PARTS` in `paper/generate_proofs.py`:
+L18 to L20 are about noise and belong in a third part ("Noise on the metrics", 18 to 20), not under the several-term fit
+(the heading "(L12 to L20)" is kept until then, as the test requires); register rows C-a to C-d of P5 are re-cut as: the
+ridge identity (L20.20), the first-order shift (L20.43 and the nine-cell test), the norm bound and the descent of the
+ridge (L20.48, L20.49), the stated limits (the boundary test), and the table of Appendix D (generated). The vocabulary
+check (`uv run python scripts/check_vocabulary.py`) has not been run on the proposed box text: "ridge", "active face" and
+"tangent space" need the glossary's terms.
+
+## The two statements, in words (L18 and L19; superseded as two boxes by the revision above)
 
 1. **Noise enters through a covariance, and the conditioning is the map from a measurement error to the noise the fit
    sees (L18).** For Gaussian noise with covariance Sigma on the conditioned metrics, (1/tau) log E exp(tau w.eps) =

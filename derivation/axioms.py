@@ -120,6 +120,11 @@ _Zm = sp.Symbol("Zm", real=True)  # F19: the maximum of the draws
 _i0z = sp.Symbol("i0z", integer=True)
 _JX_F, _JX_EF = sp.symbols("jx_f_of_mean jx_mean_of_f", real=True)  # I17: f(E X), E f(X)
 _EX_LE_P, _EX_LE_Q = sp.symbols("jx_X_le_Y_almost_surely jx_EX_le_EY")  # I17 monotonicity
+_RQ, _VV = sp.symbols("rq_form vv_norm2", real=True)  # R3: v'Cv and v'v for a tangent v
+_M3 = sp.Symbol("m_curv", positive=True)  # R3: the smallest eigenvalue of C on the tangent space
+_PIN_SOLVES = sp.Symbol("x_equals_pinv_X_times_b")  # I18 conclusion
+_PIN_EQ = sp.Symbol("X_x_equals_b")  # I18 premises
+_PIN_RANGE = sp.Symbol("x_in_range_of_X")
 
 
 def _rule_one(expr, rel):
@@ -379,6 +384,7 @@ AXIOMS = {
                 sp.Sum(sp.Sum(_S.w[_j] * _SIGM[_j, _l] * _S.w[_l], (_l, 1, _S.d)), (_j, 1, _S.d)),
             ),
             _GE(_QV, 0, evaluate=False),
+            sp.Eq(_SIGM[_l, _j], _SIGM[_j, _l]),
         ),
         objects=(("lin", _LIN), ("cov", _SIGM)),
     ),
@@ -682,6 +688,23 @@ AXIOMS = {
             sp.Implies(_EX_LE_P, _EX_LE_Q),
         ),
     ),
+    "I18": Axiom(
+        "I18",
+        INHERITED,
+        "Moore-Penrose pseudoinverse: for a real symmetric matrix X, X^+ X is the orthogonal "
+        "projector onto the range of X; hence if x lies in the range of X and X x = b, then "
+        "x = X^+ b",
+        citation="Penrose, A generalized inverse for matrices, Mathematical Proceedings of the "
+        "Cambridge Philosophical Society 51 (1955) 406-413, doi:10.1017/S0305004100030401 "
+        "(the four defining equations; X^+ X and X X^+ are Hermitian idempotents, so projectors); "
+        "the page of the DOI was resolved, the paper itself was not read in full",
+        role="turns the linearised first-order condition on the tangent space into the closed "
+        "form delta = - (P C P)^+ P Sigma w (L20)",
+        failure_mode="holds for every real symmetric matrix; it is a statement about the "
+        "pseudoinverse, so nothing here depends on how X^+ is computed",
+        relation=(sp.Implies(sp.And(_PIN_RANGE, _PIN_EQ), _PIN_SOLVES),),
+        objects=(("range", _PIN_RANGE), ("equation", _PIN_EQ), ("conclusion", _PIN_SOLVES)),
+    ),
     # ------------------------------------------------------------- REGULARITY
     "R1": Axiom(
         "R1",
@@ -701,6 +724,25 @@ AXIOMS = {
         "and then only the full simplex KKT (g_j >= lambda, w_j (g_j - lambda) = 0) holds, with "
         "equal gradients on the positive-weight coordinates only",
         relation=(_GT(_S.w[_j], 0, evaluate=False),),  # the balanced point has w_j > 0
+    ),
+    "R3": Axiom(
+        "R3",
+        REGULARITY,
+        "the clean fit is interior to its face and well conditioned there: at the minimizer w* "
+        "of J_tau on the simplex the participating exponents (w*_j > 0) form the face on which "
+        "the fit is read, the coordinates outside it have g_j > lambda (strict complementarity, "
+        "so a small perturbation of the problem leaves them at zero), and the covariance C = "
+        "Cov_p(u) of the softmax weights at w* is positive definite on the tangent space "
+        "{v : sum_j v_j = 0} of the face: v'Cv >= m ||v||^2 with m > 0, m the smallest "
+        "eigenvalue of C there (conditioning_ = tau m)",
+        role="lets the first-order condition be read on the face, makes the shift unique, and "
+        "gives its size: the shift is at most ||P Sigma w*|| / m",
+        failure_mode="when a coordinate sits at the boundary of the simplex (w*_j = 0) or close "
+        "to it, the projector of the full simplex is the wrong one and the formula can send an "
+        "exponent below zero, which the constrained fit would not do; when strict "
+        "complementarity fails the face changes with the noise; when m is near zero the shift "
+        "is large and the first-order reading is outside its range",
+        relation=(_GE(_RQ, _M3 * _VV, evaluate=False), _GT(_M3, 0, evaluate=False)),
     ),
     "R2": Axiom(
         "R2",
@@ -808,8 +850,10 @@ I14 = AXIOMS["I14"]
 I15 = AXIOMS["I15"]
 I16 = AXIOMS["I16"]
 I17 = AXIOMS["I17"]
+I18 = AXIOMS["I18"]
 R1 = AXIOMS["R1"]
 R2 = AXIOMS["R2"]
+R3 = AXIOMS["R3"]
 F5 = AXIOMS["F5"]
 F10 = AXIOMS["F10"]
 F12 = AXIOMS["F12"]
