@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 17
+contract_version = 18
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -332,7 +332,7 @@ paths = [
   "docs/superpowers/",
   "examples/adcs/k_terms.py", "examples/adcs/generate_dataset.py", "examples/adcs/design_space.py",
   "examples/adcs/cubesat_model.py", "examples/adcs/adcs_sim.py", "examples/adcs/make_check_designs.py",
-  "examples/adcs/adcs_trade_study.ipynb", "examples/adcs/cubesat_tradespace.sysml",
+  "examples/adcs/cubesat_tradespace.sysml",
   "examples/adcs/extended_design_space.sysml", "examples/adcs/data/", "examples/adcs/figures/",
   "examples/adcs/model_v2/", "examples/adcs/experiments/", "examples/adcs/case-model.md",
 ]

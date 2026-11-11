@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 17. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 18. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 17
+contract_version = 18
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -337,6 +337,7 @@ the last row of the change log.
 | 15 | 2026-11-10 | Eight traded metrics (the WP23 close-out, `WP23-closeout-scope-of-work.md`, D-14; the supervisor's "if the redundancy is a modelling issue then you clean it up", `WP23-decisions.md`, "The two metric redundancies", and the driver's call A1 on `WP23-rounds/spike-redundancy.md`): the eclipse reserve's requirement restated the depth-of-discharge requirement (0.3 C - D >= 0 is D / C <= 0.3), so its calc and requirement leave the model, `eclipse_reserve_wh` leaves the v2 headers of `case.v2.data` (the three files that carried it; the predictions never did) and `case.v2.traded_metrics` is eight. The case's feasibility flags gain `dod_ok` (`case.CUBESAT.flags` in `examples/adcs/case.py`; no manifest key pins the case's flags, so none changes here): the 131 depth-of-discharge failures per regime left the fit through the reserve's positivity and now leave through the flag, and the feasible sets stay 706 and 780. `case.v2.data_rule` reads the supervisor's rule of 2026-11-10, 09:05 (`PM-BRIEF.md`, "The container is a gate check, not a unit step"): the v2 files regenerate on the host; the container of record re-pins the exact outputs at the gate. Not additive: a pinned list shrinks and pinned headers lose a column. The frozen files and their `case.data` manifests are unchanged | technical (the paper's and the docs' numbers regenerate in the same package) | `WP23-closeout-scope-of-work.md`, approved by the driver under the mandate at 944c564 (`WP23-decisions.md`, "The close-out scope approved; OD10") |
 | 16 | 2026-11-10 | The estimator's two module constants (WP25-3 gap P-1; the paper sources cite them): `estimator` also offers `EPS_ZERO_EXPONENT` (`1e-12`: an exponent at or below it is numerically zero, so a zero metric there scores `0 log 0 := 0`) and `PARTICIPATION_THRESHOLD` (`1e-3`: an exponent above it participates; the default `threshold` of `tension_report` and the participating set of `conditioning_`), pinned by name in `package.submodule_names.estimator` and by value in `package.estimator.constants`; `docs/api.md` says the same in one line each. `plotting.CATEGORY_COLORS` and `plotting.DATA_COLOR` leave `plotting.__all__`: never pinned (row 11 is the plotting surface), internal; the imports by name (`examples/adcs/case.py`, `paper/figures/`) are unchanged. Additive on the manifest (floor rule); no number changes | both (the API page; the package's `__all__`) | the driver's decision on WP25-3's P-1, `driver-log.md`, "PM6's batch 2" (2026-11-10, 17:10) |
 | 17 | 2026-11-11 | A page on choosing K (WP31 stage 2, placement A): `docs.pages` and `docs.presentation_pages` gain `user-guide/choosing-k.md` between Fitting and Tensions; the fitting page's section on choosing K becomes a pointer to it. Additive on the manifest (floor rule); no number changes | presentation (the docsite; the technical side edits none of it) | the driver, `WP31-decisions.md`, "Stage (2)" ("WP31 stage 2: placement A, the fitting section to a pointer, the 0.31 sentence corrected first, the page built from the readout's methods with their limits stated and two worked examples; the elbow named once.") |
+| 18 | 2026-11-11 | A path to a deleted file leaves the manifest (WP25-4 row T-1): `[ownership.technical].paths` no longer lists `examples/adcs/adcs_trade_study.ipynb`, deleted at 4bd6bac. No pinned fact changes: the ownership tests check form, not existence, so the stale entry had passed; `examples/adcs/figures/` stays (amendment 14's guard) | technical (one ownership entry) | the driver, `WP25-decisions.md`, "Instance 4: the gate" ("WP25-4: approved as drafted") |
 
 ## 15. Consumers: may assume, must not touch
 
