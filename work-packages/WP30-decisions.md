@@ -82,3 +82,16 @@ per satellite including launch; on the spike's calibration the baseline's 25-sat
 (build about 4.2 million at the 90 to 95 percent learning slopes, launch 25 x 13.3 kg x 7,000 USD/kg about 2.3
 million), and launch alone is 93,000 per satellite. The question of what his research prices is put back to him
 before the value is set.
+
+**The supervisor, verbatim (10:05):** "recalibrate your research. i am not convinced you did real desk work see:
+https://keeptrack.space/deep-dive/how-much-does-a-satellite-cost and
+https://spacenexus.us/guide/space-launch-cost-comparison i am guessing if you did do research it was overly impacted
+by old data. the commercial space industry has really ramped up recently. please focus your research on 2026 prices".
+**Disposition:** spike D is re-run as a recalibration spike on 2026 prices (his two pages opened in full and read
+first; every figure dated; pre-2025 catalogue prices used only where no 2026 figure exists and marked as such; the
+launch market's 2026 rates and the integrator and rideshare offers for cubesat classes; platform prices by class;
+fleet and volume pricing where any vendor publishes it), with the baseline's 25-satellite fleet priced under the 2026
+numbers and a statement of what 1,000,000 USD buys for 25 satellites of this class. The readout goes to him with the
+arithmetic before either cost value is set; the WP30 build continues on placeholders; the gate waits for the values
+(OD5 (b)). The unit cost limit of 350,000 USD is held until the recalibration, since it was chosen on the old
+calibration.
