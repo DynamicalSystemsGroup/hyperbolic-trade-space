@@ -6,13 +6,15 @@ ladder is the share of the feasible designs at or under each candidate limit. Th
 the two limits from these rows (``WP30-decisions.md``, OD3 (a)); this script prints them and, with
 ``--write``, writes ``work-packages/WP30-rounds/cost-ladders.md``.
 
-Prices are the spike's table (``spike-D-cubesat-economics/economics.py``, which the model's
-``cubesat.sysml`` states: relative difference below 1e-12). A design's cost depends on its
+Prices are the 2026 table: the curves, bus, tracker and assembly of ``spike-D-cubesat-economics/
+economics.py`` with the part coefficients of spike D2 (``spike-D2-prices-2026``: panels 340,000
+USD/m^2, battery 70 USD/Wh, wheels 4,000 USD plus 2,000,000 USD per N.m, so the medium wheel is
+8,000 USD), which the model's ``cubesat.sysml`` states (relative difference below 1e-12; the
+baseline against D2's own table, to the same tolerance). A design's cost depends on its
 configuration, its fleet size and its total mass only, so the ladders are priced from the data's
 design columns at every n; when the data carry ``fleet_size`` and ``unit_cost_usd`` (the
 regenerated v2 data), the repricing is checked against them at each design's own fleet size and
-the script exits 2 on a difference above 1e-9. ``--no-launch`` prices the build only, which
-reproduces the spike's ``admit-shares.txt``.
+the script exits 2 on a difference above 1e-9. ``--no-launch`` prices the build only.
 
     uv run python scripts/wp30_cost_ladders.py [--data DIR] [--write] [--no-launch]
 """
@@ -39,15 +41,29 @@ ALL_SIZES = tuple(range(1, 31))  # the sampler draws n uniform on the integers 1
 UNIT_LIMITS = tuple(range(200_000, 500_001, 50_000))
 FLEET_LIMITS = (500_000, 1_000_000, 2_000_000, 3_000_000, 4_000_000, 6_000_000, 8_000_000)
 CHECK_TOLERANCE = 1e-9
+# The 2026 part coefficients (spike D2, readout section 3; the sources and dates are in the doc of
+# ``part def Prices`` in cubesat.sysml, which these equal)
+PANEL_PER_M2 = 340_000.0  # USD/m^2
+BATTERY_PER_WH = 70.0  # USD/Wh
+WHEEL_BASE = 4_000.0  # USD per wheel
+WHEEL_PER_TORQUE = 2.0e6  # USD per N.m of peak torque
 
 
 def load_prices(path: Path = SPIKE) -> dict:
-    """The spike's price functions, run without its report (the file ends in ``main()``)."""
+    """Spike D's curves and relations with the 2026 part coefficients, run without its report
+    (the file ends in ``main()``)."""
     text = path.read_text(encoding="utf-8").rstrip()
     if not text.endswith("main()"):
         raise ValueError(f"{path} no longer ends in main(); read the table another way")
     namespace = {"__file__": str(path), "__name__": "economics"}
     exec(compile(text[: -len("main()")], str(path), "exec"), namespace)
+    wheel_torque, n_wheels = namespace["WHEEL_TORQUE"], namespace["N_WHEELS"]
+    chord = namespace["PANEL_CHORD"]
+    namespace["u_panels"] = lambda span: PANEL_PER_M2 * 2 * span * chord
+    namespace["u_battery"] = lambda wh: BATTERY_PER_WH * wh
+    namespace["u_wheels"] = lambda wheel: (
+        n_wheels * (WHEEL_BASE + WHEEL_PER_TORQUE * wheel_torque[wheel])
+    )
     return namespace
 
 
@@ -145,7 +161,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--data", type=Path, default=ROOT / "examples/adcs/data/v2")
     ap.add_argument("--write", action="store_true", help=f"write {OUT.relative_to(ROOT)}")
-    ap.add_argument("--no-launch", action="store_true", help="price the build only (the spike)")
+    ap.add_argument("--no-launch", action="store_true", help="price the build only")
     a = ap.parse_args(argv)
     launch = not a.no_launch
     econ = load_prices()

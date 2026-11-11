@@ -188,7 +188,8 @@ def _subset(pool, predicate, n):
 # pointing-error requirement at the supervisor's 0.0085 degree (a negated ``satisfy``). WP30 stage 3b
 # (OD1 (a): eleven traded metrics) added UnitCostRequirement and FleetCostRequirement, each
 # satisfied by the baseline and verified before the slew (the configuration decides them), with
-# placeholder limits until the supervisor's values.
+# the supervisor's limits (350,000 USD a satellite, 6,000,000 USD a fleet); the baseline, as a
+# single satellite, is over the unit cost limit (``not satisfy``).
 METRIC_REQUIREMENTS = {
     "UnitCostRequirement",
     "FleetCostRequirement",
@@ -208,7 +209,7 @@ SLEW_BAND = "SlewBandRequirement"
 REQUIREMENTS = {
     "defs": _FLAG_DEFS | METRIC_REQUIREMENTS,
     "satisfy": 13,
-    "not satisfied by the baseline": {"PointingErrorRequirement"},
+    "not satisfied by the baseline": {"PointingErrorRequirement", "UnitCostRequirement"},
     "verified": {
         "ConfigurationVerification": {
             "PowerRequirement",
@@ -269,7 +270,10 @@ def test_satisfy_statements_hold_on_the_baseline(v2):
     assert len(verdicts) == REQUIREMENTS["satisfy"] == len(REQUIREMENTS["defs"])
     assert all(v.holds and v.status == "holds" for v in verdicts)
     negated = {v.element for v in verdicts if v.element.startswith("not satisfy")}
-    assert negated == {"not satisfy baselinePointingError by cubesatBaseline"}
+    assert negated == {
+        "not satisfy baselinePointingError by cubesatBaseline",
+        "not satisfy baselineUnitCost by cubesatBaseline",  # 461,360 against 350,000 USD at n = 1
+    }
     for req in REQUIREMENTS["not satisfied by the baseline"]:
         v = v2.model.verify_requirement(f"{P}::{req}", subject=f"{P}::cubesatBaseline")
         assert v.status == "violated" and not v.holds, req

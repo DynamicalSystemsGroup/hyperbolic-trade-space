@@ -250,14 +250,18 @@ package CubesatTradeSpaceV2 {
                lithium-ion pack; the pack's peak power is this rate times its capacity, so an 80 Wh
                pack delivers 80 W and a 20 Wh pack 20 W. Not a cited rating. */
         attribute batteryDischargeRate : Real = 1.0;   // 1/h (C-rate)
-        doc /* Launch (WP30, spike D section 3, D-1): 7000 USD per kilogram to low Earth orbit, the
-               2026 small-satellite rideshare rate (spike D's sources 19 to 21; the 6000 of WP23 was
-               the 2024 to early 2025 figure). The launch cost of one satellite is this rate times
-               its total mass, so a lighter configuration is cheaper to launch and a heavier one
-               dearer; a fleet pays it once per satellite, linear in the fleet size. A rideshare
-               booking has a 50 kg minimum slot (350,000 USD): a fleet of one to three satellites
-               of this class pays that slot, four or more pay the linear rate. The minimum is a
-               note here, not a limit and not a `max` in the cost (it is not a posynomial). */
+        doc /* Launch (WP30, spike D section 3, D-1; spike D2): 7000 USD per kilogram to low Earth
+               orbit, the 2026 SpaceX Transporter rideshare rate, read from four 2026 pages
+               (spacenexus, updated 2026-10-11; orbitalintel, updated 2026-10-08; newspaceeconomy,
+               2026-02-27; SpaceX's own page returns no text); the 6000 of WP23 was the 2024 to
+               early 2025 figure. The launch cost of one satellite is this rate times its total
+               mass, so a lighter configuration is cheaper to launch and a heavier one dearer; a
+               fleet pays it once per satellite, linear in the fleet size. A rideshare booking has
+               a 50 kg minimum slot (350,000 USD): a fleet of one to three satellites of this class
+               would pay that slot, four or more pay the linear rate. The minimum is a note here,
+               not a limit and not a `max` in the cost (it is not a posynomial); it is not
+               modelled, and the launch cost is the wholesale per-kilogram rate without a broker's
+               fee. */
         attribute launchRate : Real = 7000.0;   // USD/kg
     }
     part environment : Environment;
@@ -378,23 +382,47 @@ package CubesatTradeSpaceV2 {
            is u_p n^(-b_p)). The total grows with n at a decreasing rate and the unit cost falls;
            at n = 1 the total is u_p(x). Every term is a posynomial in (n, x) because the exponent
            1 - b_p is a positive constant, so the cost model is geometric-programming compatible.
-           The prices are illustrative and calibrated to ballpark (spike D's 29 sources, opened
-           2026-11-10); the shares and slopes are choices, not findings (spike D, section 3). */
+           COVERAGE. The cost is a lower bound on a full costing. It includes the bus block
+           (structure, power, radios and computer) at vendor-bracketed prices, the
+           attitude-control parts (panels, battery, wheels, star tracker), an assembly,
+           integration and test line, and wholesale launch. It excludes, in this order: the payload
+           and its instruments; communications and the payload interface; flight software;
+           environmental testing beyond the assembly line; licensing; a ground station network
+           and operations; the launch slot minimum and broker fees. The prices are 2026 vendor and
+           marketplace listings (each part's source and date are on its coefficient below); the
+           shares and slopes are choices, not findings (spike D, section 3). */
     part def Prices {
-        doc /* Single-unit prices (USD), n = 1. The bus block is the case's bus 60,000, antenna
-               15,000 and IMU 5,000. Updated from the case's earlier roll-up by the economics
-               spike (E-1): panels 250,000 USD/m^2 (was 150,000; mid-range of the catalogue), a
-               battery 150 USD/Wh (was 50; catalogue range 30 to 250), the star tracker's accuracy
-               term 150,000 USD.arcsec (was 300,000; a 2 arcsec class unit is then 80,000 USD);
-               assembly, integration and test 100,000 USD (new; about 40 percent of the baseline's
-               parts). The wheel relation (8,000 plus 2,000,000 per N.m of peak torque, three
-               wheels) is unchanged. */
+        doc /* Single-unit prices (USD), n = 1, at the 2026 listings of spike D2
+               (WP23-rounds/spikes/spike-D2-prices-2026, pages opened 2026-11-11). The bus block is
+               the case's bus 60,000, antenna 15,000 and IMU 5,000: held at 80,000, inside what the
+               vendors' bus parts sum to before radios and harness (a 12U frame about 10,000 EUR,
+               the NanoAvionics SatBus 3C2 computer unit from 4,460 EUR, its EPS from 8,470 EUR;
+               vendor price pages, undated, live 2026-11-11), and below the 12U platform of
+               TakeMe2Space at 275,000 USD (satsearch, last updated 2026-08-26), which adds the
+               attitude-control parts. Panels 340,000 USD/m^2: the old 250,000 raised by the
+               35 to 38 percent that EnduroSat's 3U panel (5,100 to 6,900 USD) and 6U deployable
+               array (37,200 to 51,300 USD) rose from the FY2021 catalogue to the 2026 listings
+               (satsearch, last updated 2026-07-14). Battery 70 USD/Wh: the geometric mean of the
+               three 2026 readings, TakeMe2Space PowerBank 50 Wh at 1,200 USD (24 USD/Wh; satsearch,
+               2026-10-31), NanoAvionics packs at 60 to 68 EUR/Wh (about 70; vendor page, undated,
+               live 2026-11-11) and Space Inventor BAT-14-P4 50 Wh at 9,000 EUR (about 200; satsearch,
+               2026-01-08); EUR at an assumed 1.10 USD. Wheels: 4,000 USD plus 2,000,000 USD per N.m
+               of peak torque, so a medium wheel (2 mN.m) is 8,000 USD, a small one 4,600 and a
+               large one 24,000; the anchors are TakeMe2Space SpaceWheel30 from 4,000 USD (satsearch,
+               2026-10-21), NanoAvionics RW0 at 4,600 USD each in a set of four (vendor page, undated,
+               live 2026-11-11) and Space Inventor WHL-100 at 25,000 EUR (satsearch, 2026-01-07);
+               every listed wheel is larger than the model's medium one, so the medium price is a
+               reading of the band's centre, not a listing. The star tracker's relation (5,000 plus
+               150,000 USD.arcsec over the accuracy) is held: at 1.5 arcsec it gives 105,000 USD
+               against the 85,000 EUR (about 93,500 USD) of the Space Inventor STR-P3 (vendor page,
+               undated); no 2026-dated price exists for the 10 arcsec grade. Assembly, integration
+               and test 100,000 USD is UNSOURCED: no listing prices it. */
         attribute bus : Real = 60000.0;
         attribute antenna : Real = 15000.0;
         attribute imu : Real = 5000.0;
-        attribute panelPerArea : Real = 250000.0;        // USD/m^2
-        attribute batteryPerEnergy : Real = 150.0;       // USD/(W.h)
-        attribute wheelBase : Real = 8000.0;
+        attribute panelPerArea : Real = 340000.0;        // USD/m^2
+        attribute batteryPerEnergy : Real = 70.0;         // USD/(W.h)
+        attribute wheelBase : Real = 4000.0;
         attribute wheelPerTorque : Real = 2.0e6;         // USD/(N.m)
         attribute trackerBase : Real = 5000.0;
         attribute trackerPerFineness : Real = 150000.0;  // USD.arcsec
@@ -483,8 +511,10 @@ package CubesatTradeSpaceV2 {
             c.fleetSize);
     }
     calc def AssemblyTotal {
-        doc /* Assembly, integration and test: a line of its own, 100,000 USD for one satellite,
-               half of it fixed (procedures, fixtures, the test campaign). */
+        doc /* Assembly, integration and test: a line of its own, 100,000 USD for one satellite
+               (unsourced), half of it fixed (procedures, fixtures, the test campaign). It covers
+               the assembly line's own testing; an environmental test campaign beyond it
+               (vibration, thermal vacuum) is not in the cost. */
         in c : Cubesat;
         return : Real = PartTotal(prices.assembly, pricing.assemblyShare, pricing.assemblySlope,
             c.fleetSize);
@@ -742,7 +772,7 @@ package CubesatTradeSpaceV2 {
            Six more each read a traded metric's own quantity: pointing error, control effort, peak
            slew power, power margin, energy balance, and the total mass through the launch cost; the
            momentum requirement reads the momentum headroom; the unit cost and the fleet cost have
-           one each, with placeholder limits (section 5, `budgets`); so every one of the eleven
+           one each (section 5, `budgets`); so every one of the eleven
            traded metrics has a requirement. The battery
            peak power requirement, the eleventh, reads the pack's rating against the eclipse peak load. A
            requirement takes a Cubesat as its subject and, where it needs a measured quantity of
@@ -783,9 +813,9 @@ package CubesatTradeSpaceV2 {
         :>> torqueSquaredIntegral = 7.70613052023095e-06;
     }
     part def Budgets {
-        doc /* The cost limits of WP30 (the unit cost and the fleet cost) are PLACEHOLDERS until the
-               supervisor gives his values (WP30-decisions.md, OD3 and OD5); the launch budget is
-               restated at the new launch rate pending his confirmation (OD4). The four thresholds, the supervisor's choice from the loop's ladder (WP23-decisions.md,
+        doc /* The cost limits of WP30 (the unit cost and the fleet cost) are the supervisor's
+               values (WP30-decisions.md, 2026-11-11); the launch budget is restated at the new
+               launch rate. The four thresholds, the supervisor's choice from the loop's ladder (WP23-decisions.md,
                "The four thresholds", 2026-11-10; the ladder is WP23-review.md, "Proposed
                thresholds, revised for the gate popup"). Each limit is a literal; its doc names the
                ladder row and the share of the feasible designs it admits (primary / baseline
@@ -806,21 +836,24 @@ package CubesatTradeSpaceV2 {
         attribute launchBudget : Real = 105770.0 {   // USD, per satellite
             doc /* 105,770 USD, 15.11 kg at the 7,000 USD/kg of WP30 (D-1): the supervisor's budget
                    was the mass of the row that admits 95 % (94.9 % / 95.6 %), 15.107 kg, stated in
-                   USD at the earlier 6,000 USD/kg as 90,643; restated here at the same mass and
-                   the new rate, PENDING HIS CONFIRMATION (OD4 (a); (b) would keep 90,643 USD,
-                   12.95 kg). */
+                   USD at the earlier 6,000 USD/kg as 90,643; restated here at the same mass
+                   (rounded to 15.11 kg) and the new rate. */
         }
-        attribute unitCostLimit : Real = 450000.0 {   // USD per satellite, read at its own fleet size
-            doc /* PLACEHOLDER, not the supervisor's value (WP30 OD3, OD5): 450,000 USD per
-                   satellite to build and launch, the top of spike D's range for the unit build
-                   cost (300,000 to 450,000 USD). The requirement is a verdict only (OD2 (a)): the
-                   limit does not enter the feasibility flags. His value replaces this one from the
-                   ladder of the regenerated data (WP30-rounds/cost-ladders.md). */
+        attribute unitCostLimit : Real = 350000.0 {   // USD per satellite, read at its own fleet size
+            doc /* 350,000 USD per satellite on the covered cost, read at the design's own fleet
+                   size (the supervisor's value, WP30-decisions.md, 2026-11-11: "i want to lean
+                   smaller and its fine that no single satellite clears it"; a single satellite of
+                   this class costs more). The covered cost and what it leaves out are in
+                   `UnitCostRequirement`. A verdict only (OD2 (a)): the limit does not enter the
+                   feasibility flags. */
         }
-        attribute fleetCostLimit : Real = 3.0e6 {   // USD, the fleet's, with its size free
-            doc /* PLACEHOLDER, not the supervisor's value (WP30 OD3, OD5): 3,000,000 USD to build
-                   and launch the fleet, the order of the baseline configuration at ten satellites
-                   (2,857,334 USD). A verdict only (OD2 (a)). His value replaces this one. */
+        attribute fleetCostLimit : Real = 6.0e6 {   // USD, the fleet's, with its size free
+            doc /* 6,000,000 USD on the covered fleet cost, build and launch, the fleet size free
+                   from 1 to 30 (the supervisor's value, WP30-decisions.md, 2026-11-11). His full
+                   fleet budget is 8,000,000 USD, of which the covered cost is held under
+                   6,000,000 and the remaining 2,000,000 USD is the allowance for what the
+                   assessment does not scope. The covered cost and what it leaves out are in
+                   `FleetCostRequirement`. A verdict only (OD2 (a)). */
         }
     }
     part budgets : Budgets;
@@ -904,17 +937,33 @@ package CubesatTradeSpaceV2 {
     requirement def UnitCostRequirement {
         doc /* The configuration costs within the unit cost limit to build and launch, per
                satellite, at its own fleet size: the unit cost (the traded metric `unit cost`, an
-               MoE) is within budgets.unitCostLimit. It reads the configuration only. The limit is
-               a placeholder until the supervisor's value (WP30 OD3, OD5); the requirement is a
-               verdict and does not enter the feasibility flags (OD2 (a)). */
+               MoE) is within budgets.unitCostLimit, 350,000 USD. It reads the configuration only.
+               COVERAGE: the unit cost is a lower bound on a full costing. It includes the bus block
+               (structure, power, radios and computer), the attitude-control parts, assembly,
+               integration and test, and wholesale launch at 7,000 USD/kg. It excludes, in this
+               order: the payload and its instruments; communications and the payload interface;
+               flight software; environmental testing beyond the assembly line; licensing; a ground
+               station network and operations; the launch slot minimum (50 kg, 350,000 USD, not
+               modelled) and broker fees. The figure is for this 12U class: a 1U series can sit
+               below 40,000 USD a unit, larger series are dearer. A verdict; it does not enter the
+               feasibility flags (OD2 (a)). */
         subject c : Cubesat;
         require constraint { UnitCost(c) <= budgets.unitCostLimit }
     }
     requirement def FleetCostRequirement {
         doc /* The fleet costs within the fleet cost limit to build and launch, with its size
                free: the fleet cost (the traded metric `fleet cost`, an MoE) is within
-               budgets.fleetCostLimit. It reads the configuration only. The limit is a placeholder
-               until the supervisor's value (WP30 OD3, OD5); a verdict only (OD2 (a)). */
+               budgets.fleetCostLimit, 6,000,000 USD. It reads the configuration only. The sponsor's
+               full fleet budget is 8,000,000 USD; the covered cost is held under 6,000,000 and the
+               remaining 2,000,000 USD is the allowance for what the assessment does not scope.
+               COVERAGE: the fleet cost is a lower bound on a full costing. It includes the bus
+               block (structure, power, radios and computer), the attitude-control parts, assembly,
+               integration and test, and wholesale launch at 7,000 USD/kg. It excludes, in this
+               order: the payload and its instruments; communications and the payload interface;
+               flight software; environmental testing beyond the assembly line; licensing; a ground
+               station network and operations; the launch slot minimum (50 kg, 350,000 USD, not
+               modelled) and broker fees. The figure is for this 12U class: a 1U series can sit
+               below 40,000 USD a unit, larger series are dearer. A verdict only (OD2 (a)). */
         subject c : Cubesat;
         require constraint { FleetCost(c) <= budgets.fleetCostLimit }
     }
@@ -958,7 +1007,9 @@ package CubesatTradeSpaceV2 {
     satisfy baselinePeakSlewPower by cubesatBaseline;
     satisfy baselineBatteryPeakPower by cubesatBaseline;
     satisfy baselineLaunchBudget by cubesatBaseline;
-    satisfy baselineUnitCost by cubesatBaseline;
+    // as a single satellite the baseline costs 461,360 USD (build and launch) against the unit cost
+    // limit of 350,000: the limit is read at a design's own fleet size, and a fleet brings it under
+    not satisfy baselineUnitCost by cubesatBaseline;
     satisfy baselineFleetCost by cubesatBaseline;
     satisfy baselinePowerMargin by cubesatBaseline;
     satisfy baselineEnergyBalance by cubesatBaseline;

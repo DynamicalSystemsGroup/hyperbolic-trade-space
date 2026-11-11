@@ -57,8 +57,18 @@ package CubesatStakeholders {
         doc /* The cubesat costs little to build and to launch, alone and as a fleet. The launch
                cost (the MoE on the total mass) is bounded by the launch budget requirement; the
                unit cost and the fleet cost (the two traded cost metrics of the cost model, WP30)
-               by a requirement each, with placeholder limits until the supervisor's values; the
-               cost to build is an illustrative roll-up with no requirement on it (section 3). */
+               by a requirement each, 350,000 USD a satellite and 6,000,000 USD a fleet; the cost to
+               build is an illustrative roll-up with no requirement on it (section 3).
+               The sponsor's full fleet budget is 8,000,000 USD. The two cost limits are on the
+               covered cost, a lower bound on a full costing: the bus block (structure, power, radios
+               and computer), the attitude-control parts, assembly, integration and test, and
+               wholesale launch. The covered cost is held under 6,000,000 USD, and the remaining
+               2,000,000 USD is the allowance for what the assessment does not scope, in this order:
+               the payload and its instruments; communications and the payload interface; flight
+               software; environmental testing beyond the assembly line; licensing; a ground station
+               network and operations; the launch slot minimum and broker fees. The figures are for
+               this 12U class: a 1U series can sit below 40,000 USD a unit, larger series are
+               dearer. */
         subject :>> c;
         stakeholder :>> s = sponsor;
         requirement launchBudget : LaunchBudgetRequirement;
@@ -103,7 +113,7 @@ package CubesatStakeholders {
     // of cubesat.sysml): the baseline fails the pointing-error requirement (0.0155 against 0.0085
     // degree), so the operator's pointing concern is not met by it.
     satisfy lowCost.launchBudget by cubesatBaseline;
-    satisfy lowCost.unitCost by cubesatBaseline;
+    not satisfy lowCost.unitCost by cubesatBaseline;
     satisfy lowCost.fleetCost by cubesatBaseline;
     satisfy longLife.depthOfDischarge by cubesatBaseline;
     not satisfy pointingAndSlewing.pointingError by cubesatBaseline;
@@ -121,12 +131,13 @@ package CubesatStakeholders {
     // configuration's own slew (the engine checks each statement). A requirement that reads a
     // measured quantity has the baseline's measurement as its default, so each such statement
     // binds the `in` parameter to the configuration's recorded measurement below. The agile
-    // configuration fails the launch budget (109,620 against 105,770 USD), the unit cost (610,620
-    // USD per satellite against the placeholder limit of 450,000: a verdict that stays until the
-    // supervisor's value replaces the placeholder), the control effort
+    // configuration fails the launch budget (109,620 against 105,770 USD), the control effort
     // (0.112 against 0.059 N.m.s) and the peak slew power (7.4 against 2.6 W): the sponsor's low
     // cost and two of the operator's requirements. The compact configuration fails the pointing
     // error (0.008533 against 0.008495 degree), the operator's pointing concern.
+    // Each of the three, as a single satellite, fails the unit cost limit (461,360, 371,455 and
+    // 636,380 USD against 350,000); the limit is read at a design's own fleet size, and a fleet
+    // brings the baseline under it.
     part agileMeasurement : SlewMeasurement {
         doc /* The agile configuration's slew integrated by adcs_sim.simulate_adcs (600 s horizon,
                0.5 s step, 30 degree slew), recorded as the baseline's is in cubesat.sysml, to
@@ -178,7 +189,7 @@ package CubesatStakeholders {
         in torqueSquaredIntegral = agileMeasurement.torqueSquaredIntegral;
     }
     satisfy lowCost.launchBudget by cubesatCompact;
-    satisfy lowCost.unitCost by cubesatCompact;
+    not satisfy lowCost.unitCost by cubesatCompact;
     satisfy lowCost.fleetCost by cubesatCompact;
     satisfy longLife.depthOfDischarge by cubesatCompact {
         in torqueSquaredIntegral = compactMeasurement.torqueSquaredIntegral;

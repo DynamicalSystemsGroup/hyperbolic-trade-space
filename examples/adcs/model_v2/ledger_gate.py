@@ -37,8 +37,9 @@ WP30 (``WP30-decisions.md``, OD1 (a), OD2 (a), OD5 (b)) re-runs the same five en
 the regeneration (``--wp30 regen``, ``@9``, ``scope-sensitivity-shared-subspace-v2@8``): the
 momentum headroom and the cost model add columns (``fleet_size``, ``momentum_headroom``,
 ``unit_cost_usd``, ``fleet_cost_usd``), so the outputs move and nothing is required of their
-hashes; the limits are the placeholders. Then the supervisor's two cost limits and the restated
-launch budget, which are verdicts only (OD2 (a)) and move no output: ``--wp30 values`` re-runs the
+hashes; the model already carries the supervisor's two cost limits (350,000 and 6,000,000 USD) and
+the restated launch budget, so this is the gate's regeneration. A later edit of a cost limit or the
+launch budget is a verdict only (OD2 (a)) and moves no output: ``--wp30 values`` re-runs the
 five entries on the model with his values, against the new model hash, and requires each output
 hash to equal the hash of the entry it supersedes (the WP26 rule, enforced: the script exits 1 and
 names the entries when one differs, and the commit that edited the model is reverted). Run on the
@@ -86,8 +87,9 @@ WP26_NOTE = (
 )
 WP30_NOTE = (
     "WP30: the momentum headroom and the cost model (fleet size, unit cost, fleet cost) added to"
-    " cubesat.sysml, eleven traded metrics, the two cost limits at their placeholders (a verdict"
-    " only, not a flag); regenerated {where}; the container of record re-pins the exact outputs"
+    " cubesat.sysml, eleven traded metrics, the two cost limits at the supervisor's values (350,000"
+    " and 6,000,000 USD; a verdict only, not a flag); regenerated {where}; the container of record"
+    " re-pins the exact outputs"
 )
 WP30_VALUES_NOTE = (
     "WP30: the supervisor's two cost limits and the restated launch budget set in cubesat.sysml"

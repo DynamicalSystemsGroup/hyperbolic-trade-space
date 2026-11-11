@@ -184,8 +184,8 @@ def test_the_four_thresholds_are_listed_with_their_requirements(structural):
         "peak slew power": "budgets.peakSlewPowerLimit = 2.6 [W]",
         "depth of discharge": "-",
         "momentum headroom": "-",
-        "unit cost": "budgets.unitCostLimit = 450000.0",
-        "fleet cost": "budgets.fleetCostLimit = 3.0e6",
+        "unit cost": "budgets.unitCostLimit = 350000.0",
+        "fleet cost": "budgets.fleetCostLimit = 6.0e6",
     }
 
 

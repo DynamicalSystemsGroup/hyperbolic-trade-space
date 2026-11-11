@@ -51,7 +51,7 @@ WP22_CALCS = {
     "TorqueLimitedSlewTime", "UsableWheelTorque",
 }  # fmt: skip
 EXPECT = {
-    "line_cap": 1150,
+    "line_cap": 1200,
     "calcs": {
         "LaunchCost",
         "BatteryPeakPower",
@@ -317,7 +317,8 @@ def test_every_constant_has_a_doc_rationale():
     round 2 left it. WP30 stage 3a took it to 898 (the momentum headroom) and stage 3b added the
     cost model the scope (G3 to G5) asks for: the fleet size, six per-part pricing curves with
     their prices and shares, the fleet and unit costs, two requirements and two analyses (about
-    230 lines, most of them the rationale of each price and curve); the cap is 1150
+    230 lines, most of them the rationale of each price and curve) and the final values added each
+    part's source and date and the coverage statement (about 45 lines); the cap is 1200
     (``EXPECT``): the model stays one readable file (WP22 definition of good).
     """
     text = TEXT
@@ -541,7 +542,7 @@ def test_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it(v2):
     assert rows == sorted(rows) and rows[0][1] < rows[1][1] < rows[2][1]
     budget = v2.read("budgets.launchBudget")
     # 105,770 USD: 15.11 kg at the rate (the supervisor's mass of 15.107 kg, restated at 7,000
-    # USD/kg from 90,643 USD at 6,000, pending his confirmation: WP30 OD4 (a))
+    # USD/kg from 90,643 USD at 6,000: WP30 OD4 (a))
     assert budget == pytest.approx(rate * 15.11, abs=1.0)
     verdict = v2.model.verify_requirement(
         f"{P}::LaunchBudgetRequirement", subject=f"{P}::cubesatBaseline"
@@ -817,6 +818,7 @@ def test_the_rollups_are_illustrative_and_read_by_no_output(who_cares):
 CONTRAST_NEGATED = {  # WP27-decisions.md (16:20): the contrasts' verdicts, as the engine finds them
     "not satisfy lowCost::launchBudget by cubesatAgile",
     "not satisfy lowCost::unitCost by cubesatAgile",
+    "not satisfy lowCost::unitCost by cubesatCompact",
     "not satisfy pointingAndSlewing::controlEffort by cubesatAgile",
     "not satisfy powerAndEnergy::peakSlewPower by cubesatAgile",
     "not satisfy pointingAndSlewing::pointingError by cubesatCompact",
@@ -839,6 +841,8 @@ def test_the_baselines_verdict_on_each_concern_is_checked_by_the_engine(who_care
         == {
             "not satisfy baselinePointingError by cubesatBaseline",
             "not satisfy pointingAndSlewing::pointingError by cubesatBaseline",
+            "not satisfy baselineUnitCost by cubesatBaseline",
+            "not satisfy lowCost::unitCost by cubesatBaseline",
         }
         | CONTRAST_NEGATED
     )

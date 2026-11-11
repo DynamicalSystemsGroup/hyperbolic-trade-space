@@ -193,8 +193,8 @@ CUBESAT = CaseSpec(
     # the model's four threshold requirements (cubesat.sysml, part budgets; the supervisor's values,
     # WP23-decisions.md, "The four thresholds"), each read as attribute <= limit; the launch budget
     # 105,770 USD is the total mass at the model's launch rate of 7,000 USD/kg (WP30 D-1, restated
-    # from 90,643 USD at 6,000 USD/kg, pending the supervisor's confirmation, OD4); the two cost
-    # limits are placeholders in the model until his values (OD3, OD5) and are not read here
+    # from 90,643 USD at 6,000 USD/kg, OD4); the two cost limits (350,000 USD a satellite, 6,000,000
+    # USD a fleet, both on the covered cost) are verdicts in the model and are not read here
     requirements={
         "peak_slew_power_w": (2.6, "W"),
         "pointing_error_deg": (0.008495, "degree"),
@@ -220,8 +220,8 @@ CUBESAT = CaseSpec(
         "peak_slew_power_w": 2.0,
         "dod_eclipse": 0.10350133786988198,
         "momentum_headroom": 6.437201363621915,
-        "unit_cost_usd": 443040.0,
-        "fleet_cost_usd": 443040.0,
+        "unit_cost_usd": 461360.0,
+        "fleet_cost_usd": 461360.0,
         "settled": True,
         "momentum_ok": True,
         "power_ok": True,

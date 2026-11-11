@@ -168,16 +168,16 @@ def test_numeric_literals_added_are_the_recorded_measurement_and_the_launch_rate
     number = re.compile(r"(?<![\w.])\d+(?:\.\d+)?(?:[eE][-+]?\d+)?")
     added = set(number.findall(_code(TEXT))) - WP15_LITERALS
     # WP30 (the cost model, spike D; WP30-decisions.md, OD1 (a)): the launch rate is 7000 USD/kg
-    # (D-1) and the launch budget restated at the same mass, 105,770 USD (OD4 (a), pending the
-    # supervisor's confirmation); the single-unit prices (E-1: 60,000 bus, 15,000 antenna, 5,000
-    # IMU and tracker base, 250,000 panels, 150 battery, 8,000 wheel base, 2.0e6 wheel torque,
-    # 150,000 tracker fineness, 100,000 assembly); the fixed shares and learning slopes of the
-    # pricing curves (0.10 to 0.50 and 0.90, 0.95); ln 2; and the two cost limits, placeholders
-    # until the supervisor's values (450,000 and 3.0e6 USD). Each has its doc in the model.
+    # (D-1) and the launch budget restated at the same mass, 105,770 USD (OD4 (a)); the single-unit
+    # prices at the 2026 listings (spike D2: 60,000 bus, 15,000 antenna, 5,000 IMU and tracker
+    # base, 340,000 panels, 70 battery, 4,000 wheel base, 2.0e6 wheel torque, 150,000 tracker
+    # fineness, 100,000 assembly); the fixed shares and learning slopes of the pricing curves
+    # (0.10 to 0.50 and 0.90, 0.95); ln 2; and the two cost limits, the supervisor's values
+    # (350,000 and 6.0e6 USD). Each has its doc in the model.
     wp30 = {
-        *("7000.0", "105770.0", "60000.0", "15000.0", "5000.0", "250000.0", "150.0", "8000.0"),
+        *("7000.0", "105770.0", "60000.0", "15000.0", "5000.0", "340000.0", "70.0", "4000.0"),
         *("2.0e6", "150000.0", "100000.0", "0.10", "0.20", "0.30", "0.50", "0.95"),
-        *("0.6931471805599453", "450000.0", "3.0e6"),
+        *("0.6931471805599453", "350000.0", "6.0e6"),
     }
     assert added - wp30 == {"0.009490621914197469", "0.008495", "0.05922", "2.6"}
     assert added >= wp30

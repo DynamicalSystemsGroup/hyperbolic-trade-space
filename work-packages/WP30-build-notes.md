@@ -178,3 +178,51 @@ The fast suite on the tip: 26 red (3a's 18 plus 8 from 3b), the rest green. By c
   unit cost, across n for the fleet cost); not computable before the data.
 - `project.py` wording of the analysis box and the caption for the two cost analyses is the model developer's first
   choice; the gate's reader pass may reword it.
+
+# WP30 build notes, status after the supervisor's values (stages 3a and 3b, before the regeneration)
+
+Branches `wp30a` and `wp30b` rebased onto `origin/dev` 8b5c4f4 (`wp30b` carries `wp30a`; nine WP30 commits over `origin/dev`).
+The model, tests and ladder script carry the final values; the data are not regenerated, nothing is on `dev`.
+
+## Values and where they landed
+
+| Value | Where |
+|---|---|
+| Unit cost limit 350,000 USD per satellite, on the covered cost, at the design's own fleet size | `budgets.unitCostLimit` and `UnitCostRequirement` (`cubesat.sysml`); `lowCost` concern (`stakeholders.sysml`) |
+| Fleet cost limit 6,000,000 USD on the covered cost (build and launch, n free 1 to 30); the sponsor's full fleet budget 8,000,000 USD, 2,000,000 the allowance for what is not scoped | `budgets.fleetCostLimit`, `FleetCostRequirement`, the `lowCost` concern |
+| Launch 7,000 USD/kg linear; 50 kg minimum slot in the text, not modelled; launch budget 105,770 USD (15.11 kg) | `launchRate` doc, requirement and limit docs; `launchBudget` (the "pending" wording removed) |
+| 2026 coefficients (spike D2): panels 340,000 USD/m^2, battery 70 USD/Wh, wheels 4,000 + 2,000,000 USD per N.m (medium 8,000), bus block 80,000 and tracker relation held, assembly 100,000 marked unsourced | `part def Prices` doc (source and date per part), `panelPerArea`, `batteryPerEnergy`, `wheelBase` |
+| Coverage statement (included; excluded in the supervisor's order; lower bound; the 12U class note) | the cost model's header doc, both limits' docs, both requirements' docs, the `lowCost` concern |
+
+Choice inside the stream: spike D2 prices one wheel per scenario (8,000 for the baseline's medium wheel) and gives no class
+relation; the model keeps its linear relation in the peak torque with the base moved to 4,000 USD (the SpaceWheel30 listing) so the
+medium wheel is exactly 8,000, the small 4,600 (the NanoAvionics RW0 listing) and the large 24,000 (the Space Inventor WHL-100
+listing is 27,500). The class prices of a small and a large wheel are this relation's, not listings.
+
+Consequences in the model: each of the three named configurations, as a single satellite, is over the unit cost limit
+(461,360, 371,455 and 636,380 USD), so `stakeholders.sysml` and `cubesat.sysml` state `not satisfy` for the unit cost on
+the baseline and the compact (the agile already was); the baseline's unit cost crosses 350,000 between 3 and 5 satellites
+(354,661 at 3, 325,213 at 5); its fleet cost passes 6,000,000 up to 17 satellites (4.72 million) and fails at 25 (6.66 million;
+under the 8,000,000 full budget) and 30 (7.84 million). Baseline per satellite, build only, at n = 1, 3, 10, 25, 30: 368,320;
+261,621; 202,334; 173,167; 168,259 (spike D2's table).
+
+## Evidence
+
+| Check | Result |
+|---|---|
+| Repricing in the code against spike D2's table (its own `build()` at the 2026 central scenario, baseline, n = 1, 3, 10, 25, 30) | equal to relative 1e-12; the readout's per-unit figures to the dollar (`tests/test_wp30_cost_ladders.py`) |
+| The model's calcs against the repricing, 12 sampled designs at n = 1 and 7 | relative difference below 1e-12 on build, mass, fleet and unit cost (`tests/test_cost_model.py`) |
+| The ladder script's price functions | spike D's curves, bus, tracker and assembly with the three 2026 coefficients patched in `load_prices()`; `--no-launch` no longer reproduces spike D's `admit-shares.txt` (that test is replaced by the D2 one) |
+| `rg PLACEHOLDER` over the model files, tests and scripts for WP30 | none left (test `test_the_two_cost_limits_are_the_supervisors_values_with_the_coverage_statement` asserts it, the exclusion order, the class note and the 8,000,000 / 2,000,000 relation) |
+| `ruff check .` | clean except `work-packages/WP23-rounds/spikes/spike-D2-prices-2026/economics2026.py` (18, a separate unit); `ruff format --check`, `check_vocabulary.py --baseline`: clean |
+| Fast suite | see the red set below |
+
+## Stale in the checklist
+
+Steps 8 and 14: the model already carries the values at the regeneration, so there is no "placeholder model" and no second
+`--wp30 values` run; the container run is one run (entries `@10`, shared `@9`), and step 11's model edit and neutrality run
+reduce to re-reading the ladders and printing the admitted shares for the record. The gate's `WP30_NOTE` (ledger text) now says
+the limits are the supervisor's values. The step 10 pass fractions in `WP30-decisions.md` (82 percent, 71 percent, 93 percent)
+are on the earlier calibration and are recomputed from the regenerated data. Docs (`docs/examples.md`, `examples/adcs/case-model.md`)
+carry no cost sentence yet: the docs statement of the 8,000,000 / 6,000,000 / 2,000,000 relation and the coverage statement
+is step 15's.

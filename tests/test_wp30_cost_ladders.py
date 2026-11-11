@@ -1,8 +1,7 @@
-"""The WP30 cost ladders: the spike's shares reproduced, the repricing check, a small fixture."""
+"""The WP30 cost ladders: the repricing equals spike D2's table; the repricing check; a fixture."""
 
 from __future__ import annotations
 
-import ast
 import importlib.util
 from pathlib import Path
 
@@ -12,8 +11,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/wp30_cost_ladders.py"
-SPIKE_DIR = ROOT / "work-packages/WP23-rounds/spikes/spike-D-cubesat-economics"
-DATA = ROOT / "examples/adcs/data/v2"
+D2 = ROOT / "work-packages/WP23-rounds/spikes/spike-D2-prices-2026/economics2026.py"
 
 
 @pytest.fixture(scope="module")
@@ -62,21 +60,31 @@ def _fixture(econ, launch=True):
     return frame
 
 
-def test_no_launch_ladders_reproduce_the_spikes_admit_shares(lad, econ):
-    lines = (SPIKE_DIR / "admit-shares.txt").read_text(encoding="utf-8").splitlines()
-    seen = 0
-    for line in lines:
-        name, n, count, rest = line.split(" ", 3)
-        regime = "baseline" if name == "adcs_designs_cubesat.csv" else "primary"
-        feasible = lad.feasible_rows(pd.read_csv(DATA / lad.REGIMES[regime]))
-        assert len(feasible) == int(count)
-        _, unit = lad.price(econ, feasible, int(n), launch=False)
-        want = ast.literal_eval(rest)
-        got = dict(zip(lad.UNIT_LIMITS, lad.shares(unit, lad.UNIT_LIMITS), strict=True))
-        for limit, percent in want.items():
-            assert round(got[int(limit)], 1) == percent, (name, n, limit)
-        seen += 1
-    assert seen == 8
+def test_the_repricing_equals_spike_d2s_table_for_the_baseline(lad, econ):
+    """The 2026 central scenario of spike D2 (its own functions, run without its report), the
+    baseline configuration at every fleet size of its table, to 1e-12."""
+    source = D2.read_text(encoding="utf-8").rstrip()
+    assert source.endswith("\nmain()")
+    scope = {"__file__": str(D2), "__name__": "spike_d2"}
+    exec(compile(source[: -len("main()")], str(D2), "exec"), scope)
+    central = scope["SCEN"]["2026 central"]
+    for n in (1, 3, 10, 25, 30):
+        want = sum(scope["build"](central, n).values())
+        got = econ["fleet_build"]("medium", "medium", 0.6, 80.0, n)
+        assert got == pytest.approx(want, rel=1e-12), n
+    launch = scope["LAUNCH"] * scope["MASS"]
+    assert econ["LAUNCH_RATE"] == scope["LAUNCH"] and launch == pytest.approx(93_037.0)
+    # the readout's table, to the dollar
+    assert {
+        n: round(econ["fleet_build"]("medium", "medium", 0.6, 80.0, n) / n)
+        for n in (1, 3, 10, 25, 30)
+    } == {
+        1: 368_320,
+        3: 261_621,
+        10: 202_334,
+        25: 173_167,
+        30: 168_259,
+    }
 
 
 def test_feasible_rows_keep_only_designs_where_every_flag_holds(lad, econ):
