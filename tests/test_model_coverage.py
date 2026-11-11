@@ -40,6 +40,8 @@ METRICS = [
     "peak slew power",
     "depth of discharge",
     "momentum headroom",
+    "available power",
+    "battery peak power ratio",
     "unit cost",
     "fleet cost",
 ]
@@ -163,10 +165,11 @@ def test_the_gains_do_not_reach_the_mass_and_kd_does_not_reach_the_pointing_erro
 # ---------------------------------------------------------------------------------------------
 # R-2: every traded metric has a requirement on its quantity and is marked MoE or MoP
 # ---------------------------------------------------------------------------------------------
-def test_traded_metrics_are_the_eleven_of_the_case(structural):
-    """The eleven traded metrics: the eight of the WP23 close-out (the eclipse reserve left), the
-    momentum headroom (WP30, D-1 (a) of spike C; the supervisor's "Confirm") and the unit cost and
-    the fleet cost (WP30 OD1 (a)), the last two returned by an analysis each."""
+def test_traded_metrics_are_the_thirteen_of_the_case(structural):
+    """The thirteen traded metrics: the eight of the WP23 close-out (the eclipse reserve left), the
+    momentum headroom (WP30, D-1 (a) of spike C; the supervisor's "Confirm"), the available power
+    and the battery peak power ratio ("No floating requirements") and the unit cost and the fleet
+    cost (WP30 OD1 (a)), the last two returned by an analysis each."""
     assert [m.name for m in structural["metrics"]] == METRICS
 
 
@@ -184,6 +187,8 @@ def test_the_four_thresholds_are_listed_with_their_requirements(structural):
         "peak slew power": "budgets.peakSlewPowerLimit = 2.6 [W]",
         "depth of discharge": "-",
         "momentum headroom": "-",
+        "available power": "-",
+        "battery peak power ratio": "-",
         "unit cost": "budgets.unitCostLimit = 350000.0",
         "fleet cost": "budgets.fleetCostLimit = 6.0e6",
     }
@@ -361,11 +366,10 @@ def test_repository_paths_print_with_forward_slashes(coverage):
 
 
 # ---------------------------------------------------------------------------------------------
-# D-2 (a) of spike C: the box names a computed reason for each requirement in it (WP30)
+# "No floating requirements" (WP30): every requirement reads a traded metric; the three whose metric
+# the fit may give no weight carry a computed reason
 # ---------------------------------------------------------------------------------------------
-# The two requirements the study does not trade a quantity for (spike C: the available power and the
-# battery peak power ratio are not candidates), each with the traded metric it follows.
-BOX = {"BatteryPeakPowerRequirement", "PowerRequirement"}
+REASONED = {"MomentumRequirement", "PowerRequirement", "BatteryPeakPowerRequirement"}
 
 
 def _project():
@@ -379,24 +383,70 @@ def _project():
 
 
 def _unexplained(result) -> list[str]:
-    """The requirements in the box with no stated reason."""
-    return [r["requirement"] for r in result["reasons"] if not r["sentence"]]
+    """The requirements in the view's box with no stated reason."""
+    return [r["requirement"] for r in result["reasons"] if r["requirement"] in result["box"]
+            and not r["sentence"]]  # fmt: skip
 
 
-def test_every_requirement_in_the_box_has_a_computed_reason(structural):
-    """D-2 (a): the box holds the requirements no traded metric reads; each has a reason computed
-    from the model (the solver's verdict on its in-range claim) and the data of record (the
-    Spearman correlation of its quantity with the traded metrics)."""
+def test_no_requirement_floats_free_of_the_traded_metrics(structural):
+    """The supervisor's word ("No floating requirements", WP30-decisions.md): the box of
+    requirements that read no traded metric is empty; the three that used to stand there read the
+    momentum headroom, the available power and the battery peak power ratio."""
+    assert structural["box"] == []
+    reads = {t["metric"]: t["requirement"] for t in structural["table2"]}
+    assert reads["momentum headroom"] == "MomentumRequirement"
+    assert reads["available power"] == "PowerRequirement"
+    assert reads["battery peak power ratio"] == "BatteryPeakPowerRequirement"
+    assert {r["requirement"] for r in structural["reasons"]} == REASONED
+    claims = {r["requirement"]: r["claim"] for r in structural["reasons"]}
+    for name in ("PowerRequirement", "BatteryPeakPowerRequirement"):
+        assert (claims[name]["status"], claims[name]["strength"]) == ("holds", "proved")
+    assert (
+        claims["MomentumRequirement"] is None
+    )  # it can fail: 188 and 81 designs of the first sample
+
+
+def test_a_requirement_that_reads_no_traded_metric_is_found(coverage, tmp_path):
+    """Negative control: a planted requirement that reads no traded metric stands in the box with no
+    reason, and the check names it; the model as committed has none."""
+    text = coverage.DEFAULT_MODEL.read_text()
+    planted = text.rstrip()[:-1] + (
+        "\n    requirement def PlantedRequirement {\n        subject c : Cubesat;\n"
+        "        require constraint { c.panelSpan > 0.0 [m] }\n    }\n}\n"
+    )
+    path = tmp_path / "planted.sysml"
+    path.write_text(planted)
+    result = coverage.build(path, with_empirical=False)
+    assert result["box"] == ["PlantedRequirement"]
+    assert _unexplained(result) == ["PlantedRequirement"]
+    assert {r["requirement"] for r in result["reasons"]} == REASONED | {"PlantedRequirement"}
+
+
+def test_the_view_draws_no_box_because_every_requirement_reads_a_traded_metric(structural):
+    project = _project()
+    m, byid = project.load(MODEL_DIR / "cubesat.sysml")
+    _, facts = project.behavioural(m, byid, "CubesatTradeSpaceV2")
+    boxed = {project.short(r) for r in facts["reqs"] if facts["band"][r] is None}
+    assert boxed == set(structural["box"]) == set()
+
+
+# The tests below read the regenerated data of the WP30 gate (thirteen columns, the first
+# 1,250 designs per regime); they are red until the gate regenerates it.
+def test_every_reasoned_requirement_has_a_computed_reading(structural):
+    """Each of the three carries one of the three readings, computed from the K = 1 fit and the
+    Spearman correlation of the data of record. Host-recorded at the gate (spike C's values, from
+    the first 1,000 designs: the power requirement's metric one axis with the energy balance at
+    0.9996 and 0.9997; the battery peak power ratio tracking the depth of discharge at 0.970 and
+    0.975, exponent zero; the momentum headroom taking part)."""
     reasons = {r["requirement"]: r for r in structural["reasons"]}
-    assert set(reasons) == BOX and _unexplained(structural) == []
-    power, battery = reasons["PowerRequirement"], reasons["BatteryPeakPowerRequirement"]
-    for r in (power, battery):
-        assert (r["claim"]["status"], r["claim"]["strength"]) == ("holds", "proved")
-    assert (power["metric"], power["axis"]) == ("energy balance", "one axis")
-    assert (battery["metric"], battery["axis"]) == ("depth of discharge", "tracks")
-    # spike C's table, to its digits (primary, baseline)
-    assert [round(v, 4) for v in power["spearman"].values()] == [0.9996, 0.9997]
-    assert [round(v, 3) for v in battery["spearman"].values()] == [0.970, 0.975]
+    assert all(r["sentence"] for r in reasons.values()), "the data lack the thirteen columns"
+    power = reasons["PowerRequirement"]
+    assert (power["partner"], power["reading"]) == ("energy balance", "one axis")
+    assert min(power["spearman"].values()) >= 0.99
+    battery = reasons["BatteryPeakPowerRequirement"]
+    assert battery["reading"] == "exponent zero" and battery["partner"] == "depth of discharge"
+    assert max(battery["exponent"].values()) <= 1e-9
+    assert reasons["MomentumRequirement"]["reading"] == "participates"
 
 
 def test_the_reason_numbers_are_the_spearman_of_the_stated_pair(coverage, structural):
@@ -410,42 +460,20 @@ def test_the_reason_numbers_are_the_spearman_of_the_stated_pair(coverage, struct
     import case
 
     got = next(r for r in structural["reasons"] if r["requirement"] == "PowerRequirement")
+    assert got["spearman"], "the data lack the thirteen columns"
     for regime, name in case.CUBESAT.regimes.items():
         raw = pd.read_csv(case.CUBESAT.data_dir / name)
         ok = raw[list(case.CUBESAT.flags)].all(axis=1)
         for a in case.CUBESAT.attributes:
-            if a in raw.columns:
-                ok &= raw[a] > 0
+            ok &= raw[a] > 0
         f = raw[ok]
         rho = spearmanr(f["available_power_w"], f["energy_balance_wh"]).statistic
         assert got["spearman"][case._REGIME_WORDS.get(regime, regime)] == pytest.approx(rho)
 
 
-def test_a_requirement_in_the_box_with_no_reason_is_found(coverage, tmp_path):
-    """Negative control: a planted requirement that reads no traded metric and has neither an
-    in-range claim nor a stated quantity stands in the box with no reason, and the check names
-    it; the model as committed has none."""
-    text = coverage.DEFAULT_MODEL.read_text()
-    planted = text.rstrip()[:-1] + (
-        "\n    requirement def PlantedRequirement {\n        subject c : Cubesat;\n"
-        "        require constraint { c.panelSpan > 0.0 [m] }\n    }\n}\n"
-    )
-    path = tmp_path / "planted.sysml"
-    path.write_text(planted)
-    result = coverage.build(path, with_empirical=False)
-    assert _unexplained(result) == ["PlantedRequirement"]
-    assert {r["requirement"] for r in result["reasons"]} == BOX | {"PlantedRequirement"}
-
-
-def test_the_box_is_the_views_box_and_the_caption_and_the_table_print_one_reason(structural):
-    """The requirements the view draws in its box are the ones the table gives a reason; the
-    committed caption, ``coverage.md`` and ``coverage.csv`` carry each reason sentence as the
+def test_the_caption_the_table_and_the_csv_print_one_reason(structural):
+    """The committed caption, ``coverage.md`` and ``coverage.csv`` carry each reason sentence as the
     computation prints it."""
-    project = _project()
-    m, byid = project.load(MODEL_DIR / "cubesat.sysml")
-    _, facts = project.behavioural(m, byid, "CubesatTradeSpaceV2")
-    boxed = {project.short(r) for r in facts["reqs"] if facts["band"][r] is None}
-    assert boxed == {r["requirement"] for r in structural["reasons"]}
     caption = (VIEWS / "behavioural_caption.md").read_text()
     table = (VIEWS / "coverage.md").read_text()
     reasons_csv = {

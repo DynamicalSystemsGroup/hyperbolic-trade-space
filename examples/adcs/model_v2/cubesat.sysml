@@ -31,7 +31,9 @@
  * 7,000 USD/kg; and two more traded metrics, the unit cost and the fleet cost (the unit cost
  * times the fleet size), each with a requirement. The model prices the manufacturing and launch
  * of a fleet of identical satellites per unit; it models nothing of the fleet's communication,
- * range or networking. Eleven metrics are traded.
+ * range or networking. The available power and the battery peak power ratio, the quantities the power
+ * requirement and the battery peak power requirement bound, are traded too (WP30-decisions.md, "No
+ * floating requirements"), so every requirement reads a traded metric. Thirteen metrics are traded.
  * The baseline configuration fails the pointing-error requirement: its pointing error is 0.0155 degree against a limit of
  * 0.0085 degree, so section 5 states `not satisfy` for it; 63.7 % of the baseline regime's feasible
  * designs pass that requirement.
@@ -55,14 +57,14 @@
  * alternatives (categorical variables), the parameters (continuous variables), the named
  * configurations. The ASSESSMENT view is sections 3 to 6: the calculations, the scenario, the
  * requirements and verification cases, and the experiment, that say how a configuration is
- * assessed and how each traded metric (the eleven of the case study) traces back to this model.
+ * assessed and how each traded metric (the thirteen of the case study) traces back to this model.
  * Each section header below carries the name of its view. The chain read from the elements: a
  * configuration variable feeds a calc def or the measured slew; the experiment returns the calc as
  * the metric, or the measurement passes it on; a requirement def states the bound on the same calc
  * or measured quantity (or, for the total mass, on the launch cost computed from it); a
- * verification case verifies the requirement. The eleven traded metrics: settling time, pointing
+ * verification case verifies the requirement. The thirteen traded metrics: settling time, pointing
  * error, total mass, control effort, power margin, energy balance, peak slew power, depth of
- * discharge, momentum headroom, unit cost, fleet cost. Each is marked MoE or MoP in the `doc` of its element (the first word
+ * discharge, momentum headroom, available power, battery peak power ratio, unit cost, fleet cost. Each is marked MoE or MoP in the `doc` of its element (the first word
  * of the doc): an MoE is a measure a stakeholder states without knowing the design (how well the
  * payload points; what the launch costs); an MoP is a measure of the system's performance under
  * the scenario the engineer states. Every one has a requirement that reads its own quantity.
@@ -553,6 +555,8 @@ package CubesatTradeSpaceV2 {
             + c.wheelCount * environment.wheelIdlePower;
     }
     calc def AvailablePower {
+        doc /* MoP: the generated power left after the housekeeping load and the tracker (the traded
+               metric `available power`), positive wherever the power requirement holds. */
         in c : Cubesat;
         return : PowerValue = GeneratedPower(c) - environment.housekeepingLoad - c.tracker.power;
     }
@@ -622,16 +626,26 @@ package CubesatTradeSpaceV2 {
         in peakMomentum : AngularMomentumValue;
         return : Real = c.momentumCapacity / peakMomentum;
     }
+    calc def BatteryPeakPowerRatio {
+        doc /* MoP: the pack's peak power over the eclipse peak load (the traded metric `battery
+               peak power ratio`), 1 where the pack just carries the slew in eclipse and above 1
+               where it keeps reserve. The peak torque is measured. */
+        in c : Cubesat;
+        in peakTorque : TorqueValue;
+        return : Real = BatteryPeakPower(c) / EclipsePeakLoad(c, peakTorque);
+    }
     calc def BatteryPeakPower {
         doc /* The power the pack can deliver at its continuous discharge rating: the discharge rate
-               times the capacity (W). Not a traded metric: the battery peak power requirement
-               reads it against the eclipse peak load. */
+               times the capacity (W). Not a traded metric by itself: the battery peak power
+               ratio is this over the eclipse peak load, and the battery peak power requirement
+               reads that ratio. */
         in c : Cubesat;
         return : PowerValue = environment.batteryDischargeRate * c.battery.capacity / 1.0 [h];
     }
     calc def EclipsePeakLoad {
         doc /* The load the battery alone carries at the peak of a slew in eclipse, where the panels
-               give nothing: the housekeeping load plus the peak slew power. Not a traded metric. */
+               give nothing: the housekeeping load plus the peak slew power. Not a traded metric by
+               itself (the denominator of the battery peak power ratio). */
         in c : Cubesat;
         in peakTorque : TorqueValue;
         return : PowerValue = environment.housekeepingLoad + PeakSlewPower(c, peakTorque);
@@ -771,10 +785,11 @@ package CubesatTradeSpaceV2 {
            settled and depth-of-discharge ones read the settling time and the depth of discharge.
            Six more each read a traded metric's own quantity: pointing error, control effort, peak
            slew power, power margin, energy balance, and the total mass through the launch cost; the
-           momentum requirement reads the momentum headroom; the unit cost and the fleet cost have
-           one each (section 5, `budgets`); so every one of the eleven
-           traded metrics has a requirement. The battery
-           peak power requirement, the eleventh, reads the pack's rating against the eclipse peak load. A
+           momentum requirement reads the momentum headroom, the power requirement the available
+           power, and the battery peak power requirement, the eleventh, the battery peak power
+           ratio (the pack's rating over the eclipse peak load); the unit cost and the fleet cost
+           have one each (section 5, `budgets`); so every one of the thirteen
+           traded metrics has a requirement, and every requirement reads a traded metric. A
            requirement takes a Cubesat as its subject and, where it needs a measured quantity of
            the slew, an `in` parameter that the runner binds by name (a Quantity, or a Real for
            the integral of |tau|^2). The defaults of those parameters are the recorded measurement
@@ -877,10 +892,11 @@ package CubesatTradeSpaceV2 {
         require constraint { MomentumHeadroom(c, peakMomentum) >= 1.0 }
     }
     requirement def PowerRequirement {
-        doc /* The panels cover the housekeeping and tracker loads (`power_ok`); it reads the
-               configuration only, so it can be checked before any simulation. */
+        doc /* The panels cover the housekeeping and tracker loads (`power_ok`): the available power
+               (the traded metric `available power`) is positive. It reads the configuration only,
+               so it can be checked before any simulation. */
         subject c : Cubesat;
-        require constraint { c.availablePower > 0.0 [W] }
+        require constraint { AvailablePower(c) > 0.0 [W] }
     }
     requirement def DepthOfDischargeRequirement {
         doc /* The depth of discharge, the eclipse demand with the slew loss energy over the battery
@@ -921,11 +937,11 @@ package CubesatTradeSpaceV2 {
         doc /* The pack can carry a slew in eclipse: the eclipse peak load (the housekeeping load plus
                the peak slew power) is within the battery's peak power, its discharge rating times
                its capacity (WP23 round 2: the battery's own rating ties the capacity to the slew's
-               peak draw). It needs the measured peak torque and bounds no traded metric by itself,
-               so the behavioural view draws it with no line, like the power requirement. */
+               peak draw); stated on the battery peak power ratio (the traded metric `battery peak
+               power ratio`), at least 1. It needs the measured peak torque. */
         subject c : Cubesat;
         in peakTorque : TorqueValue default = baselineMeasurement.peakTorque;
-        require constraint { EclipsePeakLoad(c, peakTorque) <= BatteryPeakPower(c) }
+        require constraint { BatteryPeakPowerRatio(c, peakTorque) >= 1.0 }
     }
     requirement def LaunchBudgetRequirement {
         doc /* The configuration launches within the launch budget: the launch cost (the MoE on
@@ -1111,9 +1127,10 @@ package CubesatTradeSpaceV2 {
            design variables are its features). The Python runner integrates the slew and hands in
            the measured quantities the accounting needs: the integral of |tau|^2 (N^2.m^2.s), the
            peak torque, the peak wheel momentum and the control effort (integral of |tau|, N.m.s).
-           The eleven traded metrics are the settling time, the eight attributes this analysis
+           The thirteen traded metrics are the settling time, the ten attributes this analysis
            returns, in this order: pointing error, total mass, control effort, power margin,
-           energy balance, peak slew power, eclipse depth of discharge, momentum headroom, and the
+           energy balance, peak slew power, eclipse depth of discharge, momentum headroom,
+           available power, battery peak power ratio, and the
            unit cost and the fleet cost, each returned by an analysis of its own below (they read
            the configuration only, at its own fleet size). The
            settling time is measured, not computed: it goes from the measurement into the output
@@ -1134,7 +1151,9 @@ package CubesatTradeSpaceV2 {
             EnergyBalance(cubesat, SlewLossEnergy(torqueSquaredIntegral)),
             PeakSlewPower(cubesat, peakTorque),
             DepthOfDischarge(cubesat, SlewLossEnergy(torqueSquaredIntegral)),
-            MomentumHeadroom(cubesat, peakMomentum));
+            MomentumHeadroom(cubesat, peakMomentum),
+            AvailablePower(cubesat),
+            BatteryPeakPowerRatio(cubesat, peakTorque));
     }
     analysis def UnitCostExperiment {
         doc /* The traded metric `unit cost` (MoE): the cost per satellite to build and launch the

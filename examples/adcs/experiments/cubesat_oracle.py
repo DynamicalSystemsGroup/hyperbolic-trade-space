@@ -15,7 +15,7 @@ the accounting, the attributes and the feasibility are computed:
   (``settling_time_method="events"``, the default; ``"steps"`` reads it off the accepted steps,
   the generation before WP23);
 * **account**: the model's ``analysis def SlewExperiment`` takes the measured quantities and
-  returns the eight attributes it computes (the settling time is measured and passes into the
+  returns the ten attributes it computes (the settling time is measured and passes into the
   row unchanged); ``UnitCostExperiment`` and ``FleetCostExperiment`` return the two cost
   metrics from the configuration and its ``fleet_size`` (a configuration without one is a fleet
   of one satellite);
@@ -74,10 +74,12 @@ CONFIG_NAMES = ("panel_span_m", "battery_wh", "wheel_class", "st_grade", "Kp", "
 # a configuration that names no fleet size is a fleet of one satellite (the three named
 # configurations of the model are at 1)
 DEFAULT_FLEET_SIZE = 1
-# the eleven traded metrics (WP23 G5: one time metric, the settling time; the close-out: the eclipse
-# reserve left, its requirement being the depth-of-discharge requirement restated; WP30: the
+# the thirteen traded metrics (WP23 G5: one time metric, the settling time; the close-out: the
+# eclipse reserve left, its requirement being the depth-of-discharge requirement restated; WP30: the
 # momentum headroom joined, the wheel's momentum capacity over the slew's peak momentum, and the
-# cost model's unit cost and fleet cost, which read the configuration and its fleet size only)
+# cost model's unit cost and fleet cost, which read the configuration and its fleet size only; the
+# available power and the battery peak power ratio, the quantities the power requirement and the
+# battery peak power requirement bound, so that every requirement reads a traded metric)
 ATTRIBUTE_NAMES = (
     "settling_time_s",
     "pointing_error_deg",
@@ -88,14 +90,16 @@ ATTRIBUTE_NAMES = (
     "peak_slew_power_w",
     "dod_eclipse",
     "momentum_headroom",
+    "available_power_w",
+    "battery_peak_power_ratio",
     "unit_cost_usd",
     "fleet_cost_usd",
 )
 FLAG_NAMES = ("settled", "momentum_ok", "power_ok", "dod_ok")
-# the model's slew analysis returns the eight attributes it computes in this order, each read in
+# the model's slew analysis returns the ten attributes it computes in this order, each read in
 # this unit; the settling time is measured and enters the row from the measurement; the unit cost
 # and the fleet cost are returned by an analysis of their own each (they need no slew)
-_COMPUTED_NAMES = ATTRIBUTE_NAMES[1:9]
+_COMPUTED_NAMES = ATTRIBUTE_NAMES[1:11]
 _COST_ANALYSES = {"unit_cost_usd": "UnitCostExperiment", "fleet_cost_usd": "FleetCostExperiment"}
 _COMPUTED_UNITS = (
     "SI::degree",
@@ -105,6 +109,8 @@ _COMPUTED_UNITS = (
     "SI::W*SI::h",
     "SI::W",
     None,
+    None,
+    "SI::W",
     None,
 )
 # the keys of the frozen ``cubesat_model.measure`` less the slew-time and eclipse-reserve columns,
@@ -121,6 +127,8 @@ OUTPUT_NAMES = (
     "peak_slew_power_w",
     "dod_eclipse",
     "momentum_headroom",
+    "available_power_w",
+    "battery_peak_power_ratio",
     "unit_cost_usd",
     "fleet_cost_usd",
     "settled",
@@ -132,7 +140,6 @@ OUTPUT_NAMES = (
     "panel_mass_kg",
     "battery_mass_kg",
     "generated_power_w",
-    "available_power_w",
     "usable_torque_nm",
     "slew_loss_energy_wh",
 )
@@ -555,7 +562,7 @@ class CubesatOracle:
         }
 
     def _analyse(self, loaded, symbol: str, measured: dict) -> dict:
-        """Eleven attributes by name: eight from the slew analysis, the unit cost and the fleet
+        """Thirteen attributes by name: ten from the slew analysis, the unit cost and the fleet
         cost from their own analyses, the settling time measured.
 
         The settling time is measured, not computed; the analysis neither receives nor returns
@@ -602,7 +609,6 @@ class CubesatOracle:
             "panel_mass_kg": v(inst.get("panelPlus").get("mass"), kg),
             "battery_mass_kg": v(inst.get("battery").get("mass"), kg),
             "generated_power_w": v(inst.get("generatedPower"), w),
-            "available_power_w": v(inst.get("availablePower"), w),
             "usable_torque_nm": v(inst.get("usableWheelTorque"), "SI::N*SI::m"),
             "slew_loss_energy_wh": v(loss, "SI::W*SI::h"),
         }

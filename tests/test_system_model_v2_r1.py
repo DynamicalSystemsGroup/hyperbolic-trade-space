@@ -34,6 +34,7 @@ from test_system_model_v2 import (
     P,
     _measure_slew,
     _rel,
+    frozen_battery_peak_power_ratio,
 )
 
 # The views generator (WP22's spike, kept there as the record) and the committed views it writes.
@@ -309,6 +310,7 @@ def test_regenerated_designs_equal_the_frozen_oracle(box, r1, frozen):
         want["momentum_headroom"] = (
             frozen.sim_params(cfg)["maxMomentum"] / measured["peak_momentum"]
         )
+        want["battery_peak_power_ratio"] = frozen_battery_peak_power_ratio(cfg, want)
         got = r1.experiment(loaded, sym, measured)
         for name, _ in ATTRIBUTES:
             worst = max(worst, _rel(got[name], want[name]))
@@ -392,16 +394,12 @@ def test_the_picture_reads_cold_requirements_apart_sources_distinct_no_long_deto
 ):
     """Round 2 (reviewer B-1, B-3, B-4, B-5): what a reader sees in the behavioural view's text."""
     _, behaviour, facts = _views(project, TEXT, tmp_path)
-    # requirements with no line are in one separate group, not among those with lines
-    group = behaviour[
-        behaviour.index("as xNoLine") : behaviour.index("\n}\n", behaviour.index("as xNoLine"))
-    ]
+    # a requirement with no line would stand in one separate group, not among those with lines;
+    # since "No floating requirements" (WP30) every requirement has a line, so there is no group
     no_line = {project.short(r) for r in facts["reqs"]} - {
         project.short(r) for r, *_ in facts["rel"]
     }
-    assert no_line and all(f"**{r}**" in group for r in no_line)
-    for r, *_ in facts["rel"]:
-        assert f"**{project.short(r)}**" not in group
+    assert not no_line and "xNoLine" not in behaviour
     # the analysis box has a colour no metric box has
     covered, analysis = project.COVERED_COLOUR, project.ANALYSIS_COLOUR
     assert covered != analysis and "xAnalysis " + analysis in behaviour
@@ -460,24 +458,31 @@ def test_the_analysis_box_names_what_needs_no_slew_and_the_caption_is_the_commit
     """Disposition B: the analysis box names what the analysis returns and what needs no slew."""
     _, behaviour, facts = _views(project, TEXT, tmp_path, reasons=True)
     box = next(x for x in behaviour.splitlines() if "as xAnalysis" in x)
-    assert "returns 8 of 11" in box and "pointing error" in box and "total mass" in box
+    assert "returns 10 of 13" in box and "pointing error" in box and "total mass" in box
+    assert "available power" in box  # computed from the configuration alone, with no slew
     # WP30: the unit cost and the fleet cost have an analysis each, named in the box
     assert "An analysis each" in box and "unit cost and\\nfleet cost" in box
     # the control effort and the settling time come from the measurement (disposition G3-P2-6)
     assert "control effort\\n(passed on)" in box and "settling time\\n(not returned)" in box
     cap = facts["caption"]
     assert (
-        "returns 8 of the 11" in cap[0] and "settling time is read from `SlewMeasurement`" in cap[0]
+        "returns 10 of the 13" in cap[0]
+        and "settling time is read from `SlewMeasurement`" in cap[0]
     )
     assert "ConfigurationVerification" in cap[1] and "SlewVerification" in cap[1]
+    assert "available power" in cap[1]
     assert "unit cost and the fleet cost are computed from the configuration alone" in cap[2]
-    assert "coverage.md" in cap[3] and "2 requirements that read no traded metric" in cap[3]
-    # WP30, D-2 (a): one bullet per requirement in the box, the reason computed (coverage.py)
+    # "No floating requirements": no box; every requirement reads a traded metric
+    assert "Every requirement reads a traded metric" in cap[3] and "stand apart" not in cap[3]
+    assert "xNoLine" not in "".join(behaviour.splitlines())
+    # one bullet per requirement whose metric the fit may give no weight, the reading computed
+    # (coverage.py), in the order of the names
     assert cap[4].startswith("`BatteryPeakPowerRequirement` holds at every in-range")
-    assert cap[5].startswith("`PowerRequirement` holds at every in-range")
-    assert "coverage.md" in cap[6]  # the bullet on what is not drawn
+    assert cap[5].startswith("`MomentumRequirement` reads the momentum headroom")
+    assert cap[6].startswith("`PowerRequirement` holds at every in-range")
+    assert "coverage.md" in cap[7]  # the bullet on what is not drawn
     # revision 9 (the WP23 close-out): the negated satisfy is drawn and named, not read as satisfied
-    assert "`cubesatBaseline` satisfies every requirement but `PointingErrorRequirement`" in cap[7]
+    assert "`cubesatBaseline` satisfies every requirement but `PointingErrorRequirement`" in cap[8]
     assert facts["fails"][f"{P}__PointingErrorRequirement"] == {"cubesatBaseline"}
     box = next(x for x in behaviour.splitlines() if "**PointingErrorRequirement**" in x)
     assert "not satisfied by cubesatBaseline" in box

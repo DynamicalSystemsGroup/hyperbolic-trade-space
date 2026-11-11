@@ -22,17 +22,22 @@ from hyperbolic_trade_space.plotting import PARTICIPATION
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "data" / "v2"  # the data of record (WP23)
 REGIMES = {"primary": "adcs_designs_cubesat_gains.csv", "stock": "adcs_designs_cubesat.csv"}
+# the thirteen traded metrics of the case (``case.py``; WP30), in the case's order
 ATTRS = [
     "settling_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
     "power_margin_w", "energy_balance_wh", "peak_slew_power_w", "dod_eclipse",
+    "momentum_headroom", "available_power_w", "battery_peak_power_ratio",
+    "unit_cost_usd", "fleet_cost_usd",
 ]  # fmt: skip
 SHORT = dict(zip(ATTRS, [
     "settling time", "pointing error", "total mass", "control effort",
     "power margin", "energy balance", "peak slew power", "depth of discharge",
+    "momentum headroom", "available power", "battery peak power ratio",
+    "unit cost", "fleet cost",
 ], strict=True))  # fmt: skip
-ORIENT = dict(zip(ATTRS, [-1, -1, -1, -1, +1, +1, -1, -1], strict=True))
+ORIENT = dict(zip(ATTRS, [-1, -1, -1, -1, +1, +1, -1, -1, +1, +1, +1, -1, -1], strict=True))
 WHEELS, TRACKERS = ["small", "medium", "large"], ["coarse", "medium", "fine"]
-DESIGN_VARS = ["panel_span_m", "battery_wh", "Kp", "Kd"]
+DESIGN_VARS = ["panel_span_m", "battery_wh", "Kp", "Kd", "fleet_size"]
 NAMES = [SHORT[a] for a in ATTRS]
 
 

@@ -44,7 +44,16 @@ from experiments.exclusion import (
     wheel_region,
 )
 from opensysml.values import Quantity
-from test_system_model_v2 import ATTRIBUTES, MODEL, TEXT, V2, P, _measure_slew, _rel
+from test_system_model_v2 import (
+    ATTRIBUTES,
+    MODEL,
+    TEXT,
+    V2,
+    P,
+    _measure_slew,
+    _rel,
+    frozen_battery_peak_power_ratio,
+)
 
 ADCS_DIR = MODEL.parents[1]
 FAST = {"t_end": 600.0, "max_step": 1.0}
@@ -376,7 +385,8 @@ def sample20(pool, measured):
                 "measured": m,
                 "flags": pool["checker"].flags(sym, m),
                 "frozen": {
-                    **pool["frozen"].measure(cfg, **FAST),
+                    **(base := pool["frozen"].measure(cfg, **FAST)),
+                    "battery_peak_power_ratio": frozen_battery_peak_power_ratio(cfg, base),
                     # WP30: the frozen model has no momentum headroom, the wheel class capacity over
                     # the peak momentum measured (the inverse of WP4b's utilisation)
                     "momentum_headroom": pool["frozen"].sim_params(cfg)["maxMomentum"]
@@ -831,7 +841,7 @@ def test_momentum_closed_form_is_optimistic_against_the_ode(pool, measured, v2, 
 # ---------------------------------------------------------------------------------------------
 @pytest.mark.slow
 def test_run_analysis_with_the_measured_slew_equals_the_frozen_oracle(sample20, pool):
-    """R-7: the eight computed attributes of run_analysis on a configuration plus the Python
+    """R-7: the ten computed attributes of run_analysis on a configuration plus the Python
     measurement equal the frozen oracle's output (1e-9 relative), and the flags are those the requirements give."""
     worst = 0.0
     for row in sample20:

@@ -138,26 +138,32 @@ class CaseSpec:
 _ATTRS = (
     "settling_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
     "power_margin_w", "energy_balance_wh", "peak_slew_power_w", "dod_eclipse",
-    "momentum_headroom", "unit_cost_usd", "fleet_cost_usd",
+    "momentum_headroom", "available_power_w", "battery_peak_power_ratio",
+    "unit_cost_usd", "fleet_cost_usd",
 )  # fmt: skip
 _NAMES = (
     "settling time", "pointing error", "total mass", "control effort",
     "power margin", "energy balance", "peak slew power", "depth of discharge",
-    "momentum headroom", "unit cost", "fleet cost",
+    "momentum headroom", "available power", "battery peak power ratio",
+    "unit cost", "fleet cost",
 )  # fmt: skip
 _SUBSYSTEMS = (
     "controls", "controls", "mass", "controls",
     "power and energy", "power and energy", "power and energy", "power and energy",
-    "controls", "cost", "cost",
+    "controls", "power and energy", "power and energy", "cost", "cost",
 )  # fmt: skip
-_UNITS = ("s", "deg", "kg", "torque.s, proxy", "W", "Wh", "W", "fraction", "ratio", "USD", "USD")
-_ORIENT = (-1, -1, -1, -1, +1, +1, -1, -1, +1, -1, -1)
+_UNITS = (
+    "s", "deg", "kg", "torque.s, proxy", "W", "Wh", "W", "fraction", "ratio", "W", "ratio",
+    "USD", "USD",
+)  # fmt: skip
+_ORIENT = (-1, -1, -1, -1, +1, +1, -1, -1, +1, +1, +1, -1, -1)
 
 CUBESAT = CaseSpec(
     name="cubesat attitude determination and control",
     # the data of record (ledger entries @8, the WP23 close-out); WP30 stage 3a adds the ninth
-    # traded metric, the momentum headroom, and stage 3b the unit cost and the fleet cost (eleven in
-    # all, WP30 OD1 (a)); the columns, and the fleet size, are in the data after the WP30 data gate
+    # traded metric, the momentum headroom, stage 3b the unit cost and the fleet cost, and the
+    # revision after "No floating requirements" the available power and the battery peak power ratio
+    # (thirteen in all); the columns, and the fleet size, are in the data after the WP30 data gate
     data_dir=HERE / "data" / "v2",
     regimes={"primary": "adcs_designs_cubesat_gains.csv", "stock": "adcs_designs_cubesat.csv"},
     attributes=_ATTRS,
@@ -220,6 +226,8 @@ CUBESAT = CaseSpec(
         "peak_slew_power_w": 2.0,
         "dod_eclipse": 0.10350133786988198,
         "momentum_headroom": 6.437201363621915,
+        "available_power_w": 36.076401600000004,
+        "battery_peak_power_ratio": 5.714285714285714,
         "unit_cost_usd": 461360.0,
         "fleet_cost_usd": 461360.0,
         "settled": True,

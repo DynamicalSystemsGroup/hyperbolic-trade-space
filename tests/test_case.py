@@ -58,20 +58,21 @@ def stock_fits(stock):
 
 
 def test_subsystem_mapping_is_data_and_covers_every_attribute():
-    """Each attribute has one subsystem in the spec; the model's grouping is 4 + 4 + 1 + 2 (the
-    momentum headroom joined the controls at WP30, D-1 (a) of spike C; the unit cost and the fleet
-    cost form the cost group, WP30 OD1 (a))."""
+    """Each attribute has one subsystem in the spec; the model's grouping is 4 + 6 + 1 + 2 (the
+    momentum headroom joined the controls at WP30, D-1 (a) of spike C; the available power and the
+    battery peak power ratio joined the power and energy group, "No floating requirements"; the
+    unit cost and the fleet cost form the cost group, WP30 OD1 (a))."""
     spec = case.CUBESAT
     assert set(spec.subsystems) == set(spec.attributes)
     assert set(spec.subsystem_order) == set(spec.subsystems.values())
     counts = {g: list(spec.subsystems.values()).count(g) for g in spec.subsystem_order}
-    assert counts == {"controls": 4, "power and energy": 4, "mass": 1, "cost": 2}
+    assert counts == {"controls": 4, "power and energy": 6, "mass": 1, "cost": 2}
     assert spec.subsystems_of(["total mass", "pointing error"]) == ["controls", "mass"]
     assert spec.subsystems_of(["settling time"]) == ["controls"]
 
 
 def test_load_study_filters_and_conditions(small):
-    assert small.M.shape == (N, 11) and (small.M > 0).all()
+    assert small.M.shape == (N, 13) and (small.M > 0).all()
     assert len(small.raw) == 1000 and len(small.feasible) == N
     assert small.feasible.settled.all() and small.feasible.momentum_ok.all()
     assert small.names[0] == "settling time" and small.names[-1] == "fleet cost"
@@ -105,7 +106,7 @@ def test_feasibility_table_cascade(primary):
 
 def test_conditioning_table(small):
     t = case.conditioning_table(small)
-    assert list(t.index) == small.names and len(t) == 11
+    assert list(t.index) == small.names and len(t) == 13
     assert set(t.orientation) == {"reciprocal", "direct"}
     assert np.allclose(t["m min"], small.M.min(axis=0))
 
@@ -585,12 +586,13 @@ def test_panel_titles_count_the_exact_maximum_support_and_outline_exactly_those(
 
 @pytest.mark.parametrize("regime", ["primary", "stock"])
 def test_association_step_covers_every_pair_and_names_the_one_axis_pairs(regime, request):
-    """R-25: 55 pairs of the eleven traded metrics; the named set is the pairs at |Spearman| >= 0.99
-    (none on the data of record: the power margin and the energy balance stay below, 0.982 and
-    0.988), and the summed reading has nothing to sum."""
+    """R-25: 78 pairs of the thirteen traded metrics; the named set is the pairs at |Spearman|
+    >= 0.99 (on the data of the WP30 gate: the available power and the energy balance, one axis
+    at 0.9996 in the spike's data; the power margin and the energy balance stay below, 0.982 and
+    0.988), and the summed reading sums that pair's exponents."""
     study = request.getfixturevalue(regime)
     t = case.association_all_pairs(study)
-    assert len(t) == 55 and case.ONE_AXIS == 0.99
+    assert len(t) == 78 and case.ONE_AXIS == 0.99
     assert {frozenset(p) for p in zip(t["metric a"], t["metric b"], strict=True)} == {
         frozenset((a, b)) for i, a in enumerate(study.names) for b in study.names[i + 1 :]
     }
@@ -599,11 +601,15 @@ def test_association_step_covers_every_pair_and_names_the_one_axis_pairs(regime,
         (a, b) for a, b, s in zip(t["metric a"], t["metric b"], t["spearman"], strict=True)
         if abs(s) >= 0.99
     ]  # fmt: skip
-    assert named == []
+    # host-recorded at the gate: the pair spike C found, nothing else
+    assert [frozenset(p) for p in named] == [frozenset(("available power", "energy balance"))]
     top = t.iloc[0]
-    assert {top["metric a"], top["metric b"]} == {"power margin", "energy balance"}
-    assert 0.98 < top["spearman"] < 0.99
-    assert case.summed_exponents(study, case.fit_study(study), named).empty
+    assert {top["metric a"], top["metric b"]} == {"available power", "energy balance"}
+    assert top["spearman"] > 0.999
+    summed = case.summed_exponents(study, case.fit_study(study), named)
+    assert not summed.empty and np.allclose(
+        summed["sum"], summed["exponent a"] + summed["exponent b"]
+    )
 
 
 def test_requirements_are_the_models_budgets():

@@ -57,6 +57,8 @@ EXPECT = {
         "BatteryPeakPower",
         "EclipsePeakLoad",
         "MomentumHeadroom",
+        # "No floating requirements": the battery peak power over the eclipse peak load, traded
+        "BatteryPeakPowerRatio",
         # WP30 stage 3b, the cost model (section 3): the pricing curve, the single-unit prices that
         # read the configuration, each part's total, the fleet's build cost, the two traded costs
         "PartTotal",
@@ -86,8 +88,9 @@ SECTIONS = [
     "6. THE EXPERIMENT",
     "7. NAMED CONFIGURATIONS",
 ]
-# The eight attributes the experiment computes (the eclipse reserve left at the close-out; the
-# momentum headroom joined at WP30, stage 3a), in order, with the unit each is read in. The
+# The ten attributes the experiment computes (the eclipse reserve left at the close-out; the
+# momentum headroom joined at WP30, stage 3a; the available power and the battery peak power ratio
+# after "No floating requirements"), in order, with the unit each is read in. The
 # settling time is measured, not computed: the oracle takes it from the measurement, so the
 # analysis neither receives nor returns it.
 ATTRIBUTES = [
@@ -99,7 +102,17 @@ ATTRIBUTES = [
     ("peak_slew_power_w", "SI::W"),
     ("dod_eclipse", None),
     ("momentum_headroom", None),
+    ("available_power_w", "SI::W"),
+    ("battery_peak_power_ratio", None),
 ]
+
+
+def frozen_battery_peak_power_ratio(cfg, want: dict) -> float:
+    """The battery peak power ratio of a configuration of the frozen model: the pack's rated power
+    (1.0 per hour times the capacity, the model's discharge rate) over the eclipse peak load
+    (the 12 W housekeeping load plus the peak slew power). The frozen model has no such metric
+    (WP30, "No floating requirements"); this is the model's calc read in Python."""
+    return cfg.design["battery_wh"] * 1.0 / (12.0 + want["peak_slew_power_w"])
 
 
 class V2:
@@ -462,6 +475,7 @@ def test_analysis_reproduces_the_frozen_attributes(v2, frozen, sample, capsys):
         want["momentum_headroom"] = (
             frozen.sim_params(cfg)["maxMomentum"] / measured["peak_momentum"]
         )
+        want["battery_peak_power_ratio"] = frozen_battery_peak_power_ratio(cfg, want)
         got = v2.experiment(loaded, sym, measured)
         assert list(got) == [name for name, _ in ATTRIBUTES]
         for name, _ in ATTRIBUTES:
@@ -470,7 +484,7 @@ def test_analysis_reproduces_the_frozen_attributes(v2, frozen, sample, capsys):
                 worst, worst_key = diff, name
     with capsys.disabled():
         print(
-            f"\n[equivalence] nine traded metrics less the measured settling time, 5 configs: "
+            f"\n[equivalence] the ten computed traded metrics, 5 configs: "
             f"max rel diff {worst:.2e} ({worst_key})"
         )
     assert worst < 1e-9
@@ -505,7 +519,8 @@ def test_the_calc_defs_are_the_wp22_set_plus_the_adds(v2):
     body kept; their agreement with the frozen oracle is R-6 of test_system_model_v2_r1.py) plus
     the launch cost (round 1) and the battery's peak power and the eclipse peak load (round 2),
     none of the three traded, WP30's momentum headroom, the ninth traded metric (D-1 (a) of
-    spike C, WP30-decisions.md), and the cost model of WP30 stage 3b (spike D; the unit cost and
+    spike C, WP30-decisions.md), the battery peak power ratio (traded with the available power, "No floating requirements"),
+        and the cost model of WP30 stage 3b (spike D; the unit cost and
     the fleet cost are the tenth and eleventh traded metrics, OD1 (a))."""
     calcs = set(re.findall(r"^    calc def (\w+)", v2.text, flags=re.M))
     assert calcs == WP22_CALCS | EXPECT["calcs"]

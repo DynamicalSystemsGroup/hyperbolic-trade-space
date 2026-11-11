@@ -22,7 +22,8 @@ def result(request):
 def test_k3_fits_and_three_reports(result):
     _, out = result
     est, reps = out["fits"][3], out["reports"][3]
-    assert est.exponents_.shape == (3, 8)  # the eight traded metrics (WP23 close-out)
+    assert est.exponents_.shape == (3, 13)  # the thirteen traded metrics (WP30)
+    assert len(k_terms.ATTRS) == 13 and "fleet_size" in k_terms.DESIGN_VARS
     assert len(reps) == 3 and len(out["reports"][1]) == 1 and len(out["reports"][2]) == 2
     assert np.isclose(est.term_share_.sum(), 1.0)
     assert (np.bincount(est.cell_, minlength=3) > 0).all()
@@ -36,6 +37,7 @@ def test_tau_reselected_at_each_k_holds_the_fraction(result):
     for K in (1, 2, 3):
         assert abs(out["fits"][K].frac_above_ - 0.10) <= 0.011  # tool tolerance 0.01
         assert out["fits"][K].temperature == out["taus"][K]
+    # the eight-metric record's temperatures: re-pin at the WP30 gate, step 8 (host-recorded)
     assert out["taus"][1] == pytest.approx({"primary": 38.10, "stock": 45.68}[regime], abs=0.01)
     # the diagnostic reuses K = 1's tau and shows the fraction rising with K
     assert (out["fixed_diag"]["tau"] == round(out["taus"][1], 2)).all()
@@ -43,7 +45,8 @@ def test_tau_reselected_at_each_k_holds_the_fraction(result):
 
 
 # margin gamma and stable radius of the re-selected fits, as printed (six decimals), on the
-# eight-metric data of record (WP23 close-out; the radius scales with the number of metrics)
+# eight-metric data of record (WP23 close-out; the radius scales with the number of metrics);
+# re-pin at the WP30 gate, step 8 (host-recorded), on the thirteen-metric data
 MARGIN = {
     ("primary", 2): (0.000697, 0.000069), ("primary", 3): (0.001213, 0.000121),
     ("stock", 2): (0.001413, 0.000133), ("stock", 3): (0.000350, 0.000033),

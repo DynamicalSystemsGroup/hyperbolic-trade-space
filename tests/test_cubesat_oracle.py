@@ -3,7 +3,9 @@
 * R-9: the output keys equal the frozen ``measure`` keys less the slew-time columns (WP23 G5: one
   time metric) and the eclipse reserve (the WP23 close-out: eight traded metrics), plus the
   momentum headroom after the depth of discharge (WP30: nine traded metrics) and the unit cost and
-  the fleet cost after it (WP30 OD1 (a): eleven traded metrics), in the frozen CSV column order;
+  the fleet cost after it (WP30 OD1 (a): eleven traded metrics), the available power (which the
+  frozen model reports as an auxiliary column) and the battery peak power ratio before them
+  ("No floating requirements": thirteen traded metrics), in the frozen CSV column order;
   a configuration outside the model's ranges or with an unknown categorical value raises
   ``ValueError`` naming the variable; construction names the cause when the runtime cannot
   start.
@@ -93,12 +95,15 @@ def test_the_sampler_reproduces_the_frozen_designs(designs):
 
 
 def _keys_with_headroom(frozen_keys) -> list[str]:
-    """The frozen ``measure`` keys less the dropped columns, the momentum headroom and the unit
-    cost and fleet cost (WP30) placed after the depth of discharge, where the oracle's attribute
-    block ends."""
-    keys = [k for k in frozen_keys if k not in DROPPED_COLUMNS]
+    """The frozen ``measure`` keys less the dropped columns, the momentum headroom, the available
+    power (the frozen model reports it among the auxiliary columns), the battery peak power ratio
+    and the unit cost and fleet cost (WP30) placed after the depth of discharge, where the oracle's
+    attribute block ends."""
+    keys = [k for k in frozen_keys if k not in DROPPED_COLUMNS and k != "available_power_w"]
     keys[keys.index("dod_eclipse") + 1 : keys.index("dod_eclipse") + 1] = [
         "momentum_headroom",
+        "available_power_w",
+        "battery_peak_power_ratio",
         "unit_cost_usd",
         "fleet_cost_usd",
     ]
@@ -116,7 +121,7 @@ def test_keys_and_order_equal_the_frozen_measure_less_slew_time_on_three_configu
         cfg = row.to_dict()
         got, want = oracle(cfg), frozen.measure(cfg)
         assert list(got) == _keys_with_headroom(want)
-        assert len(co.ATTRIBUTE_NAMES) == 11
+        assert len(co.ATTRIBUTE_NAMES) == 13
         # WP30 R-1: the momentum headroom is the wheel class capacity over the measured peak
         # momentum, the inverse of WP4b's momentum utilisation, and positive
         capacity = frozen.wheel_capacities()[cfg["wheel_class"]]
@@ -126,6 +131,15 @@ def test_keys_and_order_equal_the_frozen_measure_less_slew_time_on_three_configu
         assert (
             got["momentum_headroom"] > 0 and (got["momentum_headroom"] >= 1) == got["momentum_ok"]
         )
+        # "No floating requirements": the battery peak power ratio is the pack's rated power (1.0
+        # per hour times the capacity) over the eclipse peak load (12 W housekeeping plus the peak
+        # slew power), at least 1 where the battery peak power requirement holds; the available
+        # power is positive where the power requirement holds
+        assert got["battery_peak_power_ratio"] == pytest.approx(
+            cfg["battery_wh"] / (12.0 + got["peak_slew_power_w"]), rel=1e-9
+        )
+        assert got["battery_peak_power_ratio"] >= 1.0
+        assert (got["available_power_w"] > 0) == got["power_ok"]
         for k, v in want.items():
             if k in DROPPED_COLUMNS:
                 continue
@@ -426,8 +440,8 @@ def test_ledger_ready_record_of_an_excluded_region(oracle, solver):
 
 
 def test_the_measured_settling_time_enters_the_row_unchanged(oracle, designs):
-    """The slew analysis returns the eight computed attributes only (the two cost analyses
-    return the other two); the settling time is measured,
+    """The slew analysis returns the ten computed attributes only (the two cost analyses
+    return two more); the settling time is measured,
     enters the row exactly as measured, and moves no computed attribute."""
     loaded, symbols = oracle._configure([{**designs.iloc[0].to_dict(), "design_id": 0}])
     measured = {
@@ -439,7 +453,7 @@ def test_the_measured_settling_time_enters_the_row_unchanged(oracle, designs):
     }
     got = oracle._analyse(loaded, symbols[0], measured)
     assert got["settling_time_s"] == 14.398119154048933
-    assert list(got) == list(co.ATTRIBUTE_NAMES) and len(got) == 11
+    assert list(got) == list(co.ATTRIBUTE_NAMES) and len(got) == 13
     distinct = oracle._analyse(loaded, symbols[0], {**measured, "settling_time": 10.0})
     for k in co.ATTRIBUTE_NAMES[1:]:
         assert got[k] == pytest.approx(distinct[k], rel=1e-12), k

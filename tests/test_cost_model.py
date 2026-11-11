@@ -356,5 +356,5 @@ def test_the_cost_requirements_are_verdicts_and_read_the_configurations_own_flee
 
 def test_the_model_and_the_oracle_name_the_cost_columns_once():
     assert co.ATTRIBUTE_NAMES[-2:] == ("unit_cost_usd", "fleet_cost_usd")
-    assert co.CONFIG_NAMES[-1] == "fleet_size" and len(co.ATTRIBUTE_NAMES) == 11
+    assert co.CONFIG_NAMES[-1] == "fleet_size" and len(co.ATTRIBUTE_NAMES) == 13
     assert importlib.import_module("case").CUBESAT.attributes == co.ATTRIBUTE_NAMES

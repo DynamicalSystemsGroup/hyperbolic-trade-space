@@ -33,15 +33,19 @@ Two tables, written to ``views/coverage.md`` and ``views/coverage.csv`` from the
    connectivity: every configuration value feeds a subsystem and reaches a traded metric (the
    structural column of table 1), every metric is read off a subsystem, and the graph is connected.
 
-3. **The reason a requirement reads no traded metric** (WP30, D-2 (a) of spike C). A requirement
-   that no traded metric's quantity feeds stands in the behavioural view's box. Each one carries a
-   computed reason: the solver's verdict on the model's claim that it holds at every in-range
-   configuration (the constraint ``<Requirement>HoldsInRange``), and the Spearman correlation of
-   its quantity with the traded metrics over the feasible designs of each regime of the data of
-   record (one axis with a traded metric from ``case.ONE_AXIS``, tracking one from
-   ``NEAR_DUPLICATE``, else not traded). The behavioural view's caption prints the same sentence
-   (``reason_sentence``); a requirement with no claim and no quantity here has no reason, and a
-   test fails on it.
+3. **What each requirement reads, and what the fit makes of it** (WP30, "No floating requirements").
+   Every requirement reads a traded metric. Three of the thirteen are traded because a requirement
+   bounds their quantity (the momentum headroom, the available power, the battery peak power
+   ratio) and the fit may give them no weight of their own. Each such requirement carries a
+   computed reason, one of three readings of the data of record (the K = 1 fit of each regime, at
+   the case's temperature rule): the metric *participates* (its exponent is above the plotting
+   module's participation threshold); it is *one axis* with another traded metric (Spearman at
+   ``case.ONE_AXIS`` in both regimes), whose exponent the reading sums with it; or its exponent is
+   *zero*. Where the model states the requirement holds at every in-range configuration (the
+   constraint ``<Requirement>HoldsInRange``) the solver's verdict is added. The behavioural view's
+   caption prints the same sentence (``reason_sentence``). A requirement that reads no traded
+   metric would stand in the view's box ("requirements that read no traded metric") with no
+   reason, and a test fails on it; the committed model has none.
 
 The empirical column runs the slews through the case's oracle (``experiments.cubesat_oracle``)
 on the same model text, and the table says which model text the oracle ran. Nothing numeric about
@@ -92,6 +96,8 @@ METRIC_COLUMNS = {
     "peak slew power": "peak_slew_power_w",
     "depth of discharge": "dod_eclipse",
     "momentum headroom": "momentum_headroom",
+    "available power": "available_power_w",
+    "battery peak power ratio": "battery_peak_power_ratio",
     "unit cost": "unit_cost_usd",
     "fleet cost": "fleet_cost_usd",
 }
@@ -541,20 +547,12 @@ class Metric:
 
 
 # =================================================================================================
-# The reason a requirement reads no traded metric (WP30, D-2 (a))
+# What each requirement reads and what the fit makes of it (WP30, "No floating requirements")
 # =================================================================================================
-# The quantity each such requirement bounds, as a function of the dataset's columns ``f`` and the
-# model's constants ``k`` (read from the model below). A requirement that reads no traded metric and
-# has neither an entry here nor a ``<Requirement>HoldsInRange`` claim in the model has no reason.
-BOX_QUANTITY = {
-    "PowerRequirement": ("available power", lambda f, k: f["available_power_w"]),
-    "BatteryPeakPowerRequirement": (
-        "battery peak power ratio",
-        lambda f, k: (
-            k["discharge_rate"] * f["battery_wh"] / (k["housekeeping_w"] + f["peak_slew_power_w"])
-        ),
-    ),
-}
+# The traded metrics a requirement bounds that the fit may give no weight of their own (spike C):
+# each requirement reading one carries a computed reason. A requirement that reads no traded metric
+# at all (the view's box) is listed too, with no reason, and a test fails on it.
+REASONED_METRICS = ("momentum headroom", "available power", "battery peak power ratio")
 
 
 def box_requirements(graph: ModelGraph, metrics: list[Metric]) -> list[str]:
@@ -572,44 +570,105 @@ def _claim(graph: ModelGraph, requirement: str) -> dict | None:
     return {"name": name, "status": v.status, "strength": v.strength}
 
 
-def _spearman(graph: ModelGraph, requirement: str, data_dir: pathlib.Path) -> dict | None:
-    """``{regime: {metric: oriented Spearman of the quantity with the metric}}`` over the feasible
-    designs of the data of record, or None where no quantity is stated for the requirement."""
-    if requirement not in BOX_QUANTITY:
-        return None
+def _readings(metric: str, data_dir: pathlib.Path) -> dict | None:
+    """What the data of record say of one traded metric, per regime, or None where a column of the
+    case is missing from the data (a table not yet regenerated).
+
+    ``{"spearman": {regime: {other metric: Spearman}}, "exponent": {regime: K = 1 exponent},
+    "pair_sum": {regime: exponent of the metric plus the best partner's}}``; the Spearman is over
+    the feasible designs, all metrics oriented larger-is-better (``case.association_all_pairs``).
+    """
     sys.path.insert(0, str(ADCS_DIR))
     import case
+    import numpy as np
     import pandas as pd
-    from scipy.stats import spearmanr
 
-    spec = case.CUBESAT
-    k = {
-        "discharge_rate": graph.value(
-            graph.model.eval(f"{graph.package}::environment.batteryDischargeRate")
-        ),
-        "housekeeping_w": graph.value(
-            graph.model.eval(f"{graph.package}::environment.housekeepingLoad"), "SI::W"
-        ),
-    }
-    out = {}
-    for regime, name in spec.regimes.items():
-        raw = pd.read_csv(data_dir / name)
-        attrs = tuple(a for a in spec.attributes if a in raw.columns)  # the columns the data has
-        f = raw[case.feasible_mask(raw, dataclasses.replace(spec, attributes=attrs))]
-        q = BOX_QUANTITY[requirement][1](f, k)
-        out[case._REGIME_WORDS.get(regime, regime)] = {
-            spec.short[a]: float(spearmanr(q, spec.orientation[a] * f[a]).statistic) for a in attrs
-        }
+    spec = dataclasses.replace(case.CUBESAT, data_dir=pathlib.Path(data_dir))
+    for name in spec.regimes.values():
+        if not set(spec.attributes) <= set(pd.read_csv(spec.data_dir / name, nrows=1).columns):
+            return None
+    out = {"spearman": {}, "exponent": {}, "w": {}}
+    for regime in spec.regimes:
+        word = case._REGIME_WORDS.get(regime, regime)
+        study = case.load_study(regime, spec)
+        pairs = case.association_all_pairs(study)
+        rho = {}
+        for _, row in pairs.iterrows():
+            if metric in (row["metric a"], row["metric b"]):
+                other = row["metric b"] if row["metric a"] == metric else row["metric a"]
+                rho[other] = float(row["spearman"])
+        w = np.ravel(case.fit_study(study).estimator.exponents_)
+        out["spearman"][word] = rho
+        out["w"][word] = dict(zip(study.names, map(float, w), strict=True))
+        out["exponent"][word] = out["w"][word][metric]
     return out
 
 
-def _signed(by_regime: dict[str, float]) -> str:
-    return ", ".join(f"{v:+.4f} {r}" for r, v in by_regime.items())
+def _signed(by_regime: dict[str, float], digits: int = 4) -> str:
+    return ", ".join(f"{v:+.{digits}f} {r}" for r, v in by_regime.items())
+
+
+def _exps(by_regime: dict[str, float]) -> str:
+    return ", ".join(f"{v:.3f} {r}" for r, v in by_regime.items())
+
+
+def requirement_reasons(graph: ModelGraph, metrics: list[Metric], data_dir=None) -> list[dict]:
+    """The reason of every requirement that reads a metric of ``REASONED_METRICS``, and of every
+    requirement in the box (``sentence`` None where there is none).
+
+    ``reading`` is ``one axis`` where the metric's Spearman with another traded metric is at or
+    above ``case.ONE_AXIS`` in every regime (the reading sums their exponents), else ``exponent
+    zero`` where its K = 1 exponent is at or below the plotting module's participation threshold
+    in every regime, else ``participates``. The partner named is the metric with the largest
+    smaller-regime Spearman. A table without the thirteen columns gives ``sentence`` None.
+    """
+    sys.path.insert(0, str(ADCS_DIR))
+    import case
+
+    from hyperbolic_trade_space.plotting import PARTICIPATION
+
+    data_dir = pathlib.Path(data_dir or case.CUBESAT.data_dir)
+    out = []
+    for m in metrics:
+        if m.name not in REASONED_METRICS:
+            continue
+        req = graph.requirement_of(m)[0]
+        if req is None:
+            continue
+        req = short(req)
+        row = {"requirement": req, "claim": _claim(graph, req), "metric": m.name, "partner": None,
+               "spearman": None, "exponent": None, "pair_sum": None, "reading": None}  # fmt: skip
+        got = _readings(m.name, data_dir)
+        if got:
+            rho = got["spearman"]
+            names = next(iter(rho.values())).keys()
+            best = max(names, key=lambda n: min(rho[g][n] for g in rho))
+            floor = min(rho[g][best] for g in rho)
+            exps = got["exponent"]
+            row.update(
+                partner=best,
+                spearman={g: rho[g][best] for g in rho},
+                exponent=exps,
+                pair_sum={g: exps[g] + got["w"][g][best] for g in exps},
+                reading="one axis"
+                if floor >= case.ONE_AXIS
+                else "exponent zero"
+                if max(exps.values()) <= PARTICIPATION
+                else "participates",
+                tracks=floor >= NEAR_DUPLICATE,
+            )
+        row["sentence"] = reason_sentence(row)
+        out.append(row)
+    for req in box_requirements(graph, metrics):
+        out.append({"requirement": req, "claim": _claim(graph, req), "metric": None,
+                    "partner": None, "spearman": None, "exponent": None, "pair_sum": None,
+                    "reading": None, "sentence": None})  # fmt: skip
+    return out
 
 
 def reason_sentence(r: dict) -> str | None:
-    """The sentence the caption and the table print for a requirement in the box, or None."""
-    if not (r["claim"] or r["quantity"]):
+    """The sentence the caption and the table print for a requirement, or None."""
+    if not r["reading"]:
         return None
     parts = []
     if r["claim"] and r["claim"]["status"] == "holds":
@@ -623,56 +682,24 @@ def reason_sentence(r: dict) -> str | None:
             f"has the model's claim `{r['claim']['name']}`, which the solver reports "
             f"{r['claim']['status']}"
         )
-    if r["quantity"]:
-        q, m, rho = r["quantity"], r["metric"], r["spearman"]
-        if r["axis"] == "one axis":
-            parts.append(
-                f"its quantity, the {q}, is one axis with the {m} (Spearman {_signed(rho)})"
-            )
-        elif r["axis"] == "tracks":
-            parts.append(f"its quantity, the {q}, tracks the {m} (Spearman {_signed(rho)})")
-        else:
-            parts.append(
-                f"its quantity, the {q}, is not traded "
-                f"(largest Spearman {_signed(rho)}, with the {m})"
-            )
+    m, p, rho = r["metric"], r["partner"], r["spearman"]
+    if r["reading"] == "one axis":
+        parts.append(
+            f"reads the {m}, one axis with the {p} (Spearman {_signed(rho)}), so the reading "
+            f"sums their exponents ({_exps(r['pair_sum'])})"
+        )
+    elif r["reading"] == "exponent zero":
+        near = (
+            f"; it tracks the {p} (Spearman {_signed(rho, 3)})"
+            if r.get("tracks")
+            else f"; its largest Spearman is with the {p} ({_signed(rho, 3)})"
+        )
+        parts.append(f"reads the {m}, which the fit gives exponent zero{near}")
+    else:
+        parts.append(
+            f"reads the {m}, which takes part in the fit (exponent {_exps(r['exponent'])})"
+        )
     return f"`{r['requirement']}` " + "; ".join(parts) + "."
-
-
-def box_reasons(graph: ModelGraph, metrics: list[Metric], data_dir=None) -> list[dict]:
-    """A computed reason for every requirement in the box, ``sentence`` None where there is none.
-
-    The Spearman is taken over the feasible designs of each regime, the quantity and the traded
-    metric both oriented larger-is-better; the traded metric named is the one with the largest
-    smaller-regime value. ``axis`` is ``one axis`` at ``case.ONE_AXIS``, ``tracks`` at
-    ``NEAR_DUPLICATE``, else ``not traded``.
-    """
-    sys.path.insert(0, str(ADCS_DIR))
-    import case
-
-    data_dir = pathlib.Path(data_dir or case.CUBESAT.data_dir)
-    out = []
-    for req in box_requirements(graph, metrics):
-        rho = _spearman(graph, req, data_dir)
-        row = {"requirement": req, "claim": _claim(graph, req), "quantity": None, "metric": None,
-               "spearman": None, "axis": None}  # fmt: skip
-        if rho:
-            names = next(iter(rho.values())).keys()
-            best = max(names, key=lambda n: min(rho[g][n] for g in rho))
-            floor = min(rho[g][best] for g in rho)
-            row.update(
-                quantity=BOX_QUANTITY[req][0],
-                metric=best,
-                spearman={g: rho[g][best] for g in rho},
-                axis="one axis"
-                if floor >= case.ONE_AXIS
-                else "tracks"
-                if floor >= NEAR_DUPLICATE
-                else "not traded",
-            )
-        row["sentence"] = reason_sentence(row)
-        out.append(row)
-    return out
 
 
 # =================================================================================================
@@ -761,6 +788,7 @@ SUBSYSTEM_OF = {
         "PeakSlewPower",
         "PowerMargin",
         "BatteryPeakPower",
+        "BatteryPeakPowerRatio",
         "EclipsePeakLoad",
     },
     "mass": {
@@ -1284,7 +1312,8 @@ def build(model_path: pathlib.Path, with_empirical: bool = True, data_dir=None) 
             elements,
             {(r["decision_element"], r["metric"]): r["structural"] for r in rows},
         ),
-        "reasons": box_reasons(graph, metrics, data_dir),
+        "reasons": requirement_reasons(graph, metrics, data_dir),
+        "box": box_requirements(graph, metrics),
         "empirical_note": note,
         "measurement_inputs": graph.measurement_inputs(),
     }
@@ -1392,15 +1421,17 @@ def render_md(result: dict) -> str:
         )
     out += ["", *render_coupling_md(result["coupling"], result["elements"]), ""]
     out += [
-        "## Requirements that read no traded metric: the reason",
+        "## What each requirement reads, and what the fit makes of it",
         "",
-        "A requirement no traded metric's quantity feeds stands apart in the behavioural view. "
-        "Each carries a computed reason, printed here and in the view's caption from the same "
-        "computation (`box_reasons`): the solver's verdict on the model's claim that it holds at "
-        "every in-range configuration, and the Spearman correlation of its quantity with the "
-        "traded metrics over the feasible designs of each regime of the data of record, the "
-        "quantity and the metric both oriented larger-is-better (one axis at "
-        f"{_one_axis():g}, tracks at {NEAR_DUPLICATE:g}).",
+        "Every requirement reads a traded metric. Where the fit may give that metric no weight "
+        "of its own, the requirement carries a computed reason, printed here and in the "
+        "behavioural view's caption from the same computation (`requirement_reasons`): the "
+        "solver's verdict on the model's claim that it holds at every in-range configuration, "
+        "and one of three readings of the K = 1 fit of the data of record: the metric takes part "
+        "in the fit, it is one axis with another traded metric (Spearman at or above "
+        f"{_one_axis():g} in both regimes; the reading sums their exponents), or the fit gives "
+        "it exponent zero (the Spearman is over the feasible designs, both metrics oriented "
+        f"larger-is-better; tracks at {NEAR_DUPLICATE:g}).",
         "",
         *[
             f"- {r['sentence'] or '`' + r['requirement'] + '`: no reason stated'}"
@@ -1424,8 +1455,7 @@ def render_coupling_md(c: dict, elements) -> list[str]:
         "metrics and the requirements read off each subsystem. The subsystems are the three "
         "groups of the behavioural view, the analyst's grouping of the metrics; which calc belongs "
         "to which is the analyst's decomposition (`SUBSYSTEM_OF` in `coverage.py`); a requirement "
-        "is listed under the group of the calc it reads, so a requirement that reads no traded "
-        "metric is listed here and stands apart in the behavioural view; every cell is read from "
+        "is listed under the group of the calc it reads; every cell is read from "
         "the model. The constants of "
         "the environment, the scenario, the budgets and the fixed parts (bus, antenna, IMU) are "
         "not shown.",
@@ -1556,7 +1586,7 @@ def render_csv(result: dict) -> str:
         ]
     )
     w.writerow(
-        ["table", "requirement", "claim", "claim_verdict", "quantity", "metric", "axis", "reason"]
+        ["table", "requirement", "claim", "claim_verdict", "traded_metric", "reading", "reason"]
     )
     for r in result["reasons"]:
         claim = r["claim"]
@@ -1566,9 +1596,8 @@ def render_csv(result: dict) -> str:
                 r["requirement"],
                 claim["name"] if claim else "",
                 f"{claim['status']} {claim['strength']}" if claim else "",
-                r["quantity"] or "",
                 r["metric"] or "",
-                r["axis"] or "",
+                r["reading"] or "",
                 r["sentence"] or "",
             ]
         )

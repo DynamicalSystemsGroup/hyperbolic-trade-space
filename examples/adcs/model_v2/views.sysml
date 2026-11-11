@@ -73,7 +73,7 @@ package CubesatViews {
         expose CubesatTradeSpaceV2::*;
     }
     view metricCarriers : GeneralView {
-        doc /* Where the eleven traded metrics live, each marked MoE or MoP in the doc of its
+        doc /* Where the thirteen traded metrics live, each marked MoE or MoP in the doc of its
                element: the configuration's own accounting (total mass, with the launch cost its
                MoE), the measured slew (settling time, control effort), the cost model (the unit
                cost and the fleet cost, with the prices and the pricing curves they are computed

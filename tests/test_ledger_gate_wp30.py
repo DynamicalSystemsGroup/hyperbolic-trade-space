@@ -26,7 +26,7 @@ def test_each_wp30_note_names_where_the_run_is_made(gate):
     exp = gate.ORDER[0]
     host = gate.declared(exp, _entries(gate), None, wp30="regen")
     image = gate.declared(exp, _entries(gate), "abc123", wp30="values")
-    assert "on the host" in host.inputs["note"] and "eleven traded metrics" in host.inputs["note"]
+    assert "on the host" in host.inputs["note"] and "thirteen traded metrics" in host.inputs["note"]
     assert "image abc123" in image.inputs["note"] and "equal to the hash" in image.inputs["note"]
 
 

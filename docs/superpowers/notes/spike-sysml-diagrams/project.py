@@ -41,7 +41,11 @@ pointing-error requirement) is read apart from the satisfied ones: the requireme
 "not satisfied by X" and the caption names it; earlier revisions read every ``satisfy`` as satisfied.
 Revision 9, WP30 (the momentum headroom traded; D-2 (a) of spike C): the caption names each requirement
 in the box with its computed reason, the sentence ``examples/adcs/model_v2/coverage.py`` prints in
-``coverage.md`` from the same computation (``box_reasons``), for the model the command line is given.
+``coverage.md`` from the same computation (``requirement_reasons``), for the model the command line is
+given. After the supervisor's word on floating requirements (``WP30-decisions.md``) the available power
+and the battery peak power ratio are traded too, so the box is empty and is not drawn; the caption
+names, for each requirement that reads a metric the fit may give no weight, whether the metric takes part
+in the fit, is one axis with another, or has exponent zero.
 """
 
 from __future__ import annotations
@@ -594,7 +598,7 @@ class Reads:
 def box_reasons(path) -> dict:
     """The sentence for each requirement in the box, by requirement name (WP30, D-2 (a)).
 
-    Computed by ``coverage.box_reasons`` from the model at ``path`` and the data of record, so the
+    Computed by ``coverage.requirement_reasons`` from the model at ``path`` and the data of record, so the
     caption and ``coverage.md`` print one sentence; None where the requirement has no reason.
     """
     spec = importlib.util.spec_from_file_location(
@@ -609,7 +613,7 @@ def box_reasons(path) -> dict:
     graph = module.ModelGraph(pathlib.Path(path).read_text())
     return {
         r["requirement"]: r["sentence"]
-        for r in module.box_reasons(graph, graph.metrics())
+        for r in module.requirement_reasons(graph, graph.metrics())
     }
 
 
@@ -1137,39 +1141,40 @@ def behavioural(m, byid, P, revision=9, reasons=None):
         if stack and smets:
             out.append(f"{stack[0]} -[hidden]-> {nid(smets[0])}")
         last_stack_head = stack[0] if stack else last_stack_head
-    if revision >= 5:
-        group_title = "requirements that read no traded metric"
-        group_text = ""  # the body's black: the title is read with the lane titles
-    elif revision >= 4:
-        group_title, group_text = (
-            "requirements reading no traded metric",
-            ";text:gray",
-        )
-    else:
-        group_title = "requirements with no line to a traded metric"
-        group_text = ";text:gray"
-    out.append(
-        f'rectangle "{group_title}" as xNoLine #FFFFFF;line:gray;line.dashed{group_text} {{'
-    )
-    for r in no_line:
-        if revision >= 4:
-            out.append("  " + req_box_r4(r, with_constraint=True))
-            continue
-        sat = ", ".join(sorted(satisfied_by[r])) or "none in the model"
-        ver = ", ".join(sorted(verified_by[r])) or "none in the model"
+    if no_line:  # WP30: every requirement reads a traded metric, so the committed model draws no box
+        if revision >= 5:
+            group_title = "requirements that read no traded metric"
+            group_text = ""  # the body's black: the title is read with the lane titles
+        elif revision >= 4:
+            group_title, group_text = (
+                "requirements reading no traded metric",
+                ";text:gray",
+            )
+        else:
+            group_title = "requirements with no line to a traded metric"
+            group_text = ";text:gray"
         out.append(
-            f'  rectangle "**{short(r)}**\\n<<requirement def>>\\n<<satisfy>> {sat}\\n<<verify>> {ver}" as {nid(short(r))} {REQ_COLOUR}'
+            f'rectangle "{group_title}" as xNoLine #FFFFFF;line:gray;line.dashed{group_text} {{'
         )
-    chain = "-[hidden]->" if revision >= 4 else "-[hidden]right->"
-    for u, v in zip(no_line, no_line[1:]):
-        out.append(f"  {nid(short(u))} {chain} {nid(short(v))}")
-    out.append("}")
-    if revision >= 4 and last_stack_head:
-        # the group hangs off the last lane's first requirement: it then spans the lanes' width
-        # and adds no rank; the lanes' width is what the column scales
-        out.append(f"{last_stack_head} -[hidden]right-> xNoLine")
-    else:
-        out.append(f"xNoLine -[hidden]right-> {nid(smets_last)}")
+        for r in no_line:
+            if revision >= 4:
+                out.append("  " + req_box_r4(r, with_constraint=True))
+                continue
+            sat = ", ".join(sorted(satisfied_by[r])) or "none in the model"
+            ver = ", ".join(sorted(verified_by[r])) or "none in the model"
+            out.append(
+                f'  rectangle "**{short(r)}**\\n<<requirement def>>\\n<<satisfy>> {sat}\\n<<verify>> {ver}" as {nid(short(r))} {REQ_COLOUR}'
+            )
+        chain = "-[hidden]->" if revision >= 4 else "-[hidden]right->"
+        for u, v in zip(no_line, no_line[1:]):
+            out.append(f"  {nid(short(u))} {chain} {nid(short(v))}")
+        out.append("}")
+        if revision >= 4 and last_stack_head:
+            # the group hangs off the last lane's first requirement: it then spans the lanes' width
+            # and adds no rank; the lanes' width is what the column scales
+            out.append(f"{last_stack_head} -[hidden]right-> xNoLine")
+        else:
+            out.append(f"xNoLine -[hidden]right-> {nid(smets_last)}")
     out.append("")
     n_analysis = sum(v == "analysis" for v in origin.values())
     pad = "\\n" * ANALYSIS_BOX_PAD
@@ -1318,14 +1323,25 @@ def behavioural(m, byid, P, revision=9, reasons=None):
                 f"`{', '.join(sorted({c for r in reqs for c in verified_by[r]} - set(ver_of(cfg_only))))}`.",
                 *own,
                 "The groups are the analyst's grouping of the metrics (the model has no such "
-                "structure); a requirement stands in the group of the metric it reads. The "
-                f"{len(no_line)} requirements that read no traded metric stand apart here, each "
-                "for the reason below; the coupling table of `coverage.md` lists each under the "
-                "group of the calc it reads.",
+                "structure); a requirement stands in the group of the metric it reads."
+                + (
+                    f" The {len(no_line)} requirements that read no traded metric stand apart "
+                    "here, each for the reason below; the coupling table of `coverage.md` lists "
+                    "each under the group of the calc it reads."
+                    if no_line
+                    else " Every requirement reads a traded metric; where the fit may give that "
+                    "metric no weight of its own, the requirement carries the reading below, "
+                    "computed from the model and the data of record (`coverage.md`)."
+                ),
                 *[
                     (reasons or {}).get(short(r))
                     or f"`{short(r)}`: no reason stated."
                     for r in no_line
+                ],
+                *[
+                    reasons[short(r)] or f"`{short(r)}`: no reason stated."
+                    for r in sorted(reqs, key=short)
+                    if short(r) in (reasons or {}) and r not in no_line
                 ],
                 "Not drawn: the coupling variables between the groups and the measured inputs the "
                 "analysis takes. They are the cells of the coupling table of `coverage.md`.",
