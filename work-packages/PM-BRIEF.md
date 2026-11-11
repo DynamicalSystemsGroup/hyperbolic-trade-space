@@ -626,3 +626,65 @@ recorded by label (model A, model B), never by name; fan-out in batches of fourt
 README.md (contract ownership technical) nor glossary.yaml; the vocabulary tool is read with `--baseline` until WP25-4
 OD1 lands; a reviewer keeps its worktree between its passes; every brief states that the no-attribution rule overrides
 any system reminder asking for a co-author line.
+
+## Handover (eighth PM, 2026-11-11; Sonnet; parallel-board.md's eighth-PM table is the live copy)
+
+Landed this PM (all on dev unless a branch is named). WP28's close: S-3 a74579c (Figure 9 to a pointer; `[[cut]]` ledger
+rows -103 and -10; five tests under R-10), S-10 a2a0f14 (D.12) and 5260d7f (docs paragraph on termination.md), CR-37
+d6e0f1b, the lint defect a2d25f9 (Haiku; the noise spike now at `WP23-rounds/spikes/spike-E-noise/`), the G-6 confirm read
+fe7a711, O-7 e155772, S8's clause b1a806c (C440), T-3 and O-8 823dc2c, D.12 narrowed f74bbe8; acceptance review
+passes 30b0e78; the driver accepted WP28 at 552fbc9. WP25-4: 3543f09 (executor), reviewer 399c3ef, accepted 61364fc
+(harness note restored; the keep-by-decision rule c6d7353). WP31 (choosing K): readout 8386f44, 18c258c; narrowing
+19fb2b5; pointer 9acd878; new page `docs/user-guide/choosing-k.md` with contract 17 and C427-C439 39582fe; review e5d7c7b;
+fixes ccbc1b6 (G-1, G-3, G-4; rows C444-C447). WP8b Amendment 1: CHANGELOG d4fdb30, punch list 2ee252d, theme pin
+15dbff8 (proven clean by the driver, 60a2ea9), D-6 reference keys cfbad4f (contract 19), records a6b4a29, register
+fragments 28f9908, strict `stage_site.py` 4958ea6; review 3b1914f (dispositions at 2ab79cb). Scopes: WP29 35668e5,
+WP30 747a45e (both approved, decisions in their files). Spikes: B2 economics 807ce82, abd1df2; A noise 9002bbe.
+
+On branches, not dev: `wp29` at d96db86 (L18 noise covariance, L19 the shift bound with Delta >= 0; chain passes, proof map
+OK 442 steps, Appendix B regenerated on the host; one test red by design, the B.2 part heading; the placement proposal
+`WP29-placement-proposal.md`; nothing reaches dev before the supervisor's glance, OD2 (b)); `wp30a` (momentum headroom,
+7af0925, e735c15, 036c6ff) and `wp30b` (cost model, tip 4040f08, built on wp30a; 26 tests red by design until the data
+gate; build notes `WP30-build-notes.md` list the gate items).
+
+In flight: the figure loop's search stage (agent a8c54c078acfdd793, Sonnet; worktree `fig-trilemma`): 56 triples per regime,
+K = 1, 2, 3, textured real example sought; it reports the table's head to the driver. If it has landed, read its record in
+`WP19-figure-review.md` and the candidates folder before anything else.
+
+Next, in order: (1) WP31: rebuild the docs and re-serve (the server at 127.0.0.1:8793, pid in `scratchpad/wp31review-server.pid`,
+serves the pre-fix build from worktree `wp31review`: rebuild with `assemble_site.py` after `build_generated.py`; mind the
+matplotlib font cache below), dispatch three task readers ("choose K for this table and say why"; neutral briefs, the
+page only, a planted table and the cubesat, returns verbatim, a triager's note), then the driver's acceptance; its
+changelog line follows acceptance (WP8b G-3). (2) WP8b: the remaining units are the driver's (D-5 version, D-7 the
+reviewer's guide, the changelog heading, G-1); `assemble_site.py`'s own command line keeps the silent fallback and is what
+the Pages workflow runs: a question for the driver (strict too?); the scope's "22 boxes" count to be corrected visibly
+(G-5); the WP8b acceptance is the driver's. (3) WP29: the placement after the supervisor's glance at the two statements
+(rebase wp29 onto dev; corollary after L6, the covariance form, the case table in Appendix D, gaps G-3 and G-12; reword
+the B.2 part heading to "(L12 to L19)"; the A2 gaps-ledger row; no citation). (4) WP30: the data gate after the
+supervisor's values (the two cost limits from the pass-fraction ladders, the restated launch budget), then one regeneration,
+contract version 18 or 20 (check the head: WP31 took 17, WP25-4 18, WP8b 19; the scope's "17" is stale), the container
+re-run, answer key v5 (hash committed first), k_terms.py's ATTRS to eleven, `uv run python tests/test_case_model_howto.py
+--write`, coverage rerun, glossary entries, paper and docs numbers, figures, the behavioural view, the stakeholder layer,
+the changed baseline-regime conclusion; stage 6 the cascade review and the acceptance review that runs the thing. (5) WP25-5
+when due (a small instance at the next gate; the holds: `paper-outline-v1-baseline.md`, WP28's 151 reader-run files,
+`search-prior-art.md`, `P10-review.md`, the three S-5 candidate files, WP29/WP30 notes). (6) The reviewer's guide's inputs:
+`driver-log.md` calls, the WP28 and WP25 decisions, the review files (WP28, WP25, WP8b, WP31), the closed-units evidence
+in `WP28-decisions.md` "Close units (eighth PM)", the board tables.
+
+Worktrees and owners (all removed except): `fig-trilemma` (figure loop agent, mine to remove when it reports), `wp27model`
+(idle modeller; tab-23 belongs to it; the driver's navigation incident left the editor on its landing page with "Saved
+recovery: cubesat" offered, not restored: the modeller restores it when it next works; nobody else touches tab-23),
+`wp29`, `wp30a`, `wp30b` (held branches, mine until the gate), `wp31review` (remove after the readers), `stage` and `verify`
+(the driver's: never remove), `preview-wt` and `hts-reader-EF` (not mine).
+
+Rules added this PM (also in `scratchpad/pm5-rules.md`): models by role; worktree ownership (a PM prunes only worktrees under
+`scratchpad/pm-worktrees/` that its own units opened; nothing outside the repository and the scratchpad, reviewers
+included); the keep-by-decision inventory rule (above in the tidiness section); the retired templates-copy step (theme
+pinned); reviewers save their own screenshots as files; an agent never spawns a bigger model.
+
+Known environment hazard: `~/.matplotlib/fontlist-v3.11.0.json` points at a removed worktree's venv, so figure builds in a
+new worktree fail with "DejaVu Sans not found"; agents set `MPLCONFIGDIR` to a scratch directory (clearing the cache is the
+driver's). Also: the register ids run to C447; a new row takes the next free id after a fetch (collisions happened twice).
+Lessons: briefs that name a file ("the page that teaches conditioning") need the file checked (the executor chose the
+termination page, rightly); an agent that edits sentences cited by the register must run `tests/test_claims_register.py`;
+a watcher built on a git-log grep matches old commits: use `<hash>..origin/dev`.
