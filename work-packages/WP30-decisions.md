@@ -246,3 +246,20 @@ lists the changed numbers (the light_slow candidate's log V, the baseline K = 3 
 model carried the values from the build and no placeholder run happened, so option B collapses to one container run
 (entries @12, shared @11) whose hash equality against the host's @11 entries, last-digit drift allowed, is the proof;
 no `--wp30 values` live run.
+
+## The choice of K in the case (2026-11-11, 15:30; the supervisor on the K = 3 tension figure of the old data, verbatim)
+
+"are the order of the terms determined by anything? the first one here doesn't have much explanatory power. if we
+were to do only 2 would we get the other 2? i am a bit wondering if initial guess of K=3 for our sample problem is
+just a bad choice of K? i could be misreading the data but if that's my kneejerk response i am assuming others might
+think that, even if i am wrong"
+
+**The assistant's answer and call.** The term order is the alternation's label order (initialisation), meaningless;
+the panels and tables order terms by share, largest first, and say so. On the old data term 1 (3 near-frontier
+designs, 3 percent share) is the splinter the choosing-K page describes, so K = 3 was one step too many for the
+several-term reading there; on the regenerated data K = 2 splits the primary regime 26 to 74 percent and K = 3 adds a
+6 percent term with 459 rows. The cascade applies the paper's own choosing-K methods to the case (the mean slack
+drops at the one-term temperature, the resampling splinter check, the thin-term shares) in a few sentences of
+Section 9 with a small table in Appendix D, states the K the methods pick for the several-term reading, lets the
+figures and the narrative follow it, and shows the next K as the step where a thin term appears. If the methods pick
+K = 2, the several-term story is told at K = 2. Listed for his review.
