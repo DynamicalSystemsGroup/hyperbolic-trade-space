@@ -972,16 +972,20 @@ def probe_query_blind_spots() -> dict:
 
 
 # -- 10. engine list and readiness -------------------------------------------------------------------
+def path_without_solver(path: str) -> str:
+    """``path`` without the directories holding a solver executable (``z3``/``cvc5``, ``.exe`` on Windows)."""
+    names = ("z3", "z3.exe", "cvc5", "cvc5.exe")
+    return os.pathsep.join(
+        d for d in path.split(os.pathsep) if not any(pathlib.Path(d, n).exists() for n in names)
+    )
+
+
 def probe_engines() -> dict:
     conn = connection()
     info = {e.name: (e.ready, sorted(e.answers)) for e in conn.list_engines()}
     without_solver = ""
     if solver_present():
-        path = os.pathsep.join(
-            d
-            for d in os.environ.get("PATH", "").split(os.pathsep)
-            if not (pathlib.Path(d, "z3").exists() or pathlib.Path(d, "cvc5").exists())
-        )
+        path = path_without_solver(os.environ.get("PATH", ""))
         code = (
             "import opensysml;c=opensysml.connect();"
             "print({e.name:e.ready for e in c.list_engines()})"

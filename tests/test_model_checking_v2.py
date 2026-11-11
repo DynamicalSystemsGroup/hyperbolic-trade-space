@@ -963,3 +963,13 @@ def test_probe_still_holds(name, probe_results):
         f"differing fields: {_differing_fields(r['evidence']['facts'], probes.EXPECTED.get(name))}; "
         f"observation: {r['observation'][:300]}"
     )
+
+
+@pytest.mark.parametrize("name", ["z3", "z3.exe", "cvc5", "cvc5.exe"])
+def test_path_without_solver_drops_the_directory_of_either_executable_form(name, tmp_path):
+    with_solver, plain = tmp_path / "with", tmp_path / "plain"
+    with_solver.mkdir()
+    plain.mkdir()
+    (with_solver / name).write_text("")
+    path = os.pathsep.join([str(with_solver), str(plain)])
+    assert probes.path_without_solver(path) == str(plain)
