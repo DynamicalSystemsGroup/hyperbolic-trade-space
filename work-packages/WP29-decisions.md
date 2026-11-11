@@ -20,3 +20,29 @@ Origin: the supervisor on Proposition 2 (`WP28-decisions.md`, S-9, verbatim ther
 
 **Driver, verbatim:** "WP29 approved with OD1 (a), OD2 (b), OD3 (a) falling back to (b), OD4 (a). Stages 3 and 4 run
 on the branch now; nothing reaches dev before the supervisor's glance."
+
+## The supervisor's glance (2026-11-11, 09:30; the placement proposal in his pane)
+
+Asked whether the two lemmas go into the paper as proposed, he answered, verbatim: "explain to me why/how this
+advances the papers core thesis. and if its just lemmas will be clear to the reader what the result this actually
+builds to is? a theorem of a corollary of an existing theorem that accounts for noise. I really want to make sure
+we're not inventing results just to have results." The driver's assessment: L18 and L19 are honest corollaries about
+the offset, not the exponents the thesis reads; alone they are results for their own sake; the piece that touches the
+thesis is the held candidate A2 (noise on the metrics is a ridge on the exponents; the first-order bias is governed by
+the restricted Hessian's smallest eigenvalue, the conditioning diagnostic) combined with L18's conditioning map, as
+one corollary of Proposition 2 and Theorem 3. Asked for the arc in simple terms, he said, verbatim: "leaning toward
+adding corollary. explain in simple terms what the narrative arc of the mathematical results becomes." After the
+arc (the fifth beat: how sharp the rates are), verbatim: "okay this sounds like a good addition."
+
+**Disposition (the driver):** WP29's stage (2) is revised. Build: one corollary, after Proposition 2 and Theorem 3,
+stating to first order under an interior-solution and small-noise hypothesis that Gaussian noise on the conditioned
+metrics shifts the fitted exponents by delta = -sigma^2 (P C P)^+ P w (the ridge toward uniform exponents), with the
+noise entering as the attribute's relative measurement error over its log spread (L18's map), so the shift is large
+where `conditioning_` is small; L18 stays as its supporting lemma; L19 stays in Appendix B only (no box); the cubesat
+injection table is the corollary's demonstration in Appendix D, stated as injected noise on noise-free data of record;
+the gap readings G-3, G-11, G-12 revised; the main-results list gains one clause only if the paper stream shows it
+earns its place. Order: the derivation (a lemma script with tagged steps for the ridge identity and the first-order
+bias; the proof map), the tests on planted data and the check against the spike's numbers, then the box and the
+prose; nothing on dev before the derivation passes stage (4). The driver's two statements of what it must not claim
+stand: not that the rates are right, only how far noise of a given size moves them; first order, interior solution,
+small noise.
