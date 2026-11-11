@@ -5481,3 +5481,15 @@ disposition = "keep"
 source = "WP28 close, S8's second item (the driver's option (a))"
 note = "A statement of scope, not a finding: Section 2 says only that the combination was not found in the sources reviewed, and main result 5 has the method composed with PCA; Pareto efficiency of a maximizer is Theorem 4 (thm-pareto), not a replacement for Pareto analysis."
 
+[[claim]]
+id = "C441"
+fragment = "a small value flags a nearly flat direction"
+file = "paper/supporting_material.ipynb"
+anchor = "D.12 The conditioning of the exponents"
+kind = "M"
+backing = ["lemma:L17.5", "test:tests/test_estimator.py::test_conditioning_drops_for_nearly_collinear_metrics"]
+status = "backed"
+disposition = "keep"
+source = "WP28 close, WP25-4 T-3 (as C340 on the termination page)"
+note = "As C340: the Hessian of J_tau is tau times a weighted covariance (L17.5), so a small smallest eigenvalue is a nearly flat direction; the clause 'so weakly identified exponents' was dropped from D.12's first paragraph, as the page dropped it."
+

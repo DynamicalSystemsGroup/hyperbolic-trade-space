@@ -2266,6 +2266,18 @@ def test_the_main_results_list_ends_with_what_the_method_does_not_claim():
     )
 
 
+def test_section_9_prints_the_strongest_pair_to_the_digits_appendix_d4_prints():
+    """O-8 (WP25-review.md; WP28-retest.md G-6): Section 9's two Spearman values are D.4's, to three
+    decimals, so "+0.99" does not sit beside D.4's "no pair reaches 0.99"."""
+    sentence = _cell_out(PAPER_NB, "num-regimes")
+    d4 = _cell_out(SUPPORT_NB, "tab-D-regime_comparison")
+    values = re.findall(r"Spearman (\+\d\.\d{3}) and (\+\d\.\d{3}) over", sentence)
+    assert values, sentence
+    for v in values[0]:
+        assert v in d4, v
+        assert float(v) < 0.99
+
+
 def test_no_doubled_label_before_a_cross_reference():
     """G-7: a reference to a definition or theorem prints its own kind; none is typed before it."""
     body = _markdown(_nb(PAPER_NB))

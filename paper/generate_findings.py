@@ -385,7 +385,7 @@ def regime_sentence() -> Md:
         own_a, own_b = own_a - {x}, own_b - {y}
         middle = (
             f"; {x} and {y}, one in each regime's own part, are the strongest-associated pair "
-            f"of traded metrics (Spearman {rho[a]:+.2f} and {rho[b]:+.2f} over the feasible "
+            f"of traded metrics (Spearman {rho[a]:+.3f} and {rho[b]:+.3f} over the feasible "
             f"designs, {_D3}); counting them as one, the {a} regime alone has "
             f"{_and(sorted(own_a))}, the {b} regime alone {_and(sorted(own_b))}"
         )

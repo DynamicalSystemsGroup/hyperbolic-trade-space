@@ -230,3 +230,21 @@ landed in the main-results list (b1a806c). Linux green at 18c258c and 7d25ce3; t
 **Driver, verbatim:** "WP28 accepted. The pass cut what the supervisor let it cut, recorded what it could not, and
 every unit is net negative or carries his word; the paper body stands at 9,846 words, down 113 from the cut and up
 by the narrowings he and the readers asked for; the docs lost two figures and the README its second description."
+
+### U5. Post-acceptance unit: WP25-4's routed rows T-3 and O-8 (the PM's request)
+
+- **T-3.** D.12's first paragraph no longer says ", so weakly identified exponents" (3 words; `[[cut]]` row, Appendix D);
+  the remaining claim, "a small value flags a nearly flat direction", is register row C441, backed as C340 is
+  (L17.5 and the collinear-metrics test). Not touched, for the PM to judge: the U2 paragraph in the same cell says
+  "so the data fix them loosely", the same reading in other words, backed only by the definition of curvature.
+- **O-8.** `generate_findings.regime_sentence` prints the strongest pair's two Spearman values with `:+.3f` in place of
+  `:+.2f`; Section 9 now reads "Spearman +0.982 and +0.988", D.4's values, both below the 0.99 threshold. The three
+  places in the notebook are the three output formats (html, markdown, plain) of `num-regimes`. New test
+  `test_section_9_prints_the_strongest_pair_to_the_digits_appendix_d4_prints` (no old test pinned the rounding).
+- **Re-record.** `execute_notebooks.py paper.ipynb` on the host; everything but `num-regimes` put back to the committed
+  bytes (host numerics, figures); the one output changed is the one that this change affects, and it is a printed
+  sentence, not an exact-equality reference, so no "re-pin at the gate" mark is needed.
+- **Seen.** Built page (no warnings), own tab, closed: Section 9's paragraph reads "+0.982 and +0.988" and keeps its
+  link to D.3; screenshot `/private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/s3/o8-section9-three-decimals.jpg`.
+- **Checks.** ruff; `uv run pytest -q -m "not slow" tests/test_paper.py tests/test_claims_register.py` 165 passed, 4
+  skipped; the generated-sentence and regime tests including slow ones 9 passed; vocabulary baseline 0 new.
