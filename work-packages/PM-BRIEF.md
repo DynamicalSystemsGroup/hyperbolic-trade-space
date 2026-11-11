@@ -480,23 +480,43 @@ docs loop fdab633, 308dc5a with DCR-1..9), its paper units (3e3378c, 7c75408, ac
 stated); the WP28 scope (1277210), approved d7a3fe3 (OD1 b: the re-test is WP11's round 3; OD6 a: the driver approves the
 cut list before any cut lands).
 
-Running at the handover: the WP28 D-1 inventory coordinator (stages the site at the head, fans out about 55 cold readers
-one per unit, commits `WP28-inventory.md` and its folder). Idle: the modeller's worktree `wp27model` (tab-23 holds the
-head's three model files at 0 issues; by Bug 10 no other tab restores or creates a project while it is in use).
+Running at the handover: nothing. WP28 starts with the seventh PM from its first unit (the driver's instruction: the
+seventh PM runs WP28 from its start; a first inventory dispatch by the sixth PM ended at once on an API error and left
+nothing: no commit, no worktree, the scratch folder `scratchpad/wp28/inventory` empty, its tab and server closed). Idle:
+the modeller's worktree `wp27model` (tab-23 holds the head's three model files at 0 issues; by Bug 10 no other tab
+restores or creates a project while it is in use). The seventh PM's inputs for WP28, all in files: the scope
+(`WP28-scope-of-work.md`, start 1277210) and the driver's decisions (`WP28-decisions.md`, "Scope gate": OD1 b, OD2 b
+with Appendix F out, OD3 a, OD4 b, OD5 a, OD6 a, OD7 the defaults); the sizing (123 units: 14 paper sections, 27 boxed
+statements, 10 floats, 7 appendices with 40 generated tables, 14 docs pages, 8 docs figures, the root page, the README;
+the paper at 9,805 words of a 10,107 ceiling, the docs at 6,792 of 7,600); round 2's friction counts and worst cells
+(`WP11-round-1/triage.md`, "Round 2") as the triager's input; the answer key at version 4 (hash in `WP11-decisions.md`;
+the file is the driver's: the triager sends reader sentences and gets stated / missing / wrong back; round 2's lines
+through the recorded "key stale" mapping); the orphan list (`paper/figures/fig-chart-k3.png`, `fig-predict-check.png`
+tracked and unreferenced; `docs/generated/figures/ternary-cubesat-*`, `three-facets-*` generated and unreferenced); the
+stage note (a fresh worktree copies the main checkout's `paper/_build/templates` before `stage_site.py`; recorded as a
+WP8b release item). WP8b's release items list (`driver-log.md`, the WP8b entries; `WP8b-scope-of-work.md`) is the step
+after 5a and is inherited with it.
 
-Next for the seventh PM, in order: (1) when the inventory lands, a fresh triager (not a reader, not an author) writes
-`WP28-cut-list.md` per the scope's D-2 (goes / merged / shortened to a pointer; the six checks per row; "kept, with
-reason"; "for the supervisor" for his fixed figures and the two model views) and the PM sends it to the driver for OD6's
-approval; (2) after approval, the paper stream and the docs stream execute net-negative units (the scope's D-3, D-4;
-`[[cut]]` ledger rows and the ledger reader extended to read them; Appendix F.4 and A regenerated where a cell or entry
-goes); the paper stream takes no CR unit on a section with an open cut; held for after the cut list: the (a) clause on
-centring (the maths unit's report, Methods), a one-clause hook for L15's finite termination (Results, Theorem 11 or Open
-questions), and the R1 sentence in Methods read as the τ = ∞ statement; (3) the re-test (D-5 = WP11 round 3: depth B six
-personas, depth C five with P4-C held out; the key at version 4 is the driver's; the triager sends reader sentences to
-the driver for marking), then the P6-B confirmation read on an unused brief wording; (4) WP28's acceptance review
-(fresh reviewer; the staged site looked at in the browser); (5) WP25's next instance before the PR (the inventory greps
-constant names too: `cmp.REPORT` was the miss), with the cruft list from WP28 (orphan `fig-chart-k3.png`,
-`fig-predict-check.png`; D.12's "weakly identified exponents" sentence in the supporting material is unpinned).
+Next for the seventh PM, in order: (0) first, one small paper unit allowed during WP28 (a narrowing): the maths unit's
+(a) clause, one sentence where the conditioning is stated (Section 3 or 8): the conditioning of record centres each
+log-metric (the standard scaler), so the one-term objective of (2) is (1); with uncentred log-metrics they differ by the
+linear term and need not share a minimizer (backing: L14's identity and A2; `np.log(study.M).mean(0)` is 0 to 7e-15 on
+both regimes); it lands before the inventory reader reads that section, or that reader reads the head after it.
+(1) D-1, the inventory: a coordinator stages the site at the head, fans out about 55 cold readers one per unit
+(no record in any brief; the story sentences from Section 1's main-results list and the abstract, the docs Home for the
+docs; figures image first; two models), commits the returns verbatim with `WP28-inventory.md` before any triage. (2) A
+fresh triager (not a reader, not an author) writes `WP28-cut-list.md` per the scope's D-2 (goes / merged / shortened to
+a pointer; the six checks per row; "kept, with reason"; "for the supervisor" for his fixed figures and the two model
+views) and the PM sends it to the driver for OD6's approval. (3) After approval, the paper stream and the docs stream
+execute net-negative units (D-3, D-4; `[[cut]]` ledger rows and the ledger reader extended to read them; Appendix F.4
+and A regenerated where a cell or entry goes); the paper stream takes no CR unit on a section with an open cut; held
+for after the cut list: a one-clause hook for L15's finite termination (Results, Theorem 11 or Open questions) and the
+R1 sentence in Methods read as the τ = ∞ statement with the finite-τ relation named in Theorem 2. (4) The re-test (D-5;
+there is no separate WP11 round 3: the cells that found something are read here at the same depths on the cut paper;
+depth B six personas, depth C five with P4-C held out), then the P6-B confirmation read on an unused brief wording.
+(5) WP28's acceptance review (fresh reviewer; the staged site looked at in the browser). (6) WP25's next instance
+before the PR (the inventory greps constant names too: `cmp.REPORT` was the miss) with WP28's cruft list (D.12's
+"weakly identified exponents" sentence in the supporting material is unpinned). (7) WP8b's release items.
 
 Rules applied this PM beyond the brief: every agent reads `scratchpad/pm5-rules.md`; a reader's change requests are
 extracted to a scratch file for the author with the depth and persona words removed (R-2); a handover note at the
