@@ -274,7 +274,7 @@ def _designs(frozen_box: str, n: int = 6, seed: int = 3):
 
 @pytest.mark.parametrize("box", ["baseline", "aggressive"])
 def test_regenerated_designs_equal_the_frozen_oracle(box, r1, frozen):
-    """R-6: the analysis (seven attributes), the flags and the new requirements' verdicts agree.
+    """R-6: the analysis (eight attributes), the flags and the new requirements' verdicts agree.
 
     Same seed, both gain boxes. Attributes: the model's analysis equals the frozen oracle to 1e-9;
     the four flags the model's requirements decide equal the frozen flags; each new requirement's
@@ -290,6 +290,11 @@ def test_regenerated_designs_equal_the_frozen_oracle(box, r1, frozen):
     for sym, cfg in zip(symbols, frozen_cfgs, strict=True):
         measured = _measure_slew(frozen, cfg, t_end=600.0, max_step=0.5)
         want = frozen.measure(cfg)
+        # the frozen model has no momentum headroom (WP30, D-1 (a)): the wheel class capacity over
+        # the peak momentum, the inverse of the utilisation WP4b reads
+        want["momentum_headroom"] = (
+            frozen.sim_params(cfg)["maxMomentum"] / measured["peak_momentum"]
+        )
         got = r1.experiment(loaded, sym, measured)
         for name, _ in ATTRIBUTES:
             worst = max(worst, _rel(got[name], want[name]))

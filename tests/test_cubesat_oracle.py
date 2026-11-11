@@ -1,8 +1,9 @@
 """The SysML-backed cubesat oracle and sampler of the v2 generation (WP15 15.4).
 
 * R-9: the output keys equal the frozen ``measure`` keys less the slew-time columns (WP23 G5: one
-  time metric) and the eclipse reserve (the WP23 close-out: eight traded metrics), in the frozen
-  CSV column order; a configuration outside the
+  time metric) and the eclipse reserve (the WP23 close-out: eight traded metrics), plus the
+  momentum headroom after the depth of discharge (WP30: nine traded metrics), in the frozen CSV
+  column order; a configuration outside the
   model's ranges or with an unknown categorical value raises ``ValueError`` naming the variable;
   construction names the cause when the runtime cannot start.
 * WP16 Amendment 2 and WP23: the settling time of record is the hold time by event detection
@@ -90,6 +91,14 @@ def test_the_sampler_reproduces_the_frozen_designs(designs):
         np.testing.assert_allclose(designs[c], frozen[c], rtol=1e-8)
 
 
+def _keys_with_headroom(frozen_keys) -> list[str]:
+    """The frozen ``measure`` keys less the dropped columns, the momentum headroom (WP30) placed
+    after the depth of discharge, where the oracle's attribute block ends."""
+    keys = [k for k in frozen_keys if k not in DROPPED_COLUMNS]
+    keys.insert(keys.index("dod_eclipse") + 1, "momentum_headroom")
+    return keys
+
+
 def test_keys_and_order_equal_the_frozen_measure_less_slew_time_on_three_configurations(
     oracle, designs
 ):
@@ -100,8 +109,17 @@ def test_keys_and_order_equal_the_frozen_measure_less_slew_time_on_three_configu
     for _, row in designs.head(3).iterrows():
         cfg = row.to_dict()
         got, want = oracle(cfg), frozen.measure(cfg)
-        assert list(got) == [k for k in want if k not in DROPPED_COLUMNS]
-        assert len(co.ATTRIBUTE_NAMES) == 8
+        assert list(got) == _keys_with_headroom(want)
+        assert len(co.ATTRIBUTE_NAMES) == 9
+        # WP30 R-1: the momentum headroom is the wheel class capacity over the measured peak
+        # momentum, the inverse of WP4b's momentum utilisation, and positive
+        capacity = frozen.wheel_capacities()[cfg["wheel_class"]]
+        assert got["momentum_headroom"] == pytest.approx(
+            capacity / got["peak_momentum_nms"], rel=1e-9
+        )
+        assert (
+            got["momentum_headroom"] > 0 and (got["momentum_headroom"] >= 1) == got["momentum_ok"]
+        )
         for k, v in want.items():
             if k in DROPPED_COLUMNS:
                 continue
@@ -117,7 +135,7 @@ def test_evaluate_gives_the_frozen_column_order_less_slew_time(oracle, designs):
     """R-9: ``evaluate`` is the design columns, the measure keys, then the scenario columns."""
     out = oracle.evaluate(designs.head(4))
     frozen = pd.read_csv(FROZEN_CSV, nrows=1)
-    assert list(out.columns) == [c for c in frozen.columns if c not in DROPPED_COLUMNS]
+    assert list(out.columns) == _keys_with_headroom(frozen.columns)
     assert not {*out.columns} & {*DROPPED_COLUMNS}
     assert out["design_id"].tolist() == [0, 1, 2, 3]
     assert out[["slew_deg", "t_end_s", "max_step_s"]].iloc[0].tolist() == [30.0, 600.0, 0.5]
@@ -400,7 +418,7 @@ def test_ledger_ready_record_of_an_excluded_region(oracle, solver):
 
 
 def test_the_measured_settling_time_enters_the_row_unchanged(oracle, designs):
-    """The analysis returns the seven computed attributes only; the settling time is measured,
+    """The analysis returns the eight computed attributes only; the settling time is measured,
     enters the row exactly as measured, and moves no computed attribute."""
     loaded, symbols = oracle._configure([{**designs.iloc[0].to_dict(), "design_id": 0}])
     measured = {
@@ -412,7 +430,7 @@ def test_the_measured_settling_time_enters_the_row_unchanged(oracle, designs):
     }
     got = oracle._analyse(loaded, symbols[0], measured)
     assert got["settling_time_s"] == 14.398119154048933
-    assert list(got) == list(co.ATTRIBUTE_NAMES) and len(got) == 8
+    assert list(got) == list(co.ATTRIBUTE_NAMES) and len(got) == 9
     distinct = oracle._analyse(loaded, symbols[0], {**measured, "settling_time": 10.0})
     for k in co.ATTRIBUTE_NAMES[1:]:
         assert got[k] == pytest.approx(distinct[k], rel=1e-12), k
