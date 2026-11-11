@@ -5251,7 +5251,7 @@ note = "On each regime the exact-maximum LP's primal-dual pair certifies one opt
 
 [[claim]]
 id = "C423"
-fragment = "`conditioning_` is that objective's curvature along its flattest direction: where it is small, moving the exponents along that direction barely changes the objective, so the data fix them loosely"
+fragment = "`conditioning_` is that objective's curvature along its flattest direction: where it is small, moving the exponents along that direction barely changes the objective"
 file = "paper/supporting_material.ipynb"
 anchor = "D.12 The conditioning of the exponents"
 kind = "M"

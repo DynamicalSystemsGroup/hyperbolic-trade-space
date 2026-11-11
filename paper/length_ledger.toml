@@ -1001,3 +1001,10 @@ section = "Appendix D"
 words_removed = 3
 no_longer_did = "D.12's first paragraph read the small value as weakly identified exponents, which the register's backing for the flat-direction claim does not carry (WP25-4 T-3)"
 authority = "WP25-4 instance 4, row T-3 (WP25-decisions.md)"
+
+[[cut]]
+date = "2026-11-11"
+section = "Appendix D"
+words_removed = 1
+no_longer_did = "D.12's second paragraph read a small value as the data fixing the exponents loosely (a reading the definition of curvature alone does not back), and the sentence after it said the case shows both; net one word (the driver's decision, cd2aad2)"
+authority = "the driver, cd2aad2"

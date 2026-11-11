@@ -252,3 +252,17 @@ by the narrowings he and the readers asked for; the docs lost two figures and th
 **D.12's second paragraph (2026-11-11, 01:40; the driver):** "so the data fix them loosely" carries the reading T-3
 dropped from the first paragraph and is backed only by the definition; narrow it: the sentence ends at "barely
 changes the objective". One claim, one place.
+
+### U6. D.12's "so the data fix them loosely" narrowed (the driver's decision, cd2aad2; the PM's request)
+
+- **Done.** D.12's second paragraph now ends that sentence at "barely changes the objective", and the next sentence says
+  "The case has a large and a small value" in place of "The case shows both" (which rested on the dropped reading).
+  Net one word fewer: a `[[cut]]` row (Appendix D, 1). Register C423's fragment narrowed to match; C424 and C425 stand.
+  No test pinned the old words (the D.12 test checks the two case values, the paths and the call). No notebook output
+  changed, so nothing was re-executed.
+- **Seen.** Built page (no warnings), own tab, closed: D.12 reads as above (the tables below it showed "Loading..." in
+  the pane at the moment of the shot, a lazy-load state, not a change of mine); `/private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/s3/d12-narrowed.jpg`.
+- **Checks.** ruff; the D.12 test passes; `pytest -q -m "not slow" tests/test_paper.py tests/test_claims_register.py`:
+  164 passed, 4 skipped, 1 failed: `test_the_register_holds` on C192, C195 and C375, fragments not found in
+  `docs/theory.md` and `docs/user-guide/termination.md` at origin/dev e5d7c7b (a docs-side drift, also failing with my
+  change stashed; not mine to touch); vocabulary baseline 0 new.
