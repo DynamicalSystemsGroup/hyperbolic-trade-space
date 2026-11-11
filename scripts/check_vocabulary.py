@@ -2,7 +2,8 @@
 
 The rule: docs/superpowers/notes/vocabulary-review.md.
 
-    uv run python scripts/check_vocabulary.py                 # report; non-zero exit on a failure
+    uv run python scripts/check_vocabulary.py                 # non-zero exit on a new violation
+    uv run python scripts/check_vocabulary.py --no-baseline   # every violation, known ones included
     uv run python scripts/check_vocabulary.py --density       # also the density table
     uv run python scripts/check_vocabulary.py --baseline scripts/vocabulary_baseline.toml
     uv run python scripts/check_vocabulary.py --emit-baseline # TOML of the current violations
@@ -39,8 +40,10 @@ in the same paragraph: ``<!-- vocab-exempt: phrase one; phrase two -->`` (Markdo
 an HTML comment. Never a blanket exclusion of a file.
 
 A baseline file (TOML, ``[[violation]]`` with ``kind``, ``file``, ``phrase``, ``owner``,
-``reason``) lists known violations: with ``--baseline`` the exit status reflects only violations
-not in it. Baseline entries no longer violated are reported as stale, not failed.
+``reason``) lists known violations: with a baseline the exit status reflects only violations not in
+it. On the repository itself (no ``--root``) the baseline defaults to
+``scripts/vocabulary_baseline.toml``; ``--no-baseline`` reads none. Baseline entries no longer
+violated are reported as stale, not failed.
 """
 
 from __future__ import annotations
@@ -59,6 +62,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_BASELINE = ROOT / "scripts" / "vocabulary_baseline.toml"
 
 STOP = set(
     """a an the this that these those each every any no some all both either neither one two three
@@ -511,6 +515,11 @@ def main(argv=None) -> int:
     ap.add_argument("--density", action="store_true", help="also print the density table")
     ap.add_argument("--baseline", help="TOML of known violations; exit status ignores them")
     ap.add_argument(
+        "--no-baseline",
+        action="store_true",
+        help="read no baseline (the default only on the repository)",
+    )
+    ap.add_argument(
         "--emit-baseline", action="store_true", help="print the baseline TOML and exit 0"
     )
     args = ap.parse_args(argv)
@@ -520,7 +529,10 @@ def main(argv=None) -> int:
     if args.emit_baseline:
         print(emit_baseline(vs))
         return 0
-    base = load_baseline(Path(args.baseline)) if args.baseline else {}
+    baseline = args.baseline
+    if baseline is None and not args.no_baseline and root.resolve() == ROOT:
+        baseline = str(DEFAULT_BASELINE)
+    base = load_baseline(Path(baseline)) if baseline else {}
     new = [v for v in vs if v.key not in base]
     known = [v for v in vs if v.key in base]
     stale = [k for k in base if k not in {v.key for v in vs}]

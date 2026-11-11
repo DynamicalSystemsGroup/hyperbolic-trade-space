@@ -224,3 +224,9 @@ def test_real_repo_has_no_new_vocabulary_violation(capsys):
     assert code == 0, out
     base = cv.load_baseline(BASELINE)
     assert all(r["owner"] and r["reason"] for r in base.values())
+
+
+def test_the_documented_bare_command_exits_zero_on_the_repository(capsys):
+    """`CLAUDE.md` gives the bare command: it reads the committed baseline by default."""
+    assert cv.main([]) == 0, capsys.readouterr().out
+    assert cv.main(["--no-baseline"]) == 1
