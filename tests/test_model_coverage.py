@@ -409,13 +409,13 @@ def test_no_requirement_floats_free_of_the_traded_metrics(structural):
 def test_a_requirement_that_reads_no_traded_metric_is_found(coverage, tmp_path):
     """Negative control: a planted requirement that reads no traded metric stands in the box with no
     reason, and the check names it; the model as committed has none."""
-    text = coverage.DEFAULT_MODEL.read_text()
+    text = coverage.DEFAULT_MODEL.read_text(encoding="utf-8")
     planted = text.rstrip()[:-1] + (
         "\n    requirement def PlantedRequirement {\n        subject c : Cubesat;\n"
         "        require constraint { c.panelSpan > 0.0 [m] }\n    }\n}\n"
     )
     path = tmp_path / "planted.sysml"
-    path.write_text(planted)
+    path.write_text(planted, encoding="utf-8")
     result = coverage.build(path, with_empirical=False)
     assert result["box"] == ["PlantedRequirement"]
     assert _unexplained(result) == ["PlantedRequirement"]
@@ -474,11 +474,11 @@ def test_the_reason_numbers_are_the_spearman_of_the_stated_pair(coverage, struct
 def test_the_caption_the_table_and_the_csv_print_one_reason(structural):
     """The committed caption, ``coverage.md`` and ``coverage.csv`` carry each reason sentence as the
     computation prints it."""
-    caption = (VIEWS / "behavioural_caption.md").read_text()
-    table = (VIEWS / "coverage.md").read_text()
+    caption = (VIEWS / "behavioural_caption.md").read_text(encoding="utf-8")
+    table = (VIEWS / "coverage.md").read_text(encoding="utf-8")
     reasons_csv = {
         r["requirement"]: r["reason"]
-        for r in _tables((VIEWS / "coverage.csv").read_text())["reasons"]
+        for r in _tables((VIEWS / "coverage.csv").read_text(encoding="utf-8"))["reasons"]
     }
     for r in structural["reasons"]:
         assert f"- {r['sentence']}\n" in caption and f"- {r['sentence']}\n" in table

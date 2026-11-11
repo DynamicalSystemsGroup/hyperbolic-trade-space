@@ -37,7 +37,7 @@ from experiments.runner import LogUniformSampler
 
 ADCS = pathlib.Path(__file__).resolve().parents[1] / "examples" / "adcs"
 MODEL = ADCS / "model_v2" / "cubesat.sysml"
-TEXT = MODEL.read_text()
+TEXT = MODEL.read_text(encoding="utf-8")
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 LADDERS = ROOT / "scripts/wp30_cost_ladders.py"
 P = co.PACKAGE

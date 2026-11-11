@@ -157,7 +157,7 @@ def main() -> int:  # pragma: no cover - the printed reading
     sys.path.insert(0, str(here.parent))
     from experiments import cubesat_oracle as co
 
-    text = (here.parent / "model_v2" / "cubesat.sysml").read_text()
+    text = (here.parent / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8")
     oracle = co.CubesatOracle(text, "nominalSlew", "aggressive", workers=1)
     base = dict(wheel_class="medium", st_grade="medium", Kp=0.5, Kd=1.0, fleet_size=1.0)
     grid = [(0.3, 20.0), (1.0, 20.0), (0.3, 200.0), (0.7, 90.0)]
