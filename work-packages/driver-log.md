@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The eleventh PM stopped early (2026-11-11, 13:45):** it could not wait on the oracle timing without a polling tool and
+  the timing was contaminated by load (the watcher's full suite and the agents). The assistant takes the gate's long
+  steps himself (the watcher paused; the timing re-run on a quiet machine from the wp30b worktree; the sample size set;
+  the regeneration and the container runs as background tasks), and the twelfth PM runs the rest in parallel and
+  takes the cascade from the data commit. WP25-5's six calls and WP34's stage 3 landing are recorded in their files.
+
 - **Second main-checkout incident (2026-11-11, 11:45).** The S-5 paper-and-root-page unit is editing eleven files in
   the main checkout; told the PM: the agent finishes, commits only its own files and pushes, then every unit starts
   with `git worktree add` named in its brief (first rule of pm5-rules.md); the assistant's records go through a

@@ -142,3 +142,18 @@ keep-by-decision rule added for the next instance."
 **Instance 4 holds, the driver (2026-11-11, 01:40):** `paper-outline-v1-baseline.md` (a) keep, two live readers;
 WP28's 151 reader files (a) hold: they are the verbatim returns the inventory and the re-test cite, the evidence of an
 accepted package; a later instance may fold them once nothing cites them.
+
+## Instance 5 (2026-11-11, 13:45; inventory eb43b21, 556 rows; the assistant's calls on the six open rows)
+
+1. The ten S-5 candidate files (`docs/superpowers/notes/figure-candidates/`): the chosen two-panel figure lives in
+   `paper/figures/` and on the docs page; the candidates and their script are cited only by the figure review and the
+   cold-read returns: delete (git keeps them; the review's rows name the commit that held them).
+2. The sixteen WP11 round-2 raw reader reports: the triage and the record are in the repository and round 3 is read;
+   delete, as round 1's went.
+3. The fourteen WP31 readout outputs: delete; the two generator scripts and `cubesat-stock.csv` stay.
+4. and 5. The page renders of the P10 reads and the WP19 cold-read images: screenshots a review cites are the
+   review's evidence under the standing order; keep those a review or triage cites by name, delete the rest.
+6. `streams/P10-review.md`: WP10 is accepted as a structure since 2026-11-09 and its record is `WP10-review-2.md`;
+   delete, with one line in `WP10-decisions.md` naming the record.
+The 60 delete rows and 2 merges execute under the instance's rules (the contract grep first; one deletion commit;
+the keep-by-decision rows untouched). **Assistant, verbatim:** "WP25-5 executes with the six calls above."

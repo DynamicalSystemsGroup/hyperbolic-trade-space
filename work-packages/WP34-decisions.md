@@ -20,3 +20,9 @@ on every `open` and `read_text`/`write_text` with a test that greps for the bare
 platform-aware (a Windows branch that tests the same behaviour, or a skip with the reason when the behaviour has no
 Windows meaning), and the `tab-C` item explained before it is touched. Then a second spike with the fast and slow
 shards; then stage 4, the matrix entry run on dispatch and at gates.
+
+**Stage 3 landed (843d2eb and its commits; the assistant, 13:45):** the five fixes are on dev; the three
+ledger-hashed files that keep bare reads (`cubesat_model.py`, `legacy_oracle.py`, `cubesat_oracle.py`) get their
+`encoding="utf-8"` at the WP30 regeneration, which re-hashes them anyway, and are re-adopted there; the second Windows
+spike runs when the workflow's input allows the slow shard (checked below). The fast suite at the head is the
+watcher's and Linux's to confirm; Linux dispatched.
