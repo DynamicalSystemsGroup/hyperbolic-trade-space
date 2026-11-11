@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Container build broken by the theme pin (2026-11-11, 18:25).** The first container run for the WP30 gate failed
+  at the image build: the Dockerfile's warm-up record step changed into `_build/templates/site/myst/article-theme`,
+  but since the pin (WP8b D-8) MyST stores the template under a directory named by the archive URL's hash. The
+  assistant fixed the step to find the template by its `template.zip` (910a57d) and rebuilt; the first attempt had
+  fallen back to the old image (877c42cc10e3), whose gate script lacks the WP30 mode, so nothing of it counts. A
+  lesson for the release checklist: the container build is part of the clean-checkout proof of the pin.
+
 - **The gate's last mile (2026-11-11, 16:50).** The sensitivity record's analyse step has a circular dependency (its
   quantities call the paper's sentence generators, which read the results file the step writes); the runner works
   around it in the scratchpad and records the failure; the cascade fixes it in the repository. The push plan: the
