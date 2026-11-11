@@ -2412,7 +2412,8 @@ def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_ap
     first = results.split("2.", 1)[0]
     assert "not the Pareto boundary" in first and "fitted reference surface" in first
     sentence = _cell_out(PAPER_NB, "num-nondominated")
-    assert "659 on 8" in sentence and "regenerations of the data under rounding-level" in sentence
+    assert "659 on all 8" in sentence
+    assert "regenerations of the data under rounding-level" in sentence
 
 
 def test_cr8_the_k_comparison_says_the_temperature_differs_and_d15_fixes_it():

@@ -66,7 +66,7 @@ def nondominated_sentence(study) -> Md:
             names = _and(spec.short[a] for a in spec.views[r.view])
             parts.append(f"{count} on {int(r.columns)} attributes ({names})")
         else:
-            parts.append(f"{count} on {int(r.columns)}, all of them")
+            parts.append(f"{count} on all {int(r.columns)}")
     runs = _NUMBER_WORDS.get(len(summary()["seeds"]), len(summary()["seeds"]))
     if any(" to " in p for p in parts):
         tail = (
