@@ -431,7 +431,7 @@ def test_the_view_draws_no_box_because_every_requirement_reads_a_traded_metric(s
 
 
 # The tests below read the regenerated data of the WP30 gate (thirteen columns, the first
-# 2,000 designs per regime); they are red until the gate regenerates it.
+# 3,000 designs per regime); they are red until the gate regenerates it.
 def test_every_reasoned_requirement_has_a_computed_reading(structural):
     """Each of the three carries one of the three readings, computed from the K = 1 fit and the
     Spearman correlation of the data of record. Host-recorded at the gate (spike C's values, from
