@@ -133,7 +133,8 @@ RUN uv run python -c "from opensysml.binary import ensure_binary; print(ensure_b
 # it back). The hashes of what was downloaded are printed into the build log (RECORD.md).
 RUN cd paper && uv run myst build --html \
     && mkdir -p _build/cache && cp _build/html/favicon.ico _build/cache/favicon.ico \
-    && (cd _build/templates/site/myst/article-theme && sha256sum template.zip package-lock.json \
+    && (cd "$(find _build/templates/site -mindepth 1 -maxdepth 2 -name template.zip -exec dirname {} \; | head -1)" \
+        && pwd && sha256sum template.zip package-lock.json \
         && grep -m1 '"version"' package.json) \
     && sha256sum _build/cache/favicon.ico
 
