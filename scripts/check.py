@@ -74,6 +74,7 @@ PATH_TESTS: list[tuple[str, list[str]]] = [
             "tests/test_toolkit.py",
             "tests/test_legacy_oracle.py",
             "tests/test_cubesat_oracle.py",
+            "tests/test_cost_model.py",
         ],
     ),
     (
@@ -86,6 +87,7 @@ PATH_TESTS: list[tuple[str, list[str]]] = [
             "tests/test_v2_data.py",
             "tests/test_model_coverage.py",
             "tests/test_diagnostic_pair.py",
+            "tests/test_cost_model.py",
         ],
     ),
     (

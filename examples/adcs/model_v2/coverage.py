@@ -92,6 +92,8 @@ METRIC_COLUMNS = {
     "peak slew power": "peak_slew_power_w",
     "depth of discharge": "dod_eclipse",
     "momentum headroom": "momentum_headroom",
+    "unit cost": "unit_cost_usd",
+    "fleet cost": "fleet_cost_usd",
 }
 # the oracle's configuration keys for the model's decision elements
 ORACLE_KEYS = {
@@ -101,6 +103,7 @@ ORACLE_KEYS = {
     "batteryCapacity": "battery_wh",
     "Kp": "Kp",
     "Kd": "Kd",
+    "fleetSize": "fleet_size",
 }
 
 
@@ -343,11 +346,35 @@ class ModelGraph:
         return out
 
     # -- the traded metrics -----------------------------------------------------------------------
+    def analyses(self) -> list[str]:
+        """The model's analysis defs, the slew experiment first (the others return one traded
+        metric each: an analysis's result refuses equal entries, and the unit cost equals the
+        fleet cost at a fleet of one)."""
+        slew = self.pre + "SlewExperiment"
+        return [slew, *(a for a in self.kinds("AnalysisCaseDefinition") if a != slew)]
+
+    def analysis_entries(self, analysis: str) -> list[str]:
+        """The ids of the entries an analysis returns, in order: the positions of a tuple, or the
+        expression itself when the analysis returns one entry (whose own arguments are not
+        entries)."""
+        root = analysis + "__attributes_pvalue"
+        positions = sorted(
+            (i for i in self.byid if re.fullmatch(re.escape(root) + r"_pa\d+", i)),
+            key=lambda i: int(i.rsplit("_pa", 1)[1]),
+        )
+        if root in self.byid and self.byid[root]["@type"] in (
+            "InvocationExpression",
+            "FeatureChainExpression",
+            "FeatureReferenceExpression",
+        ):
+            return [root]
+        return positions
+
     def metrics(self) -> list[Metric]:
-        """The traded metrics: the measurement attributes marked MoE/MoP that the analysis neither
-        takes as input nor returns, then the analysis's return entries in order (an input it
-        returns unchanged is one of them)."""
-        analysis = next(iter(self.kinds("AnalysisCaseDefinition")))
+        """The traded metrics: the measurement attributes marked MoE/MoP that the slew analysis
+        neither takes as input nor returns, then the return entries of each analysis in order
+        (an input it returns unchanged is one of them)."""
+        analysis = self.analyses()[0]
         params = {short(p): p for p in self.children(analysis, "ReferenceUsage")}
         measurement = self.pre + "SlewMeasurement"
         out = []
@@ -356,36 +383,38 @@ class ModelGraph:
                 out.append(
                     Metric(plain(short(a)), "measured", a, self.mark(a), self.measured_deps())
                 )
-        tuple_root = analysis + "__attributes_pvalue"
-        entries = sorted(
-            (i for i in self.byid if re.fullmatch(re.escape(tuple_root) + r"_pa\d+", i)),
-            key=lambda i: int(i.rsplit("_pa", 1)[1]),
-        )
-        for entry in entries:
-            e = self.byid[entry]
-            kind = e["@type"]
-            measured = any(
-                ref(x.get("referent")) in params.values() and short(ref(x["referent"])) != "cubesat"
-                for x in [*self.inside(entry), e]
-                if x["@type"] == "FeatureReferenceExpression" and x.get("referent")
-            )
-            if kind == "InvocationExpression":
-                calc = ref(e["function"])
-                deps = self.calc_deps(calc)
-                if measured or self.calc_measured_inputs(calc):
-                    deps |= self.measured_deps()
-                out.append(Metric(plain(short(calc)), "calc", calc, self.mark(calc), deps))
-            elif kind == "FeatureChainExpression":
-                attr = f"{self.cubesat}__{e['sysx:sourceText'].split('.')[-1].strip()}"
-                out.append(
-                    Metric(plain(short(attr)), "attribute", attr, self.mark(attr), self.deps(attr))
+        for analysis in self.analyses():
+            params = {short(p): p for p in self.children(analysis, "ReferenceUsage")}
+            for entry in self.analysis_entries(analysis):
+                e = self.byid[entry]
+                kind = e["@type"]
+                measured = any(
+                    ref(x.get("referent")) in params.values()
+                    and short(ref(x["referent"])) != "cubesat"
+                    for x in [*self.inside(entry), e]
+                    if x["@type"] == "FeatureReferenceExpression" and x.get("referent")
                 )
-            elif kind == "FeatureReferenceExpression":
-                name = short(ref(e["referent"]))
-                attr = f"{measurement}__{name}"
-                out.append(
-                    Metric(plain(name), "measured", attr, self.mark(attr), self.measured_deps())
-                )
+                if kind == "InvocationExpression":
+                    calc = ref(e["function"])
+                    deps = self.calc_deps(calc)
+                    # an analysis that takes no measured input (the cost analyses) binds none
+                    takes_measured = any(n not in ("cubesat", "attributes") for n in params)
+                    if measured or (takes_measured and self.calc_measured_inputs(calc)):
+                        deps |= self.measured_deps()
+                    out.append(Metric(plain(short(calc)), "calc", calc, self.mark(calc), deps))
+                elif kind == "FeatureChainExpression":
+                    attr = f"{self.cubesat}__{e['sysx:sourceText'].split('.')[-1].strip()}"
+                    out.append(
+                        Metric(
+                            plain(short(attr)), "attribute", attr, self.mark(attr), self.deps(attr)
+                        )
+                    )
+                elif kind == "FeatureReferenceExpression":
+                    name = short(ref(e["referent"]))
+                    attr = f"{measurement}__{name}"
+                    out.append(
+                        Metric(plain(name), "measured", attr, self.mark(attr), self.measured_deps())
+                    )
         return out
 
     # -- requirements and verification cases ------------------------------------------------------
@@ -738,13 +767,31 @@ SUBSYSTEM_OF = {
         "MassAccounting",
         "StructureMass",
         "AdcsMass",
-        "LaunchCost",
         "InertiaX",
         "InertiaY",
         "InertiaZ",
     },
+    # the cost model (WP30): the launch cost of a satellite, the pricing curves of the parts and
+    # of the assembly line, and the cost of the fleet and per unit
+    "cost": {
+        "LaunchCost",
+        "PartTotal",
+        "PanelPrice",
+        "BatteryPrice",
+        "WheelPrice",
+        "TrackerPrice",
+        "BusTotal",
+        "PanelTotal",
+        "BatteryTotal",
+        "WheelTotal",
+        "TrackerTotal",
+        "AssemblyTotal",
+        "FleetBuildCost",
+        "FleetCost",
+        "UnitCost",
+    },
 }
-CONSTANT_PARTS = ("environment", "nominalSlew", "budgets")
+CONSTANT_PARTS = ("environment", "nominalSlew", "budgets", "prices", "pricing")
 MEASUREMENT = "SlewMeasurement"
 SIMULATOR = "adcs_sim.simulate_adcs"
 
@@ -785,32 +832,29 @@ class Coupling:
         for name in g.measurement_inputs():
             self.read(self.resolve_chain(name, None), ("measurement",), self.label(name))
         # the metrics, from the analysis's return entries and the measurement
-        analysis = next(iter(g.kinds("AnalysisCaseDefinition")))
-        env = {p: ("measured", p) for p, t in self.in_params[analysis] if t != g.cubesat}
-        tuple_root = analysis + "__attributes_pvalue"
-        entries = {}
         for m in metrics:
             if m.kind == "measured":
                 self.read(("measured", short(m.element)), ("metric", m.name), short(m.element))
-        for i in g.byid:
-            if re.fullmatch(re.escape(tuple_root) + r"_pa\d+", i):
-                entries[int(i.rsplit("_pa", 1)[1])] = i
         by_element = {m.element: m for m in metrics}
-        for _, entry in sorted(entries.items()):
-            e = g.byid[entry]
-            if e["@type"] == "InvocationExpression":
-                calc = ref(e["function"])
-                self.invoke(entry, ("metric", by_element[calc].name), None, env)
-            elif e["@type"] == "FeatureChainExpression":
-                attr = f"{g.cubesat}__{e['sysx:sourceText'].split('.')[-1].strip()}"
-                m = by_element[attr]
-                self.read(
-                    self.resolve_chain(e["sysx:sourceText"], None), ("metric", m.name), short(attr)
-                )
-            elif e["@type"] == "FeatureReferenceExpression":
-                name = short(ref(e["referent"]))
-                m = by_element[f"{g.pre}{MEASUREMENT}__{name}"]
-                self.read(("measured", name), ("metric", m.name), name)
+        for analysis in g.analyses():
+            env = {p: ("measured", p) for p, t in self.in_params[analysis] if t != g.cubesat}
+            for entry in g.analysis_entries(analysis):
+                e = g.byid[entry]
+                if e["@type"] == "InvocationExpression":
+                    calc = ref(e["function"])
+                    self.invoke(entry, ("metric", by_element[calc].name), None, env)
+                elif e["@type"] == "FeatureChainExpression":
+                    attr = f"{g.cubesat}__{e['sysx:sourceText'].split('.')[-1].strip()}"
+                    m = by_element[attr]
+                    self.read(
+                        self.resolve_chain(e["sysx:sourceText"], None),
+                        ("metric", m.name),
+                        short(attr),
+                    )
+                elif e["@type"] == "FeatureReferenceExpression":
+                    name = short(ref(e["referent"]))
+                    m = by_element[f"{g.pre}{MEASUREMENT}__{name}"]
+                    self.read(("measured", name), ("metric", m.name), name)
         # the requirements: the constraint, with the `in` parameters bound by their defaults
         for r in g.kinds("RequirementDefinition"):
             env = {}

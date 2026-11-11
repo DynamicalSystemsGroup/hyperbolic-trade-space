@@ -20,7 +20,7 @@ Examples
 --------
 >>> study = load_study("primary", n_max=60)
 >>> study.M.shape
-(60, 9)
+(60, 11)
 """
 
 from __future__ import annotations
@@ -76,7 +76,7 @@ class CaseSpec:
     seed : int
         Seed of every fit.
     subsystems : dict of str to str
-        Subsystem of each attribute (the model's own grouping: controls, power and energy, mass);
+        Subsystem of each attribute (the model's grouping: controls, power and energy, mass, cost);
         the single source of every sentence that says which subsystems a set of metrics spans.
     subsystem_order : tuple of str
         The order in which subsystems are listed in a sentence.
@@ -138,25 +138,26 @@ class CaseSpec:
 _ATTRS = (
     "settling_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
     "power_margin_w", "energy_balance_wh", "peak_slew_power_w", "dod_eclipse",
-    "momentum_headroom",
+    "momentum_headroom", "unit_cost_usd", "fleet_cost_usd",
 )  # fmt: skip
 _NAMES = (
     "settling time", "pointing error", "total mass", "control effort",
     "power margin", "energy balance", "peak slew power", "depth of discharge",
-    "momentum headroom",
+    "momentum headroom", "unit cost", "fleet cost",
 )  # fmt: skip
 _SUBSYSTEMS = (
     "controls", "controls", "mass", "controls",
     "power and energy", "power and energy", "power and energy", "power and energy",
-    "controls",
+    "controls", "cost", "cost",
 )  # fmt: skip
-_UNITS = ("s", "deg", "kg", "torque.s, proxy", "W", "Wh", "W", "fraction", "ratio")
-_ORIENT = (-1, -1, -1, -1, +1, +1, -1, -1, +1)
+_UNITS = ("s", "deg", "kg", "torque.s, proxy", "W", "Wh", "W", "fraction", "ratio", "USD", "USD")
+_ORIENT = (-1, -1, -1, -1, +1, +1, -1, -1, +1, -1, -1)
 
 CUBESAT = CaseSpec(
     name="cubesat attitude determination and control",
     # the data of record (ledger entries @8, the WP23 close-out); WP30 stage 3a adds the ninth
-    # traded metric, the momentum headroom, whose column the data carries after the WP30 data gate
+    # traded metric, the momentum headroom, and stage 3b the unit cost and the fleet cost (eleven in
+    # all, WP30 OD1 (a)); the columns, and the fleet size, are in the data after the WP30 data gate
     data_dir=HERE / "data" / "v2",
     regimes={"primary": "adcs_designs_cubesat_gains.csv", "stock": "adcs_designs_cubesat.csv"},
     attributes=_ATTRS,
@@ -167,7 +168,7 @@ CUBESAT = CaseSpec(
         "wheel_class": ("small", "medium", "large"),
         "st_grade": ("coarse", "medium", "fine"),
     },
-    design_vars=("panel_span_m", "battery_wh", "Kp", "Kd"),
+    design_vars=("panel_span_m", "battery_wh", "Kp", "Kd", "fleet_size"),
     # dod_ok joined at the WP23 close-out: the depth-of-discharge failures left the fit through the
     # eclipse reserve's positivity until the reserve left the metric set
     flags=("settled", "power_ok", "momentum_ok", "dod_ok"),
@@ -188,15 +189,17 @@ CUBESAT = CaseSpec(
     checks_file="check_designs_cubesat.csv",
     predictions_file="check_predictions_cubesat.csv",
     subsystems=dict(zip(_ATTRS, _SUBSYSTEMS, strict=True)),
-    subsystem_order=("controls", "power and energy", "mass"),
+    subsystem_order=("controls", "power and energy", "mass", "cost"),
     # the model's four threshold requirements (cubesat.sysml, part budgets; the supervisor's values,
     # WP23-decisions.md, "The four thresholds"), each read as attribute <= limit; the launch budget
-    # 90,643 USD is the total mass at the model's illustrative 6,000 USD/kg
+    # 105,770 USD is the total mass at the model's launch rate of 7,000 USD/kg (WP30 D-1, restated
+    # from 90,643 USD at 6,000 USD/kg, pending the supervisor's confirmation, OD4); the two cost
+    # limits are placeholders in the model until his values (OD3, OD5) and are not read here
     requirements={
         "peak_slew_power_w": (2.6, "W"),
         "pointing_error_deg": (0.008495, "degree"),
         "control_effort": (0.05922, "N.m.s"),
-        "total_mass_kg": (90643.0 / 6000.0, "kg"),
+        "total_mass_kg": (105770.0 / 7000.0, "kg"),
     },
     # the model's baseline configuration (cubesatBaseline: 0.6 m, 80 Wh, medium wheels, medium
     # tracker, Kp 0.03, Kd 0.3) as the v2 oracle measures it in the baseline gain box
@@ -207,6 +210,7 @@ CUBESAT = CaseSpec(
         "st_grade": "medium",
         "Kp": 0.03,
         "Kd": 0.3,
+        "fleet_size": 1.0,
         "settling_time_s": 180.24208428988604,
         "pointing_error_deg": 0.015534921289205101,
         "total_mass_kg": 13.29142857142857,
@@ -216,6 +220,8 @@ CUBESAT = CaseSpec(
         "peak_slew_power_w": 2.0,
         "dod_eclipse": 0.10350133786988198,
         "momentum_headroom": 6.437201363621915,
+        "unit_cost_usd": 443040.0,
+        "fleet_cost_usd": 443040.0,
         "settled": True,
         "momentum_ok": True,
         "power_ok": True,
@@ -226,6 +232,7 @@ CUBESAT = CaseSpec(
         "battery_wh": (20.0, 200.0),
         "Kp": (0.2, 2.0),
         "Kd": (0.3, 1.5),
+        "fleet_size": (1.0, 30.0),
     },
 )
 
