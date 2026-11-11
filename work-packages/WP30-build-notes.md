@@ -226,3 +226,96 @@ the limits are the supervisor's values. The step 10 pass fractions in `WP30-deci
 are on the earlier calibration and are recomputed from the regenerated data. Docs (`docs/examples.md`, `examples/adcs/case-model.md`)
 carry no cost sentence yet: the docs statement of the 8,000,000 / 6,000,000 / 2,000,000 relation and the coverage statement
 is step 15's.
+
+# WP30 build notes, status after "No floating requirements" and "Sampling" (thirteen traded metrics; stages 3a and 3b, before the regeneration)
+
+Both decisions are in `WP30-decisions.md` (the supervisor verbatim, then the assistant's call). Nothing is on `dev`, the data
+are not regenerated. Built on `wp30b` (over `wp30a`); the red set at the end of this section is the data-bound tests only.
+
+## Thirteen traded metrics
+
+| Piece | Where | State |
+|---|---|---|
+| Two calcs: `AvailablePower` marked MoP (it existed, unmarked), `BatteryPeakPowerRatio` (new: `BatteryPeakPower` over `EclipsePeakLoad`, MoP); `SlewExperiment` returns them after the momentum headroom (ten computed attributes) | `cubesat.sysml` | built |
+| `PowerRequirement` restated on `AvailablePower(c) > 0`, `BatteryPeakPowerRequirement` on `BatteryPeakPowerRatio >= 1`, same verdicts (the in-range claims stand, proved) | `cubesat.sysml` | built |
+| Oracle: `ATTRIBUTE_NAMES` thirteen (after `momentum_headroom`: `available_power_w`, `battery_peak_power_ratio`, then the two costs); `available_power_w` leaves the auxiliary block (one column, now earlier) | `cubesat_oracle.py` | built; the three named configurations and 1,000 + 1,000 designs run (below) |
+| Case spec: thirteen attributes, units, orientation (+1), group `power and energy` six; baseline configuration gains the two values (36.0764016 W, 5.714285714) | `case.py` | built |
+| Coverage: `METRIC_COLUMNS`, `SUBSYSTEM_OF`; the box section becomes "What each requirement reads, and what the fit makes of it": `requirement_reasons` computes, for the requirements of the momentum headroom, the available power and the battery peak power ratio, one of three readings from the K = 1 fit of each regime (participates, one axis with X at rho and the summed exponents, exponent zero) and adds the solver's verdict on the in-range claim; a requirement that reads no traded metric would be listed in `box` with no reason, and a test fails on it | `coverage.py` | built |
+| Behavioural view: the box is drawn only when a requirement reads no traded metric (none does); the caption prints each reasoned requirement's sentence; the analysis box lists the available power among the no-slew metrics | `project.py` | built, regenerated at the gate |
+| `k_terms.py`: `ATTRS`, `SHORT`, `ORIENT` thirteen, `DESIGN_VARS` with `fleet_size`; `tests/test_k_terms_case.py` shape `(3, 13)` (record-bound temperatures and margins marked "re-pin at the gate") | `examples/adcs/` | built (slow, runs at the gate) |
+| Contract amendment, version 20 (next free: `origin/dev` is at 19): thirteen metrics, the new columns and their order, `fleet_size`, 1,250 rows | `interface-contract.md` and `.toml` | edited in this branch; `test_interface_contract` checks everything but the data files |
+
+### Evidence
+
+Scratch data (not the repository's): `examples/adcs/model_v2/cubesat.sysml` as built, oracle on the first 1,000 designs of each regime
+(`build_sampler`, seed 0), three workers. Feasible designs 706 (primary) and 780 (baseline), the numbers of record, so the model
+change moved no flag. Available power 11.13 to 69.09 W and battery peak power ratio 1.04 to 15.02, strictly positive and at least 1
+on every design. `requirement_reasons` on those two tables (K = 1, the case's temperature rule):
+
+| Requirement | Reading | Numbers |
+|---|---|---|
+| `MomentumRequirement` | participates | exponent 0.113 primary, 0.173 baseline |
+| `PowerRequirement` | one axis with the energy balance | Spearman +0.9996 primary, +0.9997 baseline (spike C: the same to four places); the summed exponents 0.189 and 0.205 |
+| `BatteryPeakPowerRequirement` | exponent zero; tracks the depth of discharge | exponent 0.000 in both regimes; Spearman +0.970 and +0.975 (spike C: the same) |
+
+These are readings of the first 1,000 designs on the host and are re-computed from the regenerated 1,250 at the gate (the tests that
+pin them are in the red set and say so).
+
+## Sampling
+
+The supervisor's word is in `WP30-decisions.md`, "Sampling". The oracle is timed, then the largest round count that fits the hour is
+set once in the code (`experiments.definitions.SAMPLE_PER_REGIME`) and stated once in the contract.
+
+**Timing** (host, 10 cores, three workers, the first 1,000 designs of each regime, the model of this branch; the machine was shared,
+load average 9.5 of 10 at the start of the first run and 5 at the end of the second):
+
+| Run | Wall | Children CPU | Per 1,000 designs |
+|---|---|---|---|
+| `v2-primary`, 1,000 designs | 203.2 s | 562 s | 203 s |
+| `v2-baseline`, 1,000 designs | 206.7 s | 573 s | 207 s |
+| `v2-primary`, 100 designs (startup and chunk tails included) | 62.1 s | | 621 s (a fixed cost of about 15 to 20 s) |
+
+0.205 s per design wall at three workers; the oracle is about 0.56 s of CPU a design.
+
+**Arithmetic.** The regeneration at the gate is the five ledger entries (two regimes, 2 N designs; the 3 predictions, 6 check designs
+and 20 shared-subspace designs are about 30 designs and the proposer's fit) and the sensitivity record, five regenerations of both
+regimes (10 N designs, `sensitivity.regenerate` draws `exp.count` designs, so it scales with the sample). That is 12 N designs at 0.205 s:
+
+| N per regime | Oracle time, all of it | Five entries alone | Within the hour? |
+|---|---|---|---|
+| 1,000 (the earlier sample) | 41 min | 6.8 min | yes (the two analysis steps, about 7 min, bring it to 48) |
+| **1,250** | **51 min** | 8.6 min | **yes (with the analysis steps, about 60 min)** |
+| 1,500 | 62 min | 10.3 min | no |
+| 2,000 | 82 min | 13.7 min | no |
+| 3,000 (the default asked) | 123 min | 20.5 min | no |
+
+**Chosen: 1,250 per regime**, the largest round number inside the hour at three workers. The five entries alone would fit 3,000 (20.5
+minutes); what does not scale is the sensitivity record, 10 N designs for the comparison "identical across regenerations and to the
+committed data", which needs the same designs in every table. If the gate runs the host regeneration with the oracle's own default
+(the CPU count less one, nine workers here) the same arithmetic gives 3,000 in about 41 minutes, but the machine is shared and the
+sensitivity record's stated figure is for three workers, so it is not claimed. Raising N is one number, `SAMPLE_PER_REGIME`, the
+contract's two `rows`, and `tests/test_v2_data.py`'s `SAMPLE`.
+
+**Seed discipline.** Design i depends only on (seed, i) (tested in `test_cost_model`), so the first 1,000 designs of each new table are the
+earlier sample, the feasible sets of those rows stay 706 and 780, and the flags can be compared row by row (the gate's pass condition).
+The check designs, the predictions and the shared-subspace sample are as before (6, 3, 20); the proposer's training set grows to the
+feasible designs of 1,250.
+
+## Red set
+
+`REQUIRE_OPENSYSML=1 uv run pytest -q -m "not slow"` at the tip: 33 failed, 3 errors, 1807 passed (17 skipped, 464 deselected as slow). Every
+one reads the data of record or a generated file that the regeneration rewrites; none is a logic failure of the model, the oracle, the case or the
+tools (those pass: `test_cubesat_oracle`, `test_system_model_v2`, `test_system_model_v2_r1` less the two below, `test_model_checking_v2`,
+`test_cost_model`, `test_interface_contract` less the four header tests, `test_ledger_gate_wp30`, `test_sensitivity`, `test_wp30_cost_ladders`).
+
+| Group | Tests | Why red until the gate |
+|---|---|---|
+| ledger and data | `test_experiments::test_committed_ledger_verifies_and_predictions_precede_checks`; `test_mutation_v2` (3); `test_v2_data` (6: the two files' columns and rows, the count and seed, `experiments verify`, the check designs regenerate) | the entries hash the model and the definitions (1,250); the files have eight metrics and 1,000 rows |
+| contract | `test_interface_contract::test_r3_v2_data_file_header_dtypes_rows` (4, one per v2 file) | the headers and rows pinned by version 20 are the regenerated files' |
+| paper | `test_paper` (9); `test_paper_static_figures::test_model_views_in_the_paper_equal_the_models_views` | the notebook outputs and the committed figure are the eight-metric record's |
+| diagnostic pair | `test_diagnostic_pair` (3 errors) | the case spec's thirteen attributes against the committed data |
+| generated files | `test_model_coverage` (4: the committed coupling table, the structural columns, the empirical rows with `fleetSize`, the caption/table/CSV reason sentences); `test_system_model_v2_r1` (2: the committed views and caption); `test_case_model_howto::test_sections_block_is_generated_from_the_model` | `coverage.md`, `coverage.csv`, the views and `case-model.md` are regenerated at step 9 |
+| reasons from the data | `test_model_coverage::test_every_reasoned_requirement_has_a_computed_reading`, `::test_the_reason_numbers_are_the_spearman_of_the_stated_pair` | they read `available_power_w` and `battery_peak_power_ratio` in the regenerated tables (the readings were checked on scratch tables, above) |
+
+Slow tests not in the fast run and pinned to the record (`test_case.py`, `test_k_terms_case.py`): updated to thirteen in shape and counts,
+and marked "re-pin at the gate" where a number of record is in them.
