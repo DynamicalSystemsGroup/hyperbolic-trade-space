@@ -1,0 +1,5 @@
+- Staged head: `fbeede50cdc195ee7d590825a987321f0a7969eb` (fbeede5), the commit every reader read (WP28 D-1).
+- Served for the reads at http://127.0.0.1:8791/ (the staged site at that head).
+- The slices each reader was given came from the rendered pages, extracted from the DOM; light renders; the figure images exactly as served.
+- Two models read, 28 readers each (`readers.tsv`, column `model`); 56 readers over the 122 units of `units.tsv`; `templates/`, `briefs/` and `returns/` are verbatim copies.
+- The slices are not committed: they regenerate from the head with the scratchpad scripts `units.py` (the unit list) and `make_slices.py` (the slices).

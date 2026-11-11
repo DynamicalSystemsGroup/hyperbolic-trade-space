@@ -1,0 +1,123 @@
+unit_id	kind	parent	source
+sect-problem	section		paper/paper.ipynb cell 4: ## The decision problem
+sect-prior-art	section		paper/paper.ipynb cell 8: ## Prior art, by family
+tab-families	float	sect-prior-art	paper/paper.ipynb cell 10: {table} embed #tab-families (label tab-families-1)
+sect-notation	section		paper/paper.ipynb cell 14: ## Preliminaries and notation
+def-objects	statement	sect-notation	paper/paper.ipynb cell 14: prf:definition Three objects
+sect-definitions	section		paper/paper.ipynb cell 15: ## Definitions
+def-invariant	statement	sect-definitions	paper/paper.ipynb cell 15: prf:definition Invariant form
+def-posynomial	statement	sect-definitions	paper/paper.ipynb cell 15: prf:definition Posynomial
+def-temperature	statement	sect-definitions	paper/paper.ipynb cell 15: prf:definition Temperatures and band
+def-chart	statement	sect-definitions	paper/paper.ipynb cell 15: prf:definition The chart
+def-nlemma	statement	sect-definitions	paper/paper.ipynb cell 15: prf:definition The n-lemma
+fig-nlemma	float	sect-definitions	paper/paper.ipynb cell 16: {figure} figures/fig-nlemma.png (label fig-nlemma)
+def-reach	statement	sect-definitions	paper/paper.ipynb cell 17: prf:definition Reach and share
+def-exchange	statement	sect-definitions	paper/paper.ipynb cell 17: prf:definition Elasticity
+def-ascent	statement	sect-definitions	paper/paper.ipynb cell 17: prf:definition Ascent direction
+sect-methods	section		paper/paper.ipynb cell 18: ## Methods
+sect-results	section		paper/paper.ipynb cell 20: ## Results
+thm-invariant	statement	sect-results	paper/paper.ipynb cell 21: prf:theorem Homogeneity and the invariant form (L1)
+prop-shift	statement	sect-results	paper/paper.ipynb cell 22: prf:proposition Uniform shift (L2)
+thm-kkt	statement	sect-results	paper/paper.ipynb cell 24: prf:theorem Gradient and the simplex KKT conditions (L3)
+thm-convex	statement	sect-results	paper/paper.ipynb cell 25: prf:theorem Convexity of the fit (L4)
+thm-lme	statement	sect-results	paper/paper.ipynb cell 26: prf:theorem Log-mean-exp against log-sum-exp (L5)
+prop-cumulant	statement	sect-results	paper/paper.ipynb cell 28: prf:proposition Gaussian cumulant (L6)
+thm-elasticity	statement	sect-results	paper/paper.ipynb cell 29: prf:theorem Elasticities and improvement factors (L7)
+thm-chart	statement	sect-results	paper/paper.ipynb cell 31: prf:theorem The chart (L8)
+thm-pullback	statement	sect-results	paper/paper.ipynb cell 32: prf:theorem Pull-back to attributes (L9)
+thm-extension	statement	sect-results	paper/paper.ipynb cell 34: prf:theorem The posynomial extension (L10)
+thm-pareto	statement	sect-results	paper/paper.ipynb cell 35: prf:theorem A maximizer of V is Pareto-efficient (L11)
+thm-soft	statement	sect-results	paper/paper.ipynb cell 37: prf:theorem Soft-weight alternation (L16)
+thm-descent	statement	sect-results	paper/paper.ipynb cell 40: prf:theorem Level 1, descent (L15)
+lem-gap	statement	sect-results	paper/paper.ipynb cell 41: prf:lemma Level 2, numerical stationarity: the term gap (L12)
+lem-margin	statement	sect-results	paper/paper.ipynb cell 42: prf:lemma Assignment margin and stable radius (L13)
+prop-local	statement	sect-results	paper/paper.ipynb cell 43: prf:proposition Level 3, conditional local optimality (L14)
+cor-bound	statement	sect-results	paper/paper.ipynb cell 44: prf:corollary Approximate certificate (L14)
+thm-certificate	statement	sect-results	paper/paper.ipynb cell 46: prf:theorem Soft-fit certificate (L17)
+sect-search	section		paper/paper.ipynb cell 51: ## Search of the design space (preliminary)
+sect-case-construction	section		paper/paper.ipynb cell 52: ## Case construction
+fig-assembly-view	float	sect-case-construction	paper/paper.ipynb cell 53: {figure} figures/fig-assembly-view.png (label fig-assembly)
+fig-behavioural-view	float	sect-case-construction	paper/paper.ipynb cell 56: {figure} figures/fig-behavioural-view.png (label fig-behavioural)
+fig-tau-sweep	float	sect-case-construction	paper/paper.ipynb cell 62: {figure} embed #fig-tau-sweep (label fig-tau)
+sect-case-analysis	section		paper/paper.ipynb cell 67: ## Case analysis
+fig-planes-k1	float	sect-case-analysis	paper/paper.ipynb cell 72: {figure} figures/fig-planes-k1.png (label fig-plane-1)
+fig-planes-k3	float	sect-case-analysis	paper/paper.ipynb cell 76: {figure} figures/fig-planes-k3.png (label fig-plane-3)
+fig-chart-level	float	sect-case-analysis	paper/paper.ipynb cell 78: {figure} figures/fig-chart-level.png (label fig-chart-3)
+fig-tensions-k3	float	sect-case-analysis	paper/paper.ipynb cell 81: {figure} embed #fig-tensions-k3 (label fig-tensions-3)
+fig-regimes	float	sect-case-analysis	paper/paper.ipynb cell 89: {figure} embed #fig-regimes (label fig-regimes-1)
+sect-discussion	section		paper/paper.ipynb cell 99: ## Discussion
+sect-reproducibility	section		paper/paper.ipynb cell 102: ## Reproducibility and your own case
+sect-future	section		paper/paper.ipynb cell 103: ## Future work and final remark
+sect-process	section		paper/paper.ipynb cell 104: ## Acknowledgments and process
+sect-cited	section		paper/paper.ipynb cell 105: ## Works cited
+appendix-a	appendix		paper/supporting_material.ipynb cell 2: ## Appendix A. Notation and terms
+tab-A-register	appendix-table	appendix-a	paper/supporting_material.ipynb cell 4: register_table()
+appendix-b	appendix		paper/supporting_material.ipynb cell 5: ## Appendix B. Proofs, step for step with their scripts
+tab-B-how-to-read	appendix-table	appendix-b	paper/supporting_material.ipynb cell 7: how_to_read()
+tab-B-proof-map	appendix-table	appendix-b	paper/supporting_material.ipynb cell 8: proof_map()
+tab-B-proofs-fit	appendix-table	appendix-b	paper/supporting_material.ipynb cell 10: proofs_fit()
+tab-B-proofs-solver	appendix-table	appendix-b	paper/supporting_material.ipynb cell 12: proofs_solver()
+tab-B-checker	appendix-table	appendix-b	paper/supporting_material.ipynb cell 14: checker()
+appendix-c	appendix		paper/supporting_material.ipynb cell 15: ## Appendix C. The case's model: how the table of metrics came to be
+tab-C-configuration_space	appendix-table	appendix-c	paper/supporting_material.ipynb cell 18: configuration_space()
+tab-C-evaluation	appendix-table	appendix-c	paper/supporting_material.ipynb cell 20: evaluation()
+tab-C-attribute_sources	appendix-table	appendix-c	paper/supporting_material.ipynb cell 21: attribute_sources()
+tab-C-feasibility	appendix-table	appendix-c	paper/supporting_material.ipynb cell 23: feasibility()
+tab-C-conditioning	appendix-table	appendix-c	paper/supporting_material.ipynb cell 25: conditioning()
+tab-C-metric_table	appendix-table	appendix-c	paper/supporting_material.ipynb cell 27: metric_table()
+tab-C-metric_associations	appendix-table	appendix-c	paper/supporting_material.ipynb cell 29: metric_associations()
+tab-C-datasets	appendix-table	appendix-c	paper/supporting_material.ipynb cell 31: datasets()
+tab-C-planted_example	appendix-table	appendix-c	paper/supporting_material.ipynb cell 33: planted_example()
+appendix-d	appendix		paper/supporting_material.ipynb cell 34: ## Appendix D. Extended results: what the method found in the table
+tab-D-temperature_selection	appendix-table	appendix-d	paper/supporting_material.ipynb cell 37: temperature_selection()
+tab-D-k_diagnostics	appendix-table	appendix-d	paper/supporting_material.ipynb cell 39: k_diagnostics()
+tab-D-exponents_and_terms	appendix-table	appendix-d	paper/supporting_material.ipynb cell 41: exponents_and_terms()
+tab-D-regime_comparison	appendix-table	appendix-d	paper/supporting_material.ipynb cell 43: regime_comparison()
+tab-D-sensitivity_variants	appendix-table	appendix-d	paper/supporting_material.ipynb cell 45: sensitivity_variants()
+tab-D-refits_by_category	appendix-table	appendix-d	paper/supporting_material.ipynb cell 47: refits_by_category()
+tab-D-candidate_designs	appendix-table	appendix-d	paper/supporting_material.ipynb cell 49: candidate_designs()
+tab-D-termination_records	appendix-table	appendix-d	paper/supporting_material.ipynb cell 51: termination_records()
+tab-D-margin_reading	appendix-table	appendix-d	paper/supporting_material.ipynb cell 53: margin_reading()
+tab-D-nondominated	appendix-table	appendix-d	paper/supporting_material.ipynb cell 55: nondominated()
+tab-D-propose_predict_check	appendix-table	appendix-d	paper/supporting_material.ipynb cell 57: propose_predict_check()
+tab-D-stability	appendix-table	appendix-d	paper/supporting_material.ipynb cell 59: stability()
+tab-D-conditioning_diagnostic	appendix-table	appendix-d	paper/supporting_material.ipynb cell 61: conditioning_diagnostic()
+tab-D-own_rows_refit	appendix-table	appendix-d	paper/supporting_material.ipynb cell 63: own_rows_refit()
+tab-D-planted_recovery	appendix-table	appendix-d	paper/supporting_material.ipynb cell 66: planted_recovery()
+tab-D-mean_slack_fixed	appendix-table	appendix-d	paper/supporting_material.ipynb cell 69: mean_slack_fixed()
+tab-D-pca_chain	appendix-table	appendix-d	paper/supporting_material.ipynb cell 72: pca_chain()
+tab-D-requirements_at_the_frontier	appendix-table	appendix-d	paper/supporting_material.ipynb cell 74: requirements_at_the_frontier()
+tab-D-design_sets_comparison	appendix-table	appendix-d	paper/supporting_material.ipynb cell 76: design_sets_comparison()
+appendix-e	appendix		paper/supporting_material.ipynb cell 77: ## Appendix E. Assumptions and abstraction gaps
+tab-E-gaps	appendix-table	appendix-e	paper/supporting_material.ipynb cell 79: gaps_table()
+appendix-f	appendix		paper/supporting_material.ipynb cell 80: ## Appendix F. Computational reproducibility
+tab-F-toolchain	appendix-table	appendix-f	paper/supporting_material.ipynb cell 83: toolchain()
+tab-F-commands	appendix-table	appendix-f	paper/supporting_material.ipynb cell 87: commands()
+tab-F-reproduction	appendix-table	appendix-f	paper/supporting_material.ipynb cell 89: reproduction_table()
+appendix-g	appendix		paper/supporting_material.ipynb cell 90: ## Appendix G. Register of prior art
+tab-G-register	appendix-table	appendix-g	paper/supporting_material.ipynb cell 94: register()
+tab-G-reading_pass_table	appendix-table	appendix-g	paper/supporting_material.ipynb cell 96: reading_pass_table()
+docs-index	docs-page		docs/index.md
+docs-getting-started	docs-page		docs/getting-started.md
+docsfig-first-fit	docs-figure	docs-getting-started	docs/generated/figures/first-fit-light.png
+docs-user-guide-overview	docs-page		docs/user-guide/overview.md
+docs-user-guide-conditioning	docs-page		docs/user-guide/conditioning.md
+docs-user-guide-fitting	docs-page		docs/user-guide/fitting.md
+docsfig-three-terms	docs-figure	docs-user-guide-fitting	docs/generated/figures/three-terms-light.png
+docs-user-guide-tensions	docs-page		docs/user-guide/tensions.md
+docsfig-tension-report	docs-figure	docs-user-guide-tensions	docs/generated/figures/tension-report-light.png
+docs-user-guide-chart	docs-page		docs/user-guide/chart.md
+docsfig-log-plane	docs-figure	docs-user-guide-chart	docs/generated/figures/log-plane-light.png
+docsfig-chart-holes	docs-figure	docs-user-guide-chart	docs/generated/figures/chart-holes-light.png
+docs-user-guide-prediction	docs-page		docs/user-guide/prediction.md
+docs-user-guide-termination	docs-page		docs/user-guide/termination.md
+docs-user-guide-limitations	docs-page		docs/user-guide/limitations.md
+docs-api	docs-page		docs/api.md
+docs-examples	docs-page		docs/examples.md
+docsfig-adcs-tensions	docs-figure	docs-examples	docs/generated/figures/adcs-tensions-light.png
+docsfig-adcs-coordinates	docs-figure	docs-examples	docs/generated/figures/adcs-coordinates-light.png
+docsfig-ternary-planted	docs-figure	docs-examples	docs/generated/figures/ternary-planted-light.png
+docs-theory	docs-page		docs/theory.md
+docs-further-reading	docs-page		docs/further-reading.md
+root-index	root		site/index.html (images: why-regions-light.png, figure1.png)
+readme	readme		README.md
