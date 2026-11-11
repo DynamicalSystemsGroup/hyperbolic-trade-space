@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The twelfth PM's batch 1 (2026-11-11, 14:10; head e10a4f1):** WP25-5 executed (50 files, two megabytes; thirteen page
+  renders held because a review cites them by name); the corollary's five wording items landed (net minus one word,
+  a ledger cut row); the Windows job gains the slow shard; the release checklist and the reviewer's guide skeleton
+  drafted for the assistant; the review list and grid current. The assistant's calls: the two wording choices
+  accepted; the release checklist states the platforms as they are (Linux and, after WP34, Windows in CI; macOS by the
+  tier 2 watcher), points at Appendix F for the cold reproduction, names the assistant as owner of D2 to D4, and says
+  no pull request is opened by the assistant (the mandate governs: the candidate is dev at a named head; the chief
+  engineer opens or merges after his review); the closed worktrees pruned.
+
 - **The gate's owner (2026-11-11, 14:00).** The assistant spawned a dedicated gate runner (Sonnet) on the wp30b worktree
   for steps 7 to 12 of the checklist, running the long steps as background tasks and waiting on them, the merge to dev
   last so dev never goes red; the assistant times the oracle on the quiet machine and sets the sample size, writes
