@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The gate's last mile (2026-11-11, 16:50).** The sensitivity record's analyse step has a circular dependency (its
+  quantities call the paper's sentence generators, which read the results file the step writes); the runner works
+  around it in the scratchpad and records the failure; the cascade fixes it in the repository. The push plan: the
+  notebooks re-executed on the branch before the push (host-recorded), so that at most two prose tests (Figure 9's
+  regions, D.12's values) are red on dev until the PM's first cascade unit lands within the hour: a bounded red window
+  the assistant accepts and records; the watcher resumes after that unit.
+
 - **Renders for the supervisor (2026-11-11, 15:50; his words):** "the next time it makes sense inflow, give me a clean
   render because i like to be able to see the progress as your work advances". Standing practice: at each milestone
   that changes what he sees (the gate's push, the cascade's paper and docs units, the figure rebuilds, the final round),
