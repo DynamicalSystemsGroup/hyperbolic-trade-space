@@ -162,3 +162,22 @@ testing beyond the assembly line (vibration, thermal vacuum); licensing; a groun
 launch slot minimum and broker fees. The 2,000,000 USD allowance inside the 8,000,000 full budget is described as
 covering these; the requirement's text says the covered cost is the bus (structure, power, computer and radios in the
 bus block), the attitude-control parts, assembly and wholesale launch.
+
+## No floating requirements (2026-11-11, 12:00; the supervisor, verbatim, on the behavioural view's box)
+
+"we still have some requirements with no traded metric? it seems like these should gave relationships to traded
+metrics. its fine if they fall out and don't bind in the learned trade-off surfaces but i dont love having floating
+requirements it feels like a modeling gap to a reader"
+
+**The assistant's call (spike C's D-1 moves from (a) to (c)).** All three requirements of the box read a traded
+metric in the revision: the momentum headroom (already the ninth metric), the available power (`PowerRequirement`
+reads it; one axis with the energy balance at Spearman 0.9996, which the association step names and the reading
+merges) and the battery peak power ratio (`BatteryPeakPowerRequirement` reads it; it tracks the depth of discharge at
+0.97 and the fit gives it exponent zero). Both are measures of performance in the power and energy group, strictly
+positive on the feasible set (available power is positive wherever the requirement holds, and the fit uses feasible
+designs). With the two pricing metrics the traded set is thirteen; the contract amendment states it. The box
+"requirements that read no traded metric" leaves the view; the behavioural view's computed reasons (D-2 (a)) now say,
+per requirement, whether its metric participates in the fit, is one axis with another, or carries no exponent, which
+is the analysis outcome he asked the redundancy to be. Same gate, same cascade; the paper's body says in one sentence
+that two of the thirteen do not participate and why, the detail in Appendix C and D. Listed for his review as the
+implementation of his word.
