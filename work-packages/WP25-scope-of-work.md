@@ -28,6 +28,9 @@ quoted in `WP25-decisions.md`; the inventory and the review are rewritten to the
   `WP25-review.md`; scope `WP25-3-scope-of-work.md` (own file: the two open file decisions and the survey); 209 rows, 2
   deleted (de3ce61 `spike-ternary/report.md`; 5a3ee03 `v1-v2-comparison.md`), 61 held (WP11's, WP26's and WP27's files, `search-prior-art.md`,
   `P10-review.md`), 148 kept; inventory and review rewritten.
+- Instance 4 (WP28 accepted at 552fbc9): 2026-11-11, scope `WP25-4-scope-of-work.md`; 466 rows, 2 deleted (ef04524 `paper-appendices-sketch.md`,
+  `view-editor-harness.md`; plus T-11's two PNGs at 9216154), 194 held (WP28's 151 reader runs, WP31's, WP11's, WP29/30's, S-5's, `search-prior-art.md`,
+  `P10-review.md`), 272 kept; amendment 18, the vocabulary command exits 0 by default; inventory and review rewritten.
 
 Sizing at `dev` cc409f8: 622 tracked files. A first pass (each tracked file's basename grepped across every other
 tracked file; it credits a reference to any file sharing the name, so it undercounts) finds under

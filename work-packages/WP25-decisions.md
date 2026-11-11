@@ -111,3 +111,15 @@ with OD1 (a) the vocabulary tool uses the baseline by default and CLAUDE.md's co
 the stale generated images by hand once and git-ignore the pattern; OD3 (b) delete the three notes read only by
 records, hold search-prior-art.md for WP12. Quote this in WP25-decisions.md as instance 4's gate. It runs after WP28's
 acceptance."
+
+## Instance 4 executed (2026-11-11)
+
+From `dev` 552fbc9 (WP28 accepted), in the executor's worktree `wp254`: T-1 amendment 18 (898f1de; the scope's "17" was
+taken by WP31's page), T-2 (a4fe8f7, bf3929d), T-4 OD1 (a) (037d9cc), T-5 OD2 (b) (eight git-ignored images removed by
+hand in the main checkout; no tracked change), T-6 and T-7 in the inventory (ad1eea9: 466 rows, 272 keep, 194 hold, 0
+delete), T-9 OD3 (b) in one deletion commit (ef04524, "WP25: 2 files deleted (fourth instance)"); T-11 was done at
+9216154. **OD3 (b) applied to two of the three notes:** `paper-outline-v1-baseline.md` has two live readers
+(`paper-outline-v2-search.md`, `paper-prior-art-sources.md`, the second read by `paper/prior_art.yaml` and
+`tests/test_references.py`), so it stays, held for the PM. T-3 and O-8 (Section 9's "+0.99" against D.4's threshold) are
+routed to the paper stream; T-8 and T-10 are WP8b's. Review: `WP25-review.md`. The driver's acceptance, when given, is
+quoted here verbatim.
