@@ -209,6 +209,20 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Choosing K in the documentation (2026-11-10, 23:25; the supervisor, verbatim):** "if its not already planned i also
+  think the documentation for this package (but not necessarily the paper) needs to cover how to select K. we already
+  did some research sweeping K and interpreting the sweep so it shouldn't be totally new work. it is however an
+  obvious question a user should ask and we need to answer it. best if both methods and examples are provided. its
+  similar to the elbow seeking heuristics for piking a number of principle components in PCA but our limit behavior
+  in large K is different so make sure not to lean too hard on the analogy that." The driver's disposition: a docs
+  package (the PM numbers it) scoped under the lifecycle with a light first stage (gather what exists: the fitting
+  page's "Choosing K, the temperature and the band" section, k_terms.py's sweep, Appendix D's K tables, the planted
+  recovery, the term gap and share, the stable radius); then a page or expanded section that gives methods and
+  worked examples (synthetic and the cubesat), states the large-K limit from the data and the derivations rather
+  than by analogy, names the PCA elbow heuristic once and says where the analogy stops; cold reads by task readers
+  ("choose K for this table and say why"); the glossary, the contract's docs.pages (an amendment if a page is added)
+  and the claims register follow. Not the paper.
+
 - **PM rotation and decisions (2026-11-10, 23:05).** The seventh PM handed over at 37bc97e and stopped; the eighth
   started on Sonnet with the models-by-role rule in its brief. The driver's decisions: spike B1's D-1 (a), the momentum
   headroom as the ninth traded metric, executed inside Track B with the cost-model change so the data gate happens
