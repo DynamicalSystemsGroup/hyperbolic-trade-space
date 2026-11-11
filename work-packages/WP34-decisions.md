@@ -33,3 +33,10 @@ paths; the import-time check keeps its purity assertion and takes a platform-awa
 the probe mismatch is diagnosed on the runner before a fix (a platform-dependent field recorded per platform, or that
 one field excluded with the reason, never the whole comparison); then the Windows jobs join the gate matrix, the
 README and the reproducibility appendix state the platforms per shard, and a third spike proves both Windows shards.
+
+**Stage 4 landed (fc4f12f, 9b20098, d210b27, 8507df5, ee3580a; 14:45):** the three fixes (posix paths; the platform-aware
+import limit with purity unchanged; the PATH strip recognising `z3.exe` and `cvc5.exe`, the probe's recorded facts and
+comparison untouched) and the Windows shards in every dispatch (the workflow has no push trigger, so every dispatch
+is a gate run; `-f windows=false` skips them; the toolkit provision step no longer tolerated to fail); the README's
+environment line states the platforms per shard. The third spike is dispatched on ee3580a to prove both Windows
+shards; acceptance follows its green.
