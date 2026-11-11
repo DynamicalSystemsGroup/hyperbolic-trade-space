@@ -5309,3 +5309,159 @@ disposition = "keep"
 source = "WP28 CR-38 (the sentence that stayed in Section 8 when the comparison of equations (1) and (2) moved to Section 6.2); pinned at the close of WP28"
 note = "The case's conditioner is LogAffinePreconditioner with scaler='standard' (case.conditioner_for default); the test checks the column means of the log of the conditioned metrics are below 1e-12 in both regimes (7.4e-15 and 3.6e-15 on the data of record, C421)."
 
+
+[[claim]]
+id = "C427"
+fragment = "The mean slack falls with every added term by construction, and a table may show no break."
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "S"
+backing = ["glossary:mean-slack", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "mean_slack_ falls with K by construction (glossary); the page's sweep helper asserts a positive drop at every K on every table it runs, and the primary cubesat regime shows no break."
+
+[[claim]]
+id = "C428"
+fragment = "`term_share_.min()` is the share of the near-frontier designs in the thinnest term's cell"
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "S"
+backing = ["glossary:term-share", "test:tests/test_estimator.py::test_k_terms_attributes_conventions"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "term_share_ is the fraction of near-frontier rows in each term's cell (glossary); its minimum is the thinnest term."
+
+[[claim]]
+id = "C429"
+fragment = "It is noisy: draws of one procedure differ by several tenths on the cubesat below, so it offers no threshold."
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "R"
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "Primary cubesat, three outer draws of two resamples each: 0.09 to 0.45 at K = 2, 0.25 to 0.69 at K = 3, 0.17 to 0.54 at K = 4 (WP31 readout scripts agree in kind: ranges overlap). Three draws, not a rate."
+
+[[claim]]
+id = "C430"
+fragment = "`termination_.status` and `termination_.radius` say the optimizer finished and the assignments hold under small changes of the terms. Every fit below is certified at every K tried"
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "S"
+backing = ["glossary:certificate", "glossary:stable-radius", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "Certificate and stable radius as the glossary defines them; the sweep helper asserts status certified (not_applicable at K = 1) for every fit it runs."
+
+[[claim]]
+id = "C431"
+fragment = "The smallest eigenvalue per term flags a nearly flat direction"
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "S"
+backing = ["lemma:L17", "test:tests/test_estimator.py::test_conditioning_drops_for_nearly_collinear_metrics"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "As C340 on the termination page: a small value marks a nearly flat direction; the page adds that it compares metrics within a fit, which is how conditioning_ is defined (one value per term)."
+
+[[claim]]
+id = "C432"
+fragment = "With two planted terms the mean slack drops by 0.108 at K = 2 and by 0.005 or less after; both terms are found at K = 2."
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "R"
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "make_frontier_data(400, 4, n_terms=2, random_state=0) at tau 50, random_state 0: drops 0.108, 0.005, 0.004, 0.003, 0.003; found 2 of 2 at K = 2. One table, not a rate."
+
+[[claim]]
+id = "C433"
+fragment = "With three, table 0 drops by 0.163 and 0.029, then 0.005 or less, and all three are found at K = 3. Table 1 drops by 0.181, then 0.006 or less, and finds two of the three at every K"
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "R"
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "n_terms=3 tables, random_state 0 and 1: drops 0.163, 0.029, 0.005, 0.004 (found 3 at K = 3) and 0.181, 0.006, 0.004, 0.003 (found 2 at K = 2 to 5). Two tables, not a rate; the elbow reads the terms the fit recovers."
+
+[[claim]]
+id = "C434"
+fragment = "On table 0 the movement is 0.04 and 0.02 at K = 3, and 0.23 and 0.24 at K = 5."
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "R"
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "Planted K0 = 3 table 0, two outer draws of two resamples each; the block prints 0.04 0.02 and 0.23 0.24."
+
+[[claim]]
+id = "C435"
+fragment = "The stock regime drops by 0.065 and 0.068, then 0.011 and 0.004: a break at K = 3, where the thinnest term holds 0.17."
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "R"
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "Stock regime at its K = 1 temperature: slack 0.179, 0.114, 0.046, 0.035, 0.031; thinnest term share 0.17 at K = 3. Agrees with the WP31 readout sweep (cubesat-stock.csv)."
+
+[[claim]]
+id = "C436"
+fragment = "The primary regime drops by 0.112, 0.044, 0.017 and 0.010: the curve bends with no break, so the mean slack cannot choose K, and its thinnest term holds 0.07 already at K = 2. Every fit is certified, with a stable radius from 3e-06 to 1e-04."
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "R"
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "Primary regime at its K = 1 temperature: slack 0.243, 0.132, 0.088, 0.070, 0.061; thinnest share 0.07 at K = 2; radii 1e-04, 1e-05, 4e-05, 3e-06 (primary) and 6e-05, 9e-05, 3e-05, 4e-06 (stock). 'No break' is the reading of drops that shrink steadily; stated as the reading."
+
+[[claim]]
+id = "C437"
+fragment = "Over three draws the primary regime's movement is 0.09 to 0.45 at K = 2, 0.25 to 0.69 at K = 3 and 0.17 to 0.54 at K = 4. The ranges overlap, so this check excludes none."
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "R"
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "Printed by the block: [0.09 0.1 0.45], [0.25 0.31 0.69], [0.23 0.54 0.17]. Three draws."
+
+[[claim]]
+id = "C438"
+fragment = "variance explained ends at d components"
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "L"
+backing = ["bib:jolliffe2016principal"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "The standard fact that the d components of a table of d metrics exhaust its variance; the comparison is to the number-of-components elbow heuristic, named once."
+
+[[claim]]
+id = "C439"
+fragment = "In every sweep above it is still falling at the largest K tried, fitted terms matching no planted term appear beyond K0, and the thinnest term's share reaches 0.00 on the two-term table at K = 5."
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "R"
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP31 U3"
+note = "The sweep helper asserts the last drop exceeds 0.002 on every table; unmatched fitted terms appear at K > K0 on all three planted tables (K0 = 2: K = 3, 4; K0 = 3: K = 4 on table 0, K = 3 on table 1); thinnest share 0.00 at K = 5 on the K0 = 2 table."

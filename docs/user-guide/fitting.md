@@ -62,7 +62,7 @@ Hold tau fixed across numbers of terms, selected at K = 1.
 ## Several terms
 
 One term is flat in log space, with constant elasticities. When the rates vary by region, fit
-`n_terms=K` terms, where you choose K:
+`n_terms=K` terms, where you choose K ([Choosing K](choosing-k.md)):
 
 ```python {.runnable}
 from hyperbolic_trade_space import (
@@ -95,43 +95,7 @@ rows. Options:
 and term shares. At one term `cell_` is all zeros and `term_share_` is
 `[1.0]`.
 
-## Choosing K, the temperature and the band
-
-Compare numbers of terms at one fixed temperature, by `mean_slack_`, never by `objective_` and never
-at a temperature re-selected for each K. `mean_slack_` falls with K by construction, so it cannot choose
-K alone: a term whose exponents change between bootstrap resamples or restarts is a splinter, a
-few designs fitted alone, and K is too large.
-
-```python {.runnable}
-import sys
-
-import numpy as np
-from hyperbolic_trade_space import HyperbolicTradeSpace
-
-sys.path.insert(0, "examples/adcs")
-import case
-
-study = case.load_study("primary")
-M, tau = study.M, case.fit_study(study, K=1).tau
-rng = np.random.default_rng(0)
-for K in (1, 2, 3, 4):
-    fit = lambda A, s: HyperbolicTradeSpace(
-        n_terms=K, temperature=tau, random_state=s
-    ).fit(A)
-    ref = fit(M, 0)
-    moved = np.zeros(K)
-    for s in range(3):
-        W = fit(M[rng.choice(len(M), len(M))], s).exponents_
-        d = np.abs(W[:, None] - ref.exponents_).sum(axis=2)
-        moved = np.maximum(moved, d.min(axis=0))
-    print(K, round(ref.mean_slack_, 3), np.round(moved, 2))
-```
-
-On the cubesat table of the [examples](../examples.md), where terms leave metrics out, the
-mean slack falls from 0.243 at K = 1 to 0.132, 0.088 and 0.07. The last column, per term: its
-exponent vector's distance to the nearest resampled term, the largest over three resamples (summed
-absolute differences, at most 2). The values belong to this draw of resamples, so none of them is a
-threshold for K.
+## The temperature and the band at several terms
 
 `select_temperature` needs a target the fit can reach. With several terms the term planes are not
 supporting planes, so `frac_above_` levels off above zero as tau grows (about 0.30 on the table of

@@ -64,6 +64,7 @@ nav:
       - Overview: user-guide/overview.md
       - Conditioning: user-guide/conditioning.md
       - Fitting: user-guide/fitting.md
+      - Choosing K: user-guide/choosing-k.md
       - Tensions: user-guide/tensions.md
       - Chart: user-guide/chart.md
       - Prediction: user-guide/prediction.md

@@ -38,6 +38,7 @@ NAV_PAGES = [
     "user-guide/overview.md",
     "user-guide/conditioning.md",
     "user-guide/fitting.md",
+    "user-guide/choosing-k.md",
     "user-guide/tensions.md",
     "user-guide/chart.md",
     "user-guide/prediction.md",
@@ -56,7 +57,8 @@ BUDGETS = {
     "getting-started.md": 400,
     "user-guide/overview.md": 500,
     "user-guide/conditioning.md": 700,
-    "user-guide/fitting.md": 791,  # 800 until WP31 U2 (the 0.31 sentence)
+    "user-guide/fitting.md": 668,  # 800 until WP31 U2 and U3
+    "user-guide/choosing-k.md": 677,  # WP31 U3
     "user-guide/tensions.md": 700,
     "user-guide/chart.md": 557,  # 600 until WP28 X-1; 561 until the holes block printed
     "user-guide/prediction.md": 350,
@@ -67,7 +69,7 @@ BUDGETS = {
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 6867  # 6845 until WP31 U1 (conditioning pointer: +31), U2 (the 0.31 sentence: -9)
+TOTAL_BUDGET = 7421  # 6845 until WP31 (U1 +31, U2 -9, U3 +554)
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
