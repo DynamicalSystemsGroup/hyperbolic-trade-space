@@ -72,6 +72,34 @@ The smallest eigenvalue of the restricted Hessian over the participating
 exponents (above 1e-3), one per term. A small value marks a nearly flat direction. It is `nan` at infinite
 temperature and for a term with fewer than two participating exponents.
 
+Why it matters: along a flat direction many exponent vectors fit almost equally well, so the reported
+exponents and the contending set are not pinned by the data; two metrics that move together in log space
+cause it. How it is computed: the Hessian of the objective at the fit is the temperature times the
+support-weighted covariance of the log-metrics, restricted to the participating exponents and to
+directions that keep their sum fixed; the smallest eigenvalue is read off, and the fit is untouched. On
+your own problem, read `conditioning_` after `fit`, comparing fits at one temperature because the value
+scales with it. A value far below a comparable fit's is a prompt for feature engineering: drop or combine
+the metrics that move together, change the [conditioning](conditioning.md), refit and see whether it rises.
+
+```python {.runnable}
+import numpy as np
+from hyperbolic_trade_space import (
+    HyperbolicTradeSpace,
+    make_frontier_data,
+)
+
+Xf, _ = make_frontier_data(400, 3, random_state=0)
+Xr = Xf.copy()
+rng = np.random.default_rng(0)
+# the second metric nearly repeats the first
+Xr[:, 1] = Xr[:, 0] * np.exp(1e-3 * rng.standard_normal(400))
+for data in (Xf, Xr):
+    fit = HyperbolicTradeSpace(
+        temperature=20.0, min_exponent=0.1
+    ).fit(data)
+    print(fit.conditioning_)
+```
+
 ## How small is a small margin
 
 The margin `gamma` is in score units (log metrics), the scale of the band 1/tau. Level 3 holds
