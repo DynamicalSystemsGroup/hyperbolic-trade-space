@@ -277,8 +277,8 @@ package CubesatStakeholders {
                budget, the unit cost and the fleet cost, the pointing error and the power
                requirement, each as its concern holds it.
                Evidence: the primary dataset's verdicts, computed by the model's requirements in the
-               oracle; the current entry is the close-out gate's container regression, which
-               re-pinned the outputs in hts-paper. */
+               oracle; the current entry is the WP30 data gate's host regeneration (the
+               container regression of that gate follows and moves the pointer). */
         objective {
             verify lowCost.launchBudget;
             verify lowCost.unitCost;
@@ -286,10 +286,10 @@ package CubesatStakeholders {
             verify pointingAndSlewing.pointingError;
             verify powerAndEnergy.power;
         }
-        :>> ledgerEntry = "v2-primary@8";
-        :>> recordEntry = "Container regression at the WP23 close-out gate (2026-11-10, image 877c42cc10e3, head 61cef31)";
+        :>> ledgerEntry = "v2-primary@11";
+        :>> recordEntry = "Host regeneration at the WP30 data gate (2026-11-11, no container)";
         :>> testNode = "tests/test_cubesat_oracle.py::test_the_flags_come_from_the_requirements_not_from_python";
-        :>> environment = "877c42cc10e3";
+        :>> environment = "host";
     }
     verification slewEvidence : EvidenceCase {
         doc /* What needs the measured slew (as SlewVerification): settling, control effort,
@@ -308,9 +308,9 @@ package CubesatStakeholders {
             verify powerAndEnergy.batteryPeakPower;
             verify powerAndEnergy.eclipseDepthOfDischarge;
         }
-        :>> ledgerEntry = "v2-primary@8";
-        :>> recordEntry = "Container regression at the WP23 close-out gate (2026-11-10, image 877c42cc10e3, head 61cef31)";
+        :>> ledgerEntry = "v2-primary@11";
+        :>> recordEntry = "Host regeneration at the WP30 data gate (2026-11-11, no container)";
         :>> testNode = "tests/test_case.py::test_feasible_mask_counts_on_frozen_data";
-        :>> environment = "877c42cc10e3";
+        :>> environment = "host";
     }
 }

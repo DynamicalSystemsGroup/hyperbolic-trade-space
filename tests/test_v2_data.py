@@ -76,16 +76,39 @@ def _git(*args) -> str | None:
 # ---------------------------------------------------------------------------------------------
 # R-13: the files
 # ---------------------------------------------------------------------------------------------
+WP30_METRICS = [
+    "momentum_headroom",
+    "available_power_w",
+    "battery_peak_power_ratio",
+    "unit_cost_usd",
+    "fleet_cost_usd",
+]
+
+
 def v2_columns(frozen_columns) -> list[str]:
     """The v2 header a frozen header implies: the slew-time columns out (WP23 G5), the
-    check-design predictions' standard deviation of the time metric on the settling time."""
+    check-design predictions' standard deviation of the time metric on the settling time, and at
+    the WP30 data gate the fleet size after the gains (after the tracker grade in the predictions)
+    and the five columns after the depth of discharge (the available power moved up from the
+    auxiliary block)."""
     gone = {
         "slew_time_s",
         "slew_time_05deg_s",
         "eclipse_reserve_wh",
+        "available_power_w",  # moved up, below
     }  # the reserve: the WP23 close-out
     rename = {"pred_std_slew_time_s": "pred_std_settling_time_s"}
-    return [rename.get(c, c) for c in frozen_columns if c not in gone]
+    out = []
+    for c in frozen_columns:
+        if c in gone:
+            continue
+        out.append(rename.get(c, c))
+        predictions = "pred_log_v" in frozen_columns
+        if (c == "Kd" and not predictions) or (c == "st_grade" and predictions):
+            out.append("fleet_size")
+        if c == "dod_eclipse":
+            out.extend(WP30_METRICS)
+    return out
 
 
 @pytest.mark.parametrize("name", sorted(ROWS))
@@ -94,8 +117,8 @@ def test_v2_file_has_the_frozen_columns_less_slew_time_in_order_and_the_stated_r
     assert list(v2.columns) == v2_columns(frozen.columns)
     assert not {c for c in v2.columns if "slew_time" in c}
     assert len(v2) == ROWS[name]
-    assert len(frozen) == ROWS[name]
-    assert v2["design_id"].tolist() == frozen["design_id"].tolist()
+    assert len(frozen) == min(ROWS[name], 1000)  # the frozen files are the first 1,000 designs
+    assert v2["design_id"].tolist()[: len(frozen)] == frozen["design_id"].tolist()
 
 
 def test_the_v2_directory_holds_exactly_the_four_files():
@@ -343,7 +366,7 @@ def test_changed_columns_and_design_ids_are_reported():
         "primary", v1, v2.drop(columns=["Kd"]).iloc[1:], dict(cmp.DEFAULT_TOL)
     )
     assert "primary:columns" in got.exceeded and "primary:ids" in got.exceeded
-    assert got.only_v1 == ["Kd"] and not got.ids_equal and got.n_shared_ids == 999
+    assert got.only_v1 == ["Kd"] and not got.ids_equal and got.n_shared_ids == len(v1) - 1
 
 
 def test_register_rows_are_parsed_from_the_table(tmp_path):

@@ -20,7 +20,7 @@ import pytest
 # Slow module: shared fixtures cost minutes (verification in tiers); not in the fast suite.
 pytestmark = pytest.mark.slow
 
-N = 300  # small sample: the first N feasible designs (thirteen metrics need more than 150 for K = 2)
+N = 300  # small sample: the first N feasible designs (thirteen metrics need over 150 for K = 2)
 ADCS = Path(__file__).resolve().parents[1] / "examples" / "adcs"
 
 

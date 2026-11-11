@@ -227,7 +227,7 @@ the frozen columns less the slew-time columns `slew_time_s` and `slew_time_05deg
 version 15, less `eclipse_reserve_wh`, in the frozen order. The traded metrics of the v2 data are
 thirteen since version 20 (`case.v2.traded_metrics`: the eight of version 15, then `momentum_headroom`,
 `available_power_w`, `battery_peak_power_ratio`, `unit_cost_usd` and `fleet_cost_usd`); the seventh
-configuration variable `fleet_size` (a float column of whole numbers 1 to 30) follows `Kd` in the headers
+configuration variable `fleet_size` (an integer column, whole numbers 1 to 30; the oracle takes it as a float configuration value) follows `Kd` in the headers
 of the main files and the check designs and follows `st_grade` in the predictions; each regime file has
 3,000 rows; the one time metric
 is the settling time, read by event detection (`case.v2.settling_time_method`), the hold time: the

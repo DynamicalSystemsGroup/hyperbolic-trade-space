@@ -544,6 +544,22 @@ record is now `877c42cc10e3`.
 
 **The robustness image** (`hts-alt` 81e06426f7b3, Ubuntu 24.04, the same `uv.lock`, `HTS_ENVIRONMENT_OF_RECORD=0`): a container `hts-alt-gate` from the image, this commit's history bundle fetched and the tree reset to it (the lock is unchanged since the image's head d66c106, so its environment is the locked one), the full suite with the tolerance branches, `uv run pytest -q -n 4` on 8a732ed (`git status` clean): RECORD: **2187 passed, 17 skipped, 1 xfailed, 0 failed** in 735 s. `hts-alt-gate` removed by name afterwards; the image untouched.
 
+## Host regeneration at the WP30 data gate (2026-11-11, no container)
+
+The host (macOS arm64, ten cores, nine workers) regenerated the five ledger entries on the model at
+`fe6de947d18f` with thirteen traded metrics, the fleet size and 3,000 designs per regime. The container
+regression of the same gate is a separate section, added when it runs.
+
+| What | Command | Time | Result |
+|---|---|---|---|
+| the five entries | `EXPERIMENTS_WORKERS=9 PYTHONPATH=examples/adcs uv run python examples/adcs/model_v2/ledger_gate.py --host --wp30 regen` | 9.2 min | `v2-primary@11` `e4ab2fca5c74`, `v2-baseline@11` `57c208c91c59`, `v2-check-predictions@11` `05649b15348c`, `v2-check-designs@11` `1cab3bafa3fe`, `scope-sensitivity-shared-subspace-v2@10` `25425be01309`; none dirty |
+| the K = 1, 2, 3 record | `PYTHONPATH=examples/adcs uv run python examples/adcs/k_terms.py` | 3 min 7 s | `work-packages/WP30-rounds/data-gate/k-record.txt` |
+| re-adoption of the entries that hash a changed code file | `PYTHONPATH=examples/adcs uv run python -m experiments adopt --readopt` | seconds | `adopted-adcs_designs_cubesat@2`, `adopted-adcs_designs_cubesat_gains@2`, `adopted-check_predictions_cubesat@2`, `adopted-check_designs_cubesat@2`, `scope-sensitivity-shared-subspace-legacy@2`; `verify`: 0 drifts |
+
+Earlier runs of the same gate, kept in the ledger as history: the 2,000-design run (`@9`, shared `@8`) and a
+first 3,000-design run written with an uncommitted tree (`@10`, shared `@9`, `git_dirty` true), whose outputs
+equal the clean run's byte for byte.
+
 ## History
 
 The tests read git history (`git log` of the generating commits, `git diff` of the frozen CSVs). The build context excludes

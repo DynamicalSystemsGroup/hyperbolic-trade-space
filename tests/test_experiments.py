@@ -393,7 +393,7 @@ def test_readopt_supersedes_entries_whose_code_changed_and_output_did_not(tmp_pa
     assert added[1]["parents"][0]["id"] == "adopted-a@2"
     assert added[1]["inputs"]["readoption"]["changed_files"] == ["code.py"]
     assert "not regenerated" in added[1]["inputs"]["readoption"]["note"]
-    assert [d.entry_id for d in lg.verify(led, root)] == ["adopted-c"]
+    assert {d.entry_id for d in lg.verify(led, root)} == {"adopted-c"}
 
 
 @pytest.mark.slow

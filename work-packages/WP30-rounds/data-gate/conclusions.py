@@ -1,3 +1,4 @@
+# ruff: noqa  (a record script of the WP30 data gate, kept as run; not part of the package)
 """WP23 data gate, D-9 part 3: the conclusions, computed by the case's own functions.
 
 Three configurations through ``case.py`` at dev 8507bd9, defaults unchanged:
@@ -100,7 +101,7 @@ def term_report(study, fits, K):
 
 def regime_block(study, fits):
     names = study.names
-    b = {"n_raw": int(len(study.raw)), "n_feasible": int(len(study.M)), "metrics": names}
+    b = {"n_raw": len(study.raw), "n_feasible": len(study.M), "metrics": names}
     for K, f in fits.items():
         e = f.estimator
         b[f"K{K}"] = {
@@ -129,9 +130,19 @@ def regime_block(study, fits):
     # the two redundancies among the feasible designs (Spearman of the raw attributes)
     f = study.feasible
     b["redundancy_spearman"] = {
-        "power margin, energy balance": float(f["power_margin_w"].corr(f["energy_balance_wh"], method="spearman")),
-        "available power, energy balance": float(f["available_power_w"].corr(f["energy_balance_wh"], method="spearman")) if "available_power_w" in f else None,
-        "battery peak power ratio, depth of discharge": float(f["battery_peak_power_ratio"].corr(f["dod_eclipse"], method="spearman")) if "battery_peak_power_ratio" in f else None,
+        "power margin, energy balance": float(
+            f["power_margin_w"].corr(f["energy_balance_wh"], method="spearman")
+        ),
+        "available power, energy balance": float(
+            f["available_power_w"].corr(f["energy_balance_wh"], method="spearman")
+        )
+        if "available_power_w" in f
+        else None,
+        "battery peak power ratio, depth of discharge": float(
+            f["battery_peak_power_ratio"].corr(f["dod_eclipse"], method="spearman")
+        )
+        if "battery_peak_power_ratio" in f
+        else None,
     }
     b["nondominated"] = df_rows(case.nondominated_counts(study))
     return b
@@ -145,7 +156,10 @@ for cname, spec in CONFIGS.items():
     fits = {r: case.k_fits(s) for r, s in studies.items()}
     for r in spec.regimes:
         block[r] = regime_block(studies[r], fits[r])
-        print(f"   {r}: K1 tau {fits[r][1].tau:.2f}, K2 {fits[r][2].tau:.2f}, K3 {fits[r][3].tau:.2f}", flush=True)
+        print(
+            f"   {r}: K1 tau {fits[r][1].tau:.2f}, K2 {fits[r][2].tau:.2f}, K3 {fits[r][3].tau:.2f}",
+            flush=True,
+        )
     block["regime_comparison"] = df_rows(case.regime_comparison(spec))
     prim = studies["primary"]
     block["candidates"] = df_rows(case.candidate_table(prim, fits["primary"][1]))
@@ -154,13 +168,44 @@ for cname, spec in CONFIGS.items():
     if True:
         reg = case.fit_regressor(prim)
         pc = case.predict_check(prim, reg)
-        block["predict_check"] = {"tau": float(reg.tau), "band": float(1 / reg.tau), "rows": df_rows(pc)}
+        block["predict_check"] = {
+            "tau": float(reg.tau),
+            "band": float(1 / reg.tau),
+            "rows": df_rows(pc),
+        }
         block["proposals_refit"] = df_rows(case.proposals_table(prim, reg))
         print(f"   regressor tau {reg.tau:.3f}", flush=True)
     preds = pd.read_csv(spec.data_dir / spec.predictions_file)
-    block["predictions_file"] = df_rows(preds[["name", "wheel_class", "st_grade", "hole_score", "distance_to_target", "tau", "band", "pred_log_v"]])
+    block["predictions_file"] = df_rows(
+        preds[
+            [
+                "name",
+                "wheel_class",
+                "st_grade",
+                "hole_score",
+                "distance_to_target",
+                "tau",
+                "band",
+                "pred_log_v",
+            ]
+        ]
+    )
     checks = pd.read_csv(spec.data_dir / spec.checks_file)
-    block["checks_file_flags"] = df_rows(checks[["name", "role", "settled", "momentum_ok", "power_ok", "dod_ok", "settling_time_s", "dod_eclipse", "battery_wh"]])
+    block["checks_file_flags"] = df_rows(
+        checks[
+            [
+                "name",
+                "role",
+                "settled",
+                "momentum_ok",
+                "power_ok",
+                "dod_ok",
+                "settling_time_s",
+                "dod_eclipse",
+                "battery_wh",
+            ]
+        ]
+    )
     result[cname] = block
 
 OUT.write_text(json.dumps(result, indent=1))

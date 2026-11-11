@@ -33,7 +33,8 @@ MOVED = ("total_mass_kg", "pointing_error_deg")  # the bus mass enters the mass 
 def _config() -> dict:
     row = pd.read_csv(V2_PRIMARY).iloc[0]
     return {
-        k: row[k] for k in ("wheel_class", "st_grade", "panel_span_m", "battery_wh", "Kp", "Kd")
+        k: row[k]
+        for k in ("wheel_class", "st_grade", "panel_span_m", "battery_wh", "Kp", "Kd", "fleet_size")
     }
 
 
