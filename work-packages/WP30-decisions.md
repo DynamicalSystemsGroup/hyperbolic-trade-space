@@ -69,3 +69,9 @@ and test line, and launch at the wholesale per-kilogram rate; excluded, communic
 software, a test campaign beyond the assembly line, the launch slot minimum and any broker's fee; the figure is a lower
 bound on a full costing, and the requirement reads it as such. The same sentence appears where the docs and the paper
 name the cost metrics. The sponsor's stakeholder view carries it as the concern's note. His values follow.
+
+**Unit cost limit, the supervisor, verbatim (09:55):** "i want to lean smaller and its fine that no single satellite
+clears it. i think that's pretty realistic. we shouldn't be launching a single cube sat, i would expect the cost to be
+prohibitive". **Value: 350,000 USD** per satellite on the covered cost, read at the design's own fleet size (admits 82
+percent of the baseline regime's feasible designs at their own fleet size, none priced as a single satellite; the
+primary regime's share from the same ladder).
