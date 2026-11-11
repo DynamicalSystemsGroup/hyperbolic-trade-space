@@ -52,3 +52,18 @@ the same cause as `tab-B-checker`, with no differing line printed because the as
 part on the Mac: a clone with `core.autocrlf=true` of the branch before the `.gitattributes` has CRLF in every text
 file; a clone after it has none. The fix is the same `.gitattributes` (`* text=auto eol=lf`); the test is unchanged.
 What stays to be proved is the Windows run itself.
+
+## Second spike (run 43080511999, dispatched at e94357c; fast and slow shards; PM 12)
+
+Linux fast, slow and docs-paper green. Windows fast: 1 failed, 1830 passed, 23 skipped, 2 xfailed (385 s). Windows slow:
+2 failed, 396 passed (1351 s, 22.5 min). The five classes of the first spike are gone (z3 on PATH, encodings, line
+endings, the POSIX-bit tests, the tab-C item); three failures remain, in three new classes.
+
+| Test | Shard | Cause from the log | Class and fix size |
+|---|---|---|---|
+| `test_model_checking_v2.py::test_probe_still_holds[engines]` | fast | the probe's observation, taken on win32-AMD64, no longer matches the recorded result (the log shows the observation string, not the differing field) | Not yet diagnosed: probably a platform-dependent field of the engines record; read `probes.py` probe_engines against the observation. Small |
+| `test_case.py::test_import_is_fast_and_pure` | slow | `assert 2.40 < 2.0`: the import of `case` took 2.4 s on the runner; the subprocess runs with an empty `PATH` and `SYSTEMROOT` | Timing threshold, runner speed (Windows process and import cost); the purity half of the test is not in question. Threshold per platform, or a Windows allowance with the reason. Small |
+| `test_model_coverage.py::test_committed_table_equals_a_full_regeneration_three_times` | slow | the regenerated coverage table prints a path with a backslash, `examples\adcs\model_v2\cubesat.s...`, where the committed table has a forward slash | Path separator in generated text: write `Path.as_posix()`. Small |
+
+Nothing else failed: the slow shard's 396 passes include the sklearn conformance suite and the model-coverage tests.
+These three are the work before stage 4 enters the matrix; the docs-paper shard stays Linux and macOS (option 2).
