@@ -216,3 +216,17 @@ driver log; acceptance is written here when the confirm read, O-7 and that pass 
   `/private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/s3/s8-main-results-closing-clause.jpg`.
 - **Checks.** ruff; `uv run pytest -q -m "not slow" tests/test_paper.py tests/test_claims_register.py` 164 passed, 4
   skipped; vocabulary baseline 0 new violations.
+
+## Acceptance (2026-11-11, 00:25; at b1a806c, the review head 18c258c plus the S8 clause, the confirm read and the O-7 fix)
+
+The three conditions are in: the confirm read of Section 9 and Appendix D.4 (fe7a711: the reader finds every fact of
+the regime comparison in the two passages; the unclear items are definitional and predate the cut); O-7 fixed
+(e155772); the driver's own browser pass at 18c258c from a scratch worktree staged on this Mac (the paper: no broken
+reference, the "Two regimes" paragraph pointing at Appendix D.4; D.4 with both regimes' sets and pair associations;
+D.12 in its three paragraphs; the docs: the termination page's conditioning block, the chart page without the holes
+figure and with the holes block, the examples page with Figures 5 and 6 and no coordinates figure). The S8 clause
+landed in the main-results list (b1a806c). Linux green at 18c258c and 7d25ce3; the watcher green at eb48f4e.
+
+**Driver, verbatim:** "WP28 accepted. The pass cut what the supervisor let it cut, recorded what it could not, and
+every unit is net negative or carries his word; the paper body stands at 9,846 words, down 113 from the cut and up
+by the narrowings he and the readers asked for; the docs lost two figures and the README its second description."
