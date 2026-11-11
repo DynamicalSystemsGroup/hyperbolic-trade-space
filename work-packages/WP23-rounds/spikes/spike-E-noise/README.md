@@ -3,7 +3,7 @@
 Question (the supervisor, S-9, verbatim in `work-packages/WP28-decisions.md`): whether the paper needs another result on
 the model's relationship to measurement noise and/or noise in the process being measured, building on Proposition 2
 (L6). Spike only: no change to the product, no derivation written. Scripts and outputs are in this folder; run from the
-repository root with `uv run python work-packages/WP-trackA-noise-spike/<script>`.
+repository root with `uv run python work-packages/WP23-rounds/spikes/spike-E-noise/<script>`.
 
 ## Where the paper stands
 

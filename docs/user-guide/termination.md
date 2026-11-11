@@ -94,9 +94,9 @@ rng = np.random.default_rng(0)
 # the second metric nearly repeats the first
 Xr[:, 1] = Xr[:, 0] * np.exp(1e-3 * rng.standard_normal(400))
 for data in (Xf, Xr):
-    fit = HyperbolicTradeSpace(
-        temperature=20.0, min_exponent=0.1
-    ).fit(data)
+    fit = HyperbolicTradeSpace(temperature=20.0, min_exponent=0.1).fit(
+        data
+    )
     print(fit.conditioning_)
 ```
 

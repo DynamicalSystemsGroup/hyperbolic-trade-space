@@ -1,3 +1,4 @@
+# ruff: noqa: E501, E731
 """Spike A, check 2: is independent log-noise on the metrics, at the level of the fit, a ridge on w?
 
 Claim A2 (population level, L6 applied row by row): when the weights p of the soft maximum spread over many
@@ -6,7 +7,7 @@ plus a ridge, and to first order the exponent bias is  delta = - sigma^2 (P C P)
 (p = softmax(tau U w) at the clean fit; the tau cancels because the Hessian is tau C).
 Compares, on planted frontier data (d = 4, w* = (.4,.3,.2,.1)), the exponents of
   clean fit | noisy fit (the package) | ridge-objective minimiser (clean U) | first-order prediction.
-Run: uv run python work-packages/WP-trackA-noise-spike/check2_noise_is_ridge.py
+Run: uv run python work-packages/WP23-rounds/spikes/spike-E-noise/check2_noise_is_ridge.py
 """
 
 import numpy as np
@@ -26,9 +27,15 @@ def minimise(U, tau, ridge_coeff=0.0, w0=None):
         j, g = objective_and_grad(w, U, tau)
         return j + ridge_coeff * w @ w / 2, g + ridge_coeff * w
 
-    r = minimize(f, np.full(d, 1 / d) if w0 is None else w0, jac=True, method="SLSQP",
-                 bounds=[(0, 1)] * d, constraints=[{"type": "eq", "fun": lambda w: w.sum() - 1}],
-                 options={"ftol": 1e-14, "maxiter": 500})
+    r = minimize(
+        f,
+        np.full(d, 1 / d) if w0 is None else w0,
+        jac=True,
+        method="SLSQP",
+        bounds=[(0, 1)] * d,
+        constraints=[{"type": "eq", "fun": lambda w: w.sum() - 1}],
+        options={"ftol": 1e-14, "maxiter": 500},
+    )
     return r.x
 
 
@@ -59,6 +66,8 @@ if __name__ == "__main__":
             d1, neff = first_order(U, w_mine, tau)
             d1 = sigma**2 * d1
             e = lambda a, b: np.abs(a - b).max()
-            print(f"sigma={sigma:.2f} tau={tau:4.0f} n_eff={neff:7.0f} | noisy-clean {e(w_noisy, w_clean):.4f} "
-                  f"| ridge-clean {e(w_ridge, w_clean):.4f} | noisy-ridge {e(w_noisy, w_ridge):.4f} "
-                  f"| 1st-order-vs-ridge {e(w_clean + d1, w_ridge):.4f} | pkg-vs-mine(clean) {e(w_mine, w_clean):.4f}")
+            print(
+                f"sigma={sigma:.2f} tau={tau:4.0f} n_eff={neff:7.0f} | noisy-clean {e(w_noisy, w_clean):.4f} "
+                f"| ridge-clean {e(w_ridge, w_clean):.4f} | noisy-ridge {e(w_noisy, w_ridge):.4f} "
+                f"| 1st-order-vs-ridge {e(w_clean + d1, w_ridge):.4f} | pkg-vs-mine(clean) {e(w_mine, w_clean):.4f}"
+            )
