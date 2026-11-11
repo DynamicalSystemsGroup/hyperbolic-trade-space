@@ -35,16 +35,18 @@ kept. A host run (``--host --wp26``, in a throwaway tree) is the neutrality evid
 
 WP30 (``WP30-decisions.md``, OD1 (a), OD2 (a), OD5 (b)) re-runs the same five entries twice. First
 the regeneration (``--wp30 regen``, ``@9``, ``scope-sensitivity-shared-subspace-v2@8``): the
-momentum headroom and the cost model add columns (``fleet_size``, ``momentum_headroom``,
-``unit_cost_usd``, ``fleet_cost_usd``), so the outputs move and nothing is required of their
-hashes; the model already carries the supervisor's two cost limits (350,000 and 6,000,000 USD) and
-the restated launch budget, so this is the gate's regeneration. A later edit of a cost limit or the
-launch budget is a verdict only (OD2 (a)) and moves no output: ``--wp30 values`` re-runs the
-five entries on the model with his values, against the new model hash, and requires each output
-hash to equal the hash of the entry it supersedes (the WP26 rule, enforced: the script exits 1 and
-names the entries when one differs, and the commit that edited the model is reverted). Run on the
-host in a throwaway tree it is the neutrality evidence; run in ``hts-paper`` (``--image``) after a
-container regeneration it is the gate's closing proof.
+momentum headroom, the cost model and the two newly traded quantities add columns (``fleet_size``,
+``momentum_headroom``, ``available_power_w`` (before, an auxiliary column),
+``battery_peak_power_ratio``, ``unit_cost_usd``, ``fleet_cost_usd``), and each regime has 1,250
+designs (the first 1,000 are the earlier sample), so the outputs move and nothing is required of
+their hashes; the model already carries the supervisor's two cost limits (350,000 and 6,000,000
+USD) and the restated launch budget, so this is the gate's regeneration. A later edit of a cost
+limit or the launch budget is a verdict only (OD2 (a)) and moves no output: ``--wp30 values``
+re-runs the five entries on the model with his values, against the new model hash, and requires
+each output hash to equal the hash of the entry it supersedes (the WP26 rule, enforced: the script
+exits 1 and names the entries when one differs, and the commit that edited the model is reverted).
+Run on the host in a throwaway tree it is the neutrality evidence; run in ``hts-paper``
+(``--image``) after a container regeneration it is the gate's closing proof.
 
     REQUIRE_OPENSYSML=1 PYTHONPATH=examples/adcs \
         uv run python examples/adcs/model_v2/ledger_gate.py \
@@ -87,9 +89,10 @@ WP26_NOTE = (
 )
 WP30_NOTE = (
     "WP30: the momentum headroom and the cost model (fleet size, unit cost, fleet cost) added to"
-    " cubesat.sysml, eleven traded metrics, the two cost limits at the supervisor's values (350,000"
-    " and 6,000,000 USD; a verdict only, not a flag); regenerated {where}; the container of record"
-    " re-pins the exact outputs"
+    " cubesat.sysml, thirteen traded metrics (the available power and the battery peak power ratio"
+    " traded, so every requirement reads a traded metric), the two cost limits at the supervisor's"
+    " values (350,000 and 6,000,000 USD; a verdict only, not a flag), 1,250 designs per regime;"
+    " regenerated {where}; the container of record re-pins the exact outputs"
 )
 WP30_VALUES_NOTE = (
     "WP30: the supervisor's two cost limits and the restated launch budget set in cubesat.sysml"

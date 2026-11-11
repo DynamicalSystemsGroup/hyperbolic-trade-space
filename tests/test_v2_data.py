@@ -36,9 +36,10 @@ LEDGER = ADCS / "experiments" / "ledger" / "ledger.jsonl"
 REGISTER = ADCS / "experiments" / "reports" / cmp.REGISTER
 # the commit from which the frozen CSVs must be unchanged (the WP15 scope's start)
 START = "fc2363e"
+SAMPLE = 1250  # designs per regime after the WP30 regeneration ("Sampling"; the contract states it)
 ROWS = {
-    "adcs_designs_cubesat_gains.csv": 1000,
-    "adcs_designs_cubesat.csv": 1000,
+    "adcs_designs_cubesat_gains.csv": SAMPLE,
+    "adcs_designs_cubesat.csv": SAMPLE,
     "check_predictions_cubesat.csv": 3,
     "check_designs_cubesat.csv": 6,
 }
@@ -104,11 +105,11 @@ def test_the_v2_directory_holds_exactly_the_four_files():
 @pytest.mark.parametrize("name", ["adcs_designs_cubesat_gains.csv", "adcs_designs_cubesat.csv"])
 def test_scenario_seed_and_count_of_the_main_datasets(name, entries):
     v2 = pd.read_csv(V2 / name)
-    assert v2["design_id"].tolist() == list(range(1000))
+    assert v2["design_id"].tolist() == list(range(SAMPLE))
     assert set(v2["slew_deg"]) == {30.0} and set(v2["t_end_s"]) == {600.0}
     assert set(v2["max_step_s"]) == {0.5}
     inp = lg.latest(entries, ENTRY[name])["inputs"]
-    assert (inp["count"], inp["seed"], inp["scenario"]) == (1000, 0, "nominalSlew")
+    assert (inp["count"], inp["seed"], inp["scenario"]) == (SAMPLE, 0, "nominalSlew")
 
 
 def test_the_check_designs_are_the_candidates_and_the_proposals():

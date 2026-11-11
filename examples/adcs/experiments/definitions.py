@@ -32,6 +32,13 @@ V2_CODE = (
 V2_CHECK_CODE = (*V2_CODE, f"{ADCS}/experiments/check_designs.py")
 V2_SCENARIO = "nominalSlew"  # the model's scenario part (slew 30 degrees, 600 s, 0.5 s step)
 CHECK_SEED = 20261108  # the seed of the pool and of the check designs (make_check_designs.SEED)
+# Designs per regime of the two main datasets (WP30, "Sampling"): the paper assumes nothing about
+# how the designs were drawn, so the sample is a design choice of the case. Design i depends only on
+# (seed, i), so the first 1000 designs are the earlier sample. The count is the largest round number
+# for which the whole regeneration fits the hour at three workers: the oracle took 203 s per 1000
+# designs (work-packages/WP30-build-notes.md, "Sampling"), and the regeneration is the two datasets
+# plus the sensitivity record's five regenerations of both, 12 x N designs.
+SAMPLE_PER_REGIME = 1250
 
 # Oracle and sampler names -> "module:factory"; a factory takes the (sweep-cell) Experiment.
 ORACLES: dict[str, str] = {
@@ -109,8 +116,8 @@ CANDIDATES = (
 
 # Order is the ledger order: predictions precede the check-design simulation, both follow primary.
 V2: tuple[Experiment, ...] = (
-    _v2("v2-primary", "adcs_designs_cubesat_gains.csv", 1000, "aggressive"),
-    _v2("v2-baseline", "adcs_designs_cubesat.csv", 1000, "baseline"),
+    _v2("v2-primary", "adcs_designs_cubesat_gains.csv", SAMPLE_PER_REGIME, "aggressive"),
+    _v2("v2-baseline", "adcs_designs_cubesat.csv", SAMPLE_PER_REGIME, "baseline"),
     _v2(
         "v2-check-predictions",
         "check_predictions_cubesat.csv",

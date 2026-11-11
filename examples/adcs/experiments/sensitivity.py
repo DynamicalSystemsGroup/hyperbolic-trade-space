@@ -576,8 +576,8 @@ def _headline(name: str) -> bool:
 def _deviation_section(runs_dirs: Mapping[int, Path], committed_dir: Path) -> list[str]:
     lines = ["### Deviation of the attributes from the committed data", ""]
     for f, title in (
-        (PRIMARY_FILE, "Primary (1000 designs)"),
-        (BASELINE_FILE, "Baseline (1000 designs)"),
+        (PRIMARY_FILE, f"Primary ({df_.SAMPLE_PER_REGIME} designs)"),
+        (BASELINE_FILE, f"Baseline ({df_.SAMPLE_PER_REGIME} designs)"),
         (CHECKS_FILE, "Check designs (6)"),
     ):
         com = pd.read_csv(committed_dir / f)

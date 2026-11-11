@@ -300,7 +300,8 @@ def test_definitions_import_without_runtime_and_declare_v2():
     assert ids == ["v2-primary", "v2-baseline", "v2-check-predictions", "v2-check-designs"]
     assert all(e.output.startswith("examples/adcs/data/v2/") for e in defs.V2)
     prim = defs.EXPERIMENTS["v2-primary"]
-    assert (prim.count, prim.seed, prim.gain_box) == (1000, 0, "aggressive")
+    assert (prim.count, prim.seed, prim.gain_box) == (defs.SAMPLE_PER_REGIME, 0, "aggressive")
+    assert defs.SAMPLE_PER_REGIME == defs.EXPERIMENTS["v2-baseline"].count == 1250
     assert defs.EXPERIMENTS["v2-check-designs"].parents == ("v2-check-predictions",)
     with pytest.raises(KeyError):
         defs.resolve_oracle("no-such-oracle")
