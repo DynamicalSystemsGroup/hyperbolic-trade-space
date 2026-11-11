@@ -2209,6 +2209,37 @@ def test_appendix_d_prints_the_conditioning_diagnostic():
     assert any(r in _out_text(cell) for r in ("Dataset cubesat-primary", "Dataset cubesat-stock"))
 
 
+def test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect_it():
+    """S-10 (the supervisor's word, WP28-decisions.md): D.12 carries the concise explanation. Its
+    two case values are the K = 1 values of the tables below it, the code path it names exists,
+    and the call it gives runs on a strictly positive array."""
+    cell = next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-D-cond")
+    text = _src(cell)
+    for part in ("*Why it matters.*", "*How it is computed.*", "*Inspecting your own problem.*"):
+        assert part in text, part
+    values = {
+        r: f"{generate_results._fits(r)[1].estimator.conditioning_[0]:.2g}"
+        for r in generate_results._studies()
+    }
+    assert (
+        f"has {values['primary']} in the primary regime and {values['stock']} in the stock" in text
+    )
+    assert (
+        "def _conditioning"
+        in (ROOT / "src" / "hyperbolic_trade_space" / "estimator.py").read_text()
+    )
+    assert "def conditioning_diagnostic" in (PAPER / "generate_results.py").read_text()
+    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+
+    call = re.search(
+        r"`(HyperbolicTradeSpace\(temperature=50\.0\)\.fit\(M\)\.conditioning_)`", text
+    )
+    assert call, "the call is printed in code font"
+    M, _ = make_frontier_data(400, 4, n_terms=1, random_state=0)
+    value = eval(call.group(1), {"HyperbolicTradeSpace": HyperbolicTradeSpace, "M": M})
+    assert value.shape == (1,) and value[0] > 0
+
+
 def test_no_doubled_label_before_a_cross_reference():
     """G-7: a reference to a definition or theorem prints its own kind; none is typed before it."""
     body = _markdown(_nb(PAPER_NB))

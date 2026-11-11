@@ -36,6 +36,8 @@ total = 5900
 # The supporting material is outside the count (words_by_section reads the paper only); the entry
 # below admits rows that record what is added to Appendix B and why.
 "Appendix B" = 0
+# The same for Appendix D (WP28 S-10).
+"Appendix D" = 0
 
 # Rows: the tickets of 2026-11-09 on sections 4 and 6 (the supervisor's, WP10-decisions.md).
 # Each row: date, section, words_added, job, reader.
@@ -978,3 +980,10 @@ section = "Case construction"
 words_removed = 10
 no_longer_did = "Figure 4's caption pointed to the stock regime as the second panel of a figure that is gone"
 authority = "the supervisor, S-3: 'Cut to a pointer'"
+
+[[raise]]
+date = "2026-11-10"
+section = "Appendix D"
+words_added = 153
+job = "the supervisor's word on D.12 (S-10, WP28-decisions.md): 'keep and clarify why it matters ... we do need to provide a concise explanation for why this is relevant and how it was computed. someone who runs into issue needs a way to inspect the conditioning of their problem since trouble shooting may involve feature engineering work': D.12 says why the conditioning of the exponents matters, how the number is computed, and how a reader inspects their own problem"
+reader = "the discerning reader and the external reviewer who asked for the diagnostic, and the user whose own fit shows a small value"

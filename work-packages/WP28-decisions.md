@@ -134,3 +134,22 @@ Implementer's record, one entry per unit. Worktree `wp28close` from origin/dev 0
   exponents w; the full association table over the feasible designs is Appendix C.5's, the exponents are D.3's
   (`tab-D-exponents_and_terms`). So the sets and the pair tensions the text relies on are in D.4; the all-pairs
   picture is not (that is what "pointer" gives up).
+
+### U2. S-10, the supervisor's word (S-10 above): Appendix D.12 explains why, how and how to inspect
+
+- **Done.** D.12 (`app-D-cond`) gains one paragraph of three labelled parts (153 words net): why the conditioning of
+  the exponents matters (the curvature of the convex objective along its flattest direction; the case's K = 1 values
+  7.1 primary and 0.017 stock), how it is computed (`HyperbolicTradeSpace._conditioning` in
+  `src/hyperbolic_trade_space/estimator.py`; printed by `conditioning_diagnostic()` of `paper/generate_results.py`),
+  and how a user inspects their own problem (`HyperbolicTradeSpace(temperature=50.0).fit(M).conditioning_` for a
+  strictly positive `M`; a small value is a prompt to rescale, merge or drop metrics, refit and compare).
+- **Path named in the brief.** `paper/paper_perturb.py` does not compute the number: it only lists
+  `conditioning_diagnostic` among the tables whose term numbering moves under a restart shift. The code path cited is
+  the estimator's `_conditioning`, with the generator that prints the table.
+- **Backing.** Test `test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect_it` (the two values
+  recomputed from the fits, the named paths exist, the printed call is evaluated on a strictly positive planted
+  table and returns one positive value); claims rows C423 to C425; the ledger `[[raise]]` row (section "Appendix D",
+  admitted with a zero baseline like "Appendix B") quotes his words as the job.
+- **Checked and left out.** A near-duplicate metric does not lower `conditioning_` (the fit gives the duplicate a
+  zero exponent, and only participating exponents count: 39.4 with four metrics, 39.2 with a fifth near-copy), so the
+  paragraph does not say that duplicates are what the number finds. The docs conditioning page is the docs stream's.

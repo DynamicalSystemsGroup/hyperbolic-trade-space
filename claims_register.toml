@@ -5248,3 +5248,49 @@ status = "backed"
 disposition = "keep"
 source = "WP28 CR-37 (the retest record 052e8ee); the check is 4c9416c's"
 note = "On each regime the exact-maximum LP's primal-dual pair certifies one optimal point: reduced costs vanish on the support and are strictly positive off it, every row with positive dual weight is tight, and the active system has full column rank; both HiGHS methods return that support, which is the K = 1 tension report's contending set (a 5-lemma in both regimes)."
+
+[[claim]]
+id = "C423"
+fragment = "`conditioning_` is that objective's curvature along its flattest direction: where it is small, moving the exponents along that direction barely changes the objective, so the data fix them loosely"
+file = "paper/supporting_material.ipynb"
+anchor = "D.12 The conditioning of the exponents"
+kind = "M"
+backing = [
+  "func:src/hyperbolic_trade_space/estimator.py::_conditioning",
+  "glossary:conditioning-of-the-exponents",
+  "test:tests/test_paper.py::test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect_it",
+]
+status = "backed"
+disposition = "keep"
+source = "WP28 S-10 (the supervisor's word, WP28-decisions.md)"
+note = "The smallest eigenvalue of a Hessian is the smallest second-order change of the objective per unit squared step in a unit direction; the Hessian is that of the convex per-term objective restricted to the participating exponents and the simplex tangent space (estimator.py, _conditioning)."
+
+[[claim]]
+id = "C424"
+fragment = "the one-term fit has 7.1 in the primary regime and 0.017 in the stock regime"
+file = "paper/supporting_material.ipynb"
+anchor = "D.12 The conditioning of the exponents"
+kind = "R"
+backing = [
+  "gen:paper/generate_results.py::conditioning_diagnostic",
+  "test:tests/test_paper.py::test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect_it",
+]
+status = "backed"
+disposition = "keep"
+source = "WP28 S-10"
+note = "The K = 1 rows of the D.12 tables; the test recomputes both values from the fits and compares them with the paragraph."
+
+[[claim]]
+id = "C425"
+fragment = "`HyperbolicTradeSpace(temperature=50.0).fit(M).conditioning_` for a strictly positive array `M`"
+file = "paper/supporting_material.ipynb"
+anchor = "D.12 The conditioning of the exponents"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect_it",
+]
+status = "backed"
+disposition = "keep"
+source = "WP28 S-10"
+note = "The test evaluates the printed call on a strictly positive planted table and checks it returns one positive value."
+
