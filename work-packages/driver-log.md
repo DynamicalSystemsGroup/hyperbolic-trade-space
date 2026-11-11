@@ -228,6 +228,16 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **CI on the gate head 684b5b7 (run 43116693470, 18:50).** Linux fast and Windows fast: 6 failed each, the six
+  `tests/test_paper.py` reds the cascade's first unit clears (stale committed outputs, D.12's conditioning sentence,
+  Figure 9's region names); nothing Windows-specific. Linux slow: six more paper reds of the same kind (Appendix D's
+  conditioning table, D.16's PCA chain, D.18's table, the generated sentences, the term-numbered tables); routed to the
+  first unit. Docs-paper: `test_soft_fit.py::test_r2_default_cubesat_fits_equal_the_recording[primary|stock]`, the four
+  default cubesat fits recorded at the WP23 close-out and moved by the thirteen-metric data; per the brief's rule the
+  gate's container re-records them, so the assistant re-records the four cubesat arrays inside the gate image after the
+  ledger re-run (planted arrays untouched) and commits the file with a RECORD entry. Windows slow still running. The
+  attribution step passed on every job.
+
 - **The container's OOM (18:40).** `docker inspect` shows the gate container was OOM-killed: the Docker VM has four CPUs
   and 7.7 GB, and three spawned oracle workers at 3,000 designs per regime exceed it. The re-run restarted with one
   worker (`EXPERIMENTS_WORKERS=1`), detached inside the container; its entries are read from the container's ledger
