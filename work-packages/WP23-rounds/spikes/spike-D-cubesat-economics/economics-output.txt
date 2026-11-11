@@ -1,0 +1,54 @@
+== current roll-up (n=1) vs proposed build price at n=1 ==
+compact   current    158,500   proposed build n=1    281,300   mass 11.991 kg
+baseline  current    216,200   proposed build n=1    350,000   mass 13.291 kg
+agile     current    407,600   proposed build n=1    501,000   mass 15.660 kg
+
+== per-part totals at the baseline configuration ==
+part             u1     f  slope      b        n=1        n=3       n=10       n=30
+bus          80,000  0.30   0.90  0.152     80,000    166,163    418,625  1,025,803
+panels      102,000  0.15   0.90  0.152    102,000    235,398    626,265  1,566,306
+battery      12,000  0.10   0.90  0.152     12,000     28,617     77,306    194,405
+wheels       36,000  0.15   0.95  0.074     36,000     90,032    263,460    719,131
+tracker      20,000  0.20   0.95  0.074     20,000     48,252    138,933    377,193
+assembly    100,000  0.50   0.90  0.152    100,000    176,931    402,344    944,467
+
+== representative design (baseline configuration), fleet n = 1, 3, 10, 30 ==
+mass 13.291 kg; launch rate 7,000 USD/kg (linear)
+   n  build total  build unit  launch total  fleet cost  unit cost  unit/unit(1)
+   1      350,000     350,000        93,040     443,040    443,040         1.000
+   3      745,393     248,464       279,120   1,024,513    341,504         0.771
+  10    1,926,934     192,693       930,400   2,857,334    285,733         0.645
+  30    4,827,305     160,910     2,791,200   7,618,505    253,950         0.573
+
+== same, with the 50 kg minimum slot (350,000 USD) applied to the launch (not posynomial) ==
+n=  1 launch     350,000  fleet      700,000  unit    700,000
+n=  3 launch     350,000  fleet    1,095,393  unit    365,131
+n= 10 launch     930,400  fleet    2,857,334  unit    285,733
+n= 30 launch   2,791,200  fleet    7,618,505  unit    253,950
+
+== sensitivity of the baseline unit build cost (no launch) to the learning slopes ==
+slopes as proposed  n=1:   350,000  n=3:   248,464  n=10:   192,693  n=30:   160,910
+all 0.95 (flat)     n=1:   350,000  n=3:   263,872  n=10:   220,908  n=30:   197,779
+all 0.85 (strong)   n=1:   350,000  n=3:   226,606  n=10:   155,753  n=30:   115,993
+
+== distribution of unit build cost over the 1000 + 1000 designs (proposed prices, n = 1, 10) ==
+adcs_designs_cubesat.csv   all      n= 1 N=1000 min   276,299 p05   294,553 median   370,711 p90   447,610 p95   460,115 max   530,400
+adcs_designs_cubesat.csv   all      n=10 N=1000 min   145,216 p05   157,263 median   208,473 p90   258,487 p95   266,590 max   314,165
+adcs_designs_cubesat.csv   feasible n= 1 N= 780 min   276,299 p05   293,237 median   369,892 p90   448,695 p95   461,065 max   530,400
+adcs_designs_cubesat.csv   feasible n=10 N= 780 min   145,216 p05   156,028 median   208,330 p90   259,531 p95   268,528 max   314,165
+adcs_designs_cubesat_gains all      n= 1 N=1000 min   276,299 p05   294,553 median   370,711 p90   447,610 p95   460,115 max   530,400
+adcs_designs_cubesat_gains all      n=10 N=1000 min   145,216 p05   157,263 median   208,473 p90   258,487 p95   266,590 max   314,165
+adcs_designs_cubesat_gains feasible n= 1 N= 706 min   276,299 p05   291,836 median   365,613 p90   446,798 p95   461,065 max   530,400
+adcs_designs_cubesat_gains feasible n=10 N= 706 min   145,216 p05   155,046 median   205,791 p90   259,161 p95   269,994 max   314,165
+
+== current roll-up over the same designs (n=1) ==
+adcs_designs_cubesat.csv   min   155,011 median   237,518 p95   376,149 max   425,781
+adcs_designs_cubesat_gains min   155,011 median   237,518 p95   376,149 max   425,781
+
+== posynomial check: total(n) is a sum of c*n**e with c > 0, e = 1 - b in (0, 1), plus a constant ==
+bus       exponent 1-b = 0.848  (total grows, concave in n; average unit cost falls as n^-0.152)
+panels    exponent 1-b = 0.848  (total grows, concave in n; average unit cost falls as n^-0.152)
+battery   exponent 1-b = 0.848  (total grows, concave in n; average unit cost falls as n^-0.152)
+wheels    exponent 1-b = 0.926  (total grows, concave in n; average unit cost falls as n^-0.074)
+tracker   exponent 1-b = 0.926  (total grows, concave in n; average unit cost falls as n^-0.074)
+assembly  exponent 1-b = 0.848  (total grows, concave in n; average unit cost falls as n^-0.152)
