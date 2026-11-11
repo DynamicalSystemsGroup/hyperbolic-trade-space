@@ -7,6 +7,13 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- **For the morning (2026-11-10, 23:50), one question with a ladder:** the two cost budgets of the model revision (a unit
+  build cost limit read at the configuration's fleet size; a fleet cost limit), from pass-fraction ladders the model
+  developer computes on the regenerated data (the first rung: `WP23-rounds/spikes/spike-D-cubesat-economics/
+  admit-shares.txt`, 450,000 USD admits 91 % at one unit), and the launch rate: 7,000 USD/kg (2026) restates his
+  launch budget of 15.11 kg as 105,770 USD, or 90,643 USD stays at the new rate (12.95 kg). The build runs with the
+  form meanwhile; the values land at the data gate.
+
 - **Resolved 2026-11-10, 23:15, in his presence:** the change of the baseline regime's conclusion by the momentum headroom as the ninth traded metric: "Confirm" (spike C's decisions.md). Nothing waits for him now.
 
 - **Resolved 2026-11-10, 22:40, in his presence:** the ten WP28 rows (S-3 cut to a pointer; the rest kept; three of them
