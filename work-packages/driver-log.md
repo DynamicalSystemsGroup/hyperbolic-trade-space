@@ -7,6 +7,19 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- **WP28's rows for the supervisor (2026-11-10, 20:50; `WP28-cut-list.md`, "For the supervisor").** Ten units the
+  readers judged not to advance the narrative that this package may not cut because each rests on his decision.
+  One question for him when he is here, multi-select, with the words that would leave: S-1, S-2 the two model-view
+  figures (Figures 2 and 3; −385 words together; the driver recommends keep: they tie the paper to the model of
+  record and the WP27 trace); S-3 the two-regimes figure (Figure 9; −114; readers disagree, round 2 called it the
+  most decision-relevant figure; the driver recommends keep); S-4 the docs tension heatmap ("i like the tension
+  heatmap"; keep); S-5 the planted ternary and its subsection (−194; "this one is great"; keep); S-6 Future work
+  (−188; his final remark lives there; his call); S-7 the process disclosure (−73; his voice; keep); S-8, S-9 the
+  boxes for L2 and L6 (−92; his requirement R-17 puts every lemma in the body; the driver recommends relaxing R-17
+  so supporting lemmas live in Appendix B with a pointer, the only cut here that shortens the Results); S-10 the
+  conditioning diagnostic D.12 (−52; part of the external-review response he accepted; keep; if cut, D.6 goes with
+  it). The executed cuts of WP28 leave the paper's body at its length; this list is where the body would shorten.
+
 - **For his eye, not blocking (2026-11-10, 17:10):** CR-15's sentence in Section 6.2 is amended by the driver's
   call (the sharp fit's labels are the alternation's weights at infinite term temperature; the cell is read after
   the fit); the readers found the old sentence contradicted equation (2). The call keeps his fit-versus-analysis

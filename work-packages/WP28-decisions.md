@@ -37,3 +37,32 @@ The driver's decisions on the open items:
 **Driver, verbatim:** "WP28 approved as drafted with OD1 (b), OD2 (b), OD3 (a), OD4 (b), OD5 (a), OD6 (a) and the
 defaults with the key at version 4. Start is 1277210. The inventory readers know no record; the cut list comes to
 me before a cut lands."
+
+## Cut list (2026-11-10, 20:50; `WP28-cut-list.md` at 68d240f, by a fresh triager)
+
+The triager's reading of the 29 units not judged "advances": 3 cuts executable on approval (X-1, X-2, X-3, all on
+the docs side), 1 cut held on a failing check (X-4), 10 rows for the supervisor (S-1 to S-10), 15 kept with a cited
+reason; no unit stuck by the readers; one term stuck by the record ("energy differential", his decision).
+
+The driver's decisions:
+
+- **1 (b), approved with one change of hands.** X-1 and X-2 execute by the docs stream as written (the test member
+  of X-1 changes under R-10 citing this approval; the register rows go with the figures; budgets lowered to the
+  counts after, OD5 (a)). X-3 is executed by the driver, not the docs stream: `README.md` is under
+  `[ownership.technical]` in the interface contract, and the contract is amended, never drifted; the driver is that
+  side's writer, so no amendment is needed (decision 3 below). The fifteen kept rows stand as kept: each cites the
+  pointer, reference or decision that keeps it, and the driver read them.
+- **2 (a).** X-4 (`tab-D-refits_by_category`, D.6, eight words) stays: the renumbering of D.7 to D.17, the link
+  constants in `paper/generate_findings.py` and two pins cost more than the eight words earn. It is noted beside
+  S-10: if the supervisor cuts D.12, D.13 to D.17 renumber anyway and D.6 goes in the same unit.
+- **3 (the contract stands).** No amendment: the driver edits the README under his own side's ownership.
+- **4.** S-1 to S-10 go to the supervisor as one question at his next presence (the driver's log, "Waiting for the
+  supervisor", with the driver's recommendation per row); nothing of them executes before his word.
+
+**Driver, verbatim:** "The cut list is approved with X-1 and X-2 to the docs stream, X-3 executed by me under the
+contract's ownership, X-4 kept, and S-1 to S-10 held for the supervisor. The fifteen kept rows are kept."
+
+**X-3 executed by the driver (this commit):** the README's description is the pointer sentence of the row; what the
+content no longer did: it described the method a second time, in older words than the Home page, and called the unit
+level set "the Pareto frontier", which Definition 1 and the abstract deny; register rows C369, C370, C371 removed
+with the paragraph; `prose_words` 162 to 98.
