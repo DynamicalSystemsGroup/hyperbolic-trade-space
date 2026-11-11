@@ -5312,7 +5312,7 @@ note = "The case's conditioner is LogAffinePreconditioner with scaler='standard'
 
 [[claim]]
 id = "C427"
-fragment = "The mean slack falls with every added term by construction, and a table may show no break."
+fragment = "The mean slack falls with every added term by construction, so it cannot choose K, and a table may show no break."
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "S"
@@ -5348,7 +5348,7 @@ note = "Primary cubesat, three outer draws of two resamples each: 0.09 to 0.45 a
 
 [[claim]]
 id = "C430"
-fragment = "`termination_.status` and `termination_.radius` say the optimizer finished and the assignments hold under small changes of the terms. Every fit below is certified at every K tried"
+fragment = "`termination_.status` and `termination_.radius` say the optimizer finished and the assignments hold under small changes of the terms. Every fit below at K = 2 and above is certified"
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "S"
@@ -5384,7 +5384,7 @@ note = "make_frontier_data(400, 4, n_terms=2, random_state=0) at tau 50, random_
 
 [[claim]]
 id = "C433"
-fragment = "With three, table 0 drops by 0.163 and 0.029, then 0.005 or less, and all three are found at K = 3. Table 1 drops by 0.181, then 0.006 or less, and finds two of the three at every K"
+fragment = "With three, table 0 drops by 0.163 and 0.029, then 0.005 or less, and all three are found at K = 3. Table 1 drops by 0.181, then 0.006 or less, and finds two of the three at every K from 2"
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "R"
@@ -5420,7 +5420,7 @@ note = "Stock regime at its K = 1 temperature: slack 0.179, 0.114, 0.046, 0.035,
 
 [[claim]]
 id = "C436"
-fragment = "The primary regime drops by 0.112, 0.044, 0.017 and 0.010: the curve bends with no break, so the mean slack cannot choose K, and its thinnest term holds 0.07 already at K = 2. Every fit is certified, with a stable radius from 3e-06 to 1e-04."
+fragment = "The primary regime drops by 0.112, 0.044, 0.017 and 0.010: the curve bends with no break, so the mean slack cannot choose K, and its thinnest term holds 0.07 already at K = 2. Every fit at K = 2 and above is certified, with a stable radius from 3e-06 to 1e-04."
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "R"
@@ -5493,3 +5493,51 @@ disposition = "keep"
 source = "WP28 close, WP25-4 T-3 (as C340 on the termination page)"
 note = "As C340: the Hessian of J_tau is tau times a weighted covariance (L17.5), so a small smallest eigenvalue is a nearly flat direction; the clause 'so weakly identified exponents' was dropped from D.12's first paragraph, as the page dropped it."
 
+
+[[claim]]
+id = "C444"
+fragment = "`mean_slack_` is comparable across K at one temperature, and `objective_` is not."
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "S"
+backing = ["glossary:mean-slack", "test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized", "test:tests/test_case.py::test_mean_slack_by_k_reads_the_estimator_and_the_fixed_tau_refit_shares_one_temperature"]
+status = "backed"
+disposition = "keep"
+source = "WP31 review G-1, G-3, G-4"
+note = "As C402 and C155: mean_slack_ is defined at every K; objective_ is the soft maximum at one term and the mean slack at several, so it is not comparable. Narrowed from 'only there' to the comparison the case test makes."
+
+[[claim]]
+id = "C445"
+fragment = "exponent vector sits from the nearest term of the refit (summed absolute differences, at most 2)"
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "M"
+backing = ["test:tests/test_estimator.py::test_fit_invariants", "test:tests/test_estimator.py::test_k_terms_attributes_conventions"]
+status = "backed"
+disposition = "keep"
+source = "WP31 review G-1, G-3, G-4"
+note = "Exponents are nonnegative and sum to one (the tests pin it), so the summed absolute difference of two exponent vectors is at most 2."
+
+[[claim]]
+id = "C446"
+fragment = "The planted K0 is known there; your table's is not."
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_estimator.py::test_k_terms_recovers_planted_terms", "func:src/hyperbolic_trade_space/datasets.py::make_frontier_data"]
+status = "backed"
+disposition = "keep"
+source = "WP31 review G-1, G-3, G-4"
+note = "make_frontier_data(n_terms=K0) returns the planted exponents (info['exponents']); the recovery test uses them. A real table has no planted K0."
+
+[[claim]]
+id = "C447"
+fragment = "The package has no held-out criterion for K, and none has been studied."
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "S"
+backing = ["file:work-packages/WP31-readout.md"]
+status = "backed"
+disposition = "keep"
+source = "WP31 review G-1, G-3, G-4"
+note = "WP31 readout, section 1: no held-out criterion is built or studied; a search of the public names shows none."

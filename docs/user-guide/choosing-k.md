@@ -2,14 +2,15 @@
 
 The fit never selects the number of terms K; you do. Every check below reads fits at one
 temperature, selected at K = 1 ([Fitting](fitting.md#choosing-the-temperature)): `mean_slack_` is
-comparable across K only there, and `objective_` not at all. No check decides K alone, so each is
-given with what it cannot say.
+comparable across K at one temperature, and `objective_` is not. No check decides K alone, so each
+is given with what it cannot say. The package has no held-out criterion for K, and none has been
+studied.
 
 ## Methods
 
 - **Mean slack against K.** Fit `n_terms` = 1, 2, ... and read the drop in `mean_slack_` per added
-  term. A break, one large drop then small ones, marks a K worth keeping. The mean slack falls with
-  every added term by construction, and a table may show no break.
+  term. A break, one large drop then small ones, shows where added terms stop paying. The mean slack
+  falls with every added term by construction, so it cannot choose K, and a table may show no break.
 - **Thinnest term.** `term_share_.min()` is the share of the near-frontier designs in the thinnest
   term's cell; a term of few designs is a few designs fitted alone. It says a term is thin, not
   which K is right, and it depends on the band.
@@ -18,10 +19,10 @@ given with what it cannot say.
   It is noisy: draws of one procedure differ by several tenths on the cubesat below, so it offers no
   threshold.
 - **Planted check.** Fit `make_frontier_data(n_terms=K0)` at your number of designs and metrics to
-  see how recovery looks on a table of your shape. It tests the method there, not your table's K.
+  see how recovery looks on a table of your shape. The planted K0 is known there; your table's is not.
 - **The certificate.** `termination_.status` and `termination_.radius` say the optimizer finished
-  and the assignments hold under small changes of the terms. Every fit below is certified at every
-  K tried, so it does not say K is right.
+  and the assignments hold under small changes of the terms. Every fit below at K = 2 and above is
+  certified, so it does not say K is right.
 - **`conditioning_`.** The smallest eigenvalue per term flags a nearly flat direction
   ([Termination](termination.md#conditioning_)). It compares metrics within a fit, not numbers of
   terms.
@@ -102,7 +103,7 @@ for K0, seed in ((2, 0), (3, 0), (3, 1)):
 With two planted terms the mean slack drops by 0.108 at K = 2 and by 0.005 or less after; both
 terms are found at K = 2. With three, table 0 drops by 0.163 and 0.029, then 0.005 or less, and all
 three are found at K = 3. Table 1 drops by 0.181, then 0.006 or less, and finds two of the three at
-every K: the break reads the terms the fit recovers, not the number planted. Past the break the
+every K from 2: the break reads the terms the fit recovers, not the number planted. Past the break the
 mean slack keeps falling, by 0.003 or more at K = 5.
 
 ```python {.runnable}
@@ -130,7 +131,7 @@ for r, s in studies.items():
 The stock regime drops by 0.065 and 0.068, then 0.011 and 0.004: a break at K = 3, where the
 thinnest term holds 0.17. The primary regime drops by 0.112, 0.044, 0.017 and 0.010: the curve
 bends with no break, so the mean slack cannot choose K, and its thinnest term holds 0.07 already at
-K = 2. Every fit is certified, with a stable radius from 3e-06 to 1e-04.
+K = 2. Every fit at K = 2 and above is certified, with a stable radius from 3e-06 to 1e-04.
 
 ```python {.runnable}
 for K in (2, 3, 4):

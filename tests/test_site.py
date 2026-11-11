@@ -58,7 +58,7 @@ BUDGETS = {
     "user-guide/overview.md": 500,
     "user-guide/conditioning.md": 700,
     "user-guide/fitting.md": 668,  # 800 until WP31 U2 and U3
-    "user-guide/choosing-k.md": 677,  # WP31 U3
+    "user-guide/choosing-k.md": 707,  # WP31 U3 (677), review G-1, G-3, G-4
     "user-guide/tensions.md": 700,
     "user-guide/chart.md": 557,  # 600 until WP28 X-1; 561 until the holes block printed
     "user-guide/prediction.md": 350,
@@ -69,7 +69,7 @@ BUDGETS = {
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 7450  # 6845 until WP31 (U1 +31, U2 -9, U3 +554)
+TOTAL_BUDGET = 7472  # 6845 until WP31 (7450 before its review fixes, +30)
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
