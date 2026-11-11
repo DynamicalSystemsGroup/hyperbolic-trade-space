@@ -263,3 +263,14 @@ drops at the one-term temperature, the resampling splinter check, the thin-term 
 Section 9 with a small table in Appendix D, states the K the methods pick for the several-term reading, lets the
 figures and the narrative follow it, and shows the next K as the step where a thin term appears. If the methods pick
 K = 2, the several-term story is told at K = 2. Listed for his review.
+
+**Term order, the supervisor, verbatim (15:40):** "arbitrary term order is an interpretability issue. we need some
+justifiable metric to order by. i would recommend using whatever we used when we were thinking about selecting K".
+**The assistant's call:** the per-term quantity the choosing-K methods use is the term share (the fraction of
+near-frontier designs a term dominates; the thinnest term's share is what the K choice reads), so terms are ordered by
+share, largest first, and the order is made in the estimator at fit time, not in the plotting: after the alternation
+converges the terms are permuted once by descending share, so `exponents_`, the offsets, the labels, the termination
+record, every table and every figure carry one order; ties broken by cell size then by the first metric's exponent;
+the glossary's "term share" entry says it is the order of the terms; the paper and the docs state it in one sentence.
+The planted-recovery tests already compare sorted exponents; the per-term pins (the K record tests) re-pin at the
+cascade. A reader then knows term 1 is the term that carries most of the frontier.
