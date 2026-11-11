@@ -138,15 +138,20 @@ def test_no_decision_element_row_is_empty_empirically():
 # named configurations (WP23-review.md, "Coverage findings"): the peak slew power and the power
 # margin read the measured peak torque, and at every named configuration the wheels saturate at
 # their class's maximum torque, so the gains, the battery and (for the peak power) the panel span
-# move neither. In the CSV's row order.
+# move neither. The battery peak power ratio (WP30, traded) divides by the eclipse peak load, which
+# reads the same measured (saturated) peak torque, so the panel span and the gains move it no more. In the
+# CSV's row order.
 EXPECTED_DISAGREEMENTS: list[tuple[str, str]] = [
     ("panelSpan", "peak slew power"),
+    ("panelSpan", "battery peak power ratio"),
     ("batteryCapacity", "power margin"),
     ("batteryCapacity", "peak slew power"),
     ("Kp", "power margin"),
     ("Kp", "peak slew power"),
+    ("Kp", "battery peak power ratio"),
     ("Kd", "power margin"),
     ("Kd", "peak slew power"),
+    ("Kd", "battery peak power ratio"),
 ]
 
 

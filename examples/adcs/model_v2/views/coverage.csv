@@ -8,6 +8,10 @@ coverage,wheelClass,swap,energy balance,yes,yes,3.6e-04,yes
 coverage,wheelClass,swap,peak slew power,yes,yes,6.8e-01,yes
 coverage,wheelClass,swap,depth of discharge,yes,yes,1.6e-03,yes
 coverage,wheelClass,swap,momentum headroom,yes,yes,2.3e+00,yes
+coverage,wheelClass,swap,available power,no,no,0.0e+00,yes
+coverage,wheelClass,swap,battery peak power ratio,yes,yes,3.5e-01,yes
+coverage,wheelClass,swap,unit cost,yes,yes,1.2e-01,yes
+coverage,wheelClass,swap,fleet cost,yes,yes,1.2e-01,yes
 coverage,grade,swap,settling time,yes,yes,2.1e-02,yes
 coverage,grade,swap,pointing error,yes,yes,1.2e+01,yes
 coverage,grade,swap,total mass,yes,yes,4.8e-02,yes
@@ -17,6 +21,10 @@ coverage,grade,swap,energy balance,yes,yes,1.2e-01,yes
 coverage,grade,swap,peak slew power,yes,yes,3.8e-01,yes
 coverage,grade,swap,depth of discharge,yes,yes,7.6e-02,yes
 coverage,grade,swap,momentum headroom,yes,yes,1.8e-02,yes
+coverage,grade,swap,available power,yes,yes,3.1e-02,yes
+coverage,grade,swap,battery peak power ratio,yes,yes,6.0e-02,yes
+coverage,grade,swap,unit cost,yes,yes,1.4e-01,yes
+coverage,grade,swap,fleet cost,yes,yes,1.4e-01,yes
 coverage,panelSpan,tune,settling time,yes,yes,1.3e-01,yes
 coverage,panelSpan,tune,pointing error,yes,yes,1.8e-04,yes
 coverage,panelSpan,tune,total mass,yes,yes,8.7e-03,yes
@@ -26,6 +34,10 @@ coverage,panelSpan,tune,energy balance,yes,yes,4.2e-01,yes
 coverage,panelSpan,tune,peak slew power,yes,no,0.0e+00,no
 coverage,panelSpan,tune,depth of discharge,yes,yes,3.2e-04,yes
 coverage,panelSpan,tune,momentum headroom,yes,yes,1.2e-01,yes
+coverage,panelSpan,tune,available power,yes,yes,1.8e-01,yes
+coverage,panelSpan,tune,battery peak power ratio,yes,no,0.0e+00,no
+coverage,panelSpan,tune,unit cost,yes,yes,3.2e-02,yes
+coverage,panelSpan,tune,fleet cost,yes,yes,3.2e-02,yes
 coverage,batteryCapacity,tune,settling time,yes,yes,3.1e-03,yes
 coverage,batteryCapacity,tune,pointing error,yes,yes,9.9e-07,yes
 coverage,batteryCapacity,tune,total mass,yes,yes,6.4e-03,yes
@@ -35,6 +47,23 @@ coverage,batteryCapacity,tune,energy balance,yes,yes,7.8e-07,yes
 coverage,batteryCapacity,tune,peak slew power,yes,no,0.0e+00,no
 coverage,batteryCapacity,tune,depth of discharge,yes,yes,9.1e-02,yes
 coverage,batteryCapacity,tune,momentum headroom,yes,yes,1.9e-03,yes
+coverage,batteryCapacity,tune,available power,no,no,0.0e+00,yes
+coverage,batteryCapacity,tune,battery peak power ratio,yes,yes,1.0e-01,yes
+coverage,batteryCapacity,tune,unit cost,yes,yes,2.6e-03,yes
+coverage,batteryCapacity,tune,fleet cost,yes,yes,2.6e-03,yes
+coverage,fleetSize,tune,settling time,no,no,0.0e+00,yes
+coverage,fleetSize,tune,pointing error,no,no,0.0e+00,yes
+coverage,fleetSize,tune,total mass,no,no,0.0e+00,yes
+coverage,fleetSize,tune,control effort,no,no,0.0e+00,yes
+coverage,fleetSize,tune,power margin,no,no,0.0e+00,yes
+coverage,fleetSize,tune,energy balance,no,no,0.0e+00,yes
+coverage,fleetSize,tune,peak slew power,no,no,0.0e+00,yes
+coverage,fleetSize,tune,depth of discharge,no,no,0.0e+00,yes
+coverage,fleetSize,tune,momentum headroom,no,no,0.0e+00,yes
+coverage,fleetSize,tune,available power,no,no,0.0e+00,yes
+coverage,fleetSize,tune,battery peak power ratio,no,no,0.0e+00,yes
+coverage,fleetSize,tune,unit cost,yes,yes,2.9e-02,yes
+coverage,fleetSize,tune,fleet cost,yes,yes,7.1e-02,yes
 coverage,Kp,tune,settling time,yes,yes,9.3e-02,yes
 coverage,Kp,tune,pointing error,yes,yes,8.8e-02,yes
 coverage,Kp,tune,total mass,no,no,0.0e+00,yes
@@ -44,6 +73,10 @@ coverage,Kp,tune,energy balance,yes,yes,3.8e-05,yes
 coverage,Kp,tune,peak slew power,yes,no,0.0e+00,no
 coverage,Kp,tune,depth of discharge,yes,yes,1.7e-04,yes
 coverage,Kp,tune,momentum headroom,yes,yes,8.6e-02,yes
+coverage,Kp,tune,available power,no,no,0.0e+00,yes
+coverage,Kp,tune,battery peak power ratio,yes,no,0.0e+00,no
+coverage,Kp,tune,unit cost,no,no,0.0e+00,yes
+coverage,Kp,tune,fleet cost,no,no,0.0e+00,yes
 coverage,Kd,tune,settling time,yes,yes,2.2e-01,yes
 coverage,Kd,tune,pointing error,no,no,0.0e+00,yes
 coverage,Kd,tune,total mass,no,no,0.0e+00,yes
@@ -53,43 +86,61 @@ coverage,Kd,tune,energy balance,yes,yes,3.4e-05,yes
 coverage,Kd,tune,peak slew power,yes,no,0.0e+00,no
 coverage,Kd,tune,depth of discharge,yes,yes,1.5e-04,yes
 coverage,Kd,tune,momentum headroom,yes,yes,8.8e-02,yes
+coverage,Kd,tune,available power,no,no,0.0e+00,yes
+coverage,Kd,tune,battery peak power ratio,yes,no,0.0e+00,no
+coverage,Kd,tune,unit cost,no,no,0.0e+00,yes
+coverage,Kd,tune,fleet cost,no,no,0.0e+00,yes
 table,metric,mark,element,kind,requirement,how,limit,verified_in
 metrics,settling time,MoP,settlingTime,measured,SettledRequirement,reads the measured settlingTime,-,SlewVerification
 metrics,pointing error,MoE,PointingError,calc,PointingErrorRequirement,invokes PointingError,budgets.pointingErrorLimit = 0.008495 [degree],ConfigurationVerification
-metrics,total mass,MoP,totalMass,attribute,LaunchBudgetRequirement,"reads c.launchCost = LaunchCost(c), the MoE",budgets.launchBudget = 90643.0,ConfigurationVerification
+metrics,total mass,MoP,totalMass,attribute,LaunchBudgetRequirement,"reads c.launchCost = LaunchCost(c), the MoE",budgets.launchBudget = 105770.0,ConfigurationVerification
 metrics,control effort,MoP,controlEffort,measured,ControlEffortRequirement,reads the measured controlEffort,budgets.controlEffortLimit = 0.05922 [N*m*s],SlewVerification
 metrics,power margin,MoP,PowerMargin,calc,PowerMarginRequirement,invokes PowerMargin,-,SlewVerification
 metrics,energy balance,MoP,EnergyBalance,calc,EnergyBalanceRequirement,invokes EnergyBalance,-,SlewVerification
 metrics,peak slew power,MoP,PeakSlewPower,calc,PeakSlewPowerRequirement,invokes PeakSlewPower,budgets.peakSlewPowerLimit = 2.6 [W],SlewVerification
 metrics,depth of discharge,MoP,DepthOfDischarge,calc,DepthOfDischargeRequirement,invokes DepthOfDischarge,-,SlewVerification
 metrics,momentum headroom,MoP,MomentumHeadroom,calc,MomentumRequirement,invokes MomentumHeadroom,-,SlewVerification
+metrics,available power,MoP,AvailablePower,calc,PowerRequirement,invokes AvailablePower,-,ConfigurationVerification
+metrics,battery peak power ratio,MoP,BatteryPeakPowerRatio,calc,BatteryPeakPowerRequirement,invokes BatteryPeakPowerRatio,-,SlewVerification
+metrics,unit cost,MoE,UnitCost,calc,UnitCostRequirement,invokes UnitCost,budgets.unitCostLimit = 350000.0,ConfigurationVerification
+metrics,fleet cost,MoE,FleetCost,calc,FleetCostRequirement,invokes FleetCost,budgets.fleetCostLimit = 6.0e6,ConfigurationVerification
 table,from,to,variables
 coupling,wheelClass,controls,momentumCapacity (wheel.maxMomentum)
 coupling,wheelClass,power and energy,wheel.maxTorque
 coupling,wheelClass,mass,wheel.mass
+coupling,wheelClass,cost,wheel.maxTorque
 coupling,grade,controls,tracker.accuracy
 coupling,grade,power and energy,tracker.power
 coupling,grade,mass,tracker.mass
+coupling,grade,cost,tracker.accuracy
 coupling,panelSpan,controls,panelPlus.span
 coupling,panelSpan,power and energy,panelMinus.span; panelPlus.span
 coupling,panelSpan,mass,panelPlus.span
 coupling,batteryCapacity,power and energy,battery.capacity
+coupling,batteryCapacity,cost,battery.capacity
+coupling,fleetSize,cost,fleetSize; n
 coupling,Kp,controls,controller.Kp
 coupling,Kd,controls,controller.Kd
 coupling,controls,controls,SlewMeasurement (adcs_sim.simulate_adcs); MomentumHeadroom; GravityGradientTorque; PointingError
 coupling,controls,power and energy,peakTorque; torqueSquaredIntegral
 coupling,controls,metrics read off,settling time; pointing error; control effort; momentum headroom
 coupling,controls,requirements read off,ControlEffortRequirement; MomentumRequirement; PointingErrorRequirement; SettledRequirement
-coupling,power and energy,power and energy,panelMinus.area; panelPlus.area; panelMinus.mass; panelPlus.mass; battery.mass; GeneratedPower; BaseLoad; AvailablePower; UsableWheelTorque; SlewLossEnergy; EclipseDemand; DepthOfDischarge; OrbitPeriod; EnergyBalance; PeakSlewPower; PowerMargin; BatteryPeakPower; EclipsePeakLoad
+coupling,power and energy,power and energy,panelMinus.area; panelPlus.area; panelMinus.mass; panelPlus.mass; battery.mass; GeneratedPower; BaseLoad; AvailablePower; UsableWheelTorque; SlewLossEnergy; EclipseDemand; DepthOfDischarge; OrbitPeriod; EnergyBalance; PeakSlewPower; PowerMargin; BatteryPeakPowerRatio; BatteryPeakPower; EclipsePeakLoad
 coupling,power and energy,controls,panelPlus.mass; usableWheelTorque
 coupling,power and energy,mass,battery.mass; panelMinus.mass; panelPlus.mass
-coupling,power and energy,metrics read off,power margin; energy balance; peak slew power; depth of discharge
+coupling,power and energy,cost,panelMinus.area; panelPlus.area
+coupling,power and energy,metrics read off,power margin; energy balance; peak slew power; depth of discharge; available power; battery peak power ratio
 coupling,power and energy,requirements read off,BatteryPeakPowerRequirement; DepthOfDischargeRequirement; EnergyBalanceRequirement; PeakSlewPowerRequirement; PowerMarginRequirement; PowerRequirement
-coupling,mass,mass,MassAccounting; StructureMass; LaunchCost; InertiaX; InertiaY; InertiaZ
+coupling,mass,mass,MassAccounting; StructureMass; InertiaX; InertiaY; InertiaZ
 coupling,mass,controls,InertiaX; InertiaY; InertiaZ; structureMass
+coupling,mass,cost,totalMass
 coupling,mass,metrics read off,total mass
-coupling,mass,requirements read off,LaunchBudgetRequirement
-coupling,connectivity,connected,18 nodes; 25 edges; unfed: none; unreached: none
-table,requirement,claim,claim_verdict,quantity,metric,axis,reason
-reasons,BatteryPeakPowerRequirement,BatteryPeakPowerRequirementHoldsInRange,holds proved,battery peak power ratio,depth of discharge,tracks,"`BatteryPeakPowerRequirement` holds at every in-range configuration (the model's claim `BatteryPeakPowerRequirementHoldsInRange`, proved by the solver); its quantity, the battery peak power ratio, tracks the depth of discharge (Spearman +0.9703 primary, +0.9753 baseline)."
-reasons,PowerRequirement,PowerRequirementHoldsInRange,holds proved,available power,energy balance,one axis,"`PowerRequirement` holds at every in-range configuration (the model's claim `PowerRequirementHoldsInRange`, proved by the solver); its quantity, the available power, is one axis with the energy balance (Spearman +0.9996 primary, +0.9997 baseline)."
+coupling,mass,requirements read off,
+coupling,cost,cost,LaunchCost; PartTotal; PanelPrice; BatteryPrice; WheelPrice; TrackerPrice; BusTotal; PanelTotal; BatteryTotal; WheelTotal; TrackerTotal; AssemblyTotal; FleetBuildCost; FleetCost; UnitCost
+coupling,cost,metrics read off,unit cost; fleet cost
+coupling,cost,requirements read off,FleetCostRequirement; LaunchBudgetRequirement; UnitCostRequirement
+coupling,connectivity,connected,24 nodes; 35 edges; unfed: none; unreached: none
+table,requirement,claim,claim_verdict,traded_metric,reading,reason
+reasons,MomentumRequirement,,,momentum headroom,participates,"`MomentumRequirement` reads the momentum headroom, which takes part in the fit (exponent 0.107 primary, 0.181 baseline)."
+reasons,PowerRequirement,PowerRequirementHoldsInRange,holds proved,available power,one axis,"`PowerRequirement` holds at every in-range configuration (the model's claim `PowerRequirementHoldsInRange`, proved by the solver); reads the available power, one axis with the energy balance (Spearman +0.9997 primary, +0.9997 baseline), so the reading sums their exponents (0.197 primary, 0.192 baseline)."
+reasons,BatteryPeakPowerRequirement,BatteryPeakPowerRequirementHoldsInRange,holds proved,battery peak power ratio,exponent zero,"`BatteryPeakPowerRequirement` holds at every in-range configuration (the model's claim `BatteryPeakPowerRequirementHoldsInRange`, proved by the solver); reads the battery peak power ratio, which the fit gives exponent zero; it tracks the depth of discharge (Spearman +0.971 primary, +0.975 baseline)."

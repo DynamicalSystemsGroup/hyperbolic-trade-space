@@ -56,13 +56,13 @@ the file.
 <!-- sections:begin -->
 | section | title | lines |
 |---|---|---|
-| 1 | CONFIGURATION SPACE (configuration view): what can be chosen | 91 to 191 |
-| 2 | THE CUBESAT (configuration view): composition and environment | 193 to 303 |
-| 3 | ACCOUNTING (assessment view): mass, power, energy, inertia, pointing | 305 to 469 |
-| 4 | SCENARIOS (assessment view): the slew, and a closed-form approximation of it | 471 to 545 |
-| 5 | REQUIREMENTS, SATISFACTION AND VERIFICATION (assessment view; 15.2, WP22) | 547 to 810 |
-| 6 | THE EXPERIMENT (assessment view): configuration and measured slew in, attributes out | 812 to 840 |
-| 7 | NAMED CONFIGURATIONS (configuration view) | 842 to 865 |
+| 1 | CONFIGURATION SPACE (configuration view): what can be chosen | 106 to 214 |
+| 2 | THE CUBESAT (configuration view): composition and environment | 216 to 335 |
+| 3 | ACCOUNTING (assessment view): mass, power, energy, inertia, pointing | 337 to 698 |
+| 4 | SCENARIOS (assessment view): the slew, and a closed-form approximation of it | 700 to 774 |
+| 5 | REQUIREMENTS, SATISFACTION AND VERIFICATION (assessment view; 15.2, WP22) | 776 to 1122 |
+| 6 | THE EXPERIMENT (assessment view): configuration and measured slew in, attributes out | 1124 to 1174 |
+| 7 | NAMED CONFIGURATIONS (configuration view) | 1176 to 1199 |
 <!-- sections:end -->
 
 What to take from each section:

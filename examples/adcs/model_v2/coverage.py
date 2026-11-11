@@ -741,7 +741,8 @@ def empirical(
         return new
 
     effects: dict[tuple[str, str], float] = {}
-    for cfg in graph.named_configurations().values():
+    for named in graph.named_configurations().values():
+        cfg = {"fleet_size": 1.0, **named}  # the named candidates are fleets of one (WP30 gate)
         oracle = oracle_for(cfg)
         base = oracle(cfg)
         for element, kind in elements:
