@@ -743,3 +743,38 @@ whom-it-is-for is one sentence, not a section; depth is reached by drilling down
 repository), never by stacking it on the landing surface; every signposting unit is net neutral or net negative in
 words on the surface it touches, with the ledger and budgets showing it; the journeys map is a working note for the
 builders, not a page for users.
+
+## Handover (ninth PM, 2026-11-11; Sonnet; parallel-board.md's ninth-PM tables are the live copy)
+
+Landed this PM on dev: WP31 accepted at 1d26560 (page fixes 378e8c6, readers' returns verbatim `WP31-task-readers/`, changelog line b2c5dd9);
+WP8b strict `assemble_site.py` a007ec0; WP30 gate checklist 450c65b and preparation 63b1d2e..eea0673 (option B for the container runs; the
+amendment is contract version 20); figure round: search 8297df5, redraw d84b9f9 (the `plot_ternary` label unit), final iteration b00d4aa, cold reads
+`WP19-cold-reads-s5b/`; two-panel docs and root-page unit fa2c66e (generator in `examples/adcs/case.py`; C453-C458); spike D2 b057b4f; WP32 scope
+78608bc and WP33 scope 5c70a4b (DRAFT, open decisions in each, for the driver); `supervisor-review-list.md` 4715257 (92 rows; keep current at each batch).
+P7 and P8 baseline reads (verbatim, uncommitted until this commit): `WP30-rounds/persona-baseline/`.
+
+Review of fa2c66e found no defect; open items for the driver: (1) the root page's planted story figure repeats `why-regions` (the reviewer's cold read:
+second figure has no key and fails the sentence test; remove it, or drop `why-regions` and give the planted figure a real caption); (2) at 375 px the
+two-panel figure text is illegible (cheapest fix: wrap in a link to the full-size PNG); (3) the caption says "the second" region is the single-metric term
+but in B that is marker 1: say "the other region". The paper unit of the two-panel figure waits for the driver's approval of the position: the proposal
+(read-only researcher): after cell 86 `num-elasticity`, before `sec-case-analysis-3b`; Figure 9, static route (a module in `paper/figures/`, PNG, caption
+and lines cells); `tests/test_paper.py` float count 9 to 10; ledger raise row quoting his words; register rows with new tests for the contending sets;
+F.4 does not change on the static route; docs/examples.md's "none is drawn for the cubesat" sentence needs rewording. Not yet built.
+
+WP29: branch `wp29` at 33c1d07 (L20 noise ridge lemma, 51 steps; proof map OK 20 files, 493 steps; chain passes; Appendix B regenerated, test 8 passed;
+`tests/test_noise_ridge.py` 28 passed; the supervisor's formula delta = -sigma^2 (P C P)^+ P w is right in sign and factor, with four refinements: the
+ridge reading holds for the norm only; the bound carries tau (||delta|| <= tau ||P Sigma w|| / conditioning_); P is the active face's projector; tracking
+the ridge minimiser holds at small tau only). Placement proposal updated on the branch; nothing on dev; the driver places it.
+
+WP30 data gate: D2 readout (the 2026 prices) is with the driver, who sets the two cost values and the launch rate; the figures: build per unit at n = 1 ..
+30 about 5 percent above spike D (368,320 down to 168,259 central); launch 93,037 per baseline satellite; 1,000,000 for 25 satellites = 40,000 each,
+build and launch, fits only the 1U class; options A to D in the readout. Held: `wp30a`, `wp30b`. The checklist `WP30-gate-checklist.md` has the order; the
+container commands go to the driver when ready; key v5 is the driver's. The P7/P8 findings feed the model developer: no cost axis, linear launch, requirements
+read off the data, no margins or momentum accumulation, gains as variables, constant 12 W load, no statement of what is left out (P7 F1-F16); no fleet,
+no program currency for requirement prices, no decision changed, Examples vs paper three-term numbers differ (5/4/5 against 4/5/5; 17/10/73 against 3/24/72)
+(P8 F1-F9). Not triaged into change requests yet.
+
+Not yet done: the package-user tests (WP32) and journeys (WP33) await approval of their scopes; WP25-5; WP8b's driver items (version step, changelog
+heading, reviewer's guide skeleton); the final reader round; both platforms and the container at the head. Worktrees mine: `fig-trilemma` (idle),
+`wp29`, `wp30a`, `wp30b`, `s5real` (unit fa2c66e, prune), `hand` (this commit, prune), `spikeD2` (prune). Not mine: `wp27model`, `stage`, `verify`,
+`preview-wt`, `hts-reader-EF`. Environment: `MPLCONFIGDIR` under the scratchpad; the register ids run to C458 (fetch before a new row).
