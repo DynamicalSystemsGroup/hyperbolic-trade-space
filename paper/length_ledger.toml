@@ -952,3 +952,10 @@ section = "Case construction"
 words_added = 1
 job = "the effective sample sentence gives one number for one quantity: 'about that many' replaces the count rounded to five, which five readers read as a second, disagreeing number (WP28 CR-39)"
 reader = "the depth-C reader who compared 23.1 with 'about 25'"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 6
+job = "Figure 3's caption says which way each measured metric goes (the settling time directly to the table, the control effort through the analysis) and that the analysis returns seven of the eight, so its counts agree with the box read from the model (WP28 CR-41)"
+reader = "the reader who could not reconcile the caption's counts with the box's '7 of 8'"
