@@ -69,6 +69,15 @@ PRODUCERS = {
     "energy_balance_wh": ("cubesat_tradespace.sysml", "EnergyBalance", "computed: accounting"),
     "peak_slew_power_w": ("cubesat_tradespace.sysml", "PeakSlewPower", "computed: accounting"),
     "dod_eclipse": ("cubesat_tradespace.sysml", "DepthOfDischarge", "computed: accounting"),
+    "momentum_headroom": ("model_v2/cubesat.sysml", "MomentumHeadroom", "computed: accounting"),
+    "available_power_w": ("model_v2/cubesat.sysml", "AvailablePower", "computed: accounting"),
+    "battery_peak_power_ratio": (
+        "model_v2/cubesat.sysml",
+        "BatteryPeakPowerRatio",
+        "computed: accounting",
+    ),
+    "unit_cost_usd": ("model_v2/cubesat.sysml", "UnitCost", "computed: cost model"),
+    "fleet_cost_usd": ("model_v2/cubesat.sysml", "FleetCost", "computed: cost model"),
 }
 
 

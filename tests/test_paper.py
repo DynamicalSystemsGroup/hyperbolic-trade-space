@@ -1418,7 +1418,8 @@ def test_the_regimes_contending_set_is_the_unique_lp_optimum_not_a_solver_choice
                       bounds=[(0, None)] * d + [(None, None)], method=method)  # fmt: skip
         assert np.array_equal(np.flatnonzero(res.x[:d] > 1e-9), S), method
     rep = case._reports(st, case.fit_study(st))[0]
-    assert np.array_equal(rep.contending_set, S) and rep.n_lemma == S.size == 5
+    assert np.array_equal(rep.contending_set, S) and rep.n_lemma == S.size
+    assert S.size == {"primary": 7, "stock": 8}[regime]  # the thirteen-metric data of the WP30 gate
 
 
 def test_c_has_the_metric_table_and_the_sources_and_d_has_the_extended_tables():
