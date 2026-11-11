@@ -181,3 +181,12 @@ Implementer's record, one entry per unit. Worktree `wp28close` from origin/dev 0
   --changed` before U1's push (147 passed, 4 skipped); the new D.12 test (slow-marked neighbour run) passes;
   `scripts/check_vocabulary.py --baseline scripts/vocabulary_baseline.toml`: 0 new violations. The container
   regression and the exact-equality re-pinning are the gate's.
+
+## Round 3's placement question and two small calls (2026-11-11, the driver)
+
+- **S8 at depth B (a):** the main-results list (`sec-decision-3`) closes with one clause carrying S8's second item (no
+  priority claimed; not a replacement for PCA or Pareto analysis): five of six skim readers missed it in round 3, and
+  the list is what they read.
+- **The conditioning page pointer: yes**, one sentence on `conditioning.md` pointing at the diagnostic on the
+  termination page, since a user looks for conditioning where it is taught.
+- **Contract row 12's "nine":** historically right (the close-out took the set to eight at row 15); no change.

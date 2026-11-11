@@ -105,3 +105,9 @@ missed a reader because `cmp.REPORT` is a constant, not a path; the inventory's 
 ## Instance 4: the gate (scope `WP25-4-scope-of-work.md` at 325e2e3)
 
 **Approved by the driver (relayed in the seventh PM's handover, PM-BRIEF.md, 2026-11-10 night; the driver's own words are in his session record):** OD1 (a), OD2 (b), OD3 (b). T-11's two files were already deleted at 9216154. The instance runs after WP28's acceptance: rows T-1 to T-10 by their blast radii, executed by units, reviewed by a reviewer that runs the checks. The driver's acceptance, when given, is quoted here verbatim.
+
+**The driver's approval of instance 4, verbatim (2026-11-10, as sent to the seventh PM):** "WP25-4: approved as drafted
+with OD1 (a) the vocabulary tool uses the baseline by default and CLAUDE.md's command stays as written; OD2 (b) remove
+the stale generated images by hand once and git-ignore the pattern; OD3 (b) delete the three notes read only by
+records, hold search-prior-art.md for WP12. Quote this in WP25-decisions.md as instance 4's gate. It runs after WP28's
+acceptance."
