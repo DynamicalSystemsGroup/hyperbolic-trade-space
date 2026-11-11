@@ -970,6 +970,6 @@ def test_path_without_solver_drops_the_directory_of_either_executable_form(name,
     with_solver, plain = tmp_path / "with", tmp_path / "plain"
     with_solver.mkdir()
     plain.mkdir()
-    (with_solver / name).write_text("")
+    (with_solver / name).write_text("", encoding="utf-8")
     path = os.pathsep.join([str(with_solver), str(plain)])
     assert probes.path_without_solver(path) == str(plain)
