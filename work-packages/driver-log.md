@@ -222,6 +222,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Defect on dev (2026-11-11, 02:05, from the eighth PM):** `tests/test_claims_register.py::test_the_register_holds`
+  fails at the head on C192, C195 (`docs/theory.md`) and C375 (`termination.md`): the WP8b reference-key unit (cfbad4f)
+  rewrote the cited sentences and the register's fragments were not re-pinned; the fix is queued with the fallback
+  unit; the watcher will show the red until it lands. Rule restated to the PM: a unit that edits a sentence runs the
+  register test before its push.
+
 - **Track A stage (2), the noise result (2026-11-10, 23:05; readout 9002bbe).** Option 2: build A3 and A1. A3: L6 with a
   noise covariance (the same moment-generating-function route; a diagonal covariance gives the shift tau sum_j w_j^2
   sigma_j^2 / 2) and the conditioning as the map from a relative measurement error on an attribute to the noise the fit

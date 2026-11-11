@@ -71,3 +71,10 @@ template reference, proven by the driver's clean-worktree staging (driver-log.md
 not. Unit: the script exits non-zero and says so when the paper build fails, the placeholder only behind an explicit
 flag; a test covers it. WP31's executor checked the light and phone renders in its tab without saving them: accepted
 for the executor; the page's reviewer saves the screenshots in the record, as the standing order says.
+
+**Amendment 1 review (3b1914f), the driver's dispositions (2026-11-11, 02:05):** G-1 (the version box and the changelog
+heading) is the driver's at the candidate, with D-5; G-2 (the silent fallback) is the running unit; G-3 fix: WP31 enters
+the changelog when it is accepted; G-4 (Figure 1's panel text at phone width) accept as is: the supervisor does not
+require the paper's figures to read on a phone ("i don't need the paper to be fully readable on a phone"); G-5 fix: the
+scope's "22 boxes" corrected visibly to the list's count; G-6 accept as is: the status line says DRAFT by the scope
+convention, the approval being the recorded act, not an edit to the line.

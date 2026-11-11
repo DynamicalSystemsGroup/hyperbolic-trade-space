@@ -28,3 +28,10 @@ The supervisor, 2026-11-10, verbatim in `driver-log.md` ("Choosing K in the docu
 
 **Driver, verbatim:** "WP31 stage 2: placement A, the fitting section to a pointer, the 0.31 sentence corrected first,
 the page built from the readout's methods with their limits stated and two worked examples; the elbow named once."
+
+**Page review (e5d7c7b), the driver (2026-11-11, 02:05):** G-1, G-3 and G-4 fixes as dispatched (the K = 1 claims
+narrowed to K >= 2; the sentence that the package has no held-out criterion; register rows for the method statements
+and the glossary's "mean slack cannot choose K" made consistent with the page). G-2: the driver's stage-2 line said the
+large-K limit shows "the stable radius shrinks, the n-lemmas fragment"; the readout's sweep shows no radius trend, so
+the page rightly omits both; the driver's line was wrong on the data and is withdrawn; the page says what the sweep
+shows and nothing more.
