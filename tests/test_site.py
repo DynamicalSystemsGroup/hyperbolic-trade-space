@@ -67,7 +67,7 @@ BUDGETS = {
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 7600
+TOTAL_BUDGET = 6716
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
