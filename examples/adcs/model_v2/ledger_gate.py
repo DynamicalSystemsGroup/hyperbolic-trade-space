@@ -33,9 +33,21 @@ limit's primary share printed as 95.0 %): ``--image <id> --wp26`` writes its not
 hash must equal the hash of the entry it supersedes, or the edits revert and the entries are not
 kept. A host run (``--host --wp26``, in a throwaway tree) is the neutrality evidence before it.
 
+WP30 (``WP30-decisions.md``, OD1 (a), OD2 (a), OD5 (b)) re-runs the same five entries twice. First
+the regeneration (``--wp30 regen``, ``@9``, ``scope-sensitivity-shared-subspace-v2@8``): the
+momentum headroom and the cost model add columns (``fleet_size``, ``momentum_headroom``,
+``unit_cost_usd``, ``fleet_cost_usd``), so the outputs move and nothing is required of their
+hashes; the limits are the placeholders. Then the supervisor's two cost limits and the restated
+launch budget, which are verdicts only (OD2 (a)) and move no output: ``--wp30 values`` re-runs the
+five entries on the model with his values, against the new model hash, and requires each output
+hash to equal the hash of the entry it supersedes (the WP26 rule, enforced: the script exits 1 and
+names the entries when one differs, and the commit that edited the model is reverted). Run on the
+host in a throwaway tree it is the neutrality evidence; run in ``hts-paper`` (``--image``) after a
+container regeneration it is the gate's closing proof.
+
     REQUIRE_OPENSYSML=1 PYTHONPATH=examples/adcs \
         uv run python examples/adcs/model_v2/ledger_gate.py \
-        (--image <image id> | --host) [--wp26] [--dry]
+        (--image <image id> | --host) [--wp26 | --wp30 {regen,values}] [--dry]
 """
 
 from __future__ import annotations
@@ -72,6 +84,16 @@ WP26_NOTE = (
     " in a SysML v2 view editor; WP23's O-1, the pointing limit's primary share 95.0 %);"
     " regenerated {where}; each output's hash equal to the hash of the entry it supersedes"
 )
+WP30_NOTE = (
+    "WP30: the momentum headroom and the cost model (fleet size, unit cost, fleet cost) added to"
+    " cubesat.sysml, eleven traded metrics, the two cost limits at their placeholders (a verdict"
+    " only, not a flag); regenerated {where}; the container of record re-pins the exact outputs"
+)
+WP30_VALUES_NOTE = (
+    "WP30: the supervisor's two cost limits and the restated launch budget set in cubesat.sysml"
+    " (verdicts only, no output moves); regenerated {where}; each output's hash equal to the hash"
+    " of the entry it supersedes"
+)
 ORDER = (
     *(df.EXPERIMENTS[k] for k in ("v2-primary", "v2-baseline")),
     *(df.EXPERIMENTS[k] for k in ("v2-check-predictions", "v2-check-designs")),
@@ -79,23 +101,34 @@ ORDER = (
 )
 
 
-def declared(exp, entries, image: str | None, wp26: bool = False):
+def declared(exp, entries, image: str | None, wp26: bool = False, wp30: str | None = None):
     """``exp`` as the gate's re-run of its current entry, the note naming the image (the gate) or
-    the host's platform (the close-out, or WP26's re-run with ``wp26``; ``image`` None)."""
+    the host's platform (the close-out, WP26's re-run with ``wp26``, or WP30's with ``wp30`` set to
+    ``"regen"`` or ``"values"``; ``image`` None)."""
     run = df.revise(exp, entries)
     host = f"{platform.system()} {platform.machine()}"
-    if wp26:
-        where = (
-            f"in the container of record hts-paper (image {image})"
-            if image
-            else f"on the host ({host})"
-        )
+    where = (
+        f"in the container of record hts-paper (image {image})"
+        if image
+        else f"on the host ({host})"
+    )
+    if wp30 is not None:
+        notes = {"regen": WP30_NOTE, "values": WP30_VALUES_NOTE}
+        if wp30 not in notes:
+            raise ValueError(f"wp30 is 'regen' or 'values', not {wp30!r}")
+        note = notes[wp30].format(where=where)
+    elif wp26:
         note = WP26_NOTE.format(where=where)
     elif image:
         note = NOTE.format(image=image)
     else:
         note = HOST_NOTE.format(where=host)
     return dataclasses.replace(run, inputs={**dict(run.inputs), "note": note})
+
+
+def moved(prev: dict, entry: dict) -> bool:
+    """Whether the new entry's output hash differs from the hash of the entry it supersedes."""
+    return prev["output_sha256"] != entry["output_sha256"]
 
 
 def run_one(run):
@@ -119,13 +152,20 @@ def main(argv=None) -> int:
     where = ap.add_mutually_exclusive_group(required=True)
     where.add_argument("--image", help="the hts-paper image id the run is made in")
     where.add_argument("--host", action="store_true", help="the close-out's run on the host")
-    ap.add_argument("--wp26", action="store_true", help="WP26's re-run note")
+    kind = ap.add_mutually_exclusive_group()
+    kind.add_argument("--wp26", action="store_true", help="WP26's re-run note")
+    kind.add_argument(
+        "--wp30",
+        choices=("regen", "values"),
+        help="WP30's regeneration note, or the values' note with hash equality required",
+    )
     ap.add_argument("--dry", action="store_true", help="print the plan, run nothing")
     a = ap.parse_args(argv)
+    differ = []
     for exp in ORDER:
         entries = lg.read(lg.LEDGER_PATH)
         prev = lg.latest(entries, exp.id)
-        run = declared(exp, entries, a.image, a.wp26)
+        run = declared(exp, entries, a.image, a.wp26, a.wp30)
         print(run.id, "supersedes", list(run.supersedes), "output was", prev["output_sha256"][:12])
         if a.dry:
             continue
@@ -141,6 +181,12 @@ def main(argv=None) -> int:
             "rows",
             entry["output_rows"],
         )
+        if a.wp30 == "values" and moved(prev, entry):
+            differ.append(run.id)
+    if differ:
+        print("output hash differs from the superseded entry's:", *differ)
+        print("the values are not neutral: revert the model edit and do not keep these entries")
+        return 1
     return 0
 
 
