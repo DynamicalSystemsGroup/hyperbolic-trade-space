@@ -123,3 +123,18 @@ delete), T-9 OD3 (b) in one deletion commit (ef04524, "WP25: 2 files deleted (fo
 `tests/test_references.py`), so it stays, held for the PM. T-3 and O-8 (Section 9's "+0.99" against D.4's threshold) are
 routed to the paper stream; T-8 and T-10 are WP8b's. Review: `WP25-review.md`. The driver's acceptance, when given, is
 quoted here verbatim.
+
+## Instance 4 accepted, with one restoration (2026-11-11, 00:50; the driver)
+
+The reviewer's rerun holds (D-1 to D-6 met; `paper-outline-v1-baseline.md` kept for its two live readers). One of
+OD3 (b)'s two deletions is reversed: `docs/superpowers/notes/view-editor-harness.md` is a deliverable the supervisor
+added to WP26 by his word of 2026-11-10, 13:10 ("if we need to we can build minimum viable harness for managing the
+view editor work loops"; `WP26-decisions.md`, "Computer-use access and a minimal harness"), and its readers are the
+agents that drive the editor (the modeller, the reviewers, the model developer of WP30), whose briefs are not in the
+repository, so the inventory's "read only by records" rule could not see them. The driver approved OD3 (b) by the
+count of notes without reading the three names: the driver's error. The file is restored byte for byte from
+ef04524^ in this commit. **Rule for the next instance:** a file a decision record names as a deliverable is a keep
+row with that record as its reader, whatever the path grep finds; the inventory lists it as "kept by decision".
+
+**Driver, verbatim:** "WP25-4 accepted, with the harness note restored as the supervisor's deliverable and the
+keep-by-decision rule added for the next instance."
