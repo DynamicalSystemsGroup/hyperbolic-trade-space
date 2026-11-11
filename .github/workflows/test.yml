@@ -3,6 +3,11 @@ name: Tests
 # Manual dispatch only (the driver dispatches once per batch of pushes; verification in tiers).
 on:
   workflow_dispatch:
+    inputs:
+      windows:
+        description: "Also run the Windows job (WP34 spike)"
+        type: boolean
+        default: false
 
 env:
   # The modules that build the site, the docs and the paper (they share generated files).
@@ -91,3 +96,50 @@ jobs:
               uv run pytest $opts -m slow $ignores ;;
             docs-paper) uv run pytest $opts -m slow $DOCS_MODULES ;;
           esac
+
+  windows:
+    name: windows (fast)
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.windows }}
+    defaults:
+      run:
+        shell: bash
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.12"
+      - name: Versions (OS, uv, python, node)
+        run: |
+          uname -a || true
+          cmd //c ver || true
+          uv --version
+          uv run --no-project python --version
+          node --version || echo "node: not found"
+          git --version
+          git config --get core.autocrlf || echo "core.autocrlf: unset"
+      - name: Install (locked)
+        run: uv sync --locked
+      - name: Lock check
+        run: uv lock --check
+      - name: Lint
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+      - name: Locked opensysml version
+        id: opensysml
+        run: |
+          v=$(grep -A1 '^name = "opensysml"' uv.lock | grep '^version' | cut -d'"' -f2)
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+      # The spike reads what breaks; a failed provision is data, not a stop.
+      - name: Provision the pinned sysml-toolkit
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: PYTHONPATH=examples/adcs uv run python -m experiments.toolkit fetch
+      - name: Test (fast)
+        env:
+          REQUIRE_OPENSYSML: "1"
+        run: uv run pytest -q -n auto --dist loadgroup -m "not slow"

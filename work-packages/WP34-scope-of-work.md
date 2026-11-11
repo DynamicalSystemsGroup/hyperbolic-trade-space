@@ -36,16 +36,16 @@ and the reproducibility appendix say what runs where.
 
 ## Stages
 
-1. **Spike.** `.github/workflows/windows.yml`, dispatch only: `windows-latest`, `astral-sh/setup-uv`, Python 3.12,
+1. **Spike.** a `windows` job in `.github/workflows/test.yml` (GitHub dispatches only workflow files on the default branch, and `main` has no separate `windows.yml`), behind a boolean `workflow_dispatch` input `windows` (default false; never on push or pull request), dispatched with `gh workflow run test.yml --ref dev -f windows=true`: `windows-latest`, `astral-sh/setup-uv`, Python 3.12,
    `uv sync --locked`, lock check, ruff check and format check, the fast suite as `test.yml`'s fast shard runs it,
    a step printing OS, uv, python and node versions, `fail-fast` not needed (one job). The driver dispatches
-   (`gh workflow run windows.yml --ref dev`); the log is read and each failure classified in `WP34-readout.md`.
+   (`gh workflow run test.yml --ref dev -f windows=true`); the log is read and each failure classified in `WP34-readout.md`.
 2. **Readout.** The classification table, and a plain-options question to the supervisor on which shards Windows runs
    (the fast suite at least; slow and docs-paper if the toolchain stands up, otherwise Linux-only with the reason).
 3. **Fixes** to what is ours (pathlib, utf-8 opens, newline handling, a Windows-safe staging script), each with a test;
    a test is never weakened for Windows without a stated reason in the commit.
 4. **CI.** Windows folded into `test.yml` as an OS matrix entry (the shards stage 2 chose), dispatch and gates only;
-   `windows.yml` is then deleted (its job moved, not duplicated).
+   the spike job becomes the matrix entry (the input is then dropped).
 5. **Documentation.** The README environment line and the reproducibility appendix (and the ledger row if the paper's
    words change, net neutral or negative) say what runs where.
 6. **Review.** `WP34-review.md`: the three platforms green at one named head, the run links, the shards table.
@@ -54,11 +54,11 @@ and the reproducibility appendix say what runs where.
 
 | ID | Requirement | Checked by |
 |---|---|---|
-| R-1 | The spike workflow parses and runs on `windows-latest` and prints the four versions | the dispatched run's log |
+| R-1 | The spike job parses and runs on `windows-latest` and prints the four versions | the dispatched run's log |
 | R-2 | Every failure of the spike is classified, with the log line, in `WP34-readout.md` | read |
 | R-3 | Each fix has a test that fails without it on the platform it concerns, or a stated reason none can | `git diff`, the run |
 | R-4 | No test is weakened for Windows without a reason in the commit message | `git log -p` on `tests/` |
-| R-5 | `test.yml` carries Windows as a matrix entry; `windows.yml` is gone | the file |
+| R-5 | `test.yml` carries Windows as a matrix entry | the file |
 | R-6 | README and appendix state, per shard, the platforms it runs on and the reason for any exclusion | read; the claims register where a claim is made |
 | R-7 | Linux and macOS results are unchanged by the fixes | the green runs at the head |
 | R-8 | Repository gates: `uv run pytest`, `uv run ruff check .`, `uv run ruff format --check .`, `uv lock --check`; no AI attribution | the commands; the CI grep |
@@ -81,6 +81,6 @@ Good enough is met, no open item remains unresolved, and the supervisor has acce
 
 ## Blast radius
 
-`.github/workflows/windows.yml` then `test.yml`; `WP34-*` records; `README.md`; the reproducibility appendix cell and
+`.github/workflows/test.yml`; `WP34-*` records; `README.md`; the reproducibility appendix cell and
 `paper/length_ledger.toml` if its words change; the source or test files a classified failure names, each listed in the
 readout before it is touched. Anything else is a stop and a question to the PM.
