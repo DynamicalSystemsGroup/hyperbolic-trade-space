@@ -253,3 +253,36 @@ box's wording. CR-35 to CR-41 close the paper's part; the S8 placement is the dr
 Counts: 12 paper cells, 148 sentences marked (stated 144, wrong 4); W1-W8 beliefs
 0; missing at depth B 11 key items over 6 cells (S8's second item 5, S8's first item 3, S4's n-lemma name 3); missing at depth C 0; stops 284 (round 2: 180 over 11 cells); replicated passages
 43; friction naming a cut or a pointer 0; docs tasks 2 of 2 done, 0 broken.
+
+## G-6 confirm read (eighth PM; fresh Sonnet reader; Section 9 and Appendix D.4 at 18c258c, passages extracted by a Haiku unit)
+
+The driver's disposition (eb48f4e): one narrow confirm read of Section 9 and Appendix D.4 with the pointer in place of Figure 9. The reader saw only the two passage files (/private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/readers/g6/passage-A.md, passage-B.md). Return verbatim:
+
+> (1) What the regime comparison tells me
+> 
+> The same fitting pipeline was run on two datasets, a "primary" regime and a "stock" regime (also called "baseline"). Both fits give a 5-metric contending set, and the two sets share 3 metrics: depth of discharge, pointing error and settling time. The primary set also has total mass and energy balance. The stock set also has control effort and power margin. Energy balance (primary) and power margin (stock) correlate at about +0.98 and +0.99 (Spearman, feasible designs), so if those two are counted as one metric, the primary regime alone has total mass and the stock regime alone has control effort. Mass is in the set only in the primary regime. Fit temperatures differ: tau is 38.1 for primary and 45.7 for stock. Some pairwise values differ a lot between regimes. For example, settling time vs pointing error is +0.03 (primary) against +0.63 (stock), and pointing error vs control effort is -0.36 against -0.63. No pair reaches |Spearman| 0.99, so no pair is merged into one axis and every exponent is read on its own.
+> 
+> (2) Where I found each fact
+> 
+> - Two 5-metric sets sharing 3: A "a 5-lemma and a 5-lemma sharing 3 metrics (depth of discharge, pointing error and settling time)". B row "contending set" lists both sets, and I counted the overlap myself (settling time, pointing error, depth of discharge = 3).
+> - Mass only in primary: A "mass enters only in the primary regime"; B "contending set" row.
+> - Primary-only total mass, stock-only control effort, after merging the pair: A "counting them as one, the primary regime alone has total mass, the stock regime alone control effort".
+> - Energy balance and power margin pair: A "strongest-associated pair of traded metrics (Spearman +0.98 and +0.99". B "primary regime, power margin and energy balance, +0.982; stock regime, ... +0.988".
+> - tau 38.1 vs 45.7: B row "tau, frac_above_, n_eff_". A gives only "tau = 38 ... at K = 1", which matches the primary value. A gives no stock tau.
+> - Band and near-frontier counts: B row "band 1/tau, near-frontier designs" (0.0262, 56 vs 0.0219, 77). A repeats 0.0262 for K = 1.
+> - The pair values (+0.03 vs +0.63 etc.): B last three table rows only.
+> - No pair reaches 0.99: B "No pair of traded metrics reaches |Spearman| 0.99".
+> 
+> (3) Missing or unclear
+> 
+> - A never says what "primary" and "stock" (or "baseline") are. It says the comparison "separates the problem's contribution from the gains'", but "the gains" is not defined. I could not tell what physically differs between the regimes.
+> - "5-lemma" is not defined in either passage. I read it as a contending set of 5 metrics, but that is a guess from context.
+> - Table B rows 11-13 have two numbers per cell, the second in parentheses, and nothing says what the quantities are or what the parentheses mean. They might be elasticities, correlations or something else, and they might be exponent-based versus data-based. I could not tell. A does not discuss these rows at all.
+> - A and B appear to disagree slightly on the energy balance / power margin pair. A rounds +0.988 to "+0.99". B says no pair reaches 0.99 and none is read as one axis. Yet A compares the sets "counting them as one", and B says a merge only happens at 0.99 or above. That is explained by A's wording "pair that nearly coincides", but the 0.99 threshold is stated only in B, and A's rounded numbers sit right at it. I stumbled here.
+> - A says the pair has one metric "in each regime's own part", and B lists only energy balance in the primary set and only power margin in the stock set. This is consistent, but "own part" is unexplained.
+> - A says "Theorem 3 gives convexity, not strict convexity", with no statement of what the theorem is or why it matters here.
+> - A does not say whether the 3 shared metrics have similar exponents in both regimes. The exponents are said to be "read apart, Appendix D.3", which I was not given. A does not say whether the 3 shared metrics' trades behave the same, and the table suggests they do not (settling time vs pointing error +0.03 vs +0.63).
+> - No stock-regime fit quality or exponent values are given, so I cannot judge the "stock set spans controls plus power and energy" claim beyond the list of names. The set contains control effort, settling time, power margin, pointing error and depth of discharge. Calling that "controls plus power and energy" is a reading I had to work out.
+> - Numbers that do match across A and B: tau 38 vs 38.1, band 0.0262, both sets of 5, 3 shared. No hard mismatches found, only the rounding and threshold issue above.
+
+**Note on the return (PM, not the key's triager; the answer key is the driver's):** the reader finds what the regime comparison says (the two contending sets share three metrics, mass only in the first, control effort only in the second, the temperatures and bands, pair associations that differ, no pair at 0.99) and finds each fact in A or B; nothing numeric disagrees across the passages. What it could not find: what "primary" and "stock" are in Section 9 itself, "5-lemma" undefined in both passages, the second parenthesised number in D.4's pair rows unexplained, the +0.99 rounding in A against B's "no pair reaches 0.99" (the pre-existing O-8, routed to WP25-4), Theorem 3 cited without a statement. None traces to the pointer: the figure's content is in D.4 or the text. For the driver's reading: R-13's condition on a reader finding the regime comparison after the cut holds on this one read; the stumbles are pre-existing wording items.
