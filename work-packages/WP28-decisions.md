@@ -287,3 +287,12 @@ addressed, by the supervisor's own rule against over-tuning: the hill reading of
 sizes. No third iteration; he chooses on what the second shows. Note for his glance: the label-size change in
 `plot_ternary` re-wraps one label of the planted Figure 6 (two lines to four) and re-renders the root page's two
 "why regions" images; the drawings are otherwise the same.
+
+**S-5, the supervisor's choice (2026-11-11, 09:00; the four images in the pane: A, the one-region figure, the planted
+Figure 6, B). Supervisor, verbatim:** "i want the first and the 3rd plot. but use the constructed example more for a
+story plot and the real data one. the real data one belongs in the paper and in the documentation but i want to keep
+the abstract one which is made from synthetic data in the index for the github pages because its fine to use
+synthetic data for a story telling figure." **Disposition (the driver, the plan put back to him before dispatch):**
+candidate A (real data) enters the paper and replaces the planted figure on the docs Examples page; the planted
+synthetic ternary moves to the root page (the GitHub Pages index) as a story figure; the one-region figure and B stay
+in the record only.
