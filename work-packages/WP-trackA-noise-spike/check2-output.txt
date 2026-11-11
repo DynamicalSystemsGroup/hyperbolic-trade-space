@@ -1,0 +1,10 @@
+N = 20000  planted w = [0.4 0.3 0.2 0.1]
+sigma=0.05 tau=   5 n_eff=   9515 | noisy-clean 0.0007 | ridge-clean 0.0004 | noisy-ridge 0.0003 | 1st-order-vs-ridge 0.0000 | pkg-vs-mine(clean) 0.0000
+sigma=0.05 tau=  20 n_eff=   6997 | noisy-clean 0.0006 | ridge-clean 0.0004 | noisy-ridge 0.0004 | 1st-order-vs-ridge 0.0000 | pkg-vs-mine(clean) 0.0000
+sigma=0.05 tau=  50 n_eff=   6406 | noisy-clean 0.0006 | ridge-clean 0.0004 | noisy-ridge 0.0005 | 1st-order-vs-ridge 0.0000 | pkg-vs-mine(clean) 0.0000
+sigma=0.10 tau=   5 n_eff=   9515 | noisy-clean 0.0020 | ridge-clean 0.0015 | noisy-ridge 0.0006 | 1st-order-vs-ridge 0.0000 | pkg-vs-mine(clean) 0.0000
+sigma=0.10 tau=  20 n_eff=   6997 | noisy-clean 0.0017 | ridge-clean 0.0015 | noisy-ridge 0.0010 | 1st-order-vs-ridge 0.0000 | pkg-vs-mine(clean) 0.0000
+sigma=0.10 tau=  50 n_eff=   6406 | noisy-clean 0.0022 | ridge-clean 0.0015 | noisy-ridge 0.0016 | 1st-order-vs-ridge 0.0000 | pkg-vs-mine(clean) 0.0000
+sigma=0.20 tau=   5 n_eff=   9515 | noisy-clean 0.0065 | ridge-clean 0.0059 | noisy-ridge 0.0013 | 1st-order-vs-ridge 0.0002 | pkg-vs-mine(clean) 0.0000
+sigma=0.20 tau=  20 n_eff=   6997 | noisy-clean 0.0055 | ridge-clean 0.0058 | noisy-ridge 0.0031 | 1st-order-vs-ridge 0.0003 | pkg-vs-mine(clean) 0.0000
+sigma=0.20 tau=  50 n_eff=   6406 | noisy-clean 0.0067 | ridge-clean 0.0058 | noisy-ridge 0.0078 | 1st-order-vs-ridge 0.0003 | pkg-vs-mine(clean) 0.0000

@@ -1,0 +1,18 @@
+
+== primary: N=706 tau=38.10
+attributes: ['settling_time_s', 'pointing_error_deg', 'total_mass_kg', 'control_effort', 'power_margin_w', 'energy_balance_wh', 'peak_slew_power_w', 'dod_eclipse']
+log spread s_j of the raw attribute: [0.827 0.86  0.066 0.745 0.513 0.827 0.657 0.573]
+clean exponents: [0.136 0.164 0.358 0.    0.    0.184 0.    0.158]  participants: ['settling_time_s', 'pointing_error_deg', 'total_mass_kg', 'energy_balance_wh', 'dod_eclipse']
+delta=0.005  sigma_j range 0.006..0.076  max|dw| 0.013  contending-set Jaccard 0.94  offset shift 0.013  L6 (diag Sigma) 0.014  L6 (isotropic, mean sigma) 0.001
+delta=0.020  sigma_j range 0.023..0.304  max|dw| 0.085  contending-set Jaccard 0.82  offset shift 0.101  L6 (diag Sigma) 0.227  L6 (isotropic, mean sigma) 0.018
+delta=0.050  sigma_j range 0.058..0.760  max|dw| 0.293  contending-set Jaccard 0.71  offset shift 0.174  L6 (diag Sigma) 1.416  L6 (isotropic, mean sigma) 0.111
+delta=0.100  sigma_j range 0.116..1.520  max|dw| 0.307  contending-set Jaccard 0.68  offset shift 0.199  L6 (diag Sigma) 5.665  L6 (isotropic, mean sigma) 0.444
+
+== stock: N=780 tau=45.68
+attributes: ['settling_time_s', 'pointing_error_deg', 'total_mass_kg', 'control_effort', 'power_margin_w', 'energy_balance_wh', 'peak_slew_power_w', 'dod_eclipse']
+log spread s_j of the raw attribute: [0.921 0.734 0.064 0.918 0.53  0.841 0.602 0.566]
+clean exponents: [0.319 0.039 0.    0.432 0.178 0.019 0.    0.012]  participants: ['settling_time_s', 'pointing_error_deg', 'control_effort', 'power_margin_w', 'energy_balance_wh', 'dod_eclipse']
+delta=0.005  sigma_j range 0.005..0.079  max|dw| 0.043  contending-set Jaccard 0.98  offset shift -0.000  L6 (diag Sigma) 0.000  L6 (isotropic, mean sigma) 0.002
+delta=0.020  sigma_j range 0.022..0.314  max|dw| 0.103  contending-set Jaccard 0.98  offset shift 0.001  L6 (diag Sigma) 0.004  L6 (isotropic, mean sigma) 0.031
+delta=0.050  sigma_j range 0.054..0.786  max|dw| 0.136  contending-set Jaccard 0.93  offset shift 0.011  L6 (diag Sigma) 0.026  L6 (isotropic, mean sigma) 0.191
+delta=0.100  sigma_j range 0.109..1.572  max|dw| 0.150  contending-set Jaccard 0.89  offset shift 0.049  L6 (diag Sigma) 0.105  L6 (isotropic, mean sigma) 0.764
