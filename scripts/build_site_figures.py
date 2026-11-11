@@ -1,4 +1,4 @@
-"""Build the root index page's own figure: the Why image (the triangle of three metrics).
+"""Build the root index page's own figure: the planted triangle of three metrics.
 
     uv run python scripts/build_site_figures.py [--out DIR] [--lines]
 
@@ -13,10 +13,11 @@ exponents are large, and the label sits where the region holds few designs.
 The triangle is drawn by the package's own ``plot_ternary`` (plain Matplotlib, the barycentric
 projection written out there: ``x = right + top / 2``, ``y = sqrt(3) / 2 * top``), the function the
 documentation's examples call; this script supplies the planted table, the fit and the figure.
-Two files are written, ``why-regions-light.png`` and ``why-regions-dark.png``, on transparent
-backgrounds and with the colours of the root page's two schemes. :func:`build_story` writes the
-same table with the lines of equal V and the numbered markers, ``ternary-planted-light.png`` and
-``ternary-planted-dark.png``: the planted three-region figure the root page tells its story with.
+:func:`build_story` writes the table with the lines of equal V and the numbered markers,
+``ternary-planted-light.png`` and ``ternary-planted-dark.png``, on transparent backgrounds and with
+the colours of the root page's two schemes: the one figure of the root page (the plain image,
+``why-regions-light.png`` and ``why-regions-dark.png`` from :func:`build`, left the page when the
+planted figure took its place).
 
 ``--lines`` (off by default, and off everywhere on the site) overlays lines of equal V at a fixed
 total: the shares are ``c_j = (m_j / typical_j)^(1/s) / L`` with ``s = 1`` and ``L`` their sum, the
@@ -114,9 +115,8 @@ def build_story(out=DEFAULT_OUT, fit=None):
 
 
 def build_all(out=DEFAULT_OUT):
-    """The root page's images: the Why image and the story figure; one fit serves both."""
-    fit = fit_why()
-    return {"why": build(out, fit=fit), "story": build_story(out, fit=fit)}
+    """The root page's images: the story figure (the Why image no longer sits on the page)."""
+    return {"story": build_story(out)}
 
 
 def main(argv=None):

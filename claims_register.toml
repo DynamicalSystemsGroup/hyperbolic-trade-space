@@ -4382,7 +4382,7 @@ note = "Practice claim (usually decided from documents and tables); reading, aut
 
 [[claim]]
 id = "C358"
-fragment = "What trades against what depends on where a design sits."
+fragment = "A constructed table of three metrics, fitted with three terms: each shaded region is led by a different trade-off"
 file = "site/index.html"
 anchor = ""
 kind = "M"
@@ -4390,7 +4390,7 @@ backing = ["lemma:L7", "lemma:L10", "test:tests/test_site.py::test_why_labels_co
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Each term has its own exponents (L7 elasticities along a term, L10 sum of terms); the why-figure test pins that regions and labels follow the fitted exponents"
+note = "Each term has its own exponents (L7 elasticities along a term, L10 sum of terms); the why-figure test pins that regions and labels follow the fitted exponents; the root page keeps the planted figure (the plain Why image left the page)"
 
 [[claim]]
 id = "C359"
@@ -5544,7 +5544,7 @@ note = "The words are read from each fit's exponents by plot_ternary (an exponen
 
 [[claim]]
 id = "C454"
-fragment = "B: one region trades settling time against control effort; the second is a single-metric term, depth of discharge, beside that trade."
+fragment = "B: one region trades settling time against control effort; the other region is depth of discharge alone."
 file = "docs/examples.md"
 anchor = ""
 kind = "R"

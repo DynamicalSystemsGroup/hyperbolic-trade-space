@@ -416,8 +416,6 @@ def _site_file_for(path_in_site: str, site_root: Path) -> Path | None:
 # generated); they are not in site/ and are checked on the assembled site.
 BUILT_IMAGES = {
     "figure1.png",
-    "why-regions-light.png",
-    "why-regions-dark.png",
     "ternary-planted-light.png",
     "ternary-planted-dark.png",
 }
@@ -881,12 +879,6 @@ def test_each_figure_is_produced_by_the_code_shown_above_it(tmp_path):
 
 # ---- the index page's images: Why, What --------------------------------------------------
 
-WHY_ALT = (
-    "A triangle of three metrics. Evaluated designs are dots placed by which metric they favour; "
-    "three shaded regions are labelled by the trade-off that binds there: all three trade, "
-    "metric 3 against metric 1, metric 3 against metric 2."
-)
-
 
 class _Figures(HTMLParser):
     """The root page's figures: for each, its links, images (src, alt) and caption text."""
@@ -929,15 +921,15 @@ def _index_figures():
 def test_index_has_a_figure_each_for_why_what_and_how_in_that_order():
     text = (SITE / "index.html").read_text()
     figures = _index_figures()
-    # the supervisor's choice (WP28-decisions): the planted ternary is a story figure of the Why
-    # section, after the Why image
-    assert [f["class"].split()[0] if f["class"] else "" for f in figures] == ["why", "why", "wide"]
-    assert "story" in figures[1]["class"].split()
+    # the supervisor's choice (WP28-decisions): the planted ternary is the story figure of the Why
+    # section, and the plain Why image is gone (the assistant's call on the reviewer's first point)
+    assert [f["class"].split()[0] if f["class"] else "" for f in figures] == ["why", "wide"]
+    assert "story" in figures[0]["class"].split()
     srcs = [f["img"][0][0] for f in figures]
-    assert srcs == ["why-regions-light.png", "ternary-planted-light.png", "figure1.png"]
+    assert srcs == ["ternary-planted-light.png", "figure1.png"]
     sections = [text.index(f"<h2>{h}</h2>") for h in ("Why", "What")]
     assert sections == sorted(sections)
-    for h, f in zip(("Why", "Why", "What"), figures, strict=True):
+    for h, f in zip(("Why", "What"), figures, strict=True):
         start = text.index(f"<h2>{h}</h2>")
         assert text.index(f["img"][0][0], start) < (
             text.index("<h2>", start + 5) if "<h2>" in text[start + 5 :] else len(text)
@@ -947,19 +939,18 @@ def test_index_has_a_figure_each_for_why_what_and_how_in_that_order():
 
 def test_index_images_have_alt_text_captions_and_full_size_links():
     figures = _index_figures()
-    why, story, what = figures
+    story, what = figures
     assert [a for a in story["a"]] == ["ternary-planted-light.png", "ternary-planted-dark.png"]
     assert [i[0] for i in story["img"]] == ["ternary-planted-light.png", "ternary-planted-dark.png"]
-    assert "constructed table" in story["cap"] and "to show the idea" in story["cap"]
-    assert [a for a in why["a"]] == ["why-regions-light.png", "why-regions-dark.png"]
-    assert [i[0] for i in why["img"]] == ["why-regions-light.png", "why-regions-dark.png"]
-    assert all(alt == WHY_ALT for _, alt in why["img"])
+    assert "constructed table" in story["cap"] and "three terms" in story["cap"]
+    assert "larger when nearer the frontier" in story["cap"] and "full size" in story["cap"]
+    assert story["cap"].count(". ") == 1  # one sentence, then the link note
+    assert not any("why-regions" in i[0] for f in figures for i in f["img"])
     assert what["a"] == ["figure1.png"]
     for f in figures:
         assert all(alt and len(alt) > 60 for _, alt in f["img"]), "alt text names what is shown"
         assert len(f["cap"].strip()) > 40
     assert "black arrow" in what["img"][0][1] and "black arrow" in what["cap"]
-    assert "the larger dots are nearest the frontier" in why["cap"]
     for f in figures:  # plain links: each figure's link is the file the image shows
         assert [i[0] for i in f["img"]] == f["a"]
     # in the dark scheme the light twin is hidden (and the dark one shown), by CSS alone

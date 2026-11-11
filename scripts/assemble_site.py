@@ -6,7 +6,7 @@ Default output is ``_site/``. Steps: write the generated pages (``build_generate
 glossary into ``docs/generated/`` for the docsite, derivations and verification into
 ``build/generated/`` for the paper's build), run
 ``mkdocs build --strict -d <out>/docs``, copy ``site/index.html`` to ``<out>/index.html`` (with
-the paper's ``figure1.png`` and the Why image from ``build_site_figures``) and
+the paper's ``figure1.png`` and the story figure from ``build_site_figures``) and
 build the paper slot through ``build_paper``: the real paper (``myst build --html`` in ``paper/``,
 copied from ``paper/_build/html``). The command line is strict: a paper that does not build, or
 writes no ``index.html``, exits non-zero naming the failure and the flag; ``--paper placeholder`` is
