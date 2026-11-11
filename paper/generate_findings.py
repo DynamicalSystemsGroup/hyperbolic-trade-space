@@ -149,7 +149,11 @@ def temperature_sentence(study, fit) -> Md:
 
 
 def k1_sentence(study, fit) -> Md:
-    """The K = 1 contending set: the support of the exact-maximum fit, and its exponents."""
+    """The K = 1 contending set: the support of the exact-maximum fit, and its exponents.
+
+    The R1 clause is checked on both regimes by
+    ``tests/test_paper.py::test_the_regimes_contending_set_is_the_unique_lp_optimum_not_a_solver_choice``.
+    """
     rep = case._reports(study, fit)[0]
     names = _contending(study, fit)
     w = {study.names[j]: float(rep.exponents[j]) for j in rep.contending_set}
@@ -160,7 +164,9 @@ def k1_sentence(study, fit) -> Md:
     return Md(
         f"At K = 1 the exact-maximum fit has a {len(names)}-lemma across "
         f"{_span(study.spec.subsystems_of(names))}: {_and(names)} contend, with "
-        f"exponents at the fit temperature from {two(low)} to {two(high)}."
+        f"exponents at the fit temperature from {two(low)} to {two(high)}. "
+        "R1 holds on both regimes: the exact-maximum optimum is one point, so the support is not "
+        "a solver's choice."
     )
 
 

@@ -931,3 +931,10 @@ section = "Results"
 words_added = 7
 job = "Theorem 11's termination sentence says that Theorem 3 does not supply the unique term minimizers it assumes, and states finite termination without the K^N + 1 count (which stays in L15), so the count is not read as a practical bound (WP28 CR-36)"
 reader = "the mathematician who set 'unique term minimizers' against Theorem 3 and read the count as empty"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case analysis"
+words_added = 20
+job = "the K = 1 sentence says that R1 holds on both regimes (the exact-maximum optimum is one point, so the support is not a solver's choice), the check the test at 4c9416c makes and three readers could not find stated (WP28 CR-37)"
+reader = "the mathematician who asks whether R1 was checked on the case before reading the contending set"

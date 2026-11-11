@@ -5232,3 +5232,19 @@ status = "backed"
 disposition = "keep"
 source = "WP28 (a), the maths-check unit of WP11 round 2, item (a)"
 note = "L14.14 and L14.15 at K = 1 (one cell, n_1 = N, share 1): F(W) = f_1(w) = J_tau(Uw) - ubar.w with ubar the column mean of U; under A2 the weights sum to one, and with ubar = 0 the linear term vanishes for every w, so equation (2) is equation (1); with ubar != 0 the minimizers of J_tau and of J_tau - ubar.w differ in general. The case's conditioning is LogAffinePreconditioner with scaler='standard' (sklearn StandardScaler on the log-attributes; case.conditioner_for); on the data of record max_j |mean_i log M_ij| = 7.4e-15 (primary, N = 706) and 3.6e-15 (stock, N = 780), computed with case.load_study on 2026-11-10."
+
+[[claim]]
+id = "C422"
+fragment = "R1 holds on both regimes: the exact-maximum optimum is one point, so the support is not ... a solver's choice"
+file = "paper/generate_findings.py"
+anchor = "def k1_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::k1_sentence",
+  "test:tests/test_paper.py::test_the_regimes_contending_set_is_the_unique_lp_optimum_not_a_solver_choice",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP28 CR-37 (the retest record 052e8ee); the check is 4c9416c's"
+note = "On each regime the exact-maximum LP's primal-dual pair certifies one optimal point: reduced costs vanish on the support and are strictly positive off it, every row with positive dual weight is tight, and the active system has full column rank; both HiGHS methods return that support, which is the K = 1 tension report's contending set (a 5-lemma in both regimes)."
