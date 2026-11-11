@@ -116,3 +116,19 @@ feel must be changed."
 each with its reason and its commits in `work-packages/supervisor-review-list.md`; a question goes to him only when
 the assistant is genuinely unable to decide (a value only he holds, a change to his own stated intent, an outward
 act). He reviews everything produced and changes what he must.
+
+## Windows (2026-11-11, 11:30; the supervisor, verbatim)
+
+"i have another parallel workpackage for you to get going. we have mac and linux environments, but can you emulate
+windows and make sure that works as well?"
+
+**Disposition (the assistant).** Windows cannot be emulated on this Mac (no Windows containers on macOS, no VM in the
+sandbox); the honest route is a real Windows runner in GitHub Actions (`windows-latest`), which is a true Windows, not
+an emulation. A parallel package (the PM numbers it) under the lifecycle: (1) a spike: dispatch the fast suite, lint
+and the lock check on `windows-latest` once, and read what breaks (paths, line endings, encodings, temp directories,
+fonts, subprocess calls, wheels for scipy, HiGHS and Z3, the SysML toolkit, node for mystmd); (2) decide which shards
+Windows runs (the fast suite at least; slow and docs-paper if the toolchain stands up, otherwise stated as Linux-only
+with the reason); (3) fix what is ours (pathlib, utf-8 opens, newline handling, a Windows-safe staging script), never
+weaken a test for Windows without a stated reason; (4) a Windows job in `test.yml` on dispatch and at gates, matrix on
+the operating system; (5) the README and the reproducibility appendix say what runs where; (6) review on the three
+platforms green at the head.
