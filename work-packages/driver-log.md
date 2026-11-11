@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Standing order and two personas (2026-11-11, 09:40; the supervisor, verbatim in PM-BRIEF.md and reader-grid.md).**
+  The case is a synthetic demonstrator; its hard requirement is realism enough to keep a space-industry collaborator
+  interested; the paper's body carries a high-level description in service of the method, Appendix C the detail, the
+  repository the full model. Personas P7 (the new-space systems engineer, the modeller's or quality engineer's
+  vantage) and P8 (the new-space executive, the sponsor's vantage) join the reader grid as the review pair for every
+  case-model change; companies never named. Baseline reads by both on the current case dispatched before the WP30
+  revision lands. He is away for a while; the loop runs autonomously on the decisions of the morning.
+
 - **Defect on dev (2026-11-11, 02:05, from the eighth PM):** `tests/test_claims_register.py::test_the_register_holds`
   fails at the head on C192, C195 (`docs/theory.md`) and C375 (`termination.md`): the WP8b reference-key unit (cfbad4f)
   rewrote the cited sentences and the register's fragments were not re-pinned; the fix is queued with the fallback
