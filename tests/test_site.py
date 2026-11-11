@@ -67,7 +67,7 @@ BUDGETS = {
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 6845
+TOTAL_BUDGET = 6876  # 6845 until WP31 U1 (the conditioning pointer)
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",

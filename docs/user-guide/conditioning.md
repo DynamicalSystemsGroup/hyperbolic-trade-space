@@ -69,6 +69,8 @@ None proves a conditioning right; they show whether the story is sensible.
   you believe about that attribute is a prompt to revisit orientation or shift.
 - Refit under a second reasonable conditioning, the other scaler or a modest change of shift. If the
   contending set moves, the finding depends on the conditioning, and should be reported that way.
+- After a fit, `conditioning_` reads the same question from the fit itself: a value far below a comparable fit's marks
+  metrics that move together; [Termination](termination.md#conditioning_) shows how to read it.
 
 ## The pull-back to attributes
 
