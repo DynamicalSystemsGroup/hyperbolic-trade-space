@@ -11,6 +11,7 @@ import io
 import json
 import socket
 import subprocess
+import sys
 import tarfile
 import urllib.error
 import urllib.request
@@ -19,6 +20,14 @@ import pytest
 from experiments import toolkit
 
 TRIPLE = "x86_64-unknown-linux-gnu"
+
+# The fixture's archive holds a shell script as the binary, which Windows cannot execute
+# ([WinError 216]); the unpacked binary is run for its version, so these tests need a POSIX
+# executable. The provisioning code itself ran against the real sysmlv2.exe on Windows (WP34 spike).
+posix_binary = pytest.mark.skipif(
+    sys.platform == "win32",
+    reason="the fixture archive's binary is a shell script; Windows runs only the real sysmlv2.exe",
+)
 
 
 def make_archive(path, payload=b"#!/bin/sh\necho 'sysmlv2 0.12.0'\n"):
@@ -80,6 +89,7 @@ def no_sleep(_):
 # --- cache hit: no connection at all -------------------------------------------------------------
 
 
+@posix_binary
 def test_cache_hit_opens_no_connection(pinned, monkeypatch, capsys):
     pin, archive = pinned
     toolkit.fetch_binary(archive=archive)  # populate the binary
@@ -112,6 +122,7 @@ def test_stdlib_at_another_commit_is_not_a_hit(pinned):
 # --- retry ---------------------------------------------------------------------------------------
 
 
+@posix_binary
 def test_retry_on_transient_then_success(pinned):
     pin, archive = pinned
     name = pin["toolkit"]["assets"][TRIPLE]["name"]
@@ -174,6 +185,7 @@ def api_routes(pin, name, payload):
     }
 
 
+@posix_binary
 def test_fallback_to_the_release_assets_api(pinned, monkeypatch):
     pin, archive = pinned
     monkeypatch.delenv("GH_TOKEN", raising=False)
@@ -190,6 +202,7 @@ def test_fallback_to_the_release_assets_api(pinned, monkeypatch):
     assert "authorization" not in last
 
 
+@posix_binary
 def test_api_fallback_sends_the_token(pinned, monkeypatch):
     pin, archive = pinned
     monkeypatch.setenv("GH_TOKEN", "tok123")
@@ -224,6 +237,7 @@ def test_direct_route_verifies_too(pinned):
 # --- local archive -------------------------------------------------------------------------------
 
 
+@posix_binary
 def test_local_archive_installs_when_it_matches(pinned):
     pin, archive = pinned
     assert toolkit.fetch_binary(archive=archive) == toolkit.cached_binary(pin)
@@ -241,6 +255,7 @@ def test_tampered_local_archive_is_never_extracted(pinned, tmp_path, monkeypatch
     assert not toolkit.cached_binary(pin).exists()
 
 
+@posix_binary
 def test_cli_fetch_archive(pinned, capsys):
     pin, archive = pinned
     assert toolkit.main(["fetch", "--binary-only", "--archive", str(archive)]) == 0
