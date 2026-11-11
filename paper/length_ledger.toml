@@ -945,3 +945,10 @@ section = "Results"
 words_added = 26
 job = "the comparison of equations (1) and (2) at K = 1 (equal on centred log-metrics, as the case's conditioning makes them; otherwise differing by the linear term) moves to Section 6.2 after f_k is defined, the first place both equations stand; it leaves Case construction, which falls by 38 words (a placement, net -12; WP28 CR-38)"
 reader = "the mathematician who meets equation (1) and wants its relation to equation (2) where both stand"
+
+[[raise]]
+date = "2026-11-10"
+section = "Case construction"
+words_added = 1
+job = "the effective sample sentence gives one number for one quantity: 'about that many' replaces the count rounded to five, which five readers read as a second, disagreeing number (WP28 CR-39)"
+reader = "the depth-C reader who compared 23.1 with 'about 25'"

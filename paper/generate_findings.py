@@ -105,11 +105,6 @@ def datasets_sentence(primary, stock) -> Md:
     )
 
 
-def _about(n: float) -> str:
-    """A count to the nearest five, for a reading ("about 25")."""
-    return str(int(5 * round(float(n) / 5)))
-
-
 def _target_variants_keep_the_set(study) -> bool:
     """Whether the K = 1 contending set is the baseline's with the target halved and doubled."""
     t = case.sensitivity_table(study).set_index("variant")
@@ -130,7 +125,6 @@ def temperature_sentence(study, fit) -> Md:
     frac = stable(f"fit | {r} K=1 | frac_above_", lambda v: f"{v:.3f}")
     n_eff = stable(f"fit | {r} K=1 | n_eff_", lambda v: f"{v:.1f}")
     band = stable("sentence | temperature | band", lambda v: f"{v:.4f}")
-    about = _about(fit.estimator.n_eff_)
     holds = (
         "holds with the target fraction halved or doubled"
         if _target_variants_keep_the_set(study)
@@ -142,8 +136,8 @@ def temperature_sentence(study, fit) -> Md:
         f"1/tau is {band} and the effective sample size is {n_eff} designs. The effective "
         f"sample size is the inverse sum of squares of the support weights, the softmax weights "
         f"of the designs in the fit: the designs the soft maximum weighs as if equally, so the "
-        f"exponents at the fit temperature rest on about "
-        f"{about} of the {len(study.M)} designs; the contending set {holds} ({_D5}); the digits "
+        f"exponents at the fit temperature rest on about that many of the {len(study.M)} "
+        f"designs; the contending set {holds} ({_D5}); the digits "
         f"that hold are in {_D11}."
     )
 
