@@ -888,7 +888,10 @@ def test_wp13_lemmas_in_chain_in_order_and_no_enumeration(num):
     import inspect
 
     assert _WP13[num] in CHAIN_NAMES
-    assert CHAIN_NAMES[-6:-3] == list(_WP13.values())  # L15 (Level 1), L16 and L17 follow
+    first = CHAIN_NAMES.index(_WP13[min(_WP13)])
+    assert CHAIN_NAMES[first : first + 3] == list(
+        _WP13.values()
+    )  # L15 (Level 1), L16 and L17 follow
     src = inspect.getsource(_il.import_module(f"derivation.{_WP13[num]}"))
     assert "range(" not in src and "numpy" not in src and "scipy" not in src
 
@@ -1086,7 +1089,8 @@ def test_wp13_audit_lists_new_axioms_and_headline_names_fallbacks():
 # --- WP10 C-1: L15, Level 1 (descent) ---
 def test_L15_is_followed_by_L16_and_states_level_one_exactly():
     mod = _il.import_module("derivation.lemma_15_descent")
-    assert CHAIN_NAMES[-3:-1] == ["lemma_15_descent", "lemma_16_soft_fit_alternation"]
+    at = CHAIN_NAMES.index("lemma_15_descent")
+    assert CHAIN_NAMES[at : at + 2] == ["lemma_15_descent", "lemma_16_soft_fit_alternation"]
     assert mod.STATEMENT == (
         "Level 1 (descent), step B unpenalized: reassigning every row to its maximizing term "
         "does not increase the mean slack F, and refitting each term to a minimizer of its "

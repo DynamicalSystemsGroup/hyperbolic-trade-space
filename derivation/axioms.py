@@ -105,6 +105,22 @@ _SOS_MIN = sp.Symbol("strict_local_minimizer")
 
 _GT, _GE, _LE = sp.StrictGreaterThan, sp.GreaterThan, sp.LessThan
 
+_SIGM = sp.IndexedBase("Sigma")  # A9: the entries Sigma[j, l] of the noise covariance
+_l = sp.Symbol("l", integer=True)
+_QV = sp.Symbol("q_form", positive=True)  # A9: the variance q = w'Sigma w of w.eps (case q > 0)
+_LIN = Normal("Xlin", 0, sp.sqrt(_QV))  # A9: the combination w.eps as a centred normal variable
+_RT = sp.IndexedBase("rt")  # A10: the measured raw attribute
+_ZETA = sp.IndexedBase("zeta")  # A10: the log-error of the measurement of attribute j
+_DEL = sp.IndexedBase("delta", positive=True)  # A10: the size delta_j of the log-error
+_ZJ = Normal("Zj", 0, _DEL[_j])  # A10: one log-error zeta_j ~ N(0, delta_j^2)
+_VROW = sp.Symbol("v_row", positive=True)  # A11: v, the standard deviation of one row's noise
+_ZROW = Normal("Zrow", 0, _VROW)  # A11: one row's noise z_i ~ N(0, v^2)
+_zr = sp.IndexedBase("z")  # F19: the row noise draws z_i
+_Zm = sp.Symbol("Zm", real=True)  # F19: the maximum of the draws
+_i0z = sp.Symbol("i0z", integer=True)
+_JX_F, _JX_EF = sp.symbols("jx_f_of_mean jx_mean_of_f", real=True)  # I17: f(E X), E f(X)
+_EX_LE_P, _EX_LE_Q = sp.symbols("jx_X_le_Y_almost_surely jx_EX_le_EY")  # I17 monotonicity
+
 
 def _rule_one(expr, rel):
     """Rewrite ``expr`` by the equation ``rel`` (left side to right side)."""
@@ -343,6 +359,60 @@ AXIOMS = {
             _GE(_ncell[_k], 1, evaluate=False),
         ),
         objects=(("membership", _chi), ("count", _ncell), ("rows", _NROWS)),
+    ),
+    "A9": Axiom(
+        "A9",
+        POSITED,
+        "noise with a covariance: the noise vector eps is a Gaussian vector with mean 0 and a "
+        "symmetric positive semi-definite covariance Sigma, so every linear combination w.eps is a "
+        "centred normal variable with variance q = w'Sigma w = Sum_j Sum_l w_j Sigma_jl w_l >= 0 "
+        "(the definition of a Gaussian vector); Sigma = sigma^2 I is A5",
+        role="lets the noise of the conditioned metrics have unequal levels and correlations "
+        "(A5 asks for one sigma in every metric), so the offset shift of L6 is read for the noise "
+        "the fit actually sees",
+        failure_mode="a noise that is not jointly Gaussian (heavy tails, a skewed or bounded "
+        "error) has a different cumulant: the identity of L18 is a statement about the Gaussian "
+        "vector only",
+        relation=(
+            sp.Eq(
+                _QV,
+                sp.Sum(sp.Sum(_S.w[_j] * _SIGM[_j, _l] * _S.w[_l], (_l, 1, _S.d)), (_j, 1, _S.d)),
+            ),
+            _GE(_QV, 0, evaluate=False),
+        ),
+        objects=(("lin", _LIN), ("cov", _SIGM)),
+    ),
+    "A10": Axiom(
+        "A10",
+        POSITED,
+        "multiplicative measurement error: the measured raw attribute rt_j of a true value "
+        "r_j > 0 has log rt_j = log r_j + zeta_j, the log-errors zeta_j are independent "
+        "N(0, delta_j^2) with delta_j > 0 (to first order a relative error of size delta_j); "
+        "one delta for every attribute is the equal-error case",
+        role="turns a measurement error stated on the raw attribute into additive noise in the "
+        "log space where the model works, so the map to the noise the fit sees is an exact "
+        "linear one under log-affine conditioning",
+        failure_mode="an error that is additive on the raw attribute, or not independent across "
+        "attributes, is not covered: it needs its own map to the conditioned noise",
+        relation=(
+            sp.Eq(sp.log(_RT[_j]), sp.log(_RAW[_j]) + _ZETA[_j]),
+            _GT(_RAW[_j], 0, evaluate=False),
+            _GT(_DEL[_j], 0, evaluate=False),
+        ),
+        objects=(("zeta", _ZJ),),
+    ),
+    "A11": Axiom(
+        "A11",
+        POSITED,
+        "row noise: the noise z_i = w.eps_i that the weighted metrics of row i carry are "
+        "independent N(0, v^2) across the rows i = 1..n with v > 0 (v^2 = sigma^2 ||w||^2 under "
+        "A5 and I5, and v^2 = w'Sigma w under A9)",
+        role="lets the soft maximum of the noisy scores be compared with that of the clean scores "
+        "through the single number v",
+        failure_mode="noise that is shared across rows (a common offset), heteroscedastic or not "
+        "Gaussian changes the moment generating function the bound uses",
+        relation=(_GT(_VROW, 0, evaluate=False),),
+        objects=(("noise", _ZROW),),
     ),
     # -------------------------------------------------------------- INHERITED
     "I1": Axiom(
@@ -593,6 +663,25 @@ AXIOMS = {
         relation=(sp.Implies(sp.And(_SOS_KKT, _SOS_PD), _SOS_MIN),),
         objects=(("kkt", _SOS_KKT), ("curvature", _SOS_PD), ("conclusion", _SOS_MIN)),
     ),
+    "I17": Axiom(
+        "I17",
+        INHERITED,
+        "expectation: E is linear and monotone (X <= Y almost surely gives E X <= E Y), and for a "
+        "convex f and a random variable X with E X and E f(X) existing, f(E X) <= E f(X) "
+        "(Jensen's inequality for expectations)",
+        citation="Boyd & Vandenberghe, Convex Optimization, section 3.1.8, inequality (3.5) "
+        "f(E x) <= E f(x) (read in the authors' PDF https://web.stanford.edu/~boyd/cvxbook/"
+        "bv_cvxbook.pdf); Billingsley, Probability and Measure, properties of the expected value "
+        "(linearity, monotonicity)",
+        role="takes the expectation of a pointwise inequality of random scores (L19) and "
+        "moves a concave logarithm outside an expectation",
+        failure_mode="holds whenever the expectations exist; the exponential moments the lemma "
+        "uses exist for Gaussian noise",
+        relation=(
+            _LE(_JX_F, _JX_EF, evaluate=False),
+            sp.Implies(_EX_LE_P, _EX_LE_Q),
+        ),
+    ),
     # ------------------------------------------------------------- REGULARITY
     "R1": Axiom(
         "R1",
@@ -672,6 +761,19 @@ AXIOMS = {
         fallback=True,
         relation=(_GE(_gj[_j], _mmin, evaluate=False), sp.Eq(_gj[_j0], _mmin)),
     ),
+    "F19": Axiom(
+        "F19",
+        POSITED,
+        "max representation for L19: the maximum of the noise draws z_1, ..., z_n is a symbol Zm "
+        "with z_i <= Zm for all i in 1..n and z_{i0} = Zm for some i0 in 1..n",
+        role="lets the bound LME(s + z) <= LME(s) + max_i z_i and the bound on E max_i z_i be "
+        "proved for symbolic n (sympy has no symbolic-n maximum)",
+        failure_mode="as F5: if Zm is only an upper bound that is not attained, the first bound "
+        "holds with Zm in place of the maximum but the sandwich names a larger quantity than "
+        "E max z",
+        fallback=True,
+        relation=(_LE(_zr[_S.i], _Zm, evaluate=False), sp.Eq(_zr[_i0z], _Zm)),
+    ),
 }
 
 
@@ -686,6 +788,9 @@ A5 = AXIOMS["A5"]
 A6 = AXIOMS["A6"]
 A7 = AXIOMS["A7"]
 A8 = AXIOMS["A8"]
+A9 = AXIOMS["A9"]
+A10 = AXIOMS["A10"]
+A11 = AXIOMS["A11"]
 I1 = AXIOMS["I1"]
 I2 = AXIOMS["I2"]
 I3 = AXIOMS["I3"]
@@ -702,11 +807,13 @@ I13 = AXIOMS["I13"]
 I14 = AXIOMS["I14"]
 I15 = AXIOMS["I15"]
 I16 = AXIOMS["I16"]
+I17 = AXIOMS["I17"]
 R1 = AXIOMS["R1"]
 R2 = AXIOMS["R2"]
 F5 = AXIOMS["F5"]
 F10 = AXIOMS["F10"]
 F12 = AXIOMS["F12"]
+F19 = AXIOMS["F19"]
 
 
 def get(name):

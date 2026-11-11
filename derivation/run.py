@@ -37,6 +37,8 @@ CHAIN_NAMES = [
     "lemma_15_descent",
     "lemma_16_soft_fit_alternation",
     "lemma_17_soft_fit_certificate",
+    "lemma_18_noise_covariance",
+    "lemma_19_noise_shift_bound",
 ]
 
 
