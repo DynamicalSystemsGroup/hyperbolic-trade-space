@@ -319,3 +319,18 @@ tools (those pass: `test_cubesat_oracle`, `test_system_model_v2`, `test_system_m
 
 Slow tests not in the fast run and pinned to the record (`test_case.py`, `test_k_terms_case.py`): updated to thirteen in shape and counts,
 and marked "re-pin at the gate" where a number of record is in them.
+
+# WP30 gate, step 11 (the values): a check, not an edit
+
+The model has carried the supervisor's values since the build (unit cost limit 350,000 USD at the
+design's own fleet size, fleet cost limit 6,000,000 USD on the covered cost inside the full 8,000,000
+budget, launch 7,000 USD/kg and the budget 105,770 USD). The check at the gate: no literal marked
+placeholder is left (the R-7 grep over the model, the case, the experiments and the ladder script is
+empty; `tests/test_cost_model.py` asserts it); the data were regenerated once on this model, so no
+limit moved afterwards and the `--wp30 values` live run was not made. The two cost requirements are verdicts,
+neither a flag. Their verdicts per named configuration (`tests/test_cost_model.py`, solver-checked in the
+loaded model): the baseline's unit cost fails at 1, 2 and 3 satellites (354,661 USD at 3) and holds from
+5 (325,213 USD); its fleet cost holds at 17 satellites (4.72 million USD) and is violated at 30 (7.84
+million USD); no named configuration at a fleet of one meets the unit cost limit (the supervisor: "its
+fine"), and all three meet the fleet cost limit at one satellite (the `satisfy lowCost.fleetCost` statements of
+`stakeholders.sysml`).
