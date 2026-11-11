@@ -463,3 +463,44 @@ sensitivity record) re-records only the arrays its change affects, leaves the re
 re-recording rewrote the planted soft-fit arrays it did not need to touch and the gate caught it (47 exact-branch
 failures in the container, all of this kind).
 
+
+## Handover (sixth PM, 2026-11-10, night; parallel-board.md's sixth-PM tables are the live copy)
+
+Landed this PM (all on dev): the WP26 sequel under OD1 as amended (in-file edits hash-equal to the container's @7 through a
+container re-run, entries @8; the pointers at @8; tab-C regenerated on the host; 331c9e4, ad9df4b, 50df9ac, 05fbd3c); WP27
+D-4 (the P1 cold read, verbatim with dispositions, f840bf3), the verdicts per configuration in `stakeholders.sysml`
+(b9c8819 baseline; 73b4e89 agile and compact with their own measurements bound), D-5 "none", D-6 (fbee839, 85ae173,
+8f4e10b, 195bd81: Bugs 7-10, F-1 to F-5, the reader's screens), the harness note §8 (0869ecf); the WP26 and WP27
+acceptance reviews (2d2a81b, 3e22533) with their gap fixes (05f8a2a), both accepted by the driver at d427011; WP25-3
+(scope 0edab7b; executed 6e34f2b..1d9fae1; OD2 closed by the test regenerating the comparison; accepted; P-1 contract
+amendment 16 2bbdf3b; OD3 (b) 6c8481a); WP11 round 2 (eleven reads verbatim 31fedfc, triage e76f520 with CR-9..34; the
+docs loop fdab633, 308dc5a with DCR-1..9), its paper units (3e3378c, 7c75408, acb8c45, e165c7f, 59105bb), figures
+(f517875), docs (8715f28..44cb75e), the register re-pin (37b1339), the maths-check unit (4c9416c: (b) narrowed in the box,
+(d) Theorem 2's hypothesis named, (e) finite termination L15.17-L15.22, (f) the LP-uniqueness test, (a) and (g) true as
+stated); the WP28 scope (1277210), approved d7a3fe3 (OD1 b: the re-test is WP11's round 3; OD6 a: the driver approves the
+cut list before any cut lands).
+
+Running at the handover: the WP28 D-1 inventory coordinator (stages the site at the head, fans out about 55 cold readers
+one per unit, commits `WP28-inventory.md` and its folder). Idle: the modeller's worktree `wp27model` (tab-23 holds the
+head's three model files at 0 issues; by Bug 10 no other tab restores or creates a project while it is in use).
+
+Next for the seventh PM, in order: (1) when the inventory lands, a fresh triager (not a reader, not an author) writes
+`WP28-cut-list.md` per the scope's D-2 (goes / merged / shortened to a pointer; the six checks per row; "kept, with
+reason"; "for the supervisor" for his fixed figures and the two model views) and the PM sends it to the driver for OD6's
+approval; (2) after approval, the paper stream and the docs stream execute net-negative units (the scope's D-3, D-4;
+`[[cut]]` ledger rows and the ledger reader extended to read them; Appendix F.4 and A regenerated where a cell or entry
+goes); the paper stream takes no CR unit on a section with an open cut; held for after the cut list: the (a) clause on
+centring (the maths unit's report, Methods), a one-clause hook for L15's finite termination (Results, Theorem 11 or Open
+questions), and the R1 sentence in Methods read as the τ = ∞ statement; (3) the re-test (D-5 = WP11 round 3: depth B six
+personas, depth C five with P4-C held out; the key at version 4 is the driver's; the triager sends reader sentences to
+the driver for marking), then the P6-B confirmation read on an unused brief wording; (4) WP28's acceptance review
+(fresh reviewer; the staged site looked at in the browser); (5) WP25's next instance before the PR (the inventory greps
+constant names too: `cmp.REPORT` was the miss), with the cruft list from WP28 (orphan `fig-chart-k3.png`,
+`fig-predict-check.png`; D.12's "weakly identified exponents" sentence in the supporting material is unpinned).
+
+Rules applied this PM beyond the brief: every agent reads `scratchpad/pm5-rules.md`; a reader's change requests are
+extracted to a scratch file for the author with the depth and persona words removed (R-2); a handover note at the
+worktree root when an agent's context grows (three agents did; fresh agents took their worktrees); the browser pane's
+tab-23 is the modeller's and every other agent creates and closes its own tab (Bug 10 means a second tab on the editor
+breaks the first's recovery save: reviewers open the editor only when tab-23 is idle); a fresh worktree staging the
+site copies the main checkout's `paper/_build/templates` until the myst theme is pinned (the driver's).
