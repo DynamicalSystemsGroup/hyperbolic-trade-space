@@ -199,6 +199,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Round 3's key marks (2026-11-10, 21:35; WP28 D-5 = WP11 round 3 at af9ffea).** The driver marked the triager's 148
+  reader sentences against answer key version 4 (the marks file sits beside the request in the session scratchpad;
+  the key stays outside the repository). No wrong belief of W1 to W8 in any of the twelve cells. One statement wrong
+  against S5 in four cells: the several-term fit read as a per-cell one-term refit, invited by Theorem 11's box
+  ("refitting each term on its new cell") read without Section 6.2's first sentence; the fix is the box's wording,
+  a narrowing. Depth B misses S8's second item (no novelty, not a replacement) in five of six cells; depth C states
+  the whole argument in every cell. Old words (exchange rate, facet) are not counted against readers.
+
 - **Staging from a clean checkout (2026-11-10, 19:05; from PM6's batch 3).** Two authors found that `stage_site.py` in a
   fresh worktree fails at the myst article-theme's `/_public/` prerender unless the main checkout's
   `paper/_build/templates` (article-theme 1.4.1) is copied in: the theme is fetched at build time and is not pinned
