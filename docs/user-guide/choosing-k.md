@@ -1,44 +1,64 @@
 # Choosing K
 
 The fit never selects the number of terms K; you do. Every check below reads fits at one
-temperature, selected at K = 1 ([Fitting](fitting.md#choosing-the-temperature)): `mean_slack_` is
+temperature, selected at K = 1 on your table ([the recipe](#the-temperature)): `mean_slack_` is
 comparable across K at one temperature, and `objective_` is not. No check decides K alone, so each
 is given with what it cannot say. The package has no held-out criterion for K, and none has been
 studied.
 
 ## Methods
 
-- **Mean slack against K.** Fit `n_terms` = 1, 2, ... and read the drop in `mean_slack_` per added
-  term. A break, one large drop then small ones, shows where added terms stop paying. The mean slack
-  falls with every added term by construction, so it cannot choose K, and a table may show no break.
+- **Mean slack against K.** Fit `n_terms` = 1, 2, ... and read the drop in `mean_slack_`, the mean
+  shortfall of the designs below the fitted reference surface, per added term. A break, one large drop then small ones, shows where
+  added terms stop paying. The mean slack falls with every added term by construction, so it cannot choose K, and a table may show no break.
 - **Thinnest term.** `term_share_.min()` is the share of the near-frontier designs in the thinnest
-  term's cell; a term of few designs is a few designs fitted alone. It says a term is thin, not
-  which K is right, and it depends on the band.
+  term's cell. The band is the designs within 1/tau of the surface in log V; a cell is the designs
+  for which the term is largest. Read the share against 1/K, what each term holds if the cells are equal.
+  It says a term is thin, not which K is right.
 - **Movement under resampling.** Refit on resamples of the rows and measure how far each term's
-  exponent vector sits from the nearest term of the refit (summed absolute differences, at most 2).
-  It is noisy: draws of one procedure differ by several tenths on the cubesat below, so it offers no
+  exponent vector sits from the nearest term of the refit (summed absolute differences; exponents sum to one, so at most
+  2). It is noisy: draws of one procedure differ by several tenths on the cubesat below, so it offers no
   threshold.
-- **Planted check.** Fit `make_frontier_data(n_terms=K0)` at your number of designs and metrics to
-  see how recovery looks on a table of your shape. The planted K0 is known there; your table's is not.
-- **The certificate.** `termination_.status` and `termination_.radius` say the optimizer finished
-  and the assignments hold under small changes of the terms. Every fit below at K = 2 and above is
-  certified, so it does not say K is right.
-- **`conditioning_`.** The smallest eigenvalue per term flags a nearly flat direction
-  ([Termination](termination.md#conditioning_)). It compares metrics within a fit, not numbers of
-  terms.
+- **Planted check.** Fit `make_frontier_data(n_terms=K0)` at your table's shape to see how recovery
+  looks. The planted K0 is known there; your table's is not.
+- **The certificate.** `termination_.status` says the optimizer reached a local minimizer;
+  `termination_.radius` is the stable radius, the size of a change of the terms that leaves every
+  design's cell unchanged. Every fit below at K = 2 and above is certified, so it does not say K is
+  right.
 
-Two helpers carry the first three checks.
+## The temperature
+
+For your table `M` of conditioned metrics, the fit temperature is selected at K = 1 and held for
+every K ([Fitting](fitting.md#choosing-the-temperature)):
+
+<!-- vocab-exempt: select temperature -->
+```python {.runnable}
+from hyperbolic_trade_space import (
+    make_frontier_data,
+    select_temperature,
+)
+
+M, _ = make_frontier_data(400, 4, n_terms=2, random_state=0)
+tau = select_temperature(M, 0.10, bounds=(3, 1000))
+print(round(tau, 1))
+```
+<!-- vocab-exempt: select temperature -->
+
+0.10 is the share of designs allowed above V = 1. The planted table returns 50.0, the tau used
+below for all three planted tables (26.5 and 38.1 on the others).
+
+## Helpers
+
+The cubesat blocks run from the repository root, where `examples/adcs` is; the planted blocks need
+only the installed package.
 
 ```python {.runnable}
 import sys
 
 import numpy as np
-from hyperbolic_trade_space import (
-    HyperbolicTradeSpace,
-    make_frontier_data,
-)
+from hyperbolic_trade_space import HyperbolicTradeSpace
 
-sys.path.insert(0, "examples/adcs")
+sys.path.insert(0, "examples/adcs")  # repository root
 import case
 
 
@@ -54,7 +74,6 @@ def sweep(M, tau, Ks, planted=None):
     for K in Ks:
         fit = fit_k(M, K, tau)
         t = fit.termination_
-        assert t.status in ("certified", "not_applicable")
         line = (
             f"K={K} slack={fit.mean_slack_:.3f}"
             f" thinnest={fit.term_share_.min():.2f}"
@@ -72,7 +91,6 @@ def sweep(M, tau, Ks, planted=None):
         slack.append(fit.mean_slack_)
     drops = -np.diff(slack)
     print("drops", drops.round(3))
-    assert (drops > 0).all() and drops[-1] > 0.002
     return np.array(slack)
 
 
@@ -90,7 +108,7 @@ def movement(M, K, tau, draws=2, seed=0):
 
 ## A planted table
 
-The answer is known. `found` counts planted terms matched by a fitted term (largest exponent
+`found` counts planted terms matched by a fitted term (largest exponent
 difference under 0.05); `unmatched` counts fitted terms matching none.
 
 ```python {.runnable}
@@ -103,8 +121,7 @@ for K0, seed in ((2, 0), (3, 0), (3, 1)):
 With two planted terms the mean slack drops by 0.108 at K = 2 and by 0.005 or less after; both
 terms are found at K = 2. With three, table 0 drops by 0.163 and 0.029, then 0.005 or less, and all
 three are found at K = 3. Table 1 drops by 0.181, then 0.006 or less, and finds two of the three at
-every K from 2: the break reads the terms the fit recovers, not the number planted. Past the break the
-mean slack keeps falling, by 0.003 or more at K = 5.
+every K from 2: the break reads the terms the fit recovers, not the number planted.
 
 ```python {.runnable}
 X, _ = make_frontier_data(400, 4, n_terms=3, random_state=0)
@@ -118,7 +135,8 @@ On table 0 the movement is 0.04 and 0.02 at K = 3, and 0.23 and 0.24 at K = 5.
 
 ## The cubesat
 
-The two regimes of the [examples](../examples.md), each at its K = 1 temperature.
+The two regimes of the [examples](../examples.md), each at its K = 1 temperature, selected as in the
+recipe.
 
 ```python {.runnable}
 studies = {r: case.load_study(r) for r in ("primary", "stock")}
@@ -131,7 +149,7 @@ for r, s in studies.items():
 The stock regime drops by 0.065 and 0.068, then 0.011 and 0.004: a break at K = 3, where the
 thinnest term holds 0.17. The primary regime drops by 0.112, 0.044, 0.017 and 0.010: the curve
 bends with no break, so the mean slack cannot choose K, and its thinnest term holds 0.07 already at
-K = 2. Every fit at K = 2 and above is certified, with a stable radius from 3e-06 to 1e-04.
+K = 2. Stable radii run from 3e-06 to 1e-04.
 
 ```python {.runnable}
 for K in (2, 3, 4):
@@ -146,9 +164,6 @@ Over three draws the primary regime's movement is 0.09 to 0.45 at K = 2, 0.25 to
 
 ## Large K and the elbow in PCA
 
-The elbow heuristic for the number of principal components is the nearest kin of the first check,
-and a break reads the same way. The limit differs: variance explained ends at d components, while
-here K has no ceiling and the mean slack no floor. In every sweep above it is still falling at the
-largest K tried, fitted terms matching no planted term appear beyond K0, and the thinnest term's
-share reaches 0.00 on the two-term table at K = 5. A break is read together with the thinnest-term
-and resampling checks, and a table can have none.
+The elbow heuristic for the number of principal components reads a break the same way. The limit
+differs: variance explained ends at d components, while
+here K has no ceiling and the mean slack no floor.

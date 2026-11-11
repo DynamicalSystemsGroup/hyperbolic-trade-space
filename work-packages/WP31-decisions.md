@@ -46,3 +46,14 @@ page example does not assert on a borderline number); (4) the repository-root no
 three returns are committed verbatim (the readers are resumed to write them to files) beside the triage, as every
 reader round's are; the rebuilt page is photographed by the reviewer to files, light and dark, and the driver's own
 pass follows. Then acceptance and the changelog line.
+
+**Task-reader fixes (unit wp31fix), implementer's record:** the four defects fixed on `docs/user-guide/choosing-k.md`.
+(1) Recipe: `select_temperature(M, 0.10, bounds=(3, 1000))`, run on a planted table (returns 50.0; 26.5 and 38.1 on the
+other two planted tables, which the page keeps at tau = 50, so no stated number changed) and equal to the case helper's
+K = 1 temperature on the cubesat (38.096 primary, 45.679 stock). (2) Glosses for the mean slack, the near-frontier
+band, the cell and the stable radius (glossary wording); "thin" is read against 1/K, with no threshold claimed.
+(3) The sweep helper's assertions removed. (4) The repository-root note. The page's prose budget (707 words, tests/test_site.py)
+held, so the additions were paid for by deletions: the `conditioning_` bullet (a check that compares metrics within a fit,
+nothing about K; C431 dropped), the sentence restating the sweeps at large K (C439 dropped; the printed sweeps show it),
+the closing sentence of the large-K section (repeated the methods), and the clause on the mean slack's continued fall
+in the planted paragraph. C451 merged into C430.

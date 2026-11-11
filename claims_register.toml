@@ -5320,7 +5320,7 @@ backing = ["glossary:mean-slack", "test:tests/test_docs.py::test_runnable_blocks
 status = "backed"
 disposition = "keep"
 source = "WP31 U3"
-note = "mean_slack_ falls with K by construction (glossary); the page's sweep helper asserts a positive drop at every K on every table it runs, and the primary cubesat regime shows no break."
+note = "mean_slack_ falls with K by construction (glossary); the page's sweep prints a positive drop at every K on every table it runs (the helper no longer asserts it), and the primary cubesat regime shows no break."
 
 [[claim]]
 id = "C428"
@@ -5348,7 +5348,7 @@ note = "Primary cubesat, three outer draws of two resamples each: 0.09 to 0.45 a
 
 [[claim]]
 id = "C430"
-fragment = "`termination_.status` and `termination_.radius` say the optimizer finished and the assignments hold under small changes of the terms. Every fit below at K = 2 and above is certified"
+fragment = "`termination_.status` says the optimizer reached a local minimizer;"
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "S"
@@ -5356,19 +5356,7 @@ backing = ["glossary:certificate", "glossary:stable-radius", "test:tests/test_do
 status = "backed"
 disposition = "keep"
 source = "WP31 U3"
-note = "Certificate and stable radius as the glossary defines them; the sweep helper asserts status certified (not_applicable at K = 1) for every fit it runs."
-
-[[claim]]
-id = "C431"
-fragment = "The smallest eigenvalue per term flags a nearly flat direction"
-file = "docs/user-guide/choosing-k.md"
-anchor = ""
-kind = "S"
-backing = ["lemma:L17", "test:tests/test_estimator.py::test_conditioning_drops_for_nearly_collinear_metrics"]
-status = "backed"
-disposition = "keep"
-source = "WP31 U3"
-note = "As C340 on the termination page: a small value marks a nearly flat direction; the page adds that it compares metrics within a fit, which is how conditioning_ is defined (one value per term)."
+note = "Certificate and stable radius as the glossary defines them (the radius: a perturbation of the terms smaller than it leaves every design's assignment, i.e. cell, unchanged); the sweep prints the status of every fit it runs: not_applicable at K = 1, certified at every K >= 2 on all five tables. The helper no longer asserts it."
 
 [[claim]]
 id = "C432"
@@ -5420,7 +5408,7 @@ note = "Stock regime at its K = 1 temperature: slack 0.179, 0.114, 0.046, 0.035,
 
 [[claim]]
 id = "C436"
-fragment = "The primary regime drops by 0.112, 0.044, 0.017 and 0.010: the curve bends with no break, so the mean slack cannot choose K, and its thinnest term holds 0.07 already at K = 2. Every fit at K = 2 and above is certified, with a stable radius from 3e-06 to 1e-04."
+fragment = "The primary regime drops by 0.112, 0.044, 0.017 and 0.010: the curve bends with no break, so the mean slack cannot choose K, and its thinnest term holds 0.07 already at K = 2. Stable radii run from 3e-06 to 1e-04."
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "R"
@@ -5453,18 +5441,6 @@ status = "backed"
 disposition = "keep"
 source = "WP31 U3"
 note = "The standard fact that the d components of a table of d metrics exhaust its variance; the comparison is to the number-of-components elbow heuristic, named once."
-
-[[claim]]
-id = "C439"
-fragment = "In every sweep above it is still falling at the largest K tried, fitted terms matching no planted term appear beyond K0, and the thinnest term's share reaches 0.00 on the two-term table at K = 5."
-file = "docs/user-guide/choosing-k.md"
-anchor = ""
-kind = "R"
-backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
-status = "backed"
-disposition = "keep"
-source = "WP31 U3"
-note = "The sweep helper asserts the last drop exceeds 0.002 on every table; unmatched fitted terms appear at K > K0 on all three planted tables (K0 = 2: K = 3, 4; K0 = 3: K = 4 on table 0, K = 3 on table 1); thinnest share 0.00 at K = 5 on the K0 = 2 table."
 
 [[claim]]
 id = "C440"
@@ -5508,7 +5484,7 @@ note = "As C402 and C155: mean_slack_ is defined at every K; objective_ is the s
 
 [[claim]]
 id = "C445"
-fragment = "exponent vector sits from the nearest term of the refit (summed absolute differences, at most 2)"
+fragment = "(summed absolute differences; exponents sum to one, so at most"
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "M"
@@ -5541,3 +5517,51 @@ status = "backed"
 disposition = "keep"
 source = "WP31 review G-1, G-3, G-4"
 note = "WP31 readout, section 1: no held-out criterion is built or studied; a search of the public names shows none."
+
+[[claim]]
+id = "C448"
+fragment = "tau = select_temperature(M, 0.10, bounds=(3, 1000))"
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/tuning.py::select_temperature", "func:examples/adcs/case.py::fit_study", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP31 task-reader fix (1)"
+note = "Run on the cubesat metrics, select_temperature(M, 0.10, bounds=(3, 1000)) returns 38.096 (primary) and 45.679 (stock), equal to case.fit_study(study, K=1).tau, which calls it with spec.target_frac = 0.10, spec.tau_bounds = (3, 1000) and n_terms = 1. The second argument is target_frac_above (the docstring)."
+
+[[claim]]
+id = "C449"
+fragment = "The planted table returns 50.0, the tau used"
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "R"
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+status = "backed"
+disposition = "keep"
+source = "WP31 task-reader fix (1)"
+note = "Run with bounds=(3, 1000) on make_frontier_data(400, 4, n_terms=K0, random_state=seed): (2, 0) gives 50.02 (block prints 50.0), (3, 0) gives 26.50, (3, 1) gives 38.10. The page fixes tau = 50 on all three, as before; no stated number changed."
+
+[[claim]]
+id = "C450"
+fragment = "Read the share against 1/K, what each term holds if the cells are equal."
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "S"
+backing = ["glossary:cell", "glossary:term-share", "gen:tests/test_docs.py::_runnable_blocks"]
+status = "backed"
+disposition = "keep"
+source = "WP31 task-reader fix (2)"
+note = "The cells partition the rows (glossary), so equal cells hold 1/K each; the page claims no threshold for thin, only the reading against 1/K, with the printed thinnest shares 0.17 at K = 3 (stock) and 0.07 at K = 2 (primary)."
+
+[[claim]]
+id = "C452"
+fragment = "The band is the designs within 1/tau of the surface in log V; a cell is the designs"
+file = "docs/user-guide/choosing-k.md"
+anchor = ""
+kind = "S"
+backing = ["glossary:near-frontier-band", "glossary:cell"]
+status = "backed"
+disposition = "keep"
+source = "WP31 task-reader fix (2)"
+note = "Glossary: the band is the designs with log V strictly between -1/tau and 1/tau; the cell is the rows whose maximizing term is that term."
