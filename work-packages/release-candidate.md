@@ -84,3 +84,22 @@ After 0.1: the search (WP12); publishing to an index or a registry; the PDF expo
 ## The driver's calls (each for the supervisor's review)
 
 Kept in `driver-log.md` ("Scopes and acceptances by the driver"), with the evidence for each.
+
+## The mandate, extended (2026-11-11, 10:00; the supervisor, verbatim)
+
+"i think you have enough information to get us to a full package for me to review. don't make the pull request
+because i do want you to make a list of calls you made for me to review (and revert at my discretion) but at this
+point once you handle these spikes, design the changes, test, integrate, test, review, and then do ux loops to meet
+our human user requirements you should have something i can only need to make minor changes on before we prep for
+release."
+
+**What this changes.** The open decisions that waited for him (the two cost budgets and the launch rate after the
+2026 recalibration readout; the noise corollary's placement after its derivation passes; the final form of the
+two-panel figure) are the driver's to make on the readouts, each listed for his review. No pull request: the package
+is `dev` at a named head with `work-packages/supervisor-review-list.md`, the list of every call the driver made with
+where it is recorded and the commit that lands it, so that he can revert any at his discretion, and the reviewer's
+guide in sittings. The path to the package from here: WP30 built, gated and reviewed by P7 and P8; WP29's corollary
+derived, tested, placed and read; the two-panel figure in the paper and the docs; WP25-5; the release items that are
+the driver's (the version, the changelog heading, the reviewer's guide); a final reader round on the finished paper
+and docs at depths A to D with the grid including P7 and P8, its change requests landed; both platforms and the
+container green at the head; then the driver stops and hands him the package.
