@@ -15,11 +15,11 @@ Appendix B table are deleted as one unit. Kept apart throughout: the **model** (
    0.066) is as large in the metric as twelve percent on settling time (spread 0.83).
 2. **The shift of the soft maximum under noise is bounded, and the bound says when L6 can be read (L19).** For clean scores
    s_i and independent N(0, v^2) draws z_i (v^2 = sigma^2 ||w||^2, or w'Sigma w by L18),
-   mean(s) - LME(s) <= E LME_tau(s+z) - LME_tau(s) <= min(tau v^2 / 2, E max z), E max z <= v sqrt(2 log n); tau v^2 / 2 and
+   0 <= E LME_tau(s+z) - LME_tau(s) <= min(tau v^2 / 2, E max z), E max z <= v sqrt(2 log n); tau v^2 / 2 and
    v sqrt(2 log n) cross at tau* = 2 sqrt(2 log n) / v. **An upper bound that is not tight**: near equality with tau v^2 / 2
    in the small-tau regime, a factor of up to about 2.6 above the shift at tau = 200 in the planted cells (the L6 value alone,
-   up to about 12). tau* is a rule of thumb. The lower bound is at most 0 (LME >= mean) and weaker than Delta >= 0 from
-   convexity; it is in the lemma and not in the paper sentence.
+   up to about 12). tau* is a rule of thumb. The lower bound is Delta >= 0 (the convexity of LME;
+   the PM replaced the weaker mean(s) - LME(s), which is at most 0).
 
 Proof sketches (each step is a tagged line of the script, Appendix B):
 
@@ -27,7 +27,7 @@ Proof sketches (each step is a tagged line of the script, Appendix B):
   function at tau is exp(tau^2 q / 2) (sympy.stats); the diagonal case collapses the double sum by the Kronecker delta; the
   equal-level case is L6; the conditioning map applies A4 with a_j = 0 and the error model log rt_j = log r_j + zeta_j (A10)
   to get eps_j = alpha_j zeta_j exactly, variance alpha_j^2 delta_j^2, with s_j := 1/|alpha_j|.
-- L19: lower: LME >= mean (tangent line) and E z_i = 0; first upper: Jensen for the concave logarithm with the L6 moment
+- L19: lower: the tangent line with the softmax weights of the clean scores gives LME(s+z) - LME(s) >= Sum p_i z_i, and E z_i = 0; first upper: Jensen for the concave logarithm with the L6 moment
   generating function; second upper: exp(tau(s_i+z_i)) <= exp(tau s_i) exp(tau max z); the maximum: Jensen for exp and a
   sum bound give E max z <= log n / lam + lam v^2 / 2, minimised at lam = sqrt(2 log n) / v.
 
@@ -36,7 +36,7 @@ Proof sketches (each step is a tagged line of the script, Appendix B):
 **P1. Corollary after L6 (paper, Results).** Statement: "With noise covariance Sigma in place of sigma^2 I, the cumulant
 is tau w'Sigma w / 2 (L18); with a diagonal Sigma, tau Sum_j w_j^2 sigma_j^2 / 2. For a measurement error of log-size
 delta_j on attribute j, the conditioned metric carries sigma_j = delta_j / s_j (log, orient, standardise conditioning).
-The shift of the soft maximum under that noise lies between mean - LME and min(tau v^2 / 2, v sqrt(2 log n)) (L19); the
+The shift of the soft maximum under that noise lies between 0 and min(tau v^2 / 2, v sqrt(2 log n)) (L19); the
 second bound is not tight, and tau* = 2 sqrt(2 log n) / v marks where L6 stops being the smaller." Script box: `L18`,
 `L19`, Appendix B. Sentence on the sign: the soft maximum is the entropic risk with the risk-seeking sign (+tau); noise
 raises the reference surface; a risk-averse reading is the (-tau) version, a different object, the analyst's choice (no
@@ -99,8 +99,10 @@ Lemma count (17 to 19) in paper, docs, `tests/test_build_generated.py` (already 
 for L18 and L19 (`PARTS` in `paper/generate_proofs.py`); length ledger raise; register rows P5; `notation.md`; Appendix D
 cell and the contract key if the table id is pinned; ledger entries A9, A10, A11, I17, F19 in the docs' ledger count.
 
-## Questions for the supervisor
+## Decisions recorded (PM, for the placement)
 
-1. Keep the lower bound mean - LME in the lemma (true, at most 0, weaker than Delta >= 0), or replace it by Delta >= 0 from
-   convexity?
-2. Place L18 and L19 with the fit and its geometry in Appendix B, or as a third part on noise?
+1. The lower bound is Delta >= 0 (convexity of LME); the weaker mean(s) - LME(s) is dropped from the lemma, its test and
+   this proposal.
+2. Appendix B: L18 and L19 stay in the second part and "B.2 ... (L12 to L19)" is kept (the `test_paper` heading test requires
+   it); at placement the part heading is reworded so that it does not say "the several-term fit" of a noise result.
+   `PARTS` and the paper are not touched before the supervisor's word.

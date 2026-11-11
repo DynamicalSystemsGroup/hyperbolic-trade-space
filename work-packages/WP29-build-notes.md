@@ -7,7 +7,7 @@ Derivation-side readout. Nothing here has reached `dev` (OD2 (b)).
 | Item | File | State |
 |---|---|---|
 | A3, L18 | `derivation/lemma_18_noise_covariance.py` (21 tagged steps) | passes |
-| A1, L19 | `derivation/lemma_19_noise_shift_bound.py` (41 tagged steps) | passes |
+| A1, L19 | `derivation/lemma_19_noise_shift_bound.py` (44 tagged steps) | passes |
 | ledger | `derivation/axioms.py`: A9 (Gaussian vector with a covariance), A10 (multiplicative measurement error), A11 (row noise), I17 (expectation: linear, monotone, Jensen), F19 (maximum of the noise draws) | every new entry is consumed by a lemma |
 | chain, record | `derivation/run.py`, `derivation/proof_map_record.json` | PROOF MAP OK, 19 files, 439 steps |
 | tests | `tests/test_noise_lemmas.py` (seeds from `WP29_SEEDS`, default 0,1) | passes for seeds 0,1; 7,8; 21,22 |
@@ -30,8 +30,8 @@ Existing tests changed (requirement kept, position now relative to a named lemma
 1. The spike read "loose by a factor of 2 to 6 at tau = 50 to 200" against the L6 branch alone. Against the smaller upper
    bound the planted cells give a ratio of 0.95 to 1.1 where tau v^2 / 2 is the smaller, and up to about 2.6 at tau = 200
    (L6 alone up to about 12). The lemma text and the test carry the corrected figures.
-2. The lower bound mean(s) - LME(s) is at most 0 (LME >= mean) and is weaker than Delta >= 0, which follows from the
-   convexity of LME. It is true and is in the statement as scoped; whether to keep it is a question for the PM.
+2. The lower bound mean(s) - LME(s) was at most 0 and weaker than Delta >= 0. Replaced (PM decision) by Delta >= 0: the
+   tangent line with the softmax weights p_i of the clean scores gives LME(s+z) - LME(s) >= Sum_i p_i z_i, and E z_i = 0.
 3. tau* = 2 sqrt(2 log n) / v is the crossing of tau v^2 / 2 with the closed-form bound v sqrt(2 log n), not with E max z
    (which is smaller): the cold read caught the misidentification and the lemma now says so.
 4. The spike's "the isotropic A5 reading is off by 10 to 20 times everywhere" does not hold where the offset shift saturates:
