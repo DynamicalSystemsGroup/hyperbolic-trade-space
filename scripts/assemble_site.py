@@ -84,18 +84,25 @@ def build_paper(out, paper="auto", base_url=PUBLIC_PAPER_BASE, paper_runner=None
 
     ``paper="auto"`` builds the real paper (``paper_runner(base_url)``, default ``run_paper_build``)
     and copies its HTML; when the build is unavailable or fails, or ``paper="placeholder"``, the
-    placeholder page is used instead. ``base_url`` is the route the paper is served under.
+    placeholder page is used instead. ``paper="strict"`` builds the real paper and raises when it
+    does not build (the placeholder only behind ``paper="placeholder"``). ``base_url`` is the route
+    the paper is served under.
     """
     out = Path(out)
     dest = out / "paper"
-    if paper == "auto":
+    if paper in ("auto", "strict"):
         built = (paper_runner or run_paper_build)(base_url)
         source = Path(paper_html) if paper_html is not None else PAPER_HTML
         if built and (source / "index.html").is_file():
             shutil.copytree(source, dest, dirs_exist_ok=True)
             return "paper"
+        if paper == "strict":
+            raise RuntimeError(
+                "the paper did not build (its error is printed above); "
+                "use --paper placeholder to stage the site without it"
+            )
     elif paper != "placeholder":
-        raise ValueError(f"paper must be 'auto' or 'placeholder', got {paper!r}")
+        raise ValueError(f"paper must be 'auto', 'strict' or 'placeholder', got {paper!r}")
     if not PAPER_PLACEHOLDER.is_file():
         raise FileNotFoundError(f"missing paper placeholder: {PAPER_PLACEHOLDER}")
     dest.mkdir(parents=True, exist_ok=True)

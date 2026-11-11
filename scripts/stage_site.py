@@ -1,8 +1,10 @@
 """Stage the site locally: assemble into ``_stage/`` and serve it on 127.0.0.1.
 
-    uv run python scripts/stage_site.py [--serve] [--port 8000] [--no-build]
+    uv run python scripts/stage_site.py [--serve] [--port 8000] [--no-build] [--paper placeholder]
 
-No network access and no kernel are needed. Review the pages printed, then stop with Ctrl-C.
+No kernel is needed; the paper's build fetches its pinned theme from GitHub. The paper must build:
+a failed paper build exits non-zero. ``--paper placeholder`` stages the placeholder page
+instead. Review the pages printed, then stop with Ctrl-C.
 """
 
 from __future__ import annotations
@@ -55,7 +57,8 @@ def stage(out=STAGE_DIR, build=True, mkdocs_runner=None, **assemble_kwargs):
     """Assemble into ``out`` (unless ``build`` is false and it exists). Returns the path.
 
     The site is served from the root of 127.0.0.1, so the paper is built for the route ``/paper``
-    (the real paper when it builds, the placeholder otherwise); other keywords go to ``assemble``.
+    (``paper="auto"`` falls back to the placeholder when it does not build; the command line
+    asks for ``"strict"``, which raises); other keywords go to ``assemble``.
     """
     out = Path(out)
     if build or not out.exists():
@@ -71,9 +74,10 @@ def main(argv=None):
     parser.add_argument("--no-build", action="store_true", help="reuse an existing _stage/")
     parser.add_argument(
         "--paper",
-        choices=("auto", "placeholder"),
-        default="auto",
-        help="stage the real paper when it builds (default) or the placeholder",
+        choices=("strict", "placeholder"),
+        default="strict",
+        help="stage the real paper and fail when it does not build (default), or stage the "
+        "placeholder page in its place",
     )
     args = parser.parse_args(argv)
     try:

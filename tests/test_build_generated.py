@@ -430,6 +430,58 @@ def test_build_paper_falls_back_to_the_placeholder(tmp_path, monkeypatch):
         assemble_site.build_paper(tmp_path / "x", paper="sometimes")
 
 
+def test_strict_paper_build_raises_instead_of_falling_back(tmp_path, monkeypatch):
+    built = _paper_slot(tmp_path, monkeypatch)
+    with pytest.raises(RuntimeError, match="did not build"):
+        assemble_site.build_paper(
+            tmp_path / "a", paper="strict", paper_runner=lambda base: False, paper_html=built
+        )
+    with pytest.raises(RuntimeError, match="did not build"):  # success reported, nothing written
+        assemble_site.build_paper(
+            tmp_path / "b",
+            paper="strict",
+            paper_runner=lambda base: True,
+            paper_html=tmp_path / "missing",
+        )
+    kind = assemble_site.build_paper(
+        tmp_path / "c", paper="strict", paper_runner=lambda base: True, paper_html=built
+    )
+    assert kind == "paper"
+
+
+def _fake_assemble(tmp_path, monkeypatch, built_ok):
+    """Stage with every step but the paper slot faked; ``built_ok`` is the paper build's result."""
+    placeholder = tmp_path / "placeholder.html"
+    placeholder.write_text("<html>placeholder</html>")
+    monkeypatch.setattr(assemble_site, "PAPER_PLACEHOLDER", placeholder)
+    monkeypatch.setattr(stage_site, "STAGE_DIR", tmp_path / "_stage")
+
+    def fake(out, paper="auto", paper_base="/paper", **kw):
+        Path(out).mkdir(parents=True)
+        assemble_site.build_paper(
+            out, paper, paper_base, paper_runner=lambda base: built_ok, paper_html=tmp_path / "none"
+        )
+        return Path(out)
+
+    monkeypatch.setattr(assemble_site, "assemble", fake)
+
+
+def test_stage_site_exits_non_zero_when_the_paper_does_not_build(tmp_path, monkeypatch, capsys):
+    _fake_assemble(tmp_path, monkeypatch, built_ok=False)
+    assert stage_site.main([]) == 1  # the default is strict
+    err = capsys.readouterr().err
+    assert "FAILED" in err and "paper did not build" in err and "--paper placeholder" in err
+    assert not (tmp_path / "_stage" / "paper" / "index.html").exists()
+
+
+def test_stage_site_placeholder_flag_still_stages(tmp_path, monkeypatch, capsys):
+    _fake_assemble(tmp_path, monkeypatch, built_ok=False)
+    assert stage_site.main(["--paper", "placeholder"]) == 0
+    assert (tmp_path / "_stage" / "paper" / "index.html").read_text() == (
+        "<html>placeholder</html>"
+    )
+
+
 def test_run_paper_build_reports_failure_without_raising(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(assemble_site, "paper_command", lambda: ["false"])
     assert assemble_site.run_paper_build("/paper", paper_dir=tmp_path) is False
