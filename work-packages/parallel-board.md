@@ -208,3 +208,13 @@ Worktrees alive: `wp27model` (idle, tab-23), `stage` (af9ffea, port 8791), `wp28
 | Figure loop (search stage, then cold reads) | e6d0e4e candidate; search running | Sonnet |
 | WP28 acceptance review at the final head | resumed (agent ab43496ec9ac4ebc5) | Sonnet |
 | WP25-4, WP8b Amendment 1 | after WP28's acceptance | |
+
+## Ninth PM (2026-11-11)
+
+| Unit | State | Hash | Agent model |
+|---|---|---|---|
+| WP31 rebuild + three task readers | readers returned; record `WP31-task-readers.md`; page served 127.0.0.1:8793 from `wp31review/_site` (6745b88) | this commit | Sonnet x3 |
+| WP8b `assemble_site.py` strict CLI + scope count 22 to 20 | landed | a007ec0 | Sonnet |
+| WP30 gate checklist | landed (`WP30-gate-checklist.md`; contract version 20) | 450c65b | Sonnet |
+| WP29 placement | held for the supervisor's glance | wp29 d96db86 | - |
+| Figure loop | agent a8c54c078acfdd793 running | - | Sonnet |
