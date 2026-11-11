@@ -32,7 +32,7 @@ quoted in `WP25-decisions.md`; the inventory and the review are rewritten to the
   `view-editor-harness.md`; plus T-11's two PNGs at 9216154), 194 held (WP28's 151 reader runs, WP31's, WP11's, WP29/30's, S-5's, `search-prior-art.md`,
   `P10-review.md`), 272 kept; amendment 18, the vocabulary command exits 0 by default; inventory and review rewritten.
 - Instance 5 (the 0.1 candidate's gate, `dev` 8eda7e6): 2026-11-11; no scope file (inventory `WP25-5-inventory.md`, 556 rows, the assistant's six calls in
-  `WP25-decisions.md`); 50 files deleted (d9be725), 13 held (WP29's P10 page renders, cited by `WP29-review.md`).
+  `WP25-decisions.md`); 50 files deleted (1a20557), 13 held (WP29's P10 page renders, cited by `WP29-review.md`).
 
 Sizing at `dev` cc409f8: 622 tracked files. A first pass (each tracked file's basename grepped across every other
 tracked file; it credits a reference to any file sharing the name, so it undercounts) finds under
