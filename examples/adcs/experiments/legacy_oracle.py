@@ -128,7 +128,7 @@ def shared_subspace(v2_oracle) -> dict:
         "fixed_v2": dict(FIXED_V2),
         "fixed_legacy": {"Kd": BASELINE["Kd"], **nominal_masses()},
         "not_shared": {
-            "v2_only": ["panel_span_m", "battery_wh"],
+            "v2_only": ["panel_span_m", "battery_wh", "fleet_size"],
             "legacy_only": ["panel_mass_kg", "antenna_mass_kg"],
             "disjoint_ranges": ["Kd"],
         },
@@ -140,8 +140,9 @@ def shared_subspace(v2_oracle) -> dict:
 
 
 # design points of the v2 oracle that the frozen variant has no counterpart for (the model's own
-# defaults for the span and the capacity; a Kd inside the v2 gain box); declared, not read
-FIXED_V2 = {"panel_span_m": 0.6, "battery_wh": 80.0, "Kd": 1.0}
+# defaults for the span and the capacity; a Kd inside the v2 gain box; one satellite, the fleet
+# size of the model's named configurations); declared, not read
+FIXED_V2 = {"panel_span_m": 0.6, "battery_wh": 80.0, "Kd": 1.0, "fleet_size": 1.0}
 
 
 def build(experiment, root: Path | None = None, workers: int | None = None):

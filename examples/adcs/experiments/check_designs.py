@@ -28,7 +28,14 @@ import numpy as np
 import pandas as pd
 
 from . import ledger as lg
-from .cubesat_oracle import ATTRIBUTE_NAMES, CONFIG_NAMES, SCENARIO_COLUMNS, build, build_sampler
+from .cubesat_oracle import (
+    ATTRIBUTE_NAMES,
+    CONFIG_NAMES,
+    DEFAULT_FLEET_SIZE,
+    SCENARIO_COLUMNS,
+    build,
+    build_sampler,
+)
 
 POOL = 100_000
 # The reach: a hole counts as reachable when a seeded configuration is predicted within it, in
@@ -55,7 +62,7 @@ def _path(experiment, key: str, root: Path | None = None) -> Path:
 def _ranges_and_levels(experiment, root):
     """Ranges (aggressive gain box) and enumeration levels, read from the experiment's model."""
     sampler = build_sampler(experiment, root)
-    return sampler.log_ranges, sampler.categorical
+    return {**sampler.log_ranges, **sampler.integer_ranges}, sampler.categorical
 
 
 def _features(df: pd.DataFrame, ranges, levels) -> np.ndarray:
@@ -134,6 +141,9 @@ class Proposer:
         nn = cKDTree(Z_data).query(Z_data, k=2)[0][:, 1]
         sep = 1.5 * float(np.median(nn))
         rng = np.random.default_rng(int(seed))
+        # the fleet size has a generator of its own, so the other pool draws do not move with it
+        fleet = np.random.default_rng(np.random.SeedSequence(int(seed), spawn_key=(1,)))
+        lo_n, hi_n = ranges["fleet_size"]
         pool = pd.DataFrame(
             {
                 "panel_span_m": np.exp(rng.uniform(*np.log(ranges["panel_span_m"]), POOL)),
@@ -142,6 +152,7 @@ class Proposer:
                 "Kd": np.exp(rng.uniform(*np.log(ranges["Kd"]), POOL)),
                 "wheel_class": rng.choice(levels["wheel_class"], POOL),
                 "st_grade": rng.choice(levels["st_grade"], POOL),
+                "fleet_size": fleet.integers(lo_n, hi_n + 1, POOL).astype(float),
             }
         )
         Zp, lvp = reg.predict_coordinates(_features(pool, ranges, levels))
@@ -220,9 +231,12 @@ class Checks:
         for _, r in pd.read_csv(self.predictions).iterrows():
             rows.append(
                 {"role": "proposal", "design_id": int(r.design_id), "name": r["name"]}
-                | {c: r[c] for c in CONFIG_NAMES}
+                | {c: r[c] for c in CONFIG_NAMES if c in r}
             )
         out = pd.DataFrame(rows)
+        if "fleet_size" not in out:  # the named candidates are at one satellite
+            out["fleet_size"] = float(DEFAULT_FLEET_SIZE)
+        out["fleet_size"] = out["fleet_size"].fillna(float(DEFAULT_FLEET_SIZE))
         out["seed"] = int(seed)
         if len(out) != n:
             raise ValueError(f"{self.experiment.id}: {len(out)} check designs, count says {n}")

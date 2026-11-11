@@ -15,8 +15,10 @@ the accounting, the attributes and the feasibility are computed:
   (``settling_time_method="events"``, the default; ``"steps"`` reads it off the accepted steps,
   the generation before WP23);
 * **account**: the model's ``analysis def SlewExperiment`` takes the measured quantities and
-  returns the seven attributes it computes (the settling time is measured and passes into the
-  row unchanged);
+  returns the eight attributes it computes (the settling time is measured and passes into the
+  row unchanged); ``UnitCostExperiment`` and ``FleetCostExperiment`` return the two cost
+  metrics from the configuration and its ``fleet_size`` (a configuration without one is a fleet
+  of one satellite);
 * **feasibility**: the four flags are the verdicts of the model's named requirements
   (``feasibility.FeasibilityChecker``, engine ``run``, evidence ``observed``). They are
   observations of single configurations; the solver's classification of regions before simulation
@@ -68,10 +70,14 @@ from .feasibility import FeasibilityChecker
 from .runner import LogUniformSampler
 
 PACKAGE = "CubesatTradeSpaceV2"
-CONFIG_NAMES = ("panel_span_m", "battery_wh", "wheel_class", "st_grade", "Kp", "Kd")
-# the nine traded metrics (WP23 G5: one time metric, the settling time; the close-out: the eclipse
+CONFIG_NAMES = ("panel_span_m", "battery_wh", "wheel_class", "st_grade", "Kp", "Kd", "fleet_size")
+# a configuration that names no fleet size is a fleet of one satellite (the three named
+# configurations of the model are at 1)
+DEFAULT_FLEET_SIZE = 1
+# the eleven traded metrics (WP23 G5: one time metric, the settling time; the close-out: the eclipse
 # reserve left, its requirement being the depth-of-discharge requirement restated; WP30: the
-# momentum headroom joined, the wheel's momentum capacity over the slew's peak momentum)
+# momentum headroom joined, the wheel's momentum capacity over the slew's peak momentum, and the
+# cost model's unit cost and fleet cost, which read the configuration and its fleet size only)
 ATTRIBUTE_NAMES = (
     "settling_time_s",
     "pointing_error_deg",
@@ -82,11 +88,15 @@ ATTRIBUTE_NAMES = (
     "peak_slew_power_w",
     "dod_eclipse",
     "momentum_headroom",
+    "unit_cost_usd",
+    "fleet_cost_usd",
 )
 FLAG_NAMES = ("settled", "momentum_ok", "power_ok", "dod_ok")
-# the model's analysis returns the eight attributes it computes in this order, each read in this
-# unit; the settling time is measured and enters the row from the measurement
-_COMPUTED_NAMES = ATTRIBUTE_NAMES[1:]
+# the model's slew analysis returns the eight attributes it computes in this order, each read in
+# this unit; the settling time is measured and enters the row from the measurement; the unit cost
+# and the fleet cost are returned by an analysis of their own each (they need no slew)
+_COMPUTED_NAMES = ATTRIBUTE_NAMES[1:9]
+_COST_ANALYSES = {"unit_cost_usd": "UnitCostExperiment", "fleet_cost_usd": "FleetCostExperiment"}
 _COMPUTED_UNITS = (
     "SI::degree",
     "SI::kg",
@@ -98,7 +108,8 @@ _COMPUTED_UNITS = (
     None,
 )
 # the keys of the frozen ``cubesat_model.measure`` less the slew-time and eclipse-reserve columns,
-# in order, with the momentum headroom after the depth of discharge
+# in order, with the momentum headroom after the depth of discharge and the unit cost and the fleet
+# cost after it
 OUTPUT_NAMES = (
     "settling_time_s",
     "pointing_error_deg",
@@ -110,6 +121,8 @@ OUTPUT_NAMES = (
     "peak_slew_power_w",
     "dod_eclipse",
     "momentum_headroom",
+    "unit_cost_usd",
+    "fleet_cost_usd",
     "settled",
     "momentum_ok",
     "torque_saturated_frac",
@@ -130,6 +143,12 @@ DESIGN_COLUMNS = ("design_id", "seed", "wheel_class", "st_grade", *CONFIG_NAMES[
 SETTLING_METHODS = ("events", "steps")
 CHUNK = 10  # designs per model load, as in the frozen generator
 _EDGE = 1e-9  # relative slack at the range edges (float round trip through the model)
+
+
+def _fleet_size(row: Mapping) -> float:
+    """The fleet size of a design row (a missing or empty entry is a fleet of one)."""
+    value = row.get("fleet_size")
+    return float(DEFAULT_FLEET_SIZE if value is None or pd.isna(value) else value)
 
 
 class ScenarioError(ValueError):
@@ -195,6 +214,7 @@ class ModelReader:
             "battery_wh": tuple(
                 r(f"designRanges.batteryCapacity{k}", "SI::W*SI::h") for k in ("Min", "Max")
             ),
+            "fleet_size": tuple(r(f"designRanges.fleetSize{k}") for k in ("Min", "Max")),
         }
 
     def scenario(self, name: str) -> dict[str, float]:
@@ -427,7 +447,10 @@ class CubesatOracle:
 
     # -- validation ----------------------------------------------------------------------------
     def validate(self, configuration: Mapping) -> None:
-        """Raise ``ValueError`` naming the variable for a missing, out-of-range or unknown value."""
+        """Raise ``ValueError`` naming the variable for a missing, out-of-range or unknown value.
+
+        A configuration without ``fleet_size`` is a fleet of one satellite.
+        """
         for name, levels in (
             ("wheel_class", self.wheel_classes),
             ("st_grade", self.tracker_grades),
@@ -437,6 +460,8 @@ class CubesatOracle:
                 raise ValueError(f"{name}: {value!r} is not one of {levels}")
         for name, (lo, hi) in self.ranges.items():
             value = configuration.get(name)
+            if value is None and name == "fleet_size":
+                value = DEFAULT_FLEET_SIZE
             if value is None:
                 raise ValueError(f"{name}: missing")
             slack = _EDGE * max(abs(lo), abs(hi))
@@ -452,6 +477,7 @@ class CubesatOracle:
             f"    part cfg_{int(r['design_id'])} : {PACKAGE}::Cubesat {{\n"
             f"        :>> panelSpan default = {num(r['panel_span_m'])} [SI::m];\n"
             f"        :>> batteryCapacity default = {num(r['battery_wh'])} [SI::W*SI::h];\n"
+            f"        :>> fleetSize default = {num(_fleet_size(r))};\n"
             f"        part :>> wheel : {self.wheels[r['wheel_class']]};\n"
             f"        part :>> tracker : {self.trackers[r['st_grade']]};\n"
             f"        part :>> controller {{ :>> Kp default = {num(r['Kp'])};"
@@ -529,7 +555,8 @@ class CubesatOracle:
         }
 
     def _analyse(self, loaded, symbol: str, measured: dict) -> dict:
-        """Nine attributes by name: eight from the model's analysis, the settling time measured.
+        """Eleven attributes by name: eight from the slew analysis, the unit cost and the fleet
+        cost from their own analyses, the settling time measured.
 
         The settling time is measured, not computed; the analysis neither receives nor returns
         it, and it enters the row unchanged.
@@ -550,6 +577,9 @@ class CubesatOracle:
                 _COMPUTED_NAMES, _COMPUTED_UNITS, out.outputs["attributes"], strict=True
             )
         }
+        for name, analysis in _COST_ANALYSES.items():
+            cost = loaded.run_analysis(f"{PACKAGE}::{analysis}", subject=symbol)
+            computed[name] = _quantity_value(loaded, cost.outputs["attributes"], None)
         return {"settling_time_s": measured["settling_time"], **computed}
 
     def _one(self, loaded, symbol: str, checker: FeasibilityChecker) -> dict:
@@ -595,6 +625,8 @@ class CubesatOracle:
     def evaluate(self, designs: pd.DataFrame) -> pd.DataFrame:
         """The designs, the measured and the scenario columns; rows in ``design_id`` order."""
         ordered = designs.sort_values("design_id").reset_index(drop=True)
+        if "fleet_size" not in ordered:  # designs made before the fleet size: fleets of one
+            ordered["fleet_size"] = float(DEFAULT_FLEET_SIZE)
         rows = [r.to_dict() for _, r in ordered.iterrows()]
         for r in rows:
             self.validate(r)
@@ -673,6 +705,7 @@ def build_sampler(experiment, root: Path | None = None) -> LogUniformSampler:
     return LogUniformSampler(
         {"wheel_class": oracle.wheel_classes, "st_grade": oracle.tracker_grades},
         {k: oracle.ranges[k] for k in ("panel_span_m", "battery_wh", "Kp", "Kd")},
+        integer_ranges={"fleet_size": oracle.ranges["fleet_size"]},
     )
 
 
