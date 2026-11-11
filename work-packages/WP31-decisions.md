@@ -6,7 +6,7 @@ The supervisor's words are quoted verbatim where they bind; the driver's calls a
 
 The supervisor, 2026-11-10, verbatim in `driver-log.md` ("Choosing K in the documentation").
 
-## Stage (2), the driver (2026-11-11; readout `WP31-readout.md` at 8386f44, 18c258c)
+## Stage (2), the driver (2026-11-10, 23:30; readout `WP31-readout.md` at 8386f44, 18c258c)
 
 - **Placement A: a new user-guide page "Choosing K"**, between Fitting and Tensions, by a contract amendment adding it
   to `docs.pages`; the fitting page's "Choosing K, the temperature and the band" section shrinks to a pointer (net

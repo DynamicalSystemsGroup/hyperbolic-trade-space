@@ -182,7 +182,7 @@ Implementer's record, one entry per unit. Worktree `wp28close` from origin/dev 0
   `scripts/check_vocabulary.py --baseline scripts/vocabulary_baseline.toml`: 0 new violations. The container
   regression and the exact-equality re-pinning are the gate's.
 
-## Round 3's placement question and two small calls (2026-11-11, the driver)
+## Round 3's placement question and two small calls (2026-11-10, 23:30, the driver)
 
 - **S8 at depth B (a):** the main-results list (`sec-decision-3`) closes with one clause carrying S8's second item (no
   priority claimed; not a replacement for PCA or Pareto analysis): five of six skim readers missed it in round 3, and

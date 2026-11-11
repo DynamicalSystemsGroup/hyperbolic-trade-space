@@ -7,7 +7,7 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
-- **For the morning (2026-11-11, 00:05):** a glance at the two noise results chosen from the Track A readout (A3: L6
+- **For the morning (2026-11-10, 23:05):** a glance at the two noise results chosen from the Track A readout (A3: L6
   with a noise covariance and the conditioning as the map from measurement error to the noise the fit sees, with a
   cubesat injection table; A1: a two-regime upper bound on the noise shift of the soft maximum) before they are placed
   in the paper; the scripts and tests are being built meanwhile. Readout: the Track A spike's README (its folder moves
@@ -222,7 +222,7 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
-- **Track A stage (2), the noise result (2026-11-11, 00:05; readout 9002bbe).** Option 2: build A3 and A1. A3: L6 with a
+- **Track A stage (2), the noise result (2026-11-10, 23:05; readout 9002bbe).** Option 2: build A3 and A1. A3: L6 with a
   noise covariance (the same moment-generating-function route; a diagonal covariance gives the shift tau sum_j w_j^2
   sigma_j^2 / 2) and the conditioning as the map from a relative measurement error on an attribute to the noise the fit
   sees (sigma_j = delta_j / s_j under log-affine conditioning, A4), with the cubesat injection table (both regimes; the
@@ -571,6 +571,7 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
 | 2026-11-10 | commit af9ffea, this Mac (WP28 X-1, X-2 by the docs stream; X-3 by the driver at 712a59f; the paper's held unit dbb18e3) | diffs read: each cut net negative, budgets lowered in the same commit with the reason, the X-1 test member cites the approval, the four register rows gone; the paper unit's two sentences read against L15.17 to L15.22 and L3.9 (+40 words, raise rows); tests/test_site.py, test_docs.py, test_paper.py, test_claims_register.py 258 passed, 4 skipped; ruff clean; the watcher green on d803daf (2203 passed) | a verdict: the executed cuts hold; the driver's own browser look at the two docs pages is at WP28's acceptance on the staged site; Linux dispatched on af9ffea |
 | 2026-11-10 | commit af9ffea, CI run on ubuntu, three shards (WP28's cuts, the held paper unit, the maths unit, the centring clause) | fast, slow and docs-paper all green | a verdict: the WP28 execution head is green on Linux; the watcher green on dbb18e3 (2203 passed) |
 | 2026-11-10 | commit a2a0f14, this Mac (WP28 S-3: Figure 9 to a pointer, the first [[cut]] rows; S-10: D.12's explanation) | diffs read (the pointer to D.4, the caption gloss gone, the cut rows with authority, F.4 regenerated; D.12's three parts with register rows); tests/test_paper.py, test_claims_register.py, test_paper_static_figures.py 171 passed, 4 skipped; attribution 0; ruff: 24 errors and 4 unformatted files, all in work-packages/WP23-rounds/spikes/spike-E-noise/*.py (the noise spike's scratch scripts, untracked or just landed), none in the two units | a verdict: S-3 and S-10 hold; the lint findings are routed to the PM (the spike's scripts pass ruff and format or live outside the lint path); Linux dispatched on a2a0f14 |
+| 2026-11-10 | commit 18c258c, CI run on ubuntu, three shards (WP28's S-3, S-10, the CR-37 loose ends, the lint fix, the scopes and readouts) | fast, slow and docs-paper all green | a verdict: WP28's review head is green on Linux; the watcher's d6e0f1b row shows the pre-fix lint state (2205 passed, ruff and format failing on the spike's scripts), fixed at a2d25f9; Linux dispatched on 39582fe (WP31's page, contract version 17) |
 
 ## Overruled or corrected (kept so the pattern is visible)
 

@@ -2,7 +2,7 @@
 
 Approvals and acceptances are the driver's under the mandate; the supervisor's words are quoted verbatim where they bind.
 
-## Scope gate (2026-11-11; scope `WP30-scope-of-work.md` at 747a45e; Track B, the model revision with one data gate)
+## Scope gate (2026-11-10, 23:20; scope `WP30-scope-of-work.md` at 747a45e; Track B, the model revision with one data gate)
 
 Origin: the supervisor on Figure 3 and on H-2 (`WP28-decisions.md` S-2; `WP27-decisions.md` "H-2"; his "Confirm" of
 the changed baseline conclusion in spike C's `decisions.md`). Stage (2) taken by the driver on both readouts (spike C's

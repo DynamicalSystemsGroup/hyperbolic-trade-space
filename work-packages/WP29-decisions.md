@@ -2,7 +2,7 @@
 
 Approvals and acceptances are the driver's under the mandate; the supervisor's words are quoted verbatim where they bind.
 
-## Scope gate (2026-11-11; scope `WP29-scope-of-work.md` at 35668e5; Track A, the noise result)
+## Scope gate (2026-11-10, 23:20; scope `WP29-scope-of-work.md` at 35668e5; Track A, the noise result)
 
 Origin: the supervisor on Proposition 2 (`WP28-decisions.md`, S-9, verbatim there). Stage (2) taken by the driver
 (`driver-log.md`, "Track A stage (2)"): build A3 and A1.
