@@ -494,7 +494,9 @@ def test_import_is_fast_and_pure(tmp_path):
         env={"PYTHONPATH": str(here), "PATH": "", "SYSTEMROOT": ""},
     )  # fmt: skip
     dt, sk, kt, nfiles = out.stdout.split()
-    assert float(dt) < 2.0
+    # A cold subprocess with an empty PATH starts slower on Windows (2.4 s observed on the runner).
+    limit = 5.0 if sys.platform == "win32" else 2.0
+    assert float(dt) < limit
     assert (sk, kt) == ("False", "False") and nfiles == "0"
 
 
