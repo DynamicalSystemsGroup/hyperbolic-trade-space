@@ -81,3 +81,14 @@ panels, so it holds for any fit, with a test on a planted case that has a thin t
 signature change); the paper's and the docs' renders regenerate from the same function; a cold read of the redrawn
 figure image first, then the caption says what an empty panel means. It lands before the WP30 regeneration so the
 regenerated figure inherits it; the thin term after the regeneration is whatever the data give.
+
+## The n-lemma schematic (Figure 1) (2026-11-11, 12:40; the supervisor, verbatim, on the head's figure)
+
+"this image feel overly complex. i don't think you ned the extra circle denoting planted data. the colored circles
+with the explanation of each terms exponent vector suffices"
+
+**Disposition (the assistant):** a negative edit to `fig-nlemma`: the planted rings and their legend entry go; the
+three coloured markers with the key (each term's n-lemma and exponent vector) carry the figure; the caption loses its
+recovery clause, and the recovery statement, where the paper needs it, stays in the text that cites the planted
+check (Section 9 and Appendix D) rather than in the schematic. Cold read of the redrawn image first; the ledger
+records the caption's removal.
