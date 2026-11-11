@@ -101,3 +101,7 @@ and `compare.py`'s default output name, which the regenerating test now uses wit
 passes on this Mac (28 passed); the Linux run on 1d9fae1 is dispatched and the watcher's verdict follows. The
 remaining 61 hold rows are the fourth instance's inventory." The driver notes for the next instance: OD2's sizing
 missed a reader because `cmp.REPORT` is a constant, not a path; the inventory's grep now lists constant names too.
+
+## Instance 4: the gate (scope `WP25-4-scope-of-work.md` at 325e2e3)
+
+**Approved by the driver (relayed in the seventh PM's handover, PM-BRIEF.md, 2026-11-10 night; the driver's own words are in his session record):** OD1 (a), OD2 (b), OD3 (b). T-11's two files were already deleted at 9216154. The instance runs after WP28's acceptance: rows T-1 to T-10 by their blast radii, executed by units, reviewed by a reviewer that runs the checks. The driver's acceptance, when given, is quoted here verbatim.

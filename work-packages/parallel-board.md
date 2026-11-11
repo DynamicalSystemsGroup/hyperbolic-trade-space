@@ -194,3 +194,17 @@ Worktrees alive: `wp27model` (the modeller's, idle), `stage`. Docker: hts-paper 
 
 Worktrees alive: `wp27model` (idle, tab-23), `stage` (af9ffea, port 8791), `wp28review`, `wp28review-start`, `fig-trilemma`.
 
+
+## Eighth PM (2026-11-10, night; Sonnet; every agent's model named at dispatch)
+
+| Unit | State | Model |
+|---|---|---|
+| WP28 S-3 (Figure 9 to a pointer; [[cut]] ledger rows), S-10 D.12, CR-37 loose ends | a74579c, a2a0f14, d6e0f1b (paper test slice 163 passed, 4 skipped; host re-execution; D.4 compared with the removed figure) | Sonnet |
+| WP28 S-10 docs paragraph (docs/user-guide/termination.md, budget 600 to 714) | 5260d7f | Sonnet |
+| Lint defect of 9002bbe; spike E moved to WP23-rounds/spikes/spike-E-noise | a2d25f9 (ruff check and format clean; scripts' outputs identical) | Haiku |
+| Track A spike E | 9002bbe; scope WP29 35668e5 (for the driver) | Sonnet |
+| Track B spike D (economics) | 807ce82, abd1df2; scope WP30 747a45e (for the driver) | Sonnet |
+| WP31 Choosing K, stage 1 readout | 8386f44, 18c258c | Sonnet |
+| Figure loop (search stage, then cold reads) | e6d0e4e candidate; search running | Sonnet |
+| WP28 acceptance review at the final head | resumed (agent ab43496ec9ac4ebc5) | Sonnet |
+| WP25-4, WP8b Amendment 1 | after WP28's acceptance | |
