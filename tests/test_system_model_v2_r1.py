@@ -161,13 +161,27 @@ def test_numeric_literals_added_are_the_recorded_measurement_and_the_launch_rate
     (WP22 round 2; its measured slew time left with the slew time, WP23 G5) and the illustrative
     launch rate (WP23 G2, labelled like the model's other constants), and the supervisor's four
     thresholds (the WP23 close-out, ``WP23-decisions.md``, "The four thresholds"): 0.008495
-    degree, 0.05922 N.m.s, 2.6 W and 90,643 USD, each with its doc in ``budgets``;
+    degree, 0.05922 N.m.s, 2.6 W and the launch budget (90,643 USD, restated at WP30 as 105,770
+    USD at 7,000 USD/kg), each with its doc in ``budgets``;
     ``test_system_model_v2.py`` reads them through the toolkit.
     """
     number = re.compile(r"(?<![\w.])\d+(?:\.\d+)?(?:[eE][-+]?\d+)?")
     added = set(number.findall(_code(TEXT))) - WP15_LITERALS
-    assert added == {"0.009490621914197469", "6000.0", "0.008495", "0.05922", "2.6", "90643.0"}
-    assert "launchRate : Real = 6000.0" in _code(TEXT)
+    # WP30 (the cost model, spike D; WP30-decisions.md, OD1 (a)): the launch rate is 7000 USD/kg
+    # (D-1) and the launch budget restated at the same mass, 105,770 USD (OD4 (a), pending the
+    # supervisor's confirmation); the single-unit prices (E-1: 60,000 bus, 15,000 antenna, 5,000
+    # IMU and tracker base, 250,000 panels, 150 battery, 8,000 wheel base, 2.0e6 wheel torque,
+    # 150,000 tracker fineness, 100,000 assembly); the fixed shares and learning slopes of the
+    # pricing curves (0.10 to 0.50 and 0.90, 0.95); ln 2; and the two cost limits, placeholders
+    # until the supervisor's values (450,000 and 3.0e6 USD). Each has its doc in the model.
+    wp30 = {
+        *("7000.0", "105770.0", "60000.0", "15000.0", "5000.0", "250000.0", "150.0", "8000.0"),
+        *("2.0e6", "150000.0", "100000.0", "0.10", "0.20", "0.30", "0.50", "0.95"),
+        *("0.6931471805599453", "450000.0", "3.0e6"),
+    }
+    assert added - wp30 == {"0.009490621914197469", "0.008495", "0.05922", "2.6"}
+    assert added >= wp30
+    assert "launchRate : Real = 7000.0" in _code(TEXT)
     assert "133.6904772571943" not in added  # the baseline's slew time, gone with slewTime
 
 
@@ -446,21 +460,24 @@ def test_the_analysis_box_names_what_needs_no_slew_and_the_caption_is_the_commit
     """Disposition B: the analysis box names what the analysis returns and what needs no slew."""
     _, behaviour, facts = _views(project, TEXT, tmp_path, reasons=True)
     box = next(x for x in behaviour.splitlines() if "as xAnalysis" in x)
-    assert "returns 8 of 9" in box and "pointing error" in box and "total mass" in box
+    assert "returns 8 of 11" in box and "pointing error" in box and "total mass" in box
+    # WP30: the unit cost and the fleet cost have an analysis each, named in the box
+    assert "An analysis each" in box and "unit cost and\\nfleet cost" in box
     # the control effort and the settling time come from the measurement (disposition G3-P2-6)
     assert "control effort\\n(passed on)" in box and "settling time\\n(not returned)" in box
     cap = facts["caption"]
     assert (
-        "returns 8 of the 9" in cap[0] and "settling time is read from `SlewMeasurement`" in cap[0]
+        "returns 8 of the 11" in cap[0] and "settling time is read from `SlewMeasurement`" in cap[0]
     )
     assert "ConfigurationVerification" in cap[1] and "SlewVerification" in cap[1]
-    assert "coverage.md" in cap[2] and "2 requirements that read no traded metric" in cap[2]
+    assert "unit cost and the fleet cost are computed from the configuration alone" in cap[2]
+    assert "coverage.md" in cap[3] and "2 requirements that read no traded metric" in cap[3]
     # WP30, D-2 (a): one bullet per requirement in the box, the reason computed (coverage.py)
-    assert cap[3].startswith("`BatteryPeakPowerRequirement` holds at every in-range")
-    assert cap[4].startswith("`PowerRequirement` holds at every in-range")
-    assert "coverage.md" in cap[5]  # the bullet on what is not drawn
+    assert cap[4].startswith("`BatteryPeakPowerRequirement` holds at every in-range")
+    assert cap[5].startswith("`PowerRequirement` holds at every in-range")
+    assert "coverage.md" in cap[6]  # the bullet on what is not drawn
     # revision 9 (the WP23 close-out): the negated satisfy is drawn and named, not read as satisfied
-    assert "`cubesatBaseline` satisfies every requirement but `PointingErrorRequirement`" in cap[6]
+    assert "`cubesatBaseline` satisfies every requirement but `PointingErrorRequirement`" in cap[7]
     assert facts["fails"][f"{P}__PointingErrorRequirement"] == {"cubesatBaseline"}
     box = next(x for x in behaviour.splitlines() if "**PointingErrorRequirement**" in x)
     assert "not satisfied by cubesatBaseline" in box
@@ -485,7 +502,9 @@ def test_the_legend_names_every_colour_and_line_kind_and_the_type_has_a_floor(pr
         assert kind in legend, kind
     assert project.RELATION_COLOUR in legend and project.SOURCE_COLOUR in legend
     assert "A metric marked MoE is a measure of effectiveness" in "".join(facts["caption"])
-    assert "pointing error and the launch cost" in "".join(facts["caption"])
+    assert "the pointing error, the unit cost, the fleet cost and the launch cost" in "".join(
+        facts["caption"]
+    )
     svg = (VIEWS / "behavioural_view.svg").read_text(encoding="utf-8")
     sizes = [float(s) for s in re.findall(r'font-size="([0-9.]+)"', svg)]
     assert min(sizes) >= 12.5, min(sizes)

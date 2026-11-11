@@ -185,8 +185,13 @@ def _subset(pool, predicate, n):
 # eclipse peak load, verified in the slew case: the pin is the model adopted at the data gate. The
 # close-out (WP23-closeout-scope-of-work.md, D-11) removed EclipseReserveRequirement (the
 # depth-of-discharge requirement restated) and states that the baseline configuration fails the
-# pointing-error requirement at the supervisor's 0.0085 degree (a negated ``satisfy``).
+# pointing-error requirement at the supervisor's 0.0085 degree (a negated ``satisfy``). WP30 stage 3b
+# (OD1 (a): eleven traded metrics) added UnitCostRequirement and FleetCostRequirement, each
+# satisfied by the baseline and verified before the slew (the configuration decides them), with
+# placeholder limits until the supervisor's values.
 METRIC_REQUIREMENTS = {
+    "UnitCostRequirement",
+    "FleetCostRequirement",
     "PowerMarginRequirement",
     "EnergyBalanceRequirement",
     "PointingErrorRequirement",
@@ -202,13 +207,15 @@ _FLAG_DEFS = set(fz.FLAG_REQUIREMENTS.values())
 SLEW_BAND = "SlewBandRequirement"
 REQUIREMENTS = {
     "defs": _FLAG_DEFS | METRIC_REQUIREMENTS,
-    "satisfy": 11,
+    "satisfy": 13,
     "not satisfied by the baseline": {"PointingErrorRequirement"},
     "verified": {
         "ConfigurationVerification": {
             "PowerRequirement",
             "PointingErrorRequirement",
             "LaunchBudgetRequirement",
+            "UnitCostRequirement",
+            "FleetCostRequirement",
         },
         "SlewVerification": {
             "SettledRequirement",
@@ -255,7 +262,7 @@ def test_verification_defs_name_the_requirements_they_verify(v2):
 
 def test_satisfy_statements_hold_on_the_baseline(v2):
     """R-4: one `satisfy` statement per requirement ties it to the baseline (eleven since the WP23
-    close-out); all hold (engine run). The pointing-error one is negated, ``not satisfy``: the
+    close-out, thirteen with the two cost requirements of WP30); all hold (engine run). The pointing-error one is negated, ``not satisfy``: the
     model states that the baseline configuration fails that requirement (0.0155 against 0.0085
     degree), and the engine finds the statement true."""
     verdicts = v2.model.verify_satisfaction()

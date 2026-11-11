@@ -73,12 +73,18 @@ package CubesatViews {
         expose CubesatTradeSpaceV2::*;
     }
     view metricCarriers : GeneralView {
-        doc /* Where the nine traded metrics live, each marked MoE or MoP in the doc of its
+        doc /* Where the eleven traded metrics live, each marked MoE or MoP in the doc of its
                element: the configuration's own accounting (total mass, with the launch cost its
-               MoE), the measured slew (settling time, control effort), and the thresholds the
-               requirements read them against. */
+               MoE), the measured slew (settling time, control effort), the cost model (the unit
+               cost and the fleet cost, with the prices and the pricing curves they are computed
+               from), and the thresholds the requirements read them against. */
         expose CubesatTradeSpaceV2::Cubesat::totalMass;
         expose CubesatTradeSpaceV2::Cubesat::launchCost;
+        expose CubesatTradeSpaceV2::Cubesat::fleetSize;
+        expose CubesatTradeSpaceV2::UnitCost;
+        expose CubesatTradeSpaceV2::FleetCost;
+        expose CubesatTradeSpaceV2::prices;
+        expose CubesatTradeSpaceV2::pricing;
         expose CubesatTradeSpaceV2::SlewMeasurement;
         expose CubesatTradeSpaceV2::SlewMeasurement::*;
         expose CubesatTradeSpaceV2::Budgets;

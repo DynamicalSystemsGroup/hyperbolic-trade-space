@@ -8,8 +8,9 @@
  *   2. their needs     concerns framing the cubesat, each held by its stakeholder and decomposed into
  *                      the engineers' requirements of cubesat.sysml that serve it; the verdict of
  *                      each named configuration on each of those requirements, engine-checked
- *   3. roll-ups        the sponsor's measures derived from the engineers': the launch cost (in the
- *                      model), and two ILLUSTRATIVE roll-ups, cost to build and effective life
+ *   3. roll-ups        the sponsor's measures derived from the engineers': the launch cost, the
+ *                      unit cost and the fleet cost (in the model, WP30), and two ILLUSTRATIVE
+ *                      roll-ups, cost to build and effective life
  *   4. evidence        verification cases that verify the concerns' requirements and point at where
  *                      the evidence is logged and the environment that produced it
  *
@@ -53,12 +54,16 @@ package CubesatStakeholders {
     }
 
     concern lowCost : PriceConcern {
-        doc /* The cubesat costs little to build and to launch. The launch cost (the MoE on the
-               total mass) is bounded by the launch budget requirement; the cost to build is an
-               illustrative roll-up with no requirement on it (section 3). */
+        doc /* The cubesat costs little to build and to launch, alone and as a fleet. The launch
+               cost (the MoE on the total mass) is bounded by the launch budget requirement; the
+               unit cost and the fleet cost (the two traded cost metrics of the cost model, WP30)
+               by a requirement each, with placeholder limits until the supervisor's values; the
+               cost to build is an illustrative roll-up with no requirement on it (section 3). */
         subject :>> c;
         stakeholder :>> s = sponsor;
         requirement launchBudget : LaunchBudgetRequirement;
+        requirement unitCost : UnitCostRequirement;
+        requirement fleetCost : FleetCostRequirement;
     }
     concern longLife : PriceConcern {
         doc /* The cubesat serves long. The battery's cycle life falls as its eclipse depth of
@@ -98,6 +103,8 @@ package CubesatStakeholders {
     // of cubesat.sysml): the baseline fails the pointing-error requirement (0.0155 against 0.0085
     // degree), so the operator's pointing concern is not met by it.
     satisfy lowCost.launchBudget by cubesatBaseline;
+    satisfy lowCost.unitCost by cubesatBaseline;
+    satisfy lowCost.fleetCost by cubesatBaseline;
     satisfy longLife.depthOfDischarge by cubesatBaseline;
     not satisfy pointingAndSlewing.pointingError by cubesatBaseline;
     satisfy pointingAndSlewing.settled by cubesatBaseline;
@@ -114,7 +121,9 @@ package CubesatStakeholders {
     // configuration's own slew (the engine checks each statement). A requirement that reads a
     // measured quantity has the baseline's measurement as its default, so each such statement
     // binds the `in` parameter to the configuration's recorded measurement below. The agile
-    // configuration fails the launch budget (93,960 against 90,643 USD), the control effort
+    // configuration fails the launch budget (109,620 against 105,770 USD), the unit cost (610,620
+    // USD per satellite against the placeholder limit of 450,000: a verdict that stays until the
+    // supervisor's value replaces the placeholder), the control effort
     // (0.112 against 0.059 N.m.s) and the peak slew power (7.4 against 2.6 W): the sponsor's low
     // cost and two of the operator's requirements. The compact configuration fails the pointing
     // error (0.008533 against 0.008495 degree), the operator's pointing concern.
@@ -137,6 +146,8 @@ package CubesatStakeholders {
         :>> torqueSquaredIntegral = 5.839661452972206e-06;
     }
     not satisfy lowCost.launchBudget by cubesatAgile;
+    not satisfy lowCost.unitCost by cubesatAgile;
+    satisfy lowCost.fleetCost by cubesatAgile;
     satisfy longLife.depthOfDischarge by cubesatAgile {
         in torqueSquaredIntegral = agileMeasurement.torqueSquaredIntegral;
     }
@@ -167,6 +178,8 @@ package CubesatStakeholders {
         in torqueSquaredIntegral = agileMeasurement.torqueSquaredIntegral;
     }
     satisfy lowCost.launchBudget by cubesatCompact;
+    satisfy lowCost.unitCost by cubesatCompact;
+    satisfy lowCost.fleetCost by cubesatCompact;
     satisfy longLife.depthOfDischarge by cubesatCompact {
         in torqueSquaredIntegral = compactMeasurement.torqueSquaredIntegral;
     }
@@ -200,38 +213,14 @@ package CubesatStakeholders {
     // ==========================================================================================
     // 3. ROLL-UPS: the sponsor's measures from the engineers' (illustrative, read by no output)
     // ==========================================================================================
-    part def UnitCosts {
-        doc /* Illustrative unit costs (USD), chosen for plausibility at cubesat scale and never
-               cited or calibrated: a bus 60,000; solar panels 150,000 per square metre of panel;
-               a battery 50 per watt-hour; an antenna 15,000; an IMU 5,000; a reaction wheel 8,000
-               plus 2,000,000 per N.m of peak torque (three wheels); a star tracker 5,000 plus
-               300,000 arcsec over its accuracy. */
-        attribute bus : Real = 60000.0;
-        attribute panelPerArea : Real = 150000.0;        // USD/m^2
-        attribute batteryPerEnergy : Real = 50.0;        // USD/(W.h)
-        attribute antenna : Real = 15000.0;
-        attribute imu : Real = 5000.0;
-        attribute wheelBase : Real = 8000.0;
-        attribute wheelPerTorque : Real = 2.0e6;         // USD/(N.m)
-        attribute trackerBase : Real = 5000.0;
-        attribute trackerPerFineness : Real = 300000.0;  // USD.arcsec
-    }
-    part unitCosts : UnitCosts;
-
     calc def CostToBuild {
-        doc /* Illustrative roll-up for the sponsor's low cost: the sum of the unit costs of the
-               configuration's parts (USD). It rolls up the parts the configuration swaps (wheel,
-               tracker) and tunes (panel span, battery capacity); it is not a traded metric and no
-               requirement reads it. */
+        doc /* Illustrative roll-up for the sponsor's low cost: the cost to build one satellite of
+               the configuration's fleet (USD), the parts and the assembly line of the cost model
+               (cubesat.sysml, section 3, WP30) over the fleet size, without the launch. It is not
+               a traded metric and no requirement reads it: the traded cost metrics add the launch
+               (the unit cost, the fleet cost). */
         in c : Cubesat;
-        return : Real = unitCosts.bus
-            + unitCosts.panelPerArea * ((c.panelPlus.area + c.panelMinus.area) / 1.0 [m**2])
-            + unitCosts.batteryPerEnergy * (c.battery.capacity / 1.0 [W*h])
-            + unitCosts.antenna + unitCosts.imu
-            + c.wheelCount * (unitCosts.wheelBase
-                + unitCosts.wheelPerTorque * (c.wheel.maxTorque / 1.0 [N*m]))
-            + unitCosts.trackerBase
-            + unitCosts.trackerPerFineness / (c.tracker.accuracy / 1.0 [SI::arcsec]);
+        return : Real = FleetBuildCost(c) / c.fleetSize;
     }
 
     part def BatteryLife {
@@ -274,12 +263,15 @@ package CubesatStakeholders {
 
     verification configurationEvidence : EvidenceCase {
         doc /* What the configuration alone decides (as ConfigurationVerification): the launch
-               budget, the pointing error and the power requirement, each as its concern holds it.
+               budget, the unit cost and the fleet cost, the pointing error and the power
+               requirement, each as its concern holds it.
                Evidence: the primary dataset's verdicts, computed by the model's requirements in the
                oracle; the current entry is the close-out gate's container regression, which
                re-pinned the outputs in hts-paper. */
         objective {
             verify lowCost.launchBudget;
+            verify lowCost.unitCost;
+            verify lowCost.fleetCost;
             verify pointingAndSlewing.pointingError;
             verify powerAndEnergy.power;
         }
