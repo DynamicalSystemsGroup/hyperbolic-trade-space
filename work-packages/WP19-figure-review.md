@@ -1901,3 +1901,19 @@ Three points, from the fresh cold read (`WP19-cold-reads-s5b/reader3.md`); the h
 Shows / Does not show (A and B): as in the redraw iteration, plus: a design's position is its scaled shares, and the marker of a term is where that term's V peaks. Still does not
 show that the designs fall in groups, the values of V on the lines, or the cause of the split. Not addressed by decision: the ring-and-dots hill reading, the tints, the dot sizes,
 A's open bands in the blue region, the dashed line exiting at the corner.
+
+### S-5 round closed: the choice for the morning (ninth PM)
+
+Fresh cold read of the final images (reader 4, image first), verbatim in `work-packages/WP19-cold-reads-s5b/reader4.md`. The reader's rank for "regions with
+different leading trade-offs": A-light, A-dark, planted Figure 6, B-light, one-region figure. Files are under `docs/superpowers/notes/figure-candidates/`
+unless stated.
+
+| Figure | File | The reader's sentence | Main defects named |
+|---|---|---|---|
+| Redrawn A (pointing error / total mass / control effort, K = 2) | `ternary-cubesat-textured-A-{light,dark}.png` | "there are two regions, and in each the leading trade-off is between a different pair of metrics" | the key does not say the tints are where one term leads, nor what term, V, exponent vector are; the callouts state trade-offs the plot shows only through the peaks; contours kink at the dashed line; dots hide the dashed line near the top; dark: the two tints are close in lightness |
+| One-region figure (settling time / pointing error / total mass) | `ternary-cubesat-trilemma-{light,dark}.png` | "one balanced optimum in the middle"; "it shows no regions" | no key; the in-plot label is cut off by the marker |
+| Planted Figure 6 | `docs/generated/figures/ternary-planted-{light,dark}.png` | "the space divides into three regions, each with a different trade-off pair"; "reads as synthetic" | no key; generic metric names; callouts over the data; a clipped marker |
+| Alternative B (settling time / control effort / depth of discharge, K = 2) | `ternary-cubesat-textured-B-{light,dark}.png` | "a large region where settling time trades against control effort and a small region near the depth-of-discharge corner where that one metric dominates" | the second region is a sliver and "alone" is not a trade-off; the star sits on the corner vertex, half on the frame (its exponent vector is about 0.94 depth of discharge: the position is the datum) |
+
+Not addressed, by the supervisor's rule against over-tuning: the hill reading, the tints, the dot sizes. Candidate C is dropped (each of its regions is a
+single-metric term).
