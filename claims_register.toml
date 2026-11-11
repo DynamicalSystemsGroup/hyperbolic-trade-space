@@ -4759,7 +4759,7 @@ note = "Proposer.draw computes the reach as the REACH_QUANTILE (0.02) quantile o
 
 [[claim]]
 id = "C392"
-fragment = "A term with fewer than ten near-frontier designs has no map; a sentence in its place says so"
+fragment = "A term with fewer than ten near-frontier designs is drawn without cells, and a line in its panel gives the count"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "R"
@@ -4767,11 +4767,12 @@ backing = [
   "gen:examples/adcs/case.py::tension_figure",
   "func:examples/adcs/case.py::has_reading",
   "test:tests/test_case.py::test_thin_term_is_reported_from_the_estimator_and_gets_its_reason",
+  "test:tests/test_plotting.py::test_tensions_thin_term_is_drawn_with_empty_cells_and_its_count",
 ]
 status = "backed"
 disposition = "keep"
 source = "swap-evidence part 5 item 2 (the per-term rule); part 6, finding 7"
-note = "MIN_NEAR_FRONTIER = 10 is applied per term (has_reading); tension_figure draws a map only for a term that meets it and sets the thin term's title and reason above the next map; the test finds '3 of ten' among the figure's texts"
+note = "MIN_NEAR_FRONTIER = 10 is applied per term (has_reading); tension_figure draws every term through plot_tensions, which leaves the cells of a term below ten near-frontier designs empty and writes '3 near-frontier designs; no association reading' in its panel (supervisor, WP19-decisions.md, the missing term); the tests find that line, the empty cells, and the title, labels and outline kept"
 
 [[claim]]
 id = "C393"

@@ -128,8 +128,8 @@ def _thin_terms(ft) -> str:
         if int(n) < case.MIN_NEAR_FRONTIER:
             reason = case.thin_reason(n)
             out += (
-                f"\n\nTerm {int(label)}: {reason}; its row above is the fit's, and it has no "
-                "association map."
+                f"\n\nTerm {int(label)}: {reason}; its row above is the fit's, and its "
+                "association cells are empty."
             )
     return out
 

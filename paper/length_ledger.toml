@@ -1036,3 +1036,10 @@ section = "Case analysis"
 words_added = 151
 job = "the two-panel ternary figure of the cubesat in the paper (WP28-decisions.md, S-5 and the assistant's call on the two-panel figure): the citing paragraph, the caption (one sentence) and the Shows line; the supervisor, S-5: 'the real data one belongs in the paper and in the documentation', and, adding the fourth plot: 'and actually use the 4th plot too place 1 and 4 side by side to show multiple active trade-offs'"
 reader = "the reader of Case analysis who has read the elasticity and wants to see two different pairs of metrics trading in two regions each, three metrics at a time, from the real data"
+
+[[raise]]
+date = "2026-11-11"
+section = "Case analysis"
+words_added = 11
+job = "Figure 5's caption says what an empty panel means (the supervisor's 'leaving the first term off the picture feels wrong to me', WP19-decisions.md): the sentence 'has no map; a sentence in its place says so' (17 words) becomes 'is drawn without cells, and a line in its panel gives the count: too few designs for a correlation' (28 words); the panel of the term with too few near-frontier designs is now drawn like the others"
+reader = "the reader of Figure 5 who sees a panel with a title, metrics and outlines but no colours"

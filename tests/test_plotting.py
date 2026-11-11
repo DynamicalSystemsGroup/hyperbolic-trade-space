@@ -481,3 +481,48 @@ def test_ternary_marker_values_needs_three_metrics():
     ts = HyperbolicTradeSpace(n_terms=2, temperature=30.0, random_state=0).fit(X)
     with pytest.raises(ValueError, match="3 metrics"):
         P.ternary_marker_values(ts, X)
+
+
+def _planted_k3_reports(band):
+    from hyperbolic_trade_space import tension_report
+
+    W = [[0.5, 0.5, 0, 0], [0, 0.5, 0.5, 0], [0, 0, 0.5, 0.5]]
+    X, _ = make_frontier_data(900, 4, exponents=W, n_terms=3, random_state=0)
+    est = HyperbolicTradeSpace(n_terms=3, temperature=20.0, random_state=0).fit(X)
+    return tension_report(est, X, band=band, min_near_frontier=0)
+
+
+def test_tensions_thin_term_is_drawn_with_empty_cells_and_its_count():
+    """A term with too few near-frontier designs keeps its panel and has empty cells."""
+    reps = _planted_k3_reports(band=0.03)
+    counts = [r.n_near_frontier for r in reps]
+    assert min(counts) < 10 <= max(counts), counts
+    axs = P.plot_tensions(reps, names=list("abcd"), ax=plt.subplots(1, 3)[1])
+    for rep, ax in zip(reps, axs, strict=True):
+        assert rep.lemma_name in ax.get_title()
+        assert len(ax.patches) == len(np.atleast_1d(rep.contending_set))  # the outline is drawn
+        assert ax.get_xticklabels()[0].get_text().startswith("a\nw=")  # metrics with exponents
+        cells = [t.get_text() for t in ax.texts if re.fullmatch(r"-?\d\.\d\d", t.get_text())]
+        line = [t.get_text() for t in ax.texts if "near-frontier" in t.get_text()]
+        im = ax.get_images()[0]
+        if rep.n_near_frontier < 10:
+            n = rep.n_near_frontier
+            word = "design" if n == 1 else "designs"
+            assert cells == []
+            assert np.ma.getmaskarray(im.get_array()).all()
+            assert line == [f"{n} near-frontier {word};\nno association reading"]
+        else:
+            assert len(cells) == 16 and line == []
+            assert not np.ma.getmaskarray(im.get_array()).any()
+
+
+def test_tensions_a_report_without_a_count_is_drawn_in_full():
+    r = SimpleNamespace(
+        participating=np.array([True, True]),
+        exponents=np.array([0.5, 0.5]),
+        association=np.array([[1, -0.6], [-0.6, 1]]),
+        contending_set=np.array([0, 1]),
+        n_lemma=2,
+    )
+    ax = P.plot_tensions(r)
+    assert sum(bool(re.fullmatch(r"-?\d\.\d\d", t.get_text())) for t in ax.texts) == 4

@@ -927,23 +927,6 @@ def _reports(study, fit, band=None, **kw):
     return reps
 
 
-def term_tension_panels(reps, names, axes, plotting, who="term"):
-    """One association panel per term on ``axes``; a term without the rows gets its reason.
-
-    The panel of a thin term is left empty but for the sentence of :func:`thin_reason`, so the
-    figure keeps one row per term and says why one is not drawn.
-    """
-    for k, (ax, rep) in enumerate(zip(axes, reps, strict=True)):
-        if has_reading(rep):
-            plotting.plot_tensions(rep, names=names, ax=ax)
-            ax.set_title(_member_title(rep, f"{who} {k + 1}"))
-        else:
-            ax.set_axis_off()
-            ax.set_title(_member_title(rep, f"{who} {k + 1}"))
-            ax.text(0.5, 0.5, _wrap(thin_reason(rep.n_near_frontier), 40).capitalize(), ha="center",
-                    va="center", transform=ax.transAxes)  # fmt: skip
-
-
 def _sorted_contending(rep, names):
     order = np.argsort(-rep.contending_exponents)
     return [names[rep.contending_set[i]] for i in order]
@@ -1982,9 +1965,9 @@ def _member_title(rep, who):
 def tension_figure(study, fit, band=None):
     """Association among the near-frontier designs, one map per term.
 
-    A term whose near-frontier rows do not meet the guard (:func:`has_reading`) gets the sentence
-    of :func:`thin_reason` in place of its map, set above the next map (below the last), so it
-    takes the height of its sentence and not of a panel.
+    Every term is drawn. A term whose near-frontier rows do not meet the guard
+    (:func:`has_reading`) keeps its title, labels and contending set, its cells are empty and one
+    line inside the panel gives the count (``plot_tensions``).
 
     Parameters
     ----------
@@ -1999,34 +1982,12 @@ def tension_figure(study, fit, band=None):
     _, _, plotting = _lib()
     plt = _plt()
     reps = _all_terms(study, fit, band)
-    shown = [k for k, r in enumerate(reps) if has_reading(r)]
-    if not shown:  # no map at all: one row per term, each its sentence
-        fig, axes = plt.subplots(len(reps), 1, figsize=(FIGURE_WIDTH_IN, 0.8 * len(reps)),
-                                 squeeze=False)  # fmt: skip
-        term_tension_panels(reps, study.names, axes[:, 0], plotting)
-        fig.tight_layout()
-        return fig
-    fig, axes = plt.subplots(len(shown), 1, figsize=(FIGURE_WIDTH_IN, 6.8 * len(shown)),
+    fig, axes = plt.subplots(len(reps), 1, figsize=(FIGURE_WIDTH_IN, 6.8 * len(reps)),
                              squeeze=False)  # fmt: skip
-    axes = axes[:, 0]
-    for ax, k in zip(axes, shown, strict=True):
-        plotting.plot_tensions(reps[k], names=study.names, ax=ax)
-        ax.set_title(_member_title(reps[k], f"term {k + 1}"))
+    for k, (ax, rep) in enumerate(zip(axes[:, 0], reps, strict=True)):
+        plotting.plot_tensions(rep, names=study.names, ax=ax)
+        ax.set_title(_member_title(rep, f"term {k + 1}"))
         plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
-    for k, rep in enumerate(reps):
-        if has_reading(rep):
-            continue
-        title = _member_title(rep, f"term {k + 1}")
-        note = f"{title}\n{thin_reason(rep.n_near_frontier).capitalize()}"
-        after = [i for i, j in enumerate(shown) if j > k]
-        if after:  # above the next map's title
-            ax = axes[after[0]]
-            ax.annotate(note, (0.5, 1), xycoords="axes fraction", xytext=(0, 30),
-                        textcoords="offset points", ha="center", va="bottom")  # fmt: skip
-        else:  # below the last map's tick labels
-            ax = axes[-1]
-            ax.annotate(note, (0.5, 0), xycoords=ax.xaxis.get_tightbbox, xytext=(0, -12),
-                        textcoords="offset points", ha="center", va="top")  # fmt: skip
     fig.tight_layout()
     return fig
 

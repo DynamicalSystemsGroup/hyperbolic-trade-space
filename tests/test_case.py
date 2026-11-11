@@ -360,8 +360,9 @@ def test_thin_term_is_reported_from_the_estimator_and_gets_its_reason(primary, p
     with pytest.raises(ValueError, match="3 of ten"):
         case._reports(primary, fit, band)
     fig = case.tension_figure(primary, fit, band=band)
-    texts = [t.get_text().lower() for ax in fig.axes for t in ax.texts]
-    assert any("3 of ten" in t.replace("\n", " ") for t in texts)
+    texts = [t.get_text().replace("\n", " ") for ax in fig.axes for t in ax.texts]
+    assert any(t == "3 near-frontier designs; no association reading" for t in texts)
+    assert len(fig.axes) == 6  # every term drawn: three panels, three colour bars
     plt.close(fig)
 
 

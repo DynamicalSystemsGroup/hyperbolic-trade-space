@@ -204,7 +204,7 @@ def k_sweep_sentence(study, fits) -> Md:
 
 
 def terms_sentence(study, fits) -> Md:
-    """Each K = 3 term without an association map, with what the main text relies on for it:
+    """Each K = 3 term without an association reading, with what the main text relies on for it:
     its contending set, its leading exponent and its near-frontier count; then the term shares.
 
     The numbers are D.3's rows (``aligned``), printed to the digits that hold.
@@ -222,13 +222,13 @@ def terms_sentence(study, fits) -> Md:
         w = stable(f"D exponents K=3 | {r} | {lead} | term {k}", two)
         names = [s.strip() for s in str(row._2).split(",")]  # contending set
         parts.append(
-            f"Term {k} has no association map ({near} near-frontier designs of the "
+            f"Term {k} has no association reading ({near} near-frontier designs of the "
             f"{_NUMBER_WORDS[case.MIN_NEAR_FRONTIER]} the reading needs); its contending set is "
             f"{_and(names)}, led by {lead} at {w}."
         )
     shares = _and(stable(f"D terms K=3 | {r} | {int(k)} | share", two) for k in ft["term"])
     terms = _and(int(k) for k in ft["term"])
-    head = " ".join(parts) + " " if parts else "Every term has an association map; "
+    head = " ".join(parts) + " " if parts else "Every term has an association reading; "
     return Md(f"{head}The term shares are {shares} for terms {terms} ({_D3}).")
 
 

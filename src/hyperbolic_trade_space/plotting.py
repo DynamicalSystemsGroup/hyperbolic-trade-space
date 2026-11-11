@@ -452,6 +452,7 @@ def plot_v_by_variable(values, log_v, color=None, band=None, ax=None, label=None
 
 
 _LEMMA_NAMES = {1: "monolemma", 2: "dilemma", 3: "trilemma"}
+_MIN_ASSOCIATION_ROWS = 10  # fewer near-frontier designs than this: the cells are left empty
 
 
 def _annotation_color(rgba):
@@ -482,14 +483,18 @@ def _tension_panel(report, names=None, ax=None):
     Draws the association matrix of the log-metrics (negative: tension, positive: aligned) as a
     heatmap in ``TENSION_CMAP``. Tick labels carry each metric's frontier exponent; metrics that
     do not participate are labelled in grey; the contending set (the metrics that define the
-    ``n``-lemma) is outlined in black on the diagonal.
+    ``n``-lemma) is outlined in black on the diagonal. A report whose ``n_near_frontier`` is
+    below ten (the default guard of ``tension_report``) has too few designs for a correlation:
+    its panel is drawn like the others, with the cells empty (no colour, no number) and the line
+    "N near-frontier designs; no association reading" inside it.
 
     Parameters
     ----------
     report : TensionReport
         From ``hyperbolic_trade_space.tensions.tension_report``. Only these attributes are
         used: ``participating`` (bool per metric), ``exponents`` (per metric), ``association``
-        (``d x d``), ``contending_set`` (metric indices), ``n_lemma`` (int). The principal
+        (``d x d``), ``contending_set`` (metric indices), ``n_lemma`` (int), and, when present,
+        ``n_near_frontier`` (int). The principal
         ``tension_directions`` and ``tension_loadings`` are reported numerically and not drawn.
     names : sequence of str, default=None
         Metric names; default ``m0, m1, ...``.
@@ -517,11 +522,17 @@ def _tension_panel(report, names=None, ax=None):
     part = np.asarray(report.participating, dtype=bool)
     d = A.shape[0]
     names = [f"m{j}" for j in range(d)] if names is None else [str(n) for n in names]
+    n_near = getattr(report, "n_near_frontier", None)
+    thin = n_near is not None and int(n_near) < _MIN_ASSOCIATION_ROWS
+    if thin:
+        A = np.full_like(A, np.nan)
     ax = _axes(ax)
-    im = ax.imshow(A, cmap=TENSION_CMAP, vmin=-1.0, vmax=1.0)
+    im = ax.imshow(np.ma.masked_invalid(A), cmap=TENSION_CMAP, vmin=-1.0, vmax=1.0)
     ax.figure.colorbar(im, ax=ax, label="association (negative = tension)")
     for i in range(d):
         for j in range(d):
+            if not np.isfinite(A[i, j]):
+                continue
             ax.text(
                 j,
                 i,
@@ -542,6 +553,18 @@ def _tension_panel(report, names=None, ax=None):
     for j in np.atleast_1d(report.contending_set):
         ax.add_patch(
             Rectangle((j - 0.5, j - 0.5), 1, 1, fill=False, edgecolor=FRONTIER_COLOR, linewidth=2)
+        )
+    if thin:
+        k = int(n_near)
+        ax.text(  # lower left: clear of the outlines, which sit on the diagonal
+            0.3,
+            0.15,
+            f"{k} near-frontier design{'s' if k != 1 else ''};\nno association reading",
+            ha="center",
+            va="center",
+            transform=ax.transAxes,
+            fontsize=10,
+            bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.9, "pad": 3},
         )
     n = int(report.n_lemma)
     ax.set_title(f"{_LEMMA_NAMES.get(n, f'{n}-lemma')} ({n} metric{'s' if n != 1 else ''} contend)")
