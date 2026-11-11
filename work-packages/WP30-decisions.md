@@ -139,3 +139,14 @@ regime's feasible designs at their own fleet size, and the baseline's own 25-sat
 2026 central prices) clears it. This replaces the assistant's 6,000,000 call, which is withdrawn from the review list's
 first row (his number stands, not a call against it). His note on classes goes into the requirement's coverage text:
 the figure is for this 12U class; a 1U series can sit below 40,000 USD a unit, larger series are dearer.
+
+**Fleet cost limit, final; the supervisor, verbatim (2026-11-11, 10:30):** "i think we use your 6 million as the
+budget per your suggestion but 8 million is full budget accounting for what we didn't scope into this assessment".
+**Values:** the fleet cost requirement on the covered cost is **6,000,000 USD** (the assistant's suggestion, now his
+decision: not a call against his word, so it leaves the review list's first row); the requirement's text states that
+the sponsor's **full fleet budget is 8,000,000 USD**, of which the covered cost (attitude-control, power and structure
+parts, assembly and test, wholesale launch) is held under 6,000,000, the remaining 2,000,000 being the allowance for
+what the assessment does not scope (communications, payload interface, flight software, a fuller test campaign, the
+launch slot minimum, broker fees). The same two numbers and their relation appear in the stakeholder layer's sponsor
+concern, Appendix C and the docs case page; the class note stands (a 1U series below 40,000 USD a unit; larger series
+dearer).
