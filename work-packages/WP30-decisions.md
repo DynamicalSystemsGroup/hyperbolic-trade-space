@@ -234,3 +234,15 @@ that price it, which is the reading the cost model was built to give; (3) feasib
 1,000 (unchanged), 2,134 and 2,355 on 3,000; K = 2 and 3 certified in both regimes. These are consequences of his
 directions (the ninth metric, the cost model, more designs), recorded as the case's new findings, not as a change of
 his intent; the paper's case narrative is rewritten from the regenerated record in the cascade.
+
+**Steps 9 and 10 (2026-11-11, 15:10; the assistant, on the runner's report):** the three "no floating requirements"
+readings came out as predicted (available power one axis with the energy balance at Spearman +0.9997; the battery
+ratio with exponent zero, tracking the depth of discharge; the momentum headroom taking part); the named candidates
+are fleets of one; the ladder script's repricing tolerance is 1e-8 (twice the files' nine-digit rounding bound, the
+reason in the script); at 350,000 USD per satellite no design is admitted as a single satellite and 77 percent at
+the free fleet size, at 6,000,000 USD per fleet every design through ten satellites and none at thirty, as his
+words wanted. The data-gate comparison separates the sample's effect from the new metrics' (three configurations) and
+lists the changed numbers (the light_slow candidate's log V, the baseline K = 3 sets). **The container proof:** the
+model carried the values from the build and no placeholder run happened, so option B collapses to one container run
+(entries @12, shared @11) whose hash equality against the host's @11 entries, last-digit drift allowed, is the proof;
+no `--wp30 values` live run.
