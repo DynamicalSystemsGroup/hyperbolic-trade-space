@@ -1821,3 +1821,15 @@ candidates A and B drop out (their largest changes are 0.055 and 0.070).
 | stock | power margin, peak slew power, depth of discharge | 3 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
 | stock | energy balance, peak slew power, depth of discharge | 2 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
 | stock | energy balance, peak slew power, depth of discharge | 3 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+
+### S-5 textured candidates: cold reads (ninth PM)
+
+Two cold readers (Sonnet), images only, no captions; their returns verbatim in `work-packages/WP19-cold-reads-s5b/reader1.md`, `reader2.md`.
+Both rank C (pointing error / energy balance / depth of discharge, K = 3) first and keep it if only one: most legible, three regions with three
+leaders; weak points: the "alone" wording shows different leading objectives, not pair trade-offs, and the filled regions read as clusters. A second
+(reader 1) or third (reader 2): A (pointing error / total mass / control effort, K = 2), the only one whose labels name different pair trade-offs;
+two regions, cramped labels of unequal size, two-cluster reading. B third or fourth (jagged boundary read as artefact; label over the star). The
+one-region figure (settling time, pointing error, total mass) is last in both: it does not show several regions and its in-plot label is clipped.
+Both readers ask that the contours and dots be named and that fills read as model regions (outlined, lighter) rather than clusters. Dark: corner labels
+low contrast (A, B, one-region). C is the weakest by the search table (minimum near-frontier exactly the guard, 10); A is the strongest (28, texture 2).
+The supervisor chooses.
