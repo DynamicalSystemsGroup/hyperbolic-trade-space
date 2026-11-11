@@ -220,3 +220,17 @@ hash code files the revision and the encoding fix changed while their frozen v1 
 gains a `--readopt` mode writing a superseding `<id>@2` entry per such id with the new code hash, the frozen outputs'
 hashes asserted unchanged, and a note naming the cause; `verify` must then report 0 drifts. A recorded exception was
 refused (verify stays the gate's instrument), and reverting the encoding fix would have left the fleet-variable drift.
+
+## Step 10's stop condition and the changed conclusions (2026-11-11, 15:00; the assistant, on the K record at 3,000)
+
+The gate proceeds. The condition's intent holds: with the momentum headroom traded, the baseline regime's one-term
+trade no longer leads with control effort against settling time (control effort 0.432 to 0.076). The changed
+conclusions, to be written first in the data-gate comparison and put to the chief engineer with the package:
+(1) the baseline regime's K = 1 contending set is eight metrics led by the energy-balance axis (available power
+0.192, one axis with the energy balance), the momentum headroom 0.181, settling time 0.159 and total mass 0.131;
+(2) the primary regime's K = 1 trade is led by the unit cost (0.257), then available power 0.197, pointing error
+0.156, fleet cost 0.151 and momentum headroom 0.107: total mass's former lead (0.358) has moved into the cost metrics
+that price it, which is the reading the cost model was built to give; (3) feasible designs 706 and 780 on the first
+1,000 (unchanged), 2,134 and 2,355 on 3,000; K = 2 and 3 certified in both regimes. These are consequences of his
+directions (the ninth metric, the cost model, more designs), recorded as the case's new findings, not as a change of
+his intent; the paper's case narrative is rewritten from the regenerated record in the cascade.
