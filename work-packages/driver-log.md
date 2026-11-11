@@ -7,6 +7,14 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- **Resolved 2026-11-10, 22:40, in his presence:** the ten WP28 rows (S-3 cut to a pointer; the rest kept; three of them
+  open work: the modelling spike, the noise-result spike, the real-3-lemma figure loop; D.12 clarified) and H-2 (a
+  budget, calibrated by a commercial-economics spike, with a fleet-size variable and per-part pricing curves in the
+  model revision). All verbatim in WP28-decisions.md ("The rows for the supervisor, ruled") and WP27-decisions.md
+  ("H-2"). Nothing waits for him now. **Standing order added:** bigger candidate edits run the six-stage lifecycle:
+  research spike, decide (the driver), build, quality control, integrate, review the cascade; a final clean merged
+  state before acceptance.
+
 - **WP28's rows for the supervisor (2026-11-10, 20:50; `WP28-cut-list.md`, "For the supervisor").** Ten units the
   readers judged not to advance the narrative that this package may not cut because each rests on his decision.
   One question for him when he is here, multi-select, with the words that would leave: S-1, S-2 the two model-view

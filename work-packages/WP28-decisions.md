@@ -66,3 +66,20 @@ contract's ownership, X-4 kept, and S-1 to S-10 held for the supervisor. The fif
 content no longer did: it described the method a second time, in older words than the Home page, and called the unit
 level set "the Pareto frontier", which Definition 1 and the abstract deny; register rows C369, C370, C371 removed
 with the paragraph; `prose_words` 162 to 98.
+
+## The rows for the supervisor, ruled (2026-11-10, 22:00 to 22:40; walked one at a time in the browser on the staged
+site at af9ffea, at his request: "i want you to walk me through one at a time and show me in the browser so i can
+assess myself as you walk through")
+
+| Row | Unit | Supervisor, verbatim | Disposition |
+|---|---|---|---|
+| S-1 | Figure 2, the assembly view | "Keep" | kept |
+| S-2 | Figure 3, the behavioural view | "this one brings to mind a modeling question. why are these requirements not related to metrics. my intuition is that these metrics should be in the trade and should into the existing groupings. my recommendation is keep but also use it as view ensure our model and our study are well matched. you can kick off a modeler research spike then a model developer to refine the model based on the modelling spike." | kept; a modelling research spike and a model-developer package (Track B) opened, origin quoted in its decision file |
+| S-3 | Figure 9, the two regimes | "Cut to a pointer" | executes as a WP28 paper unit: the figure to a pointer to Appendix D.4 (114 words) |
+| S-4 | docs Figure 5, the cubesat tension heatmap | "Keep" | kept |
+| S-5 | docs Figure 6, the planted ternary and its subsection | "can we rebuild the figure from a trilemma using data from the ADCS model? i like this figure a lot and i lean towards keeping it but if the issue is that it feels made up we can do a real 3-lemma. don't swap in a new figure but do a loop to build an alternative" | kept as it is; a figure loop opened to build an alternative from a real 3-lemma of the case data; he chooses between the two |
+| S-6 | Section 12, Future work and final remark | "Keep" | kept |
+| S-7 | Section 13, Acknowledgments and process | "Keep" | kept |
+| S-8 | Proposition 1 (L2) | "Keep" | kept; R-17 stands |
+| S-9 | Proposition 2 (L6) | "consider whether we need another result that addresses our models relationship to measurement noise and/or noise in the process being measured. this may result in more work so first spike for relevant results and if we can add a result that builds on this proposition to character our relation to the noise. similiar to the modeling updates deploy research spike agents before deciding whether/what to build, then build, then quality control, then integrate, then review again. (also not i was bit short with my instructions before, so please apply this full lifecycle tactic to the modeling spike + model change)" | kept; a noise-result research spike opened (Track A); the six-stage lifecycle (research spike, decide, build, quality control, integrate, review again) applies to Tracks A and B and the figure loop |
+| S-10 | Appendix D.12, the conditioning diagnostic | "keep and clarify why it matters. its supporting evidence for a discerning reader and our external review shows a descernign reader might ask for it. in practice conditioning does matter. we do need to provide a concise explanation for why this is relevant and how it was computed. someone who runs into issue needs a way to inspect the conditioning of their problem since trouble shooting may involve feature engineering work to get a better conditions version of the same problem." | kept; one unit adds the concise explanation (why, how computed, how a user inspects their own problem) in D.12 and on the docs page that teaches conditioning; X-4 (D.6) stays |

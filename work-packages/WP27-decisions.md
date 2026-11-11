@@ -121,3 +121,29 @@ with the supervisor."
 **Accepted by the driver (2026-11-10, 18:20, at 05f8a2a).** G-1, G-2 and the elision landed in 05f8a2a (step 24's screenshot,
 the N5/N6/T3/T5 paragraph in D-4, "[the browser tools]"), G-3 in 8f4e10b (F-5 with steps; Bug 10 reproduced); the
 model tests pass at the head. **Driver, verbatim:** "WP27 accepted. H-2 stays open with the supervisor."
+
+## H-2, the cost-to-build budget (2026-11-10, 22:40; the supervisor, verbatim)
+
+Asked whether to add a budget on the sponsor's cost-to-build roll-up (no requirement; 300,000 USD; 450,000 USD;
+another number): "add one but do a research spike on commercial space economics so we can calibrate this to read
+data. it doesn't need to be perfect priced to speak but the ballpark for parts, assembly and launch costs need to be
+sane to a professional familiar with the economics of cube sats. its worth noting that cubesats are usually fleets so
+you may want to incorporate a config variable number of satellites in the fleet and a cost model that accounts for
+diminishing unit costs but increasing total cost for more satellite; i think without this the cost of a single
+satellite may sound kind of rediculous for this class. we are still pricing per unit though so we do not want to over
+complicate the model by making it a model of the fleet. that would also require us to start looking at the
+communication range and fidelity and networking which we don't want to do. this is still a demonstrative model. i
+think it suffices to simply clearly denote that we're looking at the manufacturing and launch costs of a fleet, there
+are 2 pricing metrics one for fleet cost at unit cost times number of units and one which is unit cost. all of the
+part then get their own pricing curves as a function of number but they can be different curves. some may be
+relatively flat and others may have significant economies of scale. manufacturing cost may also vary by number of
+units. all costs need to have a fixed base cost plus a curve. total cost for any part (and total cost for assembly)
+is offset (fixed cost) + a discount applied as a falling unit cost and units go up. total cost in growing in units
+but at a decreasing rate. remember integrate this into the modeling revision spike that goes through research,
+modeling, quality control, integration then reviewing the cascade consequences and resolving them before we get a
+final clean merged state. patter as with the other bigger (candidate) edits".
+
+**Disposition:** H-2 is no longer a number to pick; it is calibrated by the commercial-economics research spike and
+set in the model revision (Track B: the three requirements that read no traded metric, the fleet-size configuration
+variable, per-part pricing curves with a fixed base and a falling unit cost, two pricing metrics), under the six-stage
+lifecycle he named. The budget's value is his once the spike reports.
