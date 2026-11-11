@@ -924,3 +924,10 @@ section = "Results"
 words_added = 6
 job = "Theorem 11's box says what step B's refit is in Section 6.2's words (each term refitted by f_k, its support over all rows less its cell's mean), replacing 'on its cell', which three readers took for a one-term fit on the cell's rows (WP28 CR-35)"
 reader = "the depth-B reader who reads the box and not Section 6.2's first sentence"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 7
+job = "Theorem 11's termination sentence says that Theorem 3 does not supply the unique term minimizers it assumes, and states finite termination without the K^N + 1 count (which stays in L15), so the count is not read as a practical bound (WP28 CR-36)"
+reader = "the mathematician who set 'unique term minimizers' against Theorem 3 and read the count as empty"
