@@ -207,6 +207,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Models, corrected (2026-11-10, 22:25; the supervisor's standing arrangement).** The driver runs on the large model;
+  PMs and every subagent run on smaller models fit to the task: the PM on Sonnet; subagents on Sonnet, or Haiku for
+  mechanical work (greps, counts, file moves, screenshot runs); Opus only on the driver's word for a named reason.
+  The sixth and seventh PMs ran on the large model by inheritance when the driver spawned them without a model: the
+  driver's error, noticed when the supervisor said "while you (my assistant) is fable, your PMs and all the sub
+  agents are supposed to be smaller models fit to task". The seventh PM writes its handover and stops; the eighth
+  starts on Sonnet, and every brief from now names the model of each agent it spawns. Quota: he has extra usage and
+  credits, so the overnight run continues without a reset.
+
 - **Round 3's key marks (2026-11-10, 21:35; WP28 D-5 = WP11 round 3 at af9ffea).** The driver marked the triager's 148
   reader sentences against answer key version 4 (the marks file sits beside the request in the session scratchpad;
   the key stays outside the repository). No wrong belief of W1 to W8 in any of the twelve cells. One statement wrong
