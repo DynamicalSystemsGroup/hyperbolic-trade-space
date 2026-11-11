@@ -303,3 +303,13 @@ effort) on the left and B (settling time, control effort, depth of discharge) on
 on the docs Examples page; B's caption says plainly that its second region is a single-metric term (depth of discharge
 leads alone) beside the settling-time-against-control-effort trade, so the pair shows several active trade-offs across
 two triples of the same data. The synthetic figure on the root page as before. Dispatched to the ninth PM.
+
+**S-5 landed in the docs and the root page (fa2c66e); the assistant's calls on the reviewer's three points
+(2026-11-11, 10:10):** (1) the root page keeps the planted ternary as the story figure the supervisor asked for and
+drops the two "why regions" images it repeats, with a one-sentence caption that says what the constructed table shows
+(net fewer images, the no-bloat order); (2) the image links to the full-size PNG for the phone view, as the root page
+already does for its other figure; (3) the caption says "the other region". **The paper unit:** approved at the
+proposed position (after `num-elasticity`, before `sec-case-analysis-3b`, Figure 9, the static route, the float count
+to 10, one citing paragraph and one caption with the detail in Appendix C, a ledger raise row quoting his words,
+register rows with tests pinning the two contending sets, the Examples sentence "none is drawn for the cubesat"
+reworded); the reviewer checks the type size in the rendered column by eye.

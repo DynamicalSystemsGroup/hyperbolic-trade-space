@@ -46,3 +46,18 @@ bias; the proof map), the tests on planted data and the check against the spike'
 prose; nothing on dev before the derivation passes stage (4). The driver's two statements of what it must not claim
 stand: not that the rates are right, only how far noise of a given size moves them; first order, interior solution,
 small noise.
+
+## Placement (2026-11-11, 10:10; the assistant, on the branch at 33c1d07)
+
+Stage (4) passed: L20 (51 tagged steps), the proof map at 20 files and 493 steps, the chain, `tests/test_noise_ridge.py`
+28 passed (the first-order formula within 3e-4 of the ridge minimiser in nine cells). The corollary is placed between
+`res-L6` and `res-L7` as `cor-noise-ridge`, stated with the four refinements the derivation found: the shift is a
+statement about the exponents' displacement (its norm), an upper bound in which the temperature reappears (at most
+tau times the norm of P Sigma w over `conditioning_`), the projector is the active face's (a boundary exponent breaks
+the full-simplex form, tested), and the noisy fit tracks the ridge at small temperature only. It claims neither that
+the rates are right, nor consistency, nor a remainder bound, nor anything at a boundary exponent. L19 stays in
+Appendix B without a box; the Appendix D injection table is the demonstration, stated as injected noise on noise-free
+data; G-3, G-11 and G-12 revised; the main-results list is unchanged. Before landing: the vocabulary tool on the box
+text, the glossary's terms for "ridge", "active face" and "tangent space" (entries added where the glossary has
+none, Appendix A regenerated), the heading of `app-B-2` as the executor set it. The paper unit lands on dev from the
+branch after these, re-executed on the host.

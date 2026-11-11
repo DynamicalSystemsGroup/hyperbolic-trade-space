@@ -104,3 +104,28 @@ minimum, 7,000 USD/kg in 2026 rising 500 USD/kg a year, Falcon 9 dedicated at 74
 million average revenue per launch. Neither page prices a 12U cubesat or a fleet. The recalibration spike (D2) runs
 on 2026 sources first; its readout, with the baseline priced at 1 to 30 units and what 1,000,000 USD buys for 25
 satellites in 2026, goes to him before either value is set.
+
+## The assistant's calls on the spike D2 readout (2026-11-11, 10:10; readout b057b4f)
+
+The 2026 readout confirms the launch rate and moves the part prices about five percent up (panels 340,000 USD/m²,
+battery about 70 USD/Wh, wheels 8,000 each; tracker and bus hold; assembly has no source and stays at 100,000 USD):
+the baseline builds at 368,320 USD for one unit and 173,167 at twenty-five, inside the 2026 spread. One million USD
+for twenty-five satellites is 40,000 each with launch, which buys two baseline 12U satellites with launch, or a
+1U-class fleet; "more than enough" holds only at the 1U class.
+
+- **A. Coefficients:** the 2026 central values are adopted in the cost model, each with its source and date in the
+  calc's doc; assembly stays at 100,000 USD and is marked unsourced.
+- **B. Unit cost limit: 350,000 USD stands** (his pick on the earlier calibration; the covered cost, read at the
+  design's own fleet size); its admitted share is recomputed on the regenerated data at the gate and printed.
+- **C. Fleet cost limit: 6,000,000 USD** (build and launch, the fleet size free from 1 to 30; on the earlier ladder it
+  admits 71 percent of the baseline regime's feasible designs at their own fleet size, every design up to ten
+  satellites). **This is a call against his stated number** ("set a 1 million budget for 25 satellites"): the
+  recalibration he ordered shows that number buys two satellites of this class, so a limit of 1,000,000 would admit no
+  design and the metric would carry a requirement nothing meets; 6,000,000 keeps a fleet of ten within reach of every
+  design and binds the larger fleets, which is the trade he described. It is the first row of the review list for
+  him to revert; his number is kept beside it as the alternative, and the requirement's doc says the figure is a
+  lower bound on a full costing.
+- **D. Launch:** 7,000 USD/kg linear, the 50 kg minimum slot noted in the requirement's text, not modelled; the launch
+  budget restated at his admitted mass: 15.11 kg at 7,000 USD/kg = 105,770 USD.
+- The requirements' coverage statement as decided (included, excluded, a lower bound). The gate runs on these values;
+  no placeholder remains.
