@@ -10,8 +10,8 @@ One CSV row per (table, K), all at one fixed temperature (the K = 1 selection fo
 smallest term share and smallest row share, the largest term gap, status, assignment margin,
 stable radius, the smallest conditioning, the splinter measure (the largest, over terms and
 WP31_B (default three) bootstrap resamples, of the summed absolute exponent distance to the
-nearest resampled term; at most 2), and for planted tables the planted terms recovered (a fitted term within 0.05 in
-largest absolute exponent difference).
+nearest resampled term; at most 2), and for planted tables the planted terms recovered (a
+fitted term within 0.05 in largest absolute exponent difference).
 """
 
 import os
