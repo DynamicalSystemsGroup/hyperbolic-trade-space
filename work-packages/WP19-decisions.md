@@ -92,3 +92,7 @@ three coloured markers with the key (each term's n-lemma and exponent vector) ca
 recovery clause, and the recovery statement, where the paper needs it, stays in the text that cites the planted
 check (Section 9 and Appendix D) rather than in the schematic. Cold read of the redrawn image first; the ledger
 records the caption's removal.
+
+**Figure 1, two riders (2026-11-11, 13:05; the assistant):** the footer "Weight on these three metrics: 1.00, 1.00,
+1.00 (all of it: d = 3)" goes (it reads cryptic and says nothing a reader uses), and the caption gains the clause that
+the three markers are the terms of one fitted posynomial. One negative-leaning unit with a cold read.

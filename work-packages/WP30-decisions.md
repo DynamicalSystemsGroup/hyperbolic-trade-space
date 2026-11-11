@@ -196,3 +196,11 @@ sample is a design choice of the case and that the method assumes nothing about 
 Section 7 (the search) gets the sentence or two he names on how the sampling strategy enters the broader optimisation
 loop, with a ledger raise row quoting him; the "effective sample size" and every number of record move with the
 regeneration as they would anyway. The thin-term panel fix (WP19-decisions.md) stands regardless, for any fit.
+
+**Sample size, the assistant's call (2026-11-11, 13:05):** the oracle runs 1,000 designs in 203 s on three workers;
+this Mac has ten cores, so the gate samples 3,000 designs per regime on nine workers (about 40 minutes if the oracle
+scales; measured first on 300 designs), with the first 1,000 the old sample so the earlier flags hold; if the measured
+rate puts 3,000 above 75 minutes, the count is 2,000. The container's two runs re-run the five ledger entries on the
+regenerated data, not the regeneration itself. `SAMPLE_PER_REGIME`, the two contract rows and `SAMPLE` in
+`test_v2_data.py` carry the count. The model's line cap of 1,200 is accepted with its reason recorded; the wheel
+relation 4,000 + 2.0e6 USD/(N·m) as the developer set it, with its source.

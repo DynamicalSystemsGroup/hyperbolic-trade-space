@@ -76,3 +76,14 @@ ones. If the face step is not a page of elementary steps, the box narrows to fit
 D.18 says it reads the shift within the support. Either way the box carries R3 as the triage words it and nothing is
 added for the novice to stumble on. This is a call for the supervisor's review (the review list), since it decides
 what the corollary claims at a boundary.
+
+## Acceptance (2026-11-11, 13:05; at 7e7acdd, the review in WP29-review.md)
+
+Stage 6 holds: the P9/P10 narrowings (3f8c49b), the face step (d7ac579: L20.52 to L20.63; the chain and proof map pass
+at 505 steps on this Mac; 32 tests), the re-reads (7e7acdd; P10, a P5-type cold read, P9's box-against-script read).
+**Assistant, verbatim:** "WP29 accepted. The corollary is stated on the support under strict complementarity, says how
+far noise moves the exponents and not whether the rates are right, and its demonstration says the noise is injected."
+Two riders, not conditions: the reads2 wording items (conditioned metrics as log-metrics; the fit as the clean fit;
+"lowers" first order; A5 in the hypotheses line; Appendix B's quoted lines) land as one narrowing unit before the final
+reader round; the Results section's net growth (+201, then narrowed) is recorded in the ledger as the supervisor's
+addition and listed for his eye. The assistant's look at the rendered box comes with the next stage rebuild.
