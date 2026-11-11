@@ -1,0 +1,113 @@
+
+==============================================================================
+REGIME primary: adcs_designs_cubesat_gains.csv; feasible 2134; tau re-selected at each K (target 0.10 of designs above V = 1); near-frontier band for reports and slices 0.0240 (K = 1's)
+
+RE-SELECTED fits, K = 1, 2, 3:
+ K    tau  band 1/tau  objective_  frac_above_        term rows           term shares      max gap         status    gamma   radius        bound
+ 1  41.72      0.0240    0.121792     0.097938           [2134]                 [1.0] 6.959285e-06 not_applicable      NaN      NaN 6.959285e-06
+ 2 113.22      0.0088    0.087426     0.095127      [934, 1200]        [0.262, 0.738] 4.052314e-15      certified 0.000377 0.000026 3.030014e-15
+ 3 135.76      0.0074    0.069274     0.107779 [621, 1054, 459] [0.344, 0.594, 0.061] 3.413936e-15      certified 0.000421 0.000029 2.347551e-15
+
+K = 2 per term (re-selected tau = 113.22):
+ term  rows                                                                                                                contending set  n_lemma                                            largest exponents  near-frontier  reach beta_k    share      gap G_k
+    1   934                  unit cost, available power, fleet cost, momentum headroom, pointing error, settling time, depth of discharge        7     unit cost 0.250, available power 0.216, fleet cost 0.142            119      0.202345 0.261628 4.052314e-15
+    2  1200 peak slew power, pointing error, unit cost, available power, fleet cost, momentum headroom, settling time, depth of discharge        8 peak slew power 0.426, pointing error 0.206, unit cost 0.122            318      0.399912 0.738372 2.234324e-15
+
+K = 1 vs K = 2 contending sets:
+K=1 set (7): ['available power', 'depth of discharge', 'fleet cost', 'momentum headroom', 'pointing error', 'settling time', 'unit cost']
+  term 1: shares 7 of 7; only in term: []; K=1 members absent: []
+  term 2: shares 7 of 8; only in term: ['peak slew power']; K=1 members absent: []
+  union of terms (8): K=1 subset of union: True; in union not in K=1: ['peak slew power']; in K=1 not in union: []
+
+K = 3 per term (re-selected tau = 135.76):
+ term  rows                                                                                                                 contending set  n_lemma                                              largest exponents  near-frontier  reach beta_k    share      gap G_k
+    1   621                    energy balance, unit cost, fleet cost, momentum headroom, settling time, pointing error, depth of discharge        7        energy balance 0.384, unit cost 0.238, fleet cost 0.112            188      0.317201 0.344444 1.845746e-15
+    2  1054  peak slew power, pointing error, unit cost, available power, fleet cost, momentum headroom, settling time, depth of discharge        8   peak slew power 0.417, pointing error 0.208, unit cost 0.132            297      0.407660 0.594444 2.178813e-15
+    3   459 momentum headroom, settling time, total mass, available power, pointing error, depth of discharge, peak slew power, fleet cost        8 momentum headroom 0.223, total mass 0.214, settling time 0.211             50      0.297667 0.061111 3.413936e-15
+
+K = 1 vs K = 3 contending sets:
+K=1 set (7): ['available power', 'depth of discharge', 'fleet cost', 'momentum headroom', 'pointing error', 'settling time', 'unit cost']
+  term 1: shares 6 of 7; only in term: ['energy balance']; K=1 members absent: ['available power']
+  term 2: shares 7 of 8; only in term: ['peak slew power']; K=1 members absent: []
+  term 3: shares 6 of 8; only in term: ['peak slew power', 'total mass']; K=1 members absent: ['unit cost']
+  union of terms (10): K=1 subset of union: True; in union not in K=1: ['energy balance', 'peak slew power', 'total mass']; in K=1 not in union: []
+
+K = 1 (tau = 41.72) contending set and exponents: unit cost, available power, pointing error, fleet cost, momentum headroom, settling time, depth of discharge
+K = 1 exponents: unit cost 0.257, available power 0.197, pointing error 0.156, fleet cost 0.151, momentum headroom 0.107, settling time 0.068
+
+DIAGNOSTIC, fixed tau (K = 1's tau reused at K = 2, 3):
+ K   tau  band 1/tau  objective_  frac_above_       term rows          term shares      max gap         status    gamma   radius        bound
+ 1 41.72       0.024    0.121792     0.097938          [2134]                [1.0] 6.959285e-06 not_applicable      NaN      NaN 6.959285e-06
+ 2 41.72       0.024    0.043395     0.303655     [931, 1203]       [0.277, 0.723] 9.436896e-16      certified 0.000577 0.000039 5.759932e-16
+ 3 41.72       0.024    0.020121     0.421743 [616, 950, 568] [0.268, 0.522, 0.21] 7.979728e-16      certified 0.000618 0.000042 6.074556e-16
+
+DIAGNOSTIC K = 3 per term at fixed tau:
+ term  rows                                                                                                                 contending set  n_lemma                                              largest exponents  near-frontier  reach beta_k    share      gap G_k
+    1   616                    energy balance, unit cost, fleet cost, momentum headroom, settling time, pointing error, depth of discharge        7        energy balance 0.383, unit cost 0.226, fleet cost 0.119            214      0.267477 0.267835 3.747003e-16
+    2   950  peak slew power, pointing error, unit cost, available power, fleet cost, momentum headroom, settling time, depth of discharge        8   peak slew power 0.455, pointing error 0.211, unit cost 0.110            417      0.391651 0.521902 7.979728e-16
+    3   568 total mass, momentum headroom, settling time, available power, pointing error, depth of discharge, peak slew power, fleet cost        8 total mass 0.233, momentum headroom 0.205, settling time 0.191            168      0.199938 0.210263 5.412337e-16
+
+K = 3 stability over seeds at the re-selected tau = 135.76:
+ seed  objective_  frac_above_       shares (sorted)      max gap    status    gamma   radius        bound                                                                                                                                                                                                                                                                                                                                          contending sets
+    0    0.069274     0.107779 [0.061, 0.344, 0.594] 3.413936e-15 certified 0.000421 0.000029 2.347551e-15 available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+total mass | available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+unit cost | depth of discharge+energy balance+fleet cost+momentum headroom+pointing error+settling time+unit cost
+    1    0.069274     0.107779 [0.061, 0.344, 0.594] 3.413936e-15 certified 0.000421 0.000029 2.347551e-15 available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+total mass | available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+unit cost | depth of discharge+energy balance+fleet cost+momentum headroom+pointing error+settling time+unit cost
+    2    0.069274     0.107779 [0.061, 0.344, 0.594] 3.413936e-15 certified 0.000421 0.000029 2.347551e-15 available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+total mass | available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+unit cost | depth of discharge+energy balance+fleet cost+momentum headroom+pointing error+settling time+unit cost
+    3    0.069274     0.107779 [0.061, 0.344, 0.594] 3.413936e-15 certified 0.000421 0.000029 2.347551e-15 available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+total mass | available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+unit cost | depth of discharge+energy balance+fleet cost+momentum headroom+pointing error+settling time+unit cost
+    4    0.069274     0.107779 [0.061, 0.344, 0.594] 3.413936e-15 certified 0.000421 0.000029 2.347551e-15 available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+total mass | available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+unit cost | depth of discharge+energy balance+fleet cost+momentum headroom+pointing error+settling time+unit cost
+
+==============================================================================
+REGIME stock: adcs_designs_cubesat.csv; feasible 2355; tau re-selected at each K (target 0.10 of designs above V = 1); near-frontier band for reports and slices 0.0219 (K = 1's)
+
+RE-SELECTED fits, K = 1, 2, 3:
+ K    tau  band 1/tau  objective_  frac_above_       term rows           term shares      max gap         status    gamma   radius        bound
+ 1  45.68      0.0219    0.114827     0.106157          [2355]                 [1.0] 3.165407e-05 not_applicable      NaN      NaN 3.165407e-05
+ 2 103.40      0.0097    0.099601     0.102335     [986, 1369]        [0.754, 0.246] 5.495604e-15      certified 0.000263 0.000017 3.833829e-15
+ 3 135.76      0.0074    0.080296     0.095966 [853, 705, 797] [0.405, 0.061, 0.534] 1.448841e-14      certified 0.000100 0.000007 7.442725e-15
+
+K = 2 per term (re-selected tau = 103.40):
+ term  rows                                                                                                                           contending set  n_lemma                                                largest exponents  near-frontier  reach beta_k    share      gap G_k
+    1   986            peak slew power, pointing error, unit cost, available power, momentum headroom, fleet cost, settling time, depth of discharge        8     peak slew power 0.378, pointing error 0.174, unit cost 0.123            292       0.38135 0.754011 1.526557e-15
+    2  1369 available power, settling time, control effort, momentum headroom, unit cost, pointing error, fleet cost, total mass, depth of discharge        9 settling time 0.223, available power 0.204, control effort 0.185             92       0.17427 0.245989 5.495604e-15
+
+K = 1 vs K = 2 contending sets:
+K=1 set (8): ['available power', 'depth of discharge', 'fleet cost', 'momentum headroom', 'pointing error', 'settling time', 'total mass', 'unit cost']
+  term 1: shares 7 of 8; only in term: ['peak slew power']; K=1 members absent: ['total mass']
+  term 2: shares 8 of 9; only in term: ['control effort']; K=1 members absent: []
+  union of terms (10): K=1 subset of union: True; in union not in K=1: ['control effort', 'peak slew power']; in K=1 not in union: []
+
+K = 3 per term (re-selected tau = 135.76):
+ term  rows                                                                                                                contending set  n_lemma                                                largest exponents  near-frontier  reach beta_k    share      gap G_k
+    1   853   energy balance, settling time, unit cost, control effort, momentum headroom, fleet cost, pointing error, depth of discharge        8  energy balance 0.371, settling time 0.146, control effort 0.133            175      0.276373 0.404908 6.952772e-15
+    2   705             control effort, settling time, available power, momentum headroom, pointing error, fleet cost, depth of discharge        7 control effort 0.373, settling time 0.354, available power 0.129             38      0.247265 0.061350 1.448841e-14
+    3   797 peak slew power, pointing error, unit cost, momentum headroom, available power, fleet cost, settling time, depth of discharge        8     peak slew power 0.371, pointing error 0.176, unit cost 0.132            261      0.390948 0.533742 1.734723e-15
+
+K = 1 vs K = 3 contending sets:
+K=1 set (8): ['available power', 'depth of discharge', 'fleet cost', 'momentum headroom', 'pointing error', 'settling time', 'total mass', 'unit cost']
+  term 1: shares 6 of 8; only in term: ['control effort', 'energy balance']; K=1 members absent: ['available power', 'total mass']
+  term 2: shares 6 of 7; only in term: ['control effort']; K=1 members absent: ['total mass', 'unit cost']
+  term 3: shares 7 of 8; only in term: ['peak slew power']; K=1 members absent: ['total mass']
+  union of terms (10): K=1 subset of union: False; in union not in K=1: ['control effort', 'energy balance', 'peak slew power']; in K=1 not in union: ['total mass']
+
+K = 1 (tau = 45.68) contending set and exponents: momentum headroom, available power, total mass, settling time, pointing error, depth of discharge, unit cost, fleet cost
+K = 1 exponents: available power 0.192, momentum headroom 0.181, settling time 0.159, total mass 0.131, pointing error 0.087, control effort 0.076
+
+DIAGNOSTIC, fixed tau (K = 1's tau reused at K = 2, 3):
+ K   tau  band 1/tau  objective_  frac_above_       term rows           term shares      max gap         status    gamma   radius        bound
+ 1 45.68      0.0219    0.114827     0.106157          [2355]                 [1.0] 3.165407e-05 not_applicable      NaN      NaN 3.165407e-05
+ 2 45.68      0.0219    0.060166     0.250531     [938, 1417]        [0.648, 0.352] 4.302114e-15      certified 0.000254 0.000017 2.820733e-15
+ 3 45.68      0.0219    0.029611     0.365180 [885, 725, 745] [0.459, 0.409, 0.133] 3.136380e-15      certified 0.000122 0.000008 1.521680e-15
+
+DIAGNOSTIC K = 3 per term at fixed tau:
+ term  rows                                                                                                                          contending set  n_lemma                                                    largest exponents  near-frontier  reach beta_k    share      gap G_k
+    1   885 energy balance, settling time, control effort, unit cost, momentum headroom, fleet cost, pointing error, depth of discharge, total mass        9      energy balance 0.365, control effort 0.185, settling time 0.182            356      0.235765 0.458763 1.096345e-15
+    2   725           peak slew power, pointing error, unit cost, momentum headroom, available power, fleet cost, settling time, depth of discharge        8 peak slew power 0.410, pointing error 0.185, momentum headroom 0.103            317      0.377310 0.408505 3.816392e-16
+    3   745                       control effort, settling time, available power, momentum headroom, pointing error, fleet cost, depth of discharge        7   settling time 0.318, control effort 0.306, momentum headroom 0.125            103      0.174778 0.132732 3.136380e-15
+
+K = 3 stability over seeds at the re-selected tau = 135.76:
+ seed  objective_  frac_above_       shares (sorted)      max gap    status    gamma       radius        bound                                                                                                                                                                                                                                                                                                                                             contending sets
+    0    0.080296     0.095966 [0.061, 0.405, 0.534] 1.448841e-14 certified 0.000100 6.638513e-06 7.442725e-15 available power+control effort+depth of discharge+fleet cost+momentum headroom+pointing error+settling time | available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+unit cost | control effort+depth of discharge+energy balance+fleet cost+momentum headroom+pointing error+settling time+unit cost
+    1    0.080296     0.095966 [0.061, 0.405, 0.534] 1.448841e-14 certified 0.000004 2.587750e-07 6.322319e-15 available power+control effort+depth of discharge+fleet cost+momentum headroom+pointing error+settling time | available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+unit cost | control effort+depth of discharge+energy balance+fleet cost+momentum headroom+pointing error+settling time+unit cost
+    2    0.080296     0.095966 [0.061, 0.405, 0.534] 1.448841e-14 certified 0.000026 1.731790e-06 5.514874e-15 available power+control effort+depth of discharge+fleet cost+momentum headroom+pointing error+settling time | available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+unit cost | control effort+depth of discharge+energy balance+fleet cost+momentum headroom+pointing error+settling time+unit cost
+    3    0.080296     0.095966 [0.061, 0.405, 0.534] 1.448841e-14 certified 0.000244 1.620229e-05 7.719939e-15 available power+control effort+depth of discharge+fleet cost+momentum headroom+pointing error+settling time | available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+unit cost | control effort+depth of discharge+energy balance+fleet cost+momentum headroom+pointing error+settling time+unit cost
+    4    0.080296     0.095966 [0.061, 0.405, 0.534] 1.448841e-14 certified 0.000026 1.731790e-06 5.510171e-15 available power+control effort+depth of discharge+fleet cost+momentum headroom+pointing error+settling time | available power+depth of discharge+fleet cost+momentum headroom+peak slew power+pointing error+settling time+unit cost | control effort+depth of discharge+energy balance+fleet cost+momentum headroom+pointing error+settling time+unit cost
+uv run python examples/adcs/k_terms.py  183.84s user 4.88s system 100% cpu 3:06.91 total

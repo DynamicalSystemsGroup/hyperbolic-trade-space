@@ -1961,3 +1961,137 @@ one design, at 0.00849489 degree, lies between the percentile and the rounded li
 tables keep the exact share; `cubesat.sysml` is ledger-hashed and not changed here, and
 `case-model.md` is outside this unit's files: making them print 95.0 % is a later edit (the model's
 doc at its next regeneration).
+
+
+## WP30 data gate: eight metrics on 1,000 designs against thirteen metrics on 3,000 designs
+
+Written 2026-11-11 by the gate runner of WP30 (D-8, R-6, R-9). Old: the WP23 close-out state at `dev`
+b22821e (ledger entries `v2-primary@8`, `v2-baseline@8`, `v2-check-predictions@8`, `v2-check-designs@8`,
+`scope-sensitivity-shared-subspace-v2@7`; eight traded metrics, 1,000 designs per regime, regenerated in
+the container `hts-paper`). New: the host regeneration on macOS arm64 at the branch head (`v2-primary@11`,
+`v2-baseline@11`, `v2-check-predictions@11`, `v2-check-designs@11`, `scope-sensitivity-shared-subspace-v2@10`;
+thirteen traded metrics, 3,000 designs per regime, nine workers, 9.2 minutes for the five entries,
+`git_dirty` false, model hash `fe6de947d18f`). The container run is the reference later (step 14); this
+section is the host's. Three configurations through `case.py` (script and output committed in
+`work-packages/WP30-rounds/data-gate/`: `conclusions.py`, `render.py`, `conclusions.md`, `k-record.txt`):
+**old8**, the old files with the eight-metric spec (the paper as committed); **new8**, the new files
+with the same eight-metric spec (what the regeneration and the larger sample change on their own); **new13**,
+the new files with the thirteen-metric spec of the case. A quantity equal in old8 and new8 but not in new13
+moved because of the new metrics; a quantity that differs between old8 and new8 moved because of the
+data (the sample size and the platform).
+
+### Changed conclusions (read first)
+
+1. **The baseline regime's K = 1 trade is led by the energy-balance axis, then the momentum headroom,
+   the settling time and the total mass; the control effort is out of the lead.** Old: control effort,
+   settling time, power margin, pointing error, depth of discharge (5), led by control effort 0.432 then
+   settling time 0.319. New: momentum headroom, available power, total mass, settling time, pointing
+   error, depth of discharge, unit cost, fleet cost (8), led by available power 0.192, momentum headroom
+   0.181, settling time 0.159, total mass 0.131, control effort 0.076. The available power is one axis
+   with the energy balance (Spearman +0.9997, both regimes), so the 0.192 is that axis's weight (the
+   energy balance carries exponent zero beside it). Cause: the momentum headroom (new8 keeps control
+   effort 0.435 and settling time 0.318 leading, so neither the sample nor the platform moved the
+   lead; the new metrics did).
+2. **The primary regime's K = 1 trade is led by the unit cost; the total mass has left the set.** Old:
+   total mass 0.358, energy balance 0.184, pointing error 0.164 (set of 5: total mass, energy balance,
+   pointing error, depth of discharge, settling time). New: unit cost 0.257, available power 0.197,
+   pointing error 0.156, fleet cost 0.151, momentum headroom 0.107, settling time 0.068 (set of 7: unit
+   cost, available power, pointing error, fleet cost, momentum headroom, settling time, depth of
+   discharge); the total mass has exponent 0.021 and is no longer contending. Cause: the cost metrics
+   price the mass (new8 keeps total mass 0.349 leading).
+3. **Which metrics the fit weights.** Pairs at or above 0.99 (Spearman among the feasible designs):
+   available power with energy balance, +0.9997 in both regimes (the association step's merge); no other
+   pair. Pairs at or above 0.95: power margin with energy balance (+0.982 primary, +0.987 baseline) and
+   with available power (+0.982, +0.988); depth of discharge with the battery peak power ratio (-0.971,
+   -0.975). Exponents at K = 1: power margin 0 in both regimes, energy balance 0 (primary, 1.8e-17) and 0
+   (baseline), the battery peak power ratio 0 in both (1e-20 or less), the available power 0.197 and 0.192,
+   the momentum headroom 0.107 and 0.181 (takes part). These are the three readings of "No floating
+   requirements": the power requirement reads an axis the fit weights, the battery requirement a metric
+   at exponent zero, the momentum requirement a metric that takes part.
+4. **Counts.** Feasible designs: 706 and 780 on the first 1,000 rows (no design's four flags changed:
+   `settled`, `power_ok`, `momentum_ok`, `dod_ok` are equal row by row), 2,134 and 2,355 on the 3,000.
+   Nondominated designs on all attributes: 659 of 706 and 724 of 780 on eight metrics become 2,134 of
+   2,134 and 2,355 of 2,355 on thirteen (with thirteen metrics no feasible design is dominated); the
+   four-metric view 126 and 152 become 236 of 2,134 and 306 of 2,355 (new8 gives the same, so the larger
+   sample alone moved it).
+5. **K = 2 and K = 3, by regime (term rows, shares, contending sets).** Primary K = 2: old terms of 414
+   and 292 rows (shares 0.800, 0.200); new 934 and 1,200 rows (0.262, 0.738): term 1 unit cost, available
+   power, fleet cost, momentum headroom, pointing error, settling time, depth of discharge (7), term 2
+   peak slew power, pointing error, unit cost, available power, fleet cost, momentum headroom, settling
+   time, depth of discharge (8). Primary K = 3: new terms of 621, 1,054 and 459 rows (0.344, 0.594, 0.061),
+   led by energy balance 0.384, peak slew power 0.417 and momentum headroom 0.223; old 181, 162 and 363
+   rows (0.034, 0.241, 0.724). Baseline K = 2: old 454 and 326 rows (0.562, 0.438); new 986 and 1,369
+   (0.754, 0.246), term 1 led by peak slew power 0.378, term 2 by settling time 0.223 with available power
+   0.204 and control effort 0.185. Baseline K = 3: old 253, 185 and 342 rows (0.115, 0.462, 0.423); new 853,
+   705 and 797 (0.405, 0.061, 0.534): term 1 energy balance 0.371, term 2 control effort 0.373 with settling
+   time 0.354, term 3 peak slew power 0.371. The per-term report does not refuse in either regime at
+   either K (near-frontier rows per term at the K = 1 band: primary 188, 297, 50; baseline 175, 38, 261).
+   The K = 1 set is contained in the union of the K = 2 terms in both regimes except as follows: baseline
+   K = 3, where total mass (a K = 1 member) is in no term's set (union of 10, K = 1 not a subset).
+6. **Selected temperatures and effective sample size.** K = 1: primary 38.10 becomes 41.72 (new8 26.50:
+   the sample changes the temperature, the metrics move it back), baseline 45.68 stays 45.68 (new8 29.01).
+   K = 2: 94.42 becomes 113.22 and 71.92 becomes 103.40. K = 3: 113.22 becomes 135.76 in both regimes.
+   Effective sample size at K = 1: 23.1 becomes 73.6 (primary) and 14.6 becomes 47.9 (baseline); the
+   near-frontier designs at K = 1: 56 and 77 become 238 and 293.
+7. **Certificates unchanged in status:** `not_applicable`, `certified`, `certified` at K = 1, 2, 3 in both
+   regimes; the margins at K = 2 and 3 are 0.000377 and 0.000421 (primary), 0.000263 and 0.000100
+   (baseline), the stable radii 0.000026, 0.000029, 0.000017 and 0.000007 (were 0.000697, 0.001213,
+   0.001413, 0.000350 and 0.000069, 0.000121, 0.000133, 0.000033). K = 3 over five seeds: one solution,
+   certified every seed. The K = 3 record has no row where the fit refuses.
+8. **The check.** Three proposals at reach 0.6947 (the stated rule on the new pool); proposal_1 and
+   proposal_3 are one design again (medium wheel, fine tracker). Log V within the band for 3 of 3 and
+   position within the band for **3 of 3** (was 1 of 3: 1.05, 0.51 and 1.05 bands); `dod_ok` False for 3 of
+   3 as before. The three named candidates' log V: fast_effort_hungry -0.197 becomes -0.162, precise_heavy_sensor
+   -0.153 becomes -0.130, light_slow -0.171 becomes **-0.402** (rank among the training designs 0.58 becomes
+   0.006: on thirteen metrics the light, slow candidate is far beyond the sample's frontier, by the cost
+   metrics). The candidates remain 0 of 3 beyond the surface.
+9. **Association signs.** Primary (settling time, pointing error): +0.03 (+0.15) becomes +0.36 (+0.47);
+   (settling time, total mass) -0.50 (-0.50) becomes -0.46 (-0.46); (pointing error, control effort)
+   -0.36 (-0.50) becomes -0.52 (-0.66). Baseline (settling time, total mass): -0.10 (+0.05) becomes -0.16
+   (-0.14), **the Spearman sign changes**; (settling time, pointing error) +0.63 (+0.70) becomes +0.68 (+0.76);
+   (pointing error, control effort) -0.63 (-0.69) becomes -0.69 (-0.77).
+10. **Platform.** The first 1,000 rows' inputs (design variables, categories, seeds) and the flags equal the
+    old ones exactly. The outputs differ because the old files are the container's (Linux) and the new the
+    host's: settling time by at most 5.4e-9 relative, energy balance 1.3e-8, depth of discharge 1.7e-8 (last
+    digits), control effort 7.4e-5 (primary) and 1.2e-4 (baseline), peak momentum 3.3e-5, slew loss energy 7.3e-5,
+    and the torque-saturated fraction by up to 0.13 and 0.23 relative (the registered platform difference
+    of the first section of this file). "Equal exactly" (R-6) is therefore the container run's to show (step 14);
+    on the host the first 1,000 rows agree to the tolerances above and the flags agree exactly.
+11. **Cost limits** (`work-packages/WP30-rounds/cost-ladders.md`, repriced from the configurations and checked
+    against the data's cost columns to 5.5e-9, which is the nine-digit rounding of the files): share of the
+    feasible designs at or under the unit cost limit of 350,000 USD: 0 percent at a fleet of one (the
+    baseline configuration costs 461,360 USD with launch), 37.2 and 34.5 percent at three satellites
+    (primary, baseline), 78.1 and 77.9 at ten, 95.4 and 95.7 at thirty, 77.5 and 77.2 averaged over the
+    free fleet size 1 to 30. At the fleet cost limit of 6,000,000 USD: 100 percent through ten satellites,
+    0 at thirty, 69.7 and 69.2 averaged over the free size; at 8,000,000 USD, 42.7 and 40.8 at thirty, 91.4 and 91.2 averaged. The three
+    calibration fractions of `WP30-decisions.md` (82, 71 and 93 percent) were on the earlier coefficients.
+12. **Unchanged:** the four flags of every design in the first 1,000 rows; the two feasible counts on them
+    (706 and 780); the certificate statuses; the six check designs (three candidates, three proposals).
+
+### 1. The files
+
+| dataset | old rows | new rows | columns old / new | added | removed |
+|---|---|---|---|---|---|
+| `data/v2/adcs_designs_cubesat_gains.csv` (primary) | 1000 | 3000 | 32 / 37 | `fleet_size`, `momentum_headroom`, `battery_peak_power_ratio`, `unit_cost_usd`, `fleet_cost_usd` | none |
+| `data/v2/adcs_designs_cubesat.csv` (baseline) | 1000 | 3000 | 32 / 37 | the same five | none |
+| `data/v2/check_predictions_cubesat.csv` | 3 | 3 | 25 / 26 | `fleet_size` | none |
+| `data/v2/check_designs_cubesat.csv` | 6 | 6 | 31 / 36 | the same five | none |
+| `data/scope-sensitivity/scope_sensitivity_v2.csv` | 20 | 20 | | the same columns | none |
+
+`available_power_w` was an auxiliary column and is now a traded metric (same column, moved up). The
+three named candidates keep a fleet of one; the proposals and the check designs keep the fleet size the
+pool draws (the gate's choice, recorded in `WP30-build-notes.md`). Output hashes (12 hex): `v2-primary@11`
+`e4ab2fca5c74`, `v2-baseline@11` `57c208c91c59`, `v2-check-predictions@11` `05649b15348c`,
+`v2-check-designs@11` `1cab3bafa3fe`, `scope-sensitivity-shared-subspace-v2@10` `25425be01309`. The
+run was repeated on a clean tree after a first run written with an uncommitted tree: the outputs are
+bit-identical (`@10` and `@11` carry the same hashes). The 2,000-design run (`@9`) is history too. The five
+older ledger entries that hash `cubesat_model.py` or `legacy_oracle.py` (four adopted v1 datasets and the
+legacy shared-subspace sample) were re-adopted as `<id>@2` with `experiments adopt --readopt`: new code
+hashes, the frozen outputs unchanged, `verify` reports 0 drifts.
+
+### 2. The full tables
+
+Every number above is in `work-packages/WP30-rounds/data-gate/conclusions.md` (old8 | new8 | new13 side by
+side: temperatures, contending sets, term tables at K = 2 and 3, certificates, association pairs,
+redundancies, nondominated counts, regime comparison, candidates, propose-predict-check) and the K = 1, 2, 3
+record in `k-record.txt`.

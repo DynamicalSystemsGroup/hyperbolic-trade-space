@@ -14,7 +14,7 @@ baseline against D2's own table, to the same tolerance). A design's cost depends
 configuration, its fleet size and its total mass only, so the ladders are priced from the data's
 design columns at every n; when the data carry ``fleet_size`` and ``unit_cost_usd`` (the
 regenerated v2 data), the repricing is checked against them at each design's own fleet size and
-the script exits 2 on a difference above 1e-9. ``--no-launch`` prices the build only.
+the script exits 2 on a difference above 1e-8. ``--no-launch`` prices the build only.
 
     uv run python scripts/wp30_cost_ladders.py [--data DIR] [--write] [--no-launch]
 """
@@ -40,7 +40,9 @@ FLEET_SIZES = (1, 3, 10, 30)
 ALL_SIZES = tuple(range(1, 31))  # the sampler draws n uniform on the integers 1 to 30
 UNIT_LIMITS = tuple(range(200_000, 500_001, 50_000))
 FLEET_LIMITS = (500_000, 1_000_000, 2_000_000, 3_000_000, 4_000_000, 6_000_000, 8_000_000)
-CHECK_TOLERANCE = 1e-9
+# The data files carry nine significant digits, so a fleet cost near 1e7 USD is rounded by up to
+# 5e-9 relative (the largest difference found, 5.5e-9, is such a row); twice that bound is a defect.
+CHECK_TOLERANCE = 1e-8
 # The 2026 part coefficients (spike D2, readout section 3; the sources and dates are in the doc of
 # ``part def Prices`` in cubesat.sysml, which these equal)
 PANEL_PER_M2 = 340_000.0  # USD/m^2
