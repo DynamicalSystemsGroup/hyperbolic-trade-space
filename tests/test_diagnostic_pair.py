@@ -110,10 +110,11 @@ def test_the_metric_list_is_the_coverage_tables_in_its_order(pair):
     assert headers and all("facet" not in h for h in headers)
 
 
-def test_the_committed_coverage_table_names_eight_metrics_the_spec_knows():
-    """Eight since the WP23 close-out (the eclipse reserve left the model)."""
+def test_the_committed_coverage_table_names_nine_metrics_the_spec_knows():
+    """Eight since the WP23 close-out (the eclipse reserve left the model), nine since WP30 (the
+    momentum headroom, D-1 (a) of spike C)."""
     metrics = dp.metrics_from_coverage(COVERAGE)
-    assert len(metrics) == 8 and "slew time" not in metrics and "eclipse reserve" not in metrics
+    assert len(metrics) == 9 and "slew time" not in metrics and "eclipse reserve" not in metrics
     spec = dp.round_spec(V2 / "adcs_designs_cubesat.csv", V2 / "adcs_designs_cubesat_gains.csv",
                          metrics)  # fmt: skip
     assert [spec.short[a] for a in spec.attributes] == metrics

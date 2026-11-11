@@ -33,6 +33,16 @@ Two tables, written to ``views/coverage.md`` and ``views/coverage.csv`` from the
    connectivity: every configuration value feeds a subsystem and reaches a traded metric (the
    structural column of table 1), every metric is read off a subsystem, and the graph is connected.
 
+3. **The reason a requirement reads no traded metric** (WP30, D-2 (a) of spike C). A requirement
+   that no traded metric's quantity feeds stands in the behavioural view's box. Each one carries a
+   computed reason: the solver's verdict on the model's claim that it holds at every in-range
+   configuration (the constraint ``<Requirement>HoldsInRange``), and the Spearman correlation of
+   its quantity with the traded metrics over the feasible designs of each regime of the data of
+   record (one axis with a traded metric from ``case.ONE_AXIS``, tracking one from
+   ``NEAR_DUPLICATE``, else not traded). The behavioural view's caption prints the same sentence
+   (``reason_sentence``); a requirement with no claim and no quantity here has no reason, and a
+   test fails on it.
+
 The empirical column runs the slews through the case's oracle (``experiments.cubesat_oracle``)
 on the same model text, and the table says which model text the oracle ran. Nothing numeric about
 the case is typed here: ranges, enumerations, the named configurations and every effect are read
@@ -52,6 +62,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import dataclasses
 import hashlib
 import io
 import json
@@ -65,6 +76,8 @@ HERE = pathlib.Path(__file__).resolve().parent
 DEFAULT_MODEL = HERE / "cubesat.sysml"
 DEFAULT_OUT = HERE / "views"
 PACKAGE = "CubesatTradeSpaceV2"
+ADCS_DIR = HERE.parent
+NEAR_DUPLICATE = 0.95  # |Spearman| at or above which a quantity tracks a traded metric (spike C)
 EFFECT = 1e-9  # relative change below which a metric is said not to move
 TUNE_FACTOR = 1.1  # the one-at-a-time change of a tune (or its inverse at the top of a range)
 MARKS = ("MoE", "MoP")
@@ -78,6 +91,7 @@ METRIC_COLUMNS = {
     "energy balance": "energy_balance_wh",
     "peak slew power": "peak_slew_power_w",
     "depth of discharge": "dod_eclipse",
+    "momentum headroom": "momentum_headroom",
 }
 # the oracle's configuration keys for the model's decision elements
 ORACLE_KEYS = {
@@ -498,6 +512,141 @@ class Metric:
 
 
 # =================================================================================================
+# The reason a requirement reads no traded metric (WP30, D-2 (a))
+# =================================================================================================
+# The quantity each such requirement bounds, as a function of the dataset's columns ``f`` and the
+# model's constants ``k`` (read from the model below). A requirement that reads no traded metric and
+# has neither an entry here nor a ``<Requirement>HoldsInRange`` claim in the model has no reason.
+BOX_QUANTITY = {
+    "PowerRequirement": ("available power", lambda f, k: f["available_power_w"]),
+    "BatteryPeakPowerRequirement": (
+        "battery peak power ratio",
+        lambda f, k: (
+            k["discharge_rate"] * f["battery_wh"] / (k["housekeeping_w"] + f["peak_slew_power_w"])
+        ),
+    ),
+}
+
+
+def box_requirements(graph: ModelGraph, metrics: list[Metric]) -> list[str]:
+    """The requirements no traded metric's quantity feeds (the behavioural view's box), by name."""
+    read = {graph.requirement_of(m)[0] for m in metrics}
+    return sorted(short(r) for r in graph.kinds("RequirementDefinition") if r not in read)
+
+
+def _claim(graph: ModelGraph, requirement: str) -> dict | None:
+    """The solver's verdict on ``<requirement>HoldsInRange``, or None where the model has none."""
+    name = f"{requirement}HoldsInRange"
+    if f"{graph.pre}{name}" not in graph.byid:
+        return None
+    v = graph.model.verify_constraint(f"{graph.package}::{name}", engine="solve", question="holds")
+    return {"name": name, "status": v.status, "strength": v.strength}
+
+
+def _spearman(graph: ModelGraph, requirement: str, data_dir: pathlib.Path) -> dict | None:
+    """``{regime: {metric: oriented Spearman of the quantity with the metric}}`` over the feasible
+    designs of the data of record, or None where no quantity is stated for the requirement."""
+    if requirement not in BOX_QUANTITY:
+        return None
+    sys.path.insert(0, str(ADCS_DIR))
+    import case
+    import pandas as pd
+    from scipy.stats import spearmanr
+
+    spec = case.CUBESAT
+    k = {
+        "discharge_rate": graph.value(
+            graph.model.eval(f"{graph.package}::environment.batteryDischargeRate")
+        ),
+        "housekeeping_w": graph.value(
+            graph.model.eval(f"{graph.package}::environment.housekeepingLoad"), "SI::W"
+        ),
+    }
+    out = {}
+    for regime, name in spec.regimes.items():
+        raw = pd.read_csv(data_dir / name)
+        attrs = tuple(a for a in spec.attributes if a in raw.columns)  # the columns the data has
+        f = raw[case.feasible_mask(raw, dataclasses.replace(spec, attributes=attrs))]
+        q = BOX_QUANTITY[requirement][1](f, k)
+        out[case._REGIME_WORDS.get(regime, regime)] = {
+            spec.short[a]: float(spearmanr(q, spec.orientation[a] * f[a]).statistic) for a in attrs
+        }
+    return out
+
+
+def _signed(by_regime: dict[str, float]) -> str:
+    return ", ".join(f"{v:+.4f} {r}" for r, v in by_regime.items())
+
+
+def reason_sentence(r: dict) -> str | None:
+    """The sentence the caption and the table print for a requirement in the box, or None."""
+    if not (r["claim"] or r["quantity"]):
+        return None
+    parts = []
+    if r["claim"] and r["claim"]["status"] == "holds":
+        how = "proved" if r["claim"]["strength"] == "proved" else r["claim"]["strength"]
+        parts.append(
+            f"holds at every in-range configuration (the model's claim `{r['claim']['name']}`, "
+            f"{how} by the solver)"
+        )
+    elif r["claim"]:
+        parts.append(
+            f"has the model's claim `{r['claim']['name']}`, which the solver reports "
+            f"{r['claim']['status']}"
+        )
+    if r["quantity"]:
+        q, m, rho = r["quantity"], r["metric"], r["spearman"]
+        if r["axis"] == "one axis":
+            parts.append(
+                f"its quantity, the {q}, is one axis with the {m} (Spearman {_signed(rho)})"
+            )
+        elif r["axis"] == "tracks":
+            parts.append(f"its quantity, the {q}, tracks the {m} (Spearman {_signed(rho)})")
+        else:
+            parts.append(
+                f"its quantity, the {q}, is not traded "
+                f"(largest Spearman {_signed(rho)}, with the {m})"
+            )
+    return f"`{r['requirement']}` " + "; ".join(parts) + "."
+
+
+def box_reasons(graph: ModelGraph, metrics: list[Metric], data_dir=None) -> list[dict]:
+    """A computed reason for every requirement in the box, ``sentence`` None where there is none.
+
+    The Spearman is taken over the feasible designs of each regime, the quantity and the traded
+    metric both oriented larger-is-better; the traded metric named is the one with the largest
+    smaller-regime value. ``axis`` is ``one axis`` at ``case.ONE_AXIS``, ``tracks`` at
+    ``NEAR_DUPLICATE``, else ``not traded``.
+    """
+    sys.path.insert(0, str(ADCS_DIR))
+    import case
+
+    data_dir = pathlib.Path(data_dir or case.CUBESAT.data_dir)
+    out = []
+    for req in box_requirements(graph, metrics):
+        rho = _spearman(graph, req, data_dir)
+        row = {"requirement": req, "claim": _claim(graph, req), "quantity": None, "metric": None,
+               "spearman": None, "axis": None}  # fmt: skip
+        if rho:
+            names = next(iter(rho.values())).keys()
+            best = max(names, key=lambda n: min(rho[g][n] for g in rho))
+            floor = min(rho[g][best] for g in rho)
+            row.update(
+                quantity=BOX_QUANTITY[req][0],
+                metric=best,
+                spearman={g: rho[g][best] for g in rho},
+                axis="one axis"
+                if floor >= case.ONE_AXIS
+                else "tracks"
+                if floor >= NEAR_DUPLICATE
+                else "not traded",
+            )
+        row["sentence"] = reason_sentence(row)
+        out.append(row)
+    return out
+
+
+# =================================================================================================
 # The empirical column: one-at-a-time changes through the oracle
 # =================================================================================================
 def empirical(
@@ -566,7 +715,7 @@ def empirical(
 # metrics and requirements reach that is not placed here stops the build by name. The constants
 # (the environment, the scenario, the budgets, the fixed parts bus, antenna and IMU) are not nodes.
 SUBSYSTEM_OF = {
-    "controls": {"SlewMeasurement", "GravityGradientTorque", "PointingError"},
+    "controls": {"SlewMeasurement", "GravityGradientTorque", "PointingError", "MomentumHeadroom"},
     "power and energy": {
         "SolarPanel.area",
         "SolarPanel.mass",
@@ -1038,7 +1187,7 @@ def coupling(graph: ModelGraph, metrics: list[Metric], elements, structural: dic
 # =================================================================================================
 # The tables
 # =================================================================================================
-def build(model_path: pathlib.Path, with_empirical: bool = True) -> dict:
+def build(model_path: pathlib.Path, with_empirical: bool = True, data_dir=None) -> dict:
     text = model_path.read_text(encoding="utf-8")
     graph = ModelGraph(text)
     metrics = graph.metrics()
@@ -1091,9 +1240,17 @@ def build(model_path: pathlib.Path, with_empirical: bool = True) -> dict:
             elements,
             {(r["decision_element"], r["metric"]): r["structural"] for r in rows},
         ),
+        "reasons": box_reasons(graph, metrics, data_dir),
         "empirical_note": note,
         "measurement_inputs": graph.measurement_inputs(),
     }
+
+
+def _one_axis() -> float:
+    sys.path.insert(0, str(ADCS_DIR))
+    import case
+
+    return case.ONE_AXIS
 
 
 def _yn(v) -> str:
@@ -1190,6 +1347,23 @@ def render_md(result: dict) -> str:
             f"{t['how']} | {t['limit']} | {t['verified_in']} |"
         )
     out += ["", *render_coupling_md(result["coupling"], result["elements"]), ""]
+    out += [
+        "## Requirements that read no traded metric: the reason",
+        "",
+        "A requirement no traded metric's quantity feeds stands apart in the behavioural view. "
+        "Each carries a computed reason, printed here and in the view's caption from the same "
+        "computation (`box_reasons`): the solver's verdict on the model's claim that it holds at "
+        "every in-range configuration, and the Spearman correlation of its quantity with the "
+        "traded metrics over the feasible designs of each regime of the data of record, the "
+        "quantity and the metric both oriented larger-is-better (one axis at "
+        f"{_one_axis():g}, tracks at {NEAR_DUPLICATE:g}).",
+        "",
+        *[
+            f"- {r['sentence'] or '`' + r['requirement'] + '`: no reason stated'}"
+            for r in result["reasons"]
+        ],
+        "",
+    ]
     return "\n".join(out)
 
 
@@ -1337,6 +1511,23 @@ def render_csv(result: dict) -> str:
             f"unreached: {'; '.join(c['unreached_metrics']) or 'none'}",
         ]
     )
+    w.writerow(
+        ["table", "requirement", "claim", "claim_verdict", "quantity", "metric", "axis", "reason"]
+    )
+    for r in result["reasons"]:
+        claim = r["claim"]
+        w.writerow(
+            [
+                "reasons",
+                r["requirement"],
+                claim["name"] if claim else "",
+                f"{claim['status']} {claim['strength']}" if claim else "",
+                r["quantity"] or "",
+                r["metric"] or "",
+                r["axis"] or "",
+                r["sentence"] or "",
+            ]
+        )
     return buf.getvalue()
 
 

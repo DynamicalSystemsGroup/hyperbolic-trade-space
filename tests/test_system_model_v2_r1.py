@@ -330,14 +330,18 @@ def project():
     return mod
 
 
-def _views(project, text: str, tmp_path: pathlib.Path):
+def _views(project, text: str, tmp_path: pathlib.Path, reasons: bool = False):
+    """The assembly view, the behavioural view and its facts; ``reasons`` computes the box's
+    reasons (the solver and the data of record: WP30, D-2 (a)) so the caption carries them."""
     path = tmp_path / "m.sysml"
     path.write_text(text, encoding="utf-8")
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         m, byid = project.load(path)
         assembly = project.assembly(m, byid, P)
-        behaviour, facts = project.behavioural(m, byid, P)
+        behaviour, facts = project.behavioural(
+            m, byid, P, reasons=project.box_reasons(path) if reasons else None
+        )
     return assembly, behaviour, facts
 
 
@@ -356,6 +360,8 @@ def test_every_covered_metric_has_a_thick_line_from_its_requirement(project, tmp
     for metric, req in WP23_COVERED.items():
         assert (req, metric) in drawn or (req, metric) in moe, (req, metric)
     assert moe == {("LaunchBudgetRequirement", "total mass"): "LaunchCost"}
+    # WP30: the momentum requirement reads the momentum headroom, now traded (its own calc)
+    assert ("MomentumRequirement", "momentum headroom") in drawn
     assert "(no requirement)" not in behaviour  # no dashed box: no open metric remains
     # the MoE is two lines: requirement to launch cost (a requirement line, thickness 2) and launch
     # cost to the total mass (revision 7: dashed, a derived-from line, not a requirement line)
@@ -438,19 +444,23 @@ def test_the_analysis_box_names_what_needs_no_slew_and_the_caption_is_the_commit
     project, tmp_path
 ):
     """Disposition B: the analysis box names what the analysis returns and what needs no slew."""
-    _, behaviour, facts = _views(project, TEXT, tmp_path)
+    _, behaviour, facts = _views(project, TEXT, tmp_path, reasons=True)
     box = next(x for x in behaviour.splitlines() if "as xAnalysis" in x)
-    assert "returns 7 of 8" in box and "pointing error" in box and "total mass" in box
+    assert "returns 8 of 9" in box and "pointing error" in box and "total mass" in box
     # the control effort and the settling time come from the measurement (disposition G3-P2-6)
     assert "control effort\\n(passed on)" in box and "settling time\\n(not returned)" in box
     cap = facts["caption"]
     assert (
-        "returns 7 of the 8" in cap[0] and "settling time is read from `SlewMeasurement`" in cap[0]
+        "returns 8 of the 9" in cap[0] and "settling time is read from `SlewMeasurement`" in cap[0]
     )
     assert "ConfigurationVerification" in cap[1] and "SlewVerification" in cap[1]
-    assert "coverage.md" in cap[2] and "coverage.md" in cap[3]
+    assert "coverage.md" in cap[2] and "2 requirements that read no traded metric" in cap[2]
+    # WP30, D-2 (a): one bullet per requirement in the box, the reason computed (coverage.py)
+    assert cap[3].startswith("`BatteryPeakPowerRequirement` holds at every in-range")
+    assert cap[4].startswith("`PowerRequirement` holds at every in-range")
+    assert "coverage.md" in cap[5]  # the bullet on what is not drawn
     # revision 9 (the WP23 close-out): the negated satisfy is drawn and named, not read as satisfied
-    assert "`cubesatBaseline` satisfies every requirement but `PointingErrorRequirement`" in cap[4]
+    assert "`cubesatBaseline` satisfies every requirement but `PointingErrorRequirement`" in cap[6]
     assert facts["fails"][f"{P}__PointingErrorRequirement"] == {"cubesatBaseline"}
     box = next(x for x in behaviour.splitlines() if "**PointingErrorRequirement**" in x)
     assert "not satisfied by cubesatBaseline" in box
