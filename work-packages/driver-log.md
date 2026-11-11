@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The supervisor's view was stale (2026-11-11, 12:15).** His two comments of the hour (the floating requirements in
+  the behavioural view; term 1 missing from the K = 3 tension figure) were made on the staged site at af9ffea. Checked
+  at the head: both stand there too (the revision that removes the box is in flight; the tension figure's static image
+  was last written at the close-out gate and still carries the "too few" note), so both units proceed as recorded. The
+  `stage` worktree is rebuilt at the head and served again on port 8791 so that his next look is current; a rule for
+  the assistant: before putting anything to him in the browser, state the head the page is built from.
+
 - **Incident (2026-11-11, 11:20):** an agent of the tenth PM is editing `paper/paper.ipynb` in the main checkout (the
   P9/P10 narrowings), against the one-writer-per-worktree rule; the assistant's rebase was refused by the unstaged
   change and the file was left untouched; the PM is told to move the work to a worktree without losing it and restate
