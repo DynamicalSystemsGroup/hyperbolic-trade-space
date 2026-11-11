@@ -172,7 +172,9 @@ def regenerate(out_dir: Path | str, seed: int, workers: int | None = None, n: in
         exp = _experiment("v2-check-designs")
         text = (lg.REPO_ROOT / exp.model_path).read_text(encoding="utf-8")
         committed = pd.read_csv(V2_DATA / CHECKS_FILE)
-        designs = committed[["role", "design_id", "name", "seed", *oracle_config_names()]]
+        # a committed file made before the fleet size has no such column: fleets of one
+        have = [c for c in oracle_config_names() if c in committed]
+        designs = committed[["role", "design_id", "name", "seed", *have]]
         inner = CubesatOracle(text, exp.scenario, exp.gain_box, workers=1)
         table = CheckOracle(inner).evaluate(perturb(designs, seed))
         _write(table.reset_index(drop=True), target / CHECKS_FILE)

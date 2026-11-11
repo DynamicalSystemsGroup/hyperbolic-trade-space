@@ -149,7 +149,15 @@ def test_the_guard_refuses_the_committed_data_directories(tmp_path):
 class _StubOracle:
     """Stands in for the model-backed oracle: the designs, zeros for every measured column."""
 
-    config_names = ("panel_span_m", "battery_wh", "wheel_class", "st_grade", "Kp", "Kd")
+    config_names = (
+        "panel_span_m",
+        "battery_wh",
+        "wheel_class",
+        "st_grade",
+        "Kp",
+        "Kd",
+        "fleet_size",
+    )
     attribute_names = ATTRIBUTE_NAMES
     flag_names = ("settled", "momentum_ok", "power_ok", "dod_ok")
 
@@ -158,6 +166,8 @@ class _StubOracle:
 
     def evaluate(self, designs):
         out = designs.sort_values("design_id").reset_index(drop=True)
+        if "fleet_size" not in out:  # as the oracle: a design without one is a fleet of one
+            out["fleet_size"] = 1.0
         meas = pd.DataFrame({c: [1.0] * len(out) for c in OUTPUT_NAMES})
         for c in self.flag_names:
             meas[c] = True

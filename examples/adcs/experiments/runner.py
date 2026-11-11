@@ -22,11 +22,16 @@ class LogUniformSampler:
 
     Design ``i`` depends only on ``(seed, i)``, not on ``count``. Categorical variables are uniform
     over their levels, drawn first in mapping order; continuous variables are log-uniform in their
-    ranges, drawn next in mapping order. Columns: ``design_id``, ``seed``, categoricals,
-    continuous variables.
+    ranges, drawn next in mapping order. Integer variables (``integer_ranges``, uniform on the
+    integers of the closed range) are drawn from a generator of their own, a second stream of the
+    design's child seed, so adding one moves no draw of the other variables. Columns:
+    ``design_id``, ``seed``, categoricals, continuous variables, integer variables.
 
     >>> s = LogUniformSampler({"c": ["a", "b"]}, {"x": (1.0, 10.0)})
     >>> s.draw(3, 0).iloc[0].to_dict() == s.draw(5, 0).iloc[0].to_dict()
+    True
+    >>> t = LogUniformSampler({"c": ["a", "b"]}, {"x": (1.0, 10.0)}, {"k": (1, 30)})
+    >>> bool((t.draw(5, 0)[["design_id", "seed", "c", "x"]] == s.draw(5, 0)).all().all())
     True
     """
 
@@ -34,9 +39,13 @@ class LogUniformSampler:
         self,
         categorical: Mapping[str, Sequence[str]],
         log_ranges: Mapping[str, tuple[float, float]],
+        integer_ranges: Mapping[str, tuple[float, float]] | None = None,
     ):
         self.categorical = {k: list(v) for k, v in categorical.items()}
         self.log_ranges = {k: (float(lo), float(hi)) for k, (lo, hi) in log_ranges.items()}
+        self.integer_ranges = {
+            k: (round(lo), round(hi)) for k, (lo, hi) in (integer_ranges or {}).items()
+        }
 
     def draw(self, n: int, seed: int) -> pd.DataFrame:
         """``n`` designs for root seed ``seed``."""
@@ -50,9 +59,20 @@ class LogUniformSampler:
                 row[name] = levels[g.integers(len(levels))]
             for name, (lo, hi) in self.log_ranges.items():
                 row[name] = float(np.exp(g.uniform(*np.log((lo, hi)))))
+            if self.integer_ranges:
+                own = np.random.default_rng(np.random.SeedSequence(cs, spawn_key=(1,)))
+                for name, (lo, hi) in self.integer_ranges.items():
+                    row[name] = float(own.integers(lo, hi + 1))
             rows.append(row)
         return pd.DataFrame(
-            rows, columns=["design_id", "seed", *self.categorical, *self.log_ranges]
+            rows,
+            columns=[
+                "design_id",
+                "seed",
+                *self.categorical,
+                *self.log_ranges,
+                *self.integer_ranges,
+            ],
         )
 
     __call__ = draw
