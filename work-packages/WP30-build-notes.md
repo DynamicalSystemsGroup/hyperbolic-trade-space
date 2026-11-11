@@ -334,3 +334,20 @@ loaded model): the baseline's unit cost fails at 1, 2 and 3 satellites (354,661 
 million USD); no named configuration at a fleet of one meets the unit cost limit (the supervisor: "its
 fine"), and all three meet the fleet cost limit at one satellite (the `satisfy lowCost.fleetCost` statements of
 `stakeholders.sysml`).
+
+# WP30 gate: a defect found in `experiments.sensitivity analyse` (for the cascade)
+
+`PYTHONPATH=examples/adcs uv run python -m experiments.sensitivity analyse --out DIR --json
+examples/adcs/experiments/reports/sensitivity.json` cannot write the results file when the data carry a
+metric the stored results do not name. `sensitivity.quantities` (line 305) calls the paper's sentence
+generators first (`paper/generate_findings.py`: `k1_sentence`, `k_sweep_sentence`, ...), and those read the
+stored results: `k1_sentence` asks `paper_stability.stable` for `D exponents K=1 | primary | unit cost |
+exponent w` (KeyError: not in `sensitivity.json` or `stability_extra.json`), then `k_sweep_sentence`, through
+`paper_terms.aligned` and `stored_exponents`, asks for `D exponents K=3 | primary | momentum headroom | term 1`.
+The numeric quantities that would supply those entries are computed after the sentences, in the same call.
+So the file that has to hold the names is the file the run exists to write. At the WP30 gate the run was done
+in two passes with a scratch driver (not in the repository): the sentence generators returned `?` when they
+raised, the first pass wrote the numeric quantities, and the second, unpatched, wrote the sentences against
+them. The unit for the cascade: compute and write the numeric quantities before any sentence generator runs,
+or let the generators return a marker on a first pass, so that one command suffices after any change of the
+metric set.
