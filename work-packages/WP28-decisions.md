@@ -153,3 +153,31 @@ Implementer's record, one entry per unit. Worktree `wp28close` from origin/dev 0
 - **Checked and left out.** A near-duplicate metric does not lower `conditioning_` (the fit gives the duplicate a
   zero exponent, and only participating exponents count: 39.4 with four metrics, 39.2 with a fifth near-copy), so the
   paragraph does not say that duplicates are what the number finds. The docs conditioning page is the docs stream's.
+
+### U3. CR-37 loose ends and the two stale spots
+
+- **(a) The sketch's wording: (a) implemented, (b) the alternative, decided by the PM.** Theorem 5's sketch (`res-L7`)
+  reads, since dbb18e3, "Identifying these rates with the fit needs Theorem 2's hypothesis." (10 words as the paper's
+  counter reads it); (b) would add "(R1's relation at the fit temperature)" (16 words). (a) is kept and nothing in the
+  sketch changed: Theorem 2's own hypotheses line (`thm-kkt`) already says "R1's relation at the fit temperature",
+  so (b) would repeat the line the link points to. Reported to the PM as the choice made.
+- **(b) The rendering of "{prf:ref}`thm-kkt`'s" in a built page.** Built with `cd paper && uv run myst build --html`
+  (the main checkout's `paper/_build/templates` copied first; no warnings), served on a local port, viewed in a tab
+  of my own (closed after). The sketch shows "Identifying these rates with the fit needs Theorem 2's hypothesis." with
+  "Theorem 2" a link to `#thm-kkt` and the apostrophe-s outside the link, nothing broken (DOM read and screenshot:
+  `/private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/s3/cr37-thm-kkt-sketch.jpg`).
+  Also seen in the built pages: Section 9's "Two regimes" paragraph with "Appendix D.4" linking to
+  `/supporting-material#sub-d-4` (`.../s3/s3-section9-pointer.jpg`), and D.12 with the new paragraph, whose
+  `{prf:ref}` to Theorem 3 resolves across the two pages (`.../s3/s10-d12-before-split.jpg`, taken before the
+  paragraph was split into three; the split changes line breaks only).
+- **(c) Section 8's centring sentence, pinned.** `test_section_8_says_the_conditioning_centres_each_log_metric_and_on_the_data_it_does`
+  checks the sentence is in Case construction, the case's conditioner defaults to the standard scaler, and the
+  column means of the log of the conditioned metrics are below 1e-12 in both regimes; claims row C426.
+- **(d) C064's stale note.** It read "7-8 on 2, 145-146 on 4, 671 on 10"; the sentence now says 126 on 4 and 659 on
+  all 8 attributes, no count moving over the five regenerations (the committed `num-nondominated` output); the note
+  says that and what the test pins.
+- **Checks run across the units.** `uv run ruff check`/`format` on the changed files; `uv run pytest -q -m "not slow"
+  tests/test_paper.py tests/test_claims_register.py` (163 passed, 4 skipped); `uv run python scripts/check.py
+  --changed` before U1's push (147 passed, 4 skipped); the new D.12 test (slow-marked neighbour run) passes;
+  `scripts/check_vocabulary.py --baseline scripts/vocabulary_baseline.toml`: 0 new violations. The container
+  regression and the exact-equality re-pinning are the gate's.

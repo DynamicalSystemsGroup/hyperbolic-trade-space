@@ -2240,6 +2240,21 @@ def test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect
     assert value.shape == (1,) and value[0] > 0
 
 
+def test_section_8_says_the_conditioning_centres_each_log_metric_and_on_the_data_it_does():
+    """CR-38: Section 8 keeps "This conditioning centres each log-metric (the standard scaler)."
+    The case's conditioner is the standard scaler and the log-metrics of both regimes have column
+    means at rounding level (the comparison of equations (1) and (2) is Section 6.2's)."""
+    import case
+
+    assert "This conditioning centres each log-metric (the standard scaler)." in _section(
+        "Case construction"
+    )
+    for study in generate_results._studies().values():
+        logs = np.log(study.M)
+        assert np.abs(logs.mean(axis=0)).max() < 1e-12, study.regime
+    assert case.conditioner_for.__defaults__[-1] == "standard"
+
+
 def test_no_doubled_label_before_a_cross_reference():
     """G-7: a reference to a definition or theorem prints its own kind; none is typed before it."""
     body = _markdown(_nb(PAPER_NB))

@@ -934,7 +934,7 @@ backing = ["gen:paper/generate_findings.py::nondominated_sentence", "test:tests/
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "706 designs: nondominated 7-8 on 2, 145-146 on 4, 671 on 10 attributes; the test pins '671 on 10' and every range against the results file; 'on this case' scopes it"
+note = "706 designs: nondominated 126 on 4 and 659 on all 8 attributes, no count moving over the five regenerations (the sentence num-nondominated, from case.nondominated_counts); the test pins that none of those counts is typed in the body and that each is the results file's value; 'on this case' scopes it"
 
 [[claim]]
 id = "C065"
@@ -5293,4 +5293,19 @@ status = "backed"
 disposition = "keep"
 source = "WP28 S-10"
 note = "The test evaluates the printed call on a strictly positive planted table and checks it returns one positive value."
+
+[[claim]]
+id = "C426"
+fragment = "This conditioning centres each log-metric (the standard scaler)"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "S"
+backing = [
+  "func:examples/adcs/case.py::conditioner_for",
+  "test:tests/test_paper.py::test_section_8_says_the_conditioning_centres_each_log_metric_and_on_the_data_it_does",
+]
+status = "backed"
+disposition = "keep"
+source = "WP28 CR-38 (the sentence that stayed in Section 8 when the comparison of equations (1) and (2) moved to Section 6.2); pinned at the close of WP28"
+note = "The case's conditioner is LogAffinePreconditioner with scaler='standard' (case.conditioner_for default); the test checks the column means of the log of the conditioned metrics are below 1e-12 in both regimes (7.4e-15 and 3.6e-15 on the data of record, C421)."
 
