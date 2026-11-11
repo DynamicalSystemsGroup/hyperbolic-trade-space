@@ -1100,12 +1100,13 @@ def _yn(v) -> str:
     return "-" if v is None else ("yes" if v else "no")
 
 
+def repo_path(path: pathlib.PurePath, root: pathlib.PurePath) -> str:
+    """The path relative to ``root``, with forward slashes on every platform."""
+    return (path.relative_to(root) if root in path.parents else path).as_posix()
+
+
 def render_md(result: dict) -> str:
-    rel = (
-        result["model"].relative_to(HERE.parents[2])
-        if HERE.parents[2] in result["model"].parents
-        else result["model"]
-    )
+    rel = repo_path(result["model"], HERE.parents[2])
     metrics = [m.name for m in result["metrics"]]
     out = [
         "# Coverage table of the cubesat model",

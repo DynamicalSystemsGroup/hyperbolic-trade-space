@@ -326,3 +326,11 @@ def test_committed_table_equals_a_full_regeneration_three_times(coverage):
         "magnitudes that differ from the environment of record (committed, here): "
         + ("; ".join(f"{e} -> {m}: {a}, {b}" for e, m, a, b in differing) or "none")
     )
+
+
+def test_repository_paths_print_with_forward_slashes(coverage):
+    root = pathlib.PureWindowsPath("C:/work/repo")
+    path = root / "examples" / "adcs" / "model_v2" / "cubesat.sysml"
+    assert coverage.repo_path(path, root) == "examples/adcs/model_v2/cubesat.sysml"
+    outside = pathlib.PureWindowsPath("D:/other/cubesat.sysml")
+    assert coverage.repo_path(outside, root) == "D:/other/cubesat.sysml"
