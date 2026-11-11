@@ -509,7 +509,7 @@ nothing: no commit, no worktree, the scratch folder `scratchpad/wp28/inventory` 
 the modeller's worktree `wp27model` (tab-23 holds the head's three model files at 0 issues; by Bug 10 no other tab
 restores or creates a project while it is in use). The seventh PM's inputs for WP28, all in files: the scope
 (`WP28-scope-of-work.md`, start 1277210) and the driver's decisions (`WP28-decisions.md`, "Scope gate": OD1 b, OD2 b
-with Appendix F out, OD3 a, OD4 b, OD5 a, OD6 a, OD7 the defaults); the sizing (123 units: 14 paper sections, 27 boxed
+with Appendix F out, OD3 a, OD4 b, OD5 a, OD6 a, OD7 the defaults); the sizing (122 units (corrected by WP25-4; the scope's terms sum to 122, `WP28-inventory.md`): 14 paper sections, 27 boxed
 statements, 10 floats, 7 appendices with 40 generated tables, 14 docs pages, 8 docs figures, the root page, the README;
 the paper at 9,805 words of a 10,107 ceiling, the docs at 6,792 of 7,600); round 2's friction counts and worst cells
 (`WP11-round-1/triage.md`, "Round 2") as the triager's input; the answer key at version 4 (hash in `WP11-decisions.md`;
