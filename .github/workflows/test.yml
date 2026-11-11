@@ -124,6 +124,12 @@ jobs:
         run: uv sync --locked
       - name: Lock check
         run: uv lock --check
+      # The z3-solver wheel installs z3.exe in <venv>\bin, which a Windows venv does not put on PATH
+      # (it adds Scripts); the engines find the solver by PATH.
+      - name: z3 on PATH
+        run: |
+          test -f .venv/bin/z3.exe
+          echo "$(cygpath -w "$PWD/.venv/bin")" >> "$GITHUB_PATH"
       - name: Lint
         run: |
           uv run ruff check .

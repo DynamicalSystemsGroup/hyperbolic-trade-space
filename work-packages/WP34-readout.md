@@ -41,3 +41,14 @@ Which shards should Windows run in `test.yml` once the fixes are in?
 1. The fast shard only. Smallest set; the failures above are the whole work; the README says slow and docs-paper are Linux and macOS.
 2. The fast shard and the slow shard. One more spike run (dispatch with the slow shard) before the decision; adds the cost of the slow shard's time on Windows at each gate.
 3. All three shards. Needs a spike of the docs-paper shard (node, mystmd and the paper build on Windows) first; the README then states three platforms for all shards.
+
+## Addendum (stage 3): the `tab-C` item is the line-endings class
+
+`tests/test_paper.py::test_c_committed_output_is_current` re-runs `paper/generate_model.py::datasets`, whose table prints
+`SHA-256` of each dataset CSV (`_sha256` is `hashlib.sha256(path.read_bytes())`) and looks the digest up in the ledger
+(`Ledger entry`, `Ledger hash`). The tolerance comparison (`_same_text`) compares 64-hex tokens exactly and the planted
+row alone is masked. On a CRLF checkout the CSV bytes differ, so the digests differ and the ledger lookup prints `none`:
+the same cause as `tab-B-checker`, with no differing line printed because the assertion carries none. Reproduced in
+part on the Mac: a clone with `core.autocrlf=true` of the branch before the `.gitattributes` has CRLF in every text
+file; a clone after it has none. The fix is the same `.gitattributes` (`* text=auto eol=lf`); the test is unchanged.
+What stays to be proved is the Windows run itself.
