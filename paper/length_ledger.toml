@@ -1065,3 +1065,11 @@ section = "Definitions"
 words_removed = 14
 no_longer_did = "Figure 1 drew the planted exponent vectors as open rings beside the fitted ones; the caption's clause and the 'Shows' line's clause (7 words each) said the fit recovers them, and the recovery statement stays in Appendix D.14, now cited from Section 9"
 authority = "the supervisor: 'i don't think you ned the extra circle denoting planted data'"
+
+# WP29 acceptance rider: the reads2 wording items on Corollary 1 (net one word).
+[[cut]]
+date = "2026-11-11"
+section = "Results"
+words_removed = 1
+no_longer_did = "Corollary 1 said 'result first order' in its hypotheses line and again 'to first order' in its statement, and its sketch said the Hessian and gradient are 'set against each other'; the box now names the noise on the log-metrics, the noise-free fit, A5, and 'to first order' at 'lowers', net one word"
+authority = "WP29 acceptance rider (WP29-decisions.md, Acceptance), reads2 returns a2, b2, d2"

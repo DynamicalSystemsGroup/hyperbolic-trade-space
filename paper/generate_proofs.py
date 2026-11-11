@@ -270,11 +270,13 @@ def _proof(file, lemma, record, res_index, owners, results) -> str:
         if shared
         else ""
     )
+    label = "premises the script declares" if lemma["hypotheses"] else "quoted from the statement"
     return (
         f'<a id="{_anchor(n, res_index)}"></a>\n\n#### {heading}\n\n{sharing}'
         f"**File.** [{file}]({BLOB}/{file}). "
         f"**Statement.** {stated}\n\n"
-        f"**Hypotheses** (quoted from the statement): {_hypotheses(lemma)}\n\n"
+        f"**Hypotheses** ({label}): "
+        f"{_hypotheses(lemma)}\n\n"
         f"**Ledger.** {ledger}.\n\n{body}"
     )
 

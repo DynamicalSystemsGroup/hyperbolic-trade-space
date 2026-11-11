@@ -5605,7 +5605,7 @@ note = "S-5 criteria: MIN_NEAR = 10 (case.MIN_NEAR_FRONTIER), TOL = 0.10 over 3 
 
 [[claim]]
 id = "C459"
-fragment = "Gaussian noise of covariance Sigma on the conditioned metrics adds the ridge"
+fragment = "Gaussian noise of covariance Sigma on the log-metrics adds the ridge"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -5621,7 +5621,7 @@ note = "The expected noisy objective is J_tau plus (tau/2) w'Sigma w (L20.20, fr
 
 [[claim]]
 id = "C460"
-fragment = "The shift is at most ... and lowers"
+fragment = "The shift is at most ... and, to first order, lowers"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -5715,7 +5715,7 @@ note = "L20 proves the shift on the support T of the clean fit under strict comp
 
 [[claim]]
 id = "C466"
-fragment = "is at most $\\lVert P\\Sigma w\\rVert/m$, $m$ the smallest eigenvalue of $C$ on that space, and lowers $w^\\top\\Sigma w$, in the equal case $\\lVert w\\rVert^2$"
+fragment = "is at most $\\lVert P\\Sigma w\\rVert/m$, $m$ the smallest eigenvalue of $C$ on that space, and, to first order, lowers $w^\\top\\Sigma w$ ($\\lVert w\\rVert^2$ in the equal case)"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
