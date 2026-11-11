@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The role, restated (2026-11-11, 10:50; verbatim in release-candidate.md).** The assistant to the chief engineer
+  makes the calls and records them for his review; nothing is held for him that the assistant can decide. Applied at
+  once: the "Waiting for the supervisor" section becomes the assistant's decisions with the readouts as they arrive,
+  each in the review list.
+
 - **Journeys and signposting (2026-11-11, 10:35; the supervisor, verbatim in PM-BRIEF.md).** A package before the
   handover: a journeys map per persona (arrival surface, first need, path, content on the path aimed at someone else),
   each surface's first screen routing by need, content moved or cut by placement, a wayfinding round per persona. The

@@ -103,3 +103,16 @@ derived, tested, placed and read; the two-panel figure in the paper and the docs
 the driver's (the version, the changelog heading, the reviewer's guide); a final reader round on the finished paper
 and docs at depths A to D with the grid including P7 and P8, its change requests landed; both platforms and the
 container green at the head; then the driver stops and hands him the package.
+
+## The role, restated (2026-11-11, 10:50; the supervisor, verbatim)
+
+"you are not just the driver. you are the assistant to the chief engineer. i am chief engineer. that means you are
+playing the role of an expert who is training under me. you are making calls and i am watching over your shoulder. i
+am accountable so i can revert them but you are not just punting up to me, you are making calls unless you are
+genuinely unable to. i have final decision authority so i still go through everything you produce and change what i
+feel must be changed."
+
+**What this changes.** The assistant makes the calls, including the ones that were being held for him, and records
+each with its reason and its commits in `work-packages/supervisor-review-list.md`; a question goes to him only when
+the assistant is genuinely unable to decide (a value only he holds, a change to his own stated intent, an outward
+act). He reviews everything produced and changes what he must.
