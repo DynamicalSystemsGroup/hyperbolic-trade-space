@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Container gate run failed inside the image (2026-11-11, 18:30).** The rebuilt image (at 910a57d) planned the right
+  entries (dry run: @12, shared @11), and the live re-run died in the oracle's worker pool with
+  `opensysml.errors.ConnectionError: sysml-grpc service unavailable ... Connection refused` on the loopback port, with
+  no entry written. The close-out gate ran the same re-run at 1,000 designs; this is 3,000 designs per regime with
+  three workers inside the container. The assistant checks the container's memory and retries with one worker before
+  routing a robustness fix (the oracle reconnecting or restarting the service per chunk) to the cascade.
+
 - **Container build broken by the theme pin (2026-11-11, 18:25).** The first container run for the WP30 gate failed
   at the image build: the Dockerfile's warm-up record step changed into `_build/templates/site/myst/article-theme`,
   but since the pin (WP8b D-8) MyST stores the template under a directory named by the archive URL's hash. The
