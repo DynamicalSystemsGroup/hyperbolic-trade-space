@@ -14,7 +14,9 @@ The triangle is drawn by the package's own ``plot_ternary`` (plain Matplotlib, t
 projection written out there: ``x = right + top / 2``, ``y = sqrt(3) / 2 * top``), the function the
 documentation's examples call; this script supplies the planted table, the fit and the figure.
 Two files are written, ``why-regions-light.png`` and ``why-regions-dark.png``, on transparent
-backgrounds and with the colours of the root page's two schemes.
+backgrounds and with the colours of the root page's two schemes. :func:`build_story` writes the
+same table with the lines of equal V and the numbered markers, ``ternary-planted-light.png`` and
+``ternary-planted-dark.png``: the planted three-region figure the root page tells its story with.
 
 ``--lines`` (off by default, and off everywhere on the site) overlays lines of equal V at a fixed
 total: the shares are ``c_j = (m_j / typical_j)^(1/s) / L`` with ``s = 1`` and ``L`` their sum, the
@@ -36,6 +38,7 @@ from hyperbolic_trade_space.plotting import plot_ternary
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUT = ROOT / "build" / "site-figures"
 FILES = {"light": "why-regions-light.png", "dark": "why-regions-dark.png"}
+STORY_FILES = {"light": "ternary-planted-light.png", "dark": "ternary-planted-dark.png"}
 
 N_ROWS, N_METRICS, N_TERMS, DATA_SEED = 900, 3, 3, 11
 TEMPERATURE, FIT_SEED = 50.0, 0
@@ -88,7 +91,7 @@ def draw(fit, scheme="light", lines=False):
     return fig
 
 
-def build(out=DEFAULT_OUT, lines=False, fit=None):
+def build(out=DEFAULT_OUT, lines=False, fit=None, files=None):
     """Write both schemes' images into ``out``; returns the paths by scheme."""
     import matplotlib.pyplot as plt
 
@@ -97,12 +100,23 @@ def build(out=DEFAULT_OUT, lines=False, fit=None):
     fit = fit or fit_why()
     paths = {}
     with plt.rc_context({"font.family": "DejaVu Sans", "font.size": 11}):
-        for scheme, name in FILES.items():
+        for scheme, name in (files or FILES).items():
             fig = draw(fit, scheme, lines=lines)
             paths[scheme] = out / name
             fig.savefig(paths[scheme], dpi=DPI, transparent=True)
             plt.close(fig)
     return paths
+
+
+def build_story(out=DEFAULT_OUT, fit=None):
+    """The planted table with lines of equal V and numbered markers: both schemes, into ``out``."""
+    return build(out, lines=True, fit=fit, files=STORY_FILES)
+
+
+def build_all(out=DEFAULT_OUT):
+    """The root page's images: the Why image and the story figure; one fit serves both."""
+    fit = fit_why()
+    return {"why": build(out, fit=fit), "story": build_story(out, fit=fit)}
 
 
 def main(argv=None):
@@ -118,6 +132,8 @@ def main(argv=None):
     fit = fit_why()
     for scheme, path in build(args.out, lines=args.lines, fit=fit).items():
         print(f"{scheme}: {path}")
+    for scheme, path in build_story(args.out, fit=fit).items():
+        print(f"story {scheme}: {path}")
     print("exponents", np.round(fit["W"], 2).tolist())
     print("labels", [says(w).replace("\n", " ") for w in fit["W"]])
     return 0

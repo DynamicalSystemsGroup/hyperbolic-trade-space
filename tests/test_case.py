@@ -694,3 +694,42 @@ def test_the_docs_design_sets_block_is_the_case_modules():
     assert _docs_block("# case.design_sets_summary()") == case.design_sets_summary(
         labels=DOCS_LABELS
     )
+
+
+def test_ternary_pair_figure_is_two_panels_one_key_and_the_regions_the_page_names():
+    """Figure 6 of the examples page (supervisor, WP28-decisions): panel A and panel B, each fitted
+    with two terms, one shared key; the words are read from the fits' exponents."""
+    import matplotlib
+    from matplotlib.text import Text
+
+    from hyperbolic_trade_space import plotting
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    schemes, sizes = plotting._TERN_SCHEMES, plotting._TERN_LABEL_SIZES
+    fits = case.ternary_pair_fits()
+    assert list(fits) == ["A", "B"]
+    assert [est.exponents_.shape[0] for _, est in fits.values()] == [2, 2]
+    fig = case.ternary_pair_figure(fits)
+    assert plotting._TERN_SCHEMES is schemes and plotting._TERN_LABEL_SIZES is sizes
+    assert len(fig.axes) == 2 and len(fig.legends) == 1 and len(fig.legends[0].get_texts()) == 5
+
+    def words(ax):
+        found = ax.findobj(lambda a: (a.get_gid() or "").startswith("ternary-label-"))
+        return {" ".join(t.get_text().split()) for t in found}
+
+    assert words(fig.axes[0]) == {
+        "pointing error trades against control effort",
+        "total mass trades against pointing error",
+    }
+    assert words(fig.axes[1]) == {
+        "settling time trades against control effort",
+        "depth of discharge alone",
+    }
+    small = [t.get_text() for t in fig.findobj(Text) if t.get_text().strip() and
+             t.get_fontsize() < case.FIGURE_MIN_FONT_PT]  # fmt: skip
+    assert not small, small
+    for _, est in fits.values():  # no design colouring by cell: one neutral colour
+        assert est.exponents_.sum(axis=1) == pytest.approx(1.0)
+    plt.close(fig)

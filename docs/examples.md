@@ -20,10 +20,6 @@ above V = 1:
   and the other is the one-term contending set.
 - **A second table.** The stock-gains table gives a different one-term
   contending set, so the finding depends on the regime.
-- **No metric twice.** No pair of the eight metrics reaches a rank correlation of 0.99 over the
-  feasible designs, so each exponent is read on its own.
-
-These are observations of the fit, not explanations; the physical reading is the engineer's work.
 
 ## The one-term fit, drawn
 
@@ -83,27 +79,23 @@ stock, requirements met (302): control effort, settling time, energy
 
 ## Three metrics as shares of a total
 
-A ternary plot places a design by its shares of a total among three metrics. This block fits a
-synthetic table (`make_frontier_data`) and draws it with lines of equal V:
+A ternary plot places a design by its shares of a total among three metrics. This block fits two triples of
+the primary regime, two terms each, and draws both with one key:
 
 ```python {.runnable}
-from hyperbolic_trade_space import (
-    HyperbolicTradeSpace,
-    make_frontier_data,
-)
-from hyperbolic_trade_space.plotting import plot_ternary
+import sys
 
-X, _ = make_frontier_data(900, 3, n_terms=3, random_state=11)
-ts = HyperbolicTradeSpace(
-    n_terms=3, temperature=50.0, random_state=0
-).fit(X)
-plot_ternary(ts, X, lines=True)
+sys.path.insert(0, "examples/adcs")
+import case
+
+fits = case.ternary_pair_fits()
+case.ternary_pair_figure(fits)
 ```
 
 <figure markdown>
-![A triangle whose corners are three metrics, tinted in three regions by the term that is largest there, with designs as points, a numbered marker for each term's exponent vector, and lines of equal V closing around each marker.](generated/figures/ternary-planted-light.png#only-light)
-![A triangle whose corners are three metrics, tinted in three regions by the term that is largest there, with designs as points, a numbered marker for each term's exponent vector, and lines of equal V closing around each marker.](generated/figures/ternary-planted-dark.png#only-dark)
-<figcaption>Figure 6. Designs by shares of three metrics: regions, numbered exponent vectors, lines of equal V.</figcaption>
+![Two triangles side by side, each with three metrics at its corners, tinted in two regions, with designs as points, a numbered marker for each term's exponent vector, lines of equal V and a dashed line where the leading term changes; one key below both. A: pointing error, total mass, control effort. B: settling time, control effort, depth of discharge.](generated/figures/ternary-cubesat-light.png#only-light)
+![Two triangles side by side, each with three metrics at its corners, tinted in two regions, with designs as points, a numbered marker for each term's exponent vector, lines of equal V and a dashed line where the leading term changes; one key below both. A: pointing error, total mass, control effort. B: settling time, control effort, depth of discharge.](generated/figures/ternary-cubesat-dark.png#only-dark)
+<figcaption>Figure 6. A: one region trades pointing error against control effort, the other total mass against pointing error. B: one region trades settling time against control effort; the second is a single-metric term, depth of discharge, beside that trade. Shows: where each term leads and where its V peaks. Does not show: groups of designs, the values of V on the lines, a cause.</figcaption>
 </figure>
 
 Reading it:
@@ -111,20 +103,27 @@ Reading it:
 - A corner is the whole total in one metric; an edge splits it between two.
 - A numbered marker is a term's exponent vector, where that term's V is largest for a fixed total.
   V, the invariant value, also depends on the total, so a marker is not where V = 1.
-- A region is where one term is the largest, named by the metrics that trade there: an analysis of the
-  fit, not a label on a design.
+- A region is where one term is the largest: an analysis of the fit, not a label on a
+  design.
 
 ```python {.runnable}
 from hyperbolic_trade_space.plotting import ternary_marker_values
 
-values = ternary_marker_values(ts, X)
-print(values.round(2).to_string(index=False))
-print("lines at", values.attrs["levels"])
+for name, (study, est) in fits.items():
+    print(name, study.names)
+    print(
+        ternary_marker_values(est, study.M, study.names)
+        .round(2)
+        .to_string(index=False)
+    )
 ```
 
-Each row is a marker, its shares of the total, and V there as a fraction of the highest marker's V.
+Each row is a marker: its shares and V there, relative to the highest marker's.
 
-Limits: three parts only; the choice of metrics can flatter the result; it is for reading, not measuring distance; eight metrics do not separate in three, so none is drawn for the cubesat.
+The triples came from a search of all 56 triples in each regime at one, two and three
+terms (336 fits, 275 made). A term counts when its cell holds at least ten near-frontier designs, its
+exponents move by at most 0.10 under restarts and resamples and the fit is certified; 55 fits have two
+counting terms with different contending sets.
 
 ## Run it
 
@@ -136,9 +135,6 @@ holds the design space, the evaluation model, the seeded datasets, the figures a
 uv run python examples/adcs/k_terms.py
 ```
 
-Per regime it prints a per-K summary at a temperature re-selected per K (columns `tau`, `band 1/tau`,
-`objective_`, equal here to `mean_slack_`, `frac_above_`, `term rows`, `term shares`, `max gap`,
-`status`, `gamma`, `radius`, `bound`), the per-term record (contending set, largest exponents,
-near-frontier designs, reach, share, gap), the same two at the one-term temperature (the comparison
-above) and a seed check at three terms. A fit's record is `fit.estimator.termination_`, read on the
+Per regime it prints a per-K summary at a temperature re-selected per K, the per-term record, the same
+two at the one-term temperature (the comparison above) and a seed check at three terms. A fit's record is `fit.estimator.termination_`, read on the
 [termination page](user-guide/termination.md).

@@ -414,7 +414,13 @@ def _site_file_for(path_in_site: str, site_root: Path) -> Path | None:
 
 # Images the assembled root page gets at build time (the paper's Figure 1, copied; the Why image,
 # generated); they are not in site/ and are checked on the assembled site.
-BUILT_IMAGES = {"figure1.png", "why-regions-light.png", "why-regions-dark.png"}
+BUILT_IMAGES = {
+    "figure1.png",
+    "why-regions-light.png",
+    "why-regions-dark.png",
+    "ternary-planted-light.png",
+    "ternary-planted-dark.png",
+}
 
 
 def test_root_and_paper_links_classified():
@@ -923,12 +929,15 @@ def _index_figures():
 def test_index_has_a_figure_each_for_why_what_and_how_in_that_order():
     text = (SITE / "index.html").read_text()
     figures = _index_figures()
-    assert [f["class"].split()[0] if f["class"] else "" for f in figures] == ["why", "wide"]
+    # the supervisor's choice (WP28-decisions): the planted ternary is a story figure of the Why
+    # section, after the Why image
+    assert [f["class"].split()[0] if f["class"] else "" for f in figures] == ["why", "why", "wide"]
+    assert "story" in figures[1]["class"].split()
     srcs = [f["img"][0][0] for f in figures]
-    assert srcs == ["why-regions-light.png", "figure1.png"]
+    assert srcs == ["why-regions-light.png", "ternary-planted-light.png", "figure1.png"]
     sections = [text.index(f"<h2>{h}</h2>") for h in ("Why", "What")]
     assert sections == sorted(sections)
-    for h, f in zip(("Why", "What"), figures, strict=True):
+    for h, f in zip(("Why", "Why", "What"), figures, strict=True):
         start = text.index(f"<h2>{h}</h2>")
         assert text.index(f["img"][0][0], start) < (
             text.index("<h2>", start + 5) if "<h2>" in text[start + 5 :] else len(text)
@@ -938,7 +947,10 @@ def test_index_has_a_figure_each_for_why_what_and_how_in_that_order():
 
 def test_index_images_have_alt_text_captions_and_full_size_links():
     figures = _index_figures()
-    why, what = figures
+    why, story, what = figures
+    assert [a for a in story["a"]] == ["ternary-planted-light.png", "ternary-planted-dark.png"]
+    assert [i[0] for i in story["img"]] == ["ternary-planted-light.png", "ternary-planted-dark.png"]
+    assert "constructed table" in story["cap"] and "to show the idea" in story["cap"]
     assert [a for a in why["a"]] == ["why-regions-light.png", "why-regions-dark.png"]
     assert [i[0] for i in why["img"]] == ["why-regions-light.png", "why-regions-dark.png"]
     assert all(alt == WHY_ALT for _, alt in why["img"])
@@ -1040,6 +1052,18 @@ def test_why_figure_files_have_the_expected_size_and_no_overlay_by_default(tmp_p
     assert len(ax.collections) > n_default, "the option adds the contours and the stars"
     plt.close(fig)
     assert "--lines" in bsf.__doc__ and "off by default" in bsf.__doc__
+
+
+@pytest.mark.slow
+def test_story_figure_is_the_planted_table_with_the_overlay(tmp_path, why_fit):
+    """The root page's story figure: the same planted fit as the Why image, drawn with lines."""
+    bsf, fit = why_fit
+    paths = bsf.build_story(tmp_path, fit=fit)
+    assert {p.name for p in paths.values()} == {
+        "ternary-planted-light.png",
+        "ternary-planted-dark.png",
+    }
+    assert all(p.stat().st_size > 30_000 for p in paths.values())
 
 
 def test_why_lines_overlay_is_the_fixed_total_function(why_fit):

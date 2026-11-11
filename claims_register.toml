@@ -5565,3 +5565,75 @@ status = "backed"
 disposition = "keep"
 source = "WP31 task-reader fix (2)"
 note = "Glossary: the band is the designs with log V strictly between -1/tau and 1/tau; the cell is the rows whose maximizing term is that term."
+
+[[claim]]
+id = "C453"
+fragment = "A: one region trades pointing error against control effort, the other total mass against pointing error."
+file = "docs/examples.md"
+anchor = ""
+kind = "R"
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_case.py::test_ternary_pair_figure_is_two_panels_one_key_and_the_regions_the_page_names", "func:examples/adcs/case.py::ternary_pair_figure"]
+status = "backed"
+disposition = "keep"
+source = "WP28 supervisor decision (c045837, 3a0be54): the two-panel figure"
+note = "The words are read from each fit's exponents by plot_ternary (an exponent above 0.12 names a metric); the test reads them off the drawn labels. The search record (WP19-figure-review.md, row 2) has the contending sets {pointing error, control effort} and {pointing error, total mass}."
+
+[[claim]]
+id = "C454"
+fragment = "B: one region trades settling time against control effort; the second is a single-metric term, depth of discharge, beside that trade."
+file = "docs/examples.md"
+anchor = ""
+kind = "R"
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_case.py::test_ternary_pair_figure_is_two_panels_one_key_and_the_regions_the_page_names", "func:examples/adcs/case.py::ternary_pair_figure"]
+status = "backed"
+disposition = "keep"
+source = "WP28 supervisor decision (c045837, 3a0be54): the two-panel figure"
+note = "The label of the second region reads depth of discharge alone: its exponent vector is almost all depth of discharge (about 0.94), so the term names one metric. Search record row 6."
+
+[[claim]]
+id = "C455"
+fragment = "Shows: where each term leads and where its V peaks."
+file = "docs/examples.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_ternary_fixed_total_identity_and_peak", "test:tests/test_plotting.py::test_ternary_markers_sit_at_the_exponent_vectors", "test:tests/test_plotting.py::test_ternary_regions_partition_the_triangle"]
+status = "backed"
+disposition = "keep"
+source = "WP28 supervisor decision (c045837, 3a0be54): the two-panel figure"
+note = "Regions are the argmax term of the fit (the partition test); a marker sits at the term's exponent vector, where its V peaks at a fixed total (the two tests)."
+
+[[claim]]
+id = "C456"
+fragment = "A region is where one term is the largest: an analysis of the fit, not a label on a design."
+file = "docs/examples.md"
+anchor = ""
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_ternary_regions_partition_the_triangle", "func:src/hyperbolic_trade_space/plotting.py::plot_ternary"]
+status = "backed"
+disposition = "keep"
+source = "WP28 supervisor decision (c045837, 3a0be54): the two-panel figure"
+note = "plot_ternary docstring: a region is an analysis of the fit, not a label on a design; the partition test pins the argmax rule."
+
+[[claim]]
+id = "C457"
+fragment = "The triples came from a search of all 56 triples in each regime at one, two and three terms (336 fits, 275 made)."
+file = "docs/examples.md"
+anchor = ""
+kind = "S"
+backing = ["file:work-packages/WP19-figure-review.md", "file:docs/superpowers/notes/figure-candidates/triple_search.py"]
+status = "backed"
+disposition = "keep"
+source = "WP28 supervisor decision (c045837, 3a0be54): the two-panel figure"
+note = "S-5 search record: 56 triples x 2 regimes x K = 1, 2, 3 = 336 fits; 275 could be made (61 not: 18 temperature not bracketed, 43 a term with fewer than two near-frontier rows)."
+
+[[claim]]
+id = "C458"
+fragment = "A term counts when its cell holds at least ten near-frontier designs, its exponents move by at most 0.10 under restarts and resamples and the fit is certified; 55 fits have two counting terms with different contending sets."
+file = "docs/examples.md"
+anchor = ""
+kind = "S"
+backing = ["file:work-packages/WP19-figure-review.md", "file:docs/superpowers/notes/figure-candidates/triple_search.py"]
+status = "backed"
+disposition = "keep"
+source = "WP28 supervisor decision (c045837, 3a0be54): the two-panel figure"
+note = "S-5 criteria: MIN_NEAR = 10 (case.MIN_NEAR_FRONTIER), TOL = 0.10 over 3 restarts and 4 bootstrap resamples, certified at K >= 2; texture >= 2 (distinct contending sets among counting terms) in 55 of the 275 fits."

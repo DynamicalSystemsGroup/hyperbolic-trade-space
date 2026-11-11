@@ -2098,6 +2098,184 @@ def predict_check_figure(study, reg):
     return fig
 
 
+TERNARY_PAIR = {
+    "A": ("primary", ("pointing error", "total mass", "control effort"), 2),
+    "B": ("primary", ("settling time", "control effort", "depth of discharge"), 2),
+}
+"""The two triples the ternary figure draws: panel -> (regime, three attributes, K). Found by a
+search over every triple of the eight attributes in both regimes at K = 1, 2, 3 (WP19)."""
+_TERN_BORDER = {"light": "#c2410c", "dark": "#ffb347"}
+_TERN_TINT = {"light": ("#ffffff", 0.90), "dark": ("#191817", 0.80)}
+_TERN_SHAPE = {"*": "star", "D": "diamond"}
+
+
+def triple_study(regime, names, spec=CUBESAT):
+    """The study of one regime restricted to three attributes, each conditioned on its own.
+
+    Parameters
+    ----------
+    regime : str
+    names : sequence of str
+        Three short names of attributes (:attr:`CaseSpec.short` values).
+    spec : CaseSpec
+
+    Returns
+    -------
+    Study
+    """
+    full = load_study(regime, spec)
+    attrs = tuple(full.attrs[full.names.index(n)] for n in names)
+    cond, M = _condition(full.feasible, attrs, full.spec)
+    return Study(full.spec, regime, full.raw, full.feasible, attrs, M, cond)
+
+
+def _ternary_house_style():
+    """Patch the package's ternary drawing for the figure below and restore it on exit.
+
+    The tint is lighter, so a region reads as a model region and not as a group of designs, and
+    the labels may fall to the smallest legible size before giving up on a small region.
+    """
+    import contextlib
+
+    _, _, plotting = _lib()
+
+    @contextlib.contextmanager
+    def patched():
+        schemes, sizes = plotting._TERN_SCHEMES, plotting._TERN_LABEL_SIZES
+        plotting._TERN_SCHEMES = {k: {**v, "mix": _TERN_TINT[k]} for k, v in schemes.items()}
+        plotting._TERN_LABEL_SIZES = (*sizes, 13.0, 12.0, 11.0, 10.0, 9.5, 8.0, 6.0, 4.0)
+        try:
+            yield
+        finally:
+            plotting._TERN_SCHEMES, plotting._TERN_LABEL_SIZES = schemes, sizes
+
+    return patched()
+
+
+def _ternary_border_and_callouts(ax, est, M, scheme):
+    """A dashed line where the leading term changes; each region's words moved out of the
+    triangle beside the apex, joined to its term's marker by a line in the term's colour."""
+    _, _, plotting = _lib()
+    sch = plotting._TERN_SCHEMES[scheme]
+    fit = plotting._ternary_geometry(est, M)
+    x, y, top, left, right, inside = plotting._ternary_grid(900)
+    reg = np.full(top.shape, np.nan)
+    reg[inside] = plotting._ternary_region_of(fit, 1.0, top[inside], left[inside], right[inside])[0]
+    for k in range(1, len(fit["W"])):
+        ax.contour(x, y, reg, levels=[k - 0.5], colors=[_TERN_BORDER[scheme]], linewidths=2.2,
+                   linestyles=[(0, (6, 3))], zorder=4.5)  # fmt: skip
+    W, col = est.exponents_, plotting._ternary_colours(est.exponents_)
+    for k in range(len(W)):
+        found = ax.findobj(lambda a, g=f"ternary-label-{k}": a.get_gid() == g)
+        if not found:
+            continue
+        t = found[0]
+        sx, sy = plotting._ternary_project(*W[k])
+        words = " ".join(t.get_text().split()).replace(" trades against ", "\ntrades against\n")
+        words = words.replace("depth of discharge alone", "depth of\ndischarge\nalone")
+        t.set_fontweight("normal")
+        t.set_text(words)
+        which = "left" if sx < 0.5 else "right"
+        cx, cy = {"left": -0.05, "right": 1.05}[which], {"left": 0.5, "right": 0.8}[which]
+        t.set_position((cx, cy))
+        t.set_fontsize(FIGURE_MIN_FONT_PT + 0.5)
+        t.set_ha("center")
+        t.set_va("center")
+        ax.annotate("", xy=(sx, sy), xytext=(cx, cy), textcoords="data", zorder=3.5,
+                    arrowprops={"arrowstyle": "-", "color": col[k], "lw": 1.4,
+                                "shrinkA": 22, "shrinkB": 8})  # fmt: skip
+    for t in ax.texts:  # nothing below the figure's smallest type
+        if t.get_fontsize() < FIGURE_MIN_FONT_PT + 0.5:
+            t.set_fontsize(FIGURE_MIN_FONT_PT + 0.5)
+    for k in range(len(W)):
+        for s in ax.findobj(lambda a, g=f"ternary-star-{k}": a.get_gid() == g):
+            s.set_sizes([float(np.asarray(s.get_sizes())[0]) * 1.8])
+    return sch
+
+
+def ternary_pair_fits(pair=None):
+    """The study and the fitted estimator of each panel of :func:`ternary_pair_figure`.
+
+    Parameters
+    ----------
+    pair : dict, optional
+        Panel name -> ``(regime, three attribute names, K)``; default :data:`TERNARY_PAIR`.
+
+    Returns
+    -------
+    dict
+        Panel name -> ``(Study, HyperbolicTradeSpace)``.
+    """
+    out = {}
+    for name, (regime, names, K) in (pair or TERNARY_PAIR).items():
+        st = triple_study(regime, names)
+        out[name] = (st, fit_study(st, K=K).estimator)
+    return out
+
+
+def ternary_pair_figure(fits=None):
+    """Two triples of the cubesat metrics as triangles side by side, with one key.
+
+    Each panel is the package's ``plot_ternary(..., lines=True)`` on three attributes of one
+    regime, conditioned on their own (:func:`triple_study`) and fitted at K terms with the
+    temperature selected by :func:`fit_study`. The designs are one neutral colour (no colouring
+    by cell: a region is the fit's, not a group of designs). Panel A is the primary regime's
+    pointing error, total mass and control effort; panel B its settling time, control effort and
+    depth of discharge, both at K = 2 (:data:`TERNARY_PAIR`).
+
+    Parameters
+    ----------
+    fits : dict, optional
+        The result of :func:`ternary_pair_fits`; made when not given.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
+    from matplotlib.lines import Line2D
+
+    _, _, plotting = _lib()
+    plt = _plt()
+    fits = fits or ternary_pair_fits()
+    scheme = plotting._ternary_scheme("auto")
+    height, side = 5.1, 3.0  # inches: the figure, and each triangle's square
+    fig = plt.figure(figsize=(FIGURE_WIDTH_IN, height))
+    left = {name: (0.5 + (side + 1.0) * i) / FIGURE_WIDTH_IN for i, name in enumerate(fits)}
+    with _ternary_house_style():
+        sch = plotting._TERN_SCHEMES[scheme]
+        for name, (st, est) in fits.items():
+            names = st.names
+            ax = fig.add_axes([left[name], 1.55 / height, side / FIGURE_WIDTH_IN, side / height])
+            plotting.plot_ternary(est, st.M, names=list(names), lines=True, ax=ax, scheme=scheme)
+            _ternary_border_and_callouts(ax, est, st.M, scheme)
+            ax.set_title(name, loc="left", fontsize=FIGURE_MIN_FONT_PT + 3, fontweight="bold",
+                         color=sch["ink"])  # fmt: skip
+        ink = sch["ink"]
+        cols = [plotting._ternary_colours(e.exponents_) for _, e in fits.values()]
+        if any(c != cols[0] for c in cols):
+            raise ValueError("the panels colour their terms differently: one key cannot serve")
+        col = cols[0]
+    keys = [
+        Line2D([], [], marker="o", ls="", ms=7, mfc=sch["dots"], mec=sch["plate"]),
+        Line2D([], [], color=ink, lw=1.0),
+        Line2D([], [], color=_TERN_BORDER[scheme], lw=2.2, ls=(0, (6, 3))),
+    ]
+    text = [
+        "a design, placed by its shares of the three metrics\n"
+        "(each scaled by its typical size); larger: near the frontier",
+        "thin lines: equal invariant value V at a fixed total\n(0.3 to 0.97 of the peak)",
+        "dashed line: where the leading term changes",
+    ]
+    for k in range(2):
+        m = plotting._TERN_MARKERS[k][0]
+        keys.append(Line2D([], [], marker=m, ls="", ms=10, mfc=col[k], mec=ink, mew=1.1))
+        text.append(f"{_TERN_SHAPE[m]}: the exponent vector of term {k + 1}\n(where its V peaks)")
+    fig.legend(keys, text, loc="lower center", ncol=2, frameon=False, labelcolor=ink,
+               fontsize=FIGURE_MIN_FONT_PT + 0.5, handlelength=2.2, labelspacing=0.9,
+               columnspacing=2.0, bbox_to_anchor=(0.5, 0.0))  # fmt: skip
+    return fig
+
+
 def with_spec(spec=CUBESAT, **changes):
     """A copy of the spec with fields replaced (the way to point the functions at another table).
 

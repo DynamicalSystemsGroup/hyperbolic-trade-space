@@ -171,7 +171,9 @@ def assemble(
     if not Path(figure1).is_file():
         raise FileNotFoundError(f"missing the paper's Figure 1: {figure1}")
     shutil.copy2(figure1, out / FIGURE1_NAME)  # the What image: the paper's own file
-    (site_figures_builder or build_site_figures.build)(out)  # the Why image, both schemes
+    (site_figures_builder or build_site_figures.build_all)(
+        out
+    )  # the Why image and the story figure
     build_paper(out, paper, paper_base, paper_runner, paper_html)
     return out
 
