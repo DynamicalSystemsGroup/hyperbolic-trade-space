@@ -75,3 +75,10 @@ clears it. i think that's pretty realistic. we shouldn't be launching a single c
 prohibitive". **Value: 350,000 USD** per satellite on the covered cost, read at the design's own fleet size (admits 82
 percent of the baseline regime's feasible designs at their own fleet size, none priced as a single satellite; the
 primary regime's share from the same ladder).
+
+**Fleet cost limit, the supervisor, verbatim (10:00):** "set a 1 million budget for 25 satellites. my research shows
+thats more than enough". The driver's check before recording a value: 1,000,000 USD over 25 satellites is 40,000 USD
+per satellite including launch; on the spike's calibration the baseline's 25-satellite fleet costs about 6.5 million
+(build about 4.2 million at the 90 to 95 percent learning slopes, launch 25 x 13.3 kg x 7,000 USD/kg about 2.3
+million), and launch alone is 93,000 per satellite. The question of what his research prices is put back to him
+before the value is set.
