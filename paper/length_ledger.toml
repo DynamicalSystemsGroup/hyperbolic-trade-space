@@ -987,3 +987,10 @@ section = "Appendix D"
 words_added = 153
 job = "the supervisor's word on D.12 (S-10, WP28-decisions.md): 'keep and clarify why it matters ... we do need to provide a concise explanation for why this is relevant and how it was computed. someone who runs into issue needs a way to inspect the conditioning of their problem since trouble shooting may involve feature engineering work': D.12 says why the conditioning of the exponents matters, how the number is computed, and how a reader inspects their own problem"
 reader = "the discerning reader and the external reviewer who asked for the diagnostic, and the user whose own fit shows a small value"
+
+[[raise]]
+date = "2026-11-10"
+section = "The decision problem"
+words_added = 14
+job = "the main-results list carries the second item of the key's S8, that the method claims nothing as novel and does not replace PCA or Pareto analysis, which five of six depth-B readers of the third WP11 round did not find stated (WP28-retest.md; the driver's choice of option (a))"
+reader = "the reader who stops after the main-results list and needs to know what the method does not claim"

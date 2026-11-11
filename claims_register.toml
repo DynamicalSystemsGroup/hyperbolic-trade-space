@@ -5465,3 +5465,19 @@ status = "backed"
 disposition = "keep"
 source = "WP31 U3"
 note = "The sweep helper asserts the last drop exceeds 0.002 on every table; unmatched fitted terms appear at K > K0 on all three planted tables (K0 = 2: K = 3, 4; K0 = 3: K = 4 on table 0, K = 3 on table 1); thinnest share 0.00 at K = 5 on the K0 = 2 table."
+
+[[claim]]
+id = "C440"
+fragment = "The method claims nothing as novel and does not replace PCA or Pareto analysis."
+file = "paper/paper.ipynb"
+anchor = "The decision problem"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_the_main_results_list_ends_with_what_the_method_does_not_claim",
+  "test:tests/test_paper.py::test_the_combination_sentence_says_what_was_looked_at",
+]
+status = "backed"
+disposition = "keep"
+source = "WP28 close, S8's second item (the driver's option (a))"
+note = "A statement of scope, not a finding: Section 2 says only that the combination was not found in the sources reviewed, and main result 5 has the method composed with PCA; Pareto efficiency of a maximizer is Theorem 4 (thm-pareto), not a replacement for Pareto analysis."
+

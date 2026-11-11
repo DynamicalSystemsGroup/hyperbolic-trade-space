@@ -202,3 +202,17 @@ Implementer's record, one entry per unit. Worktree `wp28close` from origin/dev 0
 
 The driver's own browser pass at 18c258c (a scratch worktree staged on this Mac) follows and is recorded in the
 driver log; acceptance is written here when the confirm read, O-7 and that pass are in.
+
+### U4. S8's second item in the main-results list (the driver's option (a); the PM's request)
+
+- **Done.** One closing sentence after item 7 of the main-results list (`sec-decision-3`): "The method claims nothing as
+  novel and does not replace PCA or Pareto analysis." (14 words; the key's wording was "claims no novelty; does not
+  replace PCA or Pareto analysis", and "novelty" is the glossary's score V - 1, so the sentence says "nothing as
+  novel"). Ledger `[[raise]]` row in "The decision problem" (+14; count 726 against 737), register row C440 (a
+  statement of scope, backed by the new test `test_the_main_results_list_ends_with_what_the_method_does_not_claim`
+  and the Section 2 combination sentence), no notebook output changed so nothing was re-executed.
+- **Seen.** Built page (myst, no warnings), own tab, closed: the sentence stands as a paragraph between item 7 and
+  "Organization", Section 2's "We claim no priority." follows two lines below; screenshot
+  `/private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/s3/s8-main-results-closing-clause.jpg`.
+- **Checks.** ruff; `uv run pytest -q -m "not slow" tests/test_paper.py tests/test_claims_register.py` 164 passed, 4
+  skipped; vocabulary baseline 0 new violations.

@@ -2255,6 +2255,17 @@ def test_section_8_says_the_conditioning_centres_each_log_metric_and_on_the_data
     assert case.conditioner_for.__defaults__[-1] == "standard"
 
 
+def test_the_main_results_list_ends_with_what_the_method_does_not_claim():
+    """WP28 (S8's second item, the driver's option (a)): the list closes with the clause, and the
+    combination sentence of Section 2 that backs it is present."""
+    text = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "sec-decision-3"))
+    clause = "The method claims nothing as novel and does not replace PCA or Pareto analysis."
+    assert clause in text and text.index(clause) > text.index("7. On a cubesat model")
+    assert "We did not find the combination in the sources reviewed" in _section(
+        "Prior art, by family"
+    )
+
+
 def test_no_doubled_label_before_a_cross_reference():
     """G-7: a reference to a definition or theorem prints its own kind; none is typed before it."""
     body = _markdown(_nb(PAPER_NB))
