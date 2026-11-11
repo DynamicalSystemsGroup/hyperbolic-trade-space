@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The container's OOM (18:40).** `docker inspect` shows the gate container was OOM-killed: the Docker VM has four CPUs
+  and 7.7 GB, and three spawned oracle workers at 3,000 designs per regime exceed it. The re-run restarted with one
+  worker (`EXPERIMENTS_WORKERS=1`), detached inside the container; its entries are read from the container's ledger
+  when it finishes. For the record: the close-out's container recipe (three workers) no longer fits this sample size,
+  and `paper/container/README.md` gets the one-worker note at the cascade; the container regression is a gate check,
+  so its hour is acceptable.
+
 - **Container gate run failed inside the image (2026-11-11, 18:30).** The rebuilt image (at 910a57d) planned the right
   entries (dry run: @12, shared @11), and the live re-run died in the oracle's worker pool with
   `opensysml.errors.ConnectionError: sysml-grpc service unavailable ... Connection refused` on the loopback port, with
