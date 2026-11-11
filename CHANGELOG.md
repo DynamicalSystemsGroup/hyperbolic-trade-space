@@ -12,6 +12,7 @@ package.
 
 ### Added
 
+- Windows as a third platform for the fast and slow test shards, run on dispatch and at gates; the paper build stays on Linux and macOS (WP34).
 - The package `hyperbolic_trade_space` (alias `hts`): the posynomial invariant form for a trade
   space, with the scikit-learn estimator `HyperbolicTradeSpace` (fit, `transform`,
   `inverse_transform`, `score_samples`), the frontier chart (Helmert and additive-log-ratio
