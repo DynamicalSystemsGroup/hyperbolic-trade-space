@@ -130,8 +130,8 @@ for K in (1, 2, 3, 4):
 On the cubesat table of the [examples](../examples.md), where terms leave metrics out, the
 mean slack falls from 0.243 at K = 1 to 0.132, 0.088 and 0.07. The last column, per term: its
 exponent vector's distance to the nearest resampled term, the largest over three resamples (summed
-absolute differences, at most 2). Through K = 3 no term moves more than 0.31; at K = 4 two move by
-0.51 and 0.7: K = 4 is too large.
+absolute differences, at most 2). The values belong to this draw of resamples, so none of them is a
+threshold for K.
 
 `select_temperature` needs a target the fit can reach. With several terms the term planes are not
 supporting planes, so `frac_above_` levels off above zero as tau grows (about 0.30 on the table of

@@ -56,7 +56,7 @@ BUDGETS = {
     "getting-started.md": 400,
     "user-guide/overview.md": 500,
     "user-guide/conditioning.md": 700,
-    "user-guide/fitting.md": 800,
+    "user-guide/fitting.md": 791,  # 800 until WP31 U2 (the 0.31 sentence)
     "user-guide/tensions.md": 700,
     "user-guide/chart.md": 557,  # 600 until WP28 X-1; 561 until the holes block printed
     "user-guide/prediction.md": 350,
@@ -67,7 +67,7 @@ BUDGETS = {
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 6876  # 6845 until WP31 U1 (the conditioning pointer)
+TOTAL_BUDGET = 6867  # 6845 until WP31 U1 (conditioning pointer: +31), U2 (the 0.31 sentence: -9)
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
