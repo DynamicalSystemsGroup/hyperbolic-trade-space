@@ -210,3 +210,13 @@ timing could not be made clean: 300 designs on nine workers had not finished aft
 a load of 60 to 150 (the gate runner's rebase and its nine-minute suite, the agents, the oracle itself), so the rule's
 fallback applies; the regeneration's own wall time per regime, run with nothing else in parallel, becomes the measured
 rate of record for the next gate. Listed for the supervisor's review with the reason.
+
+**Sample size, corrected on the clean rate (2026-11-11, 14:15; the assistant):** the regeneration at 2,000 per regime
+ran in 6 min 17 s on nine workers with nothing else running (about 180 s and 163 s per regime), so the rule's primary
+value stands: the gate re-runs at **3,000 designs per regime** (about seven minutes), the first 1,000 the old sample;
+the 2,000 run's entries stay in the ledger as history. The measured rate of record: about 90 s per 1,000 designs per
+regime on nine workers. **The five legacy drifts:** the four `adopted-*` entries and the legacy shared-subspace entry
+hash code files the revision and the encoding fix changed while their frozen v1 outputs did not; the adopt runner
+gains a `--readopt` mode writing a superseding `<id>@2` entry per such id with the new code hash, the frozen outputs'
+hashes asserted unchanged, and a note naming the cause; `verify` must then report 0 drifts. A recorded exception was
+refused (verify stays the gate's instrument), and reverting the encoding fix would have left the fleet-variable drift.
