@@ -1387,3 +1387,437 @@ re-run: the light labels, lines and designs read; on the dark tint the label, th
 the three corner names are pale but legible. One round of cold reads (two readers) was run; no change to the image
 followed, since the readers' open points (two dot sizes, the shares) belong to `plot_ternary`, shared with Figure 6,
 and are outside this loop.
+
+
+## S-5 search for a textured triple (ninth PM, the supervisor's cherry-picking word)
+
+The supervisor's word (WP28-decisions, S-5): "ideally either find a real example with texture like the
+constructured one or also keep the constructed one". The search: every one of the 56 triples of the eight
+metrics, on each regime (primary 706 designs, stock 780), at K = 1, 2, 3 (336 fits), each triple conditioned alone
+with the case's conditioning and the temperature selected by the case's rule at each K (`case.fit_study`).
+`docs/superpowers/notes/figure-candidates/triple_search.py` (run: `uv run python
+docs/superpowers/notes/figure-candidates/triple_search.py OUT.json`, 3 min 55 s on 8 processes).
+
+### Criteria
+
+- A term has a **real region** when (i) its cell holds at least `MIN_NEAR` = 10 near-frontier designs (the case's
+  guard, `case.MIN_NEAR_FRONTIER`; near-frontier is within 1/tau of the frontier at that K's own temperature),
+  (ii) its exponent vector changes by at most `TOL` = 0.10 (largest change over 3 restarts and 4 bootstrap
+  resamples, terms matched by nearest exponent vector; a refit that fails counts as unstable) and (iii) the fit's
+  certificate status is `certified` (K >= 2; at K = 1 there is one term and no certificate).
+- **Texture** = the number of distinct contending sets among the real regions; a contending set is the metrics
+  whose exact-maximum exponent on the cell's rows is at least 0.05 (`case.CO_CONTENDER`, the case's own level
+  for a co-contender; at the library's own support, any positive exponent, sets differ by 0.01 and the count
+  is noise).
+- **Stated minimum of near-frontier designs per cell: 10** (the case's guard; the table gives the smallest cell of
+  each fit).
+- Plausibility is the engineer's reading from `examples/adcs/case-model.md`, by a fixed rule written in the
+  note column (settling time and control effort trade through the gains; pointing error and settling time
+  through the gains; control against mass through the wheel and bus class; control against power through
+  the slew's loss energy; the pair power margin and energy balance is one quantity (Spearman 0.98); the
+  peak slew power steps with the swaps; power metrics alone are affine in one generated power). It ranks
+  rows, it does not decide them; the three candidates carry a reading each below.
+- `TOL` was kept at the previous script's 0.10 (nothing in the case fixes it; it is twice `CO_CONTENDER`).
+  Sensitivity, rows with texture 2 (and 3): TOL 0.05: 20 (0); 0.10: 54 (1); 0.15: 63 (3); 0.20: 66 (3).
+
+### Result
+
+A real textured example exists: **55 of the 275 fits that could be made have texture >= 2, one has texture 3.**
+K = 1 has none (one term). 61 fits could not be made or reported: 18 where the temperature is not bracketed (17 stock,
+1 primary, K >= 2; every one contains peak slew power, the metric that steps with the swaps) and 43 where a term
+holds fewer than two near-frontier rows (42 of them contain peak slew power). Head of the table (top 10 by texture, then plausibility, then the smallest
+cell's near-frontier count; "(rows/near-frontier)" per real region):
+
+1. primary, pointing error, energy balance, depth of discharge, K = 3: texture 3, {pointing error, depth of discharge} (232/10); {energy balance} (297/12); {pointing error} (177/14); min near-frontier 10, max exponent change 0.053
+2. primary, pointing error, total mass, control effort, K = 2: texture 2, {pointing error, control effort} (279/35); {pointing error, total mass} (427/28); min near-frontier 28, max exponent change 0.055
+3. stock, settling time, total mass, energy balance, K = 2: texture 2, {energy balance} (279/30); {settling time, total mass, energy balance} (501/23); min near-frontier 23, max exponent change 0.081
+4. primary, total mass, control effort, depth of discharge, K = 2: texture 2, {total mass, depth of discharge} (484/30); {depth of discharge} (222/22); min near-frontier 22, max exponent change 0.081
+5. stock, total mass, control effort, depth of discharge, K = 2: texture 2, {depth of discharge} (251/22); {total mass, depth of discharge} (529/30); min near-frontier 22, max exponent change 0.074
+6. primary, settling time, control effort, depth of discharge, K = 2: texture 2, {depth of discharge} (162/20); {settling time, control effort} (544/37); min near-frontier 20, max exponent change 0.070
+7. stock, settling time, pointing error, control effort, K = 2: texture 2, {settling time, pointing error, control effort} (295/19); {settling time, control effort} (485/43); min near-frontier 19, max exponent change 0.094
+8. stock, settling time, total mass, depth of discharge, K = 2: texture 2, {depth of discharge} (222/18); {settling time, total mass, depth of discharge} (558/38); min near-frontier 18, max exponent change 0.035
+9. stock, settling time, pointing error, total mass, K = 3: texture 2, {settling time, pointing error, total mass} (315/16); {pointing error, total mass} (155/16); {settling time, pointing error, total mass} (310/17); min near-frontier 16, max exponent change 0.061
+10. primary, settling time, control effort, depth of discharge, K = 3: texture 2, {settling time, control effort, depth of discharge} (253/21); {settling time, control effort, depth of discharge} (304/17); {depth of discharge} (149/15); min near-frontier 15, max exponent change 0.073
+
+The cleanest read is row 2: two regions, **different pairs** with a shared metric (pointing error trades against
+control effort in one cell, against total mass in the other), 35 and 28 near-frontier designs, exponent change
+0.055, certified: the form of Figure 6's "metric 3 against metric 1" and "metric 3 against metric 2". The only
+texture-3 fit (row 1) meets the criteria at the guard (10, 12, 14) and its regions are a pair and two single metrics.
+
+### The candidates (light and dark in `docs/superpowers/notes/figure-candidates/`)
+
+Made by `uv run python docs/superpowers/notes/figure-candidates/ternary_cubesat_textured.py`: the three columns
+conditioned alone, `case.fit_study`, `plot_ternary(..., lines=True)` as Figure 6 draws, one neutral colour for
+designs (no colouring by cell); region labels use the library's placement with its label sizes extended down to
+9.5 pt, because a region of a real fit can be small (the library's own sizes find no room for A and B).
+Figure 6 is unchanged.
+
+**A. primary, pointing error, total mass, control effort, K = 2** (`ternary-cubesat-textured-A-{light,dark}.png`).
+Reading: bigger wheels and a heavier bus buy pointing at a cost in mass, and in the other cell gains buy
+it at a cost in wheel effort, so a different partner in each cell is what a cubesat attitude-control designer
+expects (term 1: 279 designs, 35 near-frontier, exponents 0.70 / 0 / 0.30; term 2: 427 designs, 28, 0.34 / 0.61 / 0.04).
+- Shows: the 706 designs by shares of the three metrics, two regions with different trading pairs, each with its
+  exponent vector and lines of equal V; one region's vector sits on an edge (two metrics), the other near it.
+- Does not show: a region where all three trade; the other five metrics; that the cells are the fit's analysis, not
+  a property of a design; that V also depends on the total.
+
+**B. primary, settling time, control effort, depth of discharge, K = 2** (`ternary-cubesat-textured-B-{light,dark}.png`).
+Reading: for most designs (544) faster settling costs wheel effort, the gain trade; in a cell of 162 designs the
+battery's depth of discharge alone is what limits, which fits a power-limited bus (term 1: 0.05 / 0.01 / 0.94, 20
+near-frontier; term 2: 0.51 / 0.46 / 0.03, 37).
+- Shows: a large region where two metrics trade and a corner region where one metric alone limits, with the
+  designs and lines of equal V.
+- Does not show: a three-way trade; a pair in the second region (its exponent vector is a sliver at the corner);
+  the other five metrics.
+
+**C. primary, pointing error, energy balance, depth of discharge, K = 3** (`ternary-cubesat-textured-C-{light,dark}.png`).
+Reading: weakest. Energy balance and depth of discharge both ride the slew's loss energy and the generated power,
+so a cell where one limits alone is believable, but "pointing error alone" in a third cell and the minimum of 10
+near-frontier designs in term 1 make it thin (terms 1 to 3: 232, 297, 177 designs; 10, 12, 14 near-frontier).
+- Shows: three regions with three different contending sets (the only texture-3 fit).
+- Does not show: any region where three metrics trade; a trade larger than a pair; regions of more than a corner
+  sliver for terms 2 and 3.
+
+Cold reads are the PM's. Open for the PM: TOL and the support level are choices (criteria above); at TOL 0.05
+candidates A and B drop out (their largest changes are 0.055 and 0.070).
+
+### The full table (rows sorted by texture, then plausibility rank, then smallest cell)
+
+| regime | triple | K | real regions | texture | min near-frontier per term | max exponent change | certified | plausibility note | real regions: contending set (rows/near-frontier) |
+|---|---|---|---|---|---|---|---|---|---|
+| primary | pointing error, energy balance, depth of discharge | 3 | 3 | 3 | 10 | 0.053 | certified | control against power: wheel loss energy and tracker draw couple them | {pointing error, depth of discharge} (232/10); {energy balance} (297/12); {pointing error} (177/14) |
+| primary | pointing error, total mass, control effort | 2 | 2 | 2 | 28 | 0.055 | certified | wheel and bus class: control performance against mass | {pointing error, control effort} (279/35); {pointing error, total mass} (427/28) |
+| stock | settling time, total mass, energy balance | 2 | 2 | 2 | 23 | 0.081 | certified | wheel and bus class: control performance against mass | {energy balance} (279/30); {settling time, total mass, energy balance} (501/23) |
+| primary | total mass, control effort, depth of discharge | 2 | 2 | 2 | 22 | 0.081 | certified | wheel and bus class: control performance against mass | {total mass, depth of discharge} (484/30); {depth of discharge} (222/22) |
+| stock | total mass, control effort, depth of discharge | 2 | 2 | 2 | 22 | 0.074 | certified | wheel and bus class: control performance against mass | {depth of discharge} (251/22); {total mass, depth of discharge} (529/30) |
+| primary | settling time, control effort, depth of discharge | 2 | 2 | 2 | 20 | 0.070 | certified | gain trade: faster settling costs wheel effort | {depth of discharge} (162/20); {settling time, control effort} (544/37) |
+| stock | settling time, pointing error, control effort | 2 | 2 | 2 | 19 | 0.094 | certified | gain trade: faster settling costs wheel effort | {settling time, pointing error, control effort} (295/19); {settling time, control effort} (485/43) |
+| stock | settling time, total mass, depth of discharge | 2 | 2 | 2 | 18 | 0.035 | certified | wheel and bus class: control performance against mass | {depth of discharge} (222/18); {settling time, total mass, depth of discharge} (558/38) |
+| stock | settling time, pointing error, total mass | 3 | 3 | 2 | 16 | 0.061 | certified | gains set both the slew speed and the steady error | {settling time, pointing error, total mass} (315/16); {pointing error, total mass} (155/16); {settling time, pointing error, total mass} (310/17) |
+| primary | settling time, control effort, depth of discharge | 3 | 3 | 2 | 15 | 0.073 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort, depth of discharge} (253/21); {settling time, control effort, depth of discharge} (304/17); {depth of discharge} (149/15) |
+| primary | settling time, pointing error, energy balance | 2 | 2 | 2 | 13 | 0.045 | certified | gains set both the slew speed and the steady error | {pointing error} (230/13); {settling time, pointing error, energy balance} (476/19) |
+| stock | settling time, pointing error, power margin | 2 | 2 | 2 | 11 | 0.097 | certified | gains set both the slew speed and the steady error | {settling time, power margin} (426/37); {settling time, pointing error, power margin} (354/11) |
+| primary | settling time, pointing error, control effort | 3 | 2 | 2 | 10 | 0.103 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort} (284/10); {settling time, pointing error, control effort} (305/18) |
+| primary | settling time, total mass, control effort | 3 | 2 | 2 | 10 | 0.405 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort} (394/43); {settling time, total mass} (210/22) |
+| primary | total mass, control effort, depth of discharge | 3 | 2 | 2 | 10 | 0.146 | certified | wheel and bus class: control performance against mass | {depth of discharge} (153/19); {total mass, control effort, depth of discharge} (328/23) |
+| stock | settling time, total mass, depth of discharge | 3 | 2 | 2 | 9 | 0.104 | certified | wheel and bus class: control performance against mass | {depth of discharge} (197/15); {total mass, depth of discharge} (309/20) |
+| stock | settling time, control effort, depth of discharge | 3 | 2 | 2 | 8 | 0.081 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort} (481/46); {settling time, control effort, depth of discharge} (109/10) |
+| stock | total mass, control effort, energy balance | 3 | 2 | 2 | 7 | 0.066 | certified | wheel and bus class: control performance against mass | {energy balance} (285/24); {total mass, energy balance} (323/18) |
+| stock | settling time, pointing error, control effort | 3 | 2 | 2 | 6 | 0.314 | certified | gain trade: faster settling costs wheel effort | {settling time, pointing error, control effort} (359/17); {settling time, control effort} (358/44) |
+| primary | settling time, pointing error, power margin | 3 | 2 | 2 | 4 | 0.062 | certified | gains set both the slew speed and the steady error | {pointing error} (215/13); {settling time, power margin} (245/10) |
+| primary | settling time, pointing error, depth of discharge | 3 | 2 | 2 | 4 | 0.368 | certified | gains set both the slew speed and the steady error | {pointing error, depth of discharge} (196/14); {pointing error} (225/15) |
+| stock | pointing error, control effort, depth of discharge | 2 | 2 | 2 | 25 | 0.080 | certified | control metrics only | {pointing error, control effort, depth of discharge} (268/25); {pointing error, control effort} (512/33) |
+| stock | pointing error, power margin, depth of discharge | 2 | 2 | 2 | 23 | 0.054 | certified | control against power: wheel loss energy and tracker draw couple them | {pointing error, depth of discharge} (386/26); {pointing error, power margin} (394/23) |
+| primary | pointing error, power margin, depth of discharge | 2 | 2 | 2 | 19 | 0.081 | certified | control against power: wheel loss energy and tracker draw couple them | {pointing error, depth of discharge} (390/26); {power margin} (316/19) |
+| stock | control effort, power margin, depth of discharge | 2 | 2 | 2 | 18 | 0.076 | certified | control against power: wheel loss energy and tracker draw couple them | {depth of discharge} (272/25); {control effort, power margin} (508/18) |
+| primary | pointing error, control effort, depth of discharge | 2 | 2 | 2 | 17 | 0.090 | certified | control metrics only | {pointing error, depth of discharge} (305/27); {pointing error, control effort} (401/17) |
+| primary | settling time, power margin, depth of discharge | 2 | 2 | 2 | 16 | 0.065 | certified | control against power: wheel loss energy and tracker draw couple them | {settling time, depth of discharge} (278/23); {settling time, power margin, depth of discharge} (428/16) |
+| primary | control effort, power margin, depth of discharge | 2 | 2 | 2 | 16 | 0.054 | certified | control against power: wheel loss energy and tracker draw couple them | {depth of discharge} (251/20); {control effort, power margin} (455/16) |
+| stock | pointing error, energy balance, depth of discharge | 2 | 2 | 2 | 16 | 0.050 | certified | control against power: wheel loss energy and tracker draw couple them | {energy balance} (473/17); {pointing error, depth of discharge} (307/16) |
+| primary | settling time, energy balance, depth of discharge | 2 | 2 | 2 | 14 | 0.050 | certified | control against power: wheel loss energy and tracker draw couple them | {settling time, depth of discharge} (261/14); {settling time, energy balance, depth of discharge} (445/16) |
+| primary | control effort, energy balance, depth of discharge | 2 | 2 | 2 | 14 | 0.032 | certified | control against power: wheel loss energy and tracker draw couple them | {depth of discharge} (220/14); {control effort, energy balance} (486/20) |
+| primary | pointing error, energy balance, depth of discharge | 2 | 2 | 2 | 12 | 0.069 | certified | control against power: wheel loss energy and tracker draw couple them | {pointing error, depth of discharge} (320/18); {energy balance} (386/12) |
+| primary | control effort, power margin, depth of discharge | 3 | 3 | 2 | 10 | 0.072 | certified | control against power: wheel loss energy and tracker draw couple them | {depth of discharge} (216/19); {control effort, power margin} (283/10); {control effort, power margin} (207/10) |
+| primary | pointing error, power margin, depth of discharge | 3 | 2 | 2 | 9 | 0.096 | certified | control against power: wheel loss energy and tracker draw couple them | {power margin} (239/12); {pointing error} (196/20) |
+| stock | control effort, power margin, depth of discharge | 3 | 2 | 2 | 9 | 0.075 | certified | control against power: wheel loss energy and tracker draw couple them | {power margin} (213/15); {depth of discharge} (240/12) |
+| primary | control effort, energy balance, depth of discharge | 3 | 2 | 2 | 8 | 0.099 | certified | control against power: wheel loss energy and tracker draw couple them | {depth of discharge} (187/18); {control effort, energy balance, depth of discharge} (354/13) |
+| primary | pointing error, control effort, depth of discharge | 3 | 2 | 2 | 7 | 0.085 | certified | control metrics only | {pointing error, control effort} (253/16); {pointing error, depth of discharge} (265/23) |
+| stock | control effort, energy balance, depth of discharge | 3 | 2 | 2 | 6 | 0.085 | certified | control against power: wheel loss energy and tracker draw couple them | {depth of discharge} (206/13); {energy balance} (307/23) |
+| primary | pointing error, control effort, energy balance | 3 | 2 | 2 | 5 | 0.108 | certified | control metrics only | {pointing error, control effort, energy balance} (240/21); {energy balance} (270/17) |
+| stock | settling time, energy balance, depth of discharge | 3 | 2 | 2 | 5 | 0.440 | certified | control against power: wheel loss energy and tracker draw couple them | {settling time, energy balance} (378/18); {settling time, energy balance, depth of discharge} (259/15) |
+| stock | pointing error, control effort, depth of discharge | 3 | 2 | 2 | 5 | 0.096 | certified | control metrics only | {pointing error, control effort} (290/23); {pointing error, control effort, depth of discharge} (252/21) |
+| stock | settling time, power margin, depth of discharge | 3 | 2 | 2 | 4 | 0.236 | certified | control against power: wheel loss energy and tracker draw couple them | {settling time, power margin} (316/24); {power margin, depth of discharge} (283/20) |
+| stock | pointing error, power margin, depth of discharge | 3 | 2 | 2 | 2 | 0.056 | certified | control against power: wheel loss energy and tracker draw couple them | {pointing error, power margin, depth of discharge} (338/17); {pointing error, power margin} (350/18) |
+| stock | pointing error, energy balance, depth of discharge | 3 | 2 | 2 | 2 | 0.057 | certified | control against power: wheel loss energy and tracker draw couple them | {depth of discharge} (278/18); {energy balance} (424/16) |
+| primary | total mass, power margin, energy balance | 2 | 2 | 2 | 27 | 0.041 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {total mass, power margin} (298/27); {total mass, energy balance} (408/34) |
+| stock | total mass, power margin, energy balance | 2 | 2 | 2 | 24 | 0.019 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance} (388/25); {total mass, power margin} (392/24) |
+| stock | power margin, energy balance, depth of discharge | 2 | 2 | 2 | 18 | 0.029 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {depth of discharge} (298/18); {energy balance} (482/26) |
+| primary | settling time, power margin, energy balance | 2 | 2 | 2 | 15 | 0.054 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {settling time, power margin} (321/15); {energy balance} (385/22) |
+| primary | pointing error, power margin, energy balance | 2 | 2 | 2 | 14 | 0.058 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {pointing error} (261/14); {energy balance} (445/15) |
+| primary | control effort, power margin, energy balance | 2 | 2 | 2 | 13 | 0.072 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {control effort, power margin} (234/13); {control effort, energy balance} (472/37) |
+| primary | power margin, energy balance, depth of discharge | 2 | 2 | 2 | 10 | 0.018 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {depth of discharge} (286/17); {energy balance} (420/10) |
+| stock | total mass, power margin, energy balance | 3 | 2 | 2 | 7 | 0.034 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {total mass, energy balance} (312/12); {energy balance} (249/18) |
+| stock | control effort, power margin, energy balance | 3 | 2 | 2 | 6 | 0.094 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance} (313/21); {control effort, energy balance} (297/10) |
+| primary | pointing error, power margin, energy balance | 3 | 2 | 2 | 2 | 0.344 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {pointing error} (223/12); {energy balance} (386/11) |
+| stock | settling time, control effort, peak slew power | 3 | 2 | 2 | 2 | 0.027 | certified | peak slew power steps with the swaps, flat inside each cell | {settling time, control effort} (501/18); {peak slew power} (215/28) |
+| primary | settling time, total mass, control effort | 1 | 1 | 1 | 101 | 0.000 | n/a (K = 1) | gain trade: faster settling costs wheel effort | {settling time, control effort} (706/101) |
+| primary | settling time, pointing error, control effort | 1 | 1 | 1 | 94 | 0.000 | n/a (K = 1) | gain trade: faster settling costs wheel effort | {settling time, pointing error, control effort} (706/94) |
+| stock | settling time, control effort, power margin | 1 | 1 | 1 | 90 | 0.000 | n/a (K = 1) | gain trade: faster settling costs wheel effort | {settling time, control effort, power margin} (780/90) |
+| stock | total mass, control effort, power margin | 1 | 1 | 1 | 90 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {total mass, power margin} (780/90) |
+| primary | settling time, total mass, depth of discharge | 1 | 1 | 1 | 89 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {settling time, total mass, depth of discharge} (706/89) |
+| primary | settling time, total mass, power margin | 1 | 1 | 1 | 88 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {settling time, total mass, power margin} (706/88) |
+| stock | settling time, control effort, depth of discharge | 1 | 1 | 1 | 88 | 0.000 | n/a (K = 1) | gain trade: faster settling costs wheel effort | {settling time, control effort} (780/88) |
+| stock | settling time, total mass, control effort | 1 | 1 | 1 | 86 | 0.000 | n/a (K = 1) | gain trade: faster settling costs wheel effort | {settling time, control effort} (780/86) |
+| stock | settling time, control effort, energy balance | 1 | 1 | 1 | 86 | 0.000 | n/a (K = 1) | gain trade: faster settling costs wheel effort | {settling time, control effort, energy balance} (780/86) |
+| stock | settling time, pointing error, power margin | 1 | 1 | 1 | 85 | 0.000 | n/a (K = 1) | gains set both the slew speed and the steady error | {settling time, pointing error, power margin} (780/85) |
+| stock | total mass, control effort, energy balance | 1 | 1 | 1 | 78 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {total mass, energy balance} (780/78) |
+| primary | settling time, control effort, depth of discharge | 1 | 1 | 1 | 74 | 0.000 | n/a (K = 1) | gain trade: faster settling costs wheel effort | {settling time, control effort, depth of discharge} (706/74) |
+| stock | settling time, pointing error, control effort | 1 | 1 | 1 | 74 | 0.000 | n/a (K = 1) | gain trade: faster settling costs wheel effort | {settling time, control effort} (780/74) |
+| primary | total mass, control effort, power margin | 1 | 1 | 1 | 73 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {total mass, power margin} (706/73) |
+| stock | total mass, control effort, depth of discharge | 1 | 1 | 1 | 73 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {total mass, depth of discharge} (780/73) |
+| stock | pointing error, total mass, power margin | 1 | 1 | 1 | 72 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {pointing error, total mass, power margin} (780/72) |
+| primary | total mass, control effort, energy balance | 1 | 1 | 1 | 70 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {total mass, energy balance} (706/70) |
+| primary | settling time, total mass, energy balance | 1 | 1 | 1 | 68 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {settling time, total mass, energy balance} (706/68) |
+| stock | settling time, pointing error, total mass | 1 | 1 | 1 | 67 | 0.000 | n/a (K = 1) | gains set both the slew speed and the steady error | {settling time, pointing error, total mass} (780/67) |
+| stock | settling time, pointing error, depth of discharge | 1 | 1 | 1 | 67 | 0.000 | n/a (K = 1) | gains set both the slew speed and the steady error | {pointing error, depth of discharge} (780/67) |
+| stock | pointing error, total mass, depth of discharge | 1 | 1 | 1 | 66 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {pointing error, total mass, depth of discharge} (780/66) |
+| primary | settling time, control effort, energy balance | 1 | 1 | 1 | 64 | 0.000 | n/a (K = 1) | gain trade: faster settling costs wheel effort | {settling time, control effort, energy balance} (706/64) |
+| stock | settling time, pointing error, energy balance | 1 | 1 | 1 | 64 | 0.000 | n/a (K = 1) | gains set both the slew speed and the steady error | {settling time, pointing error, energy balance} (780/64) |
+| primary | pointing error, total mass, control effort | 1 | 1 | 1 | 62 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {pointing error, total mass, control effort} (706/62) |
+| stock | pointing error, total mass, control effort | 1 | 1 | 1 | 62 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {pointing error, total mass, control effort} (780/62) |
+| primary | settling time, pointing error, power margin | 1 | 1 | 1 | 60 | 0.000 | n/a (K = 1) | gains set both the slew speed and the steady error | {settling time, pointing error, power margin} (706/60) |
+| primary | total mass, control effort, depth of discharge | 1 | 1 | 1 | 60 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {total mass, depth of discharge} (706/60) |
+| stock | settling time, total mass, depth of discharge | 1 | 1 | 1 | 59 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {settling time, total mass, depth of discharge} (780/59) |
+| stock | pointing error, total mass, energy balance | 1 | 1 | 1 | 58 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {pointing error, total mass, energy balance} (780/58) |
+| primary | settling time, pointing error, total mass | 1 | 1 | 1 | 57 | 0.000 | n/a (K = 1) | gains set both the slew speed and the steady error | {settling time, pointing error, total mass} (706/57) |
+| primary | pointing error, total mass, power margin | 1 | 1 | 1 | 57 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {pointing error, total mass, power margin} (706/57) |
+| primary | pointing error, total mass, depth of discharge | 1 | 1 | 1 | 57 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {pointing error, total mass, depth of discharge} (706/57) |
+| primary | settling time, control effort, power margin | 1 | 1 | 1 | 56 | 0.000 | n/a (K = 1) | gain trade: faster settling costs wheel effort | {settling time, control effort, power margin} (706/56) |
+| primary | settling time, pointing error, depth of discharge | 1 | 1 | 1 | 55 | 0.000 | n/a (K = 1) | gains set both the slew speed and the steady error | {settling time, pointing error, depth of discharge} (706/55) |
+| primary | pointing error, total mass, energy balance | 1 | 1 | 1 | 55 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {pointing error, total mass, energy balance} (706/55) |
+| primary | settling time, pointing error, energy balance | 1 | 1 | 1 | 54 | 0.000 | n/a (K = 1) | gains set both the slew speed and the steady error | {settling time, pointing error, energy balance} (706/54) |
+| stock | settling time, total mass, power margin | 1 | 1 | 1 | 54 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {settling time, total mass, power margin} (780/54) |
+| stock | settling time, total mass, energy balance | 1 | 1 | 1 | 53 | 0.000 | n/a (K = 1) | wheel and bus class: control performance against mass | {settling time, total mass, energy balance} (780/53) |
+| primary | settling time, control effort, power margin | 2 | 2 | 1 | 32 | 0.088 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort, power margin} (448/32); {settling time, control effort, power margin} (258/44) |
+| primary | pointing error, total mass, energy balance | 2 | 2 | 1 | 30 | 0.060 | certified | wheel and bus class: control performance against mass | {pointing error, total mass, energy balance} (375/30); {pointing error, total mass, energy balance} (331/30) |
+| primary | settling time, pointing error, control effort | 2 | 1 | 1 | 25 | 0.118 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort} (521/25) |
+| primary | settling time, total mass, power margin | 2 | 2 | 1 | 25 | 0.027 | certified | wheel and bus class: control performance against mass | {settling time, total mass, power margin} (338/25); {settling time, total mass, power margin} (368/28) |
+| primary | settling time, total mass, energy balance | 2 | 1 | 1 | 24 | 0.175 | certified | wheel and bus class: control performance against mass | {settling time, total mass, energy balance} (372/33) |
+| stock | settling time, control effort, power margin | 2 | 2 | 1 | 24 | 0.071 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort, power margin} (414/42); {settling time, control effort, power margin} (366/24) |
+| primary | settling time, total mass, control effort | 2 | 1 | 1 | 23 | 0.136 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort} (490/39) |
+| primary | total mass, control effort, power margin | 2 | 1 | 1 | 21 | 0.113 | certified | wheel and bus class: control performance against mass | {total mass, power margin} (399/31) |
+| primary | settling time, control effort, energy balance | 2 | 1 | 1 | 20 | 0.190 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort, energy balance} (307/50) |
+| stock | pointing error, total mass, control effort | 2 | 1 | 1 | 20 | 0.113 | certified | wheel and bus class: control performance against mass | {pointing error, control effort} (470/28) |
+| primary | settling time, pointing error, total mass | 2 | 1 | 1 | 18 | 0.136 | certified | gains set both the slew speed and the steady error | {settling time, pointing error, total mass} (366/38) |
+| primary | settling time, total mass, depth of discharge | 2 | 1 | 1 | 18 | 0.102 | certified | wheel and bus class: control performance against mass | {settling time, total mass, depth of discharge} (360/42) |
+| stock | settling time, total mass, power margin | 2 | 1 | 1 | 18 | 0.239 | certified | wheel and bus class: control performance against mass | {settling time, total mass, power margin} (455/37) |
+| stock | pointing error, total mass, depth of discharge | 2 | 1 | 1 | 18 | 0.103 | certified | wheel and bus class: control performance against mass | {pointing error, total mass, depth of discharge} (541/38) |
+| stock | settling time, total mass, power margin | 3 | 1 | 1 | 16 | 0.151 | certified | wheel and bus class: control performance against mass | {settling time, power margin} (148/19) |
+| stock | settling time, control effort, energy balance | 2 | 2 | 1 | 16 | 0.045 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort, energy balance} (444/48); {settling time, control effort, energy balance} (336/16) |
+| stock | pointing error, total mass, depth of discharge | 3 | 2 | 1 | 16 | 0.134 | certified | wheel and bus class: control performance against mass | {pointing error, total mass, depth of discharge} (400/16); {pointing error, total mass, depth of discharge} (174/16) |
+| primary | pointing error, total mass, power margin | 2 | 1 | 1 | 12 | 0.228 | certified | wheel and bus class: control performance against mass | {pointing error, total mass, power margin} (350/19) |
+| stock | settling time, total mass, energy balance | 3 | 1 | 1 | 12 | 0.208 | certified | wheel and bus class: control performance against mass | {energy balance} (220/14) |
+| primary | settling time, pointing error, power margin | 2 | 1 | 1 | 11 | 0.126 | certified | gains set both the slew speed and the steady error | {pointing error} (244/13) |
+| primary | pointing error, total mass, energy balance | 3 | 1 | 1 | 11 | 0.707 | certified | wheel and bus class: control performance against mass | {pointing error, total mass, energy balance} (235/13) |
+| primary | settling time, total mass, power margin | 3 | 2 | 1 | 10 | 0.196 | certified | wheel and bus class: control performance against mass | {settling time, total mass, power margin} (203/10); {settling time, total mass, power margin} (313/21) |
+| primary | pointing error, total mass, control effort | 3 | 1 | 1 | 10 | 0.299 | certified | wheel and bus class: control performance against mass | {pointing error, total mass} (268/10) |
+| primary | pointing error, total mass, depth of discharge | 2 | 2 | 1 | 10 | 0.077 | certified | wheel and bus class: control performance against mass | {pointing error, total mass, depth of discharge} (506/28); {pointing error, total mass, depth of discharge} (200/10) |
+| stock | settling time, total mass, control effort | 2 | 2 | 1 | 10 | 0.031 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort} (550/64); {settling time, control effort} (230/10) |
+| stock | settling time, control effort, depth of discharge | 2 | 1 | 1 | 10 | 0.532 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort} (671/51) |
+| stock | settling time, pointing error, depth of discharge | 2 | 1 | 1 | 9 | 0.268 | certified | gains set both the slew speed and the steady error | {pointing error, depth of discharge} (487/50) |
+| stock | settling time, control effort, power margin | 3 | 2 | 1 | 9 | 0.089 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort, power margin} (264/24); {settling time, control effort, power margin} (330/30) |
+| primary | settling time, control effort, power margin | 3 | 1 | 1 | 8 | 0.103 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort, power margin} (226/25) |
+| stock | settling time, total mass, control effort | 3 | 1 | 1 | 8 | 0.075 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort} (492/56) |
+| stock | total mass, control effort, power margin | 3 | 1 | 1 | 8 | 0.118 | certified | wheel and bus class: control performance against mass | {total mass, power margin} (376/22) |
+| primary | settling time, total mass, depth of discharge | 3 | 2 | 1 | 7 | 0.093 | certified | wheel and bus class: control performance against mass | {settling time, total mass, depth of discharge} (114/10); {settling time, total mass, depth of discharge} (331/21) |
+| primary | total mass, control effort, power margin | 3 | 1 | 1 | 7 | 0.221 | certified | wheel and bus class: control performance against mass | {total mass, power margin} (279/21) |
+| stock | settling time, pointing error, energy balance | 2 | 1 | 1 | 7 | 0.122 | certified | gains set both the slew speed and the steady error | {energy balance} (513/37) |
+| stock | total mass, control effort, depth of discharge | 3 | 1 | 1 | 7 | 0.258 | certified | wheel and bus class: control performance against mass | {depth of discharge} (158/18) |
+| primary | total mass, control effort, energy balance | 3 | 1 | 1 | 6 | 0.113 | certified | wheel and bus class: control performance against mass | {total mass, energy balance} (227/23) |
+| stock | settling time, pointing error, depth of discharge | 3 | 1 | 1 | 6 | 0.658 | certified | gains set both the slew speed and the steady error | {pointing error, depth of discharge} (466/39) |
+| stock | pointing error, total mass, control effort | 3 | 1 | 1 | 6 | 0.237 | certified | wheel and bus class: control performance against mass | {pointing error, control effort} (389/23) |
+| stock | settling time, pointing error, energy balance | 3 | 1 | 1 | 5 | 0.828 | certified | gains set both the slew speed and the steady error | {energy balance} (482/24) |
+| stock | settling time, control effort, energy balance | 3 | 1 | 1 | 5 | 0.109 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort, energy balance} (359/34) |
+| primary | settling time, pointing error, energy balance | 3 | 1 | 1 | 3 | 0.064 | certified | gains set both the slew speed and the steady error | {pointing error} (210/16) |
+| primary | settling time, control effort, energy balance | 3 | 2 | 1 | 3 | 0.128 | certified | gain trade: faster settling costs wheel effort | {settling time, control effort, energy balance} (349/15); {settling time, control effort, energy balance} (224/29) |
+| stock | settling time, pointing error, power margin | 3 | 1 | 1 | 3 | 0.827 | certified | gains set both the slew speed and the steady error | {settling time, power margin} (406/29) |
+| primary | pointing error, power margin, depth of discharge | 1 | 1 | 1 | 96 | 0.000 | n/a (K = 1) | control against power: wheel loss energy and tracker draw couple them | {pointing error, power margin, depth of discharge} (706/96) |
+| primary | pointing error, energy balance, depth of discharge | 1 | 1 | 1 | 90 | 0.000 | n/a (K = 1) | control against power: wheel loss energy and tracker draw couple them | {pointing error, energy balance, depth of discharge} (706/90) |
+| primary | pointing error, control effort, energy balance | 1 | 1 | 1 | 86 | 0.000 | n/a (K = 1) | control metrics only | {pointing error, control effort, energy balance} (706/86) |
+| stock | pointing error, control effort, depth of discharge | 1 | 1 | 1 | 82 | 0.000 | n/a (K = 1) | control metrics only | {pointing error, control effort} (780/82) |
+| stock | settling time, power margin, depth of discharge | 1 | 1 | 1 | 78 | 0.000 | n/a (K = 1) | control against power: wheel loss energy and tracker draw couple them | {settling time, power margin, depth of discharge} (780/78) |
+| stock | pointing error, control effort, energy balance | 1 | 1 | 1 | 77 | 0.000 | n/a (K = 1) | control metrics only | {pointing error, control effort, energy balance} (780/77) |
+| primary | control effort, energy balance, depth of discharge | 1 | 1 | 1 | 75 | 0.000 | n/a (K = 1) | control against power: wheel loss energy and tracker draw couple them | {control effort, energy balance, depth of discharge} (706/75) |
+| stock | control effort, power margin, depth of discharge | 1 | 1 | 1 | 75 | 0.000 | n/a (K = 1) | control against power: wheel loss energy and tracker draw couple them | {control effort, power margin, depth of discharge} (780/75) |
+| stock | control effort, energy balance, depth of discharge | 1 | 1 | 1 | 74 | 0.000 | n/a (K = 1) | control against power: wheel loss energy and tracker draw couple them | {control effort, energy balance, depth of discharge} (780/74) |
+| stock | pointing error, power margin, depth of discharge | 1 | 1 | 1 | 72 | 0.000 | n/a (K = 1) | control against power: wheel loss energy and tracker draw couple them | {pointing error, power margin, depth of discharge} (780/72) |
+| stock | pointing error, energy balance, depth of discharge | 1 | 1 | 1 | 72 | 0.000 | n/a (K = 1) | control against power: wheel loss energy and tracker draw couple them | {energy balance, depth of discharge} (780/72) |
+| stock | total mass, power margin, depth of discharge | 1 | 1 | 1 | 72 | 0.000 | n/a (K = 1) | mass against power: panels and battery carry both | {total mass, power margin, depth of discharge} (780/72) |
+| stock | total mass, energy balance, depth of discharge | 1 | 1 | 1 | 71 | 0.000 | n/a (K = 1) | mass against power: panels and battery carry both | {total mass, energy balance, depth of discharge} (780/71) |
+| primary | control effort, power margin, depth of discharge | 1 | 1 | 1 | 69 | 0.000 | n/a (K = 1) | control against power: wheel loss energy and tracker draw couple them | {control effort, power margin} (706/69) |
+| primary | pointing error, control effort, power margin | 1 | 1 | 1 | 68 | 0.000 | n/a (K = 1) | control metrics only | {pointing error, control effort, power margin} (706/68) |
+| stock | settling time, energy balance, depth of discharge | 1 | 1 | 1 | 68 | 0.000 | n/a (K = 1) | control against power: wheel loss energy and tracker draw couple them | {settling time, energy balance, depth of discharge} (780/68) |
+| stock | pointing error, control effort, power margin | 1 | 1 | 1 | 66 | 0.000 | n/a (K = 1) | control metrics only | {pointing error, control effort, power margin} (780/66) |
+| primary | pointing error, control effort, depth of discharge | 1 | 1 | 1 | 62 | 0.000 | n/a (K = 1) | control metrics only | {pointing error, control effort, depth of discharge} (706/62) |
+| primary | settling time, power margin, depth of discharge | 1 | 1 | 1 | 59 | 0.000 | n/a (K = 1) | control against power: wheel loss energy and tracker draw couple them | {settling time, power margin, depth of discharge} (706/59) |
+| primary | settling time, energy balance, depth of discharge | 1 | 1 | 1 | 56 | 0.000 | n/a (K = 1) | control against power: wheel loss energy and tracker draw couple them | {settling time, energy balance, depth of discharge} (706/56) |
+| primary | total mass, power margin, depth of discharge | 1 | 1 | 1 | 55 | 0.000 | n/a (K = 1) | mass against power: panels and battery carry both | {total mass, power margin, depth of discharge} (706/55) |
+| primary | total mass, energy balance, depth of discharge | 1 | 1 | 1 | 51 | 0.000 | n/a (K = 1) | mass against power: panels and battery carry both | {total mass, energy balance, depth of discharge} (706/51) |
+| primary | pointing error, control effort, energy balance | 2 | 2 | 1 | 24 | 0.072 | certified | control metrics only | {pointing error, control effort, energy balance} (342/41); {pointing error, control effort, energy balance} (364/24) |
+| stock | settling time, power margin, depth of discharge | 2 | 1 | 1 | 22 | 0.134 | certified | control against power: wheel loss energy and tracker draw couple them | {settling time, power margin, depth of discharge} (298/22) |
+| stock | pointing error, control effort, energy balance | 2 | 1 | 1 | 22 | 0.218 | certified | control metrics only | {pointing error, control effort, energy balance} (474/27) |
+| stock | settling time, energy balance, depth of discharge | 2 | 1 | 1 | 19 | 0.104 | certified | control against power: wheel loss energy and tracker draw couple them | {settling time, energy balance, depth of discharge} (499/29) |
+| primary | pointing error, control effort, power margin | 2 | 2 | 1 | 16 | 0.062 | certified | control metrics only | {pointing error, control effort, power margin} (389/35); {pointing error, control effort, power margin} (317/16) |
+| primary | total mass, energy balance, depth of discharge | 2 | 2 | 1 | 16 | 0.035 | certified | mass against power: panels and battery carry both | {total mass, energy balance, depth of discharge} (322/16); {total mass, energy balance, depth of discharge} (384/17) |
+| stock | total mass, energy balance, depth of discharge | 2 | 1 | 1 | 14 | 0.159 | certified | mass against power: panels and battery carry both | {total mass, energy balance, depth of discharge} (571/14) |
+| stock | total mass, power margin, depth of discharge | 2 | 1 | 1 | 13 | 0.720 | certified | mass against power: panels and battery carry both | {total mass, power margin, depth of discharge} (642/42) |
+| stock | pointing error, control effort, power margin | 3 | 1 | 1 | 12 | 0.399 | certified | control metrics only | {pointing error, control effort, power margin} (273/24) |
+| primary | pointing error, control effort, power margin | 3 | 1 | 1 | 6 | 0.147 | certified | control metrics only | {pointing error, control effort, power margin} (272/31) |
+| stock | total mass, power margin, depth of discharge | 3 | 1 | 1 | 6 | 0.454 | certified | mass against power: panels and battery carry both | {total mass, power margin, depth of discharge} (540/24) |
+| stock | total mass, energy balance, depth of discharge | 3 | 1 | 1 | 6 | 0.549 | certified | mass against power: panels and battery carry both | {total mass, energy balance, depth of discharge} (482/21) |
+| primary | total mass, power margin, depth of discharge | 3 | 1 | 1 | 4 | 0.217 | certified | mass against power: panels and battery carry both | {total mass, power margin, depth of discharge} (321/16) |
+| primary | settling time, pointing error, peak slew power | 1 | 1 | 1 | 92 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {settling time, pointing error, peak slew power} (706/92) |
+| primary | settling time, control effort, peak slew power | 1 | 1 | 1 | 91 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {settling time, control effort, peak slew power} (706/91) |
+| primary | control effort, power margin, energy balance | 1 | 1 | 1 | 91 | 0.000 | n/a (K = 1) | near one quantity (power margin and energy balance, Spearman 0.98) | {control effort, energy balance} (706/91) |
+| stock | pointing error, power margin, peak slew power | 1 | 1 | 1 | 89 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {pointing error, power margin, peak slew power} (780/89) |
+| primary | control effort, peak slew power, depth of discharge | 1 | 1 | 1 | 86 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {peak slew power} (706/86) |
+| stock | settling time, control effort, peak slew power | 1 | 1 | 1 | 86 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {settling time, control effort} (780/86) |
+| stock | control effort, energy balance, peak slew power | 1 | 1 | 1 | 86 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {control effort, energy balance, peak slew power} (780/86) |
+| primary | pointing error, power margin, peak slew power | 1 | 1 | 1 | 85 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {pointing error, power margin, peak slew power} (706/85) |
+| primary | control effort, power margin, peak slew power | 1 | 1 | 1 | 85 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {peak slew power} (706/85) |
+| stock | control effort, power margin, peak slew power | 1 | 1 | 1 | 85 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {peak slew power} (780/85) |
+| primary | energy balance, peak slew power, depth of discharge | 1 | 1 | 1 | 84 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {energy balance, peak slew power} (706/84) |
+| primary | settling time, power margin, peak slew power | 1 | 1 | 1 | 83 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {settling time, power margin, peak slew power} (706/83) |
+| primary | settling time, peak slew power, depth of discharge | 1 | 1 | 1 | 82 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {settling time, peak slew power, depth of discharge} (706/82) |
+| primary | power margin, peak slew power, depth of discharge | 1 | 1 | 1 | 82 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {power margin, peak slew power} (706/82) |
+| stock | control effort, peak slew power, depth of discharge | 1 | 1 | 1 | 82 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {peak slew power} (780/82) |
+| primary | settling time, total mass, peak slew power | 1 | 1 | 1 | 80 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {settling time, peak slew power} (706/80) |
+| primary | pointing error, energy balance, peak slew power | 1 | 1 | 1 | 80 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {pointing error, energy balance, peak slew power} (706/80) |
+| stock | pointing error, energy balance, peak slew power | 1 | 1 | 1 | 80 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {pointing error, energy balance, peak slew power} (780/80) |
+| stock | total mass, power margin, energy balance | 1 | 1 | 1 | 80 | 0.000 | n/a (K = 1) | near one quantity (power margin and energy balance, Spearman 0.98) | {total mass, energy balance} (780/80) |
+| stock | total mass, energy balance, peak slew power | 1 | 1 | 1 | 80 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {total mass, energy balance} (780/80) |
+| stock | settling time, pointing error, peak slew power | 1 | 1 | 1 | 79 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {settling time, pointing error, peak slew power} (780/79) |
+| stock | pointing error, control effort, peak slew power | 1 | 1 | 1 | 76 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {pointing error, control effort, peak slew power} (780/76) |
+| primary | total mass, power margin, energy balance | 1 | 1 | 1 | 75 | 0.000 | n/a (K = 1) | near one quantity (power margin and energy balance, Spearman 0.98) | {total mass, energy balance} (706/75) |
+| primary | total mass, energy balance, peak slew power | 1 | 1 | 1 | 75 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {total mass, energy balance} (706/75) |
+| primary | power margin, energy balance, depth of discharge | 1 | 1 | 1 | 75 | 0.000 | n/a (K = 1) | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance, depth of discharge} (706/75) |
+| stock | power margin, energy balance, depth of discharge | 1 | 1 | 1 | 75 | 0.000 | n/a (K = 1) | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance, depth of discharge} (780/75) |
+| stock | energy balance, peak slew power, depth of discharge | 1 | 1 | 1 | 75 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {energy balance, peak slew power, depth of discharge} (780/75) |
+| primary | pointing error, power margin, energy balance | 1 | 1 | 1 | 74 | 0.000 | n/a (K = 1) | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance} (706/74) |
+| stock | settling time, energy balance, peak slew power | 1 | 1 | 1 | 74 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {settling time, energy balance, peak slew power} (780/74) |
+| stock | settling time, power margin, peak slew power | 1 | 1 | 1 | 73 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {settling time, power margin, peak slew power} (780/73) |
+| stock | total mass, peak slew power, depth of discharge | 1 | 1 | 1 | 73 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {total mass, depth of discharge} (780/73) |
+| stock | power margin, peak slew power, depth of discharge | 1 | 1 | 1 | 73 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {peak slew power} (780/73) |
+| primary | settling time, energy balance, peak slew power | 1 | 1 | 1 | 72 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {settling time, energy balance, peak slew power} (706/72) |
+| primary | total mass, power margin, peak slew power | 1 | 1 | 1 | 72 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {total mass, power margin} (706/72) |
+| stock | settling time, peak slew power, depth of discharge | 1 | 1 | 1 | 72 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {settling time, peak slew power} (780/72) |
+| stock | settling time, power margin, energy balance | 1 | 1 | 1 | 71 | 0.000 | n/a (K = 1) | near one quantity (power margin and energy balance, Spearman 0.98) | {settling time, energy balance} (780/71) |
+| primary | pointing error, control effort, peak slew power | 1 | 1 | 1 | 68 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (706/68) |
+| stock | pointing error, power margin, energy balance | 1 | 1 | 1 | 67 | 0.000 | n/a (K = 1) | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance} (780/67) |
+| primary | control effort, energy balance, peak slew power | 1 | 1 | 1 | 65 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {control effort, energy balance} (706/65) |
+| primary | power margin, energy balance, peak slew power | 1 | 1 | 1 | 62 | 0.000 | n/a (K = 1) | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance, peak slew power} (706/62) |
+| stock | total mass, power margin, peak slew power | 1 | 1 | 1 | 62 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {total mass, power margin} (780/62) |
+| primary | total mass, peak slew power, depth of discharge | 1 | 1 | 1 | 60 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {total mass, depth of discharge} (706/60) |
+| stock | control effort, power margin, energy balance | 1 | 1 | 1 | 57 | 0.000 | n/a (K = 1) | near one quantity (power margin and energy balance, Spearman 0.98) | {control effort, energy balance} (780/57) |
+| stock | settling time, total mass, peak slew power | 1 | 1 | 1 | 54 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {settling time, peak slew power} (780/54) |
+| primary | settling time, power margin, energy balance | 1 | 1 | 1 | 49 | 0.000 | n/a (K = 1) | near one quantity (power margin and energy balance, Spearman 0.98) | {settling time, energy balance} (706/49) |
+| stock | power margin, energy balance, peak slew power | 1 | 1 | 1 | 49 | 0.000 | n/a (K = 1) | near one quantity (power margin and energy balance, Spearman 0.98) | {peak slew power} (780/49) |
+| stock | pointing error, peak slew power, depth of discharge | 1 | 1 | 1 | 46 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (780/46) |
+| stock | pointing error, total mass, peak slew power | 1 | 1 | 1 | 43 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (780/43) |
+| primary | pointing error, peak slew power, depth of discharge | 1 | 1 | 1 | 34 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (706/34) |
+| stock | total mass, control effort, peak slew power | 1 | 1 | 1 | 25 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {peak slew power} (780/25) |
+| primary | pointing error, total mass, peak slew power | 1 | 1 | 1 | 23 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (706/23) |
+| stock | settling time, control effort, peak slew power | 2 | 1 | 1 | 19 | 0.894 | certified | peak slew power steps with the swaps, flat inside each cell | {settling time, control effort} (565/19) |
+| primary | total mass, control effort, peak slew power | 1 | 1 | 1 | 13 | 0.000 | n/a (K = 1) | peak slew power steps with the swaps, flat inside each cell | {peak slew power} (706/13) |
+| primary | total mass, power margin, energy balance | 3 | 1 | 1 | 12 | 0.133 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {total mass, power margin} (236/22) |
+| stock | control effort, power margin, energy balance | 2 | 1 | 1 | 12 | 0.400 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance} (380/34) |
+| stock | settling time, peak slew power, depth of discharge | 2 | 1 | 1 | 11 | 0.560 | certified | peak slew power steps with the swaps, flat inside each cell | {settling time, peak slew power} (541/42) |
+| primary | settling time, energy balance, peak slew power | 2 | 1 | 1 | 9 | 0.073 | certified | peak slew power steps with the swaps, flat inside each cell | {settling time, peak slew power} (351/33) |
+| stock | settling time, energy balance, peak slew power | 2 | 1 | 1 | 8 | 0.274 | certified | peak slew power steps with the swaps, flat inside each cell | {peak slew power} (435/36) |
+| stock | pointing error, power margin, energy balance | 2 | 1 | 1 | 8 | 0.013 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance} (627/34) |
+| stock | pointing error, energy balance, peak slew power | 2 | 1 | 1 | 8 | 0.025 | certified | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (527/36) |
+| stock | settling time, power margin, energy balance | 2 | 1 | 1 | 6 | 0.031 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance} (500/42) |
+| stock | pointing error, power margin, peak slew power | 2 | 1 | 1 | 6 | 0.015 | certified | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (596/39) |
+| stock | power margin, energy balance, depth of discharge | 3 | 1 | 1 | 6 | 0.281 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance} (334/19) |
+| stock | pointing error, control effort, peak slew power | 2 | 1 | 1 | 5 | 0.037 | certified | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (442/35) |
+| primary | settling time, power margin, peak slew power | 2 | 1 | 1 | 4 | 0.059 | certified | peak slew power steps with the swaps, flat inside each cell | {settling time, peak slew power} (355/43) |
+| stock | settling time, total mass, peak slew power | 2 | 1 | 1 | 4 | 0.131 | certified | peak slew power steps with the swaps, flat inside each cell | {peak slew power} (541/52) |
+| stock | settling time, power margin, peak slew power | 2 | 1 | 1 | 4 | 0.044 | certified | peak slew power steps with the swaps, flat inside each cell | {peak slew power} (476/45) |
+| stock | pointing error, power margin, peak slew power | 3 | 1 | 1 | 4 | 0.181 | certified | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (417/20) |
+| primary | settling time, peak slew power, depth of discharge | 2 | 1 | 1 | 3 | 0.126 | certified | peak slew power steps with the swaps, flat inside each cell | {settling time, peak slew power} (372/49) |
+| primary | pointing error, energy balance, peak slew power | 2 | 1 | 1 | 3 | 0.127 | certified | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (507/29) |
+| primary | control effort, power margin, energy balance | 3 | 1 | 1 | 3 | 0.085 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {control effort, energy balance} (189/15) |
+| stock | settling time, power margin, peak slew power | 3 | 1 | 1 | 3 | 0.055 | certified | peak slew power steps with the swaps, flat inside each cell | {peak slew power} (424/30) |
+| stock | pointing error, peak slew power, depth of discharge | 2 | 1 | 1 | 3 | 0.080 | certified | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (606/34) |
+| primary | settling time, total mass, peak slew power | 2 | 1 | 1 | 2 | 0.115 | certified | peak slew power steps with the swaps, flat inside each cell | {settling time, peak slew power} (425/38) |
+| primary | settling time, energy balance, peak slew power | 3 | 1 | 1 | 2 | 0.508 | certified | peak slew power steps with the swaps, flat inside each cell | {settling time, peak slew power} (349/23) |
+| primary | pointing error, total mass, peak slew power | 2 | 1 | 1 | 2 | 0.001 | certified | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (615/16) |
+| primary | pointing error, total mass, peak slew power | 3 | 1 | 1 | 2 | 0.582 | certified | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (550/14) |
+| primary | pointing error, power margin, peak slew power | 2 | 1 | 1 | 2 | 0.150 | certified | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (564/44) |
+| stock | settling time, pointing error, peak slew power | 2 | 1 | 1 | 2 | 0.068 | certified | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (599/35) |
+| stock | settling time, power margin, energy balance | 3 | 1 | 1 | 2 | 0.192 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance} (405/43) |
+| stock | pointing error, total mass, peak slew power | 2 | 1 | 1 | 2 | 0.045 | certified | peak slew power steps with the swaps, flat inside each cell | {pointing error, peak slew power} (649/30) |
+| stock | pointing error, power margin, energy balance | 3 | 1 | 1 | 2 | 0.159 | certified | near one quantity (power margin and energy balance, Spearman 0.98) | {energy balance} (446/25) |
+| primary | total mass, control effort, energy balance | 2 | 0 | 0 | 30 | 0.150 | certified | wheel and bus class: control performance against mass |  |
+| stock | pointing error, total mass, energy balance | 2 | 0 | 0 | 27 | 0.158 | certified | wheel and bus class: control performance against mass |  |
+| stock | settling time, pointing error, total mass | 2 | 0 | 0 | 25 | 0.151 | certified | gains set both the slew speed and the steady error |  |
+| stock | pointing error, total mass, power margin | 2 | 0 | 0 | 25 | 0.247 | certified | wheel and bus class: control performance against mass |  |
+| stock | total mass, control effort, power margin | 2 | 0 | 0 | 21 | 0.512 | certified | wheel and bus class: control performance against mass |  |
+| stock | total mass, control effort, energy balance | 2 | 0 | 0 | 19 | 0.391 | certified | wheel and bus class: control performance against mass |  |
+| primary | settling time, pointing error, depth of discharge | 2 | 0 | 0 | 14 | 0.817 | certified | gains set both the slew speed and the steady error |  |
+| stock | pointing error, total mass, power margin | 3 | 0 | 0 | 12 | 0.393 | certified | wheel and bus class: control performance against mass |  |
+| primary | pointing error, total mass, power margin | 3 | 0 | 0 | 9 | 0.707 | certified | wheel and bus class: control performance against mass |  |
+| primary | pointing error, total mass, depth of discharge | 3 | 0 | 0 | 9 | 0.692 | certified | wheel and bus class: control performance against mass |  |
+| primary | settling time, total mass, energy balance | 3 | 0 | 0 | 8 | 0.160 | certified | wheel and bus class: control performance against mass |  |
+| stock | pointing error, total mass, energy balance | 3 | 0 | 0 | 7 | 0.271 | certified | wheel and bus class: control performance against mass |  |
+| primary | settling time, pointing error, total mass | 3 | 0 | 0 | 4 | 0.595 | certified | gains set both the slew speed and the steady error |  |
+| stock | pointing error, control effort, power margin | 2 | 0 | 0 | 20 | 0.334 | certified | control metrics only |  |
+| stock | control effort, energy balance, depth of discharge | 2 | 0 | 0 | 17 | 0.851 | certified | control against power: wheel loss energy and tracker draw couple them |  |
+| primary | total mass, power margin, depth of discharge | 2 | 0 | 0 | 16 | 0.190 | certified | mass against power: panels and battery carry both |  |
+| primary | total mass, energy balance, depth of discharge | 3 | 0 | 0 | 6 | 0.297 | certified | mass against power: panels and battery carry both |  |
+| stock | pointing error, control effort, energy balance | 3 | 0 | 0 | 6 | 0.167 | certified | control metrics only |  |
+| primary | settling time, energy balance, depth of discharge | 3 | 0 | 0 | 5 | 0.057 | certified | control against power: wheel loss energy and tracker draw couple them |  |
+| primary | settling time, power margin, depth of discharge | 3 | 0 | 0 | 4 | 0.106 | certified | control against power: wheel loss energy and tracker draw couple them |  |
+| primary | power margin, energy balance, depth of discharge | 3 | 0 | 0 | 4 | 0.173 | certified | near one quantity (power margin and energy balance, Spearman 0.98) |  |
+| stock | pointing error, control effort, peak slew power | 3 | 0 | 0 | 3 | 0.120 | certified | peak slew power steps with the swaps, flat inside each cell |  |
+| primary | settling time, pointing error, peak slew power | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | settling time, pointing error, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | settling time, total mass, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | settling time, control effort, peak slew power | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | settling time, control effort, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | settling time, power margin, energy balance | 3 | - | - | - | - | no report: orient_by_pca needs at least  | near one quantity (power margin and energy balance, Spearman 0.98) | |
+| primary | settling time, power margin, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | settling time, peak slew power, depth of discharge | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | pointing error, control effort, peak slew power | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | pointing error, control effort, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | pointing error, power margin, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | pointing error, energy balance, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | pointing error, peak slew power, depth of discharge | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | pointing error, peak slew power, depth of discharge | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | total mass, control effort, peak slew power | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | total mass, control effort, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | total mass, power margin, peak slew power | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | total mass, power margin, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | total mass, energy balance, peak slew power | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | total mass, energy balance, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | total mass, peak slew power, depth of discharge | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | total mass, peak slew power, depth of discharge | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | control effort, power margin, peak slew power | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | control effort, power margin, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | control effort, energy balance, peak slew power | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | control effort, energy balance, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | control effort, peak slew power, depth of discharge | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | control effort, peak slew power, depth of discharge | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | power margin, energy balance, peak slew power | 2 | - | - | - | - | no report: orient_by_pca needs at least  | near one quantity (power margin and energy balance, Spearman 0.98) | |
+| primary | power margin, energy balance, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | near one quantity (power margin and energy balance, Spearman 0.98) | |
+| primary | power margin, peak slew power, depth of discharge | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | power margin, peak slew power, depth of discharge | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | energy balance, peak slew power, depth of discharge | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| primary | energy balance, peak slew power, depth of discharge | 3 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | settling time, pointing error, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| stock | settling time, total mass, peak slew power | 3 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | settling time, energy balance, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| stock | settling time, peak slew power, depth of discharge | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| stock | pointing error, total mass, peak slew power | 3 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | pointing error, energy balance, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| stock | pointing error, peak slew power, depth of discharge | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| stock | total mass, control effort, peak slew power | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| stock | total mass, control effort, peak slew power | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| stock | total mass, power margin, peak slew power | 2 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | total mass, power margin, peak slew power | 3 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | total mass, energy balance, peak slew power | 2 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | total mass, energy balance, peak slew power | 3 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | total mass, peak slew power, depth of discharge | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| stock | total mass, peak slew power, depth of discharge | 3 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| stock | control effort, power margin, peak slew power | 2 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | control effort, power margin, peak slew power | 3 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | control effort, energy balance, peak slew power | 2 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | control effort, energy balance, peak slew power | 3 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | control effort, peak slew power, depth of discharge | 2 | - | - | - | - | no report: orient_by_pca needs at least  | peak slew power steps with the swaps, flat inside each cell | |
+| stock | control effort, peak slew power, depth of discharge | 3 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | power margin, energy balance, peak slew power | 2 | - | - | - | - | tau not bracketed | near one quantity (power margin and energy balance, Spearman 0.98) | |
+| stock | power margin, energy balance, peak slew power | 3 | - | - | - | - | tau not bracketed | near one quantity (power margin and energy balance, Spearman 0.98) | |
+| stock | power margin, peak slew power, depth of discharge | 2 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | power margin, peak slew power, depth of discharge | 3 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | energy balance, peak slew power, depth of discharge | 2 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
+| stock | energy balance, peak slew power, depth of discharge | 3 | - | - | - | - | tau not bracketed | peak slew power steps with the swaps, flat inside each cell | |
