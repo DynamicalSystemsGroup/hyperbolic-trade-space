@@ -220,3 +220,5 @@ Worktrees alive: `wp27model` (idle, tab-23), `stage` (af9ffea, port 8791), `wp28
 | Figure loop | agent a8c54c078acfdd793 running | - | Sonnet |
 
 Ninth PM, batch 2: WP31 accepted at 1d26560 (driver's pass); changelog line landed (WP8b G-3); `wp31review` and its server removed. WP30 gap 2: option B (checklist). Figure search restarted as a fresh unit in `fig-trilemma`.
+
+Ninth PM, batch 3 and 4 (current): figure loop closed at 96aa493 (search 8297df5; redraw d84b9f9 with the `plot_ternary` label unit; final iteration b00d4aa; cold reads in `WP19-cold-reads-s5b/`); the choice table for the supervisor is the last section of `WP19-figure-review.md`. WP30 preparation landed (63b1d2e to eea0673; checklist option B, b2c5dd9); held for his values. WP29 held for his glance (`wp29` d96db86). Held branches `wp29`, `wp30a`, `wp30b` untouched. `fig-trilemma` is mine, idle. WP25-5 not yet due.
