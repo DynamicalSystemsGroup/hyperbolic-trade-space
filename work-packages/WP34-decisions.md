@@ -26,3 +26,10 @@ ledger-hashed files that keep bare reads (`cubesat_model.py`, `legacy_oracle.py`
 `encoding="utf-8"` at the WP30 regeneration, which re-hashes them anyway, and are re-adopted there; the second Windows
 spike runs when the workflow's input allows the slow shard (checked below). The fast suite at the head is the
 watcher's and Linux's to confirm; Linux dispatched.
+
+**Second spike (run 43080511999 on e94357c; readout 9614ebb; the assistant, 14:30):** the five first-spike classes are
+gone; Windows fast 1 failure of 1,830, slow 2 of 396 (22.5 minutes). Stage 4: the coverage generator writes posix
+paths; the import-time check keeps its purity assertion and takes a platform-aware wall-clock limit with the reason;
+the probe mismatch is diagnosed on the runner before a fix (a platform-dependent field recorded per platform, or that
+one field excluded with the reason, never the whole comparison); then the Windows jobs join the gate matrix, the
+README and the reproducibility appendix state the platforms per shard, and a third spike proves both Windows shards.
