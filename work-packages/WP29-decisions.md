@@ -61,3 +61,18 @@ data; G-3, G-11 and G-12 revised; the main-results list is unchanged. Before lan
 text, the glossary's terms for "ridge", "active face" and "tangent space" (entries added where the glossary has
 none, Appendix A regenerated), the heading of `app-B-2` as the executor set it. The paper unit lands on dev from the
 branch after these, re-executed on the host.
+
+## Stage 6, the P9 and P10 pass (reviews bcb864e, 94a3853, 6140ace; the assistant, 2026-11-11, 11:20)
+
+The triage's dispositions under the balance rule are approved as proposed (C2 to C8 and the section lines:
+substitutions and narrowings, detail to Appendix B, the one-clause list entries for A8, A9 and R3, no caveats). On C1,
+the one place the claim and not the wording is in question: the script's projector is the sum-zero projector, which is
+the active face's tangent space only when every exponent is positive, while the case's fits of record carry zero
+exponents. The assistant's call: the corollary is stated for the exponents on the support (the active face) under
+strict complementarity (the zero exponents stay zero for small noise), and L20 gains the face step: the same algebra
+on the support's coordinates, P the projector onto the support's sum-zero subspace, with a test on a planted fit that
+has a zero exponent; D.18's predicted shifts are recomputed with the support's P and compared again with the measured
+ones. If the face step is not a page of elementary steps, the box narrows to fits with every exponent positive and
+D.18 says it reads the shift within the support. Either way the box carries R3 as the triage words it and nothing is
+added for the novice to stumble on. This is a call for the supervisor's review (the review list), since it decides
+what the corollary claims at a boundary.
