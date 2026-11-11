@@ -32,6 +32,21 @@ from hyperbolic_trade_space.plotting import plot_ternary  # noqa: E402
 # a region of a real fit can be small: let the labels fall to the case's
 # smallest legible size (``case.FIGURE_MIN_FONT_PT``) before giving up
 plotting._TERN_LABEL_SIZES += (13.0, 12.0, 11.0, 10.0, 9.5)
+# redraw iteration (WP19): the regions are model regions, not clusters
+# of designs, so the fill is a light tint and each border a drawn line;
+# the dark render is saved on its own dark ground so the corner names
+# are read as on a dark page
+plotting._TERN_SCHEMES = {
+    "light": {
+        **plotting._TERN_SCHEMES["light"],
+        "mix": ("#ffffff", 0.90),
+    },
+    "dark": {
+        **plotting._TERN_SCHEMES["dark"],
+        "mix": ("#191817", 0.80),
+    },
+}
+GROUND = {"light": "#ffffff", "dark": "#191817"}
 
 HERE = Path(__file__).resolve().parent
 CANDIDATES = {
@@ -62,8 +77,78 @@ def triple_study(regime, names):
     )
 
 
+def draw_borders_and_key(ax, est, M, scheme):
+    """A line where the leading term changes, and the key."""
+    import numpy as np
+    from matplotlib.lines import Line2D
+
+    sch = plotting._TERN_SCHEMES[scheme]
+    fit = plotting._ternary_geometry(est, M)
+    x, y, top, left, right, inside = plotting._ternary_grid(900)
+    reg = np.full(top.shape, np.nan)
+    reg[inside] = plotting._ternary_region_of(
+        fit, 1.0, top[inside], left[inside], right[inside]
+    )[0]
+    for k in range(1, len(fit["W"])):
+        ax.contour(
+            x,
+            y,
+            reg,
+            levels=[k - 0.5],
+            colors=[sch["ink"]],
+            linewidths=2.2,
+            linestyles=[(0, (6, 3))],
+            zorder=4.5,
+        )
+    ink = sch["ink"]
+    keys = [
+        Line2D([], [], color=ink, lw=1.0),
+        Line2D([], [], color=ink, lw=2.2, ls=(0, (6, 3))),
+        Line2D(
+            [],
+            [],
+            marker="o",
+            ls="",
+            ms=8,
+            mfc=sch["dots"],
+            mec=sch["plate"],
+        ),
+        Line2D(
+            [],
+            [],
+            marker="D",
+            ls="",
+            ms=9,
+            mfc="none",
+            mec=ink,
+            mew=1.4,
+        ),
+    ]
+    text = [
+        "lines of equal V (0.3 to 0.97 of the peak)",
+        "where the leading term changes",
+        "designs (larger: near the frontier)",
+        "numbered marker: a term's exponent vector",
+    ]
+    leg = ax.legend(
+        keys,
+        text,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.0),
+        ncol=1,
+        fontsize=11,
+        frameon=False,
+        labelcolor=ink,
+        handlelength=1.8,
+        borderaxespad=2.6,
+    )
+    leg.set_zorder(10)
+
+
 def main():
     for key, (regime, names, K) in CANDIDATES.items():
+        if key == "C":  # dropped: each region is one metric alone
+            continue
         st = triple_study(regime, names)
         fit = case.fit_study(st, K=K)
         est = fit.estimator
@@ -95,12 +180,15 @@ def main():
             )
         for scheme in ("light", "dark"):
             with build_figures._apply(scheme):
-                plot_ternary(est, st.M, names=list(names), lines=True)
+                ax = plot_ternary(
+                    est, st.M, names=list(names), lines=True
+                )
+                draw_borders_and_key(ax, est, st.M, scheme)
                 plt.gcf().savefig(
                     HERE
                     / f"ternary-cubesat-textured-{key}-{scheme}.png",
                     bbox_inches="tight",
-                    transparent=True,
+                    facecolor=GROUND[scheme],
                     metadata={"Software": None},
                 )
                 plt.close("all")

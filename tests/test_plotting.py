@@ -445,6 +445,37 @@ def test_ternary_marker_table_matches_the_drawn_markers_and_levels(planted3):
     np.testing.assert_allclose(levels, table.attrs["levels"])
 
 
+def test_ternary_labels_clear_the_markers_and_share_one_size(planted3):
+    # WP19 redraw iteration: a region's words must not sit on an exponent marker or its number,
+    # and the labels of one figure are one size (cold readers: "cramped, inconsistent in size").
+    X, ts = planted3
+    for scheme in ("light", "dark"):
+        fig = plt.figure(figsize=(6.4, 6.1))
+        ax = fig.add_axes([0, 0, 1, 1])
+        P.plot_ternary(ts, X, lines=True, scheme=scheme, ax=ax)
+        fig.canvas.draw()
+        rend = fig.canvas.get_renderer()
+        words = _by_gid(ax, "ternary-label-")
+        assert len(words) == 3
+        assert len({t.get_fontsize() for t in words.values()}) == 1
+        marks = [
+            t.get_bbox_patch().get_window_extent(rend)
+            for t in _by_gid(ax, "ternary-star-label-").values()
+        ]
+        for star in _by_gid(ax, "ternary-star-").values():  # a scatter marker: box from its size
+            (cx, cy), half = (
+                ax.transData.transform(star.get_offsets()[0]),
+                np.sqrt(star.get_sizes()[0]) * fig.dpi / 72 / 2,
+            )
+            marks.append(
+                matplotlib.transforms.Bbox([[cx - half, cy - half], [cx + half, cy + half]])
+            )
+        for t in words.values():
+            box = t.get_bbox_patch().get_window_extent(rend)
+            assert not any(box.overlaps(m) for m in marks), (scheme, t.get_text())
+        plt.close(fig)
+
+
 def test_ternary_marker_values_needs_three_metrics():
     X, _ = make_frontier_data(100, 4, n_terms=2, random_state=1)
     ts = HyperbolicTradeSpace(n_terms=2, temperature=30.0, random_state=0).fit(X)

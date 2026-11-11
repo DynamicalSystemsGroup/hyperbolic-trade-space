@@ -722,19 +722,21 @@ def _ternary_box(ax, text, size, ink, plate, edge):
     return t, (x1 - x0) / 2.0, (y1 - y0) / 2.0
 
 
-def _ternary_labels(fit, comp, s, ax, ink, plate, col, names, scale=1.0):
+def _ternary_labels(fit, comp, s, ax, ink, plate, col, names, scale=1.0, avoid=()):
     """Draw each term's label inside its own region and return ``{term: text artist}``.
 
     The rule reads the fit. On a fine grid of the triangle the region of term k is where
     ``k = argmax_k w_k . p - beta_k``. A label's box (its extent as the renderer measures it, in
     plane units, plus a margin) is placed only where it lies wholly in its region, so it crosses
-    neither a border with another region nor an edge of the triangle: the feasible centres are the
-    region's grid points eroded by the box. Of those the chosen one maximises the distance to the
-    region's border less the local density of designs (a Gaussian-smoothed count, bandwidth 0.04;
-    the distance counts a quarter as much).
-    The largest of the label sizes that has a feasible centre is used, with the wrap (the same
-    words on one to four lines) whose best centre scores highest. Nothing in the rule depends on
-    the colour scheme, so the light and dark images get the same placement.
+    neither a border with another region nor an edge of the triangle, and none of the ``avoid``
+    discs (``(x, y, r)`` in plane units: where the exponent markers and their numbers are): the
+    feasible centres are the region's grid points eroded by the box. Of those the chosen one
+    maximises the distance to the region's border less the local density of designs (a
+    Gaussian-smoothed count, bandwidth 0.04; the distance counts a quarter as much).
+    One size serves every label: the largest of the label sizes at which every region has a
+    feasible centre, with, for each label, the wrap (the same words on one to four lines) whose
+    best centre scores highest. Nothing in the rule depends on the colour scheme, so the light
+    and dark images get the same placement.
     """
     from scipy import ndimage
 
@@ -753,36 +755,48 @@ def _ternary_labels(fit, comp, s, ax, ink, plate, col, names, scale=1.0):
     )
     density = ndimage.gaussian_filter(hist, sigma=0.04 / dx)
     density /= density.max()
-    out = {}
-    for k in range(len(fit["W"])):
-        mask = reg == k
-        if not mask.any():
-            continue
-        dist = ndimage.distance_transform_edt(mask) * dx
-        text = _ternary_says(fit["W"][k], names)
-        for size in _TERN_LABEL_SIZES:
-            best = None
-            for variant in _ternary_wraps(text, names):
-                t, hw, hh = _ternary_box(ax, variant, size * scale, ink, plate, col[k])
-                nx = int(np.ceil((hw + _TERN_LABEL_MARGIN) / dx))
-                ny = int(np.ceil((hh + _TERN_LABEL_MARGIN) / dy))
-                ok = ndimage.binary_erosion(mask, structure=np.ones((2 * ny + 1, 2 * nx + 1), bool))
-                score = np.where(ok, 0.25 * dist / dist.max() - density, -np.inf)
-                i, j = np.unravel_index(np.argmax(score), score.shape)
-                if ok.any() and (best is None or score[i, j] > best[0]):
-                    if best is not None:
-                        best[1].remove()
-                    best = (score[i, j], t, (x[i, j], y[i, j]))
-                else:
-                    t.remove()
-            if best is not None:  # the best wrap at the largest size that fits
+    clear = np.ones(top.shape, bool)
+    for ax_, ay_, r_ in avoid:
+        clear &= np.hypot(x - ax_, y - ay_) > r_
+    regions = [k for k in range(len(fit["W"])) if (reg == k).any()]
+    masks = {k: (reg == k) & clear for k in regions}
+    dists = {k: ndimage.distance_transform_edt(masks[k]) * dx for k in regions}
+    texts = {k: _ternary_says(fit["W"][k], names) for k in regions}
+
+    def place(k, size):
+        best = None
+        for variant in _ternary_wraps(texts[k], names):
+            t, hw, hh = _ternary_box(ax, variant, size * scale, ink, plate, col[k])
+            nx = int(np.ceil((hw + _TERN_LABEL_MARGIN) / dx))
+            ny = int(np.ceil((hh + _TERN_LABEL_MARGIN) / dy))
+            ok = ndimage.binary_erosion(masks[k], structure=np.ones((2 * ny + 1, 2 * nx + 1), bool))
+            score = np.where(ok, 0.25 * dists[k] / dists[k].max() - density, -np.inf)
+            i, j = np.unravel_index(np.argmax(score), score.shape)
+            if ok.any() and (best is None or score[i, j] > best[0]):
+                if best is not None:
+                    best[1].remove()
+                best = (score[i, j], t, (x[i, j], y[i, j]))
+            else:
+                t.remove()
+        return best
+
+    for size in _TERN_LABEL_SIZES:
+        placed = {}
+        for k in regions:
+            best = place(k, size)
+            if best is None:
+                break
+            placed[k] = best
+        else:  # every label fits at this size
+            out = {}
+            for k, best in placed.items():
                 best[1].set_position(best[2])
                 best[1].set_gid(f"ternary-label-{k}")
                 out[k] = best[1]
-                break
-        else:
-            raise RuntimeError(f"no room for the label of term {k} inside its region")
-    return out
+            return out
+        for _, t, _ in placed.values():
+            t.remove()
+    raise RuntimeError("no room for the labels inside their regions")
 
 
 def _ternary_parts(W, names, groups):
@@ -1076,7 +1090,15 @@ def plot_ternary(
 
     ax.plot([0, 0.5, 1, 0], [0, _SQ3, 0, 0], color=ink, lw=1.4, solid_joinstyle="miter", zorder=5)
     if X is not None:
-        _ternary_labels(fit, comp, s, ax, ink, sch["plate"], col, names, scale)
+        # the exponent markers and their numbers (drawn with ``lines``) are kept clear of the labels
+        avoid = []
+        for k in range(K if lines else 0):
+            sx, sy = _ternary_project(*Wt[k])
+            tx, ty = 0.5 - sx, _SQ3 / 3.0 - sy
+            nrm = float(np.hypot(tx, ty)) or 1.0
+            for f in (0.0, 0.5, 1.0):  # the marker, the number and the stretch between them
+                avoid.append((sx + 0.05 * f * tx / nrm, sy + 0.05 * f * ty / nrm, 0.045 * scale))
+        _ternary_labels(fit, comp, s, ax, ink, sch["plate"], col, names, scale, avoid)
     corner = {"fontsize": 15 * scale, "fontweight": "bold", "color": ink, "zorder": 6}
     ax.text(0.5, _SQ3 + 0.035, f"favours {names[0]}", ha="center", va="bottom", **corner)
     ax.text(-0.03, -0.03, f"favours\n{names[1]}", ha="left", va="top", **corner)

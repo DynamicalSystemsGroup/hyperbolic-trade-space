@@ -1833,3 +1833,42 @@ one-region figure (settling time, pointing error, total mass) is last in both: i
 Both readers ask that the contours and dots be named and that fills read as model regions (outlined, lighter) rather than clusters. Dark: corner labels
 low contrast (A, B, one-region). C is the weakest by the search table (minimum near-frontier exactly the guard, 10); A is the strongest (28, texture 2).
 The supervisor chooses.
+
+### S-5 redraw iteration of A and B (ninth PM; the driver's decision: C dropped, A the candidate, B the alternative)
+
+Decision: C (pointing error / energy balance / depth of discharge) is dropped, because each of its three regions is a single-metric term, so no region shows
+a trade-off. Its two images stay in `docs/superpowers/notes/figure-candidates/` because the cold-read returns above name them; the script skips C.
+
+What changed (A and B redrawn, light and dark, `docs/superpowers/notes/figure-candidates/ternary-cubesat-textured-{A,B}-{light,dark}.png`):
+
+- Regions are a light tint with a drawn border (a dashed line where the leading term changes), not colour blocks.
+- A key under the triangle: thin lines = lines of equal V (0.3 to 0.97 of the peak); dashed line = where the leading term changes; dots = designs (larger =
+  near the frontier); numbered marker = a term's exponent vector (read from `plot_ternary`: the marker sits at the term's exponents in the triangle, the
+  point where that term's V is largest at a fixed total; the number is the term's).
+- Region labels no longer sit on a marker or its number and are one size in a figure (`_ternary_labels` in `src/hyperbolic_trade_space/plotting.py`:
+  exclusion discs around each marker and its number; the largest size at which every label fits; test
+  `test_ternary_labels_clear_the_markers_and_share_one_size`, which fails before the change and passes after; no signature change; contract row 11 untouched).
+- The dark render is saved on its own dark ground, so the corner names read on dark (on a white viewer the transparent PNG showed them pale).
+- Side effect: the docs' Figure 6 (`ternary-planted`, light and dark) and the site's `why-regions` change pixels (labels placed clear of markers, one size); both were viewed
+  and read acceptably (the lower label wraps on four lines instead of two).
+
+Redrawn A (pointing error / total mass / control effort, K = 2). Shows: two regions of the fit, one where pointing error trades against control effort and one
+where total mass trades against pointing error, with lines of equal V around each term's marker. Does not show: that the designs fall into two groups (the dots cross
+the border), the values of V on the lines, or any claim about the cause of the split.
+
+Redrawn B (settling time / control effort / depth of discharge, K = 2). Shows: a large region where settling time trades against control effort with its
+marker inside, and a smaller region at the depth-of-discharge corner where that metric alone leads. Does not show: a trade-off in the second region, the values of V
+on the lines, or that the border is exact (it is drawn from a grid, so its small steps are the grid's).
+
+Engineer's plausibility reading, top ten rows of the search table (one sentence each, in table order):
+
+1. primary, pointing error / energy balance / depth of discharge, K = 3: wheel loss and tracker draw load the bus, so control quality against the energy budget is a believable coupling.
+2. primary, pointing error / total mass / control effort, K = 2: a bigger wheel and bus buy pointing at the cost of mass and torque effort, the classic sizing trade.
+3. stock, settling time / total mass / energy balance, K = 2: faster settling needs more wheel and power, so it trades against mass and energy, believable if the energy-alone region is the sun-rich designs.
+4. primary, total mass / control effort / depth of discharge, K = 2: mass, wheel effort and battery cycling all follow the bus class, which is a shared driver more than a trade, so it reads weaker.
+5. stock, total mass / control effort / depth of discharge, K = 2: the same shared bus-class driver as row 4, with the same reservation.
+6. primary, settling time / control effort / depth of discharge, K = 2: a gain trade, faster settling costs wheel effort, with depth of discharge leading alone at the low-draw end; plausible.
+7. stock, settling time / pointing error / control effort, K = 2: settling, steady error and wheel effort all come from the gains, so the pairing is believable but one mechanism.
+8. stock, settling time / total mass / depth of discharge, K = 2: settling and mass share the wheel class while depth of discharge leads alone elsewhere; plausible, not striking.
+9. stock, settling time / pointing error / total mass, K = 3: the gains set both slew speed and steady error, and mass enters through the wheel; believable, with three regions that differ only in which pairs of the three lead.
+10. primary, settling time / control effort / depth of discharge, K = 3: the row-6 gain trade split into three regions, two of which name the same set, so the third region adds little an engineer would act on.
