@@ -44,7 +44,7 @@ case.tension_figure(study, fit)
 <figure markdown>
 ![Heatmap of the association among eight conditioned metrics near the frontier; five metrics are outlined as the contending set.](generated/figures/adcs-tensions-light.png#only-light)
 ![Heatmap of the association among eight conditioned metrics near the frontier; five metrics are outlined as the contending set.](generated/figures/adcs-tensions-dark.png#only-dark)
-<figcaption>Figure 6. The tension report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, metrics that do not participate.</figcaption>
+<figcaption>Figure 5. The tension report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, metrics that do not participate.</figcaption>
 </figure>
 
 ```python {.runnable}
@@ -57,7 +57,7 @@ plot_frontier_coordinates(chart[:, :-1], chart[:, -1])
 <figure markdown>
 ![The 706 feasible designs in the plane of the first two position coordinates Z0 and Z1, with the designs nearest the frontier ringed in black.](generated/figures/adcs-coordinates-light.png#only-light)
 ![The 706 feasible designs in the plane of the first two position coordinates Z0 and Z1, with the designs nearest the frontier ringed in black.](generated/figures/adcs-coordinates-dark.png#only-dark)
-<figcaption>Figure 7. The 706 feasible designs by Z0 and Z1, the first two of seven position coordinates, meaningless alone; 193 ringed designs lie nearest the frontier. It shows coverage, not the frontier.</figcaption>
+<figcaption>Figure 6. The 706 feasible designs by Z0 and Z1, the first two of seven position coordinates, meaningless alone; 193 ringed designs lie nearest the frontier. It shows coverage, not the frontier.</figcaption>
 </figure>
 
 ## Requirements read after the fit
@@ -116,7 +116,7 @@ plot_ternary(ts, X, lines=True)
 <figure markdown>
 ![A triangle whose corners are three metrics, tinted in three regions by the term that is largest there, with designs as points, a numbered marker for each term's exponent vector, and lines of equal V closing around each marker.](generated/figures/ternary-planted-light.png#only-light)
 ![A triangle whose corners are three metrics, tinted in three regions by the term that is largest there, with designs as points, a numbered marker for each term's exponent vector, and lines of equal V closing around each marker.](generated/figures/ternary-planted-dark.png#only-dark)
-<figcaption>Figure 8. Designs by shares of three metrics: regions, numbered exponent vectors, lines of equal V.</figcaption>
+<figcaption>Figure 7. Designs by shares of three metrics: regions, numbered exponent vectors, lines of equal V.</figcaption>
 </figure>
 
 Reading it:

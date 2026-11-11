@@ -74,22 +74,12 @@ Holes of a three-metric fit:
 
 ```python {.runnable}
 from hyperbolic_trade_space.gaps import find_holes
-from hyperbolic_trade_space.plotting import (
-    plot_frontier_coordinates,
-)
 
 X3, _ = make_frontier_data(300, 3, random_state=0)
 ts3 = HyperbolicTradeSpace(temperature=20.0).fit(X3)
 chart3 = ts3.transform(X3)
 holes, scores = find_holes(chart3[:, :-1], resolution=30, threshold=3.0)
-plot_frontier_coordinates(chart3[:, :-1], chart3[:, -1], holes=holes)
 ```
-
-<figure markdown>
-![Designs in the plane of two position coordinates with orange squares ringing the cloud at its rim, where the grid positions far from every design fall.](../generated/figures/chart-holes-light.png#only-light)
-![Designs in the plane of two position coordinates with orange squares ringing the cloud at its rim, where the grid positions far from every design fall.](../generated/figures/chart-holes-dark.png#only-dark)
-<figcaption>Figure 5. The chart with holes: the orange squares are grid positions far from every design, candidates for white space. This seeded blob has no interior hole, so they fall at the rim.</figcaption>
-</figure>
 
 A hole is a candidate and not a verdict. An empty region can be an opportunity, a categorical
 stratum that cannot be occupied, or simply unsampled. The score cannot tell these apart; you decide.

@@ -58,7 +58,7 @@ BUDGETS = {
     "user-guide/conditioning.md": 700,
     "user-guide/fitting.md": 800,
     "user-guide/tensions.md": 700,
-    "user-guide/chart.md": 600,
+    "user-guide/chart.md": 561,  # 600 until WP28 X-1 (the holes figure went)
     "user-guide/prediction.md": 350,
     "user-guide/termination.md": 600,
     "user-guide/limitations.md": 500,
@@ -770,7 +770,7 @@ def test_figures_are_few_captioned_and_in_both_colour_schemes():
         assert [i for i, _ in bf.page_figures(page)] == sorted(i for i, _ in bf.page_figures(page))
     assert 1 <= len(names) <= bf.MAX_FIGURES == 8
     assert len(set(names)) == len(names)
-    assert {"first-fit", "three-terms", "tension-report", "log-plane", "chart-holes"} <= set(names)
+    assert {"first-fit", "three-terms", "tension-report", "log-plane"} <= set(names)
     assert any(n.startswith("adcs-") for n in names), "an example from the case, on the frozen data"
 
 
