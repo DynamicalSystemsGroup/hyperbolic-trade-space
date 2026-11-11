@@ -715,3 +715,22 @@ round is a package before the handover (the UX loop of the mandate): tasks defin
 named head, returns verbatim, triage into docs and package change requests, fixes, a re-run until a fresh cell
 completes without a stop the docs owe. The standing question: did anything make them think they need SysML v2 or
 satellites to use the tool.
+
+## One size fits none: journeys and signposting (standing order, 2026-11-11, 10:35)
+
+The supervisor, verbatim: "as we near the end, we need to be very clear about our wide range of users and their
+different user journeys and make sure we're not doing the thing were what offer is "one size fits none" instead the
+top level index page, the paper, the documentation, the api, the examples, the package itself, the repo organization
+all need to be fit for purpose and aligned to a user need. the body of content needs to be signposted well enough that
+the user can quickly find what they need, not get lost in content aimed at another user." So, before the handover, a
+journeys-and-signposting package: (1) a journeys map, `docs/superpowers/notes/user-journeys.md`, one row per persona
+of the grid (P1 to P8, U1 to U4): where they arrive (the repository page, the root page, the docs site, the paper, the
+API reference, the examples, the package itself), what they need first, the path they take, and which content on that
+path is aimed at someone else; (2) each surface's first screen routes by need, in the user's words (use the tool on
+your own table; read the paper; bring your own system model; check the mathematics; reproduce the results), and every
+page says at its top whom it is for and where the others go; the repository's top level reads the same way (what each
+directory is for, in the README's layout list); (3) content on a path that is aimed at another user moves to that
+user's path or goes (the negative-edit test applied to placement, not only to existence); (4) a wayfinding round: a
+fresh reader per persona is dropped at their arrival surface with their need and asked to find what they need, timed
+in steps, reporting where they got lost and what they skipped; the round repeats on the fixed surfaces. The
+package-user tests (U1 to U4) carry the wayfinding question in their protocol too.

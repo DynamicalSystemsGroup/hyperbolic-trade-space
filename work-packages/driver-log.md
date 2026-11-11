@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Journeys and signposting (2026-11-11, 10:35; the supervisor, verbatim in PM-BRIEF.md).** A package before the
+  handover: a journeys map per persona (arrival surface, first need, path, content on the path aimed at someone else),
+  each surface's first screen routing by need, content moved or cut by placement, a wayfinding round per persona. The
+  PM scopes it; it runs with the package-user tests.
+
 - **Package-user tests (2026-11-11, 10:20; the supervisor, verbatim in reader-grid.md, "Axis 3").** Four personas U1 to
   U4 (human or coding agent; with or without SysML v2 experience; the table measured or model-exported) who pull the
   package and read the docs knowing nothing of satellites; a round before the handover, run on the staged site with
