@@ -432,6 +432,15 @@ def test_root_index_is_thin_and_has_the_cards():
         assert stale not in paper.lower(), stale
 
 
+def test_paper_theme_is_pinned_to_a_commit():
+    """A clean checkout must build the paper on the theme it was reviewed on (WP8b D-8): the
+    article theme is a commit-pinned archive, not the name that follows the main branch."""
+    template = load_yaml(ROOT / "paper" / "myst.yml")["site"]["template"]
+    assert re.fullmatch(
+        r"https://github\.com/myst-templates/article-theme/archive/[0-9a-f]{40}\.zip", template
+    ), template
+
+
 def test_punch_list_covers_post_release_checks():
     text = PUNCH_LIST.read_text()
     for route in LIVE_ROUTES:

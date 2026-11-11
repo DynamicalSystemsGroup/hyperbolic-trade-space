@@ -62,7 +62,10 @@ project:
         - chilli2026decision
   # No export block: the PDF export is deferred (OD4, decided "Later, once the content has settled").
 site:
-  template: article-theme
+  # Pinned to the commit of myst-templates/article-theme that is theme v1.4.1 (the name
+  # `article-theme` alone resolves to the repository's main branch, which moved to v2.0.0 on
+  # 2026-11-10 and does not render this paper). Change it only with a rendered-paper review.
+  template: https://github.com/myst-templates/article-theme/archive/4acce1eba558b301c2aadca99a7804aa6e294e1e.zip
   options:
     # a narrow screen clips the anchor mark of a heading that fills its line (BROWSER_NOTES)
     style: style.css
