@@ -7,11 +7,7 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
-- **For the morning (2026-11-10, 23:05):** one question on Track B once the economics spike (B2) reports: the model
-  revision (the momentum headroom as the ninth traded metric; the fleet-size variable and the pricing curves) changes
-  the baseline regime's leading trade, a conclusion of the case; the spike B1 readout has the numbers
-  (`WP23-rounds/spikes/spike-C-requirements-no-traded-metric/README.md`, section (4)). The driver recommends proceeding:
-  the new trade is the one the model's own requirement says exists. Nothing builds before his word.
+- **Resolved 2026-11-10, 23:15, in his presence:** the change of the baseline regime's conclusion by the momentum headroom as the ninth traded metric: "Confirm" (spike C's decisions.md). Nothing waits for him now.
 
 - **Resolved 2026-11-10, 22:40, in his presence:** the ten WP28 rows (S-3 cut to a pointer; the rest kept; three of them
   open work: the modelling spike, the noise-result spike, the real-3-lemma figure loop; D.12 clarified) and H-2 (a

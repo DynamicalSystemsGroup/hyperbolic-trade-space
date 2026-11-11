@@ -61,3 +61,8 @@ three has a different reason, and only the momentum requirement's points to a ga
 - **For the supervisor, in the morning, one question:** the revision changes the baseline regime's leading trade (from
   control effort against settling time to momentum headroom, mass and settling time), which is a changed conclusion of
   the case; he confirms it before stage (3) builds.
+
+**The supervisor, 2026-11-10, 23:15, asked whether he confirms the change of conclusion (the momentum headroom as the
+ninth traded metric; the baseline regime's leading trade moving from control effort against settling time to momentum
+headroom, total mass and settling time), verbatim:** "Confirm". Stage (2) of Track B is taken for the momentum part;
+the cost model's calibration waits for the B2 readout; one data gate for both.
