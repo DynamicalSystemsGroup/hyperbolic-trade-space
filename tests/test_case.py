@@ -58,21 +58,22 @@ def stock_fits(stock):
 
 
 def test_subsystem_mapping_is_data_and_covers_every_attribute():
-    """Each attribute has one subsystem in the spec; the model's grouping is 3 + 5 + 1."""
+    """Each attribute has one subsystem in the spec; the model's grouping is 4 + 4 + 1 (the momentum
+    headroom joined the controls at WP30, D-1 (a) of spike C)."""
     spec = case.CUBESAT
     assert set(spec.subsystems) == set(spec.attributes)
     assert set(spec.subsystem_order) == set(spec.subsystems.values())
     counts = {g: list(spec.subsystems.values()).count(g) for g in spec.subsystem_order}
-    assert counts == {"controls": 3, "power and energy": 4, "mass": 1}
+    assert counts == {"controls": 4, "power and energy": 4, "mass": 1}
     assert spec.subsystems_of(["total mass", "pointing error"]) == ["controls", "mass"]
     assert spec.subsystems_of(["settling time"]) == ["controls"]
 
 
 def test_load_study_filters_and_conditions(small):
-    assert small.M.shape == (N, 8) and (small.M > 0).all()
+    assert small.M.shape == (N, 9) and (small.M > 0).all()
     assert len(small.raw) == 1000 and len(small.feasible) == N
     assert small.feasible.settled.all() and small.feasible.momentum_ok.all()
-    assert small.names[0] == "settling time" and small.names[-1] == "depth of discharge"
+    assert small.names[0] == "settling time" and small.names[-1] == "momentum headroom"
     assert "metrics__settling_time_s" in small.conditioner.get_feature_names_out()
     assert "metrics__slew_time_s" not in small.conditioner.get_feature_names_out()
 
@@ -103,7 +104,7 @@ def test_feasibility_table_cascade(primary):
 
 def test_conditioning_table(small):
     t = case.conditioning_table(small)
-    assert list(t.index) == small.names and len(t) == 8
+    assert list(t.index) == small.names and len(t) == 9
     assert set(t.orientation) == {"reciprocal", "direct"}
     assert np.allclose(t["m min"], small.M.min(axis=0))
 
@@ -583,12 +584,12 @@ def test_panel_titles_count_the_exact_maximum_support_and_outline_exactly_those(
 
 @pytest.mark.parametrize("regime", ["primary", "stock"])
 def test_association_step_covers_every_pair_and_names_the_one_axis_pairs(regime, request):
-    """R-25: 28 pairs of the eight traded metrics; the named set is the pairs at |Spearman| >= 0.99
+    """R-25: 36 pairs of the nine traded metrics; the named set is the pairs at |Spearman| >= 0.99
     (none on the data of record: the power margin and the energy balance stay below, 0.982 and
     0.988), and the summed reading has nothing to sum."""
     study = request.getfixturevalue(regime)
     t = case.association_all_pairs(study)
-    assert len(t) == 28 and case.ONE_AXIS == 0.99
+    assert len(t) == 36 and case.ONE_AXIS == 0.99
     assert {frozenset(p) for p in zip(t["metric a"], t["metric b"], strict=True)} == {
         frozenset((a, b)) for i, a in enumerate(study.names) for b in study.names[i + 1 :]
     }

@@ -20,7 +20,7 @@ Examples
 --------
 >>> study = load_study("primary", n_max=60)
 >>> study.M.shape
-(60, 8)
+(60, 9)
 """
 
 from __future__ import annotations
@@ -138,21 +138,26 @@ class CaseSpec:
 _ATTRS = (
     "settling_time_s", "pointing_error_deg", "total_mass_kg", "control_effort",
     "power_margin_w", "energy_balance_wh", "peak_slew_power_w", "dod_eclipse",
+    "momentum_headroom",
 )  # fmt: skip
 _NAMES = (
     "settling time", "pointing error", "total mass", "control effort",
     "power margin", "energy balance", "peak slew power", "depth of discharge",
+    "momentum headroom",
 )  # fmt: skip
 _SUBSYSTEMS = (
     "controls", "controls", "mass", "controls",
     "power and energy", "power and energy", "power and energy", "power and energy",
+    "controls",
 )  # fmt: skip
-_UNITS = ("s", "deg", "kg", "torque.s, proxy", "W", "Wh", "W", "fraction")
-_ORIENT = (-1, -1, -1, -1, +1, +1, -1, -1)
+_UNITS = ("s", "deg", "kg", "torque.s, proxy", "W", "Wh", "W", "fraction", "ratio")
+_ORIENT = (-1, -1, -1, -1, +1, +1, -1, -1, +1)
 
 CUBESAT = CaseSpec(
     name="cubesat attitude determination and control",
-    data_dir=HERE / "data" / "v2",  # the data of record (ledger entries @6, the WP23 close-out)
+    # the data of record (ledger entries @8, the WP23 close-out); WP30 stage 3a adds the ninth
+    # traded metric, the momentum headroom, whose column the data carries after the WP30 data gate
+    data_dir=HERE / "data" / "v2",
     regimes={"primary": "adcs_designs_cubesat_gains.csv", "stock": "adcs_designs_cubesat.csv"},
     attributes=_ATTRS,
     short=dict(zip(_ATTRS, _NAMES, strict=True)),
@@ -210,6 +215,7 @@ CUBESAT = CaseSpec(
         "energy_balance_wh": 24.945381826675046,
         "peak_slew_power_w": 2.0,
         "dod_eclipse": 0.10350133786988198,
+        "momentum_headroom": 6.437201363621915,
         "settled": True,
         "momentum_ok": True,
         "power_ok": True,
