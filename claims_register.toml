@@ -5726,3 +5726,63 @@ status = "backed"
 disposition = "narrow"
 source = "WP29 review, P9 39 (triage R17)"
 note = "The corollary needs the partition (A8), the reaches beta_k = J_tau(U w_k) and the term gap of L12; it needs neither R2 nor minimality of w_k."
+
+[[claim]]
+id = "C468"
+fragment = "in A one region trades pointing error against control effort and the other region total mass against pointing error"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "R"
+backing = ["test:tests/test_paper.py::test_figure_9_names_the_regions_the_contending_sets_of_its_two_panels_give", "test:tests/test_case.py::test_ternary_pair_figure_is_two_panels_one_key_and_the_regions_the_page_names", "gen:paper/figures/ternary_pair.py::ternary_pair_paper_figure"]
+status = "backed"
+disposition = "keep"
+source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper"
+note = "Panel A is the primary regime's pointing error, total mass and control effort at K = 2: the exponents above the labelling threshold 0.12 are {pointing error, control effort} for term 1 and {total mass, pointing error} for term 2; the tau = infinity contending sets are {pointing error, control effort} and {pointing error, total mass, control effort}."
+
+[[claim]]
+id = "C469"
+fragment = "in B one region trades settling time against control effort and the other region is depth of discharge alone"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "R"
+backing = ["test:tests/test_paper.py::test_figure_9_names_the_regions_the_contending_sets_of_its_two_panels_give", "test:tests/test_case.py::test_ternary_pair_figure_is_two_panels_one_key_and_the_regions_the_page_names", "gen:paper/figures/ternary_pair.py::ternary_pair_paper_figure"]
+status = "backed"
+disposition = "keep"
+source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper"
+note = "Panel B is settling time, control effort and depth of discharge at K = 2: term 1 is almost all depth of discharge (about 0.96) and term 2 is settling time and control effort; the tau = infinity contending set is all three metrics for both terms, so the caption speaks of the regions the drawing labels, not of the n-lemma."
+
+[[claim]]
+id = "C470"
+fragment = "a design sits at its shares of the triple's total, a numbered marker is a term's exponent vector, and a region is where that term is the largest"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_ternary_markers_sit_at_the_exponent_vectors", "test:tests/test_plotting.py::test_ternary_regions_partition_the_triangle", "func:src/hyperbolic_trade_space/plotting.py::plot_ternary"]
+status = "backed"
+disposition = "keep"
+source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper"
+note = "As C455 and C456 for the docs page: a marker sits at the term's exponent vector; a region is the argmax term of the fit."
+
+[[claim]]
+id = "C471"
+fragment = "The triples were picked, from a search of every triple at one, two and three terms, for two stable terms that contend differently."
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = ["file:work-packages/WP19-figure-review.md", "file:docs/superpowers/notes/figure-candidates/triple_search.py"]
+status = "backed"
+disposition = "keep"
+source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper"
+note = "The search record of C457 and C458: 56 triples in each regime at K = 1, 2, 3; a term counts when its cell holds at least ten near-frontier designs and its exponents move by at most 0.10; 55 fits have two counting terms with different contending sets. The figure is a pick among them, as the sentence says."
+
+[[claim]]
+id = "C472"
+fragment = "*Shows:* where each term leads and where its V peaks. *Does not show:* groups of designs, the values of V on the lines, the other five metrics or a cause."
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = ["test:tests/test_plotting.py::test_ternary_fixed_total_identity_and_peak", "test:tests/test_plotting.py::test_ternary_markers_sit_at_the_exponent_vectors"]
+status = "backed"
+disposition = "keep"
+source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper"
+note = "As C455 for the docs page; the five metrics are the eight less the triple."

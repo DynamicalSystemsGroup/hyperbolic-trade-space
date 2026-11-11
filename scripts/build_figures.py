@@ -44,7 +44,7 @@ RESIZE = {"adcs-tensions": 6.3}
 # colouring; the last two read the case's committed data and are regenerated with WP23's). The
 # index page's three-pane figure has its own command (``uv run python paper/figures/figure1.py``)
 # and is not rebuilt here: its SVG's ids vary from run to run.
-PAPER_FIGURES = ("nlemma", "planes", "chart_level")
+PAPER_FIGURES = ("nlemma", "planes", "chart_level", "ternary_pair")
 # The model's two views, drawn by the model's own projection (PlantUML, a system tool) and committed
 # beside the model; the paper takes byte-identical copies (published path in paper/figures: source).
 MODEL_VIEWS = {

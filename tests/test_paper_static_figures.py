@@ -16,5 +16,11 @@ def test_model_views_in_the_paper_equal_the_models_views():
 
 
 def test_the_nlemma_figure_is_committed_beside_its_generator():
-    assert {"nlemma", "planes", "chart_level"} <= set(build_figures.PAPER_FIGURES)
+    assert {"nlemma", "planes", "chart_level", "ternary_pair"} <= set(build_figures.PAPER_FIGURES)
     assert (ROOT / "paper" / "figures" / "fig-nlemma.png").stat().st_size > 10_000
+
+
+def test_the_two_panel_ternary_is_committed_beside_its_generator():
+    """Figure 9: the module draws ``case.ternary_pair_figure``; its PNG is committed."""
+    assert (ROOT / "paper" / "figures" / "ternary_pair.py").is_file()
+    assert (ROOT / "paper" / "figures" / "fig-ternary-pair.png").stat().st_size > 10_000

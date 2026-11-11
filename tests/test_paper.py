@@ -2158,11 +2158,50 @@ def test_the_paper_claims_no_external_review():
     assert "The derivations are machine-checked." in _section("Acknowledgments")
 
 
+def test_figure_9_names_the_regions_the_contending_sets_of_its_two_panels_give():
+    """The caption of the two-panel ternary (the real data's two triples): each region it names is
+    the set of metrics whose exponent in that term is above the drawing's labelling threshold, and
+    the tau = infinity contending sets (the n-lemma) are the ones the search found."""
+    import case
+
+    from hyperbolic_trade_space import tensions
+
+    caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-ternary-pair-caption"))
+    fits = case.ternary_pair_fits()
+    named = {  # the regions of the drawing, from the fit's exponents above 0.12
+        panel: [
+            {n for n, w in zip(st.names, term, strict=True) if w > 0.12} for term in est.exponents_
+        ]
+        for panel, (st, est) in fits.items()
+    }
+    assert named == {
+        "A": [{"pointing error", "control effort"}, {"total mass", "pointing error"}],
+        "B": [{"depth of discharge"}, {"settling time", "control effort"}],
+    }
+    contending = {
+        panel: [{st.names[i] for i in r.contending_set} for r in tensions.tension_report(est, st.M)]
+        for panel, (st, est) in fits.items()
+    }
+    assert contending["A"] == [
+        {"pointing error", "control effort"},
+        {"pointing error", "total mass", "control effort"},
+    ]
+    assert contending["B"][0] == contending["B"][1] == {
+        "settling time", "control effort", "depth of discharge"
+    }  # fmt: skip
+    for words in ("pointing error against control effort", "total mass against pointing error",
+                  "settling time against control effort", "depth of discharge alone"):  # fmt: skip
+        assert words in caption, words
+    assert "in A" in caption and "in B" in caption and "the other region" in caption
+
+
 def test_every_figure_and_table_is_referenced_from_the_text():
     """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
     body = _markdown(_nb(PAPER_NB))
     floats = re.findall(r"^:::+\{(?:figure|table)\}[^\n]*\n:label: (\S+)", body, re.M)
-    assert len(floats) == 9, floats  # eight figures (Figure 9 went: S-3, R-10) and the family table
+    assert len(floats) == 10, (
+        floats
+    )  # nine figures (the two-panel ternary is Figure 9) and the family table
     for cell in _nb(PAPER_NB).cells:
         if cell.cell_type != "markdown" or cell.id == "frontmatter":
             continue
