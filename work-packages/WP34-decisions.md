@@ -40,3 +40,12 @@ comparison untouched) and the Windows shards in every dispatch (the workflow has
 is a gate run; `-f windows=false` skips them; the toolkit provision step no longer tolerated to fail); the README's
 environment line states the platforms per shard. The third spike is dispatched on ee3580a to prove both Windows
 shards; acceptance follows its green.
+
+## Acceptance (2026-11-11, 15:15; run 43090050287 on 710a6ac)
+
+All five jobs green on one run: Linux fast, slow and docs-paper; Windows fast and slow. The Windows shards run at
+every gate dispatch; the README states the platforms per shard; the fixes are the project's own (posix paths, named
+encodings, LF on checkout, a platform-aware wall-clock limit with purity unchanged, the PATH strip recognising the
+Windows executables, z3 on the runner's PATH, the POSIX-bit tests skipped with their reason). **Assistant, verbatim:**
+"WP34 accepted: the package runs on a real Windows runner for the fast and slow shards; the paper's build stays Linux
+and macOS with the reason stated." The reviewer's guide names the three platforms and this run.
