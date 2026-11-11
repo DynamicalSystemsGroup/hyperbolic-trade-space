@@ -154,3 +154,8 @@ the column; it holds the state (not started, in progress, delivered, accepted) a
 stakeholder (the reader round or user test and its verdict, or the check that ran). Blank means not applicable.
 The grid lives in `work-packages/deliverables-grid.md`, the PM keeps it current at each batch, the tick update
 prints its changes (and the whole grid when he asks); the handover prints it whole.
+
+**The status report (2026-11-11, 11:50; the supervisor, verbatim):** "sounds good. use that grid to create a status
+report template so we can start converging to our 0.1 release candidate". The template is
+`work-packages/status-report-template.md`; from this point the tick updates and the PM's batch reports use it, the
+grid as the table and the rest in lines; the first filled report follows the grid's first fill.
