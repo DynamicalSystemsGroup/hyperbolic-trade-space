@@ -1,0 +1,9 @@
+# Text is committed and checked out with LF on every platform: the experiment ledger and the
+# paper's committed outputs hash the files' bytes, so a CRLF checkout (Windows core.autocrlf)
+# would change the hashes. Binary files are left alone.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.npz binary
+*.ico binary
+*.pdf binary
