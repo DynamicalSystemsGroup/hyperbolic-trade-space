@@ -141,6 +141,141 @@ the paper page (checked in the pane over the whole page text).
 
 ## Recommendation
 
-Pending R-13: the recommendation is written when the re-test's record (`WP28-retest.md`) is read.
+See "Second pass at 18c258c" below: the recommendation is written there, after R-13.
 
 Acceptance is the driver's act under the mandate, recorded in `WP28-decisions.md`. This report does not accept the work.
+
+## Second pass at 18c258c (2026-11-11)
+
+**Head:** 18c258c (`origin/dev` when this pass ran). The last commit that touches anything outside `work-packages/`
+is a2d25f9; the five after it (35668e5 to 18c258c) are WP29, WP30 and WP31 records only. **Landed since the first
+pass (9216154):**
+- WP28's own units: db8d8bd (G-1), afdb222 (O-3), the CR units CR-35 to CR-41 (b0d14a4, 4dee363, c12e5bc, 91369c2,
+  e70585f, 6b858fc, 95d77b4), the supervisor's rulings (ac22112), S-3 (a74579c), S-10 (a2a0f14 Appendix D.12,
+  5260d7f the docs termination page), the CR-37 loose ends (d6e0f1b) and the re-test record (052e8ee).
+- Other packages' records (Track A, Track B and the figure loop) and the lint commit a2d25f9.
+
+The fresh staged site was built in a new worktree, `pm-worktrees/wp28stage2`, detached at 18c258c, with the theme
+templates copied from the main checkout; it was served on 127.0.0.1:8829 and read in a browser tab of the reviewer's
+own (closed afterwards). The tests and the code ran in `pm-worktrees/wp28review`, fast-forwarded to 18c258c.
+
+### Requirements, second pass
+
+| ID | Verdict | Evidence |
+|---|---|---|
+| R-5 | not met on the letter (G-5) | **The cuts are net negative.** S-3 takes Case analysis 1,825 to 1,722 (−103) and Case construction 1,156 to 1,146 (−10); O-3 takes `chart.md` 561 to 557 (−4).<br>**The supervisor's S-10 adds words** at his word "keep and clarify": Appendix D's Markdown 1,130 to 1,283 (+153) and `user-guide/termination.md` 581 to 714 (+133).<br>**The CR units change Results and Case construction.** Results 2,429 to 2,467 (+38): CR-35 +6, CR-36 +7, CR-37 −1, CR-38 +26. Case construction 1,187 to 1,156 before S-3: CR-38 −38 (the comparison moved to 6.2), CR-39 +1, CR-41 +6. CR-40 takes The decision problem 714 to 712.<br>**Totals.** Paper body 9,805 at the start, 9,934 at af9ffea, 9,846 at the head. Docs total, README aside, 6,792 to 6,845. Measured per commit with `words_by_section()` and `prose_words()` over 15 commits (the review's `words_seq.py`). |
+| R-6 | met, exceptions named (G-2) | `tests/test_claims_register.py`: 21 passed. **Rows removed since the start:** C303, C369, C370, C371. **Rows added**, each backing a sentence a recorded unit added, none for cut prose: C421 (unit 0), C422 (c12e5bc, CR-37), C423 to C425 (a2a0f14, S-10), C426 (d6e0f1b). No row names the cut Figure 9 (the implementer's grep; `git grep fig-regimes claims_register.toml` finds nothing). |
+| R-7 | met | `tests/test_interface_contract.py tests/test_site.py`: 136 passed; `contract_version = 16`. |
+| R-8 | met | **The two `[[cut]]` rows are S-3's:** Case analysis 103 and Case construction 10, each with date, section, `words_removed`, `no_longer_did` and `authority` ("the supervisor, S-3: 'Cut to a pointer'"). They equal R-5's deltas exactly.<br>**The ledger reader.** `ledger_ceilings()` subtracts cut rows: run, it gives the Case analysis ceiling 1,732 (count 1,722), Case construction 1,190 (count 1,146) and a total of 10,342 (count 9,846). `pytest -k "ledger or ceiling"`: 5 passed.<br>**The docs budgets.** `TOTAL_BUDGET` is 6845, the count after the pass (db8d8bd; G-1 closed). `chart.md` is 557 and `termination.md` 714, at S-10's count. |
+| R-9 | met | `check_vocabulary.py --baseline`: "0 new violation(s), 69 known", exit 0; `pytest -k register`: 9 passed; `glossary.yaml` unchanged. |
+| R-10 | met | **The five tests a74579c changed** each cite "Cut to a pointer (S-3, R-10, WP28-decisions.md)" in a comment beside the change, and the commit subject names S-3 and "the supervisor's word":<br>- `test_cells_whose_output_is_embedded_...`, from at least 4 to at least 3<br>- `test_every_figure_and_table_is_referenced_from_the_text`, 10 to 9<br>- `test_every_figure_shows_its_smallest_text_...`, 3 to 2<br>- `test_cr1_...`, which loses `fig-regimes-caption` from the tuple<br>- `test_regime_names_...`, which loses its `fig-regimes` exemption<br>Each count drops by exactly the one figure, and removing the exemption makes that check stricter.<br>**`test_each_ledger_row_...`** gains the cut-row field checks.<br>**Other changes since the first pass are additions or tightenings:** 6b858fc ("659 on all 8"), a2a0f14 (the D.12 test), d6e0f1b (the Section 8 centring test), and in `test_site.py` the three budgets (db8d8bd, afdb222, 5260d7f). |
+| R-11 | met | **The host run.** `paper/execute_notebooks.py` ran on the host after S-3, the one unit that removed code cells. It re-recorded only Appendix F.4: the `fig-regimes` row left (`WP28-decisions.md`, "Close units", U1). The later paper units (a2a0f14, d6e0f1b) are Markdown cells.<br>**The tests.** `pytest tests/test_paper.py tests/test_paper_static_figures.py`: "151 passed, 4 skipped". The D.12 test alone (`-k d12`): 1 passed. |
+| R-12 | met (for WP28's units) | **Unchanged:** the front matter (cell 0), `sec-discussion` (C406, C407), `sec-search` (the proposals' sentence) and `sec-future`.<br>**Under the protected paths** (`src`, `derivation`, `examples/adcs`, `mkdocs.yml`), the only change is still 4c9416c's `derivation/` (WP11).<br>**Cells removed:** `fig-regimes`, `fig-regimes-caption` and `fig-regimes-lines` (S-3, the supervisor's word). |
+| R-13 | not met as written (G-6) | `WP28-retest.md` (052e8ee), "R-13, condition by condition":<br>**(1) No wrong belief: met.** "no W1-W8 belief in any of the twelve cells". The one statement wrong against the key (S5, four sentences in three cells) traces to Theorem 11's box wording, now changed by CR-35.<br>**(2) Every main result at depth B: not met.** S8's second item is missing in five of six B cells, and all of S8 in P4-B and P5-B. The record traces this to S8's absence from the main-results list, not to a cut.<br>**(3) No new "why" at depth C: not met on the letter.** The new "why"s come from the maths check's three sentences, two round-2 CR sentences and unchanged passages; the record names none from a cut.<br>**(4) No friction naming a cut or a pointer: met.**<br>**The re-test predates S-3.** It read af9ffea, before S-3 (the paper's one cut) and before CR-35 to CR-41. No fresh reader has read Section 9 since Figure 9 went to its pointer. |
+| R-14 | met | **Fast suite at 18c258c:** `uv run pytest -q -m "not slow"` gave "1750 passed, 16 skipped, 455 deselected, 1 xfailed, 6 warnings in 230.15s", exit 0.<br>**Full suite:** 2203 passed at 9216154 (first pass).<br>**Linux CI:** run 42954612918 at a2a0f14 succeeded; run 42957819945 at 18c258c was in progress when this pass ran. |
+| R-15 | met | `scripts/stage_site.py` at 18c258c exited 0 in the fresh worktree. 16 screenshots (8 places, light and dark at 1440 px), listed below. |
+| R-16 | met | **The whole-word pattern** over `1277210..18c258c` matches one subject only: 2a65d6e, "... (PM-BRIEF, CLAUDE.md)", the repository's file name, not attribution.<br>**The CI's pattern:** 0.<br>**Vocabulary:** R-9. |
+
+### Running the code
+
+- **The docs `conditioning_` block** (`docs/user-guide/termination.md`, 5260d7f), run as written, prints
+  `[19.52364466]` for the planted table and `[2.27276623e-06]` for the copy whose second metric nearly repeats the
+  first, at temperature 20. Both numbers hold.
+  - The second number depends on `min_exponent=0.1`, which the block passes and the prose does not explain.
+  - With the default `min_exponent`, the near-duplicate table gives 12.40, not 2.27e-06: the fit drops the duplicate
+    and the value stays near the first.
+  - The implementer's record for D.12 says the same ("a near-duplicate metric does not lower `conditioning_` ... the
+    fit gives the duplicate a zero exponent"). The page's sentence "two metrics that move together in log space cause
+    it" is true only when both take part in the fit (O-7).
+- **The D.12 snippet** `HyperbolicTradeSpace(temperature=50.0).fit(M).conditioning_` on a strictly positive planted
+  table (`make_frontier_data(300, 4, random_state=1)`) returns `[36.44227204]`, one positive value as the test checks.
+- **The Chart page's holes block** (afdb222) prints `168 [8.63 8.36 7.89]`, and the scores come out in descending
+  order, as the new lead sentence ("most isolated first") says. O-3 is closed.
+- **The cut-ledger reader:** R-8 above.
+
+### Does Appendix D.4 carry what Figure 9 carried?
+
+The S-3 implementer's account is confirmed on the rendered page.
+- **What D.4 holds** (`tab-D-regime_comparison`): per regime, tau, `frac_above_` and `n_eff_`; the band and the
+  near-frontier count; `n_lemma`; both contending sets by name; three pair associations (settling time with total
+  mass, pointing error with control effort, settling time with pointing error); and the strongest-pair sentence.
+- **What it lacks:** the two 8 × 8 association matrices and each metric's K = 1 exponent that Figure 9 drew. The
+  feasible-design associations are in C.5's table; the exponents are in D.3's.
+- **What Section 9 relies on is in D.4 or D.3.** The prose and its generated sentence use the two sets, the three
+  shared metrics, the one-axis pair and the "mass enters only in the primary regime" reading. The all-pairs picture
+  is what the pointer gives up, as the cut list said.
+- **A stumble a reader would meet:** Section 9's generated sentence gives the strongest pair as "Spearman +0.98 and
+  +0.99 ... Appendix D.3". D.4 prints +0.982 and +0.988 and says no pair reaches 0.99, the one-axis threshold, so the
+  rounded "+0.99" reads as crossing it. This is not new: the retest lists "The 0.99 pair" as friction in 7 cells,
+  as in round 2 (O-8).
+
+### Browser pass, second (R-15)
+
+| Screenshot (light / dark), under `work-packages/WP28-review/` | Reading |
+|---|---|
+| `r2-09-paper-s9-two-regimes-{light,dark}.png` | **Section 9, "Two regimes."** The paragraph points to Appendix D.4 (a live link), and the generated sentence follows with the 5-lemma comparison. No "Figure 9" anywhere on the page: the page text has 0 matches. Figures run 1 to 8 with Table 1, and no `??`, raw role or KaTeX error appears on the page. |
+| `r2-10-sm-d4-{light,dark}.png` | **D.4 "The regimes side by side."** The table renders with both contending sets and the three pairs (values with bracketed second figures), followed by the strongest-pair sentence. |
+| `r2-11-sm-d12-{light,dark}.png` | **D.12** renders as an opening paragraph and the three labelled paragraphs *Why it matters*, *How it is computed* and *Inspecting your own problem*. The Theorem 3 link resolves across the pages and the code font is right. The K = 1 rows printed below match the text (7.1 primary, 0.017 stock). |
+| `r2-12-docs-termination-conditioning-{light,dark}.png` | **Termination page, `conditioning_`.** The new paragraph and the runnable block render, and the conditioning link works. `min_exponent=0.1` shows in the code with no word on it in the prose (O-7). |
+| `r2-13-docs-chart-holes-{light,dark}.png` | **Chart page, holes.** The new lead sentence reads "Holes of a three-metric fit, most isolated first:" and the block ends with the `print`. |
+| `r2-14-paper-s62-theorem11-{light,dark}.png` | **Theorem 11 after CR-35 and CR-36.** The hypotheses say the refit is by f_k ("its support over all rows less its cell's mean"); the statement says "unique term minimizers, which Theorem 3 does not supply". The K^N + 1 count left the box (it is in L15). |
+| `r2-15-paper-s62-equations-{light,dark}.png` | **Section 6.2, after equation (2) (CR-38).** "On centred log-metrics, as the case's conditioning makes them, f₁ = J_τ and equation (2) at K = 1 is equation (1); otherwise they differ by ū₁·w." The maths renders. |
+| `r2-16-paper-s8-centring-fig4-{light,dark}.png` | **Section 8.** The centring sentence is now one sentence, "This conditioning centres each log-metric (the standard scaler)."; Figure 4 follows. The caption no longer names a second panel of Figure 9 (the test passes, and the source contains no "Figure 9"). |
+
+### Definition of good enough, second pass
+
+| Item | Verdict | Evidence |
+|---|---|---|
+| D-3 and D-4: every cut executed or listed; net negative; ledger, register and tests; suite green | met except R-5's letter (G-5) | The approved cuts and the supervisor's cut (S-3) are executed. Nothing on the cut list is left unexecuted without a decision: X-4 was kept by the driver; S-1, S-2 and S-4 to S-10 were ruled keep. R-6 to R-11 and R-14 above. |
+| D-5: re-test at a named commit after the last unit | not met (G-6) | The re-test read af9ffea; S-3 and CR-35 to CR-41 landed after it. |
+| The counts | met | below |
+
+**Counts, updated:**
+- **Cuts executed:** goes 2 (X-1, X-2); pointer 2 (X-3, S-3); merged 0.
+- **Cut rows in the ledger:** 2, both S-3's (113 words).
+- **Words removed by cuts:** Case analysis −103, Case construction −10, `chart.md` −36 then −4, `examples.md` −40,
+  README −64.
+- **Words added by the supervisor's S-10:** Appendix D +153, `termination.md` +133.
+- **Register rows:** 4 removed (C303, C369 to C371), 0 re-pointed, 6 added (C421 to C426; C421 by unit 0, the rest
+  by the CR and S-10 units).
+- **Glossary entries removed:** 0.
+- **Tests changed under R-10:** the five of a74579c, the ledger row test, and the four `test_site.py` budget lines.
+
+### Gaps, updated
+
+- **G-1** closed by db8d8bd: `TOTAL_BUDGET` 6845, the measured count.
+- **G-2** C421 to C426: rows added for sentences that recorded units added; none for cut prose. Options: accept as
+  is / fix before acceptance / follow-up work package.
+- **G-5** R-5's "every executed unit is net negative; no section, page or appendix grows" does not hold on its
+  letter. Appendix D grows +153 and `termination.md` +133, at the supervisor's word on S-10 ("keep and clarify why
+  it matters"). Results grows +38 from the WP28 CR units of the re-test. Each has a ledger raise row or a budget
+  line. Options: accept as is / fix before acceptance / follow-up work package.
+- **G-6** R-13 and D-5. The re-test's own record finds conditions 2 and 3 not met on their letter, and traces neither
+  to a cut. The re-test also predates S-3, the only paper cut, so no fresh reader has read Section 9 with its
+  pointer in place of Figure 9. Options: accept as is (the record traces nothing to a cut, and D.4 holds what
+  Section 9 relies on) / fix before acceptance (a narrow confirm read of Section 9 and D.4 at the head) / follow-up
+  work package (S8's placement in the main-results list, which the record leaves to the driver).
+- **G-3** (the out-of-scope units) and **G-4** (the observations, now O-1, O-2, O-4 to O-8, as one item) stand.
+  - O-3 closed by afdb222.
+  - O-6: the twelve other page budgets stay above their counts.
+  - **O-7.** The docs `conditioning_` block's near-duplicate demonstration relies on `min_exponent=0.1`, unexplained
+    on the page; at the default the duplicate is dropped and the value is 12.40.
+  - **O-8.** Section 9's "+0.99" against D.4's 0.99 threshold (pre-existing friction).
+
+### Recommendation
+
+**Recommend acceptance with the listed gaps noted**, because:
+- every cut the cut list and the supervisor approved has executed, each net negative with its "no longer did" line,
+  its register rows and its ledger or budget row;
+- the contract, register, ledger, vocabulary and pinned tests hold, and the fast suite is green at 18c258c (full
+  suite green at 9216154; Linux green at a2a0f14);
+- the changed pages render correctly in both schemes;
+- the re-test found no wrong belief and no friction that names a cut or a pointer.
+
+The deciding open item is G-6. The paper's one cut (S-3) has not been read by a fresh reader. D.4 carries the sets
+and pair tensions Section 9 relies on, but not the full matrices Figure 9 drew. If the driver wants R-13's letter
+met for that cut, a narrow confirm read of Section 9 and D.4 at the head is the fix before acceptance. G-5's growth
+is the supervisor's own S-10 addition and the re-test's CR units, each recorded.
+
+Acceptance is the driver's act under the mandate, recorded in `WP28-decisions.md`. This report does not accept the
+work.
