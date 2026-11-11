@@ -48,8 +48,7 @@ def nlemma_data():
     -------
     dict
         ``fitted`` (K, 3) and ``planted`` (K, 3) exponent vectors, matched term by term;
-        ``support`` a list of index arrays (the exact-maximum support); ``lemma`` the names;
-        ``weight`` (K,) the weight each term's exponents carry on the three metrics drawn.
+        ``support`` a list of index arrays (the exact-maximum support); ``lemma`` the names.
     """
     from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data, tension_report
 
@@ -67,7 +66,6 @@ def nlemma_data():
         "planted": P[np.asarray(match)[order]],
         "support": [np.asarray(reports[k].contending_set) for k in order],
         "lemma": [reports[k].lemma_name for k in order],
-        "weight": W[order].sum(axis=1),
     }
 
 
@@ -110,7 +108,7 @@ def nlemma_figure(data=None, figsize=(6.4, 3.9)):
         ax.text(x, y, str(k + 1), ha="center", va="center", fontsize=7, color="white",
                 weight="bold", zorder=6)  # fmt: skip
 
-    # The key: one line per term, its exponents, its n-lemma and the weight drawn.
+    # The key: one line per term, its exponents, and its n-lemma.
     tx = fig.add_axes([0.62, 0.0, 0.38, 1.0])
     tx.set_axis_off()
     y = 0.84
@@ -127,9 +125,6 @@ def nlemma_figure(data=None, figsize=(6.4, 3.9)):
         tx.text(0.1, y - 0.07, "w = (" + ", ".join(f"{v:.2f}" for v in w) + ")", fontsize=8.5,
                 color="0.3", va="center")  # fmt: skip
         y -= 0.17
-    weights = ", ".join(f"{v:.2f}" for v in d["weight"])
-    tx.text(0.0, y - 0.07, f"Weight on these three metrics:\n{weights} (all of it: d = 3)",
-            fontsize=8.5, color="0.3", va="top", linespacing=1.2)  # fmt: skip
     tx.set(xlim=(0, 1), ylim=(0, 1))
     return fig
 
