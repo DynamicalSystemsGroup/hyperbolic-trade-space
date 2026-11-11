@@ -317,6 +317,10 @@ folders whose result is recorded, raw reader reports after triage, superseded re
 nothing reads), the records of the gates kept; drift closed between docs, glossary and code; gaps listed. Every
 stream also leaves no scratch behind in the tree when its unit lands.
 
+**Deliverables named by a decision record are kept (the driver, 2026-11-11, after the harness note's restoration).** A file
+a decision record names as a deliverable is a keep row ("kept by decision", the record as its reader) whatever the path
+grep finds: its readers may be agents whose briefs are not in the repository.
+
 **Deletions check the contract first (the driver's rule of 2026-11-10, after 4bd6bac).** Before any file leaves the
 tree, the deletion unit's grep includes `work-packages/interface-contract.md`, `interface-contract.toml` and
 `tests/test_interface_contract.py`: a file the contract pins goes only with the amendment that retires its pin, in the
