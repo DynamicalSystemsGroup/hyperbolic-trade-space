@@ -48,16 +48,28 @@ OD1/OD2/OD5 are settled, so no value changes the feasibility flags and none need
    (carries `wp30a`); push with `git fetch origin && git rebase origin/dev && git push origin HEAD:dev`. dev is red by design for the 26 until step 8-9;
    the Mac watcher and CI will show it: tell the driver first.
 7. **k_terms to eleven.** impl. Edit `examples/adcs/k_terms.py` (`ATTRS`, `SHORT`, `ORIENT`: eleven, plus the design variables incl. `fleet_size`)
-   and `tests/test_k_terms_case.py` (`exponents_.shape == (3, 8)` becomes the eleven-metric shape). Pass: `uv run pytest tests/test_k_terms_case.py -k "not slow"`.
+   and `tests/test_k_terms_case.py` (`exponents_.shape == (3, 8)` becomes the eleven-metric shape). Pass: `uv run pytest -q tests/test_k_terms_case.py` (the whole module is marked slow, so `-k "not slow"` selects nothing; it
+   pins the K = 3 margin and the temperatures, which re-pin at step 8's data).
 8. **One regeneration, on the host, with the placeholder limits (OD5 (b)).** impl.
    `REQUIRE_OPENSYSML=1 PYTHONPATH=examples/adcs uv run python examples/adcs/model_v2/ledger_gate.py --host --dry` then without `--dry`
    (the script's header names the five entries re-run: `v2-primary`, `v2-baseline`, `v2-check-predictions`, `v2-check-designs`,
    `scope-sensitivity-shared-subspace-v2`; `ledger_gate.py` needs a WP30 note constant, the build did not add one: **gap 1**).
-   Then the K = 1, 2, 3 record (`examples/adcs/k_terms.py` script / `tests/test_k_terms_case.py` slow path) and the sensitivity record.
+   Then the two records, in this order, on the regenerated data (the commands of the WP23 close-out gate, `paper/container/RECORD.md`; nothing
+   new is needed, `k_terms.py` is the K record's script, run from the repository root):
+   - K = 1, 2, 3 record: `uv run python examples/adcs/k_terms.py` (about 50 s; prints the per-K summary and the per-term record for both
+     regimes; record the contending sets, the temperatures and the K = 3 margin in `WP30-build-notes.md` or the data-gate comparison, then re-pin
+     `tests/test_k_terms_case.py` and `test_case.py`'s record-bound numbers).
+   - Sensitivity record (five regenerations at a perturbation of one part in 10^12 of the four design variables, about 38 minutes with three
+     workers, scratch directory under the scratchpad, never inside `examples/adcs/data`):
+     `PYTHONPATH=examples/adcs uv run python -m experiments.sensitivity regenerate --out $SCRATCH/sens --workers 3`, then
+     `PYTHONPATH=examples/adcs uv run python -m experiments.sensitivity analyse --out $SCRATCH/sens --json examples/adcs/experiments/reports/sensitivity.json --md $SCRATCH/sens/generated-section.md`
+     (about 3 minutes; the generated section stays in the scratchpad), then `uv run python paper/stability_extra.py $SCRATCH/sens`
+     (about 3 minutes; writes `paper/stability_extra.json`). Pass: `uv run pytest -q tests/test_sensitivity.py`; the report's sentence
+     "Every listed conclusion is identical across the regenerations and to the committed data", or the listed exceptions, go to the data-gate comparison.
    Check designs: decide whether they keep `fleet_size` drawn from the pool (build notes: "a gate choice"); record it.
    Expected: every v2 file gains `fleet_size` (after `Kd`), `momentum_headroom`, `unit_cost_usd`, `fleet_cost_usd`; flags give 706 and 780 (R-6);
    `PYTHONPATH=examples/adcs uv run python -m experiments verify` reports 0 drifts; no entry dirty.
-   Files: `examples/adcs/data/v2/*`, `tests/data/v2_first_designs_of_record.csv`, `examples/adcs/experiments/ledger/ledger.jsonl`, `experiments/reports/*`.
+   Files: `examples/adcs/data/v2/*`, `tests/data/v2_first_designs_of_record.csv`, `examples/adcs/experiments/ledger/ledger.jsonl`, `experiments/reports/*`, `paper/stability_extra.json`.
    Re-record only arrays the change affects; mark any exact reference "host-recorded, re-pin at the gate" (R-10).
 9. **Regenerate the generated files.** impl. `PYTHONPATH=... uv run python examples/adcs/model_v2/coverage.py` (about 16 s; names the model hash);
    regenerate the views (`docs/superpowers/notes/spike-sysml-diagrams/project.py`, PlantUML) and copy the behavioural view to
