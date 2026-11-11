@@ -4501,42 +4501,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "docs.pages in the contract lists getting-started, user-guide (conditioning, tensions), api-reference, examples (cubesat), theory, glossary; the test checks the nav covers them"
 
 [[claim]]
-id = "C369"
-fragment = "\"space\": a monomial, later posynomial, frontier V(m) = Π m_j^{w_j} whose unit level set is the"
-file = "README.md"
-anchor = ""
-kind = "M"
-backing = ["lemma:L1.4", "lemma:L1.6", "glossary:invariant-value"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "V = prod m_j^w_j is L1.4; V(m/V(m))=1 puts the point on the unit level set (L1.6); 'later posynomial' is the documented extension (L10)"
-
-[[claim]]
-id = "C370"
-fragment = "log V, the energy differential to it). It is a scikit-learn-compatible unsupervised estimator, with"
-file = "README.md"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_sklearn_compat.py::test_no_predict_decision_function_or_score", "glossary:energy-differential"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "parametrize_with_checks conformance, TransformerMixin estimator with fit(X, y=None); log V as energy differential is the glossary definition"
-
-[[claim]]
-id = "C371"
-fragment = "SymPy-verified derivations and an ADCS trade-study case."
-file = "README.md"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_proof_map.py::test_checker_passes_on_the_committed_record", "test:tests/test_adcs_case.py::test_evaluate_design_three_fast"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Proof-map checker passes on the committed lemma record (SymPy scripts); ADCS case is exercised by tests/test_adcs_case.py"
-
-[[claim]]
 id = "C372"
 fragment = "`term_aggregation`: `\"sum\"` (default) or `\"mean\"`, which subtracts log K / kappa"
 file = "docs/user-guide/fitting.md"
