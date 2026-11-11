@@ -79,3 +79,102 @@ pushed as `origin/wp30a`; `wp30b` rebases onto it (the scope's default). Unit A 
 - The contract is at version 17 already (WP31 U3); WP30's amendment is therefore version 18, not 17 as the scope says.
 - Any later edit to `cubesat.sysml` changes the sha256 that `coverage.md` names; `uv run python
   examples/adcs/model_v2/coverage.py` regenerates it (about 16 s on the host).
+
+# WP30 build notes, stream 3b (the cost model)
+
+Worktree `wp30b`, branch `wp30b` (from `origin/wp30a` at 79ca1d8). Authority: `WP30-decisions.md` ("Scope gate": OD1 (a),
+OD2 (a), OD5 (b), OD6 (a); OD3 and OD4 the supervisor's, placeholders now); spike D's `decisions.md` (A-1, B-2, C-3,
+D-1, E-1) and `README.md` sections 3, 4 and 7. The branch is not on `dev` (same reason as 3a).
+
+## Units
+
+| Unit | What | Commit |
+|---|---|---|
+| A | `cubesat.sysml`: fleet size `fleetSize` (1 to 30), `Prices` and `PricingCurves` parts, calcs `PartTotal`, four single-unit prices, six part totals, `FleetBuildCost`, `FleetCost`, `UnitCost`, analyses `UnitCostExperiment` and `FleetCostExperiment`, `UnitCostRequirement` and `FleetCostRequirement` with placeholder limits, launch rate 7,000, launch budget 105,770; `stakeholders.sysml` (`CostToBuild` a roll-up of `FleetBuildCost`, the two requirements in `lowCost` with satisfy statements); `views.sysml`; the model tests re-pinned | aa73149 |
+| B | oracle and sampler: `fleet_size` in `CONFIG_NAMES` (default one satellite), own generator, `unit_cost_usd` and `fleet_cost_usd` in `ATTRIBUTE_NAMES` and `OUTPUT_NAMES`, check-design pool, legacy shared subspace, sensitivity; oracle and sensitivity tests | cba85e5 |
+| C | `case.py` (eleven attributes, group cost, `fleet_size` design variable), `coverage.py` and `project.py` (read every analysis, cost subsystem, fleet size a decision element), `scripts/check.py`, `test_case.py`, `test_model_coverage.py` | 433c145 |
+| D | `tests/test_cost_model.py` (R-4, R-5, R-6 in code, R-7, a negative control) and `examples/adcs/experiments/cost_form.py` (plain SymPy form check) | 950451c |
+
+## Decisions inside the stream (each is a choice, not a finding)
+
+- **The unit cost is `FleetCost / fleet size`, launch included** (scope G5: "unit cost U = F / n"), and its requirement reads
+  that metric (`UnitCostRequirement`: `UnitCost(c) <= budgets.unitCostLimit`), so each requirement reads a traded metric's
+  own quantity and the box stays at two. The ladder of spike D's `admit-shares.txt` is on the unit *build* cost (no
+  launch); the placeholder 450,000 USD is its top rung read as a unit cost with launch (baseline 443,040 at n = 1). The
+  `CostToBuild` roll-up is the build cost per satellite (no launch), the sponsor's illustrative measure.
+- **Two analyses for the two cost metrics.** An analysis's result is a unique feature: two equal entries are refused
+  ("written at positions 9 and 10 of a unique feature"), and the unit cost equals the fleet cost at one satellite, so
+  the pair cannot be returned together (`nonunique` is refused: the redefined feature is unique; only one `return` is
+  allowed). `UnitCostExperiment` and `FleetCostExperiment` return one metric each; `SlewExperiment` still returns eight.
+  `coverage.py` and `project.py` read all analyses (the slew experiment first); the view's analysis box names the other
+  two.
+- **`fleet_size` is a configuration variable of the oracle** (last in `CONFIG_NAMES`, so no existing column moves) with the
+  default one satellite when a configuration or a design table names none (the named configurations are at one). It is
+  drawn from its own stream of each design's child seed (`SeedSequence(child, spawn_key=(1,))`), uniform on the integers
+  1 to 30 read from `designRanges`; a test shows every existing column equal to the old sampler's exactly, and design `i`
+  independent of the count.
+- **Check designs.** The proposal pool draws `fleet_size` from its own generator (the same rule, `SeedSequence(seed,
+  spawn_key=(1,))`); the three named candidates stay at one (`Checks.draw` fills it); the predictor's features stay the six
+  (the four traded metrics it fits do not include a cost). `make_check_designs.py` (the frozen v1 script) and
+  `definitions.CANDIDATES` are unchanged: a test ties them to each other and the frozen script has no fleet.
+- **Shares, slopes, prices** are spike D's table (labelled choices in the model's docs); the all-flat and all-strong
+  envelopes stay in the spike's record (`economics-output.txt`).
+- **Placeholders:** unit cost limit 450,000 USD, fleet cost limit 3,000,000 USD (the baseline at ten satellites, 2,857,334),
+  each documented `PLACEHOLDER, not the supervisor's value` in `budgets`; verdict only, not a flag (OD2 (a)); the
+  stakeholder layer's satisfy statements for them (agile `not satisfy` unit cost at n = 1) stand until his values.
+- **Launch budget 105,770 USD** is the recorded OD4 (a) figure (15.11 kg at 7,000). The supervisor's mass is 15.107 kg
+  (90,643 / 6,000), whose price at 7,000 is 105,750; 105,770 uses the rounded mass. `case.py`'s mass threshold follows the
+  model (105,770 / 7,000 kg).
+- **Test line cap.** `test_every_constant_has_a_doc_rationale` capped the model at 900 lines (898 after 3a); the cost model
+  is about 230 lines (mostly the rationale of each price and curve), so the cap is 1,150.
+- **Cost group.** `LaunchCost` moves from the mass subsystem to a new cost subsystem in the coverage graph (the scope: "launch
+  cost joins it"); total mass stays in mass.
+
+## Evidence
+
+| Check | Result |
+|---|---|
+| Model values against spike D (R-5): `FleetBuildCost` at the baseline, n = 1, 3, 10, 30 per satellite | 350,000 / 248,464 / 192,693 / 160,910 USD; launch 93,040 USD per satellite at 13.291 kg; compact and agile at one satellite 281,300 and 501,000; unit cost 443,040 / 341,504 / 285,733 / 253,950, fleet cost 443,040 / 1,024,513 / 2,857,334 / 7,618,505 (`test_the_models_prices_are_the_spikes_table`) |
+| The model against `economics.py` (loaded without `main()`), 12 sampled designs at n = 1 and 7 | relative difference below 1e-12 on build, mass, fleet and unit cost |
+| Monotone, concave, unit cost falls, F = U n, launch linear, n = 1 identity (R-4) | the three named configurations at n = 1, 2, 3, 5, 10, 17, 30; every part and the assembly |
+| Plain-SymPy form (`cost_form.py`) | seven statements yes: each total and the fleet and unit cost a posynomial in (n, span, capacity); nondecreasing, concave; unit cost falls; n = 1 identity |
+| Negative control | busSlope 1.10 fails "concave" and "unit cost falls" |
+| R-6 in code | `fleet_size` integers 1 to 30, all thirty present in 1,000 designs; the other columns equal the old sampler's exactly; the oracle's output differs between n = 1 and n = 30 in the two cost columns only |
+| `REQUIRE_OPENSYSML=1 uv run pytest -m "not slow"` on the whole suite | 23 failed, 3 errors, 1,746 passed (3a's tip: 18 red); the 26 are listed below by cause |
+| `uv run ruff check .`, `uv run ruff format --check .`, `uv run python scripts/check_vocabulary.py --baseline scripts/vocabulary_baseline.toml` | clean; clean; 0 new violations |
+| Behavioural view of the new model rendered (PlantUML) and looked at | the cost group holds the two requirements and the two metrics; the analysis box says "returns 8 of 11 ... An analysis each, no slew: unit cost and fleet cost"; the arrows to the two cost metrics start at that box (the gate regenerates the committed views and looks again) |
+
+## Held for the data gate (red on this branch by design)
+
+The fast suite on the tip: 26 red (3a's 18 plus 8 from 3b), the rest green. By cause:
+
+- **Data of record lacks the columns or the fleet size** (3a's, unchanged in kind): `test_experiments::test_committed_ledger_verifies...`,
+  `test_mutation_v2` (three), `test_v2_data` (two), and `test_paper` (nine) read the study or a table; `test_diagnostic_pair`
+  (three errors, new in 3b: the case spec's eleven attributes and `fleet_size` against the committed data).
+- **Contract:** `test_interface_contract::test_r3_v2_traded_metrics_are_the_oracles_attribute_names` (version 18 names eleven,
+  `fleet_size` among the configuration names).
+- **Committed generated files** (re-generated at the gate): `test_model_coverage` (three: `coverage.md` and `coverage.csv` name the
+  committed model's hash and nine metrics; `coverage.py` rerun, about 16 s on the host, the container's files at the gate),
+  `test_system_model_v2_r1` (two: `behavioural_view.*` and `behavioural_caption.md` against the generator),
+  `test_paper_static_figures::test_model_views_in_the_paper_equal_the_models_views` (the paper's copy), and
+  `test_case_model_howto::test_sections_block_is_generated_from_the_model` (the section line ranges: `uv run python
+  tests/test_case_model_howto.py --write` after the last edit to `cubesat.sysml`).
+- slow, not run in the fast suite: the record-bound numbers in `test_case.py`, `test_k_terms_case.py` and the K-terms record script.
+
+## Items the gate and the other streams need (outside 3b's files)
+
+- `examples/adcs/k_terms.py`: `ATTRS`, `SHORT`, `ORIENT` now eleven (and the design variables); `tests/test_k_terms_case.py`
+  pins `exponents_.shape == (3, 8)`.
+- The contract amendment is version 18: eleven traded metrics, `fleet_size` in `config_names` and in the dataset column
+  tables (a float column holding integers 1 to 30), the two cost columns after `momentum_headroom`, `case.v2.traded_metrics`.
+- The data: every v2 file gains `fleet_size` (after `Kd`), `momentum_headroom`, `unit_cost_usd`, `fleet_cost_usd`; the proposals of
+  `v2-check-predictions` now carry a pool-drawn fleet size (a gate choice whether the check designs stay at one satellite:
+  `Checks.draw` already fills one for the candidates); the scope-sensitivity ledger entry records a changed `FIXED_V2`
+  (`fleet_size: 1.0`).
+- `docs/examples.md`, `examples/adcs/case-model.md` (counts, the sections block), the paper cells and tables that state the metric count,
+  the launch rate or a cost figure, `glossary.yaml` (fleet size, unit cost, fleet cost, pricing curve, the cost group; an entry
+  regenerates Appendix A in the same push), the answer key, the figures.
+- `WP30-rounds/cost-ladders.md` (D-6): the pass fractions of the two limits on the regenerated data (per regime and per n for the
+  unit cost, across n for the fleet cost); not computable before the data.
+- `project.py` wording of the analysis box and the caption for the two cost analyses is the model developer's first
+  choice; the gate's reader pass may reword it.
