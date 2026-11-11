@@ -186,6 +186,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Staging from a clean checkout (2026-11-10, 19:05; from PM6's batch 3).** Two authors found that `stage_site.py` in a
+  fresh worktree fails at the myst article-theme's `/_public/` prerender unless the main checkout's
+  `paper/_build/templates` (article-theme 1.4.1) is copied in: the theme is fetched at build time and is not pinned
+  with `mystmd`. A release must build from a clean checkout, so this is a WP8b release item (pin the theme version or
+  vendor the template, with the test that a clean worktree stages), not a unit now; the workaround stands meanwhile
+  and is in `parallel-board.md`. The driver's.
+
 - **WP28 scope approved (2026-11-10, 18:55; start 1277210).** The subtraction pass (step 5a) starts now rather than
   after WP11's round 3: its re-test is round 3 (OD1 (b)); appendices judged by their depth's job, Appendix F out
   (OD2 (b)); a figure that serves no sentence of the story goes (OD3 (a)); the supervisor's fixed figures are rows

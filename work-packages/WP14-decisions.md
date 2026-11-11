@@ -96,3 +96,11 @@ Records typed by the agent (driver session). Decisions are the supervisor's.
   citations into the paper are deferred to stable reference keys).
 - **Supervisor (mzargham), verbatim** (the same quote as in `WP8a-decisions.md`): "Approved"
 - Disposition: contract version 2 approved; executed with WP8a's Amendment 2.
+
+## Contract versions 13, 15 and 16 (pointer entries, 2026-11-10)
+
+Section 14 of the contract says amendments are quoted here; these three were recorded where they arose and are
+pointed to from here. Version 13: the case reads the data of record (`case.data_dir` = `examples/adcs/data/v2/`;
+WP23's swap, `WP23-decisions.md`). Version 15: eight traded metrics (the WP23 close-out, `WP23-decisions.md`, "The
+two metric redundancies"). Version 16: the estimator's two module constants pinned, the palette names out of
+`plotting.__all__` (WP25-3 gap P-1, the driver's call in `driver-log.md`, "PM6's batch 2").
