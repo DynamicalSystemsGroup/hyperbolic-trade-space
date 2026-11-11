@@ -591,7 +591,7 @@ n_train = "int"
 
 # --- The v2 datasets (WP23 D-4, amendment 12): the frozen headers less the slew-time columns -----
 # --- and, since amendment 15 (the WP23 close-out), less eclipse_reserve_wh: eight traded metrics; ----
-# --- since amendment 20 (WP30): thirteen traded metrics, the fleet size, 1,250 designs per regime ----
+# --- since amendment 20 (WP30): thirteen traded metrics, the fleet size, 2,000 designs per regime ----
 [case.v2]
 dir = "examples/adcs/data/v2/"
 data_rule = "committed, seeded, ledgered (examples/adcs/experiments/ledger/ledger.jsonl); regenerated only by a package whose scope says so, once, on the host with the suite's tolerance branches; the container of record re-pins the exact outputs at the gate"
@@ -606,7 +606,7 @@ settling_time_method = "events"
 
 [case.v2.data."adcs_designs_cubesat_gains.csv"]
 role = "primary regime dataset, v2"
-rows = 1250
+rows = 2000
 
 [case.v2.data."adcs_designs_cubesat_gains.csv".columns]
 design_id = "int"
@@ -649,7 +649,7 @@ max_step_s = "float"
 
 [case.v2.data."adcs_designs_cubesat.csv"]
 role = "stock (baseline) regime dataset, v2"
-rows = 1250
+rows = 2000
 
 [case.v2.data."adcs_designs_cubesat.csv".columns]
 design_id = "int"

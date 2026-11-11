@@ -37,7 +37,7 @@ WP30 (``WP30-decisions.md``, OD1 (a), OD2 (a), OD5 (b)) re-runs the same five en
 the regeneration (``--wp30 regen``, ``@9``, ``scope-sensitivity-shared-subspace-v2@8``): the
 momentum headroom, the cost model and the two newly traded quantities add columns (``fleet_size``,
 ``momentum_headroom``, ``available_power_w`` (before, an auxiliary column),
-``battery_peak_power_ratio``, ``unit_cost_usd``, ``fleet_cost_usd``), and each regime has 1,250
+``battery_peak_power_ratio``, ``unit_cost_usd``, ``fleet_cost_usd``), and each regime has 2,000
 designs (the first 1,000 are the earlier sample), so the outputs move and nothing is required of
 their hashes; the model already carries the supervisor's two cost limits (350,000 and 6,000,000
 USD) and the restated launch budget, so this is the gate's regeneration. A later edit of a cost
@@ -91,7 +91,7 @@ WP30_NOTE = (
     "WP30: the momentum headroom and the cost model (fleet size, unit cost, fleet cost) added to"
     " cubesat.sysml, thirteen traded metrics (the available power and the battery peak power ratio"
     " traded, so every requirement reads a traded metric), the two cost limits at the supervisor's"
-    " values (350,000 and 6,000,000 USD; a verdict only, not a flag), 1,250 designs per regime;"
+    " values (350,000 and 6,000,000 USD; a verdict only, not a flag), 2,000 designs per regime;"
     " regenerated {where}; the container of record re-pins the exact outputs"
 )
 WP30_VALUES_NOTE = (

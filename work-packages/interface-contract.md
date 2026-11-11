@@ -229,7 +229,7 @@ thirteen since version 20 (`case.v2.traded_metrics`: the eight of version 15, th
 `available_power_w`, `battery_peak_power_ratio`, `unit_cost_usd` and `fleet_cost_usd`); the seventh
 configuration variable `fleet_size` (a float column of whole numbers 1 to 30) follows `Kd` in the headers
 of the main files and the check designs and follows `st_grade` in the predictions; each regime file has
-1,250 rows; the one time metric
+2,000 rows; the one time metric
 is the settling time, read by event detection (`case.v2.settling_time_method`), the hold time: the
 first time after which the pointing error stays inside the band of the model's settling fraction.
 The check-design predictions carry `pred_std_settling_time_s`. The v2 files are ledgered

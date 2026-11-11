@@ -36,7 +36,7 @@ LEDGER = ADCS / "experiments" / "ledger" / "ledger.jsonl"
 REGISTER = ADCS / "experiments" / "reports" / cmp.REGISTER
 # the commit from which the frozen CSVs must be unchanged (the WP15 scope's start)
 START = "fc2363e"
-SAMPLE = 1250  # designs per regime after the WP30 regeneration ("Sampling"; the contract states it)
+SAMPLE = 2000  # designs per regime after the WP30 regeneration ("Sampling"; the contract states it)
 ROWS = {
     "adcs_designs_cubesat_gains.csv": SAMPLE,
     "adcs_designs_cubesat.csv": SAMPLE,
