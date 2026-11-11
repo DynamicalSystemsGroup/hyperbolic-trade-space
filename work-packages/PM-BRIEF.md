@@ -520,7 +520,7 @@ the paper at 9,805 words of a 10,107 ceiling, the docs at 6,792 of 7,600); round
 the file is the driver's: the triager sends reader sentences and gets stated / missing / wrong back; round 2's lines
 through the recorded "key stale" mapping); the orphan list (`paper/figures/fig-chart-k3.png`, `fig-predict-check.png`
 tracked and unreferenced; `docs/generated/figures/ternary-cubesat-*`, `three-facets-*` generated and unreferenced); the
-stage note (a fresh worktree copies the main checkout's `paper/_build/templates` before `stage_site.py`; recorded as a
+stage note (obsolete since 15dbff8, the theme is pinned: a fresh worktree no longer copies the main checkout's `paper/_build/templates` before `stage_site.py`; recorded as a
 WP8b release item). WP8b's release items list (`driver-log.md`, the WP8b entries; `WP8b-scope-of-work.md`) is the step
 after 5a and is inherited with it.
 
