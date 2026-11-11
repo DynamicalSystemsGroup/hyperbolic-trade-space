@@ -83,3 +83,16 @@ assess myself as you walk through")
 | S-8 | Proposition 1 (L2) | "Keep" | kept; R-17 stands |
 | S-9 | Proposition 2 (L6) | "consider whether we need another result that addresses our models relationship to measurement noise and/or noise in the process being measured. this may result in more work so first spike for relevant results and if we can add a result that builds on this proposition to character our relation to the noise. similiar to the modeling updates deploy research spike agents before deciding whether/what to build, then build, then quality control, then integrate, then review again. (also not i was bit short with my instructions before, so please apply this full lifecycle tactic to the modeling spike + model change)" | kept; a noise-result research spike opened (Track A); the six-stage lifecycle (research spike, decide, build, quality control, integrate, review again) applies to Tracks A and B and the figure loop |
 | S-10 | Appendix D.12, the conditioning diagnostic | "keep and clarify why it matters. its supporting evidence for a discerning reader and our external review shows a descernign reader might ask for it. in practice conditioning does matter. we do need to provide a concise explanation for why this is relevant and how it was computed. someone who runs into issue needs a way to inspect the conditioning of their problem since trouble shooting may involve feature engineering work to get a better conditions version of the same problem." | kept; one unit adds the concise explanation (why, how computed, how a user inspects their own problem) in D.12 and on the docs page that teaches conditioning; X-4 (D.6) stays |
+
+**S-5, the real-3-lemma candidate shown to the supervisor (2026-11-10, 23:35; the candidate at e6d0e4e: settling
+time, pointing error, total mass, one term, one region). Supervisor, verbatim:** "having an example where all 3
+trade everywhere is pretty realistic but not didactically interesting. my gut is we need to do some cherry picking to
+get a didactically interesting example. its okay to include the one where all 3 trade everywhere but ideally either
+find a real example with texture like the constructured one or also keep the constructed one to show what happens in
+more complex setting. ideally we can accomplish this with a real example". **Disposition (the driver):** the figure
+loop searches the data of record for a three-metric example with texture (several terms with distinct regions in
+the triangle: metric triples from both regimes, K = 2 and 3 on the triple, the temperature by the case's rule, the
+terms real by the splinter check and the certificate), the search recorded as a table of triples with what each
+shows; if one is found it is the candidate and the one-region figure may stand beside it as the realistic case; if
+none is found, the constructed figure stays to show the more complex setting and the one-region real figure joins
+it. He chooses on the cold reads.
