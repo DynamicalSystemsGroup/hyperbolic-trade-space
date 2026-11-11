@@ -30,7 +30,7 @@ glossary entries, 104 ledger raise rows and no cut row yet. Orphans seen while s
 lists: `paper/figures/fig-chart-k3.png` and `fig-predict-check.png` (figures that left the body; files still
 tracked); `docs/generated/figures/ternary-cubesat-*.png` and `three-facets-*.png` (generated, not tracked, read by
 no page). In all: 14 sections, 27 statements, 10 floats, 7 appendices with 40 tables, 14 pages, 8 docs figures, the
-root page, the README: 123 units with a verdict each.
+root page, the README: 122 units (corrected by WP25-4; the scope's terms sum to 122, `WP28-inventory.md`) with a verdict each.
 
 ## Purpose
 
