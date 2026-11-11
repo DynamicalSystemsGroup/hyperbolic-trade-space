@@ -677,7 +677,7 @@ def _worker_chunk(args):
 def _model_text(experiment, root: Path | None = None) -> str:
     if not experiment.model_path:
         raise ValueError(f"{experiment.id}: the cubesat oracle needs a model_path")
-    return (Path(root or lg.REPO_ROOT) / experiment.model_path).read_text()
+    return (Path(root or lg.REPO_ROOT) / experiment.model_path).read_text(encoding="utf-8")
 
 
 def _names(experiment) -> tuple[str, str]:

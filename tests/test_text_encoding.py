@@ -13,13 +13,9 @@ DIRS = ("src", "tests", "scripts", "paper", "examples")
 # Positional index of ``encoding`` in each call form.
 # Receivers whose ``open`` is not a text opener.
 NOT_A_PATH = {"tarfile", "zipfile", "Image", "webbrowser", "os", "io", "gzip", "bz2", "lzma"}
-# Code files the experiment ledger hashes: editing them breaks the ledger's chain of hashes, so
-# their three bare reads wait for a re-adoption (WP34 stage 3 report).
-LEDGER_FROZEN = {
-    "examples/adcs/cubesat_model.py",
-    "examples/adcs/experiments/legacy_oracle.py",
-    "examples/adcs/experiments/cubesat_oracle.py",
-}
+# Code files the experiment ledger hashes: none now (WP30's regeneration re-adopted the three that
+# waited on their bare reads, WP34 stage 3 report).
+LEDGER_FROZEN: set[str] = set()
 ENCODING_POS = {"read_text": 0, "write_text": 1, "open": 3}
 
 

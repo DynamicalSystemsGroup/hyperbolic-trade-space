@@ -175,7 +175,7 @@ def build_shared_sampler(experiment, root: Path | None = None) -> _FixedColumns:
     from . import cubesat_oracle as co
 
     model = Path(root or lg.REPO_ROOT) / experiment.inputs["subspace_model"]
-    v2 = co.CubesatOracle(model.read_text(), workers=1)
+    v2 = co.CubesatOracle(model.read_text(encoding="utf-8"), workers=1)
     sub = shared_subspace(v2)
     base = LogUniformSampler(
         sub["varied"]["categorical"], {k: tuple(v) for k, v in sub["varied"]["log_ranges"].items()}
