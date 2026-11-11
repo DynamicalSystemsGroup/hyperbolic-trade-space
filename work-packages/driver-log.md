@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The gate's owner (2026-11-11, 14:00).** The assistant spawned a dedicated gate runner (Sonnet) on the wp30b worktree
+  for steps 7 to 12 of the checklist, running the long steps as background tasks and waiting on them, the merge to dev
+  last so dev never goes red; the assistant times the oracle on the quiet machine and sets the sample size, writes
+  answer key version 5 and dispatches the two container runs; the twelfth PM runs the parallel units and takes the
+  cascade from the data commit. The watcher stays paused until the regeneration has run.
+
 - **The eleventh PM stopped early (2026-11-11, 13:45):** it could not wait on the oracle timing without a polling tool and
   the timing was contaminated by load (the watcher's full suite and the agents). The assistant takes the gate's long
   steps himself (the watcher paused; the timing re-run on a quiet machine from the wp30b worktree; the sample size set;
