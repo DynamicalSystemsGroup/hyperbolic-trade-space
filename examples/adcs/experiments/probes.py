@@ -531,7 +531,11 @@ def probe_verify_requirement_satisfaction() -> dict:
 
 # -- 5. holds on smt/solve, and exclusion before simulation -----------------------------------------
 def solver_present() -> bool:
-    return shutil.which("z3") is not None or shutil.which("cvc5") is not None
+    try:
+        from .exclusion import solver_available
+    except ImportError:  # run as a script, outside the package
+        return shutil.which("z3") is not None or shutil.which("cvc5") is not None
+    return solver_available()
 
 
 def classify(model, stem: str) -> dict:

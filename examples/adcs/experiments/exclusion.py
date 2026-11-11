@@ -37,8 +37,10 @@ from __future__ import annotations
 import hashlib
 import math
 import os
+import os
 import re
 import shutil
+import sys
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -57,7 +59,19 @@ class SolverUnavailable(RuntimeError):
 
 
 def solver_available() -> bool:
-    return bool(shutil.which("z3") or shutil.which("cvc5"))
+    """Whether ``z3`` or ``cvc5`` can be run, putting the ``z3-solver`` wheel's directory on ``PATH`` if needed.
+
+    The wheel installs its executable as ``<prefix>/bin/z3`` (``z3.exe`` on Windows), and a virtual
+    environment on Windows puts only ``Scripts`` on ``PATH``; the engine finds the solver by ``PATH``,
+    so the directory is added to this process's ``PATH`` when it is the only place the solver is.
+    """
+    if shutil.which("z3") or shutil.which("cvc5"):
+        return True
+    wheel_bin = Path(sys.prefix) / "bin"
+    if shutil.which("z3", path=str(wheel_bin)):
+        os.environ["PATH"] = str(wheel_bin) + os.pathsep + os.environ.get("PATH", "")
+        return True
+    return False
 
 
 @dataclass(frozen=True)
