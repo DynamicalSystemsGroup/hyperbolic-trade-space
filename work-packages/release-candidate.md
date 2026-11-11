@@ -132,3 +132,25 @@ with the reason); (3) fix what is ours (pathlib, utf-8 opens, newline handling, 
 weaken a test for Windows without a stated reason; (4) a Windows job in `test.yml` on dispatch and at gates, matrix on
 the operating system; (5) the README and the reproducibility appendix say what runs where; (6) review on the three
 platforms green at the head.
+
+## The deliverables grid (2026-11-11, 11:40; the supervisor, verbatim)
+
+"another thing that i think would be helpful is to update your readout protocol to start reporting a grid of
+deliverables cross stakeholders. it can be rolled up but the point is to make sure we're actually delivering
+everything we need for people who are just interested in exploring, people going deep in the theory, people going
+deep into the model or people exploring the repo for potential use, versus using it. tell me what you think the
+columns and rows for this rolled up view should look like, keep in mind its sparse"
+
+**The assistant's proposal (adopted unless he changes it).** Columns, five journeys: Explore (a skim with no
+commitment: the root page, the README, the abstract, one figure); Use (install and run on a table of their own); Theory
+(the mathematics and its proofs); Model (the case model, its views and data); Evaluate (deciding whether to adopt or
+cite: reproducibility, platforms, tests, the release record). Rows, nine deliverable groups: the root page; the README
+and repository layout; the docs user guide (getting started, conditioning, fitting, choosing K, tensions, chart,
+prediction, termination, limitations); the API reference and examples; the package itself (install, public API,
+tests); the paper's body; the paper's appendices (proofs, model, results, reproducibility, prior art); the
+derivations and proof map; the case model, views, stakeholder layer and data of record; the release items
+(container, CI on three platforms, changelog, version, reviewer's guide). A cell is filled only where the row serves
+the column; it holds the state (not started, in progress, delivered, accepted) and the last evidence for that
+stakeholder (the reader round or user test and its verdict, or the check that ran). Blank means not applicable.
+The grid lives in `work-packages/deliverables-grid.md`, the PM keeps it current at each batch, the tick update
+prints its changes (and the whole grid when he asks); the handover prints it whole.
