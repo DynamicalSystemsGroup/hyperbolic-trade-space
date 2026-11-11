@@ -938,3 +938,10 @@ section = "Case analysis"
 words_added = 20
 job = "the K = 1 sentence says that R1 holds on both regimes (the exact-maximum optimum is one point, so the support is not a solver's choice), the check the test at 4c9416c makes and three readers could not find stated (WP28 CR-37)"
 reader = "the mathematician who asks whether R1 was checked on the case before reading the contending set"
+
+[[raise]]
+date = "2026-11-10"
+section = "Results"
+words_added = 26
+job = "the comparison of equations (1) and (2) at K = 1 (equal on centred log-metrics, as the case's conditioning makes them; otherwise differing by the linear term) moves to Section 6.2 after f_k is defined, the first place both equations stand; it leaves Case construction, which falls by 38 words (a placement, net -12; WP28 CR-38)"
+reader = "the mathematician who meets equation (1) and wants its relation to equation (2) where both stand"
