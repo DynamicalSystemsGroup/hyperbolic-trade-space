@@ -59,7 +59,7 @@ def entries():
 
 @pytest.fixture(scope="module")
 def text():
-    return (ADCS / "model_v2" / "cubesat.sysml").read_text()
+    return (ADCS / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8")
 
 
 def _git(*args) -> str | None:
@@ -357,11 +357,13 @@ def test_register_rows_are_parsed_from_the_table(tmp_path):
 
 @pytest.mark.slow
 def test_the_report_has_every_section_and_includes_the_register_verbatim(tmp_path):
-    before = REGISTER.read_text()
+    before = REGISTER.read_text(encoding="utf-8")
     out = tmp_path / "report.md"
     assert cmp.main(["--root", str(ROOT), "--out", str(out)]) == 0
-    report = out.read_text()
-    assert REGISTER.read_text() == before, "the generator rewrote the hand-written register"
+    report = out.read_text(encoding="utf-8")
+    assert REGISTER.read_text(encoding="utf-8") == before, (
+        "the generator rewrote the hand-written register"
+    )
     assert before.rstrip() in report
     for heading in (
         "## Ledger entries of the v2 generation",
@@ -383,8 +385,8 @@ def test_the_regenerated_report_includes_the_register(tmp_path):
     # The report is not committed (WP25 instance 3, OD2): the generator regenerates it on demand.
     out = tmp_path / "report.md"
     assert cmp.main(["--root", str(ROOT), "--out", str(out)]) == 0
-    report = out.read_text()
-    assert REGISTER.read_text().rstrip() in report
+    report = out.read_text(encoding="utf-8")
+    assert REGISTER.read_text(encoding="utf-8").rstrip() in report
     assert "## Exclusion by the solver" in report
 
 

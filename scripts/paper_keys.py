@@ -39,7 +39,7 @@ def paper_keys(paper_dir: Path = PAPER_DIR) -> dict[str, str]:
     """Map every key the paper defines to the route of its page (``paper/`` or a sub-page)."""
     keys: dict[str, str] = {}
     for notebook, route in PAGES.items():
-        cells = json.loads((Path(paper_dir) / notebook).read_text())["cells"]
+        cells = json.loads((Path(paper_dir) / notebook).read_text(encoding="utf-8"))["cells"]
         for cell in cells:
             if cell["cell_type"] != "markdown":
                 continue

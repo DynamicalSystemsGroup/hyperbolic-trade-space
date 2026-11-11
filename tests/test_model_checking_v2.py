@@ -326,7 +326,7 @@ def test_negative_control_satisfy_fails_on_an_out_of_range_part(v2):
 # ---------------------------------------------------------------------------------------------
 def test_feasibility_module_has_no_inequality_on_quantities():
     """R-3: no ordering comparison appears in experiments/feasibility.py."""
-    tree = ast.parse((ADCS_DIR / "experiments" / "feasibility.py").read_text())
+    tree = ast.parse((ADCS_DIR / "experiments" / "feasibility.py").read_text(encoding="utf-8"))
     ordering = (ast.Lt, ast.LtE, ast.Gt, ast.GtE)
     bad = [
         n.lineno
@@ -861,7 +861,7 @@ def test_toolkit_verify_solve_runs_on_v2(toolkit_bin, v2, solver):
 def test_toolkit_verify_solve_negative_control(toolkit_bin, solver, tmp_path):
     """verify --solve flags a jointly unsatisfiable range (exit 1, VIOLATED)."""
     snippet = tmp_path / "tank.sysml"
-    snippet.write_text(probes._TOOLKIT_SNIPPET)
+    snippet.write_text(probes._TOOLKIT_SNIPPET, encoding="utf-8")
     out = toolkit_bin.verify_solve(snippet)
     assert out.returncode == 1 and "VIOLATED" in out.stdout
 
@@ -874,7 +874,7 @@ def test_toolkit_reports_the_pinned_version(toolkit_bin):
 def test_pin_agrees_with_the_probe_record_assets():
     pin = toolkit.load_pin()
     assert pin["toolkit"]["tag"] == probes.TOOLKIT_VERSION
-    record = PROBE_RECORD.read_text()
+    record = PROBE_RECORD.read_text(encoding="utf-8")
     for triple, asset in pin["toolkit"]["assets"].items():
         size, digest = probes.RELEASE_ASSETS[asset["name"]]
         assert (asset["size"], asset["sha256"]) == (size, digest), triple
@@ -929,7 +929,7 @@ def test_a_missing_toolkit_names_the_provisioning_command(monkeypatch, tmp_path)
 def test_engine_names_of_the_probe_record_exist(v2):
     """R-8: the engines the record lists are in list_engines(); readiness as recorded."""
     engines = {e.name: e for e in v2.connection.list_engines()}
-    record = PROBE_RECORD.read_text()
+    record = PROBE_RECORD.read_text(encoding="utf-8")
     for name in ("check", "explore", "run", "smt", "solve", "sweep", "tool:fmi"):
         assert name in engines, f"engine {name} listed in the probe record is not in list_engines()"
         assert name in record

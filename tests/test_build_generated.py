@@ -32,9 +32,9 @@ def pages(tmp_path_factory):
     docs_out = tmp_path_factory.mktemp("docsgen")
     build_generated.build(out, collect_runner=lambda: FAKE_COLLECT, docs_out=docs_out)
     return {
-        "derivations": (out / "derivations.md").read_text(),
-        "verification": (out / "verification.md").read_text(),
-        "glossary": (docs_out / "glossary.md").read_text(),
+        "derivations": (out / "derivations.md").read_text(encoding="utf-8"),
+        "verification": (out / "verification.md").read_text(encoding="utf-8"),
+        "glossary": (docs_out / "glossary.md").read_text(encoding="utf-8"),
     }
 
 
@@ -127,7 +127,7 @@ REGISTER_PHRASES = (
 
 def _write(tmp_path, text):
     path = tmp_path / "g.yaml"
-    path.write_text(text)
+    path.write_text(text, encoding="utf-8")
     return path
 
 
@@ -334,8 +334,8 @@ def test_exit_nonzero_on_failing_lemma(monkeypatch, tmp_path, capsys):
 def test_assemble_with_fake_mkdocs(tmp_path, monkeypatch):
     site = tmp_path / "src_site"
     (site / "paper").mkdir(parents=True)
-    (site / "index.html").write_text("<html>root</html>")
-    (site / "paper" / "index.html").write_text("<html>paper</html>")
+    (site / "index.html").write_text("<html>root</html>", encoding="utf-8")
+    (site / "paper" / "index.html").write_text("<html>paper</html>", encoding="utf-8")
     monkeypatch.setattr(assemble_site, "ROOT_INDEX", site / "index.html")
     monkeypatch.setattr(assemble_site, "PAPER_PLACEHOLDER", site / "paper" / "index.html")
     seen, figures = [], []
@@ -344,7 +344,7 @@ def test_assemble_with_fake_mkdocs(tmp_path, monkeypatch):
         seen.append(cmd)
         out = Path(cmd[cmd.index("-d") + 1])
         out.mkdir(parents=True)
-        (out / "index.html").write_text("docs")
+        (out / "index.html").write_text("docs", encoding="utf-8")
 
     out = assemble_site.assemble(
         tmp_path / "out",
@@ -356,9 +356,9 @@ def test_assemble_with_fake_mkdocs(tmp_path, monkeypatch):
         paper="placeholder",
     )
     assert figures == [tmp_path / "docsgen" / "figures"]
-    assert (out / "index.html").read_text() == "<html>root</html>"
+    assert (out / "index.html").read_text(encoding="utf-8") == "<html>root</html>"
     assert (out / "docs" / "index.html").exists()
-    assert (out / "paper" / "index.html").read_text() == "<html>paper</html>"
+    assert (out / "paper" / "index.html").read_text(encoding="utf-8") == "<html>paper</html>"
     assert (tmp_path / "gen" / "derivations.md").exists()
     assert (tmp_path / "docsgen" / "glossary.md").exists()
     assert "--strict" in seen[0] and "build" in seen[0]
@@ -384,12 +384,12 @@ def test_assemble_fails_loudly_when_mkdocs_fails(tmp_path):
 def _paper_slot(tmp_path, monkeypatch):
     """A fake placeholder and a fake built paper, so no real MyST build runs."""
     placeholder = tmp_path / "placeholder.html"
-    placeholder.write_text("<html>placeholder</html>")
+    placeholder.write_text("<html>placeholder</html>", encoding="utf-8")
     monkeypatch.setattr(assemble_site, "PAPER_PLACEHOLDER", placeholder)
     built = tmp_path / "html"
     (built / "build").mkdir(parents=True)
-    (built / "index.html").write_text("<html>the real paper</html>")
-    (built / "build" / "entry.js").write_text("js")
+    (built / "index.html").write_text("<html>the real paper</html>", encoding="utf-8")
+    (built / "build" / "entry.js").write_text("js", encoding="utf-8")
     return built
 
 
@@ -403,7 +403,9 @@ def test_build_paper_stages_the_real_paper_when_it_builds(tmp_path, monkeypatch)
         base_url="/hyperbolic-trade-space/paper",
     )
     assert kind == "paper" and calls == ["/hyperbolic-trade-space/paper"]
-    assert (tmp_path / "out" / "paper" / "index.html").read_text() == "<html>the real paper</html>"
+    assert (tmp_path / "out" / "paper" / "index.html").read_text(
+        encoding="utf-8"
+    ) == "<html>the real paper</html>"
     assert (tmp_path / "out" / "paper" / "build" / "entry.js").is_file()
 
 
@@ -416,7 +418,9 @@ def test_build_paper_falls_back_to_the_placeholder(tmp_path, monkeypatch):
         out = tmp_path / f"out{id(runner)}"
         kind = assemble_site.build_paper(out, paper_runner=runner, paper_html=html)
         assert kind == "placeholder"
-        assert (out / "paper" / "index.html").read_text() == "<html>placeholder</html>"
+        assert (out / "paper" / "index.html").read_text(
+            encoding="utf-8"
+        ) == "<html>placeholder</html>"
     # the explicit placeholder never runs the build
     out = tmp_path / "forced"
     kind = assemble_site.build_paper(
@@ -452,7 +456,7 @@ def test_strict_paper_build_raises_instead_of_falling_back(tmp_path, monkeypatch
 def _fake_assemble(tmp_path, monkeypatch, built_ok):
     """Stage with every step but the paper slot faked; ``built_ok`` is the paper build's result."""
     placeholder = tmp_path / "placeholder.html"
-    placeholder.write_text("<html>placeholder</html>")
+    placeholder.write_text("<html>placeholder</html>", encoding="utf-8")
     monkeypatch.setattr(assemble_site, "PAPER_PLACEHOLDER", placeholder)
     monkeypatch.setattr(stage_site, "STAGE_DIR", tmp_path / "_stage")
 
@@ -477,7 +481,7 @@ def test_stage_site_exits_non_zero_when_the_paper_does_not_build(tmp_path, monke
 def test_stage_site_placeholder_flag_still_stages(tmp_path, monkeypatch, capsys):
     _fake_assemble(tmp_path, monkeypatch, built_ok=False)
     assert stage_site.main(["--paper", "placeholder"]) == 0
-    assert (tmp_path / "_stage" / "paper" / "index.html").read_text() == (
+    assert (tmp_path / "_stage" / "paper" / "index.html").read_text(encoding="utf-8") == (
         "<html>placeholder</html>"
     )
 
@@ -495,7 +499,7 @@ def test_assemble_site_placeholder_flag_still_assembles(tmp_path, monkeypatch, c
     _fake_assemble(tmp_path, monkeypatch, built_ok=False)
     out = tmp_path / "site"
     assert assemble_site.main(["--out", str(out), "--paper", "placeholder"]) == 0
-    assert (out / "paper" / "index.html").read_text() == "<html>placeholder</html>"
+    assert (out / "paper" / "index.html").read_text(encoding="utf-8") == "<html>placeholder</html>"
 
 
 def test_run_paper_build_reports_failure_without_raising(tmp_path, monkeypatch, capsys):
@@ -521,7 +525,7 @@ def test_assemble_refuses_repo_root():
 
 
 def test_stage_server_serves_index_on_loopback(tmp_path):
-    (tmp_path / "index.html").write_text("<html>hello</html>")
+    (tmp_path / "index.html").write_text("<html>hello</html>", encoding="utf-8")
     server = stage_site.serve_in_thread(tmp_path, port=0)
     try:
         host, port = server.server_address[:2]

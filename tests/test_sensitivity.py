@@ -191,7 +191,7 @@ def test_regenerate_writes_only_under_the_scratch_directory(tmp_path, monkeypatc
 
 
 def test_the_module_names_no_write_to_the_ledger_or_the_data_directory():
-    src = (Path(sens.__file__)).read_text()
+    src = (Path(sens.__file__)).read_text(encoding="utf-8")
     assert "lg.append" not in src and "runner.run" not in src and "ledger.jsonl" not in src
     # the only writers are the guarded ones
     assert (
@@ -223,7 +223,10 @@ def test_the_results_file_is_written_deterministically_and_guarded(tmp_path):
     sens.write_summary(one, committed, runs)
     sens.write_summary(two, committed, runs)
     assert one.read_bytes() == two.read_bytes()
-    assert json.loads(one.read_text())["quantities"]["a | r | x"]["min"] == 0.3333333333
+    assert (
+        json.loads(one.read_text(encoding="utf-8"))["quantities"]["a | r | x"]["min"]
+        == 0.3333333333
+    )
     with pytest.raises(ValueError, match="refusing to write inside examples/adcs/data"):
         sens.write_summary(DATA / "v2" / "x.json", committed, runs)
 
@@ -236,7 +239,7 @@ def recomputed():
 @pytest.mark.slow
 def test_the_results_file_committed_values_equal_the_committed_case_results(recomputed):
     """Every number of the file's ``committed`` column is what ``case.py`` gives on the data."""
-    saved = json.loads(sens.SUMMARY_FILE.read_text())
+    saved = json.loads(sens.SUMMARY_FILE.read_text(encoding="utf-8"))
     assert set(saved["quantities"]) == set(recomputed)
     for name, e in saved["quantities"].items():
         now = recomputed[name]

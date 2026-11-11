@@ -1039,7 +1039,7 @@ def coupling(graph: ModelGraph, metrics: list[Metric], elements, structural: dic
 # The tables
 # =================================================================================================
 def build(model_path: pathlib.Path, with_empirical: bool = True) -> dict:
-    text = model_path.read_text()
+    text = model_path.read_text(encoding="utf-8")
     graph = ModelGraph(text)
     metrics = graph.metrics()
     elements = graph.decision_elements()
@@ -1347,8 +1347,8 @@ def main(argv: list[str] | None = None) -> int:
     a = ap.parse_args(argv)
     result = build(a.model.resolve(), with_empirical=not a.no_empirical)
     a.out.mkdir(parents=True, exist_ok=True)
-    (a.out / "coverage.md").write_text(render_md(result))
-    (a.out / "coverage.csv").write_text(render_csv(result))
+    (a.out / "coverage.md").write_text(render_md(result), encoding="utf-8")
+    (a.out / "coverage.csv").write_text(render_csv(result), encoding="utf-8")
     findings = [r for r in result["rows"] if r["agree"] is False]
     print(f"wrote {a.out / 'coverage.md'} and coverage.csv; {len(findings)} disagreement(s)")
     return 0

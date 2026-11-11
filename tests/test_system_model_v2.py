@@ -24,7 +24,7 @@ from opensysml.values import Quantity
 
 ADCS_DIR = pathlib.Path(__file__).resolve().parents[1] / "examples" / "adcs"
 MODEL = ADCS_DIR / "model_v2" / "cubesat.sysml"
-TEXT = MODEL.read_text()
+TEXT = MODEL.read_text(encoding="utf-8")
 P = "CubesatTradeSpaceV2"
 FAST = {"t_end": 600.0, "max_step": 1.0}  # coarser than the dataset (0.5 s), for tests only
 
@@ -614,11 +614,11 @@ def test_views_file_loads_with_the_model_and_every_exposed_name_resolves(v2):
     ``stakeholders.sysml``, which its stakeholder view exposes) as one model loads strictly; it
     declares one package of views and nothing else; every name a view exposes is an element of
     the model; and the model's own elements are the same with the views as without them."""
-    views = VIEWS.read_text()
+    views = VIEWS.read_text(encoding="utf-8")
     assert re.findall(r"^package\s+(\w+)", views, flags=re.M) == ["CubesatViews"]
     assert P not in re.findall(r"^package\s+(\w+)", views, flags=re.M)
     both = v2.connection.load_from_content(
-        TEXT + "\n" + STAKEHOLDERS.read_text() + "\n" + views, strict=True
+        TEXT + "\n" + STAKEHOLDERS.read_text(encoding="utf-8") + "\n" + views, strict=True
     )
     assert both.ok
     assert not [d for d in both.diagnostics if d.severity == "error"]
@@ -664,7 +664,13 @@ STAKEHOLDER_PARTS = {"sponsor": "Sponsor", "operator": "Operator"}
 @pytest.fixture(scope="module")
 def who_cares(v2):
     """``cubesat.sysml`` with ``stakeholders.sysml`` and ``views.sysml``, loaded strictly."""
-    text = TEXT + "\n" + STAKEHOLDERS.read_text() + "\n" + VIEWS.read_text()
+    text = (
+        TEXT
+        + "\n"
+        + STAKEHOLDERS.read_text(encoding="utf-8")
+        + "\n"
+        + VIEWS.read_text(encoding="utf-8")
+    )
     return v2.connection.load_from_content(text, strict=True)
 
 
@@ -692,7 +698,7 @@ def test_stakeholders_file_loads_strictly_and_its_names_resolve(who_cares):
                  "EffectiveLife", "EvidenceCase"):  # fmt: skip
         assert who_cares.find(f"{S}::{name}") is not None, name
     assert who_cares.find("CubesatViews::stakeholders") is not None
-    broken = STAKEHOLDERS.read_text().replace(
+    broken = STAKEHOLDERS.read_text(encoding="utf-8").replace(
         "verify lowCost.launchBudget;", "verify lowCost.launchBudgt;"
     )
     with pytest.raises(ModelError, match="launchBudgt"):
@@ -704,7 +710,7 @@ def test_the_trace_from_who_cares_to_every_requirement_is_complete(who_cares):
     is decomposed into at least one requirement; every one of the model's eleven requirement defs
     serves at least one concern (so every traded metric's requirement reaches one); and every
     requirement a concern holds is verified by a verification case with evidence pointers."""
-    stk = STAKEHOLDERS.read_text()
+    stk = STAKEHOLDERS.read_text(encoding="utf-8")
     concerns = _concerns(who_cares)
     assert set(concerns) == {"lowCost", "longLife", "pointingAndSlewing", "powerAndEnergy"}
     holder = r"concern\s+(\w+)\s*:\s*\w+\s*\{.*?stakeholder\s*:>>\s*s\s*=\s*(\w+);"
@@ -735,7 +741,7 @@ def test_the_rollups_are_illustrative_and_read_by_no_output(who_cares):
     appears in the oracle, the coverage table, the view generator, the data or the contract; the
     roll-ups evaluate on the named configurations (cost to build rises with the agile corner's
     larger wheels and finer tracker; effective life rises with the battery capacity)."""
-    stk = STAKEHOLDERS.read_text()
+    stk = STAKEHOLDERS.read_text(encoding="utf-8")
     for calc, rolls_up in (("CostToBuild", "unit costs"), ("EffectiveLife", "depth of discharge")):
         body = stk[stk.index(f"calc def {calc}") :]
         doc = " ".join(body[body.index("doc /*") : body.index("*/")].split())
@@ -751,7 +757,7 @@ def test_the_rollups_are_illustrative_and_read_by_no_output(who_cares):
         *(p for p in (ADCS_DIR / "data").rglob("*") if p.suffix in {".csv", ".json"}),
     ]  # fmt: skip
     for path in readers:
-        text = path.read_text(errors="ignore")
+        text = path.read_text(errors="ignore", encoding="utf-8")
         assert not [n for n in names if re.search(rf"\b{n}\b", text)], path
     cost = {
         c: who_cares.eval(f"{S}::CostToBuild({P}::{c})")[0]
@@ -793,7 +799,7 @@ def test_the_baselines_verdict_on_each_concern_is_checked_by_the_engine(who_care
         }
         | CONTRAST_NEGATED
     )
-    flipped = STAKEHOLDERS.read_text().replace(
+    flipped = STAKEHOLDERS.read_text(encoding="utf-8").replace(
         "not satisfy pointingAndSlewing.pointingError by cubesatBaseline",
         "satisfy pointingAndSlewing.pointingError by cubesatBaseline",
     )
@@ -850,7 +856,7 @@ def test_the_contrasts_verdicts_rest_on_their_own_measurements(who_cares):
     assert len(contrasts) == 2 * 12
     assert all(v.holds for v in contrasts)
     assert {v.element for v in contrasts if v.element.startswith("not ")} == CONTRAST_NEGATED
-    stk = STAKEHOLDERS.read_text()
+    stk = STAKEHOLDERS.read_text(encoding="utf-8")
     negated = "not satisfy pointingAndSlewing.controlEffort by cubesatAgile {"
     assert stk.count(negated) == 1
     flipped = stk.replace(negated, negated[len("not ") :])

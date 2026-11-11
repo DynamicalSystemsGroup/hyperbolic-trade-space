@@ -30,9 +30,9 @@ POINTERS = ("ledgerEntry", "recordEntry", "testNode", "environment")
 def cases() -> dict[str, dict[str, str]]:
     """Each ``EvidenceCase`` usage of the model with its four pointers, read through the toolkit."""
     text = (
-        (MODEL_DIR / "cubesat.sysml").read_text()
+        (MODEL_DIR / "cubesat.sysml").read_text(encoding="utf-8")
         + "\n"
-        + (MODEL_DIR / "stakeholders.sysml").read_text()
+        + (MODEL_DIR / "stakeholders.sysml").read_text(encoding="utf-8")
     )
     try:
         model = cm.get_connection().load_from_content(text, strict=True)
@@ -58,7 +58,7 @@ def problems(pointers: dict[str, str]) -> list[str]:
     current = lg.latest(entries, pointers["ledgerEntry"].split("@")[0])
     if current is None or current["id"] != entry["id"]:
         found.append(f"ledger entry {entry['id']} is not current ({current and current['id']})")
-    record = RECORD.read_text()
+    record = RECORD.read_text(encoding="utf-8")
     if f"## {pointers['recordEntry']}\n" not in record:
         found.append(f"no RECORD.md heading {pointers['recordEntry']!r}")
     env = pointers["environment"]

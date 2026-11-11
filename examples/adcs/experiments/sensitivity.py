@@ -163,14 +163,14 @@ def regenerate(out_dir: Path | str, seed: int, workers: int | None = None, n: in
         if (target / file).exists():
             continue
         exp = _experiment(label)
-        text = (lg.REPO_ROOT / exp.model_path).read_text()
+        text = (lg.REPO_ROOT / exp.model_path).read_text(encoding="utf-8")
         designs = build_sampler(exp).draw(n or exp.count, exp.seed)
         oracle = CubesatOracle(text, exp.scenario, exp.gain_box, workers=workers)
         table = oracle.evaluate(perturb(designs, seed)).sort_values("design_id")
         _write(table.reset_index(drop=True), target / file)
     if not (target / CHECKS_FILE).exists():
         exp = _experiment("v2-check-designs")
-        text = (lg.REPO_ROOT / exp.model_path).read_text()
+        text = (lg.REPO_ROOT / exp.model_path).read_text(encoding="utf-8")
         committed = pd.read_csv(V2_DATA / CHECKS_FILE)
         designs = committed[["role", "design_id", "name", "seed", *oracle_config_names()]]
         inner = CubesatOracle(text, exp.scenario, exp.gain_box, workers=1)
@@ -535,7 +535,7 @@ def summarise(committed: Mapping, runs: Mapping[str, Mapping]) -> dict:
 def write_summary(path: Path, committed: Mapping, runs: Mapping[str, Mapping]) -> dict:
     """Write :func:`summarise` as JSON (sorted keys, two-space indent); return the record."""
     record = summarise(committed, runs)
-    guard(path).write_text(json.dumps(record, indent=1, sort_keys=True) + "\n")
+    guard(path).write_text(json.dumps(record, indent=1, sort_keys=True) + "\n", encoding="utf-8")
     return record
 
 
@@ -630,13 +630,13 @@ def report(
         s: out_dir / f"seed{s}" for s in SEEDS if (out_dir / f"seed{s}" / CHECKS_FILE).exists()
     }
     cache = out_dir / "quantities.json"
-    qs = json.loads(cache.read_text()) if cache.exists() else {}
+    qs = json.loads(cache.read_text(encoding="utf-8")) if cache.exists() else {}
     if "committed" not in qs:
         qs["committed"] = quantities(committed_dir)
     for s, d in runs_dirs.items():
         if f"seed{s}" not in qs:
             qs[f"seed{s}"] = quantities(d)
-        cache.write_text(json.dumps(qs))
+        cache.write_text(json.dumps(qs), encoding="utf-8")
     runs = {str(s): qs[f"seed{s}"] for s in runs_dirs}
     if json_path:
         write_summary(Path(json_path), qs["committed"], runs)
@@ -759,7 +759,7 @@ def main(argv=None) -> int:
     md = guard(args.md) if args.md else None
     text = report(out, args.committed, args.runtime_s, args.json)
     if md:
-        md.write_text(text)
+        md.write_text(text, encoding="utf-8")
     else:
         print(text)
     return 0

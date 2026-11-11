@@ -23,7 +23,7 @@ from experiments import ledger as lg
 REPO = pathlib.Path(__file__).resolve().parents[1]
 ADCS = REPO / "examples" / "adcs"
 MODEL = ADCS / "model_v2" / "cubesat.sysml"
-TEXT = MODEL.read_text()
+TEXT = MODEL.read_text(encoding="utf-8")
 V2_PRIMARY = ADCS / "data" / "v2" / "adcs_designs_cubesat_gains.csv"
 BUS_MASS = "attribute mass : MassValue = 10.0 [kg];"
 MUTANT = TEXT.replace(BUS_MASS, "attribute mass : MassValue = 11.0 [kg];")

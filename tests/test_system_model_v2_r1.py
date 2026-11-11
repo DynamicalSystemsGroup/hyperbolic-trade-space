@@ -327,7 +327,7 @@ def project():
 
 def _views(project, text: str, tmp_path: pathlib.Path):
     path = tmp_path / "m.sysml"
-    path.write_text(text)
+    path.write_text(text, encoding="utf-8")
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         m, byid = project.load(path)
@@ -425,7 +425,7 @@ def test_assembly_alternatives_in_enum_order_and_the_legend_names_what_is_drawn(
     assert (
         "wheelClass (enum WheelClass):" in caption[0] and "grade (enum TrackerGrade):" in caption[1]
     )
-    committed = (VIEWS / "assembly_caption.md").read_text().splitlines()[2:]
+    committed = (VIEWS / "assembly_caption.md").read_text(encoding="utf-8").splitlines()[2:]
     assert committed == [f"- {x}" for x in caption]
 
 
@@ -449,7 +449,7 @@ def test_the_analysis_box_names_what_needs_no_slew_and_the_caption_is_the_commit
     assert facts["fails"][f"{P}__PointingErrorRequirement"] == {"cubesatBaseline"}
     box = next(x for x in behaviour.splitlines() if "**PointingErrorRequirement**" in x)
     assert "not satisfied by cubesatBaseline" in box
-    committed = (VIEWS / "behavioural_caption.md").read_text().splitlines()[2:]
+    committed = (VIEWS / "behavioural_caption.md").read_text(encoding="utf-8").splitlines()[2:]
     assert committed == [f"- {x}" for x in cap]
 
 
@@ -471,7 +471,7 @@ def test_the_legend_names_every_colour_and_line_kind_and_the_type_has_a_floor(pr
     assert project.RELATION_COLOUR in legend and project.SOURCE_COLOUR in legend
     assert "A metric marked MoE is a measure of effectiveness" in "".join(facts["caption"])
     assert "pointing error and the launch cost" in "".join(facts["caption"])
-    svg = (VIEWS / "behavioural_view.svg").read_text()
+    svg = (VIEWS / "behavioural_view.svg").read_text(encoding="utf-8")
     sizes = [float(s) for s in re.findall(r'font-size="([0-9.]+)"', svg)]
     assert min(sizes) >= 12.5, min(sizes)
 
@@ -504,8 +504,8 @@ def test_committed_views_are_the_generators_output_on_the_model(project, tmp_pat
     runs = [_views(project, TEXT, tmp_path)[:2] for _ in range(3)]
     assert runs[0] == runs[1] == runs[2]
     assembly, behaviour = runs[0]
-    assert (VIEWS / "assembly_view.puml").read_text() == assembly
-    assert (VIEWS / "behavioural_view.puml").read_text() == behaviour
+    assert (VIEWS / "assembly_view.puml").read_text(encoding="utf-8") == assembly
+    assert (VIEWS / "behavioural_view.puml").read_text(encoding="utf-8") == behaviour
     for name in ("assembly_view", "behavioural_view"):
         for ext in ("svg", "png"):
             assert (VIEWS / f"{name}.{ext}").stat().st_size > 0, f"{name}.{ext}"

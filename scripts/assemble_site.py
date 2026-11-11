@@ -118,7 +118,7 @@ def _build_lock():
     (parallel pytest runs or builds in one checkout)."""
     lock_dir = ROOT / "build"
     lock_dir.mkdir(exist_ok=True)
-    with open(lock_dir / ".site-build.lock", "w") as fh:
+    with open(lock_dir / ".site-build.lock", "w", encoding="utf-8") as fh:
         try:
             import fcntl
         except ImportError:  # not POSIX: no lock available

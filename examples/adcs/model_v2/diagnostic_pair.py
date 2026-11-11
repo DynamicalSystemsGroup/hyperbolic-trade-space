@@ -68,7 +68,7 @@ def shared_vmax(figures) -> float:
 
 def metrics_from_coverage(path: pathlib.Path) -> list[str]:
     """The traded metrics of the coverage table's ``metrics`` rows, plain names in table order."""
-    with open(path, newline="") as fh:
+    with open(path, newline="", encoding="utf-8") as fh:
         rows = list(csv.reader(fh))
     names = []
     for row in rows:
@@ -261,7 +261,7 @@ def write_pair(dataset, gains, coverage, out) -> dict:
         case._plt().close(fig)
         record += regime_record(study, fits)
         zero[regime] = zero_across_tau(study)
-    (out / "k3_record.md").write_text("\n".join(record))
+    (out / "k3_record.md").write_text("\n".join(record), encoding="utf-8")
     source = coverage.with_suffix(".md")
     if source.exists():
         shutil.copyfile(source, out / "coverage.md")

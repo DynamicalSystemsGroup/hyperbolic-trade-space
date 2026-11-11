@@ -74,12 +74,12 @@ SCHEMES = {
 
 def page_blocks(path):
     """The ``{.runnable}`` blocks of a page, in order."""
-    return BLOCK.findall(Path(path).read_text())
+    return BLOCK.findall(Path(path).read_text(encoding="utf-8"))
 
 
 def page_figures(path):
     """``[(block_index, name)]``: each figure and the index of the block directly above it."""
-    text = Path(path).read_text()
+    text = Path(path).read_text(encoding="utf-8")
     events = [(m.start(), "block", None) for m in BLOCK.finditer(text)]
     events += [(m.start(), "figure", m.group(2)) for m in IMAGE.finditer(text)]
     figures, seen = [], -1
@@ -95,7 +95,7 @@ def page_figures(path):
 
 def figure_alts(path):
     """``{name: alt text}`` of the page's figures; the alt text is also written into each image."""
-    return {m.group(2): m.group(1) for m in ALT.finditer(Path(path).read_text())}
+    return {m.group(2): m.group(1) for m in ALT.finditer(Path(path).read_text(encoding="utf-8"))}
 
 
 def pages_with_figures(docs=DOCS):

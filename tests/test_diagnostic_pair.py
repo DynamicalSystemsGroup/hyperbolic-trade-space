@@ -34,7 +34,7 @@ def _slice(src: pathlib.Path, dst: pathlib.Path) -> None:
 
 
 def _coverage(path: pathlib.Path, metrics: list[str]) -> None:
-    with open(path, "w", newline="") as fh:
+    with open(path, "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["table", "decision_element", "kind", "metric", "structural"])
         w.writerow(["coverage", "Kp", "tune", metrics[0], "yes"])  # another table: not read
@@ -50,7 +50,7 @@ def pair(tmp_path_factory):
     _slice(V2 / "adcs_designs_cubesat_gains.csv", tmp / "gains.csv")
     metrics = ["total mass", "control effort", "pointing error", "settling time", "energy balance"]
     _coverage(tmp / "coverage.csv", metrics)
-    (tmp / "coverage.md").write_text("# coverage of the test\n")
+    (tmp / "coverage.md").write_text("# coverage of the test\n", encoding="utf-8")
     out = tmp / "out"
     result = dp.write_pair(tmp / "dataset.csv", tmp / "gains.csv", tmp / "coverage.csv", out)
     return out, metrics, result
@@ -61,12 +61,12 @@ def test_the_two_files_and_the_copy_exist(pair):
     assert (out / "heatmap.png").stat().st_size > 1000
     assert (out / "heatmap_baseline.png").stat().st_size > 1000
     assert (out / "k3_record.md").exists()
-    assert (out / "coverage.md").read_text() == "# coverage of the test\n"
+    assert (out / "coverage.md").read_text(encoding="utf-8") == "# coverage of the test\n"
 
 
 def test_the_two_heatmaps_share_one_colour_scale_and_the_record_says_so(pair):
     out, _, result = pair
-    record = (out / "k3_record.md").read_text()
+    record = (out / "k3_record.md").read_text(encoding="utf-8")
     assert result["vmax"] > dp.case.EXPONENT_FLOOR
     assert (
         f"Both heatmaps share one colour scale, from white at 0.001 to {result['vmax']:.3f}"
@@ -92,7 +92,7 @@ def test_the_shared_top_is_the_larger_of_the_two_figures_own_tops():
 def test_the_metric_list_is_the_coverage_tables_in_its_order(pair):
     out, metrics, result = pair
     assert result["metrics"] == metrics
-    record = (out / "k3_record.md").read_text()
+    record = (out / "k3_record.md").read_text(encoding="utf-8")
     assert f"traded metrics ({len(metrics)}, from `coverage.csv`): {', '.join(metrics)}" in record
     # the exponent table of each regime lists exactly those metrics, in that order
     tables = re.findall(r"K = 1 exponents:\n\n((?:\|.*\n)+)", record)

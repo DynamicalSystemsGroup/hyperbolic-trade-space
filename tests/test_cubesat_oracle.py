@@ -40,7 +40,7 @@ from experiments.exclusion import battery_region, classify_region
 
 ADCS = pathlib.Path(__file__).resolve().parents[1] / "examples" / "adcs"
 MODEL = ADCS / "model_v2" / "cubesat.sysml"
-TEXT = MODEL.read_text()
+TEXT = MODEL.read_text(encoding="utf-8")
 RECORDED_FIRST_DESIGNS = pathlib.Path(__file__).parent / "data" / "v2_first_designs_of_record.csv"
 FROZEN_CSV = ADCS / "data" / "adcs_designs_cubesat_gains.csv"
 FLAGS = co.FLAG_NAMES
@@ -222,7 +222,7 @@ COPIES = [
 def test_no_model_constant_is_copied_into_the_experiment_layer(module):
     """R-2: a grep of the experiment modules finds no enumeration literal, range, gain box,
     scenario number or accounting constant of the model."""
-    text = (ADCS / "experiments" / f"{module}.py").read_text()
+    text = (ADCS / "experiments" / f"{module}.py").read_text(encoding="utf-8")
     code = re.sub(r'""".*?"""', "", text, flags=re.S)  # docstrings may quote the model
     hits = [p for p in COPIES if re.search(p, code)]
     assert not hits, f"{module}.py copies model constants matching {hits}"
@@ -238,7 +238,7 @@ def test_editing_the_model_changes_the_sampler_and_the_scenario(tmp_path):
     )
     assert edited != TEXT
     path = tmp_path / "copy.sysml"
-    path.write_text(edited)
+    path.write_text(edited, encoding="utf-8")
     exp = dataclasses.replace(
         df.EXPERIMENTS["v2-primary"], model_path="copy.sysml", inputs={}, scenario="nominalSlew"
     )
@@ -272,7 +272,7 @@ def test_the_flags_come_from_the_requirements_not_from_python(oracle, designs, m
 
 def test_no_flag_inequality_in_the_oracle_module():
     """R-3: the oracle compares none of the quantities the requirements read."""
-    text = (ADCS / "experiments" / "cubesat_oracle.py").read_text()
+    text = (ADCS / "experiments" / "cubesat_oracle.py").read_text(encoding="utf-8")
     for quantity in ("peak_momentum", "settling_time", "available_power", "dod_eclipse"):
         assert not re.search(rf"{quantity}\w*\s*(<=|>=|<|>)", text), quantity
         assert not re.search(rf"(<=|>=|<|>)\s*\w*{quantity}", text), quantity
@@ -313,7 +313,7 @@ def test_a_variant_without_a_feasible_configuration_is_not_simulated(solver, tmp
             )
         },
     )
-    (tmp_path / "variant.sysml").write_text(variant)
+    (tmp_path / "variant.sysml").write_text(variant, encoding="utf-8")
     exp = dataclasses.replace(
         df.EXPERIMENTS["v2-primary"], model_path="variant.sysml", inputs={}, model_sha256=None
     )
@@ -328,7 +328,7 @@ def test_a_proved_infeasible_variant_is_recorded_in_the_ledger_before_the_error(
 
     old = "attribute maxDepthOfDischarge : Real = 0.3;"
     edits = {old: old.replace("0.3;", "0.03;")}
-    (tmp_path / "variant.sysml").write_text(ex.model_variant(TEXT, edits))
+    (tmp_path / "variant.sysml").write_text(ex.model_variant(TEXT, edits), encoding="utf-8")
     exp = dataclasses.replace(
         df.EXPERIMENTS["v2-primary"],
         model_path="variant.sysml",
@@ -416,7 +416,7 @@ def test_the_measured_settling_time_enters_the_row_unchanged(oracle, designs):
     distinct = oracle._analyse(loaded, symbols[0], {**measured, "settling_time": 10.0})
     for k in co.ATTRIBUTE_NAMES[1:]:
         assert got[k] == pytest.approx(distinct[k], rel=1e-12), k
-    assert "nextafter" not in pathlib.Path(co.__file__).read_text()
+    assert "nextafter" not in pathlib.Path(co.__file__).read_text(encoding="utf-8")
 
 
 # -- the sampler consumes the regions the solver excludes (B2) -------------------------------------
@@ -459,8 +459,8 @@ def test_declared_space_excludes_nothing_so_the_first_designs_are_unchanged(tmp_
     want = pd.read_csv(ADCS / "data" / "v2" / "adcs_designs_cubesat_gains.csv").head(20)
     assert got.columns.tolist() == want.columns.tolist()
     if exact_only("v2_first_designs_rows"):  # the container of record: byte-equal to its recording
-        recorded = RECORDED_FIRST_DESIGNS.read_text().splitlines()
-        assert (tmp_path / "primary20.csv").read_text().splitlines() == recorded
+        recorded = RECORDED_FIRST_DESIGNS.read_text(encoding="utf-8").splitlines()
+        assert (tmp_path / "primary20.csv").read_text(encoding="utf-8").splitlines() == recorded
         return
     # elsewhere: the frozen reproducibility tolerances (paper/environment_values.toml)
     tol = listed()["v2_first_designs_rows"]

@@ -66,7 +66,7 @@ COUPLING_HEADER = "table,from,to,variables\n"
 
 def _committed_rows() -> tuple[list[dict], list[dict]]:
     """The committed CSV's first two tables as lists of dicts."""
-    text = (VIEWS / "coverage.csv").read_text()
+    text = (VIEWS / "coverage.csv").read_text(encoding="utf-8")
     blocks = text.split(METRICS_HEADER)
     assert len(blocks) == 2, "the CSV has the metrics table once"
     one = list(csv.DictReader(io.StringIO(blocks[0])))
@@ -78,7 +78,7 @@ def _committed_rows() -> tuple[list[dict], list[dict]]:
 
 def _committed_coupling() -> list[dict]:
     """The committed CSV's third table (the design structure matrix) as a list of dicts."""
-    text = (VIEWS / "coverage.csv").read_text()
+    text = (VIEWS / "coverage.csv").read_text(encoding="utf-8")
     block = text.split(COUPLING_HEADER)[1]
     return list(csv.DictReader(io.StringIO(COUPLING_HEADER + block)))
 
@@ -263,7 +263,7 @@ def test_committed_structural_columns_equal_a_fresh_generation(coverage, structu
     assert {(r["decision_element"], r["metric"]): r["structural"] == "yes" for r in rows} == fresh
     want = [{k: str(v) for k, v in t.items()} for t in structural["table2"]]
     assert table2 == want
-    text = (VIEWS / "coverage.md").read_text()
+    text = (VIEWS / "coverage.md").read_text(encoding="utf-8")
     assert structural["sha256"][:12] in text, "the committed table names the committed model"
 
 
@@ -304,8 +304,8 @@ def test_committed_table_equals_a_full_regeneration_three_times(coverage):
     mds = [coverage.render_md(r) for r in results]
     csvs = [coverage.render_csv(r) for r in results]
     assert mds[0] == mds[1] == mds[2] and csvs[0] == csvs[1] == csvs[2]
-    committed_md = (VIEWS / "coverage.md").read_text()
-    committed_csv = (VIEWS / "coverage.csv").read_text()
+    committed_md = (VIEWS / "coverage.md").read_text(encoding="utf-8")
+    committed_csv = (VIEWS / "coverage.csv").read_text(encoding="utf-8")
     if of_record():
         assert committed_md == mds[0]
         assert committed_csv == csvs[0]

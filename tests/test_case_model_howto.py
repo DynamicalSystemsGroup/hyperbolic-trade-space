@@ -51,7 +51,7 @@ CAPABILITIES = (
 # -- generated blocks ---------------------------------------------------------------------------
 def render_sections() -> str:
     """The model's sections with line pointers, read from its header comments."""
-    text = MODEL.read_text()
+    text = MODEL.read_text(encoding="utf-8")
     lines = text.splitlines()
     found = [
         (m.group(1), m.group(2), text.count("\n", 0, m.start()) + 1) for m in HEADER.finditer(text)
@@ -81,7 +81,7 @@ def _between(text: str, name: str) -> str:
 
 def write_generated() -> None:
     """Rewrite the generated blocks of the how-to."""
-    text = HOWTO.read_text()
+    text = HOWTO.read_text(encoding="utf-8")
     for name, body in (("sections", render_sections()), ("cadcad", render_cadcad())):
         text = re.sub(
             rf"(<!-- {name}:begin -->\n).*?(\n<!-- {name}:end -->)",
@@ -89,12 +89,12 @@ def write_generated() -> None:
             text,
             flags=re.S,
         )
-    HOWTO.write_text(text)
+    HOWTO.write_text(text, encoding="utf-8")
 
 
 @pytest.fixture(scope="module")
 def howto() -> str:
-    return HOWTO.read_text()
+    return HOWTO.read_text(encoding="utf-8")
 
 
 @pytest.fixture(scope="module")
@@ -183,7 +183,7 @@ def _table_rows(howto: str) -> list[list[str]]:
 
 def _probe_numbers() -> dict[int, str]:
     """Probe number -> probe name, from the recorded table (generated in probe order)."""
-    text = RECORD.read_text()
+    text = RECORD.read_text(encoding="utf-8")
     table = text.split("<!-- probes:begin -->", 1)[1].split("<!-- probes:end -->", 1)[0]
     names = re.findall(r"^\| `(\w+)` \|", table, re.M)
     return dict(enumerate(names, 1))
@@ -199,7 +199,9 @@ def test_toolkit_table_has_every_required_capability(howto):
 def test_each_toolkit_row_is_complete_and_cites_a_recorded_probe(howto):
     probes = _probe_numbers()
     assert len(probes) == 11
-    headings = {int(n) for n in re.findall(r"^## (\d+)\. ", RECORD.read_text(), re.M)}
+    headings = {
+        int(n) for n in re.findall(r"^## (\d+)\. ", RECORD.read_text(encoding="utf-8"), re.M)
+    }
     assert headings == set(probes)
     for cap, section, used, why, probe in _table_rows(howto):
         assert section and why, cap
@@ -229,7 +231,7 @@ def test_the_tests_the_howto_points_to_exist(howto):
     cited = re.findall(r"`(tests/test_\w+\.py)::(test_\w+)`", howto)
     assert cited, "the Z3 section cites tests"
     for path, name in cited:
-        assert f"def {name}(" in (ROOT / path).read_text(), (path, name)
+        assert f"def {name}(" in (ROOT / path).read_text(encoding="utf-8"), (path, name)
 
 
 def test_the_exclusion_example_runs(blocks, connection):
@@ -254,8 +256,8 @@ def test_toy_model_is_about_thirty_lines(blocks):
 def test_three_oracles_run_through_the_runner_and_the_ledger(blocks, tmp_path, connection):
     from experiments import ledger as lg
 
-    (tmp_path / "toy.sysml").write_text(blocks["toy-model"][1])
-    (tmp_path / "campaign.csv").write_text(blocks["campaign-file"][1])
+    (tmp_path / "toy.sysml").write_text(blocks["toy-model"][1], encoding="utf-8")
+    (tmp_path / "campaign.csv").write_text(blocks["campaign-file"][1], encoding="utf-8")
     ns: dict = {"root": tmp_path}
     for name in ("toy-common", "toy-simulator", "toy-physical", "toy-human", "toy-run"):
         exec(compile(blocks[name][1], name, "exec"), ns)
@@ -281,8 +283,8 @@ def test_three_oracles_run_through_the_runner_and_the_ledger(blocks, tmp_path, c
 def test_each_oracle_returns_what_its_evidence_says(blocks, tmp_path, connection):
     import pandas as pd
 
-    (tmp_path / "toy.sysml").write_text(blocks["toy-model"][1])
-    (tmp_path / "campaign.csv").write_text(blocks["campaign-file"][1])
+    (tmp_path / "toy.sysml").write_text(blocks["toy-model"][1], encoding="utf-8")
+    (tmp_path / "campaign.csv").write_text(blocks["campaign-file"][1], encoding="utf-8")
     ns: dict = {"root": tmp_path}
     for name in ("toy-common", "toy-simulator", "toy-physical", "toy-human", "toy-run"):
         exec(compile(blocks[name][1], name, "exec"), ns)
@@ -304,8 +306,8 @@ def test_the_oracles_satisfy_the_protocol_and_reject_unknown_configurations(
 ):
     from experiments.oracle import Oracle
 
-    (tmp_path / "toy.sysml").write_text(blocks["toy-model"][1])
-    (tmp_path / "campaign.csv").write_text(blocks["campaign-file"][1])
+    (tmp_path / "toy.sysml").write_text(blocks["toy-model"][1], encoding="utf-8")
+    (tmp_path / "campaign.csv").write_text(blocks["campaign-file"][1], encoding="utf-8")
     ns: dict = {"root": tmp_path}
     for name in ("toy-common", "toy-simulator", "toy-physical", "toy-human"):
         exec(compile(blocks[name][1], name, "exec"), ns)

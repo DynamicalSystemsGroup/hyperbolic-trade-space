@@ -332,7 +332,7 @@ def stdlib_cached(pin: dict | None = None) -> bool:
     return (
         cached_stdlib(pin).is_dir()
         and m.is_file()
-        and m.read_text().strip() == pin["stdlib"]["commit"]
+        and m.read_text(encoding="utf-8").strip() == pin["stdlib"]["commit"]
     )
 
 
@@ -374,7 +374,7 @@ def fetch_stdlib() -> Path:
             shutil.rmtree(dest)
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copytree(clone / s["path"], dest)
-        _stdlib_marker(pin).write_text(head + "\n")
+        _stdlib_marker(pin).write_text(head + "\n", encoding="utf-8")
     return dest
 
 

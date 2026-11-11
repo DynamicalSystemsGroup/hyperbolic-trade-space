@@ -72,4 +72,4 @@ def test_certificate_margin_and_radius_columns(result):
 
 
 def test_no_word_red_in_script():
-    assert not re.search(r"\bred\b", SCRIPT.read_text(), flags=re.I)
+    assert not re.search(r"\bred\b", SCRIPT.read_text(encoding="utf-8"), flags=re.I)

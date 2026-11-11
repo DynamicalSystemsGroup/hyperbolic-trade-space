@@ -606,7 +606,7 @@ def test_requirements_are_the_models_budgets():
     """The case's four thresholds are the literals of the model's part ``budgets``."""
     import re
 
-    text = (ADCS / "model_v2" / "cubesat.sysml").read_text()
+    text = (ADCS / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8")
     lit = {
         name: float(v)
         for name, v in re.findall(r"attribute (\w+Limit|launchBudget) : \w+ = ([\d.]+)", text)
@@ -665,7 +665,7 @@ def test_the_baseline_configuration_is_the_oracles():
     """The case's record of the baseline configuration is what the v2 oracle measures."""
     from experiments import cubesat_oracle as co
 
-    text = (ADCS / "model_v2" / "cubesat.sysml").read_text()
+    text = (ADCS / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8")
     oracle = co.CubesatOracle(text, "nominalSlew", "baseline", workers=1)
     base = case.CUBESAT.baseline_configuration
     got = oracle({k: base[k] for k in co.CONFIG_NAMES})
@@ -674,7 +674,7 @@ def test_the_baseline_configuration_is_the_oracles():
 
 
 def _docs_block(first_line):
-    text = (ADCS.parents[1] / "docs" / "examples.md").read_text()
+    text = (ADCS.parents[1] / "docs" / "examples.md").read_text(encoding="utf-8")
     start = text.index("```text\n" + first_line + "\n") + len("```text\n" + first_line + "\n")
     return text[start : text.index("```", start)].rstrip("\n")
 

@@ -120,7 +120,7 @@ def _check_backing(root, item):
     if item == "reading":
         return None
     if kind == "lemma":
-        record = json.loads((root / "derivation/proof_map_record.json").read_text())
+        record = json.loads((root / "derivation/proof_map_record.json").read_text(encoding="utf-8"))
         m = re.fullmatch(r"L(\d+)(?:\.(\d+))?", value)
         if not m:
             return f"bad lemma id {value!r}"
@@ -210,15 +210,18 @@ def test_the_notes_table_rows_are_migrated():
 def tree(tmp_path):
     (tmp_path / "derivation").mkdir()
     (tmp_path / "derivation/proof_map_record.json").write_text(
-        json.dumps({"lemmas": {"lemma_01_x.py": {"number": 1, "steps": [{"tag": "L1.1"}]}}})
+        json.dumps({"lemmas": {"lemma_01_x.py": {"number": 1, "steps": [{"tag": "L1.1"}]}}}),
+        encoding="utf-8",
     )
     (tmp_path / "docs").mkdir()
     (tmp_path / "docs/references.bib").write_text("@book{aaa2000bbb,\n title={x}\n}\n")
-    (tmp_path / "glossary.yaml").write_text("terms:\n  - id: 'chart'\n")
+    (tmp_path / "glossary.yaml").write_text("terms:\n  - id: 'chart'\n", encoding="utf-8")
     (tmp_path / "page.md").write_text(
         "# Top\n\n## Sec\n\nThe quick brown fox jumps over the lazy dog.\n"
     )
-    (tmp_path / "t.py").write_text("def test_a():\n    pass\n\ndef make():\n    pass\n")
+    (tmp_path / "t.py").write_text(
+        "def test_a():\n    pass\n\ndef make():\n    pass\n", encoding="utf-8"
+    )
     return tmp_path
 
 

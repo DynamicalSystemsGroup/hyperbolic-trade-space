@@ -85,7 +85,9 @@ def test_cache_hit_opens_no_connection(pinned, monkeypatch, capsys):
     toolkit.fetch_binary(archive=archive)  # populate the binary
     monkeypatch.setattr(toolkit, "version", lambda b: pin["toolkit"]["version_output"])
     toolkit.cache_dir(pin).joinpath("stdlib").mkdir(parents=True, exist_ok=True)
-    toolkit.cache_dir(pin).joinpath("stdlib.commit").write_text(pin["stdlib"]["commit"] + "\n")
+    toolkit.cache_dir(pin).joinpath("stdlib.commit").write_text(
+        pin["stdlib"]["commit"] + "\n", encoding="utf-8"
+    )
 
     def boom(*a, **k):
         raise AssertionError("network or subprocess used on a cache hit")
@@ -103,7 +105,7 @@ def test_stdlib_at_another_commit_is_not_a_hit(pinned):
     pin, _ = pinned
     d = toolkit.cache_dir(pin)
     (d / "stdlib").mkdir(parents=True)
-    (d / "stdlib.commit").write_text("0" * 40 + "\n")
+    (d / "stdlib.commit").write_text("0" * 40 + "\n", encoding="utf-8")
     assert not toolkit.stdlib_cached(pin)
 
 

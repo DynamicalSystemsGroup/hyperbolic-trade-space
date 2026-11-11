@@ -518,4 +518,4 @@ def test_margin_and_radius_are_nan_at_one_term_not_infinite():
     from pathlib import Path
 
     doc = Path(__file__).parents[1] / "docs/user-guide/termination.md"
-    assert "`nan` at one term" in doc.read_text()
+    assert "`nan` at one term" in doc.read_text(encoding="utf-8")

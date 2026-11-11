@@ -210,7 +210,7 @@ def register_rows(register: Path) -> list[dict]:
     rows = []
     if not Path(register).exists():
         return rows
-    for line in Path(register).read_text().splitlines():
+    for line in Path(register).read_text(encoding="utf-8").splitlines():
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
         if len(cells) != 5 or not re.fullmatch(r"CR-\d+", cells[0]):
             continue
@@ -247,7 +247,7 @@ def frozen_consumers(root: Path) -> dict[str, list[str]]:
         if rel.startswith(skip) or rel.endswith((".png", ".csv", ".lock", ".pdf", ".svg")):
             continue
         try:
-            text = (root / rel).read_text()
+            text = (root / rel).read_text(encoding="utf-8")
         except (UnicodeDecodeError, OSError):
             continue
         names = sorted(set(FROZEN_FILES.findall(text)))
@@ -697,7 +697,11 @@ def build_report(root: Path) -> str:
     L += _exclusion_section(lg.current(entries))
     L += ["## Change register", "", "<!-- change-register:begin -->"]
     reg = p["reports"] / REGISTER
-    L += [reg.read_text().rstrip() if reg.exists() else "(change-register.md is not written yet)"]
+    L += [
+        reg.read_text(encoding="utf-8").rstrip()
+        if reg.exists()
+        else "(change-register.md is not written yet)"
+    ]
     L += ["<!-- change-register:end -->", ""]
     return re.sub(r"\n{3,}", "\n\n", "\n".join(L)) + "\n"
 
@@ -710,6 +714,6 @@ def main(argv=None) -> int:
     p = paths(a.root)
     out = a.out or p["reports"] / REPORT
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(build_report(a.root))
+    out.write_text(build_report(a.root), encoding="utf-8")
     print(f"wrote {out}")
     return 0

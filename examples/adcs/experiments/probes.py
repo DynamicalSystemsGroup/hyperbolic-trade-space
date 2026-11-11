@@ -290,7 +290,7 @@ def stamp() -> str:
 
 
 def frozen_source() -> str:
-    return MODEL_PATH.read_text()
+    return MODEL_PATH.read_text(encoding="utf-8")
 
 
 def frozen_body() -> str:
@@ -358,8 +358,8 @@ def probe_cross_source_import() -> dict:
     bare = conn.load_from_content("package C { import ScalarValues::*; }")
     with tempfile.TemporaryDirectory() as tmp:
         a, b = pathlib.Path(tmp, "a.sysml"), pathlib.Path(tmp, "b.sysml")
-        a.write_text(_PKG_A)
-        b.write_text(_PKG_B)
+        a.write_text(_PKG_A, encoding="utf-8")
+        b.write_text(_PKG_B, encoding="utf-8")
         by_path_alone = conn.load(str(b))
         joined = conn.parse_sources([str(a), str(b)], strict=True)
         reverse = conn.parse_sources([("b", _PKG_B), ("a", _PKG_A)], strict=True)
@@ -1042,7 +1042,7 @@ def toolkit_local() -> dict:
     extra = ["--lib", lib] if lib else []
     with tempfile.TemporaryDirectory() as tmp:
         snippet = pathlib.Path(tmp, "tank.sysml")
-        snippet.write_text(_TOOLKIT_SNIPPET)
+        snippet.write_text(_TOOLKIT_SNIPPET, encoding="utf-8")
         frozen = str(MODEL_PATH)
         env = {**os.environ, "SYSMLV2_CACHE_DIR": tmp}
 
@@ -1148,10 +1148,10 @@ def generated_table(results: list[dict]) -> str:
 
 
 def write_record(results: list[dict]) -> None:
-    text = RECORD_PATH.read_text()
+    text = RECORD_PATH.read_text(encoding="utf-8")
     block = f"{BEGIN}\n{generated_table(results)}\n{END}"
     new = re.sub(re.escape(BEGIN) + ".*?" + re.escape(END), lambda _: block, text, flags=re.S)
-    RECORD_PATH.write_text(new)
+    RECORD_PATH.write_text(new, encoding="utf-8")
 
 
 def main(argv: list[str] | None = None) -> int:

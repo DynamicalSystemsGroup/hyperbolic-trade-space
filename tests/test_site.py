@@ -24,7 +24,9 @@ ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 SITE = ROOT / "site"
 PUNCH_LIST = ROOT / "work-packages" / "release-punch-list.md"
-CONTRACT = tomllib.loads((ROOT / "work-packages" / "interface-contract.toml").read_text())
+CONTRACT = tomllib.loads(
+    (ROOT / "work-packages" / "interface-contract.toml").read_text(encoding="utf-8")
+)
 GENERATED_PAGES = {
     CONTRACT["docs"]["generated_dir"].removeprefix("docs/") + n
     for n in CONTRACT["docs"]["generated_pages"]
@@ -98,7 +100,7 @@ _Loader.add_multi_constructor("tag:yaml.org,2002:python/", lambda loader, suffix
 
 
 def load_yaml(path: Path):
-    return yaml.load(path.read_text(), Loader=_Loader)
+    return yaml.load(path.read_text(encoding="utf-8"), Loader=_Loader)
 
 
 def flatten_nav(nav) -> list[str]:
@@ -116,14 +118,14 @@ def flatten_nav(nav) -> list[str]:
 
 
 def front_matter(path: Path) -> dict:
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     match = re.match(r"---\n(.*?)\n---\n", text, re.S)
     return yaml.safe_load(match.group(1)) if match else {}
 
 
 def punch_list_urls() -> set[str]:
     """URLs under 'Expected-at-release links' of the punch list."""
-    text = PUNCH_LIST.read_text()
+    text = PUNCH_LIST.read_text(encoding="utf-8")
     section = text.split("## Expected-at-release links", 1)[1].split("\n## ", 1)[0]
     return set(re.findall(r"https?://[^\s)`]+", section))
 
@@ -143,7 +145,7 @@ class _Links(HTMLParser):
 
 def html_links(path: Path) -> list[str]:
     parser = _Links()
-    parser.feed(path.read_text())
+    parser.feed(path.read_text(encoding="utf-8"))
     return parser.hrefs
 
 
@@ -151,7 +153,7 @@ MD_LINK = re.compile(r"(?<!\!)\[[^\]]*\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
 
 
 def md_links(path: Path) -> list[str]:
-    text = re.sub(r"```.*?```", "", path.read_text(), flags=re.S)
+    text = re.sub(r"```.*?```", "", path.read_text(encoding="utf-8"), flags=re.S)
     return MD_LINK.findall(text)
 
 
@@ -170,7 +172,7 @@ def source_pages() -> list[Path]:
 
 def prose_words(path: Path) -> int:
     """Words of a page outside fenced code blocks, tables, image alt text and HTML comments."""
-    text = re.sub(r"```.*?```", "", path.read_text(), flags=re.S)
+    text = re.sub(r"```.*?```", "", path.read_text(encoding="utf-8"), flags=re.S)
     text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
     text = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", text)  # alt text is not prose; captions count
     text = re.sub(r"^\|.*$", "", text, flags=re.M)
@@ -246,7 +248,7 @@ def test_hand_written_pages_carry_no_review_or_proof_content():
         r"^\*\*Proof",
     ]
     for page in source_pages():
-        text = re.sub(r"```.*?```", "", page.read_text(), flags=re.S)
+        text = re.sub(r"```.*?```", "", page.read_text(encoding="utf-8"), flags=re.S)
         for pattern in forbidden:
             assert not re.search(pattern, text, re.I | re.M), f"{page.name}: {pattern}"
         displays = re.findall(r"\$\$", text)
@@ -259,31 +261,31 @@ def test_hand_written_pages_carry_no_review_or_proof_content():
 def test_every_hand_written_page_is_free_of_front_matter():
     """No world key (or any front matter) on a docsite page."""
     for page in source_pages():
-        assert not page.read_text().startswith("---"), page.name
+        assert not page.read_text(encoding="utf-8").startswith("---"), page.name
 
 
 def test_no_table_needs_columns_on_a_phone(mkdocs_config):
     """D3: the hand-written pages use lists, and the API reference renders parameters as lists."""
     for page in source_pages():
-        tables = [ln for ln in page.read_text().splitlines() if ln.startswith("|")]
+        tables = [ln for ln in page.read_text(encoding="utf-8").splitlines() if ln.startswith("|")]
         assert not tables, f"{page.name}: a table (use a list)"
     handler = next(p["mkdocstrings"] for p in mkdocs_config["plugins"] if "mkdocstrings" in p)
     assert handler["handlers"]["python"]["options"]["docstring_section_style"] == "list"
 
 
 def test_api_reference_names_equal_the_contract():
-    text = (DOCS / "api-reference.md").read_text()
+    text = (DOCS / "api-reference.md").read_text(encoding="utf-8")
     names = re.findall(r"^::: hyperbolic_trade_space\.(\w+)\s*$", text, re.M)
     assert sorted(names) == sorted(CONTRACT["package"]["public_names"])
     assert len(names) == len(set(names))
 
 
 def test_citations_resolve():
-    bib = (DOCS / "references.bib").read_text()
+    bib = (DOCS / "references.bib").read_text(encoding="utf-8")
     keys = set(re.findall(r"^@\w+\{([^,\s]+),", bib, re.M))
     cited = set()
     for path in source_pages():
-        for group in re.findall(r"\[(@[^\]]+)\]", path.read_text()):
+        for group in re.findall(r"\[(@[^\]]+)\]", path.read_text(encoding="utf-8")):
             cited |= set(re.findall(r"@([\w:.\-/]+)", group))
     assert cited, "the docs should cite"
     assert cited <= keys, sorted(cited - keys)
@@ -322,7 +324,7 @@ def test_docs_relative_links_resolve():
 
 
 def _heading_slugs(path: Path) -> set[str]:
-    text = re.sub(r"```.*?```", "", path.read_text(), flags=re.S)
+    text = re.sub(r"```.*?```", "", path.read_text(encoding="utf-8"), flags=re.S)
     return {slugify(h, "-") for h in re.findall(r"^#{1,6}\s+(.*?)\s*#*\s*$", text, re.M)}
 
 
@@ -388,7 +390,7 @@ def test_every_paper_key_is_a_label_of_the_built_paper():
         pytest.skip("no built paper (run scripts/stage_site.py first)")
     import json
 
-    refs = json.loads(xref.read_text())["references"]
+    refs = json.loads(xref.read_text(encoding="utf-8"))["references"]
     built = {r["identifier"]: r["url"].rstrip("/") for r in refs if "identifier" in r}
     for key, route in _paper_keys_module().paper_keys().items():
         page = "/" + route.removeprefix("paper/").rstrip("/")
@@ -444,7 +446,7 @@ def test_root_and_paper_links_classified():
 
 
 def test_root_index_is_thin_and_has_the_cards():
-    text = (SITE / "index.html").read_text()
+    text = (SITE / "index.html").read_text(encoding="utf-8")
     assert "<script" not in text.lower()
     assert "prefers-color-scheme: dark" in text
     assert "Start wherever suits you" in text
@@ -461,7 +463,9 @@ def test_root_index_is_thin_and_has_the_cards():
     assert any(h.endswith("hyperbolic-trade-space") for h in hrefs), "repository link"
     assert "New card" in text
     assert '<link rel="icon" href="data:,">' in text  # D6: no /favicon.ico request, no 404
-    assert '<link rel="icon" href="data:,">' in (SITE / "paper" / "index.html").read_text()
+    assert '<link rel="icon" href="data:,">' in (SITE / "paper" / "index.html").read_text(
+        encoding="utf-8"
+    )
     # R1: a wide figure may use a wide screen's width
     assert "min(94vw" in text and "figure.wide" in text
     # R2: the install command breaks between words, never inside one
@@ -474,7 +478,7 @@ def test_root_index_is_thin_and_has_the_cards():
     for stale in ("page by page", "its mathematics", "in full"):
         assert stale not in text.lower(), stale
     assert "pypi.org" not in text.lower()
-    paper = (SITE / "paper" / "index.html").read_text()
+    paper = (SITE / "paper" / "index.html").read_text(encoding="utf-8")
     assert "The paper is in preparation" in paper
     assert "../docs/" in html_links(SITE / "paper" / "index.html")
     assert "../" in html_links(SITE / "paper" / "index.html")
@@ -493,7 +497,7 @@ def test_paper_theme_is_pinned_to_a_commit():
 
 
 def test_punch_list_covers_post_release_checks():
-    text = PUNCH_LIST.read_text()
+    text = PUNCH_LIST.read_text(encoding="utf-8")
     for route in LIVE_ROUTES:
         assert f"`{route}`" in text, route
     assert "PyPI" in text and "release notes" in text.lower()
@@ -594,15 +598,17 @@ def assembled(tmp_path_factory, generated_dir) -> Path:
 def test_assembled_layout(assembled):
     for rel in ("index.html", "docs/index.html", "paper/index.html"):
         assert (assembled / rel).is_file(), rel
-    assert (assembled / "index.html").read_text() == (SITE / "index.html").read_text()
+    assert (assembled / "index.html").read_text(encoding="utf-8") == (
+        SITE / "index.html"
+    ).read_text(encoding="utf-8")
     for name in sorted(BUILT_IMAGES):
         assert (assembled / name).stat().st_size > 10_000, name
     assert (assembled / "figure1.png").read_bytes() == (
         ROOT / "paper" / "figures" / "figure1.png"
     ).read_bytes(), "the What image is the paper's Figure 1, copied, not regenerated"
-    assert (assembled / "paper" / "index.html").read_text() == (
+    assert (assembled / "paper" / "index.html").read_text(encoding="utf-8") == (
         SITE / "paper" / "index.html"
-    ).read_text()
+    ).read_text(encoding="utf-8")
 
 
 def test_every_link_in_the_assembled_site_resolves(assembled):
@@ -611,9 +617,9 @@ def test_every_link_in_the_assembled_site_resolves(assembled):
     problems = []
     # With the placeholder paper only ``paper/`` exists; the paper's other pages are checked by
     # the key test against the built paper (test_every_paper_key_is_a_label_of_the_built_paper).
-    placeholder = (assembled / "paper" / "index.html").read_text() == (
+    placeholder = (assembled / "paper" / "index.html").read_text(encoding="utf-8") == (
         SITE / "paper" / "index.html"
-    ).read_text()
+    ).read_text(encoding="utf-8")
     for page in assembled.rglob("*.html"):
         rel_url = "/" + page.relative_to(assembled).as_posix()
         page_url = rel_url[: -len("index.html")] if rel_url.endswith("index.html") else rel_url
@@ -640,24 +646,24 @@ def test_every_link_in_the_assembled_site_resolves(assembled):
 
 
 def test_math_markers_in_built_pages(assembled):
-    html = (assembled / "docs" / "theory" / "index.html").read_text()
+    html = (assembled / "docs" / "theory" / "index.html").read_text(encoding="utf-8")
     assert 'class="arithmatex"' in html
     assert "mathjax@" in html
     for page in source_pages():
-        if re.search(r"\$[^$\n]+\$", page.read_text()):
+        if re.search(r"\$[^$\n]+\$", page.read_text(encoding="utf-8")):
             rel = page.relative_to(DOCS).with_suffix("").as_posix()
-            built = (assembled / "docs" / rel / "index.html").read_text()
+            built = (assembled / "docs" / rel / "index.html").read_text(encoding="utf-8")
             assert 'class="arithmatex"' in built, f"{rel}: inline math is not rendered"
 
 
 @pytest.mark.slow
 def test_no_world_lines_in_built_pages(assembled):
     for html in (assembled / "docs").rglob("index.html"):
-        assert "world-line" not in html.read_text(), html
+        assert "world-line" not in html.read_text(encoding="utf-8"), html
 
 
 def test_citations_render_and_further_reading_lists_the_references(assembled):
-    html = (assembled / "docs" / "further-reading" / "index.html").read_text()
+    html = (assembled / "docs" / "further-reading" / "index.html").read_text(encoding="utf-8")
     assert "[@" not in re.sub(r"<code.*?</code>", "", html, flags=re.S)
     assert "<ol" in html or '<li id="' in html or "references" in html.lower()
     for key_text in ("Boyd", "Hoburg"):
@@ -665,7 +671,7 @@ def test_citations_render_and_further_reading_lists_the_references(assembled):
 
 
 def test_api_reference_renders_every_public_name(assembled):
-    html = (assembled / "docs" / "api-reference" / "index.html").read_text()
+    html = (assembled / "docs" / "api-reference" / "index.html").read_text(encoding="utf-8")
     for name in CONTRACT["package"]["public_names"]:
         assert f"hyperbolic_trade_space.{name}" in html, name
     assert "doc-class" in html and "doc-function" in html
@@ -708,7 +714,9 @@ def _refs(text: str) -> list[str]:
 
 
 def test_r26_docsite_sources_refer_to_no_removed_content():
-    problems = {p.relative_to(DOCS).as_posix(): _refs(p.read_text()) for p in source_pages()}
+    problems = {
+        p.relative_to(DOCS).as_posix(): _refs(p.read_text(encoding="utf-8")) for p in source_pages()
+    }
     assert {k: v for k, v in problems.items() if v} == {}
 
 
@@ -722,7 +730,7 @@ def test_r26_root_page_navigation_and_site_scripts_refer_to_no_removed_content()
     ]
     problems = {}
     for path in scanned:
-        text = path.read_text()
+        text = path.read_text(encoding="utf-8")
         if path.name == "mkdocs.yml":
             text = "\n".join(ln for ln in text.splitlines() if not ln.lstrip().startswith("#"))
             assert "overrides" not in text and "world" not in text.lower(), path.name
@@ -736,7 +744,7 @@ def test_r26_route_lists_refer_to_no_removed_content():
     assert _refs("\n".join(LIVE_ROUTES)) == []
     assert _refs("\n".join(NAV_PAGES)) == []
     assert not any("derivations" in r or "verification" in r for r in LIVE_ROUTES)
-    text = PUNCH_LIST.read_text()
+    text = PUNCH_LIST.read_text(encoding="utf-8")
     section = text.split("## Post-release live checks", 1)[1]
     assert _refs(section.split("- Deferred", 1)[0]) == []
 
@@ -790,7 +798,7 @@ def _docs_line_length():
     formats the Markdown code blocks (a code line that fits the column at 1280 px)."""
     import tomllib
 
-    return tomllib.loads((DOCS / "ruff.toml").read_text())["line-length"]
+    return tomllib.loads((DOCS / "ruff.toml").read_text(encoding="utf-8"))["line-length"]
 
 
 CODE_COLUMN = _docs_line_length()
@@ -812,7 +820,7 @@ def test_no_code_line_in_a_docsite_page_exceeds_the_column():
     so no code line is longer; imports and comments are wrapped."""
     long_lines = {}
     for page in source_pages():
-        for block in FENCE.findall(page.read_text()):
+        for block in FENCE.findall(page.read_text(encoding="utf-8")):
             for line in block.splitlines():
                 if len(line) > CODE_COLUMN:
                     long_lines.setdefault(page.name, []).append(line)
@@ -825,7 +833,7 @@ def test_figures_are_few_captioned_and_in_both_colour_schemes():
     bf = _figures_module()
     names = []
     for page in source_pages():
-        text = page.read_text()
+        text = page.read_text(encoding="utf-8")
         for name in re.findall(r"!\[[^\]]*\]\([^)\s#]*?([\w-]+)-light\.png#only-light\)", text):
             names.append(name)
             pair = re.findall(
@@ -873,7 +881,9 @@ def test_each_figure_is_produced_by_the_code_shown_above_it(tmp_path):
     embedded = set().union(*built.values())
     on_pages = set()
     for page in source_pages():
-        on_pages |= set(re.findall(r"([\w-]+)-light\.png#only-light", page.read_text()))
+        on_pages |= set(
+            re.findall(r"([\w-]+)-light\.png#only-light", page.read_text(encoding="utf-8"))
+        )
     assert embedded == on_pages
 
 
@@ -914,12 +924,12 @@ class _Figures(HTMLParser):
 
 def _index_figures():
     parser = _Figures()
-    parser.feed((SITE / "index.html").read_text())
+    parser.feed((SITE / "index.html").read_text(encoding="utf-8"))
     return parser.figures
 
 
 def test_index_has_a_figure_each_for_why_what_and_how_in_that_order():
-    text = (SITE / "index.html").read_text()
+    text = (SITE / "index.html").read_text(encoding="utf-8")
     figures = _index_figures()
     # the supervisor's choice (WP28-decisions): the planted ternary is the story figure of the Why
     # section, and the plain Why image is gone (the assistant's call on the reviewer's first point)
@@ -954,7 +964,7 @@ def test_index_images_have_alt_text_captions_and_full_size_links():
     for f in figures:  # plain links: each figure's link is the file the image shows
         assert [i[0] for i in f["img"]] == f["a"]
     # in the dark scheme the light twin is hidden (and the dark one shown), by CSS alone
-    css = (SITE / "index.html").read_text()
+    css = (SITE / "index.html").read_text(encoding="utf-8")
     assert "figure.why .only-dark { display: none; }" in css
     assert "figure.why .only-light { display: none; }" in css
 
@@ -1140,7 +1150,7 @@ def test_why_image_is_drawn_by_the_package_function(why_fit, monkeypatch):
     from hyperbolic_trade_space import plotting
 
     bsf, fit = why_fit
-    text = (ROOT / "scripts" / "build_site_figures.py").read_text()
+    text = (ROOT / "scripts" / "build_site_figures.py").read_text(encoding="utf-8")
     assert "def project" not in text and "def place_labels" not in text
     calls = []
     real = plotting.plot_ternary
@@ -1151,6 +1161,6 @@ def test_why_image_is_drawn_by_the_package_function(why_fit, monkeypatch):
 
 
 def test_site_does_not_import_a_ternary_package():
-    text = (ROOT / "scripts" / "build_site_figures.py").read_text()
+    text = (ROOT / "scripts" / "build_site_figures.py").read_text(encoding="utf-8")
     assert "import mpltern" not in text and "projection=" not in text
-    assert "mpltern" not in (ROOT / "pyproject.toml").read_text()
+    assert "mpltern" not in (ROOT / "pyproject.toml").read_text(encoding="utf-8")

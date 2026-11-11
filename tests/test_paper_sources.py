@@ -17,7 +17,9 @@ ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 SRC = DOCS / "superpowers" / "notes" / "paper-sources"
 
-BIB_KEYS = set(re.findall(r"^@\w+\{([^,\s]+),", (DOCS / "references.bib").read_text(), re.M))
+BIB_KEYS = set(
+    re.findall(r"^@\w+\{([^,\s]+),", (DOCS / "references.bib").read_text(encoding="utf-8"), re.M)
+)
 CITE_RE = re.compile(r"\[(@[^\]]+)\]")
 LEMMA_RE = re.compile(r"\bL(\d+)\b")
 LEDGER_RE = re.compile(r"\b([AIRF]\d+)\b")
@@ -34,7 +36,7 @@ SNAPSHOTS = [
 
 
 def _text(name):
-    return (SRC / name).read_text()
+    return (SRC / name).read_text(encoding="utf-8")
 
 
 def _keys(text):

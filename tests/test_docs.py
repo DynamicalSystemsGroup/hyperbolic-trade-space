@@ -28,14 +28,16 @@ def docsite_pages():
 
 PAGES = [p.relative_to(DOCS).as_posix() for p in docsite_pages()]
 
-BIB_KEYS = set(re.findall(r"^@\w+\{([^,\s]+),", (DOCS / "references.bib").read_text(), re.M))
+BIB_KEYS = set(
+    re.findall(r"^@\w+\{([^,\s]+),", (DOCS / "references.bib").read_text(encoding="utf-8"), re.M)
+)
 CITE_RE = re.compile(r"\[(@[^\]]+)\]")
 LEMMA_RE = re.compile(r"\bL(\d+)\b")
 LEDGER_RE = re.compile(r"\b([AIRF]\d+)\b")
 
 
 def _text(page):
-    return (DOCS / page).read_text()
+    return (DOCS / page).read_text(encoding="utf-8")
 
 
 def _guide_text():
@@ -122,7 +124,7 @@ NOTATION = ROOT / "docs/superpowers/notes/notation.md"
 
 def _register_list(label):
     """Phrases from the bullet list under a heading or bold lead containing ``label``, or None."""
-    lines = NOTATION.read_text().splitlines()
+    lines = NOTATION.read_text(encoding="utf-8").splitlines()
     start = next(
         (
             i
@@ -166,8 +168,10 @@ def test_forbidden_phrases_absent():
         pytest.skip("notation.md has no 'Forbidden phrases' subsection yet")
     assert phrases, "the 'Forbidden phrases' subsection lists nothing"
     text = _prose().lower()
-    preserved = "\n".join(f.read_text() for f in sorted(SOURCES.glob("*.md"))).lower()
-    source = GLOSSARY_YAML.read_text().lower()
+    preserved = "\n".join(
+        f.read_text(encoding="utf-8") for f in sorted(SOURCES.glob("*.md"))
+    ).lower()
+    source = GLOSSARY_YAML.read_text(encoding="utf-8").lower()
     assert [p for p in phrases if p.lower() in text] == []
     assert [p for p in phrases if p.lower() in preserved] == [], "paper-sources"
     assert [p for p in phrases if p.lower() in source] == [], "glossary.yaml"

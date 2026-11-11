@@ -5,7 +5,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-WF = yaml.safe_load((ROOT / ".github" / "workflows" / "test.yml").read_text())
+WF = yaml.safe_load((ROOT / ".github" / "workflows" / "test.yml").read_text(encoding="utf-8"))
 JOB = WF["jobs"]["test"]
 RUN = next(s["run"] for s in JOB["steps"] if "pytest" in s.get("run", ""))
 

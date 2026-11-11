@@ -153,10 +153,10 @@ class Classification:
 # -- reading the model ----------------------------------------------------------------------------
 def _source(model_text_or_path) -> str:
     if isinstance(model_text_or_path, os.PathLike):
-        return Path(model_text_or_path).read_text()
+        return Path(model_text_or_path).read_text(encoding="utf-8")
     text = str(model_text_or_path)
     if "\n" not in text and text.endswith(".sysml") and Path(text).exists():
-        return Path(text).read_text()
+        return Path(text).read_text(encoding="utf-8")
     return text
 
 

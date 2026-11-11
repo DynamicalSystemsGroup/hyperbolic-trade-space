@@ -23,7 +23,7 @@ from adcs_sim import inertia_tensor
 from opensysml.errors import ModelError
 
 ADCS_DIR = pathlib.Path(__file__).resolve().parents[1] / "examples" / "adcs"
-SYSML = (ADCS_DIR / "cubesat_tradespace.sysml").read_text()
+SYSML = (ADCS_DIR / "cubesat_tradespace.sysml").read_text(encoding="utf-8")
 PKG = cm.PKG
 FAST = {"t_end": 1500.0, "max_step": 2.0}  # coarser steps than the dataset, for tests only
 
@@ -182,7 +182,7 @@ def test_editing_a_range_or_enum_literal_changes_the_sampler(cubesat):
 
 def test_no_duplicated_constants_in_python():
     """R-4: the wheel and tracker tables and the design-space bounds are not copied into Python."""
-    py = (ADCS_DIR / "cubesat_model.py").read_text()
+    py = (ADCS_DIR / "cubesat_model.py").read_text(encoding="utf-8")
     code = "\n".join(
         line for line in py.splitlines() if not line.lstrip().startswith(("#", '"', "*"))
     )

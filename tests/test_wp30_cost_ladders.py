@@ -63,7 +63,7 @@ def _fixture(econ, launch=True):
 
 
 def test_no_launch_ladders_reproduce_the_spikes_admit_shares(lad, econ):
-    lines = (SPIKE_DIR / "admit-shares.txt").read_text().splitlines()
+    lines = (SPIKE_DIR / "admit-shares.txt").read_text(encoding="utf-8").splitlines()
     seen = 0
     for line in lines:
         name, n, count, rest = line.split(" ", 3)
@@ -125,7 +125,7 @@ def test_main_writes_the_ladders_and_stops_on_a_mismatch(lad, econ, tmp_path, mo
     # OUT.relative_to(ROOT) would fail outside the repository; the message uses it only on write
     monkeypatch.setattr(lad, "ROOT", tmp_path)
     assert lad.main(["--data", str(data), "--write"]) == 0
-    text = out.read_text()
+    text = out.read_text(encoding="utf-8")
     assert "Regime: baseline (4 feasible designs)" in text and "max relative" in text
     frame.loc[0, "fleet_cost_usd"] *= 2
     frame.to_csv(data / lad.REGIMES["baseline"], index=False)

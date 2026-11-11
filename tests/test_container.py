@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
-DOCKERFILE = (ROOT / "Dockerfile").read_text()
+DOCKERFILE = (ROOT / "Dockerfile").read_text(encoding="utf-8")
 RECORD = ROOT / "paper" / "container" / "RECORD.md"
 
 
@@ -50,12 +50,12 @@ def test_default_command_runs_the_derivation():
 def test_dockerignore_excludes_build_products():
     path = ROOT / ".dockerignore"
     assert path.exists()
-    entries = set(path.read_text().split())
+    entries = set(path.read_text(encoding="utf-8").split())
     assert {".venv", ".git", "_site", "_stage", "build"} <= entries
 
 
 def test_record_has_the_recorded_result_lines():
-    text = RECORD.read_text()
+    text = RECORD.read_text(encoding="utf-8")
     assert "RECORD:" in text
     for needle in (
         "image id",

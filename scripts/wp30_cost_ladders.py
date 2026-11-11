@@ -43,7 +43,7 @@ CHECK_TOLERANCE = 1e-9
 
 def load_prices(path: Path = SPIKE) -> dict:
     """The spike's price functions, run without its report (the file ends in ``main()``)."""
-    text = path.read_text().rstrip()
+    text = path.read_text(encoding="utf-8").rstrip()
     if not text.endswith("main()"):
         raise ValueError(f"{path} no longer ends in main(); read the table another way")
     namespace = {"__file__": str(path), "__name__": "economics"}
@@ -164,7 +164,7 @@ def main(argv=None) -> int:
         return 2
     if a.write:
         OUT.parent.mkdir(parents=True, exist_ok=True)
-        OUT.write_text(text)
+        OUT.write_text(text, encoding="utf-8")
         print(f"wrote {OUT.relative_to(ROOT)}")
     return 0
 

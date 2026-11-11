@@ -164,7 +164,11 @@ def _headings(nb, level="##") -> list[str]:
 
 def _bib_keys() -> set[str]:
     return set(
-        re.findall(r"^@\w+\{([^,\s]+),", (ROOT / "docs" / "references.bib").read_text(), re.M)
+        re.findall(
+            r"^@\w+\{([^,\s]+),",
+            (ROOT / "docs" / "references.bib").read_text(encoding="utf-8"),
+            re.M,
+        )
     )
 
 
@@ -221,7 +225,7 @@ def test_files_exist():
 
 
 def test_myst_config_parses_and_is_modelled_on_the_scipy_build():
-    cfg = yaml.safe_load((PAPER / "myst.yml").read_text())
+    cfg = yaml.safe_load((PAPER / "myst.yml").read_text(encoding="utf-8"))
     proj = cfg["project"]
     assert cfg["version"] == 1
     assert proj["index"] == "paper.ipynb"
@@ -241,7 +245,9 @@ TOOL_NAMES = ("scikit-learn", "sklearn", "numpy", "scipy", "python", "sympy", "c
 
 def test_keywords_name_no_tool_or_library():
     """The supervisor's rule: a keyword is a subject, not a tool (WP10, reading of the abstract)."""
-    keywords = yaml.safe_load((PAPER / "myst.yml").read_text())["project"]["keywords"]
+    keywords = yaml.safe_load((PAPER / "myst.yml").read_text(encoding="utf-8"))["project"][
+        "keywords"
+    ]
     assert keywords == [
         "decision analysis", "trade studies", "trade space", "posynomial", "geometric programming",
         "unsupervised learning", "model-based systems engineering", "open source software",
@@ -379,7 +385,7 @@ def test_generated_sentences_name_the_subsystems_from_the_one_mapping():
 
 
 def test_no_pdf_export_block():
-    text = (PAPER / "myst.yml").read_text()
+    text = (PAPER / "myst.yml").read_text(encoding="utf-8")
     cfg = yaml.safe_load(text)
     assert "exports" not in cfg["project"]
     assert "typst" not in text.lower()
@@ -387,7 +393,7 @@ def test_no_pdf_export_block():
 
 
 def test_build_output_is_ignored():
-    assert "_build/" in (PAPER / ".gitignore").read_text()
+    assert "_build/" in (PAPER / ".gitignore").read_text(encoding="utf-8")
 
 
 def test_notebooks_are_valid_and_use_the_project_kernel():
@@ -410,7 +416,7 @@ def test_no_ai_attribution_in_paper_files():
         if path.is_file() and not {"_build", "container"} & set(path.parts) and path.suffix in {
             ".py", ".yml", ".yaml", ".ipynb", ".md",
         }:  # fmt: skip
-            assert not pattern.search(path.read_text()), path
+            assert not pattern.search(path.read_text(encoding="utf-8")), path
 
 
 # ---- section structure of the paper ------------------------------------------------------------
@@ -591,7 +597,7 @@ def test_generated_sentences_are_counted_not_excluded():
 
 def test_register_forbidden_phrases_are_absent_from_all_prose():
     """R-5: the register's forbidden phrases appear nowhere in the paper's prose or appendices."""
-    text = (NOTES / "notation.md").read_text()
+    text = (NOTES / "notation.md").read_text(encoding="utf-8")
     block = text.split("## Forbidden phrases", 1)[1]
     phrases = re.findall(r"^- `([^`]+)`", block, re.M)
     assert len(phrases) >= 10
@@ -608,7 +614,7 @@ def test_register_forbidden_phrases_are_absent_from_all_prose():
 @needs_prose
 def test_register_phrases_are_used_in_the_body():
     """R-5 (hook, active with the prose): each register phrase appears in the paper."""
-    text = (NOTES / "notation.md").read_text()
+    text = (NOTES / "notation.md").read_text(encoding="utf-8")
     block = text.split("## Register phrases", 1)[1].split("## Forbidden phrases", 1)[0]
     phrases = re.findall(r"^- `([^`]+)`", block, re.M)
     prose = (_markdown(_nb(PAPER_NB)) + _markdown(_nb(SUPPORT_NB))).lower()
@@ -799,7 +805,7 @@ def test_appendix_cells_import_from_the_generators():
 
 
 def test_register_table_equals_the_glossary():
-    entries = yaml.safe_load((ROOT / "glossary.yaml").read_text())["entries"]
+    entries = yaml.safe_load((ROOT / "glossary.yaml").read_text(encoding="utf-8"))["entries"]
     headers, rows = generate_register.register_rows()
     assert len(rows) == len(entries)
     text = str(generate_register.register_table())
@@ -823,12 +829,14 @@ def test_register_committed_output_is_current():
 
 def test_gaps_table_has_every_ledger_row():
     rows = generate_gaps.gap_rows()
-    ledger_ids = re.findall(r"^\| \*\*(G-\d+)\.", (NOTES / "abstraction-gaps.md").read_text(), re.M)
+    ledger_ids = re.findall(
+        r"^\| \*\*(G-\d+)\.", (NOTES / "abstraction-gaps.md").read_text(encoding="utf-8"), re.M
+    )
     assert [r["id"] for r in rows] == ledger_ids == [f"G-{i}" for i in range(1, len(rows) + 1)]
     for r in rows:
         for col in generate_gaps.COLUMNS:
             assert r[col].strip(), (r["id"], col)
-    ledger = (NOTES / "abstraction-gaps.md").read_text()
+    ledger = (NOTES / "abstraction-gaps.md").read_text(encoding="utf-8")
     assert len(re.findall(r"^\| \*\*G-\d+\.", ledger, re.M)) == len(rows)
 
 
@@ -859,7 +867,7 @@ def test_gaps_table_carries_its_mathematics_intact_into_the_page():
 
 
 def _lock_versions():
-    data = tomllib.loads((ROOT / "uv.lock").read_text())
+    data = tomllib.loads((ROOT / "uv.lock").read_text(encoding="utf-8"))
     return {p["name"]: p["version"] for p in data["package"] if "version" in p}
 
 
@@ -867,7 +875,7 @@ def test_toolchain_matches_the_lock_pyproject_and_python_version():
     """R-30: the stated versions are the lock's."""
     locked = _lock_versions()
     text = str(generate_repro.toolchain())
-    pp = tomllib.loads((ROOT / "pyproject.toml").read_text())
+    pp = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
     names = [
         re.match(r"[A-Za-z0-9_.-]+", r).group(0).lower() for r in pp["project"]["dependencies"]
     ]
@@ -879,7 +887,7 @@ def test_toolchain_matches_the_lock_pyproject_and_python_version():
     )
     for name in names:
         assert f"| {name} | {locked[name]} |" in text, name
-    py = (ROOT / ".python-version").read_text().strip()
+    py = (ROOT / ".python-version").read_text(encoding="utf-8").strip()
     assert f"| Python | {py} |" in text
     assert "| Package manager | uv " in text
     assert f"| Locked packages | {len(locked)} |" in text
@@ -1293,7 +1301,11 @@ def test_figure1_files_exist_and_the_data_hash_is_pinned():
     from figures import figure1
 
     assert (PAPER / "figures" / "figure1.png").stat().st_size > 10_000
-    assert (PAPER / "figures" / "figure1.svg").read_text().startswith(("<?xml", "<svg"))
+    assert (
+        (PAPER / "figures" / "figure1.svg")
+        .read_text(encoding="utf-8")
+        .startswith(("<?xml", "<svg"))
+    )
     data = figure1.figure1_data()
     assert data["u"].shape == (253, 2)
     assert figure1.data_hash(data) == figure1.data_hash()  # deterministic within a platform
@@ -1656,7 +1668,9 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
         )
         assert pointer and int(pointer.group(2)) == n, label
         script = scripts[n]
-        assert script.name == pointer.group(1) and "def verify(" in script.read_text(), label
+        assert script.name == pointer.group(1) and "def verify(" in script.read_text(
+            encoding="utf-8"
+        ), label
     kinds = [(k, int(re.search(r"\(L(\d+)\)", t).group(1))) for k, t, _, _ in blocks]
     assert kinds[6] == ("corollary", 20)
     assert kinds[12:] == [
@@ -1696,7 +1710,7 @@ def test_no_hedging_phrases_in_the_body():
 
 
 def test_register_phrases_are_used_in_the_main_text_itself():
-    text = (NOTES / "notation.md").read_text()
+    text = (NOTES / "notation.md").read_text(encoding="utf-8")
     block = text.split("## Register phrases", 1)[1].split("## Forbidden phrases", 1)[0]
     body = _markdown(_nb(PAPER_NB)).lower()
     assert [p for p in re.findall(r"^- `([^`]+)`", block, re.M) if p.lower() not in body] == []
@@ -2330,11 +2344,12 @@ def test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect
     assert (
         f"has {values['primary']} in the primary regime and {values['stock']} in the stock" in text
     )
-    assert (
-        "def _conditioning"
-        in (ROOT / "src" / "hyperbolic_trade_space" / "estimator.py").read_text()
+    assert "def _conditioning" in (
+        ROOT / "src" / "hyperbolic_trade_space" / "estimator.py"
+    ).read_text(encoding="utf-8")
+    assert "def conditioning_diagnostic" in (PAPER / "generate_results.py").read_text(
+        encoding="utf-8"
     )
-    assert "def conditioning_diagnostic" in (PAPER / "generate_results.py").read_text()
     from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
 
     call = re.search(
@@ -2416,7 +2431,7 @@ def test_regime_names_a_gain_box_dataset_and_the_terms_are_terms():
         # WP28-decisions.md): its label is gone from the text, so its exemption goes with it.
         prose = re.sub(r"two (gain )?regimes", "", _section(section).lower())
         assert "regimes" not in prose, section
-    notation = (NOTES / "notation.md").read_text()
+    notation = (NOTES / "notation.md").read_text(encoding="utf-8")
     register = notation.split("## Register phrases", 1)[1].split("## Forbidden phrases", 1)[0]
     forbidden = notation.split("## Forbidden phrases", 1)[1]
     assert "- `regime`" in register and "- `the three regimes`" in forbidden

@@ -29,7 +29,7 @@ DERIVATION = ROOT / "derivation"
 
 
 def _record():
-    return json.loads((DERIVATION / proofmap.RECORD_NAME).read_text())
+    return json.loads((DERIVATION / proofmap.RECORD_NAME).read_text(encoding="utf-8"))
 
 
 @pytest.fixture
@@ -57,9 +57,9 @@ def run_checker(scratch_pkg, *args):
 
 def edit(scratch_pkg, filename, old, new, count=1):
     path = scratch_pkg / filename
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     assert text.count(old) == count, f"{filename}: expected {count} of {old!r}"
-    path.write_text(text.replace(old, new))
+    path.write_text(text.replace(old, new), encoding="utf-8")
 
 
 # ---------------------------------------------------------------- the committed record passes
@@ -190,7 +190,10 @@ def test_a_gap_in_the_numbering_fails(scratch):
 
 def test_a_lemma_with_zero_tags_fails(scratch):
     path = scratch / "lemma_02_shift.py"
-    path.write_text(re.sub(r"^\s*# \[L2\.\d+\].*\n", "", path.read_text(), flags=re.M))
+    path.write_text(
+        re.sub(r"^\s*# \[L2\.\d+\].*\n", "", path.read_text(encoding="utf-8"), flags=re.M),
+        encoding="utf-8",
+    )
     code, out = run_checker(scratch)
     assert code != 0
     assert "lemma_02_shift.py: the lemma has no tagged steps" in out
@@ -290,13 +293,13 @@ def test_a_ledger_entry_without_a_form_fails(scratch):
 def test_the_order_of_steps_in_the_file_is_the_tag_order(scratch):
     """Moving a tagged line past its successor reorders the steps, so the tags are out of order."""
     path = scratch / "lemma_02_shift.py"
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     a = re.search(r"    # \[L2\.4\].*\n.*\n.*\n.*\n", text)  # the L2.4 comment and its assert
     assert a
     block3 = a.group(0)
     text = text.replace(block3, "", 1)
     # put the L2.4 block after the last step (the end of verify)
-    path.write_text(text.rstrip("\n") + "\n" + block3)
+    path.write_text(text.rstrip("\n") + "\n" + block3, encoding="utf-8")
     code, out = run_checker(scratch)
     assert code != 0 and "lemma_02_shift.py" in out
 
@@ -682,7 +685,7 @@ def test_no_lemma_script_creates_a_signed_symbol_directly():
     import ast
 
     for path in sorted(DERIVATION.glob("lemma_*.py")):
-        for node in ast.walk(ast.parse(path.read_text())):
+        for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
             if isinstance(node, ast.Call):
                 for kw in node.keywords:
                     assert kw.arg not in proofmap.SIGN_KWARGS, (path.name, node.lineno)

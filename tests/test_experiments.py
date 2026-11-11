@@ -64,8 +64,8 @@ def _sampler():
 
 
 def _tree(tmp_path):
-    (tmp_path / "model.txt").write_text("toy model v1\n")
-    (tmp_path / "code.py").write_text("# toy code\n")
+    (tmp_path / "model.txt").write_text("toy model v1\n", encoding="utf-8")
+    (tmp_path / "code.py").write_text("# toy code\n", encoding="utf-8")
     return tmp_path
 
 
@@ -141,14 +141,14 @@ def test_editing_makes_verify_fail_naming_the_entry(tmp_path, what):
     led = root / "ledger.jsonl"
     runner.run(_exp(), SimulatorToy(), _sampler(), root, led)
     if what == "output":
-        (root / "out" / "toy.csv").write_text("tampered\n")
+        (root / "out" / "toy.csv").write_text("tampered\n", encoding="utf-8")
     elif what == "model":
-        (root / "model.txt").write_text("toy model v2\n")
+        (root / "model.txt").write_text("toy model v2\n", encoding="utf-8")
     elif what == "code":
-        (root / "code.py").write_text("# changed\n")
+        (root / "code.py").write_text("# changed\n", encoding="utf-8")
     else:
-        text = led.read_text().replace('"seed": 7', '"seed": 8')
-        led.write_text(text)
+        text = led.read_text(encoding="utf-8").replace('"seed": 7', '"seed": 8')
+        led.write_text(text, encoding="utf-8")
     drifts = lg.verify(led, root)
     assert drifts and all(d.entry_id == "toy" for d in drifts)
     assert any(what in d.what or what == "entry" for d in drifts)
@@ -163,8 +163,8 @@ def test_append_refuses_to_rewrite(tmp_path):
     entry = lg.read(led)[0]
     with pytest.raises(lg.LedgerError):
         lg.append(led, entry)
-    lines = led.read_text().splitlines()
-    led.write_text(lines[0].replace("toy", "toz", 1) + "\n")
+    lines = led.read_text(encoding="utf-8").splitlines()
+    led.write_text(lines[0].replace("toy", "toz", 1) + "\n", encoding="utf-8")
     with pytest.raises(lg.LedgerError):
         lg.append(led, {**entry, "id": "other"})
 
@@ -231,7 +231,8 @@ def test_three_evidence_kinds_run_through_runner_and_ledger(tmp_path):
     (root / "campaign.csv").write_text(
         pd.DataFrame({"design_id": range(4), "measured": [1.5, -0.5, 2.0, 0.25]}).to_csv(
             index=False
-        )
+        ),
+        encoding="utf-8",
     )
 
     class Fixed:
@@ -276,7 +277,7 @@ def test_parent_hash_is_recorded_and_checked_before_running(tmp_path):
     assert c["prev_hash"] == p["entry_hash"]
     with pytest.raises(lg.LedgerError):
         runner.run(_exp(id="orphan", parents=("nope",)), SimulatorToy(), _sampler(), root, led)
-    (root / "out" / "toy.csv").write_text("tampered\n")
+    (root / "out" / "toy.csv").write_text("tampered\n", encoding="utf-8")
     with pytest.raises(lg.LedgerError):
         runner.run(
             _exp(id="late", output="out/late.csv", parents=("parent",)),
@@ -354,7 +355,9 @@ def test_adopt_is_idempotent_and_does_not_touch_the_files(tmp_path):
     first = runner.adopt(defs.FROZEN, REPO, led)
     assert len(first) == 5 and runner.adopt(defs.FROZEN, REPO, led) == []
     assert before == {c: lg.sha256_file(c) for c in FROZEN_CSVS}
-    assert json.loads(led.read_text().splitlines()[3])["parents"][0]["id"].startswith("adopted-")
+    assert json.loads(led.read_text(encoding="utf-8").splitlines()[3])["parents"][0][
+        "id"
+    ].startswith("adopted-")
 
 
 @pytest.mark.slow
@@ -390,7 +393,7 @@ def test_model_change_is_drift_and_a_superseding_entry_clears_it(tmp_path):
     root = _tree(tmp_path)
     led = root / "ledger.jsonl"
     [old] = runner.run(_exp(), SimulatorToy(), _sampler(), root, led)
-    (root / "model.txt").write_text("toy model v2\n")
+    (root / "model.txt").write_text("toy model v2\n", encoding="utf-8")
     drifts = lg.verify(led, root)
     assert [d.entry_id for d in drifts] == ["toy"] and drifts[0].what == "model changed"
     [new] = _superseding(root, led)
@@ -411,7 +414,7 @@ def test_superseded_output_replaced_is_reported_not_drift(tmp_path):
     root = _tree(tmp_path)
     led = root / "ledger.jsonl"
     runner.run(_exp(), SimulatorToy(), _sampler(), root, led)
-    (root / "model.txt").write_text("toy model v2\n")
+    (root / "model.txt").write_text("toy model v2\n", encoding="utf-8")
     _superseding(root, led, seed=8)  # other seed: the output file changes
     assert lg.verify(led, root) == []
     [s] = lg.superseded(led, root)
@@ -424,9 +427,10 @@ def test_supersession_is_hashed_and_cannot_be_dropped(tmp_path):
     runner.run(_exp(), SimulatorToy(), _sampler(), root, led)
     _superseding(root, led)
     led.write_text(
-        led.read_text()
+        led.read_text(encoding="utf-8")
         .replace('"supersedes":["toy"]', '"supersedes":[]')
-        .replace('"supersedes": ["toy"]', '"supersedes": []')
+        .replace('"supersedes": ["toy"]', '"supersedes": []'),
+        encoding="utf-8",
     )
     assert any(d.entry_id == "toy@2" and "edited" in d.what for d in lg.verify(led, root))
 
