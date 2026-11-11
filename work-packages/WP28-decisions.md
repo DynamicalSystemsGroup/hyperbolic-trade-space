@@ -296,3 +296,10 @@ synthetic data for a story telling figure." **Disposition (the driver, the plan 
 candidate A (real data) enters the paper and replaces the planted figure on the docs Examples page; the planted
 synthetic ternary moves to the root page (the GitHub Pages index) as a story figure; the one-region figure and B stay
 in the record only.
+
+**Addition, the supervisor, verbatim (09:05):** "and actually use the 4th plot too place 1 and 4 side by side to show
+multiple active trade-offs". **Disposition:** the real figure is a two-panel: A (pointing error, total mass, control
+effort) on the left and B (settling time, control effort, depth of discharge) on the right, one key, in the paper and
+on the docs Examples page; B's caption says plainly that its second region is a single-metric term (depth of discharge
+leads alone) beside the settling-time-against-control-effort trade, so the pair shows several active trade-offs across
+two triples of the same data. The synthetic figure on the root page as before. Dispatched to the ninth PM.
