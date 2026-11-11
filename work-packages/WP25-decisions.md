@@ -138,3 +138,7 @@ row with that record as its reader, whatever the path grep finds; the inventory 
 
 **Driver, verbatim:** "WP25-4 accepted, with the harness note restored as the supervisor's deliverable and the
 keep-by-decision rule added for the next instance."
+
+**Instance 4 holds, the driver (2026-11-11, 01:40):** `paper-outline-v1-baseline.md` (a) keep, two live readers;
+WP28's 151 reader files (a) hold: they are the verbatim returns the inventory and the re-test cite, the evidence of an
+accepted package; a later instance may fold them once nothing cites them.

@@ -64,3 +64,10 @@ Screenshots and logs are under `/private/tmp/claude-501/-Users-z--claude-spares-
 - **Checks.** `uv run ruff check .`, `ruff format --check .` clean; `check_vocabulary.py` 0 new violations; `uv run pytest -q -n auto tests/test_site.py tests/test_interface_contract.py` (slow included): 140 passed; `uv lock --check` passes.
 
 The punch list's reference-keys box is ticked and the CHANGELOG names the keys and the pin (WP8b).
+
+**OD-A1 outcome (2026-11-11, 01:40):** the commit-archive pin in `paper/myst.yml` is accepted as (a): a versioned
+template reference, proven by the driver's clean-worktree staging (driver-log.md). One defect found beside it:
+`scripts/stage_site.py` falls back silently to the placeholder paper when the paper build fails; a release build must
+not. Unit: the script exits non-zero and says so when the paper build fails, the placeholder only behind an explicit
+flag; a test covers it. WP31's executor checked the light and phone renders in its tab without saving them: accepted
+for the executor; the page's reviewer saves the screenshots in the record, as the standing order says.

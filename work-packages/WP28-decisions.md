@@ -248,3 +248,7 @@ by the narrowings he and the readers asked for; the docs lost two figures and th
   link to D.3; screenshot `/private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/s3/o8-section9-three-decimals.jpg`.
 - **Checks.** ruff; `uv run pytest -q -m "not slow" tests/test_paper.py tests/test_claims_register.py` 165 passed, 4
   skipped; the generated-sentence and regime tests including slow ones 9 passed; vocabulary baseline 0 new.
+
+**D.12's second paragraph (2026-11-11, 01:40; the driver):** "so the data fix them loosely" carries the reading T-3
+dropped from the first paragraph and is backed only by the definition; narrow it: the sentence ends at "barely
+changes the objective". One claim, one place.

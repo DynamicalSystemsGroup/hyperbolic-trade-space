@@ -25,3 +25,15 @@ and spike D's `decisions.md`).
 
 **Driver, verbatim:** "WP30 approved with OD1 (a), OD2 (a), OD3 and OD4 his in the morning, OD5 (b), OD6 (a). The
 model developer may start the build."
+
+## Stage 3b questions (2026-11-11, 01:40; the driver)
+
+- **(1) (a).** The unit cost includes launch, as built (U = F / n with launch in F): the supervisor's words were "the
+  manufacturing and launch costs of a fleet ... one for fleet cost at unit cost times number of units and one which
+  is unit cost"; "unit build cost" was the spike's phrase. The placeholder 450,000 USD is read with launch, and the
+  morning ladder is on that metric.
+- **(2) (a) recorded, (b) offered.** 105,770 USD (15.11 kg at 7,000 USD/kg) is the figure recorded for his confirmation;
+  the exact-mass figure 105,750 USD (15.107 kg) is shown beside it in the morning question; he picks.
+- **(3) (a).** The model's line cap rises to 1,150 with the reason in the record (eleven traded metrics and a cost
+  section); no trimming of the model's docs for the cap's sake.
+- **(4) (a).** The check designs draw fleet sizes as the scope says, so the pricing metrics are exercised by the checks.
