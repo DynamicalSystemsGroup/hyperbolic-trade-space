@@ -943,8 +943,23 @@ def probe_results(solver):
     return {r["name"]: r for r in probes.run_all()}
 
 
+def _differing_fields(observed, recorded) -> dict:
+    """The fields of the observed facts that differ from the recorded ones: {field: (observed, recorded)}."""
+    if not isinstance(observed, dict) or not isinstance(recorded, dict):
+        return {"<whole>": (observed, recorded)}
+    return {
+        k: (observed.get(k, "<absent>"), recorded.get(k, "<absent>"))
+        for k in sorted(set(observed) | set(recorded))
+        if observed.get(k, "<absent>") != recorded.get(k, "<absent>")
+    }
+
+
 @pytest.mark.parametrize("name", [p.__name__.removeprefix("probe_") for p in probes.PROBES])
 def test_probe_still_holds(name, probe_results):
     """R-8: re-running a probe gives the facts the record holds; the failure names the probe."""
     r = probe_results[name]
-    assert r["ok"], f"probe {name} no longer matches the recorded result: {r['observation'][:300]}"
+    assert r["ok"], (
+        f"probe {name} no longer matches the recorded result; "
+        f"differing fields: {_differing_fields(r['evidence']['facts'], probes.EXPECTED.get(name))}; "
+        f"observation: {r['observation'][:300]}"
+    )
