@@ -62,14 +62,14 @@ BUDGETS = {
     "user-guide/tensions.md": 700,
     "user-guide/chart.md": 557,  # 600 until WP28 X-1; 561 until the holes block printed
     "user-guide/prediction.md": 350,
-    "user-guide/termination.md": 714,  # 600 until WP28 S-10
+    "user-guide/termination.md": 743,  # 600 until WP28 S-10
     "user-guide/limitations.md": 500,
     "api.md": 300,
     "examples.md": 676,  # 720 until WP28 X-2 (the coordinates figure went)
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 7421  # 6845 until WP31 (U1 +31, U2 -9, U3 +554)
+TOTAL_BUDGET = 7450  # 6845 until WP31 (U1 +31, U2 -9, U3 +554)
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",

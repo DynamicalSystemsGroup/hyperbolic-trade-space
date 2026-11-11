@@ -80,6 +80,7 @@ directions that keep their sum fixed; the smallest eigenvalue is read off, and t
 your own problem, read `conditioning_` after `fit`, comparing fits at one temperature because the value
 scales with it. A value far below a comparable fit's is a prompt for feature engineering: drop or combine
 the metrics that move together, change the [conditioning](conditioning.md), refit and see whether it rises.
+The block sets `min_exponent=0.1`, a floor that keeps the duplicate in the fit; at the default of zero the fit gives it a zero exponent and `conditioning_` prints 12.4.
 
 ```python {.runnable}
 import numpy as np
