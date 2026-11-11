@@ -37,7 +37,6 @@ from __future__ import annotations
 import hashlib
 import math
 import os
-import os
 import re
 import shutil
 import sys
@@ -68,7 +67,7 @@ def solver_available() -> bool:
     if shutil.which("z3") or shutil.which("cvc5"):
         return True
     wheel_bin = Path(sys.prefix) / "bin"
-    if shutil.which("z3", path=str(wheel_bin)):
+    if any((wheel_bin / name).is_file() for name in ("z3", "z3.exe")):
         os.environ["PATH"] = str(wheel_bin) + os.pathsep + os.environ.get("PATH", "")
         return True
     return False

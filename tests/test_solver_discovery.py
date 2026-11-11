@@ -1,4 +1,4 @@
-"""The solver is found where the ``z3-solver`` wheel installs it, not only on ``PATH`` (WP34, Windows)."""
+"""The solver is found where the z3-solver wheel installs it, not only on PATH (WP34, Windows)."""
 
 import os
 import stat

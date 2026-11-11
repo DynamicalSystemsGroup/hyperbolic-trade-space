@@ -28,6 +28,7 @@ import math
 import os
 import re
 import shutil
+import sys
 import tarfile
 
 import cubesat_model as cm
@@ -610,7 +611,7 @@ def test_slew_energy_bound_moves_the_all_feasible_boundary(v2, solver):
     )
 
 
-def test_negative_controls_of_the_exclusion_helper(v2, solver, monkeypatch):
+def test_negative_controls_of_the_exclusion_helper(v2, solver, monkeypatch, tmp_path):
     """A feasible region is not excluded; malformed input is refused; no solver is a named error."""
     model = v2.path
     assert not classify_region(model, battery_region((100, 200))).excluded
@@ -621,6 +622,9 @@ def test_negative_controls_of_the_exclusion_helper(v2, solver, monkeypatch):
     with pytest.raises(ValueError, match="matches 0 times"):
         ex.model_variant(v2.text, {"no such literal": "x"})
     monkeypatch.setattr(shutil, "which", lambda name: None)
+    monkeypatch.setattr(
+        sys, "prefix", str(tmp_path)
+    )  # the wheel's directory holds no solver either
     with pytest.raises(ex.SolverUnavailable, match="z3"):
         classify_region(model, battery_region((20, 26)))
 
