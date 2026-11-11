@@ -218,3 +218,5 @@ Worktrees alive: `wp27model` (idle, tab-23), `stage` (af9ffea, port 8791), `wp28
 | WP30 gate checklist | landed (`WP30-gate-checklist.md`; contract version 20) | 450c65b | Sonnet |
 | WP29 placement | held for the supervisor's glance | wp29 d96db86 | - |
 | Figure loop | agent a8c54c078acfdd793 running | - | Sonnet |
+
+Ninth PM, batch 2: WP31 accepted at 1d26560 (driver's pass); changelog line landed (WP8b G-3); `wp31review` and its server removed. WP30 gap 2: option B (checklist). Figure search restarted as a fresh unit in `fig-trilemma`.

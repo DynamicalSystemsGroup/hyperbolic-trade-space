@@ -35,6 +35,8 @@ package.
 - Stable reference keys from the docsite into the paper: `[text](paper:key)` names a label the paper
   defines, the docs build turns it into a link to the paper page and anchor and fails on an undefined
   key; the paper's article theme is pinned so a clean checkout builds the paper (WP8b).
+- A user-guide page, "Choosing K": the checks that bear on the number of terms, what each can and cannot say,
+  a temperature recipe with `select_temperature`, and worked examples on planted tables and the cubesat (WP31).
 - The interface contract between the technical and presentation sides, with its manifest
   (WP14).
 - The case study (a SysML-modelled illustrative cubesat attitude-control design space): the
