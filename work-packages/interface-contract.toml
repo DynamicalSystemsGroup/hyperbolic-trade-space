@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 18
+contract_version = 19
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -263,6 +263,9 @@ bibliography = "docs/references.bib"
 notes_dir = "docs/superpowers/notes/"
 notes_in_navigation = false
 citation_syntax = "[@key]"
+reference_key_syntax = "[text](paper:key)"
+reference_key_resolver = "scripts/paper_keys.py"
+reference_key_sources = ["paper/paper.ipynb", "paper/supporting_material.ipynb"]
 citation_multi = "[@key1; @key2]"
 math_inline = "$...$"
 math_display = "$$...$$"

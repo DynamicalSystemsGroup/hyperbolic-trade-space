@@ -2,7 +2,7 @@
 
 ## A cubesat trade study across power, mass and attitude control
 
-The worked case is a cubesat model coupling power, mass and attitude control. Eight attributes are
+[The worked case](paper:sect-case-construction) is a cubesat model coupling power, mass and attitude control. Eight attributes are
 compared under two controller-gain settings: settling time, pointing error, control effort, power margin, energy balance, peak slew power, depth of discharge and total
 mass. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`. In this
 design loop a simulation measures the attributes; a fielded system's measured attributes would enter

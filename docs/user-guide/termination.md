@@ -121,6 +121,6 @@ tightest design sits a hundredfold nearer a seam than the typical one.
 
 ## What to decide from it
 
-Keep three claims apart. `certified` is the first: a local optimum of the objective, not of other restarts. The second, a description of the observed designs, is read from `mean_slack_`. The
+Keep three claims apart. [`certified`](paper:thm-certificate) is the first: a local optimum of the objective, not of other restarts. The second, a description of the observed designs, is read from `mean_slack_`. The
 third, that it holds outside the table or supports a decision, the certificate does not make: check it
 on held-out evaluations.

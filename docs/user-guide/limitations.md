@@ -46,5 +46,5 @@ metric does. It is unrelated to PCA in hyperbolic space [@chami2021horopca].
 
 Machine checks confirm that formulas follow from stated conditions and that the code agrees with
 them. Whether the conditions suit your problem is for you to judge. The lemma scripts replace
-pencil-and-paper derivation, not formal verification; Appendix B of the paper states
+pencil-and-paper derivation, not formal verification; [Appendix B](paper:appendix-b) of the paper states
 what they do and do not establish.

@@ -36,6 +36,11 @@ markdown_extensions:
   - tables
   - toc: { permalink: true }
 
+# `[text](paper:key)` cites a label of the paper; the hook turns it into a link and fails on an
+# undefined key (scripts/paper_keys.py).
+hooks:
+  - scripts/paper_keys.py
+
 extra_css:
   - stylesheets/extra.css
 

@@ -340,12 +340,59 @@ def test_internal_anchors_resolve():
             assert frag in _heading_slugs(resolved), f"{path.name}: no heading for {href}"
 
 
-def test_docsite_pages_do_not_cite_into_the_paper():
-    """G9 withdrawn: no link from a docsite page into a paper section; paper references by stable
-    keys are deferred (punch list)."""
+def _paper_keys_module():
+    spec = importlib.util.spec_from_file_location("_paper_keys", ROOT / "scripts" / "paper_keys.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_docsite_cites_the_paper_only_through_keys():
+    """D-6: a link into the paper is ``[text](paper:key)`` and nothing else; every cited key is a
+    label the paper defines, and the docs cite the paper at least once."""
+    keys = _paper_keys_module().paper_keys()
+    cited = set()
     for path in source_pages():
         for href in md_links(path):
+            if href.startswith("paper:"):
+                cited.add(href.removeprefix("paper:"))
+                continue
             assert "paper/" not in href and "paper_sections" not in href, f"{path.name}: {href}"
+    assert cited, "the docs cite the paper"
+    assert cited <= set(keys), sorted(cited - set(keys))
+
+
+def test_paper_keys_resolve_to_relative_links_and_unknown_keys_fail():
+    mod = _paper_keys_module()
+    keys = mod.paper_keys()
+    assert keys["thm-kkt"] == "paper/" and keys["appendix-b"] == "paper/supporting-material/"
+    text = "[a](paper:thm-kkt) and [b](paper:appendix-b)"
+    assert mod.resolve(text, "", keys) == (
+        "[a](../paper/#thm-kkt) and [b](../paper/supporting-material/#appendix-b)"
+    )
+    assert mod.resolve("[a](paper:fig-nlemma)", "user-guide/fitting/", keys) == (
+        "[a](../../../paper/#fig-nlemma)"
+    )
+    assert mod.resolve("[a\nb](paper:thm-kkt)", "", keys) == "[a\nb](../paper/#thm-kkt)"
+    fenced = "```\n[a](paper:thm-kkt)\n```"
+    assert mod.resolve(fenced, "", keys) == fenced, "a code fence is left as written"
+    with pytest.raises(mod.UnknownPaperKey):
+        mod.resolve("[a](paper:no-such-key)", "", keys)
+
+
+def test_every_paper_key_is_a_label_of_the_built_paper():
+    """The keys read from the notebooks are the labels the paper's build publishes, on the page
+    the resolver names (needs a built paper: ``scripts/stage_site.py`` leaves one)."""
+    xref = ROOT / "paper" / "_build" / "html" / "myst.xref.json"
+    if not xref.is_file():
+        pytest.skip("no built paper (run scripts/stage_site.py first)")
+    import json
+
+    refs = json.loads(xref.read_text())["references"]
+    built = {r["identifier"]: r["url"].rstrip("/") for r in refs if "identifier" in r}
+    for key, route in _paper_keys_module().paper_keys().items():
+        page = "/" + route.removeprefix("paper/").rstrip("/")
+        assert built.get(key) == (page if page != "/" else ""), (key, built.get(key), route)
 
 
 def _resolve_site_href(page_url: str, href: str) -> str:
@@ -558,6 +605,11 @@ def test_every_link_in_the_assembled_site_resolves(assembled):
     expected = punch_list_urls()
     base = urlparse(PUBLIC_URL).path
     problems = []
+    # With the placeholder paper only ``paper/`` exists; the paper's other pages are checked by
+    # the key test against the built paper (test_every_paper_key_is_a_label_of_the_built_paper).
+    placeholder = (assembled / "paper" / "index.html").read_text() == (
+        SITE / "paper" / "index.html"
+    ).read_text()
     for page in assembled.rglob("*.html"):
         rel_url = "/" + page.relative_to(assembled).as_posix()
         page_url = rel_url[: -len("index.html")] if rel_url.endswith("index.html") else rel_url
@@ -577,6 +629,8 @@ def test_every_link_in_the_assembled_site_resolves(assembled):
             if not route.startswith(base):
                 continue
             if _site_file_for(route, assembled) is None:
+                if placeholder and route.startswith(base + "paper/"):
+                    continue
                 problems.append((rel_url, href))
     assert not problems, problems[:20]
 

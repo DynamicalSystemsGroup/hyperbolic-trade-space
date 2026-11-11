@@ -32,6 +32,9 @@ package.
   from docstrings, generated glossary and derivation pages, further reading and a bibliography
   with resolved references (WP5, WP6, WP8a).
 - A root page and one-command local staging of the site (WP8a, WP14).
+- Stable reference keys from the docsite into the paper: `[text](paper:key)` names a label the paper
+  defines, the docs build turns it into a link to the paper page and anchor and fails on an undefined
+  key; the paper's article theme is pinned so a clean checkout builds the paper (WP8b).
 - The interface contract between the technical and presentation sides, with its manifest
   (WP14).
 - The case study (a SysML-modelled illustrative cubesat attitude-control design space): the

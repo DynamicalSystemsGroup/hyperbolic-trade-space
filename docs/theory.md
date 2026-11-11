@@ -1,6 +1,6 @@
 # Theory in brief
 
-This page states the model so the user guide reads without gaps. It gives definitions and no proofs.
+This page states the model so the user guide reads without gaps. It gives definitions and no proofs; the [paper](paper:sect-results) has them.
 
 ## The invariant form
 
@@ -14,11 +14,11 @@ w_j&\ge 0,\quad \sum_j w_j=1 .
 \end{aligned}
 $$
 
-Because the weights sum to one, $V(\lambda m)=\lambda V(m)$: doubling every metric doubles V. So V
+Because the weights sum to one, $V(\lambda m)=\lambda V(m)$: [doubling every metric doubles V](paper:thm-invariant). So V
 reads as a factor of improvement, which is what "invariant" refers to. A sum of such products, a
 posynomial, extends one term to K terms and keeps the programs inside geometric programming. The
-model is a root of that sum, so the surface V = 1 is where the posynomial equals one. Fitting one term is a geometric program (GP), solved as
-a convex program after the logarithmic change of variables; fitting several terms alternates assigning
+model is a root of that sum, so the surface V = 1 is where the posynomial equals one. Fitting one term is a geometric program (GP), [solved as
+a convex program](paper:thm-convex) after the logarithmic change of variables; fitting several terms alternates assigning
 the designs to terms with a separate convex refit of each term. By default (`term_temperature=np.inf`)
 the package takes the sharp limit of the weights, one label per design, and the labels drive the refit;
 reading off which term scores a design highest is analysis of the fitted model, not part of the fit.
@@ -26,7 +26,7 @@ reading off which term scores a design highest is analysis of the fitted model, 
 ## V = 1 is the fitted reference surface
 
 The fit chooses $w$ and an offset $\beta$ so that the data lie on or below the surface
-$\log V=w\cdot u-\beta=0$, using the log-mean-exp (entropic) soft maximum of $w\cdot u$ over the
+$\log V=w\cdot u-\beta=0$, using the [log-mean-exp (entropic) soft maximum](paper:thm-lme) of $w\cdot u$ over the
 designs. With one term this is a convex program. Three objects answer to the word frontier, and the
 text names them:
 
@@ -50,20 +50,20 @@ $$
 $$
 
 where $Z$ is free of overall scale and says where along the surface the design sits, and $\log V$ says
-how far from it. The map is reversible for every row with strictly positive metrics: nothing is lost
+how far from it. [The map is reversible](paper:thm-chart) for every row with strictly positive metrics: nothing is lost
 either way. Holes in the $Z$ plane are candidates for white space.
 
 ## Elasticities and the n-lemma
 
 The surface $w\cdot u=\beta$ is flat in log space, so moving along it trades
-the contending metrics at constant elasticities:
+the contending metrics at [constant elasticities](paper:thm-elasticity):
 
 $$
 \frac{\mathrm{d}\log m_j}{\mathrm{d}\log m_k}=-\frac{w_k}{w_j}.
 $$
 
 The metrics with positive weight at tau = infinity are the contending set, and its size n is the
-n-lemma (a dilemma is n = 2, a trilemma n = 3). It is found from the data and not assumed: the fit at
+[n-lemma](paper:def-nlemma) (a dilemma is n = 2, a trilemma n = 3; [Figure 1 of the paper](paper:fig-nlemma) draws it). It is found from the data and not assumed: the fit at
 tau = infinity is a linear program whose solution is generically sparse. At a finite fit
 temperature a small weight means weak participation, set by a participation threshold. With K
 terms there is one contending set per term, and elasticities vary between terms.
@@ -75,5 +75,4 @@ at one term the elasticities are constant; designs are chosen by an evaluator an
 the attainable set. The [limitations](user-guide/limitations.md) page says what each means when you
 act on a result.
 
-The argument itself lives in the project repository, in the derivation scripts under `derivation/`
-and the README there, and the full account will be in the paper when it is published.
+The argument itself is in the paper, and the derivation scripts under `derivation/` check it.

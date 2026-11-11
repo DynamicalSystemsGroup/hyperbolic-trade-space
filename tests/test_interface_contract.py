@@ -729,6 +729,15 @@ def test_r6_syntax_helper_and_notes_pinned():
         "$...$",
         "$$...$$",
     ), msg("R-6", "citation and math syntax are pinned", "both")
+    assert DOCS["reference_key_syntax"] == "[text](paper:key)", msg(
+        "R-6", "the reference-key syntax into the paper is pinned", "both"
+    )
+    assert (ROOT / DOCS["reference_key_resolver"]).is_file(), msg(
+        "R-6", "the reference-key resolver exists"
+    )
+    assert all((ROOT / p).is_file() for p in DOCS["reference_key_sources"]), msg(
+        "R-6", "the notebooks that define the keys exist"
+    )
 
 
 def test_r6_api_reference_page():

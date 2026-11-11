@@ -23,5 +23,5 @@ where they stop, and the two chain.
 - [Glossary](generated/glossary.md): the terms the package uses.
 - [Further reading](further-reading.md): the sources the method builds on.
 
-The [project page](../) links the paper, which is where the argument for the method is made, these
+The [paper](paper:sect-problem) makes the argument for the method; the [project page](../) links it, these
 docs and the package.

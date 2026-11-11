@@ -62,7 +62,7 @@ Hold tau fixed across numbers of terms, selected at K = 1.
 ## Several terms
 
 One term is flat in log space, with constant elasticities. When the rates vary by region, fit
-`n_terms=K` terms, where you choose K ([Choosing K](choosing-k.md)):
+`n_terms=K` [terms](paper:thm-extension), where you choose K ([Choosing K](choosing-k.md)):
 
 ```python {.runnable}
 from hyperbolic_trade_space import (
