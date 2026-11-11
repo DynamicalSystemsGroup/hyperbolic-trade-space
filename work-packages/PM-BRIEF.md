@@ -704,3 +704,14 @@ detail goes to Appendix C; the full model stays in the repository and is pointed
 content in the body is strict. The two new reader personas (P7 the new-space systems engineer, P8 the new-space
 executive; `docs/superpowers/notes/reader-grid.md`) are the review pair for every case-model change and judge the
 hard requirement: realistic enough to keep a space-industry collaborator interested, and honest where it is a toy.
+
+## Package-user tests (standing order, 2026-11-11, 10:20)
+
+The supervisor's words are in `docs/superpowers/notes/reader-grid.md`, "Axis 3: package users". Four personas (U1 to
+U4: human or coding agent, with or without SysML v2 experience; the task's table measured or exported from a model)
+pull the package, read the docs and fit a table of their own, knowing nothing of satellites. An agent cell gets only
+what a user has: the README, the docs site, the installed package; never the repository's notes, records or tests. The
+round is a package before the handover (the UX loop of the mandate): tasks defined, cells run on the staged site at a
+named head, returns verbatim, triage into docs and package change requests, fixes, a re-run until a fresh cell
+completes without a stop the docs owe. The standing question: did anything make them think they need SysML v2 or
+satellites to use the tool.

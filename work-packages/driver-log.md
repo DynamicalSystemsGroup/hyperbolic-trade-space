@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Package-user tests (2026-11-11, 10:20; the supervisor, verbatim in reader-grid.md, "Axis 3").** Four personas U1 to
+  U4 (human or coding agent; with or without SysML v2 experience; the table measured or model-exported) who pull the
+  package and read the docs knowing nothing of satellites; a round before the handover, run on the staged site with
+  the package installed and no repository records in reach; stumbles become docs and package change requests. Scoped
+  as its own package by the PM (the driver numbers it on the scope).
+
 - **The mandate extended (2026-11-11, 10:00; verbatim in release-candidate.md, "The mandate, extended").** The driver
   takes the decisions that waited for him on the readouts (the cost budgets and the launch rate after spike D2; the
   corollary's placement after stage 4; the two-panel figure's final form), each listed in
