@@ -1057,3 +1057,11 @@ section = "Results"
 words_added = 16
 job = "WP29 stage 6, the assistant's call on triage C1: Corollary 1 states P as the projector onto the sum-zero vectors that vanish where w does (the sum-zero projector when every exponent is positive) and that the zero exponents stay zero, the claim L20 proves on the support under strict complementarity"
 reader = "the expert reader who checks the box against the script, and the practitioner applying the shift to a fit with zero exponents"
+
+# Figure 1 simplification (the supervisor's ruling, WP19-decisions.md, "The n-lemma schematic (Figure 1)").
+[[cut]]
+date = "2026-11-11"
+section = "Definitions"
+words_removed = 14
+no_longer_did = "Figure 1 drew the planted exponent vectors as open rings beside the fitted ones; the caption's clause and the 'Shows' line's clause (7 words each) said the fit recovers them, and the recovery statement stays in Appendix D.14, now cited from Section 9"
+authority = "the supervisor: 'i don't think you ned the extra circle denoting planted data'"

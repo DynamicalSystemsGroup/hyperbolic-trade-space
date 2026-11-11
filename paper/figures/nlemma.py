@@ -5,7 +5,7 @@ point of it, and the smallest face holding that point is the term's contending s
 one binding metric, an edge a dilemma of the two metrics at its ends, the interior a trilemma
 (assumption A2 and Definition 5 of the paper). The figure fits a synthetic table of three
 metrics with three planted terms, two on edges and one inside, and draws each fitted exponent
-vector beside the planted one. The n-lemma printed for each term is the tension report's (the
+vector. The n-lemma printed for each term is the tension report's (the
 support of the exact-maximum fit on the term's cell), not read off the marker.
 
 Run ``uv run python paper/figures/nlemma.py`` to write ``fig-nlemma.png`` beside this file.
@@ -103,9 +103,8 @@ def nlemma_figure(data=None, figsize=(6.4, 3.9)):
     ax.text(0.5, 0.2, "interior:\ntrilemma", ha="center", va="center", fontsize=8.5,
             color="0.35", linespacing=1.15)  # fmt: skip
 
-    for k, (w, p) in enumerate(zip(d["fitted"], d["planted"], strict=True)):
+    for k, w in enumerate(d["fitted"]):
         col = CATEGORY_COLORS[k]
-        ax.scatter(*xy(p), s=210, facecolor="none", edgecolor=INK, lw=1.2, zorder=4)
         ax.scatter(*xy(w), s=95, color=col, edgecolor="white", lw=0.8, zorder=5)
         x, y = xy(w)
         ax.text(x, y, str(k + 1), ha="center", va="center", fontsize=7, color="white",
@@ -128,9 +127,6 @@ def nlemma_figure(data=None, figsize=(6.4, 3.9)):
         tx.text(0.1, y - 0.07, "w = (" + ", ".join(f"{v:.2f}" for v in w) + ")", fontsize=8.5,
                 color="0.3", va="center")  # fmt: skip
         y -= 0.17
-    tx.scatter([0.03], [y], s=150, facecolor="none", edgecolor=INK, lw=1.2,
-               transform=tx.transAxes, clip_on=False)  # fmt: skip
-    tx.text(0.1, y, "planted (the known answer)", fontsize=8.5, color=INK, va="center")
     weights = ", ".join(f"{v:.2f}" for v in d["weight"])
     tx.text(0.0, y - 0.07, f"Weight on these three metrics:\n{weights} (all of it: d = 3)",
             fontsize=8.5, color="0.3", va="top", linespacing=1.2)  # fmt: skip
