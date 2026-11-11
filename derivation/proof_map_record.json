@@ -6112,8 +6112,8 @@
      ],
      "results": [],
      "prose": "I9: the Cauchy-Schwarz gap ||delta|| ||y|| - |delta.y|, nonnegative",
-     "code": "cs_gap = I9.slack_expr(a_dot_b=B_sym_, norm_a=nd, norm_b=ny)",
-     "fingerprint": "81de1f014c5407118b4cac5b77709359acaf91f1933495a30d59c124bc178a59",
+     "code": "cs_slack = I9.slack_expr(a_dot_b=B_sym_, norm_a=nd, norm_b=ny)",
+     "fingerprint": "6d548c9d8d82c579b6708149da7ffa4aaf8aafd5fe739d90dae18426a219e3a7",
      "result": "Noise on the metrics is a ridge on the exponents: the first-order shift"
     },
     {

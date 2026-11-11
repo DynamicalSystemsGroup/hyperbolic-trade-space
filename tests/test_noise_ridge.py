@@ -131,7 +131,7 @@ def test_L20_negative_controls_a_wrong_statement_fails_its_step(chain, change, m
         "B_sym_not_symmetric": {"B_sym": r["B_f"]},
         "pair_matrix_sign": {"pair_matrix": -r["pair_matrix"]},
         "range_not_ok": {"range_ok": False},
-        "wrong_norm_bound": {"cs_gap": r["cs_gap"] + r["mc"]},
+        "wrong_norm_bound": {"cs_slack": r["cs_slack"] + r["mc"]},
     }[change]
     with pytest.raises(AssertionError, match=match):
         _reverify(chain, **changes)

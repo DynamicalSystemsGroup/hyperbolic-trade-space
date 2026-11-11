@@ -1609,11 +1609,32 @@ def test_search_section_is_short_future_work_without_numbers():
 
 
 def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script():
-    """R-17, R-18: L1 to L17 once each, each with the parts of the form. The paper's order is the
+    """R-17, R-18: L1 to L17 once each (and L20, the noise corollary, after L6), each with the
+    parts of the form. The paper's order is the
     algorithm's (E-8): the alternation (L16) and Level 1 (L15) come before Lemma 1 (L12)."""
     blocks = _blocks()
     tags = [re.search(r"\(L(\d+)\)\s*$", title).group(1) for _, title, _, _ in blocks]
-    assert [int(t) for t in tags] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 15, 12, 13, 14, 14, 17]
+    assert [int(t) for t in tags] == [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        20,
+        7,
+        8,
+        9,
+        10,
+        11,
+        16,
+        15,
+        12,
+        13,
+        14,
+        14,
+        17,
+    ]
     body = _markdown(_nb(PAPER_NB))
     scripts = {
         int(re.match(r"lemma_(\d+)_", p.name).group(1)): p
@@ -1637,7 +1658,8 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
         script = scripts[n]
         assert script.name == pointer.group(1) and "def verify(" in script.read_text(), label
     kinds = [(k, int(re.search(r"\(L(\d+)\)", t).group(1))) for k, t, _, _ in blocks]
-    assert kinds[11:] == [
+    assert kinds[6] == ("corollary", 20)
+    assert kinds[12:] == [
         ("theorem", 16),
         ("theorem", 15),
         ("lemma", 12),
@@ -2207,6 +2229,51 @@ def test_appendix_d_prints_the_conditioning_diagnostic():
     assert "`conditioning_`" in _out_text(cell)
     assert _out_text(cell) == str(generate_results.conditioning_diagnostic())
     assert any(r in _out_text(cell) for r in ("Dataset cubesat-primary", "Dataset cubesat-stock"))
+
+
+def _injected_noise_rows(text: str) -> list[dict]:
+    """The rows of D.18's table as dicts keyed by the header cells."""
+    lines = [ln for ln in text.splitlines() if ln.startswith("|")]
+    head = [c.strip() for c in lines[0].strip("|").split("|")]
+    return [
+        dict(zip(head, (c.strip() for c in ln.strip("|").split("|")), strict=True))
+        for ln in lines[2:]
+    ]
+
+
+def test_d18_reads_the_corollary_against_injected_noise_as_the_table_licenses():
+    """WP29: D.18 says the predicted shift is larger where `conditioning_` is smaller, that it
+    agrees with the measured mean within the spread of the draws at 0.5 percent in both regimes and
+    at 2 percent in the primary one, and that the contending set changes where the prediction
+    exceeds the smallest active exponent (the Jaccard column falls)."""
+    nb = _nb(SUPPORT_NB)
+    cell = next(c for c in _code_cells(nb) if c.id == "tab-D-injected_noise")
+    rows = _injected_noise_rows(_out_text(cell))
+    assert len(rows) == 8
+    by = {(r["regime"], r["delta (%)"]): r for r in rows}
+    f = lambda r, k: float(r[k])  # noqa: E731
+    pred, meas, spread = (
+        "predicted largest shift",
+        "measured largest shift (mean)",
+        "spread of the draws",
+    )
+    for key in (("cubesat-primary", "0.5"), ("cubesat-primary", "2.0"), ("cubesat-stock", "0.5")):
+        assert abs(f(by[key], pred) - f(by[key], meas)) <= f(by[key], spread), key
+    assert f(by[("cubesat-stock", "0.5")], pred) > f(by[("cubesat-primary", "0.5")], pred)
+    assert f(by[("cubesat-stock", "0.5")], "conditioning_") < f(
+        by[("cubesat-primary", "0.5")], "conditioning_"
+    )
+    for regime in ("cubesat-primary", "cubesat-stock"):
+        jac = [f(by[(regime, d)], "contending-set Jaccard") for d in ("0.5", "2.0", "5.0", "10.0")]
+        assert jac == sorted(jac, reverse=True) and jac[-1] < jac[0]
+    d18 = next(c for c in nb.cells if c.id == "app-D-noise")
+    assert "D.18" in _src(d18) and "injected" in _src(d18)
+
+
+@pytest.mark.slow
+def test_d18_table_is_the_injection_script_output():
+    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-injected_noise")
+    assert _out_text(cell) == str(generate_results.injected_noise())
 
 
 def test_d12_says_why_conditioning_matters_how_it_is_computed_and_how_to_inspect_it():

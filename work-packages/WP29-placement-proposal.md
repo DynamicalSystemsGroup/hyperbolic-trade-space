@@ -1,4 +1,4 @@
-# WP29 placement proposal (stage 5, prepared and not landed)
+# WP29 placement proposal (stage 5; landed on dev with the placement, 2026-11-11)
 
 For the supervisor's glance. Nothing below is in the paper, the docs, the register, the ledger or `references.bib`; the
 lemmas, tests and Appendix B tables are on branch `wp29` and not on `dev`. If he declines a statement, its lemma, test and

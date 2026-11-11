@@ -333,7 +333,7 @@ the MGFs; I6 for square Q, Q Qᵀ = I implies Qᵀ Q = I; I7 alternating partiti
 the relative interior of a facet with positive normal, a statement about the hard-support (τ = ∞) geometry that does not imply an interior finite-τ minimizer; R2: the assignment margin γ is positive, so every row has a unique maximizing facet. FALLBACK hypotheses (introduced because a
 step resisted abstract simplification, each with a role and a failure mode in the ledger): F5 the
 max representation for L5 (a symbol M with s_i ≤ M and s_{i0} = M), F10 the same for L10, F12 the
-min representation for L12 and L13 (a symbol m with x_j ≥ m and x_{j0} = m). I1 is
+min representation for L12 and L13 (a symbol m with x_j ≥ m and x_{j0} = m). The noise results L18 to L20 add POSITED A9 (noise with a covariance Σ: a Gaussian vector, symmetric positive semi-definite), A10 (multiplicative measurement error, log-errors independent N(0, δ_j²)) and A11 (the row noises independent N(0, v²)); INHERITED I17 (expectation is linear and monotone, and Jensen's inequality) and I18 (the Moore–Penrose pseudoinverse); the REGULARITY condition R3 (the clean fit is interior to its face and C = Cov_p(u) is positive definite on the face's tangent space); and the FALLBACK F19 (the maximum of the noise draws as a symbol, as F5). I1 is
 checked numerically in pytest, I2 by the replication test. Of the inherited entries, I7 is solver level (SOLVER_LEVEL: it licenses the K > 1 solver and no lemma consumes it) and I2, I3, I4 are cited context (CITED_CONTEXT); both groups are reported apart in the ledger.
 
 Lemmas: L1 homogeneity and invariant form, V(k·m) = k·V(m), V(m/V) = 1 [A1, A2]; L2 uniform shift

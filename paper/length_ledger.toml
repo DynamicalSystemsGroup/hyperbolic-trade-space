@@ -1008,3 +1008,10 @@ section = "Appendix D"
 words_removed = 1
 no_longer_did = "D.12's second paragraph read a small value as the data fixing the exponents loosely (a reading the definition of curvature alone does not back), and the sentence after it said the case shows both; net one word (the driver's decision, cd2aad2)"
 authority = "the driver, cd2aad2"
+
+[[raise]]
+date = "2026-11-11"
+section = "Results"
+words_added = 201
+job = "the noise-ridge corollary (L20) between L6 and L7, one box with its sketch and script pointer, and the lead-in sentence of L6 and L7 naming it: Gaussian noise on the conditioned metrics adds a ridge to the objective and moves the exponents to first order by a stated amount that the conditioning bounds, the result that touches the paper's reading of the exponents; the supervisor, WP29-decisions.md (the glance): 'okay this sounds like a good addition'"
+reader = "the reader of the main-results list who asks, after the exponents are elasticities, how far noise of a given size moves them, and the practitioner whose own fit shows a small `conditioning_`"

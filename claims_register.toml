@@ -264,7 +264,7 @@ note = "Section 6.1; LSE = LME + (log N)/tau."
 
 [[claim]]
 id = "C016"
-fragment = "the soft maximum of Gaussian noise has a closed form (L6), and along a term the exponents are elasticities and give the improvement factors to V=1 (L7)"
+fragment = "the soft maximum of Gaussian noise has a closed form (L6) ... and along a term the exponents are elasticities and give the improvement factors to V=1 (L7)"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -5637,3 +5637,80 @@ status = "backed"
 disposition = "keep"
 source = "WP28 supervisor decision (c045837, 3a0be54): the two-panel figure"
 note = "S-5 criteria: MIN_NEAR = 10 (case.MIN_NEAR_FRONTIER), TOL = 0.10 over 3 restarts and 4 bootstrap resamples, certified at K >= 2; texture >= 2 (distinct contending sets among counting terms) in 55 of the 275 fits."
+
+[[claim]]
+id = "C459"
+fragment = "Gaussian noise of covariance Sigma on the conditioned metrics adds the ridge"
+file = "paper/paper.ipynb"
+anchor = "The fit and its geometry"
+kind = "M"
+backing = [
+  "lemma:L20.20",
+  "lemma:L6",
+  "test:tests/test_noise_ridge.py::test_first_order_formula_is_within_3e_4_of_the_ridge_minimiser",
+]
+status = "backed"
+disposition = "keep"
+source = "WP29 placement: the corollary after Proposition 2 and Theorem 3 (WP29-decisions.md)"
+note = "The expected noisy objective is J_tau plus (tau/2) w'Sigma w (L20.20, from the cumulant of L6 with a covariance, L18); the first-order shift is within 3e-4 of the ridge minimiser in nine cells of noise and tau on planted data."
+
+[[claim]]
+id = "C460"
+fragment = "The shift is at most ... and lowers"
+file = "paper/paper.ipynb"
+anchor = "The fit and its geometry"
+kind = "M"
+backing = [
+  "lemma:L20.48",
+  "lemma:L20.49",
+  "test:tests/test_noise_ridge.py::test_the_shift_obeys_the_norm_bound_with_conditioning_and_lowers_the_ridge",
+]
+status = "backed"
+disposition = "keep"
+source = "WP29 placement"
+note = "The norm bound tau ||P Sigma w|| / conditioning_ (conditioning_ is tau times the smallest eigenvalue of C on the tangent space) and the descent of ||w||^2 at first order (L20.48, L20.49); toward uniform is in norm, not coordinate by coordinate."
+
+[[claim]]
+id = "C461"
+fragment = "An attribute with relative error delta_j enters with sigma_j=delta_j/s_j"
+file = "paper/paper.ipynb"
+anchor = "The fit and its geometry"
+kind = "M"
+backing = [
+  "lemma:L18",
+  "test:tests/test_noise_lemmas.py::test_L18_conditioning_maps_log_error_to_sigma_j_equal_delta_over_spread",
+]
+status = "backed"
+disposition = "keep"
+source = "WP29 placement"
+note = "Under log-affine conditioning with a_j = 0 and a multiplicative error, the conditioned noise has sigma_j = delta_j / s_j, s_j the log spread (L18, s_j a definition by the convention of standardising)."
+
+[[claim]]
+id = "C462"
+fragment = "it says how far noise moves the exponents, not whether the rates are right"
+file = "paper/paper.ipynb"
+anchor = "The fit and its geometry"
+kind = "M"
+backing = [
+  "lemma:L20",
+  "test:tests/test_noise_ridge.py::test_the_noisy_fit_no_longer_follows_the_ridge_at_large_tau_and_noise",
+]
+status = "backed"
+disposition = "narrow"
+source = "WP29 placement (the driver's second statement of what the corollary must not claim)"
+note = "The statement is first order, interior solution, small noise, Gaussian, fixed scaler; it is silent on consistency and on the rates (gap G-11); the noisy fit leaves the ridge at tau = 50 with noise 0.20."
+
+[[claim]]
+id = "C463"
+fragment = "The predicted shift grows as `conditioning_` falls and measured shifts agree with it within the spread of the draws at half a percent in both regimes and at 2 percent in the primary one"
+file = "paper/supporting_material.ipynb"
+anchor = "D.18 The noise-ridge corollary against injected noise"
+kind = "R"
+backing = [
+  "gen:paper/generate_results.py::injected_noise",
+  "test:tests/test_paper.py::test_d18_reads_the_corollary_against_injected_noise_as_the_table_licenses",
+]
+status = "backed"
+disposition = "keep"
+source = "WP29 placement (OD4: the injection table is the corollary's demonstration)"
+note = "Eight draws per cell, seeds 100 to 107; the noise is injected into noise-free data of record; the 5 and 10 percent cells are outside the formula's range and are not read as confirmation."

@@ -28,9 +28,10 @@ What this proves (symbolic d, n):
      they need not.
 
 What this does NOT prove: that the noisy fit of a finite table lands at the minimizer of J^R
-(that J^R is the logarithm of an expectation, not the expectation of a logarithm: the gap is a
-Jensen gap that closes when the softmax weights spread over many rows, and it is measured in
-tests/test_noise_ridge.py, not proved here); a bound on the second-order remainder or a radius
+(that J^R is the logarithm of an expectation, not the expectation of a logarithm: the
+difference is the slack of Jensen's inequality, which closes when the softmax weights spread over
+many rows, and it is measured in tests/test_noise_ridge.py, not proved here); a bound on the
+second-order remainder or a radius
 within which the first-order shift is accurate (the linearisation drops terms of order
 (noise)^2 and (shift)^2, and names the dropped term); anything at an exponent on the boundary of
 the simplex or near it (R3 fails, and the projector of the face is then the wrong one); the
@@ -285,7 +286,7 @@ def derive(ctx):
     # [L20.14] R3: the Rayleigh slack delta'C delta - m ||delta||^2, nonnegative
     rayleigh = R3.slack_expr(rq_form=A_sym, m_curv=mc, vv_norm2=nd**2)
     # [L20.15] I9: the Cauchy-Schwarz gap ||delta|| ||y|| - |delta.y|, nonnegative
-    cs_gap = I9.slack_expr(a_dot_b=B_sym_, norm_a=nd, norm_b=ny)
+    cs_slack = I9.slack_expr(a_dot_b=B_sym_, norm_a=nd, norm_b=ny)
     # [L20.16] I18: if delta is in the range of X = P C P and X delta = - y, then delta = - X^+ y
     pin_range, pin_eq, pin_out = I18.obj("range"), I18.obj("equation"), I18.obj("conclusion")
     range_ok = mc.is_positive is True  # X is positive definite on the tangent space, R3
@@ -301,7 +302,7 @@ def derive(ctx):
         dsv=dsv, dsd=dsd, dsd_j=dsd_j, m=m, h=h, h2=h2, sigma=sigma, z=z, Pf=Pf, zf=zf, Sw=Sw,
         Cd=Cd, force=force, Pdl=Pdl,
         CPd=CPd, Xd=Xd, yv=yv, mc=mc, s_r3=s_r3, cs=cs, ny=ny, A_sym=A_sym, B_sym_=B_sym_,
-        VV=VV, A_expr=A_expr, B_expr=B_expr, rayleigh=rayleigh, cs_gap=cs_gap,
+        VV=VV, A_expr=A_expr, B_expr=B_expr, rayleigh=rayleigh, cs_slack=cs_slack,
         pin_range=pin_range, pin_eq=pin_eq, pin_out=pin_out, range_ok=range_ok, C_pair=C_pair,
     )  # fmt: skip
 
@@ -467,7 +468,7 @@ def verify(ctx):
         sp.simplify(linearize(sp.Sum(dl[j] * (r["yv"](j) - r["Sw"](j)), lim_j)).subs(tang, 0)) == 0
     ), "L20 FAIL delta.y = delta'Sigma w"
     B_val = -A_val  # the condition: delta'Sigma w* = - delta'C delta
-    gap = sp.simplify(r["cs_gap"].subs(B_, B_val))
+    gap = sp.simplify(r["cs_slack"].subs(B_, B_val))
     # [L20.47] I9: ||delta|| ||y|| - |delta.y| = cs >= 0 with delta.y = - (m ||delta||^2 + s)
     assert sp.simplify(gap - (nd * ny - mc * nd**2 - s_r3)) == 0, "L20 FAIL Cauchy-Schwarz chain"
     ny_sol = sp.solve(sp.Eq(gap, cs), ny)[0]

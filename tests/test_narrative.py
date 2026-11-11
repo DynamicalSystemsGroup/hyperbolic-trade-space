@@ -111,7 +111,7 @@ def test_conditions_table_equals_ledger_set():
     expected = {a.name for a in axioms.by_tag(axioms.REGULARITY)}
     expected |= {a.name for a in axioms.fallbacks()}
     expected |= {"A4"}
-    assert ids == expected == {"R1", "R2", "F5", "F10", "F12", "A4"}
+    assert ids == expected == {"R1", "R2", "R3", "F5", "F10", "F12", "F19", "A4"}
 
 
 def test_conditions_table_quotes_ledger_role_and_failure_mode():

@@ -782,3 +782,34 @@ def design_sets_comparison() -> Md:
         + "\n\nThe baseline configuration and the check designs in each set's one-term fit, "
         "log V (in band widths, share of the set's designs below):\n\n" + frame_table(place)
     )
+
+
+def injected_noise() -> Md:
+    """The noise-ridge corollary (L20) against measurement error injected into the cubesat data.
+
+    The data of record carry no noise of their own; ``examples/adcs/noise_injection.py`` multiplies
+    each raw attribute by ``exp(delta z)`` (a design choice of this experiment), conditions the
+    table again and refits at the clean fit's temperature.
+
+    Returns
+    -------
+    Md
+        Per regime and ``delta``: ``conditioning_`` of the clean fit, the largest component of the
+        shift the corollary predicts, of the measured mean shift and of its spread over the
+        draws, and the contending-set overlap.
+    """
+    import noise_injection
+
+    rows = []
+    for regime in case.CUBESAT.regimes:
+        rows += [[DATASET_LABELS[regime], *r[1:]] for r in noise_injection.regime_rows(regime)[1]]
+    return Md(
+        f"Datasets {' and '.join(DATASET_LABELS[r] for r in case.CUBESAT.regimes)}: the data of "
+        "record carry no noise of their own; the noise is injected as a design choice "
+        "of this experiment (`examples/adcs/noise_injection.py`): each raw attribute is multiplied "
+        "by exp(delta z), z standard normal, the table is conditioned again and refitted at the "
+        "clean fit's temperature, and the measured columns are over eight draws. The predicted "
+        "shift is the corollary's, on the active face, with the noise of each metric "
+        "delta divided by the log spread of its attribute. What the table shows belongs to the fit "
+        "and the conditioning together.\n\n" + md_table(list(noise_injection.COLUMNS), rows)
+    )
