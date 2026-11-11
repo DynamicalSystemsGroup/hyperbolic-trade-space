@@ -658,14 +658,24 @@ def behavioural(m, byid, P, revision=9, reasons=None):
                     and typing.get(e["@id"]) in verified_by
                 ):
                     verified_by[typing[e["@id"]]].add(short(vid))
-    analysis = next(
+    # the slew experiment, and (WP30) the analyses that return one traded metric each from the
+    # configuration alone (the unit cost and the fleet cost: a result refuses equal entries)
+    analysis = pre + "SlewExperiment"
+    others = [
         i
         for i, e in byid.items()
-        if e["@type"] == "AnalysisCaseDefinition"
-    )
+        if e["@type"] == "AnalysisCaseDefinition" and i != analysis
+    ]
     a_inv = {
         ref(e["function"])
-        for e in rd.inside(analysis)
+        for a in (analysis, *others)
+        for e in rd.inside(a)
+        if e["@type"] == "InvocationExpression" and e.get("function")
+    }
+    other_inv = {
+        ref(e["function"])
+        for a in others
+        for e in rd.inside(a)
         if e["@type"] == "InvocationExpression" and e.get("function")
     }
     a_chain = {
@@ -789,10 +799,11 @@ def behavioural(m, byid, P, revision=9, reasons=None):
         roots = roots | {c for r in roots for c in rd.closure(r)}
         return any(rd.measured(r) for r in roots)
 
+    own_analysis = [n for n, _ in metrics if mcalc.get(n) in other_inv]
     cfg_only = [
         n
         for n, _ in metrics
-        if origin[n] == "analysis" and not needs_slew(n)
+        if origin[n] == "analysis" and n not in own_analysis and not needs_slew(n)
     ]
     # returned = computed by the analysis, or an `in` of the analysis returned unchanged
     passed = [
@@ -801,7 +812,9 @@ def behavioural(m, byid, P, revision=9, reasons=None):
         if origin[n] == "measurement" and camel(n, False) in a_refs
     ]
     returned = [
-        n for n, _ in metrics if origin[n] == "analysis"
+        n
+        for n, _ in metrics
+        if origin[n] == "analysis" and n not in own_analysis
     ] + passed
     read_only = [
         n
@@ -1179,6 +1192,8 @@ def behavioural(m, byid, P, revision=9, reasons=None):
                 f"**SlewExperiment**\\n<<analysis def>>\\nreturns {len(returned)} of {len(metrics)}"
                 f"\\nmetrics, computed\\nwith no slew:\\n{said}.\\nFrom the\\nmeasurement:\\n{from_meas}."
             )
+            if own_analysis:  # WP30: the metrics that have an analysis of their own
+                box += "\\nAn analysis each,\\nno slew:\\n" + " and\\n".join(own_analysis) + "."
         out.append(
             f'rectangle "{box}{pad}" as xAnalysis {ANALYSIS_COLOUR}'
         )
@@ -1284,6 +1299,14 @@ def behavioural(m, byid, P, revision=9, reasons=None):
                     for c in verified_by[r]
                 }
             )
+            own = (
+                [
+                    f"The {' and the '.join(own_analysis)} are computed from the configuration "
+                    "alone, with no slew, each by an analysis of its own."
+                ]
+                if own_analysis
+                else []
+            )
             cap = [
                 f"The analysis `SlewExperiment` returns {len(returned)} of the {len(metrics)} traded "
                 f"metrics. The {', '.join(read_only)} is read from `SlewMeasurement` and is not "
@@ -1293,6 +1316,7 @@ def behavioural(m, byid, P, revision=9, reasons=None):
                 "no slew; their requirements are verified in "
                 f"`{', '.join(ver_of(cfg_only))}`, the others in "
                 f"`{', '.join(sorted({c for r in reqs for c in verified_by[r]} - set(ver_of(cfg_only))))}`.",
+                *own,
                 "The groups are the analyst's grouping of the metrics (the model has no such "
                 "structure); a requirement stands in the group of the metric it reads. The "
                 f"{len(no_line)} requirements that read no traded metric stand apart here, each "
@@ -1320,7 +1344,7 @@ def behavioural(m, byid, P, revision=9, reasons=None):
             if revision >= 7:
                 cap.append(
                     "A metric marked MoE is a measure of effectiveness, one a stakeholder states "
-                    f"without knowing the design (here the {' and the '.join(moes)}); a metric marked "
+                    f"without knowing the design (here the {', the '.join(moes[:-1]) + ' and the ' + moes[-1] if len(moes) > 1 else moes[0]}); a metric marked "
                     "MoP is a measure of performance under the engineer's scenario (here the others). "
                     "The dashed line joins a derived quantity to the metric it is computed from.",
                 )

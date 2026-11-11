@@ -29,7 +29,7 @@ ADCS_DIR = pathlib.Path(__file__).resolve().parents[1] / "examples" / "adcs"
 MODEL_DIR = ADCS_DIR / "model_v2"
 VIEWS = MODEL_DIR / "views"
 SWAPS = {"wheelClass", "grade"}  # the swaps by their selecting attribute, as the view tags them
-TUNES = {"panelSpan", "batteryCapacity", "Kp", "Kd"}
+TUNES = {"panelSpan", "batteryCapacity", "Kp", "Kd", "fleetSize"}
 METRICS = [
     "settling time",
     "pointing error",
@@ -40,6 +40,8 @@ METRICS = [
     "peak slew power",
     "depth of discharge",
     "momentum headroom",
+    "unit cost",
+    "fleet cost",
 ]
 
 
@@ -152,15 +154,19 @@ def test_the_gains_do_not_reach_the_mass_and_kd_does_not_reach_the_pointing_erro
     by = {(r["decision_element"], r["metric"]): r["structural"] for r in structural["rows"]}
     assert not by[("Kp", "total mass")] and not by[("Kd", "total mass")]
     assert by[("Kp", "pointing error")] and not by[("Kd", "pointing error")]
-    assert all(by[(e, "settling time")] for e in SWAPS | TUNES)  # the slew reads every input
+    # the slew reads every input but the fleet size, which only the cost model reads (WP30)
+    assert all(by[(e, "settling time")] for e in (SWAPS | TUNES) - {"fleetSize"})
+    assert {m for (e, m), v in by.items() if e == "fleetSize" and v} == {"unit cost", "fleet cost"}
+    assert not any(by[(e, m)] for e in ("Kp", "Kd") for m in ("unit cost", "fleet cost"))
 
 
 # ---------------------------------------------------------------------------------------------
 # R-2: every traded metric has a requirement on its quantity and is marked MoE or MoP
 # ---------------------------------------------------------------------------------------------
-def test_traded_metrics_are_the_nine_of_the_case(structural):
-    """The nine traded metrics: the eight of the WP23 close-out (the eclipse reserve left) and the
-    momentum headroom (WP30, D-1 (a) of spike C; the supervisor's "Confirm")."""
+def test_traded_metrics_are_the_eleven_of_the_case(structural):
+    """The eleven traded metrics: the eight of the WP23 close-out (the eclipse reserve left), the
+    momentum headroom (WP30, D-1 (a) of spike C; the supervisor's "Confirm") and the unit cost and
+    the fleet cost (WP30 OD1 (a)), the last two returned by an analysis each."""
     assert [m.name for m in structural["metrics"]] == METRICS
 
 
@@ -171,13 +177,15 @@ def test_the_four_thresholds_are_listed_with_their_requirements(structural):
     assert limits == {
         "settling time": "-",
         "pointing error": "budgets.pointingErrorLimit = 0.008495 [degree]",
-        "total mass": "budgets.launchBudget = 90643.0",
+        "total mass": "budgets.launchBudget = 105770.0",
         "control effort": "budgets.controlEffortLimit = 0.05922 [N*m*s]",
         "power margin": "-",
         "energy balance": "-",
         "peak slew power": "budgets.peakSlewPowerLimit = 2.6 [W]",
         "depth of discharge": "-",
         "momentum headroom": "-",
+        "unit cost": "budgets.unitCostLimit = 450000.0",
+        "fleet cost": "budgets.fleetCostLimit = 3.0e6",
     }
 
 
@@ -198,7 +206,7 @@ def test_every_traded_metric_has_a_requirement_that_reads_it_and_a_mark(structur
 # ---------------------------------------------------------------------------------------------
 # G1, G3: the coupling graph (configuration values -> subsystems -> metrics) is connected
 # ---------------------------------------------------------------------------------------------
-SUBSYSTEMS = ["controls", "power and energy", "mass"]
+SUBSYSTEMS = ["controls", "power and energy", "mass", "cost"]
 # The coupling variables between the subsystems, as the model names them (WP23-review.md,
 # "Round 2"): a change in the model that adds or removes one is seen here by name.
 EXPECTED_COUPLING = {
@@ -206,6 +214,9 @@ EXPECTED_COUPLING = {
     ("power and energy", "controls"): ["panelPlus.mass", "usableWheelTorque"],
     ("power and energy", "mass"): ["battery.mass", "panelMinus.mass", "panelPlus.mass"],
     ("mass", "controls"): ["InertiaX", "InertiaY", "InertiaZ", "structureMass"],
+    # the cost model reads the panels' area (the panel price) and the total mass (the launch cost)
+    ("power and energy", "cost"): ["panelMinus.area", "panelPlus.area"],
+    ("mass", "cost"): ["totalMass"],
 }
 
 
@@ -220,8 +231,10 @@ def test_every_configuration_value_feeds_a_subsystem_and_the_graph_is_connected(
     for element in SWAPS | TUNES:
         assert c["feeds"][element], f"{element} feeds no subsystem"
         assert c["reached"][element], f"{element} reaches no traded metric"
-    # the battery feeds the power subsystem alone; the gains feed the controls alone
-    assert c["feeds"]["batteryCapacity"] == ["power and energy"]
+    # the battery feeds the power subsystem and the cost (its price); the gains feed the controls
+    # alone; the fleet size feeds the cost alone
+    assert c["feeds"]["batteryCapacity"] == ["power and energy", "cost"]
+    assert c["feeds"]["fleetSize"] == ["cost"]
     assert c["feeds"]["Kp"] == c["feeds"]["Kd"] == ["controls"]
 
 
@@ -254,7 +267,7 @@ def test_coupling_variables_between_subsystems_are_the_models_named_quantities(s
 def test_every_requirement_is_read_off_a_subsystem(structural):
     c = structural["coupling"]
     reqs = sorted(r for s in SUBSYSTEMS for r in c["requirements_read_off"][s])
-    assert len(reqs) == len(set(reqs)) and len(reqs) >= 11
+    assert len(reqs) == len(set(reqs)) and len(reqs) >= 13
     assert {t["requirement"] for t in structural["table2"]} <= set(reqs)
 
 
