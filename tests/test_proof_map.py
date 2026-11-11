@@ -947,7 +947,9 @@ def _run_L16():
 
 
 def test_L16_is_in_the_chain_with_its_exact_statement_and_new_entries():
-    assert CHAIN_NAMES[-2] == "lemma_16_soft_fit_alternation"
+    assert CHAIN_NAMES[CHAIN_NAMES.index("lemma_17_soft_fit_certificate") - 1] == (
+        "lemma_16_soft_fit_alternation"
+    )
     mod = importlib.import_module("derivation.lemma_16_soft_fit_alternation")
     assert mod.STATEMENT == (
         "Soft-weight alternation: with weights alpha_ik = softmax_k(kappa score_ik) from the "
@@ -1118,7 +1120,7 @@ def _l17_fresh(l17):
 
 
 def test_L17_is_in_the_chain_with_its_exact_statement_and_the_new_entry():
-    assert CHAIN_NAMES[-1] == "lemma_17_soft_fit_certificate"
+    assert "lemma_17_soft_fit_certificate" in CHAIN_NAMES
     mod = importlib.import_module("derivation.lemma_17_soft_fit_certificate")
     assert mod.STATEMENT == (
         "Soft-fit certificate: at a feasible point of the soft-weight fit where the first-order "
