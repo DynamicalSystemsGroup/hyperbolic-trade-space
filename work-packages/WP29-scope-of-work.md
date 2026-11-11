@@ -212,7 +212,7 @@ Approved or changed as one item at the scope gate. Each is marked *(default)* wh
   (a) wait, with the lemmas, tests and Appendix B tables landed on `dev` and no prose citing them / (b) hold the
   lemma pushes too, so `dev` carries nothing of Track A until his word, the work staying in a branch.
 - **OD3.** The entropic-risk citation. — options: (a) find and open in full a source that states the entropic formula
-  (the readout names Foellmer-Knispel 2011, DOI 10.1142/S021949371, not yet opened) and cite it in the proposal /
+  (the readout names Foellmer-Knispel 2011, DOI 10.1142/S0219493711003334; its page returned 403 and the formula was not seen, so not yet opened in full) and cite it in the proposal /
   (b) no citation; the sentence is a derivation from L6 and says so.
 - **OD4.** The cubesat injection script and table. — options: (a) the script moves to `examples/adcs/` and its table
   goes to Appendix D at placement / (b) the table is a docs-page figure of the fit-plus-conditioning pair and not an
