@@ -1352,6 +1352,50 @@ def test_the_metric_rule_reproduces_the_table_of_metrics():
     assert "m_j = exp((o_j log(a_j + s_j) - c_j) / k_j)" in str(generate_model.metric_table(n=2))
 
 
+@pytest.mark.parametrize("regime", ["primary", "stock"])
+def test_the_regimes_contending_set_is_the_unique_lp_optimum_not_a_solver_choice(regime):
+    """R1 checked on the case before the n-lemma is printed (the regimes sentence of Section 7):
+    the exact-maximum fit's optimal face is one point, so its support, the contending set, does
+    not depend on the solver's choice among optimal vertices.
+
+    The certificate reads the LP's own primal-dual pair ``(w, p, beta)`` on the regime's
+    log-metrics. (i) The reduced costs ``g_j - beta``, ``g = U^T p`` the balanced point, vanish on
+    the support and are strictly positive off it, so by complementary slackness every primal
+    optimum has ``w_j = 0`` off the support. (ii) Every row with a positive dual is tight, and
+    every primal optimum is tight on those rows. (iii) The active system ``[U_P[:, S], -1; 1^T, 0]``
+    has full column rank, so (i) and (ii) leave one point. The two HiGHS methods return that
+    support, and the K = 1 tension report of record prints it: a 5-lemma in both regimes.
+    """
+    import case
+    from scipy.optimize import linprog
+
+    from hyperbolic_trade_space import solvers
+
+    st = case.load_study(regime)
+    U = np.log(st.M)
+    N, d = U.shape
+    r = solvers.solve_lp(U, 0.0)
+    assert r.success
+    S = np.flatnonzero(r.w > 1e-9)
+    reduced = U.T @ r.p - r.beta  # (i): the balanced point against the level
+    assert np.all(np.abs(reduced[S]) < 1e-6)  # equal gradients on the support (L3.22)
+    assert np.all(reduced[np.setdiff1d(np.arange(d), S)] > 1e-4)  # strict off it
+    P = np.flatnonzero(r.p > 1e-9)  # (ii): the rows that carry the support weights
+    assert np.all(U[P] @ r.w >= r.beta - 1e-7) and r.p[P].sum() == pytest.approx(1.0)
+    A = np.block(
+        [[U[np.ix_(P, S)], -np.ones((P.size, 1))], [np.ones((1, S.size)), np.zeros((1, 1))]]
+    )
+    assert np.linalg.matrix_rank(A) == S.size + 1  # (iii): one point on the optimal face
+    c, A_ub = np.zeros(d + 1), np.hstack([U, -np.ones((N, 1))])
+    c[-1], A_eq = 1.0, np.hstack([np.ones((1, d)), np.zeros((1, 1))])
+    for method in ("highs-ds", "highs-ipm"):
+        res = linprog(c, A_ub=A_ub, b_ub=np.zeros(N), A_eq=A_eq, b_eq=[1.0],
+                      bounds=[(0, None)] * d + [(None, None)], method=method)  # fmt: skip
+        assert np.array_equal(np.flatnonzero(res.x[:d] > 1e-9), S), method
+    rep = case._reports(st, case.fit_study(st))[0]
+    assert np.array_equal(rep.contending_set, S) and rep.n_lemma == S.size == 5
+
+
 def test_c_has_the_metric_table_and_the_sources_and_d_has_the_extended_tables():
     sections = _appendix_cells(_nb(SUPPORT_NB))
     ids_c = {c.id for c in sections["C"]}
@@ -2467,10 +2511,12 @@ def test_cr13_the_first_generated_range_says_what_varies():
 
 
 def test_cr15_appendix_b_says_where_two_statements_share_a_script():
-    """(15) Proposition 3 and its corollary (the approximate certificate) share a file; each entry
-    says so."""
+    """(15) Proposition 3 and its corollary (the approximate certificate) share a file, as do
+    Level 1 (descent) and the finite termination of the sharp alternation; each entry says so."""
     text = str(generate_proofs.proofs_solver())
-    assert text.count("**Shared script.**") == 2
+    shared = {f: lem for f, lem in _record()["lemmas"].items() if len(lem["results"]) > 1}
+    assert set(shared) == {"lemma_14_assignment_stable.py", "lemma_15_descent.py"}
+    assert text.count("**Shared script.**") == sum(len(lem["results"]) for lem in shared.values())
     assert "each proof lists its own steps in the file's order" in text
     assert "**Shared script.**" not in str(generate_proofs.proofs_fit())
 

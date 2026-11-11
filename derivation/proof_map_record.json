@@ -3500,6 +3500,17 @@
       15,
       16
      ]
+    },
+    {
+     "name": "finite termination of the sharp alternation: at most K^N + 1 iterations, given unique term minimizers and a fixed tie rule",
+     "steps": [
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+     ]
     }
    ],
    "steps": [
@@ -3678,6 +3689,68 @@
      "code": "assert r['total'] == 0 and r['nonincreasing'] is True, 'L15 FAIL: F(current) - F(refit) is not the sum of the two nonnegative drops'",
      "fingerprint": "633d28674e98c280f1c68e74b1c67e91a4ba065eb67ffa927db792cb18601b52",
      "result": "descent (Level 1): reassignment and term refit do not increase the mean slack"
+    },
+    {
+     "tag": "L15.17",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "a repeat chi_t = chi_s (t > s) pins the drop x = Phi_s - Phi_{s+1}: x >= 0 (L15.16)",
+     "code": "assert sp.reduce_inequalities([x >= 0, x <= 0], x) == sp.Eq(x, 0), 'L15 FAIL: a drop that is >= 0 and <= 0 is not 0'",
+     "fingerprint": "5f17044ff020764900f73cc09e6330328519237facecf39caf6b176f252fa65b",
+     "result": "finite termination of the sharp alternation: at most K^N + 1 iterations, given unique term minimizers and a fixed tie rule"
+    },
+    {
+     "tag": "L15.18",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "the zero drop is D1 + D2 with D1, D2 >= 0 (L15.12, L15.15): D1 = -D2 <= 0 pins",
+     "code": "assert sp.reduce_inequalities([D2 >= 0, sp.solve(sp.Eq(D1 + D2, 0), D1)[0] >= 0], D2) == sp.Eq(D2, 0), 'L15 FAIL: two nonnegative drops with zero sum are not both zero'",
+     "fingerprint": "dcae79209021d6844ccf67bd27848a6ae1d96e81152e32ccdf123e455e2a5dd1",
+     "result": "finite termination of the sharp alternation: at most K^N + 1 iterations, given unique term minimizers and a fixed tie rule"
+    },
+    {
+     "tag": "L15.19",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "with H1, H2 and the stop rule, a zero refit drop (L15.18, after a repeat) forces the",
+     "code": "assert satisfiable(sp.And(by_h1, by_h2, rule, zero_refit, sp.Not(stop))) is False, 'L15 FAIL: a repeated partition does not force the stop'",
+     "fingerprint": "77d09ded6d74f05df6a2be0f5abc65de9af64d9608e1b299e983e198ddfab096",
+     "result": "finite termination of the sharp alternation: at most K^N + 1 iterations, given unique term minimizers and a fixed tie rule"
+    },
+    {
+     "tag": "L15.20",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "negative control: without H1 (a flat term objective, several minimizers) the stop",
+     "code": "assert satisfiable(sp.And(by_h2, rule, zero_refit, sp.Not(stop))) is not False, 'L15 FAIL: the stop followed without the unique-minimizer hypothesis'",
+     "fingerprint": "342e0111a0073f26b2c64b479a26c907a1b5871e97911d6e9d99dd874487559f",
+     "result": "finite termination of the sharp alternation: at most K^N + 1 iterations, given unique term minimizers and a fixed tie rule"
+    },
+    {
+     "tag": "L15.21",
+     "kind": "axiom",
+     "applies": [
+      "A8"
+     ],
+     "results": [],
+     "prose": "A8: one cell per row, so a partition is a map from the N rows to the K terms, one",
+     "code": "n_partitions, N = (sp.Product(K, (i, 1, A8.obj('rows'))).doit(), A8.obj('rows'))",
+     "fingerprint": "4d7225abbfa74110c5fa8d2833261eddebe85c97b5811b9dd79ecb4d385b38ff",
+     "result": "finite termination of the sharp alternation: at most K^N + 1 iterations, given unique term minimizers and a fixed tie rule"
+    },
+    {
+     "tag": "L15.22",
+     "kind": "computed",
+     "applies": [],
+     "results": [],
+     "prose": "there are K^N partitions and no K^N + 1 of them are pairwise distinct, so the loop,",
+     "code": "assert n_partitions == K ** N and sp.binomial(n_partitions, n_partitions + 1) == 0, 'L15 FAIL: the partitions do not number K^N, or more than K^N are pairwise distinct'",
+     "fingerprint": "bda9b15b8e7569799560c904112703d3cd64b65783ed2340c51e1050e66309d4",
+     "result": "finite termination of the sharp alternation: at most K^N + 1 iterations, given unique term minimizers and a fixed tie rule"
     }
    ]
   },
