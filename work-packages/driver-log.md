@@ -7,6 +7,12 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- **For the morning (2026-11-10, 23:05):** one question on Track B once the economics spike (B2) reports: the model
+  revision (the momentum headroom as the ninth traded metric; the fleet-size variable and the pricing curves) changes
+  the baseline regime's leading trade, a conclusion of the case; the spike B1 readout has the numbers
+  (`WP23-rounds/spikes/spike-C-requirements-no-traded-metric/README.md`, section (4)). The driver recommends proceeding:
+  the new trade is the one the model's own requirement says exists. Nothing builds before his word.
+
 - **Resolved 2026-11-10, 22:40, in his presence:** the ten WP28 rows (S-3 cut to a pointer; the rest kept; three of them
   open work: the modelling spike, the noise-result spike, the real-3-lemma figure loop; D.12 clarified) and H-2 (a
   budget, calibrated by a commercial-economics spike, with a fleet-size variable and per-part pricing curves in the
@@ -206,6 +212,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   (811d260, d7d9919) are the fix-forward, to be confirmed by the next verdict.
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
+
+- **PM rotation and decisions (2026-11-10, 23:05).** The seventh PM handed over at 37bc97e and stopped; the eighth
+  started on Sonnet with the models-by-role rule in its brief. The driver's decisions: spike B1's D-1 (a), the momentum
+  headroom as the ninth traded metric, executed inside Track B with the cost-model change so the data gate happens
+  once; D-2 (a), the behavioural view's box carries each requirement's computed reason with a test; WP8b Amendment 1
+  approved with OD-A1 (a) falling back to (c) on evidence and OD-A2 (a). The figure-loop agent on the large model was
+  stopped at 21 minutes and restarts on Sonnet from its worktree.
 
 - **Models, corrected (2026-11-10, 22:25; the supervisor's standing arrangement).** The driver runs on the large model;
   PMs and every subagent run on smaller models fit to the task: the PM on Sonnet; subagents on Sonnet, or Haiku for

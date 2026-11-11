@@ -20,3 +20,14 @@ section records this approval. The header is left as it is until the driver upda
 
 ## Amendment 1
 
+
+## Amendment 1, the driver's decisions (2026-11-10, 23:05)
+
+- **OD-A1 (a), with (c) as the fallback.** Pin the article theme's version in `paper/myst.yml` if `mystmd` resolves a
+  versioned site template; if it does not (the implementer shows the attempt), `scripts/stage_site.py` fetches or
+  copies the templates itself before the build (c). Either way the proof is a test or a CI step that stages the site
+  from a clean worktree with no copy by hand.
+- **OD-A2 (a).** D-6 lands inside 0.1 after WP28 is accepted, as the supervisor's words of 2026-11-08 and step 6 of the
+  path record; nothing here changes his recorded word.
+
+**Driver, verbatim:** "Amendment 1 approved with OD-A1 (a) falling back to (c) on evidence, and OD-A2 (a)."

@@ -45,3 +45,19 @@ three has a different reason, and only the momentum requirement's points to a ga
   configuration, one axis with a traded metric (with its Spearman), or not traded. The coverage generator prints the
   same reason from a computed check, and a test fails when a requirement in the box has no stated reason.
 - (b) The box and caption stay as they are, and this readout is the record.
+
+## The driver's decisions (2026-11-10, 23:05)
+
+- **D-1 (a), executed inside Track B.** The momentum headroom becomes the ninth traded metric (MoP, controls); the
+  power and battery peak power requirements stay requirements only. It is not a package of its own: the supervisor's
+  direction on the cost model (`WP27-decisions.md`, "H-2": a fleet-size configuration variable, per-part pricing
+  curves, two pricing metrics) is the same kind of change, so the two land in one model revision with one data gate,
+  one container re-run, one key version and one cascade review, after the B2 economics spike reports and the driver
+  takes stage (2) on both readouts together.
+- **D-2 (a).** The box becomes the check the supervisor asked for: the caption names each requirement in it with its
+  computed reason (holds at every in-range configuration; one axis with a named traded metric and its Spearman; not
+  traded), the coverage generator prints the same reason, and a test fails on a requirement in the box with no stated
+  reason. Lands with the revision.
+- **For the supervisor, in the morning, one question:** the revision changes the baseline regime's leading trade (from
+  control effort against settling time to momentum headroom, mass and settling time), which is a changed conclusion of
+  the case; he confirms it before stage (3) builds.
