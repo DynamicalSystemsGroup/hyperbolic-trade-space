@@ -25,14 +25,18 @@ package "controls (the analyst's grouping)" {
   rectangle "**SettledRequirement**\nSlewVerification" as xSettledrequirement #FDEBD0
   rectangle "**ControlEffortRequirement**\nSlewVerification" as xControleffortrequirement #FDEBD0
   rectangle "**PointingErrorRequirement**\nConfigurationVerification\nnot satisfied by cubesatBaseline" as xPointingerrorrequirement #FDEBD0
+  rectangle "**MomentumRequirement**\nSlewVerification" as xMomentumrequirement #FDEBD0
   rectangle "settling time\n<<MoP>>\nsettlingTime" as xSettlingTime #E3F1E3
   rectangle "control effort\n<<MoP>>\ncontrolEffort" as xControlEffort #E3F1E3
   rectangle "pointing error\n<<MoE>>\nPointingError" as xPointingError #E3F1E3
+  rectangle "momentum headroom\n<<MoP>>\nMomentumHeadroom" as xMomentumHeadroom #E3F1E3
 }
 xSettledrequirement -[hidden]right-> xControleffortrequirement
 xControleffortrequirement -[hidden]right-> xPointingerrorrequirement
+xPointingerrorrequirement -[hidden]right-> xMomentumrequirement
 xSettlingTime -[hidden]right-> xControlEffort
 xControlEffort -[hidden]right-> xPointingError
+xPointingError -[hidden]right-> xMomentumHeadroom
 xSettledrequirement -[hidden]-> xSettlingTime
 package "power and energy (the analyst's grouping)" {
   rectangle "**PowerMarginRequirement**\nSlewVerification" as xPowermarginrequirement #FDEBD0
@@ -59,14 +63,12 @@ package "mass (the analyst's grouping)" {
 xLaunchbudgetrequirement -[hidden]-> xTotalMass
 rectangle "requirements that read no traded metric" as xNoLine #FFFFFF;line:gray;line.dashed {
   rectangle "**BatteryPeakPowerRequirement**\nEclipsePeakLoad(c, peakTorque)\n<= BatteryPeakPower(c)\nSlewVerification" as xBatterypeakpowerrequirement #FDEBD0
-  rectangle "**MomentumRequirement**\npeakMomentum\n<= c.momentumCapacity\nSlewVerification" as xMomentumrequirement #FDEBD0
   rectangle "**PowerRequirement**\nc.availablePower\n> 0.0 [W]\nConfigurationVerification" as xPowerrequirement #FDEBD0
-  xBatterypeakpowerrequirement -[hidden]-> xMomentumrequirement
-  xMomentumrequirement -[hidden]-> xPowerrequirement
+  xBatterypeakpowerrequirement -[hidden]-> xPowerrequirement
 }
 xLaunchbudgetrequirement -[hidden]right-> xNoLine
 
-rectangle "**SlewExperiment**\n<<analysis def>>\nreturns 7 of 8\nmetrics, computed\nwith no slew:\npointing error,\ntotal mass.\nFrom the\nmeasurement:\ncontrol effort\n(passed on) and\nsettling time\n(not returned).\n\n\n\n\n\n\n\n\n\n\n\n\n\n" as xAnalysis #E1D8F0
+rectangle "**SlewExperiment**\n<<analysis def>>\nreturns 8 of 9\nmetrics, computed\nwith no slew:\npointing error,\ntotal mass.\nFrom the\nmeasurement:\ncontrol effort\n(passed on) and\nsettling time\n(not returned).\n\n\n\n\n\n\n\n\n\n\n\n\n\n" as xAnalysis #E1D8F0
 rectangle "**SlewMeasurement**\nmeasured slew:\nsimulation here;\nfield data when\nfielded" as xMeasure #E4E4E4
 xMeasure -[hidden]right-> xAnalysis
 
@@ -75,6 +77,7 @@ xDepthofdischargerequirement -[#B5541C,thickness=2]- xDepthOfDischarge
 xEnergybalancerequirement -[#B5541C,thickness=2]- xEnergyBalance
 xLaunchbudgetrequirement -[#B5541C,thickness=2]- xLaunchcost
 xLaunchcost -[#B5541C,dashed,thickness=3]right- xTotalMass : totalMass
+xMomentumrequirement -[#B5541C,thickness=2]- xMomentumHeadroom
 xPeakslewpowerrequirement -[#B5541C,thickness=2]- xPeakSlewPower
 xPointingerrorrequirement -[#B5541C,thickness=2]- xPointingError
 xPowermarginrequirement -[#B5541C,thickness=2]- xPowerMargin
@@ -87,6 +90,7 @@ xPowerMargin <-[#6B6B6B]- xAnalysis
 xEnergyBalance <-[#6B6B6B]- xAnalysis
 xPeakSlewPower <-[#6B6B6B]- xAnalysis
 xDepthOfDischarge <-[#6B6B6B]- xAnalysis
+xMomentumHeadroom <-[#6B6B6B]- xAnalysis
 
 legend bottom
   <back:#FDEBD0> requirement </back> <back:#E3F1E3> traded metric </back> <back:#FFF4C2> derived, not traded </back>

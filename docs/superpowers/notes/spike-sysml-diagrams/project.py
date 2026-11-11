@@ -39,11 +39,15 @@ Revision 9 (WP23 close-out, the default): a negated ``satisfy`` (``not satisfy R
 statement that the configuration X fails the requirement R; the baseline configuration and the
 pointing-error requirement) is read apart from the satisfied ones: the requirement's box says
 "not satisfied by X" and the caption names it; earlier revisions read every ``satisfy`` as satisfied.
+Revision 9, WP30 (the momentum headroom traded; D-2 (a) of spike C): the caption names each requirement
+in the box with its computed reason, the sentence ``examples/adcs/model_v2/coverage.py`` prints in
+``coverage.md`` from the same computation (``box_reasons``), for the model the command line is given.
 """
 
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import pathlib
 import re
@@ -587,7 +591,29 @@ class Reads:
         return out
 
 
-def behavioural(m, byid, P, revision=9):
+def box_reasons(path) -> dict:
+    """The sentence for each requirement in the box, by requirement name (WP30, D-2 (a)).
+
+    Computed by ``coverage.box_reasons`` from the model at ``path`` and the data of record, so the
+    caption and ``coverage.md`` print one sentence; None where the requirement has no reason.
+    """
+    spec = importlib.util.spec_from_file_location(
+        "coverage_table",
+        REPO / "examples" / "adcs" / "model_v2" / "coverage.py",
+    )
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = (
+        module  # dataclasses resolve annotations through sys.modules
+    )
+    spec.loader.exec_module(module)
+    graph = module.ModelGraph(pathlib.Path(path).read_text())
+    return {
+        r["requirement"]: r["sentence"]
+        for r in module.box_reasons(graph, graph.metrics())
+    }
+
+
+def behavioural(m, byid, P, revision=9, reasons=None):
     sys.path.insert(0, str(REPO / "examples" / "adcs"))
     import case  # the CaseSpec: the metrics, in order, and their subsystems
 
@@ -1269,8 +1295,14 @@ def behavioural(m, byid, P, revision=9):
                 f"`{', '.join(sorted({c for r in reqs for c in verified_by[r]} - set(ver_of(cfg_only))))}`.",
                 "The groups are the analyst's grouping of the metrics (the model has no such "
                 "structure); a requirement stands in the group of the metric it reads. The "
-                f"{len(no_line)} requirements that read no traded metric stand apart here; the "
-                "coupling table of `coverage.md` lists each under the group of the calc it reads.",
+                f"{len(no_line)} requirements that read no traded metric stand apart here, each "
+                "for the reason below; the coupling table of `coverage.md` lists each under the "
+                "group of the calc it reads.",
+                *[
+                    (reasons or {}).get(short(r))
+                    or f"`{short(r)}`: no reason stated."
+                    for r in no_line
+                ],
                 "Not drawn: the coupling variables between the groups and the measured inputs the "
                 "analysis takes. They are the cells of the coupling table of `coverage.md`.",
             ]
@@ -1387,7 +1419,13 @@ if __name__ == "__main__":
             "Levels and ranges (read from the model by the views generator):\n\n"
             + "".join(f"- {line}\n" for line in caption)
         )
-    text, facts = behavioural(m, byid, a.package, a.revision)
+    text, facts = behavioural(
+        m,
+        byid,
+        a.package,
+        a.revision,
+        reasons=box_reasons(a.model) if a.revision >= 9 else None,
+    )
     (od / "behavioural_view.puml").write_text(text)
     if a.revision >= 6:
         (od / "behavioural_caption.md").write_text(

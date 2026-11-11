@@ -39,6 +39,7 @@ METRICS = [
     "energy balance",
     "peak slew power",
     "depth of discharge",
+    "momentum headroom",
 ]
 
 
@@ -64,23 +65,31 @@ METRICS_HEADER = "table,metric,mark,element,kind,requirement,how,limit,verified_
 COUPLING_HEADER = "table,from,to,variables\n"
 
 
+def _tables(text: str) -> dict[str, list[dict]]:
+    """The CSV's tables by the label in their first column (``coverage``, ``metrics``,
+    ``coupling``, ``reasons``): a line that starts ``table,`` is a header, the rows after it
+    carry the label."""
+    out: dict[str, list[dict]] = {}
+    header = None
+    for line in text.splitlines():
+        if line.startswith("table,"):
+            header = next(csv.reader([line]))
+            continue
+        row = dict(zip(header, next(csv.reader([line])), strict=True))
+        out.setdefault(row["table"], []).append(row)
+    return out
+
+
 def _committed_rows() -> tuple[list[dict], list[dict]]:
     """The committed CSV's first two tables as lists of dicts."""
-    text = (VIEWS / "coverage.csv").read_text()
-    blocks = text.split(METRICS_HEADER)
-    assert len(blocks) == 2, "the CSV has the metrics table once"
-    one = list(csv.DictReader(io.StringIO(blocks[0])))
-    rest = blocks[1].split(COUPLING_HEADER)
-    assert len(rest) == 2, "the CSV has the coupling table once"
-    two = list(csv.DictReader(io.StringIO(METRICS_HEADER + rest[0])))
-    return one, [{k: v for k, v in t.items() if k != "table"} for t in two]
+    tables = _tables((VIEWS / "coverage.csv").read_text())
+    drop = lambda rows: [{k: v for k, v in r.items() if k != "table"} for r in rows]  # noqa: E731
+    return tables["coverage"], drop(tables["metrics"])
 
 
 def _committed_coupling() -> list[dict]:
     """The committed CSV's third table (the design structure matrix) as a list of dicts."""
-    text = (VIEWS / "coverage.csv").read_text()
-    block = text.split(COUPLING_HEADER)[1]
-    return list(csv.DictReader(io.StringIO(COUPLING_HEADER + block)))
+    return _tables((VIEWS / "coverage.csv").read_text())["coupling"]
 
 
 # ---------------------------------------------------------------------------------------------
@@ -149,8 +158,9 @@ def test_the_gains_do_not_reach_the_mass_and_kd_does_not_reach_the_pointing_erro
 # ---------------------------------------------------------------------------------------------
 # R-2: every traded metric has a requirement on its quantity and is marked MoE or MoP
 # ---------------------------------------------------------------------------------------------
-def test_traded_metrics_are_the_eight_of_the_case(structural):
-    """The eight traded metrics (the eclipse reserve left at the WP23 close-out)."""
+def test_traded_metrics_are_the_nine_of_the_case(structural):
+    """The nine traded metrics: the eight of the WP23 close-out (the eclipse reserve left) and the
+    momentum headroom (WP30, D-1 (a) of spike C; the supervisor's "Confirm")."""
     assert [m.name for m in structural["metrics"]] == METRICS
 
 
@@ -167,6 +177,7 @@ def test_the_four_thresholds_are_listed_with_their_requirements(structural):
         "energy balance": "-",
         "peak slew power": "budgets.peakSlewPowerLimit = 2.6 [W]",
         "depth of discharge": "-",
+        "momentum headroom": "-",
     }
 
 
@@ -223,6 +234,7 @@ def test_every_traded_metric_is_read_off_one_subsystem(structural):
         "settling time",
         "pointing error",
         "control effort",
+        "momentum headroom",
     ]
 
 
@@ -248,8 +260,7 @@ def test_every_requirement_is_read_off_a_subsystem(structural):
 
 def test_committed_coupling_table_equals_a_fresh_generation(coverage, structural):
     rows = _committed_coupling()
-    fresh = coverage.render_csv(structural).split(COUPLING_HEADER)[1]
-    assert rows == list(csv.DictReader(io.StringIO(COUPLING_HEADER + fresh)))
+    assert rows == _tables(coverage.render_csv(structural))["coupling"]
     assert rows[-1]["to"] == "connected"
 
 
@@ -326,3 +337,100 @@ def test_committed_table_equals_a_full_regeneration_three_times(coverage):
         "magnitudes that differ from the environment of record (committed, here): "
         + ("; ".join(f"{e} -> {m}: {a}, {b}" for e, m, a, b in differing) or "none")
     )
+
+
+# ---------------------------------------------------------------------------------------------
+# D-2 (a) of spike C: the box names a computed reason for each requirement in it (WP30)
+# ---------------------------------------------------------------------------------------------
+# The two requirements the study does not trade a quantity for (spike C: the available power and the
+# battery peak power ratio are not candidates), each with the traded metric it follows.
+BOX = {"BatteryPeakPowerRequirement", "PowerRequirement"}
+
+
+def _project():
+    spec = importlib.util.spec_from_file_location(
+        "wp30_project",
+        MODEL_DIR.parents[2] / "docs/superpowers/notes/spike-sysml-diagrams/project.py",
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _unexplained(result) -> list[str]:
+    """The requirements in the box with no stated reason."""
+    return [r["requirement"] for r in result["reasons"] if not r["sentence"]]
+
+
+def test_every_requirement_in_the_box_has_a_computed_reason(structural):
+    """D-2 (a): the box holds the requirements no traded metric reads; each has a reason computed
+    from the model (the solver's verdict on its in-range claim) and the data of record (the
+    Spearman correlation of its quantity with the traded metrics)."""
+    reasons = {r["requirement"]: r for r in structural["reasons"]}
+    assert set(reasons) == BOX and _unexplained(structural) == []
+    power, battery = reasons["PowerRequirement"], reasons["BatteryPeakPowerRequirement"]
+    for r in (power, battery):
+        assert (r["claim"]["status"], r["claim"]["strength"]) == ("holds", "proved")
+    assert (power["metric"], power["axis"]) == ("energy balance", "one axis")
+    assert (battery["metric"], battery["axis"]) == ("depth of discharge", "tracks")
+    # spike C's table, to its digits (primary, baseline)
+    assert [round(v, 4) for v in power["spearman"].values()] == [0.9996, 0.9997]
+    assert [round(v, 3) for v in battery["spearman"].values()] == [0.970, 0.975]
+
+
+def test_the_reason_numbers_are_the_spearman_of_the_stated_pair(coverage, structural):
+    """The printed correlation is the one an independent reading of the data gives: the available
+    power against the energy balance, over the feasible designs (every flag true, every traded
+    attribute positive), the two oriented larger-is-better."""
+    import pandas as pd
+    from scipy.stats import spearmanr
+
+    sys.path.insert(0, str(ADCS_DIR))
+    import case
+
+    got = next(r for r in structural["reasons"] if r["requirement"] == "PowerRequirement")
+    for regime, name in case.CUBESAT.regimes.items():
+        raw = pd.read_csv(case.CUBESAT.data_dir / name)
+        ok = raw[list(case.CUBESAT.flags)].all(axis=1)
+        for a in case.CUBESAT.attributes:
+            if a in raw.columns:
+                ok &= raw[a] > 0
+        f = raw[ok]
+        rho = spearmanr(f["available_power_w"], f["energy_balance_wh"]).statistic
+        assert got["spearman"][case._REGIME_WORDS.get(regime, regime)] == pytest.approx(rho)
+
+
+def test_a_requirement_in_the_box_with_no_reason_is_found(coverage, tmp_path):
+    """Negative control: a planted requirement that reads no traded metric and has neither an
+    in-range claim nor a stated quantity stands in the box with no reason, and the check names
+    it; the model as committed has none."""
+    text = coverage.DEFAULT_MODEL.read_text()
+    planted = text.rstrip()[:-1] + (
+        "\n    requirement def PlantedRequirement {\n        subject c : Cubesat;\n"
+        "        require constraint { c.panelSpan > 0.0 [m] }\n    }\n}\n"
+    )
+    path = tmp_path / "planted.sysml"
+    path.write_text(planted)
+    result = coverage.build(path, with_empirical=False)
+    assert _unexplained(result) == ["PlantedRequirement"]
+    assert {r["requirement"] for r in result["reasons"]} == BOX | {"PlantedRequirement"}
+
+
+def test_the_box_is_the_views_box_and_the_caption_and_the_table_print_one_reason(structural):
+    """The requirements the view draws in its box are the ones the table gives a reason; the
+    committed caption, ``coverage.md`` and ``coverage.csv`` carry each reason sentence as the
+    computation prints it."""
+    project = _project()
+    m, byid = project.load(MODEL_DIR / "cubesat.sysml")
+    _, facts = project.behavioural(m, byid, "CubesatTradeSpaceV2")
+    boxed = {project.short(r) for r in facts["reqs"] if facts["band"][r] is None}
+    assert boxed == {r["requirement"] for r in structural["reasons"]}
+    caption = (VIEWS / "behavioural_caption.md").read_text()
+    table = (VIEWS / "coverage.md").read_text()
+    reasons_csv = {
+        r["requirement"]: r["reason"]
+        for r in _tables((VIEWS / "coverage.csv").read_text())["reasons"]
+    }
+    for r in structural["reasons"]:
+        assert f"- {r['sentence']}\n" in caption and f"- {r['sentence']}\n" in table
+        assert reasons_csv[r["requirement"]] == r["sentence"]
