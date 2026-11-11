@@ -1,4 +1,4 @@
-"""Command line: ``run <id>``, ``verify``, ``adopt``, ``compare``.
+"""Command line: ``run <id>``, ``verify``, ``adopt [--readopt]``, ``compare``.
 
 From the repository root::
 
@@ -32,7 +32,12 @@ def main(argv=None) -> int:
         help="re-run after a model or code change: a new entry <id>@<n> supersedes the current one",
     )
     sub.add_parser("verify", help="recompute every ledger hash; exit 1 on drift")
-    sub.add_parser("adopt", help="register the frozen datasets (no regeneration)")
+    ad = sub.add_parser("adopt", help="register the frozen datasets (no regeneration)")
+    ad.add_argument(
+        "--readopt",
+        action="store_true",
+        help="supersede each entry whose code or model file changed but whose output did not",
+    )
     c = sub.add_parser("compare", help="v1-v2 comparison report (experiments.compare)")
     c.add_argument("rest", nargs=argparse.REMAINDER)
     a = p.parse_args(argv)
@@ -46,6 +51,10 @@ def main(argv=None) -> int:
         entries = lg.read(a.ledger)
         print(f"{len(entries)} entries ({len(lg.current(entries))} current); {len(drifts)} drifts")
         return 1 if drifts else 0
+    if a.cmd == "adopt" and a.readopt:
+        added = runner.readopt(a.root, a.ledger)
+        print(f"re-adopted {len(added)} entries: {[e['id'] for e in added]}")
+        return 0
     if a.cmd == "adopt":
         added = runner.adopt(df.FROZEN, a.root, a.ledger)
         print(f"adopted {len(added)} entries: {[e['id'] for e in added]}")

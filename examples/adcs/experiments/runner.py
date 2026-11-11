@@ -458,3 +458,67 @@ def adopt(specs: Sequence[AdoptedSpec], root: Path, ledger: Path) -> list[dict]:
         }
         done.append(lg.append(ledger, entry))
     return done
+
+
+READOPT_NOTE = (
+    "re-adopted at WP30's data gate: a code file this entry hashes changed (WP30's fleet-size "
+    "variable in cubesat_model.py, WP34's encoding fix on the file reads) and the frozen output "
+    "was not regenerated; its hash is the one the superseded entry records"
+)
+
+
+def readopt(root: Path, ledger: Path, note: str = READOPT_NOTE) -> list[dict]:
+    """Append ``<id>@<n>`` superseding each current entry whose code or model file changed while
+    its output did not (a frozen output); return the new entries.
+
+    The new entry copies the old one, records the files' present hashes, names the changed files
+    and ``note``, and points its parents at their current entries. An entry whose output also
+    differs from the recorded hash is left alone, so ``verify`` still reports it.
+    """
+    root = Path(root)
+    done = []
+    for e in lg.current(lg.read(ledger)):
+        files = {
+            **e.get("code", {}),
+            **({e["model_path"]: e["model_sha256"]} if e.get("model_path") else {}),
+        }
+        changed = sorted(
+            r for r, h in files.items() if not (root / r).exists() or lg.sha256_file(root / r) != h
+        )
+        out = root / e["output_path"] if e.get("output_path") else None
+        if (
+            not changed
+            or out is None
+            or not out.exists()
+            or lg.sha256_file(out) != e["output_sha256"]
+        ):
+            continue
+        entries = lg.read(ledger)
+        base = e["id"].split("@")[0]
+        n = 2 if "@" not in e["id"] else int(e["id"].rsplit("@", 1)[1]) + 1
+        commit, dirty = lg.git_state(root, [ledger])
+        new = {k: v for k, v in e.items() if k not in ("prev_hash", "entry_hash")}
+        new.update(
+            id=f"{base}@{n}",
+            supersedes=[e["id"]],
+            time_utc=lg.utc_now(),
+            git_commit=commit,
+            git_dirty=dirty,
+            code=lg.hash_files(root, tuple(e.get("code", {}))),
+            versions=lg.versions(),
+            platform=lg.platform_string(),
+        )
+        if e.get("model_path"):
+            new["model_sha256"] = lg.sha256_file(root / e["model_path"])
+        new["parents"] = [
+            {**par, "id": cur["id"], "entry_hash": cur["entry_hash"]}
+            for par in e.get("parents", [])
+            for cur in [lg.latest(entries, par["id"].split("@")[0]) or lg.find(entries, par["id"])]
+        ]
+        new["inputs"] = {
+            **e.get("inputs", {}),
+            "readoption": {"changed_files": changed, "note": note},
+        }
+        assert lg.sha256_file(out) == new["output_sha256"], "a frozen output must not change"
+        done.append(lg.append(ledger, new))
+    return done

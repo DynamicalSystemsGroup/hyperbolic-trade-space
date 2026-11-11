@@ -361,6 +361,41 @@ def test_adopt_is_idempotent_and_does_not_touch_the_files(tmp_path):
     ].startswith("adopted-")
 
 
+def test_readopt_supersedes_entries_whose_code_changed_and_output_did_not(tmp_path):
+    """WP30's re-adoption: a changed code file with an unchanged frozen output gives ``<id>@2``
+    (the child pointing at its parent's ``@2``), ``verify`` then reports no drift, and an entry
+    whose output changed is left alone and still drifts."""
+    from experiments.experiment import AdoptedSpec
+
+    root = tmp_path / "repo"
+    root.mkdir()
+    (root / "code.py").write_text("x = 1\n", encoding="utf-8")
+    for name in ("a", "b", "c"):
+        (root / f"{name}.csv").write_text("v\n1\n2\n", encoding="utf-8")
+    specs = (
+        AdoptedSpec("adopted-a", "a.csv", "make a", None, ("code.py",), {"t": "x"}),
+        AdoptedSpec(
+            "adopted-b", "b.csv", "make b", None, ("code.py",), {"t": "x"}, parents=("adopted-a",)
+        ),
+        AdoptedSpec("adopted-c", "c.csv", "make c", None, ("code.py",), {"t": "x"}),
+    )
+    led = root / "ledger.jsonl"
+    runner.adopt(specs, root, led)
+    assert lg.verify(led, root) == []
+    assert runner.readopt(root, led) == []  # nothing changed: nothing written
+    (root / "code.py").write_text("x = 2\n", encoding="utf-8")
+    (root / "c.csv").write_text("v\n1\n3\n", encoding="utf-8")  # an output that did change
+    assert {d.entry_id for d in lg.verify(led, root)} == {"adopted-a", "adopted-b", "adopted-c"}
+    added = runner.readopt(root, led)
+    assert [e["id"] for e in added] == ["adopted-a@2", "adopted-b@2"]
+    assert added[0]["supersedes"] == ["adopted-a"]
+    assert added[0]["output_sha256"] == lg.find(lg.read(led), "adopted-a")["output_sha256"]
+    assert added[1]["parents"][0]["id"] == "adopted-a@2"
+    assert added[1]["inputs"]["readoption"]["changed_files"] == ["code.py"]
+    assert "not regenerated" in added[1]["inputs"]["readoption"]["note"]
+    assert [d.entry_id for d in lg.verify(led, root)] == ["adopted-c"]
+
+
 @pytest.mark.slow
 def test_cli_verify_and_compare_message(tmp_path):
     env = {"PYTHONPATH": str(ADCS), "PATH": "/usr/bin:/bin"}
