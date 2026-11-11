@@ -7,6 +7,12 @@ not here. Rules for who answers what: `PM-BRIEF.md`, "The autonomous phase".
 
 ## Waiting for the supervisor
 
+- **For the morning (2026-11-11, 00:05):** a glance at the two noise results chosen from the Track A readout (A3: L6
+  with a noise covariance and the conditioning as the map from measurement error to the noise the fit sees, with a
+  cubesat injection table; A1: a two-regime upper bound on the noise shift of the soft maximum) before they are placed
+  in the paper; the scripts and tests are being built meanwhile. Readout: the Track A spike's README (its folder moves
+  to WP23-rounds/spikes/spike-E-noise/).
+
 - **For the morning (2026-11-10, 23:50), one question with a ladder:** the two cost budgets of the model revision (a unit
   build cost limit read at the configuration's fleet size; a fleet cost limit), from pass-fraction ladders the model
   developer computes on the regenerated data (the first rung: `WP23-rounds/spikes/spike-D-cubesat-economics/
@@ -215,6 +221,22 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   (811d260, d7d9919) are the fix-forward, to be confirmed by the next verdict.
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
+
+- **Track A stage (2), the noise result (2026-11-11, 00:05; readout 9002bbe).** Option 2: build A3 and A1. A3: L6 with a
+  noise covariance (the same moment-generating-function route; a diagonal covariance gives the shift tau sum_j w_j^2
+  sigma_j^2 / 2) and the conditioning as the map from a relative measurement error on an attribute to the noise the fit
+  sees (sigma_j = delta_j / s_j under log-affine conditioning, A4), with the cubesat injection table (both regimes; the
+  table states that the data of record carry no noise of their own and that the noise is injected as a design choice;
+  the finding belongs to the fit-plus-conditioning pair, not the model). A1: the two-regime bound on the noise shift of
+  the soft maximum (Jensen with L6 below; the maximum of the draws above; stated as an upper bound that is not tight,
+  with the crossover tau* = 2 sqrt(2 log N) / v as a rule of thumb). Each a lemma script in derivation/ with tagged
+  steps, a test on planted data, Appendix B regenerated in the same push, the proof map updated. A2 (the ridge reading)
+  is held as a tested-by-spike statement in the gaps ledger with its check script kept, not built now; A4 dropped as a
+  result (it duplicates M2); A5 recorded, no Discussion paragraph (a risk attitude the method does not have). The
+  entropic-risk source is opened in full before the paper cites it, as every reference is. Stages (3) and (4) run now;
+  stage (5), the paper's placement (a corollary after L6, the covariance form, the case table in Appendix D, the G-3
+  and G-12 readings), waits for the supervisor's morning glance at the two statements, since new results in his paper
+  are his to see before they are placed.
 
 - **Choosing K in the documentation (2026-11-10, 23:25; the supervisor, verbatim):** "if its not already planned i also
   think the documentation for this package (but not necessarily the paper) needs to cover how to select K. we already
