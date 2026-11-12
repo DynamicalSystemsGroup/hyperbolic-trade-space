@@ -36,8 +36,8 @@ plot_tensions(report, names=["m0", "m1", "m2"])
 
 `contending_set` holds the metrics with positive exponent in the exact-maximum fit (tau = infinity,
 exponents above 1e-9). `contending_exponents` are their exponents, `n_lemma` is its size and `lemma_name` names it: monolemma, dilemma,
-trilemma, then an n-lemma. The set is found, not assumed: n is read from the fitted exponents, not
-chosen before the fit. The report solves the tau = infinity program itself, independent of the
+trilemma, then an n-lemma. n is read from the fitted exponents, not chosen before the fit, and the name counts every
+exponent above 1e-9: read `contending_exponents` before the name. The report solves the tau = infinity program itself, independent of the
 fit temperature. `min_exponent` must be 0 for this reading, because a positive floor masks the
 sparsity; the report warns when the estimator was fitted with a floor.
 
@@ -52,7 +52,7 @@ describes a feature of the fitted model, not a causal exchange.
 
 ## Association among near-frontier designs
 
-For designs with absolute log V below `band` (by default 1/tau, or 0.1 at infinite tau),
+For designs with absolute log V below `band` (by default 1/tau, or 0.1 at infinite tau; `n_near_frontier` counts them),
 `association` is the Pearson or Spearman correlation of the log-metrics: negative is traded, positive
 is aligned; `association_kind` says which. Near the surface the weighted sum of log-metrics is almost constant, so a binding
 constraint produces negative association even where no designer traded the metrics (`closure_note`
@@ -66,8 +66,7 @@ Three fields describe the spread of the near-frontier designs along the surface:
 - `tension_loadings`: the same directions as loadings on the log-metrics.
 - `explained_spread`: the share of variance along each.
 
-They equal `orient_by_pca` on the same rows. This is how the method chains with PCA: the spread
-along the surface is the set of trade-offs the designs exercised.
+They equal `orient_by_pca` on the same rows.
 
 ## With several terms
 
