@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The WP35 build's head fully checked; two more green runs (03:20).** The slow paper, site and docs tests on the
+  head with the WP35 build 45 passed (44 min) on top of the fast suite's 1916, so the build is verified on this Mac
+  and waits only on its fresh reader for acceptance. CI on ee009be and df0cad9: every job green on both platforms
+  (the fifteenth and sixteenth fully green heads); cec9d70's three slow jobs run.
+
 - **7ef86dc and cec9d70, the assistant's checks (02:20).** Ruff and format clean, lock current, attribution 0,
   vocabulary 0 new; the contract (version 21), docs, site, claims-register and encoding tests 205 passed on the
   head with the API-page amendment and the repeat-round records. Accepted; the fast suite's full run on the head
