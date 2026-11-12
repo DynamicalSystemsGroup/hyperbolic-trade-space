@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **d7942d0, the rendered read (00:35).** Stage rebuilt at d7942d0 on 8791. The article reads "an 8-lemma"; the
+  sentence on the two metrics that join no contending set (the power margin and the battery peak power ratio, each
+  nearly one axis with a metric that does, Spearman at least 0.97, Appendix C.5), the cost coverage sentence
+  (6,000,000 inside 8,000,000 USD) and Appendix C.8 (the cost model, its sources and choices, what the case leaves
+  out) read as intended; no stderr on either page; no "1,000" or "1,250" remains; the one "eight metrics" left on
+  the paper page is Figure 3's caption, whose unit is pending. One defect routed: the generated regime sentence
+  prints "3000", "2134", "2355" and "13 attributes" against the paper's convention of thousands separators and the
+  metric count in words. The assistant's checks on d7942d0 are running.
+
 - **4162a61 slow green; the paper's body and Appendix C.8 landed (00:20).** Linux slow on 4162a61 passed, so every
   slow job is green on both platforms at that head. Two commits since: 6840c8a (the thirteen metrics with the two
   that join no contending set and why, the cost coverage sentence with 6,000,000 inside 8,000,000 USD, the draw of
