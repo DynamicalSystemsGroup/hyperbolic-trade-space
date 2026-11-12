@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | DRAFT, for the assistant's approval. Approved only by the recorded act below; nothing further is executed before then. |
+| **Status** | APPROVED with amendment D-9 (2026-11-12, 22:55; `WP37-decisions.md`, scope at 2a1d4fa). Open decisions decided as defaults the supervisor approves or reverts at his review. |
 | **Supervisor (accountable)** | mzargham |
 | **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space`; work on `dev` |
 | **Approval record** | The assistant's approval, quoted verbatim in `work-packages/WP37-decisions.md` |
@@ -84,6 +84,8 @@ supervisor's open items to him.
 | D-6 | The tests in `tests/test_site.py`: one screen and register, one root link, links resolve, vocabulary, word ceiling | G3, G5, G6 |
 | D-7 | `work-packages/WP37-rounds/trace.md`: the sentence classification table (sentence, kind, the link or account it rests on, what it lets a reader trace), re-run by the review | G4, G6 |
 | D-8 | `WP37-review.md` with screenshots and a fresh reader's walk of the arc; `WP37-decisions.md` updated | G1 to G6 |
+| D-9 | **Amendment: the record and its view.** `history.yaml` (repository root, beside `glossary.yaml`): one entry per dated reference and per person (id, date, kind, title, people with a role only where a source states it, url, read_on, shows, claim, special_case, note), with a schema description at the top; the page is its view. The page's prose stays hand-written, with a marker; `scripts/history_record.py` and `scripts/assemble_site.py` render a chronological dated reference list from the record beneath the prose at build time. Tests tie every link, name and date on the page to a record entry | G1 to G4, G6 |
+| D-10 | Under D-9: the link check reads the record (`scripts/check_history_links.py`); the sentence classification and trace table are derived from the record's claim kinds into `work-packages/WP37-rounds/trace.md` by `scripts/history_record.py`, and a test checks the file is current | G4, G6 |
 
 ## Page structure
 
@@ -114,6 +116,10 @@ supervisor's open items to him.
 | R-11 | A fresh Sonnet reader, given only the rendered page, walks the arc in their own words (who, what, when, in what order) and says whether the work reads as the synthesis of a long-running endeavour or as appearing from nowhere, without being told the intent | `WP37-review.md`: the reader's words verbatim beside the intended reading |
 | R-12 | Rendered check: the page is screenshotted at 1280 by 800 and 390 by 844, light and dark; it fits one 1280 by 800 screen with the footer link; no stderr line, no broken link | `WP37-rounds/draft-shots/` replaced by the final head's screenshots with a one-line reading each |
 | R-13 | The root page links to it once; the assembler copies it; the assembled site serves it | `uv run pytest tests/test_site.py`; `uv run python scripts/assemble_site.py` output listed |
+| R-15 | Every entry of `history.yaml` has the required fields and a URL; the schema description is at the top of the file | `uv run pytest tests/test_site.py -k history_record` |
+| R-16 | Every link on the page (prose and generated list) is the URL of a record entry; every name marked on the page is a person or a named co-author of a record entry; every year on the page is a year of a record date or read date; a year printed after a link is that entry's year | `uv run pytest tests/test_site.py -k history` |
+| R-17 | The generated list is chronological, carries each entry's year, title as a link and people, marks special cases in the sentence beside them, and holds no banned word outside link titles; the word ceiling applies to the prose only | the same tests |
+| R-18 | `trace.md` is current with the page and the record; every prose sentence has a row in `claims_register.toml` (kind S, the record id and URL in the note) | `uv run pytest tests/test_site.py -k trace`, `tests/test_claims_register.py` |
 | R-14 | Whole-repo `uv run ruff check .` and `uv run ruff format --check .`; `uv lock --check`; `tests/test_text_encoding.py`; no AI attribution in commits or files | the commands; grep of `git log` |
 
 ## Assessment machinery (outlives the drafting unit)
@@ -163,9 +169,13 @@ only. No sub-agent without the PM.
 - The page's section order follows the structure above; the visual register is the root page's *(default)*.
 - One unit per surface, all on `dev`; `main` gets a no-ff merge only at the accepted package *(default)*.
 
-## Open decisions (for the supervisor)
+## Open decisions (decided as defaults, 2026-11-12, 22:55; the supervisor approves or reverts at his review)
 
-Each is a problem-level question; the page says less on each until it is answered.
+Each is a problem-level question the page answers by the default stated first, until the supervisor answers.
+
+**Decided:** 1 (a) Barlin's role only, a background in the record if a source gives it (none found). 2 (a) "Bernardineli", the form of his own public profile. 3 (a) "Penland", the public record's form (w5-pass3.md: andrewpenland, "Dr. Penland"), the identity with "Octopus" given by the supervisor's own first message. 4 the five posts fetched from the old blog the supervisor gave (blog.block.science) first (done, w5-pass3.md), else linked by known URL with no claim resting on them. 5 (a) the handle CarolinaRiascos as her own site gives it. 6 (a) keep the closing phrase unless the fresh reader's walk says it does not earn its place. 7 (a) the Clark paper named with the Red Cross and Grassroots Economics collaboration and its purpose, community currencies; the implementation form is not named (an implementation detail, never the point); the record carries the detail. 8 (a) the Edinburgh talk as the CV states it (ICMS, October 2024), linking the CV, unless a second pass finds the event page. 9 (b) joins this package as D-9.
+
+The questions as first put, kept for the supervisor's review:
 
 1. **Matthew Barlin's background.** The page may name only his role in cadCAD's design (AUTHORS.txt). Options: (a) name
    only that role; (b) add a background from a public source the workers find; (c) add it as the team's own account in
