@@ -54,3 +54,16 @@ and `fig5-k1-plane-for-comparison.png`.
 Cascade of the removal: the two markdown cells of the figure (caption, Shows line) and `paper/figures/fig-planes-case.png`; claim
 row C475 (the caption's sentence on the bottom panel); the float count of `test_every_figure_and_table_is_referenced_from_the_text`
 (nine figures became eight); `planes.py::main` writes the K = 1 plane only. A ledger cut row records the 259 words.
+
+## The rendered pass (my own browser tab, the site staged from this worktree at 78cd40a plus the re-executed notebooks)
+
+Served from `scripts/stage_site.py --serve --port 8795`; the page's text read from the DOM and the pages looked at as screenshots
+(this folder): `page-fig3-image-top.jpg`, `page-fig3-caption-and-coverage-sentence.jpg` (Figure 3 with its new caption and the
+coverage sentence below it), `page-section8-participation-sentence.jpg` (the two-metrics sentence, the marks sentence),
+`page-fig6-chart-caption-axis.jpg` (the chart as Figure 6: the axis reads "better unit cost, total mass and peak slew power",
+the caption points at D.16 and at the axis; the association figure follows as Figure 7),
+`page-section6-margin-and-section7-sampling.jpg` (the margin sentence at K = 2, the Section 7 sampling sentence),
+`page-appendix-c8.jpg` (C.8). The page's width equals the viewport (scrollWidth 898 of 913). The page text carries "a 7-lemma
+and an 8-lemma", "The designs are drawn at random, 3000 per regime", the K = 2 margin (0.0003768, 37 of the 2134), the D.3 summed
+pairs at K = 1, K = 2 and K = 3, and no "Figure 6" for the removed planes figure (the numbering after Figure 5 is the chart,
+the association figure, the ternary figure).
