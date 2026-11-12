@@ -242,7 +242,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   and stage 2 decided (WP39-decisions.md, 1af5c8a): both sponsor measures with the fleet size named as unvalued, the
   28 designs within both bands, no term-to-executive mapping, the Candidates paragraph cut with a raise row for the
   remainder, Draft 2's shape, Figure 9 left to the final subtraction pass; the scope of work is being written for the
-  assistant's approval. The stage rebuilt at dafa839 for the assistant's look at D.3 and G.2 as rendered.
+  assistant's approval. The stage rebuilt at dafa839 and read in the assistant's browser: the summed-pairs lead sentence and table render
+  once per regime; G.2's three-column header renders, with five cells beginning "Cited now" and 25 api.crossref.org
+  URLs on the page, which is the return. The supervisor asked for the history page and it was fronted in his tab
+  (tab-100) at dafa839, before the closing unit.
 
 - **WP37 review received and returned for one closing unit (11:50).** The review (940e238): R-1, R-3 to R-7, R-9,
   R-10, R-13 to R-18 met; R-2 not met (the link-to-claim table is from the draft head); R-8 and R-12 not met in part
