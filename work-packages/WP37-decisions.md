@@ -154,3 +154,12 @@ account of the systems the firm studied; the page says so.
 **The assistant's reading.** Two wording rulings for the fix unit: the firm is described as a "contract research and
 engineering firm"; the activities sentence that follows is in the present tense ("we perform requirements,
 architecture, design, simulation and analysis ..."), the firm's own voice, since the work continues.
+
+> stuff we perform
+> "requirements, architecture, design, simulation and analysis for clients, all software-defined, studying the
+> spaces of feasible designs of their systems under uncertain, strategic and adversarial users."
+
+**The assistant's reading.** The activities sentence, in the present tense and the firm's voice, reads: "We perform
+requirements, architecture, design, simulation and analysis for clients, all software-defined, studying the spaces
+of feasible designs of their systems under uncertain, strategic and adversarial users." The list is his wording
+and is kept as given.
