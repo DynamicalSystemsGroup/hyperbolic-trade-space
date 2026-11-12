@@ -240,3 +240,14 @@ team's own account does, and otherwise just names them with their work. The line
 founding as BlockScience: the GGP work with Preciado on viral propagation and the supervisor's own convex
 optimization work are the earlier academic line, and the page places them in time. The register is pointers: no
 point is overloaded, each name and each work gets a link and a clause, not a paragraph. One screen stands.
+
+## The supervisor, on the risk the page offsets (verbatim)
+
+> critically, the history page offsets a risk that this work is treated as AI generated out of the blue, rather
+> than synthesis and publication of long running endeavor
+
+**The assistant's reading.** The page's job stated as the risk it answers: a reader who finds a polished method,
+paper, docs and package at once may take it for something generated out of nothing; the page shows, by dated
+pointers to public work and the people who did it, that this is the synthesis and publication of a long-running
+endeavour. That sets the test for every sentence on it: does it help a reader trace the line back? Dates and
+links do; adjectives do not. The page may say its purpose in one plain sentence; it does not argue it.
