@@ -122,7 +122,7 @@ for name, (study, est) in fits.items():
 
 Each row is a marker: its shares and V there, relative to the highest marker's.
 
-The triples are examples that show how to read the figure, not findings about the case.
+The triples are examples that show how to read the figure, not findings about the case. What the case leaves out is listed on [the case page](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/examples/adcs/case-model.md#what-the-case-leaves-out).
 
 ## Run it
 

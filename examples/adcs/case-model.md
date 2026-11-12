@@ -105,13 +105,13 @@ This section reads the model `model_v2/cubesat.sysml` as adopted at the package'
 the section table above is this file's). The chain is short.
 A configuration is what the assembly view shows: two swaps (the wheel class, the star-tracker
 grade) and four tunes (the panel span, the battery capacity, the gains Kp and Kd). The assessment
-turns a configuration into eight traded metrics: the slew is integrated once and measured, the
+turns a configuration into thirteen traded metrics: the slew is integrated once and measured, the
 accounting calcs are evaluated, and the experiment returns the metrics as one row of the dataset,
 with the four flags beside them. Each metric is marked in the model as a measure of effectiveness
 (MoE) or a measure of performance (MoP), by one rule stated in the model's top comment: an MoE is a
 measure a stakeholder states without knowing the design; an MoP is a measure of the system's
-performance under the scenario the engineer states. Two MoEs (the pointing error and the launch
-cost) and seven MoPs: the stakeholders ask for a payload that points and a launch they can afford;
+performance under the scenario the engineer states. Three MoEs (the pointing error, the unit cost
+and the fleet cost) and ten MoPs: the stakeholders ask for a payload that points and a launch they can afford;
 everything else is how the design performs under the engineer's slew and orbit. Each metric is read
 by a requirement on its own quantity and verified in a verification case (`model_v2/views/coverage.md`,
 second table; `tests/test_model_coverage.py::test_every_traded_metric_has_a_requirement_that_reads_it_and_a_mark`).
@@ -193,21 +193,41 @@ capacity in one hour, the plain rating of a small-satellite lithium-ion pack and
 record is the fit on the feasible designs, and the case reads the four requirements after it
 (`case.requirements_table`, `case.design_sets_table`; Appendix D.17 of the supporting material).
 
+### What the case leaves out
+"Verification" on this page is a solver checking a requirement on a configuration, not a hardware test. The case does not model:
+- **Cost beyond a lower bound.** The unit cost and the fleet cost cover the bus (structure, power, radios and computer), the
+  attitude-control parts, assembly and test, and wholesale launch; they leave out the payload and its instruments,
+  communications and the payload interface, flight software, environmental testing beyond the assembly line, licensing, a ground
+  station network and operations, the launch slot minimum and broker fees. The fleet cost requirement holds the covered cost under
+  6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD, the rest being the allowance for what is not covered.
+- **Schedule, lead time, heritage, qualification.** No attribute or requirement reads any of them.
+- **Fault tolerance.** Three identical wheels and one tracker; no failure case.
+- **Thermal, communications, load profile.** None modelled; payload and radio power sit inside one constant 12 W load.
+- **Margins and growth.** Mass and power are nominal sums; solar degradation is one fixed factor (0.9); no battery fade or charge loss.
+- **Momentum management.** `momentum_ok` compares one slew's peak momentum with the wheel's capacity; the constant disturbance
+  torque is not accumulated over an orbit and no desaturation device exists.
+- **Gains as hardware.** Kp and Kd are traded like parts, though flight software tunes them.
+- **One scenario.** One 30 degree slew in a 600 s horizon, one fixed 0.6 h eclipse of a LEO of about 95 minutes, no altitude.
+- **Requirement limits from a mission.** Four limits (peak slew power, pointing error, control effort, launch budget) are the
+  supervisor's choices from the data's ladder of pass fractions; the two cost limits are budget figures; none is flowed down
+  from a mission.
+
 ### Coverage: every swap and tune reaches a metric
 
 The coverage table (`model_v2/views/coverage.md` and `.csv`, generated from the model by
 `model_v2/coverage.py`) states, for each decision element and each traded metric, whether the model
 has a path from the metric back to the element and whether a one-at-a-time change of the element
 at the three named configurations moves the metric. Every swap and tune reaches at least one
-traded metric in both columns, and every traded metric is reached: the two swaps, the panel span
-and the battery reach all eight, Kp seven (not the total mass: the mass accounting has no gain in
-it) and Kd six (not the total mass or the pointing error, whose closed form has Kp alone)
+traded metric in both columns, and every traded metric is reached: the tracker grade and the panel
+span reach all thirteen, the wheel class and the battery twelve (not the available power), Kp nine and Kd
+eight (neither reaches the total mass, the available power or the two costs: the accounting has no gain in
+it; Kd not the pointing error either, whose closed form has Kp alone), and the fleet size the two costs
 (`tests/test_model_coverage.py::test_no_decision_element_row_is_empty_structurally`,
 `test_no_decision_element_row_is_empty_empirically`,
-`test_the_gains_do_not_reach_the_mass_and_kd_does_not_reach_the_pointing_error`). Seven cells
-disagree between the columns, with one cause: the power margin and the peak slew power read the
-measured peak torque, which at all three named configurations is the wheel class's maximum, because
-the power cap does not bind there; the model allows the effect, the three configurations do not
+`test_the_gains_do_not_reach_the_mass_and_kd_does_not_reach_the_pointing_error`). Ten cells
+disagree between the columns, with one cause: the power margin, the peak slew power and the battery
+peak power ratio read the measured peak torque, which at the named configurations is the wheel
+class's maximum, because the power cap does not bind there; the model allows the effect, the three configurations do not
 show it (`WP23-review.md`, "Coverage findings").
 <!-- vocab-exempt: power margin -->
 
@@ -235,7 +255,7 @@ figure checks after the data gate, never a target: no metric, threshold or const
 was chosen because it moves the heatmap, and the fit runs unchanged on whatever the model produces
 (`WP23-scope-of-work.md`, non-goals).
 
-What the fit returned on the data of record (the eight-metric regeneration of the WP23 close-out;
+What the fit returned at the WP23 close-out, on the earlier eight-metric data (history, not the current record;
 `swap-evidence.md`, "WP23 close-out"). In the primary regime two metrics carry no exponent at any
 fit temperature of the sweep: the power margin and the peak slew power; in the baseline regime the
 peak slew power alone (the eclipse reserve, zero in the primary regime before, left the metric

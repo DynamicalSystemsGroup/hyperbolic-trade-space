@@ -61,13 +61,6 @@ reason = "FIRST-USE: a glossary term met in the paper before its definition cue;
 
 [[violation]]
 kind = "stem"
-file = "docs/examples.md"
-phrase = "power margin"
-owner = "WP8a docsite stream"
-reason = "BASELINE: a named attribute of the cubesat case (power_margin_w), a proper name of the case (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
 file = "docs/user-guide/chart.md"
 phrase = "finite temperature"
 owner = "WP8a docsite stream"
