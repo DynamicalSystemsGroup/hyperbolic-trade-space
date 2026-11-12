@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The history page as rendered (19:55).** Read from the unit's committed screenshots (the browser pane refused a
+  second local port; the stage worktree stays frozen for WP33): one screen at 1280 px, the title, five paragraphs,
+  every demonstrative claim a link, the credit paragraph set smaller, no banned term in the page's words. The
+  draft reads as the supervisor framed it and is dense with links by design; no fix beyond the nine already sent.
+
 - **5073055, the assistant's checks (19:45).** Ruff and format clean, attribution 0, vocabulary 0 new; the site
   (history and assembled tests included), claims-register, docs and encoding tests 99 passed. The page's rendered
   look follows on a local build; CI run 43267160637 on the head.
