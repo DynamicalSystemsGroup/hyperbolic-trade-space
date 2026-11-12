@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The container proof, third run planned (20:20).** The chunked pool prediction landed (65dcd38; host peak memory
+  7.27 GB to 1.83 GB, output hash unchanged per the PM's report) and the fitting page is back under its budget by
+  subtraction (8d27d87, c64430e: 706 to 667 words, budget unchanged). The gate image is rebuilding at c64430e; the
+  five-entry run follows at one worker. Per the gate checklist (step 14) and the container README the container's
+  outputs and entries then become the data of record (`@12`, shared `@11`), the host's `@11` kept as superseded;
+  the paper's later re-executions run on them. Known red window on dev until that commit: the committed-ledger test,
+  because `check_designs.py` is ledger-hashed and the chunking changed its hash. The soft-fit cubesat arrays are
+  re-recorded in the same container after the run.
+
 - **a5cd754, the fast verdict (20:05).** CI fast on Linux (run 43129381509): 1 failed, 1870 passed; the six paper reds
   of the gate head are gone. The one failure is `test_site.py::test_word_budgets_hold`: `docs/user-guide/fitting.md`
   at 706 words against 668, pushed over by the term-order sentence. Returned to the cascade for subtraction (the
