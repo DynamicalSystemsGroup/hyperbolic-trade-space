@@ -49,17 +49,11 @@ below for all three planted tables (26.5 and 38.1 on the others).
 
 ## Helpers
 
-The cubesat blocks run from the repository root, where `examples/adcs` is; the planted blocks need
-only the installed package.
+The planted blocks need only the installed package; the case study's cubesat blocks run from the repository root.
 
 ```python {.runnable}
-import sys
-
 import numpy as np
 from hyperbolic_trade_space import HyperbolicTradeSpace
-
-sys.path.insert(0, "examples/adcs")  # repository root
-import case
 
 
 def fit_k(M, K, tau, seed=0):
@@ -139,6 +133,11 @@ The two regimes of the [examples](../examples.md), each at its K = 1 temperature
 recipe.
 
 ```python {.runnable}
+import sys
+
+sys.path.insert(0, "examples/adcs")  # repository root
+import case
+
 studies = {r: case.load_study(r) for r in ("primary", "stock")}
 taus = {r: case.fit_study(s, K=1).tau for r, s in studies.items()}
 for r, s in studies.items():
