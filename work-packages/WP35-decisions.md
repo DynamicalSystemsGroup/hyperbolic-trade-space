@@ -1,0 +1,52 @@
+# WP35 decisions: the word "hyperbolic", the HoroPCA comparison, and Table 1's "differs" column
+
+Supervisor: Michael Zargham (`mzargham`). Decisions and acceptances are verbal and quoted verbatim here. The
+package runs through the standard channels (a scope by the PM, the assistant's approval, units in their own
+worktrees, a review that runs the thing); the supervisor asked for exactly that.
+
+## The supervisor's feedback (2026-11-12, afternoon, verbatim)
+
+> there are several places where we compare to hyperbolicPCA and i think we could do a better job differentiating
+> ourselves. to my knowledge that work is PCA with a specific kernel. we are not actually doing PCA at all, we're
+> just borrowing some of its intuition, and looking at it as an example of how how scikit learn handles
+> unsupervised learning in general. it seems like we should address this directly and concisely in the paper in
+> the related work section, and in the associated appendix. the other reference that say its different can remain
+> brief and point to the paper
+
+> also since we're talking about wording, its worth noting that "hyperbolic" in our paper seems to reliably refer
+> to negative curvature geometry, it may be helpful to clarify, potentially in the glossary and limit the number of
+> times and places we need to caveat about it
+> the table of comparisons to prior art as a row about how our method differs from the method the row references.
+> its not always clear whether the difference described is about our method or the method we're distinguishing it
+> form
+> don't disrupt work by jumping in and editing, this is feedback to you that should be processed through the
+> standard work channels
+
+## The assistant's reading (2026-11-12)
+
+What the records say now. The body uses "hyperbolic" in the title and twice in Section 2 (`sec-prior-art-3`): once
+against the Färe, Grosskopf and Lovell hyperbolic graph measure, once as '"hyperbolic" here is unrelated to
+hyperbolic PCA [@chami2021horopca]'. Table 1's row "Kernel and hyperbolic PCA" (from `paper/prior_art.yaml`,
+`kernel-hyperbolic-pca`) has a "differs" cell that states what our term means ('"Hyperbolic" here means the level
+surfaces of V in metric space'), not how this work differs from that family: the ambiguity the supervisor names.
+Appendix G prints the full sentences; the reading pass (row 44) records HoroPCA from its abstract. The docs carry
+two further one-line caveats (`docs/user-guide/limitations.md`, `docs/further-reading.md`). `glossary.yaml` has no
+entry for "hyperbolic".
+
+What HoroPCA is, from the verified abstract on record (`docs/references.bib`, `chami2021horopca`): the components of
+PCA (subspace parameterization, projection, variance objective) carried into hyperbolic space, with horospherical
+projections. That is a generalization of PCA to a negative-curvature geometry, not PCA with a kernel; kernel PCA
+(Schölkopf, Smola and Müller 1998) is the other member of the same table row. The paper's sentence should say the
+precise thing. The spike confirms this against the source before the build.
+
+Path (the six stages, scaled to the size): a research spike (every occurrence of "hyperbolic" and its caveats
+across paper, docs, glossary and register; Table 1 row by row, which "differs" cells read as this work's and which
+as the family's; HoroPCA from the source), a readout with options to the assistant; the decision; the build; QC;
+integrate (glossary, Appendix A, register rows, docs pointers, ledger); the review that reads the rendered pages.
+
+Defaults the assistant brings to the scope: one glossary entry says what "hyperbolic" means in the name and what
+it is not, and Appendix A carries it; Section 2 holds the one direct, concise differentiation from HoroPCA (what
+that work is, what this work does instead, what it borrows from PCA and from scikit-learn's unsupervised
+estimators, and that the two chain in D.16); Appendix G holds the full version; every other mention becomes a
+pointer or goes; Table 1's "differs" column is rewritten so every row's sentence has this work as its subject, and
+a test keeps it so.
