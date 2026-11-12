@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The container proof complete; the data of record is the container's (21:30).** The five entries ran in image
+  27add815d66c (built at c64430e) at one worker in 61 minutes with a clean tree and no memory kill: `v2-primary@12`,
+  `v2-baseline@12`, `v2-check-predictions@12`, `v2-check-designs@12`, `scope-sensitivity-shared-subspace-v2@11`.
+  Inside the same container the four default cubesat soft-fit entries (49 arrays, planted entries untouched) and
+  the first 20 v2 designs were re-recorded by the tests' own routines; inside, `test_soft_fit.py` and the
+  first-designs test pass (59 and 1) and `verify` reports 74 entries, 0 drifts. Copied into the checkout per the
+  gate checklist's step 14: host `verify` 0 drifts (the `@11` entries superseded, output replaced); on this Mac
+  `test_soft_fit.py`, the first-designs test and `test_experiments.py` 93 passed, the one failure
+  (`test_frozen_csvs_unchanged_in_git`) being the uncommitted working tree the test reads, green once committed.
+  Against the host's `@11` outputs: platform drift only, the same three proposals, fits equal to every printed digit
+  (RECORD.md, the WP30 section). The README's gate recipe now says one worker. Committed with this entry; CI
+  dispatched; the pointer move to `@12` and the notebooks' re-execution on this data go to the cascade.
+
 - **a5cd754, the slow verdict (20:55).** Linux slow 5 failed / 393 passed, Windows slow 4 failed / 394 passed,
   docs-paper green. All from the term order, in tests the unit did not run (it used the fast marker): two
   `test_termination_record_for_k_terms` cases compare the estimator's permuted exponents row for row with the raw

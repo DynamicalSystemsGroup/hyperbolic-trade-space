@@ -544,6 +544,37 @@ record is now `877c42cc10e3`.
 
 **The robustness image** (`hts-alt` 81e06426f7b3, Ubuntu 24.04, the same `uv.lock`, `HTS_ENVIRONMENT_OF_RECORD=0`): a container `hts-alt-gate` from the image, this commit's history bundle fetched and the tree reset to it (the lock is unchanged since the image's head d66c106, so its environment is the locked one), the full suite with the tolerance branches, `uv run pytest -q -n 4` on 8a732ed (`git status` clean): RECORD: **2187 passed, 17 skipped, 1 xfailed, 0 failed** in 735 s. `hts-alt-gate` removed by name afterwards; the image untouched.
 
+## Container regression at the WP30 data gate (2026-11-11, image 27add815d66c, head c64430e)
+
+The assistant's regression under the gate checklist's step 14 (one container run; the container's outputs and
+entries become the data of record, the host's `@11` kept in the ledger as superseded). `sh paper/container/build.sh`
+at c64430e (the dev head carrying the thirteen-metric model, the term order and the proposer's chunked pool
+prediction), image `hts-paper` **`27add815d66c`**; `docker create --name hts-gate-regression --network none
+-e REQUIRE_OPENSYSML=1 -e PYTHONPATH=examples/adcs -e EXPERIMENTS_WORKERS=1 hts-paper sleep infinity`; every step by
+`docker exec`; the outputs copied out with `docker cp`; the container removed by name. One worker, not three: at
+3,000 designs per regime the Docker VM (four CPUs, 7.7 GB) killed the run at three workers and once more at one
+worker in the proposer, whose pool prediction then took its chunking (65dcd38). `git log -1` inside prints c64430e;
+`git status` before the run is clean; every entry's `git_dirty` reads False.
+
+| command (inside `hts-paper`, `HTS_ENVIRONMENT_OF_RECORD=1`) | wall time | result |
+|---|---|---|
+| `uv run python examples/adcs/model_v2/ledger_gate.py --image 27add815d66c --wp30 regen` | 61 min | RECORD: `v2-primary@12` `f7632865f2e4`, `v2-baseline@12` `e72cd954f122`, `v2-check-predictions@12` `9abafdf1ce85`, `v2-check-designs@12` `e82725af7739`, `scope-sensitivity-shared-subspace-v2@11` `e7051ec617fa`; 3,000, 3,000, 3, 6 and 20 rows; `oom=false` |
+| the four default cubesat fits of the soft-fit reference by the test's own routines (the planted entries untouched) | 2 min | `tests/data/soft_fit_default_reference.npz`: 1274 arrays, 49 rewritten, `recorded_on` = linux, aarch64 |
+| the first 20 v2 designs by the test's own runner call | 14 s | `tests/data/v2_first_designs_of_record.csv` (21 lines, every line changed: the five new columns) |
+| `uv run pytest tests/test_soft_fit.py` and the first-designs test, inside | 6 min | 59 passed after the re-recording |
+| `uv run python -m experiments verify`, inside | 1 s | RECORD: `74 entries (11 current); 0 drifts` |
+
+Against the host's `@11` outputs (the data the cascade's first unit executed on), the differences are platform drift
+and nothing the paper prints: in the two 3,000-design tables settling time within 1e-6 s, control effort and momentum
+headroom within 1.2e-4 relative, `torque_saturated_frac` within 0.014 absolute (a fraction of accepted solver steps),
+the categorical columns and flags equal; the three proposals are the same designs with their chart coordinates
+within 1e-4 relative; the six checked rows and the 20 sensitivity rows within the same drift. The case fits on the
+container's data agree with the fits on the host's to every printed digit (K = 1 exponents to four decimals in both
+regimes, K = 3 term shares to three, the selected temperature identical; mean slack differs at 1e-8). The first 20
+designs sit inside the frozen tolerances of `v2_first_designs_rows`. The earlier container attempts of this gate
+(image 447cb4853cd9 at 910a57d: killed at three workers, then at one worker in the proposer; its two completed
+entries equal this run's byte for byte) are not in the ledger.
+
 ## Host regeneration at the WP30 data gate (2026-11-11, no container)
 
 The host (macOS arm64, ten cores, nine workers) regenerated the five ledger entries on the model at

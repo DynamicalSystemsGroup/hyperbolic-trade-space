@@ -57,12 +57,13 @@ head, so that the model, the script and the ledger inside are the commit's. Use 
 out, with the environment variables the host run uses:
 
     docker create --name hts-gate-regression --network none -e REQUIRE_OPENSYSML=1 -e PYTHONPATH=examples/adcs \
-        -e EXPERIMENTS_WORKERS=3 hts-paper sleep infinity
+        -e EXPERIMENTS_WORKERS=1 hts-paper sleep infinity
     docker start hts-gate-regression
     docker exec hts-gate-regression uv run python examples/adcs/model_v2/ledger_gate.py --image <id> --wp30 regen --dry
     docker exec hts-gate-regression uv run python examples/adcs/model_v2/ledger_gate.py --image <id> --wp30 regen
 
-`--dry` prints the plan (each entry's new id, the entry it supersedes and that entry's output hash) and runs nothing. The run takes
+One worker: at 3,000 designs per regime the Docker VM's memory (7.7 GB on this Mac) does not hold three spawned oracle
+workers, and the run takes about an hour (RECORD.md, the WP30 data gate). `--dry` prints the plan (each entry's new id, the entry it supersedes and that entry's output hash) and runs nothing. The run takes
 the five entries in the script's order, one `runner` run each, appends five entries to `examples/adcs/experiments/ledger/ledger.jsonl`
 and rewrites each entry's output file; every `git_dirty` must read False (the script excludes the unit's five outputs and the ledger from
 the clean-tree check), so the tree inside must be clean before the run: remove anything copied in that git counts as untracked
