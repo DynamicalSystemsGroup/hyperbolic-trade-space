@@ -283,3 +283,9 @@ one of cadCAD's three designers with Zargham and Koch. On the spelling: the page
 the form the supervisor first gave; he now writes "Pentland". The workers settle it from a public source of his
 own (his profile, a publication byline, his video channel) and the page takes that form; if the source reads
 "Penland", the assistant says so to the supervisor rather than changing it on the word alone.
+
+> old blog is here https://blog.block.science/
+
+**The assistant's reading.** The historical BlockScience blog's address for the second research pass; the workers
+read it for the cadCAD, GDS and PSuU posts (the origin story, the open-source announcement, the PSuU article) that
+the first pass could not reach on Medium, and cite from it with dates.
