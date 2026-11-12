@@ -332,3 +332,19 @@ takes these as its deliverables; the draft page is the view's first draft.
 verify goes into `history.yaml` with its date and source; the prose keeps only the pointers that walk the arc, and
 the generated dated list carries the rest. The marginal-value test on the page is therefore strict, and the
 record's growth costs the page nothing.
+
+## Approval of the scope, and the nine open decisions (2026-11-12, 22:55; the assistant, under the supervisor's mandate; scope at 2a1d4fa)
+
+**Assistant, verbatim:** "WP37-scope-of-work.md at 2a1d4fa is approved with one amendment, D-9: the history record
+`history.yaml` with the page as its view, the generated dated list beneath the prose and the tests tying every
+link, name and date on the page to a record entry join this package (the supervisor ruled the split; it belongs
+here, not later). The open decisions are decided as follows, each a default the supervisor approves or reverts at
+his review of the page: 1 (a) Barlin's role only, a background in the record if a source gives it; 2 (a)
+Bernardineli, the form of his own public profile; 3 (a) Penland, the public record's form, the identity with
+'Octopus' given by the supervisor's own first message; 4 the five posts fetched from the old blog the supervisor
+gave (blog.block.science) first, else (c) linked by their known URLs with no claim resting on them; 5 (a) the
+handle CarolinaRiascos as her own site gives it; 6 (a) keep the closing phrase unless the fresh reader's walk
+says it does not earn its place; 7 (a) the Clark paper named with the Red Cross and Grassroots Economics
+collaboration and its purpose, community currencies, the implementation form not named (his rule: an
+implementation detail, never the point), the record carrying the detail; 8 (a) the Edinburgh talk as the CV states
+it (ICMS, October 2024), linking the CV, unless the second pass finds the event page; 9 (b)."
