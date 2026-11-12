@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **78cd40a, the rendered pass (01:15).** Stage rebuilt at 78cd40a on 8791. Eight figures numbered without a gap
+  (the chart 6, the association 7, the ternary pair 8); no "eight metrics" left; Section 6's certificate sentence at
+  K = 2; the K = 2 paragraph points at Figures 6 and 7; the lattice sentence stands in the elasticity sentence;
+  Figure 3's caption counts thirteen; the chart's caption points at its axis and D.16 (the typed clause gone); D.3's
+  K = 2 tables in share order; no stderr. One note routed to the number-format unit: D.3 prints exact zeros as "0"
+  and tiny positives as "below 1e-12" in one column. The assistant's fast suite on 78cd40a is running.
+
 - **38aff78 fast green on both platforms; 78cd40a received (00:50).** CI on 38aff78: Linux and Windows fast green
   (the encoding fix); d7942d0's Linux slow green. 78cd40a landed: Section 6's certificate sentence at the case's
   K = 2, D.3's summed pairs at K = 2, Figure 3's caption for thirteen metrics, the chart's caption generated from
