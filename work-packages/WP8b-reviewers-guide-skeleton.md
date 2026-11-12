@@ -33,9 +33,15 @@ Machine verification and human validation kept apart (glass-box seams).
   vocabulary check; container regression; CI on three platforms with the run links.
   Records: `WP8b-release-checklist.md` (B, C); `paper/container/RECORD.md`; `WP34-review.md`;
   `derivation/` and the proof-map output; `claims_register.toml`; `WP30-gate-checklist.md`.
+  The residual pass's machinery (WP38): the reader's brief `docs/superpowers/notes/residual-review.md`, the surface
+  inventory `scripts/prose_surfaces.py`, the checker `scripts/check_residuals.py` with its committed baseline
+  `scripts/residuals_baseline.json` (re-run it with `--compare` to see no count has risen), `tests/test_residuals.py`.
 - **Human validation.** Reader rounds, the reader grid and its worst cells, the browser pass with screenshots,
   the expert and novice mathematics reads, package-user tests. Records: `WP11-decisions.md`; `WP28-retest.md`;
   `WP29-review.md`; `WP30-review.md`; `WP32-*`, `WP33-*` records; `docs/superpowers/notes/presentation-framing.md`.
+  The residual pass (WP38): a fresh reader's flag table and a second reader's confirmation for every prose surface,
+  and the checker's counts before and after. Records: `WP38-scope-of-work.md`; `WP38-flags/`; `WP38-confirmations/`;
+  `WP38-review.md`; `WP38-decisions.md`.
 
 ## 4. What the supervisor must decide
 
@@ -65,5 +71,6 @@ PyPI, PDF export.
 ## 7. Where the evidence lives
 
 An index: each record type, its path, its owner. Records: `README.md` (work-packages board and gates table);
-`parallel-board.md`; the `WPn-decisions.md` and `WPn-review.md` files; screenshot directories named in the reviews;
+`parallel-board.md`; the `WPn-decisions.md` and `WPn-review.md` files; the residual pass's records (`WP38-flags/`,
+`WP38-confirmations/`, the baseline `scripts/residuals_baseline.json`); screenshot directories named in the reviews;
 `paper/container/RECORD.md`; the CI run links.
