@@ -200,3 +200,15 @@ confirmed from the DOI), and Zhang and Preciado named on the page as co-authors.
 already has: the supervisor's optimization and control record, the GGP work (Preciado is a co-author of the
 network-protection papers that use geometric programs), and simulation and analysis in service of design
 optimization. The page cites the journal paper where it now cites the arXiv preprint, with the names.
+
+## The supervisor, on Jakob Hackel's credit (verbatim)
+
+> Jakob hackel gets a more specific reference relating to his work in unnamed client projects. use it as a hook to
+> imply there is relevant work done at DSG that we need to acknowledge people for but we cannot describe in detail
+> here.
+
+**The assistant's reading.** Jakob Hackel's line on the page credits his work on client projects the firm cannot
+name, in the team's own voice, and the sentence does double duty: it says plainly that relevant work was done at
+the firm by people the page thanks but cannot describe here, which is also where the earlier "team's own thanks"
+for Andrew Penland can sit if no public source is found for him. No client is named, no project detail is given,
+and the sentence is marked as the team's account.
