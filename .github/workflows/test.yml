@@ -43,6 +43,10 @@ jobs:
         run: uv lock --check
       - name: Install (locked)
         run: uv sync --locked
+      - name: Lint
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
       - name: Locked opensysml version
         id: opensysml
         run: |

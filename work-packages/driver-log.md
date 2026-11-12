@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Linux CI gains the lint step (13:30).** The Windows jobs on ec3709e failed at Lint (the `ruff format --check` the
+  exclusion at a3a61af fixes) while the Linux jobs passed, because only the Windows job ran ruff: the Linux matrix
+  had no lint step, so a format failure reached Windows first and the slow Linux jobs ran for nothing. The
+  assistant's call: the Linux `test` job runs `ruff check` and `ruff format --check` right after the install, in
+  every shard, as the Windows job does. Recorded for the supervisor's review.
+
 - **a3a61af staged; WP32 round 2 released (13:15).** The stage serves a3a61af and is frozen until the PM reports the
   round done (the four fresh cells read it as their only docs source; their tabs are theirs, the assistant's is a
   new one, tab-84, after the old one was closed). Rendered read of the six fixes: the README's first screen (one
