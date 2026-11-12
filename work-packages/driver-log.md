@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **b4606f5, the Linux slow verdict (22:25).** 6 failed, 392 passed: the term order's estimator tests (the two
+  aggregation cases and now three termination-record cases, the same row-for-row comparison with the raw solver) and
+  the sensitivity results file, which the data of record now moves at the K = 1 total-mass exponent's last digits as
+  well as the term order; both already routed (the estimator follow-up; the analyse re-run on the regenerations of
+  record with K = 2 keys). Nothing new in kind. Windows slow still running; CI on f3f8840 (run 43144790240) dispatched.
+
 - **755e151, the fast verdict (22:20).** On this Mac: 4 failed, 1871 passed; three are the data commit's known reds
   (C261, the datasets table digest, the v1-v2 register rows), and `test_site.py::test_every_paper_key_is_a_label_of_
   the_built_paper` failed only against the main checkout's stale paper build (11:49): in the stage worktree built at
