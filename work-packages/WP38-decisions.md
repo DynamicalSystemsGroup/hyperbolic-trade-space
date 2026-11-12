@@ -1,0 +1,26 @@
+# WP38 decisions: the residual pass (patterns that read as machine-written)
+
+Supervisor: Michael Zargham (`mzargham`). A review near the end of the 0.1 candidate, over every prose surface,
+with a reader's lens the earlier loops did not apply.
+
+## The supervisor's direction (2026-11-13, verbatim)
+
+> as we get close to the end there is another kind of a review i want. this review eliminates LLM residuals or
+> patterns that feel like LLM. often this is unecessary metanarration, parentheticals or out of place caveats or
+> spurious details that either dont belong in that location or dont belong at all. llms love details so much so
+> they inject them where they dont belong
+
+## The assistant's reading
+
+A pass, not a rewrite: fresh readers go over each prose surface (the paper's body and appendices, the docs pages,
+the README, the root page, the history page, the glossary's long forms) with one lens, where does this read as
+machine-written, and flag each instance with its sentence and its kind: metanarration (a sentence that announces
+or summarizes instead of saying); a parenthetical that carries a second thought; a caveat placed where no claim
+is made, or repeated; a detail that belongs elsewhere or nowhere (precision, an aside, a list of three where one
+word does); a hedge where the record is definite; signposting that the structure already gives; a restatement.
+Each flag gets a disposition, cut, move or keep with a reason, and the cuts land as negative edits under the
+ledger and the claims register (a moved claim keeps its backing; a cut states what the sentence no longer did);
+a second fresh reader confirms the surface reads clean. It runs once the surfaces are stable, after WP33, WP35,
+WP36 and WP37 land and before the final reader round, so that round reads the cleaner text. The five entry
+surfaces are read in it too, their changes listed for the supervisor as always. The scope comes to the assistant
+in the usual form; Sonnet readers and implementer, Haiku for counts.
