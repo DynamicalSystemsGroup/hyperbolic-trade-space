@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP35 amendment 1 (Appendix H) approved; 652c27d fully green (10:30).** CI 43308186328: every job green on both
+  platforms, the eighteenth fully green head. The amendment (dae99a6) carries the supervisor's order of sections, a
+  generated results table with a computed verdict column, the removal of the Appendix G passage with what it no longer
+  did, the re-pointing of Section 2, the prior-art row and reading-pass row 44, new tests, the ledger rows, and the
+  fresh readers on the finished appendix; its content matches the five calls of 09:20 and it lists no open decision.
+  Approved as written with the 900-word ceiling pinned now (WP35-decisions.md). PM13 told to build: the generator and
+  tests in parallel, the notebooks after the WP36 integration unit through the single-writer queue.
+
 - **WP35 stage-6 review findings ruled on (09:50).** The review at 48a0ead (R-1 to R-12, R-15, R-16 met; R-13, R-14
   held for Appendix H) carries eight findings; the assistant's calls, sent to PM13: F-1, the theme's releases-widget
   404 on every docs page, goes to WP8b's checklist (reload after the repository is public and tagged; turn the lookup

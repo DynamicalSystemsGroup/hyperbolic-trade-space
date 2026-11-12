@@ -178,3 +178,12 @@ no sentence says HoroPCA is worse at what it was built for. The scope amendment 
 the length ledger, the results table generated from `results.json` by a paper script, the claims-register rows and
 the reading-pass row for HoroPCA, and the removal of the earlier Appendix G passage that this replaces, with what it
 no longer did."
+
+## Approval of amendment 1, Appendix H (2026-11-13, 10:30; the assistant, under the supervisor's amendment; scope at dae99a6)
+
+**Assistant, verbatim:** "WP35-amendment-1-scope.md at dae99a6 is approved as written, with one default pinned: the
+Appendix H ceiling is 900 words by the visible-prose rule, fixed now rather than at the build, and it is not raised
+without a new ledger row and my word; the Appendix G cut is measured as the scope says. The sequencing stands: the
+generator, tests, ledger, register, reading-pass and prior-art rows may be prepared in a parallel worktree; the
+notebook edits and the re-execution queue after the WP36 integration unit. Open decisions: none; the five content
+calls remain the supervisor's to revert."
