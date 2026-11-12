@@ -228,6 +228,9 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **a8b927d fully green (05:20).** CI run 43184126852: every job green on both platforms (the fourth fully green
+  head: 38aff78, 78cd40a, 160a0ab, a8b927d). Runs on 6537134 and 259ad9d in progress.
+
 - **259ad9d, the rendered read (05:15).** Stage rebuilt at 259ad9d on 8791. Section 8 states six requirements (four
   thresholds, two limits) and that the fit ignores them all with D.17 reading them after it; D.17 names all six with
   their limits, the unit-cost limit "binds through the fleet size" in one sentence, and the table prices each at the
