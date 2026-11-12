@@ -1215,30 +1215,38 @@ def one_axis_pairs(table):
     return list(zip(named["metric a"], named["metric b"], strict=True))
 
 
-def summed_exponents(study, fit, pairs):
+def summed_exponents(study, fits, pairs):
     """The exponent reading of named one-axis pairs: each pair's exponents summed per term.
 
     Parameters
     ----------
     study : Study
-    fit : Fit
+    fits : dict of int to Fit
+        The fits to read, keyed by their number of terms K (as :func:`k_fits` returns them).
     pairs : sequence of (str, str)
         Usually :func:`one_axis_pairs`; empty when no pair is named.
 
     Returns
     -------
     pandas.DataFrame
-        One row per pair and term: ``pair``, ``term``, ``exponent a``, ``exponent b``, ``sum``.
-        Empty (with those columns) when ``pairs`` is empty.
+        One table across K. One pair: columns ``K``, ``term``, the two metrics' own names, ``sum``.
+        Several pairs: a ``pair`` column after ``K`` and the exponents as ``exponent a`` and
+        ``exponent b``. Empty when ``pairs`` is empty.
     """
-    W = np.atleast_2d(fit.estimator.exponents_)
+    one = len(pairs) == 1
     rows = []
-    for a, b in pairs:
-        i, j = study.names.index(a), study.names.index(b)
-        for k, w in enumerate(W):
-            rows.append({"pair": f"{a} + {b}", "term": k + 1, "exponent a": float(w[i]),
-                         "exponent b": float(w[j]), "sum": float(w[i] + w[j])})  # fmt: skip
-    return pd.DataFrame(rows, columns=["pair", "term", "exponent a", "exponent b", "sum"])
+    for K, fit in fits.items():
+        W = np.atleast_2d(fit.estimator.exponents_)
+        for a, b in pairs:
+            i, j = study.names.index(a), study.names.index(b)
+            for k, w in enumerate(W):
+                row = {"K": K} if one else {"K": K, "pair": f"{a} + {b}"}
+                row["term"] = k + 1
+                row[a if one else "exponent a"] = float(w[i])
+                row[b if one else "exponent b"] = float(w[j])
+                row["sum"] = float(w[i] + w[j])
+                rows.append(row)
+    return pd.DataFrame(rows)
 
 
 def requirement_mask(df, spec=CUBESAT, only=None, costs=False):

@@ -1301,3 +1301,11 @@ section = "The decision problem"
 words_removed = 39
 no_longer_did = "the Section 1 paragraph's sentence 'Like PCA, our method is unsupervised feature engineering; the two answer different questions and compose: Appendix D.16 reads the principal directions ... a reading and not a result' said again what the abstract says in its own words (unsupervised feature engineering, the two compose) and what Main results item 5 says two paragraphs below (PCA on the near-frontier chart, a reading and not a result, with the same pointer to Appendix D.16); a reader met it three times in one screen and a half"
 authority = "WP33 R-3, marginal-value test (the cut that pays for the audience sentence)"
+
+# Appendix D.3: the summed-pairs table, one per regime (the supervisor's skim, driver-log b229220).
+[[cut]]
+date = "2026-11-12"
+section = "Appendix D"
+words_removed = 120
+no_longer_did = "D.3 printed the one-axis pair's summed exponents as three frames per regime (K = 1, 2, 3), each row repeating the pair in a column of identical text under the labels 'exponent a' and 'exponent b', and closed with a sentence naming the same pair again; one table per regime now names the pair once in its lead sentence, carries K as a column and the two exponents under the metrics' own names, and the closing sentence (also printed in C.5 and D.4) is dropped"
+authority = "the supervisor's skim of D.3, driver-log entry b229220 (the 'cubesat-stock' table has the same fix)"

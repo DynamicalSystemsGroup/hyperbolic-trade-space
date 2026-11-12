@@ -651,10 +651,14 @@ def test_association_step_covers_every_pair_and_names_the_one_axis_pairs(regime,
     top = t.iloc[0]
     assert {top["metric a"], top["metric b"]} == {"available power", "energy balance"}
     assert top["spearman"] > 0.999
-    summed = case.summed_exponents(study, case.fit_study(study), named)
-    assert not summed.empty and np.allclose(
-        summed["sum"], summed["exponent a"] + summed["exponent b"]
-    )
+    fits = case.k_fits(study)
+    summed = case.summed_exponents(study, fits, named)
+    a, b = named[0]
+    # one table across K: no pair column, the metrics' own names, the sum
+    assert list(summed.columns) == ["K", "term", a, b, "sum"]
+    assert sorted(set(summed["K"])) == sorted(fits)
+    assert len(summed) == sum(K for K in fits)
+    assert np.allclose(summed["sum"], summed[a] + summed[b])
 
 
 def test_requirements_are_the_models_budgets():

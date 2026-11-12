@@ -137,7 +137,7 @@ def exponents_and_terms() -> Md:
             + _thin_terms(ft3)
             + _summed_text(r, _fits(r))
         )  # fmt: skip
-    return Md("\n\n".join(parts) + "\n\n" + _one_axis_sentence())
+    return Md("\n\n".join(parts))
 
 
 def _thin_terms(ft) -> str:
@@ -753,11 +753,14 @@ def _summed_text(regime, fits) -> str:
     pairs = case.one_axis_pairs(_associations(regime))
     if not pairs:
         return ""
-    s = _study(regime)
     ks = (1, case.CASE_K, 3)
-    parts = [frame_table(case.summed_exponents(s, fits[K], pairs), floatfmt=".3f") for K in ks]
-    where = ", ".join(f"K = {K}" for K in ks)
-    return f"\n\n{_cite(regime)}, named pairs summed per term ({where}):\n\n" + "\n\n".join(parts)
+    named = " and ".join(f"{a} and {b}" for a, b in pairs)
+    lead = (
+        f"{_cite(regime)}, the one-axis pair{'s' if len(pairs) > 1 else ''} {named}, "
+        f"|Spearman| {case.ONE_AXIS:g} or above, its exponents summed per term:"
+    )
+    table = case.summed_exponents(_study(regime), {K: fits[K] for K in ks}, pairs)
+    return f"\n\n{lead}\n\n" + frame_table(table, floatfmt=".3f")
 
 
 def requirements_at_the_frontier() -> Md:
