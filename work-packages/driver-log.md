@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **160a0ab fully green (02:45).** CI run 43170142883: every job green on both platforms (the third fully green run:
+  38aff78, 78cd40a, 160a0ab). The D.2 term-order unit is still editing in its worktree (last change 02:39); no
+  other unit has landed since.
+
 - **160a0ab, the assistant's checks (01:55).** Ruff and format clean, attribution 0; the paper, claims-register and
   site tests 203 passed. Accepted into the cascade; CI run 43170142883 gives the slow marker.
 
