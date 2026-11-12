@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **259ad9d fully verified and fully green (06:20).** Locally the slow case, paper, sensitivity, site and docs tests
+  100 passed (43 min) on top of the fast suite's 1881; CI run 43191456435 every job green on both platforms (the
+  sixth fully green head). Accepted. The staged head for stage 6 is set after the design-sets wording unit lands,
+  so the fresh reviewer and the P7 and P8 readers see the final sentences.
+
 - **6537134 fully green; 259ad9d one job from it (06:10).** CI run 43189563128 (the docs head): every job green on
   both platforms (the fifth fully green head). 259ad9d: Linux fast, slow and docs-paper and Windows fast green,
   Windows slow running; the local slow subset still running. The design-sets wording unit is executing notebooks
