@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **38aff78 fast green on both platforms; 78cd40a received (00:50).** CI on 38aff78: Linux and Windows fast green
+  (the encoding fix); d7942d0's Linux slow green. 78cd40a landed: Section 6's certificate sentence at the case's
+  K = 2, D.3's summed pairs at K = 2, Figure 3's caption for thirteen metrics, the chart's caption generated from
+  the axis (a test compares it with D.16), the K = 2 planes figure retired with a figure-loop record and the
+  option images (one panel; pointing error against unit cost) kept for the supervisor; ledger cut, claim rows.
+  The assistant's checks and a stage rebuild at 78cd40a are running; CI run 43163272119 dispatched.
+
 - **A lint slip of the assistant's own (01:00).** The encoding fix (5875f3a) left four lines over 100 characters;
   the check chain did not stop on ruff's failure and the commit went out. Reformatted at 38aff78 (ruff and format
   clean over the repository; the encoding test and the paper tests' fast marker 151 passed). CI run 43161191156
