@@ -440,40 +440,43 @@ def test_root_and_paper_links_classified():
             route = _resolve_site_href(page_url, href)
             assert route.startswith(urlparse(PUBLIC_URL).path)
             sub = route[len(urlparse(PUBLIC_URL).path) :]
-            if sub.startswith("docs/"):
-                continue  # the docsite; checked on the assembled site
+            if sub.startswith(("docs/", "paper/supporting-material/")):
+                continue  # docsite and built paper pages: checked on the assembled site
             assert _site_file_for(route, SITE) is not None, f"{rel}: {href} does not resolve"
 
 
-def test_root_index_is_thin_and_has_the_cards():
+def test_root_index_is_thin_and_routes_by_need():
+    """WP33 G2, R-3: after the title, one whom-it-is-for sentence and at most five need-phrases,
+    each a link; no cards. Then why, what."""
     text = (SITE / "index.html").read_text(encoding="utf-8")
     assert "<script" not in text.lower()
     assert "prefers-color-scheme: dark" in text
-    assert "Start wherever suits you" in text
+    assert 'class="cards"' not in text
+    needs = re.search(r'<ul class="needs">(.*?)</ul>', text, re.S).group(1)
+    items = re.findall(r"<li>(.*?)</li>", needs, re.S)
+    assert 1 <= len(items) <= 5
+    assert all(re.fullmatch(r'<a href="[^"]+">[^<]+</a>', i) for i in items), items
+    assert text.count('class="whom"') == 1
     low = text.lower()
-    order = [low.index(k) for k in ("<h2>why</h2>", "<h2>what</h2>", 'class="cards"')]
-    assert order == sorted(order), "order: why, what, cards"
+    order = [
+        low.index(k) for k in ('class="whom"', 'class="needs"', "<h2>why</h2>", "<h2>what</h2>")
+    ]
+    assert order == sorted(order), "order: whom, needs, why, what"
     for needle in ("scikit-learn", "unsupervised", "feature engineering", "pca"):
         assert needle in low, needle
     for banned in ("sympy", "worked example", "chatgpt", "openai"):
         assert banned not in low, banned
     hrefs = html_links(SITE / "index.html")
-    for href in ("paper/", "docs/", "docs/api-reference/"):
+    for href in ("paper/", "docs/getting-started/", "docs/user-guide/conditioning/"):
         assert href in hrefs
     assert any(h.endswith("hyperbolic-trade-space") for h in hrefs), "repository link"
-    assert "New card" in text
     assert '<link rel="icon" href="data:,">' in text  # D6: no /favicon.ico request, no 404
     assert '<link rel="icon" href="data:,">' in (SITE / "paper" / "index.html").read_text(
         encoding="utf-8"
     )
     # R1: a wide figure may use a wide screen's width
     assert "min(94vw" in text and "figure.wide" in text
-    # R2: the install command breaks between words, never inside one
     assert "break-all" not in text and "anywhere" not in text
-    install = re.search(r'<p class="install">(.*?)</p>', text, re.S).group(1)
-    assert re.sub(r"<[^>]+>", "", install) == (
-        "pip install git+https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space.git"
-    )
     # R3: the wording matches the thinned docsite
     for stale in ("page by page", "its mathematics", "in full"):
         assert stale not in text.lower(), stale

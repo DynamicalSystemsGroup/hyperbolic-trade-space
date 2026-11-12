@@ -94,68 +94,16 @@
       transform: translateX(-50%);
     }
   }
-  .cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin: 2.25rem 0 0;
-    padding: 0;
-    list-style: none;
-  }
-  @media (max-width: 40rem) {
-    .cards { grid-template-columns: 1fr; }
-  }
-  .card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    padding: 1.1rem 1.2rem 1.2rem;
-    display: flex;
-    flex-direction: column;
-  }
-  .card h2 {
-    font-size: 1.1rem;
-    margin: 0 0 0.5rem;
-  }
-  .card p {
-    font-size: 0.93rem;
-    color: var(--muted);
-    margin: 0 0 0.9rem;
-    flex: 1;
-  }
-  .card .go {
-    display: inline-block;
-    font-size: 0.9rem;
-    font-family: system-ui, sans-serif;
-    text-decoration: none;
-    background: var(--accent-soft);
-    border-radius: 6px;
-    padding: 0.35rem 0.7rem;
-    align-self: start;
-  }
-  .card .soon {
-    display: inline-block;
-    font-size: 0.9rem;
-    font-family: system-ui, sans-serif;
-    color: var(--muted);
-    border: 1px dashed var(--card-border);
-    border-radius: 6px;
-    padding: 0.35rem 0.7rem;
-    align-self: start;
-  }
-  .footnote {
-    margin: 1rem 0 0;
-    font-size: 0.85rem;
-    color: var(--muted);
-  }
+  .whom { margin: 0 0 0.5rem; }
+  .needs { margin: 0 0 1rem; padding-left: 1.2rem; font-family: system-ui, sans-serif; }
+  .needs li { margin: 0.3rem 0; }
+  .adopt { font-size: 0.93rem; color: var(--muted); }
   code, pre {
     font: 0.85rem/1.4 ui-monospace, Menlo, monospace;
     background: var(--accent-soft);
     border-radius: 4px;
     padding: 0.1rem 0.35rem;
   }
-  .card p.install { font-size: 0.85rem; }
-  .card p.install code span { white-space: nowrap; }
   footer {
     margin-top: 3rem;
     padding-top: 1rem;
@@ -172,6 +120,16 @@
     <p class="subtitle">An unsupervised learning method which applies a posynomial invariant form, a sum of terms each a product of powers of the metrics, to learn the shape of a trade space from evaluated designs.</p>
     <p class="byline">Michael Zargham</p>
   </header>
+
+  <p class="whom">Choose the line that is yours: the documentation serves those who run the tool, the paper those who read it, check it or decide on it.</p>
+  <ul class="needs">
+    <li><a href="docs/getting-started/">Use the tool on your own table</a></li>
+    <li><a href="docs/user-guide/overview/">Bring your own system model</a></li>
+    <li><a href="paper/">Read the paper</a></li>
+    <li><a href="paper/supporting-material/#appendix-b">Check the mathematics</a></li>
+    <li><a href="paper/supporting-material/#sub-d-17">Decide what adopting it would change</a></li>
+  </ul>
+  <p class="adopt">Adopting it: the analyst writes the <a href="docs/user-guide/conditioning/">conditioning</a>; from install to a first fit took 6 s, or about 100 s counting the reading and the writing of the script, for readers new to it; few designs <a href="docs/user-guide/limitations/">determine the exponents only weakly</a>. The cubesat case is a synthetic demonstrator.</p>
 
   <section>
     <h2>Why</h2>
@@ -200,50 +158,14 @@
       conformance checks pass), so it drops into the same workflows.
     </p>
     <figure class="wide what">
-      <a href="figure1.png"><img class="hero" src="figure1.png" width="1640" height="720" alt="Three panes: the fitted reference surface in metric space, its terms as a supporting envelope in log space, and the chart in which the frontier is one line with the terms laid end to end along it. The designs are grey points; a black arrow in each pane marks one design's energy differential."></a>
-      <figcaption>One table of designs seen three ways. The coloured pieces are the three terms of the fitted reference surface, the same three in each pane; the black arrow is the same step in each pane: a design's energy differential to that surface. Select the figure to open it at full size.</figcaption>
+      <a href="figure1.png"><img class="hero" src="figure1.png" width="1640" height="720" alt="Three panes: the fitted reference surface in metric space, its terms as a supporting envelope in log space, and the chart in which the frontier is one line with the terms laid end to end along it. The designs are grey points; a black arrow in each pane marks one design's distance from the surface."></a>
+      <figcaption>One table of designs seen three ways. The coloured pieces are the three terms of the fitted reference surface, the same three in each pane; the black arrow marks one design's distance from that surface. Select the figure to open it at full size.</figcaption>
     </figure>
   </section>
 
-  <p>
-    The paper tells the method, the documentation shows how to use the package task by task, and the
-    package is the tool you run on your own data. Start wherever suits you.
-  </p>
-
-  <ul class="cards">
-    <li class="card">
-      <h2>Paper</h2>
-      <p>
-        The method told from evaluated designs to the frontier, its tensions and its gaps.
-      </p>
-      <a class="go" href="paper/">Read the paper →</a>
-    </li>
-    <li class="card">
-      <h2>Documentation</h2>
-      <p>
-        For a user of the package: a first fit, a guide per task from conditioning your attributes
-        to reading a tension report, the API reference, a cubesat example, the model in brief
-        and a glossary.
-      </p>
-      <a class="go" href="docs/">Open the docs →</a>
-    </li>
-    <li class="card">
-      <h2>Package</h2>
-      <p>
-        A scikit-learn-compatible estimator for the frontier, with an invertible log-ratio chart,
-        tension reports and plotting helpers. Install from source:
-      </p>
-      <p class="install"><code><span>pip install</span> <span>git+https://github.com/</span><wbr><span>DynamicalSystemsGroup/</span><wbr><span>hyperbolic-trade-space.git</span></code></p>
-      <a class="go" href="docs/api-reference/">API reference →</a>
-      <p class="footnote"><a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space">Repository</a> · <a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/releases">Release notes</a></p>
-    </li>
-    <!-- New card: copy a <li class="card"> block above (a talk, a deck, a notebook) and edit its
-         heading, text and link. Nothing else on this page changes. -->
-  </ul>
-
   <footer>
     Source for everything on this page:
-    <a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space">github.com/DynamicalSystemsGroup/hyperbolic-trade-space</a>
+    <a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space">github.com/DynamicalSystemsGroup/hyperbolic-trade-space</a> · <a href="https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/releases">Release notes</a>
   </footer>
 </main>
 </body>

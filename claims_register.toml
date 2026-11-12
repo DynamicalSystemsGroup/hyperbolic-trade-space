@@ -4405,30 +4405,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "The report's tension directions equal orient_by_pca of the near-frontier chart coordinates; the test asserts it"
 
 [[claim]]
-id = "C367"
-fragment = "A scikit-learn-compatible estimator for the frontier, with an invertible log-ratio chart,"
-file = "site/index.html"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples", "test:tests/test_tensions.py::test_monolemma_and_names", "test:tests/test_plotting.py::test_ternary_regions_partition_the_triangle", "file:work-packages/interface-contract.toml"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Estimator, invertible chart round trip, tension_report and plotting are in package.public_names and submodules of the contract and tested"
-
-[[claim]]
-id = "C368"
-fragment = "to reading a tension report, the API reference, a cubesat example, the model in brief"
-file = "site/index.html"
-anchor = ""
-kind = "S"
-backing = ["file:work-packages/interface-contract.toml", "test:tests/test_site.py::test_nav_pages_exist_and_cover_the_contract_pages"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "docs.pages in the contract lists getting-started, user-guide (conditioning, tensions), api-reference, examples (cubesat), theory, glossary; the test checks the nav covers them"
-
-[[claim]]
 id = "C372"
 fragment = "`term_aggregation`: `\"sum\"` (default) or `\"mean\"`, which subtracts log K / kappa"
 file = "docs/user-guide/fitting.md"
@@ -6039,3 +6015,54 @@ status = "backed"
 disposition = "narrow"
 source = "WP30 stage 6 review, findings 2 (the eight-metric, 1,000-design numbers of G-2 and G-17)"
 note = "Brought to the thirteen-metric record: G-2's conditioning_, tau-halving and participant counts are recomputed by recipes M3 and M5 (now on case.fit_study); G-17's nondominated and moved-quantity counts are read from the sensitivity record (818 quantities, 346 not identical, 259 beyond a 1e-12 residue). The test recomputes each and refuses the stale strings."
+
+[[claim]]
+id = "C508"
+fragment = "from install to a first fit took 6 s, or about 100 s counting the reading and the writing of the script, for readers new to it"
+file = "site/index.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:work-packages/WP32-cells/round-2/U3-return.md",
+  "file:work-packages/WP32-cells/round-2/U1-return.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP33 Q1 (the executive's adoption-cost lines); WP32 round 2"
+note = "Measured by two reader cells at head a3a61af: U3 uv sync 6 s wall with the first fit in the same minute; U1 install to first fit about 100 s wall, of which uv sync 1.3 s and the rest reading pages and writing the script. Two cells, one table each; stated as what they measured, not as a typical time."
+
+[[claim]]
+id = "C509"
+fragment = "Adopting it: the analyst writes the ... conditioning"
+file = "site/index.html"
+anchor = ""
+kind = "S"
+backing = ["file:docs/user-guide/conditioning.md", "file:docs/user-guide/overview.md"]
+status = "backed"
+disposition = "keep"
+source = "WP33 Q1"
+note = "The package takes metrics, not attributes; conditioning is the analyst's step (overview, pipeline stage 3; the conditioning page)."
+
+[[claim]]
+id = "C510"
+fragment = "few designs ... determine the exponents only weakly"
+file = "site/index.html"
+anchor = ""
+kind = "S"
+backing = ["file:docs/user-guide/limitations.md"]
+status = "backed"
+disposition = "keep"
+source = "WP33 Q1"
+note = "Limitations, Small samples: with few designs the exponents are weakly determined. No number of designs is stated, by decision."
+
+[[claim]]
+id = "C511"
+fragment = "The cubesat case is a synthetic demonstrator."
+file = "site/index.html"
+anchor = ""
+kind = "S"
+backing = ["file:examples/adcs/case-model.md"]
+status = "backed"
+disposition = "keep"
+source = "WP33 P7 wayfinding read"
+note = "The case's hardware values are illustrative and its requirement limits come from the data, not a mission (case-model.md, what the case leaves out; paper C.8)."
