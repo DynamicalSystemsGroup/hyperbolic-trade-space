@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **CI, 14:00.** 94464bb: every job green on both platforms (the eleventh fully green head). a3a61af: the fast
+  jobs on both platforms fail on the claims-register rows only (the unit is dispatched); its slow jobs run. c060dd1:
+  the Linux job's new lint step passed on its first run; the rest in progress.
+
 - **a3a61af, the assistant's checks (13:45).** Attribution 0, vocabulary 0 new; the docs, site, encoding, fixtures
   and contract tests 173 passed; fast suite 1889 passed, 1 failed: `test_claims_register.py::test_the_register_holds`,
   seven rows whose quoted fragments the round-1 docs fixes cut or reworded (the overview, and the other changed
