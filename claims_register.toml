@@ -842,7 +842,7 @@ note = "Transformer with fit/transform/inverse_transform/score_samples under par
 
 [[claim]]
 id = "C059"
-fragment = "the two answer different questions and compose: {ref}`Appendix D.16 <sub-d-16>` reads the principal directions"
+fragment = "PCA run on the near-frontier chart reads the trade-offs the sampling exercised, a reading and not a result"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -6535,3 +6535,18 @@ status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
 note = "The supervisor's own phrase for the image of the team (WP37-decisions.md, on the page's storytelling); kept by default 6 unless the fresh reader's walk says it does not earn its place. Kind: page (trace.md)."
+
+[[claim]]
+id = "C562"
+fragment = "This paper is for readers deciding whether to rely on a trade study"
+file = "paper/paper.ipynb"
+anchor = "The decision problem"
+kind = "S"
+backing = [
+  "file:docs/superpowers/notes/user-journeys.md",
+  "file:work-packages/WP33-scope-of-work.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP33 R-3 (the paper's whom-it-is-for sentence)"
+note = "The three readers who arrive at the paper in the journeys map (P1 and P8 decide, P5 checks the mathematics, P6 places the method among prior methods) and where each goes: the abstract and the Main results, Section 4 (Definitions) and Appendix B, Section 2 (Prior art) and Appendix G; the targets are cross-references the paper build resolves."

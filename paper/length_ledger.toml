@@ -1286,3 +1286,18 @@ section = "Appendix G"
 words_added = 659
 job = "the full version of the HoroPCA distinction: the solver contrast, what HoroPCA does that this work does not, the plain statement that the embedding was ours and not natural for the data, the reading of the generated results table, and the limits of the comparison with the spike record cited; the numbers sit here so that Section 2 holds none"
 reader = "the expert who asks what running the closest existing analog on the paper's tables showed"
+
+# WP33 R-3: the paper's whom-it-is-for sentence, net neutral in Section 1 (a raise and a cut, no net raise).
+[[raise]]
+date = "2026-11-12"
+section = "The decision problem"
+words_added = 37
+job = "one sentence at the top of Section 1 names the three readers who arrive at the paper (those who decide on it, those who check the mathematics, those placing it among prior methods) and where each goes; the first screen named no reader (P1, P5, P6, P7, P8)"
+reader = "the reader who arrives at the paper and has to find which part is theirs"
+
+[[cut]]
+date = "2026-11-12"
+section = "The decision problem"
+words_removed = 39
+no_longer_did = "the Section 1 paragraph's sentence 'Like PCA, our method is unsupervised feature engineering; the two answer different questions and compose: Appendix D.16 reads the principal directions ... a reading and not a result' said again what the abstract says in its own words (unsupervised feature engineering, the two compose) and what Main results item 5 says two paragraphs below (PCA on the near-frontier chart, a reading and not a result, with the same pointer to Appendix D.16); a reader met it three times in one screen and a half"
+authority = "WP33 R-3, marginal-value test (the cut that pays for the audience sentence)"
