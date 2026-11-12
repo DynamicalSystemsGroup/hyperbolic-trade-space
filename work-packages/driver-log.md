@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **6537134, the docs head: checks and rendered read (04:35).** Ruff and format clean, vocabulary 0 new, attribution
+  0; the encoding, docs, site, claims-register and paper tests 247 passed. Rendered: the Examples page on the stage
+  reads the case at K = 2 with the docsite's own Figure 5 and 6 and points at the case page's list; the case page
+  as GitHub renders it at dev carries the thirteen metrics, 7,000 USD/kg, and the four-bullet leaves-out list with
+  its pointer to C.8. The Examples page's link to the case page names `main`, as the docs' one other repository
+  link does (the published state); its anchor resolves after the merge, not before, which the reviewer's guide
+  will say. Accepted into the cascade.
+
 - **The docs unit landed (04:20).** 28041fb (the case page describes thirteen metrics, the cost metrics, 7,000 USD/kg
   and the 105,770 USD launch budget; the eight-metric texture history cut for a pointer to Appendix D), e28bbcd (the
   leaves-out list keeps the four bullets that bound the model's reach and points at C.8 for the rest, 301 to 216
