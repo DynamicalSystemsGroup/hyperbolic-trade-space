@@ -1,0 +1,3 @@
+Round 4 (U1 only, the fresh cell of WP32 R-10 after WP33's first-screen units): head df0cad9, stage http://127.0.0.1:8791/, one fresh Sonnet cell.
+Worktree listing (R-4): the cell ran in a scratchpad copy of a git archive of head df0cad9: README.md, LICENSE, pyproject.toml, uv.lock, .python-version, src/, plus the plain table (table.csv) and the task text (the round-1 text, U1 header filled). No model source, no answers file, no tests.
+The return is below in U1-return.md as the cell wrote it (the fields' layout kept; the code of the robustness script u1_check.py is described by the cell, not reproduced).
