@@ -228,6 +228,20 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Five cascade commits received; Figure 6 retired on the cold read (22:55).** On dev: the term-order follow-up
+  (7adfb84: slow tests compare terms as sets of rows; cells re-derived after the permutation so tied rows go to the
+  lower index; the fitting page restores the C261 and C401 sentences within its budget), the sensitivity analysis
+  (95f6f5d: no longer reads the results file it writes; K = 2 keys in the jitter record), the review-list rows
+  (21d2532), CR-2's return in the change register (ee957cf) and the cold read of Figures 6 to 8 and Figure 3's
+  caption (e9a1dd4). The assistant's call on the cold read: the reader confirms Figure 6's top panel is a lattice of
+  discrete grades that no second metric cures, and the remaining panel would repeat Figure 5's pair at K = 2, so
+  Figure 6 is retired and Section 9 carries its two sentences (no caption caveat; a review-list row names the
+  one-panel alternative for the supervisor to revert to). Figure 7's axis label and caption disagree on what lies to
+  the right and its "Does not show" line counts six directions where the metric set gives twelve: generated from the
+  D.16 loadings, routed. Verification of e9a1dd4 running; CI run 43150102872 dispatched on it. f3f8840's slow jobs
+  on both platforms: the known term-order and sensitivity failures only, since fixed by 7adfb84 and 95f6f5d if the
+  local run agrees.
+
 - **CI verdicts, 22:30.** f3f8840 (the choosing-K head) fast on Linux and Windows: 3 failed each, the data commit's
   known reds (C261, the datasets table digest, the v2 register rows); the verification pointers now resolve.
   b4606f5 Windows slow: the same term-order estimator cases and sensitivity results file as Linux. Nothing new in
