@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP32 round 1 triaged; the fixes landed; the ruff question decided (12:45).** The PM's triage (`WP32-cells/triage.md`,
+  20 rows) and six docs fixes are on dev (README first screen: one site link, one install line, one first call;
+  the choosing-K helpers need only the installed package; the fitting page says what to do when the 0.10 target is
+  not reachable; the tensions page names the band count and the 1e-9 reading of a set's name; the chart page states
+  `plot_frontier_coordinates`' signature; the overview says any table works and a model's export is one source);
+  every touched page net negative in words; no code defect found by the cells. The assistant's checks on ec3709e:
+  fast suite 1890 passed, lint and lock clean, but `ruff format --check` fails on three verbatim returns, whose
+  Python blocks are the cells' own. The assistant's call: the returns stay verbatim (R-6) and
+  `work-packages/WP32-cells/round-*` joins `extend-exclude` in `pyproject.toml` beside the research-spike folders,
+  the same class (evidence kept as written, not package code); the scope's "never pyproject" guards the package's
+  build and dependencies, which this one-line tool setting does not touch. Recorded for the supervisor's review.
+  CI run 43236268856 on d7cd8d4 will show the lint failure; the next head carries the exclusion.
+
 - **32a3a33 fully green; WP32 round 1 landed (12:20).** CI run 43225261831: every job green on both platforms (the
   tenth fully green head). On dev: the approval and the open questions recorded verbatim (cb11840), the four cells'
   task text (091a451), the package-user fixtures (a plain CSV, a pump SysML v2 model, its export script and table,
