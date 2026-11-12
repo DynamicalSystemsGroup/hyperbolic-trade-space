@@ -105,6 +105,14 @@ entries:
     not: 'a probability or a bounded score; V above 1 is possible at finite temperature'
     defined_in: 'L1, A1, A2'
 
+  - id: 'hyperbolic'
+    term: 'hyperbolic'
+    short: 'The title''s word: the level curves of V, products of powers of the metrics held constant, the rectangular hyperbola in two metrics. Not negative-curvature geometry, and not the graph measure of Färe, Grosskopf and Lovell.'
+    register: 'hyperbolic'
+    formal: 'the level curves of V, a product of powers of the metrics set equal to a constant; in two metrics with equal exponents the rectangular hyperbola m1 m2 = constant'
+    not: 'negative-curvature geometry (the setting of hyperbolic PCA), or the hyperbolic graph measure of efficiency of Färe, Grosskopf and Lovell'
+    defined_in: 'Definitions'
+
   - id: 'exponent-vector'
     term: 'exponent vector'
     symbol: 'w_k'
