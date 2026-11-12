@@ -220,7 +220,7 @@ under the 8,000,000 full budget) and 30 (7.84 million). Baseline per satellite, 
 ## Stale in the checklist
 
 Steps 8 and 14: the model already carries the values at the regeneration, so there is no "placeholder model" and no second
-`--wp30 values` run; the container run is one run (entries `@10`, shared `@9`), and step 11's model edit and neutrality run
+`--wp30 values` run; the container run is one run (entries `@12`, shared `@11`, as run), and step 11's model edit and neutrality run
 reduce to re-reading the ladders and printing the admitted shares for the record. The gate's `WP30_NOTE` (ledger text) now says
 the limits are the supervisor's values. The step 10 pass fractions in `WP30-decisions.md` (82 percent, 71 percent, 93 percent)
 are on the earlier calibration and are recomputed from the regenerated data. Docs (`docs/examples.md`, `examples/adcs/case-model.md`)

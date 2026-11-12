@@ -277,8 +277,8 @@ package CubesatStakeholders {
                budget, the unit cost and the fleet cost, the pointing error and the power
                requirement, each as its concern holds it.
                Evidence: the primary dataset's verdicts, computed by the model's requirements in the
-               oracle; the current entry is the WP30 data gate's host regeneration (the
-               container regression of that gate follows and moves the pointer). */
+               oracle; the current entry is the WP30 data gate's container regression
+               (v2-primary@12), the data of record. */
         objective {
             verify lowCost.launchBudget;
             verify lowCost.unitCost;
@@ -286,10 +286,10 @@ package CubesatStakeholders {
             verify pointingAndSlewing.pointingError;
             verify powerAndEnergy.power;
         }
-        :>> ledgerEntry = "v2-primary@11";
-        :>> recordEntry = "Host regeneration at the WP30 data gate (2026-11-11, no container)";
+        :>> ledgerEntry = "v2-primary@12";
+        :>> recordEntry = "Container regression at the WP30 data gate (2026-11-11, image 27add815d66c, head c64430e)";
         :>> testNode = "tests/test_cubesat_oracle.py::test_the_flags_come_from_the_requirements_not_from_python";
-        :>> environment = "host";
+        :>> environment = "27add815d66c";
     }
     verification slewEvidence : EvidenceCase {
         doc /* What needs the measured slew (as SlewVerification): settling, control effort,
@@ -308,9 +308,9 @@ package CubesatStakeholders {
             verify powerAndEnergy.batteryPeakPower;
             verify powerAndEnergy.eclipseDepthOfDischarge;
         }
-        :>> ledgerEntry = "v2-primary@11";
-        :>> recordEntry = "Host regeneration at the WP30 data gate (2026-11-11, no container)";
+        :>> ledgerEntry = "v2-primary@12";
+        :>> recordEntry = "Container regression at the WP30 data gate (2026-11-11, image 27add815d66c, head c64430e)";
         :>> testNode = "tests/test_case.py::test_feasible_mask_counts_on_frozen_data";
-        :>> environment = "host";
+        :>> environment = "27add815d66c";
     }
 }
