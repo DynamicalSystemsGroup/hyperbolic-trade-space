@@ -2578,6 +2578,20 @@ def test_reading_pass_rows_carry_what_the_paper_does_and_resolve_in_the_bibliogr
     assert own["status"] == "supervisor"
 
 
+def _g2_cells(cells):
+    """The cells of G.2: from its heading to the next subsection of Appendix G, if any."""
+    start = next(
+        i for i, c in enumerate(cells)
+        if c.cell_type == "markdown" and "### G.2 " in _src(c)
+    )  # fmt: skip
+    out = []
+    for c in cells[start:]:
+        if out and c.cell_type == "markdown" and _unlabel(_src(c)).lstrip().startswith("### "):
+            break
+        out.append(c)
+    return out
+
+
 def test_reading_pass_table_is_in_appendix_g_and_current():
     cells = _appendix_cells(_nb(SUPPORT_NB))["G"]
     headings = [_unlabel(_src(c)) for c in cells if c.cell_type == "markdown"]
@@ -2585,7 +2599,24 @@ def test_reading_pass_table_is_in_appendix_g_and_current():
     cell = next(c for c in cells if c.cell_type == "code" and c.id == "tab-G-reading_pass_table")
     assert _out_text(cell) == str(generate_reading_pass.reading_pass_table()), STALE
     text = _out_text(cell)
-    assert text.count("\n| ") >= 56 and "to be confirmed by the author" in text
+    # Supervisor, 7257053: G.2 lets a reader check what was taken from where; no machine verdict
+    lines = [ln for ln in text.splitlines() if ln.startswith("| ")]
+    assert lines[0] == "| What we say | Source | Where in it |"
+    assert all(ln.count(" | ") == 2 for ln in lines)  # three columns, no verdict, why or status
+    removed = generate_reading_pass.REMOVED
+    kept = [r for r in generate_reading_pass.rows() if r["n"] not in removed]
+    assert len(lines) - 1 == len(kept) == 53  # the header and one row per citing sentence
+    assert all(
+        ("citation" in r["now"].lower() and "remov" in r["now"].lower())
+        or r["now"].startswith("Removed")
+        for r in generate_reading_pass.rows()
+        if r["n"] in removed
+    )
+    g2 = "\n".join(
+        _unlabel(_src(c)) if c.cell_type == "markdown" else _out_text(c) for c in _g2_cells(cells)
+    )
+    assert not re.search(r"verdict|supported", g2, re.I)
+    assert "Verdict" not in text and "rows (" not in text
 
 
 def test_the_combination_sentence_says_what_was_looked_at():

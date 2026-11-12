@@ -1309,3 +1309,11 @@ section = "Appendix D"
 words_removed = 120
 no_longer_did = "D.3 printed the one-axis pair's summed exponents as three frames per regime (K = 1, 2, 3), each row repeating the pair in a column of identical text under the labels 'exponent a' and 'exponent b', and closed with a sentence naming the same pair again; one table per regime now names the pair once in its lead sentence, carries K as a column and the two exponents under the metrics' own names, and the closing sentence (also printed in C.5 and D.4) is dropped"
 authority = "the supervisor's skim of D.3, driver-log entry b229220 (the 'cubesat-stock' table has the same fix)"
+
+# Appendix G.2: the reading pass becomes a table to check against the sources (the supervisor, WP38-decisions.md 7257053).
+[[cut]]
+date = "2026-11-12"
+section = "Appendix G"
+words_removed = 853
+no_longer_did = "G.2 rendered the machine's reading of its own citations: a count line, a verdict column (supported, partly supported, not found, not accessible), the reason for each verdict, and the action taken on the sentence, in six columns; the paragraph above the table described the verdicts. A reader cannot use a verdict to check a citation, and the table said a machine had checked. The table now gives, for each citing sentence still in the paper, what we say, the source and the place in it, three columns; the record keeps the verdicts"
+authority = "the supervisor, WP38-decisions.md at 7257053 (G.2 lets a reader check for themselves; it is not a report that a machine checked)"

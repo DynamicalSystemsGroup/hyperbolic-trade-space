@@ -1,11 +1,12 @@
-"""Appendix G.2: what the cited works say, from the reading pass of the paper's attributions.
+"""Appendix G.2: what the paper took from where, from the reading pass of its attributions.
 
 ``reading_pass.yaml`` holds the fifty-six rows of the reading pass
-(``work-packages/WP10-reading-pass.md``, read-only here): the sentence as it was read, the key, what
-was read, the verdict and the reason, each verbatim, plus what the paper now does with the sentence
-(``status`` and ``now``). The table of the appendix is compiled from the file; the file is made from
-the Markdown table by ``uv run python paper/generate_reading_pass.py`` (which keeps the
-``status`` and ``now`` already in the file), and a test compares the two.
+(``work-packages/WP10-reading-pass.md``, read-only here): the sentence as it was read, the key, the
+place read, the verdict and the reason, each verbatim, plus what the paper now does with the
+sentence (``status`` and ``now``). The file is the record and is made from the Markdown table by
+``uv run python paper/generate_reading_pass.py`` (which keeps the ``status`` and ``now`` already in
+it); a test compares the two. The table of the appendix shows only what a reader needs to check a
+citation: what we say, the source, the place in it. The record's verdict and reason are not shown.
 """
 
 from __future__ import annotations
@@ -73,6 +74,15 @@ def convert(md=MARKDOWN, out=SOURCE) -> None:
     )
 
 
+REMOVED = (4, 14, 15)
+"""Rows whose citation the paper no longer makes (their ``now`` says so): nothing is taken from the
+source for a sentence, so the table has no row for them; the record keeps them."""
+SAID = {10: "Scalarization, for example the weighting method, finds Pareto-optimal solutions."}
+"""Rows whose ``now`` quotes the wording that was cut: the row gives the sentence as the paper now
+says it (the record's ``now`` of that row, stated plainly)."""
+_URL = re.compile(r"https?://[^\s,;)]*[^\s,;).]")
+
+
 def _left(text: str, width: int, small: bool = False) -> str:
     """A cell of running text: left aligned, wrapping inside a minimum width (long URLs break)."""
     size = ";font-size:0.85em" if small else ""
@@ -82,35 +92,65 @@ def _left(text: str, width: int, small: bool = False) -> str:
     )
 
 
+def _plain(text: str) -> str:
+    """Escaped text that keeps the single space at either end (so a link beside it stays apart)."""
+    return (" " if text[:1].isspace() else "") + _esc(text) + (" " if text[-1:].isspace() else "")
+
+
+def _place(read: str) -> str:
+    """The place read, as the record gives it, with each web address a link."""
+    out, last = [], 0
+    for m in _URL.finditer(read):
+        out += [_plain(read[last : m.start()]), f'<a href="{m.group()}">{m.group()}</a>']
+        last = m.end()
+    return "".join(out) + _plain(read[last:])
+
+
+def citing_rows(rs=None) -> list[dict]:
+    """One row per citing sentence still in the paper: what we say, the source, where in it.
+
+    A sentence the record gives as ``(same sentence)`` is the previous row's. Where the sentence
+    was reworded after the reading, the paper no longer says the sentence read, so the row gives
+    what the paper now says (``now``). Where the place read is given as ``above``, it is the same
+    source's earlier place.
+    """
+    rs = rows() if rs is None else rs
+    out, sentence, places = [], "", {}
+    for r in rs:
+        if not r["sentence"].startswith("(same"):
+            sentence = r["sentence"]
+        place = r["read"]
+        if "above" in place and r["key"] in places:
+            place = places[r["key"]]
+        places.setdefault(r["key"], place)
+        if r["n"] in REMOVED:
+            continue
+        say = SAID.get(r["n"], sentence if r["status"] in ("kept", "supervisor") else r["now"])
+        out.append({"n": r["n"], "say": say, "key": r["key"], "place": place})
+    return out
+
+
 def reading_pass_table() -> Md:
-    """The reading pass as a table: sentence, key, what was read, verdict and what the paper does.
+    """What the paper took from where: the sentence, the source, the place in it.
 
     Returns
     -------
     Md
-        One row per sentence and key, with the counts of each verdict above the table.
+        One row per citing sentence still in the paper, for the reader to check against the source.
     """
-    rs = rows()
-    counts = ", ".join(
-        f"{v} {sum(r['verdict'] == v for r in rs)}"
-        for v in VERDICTS
-        if any(r["verdict"] == v for r in rs)
-    )
-    table = md_table(
-        ["#", "Sentence", "Key", "What was read", "Verdict", "In the paper"],
-        [
+    return Md(
+        md_table(
+            ["What we say", "Source", "Where in it"],
             [
-                r["n"],
-                _left(_esc(r["sentence"]), 15),
-                cite([r["key"]], "../#"),
-                _left(_esc(r["read"]), 18, small=True),
-                r["verdict"],
-                _left(f"{STATUS[r['status']]}. {_esc(r['now'])}", 16),
-            ]
-            for r in rs
-        ],
+                [
+                    _left(_esc(r["say"]), 18),
+                    cite([r["key"]], "../#"),
+                    _left(_place(r["place"]), 18, small=True),
+                ]
+                for r in citing_rows()
+            ],
+        )
     )
-    return Md(f"{len(rs)} rows ({counts}).\n\n{table}")
 
 
 if __name__ == "__main__":
