@@ -38,3 +38,12 @@ is the supervisor's and additions are proposed to him, not made. The page is sho
 the rest of the site, links back to the early formalization of cadCAD and forward to the synthesis effort, and is
 linked from the root page in one line. The paper and the docs do not change. The draft comes to the assistant and
 then to the supervisor, whose acceptance settles the people and the wording.
+
+## The supervisor, adding names (verbatim)
+
+> other people Jakob Hackel, Emanuel Lima and Andrew Clark
+
+**The assistant's reading.** The named list is now ten: Markus Koch, Danilo Bernardinelli, Rohan Mehta, Joshua
+Jodesty, Jamsheed Shorish, Kris Paruch, Andrew "Octopus" Penland, Jakob Hackel, Emanuel Lima and Andrew Clark.
+The workers research the three additions as they do the others: public works bearing on the history, attributions
+read from sources, nothing inferred.
