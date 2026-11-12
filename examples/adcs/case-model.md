@@ -130,6 +130,10 @@ Control (the attitude loop under the nominal slew, a 30 degree slew with a 600 s
   (the torque over Kp) and the star tracker's accuracy.
 - **Control effort** (MoP, measured): the integral of the wheel torque magnitude over the slew,
   in N.m.s; what the slew asks of the wheels.
+- **Momentum headroom** (MoP, from the measured peak momentum): the wheel class's momentum
+  capacity over the peak wheel momentum of the slew; 1 where the peak just reaches the capacity,
+  above 1 where the wheel keeps reserve. It is the inverse of the momentum utilisation, and the
+  quantity the momentum requirement reads.
 
 Power and energy (the panels, the battery and the loads under the stated orbit and eclipse).
 
@@ -144,17 +148,31 @@ Power and energy (the panels, the battery and the loads under the stated orbit a
   depth-of-discharge requirement restated (`WP23-rounds/spike-redundancy.md`, pair 1).
 - **Peak slew power** (MoP): the electrical draw at the peak of the slew, the tracker's power plus
   the idle wheels plus the wheels' loss at the peak torque.
+- **Available power** (MoP, a calc of the configuration): the generated power left after the
+  housekeeping load and the tracker, before any slew; positive wherever the power requirement holds.
+- **Battery peak power ratio** (MoP): the pack's peak power, its discharge rating times its
+  capacity, over the eclipse peak load, the housekeeping load plus the peak slew power with the
+  panels giving nothing; 1 where the pack just carries the slew in eclipse, above 1 where it keeps
+  reserve.
 <!-- vocab-exempt: power margin -->
 
 Mass and cost.
 
 - **Total mass** (MoP): the launch mass of the configuration, the sum of the bus, battery, panels,
   antenna, wheels, tracker and IMU masses.
-- **Launch cost** (MoE, not traded): the total mass times a price per kilogram, increasing in mass. The
-  price (6000 USD per kilogram) is an illustrative constant labelled like the model's other
-  constants, not a cited price. The launch cost is the stakeholder's measure on the mass and the
-  quantity its requirement reads; the total mass stays the traded metric and the dataset gains no
-  column (`WP23-decisions.md`, OD1 and OD2;
+- **Unit cost** (MoE, a calc of the configuration): the cost per satellite to build and launch a
+  fleet, the fleet cost over the fleet size, read at the configuration's own fleet size; it falls
+  as the fleet grows.
+- **Fleet cost** (MoE, a calc of the configuration): the cost to build and launch the fleet: the
+  parts and the assembly line, each a fixed share paid once plus a learning curve in the fleet
+  size, and the launch of every satellite at 7,000 USD per kilogram of its total mass. It rises
+  with the fleet size, more slowly on the build part than on the launch part. Both cost metrics are lower bounds on
+  a full costing (below, and Appendix C.8 of the paper).
+- **Launch cost** (MoE, not traded): the total mass times 7,000 USD per kilogram
+  (`launchRate` in `model_v2/cubesat.sysml`), increasing in mass; the launch cost is the stakeholder's
+  measure on the mass and the quantity the launch-budget requirement reads. The total mass stays the
+  traded metric and the dataset gains no column
+  (`WP23-decisions.md`, OD1 and OD2;
   `tests/test_system_model_v2.py::test_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it`).
 
 ### The requirements and what each reads
@@ -162,7 +180,7 @@ Mass and cost.
 | requirement | reads | bound | where the bound comes from |
 |---|---|---|---|
 | `SettledRequirement` (the flag `settled`) | the measured settling time | below the slew's horizon | the scenario |
-| `MomentumRequirement` (`momentum_ok`) | the measured peak momentum | within the wheel's momentum capacity | the wheel class |
+| `MomentumRequirement` (`momentum_ok`) | the momentum headroom | at least 1 | the wheel class's capacity |
 | `PowerRequirement` (`power_ok`) | the available power | positive | the accounting |
 | `DepthOfDischargeRequirement` (`dod_ok`) | the depth of discharge | within the environment's allowed depth | the environment |
 | `PowerMarginRequirement` | the power margin | not negative | zero |
@@ -170,8 +188,10 @@ Mass and cost.
 | `PointingErrorRequirement` | the pointing error | within `budgets.pointingErrorLimit`, 0.008495 degree | the supervisor's choice (below) |
 | `ControlEffortRequirement` | the measured control effort | within `budgets.controlEffortLimit`, 0.05922 N.m.s | the supervisor's choice |
 | `PeakSlewPowerRequirement` | the peak slew power | within `budgets.peakSlewPowerLimit`, 2.6 W | the supervisor's choice |
-| `LaunchBudgetRequirement` | the launch cost (the MoE on the total mass) | within `budgets.launchBudget`, 90,643 USD | the supervisor's choice |
-| `BatteryPeakPowerRequirement` | the eclipse peak load (housekeeping plus the peak slew power) | within the pack's peak power, its discharge rating times its capacity | the battery's rating (below) |
+| `LaunchBudgetRequirement` | the launch cost (the MoE on the total mass) | within `budgets.launchBudget`, 105,770 USD | the supervisor's choice |
+| `UnitCostRequirement` | the unit cost | within `budgets.unitCostLimit`, 350,000 USD per satellite | the supervisor's choice |
+| `FleetCostRequirement` | the fleet cost | within `budgets.fleetCostLimit`, 6,000,000 USD | the supervisor's choice |
+| `BatteryPeakPowerRequirement` | the battery peak power ratio | at least 1 | the battery's rating (below) |
 <!-- vocab-exempt: power margin -->
 
 The first four are the flags of the dataset, the verdicts of named requirements on each simulated
@@ -181,7 +201,7 @@ from the loop's ladder of pass fractions (`WP23-decisions.md`, "The four thresho
 in `budgets` with the share of the feasible designs each admits (primary / baseline regime): a peak
 slew power of 2.6 W (62.2 % / 67.3 %, every small and medium wheel), a pointing error of 0.008495
 degree (94.9 % / 63.7 %), a control effort of 0.05922 N.m.s (58.9 % / 90.0 %) and a launch budget
-of 90,643 USD, 15.107 kg at the illustrative 6,000 USD per kilogram (94.9 % / 95.6 %); they are read from the model by
+of 105,770 USD, 15.11 kg at 7,000 USD per kilogram (94.9 % / 95.6 %); they are read from the model by
 `tests/test_system_model_v2.py::test_the_four_thresholds_are_the_supervisors_values`. The baseline
 configuration fails the pointing-error requirement: its pointing error is 0.0155 degree against
 0.0085 degree, and 63.7 % of the baseline regime's feasible designs pass it ("Keep 0.0085 deg",
@@ -255,42 +275,7 @@ figure checks after the data gate, never a target: no metric, threshold or const
 was chosen because it moves the heatmap, and the fit runs unchanged on whatever the model produces
 (`WP23-scope-of-work.md`, non-goals).
 
-What the fit returned at the WP23 close-out, on the earlier eight-metric data (history, not the current record;
-`swap-evidence.md`, "WP23 close-out"). In the primary regime two metrics carry no exponent at any
-fit temperature of the sweep: the power margin and the peak slew power; in the baseline regime the
-peak slew power alone (the eclipse reserve, zero in the primary regime before, left the metric
-set). The K = 1 contending set is a 5-lemma in both regimes: total mass
-(0.358), energy balance, pointing error, depth of discharge and settling time in the primary regime;
-control effort (0.432), settling time, power margin, pointing error and depth of discharge in the
-baseline regime. At K = 3 the peak slew power leads a term in both regimes: 0.612 in the primary
-regime (the term of 363 of 706 designs) and 0.424 in the baseline regime (a 6-lemma of 185 of 780
-designs). The
-K = 1 fit is one monomial term, a hyperplane in log-metric space, and a metric carries weight
-only where it trades against the others at the frontier: the contending set is found from the
-data (`docs/theory.md`, "Elasticities and the n-lemma"). Read that way, each zero has a reason in
-the metric set rather than in the configuration space.
-<!-- vocab-exempt: power margin -->
-
-- The power margin is carried by the energy balance. Both are affine in the generated power, which
-  is proportional to the panel span: one is instantaneous at the slew's peak in sunlight, the other
-  integrated over the orbit. Which of the pair carries the weight is the linear program's choice,
-  and it changed between the regimes (the energy balance in the primary regime, the power margin in
-  the baseline regime). The case's association step (`case.association_all_pairs`) reads the pair
-  at Spearman 0.982 and 0.988 over the feasible designs, below the 0.99 at which it would name them
-  one axis and sum their exponents, so each is read on its own.
-- The peak slew power is a step function of the two swaps. With the peak torque at the wheel class's
-  maximum it takes one value per wheel class and tracker grade, so it is flat inside each cell of the
-  design space those swaps cut, and across the cells it orders the designs as the total mass does
-  (the heavy wheel draws the power). One hyperplane over all the cells can use no elasticity from a
-  metric that is flat inside each, and the ordering across them is the total mass's. With three
-  terms (K = 3) it leads a term in both regimes, the cell of the large-wheel designs, where the
-  draw trades against the settling time.
-<!-- vocab-exempt: power margin -->
-
-None of this says whether the texture is good or bad; it says what the metric set contains: one
-pair near one quantity and one metric that steps with the swaps. The pair that was one quantity,
-the eclipse reserve and the depth of discharge, was a modelling issue and left the model with the
-reserve (the WP23 close-out).
+What the fit returns on the thirteen-metric data of record, the contending set and the terms, is in Appendix D of the supporting material.
 
 ## Running an experiment and reading the ledger
 
