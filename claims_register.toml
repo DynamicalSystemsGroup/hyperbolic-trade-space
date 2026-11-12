@@ -2227,7 +2227,7 @@ note = "guide pages exist and links resolve; the sentence is a pointer to the gu
 [[claim]]
 id = "C177"
 fragment = "The package follows the scikit-learn conventions [@pedregosa2011scikit; @buitinck2013api]: parameters"
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_sklearn_compat.py::test_init_stores_parameters_verbatim"]
@@ -2239,7 +2239,7 @@ note = "parametrize_with_checks plus verbatim-params test; the citations are the
 [[claim]]
 id = "C178"
 fragment = "validation in `fit`, fitted attributes ending in an underscore."
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_sklearn_compat.py::test_fitted_attributes_end_in_underscore_and_n_iter_positive", "test:tests/test_preconditioning.py::test_parameter_validation_in_fit"]
@@ -2251,7 +2251,7 @@ note = "underscore test asserts all new attrs end in _; validation in fit pinned
 [[claim]]
 id = "C179"
 fragment = "Dimension is arbitrary: `d` metrics and `d - 1` chart coordinates."
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_coordinates.py::test_helmert_orthonormal_kernel", "test:tests/test_datasets.py::test_d1", "test:tests/test_estimator.py::test_d1"]
@@ -2263,7 +2263,7 @@ note = "helmert basis is (d-1,d) for d 2..8; d=1 handled; arbitrary d shown over
 [[claim]]
 id = "C180"
 fragment = "[`frontier_in_original_units`](user-guide/conditioning.md), a function: the fitted reference surface as a"
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "func:src/hyperbolic_trade_space/preconditioning.py::frontier_in_original_units"]
@@ -2275,7 +2275,7 @@ note = "returns exponents_orig, log_const, shift; log V in raw attributes equals
 [[claim]]
 id = "C181"
 fragment = "[`HyperbolicTradeSpace`](user-guide/fitting.md), a transformer: fits the surface and gives the"
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_predictive.py::test_recovers_planted_coordinates", "test:tests/test_estimator.py::test_d1", "test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator"]
@@ -2287,7 +2287,7 @@ note = "transform gives (Z, log V) chart (inverse_transform of column_stack([Z, 
 [[claim]]
 id = "C182"
 fragment = "chart of position and log V. Fitted attributes for every number of terms include `exponents_`,"
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_estimator.py::test_attributes_exist_for_every_k_and_k1_numbers_are_unchanged", "test:tests/test_estimator.py::test_k_terms_attributes_conventions", "test:tests/test_interface_contract.py::test_r1_estimator_methods_and_fitted_attributes"]
@@ -2299,7 +2299,7 @@ note = "exponents_, cell_, coefficients_, term_share_ exist at K=1 and K>1"
 [[claim]]
 id = "C183"
 fragment = "`cell_`, `coefficients_`, `term_share_`, `objective_` (what the solver minimized) and"
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized", "test:tests/test_estimator.py::test_attributes_exist_for_every_k_and_k1_numbers_are_unchanged"]
@@ -2311,7 +2311,7 @@ note = "objective_ and mean_slack_ at K=1 and K=2; the test asserts the solver-m
 [[claim]]
 id = "C184"
 fragment = "`mean_slack_` (the mean slack, to compare fits across numbers of terms)."
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_estimator.py::test_mean_slack_is_defined_for_every_k_and_objective_documents_what_was_minimized", "test:tests/test_case.py::test_mean_slack_by_k_reads_the_estimator_and_the_fixed_tau_refit_shares_one_temperature"]
@@ -2323,7 +2323,7 @@ note = "mean_slack_ defined for every K; comparison across K at a shared tempera
 [[claim]]
 id = "C185"
 fragment = "[`select_temperature`](user-guide/fitting.md), a function: chooses the temperature by a target"
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_tuning.py::test_selected_temperature_hits_target", "func:src/hyperbolic_trade_space/tuning.py::select_temperature"]
@@ -2335,7 +2335,7 @@ note = "tests assert frac_above_ within 0.01 of target"
 [[claim]]
 id = "C186"
 fragment = "[`make_frontier_data`](user-guide/fitting.md), a function: seeded synthetic data with a planted"
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_datasets.py::test_frontier_info_and_planting", "test:tests/test_datasets.py::test_reproducible_and_noise"]
@@ -2347,7 +2347,7 @@ note = "seeded reproducibility and planted frontier"
 [[claim]]
 id = "C187"
 fragment = "[`make_configured_frontier_data`](user-guide/prediction.md), a function: the same with"
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_datasets.py::test_configured"]
@@ -2359,7 +2359,7 @@ note = "configured data with config_map to (Z, log V), reproducible by seed"
 [[claim]]
 id = "C188"
 fragment = "[`tension_report`](user-guide/tensions.md), a function: contending set, elasticities and"
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "test:tests/test_tensions.py::test_exponents_and_elasticities_consistent", "test:tests/test_tensions.py::test_first_direction_recovers_planted_spread"]
@@ -2371,7 +2371,7 @@ note = "report carries contending set, elasticities, tension directions"
 [[claim]]
 id = "C189"
 fragment = "[`TradeSpaceRegressor`](user-guide/prediction.md), a regressor: metrics, coordinates and novelty"
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_predictive.py::test_recovers_planted_coordinates", "test:tests/test_predictive.py::test_novelty_beyond_the_soft_frontier"]
@@ -2383,7 +2383,7 @@ note = "predict (metrics), predict_coordinates and predict_novelty from configur
 [[claim]]
 id = "C190"
 fragment = "`hyperbolic_trade_space.tensions`: `TensionReport`, the object `tension_report` returns."
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_interface_contract.py::test_r1_termination_fields_statuses_and_report_fields", "func:src/hyperbolic_trade_space/tensions.py::tension_report"]
@@ -2395,7 +2395,7 @@ note = "TensionReport is in tensions and tension_report returns it (test_tension
 [[claim]]
 id = "C191"
 fragment = "`hyperbolic_trade_space.solvers`: the multi-term solver, the `Termination` record and the"
-file = "docs/api.md"
+file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_interface_contract.py::test_r1_submodule_importable_with_pinned_names", "test:tests/test_interface_contract.py::test_r1_termination_fields_statuses_and_report_fields"]

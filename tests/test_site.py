@@ -46,7 +46,6 @@ NAV_PAGES = [
     "user-guide/prediction.md",
     "user-guide/termination.md",
     "user-guide/limitations.md",
-    "api.md",
     "api-reference.md",
     "examples.md",
     "theory.md",
@@ -66,12 +65,12 @@ BUDGETS = {
     "user-guide/prediction.md": 350,
     "user-guide/termination.md": 743,  # 600 until WP28 S-10
     "user-guide/limitations.md": 493,
-    "api.md": 300,
+    "api-reference.md": 287,  # api.md (300) merged in; the ::: directives are not prose
     "examples.md": 671,  # 720 until WP28 X-2 (the coordinates figure went); 676 until WP33
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 7254  # 7472 until WP33 (Home, the cubesat block, what must hold, tops)
+TOTAL_BUDGET = 7241  # 7472 until WP33 (Home, cubesat block, tops, API merge)
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
@@ -171,11 +170,13 @@ def source_pages() -> list[Path]:
 
 
 def prose_words(path: Path) -> int:
-    """Words of a page outside fenced code blocks, tables, image alt text and HTML comments."""
+    """Words of a page outside fenced code blocks, tables, image alt text, HTML comments and
+    mkdocstrings directives."""
     text = re.sub(r"```.*?```", "", path.read_text(encoding="utf-8"), flags=re.S)
     text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
     text = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", text)  # alt text is not prose; captions count
     text = re.sub(r"^\|.*$", "", text, flags=re.M)
+    text = re.sub(r"^:::.*\n(?:[ \t]+.*\n?)*", "", text, flags=re.M)  # mkdocstrings directives
     return len(text.split())
 
 

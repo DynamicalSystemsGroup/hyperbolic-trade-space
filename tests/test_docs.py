@@ -41,8 +41,10 @@ def _text(page):
 
 
 def _guide_text():
-    """api.md and the user-guide pages together."""
-    return "\n".join(_text(p) for p in PAGES if p == "api.md" or p.startswith("user-guide/"))
+    """api-reference.md and the user-guide pages together."""
+    return "\n".join(
+        _text(p) for p in PAGES if p == "api-reference.md" or p.startswith("user-guide/")
+    )
 
 
 def _keys(text):

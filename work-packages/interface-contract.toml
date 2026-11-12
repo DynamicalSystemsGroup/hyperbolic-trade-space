@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 20
+contract_version = 21
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -248,7 +248,7 @@ pages = [
   "index.md", "getting-started.md", "user-guide/overview.md", "user-guide/conditioning.md",
   "user-guide/fitting.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/chart.md",
   "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md",
-  "api.md", "examples.md", "theory.md", "further-reading.md",
+  "examples.md", "theory.md", "further-reading.md",
 ]
 generated_dir = "docs/generated/"
 generated_pages = ["glossary.md"]
@@ -272,12 +272,11 @@ math_display = "$$...$$"
 rename_rule = "the presentation side owns the pages; the technical side edits none of them; a pinned page is renamed or removed only by an amendment"
 api_reference_page = "docs/api-reference.md"
 api_reference_source = "numpydoc docstrings of the public names, rendered by the docsite"
-api_overview_page = "docs/api.md"
 presentation_pages = [
   "docs/index.md", "docs/getting-started.md", "docs/user-guide/overview.md",
   "docs/user-guide/conditioning.md", "docs/user-guide/fitting.md", "docs/user-guide/choosing-k.md", "docs/user-guide/tensions.md",
   "docs/user-guide/chart.md", "docs/user-guide/prediction.md", "docs/user-guide/termination.md",
-  "docs/user-guide/limitations.md", "docs/api.md", "docs/examples.md", "docs/theory.md",
+  "docs/user-guide/limitations.md", "docs/examples.md", "docs/theory.md",
   "docs/further-reading.md", "docs/api-reference.md",
 ]
 helper = "tests/test_references.py"
@@ -353,7 +352,7 @@ paths = [
 paths = [
   "mkdocs.yml", "glossary.yaml", "site/", "scripts/", ".github/workflows/pages.yml",
   "tests/test_site.py", "docs/index.md", "docs/getting-started.md", "docs/user-guide/",
-  "docs/api.md", "docs/api-reference.md", "docs/examples.md", "docs/theory.md",
+  "docs/api-reference.md", "docs/examples.md", "docs/theory.md",
   "docs/further-reading.md", "docs/generated/", "docs/superpowers/notes/paper-sources/",
 ]
 

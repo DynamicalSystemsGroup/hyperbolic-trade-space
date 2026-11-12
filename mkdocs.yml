@@ -65,8 +65,8 @@ plugins:
 nav:
   - Home: index.md
   - Getting started: getting-started.md
-  - User guide:
-      - Overview: user-guide/overview.md
+  - User guide, page by page:
+      - "User guide: start here": user-guide/overview.md
       - Conditioning: user-guide/conditioning.md
       - Fitting: user-guide/fitting.md
       - Choosing K: user-guide/choosing-k.md
@@ -75,8 +75,7 @@ nav:
       - Prediction: user-guide/prediction.md
       - Termination: user-guide/termination.md
       - Limitations: user-guide/limitations.md
-  - API: api.md
-  - API reference: api-reference.md
+  - API: api-reference.md
   - Examples: examples.md
   - Theory in brief: theory.md
   - Glossary: generated/glossary.md
