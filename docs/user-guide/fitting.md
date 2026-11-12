@@ -30,7 +30,6 @@ The attributes to read first:
 - `termination_` and `conditioning_`: how the fit stopped and how well its exponents are identified
   ([termination page](termination.md)).
 
-The chart's basis, offsets and support weights are `basis_`, `log_offset_` and `support_weights_`. `training_log_v_` is log V of the training rows.
 Keep `min_exponent` (a floor on every exponent) at 0 to
 read the contending set, and choose `coordinates` as `"ilr"` or `"alr"`.
 
@@ -93,9 +92,8 @@ rows. Options:
 
 `cell_` gives each training row's cell; `coefficients_` and `term_share_` the terms' coefficients
 and term shares. At one term `cell_` is all zeros and `term_share_` is
-`[1.0]`. The terms are ordered by term share, largest first (ties by cell size, then by the first
-metric's exponent), so term 1 is the term that carries most of the frontier and every per-term
-attribute carries that order.
+`[1.0]`. Terms are ordered by term share, largest first (ties by cell size, then the first metric's
+exponent); every per-term attribute follows.
 
 ## The temperature and the band at several terms
 
