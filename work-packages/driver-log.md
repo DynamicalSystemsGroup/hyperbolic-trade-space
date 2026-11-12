@@ -228,6 +228,20 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP32 round 2 done; round 3 for the pump-table cells (14:40).** Round 2's four fresh cells (returns verbatim at
+  bd90bf9): every cell reached a fit and a K choice from the README, the site and the package alone, answered the
+  standing question "no", and read the planted facts right (the strength-weight pair; the flow-head-power trilemma
+  with mass at zero; U2 recovered the model's own law). Of round 1's stops only "not bracketed" recurred, on both
+  pump-table cells, because cells copy the code block and not the sentence: the fitting block now uses bounds
+  (3, 1e4) and the choosing-K page says real data may need them; the K = 1 band-minimum message is placed under
+  the right heading; the heatmap caption names w (2942ff5, net -2 words). No code defect: the tau that the target
+  returns moves with the bounds because frac_above_ falls slowly near the target, which the docstring says and the
+  fitting page now says in one clause. The claims-register repair landed (60f92d9: twelve rows, ten re-pointed, two
+  retired with reasons, no prose edited). The assistant's call: round 3 runs for U2 and U4 only, fresh cells on the
+  stage rebuilt at 60f92d9, as the second and final re-run, to show the new block holds; U1 and U3 are complete
+  (no stop recurred). Then WP32's review (the reviewer runs the cells' code and looks at the pages) and acceptance.
+  CI dispatched on 60f92d9; the assistant's checks on 2942ff5 are running and are repeated on 60f92d9.
+
 - **CI, 14:00.** 94464bb: every job green on both platforms (the eleventh fully green head). a3a61af: the fast
   jobs on both platforms fail on the claims-register rows only (the unit is dispatched); its slow jobs run. c060dd1:
   the Linux job's new lint step passed on its first run; the rest in progress.
