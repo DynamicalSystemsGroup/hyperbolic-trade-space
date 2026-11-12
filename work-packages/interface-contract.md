@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 21. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 22. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 21
+contract_version = 22
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -53,7 +53,7 @@ derivation.chain_length = 14
 derivation.generated_dir = "build/generated/"
 derivation.generated_pages = ["derivations.md", "verification.md"]
 derivation.generated_by = "scripts/build_generated.py"
-docs.pages = ["index.md", "getting-started.md", "user-guide/overview.md", "user-guide/conditioning.md", "user-guide/fitting.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/chart.md", "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md", "examples.md", "theory.md", "further-reading.md"]
+docs.pages = ["index.md", "getting-started.md", "user-guide/index.md", "user-guide/overview.md", "user-guide/conditioning.md", "user-guide/fitting.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/chart.md", "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md", "examples.md", "theory.md", "further-reading.md"]
 docs.generated_dir = "docs/generated/"
 docs.generated_pages = ["glossary.md"]
 docs.glossary_source = "glossary.yaml"
@@ -351,7 +351,8 @@ the last row of the change log.
 | 18 | 2026-11-11 | A path to a deleted file leaves the manifest (WP25-4 row T-1): `[ownership.technical].paths` no longer lists `examples/adcs/adcs_trade_study.ipynb`, deleted at 4bd6bac. No pinned fact changes: the ownership tests check form, not existence, so the stale entry had passed; `examples/adcs/figures/` stays (amendment 14's guard) | technical (one ownership entry) | the driver, `WP25-decisions.md`, "Instance 4: the gate" ("WP25-4: approved as drafted") |
 | 19 | 2026-11-11 | Stable reference keys from the docsite into the paper (WP8b D-6, `WP8b-scope-of-work.md` Amendment 1): `docs.reference_key_syntax = "[text](paper:key)"`, `docs.reference_key_resolver = "scripts/paper_keys.py"` and `docs.reference_key_sources` (the two paper notebooks, where the keys are defined) are pinned; the docs build resolves a citation to a link to the paper page and anchor and fails on an undefined key (section 10). Additive: the pinned `docs` list grows (floor rule); no number changes and no paper text changes | presentation (the docsite and `scripts/`; the paper side keeps its labels stable) | the driver, `WP8b-decisions.md`, "Amendment 1, the driver's decisions" (OD-A2 (a): D-6 inside 0.1 after WP28's acceptance) |
 | 20 | 2026-11-11 | Thirteen traded metrics, a fleet size and a larger sample (WP30; `WP30-decisions.md`, "Scope gate", "No floating requirements" and "Sampling", the supervisor's words verbatim there): `case.v2.traded_metrics` grows from eight to thirteen, in the order of the oracle's attributes: after `dod_eclipse` come `momentum_headroom` (the wheel's momentum capacity over the slew's peak momentum), `available_power_w` (W; an auxiliary column before, now a traded metric, the quantity the power requirement bounds), `battery_peak_power_ratio` (the pack's rated power over the eclipse peak load, the quantity the battery peak power requirement bounds), `unit_cost_usd` and `fleet_cost_usd` (USD, build and launch at the configuration's own fleet size); every requirement of the model now reads a traded metric. The seventh configuration variable `fleet_size` (float column of whole numbers 1 to 30) enters the headers of `case.v2.data` (after `Kd` in the main files and the check designs, after `st_grade` in the predictions) and the oracle's configuration names. `case.v2.data` rows: the two regime files have 3,000 designs each (`experiments.definitions.SAMPLE_PER_REGIME`; design i depends only on the seed and i, so the first 1,000 are the earlier sample and the feasible sets of those rows stay 706 and 780); the check designs (6) and predictions (3) are unchanged in count. Not additive: a pinned list grows by five and the pinned headers change order and gain columns. The frozen files and their `case.data` manifests are unchanged | technical (the paper's and the docs' numbers regenerate in the same package) | the supervisor and the driver, `WP30-decisions.md` ("Scope gate"; "No floating requirements"; "Sampling") |
-| 21 | 2026-11-12 | One API page (WP33 D-2 item 5, Q3 "merge where the map shows a page serves no path"): `docs/api.md` is removed and `docs/api-reference.md` (nav title "API") opens with its overview of the public names, then the generated reference. `docs.pages` loses `api.md`; `api_overview_page` leaves the manifest; `presentation_pages` loses `docs/api.md` and `ownership.wp8a.paths` loses `docs/api.md`; `api_reference_page` is unchanged. What `api.md` no longer does: it was a second entry in the navigation that only linked to the reference page. No number changes | presentation (the docs pages; `mkdocs.yml`; `tests/test_site.py`, `tests/test_docs.py`; `claims_register.toml` file paths) | the assistant's ruling on WP33 Q3 for item 5 (PM13 brief to the implementer, 2026-11-12) |
+| 21 | 2026-11-12 | One API page (WP33 D-2 item 5, Q3 "merge where the map shows a page serves no path"): `docs/api.md` is removed and `docs/api-reference.md` (nav title "API") opens with its overview of the public names, then the generated reference. `docs.pages` loses `api.md`; `api_overview_page` leaves the manifest; `presentation_pages` loses `docs/api.md` and `ownership.wp8a.paths` loses `docs/api.md`; `api_reference_page` is unchanged. What `api.md` no longer does: it was a second entry in the navigation that only linked to the reference page. No number changes | presentation (the docs pages; `mkdocs.yml`; `tests/test_site.py`, `tests/test_docs.py`; `claims_register.toml` file paths) | `WP33-decisions.md`, D-2 items 5 and 6 (the assistant's rulings) |
+| 22 | 2026-11-12 | A router page (WP33 D-2 item 6, the typed address `/docs/user-guide/`): `docs/user-guide/index.md` is added to `docs.pages` and `presentation_pages`, so that the address of the user guide's directory lands on one line pointing to the Overview instead of a directory listing. The page is a router and carries no content; it is not a navigation entry (`mkdocs.yml` `nav` unchanged). No number changes | presentation (the docs pages; `tests/test_site.py`, `tests/test_docs.py`) | `WP33-decisions.md`, D-2 items 5 and 6 (the assistant's rulings) |
 
 ## 15. Consumers: may assume, must not touch
 

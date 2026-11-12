@@ -2721,7 +2721,7 @@ note = "'nearest neighbour outside engineering design' is the author's judgment 
 
 [[claim]]
 id = "C218"
-fragment = "PCA finds the directions in which the data spread;"
+fragment = "PCA finds the directions in which the data spread"
 file = "docs/user-guide/overview.md"
 anchor = ""
 kind = "M"
@@ -2745,7 +2745,7 @@ note = "fit returns one exponent per metric on the simplex, min and sum asserted
 
 [[claim]]
 id = "C220"
-fragment = "found from the data, so you need not know in advance which dilemma or trilemma your problem holds."
+fragment = "you need not know in advance which dilemma or trilemma your problem holds."
 file = "docs/user-guide/overview.md"
 anchor = ""
 kind = "S"

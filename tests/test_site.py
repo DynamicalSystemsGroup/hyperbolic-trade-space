@@ -52,10 +52,14 @@ NAV_PAGES = [
     "generated/glossary.md",
     "further-reading.md",
 ]
+# Pages on disk and in the contract that are not navigation entries: the router of the typed
+# address /docs/user-guide/ (contract version 22), one line, no content.
+ROUTER_PAGES = {"user-guide/index.md"}
 # Word budgets of the hand-written pages (code blocks and tables excluded), total at most 7,600.
 BUDGETS = {
     "index.md": 206,
-    "getting-started.md": 351,
+    "getting-started.md": 348,
+    "user-guide/index.md": 3,  # the router: one line
     "user-guide/overview.md": 399,
     "user-guide/conditioning.md": 610,
     "user-guide/fitting.md": 668,  # 800 until WP31 U2 and U3
@@ -213,14 +217,15 @@ def test_nav_pages_exist_and_cover_the_contract_pages(mkdocs_config):
         assert page in GENERATED_PAGES or (DOCS / page).is_file(), page
     assert pages == NAV_PAGES
     contract_pages = set(CONTRACT["docs"]["pages"])
-    assert contract_pages <= set(pages)
+    assert contract_pages == set(pages) - {"api-reference.md"} - GENERATED_PAGES | ROUTER_PAGES
+    assert not ROUTER_PAGES & set(pages), "the router is not a navigation entry"
     assert set(pages) >= GENERATED_PAGES
-    assert {f"docs/{p}" for p in pages if p not in GENERATED_PAGES} == set(
+    assert {f"docs/{p}" for p in [*pages, *ROUTER_PAGES] if p not in GENERATED_PAGES} == set(
         CONTRACT["docs"]["presentation_pages"]
     )
     # every hand-written page on disk is in the navigation, and nothing else
     on_disk = {p.relative_to(DOCS).as_posix() for p in source_pages()}
-    assert on_disk == set(pages) - GENERATED_PAGES
+    assert on_disk == (set(pages) | ROUTER_PAGES) - GENERATED_PAGES
 
 
 def test_word_budgets_hold():
