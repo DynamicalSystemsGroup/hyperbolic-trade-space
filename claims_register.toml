@@ -5913,7 +5913,7 @@ note = "What the model file contains and does not: no schedule, qualification, f
 
 [[claim]]
 id = "C498"
-fragment = "The model states six requirements: four thresholds (peak slew power, pointing error, control effort, launch cost) and two limits (unit cost, fleet cost)"
+fragment = "The model states six requirements: four thresholds (peak slew power, pointing error, control effort, launch cost), whose limits are read from the data's pass fractions, not a mission's, and two limits (unit cost, fleet cost)"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "R"
@@ -5942,3 +5942,34 @@ status = "backed"
 disposition = "keep"
 source = "WP30-decisions.md, 'No floating requirements'; the supervisor's 'no single satellite clears it' (2026-11-11)"
 note = "on both datasets' feasible designs, the fleet-size-one rows all exceed 350,000 USD per satellite; the pass fractions 0.762 and 0.758 (unit cost), 0.714 and 0.710 (fleet cost) are the table's"
+
+[[claim]]
+id = "C500"
+fragment = "whose limits are read from the data's pass fractions, not a mission's"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out",
+  "test:tests/test_case.py::test_requirements_are_the_models_budgets",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "P7 final read N-F5; the triage of 2026-11-12 (WP30-rounds/persona-final/triage.md)"
+note = "The model's Budgets docs give the four thresholds as rungs of the data's ladder of pass fractions; C.8 says none is flowed down from a mission. The two cost limits are budgets and are named separately in the same sentence."
+
+[[claim]]
+id = "C501"
+fragment = "the case has no schedule, no payload and a flat launch price"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "P8 final read F7; the triage of 2026-11-12"
+note = "No attribute, calc or requirement of the model is a schedule or a payload (the C.8 test asserts none is named in the file); the launch cost is 7,000 USD per kilogram with the slot minimum noted and not modelled."
