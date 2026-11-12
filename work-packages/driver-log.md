@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **A lint slip of the assistant's own (01:00).** The encoding fix (5875f3a) left four lines over 100 characters;
+  the check chain did not stop on ruff's failure and the commit went out. Reformatted at 38aff78 (ruff and format
+  clean over the repository; the encoding test and the paper tests' fast marker 151 passed). CI run 43161191156
+  caught 5875f3a; a second run dispatched on 38aff78. Lesson applied: the assistant's chains run each check as its
+  own command and stop on any failure before a commit.
+
 - **d7942d0, the rendered read (00:35).** Stage rebuilt at d7942d0 on 8791. The article reads "an 8-lemma"; the
   sentence on the two metrics that join no contending set (the power margin and the battery peak power ratio, each
   nearly one axis with a metric that does, Spearman at least 0.97, Appendix C.5), the cost coverage sentence
