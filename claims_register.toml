@@ -5750,7 +5750,7 @@ note = "The search record of C457 and C458: 56 triples in each regime at K = 1, 
 
 [[claim]]
 id = "C472"
-fragment = "*Shows:* where each term leads and where its V peaks. *Does not show:* groups of designs, the values of V on the lines, the other five metrics or a cause."
+fragment = "*Shows:* where each term leads and where its V peaks. *Does not show:* groups of designs, the values of V on the lines, the other ten metrics or a cause."
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "S"
@@ -5758,7 +5758,7 @@ backing = ["test:tests/test_plotting.py::test_ternary_fixed_total_identity_and_p
 status = "backed"
 disposition = "keep"
 source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper"
-note = "As C455 for the docs page; the five metrics are the eight less the triple."
+note = "As C455 for the docs page; the ten metrics are the thirteen less the triple (a test computes the count from the metric set)."
 
 [[claim]]
 id = "C473"
@@ -6048,3 +6048,18 @@ status = "backed"
 disposition = "keep"
 source = "P8 final read F4; the triage of 2026-11-12 (body not changed: the balance rule)"
 note = "The values are the thresholds-met column of D.17's placement table (case.design_sets_placement): fast_effort_hungry +0.315, precise_heavy_sensor +0.354, light_slow -0.638; baseline configuration, the three candidates and the check designs: the table's 'meets the thresholds' column is False for the four named, True for proposal_2 only."
+
+[[claim]]
+id = "C507"
+fragment = "M3 and M5 again on 2026-11-12, on the thirteen-metric data of 3,000 designs per regime"
+file = "docs/superpowers/notes/abstraction-gaps.md"
+anchor = "Measurement recipes"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_appendix_e_rows_g2_and_g17_carry_the_thirteen_metric_record",
+  "file:examples/adcs/experiments/reports/sensitivity.json",
+]
+status = "backed"
+disposition = "narrow"
+source = "WP30 stage 6 review, findings 2 (the eight-metric, 1,000-design numbers of G-2 and G-17)"
+note = "Brought to the thirteen-metric record: G-2's conditioning_, tau-halving and participant counts are recomputed by recipes M3 and M5 (now on case.fit_study); G-17's nondominated and moved-quantity counts are read from the sensitivity record (818 quantities, 346 not identical, 259 beyond a 1e-12 residue). The test recomputes each and refuses the stale strings."

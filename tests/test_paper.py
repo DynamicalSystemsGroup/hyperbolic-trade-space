@@ -2935,7 +2935,8 @@ def test_the_two_metrics_in_no_contending_set_are_the_computed_ones(case_sentenc
     text = str(case_sentences["num-participation"])
     assert never == {"power margin", "battery peak power ratio"}, never
     assert (
-        "Of the 13 traded metrics, two, the power margin and the battery peak power ratio," in text
+        "Of the thirteen traded metrics, two, the power margin and the battery peak power ratio,"
+        in text
     )
     assert "enter no contending set at K = 1 to 3 in either regime" in text
     assert "Spearman at least 0.97" in text
@@ -3096,6 +3097,76 @@ def test_d7_says_two_candidates_sit_beyond_the_thresholds_met_surface_and_none_m
                  "light_slow"):  # fmt: skip
         assert not rows.loc[name, "meets the thresholds"], name
     assert "none of the three, nor the baseline configuration, meets all four thresholds" in d7
+
+
+@pytest.mark.slow
+def test_appendix_e_rows_g2_and_g17_carry_the_thirteen_metric_record():
+    """The evidence cells of G-2 and G-17 hold the numbers of the data of record (thirteen metrics,
+    3,000 designs per regime), recomputed by the ledger's recipes M3 and M5 and from the sensitivity
+    record: none of the eight-metric, 1,000-design numbers is left in the ledger."""
+    import json
+
+    import case
+
+    note = _norm_ws((NOTES / "abstraction-gaps.md").read_text(encoding="utf-8"))
+    for stale in ("eight-metric", "eight attributes", "eight fitted", "659 of 706", "74 of 685",
+                  "five participants", "7.09"):  # fmt: skip
+        assert stale not in note, stale
+    _, k_terms, _ = case._lib()
+    cond = {}
+    for regime in ("primary", "stock"):
+        study = case.load_study(regime)
+        for K in (1, 2):
+            cond[regime, K] = np.atleast_1d(case.fit_study(study, K).estimator.conditioning_)
+    assert (
+        f"$K=1$ {cond['primary', 1][0]:.3f} (primary), {cond['stock', 1][0]:.3f} (baseline)" in note
+    )
+    two = lambda r: ", ".join(f"{c:.3f}" for c in cond[r, 2])  # noqa: E731
+    assert f"$K=2$ primary {two('primary')}" in note and f"baseline {two('stock')}" in note
+    moves = {}
+    for regime in ("primary", "stock"):
+        study = case.load_study(regime)
+        fit = case.fit_study(study, 1)
+        base = np.atleast_2d(fit.estimator.exponents_)[0]
+        top = int(np.argmax(base))
+        moves[regime] = []
+        for mult in (0.5, 2):
+            w = np.atleast_2d(
+                k_terms.fit_k(study.M, 1, fit.tau * mult, study.spec.seed).exponents_
+            )[0]
+            moves[regime].append((abs(w[top] - base[top]), int((w > 1e-3).sum())))
+    assert (
+        "moves the largest exponent by {:.3f} and {:.3f} (primary".format(
+            *(m for m, _ in moves["primary"])
+        )
+        in note
+    )
+    assert "{:.3f} and {:.3f} (baseline".format(*(m for m, _ in moves["stock"])) in note
+    assert [n for _, n in moves["primary"]] == [8, 7] and [n for _, n in moves["stock"]] == [9, 9]
+    record = json.loads(
+        (ROOT / "examples/adcs/experiments/reports/sensitivity.json").read_text(encoding="utf-8")
+    )["quantities"]
+    moved = [v for v in record.values() if not v["identical"]]
+    big = [v for v in moved if "max" in v and abs(v["max"] - v["min"]) > 1e-12]
+    assert f"{len(moved)} of the record's {len(record)} quantities, {len(big)} of them" in note
+    nd = record["nondominated | primary | all attributes | nondominated"]["committed"]
+    four = record["nondominated | primary | four metrics | nondominated"]["committed"]
+    assert (
+        f"all {nd:,} feasible designs on the thirteen attributes, {four} on the four-metric" in note
+    )
+
+
+def test_the_ternary_figures_does_not_show_line_counts_the_metrics_each_triple_leaves_out():
+    """Stage 6 review, finding 1: the 'other N metrics' is the metric set less the triple's three,
+    computed here; the paper's line says it in words."""
+    import case
+
+    words = {10: "ten", 5: "five"}
+    for panel, (_, triple, _) in case.TERNARY_PAIR.items():
+        left = len(case.CUBESAT.attributes) - len(triple)
+        assert left == 10 and len(triple) == 3, panel
+    lines = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-ternary-pair-lines"))
+    assert f"the other {words[left]} metrics" in lines and "the other five" not in lines
 
 
 def test_the_charts_axis_names_the_metrics_of_the_first_direction_of_d16():

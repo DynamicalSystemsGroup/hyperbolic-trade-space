@@ -155,7 +155,8 @@ def participation_sentence() -> Md:
     out = [n for n in names if n not in used]
     if not out:
         return Md(
-            f"Each of the {len(names)} traded metrics enters a contending set at K = 1 to {depth} "
+            f"Each of the {_NUMBER_WORDS.get(len(names), len(names))} traded metrics enters a "
+            f"contending set at K = 1 to {depth} "
             f"in a regime."
         )
     rho = {}
@@ -168,7 +169,8 @@ def participation_sentence() -> Md:
     }
     low = int(min(v for v, _ in best.values()) * 100) / 100
     return Md(
-        f"Of the {len(names)} traded metrics, {_NUMBER_WORDS.get(len(out), len(out))}, "
+        f"Of the {_NUMBER_WORDS.get(len(names), len(names))} traded metrics, "
+        f"{_NUMBER_WORDS.get(len(out), len(out))}, "
         f"{_and('the ' + n for n in out)}, enter no contending set at K = 1 to {depth} in either "
         f"regime: each is nearly one axis with a metric that does (Spearman at least {low:.2f}, "
         f"{_C5})."

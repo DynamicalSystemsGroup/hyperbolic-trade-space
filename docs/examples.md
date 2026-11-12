@@ -17,7 +17,7 @@ above V = 1:
   shares of 74 and 26 percent of the near-frontier designs: the larger adds peak slew power to the
   one-term contending set, and the smaller is that set.
 - **A second table.** The stock-gains table gives a different one-term
-  contending set, so the finding depends on the regime.
+  contending set.
 
 ## The one-term fit, drawn
 
@@ -37,7 +37,7 @@ case.tension_figure(study, fit)
 <figure markdown>
 ![Heatmap of the association among thirteen conditioned metrics near the frontier; seven metrics are outlined as the contending set.](generated/figures/adcs-tensions-light.png#only-light)
 ![Heatmap of the association among thirteen conditioned metrics near the frontier; seven metrics are outlined as the contending set.](generated/figures/adcs-tensions-dark.png#only-dark)
-<figcaption>Figure 5. The tension report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, metrics that do not participate.</figcaption>
+<figcaption>Figure 5. The tension report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, below the participation threshold: an outlined metric can be grey, a black one unoutlined.</figcaption>
 </figure>
 
 ## Requirements read after the fit
@@ -126,7 +126,7 @@ for name, (study, est) in fits.items():
 
 Each row is a marker: its shares and V there, relative to the highest marker's.
 
-The triples are examples that show how to read the figure, not findings about the case. What the case leaves out is listed on [the case page](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/examples/adcs/case-model.md#what-the-case-leaves-out).
+The triples show how to read the figure; they are not findings. What the case leaves out is listed on [the case page](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/examples/adcs/case-model.md#what-the-case-leaves-out).
 
 ## Run it
 
