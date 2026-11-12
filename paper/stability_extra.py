@@ -2,7 +2,7 @@
 
 ``examples/adcs/experiments/sensitivity.py`` regenerates both cubesat datasets five times under
 perturbations of one part in 10^12 and records what the paper reported at the time. The paper has
-since added a few numbers (the mean slack by K and at a fixed temperature, the median assignment
+since added a few numbers (the median assignment
 margin, the share of spread along the principal directions of the near-frontier chart). This
 module computes those on the committed data and on the five regenerations, and writes the committed
 file ``stability_extra.json`` that :mod:`paper_stability` reads beside the sensitivity file, so the
@@ -43,10 +43,6 @@ def quantities(data_dir=None) -> dict:
     for regime in spec.regimes:
         study = case.load_study(regime, spec)
         fits = case.k_fits(study)
-        for row in case.mean_slack_by_k(study, fits).itertuples():
-            q[f"kslack | {regime} | {row.K} | mean_slack_"] = float(row.mean_slack_)
-        for row in case.mean_slack_fixed_tau(study, fits).itertuples():
-            q[f"kslack fixed | {regime} | {row.K} | mean_slack_"] = float(row.mean_slack_)
         for row in case.margin_scale(study, fits).itertuples():
             q[f"margin | {regime} | {row.K} | median margin"] = float(row._5)
         if regime == "primary":

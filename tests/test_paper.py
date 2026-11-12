@@ -2843,7 +2843,7 @@ def test_the_added_quantities_are_recorded_on_the_same_five_regenerations():
         if "min" in e:
             assert e["min"] <= e["committed"] <= e["max"], name
     groups = {n.split(" | ")[0] for n in record["quantities"]}
-    assert groups == {"kslack", "kslack fixed", "margin", "pca"}
+    assert groups == {"margin", "pca"}
 
 
 # -- legible figures and their full-size files (the driver's, WP10) -------------------------------

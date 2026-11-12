@@ -261,3 +261,34 @@ def test_the_results_file_committed_values_equal_the_committed_case_results(reco
             assert now == e["committed"], name
         else:  # floats: the file keeps ten digits; solver residues follow the platform
             assert now == pytest.approx(e["committed"], rel=1e-6, abs=1e-9, nan_ok=True), name
+
+
+@pytest.mark.slow
+def test_the_analysis_runs_from_an_empty_stored_results_file(tmp_path, monkeypatch):
+    """The step that writes the results file does not read it: empty stored files suffice.
+
+    The sentence generators read the stored results; ``quantities`` hands them the numbers it has
+    just computed, so the analysis works when the data carry a metric the stored results do not
+    name, and writes a results file whose sentences and numbers are the run's own.
+    """
+    import paper_stability as ps
+
+    empty = tmp_path / "empty.json"
+    empty.write_text(json.dumps({"quantities": {}}), encoding="utf-8")
+    for fn in (ps.summary, ps.extra):
+        fn.cache_clear()
+    monkeypatch.setattr(ps, "SUMMARY", empty)
+    monkeypatch.setattr(ps, "EXTRA", empty)
+    try:
+        q = sens.quantities(DATA / "v2")
+    finally:
+        for fn in (ps.summary, ps.extra):
+            fn.cache_clear()
+    texts = {k: v for k, v in q.items() if k.endswith("| text")}
+    assert len(texts) == 9 and all(isinstance(v, str) and v for v in texts.values())
+    assert "?" not in texts["sentence | K = 1 contending | text"]
+    out = tmp_path / "out.json"
+    sens.write_summary(out, q, {"1": q})
+    assert set(json.loads(out.read_text(encoding="utf-8"))["quantities"]) == set(q)
+    assert any(k.startswith("D exponents K=2 | primary") for k in q)
+    assert any(k.startswith("D terms K=2 | stock") for k in q)

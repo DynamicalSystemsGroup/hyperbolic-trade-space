@@ -9,98 +9,26 @@
   ]
  },
  "quantities": {
-  "kslack fixed | primary | 1 | mean_slack_": {
-   "committed": 0.12179173946581077,
-   "identical": false,
-   "max": 0.12179176914701702,
-   "min": 0.12179173946581077
-  },
-  "kslack fixed | primary | 2 | mean_slack_": {
-   "committed": 0.043394906057619906,
-   "identical": false,
-   "max": 0.04339494003259006,
-   "min": 0.043394902808595204
-  },
-  "kslack fixed | primary | 3 | mean_slack_": {
-   "committed": 0.020121123980410383,
-   "identical": false,
-   "max": 0.02012118237661366,
-   "min": 0.020121123980410383
-  },
-  "kslack fixed | stock | 1 | mean_slack_": {
-   "committed": 0.11482744937480777,
-   "identical": false,
-   "max": 0.11482746913828112,
-   "min": 0.11482744817603635
-  },
-  "kslack fixed | stock | 2 | mean_slack_": {
-   "committed": 0.060165770853502755,
-   "identical": false,
-   "max": 0.060165770853502755,
-   "min": 0.06016573409723287
-  },
-  "kslack fixed | stock | 3 | mean_slack_": {
-   "committed": 0.02961071028437439,
-   "identical": false,
-   "max": 0.02961071028437439,
-   "min": 0.029610668144999974
-  },
-  "kslack | primary | 1 | mean_slack_": {
-   "committed": 0.12179173946581077,
-   "identical": false,
-   "max": 0.12179176914701702,
-   "min": 0.12179173946581077
-  },
-  "kslack | primary | 2 | mean_slack_": {
-   "committed": 0.08742628312128628,
-   "identical": false,
-   "max": 0.08742632382332673,
-   "min": 0.08742628312128628
-  },
-  "kslack | primary | 3 | mean_slack_": {
-   "committed": 0.06927381519177431,
-   "identical": false,
-   "max": 0.06927390012576624,
-   "min": 0.06927381519177431
-  },
-  "kslack | stock | 1 | mean_slack_": {
-   "committed": 0.11482744937480777,
-   "identical": false,
-   "max": 0.11482746913828112,
-   "min": 0.11482744817603635
-  },
-  "kslack | stock | 2 | mean_slack_": {
-   "committed": 0.09960106813058564,
-   "identical": false,
-   "max": 0.09960106813058564,
-   "min": 0.09960104539174056
-  },
-  "kslack | stock | 3 | mean_slack_": {
-   "committed": 0.08029639942660136,
-   "identical": false,
-   "max": 0.08029639942660136,
-   "min": 0.08029635625176415
-  },
   "margin | primary | 2 | median margin": {
-   "committed": 0.35173126059907756,
+   "committed": 0.3517312432953281,
    "identical": false,
    "max": 0.35173128565143297,
    "min": 0.3517309425517555
   },
   "margin | primary | 3 | median margin": {
-   "committed": 0.17795973831946593,
+   "committed": 0.177959539410589,
    "identical": false,
    "max": 0.17795978964384868,
-   "min": 0.1779596217947861
+   "min": 0.177959539410589
   },
   "margin | stock | 2 | median margin": {
-   "committed": 0.23638587852447807,
+   "committed": 0.23638374153579236,
    "identical": false,
    "max": 0.23638667052987086,
-   "min": 0.23638468937894436
+   "min": 0.23638374153579236
   },
   "margin | stock | 3 | median margin": {
-   "committed": 0.13598803925069936,
+   "committed": 0.13598800587185206,
    "identical": false,
    "max": 0.13598818153954767,
    "min": 0.1359877018381147
@@ -128,10 +56,10 @@
    "min": 0.36
   },
   "pca | primary | 1 | share of spread": {
-   "committed": 0.3614927435697347,
+   "committed": 0.36149289624393927,
    "identical": false,
-   "max": 0.3614928714557616,
-   "min": 0.3614927435697347
+   "max": 0.36149289624393927,
+   "min": 0.36149280835922093
   },
   "pca | primary | 2 | leading metrics": {
    "committed": "momentum headroom, depth of discharge, battery peak power ratio",
@@ -156,7 +84,7 @@
    "min": 0.31
   },
   "pca | primary | 2 | share of spread": {
-   "committed": 0.20779908866260602,
+   "committed": 0.20779901334160253,
    "identical": false,
    "max": 0.20779909524174556,
    "min": 0.20779897752096763
@@ -184,10 +112,10 @@
    "min": 0.48
   },
   "pca | primary | 3 | share of spread": {
-   "committed": 0.17912994189597184,
+   "committed": 0.17912979761898054,
    "identical": false,
-   "max": 0.17912994189597184,
-   "min": 0.17912983593085946
+   "max": 0.17912991982112667,
+   "min": 0.17912979761898054
   }
  },
  "seeds": [

@@ -267,6 +267,35 @@ def _default_spec(case, spec):
         case.CUBESAT = saved_spec
 
 
+@contextlib.contextmanager
+def _fresh_results(q: Mapping):
+    """The paper's stability reads (``paper_stability``) answer from ``q``, not the stored files.
+
+    The sentence generators print each moving number to the digits that held, read from the
+    results file; this run is what writes that file, so while it runs they read the numbers
+    just computed (each as a quantity that did not move, printed at the format the sentence
+    asks for). The stored files are not read, so the run needs no earlier results file.
+    """
+    import generate_findings as gf
+    import paper_stability as ps
+
+    fresh = {
+        "seeds": list(SEEDS),
+        "quantities": {
+            k: {"committed": v, "min": v, "max": v, "identical": True}
+            for k, v in q.items()
+            if isinstance(v, (int, float)) and not isinstance(v, bool)
+        },
+    }
+    saved = ps.summary, ps.extra, gf.summary
+    ps.summary = gf.summary = lambda: fresh
+    ps.extra = lambda: {"quantities": {}}
+    try:
+        yield
+    finally:
+        ps.summary, ps.extra, gf.summary = saved
+
+
 def _paper_modules():
     paper = str(lg.REPO_ROOT / "paper")
     if paper not in sys.path:
@@ -299,13 +328,6 @@ def quantities(data_dir: Path | str) -> dict:
     prim, stock = studies["primary"], studies["stock"]
     k1 = fits["primary"][1]
     with _default_spec(case, spec):
-        q["sentence | nondominated | text"] = str(gf.nondominated_sentence(prim))
-        q["sentence | datasets | text"] = str(gf.datasets_sentence(prim, stock))
-        q["sentence | temperature | text"] = str(gf.temperature_sentence(prim, k1))
-        q["sentence | K = 1 contending | text"] = str(gf.k1_sentence(prim, k1))
-        q["sentence | terms | text"] = str(gf.terms_sentence(prim, fits["primary"]))
-        q["sentence | certificate | text"] = str(gf.certificate_sentence(fits["primary"]))
-        q["sentence | regime | text"] = str(gf.regime_sentence())
         regime_table = case.regime_comparison(spec)
     q.update(_flat("regime", regime_table, key="quantity"))
     for r, st in studies.items():
@@ -320,7 +342,7 @@ def quantities(data_dir: Path | str) -> dict:
         for K in (1, 2, 3):
             q[f"tau | {r} K={K} | tau selected (printed .1f)"] = f"{f[K].tau:.1f}"
             q[f"fit | {r} K={K} | tau selected (raw)"] = float(f[K].tau)
-        for K in (1, 3):
+        for K in (1, 2, 3):
             tt = case.tension_table(st, f[K], band=base.band)
             ft = case.term_table(st, f, K=K, band=base.band)
             for _, row in tt.iterrows():
@@ -342,6 +364,8 @@ def quantities(data_dir: Path | str) -> dict:
         q.update(_flat(f"nondominated | {r}", case.nondominated_counts(st), key="view"))
         q.update(_flat(f"D k_table | {r}", case.k_table(st, f), key="K"))
         q.update(_flat(f"D exponents K=1 | {r}", case.exponent_table(st, f[1]), key="metric"))
+        q.update(_flat(f"D exponents K=2 | {r}", case.exponent_table(st, f[2]), key="metric"))
+        q.update(_flat(f"D terms K=2 | {r}", case.term_table(st, f, K=2), key="term"))
         q.update(_flat(f"D exponents K=3 | {r}", case.exponent_table(st, f[3]), key="metric"))
         q.update(_flat(f"D terms K=3 | {r}", case.term_table(st, {1: f[1], 3: f[3]}), key="term"))
         q.update(_flat(f"D tau_sweep | {r}", case.tau_sweep(st)))
@@ -360,8 +384,6 @@ def quantities(data_dir: Path | str) -> dict:
     q.update(_flat("candidate", case.candidate_table(prim, k1), key="candidate"))
     reg = case.fit_regressor(prim)
     pc = case.predict_check(prim, reg)
-    q["sentence | candidates | text"] = str(gf.candidates_sentence(case.candidate_table(prim, k1)))
-    q["sentence | predict-check | text"] = str(gf.predict_check_sentence(pc, reg))
     q["predict | regressor | tau"] = float(reg.tau)
     # the numbers of the generated sentences that no table row carries, so that the paper can
     # quote their ranges from the results file (``paper_stability``)
@@ -374,11 +396,6 @@ def quantities(data_dir: Path | str) -> dict:
     q["sentence | predict-check | lowest position error"] = float(pc["||dZ|| / band"].min())
     q["sentence | predict-check | highest position error"] = float(pc["||dZ|| / band"].max())
     q["sentence | temperature | band"] = float(fits["primary"][1].band)
-    cert = case.certificate_table(fits["primary"])
-    cert = cert[cert["K"] > 1]
-    q["sentence | K sweep | largest term gap"] = float(cert["max gap"].max())
-    q["sentence | K sweep | smallest margin"] = float(cert["gamma"].min())
-    q["sentence | K sweep | smallest radius"] = float(cert["radius"].min())
     q.update(_flat("predict", pc, key="proposal"))
     for _, row in pc.iterrows():
         q[f"predict | {row['proposal']} | outcome"] = (
@@ -396,6 +413,19 @@ def quantities(data_dir: Path | str) -> dict:
             f"log V {'pass' if row['log V within band'] else 'miss'}, "
             f"position {'pass' if row['Z within band'] else 'miss'}"
         )
+    # the sentences last: they read the numbers just computed, not the stored results file
+    with _default_spec(case, spec), _fresh_results(q):
+        q["sentence | nondominated | text"] = str(gf.nondominated_sentence(prim))
+        q["sentence | datasets | text"] = str(gf.datasets_sentence(prim, stock))
+        q["sentence | temperature | text"] = str(gf.temperature_sentence(prim, k1))
+        q["sentence | K = 1 contending | text"] = str(gf.k1_sentence(prim, k1))
+        q["sentence | terms | text"] = str(gf.terms_sentence(prim, fits["primary"]))
+        q["sentence | certificate | text"] = str(gf.certificate_sentence(fits["primary"]))
+        q["sentence | regime | text"] = str(gf.regime_sentence())
+        q["sentence | candidates | text"] = str(
+            gf.candidates_sentence(case.candidate_table(prim, k1))
+        )
+        q["sentence | predict-check | text"] = str(gf.predict_check_sentence(pc, reg))
     return q
 
 
