@@ -145,3 +145,12 @@ a README says it ("published models of client systems" instead); the rebrand is 
 post the worker could not fetch may be linked by its known URL with no claim resting on it, and the supervisor is
 asked at his review to confirm or supply those links and dates. The attributes list stands as the supervisor's
 account of the systems the firm studied; the page says so.
+
+## The supervisor, after reading the draft in the browser (verbatim)
+
+> describe DSG as a "contract research and engineering firm." then in the follow sentence say we perform (present
+> tense not past tense)
+
+**The assistant's reading.** Two wording rulings for the fix unit: the firm is described as a "contract research and
+engineering firm"; the activities sentence that follows is in the present tense ("we perform requirements,
+architecture, design, simulation and analysis ..."), the firm's own voice, since the work continues.
