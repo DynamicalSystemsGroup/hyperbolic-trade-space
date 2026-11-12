@@ -89,3 +89,14 @@ the paper only when he has done it: the reading pass becomes an item of his clos
 with the entry surfaces, and the sentence is worded to what he has done. No machine verdict is rendered on any
 surface. A unit through the paper notebook's queue: the G.2 generator, a test that G.2 renders the summary and no
 verdict column, the register rows and the ledger (a cut of the table's words), the review list.
+
+> the G.2 we present should be sufficient for a reader to check for themselves and decide that we've reflected
+> the result. its less that an LLM checked and more that we are saying what we took from where and the reader is
+> given enough information to dereference it themselves and form their own opinion if they want to
+
+**The assistant's reading, revising the call above.** G.2 keeps a table, with different columns: what we say (the
+citing sentence or its claim), the source (the reference), and where in it (the locator the record holds: the
+abstract, a section, a page, a figure, a URL), one row per citing sentence, so a reader can dereference each claim
+and judge the reflection for themselves. The machine's columns (verdict, why, status) and the summary counts go
+from the view; the record keeps them. The lead sentence says what the table is: what the paper took from where,
+for the reader to check. The reading pass's validation by the authors before release stands as recorded.
