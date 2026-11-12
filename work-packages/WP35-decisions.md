@@ -131,3 +131,30 @@ Decisions, each the supervisor may revert.
 
 **Assistant, verbatim:** "WP35-scope-of-work.md at 1d27f8c is approved as written: goals G1 to G5, the non-goals, the
 sequencing behind WP33's paper unit, the agent models and the defaults as one item. The build starts now."
+
+## The supervisor, on the HoroPCA comparison (2026-11-13, verbatim)
+
+> i think the horoPCA comparison analysis needs its own appendix, and i need it broken down a bit cleaner. we need
+> an explicit (and falsifiable) hypothesis about how our method differs from theres. then a computational
+> experiment that can assess (validate or invalidat) that hypothesis, then results, then interpretation. this
+> section should probably also include some explanation of how the underlying formalism and solvers differ but the
+> critical result is to demonstrate that the methods are doing different things, that renders them complementary
+> rather than competitive.
+
+**The assistant's reading.** WP35's scope is amended: the comparison leaves Appendix G's passage and becomes its own
+appendix (the next letter, H), in the order he names: a hypothesis stated so that an experiment can refute it; the
+computational experiment designed to test it; the results; the interpretation; and a part on how the formalism
+and the solvers differ (a one-sided edge on a simplex by convex programs with a certificate, against a variance
+over frames in negative curvature by gradient ascent with restarts). The critical result the appendix must carry
+is that the two methods estimate different things, which makes them complementary (the paper already chains PCA
+on the chart in D.16), not competitors. Appendix G keeps the register row and a pointer; Section 2's paragraph
+points at H. The spike's runs are the first evidence; the hypothesis and the experiment are designed before the
+appendix is written, as the lifecycle asks: a hypothesis of the form "each method recovers a planted exponent
+vector only under its own condition, this work whenever the planted edge is present, HoroPCA and PCA only when
+that vector is also the direction of largest spread", tested on tables built so that the edge and the spread are
+decoupled by design (the generator's depth distribution controls this), beside the tables already run; the
+experiment is specified with its measure (the cosine between the recovered direction and the planted vector, and
+the share of the planted vector recovered) and its refutation condition before it runs. Stage 1b of the spike
+does this; the assistant decides on its readout; the build, QC, integration and the P9/P10-balanced review follow
+through the paper notebook's single-writer queue. The scope's non-goal "no new section, figure or page" is lifted
+for this appendix by the supervisor's word.
