@@ -43,6 +43,8 @@ The decisions only he holds, as plain options with no steering; and the calls he
 
 - Calls the assistant made, each with reason, record and landing commit. Records: `supervisor-review-list.md`;
   `driver-log.md`.
+- Entry surfaces (the five entry surfaces' changes since the data gate, each with reason and commit): the
+  "Entry surfaces" section of `supervisor-review-list.md`.
 - Questions genuinely held for him (values only he holds, changes to his stated intent, outward acts), e.g. the
   sample size, the Figure 1 footer wording, the "no candidate meets the requirements" finding.
   Records: `PM-BRIEF.md` (current handover); `WP30-decisions.md`; `deliverables-grid.md` (open items).
