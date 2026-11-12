@@ -35,6 +35,17 @@
 entries:
 
   # ------------------------------------------------------------------ before the firm
+  - id: 1997-shorish-degree
+    date: "1997"
+    kind: role
+    title: "Jamsheed Shorish in the RePEc Genealogy"
+    people: [{name: "Jamsheed Shorish", role: "terminal degree 1997, Tepper School of Business, Carnegie Mellon (the economics department)"}]
+    url: https://genealogy.repec.org/pages/psh169.html
+    read_on: "2026-11-12"
+    shows: "The genealogy lists the degree year 1997, Carnegie Mellon, Tepper economics department, advisor Stephen Spear. The field is read from the department."
+    claim: sourced
+    listed: false
+
   - id: 2007-gp-tutorial
     date: "2007-03"
     kind: paper
@@ -449,6 +460,17 @@ entries:
     shows: "cadCAD channel, uploaded 2 May 2023 (31 min): 'Jamsheed Shorish of Block.Science presents R&D on Generalized Dynamical Systems and its use and development in cadCAD'."
     claim: sourced
     note: "The id keeps the number of the call; the date is the upload date."
+
+  - id: 2022-crosswalk-part-1
+    date: "2022-08-31"
+    kind: video
+    title: "Representation | The Crosswalk Problem: Reachability, Admissibility & GDS | Part 1"
+    people: [{name: "Jamsheed Shorish", role: "presenter (the firm's post)"}]
+    url: https://youtu.be/8t-FKDzrnmA
+    read_on: "2026-11-12"
+    shows: "Firm's channel, uploaded 31 August 2022: a stylised crosswalk problem represented as a GDS; parts 2 and 3 treat equilibrium, existence, design and controllability."
+    claim: sourced
+    listed: false
 
   - id: 2022-cadcad-1
     date: "2022-02-01"

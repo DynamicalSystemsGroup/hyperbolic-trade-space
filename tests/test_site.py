@@ -500,6 +500,7 @@ class _VisibleText(HTMLParser):
         super().__init__()
         self.skip = 0
         self.words = []
+        self.chunks = []
 
     def handle_starttag(self, tag, attrs):
         if tag in ("head", "style", "script", "title"):
@@ -512,12 +513,13 @@ class _VisibleText(HTMLParser):
     def handle_data(self, data):
         if not self.skip:
             self.words += data.split()
+            self.chunks.append(data)
 
 
 def _history_text() -> str:
     parser = _VisibleText()
     parser.feed(HISTORY.read_text(encoding="utf-8"))
-    return " ".join(parser.words)
+    return " ".join("".join(parser.chunks).split())
 
 
 def _load_script(name):
@@ -631,6 +633,257 @@ def test_history_page_source_carries_the_marker_once_and_stays_readable():
         HISTORY_RECORD.build_page("<p>no marker</p>", [])
 
 
+class _Names(HTMLParser):
+    """The text of each <span class="n"> on a page: the names the prose marks."""
+
+    def __init__(self):
+        super().__init__()
+        self.depth = 0
+        self.names = []
+        self._buf = None
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "span" and dict(attrs).get("class") == "n":
+            self._buf = []
+
+    def handle_endtag(self, tag):
+        if tag == "span" and self._buf is not None:
+            self.names.append(" ".join("".join(self._buf).split()))
+            self._buf = None
+
+    def handle_data(self, data):
+        if self._buf is not None:
+            self._buf.append(data)
+
+
+class _Anchors(HTMLParser):
+    """``(href, text)`` of each link."""
+
+    def __init__(self):
+        super().__init__()
+        self.items, self._href, self._buf = [], None, []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "a":
+            self._href, self._buf = dict(attrs).get("href"), []
+
+    def handle_endtag(self, tag):
+        if tag == "a" and self._href is not None:
+            self.items.append((self._href, " ".join("".join(self._buf).split())))
+            self._href = None
+
+    def handle_data(self, data):
+        if self._href is not None:
+            self._buf.append(data)
+
+
+def _page_names(raw: str) -> list[str]:
+    """The names marked on the page, the quoted nickname dropped (Andrew "Octopus" Penland)."""
+    parser = _Names()
+    parser.convert_charrefs = True
+    parser.feed(raw)
+    return [re.sub(r"\s*[\u201c\"][^\u201d\"]*[\u201d\"]\s*", " ", n).strip() for n in parser.names]
+
+
+def _anchors(raw: str):
+    parser = _Anchors()
+    parser.feed(raw)
+    return parser.items
+
+
+def _record_years(entries) -> set[str]:
+    return {HISTORY_RECORD.year(e) for e in entries} | {e["read_on"][:4] for e in entries}
+
+
+def test_history_every_link_on_the_page_is_a_record_entry():
+    """WP37 D-9: each link of the prose and of the generated list is the URL of a record entry,
+    so the prose cannot drift from the record."""
+    entries = HISTORY_RECORD.load()
+    urls = {e["url"] for e in entries}
+    prose = [h for h, _ in _anchors(HISTORY.read_text(encoding="utf-8")) if h != "./"]
+    assert len(prose) >= 15
+    unrecorded = [h for h in prose if h not in urls]
+    assert not unrecorded, f"links on the page that no record entry holds: {unrecorded}"
+    built = HISTORY_RECORD.build_page_file()
+    for href, _ in _anchors(built):
+        assert href in urls or href == "./", href
+
+
+def test_history_every_name_on_the_page_is_in_the_record():
+    """Each name the prose marks is a person or a named co-author of a record entry (a surname
+    alone must be the surname of one); the thirteen are all named."""
+    entries = HISTORY_RECORD.load()
+    names = HISTORY_RECORD.person_names(entries)
+    surnames = {n.split()[-1] for n in names}
+    marked = _page_names(HISTORY.read_text(encoding="utf-8"))
+    assert marked
+    for n in marked:
+        assert n in names or n in surnames, f"{n!r} is on the page and not in the record"
+    for person in THIRTEEN:
+        assert person in marked, person
+
+
+def test_history_every_year_on_the_page_is_a_year_of_the_record():
+    """Each year printed on the page (prose and list) is a year of a record date or read date; a
+    year printed as a link's text, or in brackets straight after a link, is that entry's year."""
+    entries = HISTORY_RECORD.load()
+    known = _record_years(entries)
+    built = HISTORY_RECORD.build_page_file()
+    for y in re.findall(r"\b((?:19|20)\d{2})\b", " ".join(_visible(built))):
+        assert y in known, f"{y} is on the page and in no record date"
+    by_url = {e["url"]: e for e in entries}
+    raw = HISTORY.read_text(encoding="utf-8")
+    for href, text in _anchors(raw):
+        if re.fullmatch(r"(?:19|20)\d{2}", text):
+            assert HISTORY_RECORD.year(by_url[href]) == text, (href, text)
+    for m in re.finditer(r'<a href="([^"]+)"[^>]*>[^<]*</a>\s*\(((?:19|20)\d{2})\)', raw):
+        assert HISTORY_RECORD.year(by_url[m.group(1)]) == m.group(2), m.group(0)
+
+
+def _visible(raw: str) -> list[str]:
+    parser = _VisibleText()
+    parser.feed(raw)
+    return parser.words
+
+
+def test_history_list_holds_no_banned_word_outside_link_titles():
+    """The generated list's own words (years, people, the special-case mark, its heading and note)
+    use no cryptocurrency or web3 vocabulary; a source's title may carry it, as the link's text."""
+    built = HISTORY_RECORD.build_page_file()
+    block = built[built.index('<section class="record"') : built.index("</section>")]
+    own = re.sub(r"<a [^>]*>.*?</a>", " ", block)
+    text = " ".join(_visible(own)).lower()
+    assert "dated references" in text and "special case" in text
+    for banned in _BANNED:
+        assert not re.search(banned, text), banned
+
+
+def test_history_special_case_sentences_say_so():
+    """R-7: every prose sentence that cites a record entry flagged special_case says in that
+    sentence that it is a special case where the work was highly public."""
+    entries = HISTORY_RECORD.load()
+    page = HISTORY.read_text(encoding="utf-8")
+    cited = 0
+    for sentence in HISTORY_RECORD.sentences(page):
+        _, _, _, special, _ = HISTORY_RECORD.classify(sentence, entries)
+        if special:
+            cited += 1
+            assert "special case" in sentence["text"].lower(), sentence["text"]
+            assert "highly public" in sentence["text"], sentence["text"]
+    assert cited >= 1
+
+
+def test_history_team_account_sentences_are_marked():
+    """R-3: a prose sentence resting on a team-account entry carries the mark in the sentence
+    ("our own account"), or is in the firm's first person ("We ...")."""
+    entries = HISTORY_RECORD.load()
+    page = HISTORY.read_text(encoding="utf-8")
+    by_url = {e["url"]: e for e in entries}
+    for sentence in HISTORY_RECORD.sentences(page):
+        team = any(by_url[h]["claim"] == "team-account" for h in sentence["hrefs"] if h in by_url)
+        if team:
+            assert any(m in sentence["text"] for m in HISTORY_RECORD.TEAM_MARKS), sentence["text"]
+
+
+def test_history_trace_table_is_current():
+    """R-18: work-packages/WP37-rounds/trace.md is the table derived from the page and the record
+    (uv run python scripts/history_record.py --trace); every sentence has a kind."""
+    entries = HISTORY_RECORD.load()
+    page = HISTORY.read_text(encoding="utf-8")
+    table = HISTORY_RECORD.trace_table(page, entries)
+    assert HISTORY_RECORD.TRACE.read_text(encoding="utf-8") == table
+    for sentence in HISTORY_RECORD.sentences(page):
+        kinds, *_ = HISTORY_RECORD.classify(sentence, entries)
+        assert set(kinds) <= {"sourced", "link", "team-account", "page"}
+
+
+def test_history_sentences_are_split_and_classified_from_the_record():
+    page = (
+        '<main><p>First, in our own account, a claim. <a href="https://x.org/a">Linked</a> '
+        "work (2020). We perform things.</p><footer></footer></main>"
+    )
+    entry = {"url": "https://x.org/a", "claim": "sourced", "id": "2020-a", "special_case": False}
+    got = HISTORY_RECORD.sentences(page)
+    assert [s["text"] for s in got] == [
+        "First, in our own account, a claim.",
+        "Linked work (2020).",
+        "We perform things.",
+    ]
+    assert got[1]["hrefs"] == ["https://x.org/a"]
+    assert HISTORY_RECORD.classify(got[0], [entry])[0] == ["team-account"]
+    assert HISTORY_RECORD.classify(got[1], [entry])[0] == ["sourced"]
+    assert HISTORY_RECORD.classify(got[2], [entry])[0] == ["team-account"]
+
+
+def _link_checker():
+    return _load_script("check_history_links")
+
+
+def test_link_checker_reads_the_record_and_classifies_answers(monkeypatch, tmp_path):
+    """The network check reads the record (offline here: the fetch is mocked) and reports ok,
+    blocked (403 or 429) and FAIL; the page's own links are parsed from its prose."""
+    import urllib.error
+
+    checker = _link_checker()
+    entries = HISTORY_RECORD.load()
+    assert checker.record_urls(entries) == [e["url"] for e in entries]
+    assert set(checker.external_links(HISTORY)) <= {e["url"] for e in entries}
+
+    answers = {"https://a.org/": ("ok", 200), "https://b.org/": ("blocked", 403)}
+    rows = checker.check(
+        ["https://a.org/", "https://b.org/", "https://c.org/"],
+        fetch=lambda u: answers.get(u, ("FAIL", 404)),
+    )
+    assert rows == [
+        ("https://a.org/", "ok", 200),
+        ("https://b.org/", "blocked", 403),
+        ("https://c.org/", "FAIL", 404),
+    ]
+
+    class _Response:
+        status = 200
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+    def fake(code):
+        def opener(request, timeout=0):
+            if code is None:
+                return _Response()
+            raise urllib.error.HTTPError(request.full_url, code, "x", {}, None)
+
+        return opener
+
+    for code, expect in (
+        (None, ("ok", 200)),
+        (403, ("blocked", 403)),
+        (429, ("blocked", 429)),
+        (404, ("FAIL", 404)),
+    ):
+        monkeypatch.setattr(checker.urllib.request, "urlopen", fake(code))
+        assert checker.status("https://a.org/") == expect
+
+    page = tmp_path / "p.html"
+    page.write_text(
+        '<a href="https://z.org/1">x</a><a href="./">y</a><a href="https://z.org/1">z</a>',
+        encoding="utf-8",
+    )
+    assert checker.external_links(page) == ["https://z.org/1"]
+
+
+@pytest.mark.slow
+def test_history_page_links_resolve_over_the_network():
+    """Network variant: every link of the page's prose answers 2xx or 3xx, or is blocked to
+    automated requests (open it in a browser); none fails. Run: pytest -m slow -k history."""
+    checker = _link_checker()
+    rows = checker.check(checker.external_links(HISTORY))
+    failed = [(u, c) for u, label, c in rows if label == "FAIL"]
+    assert not failed, failed
+
+
 def test_history_page_is_one_screen_in_the_root_page_register():
     """WP37: a stand-alone page, light and dark like the root page, no script, about one screen."""
     raw = HISTORY.read_text(encoding="utf-8")
@@ -662,19 +915,22 @@ def test_history_page_is_linked_from_the_root_page_and_links_resolve():
         assert _site_file_for(route, SITE) is not None, f"history.html: {href} does not resolve"
 
 
+_BANNED = (
+    r"crypto",
+    r"token",
+    r"blockchain",
+    r"smart contract",
+    r"web3",
+    r"\bdao\b",
+    r"\bdefi\b",
+    r"\bnft\b",
+)
+
+
 def test_history_page_uses_no_cryptocurrency_or_web3_vocabulary():
     """WP37 register rule: the page's own words avoid it (a linked source's title may carry it)."""
     text = _history_text().lower()
-    for banned in (
-        r"crypto",
-        r"token",
-        r"blockchain",
-        r"smart contract",
-        r"web3",
-        r"\bdao\b",
-        r"\bdefi\b",
-        r"\bnft\b",
-    ):
+    for banned in _BANNED:
         assert not re.search(banned, text), banned
     # computer science is the supervisor's word for the team's backgrounds (WP37 decisions),
     # offered on the page as the team's own account of the team

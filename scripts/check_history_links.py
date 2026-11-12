@@ -1,11 +1,13 @@
-"""Fetch every external link on ``site/history.html`` and report its HTTP status (network).
+"""Fetch every URL of the history record and report its HTTP status (network).
 
-    uv run python scripts/check_history_links.py
+    uv run python scripts/check_history_links.py            # every URL of history.yaml
+    uv run python scripts/check_history_links.py --page     # only the links of the page's prose
 
-The default test suite checks the page offline (``tests/test_site.py``); this script is the network
-check, run by hand when the page changes. A link counts as resolving on a 2xx or 3xx answer; a 403
-or 429 is reported as ``blocked`` (the host refuses automated requests; open it in a browser) and
-anything else as ``FAIL``. Exit status is 1 when any link FAILs.
+The default test suite checks the record and the page offline (``tests/test_site.py``); this script
+is the network check, run by hand when the record or the page changes. A link counts as resolving on
+a 2xx or 3xx answer; a 403 or 429 is reported as ``blocked`` (the host refuses automated requests;
+open it in a browser) and anything else as ``FAIL``. Exit status is 1 when any link FAILs. No
+credentials are sent: the check sees what any reader sees.
 """
 
 from __future__ import annotations
@@ -17,7 +19,11 @@ from concurrent.futures import ThreadPoolExecutor
 from html.parser import HTMLParser
 from pathlib import Path
 
-PAGE = Path(__file__).resolve().parent.parent / "site" / "history.html"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import history_record
+
+PAGE = history_record.PAGE
 AGENT = "Mozilla/5.0 (compatible; link-check)"
 
 
@@ -32,9 +38,15 @@ class _Hrefs(HTMLParser):
 
 
 def external_links(page=PAGE):
+    """The distinct https links of a page's hand-written prose."""
     parser = _Hrefs()
     parser.feed(Path(page).read_text(encoding="utf-8"))
     return sorted({h for h in parser.hrefs if h.startswith(("http://", "https://"))})
+
+
+def record_urls(entries):
+    """The URL of every entry of the record, in record order."""
+    return [e["url"] for e in entries]
 
 
 def status(url, timeout=25):
@@ -53,13 +65,20 @@ def status(url, timeout=25):
     return "FAIL", "?"
 
 
-def main():
-    urls = external_links()
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        results = list(pool.map(status, urls))
-    for url, (label, code) in zip(urls, results, strict=True):
+def check(urls, fetch=status, workers=8):
+    """``[(url, label, code)]`` for each URL; ``fetch(url)`` is injectable for tests."""
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        results = list(pool.map(fetch, urls))
+    return [(u, label, code) for u, (label, code) in zip(urls, results, strict=True)]
+
+
+def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    urls = external_links() if "--page" in argv else record_urls(history_record.load())
+    rows = check(urls)
+    for url, label, code in rows:
         print(f"{label:7} {code}  {url}")
-    return 1 if any(label == "FAIL" for label, _ in results) else 0
+    return 1 if any(label == "FAIL" for _, label, _ in rows) else 0
 
 
 if __name__ == "__main__":

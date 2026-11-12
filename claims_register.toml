@@ -6098,7 +6098,7 @@ note = "The supervisor's exact sentence, present tense, the firm's voice (WP37-d
 
 [[claim]]
 id = "C516"
-fragment = "Before the firm: Zargham&rsquo;s convex optimization"
+fragment = "Before the firm: <span class=\"n\">Zargham</span>&rsquo;s convex optimization"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6140,7 +6140,7 @@ note = "Sourced: Google Scholar profile https://scholar.google.com/citations?use
 
 [[claim]]
 id = "C519"
-fragment = "the form of Boyd et al. ... that this method&rsquo;s frontier takes."
+fragment = "the form of <span class=\"n\">Boyd</span> et al. ... that this method&rsquo;s frontier takes."
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6155,7 +6155,7 @@ note = "The paper's Boyd, Kim, Vandenberghe and Hassibi citation, 'A Tutorial on
 
 [[claim]]
 id = "C520"
-fragment = "With Preciado and Zixuan Zhang came the ... 2020 journal version ... of the 2018 state-space framework, which applies control engineering to economic networks."
+fragment = "With Preciado and <span class=\"n\">Zixuan Zhang</span> came the ... 2020 journal version ... of the 2018 state-space framework, which applies control engineering to economic networks."
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6170,7 +6170,7 @@ note = "Sourced, Crossref record read 2026-11-12: https://doi.org/10.1007/s41109
 
 [[claim]]
 id = "C521"
-fragment = "was implemented by Joshua Jodesty and designed by Michael Zargham, Markus Koch and Matthew Barlin"
+fragment = "was implemented by <span class=\"n\">Joshua Jodesty</span> and designed by <span class=\"n\">Michael Zargham</span>, <span class=\"n\">Markus Koch</span> and <span class=\"n\">Matthew Barlin</span>"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6185,7 +6185,7 @@ note = "Sourced: AUTHORS.txt, 'originally implemented by Joshua E. Jodesty and d
 
 [[claim]]
 id = "C522"
-fragment = "extended by Danilo Bernardineli ( ... a physicist, by his profile ... ) and Emanuel Lima"
+fragment = "extended by <span class=\"n\">Danilo Bernardineli</span> ( ... a physicist, by his profile ... ) and <span class=\"n\">Emanuel Lima</span>"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6200,7 +6200,7 @@ note = "Sourced: AUTHORS.txt, 'upgrades and improvements were further committed 
 
 [[claim]]
 id = "C523"
-fragment = "Jamsheed Shorish ( ... trained in economics ... ) co-wrote ... Generalized Dynamical Systems ... presented it in video"
+fragment = "<span class=\"n\">Jamsheed Shorish</span> ( ... trained in economics ... ) co-wrote ... Generalized Dynamical Systems ... presented it in video"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6216,7 +6216,7 @@ note = "Sourced: Shorish co-author of the paper on Generalized Dynamical Systems
 
 [[claim]]
 id = "C524"
-fragment = "Andrew &ldquo;Octopus&rdquo; Penland, a research engineer at BlockScience, led ... workshops on MAIDs, GDS and cadCAD"
+fragment = "<span class=\"n\">Andrew &ldquo;Octopus&rdquo; Penland</span>, a research engineer at BlockScience, led ... workshops on MAIDs, GDS and cadCAD"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6230,7 +6230,7 @@ note = "Sourced: https://blog.block.science/complex-systems-modeling-maids-gds-c
 
 [[claim]]
 id = "C525"
-fragment = "Kris Paruch ( ... a mathematical background with focus on economic modeling ... ) co-wrote ... Economic Games as Estimators"
+fragment = "<span class=\"n\">Kris Paruch</span> ( ... a mathematical background with focus on economic modeling ... ) co-wrote ... Economic Games as Estimators"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6245,7 +6245,7 @@ note = "Paruch's own words in the linked 2018 post (https://web.archive.org/web/
 
 [[claim]]
 id = "C526"
-fragment = "Rohan Mehta wrote ... gds-core ... and ... gds-axelrod ... ; gds-core credits the ... MSML ... and bdp-lib of Sean McOwen."
+fragment = "<span class=\"n\">Rohan Mehta</span> wrote ... gds-core ... and ... gds-axelrod ... ; gds-core credits the ... MSML ... and bdp-lib of <span class=\"n\">Sean McOwen</span>."
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6261,7 +6261,7 @@ note = "Sourced: gds-core README credits, 'Author: Rohan Mehta' and 'Architectur
 
 [[claim]]
 id = "C527"
-fragment = "Andrew Clark, thanked in AUTHORS.txt, wrote with Alexander Mihailov and Zargham a ... community-currency model ... (2023) developed with the Red Cross and Grassroots Economics."
+fragment = "<span class=\"n\">Andrew Clark</span>, thanked in AUTHORS.txt, wrote with <span class=\"n\">Alexander Mihailov</span> and <span class=\"n\">Zargham</span> a ... community-currency model ... (2023) developed with the Red Cross and Grassroots Economics."
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6276,7 +6276,7 @@ note = "Sourced: AUTHORS.txt thanks list names Andrew Clark; Crossref record rea
 
 [[claim]]
 id = "C528"
-fragment = "In our own account, Jakob Hackel and Carolina Riascos-&Aacute;lvarez"
+fragment = "In our own account, <span class=\"n\">Jakob Hackel</span> and <span class=\"n\">Carolina Riascos-&Aacute;lvarez</span>"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6319,7 +6319,7 @@ note = "Sourced: https://blog.block.science/reviewing-the-fip-0056-and-cdm-debat
 
 [[claim]]
 id = "C549"
-fragment = "the RAI controller, a highly automated system, in its ... design record ... (2021) and in Zargham&rsquo;s ... talk at a workshop in Edinburgh (ICMS), October 2024"
+fragment = "the RAI controller, a highly automated system, in its ... design record ... (2021) and in <span class=\"n\">Zargham</span>&rsquo;s ... talk at a workshop in Edinburgh (ICMS), October 2024"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6333,7 +6333,7 @@ note = "Sourced: https://zenodo.org/records/10474385 (published 2021-04-09; Zeno
 
 [[claim]]
 id = "C550"
-fragment = "Zargham serves on the ... NumFOCUS Advisory Council ... the firm is a ... community sponsor"
+fragment = "<span class=\"n\">Zargham</span> serves on the ... NumFOCUS Advisory Council ... the firm is a ... community sponsor"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6363,7 +6363,7 @@ note = "Sourced: https://www.youtube.com/watch?v=vr6sIfjGmLQ ('Michael Zargham -
 
 [[claim]]
 id = "C552"
-fragment = "The team works on and with ... OpenMBEE ... Zargham as a ... maintainer across ... OpenSysML ... and Flexo MMS; in our own account, this project is part of a synthesis"
+fragment = "The team works on and with ... OpenMBEE ... <span class=\"n\">Zargham</span> as a ... maintainer across ... OpenSysML ... and Flexo MMS; in our own account, this project is part of a synthesis"
 file = "site/history.html"
 anchor = ""
 kind = "S"
