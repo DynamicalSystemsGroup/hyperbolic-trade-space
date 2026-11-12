@@ -126,3 +126,8 @@ Decisions, each the supervisor may revert.
 - **Reach.** The paper and Appendix G, `prior_art.yaml`, the glossary and Appendix A, the two docs lines, the claims
   rows and the ledger; the register test and the site tests; the paper notebook through the single-writer queue
   behind WP33's paper unit. No model, data or number of record moves.
+
+## Approval of the scope (2026-11-12, 18:50; the assistant, under the supervisor's mandate; scope at 1d27f8c)
+
+**Assistant, verbatim:** "WP35-scope-of-work.md at 1d27f8c is approved as written: goals G1 to G5, the non-goals, the
+sequencing behind WP33's paper unit, the agent models and the defaults as one item. The build starts now."
