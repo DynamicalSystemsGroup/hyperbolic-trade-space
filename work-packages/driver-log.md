@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **a3a61af, the assistant's checks (13:45).** Attribution 0, vocabulary 0 new; the docs, site, encoding, fixtures
+  and contract tests 173 passed; fast suite 1889 passed, 1 failed: `test_claims_register.py::test_the_register_holds`,
+  seven rows whose quoted fragments the round-1 docs fixes cut or reworded (the overview, and the other changed
+  pages). The fix units ran the site and docs tests but not the register test. Routed to the PM as a unit (re-point
+  each row to the current sentence or drop it with its reason) with the rule that every WP32 fix unit runs the
+  claims-register test before pushing. The stage stays at a3a61af for round 2; the register is not a page the cells
+  read.
+
 - **Linux CI gains the lint step (13:30).** The Windows jobs on ec3709e failed at Lint (the `ruff format --check` the
   exclusion at a3a61af fixes) while the Linux jobs passed, because only the Windows job ran ruff: the Linux matrix
   had no lint step, so a format failure reached Windows first and the slow Linux jobs ran for nothing. The
