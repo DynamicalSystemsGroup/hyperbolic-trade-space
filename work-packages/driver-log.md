@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Cascade unit 1 on dev (a5cd754): the clean render and the assistant's browser pass (19:55).** The stage worktree
+  rebuilt at a5cd754 and served on 8791 (the supervisor's clean render; head stated in chat). Rendered paper: Figure 9
+  draws panel B in share order (term 1 settling time against control effort, term 2 depth of discharge alone) and its
+  caption agrees; D.12 reads 0.17 primary and 0.21 stock; D.18's cross-regime conditioning claim is gone (it inverted
+  on the regenerated data); no stderr block, ConvergenceWarning or IPKernelApp text on the paper or the supporting
+  material. One defect found by reading, routed to the cascade's sentence unit: Section 9's generated regime sentence
+  prints "a 8-lemma" (article by the numeral's sound). CI run 43129381509 and the local fast suite on a5cd754 running;
+  the verdicts follow here.
+
 - **The container's second run (one worker, 18:18 to 19:27).** `v2-primary@12` and `v2-baseline@12` completed (3,000
   rows each, git_dirty False); the third entry, `v2-check-predictions`, was OOM-killed again. Cause read from the
   code: the proposer predicts its 100,000-configuration pool in one call against the ~2,134 feasible training rows
