@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **32a3a33, the rendered read (10:35).** Stage rebuilt at 32a3a33 on 8791. The paper has no "other five metrics",
+  no "13 traded", and Figure 7's caption says a black metric can be unoutlined; Figure 3's MoE line carries no
+  overprinted label; the supporting material has no eight-metric or 706 text left and G-17's row reads the thirteen-
+  metric 3,000-design record; the Examples page's Figure 5 is legible at column width (vertical x labels, the title
+  wrapped, thirteen metrics and the colour bar clear). No stderr on any page. The fast suite on the head is running.
+
 - **The stage 6 fix unit landed (10:15).** 6c6adf6 (Figure 8's line counts ten metrics left out per triple, from the
   metric set; Appendix E rows G-2 and G-17 and the recipes on the thirteen-metric 3,000-design record, recomputed
   by a test; "thirteen" in words in Section 8; captions say a black metric can be unoutlined; two Examples cuts hold
