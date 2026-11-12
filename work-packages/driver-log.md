@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **2942ff5, the fast verdict (15:15).** Ruff and format clean, attribution 0, vocabulary 0 new; fast suite 1889
+  passed, 1 failed, the claims-register rows that 60f92d9 repairs (the register test passes there in the targeted
+  run; only `claims_register.toml` differs between the two heads). The round-2 triage head is accepted with the
+  repair; CI on 60f92d9 gives both platforms.
+
 - **60f92d9 staged; round 3 and WP33's baseline released (15:05).** The stage serves 60f92d9 on 8791 (root, docs, the
   changed pages and the paper answer; the fitting block shows bounds (3, 1e4)). The PM is told to dispatch round
   3's two pump-table cells and WP33's eight baseline readers on it; the stage is frozen until round 3 is done, and
