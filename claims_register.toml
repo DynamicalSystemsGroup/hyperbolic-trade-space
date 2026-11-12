@@ -4995,7 +4995,7 @@ note = "candidate, pending the supervisor's review; Appendix D.17 prices each re
 
 [[claim]]
 id = "C407"
-fragment = "removing the infeasible designs or imposing the four requirements before the fit changes the one-term contending set by at most one of its five metrics"
+fragment = "removing the infeasible designs or imposing the four threshold requirements before the fit changes the one-term contending set by at most one of its five metrics"
 file = "paper/paper.ipynb"
 anchor = "Discussion"
 kind = "R"
@@ -5910,3 +5910,35 @@ status = "backed"
 disposition = "narrow"
 source = "WP30 persona baseline reads (P7, P8), triage class 3"
 note = "What the model file contains and does not: no schedule, qualification, fault, thermal, communications or growth element; the load is one constant 12 W in the Environment's loads doc. An absence the test cannot prove from the file; the sentence is the author's reading of the model, narrowed to what the model's own header and docs list."
+
+[[claim]]
+id = "C498"
+fragment = "The model states six requirements: four thresholds (peak slew power, pointing error, control effort, launch cost) and two limits (unit cost, fleet cost)"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "R"
+backing = [
+  "test:tests/test_case.py::test_requirements_are_the_models_budgets",
+  "test:tests/test_case.py::test_requirements_table_prices_each_requirement_as_spike_b",
+  "gen:paper/generate_results.py::requirements_at_the_frontier",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "narrow"
+source = "WP30-decisions.md, 'No floating requirements' (the supervisor, 2026-11-11, 12:00), applied to the two cost requirements"
+note = "narrowed from 'four threshold requirements': the unit cost limit (350,000 USD) and the fleet cost limit (6,000,000 USD) are budgets in the model and are now read after the fit with the four (D.17); the body no longer leaves them out"
+
+[[claim]]
+id = "C499"
+fragment = "No design of fleet size one passes the unit cost limit, so that requirement binds through the fleet size."
+file = "paper/supporting_material.ipynb"
+anchor = "D.17 The requirements read after the fit"
+kind = "R"
+backing = [
+  "test:tests/test_case.py::test_every_cost_requirement_is_read_at_the_designs_own_fleet_size",
+  "gen:paper/generate_results.py::requirements_at_the_frontier",
+]
+status = "backed"
+disposition = "keep"
+source = "WP30-decisions.md, 'No floating requirements'; the supervisor's 'no single satellite clears it' (2026-11-11)"
+note = "on both datasets' feasible designs, the fleet-size-one rows all exceed 350,000 USD per satellite; the pass fractions 0.762 and 0.758 (unit cost), 0.714 and 0.710 (fleet cost) are the table's"

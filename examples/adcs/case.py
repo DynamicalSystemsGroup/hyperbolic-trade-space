@@ -109,6 +109,7 @@ class CaseSpec:
     subsystem_order: tuple = ()
     cost_only_vars: tuple = ()
     requirements: dict = field(default_factory=dict)
+    cost_requirements: dict = field(default_factory=dict)
     baseline_configuration: dict = field(default_factory=dict)
 
     @property
@@ -205,13 +206,20 @@ CUBESAT = CaseSpec(
     # the model's four threshold requirements (cubesat.sysml, part budgets; the supervisor's values,
     # WP23-decisions.md, "The four thresholds"), each read as attribute <= limit; the launch budget
     # 105,770 USD is the total mass at the model's launch rate of 7,000 USD/kg (WP30 D-1, restated
-    # from 90,643 USD at 6,000 USD/kg, OD4); the two cost limits (350,000 USD a satellite, 6,000,000
-    # USD a fleet, both on the covered cost) are verdicts in the model and are not read here
+    # from 90,643 USD at 6,000 USD/kg, OD4); the two cost limits (below) are verdicts in the model
     requirements={
         "peak_slew_power_w": (2.6, "W"),
         "pointing_error_deg": (0.008495, "degree"),
         "control_effort": (0.05922, "N.m.s"),
         "total_mass_kg": (105770.0 / 7000.0, "kg"),
+    },
+    # the two cost requirements (cubesat.sysml, part budgets: unitCostLimit, fleetCostLimit; the
+    # supervisor's values, WP30-decisions.md), each on the covered cost, read as attribute <= limit
+    # at the design's own fleet size; read after the fit with the four above (no floating
+    # requirements), and not part of the constrained design set, which keeps the four
+    cost_requirements={
+        "unit_cost_usd": (350000.0, "USD per satellite"),
+        "fleet_cost_usd": (6000000.0, "USD per fleet"),
     },
     # the model's baseline configuration (cubesatBaseline: 0.6 m, 80 Wh, medium wheels, medium
     # tracker, Kp 0.03, Kd 0.3) as the v2 oracle measures it in the baseline gain box
@@ -1229,7 +1237,7 @@ def summed_exponents(study, fit, pairs):
     return pd.DataFrame(rows, columns=["pair", "term", "exponent a", "exponent b", "sum"])
 
 
-def requirement_mask(df, spec=CUBESAT, only=None):
+def requirement_mask(df, spec=CUBESAT, only=None, costs=False):
     """Rows of ``df`` that meet the case's threshold requirements (each ``attribute <= limit``).
 
     Parameters
@@ -1237,17 +1245,24 @@ def requirement_mask(df, spec=CUBESAT, only=None):
     df : pandas.DataFrame
     spec : CaseSpec
     only : str, optional
-        One attribute of ``spec.requirements``; default all of them jointly.
+        One attribute of ``spec.requirements`` or ``spec.cost_requirements``; default all of the
+        requirements read, jointly.
+    costs : bool, default False
+        Also read the cost requirements. The design sets keep the four threshold requirements
+        (``False``); :func:`requirements_table` reads all six.
     """
     ok = pd.Series(True, index=df.index)
-    for a, (limit, _) in spec.requirements.items():
+    limits = spec.requirements | (spec.cost_requirements if costs or only else {})
+    for a, (limit, _) in limits.items():
         if only is None or a == only:
             ok &= df[a] <= limit + REQUIREMENT_TOL
     return ok
 
 
 def requirements_table(study, fit):
-    """Each threshold requirement read after the fit, at the fitted K = 1 frontier.
+    """Each requirement read after the fit, at the fitted K = 1 frontier: the four threshold
+    requirements and the two cost requirements (the unit cost per satellite at the design's own
+    fleet size, the fleet cost).
 
     The fit is the fit of record (on the feasible designs, no requirement imposed before it). Per
     requirement: its limit, the share of the feasible designs that pass it, how many of the
@@ -1259,7 +1274,7 @@ def requirements_table(study, fit):
     ``-(w_i o_i / s_i) / (w_k o_k / s_k)`` (``o`` the orientation): the percent change in ``k``
     per percent change in ``i`` with the level held, read for the metrics ``k`` with ``w_k`` at
     least :data:`CO_CONTENDER`; a metric at zero exponent has no price and no elasticity at
-    K = 1. The last row reads the requirements jointly.
+    K = 1. The last row reads all six requirements jointly.
 
     Parameters
     ----------
@@ -1280,11 +1295,12 @@ def requirements_table(study, fit):
     w = np.atleast_2d(fit.estimator.exponents_)[0]
     near = np.abs(fit.estimator.score_samples(study.M)) < fit.band
     n_near, rows = int(near.sum()), []
-    for a, (limit, unit) in spec.requirements.items():
+    for a, (limit, unit) in (spec.requirements | spec.cost_requirements).items():
         i = list(study.attrs).index(a)
-        ok = requirement_mask(feas, spec, only=a).to_numpy()
+        ok = requirement_mask(feas, spec, only=a, costs=True).to_numpy()
         excl = near & ~ok
-        row = {"requirement": spec.short[a], "limit": f"{limit:.5g} {unit}",
+        shown = f"{limit:,.0f}" if limit >= 1e5 else f"{limit:.5g}"
+        row = {"requirement": spec.short[a], "limit": f"{shown} {unit}",
                "pass (feasible)": float(ok.mean()),
                "near-frontier excluded": f"{int(excl.sum())} of {n_near}",
                "K = 1 exponent": float(w[i])}  # fmt: skip
@@ -1301,7 +1317,7 @@ def requirements_table(study, fit):
             row |= {"price (log V)": price, "price (bands)": price / fit.band,
                     "largest elasticities": "; ".join(f"{n} {v:+.2f}" for n, v in top)}  # fmt: skip
         rows.append(row)
-    ok = requirement_mask(feas, spec).to_numpy()
+    ok = requirement_mask(feas, spec, costs=True).to_numpy()
     rows.append({"requirement": "all jointly", "limit": "", "pass (feasible)": float(ok.mean()),
                  "near-frontier excluded": f"{int((near & ~ok).sum())} of {n_near}",
                  "K = 1 exponent": np.nan, "price (log V)": np.nan, "price (bands)": np.nan,

@@ -663,7 +663,9 @@ def test_requirements_are_the_models_budgets():
     text = (ADCS / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8")
     lit = {
         name: float(v)
-        for name, v in re.findall(r"attribute (\w+Limit|launchBudget) : \w+ = ([\d.]+)", text)
+        for name, v in re.findall(
+            r"attribute (\w+Limit|launchBudget) : \w+ = ([\d.]+(?:e\d+)?)", text
+        )
     }
     rate = float(re.search(r"launchRate : Real = ([\d.]+)", text).group(1))
     req = {a: lim for a, (lim, _) in case.CUBESAT.requirements.items()}
@@ -673,6 +675,22 @@ def test_requirements_are_the_models_budgets():
         "control_effort": lit["controlEffortLimit"],
         "total_mass_kg": lit["launchBudget"] / rate,
     }
+    cost = {a: lim for a, (lim, _) in case.CUBESAT.cost_requirements.items()}
+    assert cost == {
+        "unit_cost_usd": lit["unitCostLimit"],
+        "fleet_cost_usd": lit["fleetCostLimit"],
+    }
+
+
+def test_every_cost_requirement_is_read_at_the_designs_own_fleet_size(primary):
+    """No floating requirement: the unit cost limit is read on each design's own cost column, so no
+    single satellite clears it (the supervisor's words), and the fleet cost limit on the fleet's."""
+    feas = primary.feasible
+    assert not (feas.loc[feas["fleet_size"] == 1, "unit_cost_usd"] <= 350000.0).any()
+    for a, share in (("unit_cost_usd", 0.762), ("fleet_cost_usd", 0.714)):
+        ok = case.requirement_mask(feas, only=a)
+        assert ok.mean() == pytest.approx(share, abs=5e-4)
+    assert case.requirement_mask(feas).mean() > case.requirement_mask(feas, costs=True).mean()
 
 
 def test_requirements_table_prices_each_requirement_as_spike_b(primary, primary_fits, stock,
@@ -681,12 +699,21 @@ def test_requirements_table_prices_each_requirement_as_spike_b(primary, primary_
     (`WP23-rounds/spikes/spike-B-requirements-and-the-fit.md`, sections 1 and 2)."""
     p = case.requirements_table(primary, primary_fits[1]).set_index("requirement")
     s = case.requirements_table(stock, stock_fits[1]).set_index("requirement")
-    assert p["pass (feasible)"].round(3).tolist() == [0.588, 0.952, 0.574, 0.946, 0.381]
-    assert s["pass (feasible)"].round(3).tolist() == [0.641, 0.656, 0.885, 0.952, 0.375]
+    # the four threshold requirements, the unit and fleet cost requirements, then all six jointly
+    assert p["pass (feasible)"].round(3).tolist() == [0.588, 0.952, 0.574, 0.946, 0.762, 0.714,
+                                                      0.257]  # fmt: skip
+    assert s["pass (feasible)"].round(3).tolist() == [0.641, 0.656, 0.885, 0.952, 0.758, 0.710,
+                                                      0.222]  # fmt: skip
     assert p["near-frontier excluded"].tolist() == ["108 of 238", "8 of 238", "95 of 238",
-                                                    "12 of 238", "148 of 238"]  # fmt: skip
+                                                    "12 of 238", "64 of 238", "57 of 238",
+                                                    "178 of 238"]  # fmt: skip
     assert s["near-frontier excluded"].tolist() == ["145 of 293", "118 of 293", "32 of 293",
-                                                    "9 of 293", "210 of 293"]  # fmt: skip
+                                                    "9 of 293", "66 of 293", "85 of 293",
+                                                    "241 of 293"]  # fmt: skip
+    assert p.loc["unit cost", "limit"] == "350,000 USD per satellite"
+    assert p.loc["fleet cost", "limit"] == "6,000,000 USD per fleet"
+    assert p.loc["unit cost", "price (bands)"] == pytest.approx(5.31, abs=0.01)
+    assert s.loc["fleet cost", "price (bands)"] == pytest.approx(0.49, abs=0.01)
     assert p.loc["pointing error", "price (log V)"] == pytest.approx(0.0019, abs=1e-4)
     assert s.loc["pointing error", "price (bands)"] == pytest.approx(0.79, abs=0.01)
     assert s.loc["control effort", "price (bands)"] == pytest.approx(0.91, abs=0.01)

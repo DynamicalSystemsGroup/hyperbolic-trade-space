@@ -761,7 +761,7 @@ def _summed_text(regime, fits) -> str:
 
 
 def requirements_at_the_frontier() -> Md:
-    """The four threshold requirements read after the fit of record, per dataset.
+    """The six requirements read after the fit of record, per dataset.
 
     Returns
     -------
@@ -769,7 +769,7 @@ def requirements_at_the_frontier() -> Md:
         ``case.requirements_table`` on the K = 1 fit of each dataset: the limit, the share of the
         feasible designs that pass it, the near-frontier designs it excludes, the exponent, the
         price at the frontier (log V and band widths) and the two largest elasticities; a last row
-        reads the four jointly.
+        reads the six jointly.
     """
     parts = []
     for r, s in _studies().items():
@@ -790,7 +790,7 @@ def _design_sets():
 
 def design_sets_comparison() -> Md:
     """Constrained against unconstrained: the fit on all designs, the feasible ones, and the
-    feasible ones that meet the four requirements, per dataset, in one conditioning.
+    feasible ones that meet the four threshold requirements, per dataset, in one conditioning.
 
     Returns
     -------

@@ -1170,3 +1170,12 @@ section = "Case analysis"
 words_removed = 259
 no_longer_did = "the K = 2 planes figure (then Figure 6), its Shows and Does-not-show lines and the sentence that introduced it: its top panel drew term 1's pair as a lattice of tracker-grade and wheel-class combinations, which reads as no trade-off the designs trace, and its bottom panel was the K = 1 plane (Figure 5) again; the chart figure's caption also lost a clause naming which way the axis improves, which had gone stale (the axis names the metrics itself), and the elasticity sentence its pointer to the removed panel"
 authority = "the figure loop: cold reader's returns on the K = 2 planes figure (the top panel not a trade-off, the bottom the same plane as Figure 5) and the supervisor's standing order that a figure that cannot be made clear is assessed for removal (PM-BRIEF.md, 'Stuck means assess removal')"
+
+# No floating requirements applied to the two cost requirements: the body's requirements sentence names
+# all six and Appendix D.17 reads them (WP30-decisions.md, 'No floating requirements').
+[[cut]]
+date = "2026-11-12"
+section = "Case construction"
+words_removed = 3
+no_longer_did = "the sentence counted four threshold requirements and left the two cost limits out of what Appendix D.17 reads after the fit; it now names all six in fewer words (the cost coverage sentence says 'the two costs' for 'the unit cost and the fleet cost')"
+authority = "the supervisor's 'no floating requirements' (WP30-decisions.md, 2026-11-11, 12:00), applied to the unit-cost and fleet-cost limits"
