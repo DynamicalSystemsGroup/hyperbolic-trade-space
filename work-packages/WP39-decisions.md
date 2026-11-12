@@ -56,3 +56,19 @@ call without the subsystem detail, and whether the section made the decision eas
 that did it quoted; the answer key gains the section's sentence (what the method does and does not decide); and
 the claims register backs every number the narration quotes. The reads are the acceptance, the register the
 machine check.
+
+## The supervisor, the requirement at two levels (verbatim)
+
+> this requirement lives at two levels: at the detail level in the applied case section but also in the way we
+> talk about the method which means it may have bearing on the abstract and introduction, discussion, conclusion
+> and other surfaces. this is a vibe check requirement so it may not require significant changes in any other
+> location. we just need to make sure a skimming exec is encouaged not scared off.
+
+**The assistant's reading.** Two levels, two tests. The detail level is WP39's build in the case section, tested
+by the P7 and P8 cold reads of that section. The surface level is a skim test: the P8 persona skims the paper
+the way an executive does, the abstract, the first screen, the introduction's opening, the discussion's and the
+conclusion's first lines, the Examples page, and reports, surface by surface, encouraged or put off and by which
+sentence; the readout names the sentences that put the skimmer off, and only those are touched, as wording, by
+the owning package (the abstract and the first screens are entry surfaces, so every such change is listed for the
+supervisor's close read, and the abstract's own rewrite stays his). No other change is made on the strength of
+the vibe check; it is a read with a small, named remedy list, not a rewrite.
