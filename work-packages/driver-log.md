@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Term order on dev (a4d4fc7), the assistant's checks (19:25).** The terms are permuted once after convergence by
+  descending term share (ties by cell size, then the first metric's exponent); docstring, glossary entry and fitting
+  page say so; two tests pin the order, its stability across seeds and the consistent permutation of every per-term
+  attribute. On this Mac: ruff check and format clean; lock current; vocabulary 0 new violations; attribution grep 0;
+  estimator, sklearn-conformance, contract and soft-fit test files 712 passed, 12 skipped, 1 xfailed. The soft-fit
+  reference carries the permuted planted entries and host-recorded cubesat entries ("re-pin at the gate", as the brief's
+  rule says); the gate image is rebuilt at the cascade head before that re-recording, since the current image (910a57d)
+  lacks the permutation. Accepted into the cascade; the paper's per-term tables follow in unit 1's re-execution.
+
 - **CI on the gate head 684b5b7 (run 43116693470, 18:50).** Linux fast and Windows fast: 6 failed each, the six
   `tests/test_paper.py` reds the cascade's first unit clears (stale committed outputs, D.12's conditioning sentence,
   Figure 9's region names); nothing Windows-specific. Linux slow: six more paper reds of the same kind (Appendix D's
