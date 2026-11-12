@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **8806b0e, the assistant's checks complete (07:20).** Fast suite 1881 passed, 0 failed; the design-sets and
+  requirements slow tests of `test_case.py` and `test_paper.py` 5 passed; lint, format, lock, vocabulary and
+  attribution clean (recorded above). Accepted; CI run 43201881230 gives both platforms. Stage 6 runs on this head.
+
 - **8806b0e staged; stage 6 dispatched on it (07:00).** Rendered read: the paper and D.17 name the four performance
   thresholds, "requirements met" is gone from every page, D.17 carries the one clause on the cost limits (budget
   limits read after the fit; a set constrained by the unit-cost limit would be a fleet-size choice), the Examples
