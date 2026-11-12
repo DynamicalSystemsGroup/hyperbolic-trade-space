@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **32a3a33 fully green; WP32 round 1 landed (12:20).** CI run 43225261831: every job green on both platforms (the
+  tenth fully green head). On dev: the approval and the open questions recorded verbatim (cb11840), the four cells'
+  task text (091a451), the package-user fixtures (a plain CSV, a pump SysML v2 model, its export script and table,
+  with a test; 9d83355) and the four round-1 returns verbatim (ec3709e). The assistant's checks run on the head; CI
+  dispatched. The PM's triage and fix units are in their worktrees.
+
 - **94464bb, the assistant's checks (12:05).** Ruff and format clean, attribution 0; the encoding, paper and site
   tests 189 passed (the figure-link test among them, so the redrawn Figure 7 file and the notebook agree). Accepted;
   CI run 43230065422 gives both platforms. WP32's cells have not yet appeared in the PM's worktrees; chased once.
