@@ -46,3 +46,10 @@ the reviewer's guide, so a later reader can re-run the pass. And the pass's reac
 minor wording decisions on stable text, never a claim, a number, a structure or a placement; anything a reader
 flags that is more than that goes to the owning package or to the supervisor's list, not into the pass. It
 runs late, after the content loops, for exactly the reason he gives.
+
+> LLMs also construct overly complex gramatical structures that are hard for human readers to parse.
+
+**The assistant's reading.** A ninth kind for the brief: sentence structure a human reader cannot parse at one
+pass, long sentences with stacked subordinate clauses, several ideas joined by semicolons or colons, a subject
+far from its verb, nested qualifications. The disposition is to split or reorder, never to add words; the checker
+can report sentence length and clause depth per surface as a signal, the reader decides.
