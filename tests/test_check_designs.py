@@ -62,3 +62,59 @@ def test_predictions_recorded_for_the_proposals_only():
         assert prop.loc[r.design_id, "wheel_class"] == r.wheel_class
     # predictions carry no measured attribute columns (they were fixed before the simulation)
     assert not set(ATTRS) & set(preds.columns)
+
+
+def _small_regressor():
+    """A TradeSpaceRegressor fitted on 12 rows of two metrics (a GP on three features)."""
+    import numpy as np
+    from sklearn.gaussian_process import GaussianProcessRegressor
+    from sklearn.gaussian_process.kernels import RBF, ConstantKernel, WhiteKernel
+    from sklearn.pipeline import make_pipeline
+
+    from hyperbolic_trade_space import (
+        HyperbolicTradeSpace,
+        LogAffinePreconditioner,
+        TradeSpaceRegressor,
+    )
+
+    rng = np.random.default_rng(0)
+    X = rng.uniform(size=(12, 3))
+    Y = np.exp(np.column_stack([X[:, 0] - X[:, 1], X[:, 1] + 0.3 * X[:, 2]]))
+    ts = make_pipeline(
+        LogAffinePreconditioner(orientation=[-1, -1], scaler="standard"),
+        HyperbolicTradeSpace(temperature=5.0),
+    )
+    gp = GaussianProcessRegressor(
+        kernel=ConstantKernel(1.0) * RBF(np.ones(3)) + WhiteKernel(0.1), normalize_y=True
+    )
+    return TradeSpaceRegressor(gp, ts).fit(X, Y), rng.uniform(size=(10, 3))
+
+
+def test_chunked_prediction_equals_the_one_shot_prediction():
+    import numpy as np
+    from experiments.check_designs import _predict_chunked
+
+    reg, F = _small_regressor()
+    Z, lv = reg.predict_coordinates(F)
+    Zc, lvc = _predict_chunked(reg, F, chunk=3)
+    assert Zc.shape == Z.shape and lvc.shape == (len(F),)
+    np.testing.assert_allclose(Zc, Z, rtol=0, atol=1e-8)  # blocked BLAS rounds at ~1e-11 here
+    np.testing.assert_allclose(
+        lvc, np.ravel(lv), rtol=0, atol=1e-8
+    )  # blocked BLAS rounds at ~1e-11 here
+
+
+def test_no_prediction_call_exceeds_the_chunk_size():
+    from experiments.check_designs import _predict_chunked
+
+    reg, F = _small_regressor()
+    sizes = []
+    real = reg.predict_coordinates
+
+    class Spy:
+        def predict_coordinates(self, X):
+            sizes.append(len(X))
+            return real(X)
+
+    _predict_chunked(Spy(), F, chunk=3)
+    assert sizes == [3, 3, 3, 1]

@@ -38,6 +38,7 @@ from .cubesat_oracle import (
 )
 
 POOL = 100_000
+CHUNK = 5_000  # rows per prediction call, so the GP never holds a POOL x n_train kernel
 # The reach: a hole counts as reachable when a seeded configuration is predicted within it, in
 # [Z | 2 log V] distance. WP7 typed 0.35 for the slew-time view with no stated rule; the rule stated
 # at WP23's data gate (WP23-decisions.md, "The proposer's reach on the settling-time view") is the
@@ -83,6 +84,17 @@ def _std(reg, F, p):
         return np.asarray(reg.predict_std(F), float).reshape(-1)[:p]
     except (AttributeError, ValueError, NotImplementedError):
         return np.full(p, np.nan)
+
+
+def _predict_chunked(reg, F, chunk: int = CHUNK):
+    """``reg.predict_coordinates(F)`` in blocks of ``chunk`` rows, joined: ``(Z, log V)``.
+
+    The posterior mean of each row does not depend on the other rows, so the blocks join to the
+    one-shot output; no call sees more than ``chunk`` rows.
+    """
+    F = np.asarray(F)
+    parts = [reg.predict_coordinates(F[i : i + chunk]) for i in range(0, len(F), chunk)]
+    return np.vstack([z for z, _ in parts]), np.concatenate([np.ravel(lv) for _, lv in parts])
 
 
 class Proposer:
@@ -155,8 +167,7 @@ class Proposer:
                 "fleet_size": fleet.integers(lo_n, hi_n + 1, POOL).astype(float),
             }
         )
-        Zp, lvp = reg.predict_coordinates(_features(pool, ranges, levels))
-        lvp = np.ravel(lvp)
+        Zp, lvp = _predict_chunked(reg, _features(pool, ranges, levels))
         nearest = []  # per isolated hole: the index of the nearest pool design and its distance
         for h in holes[:HOLES]:
             dist = np.sqrt(((Zp - h) ** 2).sum(axis=1) + (2 * lvp) ** 2)
