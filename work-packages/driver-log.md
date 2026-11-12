@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The docs unit landed (04:20).** 28041fb (the case page describes thirteen metrics, the cost metrics, 7,000 USD/kg
+  and the 105,770 USD launch budget; the eight-metric texture history cut for a pointer to Appendix D), e28bbcd (the
+  leaves-out list keeps the four bullets that bound the model's reach and points at C.8 for the rest, 301 to 216
+  words) and 6537134 (a site test keeps the docsite's figure numbers in navigation order; the Examples page's
+  Figure 5 and 6 are the docsite's own sequence). The assistant's checks and a stage rebuild run; CI run
+  43189563128 dispatched. Still in their worktrees: the cost requirements under D.17 and the Figure 6 review-list
+  row.
+
 - **a8b927d, the assistant's checks (03:50).** Ruff and format clean, lock current, vocabulary 0 new, attribution 0,
   fast suite 1880 passed, 0 failed; Linux fast CI green; the new D.2 slow test passes locally (1 passed, 124 s); the
   slow marker on CI. Accepted into the cascade. The three units decided at 03:30 are in their worktrees (the review-list row, the
