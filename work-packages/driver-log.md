@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **32a3a33 verified; WP32 starts on it (10:50).** Ruff and format clean, lock current, vocabulary 0 new, attribution
+  0, fast suite 1883 passed, 0 failed, the rendered pages read (above). Accepted; stage 6's findings are closed on
+  dev except D.17's USD prices, which the PM confirms or dispatches. 32a3a33 is WP32's staged head on 8791 and the
+  supervisor's clean render; the PM is told to start the four cells as approved and to record the scopes' decisions
+  verbatim. CI run 43225261831 on the head in progress.
+
 - **32a3a33, the rendered read (10:35).** Stage rebuilt at 32a3a33 on 8791. The paper has no "other five metrics",
   no "13 traded", and Figure 7's caption says a black metric can be unoutlined; Figure 3's MoE line carries no
   overprinted label; the supporting material has no eight-metric or 706 text left and G-17's row reads the thirteen-
