@@ -175,3 +175,10 @@ Every change to one of them is listed, with its reason and commit, in a section 
 in the reviewer's guide (WP8b), so his close read starts from the list of what moved. The abstract correction in
 flight (the restoration of the clause the WP33 unit cut) stands as the assistant's editorial call, not as a
 breach, and is on that list like every other change.
+
+> this is just me informing you that i expect to concentrate review effort there in addition to reviewing the
+> content as a whole
+
+**Applied.** Information, not a new gate: his review covers the whole package, with extra effort on the five entry
+surfaces. The "Entry surfaces" section of the review list and the reviewer's guide exist to make that
+concentration easy, and nothing else changes in how units work.
