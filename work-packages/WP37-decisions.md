@@ -132,3 +132,16 @@ at risk; multipolar and contentious sponsorship, with no single decision authori
 public, and legitimacy bearing on outcomes. The last one is also the thread that ties the history to this paper's
 first sentence, a decision analysis that owes an answer and a justification an accountable decision maker can
 follow and defend; the page may say so in a clause if the record supports it, and never more.
+
+## The assistant, on the W1 readout's thin record (2026-11-12, 18:15; readout at d5ab21d)
+
+The worker found the public record thin in five places: no dated rebrand announcement; no single public page
+listing the firm's activities; no README stating client permission; no public source using the five attributes
+for the firm's own work; the origin and announcement posts unreachable (HTTP 403). Decisions for the drafting unit:
+the page is the team's own page, so it may give the firm's account in the team's own voice where no public source
+exists, marked as that account ("in our own account" or the like) and never attributed to a source that does not
+say it; what a linked work shows, the page shows by the link; "with the client's permission" is not written unless
+a README says it ("published models of client systems" instead); the rebrand is stated without a date; a public
+post the worker could not fetch may be linked by its known URL with no claim resting on it, and the supervisor is
+asked at his review to confirm or supply those links and dates. The attributes list stands as the supervisor's
+account of the systems the firm studied; the page says so.
