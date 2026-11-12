@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The abstract correction verified; WP33's repeat round released on df0cad9 (01:25).** The correction had landed
+  earlier among the WP37 commits (2298720: the abstract restored word for word with the soft-support clause, the
+  reader line at the end of Section 1's Organization paragraph, C033 and the ledger re-pointed, a review-list row)
+  and is an ancestor of the staged head; verified in the notebook's source. So the stage at df0cad9 is the repeat
+  round's surface: PM13 is told to dispatch the eight wayfinding readers and the one fresh U1 cell (WP32 R-10) on
+  it, and the stage is frozen from that message until the round is done. WP33's items 5 and 6 (the API pages
+  merged by contract amendment; the nav heading) land on dev meanwhile for the next rebuild.
+
 - **The twelfth PM's handover; the thirteenth PM; the WP35 build read (01:10).** PM12 stopped at its context limit with
   its handover (PM-BRIEF.md, 4411cb2): WP37's record and page delivered, the entry-surfaces section opened
   (e5d2c35, twelve rows), WP36's three readouts done without the synthesis, WP35's build landed (b1b43cf) without
