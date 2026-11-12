@@ -228,6 +228,9 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The head with WP33's first screens, the slow site and docs verdict (21:35).** 29 passed in 28 minutes, on top of
+  the fast suite's 1895; the first-screen units are accepted into WP33's record pending the abstract correction.
+
 - **The head with WP33's first screens, the fast verdict (21:15).** Fast suite 1895 passed, 0 failed, lock current;
   the slow site and docs tests still running locally. CI on the history-page head: every job green on both
   platforms but docs-paper, still running. The abstract correction, the history page's fixes and second research
