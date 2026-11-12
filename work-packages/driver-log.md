@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **df0cad9, the assistant's checks (00:30).** Ruff and format clean, attribution 0, vocabulary 0 new; the site
+  (history page tests included), claims-register, docs and encoding tests 116 passed. The page waits only on the
+  stage rebuild to be opened for the supervisor.
+
 - **The history page fixed against the record (00:20).** df0cad9: the prose rewritten as the view of history.yaml
   under the thinness rule, 418 words of prose (inside the tests' bounds, above the 350 aim), in the scope's
   structure: the purpose sentence; the firm as a contract research and engineering firm with the activities
