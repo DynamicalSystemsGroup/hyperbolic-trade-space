@@ -47,3 +47,15 @@ then to the supervisor, whose acceptance settles the people and the wording.
 Jodesty, Jamsheed Shorish, Kris Paruch, Andrew "Octopus" Penland, Jakob Hackel, Emanuel Lima and Andrew Clark.
 The workers research the three additions as they do the others: public works bearing on the history, attributions
 read from sources, nothing inferred.
+
+## The supervisor, on the contributors' backgrounds (verbatim)
+
+> its actually fitting if you look at the backgrounds of the contributors its controls engineers, economists,
+> physicists, mathematicians and computer scientists.
+
+**The assistant's reading.** A point for the page, if the sources bear it out: the group that built cadCAD, GDS
+and PSUU drew on control engineering, economics, physics, mathematics and computer science, which is the mix the
+method rests on (a convex program, elasticities, a frontier, an estimator). The workers record each contributor's
+public background from a public source (a bio, a profile, a paper's affiliation), and the page states the mix as a
+sentence backed by those sources, naming no one's background that a source does not; the supervisor settles it at
+his review.
