@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **259ad9d, the fast verdict (05:40).** Ruff and format clean, lock current, vocabulary 0 new, attribution 0; fast
+  suite 1881 passed, 0 failed; CI fast green on Linux and Windows. The slow case, paper, sensitivity, site and docs
+  tests are running locally and on CI. The design-sets wording unit is in its worktree.
+
 - **a8b927d fully green (05:20).** CI run 43184126852: every job green on both platforms (the fourth fully green
   head: 38aff78, 78cd40a, 160a0ab, a8b927d). Runs on 6537134 and 259ad9d in progress.
 
