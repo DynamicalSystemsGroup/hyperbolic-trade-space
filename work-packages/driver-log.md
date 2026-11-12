@@ -228,6 +228,16 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP37 review received and returned for one closing unit (11:50).** The review (940e238): R-1, R-3 to R-7, R-9,
+  R-10, R-13 to R-18 met; R-2 not met (the link-to-claim table is from the draft head); R-8 and R-12 not met in part
+  (paragraph order against the six-part structure; the back link only in the footer of a 2,732 px page); the fresh
+  reader reads the lineage of the firm, not of the method, because the method is never named. The assistant's calls
+  are in WP37-decisions.md: a bridge clause to the method paid by the tagline's cut, the scope's paragraph order, a
+  back link at the top, the special-case marks and the self-published claims kept as marked, net negative words, the
+  record defects fixed and W3 re-run at the final head. The one blocked link (doi.org/10.1002/iis2.70203) resolved
+  in the assistant's browser to the supervisor's INCOSE 2026 article. His open items stay listed for his close read;
+  nothing blocks. Worktree count still 53; the prune order stands.
+
 - **WP33 review received and returned for a closing round (11:10).** The review (800a90a, 44db494) is honest and
   thorough: R-1, R-2, R-4, R-6, R-7, R-8, R-10, R-12 met in substance, R-3, R-9, R-11 partly, R-5 not; eight
   findings and an open-items table; its own verdict is that done is not met. The assistant's calls, sent to PM13:

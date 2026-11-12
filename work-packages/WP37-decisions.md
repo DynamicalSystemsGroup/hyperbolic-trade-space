@@ -348,3 +348,18 @@ says it does not earn its place; 7 (a) the Clark paper named with the Red Cross 
 collaboration and its purpose, community currencies, the implementation form not named (his rule: an
 implementation detail, never the point), the record carrying the detail; 8 (a) the Edinburgh talk as the CV states
 it (ICMS, October 2024), linking the CV, unless the second pass finds the event page; 9 (b)."
+
+## The review's triage ruled on (2026-11-13, 11:50; the assistant, under the supervisor's standing rulings; review at 940e238)
+
+**Assistant, verbatim:** "The page gets one clause bridging from the supervisor's geometric-programming work to the
+posynomial frontier of this paper, linked to the paper; the tagline is cut as default 6 (a) provides; 'long-running
+endeavour with many contributors' points at the generated list and 'synthesis effort' stays marked as the team's
+account; the special-case phrase stays on the seven list entries, which are direct references under his rule, and a
+linked source's title stays; the Edinburgh talk and 'founded in 2017' stay, marked as his own account; no connecting
+idea for 2014 to 2018; the paragraphs take the scope's six-part order and a back link to the method goes at the top
+as well as the footer; inline prose links are the site's register; Hackel and Riascos-Álvarez stay named in the prose
+only. The unit nets negative words, under 400 as the target with 350 the aim. The record defects are fixed in the same
+round, W3 re-run at the final head, the draft screenshots deleted. The DOI 10.1002/iis2.70203 resolves in the
+assistant's browser to the supervisor's INCOSE International Symposium 2026 article. The supervisor's open items
+(spellings, Carolina's handle, Barlin's reach, the 'possibly also' names, the unreachable Medium links, the closing
+phrase) remain his and are listed for his close read; each content call above is his to revert."
