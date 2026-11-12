@@ -511,19 +511,19 @@ note = "The fit takes the entropic soft maximum of the scores over the designs (
 
 [[claim]]
 id = "C034"
-fragment = "one term blends the subsystems' trade-offs into a single tension; three terms separate the contending sets"
+fragment = "one term blends the subsystems' trade-offs into a single tension; two terms separate the contending sets"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "R"
 backing = [
   "gen:paper/generate_findings.py::k1_sentence",
-  "gen:paper/generate_findings.py::k_sweep_sentence",
+  "gen:paper/generate_findings.py::terms_sentence",
   "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
 ]
 status = "backed"
 disposition = "keep"
 source = "WP11 round 1, CR-1"
-note = "On the primary regime the K = 1 fit reports one contending set and the K = 3 fit three different ones (sections 8 and 9, Appendix D.3); on this case only, not a claim about other tables."
+note = "On the primary regime the K = 1 fit reports one contending set and the K = 2 fit two different ones, the K the checks of Appendix D.15 pick (Section 9, Appendix D.3); on this case only, not a claim about other tables."
 
 [[claim]]
 id = "C035"
@@ -1970,7 +1970,7 @@ note = "meta-sentence about what Section 'Results' says; the test asserts 'ill-p
 
 [[claim]]
 id = "C154"
-fragment = "The temperature is selected afresh at each K"
+fragment = "the second share is read at each K's own fit temperature"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
@@ -1982,7 +1982,7 @@ note = "k_fits re-selects the temperature at each K; the test asserts the temper
 
 [[claim]]
 id = "C155"
-fragment = "`mean_slack_` is defined for every K and is comparable across K at one temperature; `objective_` is the soft maximum at one term and the mean slack at several, and is not."
+fragment = "where `mean_slack_` is comparable across K and `objective_` is not"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
@@ -4795,17 +4795,17 @@ note = "the sentence Figure 5 and Appendix D.3 print for term 2 of the primary K
 id = "C394"
 fragment = "each lead a term of their own"
 file = "paper/generate_findings.py"
-anchor = "def k_sweep_sentence"
+anchor = "def terms_sentence"
 kind = "R"
 backing = [
-  "gen:paper/generate_findings.py::k_sweep_sentence",
+  "gen:paper/generate_findings.py::terms_sentence",
   "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
-  "test:tests/test_case.py::test_k3_terms_equal_the_primary_record",
+  "test:tests/test_case.py::test_case_k_terms_equal_the_primary_record",
 ]
 status = "backed"
 disposition = "keep"
-source = "swap-evidence part 5 (num-k-sweep); part 6 finding 3 leaves the term/facet naming to WP24"
-note = "the metrics in a K = 3 contending set and not in the K = 1 set that are a term's largest exponent: control effort (term 2, 0.397) and peak slew power (term 3, 0.612) on the primary data; the sentence is computed from the fits and its committed output is pinned as current; the term test pins peak slew power leading the largest term"
+source = "swap-evidence part 5 (num-k-sweep, now num-terms); part 6 finding 3 leaves the term/facet naming to WP24; the K of the case is 2 (WP30-decisions.md)"
+note = "the metrics in the K = 2 contending sets and not in the K = 1 set that are a term's largest exponent; the sentence is computed from the fits and its committed output is pinned as current; the term test pins the K = 2 record (term shares 0.74 and 0.26, peak slew power leading term 1)"
 
 [[claim]]
 id = "C395"
@@ -5071,23 +5071,8 @@ source = "WP11 round 2, CR-31 (the figure stream's caption for Figure 4)"
 note = "select_temperature(X, target_frac_above=0.10, ..., tol=0.01) bisects until the fraction above V = 1 is within tol of the target; the caption states the rule as applied, which is how the fit temperature leaves 0.092 against the target 0.10."
 
 [[claim]]
-id = "C412"
-fragment = "the two straight streaks are torque-limited slews: the wheel runs at its usable torque for the whole settling time, so the control effort is that torque times the settling time"
-file = "paper/paper.ipynb"
-anchor = "Case analysis"
-kind = "S"
-backing = [
-  "func:examples/adcs/adcs_sim.py::simulate_adcs",
-  "file:work-packages/WP19-figure-review.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP11 round 2, CR-32 (the figure stream's caption for Figure 6)"
-note = "adcs_sim.py clips the wheel torque at the usable torque and integrates its magnitude over the slew into the control effort, so a slew at the limit for its whole settling time has control effort = usable torque x settling time, a line of slope one in the raw logs per wheel class; the figure review's data check on the data of record found those designs to be the two streaks (small and medium wheel; 3 of 267 large-wheel designs)."
-
-[[claim]]
 id = "C413"
-fragment = "the designs whose other six metrics, weighed by their exponents, lie within 0.1 of that median, so for them the line is the surface to within 0.1 in log V"
+fragment = "the designs whose other eleven metrics, weighed by their exponents, lie within 0.1 of that median, so for them the line is the surface to within 0.1 in log V"
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "S"
@@ -5361,39 +5346,39 @@ note = "Planted K0 = 3 table 0, two outer draws of two resamples each; the block
 
 [[claim]]
 id = "C435"
-fragment = "The stock regime drops by 0.065 and 0.068, then 0.011 and 0.004: a break at K = 3, where the thinnest term holds 0.17."
+fragment = "The primary regime drops by 0.078, then 0.023, 0.012 and 0.005: a break at K = 2, where the thinnest term holds 0.28 (0.21 at K = 3)."
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "R"
-backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_choosing_k_pages_cubesat_numbers_are_the_blocks_output"]
 status = "backed"
 disposition = "keep"
 source = "WP31 U3"
-note = "Stock regime at its K = 1 temperature: slack 0.179, 0.114, 0.046, 0.035, 0.031; thinnest term share 0.17 at K = 3. Agrees with the WP31 readout sweep (cubesat-stock.csv)."
+note = "Primary regime at its K = 1 temperature on the regenerated record: slack 0.122, 0.043, 0.020, 0.008, 0.003; thinnest term share 0.28 at K = 2 and 0.21 at K = 3; the same fits as Appendix D.15 of the paper at K = 1 to 4. The test runs the page's blocks and pins the printed lines."
 
 [[claim]]
 id = "C436"
-fragment = "The primary regime drops by 0.112, 0.044, 0.017 and 0.010: the curve bends with no break, so the mean slack cannot choose K, and its thinnest term holds 0.07 already at K = 2. Stable radii run from 3e-06 to 1e-04."
+fragment = "The stock regime drops by 0.055, 0.031, 0.012 and 0.010, bending with no break, so the mean slack cannot choose K; its thinnest term holds 0.35 at K = 2 and 0.13 at K = 3."
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "R"
-backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_choosing_k_pages_cubesat_numbers_are_the_blocks_output"]
 status = "backed"
 disposition = "keep"
 source = "WP31 U3"
-note = "Primary regime at its K = 1 temperature: slack 0.243, 0.132, 0.088, 0.070, 0.061; thinnest share 0.07 at K = 2; radii 1e-04, 1e-05, 4e-05, 3e-06 (primary) and 6e-05, 9e-05, 3e-05, 4e-06 (stock). 'No break' is the reading of drops that shrink steadily; stated as the reading."
+note = "Stock regime at its K = 1 temperature on the regenerated record: slack 0.115, 0.060, 0.030, 0.017, 0.007; thinnest share 0.35 at K = 2, 0.13 at K = 3; 'No break' is the reading of drops that shrink steadily; stated as the reading."
 
 [[claim]]
 id = "C437"
-fragment = "Over three draws the primary regime's movement is 0.09 to 0.45 at K = 2, 0.25 to 0.69 at K = 3 and 0.17 to 0.54 at K = 4. The ranges overlap, so this check excludes none."
+fragment = "Over three draws the primary regime's movement is 0.18 to 0.20 at K = 2, 0.15 to 0.29 at K = 3 and 0.14 to 0.95 at K = 4. The ranges overlap, so this check excludes none."
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "R"
-backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_runnable_blocks_execute"]
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_choosing_k_pages_cubesat_numbers_are_the_blocks_output"]
 status = "backed"
 disposition = "keep"
 source = "WP31 U3"
-note = "Printed by the block: [0.09 0.1 0.45], [0.25 0.31 0.69], [0.23 0.54 0.17]. Three draws."
+note = "Printed by the block: [0.2 0.2 0.18], [0.15 0.29 0.16], [0.14 0.95 0.79]. Three draws."
 
 [[claim]]
 id = "C438"
@@ -5808,3 +5793,35 @@ status = "backed"
 disposition = "narrow"
 source = "WP29 stage 6, the assistant's call on triage C1 (WP29-decisions.md)"
 note = "R3 as the ledger entry words it (derivation/axioms.py): the hypotheses of L20 on the support. Strict complementarity is the gradient value lambda on the support and strictly above it off the support (L20.52, L20.62); positive definiteness on the face's tangent space makes the shift unique and bounds it (L20.60 and L20.44 to L20.49)."
+
+[[claim]]
+id = "C474"
+fragment = "an exponent vector moves by up to"
+file = "paper/generate_findings.py"
+anchor = "def choosing_k_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::choosing_k_sentence",
+  "gen:paper/generate_results.py::choosing_k",
+  "test:tests/test_paper.py::test_choosing_k_picks_the_cases_k_on_both_regimes_and_the_prose_quotes_the_table",
+  "test:tests/test_case.py::test_chosen_k_is_the_k_where_the_largest_drop_in_the_mean_slack_lands",
+]
+status = "backed"
+disposition = "keep"
+source = "WP30, the choice of K in the case (WP30-decisions.md, 2026-11-11, 15:30)"
+note = "Section 9's sentence: the K the package's choosing-K checks pick for the case (the K at which the mean slack, read at the K = 1 temperature, drops most), the thinnest term's share at the pick and the next K at each K's own temperature, the movement under resampling at the last K and at the pick; every number is computed from the Appendix D.15 table, and the test pins that the checks pick K = 2 on both regimes, that a thin term appears at K = 3 (a share under 0.1 against over 0.2 at K = 2) and a splinter at K = 4 (movement over 0.5 against under 0.5 at K = 2), at two digits."
+
+[[claim]]
+id = "C475"
+fragment = "In the bottom panel both terms weigh the pair and the line is the lower of their two lines, which is term 2's across the range."
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "R"
+backing = [
+  "gen:paper/figures/planes.py::planes_figure",
+  "test:tests/test_paper.py::test_the_planes_figures_bottom_panel_is_one_terms_line",
+]
+status = "backed"
+disposition = "keep"
+source = "WP30, the choice of K in the case"
+note = "The planes figure at K = 2: the top panel is term 1's pair alone, the bottom panel's pair (available power, unit cost) is weighed by both terms and the envelope (the lower line, the surface) is term 2's at all 400 abscissae; the test recomputes the envelope."

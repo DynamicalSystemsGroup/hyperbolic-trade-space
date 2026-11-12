@@ -274,3 +274,48 @@ record, every table and every figure carry one order; ties broken by cell size t
 the glossary's "term share" entry says it is the order of the terms; the paper and the docs state it in one sentence.
 The planted-recovery tests already compare sorted exponents; the per-term pins (the K record tests) re-pin at the
 cascade. A reader then knows term 1 is the term that carries most of the frontier.
+
+## The choice of K in the case: the result (cascade unit chooseK, 2026-11-11)
+
+The package's own choosing-K methods (`docs/user-guide/choosing-k.md`) were run on both regimes of the data of record
+(thirteen metrics, 3,000 designs per regime) with `case.choosing_k_table`; the table is Appendix D.15 and the
+verdict `case.chosen_k` (the K at which the largest drop in the mean slack lands, read against the thin-term share and
+the movement under resampling). At the K = 1 temperature (mean slack, share, movement) and at each K's own fit
+temperature (the second share, the temperature of the fits the case shows):
+
+| regime | K | mean slack | drop | thinnest share | thinnest share, own tau | movement |
+|---|---|---|---|---|---|---|
+| primary | 1 | 0.122 | | | | |
+| primary | 2 | 0.043 | 0.078 | 0.28 | 0.26 | 0.22 |
+| primary | 3 | 0.020 | 0.023 | 0.21 | 0.06 | 0.15 |
+| primary | 4 | 0.008 | 0.012 | 0.17 | 0.11 | 0.75 |
+| stock | 1 | 0.115 | | | | |
+| stock | 2 | 0.060 | 0.055 | 0.35 | 0.25 | 0.08 |
+| stock | 3 | 0.030 | 0.031 | 0.13 | 0.06 | 0.30 |
+| stock | 4 | 0.017 | 0.012 | 0.09 | 0.05 | 0.69 |
+
+**Verdict: K = 2 on both regimes.** The largest drop lands at K = 2 in both; the third term's drop is a third (primary)
+and a half (stock) of it; the thinnest term at K = 3, at the temperature of the fit the case shows, holds 6 percent of
+the near-frontier designs in both regimes (a thin term appears), and at K = 4 an exponent vector moves by 0.75 and 0.69
+under resampling (a splinter). The mean slack alone does not choose K (the stock curve bends with no break); the
+three checks agree on K = 2. What the checks do not say: that two terms is the true number; the movement is noisy
+(the choosing-K page gives the ranges) and the K = 1-temperature thin shares at K = 3 (0.21, 0.13) are less thin than
+the own-temperature ones (0.06, 0.06), so the thin-term reading at K = 3 depends on the temperature read.
+
+**What follows.** `case.CASE_K = 2` is the one named value the case reads: the planes figure, the chart, the
+association figure, the generated sentences (`terms_sentence`, `elasticity_sentence`, `choosing_k_sentence`), Appendix D.3's
+K = 2 blocks. The K = 3 figures leave the body (the sentence test: the K = 3 narrative is carried by the D.2/D.3
+rows and the one clause that says where a thin term appears); the figures are redrawn at K = 2, not kept as an "one
+step too many" illustration, since the step is a number (a 6 percent share), not a picture. D.15 (the mean slack at a
+fixed temperature) becomes the choosing-K table: its fixed-temperature column is the new table's first columns, its
+own-temperature column served only the sentence that left Section 9. The term-share order is the estimator's, so term 1
+is the larger term. The choosing-K page's cubesat sentences carry the regenerated record's numbers, pinned by a slow test
+that runs the page's blocks.
+
+**Left standing, for the supervisor.** (1) Section 6's certificate sentence (`num-margin`) still reads K = 3 (the deepest
+fit of `case.k_fits`, whose stability keys and seam count exist); the case's K there would need new jitter keys. (2) The
+K = 2 rows of D.3 and the K = 2 sentence digits are not in the jitter record of D.11 (the record holds K = 3 terms, five
+regenerations at one part in 1e12); they print at two or three significant digits, a numerical residue as a bound, and
+join the record only when a sensitivity run adds K = 2 keys (the run's sentence key is now `sentence | terms | text`;
+the old `sentence | K sweep | text` stays in the file unread). (3) `docs/examples.md`
+(the case page; another stream) still describes the eight-metric K = 3 reading.

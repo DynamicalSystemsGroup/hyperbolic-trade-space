@@ -10,8 +10,7 @@ from __future__ import annotations
 import case
 import numpy as np
 from paper_common import Md, appendix_link
-from paper_stability import entry, format_hold, stable, summary
-from paper_terms import aligned
+from paper_stability import entry, stable, summary
 
 _C7 = appendix_link("sub-c-7", "Appendix C.7")
 _D3 = appendix_link("sub-d-3", "Appendix D.3")
@@ -164,22 +163,51 @@ def k1_sentence(study, fit) -> Md:
     )
 
 
-def k_sweep_sentence(study, fits) -> Md:
-    """Mean slack by K at each K's temperature and at one temperature, and the K = 3 terms.
+def choosing_k_sentence() -> Md:
+    """The K the paper's choosing-K checks pick for the case, and why (Appendix D.15).
 
-    The mean slack is the estimator's ``mean_slack_``; the temperature is re-selected at each K,
-    so the first comparison is not like for like and the second holds the temperature at K = 1's.
-    The term shares, gaps, margins and radii are Appendix D's tables (D.3, D.8, D.15).
+    Read from :func:`generate_results.choosing_k_tables`: the K at which the mean slack drops most,
+    the drop at the next K, the thinnest term's share at the pick and at the next K (each K's own
+    temperature), and the movement under resampling at the pick and at the last K.
     """
-    r = study.regime
-    three = lambda v: f"{v:.3f}"  # noqa: E731
-    own = {K: stable(f"kslack | {r} | {K} | mean_slack_", three) for K in (1, 2, 3)}
+    import generate_results as gr
+
+    tabs = gr.choosing_k_tables()
+    picks = {r: case.chosen_k(t) for r, t in tabs.items()}
+    if len(set(picks.values())) != 1:
+        raise ValueError(f"the regimes pick different K: {picks}")
+    K = case.CASE_K
+    if set(picks.values()) != {K}:
+        raise ValueError(f"the checks pick K = {picks}, the case reads K = {K}")
+
+    def both(col, k, fmt):
+        return _and(fmt(t.set_index("K").loc[k, col]) for t in tabs.values())
+
     two = lambda v: f"{v:.2f}"  # noqa: E731
-    fixed = {K: stable(f"kslack fixed | {r} | {K} | mean_slack_", two) for K in (1, 2, 3)}
-    tau = {
-        K: stable(f"fit | {r} K={K} | tau selected (raw)", lambda v: f"{v:.0f}") for K in (1, 2, 3)
-    }
-    ft = aligned(r, study, fits)[1]
+    last = max(tabs[next(iter(tabs))]["K"])
+    regimes = _and(f"the {r} regime" for r in tabs)
+    return Md(
+        f"**{_NUMBER_WORDS[K].capitalize()} terms.** The package's checks for choosing K ({_D15}) "
+        f"pick K = {K} on {regimes}: the mean "
+        f"slack, read at the K = 1 temperature, drops most at K = {K} ({both('drop', K, two)}) "
+        f"and less at K = {K + 1} ({both('drop', K + 1, two)}); the thinnest term holds "
+        f"{both('thinnest share, own tau', K, two)} of the near-frontier designs at K = {K} and "
+        f"{both('thinnest share, own tau', K + 1, two)} at K = {K + 1}, the step where a thin term "
+        f"appears; and at K = {last} an exponent vector moves by up to "
+        f"{both('movement', last, two)} under resampling, against "
+        f"{both('movement', K, two)} at K = {K}."
+    )
+
+
+def terms_sentence(study, fits) -> Md:
+    """The case's terms (``case.CASE_K``): their contending sets against the K = 1 set, any term
+    without an association reading, and the term shares.
+
+    The terms are in the estimator's order, descending term share. The shares are printed to two
+    digits, the precision the reading uses; Appendix D.3 has the rows.
+    """
+    K = case.CASE_K
+    ft = case.term_table(study, fits, K=K)
     sets = [set(s.strip() for s in x.split(",")) for x in ft["contending set"]]
     union = set().union(*sets)
     k1 = set(_contending(study, fits[1]))
@@ -194,49 +222,27 @@ def k_sweep_sentence(study, fits) -> Md:
     else:
         absent = f"{_and(new)} {'is' if len(new) == 1 else 'are'} absent from the K = 1 set"
         absent += f", and {_and(led)} {verb}" if led else ""
-    return Md(
-        f"The mean slack falls from {own[1]} at K = 1 to {own[2]} at K = 2 and {own[3]} at "
-        f"K = 3, at the temperatures {tau[1]}, {tau[2]} and {tau[3]}; refitted at the K = 1 "
-        f"temperature it falls to {fixed[2]} and {fixed[3]} ({_D15}). The "
-        f"K = 3 terms have contending sets (exact-maximum supports) of {_and(ft['n_lemma'])} "
-        f"metrics; {absent}."
-    )
-
-
-def terms_sentence(study, fits) -> Md:
-    """Each K = 3 term without an association reading, with what the main text relies on for it:
-    its contending set, its leading exponent and its near-frontier count; then the term shares.
-
-    The numbers are D.3's rows (``aligned``), printed to the digits that hold.
-    """
-    r = study.regime
-    ft = aligned(r, study, fits)[1]
-    two = lambda v: f"{v:.2f}"  # noqa: E731
-    parts = []
-    for row in ft.itertuples(index=False):
-        if row._5 >= case.MIN_NEAR_FRONTIER:  # near-frontier
-            continue
-        k = int(row.term)
-        lead = str(row._4).split(", ")[0].rsplit(" ", 1)[0]  # largest exponents
-        near = stable(f"D terms K=3 | {r} | {k} | near-frontier")
-        w = stable(f"D exponents K=3 | {r} | {lead} | term {k}", two)
-        names = [s.strip() for s in str(row._2).split(",")]  # contending set
-        parts.append(
-            f"Term {k} has no association reading ({near} near-frontier designs of the "
-            f"{_NUMBER_WORDS[case.MIN_NEAR_FRONTIER]} the reading needs); its contending set is "
-            f"{_and(names)}, led by {lead} at {w}."
-        )
-    shares = _and(stable(f"D terms K=3 | {r} | {int(k)} | share", two) for k in ft["term"])
+    thin = [
+        f"term {int(row.term)} has no association reading ({row._5} near-frontier designs of the "
+        f"{_NUMBER_WORDS[case.MIN_NEAR_FRONTIER]} the reading needs)"
+        for row in ft.itertuples(index=False)
+        if row._5 < case.MIN_NEAR_FRONTIER
+    ]  # ``_5`` is the near-frontier count (pandas names the columns with spaces by position)
+    shares = _and(f"{v:.2f}" for v in ft["share"])
     terms = _and(int(k) for k in ft["term"])
-    head = " ".join(parts) + " " if parts else "Every term has an association reading; "
-    return Md(f"{head}The term shares are {shares} for terms {terms} ({_D3}).")
+    return Md(
+        f"The K = {K} terms have contending sets (exact-maximum supports) of "
+        f"{_and(ft['n_lemma'])} metrics; {absent}. "
+        + (f"{thin[0].capitalize()}; " if thin else "Every term has an association reading; ")
+        + f"the term shares are {shares} for terms {terms} ({_D3})."
+    )
 
 
 def k_temperatures_sentence(study, fits) -> Md:
     """Each K's own fit temperature and band, selected by the one rule, and which band the figures
     and the association reading use (the K = 1 band at every K, gap G-9)."""
     r = study.regime
-    Ks = sorted(fits)
+    Ks = [K for K in sorted(fits) if K <= case.CASE_K]
     taus = [stable(f"fit | {r} K={K} | tau selected (raw)", lambda v: f"{v:.0f}") for K in Ks]
     bands = [stable(f"D k_table | {r} | {K} | band 1/tau", lambda v: f"{v:.4f}") for K in Ks]
     return Md(
@@ -496,7 +502,7 @@ def predict_reading(table, reg) -> Md:
 
 SWAP_SET = ("pointing error", "peak slew power")
 """The metrics the swapped parts, the tracker grade and the wheel class, step (the bottom panel
-of the K = 3 planes figure: columns and bands; Appendix C.2): a term led by two of them trades
+of the planes figure: columns and bands; Appendix C.2): a term led by two of them trades
 across the swapped parts' alternatives rather than along one continuous trade."""
 
 
@@ -505,28 +511,19 @@ def elasticity_sentence(study, fits) -> Md:
     two leading metrics the swaps set.
 
     The pair is the K = 1 fit's two heaviest metrics (the pair the K = 1 plane draws); the term is
-    the K = 3 term that carries the largest exponent of the heavier one. The number is
-    ``-w_i / w_j``: the percent of the heavier metric given up per percent gained in the other,
-    printed to the digits that hold over the regenerated datasets.
+    the case's term (``case.CASE_K`` terms, in the estimator's order) that carries the largest
+    exponent of the heavier one. The number is ``-w_i / w_j``: the percent of the heavier metric
+    given up per percent gained in the other.
     """
-    r = study.regime
-    _, ft, _, labels = aligned(r, study, fits)
+    ft = case.term_table(study, fits, K=case.CASE_K)
     rep1 = case._reports(study, fits[1])[0]
     order = np.argsort(-rep1.exponents)
     a, b = study.names[order[0]], study.names[order[1]]
     ja, jb = study.names.index(a), study.names.index(b)
-    W = np.atleast_2d(fits[3].estimator.exponents_)
+    W = np.atleast_2d(fits[case.CASE_K].estimator.exponents_)
     live = int(np.argmax(W[:, ja]))
-    k = labels[live]
-    ratio = float(W[live, jb] / W[live, ja])
-    ea = entry(f"D exponents K=3 | {r} | {a} | term {k}")
-    eb = entry(f"D exponents K=3 | {r} | {b} | term {k}")
-    one = lambda v: f"{v:.1f}"  # noqa: E731
-    text = (
-        format_hold(eb["min"] / ea["max"], eb["max"] / ea["min"], one, value=ratio)
-        if ea and eb and ea["min"] > 0
-        else one(ratio)
-    )
+    k = live + 1
+    text = f"{float(W[live, jb] / W[live, ja]):.1f}"
     swaps = []
     for row in ft.itertuples(index=False):
         leaders = [x.rsplit(" ", 1)[0] for x in str(row._4).split(", ")[:2]]
@@ -536,7 +533,7 @@ def elasticity_sentence(study, fits) -> Md:
         " "
         + " ".join(
             f"{head} are stepped by the swaps of the tracker grade and the wheel class (the "
-            "bottom panel of the K = 3 planes), so its elasticity is read across the swapped "
+            "planes figure's panel of that term), so its elasticity is read across the swapped "
             "parts' alternatives rather than along one continuous trade."
             for head in swaps
         )

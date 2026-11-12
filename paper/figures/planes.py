@@ -14,8 +14,9 @@ those whose other metrics are near the median (their weighted log offset from it
 :data:`NEAR_TOL` in log V, so the line is the surface for them to within that tolerance); light,
 the rest. The data are the case's committed tables of record.
 
-Run ``uv run python paper/figures/planes.py`` to write ``fig-planes-k3.png`` (the K = 3 fit, three
-slices) and ``fig-planes-k1.png`` (the K = 1 fit, one slice) beside this file.
+Run ``uv run python paper/figures/planes.py`` to write ``fig-planes-case.png`` (the fit with the
+case's ``case.CASE_K`` terms, one slice per term) and ``fig-planes-k1.png`` (the K = 1 fit, one
+slice) beside this file.
 """
 
 from __future__ import annotations
@@ -73,7 +74,7 @@ def _near_median(est, U, keep, ws, bs, j, k, tol=NEAR_TOL):
     return near
 
 
-def planes_figure(study=None, fit=None, band=None, n_terms=3):
+def planes_figure(study=None, fit=None, band=None, n_terms=None):
     """Log-metric slices of a fit: designs in two greys, each term's line in its slice, the band.
 
     With no ``study`` the primary regime's fit with ``n_terms`` terms is drawn (``case.k_fits``),
@@ -85,7 +86,7 @@ def planes_figure(study=None, fit=None, band=None, n_terms=3):
     if study is None:
         study = case.load_study("primary")
         fits = case.k_fits(study)
-        fit, band = fits[n_terms], fits[1].band
+        fit, band = fits[n_terms or case.CASE_K], fits[1].band
     band = fit.band if band is None else band
     _, k_terms, plotting = case._lib()
     est, M = fit.estimator, study.M
@@ -169,10 +170,11 @@ def _place_legend(fig, axes, ink, handles, corners=("lower left", "lower right",
 
 
 def main() -> None:
-    """Write ``fig-planes-k3.png`` and ``fig-planes-k1.png`` beside this file."""
-    for n_terms in (3, 1):
+    """Write ``fig-planes-case.png`` and ``fig-planes-k1.png`` beside this file."""
+    case = _case()
+    for n_terms, name in ((case.CASE_K, "case"), (1, "k1")):
         fig = planes_figure(n_terms=n_terms)
-        target = HERE / f"fig-planes-k{n_terms}.png"
+        target = HERE / f"fig-planes-{name}.png"
         fig.savefig(target, dpi=100, metadata={"Software": None})
         plt.close(fig)
         print("wrote", target)

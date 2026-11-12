@@ -206,3 +206,41 @@ def test_runnable_blocks_execute(page, monkeypatch):
     import matplotlib.pyplot as plt
 
     plt.close("all")
+
+
+@pytest.mark.slow
+def test_choosing_k_pages_cubesat_numbers_are_the_blocks_output(monkeypatch):
+    """The page's cubesat sentences quote what its blocks print on the regenerated record
+    (thirteen metrics, 3,000 designs per regime): each pinned fragment is in the prose and in the
+    output, to the digits the page gives (no more than the reading of a break needs)."""
+    import contextlib
+    import io
+
+    import matplotlib
+
+    matplotlib.use("Agg")
+    page = "user-guide/choosing-k.md"
+    out = io.StringIO()
+    namespace = {"__name__": "__docs_block__"}
+    with contextlib.redirect_stdout(out):
+        for i, block in enumerate(_runnable_blocks(page), 1):
+            exec(compile(block, f"{page}[block {i}]", "exec"), namespace)
+    printed = out.getvalue()
+    prose = " ".join(_text(page).split())
+    pinned = [
+        # (the fragment of the prose, the fragments of the output it quotes)
+        ("The primary regime drops by 0.078, then 0.023, 0.012 and 0.005",
+         ["drops [0.078 0.023 0.012 0.005]"]),
+        ("a break at K = 2, where the thinnest term holds 0.28 (0.21 at K = 3)",
+         ["K=2 slack=0.043 thinnest=0.28", "K=3 slack=0.020 thinnest=0.21"]),
+        ("The stock regime drops by 0.055, 0.031, 0.012 and 0.010, bending with no break",
+         ["drops [0.055 0.031 0.012 0.01 ]"]),
+        ("0.35 at K = 2 and 0.13 at K = 3",
+         ["K=2 slack=0.060 thinnest=0.35", "K=3 slack=0.030 thinnest=0.13"]),
+        ("0.18 to 0.20 at K = 2, 0.15 to 0.29 at K = 3 and 0.14 to 0.95 at K = 4",
+         ["2 [0.2  0.2  0.18]", "3 [0.15 0.29 0.16]", "4 [0.14 0.95 0.79]"]),
+    ]  # fmt: skip
+    for sentence, fragments in pinned:
+        assert sentence in prose, sentence
+        for fragment in fragments:
+            assert fragment in printed, (sentence, fragment)

@@ -209,13 +209,6 @@ reason = "BASELINE: assertion text printed in the generated proof table from der
 [[violation]]
 kind = "stem"
 file = "paper/supporting_material.ipynb"
-phrase = "different temperature"
-owner = "WP10 paper stream"
-reason = "BASELINE: plural of the fit temperature in a comparison; fit is implied by the sentence (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
 phrase = "duality gap"
 owner = "WP10 paper stream"
 reason = "BASELINE: standard convex-optimization term (Boyd and Vandenberghe); candidate for the glossary assumed list (WP10 re-triage 2026-11-09)"

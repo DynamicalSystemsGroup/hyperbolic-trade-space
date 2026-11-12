@@ -1112,7 +1112,7 @@ def test_a_different_term_order_gives_the_same_tables_d2_d3_d8_and_the_sentence(
     def everything():
         out = [str(gr.exponents_and_terms()), str(gr.k_diagnostics())]
         for r in ("primary", "stock"):
-            out.append(str(gf.k_sweep_sentence(gr._study(r), gr._fits(r))))
+            out.append(str(gf.terms_sentence(gr._study(r), gr._fits(r))))
         return out
 
     base = everything()
@@ -2012,9 +2012,9 @@ def test_the_variable_and_the_reference_file_exist():
 RESULTS = ROOT / "examples" / "adcs" / "experiments" / "reports" / "sensitivity.json"
 RAW_RESIDUE = re.compile(r"\de-(?:1[3-9]|[2-9]\d)")  # 1e-13 and below, as raw digits
 NUM_CELLS = [
-    "num-nondominated", "num-certificates", "num-margin", "num-temperature", "num-k-sweep",
+    "num-nondominated", "num-certificates", "num-margin", "num-temperature",
     "num-regimes", "num-candidates", "num-predict", "num-recovery", "num-predict-reading",
-    "num-terms-k3", "num-elasticity", "num-k-temperatures",
+    "num-choosing-k", "num-terms", "num-elasticity", "num-k-temperatures",
 ]  # fmt: skip
 
 
@@ -2037,11 +2037,11 @@ def _case_sentences():
         "num-recovery": gf.recovery_sentence(),
         "num-predict-reading": gf.predict_reading(case.predict_check(study, reg), reg),
         "num-temperature": gf.temperature_sentence(study, fits[1]),
-        "num-k-sweep": gf.k_sweep_sentence(study, fits),
         "num-regimes": gf.regime_sentence(),
         "num-candidates": gf.candidates_sentence(cand),
         "num-predict": gf.predict_check_sentence(case.predict_check(study, reg), reg),
-        "num-terms-k3": gf.terms_sentence(study, fits),
+        "num-choosing-k": gf.choosing_k_sentence(),
+        "num-terms": gf.terms_sentence(study, fits),
         "num-elasticity": gf.elasticity_sentence(study, fits),
         "num-k-temperatures": gf.k_temperatures_sentence(study, fits),
     }
@@ -2513,14 +2513,14 @@ def test_cr1_one_definition_of_the_contending_set_and_the_captions_say_it():
     assert "def-nlemma" in _section("Methods")
     # fig-regimes-caption left with Figure 9 at the supervisor's word "Cut to a pointer" (S-3,
     # R-10, WP28-decisions.md).
-    for cell_id in ("fig-tensions-k3-caption",):
+    for cell_id in ("fig-tensions-case-caption",):
         caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == cell_id))
         assert "Outlined" in caption or "outlined" in caption, cell_id
-    caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-tensions-k3-caption"))
+    caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-tensions-case-caption"))
     assert "exact-maximum" in caption and "so an outlined metric can be grey" in caption
     k1 = _cell_out(PAPER_NB, "num-k1")
     assert "exact-maximum fit has a" in k1 and "exponents at the fit temperature" in k1
-    assert "exact-maximum supports" in _cell_out(PAPER_NB, "num-k-sweep")
+    assert "exact-maximum supports" in _cell_out(PAPER_NB, "num-terms")
 
 
 @pytest.mark.slow
@@ -2630,17 +2630,86 @@ def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_ap
     assert "regenerations of the data under rounding-level" in sentence
 
 
-def test_cr8_the_k_comparison_says_the_temperature_differs_and_d15_fixes_it():
-    """(8) mean slack across K at one temperature; K = 3 is the analyst's choice."""
-    import generate_results
+def test_cr8_the_k_comparison_is_read_at_the_one_term_temperature_and_names_the_cases_k():
+    """(8) the mean slack across K at one temperature, and the K the checks pick (D.15; the
+    supervisor's call of 2026-11-11, WP30-decisions.md, "The choice of K in the case")."""
+    import case
 
-    sentence = _cell_out(PAPER_NB, "num-k-sweep")
-    assert "at the temperatures" in sentence and "refitted at the K = 1 temperature" in sentence
-    assert "Appendix D.15" in sentence
-    assert "the analyst's choice" in _section("Case analysis")
-    cell = _cell_out(SUPPORT_NB, "tab-D-mean_slack_fixed")
-    _current(cell, str(generate_results.mean_slack_fixed()), "mean_slack_fixed")
-    assert "refitted at the K = 1 temperature" in cell
+    sentence = _cell_out(PAPER_NB, "num-choosing-k")
+    assert "Appendix D.15" in sentence and "at the K = 1 temperature" in sentence
+    assert (
+        f"pick K = {case.CASE_K}" in sentence and "the step where a thin term appears" in sentence
+    )
+    cell = _cell_out(SUPPORT_NB, "tab-D-choosing_k")
+    assert "at the K = 1 temperature" in cell and "The checks pick K = 2." in cell
+
+
+def test_the_case_reads_one_named_k():
+    """The several-term reading of the case is ``case.CASE_K``: no figure, cell or generated
+    sentence of the case analysis names a K of its own."""
+    import inspect
+
+    import case
+    import generate_findings as gf
+
+    assert case.CASE_K == 2
+    for name in ("planes.py", "chart_level.py"):
+        src = (ROOT / "paper" / "figures" / name).read_text(encoding="utf-8")
+        assert "CASE_K" in src and "fits[3]" not in src and "n_terms=3" not in src, name
+    cells = {c.id: _src(c) for c in _nb(PAPER_NB).cells}
+    assert "case.CASE_K" in cells["fit-case"] and "fit_case" in cells["fig-tensions-case"]
+    assert not [i for i, t in cells.items() if "fits[3]" in t or "fit3" in t]
+    for fn in (gf.terms_sentence, gf.elasticity_sentence, gf.choosing_k_sentence):
+        assert "CASE_K" in inspect.getsource(fn), fn.__name__
+
+
+@pytest.mark.slow
+def test_choosing_k_picks_the_cases_k_on_both_regimes_and_the_prose_quotes_the_table():
+    """The checks pick K = 2 on both regimes at the precision the conclusion needs; the table, the
+    sentence of Section 9 and the committed outputs agree (the digits are two or three, so a
+    last-digit change of the data moves none of these statements)."""
+    import case
+    import generate_findings as gf
+    import generate_results as gr
+
+    for regime, t in gr.choosing_k_tables().items():
+        assert case.chosen_k(t) == case.CASE_K == 2, regime
+        t = t.set_index("K")
+        assert t.loc[2, "drop"] > t.loc[3, "drop"] > t.loc[4, "drop"] > 0, regime
+        own = t["thinnest share, own tau"]
+        assert own[2] > 0.2 and own[3] < 0.1, regime  # a thin term appears at K = 3
+        assert t.loc[4, "movement"] > 0.5 > t.loc[2, "movement"], regime  # a splinter at K = 4
+    table, sentence = str(gr.choosing_k()), str(gf.choosing_k_sentence())
+    _current(_cell_out(SUPPORT_NB, "tab-D-choosing_k"), table, "choosing_k")
+    _current(_cell_out(PAPER_NB, "num-choosing-k"), sentence, "num-choosing-k")
+    quoted = set(re.findall(r"\b\d\.\d\d\b", sentence))
+    tabled = {f"{float(x):.2f}" for x in re.findall(r"\b\d\.\d{2,3}\b", table)}
+    assert quoted and quoted <= tabled
+
+
+@pytest.mark.slow
+def test_the_planes_figures_bottom_panel_is_one_terms_line():
+    """The caption of the planes figure says the pair both terms weigh shows term 2's line alone:
+    the surface in that slice is the lower of the two lines and it is term 2's across the range."""
+    import case
+
+    sys.path.insert(0, str(ROOT / "paper" / "figures"))
+    import planes
+
+    study = case.load_study("primary")
+    fits = case.k_fits(study, (1, case.CASE_K))
+    est, band = fits[case.CASE_K].estimator, fits[1].band
+    _, k_terms, plotting = case._lib()
+    U = np.log(study.M)
+    labels = plotting.cell_labels(est, study.M)
+    drawn = {}
+    for j, k in k_terms.slice_pairs(est):
+        keep, ws, bs = k_terms._slice(est, U, labels, band, j, k)
+        g = np.linspace(U[:, j].min(), U[:, j].max(), 400)
+        _, who = planes._envelope(ws, bs, g)
+        drawn[(study.names[j], study.names[k])] = sorted({keep[f] + 1 for f in who}), keep
+    assert drawn[("pointing error", "peak slew power")] == ([1], [0])
+    assert drawn[("available power", "unit cost")] == ([2], [0, 1])
 
 
 def test_cr9_the_margin_and_the_radius_are_read_against_the_band_and_the_median_margin():

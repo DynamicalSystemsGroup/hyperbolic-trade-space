@@ -93,8 +93,21 @@ def k_diagnostics() -> Md:
     return Md("\n\n".join(parts))
 
 
+def _live(df) -> str:
+    """A table of the case's terms (``case.CASE_K``) in the estimator's order (descending term
+    share), the numbers to three significant digits and a numerical residue as a bound.
+
+    The jitter record (D.11) holds the K = 3 terms; these rows are the fit of record's.
+    """
+    out = df.astype(object).copy()
+    for col in df.columns:
+        if all(isinstance(v, float) for v in df[col]):
+            out[col] = [residue_bound(float(v)) for v in df[col]]
+    return frame_table(out, floatfmt=".3g")
+
+
 def exponents_and_terms() -> Md:
-    """Exponents per metric at K = 1 and K = 3, and the term tables, per regime.
+    """Exponents per metric at K = 1, at the case's K and at K = 3, and the term tables, per regime.
 
     Returns
     -------
@@ -107,6 +120,11 @@ def exponents_and_terms() -> Md:
         parts.append(
             f"{_cite(r)}, K = 1:\n\n"
             + _t(case.exponent_table(s, k1), f"D exponents K=1 | {r}", "metric")
+            + f"\n\n{_cite(r)}, K = {case.CASE_K}:\n\n"
+            + _live(case.exponent_table(s, _fits(r)[case.CASE_K]))
+            + f"\n\n{_cite(r)}, K = {case.CASE_K}, per term:\n\n"
+            + _live(case.term_table(s, _fits(r), K=case.CASE_K))
+            + _thin_terms(case.term_table(s, _fits(r), K=case.CASE_K))
             + f"\n\n{_cite(r)}, K = 3:\n\n"
             + _t(exp3, f"D exponents K=3 | {r}", "metric")
             + f"\n\n{_cite(r)}, K = 3, per term:\n\n"
@@ -621,32 +639,43 @@ def planted_recovery() -> Md:
     )  # fmt: skip
 
 
-# -- D.15: the mean slack at a fixed temperature -------------------------------------------------
+# -- D.15: choosing K for the case -----------------------------------------------------------------
 
 
-def mean_slack_fixed() -> Md:
-    """The mean slack of the K-term fits at their own temperatures and at the K = 1 temperature.
+@cache
+def choosing_k_tables() -> dict:
+    """The choosing-K table of each regime (:func:`case.choosing_k_table`), fitted once."""
+    return {r: case.choosing_k_table(_study(r), _fits(r)) for r in _studies()}
+
+
+def choosing_k() -> Md:
+    """The paper's choosing-K checks on the case, per regime, with the K they pick.
 
     Returns
     -------
     Md
-        Per regime: for each K the temperature selected at that K and the mean slack there, the
-        mean slack of the K-term fit refitted at the K = 1 temperature; the digits that held.
+        Per regime a table with one row per K: the mean slack at the K = 1 temperature and its
+        drop, the thinnest term's share at that temperature and at the K's own, and the movement
+        under resampling; then the K the checks pick (:func:`case.chosen_k`).
     """
     parts = []
-    for r in _studies():
-        rows = []
-        for K in (1, 2, 3):
-            tau = stable(f"fit | {r} K={K} | tau selected (raw)", lambda v: f"{v:.1f}")
-            own = stable(f"kslack | {r} | {K} | mean_slack_", lambda v: f"{v:.3f}")
-            fixed = stable(f"kslack fixed | {r} | {K} | mean_slack_", lambda v: f"{v:.3f}")
-            rows.append([K, tau, own, fixed])
-        tau1 = stable(f"fit | {r} K=1 | tau selected (raw)", lambda v: f"{v:.1f}")
+    for r, t in choosing_k_tables().items():
+        tau1 = _fits(r)[1].tau
+        dash = lambda v, f: "-" if np.isnan(v) else format(v, f)  # noqa: E731
+        rows = [
+            [int(x["K"]), format(x["mean slack"], ".3f"), dash(x["drop"], ".3f"),
+             format(x["thinnest share"], ".2f"), format(x["thinnest share, own tau"], ".2f"),
+             dash(x["movement"], ".2f")]
+            for _, x in t.iterrows()
+        ]  # fmt: skip
+        head = ["K", f"`mean_slack_` at the K = 1 temperature, {tau1:.1f}",
+                "Drop from the K before", "Thinnest term's share, same temperature",
+                "Thinnest term's share, K's own", "Largest movement under resampling"]  # fmt: skip
         parts.append(
             f"{_cite(r)}:\n\n"
-            + md_table(["K", "Temperature selected at this K", "`mean_slack_` there",
-                        f"`mean_slack_` refitted at the K = 1 temperature, {tau1}"], rows)
-        )  # fmt: skip
+            + md_table(head, rows)
+            + f"\n\nThe checks pick K = {case.chosen_k(t)}."
+        )
     return Md("\n\n".join(parts))
 
 

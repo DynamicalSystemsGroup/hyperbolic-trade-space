@@ -42,7 +42,7 @@ def generated() -> dict[str, str]:
     import generate_results as gr
 
     out = {}
-    for name in ("planted_recovery", "mean_slack_fixed", "margin_reading", "pca_chain",
+    for name in ("planted_recovery", "margin_reading", "pca_chain",
                  "stability", "temperature_selection", "k_diagnostics", "exponents_and_terms",
                  "regime_comparison", "sensitivity_variants", "refits_by_category",
                  "candidate_designs", "termination_records", "nondominated",
@@ -61,7 +61,7 @@ def generated() -> dict[str, str]:
     out["sentence num-margin"] = str(gf.margin_sentence(study, fits))
     out["sentence num-recovery"] = str(gf.recovery_sentence())
     out["sentence num-temperature"] = str(gf.temperature_sentence(study, fits[1]))
-    out["sentence num-k-sweep"] = str(gf.k_sweep_sentence(study, fits))
+    out["sentence num-terms"] = str(gf.terms_sentence(study, fits))
     out["sentence num-regimes"] = str(gf.regime_sentence())
     out["sentence num-candidates"] = str(gf.candidates_sentence(cand))
     out["sentence num-predict"] = str(gf.predict_check_sentence(pc, reg))

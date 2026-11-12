@@ -1082,3 +1082,27 @@ section = "Results"
 words_added = 1
 job = "the K = 1 and K = 2 and 3 generated sentences of Results name the regenerated record's contending sets and counts (seven metrics at K = 1 where five were named), one word beyond the ceiling set on the earlier record"
 reader = "the expert reader checking the case's numbers of record against the tables"
+
+# WP30 cascade, the choice of K in the case (WP30-decisions.md, "The choice of K in the case"): the
+# several-term reading is told at the K the package's own choosing-K checks pick (K = 2); the K = 3
+# narrative leaves the body, and the next K stays as one clause that says where a thin term appears.
+[[raise]]
+date = "2026-11-11"
+section = "Case analysis"
+words_added = 106
+job = "the generated sentence num-choosing-k states the K the package's choosing-K checks pick for the case (K = 2) and why: the drop in the mean slack, the thinnest term's share at the pick and at the next K, the movement under resampling, with Appendix D.15's table behind it"
+reader = "the reader who asked whether three terms was a bad choice for the case, and the practitioner choosing K for a table of their own"
+
+[[raise]]
+date = "2026-11-11"
+section = "Appendix D"
+words_added = 88
+job = "D.15 says which three checks choose K for the case, at which temperature each is read and how the K is read from them, in place of the fixed-temperature note it replaces"
+reader = "the reader checking the main text's K against the checks it names"
+
+[[cut]]
+date = "2026-11-11"
+section = "Case analysis"
+words_removed = 138
+no_longer_did = "the K = 3 narrative: the sweep sentence (mean slack at two sets of temperatures, the sizes of three terms' contending sets), the K = 3 term-share sentence, the planes caption's sentence on the torque-limited streaks of a panel no longer drawn, and the clause that left three terms to the analyst; the K = 2 text says the terms' sets and shares in one sentence and the choice in the raised one"
+authority = "the supervisor: 'if we were to do only 2 would we get the other 2?' (WP30-decisions.md, The choice of K in the case)"

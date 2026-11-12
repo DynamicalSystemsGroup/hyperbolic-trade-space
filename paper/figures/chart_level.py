@@ -8,8 +8,9 @@ put the first Helmert coordinate ``Z0`` on the horizontal axis and readers took 
 most: the first principal direction of the near-frontier chart, the one Appendix D.16 reads
 (``case.pca_directions``: the tension report's analysis of the K = 1 fit's band, signed with its
 largest loading positive). The chart coordinates ``Z`` do not depend on the fit, so the same
-direction serves the K = 3 chart drawn here. Designs are one neutral colour (the supervisor's
-ruling against the cluster idiom, ``work-packages/WP19-decisions.md``). Case data of record.
+direction serves the chart of the case's ``case.CASE_K`` terms drawn here. Designs are one
+neutral colour (the supervisor's ruling against the cluster idiom,
+``work-packages/WP19-decisions.md``). Case data of record.
 
 Run ``uv run python paper/figures/chart_level.py`` to write ``fig-chart-level.png`` beside it.
 """
@@ -71,7 +72,7 @@ def chart_level_figure(study=None, fit=None, band=None, fit1=None):
     if study is None:
         study = case.load_study("primary")
         fits = case.k_fits(study)
-        fit, band, fit1 = fits[3], fits[1].band, fits[1]
+        fit, band, fit1 = fits[case.CASE_K], fits[1].band, fits[1]
     band = fit.band if band is None else band
     fit1 = fit if fit1 is None else fit1
     chart = fit.estimator.transform(study.M)

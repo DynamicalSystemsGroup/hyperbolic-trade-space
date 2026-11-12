@@ -303,7 +303,7 @@ def quantities(data_dir: Path | str) -> dict:
         q["sentence | datasets | text"] = str(gf.datasets_sentence(prim, stock))
         q["sentence | temperature | text"] = str(gf.temperature_sentence(prim, k1))
         q["sentence | K = 1 contending | text"] = str(gf.k1_sentence(prim, k1))
-        q["sentence | K sweep | text"] = str(gf.k_sweep_sentence(prim, fits["primary"]))
+        q["sentence | terms | text"] = str(gf.terms_sentence(prim, fits["primary"]))
         q["sentence | certificate | text"] = str(gf.certificate_sentence(fits["primary"]))
         q["sentence | regime | text"] = str(gf.regime_sentence())
         regime_table = case.regime_comparison(spec)

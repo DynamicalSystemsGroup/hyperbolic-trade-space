@@ -824,6 +824,109 @@ def mean_slack_fixed_tau(study, fits, tau=None):
     )  # fmt: skip
 
 
+CASE_K = 2
+"""The number of terms of the case's several-term reading: the K the paper's choosing-K methods
+pick for the case (:func:`chosen_k`, Appendix D.15). Every figure, table and sentence of the case
+analysis that reads a several-term fit reads this value."""
+
+CHOOSE_KS = (1, 2, 3, 4)
+"""The K of the choosing-K table: the one-term fit, the pick, the step after it and one more."""
+
+MOVEMENT_DRAWS = 3
+"""Resamples of the rows behind one movement figure of the choosing-K table."""
+
+
+def movement_under_resampling(M, K, tau, draws=MOVEMENT_DRAWS, seed=0):
+    """The largest distance from a term of the fit to the nearest term of a refit on resampled rows.
+
+    The choosing-K page's check of the same name (summed absolute differences of the exponent
+    vectors, at most 2), read at one temperature.
+
+    Parameters
+    ----------
+    M : array of shape (n, d)
+    K : int
+    tau : float
+    draws : int
+        Resamples of the rows (with replacement), refitted with seeds ``0..draws-1``.
+    seed : int
+        Seed of the row draws.
+
+    Returns
+    -------
+    float
+        The largest, over the draws, of each term's distance to the nearest refit term, then over
+        the terms.
+    """
+    _, k_terms, _ = _lib()
+    ref = k_terms.fit_k(M, K, tau, 0).exponents_
+    rng = np.random.default_rng(seed)
+    moved = 0.0
+    for s in range(draws):
+        W = k_terms.fit_k(M[rng.choice(len(M), len(M))], K, tau, s).exponents_
+        moved = max(moved, float(np.abs(W[:, None] - ref).sum(axis=2).min(axis=0).max()))
+    return moved
+
+
+def choosing_k_table(study, fits=None, Ks=CHOOSE_KS):
+    """The paper's choosing-K checks on the case: slack, thin term and movement for each K.
+
+    The mean slack, the thinnest term's share and the movement are read at the K = 1 temperature
+    (the checks of the choosing-K page); the thinnest term's share is read again at each K's own
+    fit temperature, the temperature of the fits the case analysis shows.
+
+    Parameters
+    ----------
+    study : Study
+    fits : dict of int to Fit, optional
+        As returned by :func:`k_fits`; the Ks it lacks are fitted (own temperature selected).
+    Ks : sequence of int
+        Starting with 1.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Columns ``K``, ``mean slack`` (at the K = 1 temperature), ``drop`` (from the K before;
+        NaN at K = 1), ``thinnest share`` (at that temperature), ``thinnest share, own tau``,
+        ``movement`` (NaN at K = 1).
+    """
+    _, k_terms, _ = _lib()
+    fits = dict(fits or {})
+    for K in Ks:
+        fits.setdefault(K, fit_study(study, K))
+    tau, rows, prev = fits[1].tau, [], None
+    for K in Ks:
+        est = k_terms.fit_k(study.M, K, tau, study.spec.seed)
+        slack = float(est.mean_slack_)
+        rows.append({
+            "K": K, "mean slack": slack,
+            "drop": np.nan if prev is None else prev - slack,
+            "thinnest share": float(np.min(est.term_share_)) if K > 1 else 1.0,
+            "thinnest share, own tau":
+                float(np.min(fits[K].estimator.term_share_)) if K > 1 else 1.0,
+            "movement": movement_under_resampling(study.M, K, tau) if K > 1 else np.nan,
+        })  # fmt: skip
+        prev = slack
+    return pd.DataFrame(rows)
+
+
+def chosen_k(table):
+    """The K the checks pick: the K at which the largest drop in the mean slack lands.
+
+    Parameters
+    ----------
+    table : pandas.DataFrame
+        As returned by :func:`choosing_k_table`.
+
+    Returns
+    -------
+    int
+        The K whose added term brings the largest drop; the other checks are read against it
+        (the thinnest share at that K and at the next, the movement at the next).
+    """
+    return int(table.loc[table["drop"].idxmax(), "K"])
+
+
 def margin_scale(study, fits):
     """The assignment margin and stable radius of the several-term fits against two scales.
 

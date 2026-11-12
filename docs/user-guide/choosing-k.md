@@ -146,10 +146,10 @@ for r, s in studies.items():
     sweep(s.M, taus[r], range(1, 6))
 ```
 
-The stock regime drops by 0.065 and 0.068, then 0.011 and 0.004: a break at K = 3, where the
-thinnest term holds 0.17. The primary regime drops by 0.112, 0.044, 0.017 and 0.010: the curve
-bends with no break, so the mean slack cannot choose K, and its thinnest term holds 0.07 already at
-K = 2. Stable radii run from 3e-06 to 1e-04.
+The primary regime drops by 0.078, then 0.023, 0.012 and 0.005: a break at K = 2, where the
+thinnest term holds 0.28 (0.21 at K = 3). The stock regime drops by 0.055, 0.031, 0.012 and 0.010,
+bending with no break, so the mean slack cannot choose K; its thinnest term holds 0.35 at K = 2 and
+0.13 at K = 3.
 
 ```python {.runnable}
 for K in (2, 3, 4):
@@ -159,8 +159,8 @@ for K in (2, 3, 4):
     )
 ```
 
-Over three draws the primary regime's movement is 0.09 to 0.45 at K = 2, 0.25 to 0.69 at K = 3 and
-0.17 to 0.54 at K = 4. The ranges overlap, so this check excludes none.
+Over three draws the primary regime's movement is 0.18 to 0.20 at K = 2, 0.15 to 0.29 at K = 3 and
+0.14 to 0.95 at K = 4. The ranges overlap, so this check excludes none.
 
 ## Large K and the elbow in PCA
 

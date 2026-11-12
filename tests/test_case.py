@@ -355,6 +355,17 @@ def test_k3_terms_equal_the_primary_record(primary, primary_fits):
     assert big["largest exponents"].startswith("peak slew power 0.417")
 
 
+def test_case_k_terms_equal_the_primary_record(primary, primary_fits):
+    """The terms of the case's several-term reading (K = 2): in the estimator's order, the larger
+    term first (descending term share), to the precision the reading needs."""
+    f = case.term_table(primary, primary_fits, K=case.CASE_K)
+    assert list(f.term) == [1, 2] and list(f.share.round(2)) == [0.74, 0.26]
+    assert list(f["rows"]) == [1200, 934] and list(f["near-frontier"]) == [318, 119]
+    assert sorted(f["n_lemma"]) == [7, 8] and (f["gap G_k"] < 1e-12).all()
+    assert f["largest exponents"].iloc[0].startswith("peak slew power 0.4")
+    assert f["largest exponents"].iloc[1].startswith("unit cost 0.2")
+
+
 def test_thin_term_is_reported_from_the_estimator_and_gets_its_reason(primary, primary_fits):
     """WP23 data gate: the guard of ten is applied per term, the thin term's reading replaced."""
     import matplotlib.pyplot as plt
@@ -553,6 +564,28 @@ def test_mean_slack_by_k_reads_the_estimator_and_the_fixed_tau_refit_shares_one_
     assert (fixed.tau == fits[1].tau).all()
     assert fixed.mean_slack_.iloc[0] == pytest.approx(own.mean_slack_.iloc[0])
     assert fixed.mean_slack_.iloc[1] <= fixed.mean_slack_.iloc[0] + 1e-9  # falls with K
+
+
+def test_chosen_k_is_the_k_where_the_largest_drop_in_the_mean_slack_lands():
+    table = pd.DataFrame({"K": [1, 2, 3, 4], "drop": [np.nan, 0.08, 0.02, 0.01]})
+    assert case.chosen_k(table) == 2
+    assert case.chosen_k(table.assign(drop=[np.nan, 0.02, 0.09, 0.01])) == 3
+    assert case.CASE_K in case.CHOOSE_KS and case.chosen_k(table) == case.CASE_K
+
+
+def test_choosing_k_table_reads_the_one_term_temperature_and_each_ks_own(small):
+    fits = case.k_fits(small, Ks=(1, 2))
+    t = case.choosing_k_table(small, fits, Ks=(1, 2))
+    assert list(t.columns) == ["K", "mean slack", "drop", "thinnest share",
+                               "thinnest share, own tau", "movement"]  # fmt: skip
+    assert list(t.K) == [1, 2] and np.isnan(t["drop"].iloc[0]) and np.isnan(t.movement.iloc[0])
+    fixed = case.mean_slack_fixed_tau(small, fits)  # the one-term temperature, the same fits
+    assert np.allclose(t["mean slack"], fixed.mean_slack_)
+    assert t["drop"].iloc[1] == pytest.approx(t["mean slack"].iloc[0] - t["mean slack"].iloc[1])
+    assert t["thinnest share, own tau"].iloc[1] == pytest.approx(
+        fits[2].estimator.term_share_.min()
+    )
+    assert 0 < t.movement.iloc[1] <= 2  # summed absolute differences of exponents summing to one
 
 
 def test_margin_scale_has_the_multi_term_fits_only_and_the_median_exceeds_the_margin(small):
