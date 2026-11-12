@@ -41,8 +41,7 @@ it is wanted, feasible or safe.
 **Prediction is conditional.** A prediction inherits the surrogate's error and the fitted trade
 space, and inverting a level into a bounded outcome is yours ([Predicting](prediction.md)).
 
-**Name.** "Hyperbolic" describes the shape of the score, which tends to zero as any participating
-metric does. It is unrelated to PCA in hyperbolic space [@chami2021horopca].
+**Name.** The [glossary](../generated/glossary.md) and the [paper](paper:sect-definitions) define "hyperbolic".
 
 Machine checks confirm that formulas follow from stated conditions and that the code agrees with
 them. Whether the conditions suit your problem is for you to judge. The lemma scripts replace

@@ -25,7 +25,6 @@ survey.
   component analysis of compositional data [@aitchison1983principal]: the neighbours of the chart.
 - Kernel PCA [@schoelkopf1998nonlinear]: the kin of the documented kernel direction, which is not
   built.
-- HoroPCA [@chami2021horopca]: principal component analysis in hyperbolic space, which this package
-  is not.
+- HoroPCA [@chami2021horopca]: the nearest analog in setting; [how this work differs](paper:sect-prior-art).
 - Data envelopment analysis [@charnes1978measuring]: a frontier estimator from efficiency
   analysis, the nearest neighbour outside engineering design.
