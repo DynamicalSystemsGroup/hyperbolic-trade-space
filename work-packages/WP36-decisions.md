@@ -30,3 +30,17 @@ that, and what a WASM build would give the docs and the package's users. The rea
 draft of the future-directions paragraph for the paper (where the paper already points beyond itself) and for the
 docs' limitations or theory page, each claim backed by a verified source or narrowed. The standing line holds: the
 lemma scripts are not formal verification and the text never says they are.
+
+## The synthesis readout and the placement (2026-11-13, 07:45; the assistant, under the supervisor's ruling that this is a future direction only)
+
+The readout (`WP36-rounds/spike/readout.md`, 7b648a8) ranks the formalizable results, separates what a proof over the
+real numbers inherits from what floating point does not, and gives plain options on placement, extent and follow-on
+packages. The assistant's calls, in the readout's lettering:
+
+**Assistant, verbatim:** "Placement (a): the existing future-work section of the paper, in its own cadence, not a new
+section. Extent between (i) and (ii): the Lean direction with the two lemmas named first, the reals-versus-floating-point
+line, and one clause for the Rust core compiled to WebAssembly; the hypotheses sentence and the Pyodide sentence are
+dropped. The docs get two sentences on the limitations page where the lemma scripts are already described, saying what a
+theorem-prover proof would fix and what it would not bound. Follow-on packages: (C), neither; the readout is the record,
+and the supervisor said this is never a requirement. The lemma scripts stay 'a pencil-and-paper substitute'; no surface
+says 'formally verified' or 'formal proof' of them."
