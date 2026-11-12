@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **8806b0e staged; stage 6 dispatched on it (07:00).** Rendered read: the paper and D.17 name the four performance
+  thresholds, "requirements met" is gone from every page, D.17 carries the one clause on the cost limits (budget
+  limits read after the fit; a set constrained by the unit-cost limit would be a fleet-size choice), the Examples
+  lead-in reads the same at its budget; no stderr. Lint, lock, vocabulary and attribution clean; the fast suite
+  finishing; CI dispatched. The staged head 8806b0e on 8791 is given to the PM for stage 6: the fresh reviewer who
+  runs the thing (screenshots and review in `work-packages/WP30-review/`), P7 and P8 reads (`persona-final/`), the
+  reviewers fixing nothing; the PM's remaining worktrees cleared for pruning; WP32 and WP33 scopes requested for the
+  assistant's approval while stage 6 runs. The supervisor's clean render is this head.
+
 - **The design-sets wording and the grid refresh landed (06:45).** 9b055ec (the design sets named "the four
   performance thresholds", the label `thresholds met`, D.17's one clause on why the cost limits are not among them,
   claim C407 narrowed, the Examples lead-in held at its budget, notebooks re-executed, no figure change) and 8806b0e
