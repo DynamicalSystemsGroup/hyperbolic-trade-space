@@ -1,27 +1,33 @@
 # hyperbolic-trade-space
 
 Python package `hyperbolic_trade_space` (import alias `hts`); the method is the *posynomial invariant form*.
-
-The docsite's [Home page](docs/index.md) says what the method does and where to start.
-
-Status: a 0.1 release candidate in preparation on `dev`. See `work-packages/README.md` for the
-packages and their state and `docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md`
-for the design.
-
-## Quickstart
+It learns which metrics of a design table trade. The
+[docs](https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/) say where to start.
 
 ```bash
-uv sync          # reproducible environment from uv.lock (Python 3.12)
-uv run pytest    # tests
+git clone https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space
+cd hyperbolic-trade-space && uv sync   # Python 3.12; run with `uv run`
 ```
 
-Environment: Python 3.12 from `uv.lock`. The fast and slow test shards run on Linux and Windows; the
-paper build runs on Linux and macOS.
+```python
+from hyperbolic_trade_space import (
+    HyperbolicTradeSpace,
+    LogAffinePreconditioner,
+    make_frontier_data,
+    tension_report,
+)
+
+A, _ = make_frontier_data(300, 3, random_state=0)  # your table goes here
+A[:, 1] = 10 / A[:, 1]  # pretend column 1: smaller is better
+M = LogAffinePreconditioner(orientation=[1, -1, 1]).fit_transform(A)
+ts = HyperbolicTradeSpace(temperature=20.0).fit(M)
+print(tension_report(ts, M).exponents.round(2))
+```
 
 ## Layout
 
 - `src/hyperbolic_trade_space/` — the package
-- `derivation/` — SymPy axiom and lemma scripts (WP1)
-- `examples/adcs/` — the ADCS trade-study case (WP4, WP7)
-- `docs/` — mathematics, preconditioning, API, literature; site in WP8
-- `work-packages/` — scopes, reviews and decision records per work package
+- `derivation/` — SymPy axiom and lemma scripts
+- `examples/adcs/` — the ADCS trade-study case
+- `docs/` — the docs site's pages
+- `work-packages/` — scopes, reviews and decision records per work package, and the 0.1 state
