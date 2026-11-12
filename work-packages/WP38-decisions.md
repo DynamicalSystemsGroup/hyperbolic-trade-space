@@ -53,3 +53,16 @@ runs late, after the content loops, for exactly the reason he gives.
 pass, long sentences with stacked subordinate clauses, several ideas joined by semicolons or colons, a subject
 far from its verb, nested qualifications. The disposition is to split or reorder, never to add words; the checker
 can report sentence length and clause depth per surface as a signal, the reader decides.
+
+> another pattern to look out for is jargon use. within any particular document we should use plain language
+> where it suffice and terms of art where needed to streamline or reference properly. define clearly on first
+> use. this holds for acronyms as especially.
+
+**The assistant's reading.** A tenth kind for the brief, with a rule attached: within each document, plain language
+where it suffices and a term of art only where it streamlines or references properly; every term of art and every
+acronym defined clearly at its first use in that document (the glossary is the one source of definitions, and the
+first use points at it or carries the definition). The reader flags a term used before its definition, an
+acronym never expanded in that document, and jargon doing no work; the disposition is replace with the plain
+word, or define at first use, never a parenthetical gloss at every later use. The checker can list acronyms and
+glossary terms per document with the line of first use and whether a definition precedes it; the vocabulary
+check already covers the project's own terms.
