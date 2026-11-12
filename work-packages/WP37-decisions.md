@@ -163,3 +163,27 @@ architecture, design, simulation and analysis ..."), the firm's own voice, since
 requirements, architecture, design, simulation and analysis for clients, all software-defined, studying the spaces
 of feasible designs of their systems under uncertain, strategic and adversarial users." The list is his wording
 and is kept as given.
+
+## The supervisor, more sources and a rule on the public special cases (verbatim)
+
+> also worth looking thought the blockscience (historical) and DSG blogs for matter to cite. you don't need to say
+> GDS Part I since only one paper ended up getting released. rohan's gds axelrod repo deserves a reference. andrew
+> clarks work on community currencies (journal paper) merits a call out. octopus and jamsheed both developed write
+> ups and you tube videos about gds and cadcad; octopus also covered MAIDs. Danilo (and possibly others) have
+> recordings on youtube of applications and i gave a talk at pydata and another at university of edinburgh h that
+> is related to RAI where these methods were used. there is also extensive material on applications to filecoin.
+> we need to be very careful about how we reference the crypto stuff, any direct reference needs to note that
+> these are special cases where work was highly public. we do not want to imply that cryptocurrency is our focus
+> area.
+
+**The assistant's reading.** More leads for the workers, each to be found and read from a public source before the
+page cites it: the BlockScience (historical) and Dynamical Systems Group blogs; "Generalized Dynamical Systems"
+without "Part I"; Rohan Mehta's GDS Axelrod repository; Andrew Clark's journal paper on community currencies;
+write-ups and YouTube videos on GDS and cadCAD by Andrew "Octopus" Penland (who also covered multi-agent influence
+diagrams, MAIDs) and Jamsheed Shorish; Danilo Bernardineli's (and possibly others') recorded applications on
+YouTube; the supervisor's PyData talk and his University of Edinburgh talk related to RAI where these methods were
+used; the applications to Filecoin. The rule for any of these that is a cryptocurrency setting: the page names it
+as a special case where the work was highly public, says so in the sentence that cites it, and never implies that
+cryptocurrency is the firm's focus; the attributes rule stands (the systems are described by what bears on this
+work). Each lead that the workers cannot find or verify from a public source stays off the page and is listed for
+the supervisor to supply.
