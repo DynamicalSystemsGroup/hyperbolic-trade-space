@@ -601,6 +601,36 @@ def test_history_record_validation_names_each_defect():
     assert any("duplicate url" in p for p in HISTORY_RECORD.validate([good, twin]))
 
 
+def test_history_list_is_generated_from_the_record_oldest_first():
+    """WP37 D-9: the list beneath the prose is rendered from the record at build time: listed
+    entries only, chronological, the year, the title as a link, the people; special cases marked."""
+    entries = HISTORY_RECORD.load()
+    page = HISTORY_RECORD.build_page(HISTORY.read_text(encoding="utf-8"), entries)
+    assert HISTORY_RECORD.MARKER not in page and page.count('id="record"') == 1
+    listed = [e for e in entries if HISTORY_RECORD.is_listed(e)]
+    assert 40 <= len(listed) < len(entries)
+    assert not any(e["kind"] == "person" for e in listed)
+    items = re.findall(r'<li><span class="yr">(\d{4})</span> <a href="([^"]+)">', page)
+    assert [url for _, url in items] == [
+        e["url"] for e in sorted(listed, key=lambda e: (e["date"], e["id"]))
+    ]
+    assert [y for y, _ in items] == sorted(y for y, _ in items)
+    for e in listed:
+        if e.get("special_case"):
+            assert page.count("a special case where the work was highly public") >= 1
+    # a source whose title carries a banned word keeps it only as the link's title
+    block = page[page.index('<section class="record"') :]
+    assert "Blockchain" in block
+
+
+def test_history_page_source_carries_the_marker_once_and_stays_readable():
+    raw = HISTORY.read_text(encoding="utf-8")
+    assert raw.count(HISTORY_RECORD.MARKER) == 1
+    assert "Dated references" not in raw  # the list is generated, not written into the source
+    with pytest.raises(ValueError):
+        HISTORY_RECORD.build_page("<p>no marker</p>", [])
+
+
 def test_history_page_is_one_screen_in_the_root_page_register():
     """WP37: a stand-alone page, light and dark like the root page, no script, about one screen."""
     raw = HISTORY.read_text(encoding="utf-8")
@@ -832,9 +862,11 @@ def test_assembled_layout(assembled):
 
 
 def test_assembled_site_carries_the_history_page(assembled):
-    assert (assembled / "history.html").read_text(encoding="utf-8") == HISTORY.read_text(
-        encoding="utf-8"
-    )
+    """The assembled page is the hand-written prose with the record's dated list at the marker."""
+    built = (assembled / "history.html").read_text(encoding="utf-8")
+    assert built == HISTORY_RECORD.build_page_file()
+    assert built != HISTORY.read_text(encoding="utf-8")
+    assert HISTORY_RECORD.MARKER not in built and 'id="record"' in built
 
 
 def test_every_link_in_the_assembled_site_resolves(assembled):

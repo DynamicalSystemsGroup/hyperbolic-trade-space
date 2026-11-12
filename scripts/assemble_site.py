@@ -5,14 +5,16 @@
 Default output is ``_site/``. Steps: write the generated pages (``build_generated``: the
 glossary into ``docs/generated/`` for the docsite, derivations and verification into
 ``build/generated/`` for the paper's build), run
-``mkdocs build --strict -d <out>/docs``, copy ``site/index.html`` and ``site/history.html`` to
-``<out>/`` (with the paper's ``figure1.png`` and the story figure from ``build_site_figures``) and
-build the paper slot through ``build_paper``: the real paper (``myst build --html`` in ``paper/``,
-copied from ``paper/_build/html``). The command line is strict: a paper that does not build, or
-writes no ``index.html``, exits non-zero naming the failure and the flag; ``--paper placeholder`` is
-the only way to get the placeholder page. (The function ``assemble(paper="auto")`` keeps its
-fall-back for callers.) Any other error stops the build with a non-zero exit. The
-docsite's figures (``build_figures``) are built before MkDocs reads ``docs/``.
+``mkdocs build --strict -d <out>/docs``, copy ``site/index.html`` to
+``<out>/``, write ``history.html`` (the page's prose with the dated list of ``history.yaml``
+inserted at its marker), with the paper's ``figure1.png`` and the story figure from
+``build_site_figures``, and build the paper slot through ``build_paper``: the real paper
+(``myst build --html`` in ``paper/``, copied from ``paper/_build/html``). The command line is
+strict: a paper that does not build, or writes no ``index.html``, exits non-zero naming the
+failure and the flag; ``--paper placeholder`` is the only way to get the placeholder page.
+(The function ``assemble(paper="auto")`` keeps its fall-back for callers.) Any other error stops
+the build with a non-zero exit. The docsite's figures (``build_figures``) are built before MkDocs
+reads ``docs/``.
 """
 
 from __future__ import annotations
@@ -32,6 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build_figures  # noqa: E402
 import build_generated  # noqa: E402
 import build_site_figures  # noqa: E402
+import history_record  # noqa: E402
 
 DEFAULT_OUT = ROOT / "_site"
 GENERATED_DIR = build_generated.DEFAULT_OUT  # outside docs/: the paper's build reads it
@@ -167,7 +170,10 @@ def assemble(
     if not ROOT_INDEX.is_file():
         raise FileNotFoundError(f"missing root index: {ROOT_INDEX}")
     shutil.copy2(ROOT_INDEX, out / "index.html")
-    shutil.copy2(ROOT_HISTORY, out / "history.html")  # the stand-alone history page (WP37)
+    # the stand-alone history page (WP37): its prose with the dated list of history.yaml inserted
+    (out / "history.html").write_text(
+        history_record.build_page_file(ROOT_HISTORY), encoding="utf-8"
+    )
     for asset in sorted(ROOT_INDEX.parent.glob("*.webp")):  # figures the root index uses
         shutil.copy2(asset, out / asset.name)
     if not Path(figure1).is_file():
