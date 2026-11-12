@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP37 D-9 on dev: the record, its generator and its tests (23:30).** history.yaml is in (50 KB), the generator
+  renders the dated list beneath the prose at build time, and the tests tie every link, name and year on the page
+  to a record entry; the link check reads the record and trace.md derives from its claim kinds. The assistant's
+  checks on the head (ee009be): ruff and format clean, lock current, attribution 0, vocabulary 0 new (63 known,
+  two fewer), the site, register, docs and encoding tests 115 passed. CI dispatched. The record's remaining
+  content from the second research pass and the prose fixes follow; the page then goes to the supervisor.
+
 - **WP37 scope approved (23:00).** Approved at 2a1d4fa with D-9 added (the history record `history.yaml`, the page as
   its view, the generated dated list, the tests tying page to record), and the nine open decisions decided as
   defaults for the supervisor's review of the page (WP37-decisions.md, bf9dee8): spellings by the public record,
