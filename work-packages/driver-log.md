@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **e9a1dd4 CI and the re-execution head (23:20).** CI on e9a1dd4 (run 43150102872): Linux slow green (396 passed,
+  the first green slow job since the data gate); Linux and Windows fast 2 failed each (the datasets table digest and
+  the D.11 subsection, both waiting on the re-execution); docs-paper 1 failed (the D.2 term-numbered table, the
+  same cause); Windows slow stopped at lint on the throwaway script removed at ed68fdb. The re-execution landed at
+  4162a61 (both notebooks on the container's data of record, the K = 3 tables in share order, the unit reporting no
+  conclusion, flag or count moved); the assistant's fast suite and a stage rebuild at 4162a61 are running, CI run
+  43153385302 dispatched on it.
+
 - **e9a1dd4, the assistant's checks (23:05).** Lock current; vocabulary 0 new; attribution 0; the slow estimator,
   sensitivity and soft-fit tests 82 passed (the term order's five slow failures are closed); fast suite 3 failed /
   1872 passed: the datasets table digest and the D.11 stability subsection (both wait on the notebook re-execution
