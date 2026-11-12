@@ -228,6 +228,23 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The twelfth PM's handover; the thirteenth PM; the WP35 build read (01:10).** PM12 stopped at its context limit with
+  its handover (PM-BRIEF.md, 4411cb2): WP37's record and page delivered, the entry-surfaces section opened
+  (e5d2c35, twelve rows), WP36's three readouts done without the synthesis, WP35's build landed (b1b43cf) without
+  its review, WP33's D-2 items 5 and 6 stopped for the assistant's answer, the abstract correction uncommitted in
+  its worktree; it also owns the closure of the assistant's first tab (tab-84) and not the second. PM13 (Sonnet)
+  is spawned with the full brief: the abstract correction first, then WP33's items 5 and 6 on the assistant's
+  answers (the API pages merged by contract amendment; the nav heading by mkdocs titles, a rename only by
+  amendment), the repeat round and the U1 cell on the rebuilt stage, WP35's stage-6 review, WP36's synthesis
+  (the W2 readout's two URLs corrected with a dated note), WP37's reader walk and review, then the final reader
+  round and WP8b. The WP35 build was already on the staged head and reads as decided: Section 2's one paragraph
+  names HoroPCA the closest analog in setting and the farthest in what is estimated and says what is borrowed;
+  every Table 1 "differs" cell begins "This work", the row split into kernel PCA and HoroPCA; Appendix G carries
+  the register row, the passage (the embedding stated as ours, the solvers' difference in kind) and the spike's
+  table; Appendix A has the "hyperbolic" entry with its "not" column; the docs limitations page points at the
+  glossary and the paper. The full checks on the head are running; WP35's acceptance waits on them and on its
+  fresh reader.
+
 - **The history page opened for the supervisor (00:45).** Stage rebuilt at df0cad9 on 8791; the page as rendered: the
   prose on one 1280-wide screen with its purpose sentence first, the dated reference list of 63 items beneath it
   oldest first from history.yaml, 91 links, no horizontal scroll; opened in the browser pane for his close read.
