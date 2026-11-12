@@ -21,8 +21,7 @@ above V = 1:
 
 ## The one-term fit, drawn
 
-`examples/adcs/case.py` runs the study from the committed table; this block draws the one-term
-fit's tension report:
+This block draws the one-term fit's tension report from the committed table:
 
 ```python {.runnable}
 import sys
@@ -44,7 +43,7 @@ case.tension_figure(study, fit)
 ## Requirements read after the fit
 
 The fit ignores the model's six requirements. Read after it, each has a pass share,
-the near-frontier designs it excludes and a price at the one-term frontier, in band widths:
+the near-frontier designs it excludes and a price at the one-term frontier, in band widths and, for the costs and the mass, USD:
 
 ```text
 # case.requirements_summary()
@@ -57,6 +56,10 @@ total mass       94.6 | 95.2 %    12/238 | 9/293      0.24 | 1.55
 unit cost        76.2 | 75.8 %    64/238 | 66/293     5.31 | 1.22
 fleet cost       71.4 | 71.0 %    57/238 | 85/293     1.50 | 0.49
 all jointly      25.7 | 22.2 %    178/238 | 241/293
+excess over the limit, median excluded design (USD)
+total mass       1,880 | 1,730 USD of launch per satellite
+unit cost        35,200 | 27,300 USD per satellite
+fleet cost       1,130,000 | 1,140,000 USD per fleet
 ```
 
 Refitted on three design sets, the one-term contending set barely moves. The third keeps the designs that meet the four performance thresholds; the two cost limits are budget limits read after the fit, and the unit cost limit binds through the fleet size (no design of fleet size one passes it), so a set constrained by it would be a fleet-size choice, not a design-space one:
@@ -82,8 +85,8 @@ stock, thresholds met (882): momentum headroom, settling time, available
 
 ## Three metrics as shares of a total
 
-A ternary plot places a design by its shares of a total among three metrics. This block fits two triples of
-the primary regime, two terms each, and draws both with one key:
+A ternary plot places a design by its shares of a total among three metrics. This block draws two triples of
+the primary regime, two terms each, with one key:
 
 ```python {.runnable}
 import sys

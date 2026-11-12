@@ -164,6 +164,10 @@ _UNITS = (
 )  # fmt: skip
 _ORIENT = (-1, -1, -1, -1, +1, +1, -1, -1, +1, +1, +1, -1, -1)
 
+LAUNCH_USD_PER_KG = 7000.0
+"""The model's launch rate (``environment.launchRate``, USD per kilogram of total mass): the
+conversion of the total mass requirement to launch USD."""
+
 CUBESAT = CaseSpec(
     name="cubesat attitude determination and control",
     # the data of record (ledger entries @8, the WP23 close-out); WP30 stage 3a adds the ninth
@@ -211,7 +215,7 @@ CUBESAT = CaseSpec(
         "peak_slew_power_w": (2.6, "W"),
         "pointing_error_deg": (0.008495, "degree"),
         "control_effort": (0.05922, "N.m.s"),
-        "total_mass_kg": (105770.0 / 7000.0, "kg"),
+        "total_mass_kg": (105770.0 / LAUNCH_USD_PER_KG, "kg"),
     },
     # the two cost requirements (cubesat.sysml, part budgets: unitCostLimit, fleetCostLimit; the
     # supervisor's values, WP30-decisions.md), each on the covered cost, read as attribute <= limit
@@ -1274,7 +1278,10 @@ def requirements_table(study, fit):
     ``-(w_i o_i / s_i) / (w_k o_k / s_k)`` (``o`` the orientation): the percent change in ``k``
     per percent change in ``i`` with the level held, read for the metrics ``k`` with ``w_k`` at
     least :data:`CO_CONTENDER`; a metric at zero exponent has no price and no elasticity at
-    K = 1. The last row reads all six requirements jointly.
+    K = 1. The excess is the median value of the excluded near-frontier designs over the limit,
+    in currency where the requirement is one: USD per satellite for the unit cost, USD per fleet
+    for the fleet cost, and, for the total mass, USD of launch per satellite at
+    :data:`LAUNCH_USD_PER_KG`. The last row reads all six requirements jointly.
 
     Parameters
     ----------
@@ -1287,7 +1294,8 @@ def requirements_table(study, fit):
     -------
     pandas.DataFrame
         Columns ``requirement``, ``limit``, ``pass (feasible)``, ``near-frontier excluded``,
-        ``K = 1 exponent``, ``price (log V)``, ``price (bands)``, ``largest elasticities``.
+        ``K = 1 exponent``, ``price (log V)``, ``price (bands)``, ``excess (USD)`` (NaN where the
+        requirement is not in currency), ``largest elasticities``.
     """
     spec, feas, names = study.spec, study.feasible, study.names
     pre = study.preconditioner
@@ -1300,12 +1308,15 @@ def requirements_table(study, fit):
         ok = requirement_mask(feas, spec, only=a, costs=True).to_numpy()
         excl = near & ~ok
         shown = f"{limit:,.0f}" if limit >= 1e5 else f"{limit:.5g}"
+        usd = dict.fromkeys(spec.cost_requirements, 1.0) | {"total_mass_kg": LAUNCH_USD_PER_KG}
+        excess = (float(np.median(feas.loc[excl, a].to_numpy() - limit)) * usd[a]
+                  if a in usd and excl.any() else np.nan)  # fmt: skip
         row = {"requirement": spec.short[a], "limit": f"{shown} {unit}",
                "pass (feasible)": float(ok.mean()),
                "near-frontier excluded": f"{int(excl.sum())} of {n_near}",
                "K = 1 exponent": float(w[i])}  # fmt: skip
         if w[i] <= EXPONENT_FLOOR or not excl.any():
-            row |= {"price (log V)": 0.0, "price (bands)": 0.0,
+            row |= {"price (log V)": 0.0, "price (bands)": 0.0, "excess (USD)": excess,
                     "largest elasticities": "none at K = 1 (exponent 0)" if w[i] <= EXPONENT_FLOOR
                     else "none excluded"}  # fmt: skip
         else:
@@ -1315,13 +1326,14 @@ def requirements_table(study, fit):
                   for k in range(len(w)) if k != i and w[k] >= CO_CONTENDER}  # fmt: skip
             top = sorted(el.items(), key=lambda kv: -abs(kv[1]))[:2]
             row |= {"price (log V)": price, "price (bands)": price / fit.band,
+                    "excess (USD)": excess,
                     "largest elasticities": "; ".join(f"{n} {v:+.2f}" for n, v in top)}  # fmt: skip
         rows.append(row)
     ok = requirement_mask(feas, spec, costs=True).to_numpy()
     rows.append({"requirement": "all jointly", "limit": "", "pass (feasible)": float(ok.mean()),
                  "near-frontier excluded": f"{int((near & ~ok).sum())} of {n_near}",
                  "K = 1 exponent": np.nan, "price (log V)": np.nan, "price (bands)": np.nan,
-                 "largest elasticities": ""})  # fmt: skip
+                 "excess (USD)": np.nan, "largest elasticities": ""})  # fmt: skip
     return pd.DataFrame(rows)
 
 
@@ -1467,7 +1479,9 @@ def requirements_summary(spec=CUBESAT, labels=None):
     """:func:`requirements_table` of every regime as plain text lines of at most 72 characters.
 
     One line per requirement: the pass fractions, the near-frontier designs excluded and the
-    price in band widths, regimes side by side (``a | b``), at the docs' precision.
+    price in band widths, regimes side by side (``a | b``), at the docs' precision; then the
+    median excess over the limit of the excluded near-frontier designs where the requirement is
+    in currency (three significant digits).
 
     Parameters
     ----------
@@ -1493,6 +1507,14 @@ def requirements_summary(spec=CUBESAT, labels=None):
         near = " | ".join(x[3].replace(" of ", "/") for x in rows)
         cost = "" if np.isnan(rows[0][5]) else " | ".join(price(x[6]) for x in rows)
         lines.append(f"{name:<17}{share:<17}{near:<20}{cost}".rstrip())
+    money = lambda x: f"{float(f'{x:.3g}'):,.0f}"  # noqa: E731
+    lines.append("excess over the limit, median excluded design (USD)")
+    per = {"total mass": "USD of launch per satellite"} | {
+        spec.short[a]: unit for a, (_, unit) in spec.cost_requirements.items()
+    }
+    for rows in zip(*(t[t["excess (USD)"].notna()].itertuples(index=False) for t in tables),
+                    strict=True):  # fmt: skip
+        lines.append(f"{rows[0][0]:<17}{' | '.join(money(x[7]) for x in rows)} {per[rows[0][0]]}")
     return "\n".join(lines)
 
 

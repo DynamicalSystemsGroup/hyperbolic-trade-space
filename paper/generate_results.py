@@ -768,8 +768,9 @@ def requirements_at_the_frontier() -> Md:
     Md
         ``case.requirements_table`` on the K = 1 fit of each dataset: the limit, the share of the
         feasible designs that pass it, the near-frontier designs it excludes, the exponent, the
-        price at the frontier (log V and band widths) and the two largest elasticities; a last row
-        reads the six jointly.
+        price at the frontier (log V and band widths), the median excess of the excluded designs
+        over the limit in USD (per satellite, per fleet, and the mass as USD of launch per
+        satellite) and the two largest elasticities; a last row reads the six jointly.
     """
     parts = []
     for r, s in _studies().items():
@@ -779,6 +780,9 @@ def requirements_at_the_frontier() -> Md:
                          ("price (bands)", ".2f")):  # fmt: skip
             t[col] = ["" if np.isnan(x) else format(0.0 if abs(x) < 5e-5 else x, fmt)
                       for x in t[col]]  # fmt: skip
+        t["excess (USD)"] = [
+            "" if np.isnan(x) else f"{float(f'{x:.3g}'):,.0f}" for x in t["excess (USD)"]
+        ]
         parts.append(f"{_cite(r)}:\n\n" + frame_table(t))
     return Md("\n\n".join(parts))
 

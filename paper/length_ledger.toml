@@ -1195,3 +1195,10 @@ section = "Appendix C"
 words_added = 229
 job = "C.8's list says, item by item, what a flight-hardware reader may not take from the case: the pointing error is a loop-and-tracker figure, the momentum check is one slew, the launch slot is not priced (understated 3.1 to 4.2 times at a fleet of one), the horizon and slew law are choices, the wings are rigid and the mass axis a trim on a fixed bus; the body keeps one clause"
 reader = "the systems engineer judging whether the case is honest where it is a toy"
+
+[[raise]]
+date = "2026-11-12"
+section = "Appendix D"
+words_added = 45
+job = "D.17 states that the excess column puts the price of meeting a requirement in currency (USD per satellite, USD per fleet, the mass as USD of launch), the one conversion the program reader can negotiate with; the bands stay beside it"
+reader = "the executive weighing which requirement is dear"

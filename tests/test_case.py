@@ -772,6 +772,33 @@ def test_the_docs_requirements_block_is_the_case_modules():
     )
 
 
+def test_the_requirements_prices_are_also_in_currency():
+    """The excess column converts the price to USD (P8 final read F3): the median of the excluded
+    near-frontier designs' value over the limit, USD per satellite for the unit cost, USD per
+    fleet for the fleet cost, and the total mass at the launch rate; none for the other three."""
+    for regime in case.CUBESAT.regimes:
+        study = case.load_study(regime)
+        fit = case.fit_study(study)
+        table = case.requirements_table(study, fit).set_index("requirement")
+        near = np.abs(fit.estimator.score_samples(study.M)) < fit.band
+        for attr, rate in (
+            ("unit_cost_usd", 1.0),
+            ("fleet_cost_usd", 1.0),
+            ("total_mass_kg", case.LAUNCH_USD_PER_KG),
+        ):
+            limit = (case.CUBESAT.requirements | case.CUBESAT.cost_requirements)[attr][0]
+            over = near & ~(study.feasible[attr].to_numpy() <= limit)
+            want = float(np.median(study.feasible.loc[over, attr].to_numpy() - limit)) * rate
+            assert table.loc[case.CUBESAT.short[attr], "excess (USD)"] == pytest.approx(want)
+        assert case.LAUNCH_USD_PER_KG == 7000.0
+        assert table["excess (USD)"].notna().sum() == 3
+        assert table.loc["all jointly", "excess (USD)"] != table.loc["all jointly", "excess (USD)"]
+    text = case.requirements_summary(labels=DOCS_LABELS)
+    assert "unit cost        35,200 | 27,300 USD per satellite" in text
+    assert "fleet cost       1,130,000 | 1,140,000 USD per fleet" in text
+    assert "total mass       1,880 | 1,730 USD of launch per satellite" in text
+
+
 @pytest.mark.slow
 def test_the_docs_design_sets_block_is_the_case_modules():
     """The docs' case page prints ``design_sets_summary`` (R-27), generated, not typed."""

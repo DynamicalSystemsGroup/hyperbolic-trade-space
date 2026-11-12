@@ -6018,3 +6018,18 @@ status = "backed"
 disposition = "keep"
 source = "P7 final read N-F1; the triage of 2026-11-12"
 note = "PointingError in the model is the root-sum-square of the steady error and the tracker accuracy and names no alignment, roll-axis or jitter term; the minimum over both regimes' feasible designs is 0.000602 degree."
+
+[[claim]]
+id = "C505"
+fragment = "the excess column converts the price to currency, the median amount by which the excluded near-frontier designs exceed the limit"
+file = "paper/supporting_material.ipynb"
+anchor = "D.17 The requirements read after the fit"
+kind = "R"
+backing = [
+  "test:tests/test_case.py::test_the_requirements_prices_are_also_in_currency",
+  "gen:paper/generate_results.py::requirements_at_the_frontier",
+]
+status = "backed"
+disposition = "keep"
+source = "P8 final read F3; the triage of 2026-11-12"
+note = "excess = median over the excluded near-frontier designs of (value - limit), times the launch rate for the total mass; the test recomputes it from the feasible designs on both datasets (unit cost 35,200 and 27,300 USD per satellite, fleet cost 1,130,000 and 1,140,000 USD per fleet, mass 1,880 and 1,730 USD of launch)."
