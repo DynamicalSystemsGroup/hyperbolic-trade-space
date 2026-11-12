@@ -495,7 +495,7 @@ note = "Section 3 defines the evaluation as a black box to the method (a simulat
 
 [[claim]]
 id = "C033"
-fragment = "It is fitted to the outer edge of the data, not through its middle: a soft support that a few designs may exceed, not a regression"
+fragment = "It is fitted to the outer edge of the data, not through its middle, not a regression"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -507,7 +507,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP11 round 1, CR-1"
-note = "The fit takes the entropic soft maximum of the scores over the designs (L5), so the surface sits at the upper edge of the data, with some designs beyond it at finite temperature, and is the soft form of the supporting envelope; it is not a least-squares curve through the points."
+note = "The fit takes the entropic soft maximum of the scores over the designs (L5), so the surface sits at the upper edge of the data, with some designs beyond it at finite temperature, and is the soft form of the supporting envelope; it is not a least-squares curve through the points. WP33: the clause 'a soft support that a few designs may exceed' left the abstract (Three objects, Definitions, still says some designs lie beyond the surface)."
 
 [[claim]]
 id = "C034"
@@ -962,8 +962,8 @@ note = "row 17 abstract: mathematical programming, ratio form obtained from the 
 
 [[claim]]
 id = "C069"
-fragment = "a super-efficiency variant ranks efficient units against a reference technology spanned by all other units"
-file = "paper/paper.ipynb"
+fragment = "a super-efficiency variant that ranks efficient units against a reference technology spanned by all other units"
+file = "paper/prior_art.yaml"
 anchor = ""
 kind = "L"
 backing = ["bib:andersen1993procedure", "file:paper/reading_pass.yaml"]
@@ -974,8 +974,8 @@ note = "row 18 abstract states exactly this (reference technology spanned by all
 
 [[claim]]
 id = "C070"
-fragment = "Malmquist indices run across data sets"
-file = "paper/paper.ipynb"
+fragment = "and Malmquist productivity indices across data sets"
+file = "paper/prior_art.yaml"
 anchor = ""
 kind = "L"
 backing = ["bib:fare1994productivity", "file:paper/reading_pass.yaml"]
@@ -983,18 +983,6 @@ status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "reading_pass row 19 supported: Malmquist productivity indexes over periods ('across data sets' = across periods)"
-
-[[claim]]
-id = "C071"
-fragment = "practice has added weights restrictions [@allen1997weights] and protocols"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "L"
-backing = ["bib:allen1997weights", "bib:dyson2001pitfalls", "file:paper/reading_pass.yaml"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "rows 20 and 21: abstracts give weights restrictions arising from applications and protocols/pitfalls of applying DEA; AUDIT: both verdicts partly supported (dropped 'favourable weights' framing); re-mark for the current wording"
 
 [[claim]]
 id = "C072"
@@ -1142,8 +1130,8 @@ note = "reading_pass row 44 (chami2021horopca) verdict supported: HoroPCA is PCA
 
 [[claim]]
 id = "C084"
-fragment = "Tradespace exploration lets an analyst explore designs"
-file = "paper/paper.ipynb"
+fragment = "Value-focused broad exploration of design alternatives, a design-by-shopping interface"
+file = "paper/prior_art.yaml"
 anchor = ""
 kind = "L"
 backing = ["bib:ross2005tradespace", "bib:stump2009visual", "file:paper/reading_pass.yaml"]

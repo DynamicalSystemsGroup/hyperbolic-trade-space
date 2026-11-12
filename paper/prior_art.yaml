@@ -166,6 +166,11 @@ entries:
       does: "Estimates frontier production functions"
       shares: "A one-sided criterion on log-linear residuals"
       differs: "A smooth soft maximum over a simplex-constrained geometric mean"
+    nearest: true
+    why_not_just: >-
+      This is not just a stochastic frontier: a frontier estimate shifts the intercept of a log-linear
+      fit to bound the data, with a one-sided error, while the fit here is a soft maximum over a
+      simplex-constrained geometric mean, with a temperature, a band and K terms.
 
   # --- Dimension reduction and model fitting --------------------------------------------------
   - id: pca

@@ -90,7 +90,10 @@ APPENDICES = {
 TIERS = ("**Main text keeps:**", "**This appendix carries:**", "**The repository keeps:**")
 # Appendices whose generated content waits for another package's deliverable (stated in the report).
 AWAITING_RECORD: set[str] = set()
-NEAREST = {"pareto", "dea", "pca", "logratio", "gp-maxaffine", "production-distance", "tradespace"}
+NEAREST = {
+    "pareto", "dea", "pca", "logratio", "gp-maxaffine", "production-distance", "tradespace",
+    "frontier-estimation",
+}  # fmt: skip
 # The families of the outline (v1 baseline, v2): each has an entry in the register (R-9).
 OUTLINE_FAMILIES = {
     "pareto", "dea", "production-distance", "frontier-estimation", "pca", "logratio",

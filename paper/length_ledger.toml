@@ -1188,6 +1188,36 @@ words_removed = 1
 no_longer_did = "the sentence said 'the requirements' for the four performance thresholds the constrained set applies, and repeated 'requirements' after the pointer; it now names the four performance thresholds and says 'them' (Appendix D.17 carries the reason the two cost limits are not among them)"
 authority = "the PM's brief for the design-sets block (the four performance thresholds named; the cost limits read after the fit)"
 
+# WP33 wayfinding, the paper's rows (work-packages/WP33-scope-of-work.md R-2, R-5; docs/superpowers/notes/user-journeys.md).
+# Each deletion states what the content no longer did; no row adds words.
+[[cut]]
+date = "2026-11-12"
+section = "The decision problem"
+words_removed = 11
+no_longer_did = "the Results list's sixth item opened with 'Numerical: the termination status a fit reaches, read from its record', which three P4 cells stopped on and which Section 6 already carries (the stopping declaration, its Numerical sentence, item 4's 'stopping declaration', Appendix D.8); the item now names only the open questions ('both', which paired the two kinds, went with it), and the badge the list needs for the findings that are not derived moved to the case item, whose finding is observed (one word)"
+authority = "WP33 journeys note, placement 8 (P4 cells; the item is P5's and Section 6 holds the certificate)"
+
+[[cut]]
+date = "2026-11-12"
+section = "Prior art, by family"
+words_removed = 60
+no_longer_did = "the DEA paragraph listed the super-efficiency variant, Malmquist indices and the weights restrictions and protocols of practice, which Table 1 and Appendix G's DEA entry already carry and which a sceptical reader skimmed past on the way to how this work differs; the Lineage paragraph's tradespace sentence repeated Table 1's tradespace row and Appendix G's entry. The citations stay in Appendix G and the nocite list"
+authority = "WP33 baseline wayfinding read, P6 (the DEA and Lineage citation walls), offsetting the stochastic-frontier line added to Appendix G"
+
+[[cut]]
+date = "2026-11-12"
+section = "Preliminaries and notation"
+words_removed = 9
+no_longer_did = "the section opened with the reader sentence ('We assume multivariate calculus, linear algebra and convex optimization'), which P5 found only after reading to Section 3; the sentence now ends the abstract on the first screen (moved, not added: the abstract's count is unchanged, nine words out with the soft-support clause)"
+authority = "WP33 baseline wayfinding read, P5 (no reader statement on the first screen)"
+
+[[cut]]
+date = "2026-11-12"
+section = "Results"
+words_removed = 3
+no_longer_did = "the Corollary 1 box's hypothesis line carried two inherited-result codes with glosses (I9 Cauchy-Schwarz, I18 the pseudoinverse), which the novice cannot place and the expert reads in Appendix B, L20 (AXIOMS_USED); the line keeps the assumptions and R3, and the one gloss the formula needs, of the superscript plus, sits where the formula is"
+authority = "WP29 triage C4 and C6 (P9 keeps the detail, P10 keeps the thread); WP33 journeys note, placement 9"
+
 # The P7 and P8 final reads, triaged (WP30-rounds/persona-final/triage.md): what each omission does to a reading.
 [[raise]]
 date = "2026-11-12"
