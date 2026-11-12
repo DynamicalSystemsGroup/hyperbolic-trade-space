@@ -228,6 +228,23 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Stage 6 review in; WP32 and WP33 approved (08:50).** The reviewer who ran the thing (`WP30-review/review.md`,
+  2511508) on 8806b0e: full suite 2356 passed, 0 failed (slow included), ruff, lock and vocabulary clean, notebooks
+  executed with no stderr and outputs unchanged, ledger verify 0 drifts at `@12`, no console errors or horizontal
+  scroll on five pages in four modes; every good-enough item met except two stale counts that change a view
+  (Figure 8's "the other five metrics"; Appendix E rows G-2 and G-17 still on the eight-metric data) and a cosmetic
+  list. Routed to the `s6fix` unit: the two defects plus the Examples Figure 5 legibility, Figure 7's unexplained
+  black cell (one caption clause), Section 8's digit against word, the gate checklist's 1,250, Figure 3's overprinted
+  label; no change for the dark-mode panels (figure loop, not WP30), the 375 px heat map and C.5 tables, and the
+  Examples page's budget sentence (the case page carries it). The triage's paper unit landed its first two commits
+  (4867478 Section 8's clause; dd7753a C.8's omissions with a test computing the printed numbers); D.17's USD prices
+  and the D.7 sentence to follow. **WP32 and WP33 approved** at 03d95fd with the open questions decided by the
+  assistant (recorded by the PM in the decisions files): WP32 Q1 two re-runs then the chief engineer's list; Q2 a
+  code defect a cell finds is fixed in this package with a test. WP33 Q1 adoption-cost lines backed by existing
+  docs and the U1/U3 cells' measured time to a first fit, no invented number; Q2 docstring top-lines only, pins
+  checked; Q3 removal or merge where a page serves no path, by amendment where pinned; Q4 the executive arrives at
+  the root page. CI run 43220520062 dispatched on dd7753a; the assistant's checks and a stage rebuild run.
+
 - **Stage 6: the P7 and P8 final reads triaged (08:05).** Read from their worktrees before the PM's delivery and
   triaged as a pair under the balance rule (`WP30-rounds/persona-final/triage.md`, 77fe83c). P7: interest yes,
   honesty mostly yes, residuals where the body reads the model's limits as a mission's and where C.8 does not name
