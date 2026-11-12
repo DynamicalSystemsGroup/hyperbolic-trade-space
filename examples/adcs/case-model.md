@@ -214,23 +214,19 @@ record is the fit on the feasible designs, and the case reads the four requireme
 (`case.requirements_table`, `case.design_sets_table`; Appendix D.17 of the supporting material).
 
 ### What the case leaves out
-"Verification" on this page is a solver checking a requirement on a configuration, not a hardware test. The case does not model:
-- **Cost beyond a lower bound.** The unit cost and the fleet cost cover the bus (structure, power, radios and computer), the
-  attitude-control parts, assembly and test, and wholesale launch; they leave out the payload and its instruments,
-  communications and the payload interface, flight software, environmental testing beyond the assembly line, licensing, a ground
-  station network and operations, the launch slot minimum and broker fees. The fleet cost requirement holds the covered cost under
-  6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD, the rest being the allowance for what is not covered.
-- **Schedule, lead time, heritage, qualification.** No attribute or requirement reads any of them.
-- **Fault tolerance.** Three identical wheels and one tracker; no failure case.
-- **Thermal, communications, load profile.** None modelled; payload and radio power sit inside one constant 12 W load.
-- **Margins and growth.** Mass and power are nominal sums; solar degradation is one fixed factor (0.9); no battery fade or charge loss.
+"Verification" on this page is a solver checking a requirement on a configuration, not a hardware test. The model is a
+demonstration; what bears on how far it reaches:
+- **Cost beyond a lower bound.** The unit cost and the fleet cost cover the bus, the attitude-control parts, assembly and test,
+  and wholesale launch, and leave out the payload, communications, flight software, licensing, operations and the rest of the
+  full costing. The fleet cost requirement holds the covered cost under 6,000,000 USD, inside the sponsor's full budget of
+  8,000,000 USD, the rest being the allowance for what is not covered.
 - **Momentum management.** `momentum_ok` compares one slew's peak momentum with the wheel's capacity; the constant disturbance
   torque is not accumulated over an orbit and no desaturation device exists.
-- **Gains as hardware.** Kp and Kd are traded like parts, though flight software tunes them.
+- **Margins and growth.** Mass and power are nominal sums; solar degradation is one fixed factor (0.9); no battery fade or charge loss.
 - **One scenario.** One 30 degree slew in a 600 s horizon, one fixed 0.6 h eclipse of a LEO of about 95 minutes, no altitude.
-- **Requirement limits from a mission.** Four limits (peak slew power, pointing error, control effort, launch budget) are the
-  supervisor's choices from the data's ladder of pass fractions; the two cost limits are budget figures; none is flowed down
-  from a mission.
+
+The full list (the order of the cost exclusions, schedule and qualification, fault tolerance, thermal and communications, the
+gains as hardware, the source of each limit) is Appendix C.8 of the supporting material.
 
 ### Coverage: every swap and tune reaches a metric
 
