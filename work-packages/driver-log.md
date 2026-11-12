@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **94464bb, the rendered look (12:00).** Stage rebuilt at 94464bb on 8791. Figure 7's two heat maps carry the
+  redraw: vertical x labels with their exponents, the titles wrapped, every cell value legible at column width; no
+  stderr. The assistant's checks on the head run.
+
 - **dd7753a and 449ad05 fully green; 94464bb received (11:45).** CI runs 43220520062 and 43221693639: every job green
   on both platforms (the eighth and ninth fully green heads). 94464bb landed: both notebooks re-executed at the head
   so Figure 7 carries the redraw (vertical x labels, wrapped titles), all other outputs unchanged. The assistant's
