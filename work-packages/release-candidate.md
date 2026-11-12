@@ -182,3 +182,8 @@ breach, and is on that list like every other change.
 **Applied.** Information, not a new gate: his review covers the whole package, with extra effort on the five entry
 surfaces. The "Entry surfaces" section of the review list and the reviewer's guide exist to make that
 concentration easy, and nothing else changes in how units work.
+
+**The reading pass joins the close read (2026-11-13).** Beside the five entry surfaces, the supervisor validates the
+reading pass before any release: `paper/reading_pass.yaml` is the record of every citing sentence read against its
+source, and Appendix G.2 says the readings are the authors', so he reads the record and confirms it before the
+sentence stands. Until then G.2 is worded to what has been done.
