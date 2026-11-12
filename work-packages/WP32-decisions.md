@@ -27,3 +27,11 @@ Rows: `triage.md`, "Round 3" (R3-1 to R3-4).
 Acceptance record: pending (quoted later by the supervisor's assistant; this file records none).
 - R-10 gap (review finding 6): one fresh U1 cell runs on the next staged head, beside WP33's repeat round, with its return and a one-row triage closing the gap. U1 met R2-3 in round 2 before that fix landed; U3 met nothing in round 2 and is complete, so no U3 re-run.
 - Review finding 7: `scripts/build_figures.py` rewriting two tracked paper figures (`paper/figures/fig-chart-level.png`, `fig-ternary-pair.png`) byte-differently on each run is a machinery defect outside WP32. It is routed to a separate unit (not WP32); WP32 changes nothing there.
+
+## Acceptance (2026-11-12, 19:25; the assistant, under the supervisor's mandate; review at d09af78, closure at c33b108)
+
+**Assistant, verbatim:** "WP32 is accepted. The four package-user cells completed in three rounds from the README,
+the site and the installed package alone; the six docs fixes and the register repair landed; the review ran the
+cells' code at the head and checked every triage row against the diff; its findings are closed except R-10 for U1,
+which one fresh U1 cell on the next staged head closes, recorded here; the figure-build defect is a machinery unit
+outside this package. The residuals stand as written."

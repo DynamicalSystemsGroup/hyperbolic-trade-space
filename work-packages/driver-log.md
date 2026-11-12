@@ -228,6 +228,21 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP32 accepted; the WP37 draft page reviewed (19:25).** The WP32 review's closure (c33b108) covers its findings:
+  the round-3 triage section and acceptance record, the column corrections, the header and worktree listings;
+  R-10 for U1 stays open by design until one fresh U1 cell runs on the next staged head; the figure-build defect
+  is routed outside the package. Accepted on the record (WP32-decisions.md). The WP37 draft (b0386e3,
+  `site/history.html`, 362 words, one screen, linked from the root page, offline tests and a network link check,
+  claims rows C512 to C527) and its independent check (5073055: 26 links fetched and matched, sentence kinds
+  classified, vocabulary clean in the page's own words, no private link, the slow site tests 8 passed) are read.
+  The assistant's fixes before the page goes to the supervisor: the attributes sentence and the synthesis sentence
+  marked as the team's own account; "a mathematician, in his words" replaced by Paruch's own words; Koch credited
+  as one of cadCAD's three designers per AUTHORS.txt (Barlin, whom the source names, raised to the supervisor as a
+  possible addition); Hackel and Penland marked as the team's own thanks; "tied to control tools" narrowed to the
+  abstract; the backgrounds sentence marked as the team's account and computer science restored; the OpenSysML
+  role shown by the supervisor's research page or marked; the public spelling of Bernardineli used pending his
+  word. The page then goes to him with the open items listed.
+
 - **WP35 scope approved; WP32 review read ahead of its push (18:55).** WP35-scope-of-work.md (1d27f8c) matches the
   decisions and is approved (23eb78b); the build starts, the notebook edits queued behind WP33's paper unit. The
   WP32 review (in its worktree at d09af78) ran the cells' code at the head and checked the triage against the diff:
