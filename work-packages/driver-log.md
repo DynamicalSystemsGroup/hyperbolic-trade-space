@@ -228,6 +228,17 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The cascade's last units landed; 259ad9d under verification (04:50).** 17753f9 (the review-list row for the retired
+  planes figure), 320fead (no floating requirements: `requirements_table` and D.17 read all six requirements; unit
+  cost 350,000 USD per satellite at the design's fleet size, fleet cost 6,000,000 USD; pass shares 76.2 / 75.8 and
+  71.4 / 71.0 percent, all six jointly 25.7 / 22.2; no fleet of one passes the unit-cost limit, so it binds through
+  the fleet size, said in one sentence) and 259ad9d (the Examples page's requirements block at six rows). The
+  assistant's checks and a stage rebuild run; CI run 43191456435 dispatched. Call on the PM's open decision: the
+  design-sets block (814 and 882 designs) keeps the four performance thresholds and names them, with one clause on
+  why the two cost limits are not among them (budget limits read after the fit; the unit-cost limit binds through the
+  fleet size); no recompute; a review-list row names the six-limit alternative for the supervisor. The PM is cleared
+  to prune the cascade worktrees and branches (verify and stage stay). The key sentences are in hand for key v5.
+
 - **6537134, the docs head: checks and rendered read (04:35).** Ruff and format clean, vocabulary 0 new, attribution
   0; the encoding, docs, site, claims-register and paper tests 247 passed. Rendered: the Examples page on the stage
   reads the case at K = 2 with the docsite's own Figure 5 and 6 and points at the case page's list; the case page
