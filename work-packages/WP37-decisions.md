@@ -289,3 +289,17 @@ own (his profile, a publication byline, his video channel) and the page takes th
 **The assistant's reading.** The historical BlockScience blog's address for the second research pass; the workers
 read it for the cadCAD, GDS and PSuU posts (the origin story, the open-source announcement, the PSuU article) that
 the first pass could not reach on Medium, and cite from it with dates.
+
+## The supervisor, on the spelling and the videos (verbatim)
+
+> i don't actually know how to spell octopus' name try to use whatever is public record to get it right. you should
+> also use the block to hunt down youtube videos. here is one from the cadcad community call:
+> https://www.youtube.com/watch?v=ig4Z_V5RVQo but there are many others and in particular multiple video playlists
+> from octopus and jamsheed, possibly others
+
+**The assistant's reading.** The spelling follows the public record (the commits read "Andrew Penland"; the workers
+confirm from a profile or byline of his own and the page takes that form). The blog is the trail to the YouTube
+material: the cadCAD community call he links, and the playlists by Andrew Penland and Jamsheed Shorish and possibly
+others on GDS and cadCAD; the workers find them from the blog's posts and the channel, record title, author,
+channel, date and link for each, and the page cites a playlist or a representative video with its date rather
+than every video.
