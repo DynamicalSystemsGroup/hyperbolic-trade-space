@@ -2797,18 +2797,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "corollary: V(m/e^beta)=1 exactly when V(m)=e^beta; also test_uniform_rescaling_shifts_beta"
 
 [[claim]]
-id = "C223"
-fragment = "Because V scales with the metrics, it reads as a factor of improvement."
-file = "docs/user-guide/overview.md"
-anchor = ""
-kind = "M"
-backing = ["lemma:L1", "lemma:L7"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "V(km)=kV(m) (L1) and uniform improvement by V^-1 reaches V=1 (L7)"
-
-[[claim]]
 id = "C224"
 fragment = "the weights and the metrics that participate;"
 file = "docs/user-guide/overview.md"
@@ -3194,15 +3182,15 @@ note = "The stated expression log_const + exponents_orig @ log(X+shift) is the o
 
 [[claim]]
 id = "C256"
-fragment = "problem and returns the minimizer. It follows the scikit-learn decomposition family: `fit`,"
+fragment = "At one term it solves a convex problem and returns the minimizer."
 file = "docs/user-guide/fitting.md"
 anchor = ""
 kind = "S"
-backing = ["lemma:L4", "test:tests/test_solvers.py::test_slsqp_agrees_with_lp", "test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator"]
+backing = ["lemma:L4", "test:tests/test_solvers.py::test_slsqp_agrees_with_lp"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Solver agrees with the exact LP and the planted fit to tolerance; decomposition-family conformance by the sklearn checks."
+note = "Solver agrees with the exact LP and the planted fit to tolerance."
 
 [[claim]]
 id = "C257"
@@ -3278,7 +3266,7 @@ note = "definition/instruction: contending set is the support at the exact fit; 
 
 [[claim]]
 id = "C263"
-fragment = "This synthetic table puts 30 percent of its rows on the planted frontier, hence the target 0.35;"
+fragment = "This table has 30 percent of its rows on the planted frontier, hence the target 0.35;"
 file = "docs/user-guide/fitting.md"
 anchor = ""
 kind = "R"
@@ -3302,7 +3290,7 @@ note = "Alternation of assignment and refit with nonincreasing history (hard fit
 
 [[claim]]
 id = "C265"
-fragment = "`make_frontier_data(300, 4, n_terms=2, random_state=777)`) and the default target 0.10 raises \"not"
+fragment = "levels off above zero as tau grows and the default target 0.10 raises \"not bracketed\""
 file = "docs/user-guide/fitting.md"
 anchor = ""
 kind = "S"
@@ -3374,7 +3362,7 @@ note = "n_lemma = support size, names monolemma/dilemma/trilemma/n-lemma pinned"
 
 [[claim]]
 id = "C271"
-fragment = "The set is found, not assumed: n is read from the fitted exponents, not"
+fragment = "n is read from the fitted exponents, not chosen before the fit"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "M"
@@ -3458,7 +3446,7 @@ note = "nan for rows with exponent <= 1e-3 asserted"
 
 [[claim]]
 id = "C278"
-fragment = "For designs with absolute log V below `band` (by default 1/tau, or 0.1 at infinite tau),"
+fragment = "For designs with absolute log V below `band` (by default 1/tau, or 0.1 at infinite tau;"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
@@ -3566,7 +3554,7 @@ note = "list of K reports, one per term on the rows of its cell (slow-marked tes
 
 [[claim]]
 id = "C287"
-fragment = "cell. A term whose cell has fewer than `min_near_frontier` (default 10) near-frontier rows raises"
+fragment = "A term whose cell (at K = 1, all rows) has fewer than `min_near_frontier` (default 10) near-frontier rows raises"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
@@ -3782,7 +3770,7 @@ note = "3d axes for three metrics"
 
 [[claim]]
 id = "C306"
-fragment = "`plot_frontier_coordinates`: the chart, with optional holes and targets."
+fragment = "`plot_frontier_coordinates(Z, log_v)`: the chart, the columns of `ts.transform(X)`, with optional holes and targets."
 file = "docs/user-guide/chart.md"
 anchor = ""
 kind = "S"
@@ -3815,18 +3803,6 @@ status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "image with TENSION_CMAP asserted"
-
-[[claim]]
-id = "C309"
-fragment = "one colour vocabulary, declared as module constants (`FRONTIER_COLOR`, `BAND_COLOR`, `HOLE_COLOR`,"
-file = "docs/user-guide/chart.md"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_plotting.py::test_log_plane_draws_frontier_line_in_black_and_band_in_grey", "test:tests/test_plotting.py::test_plot_tensions_with_stand_in_report"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "FRONTIER_COLOR, BAND_COLOR, TENSION_CMAP used and asserted; HOLE_COLOR used in plot_frontier_coordinates (constants in __all__)"
 
 [[claim]]
 id = "C310"
@@ -4920,8 +4896,8 @@ note = "training_log_v_ equals the last chart column of transform(X) on the trai
 
 [[claim]]
 id = "C402"
-fragment = "Hold tau fixed across numbers of terms, selected at K = 1."
-file = "docs/user-guide/fitting.md"
+fragment = "the fit temperature is selected at K = 1 and held for every K"
+file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "S"
 backing = [
@@ -5460,7 +5436,7 @@ note = "make_frontier_data(n_terms=K0) returns the planted exponents (info['expo
 
 [[claim]]
 id = "C447"
-fragment = "The package has no held-out criterion for K, and none has been studied."
+fragment = "The package has no held-out criterion for K."
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "S"
@@ -5484,7 +5460,7 @@ note = "Run on the cubesat metrics, select_temperature(M, 0.10, bounds=(3, 1000)
 
 [[claim]]
 id = "C449"
-fragment = "The planted table returns 50.0, the tau used"
+fragment = "The planted table returns 50.0, used"
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "R"
