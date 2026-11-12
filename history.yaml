@@ -1,0 +1,926 @@
+# The history record: the dated public references and the people behind the lineage of this work.
+#
+# The page site/history.html is a view of this record (WP37, D-9): hand-written prose with names and
+# pointers, and beneath it a dated reference list rendered from this file at build time
+# (scripts/history_record.py, scripts/assemble_site.py). The record may hold more than the page
+# shows; the page may show nothing the record does not hold. Tests tie every link, name and year on
+# the page to an entry here (tests/test_site.py). Public sources only; every URL answers an
+# unauthenticated request (scripts/check_history_links.py).
+#
+# Fields of each entry (all strings unless noted)
+#   id            unique slug, "<year>-<what>" (people: "person-<surname>")
+#   date          the work's date: "YYYY", "YYYY-MM" or "YYYY-MM-DD"; a year at least. For a page
+#                 that carries no date of its own, the year of the evidence and the note says so
+#   kind          paper | repository | post | video | talk | role | person
+#   title         the work's title as its source gives it (a title may carry vocabulary that the
+#                 page's own words do not use); for a person, the name
+#   people        optional list of {name, role}: those the entry concerns; a role only where a
+#                 source states it, in the source's words; omitted otherwise
+#   url           the one public URL the entry stands for; unique across the record
+#   read_on       the day the page was read (YYYY-MM-DD)
+#   shows         what the page says, and no more
+#   claim         sourced (a source read states it) | link (the link itself shows it) |
+#                 team-account (the team's own account; the page marks it as such)
+#   special_case  optional bool, true where the work was in a highly public setting and the rule
+#                 applies: the page names it only as "a special case where the work was highly
+#                 public", never as the firm's focus
+#   listed        optional bool (default true for every kind but person and role, which default to false): whether the
+#                 generated reference list shows the entry
+#   note          optional: where the entry came from, a spelling or a conflict between sources
+#
+# Spelling: Bernardineli (his GitHub profile name "Danilo Lessa Bernardineli", AUTHORS.txt);
+# Penland (the public record, the supervisor's list gives the nickname "Octopus"); Carolina
+# Riascos-Álvarez as her own site gives it, GitHub handle CarolinaRiascos (no LinkedIn anywhere).
+
+entries:
+
+  # ------------------------------------------------------------------ before the firm
+  - id: 2007-gp-tutorial
+    date: "2007-03"
+    kind: paper
+    title: "A tutorial on geometric programming"
+    people: [{name: "Stephen Boyd"}, {name: "Seung-Jean Kim"}, {name: "Lieven Vandenberghe"}, {name: "Arash Hassibi"}]
+    url: https://doi.org/10.1007/s11081-007-9001-7
+    read_on: "2026-11-12"
+    shows: "Boyd, Kim, Vandenberghe and Hassibi, Optimization and Engineering, 2007 (Crossref); the geometric-program form that the posynomial frontier takes."
+    claim: link
+    note: "That this method's frontier takes this form is the team's account; the paper's own citations carry the technical lineage."
+
+  - id: 2009-newton
+    date: "2009-12"
+    kind: paper
+    title: "A distributed Newton method for network optimization"
+    people: [{name: "Michael Zargham"}, {name: "Asuman Ozdaglar"}, {name: "Ali Jadbabaie"}]
+    url: https://doi.org/10.1109/CDC.2009.5400289
+    read_on: "2026-11-12"
+    shows: "IEEE Conference on Decision and Control, 2009 (Crossref authors Jadbabaie, Ozdaglar, Zargham); convex network optimization."
+    claim: sourced
+
+  - id: 2013-traffic-control
+    date: "2013-10-18"
+    kind: paper
+    title: "Traffic Control for Network Protection Against Spreading Processes"
+    people: [{name: "Victor Preciado"}, {name: "Michael Zargham"}]
+    url: https://arxiv.org/abs/1310.4894
+    read_on: "2026-11-12"
+    shows: "arXiv preprint submitted 18 October 2013; the abstract solves the problem by geometric programming."
+    claim: sourced
+    note: "Preciado, Zargham and a third author (Sun) per the earlier research pass; no journal reference listed."
+
+  - id: 2013-vaccine-allocation
+    date: "2013-12"
+    kind: paper
+    title: "Optimal vaccine allocation to control epidemic outbreaks in arbitrary networks"
+    people: [{name: "Victor Preciado"}, {name: "Michael Zargham"}, {name: "Chinwendu Enyioha"}, {name: "Ali Jadbabaie"}, {name: "George Pappas"}]
+    url: https://doi.org/10.1109/CDC.2013.6761078
+    read_on: "2026-11-12"
+    shows: "IEEE Conference on Decision and Control, 2013 (Crossref authors); a convex framework. It does not name a geometric program."
+    claim: sourced
+
+  - id: 2014-dual-descent
+    date: "2014-04"
+    kind: paper
+    title: "Accelerated Dual Descent for Network Flow Optimization"
+    people: [{name: "Michael Zargham"}, {name: "Alejandro Ribeiro"}, {name: "Asuman Ozdaglar"}, {name: "Ali Jadbabaie"}]
+    url: https://doi.org/10.1109/TAC.2013.2293221
+    read_on: "2026-11-12"
+    shows: "IEEE Transactions on Automatic Control 59(4), April 2014 (Crossref); convex network optimization. The arXiv version (1104.1157) is of April 2011."
+    claim: sourced
+
+  - id: 2014-network-protection
+    date: "2014-03"
+    kind: paper
+    title: "Optimal Resource Allocation for Network Protection Against Spreading Processes"
+    people: [{name: "Victor Preciado"}, {name: "Michael Zargham"}, {name: "Chinwendu Enyioha"}, {name: "Ali Jadbabaie"}, {name: "George Pappas"}]
+    url: https://doi.org/10.1109/TCNS.2014.2310911
+    read_on: "2026-11-12"
+    shows: "IEEE Transactions on Control of Network Systems 1(1), 99-108, March 2014 (Crossref authors); the abstract solves it in polynomial time using geometric programming. 354 citations on Google Scholar (the supervisor's profile) and 227 in Crossref, both read 2026-11-12."
+    claim: sourced
+    note: "arXiv 1309.6270. The two full texts say 'geometric program', not 'generalized'; the page says geometric programs."
+
+  # ------------------------------------------------------------------ the firm
+  - id: 2017-founded
+    date: "2017"
+    kind: role
+    title: "Founding of Dynamical Systems Group, originally BlockScience"
+    people: [{name: "Michael Zargham", role: "founded the firm in 2017 (his CV)"}]
+    url: https://michael.zargham.org
+    read_on: "2026-11-12"
+    shows: "'In 2017 I founded Dynamical Systems Group (originally BlockScience)'. No page gives a date for the change of name."
+    claim: sourced
+    listed: true
+
+  - id: 2017-dsg-site
+    date: "2017"
+    kind: role
+    title: "Dynamical Systems Group"
+    url: https://www.dynamicalsystemsgroup.com
+    read_on: "2026-11-12"
+    shows: "The firm's own site, working on dynamical systems 'since 2017'."
+    claim: sourced
+    listed: false
+
+  - id: 2026-firm-description
+    date: "2026"
+    kind: role
+    title: "The firm described as a contract research and engineering firm"
+    url: https://www.dynamicalsystemsgroup.com/about
+    read_on: "2026-11-12"
+    shows: "The firm's About page. The words 'contract research and engineering firm' and the activities sentence are the supervisor's, given in the firm's present tense."
+    claim: team-account
+    listed: false
+    note: "The firm's public descriptions read 'complex systems engineering, R&D, and analytics firm' and 'systems engineering firm'; no single page lists the activities."
+
+  - id: 2026-backgrounds
+    date: "2026"
+    kind: role
+    title: "The team's backgrounds"
+    people: [{name: "Michael Zargham", role: "Ph.D. Electrical and Systems Engineering, University of Pennsylvania (the firm's leadership page)"}]
+    url: https://www.dynamicalsystemsgroup.com/leadership
+    read_on: "2026-11-12"
+    shows: "Control (Zargham's Ph.D.). Other fields are stated by the people's own pages: economics (Shorish, RePEc genealogy), physics (Bernardineli's GitHub bio, 'atmosphere physicist'), mathematics (Paruch, 2018: 'a mathematical background with focus on economic modeling'). No page states computer science as a discipline for anyone."
+    claim: team-account
+    listed: false
+    note: "The page's sentence on the team's backgrounds is the supervisor's, offered as the team's account."
+
+  - id: 2023-client-projects
+    date: "2023"
+    kind: role
+    title: "Client work kept confidential, open work published"
+    url: https://www.dynamicalsystemsgroup.com/blog/the-animating-purpose-of-dynamical-systems-group
+    read_on: "2026-11-12"
+    shows: "The firm's post of 14 June 2023: client work is kept confidential while open source and open science are prioritised."
+    claim: team-account
+    listed: false
+    note: "Backs the register only. The page's sentence that Hackel and Riascos-Álvarez worked on client projects the firm cannot name is the team's account; no client and no detail is given."
+
+  # ------------------------------------------------------------------ cadCAD, 2018 to 2024
+  - id: 2018-state-space
+    date: "2018-07-03"
+    kind: paper
+    title: "A State-Space Modeling Framework for Engineering Blockchain-Enabled Economic Systems"
+    people: [{name: "Michael Zargham"}, {name: "Zixuan Zhang"}, {name: "Victor Preciado"}]
+    url: https://arxiv.org/abs/1807.00955
+    read_on: "2026-11-12"
+    shows: "arXiv preprint submitted 3 July 2018, presented at the Ninth International Conference on Complex Systems; a dynamical-systems framework connected to control tools such as Lyapunov-like functions. The earliest formalization the sources show."
+    claim: sourced
+    note: "The journal version is 2020-state-space-journal."
+
+  - id: 2018-cadcad-repo
+    date: "2018-09-10"
+    kind: repository
+    title: "cadCAD"
+    people: [{name: "Markus Koch", role: "author of the first commit"}]
+    url: https://github.com/cadCAD-org/cadCAD
+    read_on: "2026-11-12"
+    shows: "The repository was created on 10 September 2018 (first commit 'Create README.md' by Markus Buhatem Koch); MIT license; contributors by commit count Jodesty 731, Koch 74, Bernardineli 37, Mace 17, Scholz 14, Lima 4, Zargham 3."
+    claim: sourced
+
+  - id: 2018-authors
+    date: "2018"
+    kind: repository
+    title: "cadCAD AUTHORS.txt"
+    people: [{name: "Joshua Jodesty", role: "implemented cadCAD"}, {name: "Michael Zargham", role: "designed cadCAD"}, {name: "Markus Koch", role: "designed cadCAD"}, {name: "Matthew Barlin", role: "designed cadCAD"}, {name: "Danilo Bernardineli", role: "upgrades and improvements"}, {name: "Tyler Mace", role: "upgrades and improvements"}, {name: "Emanuel Lima", role: "upgrades and improvements; current maintainer"}, {name: "Andrew Clark", role: "thanked"}]
+    url: https://github.com/cadCAD-org/cadCAD/blob/master/AUTHORS.txt
+    read_on: "2026-11-12"
+    shows: "'cadCAD was originally implemented by Joshua E. Jodesty and designed by Michael Zargham, Markus B. Koch, and Matthew V. Barlin in 2018.' Upgrades and improvements by Danilo L. Bernardineli, Tyler D. Mace and Emanuel Lima; maintainers Emanuel Lima and Michael Zargham; Andrew Clark (@aclarkData) in the thanks list. File at version 0.5.3 (April 2024)."
+    claim: sourced
+    note: "Barlin is credited as one of the three designers, as the file has him; no background is stated by any source."
+
+  - id: 2018-nash-lyapunov
+    date: "2018-10-01"
+    kind: post
+    title: "From Nash to Lyapunov"
+    people: [{name: "Michael Zargham"}]
+    url: https://blog.block.science/from-nash-to-lyapunov/
+    read_on: "2026-11-12"
+    shows: "The firm's blog, 1 October 2018 (Medium copy of 2 May 2019 under Zargham's name): equilibria, potential games, convex optimization and Lyapunov methods in the design of coordination protocols. The earliest dated post of the line."
+    claim: sourced
+
+  - id: 2019-cadcad-origin
+    date: "2019-06-03"
+    kind: post
+    title: "Introducing Complex Adaptive Dynamics Computer-Aided Design (cadCAD)"
+    people: [{name: "Michael Zargham"}, {name: "Charles Rice"}]
+    url: https://blog.block.science/introducing-complex-adaptive-dynamics-computer-aided-design-cadcad/
+    read_on: "2026-11-12"
+    shows: "The firm's own origin account of cadCAD, 'By Michael Zargham with Charles Rice', 3 June 2019. An update line says cadCAD was announced as open source at TEGG in Berlin in August 2019 (no separate announcement post exists)."
+    claim: sourced
+    note: "Replaces the Medium link, which answers HTTP 403: medium.com/block-science/introducing-complex-adaptive-dynamics-computer-aided-design-cadcad-38b63b541eb8."
+
+  - id: 2019-critical-gap
+    date: "2019-06-12"
+    kind: post
+    title: "cadCAD: Filling a Critical Gap in Open-Source Data Science"
+    people: [{name: "Michael Zargham"}, {name: "Jonathan Gabler"}]
+    url: https://blog.block.science/cadcad-filling-a-critical-gap-in-open-source-data-science/
+    read_on: "2026-11-12"
+    shows: "'By Michael Zargham and Jonathan Gabler', 12 June 2019: cadCAD as a scientific computation library for Python."
+    claim: sourced
+    note: "Replaces the Medium link (HTTP 403): medium.com/block-science/cadcad-filling-a-critical-gap-in-open-source-data-science-fcd0d3faa8ed."
+
+  - id: 2019-tutorials
+    date: "2019-01-09"
+    kind: repository
+    title: "cadCAD-Tutorials"
+    people: [{name: "Joshua Jodesty", role: "author of the first commit"}, {name: "Markus Koch"}]
+    url: https://github.com/cadCAD-org/cadCAD-Tutorials
+    read_on: "2026-11-12"
+    shows: "Created 9 January 2019; first commit by Joshua E. Jodesty (23 commits of his, 72 of Koch's)."
+    claim: sourced
+
+  - id: 2019-pypi
+    date: "2019-09-07"
+    kind: repository
+    title: "cadCAD on PyPI"
+    url: https://pypi.org/project/cadCAD/
+    read_on: "2026-11-12"
+    shows: "The earliest release in the package record is 0.3.0, uploaded 7 September 2019; the latest read is 0.5.3 (19 April 2024)."
+    claim: sourced
+
+  - id: 2020-evidence-based
+    date: "2020-01-08"
+    kind: paper
+    title: "Evidence Based Decision Making in Blockchain Economic Systems: From Theory to Practice"
+    people: [{name: "Marek Laskowski"}, {name: "Michael Zargham"}, {name: "Hjalmar Turesson"}, {name: "Matthew Barlin"}, {name: "Danil Kabanov"}, {name: "Eden Dhaliwal"}]
+    url: https://arxiv.org/abs/2001.03020
+    read_on: "2026-11-12"
+    shows: "arXiv, submitted 8 January 2020, revised 9 May 2020: data science and stochastic simulation can reveal system-level behaviours that designers did not expect, before deployment."
+    claim: sourced
+
+  - id: 2020-state-space-journal
+    date: "2020-03-19"
+    kind: paper
+    title: "On modeling blockchain-enabled economic networks as stochastic dynamical systems"
+    people: [{name: "Zixuan Zhang"}, {name: "Michael Zargham"}, {name: "Victor Preciado"}]
+    url: https://doi.org/10.1007/s41109-020-0254-9
+    read_on: "2026-11-12"
+    shows: "Applied Network Science, 19 March 2020 (Crossref authors Zhang, Zargham, Preciado); the journal version of 2018-state-space. Control engineering applied to economic networks."
+    claim: sourced
+
+  - id: 2020-curved-bonding
+    date: "2020-05"
+    kind: paper
+    title: "From Curved Bonding to Configuration Spaces"
+    people: [{name: "Michael Zargham"}, {name: "Jamsheed Shorish"}, {name: "Krzysztof Paruch"}]
+    url: https://doi.org/10.1109/ICBC48266.2020.9169474
+    read_on: "2026-11-12"
+    shows: "IEEE ICBC, May 2020 (Crossref authors)."
+    claim: sourced
+
+  - id: 2020-economic-games
+    date: "2020"
+    kind: paper
+    title: "Economic Games as Estimators"
+    people: [{name: "Michael Zargham"}, {name: "Krzysztof Paruch"}, {name: "Jamsheed Shorish"}]
+    url: https://doi.org/10.1007/978-3-030-53356-4_8
+    read_on: "2026-11-12"
+    shows: "Springer Proceedings in Business and Economics, 2020 (Crossref authors Zargham, Paruch, Shorish)."
+    claim: sourced
+
+  - id: 2018-paruch-background
+    date: "2018-11-06"
+    kind: post
+    title: "Token Engineering from an Economic Perspective"
+    people: [{name: "Krzysztof Paruch", role: "writes of 'a mathematical background with focus on economic modeling'"}]
+    url: https://web.archive.org/web/2022/https://medium.com/crypto3conomics/token-engineering-from-an-economic-perspective-b6c464f20241
+    read_on: "2026-11-12"
+    shows: "His own 2018 post (archive copy): 'Having a mathematical background with focus on economic modeling'."
+    claim: sourced
+    listed: false
+
+  - id: 2020-dynamic-games
+    date: "2020-05-23"
+    kind: repository
+    title: "Dynamic Games Seminar"
+    people: [{name: "Michael Zargham", role: "author of the first commit"}]
+    url: https://github.com/cadCAD-org/DynamicGamesSeminar
+    read_on: "2026-11-12"
+    shows: "Created 23 May 2020: dynamic games as dynamical systems whose inputs are controlled by strategic agents."
+    claim: sourced
+
+  - id: 2020-github-org
+    date: "2020-06-22"
+    kind: post
+    title: "cadCAD Gets a New GitHub Org"
+    people: [{name: "The cadCAD Team"}]
+    url: https://blog.block.science/cadcad-gets-a-new-github-org/
+    read_on: "2026-11-12"
+    shows: "22 June 2020, signed 'The cadCAD Team': cadCAD moves to its own GitHub organisation as a standalone open source community."
+    claim: sourced
+
+  - id: 2020-what-and-why
+    date: "2020-04-10"
+    kind: video
+    title: "What and Why cadCAD?"
+    people: [{name: "Danilo Bernardineli"}]
+    url: https://www.youtube.com/watch?v=cR4Otv1BG28
+    read_on: "2026-11-12"
+    shows: "Uploaded 10 April 2020 on his channel (3 min): an introduction to modelling in Python with cadCAD."
+    claim: sourced
+
+  - id: 2020-quality-metrics
+    date: "2020-12-16"
+    kind: talk
+    title: "From Quality Metrics to Reputation"
+    people: [{name: "Michael Zargham"}]
+    url: https://www.youtube.com/watch?v=EuzBLEHZbAk
+    read_on: "2026-11-12"
+    shows: "Uploaded 16 December 2020 on the Filecoin channel; given at the Storage Market Summit (11 December 2020, per the Filecoin blog)."
+    claim: sourced
+    special_case: true
+
+  - id: 2021-psuu
+    date: "2021-04-08"
+    kind: post
+    title: "How to Perform Parameter Selection Under Uncertainty"
+    people: [{name: "Krzysztof Paruch", role: "author"}, {name: "Jamsheed Shorish", role: "author"}, {name: "Michael Zargham", role: "edits and suggestions"}, {name: "Danilo Bernardineli", role: "edits and suggestions"}, {name: "Jeff Emmett", role: "edits and suggestions"}, {name: "Jessica Zartler", role: "edits and suggestions"}]
+    url: https://blog.block.science/how-to-perform-parameter-selection-under-uncertainty/
+    read_on: "2026-11-12"
+    shows: "'Article by Krzysztof Paruch and Jamsheed Shorish, with edits and suggestions by ...', 8 April 2021: a workflow for iterating multi-dimensional, multi-stakeholder systems with actionable parameter recommendations (PSuU)."
+    claim: sourced
+    note: "Replaces the Medium link (HTTP 403): medium.com/block-science/how-to-perform-parameter-selection-under-uncertainty-976931ba7e5d. Paruch is named Kris on the page; Crossref gives Krzysztof."
+
+  - id: 2021-machine-search
+    date: "2021-02-02"
+    kind: repository
+    title: "cadCAD machine search"
+    people: [{name: "Danilo Bernardineli", role: "sole contributor"}]
+    url: https://github.com/cadCAD-org/cadCAD_machine_search
+    read_on: "2026-11-12"
+    shows: "Created 2 February 2021: tools for preparing and analysing experiments where large-scale machine search selects parameters."
+    claim: sourced
+
+  - id: 2021-cadcad-jl
+    date: "2021-05-14"
+    kind: repository
+    title: "CadCAD.jl"
+    people: [{name: "Emanuel Lima", role: "author of the first commit"}]
+    url: https://github.com/cadCAD-org/CadCAD.jl
+    read_on: "2026-11-12"
+    shows: "The Julia implementation of cadCAD, created 14 May 2021."
+    claim: sourced
+
+  - id: 2021-interacting-amm
+    date: "2021-07-28"
+    kind: repository
+    title: "Interacting AMM model"
+    people: [{name: "Danilo Bernardineli", role: "sole contributor"}]
+    url: https://github.com/cadCAD-org/interacting-amm-model
+    read_on: "2026-11-12"
+    shows: "Created 28 July 2021: a public cadCAD model."
+    claim: sourced
+    note: "The parameter-selection note by Bernardineli on HackMD (undated) names it as running the full process; not used."
+
+  - id: 2021-insolar
+    date: "2021-01"
+    kind: paper
+    title: "Token Economics in Real Life: Cryptocurrency and Incentives Design for Insolar's Blockchain Network"
+    people: [{name: "Henry Kim"}, {name: "Marek Laskowski"}, {name: "Michael Zargham"}, {name: "Hjalmar Turesson"}, {name: "Matthew Barlin", role: "affiliation BlockScience, Oakland, California (Crossref)"}, {name: "Danil Kabanov"}]
+    url: https://doi.org/10.1109/MC.2020.2996572
+    read_on: "2026-11-12"
+    shows: "IEEE Computer, January 2021. Crossref gives Barlin and Laskowski the affiliation BlockScience."
+    claim: sourced
+    listed: false
+    note: "The only source for Barlin's affiliation beyond AUTHORS.txt; his background is stated by no source."
+
+  - id: 2021-rai-design
+    date: "2021-04-09"
+    kind: paper
+    title: "Summoning the Money God: Applying Control Theory to Cryptocurrency Monetary Policy"
+    people: [{name: "Michael Zargham"}, {name: "Danilo Bernardineli"}, {name: "Andrew Clark"}, {name: "Jamsheed Shorish"}, {name: "Jeff Emmett"}]
+    url: https://zenodo.org/records/10474385
+    read_on: "2026-11-12"
+    shows: "Zenodo record, CC BY 4.0, published 9 April 2021: the engineering design work by the firm and the system's developers before its launch on 17 February 2021; a controller, parameter selection under uncertainty, stress testing. Of the four attributes only 'highly automated' is stated."
+    claim: sourced
+    special_case: true
+
+  - id: 2021-rai-digital-twin
+    date: "2021-09-29"
+    kind: video
+    title: "RAI cadCAD Digital Twin Walkthrough"
+    people: [{name: "Danilo Bernardineli", role: "'Danilo, a Senior Engineer at BlockScience', in the video's description"}]
+    url: https://www.youtube.com/watch?v=CLOr-xVePJ0
+    read_on: "2026-11-12"
+    shows: "Uploaded 29 September 2021 on the firm's channel: a modular simulation toolkit built on cadCAD, open source."
+    claim: sourced
+    special_case: true
+
+  # ------------------------------------------------------------------ GDS, 2022
+  - id: 2022-gds
+    date: "2022-07-14"
+    kind: paper
+    title: "Generalized Dynamical Systems"
+    people: [{name: "Michael Zargham", role: "author"}, {name: "Jamsheed Shorish", role: "author"}]
+    url: https://research.wu.ac.at/de/publications/generalized-dynamical-systems-part-i-foundations/
+    read_on: "2026-11-12"
+    shows: "WU Vienna working paper, 14 July 2022, DOI 10.57938/e8d456ea-d975-4111-ac41-052ce73cb0cc: a data structure mapped to itself, maps closed under composition; unifies optimal control, system dynamics, agent-based modelling and networks."
+    claim: sourced
+    note: "The working paper's full title ends in a part number; only the first of the planned three papers was released (the supervisor), so the page does not number it. The gds-core README says 2021 for the same work; the WU record and the DOI give 2022."
+
+  - id: 2022-gds-post
+    date: "2022-08-29"
+    kind: post
+    title: "Generalized Dynamical Systems: the paper and the video series"
+    people: [{name: "Michael Zargham"}, {name: "Jamsheed Shorish"}]
+    url: https://blog.block.science/generalized-dynamical-systems-part-i-foundations-2/
+    read_on: "2026-11-12"
+    shows: "The firm's blog, 29 August 2022: introduces the paper and a four-video series, 'extensively researched and leveraged at BlockScience'; Dr. Shorish gives the first video."
+    claim: sourced
+    note: "Replaces the Medium copy (HTTP 403) and the gds-core README's blog.dynamicalsystemsgroup.com link, which does not resolve."
+
+  - id: 2022-gds-playlist
+    date: "2022-08-22"
+    kind: video
+    title: "Generalized Dynamical Systems (GDS) | Zargham & Shorish"
+    people: [{name: "Jamsheed Shorish", role: "presenter (the firm's post)"}, {name: "Michael Zargham"}]
+    url: https://www.youtube.com/playlist?list=PLmWm8ksQq4YJrB72Na_JB-o8Xu2JLj7h9
+    read_on: "2026-11-12"
+    shows: "Playlist of four videos on the firm's channel, uploaded 22 to 31 August 2022, accompanying the paper. No channel or playlist under Shorish's own name was found."
+    claim: sourced
+
+  - id: 2023-community-call-26
+    date: "2023-05-02"
+    kind: video
+    title: "cadCAD Community Call #26: Generalized Dynamical Systems & cadCAD - Spaces, Blocks & Diagrams"
+    people: [{name: "Jamsheed Shorish", role: "presenter"}]
+    url: https://www.youtube.com/watch?v=ig4Z_V5RVQo
+    read_on: "2026-11-12"
+    shows: "cadCAD channel, uploaded 2 May 2023 (31 min): 'Jamsheed Shorish of Block.Science presents R&D on Generalized Dynamical Systems and its use and development in cadCAD'."
+    claim: sourced
+    note: "The id keeps the number of the call; the date is the upload date."
+
+  - id: 2022-cadcad-1
+    date: "2022-02-01"
+    kind: post
+    title: "Announcing cadCAD 1.0: Foundations for a New Era of Open Modeling"
+    url: https://blog.block.science/announcing-cadcad-1-0-foundations-for-a-new-era-of-open-modeling/
+    read_on: "2026-11-12"
+    shows: "The firm's blog, 1 February 2022: the release of cadCAD 1.0."
+    claim: sourced
+
+  - id: 2022-community-currency-post
+    date: "2022-10-27"
+    kind: post
+    title: "Complex Systems Modeling of Community Inclusion Currencies"
+    people: [{name: "Andrew Clark"}, {name: "Alexander Mihailov"}, {name: "Michael Zargham"}]
+    url: https://blog.block.science/complex-systems-modeling-of-community-inclusion-currencies-a-blockscience-collaboration-with-grassroots-economics-the-danish-red-cross/
+    read_on: "2026-11-12"
+    shows: "The firm's blog, 27 October 2022: presents the paper as a BlockScience collaboration with Grassroots Economics and the Danish Red Cross. The only readable page that ties Clark to the firm."
+    claim: sourced
+    note: "Replaces the Medium link, not fetched: medium.com/block-science/complex-systems-modeling-of-community-inclusion-currencies-4e2161787934."
+
+  - id: 2022-lima-pydata
+    date: "2022-11-14"
+    kind: talk
+    title: "cadCAD: A Modeling Library for Generalized Dynamical Systems"
+    people: [{name: "Emanuel Lima", role: "'BlockScience Research Engineer', in the video's description"}]
+    url: https://www.youtube.com/watch?v=45P4vsGmDk4
+    read_on: "2026-11-12"
+    shows: "cadCAD channel, uploaded 14 November 2022 (5 min): a lightning talk from PyData NYC, November 2022."
+    claim: sourced
+
+  - id: 2022-formal-methods
+    date: "2022-11-23"
+    kind: talk
+    title: "Formal Methods in Complex System Design"
+    people: [{name: "Jamsheed Shorish", role: "'Senior Research Scientist at BlockScience'"}, {name: "Michael Zargham"}]
+    url: https://www.spreaker.com/episode/formal-methods-in-complex-system-design-jamsheed-shorish-and-michael-zargham-of-blockscience-ep-16--51979797
+    read_on: "2026-11-12"
+    shows: "Podcast episode (audio, 54 min), 23 November 2022: formal methods, validation and verification, GDS in system design."
+    claim: sourced
+
+  - id: 2022-filecoin-calculator
+    date: "2022-03-21"
+    kind: paper
+    title: "A cadCAD Interactive Calculator to Explore Minting Scenarios in Filecoin"
+    people: [{name: "Danilo Bernardineli"}, {name: "Will Wolf"}]
+    url: https://zenodo.org/records/10965927
+    read_on: "2026-11-12"
+    shows: "Zenodo record, 21 March 2022: extends a collaboration on computer-aided governance tools; open source."
+    claim: sourced
+    special_case: true
+
+  # ------------------------------------------------------------------ 2023 to 2025
+  - id: 2023-fip-0056
+    date: "2023-03-22"
+    kind: post
+    title: "Reviewing the FIP-0056 and CDM Debate on Filecoin"
+    people: [{name: "Danilo Bernardineli"}, {name: "Michael Zargham"}, {name: "Jamsheed Shorish"}, {name: "Jakob Hackel", role: "feedback"}, {name: "Nick Hirannet", role: "feedback"}, {name: "Kelsie Nabben", role: "feedback"}, {name: "Jeff Emmett", role: "feedback"}]
+    url: https://blog.block.science/reviewing-the-fip-0056-and-cdm-debate-on-filecoin/
+    read_on: "2026-11-12"
+    shows: "22 March 2023: an independent review at the Filecoin Foundation's request of two competing proposals; 'the debate was conducted publicly on GitHub and Slack'."
+    claim: sourced
+    special_case: true
+
+  - id: 2023-consensus-pledge
+    date: "2023-04-11"
+    kind: post
+    title: "Understanding the Filecoin Consensus Pledge"
+    people: [{name: "Danilo Bernardineli"}, {name: "Jamsheed Shorish"}, {name: "Jakob Hackel"}]
+    url: https://blog.block.science/understanding-the-filecoin-consensus-pledge/
+    read_on: "2026-11-12"
+    shows: "11 April 2023: the pledge 'to strengthen network security and resist economic attacks'; pre-launch simulations; an open-source calculator. The earliest public work naming Hackel as an author."
+    claim: sourced
+    special_case: true
+
+  - id: 2023-msml
+    date: "2023-05-19"
+    kind: repository
+    title: "MSML (Mathematical Specification Mapping Library)"
+    people: [{name: "Sean McOwen", role: "888 of 889 commits"}]
+    url: https://github.com/DynamicalSystemsGroup/MSML
+    read_on: "2026-11-12"
+    shows: "Created 19 May 2023: standardizing mathematical specifications as JSON objects, in line with the firm's research on Generalized Dynamical Systems. Credited by gds-core."
+    claim: sourced
+
+  - id: 2023-mbse-post
+    date: "2023-08-03"
+    kind: post
+    title: "Managing Complexity with Model-Based Systems Engineering"
+    people: [{name: "Michael Zargham"}, {name: "Ilan Ben-Meir"}]
+    url: https://dynamicalsystemsgroup.com/blog/managing-complexity-with-model-based-systems-engineering
+    read_on: "2026-11-12"
+    shows: "The firm's blog, 3 August 2023: systems engineering for multi-stakeholder projects; models should increase accountability, not serve as unquestioned authority."
+    claim: sourced
+
+  - id: 2023-community-currency
+    date: "2023-09-28"
+    kind: paper
+    title: "Complex Systems Modeling of Community Inclusion Currencies"
+    people: [{name: "Andrew Clark", role: "first author"}, {name: "Alexander Mihailov"}, {name: "Michael Zargham"}]
+    url: https://doi.org/10.1007/s10614-023-10445-9
+    read_on: "2026-11-12"
+    shows: "Computational Economics 64(2), online 28 September 2023 (Crossref): a subpopulation model of a local complementary currency, from transaction data, built in cadCAD. The model's repository says 'developed 2018-2021 in collaboration with the Red Cross and Grassroots Economics'."
+    claim: sourced
+    note: "The abstract describes a blockchain form of the currency; the page names the purpose (community currencies) and the collaboration, not the implementation form. The journal page itself could not be read (a cookie redirect)."
+
+  - id: 2023-pydata-nyc
+    date: "2023-11-29"
+    kind: talk
+    title: "Crafting Reliable Rules with Robust Control (PyData NYC 2023)"
+    people: [{name: "Michael Zargham"}]
+    url: https://www.youtube.com/watch?v=vr6sIfjGmLQ
+    read_on: "2026-11-12"
+    shows: "PyData channel, uploaded 29 November 2023 (28 min): a robust-control workflow to select the parameters of a pricing algorithm. The description names neither RAI nor any system."
+    claim: sourced
+
+  - id: 2023-juliacon
+    date: "2023-07-28"
+    kind: talk
+    title: "cadCAD.jl: A Modeling Library for Generalized Dynamical Systems (JuliaCon 2023)"
+    people: [{name: "Emanuel Lima", role: "'Research software engineer at Block Science and lead maintainer of cadCAD'"}]
+    url: https://pretalx.com/juliacon2023/talk/ERXTXE/
+    read_on: "2026-11-12"
+    shows: "Lightning talk, 28 July 2023; the 2024 talk of the same title (pretalx.com/juliacon2024/talk/JNFYPP/) gives 'Senior Research Software Engineer at Block Science'."
+    claim: sourced
+
+  - id: 2024-legitimacy
+    date: "2024-03-19"
+    kind: post
+    title: "Engineering for Legitimacy"
+    people: [{name: "Ilan Ben-Meir"}, {name: "Michael Zargham"}]
+    url: https://dynamicalsystemsgroup.com/blog/engineering-for-legitimacy
+    read_on: "2026-11-12"
+    shows: "The firm's blog, 19 March 2024: participatory governance engineered from explicit requirements; legitimacy sensed by stakeholders, not measured. The only public firm statement of the legitimacy attribute found."
+    claim: sourced
+
+  - id: 2024-zenodo-min-max
+    date: "2024-06-19"
+    kind: talk
+    title: "Min-Maxing Complexity on Digital Infrastructure Mechanisms through Occam's Razor and Ashby's Law of Requisite Variety"
+    people: [{name: "Danilo Bernardineli", role: "creator of the Zenodo record"}]
+    url: https://zenodo.org/records/12170072
+    read_on: "2026-11-12"
+    shows: "Zenodo presentation, 19 June 2024, CC BY 4.0. The SSRN author line (not readable) is Bernardineli, Ben-Meir, Zargham and Hackel per Zargham's publications page."
+    claim: sourced
+    listed: false
+
+  - id: 2024-dynamical-block-diagrams
+    date: "2024-07-26"
+    kind: repository
+    title: "Block diagrams of dynamical systems"
+    people: [{name: "Carolina Riascos-Álvarez", role: "credited for a consensus-network write-up"}]
+    url: https://github.com/DynamicalSystemsGroup/dynamical-block-diagrams
+    read_on: "2026-11-12"
+    shows: "Created 26 July 2024: formal analysis of the execution and initialization of block diagrams of dynamical systems, with a Julia implementation; the README credits Carolina Riascos."
+    claim: sourced
+
+  - id: 2024-maids-post
+    date: "2024-10-28"
+    kind: post
+    title: "Exploring Complex Systems Modeling with MAIDs, GDS & cadCAD"
+    people: [{name: "Andrew Penland", role: "'Led by Octopus, a Blockscience Research Engineer'; thanked for developing and leading the series"}]
+    url: https://blog.block.science/complex-systems-modeling-maids-gds-cadcad/
+    read_on: "2026-11-12"
+    shows: "The firm's blog, 28 October 2024: four workshops on multi-agent influence diagrams, GDS and cadCAD; slides on SlideShare."
+    claim: sourced
+    note: "No surname appears in the post; the surname is from the public record (Penland): the Token Engineering Academy team page, his channel's 'Dr. Penland' video, and the GitHub account andrewpenland."
+
+  - id: 2024-workshop-1
+    date: "2024-12-16"
+    kind: video
+    title: "Workshop 1: Introduction & Overview | Complex Systems Modeling w MAIDS, GDS & cadCAD"
+    people: [{name: "Andrew Penland", role: "led the series (the firm's post)"}]
+    url: https://www.youtube.com/watch?v=GK5oRDTa72o
+    read_on: "2026-11-12"
+    shows: "Firm's channel, uploaded 16 December 2024 (83 min): multi-agent influence diagrams as graphs, links to GDS and cadCAD. Workshop 4 is https://www.youtube.com/watch?v=8IGZQDqAWD4."
+    claim: sourced
+
+  - id: 2024-edinburgh
+    date: "2024-10"
+    kind: talk
+    title: "Crafting Reliable Rules: RAI Case Study (workshop in Edinburgh, ICMS, October 2024)"
+    people: [{name: "Michael Zargham", role: "speaker (his CV)"}]
+    url: https://michael.zargham.org/cv.pdf
+    read_on: "2026-11-12"
+    shows: "The CV's Selected Talks: 'Crafting Reliable Rules: RAI Case Study. Mathematics for Governance Design Workshop, Edinburgh, Oct 2024.' Also: NumFOCUS Advisory Council Member 2022 to present; Corporate Stewardship Award, NumFOCUS, 2023; program committee, PyData NYC, 2023. No video or slides found."
+    claim: sourced
+    special_case: true
+    note: "Rests on the CV alone; the host is ICMS in Edinburgh, not named 'University of Edinburgh' by any page read. The event page (listed below) does not name Zargham."
+
+  - id: 2024-icms-event
+    date: "2024-10-07"
+    kind: talk
+    title: "Mathematics for Governance Design: a Mathematics for Humanity workshop (ICMS)"
+    url: https://icms.ac.uk/archive/workshop/mathematics-for-governance-design-a-mathematics-for-humanity-workshop/
+    read_on: "2026-11-12"
+    shows: "The event page: 7 to 11 October 2024, hosted and funded by ICMS, organised with the CyberCat Institute and Metagov. It does not name Zargham."
+    claim: link
+    listed: false
+
+  - id: 2025-bdp-lib
+    date: "2025-01-29"
+    kind: repository
+    title: "bdp-lib"
+    people: [{name: "Sean McOwen", role: "161 of 162 commits"}]
+    url: https://github.com/DynamicalSystemsGroup/bdp-lib
+    read_on: "2026-11-12"
+    shows: "Created 29 January 2025: a library for instantiating and validating fundamental block diagrams. Credited by gds-core."
+    claim: sourced
+
+  # ------------------------------------------------------------------ scientific computing
+  - id: 2022-numfocus-council
+    date: "2022"
+    kind: role
+    title: "NumFOCUS Advisory Council"
+    people: [{name: "Michael Zargham", role: "serves on the advisory council"}]
+    url: https://numfocus.org/community/people
+    read_on: "2026-11-12"
+    shows: "The NumFOCUS people page lists him under the Advisory Council; his CV dates it 2022 to present."
+    claim: sourced
+    listed: true
+
+  - id: 2026-numfocus-sponsor
+    date: "2026"
+    kind: role
+    title: "NumFOCUS community sponsors"
+    url: https://numfocus.org/sponsors
+    read_on: "2026-11-12"
+    shows: "The firm's logo under Community Sponsors; no level and no date on the page (dated by the day read)."
+    claim: sourced
+    listed: true
+
+  - id: 2026-scipy-talk
+    date: "2026-07-17"
+    kind: talk
+    title: "Derivations, Not Just Simulations: Teaching Applied Mathematics with Scientific Python (SciPy 2026)"
+    people: [{name: "Michael Zargham"}]
+    url: https://pretalx.com/scipy-2026/talk/TBDWJZ/
+    read_on: "2026-11-12"
+    shows: "The programme page: 17 July 2026; the speaker bio gives 'Chief Engineer at BlockScience'. The proceedings paper is listed as forthcoming on his publications page."
+    claim: sourced
+
+  # ------------------------------------------------------------------ OpenMBEE, OpenSysML and the synthesis
+  - id: 2026-openmbee
+    date: "2026"
+    kind: role
+    title: "OpenMBEE and the firm"
+    url: https://www.dynamicalsystemsgroup.com/partners
+    read_on: "2026-11-12"
+    shows: "The firm's partners page: OpenMBEE is an open source collaborative engineering system; the firm contributes to its technical and ecosystem roadmaps. It does not mention OpenSysML. Dated by the day read."
+    claim: sourced
+    listed: true
+
+  - id: 2026-maintainer
+    date: "2026"
+    kind: role
+    title: "OpenMBEE maintainer across OpenSysML and Flexo MMS"
+    people: [{name: "Michael Zargham", role: "maintainer since 2026, working across the OpenSysML and Flexo MMS tool ecosystem (his research page)"}]
+    url: https://michael.zargham.org/research
+    read_on: "2026-11-12"
+    shows: "His research page lists the maintainer role."
+    claim: sourced
+    listed: true
+
+  - id: 2026-opensysml
+    date: "2026-08-01"
+    kind: repository
+    title: "OpenSysML"
+    url: https://github.com/Open-MBEE/OpenSysML
+    read_on: "2026-11-12"
+    shows: "Created 1 August 2026: an open-source SysML v2 implementation in Go. The page names no member of the firm; the role is on 2026-maintainer."
+    claim: link
+
+  - id: 2026-flexo-rtm
+    date: "2026-05-18"
+    kind: repository
+    title: "flexo-rtm"
+    url: https://github.com/DynamicalSystemsGroup/flexo-rtm
+    read_on: "2026-11-12"
+    shows: "Created 18 May 2026: a verifiable self-certification oracle for bidirectional requirements traceability of SysML v2 models."
+    claim: sourced
+
+  - id: 2026-toaster
+    date: "2026-09-25"
+    kind: repository
+    title: "toaster"
+    people: [{name: "Michael Zargham", role: "sole committer"}]
+    url: https://github.com/Open-MBEE/toaster
+    read_on: "2026-11-12"
+    shows: "Created 25 September 2026: an executable tutorial on recursive system decomposition using SysML v2 and OpenSysML."
+    claim: sourced
+
+  - id: 2026-view-editor
+    date: "2026-10-30"
+    kind: repository
+    title: "sysml_view_editor"
+    people: [{name: "Rohan Mehta", role: "sole contributor (account rororowyourboat)"}]
+    url: https://github.com/Open-MBEE/sysml_view_editor
+    read_on: "2026-11-12"
+    shows: "Created 30 October 2026: a browser-based SysML v2 editor with source-defined views, powered by OpenSysML."
+    claim: sourced
+
+  - id: 2026-gds-core
+    date: "2026-02-21"
+    kind: repository
+    title: "gds-core"
+    people: [{name: "Rohan Mehta", role: "author"}, {name: "Michael Zargham", role: "project direction, theory guidance, technical review"}, {name: "Jamsheed Shorish", role: "theoretical foundation"}, {name: "Sean McOwen", role: "architectural inspiration (MSML, bdp-lib)"}, {name: "Peter Hacker", role: "code auditing and review"}]
+    url: https://github.com/DynamicalSystemsGroup/gds-core
+    read_on: "2026-11-12"
+    shows: "Created 21 February 2026: typed compositional specifications for Generalized Dynamical Systems; Apache-2.0; preferred citation is the 2022 paper."
+    claim: sourced
+
+  - id: 2026-gds-axelrod
+    date: "2026-03-04"
+    kind: repository
+    title: "gds-axelrod"
+    people: [{name: "Rohan Mehta", role: "13 of 15 commits"}, {name: "Danilo Bernardineli"}, {name: "Michael Zargham"}]
+    url: https://github.com/DynamicalSystemsGroup/gds-axelrod
+    read_on: "2026-11-12"
+    shows: "Created 4 March 2026: Axelrod's evolution-of-trust tournament built on the GDS compositional game theory ecosystem; six showcase pages from different GDS representations."
+    claim: sourced
+
+  - id: 2026-incose
+    date: "2026-07"
+    kind: paper
+    title: "Formalizing Document Assurance: A Topological Framework for Verification, Validation, and Human Accountability"
+    people: [{name: "Michael Zargham"}]
+    url: https://doi.org/10.1002/iis2.70203
+    read_on: "2026-11-12"
+    shows: "INCOSE International Symposium 36 (Crossref), July 2026, single author, affiliation Dynamical Systems Group."
+    claim: sourced
+
+  - id: 2026-synthesis
+    date: "2026"
+    kind: role
+    title: "The synthesis effort"
+    url: https://dynamicalsystemsgroup.github.io
+    read_on: "2026-11-12"
+    shows: "The firm's hosted demonstrations (four at the day read), the first on bidirectional requirements traceability for a satellite attitude-determination and control system. That this project is part of a synthesis effort to make the learnings accessible is the team's account."
+    claim: team-account
+    listed: false
+
+  # ------------------------------------------------------------------ the people
+  - id: person-koch
+    date: "2018"
+    kind: person
+    title: "Markus Koch"
+    people: [{name: "Markus Koch", role: "one of the three designers of cadCAD (AUTHORS.txt)"}]
+    url: https://github.com/markusbkoch
+    read_on: "2026-11-12"
+    shows: "GitHub name Markus Buhatem Koch, no bio. Author of the first commit of cadCAD (10 September 2018); 74 commits. No background and no employer stated."
+    claim: sourced
+
+  - id: person-bernardineli
+    date: "2020"
+    kind: person
+    title: "Danilo Bernardineli"
+    people: [{name: "Danilo Bernardineli", role: "upgrades and improvements to cadCAD (AUTHORS.txt)"}]
+    url: https://github.com/danlessa
+    read_on: "2026-11-12"
+    shows: "GitHub name Danilo Lessa Bernardineli; bio 'atmosphere physicist' and 'research eng' at the firm. 37 commits to cadCAD; sole contributor of the machine-search library and the interacting-AMM model; recorded walkthroughs on YouTube; author of the Filecoin posts."
+    claim: sourced
+    note: "Spelling from his profile and AUTHORS.txt (the supervisor's list reads Bernardinelli)."
+
+  - id: person-mehta
+    date: "2026"
+    kind: person
+    title: "Rohan Mehta"
+    people: [{name: "Rohan Mehta", role: "author of gds-core (its README)"}]
+    url: https://github.com/rororowyourboat
+    read_on: "2026-11-12"
+    shows: "GitHub name Rohan Mehta, 'Data Scientist, Researcher', another company named in the profile. gds-core (466 commits), gds-axelrod, the OpenMBEE view editor."
+    claim: sourced
+
+  - id: person-jodesty
+    date: "2018"
+    kind: person
+    title: "Joshua Jodesty"
+    people: [{name: "Joshua Jodesty", role: "implemented cadCAD (AUTHORS.txt)"}]
+    url: https://github.com/JEJodesty
+    read_on: "2026-11-12"
+    shows: "GitHub company field BlockScience; 731 commits to cadCAD, the most of any contributor. No bio."
+    claim: sourced
+
+  - id: person-shorish
+    date: "2020"
+    kind: person
+    title: "Jamsheed Shorish"
+    people: [{name: "Jamsheed Shorish", role: "co-author of Generalized Dynamical Systems"}]
+    url: https://ideas.repec.org/e/psh169.html
+    read_on: "2026-11-12"
+    shows: "RePEc: Shorish Research (Leuven) and WU Vienna. The RePEc Genealogy lists a 1997 degree from the Tepper School of Business, Carnegie Mellon (https://genealogy.repec.org/pages/psh169.html), the economics department."
+    claim: sourced
+
+  - id: person-paruch
+    date: "2018"
+    kind: person
+    title: "Kris Paruch"
+    people: [{name: "Kris Paruch", role: "co-author (Crossref gives Krzysztof Paruch)"}]
+    url: https://ethcc.io/speakers/krzysztof-paruch
+    read_on: "2026-11-12"
+    shows: "Conference speaker page. Co-author of two 2020 papers with Zargham and Shorish and author of the 2021 parameter selection article. His own 2018 post states 'a mathematical background with focus on economic modeling'. No page states his employment at the firm."
+    claim: sourced
+
+  - id: person-penland
+    date: "2024"
+    kind: person
+    title: "Andrew Penland"
+    people: [{name: "Andrew Penland", role: "'Octopus, a Blockscience Research Engineer' who led the workshop series (the firm's post)"}]
+    url: https://github.com/andrewpenland
+    read_on: "2026-11-12"
+    shows: "GitHub account andrewpenland: cadCAD models for the firm's collaborations. The surname is from three public pieces: the Token Engineering Academy team page ('Andrew Penland, Ph.D. a.k.a Octopus'), his channel's 'Making Mathematical Memes with Dr. Penland' (3 November 2021) and the commit author name. The identity with 'Octopus' is the supervisor's own first message."
+    claim: sourced
+    note: "No page states all three together. His own channel (@octopusmath) holds no video on GDS or cadCAD; his GDS, cadCAD and MAID videos are the firm's workshop series."
+
+  - id: person-hackel
+    date: "2023"
+    kind: person
+    title: "Jakob Hackel"
+    people: [{name: "Jakob Hackel"}]
+    url: https://zenodo.org/records/10999695
+    read_on: "2026-11-12"
+    shows: "Author of the 2023 post on the consensus pledge (this Zenodo record, CC BY 4.0) and named for feedback on the 2023 proposal review. The client projects of the page's sentence are the team's account, undisclosed; no client and no detail is given."
+    claim: team-account
+    special_case: true
+
+  - id: person-lima
+    date: "2021"
+    kind: person
+    title: "Emanuel Lima"
+    people: [{name: "Emanuel Lima", role: "current maintainer of cadCAD (AUTHORS.txt)"}]
+    url: https://github.com/lima-emanuel
+    read_on: "2026-11-12"
+    shows: "GitHub name Emanuel Lima. Author of CadCAD.jl (first commit 14 May 2021), cadcad-ri; JuliaCon 2023 and 2024 and PyData NYC 2022 talks."
+    claim: sourced
+
+  - id: person-clark
+    date: "2023"
+    kind: person
+    title: "Andrew Clark"
+    people: [{name: "Andrew Clark", role: "first author of the community-currency paper; thanked in AUTHORS.txt"}]
+    url: https://github.com/aclarkData
+    read_on: "2026-11-12"
+    shows: "Handle aclarkData. Department of Economics, University of Reading on the earlier discussion paper (RePEc). Ten commits to the model's repository. No statement of a role at the firm; the firm's own post presents the paper as its collaboration."
+    claim: sourced
+
+  - id: person-mcowen
+    date: "2023"
+    kind: person
+    title: "Sean McOwen"
+    people: [{name: "Sean McOwen", role: "'architectural inspiration' (gds-core README)"}]
+    url: https://github.com/SeanMcOwen
+    read_on: "2026-11-12"
+    shows: "MSML (888 of 889 commits) and bdp-lib (161 of 162), both in the firm's organisation. No bio."
+    claim: sourced
+
+  - id: person-riascos
+    date: "2024"
+    kind: person
+    title: "Carolina Riascos-Álvarez"
+    people: [{name: "Carolina Riascos-Álvarez"}]
+    url: https://github.com/CarolinaRiascos
+    read_on: "2026-11-12"
+    shows: "Name as her own site gives it, with the handle CarolinaRiascos (her site links the profile); credited by name in dynamical-block-diagrams. No repository of the firm's organisations lists the handle. The client projects of the page's sentence are the team's account, undisclosed; the page never links her LinkedIn."
+    claim: team-account
+
+  - id: person-barlin
+    date: "2018"
+    kind: person
+    title: "Matthew Barlin"
+    people: [{name: "Matthew Barlin", role: "one of the three designers of cadCAD (AUTHORS.txt)"}]
+    url: https://github.com/matttyb80
+    read_on: "2026-11-12"
+    shows: "GitHub name Matt Barlin, no bio or company; 4 commits to cadCAD. AUTHORS.txt credits him as a designer in 2018; Crossref gives him the affiliation BlockScience in 2021 and he co-authored the 2020 evidence-based design paper. His background is stated by no source (blank, by decision)."
+    claim: sourced

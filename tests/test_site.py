@@ -520,6 +520,87 @@ def _history_text() -> str:
     return " ".join(parser.words)
 
 
+def _load_script(name):
+    spec = importlib.util.spec_from_file_location(f"_{name}", ROOT / "scripts" / f"{name}.py")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+HISTORY_RECORD = _load_script("history_record")
+
+THIRTEEN = (
+    "Markus Koch",
+    "Danilo Bernardineli",
+    "Rohan Mehta",
+    "Joshua Jodesty",
+    "Jamsheed Shorish",
+    "Kris Paruch",
+    "Andrew Penland",
+    "Jakob Hackel",
+    "Emanuel Lima",
+    "Andrew Clark",
+    "Sean McOwen",
+    "Carolina Riascos-\u00c1lvarez",
+    "Matthew Barlin",
+)
+
+
+def test_history_record_holds_the_schema_and_every_entry_has_its_required_fields():
+    """WP37 D-9: the record's schema is described at its top; every entry has the required fields
+    and an https URL; ids and URLs are unique; the thirteen people each have an entry."""
+    raw = (ROOT / "history.yaml").read_text(encoding="utf-8")
+    head = raw.split("entries:")[0]
+    for field in HISTORY_RECORD.REQUIRED + HISTORY_RECORD.OPTIONAL:
+        assert re.search(rf"^#\s+{field}\b", head, re.M), f"schema description lacks {field}"
+    entries = HISTORY_RECORD.load()
+    assert HISTORY_RECORD.validate(entries) == []
+    assert len(entries) >= 60
+    persons = {e["title"] for e in entries if e["kind"] == "person"}
+    assert persons == set(THIRTEEN)
+    for e in entries:
+        assert set(HISTORY_RECORD.REQUIRED) <= set(e), e["id"]
+        assert e["url"].startswith("https://"), e["id"]
+
+
+def test_history_record_flags_special_cases_and_keeps_the_register():
+    """The Filecoin and RAI items carry the special-case flag; nothing else in a cryptocurrency
+    setting is left unflagged by id."""
+    entries = {e["id"]: e for e in HISTORY_RECORD.load()}
+    for eid in ("2023-fip-0056", "2023-consensus-pledge", "2021-rai-design", "2024-edinburgh"):
+        assert entries[eid].get("special_case") is True, eid
+
+
+def test_history_record_validation_names_each_defect():
+    good = {
+        "id": "2020-x",
+        "date": "2020",
+        "kind": "paper",
+        "title": "T",
+        "url": "https://example.org/a",
+        "read_on": "2026-11-12",
+        "shows": "s",
+        "claim": "sourced",
+    }
+    assert HISTORY_RECORD.validate([good]) == []
+    for change, expect in (
+        ({"url": "http://example.org/a"}, "https"),
+        ({"date": "20"}, "date"),
+        ({"kind": "blog"}, "kind"),
+        ({"claim": "maybe"}, "claim"),
+        ({"shows": ""}, "missing"),
+        ({"people": [{"nom": "x"}]}, "people"),
+        ({"special_case": "yes"}, "boolean"),
+        ({"extra": 1}, "unknown"),
+    ):
+        bad = {**good, **change}
+        problems = HISTORY_RECORD.validate([bad])
+        assert any(expect in p for p in problems), (change, problems)
+    twin = {**good, "id": "2020-y"}
+    assert any("duplicate url" in p for p in HISTORY_RECORD.validate([good, twin]))
+
+
 def test_history_page_is_one_screen_in_the_root_page_register():
     """WP37: a stand-alone page, light and dark like the root page, no script, about one screen."""
     raw = HISTORY.read_text(encoding="utf-8")
