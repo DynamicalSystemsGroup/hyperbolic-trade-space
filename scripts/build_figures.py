@@ -38,7 +38,7 @@ ALT = re.compile(r"!\[([^\]]*)\]\([^)\s#]*?([\w-]+)-light\.png#only-light\)")
 _SIZE = (7.0, 4.2)  # inches; width fits a 46 rem column at 100 dpi
 _DPI = 110
 # Figures drawn wider than the column are redrawn at this width in inches (labels keep their size).
-RESIZE = {"adcs-tensions": 6.3}
+RESIZE: dict[str, float] = {}
 # The paper's static figures: the modules of ``paper/figures/`` whose ``main()`` writes the image
 # beside the module (WP19's candidates: the n-lemma, Figure 3 and Figure 4 redrawn without term
 # colouring; the last two read the case's committed data and are regenerated with WP23's). The

@@ -46,6 +46,9 @@ given. After the supervisor's word on floating requirements (``WP30-decisions.md
 and the battery peak power ratio are traded too, so the box is empty and is not drawn; the caption
 names, for each requirement that reads a metric the fit may give no weight, whether the metric takes part
 in the fit, is one axis with another, or has exponent zero.
+Revision 10 (WP30 stage 6, the rendered review's finding on Figure 3, the default): the short dashed
+line between the MoE box and the metric it is computed from carries no label; the label (the shared
+element, ``totalMass``) overprinted the line, and each of the two boxes names the element it is.
 """
 
 from __future__ import annotations
@@ -617,7 +620,7 @@ def box_reasons(path) -> dict:
     }
 
 
-def behavioural(m, byid, P, revision=9, reasons=None):
+def behavioural(m, byid, P, revision=10, reasons=None):
     sys.path.insert(0, str(REPO / "examples" / "adcs"))
     import case  # the CaseSpec: the metrics, in order, and their subsystems
 
@@ -1233,7 +1236,9 @@ def behavioural(m, byid, P, revision=9, reasons=None):
     # was missed cold; it carries the element the two share (totalMass). The requirement's line to
     # the MoE box stays unlabelled: a label between ranks widens the whole layout (0.65 px of type)
     # and the box it lands on names the element (LaunchCost).
-    moe_tag = (lambda ev: f" : {ev}") if revision >= 5 else tag  # noqa: E731
+    moe_tag = (  # noqa: E731
+        (lambda ev: "") if revision >= 10 else (lambda ev: f" : {ev}") if revision >= 5 else tag
+    )
     for r, n, strength, ev in rel:
         if strength == "strong":
             out.append(
@@ -1440,11 +1445,11 @@ if __name__ == "__main__":
     ap.add_argument(
         "--revision",
         type=int,
-        default=9,
-        choices=(3, 4, 5, 6, 7, 8, 9),
+        default=10,
+        choices=(3, 4, 5, 6, 7, 8, 9, 10),
         help="drawing revision (3: the views committed before WP23's data gate; 4: WP23 round 3; "
         "5: WP23 round 4, the committed views of the data gate; 6: the post-gate view-consistency "
-        "unit; 7: the G-3 blocks of the behavioural view; 8: the analysis box's one line; 9: the negated satisfy (the WP23 close-out), the committed views since)",
+        "unit; 7: the G-3 blocks of the behavioural view; 8: the analysis box's one line; 9: the negated satisfy (the WP23 close-out); 10: the MoE line carries no label, the committed views since)",
     )
     a = ap.parse_args()
     m, byid = load(pathlib.Path(a.model))
