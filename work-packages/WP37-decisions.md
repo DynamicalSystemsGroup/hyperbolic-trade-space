@@ -187,3 +187,16 @@ as a special case where the work was highly public, says so in the sentence that
 cryptocurrency is the firm's focus; the attributes rule stands (the systems are described by what bears on this
 work). Each lead that the workers cannot find or verify from a public source stays off the page and is listed for
 the supervisor to supply.
+
+## The supervisor, one more reference (verbatim)
+
+> i think we could add a reference to ZX Zhang and Victor preciado, and the journal paper in applied network
+> science as it connects via a co author Victor, work on GGPs and work simulation and analysis in service of
+> design optimization
+
+**The assistant's reading.** A lead for the workers: the journal paper in Applied Network Science by Zargham, Zixuan
+Zhang and Victor Preciado (the journal version of the 2018 state-space framework on arXiv 1807.00955, found and
+confirmed from the DOI), and Zhang and Preciado named on the page as co-authors. It ties three threads the page
+already has: the supervisor's optimization and control record, the GGP work (Preciado is a co-author of the
+network-protection papers that use geometric programs), and simulation and analysis in service of design
+optimization. The page cites the journal paper where it now cites the arXiv preprint, with the names.
