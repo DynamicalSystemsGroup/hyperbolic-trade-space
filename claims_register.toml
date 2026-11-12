@@ -6033,3 +6033,18 @@ status = "backed"
 disposition = "keep"
 source = "P8 final read F3; the triage of 2026-11-12"
 note = "excess = median over the excluded near-frontier designs of (value - limit), times the launch rate for the total mass; the test recomputes it from the feasible designs on both datasets (unit cost 35,200 and 27,300 USD per satellite, fleet cost 1,130,000 and 1,140,000 USD per fleet, mass 1,880 and 1,730 USD of launch)."
+
+[[claim]]
+id = "C506"
+fragment = "two of the three candidates, fast_effort_hungry (log V +0.315) and precise_heavy_sensor (+0.354), sit beyond the reference surface fitted to those designs in the primary dataset"
+file = "paper/supporting_material.ipynb"
+anchor = "D.7 Candidate designs"
+kind = "R"
+backing = [
+  "test:tests/test_paper.py::test_d7_says_two_candidates_sit_beyond_the_thresholds_met_surface_and_none_meets_them",
+  "gen:paper/generate_results.py::design_sets_comparison",
+]
+status = "backed"
+disposition = "keep"
+source = "P8 final read F4; the triage of 2026-11-12 (body not changed: the balance rule)"
+note = "The values are the thresholds-met column of D.17's placement table (case.design_sets_placement): fast_effort_hungry +0.315, precise_heavy_sensor +0.354, light_slow -0.638; baseline configuration, the three candidates and the check designs: the table's 'meets the thresholds' column is False for the four named, True for proposal_2 only."

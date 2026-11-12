@@ -3077,6 +3077,27 @@ def test_appendix_c8_list_states_numbers_the_data_and_the_model_give():
     assert "3.1 to 4.2 times at one satellite" in page and "0.0006 degree" in page
 
 
+@pytest.mark.slow
+def test_d7_says_two_candidates_sit_beyond_the_thresholds_met_surface_and_none_meets_them():
+    """D.7's sentence (P8 final read F4): on the one-term fit to the feasible designs that meet the
+    four performance thresholds, fast_effort_hungry and precise_heavy_sensor score above the
+    surface (log V +0.315, +0.354) and light_slow below it; none of the three candidates, nor the
+    baseline configuration, meets all four thresholds."""
+    import case
+
+    placement = case.design_sets_placement(sets={"primary": case.design_sets("primary")})
+    rows = placement.set_index("design")
+    log_v = lambda name: float(rows.loc[name, "fit on thresholds met"].split()[0])  # noqa: E731
+    d7 = _norm_ws(_src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-D-cand")))
+    assert f"fast_effort_hungry (log V {log_v('fast_effort_hungry'):+.3f})" in d7
+    assert f"precise_heavy_sensor ({log_v('precise_heavy_sensor'):+.3f})" in d7
+    assert log_v("light_slow") < 0 and "two of the three candidates" in d7
+    for name in ("baseline configuration", "fast_effort_hungry", "precise_heavy_sensor",
+                 "light_slow"):  # fmt: skip
+        assert not rows.loc[name, "meets the thresholds"], name
+    assert "none of the three, nor the baseline configuration, meets all four thresholds" in d7
+
+
 def test_the_charts_axis_names_the_metrics_of_the_first_direction_of_d16():
     """The chart's axis says which metrics a step to the right improves or worsens: the leading
     loadings of D.16's first direction (K = 1, primary regime), by sign. The caption names none."""
