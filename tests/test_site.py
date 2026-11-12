@@ -851,6 +851,19 @@ def test_figures_are_few_captioned_and_in_both_colour_schemes():
     assert any(n.startswith("adcs-") for n in names), "an example from the case, on the frozen data"
 
 
+def test_figure_numbers_run_one_to_n_in_navigation_order(mkdocs_config):
+    """The captions' numbers are the docsite's own sequence (the paper has its own figures and
+    numbers): read in the navigation's order they are 1, 2, ... with none missing or repeated, so a
+    figure added or removed on one page cannot leave a stale number on the next."""
+    numbers = []
+    for name in flatten_nav(mkdocs_config["nav"]):
+        path = DOCS / name
+        if path.exists() and path in source_pages():
+            text = path.read_text(encoding="utf-8")
+            numbers += [int(n) for n in re.findall(r"<figcaption>Figure (\d+)\.", text)]
+    assert numbers == list(range(1, len(numbers) + 1)), numbers
+
+
 @pytest.mark.slow
 def test_each_figure_is_produced_by_the_code_shown_above_it(tmp_path):
     """The runnable blocks of each page, executed by the figure builder, produce exactly the
