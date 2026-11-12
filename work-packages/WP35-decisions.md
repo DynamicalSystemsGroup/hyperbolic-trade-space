@@ -50,3 +50,21 @@ that work is, what this work does instead, what it borrows from PCA and from sci
 estimators, and that the two chain in D.16); Appendix G holds the full version; every other mention becomes a
 pointer or goes; Table 1's "differs" column is rewritten so every row's sentence has this work as its subject, and
 a test keeps it so.
+
+## The supervisor, later the same afternoon (verbatim)
+
+> sounds like HoroPCA is the closest existing analog to our work and we need to acknowledge it more clearly and
+> better distinguish from it. that may require a spike, and involve writing and testing code to make sure we're not
+> just saying what we want to be true
+
+## The assistant's reading
+
+WP35 is a bigger candidate edit and runs the full lifecycle. Stage 1 becomes a code spike: HoroPCA's reference
+implementation (the authors' repository, pinned by commit, in the spike's own environment, never a dependency of
+the package) is run on the paper's own tables, the planted tables of `make_frontier_data` and the cubesat
+log-metrics of record, after whatever embedding HoroPCA needs; the spike reports what it recovers against the
+planted exponents and the fitted terms, whether a hyperbolic embedding of log-metrics is a natural input at all,
+and what the two methods share in the scikit-learn sense (an unsupervised fit and transform that gives the data a
+coordinate system). The spike's code carries tests, lives under `docs/superpowers/notes/spike-horopca/` (ruff
+excludes the spike folders), and its readout states what HoroPCA does well that this work does not, as plainly as
+the converse. The paper's acknowledgement and distinction are written from the readout, not before it.
