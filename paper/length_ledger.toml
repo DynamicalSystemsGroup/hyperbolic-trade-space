@@ -1106,3 +1106,40 @@ section = "Case analysis"
 words_removed = 138
 no_longer_did = "the K = 3 narrative: the sweep sentence (mean slack at two sets of temperatures, the sizes of three terms' contending sets), the K = 3 term-share sentence, the planes caption's sentence on the torque-limited streaks of a panel no longer drawn, and the clause that left three terms to the analyst; the K = 2 text says the terms' sets and shares in one sentence and the choice in the raised one"
 authority = "the supervisor: 'if we were to do only 2 would we get the other 2?' (WP30-decisions.md, The choice of K in the case)"
+
+# WP30 cascade, the case model's entry into the body (the standing order of 2026-11-11, 09:40: the body gets
+# the sentence or two the demonstration needs, the detail goes to Appendix C). Each row is one such sentence.
+[[raise]]
+date = "2026-11-11"
+section = "Case construction"
+words_added = 44
+job = "says that two of the thirteen traded metrics, the power margin and the battery peak power ratio, enter no contending set in either regime at K = 1 to 3 and why (each is nearly one axis with a metric that does), the sentence the no-floating-requirements ruling promised the body"
+reader = "the practitioner who sees thirteen metrics and two requirements that carry no exponent, and the space-industry reader checking that nothing is hidden"
+
+[[raise]]
+date = "2026-11-11"
+section = "Case construction"
+words_added = 58
+job = "states the cost coverage in one sentence: the unit cost and the fleet cost price the bus, the attitude-control parts, assembly and test, and launch, leave out the payload, communications and operations, so are a lower bound, and the covered fleet cost is held under 6,000,000 USD inside the sponsor's full budget of 8,000,000 USD (the supervisor, 2026-11-11, 10:30)"
+reader = "the new-space systems engineer and the executive who read a cost figure and ask what it covers"
+
+[[raise]]
+date = "2026-11-11"
+section = "Case construction"
+words_added = 25
+job = "says the case's designs are a random draw of 3,000 per regime and that the method assumes nothing about how designs are drawn (the supervisor, 2026-11-11, 12:25: 'this paper is about decision analysis and is not assuming iid samples or really anything about the sampling strategy')"
+reader = "the reader who asks whether the sample size or the sampler is part of the result"
+
+[[raise]]
+date = "2026-11-11"
+section = "Case construction"
+words_added = 16
+job = "names the fleet size as a design variable of the case (a count that belongs to no part and is not drawn in the assembly view) and corrects which traded metrics are measures of effectiveness now that the unit cost and the fleet cost are traded"
+reader = "the reader mapping the case's design variables and metrics onto their own system model"
+
+[[raise]]
+date = "2026-11-11"
+section = "Search of the design space (preliminary)"
+words_added = 31
+job = "says in a sentence that the method assumes nothing about how a table's designs were drawn and that how a sampling strategy enters the search loops is not studied here (the supervisor, 2026-11-11, 12:25: 'we eventually need to think about how sampling strategies play into the broader optimization loop but we can reduce that to a sentence or two in the section about search')"
+reader = "the reader asking where sampling strategy belongs in the optimisation loop"

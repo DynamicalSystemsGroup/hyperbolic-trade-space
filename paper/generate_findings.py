@@ -18,6 +18,7 @@ _D5 = appendix_link("sub-d-5", "Appendix D.5")
 _D8 = appendix_link("sub-d-8", "Appendix D.8")
 _D11 = appendix_link("sub-d-11", "Appendix D.11")
 _D14 = appendix_link("sub-d-14", "Appendix D.14")
+_C5 = appendix_link("sub-c-5", "Appendix C.5")
 _E = appendix_link("appendix-e", "Appendix E")
 _D15 = appendix_link("sub-d-15", "Appendix D.15")
 
@@ -40,6 +41,21 @@ def _span(groups) -> str:
 def _contending(study, fit) -> list[str]:
     row = case.tension_table(study, fit).iloc[0]
     return [s.strip() for s in row["contending set"].split(",")]
+
+
+def _a(n: int) -> str:
+    """The indefinite article before a number read aloud: "an" before eight, eleven, eighteen and
+    the eighties and eight hundreds, "a" before every other (a 7-lemma, an 8-lemma, a 9-lemma,
+    an 11-lemma, a 12-lemma, an 18-lemma).
+
+    >>> [f"{_a(n)} {n}" for n in (1, 7, 8, 9, 10, 11, 12, 18, 19, 80, 100, 800, 1100)]
+    ['a 1', 'a 7', 'an 8', 'a 9', 'a 10', 'an 11', 'a 12', 'an 18', 'a 19', 'an 80', 'a 100', \
+'an 800', 'a 1100']
+    """
+    digits = str(abs(int(n)))
+    head = int(digits[: len(digits) % 3 or 3])  # the leading group, read as "<head> thousand ..."
+    an = head in (8, 11, 18) or 80 <= head <= 89 if head < 100 else head // 100 == 8
+    return "an" if an else "a"
 
 
 _NUMBER_WORDS = {
@@ -95,12 +111,61 @@ def attributes_sentence(study) -> Md:
 
 
 def datasets_sentence(primary, stock) -> Md:
-    """How many designs each regime drew and kept."""
+    """How many designs each regime drew and kept, and how they were drawn.
+
+    The draw is the experiments' sampler (``LogUniformSampler``): log-uniform in the tuned ranges,
+    uniform over the swapped parts and the integer fleet size, one count for both regimes.
+    """
     a, b = primary, stock
+    n = len(a.raw)
     return Md(
         f"The primary regime evaluates {len(a.raw)} designs and keeps {len(a.feasible)} as "
         f"feasible; the stock regime evaluates {len(b.raw)} and keeps {len(b.feasible)}. "
-        f"Each design carries {len(a.attrs)} attributes."
+        f"Each design carries {len(a.attrs)} attributes. The designs are drawn at random, {n} per "
+        f"regime: a design choice of the case, since the method assumes nothing about how they "
+        f"were drawn."
+    )
+
+
+def participation_sentence() -> Md:
+    """The traded metrics that enter no contending set, and why (Appendix C.5).
+
+    A metric participates when it is in the contending set of some term of some fit at K = 1 to
+    the deepest K the case fits, in either regime. A metric that never does is read with its
+    strongest partner among those that do: the lowest, over the regimes, of the Spearman
+    association with that partner (``case.association_all_pairs``).
+    """
+    import generate_results as gr
+
+    regs = list(case.CUBESAT.regimes)
+    names = list(gr._study(regs[0]).names)
+    used, depth = set(), 0
+    for r in regs:
+        st = gr._study(r)
+        for K, fit in gr._fits(r).items():
+            depth = max(depth, K)
+            for rep in case._reports(st, fit):
+                used |= {st.names[j] for j in rep.contending_set}
+    out = [n for n in names if n not in used]
+    if not out:
+        return Md(
+            f"Each of the {len(names)} traded metrics enters a contending set at K = 1 to {depth} "
+            f"in a regime."
+        )
+    rho = {}
+    for r in regs:
+        t = case.association_all_pairs(gr._study(r))
+        for x, y, v in zip(t["metric a"], t["metric b"], t["spearman"], strict=True):
+            rho.setdefault(frozenset((x, y)), []).append(abs(float(v)))
+    best = {
+        n: max(((min(rho[frozenset((n, m))]), m) for m in used), key=lambda p: p[0]) for n in out
+    }
+    low = int(min(v for v, _ in best.values()) * 100) / 100
+    return Md(
+        f"Of the {len(names)} traded metrics, {_NUMBER_WORDS.get(len(out), len(out))}, "
+        f"{_and('the ' + n for n in out)}, enter no contending set at K = 1 to {depth} in either "
+        f"regime: each is nearly one axis with a metric that does (Spearman at least {low:.2f}, "
+        f"{_C5})."
     )
 
 
@@ -155,7 +220,7 @@ def k1_sentence(study, fit) -> Md:
     )
     low, high = min(w, key=w.get), max(w, key=w.get)
     return Md(
-        f"At K = 1 the exact-maximum fit has a {len(names)}-lemma across "
+        f"At K = 1 the exact-maximum fit has {_a(len(names))} {len(names)}-lemma across "
         f"{_span(study.spec.subsystems_of(names))}: {_and(names)} contend, with "
         f"exponents at the fit temperature from {two(low)} to {two(high)}. "
         "R1 holds on both regimes: the exact-maximum optimum is one point, so the support is not "
@@ -410,7 +475,8 @@ def regime_sentence() -> Md:
             f"{_and(sorted(own_b))}"
         )
     return Md(
-        f"The regimes return a {t.loc['n_lemma', a]}-lemma and a {t.loc['n_lemma', b]}-lemma "
+        f"The regimes return {_a(t.loc['n_lemma', a])} {t.loc['n_lemma', a]}-lemma and "
+        f"{_a(t.loc['n_lemma', b])} {t.loc['n_lemma', b]}-lemma "
         f"sharing {len(sets[a] & sets[b])} metrics ({_and(sorted(sets[a] & sets[b]))})"
         f"{middle}. The {b} set spans {_span(gb)}{point}."
     )

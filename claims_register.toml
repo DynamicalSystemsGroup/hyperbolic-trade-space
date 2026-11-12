@@ -5816,3 +5816,80 @@ status = "backed"
 disposition = "keep"
 source = "WP30 docs unit"
 note = "The case at K = 2 on the regenerated record (primary regime, thirteen metrics, 2,134 feasible designs): the test recomputes the sets, shares (to the percent), the one-term set, the mean slack at the one-term temperature (0.122 to 0.043) and quotes the page."
+
+[[claim]]
+id = "C491"
+fragment = "each is nearly one axis with a metric that does (Spearman at least"
+file = "paper/generate_findings.py"
+anchor = "def participation_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::participation_sentence",
+  "test:tests/test_paper.py::test_the_two_metrics_in_no_contending_set_are_the_computed_ones",
+]
+status = "backed"
+disposition = "keep"
+source = "WP30 cascade, the thirteen metrics in the body (WP30-decisions.md, 'No floating requirements')"
+note = "Section 8: the traded metrics that are in no term's contending set at K = 1 to 3 in either regime (the power margin and the battery peak power ratio), each with the lowest over the regimes of its Spearman association with its strongest partner among the metrics that do take part (0.97); computed from the fits, the test recomputes the never-contending set."
+
+[[claim]]
+id = "C492"
+fragment = "the pointing error, the unit cost and the fleet cost are MoEs, the other ten traded metrics MoPs"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "R"
+backing = [
+  "gen:examples/adcs/model_v2/coverage.py::build",
+  "test:tests/test_paper.py::test_the_body_states_the_marks_the_coverage_and_the_draw",
+  "file:examples/adcs/model_v2/views/coverage.csv",
+]
+status = "backed"
+disposition = "keep"
+source = "WP30 cascade (the launch cost, an MoE that is no longer traded, left the sentence)"
+note = "The marks of the thirteen traded metrics are read from the model's coverage table (second table of coverage.csv); the launch cost is the derived MoE on the total mass and is not traded."
+
+[[claim]]
+id = "C493"
+fragment = "so each is a lower bound on a full costing; the fleet cost requirement holds that covered cost under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "P"
+backing = [
+  "test:tests/test_paper.py::test_the_body_states_the_marks_the_coverage_and_the_draw",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP30-decisions.md, 'Fleet cost limit, final' (the supervisor, 2026-11-11, 10:30) and 'on what the base prices exclude' (10:35)"
+note = "The coverage statement of the model's cost calcs and of FleetCostRequirement (included: bus, attitude-control parts, assembly and test, wholesale launch; excluded: payload and instruments, communications, flight software, testing beyond the line, licensing, ground segment, launch slot minimum, broker fees); fleetCostLimit is 6.0e6 and the doc names the sponsor's full budget of 8,000,000 USD. The test reads both from the model file."
+
+[[claim]]
+id = "C494"
+fragment = "The designs are drawn at random, {n} per"
+file = "paper/generate_findings.py"
+anchor = "def datasets_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::datasets_sentence",
+  "test:tests/test_paper.py::test_the_body_states_the_marks_the_coverage_and_the_draw",
+  "test:tests/test_experiments.py::test_definitions_import_without_runtime_and_declare_v2",
+]
+status = "backed"
+disposition = "keep"
+source = "WP30-decisions.md, 'Sampling' (the supervisor, 2026-11-11, 12:25)"
+note = "Section 8: the count is len(study.raw), the experiments' SAMPLE_PER_REGIME (3000) for both regimes; the sampler (LogUniformSampler) draws each design from its own child seed. The method's independence of the draw is a statement of scope."
+
+[[claim]]
+id = "C495"
+fragment = "the fleet size, a count that is no part and is not drawn"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_the_body_states_the_marks_the_coverage_and_the_draw",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP30 cascade, the fleet variable in the body"
+note = "fleetSize is an attribute of the Cubesat as a whole in the model file (seventh design variable, 1 to 30) and the assembly view's source draws parts only; the test checks both."

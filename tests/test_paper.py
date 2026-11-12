@@ -2014,7 +2014,7 @@ RAW_RESIDUE = re.compile(r"\de-(?:1[3-9]|[2-9]\d)")  # 1e-13 and below, as raw d
 NUM_CELLS = [
     "num-nondominated", "num-certificates", "num-margin", "num-temperature",
     "num-regimes", "num-candidates", "num-predict", "num-recovery", "num-predict-reading",
-    "num-choosing-k", "num-terms", "num-elasticity", "num-k-temperatures",
+    "num-choosing-k", "num-terms", "num-elasticity", "num-k-temperatures", "num-participation",
 ]  # fmt: skip
 
 
@@ -2044,6 +2044,7 @@ def _case_sentences():
         "num-terms": gf.terms_sentence(study, fits),
         "num-elasticity": gf.elasticity_sentence(study, fits),
         "num-k-temperatures": gf.k_temperatures_sentence(study, fits),
+        "num-participation": gf.participation_sentence(),
     }
 
 
@@ -2933,3 +2934,77 @@ def test_the_figure_functions_hold_every_text_at_the_minimum_size(monkeypatch):
     assert min(sizes.values()) >= case.FIGURE_MIN_FONT_PT, sizes
     assert fig.get_size_inches()[0] * case.FIGURE_DPI <= FIGURE_COLUMN_PX
     plt.close(fig)
+
+
+# ---- WP30 cascade: the case's body sentences (thirteen metrics, cost coverage, the draw) ---------
+
+
+def test_the_article_before_a_lemma_count_is_read_aloud(case_sentences):
+    """An 8-lemma, an 11-lemma, an 18-lemma, an 80-lemma; a 1-, 7-, 9-, 10- and 12-lemma."""
+    import generate_findings as gf
+
+    cases = {1: "a", 7: "a", 8: "an", 9: "a", 10: "a", 11: "an", 12: "a", 18: "an", 19: "a"}
+    cases |= {80: "an", 89: "an", 100: "a", 800: "an", 1100: "a", 11000: "an", 18000: "an"}
+    assert {n: gf._a(n) for n in cases} == cases
+    text = str(case_sentences["num-regimes"])
+    for m in re.finditer(r"\b(a|an) (\d+)-lemma", text):
+        assert gf._a(int(m.group(2))) == m.group(1), m.group(0)
+    assert "a 7-lemma and an 8-lemma" in text and "a 8-lemma" not in text
+
+
+def test_the_two_metrics_in_no_contending_set_are_the_computed_ones(case_sentences):
+    """The sentence names the metrics that no term of any fit at K = 1 to 3 in either regime
+    contends with, and says what it reads each against."""
+    import case
+
+    never = None
+    for regime in case.CUBESAT.regimes:
+        study = case.load_study(regime)
+        for fit in case.k_fits(study).values():
+            used = {study.names[j] for rep in case._reports(study, fit) for j in rep.contending_set}
+            never = set(study.names) - used if never is None else never & (set(study.names) - used)
+    text = str(case_sentences["num-participation"])
+    assert never == {"power margin", "battery peak power ratio"}, never
+    assert (
+        "Of the 13 traded metrics, two, the power margin and the battery peak power ratio," in text
+    )
+    assert "enter no contending set at K = 1 to 3 in either regime" in text
+    assert "Spearman at least 0.97" in text
+
+
+def test_the_body_states_the_marks_the_coverage_and_the_draw():
+    """Section 8: three measures of effectiveness among the thirteen, the cost coverage with the two
+    budgets of the model, and the draw of 3,000 designs per regime of the data of record."""
+    import csv
+
+    marks = {}
+    with (ROOT / "examples" / "adcs" / "model_v2" / "views" / "coverage.csv").open() as f:
+        for row in csv.reader(f):
+            if row[0] == "metrics":  # the file's second table: table, metric, mark, ...
+                marks[row[1]] = row[2]
+    assert len(marks) == 13
+    assert {m for m, v in marks.items() if v == "MoE"} == {
+        "pointing error",
+        "unit cost",
+        "fleet cost",
+    }
+    body = _section("Case construction")
+    assert (
+        "the pointing error, the unit cost and the fleet cost are MoEs, "
+        "the other ten traded metrics MoPs" in body
+    )
+    model = (ROOT / "examples" / "adcs" / "model_v2" / "cubesat.sysml").read_text()
+    assert "attribute fleetCostLimit : Real = 6.0e6" in model and "8,000,000 USD" in model
+    assert "attribute fleetSize : Real default = 1.0" in model  # a Cubesat attribute, no part
+    view = (ROOT / "examples" / "adcs" / "model_v2" / "views" / "assembly_view.puml").read_text()
+    assert "fleet" not in view.lower()  # the assembly view draws parts only
+    assert "the fleet size, a count that is no part and is not drawn" in body
+    assert "under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD" in body
+    sys.path.insert(0, str(ROOT / "examples" / "adcs"))
+    from experiments import definitions
+
+    n = definitions.SAMPLE_PER_REGIME
+    cell = next(c for c in _code_cells(_nb(PAPER_NB)) if c.id == "num-datasets")
+    assert f"{n} per regime: a design choice of the case" in _out_text(cell)
+    search = _section("Search of the design space")
+    assert "assumes nothing about how a table's designs were drawn" in search
