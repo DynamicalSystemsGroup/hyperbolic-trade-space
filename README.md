@@ -1,12 +1,12 @@
 # hyperbolic-trade-space
 
-Python package `hyperbolic_trade_space` (import alias `hts`); the method is the *posynomial invariant form*.
-It learns which metrics of a design table trade. The
-[docs](https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/) say where to start.
+For analysts with a table of evaluated designs, to learn which metrics trade: the
+[docs](https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/) for using it, the paper for the method,
+`examples/adcs/` for a case study.
 
 ```bash
 git clone https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space
-cd hyperbolic-trade-space && uv sync   # Python 3.12; run with `uv run`
+cd hyperbolic-trade-space && uv sync
 ```
 
 ```python
@@ -17,7 +17,7 @@ from hyperbolic_trade_space import (
     tension_report,
 )
 
-A, _ = make_frontier_data(300, 3, random_state=0)  # your table goes here
+A, _ = make_frontier_data(300, 3, random_state=0)
 A[:, 1] = 10 / A[:, 1]  # pretend column 1: smaller is better
 M = LogAffinePreconditioner(orientation=[1, -1, 1]).fit_transform(A)
 ts = HyperbolicTradeSpace(temperature=20.0).fit(M)
@@ -27,7 +27,11 @@ print(tension_report(ts, M).exponents.round(2))
 ## Layout
 
 - `src/hyperbolic_trade_space/` — the package
-- `derivation/` — SymPy axiom and lemma scripts
-- `examples/adcs/` — the ADCS trade-study case
 - `docs/` — the docs site's pages
-- `work-packages/` — scopes, reviews and decision records per work package, and the 0.1 state
+- `paper/` — the paper
+- `site/` — the root page
+- `scripts/` — build tools
+- `tests/` — the tests
+- `derivation/` — SymPy axiom and lemma scripts
+- `examples/adcs/` — the ADCS case study
+- `work-packages/` — scopes and decisions

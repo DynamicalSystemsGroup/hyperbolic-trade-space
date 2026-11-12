@@ -258,7 +258,7 @@ class LogAffinePreconditioner(OneToOneFeatureMixin, TransformerMixin, BaseEstima
 
 
 def frontier_in_original_units(estimator, preconditioner):
-    """Pull the fitted frontier back to raw attributes (closed form).
+    """The fitted frontier as a monomial in the raw attributes.
 
     With ``log m_j = alpha_j log(a_j + s_j) + b_j`` and ``log V = w . log m - beta`` the frontier
     is ``V = exp(log_const) * prod_j (s_j + shift_j)^(exponents_orig_j)`` for raw attributes

@@ -57,7 +57,7 @@ _NAMES = {1: "monolemma", 2: "dilemma", 3: "trilemma"}
 
 @dataclass(frozen=True, eq=False)
 class TensionReport:
-    """Result of ``tension_report`` (immutable; arrays are not copied).
+    """What ``tension_report`` returns: the contending set, elasticities and tension directions.
 
     Attributes
     ----------
