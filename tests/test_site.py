@@ -490,6 +490,102 @@ def test_root_index_is_thin_and_routes_by_need():
         assert stale not in paper.lower(), stale
 
 
+HISTORY = SITE / "history.html"
+
+
+class _VisibleText(HTMLParser):
+    """The visible words of a page: no head, style, script or markup."""
+
+    def __init__(self):
+        super().__init__()
+        self.skip = 0
+        self.words = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag in ("head", "style", "script", "title"):
+            self.skip += 1
+
+    def handle_endtag(self, tag):
+        if tag in ("head", "style", "script", "title"):
+            self.skip -= 1
+
+    def handle_data(self, data):
+        if not self.skip:
+            self.words += data.split()
+
+
+def _history_text() -> str:
+    parser = _VisibleText()
+    parser.feed(HISTORY.read_text(encoding="utf-8"))
+    return " ".join(parser.words)
+
+
+def test_history_page_is_one_screen_in_the_root_page_register():
+    """WP37: a stand-alone page, light and dark like the root page, no script, about one screen."""
+    raw = HISTORY.read_text(encoding="utf-8")
+    assert "<script" not in raw.lower()
+    assert "prefers-color-scheme: dark" in raw
+    assert '<link rel="icon" href="data:,">' in raw
+    assert "<h1>History and acknowledgements</h1>" in raw
+    assert 250 <= len(_history_text().split()) <= 400
+
+
+def test_history_page_is_linked_from_the_root_page_and_links_resolve():
+    """The root page links to it once; its internal links resolve; its external links are plain
+    absolute https URLs (the network check is scripts/check_history_links.py)."""
+    assert html_links(SITE / "index.html").count("history.html") == 1
+    seen = set()
+    for href in html_links(HISTORY):
+        if href.startswith("data:"):
+            continue  # the empty icon
+        if is_external(href):
+            parts = urlparse(href)
+            assert parts.scheme == "https" and parts.netloc and " " not in href, href
+            assert href not in seen, f"duplicate external link {href}"
+            seen.add(href)
+            continue
+        target, _ = urldefrag(href)
+        if not target:
+            continue
+        route = _resolve_site_href("/history.html", target)
+        assert _site_file_for(route, SITE) is not None, f"history.html: {href} does not resolve"
+
+
+def test_history_page_uses_no_cryptocurrency_or_web3_vocabulary():
+    """WP37 register rule: the page's own words avoid it (a linked source's title may carry it)."""
+    text = _history_text().lower()
+    for banned in (
+        r"crypto",
+        r"token",
+        r"blockchain",
+        r"smart contract",
+        r"web3",
+        r"\bdao\b",
+        r"\bdefi\b",
+        r"\bnft\b",
+    ):
+        assert not re.search(banned, text), banned
+    assert "computer scien" not in text, "computer science is not backed for any named person"
+
+
+def test_history_page_credits_the_eleven_named_people():
+    text = _history_text()
+    for name in (
+        "Markus Koch",
+        "Danilo Bernardinelli",
+        "Rohan Mehta",
+        "Joshua Jodesty",
+        "Jamsheed Shorish",
+        "Kris Paruch",
+        "Penland",
+        "Jakob Hackel",
+        "Emanuel Lima",
+        "Andrew Clark",
+        "Sean McOwen",
+    ):
+        assert name in text, name
+
+
 def test_paper_theme_is_pinned_to_a_commit():
     """A clean checkout must build the paper on the theme it was reviewed on (WP8b D-8): the
     article theme is a commit-pinned archive, not the name that follows the main branch."""
@@ -612,6 +708,12 @@ def test_assembled_layout(assembled):
     assert (assembled / "paper" / "index.html").read_text(encoding="utf-8") == (
         SITE / "paper" / "index.html"
     ).read_text(encoding="utf-8")
+
+
+def test_assembled_site_carries_the_history_page(assembled):
+    assert (assembled / "history.html").read_text(encoding="utf-8") == HISTORY.read_text(
+        encoding="utf-8"
+    )
 
 
 def test_every_link_in_the_assembled_site_resolves(assembled):
