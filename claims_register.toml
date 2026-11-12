@@ -5240,7 +5240,7 @@ note = "term_share_ is the fraction of near-frontier rows in each term's cell (g
 
 [[claim]]
 id = "C429"
-fragment = "It is noisy: draws of one procedure differ by several tenths on the cubesat below, so it offers no threshold."
+fragment = "It is noisy: draws of one procedure differ by several tenths on the cubesat case, so it offers no threshold."
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "R"
@@ -5301,22 +5301,22 @@ note = "Planted K0 = 3 table 0, two outer draws of two resamples each; the block
 [[claim]]
 id = "C435"
 fragment = "The primary regime drops by 0.078, then 0.023, 0.012 and 0.005: a break at K = 2, where the thinnest term holds 0.28 (0.21 at K = 3)."
-file = "docs/user-guide/choosing-k.md"
+file = "docs/examples.md"
 anchor = ""
 kind = "R"
-backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_choosing_k_pages_cubesat_numbers_are_the_blocks_output"]
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_examples_page_choosing_k_numbers_are_the_blocks_output"]
 status = "backed"
 disposition = "keep"
 source = "WP31 U3"
-note = "Primary regime at its K = 1 temperature on the regenerated record: slack 0.122, 0.043, 0.020, 0.008, 0.003; thinnest term share 0.28 at K = 2 and 0.21 at K = 3; the same fits as Appendix D.15 of the paper at K = 1 to 4. The test runs the page's blocks and pins the printed lines."
+note = "Moved from the choosing-K page to the Examples page (WP33 placement 1). Primary regime at its K = 1 temperature on the regenerated record: slack 0.122, 0.043, 0.020, 0.008, 0.003; thinnest term share 0.28 at K = 2 and 0.21 at K = 3; the same fits as Appendix D.15 of the paper at K = 1 to 4. The test runs the page's blocks and pins the printed lines."
 
 [[claim]]
 id = "C436"
 fragment = "The stock regime drops by 0.055, 0.031, 0.012 and 0.010, bending with no break, so the mean slack cannot choose K; its thinnest term holds 0.35 at K = 2 and 0.13 at K = 3."
-file = "docs/user-guide/choosing-k.md"
+file = "docs/examples.md"
 anchor = ""
 kind = "R"
-backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_choosing_k_pages_cubesat_numbers_are_the_blocks_output"]
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_examples_page_choosing_k_numbers_are_the_blocks_output"]
 status = "backed"
 disposition = "keep"
 source = "WP31 U3"
@@ -5325,10 +5325,10 @@ note = "Stock regime at its K = 1 temperature on the regenerated record: slack 0
 [[claim]]
 id = "C437"
 fragment = "Over three draws the primary regime's movement is 0.18 to 0.20 at K = 2, 0.15 to 0.29 at K = 3 and 0.14 to 0.95 at K = 4. The ranges overlap, so this check excludes none."
-file = "docs/user-guide/choosing-k.md"
+file = "docs/examples.md"
 anchor = ""
 kind = "R"
-backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_choosing_k_pages_cubesat_numbers_are_the_blocks_output"]
+backing = ["gen:tests/test_docs.py::_runnable_blocks", "test:tests/test_docs.py::test_examples_page_choosing_k_numbers_are_the_blocks_output"]
 status = "backed"
 disposition = "keep"
 source = "WP31 U3"

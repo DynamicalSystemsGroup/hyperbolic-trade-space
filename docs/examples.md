@@ -2,11 +2,10 @@
 
 ## A cubesat trade study across power, mass and attitude control
 
-[The worked case](paper:sect-case-construction) is a cubesat model coupling power, mass and attitude control. Thirteen metrics are compared under two controller-gain settings. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`. In this
-design loop a simulation measures the attributes; a fielded system's measured attributes would enter
+For the reader who wants a worked case: a synthetic satellite demonstrator, [a cubesat model](paper:sect-case-construction) coupling power, mass and attitude control. Thirteen metrics are compared under two controller-gain settings. Here a simulation measures the attributes; a fielded system's measured attributes would enter
 the same table and fit.
 
-The primary regime's table (aggressive controller gains) has 2,134 feasible designs of 3,000. With the fit temperature chosen by `select_temperature` for a tenth of designs
+The primary regime's table has 2,134 feasible designs of 3,000. With the fit temperature chosen by `select_temperature` for a tenth of designs
 above V = 1:
 
 - **One term.** The tension report finds a contending set (metrics that trade off) of seven metrics (unit cost, available power,
@@ -37,8 +36,74 @@ case.tension_figure(study, fit)
 <figure markdown>
 ![Heatmap of the association among thirteen conditioned metrics near the frontier; seven metrics are outlined as the contending set.](generated/figures/adcs-tensions-light.png#only-light)
 ![Heatmap of the association among thirteen conditioned metrics near the frontier; seven metrics are outlined as the contending set.](generated/figures/adcs-tensions-dark.png#only-dark)
-<figcaption>Figure 5. The tension report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, below the participation threshold: an outlined metric can be grey, a black one unoutlined.</figcaption>
+<figcaption>Figure 5. The tension report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, below the participation threshold.</figcaption>
 </figure>
+
+## Choosing K on the case
+
+The [choosing-K checks](user-guide/choosing-k.md) on both regimes, each at its K = 1 temperature ([recipe](user-guide/choosing-k.md#the-temperature)).
+
+```python {.runnable}
+import numpy as np
+from hyperbolic_trade_space import HyperbolicTradeSpace
+
+
+def fit_k(M, K, tau, seed=0):
+    return HyperbolicTradeSpace(
+        n_terms=K, temperature=tau, random_state=seed
+    ).fit(M)
+
+
+def sweep(M, tau, Ks):
+    """One line per K at one temperature; returns the mean slacks."""
+    slack = []
+    for K in Ks:
+        fit = fit_k(M, K, tau)
+        t = fit.termination_
+        print(
+            f"K={K} slack={fit.mean_slack_:.3f}"
+            f" thinnest={fit.term_share_.min():.2f}"
+            f" {t.status} radius={t.radius:.0e}"
+        )
+        slack.append(fit.mean_slack_)
+    print("drops", -np.diff(slack).round(3))
+    return np.array(slack)
+
+
+def movement(M, K, tau, draws=2, seed=0):
+    """Largest distance to the nearest term of a refit on a resample."""
+    ref = fit_k(M, K, tau)
+    rng = np.random.default_rng(seed)
+    moved = np.zeros(K)
+    for s in range(draws):
+        W = fit_k(M[rng.choice(len(M), len(M))], K, tau, s).exponents_
+        d = np.abs(W[:, None] - ref.exponents_).sum(axis=2)
+        moved = np.maximum(moved, d.min(axis=0))
+    return moved.max()
+
+
+studies = {r: case.load_study(r) for r in ("primary", "stock")}
+taus = {r: case.fit_study(s, K=1).tau for r, s in studies.items()}
+for r, s in studies.items():
+    print(r)
+    sweep(s.M, taus[r], range(1, 6))
+```
+
+The primary regime drops by 0.078, then 0.023, 0.012 and 0.005: a break at K = 2, where the
+thinnest term holds 0.28 (0.21 at K = 3). The stock regime drops by 0.055, 0.031, 0.012 and 0.010,
+bending with no break, so the mean slack cannot choose K; its thinnest term holds 0.35 at K = 2 and
+0.13 at K = 3.
+
+```python {.runnable}
+for K in (2, 3, 4):
+    M, tau = studies["primary"].M, taus["primary"]
+    print(
+        K, np.round([movement(M, K, tau, seed=s) for s in range(3)], 2)
+    )
+```
+
+Over three draws the primary regime's movement is 0.18 to 0.20 at K = 2, 0.15 to 0.29 at K = 3 and
+0.14 to 0.95 at K = 4. The ranges overlap, so this check excludes none.
 
 ## Requirements read after the fit
 
@@ -62,7 +127,7 @@ unit cost        35,200 | 27,300 USD per satellite
 fleet cost       1,130,000 | 1,140,000 USD per fleet
 ```
 
-Refitted on three design sets, the one-term contending set barely moves. The third keeps the designs that meet the four performance thresholds; the two cost limits are budget limits read after the fit, and the unit cost limit binds through the fleet size (no design of fleet size one passes it), so a set constrained by it would be a fleet-size choice, not a design-space one:
+Refitted on three design sets, the one-term contending set barely moves. The third keeps the designs that meet the four performance thresholds; the two cost limits are read after the fit:
 
 ```text
 # case.design_sets_summary()
@@ -106,7 +171,6 @@ case.ternary_pair_figure(fits)
 
 Reading it:
 
-- A corner is the whole total in one metric; an edge splits it between two.
 - A numbered marker is a term's exponent vector, where that term's V is largest for a fixed total.
   V, the invariant value, also depends on the total, so a marker is not where V = 1.
 - A region is where one term is the largest: an analysis of the fit, not a label on a
@@ -124,8 +188,6 @@ for name, (study, est) in fits.items():
     )
 ```
 
-Each row is a marker: its shares and V there, relative to the highest marker's.
-
 The triples show how to read the figure; they are not findings. What the case leaves out is listed on [the case page](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/examples/adcs/case-model.md#what-the-case-leaves-out).
 
 ## Run it
@@ -137,7 +199,3 @@ holds the design space, the evaluation model, the seeded datasets, the figures a
 ```bash
 uv run python examples/adcs/k_terms.py
 ```
-
-Per regime it prints a per-K summary at a temperature re-selected per K, the per-term record, the same
-two at the one-term temperature (the comparison above) and a seed check at three terms. A fit's record is `fit.estimator.termination_`, read on the
-[termination page](user-guide/termination.md).

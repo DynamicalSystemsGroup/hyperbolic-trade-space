@@ -16,7 +16,7 @@ is given with what it cannot say. The package has no held-out criterion for K.
   It says a term is thin, not which K is right.
 - **Movement under resampling.** Refit on resamples of the rows and measure how far each term's
   exponent vector sits from the nearest term of the refit (summed absolute differences; exponents sum to one, so at most
-  2). It is noisy: draws of one procedure differ by several tenths on the cubesat below, so it offers no
+  2). It is noisy: draws of one procedure differ by several tenths on the cubesat case, so it offers no
   threshold.
 - **Planted check.** Fit `make_frontier_data(n_terms=K0)` at your table's shape to see how recovery
   looks. The planted K0 is known there; your table's is not.
@@ -47,8 +47,6 @@ print(round(tau, 1))
 below for all three (26.5 and 38.1 on the others); real data may need `bounds=(3, 1e4)`.
 
 ## Helpers
-
-The planted blocks need only the installed package; the case study's cubesat blocks run from the repository root.
 
 ```python {.runnable}
 import numpy as np
@@ -126,39 +124,7 @@ for K in (3, 5):
 
 On table 0 the movement is 0.04 and 0.02 at K = 3, and 0.23 and 0.24 at K = 5.
 
-## The cubesat
-
-The two regimes of the [examples](../examples.md), each at its K = 1 temperature, selected as in the
-recipe.
-
-```python {.runnable}
-import sys
-
-sys.path.insert(0, "examples/adcs")  # repository root
-import case
-
-studies = {r: case.load_study(r) for r in ("primary", "stock")}
-taus = {r: case.fit_study(s, K=1).tau for r, s in studies.items()}
-for r, s in studies.items():
-    print(r)
-    sweep(s.M, taus[r], range(1, 6))
-```
-
-The primary regime drops by 0.078, then 0.023, 0.012 and 0.005: a break at K = 2, where the
-thinnest term holds 0.28 (0.21 at K = 3). The stock regime drops by 0.055, 0.031, 0.012 and 0.010,
-bending with no break, so the mean slack cannot choose K; its thinnest term holds 0.35 at K = 2 and
-0.13 at K = 3.
-
-```python {.runnable}
-for K in (2, 3, 4):
-    M, tau = studies["primary"].M, taus["primary"]
-    print(
-        K, np.round([movement(M, K, tau, seed=s) for s in range(3)], 2)
-    )
-```
-
-Over three draws the primary regime's movement is 0.18 to 0.20 at K = 2, 0.15 to 0.29 at K = 3 and
-0.14 to 0.95 at K = 4. The ranges overlap, so this check excludes none.
+The same checks on the cubesat case are on the [Examples page](../examples.md#choosing-k-on-the-case).
 
 ## Large K and the elbow in PCA
 

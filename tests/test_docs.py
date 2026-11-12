@@ -209,24 +209,30 @@ def test_runnable_blocks_execute(page, monkeypatch):
 
 
 @pytest.mark.slow
-def test_choosing_k_pages_cubesat_numbers_are_the_blocks_output(monkeypatch):
-    """The page's cubesat sentences quote what its blocks print on the regenerated record
-    (thirteen metrics, 3,000 designs per regime): each pinned fragment is in the prose and in the
-    output, to the digits the page gives (no more than the reading of a break needs)."""
+def test_examples_page_choosing_k_numbers_are_the_blocks_output(monkeypatch):
+    """The Examples page's choosing-K sentences quote what its blocks print on the regenerated
+    record (thirteen metrics, 3,000 designs per regime): each pinned fragment is in the prose and
+    in the output, to the digits the page gives (no more than the reading of a break needs)."""
     import contextlib
     import io
 
     import matplotlib
 
     matplotlib.use("Agg")
-    page = "user-guide/choosing-k.md"
+    import sys
+
+    sys.path.insert(0, str(DOCS.parent / "examples" / "adcs"))
+    import case
+
+    page = "examples.md"
+    section = re.search(r"## Choosing K on the case\n(.*?)\n## ", _text(page), re.S).group(1)
     out = io.StringIO()
-    namespace = {"__name__": "__docs_block__"}
+    namespace = {"__name__": "__docs_block__", "case": case}
     with contextlib.redirect_stdout(out):
-        for i, block in enumerate(_runnable_blocks(page), 1):
-            exec(compile(block, f"{page}[block {i}]", "exec"), namespace)
+        for i, block in enumerate(RUNNABLE_RE.findall(section), 1):
+            exec(compile(block, f"{page}[choosing K, block {i}]", "exec"), namespace)
     printed = out.getvalue()
-    prose = " ".join(_text(page).split())
+    prose = " ".join(section.split())
     pinned = [
         # (the fragment of the prose, the fragments of the output it quotes)
         ("The primary regime drops by 0.078, then 0.023, 0.012 and 0.005",

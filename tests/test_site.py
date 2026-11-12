@@ -60,18 +60,18 @@ BUDGETS = {
     "user-guide/overview.md": 500,
     "user-guide/conditioning.md": 700,
     "user-guide/fitting.md": 668,  # 800 until WP31 U2 and U3
-    "user-guide/choosing-k.md": 707,  # WP31 U3 (677), review G-1, G-3, G-4
+    "user-guide/choosing-k.md": 573,  # 707 until WP33 (the cubesat block moved to Examples)
     "user-guide/tensions.md": 700,
     "user-guide/chart.md": 557,  # 600 until WP28 X-1; 561 until the holes block printed
     "user-guide/prediction.md": 350,
     "user-guide/termination.md": 743,  # 600 until WP28 S-10
     "user-guide/limitations.md": 500,
     "api.md": 300,
-    "examples.md": 676,  # 720 until WP28 X-2 (the coordinates figure went)
+    "examples.md": 671,  # 720 until WP28 X-2 (the coordinates figure went); 676 until WP33
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 7407  # 7472 until WP33 (docs Home)
+TOTAL_BUDGET = 7276  # 7472 until WP33 (Home, the cubesat block to Examples)
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
