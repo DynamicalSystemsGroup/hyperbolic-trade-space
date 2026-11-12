@@ -374,3 +374,14 @@ think he'd prefer it that way. he's not really the kind of person who likes to w
 contract with BlockScience (2024)"; the workshops stay sourced to the firm's post, the contract is the supervisor's own
 account and the trace row and the claims-register row mark it so; the record's `role` fields keep the source's own
 words in quotation marks, since the record quotes what the source says. Folded into the WP37 closing unit.
+
+## The supervisor on the Clark sentence (2026-11-13, 13:30)
+
+**Supervisor, verbatim:** "'Andrew Clark wrote with Alexander Mihailov and Zargham a community-currency model (2023)
+developed with the Red Cross and Grassroots Economics.' 'which applied related methods in modeling, simulation and
+analysis.' or something along those lines so it doesnt read like a nonsequitr"
+
+**Applied as:** "Andrew Clark wrote with Alexander Mihailov and Zargham a community-currency model (2023), developed
+with the Red Cross and Grassroots Economics, which applied related methods in modeling, simulation and analysis." The
+work and its partners stay sourced to the paper; the clause "applied related methods" is the team's account of the
+connection and the trace and claims rows mark it so. Folded into the WP37 closing unit with the Penland change.
