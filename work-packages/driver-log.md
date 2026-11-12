@@ -228,6 +228,18 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **b4606f5, the fast verdict, and the choosing-K unit received (21:50).** CI fast on both platforms: 4 failed,
+  1869 passed; the four are the data commit's own cascade (the datasets table digest; the verification pointers at
+  `@11`; the v1-v2 comparison register lacking rows for the container's control effort and saturation fraction) and
+  the budget cut's miss (register row C261 quoting a deleted fitting-page sentence). Routed to the cascade; none is
+  in the data. The choosing-K unit (755e151) applies the package's own checks to the case and reads it at K = 2 on
+  both regimes (the largest mean-slack drop at K = 2, a 6 percent thin term at K = 3 at the fit's own temperature, a
+  splinter at K = 4); the K = 3 figures leave the body, the planes, chart and association figures are redrawn at K = 2,
+  D.15 holds the table. A changed conclusion for the supervisor's review list. The unit's three left-standing items
+  (the Section 6 certificate sentence at K = 3; K = 2 keys missing from the jitter record; the examples page) are
+  cascade units, not his decisions, and are routed. The assistant's verification of 755e151 (fast suite, rendered
+  pass) follows.
+
 - **The container proof complete; the data of record is the container's (21:30).** The five entries ran in image
   27add815d66c (built at c64430e) at one worker in 61 minutes with a clean tree and no memory kill: `v2-primary@12`,
   `v2-baseline@12`, `v2-check-predictions@12`, `v2-check-designs@12`, `scope-sensitivity-shared-subspace-v2@11`.
