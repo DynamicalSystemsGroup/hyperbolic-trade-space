@@ -70,3 +70,13 @@ form the posynomial frontier and its convex programs rest on (the paper's Boyd e
 finds that work from public sources (his website, a scholarly index, the papers' DOIs), records titles, venues,
 years and citation counts as the index states them with the date read, and the page says it in one sentence with
 links; nothing beyond what the sources show, no count quoted without its source and date.
+
+## The supervisor, on the scientific computing community (verbatim)
+
+> our team has a longstanding relationship with the scientific computing community (numfocus/scipy/pydata)
+
+**The assistant's reading.** Another thread for the page, from public sources: the team's standing relationship
+with the scientific computing community (NumFOCUS, SciPy, PyData): talks, proceedings papers, sponsorships,
+maintainership or community roles that public records show, each with its link and date. It bears on the page's
+point that this package is a scikit-learn-conformant estimator by design, and on the paper's venue (the SciPy
+proceedings template it is written in). One sentence on the page, backed; nothing a source does not show.
