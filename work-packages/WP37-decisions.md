@@ -80,3 +80,21 @@ with the scientific computing community (NumFOCUS, SciPy, PyData): talks, procee
 maintainership or community roles that public records show, each with its link and date. It bears on the page's
 point that this package is a scikit-learn-conformant estimator by design, and on the paper's venue (the SciPy
 proceedings template it is written in). One sentence on the page, backed; nothing a source does not show.
+
+## The supervisor, on the page's storytelling and an eleventh name (verbatim)
+
+> the history and acknowledgements page should serve storytelling that mirrors my personal webpage but narrows to
+> the relevant scope of this piece, taking the real history and aligning it with an image of a high performing
+> engineering team who is adept with formal methods, simulation, analysis, machine learning, data science, etc.
+> positioned in scientific open source software and systems engineering with a focus on decision making assurance
+> and outcomes, with computers, fast but with confidence.
+
+> add Sean McOwen to the credited people
+
+**The assistant's reading.** The frame for the drafting unit: the page tells the story his personal website tells,
+narrowed to what bears on this work, and the image it gives is the one he names, a high-performing engineering
+team adept with formal methods, simulation, analysis, machine learning and data science, placed in scientific
+open-source software and systems engineering, working on decision-making assurance and outcomes, "with computers,
+fast but with confidence". The register stays the site's: each part of that image is shown by a public work the
+page links (a theorem proved about an algorithm, a simulation framework, an analysis, a published method), not
+asserted. The named list is eleven with Sean McOwen.
