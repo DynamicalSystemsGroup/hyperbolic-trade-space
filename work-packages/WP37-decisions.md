@@ -121,3 +121,14 @@ title carries such a term may still be linked; the page's own words do not use i
 
 **The assistant's reading.** The attribute list the page keeps is: highly automated, adversarial, and with a great
 deal of value at risk; the systems' stakes are named in those words, not by the technology that carried them.
+
+## The supervisor, one more attribute (verbatim)
+
+> another attribute of the systems we dealt with was multipolar / contentiousness amongs sponsors. no single
+> decision authority, often design decisions were litigated publicly. legitimacy impacted outcomes.
+
+**The assistant's reading.** The attribute list the page keeps grows to: highly automated; adversarial; much value
+at risk; multipolar and contentious sponsorship, with no single decision authority, design decisions litigated in
+public, and legitimacy bearing on outcomes. The last one is also the thread that ties the history to this paper's
+first sentence, a decision analysis that owes an answer and a justification an accountable decision maker can
+follow and defend; the page may say so in a clause if the record supports it, and never more.
