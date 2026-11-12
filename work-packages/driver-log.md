@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **dd7753a, the rendered read (09:05).** Stage rebuilt at dd7753a on 8791. Section 8 says the four thresholds'
+  limits "are read from the data's pass fractions, not a mission's" and, beside "illustrative", that "the case has no
+  schedule, no payload and a flat launch price"; Appendix C.8 adds "What each omission does to a reading of the
+  case" (pointing error a loop-and-tracker figure; the small wheel's feasibility a one-slew reading; the launch slot
+  understating launch 3.1 to 4.2 times at one satellite; the horizon and slew law as choices; rigid wings and the
+  mass axis a trim of 1.3 to 5.7 kg on about 10.6 kg of fixed bus), the numbers computed by a test from the data; no
+  stderr on either page. The assistant's fast suite on the head is running.
+
 - **Stage 6 review in; WP32 and WP33 approved (08:50).** The reviewer who ran the thing (`WP30-review/review.md`,
   2511508) on 8806b0e: full suite 2356 passed, 0 failed (slow included), ruff, lock and vocabulary clean, notebooks
   executed with no stderr and outputs unchanged, ledger verify 0 drifts at `@12`, no console errors or horizontal
