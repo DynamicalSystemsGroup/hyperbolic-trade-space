@@ -212,3 +212,13 @@ name, in the team's own voice, and the sentence does double duty: it says plainl
 the firm by people the page thanks but cannot describe here, which is also where the earlier "team's own thanks"
 for Andrew Penland can sit if no public source is found for him. No client is named, no project detail is given,
 and the sentence is marked as the team's account.
+
+## The supervisor, adding Carolina Riascos Álvarez (verbatim)
+
+> i think you can acknowledge carolina (https://www.linkedin.com/in/carolina-riascos-%C3%A1lvarez/) by name and
+> github handle not linkedin. in the same way as jakob, implying relevant work on undisclosed projects.
+
+**The assistant's reading.** The named list is twelve with Carolina Riascos Álvarez. The page credits her by name
+and GitHub handle (the workers find the handle from public GitHub, the firm's organizations or commits; the
+LinkedIn address he gave identifies her and is not linked), in the same sentence as Jakob Hackel: relevant work on
+client projects the firm cannot describe here, the team's own account, marked.
