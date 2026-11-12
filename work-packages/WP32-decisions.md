@@ -15,3 +15,9 @@ OD3 fixtures under tests and records under work-packages."
 ## Approval (2026-11-12; the assistant, scope at 03d95fd), open questions decided
 
 **Assistant, verbatim:** "WP32 Q1: after two re-runs, an open stop the docs owe goes to the chief engineer's list with the cell's words; Q2: a code defect a cell finds is fixed in this package as its own unit with a test, since the package is the deliverable and a user-found defect blocks the release." Both scopes approved as written at 03d95fd.
+
+## Round 3 (2026-11-12; the assistant, head 60f92d9)
+
+Acceptance record: pending (the supervisor's acceptance of WP32 has not been given; this file records none).
+**Assistant, verbatim:** "Round 3 is accepted: both pump-table cells reached the fit and the trilemma with the new block, no stop persists, nothing goes to the chief engineer's list from the cells. The K = 1 tension_report error on an exact-relation table right after select_temperature: no change; the message names the fix and all three cells that met it recovered in one step; the review names it as a residual, not a caveat in the docs. U2's HTTP-text reach is noted and acceptable for the docs text (the rendered pass is the reviewer's)."
+Rows: `triage.md`, "Round 3" (R3-1 to R3-4).

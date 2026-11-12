@@ -8,16 +8,16 @@ The last column is what a cell skipped or what could go.
 
 | # | Stop or snag | Who | Page or function | Disposition | Content that did not earn its place |
 |---|---|---|---|---|---|
-| 1 | README has no first call; the first fit is two clicks away on the site | U1, U3 | `README.md` | docs: first screen = one install line, one first-call example (import, condition, fit) | README "Status" paragraph and the CI sentence under Quickstart (repo-process, for the maintainer) go to `work-packages/` |
+| 1 | README has no first call; the first fit is two clicks away on the site | U1, U3 | `README.md` | docs: first screen = one install line, one first-call example (import, condition, fit) | README "Status" paragraph ("0.1 release candidate in preparation") and the CI sentence under Quickstart ("shards run on Linux and Windows; paper build on Linux and macOS"): deleted, not moved (`work-packages/README.md` holds a status table and does not carry either sentence). They described repo process for the maintainer and told a package user nothing to do |
 | 2 | README points to docs by a repo path (`docs/index.md`), not the site | U1, U3 | `README.md` | docs: link the site | the repo-path link |
 | 3 | README never says to `cd` into the checkout (`uv sync` in the wrong directory); one cell ran bare `python3` because only `uv run pytest` is shown | U4, U3 | `README.md` | docs: `cd` in the install line; "run everything with `uv run`" | none |
 | 4 | "Choosing K" helper block imports `case` from `examples/adcs`; all four cells hit or avoided it and rewrote a five-line loop | U1, U2, U3, U4 | `user-guide/choosing-k.md`, "Helpers" | docs: the import moves into the cubesat block that uses it, so the helpers need only the installed package | the cubesat section was skipped by every cell: it stays for the case-study reader, now marked as such in one clause |
 | 5 | Report does not give the band's design count | U1 | `TensionReport.n_near_frontier` | no change in code: the field exists and prints with the report; docs: name it on the tensions page | none |
-| 6 | Default target 0.10 raises `ValueError` "not bracketed" on both tables (bounds (3, 1000)); target 0.25 worked | U2, U4 | `select_temperature`; `fitting.md`, "Choosing the temperature" | **docs, not a code defect.** The message names the fractions at both ends, the cause and the three remedies, and both cells recovered from it in one step. I ran the pump table: bounds (3, 1000) raise; bounds (3, 1e4) give tau 6023 at target 0.10 and (3, 1e5) give 7401; the plain table gives 178.2 and 173.2 at (3, 1e4) and (3, 1e5). So the failure is the docs' example bounds and the unqualified "start at the default 0.10" for a table bound by an exact relation (a model sweep), which stays above the target at tau 1000 | the cap of 1000 in the page's advice |
-| 7 | `plot_frontier_coordinates(ts, M)` raises `TypeError`; it takes `Z, log_v` | U2 | `user-guide/chart.md` "Plots" | docs: the bullet names the signature and where `Z`, `log_v` come from | none |
+| 6 | Default target 0.10 raises `ValueError` "not bracketed" on both tables (bounds (3, 1000)); target 0.25 worked | U2, U4 | `select_temperature`; `fitting.md`, "Choosing the temperature" | **docs, not a code defect.** The message names the fractions at both ends, the cause and the three remedies, and both cells recovered from it in one step. I ran the pump table: bounds (3, 1000) raise; bounds (3, 1e4) give tau 6023 at target 0.10 and (3, 1e5) give 7401; the plain table gives 178.2 and 173.2 at (3, 1e4) and (3, 1e5). So the failure is the docs' example bounds and the unqualified "start at the default 0.10" for a table bound by an exact relation (a model sweep), which stays above the target at tau 1000 | the cap of 1000 in the page's advice; `fitting.md`: the sentence "It follows the scikit-learn decomposition family: `fit`, `transform`, `inverse_transform`, `score_samples`, and no `predict`" (named the API's lineage; the next block shows the calls) and the clause "(about 0.30 on the table of `make_frontier_data(300, 4, n_terms=2, random_state=777)`)" (a quantified example on a table the reader does not have) |
+| 7 | `plot_frontier_coordinates(ts, M)` raises `TypeError`; it takes `Z, log_v` | U2 | `user-guide/chart.md` "Plots" | docs: the bullet names the signature and where `Z`, `log_v` come from | `chart.md`: the sentence "They share one colour vocabulary, declared as module constants (`FRONTIER_COLOR`, ...)" (an implementation detail; the reader sees the colours in the plots and does not set them) |
 | 8 | stderr `findfont: Failed to find font weight normal for Lucida Grande` on every plot | U1, U2, U3, U4 | matplotlib | no change: it reproduces with a bare `imshow` and `colorbar` and no package import, so it is the matplotlib font cache on this machine, not the package | none |
-| 9 | Report names a trilemma `[0 1 3]` on the plain table, the third member's exponent 0.004 to 0.01 | U1, U3 | `tensions.md`, "The contending set" | docs: one clause (the name counts every exponent above 1e-9; read the exponents before the name). Planted-fact check below: both cells read the pair right | the sentence "The set is found, not assumed" restates the next sentence |
-| 10 | No page connects a SysML v2 model to the tool; which model elements become attribute columns, and which columns are not attributes (design variables, a `batch` label, ids), is guessed | U2, U4 (design variables also U1, U3, U2, U4: `batch`, `sample`) | `user-guide/overview.md`, pipeline step 2 | docs: **owed.** One optional clause on the existing page: any table works, a SysML v2 model's exported table is one source, design variables and labels are configuration, not attributes. Not a new page, not the first screen; the tool still needs no SysML v2 | two sentences of the overview's opening paragraph and "reads as a factor of improvement" (deleted to pay for the clause) |
+| 9 | Report names a trilemma `[0 1 3]` on the plain table, the third member's exponent 0.004 to 0.01 | U1, U3 | `tensions.md`, "The contending set" | docs: one clause (the name counts every exponent above 1e-9; read the exponents before the name). Planted-fact check below: both cells read the pair right | the sentence "The set is found, not assumed" restates the next sentence; `tensions.md`: the sentence "This is how the method chains with PCA: the spread along the surface is the set of trade-offs the designs exercised" (a claim about another method with no lemma or test behind it) |
+| 10 | No page connects a SysML v2 model to the tool; which model elements become attribute columns, and which columns are not attributes (design variables, a `batch` label, ids), is guessed | U2, U4 (design variables also U1, U3, U2, U4: `batch`, `sample`) | `user-guide/overview.md`, pipeline step 2 | docs: **owed.** One optional clause on the existing page: any table works, a SysML v2 model's exported table is one source, design variables and labels are configuration, not attributes. Not a new page, not the first screen; the tool still needs no SysML v2 | one sentence of the overview's opening paragraph ("Some designs win on one number and lose on another.") and the factor sentence ("reads as a factor of improvement"), deleted to pay for the clause |
 | 11 | "Is fitting per batch the intended use?" (categorical column) | U1, U3 | none | covered by row 10's clause (labels are not attributes); per-group fitting is not owed | none |
 | 12 | Which target fraction is meaningful for real data; is tau near 700 trustworthy | U2 | `fitting.md` | not owed beyond row 6: the docs already say the band is 1/tau and tau is a judgement; a second sentence would be caveat | none |
 | 13 | Heatmap label "power_kw" is the inverted metric (sign reads opposite to raw correlation) | U2 | `tensions.md`, `plot_tensions(names=)` | not owed: U2 resolved it itself and the conditioning page says metrics are inverted | none |
@@ -126,3 +126,51 @@ third time on a copied block, it goes to the chief engineer's list with that cel
 
 None. R2-1 and R2-2 are the page's example bounds and the tolerance semantics the docstring states; the
 package default is not the defect and is not changed.
+
+# WP32 triage, round 3
+
+Inputs: the two returns in `round-3/` (unedited), head 60f92d9 and the stage as served. Round 3 re-ran U2 and U4
+only, by the assistant's decision (see `WP32-decisions.md`). Neither cell raised "not bracketed". Both reached the fit
+and the trilemma `[0 1 2]` (exponents 0.28, 0.23, 0.49, mass 0, pump table). No stop persists, so nothing goes to the
+chief engineer's list from the cells.
+
+## Round-2 rows: recurred?
+
+| Round-2 row | Recurred? |
+|---|---|
+| R2-1 "not bracketed" at 0.10, bounds (3, 1000) | no: both cells copied the pattern, `select_temperature(M, 0.10, bounds=(3, 1e4))`, tau 6023.1, no error |
+| R2-2 tau moves with the bounds | no as a question; U2 and U4 both note the fitting page's warning and read it as given |
+| R2-3 K = 1 band error | recurred in a new place, R3-1 |
+| R2-5 trilemma reading | read right by both (U4 tested tau 50, 200, 1000, 4760: the set is stable) |
+| R2-6, R2-10, R2-11 questions | recurred as questions (which tau to report, identity of physics versus trade, mass exponent 0); answered by the cells, no stop |
+| R2-7 no route from the model to orientation | recurred as the step 6 wish, both cells; the same disposition (the overview clause says the package reads tables) |
+| R2-9 own slips | U2 only, R3-2 |
+| font warning (row 8) | U4 reports it three times; matplotlib, no change |
+
+## Round-3 rows
+
+| # | Stop, error, snag or guess | Who | Page or function | Disposition | Content that did not earn its place |
+|---|---|---|---|---|---|
+| R3-1 | `tension_report(ts, M)` at K = 1 right after `select_temperature` (tau 6023.1) raises "only 6 near-frontier rows (|log V| < 0.000166) but min_near_frontier = 10; use a larger band, band=0.00021 ..., or fit at temperature=4.76e+03 ..." on the exact-relation pump table; both cells refit at tau 4760 (U2, U4) in one step from the message and got 10 rows | U2, U4 | `tension_report`; `fitting.md` | **no change; residual.** The assistant ruled: the message names the fix and all three cells that met it (U1 batches, U2, U4, over rounds 2 and 3) recovered in one step. The review lists it as a residual, not a defect and not a caveat for the docs. The package is unchanged | none |
+| R3-2 | `FileNotFoundError: 'table.csv'` running `run.py` from inside the checkout | U2 | none | not owed: an own slip (R2-9 again); the README says `uv run` and the cell recovered by running from its own directory with `--project` | none |
+| R3-3 | Guessed `/docs/overview/` (HTTP 404; the page is `/docs/user-guide/overview/`); the browser pane refused a new tab (tab cap), so U2 read the pages over HTTP as converted text and did not see them rendered | U2 | stage | no change: the guess is a reader's wayfinding datum (cf. R2's `/docs/guide/`), found in two steps. HTTP-text reach is accepted for the docs text by the assistant; the rendered pass is the reviewer's, and the review rendered the pages | none |
+| R3-4 | "README does not say which columns are attributes; the overview page says it, found late" | U2 | `README.md`; `user-guide/overview.md` | not owed beyond row 10: the overview clause (design variables and labels are configuration, not attributes) is there and U4 found it fifth and used it; U2 reached it twelfth because it read the conditioning page first. The README's first screen is one install line and one first call by decision (row 1), and a column rule there would regrow it. Reading order is the wayfinding datum of row 16, with WP33 | none |
+
+## Standing question
+
+Both answered **no**. The closest quotation both give is the overview clause ("any table works, and a SysML v2 model's
+exported table is one source"), read as optional. The cubesat example on the Examples page was set aside.
+
+## Planted-fact check
+
+Pump table: trilemma `[0 1 2]` (flow, head, power), exponents 0.28, 0.234, 0.487, mass 0; both read it right, both
+noted that power is defined by the model from flow and head so the trade is partly an identity (U4: "partly a
+definition"), and mass associated with flow (-0.93) but not binding. Right, and matching the answers file.
+
+## Defect requests for a code unit
+
+None.
+
+## Content that did not earn its place
+
+None this round: no docs edit followed it.
