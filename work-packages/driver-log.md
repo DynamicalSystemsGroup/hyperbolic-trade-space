@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The head with WP33's first screens, the fast verdict (21:15).** Fast suite 1895 passed, 0 failed, lock current;
+  the slow site and docs tests still running locally. CI on the history-page head: every job green on both
+  platforms but docs-paper, still running. The abstract correction, the history page's fixes and second research
+  pass, the WP35 build and the figure-determinism unit are in their worktrees.
+
 - **The current head as rendered (20:50).** Stage rebuilt at the dev head on 8791 (WP33's first screens and the
   history page; the repeat round not yet released, since the abstract correction is pending). The root page routes
   by need in five lines with the adoption-cost line and no horizontal scroll; the history link sits in the footer;
