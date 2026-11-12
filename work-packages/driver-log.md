@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP33's repeat round accepted; its bounce points become units (02:05).** On the frozen stage at df0cad9 the
+  eight readers' steps fell from 47 to 30 with no persona rising, and the fresh U1 cell (WP32 R-10) reached the
+  planted answer with no stop the docs owe; records at cec9d70; the stage is unfrozen. Items 5 and 6 landed at
+  7ef86dc: api.md deleted and api-reference.md titled "API" with the overview as its opening section, by contract
+  amendment (version 21), 298 to 287 words; the nav titles changed. The assistant's calls on the remaining bounce
+  points: five units (the root page's "Decide" door retargeted to the Examples requirements block; a README clause
+  pointing at select_temperature; the Overview's PCA sentence and Getting started's evaluation clause as pointers;
+  one audience sentence at the top of Section 1, not the abstract; the install time re-measured package-only and
+  the root page's figure corrected, the README gaining the package-only install line), each entry-surface change
+  listed for the supervisor; the typed /docs/user-guide/ listing answered by a one-line router page, no rename and
+  no amendment; six smaller items recorded, not fixed. WP35's fresh reader and WP37's walk may run on the current
+  stage; the rebuild follows the units. CI dispatched on the head.
+
 - **The head with the WP35 build, the fast verdict (01:45).** Fast suite 1916 passed, 0 failed; ruff and format
   clean, lock current, attribution 0, vocabulary 0 new; the slow paper, site and docs tests still running locally.
   CI on ee009be: Linux slow green, two jobs left; on df0cad9: three jobs left. PM13's units for WP33's items 5 and 6
