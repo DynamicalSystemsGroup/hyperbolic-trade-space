@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The history page opened for the supervisor (00:45).** Stage rebuilt at df0cad9 on 8791; the page as rendered: the
+  prose on one 1280-wide screen with its purpose sentence first, the dated reference list of 63 items beneath it
+  oldest first from history.yaml, 91 links, no horizontal scroll; opened in the browser pane for his close read.
+  The assistant's browser tab was closed a second time by another agent's run (the pane's seed tab with it); the
+  rule is restated to every browser-using unit and the unit that closed tabs is asked for by name.
+
 - **df0cad9, the assistant's checks (00:30).** Ruff and format clean, attribution 0, vocabulary 0 new; the site
   (history page tests included), claims-register, docs and encoding tests 116 passed. The page waits only on the
   stage rebuild to be opened for the supervisor.
