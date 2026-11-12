@@ -1179,3 +1179,11 @@ section = "Case construction"
 words_removed = 3
 no_longer_did = "the sentence counted four threshold requirements and left the two cost limits out of what Appendix D.17 reads after the fit; it now names all six in fewer words (the cost coverage sentence says 'the two costs' for 'the unit cost and the fleet cost')"
 authority = "the supervisor's 'no floating requirements' (WP30-decisions.md, 2026-11-11, 12:00), applied to the unit-cost and fleet-cost limits"
+
+# The design-sets block names what it applies: the four performance thresholds (the supervisor's, 2026-11-12).
+[[cut]]
+date = "2026-11-12"
+section = "Discussion"
+words_removed = 1
+no_longer_did = "the sentence said 'the requirements' for the four performance thresholds the constrained set applies, and repeated 'requirements' after the pointer; it now names the four performance thresholds and says 'them' (Appendix D.17 carries the reason the two cost limits are not among them)"
+authority = "the PM's brief for the design-sets block (the four performance thresholds named; the cost limits read after the fit)"

@@ -216,7 +216,7 @@ CUBESAT = CaseSpec(
     # the two cost requirements (cubesat.sysml, part budgets: unitCostLimit, fleetCostLimit; the
     # supervisor's values, WP30-decisions.md), each on the covered cost, read as attribute <= limit
     # at the design's own fleet size; read after the fit with the four above (no floating
-    # requirements), and not part of the constrained design set, which keeps the four
+    # requirements), and not among the four performance thresholds that constrain the design set
     cost_requirements={
         "unit_cost_usd": (350000.0, "USD per satellite"),
         "fleet_cost_usd": (6000000.0, "USD per fleet"),
@@ -1238,7 +1238,7 @@ def summed_exponents(study, fit, pairs):
 
 
 def requirement_mask(df, spec=CUBESAT, only=None, costs=False):
-    """Rows of ``df`` that meet the case's threshold requirements (each ``attribute <= limit``).
+    """Rows of ``df`` that meet the four performance thresholds (each ``attribute <= limit``).
 
     Parameters
     ----------
@@ -1248,7 +1248,7 @@ def requirement_mask(df, spec=CUBESAT, only=None, costs=False):
         One attribute of ``spec.requirements`` or ``spec.cost_requirements``; default all of the
         requirements read, jointly.
     costs : bool, default False
-        Also read the cost requirements. The design sets keep the four threshold requirements
+        Also read the cost requirements. The design sets keep the four performance thresholds
         (``False``); :func:`requirements_table` reads all six.
     """
     ok = pd.Series(True, index=df.index)
@@ -1325,9 +1325,12 @@ def requirements_table(study, fit):
     return pd.DataFrame(rows)
 
 
-DESIGN_SETS = ("all designs", "feasible", "requirements met")
+DESIGN_SETS = ("all designs", "feasible", "thresholds met")
 """The three design sets of :func:`design_sets_table`: every design, the feasible ones (the fit of
-record) and the feasible ones that also meet the threshold requirements (the constrained set)."""
+record) and the feasible ones that also meet the four performance thresholds (the constrained set).
+The two cost limits are not among them: they are budget limits read after the fit, and the unit cost
+limit binds through the fleet size (no design of fleet size one passes it), so a set constrained by
+it would be a fleet-size choice, not a design-space one."""
 
 
 def _set_studies(regime, spec=CUBESAT):
@@ -1343,7 +1346,7 @@ def _set_studies(regime, spec=CUBESAT):
     rows = {
         "all designs": base.raw,
         "feasible": base.feasible,
-        "requirements met": base.feasible[requirement_mask(base.feasible, spec)],
+        "thresholds met": base.feasible[requirement_mask(base.feasible, spec)],
     }
     out = {}
     for name, df in rows.items():
@@ -1430,7 +1433,7 @@ def design_sets_placement(spec=CUBESAT, sets=None):
     Returns
     -------
     pandas.DataFrame
-        Columns ``regime``, ``design``, ``passes the flags``, ``meets the requirements``, then per
+        Columns ``regime``, ``design``, ``passes the flags``, ``meets the thresholds``, then per
         set ``fit on <set>``: ``log V (bands, share below)``.
     """
     sets = sets or {r: design_sets(r, spec) for r in spec.regimes}
@@ -1450,7 +1453,7 @@ def design_sets_placement(spec=CUBESAT, sets=None):
             M = cond.transform(df)[cols].to_numpy()
             flags = all(bool(d.get(f, True)) for f in spec.flags)
             row = {"regime": regime, "design": d["name"], "passes the flags": flags,
-                   "meets the requirements": bool(requirement_mask(df, spec).iloc[0])}  # fmt: skip
+                   "meets the thresholds": bool(requirement_mask(df, spec).iloc[0])}  # fmt: skip
             for name, (_, fits) in by_set.items():
                 e = fits[1].estimator
                 lv = float(e.score_samples(M)[0])

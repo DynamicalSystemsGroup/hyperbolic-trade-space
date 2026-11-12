@@ -735,12 +735,12 @@ def test_design_sets_share_the_feasible_conditioning():
         assert len(conds) == 1  # one conditioning for every set
     feasible = t.loc[("primary", "feasible"), "contending set"]
     # the same seven metrics; the order is by exponent and moves with the set (WP30 gate)
-    met = t.loc[("primary", "requirements met"), "contending set"]
+    met = t.loc[("primary", "thresholds met"), "contending set"]
     assert set(met.split(", ")) == set(feasible.split(", "))
     place = case.design_sets_placement(sets=sets)
     assert len(place) == 14 and set(place["design"]) >= {"baseline configuration", "proposal_2"}
     base = place[place.design == "baseline configuration"]
-    assert not base["meets the requirements"].any()  # it fails the pointing-error requirement
+    assert not base["meets the thresholds"].any()  # it fails the pointing-error threshold
 
 
 @pytest.mark.slow

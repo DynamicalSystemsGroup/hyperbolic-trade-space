@@ -2,8 +2,7 @@
 
 ## A cubesat trade study across power, mass and attitude control
 
-[The worked case](paper:sect-case-construction) is a cubesat model coupling power, mass and attitude control. Thirteen metrics, among them
-settling time, pointing error, unit cost and fleet cost, are compared under two controller-gain settings. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`. In this
+[The worked case](paper:sect-case-construction) is a cubesat model coupling power, mass and attitude control. Thirteen metrics are compared under two controller-gain settings. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`. In this
 design loop a simulation measures the attributes; a fielded system's measured attributes would enter
 the same table and fit.
 
@@ -11,7 +10,7 @@ The primary regime's table (aggressive controller gains) has 2,134 feasible desi
 above V = 1:
 
 - **One term.** The tension report finds a contending set (metrics that trade off) of seven metrics (unit cost, available power,
-  pointing error, fleet cost, momentum headroom, settling time, depth of discharge): a 7-lemma, found from the data, not chosen beforehand.
+  pointing error, fleet cost, momentum headroom, settling time, depth of discharge): a 7-lemma.
 - **Two terms.** The case is read at K = 2, the K the [choosing-K checks](user-guide/choosing-k.md) pick. At the
   one-term temperature (`case.mean_slack_fixed_tau`) the mean slack falls from 0.122 to 0.043. At the
   two-term fit's own temperature, status `certified`, the terms have contending sets of 8 and 7 metrics and
@@ -60,7 +59,7 @@ fleet cost       71.4 | 71.0 %    57/238 | 85/293     1.50 | 0.49
 all jointly      25.7 | 22.2 %    178/238 | 241/293
 ```
 
-Refitted on three design sets in one conditioning, the one-term contending set barely moves:
+Refitted on three design sets, the one-term contending set barely moves. The third keeps the designs that meet the four performance thresholds; the two cost limits are budget limits read after the fit, and the unit cost limit binds through the fleet size (no design of fleet size one passes it), so a set constrained by it would be a fleet-size choice, not a design-space one:
 
 ```text
 # case.design_sets_summary()
@@ -68,7 +67,7 @@ primary, all designs (3000): unit cost, available power, pointing error,
   fleet cost, momentum headroom, settling time, depth of discharge
 primary, feasible (2134): unit cost, available power, pointing error,
   fleet cost, momentum headroom, settling time, depth of discharge
-primary, requirements met (814): momentum headroom, settling time,
+primary, thresholds met (814): momentum headroom, settling time,
   available power, unit cost, pointing error, fleet cost, depth of
   discharge
 stock, all designs (3000): available power, momentum headroom, total
@@ -77,8 +76,8 @@ stock, all designs (3000): available power, momentum headroom, total
 stock, feasible (2355): momentum headroom, available power, total mass,
   settling time, pointing error, depth of discharge, unit cost, fleet
   cost
-stock, requirements met (882): momentum headroom, settling time,
-  available power, unit cost, total mass, pointing error
+stock, thresholds met (882): momentum headroom, settling time, available
+  power, unit cost, total mass, pointing error
 ```
 
 ## Three metrics as shares of a total

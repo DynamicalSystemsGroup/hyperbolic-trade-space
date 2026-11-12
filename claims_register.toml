@@ -4995,7 +4995,7 @@ note = "candidate, pending the supervisor's review; Appendix D.17 prices each re
 
 [[claim]]
 id = "C407"
-fragment = "removing the infeasible designs or imposing the four threshold requirements before the fit changes the one-term contending set by at most one of its five metrics"
+fragment = "removing the infeasible designs or imposing the four performance thresholds before the fit changes the one-term contending set by at most one of its five metrics"
 file = "paper/paper.ipynb"
 anchor = "Discussion"
 kind = "R"
@@ -5008,7 +5008,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP23 close-out, D-18 and OD10 (a): CANDIDATE sentence 2 of 2 for the supervisor's review"
-note = "candidate, pending the supervisor's review; on the feasible set's conditioning: primary, the three sets share the contending set; baseline, all designs swap depth of discharge for total mass and the requirement-constrained set swaps power margin for energy balance (Spearman 0.988); spike A's own-rows conditioning had shown a changed set, a conditioning artefact (spike B, section 4)"
+note = "candidate, pending the supervisor's review; on the feasible set's conditioning: primary, the three sets share the contending set; baseline, all designs swap depth of discharge for total mass and the threshold-constrained set swaps power margin for energy balance (Spearman 0.988); spike A's own-rows conditioning had shown a changed set, a conditioning artefact (spike B, section 4)"
 
 [[claim]]
 id = "C408"
@@ -5930,7 +5930,7 @@ note = "narrowed from 'four threshold requirements': the unit cost limit (350,00
 
 [[claim]]
 id = "C499"
-fragment = "No design of fleet size one passes the unit cost limit, so that requirement binds through the fleet size."
+fragment = "The two cost limits are not among them: they are budget limits read after the fit, and no design of fleet size one passes the unit cost limit, so a set constrained by it would be a fleet-size choice, not a design-space one."
 file = "paper/supporting_material.ipynb"
 anchor = "D.17 The requirements read after the fit"
 kind = "R"

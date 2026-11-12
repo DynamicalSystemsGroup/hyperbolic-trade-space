@@ -790,7 +790,7 @@ def _design_sets():
 
 def design_sets_comparison() -> Md:
     """Constrained against unconstrained: the fit on all designs, the feasible ones, and the
-    feasible ones that meet the four threshold requirements, per dataset, in one conditioning.
+    feasible ones that meet the four performance thresholds, per dataset, in one conditioning.
 
     Returns
     -------
