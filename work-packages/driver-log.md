@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP35 stage-6 review findings ruled on (09:50).** The review at 48a0ead (R-1 to R-12, R-15, R-16 met; R-13, R-14
+  held for Appendix H) carries eight findings; the assistant's calls, sent to PM13: F-1, the theme's releases-widget
+  404 on every docs page, goes to WP8b's checklist (reload after the repository is public and tagged; turn the lookup
+  off if it remains); F-2, phone-width tables scrolling with the key column off-screen, no content change, the
+  theme's scroll container is the rendering, and Appendix H's table is designed for phone width; F-3, the 0.325
+  against 0.328 comparison, resolved by the removal of the Appendix G passage that Appendix H replaces; F-4, the
+  limitations budget 493 against 475, folded into the WP36 integration unit, which sets the cap to the page's count;
+  F-5, MyST's abbreviation falling inside "HoroPCA", fixed in the Appendix H unit by taking PCA out of the
+  abbreviations list and defining it at first use; F-6, literal TeX in the Appendix E gaps table (since 7b47261), a
+  paper-queue unit after D.3 and G.2 with a rendered check; F-7, blob/main links that 404 until the merge, a WP8b
+  checklist row; F-8, none. PM13's paper units fbbaf2b and 0ecba1d confirmed on dev and inside the ff9c410
+  verification.
+
 - **WP35 stage 1b verified and accepted; Appendix H content decided (09:20).** The experiment (ef4d118): a hypothesis
   with refutation conditions committed before the run, 70 tables in three arms that decouple the edge from the
   spread, 2,100 HoroPCA fits, five restarts each, every part surviving. The assistant's verification: ruff clean on the
