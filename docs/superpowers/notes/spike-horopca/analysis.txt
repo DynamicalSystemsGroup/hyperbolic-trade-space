@@ -1,0 +1,207 @@
+
+=== cubesat_primary  (full table n=2134, d=13; HoroPCA on n=500)
+PCA explained variance PC1..4 (all rows): [0.325 0.198 0.16  0.103]  PC1+PC2: 0.523
+PCA (all rows)  target: [best-PC index (|cos|)] | span(PC1) span(PC1,2)
+   fitK1 t1     PC10 (0.51) | 0.02 0.02
+   fitK2 t1     PC8 (0.70) | 0.26 0.39
+   fitK2 t2     PC10 (0.50) | 0.08 0.09
+HoroPCA (subsample), best of 5 runs by loss. R_max: FM-offset | k=1 expl, k=2 expl | span k=1, k=2 per target (unreflected) | run-to-run explained range
+   R=0.25: |mu|=0.000 | 0.316, 0.530 [k1 runs 0.316-0.316] [k2 runs 0.511-0.530]
+        fitK1 t1     k=1 |cos| 0.03   k=2 span 0.03
+        fitK2 t1     k=1 |cos| 0.26   k=2 span 0.38
+        fitK2 t2     k=1 |cos| 0.09   k=2 span 0.09
+   R=1.0: |mu|=0.000 | 0.216, 0.492 [k1 runs 0.215-0.216] [k2 runs 0.460-0.492]
+        fitK1 t1     k=1 |cos| 0.02   k=2 span 0.03
+        fitK2 t1     k=1 |cos| 0.24   k=2 span 0.34
+        fitK2 t2     k=1 |cos| 0.08   k=2 span 0.09
+   R=3.0: |mu|=0.000 | 0.068, 0.600 [k1 runs 0.068-0.068] [k2 runs 0.591-0.600]
+        fitK1 t1     k=1 |cos| 0.04   k=2 span 0.06
+        fitK2 t1     k=1 |cos| 0.27   k=2 span 0.33
+        fitK2 t2     k=1 |cos| 0.01   k=2 span 0.08
+PCA (subsample) explained k=1,2: 0.328 0.529
+
+=== cubesat_stock  (full table n=2355, d=13; HoroPCA on n=500)
+PCA explained variance PC1..4 (all rows): [0.298 0.201 0.171 0.157]  PC1+PC2: 0.498
+PCA (all rows)  target: [best-PC index (|cos|)] | span(PC1) span(PC1,2)
+   fitK1 t1     PC7 (0.75) | 0.04 0.05
+   fitK2 t1     PC9 (0.50) | 0.17 0.18
+   fitK2 t2     PC7 (0.80) | 0.07 0.09
+HoroPCA (subsample), best of 5 runs by loss. R_max: FM-offset | k=1 expl, k=2 expl | span k=1, k=2 per target (unreflected) | run-to-run explained range
+   R=0.25: |mu|=0.000 | 0.274, 0.496 [k1 runs 0.274-0.274] [k2 runs 0.495-0.496]
+        fitK1 t1     k=1 |cos| 0.03   k=2 span 0.04
+        fitK2 t1     k=1 |cos| 0.18   k=2 span 0.24
+        fitK2 t2     k=1 |cos| 0.07   k=2 span 0.08
+   R=1.0: |mu|=0.000 | 0.190, 0.453 [k1 runs 0.190-0.190] [k2 runs 0.442-0.453]
+        fitK1 t1     k=1 |cos| 0.03   k=2 span 0.03
+        fitK2 t1     k=1 |cos| 0.27   k=2 span 0.33
+        fitK2 t2     k=1 |cos| 0.07   k=2 span 0.07
+   R=3.0: |mu|=0.000 | 0.080, 0.558 [k1 runs 0.080-0.080] [k2 runs 0.554-0.558]
+        fitK1 t1     k=1 |cos| 0.05   k=2 span 0.06
+        fitK2 t1     k=1 |cos| 0.29   k=2 span 0.36
+        fitK2 t2     k=1 |cos| 0.05   k=2 span 0.08
+PCA (subsample) explained k=1,2: 0.286 0.502
+
+=== planted_K1_s0  (full table n=400, d=4; HoroPCA on n=400)
+PCA explained variance PC1..4 (all rows): [0.563 0.171 0.137 0.129]  PC1+PC2: 0.734
+   cos(fitK1 t1, nearest planted term) = 1.000
+   cos(fitK2 t1, nearest planted term) = 1.000
+   cos(fitK2 t2, nearest planted term) = 0.998
+PCA (all rows)  target: [best-PC index (|cos|)] | span(PC1) span(PC1,2)
+   planted t1   PC1 (0.98) | 0.98 0.99   w=[0.23 0.29 0.25 0.23]
+   fitK1 t1     PC1 (0.98) | 0.98 0.99   w=[0.23 0.29 0.25 0.23]
+   fitK2 t1     PC1 (0.99) | 0.99 0.99   w=[0.24 0.29 0.24 0.23]
+   fitK2 t2     PC1 (0.98) | 0.98 0.98   w=[0.21 0.3  0.26 0.24]
+HoroPCA (subsample), best of 5 runs by loss. R_max: FM-offset | k=1 expl, k=2 expl | span k=1, k=2 per target (unreflected) | run-to-run explained range
+   R=0.25: |mu|=0.000 | 0.562, 0.735 [k1 runs 0.559-0.562] [k2 runs 0.731-0.735]
+        planted t1   k=1 |cos| 0.99   k=2 span 0.99
+        fitK1 t1     k=1 |cos| 0.99   k=2 span 0.99
+        fitK2 t1     k=1 |cos| 0.99   k=2 span 0.99
+        fitK2 t2     k=1 |cos| 0.98   k=2 span 0.98
+   R=1.0: |mu|=0.000 | 0.528, 0.730 [k1 runs 0.513-0.528] [k2 runs 0.726-0.730]
+        planted t1   k=1 |cos| 0.97   k=2 span 0.99
+        fitK1 t1     k=1 |cos| 0.97   k=2 span 0.99
+        fitK2 t1     k=1 |cos| 0.97   k=2 span 0.99
+        fitK2 t2     k=1 |cos| 0.96   k=2 span 0.98
+   R=3.0: |mu|=0.000 | 0.410, 0.711 [k1 runs 0.211-0.410] [k2 runs 0.702-0.711]
+        planted t1   k=1 |cos| 0.90   k=2 span 0.99
+        fitK1 t1     k=1 |cos| 0.90   k=2 span 0.99
+        fitK2 t1     k=1 |cos| 0.91   k=2 span 0.99
+        fitK2 t2     k=1 |cos| 0.89   k=2 span 0.98
+PCA (subsample) explained k=1,2: 0.563 0.734
+
+=== planted_K2_s7  (full table n=300, d=3; HoroPCA on n=300)
+PCA explained variance PC1..4 (all rows): [0.651 0.191 0.158]  PC1+PC2: 0.842
+   cos(fitK1 t1, nearest planted term) = 0.990
+   cos(fitK2 t1, nearest planted term) = 1.000
+   cos(fitK2 t2, nearest planted term) = 1.000
+PCA (all rows)  target: [best-PC index (|cos|)] | span(PC1) span(PC1,2)
+   planted t1   PC3 (0.81) | 0.59 0.59   w=[0.04 0.7  0.27]
+   planted t2   PC3 (0.70) | 0.65 0.72   w=[0.22 0.65 0.13]
+   fitK1 t1     PC3 (0.76) | 0.62 0.65   w=[0.14 0.68 0.19]
+   fitK2 t1     PC3 (0.81) | 0.59 0.59   w=[0.03 0.7  0.27]
+   fitK2 t2     PC3 (0.70) | 0.65 0.72   w=[0.22 0.65 0.13]
+HoroPCA (subsample), best of 5 runs by loss. R_max: FM-offset | k=1 expl, k=2 expl | span k=1, k=2 per target (unreflected) | run-to-run explained range
+   R=0.25: |mu|=0.000 | 0.658, 0.850 [k1 runs 0.638-0.658] [k2 runs 0.845-0.850]
+        planted t1   k=1 |cos| 0.55   k=2 span 0.54
+        planted t2   k=1 |cos| 0.62   k=2 span 0.67
+        fitK1 t1     k=1 |cos| 0.59   k=2 span 0.60
+        fitK2 t1     k=1 |cos| 0.55   k=2 span 0.54
+        fitK2 t2     k=1 |cos| 0.63   k=2 span 0.67
+   R=1.0: |mu|=0.000 | 0.651, 0.853 [k1 runs 0.557-0.651] [k2 runs 0.847-0.853]
+        planted t1   k=1 |cos| 0.48   k=2 span 0.44
+        planted t2   k=1 |cos| 0.55   k=2 span 0.57
+        fitK1 t1     k=1 |cos| 0.52   k=2 span 0.49
+        fitK2 t1     k=1 |cos| 0.48   k=2 span 0.44
+        fitK2 t2     k=1 |cos| 0.55   k=2 span 0.57
+   R=3.0: |mu|=0.000 | 0.538, 0.819 [k1 runs 0.293-0.538] [k2 runs 0.813-0.819]
+        planted t1   k=1 |cos| 0.41   k=2 span 0.51
+        planted t2   k=1 |cos| 0.48   k=2 span 0.68
+        fitK1 t1     k=1 |cos| 0.44   k=2 span 0.59
+        fitK2 t1     k=1 |cos| 0.41   k=2 span 0.51
+        fitK2 t2     k=1 |cos| 0.48   k=2 span 0.68
+PCA (subsample) explained k=1,2: 0.651 0.842
+
+=== planted_K3_s0  (full table n=400, d=4; HoroPCA on n=400)
+PCA explained variance PC1..4 (all rows): [0.554 0.163 0.156 0.127]  PC1+PC2: 0.717
+   cos(fitK1 t1, nearest planted term) = 0.952
+   cos(fitK2 t1, nearest planted term) = 0.998
+   cos(fitK2 t2, nearest planted term) = 1.000
+PCA (all rows)  target: [best-PC index (|cos|)] | span(PC1) span(PC1,2)
+   planted t1   PC1 (0.99) | 0.99 0.99   w=[0.21 0.33 0.25 0.21]
+   planted t2   PC1 (0.83) | 0.83 0.83   w=[0.13 0.24 0.13 0.51]
+   planted t3   PC1 (0.78) | 0.78 0.82   w=[0.54 0.08 0.26 0.12]
+   fitK1 t1     PC1 (0.97) | 0.97 0.98   w=[0.27 0.23 0.2  0.3 ]
+   fitK2 t1     PC1 (0.86) | 0.86 0.86   w=[0.13 0.25 0.15 0.47]
+   fitK2 t2     PC1 (0.79) | 0.79 0.82   w=[0.53 0.09 0.26 0.12]
+HoroPCA (subsample), best of 5 runs by loss. R_max: FM-offset | k=1 expl, k=2 expl | span k=1, k=2 per target (unreflected) | run-to-run explained range
+   R=0.25: |mu|=0.000 | 0.556, 0.719 [k1 runs 0.546-0.556] [k2 runs 0.712-0.719]
+        planted t1   k=1 |cos| 0.99   k=2 span 0.99
+        planted t2   k=1 |cos| 0.82   k=2 span 0.82
+        planted t3   k=1 |cos| 0.77   k=2 span 0.83
+        fitK1 t1     k=1 |cos| 0.97   k=2 span 0.98
+        fitK2 t1     k=1 |cos| 0.86   k=2 span 0.86
+        fitK2 t2     k=1 |cos| 0.78   k=2 span 0.83
+   R=1.0: |mu|=0.000 | 0.538, 0.715 [k1 runs 0.475-0.538] [k2 runs 0.710-0.715]
+        planted t1   k=1 |cos| 0.99   k=2 span 0.99
+        planted t2   k=1 |cos| 0.82   k=2 span 0.83
+        planted t3   k=1 |cos| 0.74   k=2 span 0.89
+        fitK1 t1     k=1 |cos| 0.95   k=2 span 0.98
+        fitK2 t1     k=1 |cos| 0.85   k=2 span 0.87
+        fitK2 t2     k=1 |cos| 0.75   k=2 span 0.89
+   R=3.0: |mu|=0.000 | 0.433, 0.696 [k1 runs 0.201-0.433] [k2 runs 0.680-0.696]
+        planted t1   k=1 |cos| 0.98   k=2 span 0.99
+        planted t2   k=1 |cos| 0.78   k=2 span 0.80
+        planted t3   k=1 |cos| 0.69   k=2 span 0.83
+        fitK1 t1     k=1 |cos| 0.91   k=2 span 0.97
+        fitK2 t1     k=1 |cos| 0.82   k=2 span 0.84
+        fitK2 t2     k=1 |cos| 0.69   k=2 span 0.84
+PCA (subsample) explained k=1,2: 0.554 0.717
+
+=== planted_K3_s4  (full table n=400, d=4; HoroPCA on n=400)
+PCA explained variance PC1..4 (all rows): [0.62  0.154 0.128 0.099]  PC1+PC2: 0.773
+   cos(fitK1 t1, nearest planted term) = 0.982
+   cos(fitK2 t1, nearest planted term) = 0.999
+   cos(fitK2 t2, nearest planted term) = 1.000
+PCA (all rows)  target: [best-PC index (|cos|)] | span(PC1) span(PC1,2)
+   planted t1   PC1 (0.79) | 0.79 0.80   w=[0.38 0.09 0.4  0.14]
+   planted t2   PC4 (0.82) | 0.49 0.51   w=[0.23 0.05 0.72 0.  ]
+   planted t3   PC1 (0.64) | 0.64 0.70   w=[0.11 0.22 0.58 0.08]
+   fitK1 t1     PC4 (0.71) | 0.65 0.66   w=[0.24 0.12 0.57 0.07]
+   fitK2 t1     PC4 (0.79) | 0.51 0.53   w=[0.21 0.08 0.7  0.01]
+   fitK2 t2     PC1 (0.79) | 0.79 0.80   w=[0.37 0.09 0.4  0.14]
+HoroPCA (subsample), best of 5 runs by loss. R_max: FM-offset | k=1 expl, k=2 expl | span k=1, k=2 per target (unreflected) | run-to-run explained range
+   R=0.25: |mu|=0.000 | 0.621, 0.775 [k1 runs 0.613-0.621] [k2 runs 0.767-0.775]
+        planted t1   k=1 |cos| 0.78   k=2 span 0.78
+        planted t2   k=1 |cos| 0.48   k=2 span 0.49
+        planted t3   k=1 |cos| 0.63   k=2 span 0.68
+        fitK1 t1     k=1 |cos| 0.63   k=2 span 0.64
+        fitK2 t1     k=1 |cos| 0.50   k=2 span 0.51
+        fitK2 t2     k=1 |cos| 0.78   k=2 span 0.79
+   R=1.0: |mu|=0.000 | 0.602, 0.770 [k1 runs 0.549-0.602] [k2 runs 0.764-0.770]
+        planted t1   k=1 |cos| 0.74   k=2 span 0.78
+        planted t2   k=1 |cos| 0.42   k=2 span 0.50
+        planted t3   k=1 |cos| 0.59   k=2 span 0.70
+        fitK1 t1     k=1 |cos| 0.59   k=2 span 0.64
+        fitK2 t1     k=1 |cos| 0.44   k=2 span 0.52
+        fitK2 t2     k=1 |cos| 0.74   k=2 span 0.78
+   R=3.0: |mu|=0.000 | 0.473, 0.746 [k1 runs 0.248-0.473] [k2 runs 0.735-0.746]
+        planted t1   k=1 |cos| 0.68   k=2 span 0.80
+        planted t2   k=1 |cos| 0.35   k=2 span 0.54
+        planted t3   k=1 |cos| 0.54   k=2 span 0.73
+        fitK1 t1     k=1 |cos| 0.52   k=2 span 0.68
+        fitK2 t1     k=1 |cos| 0.38   k=2 span 0.57
+        fitK2 t2     k=1 |cos| 0.68   k=2 span 0.80
+PCA (subsample) explained k=1,2: 0.62 0.773
+
+=== loadings beside exponents
+cubesat_primary
+  metric                       fit K=1 w     PC1     PC2
+  settling time                    0.068   0.240  -0.316
+  pointing error                   0.156   0.086  -0.166
+  total mass                       0.021  -0.409   0.250
+  control effort                   0.000  -0.260  -0.049
+  power margin                     0.000   0.343   0.423
+  energy balance                   0.000   0.382   0.347
+  peak slew power                  0.000  -0.343   0.403
+  depth of discharge               0.042   0.010  -0.040
+  momentum headroom                0.107   0.090  -0.466
+  available power                  0.197   0.402   0.330
+  battery peak power ratio         0.000  -0.070   0.050
+  unit cost                        0.257  -0.379   0.123
+  fleet cost                       0.151  -0.025  -0.023
+  PC1 sign-pure: False  PC2 sign-pure: False  fit w sum: 1.0  zero exponents: 5
+planted_K1_s0
+  metric                       fit K=1 w     PC1     PC2
+  m1                               0.229   0.538   0.167
+  m2                               0.292   0.434   0.480
+  m3                               0.248   0.538  -0.812
+  m4                               0.231   0.483   0.287
+  PC1 sign-pure: True  PC2 sign-pure: False  fit w sum: 1.0  zero exponents: 0
+
+Frechet-mean offsets |mu| (Poincare ball):
+  cubesat_primary {'0.25': 8.09e-05, '1.0': 0.00035, '3.0': 0.000149} converged True
+  cubesat_stock {'0.25': 7.77e-05, '1.0': 0.000362, '3.0': 0.000164} converged True
+  planted_K1_s0 {'0.25': 6.42e-05, '1.0': 0.000471, '3.0': 0.000381} converged True
+  planted_K2_s7 {'0.25': 5.52e-05, '1.0': 0.000471, '3.0': 0.000396} converged True
+  planted_K3_s0 {'0.25': 5.55e-05, '1.0': 0.000474, '3.0': 0.000384} converged True
+  planted_K3_s4 {'0.25': 5.09e-05, '1.0': 0.000474, '3.0': 0.000395} converged True
