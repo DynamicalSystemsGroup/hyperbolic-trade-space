@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **4162a61, the fast verdict (23:45).** CI fast on Linux: 1 failed, 1873 passed; the local run agrees (plus the
+  site's paper-key test against this checkout's stale build). The one red is the full-size figure link of
+  `fig-tau-sweep`: the re-execution committed the notebooks without the figure file the execution writes. Every
+  other red of the data commit is closed (the datasets digest, D.11, C261, the v2 register). Routed into the D.2
+  term-order unit's re-execution with the rule that the notebooks and `paper/figures/` are one commit. Lint and
+  format clean on the head. Slow, docs-paper and Windows jobs running.
+
 - **4162a61, the rendered pass (23:35).** Stage rebuilt at 4162a61 on 8791. Both pages carry the `@12` entries and the
   container's hashes (no `@10`, `@11` or superseded hash remains), no stderr or warning text, D.11 reads the new jitter
   record, D.2's K = 3 lists are in share order. One defect found by reading and confirmed by refitting on this Mac:
