@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **a8b927d received; the PM's unit table and six open items decided (03:30).** The D.2 term-order and number-format
+  head landed (`paper_terms.py` deleted; D.2 in the estimator's order with a slow test pinning it to `term_share_`;
+  the `term_numbered_tables` entry narrowed to platform ties; thousands separators and the metric count in words;
+  one spelling of an exponent under the threshold; D.3's K = 2 tables from the jitter record). The assistant's
+  checks and a stage rebuild run; CI dispatched. The PM's unit table lists fourteen units landed since the data
+  commit. Calls on its six open items: the review-list row for Figure 6's retirement (Haiku, now); one docs unit for
+  the case page's stale metric descriptions, the launch rate, the texture numbers, the Examples page's hard-coded
+  figure numbers and the leaves-out list put through the marginal-value test; D.17 and `requirements_table` extended
+  to the two cost requirements (the supervisor's rule that no requirement floats, applied to the last two; a case.py
+  change with the body sentence following); the assembly view's omission of the fleet size stands by design ("a
+  count that is no part and is not drawn", tested). Then stage 6 on a head carrying those, and the key sentences
+  drafted by the PM for the assistant's key v5.
+
 - **160a0ab fully green (02:45).** CI run 43170142883: every job green on both platforms (the third fully green run:
   38aff78, 78cd40a, 160a0ab). The D.2 term-order unit is still editing in its worktree (last change 02:39); no
   other unit has landed since.
