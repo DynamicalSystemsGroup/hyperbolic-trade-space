@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The container's second run (one worker, 18:18 to 19:27).** `v2-primary@12` and `v2-baseline@12` completed (3,000
+  rows each, git_dirty False); the third entry, `v2-check-predictions`, was OOM-killed again. Cause read from the
+  code: the proposer predicts its 100,000-configuration pool in one call against the ~2,134 feasible training rows
+  (706 before the larger sample), several 100,000 x 2,134 float64 arrays at once in a 7.7 GB VM; the host has 32 GB.
+  Routed to the cascade as a unit (chunked pool prediction; the host regeneration must reproduce the @11 output);
+  then the image is rebuilt at the cascade head and the five entries re-run. The two completed entries against the
+  host's data: differences are platform drift only (settling time 1e-6 s; control effort and momentum headroom up to
+  1.2e-4 relative; torque_saturated_frac up to 0.014 absolute on a saturation fraction; non-numeric columns equal), and
+  the case fits on the container's data agree with the host's to every printed digit (K=1 exponents to four decimals
+  in both regimes, K=3 term shares to three, the selected temperature identical; mean slack differs at 1e-8). The
+  paper's numbers of record are the host's and stand; the container entries count only from the complete five-entry
+  run. Comparison files: the session scratchpad, `gate30-out/`.
+
 - **Term order on dev (a4d4fc7), the assistant's checks (19:25).** The terms are permuted once after convergence by
   descending term share (ties by cell size, then the first metric's exponent); docstring, glossary entry and fitting
   page say so; two tests pin the order, its stability across seeds and the consistent permutation of every per-term
