@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The head with the WP35 build, the fast verdict (01:45).** Fast suite 1916 passed, 0 failed; ruff and format
+  clean, lock current, attribution 0, vocabulary 0 new; the slow paper, site and docs tests still running locally.
+  CI on ee009be: Linux slow green, two jobs left; on df0cad9: three jobs left. PM13's units for WP33's items 5 and 6
+  and the entry-surfaces list are in their worktrees; the repeat round and the U1 cell run on the frozen stage.
+
 - **The abstract correction verified; WP33's repeat round released on df0cad9 (01:25).** The correction had landed
   earlier among the WP37 commits (2298720: the abstract restored word for word with the soft-support clause, the
   reader line at the end of Section 1's Organization paragraph, C033 and the ledger re-pointed, a review-list row)
