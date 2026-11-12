@@ -2192,7 +2192,7 @@ def test_figure_9_names_the_regions_the_contending_sets_of_its_two_panels_give()
     }
     assert named == {
         "A": [{"pointing error", "control effort"}, {"total mass", "pointing error"}],
-        "B": [{"depth of discharge"}, {"settling time", "control effort"}],
+        "B": [{"settling time", "control effort"}, {"depth of discharge"}],  # terms in share order
     }
     contending = {
         panel: [{st.names[i] for i in r.contending_set} for r in tensions.tension_report(est, st.M)]
@@ -2203,8 +2203,8 @@ def test_figure_9_names_the_regions_the_contending_sets_of_its_two_panels_give()
         {"pointing error", "total mass", "control effort"},
     ]
     assert contending["B"] == [
-        {"settling time", "depth of discharge"},
         {"settling time", "control effort", "depth of discharge"},
+        {"settling time", "depth of discharge"},
     ]  # the first region's one exponent above the labelling threshold is depth of discharge's
     for words in ("pointing error against control effort", "total mass against pointing error",
                   "settling time against control effort", "depth of discharge alone"):  # fmt: skip
