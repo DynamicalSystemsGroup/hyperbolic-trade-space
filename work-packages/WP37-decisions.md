@@ -251,3 +251,13 @@ paper, docs and package at once may take it for something generated out of nothi
 pointers to public work and the people who did it, that this is the synthesis and publication of a long-running
 endeavour. That sets the test for every sentence on it: does it help a reader trace the line back? Dates and
 links do; adjectives do not. The page may say its purpose in one plain sentence; it does not argue it.
+
+## The supervisor, on the page's size (verbatim)
+
+> we're keeping this page as thin as we can while establshing the work arc over 10+ years
+
+**The assistant's reading.** The budget rule for the fix unit: as thin as the arc allows. The arc runs more than ten
+years, from the convex optimization and GGP work before the firm (2013 and 2014) through cadCAD, GDS and PSuU to
+OpenMBEE, OpenSysML and this synthesis; the page shows that span with the fewest dated pointers that still let a
+reader walk it, and nothing else. Where the second research pass adds a lead, something lighter goes or two
+pointers merge into one clause; the one-screen budget is the ceiling, not the target.
