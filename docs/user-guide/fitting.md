@@ -93,7 +93,9 @@ rows. Options:
 
 `cell_` gives each training row's cell; `coefficients_` and `term_share_` the terms' coefficients
 and term shares. At one term `cell_` is all zeros and `term_share_` is
-`[1.0]`.
+`[1.0]`. The terms are ordered by term share, largest first (ties by cell size, then by the first
+metric's exponent), so term 1 is the term that carries most of the frontier and every per-term
+attribute carries that order.
 
 ## The temperature and the band at several terms
 

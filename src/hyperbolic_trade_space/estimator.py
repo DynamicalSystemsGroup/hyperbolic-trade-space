@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import numbers
 import warnings
+from dataclasses import replace
 
 import numpy as np
 from scipy.special import logsumexp
@@ -151,7 +152,11 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
     term_share_ : ndarray of shape (n_terms,)
         Share of the near-frontier training rows (``|log V| < band``,
         ``band = 1 / temperature``, or 0.1 at ``tau = inf``) assigned to each term; zeros if
-        there are none; ``[1.0]`` at ``n_terms = 1``.
+        there are none; ``[1.0]`` at ``n_terms = 1``. It is also the order of the terms: after the
+        fit converges the terms are permuted once by descending share (ties by cell size, then by
+        the first metric's exponent, ascending), so ``exponents_``, ``log_offset_``,
+        ``coefficients_``, ``cell_``, ``conditioning_`` and the per-term entries of
+        ``termination_`` all carry that one order.
     training_log_v_ : ndarray of shape (n_samples,)
         ``log V`` of the training rows (``-inf`` for rows with a zero metric on a participating
         exponent; a zero metric on an exponent at or below ``EPS_ZERO_EXPONENT`` contributes
@@ -416,6 +421,23 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
         kappa = self.term_temperature
         if K > 1:
             near = valid & (np.abs(log_v) < (1.0 / tau if np.isfinite(tau) else 0.1))
+            # one order for every per-term attribute: descending term share, ties by cell size
+            # (rows), then by the first metric's exponent (ascending); permuted once, here
+            order = np.lexsort(
+                (
+                    W[:, 0],
+                    -np.bincount(lab[valid], minlength=K),
+                    -np.bincount(lab[near], minlength=K),
+                )
+            )
+            if not np.array_equal(order, np.arange(K)):
+                rank = np.empty(K, dtype=int)
+                rank[order] = np.arange(K)
+                W, betas = W[order], betas[order]
+                self.exponents_, self.log_offset_ = W, betas
+                self.basis_ = np.repeat(B[None], K, axis=0)
+                lab = np.where(lab >= 0, rank[np.maximum(lab, 0)], -1)
+                term = replace(term, gaps=term.gaps[order], shares=term.shares[order])
             p = np.zeros(nv)
             for k in range(K):
                 m = lab[valid] == k

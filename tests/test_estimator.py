@@ -859,3 +859,44 @@ def test_n_distinct_terms_is_one_in_the_degenerate_cases(params):
     X, _ = make_frontier_data(60, 3, random_state=0)
     one = HyperbolicTradeSpace(n_terms=1).fit(X).termination_
     assert one.n_distinct_terms == 1 and one.status == "not_applicable"
+
+
+# ---------------------------------------------------------------- term order (WP30)
+@pytest.mark.parametrize("seed", [0, 1, 2, 3])
+def test_terms_are_ordered_by_descending_share_and_every_attribute_carries_it(seed):
+    """Terms run by descending term share; the per-term attributes are permuted together."""
+    X, _ = make_frontier_data(300, 4, n_terms=3, random_state=0)
+    est = HyperbolicTradeSpace(n_terms=3, random_state=seed).fit(X)
+    share = est.term_share_
+    cells = np.bincount(est.cell_[est.cell_ >= 0], minlength=3)
+    # descending share; equal shares fall back to the cell size (rows)
+    assert np.all(np.diff(share) <= 0)
+    for k in range(2):
+        if share[k] == share[k + 1]:
+            assert cells[k] >= cells[k + 1]
+    # the labels, the offsets and the exponents pair up: the chart's log V is the maximum score
+    U = np.log(X)
+    scores = U @ est.exponents_.T - est.log_offset_
+    np.testing.assert_array_equal(est.cell_, np.argmax(scores, axis=1))
+    np.testing.assert_allclose(est.transform(X)[:, -1], scores.max(axis=1), atol=1e-12)
+    # per-term attributes follow the same order
+    np.testing.assert_allclose(est.coefficients_, np.exp(-est.log_offset_))
+    np.testing.assert_allclose(est.termination_.shares, cells / len(X))
+    np.testing.assert_allclose(
+        est.conditioning_, est._conditioning(U, est.temperature), equal_nan=True
+    )
+    near = np.abs(scores.max(axis=1)) < 1.0 / est.temperature
+    np.testing.assert_allclose(share, np.bincount(est.cell_[near], minlength=3) / near.sum())
+
+
+def test_term_order_is_stable_across_seeds_and_the_one_term_fit_is_untouched():
+    X, _ = make_frontier_data(300, 4, n_terms=3, random_state=0)
+    # seeds 0, 2 and 3 reach the same three terms (seed 1 reaches another local fit); without
+    # sorting, term k is the same term in all three
+    fits = [HyperbolicTradeSpace(n_terms=3, random_state=s).fit(X) for s in (0, 2, 3)]
+    for f in fits[1:]:
+        np.testing.assert_allclose(f.exponents_, fits[0].exponents_, atol=1e-2)
+        np.testing.assert_allclose(f.term_share_, fits[0].term_share_, atol=1e-12)
+    k1 = HyperbolicTradeSpace().fit(X)
+    np.testing.assert_array_equal(k1.term_share_, [1.0])
+    np.testing.assert_array_equal(k1.cell_, 0)

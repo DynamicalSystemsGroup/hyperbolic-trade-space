@@ -352,7 +352,7 @@ entries:
   - id: 'term-share'
     term: 'term share'
     symbol: '\mathrm{share}_k'
-    short: 'The fraction of the near-frontier designs in a term''s cell (term_share_): which terms carry most of the frontier; it depends on the band.'
+    short: 'The fraction of the near-frontier designs in a term''s cell (term_share_): which terms carry most of the frontier; it depends on the band. It is also the order of the terms, largest first.'
     register: 'term share'
     formal: 'the fraction of the near-frontier rows whose cell is term k; returned as term_share_'
     not: 'the row share, which counts all rows, or a share of a total of metrics'
