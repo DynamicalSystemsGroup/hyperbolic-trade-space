@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP35 scope approved; WP32 review read ahead of its push (18:55).** WP35-scope-of-work.md (1d27f8c) matches the
+  decisions and is approved (23eb78b); the build starts, the notebook edits queued behind WP33's paper unit. The
+  WP32 review (in its worktree at d09af78) ran the cells' code at the head and checked the triage against the diff:
+  one medium finding (round 3 has no triage section and no acceptance record) and six low ones (triage column-6
+  counts, a missing header block on one return, worktree listings not recorded, U1 not re-run after the fix it
+  met, and `scripts/build_figures.py` rewriting two tracked paper images byte-differently on every run). The
+  assistant's dispositions: the round-3 section and the acceptance record added, the column corrected, the
+  header and listings added; one fresh U1 cell on the next staged head beside WP33's repeat round closes R-10 for
+  U1; the figure-build defect is a machinery unit in the cascade queue (deterministic paper figures, a
+  second-run-changes-nothing test), outside WP32. WP32 is accepted on the record once the review is pushed with
+  these closed. Its residuals (the K = 1 band message every cell recovered from; the font-cache line; U2's HTTP
+  reach in round 3) stand as written.
+
 - **WP35 decided; WP37's first readout in (18:20).** The HoroPCA spike (ace2840) ran the authors' code beside PCA on
   the paper's tables: both recover a planted exponent only where the generator makes it the direction of largest
   spread, neither captures more than 0.06 of the cubesat exponent, neither names a trade or a rate, the tables are
