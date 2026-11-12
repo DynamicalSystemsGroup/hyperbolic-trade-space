@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **5073055 fully green; WP37's scope and WP36's sources in (22:45).** CI run 43267160637 (the history-page head):
+  every job green on both platforms, docs-paper included after a long run (the fourteenth fully green head). On
+  dev: the WP37 scope of work for the assistant's approval (2a1d4fa) and WP36's W3 sources check with BibTeX
+  drafts (07217d4); the WP36 synthesis is next. The abstract correction, the history page's second research pass
+  and fix unit are in their worktrees.
+
 - **The head with WP33's first screens, the slow site and docs verdict (21:35).** 29 passed in 28 minutes, on top of
   the fast suite's 1895; the first-screen units are accepted into WP33's record pending the abstract correction.
 
