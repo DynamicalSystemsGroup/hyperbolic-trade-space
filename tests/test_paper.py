@@ -2217,9 +2217,7 @@ def test_every_figure_and_table_is_referenced_from_the_text():
     """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
     body = _markdown(_nb(PAPER_NB))
     floats = re.findall(r"^:::+\{(?:figure|table)\}[^\n]*\n:label: (\S+)", body, re.M)
-    assert len(floats) == 10, (
-        floats
-    )  # nine figures (the two-panel ternary is Figure 9) and the family table
+    assert len(floats) == 9, floats  # eight figures (the K = 2 planes left) and the table
     for cell in _nb(PAPER_NB).cells:
         if cell.cell_type != "markdown" or cell.id == "frontmatter":
             continue
@@ -3072,3 +3070,20 @@ def test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left
     quote = re.search(r"> \*\*What the case leaves out\.\*\*(.*?)\n\n", mirror, re.S).group(1)
     paragraph = _norm_ws(re.sub(r"\n> ?", " ", quote)).strip()
     assert paragraph in c8, "the paragraph of the mirror file is C.8's"
+
+
+def test_the_charts_axis_names_the_metrics_of_the_first_direction_of_d16():
+    """The chart's axis says which metrics a step to the right improves or worsens: the leading
+    loadings of D.16's first direction (K = 1, primary regime), by sign. The caption names none."""
+    import case
+    from figures.chart_level import leading_direction
+
+    study = case.load_study("primary")
+    better, worse, _ = leading_direction(study, case.fit_study(study))[1:]
+    text = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-pca_chain"))
+    row = next(r for r in text.splitlines() if r.startswith("| 1 |"))
+    loads = [m.rsplit(" ", 1) for m in row.split("|")[3].strip().split(", ")]
+    assert better == [n for n, v in loads if v.startswith("+")]
+    assert worse == [n for n, v in loads if v.startswith("-")]
+    caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-chart-level-caption"))
+    assert "the axis names the metrics it improves" in caption and "to the right" not in caption

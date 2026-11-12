@@ -357,7 +357,7 @@ def margin_sentence(study, fits) -> Md:
     a design's best and second-best term score (Appendix D.8); the designs within the band of a
     seam are counted (:func:`designs_on_a_seam`).
     """
-    r, K = study.regime, max(fits)
+    r, K = study.regime, case.CASE_K
     four = lambda v: format(v, ".4g")  # noqa: E731
     n, N = designs_on_a_seam(study, fits[K])
     times = f"{float(f'{fits[K].band / (fits[K].estimator.termination_.gamma / 2):.2g}'):g}"
@@ -598,9 +598,9 @@ def elasticity_sentence(study, fits) -> Md:
     tail = (
         " "
         + " ".join(
-            f"{head} are stepped by the swaps of the tracker grade and the wheel class (the "
-            "planes figure's panel of that term), so its elasticity is read across the swapped "
-            "parts' alternatives rather than along one continuous trade."
+            f"{head} are stepped by the swaps of the tracker grade and the wheel class, so its "
+            "elasticity is read across the swapped parts' alternatives rather than along one "
+            "continuous trade."
             for head in swaps
         )
         if swaps

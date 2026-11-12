@@ -14,9 +14,10 @@ those whose other metrics are near the median (their weighted log offset from it
 :data:`NEAR_TOL` in log V, so the line is the surface for them to within that tolerance); light,
 the rest. The data are the case's committed tables of record.
 
-Run ``uv run python paper/figures/planes.py`` to write ``fig-planes-case.png`` (the fit with the
-case's ``case.CASE_K`` terms, one slice per term) and ``fig-planes-k1.png`` (the K = 1 fit, one
-slice) beside this file.
+Run ``uv run python paper/figures/planes.py`` to write ``fig-planes-k1.png`` (the K = 1 fit, one
+slice) beside this file. The same function draws a fit with several terms (``n_terms``), one slice
+per term; the paper does not show it: at the case's K the slice of the heavier term is a lattice of
+swapped parts and the other is the K = 1 plane again (``WP30-rounds/paperwp30/figure-loop.md``).
 """
 
 from __future__ import annotations
@@ -170,14 +171,12 @@ def _place_legend(fig, axes, ink, handles, corners=("lower left", "lower right",
 
 
 def main() -> None:
-    """Write ``fig-planes-case.png`` and ``fig-planes-k1.png`` beside this file."""
-    case = _case()
-    for n_terms, name in ((case.CASE_K, "case"), (1, "k1")):
-        fig = planes_figure(n_terms=n_terms)
-        target = HERE / f"fig-planes-{name}.png"
-        fig.savefig(target, dpi=100, metadata={"Software": None})
-        plt.close(fig)
-        print("wrote", target)
+    """Write ``fig-planes-k1.png`` beside this file."""
+    fig = planes_figure(n_terms=1)
+    target = HERE / "fig-planes-k1.png"
+    fig.savefig(target, dpi=100, metadata={"Software": None})
+    plt.close(fig)
+    print("wrote", target)
 
 
 if __name__ == "__main__":

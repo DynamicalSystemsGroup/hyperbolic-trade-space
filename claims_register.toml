@@ -5086,18 +5086,20 @@ note = "planes._near_median with NEAR_TOL = 0.1 selects the dark designs: those 
 
 [[claim]]
 id = "C414"
-fragment = "to the right, better total mass and control effort, worse pointing error"
+fragment = "gives its share of the spread and its loadings; the axis names the metrics it improves"
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "R"
 backing = [
+  "gen:paper/figures/chart_level.py::leading_direction",
   "gen:paper/generate_results.py::pca_chain",
   "test:tests/test_paper.py::test_cr11_chaining_with_pca_is_worked_on_the_case_in_d16",
+  "test:tests/test_paper.py::test_the_charts_axis_names_the_metrics_of_the_first_direction_of_d16",
 ]
 status = "backed"
 disposition = "keep"
 source = "WP11 round 2, CR-30 (the figure stream's caption for Figure 7)"
-note = "The horizontal axis of Figure 7 is the first principal direction of the near-frontier chart that Appendix D.16 prints with its loadings (case.pca_directions, signed as D.16 signs it); the caption names the three leading loadings by sign and points at D.16 for the numbers, which the axis label generates."
+note = "The horizontal axis of the chart figure is the first principal direction of the near-frontier chart that Appendix D.16 prints with its loadings (case.pca_directions, signed as D.16 signs it); the caption points at D.16 for the share and the loadings and at the axis for the metrics it improves, which chart_level.leading_direction reads from the same report; the test compares the axis's better and worse metrics with D.16's leading loadings by sign (the caption of WP11 CR-30 named three metrics by sign, one of which went stale when the metrics changed)."
 
 [[claim]]
 id = "C415"
@@ -5786,21 +5788,6 @@ status = "backed"
 disposition = "keep"
 source = "WP30, the choice of K in the case (WP30-decisions.md, 2026-11-11, 15:30)"
 note = "Section 9's sentence: the K the package's choosing-K checks pick for the case (the K at which the mean slack, read at the K = 1 temperature, drops most), the thinnest term's share at the pick and the next K at each K's own temperature, the movement under resampling at the last K and at the pick; every number is computed from the Appendix D.15 table, and the test pins that the checks pick K = 2 on both regimes, that a thin term appears at K = 3 (a share under 0.1 against over 0.2 at K = 2) and a splinter at K = 4 (movement over 0.5 against under 0.5 at K = 2), at two digits."
-
-[[claim]]
-id = "C475"
-fragment = "In the bottom panel both terms weigh the pair and the line is the lower of their two lines, which is term 2's across the range."
-file = "paper/paper.ipynb"
-anchor = "Case analysis"
-kind = "R"
-backing = [
-  "gen:paper/figures/planes.py::planes_figure",
-  "test:tests/test_paper.py::test_the_planes_figures_bottom_panel_is_one_terms_line",
-]
-status = "backed"
-disposition = "keep"
-source = "WP30, the choice of K in the case"
-note = "The planes figure at K = 2: the top panel is term 1's pair alone, the bottom panel's pair (available power, unit cost) is weighed by both terms and the envelope (the lower line, the surface) is term 2's at all 400 abscissae; the test recomputes the envelope."
 
 [[claim]]
 id = "C490"

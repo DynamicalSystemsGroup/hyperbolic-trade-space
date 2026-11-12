@@ -749,10 +749,10 @@ def _summed_text(regime, fits) -> str:
     if not pairs:
         return ""
     s = _study(regime)
-    parts = [frame_table(case.summed_exponents(s, fits[K], pairs), floatfmt=".3f") for K in (1, 3)]
-    return f"\n\n{_cite(regime)}, named pairs summed per term (K = 1, K = 3):\n\n" + "\n\n".join(
-        parts
-    )
+    ks = (1, case.CASE_K, 3)
+    parts = [frame_table(case.summed_exponents(s, fits[K], pairs), floatfmt=".3f") for K in ks]
+    where = ", ".join(f"K = {K}" for K in ks)
+    return f"\n\n{_cite(regime)}, named pairs summed per term ({where}):\n\n" + "\n\n".join(parts)
 
 
 def requirements_at_the_frontier() -> Md:

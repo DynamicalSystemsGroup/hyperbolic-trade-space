@@ -1161,3 +1161,12 @@ section = "Appendix C"
 words_removed = 20
 no_longer_did = "the job's two bullets restated the section list the reader is about to see and the main text's length ('about 300 words', which was no longer true); one bullet now names what the main text keeps and what the appendix carries"
 authority = "the triage's offset for the new paragraph (WP30-rounds/persona-baseline/triage.md, Class 3 texts)"
+
+# WP30 cascade, the figure loop on Figures 6 and 7 (WP30-rounds/chooseK/cold-reads/cold-read-figs-6-7-8.md;
+# WP30-rounds/paperwp30/figure-loop.md).
+[[cut]]
+date = "2026-11-11"
+section = "Case analysis"
+words_removed = 259
+no_longer_did = "the K = 2 planes figure (then Figure 6), its Shows and Does-not-show lines and the sentence that introduced it: its top panel drew term 1's pair as a lattice of tracker-grade and wheel-class combinations, which reads as no trade-off the designs trace, and its bottom panel was the K = 1 plane (Figure 5) again; the chart figure's caption also lost a clause naming which way the axis improves, which had gone stale (the axis names the metrics itself), and the elasticity sentence its pointer to the removed panel"
+authority = "the figure loop: cold reader's returns on the K = 2 planes figure (the top panel not a trade-off, the bottom the same plane as Figure 5) and the supervisor's standing order that a figure that cannot be made clear is assessed for removal (PM-BRIEF.md, 'Stuck means assess removal')"
