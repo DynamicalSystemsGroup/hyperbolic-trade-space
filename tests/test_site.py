@@ -527,7 +527,7 @@ def test_history_page_is_one_screen_in_the_root_page_register():
     assert "prefers-color-scheme: dark" in raw
     assert '<link rel="icon" href="data:,">' in raw
     assert "<h1>History and acknowledgements</h1>" in raw
-    assert 250 <= len(_history_text().split()) <= 400
+    assert 250 <= len(_history_text().split()) <= 450
 
 
 def test_history_page_is_linked_from_the_root_page_and_links_resolve():
@@ -567,10 +567,10 @@ def test_history_page_uses_no_cryptocurrency_or_web3_vocabulary():
         assert not re.search(banned, text), banned
     # computer science is the supervisor's word for the team's backgrounds (WP37 decisions),
     # offered on the page as the team's own account of the team
-    assert "In our own account of the team" in _history_text()
+    assert "in our own account of the team" in _history_text()
 
 
-def test_history_page_credits_the_eleven_named_people():
+def test_history_page_credits_the_twelve_named_people():
     text = _history_text()
     for name in (
         "Markus Koch",
@@ -584,6 +584,7 @@ def test_history_page_credits_the_eleven_named_people():
         "Emanuel Lima",
         "Andrew Clark",
         "Sean McOwen",
+        "Carolina Riascos-\u00c1lvarez",
     ):
         assert name in text, name
 
@@ -595,8 +596,34 @@ def test_history_page_marks_the_team_account_and_credits_cadcad_as_authors_txt_d
     assert text.count("our own account") + text.count("the same account") >= 3
     assert "designed by Michael Zargham, Markus Koch and Matthew Barlin" in text
     assert "a mathematical background with focus on economic modeling" in text
-    assert "Our thanks also to Jakob Hackel" in text
     assert text.count("Barlin") == 1
+
+
+def test_history_page_follows_the_supervisors_wording_rulings():
+    """WP37 decisions, the last entries govern: the firm's description and the activities sentence
+    verbatim; Generalized Dynamical Systems without 'Part I'; the Applied Network Science journal
+    paper cited in place of the preprint; Carolina by name and GitHub handle, never LinkedIn; one
+    sentence for the work on client projects that cannot be named."""
+    text = _history_text()
+    raw = HISTORY.read_text(encoding="utf-8")
+    assert "contract research and engineering firm" in text
+    assert (
+        "We perform requirements, architecture, design, simulation and analysis for clients, "
+        "all software-defined, studying the spaces of feasible designs of their systems under "
+        "uncertain, strategic and adversarial users."
+    ) in text
+    assert "Part I" not in text and "generalized" not in text.lower().replace(
+        "generalized dynamical systems", ""
+    )
+    assert "https://doi.org/10.1007/s41109-020-0254-9" in raw
+    assert "1807.00955" not in raw
+    assert "Zixuan Zhang" in text and "Victor Preciado" in text
+    assert "https://github.com/CarolinaRiascos" in raw and "linkedin" not in raw.lower()
+    assert "worked on client projects we cannot name" in text
+    assert "cannot describe here" in text
+    for ref in ("gds-axelrod", "10.1007/s10614-023-10445-9", "fip-0056", "vr6sIfjGmLQ"):
+        assert ref in raw, ref
+    assert "workshop in Edinburgh (ICMS), October 2024" in text
 
 
 def test_paper_theme_is_pinned_to_a_commit():
