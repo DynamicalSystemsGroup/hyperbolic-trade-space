@@ -228,6 +228,22 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Four landed units judged; head dafa839 verified (12:55).** The units had landed under the assistant's own
+  `pull --rebase` between ticks (f10c7bf, d801a43, 94f33ae, fb6adcc), so the check "what is new on dev" now compares
+  against the last verified head and not the assistant's last commit. On dafa839: ruff clean and formatted, lock
+  current, vocabulary 0 new, no attribution trailer, the fast suite 1925 passed, 15 skipped, 2 xfailed in 7:19. The
+  D.3 summed-pairs table (f10c7bf) accepted: one table per regime across K, the pair named once in its lead, the
+  exponents under the metrics' names, the supervisor's two screenshots answered. G.2 (d801a43) returned: the "What
+  we say" column still carries the record's dispositions ("Cited now for ...") in place of the paper's sentence; the
+  "Where in it" column prints api.crossref.org fetch URLs where a reader needs the place in the source and its own
+  link; Appendix G's Job line still describes a verdict column. The WP38 machinery (94f33ae) accepted for D-1, D-3,
+  D-4: the checker ran here (reports per surface, never edits), its nine tests pass, the baseline is at 652c27d and
+  three counts rose since, all in Appendix G, revisited by the G.2 return. The WP39 spike readout (fb6adcc) accepted
+  and stage 2 decided (WP39-decisions.md, 1af5c8a): both sponsor measures with the fleet size named as unvalued, the
+  28 designs within both bands, no term-to-executive mapping, the Candidates paragraph cut with a raise row for the
+  remainder, Draft 2's shape, Figure 9 left to the final subtraction pass; the scope of work is being written for the
+  assistant's approval. The stage rebuilt at dafa839 for the assistant's look at D.3 and G.2 as rendered.
+
 - **WP37 review received and returned for one closing unit (11:50).** The review (940e238): R-1, R-3 to R-7, R-9,
   R-10, R-13 to R-18 met; R-2 not met (the link-to-claim table is from the draft head); R-8 and R-12 not met in part
   (paragraph order against the six-part structure; the back link only in the footer of a 2,732 px page); the fresh
