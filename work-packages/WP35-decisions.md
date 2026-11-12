@@ -76,3 +76,17 @@ horospherical projection, the variance objective), with tests against the paper'
 hyperbolic data, and states the limits of a re-implementation in its readout. If the supervisor prefers the
 authors' code for fidelity, he can install it into the spike's environment himself or grant the fetch; the spike
 then swaps it in and re-runs. Recorded for his decision.
+
+## The supervisor, on the spike's code (verbatim)
+
+> you don't necessarily need to reimplement it, you need to import it and run it, i want to understand how it
+> differs in behavior and usefulness, not necessarily how its constructed. that said looking through its code to
+> see how its solvers work is merited
+
+**The assistant's reading.** The spike imports and runs the authors' HoroPCA (the HazyResearch repository of the ICML
+2021 paper, pinned by commit, installed in the spike's own environment only, licence noted), on the paper's own
+tables after the embedding the method needs, beside ordinary PCA, and reports behaviour and usefulness: what each
+recovers, whether any of it names which metrics trade or at what rate, what each is good for. The spike also reads
+HoroPCA's solver code (how the horospherical projections and the variance objective are optimized) and says in a
+paragraph how its solvers compare with this work's convex programs. No re-implementation. The supervisor's words
+are the authorization for the fetch; nothing from the repository enters the package or its dependencies.
