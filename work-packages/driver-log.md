@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **a8b927d, the rendered pass (03:45).** Stage rebuilt at a8b927d on 8791. D.2's stock K = 2 row now reads rows
+  [986, 1369], shares [0.754, 0.246], the estimator's order (primary [1200, 934], [0.738, 0.262]); the regime sentence
+  reads "3,000 designs ... 2,134 ... 2,355 ... thirteen attributes" and no bare count remains on the page; D.3's K = 2
+  table has one spelling for an exponent under the threshold ("below 1e-12", no bare 0); the nondominated sentence
+  carries its separators; no stderr or warning text on either page. The assistant's checks on the head are running.
+
 - **a8b927d received; the PM's unit table and six open items decided (03:30).** The D.2 term-order and number-format
   head landed (`paper_terms.py` deleted; D.2 in the estimator's order with a slow test pinning it to `term_share_`;
   the `term_numbered_tables` entry narrowed to platform ties; thousands separators and the metric count in words;
