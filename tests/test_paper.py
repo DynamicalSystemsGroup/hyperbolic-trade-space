@@ -97,7 +97,7 @@ NEAREST = {
 # The families of the outline (v1 baseline, v2): each has an entry in the register (R-9).
 OUTLINE_FAMILIES = {
     "pareto", "dea", "production-distance", "frontier-estimation", "pca", "logratio",
-    "gp-maxaffine", "kernel-hyperbolic-pca", "entropic-risk", "tradespace", "decision-analysis",
+    "gp-maxaffine", "kernel-pca", "horopca", "entropic-risk", "tradespace", "decision-analysis",
     "mbse",
 }  # fmt: skip
 PRIOR_FIELDS = ("does", "shares", "differs", "cites")
@@ -1465,6 +1465,20 @@ def test_prior_art_says_nothing_is_novel_first_or_new():
         assert not WORDS_BANNED_IN_PRIOR_ART.search(text)
 
 
+def test_every_differs_cell_has_this_work_as_its_subject():
+    """WP35 Q2: Table 1 and Appendix G read down the "differs" column in one voice. Every full
+    cell and every short phrase opens "This work", so no cell can be read as the other method's
+    property; what a family does, including its limits, is in `does`."""
+    for e in generate_prior_art.entries():
+        assert e["differs"].startswith("This work"), (e["id"], "differs")
+        if e.get("section2"):
+            assert e["short"]["differs"].startswith("This work"), (e["id"], "short.differs")
+        for f in ("does", "shares"):
+            assert not e[f].startswith("This work differs"), (e["id"], f)
+    ids = {e["id"] for e in generate_prior_art.entries()}
+    assert {"kernel-pca", "horopca"} <= ids and "kernel-hyperbolic-pca" not in ids
+
+
 def test_section2_table_is_a_subset_of_the_register_with_the_same_wording():
     """R-27: section 2's rows are the flagged entries, and each cell's phrase is an extract of the
     Appendix G field of the same name, word for word.
@@ -1548,6 +1562,119 @@ def test_prior_art_committed_outputs_are_current():
     assert _out_text(paper["tab-families"]) == str(generate_prior_art.family_table()), STALE
     reg = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-G-register")
     assert _out_text(reg) == str(generate_prior_art.register()), STALE
+
+
+def _spike_table_cells():
+    """The cells of the printed HoroPCA table, row by row, as strings."""
+    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-G-horopca")
+    lines = [ln for ln in _out_text(cell).splitlines() if ln.startswith("|")][2:]
+    return [[x.strip() for x in ln.strip("|").split("|")] for ln in lines]
+
+
+def test_the_horopca_table_equals_the_spike_record():
+    """WP35 R-2: every number of Appendix G's HoroPCA table is a number of the spike's record,
+    read here independently of the generator: HoroPCA's from ``results.json`` (R = 1, the best of
+    five runs, the axes unreflected) and PCA's from ``analysis.txt`` (every row of the table)."""
+    import json
+
+    spike = ROOT / "docs" / "superpowers" / "notes" / "spike-horopca"
+    results = json.loads((spike / "results.json").read_text(encoding="utf-8"))
+    analysis = (spike / "analysis.txt").read_text(encoding="utf-8")
+    cells = _spike_table_cells()
+    assert len(cells) == 15  # planted 1 + 2 + 3 + 3 targets, cubesat 3 + 3
+    # the record lines, "PC10 (0.51) | 0.02 0.02", by table and target, in the order printed
+    pca = {}
+    for block in analysis.split("=== ")[1:]:
+        name = block.split()[0]
+        if "PCA (all rows)" not in block:
+            continue
+        part = block.split("PCA (all rows)", 1)[1].split("HoroPCA (subsample)", 1)[0]
+        for m in re.finditer(r"^\s+(planted t\d|fitK1 t1|fitK2 t\d)\s+PC(\d+) \((\d\.\d\d)\) \| "
+                             r"\S+ (\d\.\d\d)", part, re.M):  # fmt: skip
+            pca[(name, m.group(1))] = (f"PC{m.group(2)} ({m.group(3)})", m.group(4))
+    horo_key = {"fitK1 t1": "fit K=1 t1", "fitK2 t1": "fit K=2 t1", "fitK2 t2": "fit K=2 t2"}
+    expected = []
+    for name in sorted(results, key=lambda n: (n.startswith("cubesat"), n)):
+        wanted = [
+            k for (n, k) in pca if n == name and (name.startswith("cubesat") or "planted" in k)
+        ]
+        entry = results[name]["horopca"]["1.0"]
+        for t in wanted:
+            key = horo_key.get(t, t)
+            expected.append(
+                (
+                    pca[(name, t)][0],
+                    pca[(name, t)][1],
+                    f"{entry['k1']['best']['scores_unreflected'][key]['best_cos']:.2f}",
+                    f"{entry['k2']['best']['scores_unreflected'][key]['span']:.2f}",
+                )
+            )
+    assert [tuple(r[2:]) for r in cells] == expected
+
+
+def test_the_horopca_passage_numbers_are_in_the_record():
+    """WP35: the sentences around the table quote the record (R = 1 table; the other scales and
+    the Gromov four-point deltas are in the record), and the table is generated, never typed."""
+    import json
+
+    spike = ROOT / "docs" / "superpowers" / "notes" / "spike-horopca"
+    results = json.loads((spike / "results.json").read_text(encoding="utf-8"))
+    gromov = (spike / "gromov.txt").read_text(encoding="utf-8")
+    cells = _appendix_cells(_nb(SUPPORT_NB))["G"]
+    text = " ".join(_src(c) for c in cells if c.cell_type == "markdown")
+    assert "docs/superpowers/notes/spike-horopca/" in text
+    assert "the embedding was ours, not natural for the data" in text
+    assert "a spike and not a benchmark" in text
+    # alignment with this work's one-term exponent vector, every scale: 0.06 or less (two places)
+    for name in ("cubesat_primary", "cubesat_stock"):
+        for entry in results[name]["horopca"].values():
+            sc = entry["k1"]["best"]["scores_unreflected"]["fit K=1 t1"]["best_cos"]
+            sp = entry["k2"]["best"]["scores_unreflected"]["fit K=1 t1"]["span"]
+            assert max(sc, sp) < 0.065, (name, entry["R_max"])
+    # the four-point deltas of the two cubesat regimes, and of the Gaussian clouds
+    assert "0.457" in gromov and "0.446" in gromov and "0.420" in gromov and "0.393" in gromov
+    assert "0.46 and 0.45" in text and "0.42 and 0.39" in text and "0.00 for a tree" in text
+    # the smallest scale agrees with PCA's variance share: 0.007 planted, 0.013 cubesat
+    for name, r in results.items():
+        gap = abs(r["horopca"]["0.25"]["k1"]["best"]["explained"] - r["pca"]["k1"]["explained"])
+        assert gap < (0.013 if name.startswith("cubesat") else 0.007) + 1e-3, name
+    assert "0.007 on the planted tables and 0.013 on the cubesat" in text
+    # the largest scale on the cubesat primary: 0.068 against PCA's 0.325
+    assert (
+        round(results["cubesat_primary"]["horopca"]["3.0"]["k1"]["best"]["explained"], 3) == 0.068
+    )
+    assert "0.068 against PCA's 0.325" in text
+
+
+def test_section2_distinguishes_horopca_in_one_paragraph():
+    """WP35 R-1, R-7: one paragraph on HoroPCA, closest in setting and farthest in what is
+    estimated; it borrows setting, interface and PCA as a downstream step; it does not call this
+    work a PCA, nor HoroPCA a kernel method. The body defines "hyperbolic" once, in Definitions;
+    elsewhere the word is a pointer."""
+    s2 = _section("Prior art, by family")
+    paras = [p for p in s2.split("\n\n") if "HoroPCA" in p]
+    assert len(paras) == 1 and paras[0].startswith("**HoroPCA.**")
+    p = paras[0]
+    for phrase in (
+        "closest existing analog in setting",
+        "the farthest in what is estimated",
+        "is not a PCA of any kind",
+        "downstream step",
+        "recovered the planted exponents only where the generator made them the direction of "
+        "largest spread",
+    ):
+        assert phrase in p, phrase
+    assert "kernel" not in p.lower()
+    assert "unrelated" not in s2 and "Färe" not in s2  # the two caveats are pointers or gone
+    assert s2.count("hyperbolic") == 2  # the pointer to the glossary, and HoroPCA's own space
+    assert "Appendix A" in s2.split("The title's", 1)[1].split("**HoroPCA.**")[0]
+    body = _markdown(_nb(PAPER_NB))
+    assert body.count("rectangular hyperbola") == 1 and "level curves" in body
+    yml = yaml.safe_load((PAPER / "myst.yml").read_text(encoding="utf-8"))
+    assert (
+        yml["project"]["title"]
+        == "Scaling Decision Analysis with Hyperbolic Trade Space Identification"
+    )
 
 
 def test_register_opens_by_saying_it_is_not_exhaustive():

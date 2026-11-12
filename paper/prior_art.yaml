@@ -4,6 +4,8 @@
 # Restates what the verified sources say, at the depth recorded in each `verified` field of
 # docs/references.bib and in docs/superpowers/notes/paper-prior-art-sources.md. The "differs" cells
 # are the project's own statements (spec, outline addenda), not statements of the sources.
+# The HoroPCA row is backed by the spike docs/superpowers/notes/spike-horopca/ (the authors' code,
+# run on the paper's tables); Appendix G prints its results table from results.json.
 #
 # Fields
 #   id           unique lower-case slug
@@ -11,7 +13,10 @@
 #   family       the name of the work or family
 #   does         what it does, in a sentence
 #   shares       what this work shares with it or takes from it
-#   differs      what this work does differently, extends or adds (never empty)
+#   differs      what this work does differently, extends or adds (never empty). One voice: every
+#                `differs` cell, and `short.differs`, opens "This work" and has this work as its
+#                subject; what the family does, including its limits, goes in `does`
+#                (tests/test_paper.py::test_every_differs_cell_has_this_work_as_its_subject)
 #   cites        bibliography keys (docs/references.bib), each resolved
 #   section2     true if the entry is also a row of section 2's table
 #   short        required with section2: the phrases of the table, each an extract of its field
@@ -27,15 +32,16 @@ entries:
     family: Pareto and multiobjective optimization
     does: >-
       Returns a nondominated set of designs, and finds Pareto-optimal solutions by scalarization, for
-      example the weighting method; evolutionary algorithms generate nondominated sets.
+      example the weighting method; evolutionary algorithms generate nondominated sets. A nondominated
+      set says which designs survive, by a hard comparison.
     shares: >-
       A maximizer of a weighted geometric mean with positive exponents is Pareto-efficient (lemma
       L11), and the weights act as a trade-off.
     differs: >-
-      Returns no coordinate system and no exponents: a nondominated set says which designs survive,
-      the fit says what trades against what, with one exponent vector per term, a band of
-      near-boundary designs and an effective sample size. Dominance is a hard comparison, the fit
-      a soft maximum. Identification from a table, not generation of designs.
+      This work returns a coordinate system and exponents: the fit says what trades against what,
+      with one exponent vector per term, a band of near-boundary designs and an effective sample
+      size. It compares by a soft maximum, not by dominance, and identifies a surface from a table
+      without generating designs.
     cites: [miettinen1999nonlinear, ehrgott2005multicriteria, zitzler1999multiobjective, deb2002fast]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -43,7 +49,7 @@ entries:
     short:
       does: "Returns a nondominated set of designs"
       shares: "A maximizer of a weighted geometric mean with positive exponents is Pareto-efficient"
-      differs: "Returns no coordinate system and no exponents"
+      differs: "This work returns a coordinate system and exponents"
     nearest: true
     why_not_just: >-
       This is not just a Pareto front: a front is the set of designs that no other design dominates,
@@ -62,13 +68,14 @@ entries:
       A one-sided envelope of the data, a score per unit, scores beyond the boundary (V above 1)
       and a boundary that moves between data sets.
     differs: >-
-      One exponent vector per term, a global named structure, in place of weights obtained unit by
-      unit; a surface that is piecewise log-linear, with constant elasticities within a term; larger-is-better
-      metrics with homogeneity by the simplex in place of inputs, outputs and a returns-to-scale
-      choice; a soft maximum with a temperature, a band and an effective sample size in place of a
-      deterministic boundary set by extreme units; one convex program and K refits; coordinates and
-      a pull-back to attribute units in place of a score and a peer set. In short, global exponents
-      per term, not per-unit weights; a band, not extreme units.
+      This work fits global exponents per term, not per-unit weights, and reports a band, not
+      extreme units. Its exponent vector per term is a global named structure, and its surface is
+      piecewise log-linear, with constant elasticities within a term. Its metrics are
+      larger-is-better with homogeneity by the simplex in place of inputs, outputs and a
+      returns-to-scale choice. Its boundary is a soft maximum with a temperature, a band and an
+      effective sample size in place of a deterministic boundary set by extreme units. It solves one
+      convex program and K refits, and returns coordinates and a pull-back to attribute units in
+      place of a score and a peer set.
     cites: [charnes1978measuring, banker1984some, andersen1993procedure, fare1994productivity, allen1997weights, dyson2001pitfalls]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -76,7 +83,7 @@ entries:
     short:
       does: "Evaluates the relative efficiency of each decision-making unit"
       shares: "A one-sided envelope of the data, a score per unit"
-      differs: "global exponents per term, not per-unit weights; a band, not extreme units"
+      differs: "This work fits global exponents per term, not per-unit weights"
     nearest: true
     why_not_just: >-
       This is not just DEA: DEA scores each unit against the envelope under weights obtained from the data,
@@ -97,10 +104,10 @@ entries:
       A piecewise log-linear fit to the data from above, each piece a product of powers; a score per
       unit against it.
     differs: >-
-      One exponent vector per term, fitted to every design at once under a soft maximum with a
-      temperature and a band, the number of terms the analyst's choice; larger-is-better metrics
-      with homogeneity by the simplex in place of inputs and outputs; coordinates and a pull-back to
-      attribute units in place of a score per unit.
+      This work fits one exponent vector per term to every design at once under a soft maximum with
+      a temperature and a band, the number of terms the analyst's choice. Its metrics are
+      larger-is-better with homogeneity by the simplex in place of inputs and outputs, and it
+      returns coordinates and a pull-back to attribute units in place of a score per unit.
     cites: [charnes1982multiplicative, charnes1983invariant, banker1986piecewise]
     section2: false
 
@@ -115,9 +122,9 @@ entries:
       A boundary of a technology, and each unit measured against it with no quantity held fixed:
       V scores a design against the fitted reference surface with every metric free.
     differs: >-
-      The title's word names the level curves of V, products of powers of larger-is-better metrics
-      fitted to a table under a soft maximum, not this measure; nothing here scales inputs against
-      outputs.
+      This work fits products of powers of larger-is-better metrics to a table under a soft
+      maximum and scales no inputs against outputs. Its word "hyperbolic" is defined in Appendix A,
+      and is not this measure.
     cites: [fare1985measurement]
     section2: false
 
@@ -130,8 +137,8 @@ entries:
       The weighted geometric mean with exponents summing to one is the constant-returns
       Cobb-Douglas form; V read as a scaling factor to the boundary is a distance-function reading.
     differs: >-
-      Attributes in place of inputs, and the form is fitted from a table of designs with a soft
-      maximum.
+      This work takes attributes in place of inputs, and fits the form from a table of designs with
+      a soft maximum.
     cites: [cobb1928theory, shephard1970theory, fare1995multi, farrell1957measurement]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -139,7 +146,7 @@ entries:
     short:
       does: "The Cobb-Douglas production form, and the Shephard distance function"
       shares: "the constant-returns Cobb-Douglas form"
-      differs: "Attributes in place of inputs"
+      differs: "This work takes attributes in place of inputs"
     nearest: true
     why_not_just: >-
       This is not just a production or distance function: those are economic forms for inputs and
@@ -156,8 +163,8 @@ entries:
     shares: >-
       A one-sided criterion on log-linear residuals.
     differs: >-
-      A smooth soft maximum over a simplex-constrained geometric mean in place of a shifted
-      intercept, and K terms.
+      This work uses a smooth soft maximum over a simplex-constrained geometric mean in place of a
+      shifted intercept, and K terms.
     cites: [aigner1968estimating, afriat1972efficiency, richmond1974estimating, greene1980maximum, aigner1977formulation, battese1992frontier]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -165,7 +172,7 @@ entries:
     short:
       does: "Estimates frontier production functions"
       shares: "A one-sided criterion on log-linear residuals"
-      differs: "A smooth soft maximum over a simplex-constrained geometric mean"
+      differs: "This work uses a smooth soft maximum over a simplex-constrained geometric mean"
     nearest: true
     why_not_just: >-
       This is not just a stochastic frontier: a frontier estimate shifts the intercept of a log-linear
@@ -183,9 +190,9 @@ entries:
       The question "what explains this table", answered by an unsupervised summary in a few
       directions.
     differs: >-
-      The criterion is a one-sided soft maximum, not variance, and the exponents live on the
-      simplex, so the components are trade-offs between metrics. The two chain: the method belongs
-      beside PCA in unsupervised learning and feature engineering.
+      This work's criterion is a one-sided soft maximum, not variance, and its exponents live on the
+      simplex, so its components are trade-offs between metrics. The two chain: this work belongs
+      beside PCA in unsupervised learning and feature engineering, and is not a PCA.
     cites: [jolliffe2016principal]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -193,7 +200,7 @@ entries:
     short:
       does: "Finds uncorrelated components that successively maximize variance"
       shares: "an unsupervised summary in a few directions"
-      differs: "The criterion is a one-sided soft maximum, not variance"
+      differs: "This work's criterion is a one-sided soft maximum, not variance"
     nearest: true
     why_not_just: >-
       This is not just PCA: PCA explains variance, which is analysis and says nothing about what
@@ -209,8 +216,8 @@ entries:
     shares: >-
       The chart Z = Bu is in the spirit of an isometric logratio chart.
     differs: >-
-      The criterion is one-sided, and the weights lie on the simplex; the chart is paired with the
-      level log V and is reversible to the metrics and to attribute units.
+      This work's criterion is one-sided; its weights lie on the simplex, and its chart is paired
+      with the level log V and is reversible to the metrics and to attribute units.
     cites: [aitchison1983principal, aitchison1986statistical, egozcue2003isometric]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -218,7 +225,7 @@ entries:
     short:
       does: "PCA of compositional data"
       shares: "an isometric logratio chart"
-      differs: "The criterion is one-sided, and the weights lie on the simplex"
+      differs: "This work's criterion is one-sided; its weights lie on the simplex"
     nearest: true
     why_not_just: >-
       This is not just log-ratio analysis: the log-ratio chart is one half of the coordinate
@@ -231,12 +238,13 @@ entries:
     does: >-
       Geometric programming with generalized posynomials, aircraft design as geometric programs with
       fits compatible with them, softmax-affine fits compatible with geometric programming,
-      convex piecewise-linear fits, and reweighted l1 sparsity.
+      convex piecewise-linear fits, and reweighted l1 sparsity. The sources fit regression
+      surfaces.
     shares: >-
       The model class, the K > 1 refit scheme and the sparsity option.
     differs: >-
-      The sources fit regression surfaces; this method fits an envelope, the one-sided boundary of
-      the data, and reads its exponents as elasticities.
+      This work fits an envelope, the one-sided boundary of the data, and reads its exponents as
+      elasticities.
     cites: [boyd2007tutorial, hoburg2014geometric, hoburg2016data, magnani2009convex, candes2008enhancing]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -244,32 +252,59 @@ entries:
     short:
       does: "Geometric programming with generalized posynomials"
       shares: "The model class, the K > 1 refit scheme"
-      differs: "this method fits an envelope, the one-sided boundary of the data"
+      differs: "This work fits an envelope, the one-sided boundary of the data"
     nearest: true
     why_not_just: >-
       This is not just geometric-programming or max-affine fitting: those fit a surface through
       the middle of the data by regression, while this fits the edge of the data and reports the
       terms as trade-offs.
 
-  - id: kernel-hyperbolic-pca
+  - id: kernel-pca
     group: Dimension reduction and model fitting
-    family: Kernel and hyperbolic PCA
+    family: Kernel PCA
     does: >-
-      PCA in an implicit feature space, and PCA in hyperbolic space with horospherical projections.
+      PCA in an implicit feature space, reached through kernel functions: principal components of
+      data in a feature space nonlinearly related to the input space.
     shares: >-
       Kernel PCA is the feature-engineering kin of the kernel direction that stays compatible with
       geometric programming.
     differs: >-
-      "Hyperbolic" here means the level surfaces of V in metric space, unrelated to negative-curvature
-      geometry.
-    cites: [schoelkopf1998nonlinear, chami2021horopca]
+      This work builds no kernel and maximizes no variance: it fits a one-sided posynomial edge,
+      and its kernel direction is documented, not built.
+    cites: [schoelkopf1998nonlinear]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
     # (a test checks it). Appendix G prints the full sentences.
     short:
       does: "PCA in an implicit feature space"
       shares: "the feature-engineering kin of the kernel direction"
-      differs: "\"Hyperbolic\" here means the level surfaces of V in metric space"
+      differs: "This work builds no kernel and maximizes no variance"
+
+  - id: horopca
+    group: Dimension reduction and model fitting
+    family: HoroPCA (PCA in hyperbolic space)
+    does: >-
+      PCA components carried into hyperbolic space with horospherical projections (a
+      parameterization of subspaces, a projection and a variance objective), for data that lives on
+      a hyperbolic manifold such as an embedded tree; it maximizes a nonconvex variance over frames
+      by gradient ascent with restarts, and gives no certificate.
+    shares: >-
+      The closest existing analog in setting: unsupervised, a table in and coordinates out, with the
+      number of components chosen by the analyst, and PCA as a step that can follow.
+    differs: >-
+      This work estimates a one-sided edge, not a variance over frames, by convex programs on a
+      simplex with a certificate, and it uses no negative-curvature geometry; on the paper's
+      tables its exponents are recovered by neither HoroPCA nor PCA except where the generator made
+      them the direction of largest spread (the passage and table after this register, and the spike
+      record).
+    cites: [chami2021horopca]
+    section2: true
+    # Section 2's table prints these phrases; each is an extract of the field of the same name
+    # (a test checks it). Appendix G prints the full sentences.
+    short:
+      does: "PCA components carried into hyperbolic space"
+      shares: "The closest existing analog in setting"
+      differs: "This work estimates a one-sided edge, not a variance over frames"
 
   - id: entropic-risk
     group: Dimension reduction and model fitting
@@ -280,8 +315,8 @@ entries:
     shares: >-
       The log-mean-exp soft maximum is the sample version of the entropic risk functional.
     differs: >-
-      Nothing is used from the risk-measure side; the entries are cited to avoid confusion of the
-      soft maximum with a risk measure.
+      This work uses nothing from the risk-measure side; the entries are cited to avoid confusion
+      of the soft maximum with a risk measure.
     cites: [foellmer2026entropic, ahmadijavid2012entropic]
     section2: false
 
@@ -296,16 +331,16 @@ entries:
       diagram standard for them (the XDSM, which extends the design structure matrix with process
       flow), a framework that solves the coupled models and computes their coupled derivatives,
       and a textbook treatment; each run returns an optimum of a stated objective under
-      constraints.
+      constraints, driving the evaluations toward it.
     shares: >-
       The setting of the case, a design loop in which a configuration is evaluated by coupled
       disciplinary models into attributes and the design variables are chosen against several
       objectives; the case's coupling table is a design structure matrix.
     differs: >-
-      MDAO drives the evaluations toward an optimum; this method fits the table the evaluations
-      leave behind and reports the trade-offs they exercised, with one exponent vector per
-      monomial term and a level for every design, whatever produced the table. It does not search,
-      couple disciplines or need derivatives; an MDAO run is one way to fill the table.
+      This work fits the table the evaluations leave behind and reports the trade-offs they
+      exercised, with one exponent vector per monomial term and a level for every design, whatever
+      produced the table. It does not search, couple disciplines or need derivatives; an MDAO run
+      is one way to fill the table.
     cites: [sobieszczanski1997multidisciplinary, martins2013multidisciplinary, lambe2012extensions, gray2019openmdao, martins2021engineering]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -313,7 +348,7 @@ entries:
     short:
       does: "solves the coupled system inside an optimizer"
       shares: "a configuration is evaluated by coupled disciplinary models into attributes"
-      differs: "this method fits the table the evaluations leave behind"
+      differs: "This work fits the table the evaluations leave behind"
 
   - id: tradespace
     group: Systems engineering practice and decision analysis
@@ -322,11 +357,11 @@ entries:
       Value-focused broad exploration of design alternatives, a design-by-shopping interface in
       which the decision-maker forms a preference by viewing many good designs, user-guided
       samplers and linked visualization with the Pareto frontier displayed, and tradespace
-      exploration for resilient systems.
+      exploration for resilient systems; these explore and display.
     shares: >-
       The setting, a table of evaluated designs.
     differs: >-
-      These explore and display; this method fits and reports a coordinate system and a score.
+      This work fits and reports a coordinate system and a score.
     cites: [ross2004multi, ross2005tradespace, ross2010revisiting, stump2003design, simpson2008visual, stump2009visual, spero2014tradespace]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -334,7 +369,7 @@ entries:
     short:
       does: "Value-focused broad exploration of design alternatives"
       shares: "The setting, a table of evaluated designs"
-      differs: "this method fits and reports a coordinate system and a score"
+      differs: "This work fits and reports a coordinate system and a score"
     nearest: true
     why_not_just: >-
       This is not just tradespace exploration: exploration samples and shows the designs, while
@@ -347,11 +382,12 @@ entries:
     does: >-
       Decision analysis with a normative versus descriptive distinction; multiple-objective
       preferences and value trade-offs; weighted-criteria comparison methods (Pugh, AHP,
-      Kepner-Tregoe); a decision-management framework based on decision theory and cost analysis.
+      Kepner-Tregoe), with weights elicited; a decision-management framework based on decision
+      theory and cost analysis.
     shares: >-
       The weights are trade-off rates.
     differs: >-
-      The weights are fitted from the data's edge, not elicited.
+      This work fits its weights from the data's edge and elicits none.
     cites: [howard1988decision, keeney1993decisions, baker2012survey, parnell2016trade]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -359,7 +395,7 @@ entries:
     short:
       does: "Decision analysis with a normative versus descriptive distinction"
       shares: "The weights are trade-off rates"
-      differs: "The weights are fitted from the data's edge, not elicited"
+      differs: "This work fits its weights from the data's edge"
 
   - id: practice
     group: Systems engineering practice and decision analysis
@@ -370,8 +406,8 @@ entries:
     shares: >-
       The setting, a decision for which an answer and a justification are required.
     differs: >-
-      The weights are fitted from the table and the analysis reruns when the data change; the study is a
-      computation with a recorded environment, not a document.
+      This work fits its weights from the table and reruns the analysis when the data change; the
+      study is a computation with a recorded environment, not a document.
     cites: [hirshorn2017nasa, baker2012survey, chilli2026decision, smith2007ameliorating, parnell2021system]
     section2: false
 
@@ -384,8 +420,8 @@ entries:
     shares: >-
       The trade space as a model rather than a document.
     differs: >-
-      The method is a model-based trade analysis, not an MBSE methodology; the system model stays
-      behind the abstraction from configuration to attributes.
+      This work is a model-based trade analysis, not an MBSE methodology; the system model stays
+      behind its abstraction from configuration to attributes.
     cites: [madni2018model, henderson2021value]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -393,4 +429,4 @@ entries:
     short:
       does: "MBSE centred on the system model as the sole source of truth"
       shares: "The trade space as a model rather than a document"
-      differs: "The method is a model-based trade analysis, not an MBSE methodology"
+      differs: "This work is a model-based trade analysis, not an MBSE methodology"

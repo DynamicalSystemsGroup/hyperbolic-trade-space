@@ -433,8 +433,10 @@ rows:
   verdict: supported
   why: 'Abstract: HoroPCA, PCA components generalized to hyperbolic space. The ''unrelated'' half is the
     paper''s statement about itself.'
-  status: kept
-  now: ''
+  status: reworded
+  now: 'The "unrelated" clause is gone (the glossary and Appendix A define the word). Section 2 and
+    Appendix G now say what the abstract says, that HoroPCA extends the components of PCA to hyperbolic space
+    with horospherical projections, and what the authors'' code did on the paper''s tables (WP35).'
 - n: 45
   sentence: 'Lineage: ''Tradespace exploration displays a table of designs''; table: ''Value-focused broad
     exploration of design alternatives, user-guided samplers and linked visualization with the Pareto

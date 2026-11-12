@@ -31,6 +31,9 @@ READS = {
     "generate_proofs": "derivation/proof_map_record.json",
     "generate_reading_pass": "paper/reading_pass.yaml",
 }
+READS_BY_CALL = {
+    "horopca_table()": "docs/superpowers/notes/spike-horopca/ (results.json, tables.npz)",
+}
 CASE_DATA = "examples/adcs/data/v2/ (the regimes' CSV files named by the case module)"
 
 
@@ -179,7 +182,7 @@ def reproduction_rows(paper_dir=PAPER) -> list[list[str]]:
             call = " ".join(src)
             mod = next((m.group(1) for ln in "".join(cell["source"]).splitlines()
                         if (m := re.match(r"from (generate_\w+) import", ln))), None)  # fmt: skip
-            reads = READS.get(mod, CASE_DATA)
+            reads = READS_BY_CALL.get(call, READS.get(mod, CASE_DATA))
             rows.append([cid, f"`{call}`", reads, f"cell {cid} of {nb_name}"])
     return rows
 
