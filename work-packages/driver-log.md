@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP32 round 3 done; WP33's map and baseline in (15:40).** Round 3 (0fc6b29): both pump-table cells reached the
+  fit and the trilemma with the new fitting block; "not bracketed" did not recur; the only friction was the K = 1
+  tension-report message on six near-frontier rows, which both followed in one step (no change: a residual the
+  review names, not a caveat); no docs stop persists, so nothing goes to the supervisor's list from the cells. The
+  WP32 review is dispatched (a fresh reviewer runs the three rounds' cell code and reads the changed pages).
+  WP33 D-1 (cde6e5d): the journeys map, twelve rows; the eight baseline reads on the stage at 60f92d9 agree on one
+  finding, no page says whom it is for and the root routes by artefact, not need. The assistant's calls on the
+  map's eleven placements: all go, 5 and 8 by the sentence test and the record, 10 by amendment if a pinned name is
+  touched, 11 with the README net neutral; the root page's first screen routes by need as the first D-2 unit, with
+  the three adoption-cost lines (the measured times as a register row). The stage stays at 60f92d9 until the last
+  D-2 unit lands; the repeat round reads the rebuild. Two records for the review list and WP8b: the theme's
+  "Loading..." placeholders on first view, and wide tables clipping at desktop width in the paper (P5).
+
 - **2942ff5, the fast verdict (15:15).** Ruff and format clean, attribution 0, vocabulary 0 new; fast suite 1889
   passed, 1 failed, the claims-register rows that 60f92d9 repairs (the register test passes there in the targeted
   run; only `claims_register.toml` differs between the two heads). The round-2 triage head is accepted with the
