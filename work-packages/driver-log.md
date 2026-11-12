@@ -228,6 +228,16 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **60f92d9 and 0fc6b29 fully green; WP36's two worker readouts in (16:45).** CI runs 43240391612 and 43242554115:
+  every job green on both platforms (the twelfth and thirteenth fully green heads; the register repair and the
+  round-3 head). WP36's W1 (the theorem-prover question) and W2 (the Rust and WebAssembly question) readouts are
+  committed (3d73cea, e11fe60); the sources check and the PM's synthesis with its draft future-directions text are
+  still to come, and the assistant decides on the whole. Three packages opened by the supervisor this afternoon
+  run in parallel with WP32's review and WP33's D-2: WP35 (the word "hyperbolic", HoroPCA imported and run, Table
+  1's differs column), WP36 (formal results and Rust to WASM as future directions) and WP37 (the history and
+  acknowledgements page, ten names, the contributors' backgrounds, his own record, the SciPy community), each with
+  his words verbatim in its decisions file.
+
 - **0fc6b29 checked; 60f92d9's fast jobs green (16:05).** On 0fc6b29 (the returns, the baseline reads and the journeys
   note): ruff and format clean, attribution 0, vocabulary 0 new, the docs, site, register and encoding tests pass.
   CI on 60f92d9: the fast jobs green on both platforms, so the register repair holds there too; its slow jobs run.
