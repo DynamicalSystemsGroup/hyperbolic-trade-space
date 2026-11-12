@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP33 D-2 on dev; the abstract breach (20:30).** The four first-screen units are on dev: the root page routes by
+  need in five lines with the three adoption-cost lines (ebacd28); the README's first screen is for analysts with a
+  table and its layout list names every top-level directory (a80a403); the docs home carries five need-phrases and
+  a whom-it-is-for sentence, the cubesat choosing-K block moved to Examples, the configuration clause to Getting
+  started, "What must hold" on the modeller's page (2b07609 to fa612f4); the paper rows cut 83 body words and gave
+  Appendix G's stochastic-frontier entry its "why not the neighbour" line (d8d650e). Read in the diffs: d8d650e also
+  moved the reader line into the abstract and cut its soft-support clause to hold the count, against WP33's own
+  non-goal that the abstract is the supervisor's hand. The assistant's call: a correction unit restores the
+  abstract verbatim, places the reader line at the end of Section 1's Organization paragraph, re-points C033 and the
+  ledger, and a review-list row quotes the proposed abstract sentence for the supervisor; WP33's repeat round and
+  the fresh U1 cell wait for that head. The fast suite and the slow site and docs tests run on the current head; a
+  stage rebuild at it is in progress for the assistant's rendered look.
+
 - **The history page as rendered (19:55).** Read from the unit's committed screenshots (the browser pane refused a
   second local port; the stage worktree stays frozen for WP33): one screen at 1280 px, the title, five paragraphs,
   every demonstrative claim a link, the credit paragraph set smaller, no banned term in the page's words. The
