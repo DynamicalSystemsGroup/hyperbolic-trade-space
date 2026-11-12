@@ -1,0 +1,1 @@
+Round 3 (U2 and U4 only): head 60f92d9, stage http://127.0.0.1:8791/, fresh Sonnet cells. Returns verbatim. U2 read the docs pages by HTTP text because the browser pane was at its tab cap (noted in its return).
