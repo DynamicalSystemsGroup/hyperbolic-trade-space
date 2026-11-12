@@ -1,8 +1,7 @@
 # Fitting
 
 `HyperbolicTradeSpace` fits the frontier model to conditioned metrics. At one term it solves a convex
-problem and returns the minimizer. It follows the scikit-learn decomposition family: `fit`,
-`transform`, `inverse_transform`, `score_samples`, and no `predict`.
+problem and returns the minimizer.
 
 ## One term
 
@@ -56,7 +55,7 @@ print(round(tau, 1))
 ```
 
 This synthetic table puts 30 percent of its rows on the planted frontier, hence the target 0.35;
-for real data start at the default 0.10. Use tau of 3 and above: below that
+for real data start at the default 0.10. If that raises "not bracketed", raise the target above the fractions the message gives, or the upper bound: a model sweep needed `bounds=(3, 1e4)`. Use tau of 3 and above: below that
 `frac_above_` is not monotone in tau.
 Hold tau fixed across numbers of terms, selected at K = 1.
 
@@ -99,10 +98,9 @@ exponent); every per-term attribute follows.
 
 ## The temperature and the band at several terms
 
-`select_temperature` needs a target the fit can reach. With several terms the term planes are not
-supporting planes, so `frac_above_` levels off above zero as tau grows (about 0.30 on the table of
-`make_frontier_data(300, 4, n_terms=2, random_state=777)`) and the default target 0.10 raises "not
-bracketed". Choose a target above the level-off.
+With several terms the term planes are not supporting planes, so `frac_above_` levels off above
+zero as tau grows and the default target 0.10 raises "not bracketed"; choose a target above the
+level-off.
 
 `tension_report` takes its band from the temperature, 1/tau. A term whose cell has fewer than
 `min_near_frontier` designs in the band raises, and the message names the `band`, and the matching
