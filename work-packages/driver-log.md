@@ -228,6 +228,17 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **4162a61, the rendered pass (23:35).** Stage rebuilt at 4162a61 on 8791. Both pages carry the `@12` entries and the
+  container's hashes (no `@10`, `@11` or superseded hash remains), no stderr or warning text, D.11 reads the new jitter
+  record, D.2's K = 3 lists are in share order. One defect found by reading and confirmed by refitting on this Mac:
+  D.2's stock K = 2 row prints the terms in the opposite order to the estimator's (rows [1369, 986], shares
+  [0.246, 0.754] against `term_share_` [0.754, 0.246]), because `paper/paper_terms.py` still re-sorts D.2's lists
+  by cell size (K = 2) and stored labels (K = 3), a pre-term-order workaround for gap G-10 that now contradicts
+  every other table. Routed as a unit: the relabelling goes, every per-term table carries the fitted order, a test
+  pins it, the `term_numbered_tables` tolerance entry is narrowed to platform ties, and the notebooks are
+  re-executed. The sentence "a 8-lemma" is still rendered (its unit is pending). The assistant's fast suite on
+  4162a61 is running.
+
 - **e9a1dd4 CI and the re-execution head (23:20).** CI on e9a1dd4 (run 43150102872): Linux slow green (396 passed,
   the first green slow job since the data gate); Linux and Windows fast 2 failed each (the datasets table digest and
   the D.11 subsection, both waiting on the re-execution); docs-paper 1 failed (the D.2 term-numbered table, the
