@@ -38,3 +38,21 @@ record; how the narration fits the body's budget (a closing subsection of a para
 detail in Appendix D). Readout with options to the assistant; then the decision, the build through the paper
 notebook's single-writer queue, QC, the integration (claims, ledger, the key's sentence, the review list as a
 changed conclusion, Appendix D's table), and the review by the P7 and P8 pair, whose question this answers.
+
+## The supervisor, on the cost and the test (verbatim)
+
+> this may cost some space but its important that the case example section speaks to the people who actually have
+> to make decisions. i don't want them seeing this as something that makes their lives harder rather than easier.
+
+> you can determine how you want to document and test for this requirement
+
+**The assistant's reading.** The budget bends for this: the case section may grow where the narration needs it,
+each added sentence with its job in the ledger, and the section's existing text gives way first where it serves
+the decision maker less. The requirement is documented as a goal of the WP39 scope in the supervisor's terms,
+the case section speaks to the people who make decisions and leaves them with an easier call, not a harder one,
+and it is tested the way this project tests reading: the P8 persona (the new-space executive) and the P7
+persona read the finished section cold and answer two questions, whether they could follow the reduction to the
+call without the subsystem detail, and whether the section made the decision easier or harder, with the sentence
+that did it quoted; the answer key gains the section's sentence (what the method does and does not decide); and
+the claims register backs every number the narration quotes. The reads are the acceptance, the register the
+machine check.
