@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **259ad9d, the rendered read (05:15).** Stage rebuilt at 259ad9d on 8791. Section 8 states six requirements (four
+  thresholds, two limits) and that the fit ignores them all with D.17 reading them after it; D.17 names all six with
+  their limits, the unit-cost limit "binds through the fleet size" in one sentence, and the table prices each at the
+  K = 1 frontier; the Examples page's requirements block has six rows and the joint pass share (25.7 and 22.2
+  percent); the design-sets block there still says "all designs" and the thresholds (the wording unit). No stderr
+  on any page. The assistant's checks on the head are running.
+
 - **Answer key v5 fixed (05:00).** Written outside the repository from the paper's own sentences (the PM drafted
   six; the assistant added the K = 2 reading's three checks, the term order, the two unweighted metrics, the six
   requirements with the unit-cost limit binding through the fleet size, the design-sets block's four thresholds and
