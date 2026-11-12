@@ -228,6 +228,17 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Stage 6: the P7 and P8 final reads triaged (08:05).** Read from their worktrees before the PM's delivery and
+  triaged as a pair under the balance rule (`WP30-rounds/persona-final/triage.md`, 77fe83c). P7: interest yes,
+  honesty mostly yes, residuals where the body reads the model's limits as a mission's and where C.8 does not name
+  the pointing-error budget, the one-slew momentum check's effect, the launch slot minimum's effect at small fleets,
+  the horizon and slew law as choices, rigid wings, the mass axis a trim. P8: economics and verdicts sane, the front
+  of the paper not written for the executive, the requirements reading priced in bands. Calls: one paper unit (a
+  Section 8 clause, C.8 clauses and items, D.17's cost prices in USD, one D.7 sentence; no caveats, no model
+  change); P8's executive-journey asks go to WP33, not the body; the abstract's case number rests for the supervisor
+  and goes on his list as a question. Neither reader asks for a re-run. The reviewer who runs the thing is still
+  running.
+
 - **8806b0e fully green (07:45).** CI run 43201881230: every job green on both platforms (the seventh fully green
   head; the staged head of stage 6). The P7 and P8 final reads are committed in their worktrees and come through
   the PM; the reviewer who runs the thing is still taking its screenshots.
