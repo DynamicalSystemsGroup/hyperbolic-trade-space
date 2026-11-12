@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **0fc6b29 checked; 60f92d9's fast jobs green (16:05).** On 0fc6b29 (the returns, the baseline reads and the journeys
+  note): ruff and format clean, attribution 0, vocabulary 0 new, the docs, site, register and encoding tests pass.
+  CI on 60f92d9: the fast jobs green on both platforms, so the register repair holds there too; its slow jobs run.
+
 - **WP32 round 3 done; WP33's map and baseline in (15:40).** Round 3 (0fc6b29): both pump-table cells reached the
   fit and the trilemma with the new fitting block; "not bracketed" did not recur; the only friction was the K = 1
   tension-report message on six near-frontier rows, which both followed in one step (no change: a residual the
