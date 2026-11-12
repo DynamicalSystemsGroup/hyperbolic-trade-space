@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP35 decided; WP37's first readout in (18:20).** The HoroPCA spike (ace2840) ran the authors' code beside PCA on
+  the paper's tables: both recover a planted exponent only where the generator makes it the direction of largest
+  spread, neither captures more than 0.06 of the cubesat exponent, neither names a trade or a rate, the tables are
+  not tree-like, HoroPCA's solver is a nonconvex variance over frames by gradient ascent with restarts and no
+  certificate, and "PCA with a specific kernel" does not describe it. The assistant's decisions (WP35-decisions.md,
+  ab39371): one Section 2 paragraph, Appendix G with the spike's table, Table 1 split with every "differs" cell
+  rewritten to have this work as its subject under a test, one glossary entry for "hyperbolic", no title change;
+  the PM writes the scope and builds through the paper notebook's single-writer queue. WP37's W1 (d5ab21d) found
+  the public record thin in five places; the assistant's decisions (47d049c): the team's own account in its own
+  voice where no source exists, marked as such; no permission claim; the rebrand undated; unfetched posts linked
+  without claims. Lint clean on the head. Pending from the PM: the WP35 scope, WP36's synthesis, WP37's W2 and the
+  draft, the WP32 review, WP33's D-2 heads.
+
 - **60f92d9 and 0fc6b29 fully green; WP36's two worker readouts in (16:45).** CI runs 43240391612 and 43242554115:
   every job green on both platforms (the twelfth and thirteenth fully green heads; the register repair and the
   round-3 head). WP36's W1 (the theorem-prover question) and W2 (the Rust and WebAssembly question) readouts are
