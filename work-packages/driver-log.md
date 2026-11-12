@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **CI verdicts, 22:30.** f3f8840 (the choosing-K head) fast on Linux and Windows: 3 failed each, the data commit's
+  known reds (C261, the datasets table digest, the v2 register rows); the verification pointers now resolve.
+  b4606f5 Windows slow: the same term-order estimator cases and sensitivity results file as Linux. Nothing new in
+  kind on either platform. The PM asked for a unit table (eight items, with model and expected head).
+
 - **b4606f5, the Linux slow verdict (22:25).** 6 failed, 392 passed: the term order's estimator tests (the two
   aggregation cases and now three termination-record cases, the same row-for-row comparison with the raw solver) and
   the sensitivity results file, which the data of record now moves at the K = 1 total-mass exponent's last digits as
