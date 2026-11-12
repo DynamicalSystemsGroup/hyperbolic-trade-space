@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **a5cd754, the fast verdict (20:05).** CI fast on Linux (run 43129381509): 1 failed, 1870 passed; the six paper reds
+  of the gate head are gone. The one failure is `test_site.py::test_word_budgets_hold`: `docs/user-guide/fitting.md`
+  at 706 words against 668, pushed over by the term-order sentence. Returned to the cascade for subtraction (the
+  sentence cut to its job and the page's repeated prose removed), not a budget raise, per the standing order on words
+  per surface. Slow, docs-paper and both Windows jobs still running.
+
 - **Cascade unit 1 on dev (a5cd754): the clean render and the assistant's browser pass (19:55).** The stage worktree
   rebuilt at a5cd754 and served on 8791 (the supervisor's clean render; head stated in chat). Rendered paper: Figure 9
   draws panel B in share order (term 1 settling time against control effort, term 2 depth of discharge alone) and its
