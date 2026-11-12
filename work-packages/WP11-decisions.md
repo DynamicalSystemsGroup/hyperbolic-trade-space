@@ -48,3 +48,9 @@ the word the key's own header fixed at version 2. Nothing else changed. SHA-256 
 repository: `aee912f94a17834bc3a99cee591660c9c491d7bf5ee83b3d5a482e314c9f2a0c`. The round-2 "key stale" lines resolve as: S4 (terms, the cell an analysis reading) and S6 (eight
 metrics; 659 of 706 nondominated on eight; a 5-lemma) were already version 3's text, so the readers' statements are
 "stated"; S7's line is version 4's; the nine figures stay uncounted.
+
+**Answer key, version 5 (fixed 2026-11-12 05:00, the assistant).** Version 4 updated for the model revision (thirteen
+traded metrics, the fleet size, 3,000 designs per regime, the cost coverage and the two budgets), the case read at
+K = 2 by the package's own checks, the term order, the six requirements read after the fit, the data of record
+(the container's `@12` entries) and the noise corollary; wrong beliefs W9 to W12 added. Kept outside the repository
+and never shown to a reader, triager or author; sha256 `a041bc84c27f144a8ea7339ec59059f20e37a816d0f5d64bf4cb4e784ccc5bc4`. The final reader round reads against it.
