@@ -28,8 +28,7 @@ samples, such as grids, are not independent observations: the exponents describe
 no sampling error.
 
 **Contending sets are a reading.** The set is exact at infinite temperature with `min_exponent` at
-0, and graded participation at a fit temperature. Whether what contends is
-a recognizable dilemma is for you. A tension is a binding constraint, not a correlation, and
+0, and graded participation at a fit temperature. A tension is a binding constraint, not a correlation, and
 negative association near the surface is partly a closure effect.
 
 **Local fits.** A multi-term fit is a local optimum chosen among seeded restarts. A trade-off with few
@@ -46,4 +45,5 @@ space, and inverting a level into a bounded outcome is yours ([Predicting](predi
 Machine checks confirm that formulas follow from stated conditions and that the code agrees with
 them. Whether the conditions suit your problem is for you to judge. The lemma scripts replace
 pencil-and-paper derivation, not formal verification; [Appendix B](paper:appendix-b) of the paper states
-what they do and do not establish.
+what they do and do not establish. A proof in a theorem prover would fix each lemma's statement over the real numbers.
+It would not bound the double-precision error, which the certificates check.

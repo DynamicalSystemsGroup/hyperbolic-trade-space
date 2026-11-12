@@ -1317,3 +1317,10 @@ section = "Appendix G"
 words_removed = 853
 no_longer_did = "G.2 rendered the machine's reading of its own citations: a count line, a verdict column (supported, partly supported, not found, not accessible), the reason for each verdict, and the action taken on the sentence, in six columns; the paragraph above the table described the verdicts. A reader cannot use a verdict to check a citation, and the table said a machine had checked. The table now gives, for each citing sentence still in the paper, what we say, the source and the place in it, three columns; the record keeps the verdicts"
 authority = "the supervisor, WP38-decisions.md at 7257053 (G.2 lets a reader check for themselves; it is not a report that a machine checked)"
+
+[[cut]]
+date = "2026-11-13"
+section = "Future work and final remark"
+words_removed = 3
+no_longer_did = "WP36 adds 63 words (the Lean direction, the reals-versus-floating-point line, one clause for a Rust core compiled to WebAssembly: 58; the gloss of the generalized geometric program that the removed hull clause had carried by accident: 5) and takes out 64: 'Future work follows the assumptions we named.' (the lead-in said that the paragraph follows the assumptions, which its own Beyond-sentences show); the clause 'whose generalized gradient is the convex hull of the active normals, should tolerate the kinks' (a mechanism and a hope with no lemma behind it); 'with smoothing on request' (Methods says it); 'The search ... needs a convergence theorem, and Q2 to Q4 need their own conditions' (the Open paragraph of Results states the four questions and their gaps); 'Other cases across the engineering lifecycle belong here too, the configuration management of a fielded system among them' (the case section says a fielded system's measured attributes would enter the same table); and 'the generalization the search motivates' (the search section says it). The count falls from 188 to 187"
+authority = "WP36 decision entry 441cdcb (placement (a); the unit takes out at least as many words as it adds), marginal-value test"

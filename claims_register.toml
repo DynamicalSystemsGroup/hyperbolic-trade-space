@@ -1638,7 +1638,7 @@ note = "n_terms=2 fits exponents_ of shape (2,3); K=3 recovers planted terms"
 
 [[claim]]
 id = "C127"
-fragment = "GGP-compatible kernels, the generalization the search motivates"
+fragment = "kernels that keep the fit a generalized geometric program (GGP)"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1646,19 +1646,7 @@ backing = ["lemma:L16.31"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "scope/intent; L16.31 shows the fixed-weight objective is a generalized posynomial (I15); 'kernels' are a stated direction, 'the search motivates' is the paper's own reading"
-
-[[claim]]
-id = "C128"
-fragment = "needs a convergence theorem, and Q2 to Q4 need their own conditions"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "M"
-backing = ["lemma:L15"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "L15 docstring states it does NOT prove convergence; the sentence is a statement of what is open (scope)"
+note = "scope/intent; L16.31 shows the fixed-weight objective is a generalized posynomial (I15); 'kernels' are a stated direction"
 
 [[claim]]
 id = "C129"
@@ -6564,3 +6552,76 @@ status = "backed"
 disposition = "keep"
 source = "WP33 root-page units (the measured install figure replaces the 6 s of C508)"
 note = "Measured 2026-11-12 on an Apple M1 Max (10 cores), uv 0.9.18, warm uv package cache, a clean git-archive copy of dev at 48a0ead, three runs each, the script held in the scratchpad: `uv sync --no-default-groups` 0.5 s (min 0.5, median 0.5; the README's `uv sync` with the default groups 0.9 s); the README's first-fit snippet then run with `uv run --no-default-groups python` 29.9, 30.6 and 33.4 s (min 29.9, median 30.6), nearly all of it the first import of the fresh environment (the same snippet again by plain `uv run`, which first syncs the default groups: 3.8 s); install plus first fit per run 30.4, 31.1 and 33.9 s, median 31 s. Plain `uv run` after the package-only install syncs the default groups (docs, paper, case) first, so the package-only route needs `--no-default-groups` on `uv run`. A warm cache and one machine: stated as what was measured. The 6 s of C508's earlier text came from one reader cell."
+
+[[claim]]
+id = "C564"
+fragment = "Beyond pencil-and-paper checks, the Lean theorem prover, starting with the log-mean-exp bounds and the convexity of the fit objective"
+file = "paper/paper.ipynb"
+anchor = "Future work and final remark"
+kind = "L"
+backing = [
+  "file:work-packages/WP36-rounds/spike/readout.md",
+  "file:work-packages/WP36-decisions.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP36 decision entry 441cdcb (placement (a), the supervisor's direction of 2026-11-12)"
+note = "A statement of direction, not a result: the readout's section 1 ranks the log-mean-exp bounds and the convexity of the fit objective as the results to state in Lean first; nothing is formalized and the lemma scripts stay a pencil-and-paper substitute"
+
+[[claim]]
+id = "C565"
+fragment = "a proof over the reals backs the mathematics, not the floating-point computation, which the certificates check"
+file = "paper/paper.ipynb"
+anchor = "Future work and final remark"
+kind = "L"
+backing = [
+  "file:work-packages/WP36-rounds/spike/readout.md",
+  "func:src/hyperbolic_trade_space/solvers.py::soft_certificate",
+]
+status = "backed"
+disposition = "keep"
+source = "WP36 decision entry 441cdcb"
+note = "Readout section 2: a Lean theorem about Real says nothing about code on IEEE 754 doubles, and the estimator's certificates accept any point that passes a tolerance, so they check the float result"
+
+[[claim]]
+id = "C566"
+fragment = "a Rust core compiled to WebAssembly, whose verification tools address panics and overflow, not numerical accuracy"
+file = "paper/paper.ipynb"
+anchor = "Future work and final remark"
+kind = "L"
+backing = [
+  "file:work-packages/WP36-rounds/spike/readout.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP36 decision entry 441cdcb"
+note = "Readout section 3: Creusot and Prusti prove absence of panics and overflow, Kani's own documentation calls it unsuitable for properties such as precision; no page read gives an error bound for exp, ln or a solver's iterates"
+
+[[claim]]
+id = "C567"
+fragment = "A proof in a theorem prover would fix each lemma's statement over the real numbers"
+file = "docs/user-guide/limitations.md"
+anchor = "Limitations"
+kind = "L"
+backing = [
+  "file:work-packages/WP36-rounds/spike/readout.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP36 decision entry 441cdcb"
+note = "Readout section 2: a proof about Real fixes the statement's shape and its hypotheses, not the accuracy of the code"
+
+[[claim]]
+id = "C568"
+fragment = "It would not bound the double-precision error, which the certificates check"
+file = "docs/user-guide/limitations.md"
+anchor = "Limitations"
+kind = "L"
+backing = [
+  "file:work-packages/WP36-rounds/spike/readout.md",
+  "func:src/hyperbolic_trade_space/solvers.py::soft_certificate",
+]
+status = "backed"
+disposition = "keep"
+source = "WP36 decision entry 441cdcb"
+note = "Readout section 2: closing the gap needs a rounding-error statement and a proof per algorithm; the certificates check the float result at run time"
