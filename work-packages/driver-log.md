@@ -228,6 +228,20 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP33 review received and returned for a closing round (11:10).** The review (800a90a, 44db494) is honest and
+  thorough: R-1, R-2, R-4, R-6, R-7, R-8, R-10, R-12 met in substance, R-3, R-9, R-11 partly, R-5 not; eight
+  findings and an open-items table; its own verdict is that done is not met. The assistant's calls, sent to PM13:
+  the missing record files (D-3 in WP33-decisions.md, D-4 as WP33-wayfinding.md) written from material in hand and
+  the contract's rows 21 and 22 re-pointed; the 31 s measurement committed as a script and log behind register row
+  C563; the stale package docstring fixed now as the one change under src/; the docs Home's need links moved above
+  its paragraphs and "the paper" linked in the README; the reader-sentence requirement narrowed to the entry and
+  top-level pages, a line per user-guide page being restatement; the paper's Organization paragraph rewritten to
+  route by depth at net words not above the start head; the supporting material given one audience sentence; one
+  fresh U3 reader now, the other re-reads folded into the final round; the P5 link text fixed; the abstract's
+  first-screen reader naming and the systems-engineer door written into the Entry surfaces section as findings for
+  the supervisor's close read, not changed. Then a review addendum and the supervisor's acceptance through the
+  review list. Housekeeping: 53 PM worktrees found; PM13 told to prune every landed unit's worktree.
+
 - **WP35 amendment 1 (Appendix H) approved; 652c27d fully green (10:30).** CI 43308186328: every job green on both
   platforms, the eighteenth fully green head. The amendment (dae99a6) carries the supervisor's order of sections, a
   generated results table with a computed verdict column, the removal of the Appendix G passage with what it no longer
