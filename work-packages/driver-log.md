@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **dd7753a, the fast verdict; 449ad05 received (09:20).** On dd7753a: ruff and format clean, lock current,
+  vocabulary 0 new, attribution 0, fast suite 1882 passed, 0 failed; accepted. 449ad05 landed (D.7: two hand-named
+  candidates sit beyond the thresholds-met surface, +0.315 and +0.354, and none meets all four thresholds; test,
+  claim C506, ledger row; the body unchanged because the sentence does not earn a place there). The assistant's
+  checks and a stage rebuild run on it; CI dispatched.
+
 - **dd7753a, the rendered read (09:05).** Stage rebuilt at dd7753a on 8791. Section 8 says the four thresholds'
   limits "are read from the data's pass fractions, not a mission's" and, beside "illustrative", that "the case has no
   schedule, no payload and a flat launch price"; Appendix C.8 adds "What each omission does to a reading of the
