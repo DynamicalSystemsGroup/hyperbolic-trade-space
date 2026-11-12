@@ -44,7 +44,7 @@ case.tension_figure(study, fit)
 
 ## Requirements read after the fit
 
-The fit ignores the model's four threshold requirements. Read after it, each has a pass share,
+The fit ignores the model's six requirements. Read after it, each has a pass share,
 the near-frontier designs it excludes and a price at the one-term frontier, in band widths:
 
 ```text
@@ -55,7 +55,9 @@ peak slew power  58.8 | 64.1 %    108/238 | 145/293   0 | 0
 pointing error   95.2 | 65.6 %    8/238 | 118/293     0.08 | 0.79
 control effort   57.4 | 88.5 %    95/238 | 32/293     0 | 0.91
 total mass       94.6 | 95.2 %    12/238 | 9/293      0.24 | 1.55
-all jointly      38.1 | 37.5 %    148/238 | 210/293
+unit cost        76.2 | 75.8 %    64/238 | 66/293     5.31 | 1.22
+fleet cost       71.4 | 71.0 %    57/238 | 85/293     1.50 | 0.49
+all jointly      25.7 | 22.2 %    178/238 | 241/293
 ```
 
 Refitted on three design sets in one conditioning, the one-term contending set barely moves:
