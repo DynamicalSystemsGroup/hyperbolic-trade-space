@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **7ef86dc and cec9d70, the assistant's checks (02:20).** Ruff and format clean, lock current, attribution 0,
+  vocabulary 0 new; the contract (version 21), docs, site, claims-register and encoding tests 205 passed on the
+  head with the API-page amendment and the repeat-round records. Accepted; the fast suite's full run on the head
+  comes with CI (43295695481).
+
 - **WP33's repeat round accepted; its bounce points become units (02:05).** On the frozen stage at df0cad9 the
   eight readers' steps fell from 47 to 30 with no persona rising, and the fresh U1 cell (WP32 R-10) reached the
   planted answer with no stop the docs owe; records at cec9d70; the stage is unfrozen. Items 5 and 6 landed at
