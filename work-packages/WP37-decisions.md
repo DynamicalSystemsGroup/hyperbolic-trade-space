@@ -1,0 +1,40 @@
+# WP37 decisions: a history and acknowledgements page, linked from the index
+
+Supervisor: Michael Zargham (`mzargham`). A standalone page on the site, linked from the root page; not part of the
+paper or the documentation. Concise and rigorously researched: due credit, and the work rooted in its origins.
+Because the page names real people and their work, its draft goes to the supervisor before acceptance, and the
+list of people is his to settle.
+
+## The supervisor's direction (2026-11-12, afternoon, verbatim)
+
+> one more thing i need to get into your roadmap that is ideally quite parallelizable: a history and
+> acknowledgements page that links of the index. this page needs to acknowledge Markus Koch, Danilo Bernardinelli,
+> Rohan Mehta, Joshua Jodesty, Jamsheed Shorish, Kris Paruch, Andrew "Octopus" Penland (and possibly others you
+> might find in the relevant history desk research); it should cover the design and development of cadcad, gds and
+> psuu at blockscience (later rebranded to Dynamical Systems Group). its not intended to be long but should touch
+> on the fact that this approach did not emerge from an academic group but instead from an engineering firm that
+> was doing requirements, architecture, design, proving theorems about algorithms, doing simulation and analysis,
+> all in a software defined way, for clients. studying the spaces of feasible designs, their properties under
+> uncertain, strategic and even adversarial users. this section should contain relevant back links to public works
+> (non exhaustive just demonstrative and allowing someone to follow the history back to the early work to
+> formalize cadcad in the first place). at present this team is working on and with openmbee, opensysml and so
+> this project is part of a synthesis effort to make our learnings accessible.
+>
+> this should not impact the paper or the documentation. this history and acknowledgement page is stand alone
+> linked off the index. it should be concise and rigorously researched. its intent is to provide due credit and
+> ensure the work is rooted in its actual origins rather than an out of thin air math/ml contribution.
+>
+> you may also want to look at my personal website to see how my own story fits nicely with this work
+
+## The assistant's reading
+
+A parallel package with research workers and one drafting unit. The workers establish, from public sources only,
+the history of cadCAD, Generalized Dynamical Systems (GDS) and Parameter Selection Under Uncertainty (PSUU) at
+BlockScience, later the Dynamical Systems Group; the public works of each named person that bear on that history;
+the firm's current work on and with openMBEE and openSysML; and the supervisor's own public account on his
+website. Every attribution and every link is verified against its source (a resolved URL, the page fetched, the
+claim read there); nothing is inferred about a person's role that a public source does not state; the named list
+is the supervisor's and additions are proposed to him, not made. The page is short, one screen, in the register of
+the rest of the site, links back to the early formalization of cadCAD and forward to the synthesis effort, and is
+linked from the root page in one line. The paper and the docs do not change. The draft comes to the assistant and
+then to the supervisor, whose acceptance settles the people and the wording.
