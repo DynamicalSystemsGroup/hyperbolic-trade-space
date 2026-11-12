@@ -55,7 +55,7 @@ NAV_PAGES = [
 ]
 # Word budgets of the hand-written pages (code blocks and tables excluded), total at most 7,600.
 BUDGETS = {
-    "index.md": 250,
+    "index.md": 206,
     "getting-started.md": 400,
     "user-guide/overview.md": 500,
     "user-guide/conditioning.md": 700,
@@ -71,7 +71,7 @@ BUDGETS = {
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 7472  # 6845 until WP31 (7450 before its review fixes, +30)
+TOTAL_BUDGET = 7407  # 7472 until WP33 (docs Home)
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
