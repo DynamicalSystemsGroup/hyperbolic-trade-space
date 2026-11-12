@@ -5990,18 +5990,17 @@ note = "Brought to the thirteen-metric record: G-2's conditioning_, tau-halving 
 
 [[claim]]
 id = "C508"
-fragment = "from install to a first fit took 6 s, or about 100 s counting the reading and the writing of the script, for readers new to it"
+fragment = "or about 100 s counting the reading and writing of the script, for readers new to it"
 file = "site/index.html"
 anchor = ""
 kind = "S"
 backing = [
-  "file:work-packages/WP32-cells/round-2/U3-return.md",
   "file:work-packages/WP32-cells/round-2/U1-return.md",
 ]
 status = "backed"
 disposition = "keep"
 source = "WP33 Q1 (the executive's adoption-cost lines); WP32 round 2"
-note = "Measured by two reader cells at head a3a61af: U3 uv sync 6 s wall with the first fit in the same minute; U1 install to first fit about 100 s wall, of which uv sync 1.3 s and the rest reading pages and writing the script. Two cells, one table each; stated as what they measured, not as a typical time."
+note = "Measured by a reader cell at head a3a61af: U1 install to first fit about 100 s wall, of which uv sync 1.3 s and the rest reading pages and writing the script. One cell, one table; stated as what they measured, not as a typical time."
 
 [[claim]]
 id = "C509"
@@ -6550,3 +6549,18 @@ status = "backed"
 disposition = "keep"
 source = "WP33 R-3 (the paper's whom-it-is-for sentence)"
 note = "The three readers who arrive at the paper in the journeys map (P1 and P8 decide, P5 checks the mathematics, P6 places the method among prior methods) and where each goes: the abstract and the Main results, Section 4 (Definitions) and Appendix B, Section 2 (Prior art) and Appendix G; the targets are cross-references the paper build resolves."
+
+[[claim]]
+id = "C563"
+fragment = "from package-only install to a first fit took 31 s"
+file = "site/index.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:pyproject.toml",
+  "file:README.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP33 root-page units (the measured install figure replaces the 6 s of C508)"
+note = "Measured 2026-11-12 on an Apple M1 Max (10 cores), uv 0.9.18, warm uv package cache, a clean git-archive copy of dev at 48a0ead, three runs each, the script held in the scratchpad: `uv sync --no-default-groups` 0.5 s (min 0.5, median 0.5; the README's `uv sync` with the default groups 0.9 s); the README's first-fit snippet then run with `uv run --no-default-groups python` 29.9, 30.6 and 33.4 s (min 29.9, median 30.6), nearly all of it the first import of the fresh environment (the same snippet again by plain `uv run`, which first syncs the default groups: 3.8 s); install plus first fit per run 30.4, 31.1 and 33.9 s, median 31 s. Plain `uv run` after the package-only install syncs the default groups (docs, paper, case) first, so the package-only route needs `--no-default-groups` on `uv run`. A warm cache and one machine: stated as what was measured. The 6 s of C508's earlier text came from one reader cell."
