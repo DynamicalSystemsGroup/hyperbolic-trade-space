@@ -565,14 +565,16 @@ def test_history_page_uses_no_cryptocurrency_or_web3_vocabulary():
         r"\bnft\b",
     ):
         assert not re.search(banned, text), banned
-    assert "computer scien" not in text, "computer science is not backed for any named person"
+    # computer science is the supervisor's word for the team's backgrounds (WP37 decisions),
+    # offered on the page as the team's own account of the team
+    assert "In our own account of the team" in _history_text()
 
 
 def test_history_page_credits_the_eleven_named_people():
     text = _history_text()
     for name in (
         "Markus Koch",
-        "Danilo Bernardinelli",
+        "Danilo Bernardineli",
         "Rohan Mehta",
         "Joshua Jodesty",
         "Jamsheed Shorish",
@@ -584,6 +586,17 @@ def test_history_page_credits_the_eleven_named_people():
         "Sean McOwen",
     ):
         assert name in text, name
+
+
+def test_history_page_marks_the_team_account_and_credits_cadcad_as_authors_txt_does():
+    """WP37 W3 decisions: the team's own account is marked each time; cadCAD's designers are
+    credited as AUTHORS.txt states them; Paruch is quoted in his own words."""
+    text = _history_text()
+    assert text.count("our own account") + text.count("the same account") >= 3
+    assert "designed by Michael Zargham, Markus Koch and Matthew Barlin" in text
+    assert "a mathematical background with focus on economic modeling" in text
+    assert "Our thanks also to Jakob Hackel" in text
+    assert text.count("Barlin") == 1
 
 
 def test_paper_theme_is_pinned_to_a_commit():

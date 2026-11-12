@@ -6051,7 +6051,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 draft"
-note = "The team's own account (the supervisor's direction of 2026-11-12); no public source says it, and none is cited for it. The page marks it 'In our own account'."
+note = "The team's own account (the supervisor's direction of 2026-11-12); no public source says it and none is cited for it. The page marks it 'In our own account'. Narrowed by W3 flag 1 to the account being marked, not sourced."
 
 [[claim]]
 id = "C513"
@@ -6070,7 +6070,7 @@ note = "Sourced: founded 2017, 'originally named BlockScience' (https://michael.
 
 [[claim]]
 id = "C514"
-fragment = "that did requirements, architecture, design, simulation and analysis for clients, all software-defined, studying the spaces of feasible designs of their systems under uncertain, strategic and adversarial users"
+fragment = "that did requirements, architecture, design, simulation and analysis for clients, all software-defined, studying feasible designs of their systems under uncertain, strategic and adversarial users"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6080,11 +6080,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 draft"
-note = "The team's own account (supervisor's direction); the public record shows the activities by linked works, not as one statement (w1-history.md section 9, item 2)."
+note = "The team's own account (supervisor's direction), marked by the opening 'In our own account'; the public record shows the activities by linked works, not as one statement (w1-history.md section 9, item 2)."
 
 [[claim]]
 id = "C515"
-fragment = "Those systems were highly automated, with much value at risk and multipolar, contentious sponsorship: no single decision authority, design decisions litigated in public, legitimacy bearing on outcomes."
+fragment = "In the same account, those systems were highly automated, with much value at risk and multipolar, contentious sponsorship"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6094,11 +6094,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 draft"
-note = "The supervisor's account of the systems the firm studied, within the paragraph the page marks as the team's own account; no public source states these attributes."
+note = "The supervisor's account of the systems the firm studied (WP37-decisions.md, the attribute list); no public source states these attributes. The sentence carries its own marker, 'In the same account', so it reads as the team's account (W3 flag 3)."
 
 [[claim]]
 id = "C516"
-fragment = "Public work shows the rest: a ... framework ... tied to control tools; ... for design; ... grown from ... requirements traceability for SysML v2 models"
+fragment = "Public work: a ... framework ... connected to tools from control engineering; ... for evidence-based decisions; ... requirements traceability for SysML v2 models"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6109,11 +6109,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 draft"
-note = "Shown by links, each read 2026-11-12: https://arxiv.org/abs/1807.00955 (state-space framework, control tools such as Lyapunov-like functions); https://github.com/cadCAD-org/cadCAD (simulation package); https://research.wu.ac.at/de/publications/generalized-dynamical-systems-part-i-foundations/ and https://github.com/DynamicalSystemsGroup/gds-core; https://arxiv.org/abs/2001.03020 (data science and stochastic simulation); https://hackmd.io/@danlessa/HklBYikEY (parameter selection under uncertainty) and https://github.com/BlockScience/subspace (README: development later adapted into PSuU); https://github.com/DynamicalSystemsGroup/flexo-rtm (requirements traceability of SysML v2 models)."
+note = "Each shown by its link, read 2026-11-12: https://arxiv.org/abs/1807.00955 (abstract: 'we connect our modeling framework with powerful tools from control engineering, such as Lyapunov-like functions'); https://github.com/cadCAD-org/cadCAD (simulation package); https://research.wu.ac.at/de/publications/generalized-dynamical-systems-part-i-foundations/ and https://github.com/DynamicalSystemsGroup/gds-core; https://arxiv.org/abs/2001.03020 (title: Evidence Based Decision Making; subtitle: data science and stochastic simulation); https://hackmd.io/@danlessa/HklBYikEY (parameter selection under uncertainty) and https://github.com/BlockScience/subspace (README: development later adapted into a general PSUU workflow); https://github.com/DynamicalSystemsGroup/flexo-rtm (requirements traceability of SysML v2 models). 'Tied to control tools' and 'shows the rest' were narrowed to what these links show (W3 flag 4)."
 
 [[claim]]
 id = "C517"
-fragment = "Joshua Jodesty implemented cadCAD and Markus Koch ... designed it ("
+fragment = "Joshua Jodesty implemented cadCAD, designed by Michael Zargham, Markus Koch and Matthew Barlin ("
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6124,11 +6124,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 draft"
-note = "Sourced: AUTHORS.txt, 'originally implemented by Joshua E. Jodesty and designed by Michael Zargham, Markus B. Koch, and Matthew V. Barlin in 2018' (https://github.com/cadCAD-org/cadCAD/blob/master/AUTHORS.txt, version 0.5.3). Barlin is not on the supervisor's list and is not named."
+note = "Sourced: AUTHORS.txt, 'originally implemented by Joshua E. Jodesty and designed by Michael Zargham, Markus B. Koch, and Matthew V. Barlin in 2018' (https://github.com/cadCAD-org/cadCAD/blob/master/AUTHORS.txt, version 0.5.3). The page credits the file's statement and no more; Barlin appears only as that file states (open-items.md)."
 
 [[claim]]
 id = "C518"
-fragment = "Danilo Bernardinelli ( ... a physicist, by his profile ... ) and Emanuel Lima (a listed maintainer) extended it;"
+fragment = "Danilo Bernardineli ( ... a physicist, by his profile ... ) and Emanuel Lima extended it;"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6139,11 +6139,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 draft"
-note = "Sourced: AUTHORS.txt, 'upgrades and improvements were further committed by Danilo L. Bernardineli, Tyler D. Mace and Emanuel Lima' and Lima as current maintainer; the physicist line is his GitHub bio, 'atmosphere physicist' (https://github.com/danlessa). The sources spell the surname Bernardineli; the page follows the supervisor's list."
+note = "Sourced: AUTHORS.txt, 'upgrades and improvements were further committed by Danilo L. Bernardineli, Tyler D. Mace and Emanuel Lima' and Lima as a listed maintainer; the physicist line is his GitHub bio, 'atmosphere physicist' (https://github.com/danlessa). The page follows the public sources' spelling, Bernardineli, pending the supervisor's word (open-items.md)."
 
 [[claim]]
 id = "C519"
-fragment = "Jamsheed Shorish ... trained in economics ... co-wrote Part I and Kris Paruch ... a mathematician, in his words ... co-wrote"
+fragment = "Jamsheed Shorish ... trained in economics ... co-wrote Part I and Kris Paruch ... a mathematical background with focus on economic modeling ... co-wrote"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6154,7 +6154,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 draft"
-note = "Sourced: Shorish co-author of GDS Part I (WU Vienna record, DOI 10.57938/e8d456ea-d975-4111-ac41-052ce73cb0cc); economics degree, Carnegie Mellon (https://genealogy.repec.org/pages/psh169.html). Paruch's own 2018 post, 'Having a mathematical background with focus on economic modeling'; co-author of 'Economic Games as Estimators' (https://doi.org/10.1007/978-3-030-53356-4_8, Crossref authors)."
+note = "Sourced: Shorish co-author of GDS Part I (WU Vienna record, DOI 10.57938/e8d456ea-d975-4111-ac41-052ce73cb0cc); economics degree, Carnegie Mellon (https://genealogy.repec.org/pages/psh169.html). Paruch's own words in the linked 2018 post (https://web.archive.org/web/2022/https://medium.com/crypto3conomics/token-engineering-from-an-economic-perspective-b6c464f20241): 'Having a mathematical background with focus on economic modeling'; co-author of 'Economic Games as Estimators' (https://doi.org/10.1007/978-3-030-53356-4_8, Crossref authors)."
 
 [[claim]]
 id = "C520"
@@ -6173,7 +6173,7 @@ note = "Sourced: gds-core README credits section, 'Author: Rohan Mehta' and 'Arc
 
 [[claim]]
 id = "C521"
-fragment = "With thanks also to Jakob Hackel and"
+fragment = "Our thanks also to Jakob Hackel and"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6183,11 +6183,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 draft"
-note = "The acknowledgement is ours and the names are the supervisor's; no role is stated because the public record is thin for both (w2-people.md section 6, item 1)."
+note = "The thanks are the team's own, marked 'Our thanks'; the names are the supervisor's; no role is stated because the public record is thin for both (w2-people.md section 6, item 1)."
 
 [[claim]]
 id = "C522"
-fragment = "Control, economics, physics, mathematics: what a convex program, elasticities, a frontier and an estimator rest on."
+fragment = "In our own account of the team, its backgrounds are computer science, control, economics, physics and mathematics, and the method rests on them: a convex program, elasticities, a frontier and an estimator."
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6198,7 +6198,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 draft"
-note = "The fields are those the sources state for four credited people (control: https://www.dynamicalsystemsgroup.com/leadership; economics, physics, mathematics: the links in the credit sentences). Computer science is not claimed: no source states it for a named person. The tie to the method is our own statement."
+note = "The team's own account of the team, marked as such. Computer science is the supervisor's word for the team's backgrounds; economics, physics and mathematics are shown by the links in the credit sentence; control is backed by Zargham's own record in the next paragraph (https://doi.org/10.1109/TCNS.2014.2310911). The tie to the method is ours."
 
 [[claim]]
 id = "C523"
@@ -6226,7 +6226,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 draft"
-note = "Sourced: Google Scholar profile https://scholar.google.com/citations?user=bbdc3vkAAAAJ, count 354 read by the W2 worker on 2026-11-12; the drafting unit could not re-read it (the profile did not render to a plain fetch)."
+note = "Sourced: Google Scholar profile https://scholar.google.com/citations?user=bbdc3vkAAAAJ, count 354 re-read by W3 on 2026-11-12 (Crossref shows 227 for the same DOI; the page names Google Scholar)."
 
 [[claim]]
 id = "C525"
@@ -6260,7 +6260,7 @@ note = "Sourced: https://numfocus.org/community/people (Advisory Council); https
 
 [[claim]]
 id = "C527"
-fragment = "This package is a scikit-learn-conformant estimator by design."
+fragment = "This package is a scikit-learn-conformant estimator."
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6275,7 +6275,7 @@ note = "The conformance checks run in the suite."
 
 [[claim]]
 id = "C528"
-fragment = "Today the team works on and with ... OpenMBEE ... and ... OpenSysML ... ; this project is part of a synthesis"
+fragment = "Today the team works on and with ... OpenMBEE ... Zargham is a ... maintainer working across ... OpenSysML ... and Flexo MMS; in our own account, this project is part of a synthesis"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6286,7 +6286,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 draft"
-note = "Sourced: https://www.dynamicalsystemsgroup.com/partners (the firm contributes to OpenMBEE's roadmaps) and https://github.com/Open-MBEE/OpenSysML; the synthesis-effort clause is the supervisor's statement of the project's place."
+note = "Sourced: https://www.dynamicalsystemsgroup.com/partners (the firm helps shape OpenMBEE's roadmaps); https://michael.zargham.org/research (read 2026-11-12: 'OpenMBEE: maintainer since 2026, working across the OpenSysML and Flexo MMS tool ecosystem'); https://github.com/Open-MBEE/OpenSysML. The synthesis-effort clause is the supervisor's statement of the project's place, marked 'in our own account'."
 
 [[claim]]
 id = "C529"
