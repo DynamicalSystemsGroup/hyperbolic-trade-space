@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **4162a61 slow green; the paper's body and Appendix C.8 landed (00:20).** Linux slow on 4162a61 passed, so every
+  slow job is green on both platforms at that head. Two commits since: 6840c8a (the thirteen metrics with the two
+  that join no contending set and why, the cost coverage sentence with 6,000,000 inside 8,000,000 USD, the draw of
+  3,000 designs per regime, the fleet size and the marks, the article before a lemma count, the tau-sweep figure
+  file refreshed; claims and ledger rows) and d7942d0 (Appendix C.8: the cost model, its coverage, the two budgets
+  and what the case leaves out, mirrored by the case page; a test reads the model file). The assistant's checks
+  and a stage rebuild at d7942d0 are running; CI run 43159932519 dispatched.
+
 - **4162a61 CI and af41076 (23:50).** Windows slow and docs-paper green on 4162a61; Windows fast fails on the same
   single tau-sweep figure link as Linux. af41076 (the case page's "what the case leaves out" list, stale counts
   narrowed to the regenerated record, the Examples page's pointer, a stale vocabulary baseline row removed): ruff and
