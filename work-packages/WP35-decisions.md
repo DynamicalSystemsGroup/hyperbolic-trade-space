@@ -90,3 +90,39 @@ recovers, whether any of it names which metrics trade or at what rate, what each
 HoroPCA's solver code (how the horospherical projections and the variance objective are optimized) and says in a
 paragraph how its solvers compare with this work's convex programs. No re-implementation. The supervisor's words
 are the authorization for the fetch; nothing from the repository enters the package or its dependencies.
+
+## Stage 2: the assistant's decisions on the spike readout (2026-11-12, 17:30; readout at ace2840)
+
+The spike ran the authors' HoroPCA (pinned commit, spike environment only) beside PCA on the planted tables and the
+cubesat tables after embedding the log-metrics in the ball, read its solvers, and found: where a planted term is
+also the direction of largest spread both PCA and HoroPCA recover it, elsewhere neither does; on the cubesat tables
+neither captures more than 0.06 of our K = 1 exponent; neither names which metrics trade or at what rate; the
+tables are not tree-like, so nothing in the data asks for a hyperbolic embedding; HoroPCA maximizes a nonconvex
+variance over frames by gradient ascent with restarts and no certificate, where this work solves convex programs
+on a simplex with one; the two share the unsupervised setting and the estimator interface, and chain through PCA;
+"PCA with a specific kernel" does not describe HoroPCA on the evidence (no kernel, no Gram matrix; the paper's
+baseline, tangent PCA, is PCA after a fixed feature map).
+
+Decisions, each the supervisor may revert.
+
+- **Q1 (a).** Section 2 holds one concise paragraph: what HoroPCA generalizes, what this work borrows (the
+  unsupervised setting, the estimator interface, PCA as a downstream step), and that runs on the paper's own tables
+  recovered the exponents only where the generator made them the direction of largest spread. Appendix G carries
+  the full version with the spike's results table and says plainly that the embedding was ours and not natural for
+  the data. The spike's code and results stay under `docs/superpowers/notes/spike-horopca/` and are cited as the
+  record. (The supervisor asked for code-backed differentiation; the numbers earn their place in the appendix.)
+- **Q2 (a).** Table 1's row splits into kernel PCA and HoroPCA, each `differs` cell with this work as its subject.
+  Beyond that row, every `differs` cell in Table 1 and Appendix G is rewritten to the one convention, a sentence
+  whose subject is this work ("This work ..."), the rows "by elision" given their subject and the "mixed" rows
+  split into what the family does (in `does`) and what this work does (in `differs`); a test pins the convention.
+- **Q3 (a).** One glossary entry for "hyperbolic" (the level curves of V, products of powers of metrics, the
+  rectangular hyperbola in two; not negative-curvature geometry; not the Färe, Grosskopf and Lovell graph measure);
+  Appendix A prints it; the Definitions sentence that already says it stays as the body's one place; Section 2's
+  two caveats and the docs' second definition become pointers or go; the DEA paragraph keeps at most a half-clause
+  pointing at the glossary. No title change.
+- **Q4 (a), qualified.** HoroPCA is named the closest existing analog in setting (unsupervised, a table in,
+  coordinates out), and the same sentence says it is the farthest in what is estimated (a variance over frames
+  against a one-sided edge). The paragraph does not call this work a PCA of any kind.
+- **Reach.** The paper and Appendix G, `prior_art.yaml`, the glossary and Appendix A, the two docs lines, the claims
+  rows and the ledger; the register test and the site tests; the paper notebook through the single-writer queue
+  behind WP33's paper unit. No model, data or number of record moves.
