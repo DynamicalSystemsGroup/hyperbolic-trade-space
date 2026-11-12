@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **CI verdicts, 01:30.** 38aff78: every job green on both platforms (fast, slow, docs-paper, Windows fast and slow),
+  the first fully green run since the data gate. d7942d0: complete, the only failures the encoding test that 38aff78
+  fixed. 78cd40a: Linux fast and slow and Windows fast green; Windows slow and docs-paper still running. Open in
+  the cascade: the D.2 term-order relabelling (`paper_terms.py`) and the number-format unit; the PM chased once for
+  both heads and the unit table.
+
 - **78cd40a, the assistant's checks (01:25).** Ruff and format clean, lock current, vocabulary 0 new, attribution 0,
   and the fast suite green on this Mac for the first time since the data gate: 1878 passed, 0 failed. Accepted into
   the cascade; the slow marker's verdict comes from CI (run 43163272119).
