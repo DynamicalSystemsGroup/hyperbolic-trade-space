@@ -2978,7 +2978,7 @@ def test_the_body_states_the_marks_the_coverage_and_the_draw():
     import csv
 
     marks = {}
-    with (ROOT / "examples" / "adcs" / "model_v2" / "views" / "coverage.csv").open() as f:
+    with (ROOT / "examples" / "adcs" / "model_v2" / "views" / "coverage.csv").open(encoding="utf-8") as f:
         for row in csv.reader(f):
             if row[0] == "metrics":  # the file's second table: table, metric, mark, ...
                 marks[row[1]] = row[2]
@@ -2993,10 +2993,10 @@ def test_the_body_states_the_marks_the_coverage_and_the_draw():
         "the pointing error, the unit cost and the fleet cost are MoEs, "
         "the other ten traded metrics MoPs" in body
     )
-    model = (ROOT / "examples" / "adcs" / "model_v2" / "cubesat.sysml").read_text()
+    model = (ROOT / "examples" / "adcs" / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8")
     assert "attribute fleetCostLimit : Real = 6.0e6" in model and "8,000,000 USD" in model
     assert "attribute fleetSize : Real default = 1.0" in model  # a Cubesat attribute, no part
-    view = (ROOT / "examples" / "adcs" / "model_v2" / "views" / "assembly_view.puml").read_text()
+    view = (ROOT / "examples" / "adcs" / "model_v2" / "views" / "assembly_view.puml").read_text(encoding="utf-8")
     assert "fleet" not in view.lower()  # the assembly view draws parts only
     assert "the fleet size, a count that is no part and is not drawn" in body
     assert "under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD" in body
@@ -3017,7 +3017,7 @@ def _norm_ws(text: str) -> str:
 def test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out():
     """C.8 reads the model: prices, budgets, the order of exclusions, the load; and the paragraph
     that leaves out is the one the docs stream mirrors (WP30-rounds/appendix-c-leaves-out.md)."""
-    model = _norm_ws((ROOT / "examples" / "adcs" / "model_v2" / "cubesat.sysml").read_text())
+    model = _norm_ws((ROOT / "examples" / "adcs" / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8"))
     c8 = _norm_ws(_src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-C-8")))
     for model_has, c8_has in [
         ("attribute launchRate : Real = 7000.0", "7,000 USD per kilogram"),
@@ -3060,7 +3060,7 @@ def test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left
     left_out = r"\w*(?:thermal|schedule|fault|redundan|communic|growth|desaturat)"
     absent = kinds + left_out
     assert not re.search(absent, model, re.I), "the model names no element of what C.8 leaves out"
-    mirror = (ROOT / "work-packages" / "WP30-rounds" / "appendix-c-leaves-out.md").read_text()
+    mirror = (ROOT / "work-packages" / "WP30-rounds" / "appendix-c-leaves-out.md").read_text(encoding="utf-8")
     quote = re.search(r"> \*\*What the case leaves out\.\*\*(.*?)\n\n", mirror, re.S).group(1)
     paragraph = _norm_ws(re.sub(r"\n> ?", " ", quote)).strip()
     assert paragraph in c8, "the paragraph of the mirror file is C.8's"
