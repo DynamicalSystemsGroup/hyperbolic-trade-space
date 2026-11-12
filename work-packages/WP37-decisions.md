@@ -273,3 +273,13 @@ drafting unit: the link-and-claim check as a repeatable script with a test, the 
 (sourced, shown by a link, the team's own account) and the trace column as a recorded table the review re-runs,
 the vocabulary pass as a test, the word ceiling as a test, and a fresh reader's walk of the arc as the review's
 reading. The draft already built is the first delivery against that scope, not a substitute for it.
+
+## The supervisor, two rulings (verbatim)
+
+> include Barlin, and fix Andrew Pentland's spelling.
+
+**The assistant's reading.** Matthew Barlin joins the credited list (the thirteenth name), as AUTHORS.txt has him:
+one of cadCAD's three designers with Zargham and Koch. On the spelling: the page has "Andrew 'Octopus' Penland",
+the form the supervisor first gave; he now writes "Pentland". The workers settle it from a public source of his
+own (his profile, a publication byline, his video channel) and the page takes that form; if the source reads
+"Penland", the assistant says so to the supervisor rather than changing it on the word alone.
