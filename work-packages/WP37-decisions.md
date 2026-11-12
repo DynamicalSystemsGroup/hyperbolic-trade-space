@@ -59,3 +59,14 @@ method rests on (a convex program, elasticities, a frontier, an estimator). The 
 public background from a public source (a bio, a profile, a paper's affiliation), and the page states the mix as a
 sentence backed by those sources, naming no one's background that a source does not; the supervisor settles it at
 his review.
+
+## The supervisor, on his own background (verbatim)
+
+> i am also published primarily in optimization and control including highly cited work leveraging GGPs
+
+**The assistant's reading.** For the page's account of where the method comes from: the supervisor's own public
+record in optimization and control, including cited work that uses generalized geometric programs (GGPs), the
+form the posynomial frontier and its convex programs rest on (the paper's Boyd et al. citation). The W2 worker
+finds that work from public sources (his website, a scholarly index, the papers' DOIs), records titles, venues,
+years and citation counts as the index states them with the date read, and the page says it in one sentence with
+links; nothing beyond what the sources show, no count quoted without its source and date.
