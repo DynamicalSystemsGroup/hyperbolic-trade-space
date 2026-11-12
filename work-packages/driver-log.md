@@ -229,8 +229,8 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
 - **a8b927d, the assistant's checks (03:50).** Ruff and format clean, lock current, vocabulary 0 new, attribution 0,
-  fast suite 1880 passed, 0 failed; Linux fast CI green; the new D.2 slow test running locally, the slow marker on
-  CI. Accepted into the cascade. The three units decided at 03:30 are in their worktrees (the review-list row, the
+  fast suite 1880 passed, 0 failed; Linux fast CI green; the new D.2 slow test passes locally (1 passed, 124 s); the
+  slow marker on CI. Accepted into the cascade. The three units decided at 03:30 are in their worktrees (the review-list row, the
   docs unit, the cost requirements under D.17).
 
 - **a8b927d, the rendered pass (03:45).** Stage rebuilt at a8b927d on 8791. D.2's stock K = 2 row now reads rows
