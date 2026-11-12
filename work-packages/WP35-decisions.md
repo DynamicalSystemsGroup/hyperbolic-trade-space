@@ -68,3 +68,11 @@ and what the two methods share in the scikit-learn sense (an unsupervised fit an
 coordinate system). The spike's code carries tests, lives under `docs/superpowers/notes/spike-horopca/` (ruff
 excludes the spike folders), and its readout states what HoroPCA does well that this work does not, as plainly as
 the converse. The paper's acknowledgement and distinction are written from the readout, not before it.
+
+**The spike's code, a boundary (the assistant, same afternoon).** Fetching and running the authors' HoroPCA
+implementation from their repository was refused by the session's permission classifier (external code). The spike
+therefore implements the method's core from the published description (the hyperboloid or Poincaré model, the
+horospherical projection, the variance objective), with tests against the paper's stated properties on synthetic
+hyperbolic data, and states the limits of a re-implementation in its readout. If the supervisor prefers the
+authors' code for fidelity, he can install it into the spike's environment himself or grant the fetch; the spike
+then swaps it in and re-runs. Recorded for his decision.
