@@ -5893,3 +5893,33 @@ status = "backed"
 disposition = "keep"
 source = "WP30 cascade, the fleet variable in the body"
 note = "fleetSize is an attribute of the Cubesat as a whole in the model file (seventh design variable, 1 to 30) and the assembly view's source draws parts only; the test checks both."
+
+[[claim]]
+id = "C496"
+fragment = "The fleet cost requirement holds the covered cost under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD"
+file = "paper/supporting_material.ipynb"
+anchor = "Appendix C. The case's model: how the table of metrics came to be"
+kind = "P"
+backing = [
+  "test:tests/test_paper.py::test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP30-decisions.md, 'Fleet cost limit, final' (the supervisor, 2026-11-11, 10:30)"
+note = "C.8: the prices, budgets, the 40,000 USD note on a 1U series and the order of exclusions are read from the model file's docs by the test; the 2,000,000 USD allowance is the doc's."
+
+[[claim]]
+id = "C497"
+fragment = "It has no schedule or qualification, no fault tolerance, no thermal or communications model, no mass or power growth allowance and a constant 12 W load."
+file = "paper/supporting_material.ipynb"
+anchor = "Appendix C. The case's model: how the table of metrics came to be"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "narrow"
+source = "WP30 persona baseline reads (P7, P8), triage class 3"
+note = "What the model file contains and does not: no schedule, qualification, fault, thermal, communications or growth element; the load is one constant 12 W in the Environment's loads doc. An absence the test cannot prove from the file; the sentence is the author's reading of the model, narrowed to what the model's own header and docs list."

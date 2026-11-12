@@ -13,7 +13,7 @@ now reads as the model's own `COVERAGE` text and the supervisor's exclusion orde
 > assembly line, licensing, a ground station network and operations, the launch slot minimum and broker fees. It has no schedule or
 > qualification, no fault tolerance, no thermal or communications model, no mass or power growth allowance and a constant 12 W load.
 > Momentum is checked over one slew, not accumulated or dumped, and the controller gains are trade variables though a flight
-> program would tune them in software. Four requirement limits are read from the data's pass fractions and two are cost budgets;
+> project would tune them in software. Four requirement limits are read from the data's pass fractions and two are cost budgets;
 > none is flowed down from a mission.
 
 ## The list for the case page
@@ -33,7 +33,7 @@ Place after "The requirements and what each reads" and before "Coverage"; one cl
 > - **Margins and growth.** Mass and power are nominal sums; solar degradation is one fixed factor (0.9); no battery fade or charge loss.
 > - **Momentum management.** `momentum_ok` compares one slew's peak momentum with the wheel's capacity; the constant disturbance
 >   torque is not accumulated over an orbit and no desaturation device exists.
-> - **Gains as hardware.** Kp and Kd are traded like parts, though a flight program tunes them in software.
+> - **Gains as hardware.** Kp and Kd are traded like parts, though a flight project tunes them in software.
 > - **One scenario.** One 30 degree slew in a 600 s horizon, one fixed 0.6 h eclipse of a LEO of about 95 minutes, no altitude.
 > - **Requirement limits from a mission.** Four limits (peak slew power, pointing error, control effort, launch budget) are the
 >   supervisor's choices from the data's ladder of pass fractions; the two cost limits are budget figures; none is flowed down

@@ -36,6 +36,8 @@ total = 5900
 # The supporting material is outside the count (words_by_section reads the paper only); the entry
 # below admits rows that record what is added to Appendix B and why.
 "Appendix B" = 0
+# And Appendix C (WP30: the cost model and what the case leaves out).
+"Appendix C" = 0
 # The same for Appendix D (WP28 S-10).
 "Appendix D" = 0
 
@@ -1143,3 +1145,19 @@ section = "Search of the design space (preliminary)"
 words_added = 31
 job = "says in a sentence that the method assumes nothing about how a table's designs were drawn and that how a sampling strategy enters the search loops is not studied here (the supervisor, 2026-11-11, 12:25: 'we eventually need to think about how sampling strategies play into the broader optimization loop but we can reduce that to a sentence or two in the section about search')"
 reader = "the reader asking where sampling strategy belongs in the optimisation loop"
+
+# WP30 cascade, Appendix C: the detail of the case model for the thirteen metrics and the cost coverage
+# (the standing order of 2026-11-11, 09:40: the body keeps a sentence or two, the appendix the detail).
+[[raise]]
+date = "2026-11-11"
+section = "Appendix C"
+words_added = 343
+job = "C.8 states how the unit cost and the fleet cost are priced (part prices, the fleet curve, launch), what the cost covers and leaves out, the two budgets, and what the case as a whole leaves out, so the body's one-sentence coverage and its claim of a demonstration rest on a checkable statement"
+reader = "the new-space systems engineer and the executive judging whether the case is realistic enough and honest where it is a toy"
+
+[[cut]]
+date = "2026-11-11"
+section = "Appendix C"
+words_removed = 20
+no_longer_did = "the job's two bullets restated the section list the reader is about to see and the main text's length ('about 300 words', which was no longer true); one bullet now names what the main text keeps and what the appendix carries"
+authority = "the triage's offset for the new paragraph (WP30-rounds/persona-baseline/triage.md, Class 3 texts)"

@@ -3008,3 +3008,59 @@ def test_the_body_states_the_marks_the_coverage_and_the_draw():
     assert f"{n} per regime: a design choice of the case" in _out_text(cell)
     search = _section("Search of the design space")
     assert "assumes nothing about how a table's designs were drawn" in search
+
+
+def _norm_ws(text: str) -> str:
+    return re.sub(r"\s+", " ", text)
+
+
+def test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out():
+    """C.8 reads the model: prices, budgets, the order of exclusions, the load; and the paragraph
+    that leaves out is the one the docs stream mirrors (WP30-rounds/appendix-c-leaves-out.md)."""
+    model = _norm_ws((ROOT / "examples" / "adcs" / "model_v2" / "cubesat.sysml").read_text())
+    c8 = _norm_ws(_src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-C-8")))
+    for model_has, c8_has in [
+        ("attribute launchRate : Real = 7000.0", "7,000 USD per kilogram"),
+        (
+            "100,000 USD for one satellite (unsourced)",
+            "100,000 USD for one satellite, has no source",
+        ),
+        ("attribute unitCostLimit : Real = 350000.0", "350,000 USD per satellite"),
+        ("attribute fleetCostLimit : Real = 6.0e6", "under 6,000,000 USD"),
+        ("full fleet budget is 8,000,000 USD", "full budget of 8,000,000 USD"),
+        ("remaining 2,000,000 USD", "remaining 2,000,000 USD"),
+        (
+            "a 1U series can sit below 40,000 USD a unit",
+            "a 1U series can sit below 40,000 USD a unit",
+        ),
+        (
+            "a single satellite of this class costs more",
+            "which no single satellite of this class clears",
+        ),
+        ("housekeeping and payload 12 W", "a constant 12 W load"),
+        ("fleet size 1 to 30", "one to thirty identical satellites"),
+        ("2026 vendor and marketplace listings", "2026 vendor and marketplace listings"),
+    ]:
+        assert model_has in model, model_has
+        assert c8_has in c8, c8_has
+    budgets = re.findall(r"attribute (\w+(?:Limit|Budget)) :", model)
+    assert len(budgets) == 6 and "Four requirement limits" in c8 and "two are cost budgets" in c8
+    order = [  # the model's order of exclusions, and C.8's (the supervisor's, 2026-11-11, 10:35)
+        "payload and its instruments", "communications", "flight software",
+        "environmental testing beyond the assembly line", "licensing",
+        "ground station network and operations", "launch slot minimum", "broker fees",
+    ]  # fmt: skip
+    for text in (model, c8):
+        at = [
+            text.index(item, text.index("excludes" if text is model else "leaves out the"))
+            for item in order
+        ]
+        assert at == sorted(at), "the exclusions are in the supervisor's order"
+    kinds = r"(?:part|attribute|calc|requirement|action|analysis)\s+(?:def\s+)?"
+    left_out = r"\w*(?:thermal|schedule|fault|redundan|communic|growth|desaturat)"
+    absent = kinds + left_out
+    assert not re.search(absent, model, re.I), "the model names no element of what C.8 leaves out"
+    mirror = (ROOT / "work-packages" / "WP30-rounds" / "appendix-c-leaves-out.md").read_text()
+    quote = re.search(r"> \*\*What the case leaves out\.\*\*(.*?)\n\n", mirror, re.S).group(1)
+    paragraph = _norm_ws(re.sub(r"\n> ?", " ", quote)).strip()
+    assert paragraph in c8, "the paragraph of the mirror file is C.8's"
