@@ -98,3 +98,21 @@ open-source software and systems engineering, working on decision-making assuran
 fast but with confidence". The register stays the site's: each part of that image is shown by a public work the
 page links (a theorem proved about an algorithm, a simulation framework, an analysis, a published method), not
 asserted. The named list is eleven with Sean McOwen.
+
+## The supervisor, on sources and register (verbatim)
+
+> a lot of what you need to build the history is internal to blockscience /DSG so you need to be a little careful.
+> that said our public blogs, small subset of our client work that was open sourced (with permission from the
+> client) and public repos on github, plus talks publications, etc give you what you need. keep in mind that we need
+> to tone down any cryptocurrency or tokenomics references; blockchain/smart contract is an implementation detail,
+> never the point. i prefer to avoid mentioning web3 terms at all, and focus on the attributes of those systems
+> which are relevant: highly automated, adversarial setting, etc.
+
+**The assistant's reading.** Two rules for the workers and the drafting unit. Sources: only what is public, the
+firm's blogs, the client work that was open-sourced with the client's permission, the public repositories, talks
+and publications; nothing internal is inferred, reconstructed or implied, and where the public record is thin the
+page says less rather than guessing. Register: no cryptocurrency, tokenomics or web3 vocabulary on the page;
+blockchain and smart contracts are an implementation detail of some of the systems studied and are not named as
+the point; what the page keeps are the attributes of those systems that bear on this work, highly automated,
+adversarial, strategic and uncertain users, feasible design spaces studied under those conditions. A source whose
+title carries such a term may still be linked; the page's own words do not use it.
