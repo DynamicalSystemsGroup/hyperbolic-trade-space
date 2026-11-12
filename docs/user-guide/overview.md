@@ -24,8 +24,7 @@ A study has five stages and the package covers the last three:
 
 1. Sample configurations, by any scheme.
 2. Evaluate each into attributes, with a simulator, a test or an assessment. The package never sees
-   how: any table works, and a SysML v2 model's exported table is one source. Design variables and
-   labels are configuration, not attributes.
+   how: any table works, and a SysML v2 model's exported table is one source.
 3. [Condition](conditioning.md) the attributes into metrics: positive, larger-is-better, comparable
    spread.
 4. [Fit](fitting.md) `HyperbolicTradeSpace` to the metrics.

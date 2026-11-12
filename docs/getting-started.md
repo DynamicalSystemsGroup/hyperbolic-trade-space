@@ -71,5 +71,5 @@ negative inside and positive beyond. `ts.transform(X)` is the chart, `d - 1` pos
 
 Real attributes are rarely positive, larger-is-better and comparably scaled. Turning them into
 metrics is the first step of the [user guide](user-guide/conditioning.md), with
-`LogAffinePreconditioner`. From there the guide follows the order of a study: [fit](user-guide/fitting.md),
+`LogAffinePreconditioner`. Design variables and labels are configuration, not attributes: leave them out of the table ([prediction](user-guide/prediction.md) takes them). From there the guide follows the order of a study: [fit](user-guide/fitting.md),
 [read the tensions](user-guide/tensions.md), [use the chart](user-guide/chart.md).
