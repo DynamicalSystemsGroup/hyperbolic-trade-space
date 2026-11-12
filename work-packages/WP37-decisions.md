@@ -324,3 +324,11 @@ contributors, written for a human reader and as thin as the arc allows; a test t
 the page to an entry of the record, so the prose cannot drift from it; beneath the prose, a dated reference list
 generated from the record at build time gives the reader the detail the prose leaves out. The scope being written
 takes these as its deliverables; the draft page is the view's first draft.
+
+> i think this seperation will help avoid scope creep in the history page caused by all the history you will find if
+> you dig around the internet
+
+**The assistant's reading.** The record absorbs what the digging finds; the page does not. Everything the workers
+verify goes into `history.yaml` with its date and source; the prose keeps only the pointers that walk the arc, and
+the generated dated list carries the rest. The marginal-value test on the page is therefore strict, and the
+record's growth costs the page nothing.
