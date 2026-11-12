@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **4162a61 CI and af41076 (23:50).** Windows slow and docs-paper green on 4162a61; Windows fast fails on the same
+  single tau-sweep figure link as Linux. af41076 (the case page's "what the case leaves out" list, stale counts
+  narrowed to the regenerated record, the Examples page's pointer, a stale vocabulary baseline row removed): ruff and
+  format clean, vocabulary 0 new (65 known, one fewer), attribution 0, docs and claims-register tests 60 passed.
+  Accepted into the cascade; the rendered read of the case page comes with the next stage rebuild.
+
 - **4162a61, the fast verdict (23:45).** CI fast on Linux: 1 failed, 1873 passed; the local run agrees (plus the
   site's paper-key test against this checkout's stale build). The one red is the full-size figure link of
   `fig-tau-sweep`: the re-execution committed the notebooks without the figure file the execution writes. Every
