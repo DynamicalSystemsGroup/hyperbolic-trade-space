@@ -1,6 +1,6 @@
 """Build the docsite's figures by running the code blocks that sit above them.
 
-    uv run python scripts/build_figures.py [--out DIR]
+    uv run python scripts/build_figures.py [--out DIR] [--paper]
 
 A docsite page embeds a figure as the pair ``![alt](.../NAME-light.png#only-light)`` and
 ``![alt](.../NAME-dark.png#only-dark)``. The figure is what the last matplotlib figure holds after
@@ -13,8 +13,10 @@ colour), so the two images of a figure show the same picture. Default output is
 ``docs/generated/figures/`` (git-ignored, inside the docsite's ``docs_dir``).
 
 The paper's static figures (those drawn by a module of ``paper/figures/`` rather than by a cell of a
-notebook) are regenerated in place by the same run: see :data:`PAPER_FIGURES`. ``--docs-only``
-skips them.
+notebook) are tracked files, regenerated in place only on request: ``--paper`` (see
+:data:`PAPER_FIGURES`). A plain run writes only the docsite's own output directory, so it leaves
+every tracked file as it found it (the PNG encoder of another environment changes the bytes of a
+pixel-equal paper figure).
 """
 
 from __future__ import annotations
@@ -201,11 +203,13 @@ def build_paper(modules=PAPER_FIGURES):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--out", default=str(DEFAULT_OUT), help="output directory")
-    parser.add_argument("--docs-only", action="store_true", help="skip the paper's static figures")
+    parser.add_argument(
+        "--paper", action="store_true", help="also regenerate the paper's tracked static figures"
+    )
     args = parser.parse_args(argv)
     try:
         written = build(args.out)
-        paper = [] if args.docs_only else build_paper()
+        paper = build_paper() if args.paper else []
     except Exception as exc:
         print(f"build_figures: FAILED: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
