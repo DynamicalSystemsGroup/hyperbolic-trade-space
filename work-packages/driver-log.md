@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **dd7753a and 449ad05 fully green; 94464bb received (11:45).** CI runs 43220520062 and 43221693639: every job green
+  on both platforms (the eighth and ninth fully green heads). 94464bb landed: both notebooks re-executed at the head
+  so Figure 7 carries the redraw (vertical x labels, wrapped titles), all other outputs unchanged. The assistant's
+  checks and a stage rebuild run on it; CI dispatched.
+
 - **32a3a33 verified; WP32 starts on it (10:50).** Ruff and format clean, lock current, vocabulary 0 new, attribution
   0, fast suite 1883 passed, 0 failed, the rendered pages read (above). Accepted; stage 6's findings are closed on
   dev except D.17's USD prices, which the PM confirms or dispatches. 32a3a33 is WP32's staged head on 8791 and the
