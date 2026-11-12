@@ -3,8 +3,7 @@
 The fit never selects the number of terms K; you do. Every check below reads fits at one
 temperature, selected at K = 1 on your table ([the recipe](#the-temperature)): `mean_slack_` is
 comparable across K at one temperature, and `objective_` is not. No check decides K alone, so each
-is given with what it cannot say. The package has no held-out criterion for K, and none has been
-studied.
+is given with what it cannot say. The package has no held-out criterion for K.
 
 ## Methods
 
@@ -44,8 +43,8 @@ print(round(tau, 1))
 ```
 <!-- vocab-exempt: select temperature -->
 
-0.10 is the share of designs allowed above V = 1. The planted table returns 50.0, the tau used
-below for all three planted tables (26.5 and 38.1 on the others).
+0.10 is the share of designs allowed above V = 1. The planted table returns 50.0, used
+below for all three (26.5 and 38.1 on the others); real data may need `bounds=(3, 1e4)`.
 
 ## Helpers
 

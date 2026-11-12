@@ -29,7 +29,7 @@ plot_tensions(report, names=["m0", "m1", "m2"])
 <figure markdown>
 ![Heatmap of the association among three metrics near the frontier; all three off-diagonal cells are negative, and all three metrics are outlined as contending.](../generated/figures/tension-report-light.png#only-light)
 ![Heatmap of the association among three metrics near the frontier; all three off-diagonal cells are negative, and all three metrics are outlined as contending.](../generated/figures/tension-report-dark.png#only-dark)
-<figcaption>Figure 3. The tension report of the three-metric table: association is the correlation of the log-metrics near the frontier; negative (orange) marks metrics that are traded, and diagonal outlines mark the contending set.</figcaption>
+<figcaption>Figure 3. The tension report of the three-metric table: association is the correlation of the log-metrics near the frontier; negative (orange) marks metrics that are traded, diagonal outlines mark the contending set, and w under a name is its exponent.</figcaption>
 </figure>
 
 ## The contending set and the n-lemma
@@ -56,7 +56,7 @@ For designs with absolute log V below `band` (by default 1/tau, or 0.1 at infini
 `association` is the Pearson or Spearman correlation of the log-metrics: negative is traded, positive
 is aligned; `association_kind` says which. Near the surface the weighted sum of log-metrics is almost constant, so a binding
 constraint produces negative association even where no designer traded the metrics (`closure_note`
-says so). Treat association as evidence only together with the exponents and the directions.
+says so).
 
 ## Tension directions
 
@@ -71,7 +71,7 @@ They equal `orient_by_pca` on the same rows.
 ## With several terms
 
 At K > 1 the function returns a list of K reports, one per term, each on the rows of that term's
-cell. A term whose cell has fewer than `min_near_frontier` (default 10) near-frontier rows raises
+cell. A term whose cell (at K = 1, all rows) has fewer than `min_near_frontier` (default 10) near-frontier rows raises
 `ValueError`; widen `band` or lower `min_near_frontier`.
 
 ## A cap can hide a slope

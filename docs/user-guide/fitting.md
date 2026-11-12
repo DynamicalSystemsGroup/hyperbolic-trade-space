@@ -50,14 +50,13 @@ from hyperbolic_trade_space import (
 )
 
 X, info = make_frontier_data(300, 3, random_state=0)
-tau = select_temperature(X, target_frac_above=0.35, bounds=(3, 1000))
+tau = select_temperature(X, target_frac_above=0.35, bounds=(3, 1e4))
 print(round(tau, 1))
 ```
 
-This synthetic table puts 30 percent of its rows on the planted frontier, hence the target 0.35;
-for real data start at the default 0.10. If that raises "not bracketed", raise the target above the fractions the message gives, or the upper bound: a model sweep needed `bounds=(3, 1e4)`. Use tau of 3 and above: below that
-`frac_above_` is not monotone in tau.
-Hold tau fixed across numbers of terms, selected at K = 1.
+This table has 30 percent of its rows on the planted frontier, hence the target 0.35;
+for real data start at the default 0.10 with `bounds=(3, 1e4)`. If that raises "not bracketed", raise the target or the upper bound, as the message says. The result is a tau within `tol` of the target, so on an exact-relation table it moves with the bounds. Use tau of 3 and above; below it
+`frac_above_` is not monotone.
 
 ## Several terms
 

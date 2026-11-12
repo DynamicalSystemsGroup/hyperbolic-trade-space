@@ -56,3 +56,73 @@ only and no page connects it to the table (row 10).
 None. Row 6 is a docs defect; the error message already says what to do. An optional polish, not owed: at
 `n_terms=1` the message could name a numeric target as the `n_terms>1` branch does ("raise the target to
 about 0.24"); both cells succeeded without it, so no unit is opened for it.
+
+# WP32 triage, round 2
+
+Inputs: the four returns in `round-2/` (unedited), head a3a61af and the stage as served. Round 2 is the first
+re-run; the stopping rule (two re-runs, then a persisting docs stop goes to the chief engineer's list with the
+cell's words) has not yet fired. Reach: no cell opened a page outside the README, the site and the package
+(U2 fetched eight further site pages by script and searched them for "SysML" and "export" only; U1, U3, U4 read
+the README and five to seven pages; the package source appeared in tracebacks and in U2's grep). U4 guessed
+`/docs/guide/` (404). No cell was blocked: all four reached an answer.
+
+## Round-1 rows: recurred?
+
+| Round-1 row | Recurred? |
+|---|---|
+| 1 README first call | no: U3 read the README example, U1/U2/U4 ran `uv sync` and imported at once |
+| 2 README repo-path link | no |
+| 3 `cd` / `uv run` | the README gap did not recur; U4 again ran from the wrong directory and U3 again ran a stray command on system python (own slips, row R2-9) |
+| 4 helper imports `case` | no stop. U2 still describes the helpers as "partly" importing `case`; the Helpers block does not, the cubesat block does, and U2 skipped it. U3's new snag is R2-4 |
+| 5 band count | no (U2 printed `n_near_frontier`) |
+| 6 not bracketed at 0.10, bounds (3, 1000) | **recurred, U2 and U4**; see R2-1 |
+| 7 `plot_frontier_coordinates` signature | no (nobody used it) |
+| 8 font warning | recurred, all four; matplotlib, no change |
+| 9 trilemma `[0 1 3]` | recurred, U1 and U3; read right both times (R2-5) |
+| 10 SysML v2 connection | the clause was found and used by U2 and U4; the remaining wish is R2-7 |
+| 11 `batch`/`sample` | recurred as inference, U1 and U3 (neither opened the overview where the clause is); no stop |
+| 12, 17 which target / K limits | recurred as questions, answered correctly by the cells |
+| 13, 14, 15, 16, 18, 19 | no |
+| 20 own slips | recurred (U3 system python, U4 working directory) |
+
+## Round-2 rows
+
+| # | Stop, error, snag or guess | Who | Page or function | Disposition | Content that did not earn its place |
+|---|---|---|---|---|---|
+| R2-1 | `select_temperature(M, 0.10, bounds=(3, 1000))` raises "not bracketed" on the exact-relation pump table; both cells recovered in one step from the message and the page's sentence | U2, U4 | `choosing-k.md` "The temperature" and `fitting.md` code blocks | **docs, again; round 1's sentence was not enough because cells copy the code block, not the prose.** Both blocks carried `bounds=(3, 1000)`. The fitting block now uses `(3, 1e4)` (its output is not quoted anywhere); the choosing-k block stays at `(3, 1000)` because its 50.0, 26.5 and 38.1 are quoted and used below, and the line after it now says real data may need `bounds=(3, 1e4)`; the fitting page says to start at the default 0.10 with `bounds=(3, 1e4)`. Not a code defect: the default bounds `(0.1, 1e4)` return 4870 on the pump table. The package default is unchanged | "a model sweep needed", "above the fractions the message gives" (the message says it), "Hold tau fixed across numbers of terms, selected at K = 1" (choosing-k says it), "and none has been studied", "the tau used" |
+| R2-2 | Same target gives 8490 with bounds to 1e6 and 6023 with 1e4, "unexplained" | U4 (U2 asked the same) | `select_temperature` | **not a defect; explained, one clause added to the fitting page.** Measured on the pump table: frac_above_ is 0.215 at tau 1e3, 0.155 at 3e3, 0.10 at 6023, 0.09 at 1e4, 0.05 at 3e4, 0.025 at 1e6, so it falls slowly and many tau lie within `tol` = 0.01 of 0.10. Bisection returns the first one it meets, which depends on the bracket: 4870 (bounds 0.1 to 1e4), 6023 (3 to 1e4), 7401 (3 to 1e5), 8490 (3 to 1e6). The docstring already says "returns a tau with abs error at most tol". Tightening `tol` would change tau elsewhere (the paper's numbers); not touched | none |
+| R2-3 | `tension_report` raises "only 5-6 near-frontier rows ... min_near_frontier = 10; use band=..." at K = 1, on the pump table and on plain-table batches B and C; message clear, every cell recovered in one step (band 2.1e-4, 0.00021) | U1, U2, U4 | `tensions.md` "With several terms" | docs: the sentence on `min_near_frontier` sat under "With several terms" and read as K > 1 only; it now says "(at K = 1, all rows)". Code message is right and unchanged | "Treat association as evidence only together with the exponents and the directions" (the closure sentence before it already says so) |
+| R2-4 | The K-sweep helper is shown in the page and not importable from the package | U3 | `choosing-k.md` "Helpers" | no change: a package function is a feature, outside this package's scope; the page gives the code and U3 wrote a shorter loop in one step | none |
+| R2-5 | "Trilemma" `[0 1 3]` with third exponent 0.004; what exponent makes a metric a real member | U1, U3 | `tensions.md` | not owed: both cells quoted the page's 1e-9 reading and read the exponents before the name (U3: "effectively a dilemma"). The threshold (1e-3) is on the page | none |
+| R2-6 | `scaler=None` gives a monolemma on mass; standard and robust give a trilemma without mass; which to trust | U2 | `conditioning.md` | not owed: the page says `None` keeps the pure power law, to refit under a second conditioning and that the scaler is a choice. A rule for which scaler to trust would be advice the method does not have | none |
+| R2-7 | No programmatic route from a SysML v2 model to orientation (a smaller-is-better flag in the export); "does the package read the .sysml file" | U2, U4 | none | not owed: the overview clause says the package reads tables, and both cells found it; an exporter or flag is a feature, the tool still needs no SysML v2. Both answered the standing question no | none |
+| R2-8 | Heatmap tick labels "w=0.00" versus "w=0.01" unexplained | U1 | `tensions.md` Figure 3 caption | docs: caption says "w under a name is its exponent" (label is `report.exponents`) | none |
+| R2-9 | Own slips: `FileNotFoundError` (script in `hts/`), system-python `numeric_only` (U3); `np.round` on the dict that `frontier_in_original_units` returns (U2) | U4, U3, U2 | none | not owed: not documentation gaps (README says `uv run`); the dict is a return type the signature shows | none |
+| R2-10 | How small an `n_eff_` or near-frontier count is too small; what `conditioning_` = 52.6 means; Termination page not opened | U1, U2, U3, U4 | `termination.md`, `limitations.md` | not owed beyond R2-3: the pages exist and name both fields; no page gives a threshold because the method has none to give. Wayfinding datum for WP33 | none |
+| R2-11 | Does a noise-free table suit the tool; is a band of 2e-4 meaningful | U2, U4 | `limitations.md` | not owed: the page says designed samples carry no sampling error; U2 read it | none |
+
+## Standing question
+
+All four answered **no**. Satellite words met: the "cubesat" line on the Home page and the cubesat section of
+"Choosing K", set aside as optional by all four. Both model-side cells used the overview clause (configuration is
+not attributes; the table is the route) and said the model helped as a reader's aid and for a hand check of
+the answer (U2 recovered the efficiency ceiling by hand).
+
+## Planted-fact check
+
+- Plain table (U1, U3): pair strength and weight, exponents 0.49 and 0.50-0.51, cost 0.004, stiffness about 0;
+  both cells read the pair right and flagged cost as weak (U3 "effectively a dilemma"; U1 "weak third member").
+  tau 178.2 on both. Right.
+- Pump table (U2, U4): trilemma `[0 1 2]` (flow, head, power), exponents 0.28, 0.23, 0.49, mass 0; both read it
+  right, pulled it back to flow x head / power capped (exponents 0.198), robust scaler agreeing, and mass read
+  as correlated and not binding. Right. Both reached it only after the bounds step (R2-1) and the band step (R2-3).
+
+## Docs stop that persists
+
+None blocking. R2-1 recurred, so the next round tests the new code blocks; if a cell hits "not bracketed" a
+third time on a copied block, it goes to the chief engineer's list with that cell's words.
+
+## Defect requests for a code unit
+
+None. R2-1 and R2-2 are the page's example bounds and the tolerance semantics the docstring states; the
+package default is not the defect and is not changed.
