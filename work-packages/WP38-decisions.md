@@ -24,3 +24,14 @@ a second fresh reader confirms the surface reads clean. It runs once the surface
 WP36 and WP37 land and before the final reader round, so that round reads the cleaner text. The five entry
 surfaces are read in it too, their changes listed for the supervisor as always. The scope comes to the assistant
 in the usual form; Sonnet readers and implementer, Haiku for counts.
+
+> you can work in parallel to build the review machinery for this review
+
+**The assistant's reading.** The machinery is built now, in parallel with the running packages, and the pass runs
+when the surfaces are stable. The machinery: the lens as a written reader's brief with the kinds of residual and
+an example of each from this repository's own earlier drafts where one exists; a flag table format (surface,
+location, the sentence, kind, proposed disposition, reason); a script that lists the prose surfaces and their
+word counts so every surface is assigned and none missed; a checker for the mechanical patterns that can be
+searched (the metanarrative openers, the hedges, the stock intensifiers, parenthetical density per paragraph) as a
+report, never an automatic edit, with its baseline; the ledger and claims-register hooks the cuts already use; and
+the second reader's confirmation form. A scope in the usual form names them as deliverables.
