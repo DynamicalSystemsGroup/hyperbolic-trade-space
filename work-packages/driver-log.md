@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **8806b0e fully green (07:45).** CI run 43201881230: every job green on both platforms (the seventh fully green
+  head; the staged head of stage 6). The P7 and P8 final reads are committed in their worktrees and come through
+  the PM; the reviewer who runs the thing is still taking its screenshots.
+
 - **8806b0e, the assistant's checks complete (07:20).** Fast suite 1881 passed, 0 failed; the design-sets and
   requirements slow tests of `test_case.py` and `test_paper.py` 5 passed; lint, format, lock, vocabulary and
   attribution clean (recorded above). Accepted; CI run 43201881230 gives both platforms. Stage 6 runs on this head.
