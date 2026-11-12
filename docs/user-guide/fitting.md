@@ -77,7 +77,7 @@ print(ts.exponents_.shape, ts.termination_.status)
 ```
 
 Fitting alternates weights from the current model with a refit, from `n_restarts` seeded
-starts (default 5), keeping the best. `assign_cells(X)` reads the cell of new
+starts, keeping the best. `assign_cells(X)` reads the cell of new
 rows. Options:
 
 - `term_temperature` (kappa, term temperature, default infinity): infinity, one label per design;
