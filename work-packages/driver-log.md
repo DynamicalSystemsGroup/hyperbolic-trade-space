@@ -228,6 +228,17 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **a3a61af staged; WP32 round 2 released (13:15).** The stage serves a3a61af and is frozen until the PM reports the
+  round done (the four fresh cells read it as their only docs source; their tabs are theirs, the assistant's is a
+  new one, tab-84, after the old one was closed). Rendered read of the six fixes: the README's first screen (one
+  site link, one install line with the cd, one first call, the layout list; 137 words); the fitting page says what
+  to do when the 0.10 target raises "not bracketed"; the choosing-K page's `import case` sits only in the cubesat
+  block; the tensions page names `n_near_frontier` and the 1e-9 reading of a set's name; the chart page states
+  `plot_frontier_coordinates(Z, log_v)`; the overview says any table works and a model's export is one source, with
+  design variables and labels as configuration. Every page under its budget. The assistant's checks on a3a61af
+  (vocabulary, attribution, the docs, site, encoding, fixtures and contract tests, the fast suite) are running; CI
+  run 43236402122 on the head.
+
 - **WP32 round 1 triaged; the fixes landed; the ruff question decided (12:45).** The PM's triage (`WP32-cells/triage.md`,
   20 rows) and six docs fixes are on dev (README first screen: one site link, one install line, one first call;
   the choosing-K helpers need only the installed package; the fitting page says what to do when the 0.10 target is
