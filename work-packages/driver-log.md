@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **5073055, the assistant's checks (19:45).** Ruff and format clean, attribution 0, vocabulary 0 new; the site
+  (history and assembled tests included), claims-register, docs and encoding tests 99 passed. The page's rendered
+  look follows on a local build; CI run 43267160637 on the head.
+
 - **WP32 accepted; the WP37 draft page reviewed (19:25).** The WP32 review's closure (c33b108) covers its findings:
   the round-3 triage section and acceptance record, the column corrections, the header and worktree listings;
   R-10 for U1 stays open by design until one fresh U1 cell runs on the next staged head; the figure-build defect
