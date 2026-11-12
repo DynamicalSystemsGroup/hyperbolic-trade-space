@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **94464bb, the assistant's checks (12:05).** Ruff and format clean, attribution 0; the encoding, paper and site
+  tests 189 passed (the figure-link test among them, so the redrawn Figure 7 file and the notebook agree). Accepted;
+  CI run 43230065422 gives both platforms. WP32's cells have not yet appeared in the PM's worktrees; chased once.
+
 - **94464bb, the rendered look (12:00).** Stage rebuilt at 94464bb on 8791. Figure 7's two heat maps carry the
   redraw: vertical x labels with their exponents, the titles wrapped, every cell value legible at column width; no
   stderr. The assistant's checks on the head run.
