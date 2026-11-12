@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **755e151, the rendered pass (22:05).** Stage rebuilt at 755e151 on 8791. Section 9's "Two terms" paragraph, D.15's
+  two tables (the checks pick K = 2 on both regimes) and Figures 6 to 8 (planes, chart, association at K = 2) render as
+  the unit describes; no stderr on either page. Two findings routed: Figure 3's caption still says "the eight
+  metrics" (the behavioural-view unit); the unit ran no fresh-context cold read on the redrawn figures, so the PM
+  schedules one by the figure loop, with the assistant's own cold read of Figure 6's top panel (the tracker grade
+  quantises the pointing error into three columns, so the line reads as a floating bound rather than a traced
+  trade-off) given to the reader to confirm or refute. The fast suite on 755e151 is running.
+
 - **b4606f5, the fast verdict, and the choosing-K unit received (21:50).** CI fast on both platforms: 4 failed,
   1869 passed; the four are the data commit's own cascade (the datasets table digest; the verification pointers at
   `@11`; the v1-v2 comparison register lacking rows for the container's control effort and saturation fraction) and
