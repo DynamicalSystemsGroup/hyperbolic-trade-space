@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The current head as rendered (20:50).** Stage rebuilt at the dev head on 8791 (WP33's first screens and the
+  history page; the repeat round not yet released, since the abstract correction is pending). The root page routes
+  by need in five lines with the adoption-cost line and no horizontal scroll; the history link sits in the footer;
+  the history page serves at 342 words with 27 links on one screen; the docs home opens with whom it is for. A
+  browser rule after a slip: the PM's stale-tab cleanup closed the assistant's tab, so from now on an agent closes
+  only tabs it opened; the assistant's tab is its own per session.
+
 - **WP33 D-2 on dev; the abstract breach (20:30).** The four first-screen units are on dev: the root page routes by
   need in five lines with the three adoption-cost lines (ebacd28); the README's first screen is for analysts with a
   table and its layout list names every top-level directory (a80a403); the docs home carries five need-phrases and
