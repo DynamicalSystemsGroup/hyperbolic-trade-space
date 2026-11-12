@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **449ad05, the assistant's checks (09:45).** Ruff and format clean, attribution 0; the encoding, paper,
+  claims-register and site tests 209 passed. Accepted into stage 6's closing; CI run 43221693639 gives both
+  platforms. The persona unit is complete except D.17's USD prices, which the PM confirms or dispatches.
+
 - **449ad05, the rendered read (09:35).** Stage rebuilt at 449ad05 on 8791. D.7 opens with the sentence as committed
   (two of the three candidates, +0.315 and +0.354 log V, beyond the surface fitted to the designs that meet the four
   thresholds; none of the three nor the baseline meets all four); no stderr. The assistant's checks on the head run.
