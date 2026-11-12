@@ -3043,6 +3043,40 @@ def test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left
     assert paragraph in c8, "the paragraph of the mirror file is C.8's"
 
 
+def test_appendix_c8_list_states_numbers_the_data_and_the_model_give():
+    """The list after C.8's paragraph prints numbers: the smallest pointing error, the launch slot's
+    effect at fleets of one to three, the traded mass over the fixed bus; each is computed from the
+    feasible designs of both regimes (and the case page repeats the first two)."""
+    import case
+    import pandas as pd
+
+    c8 = _norm_ws(_src(next(c for c in _nb(SUPPORT_NB).cells if c.id == "app-C-8")))
+    page = _norm_ws((ROOT / "examples" / "adcs" / "case-model.md").read_text(encoding="utf-8"))
+    model = _norm_ws(
+        (ROOT / "examples" / "adcs" / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8")
+    )
+    feasible = pd.concat(
+        [case.load_study(r).feasible for r in case.CUBESAT.regimes], ignore_index=True
+    )
+    mass = feasible["total_mass_kg"].to_numpy()
+    fixed = 10.0 + 0.5 + 0.1  # bus, antenna, inertial unit (the model's three fixed masses)
+    for part in ("attribute mass : MassValue = 10.0 [kg]", "= 0.5 [kg]", "= 0.1 [kg]"):
+        assert part in model
+    assert "50 kg minimum slot (350,000 USD)" in model and "launchRate : Real = 7000.0" in model
+    assert "attribute horizon : TimeValue = 600.0 [s]" in model
+    assert f"{feasible['pointing_error_deg'].min():.4f} degree" in c8
+    assert f"{(mass - fixed).min():.1f} to {(mass - fixed).max():.1f} kg of traded parts" in c8
+    assert f"on about {fixed:.1f} kg of fixed bus" in c8
+    assert f"spans {mass.min():.1f} to {mass.max():.1f} kg" in c8
+    assert float(feasible["panel_span_m"].max()) < 1.0 and "up to 1.0 m a side" in c8
+    factor = {n: 50.0 / (n * mass) for n in (1, 2, 3)}  # the slot over the linear rate, per fleet
+    assert f"{factor[1].min():.1f} to {factor[1].max():.1f} times at one satellite" in c8
+    assert f"{factor[2].min():.1f} to {factor[2].max():.1f} at two" in c8
+    assert f"at most {factor[3].max():.1f} at three" in c8
+    assert (factor[3] >= 1.0).all()  # the slot still binds at three
+    assert "3.1 to 4.2 times at one satellite" in page and "0.0006 degree" in page
+
+
 def test_the_charts_axis_names_the_metrics_of_the_first_direction_of_d16():
     """The chart's axis says which metrics a step to the right improves or worsens: the leading
     loadings of D.16's first direction (K = 1, primary regime), by sign. The caption names none."""

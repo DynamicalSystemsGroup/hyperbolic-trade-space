@@ -220,10 +220,15 @@ demonstration; what bears on how far it reaches:
   and wholesale launch, and leave out the payload, communications, flight software, licensing, operations and the rest of the
   full costing. The fleet cost requirement holds the covered cost under 6,000,000 USD, inside the sponsor's full budget of
   8,000,000 USD, the rest being the allowance for what is not covered.
+- **Pointing error.** It is the closed-form steady error with the star tracker's accuracy, summed in quadrature; boresight
+  alignment, the tracker's roll axis and wheel jitter are not modelled, so its smallest value, 0.0006 degree, is not a flight claim.
 - **Momentum management.** `momentum_ok` compares one slew's peak momentum with the wheel's capacity; the constant disturbance
-  torque is not accumulated over an orbit and no desaturation device exists.
+  torque is not accumulated over an orbit and no desaturation device exists, so that the small wheel is feasible is a one-slew
+  reading and not a sizing.
+- **Launch slot.** The 50 kg minimum slot (350,000 USD) is a note in the model and not a cost: a fleet of one to three pays it, so
+  the launch cost is understated by 3.1 to 4.2 times at one satellite and the low end of the fleet-size axis is underpriced.
 - **Margins and growth.** Mass and power are nominal sums; solar degradation is one fixed factor (0.9); no battery fade or charge loss.
-- **One scenario.** One 30 degree slew in a 600 s horizon, one fixed 0.6 h eclipse of a LEO of about 95 minutes, no altitude.
+- **One scenario.** One 30 degree slew in a 600 s horizon under a saturating proportional-derivative law (both choices of the case), one fixed 0.6 h eclipse of a LEO of about 95 minutes, no altitude.
 
 The full list (the order of the cost exclusions, schedule and qualification, fault tolerance, thermal and communications, the
 gains as hardware, the source of each limit) is Appendix C.8 of the supporting material.

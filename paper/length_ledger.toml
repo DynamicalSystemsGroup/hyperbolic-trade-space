@@ -1187,3 +1187,11 @@ section = "Discussion"
 words_removed = 1
 no_longer_did = "the sentence said 'the requirements' for the four performance thresholds the constrained set applies, and repeated 'requirements' after the pointer; it now names the four performance thresholds and says 'them' (Appendix D.17 carries the reason the two cost limits are not among them)"
 authority = "the PM's brief for the design-sets block (the four performance thresholds named; the cost limits read after the fit)"
+
+# The P7 and P8 final reads, triaged (WP30-rounds/persona-final/triage.md): what each omission does to a reading.
+[[raise]]
+date = "2026-11-12"
+section = "Appendix C"
+words_added = 229
+job = "C.8's list says, item by item, what a flight-hardware reader may not take from the case: the pointing error is a loop-and-tracker figure, the momentum check is one slew, the launch slot is not priced (understated 3.1 to 4.2 times at a fleet of one), the horizon and slew law are choices, the wings are rigid and the mass axis a trim on a fixed bus; the body keeps one clause"
+reader = "the systems engineer judging whether the case is honest where it is a toy"

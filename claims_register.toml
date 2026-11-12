@@ -5973,3 +5973,48 @@ status = "backed"
 disposition = "keep"
 source = "P8 final read F7; the triage of 2026-11-12"
 note = "No attribute, calc or requirement of the model is a schedule or a payload (the C.8 test asserts none is named in the file); the launch cost is 7,000 USD per kilogram with the slot minimum noted and not modelled."
+
+[[claim]]
+id = "C502"
+fragment = "so the launch cost is understated by 3.1 to 4.2 times at one satellite, 1.5 to 2.1 at two and at most 1.4 at three"
+file = "paper/supporting_material.ipynb"
+anchor = "C.8 The cost model and what the case leaves out"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_appendix_c8_list_states_numbers_the_data_and_the_model_give",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "P7 final read N-F3; the triage of 2026-11-12"
+note = "The factor is 50 kg over the satellite's total mass (the slot against the linear 7,000 USD/kg), computed on the feasible designs of both regimes (total mass 11.9 to 16.3 kg); the model's own note says a fleet of one to three pays the slot."
+
+[[claim]]
+id = "C503"
+fragment = "the mass axis is a trim, 1.3 to 5.7 kg of traded parts on about 10.6 kg of fixed bus"
+file = "paper/supporting_material.ipynb"
+anchor = "C.8 The cost model and what the case leaves out"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_appendix_c8_list_states_numbers_the_data_and_the_model_give",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "P7 final read N-F11; the triage of 2026-11-12"
+note = "Fixed bus = 10.0 kg bus, 0.5 kg antenna, 0.1 kg inertial unit, read from the model file; total mass minus 10.6 kg ranges over 1.26 to 5.68 kg on the feasible designs of both regimes."
+
+[[claim]]
+id = "C504"
+fragment = "so its smallest value, 0.0006 degree, is a loop-and-tracker figure and not a flight claim"
+file = "paper/supporting_material.ipynb"
+anchor = "C.8 The cost model and what the case leaves out"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_appendix_c8_list_states_numbers_the_data_and_the_model_give",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "P7 final read N-F1; the triage of 2026-11-12"
+note = "PointingError in the model is the root-sum-square of the steady error and the tracker accuracy and names no alignment, roll-axis or jitter term; the minimum over both regimes' feasible designs is 0.000602 degree."

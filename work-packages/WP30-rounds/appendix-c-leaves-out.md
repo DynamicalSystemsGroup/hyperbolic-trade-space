@@ -16,6 +16,16 @@ now reads as the model's own `COVERAGE` text and the supervisor's exclusion orde
 > project would tune them in software. Four requirement limits are read from the data's pass fractions and two are cost budgets;
 > none is flowed down from a mission.
 
+> What each omission does to a reading of the case (the list that follows the paragraph in C.8; the case page carries the
+> pointing error, momentum, launch slot and scenario items below, in its own words):
+> - **Pointing error.** The closed-form steady error summed in quadrature with the tracker's accuracy; its smallest value, 0.0006
+>   degree, is a loop-and-tracker figure; alignment, the roll axis and jitter are not modelled.
+> - **Momentum.** One slew against the wheel's capacity: that the small wheel is feasible is a one-slew reading.
+> - **Launch.** The 50 kg slot (350,000 USD) is not a cost; understated 3.1 to 4.2 times at one satellite, 1.5 to 2.1 at two, at
+>   most 1.4 at three (computed from the feasible designs' total mass, `tests/test_paper.py`).
+> - **Scenario.** The 600 s horizon and the saturating proportional-derivative slew law are choices.
+> - **Structure.** Rigid wings, no hinge mass; 1.3 to 5.7 kg of traded parts on about 10.6 kg of fixed bus.
+
 ## The list for the case page
 
 Place after "The requirements and what each reads" and before "Coverage"; one clause at its head, then the list.
@@ -31,10 +41,15 @@ Place after "The requirements and what each reads" and before "Coverage"; one cl
 > - **Fault tolerance.** Three identical wheels and one tracker; no failure case.
 > - **Thermal, communications, load profile.** None modelled; payload and radio power sit inside one constant 12 W load.
 > - **Margins and growth.** Mass and power are nominal sums; solar degradation is one fixed factor (0.9); no battery fade or charge loss.
+> - **Pointing error.** It is the closed-form steady error with the star tracker's accuracy, summed in quadrature; boresight
+>   alignment, the tracker's roll axis and wheel jitter are not modelled, so its smallest value, 0.0006 degree, is not a flight claim.
 > - **Momentum management.** `momentum_ok` compares one slew's peak momentum with the wheel's capacity; the constant disturbance
->   torque is not accumulated over an orbit and no desaturation device exists.
+>   torque is not accumulated over an orbit and no desaturation device exists, so that the small wheel is feasible is a one-slew
+>   reading and not a sizing.
+> - **Launch slot.** The 50 kg minimum slot (350,000 USD) is a note in the model and not a cost: a fleet of one to three pays it, so
+>   the launch cost is understated by 3.1 to 4.2 times at one satellite and the low end of the fleet-size axis is underpriced.
 > - **Gains as hardware.** Kp and Kd are traded like parts, though a flight project tunes them in software.
-> - **One scenario.** One 30 degree slew in a 600 s horizon, one fixed 0.6 h eclipse of a LEO of about 95 minutes, no altitude.
+> - **One scenario.** One 30 degree slew in a 600 s horizon under a saturating proportional-derivative law (both choices of the case), one fixed 0.6 h eclipse of a LEO of about 95 minutes, no altitude.
 > - **Requirement limits from a mission.** Four limits (peak slew power, pointing error, control effort, launch budget) are the
 >   supervisor's choices from the data's ladder of pass fractions; the two cost limits are budget figures; none is flowed down
 >   from a mission.
