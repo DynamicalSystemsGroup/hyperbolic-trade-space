@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Answer key v5 fixed (05:00).** Written outside the repository from the paper's own sentences (the PM drafted
+  six; the assistant added the K = 2 reading's three checks, the term order, the two unweighted metrics, the six
+  requirements with the unit-cost limit binding through the fleet size, the design-sets block's four thresholds and
+  the data of record; wrong beliefs W9 to W12); sha256 committed in `WP11-decisions.md` (77084fa). Nobody but the
+  assistant reads it; the final reader round is marked against it.
+
 - **The cascade's last units landed; 259ad9d under verification (04:50).** 17753f9 (the review-list row for the retired
   planes figure), 320fead (no floating requirements: `requirements_table` and D.17 read all six requirements; unit
   cost 350,000 USD per satellite at the design's fleet size, fleet cost 6,000,000 USD; pass shares 76.2 / 75.8 and
