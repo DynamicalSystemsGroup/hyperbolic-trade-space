@@ -158,3 +158,23 @@ the share of the planted vector recovered) and its refutation condition before i
 does this; the assistant decides on its readout; the build, QC, integration and the P9/P10-balanced review follow
 through the paper notebook's single-writer queue. The scope's non-goal "no new section, figure or page" is lifted
 for this appendix by the supervisor's word.
+
+## Stage 2 for the appendix: the 1b readout accepted and the content decided (2026-11-13, 09:20; the assistant, under the supervisor's amendment of 13165e8)
+
+The stage-1b readout (`WP35-rounds/spike-h/readout.md`, ef4d118) is accepted as the record: the hypothesis and its
+refutation conditions were committed before the run (830cf54), every part survived under the pre-registered rule, and
+the assistant reproduced the record on this Mac (the 70 tables regenerated from their seeds in 3 s, this work's refit
+with them; `results.json` and `summary.txt` regenerated identical from the committed HoroPCA record; five cells
+recomputed by hand: arms A and B 6/6 at cosine 1.000, arm C 0/6 at median cosines 0.318 and 0.577).
+
+**Assistant, verbatim, in the readout's numbering:** "Question 1: (a). Appendix H carries the hypothesis with its
+refutation conditions, the design in a paragraph, one results table built from 3a to 3c with the verdict column, the
+interpretation and the formalism-and-solvers comparison; arm D, the cubesat rows and the loadings stay in the notes and
+the readouts, linked. Question 2: (b), not run; the embedding is stated as ours in the reading limits. Question 3: (a),
+the chain in words with the pointer to D.16. Question 4: (a), the smallest-variance component reported as the part not
+in the hypothesis, in two sentences. Question 5: (a), 0.9 with the chance rates beside it. The appendix is
+complementary in register, as the supervisor ruled: what each method estimates, shown by a table in which the two part;
+no sentence says HoroPCA is worse at what it was built for. The scope amendment names Appendix H, its word budget in
+the length ledger, the results table generated from `results.json` by a paper script, the claims-register rows and
+the reading-pass row for HoroPCA, and the removal of the earlier Appendix G passage that this replaces, with what it
+no longer did."
