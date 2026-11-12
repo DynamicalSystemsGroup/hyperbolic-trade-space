@@ -63,7 +63,7 @@ def table_A(seed, rho, edge=True):
 def spread(U, w):
     uhat = w / np.linalg.norm(w)
     along = float((U @ uhat).std())
-    P = np.eye(D) - np.outer(uhat, uhat)
+    P = np.eye(len(w)) - np.outer(uhat, uhat)
     ev = np.linalg.eigvalsh(np.cov((U @ P).T))
     return [along, float(np.sqrt(ev[-1]))]
 
