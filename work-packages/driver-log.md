@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The stage 6 fix unit landed (10:15).** 6c6adf6 (Figure 8's line counts ten metrics left out per triple, from the
+  metric set; Appendix E rows G-2 and G-17 and the recipes on the thirteen-metric 3,000-design record, recomputed
+  by a test; "thirteen" in words in Section 8; captions say a black metric can be unoutlined; two Examples cuts hold
+  the budget; claim C507) and 32a3a33 (Figures 5 and 7 legibility: vertical x labels, wrapped title, the docs figure
+  no longer redrawn narrower; Figure 3's MoE line without its overprinted label; views regenerated). The assistant's
+  checks and a stage rebuild run; CI dispatched. This head is WP32's staged head once verified.
+
 - **449ad05, the assistant's checks (09:45).** Ruff and format clean, attribution 0; the encoding, paper,
   claims-register and site tests 209 passed. Accepted into stage 6's closing; CI run 43221693639 gives both
   platforms. The persona unit is complete except D.17's USD prices, which the PM confirms or dispatches.
