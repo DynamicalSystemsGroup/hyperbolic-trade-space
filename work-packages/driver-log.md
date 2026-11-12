@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **e9a1dd4, the assistant's checks (23:05).** Lock current; vocabulary 0 new; attribution 0; the slow estimator,
+  sensitivity and soft-fit tests 82 passed (the term order's five slow failures are closed); fast suite 3 failed /
+  1872 passed: the datasets table digest and the D.11 stability subsection (both wait on the notebook re-execution
+  on the data of record and the new jitter record) and the site's paper-key test against this checkout's stale
+  paper build (passes against a fresh build). Ruff failed on one file: the cold read's throwaway slice script
+  committed into the record folder (7 lint errors, unformatted). Removed by the assistant (the two alternative
+  PNGs and the report's description carry the evidence; scripts of a reading stay in the scratchpad, as the
+  container records do); the report's sentence names what was tried instead of the file. Ruff clean after.
+
 - **Five cascade commits received; Figure 6 retired on the cold read (22:55).** On dev: the term-order follow-up
   (7adfb84: slow tests compare terms as sets of rows; cells re-derived after the permutation so tied rows go to the
   lower index; the fitting page restores the C261 and C401 sentences within its budget), the sensitivity analysis

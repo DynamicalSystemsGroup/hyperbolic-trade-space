@@ -40,7 +40,7 @@ The bottom panel reads as intended: the cloud falls on and below the line, with 
 label.
 
 Smallest fixes, in the order asked:
-1. A different second metric for term 1. Tried (alt-term1-slice.py and alt-term1-pointing-vs-unitcost.png,
+1. A different second metric for term 1. Tried (term 1's slice redrawn with `planes.py`'s pair overridden; alt-term1-pointing-vs-unitcost.png,
    alt-term1-slew-vs-unitcost.png): pointing error against unit cost (term 1's third-heaviest, 0.12)
    makes the vertical axis continuous and the dark designs hug term 1's segment on the right, but the
    horizontal axis stays in three columns, and term 2 owns the line's left half, so the panel then carries
