@@ -261,3 +261,15 @@ years, from the convex optimization and GGP work before the firm (2013 and 2014)
 OpenMBEE, OpenSysML and this synthesis; the page shows that span with the fewest dated pointers that still let a
 reader walk it, and nothing else. Where the second research pass adds a lead, something lighter goes or two
 pointers merge into one clause; the one-screen budget is the ceiling, not the target.
+
+## The supervisor, on running WP37 as a package (verbatim)
+
+> you have the right idea; lets just make sure we have requirements, structure, assessment machinery etc
+
+**The assistant's reading.** WP37 gets the full form it has so far lacked: a scope of work written from this file
+(goals, non-goals, deliverables, requirements each with its check, the page's structure, the definition of good
+enough, agent models, defaults, the open decisions that are his), and assessment machinery that outlives the
+drafting unit: the link-and-claim check as a repeatable script with a test, the sentence-kind classification
+(sourced, shown by a link, the team's own account) and the trace column as a recorded table the review re-runs,
+the vocabulary pass as a test, the word ceiling as a test, and a fresh reader's walk of the arc as the review's
+reading. The draft already built is the first delivery against that scope, not a substitute for it.
