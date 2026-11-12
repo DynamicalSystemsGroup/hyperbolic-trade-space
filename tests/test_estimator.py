@@ -512,6 +512,11 @@ def test_constants_are_reexported():
     assert _est.EPS_ZERO_EXPONENT == 1e-12 and _est.PARTICIPATION_THRESHOLD == 1e-3
 
 
+def _by_rows(W):
+    """Rows of ``W`` in a canonical order (lexicographic on the exponents), to compare as sets."""
+    return W[np.lexsort(W.T[::-1])]
+
+
 @pytest.mark.slow
 @pytest.mark.parametrize(
     "seed,tau,status",
@@ -527,7 +532,8 @@ def test_termination_record_for_k_terms(seed, tau, status):
     assert t.status == status and t.max_gap <= _est.EPS_KKT and t.assignment_changes == 0
     assert t.n_iter == ref.n_iter and t.gamma == ref.termination.gamma
     assert (t.eps_kkt, t.eps_feas, t.guard_tol) == (1e-8, 1e-9, 1e-12)
-    np.testing.assert_array_equal(est.exponents_, ref.W)
+    # the same rows: the estimator's order is the share order, the solver's the alternation's
+    np.testing.assert_array_equal(_by_rows(est.exponents_), _by_rows(ref.W))
 
 
 def test_termination_not_applicable_cases_do_not_warn():
@@ -787,8 +793,11 @@ def test_term_aggregation_mean_shifts_score_by_log_k_over_kappa(K, kappa, d):
     s = HyperbolicTradeSpace(term_aggregation="sum", **kw).fit(X)
     m = HyperbolicTradeSpace(term_aggregation="mean", **kw).fit(X)
     shift = np.log(K) / kappa
-    np.testing.assert_allclose(m.exponents_, s.exponents_, atol=1e-10)
-    np.testing.assert_allclose(m.log_offset_, s.log_offset_, atol=1e-10)
+    # the mean aggregation shifts every score, so the near-frontier band's membership, and with
+    # it the share order, can differ on near-equal shares: the same terms, matched by exponent
+    ps, pm = np.lexsort(s.exponents_.T[::-1]), np.lexsort(m.exponents_.T[::-1])
+    np.testing.assert_allclose(m.exponents_[pm], s.exponents_[ps], atol=1e-10)
+    np.testing.assert_allclose(m.log_offset_[pm], s.log_offset_[ps], atol=1e-10)
     np.testing.assert_allclose(s.score_samples(X) - m.score_samples(X), shift, atol=1e-10)
     np.testing.assert_allclose(m.mean_slack_ - s.mean_slack_, shift, atol=1e-10)
     assert m.termination_.status == s.termination_.status

@@ -431,12 +431,12 @@ class HyperbolicTradeSpace(TransformerMixin, BaseEstimator):
                 )
             )
             if not np.array_equal(order, np.arange(K)):
-                rank = np.empty(K, dtype=int)
-                rank[order] = np.arange(K)
                 W, betas = W[order], betas[order]
                 self.exponents_, self.log_offset_ = W, betas
                 self.basis_ = np.repeat(B[None], K, axis=0)
-                lab = np.where(lab >= 0, rank[np.maximum(lab, 0)], -1)
+                # relabel by the new order, so rows tied between identical terms go to the
+                # lowest index as ``assign_cells`` has them
+                lab = self._assign(U)
                 term = replace(term, gaps=term.gaps[order], shares=term.shares[order])
             p = np.zeros(nv)
             for k in range(K):
