@@ -3,7 +3,7 @@
 ## The idea in use
 
 You have evaluated many designs, and each came back with a handful of numbers: mass, power, settling
-time, pointing error. Some designs win on one number and lose on another. You want the shape of the
+time, pointing error. You want the shape of the
 trade: which numbers pull against each other, at what elasticity, where the edge of the evaluated
 designs lies, and where the table is empty.
 
@@ -16,7 +16,7 @@ participation. They are found from the data, so you need not know in advance whi
 
 The weights define a score V, a weighted geometric mean of the metrics. After a one-time
 normalization V = 1 is the fitted reference surface, V below 1 is inside it and V above 1 is beyond
-what the table reached. Because V scales with the metrics, it reads as a factor of improvement.
+what the table reached.
 
 ## The pipeline
 
@@ -24,7 +24,8 @@ A study has five stages and the package covers the last three:
 
 1. Sample configurations, by any scheme.
 2. Evaluate each into attributes, with a simulator, a test or an assessment. The package never sees
-   how.
+   how: any table works, and a SysML v2 model's exported table is one source. Design variables and
+   labels are configuration, not attributes.
 3. [Condition](conditioning.md) the attributes into metrics: positive, larger-is-better, comparable
    spread.
 4. [Fit](fitting.md) `HyperbolicTradeSpace` to the metrics.
