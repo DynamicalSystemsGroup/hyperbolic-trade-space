@@ -21,3 +21,9 @@ OD3 fixtures under tests and records under work-packages."
 Acceptance record: pending (the supervisor's acceptance of WP32 has not been given; this file records none).
 **Assistant, verbatim:** "Round 3 is accepted: both pump-table cells reached the fit and the trilemma with the new block, no stop persists, nothing goes to the chief engineer's list from the cells. The K = 1 tension_report error on an exact-relation table right after select_temperature: no change; the message names the fix and all three cells that met it recovered in one step; the review names it as a residual, not a caveat in the docs. U2's HTTP-text reach is noted and acceptable for the docs text (the rendered pass is the reviewer's)."
 Rows: `triage.md`, "Round 3" (R3-1 to R3-4).
+
+## Review closure (2026-11-12; the assistant's dispositions of `WP32-review.md` at d09af78)
+
+Acceptance record: pending (quoted later by the supervisor's assistant; this file records none).
+- R-10 gap (review finding 6): one fresh U1 cell runs on the next staged head, beside WP33's repeat round, with its return and a one-row triage closing the gap. U1 met R2-3 in round 2 before that fix landed; U3 met nothing in round 2 and is complete, so no U3 re-run.
+- Review finding 7: `scripts/build_figures.py` rewriting two tracked paper figures (`paper/figures/fig-chart-level.png`, `fig-ternary-pair.png`) byte-differently on each run is a machinery defect outside WP32. It is routed to a separate unit (not WP32); WP32 changes nothing there.

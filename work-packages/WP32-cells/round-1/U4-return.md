@@ -1,3 +1,12 @@
+Header (added afterwards from the round's record, `README.md` and `../tasks.md` of this round; the body below is as the cell wrote it)
+- model: Sonnet
+- persona: U4
+- head: 9d83355
+- table: ./table.csv
+- model source: ./model.sysml
+- stage URL: http://127.0.0.1:8791/
+- round: 1
+
 import numpy as np, pandas as pd
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt

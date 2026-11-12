@@ -1,2 +1,3 @@
 Round 3 (U2 and U4 only): head 60f92d9, stage http://127.0.0.1:8791/, fresh Sonnet cells. Returns verbatim. U2 read the docs pages by HTTP text because the browser pane was at its tab cap (noted in its return).
 Which rounds are fresh (added after the review, R-10): the last fresh U1 and U3 are round 2 (head a3a61af). U1 hit R2-3 there (the `tension_report` band at small subsets), which the round-2 fixes addressed. Round 3 re-ran U2 and U4 only, by the assistant's decision; U1 and U3 were not re-run.
+Worktree listing (R-4): U2 and U4 ran in scratchpad copies of a git archive of head 60f92d9: README.md, LICENSE, pyproject.toml, uv.lock, .python-version, src/, plus the cell's table and the model source and the task text.

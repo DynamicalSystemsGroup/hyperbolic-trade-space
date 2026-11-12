@@ -79,3 +79,15 @@ severity | where | evidence | what it breaks
 | R-12 | met | five changed pages, desktop and 375 px, light and dark: no stderr line, broken link, placeholder or "Loading"; the README is GitHub-side and was not rendered |
 | R-13 | met | vocabulary, whole-repo ruff check and format check, mkdocs strict build, and the named tests all pass (above) |
 | R-14 | not met (low) | the D-4 column exists for every row, but four deletions in the diffs are not in it (findings 2 to 4) |
+
+## Closure (2026-11-12; dispositions by the assistant; the assistant's acceptance is quoted later by him)
+
+Record-only unit on branch `wp32close`; commit hashes: the earlier closure commit is 0efe6bd; this unit's commit is the one titled "WP32 review closed: records" (its hash is in the log of `dev`).
+
+| Finding | Disposition | Commit |
+|---|---|---|
+| 1 (medium): no round-3 triage or acceptance record | Closed. `triage.md` "Round 3" (R3-1 to R3-4) covers the stops the finding names (K = 1 band error, cwd error, 404 guess and tab cap, attributes late); `WP32-decisions.md` holds the round-3 ruling, with the acceptance pending | 0efe6bd |
+| 2 to 4 (low): deletions missing from column 6, rows 1, 5, 6, 7, 9, 10 | Closed. Rows 1, 6, 7, 9, 10 corrected at 0efe6bd; row 5 checked against the diff of 0d7a0c3 (its own change cuts nothing; the PCA sentence deleted in the same commit is cross-referenced from row 5 to row 9) | 0efe6bd; row 5 in this unit |
+| 5 (low): R-4, U4 round-1 header and worktree listings | Closed. Header block prepended to `round-1/U4-return.md` (body unaltered), stated in `round-1/README.md`; each round's README now records the worktree listing (round 1 at 9d83355, round 2 at a3a61af, round 3 at 60f92d9 for U2 and U4) | this unit |
+| 6 (low): R-10, U1 and U3 not fresh in the final round | Open by design, recorded: one fresh U1 cell on the next staged head beside WP33's repeat round, its return and a one-row triage; U3 complete (`WP32-decisions.md`, "Review closure") | this unit (record); the cell is not yet run |
+| 7 (low): `scripts/build_figures.py` rewrites tracked PNGs | Routed to a separate unit, not WP32 (`WP32-decisions.md`) | this unit |
