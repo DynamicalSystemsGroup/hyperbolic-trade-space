@@ -100,3 +100,10 @@ abstract, a section, a page, a figure, a URL), one row per citing sentence, so a
 and judge the reflection for themselves. The machine's columns (verdict, why, status) and the summary counts go
 from the view; the record keeps them. The lead sentence says what the table is: what the paper took from where,
 for the reader to check. The reading pass's validation by the authors before release stands as recorded.
+
+## Approval of the scope (2026-11-13, 07:30; the assistant, under the supervisor's mandate; scope at 652c27d)
+
+**Assistant, verbatim:** "WP38-scope-of-work.md at 652c27d is approved as written: the five goals, the non-goals
+(copy-editing only; the checker reports and never edits; the pass waits for stable surfaces), deliverables D-0 to
+D-7, the requirements and good enough, the agent models and the defaults as one item. Build D-1, D-3 and D-4 now;
+the pass runs on my word once the surfaces are stable."

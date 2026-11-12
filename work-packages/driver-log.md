@@ -228,6 +228,17 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Six commits received; WP38 approved; cec9d70 fully green (07:30).** CI on cec9d70: every job green on both
+  platforms (the seventeenth fully green head). On dev: the WP33 docs unit (2114aad: the Overview's PCA sentence
+  points at the paper, Getting started says the package never calls the model, a router page at
+  /docs/user-guide/ which the contract's pages list pins, so contract version 22 by amendment, the unit applying the
+  contract's own rule where the assistant had assumed none was needed); the WP33 root-page units (540843a: the
+  adoption door opens the Examples requirements block; the install figure is the measured package-only 31 s in
+  place of the 6 s; the README gains the package-only install line and the select_temperature pointer at net zero
+  words); the entry-surfaces rows (cbc3dea, 35619df); the WP36 synthesis readout with the W2 URLs corrected
+  (7b648a8), read next; the WP38 scope (652c27d), approved as written (WP38-decisions.md). The assistant's checks
+  and a stage rebuild run on the head; CI dispatched (43308186328).
+
 - **The supervisor's skim: D.3's summed-pairs table (03:40).** His words: "just skimming though, this caught my
   attention. it reads a bit strangely and i cannot quite make sense of it since the same pair shows up in every
   row." The table (Appendix D.3, `_summed_text` in `paper/generate_results.py` over `case.summed_exponents`) prints,
