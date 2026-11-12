@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **60f92d9 staged; round 3 and WP33's baseline released (15:05).** The stage serves 60f92d9 on 8791 (root, docs, the
+  changed pages and the paper answer; the fitting block shows bounds (3, 1e4)). The PM is told to dispatch round
+  3's two pump-table cells and WP33's eight baseline readers on it; the stage is frozen until round 3 is done, and
+  WP33's units may land on dev meanwhile.
+
 - **60f92d9, the register repair checked (14:55).** Ruff and format clean, attribution 0; the claims-register, docs,
   site and encoding tests 95 passed, so the register holds again on the pages round 1 changed. Accepted; the fast
   suite's verdict comes with the run on 2942ff5 plus this head's CI (43240391612).
