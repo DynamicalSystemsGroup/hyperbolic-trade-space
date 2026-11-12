@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The design-sets wording and the grid refresh landed (06:45).** 9b055ec (the design sets named "the four
+  performance thresholds", the label `thresholds met`, D.17's one clause on why the cost limits are not among them,
+  claim C407 narrowed, the Examples lead-in held at its budget, notebooks re-executed, no figure change) and 8806b0e
+  (the deliverables grid refreshed with a "Records at the head" paragraph; seven review-list rows added). The
+  assistant's checks and a stage rebuild run; CI run 43201881230 dispatched. Stage 6's three briefs are drafted by
+  the PM and wait for the staged head.
+
 - **259ad9d fully verified and fully green (06:20).** Locally the slow case, paper, sensitivity, site and docs tests
   100 passed (43 min) on top of the fast suite's 1881; CI run 43191456435 every job green on both platforms (the
   sixth fully green head). Accepted. The staged head for stage 6 is set after the design-sets wording unit lands,
