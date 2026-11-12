@@ -222,3 +222,21 @@ and the sentence is marked as the team's account.
 and GitHub handle (the workers find the handle from public GitHub, the firm's organizations or commits; the
 LinkedIn address he gave identifies her and is not linked), in the same sentence as Jakob Hackel: relevant work on
 client projects the firm cannot describe here, the team's own account, marked.
+
+## The supervisor, on the page's purpose (verbatim)
+
+> the purpose of the history page is to acknowledge people and lineage of this work. some of these people worked
+> for DSG, some still do, still some others were just our collaborators. some of the academic work predates DSG
+> founding as blockscience (eg the GGP work with preciado on viral propogation and my own work on convex
+> optimization). the goal is not to overload any one point, its mostly pointers. its just that most of the real
+> history of this work does not fit nicely in the academic paper citations which necessarily focused on direct
+> technical/mathematical lineage rather than the human lineage
+
+**The assistant's reading.** The frame for the drafting unit, above every particular ruling: the page acknowledges
+people and the human lineage of the work, which the paper's citations (the technical and mathematical lineage)
+cannot carry. Three kinds of people are credited without overstating any relation: those who worked for the firm,
+those who still do, and collaborators who never did; the page says which only where a public source or the
+team's own account does, and otherwise just names them with their work. The lineage runs back before the firm's
+founding as BlockScience: the GGP work with Preciado on viral propagation and the supervisor's own convex
+optimization work are the earlier academic line, and the page places them in time. The register is pointers: no
+point is overloaded, each name and each work gets a link and a clause, not a paragraph. One screen stands.
