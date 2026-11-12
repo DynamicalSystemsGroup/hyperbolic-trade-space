@@ -11,3 +11,7 @@ pump, a bicycle or a heat exchanger trade), built for the test and kept small. O
 `tests/fixtures/user-tests/`, the cells' code and returns under `work-packages/WP32-cells/` as records. The defaults
 approved as one item. **Assistant, verbatim:** "WP32 approved with OD1 synthetic CSV, OD2 a small non-satellite model,
 OD3 fixtures under tests and records under work-packages."
+
+## Approval (2026-11-12; the assistant, scope at 03d95fd), open questions decided
+
+**Assistant, verbatim:** "WP32 Q1: after two re-runs, an open stop the docs owe goes to the chief engineer's list with the cell's words; Q2: a code defect a cell finds is fixed in this package as its own unit with a test, since the package is the deliverable and a user-found defect blocks the release." Both scopes approved as written at 03d95fd.
