@@ -56,22 +56,22 @@ NAV_PAGES = [
 # Word budgets of the hand-written pages (code blocks and tables excluded), total at most 7,600.
 BUDGETS = {
     "index.md": 206,
-    "getting-started.md": 375,
+    "getting-started.md": 351,
     "user-guide/overview.md": 399,
-    "user-guide/conditioning.md": 700,
+    "user-guide/conditioning.md": 610,
     "user-guide/fitting.md": 668,  # 800 until WP31 U2 and U3
     "user-guide/choosing-k.md": 573,  # 707 until WP33 (the cubesat block moved to Examples)
     "user-guide/tensions.md": 700,
     "user-guide/chart.md": 557,  # 600 until WP28 X-1; 561 until the holes block printed
     "user-guide/prediction.md": 350,
     "user-guide/termination.md": 743,  # 600 until WP28 S-10
-    "user-guide/limitations.md": 500,
+    "user-guide/limitations.md": 493,
     "api.md": 300,
     "examples.md": 671,  # 720 until WP28 X-2 (the coordinates figure went); 676 until WP33
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 7285  # 7472 until WP33
+TOTAL_BUDGET = 7254  # 7472 until WP33 (Home, the cubesat block, what must hold, tops)
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",

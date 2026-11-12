@@ -1,5 +1,7 @@
 # Getting started
 
+For an analyst fitting a table for the first time.
+
 ## Install
 
 The package is installed from source for now. It needs Python 3.12 and uses
@@ -11,8 +13,6 @@ git clone \
 cd hyperbolic-trade-space
 uv sync
 ```
-
-Run everything with `uv run`, for example `uv run python first_fit.py`.
 
 ## A first fit
 
@@ -37,9 +37,7 @@ The output is `trilemma [0 1 2]` and then `[0.3  0.37 0.33]`. `temperature`, the
 set, is tau, how hard the maximum is; the band of near-frontier designs has width 1/tau
 ([choosing the temperature](user-guide/fitting.md#choosing-the-temperature)).
 
-The idea is easiest to see with two of the metrics, where the model is a line. In the log plane of
-metrics 0 and 1 the designs lie on or just beyond a straight frontier, and the grey strip under the line
-is the region up to 0.5 below the frontier in log V:
+The idea is easiest to see with two of the metrics, where the model is a line. The grey band is up to 0.5 below the frontier in log V:
 
 ```python {.runnable}
 from hyperbolic_trade_space.plotting import plot_log_plane
@@ -59,17 +57,24 @@ plot_log_plane(ts2, X2, band=0.5)
 
 `fit` learned one exponent per metric, summing to one. `report.contending_set` lists the metrics that
 contend at the edge of the table: here all three, an n-lemma with n = 3, which the report names a
-trilemma. The set is found from the data and not chosen in advance. `report.exponents` are the
+trilemma. `report.exponents` are the
 fitted weights at the fit temperature; their ratios are the elasticities between the contending
 metrics, with a minus sign (`report.elasticities`).
 
-The fitted object has more to give. `ts.score_samples(X)` is, for each design, the log of V, the
+`ts.score_samples(X)` is, for each design, the log of V, the
 invariant value: a weighted geometric mean of the metrics, 1 on the fitted reference surface, so
 negative inside and positive beyond. `ts.transform(X)` is the chart, `d - 1` position coordinates plus that log V, and `ts.inverse_transform` undoes it.
 
 ## Your own data
 
-Real attributes are rarely positive, larger-is-better and comparably scaled. Turning them into
-metrics is the first step of the [user guide](user-guide/conditioning.md), with
-`LogAffinePreconditioner`. Design variables and labels are configuration, not attributes: leave them out of the table ([prediction](user-guide/prediction.md) takes them). From there the guide follows the order of a study: [fit](user-guide/fitting.md),
-[read the tensions](user-guide/tensions.md), [use the chart](user-guide/chart.md).
+What must hold of your table:
+
+- One row per evaluated design. Design variables and labels are configuration, not attributes: leave them
+  out ([prediction](user-guide/prediction.md) takes them).
+- The fit consumes a strictly positive matrix of larger-is-better metrics. Making them so is your
+  [conditioning](user-guide/conditioning.md), with `LogAffinePreconditioner`: zeros are tolerated, negatives
+  rejected, infeasible rows removed first.
+- The exponents describe the conditioned metrics of your sample, not the system's Pareto boundary
+  ([limitations](user-guide/limitations.md)).
+
+Then [fit](user-guide/fitting.md), [read the tensions](user-guide/tensions.md), [use the chart](user-guide/chart.md).

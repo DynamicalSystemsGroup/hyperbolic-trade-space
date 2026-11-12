@@ -1,6 +1,6 @@
 # Conditioning
 
-The fit consumes a strictly positive matrix of larger-is-better metrics. Real evaluations produce
+For the analyst whose attributes are not yet metrics. Real evaluations produce
 attributes: kilograms, dollars, error rates, counts, some of them better when small. The map from
 attributes to metrics is yours to choose, because it is part of the question you ask: a stable fitted
 direction answers that question as conditioned and is not a context-free discovery. The package

@@ -2185,18 +2185,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "contending_set equals the planted support across sizes 2 to 5"
 
 [[claim]]
-id = "C172"
-fragment = "The set is found from the data and not chosen in advance."
-file = "docs/getting-started.md"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_tensions.py::test_contending_set_recovers_planted_support", "test:tests/test_tensions.py::test_finite_tau_smooths_weights_and_contending_set_stays_exact"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "set recovered from the data (tau=inf LP) without being supplied"
-
-[[claim]]
 id = "C173"
 fragment = "fitted weights at the fit temperature; their ratios are the elasticities between the contending"
 file = "docs/getting-started.md"
@@ -2234,7 +2222,7 @@ note = "T has d columns (d-1 coordinates plus log V last) and inverse_transform(
 
 [[claim]]
 id = "C176"
-fragment = "From there the guide follows the order of a study: [fit](user-guide/fitting.md),"
+fragment = "Then [fit](user-guide/fitting.md), [read the tensions](user-guide/tensions.md), [use the chart](user-guide/chart.md)."
 file = "docs/getting-started.md"
 anchor = ""
 kind = "S"
@@ -2871,14 +2859,14 @@ note = "termination_ and conditioning_ attributes exist and are tested; 'how far
 [[claim]]
 id = "C230"
 fragment = "The fit consumes a strictly positive matrix of larger-is-better metrics."
-file = "docs/user-guide/conditioning.md"
+file = "docs/getting-started.md"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_preconditioning.py::test_round_trip_mixed_orientation_and_shift"]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Preconditioner output is strictly positive larger-is-better (M>0 asserted); zeros tolerated is stated later on the page and tested separately"
+note = "Moved from the top of the conditioning page to Getting started, Your own data (WP33 placement 4; conditioning now opens with whom it is for). Preconditioner output is strictly positive larger-is-better (M>0 asserted); zeros tolerated is stated later on the page and tested separately"
 
 [[claim]]
 id = "C231"

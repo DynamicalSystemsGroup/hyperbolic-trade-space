@@ -2,7 +2,7 @@
 
 The model is a map, not the territory. These limits change what you do with a result.
 
-**Conditioning defines the question.** The exponents describe the conditioned metrics. Moving the
+**Conditioning defines the question.** Moving the
 reference or the scale of one metric changes which term is tangent. Refit under a second reasonable
 conditioning and report what moves ([Conditioning](conditioning.md)).
 
