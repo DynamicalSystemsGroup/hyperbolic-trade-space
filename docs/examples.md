@@ -2,22 +2,21 @@
 
 ## A cubesat trade study across power, mass and attitude control
 
-[The worked case](paper:sect-case-construction) is a cubesat model coupling power, mass and attitude control. Eight attributes are
-compared under two controller-gain settings: settling time, pointing error, control effort, power margin, energy balance, peak slew power, depth of discharge and total
-mass. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`. In this
+[The worked case](paper:sect-case-construction) is a cubesat model coupling power, mass and attitude control. Thirteen metrics, among them
+settling time, pointing error, unit cost and fleet cost, are compared under two controller-gain settings. `LogAffinePreconditioner` conditions the feasible designs for `HyperbolicTradeSpace`. In this
 design loop a simulation measures the attributes; a fielded system's measured attributes would enter
 the same table and fit.
 
-The primary regime's table (aggressive controller gains) has 706 feasible designs. With the fit temperature chosen by `select_temperature` for a tenth of designs
+The primary regime's table (aggressive controller gains) has 2,134 feasible designs of 3,000. With the fit temperature chosen by `select_temperature` for a tenth of designs
 above V = 1:
 
-- **One term.** The tension report finds a contending set (metrics that trade off) of five metrics (total mass, energy balance,
-  pointing error, depth of discharge, settling time): a 5-lemma, found from the data, not chosen beforehand.
-- **Three terms.** At the one-term temperature (`case.mean_slack_fixed_tau`) the mean slack falls
-  from 0.243 to 0.132 at two terms and 0.088 at three, status `certified`. The three terms have
-  contending sets of 5, 4 and 5 metrics and term shares of 17, 10 and 73 percent of the near-frontier
-  designs: the largest alone contains peak slew power, the smallest alone contains control effort,
-  and the other is the one-term contending set.
+- **One term.** The tension report finds a contending set (metrics that trade off) of seven metrics (unit cost, available power,
+  pointing error, fleet cost, momentum headroom, settling time, depth of discharge): a 7-lemma, found from the data, not chosen beforehand.
+- **Two terms.** The case is read at K = 2, the K the [choosing-K checks](user-guide/choosing-k.md) pick. At the
+  one-term temperature (`case.mean_slack_fixed_tau`) the mean slack falls from 0.122 to 0.043. At the
+  two-term fit's own temperature, status `certified`, the terms have contending sets of 8 and 7 metrics and
+  shares of 74 and 26 percent of the near-frontier designs: the larger adds peak slew power to the
+  one-term contending set, and the smaller is that set.
 - **A second table.** The stock-gains table gives a different one-term
   contending set, so the finding depends on the regime.
 
@@ -38,8 +37,8 @@ case.tension_figure(study, fit)
 ```
 
 <figure markdown>
-![Heatmap of the association among eight conditioned metrics near the frontier; five metrics are outlined as the contending set.](generated/figures/adcs-tensions-light.png#only-light)
-![Heatmap of the association among eight conditioned metrics near the frontier; five metrics are outlined as the contending set.](generated/figures/adcs-tensions-dark.png#only-dark)
+![Heatmap of the association among thirteen conditioned metrics near the frontier; seven metrics are outlined as the contending set.](generated/figures/adcs-tensions-light.png#only-light)
+![Heatmap of the association among thirteen conditioned metrics near the frontier; seven metrics are outlined as the contending set.](generated/figures/adcs-tensions-dark.png#only-dark)
 <figcaption>Figure 5. The tension report of the one-term fit: cells, the correlation of the log-metrics near the frontier; outlined, the contending set; grey, metrics that do not participate.</figcaption>
 </figure>
 
@@ -123,10 +122,7 @@ for name, (study, est) in fits.items():
 
 Each row is a marker: its shares and V there, relative to the highest marker's.
 
-The triples came from a search of all 56 triples in each regime at one, two and three
-terms (336 fits, 275 made). A term counts when its cell holds at least ten near-frontier designs, its
-exponents move by at most 0.10 under restarts and resamples and the fit is certified; 55 fits have two
-counting terms with different contending sets.
+The triples are examples that show how to read the figure, not findings about the case.
 
 ## Run it
 

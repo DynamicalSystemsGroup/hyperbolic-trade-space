@@ -244,3 +244,44 @@ def test_choosing_k_pages_cubesat_numbers_are_the_blocks_output(monkeypatch):
         assert sentence in prose, sentence
         for fragment in fragments:
             assert fragment in printed, (sentence, fragment)
+
+
+@pytest.mark.slow
+def test_examples_page_case_numbers_are_the_computed_record():
+    """The Examples page's cubesat sentences quote what the case code computes on the data of
+    record (thirteen metrics, 3,000 designs, the case's K = 2): each number is recomputed here and
+    must round to the digits the page gives; the claims about the sets are checked as sets."""
+    import sys
+
+    sys.path.insert(0, str(DOCS.parent / "examples" / "adcs"))
+    import case
+
+    prose = " ".join(_text("examples.md").split())
+    study = case.load_study("primary")
+    fits = case.k_fits(study, (1, case.CASE_K))
+    assert case.CASE_K == 2
+    one = case.term_table(study, fits, K=1).iloc[0]
+    two = case.term_table(study, fits, K=2)
+    slack = case.mean_slack_fixed_tau(study, fits).set_index("K")["mean_slack_"]
+    sets = [set(s.split(", ")) for s in two["contending set"]]
+    shares = [round(100 * s) for s in two["share"]]
+    est = fits[2].estimator
+    assert est.termination_.status == "certified"
+    assert len(study.raw) == 3000 and len(study.M) == 2134 and study.M.shape[1] == 13
+    assert one["n_lemma"] == 7 and len(one["contending set"].split(", ")) == 7
+    assert [len(s) for s in sets] == [8, 7] and shares == [74, 26]
+    # the larger term adds peak slew power to the one-term set; the smaller is that set
+    one_set = set(one["contending set"].split(", "))
+    assert sets[0] == one_set | {"peak slew power"} and sets[1] == one_set
+    assert (round(slack[1], 3), round(slack[2], 3)) == (0.122, 0.043)
+    for fragment in [
+        "has 2,134 feasible designs of 3,000",
+        "a 7-lemma",
+        "contending set (metrics that trade off) of seven metrics",
+        "falls from 0.122 to 0.043",
+        "contending sets of 8 and 7 metrics and shares of 74 and 26 percent",
+        "the larger adds peak slew power to the one-term contending set,",
+        "and the smaller is that set",
+        "Thirteen metrics",
+    ]:
+        assert fragment in prose, fragment
