@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **78cd40a fully green; 160a0ab received (01:45).** CI on 78cd40a: every job green on both platforms (the second
+  fully green run). 160a0ab landed: both notebooks re-executed at the cascade head (outputs unchanged except the
+  toolchain commit) with the unit's rendered pass and screenshots recorded. The assistant's checks are running on
+  it; CI dispatched. The D.2 term-order unit is in its worktree (`d2order`).
+
 - **CI verdicts, 01:30.** 38aff78: every job green on both platforms (fast, slow, docs-paper, Windows fast and slow),
   the first fully green run since the data gate. d7942d0: complete, the only failures the encoding test that 38aff78
   fixed. 78cd40a: Linux fast and slow and Windows fast green; Windows slow and docs-paper still running. Open in
