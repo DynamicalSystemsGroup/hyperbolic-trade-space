@@ -116,3 +116,8 @@ blockchain and smart contracts are an implementation detail of some of the syste
 the point; what the page keeps are the attributes of those systems that bear on this work, highly automated,
 adversarial, strategic and uncertain users, feasible design spaces studied under those conditions. A source whose
 title carries such a term may still be linked; the page's own words do not use it.
+
+> and lots of "value at risk"
+
+**The assistant's reading.** The attribute list the page keeps is: highly automated, adversarial, and with a great
+deal of value at risk; the systems' stakes are named in those words, not by the technology that carried them.
