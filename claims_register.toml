@@ -495,7 +495,7 @@ note = "Section 3 defines the evaluation as a black box to the method (a simulat
 
 [[claim]]
 id = "C033"
-fragment = "It is fitted to the outer edge of the data, not through its middle, not a regression"
+fragment = "It is fitted to the outer edge of the data, not through its middle: a soft support that a few designs may exceed, not a regression"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -507,7 +507,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP11 round 1, CR-1"
-note = "The fit takes the entropic soft maximum of the scores over the designs (L5), so the surface sits at the upper edge of the data, with some designs beyond it at finite temperature, and is the soft form of the supporting envelope; it is not a least-squares curve through the points. WP33: the clause 'a soft support that a few designs may exceed' left the abstract (Three objects, Definitions, still says some designs lie beyond the surface)."
+note = "The fit takes the entropic soft maximum of the scores over the designs (L5), so the surface sits at the upper edge of the data, with some designs beyond it at finite temperature, and is the soft form of the supporting envelope; it is not a least-squares curve through the points."
 
 [[claim]]
 id = "C034"

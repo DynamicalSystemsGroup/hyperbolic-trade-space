@@ -1210,7 +1210,7 @@ authority = "WP33 baseline wayfinding read, P6 (the DEA and Lineage citation wal
 date = "2026-11-12"
 section = "Preliminaries and notation"
 words_removed = 9
-no_longer_did = "the section opened with the reader sentence ('We assume multivariate calculus, linear algebra and convex optimization'), which P5 found only after reading to Section 3; the sentence now ends the abstract on the first screen (moved, not added: the abstract's count is unchanged, nine words out with the soft-support clause)"
+no_longer_did = "the section opened with the reader sentence ('We assume multivariate calculus, linear algebra and convex optimization'), which P5 found only after reading to Section 3; the sentence now ends Section 1's Organization paragraph, on the first screens (moved; the abstract is the supervisor's hand and is unchanged; the +9 is the raise row of the same date in 'The decision problem')"
 authority = "WP33 baseline wayfinding read, P5 (no reader statement on the first screen)"
 
 [[cut]]
@@ -1219,6 +1219,13 @@ section = "Results"
 words_removed = 3
 no_longer_did = "the Corollary 1 box's hypothesis line carried two inherited-result codes with glosses (I9 Cauchy-Schwarz, I18 the pseudoinverse), which the novice cannot place and the expert reads in Appendix B, L20 (AXIOMS_USED); the line keeps the assumptions and R3, and the one gloss the formula needs, of the superscript plus, sits where the formula is"
 authority = "WP29 triage C4 and C6 (P9 keeps the detail, P10 keeps the thread); WP33 journeys note, placement 9"
+
+[[raise]]
+date = "2026-11-12"
+section = "The decision problem"
+words_added = 9
+job = "the reader sentence ('We assume multivariate calculus, linear algebra and convex optimization'), moved from the opening of Section 3 to the end of the Organization paragraph, where the route through the paper is stated and a reader who may stop meets what is assumed; it replaces the abstract placement WP33's first unit made and the correction undid"
+reader = "the reader who stops at the first screens (P5: found the statement only at Section 3)"
 
 # The P7 and P8 final reads, triaged (WP30-rounds/persona-final/triage.md): what each omission does to a reading.
 [[raise]]
