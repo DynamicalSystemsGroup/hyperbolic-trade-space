@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP37 scope approved (23:00).** Approved at 2a1d4fa with D-9 added (the history record `history.yaml`, the page as
+  its view, the generated dated list, the tests tying page to record), and the nine open decisions decided as
+  defaults for the supervisor's review of the page (WP37-decisions.md, bf9dee8): spellings by the public record,
+  Barlin's role only, the old blog for the unfetched posts, the Clark paper by its purpose with the form unnamed,
+  the Edinburgh talk as the CV states it, the closing phrase kept unless the fresh reader says otherwise. Build
+  order: record, then generator and tests, then prose.
+
 - **5073055 fully green; WP37's scope and WP36's sources in (22:45).** CI run 43267160637 (the history-page head):
   every job green on both platforms, docs-paper included after a long run (the fourteenth fully green head). On
   dev: the WP37 scope of work for the assistant's approval (2a1d4fa) and WP36's W3 sources check with BibTeX
