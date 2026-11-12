@@ -363,3 +363,14 @@ round, W3 re-run at the final head, the draft screenshots deleted. The DOI 10.10
 assistant's browser to the supervisor's INCOSE International Symposium 2026 article. The supervisor's open items
 (spellings, Carolina's handle, Barlin's reach, the 'possibly also' names, the unreachable Medium links, the closing
 phrase) remain his and are listed for his close read; each content call above is his to revert."
+
+## The supervisor on the Penland sentence (2026-11-13, 13:20)
+
+**Supervisor, verbatim:** "'Andrew "Octopus" Penland, a research engineer at BlockScience, led workshops on MAIDs, GDS
+and cadCAD (2024)' drop the 'a research engineer at BlockScience' and say under a contract with BlockScience, as i
+think he'd prefer it that way. he's not really the kind of person who likes to work for places in conventional ways"
+
+**Applied as:** the prose sentence becomes "Andrew “Octopus” Penland led workshops on MAIDs, GDS and cadCAD under a
+contract with BlockScience (2024)"; the workshops stay sourced to the firm's post, the contract is the supervisor's own
+account and the trace row and the claims-register row mark it so; the record's `role` fields keep the source's own
+words in quotation marks, since the record quotes what the source says. Folded into the WP37 closing unit.
