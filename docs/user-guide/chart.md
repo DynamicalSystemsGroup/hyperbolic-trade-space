@@ -92,14 +92,13 @@ The surface is also log-convex, so structure that is not log-convex is invisible
 
 - `plot_log_plane`: two metrics, the data, the frontier and its band.
 - `plot_frontier_surface_3d`: three metrics, the frontier surface.
-- `plot_frontier_coordinates`: the chart, with optional holes and targets.
+- `plot_frontier_coordinates(Z, log_v)`: the chart, the columns of `ts.transform(X)`, with optional
+  holes and targets.
 - `plot_v_by_variable`: log V against a configuration variable.
 - `plot_tensions`: the tension report as a heatmap.
 - `plot_ternary`: three metrics as shares of a total, with the region each term dominates
   ([example](../examples.md#three-metrics-as-shares-of-a-total)); `ternary_marker_values` gives V at its markers.
 
-Each accepts an optional `ax` and returns a matplotlib `Axes`; nothing calls `plt.show()`. They share
-one colour vocabulary, declared as module constants (`FRONTIER_COLOR`, `BAND_COLOR`, `HOLE_COLOR`,
-`TENSION_CMAP`). The designs are one colour by default, whatever the number of terms; in
+Each accepts an optional `ax` and returns a matplotlib `Axes`; nothing calls `plt.show()`. The designs are one colour by default, whatever the number of terms; in
 `plot_log_plane` and `plot_frontier_surface_3d`, `color="cell"` colours them by cell, the term that
 scores each highest (`cell_labels(estimator, X)`), and any other string raises `ValueError`.
