@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **60f92d9, the register repair checked (14:55).** Ruff and format clean, attribution 0; the claims-register, docs,
+  site and encoding tests 95 passed, so the register holds again on the pages round 1 changed. Accepted; the fast
+  suite's verdict comes with the run on 2942ff5 plus this head's CI (43240391612).
+
 - **WP32 round 2 done; round 3 for the pump-table cells (14:40).** Round 2's four fresh cells (returns verbatim at
   bd90bf9): every cell reached a fit and a K choice from the README, the site and the package alone, answered the
   standing question "no", and read the planted facts right (the strength-weight pair; the flow-head-power trilemma
