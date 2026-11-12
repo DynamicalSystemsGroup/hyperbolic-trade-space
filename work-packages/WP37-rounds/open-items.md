@@ -68,3 +68,17 @@ The page is now the record's thin path; the detail is in `history.yaml` and the 
 - Special-case sentences cite only works whose sources support the attributes: the Filecoin review (public debate stated), the RAI design record ("highly automated" stated), the CV's Edinburgh entry.
 - The fresh reader's walk (R-11) and the supervisor's confirmation of the nine defaults remain to do; the YouTube links for workshops 2 and 3 and any Shorish channel under his own name were not found (w5-pass3.md).
 - Link check on the record's 86 URLs (`scripts/check_history_links.py`, no credentials): 85 ok, 1 blocked (doi.org/10.1002/iis2.70203, Wiley bot challenge; Crossref gives the record), 0 FAIL.
+
+## 7. From the fresh reader's walk and the review (head d801a43; `WP37-review.md`)
+
+Current state: the nine defaults of `WP37-decisions.md` stand on the page and are his to approve or revert at his review. The reader's walk (verdict PARTLY) adds these items for him; none changes the page until he rules.
+
+- **The method is not named or placed.** The page tells the firm's and the people's history; "The method" link at the foot is the first place the method is named, and the only bridge is the unlinked synthesis clause. Leave, add one clause, or cut the synthesis clause.
+- **The closing phrase** ("With computers, fast but with confidence."): the reader found it unexplained; default 6 (a) says cut if the walk says it does not earn its place.
+- **Unlinked or self-sourced claims:** "long-running endeavour with many contributors"; the synthesis clause; "founded in 2017" (links his homepage); the Edinburgh talk and the RAI workshop entry (the CV); "maintainer across" (his research page).
+- **The special-case label** appears on 7 list entries, beyond the two cases the prose names (including a walkthrough video, a calculator and a Zenodo record whose title carries "Cryptocurrency").
+- **The arc's gap** between 2014 and cadCAD (2018): no connecting idea in the prose.
+- **Structure and layout:** the page's order puts the special cases before the firm today; the footer link "The method" is at the end of an 87-entry page (2,732 px at 1280), not on the first screen; 89 of 91 links are under 24 px tall at 1280 and 50 of 91 at 390.
+- **Hackel and Riascos-Álvarez** have no entry in the generated list.
+
+Record defects (for a later unit, not for him): W3 not re-run at this head; near-duplicate list rows (community-currency 2022 and 2023, three GDS rows in 2022, AUTHORS.txt row crediting more names than the prose); the 2014 convex-optimization link's entry does not say it is that work; `draft-shots/` still the old draft's images; the one blocked link (doi.org/10.1002/iis2.70203) awaits a person's browser check.
