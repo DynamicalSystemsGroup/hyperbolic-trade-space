@@ -22,7 +22,7 @@
 # | number of tables recovered at the exact maximum  | D.14, num-recovery         | the same on macOS arm64 and Linux amd64 (16 of 20, seeds 1, 3, 8, 16, CI runs 42611285270 and 42611824421) | printed; stated with the platforms |
 # | settling time, torque-saturated fraction         | v2 dataset rows (first 20) | read off the accepted steps of an adaptive solver         | listed: v2_first_designs_rows (existing) |
 # | SHA-256 of the planted table, of Figure 1's data | C datasets, Figure 1       | float hashes                                              | listed: planted_table_sha256, figure1_data_hash (existing) |
-# | term numbering, order of term sizes and shares | D.2 k_diagnostics, D.3 exponents_and_terms, D.8 termination_records, D.12 conditioning_diagnostic | term numbers are labels (G-10): the restart that wins decides them; restart order moves them | listed: term_numbered_tables |
+# | term numbering, order of term sizes and shares | D.2 k_diagnostics, D.3 exponents_and_terms, D.8 termination_records, D.12 conditioning_diagnostic | terms are numbered by the share rule (descending term share); only a platform tie in near-equal shares could swap two | listed: term_numbered_tables |
 # | per-fit margin and status at finite tau          | D.8, margin_reading, num-certificates | smooth optimum, margin 1e-4 to 1e-2: unchanged by the perturbation | none |
 # | designs within the band of a seam at K = 3       | num-margin ("here 11 of the 706") | a count at a threshold: in the fit of record two designs' best-minus-second-best gaps are 4 per cent of the band below it and one 3 per cent above; the restart-shifted fit (--restarts 7) is another optimum (term 3's exponents differ) and counts 10; the sentence's claim, at least one design, holds in both | listed: moves_under_restart_shift |
 # | exponents of the jittered fits                   | D.3, D.11 (stable())       | printed only to the digits that held under 1e-12 jitter   | none (existing) |
@@ -30,11 +30,11 @@
 # | figures' data                                    | Figure 1 (hash, listed); the case figures are not compared byte for byte | | none |
 
 [values.term_numbered_tables]
-reason = """term labels (gap G-10): which restart wins, and so the order in which the terms are
-numbered, can differ between platforms where two restarts tie; the rows, columns and keys of the
-tables below follow that numbering (D.2 k_diagnostics, D.3 exponents_and_terms, D.8
-termination_records, D.12 conditioning_diagnostic); with the restart order permuted the same
-terms appear in another order"""
+reason = """term numbers: the estimator numbers the terms by descending term share, a rule of the
+fit; the rows, columns and keys of the tables below follow that numbering (D.2 k_diagnostics, D.3
+exponents_and_terms, D.8 termination_records, D.12 conditioning_diagnostic). Only a platform tie in
+near-equal shares could swap two terms; the shares here are far apart (D.2 prints 0.754 against
+0.246 at K = 2 in the stock regime), so no swap is expected"""
 elsewhere = """tests/test_paper.py::test_term_numbered_tables_are_current compares the multiset of
 the cells of each table with its committed output, so the same terms in another order agree"""
 

@@ -7,6 +7,7 @@ tests read the same text the reader sees.
 from __future__ import annotations
 
 import math
+import re
 
 import paper_paths  # noqa: F401  (puts the repository on sys.path)
 
@@ -22,6 +23,18 @@ def appendix_link(label: str, text: str) -> str:
     roles; the link is plain HTML to the target that the supporting page's heading carries.
     """
     return f'<a href="supporting-material/#{label}" target="_self" style="{LINK_STYLE}">{text}</a>'
+
+
+def thousands(x) -> str:
+    """A count with the thousands separator in digits; in a text, every whole number of four or
+    more digits that is not part of a decimal or a longer token.
+
+    >>> thousands(2134), thousands(706), thousands("145 to 2200")
+    ('2,134', '706', '145 to 2,200')
+    """
+    if isinstance(x, str):
+        return re.sub(r"(?<![\w.,])\d{4,}(?![\w.]|,\d)", lambda m: f"{int(m.group()):,}", x)
+    return f"{int(x):,}"
 
 
 class Md(str):

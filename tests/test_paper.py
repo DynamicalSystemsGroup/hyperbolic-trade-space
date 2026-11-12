@@ -1037,14 +1037,9 @@ _TERM_NUMBERED = (
 
 
 def _cells_of_table(text: str) -> list[str]:
-    """The cells of every table row, whitespace-normalised and sorted: the order-free content.
-
-    Off the environment of record a zero exponent is a residue of the platform's arithmetic (an
-    exact 0 in the image, 2e-17 on the Mac), printed ``0`` or ``below 1e-12`` (``paper_stability``,
-    ``RESIDUE``); both read zero, so the cells compare equal here.
-    """
+    """The cells of every table row, whitespace-normalised and sorted: the order-free content."""
     cells = (c.strip() for line in text.splitlines() if line[:1] == "|" for c in line.split("|"))
-    return sorted("0" if c == "below 1e-12" else c for c in cells)
+    return sorted(cells)
 
 
 @pytest.mark.slow
@@ -1063,88 +1058,64 @@ def test_term_numbered_tables_are_current():
             assert _cells_of_table(committed) == _cells_of_table(fresh), f"{cid}: {STALE}"
 
 
-def _permute_live_terms(monkeypatch, perm):
-    """Make ``case`` return the K = 3 terms in the order ``perm`` (live term j is old perm[j])."""
+@pytest.mark.slow
+def test_d2_lists_follow_the_estimators_term_order_for_every_k():
+    """D.2's per-term lists are the estimator's own: ``term rows`` are the cell sizes and
+    ``term shares`` the ``term_share_`` (to three digits) of each fit, in the order the fit
+    returns them."""
     import case
-
-    exp, fac, kt = case.exponent_table, case.term_table, case.k_table
-
-    def exponent_table(study, fit):
-        t = exp(study, fit)
-        cols = [c for c in t.columns if c.startswith("term ")]
-        if len(cols) != 3:
-            return t
-        out = t.copy()
-        for j, old in enumerate(perm):
-            out[f"term {j + 1}"] = t[cols[old]].to_numpy()
-        return out
-
-    def term_table(study, fits, K=3, band=None):
-        t = fac(study, fits, K=K, band=band)
-        if K != 3:
-            return t
-        out = t.iloc[list(perm)].reset_index(drop=True)
-        out["term"] = range(1, 4)
-        return out
-
-    def k_table(study, fits):
-        t = kt(study, fits)
-        for i in range(len(t)):
-            if len(t.iloc[i]["term rows"]) == 3:
-                for col in ("term rows", "term shares"):
-                    v = list(t.iloc[i][col])
-                    t.iat[i, t.columns.get_loc(col)] = [v[old] for old in perm]
-        return t
-
-    monkeypatch.setattr(case, "exponent_table", exponent_table)
-    monkeypatch.setattr(case, "term_table", term_table)
-    monkeypatch.setattr(case, "k_table", k_table)
-
-
-@pytest.mark.skipif(not os.environ.get("PAPER_EXECUTE"), reason="set PAPER_EXECUTE=1 (about 40 s)")
-def test_a_different_term_order_gives_the_same_tables_d2_d3_d8_and_the_sentence(monkeypatch):
-    """Terms are matched to the committed labels by exponent vector, never by index (G-11)."""
-    import itertools
-
-    import generate_findings as gf
     import generate_results as gr
 
-    def everything():
-        out = [str(gr.exponents_and_terms()), str(gr.k_diagnostics())]
-        for r in ("primary", "stock"):
-            out.append(str(gf.terms_sentence(gr._study(r), gr._fits(r))))
-        return out
-
-    base = everything()
-    for perm in itertools.permutations(range(3)):
-        if perm == (0, 1, 2):
-            continue
-        with monkeypatch.context() as m:
-            _permute_live_terms(m, perm)
-            assert everything() == base, f"term order {perm} changes a table"
-
-
-def test_the_match_follows_the_stored_exponent_vectors_for_any_stored_order():
-    """The label of a live term is that of the stored term nearest by L1 distance, one to one."""
-    import itertools
-
-    import paper_terms as pf
-
     for regime in ("primary", "stock"):
-        names = sorted({k.split(" | ")[2] for k in generate_stored() if f"K=3 | {regime} |" in k})
-        stored = pf.stored_exponents(regime, names)
-        assert stored.shape == (3, len(names))
-        for perm in itertools.permutations(range(3)):
-            labels = pf.match_labels(stored[list(perm)], stored)
-            assert labels == [p + 1 for p in perm]
-        noisy = stored + 1e-3 * np.cos(np.arange(stored.size)).reshape(stored.shape)
-        assert pf.match_labels(noisy[[2, 0, 1]], stored) == [3, 1, 2]
+        study, fits = gr._study(regime), gr._fits(regime)
+        kt = case.k_table(study, fits)
+        for i, K in enumerate(kt["K"]):
+            if K < 2:
+                continue
+            est = fits[int(K)].estimator
+            assert list(kt.iloc[i]["term shares"]) == [round(float(v), 3) for v in est.term_share_]
+            assert list(kt.iloc[i]["term rows"]) == [
+                int(v) for v in np.bincount(est.cell_, minlength=int(K))
+            ]
 
 
-def generate_stored():
-    from paper_stability import summary
+def test_a_count_in_the_regime_sentence_has_its_thousands_separator_and_the_attributes_are_words():
+    from types import SimpleNamespace as NS
 
-    return [k for k in summary()["quantities"] if k.startswith("D exponents K=3")]
+    import generate_findings as gf
+
+    def regime(raw, kept):
+        return NS(raw=range(raw), feasible=range(kept), attrs=range(13))
+
+    text = str(gf.datasets_sentence(regime(3000, 2134), regime(3000, 2355)))
+    assert text.startswith(
+        "The primary regime evaluates 3,000 designs and keeps 2,134 as feasible; the stock regime "
+        "evaluates 3,000 and keeps 2,355. Each design carries thirteen attributes. "
+        "The designs are drawn at random, 3,000 per regime"
+    )
+    import paper_common
+
+    assert [paper_common.thousands(v) for v in (999, 1000, 2134, "145 to 2200", "0.2036")] == [
+        "999", "1,000", "2,134", "145 to 2,200", "0.2036",
+    ]  # fmt: skip
+
+
+def test_an_exact_zero_and_a_residue_have_one_spelling_in_a_stable_table():
+    import paper_stability as ps
+
+    assert ps.residue_bound(0.0, zero=True) == ps.residue_bound(5e-18, zero=True) == "below 1e-12"
+    assert ps.residue_bound(0.0) == 0.0  # elsewhere an exact zero is a zero (a fraction of none)
+
+
+def test_d3_exponent_tables_print_no_bare_zero_exponent():
+    """Every exponent cell of D.3 is a number or the bound; an exact zero is the bound."""
+    by_id = {c.id: c for c in _code_cells(_nb(SUPPORT_NB))}
+    text = _out_text(by_id["tab-D-exponents_and_terms"])
+    rows = [line for line in text.splitlines() if re.match(r"\| [a-z]", line)]
+    exponent_rows = [r for r in rows if r.count("|") >= 4 and "term" not in r.lower()]
+    assert exponent_rows
+    cells = [c.strip() for r in exponent_rows for c in r.split("|")[2:-1]]
+    assert "0" not in cells and "0.0" not in cells
 
 
 def test_c_committed_output_is_current():
@@ -2075,7 +2046,7 @@ def test_generated_sentences_quote_the_ranges_from_the_results_file(case_sentenc
             continue
         lo, hi = int(e["min"]), int(e["max"])
         moved += lo != hi
-        assert (f"{lo} to {hi}" if lo != hi else f"{lo} on") in nd, name
+        assert (f"{lo:,} to {hi:,}" if lo != hi else f"{lo:,} on") in nd, name
     # WP23 data gate (D-9 item 5): no count moves on the nine-metric data; the sentence then
     # says that a number that moves is printed as a range
     assert moved or "is printed as a range" in nd
@@ -2625,7 +2596,7 @@ def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_ap
     first = results.split("2.", 1)[0]
     assert "not the Pareto boundary" in first and "fitted reference surface" in first
     sentence = _cell_out(PAPER_NB, "num-nondominated")
-    assert "236 on 4 attributes" in sentence and "2134 on all 13" in sentence
+    assert "236 on 4 attributes" in sentence and "2,134 on all 13" in sentence
     assert "regenerations of the data under rounding-level" in sentence
 
 
@@ -3007,7 +2978,7 @@ def test_the_body_states_the_marks_the_coverage_and_the_draw():
 
     n = definitions.SAMPLE_PER_REGIME
     cell = next(c for c in _code_cells(_nb(PAPER_NB)) if c.id == "num-datasets")
-    assert f"{n} per regime: a design choice of the case" in _out_text(cell)
+    assert f"{n:,} per regime: a design choice of the case" in _out_text(cell)
     search = _section("Search of the design space")
     assert "assumes nothing about how a table's designs were drawn" in search
 

@@ -15,7 +15,7 @@ from functools import cache
 import case
 import numpy as np
 import pandas as pd
-from paper_common import Md, frame_table, md_table
+from paper_common import Md, frame_table, md_table, thousands
 from paper_paths import ROOT
 
 LEDGER = ROOT / "examples" / "adcs" / "experiments" / "ledger" / "ledger.jsonl"
@@ -202,7 +202,7 @@ def metric_table(spec=None, n=5) -> Md:
         st = case.load_study(r, spec)
         head = pd.DataFrame(st.M[:n], columns=st.names).rename_axis("design").reset_index()
         parts.append(
-            f"Dataset {_label(r)}: {st.M.shape[0]} designs by {st.M.shape[1]} metrics; "
+            f"Dataset {_label(r)}: {thousands(st.M.shape[0])} designs by {st.M.shape[1]} metrics; "
             f"the first {n} rows:\n\n" + frame_table(head)
         )
     return Md("\n\n".join(parts))

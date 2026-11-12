@@ -101,13 +101,18 @@ def format_hold(
     return digits if len(digits) < len(printed) else printed
 
 
-def residue_bound(value: float):
+def residue_bound(value: float, zero: bool = False):
     """``below 1e-12`` for a nonzero numerical residue under that bound; other values unchanged.
+
+    With ``zero`` an exact zero is the bound too: an exponent under the participation threshold
+    has one spelling, whatever the solver left (an exact 0 or a residue).
 
     >>> residue_bound(4.4e-16), residue_bound(0.5), residue_bound(0.0)
     ('below 1e-12', 0.5, 0.0)
+    >>> residue_bound(0.0, zero=True)
+    'below 1e-12'
     """
-    return f"below {RESIDUE:g}" if 0 < abs(value) < RESIDUE else value
+    return f"below {RESIDUE:g}" if (-1 if zero else 0) < abs(value) < RESIDUE else value
 
 
 def _is_count(e: dict) -> bool:

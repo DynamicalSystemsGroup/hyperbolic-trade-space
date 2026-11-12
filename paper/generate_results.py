@@ -16,7 +16,6 @@ import numpy as np
 from generate_model import DATASET_LABELS, PLANTED, _associations, _one_axis_sentence, planted_table
 from paper_common import Md, frame_table, md_table
 from paper_stability import residue_bound, stable, stable_frame, summary
-from paper_terms import aligned
 
 
 def _cite(regime) -> str:
@@ -45,20 +44,35 @@ def _t(df, prefix, key=None):
     return frame_table(stable_frame(df, prefix, key))
 
 
-def _terms(regime, ft):
-    """The K = 3 term table with each moving quantity stated as the datasets allow.
+def _exponents(df, prefix):
+    """An exponent table as the datasets allow, with an exact zero spelled as a residue is.
 
-    ``ft`` carries the stored term labels (:func:`paper_terms.aligned`). The leading exponents
+    Both are an exponent under the participation threshold (``RESIDUE``); the solver leaves either
+    an exact 0 or a residue, and the table has one spelling for it.
+    """
+    out = stable_frame(df, prefix, "metric")
+    for col in out.columns:
+        if col != "metric":
+            out[col] = [
+                residue_bound(v, zero=True) if isinstance(v, float) else v for v in out[col]
+            ]
+    return out
+
+
+def _terms(regime, ft, K=3):
+    """The K-term table with each moving quantity stated as the datasets allow.
+
+    ``ft`` is the K-term table in the estimator's order. The leading exponents
     are named in the order they hold in every dataset; their values are those of the exponent
     table, to the digits that held.
     """
-    table = stable_frame(ft, f"D terms K=3 | {regime}", "term")
+    table = stable_frame(ft, f"D terms K={K} | {regime}", "term")
     three = lambda v: f"{v:.3f}"  # noqa: E731
     for i, text in enumerate(table["largest exponents"]):
         label = int(ft["term"].iloc[i])
         pairs = [part.rsplit(" ", 1)[0] for part in text.split(", ")]
         table.iat[i, table.columns.get_loc("largest exponents")] = ", ".join(
-            f"{name} " + stable(f"D exponents K=3 | {regime} | {name} | term {label}", three)
+            f"{name} " + stable(f"D exponents K={K} | {regime} | {name} | term {label}", three)
             for name in pairs
         )
     return table
@@ -88,22 +102,9 @@ def k_diagnostics() -> Md:
     """
     parts = []
     for r, s in _studies().items():
-        kt = aligned(r, s, _fits(r))[2]
+        kt = case.k_table(s, _fits(r))
         parts.append(f"{_cite(r)}:\n\n" + _t(kt, f"D k_table | {r}", "K"))
     return Md("\n\n".join(parts))
-
-
-def _live(df) -> str:
-    """A table of the case's terms (``case.CASE_K``) in the estimator's order (descending term
-    share), the numbers to three significant digits and a numerical residue as a bound.
-
-    The jitter record (D.11) holds the K = 3 terms; these rows are the fit of record's.
-    """
-    out = df.astype(object).copy()
-    for col in df.columns:
-        if all(isinstance(v, float) for v in df[col]):
-            out[col] = [residue_bound(float(v)) for v in df[col]]
-    return frame_table(out, floatfmt=".3g")
 
 
 def exponents_and_terms() -> Md:
@@ -115,18 +116,22 @@ def exponents_and_terms() -> Md:
     """
     parts = []
     for r, s in _studies().items():
-        k1 = _fits(r)[1]
-        exp3, ft3, _, _ = aligned(r, s, _fits(r))
+        k1, kc = _fits(r)[1], _fits(r)[case.CASE_K]
+        ftc = case.term_table(s, _fits(r), K=case.CASE_K)
+        exp3 = case.exponent_table(s, _fits(r)[3])
+        ft3 = case.term_table(s, {1: k1, 3: _fits(r)[3]})
         parts.append(
             f"{_cite(r)}, K = 1:\n\n"
-            + _t(case.exponent_table(s, k1), f"D exponents K=1 | {r}", "metric")
+            + frame_table(_exponents(case.exponent_table(s, k1), f"D exponents K=1 | {r}"))
             + f"\n\n{_cite(r)}, K = {case.CASE_K}:\n\n"
-            + _live(case.exponent_table(s, _fits(r)[case.CASE_K]))
+            + frame_table(
+                _exponents(case.exponent_table(s, kc), f"D exponents K={case.CASE_K} | {r}")
+            )
             + f"\n\n{_cite(r)}, K = {case.CASE_K}, per term:\n\n"
-            + _live(case.term_table(s, _fits(r), K=case.CASE_K))
-            + _thin_terms(case.term_table(s, _fits(r), K=case.CASE_K))
+            + frame_table(_terms(r, ftc, case.CASE_K))
+            + _thin_terms(ftc)
             + f"\n\n{_cite(r)}, K = 3:\n\n"
-            + _t(exp3, f"D exponents K=3 | {r}", "metric")
+            + frame_table(_exponents(exp3, f"D exponents K=3 | {r}"))
             + f"\n\n{_cite(r)}, K = 3, per term:\n\n"
             + frame_table(_terms(r, ft3))
             + _thin_terms(ft3)

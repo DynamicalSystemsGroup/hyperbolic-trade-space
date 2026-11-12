@@ -5852,7 +5852,7 @@ note = "The coverage statement of the model's cost calcs and of FleetCostRequire
 
 [[claim]]
 id = "C494"
-fragment = "The designs are drawn at random, {n} per"
+fragment = "The designs are drawn at random, {thousands(n)} per"
 file = "paper/generate_findings.py"
 anchor = "def datasets_sentence"
 kind = "R"

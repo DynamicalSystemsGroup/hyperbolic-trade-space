@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import case
 import numpy as np
-from paper_common import Md, appendix_link
+from paper_common import Md, appendix_link, thousands
 from paper_stability import entry, stable, summary
 
 _C7 = appendix_link("sub-c-7", "Appendix C.7")
@@ -60,7 +60,8 @@ def _a(n: int) -> str:
 
 _NUMBER_WORDS = {
     2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine",
-    10: "ten",
+    10: "ten", 11: "eleven", 12: "twelve", 13: "thirteen", 14: "fourteen", 15: "fifteen",
+    16: "sixteen", 17: "seventeen", 18: "eighteen", 19: "nineteen", 20: "twenty",
 }  # fmt: skip
 
 
@@ -76,7 +77,7 @@ def nondominated_sentence(study) -> Md:
     spec = study.spec
     parts = []
     for r in df.itertuples():
-        count = stable(f"nondominated | {study.regime} | {r.view} | nondominated")
+        count = thousands(stable(f"nondominated | {study.regime} | {r.view} | nondominated"))
         if r.view in spec.views:  # a named view: its attributes, named
             names = _and(spec.short[a] for a in spec.views[r.view])
             parts.append(f"{count} on {int(r.columns)} attributes ({names})")
@@ -93,7 +94,10 @@ def nondominated_sentence(study) -> Md:
             f"(counts that hold over {runs} regenerations of the data under rounding-level "
             f"perturbation; a number that moves over them is printed as a range, {_D11})"
         )
-    return Md(f"Of {n} feasible cubesat designs, the nondominated set holds {_and(parts)} {tail}.")
+    return Md(
+        f"Of {thousands(n)} feasible cubesat designs, the nondominated set holds "
+        f"{_and(parts)} {tail}."
+    )
 
 
 def attributes_sentence(study) -> Md:
@@ -119,9 +123,11 @@ def datasets_sentence(primary, stock) -> Md:
     a, b = primary, stock
     n = len(a.raw)
     return Md(
-        f"The primary regime evaluates {len(a.raw)} designs and keeps {len(a.feasible)} as "
-        f"feasible; the stock regime evaluates {len(b.raw)} and keeps {len(b.feasible)}. "
-        f"Each design carries {len(a.attrs)} attributes. The designs are drawn at random, {n} per "
+        f"The primary regime evaluates {thousands(len(a.raw))} designs and keeps "
+        f"{thousands(len(a.feasible))} as feasible; the stock regime evaluates "
+        f"{thousands(len(b.raw))} and keeps {thousands(len(b.feasible))}. "
+        f"Each design carries {_NUMBER_WORDS.get(len(a.attrs), len(a.attrs))} attributes. "
+        f"The designs are drawn at random, {thousands(n)} per "
         f"regime: a design choice of the case, since the method assumes nothing about how they "
         f"were drawn."
     )
@@ -200,7 +206,8 @@ def temperature_sentence(study, fit) -> Md:
         f"1/tau is {band} and the effective sample size is {n_eff} designs. The effective "
         f"sample size is the inverse sum of squares of the support weights, the softmax weights "
         f"of the designs in the fit: the designs the soft maximum weighs as if equally, so the "
-        f"exponents at the fit temperature rest on about that many of the {len(study.M)} "
+        f"exponents at the fit temperature rest on about that many of the "
+        f"{thousands(len(study.M))} "
         f"designs; the contending set {holds} ({_D5}); the digits "
         f"that hold are in {_D11}."
     )
@@ -373,7 +380,8 @@ def margin_sentence(study, fits) -> Md:
         f"of {stable(f'D k_table | {r} | {K} | band 1/tau', lambda v: f'{v:.4f}')} and a median "
         f"best-minus-second-best score of "
         f"{stable(f'margin | {r} | {K} | median margin', lambda v: f'{v:.3f}')}: a margin below "
-        f"the band puts at least one design within the band of a seam, here {n} of the {N}, and "
+        f"the band puts at least one design within the band of a seam, here {thousands(n)} of "
+        f"the {thousands(N)}, and "
         f"the certificate covers changes under the radius only. For the {_NUMBER_WORDS[K]}-term "
         f"split: the local optimality certified covers changes of the term scores under half the "
         f"margin, about {times} times smaller than the band, so which term those {n} designs "
