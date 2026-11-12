@@ -914,8 +914,8 @@ note = "2134 designs: nondominated 236 on 4 and 2134 on all 13 attributes, no co
 
 [[claim]]
 id = "C065"
-fragment = "while the fit returns an exponent vector per term, a band of near-frontier designs and an effective sample size"
-file = "paper/paper.ipynb"
+fragment = "with one exponent vector per term, a band of near-boundary designs and an effective sample size"
+file = "paper/prior_art.yaml"
 anchor = ""
 kind = "S"
 backing = ["test:tests/test_estimator.py::test_fit_invariants", "test:tests/test_estimator.py::test_k_terms_attributes_conventions", "test:tests/test_estimator.py::test_n_terms_above_one_is_implemented"]
@@ -1010,8 +1010,8 @@ note = "each term is one monomial (log-linear, L10.19) with elasticity -w_k/w_j 
 
 [[claim]]
 id = "C074"
-fragment = "Our metrics are larger-is-better with homogeneity from the simplex"
-file = "paper/paper.ipynb"
+fragment = "Its metrics are larger-is-better with homogeneity by the simplex"
+file = "paper/prior_art.yaml"
 anchor = ""
 kind = "M"
 backing = ["lemma:L1.5", "lemma:L1.8", "lemma:L11.7", "glossary:metrics", "glossary:invariant-value"]
@@ -1034,8 +1034,8 @@ note = "soft maximum with temperature and band (log n)/tau (L5); effective sampl
 
 [[claim]]
 id = "C076"
-fragment = "We solve one convex program and K refits, and return coordinates with a pull-back to attribute units"
-file = "paper/paper.ipynb"
+fragment = "It solves one convex program and K refits, and returns coordinates and a pull-back to attribute units"
+file = "paper/prior_art.yaml"
 anchor = ""
 kind = "S"
 backing = ["lemma:L4", "test:tests/test_solvers.py::test_slsqp_agrees_with_lp", "test:tests/test_solvers.py::test_terms_k1_equals_slsqp_and_degenerate", "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples", "test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples"]
@@ -1118,15 +1118,19 @@ note = "row 43 supported for kernel PCA; 'kin of the direction' is the author's 
 
 [[claim]]
 id = "C083"
-fragment = "\"hyperbolic\" here is unrelated to hyperbolic PCA"
+fragment = "HoroPCA [@chami2021horopca] is the closest existing analog in setting, unsupervised with a table in and coordinates out, and the farthest in what is estimated"
 file = "paper/paper.ipynb"
-anchor = ""
+anchor = "Prior art, by family"
 kind = "L"
-backing = ["bib:chami2021horopca", "file:paper/reading_pass.yaml"]
+backing = [
+  "bib:chami2021horopca",
+  "file:paper/reading_pass.yaml",
+  "file:work-packages/WP35-rounds/spike/readout.md",
+]
 status = "backed"
 disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "reading_pass row 44 (chami2021horopca) verdict supported: HoroPCA is PCA in hyperbolic space; 'unrelated' is the paper's statement about its own term (prior_art.yaml kernel-hyperbolic-pca differs)"
+source = "P5 claims pass, WP10 Amendment 5 R-43; re-pointed by WP35"
+note = "Replaces the 'unrelated to hyperbolic PCA' clause (WP35 Q3 (a), Q4 (a)). reading_pass row 44 supported: HoroPCA is the components of PCA generalized to hyperbolic space. 'Closest in setting' is the readout's section 2 ('what each is good for') and section 4 (shared: an unsupervised fit, a table in, coordinates out); 'farthest in what is estimated' is a variance over frames against a one-sided edge."
 
 [[claim]]
 id = "C084"
@@ -2690,15 +2694,18 @@ note = "reading_pass n43 supported: kernel PCA via feature spaces"
 
 [[claim]]
 id = "C216"
-fragment = "HoroPCA [@chami2021horopca]: principal component analysis in hyperbolic space, which this package"
+fragment = "the nearest analog in setting; [how this work differs](paper:sect-prior-art)."
 file = "docs/further-reading.md"
 anchor = ""
 kind = "L"
-backing = ["bib:chami2021horopca"]
+backing = [
+  "bib:chami2021horopca",
+  "file:work-packages/WP35-rounds/spike/readout.md",
+]
 status = "backed"
 disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "reading_pass n44 supported: HoroPCA, PCA generalized to hyperbolic space"
+source = "P5 claims pass, WP10 Amendment 5 R-43; re-pointed by WP35"
+note = "A pointer to Section 2 (WP35 D-5): the setting claim is C083's. reading_pass n44 supported."
 
 [[claim]]
 id = "C217"
@@ -4261,28 +4268,19 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "L15 descent is local only; gap G-14 no global claim; n_restarts seeds the restarts and the lowest mean slack is kept"
 
 [[claim]]
-id = "C352"
-fragment = "which tends to zero as any participating"
-file = "docs/user-guide/limitations.md"
-anchor = ""
-kind = "M"
-backing = ["glossary:invariant-value", "test:tests/test_preconditioning.py::test_pullback_zero_attribute_gives_minus_inf_in_both"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "V is a weighted geometric mean so V -> 0 as a participating (w_j > 0) metric -> 0; test pins zero attribute -> log V = -inf"
-
-[[claim]]
 id = "C353"
-fragment = "It is unrelated to PCA in hyperbolic space [@chami2021horopca]."
+fragment = "The [glossary](../generated/glossary.md) and the [paper](paper:sect-definitions) define \"hyperbolic\"."
 file = "docs/user-guide/limitations.md"
 anchor = ""
-kind = "L"
-backing = ["bib:chami2021horopca"]
+kind = "S"
+backing = [
+  "glossary:hyperbolic",
+  "file:paper/paper.ipynb",
+]
 status = "backed"
 disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "reading_pass.yaml n=44 verdict supported (HoroPCA abstract; 'unrelated' is the paper's own statement); prior_art.yaml id kernel-hyperbolic-pca"
+source = "P5 claims pass, WP10 Amendment 5 R-43; re-pointed by WP35"
+note = "A pointer (WP35 D-5): the one definition is the glossary entry, printed in Appendix A, and the Definitions sentence of the paper."
 
 [[claim]]
 id = "C354"
@@ -5031,14 +5029,14 @@ note = "The horizontal axis of the chart figure is the first principal direction
 
 [[claim]]
 id = "C415"
-fragment = "not the hyperbolic graph measure of efficiency of Färe, Grosskopf and Lovell, a measure on the graph of a technology with inputs and outputs both free"
-file = "paper/paper.ipynb"
-anchor = "Prior art, by family"
+fragment = "or the hyperbolic graph measure of efficiency of Färe, Grosskopf and Lovell"
+file = "glossary.yaml"
+anchor = ""
 kind = "L"
 backing = ["bib:fare1985measurement", "file:docs/superpowers/notes/references-verified.md"]
 status = "backed"
 disposition = "keep"
-source = "WP11 round 2, PM6 batch 2 (the sceptic's register)"
+source = "WP11 round 2, PM6 batch 2 (the sceptic's register); moved to the glossary by WP35 Q3 (a)"
 note = "The chapter 'Hyperbolic Graph Efficiency Measures' (10.1007/978-94-015-7721-2_5) read by abstract: inputs and outputs both freely variable, the technology modelled by its graph. The clause claims no more than the abstract; the measure's definition (the chapter body) was not read."
 
 [[claim]]
@@ -5188,7 +5186,6 @@ status = "backed"
 disposition = "keep"
 source = "WP28 CR-38 (the sentence that stayed in Section 8 when the comparison of equations (1) and (2) moved to Section 6.2); pinned at the close of WP28"
 note = "The case's conditioner is LogAffinePreconditioner with scaler='standard' (case.conditioner_for default); the test checks the column means of the log of the conditioned metrics are below 1e-12 in both regimes (7.4e-15 and 3.6e-15 on the data of record, C421)."
-
 
 [[claim]]
 id = "C427"
@@ -5348,7 +5345,6 @@ status = "backed"
 disposition = "keep"
 source = "WP28 close, WP25-4 T-3 (as C340 on the termination page)"
 note = "As C340: the Hessian of J_tau is tau times a weighted covariance (L17.5), so a small smallest eigenvalue is a nearly flat direction; the clause 'so weakly identified exponents' was dropped from D.12's first paragraph, as the page dropped it."
-
 
 [[claim]]
 id = "C444"
@@ -6291,3 +6287,287 @@ status = "backed"
 disposition = "keep"
 source = "WP37 draft"
 note = "Sourced: https://www.dynamicalsystemsgroup.com/partners (the firm contributes to OpenMBEE's roadmaps) and https://github.com/Open-MBEE/OpenSysML; the synthesis-effort clause is the supervisor's statement of the project's place."
+
+[[claim]]
+id = "C529"
+fragment = "it extends the components of PCA to hyperbolic space with horospherical projections, maximizing a variance"
+file = "paper/paper.ipynb"
+anchor = "Prior art, by family"
+kind = "L"
+backing = [
+  "bib:chami2021horopca",
+  "file:paper/reading_pass.yaml",
+  "file:work-packages/WP35-rounds/spike/readout.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "The abstract of record (references.bib verified field): the components of PCA (subspace parameterization, projection, variance objective) extended to hyperbolic space; the title names horospherical projections. 'Maximizing a variance': readout section 3 (the objective is the variance of the Busemann values, and for more than one component the mean squared pairwise distance of the projections)."
+
+[[claim]]
+id = "C530"
+fragment = "this work fits the one-sided edge of a table and is not a PCA of any kind"
+file = "paper/paper.ipynb"
+anchor = "Prior art, by family"
+kind = "M"
+backing = [
+  "glossary:fitted-reference-surface",
+  "func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace",
+  "file:work-packages/WP35-decisions.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "The fit minimizes a one-sided soft-maximum criterion over a simplex (convex in the log variables), not a variance by eigendecomposition; the supervisor's statement and decision Q4 (a): the paper does not call this work a PCA of any kind."
+
+[[claim]]
+id = "C531"
+fragment = "We borrow that setting, the estimator interface of scikit-learn and PCA as a downstream step"
+file = "paper/paper.ipynb"
+anchor = "Prior art, by family"
+kind = "S"
+backing = [
+  "test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator",
+  "test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions",
+  "func:src/hyperbolic_trade_space/tensions.py::tension_report",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "The estimator passes scikit-learn's estimator checks (fit, transform, inverse_transform, score_samples); the tension report runs PCA on the chart (Appendix D.16)."
+
+[[claim]]
+id = "C532"
+fragment = "The authors' code, run on this paper's tables after an embedding of ours, recovered the planted exponents only where the generator made them the direction of largest spread"
+file = "paper/paper.ipynb"
+anchor = "Prior art, by family"
+kind = "R"
+backing = [
+  "gen:paper/generate_prior_art.py::horopca_rows",
+  "test:tests/test_paper.py::test_the_horopca_table_equals_the_spike_record",
+  "file:docs/superpowers/notes/spike-horopca/results.json",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "Appendix G's table at R = 1: the planted K = 1 table and the first term of K = 3 at seed 0 are recovered (absolute cosine 0.97 or more, PCA 0.98 and 0.99); the other planted terms and the cubesat's are not. The authors' code (pinned commit) ran unmodified apart from one removed PyTorch call; the embedding is the spike's."
+
+[[claim]]
+id = "C533"
+fragment = "The title's \"hyperbolic\" is defined in"
+file = "paper/paper.ipynb"
+anchor = "Prior art, by family"
+kind = "S"
+backing = [
+  "glossary:hyperbolic",
+  "test:tests/test_paper.py::test_section2_distinguishes_horopca_in_one_paragraph",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "A pointer to the Definitions sentence (C410) and to Appendix A, which prints the glossary entry."
+
+[[claim]]
+id = "C534"
+fragment = "the level curves of V, a product of powers of the metrics set equal to a constant; in two metrics with equal exponents the rectangular hyperbola m1 m2 = constant"
+file = "glossary.yaml"
+anchor = ""
+kind = "M"
+backing = [
+  "lemma:L1.4",
+  "glossary:invariant-value",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "As C410 (algebra on the definition of V); the entry also says what the word is not: negative-curvature geometry, and the Färe, Grosskopf and Lovell graph measure (C415)."
+
+[[claim]]
+id = "C535"
+fragment = "This work builds no kernel and maximizes no variance: it fits a one-sided posynomial edge, and its kernel direction is documented, not built."
+file = "paper/prior_art.yaml"
+anchor = ""
+kind = "S"
+backing = [
+  "file:paper/paper.ipynb",
+  "file:docs/further-reading.md",
+  "glossary:fitted-reference-surface",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "Only the K = 1 monomial and the K > 1 posynomial fit are built; kernels are a documented extension (Discussion; the docs name it not built). Kernel PCA is then the kin of that direction (C082 and row 43 of the reading pass)."
+
+[[claim]]
+id = "C536"
+fragment = "it maximizes a nonconvex variance over frames by gradient ascent with restarts, and gives no certificate"
+file = "paper/prior_art.yaml"
+anchor = ""
+kind = "L"
+backing = [
+  "file:work-packages/WP35-rounds/spike/readout.md",
+  "file:docs/superpowers/notes/spike-horopca/run_horopca.py",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "Readout section 3: the authors' learning/pca.py maximizes the variance of the projections with Adam for a fixed 500 steps from random initial components, restarts chosen by the caller, no convergence test and no certificate; the spike saw different local optima across restarts at the large scale."
+
+[[claim]]
+id = "C537"
+fragment = "by convex programs on a simplex with a certificate"
+file = "paper/prior_art.yaml"
+anchor = ""
+kind = "S"
+backing = [
+  "lemma:L4",
+  "test:tests/test_solvers.py::test_slsqp_agrees_with_lp",
+  "test:tests/test_solvers.py::test_iteration_cap_status",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "One convex program per term (the K = 1 fit at infinite temperature is a linear program, at finite temperature a smooth convex program) with a recorded termination status; the K > 1 assignment is local over assignments, each refit global (readout section 3)."
+
+[[claim]]
+id = "C538"
+fragment = "We ran the authors' code (a pinned commit, outside this package, with one removed PyTorch call restored by a shim) beside PCA on the paper's tables, which are not tree-like: the four-point relative delta of the log-metric cloud is 0.46 and 0.45 for the two cubesat regimes, against 0.42 and 0.39 for Gaussian clouds of the same dimension, and 0.00 for a tree."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "R"
+backing = [
+  "gen:paper/generate_prior_art.py::horopca_rows",
+  "test:tests/test_paper.py::test_the_horopca_passage_numbers_are_in_the_record",
+  "file:docs/superpowers/notes/spike-horopca/gromov.txt",
+  "file:docs/superpowers/notes/spike-horopca/README.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "gromov.txt: 0.457 and 0.446 (cubesat primary and stock) against 0.420 and 0.393 (Gaussian clouds of the same dimension), 0.000 for the repository's 40-node tree. Commit c9a99967 of the authors' repository, the one shim in compat.py (torch.solve)."
+
+[[claim]]
+id = "C539"
+fragment = "the embedding was ours, not natural for the data"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "file:docs/superpowers/notes/spike-horopca/make_tables.py",
+  "file:docs/superpowers/notes/spike-horopca/run_horopca.py",
+  "test:tests/test_paper.py::test_the_horopca_passage_numbers_are_in_the_record",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "The log-metrics are Euclidean; the spike centres them, scales the farthest point to hyperbolic distance 2 (R = 1) and applies the exponential map at the origin (readout section 2, Setup). Nothing in the tables asks for it (C538)."
+
+[[claim]]
+id = "C540"
+fragment = "the authors' own command on their small tree printed a distortion of 0.20 against 0.84 for PCA"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "file:docs/superpowers/notes/spike-horopca/smalltree_run.txt",
+  "file:docs/superpowers/notes/spike-horopca/run_main.py",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "The authors' CLI on their smalltree dataset: HoroPCA distortion 0.20 (their README: 0.19), PCA 0.84, tangent PCA 0.70, PGA 0.62; the same run checks that the spike ran the authors' code."
+
+[[claim]]
+id = "C541"
+fragment = "Where a planted term is also the direction of largest spread, both recover it"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "R"
+backing = [
+  "gen:paper/generate_prior_art.py::horopca_rows",
+  "test:tests/test_paper.py::test_the_horopca_table_equals_the_spike_record",
+  "file:docs/superpowers/notes/spike-horopca/results.json",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "The table: planted K = 1 and the first term of K = 3 at seed 0, PCA 0.98 and 0.99, HoroPCA 0.97 and 0.99 at R = 1. 'The generator makes it so': make_frontier_data draws interior designs at an exponentially distributed depth below the surface (readout section 2, Reading 1)."
+
+[[claim]]
+id = "C542"
+fragment = "on the cubesat tables the alignment of the first two directions with this work's one-term exponent vector is 0.06 or less, for PCA and for HoroPCA at every scale"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "R"
+backing = [
+  "gen:paper/generate_prior_art.py::horopca_rows",
+  "test:tests/test_paper.py::test_the_horopca_passage_numbers_are_in_the_record",
+  "file:docs/superpowers/notes/spike-horopca/analysis.txt",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "PCA 0.02 and 0.05 (every row); HoroPCA at the three scales at most 0.058 (primary) and 0.061 (stock), the larger of its one- and two-direction scores."
+
+[[claim]]
+id = "C543"
+fragment = "the one-term fit names eight metrics with exponents summing to one"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "file:docs/superpowers/notes/spike-horopca/analysis.txt",
+  "file:docs/superpowers/notes/spike-horopca/tables.npz",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "The K = 1 fit of the cubesat primary regime in the spike's tables: eight exponents above 1e-6, summing to 1.000 (readout section 2, Reading 3); the principal direction loads total mass at -0.41 and available power at +0.40."
+
+[[claim]]
+id = "C544"
+fragment = "the variance HoroPCA keeps agrees with PCA's within 0.007 on the planted tables and 0.013 on the cubesat"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "R"
+backing = [
+  "gen:paper/generate_prior_art.py::horopca_rows",
+  "file:docs/superpowers/notes/spike-horopca/results.json",
+  "test:tests/test_paper.py::test_the_horopca_passage_numbers_are_in_the_record",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "results.json, R = 0.25: the explained fraction of HoroPCA's first direction against PCA's first component on the same rows, at most 0.0069 (planted) and 0.0123 (cubesat)."
+
+[[claim]]
+id = "C545"
+fragment = "its first direction keeps far less of the variance (0.068 against PCA's 0.325 on the cubesat primary) and depends on the restart"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "R"
+backing = [
+  "gen:paper/generate_prior_art.py::horopca_rows",
+  "file:docs/superpowers/notes/spike-horopca/results.json",
+  "file:docs/superpowers/notes/spike-horopca/analysis.txt",
+  "test:tests/test_paper.py::test_the_horopca_passage_numbers_are_in_the_record",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "results.json, R = 3: 0.068 explained by HoroPCA's first direction on the cubesat primary subsample; PCA's first component, every row, 0.325 (analysis.txt); the restarts end between 0.211 and 0.410 on planted K = 1 (readout section 2)."
+
+[[claim]]
+id = "C546"
+fragment = "This is a spike and not a benchmark, and this work was not run on the data of HoroPCA's own tasks."
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "file:docs/superpowers/notes/spike-horopca/README.md",
+  "file:work-packages/WP35-rounds/spike/readout.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 build"
+note = "The readout's limits (5) and (6): one run per seed of the planted generator, four planted tables and two cubesat regimes; the paper's method was not run on graphs embedded in hyperbolic space."

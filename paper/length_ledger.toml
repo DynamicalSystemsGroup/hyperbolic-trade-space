@@ -40,6 +40,8 @@ total = 5900
 "Appendix C" = 0
 # The same for Appendix D (WP28 S-10).
 "Appendix D" = 0
+# And Appendix G (WP35: the HoroPCA passage and its table).
+"Appendix G" = 0
 
 # Rows: the tickets of 2026-11-09 on sections 4 and 6 (the supervisor's, WP10-decisions.md).
 # Each row: date, section, words_added, job, reader.
@@ -1239,3 +1241,41 @@ section = "Appendix D"
 words_added = 52
 job = "D.7 says what the constrained fit reads of the hand-named candidates (two sit beyond the thresholds-met surface; none meets all four thresholds), a result the candidate table's last column holds and no sentence read"
 reader = "the executive reading the case for the decision it supports"
+
+# WP35 (work-packages/WP35-decisions.md, Q1 to Q4): HoroPCA acknowledged and distinguished, "hyperbolic"
+# defined once. Section 2 nets to zero: the paragraph is paid for by the two caveats it replaces and by
+# detail that Table 1 and Appendix G already carry.
+[[raise]]
+date = "2026-11-12"
+section = "Prior art, by family"
+words_added = 119
+job = "one paragraph names HoroPCA as the closest existing analog in setting and the farthest in what is estimated, says what this work borrows from PCA and from scikit-learn, and reports that the authors' code recovered the planted exponents only where the generator made them the direction of largest spread; and a one-sentence pointer says where the title's word is defined"
+reader = "the reader who knows hyperbolic PCA and asks whether this work is a PCA or a hyperbolic method"
+
+[[cut]]
+date = "2026-11-12"
+section = "Prior art, by family"
+words_removed = 51
+no_longer_did = "two caveats against the title's word (the Färe, Grosskopf and Lovell graph measure after the DEA paragraph, and 'unrelated to hyperbolic PCA' in the Lineage paragraph), each a definition by negation in a different place; the glossary entry, Appendix A and the Definitions sentence now say the word once"
+authority = "WP35 Q3 (a), the supervisor's request to limit the places that caveat the word"
+
+[[cut]]
+date = "2026-11-12"
+section = "Prior art, by family"
+words_removed = 48
+no_longer_did = "the DEA paragraph's last three sentences (larger-is-better metrics with homogeneity, one convex program and K refits with coordinates and a pull-back, and the connecting sentence) repeated the DEA row of Table 1 and the DEA entry of Appendix G, which print the same distinctions word for word"
+authority = "WP35 build, offsetting the HoroPCA paragraph (length is a regularizer)"
+
+[[cut]]
+date = "2026-11-12"
+section = "Prior art, by family"
+words_removed = 20
+no_longer_did = "the Pareto paragraph's clause on what the fit returns (an exponent vector per term, a band, an effective sample size) repeated the Pareto row of Table 1 and Appendix G's entry"
+authority = "WP35 build, offsetting the HoroPCA paragraph (length is a regularizer)"
+
+[[raise]]
+date = "2026-11-12"
+section = "Appendix G"
+words_added = 659
+job = "the full version of the HoroPCA distinction: the solver contrast, what HoroPCA does that this work does not, the plain statement that the embedding was ours and not natural for the data, the reading of the generated results table, and the limits of the comparison with the spike record cited; the numbers sit here so that Section 2 holds none"
+reader = "the expert who asks what running the closest existing analog on the paper's tables showed"
