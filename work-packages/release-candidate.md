@@ -159,3 +159,19 @@ prints its changes (and the whole grid when he asks); the handover prints it who
 report template so we can start converging to our 0.1 release candidate". The template is
 `work-packages/status-report-template.md`; from this point the tick updates and the PM's batch reports use it, the
 grid as the table and the rest in lines; the first filled report follows the grid's first fill.
+
+## The entry surfaces (the supervisor, 2026-11-12, verbatim)
+
+> for the abstrac you are allowed to author/edit it but i am just telling you that rewriting the abstract as needed
+> is something i expect to do and therefore we should not push a release until i've approved it. strictly speaking
+> this is true for all of the content but there are a few surfaces: the index, the readme, the abstract, the
+> history, the first page of the documentation site. all of which need an extra close read by me since they are
+> entry points that impact peoples perception of the project
+
+**Applied.** Five entry surfaces, the root page (`site/index.html`), the README, the paper's abstract, the history
+page and the docs site's first page (`docs/index.md`), may be edited by the team but carry a release gate: the
+supervisor reads each closely and approves it before any release, and he rewrites the abstract as he sees fit.
+Every change to one of them is listed, with its reason and commit, in a section of the supervisor-review-list and
+in the reviewer's guide (WP8b), so his close read starts from the list of what moved. The abstract correction in
+flight (the restoration of the clause the WP33 unit cut) stands as the assistant's editorial call, not as a
+breach, and is on that list like every other change.
