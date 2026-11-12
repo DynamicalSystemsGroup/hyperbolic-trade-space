@@ -35,3 +35,14 @@ word counts so every surface is assigned and none missed; a checker for the mech
 searched (the metanarrative openers, the hedges, the stock intensifiers, parenthetical density per paragraph) as a
 report, never an automatic edit, with its baseline; the ledger and claims-register hooks the cuts already use; and
 the second reader's confirmation form. A scope in the usual form names them as deliverables.
+
+> the use of this review machinery becomes part of the final deliverable but i didn't want to do premature copy
+> editing so i left this to be applied in the late stage reviews since it shouldn't really cover anything but style
+> improvements and minor copy editing level decisions.
+
+**The assistant's reading.** Two consequences. The machinery and its use are part of the 0.1 package: the brief,
+the inventory, the checker with its baseline and the pass's records ship with the deliverable and are named in
+the reviewer's guide, so a later reader can re-run the pass. And the pass's reach is copy-editing: style and
+minor wording decisions on stable text, never a claim, a number, a structure or a placement; anything a reader
+flags that is more than that goes to the owning package or to the supervisor's list, not into the pass. It
+runs late, after the content loops, for exactly the reason he gives.
