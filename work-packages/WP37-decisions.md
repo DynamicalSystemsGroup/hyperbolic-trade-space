@@ -303,3 +303,24 @@ material: the cadCAD community call he links, and the playlists by Andrew Penlan
 others on GDS and cadCAD; the workers find them from the blog's posts and the channel, record title, author,
 channel, date and link for each, and the page cites a playlist or a representative video with its date rather
 than every video.
+
+## The supervisor, on representation and presentation (verbatim)
+
+> you my find stuff and build a historical record and set of dated references which is more detailed than the
+> history page. let's apply a seperation of representation and presentation where you can build your historical
+> record as a yml file, then we can think of the history (prose w/ names and references) as a view with a human
+> reader in mind and our explicit goal of showing a history with many contributors that naturally describes (as a
+> story) the project lineage.
+
+**The assistant's reading.** The pattern the repository already uses (glossary.yaml to Appendix A, prior_art.yaml to
+Table 1 and Appendix G) applies to the history. The representation is a record file, `history.yaml` at the
+repository root beside the glossary (one object, one name: the history record): one entry per dated reference and
+per person, each with its date (a year at least), kind (paper, repository, post, video, talk, role, person), title,
+the people it concerns with a role only where a source states it, the URL, the date it was read, what it shows, the
+kind of claim it backs (sourced, shown by a link, the team's own account) and a flag where the special-case
+sentence rule applies. The workers' tables become its entries; it may hold more than the page shows. The
+presentation is the page: hand-written prose with names and references, a story of a lineage with many
+contributors, written for a human reader and as thin as the arc allows; a test ties every link, name and date on
+the page to an entry of the record, so the prose cannot drift from it; beneath the prose, a dated reference list
+generated from the record at build time gives the reader the detail the prose leaves out. The scope being written
+takes these as its deliverables; the draft page is the view's first draft.
