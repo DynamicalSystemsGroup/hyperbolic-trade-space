@@ -785,6 +785,26 @@ def test_history_team_account_sentences_are_marked():
             assert any(m in sentence["text"] for m in HISTORY_RECORD.TEAM_MARKS), sentence["text"]
 
 
+def test_history_every_prose_sentence_has_a_row_in_the_claims_register():
+    """R-18: a row of claims_register.toml (kind S) for each sentence of the prose, whose fragment
+    opens the sentence; the row's note carries the record ids and URLs."""
+    import html as htmllib
+    import tomllib
+
+    with open(ROOT / "claims_register.toml", "rb") as fh:
+        rows = [r for r in tomllib.load(fh)["claim"] if r["file"] == "site/history.html"]
+    plain = []
+    for r in rows:
+        assert r["kind"] == "S" and r["note"], r["id"]
+        text = htmllib.unescape(re.sub(r"<[^>]+>", "", r["fragment"]))
+        plain.append(" ".join(text.replace(" ... ", " ").split()))
+    page = HISTORY.read_text(encoding="utf-8")
+    for sentence in HISTORY_RECORD.sentences(page):
+        opening = " ".join(sentence["text"].split()[:3])
+        assert any(opening in p for p in plain), f"no claims row opens: {sentence['text']}"
+    assert len(rows) >= len(HISTORY_RECORD.sentences(page))
+
+
 def test_history_trace_table_is_current():
     """R-18: work-packages/WP37-rounds/trace.md is the table derived from the page and the record
     (uv run python scripts/history_record.py --trace); every sentence has a kind."""
@@ -891,7 +911,7 @@ def test_history_page_is_one_screen_in_the_root_page_register():
     assert "prefers-color-scheme: dark" in raw
     assert '<link rel="icon" href="data:,">' in raw
     assert "<h1>History and acknowledgements</h1>" in raw
-    assert 250 <= len(_history_text().split()) <= 450
+    assert 250 <= len(_history_text().split()) <= 420
 
 
 def test_history_page_is_linked_from_the_root_page_and_links_resolve():
@@ -937,7 +957,7 @@ def test_history_page_uses_no_cryptocurrency_or_web3_vocabulary():
     assert "in our own account of the team" in _history_text()
 
 
-def test_history_page_credits_the_twelve_named_people():
+def test_history_page_credits_the_thirteen_named_people():
     text = _history_text()
     for name in (
         "Markus Koch",
@@ -952,17 +972,18 @@ def test_history_page_credits_the_twelve_named_people():
         "Andrew Clark",
         "Sean McOwen",
         "Carolina Riascos-\u00c1lvarez",
+        "Matthew Barlin",
     ):
         assert name in text, name
 
 
 def test_history_page_marks_the_team_account_and_credits_cadcad_as_authors_txt_does():
     """WP37 W3 decisions: the team's own account is marked each time; cadCAD's designers are
-    credited as AUTHORS.txt states them; Paruch is quoted in his own words."""
+    credited as AUTHORS.txt states them (the thinness ruling cut the per-person background
+    links; the record holds them)."""
     text = _history_text()
     assert text.count("our own account") + text.count("the same account") >= 3
     assert "designed by Michael Zargham, Markus Koch and Matthew Barlin" in text
-    assert "a mathematical background with focus on economic modeling" in text
     assert text.count("Barlin") == 1
 
 

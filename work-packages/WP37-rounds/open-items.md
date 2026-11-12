@@ -52,3 +52,19 @@ Sentences and clauses removed from the previous draft (b6fb97e), in the order of
 - "the firm is ... SciPy 2026 talk has a paper forthcoming": the talk stays, the forthcoming clause goes.
 - "Part I" in the Generalized Dynamical Systems link (your ruling); "the spaces of feasible designs" is back, in your exact sentence.
 - The word count is 440 visible words, over the 350 aimed at; the page fits one 1280 by 800 screen with the footer link (screenshots in draft-shots/), and the test allows up to 450.
+
+## 6. Prose fixes against the record (D-9, step 4; words 440 before, 418 after, ceiling lowered to 420)
+
+The page is now the record's thin path; the detail is in `history.yaml` and the generated dated list. What changed, each cut with what it no longer did:
+
+- Added: the purpose sentence ("the synthesis and publication of a long-running endeavour with many contributors"); the cadCAD origin post of 3 June 2019 (blog.block.science, replacing the unreachable Medium link); the parameter selection article by Paruch and Shorish (8 April 2021, blog copy), the one pointer for Paruch's work; Shorish's GDS playlist (2022) as his one video pointer, replacing the single crosswalk video; Penland's workshop 1 (16 December 2024) as his one pointer, replacing the blog post link; Barlin as one of the three designers, as AUTHORS.txt has him; Hackel and Riascos-Álvarez stay in the marked team-account sentence.
+- Cut "2009" (the CDC paper): the arc from convex optimization is carried by the 2014 TAC paper; the record keeps 2009.
+- Cut "354 citations on Google Scholar, 12 November 2026": a count the arc did not need; the record keeps it with its source and date.
+- Cut "in the form of Boyd et al. (2007) that this method's frontier takes": a technical lineage the paper's citations carry; it was also the team's account unmarked. The record keeps the Boyd entry and the generated list shows it.
+- Cut "which applies control engineering to economic networks" after the 2018 framework: the journal link shows it.
+- Cut the three background descriptors (Bernardineli "a physicist, by his profile", Shorish "trained in economics", Paruch's quoted mathematical background) and the Springer chapter link: the backgrounds sentence is the team's marked account, and the record holds the person entries with each source.
+- Cut "and Flexo MMS" after OpenSysML, and "thanked in AUTHORS.txt" after Clark: the record carries both.
+- "Part I": not in the prose or the list titles (the record's title for the paper omits it; its note says why).
+- Special-case sentences cite only works whose sources support the attributes: the Filecoin review (public debate stated), the RAI design record ("highly automated" stated), the CV's Edinburgh entry.
+- The fresh reader's walk (R-11) and the supervisor's confirmation of the nine defaults remain to do; the YouTube links for workshops 2 and 3 and any Shorish channel under his own name were not found (w5-pass3.md).
+- Link check on the record's 86 URLs (`scripts/check_history_links.py`, no credentials): 85 ok, 1 blocked (doi.org/10.1002/iis2.70203, Wiley bot challenge; Crossref gives the record), 0 FAIL.

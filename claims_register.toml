@@ -6040,343 +6040,6 @@ source = "WP33 P7 wayfinding read"
 note = "The case's hardware values are illustrative and its requirement limits come from the data, not a mission (case-model.md, what the case leaves out; paper C.8)."
 
 [[claim]]
-id = "C512"
-fragment = "This page acknowledges the people and the human lineage of this work, which the paper&rsquo;s citations cannot carry."
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-decisions.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "The page's purpose, the supervisor's statement (WP37-decisions.md, 'on the page's purpose'); the page's own account of itself."
-
-[[claim]]
-id = "C513"
-fragment = "In our own account, it came not from an academic group but from a contract research and engineering firm,"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-decisions.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "The team's own account (the supervisor's direction and his wording 'contract research and engineering firm'); no public source says it and none is cited; marked 'In our own account'."
-
-[[claim]]
-id = "C514"
-fragment = "founded in 2017 ... as BlockScience and now the ... Dynamical Systems Group"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w1-history.md",
-  "file:work-packages/WP37-rounds/w2-people.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: founded 2017, 'originally named BlockScience' (https://michael.zargham.org and the CV, read 2026-11-12); the firm's own site uses Dynamical Systems Group (https://www.dynamicalsystemsgroup.com). No rebrand date is stated, by decision."
-
-[[claim]]
-id = "C515"
-fragment = "We perform requirements, architecture, design, simulation and analysis for clients,"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-decisions.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "The supervisor's exact sentence, present tense, the firm's voice (WP37-decisions.md, after reading the draft in the browser); marked by the opening 'In our own account'; the public record shows the activities by linked works, not as one statement (w1-history.md section 9)."
-
-[[claim]]
-id = "C516"
-fragment = "Before the firm: <span class=\"n\">Zargham</span>&rsquo;s convex optimization"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w2-people.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced by Crossref, read 2026-11-12: https://doi.org/10.1109/CDC.2009.5400289 ('A distributed Newton method for network optimization', Jadbabaie, Ozdaglar, Zargham, CDC 2009) and https://doi.org/10.1109/TAC.2013.2293221 ('Accelerated Dual Descent for Network Flow Optimization', IEEE Transactions on Automatic Control, April 2014). Both predate the firm's 2017 founding."
-
-[[claim]]
-id = "C517"
-fragment = "geometric programs for ... protecting networks against spreading processes"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w2-people.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: https://doi.org/10.1109/TCNS.2014.2310911 ('Optimal Resource Allocation for Network Protection Against Spreading Processes', Preciado, Zargham, Enyioha, Jadbabaie, Pappas; IEEE Transactions on Control of Network Systems 1(1), March 2014; Crossref authors, read 2026-11-12); the abstract names Geometric Programming (https://arxiv.org/abs/1309.6270). The full texts say 'geometric program'. 'And others' stands for the other four authors."
-
-[[claim]]
-id = "C518"
-fragment = "354 citations on Google Scholar, 12 November 2026"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w2-people.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: Google Scholar profile https://scholar.google.com/citations?user=bbdc3vkAAAAJ, count 354 re-read by W3 on 2026-11-12 (Crossref shows 227 for the same DOI; the page names Google Scholar)."
-
-[[claim]]
-id = "C519"
-fragment = "the form of <span class=\"n\">Boyd</span> et al. ... that this method&rsquo;s frontier takes."
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w2-people.md",
-  "bib:boyd2007tutorial",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "The paper's Boyd, Kim, Vandenberghe and Hassibi citation, 'A Tutorial on Geometric Programming', Optimization and Engineering, March 2007 (https://doi.org/10.1007/s11081-007-9001-7, Crossref, read 2026-11-12)."
-
-[[claim]]
-id = "C520"
-fragment = "With Preciado and <span class=\"n\">Zixuan Zhang</span> came the ... 2020 journal version ... of the 2018 state-space framework, which applies control engineering to economic networks."
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w2-people.md",
-  "file:work-packages/WP37-rounds/w4-leads-b.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced, Crossref record read 2026-11-12: https://doi.org/10.1007/s41109-020-0254-9, Applied Network Science 5(1), 19 March 2020, authors Zixuan Zhang, Michael Zargham, Victor M. Preciado; its reference list cites 'A State-Space Modeling Framework for Engineering Blockchain-Enabled Economic Systems' arXiv:1807.00955 by the same three authors (the supervisor: it is the journal version); the abstract: 'drawing on concepts from differential games, control engineering, and stochastic dynamical systems ... a methodology to model, simulate, and engineer' economic networks. Preciado co-wrote the geometric-program paper of the row above (Crossref). The page cites the journal paper in place of the preprint, and names the paper by no title because the title carries the setting's vocabulary."
-
-[[claim]]
-id = "C521"
-fragment = "was implemented by <span class=\"n\">Joshua Jodesty</span> and designed by <span class=\"n\">Michael Zargham</span>, <span class=\"n\">Markus Koch</span> and <span class=\"n\">Matthew Barlin</span>"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w1-history.md",
-  "file:work-packages/WP37-rounds/w2-people.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: AUTHORS.txt, 'originally implemented by Joshua E. Jodesty and designed by Michael Zargham, Markus B. Koch, and Matthew V. Barlin in 2018' (https://github.com/cadCAD-org/cadCAD/blob/master/AUTHORS.txt, read 2026-11-12). The page credits the file's statement and no more."
-
-[[claim]]
-id = "C522"
-fragment = "extended by <span class=\"n\">Danilo Bernardineli</span> ( ... a physicist, by his profile ... ) and <span class=\"n\">Emanuel Lima</span>"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w1-history.md",
-  "file:work-packages/WP37-rounds/w2-people.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: AUTHORS.txt, 'upgrades and improvements were further committed by Danilo L. Bernardineli, Tyler D. Mace and Emanuel Lima'; the physicist line is his GitHub bio, 'atmosphere physicist' (https://github.com/danlessa). Spelling 'Bernardineli' follows the public sources (AUTHORS.txt, Zenodo records), pending the supervisor's word (open-items.md)."
-
-[[claim]]
-id = "C523"
-fragment = "<span class=\"n\">Jamsheed Shorish</span> ( ... trained in economics ... ) co-wrote ... Generalized Dynamical Systems ... presented it in video"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w1-history.md",
-  "file:work-packages/WP37-rounds/w2-people.md",
-  "file:work-packages/WP37-rounds/w4-leads-a.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: Shorish co-author of the paper on Generalized Dynamical Systems (WU Vienna record, https://research.wu.ac.at/de/publications/generalized-dynamical-systems-part-i-foundations/, DOI 10.57938/e8d456ea-d975-4111-ac41-052ce73cb0cc; the page omits 'Part I' by the supervisor's ruling); economics degree, Carnegie Mellon (https://genealogy.repec.org/pages/psh169.html); the video: https://youtu.be/8t-FKDzrnmA ('Representation | The Crosswalk Problem: Reachability, Admissibility & GDS', channel Dynamical Systems Group, oEmbed read 2026-11-12), the first of a four-video series presented by Shorish per the firm's blog post (w4-leads-a.md B6, V2)."
-
-[[claim]]
-id = "C524"
-fragment = "<span class=\"n\">Andrew &ldquo;Octopus&rdquo; Penland</span>, a research engineer at BlockScience, led ... workshops on MAIDs, GDS and cadCAD"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w4-leads-a.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: https://blog.block.science/complex-systems-modeling-maids-gds-cadcad/ ('Led by Octopus, a Research Engineer at BlockScience', blog dated 28 Oct 2024, read 2026-11-12; HTTP 200). The surname Penland is the supervisor's list; the only public page with the surname is the Token Engineering Academy team page (https://te-academy.netlify.app/about, 'Andrew Penland, Ph.D. (a.k.a. Octopus)'), which does not name the firm; the match rests on the nickname (open-items.md)."
-
-[[claim]]
-id = "C525"
-fragment = "<span class=\"n\">Kris Paruch</span> ( ... a mathematical background with focus on economic modeling ... ) co-wrote ... Economic Games as Estimators"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w1-history.md",
-  "file:work-packages/WP37-rounds/w2-people.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Paruch's own words in the linked 2018 post (https://web.archive.org/web/2022/https://medium.com/crypto3conomics/token-engineering-from-an-economic-perspective-b6c464f20241): 'Having a mathematical background with focus on economic modeling'; co-author of 'Economic Games as Estimators' (https://doi.org/10.1007/978-3-030-53356-4_8, Crossref authors)."
-
-[[claim]]
-id = "C526"
-fragment = "<span class=\"n\">Rohan Mehta</span> wrote ... gds-core ... and ... gds-axelrod ... ; gds-core credits the ... MSML ... and bdp-lib of <span class=\"n\">Sean McOwen</span>."
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w1-history.md",
-  "file:work-packages/WP37-rounds/w2-people.md",
-  "file:work-packages/WP37-rounds/w4-leads-a.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: gds-core README credits, 'Author: Rohan Mehta' and 'Architectural inspiration: Sean McOwen (MSML, bdp-lib)' (https://github.com/DynamicalSystemsGroup/gds-core); gds-axelrod is public (unauthenticated GitHub API private=false, HTTP 200 on the page, read 2026-11-12), description 'Axelrod's tournament built on the GDS compositional game theory ecosystem'; contributors rororowyourboat 13, danlessa 1, mzargham 1, first commit by 'rohan' (w4-leads-a.md section 2). Mehta's role as the repository shows it: author of the code."
-
-[[claim]]
-id = "C527"
-fragment = "<span class=\"n\">Andrew Clark</span>, thanked in AUTHORS.txt, wrote with <span class=\"n\">Alexander Mihailov</span> and <span class=\"n\">Zargham</span> a ... community-currency model ... (2023) developed with the Red Cross and Grassroots Economics."
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w2-people.md",
-  "file:work-packages/WP37-rounds/w4-leads-a.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: AUTHORS.txt thanks list names Andrew Clark; Crossref record read 2026-11-12, https://doi.org/10.1007/s10614-023-10445-9, 'Complex Systems Modeling of Community Inclusion Currencies', Computational Economics 64(2), 1259-1294, online 28 Sep 2023, authors Andrew Clark, Alexander Mihailov, Michael Zargham; the public code https://github.com/DynamicalSystemsGroup/Community_Inclusion_Currencies README: 'Originally developed 2018-2021 in collaboration with the Red Cross and Grassroots Economics'. The paper's abstract describes a blockchain form of local complementary currency; the page says 'community-currency model' only and does not call the work cryptocurrency-free. The journal page was not readable by the worker (cookie redirect), so the full text is unchecked."
-
-[[claim]]
-id = "C528"
-fragment = "In our own account, <span class=\"n\">Jakob Hackel</span> and <span class=\"n\">Carolina Riascos-&Aacute;lvarez</span>"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-decisions.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "The team's own account (supervisor's rulings on Hackel and Carolina); no client or project detail. Carolina's GitHub handle CarolinaRiascos: her own site https://carolinariascos.github.io/criaal_website/ ('Carolina Riascos-Álvarez', link 'github' to https://github.com/CarolinaRiascos), read 2026-11-12; the account's commits are by 'Carolina_Riascos'; no firm repository lists her, so the handle is confirmed as hers, not as the firm's contributor. The site spells the surname with a hyphen; the page follows it."
-
-[[claim]]
-id = "C547"
-fragment = "in our own account of the team, its backgrounds are computer science, control, economics, physics and mathematics."
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w2-people.md",
-  "file:work-packages/WP37-decisions.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "The team's own account of the team, marked. Computer science is the supervisor's word; economics, physics and mathematics are shown by the credit sentence's links; control by Zargham's record in the second paragraph."
-
-[[claim]]
-id = "C548"
-fragment = "review of two ... competing Filecoin proposals ... (2023), debated publicly on GitHub and Slack"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w4-leads-b.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: https://blog.block.science/reviewing-the-fip-0056-and-cdm-debate-on-filecoin/ (dated 2023-03-22; 'independent review at the Filecoin Foundation's request' of two competing proposals; 'The debate was conducted publicly on GitHub and Slack', read 2026-11-12). Named as a special case where the work was highly public, by the supervisor's rule; no attribute beyond what the post states."
-
-[[claim]]
-id = "C549"
-fragment = "the RAI controller, a highly automated system, in its ... design record ... (2021) and in <span class=\"n\">Zargham</span>&rsquo;s ... talk at a workshop in Edinburgh (ICMS), October 2024"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w4-leads-b.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: https://zenodo.org/records/10474385 (published 2021-04-09; Zenodo API read 2026-11-12: PID controllers, a rate set by rule, so 'highly automated'; only that attribute is source-stated for RAI); the talk 'Crafting Reliable Rules: RAI Case Study' at the Mathematics for Governance Design Workshop, Edinburgh, Oct 2024 is in the supervisor's CV (https://michael.zargham.org/cv.pdf, read 2026-11-12; ICMS hosted the workshop, https://icms.ac.uk/archive/workshop/mathematics-for-governance-design-a-mathematics-for-humanity-workshop/). No page says University of Edinburgh."
-
-[[claim]]
-id = "C550"
-fragment = "<span class=\"n\">Zargham</span> serves on the ... NumFOCUS Advisory Council ... the firm is a ... community sponsor"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w1-history.md",
-  "file:work-packages/WP37-rounds/w2-people.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: https://numfocus.org/community/people (Advisory Council); https://numfocus.org/sponsors (Community Sponsors, 'Dynamical Systems'), read 2026-11-12."
-
-[[claim]]
-id = "C551"
-fragment = "PyData NYC 2023 ... and ... SciPy 2026 ... talks are public."
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w2-people.md",
-  "file:work-packages/WP37-rounds/w4-leads-b.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: https://www.youtube.com/watch?v=vr6sIfjGmLQ ('Michael Zargham - Crafting Reliable Rules with Robust Control', PyData, uploaded 2023-11-29, read 2026-11-12); https://pretalx.com/scipy-2026/talk/TBDWJZ/ (talk, 17 July 2026)."
-
-[[claim]]
-id = "C552"
-fragment = "The team works on and with ... OpenMBEE ... <span class=\"n\">Zargham</span> as a ... maintainer across ... OpenSysML ... and Flexo MMS; in our own account, this project is part of a synthesis"
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-rounds/w2-people.md",
-  "file:work-packages/WP37-decisions.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 fix"
-note = "Sourced: https://www.dynamicalsystemsgroup.com/partners (the firm helps shape OpenMBEE's roadmaps); https://michael.zargham.org/research (read 2026-11-12: 'OpenMBEE: maintainer since 2026, working across the OpenSysML and Flexo MMS tool ecosystem'); https://github.com/Open-MBEE/OpenSysML. The synthesis-effort clause is the supervisor's statement of the project's place, marked 'in our own account'."
-
-[[claim]]
 id = "C529"
 fragment = "it extends the components of PCA to hyperbolic space with horospherical projections, maximizing a variance"
 file = "paper/paper.ipynb"
@@ -6659,3 +6322,216 @@ status = "backed"
 disposition = "keep"
 source = "WP35 build"
 note = "The readout's limits (5) and (6): one run per seed of the planted generator, four planted tables and two cubesat regimes; the paper's method was not run on graphs embedded in hyperbolic space."
+
+[[claim]]
+id = "C547"
+fragment = "This page acknowledges the people and the human lineage of this work, which the paper&rsquo;s citations cannot carry: it is the synthesis and publication of a long-running endeavour with many contributors."
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:work-packages/WP37-decisions.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "The page's purpose and the risk it offsets, the supervisor's statements (WP37-decisions.md); the page's own account of itself. Kind: page (trace.md row 1)."
+
+[[claim]]
+id = "C548"
+fragment = "In our own account, this work came not from an academic group but from a contract research and engineering firm, ... as BlockScience and now the"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record ids 2017-founded (https://michael.zargham.org), 2017-dsg-site (https://www.dynamicalsystemsgroup.com), 2026-firm-description (https://www.dynamicalsystemsgroup.com/about, team-account). Founding year and the earlier name sourced; no rebrand date by decision; the firm's description is the supervisor's wording, marked."
+
+[[claim]]
+id = "C549"
+fragment = "We perform requirements, architecture, design, simulation and analysis for clients,"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-decisions.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record id 2026-firm-description, team-account: the supervisor's exact sentence in the firm's present tense (WP37-decisions.md)."
+
+[[claim]]
+id = "C550"
+fragment = "Before the firm: <span class=\"n\">Zargham</span>&rsquo;s convex optimization"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record ids 2014-dual-descent (https://doi.org/10.1109/TAC.2013.2293221, IEEE TAC, April 2014) and 2014-network-protection (https://doi.org/10.1109/TCNS.2014.2310911, March 2014, geometric programming in the abstract). Authors per Crossref."
+
+[[claim]]
+id = "C551"
+fragment = "With <span class=\"n\">Preciado</span> and <span class=\"n\">Zixuan Zhang</span> came the ... 2020 journal version ... of the 2018 state-space framework"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record ids 2020-state-space-journal (https://doi.org/10.1007/s41109-020-0254-9, Zhang, Zargham, Preciado) and 2018-state-space (arXiv 1807.00955, in the record, not linked)."
+
+[[claim]]
+id = "C552"
+fragment = "cadCAD ... was implemented by <span class=\"n\">Joshua Jodesty</span> and"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record ids 2018-cadcad-repo (https://github.com/cadCAD-org/cadCAD), 2018-authors (AUTHORS.txt URL: implemented, designed by the three, upgrades by Bernardineli and Lima), 2019-cadcad-origin (https://blog.block.science/introducing-complex-adaptive-dynamics-computer-aided-design-cadcad/, 3 June 2019). Barlin credited as AUTHORS.txt has him."
+
+[[claim]]
+id = "C553"
+fragment = "<span class=\"n\">Jamsheed Shorish</span> co-wrote ... Generalized ... Dynamical Systems"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record ids 2022-gds (WU record), 2022-gds-playlist (https://www.youtube.com/playlist?list=PLmWm8ksQq4YJrB72Na_JB-o8Xu2JLj7h9, Shorish presenting per the firm's post), 2021-psuu (https://blog.block.science/how-to-perform-parameter-selection-under-uncertainty/, byline Paruch and Shorish). The paper is not numbered, by ruling."
+
+[[claim]]
+id = "C554"
+fragment = "<span class=\"n\">Andrew &ldquo;Octopus&rdquo; Penland</span>, a research engineer at BlockScience, led"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record ids 2024-workshop-1 (https://www.youtube.com/watch?v=GK5oRDTa72o), 2024-maids-post (blog, 'a Blockscience Research Engineer'), person-penland (surname from the public record; identity with Octopus from the supervisor's first message)."
+
+[[claim]]
+id = "C555"
+fragment = "<span class=\"n\">Rohan Mehta</span> wrote ... gds-core ... gds-axelrod"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record ids 2026-gds-core, 2026-gds-axelrod, 2023-msml (URLs in history.yaml); gds-core's README credits Mehta as author and McOwen for architectural inspiration."
+
+[[claim]]
+id = "C556"
+fragment = "<span class=\"n\">Andrew Clark</span> wrote with ... Mihailov ... community-currency model"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record id 2023-community-currency (https://doi.org/10.1007/s10614-023-10445-9); purpose and collaboration named, the implementation form not (default 7); the model repository's README gives the Red Cross and Grassroots Economics collaboration."
+
+[[claim]]
+id = "C557"
+fragment = "In our own account, <span class=\"n\">Jakob Hackel</span> and"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record ids person-hackel (team-account), person-riascos (https://github.com/CarolinaRiascos, team-account), 2023-client-projects, 2026-backgrounds: the supervisor's sentence on undisclosed client work and the team's backgrounds, marked as the team's account; no client and no detail."
+
+[[claim]]
+id = "C558"
+fragment = "Special cases where the work was highly public:"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record ids 2023-fip-0056 (https://blog.block.science/reviewing-the-fip-0056-and-cdm-debate-on-filecoin/, 'debate conducted publicly on GitHub and Slack'), 2021-rai-design (https://zenodo.org/records/10474385; only 'highly automated' is source-stated), 2024-edinburgh (https://michael.zargham.org/cv.pdf, the CV alone). All special_case."
+
+[[claim]]
+id = "C559"
+fragment = "<span class=\"n\">Zargham</span> serves on the ... NumFOCUS Advisory ... Council"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record ids 2022-numfocus-council, 2026-numfocus-sponsor, 2023-pydata-nyc (https://www.youtube.com/watch?v=vr6sIfjGmLQ), 2026-scipy-talk (https://pretalx.com/scipy-2026/talk/TBDWJZ/)."
+
+[[claim]]
+id = "C560"
+fragment = "The team works on and with ... OpenMBEE"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record ids 2026-openmbee (https://www.dynamicalsystemsgroup.com/partners), 2026-maintainer (https://michael.zargham.org/research), 2026-opensysml (https://github.com/Open-MBEE/OpenSysML); the synthesis effort is the team's account (2026-synthesis), marked."
+
+[[claim]]
+id = "C561"
+fragment = "With computers, fast but with confidence."
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:work-packages/WP37-decisions.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "The supervisor's own phrase for the image of the team (WP37-decisions.md, on the page's storytelling); kept by default 6 unless the fresh reader's walk says it does not earn its place. Kind: page (trace.md)."
