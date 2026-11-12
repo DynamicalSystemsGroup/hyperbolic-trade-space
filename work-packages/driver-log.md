@@ -228,6 +228,21 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The history page fixed against the record (00:20).** df0cad9: the prose rewritten as the view of history.yaml
+  under the thinness rule, 418 words of prose (inside the tests' bounds, above the 350 aim), in the scope's
+  structure: the purpose sentence; the firm as a contract research and engineering firm with the activities
+  sentence in his words; before the firm (his convex optimization and the GGP network-protection work with
+  Preciado, the 2020 journal version with Zhang); cadCAD with its three designers and implementer, Bernardineli and
+  Lima; GDS and Shorish's video series; the parameter-selection article (Shorish and Paruch, 2021); Penland's
+  workshops on MAIDs, GDS and cadCAD; Mehta's gds-core and gds-axelrod and McOwen's MSML; Clark's community-currency
+  paper with the Red Cross and Grassroots Economics, the form unnamed; Hackel and Riascos Álvarez on client work the
+  firm cannot name; the backgrounds sentence marked as the team's account; the two highly public special cases
+  (the Filecoin proposals review, the RAI controller with the ICMS talk) marked as such; the community roles; OpenMBEE
+  and OpenSysML; the closing phrase. The claims rows per sentence, trace.md, screenshots and open-items.md
+  regenerated. The assistant's checks and a stage rebuild run; CI dispatched (43287987608). The page goes to the
+  supervisor in the browser when the stage is up, with the open items (spellings, the handle, Barlin's reach, the
+  "possibly also" names, the unfetched Medium links, the closing phrase).
+
 - **WP37 D-9 on dev: the record, its generator and its tests (23:30).** history.yaml is in (50 KB), the generator
   renders the dated list beneath the prose at build time, and the tests tie every link, name and year on the page
   to a record entry; the link check reads the record and trace.md derives from its claim kinds. The assistant's
