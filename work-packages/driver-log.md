@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **78cd40a, the assistant's checks (01:25).** Ruff and format clean, lock current, vocabulary 0 new, attribution 0,
+  and the fast suite green on this Mac for the first time since the data gate: 1878 passed, 0 failed. Accepted into
+  the cascade; the slow marker's verdict comes from CI (run 43163272119).
+
 - **78cd40a, the rendered pass (01:15).** Stage rebuilt at 78cd40a on 8791. Eight figures numbered without a gap
   (the chart 6, the association 7, the ternary pair 8); no "eight metrics" left; Section 6's certificate sentence at
   K = 2; the K = 2 paragraph points at Figures 6 and 7; the lattice sentence stands in the elasticity sentence;
