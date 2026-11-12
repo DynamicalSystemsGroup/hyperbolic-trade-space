@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **755e151, the fast verdict (22:20).** On this Mac: 4 failed, 1871 passed; three are the data commit's known reds
+  (C261, the datasets table digest, the v1-v2 register rows), and `test_site.py::test_every_paper_key_is_a_label_of_
+  the_built_paper` failed only against the main checkout's stale paper build (11:49): in the stage worktree built at
+  755e151 the whole site test file passes (49 passed, the new label `fig-plane-case` resolved). Nothing new broken by
+  the choosing-K unit on the fast marker; CI dispatched on the head for both platforms and the slow marker. Accepted
+  into the cascade with the three routed items (Figure 3's caption, the cold read of Figures 6 to 8, the certificate
+  sentence and K = 2 jitter keys in the sensitivity unit).
+
 - **755e151, the rendered pass (22:05).** Stage rebuilt at 755e151 on 8791. Section 9's "Two terms" paragraph, D.15's
   two tables (the checks pick K = 2 on both regimes) and Figures 6 to 8 (planes, chart, association at K = 2) render as
   the unit describes; no stderr on either page. Two findings routed: Figure 3's caption still says "the eight
