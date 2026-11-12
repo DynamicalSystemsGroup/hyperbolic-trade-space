@@ -66,3 +66,26 @@ acronym never expanded in that document, and jargon doing no work; the dispositi
 word, or define at first use, never a parenthetical gloss at every later use. The checker can list acronyms and
 glossary terms per document with the line of first use and whether a definition precedes it; the vocabulary
 check already covers the project's own terms.
+
+## The supervisor, on Appendix G.2 (verbatim)
+
+> one more observation: G.2 two is an important sanity check but reads like LLM residual in the paper. my intuition
+> is we keep it in its yaml form for our own checking but we may want to drop it from the supporting materials.
+> or maybe we just drop the "verdict" column? from the view presented in the supporting materials? in practice i
+> like the rigor of this check but as written if feel like it undermines rather than supports. i want to keep
+> traceability records and assessments without giving the feeling that no human validated the citations.
+> ultimately we humans have to be happy with the way the cited material was used, an LLM cannot read everything
+> and has fundamental limits in terms of whether it can assess how we interpreted and reflected the cited claims
+> into the context of this paper.
+
+**The assistant's reading and call.** The record stays and the view changes. `paper/reading_pass.yaml` remains the
+traceability record of the reading pass (every cited sentence, the source read, what it says, the status), tested
+as now, and the claims rows that cite its lines stay. Appendix G.2's rendered table of sentence, verdict and why
+goes; in its place G.2 states the check in a few sentences: what was done (each citing sentence read against the
+source named, the sentence kept, reworded or cut), its counts (sentences, sources, rewordings, cuts), where the
+record lives (`paper/reading_pass.yaml` in the repository), and whose the readings are: the authors', who
+validate the record before release. That last sentence is a claim about the supervisor's own act, so it enters
+the paper only when he has done it: the reading pass becomes an item of his close read before release, listed
+with the entry surfaces, and the sentence is worded to what he has done. No machine verdict is rendered on any
+surface. A unit through the paper notebook's queue: the G.2 generator, a test that G.2 renders the summary and no
+verdict column, the register rows and the ledger (a cut of the table's words), the review list.
