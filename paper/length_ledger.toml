@@ -1073,3 +1073,12 @@ section = "Results"
 words_removed = 1
 no_longer_did = "Corollary 1 said 'result first order' in its hypotheses line and again 'to first order' in its statement, and its sketch said the Hessian and gradient are 'set against each other'; the box now names the noise on the log-metrics, the noise-free fit, A5, and 'to first order' at 'lowers', net one word"
 authority = "WP29 acceptance rider (WP29-decisions.md, Acceptance), reads2 returns a2, b2, d2"
+
+# WP30 cascade: the generated sentences of Results on the regenerated record (thirteen metrics, 3,000
+# designs per regime) run one word longer than the ceiling set on the earlier record.
+[[raise]]
+date = "2026-11-11"
+section = "Results"
+words_added = 1
+job = "the K = 1 and K = 2 and 3 generated sentences of Results name the regenerated record's contending sets and counts (seven metrics at K = 1 where five were named), one word beyond the ceiling set on the earlier record"
+reader = "the expert reader checking the case's numbers of record against the tables"

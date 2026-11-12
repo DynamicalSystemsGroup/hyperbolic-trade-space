@@ -910,7 +910,7 @@ backing = ["gen:paper/generate_findings.py::nondominated_sentence", "test:tests/
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "706 designs: nondominated 126 on 4 and 659 on all 8 attributes, no count moving over the five regenerations (the sentence num-nondominated, from case.nondominated_counts); the test pins that none of those counts is typed in the body and that each is the results file's value; 'on this case' scopes it"
+note = "2134 designs: nondominated 236 on 4 and 2134 on all 13 attributes, no count moving over the five regenerations (the sentence num-nondominated, from case.nondominated_counts); the test pins that none of those counts is typed in the body and that each is the results file's value; 'on this case' scopes it"
 
 [[claim]]
 id = "C065"
@@ -5232,7 +5232,7 @@ note = "The smallest eigenvalue of a Hessian is the smallest second-order change
 
 [[claim]]
 id = "C424"
-fragment = "the one-term fit has 7.1 in the primary regime and 0.017 in the stock regime"
+fragment = "The case's one-term fit has 0.17 in the primary regime and 0.21 in the stock regime"
 file = "paper/supporting_material.ipynb"
 anchor = "D.12 The conditioning of the exponents"
 kind = "R"
@@ -5667,7 +5667,7 @@ note = "The statement is first order, interior solution, small noise, Gaussian, 
 
 [[claim]]
 id = "C463"
-fragment = "The predicted shift grows as `conditioning_` falls and measured shifts agree with it within the spread of the draws at half a percent in both regimes and at 2 percent in the primary one"
+fragment = "At half a percent in the primary regime the predicted largest shift agrees with the measured mean within the spread of the draws; in every other row the prediction exceeds the measurement"
 file = "paper/supporting_material.ipynb"
 anchor = "D.18 The noise-ridge corollary against injected noise"
 kind = "R"
@@ -5677,8 +5677,8 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "WP29 placement (OD4: the injection table is the corollary's demonstration)"
-note = "Eight draws per cell, seeds 100 to 107; the noise is injected into noise-free data of record; the 5 and 10 percent cells are outside the formula's range and are not read as confirmation."
+source = "WP29 placement (OD4: the injection table is the corollary's demonstration); narrowed to the regenerated table in the WP30 cascade"
+note = "Eight draws per cell, seeds 100 to 107; the noise is injected into noise-free data of record; only the primary regime's half-percent row agrees within the spread (the regenerated data of 3,000 designs per regime); every other row is read as the prediction exceeding the measurement."
 
 [[claim]]
 id = "C464"

@@ -371,16 +371,17 @@ def test_the_case_is_described_as_power_mass_and_attitude_control():
 
 
 def test_generated_sentences_name_the_subsystems_from_the_one_mapping():
-    """Subsystems come from ``CaseSpec.subsystems``; mass enters only in the primary regime."""
+    """Subsystems come from ``CaseSpec.subsystems``; mass enters only in the stock regime."""
     import case
 
     spec = case.CUBESAT
     nb = _nb(PAPER_NB)
     k1 = _out_text(next(c for c in _code_cells(nb) if c.id == "num-k1"))
     reg = _out_text(next(c for c in _code_cells(nb) if c.id == "num-regimes"))
-    assert "across controls, power and energy, plus mass:" in k1
-    assert "The stock set spans controls plus power and energy" in reg
-    assert "mass enters only in the primary regime" in reg
+    assert "across controls, power and energy, plus cost:" in k1
+    assert "the primary set lies inside the stock set, which adds total mass" in reg
+    assert "The stock set spans controls, power and energy, mass, plus cost" in reg
+    assert "mass enters only in the stock regime" in reg
     assert spec.subsystems["total_mass_kg"] == "mass"
 
 
@@ -2201,9 +2202,10 @@ def test_figure_9_names_the_regions_the_contending_sets_of_its_two_panels_give()
         {"pointing error", "control effort"},
         {"pointing error", "total mass", "control effort"},
     ]
-    assert contending["B"][0] == contending["B"][1] == {
-        "settling time", "control effort", "depth of discharge"
-    }  # fmt: skip
+    assert contending["B"] == [
+        {"settling time", "depth of discharge"},
+        {"settling time", "control effort", "depth of discharge"},
+    ]  # the first region's one exponent above the labelling threshold is depth of discharge's
     for words in ("pointing error against control effort", "total mass against pointing error",
                   "settling time against control effort", "depth of discharge alone"):  # fmt: skip
         assert words in caption, words
@@ -2296,10 +2298,10 @@ def _injected_noise_rows(text: str) -> list[dict]:
 
 
 def test_d18_reads_the_corollary_against_injected_noise_as_the_table_licenses():
-    """WP29: D.18 says the predicted shift is larger where `conditioning_` is smaller, that it
-    agrees with the measured mean within the spread of the draws at 0.5 percent in both regimes and
-    at 2 percent in the primary one, and that the contending set changes where the prediction
-    exceeds the smallest active exponent (the Jaccard column falls)."""
+    """WP29, narrowed in the WP30 cascade to the regenerated table: D.18 says the predicted largest
+    shift agrees with the measured mean within the spread of the draws at half a percent in the
+    primary regime only, exceeds it in every other row, and that the contending set changes most at
+    10 percent noise in both regimes (the Jaccard column)."""
     nb = _nb(SUPPORT_NB)
     cell = next(c for c in _code_cells(nb) if c.id == "tab-D-injected_noise")
     rows = _injected_noise_rows(_out_text(cell))
@@ -2311,15 +2313,14 @@ def test_d18_reads_the_corollary_against_injected_noise_as_the_table_licenses():
         "measured largest shift (mean)",
         "spread of the draws",
     )
-    for key in (("cubesat-primary", "0.5"), ("cubesat-primary", "2.0"), ("cubesat-stock", "0.5")):
-        assert abs(f(by[key], pred) - f(by[key], meas)) <= f(by[key], spread), key
-    assert f(by[("cubesat-stock", "0.5")], pred) > f(by[("cubesat-primary", "0.5")], pred)
-    assert f(by[("cubesat-stock", "0.5")], "conditioning_") < f(
-        by[("cubesat-primary", "0.5")], "conditioning_"
-    )
+    agree = ("cubesat-primary", "0.5")
+    assert abs(f(by[agree], pred) - f(by[agree], meas)) <= f(by[agree], spread)
+    for key, r in by.items():
+        if key != agree:
+            assert f(r, pred) > f(r, meas), key
     for regime in ("cubesat-primary", "cubesat-stock"):
         jac = [f(by[(regime, d)], "contending-set Jaccard") for d in ("0.5", "2.0", "5.0", "10.0")]
-        assert jac == sorted(jac, reverse=True) and jac[-1] < jac[0]
+        assert jac[-1] == min(jac) and jac[-1] < 1  # the set changes most at 10 percent
     d18 = next(c for c in nb.cells if c.id == "app-D-noise")
     assert "D.18" in _src(d18) and "injected" in _src(d18)
 
@@ -2389,15 +2390,20 @@ def test_the_main_results_list_ends_with_what_the_method_does_not_claim():
 
 
 def test_section_9_prints_the_strongest_pair_to_the_digits_appendix_d4_prints():
-    """O-8 (WP25-review.md; WP28-retest.md G-6): Section 9's two Spearman values are D.4's, to three
-    decimals, so "+0.99" does not sit beside D.4's "no pair reaches 0.99"."""
+    """O-8 (WP25-review.md; WP28-retest.md G-6), narrowed in the WP30 cascade: a Spearman value in
+    Section 9's regime sentence is D.4's, to three decimals, so "+0.99" does not sit beside D.4's
+    "no pair reaches 0.99". On the regenerated data the one-axis pair of both regimes (energy
+    balance and available power, D.4) has no member in a regime's own part of the contending set,
+    so the sentence prints no value and says the primary set lies inside the stock set."""
     sentence = _cell_out(PAPER_NB, "num-regimes")
     d4 = _cell_out(SUPPORT_NB, "tab-D-regime_comparison")
     values = re.findall(r"Spearman (\+\d\.\d{3}) and (\+\d\.\d{3}) over", sentence)
-    assert values, sentence
-    for v in values[0]:
+    for v in (v for pair in values for v in pair):
         assert v in d4, v
         assert float(v) < 0.99
+    assert not values
+    assert "energy balance and available power" in d4
+    assert "the primary set lies inside the stock set" in sentence
 
 
 def test_no_doubled_label_before_a_cross_reference():
@@ -2620,7 +2626,7 @@ def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_ap
     first = results.split("2.", 1)[0]
     assert "not the Pareto boundary" in first and "fitted reference surface" in first
     sentence = _cell_out(PAPER_NB, "num-nondominated")
-    assert "659 on all 8" in sentence
+    assert "236 on 4 attributes" in sentence and "2134 on all 13" in sentence
     assert "regenerations of the data under rounding-level" in sentence
 
 

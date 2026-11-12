@@ -377,8 +377,12 @@ def regime_sentence() -> Md:
     a, b = regs[0], regs[1]
     spec = case.CUBESAT
     ga, gb = spec.subsystems_of(sets[a]), spec.subsystems_of(sets[b])
-    only = [g for g in ga if g not in gb]
-    point = f": {_span(only)} enters only in the {a} regime" if only else ""
+    only_a, only_b = [g for g in ga if g not in gb], [g for g in gb if g not in ga]
+    point = "".join(
+        f": {_span(only)} enters only in the {r} regime"
+        for r, only in ((a, only_a), (b, only_b))
+        if only
+    )
     own_a, own_b = sets[a] - sets[b], sets[b] - sets[a]
     pair = _straddling_pair(regs, sets)
     if pair:
@@ -390,6 +394,10 @@ def regime_sentence() -> Md:
             f"designs, {_D3}); counting them as one, the {a} regime alone has "
             f"{_and(sorted(own_a))}, the {b} regime alone {_and(sorted(own_b))}"
         )
+    elif own_b and not own_a:
+        middle = f"; the {a} set lies inside the {b} set, which adds {_and(sorted(own_b))}"
+    elif own_a and not own_b:
+        middle = f"; the {b} set lies inside the {a} set, which adds {_and(sorted(own_a))}"
     else:
         middle = (
             f"; the {a} regime alone has {_and(sorted(own_a))}, the {b} regime alone "

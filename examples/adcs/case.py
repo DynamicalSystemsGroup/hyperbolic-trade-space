@@ -80,6 +80,10 @@ class CaseSpec:
         the single source of every sentence that says which subsystems a set of metrics spans.
     subsystem_order : tuple of str
         The order in which subsystems are listed in a sentence.
+    cost_only_vars : tuple of str
+        Design variables read only by the cost-subsystem attributes (the fleet size); the
+        regressor of a view with no cost attribute leaves them out, since nothing in the view
+        depends on them.
     """
 
     name: str
@@ -103,6 +107,7 @@ class CaseSpec:
     seed: int = 0
     subsystems: dict = field(default_factory=dict)
     subsystem_order: tuple = ()
+    cost_only_vars: tuple = ()
     requirements: dict = field(default_factory=dict)
     baseline_configuration: dict = field(default_factory=dict)
 
@@ -196,6 +201,7 @@ CUBESAT = CaseSpec(
     predictions_file="check_predictions_cubesat.csv",
     subsystems=dict(zip(_ATTRS, _SUBSYSTEMS, strict=True)),
     subsystem_order=("controls", "power and energy", "mass", "cost"),
+    cost_only_vars=("fleet_size",),
     # the model's four threshold requirements (cubesat.sysml, part budgets; the supervisor's values,
     # WP23-decisions.md, "The four thresholds"), each read as attribute <= limit; the launch budget
     # 105,770 USD is the total mass at the model's launch rate of 7,000 USD/kg (WP30 D-1, restated
@@ -1486,10 +1492,20 @@ def nondominated_counts(study):
     return pd.DataFrame(rows)
 
 
-def _features(spec, df):
-    """Configuration to regressor features in [0, 1]: log-scaled variables, ordinal categories."""
+def _features(spec, df, attrs=None):
+    """Configuration to regressor features in [0, 1]: log-scaled variables, ordinal categories.
+
+    With ``attrs`` (the attributes of a view) the design variables that only the cost attributes
+    read are left out when the view holds no cost attribute: a feature nothing in the view
+    depends on has no length scale to learn.
+    """
+    drop = set()
+    if attrs is not None and not any(spec.subsystems[a] == "cost" for a in attrs):
+        drop = set(spec.cost_only_vars)
     cols = []
     for c in spec.design_vars:
+        if c in drop:
+            continue
         lo, hi = spec.ranges[c]
         cols.append((np.log(df[c].to_numpy(float)) - np.log(lo)) / (np.log(hi) - np.log(lo)))
     for c, levels in spec.covariates.items():
@@ -1614,7 +1630,7 @@ def fit_regressor(study, view=None):
         LogAffinePreconditioner(orientation=orient, scaler="standard"),
         HyperbolicTradeSpace(temperature=tau),
     )
-    X = _features(spec, vs.feasible)
+    X = _features(spec, vs.feasible, vs.attrs)
     gp = GaussianProcessRegressor(
         kernel=ConstantKernel(1.0) * RBF(length_scale=np.ones(X.shape[1])) + WhiteKernel(0.1),
         normalize_y=True,
@@ -1642,7 +1658,7 @@ def proposals_table(study, reg):
     spec = study.spec
     preds = pd.read_csv(Path(spec.data_dir) / spec.predictions_file)
     zc = [c for c in preds.columns if c.startswith("pred_z")]
-    Zp, lvp = reg.model.predict_coordinates(_features(spec, preds))
+    Zp, lvp = reg.model.predict_coordinates(_features(spec, preds, reg.view.attrs))
     refit = np.c_[Zp, np.ravel(lvp)]
     rec = preds[[*zc, "pred_log_v"]].to_numpy()
     out = preds[["name", *spec.covariates, "hole_score", "distance_to_target"]].copy()

@@ -9,9 +9,11 @@ leaves the files unchanged, and an output image repeated by the inline backend i
 
 from __future__ import annotations
 
+import os
 import sys
 
 import nbformat
+from jupyter_client import KernelManager
 from nbclient import NotebookClient
 from paper_paths import PAPER
 
@@ -60,13 +62,27 @@ def execute(name: str, timeout: int = 1800) -> None:
     """Execute one notebook of ``paper/`` and write it back."""
     path = PAPER / name
     nb = nbformat.read(path, as_version=4)
-    NotebookClient(
-        nb,
-        timeout=timeout,
-        kernel_name="python3",
-        resources={"metadata": {"path": str(PAPER)}},
-        record_timing=False,
-    ).execute()
+    # The kernel talks over unix sockets (``ipc``): the default TCP transport makes the kernel print
+    # "[IPKernelApp] WARNING | Kernel is running over TCP without encryption" on every start, a
+    # line about the connection and not about the notebook.
+    # The kernel inherits the working directory, ``paper/`` (a ``resources`` path would make the
+    # kernel's start fail over this transport).
+    km = KernelManager(kernel_name="python3")
+    km.transport = "ipc"
+    here = os.getcwd()
+    os.chdir(PAPER)
+    try:
+        NotebookClient(
+            nb,
+            km=km,
+            timeout=timeout,
+            kernel_name="python3",
+            record_timing=False,
+        ).execute()
+    finally:
+        os.chdir(here)
+        if km.has_kernel:
+            km.shutdown_kernel(now=False)
     _tidy(nb)
     nbformat.write(nb, path)
     if name == "paper.ipynb":
