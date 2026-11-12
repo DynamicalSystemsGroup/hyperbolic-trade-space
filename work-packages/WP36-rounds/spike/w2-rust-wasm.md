@@ -157,8 +157,8 @@ to the last digit.
 - S-6 microlp: https://github.com/Specy/microlp/ and https://docs.rs/crate/microlp/0.4.0
 - S-7 minilp (archived 2022-09-22): https://github.com/ztlpn/minilp
 - S-8 highs crate: https://github.com/rust-or/highs
-- S-9 highs-js / npm `highs`: https://github.com/lovasoa/highs-js and https://www.npmjs.com/package/highs
-- S-10 slsqp crate and slsqp-rssl: https://docs.rs/crate/slsqp/latest and https://docs.rs/slsqp (slsqp-rssl: https://rust-digger.code-maven.com/crates/slsqp-rssl); read through a search summary, not the pages themselves
+- S-9 highs-js / npm `highs`: https://github.com/lovasoa/highs-js and https://registry.npmjs.org/highs (2026-11-12: corrected from https://www.npmjs.com/package/highs, which returns 403 to automated checks, to the npm registry record, per W3 sources)
+- S-10 slsqp crate and slsqp-rssl: https://docs.rs/crate/slsqp/latest and https://docs.rs/slsqp (slsqp-rssl: https://docs.rs/slsqp-rssl; 2026-11-12: corrected from https://rust-digger.code-maven.com/crates/slsqp-rssl, which returns 404, to docs.rs, per W3 sources); read through a search summary, not the pages themselves
 - S-11 argmin: https://argmin-rs.github.io/argmin/argmin/
 - S-12 Verus repository: https://github.com/verus-lang/verus
 - S-13 Verus project goals: https://raw.githubusercontent.com/verus-lang/verus/main/source/docs/project-goals.md
