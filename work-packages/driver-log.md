@@ -228,6 +228,17 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **a5cd754, the slow verdict (20:55).** Linux slow 5 failed / 393 passed, Windows slow 4 failed / 394 passed,
+  docs-paper green. All from the term order, in tests the unit did not run (it used the fast marker): two
+  `test_termination_record_for_k_terms` cases compare the estimator's permuted exponents row for row with the raw
+  solver's; two `test_term_aggregation_mean_shifts_score_by_log_k_over_kappa` cases compare the sum- and
+  mean-aggregation fits row for row, and the local reproduction shows the same terms in a different order (in one
+  case two of the three terms are identical rows, a genuine tie); and `test_sensitivity`'s results-file check reads
+  the paper's K=3 table in the new order against a results file analysed in the old. Returned to the cascade as two
+  units (the estimator tests and the order rule's tie-break, decided by the unit with the docstring kept truthful;
+  the sensitivity analysis re-run on the regenerations of record after the container commit). Nothing else on either
+  platform.
+
 - **The container proof, third run planned (20:20).** The chunked pool prediction landed (65dcd38; host peak memory
   7.27 GB to 1.83 GB, output hash unchanged per the PM's report) and the fitting page is back under its budget by
   subtraction (8d27d87, c64430e: 706 to 667 words, budget unchanged). The gate image is rebuilding at c64430e; the
