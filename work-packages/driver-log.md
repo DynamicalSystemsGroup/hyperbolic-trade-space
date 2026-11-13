@@ -228,6 +228,17 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **722ce86 fully green; two WP33 paper units accepted; head 69362b5 verified (17:45).** CI 43339340106: every job
+  green on both platforms, the nineteenth fully green head. On 69362b5: ruff, lock, vocabulary and attribution clean;
+  the fast suite 1936 passed, 19 skipped, 3 xfailed in 7:16. The Organization paragraph (eb08f27) routes by depth
+  (abstract and figure; headers and main results; whole text; the appendices; repository and container), 29 words
+  against the start head's 26, paid by cutting the 12-word PCA sentence that repeated D.16's chain, so net negative;
+  read as rendered on the rebuilt stage with its three links resolving. The Methods link (79015eb) now reads
+  "Appendix B, supporting material, L4.14 to L4.24" and opens the supporting material, net minus three words. Both
+  accepted. WP33's remaining items: the supporting material's audience sentence, the fresh U3 reader, the review
+  addendum. The WP37 second closing unit and the Appendix H notebook unit are running in their worktrees
+  (wp37close2, wp35hnb); 13 worktrees.
+
 - **G.2 return and the Appendix E fix accepted; head ebd26ee verified (17:10).** On ebd26ee: ruff, lock, vocabulary
   and attribution clean; the fast suite 1935 passed, 19 skipped, 3 xfailed (the Appendix H markers) in 7:17; CI
   43339340106 on 722ce86 still running its slow jobs with four of five green. The stage rebuilt at ebd26ee and the
