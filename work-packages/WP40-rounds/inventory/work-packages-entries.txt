@@ -1,0 +1,184 @@
+  9275 KB   45f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP28-review
+  8792 KB   58f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP30-review
+  8089 KB   21f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP32-review
+  4510 KB   37f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP35-review
+  4044 KB   38f | outside-code:1 outside-docs:0 wp-mentions:1 | work-packages/WP33-review  CODE=claims_register.toml
+  3805 KB   51f | outside-code:1 outside-docs:1 wp-mentions:4 | work-packages/WP30-rounds  CODE=scripts/wp30_cost_ladders.py
+  3646 KB   33f | outside-code:1 outside-docs:0 wp-mentions:3 | work-packages/WP29-review  CODE=paper/length_ledger.toml
+  1054 KB   31f | outside-code:0 outside-docs:0 wp-mentions:6 | work-packages/WP26-view-editor-feedback
+  1027 KB   20f | outside-code:4 outside-docs:2 wp-mentions:2 | work-packages/WP35-rounds  CODE=claims_register.toml,paper/generate_repro.py,paper/prior_art.yaml,tests/test_pa
+   782 KB    4f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP37-review
+   708 KB   20f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP27-review
+   563 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP10-claims-review.md
+   533 KB    1f | outside-code:1 outside-docs:0 wp-mentions:4 | work-packages/WP10-vocabulary-review.md  CODE=scripts/vocabulary_baseline.toml
+   467 KB   45f | outside-code:4 outside-docs:3 wp-mentions:12 | work-packages/WP23-rounds  CODE=examples/adcs/model_v2/diagnostic_pair.py,scripts/wp30_cost_ladders.py,tests/t
+   461 KB  122f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP28-inventory
+   376 KB   11f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP26-review
+   314 KB    5f | outside-code:1 outside-docs:0 wp-mentions:1 | work-packages/WP36-rounds  CODE=claims_register.toml
+   313 KB   29f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP28-retest
+   211 KB    1f | outside-code:2 outside-docs:0 wp-mentions:3 | work-packages/WP19-figure-review.md  CODE=claims_register.toml,paper/length_ledger.toml
+   203 KB    1f | outside-code:0 outside-docs:1 wp-mentions:4 | work-packages/driver-log.md
+   195 KB    1f | outside-code:3 outside-docs:3 wp-mentions:12 | work-packages/swap-evidence.md  CODE=examples/adcs/experiments/sensitivity.py,tests/test_cubesat_model.py,test
+   193 KB    2f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP39-rounds
+   191 KB    8f | outside-code:3 outside-docs:0 wp-mentions:1 | work-packages/WP37-rounds  CODE=claims_register.toml,scripts/history_record.py,tests/test_site.py
+   186 KB    1f | outside-code:1 outside-docs:0 wp-mentions:5 | work-packages/WP23-review.md  CODE=examples/adcs/model_v2/coverage.py
+   150 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP25-5-inventory.md
+   127 KB    1f | outside-code:0 outside-docs:0 wp-mentions:5 | work-packages/WP25-inventory.md
+   124 KB   18f | outside-code:2 outside-docs:0 wp-mentions:5 | work-packages/WP32-cells  CODE=claims_register.toml,pyproject.toml
+   118 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP28-inventory.md
+   100 KB    1f | outside-code:1 outside-docs:7 wp-mentions:4 | work-packages/WP10-decisions.md  CODE=paper/myst.yml
+    91 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP24-review.md
+    90 KB    1f | outside-code:0 outside-docs:1 wp-mentions:4 | work-packages/WP11-round-1
+    78 KB    1f | outside-code:0 outside-docs:2 wp-mentions:6 | work-packages/PM-BRIEF.md
+    65 KB    1f | outside-code:0 outside-docs:1 wp-mentions:5 | work-packages/WP10-scope-of-work.md
+    63 KB    1f | outside-code:0 outside-docs:2 wp-mentions:5 | work-packages/WP9-review.md
+    60 KB    1f | outside-code:0 outside-docs:1 wp-mentions:4 | work-packages/supervisor-review-list.md
+    59 KB    2f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP19-cold-reads-fig1
+    54 KB    1f | outside-code:0 outside-docs:0 wp-mentions:5 | work-packages/WP8a-scope-of-work.md
+    52 KB    1f | outside-code:0 outside-docs:2 wp-mentions:6 | work-packages/external-review-2026-11.md
+    45 KB    8f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP33-wayfinding
+    45 KB    1f | outside-code:2 outside-docs:1 wp-mentions:17 | work-packages/interface-contract.md  CODE=claims_register.toml,tests/test_interface_contract.py
+    44 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP4b-scope-of-work.md
+    41 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP15-scope-of-work.md
+    40 KB    1f | outside-code:0 outside-docs:0 wp-mentions:5 | work-packages/WP8a-decisions.md
+    39 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP27-review.md
+    36 KB    4f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP19-cold-reads-s5b
+    34 KB    1f | outside-code:1 outside-docs:0 wp-mentions:4 | work-packages/WP23-decisions.md  CODE=examples/adcs/model_v2/ledger_gate.py
+    33 KB    1f | outside-code:1 outside-docs:0 wp-mentions:1 | work-packages/WP37-decisions.md  CODE=claims_register.toml
+    33 KB    1f | outside-code:1 outside-docs:0 wp-mentions:0 | work-packages/WP30-build-notes.md  CODE=examples/adcs/experiments/definitions.py
+    33 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP30-scope-of-work.md
+    33 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP28-review.md
+    31 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP28-retest.md
+    31 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP24-scope-of-work.md
+    30 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP28-decisions.md
+    29 KB    1f | outside-code:0 outside-docs:0 wp-mentions:6 | work-packages/WP26-view-editor-feedback.md
+    29 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP23-closeout-scope-of-work.md
+    28 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/parallel-board.md
+    28 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP30-decisions.md
+    27 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP28-scope-of-work.md
+    27 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP25-3-scope-of-work.md
+    26 KB    3f | outside-code:0 outside-docs:2 wp-mentions:4 | work-packages/external-assessment-2026-11-09
+    26 KB    1f | outside-code:3 outside-docs:1 wp-mentions:15 | work-packages/interface-contract.toml  CODE=claims_register.toml,tests/test_check_script.py,tests/test_interfa
+    25 KB    1f | outside-code:2 outside-docs:0 wp-mentions:3 | work-packages/WP10-reading-pass.md  CODE=paper/generate_reading_pass.py,paper/reading_pass.yaml
+    25 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP9-scope-of-work.md
+    25 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP13-review.md
+    25 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP28-cut-list.md
+    25 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP30-gate-checklist.md
+    25 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP10-review-2.md
+    24 KB    1f | outside-code:0 outside-docs:1 wp-mentions:3 | work-packages/WP23-scope-of-work.md
+    24 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP29-scope-of-work.md
+    24 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP22-review.md
+    23 KB    1f | outside-code:0 outside-docs:2 wp-mentions:4 | work-packages/WP9-decisions.md
+    23 KB    1f | outside-code:0 outside-docs:0 wp-mentions:5 | work-packages/WP14-scope-of-work.md
+    22 KB    1f | outside-code:1 outside-docs:0 wp-mentions:0 | work-packages/WP35-amendment-1-scope.md  CODE=paper/length_ledger.toml
+    22 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP7-scope-of-work.md
+    22 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP1-scope-of-work.md
+    22 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP27-scope-of-work.md
+    22 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP25-4-scope-of-work.md
+    22 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP10-review.md
+    22 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP37-review.md
+    22 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP25-scope-of-work.md
+    20 KB    1f | outside-code:2 outside-docs:0 wp-mentions:3 | work-packages/WP35-decisions.md  CODE=claims_register.toml,paper/length_ledger.toml
+    20 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP7-review.md
+    20 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP3-scope-of-work.md
+    20 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP26-model-changes.md
+    20 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP8-scope-of-work.md
+    20 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP29-placement-proposal.md
+    20 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP33-review.md
+    19 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP1-review.md
+    19 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP37-scope-of-work.md
+    19 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP35-review.md
+    18 KB    1f | outside-code:2 outside-docs:3 wp-mentions:26 | work-packages/README.md  CODE=claims_register.toml,tests/test_interface_contract.py
+    18 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP7-decisions.md
+    18 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP25-review.md
+    18 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP26-scope-of-work.md
+    18 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP25-2-scope-of-work.md
+    17 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP4b-review.md
+    17 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP8b-scope-of-work.md
+    16 KB    3f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP31-task-readers
+    16 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP2-scope-of-work.md
+    16 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/release-candidate.md
+    16 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP27-acceptance-review.md
+    16 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP26-review.md
+    16 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP35-scope-of-work.md
+    15 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP19-slots.md
+    15 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP18-scope-of-work.md
+    15 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP39-scope-of-work.md
+    14 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP4-scope-of-work.md
+    14 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP25-decisions.md
+    14 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP8b-decisions.md
+    14 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP8a-review.md
+    13 KB    1f | outside-code:1 outside-docs:1 wp-mentions:4 | work-packages/WP4b-decisions.md  CODE=tests/test_adcs_enrichment.py
+    13 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP6-scope-of-work.md
+    13 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP6-review.md
+    13 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP5-review.md
+    13 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP27-decisions.md
+    13 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP14-review.md
+    13 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP15-decisions.md
+    13 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP16-scope-of-work.md
+    12 KB    1f | outside-code:0 outside-docs:1 wp-mentions:1 | work-packages/WP16-decisions.md
+    12 KB    1f | outside-code:0 outside-docs:1 wp-mentions:0 | work-packages/WP38-scope-of-work.md
+    12 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP3-review.md
+    12 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP13-scope-of-work.md
+    12 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP22-scope-of-work.md
+    11 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP19-scope-of-work.md
+    11 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP8b-review.md
+    11 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP8b-release-checklist.md
+    11 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP32-review.md
+    10 KB    1f | outside-code:2 outside-docs:0 wp-mentions:1 | work-packages/WP33-scope-of-work.md  CODE=claims_register.toml,paper/length_ledger.toml
+    10 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP5-scope-of-work.md
+    10 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP4-review.md
+    10 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP2-review.md
+    10 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP0-review.md
+    10 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/deliverables-grid.md
+    10 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP15-review.md
+     9 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP19-backlog.md
+     9 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP8a-review-amendment2.md
+     9 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP21-scope-of-work.md
+     9 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP32-scope-of-work.md
+     9 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP31-review.md
+     9 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP34-readout.md
+     8 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP8a-figure-review.md
+     8 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP33-decisions.md
+     8 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP39-decisions.md
+     8 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP38-decisions.md
+     7 KB    1f | outside-code:4 outside-docs:1 wp-mentions:1 | work-packages/WP19-decisions.md  CODE=paper/figures/chart_level.py,paper/figures/figure1.py,paper/figures/plane
+     7 KB    1f | outside-code:1 outside-docs:0 wp-mentions:1 | work-packages/WP20-review.md  CODE=tests/test_check_script.py
+     7 KB    1f | outside-code:0 outside-docs:0 wp-mentions:7 | work-packages/WP14-decisions.md
+     7 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP26-decisions.md
+     7 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP29-decisions.md
+     7 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP29-review.md
+     7 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP10-cold-reads-triage.md
+     6 KB    1f | outside-code:0 outside-docs:1 wp-mentions:1 | work-packages/WP18-decisions.md
+     6 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP0-scope-of-work.md
+     6 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP8a-driver-browser-pass.md
+     6 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP31-decisions.md
+     6 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP20-scope-of-work.md
+     5 KB    3f | outside-code:1 outside-docs:0 wp-mentions:2 | work-packages/WP31-readout  CODE=claims_register.toml
+     5 KB    1f | outside-code:1 outside-docs:1 wp-mentions:1 | work-packages/WP17-scope-of-work.md  CODE=claims_register.toml
+     5 KB    1f | outside-code:1 outside-docs:0 wp-mentions:2 | work-packages/WP31-readout.md  CODE=claims_register.toml
+     5 KB    1f | outside-code:0 outside-docs:0 wp-mentions:5 | work-packages/release-punch-list.md
+     5 KB    1f | outside-code:0 outside-docs:0 wp-mentions:5 | work-packages/WP13-decisions.md
+     5 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP24-decisions.md
+     5 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP34-scope-of-work.md
+     5 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP22-decisions.md
+     5 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP33-wayfinding.md
+     5 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP11-scope-of-work.md
+     4 KB    1f | outside-code:1 outside-docs:1 wp-mentions:0 | work-packages/WP17-decisions.md  CODE=claims_register.toml
+     4 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP34-decisions.md
+     4 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP8b-reviewers-guide-skeleton.md
+     4 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP11-decisions.md
+     3 KB    1f | outside-code:1 outside-docs:0 wp-mentions:1 | work-packages/WP36-decisions.md  CODE=claims_register.toml
+     3 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP5-decisions.md
+     3 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP4-decisions.md
+     3 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP2-decisions.md
+     3 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP1-decisions.md
+     3 KB    1f | outside-code:0 outside-docs:0 wp-mentions:3 | work-packages/WP8-decisions.md
+     3 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/WP32-decisions.md
+     2 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP6-decisions.md
+     2 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP3-decisions.md
+     2 KB    1f | outside-code:0 outside-docs:0 wp-mentions:2 | work-packages/status-report-template.md
+     2 KB    1f | outside-code:0 outside-docs:0 wp-mentions:1 | work-packages/WP31-task-readers.md
+     1 KB    1f | outside-code:0 outside-docs:0 wp-mentions:4 | work-packages/WP0-decisions.md
+     1 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP40-decisions.md
+     0 KB    1f | outside-code:0 outside-docs:0 wp-mentions:0 | work-packages/WP12-decisions.md
