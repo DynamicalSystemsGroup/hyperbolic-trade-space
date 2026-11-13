@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Worktrees pruned by the assistant; no new delivery (16:20).** Nothing landed on dev since 722ce86 in the last
+  fifty minutes; PM13 is running with the G.2 unit in its paper-queue worktree (a build-and-screenshot wait loop) and
+  the second WP37 closing unit not yet started; CI 43339340106 on 722ce86 has both fast jobs green, the slow and
+  docs-paper jobs running. After three prune orders went unanswered, the assistant pruned the worktrees itself: each
+  of 47 removed had its head merged into origin/dev and a clean tree (the list was printed and read before removal);
+  kept: stage, verify, pm13main, the four in-flight units, preview-wt (unmerged), hts-reader-EF (a modified file,
+  outside the scratchpad) and wp27model (an untracked handover note). 58 to 11. Ninety-eight local branches merged into
+  dev remain for the next tidiness unit.
+
 - **Eight commits received; head 722ce86 verified; WP37 short of seven rulings (15:40).** On 722ce86: ruff, lock,
   vocabulary and attribution clean; the fast suite 1934 passed, 19 skipped, 3 xfailed in 7:09, the one new xfail and
   four new skips being the Appendix H markers (`H_LANDED`, until the notebook unit pastes the appendix); CI
