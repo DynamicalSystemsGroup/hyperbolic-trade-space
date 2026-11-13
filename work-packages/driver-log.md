@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **2c5bb41 fully green (13:45).** CI 43478181521 on 2c5bb41 (WP39 fix unit 1 with the sensitivity cascade): every job
+  green on both platforms, the twenty-third fully green head; the two slow failures of 74b470f are closed. WP39's second
+  fix unit is committed in its worktree (407057e3) and running its full test group before the push.
+
 - **WP39 fix unit 1 verified and accepted as rendered; unit 2 in flight (13:25).** On 2c5bb41 (50d8427, c9bc069,
   the PM-BRIEF rule): ruff, lock, vocabulary and attribution clean; the fast suite 1945 passed with the paper-key
   test passing against the fresh build (the label is now tab-decision-case); the sensitivity cascade fixed (the stale
