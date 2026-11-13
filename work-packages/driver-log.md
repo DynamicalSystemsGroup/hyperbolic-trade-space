@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **95ebd46 fully green (05:15).** CI 43394683441 on 95ebd46 (the WP35 wording unit accepted): every job green on
+  both platforms, the twenty-second fully green head. The WP39 notebook unit's implementer is in its second hour in
+  wp39nb (eight files, the re-execution done, nothing landed yet); PM14 is busy and has not yet landed WP35's
+  review-list row, chased once at 04:45.
+
 - **WP35 wording unit accepted at 1235f7f; WP35 to the review list (03:50).** The unit (940d6f0) applies the readers'
   fixes as ruled (FW-14 not), Appendix H at 916 of 920 words with the D.16 chain intact; on 1235f7f ruff, lock,
   vocabulary and attribution clean, the fast suite 1943 passed; the stage rebuilt and Appendix H read as rendered (six
