@@ -13,8 +13,8 @@ to the candidate"). Rows below marked (PR) apply only when the supervisor asks f
 
 | # | Item | Command or evidence | Owner | State | Source |
 |---|---|---|---|---|---|
-| A1 | Version 0.1.0 in `pyproject.toml`, `uv.lock`, `__version__`; last of the release items | `grep -n version pyproject.toml`; `uv run python -c "import hyperbolic_trade_space as h; print(h.__version__)"`; `uv lock --check` | assistant | - | `WP8b-scope-of-work.md`, D-5 and R-5 ("D-5 last, so the version is not set before the content is") |
-| A2 | Changelog heading `[Unreleased] - target 0.1.0` becomes `[0.1.0] - <date>`; the "Not yet released" lines go; nothing reads "Unreleased" or "target" | `grep -n -i 'swap\|unreleased\|target' CHANGELOG.md` | assistant | - | `WP8b-scope-of-work.md`, Amendment 1, D-2 and R-11; `WP8b-decisions.md`, "Amendment 1 review", G-1 |
+| A1 | Version 0.1.0 in `pyproject.toml` (now 0.0.1), `uv.lock`, `src/hyperbolic_trade_space/__init__.py` `__version__` (now 0.0.1); last of the release items | `grep -n version pyproject.toml`; `uv run python -c "import hyperbolic_trade_space as h; print(h.__version__)"`; `uv lock --check` | assistant | - | `WP8b-scope-of-work.md`, D-5 and R-5 ("D-5 last, so the version is not set before the content is") |
+| A2 | Changelog heading `[Unreleased] - target 0.1.0` (today's `CHANGELOG.md` heading) becomes `[0.1.0] - <date>`; the "Not yet released" lines go; nothing reads "Unreleased" or "target" | `grep -n -i 'swap\|unreleased\|target' CHANGELOG.md` | assistant | - | `WP8b-scope-of-work.md`, Amendment 1, D-2 and R-11; `WP8b-decisions.md`, "Amendment 1 review", G-1 |
 | A3 | Changelog names every package that changed what a user or reader sees, WP19 on; WP31 enters when accepted (accepted 1d26560); later packages (WP29 to WP34) checked the same way | `grep -o 'WP[0-9]*[a-z]*' CHANGELOG.md \| sort -u` against `release-candidate.md`'s path | PM | - | `WP8b-scope-of-work.md`, R-11; `WP8b-decisions.md`, "Amendment 1 review", G-3 ("WP31 enters the changelog when it is accepted") |
 | A4 | Punch list has no line the tree contradicts; its "Version 0.1.0" box ticked with the version step | read `release-punch-list.md` beside `git log`; `uv run pytest -q tests/test_site.py -k "punch or link"` | PM | - | `WP8b-scope-of-work.md`, R-12; `WP8b-review.md`, G-1 |
 | A5 | LICENSE is MIT, Dynamical Systems Group, agrees with `pyproject.toml` | `head -5 LICENSE`; `grep -n license pyproject.toml` | agent | - | `WP8b-scope-of-work.md`, R-1 |
@@ -76,3 +76,13 @@ to the candidate"). Rows below marked (PR) apply only when the supervisor asks f
 | F5 | `supervisor-review-list.md` current: every call with record and landing commit | read | PM | - | `release-candidate.md`, "The mandate, extended"; `supervisor-review-list.md`, header |
 | F6 | Repository tidiness instance before the PR (WP25-5) | `WP25-5-inventory.md` executed on approval | agent | - | `release-candidate.md`, step 3h ("one before the PR") and "extended" |
 | F7 | Nothing tagged, deployed, published: no PyPI, no registry image, no PDF export | `git tag` empty | assistant | - | `WP8b-scope-of-work.md`, Non-goals; `release-candidate.md`, "Already decided" |
+
+## G. After the tag and after the merge to main
+
+Added at the WP8b drafts (handover of the thirteenth PM, open item 6). Each row names what it catches that the earlier
+rows cannot, because it is only visible once the tag or the merge exists.
+
+| # | Item | Command or evidence | Owner | State | Source |
+|---|---|---|---|---|---|
+| G1 | After the tag: reload a docs page once and watch for a 404 from the releases widget (the widget asks for a release that did not exist before the tag, so no staged build shows it) | open any docs page in a fresh tab after the tag; browser console and network list show no 404 for the releases request; record the screenshot | assistant | - | `PM-BRIEF.md`, handover of the thirteenth PM, open item 6 |
+| G2 | After the merge to main: fetch every GitHub link on the site, paper, README and docs (the links resolve only once `main` holds the paths they name) | extract the `github.com` links from the staged site and `README.md`, then `curl -s -o /dev/null -w '%{http_code}' -L <url>` for each; all 200 | assistant | - | `PM-BRIEF.md`, handover of the thirteenth PM, open item 6 |

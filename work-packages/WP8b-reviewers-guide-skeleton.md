@@ -51,6 +51,10 @@ The decisions only he holds, as plain options with no steering; and the calls he
   `driver-log.md`.
 - Entry surfaces (the five entry surfaces' changes since the data gate, each with reason and commit): the
   "Entry surfaces" section of `supervisor-review-list.md`.
+- The supervisor's close-read list, named in the guide as one sitting: the five entry surfaces (root page
+  `site/index.html`, `README.md`, the abstract, `site/history.html`, `docs/index.md`) and Appendix G.2 (the reading
+  pass of what cited sources say, a generated three-column table). The residual pass's checker (WP38) does not replace
+  this read; the abstract and the five surfaces are his.
 - Questions genuinely held for him (values only he holds, changes to his stated intent, outward acts), e.g. the
   sample size, the Figure 1 footer wording, the "no candidate meets the requirements" finding.
   Records: `PM-BRIEF.md` (current handover); `WP30-decisions.md`; `deliverables-grid.md` (open items).
