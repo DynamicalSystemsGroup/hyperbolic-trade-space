@@ -422,9 +422,6 @@ def quantities(data_dir: Path | str) -> dict:
         q["sentence | terms | text"] = str(gf.terms_sentence(prim, fits["primary"]))
         q["sentence | certificate | text"] = str(gf.certificate_sentence(fits["primary"]))
         q["sentence | regime | text"] = str(gf.regime_sentence())
-        q["sentence | candidates | text"] = str(
-            gf.candidates_sentence(case.candidate_table(prim, k1))
-        )
         q["sentence | predict-check | text"] = str(gf.predict_check_sentence(pc, reg))
     return q
 

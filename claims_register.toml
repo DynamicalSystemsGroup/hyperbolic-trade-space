@@ -5686,7 +5686,7 @@ note = "R3 as the ledger entry words it (derivation/axioms.py): the hypotheses o
 
 [[claim]]
 id = "C474"
-fragment = "an exponent vector moves by up to"
+fragment = "pick K = {K} on {regimes}: the mean"
 file = "paper/generate_findings.py"
 anchor = "def choosing_k_sentence"
 kind = "R"
@@ -5697,9 +5697,9 @@ backing = [
   "test:tests/test_case.py::test_chosen_k_is_the_k_where_the_largest_drop_in_the_mean_slack_lands",
 ]
 status = "backed"
-disposition = "keep"
+disposition = "narrow"
 source = "WP30, the choice of K in the case (WP30-decisions.md, 2026-11-11, 15:30)"
-note = "Section 9's sentence: the K the package's choosing-K checks pick for the case (the K at which the mean slack, read at the K = 1 temperature, drops most), the thinnest term's share at the pick and the next K at each K's own temperature, the movement under resampling at the last K and at the pick; every number is computed from the Appendix D.15 table, and the test pins that the checks pick K = 2 on both regimes, that a thin term appears at K = 3 (a share under 0.1 against over 0.2 at K = 2) and a splinter at K = 4 (movement over 0.5 against under 0.5 at K = 2), at two digits."
+note = "Section 9's sentence: the K the package's choosing-K checks pick for the case (the K at which the mean slack, read at the K = 1 temperature, drops most) and the thinnest term's share at the pick and the next K at each K's own temperature; every number is computed from the Appendix D.15 table, and the test pins that the checks pick K = 2 on both regimes and that a thin term appears at K = 3 (a share under 0.1 against over 0.2 at K = 2), at two digits. WP39 D-5 narrowed the row: the movement under resampling at K = 4 left Section 9 and stays in D.15's table (its test still pins a splinter at K = 4)."
 
 [[claim]]
 id = "C490"
@@ -6843,3 +6843,466 @@ status = "backed"
 disposition = "keep"
 source = "WP35 wording unit"
 note = "The four conditions are printed as counts of the six tables of a cell, from RATES and the record's n (a share of 0.9 of six tables is 6 of 6, 0.1 is 0 of 6, 0.2 is 1 of 6); fix FW-6 and FW-7."
+
+[[claim]]
+id = "C596"
+fragment = "The requirements and the frontier ... cut {thousands(_count(d, 'feasible'))} feasible designs to"
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 2,134: the feasible designs of the primary regime (the 3,000 evaluated less the infeasible)."
+
+[[claim]]
+id = "C597"
+fragment = "feasible designs to {_count(d, 'working')} that ... pass all six requirements and lie within the band of both fits"
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 28: the feasible designs that pass the six requirements (D.17's joint pass) and lie within the K = 1 band at both the K = 1 and the K = 2 fit (the paper's convention, the K = 1 band at every K)."
+
+[[claim]]
+id = "C598"
+fragment = "which brings the pointing error from ... about {held('sponsor', 'pointing_error_deg', one)} to"
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. About 0.003 degree, one significant digit: the sponsor-alone design's pointing error is 0.00295 degree; the medium tracker grade spans 0.0028 to 0.0036 on the shortlist."
+
+[[claim]]
+id = "C599"
+fragment = "{held('fine', 'pointing_error_deg', one)} degree, is worth about"
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 0.0008 degree, one significant digit: the cheapest fine-tracker design's pointing error is 0.00080 degree; the fine grade spans 0.00074 to 0.00080 on the shortlist."
+
+[[claim]]
+id = "C600"
+fragment = "{_held('fine tracker | extra fleet cost', _tracker_cost(d), lambda v: f'{v / 1e6:.2f}')}"
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. About 0.56 M USD: the fleet cost of the cheapest fine-tracker design (1,686,142 USD) less that of the cheapest design of the shortlist (1,127,465 USD), 558,677 USD, to 0.01 M USD."
+
+[[claim]]
+id = "C601"
+fragment = "M USD of a {d.fleet_budget / 1e6:g} M USD fleet budget."
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "6 M USD: the fleet cost limit of the six requirements, read from the specification (spec.cost_requirements), not typed."
+
+[[claim]]
+id = "C602"
+fragment = "the fleet of {int(bw['fleet_size'])} {tracker(bw)} satellites at"
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "5: the fleet size of the minimax-regret design between the sponsor alone and the operator alone (design 1858, medium wheel, fine tracker); the generator asserts that it takes the fine tracker and the sponsor's design does not."
+
+[[claim]]
+id = "C603"
+fragment = "satellites at ... {held('between', 'fleet_cost_usd', _musd)} M USD"
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 1.69 M USD: 1,686,142 USD, the fleet cost of that design, to 0.01 M USD."
+
+[[claim]]
+id = "C604"
+fragment = "{held('between', 'fleet_cost_usd', _musd)} M USD ... ({held('between', 'unit_cost_usd', _thousand_usd)} USD each)"
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 337,000 USD: 337,228 USD, its unit cost, to the nearest 1,000 USD."
+
+[[claim]]
+id = "C605"
+fragment = "regrets least of the {_count(d, 'nondominated_working')} that trade the two measures;"
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 5: the designs of the shortlist that no other design of it beats on both pointing error and fleet cost (190, 766, 999, 1858, 2950); the test pins the set."
+
+[[claim]]
+id = "C606"
+fragment = "if not, the fleet of {int(sp['fleet_size'])} {tracker(sp)} satellites at"
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "4: the fleet size of the sponsor-alone design (999, small wheel, medium tracker), the smallest fleet cost on the shortlist."
+
+[[claim]]
+id = "C607"
+fragment = "{held('sponsor', 'fleet_cost_usd', _musd)} M USD is cheapest."
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 1.13 M USD: 1,127,465 USD, the smallest fleet cost on the shortlist, to 0.01 M USD."
+
+[[claim]]
+id = "C608"
+fragment = "question and does not answer it; the numbers are nominal ({_C8})."
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The case's numbers are illustrative: Appendix C.8 states that the model is a demonstration, its part prices are listings and the fleet pricing curve's shares and slopes are choices; the generator's link goes to sub-c-8 (test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values)."
+
+[[claim]]
+id = "C609"
+fragment = "over all {_count(d, 'six_pass')} designs that pass"
+file = "paper/generate_findings.py"
+anchor = "def decision_detail_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_detail_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 548: the feasible designs that pass all six requirements (D.17)."
+
+[[claim]]
+id = "C610"
+fragment = "{_count(d, 'nondominated')} are nondominated on pointing error and fleet cost, and"
+file = "paper/generate_findings.py"
+anchor = "def decision_detail_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_detail_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 11: the six-pass designs that no other six-pass design beats on both pointing error and fleet cost."
+
+[[claim]]
+id = "C611"
+fragment = "{_count(d, 'nondominated_in_band')} of them lies within the band of both fits;"
+file = "paper/generate_findings.py"
+anchor = "def decision_detail_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_detail_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The value is the generator's, formatted through the stability entry (paper/stability_extra.json, group 'decision'): it did not move over the five regenerations at one part in 10^12, so it prints exact; the test pins it to the data of record. 1: of those 11, the ones within the band of both fits (the shortlist)."
+
+[[claim]]
+id = "C612"
+fragment = "the baseline regime (stock gains) has ... {thousands(len(study.feasible))} feasible designs,"
+file = "paper/generate_findings.py"
+anchor = "def decision_baseline_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_baseline_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_output",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "Exact on the data of record (the baseline regime's counts are not among the stability entries; the committed output equals the generator's, checked by the test). 2,355: the feasible designs of the baseline regime (stock gains)."
+
+[[claim]]
+id = "C613"
+fragment = "{int(six.sum())} that pass the six requirements and"
+file = "paper/generate_findings.py"
+anchor = "def decision_baseline_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_baseline_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_output",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "Exact on the data of record (the baseline regime's counts are not among the stability entries; the committed output equals the generator's, checked by the test). 523 of them pass all six requirements."
+
+[[claim]]
+id = "C614"
+fragment = "that pass the six requirements and {int(work.sum())} within the band"
+file = "paper/generate_findings.py"
+anchor = "def decision_baseline_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_baseline_sentence",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_output",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "Exact on the data of record (the baseline regime's counts are not among the stability entries; the committed output equals the generator's, checked by the test). 19 of those lie within the K = 1 band at both fits."
+
+[[claim]]
+id = "C615"
+fragment = "held(k, \"pointing_error_deg\", r, lambda v: f\"{v:.5f}\"), held(k, \"unit_cost_usd\", r, lambda v: f\"{v:,.0f}\"), held(k, \"fleet_cost_usd\", r, lambda v: f\"{v:,.0f}\"), f\"{r['log V K=2']:+.3f}\""
+file = "paper/generate_findings.py"
+anchor = "def decision_table"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_table",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved",
+  "test:tests/test_paper.py::test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_output",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "Section 9's six-row table: every cell is the generator's value for the named design (exact: pointing error to five decimals, costs in USD, level log V at K = 2 to three); the baseline row is the model's baseline configuration, scored by the K = 2 fit; the test pins the 1,686,142, 337,228 and 0.00080 of the between-them row and the six row names."
+
+[[claim]]
+id = "C616"
+fragment = "int(r[\"fleet_size\"]), f\"{r['pointing_error_deg']:.5f}\", f\"{r['unit_cost_usd']:,.0f}\", f\"{r['fleet_cost_usd']:,.0f}\", f\"{r['log V K=2']:+.4f}\", f\"{r['log V K=1']:+.4f}\", _marks(r))"
+file = "paper/generate_findings.py"
+anchor = "def decision_designs_table"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_designs_table",
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+  "test:tests/test_paper.py::test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_output",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "Appendix D.19's table of the shortlist: every cell is the generator's value, exact, ordered by fleet cost, with the nondominated designs marked; the test pins 28 rows and 5 marked on fleet cost."
+
+[[claim]]
+id = "C617"
+fragment = "The baseline configuration does not meet the requirements."
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_baseline_row_fails_the_requirements_the_other_rows_meet",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The model's baseline configuration has a pointing error of 0.0155 degree against the 0.008495 limit and a unit cost of 461,360 USD against the 350,000 limit (the test)."
+
+[[claim]]
+id = "C618"
+fragment = "The method does not tell the schedule or the risk, what to buy beyond the modelled parts, or what a larger fleet is worth."
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "P"
+backing = [
+  "reading",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "Scope of the case, from Appendix C.8: the model has no schedule or qualification, no fault tolerance and a cost that is a lower bound on a full costing, and it prices the fleet size (the unit cost falls and the fleet cost rises with it) without valuing it; the sentence is the author's statement of what the method leaves to the executives."
+
+[[claim]]
+id = "C619"
+fragment = "Each named design is asserted to lie in the shortlist and to pass the six requirements."
+file = "paper/supporting_material.ipynb"
+anchor = "D.19 The decision: the shortlist and the rules"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The generator asserts it for the six named designs (the sponsor's, the cheapest-unit-cost, the operator's, the between design, the balanced and the cheapest fine-tracker design) and the test re-checks it against the requirement mask."
+
+[[claim]]
+id = "C620"
+fragment = "the sponsor alone takes the smallest fleet cost; the operator alone the smallest pointing error;"
+file = "paper/supporting_material.ipynb"
+anchor = "D.19 The decision: the shortlist and the rules"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The picks are the generator's (argmin of fleet cost and of pointing error over the shortlist); the test pins the design ids, 999 and 2950."
+
+[[claim]]
+id = "C621"
+fragment = "between them, the design whose larger shortfall on pointing error and fleet cost is smallest,"
+file = "paper/supporting_material.ipynb"
+anchor = "D.19 The decision: the shortlist and the rules"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+]
+status = "backed"
+disposition = "keep"
+source = "WP39 notebook unit"
+note = "The generator scales each measure to 0 to 1 over the shortlist and takes the design with the smallest larger scaled value (minimax regret); the test pins the design, 1858."

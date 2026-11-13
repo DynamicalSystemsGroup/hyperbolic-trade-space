@@ -245,8 +245,8 @@ def choosing_k_sentence() -> Md:
     """The K the paper's choosing-K checks pick for the case, and why (Appendix D.15).
 
     Read from :func:`generate_results.choosing_k_tables`: the K at which the mean slack drops most,
-    the drop at the next K, the thinnest term's share at the pick and at the next K (each K's own
-    temperature), and the movement under resampling at the pick and at the last K.
+    the drop at the next K, and the thinnest term's share at the pick and at the next K (each K's
+    own temperature). The movement under resampling stays in Appendix D.15.
     """
     import generate_results as gr
 
@@ -262,7 +262,6 @@ def choosing_k_sentence() -> Md:
         return _and(fmt(t.set_index("K").loc[k, col]) for t in tabs.values())
 
     two = lambda v: f"{v:.2f}"  # noqa: E731
-    last = max(tabs[next(iter(tabs))]["K"])
     regimes = _and(f"the {r} regime" for r in tabs)
     return Md(
         f"**{_NUMBER_WORDS[K].capitalize()} terms.** The package's checks for choosing K ({_D15}) "
@@ -271,9 +270,7 @@ def choosing_k_sentence() -> Md:
         f"and less at K = {K + 1} ({both('drop', K + 1, two)}); the thinnest term holds "
         f"{both('thinnest share, own tau', K, two)} of the near-frontier designs at K = {K} and "
         f"{both('thinnest share, own tau', K + 1, two)} at K = {K + 1}, the step where a thin term "
-        f"appears; and at K = {last} an exponent vector moves by up to "
-        f"{both('movement', last, two)} under resampling, against "
-        f"{both('movement', K, two)} at K = {K}."
+        f"appears."
     )
 
 
@@ -324,10 +321,9 @@ def k_temperatures_sentence(study, fits) -> Md:
     taus = [stable(f"fit | {r} K={K} | tau selected (raw)", lambda v: f"{v:.0f}") for K in Ks]
     bands = [stable(f"D k_table | {r} | {K} | band 1/tau", lambda v: f"{v:.4f}") for K in Ks]
     return Md(
-        f"Each K selects its own fit temperature by the one rule, the target fraction above V = 1: "
-        f"tau = {_and(taus)} at K = {_and(Ks)}, with bands 1/tau of {_and(bands)}; the figures of "
-        f"this section and the association reading use the K = 1 band at every K (gap G-9, "
-        f"{_E})."
+        f"Each K selects its own fit temperature by the same rule: "
+        f"tau = {_and(taus)} at K = {_and(Ks)}, with bands 1/tau of {_and(bands)}; the figures "
+        f"and the association reading use the K = 1 band at every K (gap G-9, {_E})."
     )
 
 
@@ -493,19 +489,6 @@ def regime_sentence() -> Md:
         f"{_a(t.loc['n_lemma', b])} {t.loc['n_lemma', b]}-lemma "
         f"sharing {len(sets[a] & sets[b])} metrics ({_and(sorted(sets[a] & sets[b]))})"
         f"{middle}. The {b} set spans {_span(gb)}{point}."
-    )
-
-
-def candidates_sentence(table) -> Md:
-    """Where the measured candidates sit against the K = 1 reference surface."""
-    lv = table["log V"]
-    beyond = int((lv > 0).sum())
-    three = lambda v: f"{v:.3f}"  # noqa: E731
-    return Md(
-        f"The {len(table)} measured candidates have lowest energy differential "
-        f"{stable('sentence | candidates | lowest log V', three)} and highest "
-        f"{stable('sentence | candidates | highest log V', three)}, and {beyond} of them lie "
-        f"beyond the fitted reference surface."
     )
 
 
@@ -685,6 +668,17 @@ class Decision:
     unit_limit: float
 
 
+def _shortlist(study, fits):
+    """The feasible designs that pass all six requirements (mask), those among them within the
+    band of both fits (mask), and the level log V at K = 1 and at the case's K, per design."""
+    f1, fk = fits[1], fits[case.CASE_K]
+    six = case.requirement_mask(study.feasible, study.spec, costs=True).to_numpy()
+    lv1 = f1.estimator.score_samples(study.M)
+    lvk = fk.estimator.score_samples(study.M)
+    inside = (np.abs(lv1) < f1.band) & (np.abs(lvk) < f1.band)
+    return six, six & inside, lv1, lvk
+
+
 def decision(study=None, fits=None) -> Decision:
     """The shortlist and the named designs of the case, computed from the data of record.
 
@@ -707,12 +701,8 @@ def decision(study=None, fits=None) -> Decision:
     study = study or case.load_study("primary")
     fits = fits or case.k_fits(study, (1, case.CASE_K))
     spec, df = study.spec, study.feasible
-    f1, fk = fits[1], fits[case.CASE_K]
-    six = case.requirement_mask(df, spec, costs=True).to_numpy()
-    lv1 = f1.estimator.score_samples(study.M)
-    lvk = fk.estimator.score_samples(study.M)
-    inside = (np.abs(lv1) < f1.band) & (np.abs(lvk) < f1.band)
-    work = six & inside
+    fk = fits[case.CASE_K]
+    six, work, lv1, lvk = _shortlist(study, fits)
     levels = np.log(study.M) @ fk.estimator.exponents_.T - fk.estimator.log_offset_
     out = df.assign(**{"log V K=1": lv1, "log V K=2": lvk, "term 1 level": levels[:, 0],
                        "term 2 level": levels[:, 1]})  # fmt: skip
@@ -832,19 +822,36 @@ def decision_sentence(d: Decision) -> Md:
         f"regrets least of the {_count(d, 'nondominated_working')} that trade the two measures; "
         f"if not, the fleet of {int(sp['fleet_size'])} {tracker(sp)} satellites at "
         f"{held('sponsor', 'fleet_cost_usd', _musd)} M USD is cheapest. The method prices the "
-        f"question and does not answer it, nor value fleet size, schedule or risk; the numbers "
-        f"are nominal ({_C8})."
+        f"question and does not answer it; the numbers are nominal ({_C8})."
     )
 
 
 def decision_detail_sentence(d: Decision) -> Md:
     """What the fit adds to a two-measure view, for Appendix D: the nondominated designs over all
     six-pass designs and how many of them lie in the shortlist."""
+    from generate_model import DATASET_LABELS
+
     return Md(
-        f"Over all {_count(d, 'six_pass')} designs that pass the six requirements, "
+        f"Dataset {DATASET_LABELS['primary']}: over all {_count(d, 'six_pass')} designs that pass "
+        f"the six requirements, "
         f"{_count(d, 'nondominated')} are nondominated on pointing error and fleet cost, and "
         f"{_count(d, 'nondominated_in_band')} of them lies within the band of both fits; the "
         f"others reach their cost or pointing error by lying well inside the frontier."
+    )
+
+
+def decision_baseline_sentence() -> Md:
+    """The stock-gain regime's funnel in one sentence, for Appendix D.19: the same shortlist rule
+    applied to the second regime of the case. Counts are exact on the data of record."""
+    from generate_model import DATASET_LABELS
+
+    study = case.load_study("stock")
+    six, work, *_ = _shortlist(study, case.k_fits(study, (1, case.CASE_K)))
+    return Md(
+        f"Dataset {DATASET_LABELS['stock']}: the baseline regime (stock gains) has "
+        f"{thousands(len(study.feasible))} feasible designs, "
+        f"{int(six.sum())} that pass the six requirements and {int(work.sum())} within the band "
+        f"of both fits."
     )
 
 
@@ -883,8 +890,10 @@ def _marks(r) -> str:
 def decision_designs_table(d: Decision) -> Md:
     """Appendix D's table: the shortlist ordered by fleet cost, exact, with the nondominated
     designs (on pointing error and fleet cost) marked."""
+    from generate_model import DATASET_LABELS
+
     w = d.working
-    return Md(md_table(
+    return Md(f"Dataset {DATASET_LABELS['primary']}:\n\n" + md_table(
         ["design", "wheel / tracker", "panel (m)", "battery (Wh)", "Kp", "Kd", "fleet",
          "pointing error (degree)", "unit cost (USD)", "fleet cost (USD)", "level (K=2)",
          "level (K=1)", "nondominated on pointing error and"],
@@ -895,3 +904,13 @@ def decision_designs_table(d: Decision) -> Md:
           f"{r['log V K=2']:+.4f}", f"{r['log V K=1']:+.4f}", _marks(r))
          for _, r in w.iterrows()],
     ))  # fmt: skip
+
+
+def decision_designs() -> Md:
+    """Appendix D's table of the shortlist, computed from the data of record (one call)."""
+    return decision_designs_table(decision())
+
+
+def decision_detail() -> Md:
+    """What the fit adds to a two-measure view, computed from the data of record (one call)."""
+    return decision_detail_sentence(decision())

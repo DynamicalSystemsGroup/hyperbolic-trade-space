@@ -696,7 +696,10 @@ def test_case_calls_go_through_the_case_module():
         tree = ast.parse(_src(cell))
         call = _calls(tree)[0]
         name = ast.unparse(call.func)
-        assert name.startswith("case.") or name == "family_table", (cell.id, name)
+        assert name.startswith("case.") or name in {"family_table", "decision_table"}, (
+            cell.id,
+            name,
+        )
 
 
 def test_paper_cells_have_committed_outputs_without_errors():
@@ -1601,10 +1604,19 @@ def test_cells_whose_output_is_embedded_are_removed_from_the_page():
         assert re.search(rf":::\{{embed\}} #{label}\n:remove-input: true\n", _markdown(nb)), label
 
 
-def test_candidates_table_is_in_appendix_d_and_the_text_points_to_it():
-    """Change request 14: Table 2 left the main text; its sentence points to D.7."""
-    assert "tab-candidates" not in {c.id for c in _code_cells(_nb(PAPER_NB))}
-    assert "{ref}`Appendix D.7 <sub-d-7>`" in _section("Case analysis")
+def test_the_candidates_paragraph_is_cut_and_the_table_stays_in_appendix_d():
+    """Change request 14 moved Table 2 to D.7; WP39 D-5 cut the paragraph and its sentence from
+    Section 9 (the hand-named candidates all miss the thresholds; the shortlist of the decision is
+    the case's concrete designs). D.7 keeps the table and its sentence, and nothing points to a
+    removed label."""
+    import generate_findings as gf
+
+    paper_ids = {c.id for c in _nb(PAPER_NB).cells}
+    assert not paper_ids & {"sec-case-analysis-4", "cand-table", "num-candidates", "tab-candidates"}
+    assert "Candidates." not in _section("Case analysis") and "sub-d-7" not in _markdown(
+        _nb(PAPER_NB)
+    )
+    assert not hasattr(gf, "candidates_sentence")
     assert "tab-D-candidate_designs" in {c.id for c in _cells_of("D")}
 
 
@@ -2440,8 +2452,9 @@ RESULTS = ROOT / "examples" / "adcs" / "experiments" / "reports" / "sensitivity.
 RAW_RESIDUE = re.compile(r"\de-(?:1[3-9]|[2-9]\d)")  # 1e-13 and below, as raw digits
 NUM_CELLS = [
     "num-nondominated", "num-certificates", "num-margin", "num-temperature",
-    "num-regimes", "num-candidates", "num-predict", "num-recovery", "num-predict-reading",
+    "num-regimes", "num-predict", "num-recovery", "num-predict-reading",
     "num-choosing-k", "num-terms", "num-elasticity", "num-k-temperatures", "num-participation",
+    "num-decision",
 ]  # fmt: skip
 
 
@@ -2455,7 +2468,6 @@ def _case_sentences():
 
     study = case.load_study("primary")
     fits = case.k_fits(study)
-    cand = case.candidate_table(study, fits[1])
     reg = case.fit_regressor(study)
     return {
         "num-nondominated": gf.nondominated_sentence(study),
@@ -2465,13 +2477,13 @@ def _case_sentences():
         "num-predict-reading": gf.predict_reading(case.predict_check(study, reg), reg),
         "num-temperature": gf.temperature_sentence(study, fits[1]),
         "num-regimes": gf.regime_sentence(),
-        "num-candidates": gf.candidates_sentence(cand),
         "num-predict": gf.predict_check_sentence(case.predict_check(study, reg), reg),
         "num-choosing-k": gf.choosing_k_sentence(),
         "num-terms": gf.terms_sentence(study, fits),
         "num-elasticity": gf.elasticity_sentence(study, fits),
         "num-k-temperatures": gf.k_temperatures_sentence(study, fits),
         "num-participation": gf.participation_sentence(),
+        "num-decision": gf.decision_sentence(gf.decision(study, fits)),
     }
 
 
@@ -2644,7 +2656,7 @@ def test_every_figure_and_table_is_referenced_from_the_text():
     """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
     body = _markdown(_nb(PAPER_NB))
     floats = re.findall(r"^:::+\{(?:figure|table)\}[^\n]*\n:label: (\S+)", body, re.M)
-    assert len(floats) == 9, floats  # eight figures (the K = 2 planes left) and the table
+    assert len(floats) == 10, floats  # eight figures (the K = 2 planes left) and two tables
     for cell in _nb(PAPER_NB).cells:
         if cell.cell_type != "markdown" or cell.id == "frontmatter":
             continue
@@ -3103,6 +3115,7 @@ def test_cr8_the_k_comparison_is_read_at_the_one_term_temperature_and_names_the_
     assert (
         f"pick K = {case.CASE_K}" in sentence and "the step where a thin term appears" in sentence
     )
+    assert "resampling" not in sentence  # WP39 D-5: the movement stays in D.15's table
     cell = _cell_out(SUPPORT_NB, "tab-D-choosing_k")
     assert "at the K = 1 temperature" in cell and "The checks pick K = 2." in cell
 
@@ -3773,7 +3786,7 @@ def test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_valu
         "balanced between the terms", "cheapest unit cost",
     ]  # fmt: skip
     assert "1,686,142" in table[5] and "337,228" in table[5] and "0.00080" in table[5]
-    designs = str(gf.decision_designs_table(d)).splitlines()
+    designs = [r for r in str(gf.decision_designs_table(d)).splitlines() if r.startswith("|")]
     assert len(designs) == 2 + 28
     assert sum("fleet cost" in r.split("|")[-2] for r in designs[2:]) == 5
 
@@ -3815,3 +3828,86 @@ def test_the_decision_follows_the_record_when_the_record_is_perturbed(decided):
     with pytest.raises(AssertionError, match="premise"):
         gf.decision_sentence(gf.decision(dataclasses.replace(study, spec=tight), fits))
     assert case.CASE_K == 2
+
+
+# ---- WP39 D-1, D-2, D-4, D-5: the decision in the notebooks --------------------------------------
+
+
+def test_section_9_closes_with_the_decision_and_leaves_the_neighbouring_paragraphs_alone():
+    """D-1: the closing subsection follows 'Propose, predict, check' and ends the section; Figure 9
+    and its paragraph, 'Two regimes' and 'Propose, predict, check' are as they were."""
+    ids = [c.id for c in _nb(PAPER_NB).cells]
+    tail = ids[ids.index("num-predict") + 1 : ids.index("sec-discussion")]
+    assert tail == ["decision-case", "num-decision", "tab-decision", "tab-decision-caption"]
+    kept = ("sec-ternary-pair", "fig-ternary-pair-caption", "fig-ternary-pair-lines",
+            "sec-case-analysis-3b", "num-regimes", "sec-case-analysis-5",
+            "num-predict")  # fmt: skip
+    assert set(kept) <= set(ids)
+    cells = {c.id: c for c in _nb(PAPER_NB).cells}
+    assert _src(cells["sec-ternary-pair"]).startswith("**Three metrics at a time.**")
+    assert _src(cells["sec-case-analysis-3b"]).startswith("**Two regimes.**")
+    assert _src(cells["sec-case-analysis-5"]).startswith("**Propose, predict, check**")
+
+
+def test_the_decision_paragraph_is_readable_without_the_subsystem_detail():
+    """R-3, R-4, R-5: the executives' measures in their words, subsystem choices as configuration;
+    no exponent, term, design id or log V in the paragraph; the nominal clause points at C.8; the
+    caption says what the method does not tell and points at D.19."""
+    text = re.sub(r"<[^>]+>", "", _cell_out(PAPER_NB, "num-decision"))
+    assert text.startswith("**What the executives decide.**")
+    assert not re.search(r"log V|exponent|\bterms?\b|\bdesign \d|\bid\b|\bV\b", text), text
+    for words in ("pointing error", "unit cost", "fleet cost", "wheel", "tracker", "fleet of"):
+        assert words in text, words
+    raw = _cell_out(PAPER_NB, "num-decision")
+    assert "supporting-material/#sub-c-8" in raw and "the numbers are nominal" in raw
+    assert "does not answer it" in text and "defensible" not in text and "decides" not in text
+    caption = next(c for c in _nb(PAPER_NB).cells if c.id == "tab-decision-caption")
+    phrases = ("does not tell the schedule or the risk", "what to buy beyond the modelled parts",
+               "what a larger fleet is worth", "{ref}`Appendix D.19 <sub-d-19>`",
+               ":label: tab-decision")  # fmt: skip
+    for phrase in phrases:
+        assert phrase in _src(caption), phrase
+    assert not re.search(
+        r"\d", re.sub(r"D\.19|K = 2|sub-d-19|tab-decision|log V", "", _src(caption))
+    )
+
+
+@pytest.mark.slow
+def test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_output(decided):
+    """D-1, D-2, R-1: the six-row table, the 28-design table and the Appendix D sentences are the
+    generator's output (exact in the environment of record)."""
+    import generate_findings as gf
+
+    _, _, d = decided
+    _current(_cell_out(PAPER_NB, "tab-decision"), str(gf.decision_table(d)), "tab-decision")
+    support = _nb(SUPPORT_NB)
+    for cid, fresh in (("tab-D-decision_designs", gf.decision_designs_table(d)),
+                       ("sent-D-decision", gf.decision_detail_sentence(d)),
+                       ("sent-D-decision-baseline", gf.decision_baseline_sentence())):  # fmt: skip
+        _current(_out_text(next(c for c in _code_cells(support) if c.id == cid)), str(fresh), cid)
+    base = str(gf.decision_baseline_sentence())
+    assert (
+        "2,355 feasible designs, 523 that pass the six requirements and 19 within the band" in base
+    )
+    table = _cell_out(SUPPORT_NB, "tab-D-decision_designs")
+    assert table.count("\n| ") >= 28 and "fleet cost" in table
+
+
+@pytest.mark.slow
+def test_the_baseline_row_fails_the_requirements_the_other_rows_meet(decided):
+    """The table's baseline row is outside the requirements (pointing error and unit cost); every
+    other row is a design of the shortlist, which passes all six (the generator asserts it)."""
+    import case
+
+    study, _, d = decided
+    spec = study.spec
+    assert d.baseline["pointing_error_deg"] > 0.008495
+    assert d.baseline["unit_cost_usd"] > spec.cost_requirements["unit_cost_usd"][0]
+    assert (
+        len(d.working) == 28
+        and case.requirement_mask(
+            study.feasible[study.feasible["design_id"].isin(d.working["design_id"])],
+            spec,
+            costs=True,
+        ).all()
+    )

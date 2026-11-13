@@ -1419,3 +1419,50 @@ section = "Appendix G"
 words_added = 8
 job = "the HoroPCA row says where the result holds, 'on the synthetic tables of Appendix H, the leading components of PCA and HoroPCA recover the exponents only where ...', for 'on the paper's tables its exponents are recovered by neither HoroPCA nor PCA except ...', which read as the paper's own case study; the reading pass says 'prospectively specified', as Section 2 and Appendix H do (one term for one thing)"
 reader = "the expert who reads the register's HoroPCA row and takes 'the paper's tables' for the case study"
+
+# WP39 notebook unit (work-packages/WP39-scope-of-work.md, D-1, D-2, D-5): Section 9 closes with the decision the two executives
+# face. Section 9 counted 1,557 against a ceiling of 1,603 (slack 46); it now counts 1,685. The raises are the written
+# paragraph (145), the table's caption (66) and the pointer to the table in the section's opening line (5); the cuts are the
+# Candidates paragraph (48) and the K-choice sentences (35); the ceiling is 1,603 + 216 - 83 = 1,736, and the slack of 46 is as it was.
+
+[[raise]]
+date = "2026-11-13"
+section = "Case analysis"
+words_added = 145
+job = "the closing paragraph (num-decision, 'What the executives decide') reduces the feasible designs to the shortlist inside the requirements and the band of both fits, names the one question left to the two executives in their own measures (a fine star tracker, pointing error from about 0.003 to 0.0008 degree, for about 0.56 M USD of a 6 M USD fleet budget), gives the design either answer points to in program currency, and says the method prices the question and does not answer it and that the numbers are nominal, with the pointer to C.8"
+reader = "the executive and the sponsor who read the case for the call it leads to (P8 final read F2 and F3; the supervisor's direction of 2026-11-13)"
+
+[[raise]]
+date = "2026-11-13"
+section = "Case analysis"
+words_added = 66
+job = "the six-row table's caption says what the rows are (the baseline configuration and the designs the rules pick, on the executives' measures and with the level of each), that the baseline configuration is outside the requirements, what the method does not tell (schedule and risk, what to buy beyond the modelled parts, the value of fleet size) and where the shortlist and the rules are (D.19)"
+reader = "the executive who reads the table without the paragraph, and the systems engineer who asks what the table leaves out (P7 final read, section 4)"
+
+[[raise]]
+date = "2026-11-13"
+section = "Case analysis"
+words_added = 5
+job = "the section's opening line points to the table of the executives' call, so a reader who stops at the opening knows the case ends in a call and where it is shown"
+reader = "the executive who reads the opening of the section and skims on"
+
+[[cut]]
+date = "2026-11-13"
+section = "Case analysis"
+words_removed = 48
+no_longer_did = "the Candidates paragraph (26 words) and its generated sentence (22) defined a candidate and reported that three hand-named configurations sit inside the fitted surface, none of which meets the four thresholds (P8 final read F4); the shortlist of the decision subsection replaces them as the case's concrete designs, D.7 keeps the table and its sentence on the thresholds, and the generator's candidates_sentence, its cell, the perturbation entry and the pointer to D.7 from Section 9 go with it"
+authority = "the assistant's ruling on Q4 (b), WP39-decisions.md, stage 2; marginal-value test"
+
+[[cut]]
+date = "2026-11-13"
+section = "Case analysis"
+words_removed = 35
+no_longer_did = "the K-choice sentence (106 words to 81) no longer reports the movement of an exponent vector under resampling at K = 4 against K = 2 and no longer says the 'mean slack' was read for the first share (the movement is in D.15's table, which the sentence points at); the temperatures sentence (59 words to 49) no longer says the one rule is 'the target fraction above V = 1', which the fit-temperature sentence three paragraphs earlier states, nor 'of this section'; claim C474 narrowed to the surviving pick and the thin-term share"
+authority = "the assistant's ruling on Q4 (b), WP39-decisions.md, stage 2 (the K-choice sentences shortened); marginal-value test"
+
+[[raise]]
+date = "2026-11-13"
+section = "Appendix D"
+words_added = 287
+job = "D.19 gives the detail behind Section 9's closing paragraph: the shortlist's definition and the rules that pick from it (the sponsor alone, the operator alone, between them by minimax regret, balanced between the terms, the cheapest unit cost), the 28-design table with the nondominated designs marked and exact values, what the fit adds to a two-measure view (11 nondominated over all 548 six-pass designs, 1 inside both bands), and the baseline regime's funnel in one sentence; the appendix's job line names it (six words net)"
+reader = "the executive weighing which design to ask for, and the systems engineer checking the shortlist"
