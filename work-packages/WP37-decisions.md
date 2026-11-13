@@ -426,3 +426,13 @@ University who works in formal methods and software verification"
 affiliation and field are the supervisor's words, marked as his account unless a public page states them (a
 Northeastern or Khoury page, if found, is the link; otherwise the GitHub account). The page names him in the people
 paragraph with the internship in the supervisor's words. Folded into the WP37 closing unit.
+
+## The supervisor on cadCAD's attribution (2026-11-13, 14:10)
+
+**Supervisor, verbatim:** "cadcad has 19 contributors, attributing it to 1 person is wrong"
+
+**Applied as:** the page's cadCAD sentence attributes the project to its contributors, nineteen on GitHub at the time
+of reading, linked to the repository's contributors page, with the named people only as the sources support them
+(the AUTHORS file's names and the commit record); the record's repository entry lists the people its source names
+rather than the author of the first commit alone, and the same rule applies to every repository entry in the list.
+Folded into the WP37 closing unit.
