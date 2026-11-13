@@ -46,6 +46,11 @@ def gap_rows(path=LEDGER) -> list[dict]:
     return rows
 
 
+WIDTHS = (50, 200, 260, 300, 420, 220)
+"""Column widths in pixels of the table on the page, in the order of its columns (the gap, then the
+five): the bridging assumption, one sentence, gets room to read, the sensitivity evidence, which is
+the longest, the most."""
+
 MATH = re.compile(r"\$([^$]+)\$")
 
 
@@ -89,4 +94,4 @@ def gaps_table() -> MdMath:
     head = ["Gap", *cols]
     body = [[r["id"], *(math_role(r[c]) for c in cols)] for r in rows]
     raw = [[r["id"], *(r[c] for c in cols)] for r in rows]
-    return MdMath(md_table(head, body), md_table(head, raw))
+    return MdMath(md_table(head, body), md_table(head, raw), WIDTHS)

@@ -276,10 +276,12 @@ class MdMath(Md):
     """
 
     raw: str
+    widths: tuple[int, ...] | None
 
-    def __new__(cls, text: str, raw: str):
+    def __new__(cls, text: str, raw: str, widths: tuple[int, ...] | None = None):
         self = super().__new__(cls, text)
         self.raw = raw
+        self.widths = widths
         return self
 
     def _repr_html_(self) -> str:
@@ -291,4 +293,10 @@ class MdMath(Md):
 
         masked = re.sub(r"\$([^$]+)\$", keep, self.raw)
         page = Md(masked)._repr_html_()
+        if self.widths:
+            # column-width hints in pixels: a fixed layout, so that a column the text would squeeze
+            # to a word a line keeps its width and the table scrolls inside its container instead
+            cols = "".join(f'<col style="width:{w}px">' for w in self.widths)
+            style = f"table-layout:fixed;width:{sum(self.widths)}px"
+            page = page.replace("<table>", f'<table style="{style}"><colgroup>{cols}</colgroup>', 1)
         return re.sub(r"MATHSPAN(\d+)X", lambda m: tex_to_mathml(spans[int(m.group(1))]), page)

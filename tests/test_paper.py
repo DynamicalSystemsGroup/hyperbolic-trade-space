@@ -879,6 +879,16 @@ def test_register_table_typesets_its_mathematics_on_the_page():
     assert str(table) == table.raw
 
 
+def test_gaps_table_gives_every_column_a_width_hint():
+    """The bridging-assumption column is not left to the browser, which squeezed it to a word a
+    line beside a column of 940 px: one width per column, none narrower than the gap's."""
+    page = generate_gaps.gaps_table()._repr_html_()
+    widths = [int(w) for w in re.findall(r'<col style="width:(\d+)px">', page)]
+    assert len(widths) == len(generate_gaps.gaps_table().raw.splitlines()[0].strip("|").split("|"))
+    assert widths == list(generate_gaps.WIDTHS) and "table-layout:fixed" in page
+    assert min(widths[2:]) >= 200  # every text column reads at about thirty characters or more
+
+
 def test_the_tex_subset_of_the_tables_becomes_mathml():
     from paper_common import tex_to_mathml
 
