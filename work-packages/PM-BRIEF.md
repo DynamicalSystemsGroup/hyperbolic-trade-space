@@ -816,3 +816,47 @@ Open, in the order I would take them:
 8. Pending small items: the assistant's review-list row for Figure 6's retirement is in (17753f9); the 1,250 sample-size mention in the gate checklist is history, left; WP32 residuals (K = 1 tension_report error right after select_temperature on exact-relation tables; matplotlib font line) stand as written.
 
 Worktrees still open that I created (prune once their units are closed; never wp30b, stage, verify, rec, gate30, wp27model, preview-wt, hts-reader-EF): wp37d9, wp37fix2, wp37fix, wp37draft, wp37w1, wp37w2, wp37w3, wp37r2a, wp37r2b, wp37r3, wp37scope, wp35spike, wp35build, wp35scope, wp36w1, wp36w2, wp36w3, wp33root, wp33docs, wp33paper, wp33readme, wp33d1, abstractfix, figdet, wp32rev, wp32close, wp32rec, entrysurf. Agent ids that may still report: none known running.
+
+## Handover (thirteenth PM, 2026-11-13, night; Sonnet; its run ended at dev 6d83d95; written by the assistant from the PM's hand-back)
+
+Rule zero stands (own worktree under `scratchpad/pm-worktrees/`, named in every brief; remove it when the unit lands).
+A browser-using agent opens its own tab and closes only that tab. Models by role: the PM on Sonnet; implementers,
+readers and reviewers on Sonnet; mechanical units on Haiku; `model` named on every spawn. Heads only to the assistant,
+who verifies, rebuilds the stage and accepts. No attribution lines anywhere.
+
+Landed this PM (accepted by the assistant unless marked): the summed-pairs table f10c7bf; G.2 as a three-column table
+e249460; Appendix E's mathematics ebd26ee and widths 1d741d2; Appendix A's mathematics 794a4e8; the WP36 integration
+7fe47de and 9b284fa; the WP33 closing round 36e0e9f, 2dcfbd1, b943eba (contract 23), 15d00af, eb08f27, 79015eb, the
+fresh U3 cell e14ba68, the review 800a90a/44db494 with its addendum 809b8b8 (on the review list for the supervisor);
+WP37's review 940e238 and closing units 36386eb and 7a14cea with the open items 4f7cc8b (the supervisor's acceptance
+pending); the WP38 machinery 94f33ae and 3e2b60d (baseline 1d741d2); the WP39 spike fb6adcc and scope fe2335e
+(approved 518b5ab); the WP40 inventory 64aa577 and scope dfc7c95 (approved 6d83d95); Appendix H cfa943f (NOT yet
+accepted: its follow-up is in flight).
+
+In flight, not the next PM's to duplicate: the Appendix H follow-up, agent a93614e4fd602291f in worktree `wp35hnb`,
+carrying the reviewer's five points (`WP35-decisions.md`, 1862491), the "count not rate" wording with the two
+baseline rows dropped, the readout's closing section, and the five repository-path parentheticals on the supporting
+material page. Its result reaches the assistant as a commit on dev or a hand-back; the next PM waits for the
+assistant's word that Appendix H is accepted.
+
+Open, in the order to take them:
+1. When the assistant says Appendix H is accepted: WP35's R-13 and R-14, three fresh readers (Sonnet) on the finished
+   Appendix H and Section 2 as rendered, with the reader criticisms as checks (RA-10, RA-11 of the amendment);
+   `WP35-review.md` completed; then WP35 to the review list.
+2. WP39 build per its approved scope, through the paper notebook's single-writer queue: the generator and tests first in
+   a parallel worktree, then the subsection, Appendix D's table, the register and ledger rows, the notebooks re-executed
+   once; then the P8 and P7 cold reads and the skim test (R-7, R-8); `WP39-review.md`.
+3. WP40 build per its approved scope, after WP39 lands and before the final reader round (D-1 to D-9 in the scope's
+   order; D-8 through the paper queue; the three PM-raised defaults as approved).
+4. The WP38 pass, on the assistant's word once WP39 and WP40 have landed: the reader's brief of
+   `docs/superpowers/notes/residual-review.md`, copy-editing only, the checker before and after.
+5. The final reader round, depths A to D, P1 to P10, against key version 5 (the key is the assistant's; readers never
+   see it); then the register, the grid and the review list refreshed.
+6. WP8b drafts: version 0.1.0, the changelog heading, the reviewer's guide (naming the WP38 machinery and the
+   supervisor's close-read list: the five entry surfaces and G.2), the release checklist with the two rows (reload a
+   docs page after the tag for the releases-widget 404; fetch every GitHub link after the merge to main).
+Not the PM's: the abstract and the five entry surfaces (the supervisor's close read), the history page's acceptance,
+the stage (port 8791, tab-100) and the CI dispatches (the assistant's), the merge to main, the tag.
+
+Worktrees at handover (8): the main checkout, pm13main, wp27model (an untracked handover note), wp35hnb (in flight),
+stage, verify, preview-wt, hts-reader-EF. Never touch stage, verify, preview-wt, hts-reader-EF or tab-100.
