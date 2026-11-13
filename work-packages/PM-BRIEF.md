@@ -870,3 +870,8 @@ stage, verify, preview-wt, hts-reader-EF. Never touch stage, verify, preview-wt,
   commit (1235f7f was one by mistake).
 - Set `MPLCONFIGDIR` to a scratch directory before executing notebooks or running the site and figure tests (font-cache
   stderr otherwise).
+- An implementer iterates on the failing tests alone and runs the full group once before the push (the WP39 fix unit
+  spent two and a half hours on repeated full runs).
+- Section 9's decision paragraph rose to 159 words; the ceiling test's bound (150 to 160) moved with the reader
+  definitions.
+
