@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The WP39 fix unit iterating slowly; guidance given (11:20).** The unit's last full run, read from its transcript:
+  2 failed (a stderr line in a committed output, the font cache of a cold run; a forbidden phrase on a docs page), 343
+  passed, 45 minutes a loop, two and a half hours in. The assistant told the implementer to iterate on the failing
+  tests alone and run the group once at the end, how to clear the stderr line without stripping an output by hand,
+  where the phrase most likely sits, and to carry the two sensitivity fixes; PM14 told to add the iterate-then-full-run
+  rule to the brief. Nothing landed on dev since c3d66a3.
+
 - **CI red on the WP39 head; the cascade fix routed (09:50).** CI 43435158308 on 74b470f: the fast and docs-paper
   jobs green, both slow jobs red with the same two failures in `tests/test_sensitivity.py` (the committed sensitivity
   results file's quantities no longer equal the recomputed set; the analysis yields 8 texts where the test expects 9).
