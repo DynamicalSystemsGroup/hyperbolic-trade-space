@@ -532,7 +532,7 @@ both regimes); it lands before the inventory reader reads that section, or that 
 (1) D-1, the inventory: a coordinator stages the site at the head, fans out about 55 cold readers one per unit
 (no record in any brief; the story sentences from Section 1's main-results list and the abstract, the docs Home for the
 docs; figures image first; two models), commits the returns verbatim with the WP28 inventory (since removed) before any triage. (2) A
-fresh triager (not a reader, not an author) writes `WP28-cut-list.md` per the scope's D-2 (goes / merged / shortened to
+fresh triager (not a reader, not an author) writes the WP28 cut list (since removed) per the scope's D-2 (goes / merged / shortened to
 a pointer; the six checks per row; "kept, with reason"; "for the supervisor" for his fixed figures and the two model
 views) and the PM sends it to the driver for OD6's approval. (3) After approval, the paper stream and the docs stream
 execute net-negative units (D-3, D-4; `[[cut]]` ledger rows and the ledger reader extended to read them; Appendix F.4
