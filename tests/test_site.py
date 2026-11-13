@@ -453,7 +453,7 @@ def test_root_and_paper_links_classified():
 
 def test_root_index_is_thin_and_routes_by_need():
     """WP33 G2, R-3: after the title, the plain summary, why and what; the page closes on a lead
-    sentence and two doors (the paper, the tool), each a link; no cards, no subtitle, no adoption line."""
+    sentence and two doors (paper, tool), each a link; no cards, subtitle or adoption line."""
     text = (SITE / "index.html").read_text(encoding="utf-8")
     assert "<script" not in text.lower()
     assert "prefers-color-scheme: dark" in text
