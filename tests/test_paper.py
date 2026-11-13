@@ -2260,8 +2260,10 @@ def test_appendix_and_section_references_resolve():
                 _, letter, num = label.split("-")
                 assert title in (f"Appendix {letter.upper()}.{num}", f"{letter.upper()}.{num}")
             if label.startswith("appendix-"):
-                assert (role == "ref" and title.startswith(f"Appendix {label[-1].upper()}")) or (
-                    len(title) == 1 and title == label[-1].upper()
+                assert (
+                    (role == "ref" and title.startswith(f"Appendix {label[-1].upper()}"))
+                    or (len(title) == 1 and title == label[-1].upper())
+                    or title == "supporting material's appendices"  # the Organization route
                 ), (title, label)
             for n in re.findall(r"^Appendix B, L(\d+)$", title):
                 assert any(v["number"] == int(n) for v in record.values()), n
@@ -2335,7 +2337,14 @@ def test_reader_depth_anchors_are_all_present():
         assert f"`{label}`" in results, label
     assert "Numerical" in results and "Open" in results  # O-6: the findings that are not derived
     intro = _section("The decision problem")
-    assert all(f"<appendix-{k.lower()}>`" in intro for k in APPENDICES)  # links to the lettered set
+    assert all(f"<appendix-{k.lower()}>`" in intro for k in "ABG")  # the appendices it routes to
+    organization = intro.split("**Organization.**", 1)[1]
+    for route in ("abstract and", "headers and Main results", "whole text", "appendices",
+                  "repository and container"):  # fmt: skip
+        assert route in organization, route  # the five depths, in order
+    assert "multivariate calculus, linear algebra and convex optimization" in organization
+    companion = _src(_nb(SUPPORT_NB).cells[0])
+    assert "for readers who check the proofs" in companion and "case model" in companion
 
 
 def test_simplifying_assumptions_are_named_where_made_and_taken_up_in_future_work():

@@ -44,6 +44,8 @@ total = 5900
 "Appendix G" = 0
 # And Appendix H (WP35 amendment 1: the HoroPCA comparison as a tested hypothesis).
 "Appendix H" = 0
+# And the top of the supporting material, before Appendix A (its audience line).
+"Supporting material" = 0
 
 # Rows: the tickets of 2026-11-09 on sections 4 and 6 (the supervisor's, WP10-decisions.md).
 # Each row: date, section, words_added, job, reader.
@@ -1359,3 +1361,27 @@ section = "Appendix G"
 words_removed = 79
 no_longer_did = "G.2's 'What we say' column carried the record's disposition for 21 rows ('Cited now for ...', 'Cited now only for ...', 'The sentence now says only ...', 'Attributed through the review in ...') and, for the rows the record gave as '(same)' or 'Table row ...', the record's note instead of a sentence; each cell is now the paper's own sentence at the citation. 'Where in it' carried the fetch addresses of the reading (api.crossref.org calls, a Semantic Scholar API call) as text, which no reader opens; it now says where in the source the place read lies and links the source's own DOI or page. The Job line of Appendix G still described the table as what was read, the verdict and what the paper does, and G.2's lead said sentences reworded after the reading were given as reworded; both now describe the three columns"
 authority = "the assistant's return of G.2 on three points (2026-11-12); the supervisor, WP38-decisions.md at 7257053"
+
+# Section 1's Organization paragraph routes by depth (the supervisor's F-1 close read; 17 words at 60f92d9, 26 before this
+# row, 29 after): the raise is the three words over the 26, paid by a cut of twelve in the same section.
+[[raise]]
+date = "2026-11-13"
+section = "The decision problem"
+words_added = 3
+job = "the Organization paragraph, which listed the appendices by letter, routes by depth in one line each: abstract and Figure 1; headers and Main results; the whole text (with the reader sentence, which stays); the supporting material's appendices; the repository and container (each a link: Section 11 for the repository and container)"
+reader = "the reader who arrives at the paper and has to choose how far down to read"
+
+[[cut]]
+date = "2026-11-13"
+section = "The decision problem"
+words_removed = 12
+no_longer_did = "'We take PCA as inspiration and explain tensions where it explains variance.' opened the paragraph after the PCA paragraph, and said again what the abstract's second and third sentences say ('PCA ... explains variance. We explain tensions.') and what the PCA paragraph above it ends on (variance says nothing about trade-offs); the next sentence ('Objectives may align in one region and oppose in another') carries the step from PCA to the fitted surface without it. Together with the Organization raise this puts the paragraph, with its neighbour, at 17 words net against its 17 at 60f92d9"
+authority = "the assistant's brief to this unit (Organization not above its words at 60f92d9); marginal-value test"
+
+# The top of the supporting material names whom the appendices serve (journeys map, user-journeys.md: P5, P2, P3, P7).
+[[raise]]
+date = "2026-11-13"
+section = "Supporting material"
+words_added = 19
+job = "one clause at the top of the supporting material says whom the appendices serve: readers who check the proofs (Appendix B), reproduce the results (Appendices D and F) or read the case model (Appendix C); the journeys map shows P5, P2 and P3, and P7 arriving there with no statement of whose it is"
+reader = "the reader who follows a link out of the paper and cannot tell which appendix is theirs"
