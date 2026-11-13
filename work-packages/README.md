@@ -14,12 +14,12 @@ This repository is built as supervisor-gated work packages, following the superv
 
 ## Screenshots of the records
 
-The screenshots the reviews and rounds cite are not in the checkout; git holds them at commit `c680853`, and each
-record that names them says so in one line. One image: `git show c680853:<path> > out.png`. A directory in full:
-`git worktree add <dir> c680853`, then the folder is there.
+The screenshots the reviews and rounds cite are not in the checkout; git holds them at commit `2a669de`, and each
+record that names them says so in one line. One image: `git show 2a669de:<path> > out.png`. A directory in full:
+`git worktree add <dir> 2a669de`, then the folder is there.
 
 The four superseded inventories, `WP25-inventory.md`, `WP25-5-inventory.md`, `WP28-inventory.md` and
-`WP28-cut-list.md`, are removed; the last commit that holds them is `f227405` (`git show f227405:work-packages/<name>`).
+`WP28-cut-list.md`, are removed; the last commit that holds them is `6f1a133` (`git show 6f1a133:work-packages/<name>`).
 The reader-run directories `WP28-inventory/` and `WP28-retest/` stay.
 
 ## Roles and records

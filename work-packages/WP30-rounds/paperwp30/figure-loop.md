@@ -1,6 +1,6 @@
 # Figure loop on Figures 3, 6 and 7 (paper unit paperwp30)
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP30-rounds/chooseK/screenshots/`, `work-packages/WP30-rounds/paperwp30/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP30-rounds/chooseK/screenshots/`, `work-packages/WP30-rounds/paperwp30/`.
 
 Inputs: the cold reader's returns (`WP30-rounds/chooseK/cold-reads/cold-read-figs-6-7-8.md`, read from the rendered page with
 captions hidden); my own check of each caption against the image file the caption sits under. The sentence test, ink as data and

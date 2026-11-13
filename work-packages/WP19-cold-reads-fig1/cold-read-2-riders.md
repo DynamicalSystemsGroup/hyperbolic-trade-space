@@ -1,6 +1,6 @@
 # Cold read of Figure 1 after the two riders (footer removed; caption clause added)
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP19-cold-reads-fig1/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP19-cold-reads-fig1/`.
 
 Reader: one fresh Sonnet agent, image first (`fig-nlemma-riders.png`), then the caption.
 

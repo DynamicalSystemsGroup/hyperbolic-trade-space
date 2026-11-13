@@ -1,6 +1,6 @@
 # Read P9: mathematical-presentation reviewer (expert), Appendix H and Section 2
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP35-review/reads/shots/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP35-review/reads/shots/`.
 
 ## 1. Header
 

@@ -1,6 +1,6 @@
 # WP35 review (stage 6): HoroPCA acknowledged and distinguished, "hyperbolic" defined once, Table 1's "differs" column made uniform
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP35-review/`, `work-packages/WP35-review/reads/shots/`, `work-packages/WP35-rounds/build-shots/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP35-review/`, `work-packages/WP35-review/reads/shots/`, `work-packages/WP35-rounds/build-shots/`.
 
 Reviewer: a fresh reviewer who did not build it. Scope: `work-packages/WP35-scope-of-work.md`; decisions: `WP35-decisions.md`.
 Build under review: `b1b43cf` (with the three earlier WP35 commits `4928795`, `6916871`, `dda1fe7`), on the staged site

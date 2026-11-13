@@ -1,6 +1,6 @@
 # WP23 — Review record (the model-realism loop)
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP23-rounds/gate/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP23-rounds/gate/`.
 
 Scope: `WP23-scope-of-work.md`; decisions: `WP23-decisions.md`. The modeller stream writes this record as
 it goes; the PM and the driver add the cold reads, the K = 1 and K = 3 readings and the gate items. The

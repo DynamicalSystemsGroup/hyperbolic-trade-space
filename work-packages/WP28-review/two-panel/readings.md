@@ -1,6 +1,6 @@
 # The two-panel ternary on the three surfaces (rendered at 1100 and 375 px, light and dark)
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP28-review/two-panel/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP28-review/two-panel/`.
 
 Assembled with `scripts/assemble_site.py`, served locally and captured through the Chrome DevTools protocol (viewport only, the element scrolled to the top, no horizontal overflow at either width: scroll width equals client width in all twelve).
 

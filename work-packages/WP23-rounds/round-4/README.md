@@ -1,6 +1,6 @@
 # WP23 round 4: the views by the round-3 dispositions, the pair on round 1's data
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP23-rounds/gate/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP23-rounds/gate/`.
 
 This folder holds round 4 of the model-realism loop (D-6): the two views of the model (`INTENT.md`
 states what each should say and what changed; `assembly_caption.md` is the assembly view's levels

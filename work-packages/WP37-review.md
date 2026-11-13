@@ -1,6 +1,6 @@
 # WP37 review: the history page
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP37-review/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP37-review/`.
 
 Reviewer: a Sonnet agent that did not build the page. Run at head **d801a43** (`origin/dev`, worktree `wp37rev`),
 2026-11-12. Staged page read only at http://127.0.0.1:8791/history.html; its text is byte-identical to

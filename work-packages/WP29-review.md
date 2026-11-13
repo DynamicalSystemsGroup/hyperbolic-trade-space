@@ -1,6 +1,6 @@
 # WP29 review: acceptance package for the supervisor
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP29-review/`, `work-packages/WP29-review/reads2/shots/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP29-review/`, `work-packages/WP29-review/reads2/shots/`.
 
 Stage 6 of `WP29-scope-of-work.md`. Head read: dev at d7ac579. Nothing here is accepted; the acceptance is the supervisor's.
 

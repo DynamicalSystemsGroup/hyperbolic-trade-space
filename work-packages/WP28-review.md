@@ -1,6 +1,6 @@
 # WP28 — Review report (D-6)
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP28-review/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP28-review/`.
 
 | | |
 |---|---|

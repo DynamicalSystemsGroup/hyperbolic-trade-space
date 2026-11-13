@@ -1,6 +1,6 @@
 # Read R-13 (cold reader, no persona)
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP35-review/reads/shots/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP35-review/reads/shots/`.
 
 **Header.** Persona R-13; HEAD 3d5a53e; pages: http://127.0.0.1:8791/paper/ (Section 2) and http://127.0.0.1:8791/paper/supporting-material/ (Appendix H, plus the Appendix G pointer). Viewports: pane default (about 800 wide; not exactly 1280 by 800, the pane would not give that width) and 390 by 844 for Table 1. One sitting. Screenshots: shots/R13-appendixH-top-desktop.jpg, shots/R13-table1-390.jpg (the pane tool returns images only inline; I copied them afterwards).
 

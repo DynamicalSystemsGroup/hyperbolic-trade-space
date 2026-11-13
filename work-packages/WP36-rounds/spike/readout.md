@@ -1,6 +1,6 @@
 # WP36 spike readout: a theorem prover for the paper's results, and Rust compiled to WebAssembly
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP36-rounds/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP36-rounds/`.
 
 PM-side synthesis of `w1-theorem-prover.md`, `w2-rust-wasm.md` and `w3-sources.md`, 2026-11-12. Reading and writing only:
 nothing built, no mathematics, code or claim of record changed. The SymPy lemma scripts are a pencil-and-paper

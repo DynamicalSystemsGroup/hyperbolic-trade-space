@@ -1,6 +1,6 @@
 # WP29 review, second round: the re-read of the noise-ridge box after the narrowings, verbatim
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP29-review/reads2/shots/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP29-review/reads2/shots/`.
 
 - Head read: the paper and its supporting material built and staged from dev at d7ac579 (`scripts/stage_site.py`, served at 127.0.0.1:8841, light render; text of each slice taken from the rendered DOM, page pictures from the same render at 913 px width, 1500 px tiles, one 2100 px picture of the box with its two neighbours). Staged from a scratch worktree, pruned after the reads.
 - `briefs/` and `returns/` are byte for byte what the readers were given and returned (checked with `cmp` after copying). Paths in the briefs are scratch aliases (`fa` to `fd`, no paper or repository names). The wordings are new (not the round-one briefs); the personas are the same kinds.

@@ -1,6 +1,6 @@
 # Cold read of Figures 6, 7, 8 (K = 2) and Figure 3's caption, as rendered on the paper page
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP30-rounds/chooseK/cold-reads/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP30-rounds/chooseK/cold-reads/`.
 
 Stage read: http://localhost:8791/paper/ (assistant's stage, K = 2 figures confirmed in the served page),
 own browser tab, captions hidden for the cold read and then restored. Worktree: pm-worktrees/coldfig

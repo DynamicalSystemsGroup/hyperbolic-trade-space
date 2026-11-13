@@ -1,6 +1,6 @@
 # WP40 before and after (D-9, R-7)
 
-Before: `94cb6a1` (the build's start head H0). After: `da717e1` (the head the table was computed at, before this file's own commit).
+Before: `94cb6a1` (the build's start head H0). After: `1c7fb97` (the head the table was computed at, before this file's own commit).
 Bytes are tracked blob bytes (`git ls-tree -r -l`), not blocks; MB = 10^6 bytes.
 
 ## By top-level entry

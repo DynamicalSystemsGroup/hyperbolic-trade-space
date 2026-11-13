@@ -1,6 +1,6 @@
 # WP23 round 4: the two views, the heatmap pair and the record of `cubesat_r2.sysml`
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP23-rounds/gate/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP23-rounds/gate/`.
 
 The model is round 2's (rounds 3 and 4 changed nothing in it: `WP23-review.md`, "Round 3" and
 "Round 4"); what changed are the views, by the dispositions of the round-3 cold reads (a fresh P2

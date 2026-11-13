@@ -1,6 +1,6 @@
 # WP26 — Review report
 
-Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP26-review/`, `work-packages/WP26-view-editor-feedback/`.
+Screenshots for this record: commit `2a669de`, `git show 2a669de:<path>` with `<path>` under `work-packages/WP26-review/`, `work-packages/WP26-view-editor-feedback/`.
 
 | | |
 |---|---|
