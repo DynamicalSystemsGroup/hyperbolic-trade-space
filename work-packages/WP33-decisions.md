@@ -75,3 +75,14 @@ No persona's steps rose; total 47 to 30 (P1 to P8). Each baseline bounce point:
 
 U1 (round 4) completed to the planted answer with no stop the docs owe (`WP32-cells/round-4/triage.md`); U3 was not
 re-run. The two tables are in `WP33-wayfinding.md` (D-4).
+
+## The supervisor on the root page's needs block (2026-11-14, 09:15; his close read of the entry surfaces)
+
+**Supervisor, verbatim** (with a screenshot of the block "Choose the line that is yours ..." with its five doors and the
+adoption line): "this essentially call to action. goes last in the index not first"
+
+**Applied as:** the needs block (the "Choose the line that is yours" sentence, the five doors and the adoption line)
+moves to the end of the root page, after the Why, What and How sections; the whom sentence stays at the top. The test
+that pins the order (`tests/test_site.py`, whom before needs before why before what) changes to the new order; the
+journeys note's placement row says the block closes the page as the call to action. Listed under Entry surfaces with
+its commit for his close read.
