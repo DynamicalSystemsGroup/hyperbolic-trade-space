@@ -187,3 +187,61 @@ without a new ledger row and my word; the Appendix G cut is measured as the scop
 generator, tests, ledger, register, reading-pass and prior-art rows may be prepared in a parallel worktree; the
 notebook edits and the re-execution queue after the WP36 integration unit. Open decisions: none; the five content
 calls remain the supervisor's to revert."
+
+## A reviewer's judgment of the stage-1b design, relayed by the supervisor (2026-11-13, 19:20)
+
+The supervisor's question to the reviewer: "did you find the experimental design to distinguish our method from
+horoPCA acceptable". The reviewer's answer, verbatim as relayed (the reviewer read the design, scripts and recorded
+results at dc80457 and did not rerun the HoroPCA experiment):
+
+> Yes—for distinguishing what the methods estimate, I find the design acceptable and quite persuasive. I would accept
+> it as a bounded synthetic experiment supporting the paper's positioning, rather than a general performance
+> benchmark. My earlier summary did not explain that judgment adequately.
+> The strongest design choice is varying spread while holding the planted boundary fixed. That directly tests the
+> proposed distinction instead of merely showing that the methods return different vectors.
+> Three additional controls make it convincing:
+> * Removing the planted boundary: the Gaussian-cloud arm shows PCA recovering the dominant spread direction while HTS
+>   does not recover that designated vector. HTS is not simply winning every constructed task.
+> * Breaking the package generator's accidental alignment: moving the planted normal away from the all-ones depth
+>   direction interrogates why the earlier methods appeared to agree.
+> * Reporting stronger alternatives and inconvenient results: the last principal component sometimes recovers the
+>   boundary normal; two-component spans sometimes contain it; HoroPCA's larger-radius runs show restart sensitivity.
+>   Those results remain visible.
+> Using the authors' HoroPCA implementation, selecting restarts by its own loss, recording all restarts, and committing
+> refutation rules before the experiment are also sound choices. The prior exploratory spike informed the design, so I
+> would describe this as a prospectively specified follow-up experiment, without implying it arose without prior
+> exploration.
+> My acceptance has three boundaries:
+> 1. The embedding is part of the treatment. HoroPCA receives your chosen embedding of log-metrics into hyperbolic
+>    space. The experiment distinguishes the implemented pipelines under those embeddings; it cannot establish that
+>    HoroPCA could never recover boundary information.
+> 2. The tables deliberately favor clean identification. Noise-free data, 30% of rows on the boundary, four dimensions,
+>    and a fixed HTS temperature make this a mechanism demonstration. That is appropriate here; robustness under
+>    realistic sampling remains separate.
+> 3. Six tables per cell establish separation here, not reliable population recovery rates. The large observed
+>    differences are informative, but "6/6" should stay a count rather than become a broad reliability claim.
+> I would also soften two phrases in the readout: "the two-component plane is not a rescue" and "the analyst cannot
+> pick [the last component] without knowing w." An analyst might select components using other domain information.
+> The defensible point is that variance ranking alone does not identify which component represents the relevant
+> boundary.
+> The conclusion I would endorse is:
+> In these controlled constructions, HTS tracks the planted upper boundary while leading PCA and HoroPCA directions
+> track variation in the sampled designs. Their agreement therefore depends on the relationship between boundary
+> orientation and sample spread; the methods answer different questions.
+> That is a useful result for 0.1. I would not require another experimental arm before including it. This judgment
+> comes from reviewing the design, scripts, and recorded results—not independently rerunning the HoroPCA experiment.
+
+**Applied as (the assistant):** Appendix H carries the reviewer's framing and boundaries. The design is described
+as a prospectively specified follow-up to the exploratory spike, a bounded synthetic experiment supporting the
+positioning and not a benchmark. The reading limits state the three boundaries in that order: the embedding is part
+of the treatment and the experiment distinguishes the implemented pipelines under it; the tables favour clean
+identification, so this is a mechanism demonstration and robustness under realistic sampling is separate; six
+tables per cell establish separation, not population recovery rates, and every "6/6" stays a count. The two
+phrases are softened to the defensible point: variance ranking alone does not identify which component represents
+the boundary (an analyst with other domain information might choose otherwise). The interpretation's lead is the
+endorsed conclusion, in the paper's vocabulary: in these controlled constructions this work tracks the planted
+upper boundary while the leading directions of PCA and HoroPCA track the variation in the sampled designs, so their
+agreement depends on how the boundary's orientation relates to the sample's spread, and the methods answer different
+questions. No further arm. The readout at ef4d118 stays as the record and gains a short section quoting the two
+softened phrases and their replacement, pointing here. The claims-register rows for the counts say "count" where
+they say "rate".
