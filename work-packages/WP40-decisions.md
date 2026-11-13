@@ -18,3 +18,24 @@ tidiness package of the release (the recurring kind): a stage-1 inventory of wha
 with what it does for that reader or for the record, then the decision on what moves, what goes (git keeps history)
 and what the repository's top level and README say about where things are, then the build under a scope the assistant
 approves. Nothing of the paper's content, the data of record or the decision records is thinned by it.
+
+## Stage 2: the inventory accepted and the thinning decided (2026-11-13, 21:45; the assistant, under the supervisor's direction; readout at 64aa577)
+
+The readout (`WP40-rounds/inventory/readout.md`) sizes the checkout (65 MB real bytes, 52 MB of it `work-packages/`,
+324 screenshots at 44.7 MB read by no test or script, a 100 MiB pack), names what is protected, and gives options per
+class. The assistant's calls, in the readout's numbering:
+
+**Assistant, verbatim:** "1. Screenshots: they leave the working tree at the build; git keeps them, and each review or
+round file that embedded or listed them gains one line naming the commit at which they can be seen, so 'screenshots in
+the record' stays true with the record being the history; images a markdown page or a test reads stay (the inventory
+says none). 2. Review and round directories: the text stays; it is the record and is small without the images. 3.
+Reader runs: stay, the record of the user tests. 4. Notes: the eight convention notes and the six live ones stay under
+`docs/superpowers/notes/`; the five build notes, the three outline and search notes and the two spike folders move
+under `work-packages/`, the build's record, with every path that names them updated and the paper's source map and
+the three dangling comment paths with them. 5. Superseded inventories: go. 6. The pack stays; no history rewrite, the
+records quote hashes. 7. The README's Layout list per the draft, with one correction: `history.yaml` is the record
+behind the history and acknowledgements page, not the release history; and a short header in `work-packages/README.md`
+saying what the folder holds and that it is not needed to use the method. 8. Drift closed in the build. Sequencing:
+the build runs after WP39 lands and before the final reader round, so no reader meets a moving path, and the residual
+pass runs on the surfaces after it. Protected as the readout lists, and the held-out WP11 material untouched. The
+scope for my approval next."
