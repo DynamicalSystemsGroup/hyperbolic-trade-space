@@ -256,3 +256,20 @@ the verdict-first table fitting a 375 px screen without a page scroll; no reposi
 the twelve Appendix H tests, the claims register and the vocabulary check green, the fast suite 1942 passed. The
 Appendix E path links point at blob/main and resolve after the merge; the WP8b checklist row covers the check. The
 fresh readers (P9, P10, R-13) run on this head; the supervisor's acceptance of WP35 follows their reads."
+
+## The fresh reads and the wording unit (2026-11-14, 01:40; the assistant; reads at c073362)
+
+The three fresh readers (P9 22 findings, P10 11, R-13 10; one blocking: "vector" and "symmetric" undefined in
+construction C) read as intended: none takes this work for a PCA, a hyperbolic-geometry method or a kernel method
+(R-13 met), and the P9 and P10 asks hold together (R-14). The review's consolidated fix-list FW-1 to FW-20 is ruled on:
+
+**Assistant, verbatim:** "Option (a): a WP35 wording unit goes through the paper queue first, with its own
+re-execution, and the WP39 notebook unit follows; two re-executions keep the two packages in two commits. The unit
+applies FW-1 to FW-13 and FW-15 to FW-20, and does not apply FW-14: H.4's lead is the reviewer's endorsed conclusion
+and stays as written. FW-20 cuts the clause the reviewer's softening suggested; the defensible point stands without
+it. For the words: the ceiling moves from 900 to 920 by a ledger row on my word, its job the readers' missing
+definitions (ρ, t, the depth direction, the generator, the ball, the threshold at first use) and the reviewer's second
+boundary stated with its number (FW-19); within that, the four cuts the review names pay for the rest, and the ledger
+test measures what the estimates guessed. Any test or claims row pinning the '26' moves with FW-11. WP35 goes on the
+review list for the supervisor once the wording unit is on the stage. C4's two caption links 404 before the merge;
+WP8b's G2 row fetches every link with and without sign-in after the merge."

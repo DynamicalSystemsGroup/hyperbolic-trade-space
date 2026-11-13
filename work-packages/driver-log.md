@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP35's fresh reads received; the wording unit ruled on (01:40).** PM14's three readers (c073362) read Appendix H as
+  intended; R-13 and R-14 are met on the reading with twenty wording items. The assistant's calls (WP35-decisions.md):
+  a separate wording unit first through the paper queue (two re-executions, two packages in two commits); all items but
+  FW-14 (the endorsed lead stays); the ceiling 900 to 920 on the assistant's word for the readers' definitions and the
+  reviewer's boundary with its number; WP35 to the review list once the unit is on the stage; the pre-merge 404 of two
+  caption links to WP8b's G2 row. The readers' panes were about 800 px wide, so the 1280 px look remains the
+  assistant's. The landed Appendix H worktree removed; nine worktrees.
+
 - **Appendix H accepted at 3d5a53e (01:05).** The follow-up (ba84606, 2bf1c21, 3d5a53e) carries the reviewer's five
   points: the assistant's own checks on the notebook text found the framing, the three boundaries and the endorsed lead,
   no "not a rescue", no "cannot pick", no standalone "rate", no path parenthetical, and the four vocabulary-baseline rows
