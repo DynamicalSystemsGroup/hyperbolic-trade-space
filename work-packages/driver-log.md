@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP40 D-8 verified; the WP38 pass released (14:20).** On 995075b: ruff, lock, vocabulary and attribution clean; the
+  fast suite 1946 passed; no stderr output in either notebook; the old-path grep empty outside the exempt classes
+  (the move table itself names the old paths, as it must); the stage rebuilt. WP40's build is complete and its fresh
+  review is next (WP40-decisions.md). The surfaces are stable, so the WP38 pass begins on the assistant's word
+  (WP38-decisions.md): 29 reader slots over 75,104 prose words, in waves on the shared browser pane, the checker before
+  and after, one landing unit per surface group. CI dispatched on 995075b (43522590868).
+
 - **996ed15 fully green (13:45).** CI 43514777340 on 996ed15 (the WP40 build, D-1 to D-7 and D-9): every job green
   on both platforms, the twenty-sixth fully green head. D-8 is still in its test group in the worktree.
 

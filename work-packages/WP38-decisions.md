@@ -107,3 +107,13 @@ for the reader to check. The reading pass's validation by the authors before rel
 (copy-editing only; the checker reports and never edits; the pass waits for stable surfaces), deliverables D-0 to
 D-7, the requirements and good enough, the agent models and the defaults as one item. Build D-1, D-3 and D-4 now;
 the pass runs on my word once the surfaces are stable."
+
+## The pass begins (2026-11-14, 14:20; the assistant's word; surfaces at 995075b)
+
+**Assistant, verbatim:** "The surfaces are stable: WP39's decision section and its fixes, WP40's thinning with its last
+notebook step, the WP35 and WP36 units and the history page are all on dev at 995075b and the stage is rebuilt there.
+The WP38 pass runs now per the scope and docs/superpowers/notes/residual-review.md: 29 reader slots over the prose
+surfaces, the flag table and the second reader's confirmation, copy-editing only, the checker before and after, one
+landing unit per surface group through the owning package's ledger and the paper queue. The abstract is read and
+flagged like every surface and changed by no one but the supervisor; the five entry surfaces' changes are listed for
+his close read."

@@ -63,3 +63,11 @@ history page and work-packages as the build's record; the drift comments reworde
 to the start head except the assistant's own records. The lemma chain passes after the two derivation comment edits;
 the fast suite 1946 passed; ruff, lock, vocabulary and attribution clean. D-8, the notebook cells naming moved
 paths, lands through the paper queue and completes the package."
+
+## D-8 verified; the build complete, the fresh review next (2026-11-14, 14:20; head 995075b)
+
+**Assistant, verbatim:** "D-8 is verified: the abstraction-gaps note's four lines point at work-packages/spikes/, the
+supporting material re-executed once with no stderr output and only the path swaps and the observed-commit lines
+changed, paper.ipynb and the figures unchanged; the old-path grep is empty outside the exempt classes; the fast suite
+1946 passed; ruff, lock, vocabulary and attribution clean; the stage rebuilt. The build is complete; stage 6, a fresh
+reviewer's retrievals, greps and README read, then WP40-review.md and the supervisor's acceptance."
