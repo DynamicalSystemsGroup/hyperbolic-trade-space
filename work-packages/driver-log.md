@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **39d65ab fully green (02:15).** CI 43373481676 on 39d65ab (Appendix H accepted, the follow-up at 3d5a53e): every
+  job green on both platforms, the twenty-first fully green head. The WP35 wording unit is still in its worktree
+  (nine files, re-executing); nothing else landed in the hour.
+
 - **WP35's fresh reads received; the wording unit ruled on (01:40).** PM14's three readers (c073362) read Appendix H as
   intended; R-13 and R-14 are met on the reading with twenty wording items. The assistant's calls (WP35-decisions.md):
   a separate wording unit first through the paper queue (two re-executions, two packages in two commits); all items but
