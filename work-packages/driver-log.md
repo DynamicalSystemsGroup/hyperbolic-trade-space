@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The overnight autonomous phase begins (19:30).** Supervisor, verbatim: "you clear to work tonight. i am going to
+  bed soon". The standing rules of `release-candidate.md` and `PM-BRIEF.md` ("The autonomous phase") apply: the
+  assistant verifies and accepts under the mandate, nothing merges, tags or deploys, the tick updates continue with the
+  first line saying whether anything needs him, anything that is his accumulates under "Waiting for the supervisor"
+  with the assistant's recommendation and the work routes around it, and the stop conditions are the only halts. In
+  flight: Appendix H's notebook unit with the reviewer's boundaries, the WP37 open-items refresh, WP33's last three
+  items, the WP38 path pattern, the WP40 inventory, then WP39's build on the paper queue. Waiting for him in the
+  morning: the history page's acceptance with its open items, the entry surfaces' close read, the abstract.
+
 - **The deliverables grid brought current (19:10).** The supervisor noted the grid still said the user tests and
   the wayfinding round had not run. Refilled at dc80457 from the records: U1 to U4 ran in WP32 (accepted 2026-11-12)
   and U1 again at df0cad9; the WP33 wayfinding round ran at 60f92d9 and df0cad9 (steps 47 to 30); a history-page row
