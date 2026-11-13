@@ -358,13 +358,13 @@ def horopca_verdict_sentence() -> Md:
     held = sum(c[4] for c in checks)
     parts = hypothesis_parts(rows)
     if all(v == "survives" for v in parts.values()):
-        tail = "so every part of the hypothesis survives."
+        tail = "so every part survives."
     else:
         bad = [p for p, v in parts.items() if v == "refuted"]
         tail = f"so the hypothesis is refuted in {_parts_text(bad)}."
     return Md(
-        f"Of the {len(checks)} checks the refutation conditions set over the {len(rows)} cells, "
-        f"{held} hold, {tail}"
+        f"{'All' if held == len(checks) else f'{held} of the'} {len(checks)} checks over the "
+        f"{len(rows)} cells hold, {tail}"
     )
 
 
@@ -380,12 +380,11 @@ def horopca_contrast_sentence() -> Md:
 
     same = a["rec"]["pca"] == c["rec"]["pca"]
     return Md(
-        f"At {RHO} = {a['x']:g}, removing the edge changes what this work recovers, from "
-        f"{change('ours')}, "
+        f"At {RHO} = {a['x']:g}, removing the edge takes this work from {change('ours')}"
         + (
-            f"and does not change what PCA recovers ({a['rec']['pca']} of {n} in both)."
+            f" and leaves PCA at {a['rec']['pca']} of {n}."
             if same
-            else f"and changes what PCA recovers, from {change('pca')}."
+            else f", and PCA from {change('pca')}."
         )
     )
 
@@ -408,8 +407,9 @@ def horopca_slab_sentences() -> Md:
     return Md(
         f"PCA's component of least variance recovers the vector in {k} of {n} tables at "
         f"{RHO} = 0.25 and at t = 0.9, and in none of the other {words.get(others, others)} "
-        f"cells. It is outside the hypothesis, because an analyst cannot pick it out without "
-        f"knowing the vector."
+        f"cells. It is outside the hypothesis: variance ranking alone does not identify which "
+        f"component represents the boundary, though an analyst with other domain information "
+        f"might choose it."
     )
 
 
@@ -417,13 +417,13 @@ def horopca_conditions() -> Md:
     """The four parts of the hypothesis with the result that would refute each, from ``RATES``."""
     q = RATES
     return Md(
-        f"- **H1** (A, B): this work's rate is at least {q['high']:g}. Refuted by any cell below.\n"
-        f"- **H2** (A): the rates of PCA and of HoroPCA are at least {q['high']:g} at "
-        f"{RHO} ≥ {q['rho_high']:g} and at most {q['low']:g} at {RHO} ≤ {q['rho_low']:g}. "
-        f"Refuted by a rate above {q['low']:g} at {RHO} ≤ {q['rho_low']:g} or below "
-        f"{q['high']:g} at {RHO} ≥ {q['rho_high']:g}.\n"
-        f"- **H3** (B, t = {q['t_far']:g}): PCA's rate is at most {q['pca_far']:g} and this work's "
-        f"at least {q['high']:g}. Refuted by PCA above {q['pca_far']:g}.\n"
-        f"- **H4** (C): this work's rate is at most {q['no_edge']:g}, and PCA's at "
-        f"{RHO} = {q['rho_high']:g} at least {q['high']:g}. Refuted by either failing."
+        f"- **H1** (A, B): this work recovers the vector in at least {q['high']:g} of the tables; "
+        f"refuted by any cell below.\n"
+        f"- **H2** (A): PCA and HoroPCA, in at least {q['high']:g} at {RHO} ≥ {q['rho_high']:g} "
+        f"and at most {q['low']:g} at {RHO} ≤ {q['rho_low']:g}; refuted by a cell outside either "
+        f"bound.\n"
+        f"- **H3** (B, t = {q['t_far']:g}): PCA at most {q['pca_far']:g} and this work at least "
+        f"{q['high']:g}; refuted by PCA above {q['pca_far']:g}.\n"
+        f"- **H4** (C): this work at most {q['no_edge']:g}, and PCA at {RHO} = {q['rho_high']:g} "
+        f"at least {q['high']:g}; refuted by either failing."
     )

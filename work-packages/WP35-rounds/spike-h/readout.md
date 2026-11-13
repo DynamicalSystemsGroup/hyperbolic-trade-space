@@ -371,3 +371,16 @@ the log-metrics gives it the edge, or anything about the cubesat beyond context.
 - Results: `results.json`, `summary.txt`, `results_methods.json.gz` in this folder. The tables (`tables.npz`, 0.76 MB) are not
   committed; they regenerate from the seeds.
 - The environment of the authors' code is the first spike's (`docs/superpowers/notes/spike-horopca/README.md`).
+
+## 10. Two phrases softened after the external review
+
+The record above stays as it was written. The reviewer's judgment (relayed by the supervisor, recorded verbatim in
+`work-packages/WP35-decisions.md`, entry 1862491) asked that two phrases of section 4 be softened, and Appendix H does not
+use them:
+
+- "The plane of two components is not a rescue" (item 4) and "The analyst cannot pick that [last component] without knowing
+  w" are replaced by: variance ranking alone does not identify which component represents the boundary; an analyst with
+  other domain information might choose otherwise.
+- The same entry records the three boundaries Appendix H states in its reading limits: the embedding is part of the
+  treatment; the tables favour clean identification, so this is a mechanism demonstration; six tables per cell establish
+  separation, not population recovery rates, and "6/6" stays a count.

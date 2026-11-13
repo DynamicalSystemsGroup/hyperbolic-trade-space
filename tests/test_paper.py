@@ -1875,11 +1875,18 @@ def test_appendix_h_says_where_each_term_is_first_defined_and_points_at_d16():
     assert "(|cos|, agreement of directions ignoring sign)" in text
     assert first("|cos|") < first("threshold")
     assert "distance R from the centre" in text and first("R from") < first("R = 3")
-    assert "frame, k orthonormal directions" in text and "horospheres (curved surfaces" in text
+    assert (
+        "frame, k orthonormal directions" in text
+        and "horospheres (the curved counterparts of hyperplanes" in text
+    )
     assert "{ref}`Appendix D.16 <sub-d-16>`" in " ".join(_src(c) for c in _appendix_h_cells())
     assert "was not run" in text
     assert "second embedding was not run" in text and "not tree-like" in text
-    assert "The embedding is ours" in text
+    assert "The embedding is part of the treatment" in text  # decision 1862491, boundary (a)
+    assert text.index("(a) The embedding") < text.index("(b) The tables") < text.index("(c) Six")
+    assert "every 6/6 is a count" in text and "not a performance benchmark" in text
+    assert "variance ranking alone does not identify" in text
+    assert "cannot pick" not in text and "not a rescue" not in text
 
 
 FORBIDDEN_COMPARISON = ("worse", "poorer", "inferior", "outperform", "beats", "pca with a kernel")
