@@ -153,13 +153,6 @@ reason = "BASELINE: ordinary mathematics: a property of V (log-convex), not one 
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
-phrase = "level surface"
-owner = "WP10 paper stream"
-reason = "BASELINE: level surfaces of V: the mathematical class of level sets (the \"hyperbolic\" gloss) (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/paper.ipynb"
 phrase = "power margin"
 owner = "WP10 paper stream"
 reason = "BASELINE: a named attribute of the cubesat case (power_margin_w), a proper name of the case (WP10 re-triage 2026-11-09)"
@@ -233,13 +226,6 @@ file = "paper/supporting_material.ipynb"
 phrase = "instance margin"
 owner = "WP10 paper stream"
 reason = "BASELINE: assertion text printed in the generated proof table (a code line) (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/supporting_material.ipynb"
-phrase = "level surface"
-owner = "WP10 paper stream"
-reason = "BASELINE: level surfaces of V: the mathematical class of level sets (the \"hyperbolic\" gloss) (WP10 re-triage 2026-11-09)"
 
 [[violation]]
 kind = "stem"
@@ -457,3 +443,31 @@ file = "src/hyperbolic_trade_space/tuning.py"
 phrase = "return temperature"
 owner = "package docstrings"
 reason = "BASELINE: numpydoc Returns entry of a docstring (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "curved surface"
+owner = "WP35 Appendix H"
+reason = "BASELINE: a plain gloss of the horosphere, pinned by test_appendix_h_says_where_each_term_is_first_defined_and_points_at_d16 (WP35 amendment 1)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "pca rate"
+owner = "WP35 Appendix H"
+reason = "BASELINE: the recovery rate of a method over tables, the experiment's measure (hypothesis.md); a statistic of the test, not a glossary object (WP35 amendment 1)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "quadratic program"
+owner = "WP35 Appendix H"
+reason = "BASELINE: the standard name of the solver class (SQP) in the account of the solvers; the glossary names the convex and linear program (WP35 amendment 1)"
+
+[[violation]]
+kind = "stem"
+file = "paper/supporting_material.ipynb"
+phrase = "work rate"
+owner = "WP35 Appendix H"
+reason = "BASELINE: 'this work's rate', the same measure for this work, as in the recovery rate above (WP35 amendment 1)"

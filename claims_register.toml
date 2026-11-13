@@ -6076,19 +6076,20 @@ note = "The estimator passes scikit-learn's estimator checks (fit, transform, in
 
 [[claim]]
 id = "C532"
-fragment = "The authors' code, run on this paper's tables after an embedding of ours, recovered the planted exponents only where the generator made them the direction of largest spread"
+fragment = "In a pre-registered test, on an embedding of ours, the authors' code recovered planted exponents only where they were the direction of largest spread"
 file = "paper/paper.ipynb"
 anchor = "Prior art, by family"
 kind = "R"
 backing = [
-  "gen:paper/generate_prior_art.py::horopca_rows",
-  "test:tests/test_paper.py::test_the_horopca_table_equals_the_spike_record",
-  "file:docs/superpowers/notes/spike-horopca/results.json",
+  "gen:paper/generate_prior_art.py::horopca_hypothesis_table",
+  "test:tests/test_paper.py::test_the_hypothesis_table_equals_the_record_cell_by_cell",
+  "file:work-packages/WP35-rounds/spike-h/results.json",
+  "file:work-packages/WP35-rounds/spike-h/hypothesis.md",
 ]
 status = "backed"
 disposition = "keep"
-source = "WP35 build"
-note = "Appendix G's table at R = 1: the planted K = 1 table and the first term of K = 3 at seed 0 are recovered (absolute cosine 0.97 or more, PCA 0.98 and 0.99); the other planted terms and the cubesat's are not. The authors' code (pinned commit) ran unmodified apart from one removed PyTorch call; the embedding is the spike's."
+source = "WP35 amendment 1"
+note = "Appendix H's table: PCA's first component and HoroPCA's first direction (R = 0.25 and 1) recover the planted vector in every cell where it is the direction of largest spread and in none where another direction is larger (the tied cell at rho = 1 aside), with the edge fixed (arm A) and in the package's generator (arm B); the conditions were committed at 830cf54 before the run; the embedding is ours (stated in Appendix H). Replaces the earlier C532, backed by Appendix G's table at R = 1."
 
 [[claim]]
 id = "C533"
@@ -6166,149 +6167,6 @@ status = "backed"
 disposition = "keep"
 source = "WP35 build"
 note = "One convex program per term (the K = 1 fit at infinite temperature is a linear program, at finite temperature a smooth convex program) with a recorded termination status; the K > 1 assignment is local over assignments, each refit global (readout section 3)."
-
-[[claim]]
-id = "C538"
-fragment = "We ran the authors' code (a pinned commit, outside this package, with one removed PyTorch call restored by a shim) beside PCA on the paper's tables, which are not tree-like: the four-point relative delta of the log-metric cloud is 0.46 and 0.45 for the two cubesat regimes, against 0.42 and 0.39 for Gaussian clouds of the same dimension, and 0.00 for a tree."
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "R"
-backing = [
-  "gen:paper/generate_prior_art.py::horopca_rows",
-  "test:tests/test_paper.py::test_the_horopca_passage_numbers_are_in_the_record",
-  "file:docs/superpowers/notes/spike-horopca/gromov.txt",
-  "file:docs/superpowers/notes/spike-horopca/README.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 build"
-note = "gromov.txt: 0.457 and 0.446 (cubesat primary and stock) against 0.420 and 0.393 (Gaussian clouds of the same dimension), 0.000 for the repository's 40-node tree. Commit c9a99967 of the authors' repository, the one shim in compat.py (torch.solve)."
-
-[[claim]]
-id = "C539"
-fragment = "the embedding was ours, not natural for the data"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = [
-  "file:docs/superpowers/notes/spike-horopca/make_tables.py",
-  "file:docs/superpowers/notes/spike-horopca/run_horopca.py",
-  "test:tests/test_paper.py::test_the_horopca_passage_numbers_are_in_the_record",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 build"
-note = "The log-metrics are Euclidean; the spike centres them, scales the farthest point to hyperbolic distance 2 (R = 1) and applies the exponential map at the origin (readout section 2, Setup). Nothing in the tables asks for it (C538)."
-
-[[claim]]
-id = "C540"
-fragment = "the authors' own command on their small tree printed a distortion of 0.20 against 0.84 for PCA"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = [
-  "file:docs/superpowers/notes/spike-horopca/smalltree_run.txt",
-  "file:docs/superpowers/notes/spike-horopca/run_main.py",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 build"
-note = "The authors' CLI on their smalltree dataset: HoroPCA distortion 0.20 (their README: 0.19), PCA 0.84, tangent PCA 0.70, PGA 0.62; the same run checks that the spike ran the authors' code."
-
-[[claim]]
-id = "C541"
-fragment = "Where a planted term is also the direction of largest spread, both recover it"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "R"
-backing = [
-  "gen:paper/generate_prior_art.py::horopca_rows",
-  "test:tests/test_paper.py::test_the_horopca_table_equals_the_spike_record",
-  "file:docs/superpowers/notes/spike-horopca/results.json",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 build"
-note = "The table: planted K = 1 and the first term of K = 3 at seed 0, PCA 0.98 and 0.99, HoroPCA 0.97 and 0.99 at R = 1. 'The generator makes it so': make_frontier_data draws interior designs at an exponentially distributed depth below the surface (readout section 2, Reading 1)."
-
-[[claim]]
-id = "C542"
-fragment = "on the cubesat tables the alignment of the first two directions with this work's one-term exponent vector is 0.06 or less, for PCA and for HoroPCA at every scale"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "R"
-backing = [
-  "gen:paper/generate_prior_art.py::horopca_rows",
-  "test:tests/test_paper.py::test_the_horopca_passage_numbers_are_in_the_record",
-  "file:docs/superpowers/notes/spike-horopca/analysis.txt",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 build"
-note = "PCA 0.02 and 0.05 (every row); HoroPCA at the three scales at most 0.058 (primary) and 0.061 (stock), the larger of its one- and two-direction scores."
-
-[[claim]]
-id = "C543"
-fragment = "the one-term fit names eight metrics with exponents summing to one"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = [
-  "file:docs/superpowers/notes/spike-horopca/analysis.txt",
-  "file:docs/superpowers/notes/spike-horopca/tables.npz",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 build"
-note = "The K = 1 fit of the cubesat primary regime in the spike's tables: eight exponents above 1e-6, summing to 1.000 (readout section 2, Reading 3); the principal direction loads total mass at -0.41 and available power at +0.40."
-
-[[claim]]
-id = "C544"
-fragment = "the variance HoroPCA keeps agrees with PCA's within 0.007 on the planted tables and 0.013 on the cubesat"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "R"
-backing = [
-  "gen:paper/generate_prior_art.py::horopca_rows",
-  "file:docs/superpowers/notes/spike-horopca/results.json",
-  "test:tests/test_paper.py::test_the_horopca_passage_numbers_are_in_the_record",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 build"
-note = "results.json, R = 0.25: the explained fraction of HoroPCA's first direction against PCA's first component on the same rows, at most 0.0069 (planted) and 0.0123 (cubesat)."
-
-[[claim]]
-id = "C545"
-fragment = "its first direction keeps far less of the variance (0.068 against PCA's 0.325 on the cubesat primary) and depends on the restart"
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "R"
-backing = [
-  "gen:paper/generate_prior_art.py::horopca_rows",
-  "file:docs/superpowers/notes/spike-horopca/results.json",
-  "file:docs/superpowers/notes/spike-horopca/analysis.txt",
-  "test:tests/test_paper.py::test_the_horopca_passage_numbers_are_in_the_record",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 build"
-note = "results.json, R = 3: 0.068 explained by HoroPCA's first direction on the cubesat primary subsample; PCA's first component, every row, 0.325 (analysis.txt); the restarts end between 0.211 and 0.410 on planted K = 1 (readout section 2)."
-
-[[claim]]
-id = "C546"
-fragment = "This is a spike and not a benchmark, and this work was not run on the data of HoroPCA's own tasks."
-file = "paper/supporting_material.ipynb"
-anchor = ""
-kind = "S"
-backing = [
-  "file:docs/superpowers/notes/spike-horopca/README.md",
-  "file:work-packages/WP35-rounds/spike/readout.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 build"
-note = "The readout's limits (5) and (6): one run per seed of the planted generator, four planted tables and two cubesat regimes; the paper's method was not run on graphs embedded in hyperbolic space."
 
 [[claim]]
 id = "C547"
@@ -6625,3 +6483,314 @@ status = "backed"
 disposition = "keep"
 source = "WP36 decision entry 441cdcb"
 note = "Readout section 2: closing the gap needs a rounding-error statement and a proof per algorithm; the certificates check the float result at run time"
+
+[[claim]]
+id = "C570"
+fragment = "HoroPCA [@chami2021horopca] carries principal component analysis (PCA), the directions along which a table spreads most, into hyperbolic space"
+file = "paper/supporting_material.ipynb"
+anchor = "H.1 The hypothesis and what would refute it"
+kind = "L"
+backing = [
+  "bib:chami2021horopca",
+  "file:paper/reading_pass.yaml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "As C529 and reading_pass row 44: HoroPCA is the components of PCA (subspace parameterization, projection, variance objective) extended to hyperbolic space."
+
+[[claim]]
+id = "C571"
+fragment = "The hypothesis, committed with its refutation conditions before any table existed"
+file = "paper/supporting_material.ipynb"
+anchor = "H.1 The hypothesis and what would refute it"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_the_pre_registered_rates_are_those_of_the_hypothesis_file",
+  "file:work-packages/WP35-rounds/spike-h/hypothesis.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "hypothesis.md was committed at 830cf54 with the three scripts, before results.json; the test pins the rates it states to the generator's RATES and the commit to the file's first."
+
+[[claim]]
+id = "C572"
+fragment = "is that PCA and HoroPCA follow the spread and this work follows the edge"
+file = "paper/supporting_material.ipynb"
+anchor = "H.1 The hypothesis and what would refute it"
+kind = "R"
+backing = [
+  "gen:paper/generate_prior_art.py::horopca_hypothesis_table",
+  "test:tests/test_paper.py::test_the_hypothesis_table_equals_the_record_cell_by_cell",
+  "file:work-packages/WP35-rounds/spike-h/results.json",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "The hypothesis H (one sentence in hypothesis.md); every pre-registered part survived on the record (the table's last row)."
+
+[[claim]]
+id = "C573"
+fragment = "This work finds the edge of the table instead: a vector of exponents defining a surface that bounds the rows from above"
+file = "paper/supporting_material.ipynb"
+anchor = "H.1 The hypothesis and what would refute it"
+kind = "M"
+backing = [
+  "glossary:fitted-reference-surface",
+  "func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "The fit minimizes a one-sided soft maximum over the simplex; the surface is the fitted reference surface of the glossary."
+
+[[claim]]
+id = "C574"
+fragment = "Four metrics, 300 rows, no noise, 30 percent of the rows on the edge, six tables per setting"
+file = "paper/supporting_material.ipynb"
+anchor = "H.2 The experiment"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_the_design_constants_of_appendix_h_are_the_pre_registered_ones",
+  "file:work-packages/WP35-rounds/spike-h/hypothesis.md",
+  "file:work-packages/WP35-rounds/spike-h/experiment_tables.py",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "hypothesis.md, 'The experiment': d = 4, n = 300, seeds 100 to 105, no noise, 30 percent of rows on the edge."
+
+[[claim]]
+id = "C575"
+fragment = "Each table goes to this work (one term), to PCA (first component) and to HoroPCA (first direction; the authors' code, five restarts)"
+file = "paper/supporting_material.ipynb"
+anchor = "H.2 The experiment"
+kind = "S"
+backing = [
+  "file:work-packages/WP35-rounds/spike-h/hypothesis.md",
+  "file:work-packages/WP35-rounds/spike-h/experiment_methods.py",
+  "file:work-packages/WP35-rounds/spike-h/readout.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "hypothesis.md and experiment_methods.py: HyperbolicTradeSpace(n_terms=1), the SVD of the centred log-metrics, the authors' code at c9a9996 with five restarts (readout section 2)."
+
+[[claim]]
+id = "C576"
+fragment = "HoroPCA needs a ball, so the log-metrics are centred and scaled until the farthest lies at distance R from the centre"
+file = "paper/supporting_material.ipynb"
+anchor = "H.2 The experiment"
+kind = "S"
+backing = [
+  "file:work-packages/WP35-rounds/spike-h/readout.md",
+  "file:work-packages/WP35-rounds/spike-h/experiment_methods.py",
+  "bib:chami2021horopca",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "readout section 6 ('R'): centre, one scale so the farthest point has tangent norm R, exponential map at the origin; curvature -1."
+
+[[claim]]
+id = "C577"
+fragment = "PCA and HoroPCA return the direction of largest spread. They recover the vector when it is that direction and miss it when another spreads more, edge or no edge"
+file = "paper/supporting_material.ipynb"
+anchor = "H.4 What the table shows"
+kind = "R"
+backing = [
+  "gen:paper/generate_prior_art.py::horopca_hypothesis_table",
+  "test:tests/test_paper.py::test_the_hypothesis_table_equals_the_record_cell_by_cell",
+  "file:work-packages/WP35-rounds/spike-h/results.json",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "The table: PCA's first component and HoroPCA's first direction (R = 0.25 and 1) recover w at rho >= 2 in arms A and C and not at rho <= 0.5, and in arm B at t = 0 and not at t >= 0.3 (readout section 4, item 2). HoroPCA at R = 3 is reported, not tested."
+
+[[claim]]
+id = "C578"
+fragment = "This work returns the edge at every spread, and nothing like the vector where there is none"
+file = "paper/supporting_material.ipynb"
+anchor = "H.4 What the table shows"
+kind = "R"
+backing = [
+  "gen:paper/generate_prior_art.py::horopca_hypothesis_table",
+  "test:tests/test_paper.py::test_the_hypothesis_table_equals_the_record_cell_by_cell",
+  "file:work-packages/WP35-rounds/spike-h/results.json",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "Arms A and B: this work recovers w in 54 of 54 tables (cosine at least 0.9995); arm C: 0 of 12, median cosines 0.32 and 0.58 (readout section 4, item 1)."
+
+[[claim]]
+id = "C579"
+fragment = "PCA says along which combinations the sampled designs differ, this work where the table stops"
+file = "paper/supporting_material.ipynb"
+anchor = "H.4 What the table shows"
+kind = "M"
+backing = [
+  "glossary:fitted-reference-surface",
+  "func:src/hyperbolic_trade_space/tensions.py::tension_report",
+  "file:work-packages/WP35-rounds/spike-h/readout.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "What each estimates: PCA the directions of spread of the sampled designs; this work the one-sided edge (readout section 8)."
+
+[[claim]]
+id = "C580"
+fragment = "already chains them, running PCA on the chart of the near-frontier designs"
+file = "paper/supporting_material.ipynb"
+anchor = "H.4 What the table shows"
+kind = "S"
+backing = [
+  "test:tests/test_tensions.py::test_orient_by_pca_equals_report_directions",
+  "func:src/hyperbolic_trade_space/tensions.py::tension_report",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "As C531: the tension report runs PCA on the chart coordinates of the near-frontier designs (Appendix D.16)."
+
+[[claim]]
+id = "C581"
+fragment = "A HoroPCA of the chart would be the same kind of chain and was not run"
+file = "paper/supporting_material.ipynb"
+anchor = "H.4 What the table shows"
+kind = "S"
+backing = [
+  "file:work-packages/WP35-decisions.md",
+  "file:work-packages/WP35-rounds/spike-h/readout.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "WP35-decisions.md, 2026-11-13 09:20, Question 3 (a): the chain is in words with the pointer to D.16; no third arm."
+
+[[claim]]
+id = "C582"
+fragment = "The embedding is ours: the centre, the scale R and the map into the ball are our choices, and a second embedding was not run"
+file = "paper/supporting_material.ipynb"
+anchor = "H.4 What the table shows"
+kind = "S"
+backing = [
+  "file:work-packages/WP35-rounds/spike-h/readout.md",
+  "file:work-packages/WP35-decisions.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "readout section 7, first item; decision Question 2 (b): not run, stated in the reading limits."
+
+[[claim]]
+id = "C583"
+fragment = "The tables are not tree-like, the data HoroPCA was built for, and are noise-free, four-dimensional and six per cell"
+file = "paper/supporting_material.ipynb"
+anchor = "H.4 What the table shows"
+kind = "R"
+backing = [
+  "gen:paper/generate_prior_art.py::horopca_verdicts",
+  "test:tests/test_paper.py::test_the_hypothesis_table_equals_the_record_cell_by_cell",
+  "file:docs/superpowers/notes/spike-horopca/gromov.txt",
+  "bib:chami2021horopca",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "Gromov four-point relative delta 0.26 to 0.33 on the planted tables against 0.00 for the authors' tree (gromov.txt, the first spike); HoroPCA's published results are for tree-like data (readout section 7). The tables of arms A to C are the generator's, n = 6 per cell in the record."
+
+[[claim]]
+id = "C584"
+fragment = "HoroPCA ran one direction at its default settings"
+file = "paper/supporting_material.ipynb"
+anchor = "H.4 What the table shows"
+kind = "S"
+backing = [
+  "file:work-packages/WP35-rounds/spike-h/readout.md",
+  "file:work-packages/WP35-rounds/spike-h/experiment_methods.py",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "k = 1 in the table, the repository's defaults, Adam at learning rate 0.05, 500 steps (readout sections 2 and 7)."
+
+[[claim]]
+id = "C585"
+fragment = "HoroPCA optimizes a frame, k orthonormal directions, so that points projected along horospheres (curved surfaces standing where hyperplanes do in flat space) keep the most variance"
+file = "paper/supporting_material.ipynb"
+anchor = "H.5 How the formalism and the solvers differ"
+kind = "L"
+backing = [
+  "bib:chami2021horopca",
+  "file:work-packages/WP35-rounds/spike-h/readout.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "The authors' paper, Section 3 (three generalizations: the subspace, the projection, the variance), and readout section 5 (learning/pca.py, compute_variance, gram_schmidt)."
+
+[[claim]]
+id = "C586"
+fragment = "That objective is not convex: the authors' code runs Adam from random starts, and nothing bounds the result's distance from the best frame"
+file = "paper/supporting_material.ipynb"
+anchor = "H.5 How the formalism and the solvers differ"
+kind = "S"
+backing = [
+  "file:work-packages/WP35-rounds/spike-h/readout.md",
+  "file:work-packages/WP35-rounds/spike-h/experiment_methods.py",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "readout section 5: Adam (pca.py L123), random normal start (L23), no convergence test, no certificate; the repository gives no argument for convexity. Section 3e of the readout records different restarts ending in different optima."
+
+[[claim]]
+id = "C587"
+fragment = "This work minimizes a soft maximum (log-mean-exp) of weighted log-metrics over the simplex, which for one term is convex"
+file = "paper/supporting_material.ipynb"
+anchor = "H.5 How the formalism and the solvers differ"
+kind = "M"
+backing = [
+  "lemma:L4",
+  "func:src/hyperbolic_trade_space/solvers.py::log_mean_exp",
+  "func:src/hyperbolic_trade_space/solvers.py::objective_and_grad",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "Lemma 4 (J_tau is convex on the simplex; the second directional derivative is tau times a weighted variance, checked in derivation/lemma_04_convexity.py)."
+
+[[claim]]
+id = "C588"
+fragment = "by a linear program or a sequential quadratic program, and returns a gap bounding the result's distance from the best"
+file = "paper/supporting_material.ipynb"
+anchor = "H.5 How the formalism and the solvers differ"
+kind = "S"
+backing = [
+  "func:src/hyperbolic_trade_space/solvers.py::solve_lp",
+  "func:src/hyperbolic_trade_space/solvers.py::solve_slsqp",
+  "func:src/hyperbolic_trade_space/solvers.py::simplex_gap",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "tau = inf: solve_lp; finite tau: solve_slsqp warm-started from it; simplex_gap gives 0 <= f(w) - f* <= G by convexity (readout section 5)."
+
+[[claim]]
+id = "C589"
+fragment = "HoroPCA is a PyTorch module; this work is a scikit-learn transformer"
+file = "paper/supporting_material.ipynb"
+anchor = "H.5 How the formalism and the solvers differ"
+kind = "S"
+backing = [
+  "test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator",
+  "file:work-packages/WP35-rounds/spike-h/readout.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 amendment 1"
+note = "readout section 5, interface row: torch.nn.Module with fit(x, iterative, optim); this work passes scikit-learn's estimator checks."

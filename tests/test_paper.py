@@ -86,14 +86,8 @@ APPENDICES = {
     "E": "Assumptions and abstraction gaps",
     "F": "Computational reproducibility",
     "G": "Register of prior art",
+    "H": "HoroPCA beside this work: a tested hypothesis",
 }
-# WP35 amendment 1: Appendix H is built beside the notebooks. This switch is true once the notebook
-# holds the appendix; it turns on every test that reads Appendix H's cells and adds "H" to the
-# list of appendices. The notebook unit that pastes the appendix deletes the switch (and the
-# `strict` xfail test that announces the landing).
-H_LANDED = "## Appendix H. " in (PAPER / "supporting_material.ipynb").read_text(encoding="utf-8")
-if H_LANDED:
-    APPENDICES["H"] = "HoroPCA beside this work: a tested hypothesis"
 TIERS = ("**Main text keeps:**", "**This appendix carries:**", "**The repository keeps:**")
 # Appendices whose generated content waits for another package's deliverable (stated in the report).
 AWAITING_RECORD: set[str] = set()
@@ -801,7 +795,9 @@ def test_no_appendix_is_a_stub():
         assert gen, f"Appendix {letter} has no generated content"
         for c in gen:
             assert _out_text(c).strip(), f"{c.id} has no committed output ({STALE})"
-            if letter not in AWAITING_RECORD:
+            if letter not in AWAITING_RECORD and not c.id.startswith(
+                "sent-"
+            ):  # sentences, not tables
                 assert "|" in _out_text(c) or len(_out_text(c)) > 200, c.id
 
 
@@ -1577,88 +1573,6 @@ def test_prior_art_committed_outputs_are_current():
     assert _out_text(reg) == str(generate_prior_art.register()), STALE
 
 
-def _spike_table_cells():
-    """The cells of the printed HoroPCA table, row by row, as strings."""
-    cell = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-G-horopca")
-    lines = [ln for ln in _out_text(cell).splitlines() if ln.startswith("|")][2:]
-    return [[x.strip() for x in ln.strip("|").split("|")] for ln in lines]
-
-
-def test_the_horopca_table_equals_the_spike_record():
-    """WP35 R-2: every number of Appendix G's HoroPCA table is a number of the spike's record,
-    read here independently of the generator: HoroPCA's from ``results.json`` (R = 1, the best of
-    five runs, the axes unreflected) and PCA's from ``analysis.txt`` (every row of the table)."""
-    import json
-
-    spike = ROOT / "docs" / "superpowers" / "notes" / "spike-horopca"
-    results = json.loads((spike / "results.json").read_text(encoding="utf-8"))
-    analysis = (spike / "analysis.txt").read_text(encoding="utf-8")
-    cells = _spike_table_cells()
-    assert len(cells) == 15  # planted 1 + 2 + 3 + 3 targets, cubesat 3 + 3
-    # the record lines, "PC10 (0.51) | 0.02 0.02", by table and target, in the order printed
-    pca = {}
-    for block in analysis.split("=== ")[1:]:
-        name = block.split()[0]
-        if "PCA (all rows)" not in block:
-            continue
-        part = block.split("PCA (all rows)", 1)[1].split("HoroPCA (subsample)", 1)[0]
-        for m in re.finditer(r"^\s+(planted t\d|fitK1 t1|fitK2 t\d)\s+PC(\d+) \((\d\.\d\d)\) \| "
-                             r"\S+ (\d\.\d\d)", part, re.M):  # fmt: skip
-            pca[(name, m.group(1))] = (f"PC{m.group(2)} ({m.group(3)})", m.group(4))
-    horo_key = {"fitK1 t1": "fit K=1 t1", "fitK2 t1": "fit K=2 t1", "fitK2 t2": "fit K=2 t2"}
-    expected = []
-    for name in sorted(results, key=lambda n: (n.startswith("cubesat"), n)):
-        wanted = [
-            k for (n, k) in pca if n == name and (name.startswith("cubesat") or "planted" in k)
-        ]
-        entry = results[name]["horopca"]["1.0"]
-        for t in wanted:
-            key = horo_key.get(t, t)
-            expected.append(
-                (
-                    pca[(name, t)][0],
-                    pca[(name, t)][1],
-                    f"{entry['k1']['best']['scores_unreflected'][key]['best_cos']:.2f}",
-                    f"{entry['k2']['best']['scores_unreflected'][key]['span']:.2f}",
-                )
-            )
-    assert [tuple(r[2:]) for r in cells] == expected
-
-
-def test_the_horopca_passage_numbers_are_in_the_record():
-    """WP35: the sentences around the table quote the record (R = 1 table; the other scales and
-    the Gromov four-point deltas are in the record), and the table is generated, never typed."""
-    import json
-
-    spike = ROOT / "docs" / "superpowers" / "notes" / "spike-horopca"
-    results = json.loads((spike / "results.json").read_text(encoding="utf-8"))
-    gromov = (spike / "gromov.txt").read_text(encoding="utf-8")
-    cells = _appendix_cells(_nb(SUPPORT_NB))["G"]
-    text = " ".join(_src(c) for c in cells if c.cell_type == "markdown")
-    assert "docs/superpowers/notes/spike-horopca/" in text
-    assert "the embedding was ours, not natural for the data" in text
-    assert "a spike and not a benchmark" in text
-    # alignment with this work's one-term exponent vector, every scale: 0.06 or less (two places)
-    for name in ("cubesat_primary", "cubesat_stock"):
-        for entry in results[name]["horopca"].values():
-            sc = entry["k1"]["best"]["scores_unreflected"]["fit K=1 t1"]["best_cos"]
-            sp = entry["k2"]["best"]["scores_unreflected"]["fit K=1 t1"]["span"]
-            assert max(sc, sp) < 0.065, (name, entry["R_max"])
-    # the four-point deltas of the two cubesat regimes, and of the Gaussian clouds
-    assert "0.457" in gromov and "0.446" in gromov and "0.420" in gromov and "0.393" in gromov
-    assert "0.46 and 0.45" in text and "0.42 and 0.39" in text and "0.00 for a tree" in text
-    # the smallest scale agrees with PCA's variance share: 0.007 planted, 0.013 cubesat
-    for name, r in results.items():
-        gap = abs(r["horopca"]["0.25"]["k1"]["best"]["explained"] - r["pca"]["k1"]["explained"])
-        assert gap < (0.013 if name.startswith("cubesat") else 0.007) + 1e-3, name
-    assert "0.007 on the planted tables and 0.013 on the cubesat" in text
-    # the largest scale on the cubesat primary: 0.068 against PCA's 0.325
-    assert (
-        round(results["cubesat_primary"]["horopca"]["3.0"]["k1"]["best"]["explained"], 3) == 0.068
-    )
-    assert "0.068 against PCA's 0.325" in text
-
-
 def test_section2_distinguishes_horopca_in_one_paragraph():
     """WP35 R-1, R-7: one paragraph on HoroPCA, closest in setting and farthest in what is
     estimated; it borrows setting, interface and PCA as a downstream step; it does not call this
@@ -1675,13 +1589,9 @@ def test_section2_distinguishes_horopca_in_one_paragraph():
         "downstream step",
     ):
         assert phrase in p, phrase
-    if H_LANDED:  # WP35 amendment 1: the paragraph points at Appendix H and says what it tests
-        assert (
-            "recovered planted exponents only where they were the direction of largest spread" in p
-        )
-        assert "{ref}`Appendix H <appendix-h>`" in p and "Appendix G" not in p
-    else:
-        assert "recovered the planted exponents only where the generator made them" in p
+    # WP35 amendment 1: the paragraph points at Appendix H and says what it tests
+    assert "recovered planted exponents only where they were the direction of largest spread" in p
+    assert "{ref}`Appendix H <appendix-h>`" in p and "Appendix G" not in p
     assert "kernel" not in p.lower()
     assert "unrelated" not in s2 and "Färe" not in s2  # the two caveats are pointers or gone
     assert s2.count("hyperbolic") == 2  # the pointer to the glossary, and HoroPCA's own space
@@ -1699,9 +1609,6 @@ def test_section2_distinguishes_horopca_in_one_paragraph():
 
 SPIKE_H = ROOT / "work-packages" / "WP35-rounds" / "spike-h"
 HYPOTHESIS_COMMIT = "830cf54"
-needs_h = pytest.mark.skipif(
-    not H_LANDED, reason="Appendix H is not yet in the notebook (H_LANDED)"
-)
 
 
 def _record_h() -> dict:
@@ -1868,9 +1775,8 @@ def test_the_design_constants_of_appendix_h_are_the_pre_registered_ones():
         "2 or 0.5",
     ):
         assert phrase in design, phrase
-    if H_LANDED:
-        h2 = next(c for c in _appendix_cells(_nb(SUPPORT_NB))["H"] if c.id == "app-H-2")
-        assert all(p in _src(h2) for p in ("Four metrics, 300 rows", "six tables per setting"))
+    h2 = next(c for c in _appendix_cells(_nb(SUPPORT_NB))["H"] if c.id == "app-H-2")
+    assert all(p in _src(h2) for p in ("Four metrics, 300 rows", "six tables per setting"))
 
 
 def _appendix_h_cells():
@@ -1889,22 +1795,11 @@ def _appendix_h_prose() -> str:
     return "\n\n".join(parts)
 
 
-@pytest.mark.xfail(
-    not H_LANDED, strict=True, reason="Appendix H is pasted by the notebook unit (H_LANDED)"
-)
-def test_appendix_h_has_landed():
-    """The strict xfail turns into a failure the moment the notebook holds Appendix H: the unit
-    that pastes it then deletes the switch ``H_LANDED`` and this marker, and the tests marked
-    ``needs_h`` run."""
-    assert H_LANDED and "H" in _appendix_cells(_nb(SUPPORT_NB))
-
-
-@needs_h
 def test_appendix_h_has_its_five_sections_in_the_supervisors_order():
     """WP35 RA-1: hypothesis (with its refutation conditions), experiment, results, what the table
     shows, how the formalism and the solvers differ."""
     heads = [
-        _src(c).split("\n")[-1] if _src(c).startswith("(sub-h-") else None
+        _src(c).split("\n")[1] if _src(c).startswith("(sub-h-") else None
         for c in _appendix_h_cells()
         if c.cell_type == "markdown"
     ]
@@ -1920,7 +1815,6 @@ def test_appendix_h_has_its_five_sections_in_the_supervisors_order():
     assert heads[0].endswith("what would refute it") and heads[4].endswith("solvers differ")
 
 
-@needs_h
 def test_appendix_h_is_within_its_ledger_ceiling():
     """WP35 amendment 1: the visible prose (Markdown, the caption, the generated sentences; not the
     table) is at most the ceiling the ledger fixes, 900 words, raised only by a new row and the
@@ -1930,7 +1824,6 @@ def test_appendix_h_is_within_its_ledger_ceiling():
     assert rendered_words(_appendix_h_prose()) <= ceilings["Appendix H"]
 
 
-@needs_h
 def test_appendix_h_prints_no_typed_number_in_its_table_and_sentence_cells():
     """WP35 RA-2: the table and the sentences of results are generated: their cells hold one call
     and no digit, and their committed outputs equal what the generator prints now."""
@@ -1944,17 +1837,17 @@ def test_appendix_h_prints_no_typed_number_in_its_table_and_sentence_cells():
         assert _out_text(c).strip() == str(getattr(generate_prior_art, fn)()).strip(), (cid, STALE)
 
 
-@needs_h
 def test_appendix_h_says_where_each_term_is_first_defined_and_points_at_d16():
     """WP35 RA-4, RA-10: PCA, |cos|, R, frame and horosphere each have a plain line at first use;
     the chain to D.16 is in words with its pointer."""
     text = _appendix_h_prose()
 
     def first(term):
-        return text.index(term)
+        m = re.search(term if term.startswith("\\b") else re.escape(term), text)
+        return m.start()
 
     assert "principal component analysis (PCA)" in text and first("principal component") < first(
-        "PCA"
+        r"\bPCA\b"
     )
     assert "(|cos|, agreement of directions ignoring sign)" in text
     assert first("|cos|") < first("threshold")
@@ -1984,9 +1877,8 @@ def test_no_sentence_says_horopca_is_worse_or_calls_this_work_a_pca():
     paragraph = next(p for p in _section("Prior art, by family").split("\n\n") if "HoroPCA" in p)
     assert _forbidden_in(paragraph) == []
     assert _forbidden_in("HoroPCA is worse at it; this work is a PCA; HoroPCA is PCA with a kernel")
-    if H_LANDED:
-        assert _forbidden_in(_appendix_h_prose()) == []
-        assert "kernel" not in _appendix_h_prose().lower()
+    assert _forbidden_in(_appendix_h_prose()) == []
+    assert "kernel" not in _appendix_h_prose().lower()
 
 
 def test_the_source_map_names_the_hypothesis_table_and_its_record():
