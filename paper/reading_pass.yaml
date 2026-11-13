@@ -436,7 +436,7 @@ rows:
   status: reworded
   now: 'The "unrelated" clause is gone (the glossary and Appendix A define the word). Section 2 and
     Appendix H now say what the abstract says, that HoroPCA extends the components of PCA to hyperbolic space
-    with horospherical projections, and what the authors'' code did in a pre-registered test on constructed
+    with horospherical projections, and what the authors'' code did in a prospectively specified test on constructed
     tables (WP35).'
 - n: 45
   sentence: 'Lineage: ''Tradespace exploration displays a table of designs''; table: ''Value-focused broad

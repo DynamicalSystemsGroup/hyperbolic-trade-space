@@ -1859,10 +1859,10 @@ def test_appendix_h_has_its_five_sections_in_the_supervisors_order():
 
 def test_appendix_h_is_within_its_ledger_ceiling():
     """WP35 amendment 1: the visible prose (Markdown, the caption, the generated sentences; not the
-    table) is at most the ceiling the ledger fixes, 900 words, raised only by a new row and the
-    assistant's word."""
+    table) is at most the ceiling the ledger fixes, 920 words (900, raised by the wording unit's row
+    on the assistant's word, 3fb77e6), raised again only by a new row and the assistant's word."""
     _, ceilings = ledger_ceilings()
-    assert ceilings["Appendix H"] == 900
+    assert ceilings["Appendix H"] == 920
     assert rendered_words(_appendix_h_prose()) <= ceilings["Appendix H"]
 
 
@@ -1906,6 +1906,61 @@ def test_appendix_h_says_where_each_term_is_first_defined_and_points_at_d16():
     assert "every 6/6 is a count" in text and "not a performance benchmark" in text
     assert "variance ranking alone does not identify" in text
     assert "cannot pick" not in text and "not a rescue" not in text
+
+
+def test_appendix_h_wording_unit_defines_its_terms_and_states_counts():
+    """WP35 wording unit (FW-1 to FW-13, FW-15 to FW-20; FW-14 not applied): rho, t, the depth
+    direction, the generator, the ball and the threshold are defined at first use; H1 to H4 are
+    counts of the six tables; the verdict sentence names no total; Section 2 and Appendix H use
+    one term (prospectively specified) for one thing."""
+    text = _appendix_h_prose()
+    record = _record_h()
+    assert f"reaches the threshold, {record['threshold']:g}" in text  # FW-8
+    assert "before any table of this experiment existed" in text  # FW-2
+    assert (
+        "the standard deviation along the edge's vector (the planted exponents) over that" in text
+    )
+    assert "along the largest direction orthogonal to it" in text  # FW-3
+    assert (
+        "moves the vector by a fraction t from the depth direction of the package's generator"
+        in text
+    )
+    assert "(equal exponents, where it puts its spread)" in text  # FW-4
+    assert "removes the edge and still scores the same vector" in text  # FW-5
+    assert "the rows spread symmetrically along the vector" in text
+    assert "a ball (the disk that models hyperbolic space)" in text  # FW-9
+    assert "the exponential map at the origin into the ball" in text  # FW-10
+    assert (
+        "30 percent of the rows on the edge" in text
+    )  # FW-19, the second boundary with its number
+    assert "(its fourth)" in text and "analyst with other domain" not in text  # FW-13, FW-20
+    assert "linear program" not in text and "sequential quadratic" not in text  # FW-17
+    assert "shortfall from the best value" in text and "how far its objective is" in text  # FW-16
+    assert (
+        "the paper [@chami2021horopca] (objective)" in text
+        and "c9a9996 (Adam, random starts)" in text
+    )
+    conditions = str(generate_prior_art.horopca_conditions())
+    n = _record_h()["cells"]["A/rho4.0"]["n"]
+    assert n == 6 and "refuted by any cell under 6/6" in conditions  # FW-6
+    assert (
+        "at most 1/6" in conditions and "in 0/6" in conditions and "recover it in 6/6" in conditions
+    )
+    assert "HoroPCA (R = 0.25, R = 1)" in conditions  # FW-7
+    assert "at least" not in conditions and "of the tables" not in conditions  # counts, no shares
+    verdict = str(generate_prior_art.horopca_verdict_sentence())
+    assert verdict == "Every check in the 11 cells holds, so every part survives."  # FW-11
+    caption = next(c for c in _appendix_h_cells() if c.id == "tab-H-hypothesis-caption")
+    assert "H1 to H4 are listed in H.1; HoroPCA cells read R = 0.25, R = 1" in _src(
+        caption
+    )  # FW-12
+    section2 = _section("Prior art, by family")
+    assert "prospectively specified test" in section2 and "pre-registered" not in section2  # FW-1
+    prior = next(r for r in generate_prior_art.entries() if r["id"] == "horopca")
+    assert (
+        "on the synthetic tables of Appendix H, the leading components of PCA and HoroPCA"
+        in " ".join(prior["differs"].split())
+    )  # FW-15
 
 
 FORBIDDEN_COMPARISON = ("worse", "poorer", "inferior", "outperform", "beats", "pca with a kernel")

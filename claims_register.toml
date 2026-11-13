@@ -6076,7 +6076,7 @@ note = "The estimator passes scikit-learn's estimator checks (fit, transform, in
 
 [[claim]]
 id = "C532"
-fragment = "In a pre-registered test, on an embedding of ours, the authors' code recovered planted exponents only where they were the direction of largest spread"
+fragment = "In a prospectively specified test, on an embedding of ours, the authors' code recovered planted exponents only where they were the direction of largest spread"
 file = "paper/paper.ipynb"
 anchor = "Prior art, by family"
 kind = "R"
@@ -6501,7 +6501,7 @@ note = "As C529 and reading_pass row 44: HoroPCA is the components of PCA (subsp
 
 [[claim]]
 id = "C571"
-fragment = "The hypothesis, committed with its refutation conditions before any table existed"
+fragment = "The hypothesis, committed with its refutation conditions before any table of this experiment existed"
 file = "paper/supporting_material.ipynb"
 anchor = "H.1 The hypothesis and what would refute it"
 kind = "S"
@@ -6547,7 +6547,7 @@ note = "The fit minimizes a one-sided soft maximum over the simplex; the surface
 
 [[claim]]
 id = "C574"
-fragment = "Four metrics, 300 rows, no noise, 30 percent of the rows on the edge, six tables per setting"
+fragment = "Four metrics, 300 rows, six tables per setting"
 file = "paper/supporting_material.ipynb"
 anchor = "H.2 The experiment"
 kind = "S"
@@ -6579,7 +6579,7 @@ note = "hypothesis.md and experiment_methods.py: HyperbolicTradeSpace(n_terms=1)
 
 [[claim]]
 id = "C576"
-fragment = "HoroPCA needs a ball, so the log-metrics are centred and scaled until the farthest lies at distance R from the centre"
+fragment = "HoroPCA needs a ball (the disk that models hyperbolic space), so the log-metrics are centred and scaled until the farthest lies at distance R from the centre"
 file = "paper/supporting_material.ipynb"
 anchor = "H.2 The experiment"
 kind = "S"
@@ -6641,23 +6641,8 @@ source = "WP35 amendment 1"
 note = "As C531: the tension report runs PCA on the chart coordinates of the near-frontier designs (Appendix D.16)."
 
 [[claim]]
-id = "C581"
-fragment = "A HoroPCA of the chart would be the same kind of chain and was not run"
-file = "paper/supporting_material.ipynb"
-anchor = "H.4 What the table shows"
-kind = "S"
-backing = [
-  "file:work-packages/WP35-decisions.md",
-  "file:work-packages/WP35-rounds/spike-h/readout.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP35 amendment 1"
-note = "WP35-decisions.md, 2026-11-13 09:20, Question 3 (a): the chain is in words with the pointer to D.16; no third arm."
-
-[[claim]]
 id = "C582"
-fragment = "The embedding is part of the treatment: the centre, the scale R and the map into the ball are our choices, so the experiment distinguishes the implemented pipelines under it and cannot establish that HoroPCA could never recover boundary information"
+fragment = "The embedding is part of the treatment: the centre, the scale R and the exponential map at the origin into the ball are our choices, so the experiment distinguishes the implemented pipelines under it and cannot establish that HoroPCA could never recover boundary information"
 file = "paper/supporting_material.ipynb"
 anchor = "H.4 What the table shows"
 kind = "S"
@@ -6672,7 +6657,7 @@ note = "readout section 7, first item; decision Question 2 (b): not run, stated 
 
 [[claim]]
 id = "C583"
-fragment = "The tables favour clean identification (noise-free, four metrics, a fixed temperature) and are not tree-like, the data HoroPCA was built for"
+fragment = "The tables favour clean identification (noise-free, four metrics, 30 percent of the rows on the edge, a fixed temperature) and are not tree-like, the data HoroPCA was built for"
 file = "paper/supporting_material.ipynb"
 anchor = "H.4 What the table shows"
 kind = "R"
@@ -6719,7 +6704,7 @@ note = "The authors' paper, Section 3 (three generalizations: the subspace, the 
 
 [[claim]]
 id = "C586"
-fragment = "That objective is not convex: the authors' code runs Adam from random starts, and nothing bounds the result's distance from the best frame"
+fragment = "That objective is not convex: the authors' code runs Adam from random starts, and nothing bounds how far its objective is from the best frame's"
 file = "paper/supporting_material.ipynb"
 anchor = "H.5 How the formalism and the solvers differ"
 kind = "S"
@@ -6730,7 +6715,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP35 amendment 1"
-note = "readout section 5: Adam (pca.py L123), random normal start (L23), no convergence test, no certificate; the repository gives no argument for convexity. Section 3e of the readout records different restarts ending in different optima."
+note = "The non-convexity is the readout's reading of the authors' repository (a Stiefel-type parameter space, no convexity argument), not a statement of the paper, which H.5 cites for the objective (frame, horospherical projection, variance) alone. readout section 5: Adam (pca.py L123), random normal start (L23), no convergence test, no certificate; the repository gives no argument for convexity. Section 3e of the readout records different restarts ending in different optima."
 
 [[claim]]
 id = "C587"
@@ -6750,7 +6735,7 @@ note = "Lemma 4 (J_tau is convex on the simplex; the second directional derivati
 
 [[claim]]
 id = "C588"
-fragment = "by a linear program or sequential quadratic programming, and returns a gap bounding the result's distance from the best"
+fragment = "and returns a gap bounding the result's shortfall from the best value"
 file = "paper/supporting_material.ipynb"
 anchor = "H.5 How the formalism and the solvers differ"
 kind = "S"
@@ -6794,3 +6779,67 @@ status = "backed"
 disposition = "keep"
 source = "WP35 amendment 1"
 note = "The first spike (docs/superpowers/notes/spike-horopca/) informed the design; hypothesis.md and the rules were committed at 830cf54 before results.json; the reviewer's framing, recorded at 1862491."
+
+[[claim]]
+id = "C592"
+fragment = "the standard deviation along the edge's vector (the planted exponents) over that along the largest direction orthogonal to it"
+file = "paper/supporting_material.ipynb"
+anchor = "H.1 The hypothesis and what would refute it"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_appendix_h_wording_unit_defines_its_terms_and_states_counts",
+  "file:work-packages/WP35-rounds/spike-h/hypothesis.md",
+  "file:work-packages/WP35-rounds/spike-h/experiment_tables.py",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 wording unit"
+note = "hypothesis.md, 'Spread ratio rho': the standard deviation of the log-metrics along w divided by that along the largest-spread direction orthogonal to w; read-through of fix FW-3 of the R-13/R-14 review."
+
+[[claim]]
+id = "C593"
+fragment = "Kind B moves the vector by a fraction t from the depth direction of the package's generator (equal exponents, where it puts its spread) to one metric, and kind C removes the edge and still scores the same vector"
+file = "paper/supporting_material.ipynb"
+anchor = "H.1 The hypothesis and what would refute it"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_appendix_h_wording_unit_defines_its_terms_and_states_counts",
+  "file:work-packages/WP35-rounds/spike-h/hypothesis.md",
+  "file:work-packages/WP35-rounds/spike-h/experiment_tables.py",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 wording unit"
+note = "hypothesis.md, arm B: w_t = (1 - t)(1/4, 1/4, 1/4, 1/4) + t(1, 0, 0, 0), the generator putting all depth along the all-ones direction; arm C: no edge, the same w scored; fixes FW-4 and FW-5."
+
+[[claim]]
+id = "C594"
+fragment = "A method *recovers* the vector when the absolute cosine (|cos|, agreement of directions ignoring sign) of its direction with it reaches the threshold, 0.9"
+file = "paper/supporting_material.ipynb"
+anchor = "H.1 The hypothesis and what would refute it"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_appendix_h_wording_unit_defines_its_terms_and_states_counts",
+  "test:tests/test_paper.py::test_the_threshold_and_the_chance_rates_are_the_records",
+  "file:work-packages/WP35-rounds/spike-h/hypothesis.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 wording unit"
+note = "hypothesis.md, 'Recovered': |cos| at least 0.9, fixed before the run; results.json holds the threshold, and the test pins the 0.9 of this sentence to it; fix FW-8."
+
+[[claim]]
+id = "C595"
+fragment = "**H1** (A, B): this work recovers the vector in {high} tables; refuted by any cell"
+file = "paper/generate_prior_art.py"
+anchor = "def horopca_conditions"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_appendix_h_wording_unit_defines_its_terms_and_states_counts",
+  "gen:paper/generate_prior_art.py::horopca_conditions",
+  "test:tests/test_paper.py::test_the_pre_registered_rates_are_those_of_the_hypothesis_file",
+]
+status = "backed"
+disposition = "keep"
+source = "WP35 wording unit"
+note = "The four conditions are printed as counts of the six tables of a cell, from RATES and the record's n (a share of 0.9 of six tables is 6 of 6, 0.1 is 0 of 6, 0.2 is 1 of 6); fix FW-6 and FW-7."
