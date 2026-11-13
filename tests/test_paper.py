@@ -866,6 +866,19 @@ def test_gaps_table_typesets_its_mathematics_on_the_page():
     assert "$" not in re.sub(r"<[^>]+>", "", page)
 
 
+def test_register_table_typesets_its_mathematics_on_the_page():
+    """Appendix A's table, as Appendix E's: the page shows an HTML output as given, so each
+    ``$...$`` span of the register is written as MathML, no literal dollar sign is left, and the
+    Markdown a notebook viewer typesets is the glossary's text unchanged."""
+    table = generate_register.register_table()
+    spans = re.findall(r"\$[^$]+\$", str(table))
+    page = table._repr_html_()
+    assert len(spans) > 20 and "MATHSPAN" not in page and "<em>" not in page
+    assert page.count("<math>") == len(spans)
+    assert "$" not in re.sub(r"<[^>]+>", "", page)
+    assert str(table) == table.raw
+
+
 def test_the_tex_subset_of_the_tables_becomes_mathml():
     from paper_common import tex_to_mathml
 

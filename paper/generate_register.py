@@ -11,7 +11,7 @@ from __future__ import annotations
 import re
 
 import yaml
-from paper_common import Md, md_table
+from paper_common import MdMath, md_table
 from paper_paths import ROOT
 
 GLOSSARY = ROOT / "glossary.yaml"
@@ -49,13 +49,16 @@ def register_rows(entries=None) -> tuple[list[str], list[list[str]]]:
     return headers, rows
 
 
-def register_table() -> Md:
+def register_table() -> MdMath:
     """The register table of Appendix A.
 
     Returns
     -------
-    Md
-        A Markdown pipe table, one row per entry of ``glossary.yaml``.
+    MdMath
+        A Markdown pipe table, one row per entry of ``glossary.yaml``. As Markdown it is the text
+        a notebook viewer typesets; its HTML writes each ``$...$`` span as MathML, because the page
+        typesets nothing inside an HTML output.
     """
     headers, rows = register_rows()
-    return Md(md_table(headers, rows))
+    text = md_table(headers, rows)
+    return MdMath(text, text)

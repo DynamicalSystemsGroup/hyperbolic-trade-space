@@ -130,7 +130,7 @@ _TEX_GREEK = {
 _TEX_UPRIGHT = {"Phi": "Φ", "Sigma": "Σ", "infty": "∞", "top": "⊤"}
 _TEX_FUNCTION = ("log", "max", "min")
 _TEX_OPERATOR = {
-    "times": "×", "cdot": "⋅", "le": "≤", "ge": "≥", "ne": "≠", "in": "∈", "sum": "∑",
+    "times": "×", "cdot": "⋅", "le": "≤", "ge": "≥", "ne": "≠", "in": "∈", "sum": "∑", "prod": "∏",
     "lVert": "‖", "rVert": "‖", "lvert": "|", "rvert": "|", "|": "‖",
 }  # fmt: skip
 _TEX_DOUBLE_STRUCK = {"R": "ℝ"}
