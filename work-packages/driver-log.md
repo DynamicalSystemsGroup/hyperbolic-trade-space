@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **PM13 ended; PM14 spawned on the file handover (23:10).** The thirteenth PM's run ended at 6d83d95 with its
+  hand-back (every landed head, the one unit in flight, the held items in order); the assistant wrote the handover into
+  PM-BRIEF.md (d390df0) and spawned the fourteenth PM on Sonnet with the brief to read it, not to duplicate the
+  Appendix H follow-up (still running in wp35hnb), to prepare what touches no notebook meanwhile (WP39's generator and
+  tests, WP40's path list and move table, WP8b's checklist rows, the WP35 readers' briefs), and then to follow the
+  handover's order: WP35's readers on the assistant's acceptance of Appendix H, the WP39 build and reads, the WP40
+  build, the WP38 pass on the assistant's word, the final reader round, the WP8b drafts, the register and grid. Two
+  leftover clean worktrees removed (pm13-grid, wp40scope); eight remain.
+
 - **Head 809b8b8 verified; Appendix H pending its follow-up; six records accepted; WP40 scope approved (22:30).** On
   809b8b8: ruff, lock, vocabulary and attribution clean; the fast suite 1941 passed, 15 skipped, 2 xfailed. One local
   failure at 794a4e8 (`test_every_paper_key_is_a_label_of_the_built_paper`) was the assistant's stale local paper build
