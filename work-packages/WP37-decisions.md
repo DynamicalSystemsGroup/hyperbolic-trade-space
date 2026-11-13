@@ -406,3 +406,13 @@ record entry `2024-dynamical-block-diagrams` is corrected to its actual people, 
 from the public record of that repository), with Zeke's role in the supervisor's words, a summer internship on block
 diagrams as a compositional algebra and the formal methods associated with them; and every entry's `people` field is
 audited against its source before the closing unit lands, the audit recorded in w3. Folded into the WP37 closing unit.
+
+## The supervisor on the list's exploratory entries (2026-11-13, 13:50)
+
+**Supervisor, verbatim:** "you also need to slim out some stuff like flexo-rtm and toaster are exploratory. feels like
+you are forcing it."
+
+**Applied as:** the marginal-value test runs over every entry of the dated list: an entry stays only if it is a step
+of the arc the page tells (the method's lineage, the people's credited work, the firm's public cases and ties);
+exploratory or incidental repositories go, flexo-rtm and toaster named by the supervisor and the others of their kind
+found by the same test, each removal recorded with what the list no longer did. Folded into the WP37 closing unit.
