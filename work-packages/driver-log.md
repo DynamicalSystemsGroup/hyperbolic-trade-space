@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **PM14's preparation accepted; the WP39 digits' stability decided (00:05).** PM14 landed the three fresh-reader
+  briefs for Appendix H and the WP8b checklist's post-tag and post-merge rows (8aef509, accepted; the briefs forbid the
+  readers the answer key), and holds the WP39 generator (branch wp39gen, 7d206b4: 2,134, 548, 28, 11 and 1 match the
+  spike; the paragraph at 148 words) and the WP40 path list and move table (branch wp40paths) unlanded as prepared.
+  Calls: the decision section's quantities take the paper's stability treatment (WP39-decisions.md); WP40's records go
+  under `WP40-rounds/thinning/` so `.gitignore` stays; the one `pyproject.toml` line replaces the `spike-*` glob with
+  exact entries; four build notes is the count. The Appendix H follow-up is still re-executing (WIP d1fb697 in
+  wp35hnb); PM13 has stood down.
+
 - **PM13 ended; PM14 spawned on the file handover (23:10).** The thirteenth PM's run ended at 6d83d95 with its
   hand-back (every landed head, the one unit in flight, the held items in order); the assistant wrote the handover into
   PM-BRIEF.md (d390df0) and spawned the fourteenth PM on Sonnet with the brief to read it, not to duplicate the

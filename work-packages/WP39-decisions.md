@@ -99,3 +99,11 @@ choice made for the executives, no term-to-executive mapping, Figure 9 and its p
 rewrite the supervisor's), deliverables D-0 to D-9, requirements R-1 to R-13 with the two cold reads and the skim test
 as the supervisor set them, good enough as stated, and the agent's defaults as one item. The build queues on the paper
 notebook after the G.2 return and Appendix H. Open decisions: none."
+
+## The decision section's digits take the stability treatment (2026-11-14, 00:05; the assistant, a default of the approved scope made explicit)
+
+**Assistant, verbatim:** "The decision section's quantities take the stability treatment like every other quoted number
+of the paper: the counts (2,134; 548; 28; 11 and 1), the pointing errors, the three prices and the fine-tracker
+difference go into stability_extra through paper_perturb's machinery before the notebook unit, and the generator prints
+them through stable(). The counts are exact on the data of record and print exact; if the perturbation moves any of
+them, the prose says 'about' and the register row says so."
