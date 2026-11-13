@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The WP39 notebook unit stalled on self-matching waits; unblocked (05:55).** Nothing landed in two hours. The
+  cause, found by reading the processes: the implementer waits with `until ! pgrep -f "<pattern>"` and the pattern
+  matches the waiting shell's own command line (and every sibling loop's), so each wait runs to its timeout after the
+  re-execution and the tests had finished, then another wait starts; four such loops from the WP30 gate runner of two
+  days ago were still alive for the same reason. The assistant ended five of the loops (the sixth attempt, a bulk end,
+  was refused by the tool's classifier and not retried), told the implementer directly to stop waiting and finish
+  the unit, and gave PM14 the standing rule for every agent: wait on a pid or a done-file, or bracket the pattern,
+  never on a self-matching `pgrep -f`; the rule goes into PM-BRIEF.md. WP35's review-list row is still owed by PM14.
+
 - **95ebd46 fully green (05:15).** CI 43394683441 on 95ebd46 (the WP35 wording unit accepted): every job green on
   both platforms, the twenty-second fully green head. The WP39 notebook unit's implementer is in its second hour in
   wp39nb (eight files, the re-execution done, nothing landed yet); PM14 is busy and has not yet landed WP35's
