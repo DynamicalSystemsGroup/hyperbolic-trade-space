@@ -1,6 +1,6 @@
 # Research spike round 2 (2026-11-08): the objective of the K > 1 alternation
 
-Throwaway. Nothing in the repository was changed. All code and outputs are in this folder, `<folder>` = `docs/superpowers/notes/spike-objective` (spike code, not part of the package and not imported by it). Round 1's `methods.py` (steps B, D, the loop, matching, scoring, initializations) is
+Throwaway. Nothing in the repository was changed. All code and outputs are in this folder, `<folder>` = `work-packages/spikes/spike-objective` (spike code, not part of the package and not imported by it). Round 1's `methods.py` (steps B, D, the loop, matching, scoring, initializations) is
 imported unchanged from `docs/superpowers/notes/spike-facet-refit/`. Every command is run from the
 repository root. (The subagent's harness refused to write this file; the driver saved the report
 from the subagent's message verbatim.)

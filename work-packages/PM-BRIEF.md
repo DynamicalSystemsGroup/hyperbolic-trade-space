@@ -118,8 +118,8 @@ commit touches (the Appendix B test above for `derivation/`). A push whose ruff 
 2. `CLAUDE.md` in this repo (conventions).
 3. `work-packages/README.md` (roles, records, breakdown, status).
 4. `docs/superpowers/specs/2026-11-07-posynomial-invariant-form-design.md` (the design spec).
-5. The notes for the package at hand: `docs/superpowers/notes/{adcs-port,proof-conventions,
-   sklearn-conformance,presentation-framing,references-verified}.md`.
+5. The notes for the package at hand: `docs/superpowers/notes/{proof-conventions,
+   sklearn-conformance,presentation-framing,references-verified}.md` and `work-packages/build-notes/adcs-port.md`.
 6. The previous package's `WPn-review.md` and `WPn-decisions.md`.
 
 ## Then
@@ -513,7 +513,7 @@ nothing: no commit, no worktree, the scratch folder `scratchpad/wp28/inventory` 
 the modeller's worktree `wp27model` (tab-23 holds the head's three model files at 0 issues; by Bug 10 no other tab
 restores or creates a project while it is in use). The seventh PM's inputs for WP28, all in files: the scope
 (`WP28-scope-of-work.md`, start 1277210) and the driver's decisions (`WP28-decisions.md`, "Scope gate": OD1 b, OD2 b
-with Appendix F out, OD3 a, OD4 b, OD5 a, OD6 a, OD7 the defaults); the sizing (122 units (corrected by WP25-4; the scope's terms sum to 122, `WP28-inventory.md`): 14 paper sections, 27 boxed
+with Appendix F out, OD3 a, OD4 b, OD5 a, OD6 a, OD7 the defaults); the sizing (122 units (corrected by WP25-4; the scope's terms sum to 122, in the WP28 inventory, since removed): 14 paper sections, 27 boxed
 statements, 10 floats, 7 appendices with 40 generated tables, 14 docs pages, 8 docs figures, the root page, the README;
 the paper at 9,805 words of a 10,107 ceiling, the docs at 6,792 of 7,600); round 2's friction counts and worst cells
 (`WP11-round-1/triage.md`, "Round 2") as the triager's input; the answer key at version 4 (hash in `WP11-decisions.md`;
@@ -531,7 +531,7 @@ linear term and need not share a minimizer (backing: L14's identity and A2; `np.
 both regimes); it lands before the inventory reader reads that section, or that reader reads the head after it.
 (1) D-1, the inventory: a coordinator stages the site at the head, fans out about 55 cold readers one per unit
 (no record in any brief; the story sentences from Section 1's main-results list and the abstract, the docs Home for the
-docs; figures image first; two models), commits the returns verbatim with `WP28-inventory.md` before any triage. (2) A
+docs; figures image first; two models), commits the returns verbatim with the WP28 inventory (since removed) before any triage. (2) A
 fresh triager (not a reader, not an author) writes `WP28-cut-list.md` per the scope's D-2 (goes / merged / shortened to
 a pointer; the six checks per row; "kept, with reason"; "for the supervisor" for his fixed figures and the two model
 views) and the PM sends it to the driver for OD6's approval. (3) After approval, the paper stream and the docs stream
@@ -612,8 +612,7 @@ restarted (its six stages: the spike found the trilemma candidate; the superviso
 integrate; review). (6) WP8b Amendment 1 (d4db0e5) after the driver's approval: CHANGELOG, the punch list, D-6
 reference keys as MyST labels, the theme item; D-7 and the version step are the driver's.
 
-Inputs by file: `WP28-scope-of-work.md`, `WP28-decisions.md`, `WP28-cut-list.md`, `WP28-inventory.md` and
-`WP28-inventory/`, `WP28-retest.md` and `WP28-retest/`, `WP28-review.md` and `WP28-review/`, `WP25-4-scope-of-work.md`,
+Inputs by file: `WP28-scope-of-work.md`, `WP28-decisions.md`, `WP28-inventory/` (the cut list and the inventory file are removed; `work-packages/README.md` names the last commit holding them), `WP28-retest.md` and `WP28-retest/`, `WP28-review.md` and `WP28-review/`, `WP25-4-scope-of-work.md`,
 `WP8b-scope-of-work.md` (Amendment 1) and `WP8b-decisions.md`, `WP23-rounds/spikes/spike-C-requirements-no-traded-
 metric/`, `driver-log.md` (the key marks row, the rulings), `scratchpad/wp28/` (the inventory and retest tooling:
 `units.py`, `make_slices.py`, `fill.py`, the retest's `tools/`, `key-request.md`, `key-marks.md`, `docs-renders/`,
@@ -666,8 +665,8 @@ contract version 18 or 20 (check the head: WP31 took 17, WP25-4 18, WP8b 19; the
 re-run, answer key v5 (hash committed first), k_terms.py's ATTRS to eleven, `uv run python tests/test_case_model_howto.py
 --write`, coverage rerun, glossary entries, paper and docs numbers, figures, the behavioural view, the stakeholder layer,
 the changed baseline-regime conclusion; stage 6 the cascade review and the acceptance review that runs the thing. (5) WP25-5
-when due (a small instance at the next gate; the holds: `paper-outline-v1-baseline.md`, WP28's 151 reader-run files,
-`search-prior-art.md`, `P10-review.md`, the three S-5 candidate files, WP29/WP30 notes). (6) The reviewer's guide's inputs:
+when due (a small instance at the next gate; the holds: `work-packages/outlines/paper-outline-v1-baseline.md`, WP28's 151 reader-run files,
+`work-packages/outlines/search-prior-art.md`, `P10-review.md`, the three S-5 candidate files, WP29/WP30 notes). (6) The reviewer's guide's inputs:
 `driver-log.md` calls, the WP28 and WP25 decisions, the review files (WP28, WP25, WP8b, WP31), the closed-units evidence
 in `WP28-decisions.md` "Close units (eighth PM)", the board tables.
 

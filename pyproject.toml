@@ -48,7 +48,7 @@ line-length = 100
 target-version = "py312"
 # Research-spike folders hold throwaway scripts kept for reproducibility, and the package-user cells' returns are
 # evidence kept verbatim (their code blocks are the cells' own); neither is package code.
-extend-exclude = ["docs/superpowers/notes/spike-*", "work-packages/WP32-cells/round-*"]
+extend-exclude = ["docs/superpowers/notes/spike-horopca", "docs/superpowers/notes/spike-sysml-diagrams", "docs/superpowers/notes/spike-facet-refit", "docs/superpowers/notes/spike-figure1", "work-packages/spikes", "work-packages/WP32-cells/round-*"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]

@@ -4,7 +4,7 @@ Observed at opensysml 0.12.1 (runtime `v0.12.1`) / toolkit v0.12.0 on darwin-arm
 2026-11-08, against the live runtime. Eleven probes, each a function in `../probes.py`; `run_all()`
 re-runs them and compares each observed fact set with the recorded one (`EXPECTED` at the top of the
 file), so a changed behaviour of the runtime or the toolkit fails by probe name. The pitfalls of
-`docs/superpowers/notes/opensysml-usage.md` were found at 0.9.0; each is re-checked below.
+`work-packages/build-notes/opensysml-usage.md` were found at 0.9.0; each is re-checked below.
 
 Run: `uv run python examples/adcs/experiments/probes.py [--write] [--network] [--facts]`.
 `--write` rewrites the generated table; `--network` also compares probe 11 with the published release;

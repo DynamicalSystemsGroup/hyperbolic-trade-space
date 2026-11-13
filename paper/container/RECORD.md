@@ -3,7 +3,7 @@
 Run 2026-11-09 on the author's Mac (Apple M1 Max, macOS 26.5.2, arm64) with Colima 0.8.1
 (Virtualization.Framework VM, aarch64 guest, Docker server 27.4.0), **linux/arm64 containers, native
 (no emulation)**. The platform of record is linux/arm64 (ratified by the supervisor; the spike is
-`docs/superpowers/notes/spike-container-platform/report.md`). Repository state: dev at the commit
+`work-packages/spikes/spike-container-platform/report.md`). Repository state: dev at the commit
 named in each image (`git log -1` inside the image prints it: the history is rebuilt from a
 `git bundle`). Every run below used `--network none`. Nothing was pushed to a registry.
 

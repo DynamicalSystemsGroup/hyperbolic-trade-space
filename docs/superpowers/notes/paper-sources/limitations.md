@@ -140,7 +140,7 @@ global optimality. The assumptions behind it are named, defended and extended in
   identifiability and not sufficient for recovery) and one seed with a well-populated term.
   The analyst's options are more restarts (`n_restarts`), a better start, and the tangent step
   (`refit_step="tangent"`), and their limits are measured. The spikes
-  (`docs/superpowers/notes/spike-objective/`) found, at $\tau=\infty$, that on seeds 3 and 8 two or
+  (`work-packages/spikes/spike-objective/`) found, at $\tau=\infty$, that on seeds 3 and 8 two or
   three of the five restarts pass, so a restart that recovers the terms exists there; on seeds 1
   and 16 none does, because the sparse term is barely determined by its frontier rows. But the
   restart is chosen by the mean slack, and that selection does not pick the passing restarts:
@@ -157,7 +157,7 @@ global optimality. The assumptions behind it are named, defended and extended in
 - *A non-monotone step.* `refit_step="tangent"` (step D) uses the near-frontier rows directly and
   recovers about as often as the default, but the mean slack is not monotone under it; the
   default `"support"` step is monotone and is the one the paper presents. A frontier-weighted
-  objective was measured and parked (`docs/superpowers/notes/spike-objective/`).
+  objective was measured and parked (`work-packages/spikes/spike-objective/`).
 - *Kernels,* below.
 
 **Kernel methods.** The research direction is kernel expansions that remain generalized

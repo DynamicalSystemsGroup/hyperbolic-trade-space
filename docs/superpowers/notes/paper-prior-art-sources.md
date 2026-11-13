@@ -44,7 +44,7 @@ What the sources and the project records support, in the order the paragraph nee
   `docs/literature.md`); evolutionary generation of nondominated sets [@deb2002fast] (read, with its
   spread metric) and the strength-Pareto comparison of evolutionary algorithms
   [@zitzler1999multiobjective] (record only).
-- The contrast, from `paper-outline-v1-baseline.md` (addendum) and `WP10-decisions.md`, to be compressed
+- The contrast, from `work-packages/outlines/paper-outline-v1-baseline.md` (addendum) and `WP10-decisions.md`, to be compressed
   to one paragraph: a nondominated set against a fitted reference surface with coordinates; "which
   designs survive" against "what trade-offs explain the edge"; dominance stops discriminating as d
   grows, while the fit returns d - 1 exponents per facet and a band of near-boundary designs;
@@ -76,7 +76,7 @@ What the sources and the project records support, in the order the paragraph nee
   [@fare1985measurement], the chapter "Hyperbolic Graph Efficiency Measures" read by abstract
   (inputs and outputs both freely variable; the technology modelled by its graph). Entries and what
   was read: `references-verified.md`, "Added for WP11 round 2, the sceptic's register".
-- The points of comparison, from `paper-outline-v1-baseline.md` (addendum), restated as project
+- The points of comparison, from `work-packages/outlines/paper-outline-v1-baseline.md` (addendum), restated as project
   statements. Shared: one-sided envelope; a score per unit (DEA's efficiency score, here the energy
   differential log V); super-efficiency and V above 1; Malmquist and the rerun for a moving
   boundary; the convex hull as the limit of the K-facet supporting envelope. Differs: (a) weights

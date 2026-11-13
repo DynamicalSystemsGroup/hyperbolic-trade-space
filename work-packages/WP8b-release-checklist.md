@@ -74,7 +74,7 @@ to the candidate"). Rows below marked (PR) apply only when the supervisor asks f
 | F3 | Reviewer's guide in sittings (the paper; the docsite and root page; the code and derivations; the calls made for him), each a short checklist with its own localhost entry point; skeleton in `WP8b-reviewers-guide-skeleton.md` | open each entry point after staging | assistant | - | `release-candidate.md`, "The hand-off"; `WP8b-scope-of-work.md`, D-7 and R-7 |
 | F4 | Guide lists every call with its evidence, every changed number with its reason, what is known weak | compare with `supervisor-review-list.md`, `driver-log.md`, `swap-evidence.md` | assistant | - | `WP8b-scope-of-work.md`, R-8; `release-candidate.md`, "What candidate means" |
 | F5 | `supervisor-review-list.md` current: every call with record and landing commit | read | PM | - | `release-candidate.md`, "The mandate, extended"; `supervisor-review-list.md`, header |
-| F6 | Repository tidiness instance before the PR (WP25-5) | `WP25-5-inventory.md` executed on approval | agent | - | `release-candidate.md`, step 3h ("one before the PR") and "extended" |
+| F6 | Repository tidiness instance before the PR (WP25-5) | the WP25-5 inventory (removed in WP40) executed on approval | agent | - | `release-candidate.md`, step 3h ("one before the PR") and "extended" |
 | F7 | Nothing tagged, deployed, published: no PyPI, no registry image, no PDF export | `git tag` empty | assistant | - | `WP8b-scope-of-work.md`, Non-goals; `release-candidate.md`, "Already decided" |
 
 ## G. After the tag and after the merge to main

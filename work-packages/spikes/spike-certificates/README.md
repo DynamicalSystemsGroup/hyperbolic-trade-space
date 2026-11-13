@@ -1,7 +1,7 @@
 # Research spike 3 (2026-11-08): level of effort for E-1 (certificates, margin, conditional local optimality)
 
 Throwaway. Nothing in the repository was changed. All code and outputs are in this folder
-(`<folder>` = `docs/superpowers/notes/spike-certificates` once copied into the repository). Every
+(`<folder>` = `work-packages/spikes/spike-certificates` once copied into the repository). Every
 command runs from the repository root. (The subagent's harness refused to write this file; the
 driver saved the report from the subagent's message verbatim.)
 

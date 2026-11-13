@@ -3,7 +3,7 @@
 The Dockerfile at the repository root builds the environment in which the paper's committed
 numbers and figures are produced. The platform of record is **linux/arm64** (ratified by the
 supervisor: native on the author's machine; the spike is in
-`docs/superpowers/notes/spike-container-platform/report.md`). Nothing is published to a registry.
+`work-packages/spikes/spike-container-platform/report.md`). Nothing is published to a registry.
 
 What is pinned: the base image by the digest of the multi-arch index of `python:3.12-slim` (Debian
 trixie, Python 3.12.16), Node v24.22.2 by version, sha256 and release signature (arm64 tarball),

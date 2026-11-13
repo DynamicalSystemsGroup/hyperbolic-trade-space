@@ -912,7 +912,7 @@ it and still fail in some settings, and a thin term near the bound leaves local 
 is therefore the measured rate on these 20 seeds under the generator's conditions, not a
 guarantee of recovery. The two spikes hold the measurements and the throwaway scripts that
 produced them: `docs/superpowers/notes/spike-facet-refit/` (the per-term step: oracle recovery,
-the alternation from common starts) and `docs/superpowers/notes/spike-objective/` (the objective:
+the alternation from common starts) and `work-packages/spikes/spike-objective/` (the objective:
 monotonicity, identifiability, selection among restarts).
 
 After the fit, scoring uses $\Phi_K$ with the hard offsets $\beta_k$ kept. At the default

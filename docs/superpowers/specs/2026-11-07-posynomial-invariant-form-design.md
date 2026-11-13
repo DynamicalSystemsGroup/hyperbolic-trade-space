@@ -376,7 +376,7 @@ dataset and a contingency: if the fit does not expose recognizable contention, t
 attribute) as an amendment or a follow-up package before the notebook is written. The notebook
 never asserts a trilemma; it reports what the fit found and then explains it.
 
-See `docs/superpowers/notes/adcs-port.md` for the source files, baseline values and regression
+See `work-packages/build-notes/adcs-port.md` for the source files, baseline values and regression
 pins. Demo modelling defaults (confirm at the WP4 scope gate): a constant solar-radiation-pressure
 disturbance torque (illustrative GEO-typical ~1e-5 N·m) so steady pointing error depends
 continuously on Kp instead of being set by the star-tracker floor; total pointing error = RSS(θ_ss,
