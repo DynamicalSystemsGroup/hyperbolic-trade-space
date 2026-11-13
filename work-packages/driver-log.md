@@ -228,6 +228,16 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP39's cold reads and skim test received and ruled on (09:05).** Both readers said easier and followed the
+  reduction, so R-7 holds on the reading; the findings are real: an unresolved "Table ??" in Section 9's opening
+  sentence, "the band of both fits" and "regrets least" undefined at the point of use, the executive table's
+  configuration column carrying subsystem detail, "6 M USD fleet budget" where C.8 says the budget is 8 M USD and 6 M
+  USD the covered-cost limit. The skim test: encouraged by Section 1 and the contribution line, put off by the root
+  page's adoption and What lines, two future-work fragments and the Examples page's "mean slack" sentence. The
+  assistant's rulings are in WP39-decisions.md: one fix unit on the paper queue with seven items and one P8 re-read;
+  two root-page wording changes listed for the supervisor's close read; the Examples sentence to plain words; the
+  abstract reported, not touched; the future-work sentences kept. CI 43435158308 on 74b470f running.
+
 - **WP39 notebook unit accepted at a538fc4 (08:40).** The clean execution (a538fc4) changed three lines of the
   supporting material (the observed-commit hash) and nothing of paper.ipynb; no stderr output in either notebook; the
   patched cells now carry kernel outputs equal to the committed ones. On a538fc4: ruff, lock, vocabulary and

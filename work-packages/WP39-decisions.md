@@ -119,3 +119,29 @@ Section 9 ceiling; every quoted number through the stability entries and a regis
 from the committed sources with no stderr line and paper.ipynb byte-identical to the unit's; the fast suite 1946 passed,
 ruff, lock and vocabulary clean; the section read as rendered on the stage. The P8 and P7 cold reads and the skim test
 (R-7, R-8) now run on this head; the package's acceptance is the supervisor's after them."
+
+## The cold reads and the skim test ruled on (2026-11-14, 09:05; the assistant; reads at c3d66a3 on stage a538fc4)
+
+Both readers followed the reduction to the two-way choice and both said easier (P7 quoting the pricing-not-answering
+sentence, P8 the priced question), so R-7's test is met on the reading; both stopped at "lie within the band of both
+fits", and P8 found the opening sentence's cross-reference rendered "Table ??". The skim test (R-8) found the
+executive encouraged by Section 1 and the contribution line, neutral on the discussion and the docs root, put off by
+the root page's adoption and What lines, two future-work fragments, and the Examples page's "mean slack" sentence.
+
+**Assistant, verbatim:** "One fix unit on the paper queue, then one re-run of the P8 read, as R-7 allows. The unit:
+(1) the opening sentence's reference resolves, as a numbered table or as words pointing at the subsection; (2) 'lie
+within the band of both fits' is glossed in plain words at the point of use (near the fitted frontier at both fits),
+'regrets least' becomes 'gives up the least of either measure', and 'the 5' is said as the five designs of the
+shortlist that no other beats on both measures; (3) 'of a 6 M USD fleet budget' becomes the 6 M USD fleet-cost limit,
+since C.8 puts the sponsor's full budget at 8 M USD, a correctness fix; (4) the executive table's configuration column
+reduces to wheel class, tracker grade and fleet size, the full configuration staying in D.19; the level column stays
+with its caption saying in plain words that it is the distance above or below the fitted reference surface; the two
+rows the paragraph does not name get one clause; (5) the caption names the requirement the baseline misses, the unit
+cost limit; (6) D.19's table shows the two term levels the balanced rule reads, or the rule's text gives the gap;
+(7) 'operator' and 'sponsor' are introduced as the case's two stakeholders at first mention. Words within the raised
+Section 9 ceiling, cuts first, the ledger measured. Skim test: the root page's two put-off sentences change as wording
+(exponents to trade-off strengths in the adoption line; the n-lemma gloss to a combination of the measures) and are
+listed under Entry surfaces for the supervisor's close read; the Examples page's 'mean slack' sentence goes to plain
+words without the code name; the abstract is reported to the supervisor, not touched; the future-work sentences and
+the docs root's definition of a term stay, since they serve the method reader and the first-use rule; the root page's
+unexplained 'conditioning' is listed for the supervisor with the entry surfaces."
