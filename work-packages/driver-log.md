@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The root page re-ordered per the supervisor's three morning rulings; fronted for him (11:20).** On 26555f2
+  (4b8aa94 and its records): ruff, lock, vocabulary and attribution clean; the fast suite 1945 passed with the known
+  hash-abbreviation flake (its one-line fix is committed in the PM's worktree, 631d7a7, landing with the next push).
+  The stage rebuilt and the root page read in the browser and fronted in his tab: title and byline, the plain-language
+  summary as a body paragraph, Why, What, then the closing block of the lead sentence and two doors, "Read the paper"
+  and "Use the tool"; the adoption line gone; each change listed under Entry surfaces with its commit. CI 43494523985
+  on 8699324 running with the fast jobs green; a run on 26555f2 to follow when it finishes.
+
 - **WP39 fix unit 2 accepted as rendered; root page part 1 received; a test flake found (10:35).** On 8699324
   (f89c663, 0ccc0a3, 8699324): ruff, lock, vocabulary and attribution clean; the fast suite 1945 passed with one
   failure that is a flake of the environment, `test_the_pre_registered_rates_are_those_of_the_hypothesis_file`
