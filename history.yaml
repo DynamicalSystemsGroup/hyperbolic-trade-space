@@ -95,7 +95,7 @@ entries:
     people: [{name: "Michael Zargham"}, {name: "Alejandro Ribeiro"}, {name: "Asuman Ozdaglar"}, {name: "Ali Jadbabaie"}]
     url: https://doi.org/10.1109/TAC.2013.2293221
     read_on: "2026-11-12"
-    shows: "IEEE Transactions on Automatic Control 59(4), April 2014 (Crossref); convex network optimization. The arXiv version (1104.1157) is of April 2011."
+    shows: "IEEE Transactions on Automatic Control 59(4), April 2014 (Crossref); convex network optimization: this is the convex-optimization work the page links as 'convex optimization (2014)', with the supervisor as a co-author. The arXiv version (1104.1157) is of April 2011."
     claim: sourced
 
   - id: 2014-network-protection
@@ -194,7 +194,7 @@ entries:
     people: [{name: "Joshua Jodesty", role: "implemented cadCAD"}, {name: "Michael Zargham", role: "designed cadCAD"}, {name: "Markus Koch", role: "designed cadCAD"}, {name: "Matthew Barlin", role: "designed cadCAD"}, {name: "Danilo Bernardineli", role: "upgrades and improvements"}, {name: "Tyler Mace", role: "upgrades and improvements"}, {name: "Emanuel Lima", role: "upgrades and improvements; current maintainer"}, {name: "Andrew Clark", role: "thanked"}]
     url: https://github.com/cadCAD-org/cadCAD/blob/master/AUTHORS.txt
     read_on: "2026-11-12"
-    shows: "'cadCAD was originally implemented by Joshua E. Jodesty and designed by Michael Zargham, Markus B. Koch, and Matthew V. Barlin in 2018.' Upgrades and improvements by Danilo L. Bernardineli, Tyler D. Mace and Emanuel Lima; maintainers Emanuel Lima and Michael Zargham; Andrew Clark (@aclarkData) in the thanks list. File at version 0.5.3 (April 2024)."
+    shows: "The file's own listing, which credits more names than the page's prose names (the prose names the implementer, the three designers and two of the upgrade authors; the file also lists Mace and the thanks). 'cadCAD was originally implemented by Joshua E. Jodesty and designed by Michael Zargham, Markus B. Koch, and Matthew V. Barlin in 2018.' Upgrades and improvements by Danilo L. Bernardineli, Tyler D. Mace and Emanuel Lima; maintainers Emanuel Lima and Michael Zargham; Andrew Clark (@aclarkData) in the thanks list. File at version 0.5.3 (April 2024)."
     claim: sourced
     note: "Barlin is credited as one of the three designers, as the file has him; no background is stated by any source."
 
@@ -427,7 +427,7 @@ entries:
     read_on: "2026-11-12"
     shows: "WU Vienna working paper, 14 July 2022, DOI 10.57938/e8d456ea-d975-4111-ac41-052ce73cb0cc: a data structure mapped to itself, maps closed under composition; unifies optimal control, system dynamics, agent-based modelling and networks."
     claim: sourced
-    note: "The working paper's full title ends in a part number; only the first of the planned three papers was released (the supervisor), so the page does not number it. The gds-core README says 2021 for the same work; the WU record and the DOI give 2022."
+    note: "A distinct work from 2022-gds-post (the firm's post of 29 August 2022 that introduces it) and 2022-gds-playlist (the video series of 22 to 31 August 2022): the working paper, the post and the videos are three works, not one listed three times. The working paper's full title ends in a part number; only the first of the planned three papers was released (the supervisor), so the page does not number it. The gds-core README says 2021 for the same work; the WU record and the DOI give 2022."
 
   - id: 2022-gds-post
     date: "2022-08-29"
@@ -438,7 +438,7 @@ entries:
     read_on: "2026-11-12"
     shows: "The firm's blog, 29 August 2022: introduces the paper and a four-video series, 'extensively researched and leveraged at BlockScience'; Dr. Shorish gives the first video."
     claim: sourced
-    note: "Replaces the Medium copy (HTTP 403) and the gds-core README's blog.dynamicalsystemsgroup.com link, which does not resolve."
+    note: "A distinct work from 2022-gds (the paper) and 2022-gds-playlist (the videos): the firm's post introducing both. Replaces the Medium copy (HTTP 403) and the gds-core README's blog.dynamicalsystemsgroup.com link, which does not resolve."
 
   - id: 2022-gds-playlist
     date: "2022-08-22"
@@ -447,6 +447,7 @@ entries:
     people: [{name: "Jamsheed Shorish", role: "presenter (the firm's post)"}, {name: "Michael Zargham"}]
     url: https://www.youtube.com/playlist?list=PLmWm8ksQq4YJrB72Na_JB-o8Xu2JLj7h9
     read_on: "2026-11-12"
+    note: "A distinct work from 2022-gds (the paper) and 2022-gds-post (the post that introduces the paper and these videos): the video series itself."
     shows: "Playlist of four videos on the firm's channel, uploaded 22 to 31 August 2022, accompanying the paper. No channel or playlist under Shorish's own name was found."
     claim: sourced
 
@@ -490,7 +491,7 @@ entries:
     read_on: "2026-11-12"
     shows: "The firm's blog, 27 October 2022: presents the paper as a BlockScience collaboration with Grassroots Economics and the Danish Red Cross. The only readable page that ties Clark to the firm."
     claim: sourced
-    note: "Replaces the Medium link, not fetched: medium.com/block-science/complex-systems-modeling-of-community-inclusion-currencies-4e2161787934."
+    note: "A distinct work from 2023-community-currency (the journal paper of 2023): this is the firm's blog post of 27 October 2022 presenting the work, the paper is the peer-reviewed article; the two share a title. Replaces the Medium link, not fetched: medium.com/block-science/complex-systems-modeling-of-community-inclusion-currencies-4e2161787934."
 
   - id: 2022-lima-pydata
     date: "2022-11-14"
@@ -575,7 +576,7 @@ entries:
     read_on: "2026-11-12"
     shows: "Computational Economics 64(2), online 28 September 2023 (Crossref): a subpopulation model of a local complementary currency, from transaction data, built in cadCAD. The model's repository says 'developed 2018-2021 in collaboration with the Red Cross and Grassroots Economics'."
     claim: sourced
-    note: "The abstract describes a blockchain form of the currency; the page names the purpose (community currencies) and the collaboration, not the implementation form. The journal page itself could not be read (a cookie redirect)."
+    note: "A distinct work from 2022-community-currency-post (the firm's blog post of 2022 on the same work; the two share a title). The abstract describes a blockchain form of the currency; the page names the purpose (community currencies) and the collaboration, not the implementation form. The journal page itself could not be read (a cookie redirect)."
 
   - id: 2023-pydata-nyc
     date: "2023-11-29"

@@ -15,7 +15,7 @@ does not settle by itself.
 
 ## 2. Roles and the team's own account
 
-- **Marked as the team's account (no public source):** the firm as a contract research and engineering firm; the activities sentence (your exact wording); the origin "not from an academic group"; the client-project sentence for Hackel and Carolina; the team's backgrounds (computer science, control, economics, physics, mathematics); the synthesis effort. Say if any should be dropped or restated.
+- **Marked as the team's account (no public source):** the firm as a contract research and engineering firm; the activities sentence (your exact wording); the client-project sentence for Hackel and Carolina; the team's backgrounds (computer science, control, economics, physics, mathematics); the synthesis effort. Say if any should be dropped or restated.
 - **OpenSysML.** The page links your research page for your role and the partners page for the firm's work with OpenMBEE; the firm's role in OpenSysML itself is on no public page and is not claimed.
 - **Clark's community-currency paper.** The page says what the sources say: Clark, Mihailov and Zargham, Computational Economics, 2023, a community-currency model developed with the Red Cross and Grassroots Economics (the repository's README). Your brief called it cryptocurrency-free; the paper's abstract describes a blockchain form of local complementary currency, so the page does not say "cryptocurrency-free" and does not describe the setting. The journal page itself could not be read by the workers (a cookie redirect), so its acknowledgements are unchecked.
 - **RAI.** Of your four attributes only "highly automated" is source-stated for RAI (the Zenodo record); the page asserts only that. The Edinburgh talk rests on your CV alone (ICMS hosted; no page says University of Edinburgh); there is no video or slides.
@@ -36,7 +36,7 @@ does not settle by itself.
 
 - **354 citations.** Google Scholar profile (user=bbdc3vkAAAAJ), re-read 2026-11-12, for the 2014 TCNS paper; Crossref shows 227. The page names Google Scholar and the date.
 - **SciPy 2026.** The page says only that the talk is public (the pretalx page); the "paper forthcoming" clause is cut.
-- **Closing phrase.** "With computers, fast but with confidence." is your phrase; keep or cut.
+- **Closing phrase.** "With computers, fast but with confidence." is your phrase; cut at the closing unit (default 6 (a): the fresh reader found it unexplained); restore it if you want it.
 - **Geometric programs.** The two full texts say "geometric program", not "generalized"; the page says "geometric programs".
 
 ## 5. Cuts for the one screen (each states what the content no longer did)
@@ -67,7 +67,7 @@ The page is now the record's thin path; the detail is in `history.yaml` and the 
 - "Part I": not in the prose or the list titles (the record's title for the paper omits it; its note says why).
 - Special-case sentences cite only works whose sources support the attributes: the Filecoin review (public debate stated), the RAI design record ("highly automated" stated), the CV's Edinburgh entry.
 - The fresh reader's walk (R-11) and the supervisor's confirmation of the nine defaults remain to do; the YouTube links for workshops 2 and 3 and any Shorish channel under his own name were not found (w5-pass3.md).
-- Link check on the record's 86 URLs (`scripts/check_history_links.py`, no credentials): 85 ok, 1 blocked (doi.org/10.1002/iis2.70203, Wiley bot challenge; Crossref gives the record), 0 FAIL.
+- Link check on the record's 86 URLs (`scripts/check_history_links.py`, no credentials): 85 ok, 1 blocked (doi.org/10.1002/iis2.70203, Wiley bot challenge; Crossref gives the record), 0 FAIL. The blocked link was confirmed by the assistant in a browser on 2026-11-13: it resolves to the INCOSE International Symposium 2026 article by the supervisor on Wiley Online Library.
 
 ## 7. From the fresh reader's walk and the review (head d801a43; `WP37-review.md`)
 
@@ -82,3 +82,25 @@ Current state: the nine defaults of `WP37-decisions.md` stand on the page and ar
 - **Hackel and Riascos-Álvarez** have no entry in the generated list.
 
 Record defects (for a later unit, not for him): W3 not re-run at this head; near-duplicate list rows (community-currency 2022 and 2023, three GDS rows in 2022, AUTHORS.txt row crediting more names than the prose); the 2014 convex-optimization link's entry does not say it is that work; `draft-shots/` still the old draft's images; the one blocked link (doi.org/10.1002/iis2.70203) awaits a person's browser check.
+
+## 8. The closing unit (2026-11-13): the assistant's calls under the supervisor's standing rulings, each yours to revert
+
+The page, in the scope's six-part order, reads 406 visible words (418 before; the test ceiling goes 420 to 406; 350 stays the aim).
+
+1. **Bridge.** One clause in the arc paragraph: geometric programs, "posynomial like this paper's frontier", linked to the paper (the site's relative link). Backed by the 2014 network-protection entry (geometric programming in its abstract) and the geometric-programming tutorial (a program with posynomial objective and constraints, section 2); the record has no entry for the paper, which is the page's host and not yet at a public URL.
+2. **Tagline cut** (default 6 (a)): "With computers, fast but with confidence." no longer did anything a reader could trace, and the fresh reader found it unexplained; it paid for the bridge and the back link.
+3. **"long-running endeavour with many contributors"** links to the generated dated list; the synthesis clause stays marked as the team's account.
+4. **Special-case phrase** stays on the seven list entries (direct references; a linked title may carry the word). Nothing changed.
+5. **Edinburgh talk and "founded in 2017"** stay, marked by claim kind as your own account (CV and homepage).
+6. **2014 to 2018:** no connecting idea; the list fills the gap.
+7. **Order and back link:** the firm today now comes before the special cases (a paragraph move); "The method" is at the top of the page as well as the footer. The cut "came not from an academic group but" (6 words): the next paragraph's academic papers already placed the earlier work, and the clause only contrasted with them.
+8. **Touch targets:** inline prose links are the site's register; no change.
+9. **Hackel and Riascos-Álvarez** stay named in the prose by your ruling; no list entry.
+10. **Penland sentence** as you ruled (13:20): "led workshops on MAIDs, GDS and cadCAD under a contract with BlockScience (2024)"; the workshops are sourced to the firm's post, the contract is your account (marked in trace.md and the claims row); the record's role fields keep the source's quoted words.
+11. **Clark sentence** as you ruled (13:30); the work and partners are sourced to the paper and the README, the clause "which applied related methods in modeling, simulation and analysis" is the team's account (marked in trace.md and the claims row).
+
+Other cuts, each with what it no longer did: "and others" after Preciado (the co-authors are in the record), "competing" and "debated publicly on GitHub and Slack" in the Filecoin clause (the special-case phrase says the work was highly public; the record carries the debate), "(AUTHORS.txt)" (the designers' clause is now the link), "of the firm" to "firm post", "works on and with" to "works with".
+
+Record defects fixed: W3 re-run at this head (`w3-check.md`, 29 prose links: 26 match, 3 partial with reasons, 0 no); `note` fields say the community-currency 2022 post and 2023 paper, the three 2022 GDS rows (paper, post, playlist) are distinct works; the AUTHORS.txt row's `shows` says it is the file's own listing and credits more names than the prose; the 2014 convex-optimization entry says it is the convex-optimization work; `draft-shots/` deleted.
+
+Still yours, none blocking: the spellings (Bernardineli, Penland, Riascos-Álvarez), Carolina's handle, Barlin's reach, the "possibly also" names, the unreachable Medium links, the closing phrase.

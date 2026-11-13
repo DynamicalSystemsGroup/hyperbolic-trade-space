@@ -701,18 +701,24 @@ def _record_years(entries) -> set[str]:
     return {HISTORY_RECORD.year(e) for e in entries} | {e["read_on"][:4] for e in entries}
 
 
+#: the page's own links inside the site: the method (root page), the paper, the generated list
+HISTORY_SITE_LINKS = ("./", "paper/", "#record")
+
+
 def test_history_every_link_on_the_page_is_a_record_entry():
     """WP37 D-9: each link of the prose and of the generated list is the URL of a record entry,
     so the prose cannot drift from the record."""
     entries = HISTORY_RECORD.load()
     urls = {e["url"] for e in entries}
-    prose = [h for h, _ in _anchors(HISTORY.read_text(encoding="utf-8")) if h != "./"]
+    prose = [
+        h for h, _ in _anchors(HISTORY.read_text(encoding="utf-8")) if h not in HISTORY_SITE_LINKS
+    ]
     assert len(prose) >= 15
     unrecorded = [h for h in prose if h not in urls]
     assert not unrecorded, f"links on the page that no record entry holds: {unrecorded}"
     built = HISTORY_RECORD.build_page_file()
     for href, _ in _anchors(built):
-        assert href in urls or href == "./", href
+        assert href in urls or href in HISTORY_SITE_LINKS, href
 
 
 def test_history_every_name_on_the_page_is_in_the_record():
@@ -910,6 +916,10 @@ def test_history_page_links_resolve_over_the_network():
     assert not failed, failed
 
 
+#: the page's word ceiling (WP37 closing unit: 418 words before it; the ceiling goes down only)
+WORDS_CEILING = 406
+
+
 def test_history_page_is_one_screen_in_the_root_page_register():
     """WP37: a stand-alone page, light and dark like the root page, no script, about one screen."""
     raw = HISTORY.read_text(encoding="utf-8")
@@ -917,7 +927,7 @@ def test_history_page_is_one_screen_in_the_root_page_register():
     assert "prefers-color-scheme: dark" in raw
     assert '<link rel="icon" href="data:,">' in raw
     assert "<h1>History and acknowledgements</h1>" in raw
-    assert 250 <= len(_history_text().split()) <= 420
+    assert 250 <= len(_history_text().split()) <= WORDS_CEILING
 
 
 def test_history_page_is_linked_from_the_root_page_and_links_resolve():
@@ -1018,6 +1028,51 @@ def test_history_page_follows_the_supervisors_wording_rulings():
     for ref in ("gds-axelrod", "10.1007/s10614-023-10445-9", "fip-0056", "vr6sIfjGmLQ"):
         assert ref in raw, ref
     assert "workshop in Edinburgh (ICMS), October 2024" in text
+
+
+def test_history_page_follows_the_scope_order_and_the_closing_unit_rulings():
+    """WP37 closing unit (the supervisor's standing rulings, WP37-decisions.md): the scope's six-
+    part order (the firm today before the special cases, no closing phrase); the back link to the
+    method at the top as well as the footer; the bridge from geometric programs to the paper; the
+    Penland and Clark sentences as ruled, their team-account clauses marked in the trace."""
+    raw = HISTORY.read_text(encoding="utf-8")
+    text = _history_text()
+    main = raw[raw.index("<main>") :]
+    assert main.index('<a href="./">') < main.index("<h1>") < main.index("This page acknowledges")
+    assert raw.count('<a href="./">') == 2  # top and footer
+    assert "With computers, fast but with confidence" not in text
+    order = (
+        "Before the firm",
+        "cadCAD",
+        "Jamsheed",
+        "In our own account, ",
+        "serves on",
+        "Special cases",
+    )
+    positions = [
+        text.index(m, text.index("Before the firm") if m != "Before the firm" else 0) for m in order
+    ]
+    assert positions == sorted(positions), positions
+    assert 'href="#record">long-running endeavour with many contributors</a>' in raw
+    assert 'posynomial like <a href="paper/">this paper</a>' in raw
+    assert (
+        "Andrew \u201cOctopus\u201d Penland led workshops on MAIDs, GDS and cadCAD "
+        "under a contract with BlockScience (2024)."
+    ) in text
+    assert "research engineer" not in text
+    assert (
+        "Andrew Clark wrote with Alexander Mihailov and Zargham a community-currency model "
+        "(2023), developed with the Red Cross and Grassroots Economics, which applied related "
+        "methods in modeling, simulation and analysis."
+    ) in text
+    entries = HISTORY_RECORD.load()
+    for sentence in HISTORY_RECORD.sentences(raw):
+        if (
+            "under a contract with" in sentence["text"]
+            or "applied related methods" in sentence["text"]
+        ):
+            kinds, _, marked, _, _ = HISTORY_RECORD.classify(sentence, entries)
+            assert marked and "team-account" in kinds, sentence["text"]
 
 
 def test_paper_theme_is_pinned_to_a_commit():

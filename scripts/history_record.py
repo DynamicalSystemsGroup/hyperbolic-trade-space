@@ -36,6 +36,12 @@ DATE = re.compile(r"\d{4}(-\d{2}(-\d{2})?)?")
 DAY = re.compile(r"\d{4}-\d{2}-\d{2}")
 #: the phrases that mark a sentence as the team's own account
 TEAM_MARKS = ("our own account", "the same account")
+#: clauses that are the team's own account inside a sentence a source otherwise backs (the
+#: supervisor's wording, WP37-decisions.md): the contract, and the connection of the Clark model
+TEAM_CLAUSES = (
+    "under a contract with BlockScience",
+    "which applied related methods in modeling, simulation and analysis",
+)
 
 
 def load(path=RECORD):
@@ -233,7 +239,7 @@ def classify(sentence, entries):
     by_url = {e["url"]: e for e in entries}
     linked = [by_url[h] for h in sentence["hrefs"] if h in by_url]
     kinds = {e["claim"] for e in linked}
-    marked = any(m in sentence["text"] for m in TEAM_MARKS)
+    marked = any(m in sentence["text"] for m in TEAM_MARKS + TEAM_CLAUSES)
     if marked or sentence["text"].startswith("We "):
         kinds.add("team-account")
     if not kinds:
@@ -252,8 +258,8 @@ def trace_table(page_html, entries):
         "",
         "Kinds are derived from the record's claim of each linked entry: `sourced` (a source read",
         "states it), `link` (the link itself shows it), `team-account` (the team's own account:",
-        "marked in the sentence, or in the firm's first person). `page` is the page's statement of",
-        "its own purpose.",
+        "marked in the sentence, in a clause it names as ours, or in the firm's first person).",
+        "`page` is the page's statement of its own purpose.",
         "",
         "| # | Sentence | Kind | Record ids | Marked | Special case | A reader can trace |",
         "|---|---|---|---|---|---|---|",

@@ -6312,7 +6312,7 @@ note = "The readout's limits (5) and (6): one run per seed of the planted genera
 
 [[claim]]
 id = "C547"
-fragment = "This page acknowledges the people and the human lineage of this work, which the paper&rsquo;s citations cannot carry: it is the synthesis and publication of a long-running endeavour with many contributors."
+fragment = "This page acknowledges the people and the human lineage of this work, which the paper&rsquo;s citations cannot carry: it is the synthesis and publication of a ... long-running endeavour with many contributors"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6322,11 +6322,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
-note = "The page's purpose and the risk it offsets, the supervisor's statements (WP37-decisions.md); the page's own account of itself. Kind: page (trace.md row 1)."
+note = "The page's purpose and the risk it offsets, the supervisor's statements (WP37-decisions.md); the page's own account of itself. 'long-running endeavour with many contributors' links to the generated dated list (#record), which holds the contributors and their dated work. Kind: page (trace.md)."
 
 [[claim]]
 id = "C548"
-fragment = "In our own account, this work came not from an academic group but from a contract research and engineering firm, ... as BlockScience and now the"
+fragment = "In our own account, this work came from a contract research and engineering firm, ... as BlockScience and now the"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6367,7 +6367,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
-note = "Record ids 2014-dual-descent (https://doi.org/10.1109/TAC.2013.2293221, IEEE TAC, April 2014) and 2014-network-protection (https://doi.org/10.1109/TCNS.2014.2310911, March 2014, geometric programming in the abstract). Authors per Crossref."
+note = "Record ids 2014-dual-descent (https://doi.org/10.1109/TAC.2013.2293221, IEEE TAC, April 2014) and 2014-network-protection (https://doi.org/10.1109/TCNS.2014.2310911, March 2014, geometric programming in the abstract). Authors per Crossref. The clause 'posynomial like this paper\u2019s frontier' (link to the paper, paper/) rests on 2007-gp-tutorial (a geometric program has posynomial objective and constraints; Boyd, Kim, Vandenberghe, Hassibi) and on the paper, whose model is a posynomial frontier; the record has no entry for the paper, which is the page's host and not yet at a public URL."
 
 [[claim]]
 id = "C551"
@@ -6413,7 +6413,7 @@ note = "Record ids 2022-gds (WU record), 2022-gds-playlist (https://www.youtube.
 
 [[claim]]
 id = "C554"
-fragment = "<span class=\"n\">Andrew &ldquo;Octopus&rdquo; Penland</span>, a research engineer at BlockScience, led"
+fragment = "<span class=\"n\">Andrew &ldquo;Octopus&rdquo; Penland</span> led ... workshops on MAIDs, GDS and cadCAD"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6423,7 +6423,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
-note = "Record ids 2024-workshop-1 (https://www.youtube.com/watch?v=GK5oRDTa72o), 2024-maids-post (blog, 'a Blockscience Research Engineer'), person-penland (surname from the public record; identity with Octopus from the supervisor's first message)."
+note = "Record ids 2024-workshop-1 (https://www.youtube.com/watch?v=GK5oRDTa72o), 2024-maids-post (blog, 'a Blockscience Research Engineer'), person-penland (surname from the public record; identity with Octopus from the supervisor's first message). The workshops are sourced to the firm's post and video; 'under a contract with BlockScience' is the supervisor's own account of the arrangement (WP37-decisions.md, 2026-11-13 13:20), marked in trace.md; the record's role fields keep the source's quoted words."
 
 [[claim]]
 id = "C555"
@@ -6441,7 +6441,7 @@ note = "Record ids 2026-gds-core, 2026-gds-axelrod, 2023-msml (URLs in history.y
 
 [[claim]]
 id = "C556"
-fragment = "<span class=\"n\">Andrew Clark</span> wrote with ... Mihailov ... community-currency model"
+fragment = "<span class=\"n\">Andrew Clark</span> wrote with ... Mihailov ... community-currency model ... (2023), developed with the Red Cross and Grassroots Economics, which applied related methods in modeling, simulation and analysis"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6451,7 +6451,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
-note = "Record id 2023-community-currency (https://doi.org/10.1007/s10614-023-10445-9); purpose and collaboration named, the implementation form not (default 7); the model repository's README gives the Red Cross and Grassroots Economics collaboration."
+note = "Record id 2023-community-currency (https://doi.org/10.1007/s10614-023-10445-9); purpose and collaboration named, the implementation form not (default 7); the model repository's README gives the Red Cross and Grassroots Economics collaboration. The clause 'which applied related methods in modeling, simulation and analysis' is the team's account of the connection (the supervisor's wording, WP37-decisions.md, 2026-11-13 13:30), marked in trace.md."
 
 [[claim]]
 id = "C557"
@@ -6497,7 +6497,7 @@ note = "Record ids 2022-numfocus-council, 2026-numfocus-sponsor, 2023-pydata-nyc
 
 [[claim]]
 id = "C560"
-fragment = "The team works on and with ... OpenMBEE"
+fragment = "The team works with ... OpenMBEE"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6508,20 +6508,6 @@ status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
 note = "Record ids 2026-openmbee (https://www.dynamicalsystemsgroup.com/partners), 2026-maintainer (https://michael.zargham.org/research), 2026-opensysml (https://github.com/Open-MBEE/OpenSysML); the synthesis effort is the team's account (2026-synthesis), marked."
-
-[[claim]]
-id = "C561"
-fragment = "With computers, fast but with confidence."
-file = "site/history.html"
-anchor = ""
-kind = "S"
-backing = [
-  "file:work-packages/WP37-decisions.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP37 D-9"
-note = "The supervisor's own phrase for the image of the team (WP37-decisions.md, on the page's storytelling); kept by default 6 unless the fresh reader's walk says it does not earn its place. Kind: page (trace.md)."
 
 [[claim]]
 id = "C562"
