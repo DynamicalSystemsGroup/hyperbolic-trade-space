@@ -385,3 +385,24 @@ analysis.' or something along those lines so it doesnt read like a nonsequitr"
 with the Red Cross and Grassroots Economics, which applied related methods in modeling, simulation and analysis." The
 work and its partners stay sourced to the paper; the clause "applied related methods" is the team's account of the
 connection and the trace and claims rows mark it so. Folded into the WP37 closing unit with the Penland change.
+
+## The supervisor on the client-projects paragraph, Carolina's link, and a wrong credit in the list (2026-11-13, 13:40)
+
+**Supervisor, verbatim:** "'In our own account, Jakob Hackel and Carolina Riascos-Álvarez (CarolinaRiascos) worked on
+client projects we cannot name, and relevant work was done at the firm by people we thank but cannot describe here; in
+our own account of the team, its backgrounds are computer science, control, economics, physics and mathematics.' this
+feels awkward and forced. we may need to slim it back. also don't link carolina if we didn't link other people. its
+fine just say her name. i think we can merge this paragraph with the one after and just say client projects, then
+proceed to say some projects such as the RAI one were cleared for public release then have the references.
+
+also your full list is in some places just incorrect. i check the 'block diagrams of dynamical systems' link and
+carolina was not involved it was danilo and zeke. we should probably name zeke. he did a summer internship
+specifically focused on block digrams as a compositional algebra and formal methods associated with them"
+
+**Applied as:** the two paragraphs merge into one: the people named worked on client projects, some of which, the RAI
+controller among them, were cleared for public release, then the references; Carolina's name unlinked, like every
+other name; the sentence on the team's backgrounds slimmed or dropped if the merged paragraph does without it. The
+record entry `2024-dynamical-block-diagrams` is corrected to its actual people, Danilo Bernardineli and Zeke (surname
+from the public record of that repository), with Zeke's role in the supervisor's words, a summer internship on block
+diagrams as a compositional algebra and the formal methods associated with them; and every entry's `people` field is
+audited against its source before the closing unit lands, the audit recorded in w3. Folded into the WP37 closing unit.
