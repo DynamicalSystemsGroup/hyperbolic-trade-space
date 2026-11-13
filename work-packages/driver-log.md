@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP37 closing unit 2 verified and accepted; the page fronted for the supervisor (18:30).** The unit (7a14cea,
+  13ed54c) applies the eight rulings of 2026-11-13: the client-projects paragraph merged with the special cases and
+  Carolina unlinked, cadCAD the work of 19 contributors with the AUTHORS file's names, Zeke Medley named with the
+  internship beside Danilo Bernardineli on the block-diagrams work, the Boyd entry out, flexo-rtm, toaster and
+  eighteen other entries out under the marginal-value test (87 to 69, each removal with what the list no longer did),
+  the Penland and Clark wordings, and a people audit of every entry against its source (36 match, 7 corrected, one
+  person dropped for lack of a byline). The assistant's verification on 13ed54c: ruff, lock, vocabulary and
+  attribution clean; the fast suite 1937 passed; the 24 history tests pass; the link checker finds every record URL
+  ok; the page read in the browser (no Carolina link, no Boyd, no flexo-rtm or toaster, the back link at top and
+  foot). The Filecoin review stays in the list with its special-case mark and leaves the prose, as "such as the RAI
+  one" allows. The stage rebuilt at 13ed54c and the page fronted in the supervisor's tab. WP37 goes to the review
+  list for his acceptance with the open items that are his.
+
 - **722ce86 fully green; two WP33 paper units accepted; head 69362b5 verified (17:45).** CI 43339340106: every job
   green on both platforms, the nineteenth fully green head. On 69362b5: ruff, lock, vocabulary and attribution clean;
   the fast suite 1936 passed, 19 skipped, 3 xfailed in 7:16. The Organization paragraph (eb08f27) routes by depth
