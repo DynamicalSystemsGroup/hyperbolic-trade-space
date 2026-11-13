@@ -3684,3 +3684,119 @@ def test_a_step_range_link_into_the_supporting_material_says_where_it_leads():
     methods = _section("Methods")
     assert "{ref}`Appendix B, supporting material, L4.14 to L4.24 <appendix-b>`" in methods
     assert "Appendix B, L4.14 to L4.24" not in methods
+
+
+# ---- WP39 D-3: the decision generator -----------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def decided():
+    """The study, its K = 1 and K = 2 fits and the decision computed from them (fit once)."""
+    import case
+    import generate_findings as gf
+
+    study = case.load_study("primary")
+    fits = case.k_fits(study, (1, case.CASE_K))
+    return study, fits, gf.decision(study, fits)
+
+
+@pytest.mark.slow
+def test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist(
+    decided,
+):
+    """R-6: 2,134 feasible, 548 pass six, 28 in the band of both fits, the named designs among them
+    and passing the six requirements; the picks and the dollars of the narration."""
+    import case
+
+    study, _, d = decided
+    assert d.counts == {"feasible": 2134, "six_pass": 548, "working": 28, "nondominated": 11,
+                        "nondominated_in_band": 1, "nondominated_working": 5}  # fmt: skip
+    w = d.working
+    assert list(w["fleet_cost_usd"]) == sorted(w["fleet_cost_usd"])
+    assert {k: int(v["design_id"]) for k, v in d.picks.items()} == {
+        "sponsor": 999, "cheapest unit": 2356, "operator": 2950, "between": 1858,
+        "balanced": 766, "fine": 1858,
+    }  # fmt: skip
+    assert set(w.loc[w["nd"], "design_id"]) == {190, 766, 999, 1858, 2950}
+    ids = set(w["design_id"])
+    raw = study.feasible.set_index("design_id")
+    for row in d.picks.values():
+        assert row["design_id"] in ids
+        assert case.requirement_mask(raw.loc[[row["design_id"]]], study.spec, costs=True).all()
+    assert round(_tracker_cost_of(d), -3) == 559_000
+    assert d.baseline["pointing_error_deg"] == pytest.approx(0.0155349, rel=1e-5)
+    assert d.baseline["unit_cost_usd"] == 461_360.0
+
+
+def _tracker_cost_of(d):
+    import generate_findings as gf
+
+    return gf._tracker_cost(d)
+
+
+@pytest.mark.slow
+def test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values(decided):
+    import generate_findings as gf
+
+    _, _, d = decided
+    text = str(gf.decision_sentence(d))
+    plain = re.sub(r"<[^>]+>", "", text)
+    for phrase in ("2,134 feasible designs", "to 28 that pass all six requirements",
+                   "from about 0.003 to 0.0008 degree", "about 0.56 M USD of a 6 M USD",
+                   "fleet of 5 medium-wheel, fine-tracker satellites at 1.69 M USD (337,000 USD",
+                   "regrets least of the 5", "fleet of 4 small-wheel, medium-tracker satellites "
+                   "at 1.13 M USD is cheapest", "Appendix C.8"):  # fmt: skip
+        assert phrase in plain, phrase
+    assert 130 <= len(plain.split()) <= 150
+    detail = str(gf.decision_detail_sentence(d))
+    assert "all 548 designs" in detail and "11 are nondominated" in detail
+    assert "1 of them lies within" in detail
+    table = str(gf.decision_table(d)).splitlines()
+    assert table[0].split(" | ")[0] == "| rule" and len(table) == 2 + 6
+    assert [r.split(" | ")[0].strip("| ") for r in table[2:]] == [
+        "baseline configuration", "sponsor alone", "operator alone", "between them",
+        "balanced between the terms", "cheapest unit cost",
+    ]  # fmt: skip
+    assert "1,686,142" in table[5] and "337,228" in table[5] and "0.00080" in table[5]
+    designs = str(gf.decision_designs_table(d)).splitlines()
+    assert len(designs) == 2 + 28
+    assert sum("fleet cost" in r.split("|")[-2] for r in designs[2:]) == 5
+
+
+@pytest.mark.slow
+def test_the_decision_follows_the_record_when_the_record_is_perturbed(decided):
+    """Perturb the record, not the text: a dearer cheapest design, then a tighter budget; the
+    shortlist, the picks, the narration and the table move with it."""
+    import dataclasses
+
+    import case
+    import generate_findings as gf
+
+    study, fits, base = decided
+    raw = study.feasible.copy()
+    i = raw.index[raw["design_id"] == 999][0]
+    raw.loc[i, "fleet_cost_usd"] = 3_000_000.0  # design 999 now costs 3 M USD, over the others
+    d = gf.decision(dataclasses.replace(study, feasible=raw), fits)
+    assert int(d.picks["sponsor"]["design_id"]) == 190  # the next-cheapest fleet cost
+    text = str(gf.decision_sentence(d))
+    assert "1.52 M USD is cheapest" in text and "1.13 M USD" not in text
+    assert "about 0.17 M USD" in text  # 1,686,142 - 1,515,098, not 0.56
+    assert "1,127,465" not in str(gf.decision_table(d))
+    cap = 5_800_000.0  # the cheapest-unit-cost design (5.85 M USD) now exceeds the fleet budget
+    capped = dataclasses.replace(
+        study.spec,
+        cost_requirements={**study.spec.cost_requirements, "fleet_cost_usd": (cap, "USD")},
+    )
+    d = gf.decision(dataclasses.replace(study, spec=capped), fits)
+    assert d.counts["six_pass"] < base.counts["six_pass"] and d.counts["working"] < 28
+    assert d.working["fleet_cost_usd"].max() <= cap and 2356 not in set(d.working["design_id"])
+    assert "a 5.8 M USD fleet budget" in str(gf.decision_sentence(d))
+    # the paragraph says its premise (the between design takes the fine tracker, the sponsor's does
+    # not); a record where that fails raises instead of printing a false sentence
+    tight = dataclasses.replace(
+        study.spec,
+        cost_requirements={**study.spec.cost_requirements, "fleet_cost_usd": (1_700_000.0, "USD")},
+    )
+    with pytest.raises(AssertionError, match="premise"):
+        gf.decision_sentence(gf.decision(dataclasses.replace(study, spec=tight), fits))
+    assert case.CASE_K == 2

@@ -7,9 +7,12 @@ example). Each function returns an :class:`~paper_common.Md` of one or two plain
 
 from __future__ import annotations
 
+import dataclasses
+
 import case
 import numpy as np
-from paper_common import Md, appendix_link, thousands
+import pandas as pd
+from paper_common import Md, appendix_link, md_table, thousands
 from paper_stability import entry, stable, summary
 
 _C7 = appendix_link("sub-c-7", "Appendix C.7")
@@ -21,6 +24,7 @@ _D14 = appendix_link("sub-d-14", "Appendix D.14")
 _C5 = appendix_link("sub-c-5", "Appendix C.5")
 _E = appendix_link("appendix-e", "Appendix E")
 _D15 = appendix_link("sub-d-15", "Appendix D.15")
+_C8 = appendix_link("sub-c-8", "Appendix C.8")
 
 
 def _and(items) -> str:
@@ -641,3 +645,220 @@ def planted_sentence() -> Md:
         f"termination record is in {_D8}); the {n} tables of {gr.RECOVERY_ROWS} rows that the "
         f"case analysis fits come from the same generator ({_D14})."
     )
+
+
+# ---- the decision (WP39): the closing subsection of Section 9 and Appendix D's table -------------
+# One function, ``decision``, computes every number from the study and its fits; the paragraph, the
+# six-row table and the 28-design table are formatted from its result and nothing else is typed.
+
+
+@dataclasses.dataclass(frozen=True)
+class Decision:
+    """Everything the case's closing decision reads (see :func:`decision`).
+
+    Attributes
+    ----------
+    counts : dict of str to int
+        ``feasible``, ``six_pass``, ``working`` (the shortlist), ``nondominated`` (on pointing
+        error and fleet cost, over all six-pass designs) and ``nondominated_in_band`` (of those,
+        the ones in the shortlist), ``nondominated_working`` (nondominated within the shortlist).
+    working : pandas.DataFrame
+        The shortlist ordered by fleet cost, with ``log V K=2``, ``log V K=1``, ``term 1 level``,
+        ``term 2 level``, ``nd`` and ``nd unit`` (nondominated on pointing error with fleet
+        cost, and with unit cost).
+    picks : dict of str to pandas.Series
+        The named designs: ``sponsor`` (cheapest fleet cost), ``cheapest unit`` (cheapest unit
+        cost), ``operator`` (smallest pointing error), ``between`` (minimax regret on pointing
+        error and fleet cost), ``balanced`` (smallest gap between the two term levels), and
+        ``fine`` (cheapest fleet cost among the fine-tracker designs).
+    baseline : dict
+        The model's baseline configuration with its ``log V K=2``.
+    fleet_budget, unit_limit : float
+        The fleet-cost and unit-cost limits of the requirements.
+    """
+
+    counts: dict
+    working: pd.DataFrame
+    picks: dict
+    baseline: dict
+    fleet_budget: float
+    unit_limit: float
+
+
+def decision(study=None, fits=None) -> Decision:
+    """The shortlist and the named designs of the case, computed from the data of record.
+
+    The shortlist is the feasible designs that pass all six requirements and lie within the
+    near-frontier band (the K = 1 band, at every K, as in Section 9) of both the K = 1 and the
+    case's K fit. Every named design is asserted to lie in the shortlist and to pass the six
+    requirements.
+
+    Parameters
+    ----------
+    study : case.Study, optional
+        Default: the primary regime.
+    fits : dict of int to case.Fit, optional
+        Fits at K = 1 and ``case.CASE_K``; default ``case.k_fits(study, (1, CASE_K))``.
+
+    Returns
+    -------
+    Decision
+    """
+    study = study or case.load_study("primary")
+    fits = fits or case.k_fits(study, (1, case.CASE_K))
+    spec, df = study.spec, study.feasible
+    f1, fk = fits[1], fits[case.CASE_K]
+    six = case.requirement_mask(df, spec, costs=True).to_numpy()
+    lv1 = f1.estimator.score_samples(study.M)
+    lvk = fk.estimator.score_samples(study.M)
+    inside = (np.abs(lv1) < f1.band) & (np.abs(lvk) < f1.band)
+    work = six & inside
+    levels = np.log(study.M) @ fk.estimator.exponents_.T - fk.estimator.log_offset_
+    out = df.assign(**{"log V K=1": lv1, "log V K=2": lvk, "term 1 level": levels[:, 0],
+                       "term 2 level": levels[:, 1]})  # fmt: skip
+    # the shortlist's own order: fleet cost, then design id
+    w = out[work].sort_values(["fleet_cost_usd", "design_id"]).reset_index(drop=True)
+    pe, fc = w["pointing_error_deg"].to_numpy(), w["fleet_cost_usd"].to_numpy()
+    w["nd"] = case.nondominated_mask(-np.column_stack([pe, fc]))
+    w["nd unit"] = case.nondominated_mask(-np.column_stack([pe, w["unit_cost_usd"].to_numpy()]))
+    all_six = out[six]
+    nd_all = case.nondominated_mask(-all_six[["pointing_error_deg", "fleet_cost_usd"]].to_numpy())
+    nd_ids = set(all_six["design_id"][nd_all])
+    scaled = np.column_stack([(pe - pe.min()) / np.ptp(pe), (fc - fc.min()) / np.ptp(fc)])
+    gap = np.abs(w["term 1 level"] - w["term 2 level"]).to_numpy()
+    fine = np.flatnonzero((w["st_grade"] == "fine").to_numpy())
+    picks = {
+        "sponsor": w.iloc[int(np.argmin(fc))],
+        "cheapest unit": w.iloc[int(np.argmin(w["unit_cost_usd"].to_numpy()))],
+        "operator": w.iloc[int(np.argmin(pe))],
+        "between": w.iloc[int(np.argmin(scaled.max(axis=1)))],
+        "balanced": w.iloc[int(np.argmin(gap))],
+        "fine": w.iloc[fine[int(np.argmin(fc[fine]))]],
+    }
+    ids = set(w["design_id"])
+    for name, row in picks.items():  # R-6: named designs are in the shortlist and pass all six
+        assert row["design_id"] in ids, name
+        raw = df[df["design_id"] == row["design_id"]]
+        assert case.requirement_mask(raw, spec, costs=True).all(), name
+    base = dict(spec.baseline_configuration)
+    frame = pd.DataFrame([base])
+    for c in (*spec.covariates, *spec.design_vars):
+        if c not in frame:
+            frame[c] = 0.0
+    cols = [f"metrics__{a}" for a in spec.attributes]
+    Mb = study.conditioner.transform(frame)[cols].to_numpy()
+    base["log V K=2"] = float(fk.estimator.score_samples(Mb)[0])
+    counts = {
+        "feasible": len(df),
+        "six_pass": int(six.sum()),
+        "working": len(w),
+        "nondominated": len(nd_ids),
+        "nondominated_in_band": len(nd_ids & ids),
+        "nondominated_working": int(w["nd"].sum()),
+    }
+    return Decision(counts, w, picks, base,
+                    spec.cost_requirements["fleet_cost_usd"][0],
+                    spec.cost_requirements["unit_cost_usd"][0])  # fmt: skip
+
+
+def _config(row) -> str:
+    """A design's configuration in plain words: wheel, tracker, panel, battery, gains, fleet."""
+    return (f"{row['wheel_class']} wheel, {row['st_grade']} tracker, {row['panel_span_m']:.2f} m, "
+            f"{row['battery_wh']:.0f} Wh, Kp {row['Kp']:.2f}, Kd {row['Kd']:.2f}, "
+            f"fleet {int(row['fleet_size'])}")  # fmt: skip
+
+
+def _musd(x: float) -> str:
+    return f"{x / 1e6:.2f}"
+
+
+def _thousand_usd(x: float) -> str:
+    return f"{round(x, -3):,.0f}"
+
+
+def _tracker_cost(d: Decision) -> float:
+    """What the fine tracker adds to the fleet cost: the cheapest fine design against the cheapest
+    design of the shortlist, in USD."""
+    return float(d.picks["fine"]["fleet_cost_usd"] - d.picks["sponsor"]["fleet_cost_usd"])
+
+
+def decision_sentence(d: Decision) -> Md:
+    """The closing paragraph of Section 9: the question the method hands the two executives.
+
+    Narrated dollars are to the nearest 1,000 or 0.01 M USD; the tables give them exactly.
+    """
+    c, p = d.counts, d.picks
+    sp, fi, bw = p["sponsor"], p["fine"], p["between"]
+    assert bw["st_grade"] == "fine" and sp["st_grade"] != "fine", "premise of the paragraph"
+    tracker = lambda r: f"{r['wheel_class']}-wheel, {r['st_grade']}-tracker"  # noqa: E731
+    return Md(
+        f"**What the executives decide.** Suppose the operator cares about the pointing error and "
+        f"the sponsor about the unit cost and the fleet cost. The requirements and the frontier "
+        f"cut {thousands(c['feasible'])} feasible designs to {c['working']} that pass all six "
+        f"requirements and lie within the band of both fits. One question remains, and it is "
+        f"theirs: whether a fine star tracker, which brings the pointing error from about "
+        f"{sp['pointing_error_deg']:.1g} to {fi['pointing_error_deg']:.1g} degree, is worth about "
+        f"{_tracker_cost(d) / 1e6:.2f} M USD of a {d.fleet_budget / 1e6:g} M USD fleet budget. "
+        f"If it is, the fleet of {int(bw['fleet_size'])} {tracker(bw)} satellites at "
+        f"{_musd(bw['fleet_cost_usd'])} M USD ({_thousand_usd(bw['unit_cost_usd'])} USD each) "
+        f"regrets least of the {c['nondominated_working']} that trade the two measures; if not, "
+        f"the fleet of {int(sp['fleet_size'])} {tracker(sp)} satellites at "
+        f"{_musd(sp['fleet_cost_usd'])} M USD is cheapest. The method prices the question and "
+        f"does not answer it, nor value fleet size, schedule or risk; the numbers are nominal "
+        f"({_C8})."
+    )
+
+
+def decision_detail_sentence(d: Decision) -> Md:
+    """What the fit adds to a two-measure view, for Appendix D: the nondominated designs over all
+    six-pass designs and how many of them lie in the shortlist."""
+    c = d.counts
+    return Md(
+        f"Over all {c['six_pass']} designs that pass the six requirements, {c['nondominated']} are "
+        f"nondominated on pointing error and fleet cost, and {c['nondominated_in_band']} of them "
+        f"lies within the band of both fits; the others reach their cost or pointing error by "
+        f"lying well inside the frontier."
+    )
+
+
+def decision_table(d: Decision) -> Md:
+    """The six-row table of Section 9: the rule, the configuration, the three measures and the
+    level (log V at the case's K), exact."""
+    p = d.picks
+    rows = [("baseline configuration", d.baseline)]
+    rows += [
+        ("sponsor alone", p["sponsor"]),
+        ("operator alone", p["operator"]),
+        ("between them", p["between"]),
+        ("balanced between the terms", p["balanced"]),
+        ("cheapest unit cost", p["cheapest unit"]),
+    ]
+    return Md(md_table(
+        ["rule", "configuration", "pointing error (degree)", "unit cost (USD)",
+         "fleet cost (USD)", "level"],
+        [(n, _config(r), f"{r['pointing_error_deg']:.5f}", f"{r['unit_cost_usd']:,.0f}",
+          f"{r['fleet_cost_usd']:,.0f}", f"{r['log V K=2']:+.3f}") for n, r in rows],
+    ))  # fmt: skip
+
+
+def _marks(r) -> str:
+    """Nondominated on pointing error and fleet cost, on pointing error and unit cost, or both."""
+    on = [n for n, k in (("fleet cost", "nd"), ("unit cost", "nd unit")) if r[k]]
+    return " and ".join(on)
+
+
+def decision_designs_table(d: Decision) -> Md:
+    """Appendix D's table: the shortlist ordered by fleet cost, exact, with the nondominated
+    designs (on pointing error and fleet cost) marked."""
+    w = d.working
+    return Md(md_table(
+        ["design", "wheel / tracker", "panel (m)", "battery (Wh)", "Kp", "Kd", "fleet",
+         "pointing error (degree)", "unit cost (USD)", "fleet cost (USD)", "level (K=2)",
+         "level (K=1)", "nondominated on pointing error and"],
+        [(int(r["design_id"]), f"{r['wheel_class']} / {r['st_grade']}",
+          f"{r['panel_span_m']:.2f}", f"{r['battery_wh']:.0f}", f"{r['Kp']:.2f}",
+          f"{r['Kd']:.2f}", int(r["fleet_size"]), f"{r['pointing_error_deg']:.5f}",
+          f"{r['unit_cost_usd']:,.0f}", f"{r['fleet_cost_usd']:,.0f}",
+          f"{r['log V K=2']:+.4f}", f"{r['log V K=1']:+.4f}", _marks(r))
+         for _, r in w.iterrows()],
+    ))  # fmt: skip
