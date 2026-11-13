@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 22. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 23. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 22
+contract_version = 23
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
@@ -353,6 +353,7 @@ the last row of the change log.
 | 20 | 2026-11-11 | Thirteen traded metrics, a fleet size and a larger sample (WP30; `WP30-decisions.md`, "Scope gate", "No floating requirements" and "Sampling", the supervisor's words verbatim there): `case.v2.traded_metrics` grows from eight to thirteen, in the order of the oracle's attributes: after `dod_eclipse` come `momentum_headroom` (the wheel's momentum capacity over the slew's peak momentum), `available_power_w` (W; an auxiliary column before, now a traded metric, the quantity the power requirement bounds), `battery_peak_power_ratio` (the pack's rated power over the eclipse peak load, the quantity the battery peak power requirement bounds), `unit_cost_usd` and `fleet_cost_usd` (USD, build and launch at the configuration's own fleet size); every requirement of the model now reads a traded metric. The seventh configuration variable `fleet_size` (float column of whole numbers 1 to 30) enters the headers of `case.v2.data` (after `Kd` in the main files and the check designs, after `st_grade` in the predictions) and the oracle's configuration names. `case.v2.data` rows: the two regime files have 3,000 designs each (`experiments.definitions.SAMPLE_PER_REGIME`; design i depends only on the seed and i, so the first 1,000 are the earlier sample and the feasible sets of those rows stay 706 and 780); the check designs (6) and predictions (3) are unchanged in count. Not additive: a pinned list grows by five and the pinned headers change order and gain columns. The frozen files and their `case.data` manifests are unchanged | technical (the paper's and the docs' numbers regenerate in the same package) | the supervisor and the driver, `WP30-decisions.md` ("Scope gate"; "No floating requirements"; "Sampling") |
 | 21 | 2026-11-12 | One API page (WP33 "D-2 rulings" item 5, Q3 "merge where the map shows a page serves no path"): `docs/api.md` is removed and `docs/api-reference.md` (nav title "API") opens with its overview of the public names, then the generated reference. `docs.pages` loses `api.md`; `api_overview_page` leaves the manifest; `presentation_pages` loses `docs/api.md` and `ownership.wp8a.paths` loses `docs/api.md`; `api_reference_page` is unchanged. What `api.md` no longer does: it was a second entry in the navigation that only linked to the reference page. No number changes | presentation (the docs pages; `mkdocs.yml`; `tests/test_site.py`, `tests/test_docs.py`; `claims_register.toml` file paths) | `WP33-decisions.md`, "D-2 rulings, items 5 and 6" (the assistant's rulings) |
 | 22 | 2026-11-12 | A router page (WP33 "D-2 rulings" item 6, the typed address `/docs/user-guide/`): `docs/user-guide/index.md` is added to `docs.pages` and `presentation_pages`, so that the address of the user guide's directory lands on one line pointing to the Overview instead of a directory listing. The page is a router and carries no content; it is not a navigation entry (`mkdocs.yml` `nav` unchanged). No number changes | presentation (the docs pages; `tests/test_site.py`, `tests/test_docs.py`) | `WP33-decisions.md`, "D-2 rulings, items 5 and 6" (the assistant's rulings) |
+| 23 | 2026-11-12 | The known gap on the package docstring is closed (WP33 review F-5, the task of the closing round): the docstring of `src/hyperbolic_trade_space/__init__.py` now says in one sentence what the package is and names the documentation site; the gaps row leaves section 17 and `gaps.init_docstring` leaves the manifest. No number changes | technical (`src/hyperbolic_trade_space/__init__.py`, docstring only) | `WP33-review.md`, F-5 |
 
 ## 15. Consumers: may assume, must not touch
 
@@ -404,7 +405,6 @@ Open conformance gaps, recorded and not fixed here; each names the closing packa
 
 | Gap | Closed by |
 |---|---|
-| The docstring of `src/hyperbolic_trade_space/__init__.py` says package code arrives in later work packages | WP8b |
 | `paper/myst.yml` does not exist | WP10 |
 | `pyproject.toml` has no `paper` group | WP10 (edit by the driver) |
 | `docs/references.bib` is assigned to WP10; `docs/literature.md` is a preserved source under `docs/superpowers/notes/paper-sources/`; later technical edits go through an amendment | WP10 |

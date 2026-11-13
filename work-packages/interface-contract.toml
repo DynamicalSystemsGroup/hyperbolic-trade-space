@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 22
+contract_version = 23
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -395,9 +395,6 @@ reason = "WP15 delivers the protocol; pinned by additive amendment at its accept
 closed_by = "WP15"
 
 [gaps]
-[gaps.init_docstring]
-what = "the docstring of src/hyperbolic_trade_space/__init__.py says package code arrives in later work packages"
-closed_by = "WP8b"
 [gaps.no_site_configs]
 what = "paper/myst.yml does not exist"
 closed_by = "WP10"

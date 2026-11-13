@@ -1,6 +1,9 @@
 """Hyperbolic trade space: learn the shape of a design trade space (the posynomial invariant form).
 
-Package code arrives in later work packages (see ``work-packages/README.md``).
+A scikit-learn estimator that fits a posynomial frontier to a table of conditioned metrics and
+reports which of them trade off.
+
+Documentation: https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/
 """
 
 from .datasets import make_configured_frontier_data, make_frontier_data
