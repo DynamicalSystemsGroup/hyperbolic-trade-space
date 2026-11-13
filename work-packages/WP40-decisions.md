@@ -50,3 +50,16 @@ the three the PM raised: spike-container-platform moves as the third spike folde
 count rather than guessing; one ruff-exclusion line in pyproject.toml because the spike folders move, the lock
 untouched; the two comment-only edits under derivation/ made only if neither file is pinned by a hash or the ledger,
 otherwise reported. Open decisions: none."
+
+## The build verified for D-1 to D-7 and D-9 (2026-11-14, 12:50; head ea6169d; D-8 in flight)
+
+**Assistant, verbatim:** "WP40's build is verified at ea6169d for everything but D-8: no tracked image under
+work-packages (333 removed, held at c680853, a sample retrieved by `git show`); the pointer lines in the records and
+the retrieval note in work-packages/README.md; the four superseded inventories removed and named; the build notes,
+outlines and three spike folders moved under work-packages with every path updated and the ruff exclusion naming the
+folders that remain; the README's Layout list naming every top-level entry with history.yaml as the record behind the
+history page and work-packages as the build's record; the drift comments reworded; the move table and the measure
+(work-packages 56.3 to 7.9 MB; the archive 70.9 to 22.2 MB, 53.1 to 7.9 MB gzipped). Protected items byte-identical
+to the start head except the assistant's own records. The lemma chain passes after the two derivation comment edits;
+the fast suite 1946 passed; ruff, lock, vocabulary and attribution clean. D-8, the notebook cells naming moved
+paths, lands through the paper queue and completes the package."

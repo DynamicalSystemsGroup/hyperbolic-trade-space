@@ -228,6 +228,16 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP40 build verified for D-1 to D-7 and D-9; D-8 in flight (12:50).** Fifteen WP40 commits on dev (2a669de to
+  cb91835) and the WP39 review-list row (ea6169d). The assistant's own checks on ea6169d: `git ls-files` finds no
+  image under work-packages; a sample screenshot retrieved from the holding commit c680853 (239 kB); the protected
+  items unchanged against 94cb6a1 except the assistant's records; the README Layout list read and found to name
+  every tracked top-level entry; the drift comments now name history; the move table and before-and-after read
+  (work-packages 56.3 to 7.9 MB, the archive 70.9 to 22.2 MB); `derivation/run.py` all lemmas pass after the comment
+  edits; ruff, lock, vocabulary and attribution clean; the fast suite 1946 passed; the stage rebuilt at ea6169d. CI
+  dispatched. D-8 (the supporting material's cells naming moved paths) is executing in its worktree; the WP38 pass is
+  released once it lands, the surfaces being stable then.
+
 - **WP39 delivered and verified; to the review list; 8699324 fully green (11:55).** The P8 re-read (94cb6a1): the
   closing paragraph alone, easier, quoting the priced question; the middle of Section 9 (the K = 1 fit, the terms and
   the temperatures) harder, which is the analyst's part and stands as a reader note. WP39-review.md: R-1 to R-13 met
