@@ -1,5 +1,7 @@
 # WP26 — Review report
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP26-review/`, `work-packages/WP26-view-editor-feedback/`.
+
 | | |
 |---|---|
 | **Scope of work** | `work-packages/WP26-scope-of-work.md` (74b2402; gate outcomes added in 9a77d5c) |

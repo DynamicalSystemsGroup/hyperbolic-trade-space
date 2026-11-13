@@ -1,5 +1,7 @@
 # WP27 — Review report (acceptance)
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP27-review/`.
+
 | | |
 |---|---|
 | **Scope of work** | `work-packages/WP27-scope-of-work.md` |

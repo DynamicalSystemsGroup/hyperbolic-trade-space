@@ -1,5 +1,7 @@
 # Calls the driver made, for the supervisor's review
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP30-rounds/paperwp30/`, `work-packages/WP35-review/`.
+
 The supervisor's mandate of 2026-11-11 ("make a list of calls you made for me to review (and revert at my
 discretion)"). One row per call the driver made that the supervisor did not rule on himself: what was decided, why
 in a line, where the record is, and the commit or commits that land it, so that a revert is one `git revert` away.

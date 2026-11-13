@@ -1,5 +1,7 @@
 # WP30 stage 6 review: the reviewer who ran the thing
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP30-review/`, `work-packages/WP30-rounds/d2order/`, `work-packages/WP30-rounds/reqcost/`, `work-packages/WP30-rounds/s6fix/`, `work-packages/WP30-rounds/viewsp/`.
+
 Head 8806b0e, worktree `scratchpad/pm-worktrees/s6review` (branch `s6review`), 2026-11-12. Nothing was fixed. Site read at
 http://127.0.0.1:8791/ (paper, supporting material, docs, Examples, choosing-K), light and dark, 1280 px and 375 px, in
 headless Chrome through Playwright and in the browser pane (own tab, tab-80). Screenshots are the `.jpg` files beside this

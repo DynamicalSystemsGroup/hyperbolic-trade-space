@@ -1,5 +1,7 @@
 # WP23 round 1: the cold reads, verbatim, with their dispositions
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP23-rounds/gate/`.
+
 The two reports below are the records of the round-1 cold reads (D-10, R-8): a fresh P2 proxy
 (practising engineer, depth L-B) and a fresh P3 proxy (systems modeller, depth L-C), each in its own
 context, each reading the image before the caption, on the folder as round 1 left it

@@ -1,5 +1,7 @@
 # Figure review: the case figures redrawn at K = 2 (unit chooseK, 2026-11-11)
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP30-rounds/chooseK/screenshots/`.
+
 Reviewer: the unit's author (no fresh-context cold readers were run; the figure-review note's cold read is the
 PM's to schedule). The images were looked at as rendered files and, once the paper was built, in the page
 (`screenshots/`). K = 2 is `case.CASE_K`, the K the package's own choosing-K checks pick (Appendix D.15).

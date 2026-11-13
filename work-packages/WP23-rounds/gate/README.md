@@ -1,5 +1,7 @@
 # WP23 data gate: the regeneration of record (2026-11-10)
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP23-rounds/gate/`.
+
 This folder holds the diagnostic pair of the gate (D-6 on the data of record: `heatmap.png`, the
 primary regime; `heatmap_baseline.png`, the baseline regime; `k3_record.md`; `coverage.md`, copied
 from beside the coverage table) and this record of the regeneration (D-8, G8, R-12): what ran,

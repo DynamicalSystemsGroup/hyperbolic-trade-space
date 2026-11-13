@@ -1,5 +1,7 @@
 # WP27 — Review: stakeholder concerns in the case model, in the view editor
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP27-review/`.
+
 The modeller's round (one modeller, the editor's tab of WP26, the step log `scratchpad/view-editor/wp27/steps.md`
 with one screenshot per step; the screenshots this review cites are in `WP27-review/`). The scope is
 `WP27-scope-of-work.md`; the decisions `WP27-decisions.md`. Sections: D-1 the parse check; D-2 the classed changes;

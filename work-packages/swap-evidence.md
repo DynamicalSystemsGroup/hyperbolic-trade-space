@@ -1,5 +1,7 @@
 # Swap evidence: this Mac against the CI run (ubuntu, amd64), WP10 and WP15
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP23-rounds/gate/`.
+
 Measured without Docker. Sources: the failing CI logs of the dev `Tests` runs 42572757374
 (commit a7eebde) and 42560520228 (commit 33f63b1), read with `gh run view --log`; and native
 re-runs on this Mac (macOS arm64) of the check designs, with the regeneration perturbed at the

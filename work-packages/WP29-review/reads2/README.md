@@ -1,5 +1,7 @@
 # WP29 review, second round: the re-read of the noise-ridge box after the narrowings, verbatim
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP29-review/reads2/shots/`.
+
 - Head read: the paper and its supporting material built and staged from dev at d7ac579 (`scripts/stage_site.py`, served at 127.0.0.1:8841, light render; text of each slice taken from the rendered DOM, page pictures from the same render at 913 px width, 1500 px tiles, one 2100 px picture of the box with its two neighbours). Staged from a scratch worktree, pruned after the reads.
 - `briefs/` and `returns/` are byte for byte what the readers were given and returned (checked with `cmp` after copying). Paths in the briefs are scratch aliases (`fa` to `fd`, no paper or repository names). The wordings are new (not the round-one briefs); the personas are the same kinds.
 - Cells: `a2`, a cold read of the Corollary 1 box (the introducing sentence, Proposition 2, Corollary 1, Theorem 5, one picture; the P5 type); `b2`, a precision read of Sections 3 to 6, Appendices A and B and all lemma scripts (not asked about the box in particular; the P9 type); `c2`, the novice read (P10): Sections 3 to 6 as text and as thirteen page pictures; `d2`, the P9 check of the box alone against the L20 script (steps L20.1 to L20.63), its Appendix B entry and the hypothesis definitions.

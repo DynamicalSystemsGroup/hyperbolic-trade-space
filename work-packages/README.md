@@ -5,6 +5,12 @@ This repository is built as supervisor-gated work packages, following the superv
 `scope-of-work`, `work-execution`, `work-acceptance`, and the decision loop in
 `~/.claude/skills/CLAUDE.md`). Read those before working here.
 
+## Screenshots of the records
+
+The screenshots the reviews and rounds cite are not in the checkout; git holds them at commit `c680853`, and each
+record that names them says so in one line. One image: `git show c680853:<path> > out.png`. A directory in full:
+`git worktree add <dir> c680853`, then the folder is there.
+
 ## Roles and records
 
 - **Supervisor (accountable):** Michael Zargham, GitHub `mzargham`. Remote:

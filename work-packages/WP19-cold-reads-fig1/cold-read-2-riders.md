@@ -1,5 +1,7 @@
 # Cold read of Figure 1 after the two riders (footer removed; caption clause added)
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP19-cold-reads-fig1/`.
+
 Reader: one fresh Sonnet agent, image first (`fig-nlemma-riders.png`), then the caption.
 
 Deletion and what it no longer did: the footer "Weight on these three metrics: 1.00, 1.00, 1.00 (all of it: d = 3)"

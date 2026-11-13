@@ -1,5 +1,7 @@
 # WP32 review (D-7)
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP32-review/`.
+
 Reviewer: Sonnet, in worktree `pm-worktrees/wp32rev` at `origin/dev` head 58cc8a7. The stage (http://127.0.0.1:8791/) is frozen at
 60f92d9; `git diff 60f92d9 HEAD` over `docs/`, `README.md` and `src/` holds only `docs/superpowers/notes/user-journeys.md`
 (WP33), so the stage pages equal the head's. Screenshots: `WP32-review/` (images only; `PAGE-WIDTH-SCHEME.jpg`, five pages

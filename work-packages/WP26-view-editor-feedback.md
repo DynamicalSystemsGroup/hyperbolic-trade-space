@@ -1,5 +1,7 @@
 # Feedback on the OpenMBEE View Editor from one modelling session
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP26-view-editor-feedback/`.
+
 Date: 2026-11-10. Editor: https://openmbee-view-editor.vercel.app/app (build as served on that date), used in a browser pane at
 roughly 800 px width and, where stated, a 1600 x 1000 viewport. No account, no sign-in.
 

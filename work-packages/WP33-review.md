@@ -1,5 +1,7 @@
 # WP33 review (journeys and signposting)
 
+Screenshots for this record: commit `c680853`, `git show c680853:<path>` with `<path>` under `work-packages/WP33-review/`, `work-packages/WP33-review/docs/`.
+
 Reviewer: not the builder. Review head: `d801a43` (worktree `wp33rev`, from origin/dev). Start head of the package: `60f92d9`.
 Commands were run in that worktree; no content was changed. Screenshots are in `work-packages/WP33-review/`.
 
