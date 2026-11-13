@@ -228,6 +228,9 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **996ed15 fully green (13:45).** CI 43514777340 on 996ed15 (the WP40 build, D-1 to D-7 and D-9): every job green
+  on both platforms, the twenty-sixth fully green head. D-8 is still in its test group in the worktree.
+
 - **114fdf5 fully green (13:15).** CI 43505431836 on 114fdf5 (WP39 delivered and verified): every job green on both
   platforms, the twenty-fifth fully green head; the run on 996ed15 (the WP40 build) is in progress. WP40's D-8 is
   committed in its worktree (139d3b9) and running its test group before the push.
