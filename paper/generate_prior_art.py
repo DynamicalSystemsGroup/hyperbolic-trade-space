@@ -7,6 +7,7 @@ flagged ``section2``, each cell a short extract of the register's sentence).
 
 from __future__ import annotations
 
+import math
 import re
 
 import yaml
@@ -344,7 +345,7 @@ def horopca_threshold_sentence() -> Md:
     """The threshold of *recovered* and the chance rates beside it, read from the record."""
     rec = hypothesis_record()
     return Md(
-        f"The threshold is |cos| ≥ {rec['threshold']:g}, fixed before the run. Chance reaches it "
+        f"Chance reaches |cos| ≥ {rec['threshold']:g} "
         f"with probability {rec['chance_direction']:.3f} for a random direction and "
         f"{rec['chance_simplex']:.3f} for a random point of the simplex, where this work's "
         f"exponents live."
@@ -362,10 +363,12 @@ def horopca_verdict_sentence() -> Md:
     else:
         bad = [p for p, v in parts.items() if v == "refuted"]
         tail = f"so the hypothesis is refuted in {_parts_text(bad)}."
-    return Md(
-        f"{'All' if held == len(checks) else f'{held} of the'} {len(checks)} checks over the "
-        f"{len(rows)} cells hold, {tail}"
+    lead = (
+        f"Every check in the {len(rows)} cells holds"
+        if held == len(checks)
+        else f"{held} of the {len(checks)} checks in the {len(rows)} cells hold"
     )
+    return Md(f"{lead}, {tail}")
 
 
 def horopca_contrast_sentence() -> Md:
@@ -405,25 +408,33 @@ def horopca_slab_sentences() -> Md:
     words = {9: "nine", 11: "eleven"}
     others = len(cells) - len(slab)
     return Md(
-        f"PCA's component of least variance recovers the vector in {k} of {n} tables at "
-        f"{RHO} = 0.25 and at t = 0.9, and in none of the other {words.get(others, others)} "
+        f"PCA's component of least variance (its fourth) recovers the vector in {k} of {n} tables "
+        f"at {RHO} = 0.25 and at t = 0.9, and in none of the other {words.get(others, others)} "
         f"cells. It is outside the hypothesis: variance ranking alone does not identify which "
-        f"component represents the boundary, though an analyst with other domain information "
-        f"might choose it."
+        f"component represents the boundary."
     )
 
 
 def horopca_conditions() -> Md:
-    """The four parts of the hypothesis with the result that would refute each, from ``RATES``."""
+    """The four parts of the hypothesis with the result that would refute each, from ``RATES``.
+
+    A rate is stated as a count of the tables of a cell (the record has six per cell), in the form
+    of the results table, since a share of six tables can only be one of seven values.
+    """
     q = RATES
+    n = hypothesis_record()["cells"]["A/rho4.0"]["n"]
+    high = f"{math.ceil(q['high'] * n - 1e-9)}/{n}"
+    low = f"{math.floor(q['low'] * n + 1e-9)}/{n}"
+    far = f"{math.floor(q['pca_far'] * n + 1e-9)}/{n}"
+    edge = f"{math.floor(q['no_edge'] * n + 1e-9)}/{n}"
     return Md(
-        f"- **H1** (A, B): this work recovers the vector in at least {q['high']:g} of the tables; "
-        f"refuted by any cell below.\n"
-        f"- **H2** (A): PCA and HoroPCA, in at least {q['high']:g} at {RHO} ≥ {q['rho_high']:g} "
-        f"and at most {q['low']:g} at {RHO} ≤ {q['rho_low']:g}; refuted by a cell outside either "
-        f"bound.\n"
-        f"- **H3** (B, t = {q['t_far']:g}): PCA at most {q['pca_far']:g} and this work at least "
-        f"{q['high']:g}; refuted by PCA above {q['pca_far']:g}.\n"
-        f"- **H4** (C): this work at most {q['no_edge']:g}, and PCA at {RHO} = {q['rho_high']:g} "
-        f"at least {q['high']:g}; refuted by either failing."
+        f"- **H1** (A, B): this work recovers the vector in {high} tables; refuted by any cell "
+        f"under {high}.\n"
+        f"- **H2** (A): PCA and HoroPCA (R = 0.25, R = 1) recover it in {high} at "
+        f"{RHO} ≥ {q['rho_high']:g} and in {low} at {RHO} ≤ {q['rho_low']:g}; refuted by a cell "
+        f"outside either bound.\n"
+        f"- **H3** (B, t = {q['t_far']:g}): PCA recovers it in at most {far} and this work in "
+        f"{high}; refuted by PCA above {far}.\n"
+        f"- **H4** (C): this work recovers it in at most {edge}, and PCA at {RHO} = "
+        f"{q['rho_high']:g} in {high}; refuted by either failing."
     )

@@ -294,9 +294,10 @@ entries:
       number of components chosen by the analyst, and PCA as a step that can follow.
     differs: >-
       This work estimates a one-sided edge, not a variance over frames, by convex programs on a
-      simplex with a certificate, and it uses no negative-curvature geometry; on the paper's
-      tables its exponents are recovered by neither HoroPCA nor PCA except where the generator made
-      them the direction of largest spread (Appendix H, and the earlier spike's record).
+      simplex with a certificate, and it uses no negative-curvature geometry; on the synthetic
+      tables of Appendix H, the leading components of PCA and HoroPCA recover the exponents only
+      where the generator made them the direction of largest spread (and the earlier spike's
+      record).
     cites: [chami2021horopca]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name

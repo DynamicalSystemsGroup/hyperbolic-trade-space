@@ -1393,3 +1393,29 @@ section = "Methods"
 words_removed = 3
 no_longer_did = "the link text 'Appendix B, L4.14 to L4.24' does not say that it opens the supporting material, a separate document; it now reads 'Appendix B, supporting material, L4.14 to L4.24' (two words in), and the clause 'whose convex form is the problem in w' (eight words, which the Results list's item 2 and the geometric-program statement already say as 'convex in the logarithmic variables') is now 'convex in w' (three), claims row C094 re-pointed: net three out"
 authority = "P5's reading of the Methods link (the assistant's brief to this unit); marginal-value test"
+
+# WP35 wording unit (the fresh reads R-13 and R-14, work-packages/WP35-review.md, fixes FW-1 to FW-13 and FW-15 to FW-20;
+# FW-14 not applied). The assistant's ruling at 3fb77e6 moves the ceiling from 900 to 920: the raise below is the
+# words the readers' fixes add (78 measured) with 3 words of headroom over the cuts, the cut row the words the unit
+# takes out; 900 + 81 - 61 = 920.
+[[raise]]
+date = "2026-11-14"
+section = "Appendix H"
+words_added = 81
+job = "defines at first use what the three fresh readers could not read: the spread ratio rho as a ratio of standard deviations of the edge's vector and the largest direction orthogonal to it; t as a fraction of the way from the depth direction of the package's generator (equal exponents) to one metric; kind C as still scoring the same vector, its rows spread symmetrically along it; the threshold's number (0.9) where the recovery is defined; the ball as the disk that models hyperbolic space; the exponential map at the origin in the first reading limit; 'before any table of this experiment existed'; H1 to H4 as counts of the six tables, HoroPCA named at its two scales; the caption's line saying what H1 to H4 and the HoroPCA column mean; 'its fourth' for the smallest-variance component; the solver paragraph's sources split by claim and 'shortfall from the best value'; and the reviewer's second boundary stated with its number (30 percent of the rows on the edge)"
+reader = "the novice and the expert who read the finished Appendix H cold (P9, P10, R-13): one blocked on 'vector' and 'symmetric' in construction C, eight more slowed by rho, t, the depth direction, the ball and the two different 0.9s"
+
+[[cut]]
+date = "2026-11-14"
+section = "Appendix H"
+words_removed = 61
+no_longer_did = "'hypothesis, experiment, results, reading and solver differences' in the job line listed the headings that follow (3 words out; the tier stays, as every appendix has the three); 'no noise,' in the design paragraph said what the first reading limit already says as 'noise-free' (2); '30 percent of the rows on the edge,' in the design paragraph is stated once, in the second reading limit, where it is the boundary (8 out, 8 in); 'robustness under realistic sampling is separate' repeated the limit's 'a mechanism demonstration' (6); 'by a linear program or sequential quadratic programming' named two solvers the argument does not use and the novice could not read (8); ', though an analyst with other domain information might choose it' was an aside the experiment does not back (10); 'A HoroPCA of the chart would be the same kind of chain and was not run' said what was not done in an unrun experiment, and the sentence before it carries the complementarity (16); 'The threshold is 0.9, fixed before the run.' repeated H.1, which now gives the number where the recovery is defined and the time of commitment in its first paragraph (8)"
+authority = "the assistant's ruling at 3fb77e6 (the four cuts the review names pay for the rest; the ledger test measures); marginal-value test"
+
+# Appendix G's HoroPCA row (FW-15, 'on the paper's tables') and the reading pass's wording of Section 2's sentence (FW-1).
+[[raise]]
+date = "2026-11-14"
+section = "Appendix G"
+words_added = 8
+job = "the HoroPCA row says where the result holds, 'on the synthetic tables of Appendix H, the leading components of PCA and HoroPCA recover the exponents only where ...', for 'on the paper's tables its exponents are recovered by neither HoroPCA nor PCA except ...', which read as the paper's own case study; the reading pass says 'prospectively specified', as Section 2 and Appendix H do (one term for one thing)"
+reader = "the expert who reads the register's HoroPCA row and takes 'the paper's tables' for the case study"
