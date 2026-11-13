@@ -67,6 +67,11 @@ def generated() -> dict[str, str]:
     out["sentence num-predict"] = str(gf.predict_check_sentence(pc, reg))
     out["sentence num-predict-reading"] = str(gf.predict_reading(pc, reg))
     out["sentence num-planted"] = str(gf.planted_sentence())
+    decided = gf.decision(study, case.k_fits(study, (1, case.CASE_K)))
+    out["sentence decision"] = str(gf.decision_sentence(decided))
+    out["sentence decision-detail"] = str(gf.decision_detail_sentence(decided))
+    out["D decision_table"] = str(gf.decision_table(decided))
+    out["D decision_designs"] = str(gf.decision_designs_table(decided))
     return out
 
 

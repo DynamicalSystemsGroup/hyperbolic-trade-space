@@ -9,6 +9,180 @@
   ]
  },
  "quantities": {
+  "decision | primary | balanced | design": {
+   "committed": "766",
+   "identical": true
+  },
+  "decision | primary | balanced | fleet_cost_usd": {
+   "committed": 1597159.73,
+   "identical": true,
+   "max": 1597159.73,
+   "min": 1597159.73
+  },
+  "decision | primary | balanced | pointing_error_deg": {
+   "committed": 0.00282041296,
+   "identical": true,
+   "max": 0.00282041296,
+   "min": 0.00282041296
+  },
+  "decision | primary | balanced | unit_cost_usd": {
+   "committed": 266193.288,
+   "identical": true,
+   "max": 266193.288,
+   "min": 266193.288
+  },
+  "decision | primary | between | design": {
+   "committed": "1858",
+   "identical": true
+  },
+  "decision | primary | between | fleet_cost_usd": {
+   "committed": 1686142.37,
+   "identical": true,
+   "max": 1686142.37,
+   "min": 1686142.37
+  },
+  "decision | primary | between | pointing_error_deg": {
+   "committed": 0.000796868858,
+   "identical": true,
+   "max": 0.000796868858,
+   "min": 0.000796868858
+  },
+  "decision | primary | between | unit_cost_usd": {
+   "committed": 337228.474,
+   "identical": true,
+   "max": 337228.474,
+   "min": 337228.474
+  },
+  "decision | primary | cheapest unit | design": {
+   "committed": "2356",
+   "identical": true
+  },
+  "decision | primary | cheapest unit | fleet_cost_usd": {
+   "committed": 5846300.33,
+   "identical": true,
+   "max": 5846300.33,
+   "min": 5846300.33
+  },
+  "decision | primary | cheapest unit | pointing_error_deg": {
+   "committed": 0.0028012382,
+   "identical": true,
+   "max": 0.0028012382,
+   "min": 0.0028012382
+  },
+  "decision | primary | cheapest unit | unit_cost_usd": {
+   "committed": 233852.013,
+   "identical": true,
+   "max": 233852.013,
+   "min": 233852.013
+  },
+  "decision | primary | count | feasible": {
+   "committed": 2134,
+   "identical": true,
+   "max": 2134,
+   "min": 2134
+  },
+  "decision | primary | count | nondominated": {
+   "committed": 11,
+   "identical": true,
+   "max": 11,
+   "min": 11
+  },
+  "decision | primary | count | nondominated_in_band": {
+   "committed": 1,
+   "identical": true,
+   "max": 1,
+   "min": 1
+  },
+  "decision | primary | count | nondominated_working": {
+   "committed": 5,
+   "identical": true,
+   "max": 5,
+   "min": 5
+  },
+  "decision | primary | count | six_pass": {
+   "committed": 548,
+   "identical": true,
+   "max": 548,
+   "min": 548
+  },
+  "decision | primary | count | working": {
+   "committed": 28,
+   "identical": true,
+   "max": 28,
+   "min": 28
+  },
+  "decision | primary | fine tracker | extra fleet cost": {
+   "committed": 558677.6100000001,
+   "identical": true,
+   "max": 558677.6100000001,
+   "min": 558677.6100000001
+  },
+  "decision | primary | fine | design": {
+   "committed": "1858",
+   "identical": true
+  },
+  "decision | primary | fine | fleet_cost_usd": {
+   "committed": 1686142.37,
+   "identical": true,
+   "max": 1686142.37,
+   "min": 1686142.37
+  },
+  "decision | primary | fine | pointing_error_deg": {
+   "committed": 0.000796868858,
+   "identical": true,
+   "max": 0.000796868858,
+   "min": 0.000796868858
+  },
+  "decision | primary | fine | unit_cost_usd": {
+   "committed": 337228.474,
+   "identical": true,
+   "max": 337228.474,
+   "min": 337228.474
+  },
+  "decision | primary | operator | design": {
+   "committed": "2950",
+   "identical": true
+  },
+  "decision | primary | operator | fleet_cost_usd": {
+   "committed": 2063764.52,
+   "identical": true,
+   "max": 2063764.52,
+   "min": 2063764.52
+  },
+  "decision | primary | operator | pointing_error_deg": {
+   "committed": 0.000740585275,
+   "identical": true,
+   "max": 0.000740585275,
+   "min": 0.000740585275
+  },
+  "decision | primary | operator | unit_cost_usd": {
+   "committed": 343960.754,
+   "identical": true,
+   "max": 343960.754,
+   "min": 343960.754
+  },
+  "decision | primary | sponsor | design": {
+   "committed": "999",
+   "identical": true
+  },
+  "decision | primary | sponsor | fleet_cost_usd": {
+   "committed": 1127464.76,
+   "identical": true,
+   "max": 1127464.76,
+   "min": 1127464.76
+  },
+  "decision | primary | sponsor | pointing_error_deg": {
+   "committed": 0.00295434906,
+   "identical": true,
+   "max": 0.00295434906,
+   "min": 0.00295434906
+  },
+  "decision | primary | sponsor | unit_cost_usd": {
+   "committed": 281866.19,
+   "identical": true,
+   "max": 281866.19,
+   "min": 281866.19
+  },
   "margin | primary | 2 | median margin": {
    "committed": 0.3517312432953281,
    "identical": false,

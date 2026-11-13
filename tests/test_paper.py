@@ -3306,7 +3306,7 @@ def test_the_added_quantities_are_recorded_on_the_same_five_regenerations():
         if "min" in e:
             assert e["min"] <= e["committed"] <= e["max"], name
     groups = {n.split(" | ")[0] for n in record["quantities"]}
-    assert groups == {"margin", "pca"}
+    assert groups == {"margin", "pca", "decision"}
 
 
 # -- legible figures and their full-size files (the driver's, WP10) -------------------------------
@@ -3732,6 +3732,21 @@ def _tracker_cost_of(d):
     import generate_findings as gf
 
     return gf._tracker_cost(d)
+
+
+def test_the_decisions_quantities_were_measured_on_the_same_regenerations_and_none_moved():
+    """WP39 R-1: the counts, pointing errors, prices and the fine tracker's cost are in the
+    stability results; none moved at one part in 10^12, so the narration prints them exactly (a
+    quantity that moves must be narrated with "about", and its claims-register row says so)."""
+    record = json.loads((PAPER / "stability_extra.json").read_text(encoding="utf-8"))["quantities"]
+    mine = {n: e for n, e in record.items() if n.startswith("decision | primary | ")}
+    for n in ("count | feasible", "count | six_pass", "count | working", "count | nondominated",
+              "count | nondominated_in_band", "sponsor | pointing_error_deg",
+              "fine | pointing_error_deg", "between | fleet_cost_usd", "between | unit_cost_usd",
+              "sponsor | fleet_cost_usd", "fine tracker | extra fleet cost"):  # fmt: skip
+        assert f"decision | primary | {n}" in mine, n
+    assert all(e["identical"] for e in mine.values())
+    assert all(isinstance(e["committed"], int) for n, e in mine.items() if "| count |" in n)
 
 
 @pytest.mark.slow

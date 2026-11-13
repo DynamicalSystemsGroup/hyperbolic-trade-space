@@ -3,7 +3,8 @@
 ``examples/adcs/experiments/sensitivity.py`` regenerates both cubesat datasets five times under
 perturbations of one part in 10^12 and records what the paper reported at the time. The paper has
 since added a few numbers (the median assignment
-margin, the share of spread along the principal directions of the near-frontier chart). This
+margin, the share of spread along the principal directions of the near-frontier chart, and the
+decision section's counts, pointing errors and prices). This
 module computes those on the committed data and on the five regenerations, and writes the committed
 file ``stability_extra.json`` that :mod:`paper_stability` reads beside the sensitivity file, so the
 paper prints each of them to the digits that held.
@@ -54,6 +55,33 @@ def quantities(data_dir=None) -> dict:
                 )
                 for rank, (_, loading) in enumerate(parts, 1):
                     q[f"pca | {regime} | {row.direction} | loading {rank}"] = float(loading)
+    q.update(decision_quantities(spec))
+    return q
+
+
+DECISION_PICKS = ("sponsor", "cheapest unit", "operator", "between", "balanced", "fine")
+"""The named designs of ``generate_findings.decision`` (the roles, not the design ids)."""
+
+
+def decision_quantities(spec) -> dict:
+    """The decision section's quantities (WP39): the counts and the named designs' measures.
+
+    Counts are integers; per named design (by role, as the section names them) the pointing
+    error, the unit cost, the fleet cost and the design id; the cost of the fine tracker. Names
+    are ``decision | primary | what | column``.
+    """
+    import case
+    import generate_findings as gf
+
+    study = case.load_study("primary", spec)
+    d = gf.decision(study, case.k_fits(study, (1, case.CASE_K)))
+    q: dict = {f"decision | primary | count | {k}": int(v) for k, v in d.counts.items()}
+    for role in DECISION_PICKS:
+        row = d.picks[role]
+        q[f"decision | primary | {role} | design"] = str(int(row["design_id"]))
+        for col in ("pointing_error_deg", "unit_cost_usd", "fleet_cost_usd"):
+            q[f"decision | primary | {role} | {col}"] = float(row[col])
+    q["decision | primary | fine tracker | extra fleet cost"] = float(gf._tracker_cost(d))
     return q
 
 
@@ -62,7 +90,7 @@ def summarize(committed: dict, runs: dict[str, dict]) -> dict:
     out = {}
     for name, value in committed.items():
         values = [run[name] for run in runs.values()]
-        if isinstance(value, float):
+        if isinstance(value, (int, float)) and not isinstance(value, bool):
             lo, hi = min([value, *values]), max([value, *values])
             out[name] = {"committed": value, "min": lo, "max": hi, "identical": lo == hi}
         else:

@@ -13,7 +13,7 @@ import case
 import numpy as np
 import pandas as pd
 from paper_common import Md, appendix_link, md_table, thousands
-from paper_stability import entry, stable, summary
+from paper_stability import cell, entry, stable, summary
 
 _C7 = appendix_link("sub-c-7", "Appendix C.7")
 _D3 = appendix_link("sub-d-3", "Appendix D.3")
@@ -776,6 +776,27 @@ def _thousand_usd(x: float) -> str:
     return f"{round(x, -3):,.0f}"
 
 
+def _held(name: str, value: float, orig=str) -> str:
+    """``value`` as the decision's stability entry ``name`` prints it: ``orig(value)`` where the
+    quantity did not move over the five regenerations, the digits that held where it did.
+
+    The entry must exist (a quantity the stability study has not measured is an error, not a
+    silent exact print). A value outside the measured range belongs to a different record than
+    the one measured and prints as it is.
+    """
+    e = entry(f"decision | primary | {name}")
+    if e is None or "min" not in e:
+        raise KeyError(f"decision | primary | {name!r} is not in the stability results")
+    if not e["min"] <= value <= e["max"]:
+        return orig(value)
+    shown = cell(f"decision | primary | {name}", value, orig)
+    return shown if isinstance(shown, str) else orig(value)
+
+
+def _count(d: Decision, key: str) -> str:
+    return _held(f"count | {key}", d.counts[key], lambda v: str(round(v)))
+
+
 def _tracker_cost(d: Decision) -> float:
     """What the fine tracker adds to the fleet cost: the cheapest fine design against the cheapest
     design of the shortlist, in USD."""
@@ -787,37 +808,43 @@ def decision_sentence(d: Decision) -> Md:
 
     Narrated dollars are to the nearest 1,000 or 0.01 M USD; the tables give them exactly.
     """
-    c, p = d.counts, d.picks
-    sp, fi, bw = p["sponsor"], p["fine"], p["between"]
+    p = d.picks
+    sp, bw = p["sponsor"], p["between"]
     assert bw["st_grade"] == "fine" and sp["st_grade"] != "fine", "premise of the paragraph"
+    for role in ("sponsor", "between", "fine"):  # the same design in every regeneration
+        assert entry(f"decision | primary | {role} | design")["identical"], role
     tracker = lambda r: f"{r['wheel_class']}-wheel, {r['st_grade']}-tracker"  # noqa: E731
+    one = lambda v: f"{v:.1g}"  # noqa: E731
+    held = lambda role, col, orig: _held(f"{role} | {col}", p[role][col], orig)  # noqa: E731
     return Md(
         f"**What the executives decide.** Suppose the operator cares about the pointing error and "
         f"the sponsor about the unit cost and the fleet cost. The requirements and the frontier "
-        f"cut {thousands(c['feasible'])} feasible designs to {c['working']} that pass all six "
-        f"requirements and lie within the band of both fits. One question remains, and it is "
-        f"theirs: whether a fine star tracker, which brings the pointing error from about "
-        f"{sp['pointing_error_deg']:.1g} to {fi['pointing_error_deg']:.1g} degree, is worth about "
-        f"{_tracker_cost(d) / 1e6:.2f} M USD of a {d.fleet_budget / 1e6:g} M USD fleet budget. "
+        f"cut {thousands(_count(d, 'feasible'))} feasible designs to {_count(d, 'working')} that "
+        f"pass all six requirements and lie within the band of both fits. One question remains, "
+        f"and it is theirs: whether a fine star tracker, which brings the pointing error from "
+        f"about {held('sponsor', 'pointing_error_deg', one)} to "
+        f"{held('fine', 'pointing_error_deg', one)} degree, is worth about "
+        f"{_held('fine tracker | extra fleet cost', _tracker_cost(d), lambda v: f'{v / 1e6:.2f}')}"
+        f" M USD of a {d.fleet_budget / 1e6:g} M USD fleet budget. "
         f"If it is, the fleet of {int(bw['fleet_size'])} {tracker(bw)} satellites at "
-        f"{_musd(bw['fleet_cost_usd'])} M USD ({_thousand_usd(bw['unit_cost_usd'])} USD each) "
-        f"regrets least of the {c['nondominated_working']} that trade the two measures; if not, "
-        f"the fleet of {int(sp['fleet_size'])} {tracker(sp)} satellites at "
-        f"{_musd(sp['fleet_cost_usd'])} M USD is cheapest. The method prices the question and "
-        f"does not answer it, nor value fleet size, schedule or risk; the numbers are nominal "
-        f"({_C8})."
+        f"{held('between', 'fleet_cost_usd', _musd)} M USD "
+        f"({held('between', 'unit_cost_usd', _thousand_usd)} USD each) "
+        f"regrets least of the {_count(d, 'nondominated_working')} that trade the two measures; "
+        f"if not, the fleet of {int(sp['fleet_size'])} {tracker(sp)} satellites at "
+        f"{held('sponsor', 'fleet_cost_usd', _musd)} M USD is cheapest. The method prices the "
+        f"question and does not answer it, nor value fleet size, schedule or risk; the numbers "
+        f"are nominal ({_C8})."
     )
 
 
 def decision_detail_sentence(d: Decision) -> Md:
     """What the fit adds to a two-measure view, for Appendix D: the nondominated designs over all
     six-pass designs and how many of them lie in the shortlist."""
-    c = d.counts
     return Md(
-        f"Over all {c['six_pass']} designs that pass the six requirements, {c['nondominated']} are "
-        f"nondominated on pointing error and fleet cost, and {c['nondominated_in_band']} of them "
-        f"lies within the band of both fits; the others reach their cost or pointing error by "
-        f"lying well inside the frontier."
+        f"Over all {_count(d, 'six_pass')} designs that pass the six requirements, "
+        f"{_count(d, 'nondominated')} are nondominated on pointing error and fleet cost, and "
+        f"{_count(d, 'nondominated_in_band')} of them lies within the band of both fits; the "
+        f"others reach their cost or pointing error by lying well inside the frontier."
     )
 
 
@@ -825,19 +852,25 @@ def decision_table(d: Decision) -> Md:
     """The six-row table of Section 9: the rule, the configuration, the three measures and the
     level (log V at the case's K), exact."""
     p = d.picks
-    rows = [("baseline configuration", d.baseline)]
+    rows = [("baseline configuration", None, d.baseline)]
     rows += [
-        ("sponsor alone", p["sponsor"]),
-        ("operator alone", p["operator"]),
-        ("between them", p["between"]),
-        ("balanced between the terms", p["balanced"]),
-        ("cheapest unit cost", p["cheapest unit"]),
+        ("sponsor alone", "sponsor", p["sponsor"]),
+        ("operator alone", "operator", p["operator"]),
+        ("between them", "between", p["between"]),
+        ("balanced between the terms", "balanced", p["balanced"]),
+        ("cheapest unit cost", "cheapest unit", p["cheapest unit"]),
     ]
+
+    def held(role, col, r, fmt):  # the baseline is not a pick: no stability entry, exact
+        return fmt(r[col]) if role is None else _held(f"{role} | {col}", r[col], fmt)
+
     return Md(md_table(
         ["rule", "configuration", "pointing error (degree)", "unit cost (USD)",
          "fleet cost (USD)", "level"],
-        [(n, _config(r), f"{r['pointing_error_deg']:.5f}", f"{r['unit_cost_usd']:,.0f}",
-          f"{r['fleet_cost_usd']:,.0f}", f"{r['log V K=2']:+.3f}") for n, r in rows],
+        [(n, _config(r), held(k, "pointing_error_deg", r, lambda v: f"{v:.5f}"),
+          held(k, "unit_cost_usd", r, lambda v: f"{v:,.0f}"),
+          held(k, "fleet_cost_usd", r, lambda v: f"{v:,.0f}"), f"{r['log V K=2']:+.3f}")
+         for n, k, r in rows],
     ))  # fmt: skip
 
 
