@@ -2,7 +2,7 @@
 
 ## A cubesat trade study across power, mass and attitude control
 
-For the reader who wants a worked case: a synthetic satellite demonstrator, [a cubesat model](paper:sect-case-construction) coupling power, mass and attitude control. Thirteen metrics are compared under two controller-gain settings. Here a simulation measures the attributes; a fielded system's measured attributes would enter
+For a worked case: a synthetic satellite demonstrator, [a cubesat model](paper:sect-case-construction) coupling power, mass and attitude control. Thirteen metrics are compared under two controller-gain settings. Here a simulation measures the attributes; a fielded system's measured attributes would enter
 the same table and fit.
 
 The primary regime's table has 2,134 feasible designs of 3,000. With the fit temperature chosen by `select_temperature` for a tenth of designs
@@ -11,7 +11,7 @@ above V = 1:
 - **One term.** The tension report finds a contending set (metrics that trade off) of seven metrics (unit cost, available power,
   pointing error, fleet cost, momentum headroom, settling time, depth of discharge): a 7-lemma.
 - **Two terms.** The case is read at K = 2, the K the [choosing-K checks](user-guide/choosing-k.md) pick. At the
-  one-term temperature (`case.mean_slack_fixed_tau`) the mean slack falls from 0.122 to 0.043. At the
+  one-term temperature the designs' mean level below the surface falls from 0.122 to 0.043. At the
   two-term fit's own temperature, status `certified`, the terms have contending sets of 8 and 7 metrics and
   shares of 74 and 26 percent of the near-frontier designs: the larger adds peak slew power to the
   one-term contending set, and the smaller is that set.

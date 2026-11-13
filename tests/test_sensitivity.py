@@ -285,7 +285,7 @@ def test_the_analysis_runs_from_an_empty_stored_results_file(tmp_path, monkeypat
         for fn in (ps.summary, ps.extra):
             fn.cache_clear()
     texts = {k: v for k, v in q.items() if k.endswith("| text")}
-    assert len(texts) == 9 and all(isinstance(v, str) and v for v in texts.values())
+    assert len(texts) == 8 and all(isinstance(v, str) and v for v in texts.values())
     assert "?" not in texts["sentence | K = 1 contending | text"]
     out = tmp_path / "out.json"
     sens.write_summary(out, q, {"1": q})

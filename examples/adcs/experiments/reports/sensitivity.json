@@ -4117,9 +4117,6 @@
    "max": 0.006091846298,
    "min": 0.006091846298
   },
-  "sentence | candidates | text": {
-   "identical": true
-  },
   "sentence | certificate | text": {
    "identical": false
   },

@@ -4332,7 +4332,7 @@ note = "Each term has its own exponents (L7 elasticities along a term, L10 sum o
 
 [[claim]]
 id = "C359"
-fragment = "product of the metrics that names which of them compete on one part of the trade space."
+fragment = "combination of the metrics that names which of them compete on one part of the trade space."
 file = "site/index.html"
 anchor = ""
 kind = "M"
@@ -6004,7 +6004,7 @@ note = "The package takes metrics, not attributes; conditioning is the analyst's
 
 [[claim]]
 id = "C510"
-fragment = "few designs ... determine the exponents only weakly"
+fragment = "with few designs, ... how strongly each metric counts (the exponents) is only weakly determined"
 file = "site/index.html"
 anchor = ""
 kind = "S"
@@ -6865,7 +6865,7 @@ note = "The value is the generator's, formatted through the stability entry (pap
 
 [[claim]]
 id = "C597"
-fragment = "feasible designs to {_count(d, 'working')} that ... pass all six requirements and lie within the band of both fits"
+fragment = "feasible designs to {_count(d, 'working')} that ... pass all six requirements and lie in the near-frontier band of both fits, the simpler"
 file = "paper/generate_findings.py"
 anchor = "def decision_sentence"
 kind = "R"
@@ -6941,7 +6941,7 @@ note = "The value is the generator's, formatted through the stability entry (pap
 
 [[claim]]
 id = "C601"
-fragment = "M USD of a {d.fleet_budget / 1e6:g} M USD fleet budget."
+fragment = "M USD of a {d.fleet_budget / 1e6:g} M USD fleet cost limit."
 file = "paper/generate_findings.py"
 anchor = "def decision_sentence"
 kind = "R"
@@ -7017,7 +7017,7 @@ note = "The value is the generator's, formatted through the stability entry (pap
 
 [[claim]]
 id = "C605"
-fragment = "regrets least of the {_count(d, 'nondominated_working')} that trade the two measures;"
+fragment = "regrets least of the {_count(d, 'nondominated_working')} that trade the two measures,"
 file = "paper/generate_findings.py"
 anchor = "def decision_sentence"
 kind = "R"

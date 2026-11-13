@@ -3775,7 +3775,7 @@ def test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_valu
                    "regrets least of the 5", "fleet of 4 small-wheel, medium-tracker satellites "
                    "at 1.13 M USD is cheapest", "Appendix C.8"):  # fmt: skip
         assert phrase in plain, phrase
-    assert 130 <= len(plain.split()) <= 150
+    assert 130 <= len(plain.split()) <= 160  # 150 before the two reader definitions
     detail = str(gf.decision_detail_sentence(d))
     assert "all 548 designs" in detail and "11 are nondominated" in detail
     assert "1 of them lies within" in detail
@@ -3818,7 +3818,7 @@ def test_the_decision_follows_the_record_when_the_record_is_perturbed(decided):
     d = gf.decision(dataclasses.replace(study, spec=capped), fits)
     assert d.counts["six_pass"] < base.counts["six_pass"] and d.counts["working"] < 28
     assert d.working["fleet_cost_usd"].max() <= cap and 2356 not in set(d.working["design_id"])
-    assert "a 5.8 M USD fleet budget" in str(gf.decision_sentence(d))
+    assert "a 5.8 M USD fleet cost limit" in str(gf.decision_sentence(d))
     # the paragraph says its premise (the between design takes the fine tracker, the sponsor's does
     # not); a record where that fails raises instead of printing a false sentence
     tight = dataclasses.replace(
