@@ -860,3 +860,13 @@ the stage (port 8791, tab-100) and the CI dispatches (the assistant's), the merg
 
 Worktrees at handover (8): the main checkout, pm13main, wp27model (an untracked handover note), wp35hnb (in flight),
 stage, verify, preview-wt, hts-reader-EF. Never touch stage, verify, preview-wt, hts-reader-EF or tab-100.
+
+## Fourteenth PM rules added (2026-11-13)
+
+- Never wait on `pgrep -f <pattern>` where the pattern matches the waiting command itself (the WP39 implementer's
+  `until ! pgrep -f ...` loops hung two hours on their own command line). Wait on the child's pid or a done-file, or
+  bracket the pattern (`"[e]xecute_notebooks.py"`). Put this in every implementer brief.
+- Units land on dev by rebase onto origin/dev and fast-forward (`git push origin <branch>:dev`), never by a merge
+  commit (1235f7f was one by mistake).
+- Set `MPLCONFIGDIR` to a scratch directory before executing notebooks or running the site and figure tests (font-cache
+  stderr otherwise).
