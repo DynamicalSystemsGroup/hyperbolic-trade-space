@@ -233,7 +233,9 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
   reals-versus-floating-point line and the Rust/WebAssembly clause, 188 to 187 words by the unit's count with the removed
   words accounted for, two sentences on the limitations page paid by one, no surface calling the lemma scripts formally
   verified (grep). Head 518b5ab: ruff, lock, vocabulary and attribution clean; the fast suite 1925 passed in 7:36. The
-  render check on the rebuilt stage follows in this entry's next line. The limitations cap (493 against 491) was not
+  stage rebuilt at ec9d1ca and the paper page read in the assistant's browser: Section 12 renders the paragraph as
+  committed, the GGP gloss as an abbreviation, no 'formally verified' anywhere on the page (the first load during
+  the stage's copy answered 404; the second, 200). WP36's integration is accepted. The limitations cap (493 against 491) was not
   lowered by the unit; folded into the WP33 closing unit. The WP39 scope (fe2335e) read against the decisions and the
   supervisor's words and approved as written (WP39-decisions.md, 518b5ab). The supervisor's rulings on the history page
   today, each recorded verbatim in WP37-decisions.md and sent to the closing unit: Penland under a contract; the Clark
