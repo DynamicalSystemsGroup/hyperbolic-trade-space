@@ -44,7 +44,8 @@ What this does NOT prove: that the alternation converges, that its limit is a lo
 minimizer, or any property of the fit for an infinite kappa (the weights are then a one-label
 assignment, L14 and L15); that every permutation (rather than the cyclic shifts) leaves F
 unchanged; that the all-equal point is the only symmetric optimum.  The numbers of the research
-sprint (spike-ggp-fit) are the numerical check this lemma reproduces in its exact instance.
+sprint that preceded it (its report is in history at 73c5bff) are the numerical check this lemma
+reproduces in its exact instance.
 """
 
 import sympy as sp

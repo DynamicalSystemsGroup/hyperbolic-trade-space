@@ -1,9 +1,9 @@
 """WP10 D-4: the case module (``examples/adcs/case.py``) that the paper calls.
 
 Fast tests run each function on a small sample; the record tests run the data of record and compare
-with the K record that ``examples/adcs/k_terms.py`` prints (pinned below; the older note
-``docs/superpowers/notes/k3-cubesat.md``, ten metrics, left at the WP23 close-out and is in history
-at bf2a83c) and the paper's nondominated counts.
+with the K record that ``examples/adcs/k_terms.py`` prints (pinned below; the older K-record note,
+ten metrics, left at the WP23 close-out and is in history at bf2a83c) and the paper's
+nondominated counts.
 """
 
 import doctest
