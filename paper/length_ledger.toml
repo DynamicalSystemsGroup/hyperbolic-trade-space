@@ -1351,3 +1351,11 @@ section = "Appendix G"
 words_added = 11
 job = "one sentence under the register points the HoroPCA row at Appendix H, where the comparison is tested by experiment"
 reader = "the reader of the register who looks for what running HoroPCA on the paper's tables showed"
+
+# Appendix G.2: the view carries the paper's sentence and the source's link (the supervisor's return on the G.2 table).
+[[cut]]
+date = "2026-11-13"
+section = "Appendix G"
+words_removed = 79
+no_longer_did = "G.2's 'What we say' column carried the record's disposition for 21 rows ('Cited now for ...', 'Cited now only for ...', 'The sentence now says only ...', 'Attributed through the review in ...') and, for the rows the record gave as '(same)' or 'Table row ...', the record's note instead of a sentence; each cell is now the paper's own sentence at the citation. 'Where in it' carried the fetch addresses of the reading (api.crossref.org calls, a Semantic Scholar API call) as text, which no reader opens; it now says where in the source the place read lies and links the source's own DOI or page. The Job line of Appendix G still described the table as what was read, the verdict and what the paper does, and G.2's lead said sentences reworded after the reading were given as reworded; both now describe the three columns"
+authority = "the assistant's return of G.2 on three points (2026-11-12); the supervisor, WP38-decisions.md at 7257053"

@@ -2932,6 +2932,12 @@ def test_reading_pass_table_is_in_appendix_g_and_current():
     )
     assert not re.search(r"verdict|supported", g2, re.I)
     assert "Verdict" not in text and "rows (" not in text
+    # The view gives the paper's own sentence and the source's own link, not the record's
+    # disposition or the address of the fetch (the supervisor's return on G.2, 2026-11-12)
+    cells = [ln.split(" | ")[0].removeprefix("| ") for ln in lines[2:]]
+    assert not any(re.sub(r"<[^>]+>", "", c).lstrip().startswith("Cited now") for c in cells)
+    assert "api.crossref.org" not in text and "api.semanticscholar.org" not in text
+    assert "was read, the verdict" not in g2
 
 
 def test_the_combination_sentence_says_what_was_looked_at():
