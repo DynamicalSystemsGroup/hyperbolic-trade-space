@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The deliverables grid brought current (19:10).** The supervisor noted the grid still said the user tests and
+  the wayfinding round had not run. Refilled at dc80457 from the records: U1 to U4 ran in WP32 (accepted 2026-11-12)
+  and U1 again at df0cad9; the WP33 wayfinding round ran at 60f92d9 and df0cad9 (steps 47 to 30); a history-page row
+  and a residual-pass row added; every cell's evidence is today's head or the last recorded reader round, with the
+  open reader evidence named in one place (the fresh U3, WP39's P7 and P8, Appendix H's P9, P10 and R-13, the
+  history page's re-walk, the final round against key version 5). The grid is refreshed at every acceptance from
+  here, as `release-candidate.md` asks, so the tick's table and the grid say the same thing.
+
 - **WP37 closing unit 2 verified and accepted; the page fronted for the supervisor (18:30).** The unit (7a14cea,
   13ed54c) applies the eight rulings of 2026-11-13: the client-projects paragraph merged with the special cases and
   Carolina unlinked, cadCAD the work of 19 contributors with the AUTHORS file's names, Zeke Medley named with the
