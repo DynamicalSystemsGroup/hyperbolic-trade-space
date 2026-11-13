@@ -436,3 +436,12 @@ of reading, linked to the repository's contributors page, with the named people 
 (the AUTHORS file's names and the commit record); the record's repository entry lists the people its source names
 rather than the author of the first commit alone, and the same rule applies to every repository entry in the list.
 Folded into the WP37 closing unit.
+
+## The supervisor on the Boyd entry (2026-11-13, 14:45)
+
+**Supervisor, verbatim:** "also we didn't have anything to do with boyd ggp work so we probably shouldn't list it."
+
+**Applied as:** the Boyd geometric-programming entry leaves the history record and the dated list; it is a reference
+of the paper, not a step of the team's lineage, and the paper's bibliography is where it stays. The same test (did the
+team do it, or was it a step the team took) runs over the remaining paper entries in the people audit. Folded into
+the WP37 closing unit.
