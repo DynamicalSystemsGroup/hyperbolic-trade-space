@@ -6531,13 +6531,13 @@ file = "site/index.html"
 anchor = ""
 kind = "S"
 backing = [
-  "file:pyproject.toml",
-  "file:README.md",
+  "file:work-packages/WP33-review/measure_install.py",
+  "file:work-packages/WP33-review/measure.out",
 ]
 status = "backed"
 disposition = "keep"
 source = "WP33 root-page units (the measured install figure replaces the 6 s of C508)"
-note = "Measured 2026-11-12 on an Apple M1 Max (10 cores), uv 0.9.18, warm uv package cache, a clean git-archive copy of dev at 48a0ead, three runs each, the script held in the scratchpad: `uv sync --no-default-groups` 0.5 s (min 0.5, median 0.5; the README's `uv sync` with the default groups 0.9 s); the README's first-fit snippet then run with `uv run --no-default-groups python` 29.9, 30.6 and 33.4 s (min 29.9, median 30.6), nearly all of it the first import of the fresh environment (the same snippet again by plain `uv run`, which first syncs the default groups: 3.8 s); install plus first fit per run 30.4, 31.1 and 33.9 s, median 31 s. Plain `uv run` after the package-only install syncs the default groups (docs, paper, case) first, so the package-only route needs `--no-default-groups` on `uv run`. A warm cache and one machine: stated as what was measured. The 6 s of C508's earlier text came from one reader cell."
+note = "Measured 2026-11-12 on an Apple M1 Max (10 cores), uv 0.9.18, warm uv package cache, a clean git-archive copy of dev at 48a0ead, three runs each, the script and its output committed under work-packages/WP33-review/ (measure_install.py, measure.out): `uv sync --no-default-groups` 0.5 s (min 0.5, median 0.5; the README's `uv sync` with the default groups 0.9 s); the README's first-fit snippet then run with `uv run --no-default-groups python` 29.9, 30.6 and 33.4 s (min 29.9, median 30.6), nearly all of it the first import of the fresh environment (the same snippet again by plain `uv run`, which first syncs the default groups: 3.8 s); install plus first fit per run 30.4, 31.1 and 33.9 s, median 31 s. Plain `uv run` after the package-only install syncs the default groups (docs, paper, case) first, so the package-only route needs `--no-default-groups` on `uv run`. A warm cache and one machine: stated as what was measured. The 6 s of C508's earlier text came from one reader cell."
 
 [[claim]]
 id = "C564"
