@@ -856,22 +856,28 @@ def test_gaps_committed_output_is_current():
     assert _out_text(cell) == str(generate_gaps.gaps_table()), STALE
 
 
-def test_gaps_table_carries_its_mathematics_intact_into_the_page():
-    """R-31 of the WP23 close-out: the page shows the table's HTML (``paper_common.Md``), and every
-    ``$...$`` of the ledger's columns reaches it as written (a pipe as ``\\vert``), so the page
-    typesets it; the Markdown step makes no emphasis of an underscore inside one."""
-    import html
-
-    from paper_common import Md
-
+def test_gaps_table_typesets_its_mathematics_on_the_page():
+    """The page shows a notebook's HTML output as given and typesets no ``$...$`` in it, so the
+    table writes each span of the ledger's columns as MathML: one ``<math>`` per span, no literal
+    dollar sign left, and no emphasis made of an underscore inside a span."""
     cols = ("Formal object", "Bridging assumption", "What cannot be proved",
             "Sensitivity evidence", "Interpretive consequence")  # fmt: skip
     spans = [m for r in generate_gaps.gap_rows() for c in cols
              for m in re.findall(r"\$[^$]+\$", r[c])]  # fmt: skip
-    page = html.unescape(Md(generate_gaps.gaps_table())._repr_html_())
-    assert spans and "<em>" not in page
-    missing = [s for s in spans if s.replace("\\|", "|").replace("|", "\\vert ") not in page]
-    assert not missing, missing[:3]
+    page = generate_gaps.gaps_table()._repr_html_()
+    assert spans and "<em>" not in page and "MATHSPAN" not in page
+    assert page.count("<math>") == len(spans)
+    assert "$" not in re.sub(r"<[^>]+>", "", page)
+
+
+def test_the_tex_subset_of_the_tables_becomes_mathml():
+    from paper_common import tex_to_mathml
+
+    assert tex_to_mathml(r"J_\tau(Uw)").startswith("<math><msub><mi>J</mi><mi>τ</mi></msub>")
+    assert "<msubsup>" in tex_to_mathml(r"\max_k^2 x")
+    assert "<mfrac>" in tex_to_mathml(r"\tfrac1\tau")
+    with pytest.raises(ValueError, match="unsupported"):
+        tex_to_mathml(r"\frac{a}{b}")
 
 
 # -- F: the pinned toolchain is generated from the lock

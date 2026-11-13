@@ -4,6 +4,7 @@ Every generator returns an :class:`Md`, a ``str`` that a notebook renders as Mar
 tests read the same text the reader sees.
 """
 
+# ruff: noqa: RUF001  (the TeX tables map names to the Greek and mathematical characters themselves)
 from __future__ import annotations
 
 import math
@@ -116,3 +117,178 @@ def write_environment_reference() -> None:
 
 if __name__ == "__main__":
     write_environment_reference()
+
+
+# ---- inline mathematics for an HTML output ------------------------------------------------------
+# The static site shows a notebook's HTML output as given: it typesets no ``$...$`` in it. A table
+# that carries mathematics therefore writes each span as MathML, which the browser typesets itself.
+
+_TEX_GREEK = {
+    "tau": "τ", "gamma": "γ", "beta": "β", "sigma": "σ", "kappa": "κ",
+    "varepsilon": "ε", "epsilon": "ϵ",
+}  # fmt: skip
+_TEX_UPRIGHT = {"Phi": "Φ", "Sigma": "Σ", "infty": "∞", "top": "⊤"}
+_TEX_FUNCTION = ("log", "max", "min")
+_TEX_OPERATOR = {
+    "times": "×", "cdot": "⋅", "le": "≤", "ge": "≥", "ne": "≠", "in": "∈", "sum": "∑",
+    "lVert": "‖", "rVert": "‖", "lvert": "|", "rvert": "|", "|": "‖",
+}  # fmt: skip
+_TEX_DOUBLE_STRUCK = {"R": "ℝ"}
+_TEX_TOKEN = re.compile(r"\s*(\\[A-Za-z]+|\\.|\d+(?:\.\d+)?|.)", re.S)
+
+
+def _mx(tag: str, text: str = "", **attrs) -> str:
+    inner = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    extra = "".join(f' {k}="{v}"' for k, v in attrs.items())
+    return f"<{tag}{extra}>{inner}</{tag}>"
+
+
+class _TexParser:
+    """A reader of the small subset of TeX that the paper's tables use, writing MathML."""
+
+    def __init__(self, tex: str):
+        self.tokens = _TEX_TOKEN.findall(tex.strip())
+        self.i = 0
+        self.function = False
+
+    def peek(self):
+        return self.tokens[self.i] if self.i < len(self.tokens) else None
+
+    def take(self):
+        tok = self.peek()
+        self.i += 1
+        return tok
+
+    def sequence(self, end: str | None = None) -> str:
+        out = []
+        while self.peek() is not None and self.peek() != end:
+            out.append(self.scripted())
+        if end is not None and self.take() != end:
+            raise ValueError(f"unclosed group in TeX: {end!r} missing")
+        return "".join(out)
+
+    def argument(self) -> str:
+        """One argument: a braced group, or the next single atom."""
+        tok = self.take()
+        if tok is None:
+            raise ValueError("missing TeX argument")
+        if tok == "{":
+            return "<mrow>" + self.sequence("}") + "</mrow>"
+        self.i -= 1
+        return self.atom()
+
+    def scripted(self) -> str:
+        self.function = False
+        base = self.atom()
+        function = self.function
+        self.function = False
+        sub = sup = None
+        while self.peek() in ("_", "^"):
+            kind = self.take()
+            arg = self.argument()
+            if kind == "_":
+                sub = arg
+            else:
+                sup = arg
+        if sub and sup:
+            base = f"<msubsup>{base}{sub}{sup}</msubsup>"
+        elif sub:
+            base = f"<msub>{base}{sub}</msub>"
+        elif sup:
+            base = f"<msup>{base}{sup}</msup>"
+        # the invisible function application, so that "log m" and "log 0" are spaced as functions
+        return base + _mx("mo", "\u2061") if function else base
+
+    def literal(self) -> str:
+        """The characters of a braced group, as plain text (for ``\\text`` and ``\\mathrm``)."""
+        if self.take() != "{":
+            raise ValueError("TeX: a braced argument was expected")
+        chars = []
+        while self.peek() not in ("}", None):
+            chars.append(self.take())
+        self.take()
+        return "".join(chars)
+
+    def atom(self) -> str:
+        tok = self.take()
+        if tok is None:
+            raise ValueError("TeX ended where an atom was expected")
+        if tok == "{":
+            return "<mrow>" + self.sequence("}") + "</mrow>"
+        if tok[0].isdigit():
+            return _mx("mn", tok)
+        if tok.isalpha() and len(tok) == 1:
+            return _mx("mi", tok)
+        if tok == "-":
+            return _mx("mo", "−")
+        if tok == "*":
+            return _mx("mo", "∗")
+        if tok == ":" and self.peek() == "=":
+            self.take()
+            return _mx("mo", ":=")
+        if tok in "=+/<>()[],:.|":
+            return _mx("mo", tok)
+        if tok[0] != "\\":
+            raise ValueError(f"TeX: unsupported character {tok!r}")
+        name = tok[1:]
+        if name == ",":
+            return '<mspace width="0.17em"></mspace>'
+        if name in _TEX_GREEK:
+            return _mx("mi", _TEX_GREEK[name])
+        if name in _TEX_UPRIGHT:
+            return _mx("mi", _TEX_UPRIGHT[name], mathvariant="normal")
+        if name in _TEX_FUNCTION:
+            self.function = True
+            return _mx("mi", name, mathvariant="normal")
+        if name in _TEX_OPERATOR:
+            return _mx("mo", _TEX_OPERATOR[name])
+        if name == "text":
+            return _mx("mtext", self.literal())
+        if name == "mathrm":
+            return _mx("mi", self.literal(), mathvariant="normal")
+        if name == "mathbb":
+            return _mx("mi", "".join(_TEX_DOUBLE_STRUCK[c] for c in self.literal()))
+        if name == "tfrac":
+            return f"<mfrac>{self.argument()}{self.argument()}</mfrac>"
+        if name == "bar":
+            return f'<mover accent="true">{self.argument()}{_mx("mo", "‾")}</mover>'
+        if name == "overline":
+            return f"<mover>{self.argument()}{_mx('mo', '‾')}</mover>"
+        raise ValueError(f"TeX: unsupported command {tok!r}")
+
+
+def tex_to_mathml(tex: str) -> str:
+    r"""One inline TeX span as MathML, for the small subset of TeX that the tables use.
+
+    >>> tex_to_mathml(r"w_j>0")
+    '<math><msub><mi>w</mi><mi>j</mi></msub><mo>&gt;</mo><mn>0</mn></math>'
+    >>> tex_to_mathml(r"\tau=\infty")
+    '<math><mi>τ</mi><mo>=</mo><mi mathvariant="normal">∞</mi></math>'
+    """
+    return "<math>" + _TexParser(tex).sequence() + "</math>"
+
+
+class MdMath(Md):
+    """An :class:`Md` whose HTML writes each ``$...$`` span of ``raw`` as MathML.
+
+    The string is the Markdown a notebook viewer typesets itself (escaped for the Markdown step of a
+    page); ``raw`` is the same table with each span as written, which the page's HTML is made from.
+    """
+
+    raw: str
+
+    def __new__(cls, text: str, raw: str):
+        self = super().__new__(cls, text)
+        self.raw = raw
+        return self
+
+    def _repr_html_(self) -> str:
+        spans: list[str] = []
+
+        def keep(m: re.Match) -> str:
+            spans.append(m.group(1))
+            return f"MATHSPAN{len(spans) - 1}X"
+
+        masked = re.sub(r"\$([^$]+)\$", keep, self.raw)
+        page = Md(masked)._repr_html_()
+        return re.sub(r"MATHSPAN(\d+)X", lambda m: tex_to_mathml(spans[int(m.group(1))]), page)

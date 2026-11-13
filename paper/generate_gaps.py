@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import re
 
-from paper_common import Md, md_table
+from paper_common import MdMath, md_table
 from paper_paths import ROOT
 
 LEDGER = ROOT / "docs" / "superpowers" / "notes" / "abstraction-gaps.md"
@@ -73,16 +73,20 @@ def math_role(text: str) -> str:
     return MATH.sub(safe, text)
 
 
-def gaps_table() -> Md:
-    """The table of Appendix E: one row per gap, its mathematics typeset (:func:`math_role`).
+def gaps_table() -> MdMath:
+    """The table of Appendix E: one row per gap, its mathematics typeset on the page.
 
     Returns
     -------
-    Md
-        Markdown pipe table; columns are the ledger's.
+    MdMath
+        Markdown pipe table; columns are the ledger's. As Markdown its mathematics is safe for the
+        Markdown step (:func:`math_role`); its HTML writes each ``$...$`` as MathML, because the
+        page typesets nothing inside an HTML output.
     """
     rows = gap_rows()
     cols = ("Formal object", "Bridging assumption", "What cannot be proved",
             "Sensitivity evidence", "Interpretive consequence")  # fmt: skip
+    head = ["Gap", *cols]
     body = [[r["id"], *(math_role(r[c]) for c in cols)] for r in rows]
-    return Md(md_table(["Gap", *cols], body))
+    raw = [[r["id"], *(r[c] for c in cols)] for r in rows]
+    return MdMath(md_table(head, body), md_table(head, raw))
