@@ -124,9 +124,20 @@ def _md_blocks(
 ) -> list[Block]:
     """Split Markdown into blocks at blank lines, tracking the heading path."""
     out = []
+    fence = ""  # the open code fence, which a blank line inside it does not close
     for m in re.finditer(r"\S.*?(?=\n[ \t]*\n|\Z)", text, re.S):
         block = m.group(0)
         line = line0 + text.count("\n", 0, m.start())
+        kept = []
+        for ln in block.split("\n"):
+            fm = re.match(r"\s*(```+|~~~+)", ln)
+            if fm:
+                fence = "" if fence and fm.group(1)[0] == fence[0] else (fence or fm.group(1))
+            elif not fence:
+                kept.append(ln)
+        block = "\n".join(kept)
+        if not block.strip():
+            continue
         lines = block.split("\n")
         # a block may carry a label line ("(name)=") before its heading
         hm = next((_HEAD_MD.match(ln) for ln in lines[:2] if _HEAD_MD.match(ln)), None)

@@ -10,6 +10,7 @@ Per surface (visible prose, math and code removed, tables left out of the senten
 ``hedges``            "may", "might", "perhaps", "somewhat", "generally" and the like
 ``intensifiers``      "very", "crucial", "robust", "seamless", "importantly" and the like
 ``parens``            parentheticals; ``long_parens`` those of eight words or more;
+                      ``path_parens`` those holding a repository path;
                       ``dense_paras`` paragraphs with three or more; ``max_parens`` the most in one
 ``restatements``      a sentence that repeats most of the content words of the one before
 ``long_sentences``    sentences over 35 words; ``mean_sentence``, ``max_sentence`` in words
@@ -63,6 +64,7 @@ COUNT_KEYS = (
     "intensifiers",
     "parens",
     "long_parens",
+    "path_parens",
     "dense_paras",
     "restatements",
     "long_sentences",
@@ -122,6 +124,11 @@ _SUBORD = re.compile(
 )
 _ABBREV = re.compile(r"\b(e\.g|i\.e|etc|et al|cf|vs|Fig|Figs|Eq|Eqs|Sec|No|approx|resp|viz)\.")
 _PAREN = re.compile(r"\(([^()]*)\)")
+_REPO_DIRS = "docs|paper|src|scripts|tests|examples|derivation|site|work-packages"
+_EXT = "md|py|toml|yaml|yml|json|ipynb|html|bib|sysml|txt|npz|cff"
+_PATH = re.compile(
+    rf"(?<![\w/.-])(?:(?:{_REPO_DIRS})/[\w.-]+(?:/[\w.-]+)*|[\w-]+(?:/[\w.-]+)*\.(?:{_EXT}))(?![\w-])"
+)
 _ACRONYM = re.compile(r"(?<![\w.#/-])([A-Z]{2,6})(?:s)?(?![\w-])")
 _NOT_ACRONYMS = {
     "I", "II", "III", "IV", "VI", "VII", "VIII", "IX", "XI", "XII", "OK", "AND", "OR", "NOT",
@@ -150,6 +157,21 @@ def _analysable(b: ps.Block) -> bool:
 # ------------------------------------------------------------------ per surface
 
 
+def path_parens(raw: str) -> int:
+    """Parentheticals holding a repository path, a code span included (it reads the same
+    rendered); fenced code, link targets, math and comments do not count."""
+    t = re.sub(r"^[ \t]*(```+|~~~+).*?^[ \t]*\1[ \t]*$", " ", raw, flags=re.S | re.M)
+    t = re.sub(r"<!--.*?-->|\$\$.*?\$\$", " ", t, flags=re.S)
+    t = re.sub(r"!?\[([^\]]*)\]\([^)]*\)", r"\1", t)  # a link keeps its words, not its target
+    t = re.sub(r"(?<![\\\w])\$[^$\n]+?\$", " ", t)
+    t = t.replace("`", "")
+    return sum(
+        1
+        for m in _PAREN.finditer(t)
+        if _PATH.search(m.group(1)) and not (m.start() and t[m.start() - 1].isalnum())
+    )  # a call such as f(a/b.py) is code, not a parenthetical
+
+
 def surface_counts(s: ps.Surface) -> dict:
     c = {k: 0 for k in COUNT_KEYS}
     patterns: dict[str, int] = {}
@@ -173,6 +195,7 @@ def surface_counts(s: ps.Surface) -> dict:
         pars = _PAREN.findall(text)
         c["parens"] += len(pars)
         c["long_parens"] += sum(1 for p in pars if len(p.split()) >= LONG_PAREN)
+        c["path_parens"] += path_parens(b.raw)
         c["dense_paras"] += 1 if len(pars) >= DENSE_PARAS else 0
         max_parens = max(max_parens, len(pars))
         prev: set[str] = set()
@@ -443,7 +466,9 @@ def main(argv=None) -> int:
     root = Path(args.root)
     rep = report(root)
     if args.write_baseline:
-        out = {"head": _head(root), **rep}
+        head = _head(root)
+        note = f"taken at the dev head {head}; taken again when the pass starts"
+        out = {"head": head, "note": note, **rep}
         Path(args.write_baseline).write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8")
         print(f"baseline written: {args.write_baseline} (head {out['head']})")
         return 0

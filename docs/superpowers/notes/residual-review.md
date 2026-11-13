@@ -57,6 +57,9 @@ argument of this paragraph need it? Disposition: cut; or move to the surface whe
 the backing, and a move across surfaces is routed, not done: kind 4 is the one most likely to leave the pass's reach).
 Shape seen in an earlier draft (`4867478`): "four thresholds (peak slew power, pointing error, control effort,
 launch cost) and two limits (unit cost, fleet cost)".
+A repository path in parentheses in reader-facing prose, "(docs/superpowers/notes/abstraction-gaps.md).", is this
+kind (`WP40-decisions.md`): disposition a link with words, or cut. The checker counts them as `path_parens` (a code
+span in parentheses counts, since it renders the same; fenced code and link targets do not).
 
 ### Kind 5. A hedge where the record is definite
 

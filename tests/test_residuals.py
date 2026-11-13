@@ -41,6 +41,16 @@ is smooth, although the data are noisy and the table, which is long, is split. T
 program) is solved.
 """
 
+PATHS = """
+
+The gaps are listed (docs/superpowers/notes/abstraction-gaps.md). The table (`notation.md`) is
+generated, and [a page](docs/other.md) is linked. A call `f(src/a.py)` is code, not a path in prose.
+
+```text
+(fenced/path/in/code.py)
+```
+"""
+
 SECOND = "# Other\n\nA configuration (the design variables) is an input. The API is documented.\n"
 
 
@@ -48,7 +58,7 @@ SECOND = "# Other\n\nA configuration (the design variables) is an input. The API
 def tree(tmp_path):
     (tmp_path / "docs").mkdir()
     (tmp_path / "glossary.yaml").write_text(GLOSSARY, encoding="utf-8")
-    (tmp_path / "README.md").write_text(PLANTED, encoding="utf-8")
+    (tmp_path / "README.md").write_text(PLANTED + PATHS, encoding="utf-8")
     (tmp_path / "docs" / "other.md").write_text(SECOND, encoding="utf-8")
     return tmp_path
 
@@ -92,6 +102,7 @@ def test_each_pattern_is_counted(tree):
     assert s["hedges"] >= 2  # "perhaps", "somewhat"
     assert s["intensifiers"] >= 2  # "very", "robust"
     assert s["long_parens"] == 1  # the parenthetical of 16 words
+    assert s["path_parens"] == 2  # a plain path and a code-span path; a link target does not count
     assert s["restatements"] >= 1  # the second sentence repeats the first
     assert s["deep_clauses"] >= 1  # "which holds ... since ... although ... which"
     assert s["compound"] >= 1  # two semicolons
@@ -144,7 +155,9 @@ def test_compare_lists_a_rise_and_strict_fails(tree, tmp_path_factory, capsys):
     base = tmp_path_factory.mktemp("base") / "base.json"
     assert cr.main(["--root", str(tree), "--write-baseline", str(base)]) == 0
     assert cr.main(["--root", str(tree), "--compare", str(base), "--strict"]) == 0
-    (tree / "README.md").write_text(PLANTED + "\nIn summary, it is very very robust.\n", "utf-8")
+    (tree / "README.md").write_text(
+        PLANTED + PATHS + "\nIn summary, it is very very robust.\n", "utf-8"
+    )
     assert cr.main(["--root", str(tree), "--compare", str(base)]) == 0
     assert cr.main(["--root", str(tree), "--compare", str(base), "--strict"]) == 1
     out = capsys.readouterr().out
@@ -154,7 +167,7 @@ def test_compare_lists_a_rise_and_strict_fails(tree, tmp_path_factory, capsys):
 def test_the_committed_baseline_has_the_reports_shape():
     base = json.loads(BASELINE.read_text(encoding="utf-8"))
     assert base["head"]
-    assert set(base) == {"head", "schema", "thresholds", "totals", "surfaces", "documents"}
+    assert set(base) == {"head", "note", "schema", "thresholds", "totals", "surfaces", "documents"}
     assert base["schema"] == cr.SCHEMA
     assert set(cr.COUNT_KEYS) <= set(next(iter(base["surfaces"].values())))
 
