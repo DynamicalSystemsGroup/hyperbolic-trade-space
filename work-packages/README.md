@@ -1,5 +1,12 @@
 # Work packages
 
+This folder is the build's record, text for the reader who wants to see how the repository was made, and none of it is
+needed to use the method. It holds each package's scope of work, decisions and review, the round outputs and reader
+runs, the driver log, and the process documents below. Three folders hold material moved out of `docs/superpowers/notes/`:
+`build-notes/` (notes on the model and tools), `outlines/` (the paper's outline history and a search record) and `spikes/`
+(throwaway benchmark scripts). The screenshots the records cite are in git, not in the checkout (see "Screenshots of
+the records" below).
+
 This repository is built as supervisor-gated work packages, following the supervisor's skills in
 `github.com/mzargham/claude-skills` (installed at `~/.claude/skills/`: `work-breakdown`,
 `scope-of-work`, `work-execution`, `work-acceptance`, and the decision loop in

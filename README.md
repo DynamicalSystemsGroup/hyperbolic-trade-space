@@ -28,10 +28,18 @@ print(tension_report(ts, M).exponents.round(2))
 
 ## Layout
 
-- `src/hyperbolic_trade_space/` — the package
-- `docs/` — the docs site
-- `paper/`, `site/` — the paper, the root page
-- `scripts/`, `tests/` — build tools, tests
-- `derivation/` — SymPy axioms and lemmas
-- `examples/adcs/` — the ADCS case study
-- `work-packages/` — scopes and decisions
+- `src/hyperbolic_trade_space/`: the Python package (fit a frontier, read its tensions).
+- `docs/`: the user guide and API reference, built into the docs site; `docs/superpowers/` holds the notes the checks
+  apply (conventions, notation, source lists).
+- `paper/`: the paper as two notebooks and what rebuilds them; `site/` is the root page that links the docs and the paper.
+- `examples/adcs/`: the cubesat attitude-control case study the paper uses: model, data, experiments, system model.
+- `derivation/`: the proofs of the method's results as SymPy scripts, one per lemma.
+- `tests/`: the test suite; `scripts/`: build and check tools.
+- `claims_register.toml`: each claim the paper and docs make and what backs it.
+- `glossary.yaml`: the terms, one name per object; `history.yaml`: the record behind the history and acknowledgements page.
+- `CHANGELOG.md`: what changed, by work package.
+- `work-packages/`: the build's record (scopes, reviews, decisions, round outputs, build notes, outlines and spike
+  folders); not needed to use the method.
+- `CLAUDE.md`: conventions for contributors working with Claude Code.
+- `mkdocs.yml`, `Dockerfile`, `pyproject.toml`, `uv.lock`, `.python-version`: build and environment files;
+  `LICENSE`; `.github/` (the CI workflows), `.gitattributes`, `.gitignore` and `.dockerignore`: repository settings.
