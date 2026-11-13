@@ -453,7 +453,7 @@ def test_root_and_paper_links_classified():
 
 def test_root_index_is_thin_and_routes_by_need():
     """WP33 G2, R-3: after the title, one whom-it-is-for sentence and at most five need-phrases,
-    each a link; no cards. Then why, what."""
+    each a link; no cards. The needs close the page, after why and what."""
     text = (SITE / "index.html").read_text(encoding="utf-8")
     assert "<script" not in text.lower()
     assert "prefers-color-scheme: dark" in text
@@ -465,9 +465,9 @@ def test_root_index_is_thin_and_routes_by_need():
     assert text.count('class="whom"') == 1
     low = text.lower()
     order = [
-        low.index(k) for k in ('class="whom"', 'class="needs"', "<h2>why</h2>", "<h2>what</h2>")
+        low.index(k) for k in ('class="whom"', "<h2>why</h2>", "<h2>what</h2>", 'class="needs"')
     ]
-    assert order == sorted(order), "order: whom, needs, why, what"
+    assert order == sorted(order), "order: whom, why, what, needs"
     for needle in ("scikit-learn", "unsupervised", "feature engineering", "pca"):
         assert needle in low, needle
     for banned in ("sympy", "worked example", "chatgpt", "openai"):

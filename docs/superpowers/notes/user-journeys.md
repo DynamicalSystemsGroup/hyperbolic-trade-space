@@ -41,6 +41,7 @@ interface contract (amendment, R-7); [reg] has claims-register rows to re-point;
 | Reword the Home Examples bullet to name the case study, not the user's path | `docs/index.md` | all four U cells met "cubesat" first and set it aside |
 | Cut Home bullets that no U or persona path used (Theory, Glossary, Further reading) down to the five need-phrases | `docs/index.md` | none opened in either round; P5 and P6 reach them by nav |
 | Place the "design variables and labels are configuration" clause where "Your own data" sends the reader | `docs/getting-started.md` (from `overview.md`, "The pipeline") | U1 and U3 never opened the overview; their `batch` and `sample` handling was a guess |
+| Move the needs block (the five doors and the adoption line) to the end of the root page, as the call to action; the whom sentence stays at the top | `site/index.html` | the supervisor's ruling (WP33-decisions.md, 2026-11-14 09:15): the block closes the page as the call to action, not first |
 | Cut the root page's second-figure caption sentence in the PCA/energy voice, or move it under the Paper card | `site/index.html` [reg] | the executive's arrival speaks to P4 and P5 above the three doors |
 | Move the K^N + 1 sentence to Appendix B, L15 | `paper.ipynb` `res-L15` [reg][led] | seven cells found it empty; only P5 and P9 need it (W28 CR-36) |
 | Move the R1 sentence's finite-tau reading to the Theorem 5 sketch | `paper.ipynb` `sec-methods`, `res-L7` [reg][led] | eight cells stopped; it is a P5 check (W28 CR-37) |
