@@ -228,6 +228,18 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **G.2 return and the Appendix E fix accepted; head ebd26ee verified (17:10).** On ebd26ee: ruff, lock, vocabulary
+  and attribution clean; the fast suite 1935 passed, 19 skipped, 3 xfailed (the Appendix H markers) in 7:17; CI
+  43339340106 on 722ce86 still running its slow jobs with four of five green. The stage rebuilt at ebd26ee and the
+  supporting material read in the assistant's browser: G.2 has 53 rows under "What we say / Source / Where in it",
+  the first column the paper's sentence, the third the place and the source's own DOI link ("abstract, via Crossref;
+  doi:..."), no "Cited now" and no api.crossref.org on the page, the Job line brought to the three columns (e249460,
+  accepted). The Appendix E gaps table typesets its mathematics (237 MathML nodes in the table; the first row reads
+  Φ(u) = w·u − β = 0 as typeset), with no literal dollar span left in the visible page (ebd26ee, accepted). One nit
+  for the paper queue, not a return: at 1280 px the gaps table's "Bridging assumption" column is squeezed to a word
+  a line while the last column runs wide; a column-width hint would make it legible. WP37's second closing unit has
+  not started; chased as the item the supervisor waits on.
+
 - **Worktrees pruned by the assistant; no new delivery (16:20).** Nothing landed on dev since 722ce86 in the last
   fifty minutes; PM13 is running with the G.2 unit in its paper-queue worktree (a build-and-screenshot wait loop) and
   the second WP37 closing unit not yet started; CI 43339340106 on 722ce86 has both fast jobs green, the slow and
