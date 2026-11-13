@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **CI red on the WP39 head; the cascade fix routed (09:50).** CI 43435158308 on 74b470f: the fast and docs-paper
+  jobs green, both slow jobs red with the same two failures in `tests/test_sensitivity.py` (the committed sensitivity
+  results file's quantities no longer equal the recomputed set; the analysis yields 8 texts where the test expects 9).
+  Cause: the Candidates cut removed the candidates sentence from the sensitivity analysis but the committed results
+  file keeps its entries, the item the PM had called harmless, and the test's count stayed at 9. Not a stop condition
+  (no number of record moved); folded into the WP39 fix unit in flight: the results file regenerated from the committed
+  case results, the count corrected, the whole slow sensitivity group run before the push. The assistant's own fast
+  suite had passed because the group is slow. The head stays unaccepted for release until a green run on the fix.
+
 - **WP39's cold reads and skim test received and ruled on (09:05).** Both readers said easier and followed the
   reduction, so R-7 holds on the reading; the findings are real: an unresolved "Table ??" in Section 9's opening
   sentence, "the band of both fits" and "regrets least" undefined at the point of use, the executive table's
