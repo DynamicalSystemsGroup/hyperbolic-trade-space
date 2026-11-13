@@ -228,6 +228,20 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP39 notebook unit received; WP35 on the review list; a clean execution queued (07:20).** On dev: WP35's
+  review-list row (eb6fdab), the WP39 notebook unit (20bff6e, with the stability commit 82ab799) and three PM-BRIEF rules
+  (54d1c99: no self-matching pgrep waits, rebase-and-fast-forward landings, MPLCONFIGDIR). Read as committed: Section 9
+  closes with "What the executives decide", a 141-word paragraph in Draft 2's shape (the operator's and the sponsor's
+  measures, 2,134 to 28, the fine-tracker question priced at about 0.56 M USD of a 6 M USD budget, the two answers, the
+  method prices and does not answer, the nominal clause pointing at C.8), with no exponent, term, design id or log V in
+  it; the six-row generated table with the baseline configuration; the caption carrying what the method does not tell;
+  Appendix D.19 with the shortlist and the rules; the Candidates paragraph cut and the K-choice sentences shortened,
+  Section 9 at 1,690 of a 1,736 ceiling. On 54d1c99: ruff, lock, vocabulary and attribution clean; the fast suite 1945
+  passed with one local failure, the paper-key test against the assistant's stale local build (the new labels
+  tab-decision and sub-d-19), to be re-run against the fresh stage build. Not accepted yet: the unit's final refactor
+  patched two cell outputs without a kernel run, so a clean single execution of both notebooks is queued as one small
+  commit before the P7 and P8 reads; the stage is rebuilt at that head for the readers.
+
 - **The WP39 notebook unit stalled on self-matching waits; unblocked (05:55).** Nothing landed in two hours. The
   cause, found by reading the processes: the implementer waits with `until ! pgrep -f "<pattern>"` and the pattern
   matches the waiting shell's own command line (and every sibling loop's), so each wait runs to its timeout after the
