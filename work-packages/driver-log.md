@@ -228,6 +228,21 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Eight commits received; head 722ce86 verified; WP37 short of seven rulings (15:40).** On 722ce86: ruff, lock,
+  vocabulary and attribution clean; the fast suite 1934 passed, 19 skipped, 3 xfailed in 7:09, the one new xfail and
+  four new skips being the Appendix H markers (`H_LANDED`, until the notebook unit pastes the appendix); CI
+  43339340106 dispatched, both fast jobs green at the time of writing. The WP33 closing commits (36e0e9f, 2dcfbd1,
+  b943eba, 15d00af, 722ce86) accepted: the D-3 and D-4 records; the install measurement committed behind C563; the
+  package docstring read here through `help`; docs Home at 375 px with all five need links inside the first screen
+  (y 301 to 487 of 812) on the rebuilt stage; the router page titled "Start here: Overview"; contract version 23.
+  Remaining of the return list: the Organization paragraph and the P5 link text on the paper queue, the supporting
+  material's audience sentence, the fresh U3 reader, the addendum. The WP37 closing unit (36386eb) accepted for what it
+  carries (bridge, order, back link, Penland, Clark, record fixes, 406 words) and found short of the seven rulings
+  given after it: the page still links Carolina's handle, credits cadCAD to one implementer, credits the block-diagrams
+  work to the wrong person, lists flexo-rtm, toaster and the Boyd paper; a second closing unit with the people audit
+  ordered, and the page is not shown to the supervisor until it is in. The Appendix H first part (b5fdd07) accepted:
+  the generator's table verdict-first from the record, eight tests pass here. Worktrees 58; third prune order sent.
+
 - **WP36 integration unit accepted; WP39 scope approved; the supervisor's history-page rulings routed (14:50).** The
   WP36 unit (7fe47de, 9b284fa): the future-work paragraph in its section's cadence with the Lean direction, the
   reals-versus-floating-point line and the Rust/WebAssembly clause, 188 to 187 words by the unit's count with the removed
