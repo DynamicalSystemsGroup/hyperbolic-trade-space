@@ -1727,11 +1727,11 @@ def test_the_pre_registered_rates_are_those_of_the_hypothesis_file():
         "t_far": 0.9,
     }
     log = subprocess.run(
-        ["git", "log", "--format=%h", "--", "work-packages/WP35-rounds/spike-h/hypothesis.md"],
+        ["git", "log", "--format=%H", "--", "work-packages/WP35-rounds/spike-h/hypothesis.md"],
         capture_output=True, text=True, cwd=ROOT,
     ).stdout.split()  # fmt: skip
     if log:  # a checkout with history; the file was committed once, at the pre-registration
-        assert log[-1] == HYPOTHESIS_COMMIT
+        assert log[-1].startswith(HYPOTHESIS_COMMIT)
 
 
 def test_the_hypothesis_table_equals_the_record_cell_by_cell():
