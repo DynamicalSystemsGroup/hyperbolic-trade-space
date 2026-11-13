@@ -86,3 +86,13 @@ moves to the end of the root page, after the Why, What and How sections; the who
 that pins the order (`tests/test_site.py`, whom before needs before why before what) changes to the new order; the
 journeys note's placement row says the block closes the page as the call to action. Listed under Entry surfaces with
 its commit for his close read.
+
+## The supervisor on the root page's one-sentence summary (2026-11-14, 09:25)
+
+**Supervisor, verbatim:** "'An unsupervised learning method which applies a posynomial invariant form, a sum of terms
+each a product of powers of the metrics, to learn the shape of a trade space from evaluated designs.' this is not a
+subtitle, its plain laguage summary. it goes before the 'why'"
+
+**Applied as:** the sentence leaves the header's subtitle slot and becomes a plain paragraph placed immediately before
+the Why section (after the whom sentence), styled as body text; the header keeps the title and the byline. Folded
+into the root-page unit with the needs block's move; listed under Entry surfaces.
