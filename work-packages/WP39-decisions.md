@@ -107,3 +107,15 @@ of the paper: the counts (2,134; 548; 28; 11 and 1), the pointing errors, the th
 difference go into stability_extra through paper_perturb's machinery before the notebook unit, and the generator prints
 them through stable(). The counts are exact on the data of record and print exact; if the perturbation moves any of
 them, the prose says 'about' and the register row says so."
+
+## The notebook unit accepted on the clean execution (2026-11-14, 08:40; head a538fc4, unit 20bff6e)
+
+**Assistant, verbatim:** "The WP39 notebook unit is accepted at a538fc4: Section 9 closes with 'What the executives
+decide', a 141-word paragraph in the decided shape with no exponent, term, design id or log V in it, the priced
+question, the two answers, the method pricing and not answering, the nominal clause pointing at C.8; the six-row
+generated table with the baseline configuration and the caption's what-the-method-does-not-tell; Appendix D.19 with
+the shortlist and the rules; the Candidates paragraph cut and the K-choice sentences shortened within the raised
+Section 9 ceiling; every quoted number through the stability entries and a register row; the notebooks executed once
+from the committed sources with no stderr line and paper.ipynb byte-identical to the unit's; the fast suite 1946 passed,
+ruff, lock and vocabulary clean; the section read as rendered on the stage. The P8 and P7 cold reads and the skim test
+(R-7, R-8) now run on this head; the package's acceptance is the supervisor's after them."

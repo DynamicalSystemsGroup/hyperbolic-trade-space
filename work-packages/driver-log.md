@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP39 notebook unit accepted at a538fc4 (08:40).** The clean execution (a538fc4) changed three lines of the
+  supporting material (the observed-commit hash) and nothing of paper.ipynb; no stderr output in either notebook; the
+  patched cells now carry kernel outputs equal to the committed ones. On a538fc4: ruff, lock, vocabulary and
+  attribution clean; the fast suite 1946 passed; the paper-key test passes against the fresh build. The stage rebuilt
+  at a538fc4 and the closing subsection read as rendered (the paragraph, the table, the caption, the D.19 link, the
+  Candidates paragraph gone). Accepted (WP39-decisions.md); PM14 told the stage is up for the P8 and P7 cold reads and
+  the skim test, then the WP40 build. CI dispatched on the head.
+
 - **WP39 notebook unit received; WP35 on the review list; a clean execution queued (07:20).** On dev: WP35's
   review-list row (eb6fdab), the WP39 notebook unit (20bff6e, with the stability commit 82ab799) and three PM-BRIEF rules
   (54d1c99: no self-matching pgrep waits, rebase-and-fast-forward landings, MPLCONFIGDIR). Read as committed: Section 9
