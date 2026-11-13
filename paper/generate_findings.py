@@ -752,9 +752,8 @@ def decision(study=None, fits=None) -> Decision:
 
 
 def _config(row) -> str:
-    """A design's configuration in plain words: wheel, tracker, panel, battery, gains, fleet."""
-    return (f"{row['wheel_class']} wheel, {row['st_grade']} tracker, {row['panel_span_m']:.2f} m, "
-            f"{row['battery_wh']:.0f} Wh, Kp {row['Kp']:.2f}, Kd {row['Kd']:.2f}, "
+    """A design's executive-table configuration: wheel class, tracker grade, fleet size."""
+    return (f"{row['wheel_class']} wheel, {row['st_grade']} tracker, "
             f"fleet {int(row['fleet_size'])}")  # fmt: skip
 
 
@@ -807,8 +806,9 @@ def decision_sentence(d: Decision) -> Md:
     one = lambda v: f"{v:.1g}"  # noqa: E731
     held = lambda role, col, orig: _held(f"{role} | {col}", p[role][col], orig)  # noqa: E731
     return Md(
-        f"**What the executives decide.** Suppose the operator cares about the pointing error and "
-        f"the sponsor about the unit cost and the fleet cost. The requirements and the frontier "
+        f"**What the executives decide.** The case's two stakeholders: the operator cares "
+        f"about the pointing error, the sponsor about the unit cost and the fleet cost. "
+        f"The requirements and the frontier "
         f"cut {thousands(_count(d, 'feasible'))} feasible designs to {_count(d, 'working')} that "
         f"pass all six requirements and lie in the near-frontier band of both fits, the simpler "
         f"and the richer. One question remains, "
@@ -820,8 +820,8 @@ def decision_sentence(d: Decision) -> Md:
         f"If it is, the fleet of {int(bw['fleet_size'])} {tracker(bw)} satellites at "
         f"{held('between', 'fleet_cost_usd', _musd)} M USD "
         f"({held('between', 'unit_cost_usd', _thousand_usd)} USD each) "
-        f"regrets least of the {_count(d, 'nondominated_working')} that trade the two measures, "
-        f"its larger shortfall from the best on either being the smallest; "
+        f"gives up the least of either measure among the {_count(d, 'nondominated_working')} of "
+        f"the {_count(d, 'working')} that no other beats on both; "
         f"if not, the fleet of {int(sp['fleet_size'])} {tracker(sp)} satellites at "
         f"{held('sponsor', 'fleet_cost_usd', _musd)} M USD is cheapest. The method prices the "
         f"question and does not answer it; the numbers are nominal ({_C8})."
@@ -898,12 +898,14 @@ def decision_designs_table(d: Decision) -> Md:
     return Md(f"Dataset {DATASET_LABELS['primary']}:\n\n" + md_table(
         ["design", "wheel / tracker", "panel (m)", "battery (Wh)", "Kp", "Kd", "fleet",
          "pointing error (degree)", "unit cost (USD)", "fleet cost (USD)", "level (K=2)",
-         "level (K=1)", "nondominated on pointing error and"],
+         "level (K=1)", "term 1 level (K=2)", "term 2 level (K=2)",
+         "nondominated on pointing error and"],
         [(int(r["design_id"]), f"{r['wheel_class']} / {r['st_grade']}",
           f"{r['panel_span_m']:.2f}", f"{r['battery_wh']:.0f}", f"{r['Kp']:.2f}",
           f"{r['Kd']:.2f}", int(r["fleet_size"]), f"{r['pointing_error_deg']:.5f}",
           f"{r['unit_cost_usd']:,.0f}", f"{r['fleet_cost_usd']:,.0f}",
-          f"{r['log V K=2']:+.4f}", f"{r['log V K=1']:+.4f}", _marks(r))
+          f"{r['log V K=2']:+.4f}", f"{r['log V K=1']:+.4f}", f"{r['term 1 level']:+.4f}",
+          f"{r['term 2 level']:+.4f}", _marks(r))
          for _, r in w.iterrows()],
     ))  # fmt: skip
 

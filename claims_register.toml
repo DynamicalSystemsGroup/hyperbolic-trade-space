@@ -5273,7 +5273,7 @@ note = "Moved from the choosing-K page to the Examples page (WP33 placement 1). 
 
 [[claim]]
 id = "C436"
-fragment = "The stock regime drops by 0.055, 0.031, 0.012 and 0.010, bending with no break, so the mean slack cannot choose K; its thinnest term holds 0.35 at K = 2 and 0.13 at K = 3."
+fragment = "The stock regime drops by 0.055, 0.031, 0.012 and 0.010, bending with no break, so that mean level cannot choose K; its thinnest term holds 0.35 at K = 2 and 0.13 at K = 3."
 file = "docs/examples.md"
 anchor = ""
 kind = "R"
@@ -7017,7 +7017,7 @@ note = "The value is the generator's, formatted through the stability entry (pap
 
 [[claim]]
 id = "C605"
-fragment = "regrets least of the {_count(d, 'nondominated_working')} that trade the two measures,"
+fragment = "gives up the least of either measure among the {_count(d, 'nondominated_working')} of"
 file = "paper/generate_findings.py"
 anchor = "def decision_sentence"
 kind = "R"
@@ -7217,7 +7217,7 @@ note = "Section 9's six-row table: every cell is the generator's value for the n
 
 [[claim]]
 id = "C616"
-fragment = "int(r[\"fleet_size\"]), f\"{r['pointing_error_deg']:.5f}\", f\"{r['unit_cost_usd']:,.0f}\", f\"{r['fleet_cost_usd']:,.0f}\", f\"{r['log V K=2']:+.4f}\", f\"{r['log V K=1']:+.4f}\", _marks(r))"
+fragment = "int(r[\"fleet_size\"]), f\"{r['pointing_error_deg']:.5f}\", f\"{r['unit_cost_usd']:,.0f}\", f\"{r['fleet_cost_usd']:,.0f}\", f\"{r['log V K=2']:+.4f}\", f\"{r['log V K=1']:+.4f}\", f\"{r['term 1 level']:+.4f}\", f\"{r['term 2 level']:+.4f}\", _marks(r))"
 file = "paper/generate_findings.py"
 anchor = "def decision_designs_table"
 kind = "R"
@@ -7235,7 +7235,7 @@ note = "Appendix D.19's table of the shortlist: every cell is the generator's va
 
 [[claim]]
 id = "C617"
-fragment = "The baseline configuration does not meet the requirements."
+fragment = "The baseline misses the requirements, unit cost among them."
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "R"

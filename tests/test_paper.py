@@ -3772,7 +3772,8 @@ def test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_valu
     for phrase in ("2,134 feasible designs", "to 28 that pass all six requirements",
                    "from about 0.003 to 0.0008 degree", "about 0.56 M USD of a 6 M USD",
                    "fleet of 5 medium-wheel, fine-tracker satellites at 1.69 M USD (337,000 USD",
-                   "regrets least of the 5", "fleet of 4 small-wheel, medium-tracker satellites "
+                   "gives up the least of either measure among the 5 of the 28",
+                   "fleet of 4 small-wheel, medium-tracker satellites "
                    "at 1.13 M USD is cheapest", "Appendix C.8"):  # fmt: skip
         assert phrase in plain, phrase
     assert 130 <= len(plain.split()) <= 160  # 150 before the two reader definitions

@@ -91,7 +91,7 @@ for r, s in studies.items():
 
 The primary regime drops by 0.078, then 0.023, 0.012 and 0.005: a break at K = 2, where the
 thinnest term holds 0.28 (0.21 at K = 3). The stock regime drops by 0.055, 0.031, 0.012 and 0.010,
-bending with no break, so the mean slack cannot choose K; its thinnest term holds 0.35 at K = 2 and
+bending with no break, so that mean level cannot choose K; its thinnest term holds 0.35 at K = 2 and
 0.13 at K = 3.
 
 ```python {.runnable}
