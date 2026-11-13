@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP35 wording unit accepted at 1235f7f; WP35 to the review list (03:50).** The unit (940d6f0) applies the readers'
+  fixes as ruled (FW-14 not), Appendix H at 916 of 920 words with the D.16 chain intact; on 1235f7f ruff, lock,
+  vocabulary and attribution clean, the fast suite 1943 passed; the stage rebuilt and Appendix H read as rendered (six
+  headings, the endorsed lead, ρ, the ball, the symmetric cloud and the 30 percent clause on the page, no path
+  parenthetical, no "worse"). One process slip: the PM landed the unit by a merge commit (1235f7f); told that dev stays
+  linear, rebase and fast-forward from here. CI dispatched on the head. The WP39 notebook unit is next on the queue.
+
 - **39d65ab fully green (02:15).** CI 43373481676 on 39d65ab (Appendix H accepted, the follow-up at 3d5a53e): every
   job green on both platforms, the twenty-first fully green head. The WP35 wording unit is still in its worktree
   (nine files, re-executing); nothing else landed in the hour.

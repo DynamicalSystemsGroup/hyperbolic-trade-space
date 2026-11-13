@@ -273,3 +273,11 @@ boundary stated with its number (FW-19); within that, the four cuts the review n
 test measures what the estimates guessed. Any test or claims row pinning the '26' moves with FW-11. WP35 goes on the
 review list for the supervisor once the wording unit is on the stage. C4's two caption links 404 before the merge;
 WP8b's G2 row fetches every link with and without sign-in after the merge."
+
+## The wording unit accepted (2026-11-14, 03:50; head 1235f7f, unit 940d6f0)
+
+**Assistant, verbatim:** "The wording unit is accepted: FW-1 to FW-13 and FW-15 to FW-20 applied, FW-14 not, Appendix H
+at 916 of 920 words, the chain to D.16 standing, the cut sentence on a HoroPCA of the chart staying cut with no raise;
+the readers' definitions (ρ, the ball, the symmetric cloud, the 30 percent of rows on the edge) now on the page; the
+fast suite 1943 passed, ruff, lock and vocabulary clean; read as rendered on the rebuilt stage. WP35 goes on the review
+list for the supervisor's acceptance."
