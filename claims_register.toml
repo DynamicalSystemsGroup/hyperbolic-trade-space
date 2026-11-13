@@ -1242,7 +1242,7 @@ note = "L5.24 gives J_inf = max_i w.u_i; the epigraph LP is what solve_lp implem
 
 [[claim]]
 id = "C094"
-fragment = "At finite $\\tau$ one term is a geometric program in $x=e^{w}$, whose convex form is the problem in $w$"
+fragment = "At finite $\\tau$ one term is a geometric program in $x=e^{w}$, convex in $w$"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"

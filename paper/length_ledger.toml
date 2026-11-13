@@ -1385,3 +1385,11 @@ section = "Supporting material"
 words_added = 19
 job = "one clause at the top of the supporting material says whom the appendices serve: readers who check the proofs (Appendix B), reproduce the results (Appendices D and F) or read the case model (Appendix C); the journeys map shows P5, P2 and P3, and P7 arriving there with no statement of whose it is"
 reader = "the reader who follows a link out of the paper and cannot tell which appendix is theirs"
+
+# P5's finding: a link that leaves the article should say so ("Appendix B, L4.14 to L4.24" did not).
+[[cut]]
+date = "2026-11-13"
+section = "Methods"
+words_removed = 3
+no_longer_did = "the link text 'Appendix B, L4.14 to L4.24' does not say that it opens the supporting material, a separate document; it now reads 'Appendix B, supporting material, L4.14 to L4.24' (two words in), and the clause 'whose convex form is the problem in w' (eight words, which the Results list's item 2 and the geometric-program statement already say as 'convex in the logarithmic variables') is now 'convex in w' (three), claims row C094 re-pointed: net three out"
+authority = "P5's reading of the Methods link (the assistant's brief to this unit); marginal-value test"

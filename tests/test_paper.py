@@ -3681,3 +3681,10 @@ def test_the_charts_axis_names_the_metrics_of_the_first_direction_of_d16():
     assert worse == [n for n, v in loads if v.startswith("-")]
     caption = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-chart-level-caption"))
     assert "the axis names the metrics it improves" in caption and "to the right" not in caption
+
+
+def test_a_step_range_link_into_the_supporting_material_says_where_it_leads():
+    """P5 found that 'Appendix B, L4.14 to L4.24' did not say it leaves the article."""
+    methods = _section("Methods")
+    assert "{ref}`Appendix B, supporting material, L4.14 to L4.24 <appendix-b>`" in methods
+    assert "Appendix B, L4.14 to L4.24" not in methods
