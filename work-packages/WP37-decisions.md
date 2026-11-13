@@ -416,3 +416,13 @@ you are forcing it."
 of the arc the page tells (the method's lineage, the people's credited work, the firm's public cases and ties);
 exploratory or incidental repositories go, flexo-rtm and toaster named by the supervisor and the others of their kind
 found by the same test, each removal recorded with what the list no longer did. Folded into the WP37 closing unit.
+
+## The supervisor on Zeke's name (2026-11-13, 14:00)
+
+**Supervisor, verbatim:** "Zeke Medley is a researcher in the Khoury College of Computer Sciences at Northeastern
+University who works in formal methods and software verification"
+
+**Applied as:** the record names Zeke Medley (GitHub 0xekez) on the block-diagrams entry and as a person entry; the
+affiliation and field are the supervisor's words, marked as his account unless a public page states them (a
+Northeastern or Khoury page, if found, is the link; otherwise the GitHub account). The page names him in the people
+paragraph with the internship in the supervisor's words. Folded into the WP37 closing unit.
