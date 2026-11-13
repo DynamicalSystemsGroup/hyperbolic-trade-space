@@ -452,28 +452,36 @@ def test_root_and_paper_links_classified():
 
 
 def test_root_index_is_thin_and_routes_by_need():
-    """WP33 G2, R-3: after the title, one whom-it-is-for sentence and at most five need-phrases,
-    each a link; no cards. The needs close the page, after why and what."""
+    """WP33 G2, R-3: after the title, the plain summary, why and what; the page closes on a lead
+    sentence and two doors (the paper, the tool), each a link; no cards, no subtitle, no adoption line."""
     text = (SITE / "index.html").read_text(encoding="utf-8")
     assert "<script" not in text.lower()
     assert "prefers-color-scheme: dark" in text
     assert 'class="cards"' not in text
     needs = re.search(r'<ul class="needs">(.*?)</ul>', text, re.S).group(1)
     items = re.findall(r"<li>(.*?)</li>", needs, re.S)
-    assert 1 <= len(items) <= 5
+    assert len(items) == 2
     assert all(re.fullmatch(r'<a href="[^"]+">[^<]+</a>', i) for i in items), items
-    assert text.count('class="whom"') == 1
+    assert text.count('class="lead"') == 1 and 'class="subtitle"' not in text
+    assert 'class="adopt"' not in text
     low = text.lower()
     order = [
-        low.index(k) for k in ('class="whom"', "<h2>why</h2>", "<h2>what</h2>", 'class="needs"')
+        low.index(k)
+        for k in (
+            'class="summary"',
+            "<h2>why</h2>",
+            "<h2>what</h2>",
+            'class="lead"',
+            'class="needs"',
+        )
     ]
-    assert order == sorted(order), "order: whom, why, what, needs"
+    assert order == sorted(order), "order: summary, why, what, lead, needs"
     for needle in ("scikit-learn", "unsupervised", "feature engineering", "pca"):
         assert needle in low, needle
     for banned in ("sympy", "worked example", "chatgpt", "openai"):
         assert banned not in low, banned
     hrefs = html_links(SITE / "index.html")
-    for href in ("paper/", "docs/getting-started/", "docs/user-guide/conditioning/"):
+    for href in ("paper/", "docs/getting-started/"):
         assert href in hrefs
     assert any(h.endswith("hyperbolic-trade-space") for h in hrefs), "repository link"
     assert '<link rel="icon" href="data:,">' in text  # D6: no /favicon.ico request, no 404

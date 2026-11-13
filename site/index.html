@@ -49,11 +49,6 @@
     line-height: 1.25;
     margin: 0 0 0.25rem;
   }
-  header .subtitle {
-    font-size: 1.15rem;
-    color: var(--muted);
-    margin: 0 0 0.25rem;
-  }
   header .byline {
     font-size: 0.95rem;
     color: var(--muted);
@@ -94,10 +89,9 @@
       transform: translateX(-50%);
     }
   }
-  .whom { margin: 0 0 0.5rem; }
+  .lead { margin: 0 0 0.5rem; }
   .needs { margin: 0 0 1rem; padding-left: 1.2rem; font-family: system-ui, sans-serif; }
   .needs li { margin: 0.3rem 0; }
-  .adopt { font-size: 0.93rem; color: var(--muted); }
   code, pre {
     font: 0.85rem/1.4 ui-monospace, Menlo, monospace;
     background: var(--accent-soft);
@@ -117,11 +111,10 @@
 <main>
   <header>
     <h1>hyperbolic-trade-space</h1>
-    <p class="subtitle">An unsupervised learning method which applies a posynomial invariant form, a sum of terms each a product of powers of the metrics, to learn the shape of a trade space from evaluated designs.</p>
     <p class="byline">Michael Zargham</p>
   </header>
 
-  <p class="whom">Choose the line that is yours: the documentation serves those who run the tool, the paper those who read it, check it or decide on it.</p>
+  <p class="summary">An unsupervised learning method which applies a posynomial invariant form, a sum of terms each a product of powers of the metrics, to learn the shape of a trade space from evaluated designs.</p>
 
   <section>
     <h2>Why</h2>
@@ -155,14 +148,11 @@
     </figure>
   </section>
 
+  <p class="lead">Choose the line that is yours: the documentation serves those who run the tool, the paper those who read it, check it or decide on it.</p>
   <ul class="needs">
-    <li><a href="docs/getting-started/">Use the tool on your own table</a></li>
-    <li><a href="docs/user-guide/overview/">Bring your own system model</a></li>
     <li><a href="paper/">Read the paper</a></li>
-    <li><a href="paper/supporting-material/#appendix-b">Check the mathematics</a></li>
-    <li><a href="docs/examples/#requirements-read-after-the-fit">Decide what adopting it would change</a></li>
+    <li><a href="docs/getting-started/">Use the tool</a></li>
   </ul>
-  <p class="adopt">Adopting it: the analyst writes the <a href="docs/user-guide/conditioning/">conditioning</a>; from package-only install to a first fit took 31 s, or about 100 s counting the reading and writing of the script, for readers new to it; with few designs, <a href="docs/user-guide/limitations/">how strongly each metric counts (the exponents) is only weakly determined</a>. The cubesat case is a synthetic demonstrator.</p>
 
   <footer>
     Source:

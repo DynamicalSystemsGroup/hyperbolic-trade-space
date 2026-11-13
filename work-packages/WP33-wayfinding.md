@@ -48,3 +48,7 @@ are in `WP32-cells/round-4/triage.md`. U2 to U4 were not re-run after the fixes.
 ## Reading
 
 Closed, fixed since and listed bounce points: `WP33-decisions.md`, "D-3: triage of the repeat round".
+
+## After the round
+
+The root page's doors changed after round 2 (the supervisor's rulings of 2026-11-14, WP33-decisions.md): five doors and the adoption line became "Read the paper" and "Use the tool" under the lead sentence, which now closes the page; the tables above describe the page as it was measured.

@@ -13,7 +13,7 @@ Surfaces: repo page = `README.md`; root = `site/index.html`; docs = `docs/` (nav
 
 | Persona | Arrives at | First need (their words) | Path (evidence) | Content on the path aimed at another user (file, heading, other) |
 |---|---|---|---|---|
-| P1 | root, then paper | "What trades against what, and can I trust it?" | root card "Paper" to abstract and Figure 1 to main-results list to Sections 8 to 11; reads on selectively (W11 round 1b, W28 P1-B/P1-C) | abstract's kernel and "soft support" clauses (paper, Abstract; P5); Definition 4 band sentence, "weighs within a factor e" (paper, Definitions; P5); Figure 3 box "returns 7 of 8 metrics" (paper, Case construction; P7) |
+| P1 | root, then paper | "What trades against what, and can I trust it?" | root door "Read the paper" to abstract and Figure 1 to main-results list to Sections 8 to 11; reads on selectively (W11 round 1b, W28 P1-B/P1-C) | abstract's kernel and "soft support" clauses (paper, Abstract; P5); Definition 4 band sentence, "weighs within a factor e" (paper, Definitions; P5); Figure 3 box "returns 7 of 8 metrics" (paper, Case construction; P7) |
 | P2 | paper depth B/C, then docs | "A method I can run, rerun and defend" | main results to Sections 8 to 11 (Case) to `docs/examples.md` to `choosing-k.md` (W11, W28 P2-B/P2-C, R2/R3 task reads) | Theorem 11 "K^N + 1" sentence (`res-L15`; P5, P9); Methods R1 sentence (`sec-methods`; P5, P9); Definition 6 against Section 6.2 (paper, Definitions; P5) |
 | P3 | paper (Figures 2, 3), then repo | "Plug my evaluation in; what must hold?" | Figure 2 and 3 (SysML views) to Methods to Section 11 "Reproducibility and your own case"; infers conditioning is theirs (W28 P3-B/P3-C) | Figure 1 legend "1.00, 1.00, 1.00" and "planted" (paper, Preliminaries; P5); Definition 6's 1e-9 support against Figure 1's face (paper, Definitions; P5) |
 | P4 | docs Home "beside PCA", paper Sections 5 to 6 | "Where does this sit beside PCA, how do I use it?" | `docs/index.md` third paragraph to getting-started to `choosing-k.md` "Large K and the elbow in PCA"; paper results and Figure 5 (W11 1b/1d, W28 P4-B; no P4 depth-C read, held out) | main-results item "Numerical: the termination status" (paper, Results lead; P5; 3 cells stopped); Definition 3 centring and bounds (paper, Definitions; P5, P9) |
@@ -41,8 +41,8 @@ interface contract (amendment, R-7); [reg] has claims-register rows to re-point;
 | Reword the Home Examples bullet to name the case study, not the user's path | `docs/index.md` | all four U cells met "cubesat" first and set it aside |
 | Cut Home bullets that no U or persona path used (Theory, Glossary, Further reading) down to the five need-phrases | `docs/index.md` | none opened in either round; P5 and P6 reach them by nav |
 | Place the "design variables and labels are configuration" clause where "Your own data" sends the reader | `docs/getting-started.md` (from `overview.md`, "The pipeline") | U1 and U3 never opened the overview; their `batch` and `sample` handling was a guess |
-| Move the needs block (the five doors and the adoption line) to the end of the root page, as the call to action; the whom sentence stays at the top | `site/index.html` | the supervisor's ruling (WP33-decisions.md, 2026-11-14 09:15): the block closes the page as the call to action, not first |
-| Cut the root page's second-figure caption sentence in the PCA/energy voice, or move it under the Paper card | `site/index.html` [reg] | the executive's arrival speaks to P4 and P5 above the three doors |
+| Move the needs block to the end of the root page as the call to action (lead sentence and two doors, "Read the paper" and "Use the tool"); the plain summary leaves the subtitle slot and precedes Why; no whom sentence at the top | `site/index.html` | the supervisor's rulings (WP33-decisions.md, 2026-11-14 09:15, 09:25, 09:30): the block closes the page; the doors Check the mathematics, Decide and Bring your own model, and the adoption line, are gone |
+| Cut the root page's second-figure caption sentence in the PCA/energy voice, or move it under the Paper card | `site/index.html` [reg] | the executive's arrival speaks to P4 and P5 above the doors |
 | Move the K^N + 1 sentence to Appendix B, L15 | `paper.ipynb` `res-L15` [reg][led] | seven cells found it empty; only P5 and P9 need it (W28 CR-36) |
 | Move the R1 sentence's finite-tau reading to the Theorem 5 sketch | `paper.ipynb` `sec-methods`, `res-L7` [reg][led] | eight cells stopped; it is a P5 check (W28 CR-37) |
 | Drop "Numerical: the termination status" from the main-results list; `termination.md` carries it | `paper.ipynb`, Results lead [led] | three P4 cells stopped; the item is P5's and the docs page holds it |
@@ -55,8 +55,10 @@ interface contract (amendment, R-7); [reg] has claims-register rows to re-point;
 From `WP30-rounds/persona-final/triage.md` (P8 F2, F6, F8). The executive arrives at the root page (Q4); the paper's
 first screen stays the paper's. Routing, not a new body paragraph.
 
-- **Route to the requirements reading:** one link from the root page to Appendix D.17 (and the Examples block) under a
-  need-phrase on the executive's question, which requirement is dear and what imposing them first changes. P8 found the
+- **Route to the requirements reading:** the root page's two doors ("Read the paper", "Use the tool") replaced the
+  Decide door after the round (WP33-decisions.md, 09:30): the paper's Section 9 narrates the decision and the
+  Examples requirements block stays reachable from the docs. The need was the executive's question, which requirement is
+  dear and what imposing them first changes. P8 found the
   decision mechanism present but "priced in bands" (F3, answered in D.17) and shown nowhere on the screens they were sent to.
 - **Dense first screens (F8):** the root page's lead and figure captions are the P4 and P5 voice; the wayfinding read
   measures the executive's steps to D.17 at both widths.
