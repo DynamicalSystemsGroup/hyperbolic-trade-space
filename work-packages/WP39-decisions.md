@@ -145,3 +145,13 @@ listed under Entry surfaces for the supervisor's close read; the Examples page's
 words without the code name; the abstract is reported to the supervisor, not touched; the future-work sentences and
 the docs root's definition of a term stay, since they serve the method reader and the first-use rule; the root page's
 unexplained 'conditioning' is listed for the supervisor with the entry surfaces."
+
+## The second fix unit accepted (2026-11-14, 10:35; head f89c663)
+
+**Assistant, verbatim:** "WP39's second fix unit is accepted as rendered: the subsection opens with the case's two
+stakeholders, the pick 'gives up the least of either measure among the 5 of the 28 that no other beats on both', the
+executive table's configuration column reads wheel class, tracker grade and fleet size, the level is glossed in the
+caption as the distance above or below the fitted reference surface and not a ranking, the baseline's missed limits
+named, D.19 shows the two term levels; Section 9 at 1,734 of 1,736 with no raise; the full group 358 passed in the
+unit's run and the fast suite here. The one P8 re-read runs on this head; the package's acceptance is the
+supervisor's after it and the review."

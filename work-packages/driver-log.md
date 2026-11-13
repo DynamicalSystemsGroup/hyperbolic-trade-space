@@ -228,6 +228,17 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP39 fix unit 2 accepted as rendered; root page part 1 received; a test flake found (10:35).** On 8699324
+  (f89c663, 0ccc0a3, 8699324): ruff, lock, vocabulary and attribution clean; the fast suite 1945 passed with one
+  failure that is a flake of the environment, `test_the_pre_registered_rates_are_those_of_the_hypothesis_file`
+  comparing git's abbreviated hash to a seven-character literal while this repository's abbreviation has grown to
+  eight characters; the fix (compare by prefix on the full hash) routed to PM14 for the next commit; the paper-key
+  test passes against the fresh build. The stage rebuilt at 8699324 and Section 9 read: the two stakeholders, the
+  rewritten pick, the reduced configuration column, the level gloss, no "Table ??". Unit 2 accepted
+  (WP39-decisions.md); the P8 re-read released. The root page's part 1 moved the needs block to the end with the lead
+  sentence left at the top; corrected to PM14 before part 2: the lead sentence moves with the block, the summary
+  paragraph leaves the subtitle slot and sits before Why, the two doors close the page. CI 43494523985 dispatched.
+
 - **2c5bb41 fully green (13:45).** CI 43478181521 on 2c5bb41 (WP39 fix unit 1 with the sensitivity cascade): every job
   green on both platforms, the twenty-third fully green head; the two slow failures of 74b470f are closed. WP39's second
   fix unit is committed in its worktree (407057e3) and running its full test group before the push.
