@@ -228,6 +228,20 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP36 integration unit accepted; WP39 scope approved; the supervisor's history-page rulings routed (14:50).** The
+  WP36 unit (7fe47de, 9b284fa): the future-work paragraph in its section's cadence with the Lean direction, the
+  reals-versus-floating-point line and the Rust/WebAssembly clause, 188 to 187 words by the unit's count with the removed
+  words accounted for, two sentences on the limitations page paid by one, no surface calling the lemma scripts formally
+  verified (grep). Head 518b5ab: ruff, lock, vocabulary and attribution clean; the fast suite 1925 passed in 7:36. The
+  render check on the rebuilt stage follows in this entry's next line. The limitations cap (493 against 491) was not
+  lowered by the unit; folded into the WP33 closing unit. The WP39 scope (fe2335e) read against the decisions and the
+  supervisor's words and approved as written (WP39-decisions.md, 518b5ab). The supervisor's rulings on the history page
+  today, each recorded verbatim in WP37-decisions.md and sent to the closing unit: Penland under a contract; the Clark
+  sentence's connecting clause; the client-projects paragraph merged with the special cases and Carolina unlinked; the
+  block-diagrams entry corrected to Danilo Bernardineli and Zeke Medley with a people audit of every entry; exploratory
+  repositories out of the list; cadCAD credited to its nineteen contributors; the Boyd entry out. Worktrees 58; the
+  prune ordered again with the list to keep.
+
 - **Four landed units judged; head dafa839 verified (12:55).** The units had landed under the assistant's own
   `pull --rebase` between ticks (f10c7bf, d801a43, 94f33ae, fb6adcc), so the check "what is new on dev" now compares
   against the last verified head and not the assistant's last commit. On dafa839: ruff clean and formatted, lock
