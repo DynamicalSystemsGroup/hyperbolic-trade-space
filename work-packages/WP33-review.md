@@ -121,3 +121,22 @@ reader has read the result, so "closed" below means a change is in, not that a r
 | Definition of done: "no open item remains unresolved" | not met while F-1, F-2 and the rows above stand; acceptance is the supervisor's | the supervisor |
 
 Everything else not named above is closed at this head.
+
+## Addendum: the closing round (PM, after the assistant's return of the package)
+
+Evidence for each finding of the review, at the dev head named in the commit that carries this addendum.
+
+| Finding | Closed by | Evidence |
+|---|---|---|
+| F-1 / R-5: the paper's first screen names no reader; the Organization paragraph does not route by depth | eb08f27 (paragraph routes by depth: abstract and figure; headers and results; whole text; appendices; repository and container; net 17 words with the cut of the repeated PCA sentence), fbbaf2b (audience sentence atop Section 1), 79015eb (link text says it opens the supporting material); the abstract (the supervisor's hand) is unchanged and the finding is written into the review list's Entry surfaces section with F-1's words | assistant's render at 69362b5; ledger rows; tests/test_paper.py |
+| F-2: D-3 and D-4 records missing; router contract authority | 36e0e9f: WP33-decisions.md holds the 12 placements and cuts, the repeat triage, the router decision (amendment 22 by the contract's pages rule) and the assistant's rulings verbatim; WP33-wayfinding.md holds the 12-row tables per round; contract rows 21 and 22 cite the record | files; tests/test_interface_contract.py |
+| F-3: 404 on every docs page | not a project resource: the theme's repository widget asks api.github.com for releases of a private repository; WP8b checklist row (assistant's call) | WP35-review F-1 |
+| F-4: C563 backing | 2dcfbd1: measure_install.py and measure.out committed under WP33-review/, C563 points at them | claims register test |
+| F-5: package docstring | b943eba (one sentence on what the package is, one naming the docs site; contract known-gap row closed by amendment 23) | doctests 7 passed |
+| F-6: docs Home at 390 px, README, API page | 15d00af: docs Home puts the five need links first (all above 506 px of 844); README links the paper; reader sentence on api-reference and theory; the router has its own title | docs build strict; tests/test_site.py |
+| R-9 / R-10: U3 not re-run | WP32-cells/round-5: one fresh U3 cell at ff9c410 reached the planted answer with no stop the docs owe, install to first fit 30 s of first import after a 0.7 s sync; U2 and U4 stand as WP32's unchanged returns | round-5/triage.md |
+| R-10 for P1, P8 (Decide door) and P3, P4 (PCA pointer, evaluation outside the package) | fixed (540843a, 2114aad), not yet re-read by a fresh reader: folded into the final reader round by the assistant's call | |
+| P5 link text | 79015eb | |
+| P7: no door for a systems engineer | not changed: the root page's doors are an entry surface for the supervisor's close read; listed in the Entry surfaces section | |
+
+Still open and owned elsewhere: the "Loading..." placeholders and the wide tables at 390 px (WP8b), the package docstring is closed here, the repository widget 404 and the blob/main link check (WP8b checklist rows), the supervisor's reading of the five entry surfaces. Definition of done: no open item of WP33's own remains unresolved; the supervisor's acceptance is pending through the review list.
