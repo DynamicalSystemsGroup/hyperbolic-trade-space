@@ -42,6 +42,8 @@ total = 5900
 "Appendix D" = 0
 # And Appendix G (WP35: the HoroPCA passage and its table).
 "Appendix G" = 0
+# And Appendix H (WP35 amendment 1: the HoroPCA comparison as a tested hypothesis).
+"Appendix H" = 0
 
 # Rows: the tickets of 2026-11-09 on sections 4 and 6 (the supervisor's, WP10-decisions.md).
 # Each row: date, section, words_added, job, reader.
@@ -1324,3 +1326,28 @@ section = "Future work and final remark"
 words_removed = 3
 no_longer_did = "WP36 adds 63 words (the Lean direction, the reals-versus-floating-point line, one clause for a Rust core compiled to WebAssembly: 58; the gloss of the generalized geometric program that the removed hull clause had carried by accident: 5) and takes out 64: 'Future work follows the assumptions we named.' (the lead-in said that the paragraph follows the assumptions, which its own Beyond-sentences show); the clause 'whose generalized gradient is the convex hull of the active normals, should tolerate the kinks' (a mechanism and a hope with no lemma behind it); 'with smoothing on request' (Methods says it); 'The search ... needs a convergence theorem, and Q2 to Q4 need their own conditions' (the Open paragraph of Results states the four questions and their gaps); 'Other cases across the engineering lifecycle belong here too, the configuration management of a fielded system among them' (the case section says a fielded system's measured attributes would enter the same table); and 'the generalization the search motivates' (the search section says it). The count falls from 188 to 187"
 authority = "WP36 decision entry 441cdcb (placement (a); the unit takes out at least as many words as it adds), marginal-value test"
+
+# WP35 amendment 1 (work-packages/WP35-amendment-1-scope.md, approved at e616329 with the ceiling pinned at 900
+# words by the visible-prose rule: Markdown, the caption and the generated sentences, not the table; not raised
+# without a new row and the assistant's word). Appendix H replaces the HoroPCA passage of Appendix G.
+[[raise]]
+date = "2026-11-13"
+section = "Appendix H"
+words_added = 900
+job = "states the HoroPCA comparison as a hypothesis with the result that would refute each part, the design in one paragraph, the generated results table, what the table shows (the two methods estimate different things and are complementary), the part not in the hypothesis, the reading limits with the embedding stated as ours, and how the formalisms and solvers differ"
+reader = "the expert who asks whether the closest existing analog does what this work does, and what the experiment would have shown otherwise"
+
+[[cut]]
+date = "2026-11-13"
+section = "Appendix G"
+words_removed = 659
+no_longer_did = "the HoroPCA passage (cells app-G-horopca and app-G-horopca-reading, with the generated table tab-G-horopca) asserted a causal reading, 'recovered only where the generator made them the direction of largest spread', from a handful of tables where the factor was never varied, with an undefined 'recovered', terms (PC, absolute cosine, span alignment, distortion, frame, horosphere) left unexplained, a cubesat 'target' that was this work's own fit, numbers without a source or command, and a table without a caption or source; Appendix H states the claim as a hypothesis, tests it by varying the factor with the edge fixed, and carries each of those fixes"
+authority = "WP35 amendment 1, the supervisor's request (13165e8) that the comparison have its own appendix"
+
+# The one sentence that Appendix G keeps to point at Appendix H.
+[[raise]]
+date = "2026-11-13"
+section = "Appendix G"
+words_added = 11
+job = "one sentence under the register points the HoroPCA row at Appendix H, where the comparison is tested by experiment"
+reader = "the reader of the register who looks for what running HoroPCA on the paper's tables showed"

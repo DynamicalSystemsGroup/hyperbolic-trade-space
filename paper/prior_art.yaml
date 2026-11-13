@@ -4,8 +4,9 @@
 # Restates what the verified sources say, at the depth recorded in each `verified` field of
 # docs/references.bib and in docs/superpowers/notes/paper-prior-art-sources.md. The "differs" cells
 # are the project's own statements (spec, outline addenda), not statements of the sources.
-# The HoroPCA row is backed by the spike docs/superpowers/notes/spike-horopca/ (the authors' code,
-# run on the paper's tables); Appendix G prints its results table from results.json.
+# The HoroPCA row is backed by the first spike docs/superpowers/notes/spike-horopca/ (the authors'
+# code, run on the paper's tables) and by the pre-registered experiment of Appendix H
+# (work-packages/WP35-rounds/spike-h/); Appendix H prints its results table from results.json.
 #
 # Fields
 #   id           unique lower-case slug

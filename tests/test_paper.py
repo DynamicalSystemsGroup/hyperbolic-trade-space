@@ -87,6 +87,13 @@ APPENDICES = {
     "F": "Computational reproducibility",
     "G": "Register of prior art",
 }
+# WP35 amendment 1: Appendix H is built beside the notebooks. This switch is true once the notebook
+# holds the appendix; it turns on every test that reads Appendix H's cells and adds "H" to the
+# list of appendices. The notebook unit that pastes the appendix deletes the switch (and the
+# `strict` xfail test that announces the landing).
+H_LANDED = "## Appendix H. " in (PAPER / "supporting_material.ipynb").read_text(encoding="utf-8")
+if H_LANDED:
+    APPENDICES["H"] = "HoroPCA beside this work: a tested hypothesis"
 TIERS = ("**Main text keeps:**", "**This appendix carries:**", "**The repository keeps:**")
 # Appendices whose generated content waits for another package's deliverable (stated in the report).
 AWAITING_RECORD: set[str] = set()
@@ -180,7 +187,7 @@ def _appendix_cells(nb):
     sections, current = {}, None
     for c in nb.cells:
         m = (
-            re.match(r"^## Appendix ([A-G])\. ", _unlabel(_src(c)))
+            re.match(r"^## Appendix ([A-H])\. ", _unlabel(_src(c)))
             if c.cell_type == "markdown"
             else None
         )
@@ -1660,10 +1667,15 @@ def test_section2_distinguishes_horopca_in_one_paragraph():
         "the farthest in what is estimated",
         "is not a PCA of any kind",
         "downstream step",
-        "recovered the planted exponents only where the generator made them the direction of "
-        "largest spread",
     ):
         assert phrase in p, phrase
+    if H_LANDED:  # WP35 amendment 1: the paragraph points at Appendix H and says what it tests
+        assert (
+            "recovered planted exponents only where they were the direction of largest spread" in p
+        )
+        assert "{ref}`Appendix H <appendix-h>`" in p and "Appendix G" not in p
+    else:
+        assert "recovered the planted exponents only where the generator made them" in p
     assert "kernel" not in p.lower()
     assert "unrelated" not in s2 and "Färe" not in s2  # the two caveats are pointers or gone
     assert s2.count("hyperbolic") == 2  # the pointer to the glossary, and HoroPCA's own space
@@ -1675,6 +1687,309 @@ def test_section2_distinguishes_horopca_in_one_paragraph():
         yml["project"]["title"]
         == "Scaling Decision Analysis with Hyperbolic Trade Space Identification"
     )
+
+
+# ---- Appendix H: the HoroPCA comparison as a tested hypothesis (WP35, amendment 1) ---------------
+
+SPIKE_H = ROOT / "work-packages" / "WP35-rounds" / "spike-h"
+HYPOTHESIS_COMMIT = "830cf54"
+needs_h = pytest.mark.skipif(
+    not H_LANDED, reason="Appendix H is not yet in the notebook (H_LANDED)"
+)
+
+
+def _record_h() -> dict:
+    return json.loads((SPIKE_H / "results.json").read_text(encoding="utf-8"))
+
+
+def _table_rows(text: str) -> list[list[str]]:
+    lines = [ln for ln in text.splitlines() if ln.startswith("|")][2:]
+    return [[x.strip() for x in ln.strip("|").split("|")] for ln in lines]
+
+
+def _expected_verdict(arm: str, x: float, share: dict) -> str:
+    """The pre-registered rules of ``hypothesis.md``, written out cell by cell and independent of
+    the generator's rule table: the verdict and the parts the cell tests."""
+    held, parts = [], []
+    if arm in "AB":
+        parts.append("H1")
+        held.append(share["ours"] >= 0.9)
+    if arm == "A" and x >= 2:
+        parts.append("H2")
+        held += [share[m] >= 0.9 for m in ("pca", "h25", "h1")]
+    if arm == "A" and x <= 0.5:
+        parts.append("H2")
+        held += [share[m] <= 0.1 for m in ("pca", "h25", "h1")]
+    if arm == "B" and x == 0.9:
+        parts.append("H3")
+        held += [share["pca"] <= 0.2, share["ours"] >= 0.9]
+    if arm == "C":
+        parts.append("H4")
+        held.append(share["ours"] <= 0.2)
+        if x == 2:
+            held.append(share["pca"] >= 0.9)
+    verdict = "survives" if all(held) else "refuted"
+    return f"{verdict} ({', '.join(dict.fromkeys(parts))})" if parts else "no prediction"
+
+
+def test_the_pre_registered_rates_are_those_of_the_hypothesis_file():
+    """WP35 RA-2: the rates and settings the generator applies (``RATES``) are the numbers
+    ``hypothesis.md`` committed at 830cf54 states, and the commit is the file's first."""
+    text = " ".join((SPIKE_H / "hypothesis.md").read_text(encoding="utf-8").split())
+    for phrase in (
+        "recovery rate is below 0.9",
+        "(rate at least 0.9)",
+        "(rate at most 0.1)",
+        "rate at t = 0.9 above 0.2",
+        "this work's rate above 0.2 in either cell",
+        "is at least 0.9",
+        "rho >= 2",
+        "rho <= 0.5",
+        "t in {0, 0.3, 0.6, 0.9}",
+        "rho in {4, 2, 1, 0.5, 0.25}",
+    ):
+        assert phrase in text, phrase
+    r = generate_prior_art.RATES
+    assert r == {
+        "high": 0.9,
+        "low": 0.1,
+        "pca_far": 0.2,
+        "no_edge": 0.2,
+        "rho_high": 2.0,
+        "rho_low": 0.5,
+        "t_far": 0.9,
+    }
+    log = subprocess.run(
+        ["git", "log", "--format=%h", "--", "work-packages/WP35-rounds/spike-h/hypothesis.md"],
+        capture_output=True, text=True, cwd=ROOT,
+    ).stdout.split()  # fmt: skip
+    if log:  # a checkout with history; the file was committed once, at the pre-registration
+        assert log[-1] == HYPOTHESIS_COMMIT
+
+
+def test_the_hypothesis_table_equals_the_record_cell_by_cell():
+    """WP35 RA-2: the table the generator prints has one row per cell of arms A, B and C, in the
+    record's order, each count read here from ``results.json`` independently of the generator, the
+    verdict from the pre-registered rules recomputed here, then the verdict on the whole."""
+    record = _record_h()
+    cells = {k: v for k, v in record["cells"].items() if k[0] in "ABC"}
+    assert len(cells) == 11 and all(v["n"] == 6 for v in cells.values())
+    rows = _table_rows(str(generate_prior_art.horopca_hypothesis_table()))
+    assert len(rows) == len(cells) + 1
+    for row, (key, c) in zip(rows, cells.items(), strict=False):
+        arm, setting = key.split("/")
+        x = float(setting.removeprefix("rho").removeprefix("t"))
+        n = c["n"]
+        share = {
+            "ours": c["ours_rec"] / n,
+            "pca": c["pca_pc1_rec"] / n,
+            "h25": c["horo_R0.25_k1"]["best_rec"] / n,
+            "h1": c["horo_R1.0_k1"]["best_rec"] / n,
+        }
+        verdict = _expected_verdict(arm, x, share)
+        symbol = "t" if arm == "B" else "\u03c1"
+        assert row == [
+            verdict,
+            f"{arm}, {symbol} = {x:g}",
+            f"{c['ours_rec']}/{n}",
+            f"{c['pca_pc1_rec']}/{n}",
+            f"{c['horo_R0.25_k1']['best_rec']}/{n}, {c['horo_R1.0_k1']['best_rec']}/{n}",
+        ], key
+    assert rows[-1] == ["survives", "All parts", "", "", ""]  # every pre-registered part survived
+    assert rows[0][0].startswith("survives") and "refuted" not in " ".join(r[0] for r in rows)
+
+
+def test_a_cell_that_breaks_a_refutation_condition_is_marked_refuted():
+    """The verdict is computed, not typed: perturb the record and the table says so."""
+    record = _record_h()
+    record["cells"]["A/rho2.0"]["pca_pc1_rec"] = 5  # PCA at rho = 2 below 0.9 refutes H2
+    record["cells"]["C/rho0.5"]["ours_rec"] = 2  # this work above 0.2 without an edge refutes H4
+    by_cell = {r["cell"]: r for r in generate_prior_art.horopca_verdicts(record)}
+    assert by_cell["A/rho2.0"]["verdict"] == "refuted"
+    assert by_cell["C/rho0.5"]["verdict"] == "refuted"
+    assert by_cell["A/rho4.0"]["verdict"] == "survives"
+    parts = generate_prior_art.hypothesis_parts(list(by_cell.values()))
+    assert parts == {"H1": "survives", "H2": "refuted", "H3": "survives", "H4": "refuted"}
+
+
+def test_the_threshold_and_the_chance_rates_are_the_records():
+    """WP35 RA-2: 0.9 and the two chance rates (0.037, 0.152) beside it are read from the file."""
+    record = _record_h()
+    assert (record["threshold"], round(record["chance_direction"], 3)) == (0.9, 0.037)
+    assert round(record["chance_simplex"], 3) == 0.152
+    sentence = str(generate_prior_art.horopca_threshold_sentence())
+    assert "0.9" in sentence and "0.037" in sentence and "0.152" in sentence
+
+
+def test_the_sentences_that_state_counts_match_the_record():
+    """The two sentences on the smallest-variance component and the contrast sentence: the counts
+    are the record's, recounted here."""
+    cells = {k: v for k, v in _record_h()["cells"].items() if k[0] in "ABC"}
+    last = {k: v["pca_last_rec"] for k, v in cells.items()}
+    assert {k for k, v in last.items() if v} == {"A/rho0.25", "B/t0.9"}
+    assert last["A/rho0.25"] == last["B/t0.9"] == 5 and sum(last.values()) == 10
+    slab = str(generate_prior_art.horopca_slab_sentences())
+    assert "5 of 6 tables" in slab and "none of the other nine cells" in slab
+    contrast = str(generate_prior_art.horopca_contrast_sentence())
+    a, c = cells["A/rho2.0"], cells["C/rho2.0"]
+    assert (a["ours_rec"], c["ours_rec"], a["pca_pc1_rec"], c["pca_pc1_rec"]) == (6, 0, 6, 6)
+    assert "from 6 of 6 tables to 0 of 6" in contrast and "(6 of 6 in both)" in contrast
+
+
+def test_the_design_constants_of_appendix_h_are_the_pre_registered_ones():
+    """The design paragraph's numbers (four metrics, 300 rows, 30 percent on the edge, six tables,
+    five restarts, the ranges of rho and t) are those of ``hypothesis.md``, and the draft and the
+    notebook state them."""
+    text = " ".join((SPIKE_H / "hypothesis.md").read_text(encoding="utf-8").split())
+    for phrase in (
+        "d = 4 metrics, n = 300 rows, 6 table seeds per cell",
+        "30 percent of rows",
+        "5 random restarts",
+        "rho in {4, 2, 1, 0.5, 0.25}",
+        "t in {0, 0.3, 0.6, 0.9}",
+        "rho in {2, 0.5}",
+    ):
+        assert phrase in text, phrase
+    draft = (SPIKE_H / "h-sections.md").read_text(encoding="utf-8")
+    design = draft.split("=== app-H-2 | markdown", 1)[1].split("=== ", 1)[0]
+    for phrase in (
+        "Four metrics, 300 rows",
+        "30 percent of the rows",
+        "six tables per setting",
+        "five restarts",
+        "from 0.25 to 4",
+        "0 to 0.9",
+        "2 or 0.5",
+    ):
+        assert phrase in design, phrase
+    if H_LANDED:
+        h2 = next(c for c in _appendix_cells(_nb(SUPPORT_NB))["H"] if c.id == "app-H-2")
+        assert all(p in _src(h2) for p in ("Four metrics, 300 rows", "six tables per setting"))
+
+
+def _appendix_h_cells():
+    return _appendix_cells(_nb(SUPPORT_NB))["H"]
+
+
+def _appendix_h_prose() -> str:
+    """The prose of Appendix H as the reader meets it: its Markdown and its generated sentences
+    (cells ``sent-H-*``), not its table."""
+    parts = []
+    for c in _appendix_h_cells():
+        if c.cell_type == "markdown":
+            parts.append(_src(c))
+        elif c.id.startswith("sent-H-"):
+            parts.append(_out_text(c))
+    return "\n\n".join(parts)
+
+
+@pytest.mark.xfail(
+    not H_LANDED, strict=True, reason="Appendix H is pasted by the notebook unit (H_LANDED)"
+)
+def test_appendix_h_has_landed():
+    """The strict xfail turns into a failure the moment the notebook holds Appendix H: the unit
+    that pastes it then deletes the switch ``H_LANDED`` and this marker, and the tests marked
+    ``needs_h`` run."""
+    assert H_LANDED and "H" in _appendix_cells(_nb(SUPPORT_NB))
+
+
+@needs_h
+def test_appendix_h_has_its_five_sections_in_the_supervisors_order():
+    """WP35 RA-1: hypothesis (with its refutation conditions), experiment, results, what the table
+    shows, how the formalism and the solvers differ."""
+    heads = [
+        _src(c).split("\n")[-1] if _src(c).startswith("(sub-h-") else None
+        for c in _appendix_h_cells()
+        if c.cell_type == "markdown"
+    ]
+    heads = [h for h in heads if h]
+    assert [h.split(" ", 2)[0:2] for h in heads] == [["###", f"H.{i}"] for i in range(1, 6)]
+    assert [h.split(" ", 2)[2].split()[0] for h in heads] == [
+        "The",
+        "The",
+        "Results",
+        "What",
+        "How",
+    ]
+    assert heads[0].endswith("what would refute it") and heads[4].endswith("solvers differ")
+
+
+@needs_h
+def test_appendix_h_is_within_its_ledger_ceiling():
+    """WP35 amendment 1: the visible prose (Markdown, the caption, the generated sentences; not the
+    table) is at most the ceiling the ledger fixes, 900 words, raised only by a new row and the
+    assistant's word."""
+    _, ceilings = ledger_ceilings()
+    assert ceilings["Appendix H"] == 900
+    assert rendered_words(_appendix_h_prose()) <= ceilings["Appendix H"]
+
+
+@needs_h
+def test_appendix_h_prints_no_typed_number_in_its_table_and_sentence_cells():
+    """WP35 RA-2: the table and the sentences of results are generated: their cells hold one call
+    and no digit, and their committed outputs equal what the generator prints now."""
+    cells = {c.id: c for c in _code_cells(_nb(SUPPORT_NB)) if c.id.endswith("hypothesis")
+             or c.id.startswith("sent-H-")}  # fmt: skip
+    assert "tab-H-hypothesis" in cells and len(cells) >= 5
+    for cid, c in cells.items():
+        calls = [ln for ln in _src(c).splitlines() if ln and not ln.startswith("from ")]
+        assert len(calls) == 1 and not re.search(r"\d", calls[0]), cid
+        fn = re.match(r"(horopca_\w+)\(\)", calls[0]).group(1)
+        assert _out_text(c).strip() == str(getattr(generate_prior_art, fn)()).strip(), (cid, STALE)
+
+
+@needs_h
+def test_appendix_h_says_where_each_term_is_first_defined_and_points_at_d16():
+    """WP35 RA-4, RA-10: PCA, |cos|, R, frame and horosphere each have a plain line at first use;
+    the chain to D.16 is in words with its pointer."""
+    text = _appendix_h_prose()
+
+    def first(term):
+        return text.index(term)
+
+    assert "principal component analysis (PCA)" in text and first("principal component") < first(
+        "PCA"
+    )
+    assert "(|cos|, agreement of directions ignoring sign)" in text
+    assert first("|cos|") < first("threshold")
+    assert "distance R from the centre" in text and first("R from") < first("R = 3")
+    assert "frame, k orthonormal directions" in text and "horospheres (curved surfaces" in text
+    assert "{ref}`Appendix D.16 <sub-d-16>`" in " ".join(_src(c) for c in _appendix_h_cells())
+    assert "was not run" in text
+    assert "second embedding was not run" in text and "not tree-like" in text
+    assert "The embedding is ours" in text
+
+
+FORBIDDEN_COMPARISON = ("worse", "poorer", "inferior", "outperform", "beats", "pca with a kernel")
+
+
+def _forbidden_in(text: str) -> list[str]:
+    low = text.lower().replace("not a pca of any kind", "")
+    hits = [w for w in FORBIDDEN_COMPARISON if re.search(rf"\b{re.escape(w)}", low)]
+    return hits + (
+        ["calls this work a PCA"] if re.search(r"(this work|our method) is a pca", low) else []
+    )
+
+
+def test_no_sentence_says_horopca_is_worse_or_calls_this_work_a_pca():
+    """WP35 RA-6 (default phrase list): Section 2's HoroPCA paragraph, and Appendix H once it is in
+    the notebook, say what each method estimates and never rank them nor call this work a PCA or
+    HoroPCA a kernel method."""
+    paragraph = next(p for p in _section("Prior art, by family").split("\n\n") if "HoroPCA" in p)
+    assert _forbidden_in(paragraph) == []
+    assert _forbidden_in("HoroPCA is worse at it; this work is a PCA; HoroPCA is PCA with a kernel")
+    if H_LANDED:
+        assert _forbidden_in(_appendix_h_prose()) == []
+        assert "kernel" not in _appendix_h_prose().lower()
+
+
+def test_the_source_map_names_the_hypothesis_table_and_its_record():
+    """WP35 amendment 1 (v): the reproduction table reads the table's source from the map."""
+    reads = generate_repro.READS_BY_CALL["horopca_hypothesis_table()"]
+    assert reads == "work-packages/WP35-rounds/spike-h/results.json"
+    assert (ROOT / reads).is_file()
+    source = (PAPER / "generate_prior_art.py").read_text(encoding="utf-8")
+    assert "def horopca_hypothesis_table" in source
 
 
 def test_register_opens_by_saying_it_is_not_exhaustive():

@@ -32,7 +32,9 @@ project:
     - unsupervised learning
     - model-based systems engineering
     - open source software
-  # Acronyms used in prose; every abbreviation in the paper's prose appears here.
+  # Acronyms used in prose; every abbreviation in the paper's prose appears here, except PCA: the builder
+  # matches an abbreviation inside a longer word and underlined the PCA of "HoroPCA" (WP35 amendment 1),
+  # so PCA is spelled out at its first use, in the abstract, and again in Appendix H.
   abbreviations:
     ADCS: attitude determination and control system
     DEA: data envelopment analysis
@@ -41,7 +43,6 @@ project:
     KKT: Karush-Kuhn-Tucker
     LP: linear program
     MBSE: model-based systems engineering
-    PCA: principal component analysis
   bibliography:
     - ../docs/references.bib
   # DOI exists-check ignore list: entries recorded with a stable URL and no DOI (docs/references.bib).

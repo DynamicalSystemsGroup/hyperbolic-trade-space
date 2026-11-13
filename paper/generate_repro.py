@@ -33,6 +33,7 @@ READS = {
 }
 READS_BY_CALL = {
     "horopca_table()": "docs/superpowers/notes/spike-horopca/ (results.json, tables.npz)",
+    "horopca_hypothesis_table()": "work-packages/WP35-rounds/spike-h/results.json",
 }
 CASE_DATA = "examples/adcs/data/v2/ (the regimes' CSV files named by the case module)"
 
