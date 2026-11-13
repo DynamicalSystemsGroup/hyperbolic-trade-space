@@ -228,6 +228,20 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP39 fix unit 1 verified and accepted as rendered; unit 2 in flight (13:25).** On 2c5bb41 (50d8427, c9bc069,
+  the PM-BRIEF rule): ruff, lock, vocabulary and attribution clean; the fast suite 1945 passed with the paper-key
+  test passing against the fresh build (the label is now tab-decision-case); the sensitivity cascade fixed (the stale
+  candidates key out of the results file, the count 9 to 8, the full slow group 358 passed in the unit's run); CI
+  43478181521 dispatched. On the rebuilt stage: Section 9's opening reference reads "Table 2", no "Table ??" anywhere;
+  the paragraph at 159 words carries the band gloss ("the near-frontier band of both fits, the simpler and the richer")
+  and "fleet cost limit"; the root page's adoption line now says "how strongly each metric counts (the exponents)" and
+  the What line "a combination of the metrics", both accepted as the ruling's intent and listed under Entry surfaces;
+  the docs home's "a sum of terms, where a term (a product of powers of the metrics)" keeps the first-use definition
+  with the glossary's short form, accepted; the Examples sentence in plain words. Still owed by unit 2: "gives up the
+  least of either measure" in place of the regrets clause, "the five designs of the shortlist that no other beats on
+  both measures", the configuration column reduced to wheel, tracker and fleet, the baseline's missed limit in words,
+  D.19's two term levels, operator and sponsor introduced. Then the P8 re-read.
+
 - **The WP39 fix unit iterating slowly; guidance given (11:20).** The unit's last full run, read from its transcript:
   2 failed (a stderr line in a committed output, the font cache of a cold run; a forbidden phrase on a docs page), 343
   passed, 45 minutes a loop, two and a half hours in. The assistant told the implementer to iterate on the failing
