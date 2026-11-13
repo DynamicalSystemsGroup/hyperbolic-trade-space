@@ -1,0 +1,1 @@
+Round 5 (U3 only, the fresh cell of WP32 R-10 after WP33's closing round): head ff9c410, stage http://127.0.0.1:8791/, one fresh Sonnet cell. Scratchpad copy of a git archive of ff9c410 (README.md, LICENSE, pyproject.toml, uv.lock, .python-version, src/), the plain table as table.csv, and the round-1 task text with the U3 header filled. Return below as written.
