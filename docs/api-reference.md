@@ -1,6 +1,6 @@
 # API
 
-The public interface, by what each name is for; the docstrings follow below. The package follows the scikit-learn conventions [@pedregosa2011scikit; @buitinck2013api]: parameters
+For a coder calling the package: the public names by purpose, then docstrings. The package follows the scikit-learn conventions [@pedregosa2011scikit; @buitinck2013api]: parameters
 stored verbatim, validation in `fit`, fitted attributes ending in an underscore. Dimension is
 arbitrary: `d` metrics and `d - 1` chart coordinates.
 

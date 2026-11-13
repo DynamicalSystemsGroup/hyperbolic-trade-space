@@ -1,6 +1,6 @@
 # Theory in brief
 
-This page states the model so the user guide reads without gaps. It gives definitions and no proofs; the [paper](paper:sect-results) has them.
+For a reader who wants the model stated in one place: definitions only, no proofs; the [paper](paper:sect-results) has them.
 
 ## The invariant form
 

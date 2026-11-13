@@ -1,7 +1,8 @@
 # hyperbolic-trade-space
 
 For analysts with a table of evaluated designs, to learn which metrics trade: the
-[docs](https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/), the paper, `examples/adcs/` for a
+[docs](https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/),
+[the paper](https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/paper/), `examples/adcs/` for a
 case study.
 
 ```bash

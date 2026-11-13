@@ -59,7 +59,7 @@ ROUTER_PAGES = {"user-guide/index.md"}
 BUDGETS = {
     "index.md": 206,
     "getting-started.md": 348,
-    "user-guide/index.md": 3,  # the router: one line
+    "user-guide/index.md": 4,  # the router: its title line, "Start here: Overview"
     "user-guide/overview.md": 399,
     "user-guide/conditioning.md": 610,
     "user-guide/fitting.md": 668,  # 800 until WP31 U2 and U3
@@ -68,13 +68,13 @@ BUDGETS = {
     "user-guide/chart.md": 557,  # 600 until WP28 X-1; 561 until the holes block printed
     "user-guide/prediction.md": 350,
     "user-guide/termination.md": 743,  # 600 until WP28 S-10
-    "user-guide/limitations.md": 493,
+    "user-guide/limitations.md": 491,
     "api-reference.md": 287,  # api.md (300) merged in; the ::: directives are not prose
     "examples.md": 671,  # 720 until WP28 X-2 (the coordinates figure went); 676 until WP33
     "theory.md": 700,
     "further-reading.md": 300,
 }
-TOTAL_BUDGET = 7241  # 7472 until WP33 (Home, cubesat block, tops, API merge)
+TOTAL_BUDGET = 7237  # 7472 until WP33 (Home, cubesat block, tops, API merge)
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",
