@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP40 review received; delivered and verified; the dangling hash was the assistant's (15:00).** The fresh review
+  (1be1e12): R-1 to R-9 and R-11 met, ten images retrieved and viewed, the measure re-taken; two findings. The
+  pointer hash in the assistant's records (c680853, taken from the PM's message before its rebase) is on no branch;
+  the 60 pointer lines in the records name 2a669de, which is on dev and holds all 333 images (checked by `git ls-tree`),
+  and the assistant's two records are corrected to it. R-10 (the checker's counts raised by the README Layout list)
+  is met by the WP38 pass now running. WP40 accepted at the assistant's level and sent to the review list.
+
 - **WP40 D-8 verified; the WP38 pass released (14:20).** On 995075b: ruff, lock, vocabulary and attribution clean; the
   fast suite 1946 passed; no stderr output in either notebook; the old-path grep empty outside the exempt classes
   (the move table itself names the old paths, as it must); the stage rebuilt. WP40's build is complete and its fresh
@@ -244,7 +251,7 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 - **WP40 build verified for D-1 to D-7 and D-9; D-8 in flight (12:50).** Fifteen WP40 commits on dev (2a669de to
   cb91835) and the WP39 review-list row (ea6169d). The assistant's own checks on ea6169d: `git ls-files` finds no
-  image under work-packages; a sample screenshot retrieved from the holding commit c680853 (239 kB); the protected
+  image under work-packages; a sample screenshot retrieved from the holding commit 2a669de (the commit on dev that last holds them; an earlier pre-rebase hash was quoted here and corrected 2026-11-14) (239 kB); the protected
   items unchanged against 94cb6a1 except the assistant's records; the README Layout list read and found to name
   every tracked top-level entry; the drift comments now name history; the move table and before-and-after read
   (work-packages 56.3 to 7.9 MB, the archive 70.9 to 22.2 MB); `derivation/run.py` all lemmas pass after the comment

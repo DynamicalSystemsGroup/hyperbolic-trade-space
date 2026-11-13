@@ -54,7 +54,7 @@ otherwise reported. Open decisions: none."
 ## The build verified for D-1 to D-7 and D-9 (2026-11-14, 12:50; head ea6169d; D-8 in flight)
 
 **Assistant, verbatim:** "WP40's build is verified at ea6169d for everything but D-8: no tracked image under
-work-packages (333 removed, held at c680853, a sample retrieved by `git show`); the pointer lines in the records and
+work-packages (333 removed, held at 2a669de (the commit on dev that last holds them; an earlier pre-rebase hash was quoted here and corrected 2026-11-14), a sample retrieved by `git show`); the pointer lines in the records and
 the retrieval note in work-packages/README.md; the four superseded inventories removed and named; the build notes,
 outlines and three spike folders moved under work-packages with every path updated and the ruff exclusion naming the
 folders that remain; the README's Layout list naming every top-level entry with history.yaml as the record behind the
@@ -71,3 +71,13 @@ supporting material re-executed once with no stderr output and only the path swa
 changed, paper.ipynb and the figures unchanged; the old-path grep is empty outside the exempt classes; the fast suite
 1946 passed; ruff, lock, vocabulary and attribution clean; the stage rebuilt. The build is complete; stage 6, a fresh
 reviewer's retrievals, greps and README read, then WP40-review.md and the supervisor's acceptance."
+
+## The fresh review received; WP40 delivered and verified (2026-11-14, 15:00; review at 1be1e12)
+
+**Assistant, verbatim:** "WP40 is delivered and verified under the mandate: the reviewer's R-1 to R-9 and R-11 met
+with evidence, the ten images retrieved and viewed, the measure re-taken (files 1,153 to 820; the archive 70.9 to
+21.5 MB). Its two findings are closed: the dangling hash was the assistant's own record quoting a pre-rebase commit,
+and every pointer line in the records names 2a669de, the commit on dev that last holds the 333 images, which the
+assistant's records now name too; R-10, the residual checker's counts raised by the new README Layout list, is met by
+the WP38 pass that is running over these surfaces now and is not a return. WP40 goes on the review list for the
+supervisor's acceptance."
