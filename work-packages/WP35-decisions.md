@@ -245,3 +245,14 @@ agreement depends on how the boundary's orientation relates to the sample's spre
 questions. No further arm. The readout at ef4d118 stays as the record and gains a short section quoting the two
 softened phrases and their replacement, pointing here. The claims-register rows for the counts say "count" where
 they say "rate".
+
+## Appendix H accepted by the assistant (2026-11-14, 01:05; head 3d5a53e)
+
+**Assistant, verbatim:** "Appendix H is accepted at 3d5a53e under the mandate: the five sections in the supervisor's
+order; the opening as a prospectively specified follow-up and a bounded synthetic experiment rather than a benchmark;
+the three boundaries in the reading limits; every 6/6 a count; the interpretation leading with the endorsed
+conclusion; the two phrases softened to the defensible point; no sentence saying HoroPCA is worse; 899 of 900 words;
+the verdict-first table fitting a 375 px screen without a page scroll; no repository path in parentheses on the page;
+the twelve Appendix H tests, the claims register and the vocabulary check green, the fast suite 1942 passed. The
+Appendix E path links point at blob/main and resolve after the merge; the WP8b checklist row covers the check. The
+fresh readers (P9, P10, R-13) run on this head; the supervisor's acceptance of WP35 follows their reads."

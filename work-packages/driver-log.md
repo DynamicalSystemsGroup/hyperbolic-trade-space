@@ -228,6 +228,16 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Appendix H accepted at 3d5a53e (01:05).** The follow-up (ba84606, 2bf1c21, 3d5a53e) carries the reviewer's five
+  points: the assistant's own checks on the notebook text found the framing, the three boundaries and the endorsed lead,
+  no "not a rescue", no "cannot pick", no standalone "rate", no path parenthetical, and the four vocabulary-baseline rows
+  gone (63 known again). On 3d5a53e: ruff, lock, vocabulary and attribution clean; the fast suite 1942 passed. The stage
+  rebuilt and the appendix read in the browser at 1280 and 375 px: the verdict-first table fits the phone width with no
+  page scroll, H.4 opens with the endorsed conclusion, no "worse" or "formally verified" on the page. Appendix E's 29
+  path parentheticals are links through one REPO_BLOB constant (blob/main; they resolve after the merge, the WP8b
+  checklist's post-merge row covers them, and WP40's move table updates the one constant). Accepted (WP35-decisions.md);
+  PM14 told to run the three fresh readers and then the WP39 notebook unit. CI dispatched on the head.
+
 - **PM14's preparation accepted; the WP39 digits' stability decided (00:05).** PM14 landed the three fresh-reader
   briefs for Appendix H and the WP8b checklist's post-tag and post-merge rows (8aef509, accepted; the briefs forbid the
   readers the answer key), and holds the WP39 generator (branch wp39gen, 7d206b4: 2,134, 548, 28, 11 and 1 match the
