@@ -155,3 +155,14 @@ caption as the distance above or below the fitted reference surface and not a ra
 named, D.19 shows the two term levels; Section 9 at 1,734 of 1,736 with no raise; the full group 358 passed in the
 unit's run and the fast suite here. The one P8 re-read runs on this head; the package's acceptance is the
 supervisor's after it and the review."
+
+## WP39 delivered and verified by the assistant (2026-11-14, 11:55; head 94cb6a1)
+
+**Assistant, verbatim:** "WP39 is delivered and verified under the mandate: R-1 to R-13 met with evidence in
+WP39-review.md; both cold readers followed the closing subsection and said easier, and the P8 re-read after the two
+fix units says easier for the closing paragraph taken alone and harder for Section 9's middle (the K = 1 fit, the
+terms and the temperatures), which is the analyst's part of the section and not the executive's path, so it stands as
+a reader note beside the row and not as a return; the skim test's put-off sentences were remedied where ruled and the
+abstract's two are reported; the suite 1946 passed on 94cb6a1 with the hash-abbreviation flake fixed; CI fully green
+at 8699324. WP39 goes on the review list for the supervisor's acceptance with the three reads and the re-read beside
+it."

@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP39 delivered and verified; to the review list; 8699324 fully green (11:55).** The P8 re-read (94cb6a1): the
+  closing paragraph alone, easier, quoting the priced question; the middle of Section 9 (the K = 1 fit, the terms and
+  the temperatures) harder, which is the analyst's part and stands as a reader note. WP39-review.md: R-1 to R-13 met
+  with evidence. On 94cb6a1: ruff, lock, vocabulary and attribution clean; the fast suite 1946 passed, the
+  hash-abbreviation flake fixed (b6dbe99). CI 43494523985 on 8699324: every job green on both platforms, the
+  twenty-fourth fully green head; a run dispatched on 94cb6a1. WP39 accepted at the assistant's level
+  (WP39-decisions.md) and placed on the review list; the WP40 build has started in its worktree.
+
 - **The root page re-ordered per the supervisor's three morning rulings; fronted for him (11:20).** On 26555f2
   (4b8aa94 and its records): ruff, lock, vocabulary and attribution clean; the fast suite 1945 passed with the known
   hash-abbreviation flake (its one-line fix is committed in the PM's worktree, 631d7a7, landing with the next push).
