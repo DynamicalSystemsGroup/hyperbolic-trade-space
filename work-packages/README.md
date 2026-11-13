@@ -11,6 +11,10 @@ The screenshots the reviews and rounds cite are not in the checkout; git holds t
 record that names them says so in one line. One image: `git show c680853:<path> > out.png`. A directory in full:
 `git worktree add <dir> c680853`, then the folder is there.
 
+The four superseded inventories, `WP25-inventory.md`, `WP25-5-inventory.md`, `WP28-inventory.md` and
+`WP28-cut-list.md`, are removed; the last commit that holds them is `f227405` (`git show f227405:work-packages/<name>`).
+The reader-run directories `WP28-inventory/` and `WP28-retest/` stay.
+
 ## Roles and records
 
 - **Supervisor (accountable):** Michael Zargham, GitHub `mzargham`. Remote:
