@@ -96,3 +96,16 @@ subtitle, its plain laguage summary. it goes before the 'why'"
 **Applied as:** the sentence leaves the header's subtitle slot and becomes a plain paragraph placed immediately before
 the Why section (after the whom sentence), styled as body text; the header keeps the title and the byline. Folded
 into the root-page unit with the needs block's move; listed under Entry surfaces.
+
+## The supervisor on thinning the call to action (2026-11-14, 09:30)
+
+**Supervisor, verbatim:** "i also think you can thin out the call to action down to reader the paper or use the tool."
+
+**Applied as:** the closing block keeps its lead sentence (the documentation serves those who run the tool, the paper
+those who read it, check it or decide on it) and two doors, "Read the paper" and "Use the tool"; the other three doors
+and the adoption line go, each removal stating what the block no longer did (the Check-the-mathematics door: Appendix
+B is one click inside the paper; the Decide door: the decision is now narrated in the paper's Section 9 and the
+Examples page's requirements block stays reachable from the docs; the Bring-your-own-model door: the docs' Getting
+started carries it; the adoption line: its measured figure stays on the README and in register row C563, re-pointed).
+The journeys note's placements for P1, P7 and P8 are updated to the two doors. Folded into the root-page unit; listed
+under Entry surfaces.
