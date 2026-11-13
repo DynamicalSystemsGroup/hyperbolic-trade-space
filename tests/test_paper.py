@@ -889,6 +889,25 @@ def test_gaps_table_gives_every_column_a_width_hint():
     assert min(widths[2:]) >= 200  # every text column reads at about thirty characters or more
 
 
+def test_no_repository_path_stands_in_parentheses_in_the_paper_or_its_appendices():
+    """A path in parentheses reads as machine-written prose: the paper and the appendices carry
+    each as a link with words (``link_paths``, ``repo_link``). The residual pass's own counter."""
+    import sys
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import check_residuals as cr
+    import prose_surfaces as ps
+
+    hits = [
+        (s.id, b.loc)
+        for s in ps.collect()
+        if s.kind in ("paper", "appendix")
+        for b in s.blocks
+        if cr.path_parens(b.raw)
+    ]
+    assert hits == []
+
+
 def test_the_tex_subset_of_the_tables_becomes_mathml():
     from paper_common import tex_to_mathml
 
@@ -1769,7 +1788,7 @@ def test_the_sentences_that_state_counts_match_the_record():
     contrast = str(generate_prior_art.horopca_contrast_sentence())
     a, c = cells["A/rho2.0"], cells["C/rho2.0"]
     assert (a["ours_rec"], c["ours_rec"], a["pca_pc1_rec"], c["pca_pc1_rec"]) == (6, 0, 6, 6)
-    assert "from 6 of 6 tables to 0 of 6" in contrast and "(6 of 6 in both)" in contrast
+    assert "from 6 of 6 tables to 0 of 6" in contrast and "leaves PCA at 6 of 6" in contrast
 
 
 def test_the_design_constants_of_appendix_h_are_the_pre_registered_ones():

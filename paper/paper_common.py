@@ -17,6 +17,63 @@ LINK_STYLE = "color:inherit;text-decoration:underline"
 """A link in an output cell takes the text colour and is underlined, so it reads in both themes."""
 
 
+REPO_BLOB = "https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/"
+"""Where the repository's files are read on the web: the one place a moved folder is updated."""
+_PATH_TOKEN = re.compile(
+    r"`((?:(?:docs|paper|src|scripts|tests|examples|derivation|site|work-packages|data)/[\w./-]+"
+    r"|[\w-]+\.(?:py|md|json|toml|yaml|csv))(?:::\w+)?)`"
+)
+
+
+def repo_link(label: str, path: str) -> str:
+    """A Markdown link with words to a repository file, in place of the path in the prose."""
+    return f"[{label}]({REPO_BLOB}{path})"
+
+
+def link_paths(text: str) -> str:
+    """Each backticked repository path of ``text`` becomes a link with a word for its kind.
+
+    A test is "test", a script "script", a spike's README "spike record", a review "WP9 review";
+    a bare file name takes the folder of the path before it. A test name after ``::`` is dropped
+    from the words and kept in the link's file.
+
+    >>> link_paths("a `tests/test_a.py::test_x` and `data/v2/`").replace(REPO_BLOB, "@")
+    'a [test](@tests/test_a.py) and [data](@examples/adcs/data/v2/)'
+    """
+    folder = ""
+
+    def one(m: re.Match) -> str:
+        nonlocal folder
+        path = m.group(1).split("::")[0]
+        if "/" not in path:
+            path = folder + path
+        else:
+            folder = path.rsplit("/", 1)[0] + "/" if "." in path.rsplit("/", 1)[-1] else path
+        if path.startswith("data/"):
+            path = "examples/adcs/" + path
+        name = path.rsplit("/", 1)[-1]
+        wp = re.fullmatch(r"(WP\d+)-review\.md", name)
+        if path.startswith("tests/"):
+            label = "test"
+        elif wp:
+            label = f"{wp.group(1)} review"
+        elif name == "README.md" and "/spike-" in path:
+            label = "spike record"
+        elif path.endswith(".py"):
+            label = "script"
+        elif path.endswith(".json"):
+            label = "report"
+        elif path.endswith("/"):
+            label = "data"
+        elif path.startswith("work-packages/"):
+            label = "assessment"
+        else:
+            label = "note"
+        return repo_link(label, path)
+
+    return _PATH_TOKEN.sub(one, text)
+
+
 def appendix_link(label: str, text: str) -> str:
     """A link from the paper's page to a subsection of the supporting material (``sub-d-11``).
 
@@ -49,6 +106,8 @@ class Md(str):
         from markdown_it import MarkdownIt
 
         html = MarkdownIt("commonmark").enable("table").render(str(self))
+        # a link to a repository file reads in both themes, like the other links of an output cell
+        html = html.replace(f'<a href="{REPO_BLOB}', f'<a style="{LINK_STYLE}" href="{REPO_BLOB}')
         # a wide table scrolls inside the column instead of widening the page on a phone
         return html.replace("<table>", f'<div style="{SCROLL_STYLE}"><table>').replace(
             "</table>", "</table></div>"

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import re
 
-from paper_common import MdMath, md_table
+from paper_common import MdMath, link_paths, md_table
 from paper_paths import ROOT
 
 LEDGER = ROOT / "docs" / "superpowers" / "notes" / "abstraction-gaps.md"
@@ -92,6 +92,6 @@ def gaps_table() -> MdMath:
     cols = ("Formal object", "Bridging assumption", "What cannot be proved",
             "Sensitivity evidence", "Interpretive consequence")  # fmt: skip
     head = ["Gap", *cols]
-    body = [[r["id"], *(math_role(r[c]) for c in cols)] for r in rows]
-    raw = [[r["id"], *(r[c] for c in cols)] for r in rows]
+    body = [[r["id"], *(math_role(link_paths(r[c])) for c in cols)] for r in rows]
+    raw = [[r["id"], *(link_paths(r[c]) for c in cols)] for r in rows]
     return MdMath(md_table(head, body), md_table(head, raw), WIDTHS)

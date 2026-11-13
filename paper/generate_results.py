@@ -14,7 +14,7 @@ from functools import cache
 import case
 import numpy as np
 from generate_model import DATASET_LABELS, PLANTED, _associations, _one_axis_sentence, planted_table
-from paper_common import Md, frame_table, md_table
+from paper_common import Md, frame_table, md_table, repo_link
 from paper_stability import residue_bound, stable, stable_frame, summary
 
 
@@ -847,7 +847,8 @@ def injected_noise() -> Md:
     return Md(
         f"Datasets {' and '.join(DATASET_LABELS[r] for r in case.CUBESAT.regimes)}: the data of "
         "record carry no noise of their own; the noise is injected as a design choice "
-        "of this experiment (`examples/adcs/noise_injection.py`): each raw attribute is multiplied "
+        f"of this experiment, in {repo_link('its script', 'examples/adcs/noise_injection.py')}: "
+        "each raw attribute is multiplied "
         "by exp(delta z), z standard normal, the table is conditioned again and refitted at the "
         "clean fit's temperature, and the measured columns are over eight draws. The predicted "
         "shift is the corollary's formula on the support of the clean fit (its exponents above "
