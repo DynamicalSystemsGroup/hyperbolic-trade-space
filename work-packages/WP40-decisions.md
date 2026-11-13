@@ -39,3 +39,14 @@ saying what the folder holds and that it is not needed to use the method. 8. Dri
 the build runs after WP39 lands and before the final reader round, so no reader meets a moving path, and the residual
 pass runs on the surfaces after it. Protected as the readout lists, and the held-out WP11 material untouched. The
 scope for my approval next."
+
+## Approval of the scope (2026-11-13, 22:30; the assistant, under the supervisor's direction; scope at dfc7c95)
+
+**Assistant, verbatim:** "WP40-scope-of-work.md at dfc7c95 is approved as written: goals G1 to G4, the non-goals (no
+history rewrite, no change to the paper's content or the data of record, the records' text untouched and keyed by the
+move table, the held-out WP11 material untouched), deliverables D-0 to D-10, requirements R-1 to R-11, good enough as
+stated, the sequencing after WP39 and before the final reader round, and the agent's defaults as one item, including
+the three the PM raised: spike-container-platform moves as the third spike folder and the build reports any other
+count rather than guessing; one ruff-exclusion line in pyproject.toml because the spike folders move, the lock
+untouched; the two comment-only edits under derivation/ made only if neither file is pinned by a hash or the ledger,
+otherwise reported. Open decisions: none."

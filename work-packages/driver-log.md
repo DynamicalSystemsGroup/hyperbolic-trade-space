@@ -228,6 +228,22 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Head 809b8b8 verified; Appendix H pending its follow-up; six records accepted; WP40 scope approved (22:30).** On
+  809b8b8: ruff, lock, vocabulary and attribution clean; the fast suite 1941 passed, 15 skipped, 2 xfailed. One local
+  failure at 794a4e8 (`test_every_paper_key_is_a_label_of_the_built_paper`) was the assistant's stale local paper build
+  from noon, not the head: the stage's fresh build publishes `appendix-h`, and the test passes against it; the
+  docs-paper job builds first in CI. On the rebuilt stage: Appendix H renders its five sections in the supervisor's
+  order with the verdict-first table of 11 cells, no "worse" or "formally verified"; Appendix A's register table
+  typesets its mathematics (794a4e8, accepted); Appendix E's gaps table has its column widths (1d741d2, accepted). Not
+  accepted yet: Appendix H itself, which landed before the reviewer's five points reached the unit; the follow-up in
+  wp35hnb carries them, the three repository-path parentheticals it was given, and the two "rate" baseline rows; the
+  page shows five such parentheticals in all (two more cite spike READMEs from Appendices D and E), all for the same
+  unit. Accepted: WP33's addendum (809b8b8) and the fresh U3 cell (e14ba68), so WP33 goes to the review list for the
+  supervisor; WP37's open items refreshed to the page (4f7cc8b); the WP38 checker's path pattern with its rebaseline
+  (3e2b60d, 1d741d2; nine tests, compare clean); the WP40 inventory (64aa577) with stage 2 decided (832f040) and the
+  scope (dfc7c95) approved as written. The grid and review list refreshed by the PM (4455f10, f2a8812). CI
+  43357507948 on dfe564e fully green, the twentieth fully green head. Eight worktrees after the PM's prune.
+
 - **The overnight autonomous phase begins (19:30).** Supervisor, verbatim: "you clear to work tonight. i am going to
   bed soon". The standing rules of `release-candidate.md` and `PM-BRIEF.md` ("The autonomous phase") apply: the
   assistant verifies and accepts under the mandate, nothing merges, tags or deploys, the tick updates continue with the
