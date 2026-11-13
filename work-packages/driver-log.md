@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **114fdf5 fully green (13:15).** CI 43505431836 on 114fdf5 (WP39 delivered and verified): every job green on both
+  platforms, the twenty-fifth fully green head; the run on 996ed15 (the WP40 build) is in progress. WP40's D-8 is
+  committed in its worktree (139d3b9) and running its test group before the push.
+
 - **WP40 build verified for D-1 to D-7 and D-9; D-8 in flight (12:50).** Fifteen WP40 commits on dev (2a669de to
   cb91835) and the WP39 review-list row (ea6169d). The assistant's own checks on ea6169d: `git ls-files` finds no
   image under work-packages; a sample screenshot retrieved from the holding commit c680853 (239 kB); the protected
