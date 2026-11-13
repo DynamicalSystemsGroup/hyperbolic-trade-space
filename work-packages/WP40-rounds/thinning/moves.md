@@ -8,28 +8,28 @@ moves landed).
 
 | Old path | New path | Deliverable | Commit |
 |---|---|---|---|
-| `docs/superpowers/notes/adcs-port.md` | `work-packages/build-notes/adcs-port.md` | D-3 | @@D-3 |
-| `docs/superpowers/notes/opensysml-usage.md` | `work-packages/build-notes/opensysml-usage.md` | D-3 | @@D-3 |
-| `docs/superpowers/notes/system-model-tidy.md` | `work-packages/build-notes/system-model-tidy.md` | D-3 | @@D-3 |
-| `docs/superpowers/notes/view-editor-harness.md` | `work-packages/build-notes/view-editor-harness.md` | D-3 | @@D-3 |
-| `docs/superpowers/notes/paper-outline-v1-baseline.md` | `work-packages/outlines/paper-outline-v1-baseline.md` | D-3 | @@D-3 |
-| `docs/superpowers/notes/paper-outline-v2-search.md` | `work-packages/outlines/paper-outline-v2-search.md` | D-3 | @@D-3 |
-| `docs/superpowers/notes/search-prior-art.md` | `work-packages/outlines/search-prior-art.md` | D-3 | @@D-3 |
-| `docs/superpowers/notes/spike-objective/` | `work-packages/spikes/spike-objective/` | D-3 | @@D-3 |
-| `docs/superpowers/notes/spike-certificates/` | `work-packages/spikes/spike-certificates/` | D-3 | @@D-3 |
-| `docs/superpowers/notes/spike-container-platform/` | `work-packages/spikes/spike-container-platform/` | D-3 | @@D-3 |
-| `work-packages/WP25-inventory.md` | (removed; last held at the commit named in work-packages/README.md) | D-2 | @@D-2 |
-| `work-packages/WP25-5-inventory.md` | (removed; last held at the commit named in work-packages/README.md) | D-2 | @@D-2 |
-| `work-packages/WP28-inventory.md` | (removed; last held at the commit named in work-packages/README.md) | D-2 | @@D-2 |
-| `work-packages/WP28-cut-list.md` | (removed; last held at the commit named in work-packages/README.md) | D-2 | @@D-2 |
+| `docs/superpowers/notes/adcs-port.md` | `work-packages/build-notes/adcs-port.md` | D-3 | `afb6b8e` |
+| `docs/superpowers/notes/opensysml-usage.md` | `work-packages/build-notes/opensysml-usage.md` | D-3 | `afb6b8e` |
+| `docs/superpowers/notes/system-model-tidy.md` | `work-packages/build-notes/system-model-tidy.md` | D-3 | `afb6b8e` |
+| `docs/superpowers/notes/view-editor-harness.md` | `work-packages/build-notes/view-editor-harness.md` | D-3 | `afb6b8e` |
+| `docs/superpowers/notes/paper-outline-v1-baseline.md` | `work-packages/outlines/paper-outline-v1-baseline.md` | D-3 | `afb6b8e` |
+| `docs/superpowers/notes/paper-outline-v2-search.md` | `work-packages/outlines/paper-outline-v2-search.md` | D-3 | `afb6b8e` |
+| `docs/superpowers/notes/search-prior-art.md` | `work-packages/outlines/search-prior-art.md` | D-3 | `afb6b8e` |
+| `docs/superpowers/notes/spike-objective/` | `work-packages/spikes/spike-objective/` | D-3 | `afb6b8e` |
+| `docs/superpowers/notes/spike-certificates/` | `work-packages/spikes/spike-certificates/` | D-3 | `afb6b8e` |
+| `docs/superpowers/notes/spike-container-platform/` | `work-packages/spikes/spike-container-platform/` | D-3 | `afb6b8e` |
+| `work-packages/WP25-inventory.md` | (removed; last held at `f227405`) | D-2 | `42f7af7` |
+| `work-packages/WP25-5-inventory.md` | (removed; last held at `f227405`) | D-2 | `42f7af7` |
+| `work-packages/WP28-inventory.md` | (removed; last held at `f227405`) | D-2 | `42f7af7` |
+| `work-packages/WP28-cut-list.md` | (removed; last held at `f227405`) | D-2 | `42f7af7` |
 
 The WP28 reader-run directories `work-packages/WP28-inventory/` and `work-packages/WP28-retest/` stay (the removed file is
 `WP28-inventory.md`, not the directory).
 
 ## Removed images (D-1)
 
-{len(imgs)} tracked png/jpg under `work-packages/` (WP11-* holds none), in {len(dirs)} directories, all removed at @@D1 and held at the pointer
-commit H. A removed image `<dir>/<name>` is `git show H:<dir>/<name>`. Per directory:
+333 tracked png/jpg under `work-packages/` (`WP11-*` holds none), in 30 directories, all removed at `f227405` and held at the pointer
+commit H = `c680853`. A removed image `<dir>/<name>` is `git show H:<dir>/<name>`. Per directory:
 
 | Directory | Images |
 |---|---|
