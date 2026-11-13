@@ -538,7 +538,7 @@ def _load_script(name):
 
 HISTORY_RECORD = _load_script("history_record")
 
-THIRTEEN = (
+NAMED = (
     "Markus Koch",
     "Danilo Bernardineli",
     "Rohan Mehta",
@@ -552,12 +552,13 @@ THIRTEEN = (
     "Sean McOwen",
     "Carolina Riascos-\u00c1lvarez",
     "Matthew Barlin",
+    "Zeke Medley",
 )
 
 
 def test_history_record_holds_the_schema_and_every_entry_has_its_required_fields():
     """WP37 D-9: the record's schema is described at its top; every entry has the required fields
-    and an https URL; ids and URLs are unique; the thirteen people each have an entry."""
+    and an https URL; ids and URLs are unique; the fourteen people each have an entry."""
     raw = (ROOT / "history.yaml").read_text(encoding="utf-8")
     head = raw.split("entries:")[0]
     for field in HISTORY_RECORD.REQUIRED + HISTORY_RECORD.OPTIONAL:
@@ -566,10 +567,27 @@ def test_history_record_holds_the_schema_and_every_entry_has_its_required_fields
     assert HISTORY_RECORD.validate(entries) == []
     assert len(entries) >= 60
     persons = {e["title"] for e in entries if e["kind"] == "person"}
-    assert persons == set(THIRTEEN)
+    assert persons == set(NAMED)
     for e in entries:
         assert set(HISTORY_RECORD.REQUIRED) <= set(e), e["id"]
         assert e["url"].startswith("https://"), e["id"]
+
+
+def test_history_record_credits_who_the_source_credits_and_lists_only_the_arc():
+    """WP37 closing unit 2 (the supervisor, 2026-11-13): the block-diagrams entry names Zeke
+    Medley and Danilo Bernardineli, not Carolina; cadCAD is the work of its 19 contributors; the
+    Boyd tutorial and the exploratory repositories are not entries."""
+    entries = {e["id"]: e for e in HISTORY_RECORD.load()}
+    people = {p["name"] for p in entries["2024-dynamical-block-diagrams"]["people"]}
+    assert people == {"Zeke Medley", "Danilo Bernardineli"}
+    assert "19 contributors" in entries["2018-cadcad-contributors"]["shows"]
+    assert entries["2018-cadcad-repo"]["url"] == "https://github.com/cadCAD-org/cadCAD"
+    assert len(entries["2018-cadcad-repo"]["people"]) > 1
+    assert "not of one person" in entries["2018-cadcad-repo"]["shows"]
+    assert min(e["date"] for e in entries.values() if e["kind"] != "role") >= "2013"
+    for gone in ("2007-gp-tutorial", "2026-flexo-rtm", "2026-toaster", "2026-view-editor"):
+        assert gone not in entries, gone
+    assert not any("Boyd" in p["name"] for e in entries.values() for p in e.get("people", []))
 
 
 def test_history_record_flags_special_cases_and_keeps_the_register():
@@ -723,7 +741,7 @@ def test_history_every_link_on_the_page_is_a_record_entry():
 
 def test_history_every_name_on_the_page_is_in_the_record():
     """Each name the prose marks is a person or a named co-author of a record entry (a surname
-    alone must be the surname of one); the thirteen are all named."""
+    alone must be the surname of one); the fourteen are all named."""
     entries = HISTORY_RECORD.load()
     names = HISTORY_RECORD.person_names(entries)
     surnames = {n.split()[-1] for n in names}
@@ -731,7 +749,7 @@ def test_history_every_name_on_the_page_is_in_the_record():
     assert marked
     for n in marked:
         assert n in names or n in surnames, f"{n!r} is on the page and not in the record"
-    for person in THIRTEEN:
+    for person in NAMED:
         assert person in marked, person
 
 
@@ -916,8 +934,8 @@ def test_history_page_links_resolve_over_the_network():
     assert not failed, failed
 
 
-#: the page's word ceiling (WP37 closing unit: 418 words before it; the ceiling goes down only)
-WORDS_CEILING = 406
+#: the page's word ceiling (WP37 closing unit 2: 406 words before it; the ceiling goes down only)
+WORDS_CEILING = 397
 
 
 def test_history_page_is_one_screen_in_the_root_page_register():
@@ -968,12 +986,11 @@ def test_history_page_uses_no_cryptocurrency_or_web3_vocabulary():
     text = _history_text().lower()
     for banned in _BANNED:
         assert not re.search(banned, text), banned
-    # computer science is the supervisor's word for the team's backgrounds (WP37 decisions),
-    # offered on the page as the team's own account of the team
-    assert "in our own account of the team" in _history_text()
+    # the sentence on the team's backgrounds is dropped (the supervisor, 2026-11-13)
+    assert "backgrounds" not in text
 
 
-def test_history_page_credits_the_thirteen_named_people():
+def test_history_page_credits_the_fourteen_named_people():
     text = _history_text()
     for name in (
         "Markus Koch",
@@ -989,25 +1006,29 @@ def test_history_page_credits_the_thirteen_named_people():
         "Sean McOwen",
         "Carolina Riascos-\u00c1lvarez",
         "Matthew Barlin",
+        "Zeke Medley",
     ):
         assert name in text, name
 
 
-def test_history_page_marks_the_team_account_and_credits_cadcad_as_authors_txt_does():
-    """WP37 W3 decisions: the team's own account is marked each time; cadCAD's designers are
-    credited as AUTHORS.txt states them (the thinness ruling cut the per-person background
-    links; the record holds them)."""
+def test_history_page_marks_the_team_account_and_credits_cadcad_to_its_contributors():
+    """WP37 W3 decisions: the team's own account is marked each time; cadCAD is the work of its
+    contributors (19 on GitHub, the supervisor 2026-11-13), the names those AUTHORS.txt gives."""
     text = _history_text()
     assert text.count("our own account") + text.count("the same account") >= 3
-    assert "designed by Michael Zargham, Markus Koch and Matthew Barlin" in text
+    assert "cadCAD is the work of 19 contributors" in text
+    assert "implemented" not in text
+    raw = HISTORY.read_text(encoding="utf-8")
+    assert "https://github.com/cadCAD-org/cadCAD/graphs/contributors" in raw
     assert text.count("Barlin") == 1
 
 
 def test_history_page_follows_the_supervisors_wording_rulings():
     """WP37 decisions, the last entries govern: the firm's description and the activities sentence
     verbatim; Generalized Dynamical Systems without 'Part I'; the Applied Network Science journal
-    paper cited in place of the preprint; Carolina by name and GitHub handle, never LinkedIn; one
-    sentence for the work on client projects that cannot be named."""
+    paper cited in place of the preprint; Carolina by name only (no link on any person's name);
+    one merged paragraph for the work on client projects that cannot be named and the projects
+    cleared for public release."""
     text = _history_text()
     raw = HISTORY.read_text(encoding="utf-8")
     assert "contract research and engineering firm" in text
@@ -1022,11 +1043,12 @@ def test_history_page_follows_the_supervisors_wording_rulings():
     assert "https://doi.org/10.1007/s41109-020-0254-9" in raw
     assert "1807.00955" not in raw
     assert "Zixuan Zhang" in text and "Victor Preciado" in text
-    assert "https://github.com/CarolinaRiascos" in raw and "linkedin" not in raw.lower()
+    assert "CarolinaRiascos" not in raw and "linkedin" not in raw.lower()
     assert "worked on client projects we cannot name" in text
     assert "cannot describe here" in text
-    for ref in ("gds-axelrod", "10.1007/s10614-023-10445-9", "fip-0056", "vr6sIfjGmLQ"):
+    for ref in ("gds-axelrod", "10.1007/s10614-023-10445-9", "dynamical-block-diagrams"):
         assert ref in raw, ref
+    assert "cleared for public release" in text and "the RAI controller" in text
     assert "workshop in Edinburgh (ICMS), October 2024" in text
 
 
@@ -1045,9 +1067,8 @@ def test_history_page_follows_the_scope_order_and_the_closing_unit_rulings():
         "Before the firm",
         "cadCAD",
         "Jamsheed",
-        "In our own account, ",
         "serves on",
-        "Special cases",
+        "Jakob Hackel",
     )
     positions = [
         text.index(m, text.index("Before the firm") if m != "Before the firm" else 0) for m in order

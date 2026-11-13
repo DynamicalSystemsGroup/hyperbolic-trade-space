@@ -103,3 +103,23 @@ Checks run on the closing head: `uv run pytest -q tests/test_site.py -k "history
 `tests/test_claims_register.py` and `tests/test_text_encoding.py` 23 passed; `scripts/check_history_links.py` as above;
 `scripts/history_record.py --check` (trace current); `scripts/check_vocabulary.py` 0 new violations (63 known);
 whole-repo `ruff check .` and `ruff format --check .` clean; `uv lock --check` resolved.
+
+## Addendum 2: the closing unit's second round (2026-11-13), R-2, R-4 and R-8 re-checked
+
+The supervisor's rulings at 13:40 (the merged client-projects paragraph, Carolina unlinked, the wrong credit and Zeke),
+13:50 (slimming), 14:00 (Zeke Medley), 14:10 (cadCAD's 19 contributors) and 14:45 (Boyd) are applied in one unit
+(`WP37-decisions.md`; the calls are in `WP37-rounds/open-items.md` section 9). Prose: 397 visible words (406 before;
+the ceiling goes 406 to 397; the aim of 350 is not reached). Record: 69 entries (87 before: 20 removed, 2 added; papers
+12, repositories 12, posts 10, persons 14, roles 9, talks 7, videos 5), 49 on the dated list.
+
+| R-id | Verdict | Evidence |
+|---|---|---|
+| R-2 link matches claim (W3 re-run at the final head) | met | `WP37-rounds/w3-check.md` regenerated after the people audit: 26 links of the prose (23 external, 3 site-internal), every external link ok by `scripts/check_history_links.py --page`; the table marks 2 partial (OpenMBEE and OpenSysML, as before) and none `no`. All 69 record URLs: 68 ok, 1 blocked (the Wiley DOI, confirmed in a browser 2026-11-13), 0 FAIL |
+| R-4 every work dated; every person has a work, link or marked account | met | 14 person entries (Zeke Medley added), all 14 named on the page; Hackel and Riascos-Álvarez rest on the marked team-account sentence only; Medley's internship and affiliation are the supervisor's account, no public page states either (searched; percisely.xyz and the Khoury pages do not). People audit in `w3-check.md`: 43 entries with people, 36 match their source, 7 corrected, 1 lost its person (no byline) |
+| R-8 structure and arc | met, with the readings stated | Order: purpose and the firm; before the firm; cadCAD; the people and works; the firm today; the merged paragraph on client projects and the projects cleared for public release (last, as the special cases were). The record's earliest entry is the 2013 network-protection preprint; the prose names no year before 2014 and does not name 2007. The sentence on the team's backgrounds is dropped, with the Filecoin review, the sponsor, PyData and SciPy clauses (slimming, each recorded in open-items section 9) |
+| R-12 rendered check | met | `work-packages/WP37-review/history-{1280x800,390x844}-{light,dark}.png` replaced, system Chrome via Playwright: no console message, no page error, `scrollWidth` equals `clientWidth` in all four; at 1280 by 800 the prose ends at y=722 and the first screen holds the back link, the purpose and every paragraph; at 390 by 844 the prose ends at y=1544 |
+
+Checks on this unit's head: `tests/test_site.py -k "history or word_budgets or root_and_paper"` 26 passed;
+`tests/test_claims_register.py` and `tests/test_text_encoding.py`; `scripts/history_record.py --check`;
+`scripts/check_history_links.py`; `scripts/check_vocabulary.py`; whole-repo `ruff check .`, `ruff format --check .`;
+`uv lock --check`.

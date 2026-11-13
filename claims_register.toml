@@ -6367,7 +6367,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
-note = "Record ids 2014-dual-descent (https://doi.org/10.1109/TAC.2013.2293221, IEEE TAC, April 2014) and 2014-network-protection (https://doi.org/10.1109/TCNS.2014.2310911, March 2014, geometric programming in the abstract). Authors per Crossref. The clause 'posynomial like this paper\u2019s frontier' (link to the paper, paper/) rests on 2007-gp-tutorial (a geometric program has posynomial objective and constraints; Boyd, Kim, Vandenberghe, Hassibi) and on the paper, whose model is a posynomial frontier; the record has no entry for the paper, which is the page's host and not yet at a public URL."
+note = "Record ids 2014-dual-descent (https://doi.org/10.1109/TAC.2013.2293221, IEEE TAC, April 2014) and 2014-network-protection (https://doi.org/10.1109/TCNS.2014.2310911, March 2014, geometric programming in the abstract). Authors per Crossref. The clause 'posynomial like this paper\u2019s frontier' (link to the paper, paper/) rests on the paper, whose model is a posynomial frontier, and on the geometric-programming tutorial it cites (a geometric program has posynomial objective and constraints; section 2); the tutorial is a reference of the paper and not an entry of the record (the supervisor, 2026-11-13: the team had nothing to do with that work); the record has no entry for the paper, which is the page's host."
 
 [[claim]]
 id = "C551"
@@ -6385,7 +6385,7 @@ note = "Record ids 2020-state-space-journal (https://doi.org/10.1007/s41109-020-
 
 [[claim]]
 id = "C552"
-fragment = "cadCAD ... was implemented by <span class=\"n\">Joshua Jodesty</span> and"
+fragment = "cadCAD</a> is the work of ... 19 contributors"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6395,7 +6395,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
-note = "Record ids 2018-cadcad-repo (https://github.com/cadCAD-org/cadCAD), 2018-authors (AUTHORS.txt URL: implemented, designed by the three, upgrades by Bernardineli and Lima), 2019-cadcad-origin (https://blog.block.science/introducing-complex-adaptive-dynamics-computer-aided-design-cadcad/, 3 June 2019). Barlin credited as AUTHORS.txt has him."
+note = "Record ids 2018-cadcad-repo (https://github.com/cadCAD-org/cadCAD), 2018-cadcad-contributors (https://github.com/cadCAD-org/cadCAD/graphs/contributors: 19 contributors, counted through the API on 2026-11-12 and 2026-11-13), 2018-authors (AUTHORS.txt URL: the names the file credits; the sentence names six of them), 2019-cadcad-origin (https://blog.block.science/introducing-complex-adaptive-dynamics-computer-aided-design-cadcad/, 3 June 2019). The project is attributed to its contributors, not to one implementer (the supervisor, 2026-11-13)."
 
 [[claim]]
 id = "C553"
@@ -6409,7 +6409,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
-note = "Record ids 2022-gds (WU record), 2022-gds-playlist (https://www.youtube.com/playlist?list=PLmWm8ksQq4YJrB72Na_JB-o8Xu2JLj7h9, Shorish presenting per the firm's post), 2021-psuu (https://blog.block.science/how-to-perform-parameter-selection-under-uncertainty/, byline Paruch and Shorish). The paper is not numbered, by ruling."
+note = "Record ids 2022-gds (WU record), 2022-gds-playlist (https://www.youtube.com/playlist?list=PLmWm8ksQq4YJrB72Na_JB-o8Xu2JLj7h9, the video series of the paper; Shorish presenting per the firm's post, which the record no longer holds as a duplicate pointer), 2021-psuu (https://blog.block.science/how-to-perform-parameter-selection-under-uncertainty/, byline Paruch and Shorish). The paper is not numbered, by ruling."
 
 [[claim]]
 id = "C554"
@@ -6455,7 +6455,7 @@ note = "Record id 2023-community-currency (https://doi.org/10.1007/s10614-023-10
 
 [[claim]]
 id = "C557"
-fragment = "In our own account, <span class=\"n\">Jakob Hackel</span> and"
+fragment = "In our own account, <span class=\"n\">Jakob Hackel</span> and <span class=\"n\">Carolina Riascos-&Aacute;lvarez</span> worked on client projects we cannot name"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6465,11 +6465,11 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
-note = "Record ids person-hackel (team-account), person-riascos (https://github.com/CarolinaRiascos, team-account), 2023-client-projects, 2026-backgrounds: the supervisor's sentence on undisclosed client work and the team's backgrounds, marked as the team's account; no client and no detail."
+note = "Record ids person-hackel (team-account), person-riascos (team-account, not linked), 2023-client-projects: the supervisor's sentence on undisclosed client work, marked as the team's account; no client and no detail. The sentence on the team's backgrounds is dropped (the supervisor, 2026-11-13: awkward and forced) with its record entries."
 
 [[claim]]
 id = "C558"
-fragment = "Special cases where the work was highly public:"
+fragment = "In the same account, some projects, the RAI controller among them, were cleared for public release, special cases where the work was highly public:"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -6479,7 +6479,21 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
-note = "Record ids 2023-fip-0056 (https://blog.block.science/reviewing-the-fip-0056-and-cdm-debate-on-filecoin/, 'debate conducted publicly on GitHub and Slack'), 2021-rai-design (https://zenodo.org/records/10474385; only 'highly automated' is source-stated), 2024-edinburgh (https://michael.zargham.org/cv.pdf, the CV alone). All special_case."
+note = "Record ids 2021-rai-design (https://zenodo.org/records/10474385; only 'highly automated' is source-stated), 2024-edinburgh (https://michael.zargham.org/cv.pdf, the CV alone). 'Cleared for public release' is the team's account (marked 'in the same account'); the two sources are public. Both special_case. The Filecoin review (2023-fip-0056) is no longer cited in the prose (slimming); the record and the list keep it."
+
+[[claim]]
+id = "C569"
+fragment = "<span class=\"n\">Zeke Medley</span>, whose ... summer internship"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP37 D-9"
+note = "Record ids 2024-dynamical-block-diagrams (https://github.com/DynamicalSystemsGroup/dynamical-block-diagrams: contributors 0xekez 11 and danlessa 1; the write-up's LaTeX source names Zeke Medley as author), person-medley (team-account). The summer internship and its focus are the supervisor's words (WP37-decisions.md, 2026-11-13 13:40), marked 'in our own account'; the record holds his affiliation as the supervisor's account (no public page found). People corrected from Carolina Riascos-Álvarez to Bernardineli and Medley on the supervisor's ruling."
 
 [[claim]]
 id = "C559"
@@ -6493,7 +6507,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP37 D-9"
-note = "Record ids 2022-numfocus-council, 2026-numfocus-sponsor, 2023-pydata-nyc (https://www.youtube.com/watch?v=vr6sIfjGmLQ), 2026-scipy-talk (https://pretalx.com/scipy-2026/talk/TBDWJZ/)."
+note = "Record id 2022-numfocus-council (https://numfocus.org/community/people). The sponsor, PyData NYC 2023 and SciPy 2026 clauses are cut (slimming); 2026-numfocus-sponsor, 2023-pydata-nyc and 2026-scipy-talk stay in the record and the list."
 
 [[claim]]
 id = "C560"
