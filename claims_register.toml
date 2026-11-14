@@ -8245,6 +8245,9 @@ status = "backed"
 disposition = "keep"
 source = "WP51 root page recast, 2026-11-14 (WP51-decisions.md; the three words are the abstract's, C677)"
 note = "Framing: the abstract's three words (scalable, reproducible, interpretable) carried to the page's what section; the three conditions are C356's."
+
+[[claim]]
+id = "C695"
 fragment = "Voc and Jsc are in the contending set in every variant ... association between log Voc and log Jsc is negative in every one"
 file = "work-packages/WP45-rounds/perovskite/test-record.md"
 anchor = ""
@@ -8259,7 +8262,7 @@ source = "WP45 D-3"
 note = "The run writes results.json; the test reads every variant's contending set and Voc-Jsc association."
 
 [[claim]]
-id = "C694"
+id = "C696"
 fragment = "Dropped by the rule: 2,398 = 2,359"
 file = "work-packages/WP45-rounds/perovskite/test-record.md"
 anchor = ""
@@ -8274,7 +8277,7 @@ source = "WP45 D-3"
 note = "Counts of the primary table, from the run."
 
 [[claim]]
-id = "C695"
+id = "C697"
 fragment = "extracts device data from peer-reviewed perovskite papers into one database of over 42,400 devices"
 file = "work-packages/WP45-rounds/perovskite/test-record.md"
 anchor = ""
@@ -8288,7 +8291,7 @@ source = "WP45 D-3"
 note = "Crossref abstract of the database paper, read 2026-11-14."
 
 [[claim]]
-id = "C696"
+id = "C698"
 fragment = "the efficiency is calculated with the band gap as a parameter, with a maximum of 30 percent at 1.1 eV"
 file = "work-packages/WP45-rounds/perovskite/test-record.md"
 anchor = ""
@@ -8302,7 +8305,7 @@ source = "WP45 D-3"
 note = "Crossref abstract of Shockley and Queisser, read 2026-11-14; the record states that the further reading (voltage up, current down with gap) is not checked against the text."
 
 [[claim]]
-id = "C697"
+id = "C699"
 fragment = "Complete cases of the five: 2,770"
 file = "work-packages/WP45-rounds/amniote/test-record.md"
 anchor = ""
@@ -8317,7 +8320,7 @@ source = "WP45 D-3"
 note = "Count of the complete-case table, from the run."
 
 [[claim]]
-id = "C698"
+id = "C700"
 fragment = "Longevity and litter size are in the contending set in the primary table and in every variant except the one that reads maturity the other way round"
 file = "work-packages/WP45-rounds/amniote/test-record.md"
 anchor = ""
@@ -8332,7 +8335,7 @@ source = "WP45 D-3"
 note = "The run writes results.json; the test reads each variant's contending set."
 
 [[claim]]
-id = "C699"
+id = "C701"
 fragment = "The database is compiled from peer-reviewed studies of individual species and other sources"
 file = "work-packages/WP45-rounds/amniote/test-record.md"
 anchor = ""
@@ -8346,7 +8349,7 @@ source = "WP45 D-3"
 note = "Crossref abstract of the database paper, read 2026-11-14."
 
 [[claim]]
-id = "C700"
+id = "C702"
 fragment = "re-evaluates it for mammals (by its title)"
 file = "work-packages/WP45-rounds/amniote/test-record.md"
 anchor = ""
@@ -8360,7 +8363,7 @@ source = "WP45 D-3"
 note = "The title of the record (bibliographic record only; the text is not read, and the record says so)."
 
 [[claim]]
-id = "C701"
+id = "C703"
 fragment = "n = 2 with both exponents positive in every variant, and the near-frontier association between log grain and log straw is negative in every one"
 file = "work-packages/WP45-rounds/wheat/test-record.md"
 anchor = ""
@@ -8375,7 +8378,7 @@ source = "WP45 D-3"
 note = "The run writes results.json; the test reads every variant."
 
 [[claim]]
-id = "C702"
+id = "C704"
 fragment = "Grain present (the file marks a missing value `*`): 7,814; straw present: 3,755"
 file = "work-packages/WP45-rounds/wheat/test-record.md"
 anchor = ""
@@ -8390,7 +8393,7 @@ source = "WP45 D-3"
 note = "Counts of the table, from the run."
 
 [[claim]]
-id = "C703"
+id = "C705"
 fragment = "variety improvement raised the yield potential of winter wheat in the U.K."
 file = "work-packages/WP45-rounds/wheat/test-record.md"
 anchor = ""
