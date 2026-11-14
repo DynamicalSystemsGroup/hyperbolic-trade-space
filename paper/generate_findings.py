@@ -24,6 +24,7 @@ _D14 = appendix_link("sub-d-14", "Appendix D.14")
 _C5 = appendix_link("sub-c-5", "Appendix C.5")
 _E = appendix_link("appendix-e", "Appendix E")
 _D15 = appendix_link("sub-d-15", "Appendix D.15")
+_D17 = appendix_link("sub-d-17", "Appendix D.17")
 _C8 = appendix_link("sub-c-8", "Appendix C.8")
 
 
@@ -137,6 +138,28 @@ def datasets_sentence(primary, stock) -> Md:
     )
 
 
+def baseline_requirement_sentence(stock) -> Md:
+    """The baseline configuration against the pointing-error requirement, and the share of the
+    baseline regime's feasible designs that pass it.
+
+    The limit and the baseline's pointing error are the case specification's; the share is
+    ``case.requirement_mask`` on the stock regime's feasible designs, the same mask that
+    ``case.requirements_table`` reads (Appendix D.17's pass column).
+    """
+    spec = stock.spec
+    limit = spec.requirements["pointing_error_deg"][0]
+    base = float(spec.baseline_configuration["pointing_error_deg"])
+    assert base > limit, "premise of the sentence: the baseline fails the requirement"
+    share = float(
+        case.requirement_mask(stock.feasible, spec, only="pointing_error_deg", costs=True).mean()
+    )
+    return Md(
+        f"The baseline configuration fails the pointing-error requirement ({base:.4f} against "
+        f"{limit:.4f} degree), which {100 * share:.1f} % of the baseline regime's feasible "
+        f"designs pass."
+    )
+
+
 def participation_sentence() -> Md:
     """The traded metrics that enter no contending set, and why (Appendix C.5).
 
@@ -187,6 +210,44 @@ def _target_variants_keep_the_set(study) -> bool:
     sets = {v: set(s.strip() for s in t.loc[v, "contending set"].split(",")) for v in t.index}
     base = sets["baseline"]
     return all(sets[v] == base for v in ("target fraction halved", "target fraction doubled"))
+
+
+def design_sets_sentence() -> Md:
+    """How far imposing requirements before the fit moves the one-term contending set.
+
+    For each regime, the fit of record (the feasible designs) against the fit on every design and
+    the fit on the feasible designs that meet the four performance thresholds, all in the feasible
+    set's conditioning (``case.design_sets_table``, Appendix D.17's second table). A set's
+    difference from the fit of record is the number of metrics in one contending set and not in
+    the other, the larger of the two directions; the sentence gives the largest over the other
+    two sets, with the size of the fit of record's contending set.
+    """
+    import generate_results as gr
+
+    t = case.design_sets_table(sets=gr._design_sets())
+    parts = []
+    for regime in case.CUBESAT.regimes:
+        rows = t[t["regime"] == regime].set_index("set")["contending set"]
+        sets = {k: {m.strip() for m in v.split(",")} for k, v in rows.items()}
+        record = sets["feasible"]
+        worst = max(
+            max(len(record - other), len(other - record))
+            for name, other in sets.items()
+            if name != "feasible"
+        )
+        label = {"primary": "the primary regime", "stock": "the baseline regime"}[regime]
+        n = _NUMBER_WORDS.get(len(record), len(record))
+        if worst == 0:
+            parts.append(f"leaves the one-term contending set of {label} ({n} metrics) unchanged")
+        else:
+            w = _NUMBER_WORDS.get(worst, worst)
+            parts.append(f"changes that of {label} by at most {w} of its {n} metrics")
+    return Md(
+        "With every design set conditioned as the fit of record is, removing the infeasible "
+        "designs or imposing the four performance thresholds before the fit "
+        + " and ".join(parts)
+        + f" ({_D17})."
+    )
 
 
 def temperature_sentence(study, fit) -> Md:
@@ -604,7 +665,8 @@ def elasticity_sentence(study, fits) -> Md:
     )
     return Md(
         f"On term {k} the elasticity between {a} and {b} is -{text}: along the term, one percent "
-        f"gained in {b} is {text} percent given up in {a}.{tail}"
+        f"gained in {b} is {text} percent given up in {a}. The percentages are of the "
+        f"conditioned metrics; Theorem 7 gives the rates in the attributes' own units.{tail}"
     )
 
 
@@ -794,6 +856,13 @@ def decision_sentence(d: Decision) -> Md:
     assert bw["st_grade"] == "fine" and sp["st_grade"] != "fine", "premise of the paragraph"
     for role in ("sponsor", "between", "fine"):  # the same design in every regeneration
         assert entry(f"decision | primary | {role} | design")["identical"], role
+    differs = [
+        label
+        for col, label in (("wheel_class", "wheel class"), ("st_grade", "tracker grade"),
+                           ("fleet_size", "fleet size"))
+        if p["fine"][col] != sp[col]
+    ]  # fmt: skip
+    assert "tracker grade" in differs, "premise of the sentence: the fleets differ in the tracker"
     tracker = lambda r: f"{r['wheel_class']}-wheel, {r['st_grade']}-tracker"  # noqa: E731
     one = lambda v: f"{v:.1g}"  # noqa: E731
     held = lambda role, col, orig: _held(f"{role} | {col}", p[role][col], orig)  # noqa: E731
@@ -809,6 +878,7 @@ def decision_sentence(d: Decision) -> Md:
         f"{held('fine', 'pointing_error_deg', one)} degree, is worth about "
         f"{_held('fine tracker | extra fleet cost', _tracker_cost(d), lambda v: f'{v / 1e6:.2f}')}"
         f" M USD of a {d.fleet_budget / 1e6:g} M USD fleet cost limit. "
+        f"The fleets differ in {_and(differs)}, so that cost is theirs, not the tracker's. "
         f"If it is, the fleet of {int(bw['fleet_size'])} {tracker(bw)} satellites at "
         f"{held('between', 'fleet_cost_usd', _musd)} M USD "
         f"({held('between', 'unit_cost_usd', _thousand_usd)} USD each) "
@@ -887,14 +957,22 @@ def decision_designs_table(d: Decision) -> Md:
     from generate_model import DATASET_LABELS
 
     w = d.working
-    return Md(f"Dataset {DATASET_LABELS['primary']}:\n\n" + md_table(
+    five = w["pointing_error_deg"].map(lambda v: f"{v:.5f}")
+    ties = [list(map(int, g["design_id"])) for _, g in w.groupby(five) if len(g) > 1]
+    tied = "; ".join(f"designs {_and(ids)} agree to five decimals" for ids in ties)
+    digits = (
+        f"Pointing error is printed to six decimals, so that a near tie reads as it is: {tied}."
+        if ties
+        else "Pointing error is printed to six decimals."
+    )
+    return Md(f"Dataset {DATASET_LABELS['primary']}. {digits}\n\n" + md_table(
         ["design", "wheel / tracker", "panel (m)", "battery (Wh)", "Kp", "Kd", "fleet",
          "pointing error (degree)", "unit cost (USD)", "fleet cost (USD)", "level (K=2)",
          "level (K=1)", "term 1 level (K=2)", "term 2 level (K=2)",
          "nondominated on pointing error and"],
         [(int(r["design_id"]), f"{r['wheel_class']} / {r['st_grade']}",
           f"{r['panel_span_m']:.2f}", f"{r['battery_wh']:.0f}", f"{r['Kp']:.2f}",
-          f"{r['Kd']:.2f}", int(r["fleet_size"]), f"{r['pointing_error_deg']:.5f}",
+          f"{r['Kd']:.2f}", int(r["fleet_size"]), f"{r['pointing_error_deg']:.6f}",
           f"{r['unit_cost_usd']:,.0f}", f"{r['fleet_cost_usd']:,.0f}",
           f"{r['log V K=2']:+.4f}", f"{r['log V K=1']:+.4f}", f"{r['term 1 level']:+.4f}",
           f"{r['term 2 level']:+.4f}", _marks(r))

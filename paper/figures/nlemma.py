@@ -69,6 +69,20 @@ def nlemma_data():
     }
 
 
+def hundredths(w):
+    """The exponents to two decimals by largest remainder, so the printed three sum to 1.00.
+
+    >>> hundredths([0.436, 0.274, 0.29]).tolist()
+    [0.44, 0.27, 0.29]
+    >>> float(hundredths([0.5, 0.25, 0.25]).sum())
+    1.0
+    """
+    w = np.asarray(w, float) * 100
+    q = np.floor(w + 1e-9).astype(int)
+    q[np.argsort(-(w - q), kind="stable")[: 100 - int(q.sum())]] += 1
+    return q / 100
+
+
 def _members(support):
     return " and ".join(NAMES[j].split()[1] for j in support)
 
@@ -122,8 +136,8 @@ def nlemma_figure(data=None, figsize=(6.4, 3.9)):
         if len(d["support"][k]) == 3:
             what = f"{d['lemma'][k]} of all three"
         tx.text(0.1, y, f"term {k + 1}: {what}", fontsize=9, color=INK, va="center")
-        tx.text(0.1, y - 0.07, "w = (" + ", ".join(f"{v:.2f}" for v in w) + ")", fontsize=8.5,
-                color="0.3", va="center")  # fmt: skip
+        shown = ", ".join(f"{v:.2f}" for v in hundredths(w))
+        tx.text(0.1, y - 0.07, f"w = ({shown})", fontsize=8.5, color="0.3", va="center")
         y -= 0.17
     tx.set(xlim=(0, 1), ylim=(0, 1))
     return fig

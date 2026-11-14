@@ -1557,3 +1557,63 @@ section = "Search of the design space (preliminary)"
 words_added = 2
 job = "'the nested loops below' for 'the loops': the first sentence of the section named loops the reader meets only in the next paragraph, and the pass had cut the sentence that introduced them"
 reader = "the reader following the search section for the first time"
+
+# The final reader round, wave 1 (change requests 1 to 31 of work-packages/WP11-final/triage/wave-1.md).
+# Each row below is the section's measured growth (tests/test_paper.py words_by_section, before and
+# after); the cuts are the sentences the same unit deleted.
+
+[[raise]]
+date = "2026-11-14"
+section = "Preliminaries and notation"
+words_added = 21
+job = "says once that A3 and A6 are for finite temperatures and that infinity is the exact limit, named where used (the axioms and the lemma scripts say tau > 0, the text said tau in (0, infinity])"
+reader = "the reader checking the mathematics against the lemma scripts"
+
+[[raise]]
+date = "2026-11-14"
+section = "Definitions"
+words_added = 88
+job = "the three thresholds on an exponent, side by side where the first is met; the posynomial definition's grammar (V_K the 1/kappa power of the bracketed posynomial, e^{kappa Phi_K} the posynomial); the open band against the closed band of L5.25; the contending set's size under its own symbol"
+reader = "the reader checking the mathematics, who met three thresholds in three places and a symbol with two meanings"
+
+[[raise]]
+date = "2026-11-14"
+section = "Methods"
+words_added = 39
+job = "the case is read at K = 2 and K = 3 is certified with a thin term (the sentence said the case needs three terms); the pointer to the correspondence between the conditioning letters of the text and of the lemma scripts"
+reader = "the reader checking the case against the theory"
+
+[[cut]]
+date = "2026-11-14"
+section = "Methods"
+words_removed = 14
+no_longer_did = "'One at or below 10^-12 is numerically zero, not mathematically so (membership: Definition 6)': the definition of the contending set now says it beside the other two thresholds"
+authority = "final reader round wave 1, change request 19; marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-14"
+section = "Results"
+words_added = 122
+job = "each theorem states what its lemma script states (V with its scale factor, R1 as a tau = infinity condition, K = 1 in Theorem 5, the noise model of Corollary 1, weak efficiency only at K > 1, the symmetry instance of Theorem 10, the finite stop's hypotheses in Theorem 11), what certified is and holds at, why the own-rows refit differs from the contending set's fit, and whether a script proves for arbitrary dimension"
+reader = "the reader checking the mathematics against the lemma scripts"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case analysis"
+words_added = 98
+job = "the ternary figure's caption says the triples are their own two-term fits and how many of the search's fits showed two stable terms; the energy differential and the regime are glossed at their first caption use; the elasticity sentence says what its percentages are of; the decision paragraph says the two fleets differ in more than the tracker"
+reader = "the executive reading the case and its figures"
+
+[[cut]]
+date = "2026-11-14"
+section = "Case analysis"
+words_removed = 24
+no_longer_did = "'The triples were picked for two stable terms that contend differently, from a search of every triple at one, two and three terms' (the sentence said 'every triple' of thirteen metrics where the search read eight; the caption of the figure now says what was searched and how many fits showed it)"
+authority = "final reader round wave 1, change request 28; marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-14"
+section = "Discussion"
+words_added = 16
+job = "the contending-set change under pre-imposed requirements is generated per regime with the size of the set, in place of one count typed for the primary regime (five metrics, where the set has seven)"
+reader = "the reader weighing whether the requirements belong before or after the fit"

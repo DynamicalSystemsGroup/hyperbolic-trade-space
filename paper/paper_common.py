@@ -184,7 +184,7 @@ if __name__ == "__main__":
 
 _TEX_GREEK = {
     "tau": "τ", "gamma": "γ", "beta": "β", "sigma": "σ", "kappa": "κ",
-    "varepsilon": "ε", "epsilon": "ϵ",
+    "varepsilon": "ε", "epsilon": "ϵ", "nu": "ν",
 }  # fmt: skip
 _TEX_UPRIGHT = {"Phi": "Φ", "Sigma": "Σ", "infty": "∞", "top": "⊤"}
 _TEX_FUNCTION = ("log", "max", "min")
