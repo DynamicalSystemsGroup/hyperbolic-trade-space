@@ -40,3 +40,14 @@ tension is now the glossary's word for the local partial derivative between two 
 word for competing interests is compete or trade off; "the data says how they compete and where they compete" becomes
 "the data say how they compete and where", the paper's plural and one repetition fewer. Rendered on 8793 for his read.
 
+## Merge of the prose; the figure and its prose to follow (2026-11-15, 01:35)
+
+**Supervisor, verbatim:** "you can merge in the new prose but i am still expecting new plots which will also call for some
+prose revisions in the later sections near the figures"
+
+**Applied as:** the prose (his why, the what, the how, no headers, the two vocabulary edits, the rewritten tests) merges
+into `dev` once the branch's checks pass (lint, format, lock, vocabulary, residuals, the fast suite, the site tests),
+and that merge is the approval act for WP51's G1. WP51 continues: the three-metric figure (G2, G3) and, added to G1 by
+this ruling, the prose revisions in the what and how sections and the captions that the new figure calls for, drafted
+for his close read before they merge. The page is read again rendered at that point.
+

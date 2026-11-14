@@ -18,7 +18,10 @@ example throughout and shows a trade among more than two metrics.
 ## Goals
 
 - G1. **The prose:** three sections in depth order, no headers; the summary paragraph and the two doors unchanged; the
-  two vocabulary edits already ruled for this page ("explains trade-offs", "contend"). Drafted; his close read first.
+  two vocabulary edits already ruled for this page ("explains trade-offs", "contend"). Drafted, read and merged on his
+  word of 01:35. **G1b.** When the figure lands, the prose of the what and how sections and both captions are revised
+  as the new figure calls for (one example throughout; the fan and the slice named in the caption; the ternary's caption
+  saying it is the same table's whole view), drafted for his close read before merging.
 - G2. **The figure:** from the planted three-metric table of `scripts/build_site_figures.py` (the ternary's fit, three
   terms), a three-by-three figure: rows the metric pairs (1 against 2, 2 against 3, 1 against 3); columns the metric
   space (the fitted reference surface's slices), the log space (the envelope's slices), and the chart's slice along the
@@ -42,7 +45,7 @@ example throughout and shows a trade among more than two metrics.
 
 | ID | Deliverable | Serves |
 |---|---|---|
-| D-1 | `site/index.html` body (three sections, no headers) | G1 |
+| D-1 | `site/index.html` body (three sections, no headers); its revision with the figure | G1, G1b |
 | D-2 | The figure's generator in `scripts/build_site_figures.py`, its light and dark images built at stage time, the caption | G2, G3 |
 | D-3 | `work-packages/WP51-rounds/figure-review.md` with the recipe, the before and after images, the cold-read reports verbatim, the five tests | G4 |
 | D-4 | Tests in `tests/test_site.py`; the claims row | G5 |
