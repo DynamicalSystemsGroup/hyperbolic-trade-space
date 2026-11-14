@@ -32,8 +32,14 @@ are written to hold whichever model or editor you use.
 
 **An issue is a scope of work.** It says what will be delivered and what will not, what the work aims at (good),
 and what a reviewer will check item by item (good enough). It does not say how the work is to be done; the approach
-belongs to the person doing it. Where the scope depends on a decision only the maintainer can make, the issue lists it
-as an open decision with plain options.
+belongs to the person doing it. Details the scope does not settle are the worker's call, listed in the pull request as
+defaults for the reviewer to approve as one item. Where the scope depends on a decision only the maintainer can make,
+the issue lists it as an open decision with plain options.
+
+**An issue's good-enough items are of two kinds.** Conformance items say what must hold and are checked by machine: a
+test, a lint or format rule, the lock check, a checker script, the workflow. Fitness items say what the change must do
+or how it must read, and are validated by a person: it does what the issue intends, it reads as intended, it renders
+right. Write each item so a reviewer can tell which it is.
 
 **An issue must be admissible, and this is enforced.** A draft becomes an issue only when it has a bounded scope, a
 sane blast radius (the files and surfaces it may touch, small enough to review in one sitting), and definitions of good
@@ -48,16 +54,21 @@ fixes, a typo or a broken link, need no issue: open the pull request and say wha
 description states what changed, what backs it (a test, a lemma step, a generated value, a source), which tests cover
 it, and the tools used. History stays readable: commits that each build and pass, no merges of `main` into a feature
 branch, no force-pushes to shared branches. A change that must reach beyond the files its scope names says so, and is
-split when it can be.
+split when it can be. If the work shows the scope itself must change, the change goes back to the issue as an
+amendment and is approved there; a pull request does not widen its scope on its own.
 
-**Review is against the scope.** A reviewer takes the issue's good-enough items one by one and checks each against
-evidence: the suite, the lint, format and lock checks, and, for anything rendered, the page or figure in a browser.
-Reading the diff alone is not a review. What was run is written in the review. A pull request merges into `dev` when
-its items hold, and closes the issues it resolves.
+**Review is against the scope, and reports both kinds.** A reviewer takes the issue's good-enough items one by one.
+Conformance is verified by running the checks and quoting the result; a tool may run them. Fitness is validated by a
+named reviewer who looks at the thing, the page in a browser, the figure, the output of the example, and signs the
+judgement in the review. No passing check stands in for that judgement, and no judgement excuses a failing check. A
+pull request merges into `dev`, by a maintainer who is not its author, when every conformance item passes, every
+fitness item is validated, and no gap is left open: each gap is accepted as is with a reason, fixed before the merge,
+or made its own issue. The merge closes the issues the pull request resolves.
 
 **Checks a pull request must pass.** `uv run ruff check .`, `uv run ruff format --check .`, `uv lock --check`, `uv run
 pytest`, the vocabulary and residual checks, and the test workflow on both platforms. The workflow also refuses any
-commit whose message names a tool as an author or generator.
+commit whose message names a tool as an author or generator. These are conformance; they are necessary and never
+sufficient.
 
 **Merges into `main` are releases.** The maintainer alone merges `dev` into `main`, with `git merge --no-ff` and a
 version tag. Versions follow semantic versioning: a patch for a fix, a minor for a compatible addition, a major for a

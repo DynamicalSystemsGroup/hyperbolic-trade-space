@@ -215,3 +215,8 @@ no check stands in for that judgement. The four thinner points of the validation
 enough plus no open gap with the three dispositions; agent's defaults; merged by a maintainer who is not the author)
 are drafted with it.
 
+**Supervisor, verbatim (18:50 EST):** "apply all of them, then i will review the md doc and provide feedback"
+
+**Applied as:** the conformance and fitness split and the four sentences from the skills check are in the draft; the
+file goes to him for review.
+
