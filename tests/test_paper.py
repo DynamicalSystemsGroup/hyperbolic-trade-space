@@ -261,34 +261,33 @@ def test_keywords_name_no_tool_or_library():
 
 
 def test_abstract_and_section_5_say_the_one_term_fit_is_a_geometric_program():
-    """The surface is posynomial (the abstract says "a fitted posynomial reference surface", the
-    supervisor's reading of 2026-11-09) and section 5 keeps one cited sentence that the invariant is
-    a generalized posynomial; one term is a geometric program (convex after the log change of
-    variables, L4.14 to L4.24); the several-term fit alternates weights with one program for all
-    terms (R-39: no design is assigned to a cell in the fit). Nothing says
-    the several-term fit is itself a convex program or a GGP. The abstract (the supervisor's
-    reading of 2026-11-09, R-38) says it plainly: a single n-lemma fits a monomial, which
-    transforms into a convex program; with several active trades the model is a posynomial,
-    compatible with generalized geometric programming (GGP); any kernel that keeps that
-    compatibility generalizes the method. It does not say the several-term fit is a GGP or
-    convex, and says nothing of assigning designs to cells. WP24 (A7): the first use of "monomial
-    term" is glossed as a product of powers of the metrics, and the old word is gone."""
+    """The abstract is the supervisor's text of 2026-11-14 (WP11-decisions.md); it says the monomial
+    case is a convex optimization problem and the posynomial case is compatible with generalized
+    geometric programming, and that the model is the level sets of a posynomial function of the
+    metrics. Section 5 keeps one cited sentence that the invariant is a generalized posynomial; one
+    term is a geometric program (convex after the log change of variables, L4.14 to L4.24); the
+    several-term fit alternates weights with one program for all terms (R-39: no design is assigned
+    to a cell in the fit). Nothing says the several-term fit is itself a convex program or a GGP.
+    The abstract does not say it, and says nothing of assigning designs to cells. The old
+    abstract's phrases that the supervisor replaced stay gone. WP24 (A7): the first use of "monomial
+    term" is glossed in the body as a product of powers of the metrics, and the old word is gone."""
     nb = _nb(PAPER_NB)
     fm = yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"]
     flat = " ".join(fm.split())
-    assert "generalized posynomial" not in flat and "fitted posynomial reference surface" in flat
+    assert "generalized posynomial" not in flat
     for phrase in (
-        "Modelling a single n-lemma fits a monomial, which transforms into a convex program",
-        "is solved directly",
-        "when several trade-offs are active at once the model is a posynomial",
-        "compatible with generalized geometric programming (GGP)",
-        "any kernel that keeps that compatibility",
-        "elasticities: the percentage of one metric given up per percentage gained in another",
-        "Like PCA, our method is unsupervised feature engineering; the two answer",
-        "Each monomial term (a product of powers of the metrics) reports its contending metrics",
+        "the level sets of a posynomial function of the metrics",
+        "The monomial case is a convex optimization problem",
+        "the posynomial case is compatible with generalized geometric programming",
+        "Like PCA, HTS is an unsupervised learning method",
+        "a monomial term in n metrics characterizes an n-lemma",
+        "HTS is implemented as a scikit-learn estimator",
+        "Trade-offs trace piecewise hyperbolic frontiers",
+        "Pareto improvements increase energy",
+        "a design that maximizes energy is weakly Pareto-efficient",
     ):
         assert phrase in flat, phrase  # fmt: skip
-    for gone in (  # R-38: cut from the abstract at the supervisor's direction (the body keeps them)
+    for gone in (  # cut from the abstract at the supervisor's direction (the body keeps them)
         "chains with PCA",
         "nondominated set stops shortlisting",
         "Derived statements point",
@@ -296,10 +295,19 @@ def test_abstract_and_section_5_say_the_one_term_fit_is_a_geometric_program():
         "one such program per facet",
         "assigning",
         "exchange rate",
+        # the old abstract's phrases the supervisor's text of 2026-11-14 replaced
+        "We explain tensions",
+        "soft support",
+        "reversible chart",
+        "any kernel that keeps that compatibility",
+        "unsupervised feature engineering",
+        "negative curvature",
+        "fitted posynomial reference surface",
+        "is solved directly",
     ):
         assert gone not in flat, gone  # fmt: skip
     assert "several-term" not in flat and "several facets" not in flat
-    assert "facet" not in flat.lower() and flat.index("monomial term") < flat.index("monomial,")
+    assert "facet" not in flat.lower()
     methods = _section("Methods")
     for phrase in (
         "geometric program",
@@ -313,7 +321,7 @@ def test_abstract_and_section_5_say_the_one_term_fit_is_a_geometric_program():
     cited = "generalized posynomial, the term maximum at the default $\\kappa=\\infty$"
     assert f"{cited} [@boyd2007tutorial]" in methods
     assert "geometric program" in _section("The decision problem")
-    assert flat.count("GGP") == 1  # spelled out at first use, one parenthesis
+    assert "GGP" not in flat  # the abstract spells it out and never abbreviates it
     for text in (flat, methods, _section("The decision problem")):
         assert "several facets is a" not in text
         assert not re.search(r"several[^.;]*(transform|convex program)", text)
@@ -322,11 +330,13 @@ def test_abstract_and_section_5_say_the_one_term_fit_is_a_geometric_program():
 
 
 def test_one_name_for_the_surface_and_the_data_is_what_is_modelled():
-    """WP10 Amendment 4, R-33 and R-34 (the supervisor's two readings of the abstract). The
-    Definition names the posynomial, the invariant as its root and the surface as the sum equal to
-    one, citing L10; "generalized posynomial" is in no Markdown cell of the paper but the Methods
-    one (reports of a source, the family table and Appendix G, are generated output and stay).
-    The surface is a model of the data underlying the table, whose reading is a view."""
+    """WP10 Amendment 4, R-33 and R-34, kept for the body; the abstract is the supervisor's text of
+    2026-11-14 (WP11-decisions.md). The Definition names the posynomial, the invariant as its root
+    and the surface as the sum equal to one, citing L10; "generalized posynomial" is in no Markdown
+    cell of the paper but the Methods one (reports of a source, the family table and Appendix G, are
+    generated output and stay). The surface is a model of the data underlying the table, whose
+    reading is a view. The abstract names the model by what it is: the level sets of a posynomial
+    function of the metrics, and says nothing of "the table" or of a reference surface."""
     nb = _nb(PAPER_NB)
     definition = next(c for c in nb.cells if "prf:definition} Posynomial" in _src(c))
     text = " ".join(_src(definition).split())
@@ -335,7 +345,10 @@ def test_one_name_for_the_surface_and_the_data_is_what_is_modelled():
     assert "generalized" not in text
     assert "where the posynomial equals one" in " ".join(_markdown(nb).split())  # the surface
     fm = " ".join(yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"].split())
-    assert "models the data underlying the table" in fm and "views" in fm
+    assert "the level sets of a posynomial function of the metrics" in fm
+    assert "a dataset of designs and measurements of their performance" in fm
+    for gone in ("reference surface", "the table", "its reading are views", "soft support"):
+        assert gone not in fm, gone  # the old abstract's phrases, replaced
     body = " ".join(_markdown(nb).split())
     for phrase in ("model of the table", "models the table", "surface models the table"):
         assert phrase not in body and phrase not in fm, phrase
@@ -350,11 +363,18 @@ def test_one_name_for_the_surface_and_the_data_is_what_is_modelled():
 
 
 def test_the_case_is_described_as_power_mass_and_attitude_control():
-    """The case couples power, mass and attitude control (cubesat.sysml), not attitude alone."""
+    """The case couples power, mass and attitude control (cubesat.sysml), not attitude alone, in
+    the body. The abstract is the supervisor's text of 2026-11-14 (WP11-decisions.md): its case
+    sentence says a cubesat design optimization problem with competing objectives in performance
+    and cost, scored on thirteen metrics by a simulation study, one sentence for the case."""
     nb = _nb(PAPER_NB)
     fm = " ".join(yaml.safe_load(_src(nb.cells[0]).split("---")[1])["abstract"].split())
-    assert "cubesat model coupling power, mass and attitude control" in fm
-    assert len(re.findall(r"cubesat", fm)) == 1  # one sentence: the case and what it shows
+    assert (
+        "The worked example is a cubesat design optimization problem with competing objectives "
+        "in performance and cost" in fm
+    )
+    assert "a simulation study scores each design on thirteen metrics" in fm
+    assert len(re.findall(r"cubesat", fm)) == 1  # one sentence: the case
     for count in ("ten attributes", "controller-gain"):  # PM-BRIEF ruling 1: terms may be counted
         assert count not in fm, count  # fmt: skip
     prose = _markdown(nb) + _markdown(_nb(SUPPORT_NB))
@@ -629,17 +649,16 @@ def test_register_phrases_are_used_in_the_body():
 
 @needs_prose
 def abstract_cap() -> int:
-    """The abstract's cap: 200 words plus the ledger's ``[[abstract.raise]]`` rows."""
-    abstract = _ledger().get("abstract", {"cap": 200})
-    return abstract["cap"] + sum(r["words_added"] for r in abstract.get("raise", []))
+    """The abstract's bound: the ledger's target plus its tolerance (the ruling of 17:35)."""
+    abstract = _ledger()["abstract"]
+    return abstract["cap"] + abstract["tolerance"]
 
 
-def test_abstract_within_200_words():
-    """R-13 L-A (hook, active with the prose); a raise is a ledger row with its job."""
+def test_abstract_within_its_target():
+    """R-13 L-A (hook, active with the prose): the supervisor's target of 500 words with slight
+    under or overshoot allowed (WP11-decisions.md, 2026-11-14 17:35): target plus tolerance."""
     fm = yaml.safe_load(_src(_nb(PAPER_NB).cells[0]).split("---")[1])
-    assert _ledger()["abstract"]["cap"] == 200
-    for row in _ledger()["abstract"].get("raise", []):
-        assert set(row) == {"date", "words_added", "job", "reader"}, row
+    assert _ledger()["abstract"]["cap"] == 500
     assert len(fm["abstract"].split()) <= abstract_cap()
 
 
@@ -3108,7 +3127,7 @@ def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_ap
     assert ids.index("num-nondominated") < ids.index("sec-prior-art")
     assert "number of designs and of metrics" in _section("The decision problem")
     front = _src(nb.cells[0])
-    assert "not the Pareto" in front and "reference surface" in front
+    assert "level sets of a posynomial function of the metrics" in front
     # R-38 (c): the abstract no longer carries the scaling sentence; section 1 keeps it
     assert "scales where" not in front
     assert "dominance stops shortlisting" in _section("The decision problem")

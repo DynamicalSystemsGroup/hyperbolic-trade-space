@@ -280,54 +280,17 @@ words_added = 92
 job = "keeps three claims apart in one paragraph (the certificate, the description of this table, usefulness outside it), and says designed samples are not independent observations (findings A1 and A7)"
 reader = "the decision-maker and the analyst deciding what a certified fit licenses"
 
-# The abstract's own cap (tests/test_paper.py::abstract_cap): 200 words plus the rows below.
-# PM-BRIEF ruling 1 (WP11 round 1b, CR-1b): no word of the rest of the abstract does no work; each
-# is the supervisor's, pinned by a test or a claims-register fragment, so the cap is raised.
+# The abstract's own length (tests/test_paper.py::abstract_cap): a target with a tolerance, not a
+# hard cap. The supervisor's ruling of 2026-11-14 17:35 (WP11-decisions.md): "i am currently thinking
+# of 500 word as the target length but with slight under or overshot okay". The tolerance is five
+# percent (25 words); the bound is cap plus tolerance. The seven [[abstract.raise]] rows of 2026-11-09
+# and 2026-11-10 are retired: they paid for sentences of the old abstract that no longer exist (the
+# model the table and its reading are views of, the case's finding in the main-results list's words,
+# the outer-edge picture, the energy differential gloss, PCA run on the chart, the monomial term gloss).
 
 [abstract]
-cap = 200
-
-[[abstract.raise]]
-date = "2026-11-09"
-words_added = 3
-job = "names the object the table and its reading are views of, the model, which 4 of 4 readers missed"
-reader = "the reader of the abstract alone"
-
-[[abstract.raise]]
-date = "2026-11-09"
-words_added = 7
-job = "states the case's finding in the main-results list's words: one facet blends the subsystems' trade-offs, three facets separate the contending sets"
-reader = "the reader of the abstract alone, 3 of 4 of whom read nothing in the old ending"
-
-[[abstract.raise]]
-date = "2026-11-09"
-words_added = 8
-job = "replaces soft supporting envelope with the plain picture: fitted to the outer edge of the data, not through its middle (CR-1c)"
-reader = "the reader of the abstract alone, 4 of 4 of whom read an envelope as a boundary"
-
-[[abstract.raise]]
-date = "2026-11-09"
-words_added = 9
-job = "glosses energy differential at its first use: the level relative to the surface, by analogy with a potential, not a physical energy (the supervisor's decision, CR-5)"
-reader = "the reader of the abstract alone, 16 of 16 of whom guessed at the term"
-
-[[abstract.raise]]
-date = "2026-11-09"
-words_added = 8
-job = "says PCA and the method are distinct and compose, PCA run on the chart, in place of mirrors the structure of PCA (the supervisor's decision)"
-reader = "the reader of the abstract alone, 7 of 8 of whom took the method for a replacement of PCA"
-
-[[abstract.raise]]
-date = "2026-11-09"
-words_added = 6
-job = "says which side of the data the soft support sits on and that a few designs may exceed it (CR-1d)"
-reader = "the reader of the abstract alone who asked which side the surface sits on"
-
-[[abstract.raise]]
-date = "2026-11-10"
-words_added = 8
-job = "glosses monomial term at its first use as a product of powers of the metrics (WP24 A7), where the abstract said facet"
-reader = "the executive reader of the abstract alone, who said nobody had told him what a monomial is (the spike)"
+cap = 500
+tolerance = 25
 
 # Rows: PM-BRIEF ruling 2 (Theorem 11, descent): cell and facet kept apart.
 
