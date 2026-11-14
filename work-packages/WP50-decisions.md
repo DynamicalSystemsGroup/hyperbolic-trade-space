@@ -54,3 +54,14 @@ produced after a stated effort and the hole stands with that evidence; the regio
 of the attainable set. G3 and G4 amended so the readout defines hole with this test built in, and the instance shows a
 candidate hole resolved both ways (one filled by a witness, one that stands).
 
+## The search's two aims, in one line (2026-11-14, 22:25)
+
+**Supervisor, verbatim:** "the two kinds of things we want to be able to do is find and where possible characterize and potentially \"fill in\" holes
+within the envelope, and push the envelope"
+
+**Applied as:** the readout's frame, stated in its first lines and used throughout: within the envelope, find holes,
+characterize them where possible (size, persistence, which metrics bound them, whether witnesses can be sampled) and
+fill them in where they can be; and push the envelope (advance the frontier). The same two aims are the search's in
+WP41 (`WP41-decisions.md` carries the cross-reference), where filling in is the witness sampling of 22:20 and pushing is
+the proposal beyond the surface, each a conjecture settled by building and measuring.
+

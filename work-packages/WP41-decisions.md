@@ -64,3 +64,14 @@ pull-back to attribute units (Theorem 7, built) and to configuration dimensions 
 chain rule from a tension or the ascent direction through the regressor: WP41 part 2, 0.2, a conjecture until checked);
 moving past the frontier as the ascent direction w on the fit surface, pulled back through the surrogate into
 configuration space as the search's step (Section 7; WP41 part 2), with the submartingale conjecture as its open item.
+
+## The search's two aims (2026-11-14, 22:25; given under WP50, recorded there verbatim)
+
+**Supervisor, verbatim:** "the two kinds of things we want to be able to do is find and where possible characterize and potentially \"fill in\" holes
+within the envelope, and push the envelope"
+
+**Applied as:** the bridge serves both: a proposal inside the envelope seeks a witness for a candidate hole (fill in);
+a proposal beyond the surface pushes the envelope; both are conjectures settled by building and measuring, with the
+three outcomes the bridge already names. The docs page of part 1 may say so in one sentence; the measure of a hole is
+WP50's and is not claimed in 0.1.
+

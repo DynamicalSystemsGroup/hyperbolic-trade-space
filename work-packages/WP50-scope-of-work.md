@@ -10,7 +10,8 @@
 
 ## Purpose
 
-The supervisor's direction (`WP50-decisions.md`): the word hole is reserved for future work in which the piecewise-affine
+The search's two aims, in his words (22:25): "find and where possible characterize and potentially 'fill in' holes within
+the envelope, and push the envelope". The supervisor's direction (`WP50-decisions.md`): the word hole is reserved for future work in which the piecewise-affine
 chart and the sampled designs give distances, the distances give simplicial complexes, and persistent homology finds
 topological holes, which emerge naturally under strategic sampling and need a definition that goes beyond the envelope
 method. The spike is research only: it establishes a clear direction, using this method's coordinate system and data

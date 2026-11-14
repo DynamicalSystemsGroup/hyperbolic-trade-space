@@ -933,4 +933,8 @@ the part a PM and its units need. Where he has not spoken, his next sentence ove
   simulated, the engineering lifecycle stage from research to end of life, and the measurement method, synthetic or
   actual, mixed within one problem. An intent for the build-out, "as we establish this first release as an initial
   condition", recorded in `work-packages/examples-coverage.md`; each WP45 test record states its case's row.
+- **The search's two aims (22:25).** "find and where possible characterize and potentially 'fill in' holes within the
+  envelope, and push the envelope." Filling in is sampling for witnesses of a candidate hole (a persistent class may be
+  only an absence of witnesses); pushing is a proposal beyond the surface; both are conjectures settled by building and
+  measuring. White space is 0.1's word; hole is reserved for WP50's object and is not defined in 0.1.
 
