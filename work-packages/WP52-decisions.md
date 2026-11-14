@@ -160,3 +160,10 @@ gave, not the point.
 
 **Applied as:** "What carried over is the practice of reasoning with product invariants."
 
+**Supervisor (2026-11-15, 00:05 EST):** "should we also cite the engineering for legitimacy work that emerged to support a
+client project for the arbitrum foundation"
+
+**Applied as (pending his word):** the essay "Engineering for Legitimacy" (Ben-Meir and Zargham, BlockScience, 2024) and
+the Arbitrum report it emerged beside are read and resolved first; if he says yes they enter the late lineage as public
+client work in neutral words, with "emerged to support" the client project on his authority unless a source says it.
+
