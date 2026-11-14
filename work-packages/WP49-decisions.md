@@ -97,3 +97,10 @@ written. Placement: with WP47's `CONTRIBUTING.md` in v0.1 unless he says otherwi
 (no attribution line in any commit; a scope, a review and a decisions record per package; a person's name on every
 commit) go to WP48's list. He signs off the final text.
 
+## Wording point 1 of 3, "in some cases should" (2026-11-14, 17:25 EST; popup)
+
+**Supervisor, verbatim:** "When it helps a reviewer"
+
+**Applied as:** the tools clause reads "You may document which tools you used, and should when it helps a reviewer
+reproduce or check the work."
+
