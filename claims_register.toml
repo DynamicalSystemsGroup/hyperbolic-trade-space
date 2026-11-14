@@ -2101,7 +2101,7 @@ note = "Methods exist and behave as a transformer; parametrize_with_checks passe
 
 [[claim]]
 id = "C168"
-fragment = "unsupervised learning, beside PCA"
+fragment = "unsupervised learning, beside PCA: PCA finds where the data spread, this finds where they stop, and"
 file = "docs/index.md"
 anchor = ""
 kind = "S"
