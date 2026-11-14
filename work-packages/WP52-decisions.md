@@ -274,3 +274,11 @@ and has its own doi now"
 2026, first page 303, per the proceedings page's metadata) and says "SciPy paper"; the record gains the entry
 `2026-scipy-paper` beside the talk's.
 
+**Supervisor, verbatim (02:35 EST):** "https://onlinelibrary.wiley.com/doi/abs/10.1111/1468-0262.00335 for roth  doi:
+https://doi.org/10.1111/1468-0262.00335 and https://incose.onlinelibrary.wiley.com/doi/abs/10.1002/iis2.70203 for my paper.
+doi: https://doi.org/10.1002/iis2.70203"
+
+**Applied as:** the page keeps the DOIs as its links (the record's convention); the two Wiley landing pages are noted on
+the record entries as where each DOI resolves. Both hosts answer 403 to automated requests, as the DOIs do, so the
+link checker's "blocked" reading stands for both.
+
