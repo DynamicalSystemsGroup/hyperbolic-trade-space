@@ -187,3 +187,6 @@ concentration easy, and nothing else changes in how units work.
 reading pass before any release: `paper/reading_pass.yaml` is the record of every citing sentence read against its
 source, and Appendix G.2 says the readings are the authors', so he reads the record and confirms it before the
 sentence stands. Until then G.2 is worded to what has been done.
+
+The supervisor's own tasks, his word and the ones done together at a keyboard, are kept apart in `supervisor-tasks.md`;
+the two-milestone board is `milestones.md`.

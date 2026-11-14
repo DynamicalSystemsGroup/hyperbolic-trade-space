@@ -10,28 +10,29 @@ to `main` that he alone merges. **v0.2, the secondary:** a tooling and documenta
 examples, drawn from the research that lands in v0.1's record; the breadth those examples should show, in his words, is
 `examples-coverage.md` (an intent record, not a requirement list).
 
-| Item | Role for v0.1 | Role for v0.2 | State (2026-11-14 18:30) |
+| Item | Role for v0.1 | Role for v0.2 | State (2026-11-14 21:20) |
 |---|---|---|---|
-| Third paper unit (requests 93 to 169 of the final round) | blocking: the paper's statements as the mathematicians read them; the submartingale wording | none | in flight (worktree paperfix3, four commits, running) |
-| The abstract (the supervisor's text, 497 words) | blocking: lands before the held-out reads | none | in flight (landing unit) |
-| Held-out reader cells, waves 8 and 9 (12 reads) | blocking: the grid's stopping rule | none | not started; after the third unit, the abstract and the stage rebuild |
-| Figure loop on Figures 3, 6, 7 (in the third unit); test 1 cold reads | blocking | none | in flight |
-| WP33, WP35, WP37, WP38, WP39, WP40 acceptances | blocking: his acceptance at the gate | none | his (delivered and assistant-verified; `supervisor-review-list.md`) |
-| The close read of the five entry surfaces and the reading pass G.2 | blocking: his | none | his; the entry-surfaces read against the abstract is `WP11-final/abstract/entry-surfaces-consistency.md` |
-| Root page summary paragraph and "bespoke or opaque" | blocking only if he changes them | none | his |
-| WP8b release items (version unit on `wp8b-version`; reviewer's guide and checklist on `wp8b-drafts`; CHANGELOG; register and grid refresh; final CI both platforms; the PR) | blocking: the last step | none | version held for the assistant's word; drafts not landed; refresh waits on the last prose unit |
-| WP41 part 1: the bridge's well-posedness note, audit, docs page `docs/bridge.md`, Section 7's naming paragraph | required (his ruling 12:30): framing and docs page in 0.1 | part 2: the `propose` and `check` interface, the demonstration with a Monte Carlo check, the pull-back to configuration dimensions through the surrogate | in flight (worktree wp41, near delivery) |
-| WP42 spike: tension defined, lemma step, prototype matrices, figure recipe, glossary entries (loss, objective, the three layers), Section 9 sentence drafted | informing: the readout gates; the vocabulary and the three layers (Section 3 in brief, glossary in full) and the four entry-surface edits are 0.1 on his readings of today; whether the tension definition, figure and decision-section number enter the 0.1 paper is his call at the readout | the tension method on the estimator; the docs' Tensions page reworked; the `tension_report` name settled | scoped and approved (16:55); PM15 to start |
-| WP43 spike: beyond the posynomial (the class statement, the five-way held-out comparison, two planted kinds, the extension-point design) | informing: at most a word in the paper's three alternatives sentences (GGP against log-convex) | required: the extension point (feature map, convex parameter set, conic solver), the Examples section on more terms against a kernel | in flight (worktree wp43; protocol then an amendment labelled post hoc, to check at delivery) |
-| WP44 hunt | done: the readout and the choice | the candidates list for further unrelated domains (leaf traits, battery ageing) | done (b332787, d4cd732) |
-| WP45 test records: perovskite devices, amniote life histories, Broadbalk wheat (expected n-lemma before the fit; pass or fail; sensitivities; limits) | informing (his ruling 15:25): "to help us make sure we didn't miss something or get something wrong"; lands in 0.1's record | required: the three docs example pages drawn from the records, with their fresh-reader review | in flight (worktree wp45; wheat's manual fetch pending) |
-| WP46: the fit temperature as a path (plotting helper, lemma step for the small-tau limit with its check, user-guide page) | required (his ruling 16:55): in the 0.1 candidate | none | scoped and approved; PM15 to start |
-| The docs' acceptance test (three personas given the docs alone and a table, asked to fit and read it) | proposed by the assistant on his priority of 14:20; placement his call | if not 0.1, the first docs package | not scoped |
-| The deliverables grid and the claims register refresh | blocking: after the last prose unit | none | not started |
-| Post-0.1 list (78 flagged pinned surfaces, lemma-script rows, history rows, Appendix A rows, H1/H2, the paper page's late-loading outputs, code strings in the accessibility tree) | none | tooling and docs hygiene | recorded (driver-log, WP38-review) |
-| Future directions, no package: the submartingale conjecture for the search; Lean and Rust/WASM; partial and quantile frontiers as prior art | the paper names them as future work | candidates for 0.3 and after | recorded (`WP36-decisions.md`, `WP43-decisions.md`, `WP44-rounds/hunt/readout.md`) |
+| Third paper unit (requests 93 to 169) | blocking | none | delivered at ca352f5; driver-verified (head checks, browser pass); accepted under the mandate once CI 43630979464's slow jobs are green |
+| The abstract (his text, 497 words) | blocking | none | landed at 735fa51; head-verified; CI 43635411288 running; browser read of the front matter next |
+| Held-out reader cells, waves 8 and 9 (12 reads) | blocking: the grid's stopping rule | none | stage rebuilding at the abstract head; PM15 then recaptures and runs the reads; triage after |
+| Figure loop: Figures 3, 6, 7 cold reads; the 170/171 follow-up (Figure 6 z-order, L16 docstring, Figure 7 title wrap) | blocking | none | cold reads done (ca352f5); follow-up unit with PM15, not started |
+| WP41 part 1: bridge well-posedness note, audit, `docs/bridge.md`, Section 7 paragraph | required (12:30 ruling) | part 2: `propose` and `check` interface, demonstration with a Monte Carlo check, pull-back to configuration dimensions | in flight (worktree wp41), near delivery |
+| WP42 build, Scope A (his choice 20:30): lemma L21, the definition beside elasticity, package functions with tests, Figure 7 decision, glossary and checker with schema, the loss pass, entry-surface edits, Section 3 paragraph, docs page on routes back | required: the vocabulary, the three layers, tension's definition, the entry-surface edits; the Section 9 sentence his to accept | the routes back for kernels; seam values as reported pairs | spike verified (45ea4bc); build waits on naming items 2 and 3 and the Section 9 sentence; figure cold read running |
+| WP43 spike: beyond the posynomial | informing: at most a word in the alternatives sentences | required: the extension point (feature map, convex parameter set, conic solver); Examples on more terms against a kernel | readout committed (worktree wp43); driver verification pending (the post hoc protocol amendment against R-1) |
+| WP44 hunt | done | the candidates list for further unrelated domains | done |
+| WP45 test records: perovskite, amniote, Broadbalk wheat | informing: lands in 0.1's record (15:25 ruling) | required: the three docs example pages with fresh-reader review; the coverage record's gaps | in flight (worktree wp45); wheat's manual fetch is his (below) |
+| WP46 temperature path (helper, small-tau lemma step, user-guide page) | required (16:55 ruling) | none | in flight (worktree wp46; D-1 and D-4 landed there) |
+| WP47 release engineering (0.1.0 metadata, trusted publishing workflow, CODEOWNERS, templates, CONTRIBUTING, SECURITY, maintainers page, his PyPI checklist) | blocking: the release path | the same path for 0.2 | approved 19:50; dispatched |
+| WP48 governance-checks spike | readout only | required: the checks as automated release gates, as verification cases | approved 19:50; first pass committed; readout in progress |
+| WP49 contributor covenant spike | readout before the PR; the covenant on his sign-off, placement his call at the readout | the same | approved 19:50; dispatched; his principle and tool stance recorded 20:50 and 21:10 |
+| WP50 topological holes by persistent homology (research) | at most a future-work sentence, his to accept | none | drafted; awaits his approval |
+| WP8b: version unit, reviewer's guide and checklist, CHANGELOG, register and grid refresh, final CI both platforms, the PR | blocking: the last step | none | version held (rebases with WP47's metadata); drafts not landed; refresh after the last prose unit |
+| Acceptances WP33, 35, 37, 38, 39, 40; the third unit; the abstract | blocking: his | none | his (`supervisor-tasks.md`) |
+| Close read of the entry surfaces; reading pass G.2 | blocking: his | none | his |
+| The docs' acceptance test (three personas, docs alone) | placement his call | if not 0.1, the first docs package | not scoped |
+| Examples' breadth (`examples-coverage.md`) | an intent record | guides the choice of example pages | recorded 20:00 |
+| Post-0.1 hygiene list (pinned surfaces, lemma-script rows, history rows, Appendix A rows, late-loading outputs, code strings in the accessibility tree) | none | tooling and docs hygiene | recorded |
+| Future directions without a package: the submartingale conjecture; Lean and Rust/WASM; partial and quantile frontiers | named as future work | candidates for 0.3 and after | recorded |
 
-What needs the supervisor for v0.1, in order: the acceptances on the review list; the close read of the entry
-surfaces (two root-page sentences are his); the reading pass G.2; the WP42 readout's call on the tension's place in the
-0.1 paper; the word on the version unit's timing; the merge of the PR. Everything else runs in the autonomous phase
-under `release-candidate.md`'s standing orders and stop conditions, with the ticks' updates.
+What needs the supervisor is kept apart in `supervisor-tasks.md`: the things only he can do, and the things done together
+at a keyboard. Everything else runs in the autonomous phase under `release-candidate.md`'s standing orders.
