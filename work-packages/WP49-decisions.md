@@ -300,3 +300,15 @@ using links but we need these files too before we merge"
 `uv.lock`, and a test asserts that every relative link on the page resolves to a file in the repository (the site
 tests already do this for the pages; this one reads CONTRIBUTING.md). WP47's unit carries the condition.
 
+## Release admissibility (2026-11-14, 20:35 EST)
+
+**Supervisor, verbatim (to "does the security file adequately handle the admissibility conditions for a release or should
+we cover that here too"):** "okay add it to this page and include the extra file."
+
+**Applied as:** the releases paragraph links `.github/RELEASE_ADMISSIBILITY.md` and says the release workflow refuses a
+tag that fails a condition; the security pointer says SECURITY.md reports vulnerabilities and does not govern releases;
+the conditions file is drafted beside the page (`WP49-rounds/RELEASE_ADMISSIBILITY.draft.md`): nine conditions, eight
+conformance with their checks, one fitness (a code owner's decision, recorded by the environment approval). WP47
+produces the file with the other two conditions files (R-14 covers its link); WP48's readout takes the eight as release
+gates.
+

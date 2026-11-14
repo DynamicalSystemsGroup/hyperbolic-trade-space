@@ -76,12 +76,14 @@ sufficient.
 **Merges into `main` are releases.** Only a code owner merges `dev` into `main`, with `git merge --no-ff` and a
 version tag. Versions follow semantic versioning: a patch for a fix, a minor for a compatible addition, a major for a
 breaking change; the changelog names each. Publishing to PyPI runs from the tag through the release workflow and needs
-a code owner's approval of its environment.
+a code owner's approval of its environment. A release has its own admissibility conditions, each with the check that
+enforces it, in [the release admissibility conditions](.github/RELEASE_ADMISSIBILITY.md); the release workflow refuses
+a tag that fails one.
 
 **Code owners.** The code owners are the permissioned set named in `.github/CODEOWNERS`; the file is the record of who may
 approve, merge and release, and adding one changes that file and nothing here. How a code owner is added, how a
 release is cut, and the repository settings that enforce the above are in the [code owners' page](docs/maintainers.md). Security reports go as [SECURITY.md](SECURITY.md) says, not to
-the issue tracker.
+the issue tracker; that file is for reporting a vulnerability and does not govern releases.
 
 ## Tooling and dependencies
 
