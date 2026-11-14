@@ -233,3 +233,9 @@ network"; the names stay in the record entries and the dated list's source title
 `dev` once its full checks pass (lint, format, vocabulary with the new avoided phrase, the history test module, the link
 checker, the fast suite); CI then runs on the head. WP52 is accepted with it.
 
+**Supervisor, verbatim (01:40 EST):** "algorithm is a camera can go in but only if it fits naturally, don't force it"
+
+**Applied as:** it fits where Ben-Meir is already named, one sentence ahead of the legitimacy essay: "Ilan Ben-Meir's An
+algorithm is a camera (2023) made the point this page rests on: a model is a framed view of a reality that exceeds it,
+not a view from nowhere." The judgement that it fits is the driver's; his read decides.
+
