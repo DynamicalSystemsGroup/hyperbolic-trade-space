@@ -135,3 +135,14 @@ the ones in hand. Two or three sentences, no reframing; the paper's two stakehol
 gives (governance, politics, accountability; epistemics with the real contentions preserved; the Ostrom Workshop
 application) is recorded as his intent and not written onto the page.
 
+**Supervisor, verbatim (00:30), on the same:** "so the why comes in to levels. there is a deeper motivation why, then the more
+technical why is about getting computers to help us solve these problems in scalable, reproducible and interpretable ways"
+
+**Applied as:** the Why section is drafted as two short paragraphs for his red pen: the deeper motivation first (what is
+possible and what trades against what, assessed; what is preferable, deferred to the accountable people; the line
+between options on the table and options preferred made reproducible and auditable; competing objectives made
+explicit; the footing for searching and for deliberating), then the technical why (trade studies decided from documents
+and tables, alternatives bespoke or opaque; computers that help in scalable, reproducible and interpretable ways, the
+abstract's three words; the three conditions a decision-maker needs before trusting a model-based method). Not applied
+before his word.
+
