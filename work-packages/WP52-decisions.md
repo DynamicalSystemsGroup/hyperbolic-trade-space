@@ -167,3 +167,9 @@ client project for the arbitrum foundation"
 the Arbitrum report it emerged beside are read and resolved first; if he says yes they enter the late lineage as public
 client work in neutral words, with "emerged to support" the client project on his authority unless a source says it.
 
+**Supervisor (00:10 EST):** "also not sure if it helps us but an older document based study is here
+https://hackmd.io/@blockscience/Aztec_Sequencer_Selection from work on aztec"
+
+**Applied as (pending):** read first; placed only if it is what the page's line needs (a trade study of candidate
+designs against stated criteria, decided by the people accountable), in neutral words, or left out with the reason.
+
