@@ -104,3 +104,13 @@ commit) go to WP48's list. He signs off the final text.
 **Applied as:** the tools clause reads "You may document which tools you used, and should when it helps a reviewer
 reproduce or check the work."
 
+## Wording point 2 of 3, agents acting on their own (2026-11-14, 17:30 EST; popup)
+
+**Supervisor, verbatim:** "state it. though i want to be clear that this is not an injunction against AI coding its that the AI
+is not the comitter the human on whose authority they commit is."
+
+**Applied as:** the sentence is stated in his terms, not as a stop on AI coding: "A tool may write code, open a draft
+or run a check, but it is never the committer: every act in this repository is done on the authority of a named
+person, and that person is the one who answers for it." Placed in the accountability clause after "No tool is a
+contributor, so commits should not carry a trailer or line naming a tool as author."
+
