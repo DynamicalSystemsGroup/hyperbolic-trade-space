@@ -22,8 +22,11 @@ points together with topological data analysis. It writes no code into the packa
   distance between two points is a candidate for (the chart's Euclidean metric per term, a metric across the seam of two
   terms, a distance in the metrics' log units), and what each choice does to a hole; why the piecewise-affine chart is
   the natural place, stated against doing it in the raw metrics.
-- G2. **The construction, read:** Vietoris–Rips and alpha complexes on those distances, persistent homology in degrees
-  0, 1 and 2, the persistence diagram and what a long-lived class means here; the tools (at least GUDHI, Ripser,
+- G2. **The construction, read,** from the point of departure he named (21:35): Ghrist's barcodes paper, the
+  topological-landmarks work (landmark and witness complexes) and the sensor-network coverage work by persistent
+  homology, with the thesis that the learned coordinate system decides what is near what; then Vietoris–Rips, witness
+  and alpha complexes on those distances, persistent homology in degrees 0, 1 and 2, the persistence diagram and
+  barcode and what a long-lived class means here; the tools (at least GUDHI, Ripser,
   giotto-tda) with licences and what each computes; the literature on persistent homology for sampled surfaces and for
   design spaces, each source resolved.
 - G3. **Hole against white space:** the envelope method's white space (the fit speaks, the data do not) and a topological
@@ -75,6 +78,9 @@ Good enough met, no open item remaining, and the supervisor's acceptance of the 
 
 ## Agent's defaults
 
+- The unit reads his `knowledgecomplex` repository and any earlier notes of his on topological data analysis it can
+  reach as a source of his interests and intuitions only; the readout does not favour or cite his work over the
+  literature *(default)*.
 - One research agent on Sonnet with web access, in a worktree, with a scratch environment for the TDA library (GUDHI or
   Ripser, whichever installs clean under uv in the scratch environment) *(default)*.
 - The instance uses the K = 2 chart of record of the cubesat case (position and level per design) and one planted table

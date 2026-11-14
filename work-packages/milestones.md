@@ -25,7 +25,7 @@ examples, drawn from the research that lands in v0.1's record; the breadth those
 | WP47 release engineering (0.1.0 metadata, trusted publishing workflow, CODEOWNERS, templates, CONTRIBUTING, SECURITY, maintainers page, his PyPI checklist) | blocking: the release path | the same path for 0.2 | approved 19:50; dispatched |
 | WP48 governance-checks spike | readout only | required: the checks as automated release gates, as verification cases | approved 19:50; first pass committed; readout in progress |
 | WP49 contributor covenant spike | readout before the PR; the covenant on his sign-off, placement his call at the readout | the same | approved 19:50; dispatched; his principle and tool stance recorded 20:50 and 21:10 |
-| WP50 topological holes by persistent homology (research) | at most a future-work sentence, his to accept | none | drafted; awaits his approval |
+| WP50 topological holes by persistent homology (research) | at most a future-work sentence, his to accept | none | approved 21:35; dispatched |
 | WP8b: version unit, reviewer's guide and checklist, CHANGELOG, register and grid refresh, final CI both platforms, the PR | blocking: the last step | none | version held (rebases with WP47's metadata); drafts not landed; refresh after the last prose unit |
 | Acceptances WP33, 35, 37, 38, 39, 40; the third unit; the abstract | blocking: his | none | his (`supervisor-tasks.md`) |
 | Close read of the entry surfaces; reading pass G.2 | blocking: his | none | his |

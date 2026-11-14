@@ -15,3 +15,18 @@ hole there and how that differs from the white space the envelope method sees, h
 emerge, and what the tools and the literature offer; the readout ends with what 0.1 may say about it (at most a
 future-work sentence, his to accept), what it may not, and what a later release would build. The word hole is reserved
 for this object and left undefined in 0.1.
+
+## Approval (2026-11-14, 21:35)
+
+**Supervisor, verbatim:** "you can approve WP50, you may also want to look at my knowledgecomplex repo and our past conversations about topological
+data analysis. but don't bias toward my work, just use that as a source of understanding of my intrerests and intuitions. to
+greatest extent possible i think Ghrist's barcodes paper and the topological landmarks and sensor network coverage work  as
+point of departure for theory, we're just using out learned coordinate system to figure out what is near what"
+
+**Applied as:** WP50 approved as scoped, with G2 amended to name the point of departure he gives: Ghrist's barcodes
+paper (persistent homology as barcodes), the topological-landmarks work (landmark and witness complexes) and the
+sensor-network coverage work (coverage by persistent homology without coordinates), with the thesis in his words: the
+learned coordinate system (the chart) is used to decide what is near what. His `knowledgecomplex` repository and his
+earlier work on topological data analysis are read by the unit as a source of his interests and intuitions, not as the
+literature to build on and not to be favoured. Dispatched to PM15.
+
