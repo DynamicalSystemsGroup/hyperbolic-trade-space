@@ -44,3 +44,21 @@ dropped. The docs get two sentences on the limitations page where the lemma scri
 theorem-prover proof would fix and what it would not bound. Follow-on packages: (C), neither; the readout is the record,
 and the supervisor said this is never a requirement. The lemma scripts stay 'a pencil-and-paper substitute'; no surface
 says 'formally verified' or 'formal proof' of them."
+
+## The search's outer loop: the supervisor's expectation, recorded for future work (2026-11-14, 12:20)
+
+Context: the assistant, framing the bridge from the chart back to the design space (propose, predict, check), wrote
+that the outer loop is "the refit after each check, which is Section 7's loop and the one thing about it that stays
+open: whether it moves outward monotonically."
+
+**Supervisor, verbatim:** "i don't expect it to move outward monotonically. it could move inward, but we could hoper
+for a submartingale that moved outward in expectation, and a convergence result when it ceases to make progress in
+expectation. save this feedback as part of our plan for future work. we don't need to get into solving the conditions
+under which this would hold. we just need to document our approach and leave it as future work"
+
+**Applied as:** the paper's open item on the search is restated as the supervisor expects it, in the main results'
+open list, Section 7's Open sentence and the gaps ledger row that names it: the outer loop is not expected to move
+outward at every step; the conjecture is a submartingale property, outward in expectation, with a convergence result
+when the expected progress ceases; stated as future work, with no conditions derived (change request 169 of the
+final round). The bridge-to-the-search package carries the same statement in its well-posedness note and its docs
+page. The answer key's open-items line reads the same way from its next version.
