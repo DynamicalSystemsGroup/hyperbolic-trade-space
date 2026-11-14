@@ -238,7 +238,7 @@ entries:
     does: >-
       Geometric programming with generalized posynomials, aircraft design as geometric programs with
       fits compatible with them, softmax-affine fits compatible with geometric programming,
-      convex piecewise-linear fits, and reweighted l1 sparsity. The sources fit regression
+      convex piecewise-linear fits, and reweighted ℓ₁ sparsity. The sources fit regression
       surfaces.
     shares: >-
       The model class, the K > 1 refit scheme and the sparsity option.

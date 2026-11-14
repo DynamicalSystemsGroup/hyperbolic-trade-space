@@ -398,7 +398,7 @@ rows:
   status: kept
   now: ''
 - n: 41
-  sentence: '''reweighted l1 sparsity'''
+  sentence: '''reweighted ℓ₁ sparsity'''
   key: candes2008enhancing
   read: https://arxiv.org/pdf/0711.1612, abstract
   verdict: supported

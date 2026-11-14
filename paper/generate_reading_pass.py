@@ -125,7 +125,7 @@ SAID = {
     38: "Aircraft design is posed as geometric programs with fits compatible with them.",
     39: "The model class and refit scheme come from geometric programming and max-affine fitting, here with softmax-affine fits compatible with geometric programming.",
     40: "The model class and refit scheme come from geometric programming and max-affine fitting, here with convex piecewise-linear fits.",
-    41: "The sparsity option is shared with reweighted l1 sparsity.",
+    41: "The sparsity option is shared with reweighted ℓ₁ sparsity.",
     42: "The soft maximum is an entropic risk functional.",
     43: "Kernel PCA is the feature-engineering kin of the kernel direction.",
     44: "HoroPCA extends the components of PCA to hyperbolic space with horospherical projections, maximizing a variance.",
