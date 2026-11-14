@@ -147,10 +147,10 @@ wording of 03:05 (order), for his sign-off; the text lands in `CONTRIBUTING.md` 
 > tools is documented where tool use is documented, together with the editor, the build tools and the environment:
 > in the "tools used" part of the pull request's description or of the work package's record, and never as the
 > committer or author. You may document which tools you used, and should when it helps a reviewer reproduce or check
-> the work. None of this is a blanket approval of what a tool produces: putting someone else's code through a model to
-> escape its licence is a licence violation exactly as copying it would be, and the person who commits it answers for
-> it, as for every other question of ethics in this work. This project's checks are written to hold whichever model or
-> editor you use.
+> the work. None of this is a blanket approval of what a tool produces, because the rules of this work do not depend on
+> who or what did the writing: rewriting someone else's code to escape its licence is a violation whether it is done by
+> hand or through a model, and the person who commits it answers for it, as for every other question of ethics here.
+> This project's checks are written to hold whichever model or editor you use.
 
 ## The licence sentence as the limit (2026-11-14, 17:45 EST), on the assembled clauses
 
@@ -161,4 +161,13 @@ not blanket approved either. the human is responsible for ethical behavior"
 of what a tool produces: putting someone else's code through a model to escape its licence is a licence violation
 exactly as copying it would be, and the person who commits it answers for it, as for every other question of ethics
 in this work." The assembled text above is updated in place.
+
+## The rule is actor agnostic (2026-11-14, 17:50 EST), on the licence sentence
+
+**Supervisor, verbatim:** "rewriting someones code by hand to get around a license is unethical without AI too. you see what i am getting at?"
+
+**Applied as:** yes: the ethics do not depend on the actor, which is the same principle as the bar on the code. The
+sentence no longer singles out the model: "the rules of this work do not depend on who or what did the writing:
+rewriting someone else's code to escape its licence is a violation whether it is done by hand or through a model, and
+the person who commits it answers for it, as for every other question of ethics here." Updated in the assembled text.
 
