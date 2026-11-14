@@ -4,7 +4,7 @@ For an analyst with a table of evaluated designs. The [paper](paper:sect-problem
 
 - [Use it on my own table](getting-started.md): install and run a first fit.
 - [Bring my own system model, and know what must hold](getting-started.md#your-own-data)
-- [Place it beside PCA and scikit-learn](user-guide/overview.md)
+- [Place it beside principal component analysis, or PCA, and scikit-learn](user-guide/overview.md)
 - [Read the limits](user-guide/limitations.md)
 - [See the worked case](examples.md): a cubesat trade study, a synthetic satellite demonstrator.
 
@@ -17,5 +17,3 @@ elasticity, where each design sits relative to the fitted reference surface, and
 It is a scikit-learn estimator (`fit`, `transform`, `inverse_transform`, `score_samples`) in the
 unsupervised and feature-engineering family, beside PCA: PCA finds where the data spread, this finds
 where they stop, and the two chain.
-
-The user guide, API, theory, glossary and further reading are in the navigation menu.

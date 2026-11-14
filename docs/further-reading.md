@@ -1,7 +1,6 @@
 # Further reading
 
-The sources the method builds on, by what you may want from each. This is a short list and not a
-survey.
+The sources the method builds on, by what you may want from each.
 
 **Using the package**
 
@@ -23,7 +22,7 @@ survey.
 
 - Isometric log-ratio transformations for compositional data [@egozcue2003isometric] and principal
   component analysis of compositional data [@aitchison1983principal]: the neighbours of the chart.
-- Kernel PCA [@schoelkopf1998nonlinear]: the kin of the documented kernel direction, which is not
+- Kernel principal component analysis [@schoelkopf1998nonlinear]: the related method for the documented kernel direction, which is not
   built.
 - HoroPCA [@chami2021horopca]: the nearest analog in setting; [how this work differs](paper:sect-prior-art).
 - Data envelopment analysis [@charnes1978measuring]: a frontier estimator from efficiency

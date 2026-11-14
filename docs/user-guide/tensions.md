@@ -2,7 +2,7 @@
 
 `tension_report(estimator, X)` returns a frozen `TensionReport` that says which metrics contend and
 how they trade. The model looks for the binding constraint, so the report describes a tension, where
-PCA would describe spread.
+principal component analysis would describe spread.
 
 ```python {.runnable}
 from hyperbolic_trade_space import (
@@ -29,32 +29,31 @@ plot_tensions(report, names=["m0", "m1", "m2"])
 <figure markdown>
 ![Heatmap of the association among three metrics near the frontier; all three off-diagonal cells are negative, and all three metrics are outlined as contending.](../generated/figures/tension-report-light.png#only-light)
 ![Heatmap of the association among three metrics near the frontier; all three off-diagonal cells are negative, and all three metrics are outlined as contending.](../generated/figures/tension-report-dark.png#only-dark)
-<figcaption>Figure 3. The tension report of the three-metric table: association is the correlation of the log-metrics near the frontier; negative (orange) marks metrics that are traded, diagonal outlines mark the contending set, and w under a name is its exponent.</figcaption>
+<figcaption>Figure 3. The tension report of the three-metric table. Association is the correlation of the log-metrics near the frontier. Negative (orange) marks metrics that are traded, diagonal outlines mark the contending set, and w under a name is its exponent.</figcaption>
 </figure>
 
 ## The contending set and the n-lemma
 
 `contending_set` holds the metrics with positive exponent in the exact-maximum fit (tau = infinity,
-exponents above 1e-9). `contending_exponents` are their exponents, `n_lemma` is its size and `lemma_name` names it: monolemma, dilemma,
-trilemma, then an n-lemma. n is read from the fitted exponents, not chosen before the fit, and the name counts every
-exponent above 1e-9: read `contending_exponents` before the name. The report solves the tau = infinity program itself, independent of the
+exponents above 1e-9). `contending_exponents` are their exponents, `n_lemma` is the set's size and `lemma_name` names it. The names are monolemma, dilemma,
+trilemma, then an n-lemma. n is read from the fitted exponents, not chosen before the fit. Read `contending_exponents` before the name. The report solves the tau = infinity program itself, independent of the
 fit temperature. `min_exponent` must be 0 for this reading, because a positive floor masks the
-sparsity; the report warns when the estimator was fitted with a floor.
+sparsity. The report warns when the estimator was fitted with a floor.
 
 ## Participation and elasticities
 
 At the fit temperature the exponents are smoothed, so a small one means weak participation, not
 membership. `participating` marks metrics whose exponent exceeds the participation threshold
 (`threshold`, default 1e-3); an exponent at or below 1e-12 is numerically zero. `elasticities[j, k]`
-is the elasticity along the surface: the percentage change of metric j per percentage change of
-metric k, constant within a term and `nan` where metric j does not participate. It
+is the percentage change of metric j per percentage change of
+metric k along the surface. It is constant within a term and `nan` where metric j does not participate. It
 describes a feature of the fitted model, not a causal exchange.
 
 ## Association among near-frontier designs
 
-For designs with absolute log V below `band` (by default 1/tau, or 0.1 at infinite tau; `n_near_frontier` counts them),
-`association` is the Pearson or Spearman correlation of the log-metrics: negative is traded, positive
-is aligned; `association_kind` says which. Near the surface the weighted sum of log-metrics is almost constant, so a binding
+For designs with absolute log V below `band`,
+`association` is the Pearson or Spearman correlation of the log-metrics. Negative is traded, positive
+is aligned; `association_kind` says which. The `band` is 1/tau by default, or 0.1 at infinite tau, and `n_near_frontier` counts the designs in it. Near the surface the weighted sum of log-metrics is almost constant, so a binding
 constraint produces negative association even where no designer traded the metrics (`closure_note`
 says so).
 
@@ -98,12 +97,11 @@ assert "monolemma" in [r.lemma_name for r in reports]
 assert two.mean_slack_ < one.mean_slack_ / 3
 ```
 
-One term blends cap and slope into a dilemma that fits neither; two terms return the cap and the slope
-as separate terms, at a fraction of the mean slack (0.043 against 0.351). Conversely, a cap on a table that
-never reaches the slope is all the report can show.
+One term blends cap and slope into a dilemma that fits neither. Two terms return the cap and the slope
+as separate terms, at a fraction of the mean slack (0.043 against 0.351).
 
 ## What it cannot say
 
-Each report describes one term and so one tension, depends on the band, and is a statement about
-the sampled table: tensions the sampling never exercised cannot appear. Whether a contending set is
+Each report describes one term and so one tension. It depends on the band and is a statement about
+the sampled table. Tensions the sampling never exercised cannot appear. Whether a contending set is
 a recognizable dilemma is for the engineer to decide.

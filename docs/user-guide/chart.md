@@ -1,6 +1,6 @@
 # The chart, holes and plots
 
-A fitted model gives every design two kinds of coordinate. One is log V, the energy differential (level offset)
+A fitted model gives every design two kinds of coordinate. One is log V, the level offset
 to the fitted reference surface: negative inside, positive beyond. The other `d - 1` say where along the surface the design sits,
 free of overall scale. Together they are a reversible rewriting of the metrics.
 
@@ -43,25 +43,24 @@ plot_log_plane(ts2, X2)
 
 ## Reading log V
 
-V is a factor of improvement: doubling every metric doubles V. Three methods read it:
+V is a factor of improvement: doubling every metric doubles V.
 
 - `invariant_value(X)` returns V.
 - `project(X)` returns the design moved onto V = 1 by scaling all its metrics together.
 - `improvement_factors(X)` gives, per metric, the factor on that metric alone that reaches V = 1
   (`inf` where the exponent is numerically zero).
 
-At a finite temperature some training designs lie beyond V = 1 by construction, so a score is
+At a finite temperature some training designs lie beyond V = 1 by construction. A score is
 meaningful relative to the near-frontier band, |log V| below 1/tau. Compare `tau * log V` and the rank of log V among
 training scores, not V - 1 alone. A score beyond the surface is not a verdict that the design is
-wanted, feasible or safe.
+good.
 
 For a multi-term fit, log V is the maximum over terms at the default `term_temperature=inf`, and
 `improvement_factors` uses each row's assigned term.
 
 ## Holes and white space
 
-Gaps in the designs' spread over the position coordinates are candidates for white space
-(`hyperbolic_trade_space.gaps`):
+Gaps in the designs' spread over the position coordinates are candidates for white space, the regions no design occupies:
 
 - `knn_gap_scores(Z, k=5)`: mean distance to the k nearest neighbours, normalized by its median.
 - `find_holes(Z, resolution=50, threshold=2.0)`: grid points inside the convex hull of Z that sit far
@@ -83,8 +82,8 @@ print(len(holes), scores[:3].round(2))
 ```
 
 A hole is a candidate and not a verdict. An empty region can be an opportunity, a categorical
-stratum that cannot be occupied, or simply unsampled. The score cannot tell these apart; you decide.
-The surface is also log-convex, so structure that is not log-convex is invisible to it.
+stratum that cannot be occupied, or unsampled. The score cannot tell these apart; you decide.
+The surface is also convex in log space, so structure that is not convex there is invisible to it.
 
 ## Plots
 
@@ -99,6 +98,6 @@ The surface is also log-convex, so structure that is not log-convex is invisible
 - `plot_ternary`: three metrics as shares of a total, with the region each term dominates
   ([example](../examples.md#three-metrics-as-shares-of-a-total)); `ternary_marker_values` gives V at its markers.
 
-Each accepts an optional `ax` and returns a matplotlib `Axes`; nothing calls `plt.show()`. The designs are one colour by default, whatever the number of terms; in
+Each accepts an optional `ax` and returns a matplotlib `Axes`; nothing calls `plt.show()`. The designs are one colour by default, whatever the number of terms. In
 `plot_log_plane` and `plot_frontier_surface_3d`, `color="cell"` colours them by cell, the term that
-scores each highest (`cell_labels(estimator, X)`), and any other string raises `ValueError`.
+scores each highest (`cell_labels(estimator, X)`). Any other string raises `ValueError`.

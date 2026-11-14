@@ -2,25 +2,22 @@
 
 ## A cubesat trade study across power, mass and attitude control
 
-For a worked case: a synthetic satellite demonstrator, [a cubesat model](paper:sect-case-construction) coupling power, mass and attitude control. Thirteen metrics are compared under two controller-gain settings. Here a simulation measures the attributes; a fielded system's measured attributes would enter
-the same table and fit.
+For a worked case: a synthetic satellite demonstrator, [a cubesat model](paper:sect-case-construction) coupling power, mass and attitude control. Thirteen metrics are compared under two controller-gain settings.
 
 The primary regime's table has 2,134 feasible designs of 3,000. With the fit temperature chosen by `select_temperature` for a tenth of designs
 above V = 1:
 
-- **One term.** The tension report finds a contending set (metrics that trade off) of seven metrics (unit cost, available power,
-  pointing error, fleet cost, momentum headroom, settling time, depth of discharge): a 7-lemma.
+- **One term.** The tension report finds a contending set of seven metrics that trade off: unit cost, available power,
+  pointing error, fleet cost, momentum headroom, settling time, depth of discharge. Seven contending metrics make a 7-lemma.
 - **Two terms.** The case is read at K = 2, the K the [choosing-K checks](user-guide/choosing-k.md) pick. At the
   one-term temperature the designs' mean level below the surface falls from 0.122 to 0.043. At the
   two-term fit's own temperature, status `certified`, the terms have contending sets of 8 and 7 metrics and
-  shares of 74 and 26 percent of the near-frontier designs: the larger adds peak slew power to the
+  shares of 74 and 26 percent of the near-frontier designs. The larger adds peak slew power to the
   one-term contending set, and the smaller is that set.
 - **A second table.** The stock-gains table gives a different one-term
   contending set.
 
 ## The one-term fit, drawn
-
-This block draws the one-term fit's tension report from the committed table:
 
 ```python {.runnable}
 import sys
@@ -108,7 +105,7 @@ Over three draws the primary regime's movement is 0.18 to 0.20 at K = 2, 0.15 to
 ## Requirements read after the fit
 
 The fit ignores the model's six requirements. Read after it, each has a pass share,
-the near-frontier designs it excludes and a price at the one-term frontier, in band widths and, for the costs and the mass, USD:
+the near-frontier designs it excludes and a price at the one-term frontier. The price is in band widths and, for the costs and the mass, in USD:
 
 ```text
 # case.requirements_summary()
@@ -150,8 +147,7 @@ stock, thresholds met (882): momentum headroom, settling time, available
 
 ## Three metrics as shares of a total
 
-A ternary plot places a design by its shares of a total among three metrics. This block draws two triples of
-the primary regime, two terms each, with one key:
+A ternary plot places a design by its shares of a total among three metrics.
 
 ```python {.runnable}
 import sys
@@ -188,7 +184,7 @@ for name, (study, est) in fits.items():
     )
 ```
 
-The triples show how to read the figure; they are not findings. What the case leaves out is listed on [the case page](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/blob/main/examples/adcs/case-model.md#what-the-case-leaves-out).
+The triples show how to read the figure; they are not findings.
 
 ## Run it
 

@@ -1,15 +1,14 @@
 # Choosing K
 
 The fit never selects the number of terms K; you do. Every check below reads fits at one
-temperature, selected at K = 1 on your table ([the recipe](#the-temperature)): `mean_slack_` is
-comparable across K at one temperature, and `objective_` is not. No check decides K alone, so each
-is given with what it cannot say. The package has no held-out criterion for K.
+temperature, selected at K = 1 on your table ([the recipe](#the-temperature)). `mean_slack_` is
+comparable across K, and `objective_` is not. The package has no held-out criterion for K.
 
 ## Methods
 
 - **Mean slack against K.** Fit `n_terms` = 1, 2, ... and read the drop in `mean_slack_`, the mean
   shortfall of the designs below the fitted reference surface, per added term. A break, one large drop then small ones, shows where
-  added terms stop paying. The mean slack falls with every added term by construction, so it cannot choose K, and a table may show no break.
+  added terms stop paying. The mean slack falls with every added term by construction, so it cannot choose K. A table may show no break.
 - **Thinnest term.** `term_share_.min()` is the share of the near-frontier designs in the thinnest
   term's cell. The band is the designs within 1/tau of the surface in log V; a cell is the designs
   for which the term is largest. Read the share against 1/K, what each term holds if the cells are equal.
@@ -22,7 +21,7 @@ is given with what it cannot say. The package has no held-out criterion for K.
   looks. The planted K0 is known there; your table's is not.
 - **The certificate.** `termination_.status` says the optimizer reached a local minimizer;
   `termination_.radius` is the stable radius, the size of a change of the terms that leaves every
-  design's cell unchanged. Every fit below at K = 2 and above is certified, so it does not say K is
+  design's cell unchanged. Every fit at K = 2 and above is certified, so it does not say K is
   right.
 
 ## The temperature
@@ -112,7 +111,7 @@ for K0, seed in ((2, 0), (3, 0), (3, 1)):
 With two planted terms the mean slack drops by 0.108 at K = 2 and by 0.005 or less after; both
 terms are found at K = 2. With three, table 0 drops by 0.163 and 0.029, then 0.005 or less, and all
 three are found at K = 3. Table 1 drops by 0.181, then 0.006 or less, and finds two of the three at
-every K from 2: the break reads the terms the fit recovers, not the number planted.
+every K from 2. The break reads the terms the fit recovers, not the number planted.
 
 ```python {.runnable}
 X, _ = make_frontier_data(400, 4, n_terms=3, random_state=0)
@@ -128,6 +127,6 @@ The same checks on the cubesat case are on the [Examples page](../examples.md#ch
 
 ## Large K and the elbow in PCA
 
-The elbow heuristic for the number of principal components reads a break the same way. The limit
+The elbow heuristic for the number of components in principal component analysis, or PCA, reads a break the same way. The limit
 differs: variance explained ends at d components, while
 here K has no ceiling and the mean slack no floor.

@@ -285,10 +285,10 @@ def test_examples_page_case_numbers_are_the_computed_record():
     for fragment in [
         "has 2,134 feasible designs of 3,000",
         "a 7-lemma",
-        "contending set (metrics that trade off) of seven metrics",
+        "contending set of seven metrics that trade off",
         "falls from 0.122 to 0.043",
         "contending sets of 8 and 7 metrics and shares of 74 and 26 percent",
-        "the larger adds peak slew power to the one-term contending set,",
+        "The larger adds peak slew power to the one-term contending set,",
         "and the smaller is that set",
         "Thirteen metrics",
     ]:

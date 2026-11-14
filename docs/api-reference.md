@@ -1,6 +1,6 @@
 # API
 
-For a coder calling the package: the public names by purpose, then docstrings. The package follows the scikit-learn conventions [@pedregosa2011scikit; @buitinck2013api]: parameters
+For a coder calling the package. It follows the scikit-learn conventions [@pedregosa2011scikit; @buitinck2013api]: parameters
 stored verbatim, validation in `fit`, fitted attributes ending in an underscore. Dimension is
 arbitrary: `d` metrics and `d - 1` chart coordinates.
 
@@ -11,7 +11,7 @@ arbitrary: `d` metrics and `d - 1` chart coordinates.
 - [`HyperbolicTradeSpace`](user-guide/fitting.md), a transformer: fits the surface and gives the
   chart of position and log V. Fitted attributes for every number of terms include `exponents_`,
   `cell_`, `coefficients_`, `term_share_`, `objective_` (what the solver minimized) and
-  `mean_slack_` (the mean slack, to compare fits across numbers of terms).
+  `mean_slack_`, to compare fits across numbers of terms.
 - [`select_temperature`](user-guide/fitting.md), a function: chooses the temperature by a target
   fraction above V = 1.
 - [`make_frontier_data`](user-guide/fitting.md), a function: seeded synthetic data with a planted
@@ -33,9 +33,9 @@ Submodules are used by import path:
 - `hyperbolic_trade_space.plotting`: `plot_tensions`, `plot_log_plane`, `plot_frontier_surface_3d`,
   `plot_frontier_coordinates`, `plot_v_by_variable`, `plot_ternary`, `ternary_marker_values`,
   `cell_labels`.
-- `hyperbolic_trade_space.estimator`: `EPS_ZERO_EXPONENT` (`1e-12`), an exponent at or below it is
-  numerically zero, so `score_samples` reads a zero metric there as `0 log 0 := 0`;
-  `PARTICIPATION_THRESHOLD` (`1e-3`), an exponent above it participates, the threshold of
+- `hyperbolic_trade_space.estimator`: `EPS_ZERO_EXPONENT` (`1e-12`). An exponent at or below it is
+  numerically zero, so `score_samples` reads a zero metric there as `0 log 0 := 0`.
+  `PARTICIPATION_THRESHOLD` (`1e-3`). An exponent above it participates. It is the threshold of
   `tension_report` and of `conditioning_`.
 - `hyperbolic_trade_space.solvers`: the multi-term solver, the `Termination` record and the
   certificate functions ([Reading termination](user-guide/termination.md)).

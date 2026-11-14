@@ -452,20 +452,6 @@ source = "WP10 Amendment 1, P1c; supervisor approval of 2026-11-09 (WP10-decisio
 note = "Appendix F.2; RECORD.md: Pins: Node.js v24.22.2 linux-arm64 tarball, sha256 and SHASUMS256.txt.asc checked."
 
 [[claim]]
-id = "C030"
-fragment = "a fielded system's measured attributes would enter the same table and fit"
-file = "docs/examples.md"
-anchor = ""
-kind = "S"
-backing = [
-  "file:paper/supporting_material.ipynb",
-]
-status = "backed"
-disposition = "keep"
-source = "WP10 Amendment 1, P6c; supervisor words of 2026-11-09 (WP10-decisions.md)"
-note = "The evaluation is a black box (simulator, physical test or human assessment): glossary row for attributes in the paper's section 3 and its supporting material."
-
-[[claim]]
 id = "C031"
 fragment = "in this design loop the simulation is how the attributes are measured ... because the evaluation is a black box to the method"
 file = "paper/paper.ipynb"
@@ -2178,7 +2164,7 @@ note = "L7 elasticities are ratios of exponents along a term; test pins report.e
 
 [[claim]]
 id = "C174"
-fragment = "`ts.score_samples(X)` is, for each design, the log of V, the invariant value"
+fragment = "`ts.score_samples(X)` is the log of V for each design. V, the invariant value"
 file = "docs/getting-started.md"
 anchor = ""
 kind = "S"
@@ -2201,20 +2187,8 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "T has d columns (d-1 coordinates plus log V last) and inverse_transform(T)==X"
 
 [[claim]]
-id = "C176"
-fragment = "Then [fit](user-guide/fitting.md), [read the tensions](user-guide/tensions.md), [use the chart](user-guide/chart.md)."
-file = "docs/getting-started.md"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_site.py::test_docs_relative_links_resolve", "test:tests/test_site.py::test_nav_pages_exist_and_cover_the_contract_pages"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "guide pages exist and links resolve; the sentence is a pointer to the guide order (instruction), nav order in mkdocs.yml"
-
-[[claim]]
 id = "C177"
-fragment = "The package follows the scikit-learn conventions [@pedregosa2011scikit; @buitinck2013api]: parameters"
+fragment = "It follows the scikit-learn conventions [@pedregosa2011scikit; @buitinck2013api]: parameters"
 file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
@@ -2298,7 +2272,7 @@ note = "objective_ and mean_slack_ at K=1 and K=2; the test asserts the solver-m
 
 [[claim]]
 id = "C184"
-fragment = "`mean_slack_` (the mean slack, to compare fits across numbers of terms)."
+fragment = "`mean_slack_`, to compare fits across numbers of terms."
 file = "docs/api-reference.md"
 anchor = ""
 kind = "S"
@@ -2442,7 +2416,7 @@ note = "L4.17-L4.24: posynomial objective, monomial equality/inequalities, conve
 
 [[claim]]
 id = "C196"
-fragment = "fitting several terms alternates assigning the designs to terms with a separate convex refit of each term"
+fragment = "Fitting several terms alternates assigning the designs to terms with a separate convex refit of each term"
 file = "docs/theory.md"
 anchor = ""
 kind = "M"
@@ -2466,7 +2440,7 @@ note = "Default term_temperature is inf (sharp); cell_ is one argmax label per d
 
 [[claim]]
 id = "C198"
-fragment = "reading off which term scores a design highest is analysis of the fitted model, not part of the fit."
+fragment = "Reading off which term scores a design highest is analysis of the fitted model, not part of the fit."
 file = "docs/theory.md"
 anchor = ""
 kind = "S"
@@ -2538,7 +2512,7 @@ note = "L7.5 dlog m_j0/dlog m_k0 = -w_k0/w_j0 along the tangent at constant V"
 
 [[claim]]
 id = "C204"
-fragment = "It is found from the data and not assumed: the fit at"
+fragment = "The set is found from the data and not assumed. The fit at"
 file = "docs/theory.md"
 anchor = ""
 kind = "M"
@@ -2670,7 +2644,7 @@ note = "refit scheme as sentence in n40 and prior_art gp-maxaffine 'K > 1 refit 
 
 [[claim]]
 id = "C215"
-fragment = "Kernel PCA [@schoelkopf1998nonlinear]: the kin of the documented kernel direction, which is not"
+fragment = "Kernel principal component analysis [@schoelkopf1998nonlinear]: the related method for the documented kernel direction, which is not"
 file = "docs/further-reading.md"
 anchor = ""
 kind = "L"
@@ -2709,7 +2683,7 @@ note = "'nearest neighbour outside engineering design' is the author's judgment 
 
 [[claim]]
 id = "C218"
-fragment = "PCA finds the directions in which the data spread"
+fragment = "Principal component analysis (PCA) finds the directions in which the data spread"
 file = "docs/user-guide/overview.md"
 anchor = ""
 kind = "M"
@@ -2721,7 +2695,7 @@ note = "reading_pass.yaml PCA table row (maximize variance successively) support
 
 [[claim]]
 id = "C219"
-fragment = "The answer is one weight per metric, the"
+fragment = "The answer is one weight per metric, and the weights sum to one"
 file = "docs/user-guide/overview.md"
 anchor = ""
 kind = "S"
@@ -2733,7 +2707,7 @@ note = "fit returns one exponent per metric on the simplex, min and sum asserted
 
 [[claim]]
 id = "C220"
-fragment = "you need not know in advance which dilemma or trilemma your problem holds."
+fragment = "you need not know in advance which dilemma or trilemma, two or three contending metrics, your problem holds."
 file = "docs/user-guide/overview.md"
 anchor = ""
 kind = "S"
@@ -2781,7 +2755,7 @@ note = "tension_report exposes weights (exponents) and participating mask, asser
 
 [[claim]]
 id = "C225"
-fragment = "its energy differential (level offset) to the fitted reference surface and its"
+fragment = "its level offset to the fitted reference surface and its"
 file = "docs/user-guide/overview.md"
 anchor = ""
 kind = "S"
@@ -2805,7 +2779,7 @@ note = "improvement_factors f=V^(-1/w_j) reaches V=1; test checks landing on fro
 
 [[claim]]
 id = "C227"
-fragment = "a novelty score and candidate white space;"
+fragment = "a novelty score and candidate white space, the regions no design occupies;"
 file = "docs/user-guide/overview.md"
 anchor = ""
 kind = "S"
@@ -2901,7 +2875,7 @@ note = "Asserts negative correlation of metric with raw attribute for orientatio
 
 [[claim]]
 id = "C235"
-fragment = "The cheap diagnostic is the sign of the pulled-back exponent below."
+fragment = "The cheap diagnostic is the sign of the pulled-back exponent."
 file = "docs/user-guide/conditioning.md"
 anchor = ""
 kind = "S"
@@ -2949,7 +2923,7 @@ note = "Test pins log m = (z - log_offset_)/log_scale_, so offset is the z mappi
 
 [[claim]]
 id = "C239"
-fragment = "scaler and stored as `log_offset_`. It fixes what V = 1 means in practice."
+fragment = "scaler and stored as `log_offset_`. It fixes what the surface V = 1 means in practice."
 file = "docs/user-guide/conditioning.md"
 anchor = ""
 kind = "S"
@@ -2985,7 +2959,7 @@ note = "Log IQR is 1 for robust; the 'suits data with extreme designs' is advice
 
 [[claim]]
 id = "C242"
-fragment = "works if it is affine per column. The reason to scale is the temperature of the next page: it is"
+fragment = "works if it is affine per column. The reason to scale is the temperature. It is"
 file = "docs/user-guide/conditioning.md"
 anchor = ""
 kind = "S"
@@ -3165,7 +3139,7 @@ note = "Solver agrees with the exact LP and the planted fit to tolerance."
 
 [[claim]]
 id = "C257"
-fragment = "- `exponents_`: shape `(n_terms, d)`, each row on the simplex."
+fragment = "- `exponents_`: shape `(n_terms, d)`, each row non-negative and summing to one."
 file = "docs/user-guide/fitting.md"
 anchor = ""
 kind = "S"
@@ -3249,7 +3223,7 @@ note = "frontier_fraction default 0.3 pinned (mask.sum()==150 of 500); I confirm
 
 [[claim]]
 id = "C264"
-fragment = "Fitting alternates weights from the current model with a refit, from `n_restarts` seeded"
+fragment = "Fitting alternates weights from the current model with a refit. It starts from `n_restarts` seeds"
 file = "docs/user-guide/fitting.md"
 anchor = ""
 kind = "S"
@@ -3270,18 +3244,6 @@ status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "Same table (300,4,n_terms=2,seed 777); default target raises 'not bracketed' (slow-marked test)."
-
-[[claim]]
-id = "C266"
-fragment = "also returns configuration variables. Both are seeded and used throughout these pages."
-file = "docs/user-guide/fitting.md"
-anchor = ""
-kind = "S"
-backing = ["test:tests/test_datasets.py::test_configured"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "random_state seeding tested (same seed same data); 'used throughout these pages' is descriptive"
 
 [[claim]]
 id = "C267"
@@ -3321,7 +3283,7 @@ note = "support of tau=inf LP, 1e-9 cutoff is in code; planted supports recovere
 
 [[claim]]
 id = "C270"
-fragment = "`n_lemma` is its size and `lemma_name` names it: monolemma, dilemma,"
+fragment = "`n_lemma` is the set's size and `lemma_name` names it. The names are monolemma, dilemma,"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
@@ -3357,7 +3319,7 @@ note = "contending set same at tau=5 as at inf"
 
 [[claim]]
 id = "C273"
-fragment = "the report warns when the estimator was fitted with a floor."
+fragment = "The report warns when the estimator was fitted with a floor."
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
@@ -3381,7 +3343,7 @@ note = "participating = exponents > threshold; threshold=1e-9 override tested"
 
 [[claim]]
 id = "C275"
-fragment = "is the elasticity along the surface: the percentage change of metric j per percentage change of"
+fragment = "is the percentage change of metric j per percentage change of metric k along the surface."
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "M"
@@ -3393,7 +3355,7 @@ note = "d log m_j/d log m_k = -w_k/w_j along F; code entry [j,k]=-w_k/w_j assert
 
 [[claim]]
 id = "C276"
-fragment = "metric k, constant within a term and `nan`"
+fragment = "It is constant within a term and `nan`"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "M"
@@ -3417,7 +3379,7 @@ note = "nan for rows with exponent <= 1e-3 asserted"
 
 [[claim]]
 id = "C278"
-fragment = "For designs with absolute log V below `band` (by default 1/tau, or 0.1 at infinite tau;"
+fragment = "The `band` is 1/tau by default, or 0.1 at infinite tau, and `n_near_frontier` counts the designs in it."
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
@@ -3429,7 +3391,7 @@ note = "band 0.1 at inf, 1/tau finite (0.05 at tau=20); near = |log V| < band as
 
 [[claim]]
 id = "C279"
-fragment = "`association` is the Pearson or Spearman correlation of the log-metrics: negative is traded, positive"
+fragment = "`association` is the Pearson or Spearman correlation of the log-metrics. Negative is traded, positive"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "S"
@@ -3537,7 +3499,7 @@ note = "default 10 asserted (n_near >= 10), ValueError names the term and min_ne
 
 [[claim]]
 id = "C288"
-fragment = "depends on the band, and is a statement about"
+fragment = "It depends on the band and is a statement about"
 file = "docs/user-guide/tensions.md"
 anchor = ""
 kind = "M"
@@ -3837,7 +3799,7 @@ note = "Asserts novelty positive on frontier designs, negative far inside, log1p
 
 [[claim]]
 id = "C315"
-fragment = "the regressor's `return_std` propagated by the delta method; raises"
+fragment = "the regressor's `return_std` propagated by the delta method, a linearized error propagation. It raises"
 file = "docs/user-guide/prediction.md"
 anchor = ""
 kind = "S"
@@ -3882,18 +3844,6 @@ status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "Pipeline ending in HyperbolicTradeSpace works; preconditioner example itself not tested here."
-
-[[claim]]
-id = "C319"
-fragment = "A predicted position inherits the surrogate's error and extrapolation risk, and is conditional on"
-file = "docs/user-guide/prediction.md"
-anchor = ""
-kind = "M"
-backing = ["test:tests/test_predictive.py::test_predict_std_plumbing_with_gaussian_process", "test:tests/test_predictive.py::test_recovers_planted_coordinates"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Cautionary gloss; surrogate error and growing std far from data shown by tests; conditional on trade_space_ by construction."
 
 [[claim]]
 id = "C320"
@@ -3945,7 +3895,7 @@ note = "descent holds up to guard_tol 1e-12 and not under refit_step='tangent' (
 
 [[claim]]
 id = "C325"
-fragment = "Numerical stationarity: no first-order improvement is left."
+fragment = "Numerical stationarity: no improvement is left from the gradient."
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "M"
@@ -4005,7 +3955,7 @@ note = "status and the warning pinned with a +10 rise; the threshold obj2 > obj 
 
 [[claim]]
 id = "C331"
-fragment = "- `iteration_cap`: alternation cap reached, fit kept; warned only when gap or last objective"
+fragment = "- `iteration_cap`: alternation cap reached, fit kept. Warned only when gap or last objective"
 file = "docs/user-guide/termination.md"
 anchor = ""
 kind = "S"
@@ -4172,18 +4122,6 @@ source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "Gap G-1 and glossary: the surface/envelope are fitted to the sample, the Pareto boundary is the system's; L11 non-converse"
 
 [[claim]]
-id = "C345"
-fragment = "of V is efficient in the contending metrics, and the converse is not claimed."
-file = "docs/user-guide/limitations.md"
-anchor = ""
-kind = "M"
-backing = ["lemma:L11", "test:tests/test_derivation.py::test_L11_in_chain_and_states_non_converse"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "L11.3: a V-maximizer is weakly efficient in all metrics, efficient in contending ones (no dominating u'); converse explicitly not proved"
-
-[[claim]]
 id = "C346"
 fragment = "At a finite temperature some designs lie beyond V = 1 by construction."
 file = "docs/user-guide/limitations.md"
@@ -4197,7 +4135,7 @@ note = "L5.3: mean <= LME <= max, so beta = LME <= max and the maximizing design
 
 [[claim]]
 id = "C347"
-fragment = "A very high tau rests the fit on a few extreme designs"
+fragment = "A high tau rests the fit on a few extreme designs"
 file = "docs/user-guide/limitations.md"
 anchor = ""
 kind = "M"
@@ -4221,7 +4159,7 @@ note = "Glossary: contending set = support of the exponents at infinite temperat
 
 [[claim]]
 id = "C349"
-fragment = "0, and graded participation at a fit temperature."
+fragment = "0. At a fit temperature participation is graded."
 file = "docs/user-guide/limitations.md"
 anchor = ""
 kind = "M"
@@ -4233,7 +4171,7 @@ note = "Test: finite tau smooths the weights (graded participation); glossary su
 
 [[claim]]
 id = "C350"
-fragment = "negative association near the surface is partly a closure effect."
+fragment = "negative association near the surface is partly a [closure effect](tensions.md)"
 file = "docs/user-guide/limitations.md"
 anchor = ""
 kind = "M"
@@ -4254,21 +4192,6 @@ status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
 note = "L15 descent is local only; gap G-14 no global claim; n_restarts seeds the restarts and the lowest mean slack is kept"
-
-[[claim]]
-id = "C353"
-fragment = "The [glossary](../generated/glossary.md) and the [paper](paper:sect-definitions) define \"hyperbolic\"."
-file = "docs/user-guide/limitations.md"
-anchor = ""
-kind = "S"
-backing = [
-  "glossary:hyperbolic",
-  "file:paper/paper.ipynb",
-]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43; re-pointed by WP35"
-note = "A pointer (WP35 D-5): the one definition is the glossary entry, printed in Appendix A, and the Definitions sentence of the paper."
 
 [[claim]]
 id = "C354"
@@ -4445,7 +4368,7 @@ note = "mean_slack_ is the mean shortfall below the fitted reference surface on 
 
 [[claim]]
 id = "C377"
-fragment = "The third, that it holds outside the table or supports a decision, the certificate does not make"
+fragment = "certificate does not make the third, that it holds outside the table or supports a decision."
 file = "docs/user-guide/termination.md"
 anchor = "What to decide from it"
 kind = "M"
@@ -4475,7 +4398,7 @@ note = "n_lemma is the size of the contending set of the term's cell; one metric
 
 [[claim]]
 id = "C379"
-fragment = "One term blends cap and slope into a dilemma that fits neither; two terms return the cap and the slope as separate terms, at a fraction of the mean slack"
+fragment = "One term blends cap and slope into a dilemma that fits neither. Two terms return the cap and the slope as separate terms, at a fraction of the mean slack"
 file = "docs/user-guide/tensions.md"
 anchor = "A cap can hide a slope"
 kind = "R"
@@ -4489,22 +4412,8 @@ source = "WP21 D-4 to D-7 (docs)"
 note = "The planted cap-plus-slope table of the runnable block (seed 0, 300 rows, tail of about 1/7): K = 1 gives mean slack 0.351 and a dilemma, K = 2 gives 0.043 with a monolemma term and a dilemma term; the block asserts a monolemma term and a threefold fall of the mean slack. One table, not a rate."
 
 [[claim]]
-id = "C380"
-fragment = "a cap on a table that never reaches the slope is all the report can show"
-file = "docs/user-guide/tensions.md"
-anchor = "A cap can hide a slope"
-kind = "S"
-backing = [
-  "file:docs/superpowers/notes/abstraction-gaps.md",
-]
-status = "backed"
-disposition = "keep"
-source = "WP21 D-4 to D-7 (docs)"
-note = "The report describes the sampled table (limitations; gaps ledger G-12: the contending set is a statement about the sampled region)."
-
-[[claim]]
 id = "C381"
-fragment = "is an inversion you carry out, and it can leave the quantity's admissible range while the certificate holds"
+fragment = "is an inversion you carry out. It can leave the quantity's admissible range while the [certificate](termination.md) holds"
 file = "docs/user-guide/prediction.md"
 anchor = "Using it"
 kind = "M"
@@ -4533,7 +4442,7 @@ note = "A rule for the reading, not a measured result: clipping hides that the m
 
 [[claim]]
 id = "C383"
-fragment = "a stable fitted direction answers that question as conditioned and is not a context-free discovery"
+fragment = "A stable fitted direction answers that question as conditioned and is not a context-free discovery"
 file = "docs/user-guide/conditioning.md"
 anchor = ""
 kind = "M"
@@ -4562,7 +4471,7 @@ note = "Consistency under noise and refitting is open question Q2 (gaps ledger G
 
 [[claim]]
 id = "C385"
-fragment = "and inverting a level into a bounded outcome is yours"
+fragment = "and inverting a level into a bounded outcome is left to you"
 file = "docs/user-guide/limitations.md"
 anchor = ""
 kind = "P"
@@ -5177,7 +5086,7 @@ note = "The case's conditioner is LogAffinePreconditioner with scaler='standard'
 
 [[claim]]
 id = "C427"
-fragment = "The mean slack falls with every added term by construction, so it cannot choose K, and a table may show no break."
+fragment = "The mean slack falls with every added term by construction, so it cannot choose K. A table may show no break."
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "S"
@@ -5336,7 +5245,7 @@ note = "As C340: the Hessian of J_tau is tau times a weighted covariance (L17.5)
 
 [[claim]]
 id = "C444"
-fragment = "`mean_slack_` is comparable across K at one temperature, and `objective_` is not."
+fragment = "`mean_slack_` is comparable across K, and `objective_` is not."
 file = "docs/user-guide/choosing-k.md"
 anchor = ""
 kind = "S"
@@ -5703,7 +5612,7 @@ note = "Section 9's sentence: the K the package's choosing-K checks pick for the
 
 [[claim]]
 id = "C490"
-fragment = "contending sets of 8 and 7 metrics and shares of 74 and 26 percent of the near-frontier designs: the larger adds peak slew power to the one-term contending set, and the smaller is that set."
+fragment = "contending sets of 8 and 7 metrics and shares of 74 and 26 percent of the near-frontier designs. The larger adds peak slew power to the one-term contending set, and the smaller is that set."
 file = "docs/examples.md"
 anchor = "A cubesat trade study across power, mass and attitude control"
 kind = "R"

@@ -5,7 +5,7 @@ For an analyst fitting a table for the first time.
 ## Install
 
 The package is installed from source for now. It needs Python 3.12 and uses
-[uv](https://docs.astral.sh/uv/):
+[uv](https://docs.astral.sh/uv/), a Python package manager:
 
 ```bash
 git clone \
@@ -33,7 +33,7 @@ print(report.lemma_name, report.contending_set)
 print(report.exponents.round(2))
 ```
 
-The output is `trilemma [0 1 2]` and then `[0.3  0.37 0.33]`. `temperature` is tau, how hard the maximum is; the band of near-frontier designs has width 1/tau
+The output is `trilemma [0 1 2]` and then `[0.3  0.37 0.33]`. `temperature` is tau, how hard the maximum is. The band of near-frontier designs has width 1/tau
 ([choosing the temperature](user-guide/fitting.md#choosing-the-temperature)).
 
 The idea is easiest to see with two of the metrics, where the model is a line. The grey band is up to 0.5 below the frontier in log V:
@@ -60,9 +60,9 @@ trilemma. `report.exponents` are the
 fitted weights at the fit temperature; their ratios are the elasticities between the contending
 metrics, with a minus sign (`report.elasticities`).
 
-`ts.score_samples(X)` is, for each design, the log of V, the
-invariant value: a weighted geometric mean of the metrics, 1 on the fitted reference surface, so
-negative inside and positive beyond. `ts.transform(X)` is the chart, `d - 1` position coordinates plus that log V, and `ts.inverse_transform` undoes it.
+`ts.score_samples(X)` is the log of V for each design. V, the
+invariant value, is a weighted geometric mean of the metrics and is 1 on the fitted reference surface, so
+its log is negative inside and positive beyond. `ts.transform(X)` is the chart, `d - 1` position coordinates plus that log V, and `ts.inverse_transform` undoes it.
 
 ## Your own data
 
@@ -71,9 +71,7 @@ What must hold of your table:
 - One row per evaluated design; the evaluation stays outside the package, which never calls your model. Design variables and labels are configuration, not attributes: leave them
   out ([prediction](user-guide/prediction.md) takes them).
 - The fit consumes a strictly positive matrix of larger-is-better metrics. Making them so is your
-  [conditioning](user-guide/conditioning.md), with `LogAffinePreconditioner`: zeros are tolerated, negatives
-  rejected, infeasible rows removed first.
-- The exponents describe the conditioned metrics of your sample, not the system's Pareto boundary
+  [conditioning](user-guide/conditioning.md), with `LogAffinePreconditioner`. Zeros are tolerated and negatives
+  rejected; infeasible rows are removed first.
+- The exponents describe the conditioned metrics of your sample, not the system's Pareto boundary, the best trade-offs it can reach
   ([limitations](user-guide/limitations.md)).
-
-Then [fit](user-guide/fitting.md), [read the tensions](user-guide/tensions.md), [use the chart](user-guide/chart.md).

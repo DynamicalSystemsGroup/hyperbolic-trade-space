@@ -2,7 +2,7 @@
 
 For the analyst whose attributes are not yet metrics. Real evaluations produce
 attributes: kilograms, dollars, error rates, counts, some of them better when small. The map from
-attributes to metrics is yours to choose, because it is part of the question you ask: a stable fitted
+attributes to metrics is yours to choose, because it is part of the question you ask. A stable fitted
 direction answers that question as conditioned and is not a context-free discovery. The package
 supplies `LogAffinePreconditioner`, which implements the family of maps the method allows, and
 `frontier_in_original_units`, which reports the fitted reference surface back in the units you started with.
@@ -28,7 +28,7 @@ print(np.allclose(pre.inverse_transform(M), A))
 Each column is larger-is-better (orientation +1) or smaller-is-better (orientation -1). A
 smaller-is-better attribute is inverted in log space and comes out larger-is-better. Orientation is
 a judgement about the problem, and a wrong sign is not detected: the fit finds a surface for the
-wrongly oriented metric. The cheap diagnostic is the sign of the pulled-back exponent below.
+wrongly oriented metric. The cheap diagnostic is the sign of the pulled-back exponent.
 
 ## Shift and reference point
 
@@ -38,14 +38,14 @@ decision about where the scale begins, and different shifts give different fits.
 unless an attribute legitimately reaches zero.
 
 The reference point is the attribute value that maps to metric 1; it is the centre removed by the
-scaler and stored as `log_offset_`. It fixes what V = 1 means in practice.
+scaler and stored as `log_offset_`. It fixes what the surface V = 1 means in practice.
 
 ## Scaling
 
 After the logarithm a scaler is fitted per column. `scaler="standard"` gives each metric unit
 log-standard-deviation; `"robust"` normalizes the interquartile range instead and suits data where a
 few extreme designs would dominate; `None` keeps the pure power law. A scikit-learn scaler instance
-works if it is affine per column. The reason to scale is the temperature of the next page: it is
+works if it is affine per column. The reason to scale is the temperature. It is
 quoted in inverse log-spread, so equal log-spread makes one temperature mean the same for every
 column.
 
@@ -69,8 +69,8 @@ None proves a conditioning right; they show whether the story is sensible.
   you believe about that attribute is a prompt to revisit orientation or shift.
 - Refit under a second reasonable conditioning, the other scaler or a modest change of shift. If the
   contending set moves, the finding depends on the conditioning, and should be reported that way.
-- After a fit, `conditioning_` reads the same question from the fit itself: a value far below a comparable fit's marks
-  metrics that move together; [Termination](termination.md#conditioning_) shows how to read it.
+- After a fit, `conditioning_` reads the same question from the fit itself. A value far below a comparable fit's marks
+  metrics that move together. [Termination](termination.md#conditioning_) shows how to read it.
 
 ## The pull-back to attributes
 
