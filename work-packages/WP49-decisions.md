@@ -276,3 +276,16 @@ does not", and the closing meta-sentence about the supply chain is cut too.
 
 **Applied as:** the page's "A release ships with a software bill of materials" holds for v0.1; WP47 Amendment 2 builds it.
 
+## Links to the conditions and the templates (2026-11-14, 20:05 EST), on the CONTRIBUTING draft
+
+**Supervisor, verbatim:** "i think we should include links to the issue admissibility conditions, the issue template, the PR admissibility
+conditions and the PR template"
+
+**Applied as:** the draft links four files WP47 produces: `.github/ISSUE_ADMISSIBILITY.md` (the conditions a draft
+must meet to become an issue, each with the check that enforces it), `.github/ISSUE_TEMPLATE/scope-of-work.yml` (the
+template that asks for each: scope and non-goals, blast radius, good, good enough as conformance and fitness items,
+open decisions), `.github/PR_ADMISSIBILITY.md` (what a pull request carries before review: one thing its title says,
+the issue it resolves or the small-fix label, the description's fields, readable history, the conformance checks
+green, not merged by its author; each with its check), and `.github/pull_request_template.md`. The two conditions
+files are the human-readable face of WP47's D-7 workflows: one list, enforced by the actions it names.
+

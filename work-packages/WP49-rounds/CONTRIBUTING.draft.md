@@ -43,8 +43,9 @@ right. Write each item so a reviewer can tell which it is.
 
 **An issue must be admissible, and this is enforced.** A draft becomes an issue only when it has a bounded scope, a
 sane blast radius (the files and surfaces it may touch, small enough to review in one sitting), and definitions of good
-and good enough. A draft missing one of these is returned with the gap named, not approved. The issue template asks for
-each.
+and good enough. A draft missing one of these is returned with the gap named, not approved. The conditions, each with
+the check that enforces it, are in [the issue admissibility conditions](.github/ISSUE_ADMISSIBILITY.md); [the issue
+template](.github/ISSUE_TEMPLATE/scope-of-work.yml) asks for each.
 
 **A candidate scope is a draft issue.** Filing one proposes work; it does not accept or prioritise it. A code owner
 approves a draft by making it an issue, after the open decisions are settled, and that approval is the record. Small
@@ -55,7 +56,9 @@ description states what changed, what backs it (a test, a lemma step, a generate
 it, and the tools used. History stays readable: commits that each build and pass, no merges of `main` into a feature
 branch, no force-pushes to shared branches. A change that must reach beyond the files its scope names says so, and is
 split when it can be. If the work shows the scope itself must change, the change goes back to the issue as an
-amendment and is approved there; a pull request does not widen its scope on its own.
+amendment and is approved there; a pull request does not widen its scope on its own. What a pull request must carry
+before it is reviewed, each with the check that enforces it, is in [the pull request admissibility
+conditions](.github/PR_ADMISSIBILITY.md); [the pull request template](.github/pull_request_template.md) asks for each.
 
 **Review is against the scope, and reports both kinds.** A reviewer takes the issue's good-enough items one by one.
 Conformance is verified by running the checks and quoting the result; a tool may run them. Fitness is validated by a
