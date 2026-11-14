@@ -1470,8 +1470,8 @@ reader = "the executive weighing which design to ask for, and the systems engine
 [[cut]]
 date = "2026-11-13"
 section = "The decision problem"
-words_removed = 52
-no_longer_did = "the parenthetical pointer '(the abstract, the Main results below)'; the repeat of 'the surface is not the Pareto boundary, and the table and its reading are views' (the abstract and Definition 1 say it); the announcement '(Section 6; each has hypotheses, a sketch and a script)' after Main results; and 'fitted to the outer edge of the data, not through its middle' with 'not the Pareto boundary but' in main result 1 (the abstract and Definition 1 say them); net of the plain words that replaced 'it' in 'To displace it' and the splits"
+words_removed = 45
+no_longer_did = "the parenthetical pointer '(the abstract, the Main results below)'; the repeat of 'the surface is not the Pareto boundary, and the table and its reading are views' (the abstract and Definition 1 say it); the announcement '(Section 6; each has hypotheses, a sketch and a script)' after Main results; and 'fitted to the outer edge of the data, not through its middle' and 'but the level from which' in main result 1 (the abstract and Definition 1 say them; 'It is not the Pareto boundary' stays, a test pins it); net of the plain words that replaced 'it' in 'To displace it' and the splits"
 authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
 
 [[cut]]
