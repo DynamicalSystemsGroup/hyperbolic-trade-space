@@ -30,23 +30,22 @@ ecosystem.
   cost of a change nobody checked falling on a maintainer (Ghostty, LLVM, scikit-learn, statsmodels, curl, Linux). (c)
   Who certifies the change: the human who signs (QEMU and the kernel through the Developer Certificate of Origin;
   Fedora, CPython and statsmodels by saying the contributor owns it).
-- **Bans rest on (a) alone or with ethics; none of the bans reported evidence of a defect that disclosure would not also
-  reveal.** QEMU's and NetBSD's bans are stated as a way to keep the certification of origin honest; Gentoo adds
-  ethics; Zig gives no reason.
+- **The bans rest on (a), alone or with ethics.** QEMU's and NetBSD's are stated as a way to keep the certification of
+  origin honest; Gentoo adds ethics; Zig's page gives no reason.
 - **Disclosure rules are of three kinds.** Required and enforced by rejection (scikit-learn, statsmodels, Ghostty, curl for
   reports); required in a defined place with content (kernel: tools, inputs, affected parts); encouraged with a trailer
   (LLVM `Assisted-by:`, Fedora `Assisted-by:`, Apache `Generated-by:`). CPython sits at the far end: appreciated, not
   required, and says the person owns the content.
-- **Every page that states an accountability rule states it in the same words: the human submitter owns the change.**
-  Where a trailer is used it names the tool, as a note beside a human author (LLVM, Fedora, Apache). The kernel is the
+- **The pages that state an accountability rule (kernel, Fedora, CPython, statsmodels, QEMU, scikit-learn) say the human
+  submitter owns the change.** Where a trailer is used it names the tool, as a note beside a human author (LLVM, Fedora, Apache). The kernel is the
   one source read that forbids the tool from carrying a certifying tag ("AI agents MUST NOT add Signed-off-by tags").
 - **What the pages do not say.** None of the pages read gives data on how often disclosure was accurate, or on whether
   a ban or a disclosure rule changed the quality of what was submitted; those are statements of rationale, not
   findings. Several that read as policies have no date on the page (marked above).
 - **Ecosystem spread.** Systems and operating systems (Gentoo, NetBSD, QEMU, Linux, Fedora), languages and compilers
   (Zig, CPython, LLVM), an application (Ghostty), a network library (curl), foundations (Apache, Linux Foundation) and the
-  Python numerical packages this package sits among (scikit-learn, statsmodels). Fedora and the Linux kernel carry
-  the Contributor Covenant for conduct and a separate AI document (see D-1, last section, for the kernel).
+  Python numerical packages this package sits among (scikit-learn, statsmodels). The Linux kernel keeps the Contributor
+  Covenant for conduct and separate AI documents (D-1, last section).
 
 ## Citations resolved
 
