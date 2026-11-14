@@ -54,3 +54,13 @@ and the elasticity (Theorem 7) is the scale-free companion. The association amon
 paper's figures and stays in the package as `plot_association`; Appendix D.3's one-axis reading keeps its text and
 table. The figure loop's test 1 is re-run on the final caption (image alone, then the caption).
 
+## The Section 9 sentence (2026-11-14, 23:05; popup with the driver's recommendation)
+
+**Supervisor, verbatim:** "Accept as drafted (Recommended)"
+
+**Applied as:** the sentence of `WP42-rounds/spike/drafts.md` ("Section 9, one sentence on the pick's tension") lands
+in Section 9 by the build, its numbers generated at build time by the spike's method moved into the paper's code, with
+a claims row and a length-ledger row. Naming item 4 (the solver's `objective_` and `objective_*` names) is settled by
+his ruling of 15:50 ("loss for the solver's function everywhere"): renamed to loss in the mechanical pass. With this,
+all four items and the sentence are decided and the build (Scope A) is dispatched; Amendment 1 of the scope records it.
+

@@ -105,3 +105,36 @@ None. OD1 closed on 2026-11-14 at 15:50 (`WP11-decisions.md`, verbatim): loss fo
 the choice stated where the notation is set and in the glossary; objective reserved for the decision-analysis frame,
 the subset of the metrics the decision-maker optimizes for. G3's entry for the solver's function is therefore "loss",
 and the build stage carries the mechanical pass over the theorems, Appendix A, the scripts' docstrings and the tests.
+
+## Amendment 1 (2026-11-14, 23:05): the build after the spike, as he chose it
+
+Approved by his word on the readout's options ("Scope A, all of it", 20:30) and his four answers (`WP42-decisions.md`,
+20:35 to 23:05). The build adds to the approved scope, in one unit on a branch from dev, with the spike's scripts as the
+source of record:
+
+- **Lemma:** `WP42-rounds/spike/lemma_tension.py` becomes `derivation/lemma_21_tension.py` with its hypotheses in the
+  ledger and a row in Appendix B; `derivation/run.py` runs it.
+- **Definition:** tension beside elasticity in Section 4 (the derivative along the term in the conditioned metrics; the
+  negative, zero, blank, reciprocal and piecewise cases; the term's matrix from the fit at the balanced point and a
+  design's tensions from the data, two objects), Appendix A rows; the attribute-unit route through Theorem 7 stated.
+- **Package:** `tension_matrix` and `design_tensions` in `src/`, numpydoc with doctests, finite differences as the test
+  (the spike's check, cells and tolerances); the renames of item 2: `trade_off_report`, `spread_directions`,
+  `spread_loadings`, `plot_association`; the solver's `objective_` and `objective_*` names to loss; the interface
+  contract amended (schema fields `layer`, `used_in`, `elsewhere`; the file key `preamble`; the renamed members).
+- **Figure 7:** the compact tension matrix per term with the caption of item 3; the old figure's code retired from the
+  paper; figure-loop test 1 re-run on the final caption, image alone then caption, reports committed verbatim.
+- **Section 9:** the accepted sentence, numbers generated; claims row; ledger row.
+- **Section 3:** the three layers in brief, pointing to Appendix A (the spike's draft).
+- **Glossary and checker:** the drafted entries (objective, constraint, trade-off, tension, tension matrix, design
+  tensions, loss, white space with hole and gap as avoided variants for that object; MoE and MoP revised; the preamble
+  with the three layers in full); extended stems; the mechanical pass over paper, `src/`, user guide, README and root
+  page (about 107 objective, 52 tension, 136 gap, 22 hole, 9 white space mentions by the spike's count), each use
+  moved to its layer's word; the checker's baseline reduced, not extended.
+- **Entry surfaces:** the four small edits of G3c; the root page's summary paragraph and "bespoke or opaque" untouched.
+- **Docs:** a page on the routes back from a tension in the metrics to attribute units and to the design variables
+  (what is computable, what is a conjecture past the sampled designs), linked from the user guide.
+
+Non-goals unchanged; `hole` stays undefined in 0.1 (reserved, WP50). Good enough adds: the finite-difference tests
+pass; the checker shows no new violation and a smaller baseline; the renamed API page renders; the figure's cold read
+is in; the full suite, lint, format and lock check pass; `derivation/run.py` passes with L21.
+
