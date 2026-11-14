@@ -197,3 +197,13 @@ and https://www.dynamicalsystemsgroup.com/blog/an-algorithm-is-a-camera"
 **Applied as (pending):** both read and resolved; placed on the timeline at their dates if he says so, each in a clause
 that says what it argued.
 
+**Supervisor, verbatim (00:55 EST; popup over the essay, Algorithms as Policy and An Algorithm Is a Camera):** "see dsg
+blog for missing content. the algorithms as policy essay from kelsie's blog is fine"
+
+**Supervisor, verbatim (00:57 EST):** "when doubt we should use the https://www.dynamicalsystemsgroup.com/blog/engineering-for-legitimacy versions"
+
+**Applied as:** the essay is linked to its version on the firm's own blog, not the archive; the rule for every source
+of the firm's with a version there is the Dynamical Systems Group blog first; Algorithms as Policy (Zargham and
+Nabben, 2021) enters the early lineage; An Algorithm Is a Camera was not answered and is left off the page until he
+says otherwise.
+
