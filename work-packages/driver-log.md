@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **6891eae fully green (05:25).** CI run 43586454804: every job green on both platforms, the thirty-third fully green
+  head. The stage at 127.0.0.1:8791 still serves c23cf60, the head the round reads; it is rebuilt only when the
+  change-request unit lands, so later waves read the same head as the first three.
+
 - **Final round, wave 3 triaged (05:20).** Seven reports (P7-C, P4-A, P2-C, P2-B, P8-A, P7-B, P6-C): no wrong
   belief, every depth's job done; twenty-one reports in all with none. One mis-stated detail outside the key's list
   (F02: "thirteen requirements" for six). Twenty-one new requests (48 to 68), each stopping two to four readers of
