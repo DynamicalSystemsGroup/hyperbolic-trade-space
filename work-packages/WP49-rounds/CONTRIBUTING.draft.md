@@ -33,7 +33,7 @@ are written to hold whichever model or editor you use.
 **An issue is a scope of work.** It says what will be delivered and what will not, what the work aims at (good),
 and what a reviewer will check item by item (good enough). It does not say how the work is to be done; the approach
 belongs to the person doing it. Details the scope does not settle are the worker's call, listed in the pull request as
-defaults for the reviewer to approve as one item. Where the scope depends on a decision only the maintainer can make,
+defaults for the reviewer to approve as one item. Where the scope depends on a decision only a code owner can make,
 the issue lists it as an open decision with plain options.
 
 **An issue's good-enough items are of two kinds.** Conformance items say what must hold and are checked by machine: a
@@ -46,7 +46,7 @@ sane blast radius (the files and surfaces it may touch, small enough to review i
 and good enough. A draft missing one of these is returned with the gap named, not approved. The issue template asks for
 each.
 
-**A candidate scope is a draft issue.** Filing one proposes work; it does not accept or prioritise it. The maintainer
+**A candidate scope is a draft issue.** Filing one proposes work; it does not accept or prioritise it. A code owner
 approves a draft by making it an issue, after the open decisions are settled, and that approval is the record. Small
 fixes, a typo or a broken link, need no issue: open the pull request and say what it fixes.
 
@@ -61,7 +61,7 @@ amendment and is approved there; a pull request does not widen its scope on its 
 Conformance is verified by running the checks and quoting the result; a tool may run them. Fitness is validated by a
 named reviewer who looks at the thing, the page in a browser, the figure, the output of the example, and signs the
 judgement in the review. No passing check stands in for that judgement, and no judgement excuses a failing check. A
-pull request merges into `dev`, by a maintainer who is not its author, when every conformance item passes, every
+pull request merges into `dev`, by a code owner who is not its author, when every conformance item passes, every
 fitness item is validated, and no gap is left open: each gap is accepted as is with a reason, fixed before the merge,
 or made its own issue. The merge closes the issues the pull request resolves.
 
@@ -70,13 +70,14 @@ pytest`, the vocabulary and residual checks, and the test workflow on both platf
 commit whose message names a tool as an author or generator. These are conformance; they are necessary and never
 sufficient.
 
-**Merges into `main` are releases.** The maintainer alone merges `dev` into `main`, with `git merge --no-ff` and a
+**Merges into `main` are releases.** Only a code owner merges `dev` into `main`, with `git merge --no-ff` and a
 version tag. Versions follow semantic versioning: a patch for a fix, a minor for a compatible addition, a major for a
 breaking change; the changelog names each. Publishing to PyPI runs from the tag through the release workflow and needs
-the maintainer's approval of its environment.
+a code owner's approval of its environment.
 
-**Maintainers.** How a maintainer is added, how a release is cut, and the repository settings that enforce the above
-are in the [maintainers' page](docs/maintainers.md). Security reports go as [SECURITY.md](SECURITY.md) says, not to
+**Code owners.** The code owners are the permissioned set named in `.github/CODEOWNERS`; the file is the record of who may
+approve, merge and release, and adding one changes that file and nothing here. How a code owner is added, how a
+release is cut, and the repository settings that enforce the above are in the [code owners' page](docs/maintainers.md). Security reports go as [SECURITY.md](SECURITY.md) says, not to
 the issue tracker.
 
 ## Tooling in one line

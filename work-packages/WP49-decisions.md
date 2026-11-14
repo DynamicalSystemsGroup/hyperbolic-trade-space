@@ -220,3 +220,14 @@ are drafted with it.
 **Applied as:** the conformance and fitness split and the four sentences from the skills check are in the draft; the
 file goes to him for review.
 
+## Code owners, not maintainers (2026-11-14, 19:00 EST), on the CONTRIBUTING draft
+
+**Supervisor, verbatim:** "pretty good. though i want "codeowners" in place of maintainers. that way its a permissioned set
+and the fact that i am the only member at present doesn't force a change to these markdown files if we add other
+codeowners in the future"
+
+**Applied as:** every "maintainer" in the draft becomes "a code owner" or "code owners", the permissioned set named in
+`.github/CODEOWNERS`; the closing paragraph says that file is the record of who may approve, merge and release, and
+that adding one changes that file and nothing on the page. The page WP47 writes keeps its path `docs/maintainers.md`
+until WP47's unit renames it with the same rule (a note to PM16); the word on this page is code owner throughout.
+
