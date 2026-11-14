@@ -874,3 +874,24 @@ stage, verify, preview-wt, hts-reader-EF. Never touch stage, verify, preview-wt,
 - Section 9's decision paragraph rose to 159 words; the ceiling test's bound (150 to 160) moved with the reader
   definitions.
 
+## Handover (fourteenth PM, 2026-11-14; Sonnet; written by the PM at its hand-back)
+
+Landed this PM (all on dev, units by rebase and fast-forward): WP35 reader briefs and WP8b rows 8aef509; WP35 reads
+c073362 and wording unit 940d6f0 (Appendix H accepted at 3d5a53e); WP39 notebook unit 20bff6e, clean execution
+a538fc4, fixes 50d8427 and f89c663, reads c3d66a3, review 94cb6a1; root page order and summary 4b8aa94 and 26555f2;
+WP40 build cb91835 (records under WP40-rounds/thinning/), D-8 995075b, review 1be1e12; WP38 pass: flags 6007221,
+landings L1 7f790f2, L2 0b31ef1, L3 d417196, N1+N2+X 7caf05d, residue 368f3a1, round 2 ba22d92, l1 nit 116c929,
+confirmations and closing records (WP38-review.md, baseline retaken) 5fa00a5. Review-list rows for WP35, WP39, WP40
+and WP38 are in. The pass is not "every surface reads clean": 18 of 96 confirmation rows clean; the rest listed in
+WP38-review.md as the post-0.1 list (with the 163 lemma rows and the history page's 30 rows).
+
+Open for the next PM: (1) the docs-site build fixtures in tests/test_site.py and tests/test_docs.py failed in the
+WP38 review unit's worktree (2 failed, 11 errors, a MkDocs 2 warning banner); earlier units had them green: re-run
+on a clean checkout before acceptance. (2) The final reader round: PLAN.md and 28 briefs (F01 to F28) are ready under
+scratchpad/final-round/ (assistant settles five options in PLAN.md section 8; slices are to be recaptured; the key is
+the assistant's). (3) WP8b drafts (version 0.1.0, changelog heading, reviewer's guide, release checklist rows); the
+rows G1 and G2 are in. (4) Register and grid refresh. Not the PM's: abstract, entry surfaces, history page, the
+merge to main, the tag.
+Worktrees held at hand-back: none of mine except pm13main and wp27model (older PMs); never touch stage, verify,
+preview-wt, hts-reader-EF.
+
