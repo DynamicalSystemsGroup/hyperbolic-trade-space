@@ -141,3 +141,8 @@ above", choosing the sentence: "Like PCA, HTS is unsupervised. Where PCA fits a 
 HTS fits a surface one dimension below the metrics and gives every design a position on that surface and a level
 relative to it; projecting onto the surface drops the level, and keeping both loses nothing." (Backed by Theorem 1's
 V(m/V(m)) = 1, Theorem 6 and D.16.)
+
+**Supervisor, verbatim (13:30), on the pull-back sentence:** "i like #1", choosing: "Every chart point pulls back
+exactly to attribute units; a point with a datum is a design in the table; a point without one is a conjecture about a
+design, proposed by a rule and settled by building and measuring it." (Theorem 7; the table's rows; Section 7 and
+WP41's page.)
