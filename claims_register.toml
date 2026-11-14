@@ -2089,7 +2089,7 @@ note = "Planted holes in the chart are located; gaps are gaps in ratio profiles 
 
 [[claim]]
 id = "C167"
-fragment = "It is a scikit-learn estimator (`fit`, `transform`, `inverse_transform`, `score_samples`) in the"
+fragment = "It is a scikit-learn estimator (`fit`, `transform`, `inverse_transform`, `score_samples`) in"
 file = "docs/index.md"
 anchor = ""
 kind = "S"
@@ -2101,7 +2101,7 @@ note = "Methods exist and behave as a transformer; parametrize_with_checks passe
 
 [[claim]]
 id = "C168"
-fragment = "unsupervised and feature-engineering family, beside PCA"
+fragment = "unsupervised learning, beside PCA"
 file = "docs/index.md"
 anchor = ""
 kind = "S"
