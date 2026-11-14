@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **c42d860 fully green (09:15).** CI run 43601203914: every job green on both platforms (fast, slow and docs-paper on
+  Linux; fast and slow on Windows), the thirty-fourth fully green head; the wave-1 change unit's acceptance stands
+  with CI behind it.
+
 - **The round's supervisor items entered on the review list (08:45).** `supervisor-review-list.md` gains a section with
   the twenty-one items the round routes to the supervisor, each with its cell count, the cells, and the readers' words
   in one line; the triage files hold the quotations by item number. Nothing in it is applied.
