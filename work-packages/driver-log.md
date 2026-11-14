@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The nit unit verified; register row C422 closed (00:50).** The nit unit (8bc69cf, 116c929): the prose prints the
+  ell-one as the bibliography does, and C422's fragment is re-pointed to the source's string literals; the claims
+  register tests 21 passed here; no stderr output in the notebooks; on 116c929 ruff, lock, vocabulary and attribution
+  clean, the fast suite 1947 passed, 15 skipped, 487 deselected, 2 xfailed, 10 warnings in 428.06s (0:07:08); the stage rebuilt at 116c929. CI dispatched (43581901051 on 116c929). The last two confirmation forms are
+  committed in the pass's worktree and in their test run; the baseline retake, WP38-review.md and the review list
+  follow their push.
+
 - **CI red on ba22d92 for the known register row (00:15).** CI 43574786539 on ba22d92: the slow and docs-paper jobs
   green, both fast jobs red with the one failure the assistant had already found and returned, register row C422's
   fragment; nothing else failed. The fix is committed in the nit unit's worktree (2d3c98f) and in its test group
