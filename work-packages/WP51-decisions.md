@@ -24,3 +24,19 @@ space, the chart's slice along the pair's axis), the third metric as the fan par
 kept as the one view of the whole position space (the projection, the same for all three pairs, so no projection pane
 per row). The paper's Figure 1 is not touched. The figure goes through the figure loop with cold reads of the page.
 Merge into `dev` only on his word after his close read of the rendered page.
+
+## His wording of the why (2026-11-15, 01:20)
+
+**Supervisor, verbatim ("here is my wording"):** "Decisions about engineered systems mix two questions: (1) what is possible and what trades against what, which can be
+assessed scientifically, and (2) what is preferable, which is a judgement that belongs to the people accountable for it.
+This method provides a data-driven approach to (1) in service of grounding (2) in an empirical method that is interpretable
+and reproducible. The line between the options on the table and the options preferred is then auditable. Where stakeholders'
+interests are in tension, the data says how they compete and where they compete. This provides guidance for deciding whether
+to search for new options and for deliberating over the ones in hand. When decisions are made, the evidence base and
+reasoning for that judgement can be recorded alongside the decision."
+
+**Applied as:** his paragraph, with two light touches and nothing else: "are in tension" becomes "compete", because
+tension is now the glossary's word for the local partial derivative between two metrics on the surface and the plain
+word for competing interests is compete or trade off; "the data says how they compete and where they compete" becomes
+"the data say how they compete and where", the paper's plural and one repetition fewer. Rendered on 8793 for his read.
+
