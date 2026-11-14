@@ -2714,7 +2714,12 @@ def test_the_claims_of_c1_have_their_true_basis():
     assert "by construction" in methods and "leaves the terms unchanged" in methods
     assert not re.search(r"unchanged \(\{prf:ref\}`thm-extension`\)", methods)
     search = _section("Search of the design space")
-    assert "**Open.** Outward monotonicity" in search
+    assert "**Open.** The loop may move inward on a step" in search
+    assert (
+        "submartingale property, outward in expectation" in search
+        and "no conditions are derived" in search
+    )
+    assert "may move inward on a step" in _section("The decision problem")
     intro = _section("The decision problem")
     assert "a reading and not a result" in intro
     results = _section("Results")
@@ -4405,3 +4410,17 @@ def test_the_polish_and_the_unused_lemma_are_named_in_appendix_b2():
     )
     results = " ".join(_section("Results").split())
     assert "the returned point is polished" in results
+
+
+def test_the_three_requirements_the_case_neither_filters_nor_prices_hold_for_every_feasible_design():
+    """166: the battery peak power ratio (at least 1), the power margin and the energy balance (not
+    negative) are met by every feasible design of both regimes, so they bind nowhere."""
+    import case
+
+    for regime in ("primary", "stock"):
+        f = case.load_study(regime).feasible
+        assert (f["battery_peak_power_ratio"] >= 1.0).all(), regime
+        assert (f["power_margin_w"] >= 0.0).all() and (f["energy_balance_wh"] >= 0.0).all(), regime
+    text = " ".join(_cell_src("sec-case-construction-1b").split())
+    assert "the battery peak power ratio, the power margin and the energy balance" in text
+    assert "every feasible design of both regimes meets them" in text

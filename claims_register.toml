@@ -7946,3 +7946,31 @@ status = "backed"
 disposition = "keep"
 source = "final round, third paper unit, change requests 93 to 165"
 note = "L13: the stable radius r = gamma / (2 max_i ||(u_i, -1)||) is the parameter-space form of the score-space condition 2 delta < gamma (request 114)."
+
+[[claim]]
+id = "C674"
+fragment = "The model states three more, the battery peak power ratio, the power margin and the energy balance, which the case neither filters on nor prices: every feasible design of both regimes meets them."
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "R"
+backing = [
+  "file:examples/adcs/model_v2/cubesat.sysml",
+  "gen:paper/generate_results.py::requirements_at_the_frontier",
+  "test:tests/test_paper.py::test_the_three_requirements_the_case_neither_filters_nor_prices_hold_for_every_feasible_design",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change request 166"
+note = "BatteryPeakPowerRequirement (ratio at least 1), PowerMarginRequirement and EnergyBalanceRequirement (not negative) are stated in cubesat.sysml; the case's flags are settled, power_ok, momentum_ok and dod_ok; on the feasible designs the ratio's minimum is 1.46, the margin's 6.5 W and the balance's 0.95 W h in both regimes."
+
+[[claim]]
+id = "C675"
+fragment = "The loop may move inward on a step. The conjecture is a submartingale property, outward in expectation, with a convergence result when the expected progress ceases; it is future work, and no conditions are derived."
+file = "paper/paper.ipynb"
+anchor = "Search of the design space (preliminary)"
+kind = "P"
+backing = ["file:work-packages/WP36-decisions.md"]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change request 169 (the supervisor's ruling of 2026-11-14, 12:20, WP36-decisions.md)"
+note = "Stated as future work as the supervisor expects it; no lemma, no conditions."

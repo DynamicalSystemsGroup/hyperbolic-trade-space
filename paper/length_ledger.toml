@@ -1767,3 +1767,10 @@ section = "Results"
 words_removed = 9
 no_longer_did = "'The reaches, and the soft fit, see every design.' (the paragraph's first sentence says every term is fitted against every design)"
 authority = "final reader round, third paper unit; marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case construction"
+words_added = 36
+job = "names the three requirements of the thirteen that the case neither filters on nor prices (the battery peak power ratio, the power margin, the energy balance) and says every feasible design meets them, so the four, six and three add up"
+reader = "the reader who counted ten of thirteen"
