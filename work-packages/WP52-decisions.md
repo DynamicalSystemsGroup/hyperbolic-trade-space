@@ -140,3 +140,15 @@ under this view"
 **Applied as:** the two papers (found, read, resolved) join the product-invariant sidebar at their dates as the work
 that set the context: configuration spaces, and economic games as estimators.
 
+## RAI and Filecoin as public client work (2026-11-14, 23:20 EST)
+
+**Supervisor, verbatim:** "the rai and filecoin work can (and should appear) as public client facing work that used these methods but with language
+that avoids implying this work is "crypto"."
+
+**Applied as:** the client-projects paragraph names the RAI and Filecoin work as public client-facing work that used
+these methods, in language that says what was done (a feedback controller's design record; two network-economics
+analyses adopted by the network's governance) and names no cryptocurrency setting; the record entries keep their
+special-case flag, which is the record's own bookkeeping and not the page's words. The product-invariant sidebar is
+written the same way: automated market makers and weighted-product invariants, the web3 lineage as the experience it
+gave, not the point.
+
