@@ -98,3 +98,21 @@ but are no longer cited by the page. The ADCS-lifecycle-demo repository (its Git
 talks are found, read and entered in the record with resolved links and dates, and placed on the page's timeline at
 their dates, each in a clause; sources checked before any sentence is written.
 
+## The block-diagrams repository, and reading the contents (2026-11-14, 22:35 EST)
+
+**Supervisor, verbatim:** "i think this repo was mostly zeke, danilo just reviewed it https://github.com/DynamicalSystemsGroup/dynamical-block-diagrams"
+
+**Supervisor, verbatim:** "you should probably look closer and align the prose to the contents"
+
+**Supervisor, verbatim:** "there was also work from carolina in there but its attributed in the pdf not the git history"
+
+**Applied as:** read from the repository itself: 0xekez (Zeke Medley) 11 of 12 commits, 26 July to 9 August 2024, the
+write-up and a Julia executor with examples; danlessa (Danilo Bernardineli) one commit, 15 May 2026, "aesthetic
+changes"; the README links Carolina Riascos's consensus-network write-up. The page now says Zeke wrote it (a write-up
+and a Julia executor) in the internship, that it credits Carolina Riascos-Álvarez's consensus-network work in the
+write-up, and that Danilo reviewed it; the record entry's people carry the three roles with their evidence. The
+ADCS lifecycle demo was read the same way before its sentence was written: one geosynchronous satellite, one
+requirement, evidence of several kinds, a person's judgement on the record; four presentations with dates in its
+README, among them the JAXA workshop (12 June 2026) and the Open Source Architects community (15 October 2026), which
+is the "OSA" he named. The earlier draft sentence calling it the cubesat's lifecycle was wrong and is gone.
+
