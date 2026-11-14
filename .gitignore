@@ -22,3 +22,7 @@ docs/generated/
 .DS_Store
 .vscode/
 .idea/
+
+# WP45 example caches (hash-checked downloads; nothing redistributed)
+examples/perovskite/data/
+examples/amniote/data/
