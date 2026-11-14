@@ -38,7 +38,19 @@ NEAR = "0.35"  # designs whose other metrics are near the median the line is dra
 OTHER = "0.8"  # the rest
 NEAR_TOL = 0.1  # in log V: the most the other metrics may move a near design off the line's slice
 INK = "#1c1c1c"
-_WORDS = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine"}
+_WORDS = {
+    2: "two",
+    3: "three",
+    4: "four",
+    5: "five",
+    6: "six",
+    7: "seven",
+    8: "eight",
+    9: "nine",
+    10: "ten",
+    11: "eleven",
+    12: "twelve",
+}
 
 
 def _case():
@@ -153,6 +165,77 @@ def planes_figure(study=None, fit=None, band=None, n_terms=None):
     return fig
 
 
+def adjusted_plane(study, fit):
+    """The K = 1 plane of the two heaviest metrics with every design moved onto the line's slice.
+
+    The line is the surface in the plane of metrics ``j`` and ``k`` (``k_terms.slice_pairs``) with
+    the other metrics held at the median of the near-frontier designs. A design whose other
+    metrics differ lies off that slice. Moving it vertically by what its other metrics add,
+    ``(w_rest . u_rest - w_rest . median) / w_k``, puts every design in the slice with its distance
+    above the line equal to ``log V / w_k``: the line is then the surface for every design, and the
+    designs fall below it by their level.
+
+    Returns
+    -------
+    dict
+        ``x`` and ``y`` the plane's coordinates and the adjusted height of each design, ``line``
+        a function of ``x`` giving the surface, ``names`` the two metrics, ``w_k`` the exponent of
+        the vertical metric and ``log_v`` each design's level.
+    """
+    case = _case()
+    _, k_terms, _ = case._lib()
+    est, M = fit.estimator, study.M
+    U = np.log(M)
+    j, k = k_terms.slice_pairs(est)[0]
+    w, beta = np.asarray(est.exponents_[0], float), float(est.log_offset_[0])
+    rest = [i for i in range(U.shape[1]) if i not in (j, k)]
+    near = np.abs(est.training_log_v_) < fit.band
+    base = float(np.median(U[near][:, rest] @ w[rest]))
+    y = U[:, k] + (U[:, rest] @ w[rest] - base) / w[k]
+    return {
+        "x": U[:, j],
+        "y": y,
+        "w_k": float(w[k]),
+        "log_v": U @ w - beta,
+        "line": lambda g: (beta - base - w[j] * np.asarray(g, float)) / w[k],
+        "names": (j, k),
+    }
+
+
+def adjusted_plane_figure(study=None, fit=None):
+    """Figure 5: every design against the K = 1 surface in the plane of its two heaviest metrics.
+
+    One grey for the designs, one black line for the surface. The vertical coordinate is the
+    unit-cost (second metric) coordinate adjusted for the other metrics (:func:`adjusted_plane`),
+    so the line is the surface for every design, a design above it lies beyond the surface, and
+    the distance below it is the design's level over the vertical metric's exponent.
+    """
+    case = _case()
+    if study is None:
+        study = case.load_study("primary")
+        fit = case.k_fits(study, (1,))[1]
+    d = adjusted_plane(study, fit)
+    j, k = d["names"]
+    fig, ax = plt.subplots(figsize=(case.FIGURE_WIDTH_IN, 4.4))
+    ax.scatter(d["x"], d["y"], s=12, color=DESIGN, linewidth=0, zorder=2)
+    lo, hi = d["x"].min(), d["x"].max()
+    g = np.linspace(lo - 0.1 * (hi - lo), hi + 0.1 * (hi - lo), 100)
+    ax.plot(g, d["line"](g), color=INK, lw=1.6, zorder=3)
+    ax.set_xlim(g[0], g[-1])
+    ax.set_xlabel(case._wrap("log of the " + case.cond_label(study, study.attrs[j]), 80))
+    ax.set_ylabel(case._wrap(
+        "log of the " + case.cond_label(study, study.attrs[k]) + ", adjusted for the other "
+        f"{_WORDS.get(len(study.attrs) - 2, len(study.attrs) - 2)} metrics", 44))  # fmt: skip
+    ax.set_title(f"{study.names[j]} and {study.names[k]}")
+    handles = [
+        Line2D([], [], marker="o", ls="", color=DESIGN, label="a design"),
+        Line2D([], [], color=INK, label="the surface"),
+    ]
+    ax.legend(handles=handles, frameon=False, loc="lower left", fontsize=9)
+    fig.tight_layout()
+    return fig
+
+
 def _place_legend(fig, axes, ink, handles, corners=("lower left", "lower right", "upper right")):
     """Put the legend in the panel corner whose box covers the least ink (designs and line)."""
     best, fewest = None, None
@@ -172,7 +255,7 @@ def _place_legend(fig, axes, ink, handles, corners=("lower left", "lower right",
 
 def main() -> None:
     """Write ``fig-planes-k1.png`` beside this file."""
-    fig = planes_figure(n_terms=1)
+    fig = adjusted_plane_figure()
     target = HERE / "fig-planes-k1.png"
     fig.savefig(target, dpi=100, metadata={"Software": None})
     plt.close(fig)

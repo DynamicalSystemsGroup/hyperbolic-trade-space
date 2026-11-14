@@ -259,6 +259,36 @@ def test_tau_sweep_figure_marks_the_fit_temperature_and_orders_the_rows(small, s
     plt.close(fig)
 
 
+def test_tau_sweep_lines_figure_draws_one_line_per_participating_metric(small, small_fit):
+    """Final round, request 56: the lower panel is a line per metric with an exponent above the
+    floor somewhere in the sweep (the last position the limit), named at its right end, a ring at
+    the fit temperature, and the exponents of the drawn lines sum to at most one at every
+    temperature. No colour scale: the readers could not read the sweep's change in one."""
+    import matplotlib.pyplot as plt
+
+    fig = case.tau_sweep_lines_figure(small, small_fit, title="a title")
+    ax = fig.axes[2]
+    assert fig.get_suptitle() == "a title" and len(fig.axes) == 3
+    lines = [ln for ln in ax.get_lines() if len(ln.get_xdata()) > 2]
+    drawn = [t.get_text() for t in ax.texts]
+    assert len(lines) == len(drawn) and set(drawn) <= set(small.names)
+    ys = np.array([ln.get_ydata() for ln in lines])
+    assert ys.shape[1] == len(ax.get_xticklabels()) and (ys.sum(axis=0) <= 1 + 1e-9).all()
+    assert (ys.max(axis=1) > case.EXPONENT_FLOOR).all()
+    labels = [t.get_text() for t in ax.get_xticklabels()]
+    bold = [i for i, t in enumerate(ax.get_xticklabels()) if t.get_fontweight() == "bold"]
+    assert labels[-1] == "∞ (limit)" and len(bold) == 1
+    assert abs(float(labels[bold[0]]) - small_fit.tau) <= 0.02 * small_fit.tau + 0.5
+    assert any(t.get_text().startswith("n_eff = ") for t in fig.axes[1].texts)
+    assert not [i for i in ax.images]  # a line chart, not a heat map
+    plt.close(fig)
+
+
+def test_spread_labels_keep_the_order_and_a_gap():
+    ys = case._spread_labels([0.1, 0.1, 0.1], 0.02)
+    assert np.allclose(np.diff(np.sort(ys)), 0.02) and ys.min() == 0.1
+
+
 def test_sensitivity_table_has_the_variants_and_the_baseline_shares_all(primary):
     t = case.sensitivity_table(primary)
     spec = primary.spec

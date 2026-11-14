@@ -26,6 +26,7 @@ Examples
 from __future__ import annotations
 
 from dataclasses import dataclass, field, replace
+from itertools import pairwise
 from pathlib import Path
 from typing import Any, NamedTuple
 
@@ -2053,6 +2054,113 @@ def tau_sweep_figure(study, fit, title=None, vmax=None):
     cbar = fig.colorbar(im, ax=axes[2], extend="min", ticks=ticks, pad=0.02)
     cbar.set_ticklabels(ticklabels)
     cbar.set_label("exponent w (white: at most 0.001)")
+    fig.suptitle(
+        title or f"The K = 1 fit against the fit temperature tau, {regime_word(study)} regime"
+    )
+    fig.tight_layout()
+    return fig
+
+
+def _spread_labels(ys, gap):
+    """Label heights ``ys`` pushed apart to at least ``gap`` from one another, in their order.
+
+    Examples
+    --------
+    >>> [round(float(v), 2) for v in _spread_labels([0.0, 0.1, 0.12, 0.5], 0.05)]
+    [0.0, 0.1, 0.15, 0.5]
+    """
+    order = np.argsort(ys)
+    out = np.asarray(ys, float).copy()
+    for a, b in pairwise(order):
+        out[b] = max(out[b], out[a] + gap)
+    return out
+
+
+@_legible
+def tau_sweep_lines_figure(study, fit, title=None):
+    """The K = 1 fit against the fit temperature, the exponents drawn as lines.
+
+    The top panels are those of :func:`tau_sweep_figure`. In the lower panel each metric whose
+    exponent exceeds ``EXPONENT_FLOOR`` somewhere in the sweep is a line against the temperature
+    (the last position is the ``tau = infinity`` limit), named at its right end, with a ring where
+    the fit temperature crosses it; the exponents sum to one at every temperature. A metric at or
+    below the floor everywhere is not drawn. The heat map of :func:`tau_sweep_figure` printed the
+    exponents of one column and let the others stand as shades; its dark rows hid a rise of 0.05
+    and the drop of a metric to zero (the Figure 4 readers of the final round).
+
+    Parameters
+    ----------
+    study : Study
+    fit : Fit
+        The K = 1 fit at the fit temperature.
+    title : str, optional
+        The figure's title; default names the regime (``regime_word``).
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
+    hts, _, plotting = _lib()
+    plt = _plt()
+    spec = study.spec
+    finite, sel, inserted = _sweep_with_fit(np.geomspace(*spec.tau_bounds, 12), fit.tau)
+    sweep = tau_sweep(study, taus=[*finite, np.inf])
+    fin = sweep[np.isfinite(sweep.tau)]
+    W = np.array(
+        [
+            hts.HyperbolicTradeSpace(temperature=t, random_state=spec.seed)
+            .fit(study.M)
+            .exponents_[0]
+            for t in sweep.tau
+        ]
+    )
+    xs = np.append(finite, finite[-1] * 2.4)  # the limit, drawn one step beyond the last
+    drawn = [j for j in np.argsort(-W[sel], kind="stable") if W[:, j].max() > EXPONENT_FLOOR]
+
+    fig = plt.figure(figsize=(FIGURE_WIDTH_IN, 7.0))
+    grid = fig.add_gridspec(2, 2, height_ratios=[1, 1.45])
+    axes = [fig.add_subplot(grid[0, 0]), fig.add_subplot(grid[0, 1]), fig.add_subplot(grid[1, :])]
+    axes[0].semilogx(fin.tau, fin.frac_above, "o-", color=plotting.DATA_COLOR, ms=4)
+    axes[0].axhline(spec.target_frac, color=plotting.FRONTIER_COLOR, lw=0.8, ls="--")
+    axes[0].annotate(
+        f"target {spec.target_frac:g}", (fin.tau.iloc[-1], spec.target_frac),
+        xytext=(0, 3), textcoords="offset points", ha="right", va="bottom",
+    )  # fmt: skip
+    axes[0].set(xlabel="fit temperature tau", ylabel="fraction of designs above V = 1")
+    axes[1].semilogx(fin.tau, fin.n_eff, "o-", color=plotting.DATA_COLOR, ms=4)
+    n_eff = float(fit.estimator.n_eff_)
+    axes[1].annotate(
+        f"n_eff = {n_eff:.0f}", (fit.tau, n_eff), xytext=(6, 10), textcoords="offset points"
+    )
+    axes[1].set(xlabel="fit temperature tau", ylabel="effective sample size")
+    for ax in axes[:2]:
+        ax.axvline(fit.tau, color=plotting.FRONTIER_COLOR, lw=1.5)
+
+    ax = axes[2]
+    for j in drawn:
+        ax.plot(xs, W[:, j], "-o", ms=3, lw=1.4, color=plotting.DATA_COLOR, zorder=2)
+        ax.plot([xs[sel]], [W[sel, j]], "o", ms=9, mfc="none", mec=plotting.FRONTIER_COLOR,
+                mew=1.5, zorder=3)  # fmt: skip
+    ax.axvline(xs[sel], color=plotting.FRONTIER_COLOR, lw=1.5, zorder=1)
+    ends = _spread_labels([W[-1, j] for j in drawn], 0.011 * max(W.max(), 0.1) / 0.28)
+    for j, y in zip(drawn, ends, strict=True):
+        ax.annotate(study.names[j], (xs[-1], y), xytext=(8, 0), textcoords="offset points",
+                    va="center", annotation_clip=False)  # fmt: skip
+    ax.set_xscale("log")
+    labels = [f"{t:.0f}" for t in finite] + ["∞ (limit)"]
+    if inserted:
+        labels[sel] = f"{fit.tau:.1f}"
+    ax.set_xticks(xs, labels, rotation=60)
+    ax.minorticks_off()
+    ax.get_xticklabels()[sel].set_fontweight("bold")
+    ax.set_xlim(xs[0] / 1.15, xs[-1] * 1.15)
+    ax.margins(y=0.05)
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.set(
+        xlabel="fit temperature tau",
+        ylabel="exponent w (the exponents sum to one)",
+        title="K = 1 exponent of each metric; the rings mark the fit temperature",
+    )
     fig.suptitle(
         title or f"The K = 1 fit against the fit temperature tau, {regime_word(study)} regime"
     )

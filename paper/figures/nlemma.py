@@ -101,7 +101,7 @@ def nlemma_figure(data=None, figsize=(6.4, 3.9)):
     ax.plot(*np.vstack([corners, corners[:1]]).T, color="0.55", lw=2.2, zorder=1)
     ax.scatter(*corners.T, s=26, color=INK, zorder=3)
     # Corner names; the top one says what a term at a corner would be.
-    places = [(0, 0.04, "bottom", f"{NAMES[0]}\n(corner: it binds alone)"),
+    places = [(0, 0.04, "bottom", f"{NAMES[0]}\n(corner: it contends alone)"),
               (0, -0.035, "top", NAMES[1]), (0, -0.035, "top", NAMES[2])]  # fmt: skip
     for (x, y), (dx, dy, va, text) in zip(corners, places, strict=True):
         ax.text(x + dx, y + dy, text, ha="center", va=va, fontsize=8.5, color=INK,
