@@ -327,3 +327,15 @@ machine or fitness by a code owner, with what enforces or records it; the machin
 check, the code owner rows are what the label change or the review records by name. WP47's unit takes all three as
 written.
 
+## The one-code-owner bypass (2026-11-14, 20:55 EST)
+
+**Supervisor, verbatim:** "code owner who is not the author is bypassed if the author is the only code owner. one we have additional code owners
+this bypass will not work by design"
+
+**Applied as:** the pull request admissibility row "merged by a code owner who is not its author" says so: while the
+code owners are one person the row cannot hold and the merge check passes with a notice; the bypass ends the moment a
+second code owner is added, by design, and no setting restores it. The contributing page's review paragraph carries
+the same in a clause. For WP47's unit: the merge check reads `CODEOWNERS`, and passes with a notice only when the set
+of code owners minus the author is empty; branch protection's "no self-approval" is therefore enabled from the first
+day a second code owner exists and is on the code owners' page as the step that comes with adding one.
+

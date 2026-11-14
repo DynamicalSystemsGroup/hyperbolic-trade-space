@@ -18,7 +18,7 @@ request is opened or edited and on each push; the reviewer's rows are recorded i
 | Every fitness item of its issue's good-enough list is validated: it does what the issue intends, reads as intended, renders right | fitness, a code owner | the reviewer looks at the thing and signs the judgement in the review |
 | No gap is left open: each is accepted with a reason, fixed before the merge, or made its own issue | fitness, a code owner | the review's gap list with a disposition per gap |
 | The scope was not widened: a change the issue does not cover went back to the issue as an amendment | fitness, a code owner | the reviewer compares the diff with the issue's blast radius |
-| It is merged by a code owner who is not its author | conformance, machine | branch protection (review from code owners, no self-approval) and the merge check |
+| It is merged by a code owner who is not its author | conformance, machine | branch protection (review from code owners, no self-approval) and the merge check. While the code owners are one person this row cannot hold and the check passes with a notice; the bypass ends the moment a second code owner is added, by design, and no setting restores it |
 
 The template that asks for the fields is [`pull_request_template.md`](pull_request_template.md). What the review
 records, and how a reviewer separates the two kinds of items, is on the [contributing page](../CONTRIBUTING.md).
