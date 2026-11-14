@@ -48,7 +48,7 @@ His timing ruling: framing and docs page in 0.1; interface and demonstration in 
 |---|---|---|
 | D-1 | `work-packages/WP41-rounds/spike/readout.md`: the well-posedness note, the audit table of the existing pieces, two or three selection rules prototyped on the case (one run each, recorded), plain options for the default rule and the interface's shape for 0.2 | G1, G2 |
 | D-2 | `docs/bridge.md` (title and place per the defaults), built into the docsite, linked from the docs home's navigation line and from the Examples page's search mention | G3 |
-| D-3 | Section 7 of `paper/paper.ipynb`: one paragraph naming the procedure; the open item in the supervisor's words (change request 169 lands it if first) | G4 |
+| D-3 | Section 7 of `paper/paper.ipynb`: one paragraph naming the procedure; the open item in the supervisor's words (change request 169 lands it if first); the predicted-against-measured distinction in one clause (a move along the ascent direction is a Pareto improvement of the prediction; a design built to reach it need not follow; the check is how one finds out, D.10), per the supervisor's ruling of 13:10 (`WP11-decisions.md`) | G4 |
 | D-4 | Glossary entries for proposal, selection rule, check (and their aliases), with the checker's stems extended; claims rows for every new sentence | G1, G3, G4 |
 | D-5 | `work-packages/WP41-review.md`: the review, with the docs page read in a browser by one fresh reader (P3 or P9) and the screenshot held per the WP40 rule | all |
 

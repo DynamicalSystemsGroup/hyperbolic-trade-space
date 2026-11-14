@@ -68,3 +68,76 @@ protocol asks for two. 3 (a): no edge cells; a fifth batch only if the triage sh
 5 (b): the six held-out cells are read in a batch after the other twenty-two are triaged and any change has landed,
 so they stay unseen by the revision loop. The triage is the assistant's, against the key, one form per report; every
 report is committed verbatim before any triage; the stopping rule stands as the plan states it."
+
+## The abstract pass (2026-11-14, from 11:35): the supervisor's draft and his rulings, verbatim
+
+The supervisor posted a freehand draft of the abstract and asked for a review; the assistant's review is in the chat
+record and its substance in `WP11-final/triage/` (the abstract's cells). The draft and the rulings are recorded here;
+the abstract stays the supervisor's hand and lands by his word.
+
+**Supervisor, verbatim (11:50):** "let's talk through it. obviously i was freehanding so i expected it to be imperfect.
+that said we have a clear sense of what i am hoping to achieve, and some places we need to align the facts. mostly i
+want to align my claims in the abstract to the facts. though i want to entertain the possibility that in some cases we
+can achieve support for what i'd like to claim. we also have language questions. i have used "objective" because we've
+described a multi-objective optimization problem. i think we may need both "metric" and "objective" and we may need to
+distinguish them in use between the objectives of the optimization and metrics we have in our model. i think in our
+case we have metrics which do not end up being objectives."
+
+**Supervisor, verbatim (11:58), on the vocabulary:** "on the metrics vs objectives thing. there is no way around having
+multiple definitions for the concepts of loss, metric, attribute, objective. there is inherent conflict in the terms
+use across decision analysis, optimization, and machine learning. we need to make some minor corrections but i link we
+probably need to deal with this at the glossary level then hold ourselves to our glossary definitions. of the possible
+configurations of the terms i am most interested in the top level descriptions being intuitive. caveats or detailed
+clarifications are okay in deeply detailed content but not in intuitive descriptive sections"
+
+**Applied as:** a glossary unit (folded into the tension package, `WP42`): entries for objective (a metric a
+decision-maker wants more of), constraint, trade-off, tension, loss or the solver's objective (his call pending), MoE
+and MoP; each entry says which register uses it; the checker's stems extended; the intuitive surfaces carry the plain
+words and the caveats live in the entries and the detailed sections.
+
+**Supervisor, verbatim (12:00), on tension:** "i think tension should be partial derivative computed between 2 metrics
+measured (potentially measured at a point on our surface since i think its going to be peice-wise)"
+
+**Supervisor, verbatim (12:08):** "tension should be in metrics so its well behaved mathematically but it should be
+possible to compute back to the attribute and design space given the various methods we're supporting, and we should
+provide guidance on how to do this in our documentation. / since its defined in metrics, the partials will be negative
+valued for trade-offs but not everwhere negative valued because not every metrics trades-off with every metric. we're
+already sort of seeing this in our heatmaps. i think we're talking about something pretty close to one cell in a
+heatmap."
+
+**Supervisor, verbatim (12:40), on where the matrix is evaluated:** "these are two different things. one is from the fit
+and one is from the sampled data."
+
+**Applied as:** tension between metrics i and j on term k at a point of the surface, in the conditioned metrics, is
+the partial derivative of m_j along the surface as m_i moves, minus (w_ki/w_kj)(m_j/m_i); negative where both contend,
+zero where i carries no exponent, blank where j carries none; reciprocal across the diagonal; piecewise at K > 1; the
+elasticity is its log-log, constant-per-term form. Two objects: the term's tension matrix, from the fit, at the term's
+balanced point (the paper's figure beside Figure 7's data correlations); a design's tensions, from the data, the
+formula at the design's metric ratios (the decision section's number at a pick, in metrics and through Theorem 7 in
+attribute units). Guidance on the routes back to attributes and to the design space goes to the docs. Scoped as WP42
+(the tension spike, six stages).
+
+**Supervisor, verbatim (12:55), on length:** "i want a 500 word cap not a 200 word cap form my abstract. (and to be
+honest that number is still pretty arbitrary)"
+
+**Applied as:** `paper/length_ledger.toml` `[abstract] cap = 500` with this ruling as its authority; the test
+`test_abstract_within_200_words` is renamed and reads the ledger's cap; lands with the abstract.
+
+**Supervisor, verbatim (13:05), on "directions of energy increase represent Pareto improvements":** "reading this now, i
+cannot tell if we're talking about a round trip through a design which we cannot guarantee will be a pareto improvement
+or just the predicted value. my intuition is that the predicted value will be a pareto improvement but the measured
+value need not be. is that correct?" The assistant: partly; along the ascent direction every contending metric
+improves together (Definition 9); other level-raising directions trade metrics; every Pareto improvement raises the
+level (L11); a measured design need not follow (D.10).
+
+**Supervisor, verbatim (13:10):** "i don't want to jam the predicted versus carried distinction into the abstract but i
+do want it covered in the paper"
+
+**Applied as:** the abstract states the two backed facts; the predicted-against-measured distinction is added to WP41's
+Section 7 paragraph (D-3), citing D.10.
+
+**Supervisor, verbatim (13:20), on "embeds datapoints within a dimensionally reduced space":** "both in the order
+above", choosing the sentence: "Like PCA, HTS is unsupervised. Where PCA fits a subspace and projects the data onto it,
+HTS fits a surface one dimension below the metrics and gives every design a position on that surface and a level
+relative to it; projecting onto the surface drops the level, and keeping both loses nothing." (Backed by Theorem 1's
+V(m/V(m)) = 1, Theorem 6 and D.16.)
