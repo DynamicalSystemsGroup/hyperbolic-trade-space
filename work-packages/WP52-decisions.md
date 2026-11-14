@@ -173,3 +173,13 @@ https://hackmd.io/@blockscience/Aztec_Sequencer_Selection from work on aztec"
 **Applied as (pending):** read first; placed only if it is what the page's line needs (a trade study of candidate
 designs against stated criteria, decided by the people accountable), in neutral words, or left out with the reason.
 
+**Supervisor, verbatim (2026-11-15, 00:25 EST; popup: the Aztec trade study, the legitimacy essay with the Arbitrum report,
+both, or neither):** "Both"
+
+**Applied as:** the late lineage gains "Engineering for legitimacy" (Ben-Meir and Zargham, 2023; the page blocks
+automated readers, noted) beside the Arbitrum position paper (20 March 2024) described in neutral words as a client's
+governance building an accountable, cost-conscious network of expert service providers; the client paragraph gains the
+Aztec study as a document-based trade study of two candidate protocols against stated technical and economic criteria
+for a client's engineering team (August 2023). Record entries with the special-case flag; register rows; the word
+ceiling follows the count.
+
