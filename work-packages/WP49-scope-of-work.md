@@ -36,7 +36,11 @@ covenant.
   actor agnostic at the code level, a named human who owns what they merge, no AI trailers, AI use neither disclosed by
   rule nor an excuse; the readout sets the other projects' disclosure norms against it (what each secures, and whether
   the protocol approach secures it another way) and drafts the covenant's accountability clause in those terms for his
-  sign-off. One tension remains named, not resolved: what "AI native" commits the project to in public.
+  sign-off. His stance on tools (21:10, `WP49-decisions.md`) is likewise a given: coding agents and agent-based editors
+  are part of the landscape as an editor is; tool use may, and sometimes should, be documented where that belongs (a
+  pull request's description, a work package's record) and never as the contributor in the git history; licence
+  laundering through a model is a licence violation; governance is as robust to the model used as to the editor. The
+  readout drafts that clause with the accountability clause. The phrase "AI native" is not required anywhere.
 
 ## Non-goals
 

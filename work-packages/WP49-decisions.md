@@ -47,3 +47,25 @@ the covenant's accountability clause in those terms for him to sign off. The two
 reasoning behind a protocol-based, actor-agnostic approach with a named accountable human; the readout does not cite or
 quote them unless he later asks. He signs off the guideline himself.
 
+## The stance on tools (2026-11-14, 21:10)
+
+**Supervisor, verbatim:** "we don't have to use the phrase \"AI native\". but my point is really that we're a new project that came into existence after
+abundant coding agents that produce high quality code when exercised under expert human direction. we're not litigating AI
+not AI because at this point that's a bit like saying you used an IDE. stealing someone elses code bypassing it through an LLM
+to get around a license is still not OKAY, but refusing to use LLMs because they broadly leaned from code published on the
+internet would be unecessarily tying the developers hands behind their back. do you see my point? so our contributor guide
+takes LLMs and LLMs based IDEs (like claude code, Codex, Devin, Cursor, etc) as a given part of the modern coding landscape;
+asserts that you can (and should in some cases) document which tools you are using but that does not belong in the git
+history as the contributor because it blurs accountability. noting that it successful repo governance will be as robust to
+what models the contributor uses as it is to what IDE they use."
+
+**Applied as:** the readout's last named tension (what "AI native" commits the project to) is dissolved; the phrase is
+not required. The guide's stance, for the readout to draft: coding agents and agent-based editors (Claude Code, Codex,
+Devin, Cursor and their like) are a given part of the landscape, as an editor is; which tools were used can be
+documented, and in some cases should be, in the places made for it (a pull request's description, a work package's
+record), never as the contributor in the git history, because that blurs accountability; laundering someone else's code
+through a model to escape its licence is not acceptable, and that is a licence rule, not a model rule; refusing models
+because they learned from published code is not asked of anyone; the governance is as robust to the contributor's
+choice of model as to their choice of editor. The readout states where tool documentation belongs and drafts that
+clause with the accountability clause.
+
