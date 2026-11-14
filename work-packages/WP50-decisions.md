@@ -72,3 +72,16 @@ known (each witness is a measured design that tightens the fit and settles a hol
 interior to fill; a sampling rule serves both in turn rather than trading one away for the other, and the readout's
 "trade the two" of 22:15 is read as allocating effort between complementary aims, not as a conflict.
 
+## After the readout: the abstract's last sentence (2026-11-14, 23:15)
+
+**Supervisor, verbatim:** "after you get through the WP 50 research spike, i want to assess changing the last sentence of the abstract to be a list of
+3 items with TDA for hole identification and filling work second, and the formal methods and performance clause 3rd."
+
+**Applied as:** a step after the WP50 readout, his to decide then: the abstract's closing sentence ("Future work has two
+key thrusts: (1) searching the design space by sampling white space and pushing the frontier, and (2) formal
+verification and performance by moving beyond Python into Rust and using theorem provers.") assessed as a list of three:
+(1) the search of the design space, (2) hole identification and filling by topological data analysis, (3) formal
+methods and performance. The readout's G5 drafts that three-item sentence beside the one-sentence future-work line, in
+his register (a term corrected, nothing else), within the abstract's 500-word target with its tolerance, so the
+assessment has the text in front of it. The abstract is not touched before his word.
+

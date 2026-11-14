@@ -44,7 +44,9 @@ points together with topological data analysis. It writes no code into the packa
   loop of Section 7 so a sampling rule can trade the two, how such a rule makes holes emerge, and what a definition of
   hole that survives refits must satisfy.
 - G5. **The boundary:** what 0.1 may say (a future-work sentence at most, drafted for him), what it may not, and what a
-  later release would build, with its first package named.
+  later release would build, with its first package named; and, for his assessment after the readout (23:15), the
+  abstract's closing sentence redrafted as a list of three (the search of the design space; hole identification and
+  filling by topological data analysis; formal methods and performance), in his register with the word count.
 
 ## Non-goals
 
