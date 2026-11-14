@@ -44,3 +44,16 @@ from presuming a unique optimum to mapping a design space, where the choice amon
 not optimization." The same phrase opens the page's client-projects paragraph from WP37; it goes by the same rule when
 the page is edited, unless he says otherwise.
 
+## The OpenMBEE sentence (2026-11-14, 21:40 EST), read on the history page
+
+**Supervisor, verbatim:** "you can drop the phrase "across opensysml", i am just a maintainer at openmbee which covers work on
+the organization, the ecosystem around it, opensysml and flexo. its just a role at an org, i think you are over thinking it
+with that link"
+
+**Applied as:** on the history page the sentence becomes "Zargham a maintainer at OpenMBEE" with the one link to his
+research page; "maintainer across" and the OpenSysML link go. In `history.yaml` the entry `2026-maintainer` is
+retitled "OpenMBEE maintainer" with the role "maintainer at OpenMBEE since 2026 (his research page)", and the
+`2026-opensysml` repository entry is kept as a record but no longer listed on the page (its `listed` flag goes to
+false, or the entry is removed if nothing else cites it; the tests that tie the page to the record decide which).
+Queued with the governance paragraph and the "in our own account" rule as one history unit after his placement call.
+
