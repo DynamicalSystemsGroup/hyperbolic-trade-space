@@ -116,3 +116,21 @@ requirement, evidence of several kinds, a person's judgement on the record; four
 README, among them the JAXA workshop (12 June 2026) and the Open Source Architects community (15 October 2026), which
 is the "OSA" he named. The earlier draft sentence calling it the cubesat's lifecycle was wrong and is gone.
 
+## Market design lessons; the fungibility work and product invariants (2026-11-14, 23:00 EST)
+
+**Supervisor, verbatim:** "getting close" https://blog.block.science/market-design-lessons-for-safety-first-institutional-engineering/ probably fits.
+and i'd also like to flag the work on a practical theory of fungibility which set the context for ML methods and markets
+but did not yet provide a coordinate system suitable for automated market makers. since automated market makers like
+balancer (which we worked on with fernando martinelli who was at the time of his first proofs a blockscience team member),
+this provides an interesting side bar about experience with product invariants and how the web3 lineage fed in without
+itself being "the point"
+
+**Applied as:** two additions to the page, each researched before a sentence is written: (1) the Market Design Lessons
+post (Shorish with Zargham and Ben-Meir, BlockScience, 2023) enters the lineage at its date; (2) a sidebar on product
+invariants: the practical theory of fungibility (the paper found and read, with its authors and date) set the context
+for machine-learning methods and markets but gave no coordinate system suited to automated market makers; the work on
+Balancer, whose invariant is a weighted product, with Fernando Martinelli, then a BlockScience team member at the time
+of his first proofs (the affiliation sourced, or stated on the supervisor's word and marked so); the sidebar says the
+web3 lineage fed the experience with product invariants without being the point. Balancer's record entries carry the
+special-case flag the record uses for cryptocurrency settings. Sources resolved first; the sentences follow them.
+
