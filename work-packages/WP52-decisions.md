@@ -294,3 +294,8 @@ and stability vocabulary of his earliest work back into the lineage. Against: th
 clause must earn its place. If he says yes: "Protocols and institutions (2025), with Ben-Meir, defined institutions by
 their stability in Lyapunov's sense and set protocols as the engineered part of them", one record entry, one row.
 
+**Supervisor (03:05 EST):** "another document that may merit a link is https://www.researchgate.net/publication/381615723_Min-Maxing_Complexity_on_Digital_Infrastructure_Mechanisms_through_Occam's_Razor_and_Ashby's_Law_of_Requisite_Variety"
+
+**Applied as (pending):** found and read where a stable record exists (a DOI or publisher page rather than ResearchGate,
+which blocks automated readers); placed if it fits the lineage's line, with the reason either way.
+
