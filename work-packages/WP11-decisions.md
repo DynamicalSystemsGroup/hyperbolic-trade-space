@@ -174,3 +174,15 @@ the detail. Added to WP42's G3 and deliverables; the Section 3 paragraph lands w
 
 **Supervisor (16:55, by popup), approving WP42:** "WP42,WP46" (the approvals question). WP42 is approved as drafted,
 with its open decision already closed on loss (15:50) and G3b added (16:05); execution begins in the background.
+
+**Supervisor, verbatim (17:35), on two abstract sentences and the length:** ""Our proofs are scripted with SymPy, and HTS
+is implemented as a scikit-learn estimator, so it works with existing pipelines and tools." / approve this change and
+the change about "piecewise hyperbolic frontiers". i am fine with 505. i am currently thinking of 500 word as the
+target length but with slight under or overshot okay"
+
+**Applied as:** both sentences stand in the draft (`WP11-final/abstract/draft-2026-11-14.md`) in his wording; the
+abstract's length rule is a target of 500 words with a slight overshoot or undershoot allowed; the ledger's `[abstract]`
+entry carries target 500 and the test's bound allows five percent over (525), with this ruling as its authority, landing
+with the abstract. Earlier at 15:50 his words on the draft's register: "i find the way you write pretty obtuse and often
+overly specific for an abstract. although we're correcting my technical term choice, the flow and balance of the
+abstract should not be significantly changed from my version" (applied: the light-touch draft).
