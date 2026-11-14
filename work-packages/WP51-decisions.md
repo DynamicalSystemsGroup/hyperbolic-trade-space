@@ -51,3 +51,12 @@ and that merge is the approval act for WP51's G1. WP51 continues: the three-metr
 this ruling, the prose revisions in the what and how sections and the captions that the new figure calls for, drafted
 for his close read before they merge. The page is read again rendered at that point.
 
+## The docs home (2026-11-15, 02:05; read in the pane beside the root page recast)
+
+**Supervisor, verbatim:** "docs home needs a figure and a quickstart code block"
+
+**Applied as:** a small unit on its own branch (`docshome`), drafted by the driver for his close read: a quickstart
+code block (install, a first fit on a table, the report) and the figure that code produces, placed after the five
+doors; the ruled edit "unsupervised learning, beside PCA" applied at the same time; merged only on his word after the
+rendered read, as the root page was.
+
