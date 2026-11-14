@@ -60,3 +60,10 @@ code block (install, a first fit on a table, the report) and the figure that cod
 doors; the ruled edit "unsupervised learning, beside PCA" applied at the same time; merged only on his word after the
 rendered read, as the root page was.
 
+**Supervisor, verbatim (02:30), on the docs home's word budget:** "budgets were set by you, they can be revised with good
+reason. in this case i asked for more content"
+
+**Applied as:** the docs home's budget in `tests/test_site.py` goes from 206 to 250 with that reason in the comment;
+the rule stands as he states it: a budget is the driver's instrument, revised with a stated reason, and his request for
+content is one.
+
