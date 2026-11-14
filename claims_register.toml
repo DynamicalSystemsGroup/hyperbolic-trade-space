@@ -5010,7 +5010,7 @@ note = "L14.14 and L14.15 at K = 1 (one cell, n_1 = N, share 1): F(W) = f_1(w) =
 
 [[claim]]
 id = "C422"
-fragment = "R1 of Section 5 holds on both regimes: the exact-maximum optimum is one point, so the support is not ... a solver's choice"
+fragment = "R1 of Section 5 holds on both regimes: the exact-maximum optimum is one point, so the ... support is not a solver's choice"
 file = "paper/generate_findings.py"
 anchor = "def k1_sentence"
 kind = "R"
