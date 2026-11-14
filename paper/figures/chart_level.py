@@ -80,8 +80,9 @@ def chart_level_figure(study=None, fit=None, band=None, fit1=None):
     position, logv = chart[:, :-1] @ direction, chart[:, -1]
     fig, ax = plt.subplots(figsize=(case.FIGURE_WIDTH_IN, 3.8))
     ax.axhspan(-band, 0.0, color="0.75", alpha=0.6, linewidth=0, zorder=1)
-    ax.axhline(0.0, color=INK, lw=1.6, zorder=3)
+    ax.axhline(0.0, color=INK, lw=1.6, zorder=1.5)
     ax.scatter(position, logv, s=12, color=DESIGN, linewidth=0, zorder=2)
+    ax.set_ylim(top=max(0.0, float(logv.max())) + 0.12 * (float(logv.max()) - float(logv.min())))
     ends = []
     if better:
         ends.append(f"better {_join(better)}")
