@@ -49,3 +49,25 @@ an Examples page.
 Each option is a build package scoped from this readout, with the docs page and the fetch-at-build step as its
 deliverables and no paper change. Before any citation enters `docs/references.bib`, every DOI above is resolved again
 and the two unresolved trade-off citations (fast-slow; charging against cycle life) are found and resolved.
+
+## The two-metric example: Broadbalk wheat (the supervisor's addition, checked 2026-11-14; `wheat-check.md`)
+
+- **The data.** "Broadbalk Wheat annual grain and straw yields 1968-2022", e-RA, doi:10.23637/rbk1-yld6822-01, CC BY
+  4.0 ("This dataset is available under a Creative Commons Attribution Licence (4.0)"). Annual, per plot (strip by
+  section); grain and straw at 85 percent dry matter; treatments are the fertiliser and manure strips (nil to 288 kg N
+  per hectare, farmyard manure), sections continuous wheat or in rotation; cultivars modern short-strawed since 1968,
+  named by period. Straw is recorded regularly for Section 1 and the first wheat in rotation since 1980 and only in
+  some other section-years, so the two-metric table is the straw-recorded subset, whose row count the build counts
+  first. The download is open but behind a form (name, organisation, intended use, "Agree and Download"), so the fetch
+  is a manual step done once; CC BY permits committing the derived two-column table with its attribution and licence
+  file, which is how the build handles it. Column names and units are in the xlsx, not on the page.
+- **The story.** Breeding raised grain while shoot biomass stayed: Austin et al. 1980, Journal of Agricultural Science
+  94(3), doi:10.1017/S0021859600028665 (resolved); and on Broadbalk itself, Austin, Ford, Morgan and Yeoman 1993,
+  European Journal of Agronomy 2(2), doi:10.1016/S1161-0301(14)80144-5: at equal nitrogen the old and the modern
+  cultivar gave similar shoot biomass and the modern one about 52 percent more grain, by its greater harvest index. So
+  grain and straw trade along a biomass limit, which is the line the two-metric fit should find, with the nitrogen
+  strips moving designs along it and the cultivar periods moving them across it. Shearman et al. 2005 (Crop Science)
+  is a third source whose DOI did not resolve through the publisher today.
+- **Verdict on the two conditions.** The story is clear and cited; the data are good for the purpose with two stated
+  limits (the straw subset; the manual fetch). The example goes into WP45 as its two-metric page, conditional only on
+  the subset's row count being counted when the file is in hand.

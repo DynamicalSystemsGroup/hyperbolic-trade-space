@@ -51,3 +51,8 @@ understanding of our own method"
 whether a designer exists), each a known-answer test against the field's named trade-off, reported whether the fit
 names it or not; the Examples section of the docs is the second duty. The leaf-trait and battery tables stay on the
 candidates list as the next two domains.
+
+**The wheat checks (15:10):** both conditions hold with two stated limits (the straw-recorded subset; a manual fetch
+behind a form, the derived table committed under CC BY with attribution); the story is Austin et al. 1980
+(doi:10.1017/S0021859600028665) and Austin et al. 1993 on Broadbalk itself (doi:10.1016/S1161-0301(14)80144-5).
+Recorded in the readout; the page is WP45's G4.
