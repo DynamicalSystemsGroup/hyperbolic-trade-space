@@ -895,3 +895,36 @@ merge to main, the tag.
 Worktrees held at hand-back: none of mine except pm13main and wp27model (older PMs); never touch stage, verify,
 preview-wt, hts-reader-EF.
 
+
+## The supervisor's intents, in his words (2026-11-14; a guide for every PM and unit, never a substitute for his word)
+
+Built at his request on 2026-11-14 so the team stays close to his intents; the full sketch is the driver's, and this is
+the part a PM and its units need. Where he has not spoken, his next sentence overrides it.
+
+- **The product.** "at the end of the day i care about having a well documented practically useful HTS package, the
+  paper is just means to an end." The package's API, its examples and its docs come first when work must be ordered;
+  a reader's trouble using the tool is a product defect, not a paper friction.
+- **The release line.** He places work outside 0.1 on purpose and clarifies the boundary "so there are concrete items
+  on the other side of the limit and we feel confident about what we say in the paper because we have some foresight
+  about our forward looking claims even if we're not trying to defend them in the paper." Research that could show the
+  method missed or got something wrong lands before 0.1; documentation that extends the examples lands after. Every
+  spike's readout ends with what the paper may say now, what it may not, and what the next release builds.
+- **Two requirements, never confused.** The work that tests the method (a test record: the expected answer written
+  before the fit, reported whether it passes or fails) and the didactic story drawn from it for the user. "don't
+  confuse readers to convince us." Unrelated cases, because "the point here is to truly show the method works."
+- **Words.** Settled in the glossary, then held to; intuitive at the top level, caveats only in detailed content. The
+  three layers of optimization keep their words apart: objective (the decision-maker's subset of the metrics),
+  constraint, Pareto notions at the decision layer; GGP and log-convex at the design layer (the model as a function of
+  the metrics); loss at the method layer (what the solver minimizes). Tension is the local partial derivative between
+  two metrics on the surface; elasticity its log-log constant-per-term form; trade-off the plain word; decision-maker,
+  not executive. One object, one name. No borrowed idiom with a false analogy; an intuition word is welcome when the
+  object behind it is named.
+- **Claims.** Aligned to the facts, in this order of preference: first ask what would back the claim he wants and what
+  it costs; then narrow; never caveat. "formally verified" and "machine-checked" are never said of the SymPy scripts.
+- **Deciding.** One problem-level question at a time, plain options, no recommended tag; his one-line answer is the
+  record, quoted verbatim. He corrects by restating intent, not by editing prose: smooth his wording outside decision
+  records. He expects a conflation of two objects to be caught and carried through ("one is from the fit and one is
+  from the sampled data").
+- **What loses him.** Jargon in an intuitive section; a sentence written to convince; content forced into the paper
+  that belongs in the repository or the docs; a method shown only on its own synthetic case; a report that did not run
+  the thing or look at the render.
