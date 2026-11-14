@@ -1,6 +1,6 @@
 # WP51 — Decisions: the root page recast (why, what, how; the three-metric figure)
 
-## The direction (2026-11-15, 00:20 to 01:10)
+## The direction (2026-11-14, 00:20 to 01:10)
 
 The prose rulings (the two-level Why, the three sections, headers dropped, the close read before any merge) are verbatim
 in `WP33-decisions.md`, 00:20 to 00:45, because the root page was WP33's surface. The figure thought, verbatim:
@@ -25,7 +25,7 @@ kept as the one view of the whole position space (the projection, the same for a
 per row). The paper's Figure 1 is not touched. The figure goes through the figure loop with cold reads of the page.
 Merge into `dev` only on his word after his close read of the rendered page.
 
-## His wording of the why (2026-11-15, 01:20)
+## His wording of the why (2026-11-14, 01:20)
 
 **Supervisor, verbatim ("here is my wording"):** "Decisions about engineered systems mix two questions: (1) what is possible and what trades against what, which can be
 assessed scientifically, and (2) what is preferable, which is a judgement that belongs to the people accountable for it.
@@ -40,7 +40,7 @@ tension is now the glossary's word for the local partial derivative between two 
 word for competing interests is compete or trade off; "the data says how they compete and where they compete" becomes
 "the data say how they compete and where", the paper's plural and one repetition fewer. Rendered on 8793 for his read.
 
-## Merge of the prose; the figure and its prose to follow (2026-11-15, 01:35)
+## Merge of the prose; the figure and its prose to follow (2026-11-14, 01:35)
 
 **Supervisor, verbatim:** "you can merge in the new prose but i am still expecting new plots which will also call for some
 prose revisions in the later sections near the figures"
@@ -51,7 +51,7 @@ and that merge is the approval act for WP51's G1. WP51 continues: the three-metr
 this ruling, the prose revisions in the what and how sections and the captions that the new figure calls for, drafted
 for his close read before they merge. The page is read again rendered at that point.
 
-## The docs home (2026-11-15, 02:05; read in the pane beside the root page recast)
+## The docs home (2026-11-14, 02:05; read in the pane beside the root page recast)
 
 **Supervisor, verbatim:** "docs home needs a figure and a quickstart code block"
 

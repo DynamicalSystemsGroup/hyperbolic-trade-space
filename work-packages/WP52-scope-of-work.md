@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Spike approved by his direction of 2026-11-15, 01:50 (`WP52-decisions.md`); the page changes only on his word on the proposal. |
+| **Status** | Spike approved by his direction of 2026-11-14, 01:50 (`WP52-decisions.md`); the page changes only on his word on the proposal. |
 | **Supervisor (accountable)** | mzargham |
 | **Repository** | `DynamicalSystemsGroup/hyperbolic-trade-space`; the spike under `work-packages/WP52-rounds/` |
 | **Approval record** | His direction, quoted verbatim in `WP52-decisions.md` |

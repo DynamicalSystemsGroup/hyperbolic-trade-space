@@ -110,7 +110,7 @@ started carries it; the adoption line: its measured figure stays on the README a
 The journeys note's placements for P1, P7 and P8 are updated to the two doors. Folded into the root-page unit; listed
 under Entry surfaces.
 
-## The root page's Why: the descriptive and the normative kept apart (2026-11-15, 00:20)
+## The root page's Why: the descriptive and the normative kept apart (2026-11-14, 00:20)
 
 **Supervisor, verbatim:** "one thing i want to get into the \"why\" is that we're trying to make a scientific assessment of what is possible and what
 trades against what while deferring on the normative judgement of what is preferable. this aims to strike a cleaner or at

@@ -69,7 +69,7 @@ because they learned from published code is not asked of anyone; the governance 
 choice of model as to their choice of editor. The readout states where tool documentation belongs and drafts that
 clause with the accountability clause.
 
-## His wording for the clauses (2026-11-15, 03:05), on the drafts in the readout
+## His wording for the clauses (2026-11-14, 03:05), on the drafts in the readout
 
 **Supervisor, verbatim:** "No tool is a contributor, so commits should not carry a trailer or line naming a tool as author.
 

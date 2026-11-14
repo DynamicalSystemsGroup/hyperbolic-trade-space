@@ -1,6 +1,6 @@
 # WP52 — Decisions: the governance lineage on the history page (research spike, then a proposal)
 
-## The direction (2026-11-15, 01:50)
+## The direction (2026-11-14, 01:50)
 
 **Supervisor, verbatim:** "the history page may also benefit from a reference to our computer aided governance, computer aided ethnography and
 Building the Loop paper (with Ellie Rennie), now that we've factored in the governance concepts at the top level motivation,
@@ -22,7 +22,7 @@ so. The proposal is a paragraph at most for the history page, with `history.yaml
 the lineage he names: from presuming a unique optimum to teasing out a design space in which the choice among competing
 alternatives is politics, not optimization. His direction is the approval of the spike; the proposal waits for his word.
 
-## His corrections to the spike (2026-11-15, 03:25)
+## His corrections to the spike (2026-11-14, 03:25)
 
 **Supervisor, verbatim:** "i just read in your response on the history, yes its why is there data. my mispelling. also the of preprint is the correct
 paper and the fact that i presented it at wow may not be relevant for the history. though if it is relevant you can state it

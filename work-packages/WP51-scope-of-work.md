@@ -10,7 +10,7 @@
 
 ## Purpose
 
-His direction of 2026-11-15 (`WP51-decisions.md`, `WP33-decisions.md` 00:20 to 00:45): the root page gets a why (the
+His direction of 2026-11-14 (`WP51-decisions.md`, `WP33-decisions.md` 00:20 to 00:45): the root page gets a why (the
 line between what is possible and what is preferable), a what (the former why) and a how (the former what), without
 headers; and the how's figure is drawn from the same three-metric planted table as the ternary, so the page is one
 example throughout and shows a trade among more than two metrics.
