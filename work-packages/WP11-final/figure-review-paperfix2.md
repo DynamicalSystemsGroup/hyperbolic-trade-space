@@ -94,3 +94,31 @@ right margin; the vertical line and the rings are one colour. (4) 8 by 7 inches,
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | unit cost | .225 | .226 | .227 | .228 | .234 | .258 | .275 | .274 | .273 | .273 | .273 | .273 | .274 |
 | total mass | .064 | .063 | .062 | .059 | .049 | .021 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+## Test 1, the cold read of the redraws (run by the assistant at 40a93f2; one fresh reader, Haiku, the two images alone)
+
+Figure 4, in the reader's words: "how each metric's K = 1 exponent changes with fit temperature tau ... unit cost
+rises from about 0.226 (tau 3) to about 0.257 at 42 and about 0.275 at 71, then stays flat ... Total mass falls from
+about 0.05 at 25 to about 0.02 at 42 and reaches 0 at 71. Rings mark tau = 42 on each line." Against the sentence:
+"consistent on the 0.1 crossing at 42, n_eff of 74, the eight non-zero metrics, the direction of unit cost and total
+mass, and the position of 42." Not read: the five zero metrics ("do not appear anywhere"; the caption says they are
+not drawn). Unclear: "the bottom x-axis is categorical, so spacing is by index, not by value ... slopes look different
+from the values"; "the rings have no legend and depend on the title"; "the pointing and fleet rings overlap". The
+reader's numbers differ from the sentence's by one hundredth in two places (the rise 0.04 from tau 25, 0.05 from tau
+3; total mass 0.05 at 25), which is the reading precision of a line chart, and the figure "also shows that available
+power and momentum headroom barely move, which the sentence does not say".
+
+Figure 5, in the reader's words: "log conditioned available power (x) against log inverse unit cost, adjusted for the
+other eleven metrics (y) ... a slope of roughly -0.77 by the axis endpoints. Points form a band that lies below the
+line. The band is tight in the middle and widens at both ends ... the gap widening with power, which the sentence does
+not say." Against the sentence: "the line shape and the 'below' placement are shown. The slope value, the ratio and
+'about a tenth' are not shown." The reader saw "no point clearly above the line"; the drawing puts the designs with
+V > 1 above it (the test `test_the_adjusted_plane_puts_every_design_at_its_level_from_the_surface` pins the tenth),
+and at the figure's scale they sit within the grey band's upper fringe, so the tenth is in the caption and not
+legible from the picture. Unclear: "the y-axis is inverse unit cost, while the sentence says 'unit cost'"; "the
+y-label wraps to three crowded lines".
+
+Verdict of test 1: both redraws are read as their sentences say (the edge and the slope; the rise and the drop and
+where the fit temperature sits). Two notes go to the next unit as wording, not redraws: Figure 4's x-axis is a
+category axis of the sweep's values and the caption should say so (the sweep is geometric); Figure 5's y-label can
+lose a line ("inverse unit cost, adjusted for the other eleven metrics"). Nothing here returns the unit.
