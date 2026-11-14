@@ -1,8 +1,8 @@
 # hyperbolic-trade-space
 
-For analysts with a table of evaluated designs, to learn which metrics trade: the
+For analysts with a table of evaluated designs, to learn which metrics trade. See the
 [docs](https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/docs/),
-[the paper](https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/paper/), `examples/adcs/` for a
+[the paper](https://dynamicalsystemsgroup.github.io/hyperbolic-trade-space/paper/) and `examples/adcs/` for a
 case study.
 
 ```bash
@@ -29,8 +29,7 @@ print(tension_report(ts, M).exponents.round(2))
 ## Layout
 
 - `src/hyperbolic_trade_space/`: the Python package (fit a frontier, read its tensions).
-- `docs/`: the user guide and API reference, built into the docs site; `docs/superpowers/` holds the notes the checks
-  apply (conventions, notation, source lists).
+- `docs/`: the user guide and API reference, built into the docs site.
 - `paper/`: the paper as two notebooks and what rebuilds them; `site/` is the root page that links the docs and the paper.
 - `examples/adcs/`: the cubesat attitude-control case study the paper uses: model, data, experiments, system model.
 - `derivation/`: the proofs of the method's results as SymPy scripts, one per lemma.
@@ -38,8 +37,7 @@ print(tension_report(ts, M).exponents.round(2))
 - `claims_register.toml`: each claim the paper and docs make and what backs it.
 - `glossary.yaml`: the terms, one name per object; `history.yaml`: the record behind the history and acknowledgements page.
 - `CHANGELOG.md`: what changed, by work package.
-- `work-packages/`: the build's record (scopes, reviews, decisions, round outputs, build notes, outlines and spike
-  folders); not needed to use the method.
+- `work-packages/`: the build's record; not needed to use the method.
 - `CLAUDE.md`: conventions for contributors working with Claude Code.
-- `mkdocs.yml`, `Dockerfile`, `pyproject.toml`, `uv.lock`, `.python-version`: build and environment files;
-  `LICENSE`; `.github/` (the CI workflows), `.gitattributes`, `.gitignore` and `.dockerignore`: repository settings.
+- `mkdocs.yml`, `Dockerfile`, `pyproject.toml`, `uv.lock`, `.python-version`: build and environment files.
+- `LICENSE`, `.github/` (CI workflows) and the dot-files `.gitattributes`, `.gitignore`, `.dockerignore`: license and repository settings.

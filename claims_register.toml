@@ -4284,7 +4284,7 @@ note = "Derivation lemma scripts machine-check formulas; test_matches_derivation
 
 [[claim]]
 id = "C355"
-fragment = "evaluated designs is lost, and the alternatives are bespoke or opaque. A model-based method"
+fragment = "evaluated designs is lost. The alternatives are bespoke or opaque. A model-based method"
 file = "site/index.html"
 anchor = ""
 kind = "P"
@@ -4296,7 +4296,7 @@ note = "Practice stated as fact (trade studies decided from documents and tables
 
 [[claim]]
 id = "C356"
-fragment = "has to clear a bar before a decision-maker can trust it: it has to show its reasoning, say"
+fragment = "must meet three conditions before a decision-maker can trust it: it has to show its reasoning, say"
 file = "site/index.html"
 anchor = ""
 kind = "P"
@@ -4344,7 +4344,7 @@ note = "n-lemma = support of the exponent vector of a term (L3 simplex optimalit
 
 [[claim]]
 id = "C360"
-fragment = "method belongs in unsupervised learning and feature engineering beside PCA: kin rather than a"
+fragment = "method belongs in unsupervised learning and feature engineering beside PCA. It is related to PCA, not a"
 file = "site/index.html"
 anchor = ""
 kind = "P"
@@ -4356,7 +4356,7 @@ note = "Author's judgment on where the method belongs; the kin wording for kerne
 
 [[claim]]
 id = "C361"
-fragment = "substitute, and the two chain (the tension report already runs PCA on the near-frontier chart"
+fragment = "replacement for it, and the two chain: the tension report already runs PCA on the near-frontier chart"
 file = "site/index.html"
 anchor = ""
 kind = "S"

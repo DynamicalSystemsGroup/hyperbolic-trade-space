@@ -120,8 +120,8 @@
     <h2>Why</h2>
     <p>
       Trade studies are usually decided from documents and tables, where the detail of the
-      evaluated designs is lost, and the alternatives are bespoke or opaque. A model-based method
-      has to clear a bar before a decision-maker can trust it: it has to show its reasoning, say
+      evaluated designs is lost. The alternatives are bespoke or opaque. A model-based method
+      must meet three conditions before a decision-maker can trust it: it has to show its reasoning, say
       where the data do not reach, and let the analysis be rerun.
     </p>
     <figure class="why story">
@@ -134,17 +134,16 @@
   <section>
     <h2>What</h2>
     <p>
-      PCA explains variance; this explains tensions. Its unit is the n-lemma, a combination
+      Principal component analysis (PCA) explains variance; this explains tensions. Its unit is the n-lemma, a combination
       of the metrics that names which of them compete on one part of the trade space. The
-      method belongs in unsupervised learning and feature engineering beside PCA: kin rather than a
-      substitute, and the two chain (the tension report already runs PCA on the near-frontier chart
-      coordinates). It ships as a scikit-learn-compatible estimator (<code>fit</code>,
-      <code>transform</code>, <code>inverse_transform</code>, <code>score_samples</code>; the
-      conformance checks pass), so it drops into the same workflows.
+      method belongs in unsupervised learning and feature engineering beside PCA. It is related to PCA, not a replacement for it, and the two chain: the tension report
+      already runs PCA on the near-frontier chart coordinates. It ships as a scikit-learn-compatible
+      estimator (<code>fit</code>, <code>transform</code>, <code>inverse_transform</code>,
+      <code>score_samples</code>). The conformance checks pass.
     </p>
     <figure class="wide what">
       <a href="figure1.png"><img class="hero" src="figure1.png" width="1640" height="720" alt="Three panes: the fitted reference surface in metric space, its terms as a supporting envelope in log space, and the chart in which the frontier is one line with the terms laid end to end along it. The designs are grey points; a black arrow in each pane marks one design's distance from the surface."></a>
-      <figcaption>One table of designs seen three ways. The coloured pieces are the three terms of the fitted reference surface, the same three in each pane; the black arrow marks one design's distance from that surface. Select the figure to open it at full size.</figcaption>
+      <figcaption>One table of designs seen three ways. The coloured pieces are the three terms of the fitted reference surface, the same three in each pane; the black arrow marks one design's distance from that surface.</figcaption>
     </figure>
   </section>
 
