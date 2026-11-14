@@ -228,6 +228,18 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Final round, wave 5 committed and triaged (07:35).** Seven reports finished 13:49 to 13:55 UTC; PM15 silent since
+  13:55, so the assistant committed them verbatim (bc5e724) and triaged them. No wrong belief in thirty-five reports.
+  The three mathematicians on Sections 3 to 6 (F14, G05, F28) return the statements' precision defects: forty requests
+  (93 to 132), among them Corollary 1's missing axiom A10 (verified in the lemma scripts), the expectation inside the
+  logarithm, Theorem 10 (i)'s symmetric-point argument, Theorem 11's finite stop, Theorem 6's K > 1 clause, a notation
+  audit for nine reused letters, "support" in three senses, "ridge" for two objects, the Spearman one-axis rule stated
+  as 0.97 in the text and 0.99 in C.5, the fourth threshold's three names, and the inline figures' alt text (the
+  matplotlib repr, verified on the rebuilt page). Two requests touch the supervisor's own material (the launch slot
+  below four satellites; the HoroPCA sentence's boundaries) and are flagged. The code cells are hidden by CSS on the
+  rendered page (verified), so the readers' "code as text" is DOM extraction, not a defect. CI run 43601203914 on
+  c42d860: fast green on both platforms, slow and docs-paper in progress.
+
 - **Wave-1 change unit (requests 1 to 31) verified and accepted at c42d860 (06:55).** The unit landed in the local
   checkout and was not pushed; the assistant pushed it and dispatched CI (run 43601203914, in progress; the run
   dispatched a minute earlier on 745dc9f was cancelled). Checks on c42d860: ruff and format clean; `uv lock --check`
