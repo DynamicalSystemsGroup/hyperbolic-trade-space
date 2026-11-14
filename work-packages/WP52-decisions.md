@@ -267,3 +267,10 @@ both close); the SciPy talk showed derivations scripted in SymPy with identities
 integration, the pattern this repository's lemma scripts follow. Register rows C710 and C711. If the SciPy proceedings
 paper appears, its link replaces the talk's on his word.
 
+**Supervisor, verbatim (02:30 EST):** "the scipy paper is live in the proceedings https://proceedings.scipy.org/articles/wdyr6752
+and has its own doi now"
+
+**Applied as:** the page links the paper by its DOI (10.25080/wdyr6752; SciPy Proceedings 2026, published 29 October
+2026, first page 303, per the proceedings page's metadata) and says "SciPy paper"; the record gains the entry
+`2026-scipy-paper` beside the talk's.
+
