@@ -16,3 +16,18 @@ configuration and attribute columns, the trade-off the literature names, and how
 gives plain options for the one or two to build as documentation examples in a later package; nothing enters the paper.
 `WP44-scope-of-work.md` holds the scope; the hunt itself is read-only and starts at once; the build of an example waits
 on the supervisor's choice from the readout.
+
+## The readout, and a low-dimensional example added (2026-11-14, 14:50)
+
+The readout (`WP44-rounds/hunt/readout.md`, b332787) ranks the perovskite devices and the amniote life histories
+first, with the leaf traits and the battery ageing set behind, and offers four build options.
+
+**Supervisor, verbatim:** "i am okay with doing a low dimensional example ALSO. it doesn't satisfy the request of this
+spike but we can do "Rothamsted's wheat yields" as a low dimensional example to help build inuition if the data is
+otherwise good and the story is clear"
+
+**Applied as:** Rothamsted's Broadbalk wheat yields (e-RA, doi:10.23637/rbk1-yld6822-01, CC BY 4.0; treatments and
+cultivar as configuration; grain and straw yield as the two attributes) is added to the readout as a two-metric
+example for intuition, conditional on two checks the assistant runs before it is built: the data's columns, rows and
+licence read from the archive, and a clear story with a citation (the harvest index: grain rose and straw fell across
+cultivars, so the two trade along the biomass frontier). The spike's own choice among the four options stays open.
