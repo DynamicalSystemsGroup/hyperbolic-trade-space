@@ -214,8 +214,7 @@ def temperature_sentence(study, fit) -> Md:
         f"of the designs in the fit: the designs the soft maximum weighs as if equally, so the "
         f"exponents at the fit temperature rest on about that many of the "
         f"{thousands(len(study.M))} "
-        f"designs; the contending set {holds} ({_D5}); the digits "
-        f"that hold are in {_D11}."
+        f"designs. The contending set {holds} ({_D5})."
     )
 
 
@@ -267,7 +266,7 @@ def choosing_k_sentence() -> Md:
         f"**{_NUMBER_WORDS[K].capitalize()} terms.** The package's checks for choosing K ({_D15}) "
         f"pick K = {K} on {regimes}: the mean "
         f"slack, read at the K = 1 temperature, drops most at K = {K} ({both('drop', K, two)}) "
-        f"and less at K = {K + 1} ({both('drop', K + 1, two)}); the thinnest term holds "
+        f"and less at K = {K + 1} ({both('drop', K + 1, two)}). The thinnest term holds "
         f"{both('thinnest share, own tau', K, two)} of the near-frontier designs at K = {K} and "
         f"{both('thinnest share, own tau', K + 1, two)} at K = {K + 1}, the step where a thin term "
         f"appears."
@@ -308,8 +307,8 @@ def terms_sentence(study, fits) -> Md:
     return Md(
         f"The K = {K} terms have contending sets (exact-maximum supports) of "
         f"{_and(ft['n_lemma'])} metrics; {absent}. "
-        + (f"{thin[0].capitalize()}; " if thin else "Every term has an association reading; ")
-        + f"the term shares are {shares} for terms {terms} ({_D3})."
+        + (f"{thin[0].capitalize()}; the term shares" if thin else "The term shares")
+        + f" are {shares} for terms {terms} ({_D3})."
     )
 
 
@@ -322,7 +321,7 @@ def k_temperatures_sentence(study, fits) -> Md:
     bands = [stable(f"D k_table | {r} | {K} | band 1/tau", lambda v: f"{v:.4f}") for K in Ks]
     return Md(
         f"Each K selects its own fit temperature by the same rule: "
-        f"tau = {_and(taus)} at K = {_and(Ks)}, with bands 1/tau of {_and(bands)}; the figures "
+        f"tau = {_and(taus)} at K = {_and(Ks)}, with bands 1/tau of {_and(bands)}. The figures "
         f"and the association reading use the K = 1 band at every K (gap G-9, {_E})."
     )
 
@@ -541,14 +540,14 @@ def predict_reading(table, reg) -> Md:
     where = "inside" if far < band else "against"
     joined = lambda xs, f: " and ".join(f.format(x) for x in sorted(set(xs)))  # noqa: E731
     fail = (
-        " They reached the four-metric frontier they were aimed at by spending the battery: "
-        f"their measured log V is within {far:.3f} of V = 1, {where} the band {band:.3f}; "
-        "their batteries are "
+        " They reached the four-metric frontier they were aimed at by spending the battery. "
+        f"Their measured log V is within {far:.3f} of V = 1, {where} the band {band:.3f}. "
+        "Their batteries are "
         f"{joined(props['battery_wh'].round(0), '{:.0f}')} Wh, at the bottom of the {lo:g} to "
         f"{hi:g} Wh range, and {'all' if dod == 0 else f'{n - dod} of the'} {n} fail the model's "
-        "depth-of-discharge requirement (depth of discharge "
-        f"{joined(props['dod_eclipse'].round(2), '{:.2f}')}). The proposer's chart is the "
-        "four-metric view, which has no depth-of-discharge axis; a proposer that also predicts "
+        "depth-of-discharge requirement at "
+        f"{joined(props['dod_eclipse'].round(2), '{:.2f}')}. The proposer's chart is the "
+        "four-metric view, which has no depth-of-discharge axis. A proposer that also predicts "
         "the feasibility flags, and proposes only designs predicted to meet them, is future work."
         if dod < n
         else ""
@@ -605,29 +604,22 @@ def elasticity_sentence(study, fits) -> Md:
     )
     return Md(
         f"On term {k} the elasticity between {a} and {b} is -{text}: along the term, one percent "
-        f"gained in {b} is {text} percent given up in {a}, a number an association cannot "
-        f"give.{tail}"
+        f"gained in {b} is {text} percent given up in {a}.{tail}"
     )
 
 
 def planted_sentence() -> Md:
-    """The two planted tables of the case sections, each with its job: the worked example of
-    Appendix C.7 (its termination record is D.8's) and the twenty tables the case analysis fits
-    (D.14), drawn by the same generator. The n-lemma figure's three-metric table is the third,
-    named by the text that precedes this sentence.
+    """The worked example of Appendix C.7, the planted table of the case sections, with its size.
+
+    The twenty tables the case analysis fits (D.14), drawn by the same generator, are named where
+    they are read (:func:`recovery_sentence`); the n-lemma figure's three-metric table is named by
+    the text that precedes this sentence.
     """
-    import generate_results as gr
     from generate_model import planted_table
 
     X, info = planted_table()
     k, d = np.asarray(info["exponents"]).shape
-    runs = gr.recovery_runs()
-    n = len([r for r in runs if r["tau"] == gr.RECOVERY_TAUS[0]])
-    return Md(
-        f"The worked example of {_C7} has {len(X)} rows, {d} metrics and {k} planted terms (its "
-        f"termination record is in {_D8}); the {n} tables of {gr.RECOVERY_ROWS} rows that the "
-        f"case analysis fits come from the same generator ({_D14})."
-    )
+    return Md(f"The worked example of {_C7} has {len(X)} rows, {d} metrics and {k} planted terms.")
 
 
 # ---- the decision (WP39): the closing subsection of Section 9 and Appendix D's table -------------

@@ -1466,3 +1466,87 @@ section = "Appendix D"
 words_added = 287
 job = "D.19 gives the detail behind Section 9's closing paragraph: the shortlist's definition and the rules that pick from it (the sponsor alone, the operator alone, between them by minimax regret, balanced between the terms, the cheapest unit cost), the 28-design table with the nondominated designs marked and exact values, what the fit adds to a two-measure view (11 nondominated over all 548 six-pass designs, 1 inside both bands), and the baseline regime's funnel in one sentence; the appendix's job line names it (six words net)"
 reader = "the executive weighing which design to ask for, and the systems engineer checking the shortlist"
+
+[[cut]]
+date = "2026-11-13"
+section = "The decision problem"
+words_removed = 52
+no_longer_did = "the parenthetical pointer '(the abstract, the Main results below)'; the repeat of 'the surface is not the Pareto boundary, and the table and its reading are views' (the abstract and Definition 1 say it); the announcement '(Section 6; each has hypotheses, a sketch and a script)' after Main results; and 'fitted to the outer edge of the data, not through its middle' with 'not the Pareto boundary but' in main result 1 (the abstract and Definition 1 say them); net of the plain words that replaced 'it' in 'To displace it' and the splits"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Prior art, by family"
+words_removed = 23
+no_longer_did = "'says what each family produces, what we share, how we differ and where to read it' (the table's column heads say it); '; it is not exhaustive and ... what this work does differently, extends or adds' (said as 'how this work differs'); '(Section 1 counts it)' (the reader has just read the count); 'a band and an effective sample size' in the DEA sentence (defined in Definition 4 and the methods); net of the splits of the HoroPCA and Lineage sentences"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Preliminaries and notation"
+words_removed = 18
+no_longer_did = "the aphorism 'All models are wrong, some are useful, and a model is useful for a specific purpose in a specific situation' (the clause 'the purpose is improving trade studies' says the point); 'quilt' and 'patch' for the one name 'piece'; net of the split of the sentence on the gaps ledger"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Definitions"
+words_removed = 62
+no_longer_did = "the sentence 'The chart separates where a design sits along the surface from its energy differential, ...' (Definition 5 and the first paragraph of Section 1 say it); 'Each term is a piece of the surface, not a set of designs' (Section 1 says it); the second name '(level offset)' and the restated 'the level of a potential relative to the fitted reference surface, negative inside, positive beyond' in Definition 5 (said after Definition 2); 'Figure 1 draws the n-lemma of each term for three metrics' (the caption says it); net of 'the ascent direction' added to Definition 9 and the splits"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Methods"
+words_removed = 18
+no_longer_did = "'We name each where it is made, defend it, and say in Section 12 how to go beyond it' (the list does it); 'the sentences between the boxes say what the next result is for ... and box numbers follow the page' (the layout shows it); the gap identifiers 'G-14, G-11, G-12 and G-13' (Appendix E holds them); net of the splits of the conditions R1 to R3 and the legend of Derived, Numerical and Open"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Results"
+words_removed = 131
+no_longer_did = "the lead-in paragraph 'Three results say what the fitted numbers mean: ...' (each of the three boxes states its own result); the box line and the proof line 'The converse is not claimed' (the summary line above the box states it); 'Global optimality is not claimed' in Level 3 (the lead-in says 'none global'); 'The fits of record are sharp, the default; a soft fit is on request' (said in Methods and above); the clause 'tightness is not claimed' after 'sufficient'; '(a partition into nonempty cells ... a cell is a set of rows, a term a piece of the surface)' (Definition 3 says it); net of the splits of the corollary, the soft-fit certificate and the stopping declaration"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Search of the design space (preliminary)"
+words_removed = 24
+no_longer_did = "'This section is future work with no results, and it stops short of selecting a design, which falls to experts' (the heading says preliminary; the closing Open and goal sentences say the rest); 'There are nested loops' (the three sentences that follow set them out); '(our reading)' (the sentence is labelled Open next to it); 'beyond the noise band' for 'by more than the noise' (a term the paper never defined)"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Case construction"
+words_removed = 25
+no_longer_did = "'Every traded metric is read by a requirement' in the behavioural view's caption (its first sentence says it); '; Section 12 says how to go beyond that' (a pointer the contents show); the second 'black box to the method' (made in Section 3 and the paragraph above); net of the splits of the design-variables, requirements and costs sentences and the captions of Figure 4"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Case analysis"
+words_removed = 43
+no_longer_did = "the sentence 'Figure 6 shows each design's level read apart ..., and Figure 7 shows what trades off' (the figures' captions say it; the figures stay referenced); 'The finding: the terms' sets differ' (the paragraph before says two terms with different contending sets); 'the K = 1 fit's band as at every K' in the caption of Figure 6 (the paragraph before says it); 'The case plants its own' (the next sentence says what is planted); in the generated sentences, the pointer to Appendix D.11 after the effective sample size, the termination-record and 20-table pointers after the worked example, the clause 'a number an association cannot give' and 'Every term has an association reading' (the figure's caption says it) leave at the next execution and are counted then; net of the splits"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Discussion"
+words_removed = 27
+no_longer_did = "'A certified fit supports three claims of different strength' (the next sentences state them); ', so on this case pre-imposing them does not change what the frontier trades' (said by 'changes the one-term contending set by at most one of its five metrics'); 'Another table runs through the same calls' (the sentence before says the same functions serve any source of attributes); net of the plain gloss in the deflation sentence"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Reproducibility and your own case"
+words_removed = 13
+no_longer_did = "'(install and a first fit)' and 'and its user guide takes over from there' (the page's name and 'is where to begin' say them)"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[cut]]
+date = "2026-11-13"
+section = "Future work and final remark"
+words_removed = 13
+no_longer_did = "'We offer this as a hook for future exploration, not as a result' (the sentence before says 'could be given'); net of 'crashes' for 'panics' and the split at the Lean sentence"
+authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"

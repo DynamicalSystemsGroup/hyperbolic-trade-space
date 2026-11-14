@@ -67,7 +67,7 @@ note = "L1: log V = w.u - beta, so V is constant where w.u is; L7: the tangent s
 
 [[claim]]
 id = "C004"
-fragment = "designs of equal V stand at the same level, and log V, the energy differential, is a design's level relative to the fitted reference surface V=1: negative inside, positive beyond"
+fragment = "designs of equal $V$ stand at the same level. $\\log V$, the energy differential, is a design's level relative to the fitted reference surface $V=1$: negative inside, positive beyond"
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "M"
@@ -145,9 +145,9 @@ note = "L5: the log-mean-exp, its limits and the bound; L10: max_k x_k <= Phi_K 
 
 [[claim]]
 id = "C009"
-fragment = "The chart separates where a design sits along the surface from its energy differential, how far it is from the surface in levels and not in Euclidean distance"
+fragment = "The chart is a reversible rewriting of the metrics as a position along the surface and a level relative to it"
 file = "paper/paper.ipynb"
-anchor = "Definitions"
+anchor = "The decision problem"
 kind = "M"
 backing = [
   "lemma:L8",
@@ -177,7 +177,7 @@ note = "Section 1; Definition 5."
 
 [[claim]]
 id = "C011"
-fragment = "a soft fit has a second-order certificate"
+fragment = "A soft fit has a second-order certificate"
 file = "paper/paper.ipynb"
 anchor = "The decision problem"
 kind = "M"
@@ -192,7 +192,7 @@ note = "Section 1, main results item 4."
 
 [[claim]]
 id = "C012"
-fragment = "fitting at a finite kappa is the soft fit of ... which does change them"
+fragment = "Fitting at a finite kappa is the soft fit of ... which does change them"
 file = "paper/paper.ipynb"
 anchor = "Methods"
 kind = "S"
@@ -240,7 +240,7 @@ note = "Section 6.1; LSE = LME + (log N)/tau."
 
 [[claim]]
 id = "C016"
-fragment = "the soft maximum of Gaussian noise has a closed form (L6) ... and along a term the exponents are elasticities and give the improvement factors to V=1 (L7)"
+fragment = "Gaussian cumulant (L6) ... Elasticities and improvement factors (L7)"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -272,7 +272,7 @@ note = "Section 6.1."
 
 [[claim]]
 id = "C018"
-fragment = "V_K is the 1/kappa power of a posynomial and its logarithm lies within (log K)/kappa of its largest term (L10); a maximizer of V is weakly Pareto-efficient, and the converse is not claimed (L11)"
+fragment = "V_K is the 1/kappa power of a posynomial and its logarithm lies within (log K)/kappa of its largest term (L10). A maximizer of V is weakly Pareto-efficient, and the converse is not claimed (L11)"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -336,7 +336,7 @@ note = "Section 6.2; a connective: the box states the conditions under which the
 
 [[claim]]
 id = "C022"
-fragment = "for a soft fit, certified means that the second-order test holds ... and stationary that the term gaps hold and the curvature is not positive"
+fragment = "For a soft fit, certified means that the second-order test holds ... and stationary that the term gaps hold and the curvature is not positive"
 file = "paper/paper.ipynb"
 anchor = "The algorithm for several terms"
 kind = "S"
@@ -453,7 +453,7 @@ note = "Appendix F.2; RECORD.md: Pins: Node.js v24.22.2 linux-arm64 tarball, sha
 
 [[claim]]
 id = "C031"
-fragment = "in this design loop the simulation is how the attributes are measured ... because the evaluation is a black box to the method"
+fragment = "In this design loop the simulation is how the attributes are measured ... because the evaluation is a black box to the method"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "M"
@@ -559,7 +559,7 @@ note = "Appendix D.16 runs PCA on the near-frontier chart coordinates of the pri
 
 [[claim]]
 id = "C038"
-fragment = "The reach $\\beta_k$ is how far the data extend in direction $w_k$: the soft maximum of their scores along it, the largest score at $\\tau=\\infty$"
+fragment = "The reach $\\beta_k$ is how far the data extend in direction $w_k$. It is the soft maximum of their scores along it, the largest score at $\\tau=\\infty$"
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "M"
@@ -852,7 +852,7 @@ note = "L4.14-L4.24: with x=exp(w) the one-term fit is a GP in standard form, co
 
 [[claim]]
 id = "C061"
-fragment = "its exponents are elasticities and its chart is reversible"
+fragment = "Its exponents are elasticities and its chart is reversible"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1008,7 +1008,7 @@ note = "degree-1 homogeneity passes through sum w_j = 1 (L1.5, L1.8); larger-is-
 
 [[claim]]
 id = "C075"
-fragment = "Our boundary is a soft maximum with a temperature, a band and an effective sample size"
+fragment = "Our boundary is a soft maximum with a temperature"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1056,7 +1056,7 @@ note = "row 24: publisher description gives distance function as a general chara
 
 [[claim]]
 id = "C079"
-fragment = "Frontier estimation by programming, corrected least squares and one-sided error is the family of one-sided fits"
+fragment = "The family of one-sided fits, frontier estimation by programming, corrected least squares and one-sided error"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "L"
@@ -1092,7 +1092,7 @@ note = "row 42 supported: eq. (1) is (1/beta) log E exp(-beta X), the log-mean-e
 
 [[claim]]
 id = "C082"
-fragment = "Kernel PCA is the feature-engineering kin of the direction"
+fragment = "Kernel PCA is the feature-engineering relative of the kernel direction"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "L"
@@ -1104,7 +1104,7 @@ note = "row 43 supported for kernel PCA; 'kin of the direction' is the author's 
 
 [[claim]]
 id = "C083"
-fragment = "HoroPCA [@chami2021horopca] is the closest existing analog in setting, unsupervised with a table in and coordinates out, and the farthest in what is estimated"
+fragment = "is the closest existing analog in setting: unsupervised, with a table in and coordinates out. It is the farthest in what is estimated"
 file = "paper/paper.ipynb"
 anchor = "Prior art, by family"
 kind = "L"
@@ -1180,7 +1180,7 @@ note = "Framing: floating-point/solver tolerances are recorded in the ledger (e.
 
 [[claim]]
 id = "C090"
-fragment = "which records for each place where the map and the territory part the assumption that bridges it"
+fragment = "It records, for each place where the map and the territory part, the assumption that bridges it"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "R"
@@ -1288,7 +1288,7 @@ note = "select_temperature hits the target frac_above_ within 0.01; the case use
 
 [[claim]]
 id = "C099"
-fragment = "A row with a zero metric is left out of the fit, and $N$ counts the other rows; negative values are rejected"
+fragment = "A row with a zero metric is left out of the fit, and $N$ counts the other rows. Negative values are rejected"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -1396,7 +1396,7 @@ note = "max_k x_k <= Phi_K <= max_k x_k + (log K)/kappa"
 
 [[claim]]
 id = "C108"
-fragment = "on each term the normal is an ascent direction in log space"
+fragment = "On each term the normal is an ascent direction in log space"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1516,7 +1516,7 @@ note = "Contract 'Black box' paragraph: simulator, physical test or human assess
 
 [[claim]]
 id = "C118"
-fragment = "Another table runs through the same calls."
+fragment = "so the same functions serve a simulator, a physical test campaign or a human assessment"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -1600,7 +1600,7 @@ note = "Contract states the source of attributes is a black box (simulator, test
 
 [[claim]]
 id = "C125"
-fragment = "the docsite's Getting started page (install and a first fit) is where to begin, and its user guide takes over from there"
+fragment = "The docsite's Getting started page is where to begin"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -4485,7 +4485,7 @@ note = "Responsibility statement for the downstream inversion; see the predictio
 
 [[claim]]
 id = "C386"
-fragment = "the package's mean ($\\kappa=\\infty$: the maximum) subtracts the constant $(\\log K)/\\kappa$ from every level and changes neither exponents nor minimizers"
+fragment = "The package's mean ($\\kappa=\\infty$: the maximum) subtracts the constant $(\\log K)/\\kappa$ from every level and changes neither exponents nor minimizers"
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "S"
@@ -4758,7 +4758,7 @@ note = "mean_slack_ is comparable across n_terms at a fixed temperature (estimat
 
 [[claim]]
 id = "C403"
-fragment = "the baseline configuration fails the pointing-error requirement (0.0155 against 0.0085 degree), which 63.7 % of the baseline regime's feasible designs pass"
+fragment = "The baseline configuration fails the pointing-error requirement (0.0155 against 0.0085 degree), which 63.7 % of the baseline regime's feasible designs pass"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "R"
@@ -4791,7 +4791,7 @@ note = "the check section's pointer to the Discussion's generated reading (C399)
 
 [[claim]]
 id = "C405"
-fragment = "a proposer that also predicts ... the feasibility flags, and proposes only designs predicted to meet them, is future work"
+fragment = "A proposer that also predicts ... the feasibility flags, and"
 file = "paper/generate_findings.py"
 anchor = "def predict_reading"
 kind = "S"
@@ -4851,7 +4851,7 @@ note = "The stopping declaration defines certified for the sharp kind in the ter
 
 [[claim]]
 id = "C409"
-fragment = "for two metrics with identical columns the objective is flat along their swap"
+fragment = "For two metrics with identical columns the objective is flat along their swap"
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "M"
@@ -4866,7 +4866,7 @@ note = "L4's second derivative of J_tau along a direction v is (tau/2) sum_i sum
 
 [[claim]]
 id = "C410"
-fragment = "In two metrics its level curves are $m_1^{w_1}m_2^{w_2}=\\text{const}$, the rectangular hyperbola $m_1m_2=\\text{const}$ when $w_1=w_2$"
+fragment = "In two metrics its level curves are $m_1^{w_1}m_2^{w_2}=\\text{const}$; when $w_1=w_2$ they are the rectangular hyperbola $m_1m_2=\\text{const}$"
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "M"
@@ -5421,7 +5421,7 @@ note = "The norm bound tau ||P Sigma w|| / conditioning_ (conditioning_ is tau t
 
 [[claim]]
 id = "C461"
-fragment = "noise moves the exponents by a ridge (L20, with L18 for $\\Sigma$)"
+fragment = "Noise moves the exponents by a ridge (L20)"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -5547,7 +5547,7 @@ note = "Panel B is settling time, control effort and depth of discharge at K = 2
 
 [[claim]]
 id = "C470"
-fragment = "a design sits at its shares of the triple's total, a numbered marker is a term's exponent vector, and a region is where that term is the largest"
+fragment = "A design sits at its shares of the triple's total, a numbered marker is a term's exponent vector, and a region is where that term is the largest"
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "S"
@@ -5559,7 +5559,7 @@ note = "As C455 and C456 for the docs page: a marker sits at the term's exponent
 
 [[claim]]
 id = "C471"
-fragment = "The triples were picked, from a search of every triple at one, two and three terms, for two stable terms that contend differently."
+fragment = "The triples were picked for two stable terms that contend differently, from a search of every triple at one, two and three terms."
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "S"
@@ -5583,7 +5583,7 @@ note = "As C455 for the docs page; the ten metrics are the thirteen less the tri
 
 [[claim]]
 id = "C473"
-fragment = "R3: at the clean fit the zero exponents have gradient strictly above the nonzero exponents' common value, and $C$, the softmax-weighted covariance of the log-metrics at the fit, is positive definite on the sum-zero vectors that vanish where $w$ does."
+fragment = "R3: at the clean fit the zero exponents have gradient strictly above the nonzero exponents' common value, and the softmax-weighted covariance $C$ of the log-metrics at the fit is positive definite on the sum-zero vectors that vanish where $w$ does."
 file = "paper/paper.ipynb"
 anchor = "Methods"
 kind = "M"
@@ -5658,7 +5658,7 @@ note = "The marks of the thirteen traded metrics are read from the model's cover
 
 [[claim]]
 id = "C493"
-fragment = "so each is a lower bound on a full costing; the fleet cost requirement holds that covered cost under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD"
+fragment = "so each is a lower bound on a full costing. The fleet cost requirement holds that covered cost under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "P"
@@ -5903,7 +5903,7 @@ note = "The abstract of record (references.bib verified field): the components o
 
 [[claim]]
 id = "C530"
-fragment = "this work fits the one-sided edge of a table and is not a PCA of any kind"
+fragment = "This work fits the one-sided edge of a table and is not a PCA of any kind"
 file = "paper/paper.ipynb"
 anchor = "Prior art, by family"
 kind = "M"
@@ -5919,7 +5919,7 @@ note = "The fit minimizes a one-sided soft-maximum criterion over a simplex (con
 
 [[claim]]
 id = "C531"
-fragment = "We borrow that setting, the estimator interface of scikit-learn and PCA as a downstream step"
+fragment = "We borrow that setting and the estimator interface of scikit-learn, and use PCA as a downstream step"
 file = "paper/paper.ipynb"
 anchor = "Prior art, by family"
 kind = "S"
@@ -5935,7 +5935,7 @@ note = "The estimator passes scikit-learn's estimator checks (fit, transform, in
 
 [[claim]]
 id = "C532"
-fragment = "In a prospectively specified test, on an embedding of ours, the authors' code recovered planted exponents only where they were the direction of largest spread"
+fragment = "In a test fixed in advance, on an embedding of ours, the authors' code recovered planted exponents only where they were the direction of largest spread"
 file = "paper/paper.ipynb"
 anchor = "Prior art, by family"
 kind = "R"
@@ -6272,7 +6272,7 @@ note = "A statement of direction, not a result: the readout's section 1 ranks th
 
 [[claim]]
 id = "C565"
-fragment = "a proof over the reals backs the mathematics, not the floating-point computation, which the certificates check"
+fragment = "A proof over the reals backs the mathematics, not the floating-point computation, which the certificates check"
 file = "paper/paper.ipynb"
 anchor = "Future work and final remark"
 kind = "L"
@@ -6287,7 +6287,7 @@ note = "Readout section 2: a Lean theorem about Real says nothing about code on 
 
 [[claim]]
 id = "C566"
-fragment = "a Rust core compiled to WebAssembly, whose verification tools address panics and overflow, not numerical accuracy"
+fragment = "a Rust core compiled to WebAssembly, whose verification tools address crashes and overflow, not numerical accuracy"
 file = "paper/paper.ipynb"
 anchor = "Future work and final remark"
 kind = "L"
@@ -7079,9 +7079,9 @@ note = "Appendix D.19's table of the shortlist: every cell is the generator's va
 
 [[claim]]
 id = "C617"
-fragment = "The baseline misses the requirements, unit cost among them."
+fragment = "The pointing-error and unit-cost requirements' boxes say that the baseline configuration does not satisfy them"
 file = "paper/paper.ipynb"
-anchor = "Case analysis"
+anchor = "Case construction"
 kind = "R"
 backing = [
   "gen:paper/generate_findings.py::decision",

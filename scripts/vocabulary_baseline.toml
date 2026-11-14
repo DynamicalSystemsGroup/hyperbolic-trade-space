@@ -39,27 +39,6 @@ owner = "package docstrings"
 reason = "SYNONYM of fit temperature: replace with the glossary term (WP10 re-triage 2026-11-09)"
 
 [[violation]]
-kind = "first-use"
-file = "paper/paper.ipynb"
-phrase = "improvement factor"
-owner = "WP10 paper stream"
-reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "first-use"
-file = "paper/paper.ipynb"
-phrase = "level offset"
-owner = "WP10 paper stream"
-reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "first-use"
-file = "paper/paper.ipynb"
-phrase = "position along the frontier"
-owner = "WP10 paper stream"
-reason = "FIRST-USE: a glossary term met in the paper before its definition cue; add the definition or cross-reference at first use (WP10 re-triage 2026-11-09)"
-
-[[violation]]
 kind = "stem"
 file = "docs/user-guide/chart.md"
 phrase = "finite temperature"
