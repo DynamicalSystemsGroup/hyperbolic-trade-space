@@ -85,3 +85,16 @@ would have otherwise"
 "The RAI controller's design record (2021) and Zargham's talk at a workshop in Edinburgh (ICMS), October 2024 are
 public."
 
+## Two more directions on the page (2026-11-14, 22:20 EST)
+
+**Supervisor, verbatim:** "you should include my ADCS-lifecycle-demo repo (github pages) and the OSA and JAXA talks in
+the timeline"
+
+**Supervisor, verbatim:** "the openmbee and the firm can go. it feels forced"
+
+**Applied as:** the OpenMBEE sentence and the firm's synthesis clause are removed from the page (the NumFOCUS line
+stays); the record entries `2026-openmbee`, `2026-maintainer` and `2026-opensysml` stay in `history.yaml` as record
+but are no longer cited by the page. The ADCS-lifecycle-demo repository (its GitHub Pages site) and the OSA and JAXA
+talks are found, read and entered in the record with resolved links and dates, and placed on the page's timeline at
+their dates, each in a clause; sources checked before any sentence is written.
+
