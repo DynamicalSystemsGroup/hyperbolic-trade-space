@@ -190,3 +190,13 @@ neither automatically accepted nor prioritised by being filed; a pull request de
 review against the scope with evidence; the recorded acceptance) is folded in at the depth needed to write an issue and
 to evaluate and merge code, and no deeper.
 
+## Admissibility of an issue (2026-11-14, 18:15 EST), on the CONTRIBUTING draft
+
+**Supervisor, verbatim:** "issues themselves have admissibility conditions which we're enforcing since they need to have bounded scopes, sane blast
+radiuses, and definitions of good and good enough"
+
+**Applied as:** the draft states the admissibility conditions a draft issue must meet before it can become an issue,
+and that they are enforced: a bounded scope (what is delivered and what is not), a sane blast radius (the files and
+surfaces it may touch, small enough to review), and definitions of good (what the work aims at) and good enough (the
+items a reviewer checks). A draft that lacks one is returned, not approved. The issue template asks for each.
+

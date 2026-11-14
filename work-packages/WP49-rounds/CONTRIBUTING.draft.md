@@ -30,10 +30,15 @@ are written to hold whichever model or editor you use.
 
 ## How a change moves
 
-**An issue is a scope of work.** It says what will be delivered, what will not, and what good enough means: the
-smallest statement a reviewer can check item by item. It does not say how the work is to be done; the approach belongs
-to the person doing it. Where the scope depends on a decision only the maintainer can make, the issue lists it as an
-open decision with plain options.
+**An issue is a scope of work.** It says what will be delivered and what will not, what the work aims at (good),
+and what a reviewer will check item by item (good enough). It does not say how the work is to be done; the approach
+belongs to the person doing it. Where the scope depends on a decision only the maintainer can make, the issue lists it
+as an open decision with plain options.
+
+**An issue must be admissible, and this is enforced.** A draft becomes an issue only when it has a bounded scope, a
+sane blast radius (the files and surfaces it may touch, small enough to review in one sitting), and definitions of good
+and good enough. A draft missing one of these is returned with the gap named, not approved. The issue template asks for
+each.
 
 **A candidate scope is a draft issue.** Filing one proposes work; it does not accept or prioritise it. The maintainer
 approves a draft by making it an issue, after the open decisions are settled, and that approval is the record. Small
