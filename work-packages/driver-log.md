@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Final round, wave 4 committed and triaged (06:20).** The seven reports finished at 11:30 UTC in the round's
+  scratchpad and sat uncommitted because PM15 was held by the running change unit (its own units run in the
+  foreground); the assistant committed them verbatim (b6f9b76) under the round's rule and triaged them. No wrong
+  belief in twenty-eight reports; one mis-stated detail (F08: Figure 8's triples for the K = 2 terms), prevented by
+  request 28. Depth D (F06) found every pointer it followed and did not follow a proof to its script lines (no shell by
+  the brief). Twenty-four requests (69 to 92), among them: the depth-of-discharge "requirement" that is a feasibility
+  condition and Figure 3's extra requirement boxes (three cells); the shortlist's band unsaid (the K = 1 band for
+  both fits, D.19) while two picks exceed the K = 2 band; Appendix E's G-1 row quoting a stale temperature (request
+  11 named); the five white rows at K = 1 against "two enter no contending set" (five cells); total mass at 0.02
+  against the 7-lemma (three cells); D.5's scaler rows absent from the main text (a W7 matter); multiplicative DEA
+  for the supervisor's eye. Figure 3 is at ten cells, Figure 5 at nine. PM15 is told to run units in the background
+  so the waves keep moving.
+
 - **6891eae fully green (05:25).** CI run 43586454804: every job green on both platforms, the thirty-third fully green
   head. The stage at 127.0.0.1:8791 still serves c23cf60, the head the round reads; it is rebuilt only when the
   change-request unit lands, so later waves read the same head as the first three.
