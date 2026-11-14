@@ -25,3 +25,7 @@ tool log showed a call to a session hand-off tool (it cannot be attributed to on
 Harness incident: the reader of H02 returned its whole report as its final message instead of the three-line message
 (the file itself is in `reports/` and was committed as written). The PM saw that text in the hand-back and did not
 triage it.
+
+## Wave 3 (G20 G04 F09 F02 F26 F13 G24)
+
+Stage head read: c23cf60 (unchanged). Harness incidents: none observed.
