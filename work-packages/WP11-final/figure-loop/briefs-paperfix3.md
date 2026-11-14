@@ -6,8 +6,9 @@ paper's, in `paper/paper.ipynb`, cell `fig-*-caption`) and ask whether it change
 with the sentence of test 2 in `../figure-review-paperfix3.md` (Figures 3, 6, 7) and `../figure-review-paperfix2.md`
 (Figures 4, 5). Images: `figN_before.png` is the figure at dev 40a93f2, `figN_after.png` at this unit's head.
 
-Cold read needed: Figure 4, Figure 5 (redrawn by the second unit, test 1 open), Figure 7 (retitled and regenerated),
-Figure 3 and Figure 6 (caption changes only; the image is unchanged).
+Cold read needed: Figure 7 (retitled and regenerated), Figure 3 and Figure 6 (caption changes only; the image is unchanged).
+Figures 4 and 5 had their test 1 at 40a93f2 (`../figure-review-paperfix2.md`); the briefs below for them are kept for a
+second read if the PM wants one after the caption and label changes of this unit.
 
 **Figure 3** (`fig3_after.png`; the model's behavioural view). "This is a figure from a paper on trade studies of a small
 satellite. Say in one sentence what it shows." Then the caption. Record whether the orange line from the launch budget

@@ -8,10 +8,11 @@ triage files.
 **What this record does not contain.** The loop's step 3, the cold read by fresh-context viewers, is not here: this unit
 had no sub-agents and no fresh reader. Each figure's brief for that read is at the end of its section (image alone first,
 then the caption; the sentence of test 2 is what the reader's one sentence is compared with). The PM runs the cold reads.
-**Cold reads needed:** Figure 4 and Figure 5 (redrawn by the second unit, test 1 still open), Figure 7 (panel titles
-changed, image regenerated), Figure 3 and Figure 6 (caption-only changes: the read asks whether the caption now says what
-the image shows, and for Figure 6 whether a reader finds the designs above the line). Figure 8's caption gloss (request
-132) needs no read of its own.
+**Cold reads needed:** Figure 7 (panel titles changed, image regenerated), Figure 3 and Figure 6 (caption-only changes: the
+read asks whether the caption now says what the image shows, and for Figure 6 whether a reader finds the designs above the
+line). Figures 4 and 5 had their test 1 run by the PM at 40a93f2 (`figure-review-paperfix2.md`, "Test 1"); this unit
+applies the two wording notes of that read and needs no new read for them. Figure 8's caption gloss (request 132) needs no
+read of its own.
 
 Dispositions follow the loop's order: keep, caption, resize, redraw, drop. Each change is reverted by reverting the
 commit.
@@ -59,18 +60,20 @@ rings mark the sweep point nearest the fit temperature (the sweep's grid has a p
 temperature 41.72, D.1 and D.2), and a ring is not the fit. The caption says so without printing the values (a typed value
 with three decimals fails the repository's rule against typed generated numbers; the values are in D.1 and D.2).
 
-**Disposition: caption (the figure is the second unit's redraw).** **Verdict: tests 2 to 5 as the second unit judged
-them; test 1 on the redraw pending.** Brief for the cold read: image alone ("what do the five lines that rise or fall
-show; where is the fit temperature"), then the caption; the question that matters is whether the reader finds the one line
-that leaves the support (total mass) and the ring's place on the curve, and whether "the sweep point nearest" is read as a
-distinction that matters.
+**Disposition: caption (the figure is the second unit's redraw).** The PM's test 1 at 40a93f2 found the redraw read as its
+sentence says, and noted that the horizontal axis is a category axis of the sweep's values (the sweep is geometric): the
+caption now says the axis lists the values, evenly spaced on a log scale and not to scale (request 56's note, G13).
+**Verdict: tests 1 to 5 passed on the redraw at 40a93f2; the caption changes of this unit (the ring, the axis) are not
+re-read.**
 
 ## Figure 5: the K = 1 plane of available power and unit cost (requests 36, 94)
 
 The second unit's redraw (`fig5_before.png`, `fig5_after.png`) puts every design on the line's slice; nothing changes in
-this unit's image. Request 94's alt text is the caption's first sentence (below). **Verdict: tests 2 to 5 as the second
-unit judged them; test 1 pending.** Brief for the cold read: image alone ("is the line an edge of the cloud, and on which
-side are the designs"), then the caption; compare with the nine readers of the figure before, none of whom read an edge.
+this unit's image except the label. Request 94's alt text is the caption's first sentence (Figure 4 and Figure 7 carry
+figure outputs; this figure's image is a file and its caption cell is the page's text). The PM's test 1 at 40a93f2 found the
+edge and the slope read, with one note: the vertical axis label wrapped to three crowded lines. This unit moves "adjusted
+for the other eleven metrics" into the axis title, which leaves the vertical label two lines (`fig5_before_label.png` is the
+figure at 40a93f2, `fig5_after.png` this unit's). **Verdict: tests 1 to 5 passed at 40a93f2; the relabel is not re-read.**
 
 ## Figure 6: the chart of the K = 2 fit (requests 41, 27, 89, 141)
 
