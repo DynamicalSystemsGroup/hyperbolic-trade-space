@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **2a12f7f fully green (22:45).** CI 43564973529 on 2a12f7f (the residue unit and the 27 confirmations): every job
+  green on both platforms, the thirty-first fully green head. The round-2 unit is iterating on the paper tests in its
+  worktree; the last two confirmations are not yet filed.
+
 - **The stage rebuilt on the recreated worktree; the residue fixes read as rendered (21:40).** The copied environment
   of the old worktree did not import, so the environment was rebuilt from the lock and the stage built at 003f1d2;
   served again. Read in the browser: Appendix E no longer says "G-1 to G-17", the D.18 pointer names the overlap
