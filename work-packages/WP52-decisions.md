@@ -21,3 +21,16 @@ paper he presents at the Ostrom Workshop, and his public work on computer-aided 
 so. The proposal is a paragraph at most for the history page, with `history.yaml` entries (the page's record), saying
 the lineage he names: from presuming a unique optimum to teasing out a design space in which the choice among competing
 alternatives is politics, not optimization. His direction is the approval of the spike; the proposal waits for his word.
+
+## His corrections to the spike (2026-11-15, 03:25)
+
+**Supervisor, verbatim:** "i just read in your response on the history, yes its why is there data. my mispelling. also the of preprint is the correct
+paper and the fact that i presented it at wow may not be relevant for the history. though if it is relevant you can state it
+on my authority since i literally showed up and presented it"
+
+**Applied as:** "why is there data" is the piece ("Why Is There Data?", Sisson and Ben-Meir, SSRN 4933063; he is not an
+author), so it is a work of the firm's circle he points to, available to the paragraph as a fourth link if he wants it
+there; the attention-economies paper is the OSF preprint (Schneider, Nabben, Tamari, Zargham, 2025); its presentation at
+the Workshop on the Ostrom Workshop is on his authority, and goes into `history.yaml` as a note on his word only if the
+paragraph names the paper, which is his call with the paragraph. Recorded at the end of the spike's `proposal.md`.
+

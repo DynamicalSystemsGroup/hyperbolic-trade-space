@@ -122,3 +122,13 @@ of the lineage then comes before the 2014 work, which breaks the page's time ord
 
 Nothing was written outside `work-packages/WP52-rounds/spike/`; `history.yaml`, `site/history.html` and the tests are
 unchanged (the counts came from a copy in the scratchpad directory).
+
+## The supervisor's corrections (2026-11-15, 03:25; `WP52-decisions.md`)
+
+- "why is their data" is "Why Is There Data?" (Sisson and Ben-Meir, SSRN 4933063): his spelling, confirmed. He is not an
+  author; it is available as a fourth link in the paragraph if he wants the firm's circle named, with a `history.yaml`
+  entry like the others.
+- The attention-economies paper is the OSF preprint (Schneider, Nabben, Tamari and Zargham, 2025). He presented it at
+  the Workshop on the Ostrom Workshop; that fact enters `history.yaml` on his authority ("on the author's word") only
+  if the paragraph names the paper.
+
