@@ -928,3 +928,9 @@ the part a PM and its units need. Where he has not spoken, his next sentence ove
 - **What loses him.** Jargon in an intuitive section; a sentence written to convince; content forced into the paper
   that belongs in the repository or the docs; a method shown only on its own synthetic case; a report that did not run
   the thing or look at the render.
+- **The breadth of the examples (20:00).** The examples should show the breadth of the model along the axes he named:
+  dimension (attributes, metrics and objectives vary), the number of terms, tight against soft fits, measured against
+  simulated, the engineering lifecycle stage from research to end of life, and the measurement method, synthetic or
+  actual, mixed within one problem. An intent for the build-out, "as we establish this first release as an initial
+  condition", recorded in `work-packages/examples-coverage.md`; each WP45 test record states its case's row.
+

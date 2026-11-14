@@ -7,7 +7,8 @@ is non-blocking but informing for v0.1 and required for v0.2. States: done, in f
 **v0.1, the goal state:** the paper, the docsite, the container of record, the case at K = 2 on the data of record,
 one vocabulary, the reader loops closed, the release items, on `dev` for the supervisor's review; one PR from `dev`
 to `main` that he alone merges. **v0.2, the secondary:** a tooling and documentation upgrade with more worked
-examples, drawn from the research that lands in v0.1's record.
+examples, drawn from the research that lands in v0.1's record; the breadth those examples should show, in his words, is
+`examples-coverage.md` (an intent record, not a requirement list).
 
 | Item | Role for v0.1 | Role for v0.2 | State (2026-11-14 18:30) |
 |---|---|---|---|

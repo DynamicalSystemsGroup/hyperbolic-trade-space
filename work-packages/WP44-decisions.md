@@ -84,3 +84,24 @@ and their fresh-reader review (D-4) are 0.2's first package, drawn from the reco
 decision, the solver's word). Execution begins under `work-execution`: a unit per package in its own worktree on
 Sonnet, in the background, with the scope file as the brief; the assistant verifies each delivery before the
 supervisor's acceptance.
+
+## The breadth of the examples (2026-11-14, 20:00; an intent, not a build item)
+
+**Supervisor, verbatim:** "there is a different track of feedback that i got distracted from giving. when we are building out the examples we want
+to make sure we're showing the breadth of the model, that means some examples that are high dimensional (number attributes,
+number of metrics, number of objectives can all vary), some are low dimensional, some end up with larger K number of
+posynomial terms and some are fewer posynomial terms. some will be tight fits and some will be softer. some are real world
+measured cases and some are simulation based on models. we also expect real world engineering problems to have data from
+different engineering lifecycle stages from research to design to quality control to configuration management to end of
+life. this will mean there is a rich mix of data produced by different measurement methods synthetic and actual"
+
+**Supervisor, verbatim:** "i am not exactly sure how this will fit into the build out but it fit with my broader effort to help capture my intents as
+we establish this first release as an initial condition"
+
+**Applied as:** an intent record, `work-packages/examples-coverage.md`: the axes he names (dimension in attributes,
+metrics and objectives; the number of terms K; tight or soft fit; measured or simulated; the engineering lifecycle stage
+from research to end of life; the measurement method, synthetic or actual), the current and candidate cases placed on
+them from what is known today, and the gaps. It changes no scope. Each WP45 test record states its case's row (the
+counts, the K and temperature found, the data's origin, the stage, the method) so the matrix fills from the records,
+and v0.2's example pages are chosen with the gaps in view. The cubesat remains the paper's one demonstrator.
+
