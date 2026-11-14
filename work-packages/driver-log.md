@@ -228,6 +228,17 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The stage worktree found broken and recreated (21:10).** The residue unit (b8366f6, 368f3a1: the D.18 pointer, the
+  Appendix E count, the case model's draws, the bibliography's ell-one, and 56 Appendix E rows decided) and the second
+  readers' 27 confirmations (4bcbf9a, 2a12f7f) are on dev; on 2a12f7f ruff, lock, vocabulary and attribution clean, the
+  fast suite 1947 passed, no stderr output in either notebook, the fixes present in the committed sources. The stage,
+  though, still showed the old text: the stage worktree's `.git` file had disappeared between the rebuild at c8897c2
+  (which succeeded, so every render check through c8897c2 stands) and the one at 2a12f7f, whose log shows the fetch
+  failing and the site build raising; the directory was moved aside, the worktree recreated at the served path from
+  origin/dev with its environment, and the rebuild relaunched. The spot check of the residue fixes as rendered follows
+  on the new build. Round 2 of the pass decided as option (a): one unit for the lost facts and dangling references the
+  second readers named, then WP38-review.md with the rest listed for the supervisor as the post-0.1 list.
+
 - **The residue unit's tests deadlocked; the implementer told to rerun serially (20:15).** In wp38resid the pytest run
   and six parallel worker processes have sat at 0 percent CPU for 35 minutes, a deadlock between workers, not a slow
   test; the implementer told directly to stop it and rerun without parallel workers, and PM14 told not to wait on a
