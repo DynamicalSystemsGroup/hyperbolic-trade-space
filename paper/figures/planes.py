@@ -225,7 +225,9 @@ def adjusted_plane_figure(study=None, fit=None):
     ax.set_xlabel(case._wrap("log of the " + case.cond_label(study, study.attrs[j]), 80))
     ax.set_ylabel(case._wrap("log of the " + case.cond_label(study, study.attrs[k]), 44))
     other = _WORDS.get(len(study.attrs) - 2, len(study.attrs) - 2)
-    ax.set_title(f"{study.names[j]} and {study.names[k]}, the latter adjusted for the other {other} metrics")
+    ax.set_title(
+        f"{study.names[j]} and {study.names[k]}, the latter adjusted for the other {other} metrics"
+    )
     handles = [
         Line2D([], [], marker="o", ls="", color=DESIGN, label="a design"),
         Line2D([], [], color=INK, label="the surface"),
