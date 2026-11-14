@@ -65,7 +65,7 @@ entries:
     term: 'conditioning'
     short: 'The analyst''s step that turns attributes into metrics; LogAffinePreconditioner does it.'
     register: 'conditioning'
-    formal: 'the log-affine, invertible map from attributes to metrics'
+    formal: 'the log-affine, invertible map from attributes to metrics, log m_j = alpha_j log(shift_j + attribute_j) + b_j; the lemma scripts write the shift a_j and the raw attribute r_j (s_j in the statements of A4 and L9), the main text the attribute a_j and the shift s_j'
     not: 'part of the fit'
     defined_in: 'A4, L9'
 
@@ -98,10 +98,10 @@ entries:
 
   - id: 'invariant-value'
     term: 'invariant value'
-    symbol: 'V(m) = \prod_j m_j^{w_j}'
+    symbol: 'V(m) = e^{-\beta}\prod_j m_j^{w_j}'
     short: 'A weighted geometric mean of the metrics; doubling every metric doubles it, so it reads as a factor of improvement.'
     register: 'invariant value'
-    formal: 'the weighted geometric mean of the metrics'
+    formal: 'the weighted geometric mean of the metrics, scaled by e^(-beta) so that V = 1 on the fitted reference surface (the lemma script L1 states the unscaled mean, beta = 0)'
     not: 'a probability or a bounded score; V above 1 is possible at finite temperature'
     defined_in: 'L1, A1, A2'
 
@@ -396,7 +396,7 @@ entries:
 
   - id: 'n-lemma'
     term: 'n-lemma'
-    symbol: 'n_k'
+    symbol: '\nu_k'
     short: 'How many of the d metrics contend in a term; a dilemma is 2, a trilemma 3; found from the data, not assumed.'
     register: 'n-lemma'
     formal: 'the size of the contending set of one term'
