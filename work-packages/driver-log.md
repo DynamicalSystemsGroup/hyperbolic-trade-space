@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The residual pass's flags in; its first landing unit verified; 995075b fully green (15:40).** CI 43522590868 on
+  995075b: every job green on both platforms, the twenty-seventh fully green head. The pass (6007221): first-reader
+  flag tables for all 29 slots with every sentence quoted in full and a disposition (cut, split, define, routed or
+  keep), and the checker's before-comparison (28 counts above the baseline, all from the WP39, WP35 and WP40 text that
+  landed after it). The first landing unit, L3-case (d417196: the case-model how-to and the glossary's short forms),
+  read as a diff: copy edits and kind-4 cuts, no claim or command changed; the vocabulary check 0 new, the claims
+  register and vocabulary tests 37 passed; on d417196 ruff, lock and attribution clean and the fast suite 1946 passed;
+  CI dispatched (43532734200). Two more landing units (the docs pages, the paper sources) are in their worktrees.
+
 - **WP40 review received; delivered and verified; the dangling hash was the assistant's (15:00).** The fresh review
   (1be1e12): R-1 to R-9 and R-11 met, ten images retrieved and viewed, the measure re-taken; two findings. The
   pointer hash in the assistant's records (c680853, taken from the PM's message before its rebase) is on no branch;
