@@ -82,5 +82,4 @@ above.
 
 ## Open decisions (for the supervisor)
 
-- **OD1.** Place: (a) in the 0.1 candidate (a user-guide page on tuning, not an example); (b) with the 0.2 docs
-  content.
+None. OD1 closed on 2026-11-14 at 16:55 (`WP46-decisions.md`): in the 0.1 candidate.

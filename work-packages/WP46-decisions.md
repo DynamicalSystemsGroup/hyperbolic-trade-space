@@ -16,3 +16,11 @@ checked on the case before it is claimed); the effective sample size is the pric
 
 **Applied as:** WP46, scoped in `WP46-scope-of-work.md`; approval is the supervisor's verbal word, quoted here when
 given.
+
+## Placement and approval (2026-11-14, 16:55, by popup)
+
+**Supervisor's answers, verbatim:** place: "In the 0.1 candidate"; approvals: "WP42,WP46".
+
+**Applied as:** WP46's open decision closes on (a): the page, the helper and the lemma step land in the 0.1 candidate
+before the release PR; the scope as drafted is approved; execution begins under `work-execution`, a unit in its own
+worktree on Sonnet, in the background.

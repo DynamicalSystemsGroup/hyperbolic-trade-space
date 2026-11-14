@@ -171,3 +171,6 @@ model as a function of the metrics inside a designer's optimization, where GGP a
 layer: the fit as an optimization over the exponents, whose word is loss) are stated in full in the glossary's
 preamble, with each entry naming its layer, and in brief in Section 3 with a citation to Appendix A (the register) for
 the detail. Added to WP42's G3 and deliverables; the Section 3 paragraph lands with WP42's build.
+
+**Supervisor (16:55, by popup), approving WP42:** "WP42,WP46" (the approvals question). WP42 is approved as drafted,
+with its open decision already closed on loss (15:50) and G3b added (16:05); execution begins in the background.
