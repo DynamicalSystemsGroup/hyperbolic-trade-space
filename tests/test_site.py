@@ -452,7 +452,7 @@ def test_root_and_paper_links_classified():
 
 
 def test_root_index_is_thin_and_routes_by_need():
-    """WP33 G2, R-3, and the supervisor's recast of 2026-11-15 (WP33-decisions.md): after the title,
+    """WP33 G2, R-3, and the supervisor's recast of 2026-11-14 (WP33-decisions.md): after the title,
     the plain summary, then three sections without headers in depth order (why: the line between
     what is possible and what is preferable; what: trade studies and the three conditions; how: PCA
     and the n-lemma); the page closes on a lead sentence and two doors (paper, tool), each a link;
@@ -1576,7 +1576,7 @@ def test_index_has_a_figure_in_the_what_and_how_sections_in_that_order():
     text = (SITE / "index.html").read_text(encoding="utf-8")
     figures = _index_figures()
     # the supervisor's choice (WP28-decisions): the planted ternary is the story figure, and the
-    # plain Why image is gone; after the recast of 2026-11-15 the ternary sits in the second
+    # plain Why image is gone; after the recast of 2026-11-14 the ternary sits in the second
     # section (what) and the paper's Figure 1 in the third (how); the first section carries none
     assert [f["class"].split()[0] if f["class"] else "" for f in figures] == ["why", "wide"]
     assert "story" in figures[0]["class"].split()

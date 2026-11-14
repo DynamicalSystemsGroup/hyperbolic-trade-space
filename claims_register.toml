@@ -8231,7 +8231,7 @@ kind = "P"
 backing = ["reading"]
 status = "backed"
 disposition = "keep"
-source = "WP51 root page recast, the supervisor's wording of 2026-11-15 (WP51-decisions.md)"
+source = "WP51 root page recast, the supervisor's wording of 2026-11-14 (WP51-decisions.md)"
 note = "Framing, not a checkable claim: the supervisor's statement of the line the method draws (what is possible and what trades against what, assessed; what is preferable, deferred); the paragraph that follows it is his and promises a footing, not a result. Register marks it reading."
 
 [[claim]]
@@ -8243,5 +8243,5 @@ kind = "P"
 backing = ["reading"]
 status = "backed"
 disposition = "keep"
-source = "WP51 root page recast, 2026-11-15 (WP51-decisions.md; the three words are the abstract's, C677)"
+source = "WP51 root page recast, 2026-11-14 (WP51-decisions.md; the three words are the abstract's, C677)"
 note = "Framing: the abstract's three words (scalable, reproducible, interpretable) carried to the page's what section; the three conditions are C356's."
