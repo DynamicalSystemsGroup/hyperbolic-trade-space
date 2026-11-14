@@ -103,7 +103,8 @@ def nondominated_sentence(study) -> Md:
             f"perturbation; a number that moves over them is printed as a range, {_D11})"
         )
     return Md(
-        f"Of {thousands(n)} feasible cubesat designs, the nondominated set holds "
+        f"Of {thousands(n)} feasible cubesat designs, the nondominated set (on the conditioned "
+        f"metrics, larger is better) holds "
         f"{_and(parts)} {tail}."
     )
 
@@ -206,8 +207,9 @@ def participation_sentence() -> Md:
         f"Of the {_NUMBER_WORDS.get(len(names), len(names))} traded metrics, "
         f"{_NUMBER_WORDS.get(len(out), len(out))}, "
         f"{_and('the ' + n for n in out)}, enter no contending set at K = 1 to {depth} in either "
-        f"regime: each is nearly one axis with a metric that does (Spearman at least {low:.2f}, "
-        f"{_C5}). At K = 1 in the {regs[0]} regime {_NUMBER_WORDS.get(len(zero), len(zero))} "
+        f"regime: each moves with a metric that does (|Spearman| at least {low:.2f}, below the "
+        f"{case.ONE_AXIS:g} at which {_C5} names a pair one axis). At K = 1 in the {regs[0]} "
+        f"regime {_NUMBER_WORDS.get(len(zero), len(zero))} "
         f"carry no exponent at the fit temperature; {_NUMBER_WORDS.get(len(later), len(later))} "
         f"of them ({_and(later)}) enter a contending set at K = 2 or 3 or in the other regime. A "
         f"zero exponent says the metric does not set the surface in this sample; a near-collinear "
@@ -338,9 +340,8 @@ def k1_sentence(study, fit) -> Md:
         f"At K = 1 the exact-maximum fit has {_a(len(names))} {len(names)}-lemma across "
         f"{_span(study.spec.subsystems_of(names))}: {_and(names)} contend, with "
         f"exponents at the fit temperature from {two(low)} to {two(high)}.{extra} "
-        "R1 of Section 5 holds on both regimes: the exact-maximum optimum is one point, "
-        "checked by a test of the repository on both regimes, so the support is not a "
-        "solver's choice."
+        "The exact-maximum optimum is one point, checked by a test of the repository on both "
+        "regimes, so the support is not a solver's choice."
     )
 
 
@@ -368,10 +369,11 @@ def choosing_k_sentence() -> Md:
     regimes = _and(f"the {r} regime" for r in tabs)
     return Md(
         f"**{_NUMBER_WORDS[K].capitalize()} terms.** The package's checks for choosing K ({_D15}) "
-        f"pick K = {K} on {regimes}: the mean "
+        f"point to K = {K} on {regimes}, none deciding alone: the mean "
         f"slack (in log V), read at the K = 1 temperature, drops most at K = {K} "
         f"({both('drop', K, two)}) "
-        f"and less at K = {K + 1} ({both('drop', K + 1, two)}). The thinnest term holds "
+        f"and less at K = {K + 1} ({both('drop', K + 1, two)}), the largest drop read against the "
+        f"other two checks. The thinnest term holds "
         f"{both('thinnest share, own tau', K, two)} of the near-frontier designs at K = {K} and "
         f"{both('thinnest share, own tau', K + 1, two)} at K = {K + 1}, the step where a thin term "
         f"appears."
@@ -393,7 +395,11 @@ def terms_sentence(study, fits) -> Md:
     new = sorted(union - k1)
     leads = [x.split(", ")[0].rsplit(" ", 1)[0] for x in ft["largest exponents"]]
     led = [m for m in new if m in leads]
-    verb = "leads a term of its own" if len(led) == 1 else "each lead a term of their own"
+    verb = (
+        f"leads term {int(ft['term'].iloc[leads.index(led[0])])}"
+        if len(led) == 1
+        else "each lead a term of their own"
+    )
     if not new:
         absent = "none is absent from the K = 1 set"
     elif led == new:
@@ -481,17 +487,20 @@ def margin_sentence(study, fits) -> Md:
         else f"whether the contending sets hold under rounding-level jitter is read in {_D11}"
     )
     return Md(
-        f"At K = {K} the margin is {stable(f'certificate | {r} | {K} | gamma', four)} and the "
-        f"stable radius {stable(f'certificate | {r} | {K} | radius', four)}, against a band 1/tau "
+        f"On the cubesat case of Section 8 ({r} regime, {thousands(N)} feasible designs), "
+        f"at K = {K} "
+        f"the margin, a gap between term scores, is "
+        f"{stable(f'certificate | {r} | {K} | gamma', four)}, against a band 1/tau "
         f"of {stable(f'D k_table | {r} | {K} | band 1/tau', lambda v: f'{v:.4f}')} and a median "
         f"best-minus-second-best score of "
         f"{stable(f'margin | {r} | {K} | median margin', lambda v: f'{v:.3f}')}: a margin below "
         f"the band puts at least one design within the band of a seam, here {thousands(n)} of "
-        f"the {thousands(N)}, and "
-        f"the certificate covers changes under the radius only. For the {_NUMBER_WORDS[K]}-term "
+        f"the {thousands(N)}. For the {_NUMBER_WORDS[K]}-term "
         f"split: the local optimality certified covers changes of the term scores under half the "
         f"margin, about {times} times smaller than the band, so which term those {n} designs "
-        f"fall to is not a finding; {sets}."
+        f"fall to is not a finding; {sets}. In the parameters the same condition is the stable "
+        f"radius, {stable(f'certificate | {r} | {K} | radius', four)}: the certificate covers "
+        f"moves of each term's exponents and reach under it."
     )
 
 
@@ -740,7 +749,15 @@ def planted_sentence() -> Md:
 
     X, info = planted_table()
     k, d = np.asarray(info["exponents"]).shape
-    return Md(f"The worked example of {_C7} has {len(X)} rows, {d} metrics and {k} planted terms.")
+    import generate_results as gr
+
+    exact = [r for r in gr.recovery_runs() if r["tau"] == gr.RECOVERY_TAUS[0]]
+    good = sum(r["recovered"] for r in exact)
+    return Md(
+        f"The worked example of {_C7} has {len(X)} rows, {d} metrics and {k} planted terms. "
+        f"The fit recovers all {_NUMBER_WORDS[k]} terms on {good} of {len(exact)} such tables "
+        f"(Section 9, {_D14})."
+    )
 
 
 # ---- the decision (WP39): the closing subsection of Section 9 and Appendix D's table -------------
@@ -957,11 +974,14 @@ def decision_detail_sentence(d: Decision) -> Md:
     from generate_model import DATASET_LABELS
 
     return Md(
-        f"Dataset {DATASET_LABELS['primary']}: over all {_count(d, 'six_pass')} designs that pass "
-        f"the six requirements, "
+        f"Dataset {DATASET_LABELS['primary']}: nondominance depends on the set it is read in. Over "
+        f"all {_count(d, 'six_pass')} designs that pass the six requirements, "
         f"{_count(d, 'nondominated')} are nondominated on pointing error and fleet cost, and "
-        f"{_count(d, 'nondominated_in_band')} of them lies within the band of both fits; the "
-        f"others reach their cost or pointing error by lying well inside the frontier."
+        f"{_count(d, 'nondominated_in_band')} of them lies within the band of both fits, so the "
+        f"others lie outside the band of at least one fit. Among the shortlist's "
+        f"{_count(d, 'working')} alone (the designs of the six that lie in that band), "
+        f"{_count(d, 'nondominated_working')} are nondominated on pointing error and fleet cost: "
+        f"the two sets differ."
     )
 
 

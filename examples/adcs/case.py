@@ -2255,7 +2255,7 @@ def _member_title(rep, who):
     """
     n = int(rep.n_lemma)
     plural = "s" if n != 1 else ""
-    return f"{who}: {rep.lemma_name} ({n} metric{plural} in the exact-maximum support)"
+    return f"{who}: {rep.lemma_name} ({n} metric{plural} in the contending set)"
 
 
 @_legible

@@ -459,7 +459,10 @@ def checker(path=RECORD) -> Md:
         "one and in order. Every step by a declared axiom applies an entry that exists in the "
         "ledger and that the file imports. The entries a file imports, applies and lists as used "
         "are the same set. A proved result is imported from an earlier proof and applied by a "
-        "step. No premise hides in a signed symbol. The fingerprint of each step (its tag, "
+        "step. A symbol declared positive, nonnegative or real is declared as a premise, never "
+        "assumed silently: the last column of the second table counts them per file, and in L14 "
+        "the premise that every exponent vector minimizes its term objective enters as the sign "
+        "of the nonnegative symbol dfk. The fingerprint of each step (its tag, "
         "prose and line of code) and of each ledger entry equals the record's.\n\n"
         + head + "\n\n" + per_file
     )  # fmt: skip

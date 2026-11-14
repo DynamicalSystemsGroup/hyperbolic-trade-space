@@ -132,13 +132,6 @@ reason = "BASELINE: ordinary word gap inside the definition of the assignment ma
 [[violation]]
 kind = "stem"
 file = "paper/paper.ipynb"
-phrase = "convex envelope"
-owner = "WP10 paper stream"
-reason = "BASELINE: ordinary mathematics: a property of V (log-convex), not one of the three frontier objects (WP10 re-triage 2026-11-09)"
-
-[[violation]]
-kind = "stem"
-file = "paper/paper.ipynb"
 phrase = "power margin"
 owner = "WP10 paper stream"
 reason = "BASELINE: a named attribute of the cubesat case (power_margin_w), a proper name of the case (WP10 re-triage 2026-11-09)"

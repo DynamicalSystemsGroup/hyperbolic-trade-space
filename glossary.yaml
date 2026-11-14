@@ -122,6 +122,15 @@ entries:
     not: 'a loading vector with sign or unit norm'
     defined_in: 'A2, L3, L4'
 
+  - id: 'balanced-point'
+    term: 'balanced point'
+    symbol: 'U^\top p'
+    short: 'At the exact-maximum fit, the mean of the log-metric rows under the optimal dual weights p; its components are equal on the support of the exponents.'
+    register: 'balanced point'
+    formal: 'the point U^T p, p an optimal dual weight vector (at finite tau, the softmax weights of the designs)'
+    not: 'a design of the table, or the mean of the data'
+    defined_in: 'L3, R1'
+
   - id: 'cell'
     term: 'cell'
     short: 'The designs assigned to one term, those whose largest term it is; the cells partition the rows, one per term.'
@@ -156,6 +165,16 @@ entries:
     defined_in: 'Definition Posynomial, L4.17'
     aliases:
       - 'monomials'
+
+  - id: 'log-convex'
+    term: 'log-convex'
+    short: 'Convex as a function of the log-metrics u = log m; the fitted reference surface is log-convex, so no number of terms represents a dent or a hole.'
+    register: 'log-convex'
+    formal: 'a function convex in u = log m'
+    not: 'convex in the metrics m'
+    defined_in: 'L4, L10'
+    aliases:
+      - 'log-convex surface'
 
   - id: 'posynomial'
     term: 'posynomial'
@@ -455,6 +474,8 @@ entries:
     formal: 'the first-order gap of the term''s refit on the simplex'
     not: 'the distance to the optimum'
     defined_in: 'L12, L3, L4, I8, F12'
+    aliases:
+      - 'Frank-Wolfe gap'
     avoid:
       - phrase: 'weighted gap'
         reason: 'the weighted refit of a term in the soft fit has a term gap G_k; weighted gap is a second name for it'

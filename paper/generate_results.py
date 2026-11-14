@@ -443,11 +443,11 @@ OWN_ROWS_TOLERANCE = 0.05
 
 
 def own_rows_refit() -> Md:
-    """The refit of a term on its own rows against the support refit, given the true labels.
+    """The refit of a term on its own rows against the all-rows refit, given the true labels.
 
     Planted tables of 400 rows, 4 metrics and 3 terms (``make_frontier_data``, seeds 0 to 19)
     are fitted once per term with the true labels given, so the alternation plays no part: the
-    plain ``K = 1`` fit on the term's own cell, and the support refit that the solver uses (the
+    plain ``K = 1`` fit on the term's own cell, and the all-rows refit that the solver uses (the
     fit of all rows with the log-metrics centred at the term's mean). The same comparison is
     ``docs/superpowers/notes/spike-facet-refit/bench_oracle.py`` (methods A and B).
 
@@ -488,8 +488,8 @@ def own_rows_refit() -> Md:
                 "Planted terms",
                 "Own-rows refit recovers",
                 "Largest error, own rows",
-                "Support refit recovers",
-                "Largest error, support",
+                "All-rows refit recovers",
+                "Largest error, all rows",
             ],
             rows,
         )
@@ -688,7 +688,7 @@ def choosing_k() -> Md:
         parts.append(
             f"{_cite(r)}:\n\n"
             + md_table(head, rows)
-            + f"\n\nThe checks pick K = {case.chosen_k(t)}."
+            + f"\n\nThe checks point to K = {case.chosen_k(t)}."
         )
     return Md("\n\n".join(parts))
 
@@ -834,6 +834,18 @@ def design_sets_comparison() -> Md:
     )
 
 
+def _noise_factor_sentence(rows) -> str:
+    """The factor by which the predicted largest shift exceeds the measured mean, where it does
+    so beyond the spread of the draws (the columns of ``noise_injection.COLUMNS``)."""
+    pairs = [(float(r[3]), float(r[4]), float(r[5])) for r in rows]
+    fac = [p / m for p, m, s in pairs if p > m + s]
+    return (
+        "Where the prediction exceeds the measured mean by more than the spread of the draws "
+        f"({len(fac)} of {len(rows)} rows), it does so by a factor of {min(fac):.1f} to "
+        f"{max(fac):.0f} (predicted over measured)."
+    )
+
+
 def injected_noise() -> Md:
     """The noise-ridge corollary (L20) against measurement error injected into the cubesat data.
 
@@ -867,4 +879,6 @@ def injected_noise() -> Md:
         "of its attribute. What the table shows belongs "
         "to the fit and the conditioning together.\n\n"
         + md_table(list(noise_injection.COLUMNS), rows)
+        + "\n\n"
+        + _noise_factor_sentence(rows)
     )

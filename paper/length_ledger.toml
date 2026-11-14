@@ -1697,3 +1697,73 @@ section = "Search of the design space (preliminary)"
 words_removed = 14
 no_longer_did = "'the procedure resembles a diffusion with drift along the tangent spaces' (no definition or result stood behind it); the monotonicity sentence now says conjectured"
 authority = "final reader round wave 3, change request 49; marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-14"
+section = "The decision problem"
+words_added = 29
+job = "the first main result says it is for one term and points to its definition and to the fit; the nondominated set is the whole table; the counts say on which metrics; the maximizer is over a set of designs; local optimality is with the cells held fixed"
+reader = "the evaluator and the mathematician reading the main results as the paper's whole claim"
+
+[[raise]]
+date = "2026-11-14"
+section = "Prior art, by family"
+words_added = 23
+job = "the HoroPCA sentence carries the reviewer's boundaries in one clause (a mechanism demonstration on clean tables, the authors' code at its defaults, one direction at a time)"
+reader = "the reader weighing Appendix H's result as a recovery rate"
+
+[[raise]]
+date = "2026-11-14"
+section = "Preliminaries and notation"
+words_added = 40
+job = "A9 says one covariance for every row, A10 is listed with what it does; the surface's pieces are flat in log space at the sharp limit and rounded by a finite kappa"
+reader = "the mathematician checking each hypothesis code against where it is used"
+
+[[raise]]
+date = "2026-11-14"
+section = "Definitions"
+words_added = 50
+job = "the contending set's support is a convention checked under jitter, with the ties read as the record has them; the fits of record are sharp"
+reader = "the reader who asks which kappa the figures use and whether the contending set is the solver's choice"
+
+[[raise]]
+date = "2026-11-14"
+section = "Methods"
+words_added = 78
+job = "R1 to R3 say which optimal dual vector, what the score is, where each is used and what the clean fit and C are; the offset is the log-mean-exp and what the factor 1/N does; the tenth is by convention; the scaler and the tangent term are glossed"
+reader = "the mathematician and the practitioner reading the hypotheses and the conditioning"
+
+[[raise]]
+date = "2026-11-14"
+section = "Results"
+words_added = 588
+job = "each statement carries what its script proves: the bound with its constant and the entropy, the pigeonhole of the finite stop, the Frank-Wolfe gap, the expected noisy objective and what A10 is for, the kappa = infinity maximum, the active term, the K > 1 chart clause, the cost sign, the sketch's finite-difference check, the Hessian's pieces, what the contending set's refit is against the own-rows refit, and the polish"
+reader = "the three mathematicians who checked Sections 3 to 6 and returned the statements' precision defects"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case construction"
+words_added = 120
+job = "the launch budget named once, the launch slot not costed for fleets of one to three, the regimes' gain ranges, Figure 3's launch link, Figure 4's ring, and the planted recovery counted where it is read"
+reader = "the case reader and the frontier economist asking what the regimes and the thresholds are"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case analysis"
+words_added = 95
+job = "the case named at its first mention in the margin paragraph, the margin in score space and the radius in parameter space apart, the K = 2 fit's margin and status pointed to, the term led by peak slew power named, Figure 6's level and its tenth above, Figure 8's corner word, Table 2's other variables, the regimes' gain ranges, the 16 of 20 recovery"
+reader = "the executive and the economist reading the case and its figures"
+
+[[raise]]
+date = "2026-11-14"
+section = "Discussion"
+words_added = 21
+job = "the certificate says what it covers (the cells held fixed, the exact first-order conditions) and the requirements sentence is tagged Numerical"
+reader = "the reader who took the certificate as a claim about designs"
+
+[[cut]]
+date = "2026-11-14"
+section = "Results"
+words_removed = 9
+no_longer_did = "'The reaches, and the soft fit, see every design.' (the paragraph's first sentence says every term is fitted against every design)"
+authority = "final reader round, third paper unit; marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"

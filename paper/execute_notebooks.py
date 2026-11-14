@@ -10,6 +10,7 @@ leaves the files unchanged, and an output image repeated by the inline backend i
 from __future__ import annotations
 
 import os
+import re
 import sys
 
 import nbformat
@@ -20,8 +21,36 @@ from paper_paths import PAPER
 DEFAULT = ("paper.ipynb", "supporting_material.ipynb")
 
 
+def caption_first_sentence(caption: str) -> str:
+    """The first sentence of a figure caption's body, without the MyST roles and line breaks."""
+    body = caption.split(":label:", 1)[-1].split("\n", 1)[-1].strip()
+    sentence = re.match(r"(.+?[.?!])(?:\s|$)", body, re.S)
+    text = (sentence.group(1) if sentence else body).strip()
+    text = re.sub(r"\{[a-z]+\}`([^`<]*?)(?: <[^>]*>)?`", r"\1", text)
+    return re.sub(r"\s+", " ", text)
+
+
+def set_figure_alt(nb) -> None:
+    """Give each inline figure the first sentence of its caption as alt text.
+
+    A figure cell's image output carries the matplotlib repr ("<Figure size 800x700 with 4
+    Axes>") as its plain-text form, which the built page uses as the image's alt text; the caption
+    cell ``<cell id>-caption`` says what the figure shows.
+    """
+    captions = {c.id: c.source for c in nb.cells if c.cell_type == "markdown"}
+    for cell in nb.cells:
+        caption = captions.get(f"{cell.id}-caption")
+        if cell.cell_type != "code" or not cell.id.startswith("fig-") or caption is None:
+            continue
+        for out in cell.outputs:
+            data = out.get("data", {})
+            if "image/png" in data and "text/plain" in data:
+                data["text/plain"] = caption_first_sentence(caption)
+
+
 def _tidy(nb) -> None:
-    """Drop timing metadata and repeated identical image outputs."""
+    """Drop timing metadata and repeated identical image outputs; set the figures' alt text."""
+    set_figure_alt(nb)
     for cell in nb.cells:
         cell.metadata.pop("execution", None)
         if cell.cell_type != "code":
