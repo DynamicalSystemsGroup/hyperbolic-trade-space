@@ -29,3 +29,13 @@ triage it.
 ## Wave 3 (G20 G04 F09 F02 F26 F13 G24)
 
 Stage head read: c23cf60 (unchanged). Harness incidents: none observed.
+
+## Waves 4 to 7 (reports committed by the assistant: b6f9b76, bc5e724 and later; triage in `triage/wave-4.md` to `wave-7.md`)
+
+Wave 4: F06 F21 F08 F20 F05 G22 G03. Wave 5: F22 G25 G05 F16 F14 G06 F28. Wave 6: F27 F24 G12 G28 G11 F07 G16.
+Wave 7: G07 G19 G09 G13. All read the stage at c23cf60 as captured (the round compares one head); the change units that
+landed meanwhile (c42d860 and later) were not seen by these readers. Held-out cells (F01 F10 F15 F17 F18 F23 and their
+G twins) are read later on the landed head, with slices recaptured and briefs re-rendered, in two waves of six.
+
+Harness incidents: the H02 note above stands. A "Loading" output on first extraction for six readers; Appendix D.15
+did not render once for G25; the captured first screen's collapsed contents chevron for G16.
