@@ -228,6 +228,31 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Second paper unit (requests 32 to 92) verified and accepted at 40a93f2 (10:40).** Landed in the local checkout at
+  f2b9026, 3047008 and a80c126 with the README's wave sections at 40a93f2; not pushed by PM15 (held in a foreground
+  call on the third unit), so the assistant pushed it and dispatched CI (run 43614474657). Checks: ruff and format
+  clean; `uv lock --check` clean; vocabulary 0 new (61 known); attribution grep clean (the same six "regenerated"
+  commit-body hits); fast suite 1961 passed, 15 skipped, 2 xfailed in 7:08 (head-verify-27.log); `derivation/run.py`
+  ALL LEMMAS PASS; the implementer's full suite green. The diff read against requests 32 to 92: applied as asked, 149
+  sentences changed, each pointing where the readers asked (the main results' pointers to the chart and the elasticity
+  definitions, the GP in the exponents, the thirteen requirements named apart, Theorem 8's order, Theorem 1's lambda,
+  Lemma 2's vector, Theorem 5's factor and its warning, the fleet size drawn from 1 to 30 with the fleet cost's
+  formation, Figure 3's MoE and MoP and verification tags, Figure 6's K and direction, Figure 7's one-axis clause and
+  peak slew power, Figure 8's legend gloss, the depth-of-discharge feasibility condition, Table 2's measures and rule
+  gloss, "Why a surface", the Final remark narrowed, the Works cited note, the diffusion sentence gone, the search's
+  monotonicity "conjectured", reach for offset throughout). The figure loop ran on Figures 4 and 5 as requests 36 and
+  56 asked: Figure 4's lower panel is one line per metric with rings at the fit temperature, Figure 5 moves every
+  design onto the line's slice so the line is the surface for all of them; the unit's record is
+  `WP11-final/figure-review-paperfix2.md`, and the assistant ran test 1 (a fresh cold read of the two images, Haiku):
+  both read as their sentences say (42bc9fc). Browser pass on the rebuilt pages at 8792: every new sentence found on
+  the page; both redrawn figures render with their captions; no "Loading", stderr or traceback text; the inline
+  figures' alt text is still the matplotlib repr (request 94, in the third unit's range). Screenshots:
+  `tool-results/mcp-Claude_Browser-blob-1794673449414-7u4xud.jpg` (Figure 4 rendered) and
+  `...-1794673454554-a772bp.jpg` (Figure 5 rendered). One query to the third unit, not a return: the new sentence
+  counts four feasibility conditions and six requirements read after the fit of thirteen and leaves three unnamed
+  (battery peak power ratio, power margin, energy balance: request 166); two wording notes from the cold read (167,
+  168). The readers' stage at 8791 stays at c23cf60 until the third unit lands; the held-out cells read that head.
+
 - **c42d860 fully green (09:15).** CI run 43601203914: every job green on both platforms (fast, slow and docs-paper on
   Linux; fast and slow on Windows), the thirty-fourth fully green head; the wave-1 change unit's acceptance stands
   with CI behind it.
