@@ -171,3 +171,22 @@ sentence no longer singles out the model: "the rules of this work do not depend 
 rewriting someone else's code to escape its licence is a violation whether it is done by hand or through a model, and
 the person who commits it answers for it, as for every other question of ethics here." Updated in the assembled text.
 
+## Issues as scopes of work (2026-11-14, 18:05 EST), on the CONTRIBUTING draft
+
+**Supervisor, verbatim:** "i think we need to tie this more directly to the use of Issues. issues should be scopes of work, they do not themselves
+specify the approach to delivering on that work as that belongs to the person doing the work. PRs merge into dev and close
+issues they resolve, merges into main are releases. i think the work i did previously on scoping and reviewing work needs
+to be integrated into the guidance but let's be careful not to add more detail than is actually needed to author issues and
+to evaluate and merge code. its probably worth noting that issues (as scopes of work are not automatically accepted or
+prioritized), a candidate scope of work should be a draft issue and and draft issue should become an issue when its
+approved"
+
+**Applied as:** the draft's "How a change moves" is rewritten around issues: an issue is a scope of work (what is
+delivered, what is not, what good enough means, and the open decisions) and not the approach, which belongs to whoever
+does the work; a candidate scope is a draft issue and becomes an issue when the maintainer approves it, so an issue is
+neither automatically accepted nor prioritised by being filed; a pull request delivers against its issue, merges into
+`dev` and closes the issues it resolves, reviewed item by item against the scope with the evidence named; merges into
+`main` are releases. His scoping and acceptance practice (the scope's goals, non-goals and definition of good enough; the
+review against the scope with evidence; the recorded acceptance) is folded in at the depth needed to write an issue and
+to evaluate and merge code, and no deeper.
+

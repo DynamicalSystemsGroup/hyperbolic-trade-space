@@ -30,31 +30,34 @@ are written to hold whichever model or editor you use.
 
 ## How a change moves
 
-**Scope first.** Work here is done in packages with a written scope: what is delivered, what is not, and what good
-enough means, approved by the maintainer before the work starts. A small fix needs no package; anything that changes
-what a user sees, a result the paper states, or a public name does. Open an issue to propose one; the templates ask for
-what the scope needs.
+**An issue is a scope of work.** It says what will be delivered, what will not, and what good enough means: the
+smallest statement a reviewer can check item by item. It does not say how the work is to be done; the approach belongs
+to the person doing it. Where the scope depends on a decision only the maintainer can make, the issue lists it as an
+open decision with plain options.
 
-**Narrow and readable.** A pull request does one thing its title says. Its description states what changed, what backs
-it (a test, a lemma step, a generated value, a source), which tests cover it, and the tools used. History stays
-readable: commits that each build and pass, no merges of `main` into a feature branch, no force-pushes to shared
-branches.
+**A candidate scope is a draft issue.** Filing one proposes work; it does not accept or prioritise it. The maintainer
+approves a draft by making it an issue, after the open decisions are settled, and that approval is the record. Small
+fixes, a typo or a broken link, need no issue: open the pull request and say what it fixes.
 
-**Review against the scope.** A reviewer checks the change against its scope and runs it: the suite, the lint and
-format checks, the lock check, and, for anything rendered, the page or figure in a browser. Reading the diff alone is
-not a review. The reviewer's record of what was run is part of the delivery.
+**A pull request delivers against its issue.** It does one thing its title says and names the issue it resolves. Its
+description states what changed, what backs it (a test, a lemma step, a generated value, a source), which tests cover
+it, and the tools used. History stays readable: commits that each build and pass, no merges of `main` into a feature
+branch, no force-pushes to shared branches. A change that must reach beyond the files its scope names says so, and is
+split when it can be.
 
-**Blast radius.** A change touches the files its scope names. A change that must reach further says so in its scope
-and is split when it can be.
+**Review is against the scope.** A reviewer takes the issue's good-enough items one by one and checks each against
+evidence: the suite, the lint, format and lock checks, and, for anything rendered, the page or figure in a browser.
+Reading the diff alone is not a review. What was run is written in the review. A pull request merges into `dev` when
+its items hold, and closes the issues it resolves.
 
 **Checks a pull request must pass.** `uv run ruff check .`, `uv run ruff format --check .`, `uv lock --check`, `uv run
 pytest`, the vocabulary and residual checks, and the test workflow on both platforms. The workflow also refuses any
 commit whose message names a tool as an author or generator.
 
-**Branches and releases.** Candidates are built on `dev`. Releases are cut from `main` by the maintainer, who alone
-merges to it, with `git merge --no-ff dev` and a version tag. Versions follow semantic versioning: a patch for a fix, a
-minor for a compatible addition, a major for a breaking change; the changelog names each. Publishing to PyPI runs
-from the tag through the release workflow and needs the maintainer's approval of its environment.
+**Merges into `main` are releases.** The maintainer alone merges `dev` into `main`, with `git merge --no-ff` and a
+version tag. Versions follow semantic versioning: a patch for a fix, a minor for a compatible addition, a major for a
+breaking change; the changelog names each. Publishing to PyPI runs from the tag through the release workflow and needs
+the maintainer's approval of its environment.
 
 **Maintainers.** How a maintainer is added, how a release is cut, and the repository settings that enforce the above
 are in the [maintainers' page](docs/maintainers.md). Security reports go as [SECURITY.md](SECURITY.md) says, not to
