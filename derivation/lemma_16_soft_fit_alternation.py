@@ -33,7 +33,7 @@ What this proves (symbolic K, d, N; plain SymPy):
      alpha-weighted slack regroups as sum_k (n_k/N)(beta_k - ubar_k . w_k) with n_k = sum_i alpha_ik
      and n_k ubar_k = sum_i alpha_ik u_i.  The fixed-weight objective is this sum less the constant
      E = (1/(kappa N)) sum_i H_i, which does not depend on W (so it has the same minimizers as
-     the sum): F(W) <= G_alpha(W) for every W, with F = G_alpha at the weights' own model.  This is
+     the sum): F(W) <= G_alpha(W) - E for every W, with equality at the weights' own model.  This is
      the arithmetic-geometric mean inequality applied to the sum over terms.
 (iii) The program.  With x_kj = exp(w_kj), the exponential of the fixed-weight objective is a
      product over terms of positive powers of the posynomial P_k(x) = (1/N) sum_i prod_j
