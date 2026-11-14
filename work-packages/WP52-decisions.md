@@ -212,3 +212,10 @@ says otherwise.
 **Applied as:** the sentence is gone; the paragraph opens on the Balancer whitepaper. The record's register row for it
 is removed.
 
+**Supervisor, verbatim (01:15 EST):** "to reduce the crypto reading i want to call RAI an algorithmic debt market or similar
+and filecoin as a filestorage and retrieveal network. we need to do a decrypto-fication network"
+
+**Applied as:** "a feedback controller for the RAI algorithmic debt market"; "the governance of the Filecoin file storage
+and retrieval network"; a pass over the page for words that read as cryptocurrency found no other in the prose (source
+titles in the dated list keep their own words, as the list's rule allows).
+
