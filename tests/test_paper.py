@@ -2428,7 +2428,7 @@ def test_myst_builds_the_html_site(tmp_path):
     # cross-references use are heading identifiers of the supporting page
     html = work / "_build" / "html"
     page = (html / "index.json").read_text(encoding="utf-8")
-    urls = re.findall(r'"url":"(/build/fig[\w.-]+\.png)"[^]]*?enlarge', page)
+    urls = re.findall(r'"url":"(/build/fig[\w.-]+\.png)"[^]]*?full-size figure', page)
     assert len(urls) == 3  # three figure cells (WP19 P-7, P-10, P-5, P-6 revised); static: none
     assert all((html / u.lstrip("/")).is_file() for u in urls)
     support = (html / "supporting-material.json").read_text(encoding="utf-8")
@@ -3391,7 +3391,7 @@ def test_every_figure_has_a_full_size_link_to_a_file_that_is_the_figure():
     images = _figure_images()
     for cid in images:
         cap = next(c for c in nb.cells if c.id == f"{cid}-caption")
-        m = re.search(r"\[enlarge\]\((figures/[\w.-]+\.png)\)\s*\n:::\s*$", _src(cap))
+        m = re.search(r"\[full-size figure\]\((figures/[\w.-]+\.png)\)\s*\n:::\s*$", _src(cap))
         assert m, cid
         assert (PAPER / m.group(1)).read_bytes() == images[cid][0], f"{cid}: {STALE}"
     assert not (PAPER / "figures" / "fig-schematic.png").exists()
@@ -3785,7 +3785,9 @@ def test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_valu
                    "fleet of 4 small-wheel, medium-tracker satellites "
                    "at 1.13 M USD is cheapest", "Appendix C.8"):  # fmt: skip
         assert phrase in plain, phrase
-    assert 130 <= len(plain.split()) <= 160  # 150 before the two reader definitions
+    # 150 before the two reader definitions; 180 with the clause that the two fleets differ in
+    # more than the tracker (change request 30 of the final reader round, wave 1)
+    assert 130 <= len(plain.split()) <= 180
     detail = str(gf.decision_detail_sentence(d))
     assert "all 548 designs" in detail and "11 are nondominated" in detail
     assert "1 of them lies within" in detail
@@ -3921,3 +3923,93 @@ def test_the_baseline_row_fails_the_requirements_the_other_rows_meet(decided):
             costs=True,
         ).all()
     )
+
+
+# ---- the final reader round, wave 1: change requests 1 to 31 (the paper-queue unit) -----------
+
+
+@pytest.mark.slow
+def test_the_baseline_pointing_error_share_is_generated_from_the_data_of_record():
+    """CR 8: the share of the baseline regime's feasible designs that pass the pointing-error
+    requirement is the generator's value, read from the same mask as D.17's pass column."""
+    import case
+    import generate_findings as gf
+
+    stock = case.load_study("stock")
+    fresh = str(gf.baseline_requirement_sentence(stock))
+    table = case.requirements_table(stock, case.k_fits(stock, (1,))[1]).set_index("requirement")
+    share = table.loc["pointing error", "pass (feasible)"]
+    assert f"which {100 * share:.1f} % of the baseline regime's feasible designs pass" in fresh
+    assert "0.0155 against 0.0085 degree" in fresh
+    cell = next(c for c in _code_cells(_nb(PAPER_NB)) if c.id == "num-baseline-pointing")
+    _current(_out_text(cell), fresh, "num-baseline-pointing")
+    assert "63.7" not in _markdown(_nb(PAPER_NB))  # the figure of an earlier record
+
+
+@pytest.mark.slow
+def test_the_discussion_gives_the_contending_set_change_from_the_design_sets_of_the_record():
+    """CR 9: how far imposing requirements before the fit moves the one-term contending set is
+    the generator's reading of D.17's second table, per regime, with the set's own size."""
+    import case
+    import generate_findings as gf
+    import generate_results as gr
+
+    fresh = str(gf.design_sets_sentence())
+    t = case.design_sets_table(sets=gr._design_sets())
+    out = {}
+    for regime in ("primary", "stock"):
+        by = {k: set(v.split(", ")) for k, v in t[t["regime"] == regime].set_index("set")[
+            "contending set"].items()}  # fmt: skip
+        rec = by["feasible"]
+        out[regime] = (len(rec), max(max(len(rec - o), len(o - rec)) for o in by.values()))
+    words = {7: "seven", 8: "eight", 2: "two"}
+    (n1, w1), (n2, w2) = out["primary"], out["stock"]
+    assert w1 == 0 and f"of the primary regime ({words[n1]} metrics) unchanged" in fresh
+    assert f"by at most {words[w2]} of its {words[n2]} metrics" in fresh
+    cell = next(c for c in _code_cells(_nb(PAPER_NB)) if c.id == "num-design-sets")
+    _current(_out_text(cell), fresh, "num-design-sets")
+    assert "five metrics" not in _markdown(_nb(PAPER_NB))
+
+
+@pytest.mark.slow
+def test_appendix_e_cubesat_rows_carry_the_temperatures_and_slacks_of_the_data_of_record():
+    """CR 11: the cubesat numbers of the gaps ledger (G-1, G-9, G-11, G-13, G-14) are the K = 1, 2,
+    3 fits of the feasible designs of each regime (the data of record), not an earlier table."""
+    import case
+
+    note = _norm_ws((NOTES / "abstraction-gaps.md").read_text(encoding="utf-8"))
+    for stale in ("38.10, 94.42", "0.14579", "0.09269", "0.13579", "3,000 designs per regime"):
+        assert stale not in note, stale
+    fits = {r: case.k_fits(case.load_study(r)) for r in ("primary", "stock")}
+    tau = lambda r: ", ".join(f"{fits[r][K].tau:.2f}" for K in (1, 2, 3))  # noqa: E731
+    band = ", ".join(f"{fits['primary'][K].band:.4f}" for K in (1, 2, 3))
+    assert f"by $K=1,2,3$: {tau('primary')} (primary); {tau('stock')} (baseline)" in note
+    assert f"Band {band} (primary)" in note
+    frac = lambda r: ", ".join(f"{fits[r][K].estimator.frac_above_:.3f}" for K in (1, 2, 3))  # noqa: E731
+    assert f"Fraction above {frac('primary')} (primary) and {frac('stock')} (baseline)" in note
+    obj = lambda r, K: fits[r][K].estimator.objective_  # noqa: E731
+    for r, name in (("primary", "primary"), ("stock", "baseline")):
+        assert f"{obj(r, 3):.3f} against {obj(r, 1):.3f} ({name}" in note
+        assert f"{obj(r, 1):.3f} to {obj(r, 3):.3f} ({name}" in note
+
+
+def test_the_ternary_caption_counts_are_the_triple_search_record():
+    """CR 28: the caption says how many fits of the search showed two stable terms that contend
+    differently; the count is read from the record of ``triple_search.py`` (56 triples, two
+    regimes, K = 1, 2, 3), and both drawn triples are among those fits at K = 2."""
+    record = json.loads(
+        (NOTES / "figure-candidates" / "triple_search_record.json").read_text(encoding="utf-8")
+    )
+    assert len(record) == 56 * 2 * 3
+    made = [r for r in record if "terms" in r]
+    two = [r for r in made if r["texture"] >= 2]
+    cap = _src(next(c for c in _nb(PAPER_NB).cells if c.id == "fig-ternary-pair-caption"))
+    assert f"{len(two)} of the {len(made)} fits that could be made" in cap
+    drawn = (
+        {"pointing error", "total mass", "control effort"},
+        {"settling time", "control effort", "depth of discharge"},
+    )
+    for triple in drawn:
+        assert any(
+            r["regime"] == "primary" and r["K"] == 2 and set(r["triple"]) == triple for r in two
+        ), triple

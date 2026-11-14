@@ -4758,11 +4758,13 @@ note = "mean_slack_ is comparable across n_terms at a fixed temperature (estimat
 
 [[claim]]
 id = "C403"
-fragment = "The baseline configuration fails the pointing-error requirement (0.0155 against 0.0085 degree), which 63.7 % of the baseline regime's feasible designs pass"
-file = "paper/paper.ipynb"
-anchor = "Case construction"
+fragment = "The baseline configuration fails the pointing-error requirement ({base:.4f} against ... which {100 * share:.1f} % of the baseline regime's feasible"
+file = "paper/generate_findings.py"
+anchor = "def baseline_requirement_sentence"
 kind = "R"
 backing = [
+  "gen:paper/generate_findings.py::baseline_requirement_sentence",
+  "test:tests/test_paper.py::test_the_baseline_pointing_error_share_is_generated_from_the_data_of_record",
   "test:tests/test_system_model_v2.py::test_the_four_thresholds_are_the_supervisors_values",
   "test:tests/test_case.py::test_requirements_table_prices_each_requirement_as_spike_b",
   "gen:paper/generate_results.py::requirements_at_the_frontier",
@@ -4770,8 +4772,8 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "WP23 close-out, D-18 (the supervisor: \"Keep 0.0085 deg\")"
-note = "the model's PointingError of cubesatBaseline is 0.015535 degree, the limit 0.008495 (budgets.pointingErrorLimit), and the engine verifies `not satisfy`; the baseline regime's pass fraction is requirements_table's 0.637"
+source = "WP23 close-out, D-18 (the supervisor: \"Keep 0.0085 deg\"); final round wave 1, change request 8"
+note = "the model's PointingError of cubesatBaseline is 0.015535 degree, the limit 0.008495 (budgets.pointingErrorLimit), and the engine verifies `not satisfy`; the baseline regime's pass fraction is read by the generator from case.requirement_mask on the stock regime's feasible designs (0.656 on the data of record, D.17's pass column); the typed 63.7 % was the figure of an earlier record"
 
 [[claim]]
 id = "C404"
@@ -4818,20 +4820,22 @@ note = "candidate, pending the supervisor's review; Appendix D.17 prices each re
 
 [[claim]]
 id = "C407"
-fragment = "removing the infeasible designs or imposing the four performance thresholds before the fit changes the one-term contending set by at most one of its five metrics"
-file = "paper/paper.ipynb"
-anchor = "Discussion"
+fragment = "With every design set conditioned as the fit of record is, removing the infeasible"
+file = "paper/generate_findings.py"
+anchor = "def design_sets_sentence"
 kind = "R"
 backing = [
   "func:examples/adcs/case.py::design_sets_table",
+  "gen:paper/generate_findings.py::design_sets_sentence",
+  "test:tests/test_paper.py::test_the_discussion_gives_the_contending_set_change_from_the_design_sets_of_the_record",
   "gen:paper/generate_results.py::design_sets_comparison",
   "test:tests/test_case.py::test_the_docs_design_sets_block_is_the_case_modules",
   "test:tests/test_case.py::test_design_sets_share_the_feasible_conditioning",
 ]
 status = "backed"
 disposition = "keep"
-source = "WP23 close-out, D-18 and OD10 (a): CANDIDATE sentence 2 of 2 for the supervisor's review"
-note = "candidate, pending the supervisor's review; on the feasible set's conditioning: primary, the three sets share the contending set; baseline, all designs swap depth of discharge for total mass and the threshold-constrained set swaps power margin for energy balance (Spearman 0.988); spike A's own-rows conditioning had shown a changed set, a conditioning artefact (spike B, section 4)"
+source = "WP23 close-out, D-18 and OD10 (a): CANDIDATE sentence 2 of 2 for the supervisor's review; final round wave 1, change request 9"
+note = "candidate, pending the supervisor's review; now generated from D.17's second table, per regime and with the fit of record's own set size: on the feasible set's conditioning the primary regime's three sets share their seven-metric contending set (unchanged); the baseline regime's eight-metric set is the same for all designs and loses two metrics (depth of discharge, fleet cost) on the threshold-constrained set; the typed 'at most one of its five metrics' was an earlier record's; spike A's own-rows conditioning had shown a changed set, a conditioning artefact (spike B, section 4)"
 
 [[claim]]
 id = "C408"
@@ -4986,7 +4990,7 @@ note = "D.13: the plain K = 1 fit on a term's own rows (solve_slsqp(mine, tau)) 
 
 [[claim]]
 id = "C420"
-fragment = "The contending set uses $f_k$ at $\\tau=\\infty$ on the cell's rows alone"
+fragment = "The contending set is another object, read after the fit: it uses $f_k$ at $\\tau=\\infty$ with the cell's rows centred on their own mean, on those rows alone"
 file = "paper/paper.ipynb"
 anchor = "The algorithm for several terms"
 kind = "S"
@@ -4994,7 +4998,7 @@ backing = ["func:src/hyperbolic_trade_space/solvers.py::_refit", "func:src/hyper
 status = "backed"
 disposition = "keep"
 source = "WP11 round 2, PM6 batch 2 (CR-15)"
-note = "Appendix B.2 step (2): the refit w_k = argmin f_k over all rows with beta_k = J_tau(U w_k) (solvers._refit); the contending set's LP is the same f_k at tau = inf on the cell's rows alone (C416)."
+note = "Appendix B.2 step (2): the refit w_k = argmin f_k over all rows with beta_k = J_tau(U w_k) (solvers._refit); the contending set's LP is the same f_k at tau = inf with the cell's rows centred on their own mean, on the cell's rows alone (C416); the own-rows refit that is ill-posed (D.13) takes the rows as they are."
 
 [[claim]]
 id = "C421"
@@ -5559,15 +5563,20 @@ note = "As C455 and C456 for the docs page: a marker sits at the term's exponent
 
 [[claim]]
 id = "C471"
-fragment = "The triples were picked for two stable terms that contend differently, from a search of every triple at one, two and three terms."
+fragment = "picked from the 56 triples of eight of the thirteen metrics ... fits that could be made had at least two stable terms that contend differently"
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
-kind = "S"
-backing = ["file:work-packages/WP19-figure-review.md", "file:docs/superpowers/notes/figure-candidates/triple_search.py"]
+kind = "R"
+backing = [
+  "gen:docs/superpowers/notes/figure-candidates/triple_search.py::main",
+  "test:tests/test_paper.py::test_the_ternary_caption_counts_are_the_triple_search_record",
+  "file:docs/superpowers/notes/figure-candidates/triple_search_record.json",
+  "file:work-packages/WP19-figure-review.md",
+]
 status = "backed"
 disposition = "keep"
-source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper"
-note = "The search record of C457 and C458: 56 triples in each regime at K = 1, 2, 3; a term counts when its cell holds at least ten near-frontier designs and its exponents move by at most 0.10; 55 fits have two counting terms with different contending sets. The figure is a pick among them, as the sentence says."
+source = "WP28 supervisor decision (S-5): the two-panel figure enters the paper; final round wave 1, change request 28 (the sentence moved into the caption and gave the count)"
+note = "triple_search.py on the data of record (the first eight attributes, 56 triples in each regime at K = 1, 2, 3, 336 fits): 291 fits could be made (45 have a term with under two near-frontier rows); 105 have at least two real regions with different contending sets, a region being a cell of at least ten near-frontier designs whose exponents move by at most 0.10 over refits and resamples, under a certified fit; 21 have three. The earlier WP19 count (55 of 275, on the 706-design table of that date) is superseded by the record. Both drawn triples, at K = 2, are among the 105; the figure is a pick among them, as the caption says."
 
 [[claim]]
 id = "C472"
@@ -5872,7 +5881,7 @@ note = "The values are the thresholds-met column of D.17's placement table (case
 
 [[claim]]
 id = "C507"
-fragment = "M3 and M5 again on 2026-11-12, on the thirteen-metric data of 3,000 designs per regime"
+fragment = "M3 and M5 again on 2026-11-12, on the thirteen-metric data of the feasible designs of each regime"
 file = "docs/superpowers/notes/abstraction-gaps.md"
 anchor = "Measurement recipes"
 kind = "S"
@@ -7061,7 +7070,7 @@ note = "Section 9's six-row table: every cell is the generator's value for the n
 
 [[claim]]
 id = "C616"
-fragment = "int(r[\"fleet_size\"]), f\"{r['pointing_error_deg']:.5f}\", f\"{r['unit_cost_usd']:,.0f}\", f\"{r['fleet_cost_usd']:,.0f}\", f\"{r['log V K=2']:+.4f}\", f\"{r['log V K=1']:+.4f}\", f\"{r['term 1 level']:+.4f}\", f\"{r['term 2 level']:+.4f}\", _marks(r))"
+fragment = "int(r[\"fleet_size\"]), f\"{r['pointing_error_deg']:.6f}\", f\"{r['unit_cost_usd']:,.0f}\", f\"{r['fleet_cost_usd']:,.0f}\", f\"{r['log V K=2']:+.4f}\", f\"{r['log V K=1']:+.4f}\", f\"{r['term 1 level']:+.4f}\", f\"{r['term 2 level']:+.4f}\", _marks(r))"
 file = "paper/generate_findings.py"
 anchor = "def decision_designs_table"
 kind = "R"
@@ -7150,3 +7159,73 @@ status = "backed"
 disposition = "keep"
 source = "WP39 notebook unit"
 note = "The generator scales each measure to 0 to 1 over the shortlist and takes the design with the smallest larger scaled value (minimax regret); the test pins the design, 1858."
+
+[[claim]]
+id = "C622"
+fragment = "the case is read at K=2, the value the package's checks pick ... K=3 is certified too and adds a thin term"
+file = "paper/paper.ipynb"
+anchor = "Methods"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::choosing_k_sentence",
+  "gen:paper/generate_findings.py::certificate_sentence",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "final round wave 1, change request 7 (the sentence said the case needs three terms)"
+note = "The checks pick K = 2 on both regimes (num-choosing-k, D.15); the solver declares certified at K = 2 and 3 (num-certificates); the thinnest K = 3 term holds 0.06 of the near-frontier designs (num-choosing-k)."
+
+[[claim]]
+id = "C623"
+fragment = "The slew experiment returns ten of the thirteen: nine it computes, three of them"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "S"
+backing = ["file:examples/adcs/model_v2/views/behavioural_view.puml", "file:examples/adcs/model_v2/views/behavioural_view.svg"]
+status = "backed"
+disposition = "keep"
+source = "final round wave 1, change request 26 (the count and the settling time's route)"
+note = "The view's SlewExperiment box reads: returns 10 of 13 metrics; computed with no slew: pointing error, total mass, available power; from the measurement: control effort (passed on) and settling time (not returned); an analysis each, no slew: unit cost and fleet cost. Ten returned = the thirteen less the settling time less the two costs; nine computed = the ten less the control effort passed on."
+
+[[claim]]
+id = "C624"
+fragment = "conditioned metrics; Theorem 7 gives the rates in the attributes' own units."
+file = "paper/generate_findings.py"
+anchor = "def elasticity_sentence"
+kind = "M"
+backing = ["lemma:L9", "lemma:L7"]
+status = "backed"
+disposition = "keep"
+source = "final round wave 1, change request 29"
+note = "L7: the elasticity of the conditioned metrics along a term is -w_i/w_j; L9: V = e^(w.b - beta) prod_j (a_j + s_j)^(w_j alpha_j), so the exponents on the raw attributes are w_j alpha_j and the rates in raw units follow."
+
+[[claim]]
+id = "C625"
+fragment = "The fleets differ in {_and(differs)}, so that cost is theirs, not the tracker's."
+file = "paper/generate_findings.py"
+anchor = "def decision_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_sentence",
+  "test:tests/test_paper.py::test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_values",
+]
+status = "backed"
+disposition = "keep"
+source = "final round wave 1, change request 30"
+note = "The generator lists the columns in which the sponsor's cheapest fleet and the cheapest fine-tracker fleet differ (wheel class, tracker grade, fleet size) and asserts that the tracker grade is one; the 0.56 M USD is the difference of their fleet costs."
+
+[[claim]]
+id = "C626"
+fragment = "Pointing error is printed to six decimals, so that a near tie reads as it is"
+file = "paper/generate_findings.py"
+anchor = "def decision_designs_table"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_designs_table",
+  "test:tests/test_paper.py::test_the_decision_tables_and_sentences_in_the_notebooks_are_the_generators_output",
+]
+status = "backed"
+disposition = "keep"
+source = "final round wave 1, change request 18"
+note = "Designs 190 and 999 agree to five decimals of pointing error (0.002953 and 0.002954 degree at six); 190 is the lower, so it is nondominated against 999 on pointing error and fleet cost."
