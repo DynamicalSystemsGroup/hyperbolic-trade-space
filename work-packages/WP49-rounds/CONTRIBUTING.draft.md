@@ -82,12 +82,10 @@ the issue tracker.
 
 ## Tooling and dependencies
 
-This page names no version. The toolchain and the dependencies are tracked where they change, and this page refers to
-them: the Python version in `.python-version`, the dependencies in `pyproject.toml`, the exact resolution with hashes in
-`uv.lock`. Install with `uv sync`; every command is `uv run ...`. The continuous integration installs from the lock
-file only (`uv sync --locked`) and fails if the lock no longer matches `pyproject.toml`, so what is tested is what is
-declared, and nothing is fetched that the lock does not name. Dependency updates arrive as pull requests from the
-update bot and go through the same review as any change. The same rule binds the workflows themselves: every action
-is pinned to a commit, not a tag. A release ships with a software bill of materials, so what a version contains can
-be audited after the fact. That is the supply-chain part of this page, and it lives in those files, not in this
-sentence.
+The Python version is in [`.python-version`](.python-version), the dependencies in [`pyproject.toml`](pyproject.toml),
+and the exact resolution with hashes in [`uv.lock`](uv.lock); those files change, this page does not. Install with
+`uv sync`; every command is `uv run ...`. Continuous integration installs from the lock file only (`uv sync --locked`)
+and fails if the lock no longer matches `pyproject.toml`, so what is tested is what is declared, and nothing is
+fetched that the lock does not name. Dependency updates arrive as pull requests from the update bot and go through
+the same review as any change. Every workflow action is pinned to a commit, not a tag. A release ships with a software
+bill of materials, so what a version contains can be audited afterwards.

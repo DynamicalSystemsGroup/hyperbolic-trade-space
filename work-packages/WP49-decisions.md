@@ -265,3 +265,10 @@ pinned to commits, and that a release ships with a software bill of materials (W
 places it in v0.1). The supply-chain assertions become verification cases for WP48's list: lock matches declaration;
 install from lock only; every action pinned; SBOM present on the release.
 
+**Supervisor, verbatim (19:45 EST), on the tooling section:** ""This page names no version." this statement is llm-ish. you
+don;t have to say you don't name something you don't name. you have the direct links to the file paths that do name, so
+they can change without this document changing"
+
+**Applied as:** the sentence is gone; the section opens on the three files as links, with "those files change, this page
+does not", and the closing meta-sentence about the supply chain is cut too.
+
