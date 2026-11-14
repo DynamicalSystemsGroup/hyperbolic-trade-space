@@ -186,3 +186,10 @@ entry carries target 500 and the test's bound allows five percent over (525), wi
 with the abstract. Earlier at 15:50 his words on the draft's register: "i find the way you write pretty obtuse and often
 overly specific for an abstract. although we're correcting my technical term choice, the flow and balance of the
 abstract should not be significantly changed from my version" (applied: the light-touch draft).
+
+**Supervisor, verbatim (17:50):** "we're getting close on the abstract but i think this is a bit obtuse still "One term
+merges the subsystems' trade-offs; two terms separate them." my gut is we can just drop the sentence"
+
+**Applied as:** dropped from the draft. The answer key's depth-A line (the finding in one sentence) reads, from its
+next version, the sentence that follows it in his abstract: high-dimensional n-lemmas detected and used to inform the
+decision; the ledger raise of 2026-11-09 that paid for the old finding sentence (7 words) lapses with the new cap.
