@@ -207,3 +207,8 @@ of the firm's with a version there is the Dynamical Systems Group blog first; Al
 Nabben, 2021) enters the early lineage; An Algorithm Is a Camera was not answered and is left off the page until he
 says otherwise.
 
+**Supervisor (01:05 EST):** ""A side road fed in without being the point." obnoxious metacommentart"
+
+**Applied as:** the sentence is gone; the paragraph opens on the Balancer whitepaper. The record's register row for it
+is removed.
+
