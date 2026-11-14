@@ -315,3 +315,15 @@ story of this work which is actually quite rich"
 presentation (2024) as a clause in the people's paragraph after his review; record entries and rows; the page's word
 ceiling in `tests/test_site.py` set to 1000 with his words as the reason.
 
+**Supervisor (03:20 EST):** "i downloaded the minimax complexity paper for you to read"
+
+**What it is (read from the PDF in his Downloads, `ssrn-4865894.pdf`, 20 pages):** "Min-Maxing Complexity on Digital
+Infrastructure Mechanisms through Occam's Razor and Ashby's Law of Requisite Variety", Danilo Lessa Bernardineli, Ilan
+Ben-Meir, Michael Zargham and Jakob Hackel, BlockScience; mechanisms for multi-stakeholder digital infrastructure are
+to be as complex as needed to encode the variety of behaviour and as simple as possible to stay legible to the
+stakeholders they affect; with the precautionary principle, three decision principles for mechanism selection,
+variety, legibility and safety; two case studies, the Aztec sequencer selection and Neural Quorum Governance on the
+Stellar Community Fund. **Applied as:** the clause moves from the people's paragraph into the late lineage as the
+firm's paper with four authors, linked by its SSRN record, and ties to the Aztec trade study the page already names;
+the presentation entry stays in the record as the talk of it.
+
