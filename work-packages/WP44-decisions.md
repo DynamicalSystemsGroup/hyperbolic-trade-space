@@ -31,3 +31,12 @@ cultivar as configuration; grain and straw yield as the two attributes) is added
 example for intuition, conditional on two checks the assistant runs before it is built: the data's columns, rows and
 licence read from the archive, and a clear story with a citation (the harvest index: grain rose and straw fell across
 cultivars, so the two trade along the biomass frontier). The spike's own choice among the four options stays open.
+
+## The choice (2026-11-14, 14:55)
+
+**Supervisor, verbatim:** "you can also do both cases proposed: The Perovskite Database Project and The Amniote
+life-history database"
+
+**Applied as:** option 1 of the readout. The build is scoped as WP45 (two Examples pages with fetch-at-build steps,
+conditioning rules stated, the fits at K = 1 and 2, the tension matrix once WP42 lands; the Broadbalk wheat example as
+the two-metric page if its two checks hold); its place in 0.1 or after is the one open decision of that scope.
