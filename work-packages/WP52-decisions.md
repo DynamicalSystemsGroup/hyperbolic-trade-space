@@ -249,3 +249,13 @@ record entry stays as the note of where the talk is listed.
 **Applied as:** "Ilan Ben-Meir's An algorithm is a camera (2023) made the point that a model is a framed view of a reality
 that exceeds it, not a view from nowhere."
 
+**Supervisor, verbatim (02:10 EST):** "also my incose 2026 and in scipy 2026 papers may need to appear. the incose paper for the
+AI posture and the scipy paper for the sympy proof scripting
+
+these will also help buff up the post crypto part of the story"
+
+**Applied as (pending the sources):** the INCOSE IS 2026 paper (document assurance; verification by machine, validation by
+a named human) and the SciPy 2026 paper (derivations scripted in SymPy, the pattern this repository's lemma scripts
+follow) enter the 2026 part of the timeline once each is resolved (DOI or proceedings page), each in a clause that says
+what it did and how this project uses it.
+
