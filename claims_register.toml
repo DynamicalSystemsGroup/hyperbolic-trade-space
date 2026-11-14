@@ -7035,18 +7035,6 @@ source = "final round wave 1, change request 7 (the sentence said the case needs
 note = "The checks pick K = 2 on both regimes (num-choosing-k, D.15); the solver declares certified at K = 2 and 3 (num-certificates); the thinnest K = 3 term holds 0.06 of the near-frontier designs (num-choosing-k)."
 
 [[claim]]
-id = "C623"
-fragment = "The slew experiment returns ten of the thirteen: nine it computes, three of them"
-file = "paper/paper.ipynb"
-anchor = "Case construction"
-kind = "S"
-backing = ["file:examples/adcs/model_v2/views/behavioural_view.puml", "file:examples/adcs/model_v2/views/behavioural_view.svg"]
-status = "backed"
-disposition = "keep"
-source = "final round wave 1, change request 26 (the count and the settling time's route)"
-note = "The view's SlewExperiment box reads: returns 10 of 13 metrics; computed with no slew: pointing error, total mass, available power; from the measurement: control effort (passed on) and settling time (not returned); an analysis each, no slew: unit cost and fleet cost. Ten returned = the thirteen less the settling time less the two costs; nine computed = the ten less the control effort passed on."
-
-[[claim]]
 id = "C624"
 fragment = "conditioned metrics (their logs after the standard scaler); Theorem 7 gives the rates in ... the attributes' own units, where the rate between two metrics is multiplied by ... alpha_i/alpha_j, the ratio of their conditioning exponents."
 file = "paper/generate_findings.py"
@@ -8922,4 +8910,32 @@ status = "backed"
 disposition = "keep"
 source = "WP52 history page, 2026-11-15"
 note = "Record id 2025-meltdown (https://www.dynamicalsystemsgroup.com/blog/meltdown): the closing sentence in the supervisor's words (WP52-decisions.md, 2026-11-15: 'critical for humans to participate meaningfully in decision-making in an era when machines are mediating more decisions faster decisions (see meltdown)'); the post read 2026-11-15."
+
+[[claim]]
+id = "C772"
+fragment = "Eleven arrows leave the slew experiment's box: nine for the metrics it computes, three of them from the configuration alone, and two, to the unit cost and the fleet cost, for an analysis each, drawn from the same box. The box's own count, ten of thirteen, adds the control effort, which the experiment passes on from the measured slew (that arrow runs from the measurement)."
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "S"
+backing = [
+  "file:paper/figures/fig-behavioural-view.png",
+  "file:examples/adcs/model_v2/views/behavioural_view.puml",
+  "test:tests/test_system_model_v2_r1.py::test_the_analysis_box_names_what_needs_no_slew_and_the_caption_is_the_committed_one",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, fourth paper unit, cold read of Figure 3 (10 of 13 against about 11 arrows)"
+note = "Counted in the image: eleven arrows end at momentum headroom, pointing error, energy balance, power margin, battery peak power ratio, available power, depth of discharge, peak slew power, fleet cost, unit cost and total mass; control effort and settling time are fed from SlewMeasurement. The box text (10 of 13) is unchanged; the record and the image agree (ten returned = nine computed + control effort passed on; the two costs are separate analyses drawn from the same box)."
+
+[[claim]]
+id = "C773"
+fragment = "log V of the K = 2 fit, the level; V is the invariant value (Definition 2); the percentage on the axis is the share of the near-frontier spread that lies along it."
+file = "paper/paper.ipynb"
+anchor = "The chart of the K = 2 fit"
+kind = "S"
+backing = ["file:paper/figures/chart_level.py", "test:tests/test_paper.py::test_the_case_reads_one_named_k"]
+status = "backed"
+disposition = "keep"
+source = "final round, fourth paper unit, cold read of Figure 6"
+note = "The surface line is drawn under the points (zorder 1.5 against 2) and the top of the axis leaves room above the highest design, so the 203 designs above log V = 0 show; V is Definition 2 (def-invariant); the axis's percentage is share = explained_spread of the first principal direction (leading_direction)."
 

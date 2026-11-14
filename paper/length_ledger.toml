@@ -1751,3 +1751,10 @@ section = "Search of the design space (preliminary)"
 words_added = 14
 job = "the open item is the supervisor's: a submartingale property, outward in expectation, with a convergence result when the expected progress ceases; future work, no conditions derived (WP36-decisions.md, 2026-11-14, 12:20)"
 reader = "the reader who would read the search section as promising a monotone loop"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case construction"
+words_added = 20
+job = "Figure 3's caption counts the arrows that leave the slew experiment's box (eleven) and says how the box's own ten of thirteen relates to them"
+reader = "the reader who counted the arrows against the box's ten of thirteen"
