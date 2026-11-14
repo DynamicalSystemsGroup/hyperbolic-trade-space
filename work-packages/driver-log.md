@@ -228,6 +228,23 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Final round, wave 1 triaged against the key (03:40).** Seven reports (P8-A, P1-B, P4-B, P3-C, P9-C, P7-D,
+  P9-D; Sonnet and Haiku), each read in full against the key's S and W marks and the depth's job: no wrong belief in
+  any of the seven; every depth's job done, the two depth-C reads leaving whys the main text owes, which are the
+  text's defects. The triage (WP11-final/triage/wave-1.md) lists 18 defects that count at once (a bare "enlarge" at
+  two captions' ends, Q's normalisation in Theorem 6 against L8, two objects named V, A3's tau range against the
+  scripts, a garbled Definition 3 sentence, n_k with two meanings, "the case needs three terms" against K = 2, a
+  hand-typed 63.7 percent against D.17, "five metrics" against seven, a pointer to Section 10 for the battery, the
+  gap ledger's tau for the unfiltered table, Theorem 9's main text stronger than L11, A5 with A9, the Figure 1
+  caption's "association maps" and a 0.99 legend, the conditioning letters, the band's boundary, D.19's tie), 13
+  replicated frictions (the three thresholds, the cell-rows fit against "ill-posed", the stopping declaration's
+  "certified", Theorem 10 (i), Theorem 11's hypotheses, R1 in Theorem 2, Theorem 5's K = 1, Figure 3's count, two
+  caption glosses, Figure 8's selection, the conditioned-metric percentages, the 0.56 M USD being two fleets'
+  difference, what "Derived" proves), the abstract's phrases and the title word for the supervisor, and three lemma
+  items for the post-0.1 list. The assistant checked four candidates against the source first (the ridge is tau/2,
+  as the source says; the other three stand). One change-request unit to PM15 through the paper queue; the held-out
+  cells wait as set.
+
 - **116c929 fully green (02:45).** CI 43581901051 on 116c929 (the nit unit with the C422 fix): every job green on
   both platforms, the thirty-second fully green head; the run on 6891eae (the pass's closing records) is in progress.
   The final round's first wave is launched; no report has returned yet.
