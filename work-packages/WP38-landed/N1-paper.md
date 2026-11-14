@@ -51,7 +51,7 @@ Branch wp38nb from dev at 6007221. Sources edited, nothing executed; outputs are
 | 1.42 | split | paper/prior-art-by-family, cell 8, HoroPCA | applied |  |
 | 1.43 | define | paper/prior-art-by-family, cell 8, HoroPCA | not applied | define would add words (horospherical projections is the cited work's term) |
 | 1.44 | split | paper/prior-art-by-family, cell 8, HoroPCA | applied |  |
-| 1.45 | define | paper/prior-art-by-family, cell 8, HoroPCA | applied |  |
+| 1.45 | define | paper/prior-art-by-family, cell 8, HoroPCA | not applied | 'prospectively specified test' pinned by tests/test_paper.py (FW-1) |
 | 1.46 | split | paper/prior-art-by-family, cell 8, Lineage | applied |  |
 | 1.47 | define | paper/prior-art-by-family, cell 8, Lineage | not applied | gloss or restructure would add words or touch a pinned sentence |
 | 1.48 | split | paper/prior-art-by-family, cell 8, Lineage | applied |  |
@@ -62,7 +62,7 @@ Branch wp38nb from dev at 6007221. Sources edited, nothing executed; outputs are
 | 1.53 | define | paper/preliminaries-and-notation, cell 14, Assumptions | not applied | define would add words (tau, kappa, Sigma named in Definition 4) |
 | 1.54 | define | paper/preliminaries-and-notation, cell 14, Assumptions | not applied | define would add words; Definition 3 follows |
 | 1.55 | keep | paper/preliminaries-and-notation, cell 14, Assumptions | left | keep |
-| 1.56 | cut | paper/preliminaries-and-notation, cell 14, Map and territory | applied |  |
+| 1.56 | cut | paper/preliminaries-and-notation, cell 14, Map and territory | not applied | 'all models are wrong' pinned by a test on the policy paragraph |
 | 1.57 | keep | paper/preliminaries-and-notation, cell 14, Map and territory | left | keep |
 | 1.58 | split | paper/preliminaries-and-notation, cell 14, Map and territory | applied |  |
 | 1.59 | define | paper/preliminaries-and-notation, cell 14, Words | applied |  |
@@ -81,7 +81,7 @@ Branch wp38nb from dev at 6007221. Sources edited, nothing executed; outputs are
 | 1.72 | split | paper/definitions, Definition 4, cell 15 | applied |  |
 | 1.73 | cut | paper/definitions, cell 15, before Definition 5 | applied |  |
 | 1.74 | define | paper/definitions, Definition 5, cell 15 | applied |  |
-| 1.75 | define | paper/definitions, Definition 5, cell 15 | applied |  |
+| 1.75 | define | paper/definitions, Definition 5, cell 15 | not applied | 'level offset' is a register phrase tests/test_paper.py requires in the body; kept |
 | 1.76 | cut | paper/definitions, Definition 5, cell 15 | applied |  |
 | 1.77 | split | paper/definitions, Definition 6, cell 15 | applied |  |
 | 1.78 | routed | paper/definitions, Definition 6, cell 15 | routed | The 10^−9 threshold is a number; whether to state it here or point to Section 5's threshol |
@@ -135,9 +135,9 @@ Branch wp38nb from dev at 6007221. Sources edited, nothing executed; outputs are
 | 2.36 | split | paper/results, cell 47 "Soft-fit certificate: at a feas | applied |  |
 | 2.37 | cut | paper/results, cell 48 "The fits of record are sharp" | applied |  |
 | 2.38 | split | paper/results, cell 48 "For a sharp fit, certified mean | applied |  |
-| 2.39 | cut | paper/results, cell 51 "Four questions are not establis | applied |  |
+| 2.39 | cut | paper/results, cell 51 "Four questions are not establis | not applied | gap identifiers G-11 to G-14 pinned by the badges test |
 | 2.40 | split | paper/search-of-the-design-space-preliminary, cell 52 "A trade study also decides" | applied |  |
-| 2.41 | cut | paper/search-of-the-design-space-preliminary, cell 52 "This section is future work" | applied |  |
+| 2.41 | cut | paper/search-of-the-design-space-preliminary, cell 52 "This section is future work" | not applied | 'future work' and 'no results' pinned by the search-section test |
 | 2.42 | cut | paper/search-of-the-design-space-preliminary, cell 52 "There are nested loops" | applied |  |
 | 2.43 | split | paper/search-of-the-design-space-preliminary, cell 52 "The middle loop proposes" | applied |  |
 | 2.44 | define | paper/search-of-the-design-space-preliminary, cell 52 "noise band" | applied |  |
@@ -252,7 +252,7 @@ Branch wp38nb from dev at 6007221. Sources edited, nothing executed; outputs are
 
 ## Counts
 
-{'routed': 26, 'applied': 126, 'not applied': 51, 'left': 24}
+applied 121, left 24, routed 26, not applied 56 (of 227)
 
 ## Claims rows re-pointed (backing kept)
 
@@ -260,11 +260,11 @@ C004, C009, C011, C012, C016, C018, C022, C031, C038, C061, C075, C079, C082, C0
 
 ## Ledger
 
-Twelve [[cut]] rows added to paper/length_ledger.toml (2026-11-13). Rendered words from the sources (generated sentences as in the stale outputs): 10,354 before, 9,905 after (449 out). Generated-sentence cuts (temperature pointer, worked-example pointers, 'an association cannot give', 'Every term has an association reading') leave at execution and are counted then.
+Twelve [[cut]] rows added to paper/length_ledger.toml (2026-11-13). Rendered words from the sources (generated sentences as in the stale outputs): 10,354 before, 9,954 after (400 out). Generated-sentence cuts (temperature pointer, worked-example pointers, 'an association cannot give', 'Every term has an association reading') leave at execution and are counted then.
 
 ## Vocabulary baseline
 
-Three stale first-use rows removed from scripts/vocabulary_baseline.toml (improvement factor, level offset, position along the frontier). check_vocabulary: 0 new.
+Two stale first-use rows removed from scripts/vocabulary_baseline.toml (improvement factor, position along the frontier). check_vocabulary: 0 new.
 
 ## Checker
 

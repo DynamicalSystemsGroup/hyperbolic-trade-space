@@ -5935,7 +5935,7 @@ note = "The estimator passes scikit-learn's estimator checks (fit, transform, in
 
 [[claim]]
 id = "C532"
-fragment = "In a test fixed in advance, on an embedding of ours, the authors' code recovered planted exponents only where they were the direction of largest spread"
+fragment = "In a prospectively specified test, on an embedding of ours, the authors' code recovered planted exponents only where they were the direction of largest spread"
 file = "paper/paper.ipynb"
 anchor = "Prior art, by family"
 kind = "R"

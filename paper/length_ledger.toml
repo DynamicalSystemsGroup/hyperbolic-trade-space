@@ -1477,42 +1477,42 @@ authority = "WP38 residual pass, landing of the paper flag tables paper-01 to pa
 [[cut]]
 date = "2026-11-13"
 section = "Prior art, by family"
-words_removed = 23
+words_removed = 24
 no_longer_did = "'says what each family produces, what we share, how we differ and where to read it' (the table's column heads say it); '; it is not exhaustive and ... what this work does differently, extends or adds' (said as 'how this work differs'); '(Section 1 counts it)' (the reader has just read the count); 'a band and an effective sample size' in the DEA sentence (defined in Definition 4 and the methods); net of the splits of the HoroPCA and Lineage sentences"
 authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
 
 [[cut]]
 date = "2026-11-13"
 section = "Preliminaries and notation"
-words_removed = 18
-no_longer_did = "the aphorism 'All models are wrong, some are useful, and a model is useful for a specific purpose in a specific situation' (the clause 'the purpose is improving trade studies' says the point); 'quilt' and 'patch' for the one name 'piece'; net of the split of the sentence on the gaps ledger"
+words_removed = 1
+no_longer_did = "'quilt' and 'patch' for the one name 'piece'; net of the split of the sentence on the gaps ledger"
 authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
 
 [[cut]]
 date = "2026-11-13"
 section = "Definitions"
-words_removed = 62
-no_longer_did = "the sentence 'The chart separates where a design sits along the surface from its energy differential, ...' (Definition 5 and the first paragraph of Section 1 say it); 'Each term is a piece of the surface, not a set of designs' (Section 1 says it); the second name '(level offset)' and the restated 'the level of a potential relative to the fitted reference surface, negative inside, positive beyond' in Definition 5 (said after Definition 2); 'Figure 1 draws the n-lemma of each term for three metrics' (the caption says it); net of 'the ascent direction' added to Definition 9 and the splits"
+words_removed = 60
+no_longer_did = "the sentence 'The chart separates where a design sits along the surface from its energy differential, ...' (Definition 5 and the first paragraph of Section 1 say it); 'Each term is a piece of the surface, not a set of designs' (Section 1 says it); the restated 'the level of a potential relative to the fitted reference surface, negative inside, positive beyond' in Definition 5 (said after Definition 2); 'Figure 1 draws the n-lemma of each term for three metrics' (the caption says it); net of 'the ascent direction' added to Definition 9 and the splits"
 authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
 
 [[cut]]
 date = "2026-11-13"
 section = "Methods"
 words_removed = 18
-no_longer_did = "'We name each where it is made, defend it, and say in Section 12 how to go beyond it' (the list does it); 'the sentences between the boxes say what the next result is for ... and box numbers follow the page' (the layout shows it); the gap identifiers 'G-14, G-11, G-12 and G-13' (Appendix E holds them); net of the splits of the conditions R1 to R3 and the legend of Derived, Numerical and Open"
+no_longer_did = "'We name each where it is made, defend it, and say in Section 12 how to go beyond it' (the list does it); 'the sentences between the boxes say what the next result is for ... and box numbers follow the page' (the layout shows it); net of the splits of the conditions R1 to R3 and the legend of Derived, Numerical and Open"
 authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
 
 [[cut]]
 date = "2026-11-13"
 section = "Results"
-words_removed = 131
+words_removed = 120
 no_longer_did = "the lead-in paragraph 'Three results say what the fitted numbers mean: ...' (each of the three boxes states its own result); the box line and the proof line 'The converse is not claimed' (the summary line above the box states it); 'Global optimality is not claimed' in Level 3 (the lead-in says 'none global'); 'The fits of record are sharp, the default; a soft fit is on request' (said in Methods and above); the clause 'tightness is not claimed' after 'sufficient'; '(a partition into nonempty cells ... a cell is a set of rows, a term a piece of the surface)' (Definition 3 says it); net of the splits of the corollary, the soft-fit certificate and the stopping declaration"
 authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
 
 [[cut]]
 date = "2026-11-13"
 section = "Search of the design space (preliminary)"
-words_removed = 24
+words_removed = 4
 no_longer_did = "'This section is future work with no results, and it stops short of selecting a design, which falls to experts' (the heading says preliminary; the closing Open and goal sentences say the rest); 'There are nested loops' (the three sentences that follow set them out); '(our reading)' (the sentence is labelled Open next to it); 'beyond the noise band' for 'by more than the noise' (a term the paper never defined)"
 authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
 
