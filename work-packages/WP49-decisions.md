@@ -251,3 +251,17 @@ self-approval) plus a check on the merge event; (6) no commit message names a to
 naming conformance results and the fitness judgement by name), on merge. Each as a verification case: requirement,
 method, evidence, verdict.
 
+## Tooling as a reference, dependencies tracked elsewhere (2026-11-14, 19:30 EST), on the CONTRIBUTING draft
+
+**Supervisor, verbatim:** "i am curious about tooling, practically i don't want to get stuck at 3.12 and i don't want to have to update a governance
+doc when dependencies move. maybe we should make this a reference and track our dependencies elsewhere. dependency tracking
+is also important for the supply chain aspect of security"
+
+**Applied as:** the draft's closing section "Tooling in one line" (which named Python 3.12) becomes "Tooling and
+dependencies": the page names no version and refers to where each is tracked (`.python-version`, `pyproject.toml`,
+`uv.lock` with hashes), says CI installs from the lock only and fails on drift, that dependency updates arrive as pull
+requests from the update bot (WP47's Dependabot configuration) and are reviewed like any change, that actions are
+pinned to commits, and that a release ships with a software bill of materials (WP48's check 2; WP47 builds it if he
+places it in v0.1). The supply-chain assertions become verification cases for WP48's list: lock matches declaration;
+install from lock only; every action pinned; SBOM present on the release.
+

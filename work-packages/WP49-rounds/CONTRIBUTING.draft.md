@@ -80,7 +80,14 @@ approve, merge and release, and adding one changes that file and nothing here. H
 release is cut, and the repository settings that enforce the above are in the [code owners' page](docs/maintainers.md). Security reports go as [SECURITY.md](SECURITY.md) says, not to
 the issue tracker.
 
-## Tooling in one line
+## Tooling and dependencies
 
-Python 3.12 and [uv](https://docs.astral.sh/uv/): `uv sync`, then every command is `uv run ...`. The test suite runs
-doctests; a public function has a numpydoc docstring with one.
+This page names no version. The toolchain and the dependencies are tracked where they change, and this page refers to
+them: the Python version in `.python-version`, the dependencies in `pyproject.toml`, the exact resolution with hashes in
+`uv.lock`. Install with `uv sync`; every command is `uv run ...`. The continuous integration installs from the lock
+file only (`uv sync --locked`) and fails if the lock no longer matches `pyproject.toml`, so what is tested is what is
+declared, and nothing is fetched that the lock does not name. Dependency updates arrive as pull requests from the
+update bot and go through the same review as any change. The same rule binds the workflows themselves: every action
+is pinned to a commit, not a tag. A release ships with a software bill of materials, so what a version contains can
+be audited after the fact. That is the supply-chain part of this page, and it lives in those files, not in this
+sentence.
