@@ -146,3 +146,15 @@ and tables, alternatives bespoke or opaque; computers that help in scalable, rep
 abstract's three words; the three conditions a decision-maker needs before trusting a model-based method). Not applied
 before his word.
 
+**Supervisor, verbatim (00:40), on the same:** "we can remove the why and what headers. i think we get three sections after
+this revision. we could recast our previous why as a what, and our previous what as a how. with our recently conversation
+about motivation becoming a why. noting that why, what, how is a heuristic for making a depth of detail walk natural for a
+human reader. we could include the headers if it helps or drop them. whichever allows the page to do its job effectively"
+
+**Applied as (discussion, not yet a build):** the root page's body becomes three sections in depth order: Why (the
+motivation of 00:20, the line between what is possible and what is preferable), What (the former Why: trade studies
+from documents and tables, alternatives bespoke or opaque, computers helping in scalable, reproducible and
+interpretable ways, the three conditions for trust), How (the former What: PCA explains variance, this explains
+tensions; the n-lemma; the figure). Headers kept or dropped by what lets the page do its job, to be settled by a cold
+read of both renderings rather than by argument. Nothing applied before his word.
+
