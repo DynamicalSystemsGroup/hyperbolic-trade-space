@@ -147,6 +147,18 @@ wording of 03:05 (order), for his sign-off; the text lands in `CONTRIBUTING.md` 
 > tools is documented where tool use is documented, together with the editor, the build tools and the environment:
 > in the "tools used" part of the pull request's description or of the work package's record, and never as the
 > committer or author. You may document which tools you used, and should when it helps a reviewer reproduce or check
-> the work. Putting someone else's code through a model to escape its licence is a licence violation exactly as
-> copying it would be. This project's checks are written to hold whichever model or editor you use.
+> the work. None of this is a blanket approval of what a tool produces: putting someone else's code through a model to
+> escape its licence is a licence violation exactly as copying it would be, and the person who commits it answers for
+> it, as for every other question of ethics in this work. This project's checks are written to hold whichever model or
+> editor you use.
+
+## The licence sentence as the limit (2026-11-14, 17:45 EST), on the assembled clauses
+
+**Supervisor, verbatim:** "we use the comment about using AI to launder code around a license as explicitly unacceptable as a point about AI coding is
+not blanket approved either. the human is responsible for ethical behavior"
+
+**Applied as:** the tools clause's licence sentence now carries the point it makes: "None of this is a blanket approval
+of what a tool produces: putting someone else's code through a model to escape its licence is a licence violation
+exactly as copying it would be, and the person who commits it answers for it, as for every other question of ethics
+in this work." The assembled text above is updated in place.
 
