@@ -244,3 +244,8 @@ not a view from nowhere." The judgement that it fits is the driver's; his read d
 **Applied as:** the Edinburgh talk is stated without a link; the trace marks the sentence as the team's account; the
 record entry stays as the note of where the talk is listed.
 
+**Supervisor, verbatim (01:55 EST):** "simplify the sentence. it doesn't need to be the claim this rests on just the claim that"
+
+**Applied as:** "Ilan Ben-Meir's An algorithm is a camera (2023) made the point that a model is a framed view of a reality
+that exceeds it, not a view from nowhere."
+
