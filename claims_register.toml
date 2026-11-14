@@ -336,7 +336,7 @@ note = "Section 6.2; a connective: the box states the conditions under which the
 
 [[claim]]
 id = "C022"
-fragment = "For a soft fit, certified means that the second-order test holds ... and stationary that the term gaps hold and the curvature is not positive"
+fragment = "For a soft fit, certified means that the second-order test holds ... and stationary that the term gaps hold and the Hessian is not positive definite on the tangent space of the active face"
 file = "paper/paper.ipynb"
 anchor = "The algorithm for several terms"
 kind = "S"
@@ -528,7 +528,7 @@ note = "A term of the posynomial is a flat piece of the surface in log space; de
 
 [[claim]]
 id = "C036"
-fragment = "The fitted reference surface is where the invariant value, a weighted geometric mean of the metrics that doubles when every metric doubles, equals one"
+fragment = "the fitted reference surface is where the invariant value ... a weighted geometric mean of the metrics that doubles when every metric doubles ... equals one"
 file = "paper/paper.ipynb"
 anchor = "The decision problem"
 kind = "M"
@@ -574,7 +574,7 @@ note = "beta_k = J_tau(U w_k), the soft maximum of the scores along w_k (the exa
 
 [[claim]]
 id = "C039"
-fragment = "That the optimizer reached a local minimizer of the objective is the certificate"
+fragment = "The certificate covers this: for a sharp fit, a local minimizer with the cells held fixed ... for a soft fit, a strict local minimizer at a point where the first-order conditions hold exactly"
 file = "paper/paper.ipynb"
 anchor = "Discussion"
 kind = "M"
@@ -1276,7 +1276,7 @@ note = "fixed-weight objective over all terms is a generalized posynomial (L16.4
 
 [[claim]]
 id = "C098"
-fragment = "$\\tau$ puts a target fraction of designs above $V=1$: 10 percent here"
+fragment = "$\\tau$ puts a target fraction of designs above $V=1$: about a tenth, by convention (10 percent here)"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -1377,7 +1377,7 @@ note = "elasticity -w_k/w_j constant along a term (L7.5); K>1 implemented and re
 
 [[claim]]
 id = "C106"
-fragment = "terms are fitted at $\\kappa=\\infty$ with kinks on the ridges"
+fragment = "terms are fitted at $\\kappa=\\infty$ with kinks on the seams, where terms meet"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -1538,7 +1538,7 @@ note = "Test runs a planted second table through load_study, fit_study, tables a
 
 [[claim]]
 id = "C119"
-fragment = "The fitted reference surface is a log-convex envelope."
+fragment = "The fitted reference surface is log-convex."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1694,7 +1694,7 @@ note = "Offsets use LME of full U@w_k for each term; the linear part uses the te
 
 [[claim]]
 id = "C133"
-fragment = "each offset $\\beta_k=J_\\tau(Uw_k)$ being the support over all rows"
+fragment = "each offset $\\beta_k=J_\\tau(w_k)$ being the soft maximum of the term's scores over all rows"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
@@ -1934,7 +1934,7 @@ note = "the Termination fields (max_gap, bound, gamma, radius, shares) are the c
 
 [[claim]]
 id = "C153"
-fragment = "says that refitting a term on its own rows is ill-posed"
+fragment = "says what refitting a term on its own rows alone does on planted data: it recovers none of the terms"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "R"
@@ -4989,7 +4989,7 @@ note = "assign_cells(X) is argmax_k (w_k . log m - beta_k) of the fitted model; 
 
 [[claim]]
 id = "C419"
-fragment = "Refitting a term on its own rows alone, the plain one-term fit on its cell, is ill-posed (observed on planted data"
+fragment = "recovered none of 60 planted terms with the true labels given (largest error 0.97) ... recovered all 60 (largest error 0.001"
 file = "paper/paper.ipynb"
 anchor = "The algorithm for several terms"
 kind = "R"
@@ -4997,11 +4997,11 @@ backing = ["gen:paper/generate_results.py::own_rows_refit", "test:tests/test_pap
 status = "backed"
 disposition = "keep"
 source = "WP11 round 2, PM6 batch 2 (CR-15)"
-note = "D.13: the plain K = 1 fit on a term's own rows (solve_slsqp(mine, tau)) recovers 0 of 60 planted terms at both temperatures; the support refit (all rows, centred at the term's mean) recovers 60 of 60."
+note = "D.13: the plain K = 1 fit on a term's own rows as they are (solve_slsqp(mine, tau)) recovers 0 of 60 planted terms (largest error 0.97 at the exact maximum); the all-rows refit centred at the term's mean recovers 60 of 60 (0.001). The sentence says what was observed and not 'ill-posed'."
 
 [[claim]]
 id = "C420"
-fragment = "The contending set is another object, read after the fit: it uses $f_k$ at $\\tau=\\infty$ with the cell's rows centred on their own mean, on those rows alone"
+fragment = "The contending set is a third fit, read after the fit: $f_k$ at $\\tau=\\infty$ on the cell's rows alone, centred on their own mean"
 file = "paper/paper.ipynb"
 anchor = "The algorithm for several terms"
 kind = "S"
@@ -5009,7 +5009,7 @@ backing = ["func:src/hyperbolic_trade_space/solvers.py::_refit", "func:src/hyper
 status = "backed"
 disposition = "keep"
 source = "WP11 round 2, PM6 batch 2 (CR-15)"
-note = "Appendix B.2 step (2): the refit w_k = argmin f_k over all rows with beta_k = J_tau(U w_k) (solvers._refit); the contending set's LP is the same f_k at tau = inf with the cell's rows centred on their own mean, on the cell's rows alone (C416); the own-rows refit that is ill-posed (D.13) takes the rows as they are."
+note = "The contending set's LP is f_k at tau = inf on the cell's rows alone, centred on their own mean (C416); D.13 tests two other fits (own rows as they are; all rows centred), not this one, and the sentence claims nothing about its recovery."
 
 [[claim]]
 id = "C421"
@@ -5025,7 +5025,7 @@ note = "L14.14 and L14.15 at K = 1 (one cell, n_1 = N, share 1): F(W) = f_1(w) =
 
 [[claim]]
 id = "C422"
-fragment = "R1 of Section 5 holds on both regimes: the exact-maximum optimum is one point, ... checked by a test of the repository on both regimes, so the support is not a ... solver's choice"
+fragment = "The exact-maximum optimum is one point, checked by a test of the repository on both ... regimes, so the support is not a solver's choice."
 file = "paper/generate_findings.py"
 anchor = "def k1_sentence"
 kind = "R"
@@ -5035,9 +5035,9 @@ backing = [
   "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
 ]
 status = "backed"
-disposition = "keep"
+disposition = "narrow"
 source = "WP28 CR-37 (the retest record 052e8ee); the check is 4c9416c's"
-note = "On each regime the exact-maximum LP's primal-dual pair certifies one optimal point: reduced costs vanish on the support and are strictly positive off it, every row with positive dual weight is tight, and the active system has full column rank; both HiGHS methods return that support, which is the K = 1 tension report's contending set (a 5-lemma in both regimes)."
+note = "Narrowed in the third paper unit (change request 137): the sentence no longer says R1 holds. The test checks that the exact-maximum LP optimum is one point on each regime (reduced costs vanish on the support and are strictly positive off it, every row with positive dual weight is tight, the active system has full column rank, both HiGHS methods return that support); R1's relative interior of a facet with a positive normal is not checked, and cannot hold with a 7-lemma (zero exponents), so R1 is a hypothesis of the lemmas and not a property of the case."
 
 [[claim]]
 id = "C423"
@@ -5404,7 +5404,7 @@ note = "plot_ternary docstring: a region is an analysis of the fit, not a label 
 
 [[claim]]
 id = "C459"
-fragment = "Gaussian noise of covariance Sigma on the log-metrics adds the ridge"
+fragment = "Gaussian noise of covariance $\\Sigma$ on the log-metrics adds a ridge"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -5451,7 +5451,7 @@ note = "L18 turns a relative error into a level of the conditioned noise (sigma_
 
 [[claim]]
 id = "C462"
-fragment = "It is the shift of the minimizer of the expected noisy objective, not of one noisy fit, and it does not say whether the elasticities are right"
+fragment = "It is the shift of the minimizer of $J^R$, not of one noisy fit, and it does not say whether the elasticities are right"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -5493,7 +5493,7 @@ note = "The title and the lead-in say weakly Pareto-efficient: weak efficiency i
 
 [[claim]]
 id = "C465"
-fragment = "$P$ projects onto the vectors that sum to zero and vanish where $w$ does ($P=I-\\mathbf 1\\mathbf 1^\\top/d$ when every exponent is positive), so zero exponents stay zero"
+fragment = "$P$ is the orthogonal projector onto the tangent space of the face the positive exponents span, the vectors that sum to zero and vanish where $w$ does ($P=I-\\mathbf 1\\mathbf 1^\\top/d$ when every exponent is positive), so zero exponents stay zero"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -5514,7 +5514,7 @@ note = "L20 proves the shift on the support T of the clean fit under strict comp
 
 [[claim]]
 id = "C466"
-fragment = "is at most $\\lVert P\\Sigma w\\rVert/m$, $m$ the smallest eigenvalue of $C$ on that space, and, to first order, lowers $w^\\top\\Sigma w$ ($\\lVert w\\rVert^2$ in the equal case)"
+fragment = "is at most $\\lVert P\\Sigma w\\rVert/\\lambda_{\\min}$, $\\lambda_{\\min}$ the smallest eigenvalue of $C$ on that space, and, to first order, lowers $w^\\top\\Sigma w$ ($\\lVert w\\rVert^2$ in the equal case)"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -5526,7 +5526,7 @@ note = "The script proves delta'Sigma w <= -m ||delta||^2 <= 0 (the ridge falls 
 
 [[claim]]
 id = "C467"
-fragment = "$w_k\\in\\Delta$ arbitrary; $\\beta_k=J_\\tau(Uw_k)$; cells held at $W$'s"
+fragment = "$w_k\\in\\Delta$ arbitrary; $\\beta_k=J_\\tau(w_k)$; cells held at $W$'s"
 file = "paper/paper.ipynb"
 anchor = "The algorithm for several terms"
 kind = "M"
@@ -5603,7 +5603,7 @@ note = "As C455 for the docs page; the ten metrics are the thirteen less the tri
 
 [[claim]]
 id = "C473"
-fragment = "R3: at the clean fit the zero exponents have gradient strictly above the nonzero exponents' common value, and the softmax-weighted covariance $C$ of the log-metrics at the fit is positive definite on the sum-zero vectors that vanish where $w$ does."
+fragment = "R3: at the clean fit (the fit of the noise-free table) the zero exponents have gradient strictly above the nonzero exponents' common value, and $C=\\mathrm{Cov}_p(u)$, the covariance of the log-metrics under the softmax weights $p=\\mathrm{softmax}(\\tau Uw)$ at the fit, is positive definite on the sum-zero vectors that vanish where $w$ does."
 file = "paper/paper.ipynb"
 anchor = "Methods"
 kind = "M"
@@ -5615,7 +5615,7 @@ note = "R3 as the ledger entry words it (derivation/axioms.py): the hypotheses o
 
 [[claim]]
 id = "C474"
-fragment = "pick K = {K} on {regimes}: the mean"
+fragment = "point to K = {K} on {regimes}, none deciding alone: the mean"
 file = "paper/generate_findings.py"
 anchor = "def choosing_k_sentence"
 kind = "R"
@@ -5647,7 +5647,7 @@ note = "The case at K = 2 on the regenerated record (primary regime, thirteen me
 
 [[claim]]
 id = "C491"
-fragment = "each is nearly one axis with a metric that does (Spearman at least"
+fragment = "each moves with a metric that does (|Spearman| at least"
 file = "paper/generate_findings.py"
 anchor = "def participation_sentence"
 kind = "R"
@@ -5678,7 +5678,7 @@ note = "The marks of the thirteen traded metrics are read from the model's cover
 
 [[claim]]
 id = "C493"
-fragment = "so each is a lower bound on a full costing. The fleet cost requirement holds that covered cost under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD"
+fragment = "so each is a lower bound on a full costing. The launch slot (a 50 kg minimum) is not costed ... The fleet cost requirement holds that covered cost under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "P"
@@ -5755,7 +5755,7 @@ note = "What the model file contains and does not: no schedule, qualification, f
 
 [[claim]]
 id = "C498"
-fragment = "The model states thirteen requirements, one for each traded metric. Four are the feasibility conditions, which remove designs that do not settle, saturate the momentum budget, run short of power or discharge the battery too deeply. Six are read after the fit: four thresholds (peak slew power, pointing error, control effort, launch cost) ... and two limits (unit cost, fleet cost)"
+fragment = "The model states thirteen requirements, one for each traded metric. Four are the feasibility conditions, which remove designs that do not settle, saturate the momentum budget, run short of power or discharge the battery too deeply. Six are read after the fit: four thresholds (peak slew power, pointing error, control effort and the launch budget, read as a limit on total mass at 7,000 USD per kilogram) ... and two limits (unit cost, fleet cost)"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "R"
@@ -5820,7 +5820,7 @@ note = "No attribute, calc or requirement of the model is a schedule or a payloa
 
 [[claim]]
 id = "C502"
-fragment = "so the launch cost is understated by 3.1 to 4.2 times at one satellite, 1.5 to 2.1 at two and at most 1.4 at three"
+fragment = "so the launch cost is understated by 3.1 to 4.2 times at one satellite, 1.5 to 2.1 at two and at most 1.4 at three, each the slot over the reported launch cost"
 file = "paper/supporting_material.ipynb"
 anchor = "C.8 The cost model and what the case leaves out"
 kind = "S"
@@ -5958,7 +5958,7 @@ note = "The estimator passes scikit-learn's estimator checks (fit, transform, in
 
 [[claim]]
 id = "C532"
-fragment = "In a prospectively specified test, on an embedding of ours, the authors' code recovered planted exponents only where they were the direction of largest spread"
+fragment = "the authors' code, at its defaults and one direction at a time, recovered planted exponents only where they were the direction of largest spread; the tables are clean"
 file = "paper/paper.ipynb"
 anchor = "Prior art, by family"
 kind = "R"
@@ -6960,7 +6960,7 @@ note = "The case's numbers are illustrative: Appendix C.8 states that the model 
 
 [[claim]]
 id = "C609"
-fragment = "over all {_count(d, 'six_pass')} designs that pass"
+fragment = "all {_count(d, 'six_pass')} designs that pass"
 file = "paper/generate_findings.py"
 anchor = "def decision_detail_sentence"
 kind = "R"
@@ -6998,7 +6998,7 @@ note = "The value is the generator's, formatted through the stability entry (pap
 
 [[claim]]
 id = "C611"
-fragment = "{_count(d, 'nondominated_in_band')} of them lies within the band of both fits;"
+fragment = "{_count(d, 'nondominated_in_band')} of them lies within the band of both fits,"
 file = "paper/generate_findings.py"
 anchor = "def decision_detail_sentence"
 kind = "R"
@@ -7176,7 +7176,7 @@ note = "The generator scales each measure to 0 to 1 over the shortlist and takes
 
 [[claim]]
 id = "C622"
-fragment = "the case is read at K=2, the value the package's checks pick ... K=3 is certified too and adds a thin term"
+fragment = "the case is read at K=2, the value the package's checks point to ... K=3 is certified too and adds a thin term"
 file = "paper/paper.ipynb"
 anchor = "Methods"
 kind = "R"
@@ -7557,3 +7557,392 @@ status = "backed"
 disposition = "keep"
 source = "final round, second paper unit, change requests 32 to 92"
 note = "The n-lemma printed for each term is the tension report's support of the exact-maximum fit on the term's cell; the marker is the exponent vector at the fit temperature."
+
+[[claim]]
+id = "C648"
+fragment = "$F(W)\\le G_\\alpha(W)-E$, with equality at the weights' own model"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L16.43",
+  "lemma:L16.41",
+  "lemma:L16.42",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L16.43 proves the mean of the nonnegative Jensen slacks: F <= G_alpha - E, E = (1/(kappa N)) sum_i H_i, the mean entropy of the weights over kappa; equality at x = x0 (L16.41). Request 136."
+
+[[claim]]
+id = "C649"
+fragment = "lower at a point $W$ with distinct terms than at the all-equal point, the average of $W$'s cyclic shifts, where a convex symmetric $F$ would be at most $F(W)$ (Jensen), so it is not convex"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L16.34",
+  "lemma:L16.35",
+  "lemma:L16.36",
+  "lemma:L16.37",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L16.34: the average of the cyclic shifts is the all-equal point; L16.35: a convex symmetric F is at most F(W) there; L16.36 and L16.37: the exact instance has F(mid) - F(W) above 0.004, so one symmetric point, the shift average, suffices (request 97)."
+
+[[claim]]
+id = "C650"
+fragment = "there are $K^N$ of them, so at most $K^N+1$ iterations"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L15.21",
+  "lemma:L15.22",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L15.21 and L15.22: one cell per row, K^N partitions, pairwise distinct before the stop; the count is a pigeonhole, not a rate (requests 98 and 139)."
+
+[[claim]]
+id = "C651"
+fragment = "an exact instance then checks them against finite differences, a check of the formulas and not part of the derivation"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L17.12",
+  "lemma:L17.13",
+  "lemma:L17.24",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L17.12 and L17.13 derive the gradient and the Hessian through the sums; L17.24 and L17.47 to L17.48 compare them with central finite differences on the exact instance (request 93)."
+
+[[claim]]
+id = "C652"
+fragment = "each row's noise Gaussian with mean zero and one covariance $\\Sigma$; the rows need not be independent"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L20.20",
+  "lemma:L18",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L20 step 1: J^R = J_tau + (tau/2) w'Sigma w exactly, row by row (L18's cumulant), so independence across rows is not used (request 99)."
+
+[[claim]]
+id = "C653"
+fragment = "A10 is not used: it only maps an attribute's error to this noise (L18)."
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "file:derivation/lemma_20_noise_ridge.py",
+  "lemma:L18",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "derivation/lemma_20_noise_ridge.py lists A1, A3, A5, A9, I9, I18, R3 as used; A10 is L18's, which maps a multiplicative attribute error to the conditioned noise (request 118)."
+
+[[claim]]
+id = "C654"
+fragment = "at $\\kappa=\\infty$ the model is the maximum of the $K$ monomials $e^{s_k}$"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L10.18",
+  "lemma:L10.19",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L10.18: the limit is the maximum of the scores; L10.19: each term is the monomial e^{-kappa beta_k} prod m_j^(kappa w_kj); I15 admits the maximum (request 109)."
+
+[[claim]]
+id = "C655"
+fragment = "$\\Phi_K(u)=\\Phi_K(B^\\top Z)+\\ell$ by {prf:ref}`thm-extension`, so $\\ell$ is recovered from $Z$ and $\\Phi_K$"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L10.8",
+  "lemma:L8",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L10.8: Phi_K(u + c 1) = Phi_K(u) + c; with u = B^T Z + l 1 (L8) the level is recovered from Z and Phi_K (request 107)."
+
+[[claim]]
+id = "C656"
+fragment = "a negative $\\alpha_j$ marks a cost attribute (smaller is better), whose factor has the negative power $w_j\\alpha_j$ wherever $w_j>0$"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L9",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L9: a negative alpha_j gives a negative exponent w_j alpha_j on (a_j + s_j) for w_j > 0; at w_j = 0 the power is zero (request 146)."
+
+[[claim]]
+id = "C657"
+fragment = "the intercepts contribute $w\\cdot b$, so $e^{w\\cdot b}$ multiplies the product"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L9",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L9 route: the product is rewritten as the exponential of a sum, the intercepts give w.b (request 108)."
+
+[[claim]]
+id = "C658"
+fragment = "(the Frank-Wolfe gap of $f_k$ over the simplex)"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L12",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L12: G = g.w - min_j g_j is the first-order gap over the simplex, 0 <= f - f* <= G (requests 113 and 159)."
+
+[[claim]]
+id = "C659"
+fragment = "the factor $1/N$ leaves the minimizer unchanged and moves the reach by $(\\log N)/\\tau$"
+file = "paper/paper.ipynb"
+anchor = "Methods"
+kind = "M"
+backing = [
+  "lemma:L5",
+  "lemma:L2",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L5: LSE = LME + (log N)/tau; L2: a constant added to J moves beta and leaves the minimizers (requests 158 and 164)."
+
+[[claim]]
+id = "C660"
+fragment = "The facet-normal reading of {prf:ref}`thm-kkt` and the positive exponents of {prf:ref}`thm-elasticity` rest on it."
+file = "paper/paper.ipynb"
+anchor = "Methods"
+kind = "M"
+backing = [
+  "lemma:L3.9",
+  "lemma:L7",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L3.9 takes R1 to give w_j > 0 for the balanced point; L7 reads R1 as supplying w_j > 0 (request 102)."
+
+[[claim]]
+id = "C661"
+fragment = "nondominance depends on the set it is read in"
+file = "paper/generate_findings.py"
+anchor = "def decision_detail_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision_detail_sentence",
+  "test:tests/test_paper.py::test_d19_says_the_nondominated_sets_of_the_548_and_the_shortlist_differ",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "D.19: 548 designs pass the six requirements, 11 are nondominated among them and 1 of the 11 is in the shortlist; among the shortlist's 28 alone 5 are (request 142)."
+
+[[claim]]
+id = "C662"
+fragment = "it does so by a factor of"
+file = "paper/generate_results.py"
+anchor = "def _noise_factor_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_results.py::injected_noise",
+  "test:tests/test_paper.py::test_the_noise_ridge_factor_sentence_is_computed_from_the_table",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "D.18: the factor is predicted over measured mean, over the rows where it exceeds the spread of the draws (request 149)."
+
+[[claim]]
+id = "C663"
+fragment = "the proportional gain $K_p$ from 0.2 to 2 in the aggressive (primary) regime and from 0.03 to 1 in the stock (baseline) regime"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "R"
+backing = [
+  "gen:paper/generate_model.py::configuration_space",
+  "test:tests/test_paper.py::test_the_regimes_gain_ranges_are_the_ones_section_8_states",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "C.1's table: Kp declared 0.2 to 2, sampled 0.2004 to 1.999 (primary) and 0.03009 to 0.999 (stock) (request 145; the supervisor's case model, one clause)."
+
+[[claim]]
+id = "C664"
+fragment = "The fits of record, every $K=2$ figure included, are sharp ($\\kappa=\\infty$)."
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::certificate_sentence",
+  "test:tests/test_paper.py::test_the_statements_of_the_theorems_carry_what_their_scripts_prove",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "The certificate sentence prints 'the fits of record are sharp'; the default term temperature is infinity (request 131)."
+
+[[claim]]
+id = "C665"
+fragment = "The exact-maximum support is checked under rounding-level jitter"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "R"
+backing = [
+  "test:tests/test_paper.py::test_the_regimes_contending_set_is_the_unique_lp_optimum_not_a_solver_choice",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+  "gen:paper/generate_results.py::stability",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "D.11: the contending sets are identical over five regenerations; K = 1: the LP optimum is one point on both regimes; G-10 names the tie at K > 1 (request 161)."
+
+[[claim]]
+id = "C666"
+fragment = "five reduced Newton steps (the polish)"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "func:src/hyperbolic_trade_space/solvers.py::_newton_polish",
+  "test:tests/test_solvers.py::test_polish_never_increases_the_term_objective_and_closes_the_gap",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "POLISH_STEPS = 5 after each finite-tau term refit; the soft alternation ends with a joint polish; G-16 reports the gap SLSQP alone leaves (request 138)."
+
+[[claim]]
+id = "C667"
+fragment = "no result or table of this paper uses it"
+file = "paper/supporting_material.ipynb"
+anchor = ""
+kind = "M"
+backing = [
+  "file:derivation/lemma_19_noise_shift_bound.py",
+  "file:derivation/proof_map_record.json",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "No derivation file imports L19_RESULT and the paper's tables name no L19 step (request 148)."
+
+[[claim]]
+id = "C668"
+fragment = "and the returned point is polished: at finite $\\tau$ each term's refit is followed by Newton steps"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "S"
+backing = [
+  "func:src/hyperbolic_trade_space/solvers.py::_newton_polish",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "Request 138: the status is at the polished point; the guarantees are at the exact minimizers."
+
+[[claim]]
+id = "C669"
+fragment = "The launch budget requirement reads the launch cost (yellow: derived, not traded), which is computed from the total mass (dashed arrow)."
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "P"
+backing = [
+  "file:examples/adcs/model_v2/cubesat.sysml",
+  "test:tests/test_paper.py::test_figure_captions_name_the_launch_link_the_sweep_ring_and_the_gloss_of_favours",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "The behavioural view draws the orange line from LaunchBudgetRequirement to the launch cost and a dashed link from the total mass to it (request 152)."
+
+[[claim]]
+id = "C670"
+fragment = "about a tenth of the designs lie above it, the fit's convention"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "R"
+backing = [
+  "gen:paper/generate_results.py::k_diagnostics",
+  "test:tests/test_paper.py::test_the_k2_fraction_above_the_surface_is_the_conventions_and_figure_6_says_so",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "D.2: at K = 2 the fraction above V = 1 is 0.0951, within 0.01 of the target 0.10; 203 of 2,134 designs (request 141)."
+
+[[claim]]
+id = "C671"
+fragment = "its partition taken to be the argmax cells of $W$ (ties by the fixed rule)"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L14",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L14 and L15 take A8's cells to be the argmax cells of W; for the sharp fit the label, the cell and the partition coincide (request 111)."
+
+[[claim]]
+id = "C672"
+fragment = "The fit recovers all {_NUMBER_WORDS[k]} terms on {good} of {len(exact)} such tables"
+file = "paper/generate_findings.py"
+anchor = "def planted_sentence"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::planted_sentence",
+  "test:tests/test_paper.py::test_appendix_e_rows_agree_with_appendix_d",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "D.14: 16 of 20 tables recovered at the exact maximum (request 129)."
+
+[[claim]]
+id = "C673"
+fragment = "In the parameters the same condition is the stable"
+file = "paper/generate_findings.py"
+anchor = "def margin_sentence"
+kind = "M"
+backing = [
+  "lemma:L13",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, third paper unit, change requests 93 to 165"
+note = "L13: the stable radius r = gamma / (2 max_i ||(u_i, -1)||) is the parameter-space form of the score-space condition 2 delta < gamma (request 114)."

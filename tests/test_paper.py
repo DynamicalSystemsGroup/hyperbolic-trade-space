@@ -2373,11 +2373,11 @@ def test_simplifying_assumptions_are_named_where_made_and_taken_up_in_future_wor
         "analyst chooses",
         "Small $K$",
         "Log-affine",
-        "log-convex envelope",
+        "which is what log-convex means here",
     ):
         assert marker.lower() in methods.lower(), marker
     later = ("beyond one term", "sharp weights", "analyst's k", "small k", "log-affine")
-    later += ("log-convex envelope", "continuous variables", "illustrative hardware")
+    later += ("log-convex surface", "continuous variables", "illustrative hardware")
     for marker in later:
         assert marker in future.lower(), marker
 
@@ -2686,7 +2686,7 @@ def test_section_6_names_the_three_levels_and_has_level_1_as_a_derived_block():
         assert name in text, name
     block = next(b for b in _blocks() if "(L15)" in b[1])
     assert block[2] == "thm-descent" and "**Derived.**" in block[3]
-    for hypothesis in ("each term refit by", "unpenalized", "support reaches"):
+    for hypothesis in ("each term refit by", "unpenalized", "the soft maximum over all rows"):
         assert hypothesis in block[3], hypothesis
     assert "lemma_15_descent.py" in text
     abstract = yaml.safe_load(_src(_nb(PAPER_NB).cells[0]).split("---")[1])["abstract"]
@@ -2718,7 +2718,8 @@ def test_the_claims_of_c1_have_their_true_basis():
     intro = _section("The decision problem")
     assert "a reading and not a result" in intro
     results = _section("Results")
-    assert "ill-posed (observed on planted data" in results and "D.13" in results
+    assert "recovered none of 60 planted terms" in results and "D.13" in results
+    assert "ill-posed" not in results  # what D.13 observed, not a verdict
     own = next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-own_rows_refit")
     text = _out_text(own)
     assert text == str(generate_results.own_rows_refit())
@@ -3121,12 +3122,11 @@ def test_cr8_the_k_comparison_is_read_at_the_one_term_temperature_and_names_the_
 
     sentence = _cell_out(PAPER_NB, "num-choosing-k")
     assert "Appendix D.15" in sentence and "at the K = 1 temperature" in sentence
-    assert (
-        f"pick K = {case.CASE_K}" in sentence and "the step where a thin term appears" in sentence
-    )
+    assert f"point to K = {case.CASE_K}" in sentence and "none deciding alone" in sentence
+    assert "the step where a thin term appears" in sentence
     assert "resampling" not in sentence  # WP39 D-5: the movement stays in D.15's table
     cell = _cell_out(SUPPORT_NB, "tab-D-choosing_k")
-    assert "at the K = 1 temperature" in cell and "The checks pick K = 2." in cell
+    assert "at the K = 1 temperature" in cell and "The checks point to K = 2." in cell
 
 
 def test_the_case_reads_one_named_k():
@@ -3676,7 +3676,9 @@ def test_appendix_e_rows_g2_and_g17_carry_the_thirteen_metric_record():
     )["quantities"]
     moved = [v for v in record.values() if not v["identical"]]
     big = [v for v in moved if "max" in v and abs(v["max"] - v["min"]) > 1e-12]
-    assert f"{len(moved)} of the record's {len(record)} quantities, {len(big)} of them" in note
+    numbers = [v for v in moved if "min" in v]  # the one text quantity is the certificate sentence
+    assert f"{len(moved)} of the record's {len(record)} quantities: {len(numbers)} numbers" in note
+    assert f"{len(big)} of the numbers by more than" in note
     nd = record["nondominated | primary | all attributes | nondominated"]["committed"]
     four = record["nondominated | primary | four metrics | nondominated"]["committed"]
     assert (
@@ -4240,3 +4242,166 @@ def test_the_improvement_factor_for_a_small_exponent():
     """86: the factor V^(-1/w) at V = 0.9 and w = 0.02, as Theorem 5's sentence quotes it."""
     assert round(0.9 ** (-1 / 0.02), -1) == 190.0
     assert "about 190" in _cell_src("res-L7")
+
+
+# ---- the final round, third paper unit: requests 93 to 165 -------------------------------------
+
+
+def test_inline_figures_have_their_caption_as_alt_text():
+    """94: a figure cell's image output carries the caption's first sentence, not the matplotlib
+    repr, as its plain-text form (the page's alt text)."""
+    from execute_notebooks import caption_first_sentence
+
+    nb = _nb(PAPER_NB)
+    captions = {c.id: _src(c) for c in nb.cells if c.cell_type == "markdown"}
+    seen = 0
+    for c in _code_cells(nb):
+        for out in c.outputs:
+            data = out.get("data", {})
+            if "image/png" not in data:
+                continue
+            seen += 1
+            alt = data["text/plain"]
+            alt = "".join(alt) if isinstance(alt, list) else alt
+            assert "<Figure size" not in alt, c.id
+            assert alt == caption_first_sentence(captions[f"{c.id}-caption"]), c.id
+    assert seen >= 2
+
+
+def test_the_one_term_sentence_claims_the_unique_optimum_and_not_r1():
+    """137: the check of the repository is the uniqueness of the exact-maximum optimum; R1 (a facet
+    with a positive normal) cannot hold with zero exponents and is not claimed for the case."""
+    text = " ".join(_cell_out(PAPER_NB, "num-k1").split())
+    assert "R1" not in text and "The exact-maximum optimum is one point" in text
+    assert "R1" in _section("Methods")  # the condition is a hypothesis of the lemmas
+
+
+def test_d19_says_the_nondominated_sets_of_the_548_and_the_shortlist_differ():
+    """142: nondominance is read within a set; the counts of the two sets come from the decision."""
+    text = " ".join(_cell_out(SUPPORT_NB, "sent-D-decision").split())
+    assert "nondominance depends on the set it is read in" in text and "the two sets differ" in text
+    counts = [int(x) for x in re.findall(r"\b(\d+)\b", text)]
+    assert (
+        counts[:2] == [548, 11] and 28 in counts
+    )  # the six-pass set, its nondominated, the shortlist
+
+
+def test_the_one_axis_rule_is_stated_with_its_threshold_in_section_8():
+    """116: the metrics in no contending set move with a partner at the lowest |Spearman| of C.5's
+    table, below the 0.99 at which C.5 names a pair one axis."""
+    import case
+
+    text = " ".join(_cell_out(PAPER_NB, "num-participation").split())
+    assert "nearly one axis" not in text
+    assert f"below the {case.ONE_AXIS:g} at which" in text and "|Spearman| at least 0.97" in text
+
+
+def test_appendix_e_rows_agree_with_appendix_d():
+    """143: G-7's and G-13's counts are D.14's, G-7's errors are D.13's, G-17's are D.11's."""
+    e = " ".join(
+        _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-E-gaps")).split()
+    )
+    d11 = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-stability"))
+    d13 = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-own_rows_refit"))
+    d14 = _out_text(
+        next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-planted_recovery")
+    )
+    moving = int(re.search(r"of which (\d+) numbers move at all", d11).group(1))
+    total = int(re.search(r"(\d+) quantities, of which", d11).group(1))
+    m = re.search(
+        r"\((\d+) of the record's (\d+) quantities: (\d+) numbers, as Appendix D.11 counts", e
+    )
+    assert m, "G-17's count"
+    assert (int(m.group(1)), int(m.group(2)), int(m.group(3))) == (moving + 1, total, moving)
+    recovered = re.findall(r"\| (?:infinity|50) \| 20 \| (\d+) of 20 \|", d14)
+    assert recovered == ["16", "16"] and e.count("16/20") >= 3 and "support 17/20" not in e
+    errs = re.findall(
+        r"\| (?:infinity|50) \| 60 \| 0 of 60 \| [\d.]+ \| 60 of 60 \| ([\d.]+) \|", d13
+    )
+    assert errs == ["0.001", "0.037"]
+    assert "largest error 0.001 at $\\tau=\\infty$ and 0.037 at $\\tau=50$" in e
+
+
+def test_the_noise_ridge_factor_sentence_is_computed_from_the_table():
+    """149: D.18 says by what factor the prediction exceeds the measurement."""
+    text = _out_text(
+        next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-injected_noise")
+    )
+    assert text == str(generate_results.injected_noise())
+    assert re.search(
+        r"\(7 of 8 rows\), it does so by a factor of 1\.\d to \d+ \(predicted over", text
+    )
+
+
+def test_the_regimes_gain_ranges_are_the_ones_section_8_states():
+    """145: C.1's table gives Kp 0.2 to 2 (primary) and 0.03 to 1 (stock)."""
+    c1 = _out_text(
+        next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-C-configuration_space")
+    )
+    assert re.search(r"\| Kp \| 0\.2 \| 2 \| 0\.2004 \| 1\.999 \| 0\.03009 \| 0\.999 \|", c1)
+    s8 = " ".join(_cell_src("sec-case-construction-1").split())
+    assert "from 0.2 to 2 in the aggressive (primary) regime and from 0.03 to 1 in the stock" in s8
+
+
+def test_the_k2_fraction_above_the_surface_is_the_conventions_and_figure_6_says_so():
+    """141: D.2's K = 2 row has the fraction above V = 1 within 0.01 of the target; the caption
+    names the level and says about a tenth lie above the line."""
+    d2 = _out_text(next(c for c in _code_cells(_nb(SUPPORT_NB)) if c.id == "tab-D-k_diagnostics"))
+    primary = d2.split("Dataset cubesat-stock")[0]
+    row = next(r for r in primary.splitlines() if r.startswith("| 2 |"))
+    frac = float(row.split("|")[5])
+    assert abs(frac - 0.10) < 0.01, row
+    cap = " ".join(_cell_src("fig-chart-level-caption").split())
+    assert "log V of the $K=2$ fit" in cap and "about a tenth of the designs lie above it" in cap
+
+
+def test_figure_captions_name_the_launch_link_the_sweep_ring_and_the_gloss_of_favours():
+    """152, 140, 132: the caption of Figure 3 says which way the launch link runs; Figure 4's rings
+    are the sweep point nearest the fit temperature; Figure 8 glosses the corner's word."""
+    c3 = " ".join(_cell_src("fig-behavioural-caption").split())
+    assert (
+        "launch budget requirement reads the launch cost" in c3
+        and "computed from the total mass" in c3
+    )
+    assert "read through the launch cost" not in c3
+    assert "sweep point nearest the fit temperature, which is not the fit itself" in _cell_src(
+        "fig-tau-sweep-caption"
+    )
+    c8 = _cell_src("fig-ternary-pair-caption")
+    assert "that metric's share of the triple's total is largest" in c8
+    assert "names its leading pair where the third exponent is small" in c8
+
+
+def test_the_statements_of_the_theorems_carry_what_their_scripts_prove():
+    """97, 98, 99, 106 to 110, 112/136, 113, 115: the wording of the hypotheses and the bounds."""
+    soft = " ".join(_cell_src("977883ab").split())
+    assert "F(W)\\le G_\\alpha(W)-E" in soft and "the average of $W$'s cyclic shifts" in soft
+    assert "mean entropy" in soft
+    descent = " ".join(_cell_src("res-L15").split())
+    assert "$K^N+1$ iterations" in descent and "not a practical stopping guarantee" in descent
+    cor = " ".join(_cell_src("res-L20").split())
+    assert "the rows need not be independent" in cor and "A10 is not used" in cor
+    assert (
+        "\\delta=-(PCP)^+P\\Sigma w" in cor and "\\Delta w" not in cor and "\\lambda_{\\min}" in cor
+    )
+    cert = " ".join(_cell_src("res-L17").split())
+    assert "a check of the formulas and not part of the derivation" in cert
+    assert "\\mathrm{blockdiag}" in cert and "not in $e^{w}$" in cert
+    ext = " ".join(_cell_src("res-L10").split())
+    assert "s_k=w_k\\cdot u-\\beta_k$ the score on term $k$" in ext and "x_k=" not in ext
+    gap = " ".join(_cell_src("res-L12").split())
+    assert "Frank-Wolfe gap" in gap and "f_k^*=\\min_{w\\in\\Delta}f_k(w)" in gap
+    defs = _cell_src("sec-definitions")
+    assert "c_k" not in defs and "every $K=2$ figure included, are sharp" in defs
+
+
+def test_the_polish_and_the_unused_lemma_are_named_in_appendix_b2():
+    """138: the status refers to the polished point; L19 is used by no result of the paper."""
+    b2 = " ".join(_cell_src("app-B-2", SUPPORT_NB).split())
+    assert "five reduced Newton steps (the polish)" in b2 and "G-16" in b2
+    assert (
+        "L19 bounds the noise shift of the offset, and no result or table of this paper uses it"
+        in b2
+    )
+    results = " ".join(_section("Results").split())
+    assert "the returned point is polished" in results

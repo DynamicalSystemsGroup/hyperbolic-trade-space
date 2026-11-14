@@ -648,7 +648,7 @@ def test_panel_titles_count_the_exact_maximum_support_and_outline_exactly_those(
     plural = "s" if n != 1 else ""
     # the title wraps onto two lines (it ran under the colour bar); the words are the same
     assert " ".join(ax.get_title().split()) == (
-        f"term 1: {rep.lemma_name} ({n} metric{plural} in the exact-maximum support)"
+        f"term 1: {rep.lemma_name} ({n} metric{plural} in the contending set)"
     )
     from matplotlib.patches import Rectangle
 
