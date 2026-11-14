@@ -225,3 +225,11 @@ categorical descriptions"
 **Applied as:** "a feedback controller for an algorithmic debt market"; "the governance of a file storage and retrieval
 network"; the names stay in the record entries and the dated list's source titles.
 
+## Acceptance (2026-11-15, 01:25 EST)
+
+**Supervisor, verbatim (popup: accept the history page as it now stands, or more edits):** "Accept"
+
+**Applied as:** the history page as rendered on the verify server at this moment is accepted; branch `history` lands on
+`dev` once its full checks pass (lint, format, vocabulary with the new avoided phrase, the history test module, the link
+checker, the fast suite); CI then runs on the head. WP52 is accepted with it.
+
