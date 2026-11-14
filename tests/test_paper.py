@@ -3078,7 +3078,7 @@ def test_cr4_5_6_the_term_share_is_described_and_the_terms_carry_their_clause():
     # WP11 round 1b CR-8: the share counts the rows of a term's cell (ruling 2), not "dominates"
     assert "in the cell of term $k$" in definitions and "depends on the band" in definitions
     assert "dominates" not in definitions
-    assert "the level of a potential relative to the fitted reference surface" in definitions
+    assert "a design's level relative to the fitted reference surface" in definitions
     front = _src(_nb(PAPER_NB).cells[0])
     intro = _section("The decision problem")
     for text in (front, intro):
