@@ -152,3 +152,7 @@ special-case flag, which is the record's own bookkeeping and not the page's word
 written the same way: automated market makers and weighted-product invariants, the web3 lineage as the experience it
 gave, not the point.
 
+**Supervisor (23:40 EST), on the opening sentence:** "drop the word "human" in the first sentence"
+
+**Applied as:** "This page acknowledges the people and the lineage of this work, which the paper's citations cannot carry".
+
