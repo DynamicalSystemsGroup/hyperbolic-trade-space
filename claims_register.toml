@@ -4204,7 +4204,7 @@ note = "Derivation lemma scripts machine-check formulas; test_matches_derivation
 
 [[claim]]
 id = "C355"
-fragment = "evaluated designs is lost. The alternatives are bespoke or opaque. A model-based method"
+fragment = "evaluated designs is lost, and the alternatives are bespoke or opaque. Computers can help"
 file = "site/index.html"
 anchor = ""
 kind = "P"
@@ -4252,7 +4252,7 @@ note = "Each term has its own exponents (L7 elasticities along a term, L10 sum o
 
 [[claim]]
 id = "C359"
-fragment = "combination of the metrics that names which of them compete on one part of the trade space."
+fragment = "combination of the metrics that names which of them contend on one part of the trade space."
 file = "site/index.html"
 anchor = ""
 kind = "M"
@@ -4264,7 +4264,7 @@ note = "n-lemma = support of the exponent vector of a term (L3 simplex optimalit
 
 [[claim]]
 id = "C360"
-fragment = "method belongs in unsupervised learning and feature engineering beside PCA. It is related to PCA, not a"
+fragment = "method belongs in unsupervised learning, beside PCA. It is related to PCA, not a"
 file = "site/index.html"
 anchor = ""
 kind = "P"
@@ -8221,3 +8221,27 @@ status = "backed"
 disposition = "keep"
 source = "WP11 abstract, the supervisor's text of 2026-11-14"
 note = "Framing, not a checkable claim: the supervisor's statement of intent for work outside 0.1 (the release line); not a claim about the method; the Rust and theorem-prover clauses are scoped in the body's Future work and Appendix G of the record."
+
+[[claim]]
+id = "C693"
+fragment = "Decisions about engineered systems mix two questions: (1) what is possible and what trades against what, which can be assessed scientifically, and (2) what is preferable, which is a judgement that belongs to the people accountable for it."
+file = "site/index.html"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "WP51 root page recast, the supervisor's wording of 2026-11-15 (WP51-decisions.md)"
+note = "Framing, not a checkable claim: the supervisor's statement of the line the method draws (what is possible and what trades against what, assessed; what is preferable, deferred); the paragraph that follows it is his and promises a footing, not a result. Register marks it reading."
+
+[[claim]]
+id = "C694"
+fragment = "Computers can help in ways that are scalable, reproducible and interpretable, but a model-based method must meet three conditions before a decision-maker can trust it"
+file = "site/index.html"
+anchor = ""
+kind = "P"
+backing = ["reading"]
+status = "backed"
+disposition = "keep"
+source = "WP51 root page recast, 2026-11-15 (WP51-decisions.md; the three words are the abstract's, C677)"
+note = "Framing: the abstract's three words (scalable, reproducible, interpretable) carried to the page's what section; the three conditions are C356's."

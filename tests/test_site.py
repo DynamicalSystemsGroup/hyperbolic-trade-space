@@ -452,8 +452,11 @@ def test_root_and_paper_links_classified():
 
 
 def test_root_index_is_thin_and_routes_by_need():
-    """WP33 G2, R-3: after the title, the plain summary, why and what; the page closes on a lead
-    sentence and two doors (paper, tool), each a link; no cards, subtitle or adoption line."""
+    """WP33 G2, R-3, and the supervisor's recast of 2026-11-15 (WP33-decisions.md): after the title,
+    the plain summary, then three sections without headers in depth order (why: the line between
+    what is possible and what is preferable; what: trade studies and the three conditions; how: PCA
+    and the n-lemma); the page closes on a lead sentence and two doors (paper, tool), each a link;
+    no cards, subtitle or adoption line."""
     text = (SITE / "index.html").read_text(encoding="utf-8")
     assert "<script" not in text.lower()
     assert "prefers-color-scheme: dark" in text
@@ -465,17 +468,20 @@ def test_root_index_is_thin_and_routes_by_need():
     assert text.count('class="lead"') == 1 and 'class="subtitle"' not in text
     assert 'class="adopt"' not in text
     low = text.lower()
+    assert "<h2>" not in low, "the three sections carry no headers"
+    assert low.count("<section>") == 3
     order = [
         low.index(k)
         for k in (
             'class="summary"',
-            "<h2>why</h2>",
-            "<h2>what</h2>",
+            "what is possible and what trades against",
+            "trade studies are usually decided",
+            "explains variance; this explains trade-offs",
             'class="lead"',
             'class="needs"',
         )
     ]
-    assert order == sorted(order), "order: summary, why, what, lead, needs"
+    assert order == sorted(order), "order: summary, why, what, how, lead, needs"
     for needle in ("scikit-learn", "unsupervised", "feature engineering", "pca"):
         assert needle in low, needle
     for banned in ("sympy", "worked example", "chatgpt", "openai"):
@@ -1566,22 +1572,25 @@ def _index_figures():
     return parser.figures
 
 
-def test_index_has_a_figure_each_for_why_what_and_how_in_that_order():
+def test_index_has_a_figure_in_the_what_and_how_sections_in_that_order():
     text = (SITE / "index.html").read_text(encoding="utf-8")
     figures = _index_figures()
-    # the supervisor's choice (WP28-decisions): the planted ternary is the story figure of the Why
-    # section, and the plain Why image is gone (the assistant's call on the reviewer's first point)
+    # the supervisor's choice (WP28-decisions): the planted ternary is the story figure, and the
+    # plain Why image is gone; after the recast of 2026-11-15 the ternary sits in the second
+    # section (what) and the paper's Figure 1 in the third (how); the first section carries none
     assert [f["class"].split()[0] if f["class"] else "" for f in figures] == ["why", "wide"]
     assert "story" in figures[0]["class"].split()
     srcs = [f["img"][0][0] for f in figures]
     assert srcs == ["ternary-planted-light.png", "figure1.png"]
-    sections = [text.index(f"<h2>{h}</h2>") for h in ("Why", "What")]
-    assert sections == sorted(sections)
-    for h, f in zip(("Why", "What"), figures, strict=True):
-        start = text.index(f"<h2>{h}</h2>")
-        assert text.index(f["img"][0][0], start) < (
-            text.index("<h2>", start + 5) if "<h2>" in text[start + 5 :] else len(text)
-        ), f"{h}: the figure sits in its own section"
+    sections = [m.start() for m in re.finditer("<section>", text)]
+    assert len(sections) == 3
+    ends = [*sections[2:], len(text)]
+    for n, (f, start, end) in enumerate(zip(figures, sections[1:], ends, strict=True), start=2):
+        pos = text.index(f["img"][0][0], start)
+        assert pos < end, f"section {n}: the figure sits in its own section"
+    assert text.index("ternary-planted-light.png") > sections[1], (
+        "the why section carries no figure"
+    )
     assert "<script" not in text.lower()
 
 

@@ -117,12 +117,26 @@
   <p class="summary">An unsupervised learning method which applies a posynomial invariant form, a sum of terms each a product of powers of the metrics, to learn the shape of a trade space from evaluated designs.</p>
 
   <section>
-    <h2>Why</h2>
+    <p>
+      Decisions about engineered systems mix two questions: (1) what is possible and what trades
+      against what, which can be assessed scientifically, and (2) what is preferable, which is a
+      judgement that belongs to the people accountable for it. This method provides a data-driven
+      approach to (1) in service of grounding (2) in an empirical method that is interpretable and
+      reproducible. The line between the options on the table and the options preferred is then
+      auditable. Where stakeholders’ interests compete, the data say how they compete and where.
+      This provides guidance for deciding whether to search for new options and for deliberating over
+      the ones in hand. When decisions are made, the evidence base and reasoning for that judgement
+      can be recorded alongside the decision.
+    </p>
+  </section>
+
+  <section>
     <p>
       Trade studies are usually decided from documents and tables, where the detail of the
-      evaluated designs is lost. The alternatives are bespoke or opaque. A model-based method
-      must meet three conditions before a decision-maker can trust it: it has to show its reasoning, say
-      where the data do not reach, and let the analysis be rerun.
+      evaluated designs is lost, and the alternatives are bespoke or opaque. Computers can help in ways
+      that are scalable, reproducible and interpretable, but a model-based method must meet three
+      conditions before a decision-maker can trust it: it has to show its reasoning, say where the
+      data do not reach, and let the analysis be rerun.
     </p>
     <figure class="why story">
       <a class="only-light" href="ternary-planted-light.png"><img src="ternary-planted-light.png" width="1258" height="1190" alt="A triangle of three metrics tinted in three regions, with designs as points, a numbered marker at each term's exponent vector and lines of equal value closing around each marker; each region is labelled by the trade-off that leads there."></a>
@@ -132,11 +146,10 @@
   </section>
 
   <section>
-    <h2>What</h2>
     <p>
-      Principal component analysis (PCA) explains variance; this explains tensions. Its unit is the n-lemma, a combination
-      of the metrics that names which of them compete on one part of the trade space. The
-      method belongs in unsupervised learning and feature engineering beside PCA. It is related to PCA, not a replacement for it, and the two chain: the tension report
+      Principal component analysis (PCA) explains variance; this explains trade-offs. Its unit is the n-lemma, a combination
+      of the metrics that names which of them contend on one part of the trade space. The
+      method belongs in unsupervised learning, beside PCA. It is related to PCA, not a replacement for it, and the two chain: the tension report
       already runs PCA on the near-frontier chart coordinates. It ships as a scikit-learn-compatible
       estimator (<code>fit</code>, <code>transform</code>, <code>inverse_transform</code>,
       <code>score_samples</code>). The conformance checks pass.
