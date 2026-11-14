@@ -123,3 +123,12 @@ independence constraint qualification; Theorem 12.1 and Definition 12.4). Its ro
 snapshot `paper-sources/literature.md` is not in the snapshot (it was added to the snapshot after
 it was taken, and has been removed again); this note carries the citation so that the bibliography
 has no uncited key.
+
+## 6. Sources of the WP45 test records
+
+The test records under `work-packages/WP45-rounds/` cite four sources that no page or paper uses yet; this note
+carries the citations so that the bibliography has no uncited key. `shockley1961detailed`
+[@shockley1961detailed] (the detailed-balance limit, perovskite record), `jacobsson2021open`
+[@jacobsson2021open] (the Perovskite Database Project's paper), `myhrvold2015amniote`
+[@myhrvold2015amniote] (the amniote database's paper) and `bielby2007fast` [@bielby2007fast] (the fast-slow
+continuum in mammals, amniote record). Each entry's `verified` field says what was read.

@@ -2,6 +2,20 @@
 
 Written to test the method, not to convince; reported whether it passes or not (`WP45-scope-of-work.md`, R-7).
 
+## 0. This case's row of the coverage matrix (`work-packages/examples-coverage.md`, second table)
+
+| Counts | K, fit | Origin | Stage | Method |
+|---|---|---|---|---|
+| 410 recorded columns (twelve JV columns over three scans, PCE and stability columns among them); 3 traded device metrics (Voc, Jsc, FF), PCE set aside as derived; objectives: none, since no decision-maker is posed on this table | K = 1 and K = 2 tested; tau = 18.8, band 1/tau = 0.053 at 10 percent of rows above the surface; one term carries the table (K = 2 shares 0.976 and 0.024, mean slack 0.560 against 0.594) | measured | research: laboratory devices from thousands of papers | actual, heterogeneous instruments and protocols |
+
+Known before the fit (from the source, and written into the expected lemma below): origin, stage, method, the column
+counts and the three metrics. Completed after the fit: K, tau and the band. This section was added after the fits,
+when the coverage record asked for it; the known entries do not depend on the fit, and the committed order (expected
+n-lemma before the first fit) is unchanged in `git log`.
+
+**Finding, not adjusted away:** this is a soft fit. The band is 0.053 (the cubesat's is 0.0088), the exponents move by
+up to 0.4 across conditioning choices (section 4), and K = 2 adds a term holding 2.4 percent of the rows.
+
 ## 1. Expected n-lemma, written from the literature before any fit (2026-11-14)
 
 No fit of this table had been run when this section was committed.
@@ -11,8 +25,8 @@ current density Jsc, fill factor FF. Power conversion efficiency (PCE) is the pr
 power, so it is derived and set aside, as launch cost is in the cubesat case.
 
 **The named trade-off.** Under the detailed-balance limit (Shockley and Queisser 1961, doi:10.1063/1.1736034, record
-resolved through Crossref 2026-11-14; full text not read here) a wider band gap raises the voltage a cell can
-deliver and lowers the current it can collect. Voc against Jsc is the dilemma. In that limit FF is a function of Voc
+resolved through Crossref 2026-11-14) the efficiency is calculated with the band gap as a parameter, with a maximum of 30 percent at 1.1 eV (the abstract, read; full text not read here). The standard reading is that a wider band gap raises the
+voltage a cell can deliver and lowers the current it can collect; that reading is not checked against the text. Voc against Jsc is the dilemma. In that limit FF is a function of Voc
 alone (it rises weakly with Voc), so FF rides with Voc and is not an independent third constraint.
 
 **Expected n-lemma at tau = infinity, K = 1:** the contending set contains Voc and Jsc, with a negative elasticity
@@ -29,7 +43,7 @@ FF has a practical ceiling near 0.85 where many devices cluster.
 
 ## 2. Source and reproduction
 
-Perovskite Database Project v1.0.1, doi:10.5281/zenodo.5837035 (concept doi:10.5281/zenodo.5834698), CC BY 4.0 as read
+The database paper extracts device data from peer-reviewed perovskite papers into one database of over 42,400 devices (abstract of doi:10.1038/s41560-021-00941-3, read 2026-11-14). Perovskite Database Project v1.0.1, doi:10.5281/zenodo.5837035 (concept doi:10.5281/zenodo.5834698), CC BY 4.0 as read
 from the Zenodo record; paper doi:10.1038/s41560-021-00941-3. Archive `perovskitedatabase_data-v1.0.1.zip`, 3,317,874
 bytes, md5 `1119f05607ebe4bbf46ad7cc3258c6b0` (equal to Zenodo's), sha256 in `examples/perovskite/manifest.toml`; fetched
 2026-11-14, checked against the manifest on every run (a changed size or hash stops the script with the file named).

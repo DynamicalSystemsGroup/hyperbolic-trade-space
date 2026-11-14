@@ -2,6 +2,21 @@
 
 Written to test the method, not to convince; reported whether it passes or not (`WP45-scope-of-work.md`, R-7).
 
+## 0. This case's row of the coverage matrix (`work-packages/examples-coverage.md`, second table)
+
+| Counts | K, fit | Origin | Stage | Method |
+|---|---|---|---|---|
+| 36 recorded columns, 11 life-history attributes and body mass; 4 metrics after conditioning (longevity, litter size, litters per year, earliness of maturity), mass the covariate; objectives: none, no decision-maker and no designer | K = 1 and K = 2 tested; tau = 10.7, band 1/tau = 0.093 at 10 percent of rows above the surface; K = 2 fits clearly better (shares 0.66 and 0.34, mean slack 0.345 against 0.412), so the table is not one term | measured | not an engineering lifecycle (natural science) | actual, compiled from the literature |
+
+Known before the fit (from the source, and written into the expected lemma below): origin, stage, method, the column
+counts and the four metrics. Completed after the fit: K, tau and the band. This section was added after the fits,
+when the coverage record asked for it; the known entries do not depend on the fit, and the committed order (expected
+n-lemma before the first fit) is unchanged in `git log`.
+
+**Finding, not adjusted away:** this is a soft fit with a second term worth reading. The band is 0.093, and K = 2
+lowers the mean slack by 16 percent with a term holding a third of the species that weights fecundity more and
+longevity less (section 4).
+
 ## 1. Expected n-lemma, written from the literature before any fit (2026-11-14)
 
 No fit of this table had been run when this section was committed.
@@ -14,7 +29,7 @@ categorical configuration (class, order, family), and the search story does not 
 **The named trade-off: the fast-slow continuum.** Species fall on an axis from fast (early maturity, high fecundity,
 short life) to slow (late maturity, low fecundity, long life). Bielby et al. 2007, The American Naturalist,
 doi:10.1086/516847 (record resolved through Crossref 2026-11-14; title and authors only, full text not read here),
-re-evaluates it for mammals.
+re-evaluates it for mammals (by its title).
 
 **Expected n-lemma at tau = infinity, K = 1:** the contending set contains longevity and at least one fecundity metric
 (litter size or litters per year), with negative elasticity between longevity and fecundity. Earliness of maturity,
@@ -36,7 +51,7 @@ chosen.
 
 ## 2. Source and reproduction
 
-Amniote life-history database, full archive, doi:10.6084/m9.figshare.3563457.v1, CC0 1.0 as read from the figshare
+The database is compiled from peer-reviewed studies of individual species and other sources (abstract of doi:10.1890/15-0846R.1, read 2026-11-14). Amniote life-history database, full archive, doi:10.6084/m9.figshare.3563457.v1, CC0 1.0 as read from the figshare
 record; paper doi:10.1890/15-0846R.1 (Ecology 96:3109). Archive `ECOL_96_269.zip`, 6,539,535 bytes, md5
 `5d78e9ca3494f33ed55ee532c8c01e1c` (equal to figshare's), sha256 in `examples/amniote/manifest.toml`; fetched 2026-11-14,
 checked on every run. Table `Data_Files/Amniote_Database_Aug_2015.csv`, sentinel -999. Nothing is committed from the

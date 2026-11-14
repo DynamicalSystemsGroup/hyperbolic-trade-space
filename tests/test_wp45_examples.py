@@ -106,3 +106,43 @@ def test_wheat_derive_keeps_rows_with_both_yields():
     with pytest.raises(KeyError, match="columns not in the file"):
         d.derive(df, "grain", "s")
     assert d.condition(x.assign(grain=[5.0], straw=[4.0])).shape == (1, 2)
+
+
+def _record(case):
+    return (EX.parent / "work-packages" / "WP45-rounds" / case / "test-record.md").read_text(
+        encoding="utf-8"
+    )
+
+
+def _results(case):
+    import json
+
+    return json.loads((EX / case / "results.json").read_text(encoding="utf-8"))
+
+
+def test_perovskite_record_quotes_the_results():
+    r, text = _results("perovskite"), _record("perovskite")
+    p = r["runs"]["primary"]
+    assert f"{p['rows']:,}" in text and f"{r['counts']['rows_in_table']:,}" in text
+    assert f"tau = {p['tau_selected']:.1f}" in text
+    assert p["n_lemma"] == 3 and set(p["contending_set"]) == {"Voc", "Jsc", "FF"}
+    for run in r["runs"].values():
+        assert {"Voc", "Jsc"} <= set(run["contending_set"])
+        assert run["association"]["Voc|Jsc"] < 0
+    k2 = p["k2"]
+    assert f"{k2['mean_slack']:.3f}" in text and f"{k2['mean_slack_k1']:.3f}" in text
+    assert f"{k2['term_share'][0]:.3f}" in text
+
+
+def test_amniote_record_quotes_the_results():
+    r, text = _results("amniote"), _record("amniote")
+    p = r["runs"]["keep_mass"]
+    assert f"{r['counts']['complete_cases']:,}" in text
+    assert f"{p['tau_selected']:.1f}" in text
+    for label, run in r["runs"].items():
+        if label != "maturity_not_inverted":
+            assert {"longevity", "litter_size"} <= set(run["contending_set"]), label
+    assert p["association"]["longevity|earliness"] < -0.9
+    k2 = p["k2"]
+    assert f"{k2['mean_slack']:.3f}" in text and f"{k2['mean_slack_k1']:.3f}" in text
+    assert r["runs"]["maturity_not_inverted"]["n_lemma"] == 2
