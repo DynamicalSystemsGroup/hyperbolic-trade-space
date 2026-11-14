@@ -852,8 +852,9 @@ def injected_noise() -> Md:
         "by exp(delta z), z standard normal. The table is conditioned again and refitted at the "
         "clean fit's temperature, and the measured columns are over eight draws. The predicted "
         "shift is the corollary's formula on the support of the clean fit (its exponents above "
-        "0.001), where the corollary holds while the zero exponents stay zero. The last column "
-        "shows where noise lifts one. The noise of each metric is delta divided by the log spread "
+        "0.001), where the corollary holds while the zero exponents stay zero. The last column, "
+        "the overlap of the contending set with the clean fit's, shows where noise changes it. "
+        "The noise of each metric is delta divided by the log spread "
         "of its attribute. What the table shows belongs "
         "to the fit and the conditioning together.\n\n"
         + md_table(list(noise_injection.COLUMNS), rows)

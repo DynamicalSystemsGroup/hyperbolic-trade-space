@@ -427,7 +427,7 @@ From the repository root, this runs both oracles on the same designs:
 PYTHONPATH=examples/adcs uv run python -m experiments run scope-sensitivity-shared-subspace
 ```
 
-The draws are 20 of the variables the two variants share. Wheel class and tracker grade are
+There are 20 draws, over the variables the two variants share. Wheel class and tracker grade are
 shared over the levels both declare; the controller gain Kp is shared over the overlap of the v2 gain box and the
 frozen range. The gain Kd carries the same name but the ranges do not overlap, so it is fixed in each
 variant (1.0 in v2, the frozen baseline 10.0). The variables that belong to one variant only

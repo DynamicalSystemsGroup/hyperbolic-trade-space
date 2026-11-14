@@ -783,6 +783,15 @@ def test_each_appendix_opens_with_its_job_and_three_tiers():
         assert len(job.split()) > 40, letter
 
 
+def test_appendix_e_job_block_types_no_gap_range():
+    """The ledger sets how many gaps the table has: the job block of Appendix E states no range
+    (it said G-1 to G-17 while the table ran to G-18), and the ids are G-1 to G-n in order."""
+    ids = [r["id"] for r in generate_gaps.gap_rows()]
+    assert ids == [f"G-{i}" for i in range(1, len(ids) + 1)]
+    job = _src(_appendix_cells(_nb(SUPPORT_NB))["E"][1])
+    assert not re.search(r"G-\d+ to G-\d+", job)
+
+
 def test_c_and_d_each_point_to_the_other_in_their_opening():
     """R-26: the opening sentence of C names D and the opening sentence of D names C."""
     sections = _appendix_cells(_nb(SUPPORT_NB))
