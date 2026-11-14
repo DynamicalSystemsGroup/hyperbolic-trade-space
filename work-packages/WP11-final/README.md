@@ -19,3 +19,9 @@ Reports in `reports/`. Model per slot as in `slots.tsv`.
 
 Harness incidents: none observed in the reports' first two lines (all seven carry the required head line). One reader's
 tool log showed a call to a session hand-off tool (it cannot be attributed to one slot from the log); nothing came of it.
+
+## Wave 2 (G02 F19 H01 F12 H02 F04 G21)
+
+Harness incident: the reader of H02 returned its whole report as its final message instead of the three-line message
+(the file itself is in `reports/` and was committed as written). The PM saw that text in the hand-back and did not
+triage it.
