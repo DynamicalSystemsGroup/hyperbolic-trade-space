@@ -40,3 +40,17 @@ built.
 `design_tensions` are new members of the report. README, root page, user guide and paper follow in the same unit;
 no deprecation path (nothing released); the interface contract is amended with the build.
 
+## Naming item 3, Figure 7 (2026-11-14, 23:00; popup with the driver's recommendation)
+
+**Supervisor, verbatim:** "Compact tension matrix (Recommended)"
+
+**Applied as:** Figure 7 becomes the compact tension matrix of each term of the K = 2 fit (the metrics that carry an
+exponent, sorted by exponent; the absent metrics named in one line under each panel). The caption states: a cell is
+the change in the column metric per one unit of the row metric's conditioned value along the term (the derivative of
+the surface, not a step in the logarithm), at the term's balanced point; the grey diagonal is a metric against itself;
+a metric with no exponent on the term is not drawn and so a zero or blank cell is not shown (Definition of tension
+names them); every drawn cell is negative; the magnitudes carry the conditioned metrics' scale at the balanced point,
+and the elasticity (Theorem 7) is the scale-free companion. The association among near-frontier designs leaves the
+paper's figures and stays in the package as `plot_association`; Appendix D.3's one-axis reading keeps its text and
+table. The figure loop's test 1 is re-run on the final caption (image alone, then the caption).
+
