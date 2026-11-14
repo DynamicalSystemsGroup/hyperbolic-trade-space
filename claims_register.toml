@@ -177,7 +177,7 @@ note = "Section 1; Definition 5."
 
 [[claim]]
 id = "C011"
-fragment = "A soft fit has a second-order certificate"
+fragment = "The second-order certificate of a strict local minimizer is for a soft fit"
 file = "paper/paper.ipynb"
 anchor = "The decision problem"
 kind = "M"
@@ -209,7 +209,7 @@ note = "Section 5, assumption ii. Interface contract version 6: a finite term_te
 
 [[claim]]
 id = "C014"
-fragment = "shifting every log-metric by a constant moves the offset by that constant and leaves the exponents unchanged"
+fragment = "shifting every log-metric by a constant moves the reach by that constant and leaves the exponents unchanged"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -559,7 +559,7 @@ note = "Appendix D.16 runs PCA on the near-frontier chart coordinates of the pri
 
 [[claim]]
 id = "C038"
-fragment = "The reach $\\beta_k$ is how far the data extend in direction $w_k$. It is the soft maximum of their scores along it, the largest score at $\\tau=\\infty$"
+fragment = "The reach $\\beta_k$ is how far the data extend in direction $w_k$. It is the soft maximum of their scores along it (a design's score along $w_k$ is $w_k\\cdot u$), the largest score at $\\tau=\\infty$"
 file = "paper/paper.ipynb"
 anchor = "Definitions"
 kind = "M"
@@ -840,7 +840,7 @@ note = "D.16 reads principal directions of the near-frontier chart (cell tab-D-p
 
 [[claim]]
 id = "C060"
-fragment = "The one-term fit is a geometric program, convex in the logarithmic variables"
+fragment = "The one-term fit is a geometric program in the exponents ($x=e^{w}$), convex in $w$"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1192,7 +1192,7 @@ note = "gaps_table columns are formal object, bridging assumption, what cannot b
 
 [[claim]]
 id = "C091"
-fragment = "The supporting envelope is the $\\tau=\\infty$ fit, which none of the table's designs exceeds."
+fragment = "The supporting envelope is the $\\tau=\\infty$ fit, which none of the rows of the design table exceeds."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1204,7 +1204,7 @@ note = "Definition of the tau=inf fit plus the claim: at tau=inf beta=max so log
 
 [[claim]]
 id = "C092"
-fragment = "At $K=1$ the frontier is the unit level set of $V$."
+fragment = "At $K=1$ the fitted reference surface is the unit level set of $V$."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1288,11 +1288,16 @@ note = "select_temperature hits the target frac_above_ within 0.01; the case use
 
 [[claim]]
 id = "C099"
-fragment = "A row with a zero metric is left out of the fit, and $N$ counts the other rows. Negative values are rejected"
+fragment = "A1 is the model's hypothesis; the package tolerates a zero metric by leaving that row out of the fit, without a warning, and $N$ counts the other rows. The case has none, since feasibility requires positive attributes. Negative values are rejected"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_estimator.py::test_zero_metric_row", "test:tests/test_estimator.py::test_negative_and_nonfinite_raise"]
+backing = [
+  "test:tests/test_estimator.py::test_zero_metric_row",
+  "test:tests/test_estimator.py::test_negative_and_nonfinite_raise",
+  "test:tests/test_paper.py::test_a_zero_metric_row_is_left_out_without_a_warning",
+  "func:examples/adcs/case.py::feasible_mask",
+]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1324,7 +1329,7 @@ note = "parametrize_with_checks with empty expected failures; TransformerMixin c
 
 [[claim]]
 id = "C102"
-fragment = "`fit` identifies exponents and offsets, `transform` returns the chart"
+fragment = "`fit` identifies exponents and reaches, `transform` returns the chart"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
@@ -1420,11 +1425,16 @@ note = "Model (cubesat_tradespace.sysml via cubesat_model.measure) has power, ma
 
 [[claim]]
 id = "C110"
-fragment = "Conditioning orients each attribute, shifts and scales it to unit log-spread and keeps the map invertible."
+fragment = "Conditioning orients each attribute, shifts and scales it to unit log-spread and keeps the map invertible and the count: thirteen attributes make thirteen metrics."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
-backing = ["test:tests/test_preconditioning.py::test_unit_log_standard_deviation", "test:tests/test_preconditioning.py::test_round_trip_mixed_orientation_and_shift", "lemma:L9"]
+backing = [
+  "test:tests/test_preconditioning.py::test_unit_log_standard_deviation",
+  "test:tests/test_preconditioning.py::test_round_trip_mixed_orientation_and_shift",
+  "lemma:L9",
+  "test:tests/test_paper.py::test_the_fleet_cost_is_the_unit_cost_times_the_fleet_size",
+]
 status = "backed"
 disposition = "keep"
 source = "P5 claims pass, WP10 Amendment 5 R-43"
@@ -1576,7 +1586,7 @@ note = "Reading pass row 33 (verdict supported): PCA gives components that succe
 
 [[claim]]
 id = "C123"
-fragment = "a design with $V=v$ is a frontier design scaled by $v$"
+fragment = "a design with $V=v$ is a design on the fitted reference surface scaled by $v$"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -1624,7 +1634,7 @@ note = "n_terms=2 fits exponents_ of shape (2,3); K=3 recovers planted terms"
 
 [[claim]]
 id = "C127"
-fragment = "kernels that keep the fit a generalized geometric program (GGP)"
+fragment = "kernels that keep the model a generalized geometric program (GGP) in the metrics"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
@@ -4665,7 +4675,7 @@ note = "RECORD.md, 'Regeneration of the paper on the data of record': sensitivit
 
 [[claim]]
 id = "C397"
-fragment = "It showed that the regressor places ... within its band ({lv} of {n}), the easy part. It did not show that it places the ... position along the frontier ({z} of {n})."
+fragment = "predicted energy differential and predicted position of a proposal each lie within its ... band of the measured one ({lv} of {n} and {z} of {n}): the error of the prediction"
 file = "paper/generate_findings.py"
 anchor = "def predict_reading"
 kind = "R"
@@ -4697,7 +4707,7 @@ note = "two of the three proposals (proposal_1, proposal_3) are one configuratio
 
 [[claim]]
 id = "C399"
-fragment = "They reached the four-metric frontier they were aimed at ... by spending the battery ... fail the model's ... depth-of-discharge requirement"
+fragment = "They reached the four-metric fitted reference surface they were aimed at ... by spending the battery ... fail the model's ... depth-of-discharge feasibility condition"
 file = "paper/generate_findings.py"
 anchor = "def predict_reading"
 kind = "R"
@@ -4777,7 +4787,7 @@ note = "the model's PointingError of cubesatBaseline is 0.015535 degree, the lim
 
 [[claim]]
 id = "C404"
-fragment = "The proposals fail the depth-of-discharge requirement: they reached the four-metric frontier by spending the battery"
+fragment = "The proposals fail the depth-of-discharge feasibility condition: they reached the four-metric fitted reference surface by spending the battery"
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "R"
@@ -4899,17 +4909,18 @@ note = "select_temperature(X, target_frac_above=0.10, ..., tol=0.01) bisects unt
 
 [[claim]]
 id = "C413"
-fragment = "the designs whose other eleven metrics, weighed by their exponents, lie within 0.1 of that median, so for them the line is the surface to within 0.1 in log V"
+fragment = "Each design is moved vertically by what its other eleven metrics add, weighed by their exponents, so that the line is the surface for every design"
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "S"
 backing = [
-  "func:paper/figures/planes.py::_near_median",
+  "func:paper/figures/planes.py::adjusted_plane",
+  "test:tests/test_paper.py::test_the_adjusted_plane_puts_every_design_at_its_level_from_the_surface",
 ]
 status = "backed"
 disposition = "keep"
-source = "WP11 round 2, CR-33 (the figure stream's caption for Figure 5; Figure 6's caption applies the criterion per term by reference)"
-note = "planes._near_median with NEAR_TOL = 0.1 selects the dark designs: those whose other metrics, weighed by the term's exponents, move them at most 0.1 in log V off the slice the line is drawn at."
+source = "final round wave 2, change request 36 (the figure loop; the redraw of Figure 5)"
+note = "planes.adjusted_plane moves each design vertically by (w_rest . u_rest - w_rest . median) / w_k, so the distance above the line times w_k is log V for every design (the test pins the identity and that about a tenth lie above); the dark and light selection of the earlier drawing is gone."
 
 [[claim]]
 id = "C414"
@@ -5014,7 +5025,7 @@ note = "L14.14 and L14.15 at K = 1 (one cell, n_1 = N, share 1): F(W) = f_1(w) =
 
 [[claim]]
 id = "C422"
-fragment = "R1 of Section 5 holds on both regimes: the exact-maximum optimum is one point, so the ... support is not a solver's choice"
+fragment = "R1 of Section 5 holds on both regimes: the exact-maximum optimum is one point, ... checked by a test of the repository on both regimes, so the support is not a ... solver's choice"
 file = "paper/generate_findings.py"
 anchor = "def k1_sentence"
 kind = "R"
@@ -5440,7 +5451,7 @@ note = "L18 turns a relative error into a level of the conditioned noise (sigma_
 
 [[claim]]
 id = "C462"
-fragment = "It is the shift of the minimizer of the expected noisy objective, not of one noisy fit, and it does not say whether the rates are right"
+fragment = "It is the shift of the minimizer of the expected noisy objective, not of one noisy fit, and it does not say whether the elasticities are right"
 file = "paper/paper.ipynb"
 anchor = "The fit and its geometry"
 kind = "M"
@@ -5551,7 +5562,7 @@ note = "Panel B is settling time, control effort and depth of discharge at K = 2
 
 [[claim]]
 id = "C470"
-fragment = "A design sits at its shares of the triple's total, a numbered marker is a term's exponent vector, and a region is where that term is the largest"
+fragment = "A design sits at its shares of the triple's total (each metric in units of its geometric mean over the table, the three then summed), a corner being all of the total in one metric, where that metric alone raises V and nothing trades; a numbered marker is a term's exponent vector, and a region is where that term is the largest"
 file = "paper/paper.ipynb"
 anchor = "Case analysis"
 kind = "S"
@@ -5698,13 +5709,14 @@ note = "Section 8: the count is len(study.raw), the experiments' SAMPLE_PER_REGI
 
 [[claim]]
 id = "C495"
-fragment = "the fleet size, a count that is no part and is not drawn"
+fragment = "the fleet size, a count that is no part, so ... does not draw it. The fleet size is drawn from 1 to 30"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "S"
 backing = [
   "test:tests/test_paper.py::test_the_body_states_the_marks_the_coverage_and_the_draw",
   "file:examples/adcs/model_v2/cubesat.sysml",
+  "test:tests/test_paper.py::test_the_fleet_cost_is_the_unit_cost_times_the_fleet_size",
 ]
 status = "backed"
 disposition = "keep"
@@ -5743,7 +5755,7 @@ note = "What the model file contains and does not: no schedule, qualification, f
 
 [[claim]]
 id = "C498"
-fragment = "The model states six requirements: four thresholds (peak slew power, pointing error, control effort, launch cost), whose limits are read from the data's pass fractions, not a mission's, and two limits (unit cost, fleet cost)"
+fragment = "The model states thirteen requirements, one for each traded metric. Four are the feasibility conditions, which remove designs that do not settle, saturate the momentum budget, run short of power or discharge the battery too deeply. Six are read after the fit: four thresholds (peak slew power, pointing error, control effort, launch cost) ... and two limits (unit cost, fleet cost)"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "R"
@@ -5752,6 +5764,7 @@ backing = [
   "test:tests/test_case.py::test_requirements_table_prices_each_requirement_as_spike_b",
   "gen:paper/generate_results.py::requirements_at_the_frontier",
   "file:examples/adcs/model_v2/cubesat.sysml",
+  "test:tests/test_paper.py::test_the_model_states_thirteen_requirements_four_of_them_the_feasibility_conditions",
 ]
 status = "backed"
 disposition = "narrow"
@@ -5775,7 +5788,7 @@ note = "on both datasets' feasible designs, the fleet-size-one rows all exceed 3
 
 [[claim]]
 id = "C500"
-fragment = "whose limits are read from the data's pass fractions, not a mission's"
+fragment = "whose limits are illustrative values chosen from a ladder of candidates by the share of designs each admits, not a mission's"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "S"
@@ -5783,6 +5796,7 @@ backing = [
   "test:tests/test_paper.py::test_appendix_c8_states_what_the_model_file_says_about_cost_and_what_is_left_out",
   "test:tests/test_case.py::test_requirements_are_the_models_budgets",
   "file:examples/adcs/model_v2/cubesat.sysml",
+  "file:work-packages/WP23-decisions.md",
 ]
 status = "backed"
 disposition = "keep"
@@ -6699,7 +6713,7 @@ note = "The four conditions are printed as counts of the six tables of a cell, f
 
 [[claim]]
 id = "C596"
-fragment = "The requirements and the frontier ... cut {thousands(_count(d, 'feasible'))} feasible designs to"
+fragment = "The requirements and the fits ... cut {thousands(_count(d, 'feasible'))} feasible designs to"
 file = "paper/generate_findings.py"
 anchor = "def decision_sentence"
 kind = "R"
@@ -6870,7 +6884,7 @@ note = "The value is the generator's, formatted through the stability entry (pap
 
 [[claim]]
 id = "C605"
-fragment = "gives up the least of either measure among the {_count(d, 'nondominated_working')} of"
+fragment = "is the one whose larger shortfall on the two measures, each scaled from its best to its ... worst of the {_count(d, 'working')}, is smallest, among the ... {_count(d, 'nondominated_working')} that no other beats on both"
 file = "paper/generate_findings.py"
 anchor = "def decision_sentence"
 kind = "R"
@@ -6908,7 +6922,7 @@ note = "4: the fleet size of the sponsor-alone design (999, small wheel, medium 
 
 [[claim]]
 id = "C607"
-fragment = "{held('sponsor', 'fleet_cost_usd', _musd)} M USD is cheapest."
+fragment = "{held('sponsor', 'fleet_cost_usd', _musd)} M USD is the cheapest fleet."
 file = "paper/generate_findings.py"
 anchor = "def decision_sentence"
 kind = "R"
@@ -7190,7 +7204,7 @@ note = "The view's SlewExperiment box reads: returns 10 of 13 metrics; computed 
 
 [[claim]]
 id = "C624"
-fragment = "conditioned metrics; Theorem 7 gives the rates in the attributes' own units."
+fragment = "conditioned metrics (their logs after the standard scaler); Theorem 7 gives the rates in ... the attributes' own units, where the rate between two metrics is multiplied by ... alpha_i/alpha_j, the ratio of their conditioning exponents."
 file = "paper/generate_findings.py"
 anchor = "def elasticity_sentence"
 kind = "M"
@@ -7229,3 +7243,317 @@ status = "backed"
 disposition = "keep"
 source = "final round wave 1, change request 18"
 note = "Designs 190 and 999 agree to five decimals of pointing error (0.002953 and 0.002954 degree at six); 190 is the lower, so it is nondominated against 999 on pointing error and fleet cost."
+
+[[claim]]
+id = "C627"
+fragment = "The exponents' stability under ... resampling of the rows is not assessed at K = 1"
+file = "paper/generate_findings.py"
+anchor = ""
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::temperature_sentence",
+  "test:tests/test_paper.py::test_the_k1_exponents_stability_is_not_assessed_in_the_record_and_the_text_says_so",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "D.15's movement column is the dash at K = 1: the movement of an exponent vector is the distance to the nearest term of the refit, defined from K = 2."
+
+[[claim]]
+id = "C628"
+fragment = "The robust scaler changes it: {len(rob_set)} metrics, {len(rob_set & base_set)} of the"
+file = "paper/generate_findings.py"
+anchor = ""
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::_scaler_variant_sentence",
+  "test:tests/test_paper.py::test_the_scaler_sentence_quotes_the_sensitivity_table_row",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "Read from case.sensitivity_table (Appendix D.5's robust-scaler row): the contending set's size, the metrics it shares with the baseline's and its largest exponent."
+
+[[claim]]
+id = "C629"
+fragment = "carry no exponent at the fit temperature; ... enter a contending set at K = 2 or 3 or in the other regime"
+file = "paper/generate_findings.py"
+anchor = ""
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::participation_sentence",
+  "test:tests/test_paper.py::test_the_participation_and_k1_sentences_read_the_record",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "The K = 1 exponents at or below the participation threshold, and which of those metrics enter a contending set at another K or in the other regime."
+
+[[claim]]
+id = "C630"
+fragment = "At the fit temperature {m} also carries"
+file = "paper/generate_findings.py"
+anchor = ""
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::k1_sentence",
+  "test:tests/test_paper.py::test_the_participation_and_k1_sentences_read_the_record",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "A metric above the participation threshold at the fit temperature and outside the exact-maximum support (total mass, 0.02 on the primary regime)."
+
+[[claim]]
+id = "C631"
+fragment = "every recovered table has at least {thin_ok}; the one with {rows[-1]} is"
+file = "paper/generate_findings.py"
+anchor = ""
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::recovery_sentence",
+  "test:tests/test_paper.py::test_the_known_answer_sentence_says_what_the_eleven_row_failure_is",
+  "test:tests/test_paper.py::test_generated_sentences_committed_output_is_current",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "Read from the planted-recovery runs of D.14: the fewest frontier rows on a thinnest term among recovered tables, and the status, error and right share of the failure with the most."
+
+[[claim]]
+id = "C632"
+fragment = "(its ... four-metric fit's, not the case's)"
+file = "paper/generate_findings.py"
+anchor = ""
+kind = "S"
+backing = [
+  "test:tests/test_case.py::test_predict_check_within_the_band",
+  "func:examples/adcs/case.py::fit_regressor",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "The regressor is fitted on the four-metric view with its own selected temperature; its band 1/tau is that fit's (D.5's four-metric view row), not the case's."
+
+[[claim]]
+id = "C633"
+fragment = "the fleet cost, the unit cost times the fleet size, rises"
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_the_fleet_cost_is_the_unit_cost_times_the_fleet_size",
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "fleet_cost_usd equals unit_cost_usd times fleet_size on every feasible row of the primary regime (to rounding)."
+
+[[claim]]
+id = "C634"
+fragment = "Five metrics are at most 0.001 (the glossary's participation threshold) at every temperature and are not drawn."
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "R"
+backing = [
+  "gen:examples/adcs/case.py::tau_sweep_lines_figure",
+  "test:tests/test_case.py::test_tau_sweep_lines_figure_draws_one_line_per_participating_metric",
+  "test:tests/test_paper.py::test_the_participation_and_k1_sentences_read_the_record",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "The figure draws a line for each metric above the floor somewhere in the sweep (eight of thirteen on the primary regime); the other five are the K = 1 zeros of Section 8's sentence."
+
+[[claim]]
+id = "C635"
+fragment = "the first principal direction of the near-frontier chart of the K = 1 fit"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "S"
+backing = [
+  "gen:paper/figures/chart_level.py::leading_direction",
+  "test:tests/test_paper.py::test_the_charts_axis_names_the_metrics_of_the_first_direction_of_d16",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "leading_direction reads case._reports(study, fit1)[0], the tension report of the K = 1 fit's band; the chart coordinates do not depend on the fit, so the K = 2 chart is drawn along it."
+
+[[claim]]
+id = "C636"
+fragment = "At K = 1 peak slew power carries no exponent; here it leads term 1."
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::terms_sentence",
+  "test:tests/test_paper.py::test_figure_7_caption_claim_about_peak_slew_power_is_the_data",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "K = 1 exponent of peak slew power is zero; at K = 2 its largest exponent is on term 1 (0.43)."
+
+[[claim]]
+id = "C637"
+fragment = "the levels, all inside the near-frontier band, do not rank them"
+file = "paper/paper.ipynb"
+anchor = "Case analysis"
+kind = "R"
+backing = [
+  "gen:paper/generate_findings.py::decision",
+  "test:tests/test_paper.py::test_the_decision_reproduces_the_spikes_numbers_and_every_named_design_is_in_the_shortlist",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "Every named design is asserted to lie in the shortlist, which is inside the K = 1 band of both fits (D.19)."
+
+[[claim]]
+id = "C638"
+fragment = "A small exponent makes the first factor large ($w_j=0.02$ at $V=0.9$ gives about 190)"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L7",
+  "test:tests/test_paper.py::test_the_improvement_factor_for_a_small_exponent",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "V^(-1/w) at V = 0.9 and w = 0.02 is 0.9^(-50) = 194."
+
+[[claim]]
+id = "C639"
+fragment = "Terms are numbered by share, largest first (ties by cell size, then by the first exponent)"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "S"
+backing = [
+  "func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace",
+  "test:tests/test_estimator.py::test_terms_are_ordered_by_descending_share_and_every_attribute_carries_it",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "estimator.py permutes the terms once after the fit by descending share, ties by cell size, then the first metric's exponent ascending."
+
+[[claim]]
+id = "C640"
+fragment = "a fit that stops with an empty cell is reported as stationary without margin, never certified"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "S"
+backing = [
+  "func:src/hyperbolic_trade_space/solvers.py::_termination",
+  "file:src/hyperbolic_trade_space/solvers.py",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "_termination: status certified needs n_empty == 0 and a positive margin; with an empty term the status is stationary_without_margin (Appendix D.8)."
+
+[[claim]]
+id = "C641"
+fragment = "which is the descent condition of the soft-weight alternation"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L16",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "L16 (ii): the fixed-weight objective bounds the soft slack from above with equality at the weights' own model."
+
+[[claim]]
+id = "C642"
+fragment = "$\\kappa M$ the designs' ambiguity between terms, which lowers the curvature"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L17",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "The Hessian is D - kappa M with M positive semidefinite (L17)."
+
+[[claim]]
+id = "C643"
+fragment = "the vector $(u_i,-1)$ makes the score $w_k\\cdot u_i-\\beta_k$ linear in the parameters $(w_k,\\beta_k)$"
+file = "paper/paper.ipynb"
+anchor = "Results"
+kind = "M"
+backing = [
+  "lemma:L13",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "s_ik = (u_i, -1) . (w_k, beta_k) (L13)."
+
+[[claim]]
+id = "C644"
+fragment = "The package is the scikit-learn estimator of"
+file = "paper/paper.ipynb"
+anchor = "Preliminaries and notation"
+kind = "S"
+backing = [
+  "func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "HyperbolicTradeSpace is the package's scikit-learn transformer (Methods, The estimator; Appendix F)."
+
+[[claim]]
+id = "C645"
+fragment = "The list holds the sources of the main text and of the register"
+file = "paper/paper.ipynb"
+anchor = "Works cited"
+kind = "S"
+backing = [
+  "test:tests/test_paper.py::test_works_cited_says_what_it_holds_and_each_entry_is_cited_in_the_register",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "Seven entries are cited by register rows of prior_art.yaml (Appendix G) and by no sentence of the main text."
+
+[[claim]]
+id = "C646"
+fragment = "The tags say when a requirement can be checked: ConfigurationVerification from the configuration alone, before simulation, and SlewVerification after the slew is measured."
+file = "paper/paper.ipynb"
+anchor = "Case construction"
+kind = "S"
+backing = [
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "The model's verification defs: ConfigurationVerification, before simulation; SlewVerification, after the slew is measured."
+
+[[claim]]
+id = "C647"
+fragment = "It is read from the term's contending set"
+file = "paper/paper.ipynb"
+anchor = "Definitions"
+kind = "S"
+backing = [
+  "func:paper/figures/nlemma.py::nlemma_data",
+]
+status = "backed"
+disposition = "keep"
+source = "final round, second paper unit, change requests 32 to 92"
+note = "The n-lemma printed for each term is the tension report's support of the exact-maximum fit on the term's cell; the marker is the exponent vector at the fit temperature."

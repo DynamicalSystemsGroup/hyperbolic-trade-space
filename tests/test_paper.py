@@ -2066,7 +2066,7 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
     parts of the form. The paper's order is the
     algorithm's (E-8): the alternation (L16) and Level 1 (L15) come before Lemma 1 (L12)."""
     blocks = _blocks()
-    tags = [re.search(r"\(L(\d+)\)\s*$", title).group(1) for _, title, _, _ in blocks]
+    tags = [re.search(r"\(L(\d+)(?:, [^)]*)?\)\s*$", title).group(1) for _, title, _, _ in blocks]
     assert [int(t) for t in tags] == [
         1,
         2,
@@ -2094,7 +2094,7 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
         for p in (ROOT / "derivation").glob("lemma_*.py")
     }
     for _kind, title, label, content in blocks:
-        n = int(re.search(r"\(L(\d+)\)", title).group(1))
+        n = int(re.search(r"\(L(\d+)[,)]", title).group(1))
         assert "*Hypotheses.*" in content, label
         assert re.match(
             r"\*\*(Derived|Numerical|Open)\.\*\*", content.split(":enumerated: false\n")[-1]
@@ -2112,7 +2112,7 @@ def test_every_lemma_has_a_theorem_style_block_with_hypotheses_sketch_and_script
         assert script.name == pointer.group(1) and "def verify(" in script.read_text(
             encoding="utf-8"
         ), label
-    kinds = [(k, int(re.search(r"\(L(\d+)\)", t).group(1))) for k, t, _, _ in blocks]
+    kinds = [(k, int(re.search(r"\(L(\d+)[,)]", t).group(1))) for k, t, _, _ in blocks]
     assert kinds[6] == ("corollary", 20)
     assert kinds[12:] == [
         ("theorem", 16),
@@ -2352,7 +2352,7 @@ def test_reader_depth_anchors_are_all_present():
     )
     for label in labels:
         assert f"`{label}`" in results, label
-    assert "Numerical" in results and "Open" in results  # O-6: the findings that are not derived
+    assert "numerical result" in results and "Open" in results  # O-6: the findings not derived
     intro = _section("The decision problem")
     assert all(f"<appendix-{k.lower()}>`" in intro for k in "ABG")  # the appendices it routes to
     organization = intro.split("**Organization.**", 1)[1]
@@ -2686,7 +2686,7 @@ def test_section_6_names_the_three_levels_and_has_level_1_as_a_derived_block():
         assert name in text, name
     block = next(b for b in _blocks() if "(L15)" in b[1])
     assert block[2] == "thm-descent" and "**Derived.**" in block[3]
-    for hypothesis in ("each term refit by", "unpenalized", "support offsets"):
+    for hypothesis in ("each term refit by", "unpenalized", "support reaches"):
         assert hypothesis in block[3], hypothesis
     assert "lemma_15_descent.py" in text
     abstract = yaml.safe_load(_src(_nb(PAPER_NB).cells[0]).split("---")[1])["abstract"]
@@ -3224,12 +3224,21 @@ def test_the_proposers_radius_is_the_stated_rule_of_the_check_designs():
 
 
 def test_cr10_the_discussion_says_what_propose_predict_check_showed_and_did_not():
-    """(10) The easy part passed (the energy differential); the position did not."""
+    """(10) The regressor's error is one quantity (the predicted level and the predicted position
+    both within its band of the measured one, as Section 9 says) and where the proposals landed
+    is another (the measured log V against zero); the Discussion says both, from the same table
+    and no claim that the position failed where Section 9 reports 3 of 3 (final round, change
+    request 43)."""
     ids = [c.id for c in _nb(PAPER_NB).cells]
     assert ids.index("sec-discussion") < ids.index("num-predict-reading")
     text = _cell_out(PAPER_NB, "num-predict-reading")
-    assert "It showed that" in text and "It did not show that" in text
-    assert "the easy part" in text and "remains a hypothesis" in text
+    assert "It showed that" in text and "remains a hypothesis" in text
+    assert "the easy part" not in text and "It did not show" not in text
+    assert "a second quantity, the measured log V against zero" in text
+    sec9 = _cell_out(PAPER_NB, "num-predict")
+    lv, z = re.search(r"\((\d) of (\d) and (\d) of \2\)", text).group(1, 3)
+    assert f"for {lv}, and the predicted position within that band for {z}" in sec9
+    assert "four-metric fitted reference surface" in text and "feasibility condition" in text
 
 
 @pytest.mark.slow
@@ -3260,6 +3269,9 @@ def test_cr12_every_hypothesis_label_is_worded_or_explained():
         "F5": "the maximum is attained", "I6": "implies", "A8": "a partition into nonempty cells",
     }.items():  # fmt: skip
         first = re.search(rf"\b{label}\b", results)
+        if not first and label in ("F5", "F10", "F12"):  # the preamble says what the F codes are
+            assert "F, a fallback hypothesis a script declares" in results
+            continue
         assert first, label
         assert words in results[max(first.start() - 60, 0) : first.start() + 160], (label, words)
 
@@ -3487,7 +3499,8 @@ def test_the_body_states_the_marks_the_coverage_and_the_draw():
         encoding="utf-8"
     )
     assert "fleet" not in view.lower()  # the assembly view draws parts only
-    assert "the fleet size, a count that is no part and is not drawn" in body
+    assert "the fleet size, a count that is no part, so" in body
+    assert "The fleet size is drawn from 1 to 30" in body
     assert "under 6,000,000 USD, inside the sponsor's full budget of 8,000,000 USD" in body
     sys.path.insert(0, str(ROOT / "examples" / "adcs"))
     from experiments import definitions
@@ -3781,13 +3794,16 @@ def test_the_decision_paragraph_and_tables_are_formatted_from_the_generated_valu
     for phrase in ("2,134 feasible designs", "to 28 that pass all six requirements",
                    "from about 0.003 to 0.0008 degree", "about 0.56 M USD of a 6 M USD",
                    "fleet of 5 medium-wheel, fine-tracker satellites at 1.69 M USD (337,000 USD",
-                   "gives up the least of either measure among the 5 of the 28",
+                   "is the one whose larger shortfall on the two measures, each scaled from "
+                   "its best to its worst of the 28, is smallest, among the 5 that no other "
+                   "beats on both", "the K = 1 band for both, as at every K; Appendix D.19",
                    "fleet of 4 small-wheel, medium-tracker satellites "
-                   "at 1.13 M USD is cheapest", "Appendix C.8"):  # fmt: skip
+                   "at 1.13 M USD is the cheapest fleet", "Appendix C.8"):  # fmt: skip
         assert phrase in plain, phrase
     # 150 before the two reader definitions; 180 with the clause that the two fleets differ in
-    # more than the tracker (change request 30 of the final reader round, wave 1)
-    assert 130 <= len(plain.split()) <= 180
+    # more than the tracker (change request 30 of the final reader round, wave 1); 215 with the
+    # rule in steps and the band named (change requests 51 and 70, the second unit)
+    assert 130 <= len(plain.split()) <= 215
     detail = str(gf.decision_detail_sentence(d))
     assert "all 548 designs" in detail and "11 are nondominated" in detail
     assert "1 of them lies within" in detail
@@ -3819,7 +3835,7 @@ def test_the_decision_follows_the_record_when_the_record_is_perturbed(decided):
     d = gf.decision(dataclasses.replace(study, feasible=raw), fits)
     assert int(d.picks["sponsor"]["design_id"]) == 190  # the next-cheapest fleet cost
     text = str(gf.decision_sentence(d))
-    assert "1.52 M USD is cheapest" in text and "1.13 M USD" not in text
+    assert "1.52 M USD is the cheapest fleet" in text and "1.13 M USD" not in text
     assert "about 0.17 M USD" in text  # 1,686,142 - 1,515,098, not 0.56
     assert "1,127,465" not in str(gf.decision_table(d))
     cap = 5_800_000.0  # the cheapest-unit-cost design (5.85 M USD) now exceeds the fleet budget
@@ -4013,3 +4029,214 @@ def test_the_ternary_caption_counts_are_the_triple_search_record():
         assert any(
             r["regime"] == "primary" and r["K"] == 2 and set(r["triple"]) == triple for r in two
         ), triple
+
+
+# ---- the final reader round, second paper unit (change requests 32 to 92) ----------------------
+
+
+def _cell_src(cell_id: str, path=PAPER_NB) -> str:
+    return _src(next(c for c in _nb(path).cells if c.id == cell_id))
+
+
+def test_the_main_results_cite_the_statement_that_states_each_claim_and_gloss_their_words():
+    """32, 33, 34, 66, 67, 80: each pointer resolves to the statement that carries the claim, the
+    Numerical tag is a sentence, the stopping declaration is named as a paragraph."""
+    cell = _cell_src("sec-decision-3")
+    assert "the posynomial extension is the monomial ({prf:ref}`thm-extension`), and a " in cell
+    assert "weakly Pareto-efficient ({prf:ref}`thm-pareto`)" in cell
+    assert "through the chart ({prf:ref}`def-chart`)" in cell and "{prf:ref}`def-exchange`" in cell
+    assert "a geometric program in the exponents ($x=e^{w}$), convex in $w$" in cell
+    assert "second-order certificate of a strict local minimizer is for a soft fit" in cell
+    assert "a paragraph of {numref}`Section %s <sect-results>` and not a numbered result" in cell
+    assert "; Numerical)" not in cell and "a numerical result, observed and not proved" in cell
+    assert "A soft fit has a second-order certificate" not in cell
+
+
+def test_works_cited_says_what_it_holds_and_each_entry_is_cited_in_the_register():
+    """44: the shared bibliography holds the main text's sources and Appendix G's; the seven
+    entries a reader asked about are each cited by a register row of prior_art.yaml."""
+    assert "sources of the main text and of the register" in _cell_src("bibliography")
+    cited = {k for e in generate_prior_art.entries() for k in e["cites"]}
+    for key in ("ahmadijavid2012entropic", "hirshorn2017nasa", "parnell2021system",
+                "charnes1982multiplicative", "charnes1983invariant", "banker1986piecewise",
+                "fare1985measurement"):  # fmt: skip
+        assert key in cited, key
+
+
+def test_the_geometric_programming_row_places_its_sparsity_citation():
+    """45: Candes et al. 2008 is the reweighted L1 of the package's sparsity option; the row says
+    so."""
+    row = next(e for e in generate_prior_art.entries() if e["id"] == "gp-maxaffine")
+    assert "candes2008enhancing" in row["cites"] and "the sparsity option" in row["short"]["shares"]
+    src = (ROOT / "src" / "hyperbolic_trade_space" / "solvers.py").read_text(encoding="utf-8")
+    assert 'penalty not in (None, "reweighted_l1")' in src
+    assert "Candes, Wakin and Boyd (2008)" in src
+
+
+def test_the_model_states_thirteen_requirements_four_of_them_the_feasibility_conditions():
+    """69: the paper names the two sets apart; the model's own text counts them."""
+    model = (ROOT / "examples" / "adcs" / "model_v2" / "cubesat.sysml").read_text(encoding="utf-8")
+    assert len(re.findall(r"^\s*requirement def \w+", model, re.M)) == 13
+    assert "Four are the flags the experiment reports: settled, momentum_ok, power_ok" in model
+    body = _cell_src("sec-case-construction-1b")
+    assert (
+        "The model states thirteen requirements, one for each traded metric. Four are the "
+        "feasibility conditions"
+        in body
+        and "Six are read after the fit" in body
+    )
+    assert "depth-of-discharge feasibility condition" in _cell_src("sec-case-analysis-5")
+    assert "Six of the model's thirteen requirements" in _cell_src("app-D-req", SUPPORT_NB)
+
+
+@pytest.mark.slow
+def test_the_fleet_cost_is_the_unit_cost_times_the_fleet_size():
+    """68: the sentence says how the fleet cost is formed; the data of record agree to rounding."""
+    import case
+
+    f = case.load_study("primary").feasible
+    assert np.allclose(f["fleet_cost_usd"], f["unit_cost_usd"] * f["fleet_size"], rtol=1e-6)
+    assert f["fleet_size"].between(1, 30).all()
+    assert "the unit cost times the fleet size" in _cell_src("sec-case-construction")
+
+
+def test_the_k1_exponents_stability_is_not_assessed_in_the_record_and_the_text_says_so():
+    """61: D.15's movement column is empty at K = 1 (the dash), so the sentence beside n_eff says
+    it is not assessed there."""
+    table = _cell_out(SUPPORT_NB, "tab-D-choosing_k")
+    assert len(re.findall(r"^\| 1 \| .* \| - \|$", table, re.M)) == 2  # both regimes
+    sentence = _cell_out(PAPER_NB, "num-temperature")
+    assert "not assessed at K = 1" in sentence and "Appendix D.15" in sentence
+
+
+def test_the_scaler_sentence_quotes_the_sensitivity_table_row():
+    """74: the robust scaler's row of D.5 (its size, the metrics it shares, its largest
+    exponent)."""
+    sentence = _cell_out(PAPER_NB, "num-temperature")
+    m = re.search(
+        r"The robust scaler changes it: (\d+) metrics, (\d+) of the baseline's (\d+) "
+        r"among them, the largest exponent on ([a-z ]+)\.",
+        sentence,
+    )
+    assert m, sentence
+    table = _cell_out(SUPPORT_NB, "tab-D-sensitivity_variants").split("Dataset")[1]
+    row = next(r for r in table.splitlines() if r.startswith("| robust scaler"))
+    cols = [c.strip() for c in row.strip("|").split("|")]
+    assert (cols[5], cols[8], cols[7]) == (m.group(1), m.group(2), m.group(4))
+    base = next(r for r in table.splitlines() if r.startswith("| baseline"))
+    assert [c.strip() for c in base.strip("|").split("|")][5] == m.group(3)
+
+
+def test_the_participation_and_k1_sentences_read_the_record():
+    """72, 73, 46: five metrics carry no K = 1 exponent (the figure's undrawn lines), total mass
+    carries 0.02 outside the contending set, and R1's uniqueness is a checked test."""
+    part = _cell_out(PAPER_NB, "num-participation")
+    assert "carry no exponent at the fit temperature; three of them" in part
+    assert "five metrics" not in part and "Five metrics are at most 0.001" in _cell_src(
+        "fig-tau-sweep-caption"
+    )
+    k1 = _cell_out(PAPER_NB, "num-k1")
+    assert "total mass also carries 0.02 and is not in the contending set" in k1
+    assert "checked by a test of the repository on both regimes" in k1
+
+
+def test_the_known_answer_sentence_says_what_the_eleven_row_failure_is():
+    """76: D.14's record, the failure with the most frontier rows on its thinnest term."""
+    sentence = _cell_out(PAPER_NB, "num-recovery")
+    table = _cell_out(SUPPORT_NB, "tab-D-planted_recovery")
+    m = re.search(
+        r"where every recovered table has at least (\d+); the one with (\d+) is "
+        r"(\w+) at temperature 50 and still errs by ([\d.]+), with ([\d.]+) of",
+        sentence,
+    )
+    assert m, sentence
+    assert f"Every table recovered has at least {m.group(1)} frontier rows" in table
+    row = next(r for r in table.splitlines() if r.startswith(f"| 8 | {m.group(2)} |"))
+    got = [c.strip() for c in row.strip("|").split("|")][4:7]
+    assert got == [m.group(3), m.group(4), m.group(5)]
+
+
+def test_the_executive_table_caption_and_the_shortlist_say_their_rules():
+    """38, 50, 71, 70: the executives' measures, the order of the rows, the rule names and the
+    band."""
+    cap = _cell_src("tab-decision-caption")
+    assert "the operator's pointing error, the sponsor's unit cost and fleet cost" in cap
+    assert "do not rank them" in cap and "Balanced between the terms is the design whose" in cap
+    assert any("(sub-d-19)=" in _src(c) for c in _nb(SUPPORT_NB).cells)  # the pointer resolves
+
+
+def test_terms_are_numbered_by_share_and_the_estimator_orders_them_so():
+    """62: the numbering rule is stated at Definition 7; the estimator and its test carry it."""
+    assert (
+        "Terms are numbered by share, largest first (ties by cell size, then by the first "
+        "exponent)" in _cell_src("sec-definitions-2")
+    )
+    src = (ROOT / "src" / "hyperbolic_trade_space" / "estimator.py").read_text(encoding="utf-8")
+    assert "descending term share, ties by cell size" in src
+
+
+def test_reach_is_the_word_for_beta_and_the_package_is_named():
+    """58, 59: no offset names beta in the main text; the package is named at its first use."""
+    nb = _nb(PAPER_NB)
+    text = " ".join(_src(c) for c in nb.cells if c.cell_type == "markdown")
+    text = text.replace("level offset", "").replace("the offset enters only through", "")
+    assert not re.search(r"\boffsets?\b", text)  # the conditioning's offset b is the one exception
+    first = min(i for i, c in enumerate(nb.cells) if "package" in _src(c))
+    assert "The package is the scikit-learn estimator of" in _src(nb.cells[first])
+
+
+@pytest.mark.slow
+def test_figure_7_caption_claim_about_peak_slew_power_is_the_data():
+    """87: peak slew power carries no K = 1 exponent and leads term 1 at K = 2."""
+    import case
+
+    study = case.load_study("primary")
+    fits = case.k_fits(study, (1, case.CASE_K))
+    j = study.names.index("peak slew power")
+    assert fits[1].estimator.exponents_[0][j] <= case.EXPONENT_FLOOR
+    assert int(np.argmax(fits[case.CASE_K].estimator.exponents_[:, j])) == 0
+    assert "peak slew power carries no exponent; here it leads term 1" in _cell_src(
+        "fig-tensions-case-caption"
+    )
+
+
+@pytest.mark.slow
+def test_the_adjusted_plane_puts_every_design_at_its_level_from_the_surface():
+    """Figure 5 (36): the vertical distance of a design above the line is log V over the
+    vertical metric's exponent, so the line is the surface for every design and about a tenth of
+    the designs lie above it (the fit's convention); no selection of designs is made."""
+    import case
+
+    sys.path.insert(0, str(ROOT / "paper" / "figures"))
+    import planes
+
+    study = case.load_study("primary")
+    fit = case.k_fits(study, (1,))[1]
+    d = planes.adjusted_plane(study, fit)
+    above = d["y"] - d["line"](d["x"])
+    assert np.allclose(above * d["w_k"], d["log_v"], atol=1e-9)
+    assert abs(float((above > 0).mean()) - study.spec.target_frac) < 0.02
+    assert [study.names[i] for i in d["names"]] == ["available power", "unit cost"]
+    cap = _cell_src("fig-planes-k1-caption")
+    assert "Each design is moved vertically" in cap and "Dark" not in cap and "Light:" not in cap
+
+
+def test_a_zero_metric_row_is_left_out_without_a_warning():
+    """57: the package tolerates a zero metric (the row has no weight) and says nothing."""
+    import warnings
+
+    from hyperbolic_trade_space import HyperbolicTradeSpace, make_frontier_data
+
+    X, _ = make_frontier_data(120, 3, n_terms=1, random_state=0)
+    Xz = np.vstack([X, [0.0, 1.0, 1.0]])
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        est = HyperbolicTradeSpace(temperature=20.0).fit(Xz)
+    assert est.support_weights_[-1] == 0.0
+    assert "without a warning" in _cell_src("sec-methods")
+
+
+def test_the_improvement_factor_for_a_small_exponent():
+    """86: the factor V^(-1/w) at V = 0.9 and w = 0.02, as Theorem 5's sentence quotes it."""
+    assert round(0.9 ** (-1 / 0.02), -1) == 190.0
+    assert "about 190" in _cell_src("res-L7")
