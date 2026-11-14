@@ -1758,3 +1758,10 @@ section = "Case construction"
 words_added = 20
 job = "Figure 3's caption counts the arrows that leave the slew experiment's box (eleven) and says how the box's own ten of thirteen relates to them"
 reader = "the reader who counted the arrows against the box's ten of thirteen"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case analysis"
+words_added = 23
+job = "Figure 6's caption names V once as the invariant value (Definition 2) and says what the percentage on the horizontal axis is"
+reader = "the reader who found the axis's percentage unexplained and V undefined"

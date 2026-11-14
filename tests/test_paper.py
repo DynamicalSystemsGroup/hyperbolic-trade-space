@@ -4382,7 +4382,7 @@ def test_the_k2_fraction_above_the_surface_is_the_conventions_and_figure_6_says_
     frac = float(row.split("|")[5])
     assert abs(frac - 0.10) < 0.01, row
     cap = " ".join(_cell_src("fig-chart-level-caption").split())
-    assert "log V of the $K=2$ fit" in cap and "about a tenth of the designs lie above it" in cap
+    assert "log $V$ of the $K=2$ fit" in cap and "about a tenth of the designs lie above it" in cap
 
 
 def test_figure_captions_name_the_launch_link_the_sweep_ring_and_the_gloss_of_favours():
