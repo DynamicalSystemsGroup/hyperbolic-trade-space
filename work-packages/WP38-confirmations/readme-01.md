@@ -1,0 +1,3 @@
+| Surface | Reader | Rendered view and head | Reads clean (yes/no) | Remaining flags (kind, sentence in full) | Cuts that lost something |
+|---|---|---|---|---|---|
+| `README.md` | readme-01 | README file text read from the worktree (not the GitHub render, not served at 127.0.0.1:8791), head c8897c2 | yes | none. Looked at and left: "tensions" (line 31) and "lemma" (line 35) are used without a definition, but the README points to the docs and glossary and a reader of a README does not need them to proceed; not marked. | none: no dangling reference or gap found; all linked paths in the layout list exist as named in the file |
