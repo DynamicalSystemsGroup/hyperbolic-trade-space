@@ -156,3 +156,7 @@ gave, not the point.
 
 **Applied as:** "This page acknowledges the people and the lineage of this work, which the paper's citations cannot carry".
 
+**Supervisor (23:42 EST):** ""The experience with product invariants is what this method keeps." this is awkward phrasing"
+
+**Applied as:** "What carried over is the practice of reasoning with product invariants."
+
