@@ -40,7 +40,7 @@ entries:
     short: 'What the evaluation returns (seconds, kilograms); raw, in mixed units and directions.'
     register: 'attributes'
     formal: 'the evaluation outcomes of a configuration; the evaluation is a black box (simulator, physical test or human assessment)'
-    not: 'metrics; attributes are not conditioned, positive or oriented'
+    not: 'metrics'
     defined_in: 'A4'
 
   - id: 'metrics'
@@ -66,7 +66,7 @@ entries:
     short: 'The analyst''s step that turns attributes into metrics; LogAffinePreconditioner does it.'
     register: 'conditioning'
     formal: 'the log-affine, invertible map from attributes to metrics'
-    not: 'part of the fit; the fit consumes metrics'
+    not: 'part of the fit'
     defined_in: 'A4, L9'
 
   - id: 'number-of-designs'
@@ -109,8 +109,8 @@ entries:
     term: 'hyperbolic'
     short: 'The level curves of V, products of powers of the metrics held constant, the rectangular hyperbola in two metrics. Not negative-curvature geometry, and not the graph measure of Färe, Grosskopf and Lovell.'
     register: 'hyperbolic'
-    formal: 'the level curves of V, a product of powers of the metrics set equal to a constant; in two metrics with equal exponents the rectangular hyperbola m1 m2 = constant'
-    not: 'negative-curvature geometry (the setting of hyperbolic PCA), or the hyperbolic graph measure of efficiency of Färe, Grosskopf and Lovell'
+    formal: 'the level curves of V, a product of powers of the metrics set equal to a constant. In two metrics with equal exponents the rectangular hyperbola m1 m2 = constant'
+    not: 'negative-curvature geometry (the setting of hyperbolic principal component analysis), or the hyperbolic graph measure of efficiency of Färe, Grosskopf and Lovell'
     defined_in: 'Definitions'
 
   - id: 'exponent-vector'
@@ -137,7 +137,7 @@ entries:
     short: 'One monomial of the posynomial: the model object, one trade-off; in log space one flat piece of the fitted reference surface.'
     register: 'monomial term'
     formal: 'a product of powers of the metrics; in log space a hyperplane, the flat piece of the fitted reference surface where that term is the largest'
-    not: 'a cluster of designs (those are its cell); a face of the Pareto boundary or of the data''s convex hull'
+    not: 'a cluster of designs; a face of the Pareto boundary or of the data''s convex hull'
     defined_in: 'L10'
     aliases:
       - 'term'
@@ -152,7 +152,7 @@ entries:
     short: 'A positive coefficient times the metrics raised to real powers; one term of a posynomial, a hyperplane in log-metrics.'
     register: 'monomial'
     formal: 'a positive constant times each metric raised to a real power; its logarithm is affine in the log-metrics'
-    not: 'a posynomial (a sum of monomials), or a cluster of designs'
+    not: 'a posynomial, or a cluster of designs'
     defined_in: 'Definition Posynomial, L4.17'
     aliases:
       - 'monomials'
@@ -172,8 +172,8 @@ entries:
     short: 'A function built from posynomials by sums, products, positive powers and maxima (Boyd et al. 2007); the invariant V_K belongs to this class.'
     register: 'generalized posynomial'
     formal: 'a function of the class closed under sums, products, positive powers and maxima that contains the posynomials; a class of functions'
-    not: 'a name for the fitted reference surface, which is a level set of a posynomial, or for a class of problems (that is a generalized geometric program)'
-    defined_in: 'Boyd et al. 2007, section 5; the one cited sentence of the Methods'
+    not: 'a name for the fitted reference surface, which is a level set of a posynomial, or for a class of problems'
+    defined_in: 'Boyd et al. 2007, section 5'
     aliases:
       - 'generalized posynomials'
 
@@ -182,7 +182,7 @@ entries:
     short: 'The minimization of a posynomial under posynomial inequality and monomial equality constraints; convex after x = exp(y).'
     register: 'geometric program'
     formal: 'minimize a posynomial subject to posynomial constraints at most one and monomial constraints equal to one, over positive variables; the logarithmic change of variables makes it a convex program'
-    not: 'the several-term fit as one program, which is not convex in the terms (L16); with the weights given, the fit of all terms is a generalized geometric program'
+    not: 'the several-term fit as one program, which is not convex in the terms (L16). With the weights given, the fit of all terms is a generalized geometric program'
     defined_in: 'L4.14 to L4.24'
     aliases:
       - 'geometric programs'
@@ -193,8 +193,8 @@ entries:
     term: 'generalized geometric program'
     short: 'A program that minimizes a generalized posynomial under generalized-posynomial inequality constraints and monomial equality constraints (Boyd et al. 2007, section 5.4); convex after x = exp(y).'
     register: 'generalized geometric program'
-    formal: 'minimize a generalized posynomial subject to generalized-posynomial constraints at most one and monomial constraints equal to one, over positive variables; the logarithmic change of variables makes it a convex program, and added variables turn it into a geometric program'
-    not: 'a function class, or the unsupervised several-term fit as one program (not convex in the terms); the older use of the phrase for signomial programs; a design problem that uses the fitted model is one, and so is the fit with its weights given'
+    formal: 'minimize a generalized posynomial subject to generalized-posynomial constraints at most one and monomial constraints equal to one, over positive variables. The logarithmic change of variables makes it a convex program, and added variables turn it into a geometric program'
+    not: 'a function class, or the unsupervised several-term fit as one program (not convex in the terms); the older use of the phrase for signomial programs; a design problem that uses the fitted model is one'
     defined_in: 'Boyd et al. 2007, section 5.4; L16 (iii)'
     aliases:
       - 'generalized geometric programs'
@@ -207,7 +207,7 @@ entries:
     short: 'The level V = 1 of the fitted invariant at finite temperature, a model of the data underlying the table; rows above it exist by construction.'
     register: 'fitted reference surface'
     formal: 'the level set V = 1 of the fitted invariant, where the posynomial sum equals one; it models the data (the evaluated designs)'
-    not: 'the Pareto boundary, or a bound that no design exceeds; the table and the reading drawn from it are views of the data, not what is modelled'
+    not: 'the Pareto boundary, or a bound that no design exceeds'
     defined_in: 'L3, L5, G-1'
     avoid:
       - phrase: 'generalized posynomial reference surface'
@@ -250,7 +250,7 @@ entries:
     term: 'frontier'
     short: 'Everyday word for one of three objects; the pages name them as the fitted reference surface, the supporting envelope or the Pareto boundary.'
     register: 'frontier'
-    formal: 'not a defined object; allowed where the context fixes which of the three is meant'
+    formal: 'not a defined object; allowed where the context fixes which object is meant'
     not: 'a synonym for the Pareto boundary'
     defined_in: 'Words'
 
@@ -435,7 +435,7 @@ entries:
     term: 'numerically zero'
     short: 'An exponent at or below 1e-12; the code treats it as zero, which is not the same as mathematically zero.'
     register: 'numerically zero'
-    formal: 'an exponent below EPS_ZERO_EXPONENT'
+    formal: 'an exponent below 1e-12'
     not: 'mathematically zero'
     defined_in: 'G-2, G-5'
 
@@ -505,7 +505,7 @@ entries:
     term: 'certificate'
     short: 'That the optimizer reached a local minimizer of the objective; for a soft fit, that the second-order test holds.'
     register: 'certificate'
-    formal: 'for a soft fit, the second-order sufficient conditions of L17; for a sharp fit, levels 1 to 3 (L15, L12, L13 and L14)'
+    formal: 'for a soft fit, the second-order sufficient conditions of L17. For a sharp fit, levels 1 to 3 (L15, L12, L13 and L14)'
     not: 'evidence that the surface describes the designs or holds outside the table'
     defined_in: 'L17, I16, L14'
 
@@ -531,7 +531,7 @@ entries:
     short: 'A penalty on the squared size of the exponents added to the objective. Noise on the metrics adds one, and the penalty pulls the fitted exponents toward equal weights.'
     register: 'ridge'
     formal: 'the term (tau/2) w'' Sigma w added to the fit objective by Gaussian noise of covariance Sigma on the metrics (L20)'
-    not: 'a ridge regression fit or a ridge of the data; the model has no such penalty, the noise induces it'
+    not: 'a ridge regression fit or a ridge of the data. The model has no such penalty; the noise induces it'
     defined_in: 'L20, L6, L18'
 
   - id: 'active-face'
@@ -555,7 +555,7 @@ entries:
     term: 'ternary plot'
     short: 'A triangle whose corners are three metrics: a design sits by its shares of their total, tinted by region, with a numbered marker for each term''s exponent vector. For reading, not for measuring distance.'
     register: 'ternary plot'
-    formal: 'the barycentric image of the shares of three metrics (x = right + top / 2, y = sqrt(3) / 2 * top); a term''s exponent vector sums to one, so it is a point of the triangle, where that term''s V is largest at a fixed total'
+    formal: 'the barycentric image of the shares of three metrics. A term''s exponent vector sums to one, so it is a point of the triangle, where that term''s V is largest at a fixed total'
     not: 'a plot of V, a distance between designs, or a place where V = 1; V also depends on the total'
     defined_in: 'plot_ternary (docstring, Notes)'
     aliases:

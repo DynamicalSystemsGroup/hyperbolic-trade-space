@@ -400,17 +400,17 @@ def stability() -> Md:
     moving = [e for e in s["quantities"].values() if "min" in e and not e["identical"]]
     head = (
         "The control effort and the saturated fraction are sums over the accepted steps of an "
-        "adaptive integration and the settling time is detected on its dense solution, so a "
-        f"relative change of {eps:g} in a design variable moves them (gap G-17). Datasets "
-        f"{cites} and the six check designs were regenerated {n} times with `Kp`, `Kd`, the "
-        "panel span and the battery capacity of every design multiplied by 1 + e, e uniform in "
-        f"[-{eps:g}, {eps:g}], and every quantity this paper reports was recomputed ({n_all} "
-        f"quantities, of which {len(moving)} numbers move at all). The regenerations ran on the "
-        "authors' machine and the committed data in the environment of record, so a range also "
-        "holds the two platforms' difference. A quantity that moves is printed in this paper to "
+        "adaptive integration, and the settling time is detected on its dense solution. A "
+        f"relative change of {eps:g} in a design variable therefore moves them (gap G-17). "
+        f"Datasets {cites} and the six check designs were regenerated {n} times with `Kp`, "
+        "`Kd`, the panel span and the battery capacity of every design multiplied by 1 + e, e "
+        f"uniform in [-{eps:g}, {eps:g}]. Every quantity this paper reports was recomputed: "
+        f"{n_all} quantities, of which {len(moving)} numbers move at all. The regenerations ran "
+        "on the authors' machine and the committed data in the environment of record, so a "
+        "range also holds the two platforms' difference. A quantity that moves is printed to "
         f"the digits that held in all {n + 1} datasets (the committed one and the {n} "
-        "regenerated), as a range where not even two digits did, and as a bound where it is a "
-        "numerical residue."
+        "regenerated). Where not even two digits held it is printed as a range, and where it "
+        "is a numerical residue as a bound."
     )
     verdict = md_table(
         ["Conclusion", "Quantities compared", f"Across the committed data and {n} regenerations"],
@@ -422,7 +422,7 @@ def stability() -> Md:
     )
     return Md(
         f"{head}\n\n{verdict}\n\nThe printed quantities that move, with the committed value, the "
-        f"minimum and maximum over the {n + 1} datasets and the text this paper prints:\n\n"
+        f"minimum and maximum over the {n + 1} datasets:\n\n"
         f"{moving_tab}"
     )
 
@@ -846,13 +846,13 @@ def injected_noise() -> Md:
         rows += [[DATASET_LABELS[regime], *r[1:]] for r in noise_injection.regime_rows(regime)[1]]
     return Md(
         f"Datasets {' and '.join(DATASET_LABELS[r] for r in case.CUBESAT.regimes)}: the data of "
-        "record carry no noise of their own; the noise is injected as a design choice "
-        f"of this experiment, in {repo_link('its script', 'examples/adcs/noise_injection.py')}: "
+        "record carry no noise of their own. In "
+        f"{repo_link('its script', 'examples/adcs/noise_injection.py')}, "
         "each raw attribute is multiplied "
-        "by exp(delta z), z standard normal, the table is conditioned again and refitted at the "
+        "by exp(delta z), z standard normal. The table is conditioned again and refitted at the "
         "clean fit's temperature, and the measured columns are over eight draws. The predicted "
         "shift is the corollary's formula on the support of the clean fit (its exponents above "
-        "0.001), where the corollary holds while the zero exponents stay zero; the last column "
+        "0.001), where the corollary holds while the zero exponents stay zero. The last column "
         "shows where noise lifts one. The noise of each metric is delta divided by the log spread "
         "of its attribute. What the table shows belongs "
         "to the fit and the conditioning together.\n\n"

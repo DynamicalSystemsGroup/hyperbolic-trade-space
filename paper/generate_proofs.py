@@ -217,7 +217,7 @@ def _hypotheses(lemma) -> str:
         if box is None:
             return "none beyond the declared axioms below."
         mark = f" {POLYHEDRAL_MARK}" if re.search(r"\bfacet", box) else ""
-        return f"{_esc(box)}{mark} (the paper's box; the script declares the axioms below)."
+        return f"{_esc(box)}{mark}."
     return "; ".join(
         f"{_esc(claim)} (carried by the symbols {', '.join(syms)})"
         for claim, syms in by_claim.items()
@@ -246,7 +246,7 @@ def _proof(file, lemma, record, res_index, owners, results) -> str:
     statement = _statement(file)
     if shared and res_index > 0:
         stated = (
-            f"the file's one statement, given under {_esc(lemma['results'][0]['name'])} above; "
+            f"the file's one statement, given under {_esc(lemma['results'][0]['name'])}; "
             f"{_esc(res['name'])} is the part of it that this proof's steps establish"
         )
     else:
@@ -254,8 +254,8 @@ def _proof(file, lemma, record, res_index, owners, results) -> str:
     exported = ", ".join(lemma["proved_results_exported"]) or "none"
     imported = ", ".join(f"{k} (from {v})" for k, v in lemma["proved_results_imported"].items())
     ledger = (
-        f"axioms imported and applied: {', '.join(lemma['imports']) or 'none'}; "
-        f"proved results imported: {imported or 'none'}; exported: {exported}; "
+        f"Axioms imported and applied: {', '.join(lemma['imports']) or 'none'}. "
+        f"Proved results imported: {imported or 'none'}. Exported: {exported}. "
         f"{len(order)} steps"
         + (f", in the file's one sequence of {len(lemma['steps'])}" if shared else "")
     )  # fmt: skip
@@ -270,13 +270,13 @@ def _proof(file, lemma, record, res_index, owners, results) -> str:
         if shared
         else ""
     )
-    label = "premises the script declares" if lemma["hypotheses"] else "quoted from the statement"
+    label = "premises the script declares" if lemma["hypotheses"] else None
     return (
         f'<a id="{_anchor(n, res_index)}"></a>\n\n#### {heading}\n\n{sharing}'
         f"**File.** [{file}]({BLOB}/{file}). "
         f"**Statement.** {stated}\n\n"
-        f"**Hypotheses** ({label}): "
-        f"{_hypotheses(lemma)}\n\n"
+        + (f"**Hypotheses** ({label}): " if label else "**Hypotheses.** ")
+        + f"{_hypotheses(lemma)}\n\n"
         f"**Ledger.** {ledger}.\n\n{body}"
     )
 
@@ -316,15 +316,14 @@ def how_to_read(path=RECORD) -> Md:
     record = _load(path)
     steps = [s for _, lem in _lemmas(record) for s in lem["steps"]]
     counts = {k: sum(s["kind"] == k for s in steps) for k in KIND_ORDER}
-    results = sum(len(lem["results"]) for _, lem in _lemmas(record))
     last = max(lem["number"] for lem in record["lemmas"].values())
     parts = "\n".join(f"- {name} (L{lo} to L{hi or last})" for name, lo, hi in PARTS)
+    results = sum(len(lem["results"]) for _, lem in _lemmas(record))
     return Md(
         f"Each proof is one file of `derivation/`, and each step of the proof is one line of that "
         f"file. The address of a step is its file and its tag (`L2.1`, `L2.2`, ...), and the tag "
         f"is unique within the file. The record holds {results} results in {len(record['lemmas'])} "
-        f"files and {len(steps)} steps. Every step is a line of code, including a step that cites "
-        f"a result, and is of one of three kinds:\n\n"
+        f"files and {len(steps)} steps. Every step is a line of code. It is one of three kinds:\n\n"
         f"- **computed** ({counts['computed']} steps): SymPy derives the step's condition and the "
         f"line asserts it.\n"
         f"- **by a declared axiom** ({counts['axiom']} steps): the line applies an entry of the "
@@ -334,16 +333,15 @@ def how_to_read(path=RECORD) -> Md:
         f"- **by a proved result** ({counts['result']} steps): the line applies the result of an "
         f"earlier proof that the script imported; the step names that proof's statement and "
         f"links to its entry.\n\n"
-        f"There is no kind for an argument made only in prose. A step that SymPy cannot derive "
-        f"is an explicit hypothesis or an entry of the ledger. Two results may share a file "
-        f"(L14 proves Proposition 3 and its corollary, the approximate certificate): each names "
-        f"the same file and owns its own steps. The appendix has two parts:\n\n{parts}\n\n"
-        f"What the correspondence establishes: every step of the prose has exactly one line of "
-        f"code, the lines are in the order of the prose, every computed line passes, and neither "
-        f"a line nor a sentence can change without the checker reporting the step. What it "
-        f"cannot establish is that a sentence means what its line computes; that reading is the "
-        f"human validation, and the tool guarantees there is always exactly one line to read it "
-        f"against."
+        f"A step that SymPy cannot derive is an explicit hypothesis or an entry of the ledger. "
+        f"Two results may share a file. L14 proves Proposition 3 and its corollary, the "
+        f"approximate certificate; each names the same file and owns its own steps. The appendix "
+        f"has two parts:\n\n{parts}\n\n"
+        f"What the correspondence establishes is this. Every step of the prose has exactly one "
+        f"line of code. The lines are in the order of the prose. Every computed line passes. "
+        f"Neither a line nor a sentence can change without the checker reporting the step. What "
+        f"it cannot establish is that a sentence means what its line computes; that reading is "
+        f"the human validation."
     )
 
 
@@ -456,12 +454,12 @@ def checker(path=RECORD) -> Md:
         rows,
     )  # fmt: skip
     return Md(
-        "The checker passes only when: every proof names one file; every step of every file "
-        "belongs to exactly one proof; the prose steps and the script steps correspond one to "
-        "one and in order; every step by a declared axiom applies an entry that exists in the "
-        "ledger and that the file imports; the entries a file imports, applies and lists as used "
-        "are the same set; a proved result is imported from an earlier proof and applied by a "
-        "step; no premise hides in a signed symbol; and the fingerprint of each step (its tag, "
+        "The checker passes only when every proof names one file. Every step of every file "
+        "belongs to exactly one proof. The prose steps and the script steps correspond one to "
+        "one and in order. Every step by a declared axiom applies an entry that exists in the "
+        "ledger and that the file imports. The entries a file imports, applies and lists as used "
+        "are the same set. A proved result is imported from an earlier proof and applied by a "
+        "step. No premise hides in a signed symbol. The fingerprint of each step (its tag, "
         "prose and line of code) and of each ledger entry equals the record's.\n\n"
         + head + "\n\n" + per_file
     )  # fmt: skip

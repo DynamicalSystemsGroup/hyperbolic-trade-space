@@ -84,10 +84,9 @@ def toolchain() -> Md:
     requires = pp["project"]["requires-python"]
     uv = re.match(r"uv \S+", _run(["uv", "--version"]))
     python = PYTHON_VERSION.read_text(encoding="utf-8").strip()
-    revision = f"uv.lock (format revision {lock_revision()})"
     rows = [
         ["Python", python, f".python-version; requires-python {requires}"],
-        ["Package manager", uv.group(0) if uv else "not found", revision],
+        ["Package manager", uv.group(0) if uv else "not found", "uv.lock"],
         ["Locked packages", len(locked), "uv.lock"],
     ]
     for name in deps["runtime"]:
@@ -141,7 +140,7 @@ def commands() -> Md:
         (
             "uv run python paper/execute_notebooks.py",
             "execute both notebooks from a clean kernel and write the outputs",
-            "exits 0; the outputs are unchanged when the data and the seeds are: "
+            "exits 0. The outputs are unchanged when the data and the seeds are: "
             "`git diff --stat -- paper/paper.ipynb paper/supporting_material.ipynb` then shows "
             "only the commit and platform lines of the toolchain table, and "
             "`PAPER_EXECUTE=1 uv run pytest tests/test_paper.py -k clean_kernel` compares every "
@@ -157,7 +156,7 @@ def commands() -> Md:
         (
             "cd paper && uv run myst build --html",
             "build the paper as a static site, written to paper/_build/html",
-            "exits 0, with no error reported; it prints a line that a server started on a local "
+            "exits 0, with no error reported. It prints a line that a server started on a local "
             "port, because the builder renders the pages through a temporary server that stops "
             "when the build ends",
         ),

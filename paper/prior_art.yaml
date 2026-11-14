@@ -62,7 +62,7 @@ entries:
     family: Data envelopment analysis (DEA)
     does: >-
       Evaluates the relative efficiency of each decision-making unit by mathematical programming on
-      the observed data, with weights obtained from the data, with variants for scale and returns
+      the observed data, with weights obtained from the data. It has variants for scale and returns
       to scale, a super-efficiency variant that ranks efficient units against a reference
       technology spanned by all other units, and Malmquist productivity indices across data sets.
     shares: >-
@@ -96,7 +96,7 @@ entries:
     family: Multiplicative DEA
     does: >-
       A multiplicative efficiency model whose envelopment is piecewise Cobb-Douglas (Charnes, Cooper,
-      Seiford and Stutz, read by title); linear programs for piecewise log-linear estimation of the
+      Seiford and Stutz, read by title). Linear programs for piecewise log-linear estimation of the
       efficient boundary of production, derived from properties postulated for the production
       possibility set, which admit increasing marginal products and S-shaped production functions
       and estimate technical inefficiencies, rates of substitution and transformation, marginal
@@ -159,8 +159,7 @@ entries:
     family: Deterministic and stochastic frontiers
     does: >-
       Estimates frontier production functions by programming, corrected ordinary least squares or
-      maximum likelihood, and stochastic frontiers with one-sided error, as reviewed by Battese
-      (1992).
+      maximum likelihood, and stochastic frontiers with one-sided error.
     shares: >-
       A one-sided criterion on log-linear residuals.
     differs: >-
@@ -192,8 +191,8 @@ entries:
       directions.
     differs: >-
       This work's criterion is a one-sided soft maximum, not variance, and its exponents live on the
-      simplex, so its components are trade-offs between metrics. The two chain: this work belongs
-      beside PCA in unsupervised learning and feature engineering, and is not a PCA.
+      simplex, so its components are trade-offs between metrics. The two chain. This work belongs
+      beside PCA in unsupervised learning and feature engineering and is not a PCA.
     cites: [jolliffe2016principal]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -296,8 +295,7 @@ entries:
       This work estimates a one-sided edge, not a variance over frames, by convex programs on a
       simplex with a certificate, and it uses no negative-curvature geometry; on the synthetic
       tables of Appendix H, the leading components of PCA and HoroPCA recover the exponents only
-      where the generator made them the direction of largest spread (and the earlier spike's
-      record).
+      where the generator made them the direction of largest spread.
     cites: [chami2021horopca]
     section2: true
     # Section 2's table prints these phrases; each is an extract of the field of the same name
@@ -329,18 +327,18 @@ entries:
       Couples the disciplinary analyses of a design through shared coupling variables and solves
       the coupled system inside an optimizer: a survey of the field by its conceptual components,
       a classification of its architectures by problem formulation and decomposition strategy, a
-      diagram standard for them (the XDSM, which extends the design structure matrix with process
+      diagram standard for them (which extends the design structure matrix with process
       flow), a framework that solves the coupled models and computes their coupled derivatives,
-      and a textbook treatment; each run returns an optimum of a stated objective under
-      constraints, driving the evaluations toward it.
+      and a textbook treatment. Each run returns an optimum of a stated objective under
+      constraints.
     shares: >-
       The setting of the case, a design loop in which a configuration is evaluated by coupled
       disciplinary models into attributes and the design variables are chosen against several
-      objectives; the case's coupling table is a design structure matrix.
+      objectives. The case's coupling table is a design structure matrix.
     differs: >-
       This work fits the table the evaluations leave behind and reports the trade-offs they
-      exercised, with one exponent vector per monomial term and a level for every design, whatever
-      produced the table. It does not search, couple disciplines or need derivatives; an MDAO run
+      exercised. It gives one exponent vector per monomial term and a level for every design,
+      whatever produced the table. It does not search, couple disciplines or need derivatives; an MDAO run
       is one way to fill the table.
     cites: [sobieszczanski1997multidisciplinary, martins2013multidisciplinary, lambe2012extensions, gray2019openmdao, martins2021engineering]
     section2: true
@@ -358,7 +356,7 @@ entries:
       Value-focused broad exploration of design alternatives, a design-by-shopping interface in
       which the decision-maker forms a preference by viewing many good designs, user-guided
       samplers and linked visualization with the Pareto frontier displayed, and tradespace
-      exploration for resilient systems; these explore and display.
+      exploration for resilient systems.
     shares: >-
       The setting, a table of evaluated designs.
     differs: >-
@@ -381,10 +379,10 @@ entries:
     group: Systems engineering practice and decision analysis
     family: Decision analysis and multiple-criteria methods
     does: >-
-      Decision analysis with a normative versus descriptive distinction; multiple-objective
-      preferences and value trade-offs; weighted-criteria comparison methods (Pugh, AHP,
-      Kepner-Tregoe), with weights elicited; a decision-management framework based on decision
-      theory and cost analysis.
+      Decision analysis with a normative versus descriptive distinction. Multiple-objective
+      preferences and value trade-offs. Weighted-criteria comparison methods (Pugh, the analytic
+      hierarchy process, Kepner-Tregoe), with weights elicited. A decision-management framework
+      based on decision theory and cost analysis.
     shares: >-
       The weights are trade-off rates.
     differs: >-
@@ -403,11 +401,11 @@ entries:
     family: Trade studies in systems engineering practice
     does: >-
       Describes the trade study as a documented decision activity, with elicited criteria weights
-      and known susceptibility to human bias; surveys the published state of trade-off analytics.
+      and known susceptibility to human bias. It surveys the published state of trade-off analytics.
     shares: >-
       The setting, a decision for which an answer and a justification are required.
     differs: >-
-      This work fits its weights from the table and reruns the analysis when the data change; the
+      This work fits its weights from the table and reruns the analysis when the data change. The
       study is a computation with a recorded environment, not a document.
     cites: [hirshorn2017nasa, baker2012survey, chilli2026decision, smith2007ameliorating, parnell2021system]
     section2: false

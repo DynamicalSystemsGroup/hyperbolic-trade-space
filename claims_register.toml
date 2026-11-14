@@ -467,7 +467,7 @@ note = "Section 3 defines the evaluation as a black box to the method (a simulat
 
 [[claim]]
 id = "C032"
-fragment = "in this design loop the simulation is how the attributes are measured ... because the evaluation is a black box to the method"
+fragment = "this design loop the simulation is how the attributes are measured ... because the evaluation is a black box to the method"
 file = "paper/supporting_material.ipynb"
 anchor = "Appendix C. The case's model: how the table of metrics came to be"
 kind = "M"
@@ -1720,7 +1720,7 @@ note = "Default term_temperature=inf is the label fit (one argmax label per row)
 
 [[claim]]
 id = "C136"
-fragment = "the program then separates into one convex program per term"
+fragment = "separates into one convex program per term"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
@@ -1756,7 +1756,7 @@ note = "Guard rejects a rise beyond GUARD_TOL and returns the previous state"
 
 [[claim]]
 id = "C139"
-fragment = "the fixed-weight objective bounds the soft model's mean slack from above and equals it at the model the weights came from"
+fragment = "fixed-weight objective bounds the soft model's mean slack from above and equals it at the model the weights came from"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "M"
@@ -1768,7 +1768,7 @@ note = "F <= G_alpha - E with equality at x = x0; fixed-weight objective is G_al
 
 [[claim]]
 id = "C140"
-fragment = "it is a generalized posynomial in $e^{w}$, so its minimization is a generalized geometric program"
+fragment = "generalized posynomial in $e^{w}$, so its minimization is a generalized geometric program"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "M"
@@ -1936,7 +1936,7 @@ note = "meta-sentence about what Section 'Results' says; the test asserts 'ill-p
 
 [[claim]]
 id = "C154"
-fragment = "the second share is read at each K's own fit temperature"
+fragment = "second share is read at each K's own fit temperature"
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "S"
@@ -1984,7 +1984,7 @@ note = "gloss of what a principal direction is (largest variance); no lemma step
 
 [[claim]]
 id = "C158"
-fragment = "the fit says which metrics bind, the analysis says where the sampled designs spread along the fitted surface."
+fragment = "fit says which metrics bind, the analysis says where the sampled designs spread along the fitted surface."
 file = "paper/supporting_material.ipynb"
 anchor = ""
 kind = "M"
@@ -4520,7 +4520,7 @@ note = "what the scripts are: plain SymPy run as a chain (run_chain), each step 
 
 [[claim]]
 id = "C388"
-fragment = "each step is one line of symbolic algebra that the reader can run against its sentence"
+fragment = "step is one line of symbolic algebra that the reader can run against its sentence"
 file = "paper/supporting_material.ipynb"
 anchor = "Appendix B. Proofs, step for step with their scripts"
 kind = "S"
@@ -4632,7 +4632,7 @@ note = "the metrics in the K = 2 contending sets and not in the K = 1 set that a
 
 [[claim]]
 id = "C395"
-fragment = "are sums over the accepted steps of an ... adaptive integration and the settling time is detected on its dense solution"
+fragment = "are sums over the accepted steps of an ... adaptive integration, and the settling time is detected on its dense solution"
 file = "paper/generate_results.py"
 anchor = "def stability"
 kind = "S"
@@ -4648,7 +4648,7 @@ note = "G-17: the settling time is event-detected on the dense solution; control
 
 [[claim]]
 id = "C396"
-fragment = "The regenerations ran on the ... authors' machine and the committed data in the environment of record, so a range also ... holds the two platforms' difference"
+fragment = "The regenerations ran ... on the authors' machine and the committed data in the environment of record, so a ... range also holds the two platforms' difference"
 file = "paper/generate_results.py"
 anchor = "def stability"
 kind = "R"
@@ -5751,7 +5751,7 @@ note = "narrowed from 'four threshold requirements': the unit cost limit (350,00
 
 [[claim]]
 id = "C499"
-fragment = "The two cost limits are not among them: they are budget limits read after the fit, and no design of fleet size one passes the unit cost limit, so a set constrained by it would be a fleet-size choice, not a design-space one."
+fragment = "The two cost limits are not among them. They are budget limits read after the fit, and no design of fleet size one passes the unit cost limit, so a set constrained by it would be a fleet-size choice, not a design-space one."
 file = "paper/supporting_material.ipynb"
 anchor = "D.17 The requirements read after the fit"
 kind = "R"
@@ -5967,7 +5967,7 @@ note = "A pointer to the Definitions sentence (C410) and to Appendix A, which pr
 
 [[claim]]
 id = "C534"
-fragment = "the level curves of V, a product of powers of the metrics set equal to a constant; in two metrics with equal exponents the rectangular hyperbola m1 m2 = constant"
+fragment = "the level curves of V, a product of powers of the metrics set equal to a constant. In two metrics with equal exponents the rectangular hyperbola m1 m2 = constant"
 file = "glossary.yaml"
 anchor = ""
 kind = "M"
@@ -7123,7 +7123,7 @@ note = "The generator asserts it for the six named designs (the sponsor's, the c
 
 [[claim]]
 id = "C620"
-fragment = "the sponsor alone takes the smallest fleet cost; the operator alone the smallest pointing error;"
+fragment = "sponsor alone takes the smallest fleet cost; the operator alone the smallest pointing error;"
 file = "paper/supporting_material.ipynb"
 anchor = "D.19 The decision: the shortlist and the rules"
 kind = "R"
