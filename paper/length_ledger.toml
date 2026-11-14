@@ -1550,3 +1550,10 @@ section = "Future work and final remark"
 words_removed = 13
 no_longer_did = "'We offer this as a hook for future exploration, not as a result' (the sentence before says 'could be given'); net of 'crashes' for 'panics' and the split at the Lean sentence"
 authority = "WP38 residual pass, landing of the paper flag tables paper-01 to paper-04 (flags at 6007221); marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"
+
+[[raise]]
+date = "2026-11-14"
+section = "Search of the design space (preliminary)"
+words_added = 2
+job = "'the nested loops below' for 'the loops': the first sentence of the section named loops the reader meets only in the next paragraph, and the pass had cut the sentence that introduced them"
+reader = "the reader following the search section for the first time"

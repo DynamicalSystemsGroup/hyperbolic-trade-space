@@ -85,11 +85,18 @@ def temperature_selection() -> Md:
     -------
     Md
     """
+    studies = _studies()
+    target = next(iter(studies.values())).spec.target_frac
+    lead = (
+        "Each row is the K = 1 fit at the temperature tau. The columns give the fraction of "
+        "designs above V = 1, the effective sample size, the number of metrics with an exponent "
+        "above 0.001, and the largest exponent with its metric. The fit temperature is chosen "
+        f"so that the fraction above V = 1 reaches the target {target:.2f} (Section 8)."
+    )
     parts = [
-        f"{_cite(r)}:\n\n" + _t(case.tau_sweep(s), f"D tau_sweep | {r}")
-        for r, s in _studies().items()
+        f"{_cite(r)}:\n\n" + _t(case.tau_sweep(s), f"D tau_sweep | {r}") for r, s in studies.items()
     ]
-    return Md("\n\n".join(parts))
+    return Md(lead + "\n\n" + "\n\n".join(parts))
 
 
 def k_diagnostics() -> Md:
@@ -260,6 +267,8 @@ def candidate_designs() -> Md:
     Md
     """
     return Md(
+        "The table scores the candidates against the K = 1 fit of record, to all feasible "
+        "designs.\n\n"
         f"{_cite('primary')}:\n\n"
         + frame_table(
             stable_frame(

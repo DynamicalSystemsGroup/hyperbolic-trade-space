@@ -156,7 +156,14 @@ def feasibility(spec=None) -> Md:
     for r in spec.regimes:
         tab = case.feasibility_table(case.load_study(r, spec))
         parts.append(f"Dataset {_label(r)}:\n\n" + frame_table(tab))
-    return Md("\n\n".join(parts))
+    lead = (
+        "Each condition is a flag the simulation returns for a design: settled (the slew "
+        "settles within the horizon), momentum_ok (peak wheel momentum within the wheel class's "
+        "maximum), and power_ok and dod_ok (the model's power and depth-of-discharge "
+        "constraints). A design that fails a condition alone is counted in fails alone; removed "
+        "in this order counts the designs it removes after the conditions above it."
+    )
+    return Md(lead + "\n\n" + "\n\n".join(parts))
 
 
 def conditioning(spec=None) -> Md:

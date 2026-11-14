@@ -2,8 +2,8 @@
 
 The method sees one thing: a map from configurations to attributes.
 
-Two generations sit in the directory. The **frozen** generation is what the paper and the records
-cite. The **v2** generation (`model_v2/cubesat.sysml`, `experiments/`,
+Two generations sit in the directory. The **frozen** generation is what the paper
+cites. The **v2** generation (`model_v2/cubesat.sysml`, `experiments/`,
 `data/v2/`) is the tidied model with an experiment layer; it lands beside the frozen one. Every
 file in `data/` and `data/v2/` has an entry in the ledger.
 
@@ -71,7 +71,7 @@ The **experiment declaration** gives the names, count, seed and evidence kind.
 - **Requirements.** Feasibility as named requirements, whose verdicts are `settled`,
   `momentum_ok`, `power_ok` and `dod_ok`, and the requirements over the other metrics. `satisfy`
   statements tie them to the baseline; the pointing-error requirement, which the baseline
-  configuration fails, has a negated one, `not satisfy`. Verification definitions name what each
+  configuration fails, has a negated one, `not satisfy`. Verification definitions name the requirement each
   verifies. Claims cover every in-range configuration.
 - **The experiment.** `analysis def SlewExperiment` takes the configuration and the measured slew
   quantities and returns the attributes the model computes.
@@ -168,7 +168,7 @@ Mass and cost.
 
 The first four are the flags of the dataset: the verdicts of named requirements on each simulated
 configuration. `dod_ok` is also one of the case's feasibility flags (`case.CUBESAT.flags`), so the
-depth-of-discharge failures leave the fit by name. The four thresholds are the supervisor's choice.
+depth-of-discharge failures leave the fit by name. The four performance thresholds are the supervisor's choice.
 They are literal values in `budgets`, each with the share of the feasible designs it admits (primary / baseline regime): a peak
 slew power of 2.6 W (62.2 % / 67.3 %, every small and medium wheel), a pointing error of 0.008495
 degree (94.9 % / 63.7 %), a control effort of 0.05922 N.m.s (58.9 % / 90.0 %) and a launch budget
@@ -217,7 +217,7 @@ the power cap does not bind there. The model allows the effect; the three config
 show it.
 <!-- vocab-exempt: power margin -->
 
-The table's third part is the coupling between subsystems, in the form of the design structure
+The coverage table's third part is the coupling between subsystems, in the form of the design structure
 matrix of multidisciplinary design analysis and optimization (MDAO), the family the paper names
 beside this method; the form is the XDSM of Lambe and Martins (`lambe2012extensions` in
 `docs/references.bib`) without its process line. Rows feed columns. The configuration values feed
@@ -234,8 +234,8 @@ quantity of the configuration computed before the slew, and the peak torque is r
 
 The supervisor's hypothesis: once the configuration space and the metric
 space are each explicit and joined by requirements, the K = 1 exponent heatmap across the fit
-temperature shows more texture, more metrics carrying weight. The regenerated
-figure checks it; it is never a target. No metric, threshold or constant of the model
+temperature shows more texture, more metrics carrying weight. The paper's regenerated
+heatmap checks it; it is never a target. No metric, threshold or constant of the model
 was chosen because it moves the heatmap, and the fit runs unchanged on whatever the model produces.
 
 What the fit returns on the thirteen-metric data is in Appendix D of the supporting material.

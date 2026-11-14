@@ -235,8 +235,8 @@ def k1_sentence(study, fit) -> Md:
         f"At K = 1 the exact-maximum fit has {_a(len(names))} {len(names)}-lemma across "
         f"{_span(study.spec.subsystems_of(names))}: {_and(names)} contend, with "
         f"exponents at the fit temperature from {two(low)} to {two(high)}. "
-        "R1 holds on both regimes: the exact-maximum optimum is one point, so the support is not "
-        "a solver's choice."
+        "R1 of Section 5 holds on both regimes: the exact-maximum optimum is one point, so the "
+        "support is not a solver's choice."
     )
 
 

@@ -43,7 +43,7 @@ print(round(tau, 1))
 <!-- vocab-exempt: select temperature -->
 
 0.10 is the share of designs allowed above V = 1. The planted table returns 50.0, used
-below for all three (26.5 and 38.1 on the others); real data may need `bounds=(3, 1e4)`.
+below for all three (26.5 and 38.1 on the other two planted tables); real data may need `bounds=(3, 1e4)`.
 
 ## Helpers
 

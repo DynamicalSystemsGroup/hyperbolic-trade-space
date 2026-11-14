@@ -425,7 +425,7 @@ entries:
 
   - id: 'participation-threshold'
     term: 'participation threshold'
-    short: 'A working-temperature exponent above 1e-3 participates in the tension; the threshold is a parameter of tension_report.'
+    short: 'A working-temperature exponent above 1e-3 counts as participating; the threshold is a parameter of tension_report.'
     register: 'participation threshold'
     formal: 'the exponent cutoff for membership in the participating set'
     not: 'a statistical test'
@@ -441,7 +441,7 @@ entries:
 
   - id: 'assignment'
     term: 'assignment'
-    short: 'The term that scores a design highest; reading it off the fitted model is analysis. Only the soft fit (finite term temperature) weighs every term against every design. At the default, the labels drive the refit.'
+    short: 'The term that scores a design highest; reading it off the fitted model is analysis. Only the soft fit (finite term temperature) weighs every term against every design. At the default (infinite), the assignments drive the refit.'
     register: 'assignment'
     formal: 'the maximizing term of the posynomial at the design'
     not: 'an identity that survives ties between scores'
@@ -464,7 +464,7 @@ entries:
   - id: 'row-share'
     term: 'row share'
     symbol: '\lvert C_k\rvert/N'
-    short: 'The fraction of all designs in a term''s cell; it weights the term gaps in the record''s bound.'
+    short: 'The fraction of all designs in a term''s cell; it weights the term gaps in the termination record''s bound.'
     register: 'row share'
     formal: 'the number of rows in cell k over N; returned as Termination.shares'
     not: 'the term share, which counts the near-frontier rows only'
