@@ -5,7 +5,7 @@ For an analyst fitting a table for the first time.
 ## Install
 
 The package is installed from source for now. It needs Python 3.12 and uses
-[uv](https://docs.astral.sh/uv/), a Python package manager:
+[uv](https://docs.astral.sh/uv/):
 
 ```bash
 git clone \
@@ -61,7 +61,7 @@ fitted weights at the fit temperature; their ratios are the elasticities between
 metrics, with a minus sign (`report.elasticities`).
 
 `ts.score_samples(X)` is the log of V for each design. V, the
-invariant value, is a weighted geometric mean of the metrics and is 1 on the fitted reference surface, so
+invariant value, is a weighted geometric mean of the metrics, 1 on the fitted reference surface, so
 its log is negative inside and positive beyond. `ts.transform(X)` is the chart, `d - 1` position coordinates plus that log V, and `ts.inverse_transform` undoes it.
 
 ## Your own data
@@ -71,7 +71,7 @@ What must hold of your table:
 - One row per evaluated design; the evaluation stays outside the package, which never calls your model. Design variables and labels are configuration, not attributes: leave them
   out ([prediction](user-guide/prediction.md) takes them).
 - The fit consumes a strictly positive matrix of larger-is-better metrics. Making them so is your
-  [conditioning](user-guide/conditioning.md), with `LogAffinePreconditioner`. Zeros are tolerated and negatives
-  rejected; infeasible rows are removed first.
-- The exponents describe the conditioned metrics of your sample, not the system's Pareto boundary, the best trade-offs it can reach
+  [conditioning](user-guide/conditioning.md), with `LogAffinePreconditioner`. Zeros are tolerated, negatives
+  rejected, infeasible rows removed first.
+- The exponents describe the conditioned metrics of your sample, not the system's Pareto boundary, its best trade-offs
   ([limitations](user-guide/limitations.md)).
