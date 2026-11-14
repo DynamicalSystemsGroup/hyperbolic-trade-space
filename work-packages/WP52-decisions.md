@@ -34,3 +34,13 @@ there; the attention-economies paper is the OSF preprint (Schneider, Nabben, Tam
 the Workshop on the Ostrom Workshop is on his authority, and goes into `history.yaml` as a note on his word only if the
 paragraph names the paper, which is his call with the paragraph. Recorded at the end of the spike's `proposal.md`.
 
+## "In our own account" (2026-11-14, 21:30 EST), on the paragraph
+
+**Supervisor, verbatim:** "we dont need to say " in our own account" this is literally our account. stuff we say is by
+definition in our own account"
+
+**Applied as:** the phrase is struck from the paragraph (now 88 words): "There is also a governance lineage. It runs
+from presuming a unique optimum to mapping a design space, where the choice among competing alternatives is politics,
+not optimization." The same phrase opens the page's client-projects paragraph from WP37; it goes by the same rule when
+the page is edited, unless he says otherwise.
+

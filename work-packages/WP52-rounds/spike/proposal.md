@@ -4,7 +4,7 @@ Nothing here is on the page. The page, the record and the test ceiling change on
 
 ## The paragraph (92 words)
 
-> There is also a governance lineage. In our own account, it runs from presuming a unique optimum to mapping a design
+> There is also a governance lineage. It runs from presuming a unique optimum to mapping a design
 > space, where the choice among competing alternatives is politics, not optimization. It starts with
 > [computer-aided governance](https://blog.block.science/computer-aided-governance-a-revolution-in-automated-decision-support-systems/)
 > (2019), written with Jeff Emmett, which names [Alvin Roth's market design](https://doi.org/10.1111/1468-0262.00335) and
