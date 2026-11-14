@@ -1774,3 +1774,17 @@ section = "Case construction"
 words_added = 36
 job = "names the three requirements of the thirteen that the case neither filters on nor prices (the battery peak power ratio, the power margin, the energy balance) and says every feasible design meets them, so the four, six and three add up"
 reader = "the reader who counted ten of thirteen"
+
+[[raise]]
+date = "2026-11-14"
+section = "The decision problem"
+words_added = 8
+job = "the open item on the search says the outer loop may move inward on a step, as the supervisor expects it"
+reader = "the reader of the main results who took the search's monotonicity as nearly settled"
+
+[[raise]]
+date = "2026-11-14"
+section = "Search of the design space (preliminary)"
+words_added = 14
+job = "the open item is the supervisor's: a submartingale property, outward in expectation, with a convergence result when the expected progress ceases; future work, no conditions derived (WP36-decisions.md, 2026-11-14, 12:20)"
+reader = "the reader who would read the search section as promising a monotone loop"
