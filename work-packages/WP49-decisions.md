@@ -289,3 +289,14 @@ the issue it resolves or the small-fix label, the description's fields, readable
 green, not merged by its author; each with its check), and `.github/pull_request_template.md`. The two conditions
 files are the human-readable face of WP47's D-7 workflows: one list, enforced by the actions it names.
 
+## The linked files land with the page (2026-11-14, 20:20 EST)
+
+**Supervisor, verbatim:** "i tried to click the links but the files are not there yet. this is okay for now since its why we're
+using links but we need these files too before we merge"
+
+**Applied as:** a merge condition on CONTRIBUTING: it lands on `dev` in one unit with every file it links, `CODE_OF_CONDUCT.md`,
+`.github/ISSUE_ADMISSIBILITY.md`, `.github/ISSUE_TEMPLATE/scope-of-work.yml`, `.github/PR_ADMISSIBILITY.md`,
+`.github/pull_request_template.md`, `SECURITY.md`, `docs/code-owners.md`, `.python-version`, `pyproject.toml`,
+`uv.lock`, and a test asserts that every relative link on the page resolves to a file in the repository (the site
+tests already do this for the pages; this one reads CONTRIBUTING.md). WP47's unit carries the condition.
+

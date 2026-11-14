@@ -116,3 +116,6 @@ materials from the locked resolution in a standard format (CycloneDX *(default)*
 it better) and attaches it to the GitHub release and the TestPyPI dry run's artifacts; R-13: the SBOM names every
 package the lock names, checked by a script in the review record; the generator action is SHA-pinned.
 
+Requirement R-14 (his word of 20:20 EST, `WP49-decisions.md`): `CONTRIBUTING.md` lands in the same delivery as every
+file it links, and a test asserts every relative link on it resolves to a file in the repository.
+
