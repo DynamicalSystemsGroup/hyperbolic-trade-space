@@ -51,3 +51,18 @@ used and supervised here. Nothing is adopted before his word on the readout.
 **Supervisor, verbatim (2026-11-14, 19:50; popup, multi-select over WP47, WP48, WP49):** "WP47,WP48,WP49"
 
 **Applied as:** WP47 approved as scoped (OD1 closed above); WP48 approved as scoped (its approval record is this file). The WP47 unit starts in a worktree; the WP48 spike continues from its committed first pass to the readout.
+
+## Amendment 1: the cheap enforcement checks in v0.1 (2026-11-14, 19:20 EST)
+
+**Supervisor, verbatim (popup: cheap checks with WP47 in v0.1, or all after v0.1 under WP48):** "Cheap ones in v0.1"
+
+**Applied as:** WP47 gains the checks that are a small GitHub Action with the gh CLI or a repository setting, from the
+list in `WP49-decisions.md` (19:10): (1) issue admissibility on opened or edited (the template's fields present and
+non-empty, else a comment naming the gap and the `draft` label kept); (2) the `draft` label removable only by a code
+owner, any other removal reverted; (3) a pull request names the issue it resolves or carries the small-fix label; (4)
+the pull request description's fields filled; (5) the merge into `dev` by a code owner who is not the author, as the
+branch-protection settings on his checklist plus a check on the merge event. Each is a workflow under
+`.github/workflows/` pinned by SHA, with a test or a dry run in the review record, and each is written as a
+verification case (requirement, method, evidence, verdict) so WP48's readout can cite it. The review-record check
+(8) waits for WP48's definition of the record. Fitness items get no script.
+

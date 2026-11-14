@@ -97,3 +97,15 @@ Good enough is met, no open item remains unresolved, and the supervisor has acce
   used and supervised, as its own spike (WP49). None is written in WP47.
 
 No open decision remains.
+
+## Amendment 1 (2026-11-14, 19:20 EST): the cheap enforcement checks
+
+Approved by his word "Cheap ones in v0.1" (`WP47-decisions.md`). Added deliverable:
+
+| ID | Deliverable | Serves |
+|---|---|---|
+| D-7 | Five workflows under `.github/workflows/`, each pinned by SHA and each a verification case in `WP47-rounds/checks.md`: issue admissibility (opened, edited); the `draft` label gate (unlabeled, reverted unless by a code owner); linked issue or small-fix label on a pull request (opened, edited); pull request description fields (opened, edited); merged-by-a-code-owner-not-author on `dev` (the branch-protection settings in the checklist, plus a check on the merge event). The issue and pull request templates carry the fields these read. | G2, G3 |
+
+Requirement R-12: each workflow has a dry run or a test in the review record and names its trigger; fitness items of
+the contributing page have no workflow. Non-goals unchanged.
+
