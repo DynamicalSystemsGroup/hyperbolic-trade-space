@@ -272,3 +272,7 @@ they can change without this document changing"
 **Applied as:** the sentence is gone; the section opens on the three files as links, with "those files change, this page
 does not", and the closing meta-sentence about the supply chain is cut too.
 
+**Supervisor, verbatim (19:50 EST), on the page's release sentence:** "sbom in v0.1"
+
+**Applied as:** the page's "A release ships with a software bill of materials" holds for v0.1; WP47 Amendment 2 builds it.
+

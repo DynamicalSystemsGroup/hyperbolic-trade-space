@@ -109,3 +109,10 @@ Approved by his word "Cheap ones in v0.1" (`WP47-decisions.md`). Added deliverab
 Requirement R-12: each workflow has a dry run or a test in the review record and names its trigger; fitness items of
 the contributing page have no workflow. Non-goals unchanged.
 
+## Amendment 2 (2026-11-14, 19:50 EST): the software bill of materials
+
+Approved by his word "sbom in v0.1" (`WP47-decisions.md`). D-2's release workflow also generates a software bill of
+materials from the locked resolution in a standard format (CycloneDX *(default)*; SPDX if the chosen generator does
+it better) and attaches it to the GitHub release and the TestPyPI dry run's artifacts; R-13: the SBOM names every
+package the lock names, checked by a script in the review record; the generator action is SHA-pinned.
+

@@ -66,3 +66,14 @@ branch-protection settings on his checklist plus a check on the merge event. Eac
 verification case (requirement, method, evidence, verdict) so WP48's readout can cite it. The review-record check
 (8) waits for WP48's definition of the record. Fitness items get no script.
 
+## Amendment 2: the software bill of materials in v0.1 (2026-11-14, 19:50 EST)
+
+**Supervisor, verbatim:** "sbom in v0.1"
+
+**Applied as:** WP47's release workflow produces a software bill of materials for each release and attaches it to the
+GitHub release beside the wheel and sdist: generated from the locked resolution in a standard format (CycloneDX or
+SPDX, the agent's default is CycloneDX via a SHA-pinned action or `uv export` fed to the generator), for the package
+as built, so what a version contains can be audited afterwards. It is written as a verification case (the release
+carries an SBOM that matches the lock; evidence: the release asset and the workflow log) and is WP48's check 2 made
+real in v0.1. The TestPyPI dry run from `dev` produces it too, so the step is exercised before the first real release.
+
