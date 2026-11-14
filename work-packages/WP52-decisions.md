@@ -259,3 +259,11 @@ a named human) and the SciPy 2026 paper (derivations scripted in SymPy, the patt
 follow) enter the 2026 part of the timeline once each is resolved (DOI or proceedings page), each in a clause that says
 what it did and how this project uses it.
 
+**Applied (02:25 EST):** both were already in the record (entries `2026-incose`, INCOSE IS 36(1) 1501 to 1514, July 2026,
+Crossref; `2026-scipy-talk`, the SciPy 2026 programme page, 17 July 2026, with video and slides; no proceedings paper
+found yet). The 2026 paragraph gains two sentences: the INCOSE paper set the posture this project takes toward AI
+assistance (verification by machine against a specification, validation of fitness by a named person, assurance where
+both close); the SciPy talk showed derivations scripted in SymPy with identities as test assertions in continuous
+integration, the pattern this repository's lemma scripts follow. Register rows C710 and C711. If the SciPy proceedings
+paper appears, its link replaces the talk's on his word.
+
