@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **116c929 fully green (02:45).** CI 43581901051 on 116c929 (the nit unit with the C422 fix): every job green on
+  both platforms, the thirty-second fully green head; the run on 6891eae (the pass's closing records) is in progress.
+  The final round's first wave is launched; no report has returned yet.
+
 - **WP38 accepted at the assistant's level; the final round cleared to launch (02:20).** The site and docs test
   group, slow tests included, 125 passed on this checkout at 6891eae in 28 minutes, which settles the PMs'
   worktree-only fixture errors as environmental; with the fast suite 1947 and the review read, WP38 is delivered and
