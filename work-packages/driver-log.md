@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **c8897c2 fully green; the confirmations stalled behind the residue unit (19:45).** CI 43550569362 on c8897c2
+  (the pass's landings): every job green on both platforms, the thirtieth fully green head. The second readers'
+  confirmations stand at 7 of 29 since 22:27 local; PM14 has one child running, the residue unit's implementer, now
+  in its test group, and appears to wait on it in the foreground, so the waves have not resumed; chased once with
+  the specific request to run the waves beside the unit in the background.
+
 - **The residual pass landed and verified; rulings on its residue (18:30).** All four landing units on dev at
   c8897c2 (the paper and appendices as one unit with a single execution; the figures unchanged; no quoted number
   moved; the paper 10,354 to 9,914 words). The assistant's checks on c8897c2: ruff, lock, attribution clean; the
