@@ -22,6 +22,15 @@ cubesat; and (14:50) Rothamsted's Broadbalk wheat yields become a two-metric exa
 good and the story is clear. The aim is the package's usefulness and its documentation (his priority of 14:20); the
 paper is unchanged.
 
+## Two requirements, kept apart
+
+The supervisor's ruling (15:15, verbatim in `WP44-decisions.md`): the work that tests the method and the didactic story
+drawn from it for the user are two requirements; the page is not written to convince. So each case has two
+deliverables in order: the test record first (the expected n-lemma written from the literature before any fit, the
+fit, pass or fail, sensitivity to conditioning and temperature, counts and limits; in `work-packages/WP45-rounds/`), then
+the docs page drawn from it (what the data are, how to condition, how to fit, how to read, for a user with their own
+table; no test apparatus on the page; the record cited once for the reader who wants it).
+
 ## Goals
 
 - G1. **A reader can run each example from the docs alone:** each page states the dataset, its licence and source
@@ -56,6 +65,7 @@ paper is unchanged.
 
 | ID | Deliverable | Serves |
 |---|---|---|
+| D-0 | `work-packages/WP45-rounds/<case>/test-record.md` per case: the expected n-lemma from the literature, committed before the first fit; the fit, pass or fail against it; sensitivity to conditioning and temperature; counts and limits; written to test, reported either way | G5 |
 | D-1 | `examples/perovskite/`, `examples/amniote/`, `examples/wheat/` (if built): the fetch step, the conditioning rule, the fit script, the generated figures and tables, each reproducible by one command | G1 to G4 |
 | D-2 | `docs/examples-perovskite.md`, `docs/examples-amniote.md`, `docs/examples-wheat.md` (or one page with three sections, per the defaults), built into the docsite and linked from Examples and the docs home | G1 to G4 |
 | D-3 | Claims rows and references for every sentence and citation; tests that the pages' numbers are the scripts' outputs | G5 |
@@ -71,6 +81,7 @@ paper is unchanged.
 | R-4 | The n-lemma each page reads is the fit's at the stated temperature and K, and the named trade-off is cited with a DOI | the claims rows; `uv run pytest -q -m "not slow"` |
 | R-5 | No file under `paper/` changes | `git diff --stat` |
 | R-6 | The three fresh readers state the trade-off each page shows and run the example without a question | `WP45-review.md` |
+| R-7 | Each test record's expected n-lemma is committed before the case's first fit, and the page carries no sentence whose job is to convince (the review reads for it) | `git log` order; `WP45-review.md` |
 
 ## Definition of good
 

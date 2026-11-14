@@ -56,3 +56,13 @@ candidates list as the next two domains.
 behind a form, the derived table committed under CC BY with attribution); the story is Austin et al. 1980
 (doi:10.1017/S0021859600028665) and Austin et al. 1993 on Broadbalk itself (doi:10.1016/S1161-0301(14)80144-5).
 Recorded in the readout; the page is WP45's G4.
+
+**Supervisor, verbatim (15:15):** "these are two different requirements so don't confuse readers to convince us. think
+in terms of work you do to test our method and then draw a didactic story from that work for the user"
+
+**Applied as:** WP45 separates the two: for each case, first a test record in `work-packages/WP45-rounds/<case>/`
+(the expected n-lemma written from the literature before the fit, the fit, pass or fail, the sensitivity to
+conditioning and temperature, the row counts and the limits), which is the work that hardens the method and is reported
+whether it passes or not; then the docs page, drawn from that record as a didactic story for a user with their own
+table (what the data are, how to condition, how to fit, how to read), with none of the test record's apparatus on the
+page and no sentence written to convince. The page cites the record for a reader who wants it.
