@@ -134,3 +134,9 @@ of his first proofs (the affiliation sourced, or stated on the supervisor's word
 web3 lineage fed the experience with product invariants without being the point. Balancer's record entries carry the
 special-case flag the record uses for cryptocurrency settings. Sources resolved first; the sentences follow them.
 
+**Supervisor, verbatim (23:05 EST):** "our configuration spaces and economic games as estimators papers are also salient
+under this view"
+
+**Applied as:** the two papers (found, read, resolved) join the product-invariant sidebar at their dates as the work
+that set the context: configuration spaces, and economic games as estimators.
+
