@@ -57,27 +57,30 @@ order from the contributor's act to the record:
 
 ## The clauses, drafted (for his sign-off; not adopted)
 
-**Accountability clause (draft).**
+The clauses carry his wording of 2026-11-14, 03:05 (`WP49-decisions.md`). The background paper "Protocols and Institutions"
+was read as background only; it changed no clause and no option.
+
+**Accountability clause (draft; the last sentence is his, 03:05).**
 
 > Every change merged here has a named human contributor: the person who submits it, who owns it. To own a change is to be
 > able to explain it, to have checked it against its scope, and to answer for it afterwards. The bar a change must meet
 > does not depend on what produced it: the same scope, the same review, the same blast radius, the same readable history.
 > You are not asked whether or how you used AI, and "a tool wrote it" is never an answer to a question about the change.
-> Commits name people. No tool is a contributor, so no commit carries a trailer or line naming a tool as author,
-> co-author or generator.
+> No tool is a contributor, so commits should not carry a trailer or line naming a tool as author.
 
-**Tools clause (draft).**
+**Tools clause (draft; organised around his rule, 03:05).**
 
-> Coding agents and agent-based editors (Claude Code, Codex, Devin, Cursor and their like) are part of how software is
-> written today, as an editor is; nobody is asked to avoid them or the models behind them. You may document which tools
-> you used, and in some cases should, in the pull request's description or the work package's record; this is never
-> done in the git history as the contributor. Putting someone else's code through a model to escape its licence is a
-> licence violation exactly as copying it would be. This project's checks are written to hold whichever model or editor
-> you use.
+> Humans make commits, and humans use tools. The commit history names people. Coding agents and agent-based editors
+> (Claude Code, Codex, Devin, Cursor and their like) are part of how software is written today, as an editor is; nobody
+> is asked to avoid them or the models behind them. The use of AI tools is documented where tool use is documented,
+> together with the editor, the build tools and the environment: in the "tools used" part of the pull request's
+> description or of the work package's record, and never as the committer or author. You may document it, and in some
+> cases should. Putting someone else's code through a model to escape its licence is a licence violation exactly as
+> copying it would be. This project's checks are written to hold whichever model or editor you use.
 
 Open in the wording, for him: (a) "in some cases should": which cases (the draft names none, because his words give
 none); (b) whether the accountability clause also states that no agent merges or opens a change without a named person
-behind it (the reviewer-burden row above); (c) whether "an editor is" stays in the user-facing text or is replaced.
+behind it (the reviewer-burden row above); (c) whether "as an editor is" stays in the user-facing text or is replaced.
 
 ## The covenant's shape: three options
 
