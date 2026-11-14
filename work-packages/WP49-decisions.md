@@ -339,3 +339,14 @@ the same in a clause. For WP47's unit: the merge check reads `CODEOWNERS`, and p
 of code owners minus the author is empty; branch protection's "no self-approval" is therefore enabled from the first
 day a second code owner exists and is on the code owners' page as the step that comes with adding one.
 
+## Sign-off (2026-11-14, 21:00 EST)
+
+**Supervisor, verbatim (popup: sign off CONTRIBUTING and the three admissibility files):** "Signed off"
+
+**Applied as:** the texts of record are `WP49-rounds/CONTRIBUTING.draft.md` at this commit and the three admissibility
+drafts beside it; WP47's unit places them at `CONTRIBUTING.md` and `.github/{ISSUE,PR,RELEASE}_ADMISSIBILITY.md`
+word for word (only the `.draft` suffix and the relative links change with the location), beside the unaltered
+Contributor Covenant 3.0 as `CODE_OF_CONDUCT.md`, the templates, SECURITY.md and the code owners' page, in one head
+with the link test (R-14) and the D-7 workflows. WP49 is accepted: its readout led to a shape and a text he signed.
+Task W10 on his list is done; the sign-off of the final rendered files in the repository is his acceptance of WP47.
+

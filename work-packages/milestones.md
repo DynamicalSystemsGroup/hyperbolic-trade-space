@@ -24,7 +24,7 @@ examples, drawn from the research that lands in v0.1's record; the breadth those
 | WP46 temperature path (helper, small-tau lemma step, user-guide page) | required (16:55 ruling) | none | in flight (worktree wp46; D-1 and D-4 landed there) |
 | WP47 release engineering (0.1.0 metadata, trusted publishing workflow, CODEOWNERS, templates, CONTRIBUTING, SECURITY, maintainers page, his PyPI checklist) | blocking: the release path | the same path for 0.2 | approved 19:50; dispatched |
 | WP48 governance-checks spike | readout only | required: the checks as automated release gates, as verification cases | approved 19:50; first pass committed; readout in progress |
-| WP49 contributor covenant spike | readout before the PR; the covenant on his sign-off, placement his call at the readout | the same | approved 19:50; dispatched; his principle and tool stance recorded 20:50 and 21:10 |
+| WP49 contributor covenant spike | readout before the PR; the covenant on his sign-off, placement his call at the readout | the same | readout verified and landed; shape A and the texts signed off 21:00 EST; the files land with WP47 |
 | WP50 topological holes by persistent homology (research) | at most a future-work sentence, his to accept | none | approved 21:35; dispatched |
 | WP8b: version unit, reviewer's guide and checklist, CHANGELOG, register and grid refresh, final CI both platforms, the PR | blocking: the last step | none | version held (rebases with WP47's metadata); drafts not landed; refresh after the last prose unit |
 | Acceptances WP33, 35, 37, 38, 39, 40; the third unit; the abstract | blocking: his | none | his (`supervisor-tasks.md`) |
