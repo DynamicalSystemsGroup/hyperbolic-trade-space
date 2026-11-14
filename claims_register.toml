@@ -7956,7 +7956,7 @@ kind = "R"
 backing = [
   "file:examples/adcs/model_v2/cubesat.sysml",
   "gen:paper/generate_results.py::requirements_at_the_frontier",
-  "test:tests/test_paper.py::test_the_three_requirements_the_case_neither_filters_nor_prices_hold_for_every_feasible_design",
+  "test:tests/test_paper.py::test_the_three_requirements_neither_filtered_nor_priced_hold_for_every_feasible_design",
 ]
 status = "backed"
 disposition = "keep"

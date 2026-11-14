@@ -4412,7 +4412,7 @@ def test_the_polish_and_the_unused_lemma_are_named_in_appendix_b2():
     assert "the returned point is polished" in results
 
 
-def test_the_three_requirements_the_case_neither_filters_nor_prices_hold_for_every_feasible_design():
+def test_the_three_requirements_neither_filtered_nor_priced_hold_for_every_feasible_design():
     """166: the battery peak power ratio (at least 1), the power margin and the energy balance (not
     negative) are met by every feasible design of both regimes, so they bind nowhere."""
     import case
