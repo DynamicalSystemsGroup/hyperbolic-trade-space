@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The residue unit's tests deadlocked; the implementer told to rerun serially (20:15).** In wp38resid the pytest run
+  and six parallel worker processes have sat at 0 percent CPU for 35 minutes, a deadlock between workers, not a slow
+  test; the implementer told directly to stop it and rerun without parallel workers, and PM14 told not to wait on a
+  child in the foreground so the confirmation waves (7 of 29 done) can run beside it. The wp38pass worktree that held
+  the seven forms is gone from the list and nothing of them is on dev; PM14 asked where they are, with a re-run of the
+  seven if lost.
+
 - **c8897c2 fully green; the confirmations stalled behind the residue unit (19:45).** CI 43550569362 on c8897c2
   (the pass's landings): every job green on both platforms, the thirtieth fully green head. The second readers'
   confirmations stand at 7 of 29 since 22:27 local; PM14 has one child running, the residue unit's implementer, now
