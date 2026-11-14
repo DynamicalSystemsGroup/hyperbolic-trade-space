@@ -64,3 +64,16 @@ the client-projects paragraph), and from any page of ours where it stands as a h
 team's account by definition. The history unit removes both; the vocabulary checker gains the phrase as an avoided
 variant so it does not come back.
 
+## Timeline, two places (2026-11-14, 22:00 EST), on seeing the page without the paragraph yet
+
+**Supervisor, verbatim:** "i don't see the narration of the AOI or CAG work in here yet" and "this is roughly timeline
+oriented so it may not be just one paragraph the CAG work is quite old and the AOI work is quite recent"
+
+**Applied as:** the lineage goes in two places on the page's timeline, drafted on branch `history` and previewed on the
+verify server: after the cadCAD paragraph (2018 to 2019), computer-aided governance (2019) with Emmett, naming Roth's
+market design, humans in charge informed by models, and the lineage sentence (unique optimum to design space, the
+choice among alternatives as politics); after the synthesis paragraph, with Nabben and Rennie, computer-aided
+ethnography (2023) and Building the Loop (2025) on artificial organisational intelligence, and the closing line on what
+this paper does and defers. The OpenMBEE sentence and the four "in our own account" removals are on the same branch;
+the record entries from the proposal are in `history.yaml`. Tests, the word ceiling and the checker follow his read.
+
