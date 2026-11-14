@@ -299,3 +299,10 @@ their stability in Lyapunov's sense and set protocols as the engineered part of 
 **Applied as (pending):** found and read where a stable record exists (a DOI or publisher page rather than ResearchGate,
 which blocks automated readers); placed if it fits the lineage's line, with the reason either way.
 
+**What the sources show (03:10 EST):** ResearchGate answers 403 to automated readers; the stable record is a Zenodo
+presentation of 19 June 2024 by Danilo Lessa Bernardineli alone (doi:10.5281/zenodo.12170072), with no abstract on the
+record; the title is all a clause could rest on without reading the file. The driver's view: it is Danilo's work, so if it
+enters the page it enters the people's paragraph beside his review of the block-diagrams repository, as his presentation
+on keeping a mechanism as simple as Occam's razor allows and as varied as Ashby's law requires; it is not on the
+governance lineage's line. Pending his word, and his word on whether a paper version with other authors exists.
+
