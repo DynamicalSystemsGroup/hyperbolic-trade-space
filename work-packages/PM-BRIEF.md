@@ -938,3 +938,30 @@ the part a PM and its units need. Where he has not spoken, his next sentence ove
   only an absence of witnesses); pushing is a proposal beyond the surface; both are conjectures settled by building and
   measuring. White space is 0.1's word; hole is reserved for WP50's object and is not defined in 0.1.
 
+
+## Handover (fifteenth PM, 2026-11-15; Sonnet; context near its limit)
+
+Round: the 46 core reads (waves 1 to 7) are committed verbatim under WP11-final/reports/ with README and triage by the
+assistant; waves 8 and 9 (the twelve held-out reads: F01 F10 F15 F17 F18 F23 and G twins) are NOT run. They wait on
+recapturing the A and B slices at the rebuilt stage (dev abstract head 735fa51 and later, 8791), re-rendering the twelve
+briefs (make_briefs2.py, scratchpad/final-round; slots.tsv; aliases scratchpad/material and scratchpad/returns), two waves
+of six, at most four browser readers, m1 Sonnet and m2 Haiku, background spawns, commit returns the moment they finish,
+add a README section for the new head. Paper units landed: c42d860, a80c126, ca352f5 (requests 1 to 169). Request 170 and
+171 plus Figures 3, 6, 7: fix4.
+
+Branches, none merged (a PM lands by rebase and fast-forward after the assistant verifies; the assistant pushes):
+| Branch | Head | State and what is left |
+|---|---|---|
+| fix4 | de9a1c3 | Done (Fig 6 line under points, Fig 3 caption states 11 arrows, Fig 7 title wrap, L16 docstring). Left: one fresh Haiku cold read each of Figures 3 and 6 (image alone), reports committed verbatim in figure-loop/; then land. Fig 7 title change is moot if WP42's build replaces the figure |
+| wp41 | c7f1e86 | Delivered; whole non-slow group not re-run after the last bound change (R-15 300 to 320); D-5 fresh reader not run; add the one-sentence "bridge serves both" to docs/bridge.md (assistant 22:25 note) |
+| wp42 | 19c6b5a | Spike readout plus R-3 cold reads committed. BUILD not dispatched: Amendment 1 of WP42-scope-of-work.md and WP42-decisions.md (one Sonnet unit, order lemma and derivation/run.py, package renames, glossary, paper, docs, then two fresh Haiku cold reads); rebase on whichever of wp41/fix4 lands first; drop root-page edits (rootpage branch is the assistant's) |
+| wp43 | c56892a | Delivered with rerun record (byte identical but wall-clock columns); assistant verifies |
+| wp45 | 0cc2cf2 | Perovskite and amniote delivered; wheat being done (resumed agent af1dc286, gitignore rule, zip vs csv verify); full suite not re-run since the encoding fix |
+| wp46 | 94621cf | Delivered; 3 test_paper.py failures on stale Appendix B (paper/ untouchable in its scope): re-run after rebase on dev; claims ids and contract v24 may collide at merge; D-5 fresh reader not run |
+| wp47 | 95b7398 | Delivered; resumed (agent af7a0182) to pin actions by SHA, dependabot.yml, maintainers.md paragraph; the version bump is the wp8b-version unit's, rebased and landed with it |
+| wp48 | 879d1ad | Readout delivered; SysML draft not parsed; the SHA-pin control is its first example |
+| wp49 | 7493f61 | Resumed (agent a0f47306): read the second paper, reword the two clauses per the 03:05 entry, rebase; PM then lands on dev and reports the head |
+| wp8b-drafts | 468b27a | Reviewer's guide and checklist; not landed (the assistant's word); needs a refresh at the final head and the 46-read round numbers |
+| wp8b-version | c23cf60 | Held: 0.1.0 in pyproject.toml, uv.lock, __init__.py plus CHANGELOG heading; lands only with the assistant's word, after wp47 |
+Not dispatched: WP50 (research unit, web access, files only under WP50-rounds/; read WP50-scope-of-work.md and all WP50-decisions.md entries including 22:20, 22:25, 22:27, 23:15, 23:20), WP42 build (above). Register and grid refresh after the last prose unit: not started. Worktrees to remove as units land: all under scratchpad/pm-worktrees/ named above; rootpage, stage, verify, docshome, hts-reader-EF are not mine.
+Rules learnt: spawn long units in the background; commit each wave's reports at once (the assistant committed some for me); a unit that is told "do not merge" ends with a head, and landing is rebase plus `git merge --ff-only` in the main checkout; implementers tend to skip the full group once, say so in the brief.
