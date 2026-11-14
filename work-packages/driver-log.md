@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **7f790f2 fully green (17:15).** CI 43536108422 on 7f790f2 (the pass's entry-surface and docs landings): every job
+  green on both platforms, the twenty-ninth fully green head. The paper unit of the pass has its notebooks executed
+  once on the copy-edited sources (416911d in its worktree) and is running the paper tests before the push.
+
 - **d417196 fully green (16:15).** CI 43532734200 on d417196 (the pass's first landing): every job green on both
   platforms, the twenty-eighth fully green head; the run on 7f790f2 is in progress. The paper unit of the pass is
   iterating on the tests that pin the paper's sentences in its worktree.
