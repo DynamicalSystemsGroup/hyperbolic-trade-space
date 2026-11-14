@@ -1,8 +1,9 @@
 # Source record of the wheat example (R-1). Landing page read 2026-11-14 (WP44 wheat check).
 # The download is open but behind a form (name, organisation, organisation type, country, intended
 # use, "Agree and Download"). No agent fills that form: the supervisor's step, done once.
-# The file entries below stay empty until the supervisor has fetched the file and recorded its
-# size and hashes with `uv run python examples/wheat/derive.py --record <file>`.
+# The supervisor fetched the zip on 2026-11-14. `file`, `size`, `md5`, `sha256` are the download of
+# record (the zip, recorded with `derive.py --record`); `csv_*` are the extracted table the script
+# reads (`derive.py` verifies whichever of the two it is given).
 name = "Broadbalk Wheat annual grain and straw yields 1968-2022 (Glendining and Poulton 2023), v1.0"
 doi = "10.23637/rbk1-yld6822-01"
 landing_page = "https://www.era.rothamsted.ac.uk/dataset/rbk1/01-YLD6822"
@@ -11,8 +12,12 @@ licence = "CC BY 4.0"
 licence_text = "This dataset is available under a Creative Commons Attribution Licence (4.0)."
 licence_url = "https://creativecommons.org/licenses/by/4.0/"
 attribution = "Glendining and Poulton (2023), Broadbalk Wheat annual grain and straw yields 1968-2022, e-RA, doi:10.23637/rbk1-yld6822-01"
-expected_files = ["01-BKyld6822.xlsx", "Frictionless zip of CSVs"]
-file = ""
-size = 0
-md5 = ""
-sha256 = ""
+file = "01-YLD6822.zip"
+size = 2026055
+md5 = "778fedf0ed1163b2cc6247bb46a9511a"
+sha256 = "6b5957d4fcc19776a52bd21e9d886d3e598d7af6d0e7b88a785e537145b43e43"
+csv_file = "yield_data.csv"
+csv_path_in_zip = "01-BKyld6822/yield_data.csv"
+csv_size = 1863995
+csv_md5 = "393fd30b9b6edcf36ea1676475c7d2a8"
+csv_sha256 = "3c26769491aa864c224c4c46de4340a7dad3016b3f616ee9bbec8095c425f0ad"

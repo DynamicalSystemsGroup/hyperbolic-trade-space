@@ -1,0 +1,6 @@
+This dataset is available under a Creative Commons Attribution Licence (4.0).
+
+Attribution: Glendining and Poulton (2023), Broadbalk Wheat annual grain and straw yields 1968-2022, e-RA, doi:10.23637/rbk1-yld6822-01
+Source: https://www.era.rothamsted.ac.uk/dataset/rbk1/01-YLD6822
+Licence: https://creativecommons.org/licenses/by/4.0/
+This table is derived: rows with grain and straw both recorded and positive, selected columns only.

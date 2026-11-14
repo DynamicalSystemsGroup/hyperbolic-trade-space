@@ -1,0 +1,550 @@
+{
+  "counts": {
+    "both_positive": 3753,
+    "grain_present": 7814,
+    "rows_in_table": 8573,
+    "straw_present": 3755
+  },
+  "cultivars": {
+    "Apollo": {
+      "biomass": 9.790000000000001,
+      "first": 1991.0,
+      "grain": 6.72,
+      "hi": 0.6658566221142163,
+      "last": 1995.0,
+      "rows": 139.0
+    },
+    "Brimstone": {
+      "biomass": 10.07,
+      "first": 1985.0,
+      "grain": 6.88,
+      "hi": 0.6812313803376365,
+      "last": 1990.0,
+      "rows": 167.0
+    },
+    "Cappelle Desprez": {
+      "biomass": 8.969999999999999,
+      "first": 1968.0,
+      "grain": 4.76,
+      "hi": 0.5238095238095238,
+      "last": 1978.0,
+      "rows": 1043.0
+    },
+    "Crusoe": {
+      "biomass": 8.89,
+      "first": 2013.0,
+      "grain": 6.08,
+      "hi": 0.6715049656226126,
+      "last": 2018.0,
+      "rows": 221.0
+    },
+    "Flanders": {
+      "biomass": 10.44,
+      "first": 1979.0,
+      "grain": 6.37,
+      "hi": 0.6123008713488651,
+      "last": 1984.0,
+      "rows": 236.0
+    },
+    "Hereward": {
+      "biomass": 9.06,
+      "first": 1996.0,
+      "grain": 6.12,
+      "hi": 0.6645161290322581,
+      "last": 2012.0,
+      "rows": 755.0
+    },
+    "Mulika": {
+      "biomass": 9.955,
+      "first": 2015.0,
+      "grain": 6.6899999999999995,
+      "hi": 0.6700102393826268,
+      "last": 2015.0,
+      "rows": 30.0
+    },
+    "Tybalt": {
+      "biomass": 7.199,
+      "first": 2020.0,
+      "grain": 5.414,
+      "hi": 0.7665861159929702,
+      "last": 2020.0,
+      "rows": 59.0
+    },
+    "Zyatt": {
+      "biomass": 8.75,
+      "first": 2019.0,
+      "grain": 6.967,
+      "hi": 0.76359993835722,
+      "last": 2022.0,
+      "rows": 161.0
+    }
+  },
+  "runs": {
+    "modern_only": {
+      "association": {
+        "grain|straw": -0.8058641326603694
+      },
+      "band": 0.09384884699081768,
+      "by_temperature": [
+        {
+          "exponents": {
+            "grain": 0.5419083754738282,
+            "straw": 0.45809162452617186
+          },
+          "frac_above": 0.3063063063063063,
+          "tau": 3.0
+        },
+        {
+          "exponents": {
+            "grain": 0.6037248247625345,
+            "straw": 0.3962751752374656
+          },
+          "frac_above": 0.10253110253110254,
+          "tau": 10.0
+        },
+        {
+          "exponents": {
+            "grain": 0.5978714454839796,
+            "straw": 0.4021285545160205
+          },
+          "frac_above": 0.09094809094809095,
+          "tau": 10.655431921266349
+        },
+        {
+          "exponents": {
+            "grain": 0.49281158092809285,
+            "straw": 0.5071884190719073
+          },
+          "frac_above": 0.015015015015015015,
+          "tau": 30.0
+        },
+        {
+          "exponents": {
+            "grain": 0.4404213798736257,
+            "straw": 0.5595786201263743
+          },
+          "frac_above": 0.00429000429000429,
+          "tau": 100.0
+        }
+      ],
+      "contending_exponents": [
+        0.42328726184902227,
+        0.5767127381509778
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "exponents_k1": {
+        "grain": 0.5978714454839796,
+        "straw": 0.4021285545160205
+      },
+      "frac_above": 0.09094809094809095,
+      "harvest_index_median": 0.6680981595092025,
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 2331,
+      "n_eff": 43.24308832755455,
+      "n_lemma": 2,
+      "n_near_frontier": 211,
+      "rows": 2331,
+      "target_frac_above": 0.1,
+      "tau_selected": 10.655431921266349
+    },
+    "n_at_least_96": {
+      "association": {
+        "grain|straw": -0.8677792827613633
+      },
+      "band": 0.15581485609292317,
+      "by_temperature": [
+        {
+          "exponents": {
+            "grain": 0.5261997342117445,
+            "straw": 0.4738002657882555
+          },
+          "frac_above": 0.26040554962646745,
+          "tau": 3.0
+        },
+        {
+          "exponents": {
+            "grain": 0.510259326607683,
+            "straw": 0.48974067339231697
+          },
+          "frac_above": 0.10636784062611171,
+          "tau": 6.417873270079143
+        },
+        {
+          "exponents": {
+            "grain": 0.48963969080061076,
+            "straw": 0.5103603091993892
+          },
+          "frac_above": 0.05336179295624333,
+          "tau": 10.0
+        },
+        {
+          "exponents": {
+            "grain": 0.4418301445583483,
+            "straw": 0.5581698554416517
+          },
+          "frac_above": 0.008893632159373888,
+          "tau": 30.0
+        },
+        {
+          "exponents": {
+            "grain": 0.4208399241005174,
+            "straw": 0.5791600758994826
+          },
+          "frac_above": 0.0035574528637495554,
+          "tau": 100.0
+        }
+      ],
+      "contending_exponents": [
+        0.4167476517927548,
+        0.5832523482072451
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "exponents_k1": {
+        "grain": 0.510259326607683,
+        "straw": 0.48974067339231697
+      },
+      "frac_above": 0.10636784062611171,
+      "harvest_index_median": 0.6111535523300229,
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 2811,
+      "n_eff": 84.14115139218796,
+      "n_lemma": 2,
+      "n_near_frontier": 330,
+      "rows": 2811,
+      "target_frac_above": 0.1,
+      "tau_selected": 6.417873270079143
+    },
+    "n_at_least_96_modern": {
+      "association": {
+        "grain|straw": -0.8153651693108018
+      },
+      "band": 0.12092578132210276,
+      "by_temperature": [
+        {
+          "exponents": {
+            "grain": 0.7108605586833657,
+            "straw": 0.28913944131663427
+          },
+          "frac_above": 0.2918552036199095,
+          "tau": 3.0
+        },
+        {
+          "exponents": {
+            "grain": 0.7247805608513976,
+            "straw": 0.2752194391486024
+          },
+          "frac_above": 0.09954751131221719,
+          "tau": 8.26953515674511
+        },
+        {
+          "exponents": {
+            "grain": 0.7001739669365828,
+            "straw": 0.2998260330634172
+          },
+          "frac_above": 0.0661764705882353,
+          "tau": 10.0
+        },
+        {
+          "exponents": {
+            "grain": 0.5446579183243507,
+            "straw": 0.4553420816756492
+          },
+          "frac_above": 0.012443438914027148,
+          "tau": 30.0
+        },
+        {
+          "exponents": {
+            "grain": 0.46350270068497595,
+            "straw": 0.5364972993150241
+          },
+          "frac_above": 0.003393665158371041,
+          "tau": 100.0
+        }
+      ],
+      "contending_exponents": [
+        0.4262998293341919,
+        0.573700170665808
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "exponents_k1": {
+        "grain": 0.7247805608513976,
+        "straw": 0.2752194391486024
+      },
+      "frac_above": 0.09954751131221719,
+      "harvest_index_median": 0.6651936125561753,
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 1768,
+      "n_eff": 33.71011335515746,
+      "n_lemma": 2,
+      "n_near_frontier": 201,
+      "rows": 1768,
+      "target_frac_above": 0.1,
+      "tau_selected": 8.26953515674511
+    },
+    "primary": {
+      "association": {
+        "grain|straw": -0.866717901424697
+      },
+      "band": 0.12092578132210276,
+      "by_temperature": [
+        {
+          "exponents": {
+            "grain": 0.4466735923558047,
+            "straw": 0.5533264076441953
+          },
+          "frac_above": 0.2928324007460698,
+          "tau": 3.0
+        },
+        {
+          "exponents": {
+            "grain": 0.4458678943082456,
+            "straw": 0.5541321056917544
+          },
+          "frac_above": 0.0980548894217959,
+          "tau": 8.26953515674511
+        },
+        {
+          "exponents": {
+            "grain": 0.44492158523582503,
+            "straw": 0.555078414764175
+          },
+          "frac_above": 0.0738076205702105,
+          "tau": 10.0
+        },
+        {
+          "exponents": {
+            "grain": 0.4330970464650962,
+            "straw": 0.5669029535349038
+          },
+          "frac_above": 0.010924593658406609,
+          "tau": 30.0
+        },
+        {
+          "exponents": {
+            "grain": 0.42708249681271465,
+            "straw": 0.5729175031872854
+          },
+          "frac_above": 0.002398081534772182,
+          "tau": 100.0
+        }
+      ],
+      "contending_exponents": [
+        0.4246713939299687,
+        0.5753286060700313
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "exponents_k1": {
+        "grain": 0.4458678943082456,
+        "straw": 0.5541321056917544
+      },
+      "frac_above": 0.0980548894217959,
+      "harvest_index_median": 0.6115342763873777,
+      "k2": {
+        "contending_sets": [
+          [
+            "grain",
+            "straw"
+          ],
+          [
+            "grain"
+          ]
+        ],
+        "exponents": [
+          {
+            "grain": 0.1910764568959788,
+            "straw": 0.8089235431040213
+          },
+          {
+            "grain": 1.0,
+            "straw": 0.0
+          }
+        ],
+        "mean_slack": 0.7479166031650556,
+        "mean_slack_k1": 0.8587336530505058,
+        "status": "certified",
+        "term_share": [
+          0.5708418891170431,
+          0.42915811088295686
+        ]
+      },
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 3753,
+      "n_eff": 94.70472522363553,
+      "n_lemma": 2,
+      "n_near_frontier": 405,
+      "rows": 3753,
+      "target_frac_above": 0.1,
+      "tau_selected": 8.26953515674511
+    },
+    "section_1_only": {
+      "association": {
+        "grain|straw": -0.6845232581609229
+      },
+      "band": 0.10653048929082744,
+      "by_temperature": [
+        {
+          "exponents": {
+            "grain": 0.6622593260032451,
+            "straw": 0.33774067399675484
+          },
+          "frac_above": 0.336529242569511,
+          "tau": 3.0
+        },
+        {
+          "exponents": {
+            "grain": 0.7220792193455824,
+            "straw": 0.27792078065441767
+          },
+          "frac_above": 0.10162991371045062,
+          "tau": 9.3869840142197
+        },
+        {
+          "exponents": {
+            "grain": 0.7157033576611077,
+            "straw": 0.2842966423388924
+          },
+          "frac_above": 0.09012464046021093,
+          "tau": 10.0
+        },
+        {
+          "exponents": {
+            "grain": 0.6207545701444647,
+            "straw": 0.3792454298555353
+          },
+          "frac_above": 0.012464046021093002,
+          "tau": 30.0
+        },
+        {
+          "exponents": {
+            "grain": 0.6165530554721254,
+            "straw": 0.38344694452787464
+          },
+          "frac_above": 0.0019175455417066154,
+          "tau": 100.0
+        }
+      ],
+      "contending_exponents": [
+        0.618096939336251,
+        0.381903060663749
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "exponents_k1": {
+        "grain": 0.7220792193455824,
+        "straw": 0.27792078065441767
+      },
+      "frac_above": 0.10162991371045062,
+      "harvest_index_median": 0.6496062992125984,
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 1043,
+      "n_eff": 16.223361663543706,
+      "n_lemma": 2,
+      "n_near_frontier": 113,
+      "rows": 1043,
+      "target_frac_above": 0.1,
+      "tau_selected": 9.3869840142197
+    },
+    "winter_wheat_only": {
+      "association": {
+        "grain|straw": -0.8728797275376754
+      },
+      "band": 0.12092578132210276,
+      "by_temperature": [
+        {
+          "exponents": {
+            "grain": 0.44338811771837106,
+            "straw": 0.556611882281629
+          },
+          "frac_above": 0.2903846153846154,
+          "tau": 3.0
+        },
+        {
+          "exponents": {
+            "grain": 0.44632538323489535,
+            "straw": 0.5536746167651047
+          },
+          "frac_above": 0.09752747252747253,
+          "tau": 8.26953515674511
+        },
+        {
+          "exponents": {
+            "grain": 0.44613042155919114,
+            "straw": 0.5538695784408089
+          },
+          "frac_above": 0.07335164835164835,
+          "tau": 10.0
+        },
+        {
+          "exponents": {
+            "grain": 0.43607329788035165,
+            "straw": 0.5639267021196483
+          },
+          "frac_above": 0.01098901098901099,
+          "tau": 30.0
+        },
+        {
+          "exponents": {
+            "grain": 0.43042949624888993,
+            "straw": 0.5695705037511101
+          },
+          "frac_above": 0.0024725274725274724,
+          "tau": 100.0
+        }
+      ],
+      "contending_exponents": [
+        0.42811408058031053,
+        0.5718859194196895
+      ],
+      "contending_set": [
+        "grain",
+        "straw"
+      ],
+      "exponents_k1": {
+        "grain": 0.44632538323489535,
+        "straw": 0.5536746167651047
+      },
+      "frac_above": 0.09752747252747253,
+      "harvest_index_median": 0.6080623960665326,
+      "metrics": [
+        "grain",
+        "straw"
+      ],
+      "n": 3640,
+      "n_eff": 93.44964333495007,
+      "n_lemma": 2,
+      "n_near_frontier": 390,
+      "rows": 3640,
+      "target_frac_above": 0.1,
+      "tau_selected": 8.26953515674511
+    }
+  }
+}

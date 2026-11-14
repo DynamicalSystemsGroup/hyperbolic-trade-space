@@ -146,3 +146,43 @@ def test_amniote_record_quotes_the_results():
     k2 = p["k2"]
     assert f"{k2['mean_slack']:.3f}" in text and f"{k2['mean_slack_k1']:.3f}" in text
     assert r["runs"]["maturity_not_inverted"]["n_lemma"] == 2
+
+
+def test_wheat_record_quotes_the_results():
+    r, text = _results("wheat"), _record("wheat")
+    c, p = r["counts"], r["runs"]["primary"]
+    for v in (c["rows_in_table"], c["grain_present"], c["straw_present"], c["both_positive"]):
+        assert f"{v:,}" in text
+    assert f"{p['tau_selected']:.1f}" in text
+    for label, run in r["runs"].items():
+        assert run["n_lemma"] == 2, label
+        assert run["association"]["grain|straw"] < 0, label
+        assert f"{run['rows']:,}" in text, label
+    k2 = p["k2"]
+    assert f"{k2['mean_slack']:.3f}" in text and f"{k2['mean_slack_k1']:.3f}" in text
+    assert k2["contending_sets"][1] == ["grain"]
+    cult = r["cultivars"]
+    assert (
+        cult["Cappelle Desprez"]["hi"]
+        < 0.55
+        < min(v["hi"] for k, v in cult.items() if k != "Cappelle Desprez")
+    )
+
+
+def test_wheat_check_accepts_the_zip_or_the_csv_hashes(tmp_path):
+    d = _load("wheat", "derive.py")
+    f = tmp_path / "yield_data.csv"
+    f.write_text("a\n1\n", encoding="utf-8")
+    m = {
+        "file": "x.zip",
+        "csv_file": "yield_data.csv",
+        "csv_size": f.stat().st_size,
+        "csv_md5": fitkit.file_hash(f, "md5"),
+        "csv_sha256": fitkit.file_hash(f, "sha256"),
+    }
+    d.check(f, m)
+    with pytest.raises(RuntimeError, match="neither"):
+        d.check(tmp_path / "other.csv", m)
+    f.write_text("a\n2\n", encoding="utf-8")
+    with pytest.raises(RuntimeError, match="md5"):
+        d.check(f, m)

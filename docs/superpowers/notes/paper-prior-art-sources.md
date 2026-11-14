@@ -132,3 +132,6 @@ carries the citations so that the bibliography has no uncited key. `shockley1961
 [@jacobsson2021open] (the Perovskite Database Project's paper), `myhrvold2015amniote`
 [@myhrvold2015amniote] (the amniote database's paper) and `bielby2007fast` [@bielby2007fast] (the fast-slow
 continuum in mammals, amniote record). Each entry's `verified` field says what was read.
+
+The wheat record adds `austin1980genetic` [@austin1980genetic] (variety improvement and the yield potential of winter
+wheat) and `austin1993old` [@austin1993old] (old and modern cultivars on Broadbalk, the harvest-index reading).

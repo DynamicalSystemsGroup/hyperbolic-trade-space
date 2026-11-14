@@ -26,3 +26,4 @@ docs/generated/
 # WP45 example caches (hash-checked downloads; nothing redistributed)
 examples/perovskite/data/
 examples/amniote/data/
+examples/wheat/data/

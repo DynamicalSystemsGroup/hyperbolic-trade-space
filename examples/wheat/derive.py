@@ -1,7 +1,8 @@
 """WP45 wheat test record: derive the grain-and-straw table from the manual download, then fit.
 
-The download from e-RA is behind a form and is a manual step (``manifest.toml``). This script does
-the rest from the CSV the supervisor places under ``examples/wheat/data/`` (ignored by git):
+The download from e-RA is behind a form and was a manual step (``manifest.toml``). This script does
+the rest from the zip or its ``yield_data.csv`` under ``examples/wheat/data/`` (ignored by git;
+either is checked against the manifest):
 
 ``uv run python examples/wheat/derive.py --list FILE.csv``   show the columns and the first rows;
 ``uv run python examples/wheat/derive.py --record FILE``      write the file's size and hashes into
@@ -18,8 +19,10 @@ is a line in log units and the simplex a segment.
 from __future__ import annotations
 
 import argparse
+import io
 import re
 import sys
+import zipfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -29,16 +32,15 @@ import fitkit  # noqa: E402
 
 fitkit.read_threads()
 
-import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 
 
-def derive(df, grain, straw, year=None, plot=None, treatment=None, cultivar=None):
+def derive(df, grain, straw, year=None, plot=None, treatment=None, cultivar=None, extra=()):
     """The straw-recorded subset: rows with both yields present and strictly positive.
 
     Raises ``KeyError`` naming a missing column, so a source that changed fails loudly.
     """
-    keep = {c: c for c in (grain, straw, year, plot, treatment, cultivar) if c}
+    keep = {c: c for c in (grain, straw, year, plot, treatment, cultivar, *extra) if c}
     missing = [c for c in keep if c not in df.columns]
     if missing:
         raise KeyError(f"columns not in the file: {missing}; have {list(df.columns)}")
@@ -63,6 +65,17 @@ def harvest_index(x):
     return x["grain"] / (x["grain"] + x["straw"])
 
 
+def check(path, m):
+    """Verify the zip (the download of record) or the extracted CSV against the manifest."""
+    name = Path(path).name
+    if name == m["file"]:
+        fitkit.verify(path, m)
+    elif name == m["csv_file"]:
+        fitkit.verify(path, {k[4:]: v for k, v in m.items() if k.startswith("csv_")})
+    else:
+        raise RuntimeError(f"{name} is neither {m['file']} nor {m['csv_file']} of the manifest")
+
+
 def record(path):
     """Write the file's size and hashes into the manifest (a text edit, keys kept in place)."""
     path = Path(path)
@@ -77,25 +90,97 @@ def record(path):
     (HERE / "manifest.toml").write_text(text, encoding="utf-8")
 
 
+COLUMNS = {
+    "grain": "grain",
+    "straw": "straw",
+    "year": "harvest_year",
+    "plot": "plot",
+    "treatment": "fertilizer_code",
+    "cultivar": "cultivar",
+    "nitrogen": "total_fertilizer_n_amount",
+    "cropping": "cropping",
+    "section": "section",
+}
+PRIMARY = "primary"
+
+
+def read_table(path, m):
+    """The yield table from the CSV, or from inside the zip; '*' (no value) reads as missing."""
+    path = Path(path)
+    if path.name == m["file"]:
+        with zipfile.ZipFile(path) as zf:
+            raw = zf.read(m["csv_path_in_zip"])
+        return pd.read_csv(io.BytesIO(raw), low_memory=False, na_values=["*"])
+    return pd.read_csv(path, low_memory=False, na_values=["*"])
+
+
+def variants(x):
+    """The primary table and the one-thing-changed sensitivities, as (label, frame)."""
+    yield PRIMARY, x
+    yield "winter_wheat_only", x[x["cropping"] == "winter wheat"]
+    yield "n_at_least_96", x[x["nitrogen"] >= 96]
+    yield "modern_only", x[x["cultivar"] != "Cappelle Desprez"]
+    yield "n_at_least_96_modern", x[(x["nitrogen"] >= 96) & (x["cultivar"] != "Cappelle Desprez")]
+    yield "section_1_only", x[x["section"] == 1]
+
+
+def cultivar_table(x):
+    """Per cultivar at N >= 96: rows, years, median biomass (grain + straw) and harvest index."""
+    y = x[x["nitrogen"] >= 96].copy()
+    y["biomass"] = y["grain"] + y["straw"]
+    y["hi"] = harvest_index(y)
+    g = y.groupby("cultivar").agg(
+        rows=("grain", "size"),
+        first=("year", "min"),
+        last=("year", "max"),
+        biomass=("biomass", "median"),
+        grain=("grain", "median"),
+        hi=("hi", "median"),
+    )
+    return {
+        k: {kk: float(vv) for kk, vv in v.items()} for k, v in g.sort_values("first").iterrows()
+    }
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("file")
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--record", action="store_true")
-    for k in ("grain", "straw", "year", "plot", "treatment", "cultivar"):
-        ap.add_argument(f"--{k}")
+    for k, v in COLUMNS.items():
+        ap.add_argument(f"--{k}", default=v)
     a = ap.parse_args(argv)
     if a.record:
         return record(a.file)
     m = fitkit.load_manifest(HERE / "manifest.toml")
-    if m["md5"]:
-        fitkit.verify(a.file, m)
-    df = pd.read_csv(a.file, low_memory=False)
-    if a.list or not (a.grain and a.straw):
+    check(a.file, m)
+    df = read_table(a.file, m)
+    if a.list:
         print(list(df.columns))
         print(df.head())
         return None
-    x = derive(df, a.grain, a.straw, a.year, a.plot, a.treatment, a.cultivar)
+    keep = {
+        a.grain: "grain",
+        a.straw: "straw",
+        a.year: "year",
+        a.plot: "plot",
+        a.treatment: "treatment",
+        a.cultivar: "cultivar",
+        a.nitrogen: "nitrogen",
+        a.cropping: "cropping",
+        a.section: "section",
+    }
+    x = derive(
+        df,
+        a.grain,
+        a.straw,
+        a.year,
+        a.plot,
+        a.treatment,
+        a.cultivar,
+        extra=[a.nitrogen, a.cropping, a.section],
+    )
+    x = x.rename(columns={k: v for k, v in keep.items() if k not in ("grain", "straw")})
     (HERE / "derived").mkdir(exist_ok=True)
     x.to_csv(HERE / "derived" / "grain_straw.csv", index=False)
     (HERE / "derived" / "LICENCE-DATA.txt").write_text(
@@ -104,11 +189,28 @@ def main(argv=None):
         "recorded and positive, selected columns only.\n",
         encoding="utf-8",
     )
-    res = fitkit.fit_read(condition(x), ["grain", "straw"], taus=(3.0, 10.0, 30.0, 100.0, np.inf))
-    res["rows"] = len(x)
-    res["harvest_index_median"] = float(harvest_index(x).median())
-    fitkit.dump(res, HERE / "results.json")
-    print(res["n"], res["n_lemma"], res["exponents_k1"])
+    results = {
+        "counts": {
+            "rows_in_table": len(df),
+            "grain_present": int(pd.to_numeric(df[a.grain], errors="coerce").notna().sum()),
+            "straw_present": int(pd.to_numeric(df[a.straw], errors="coerce").notna().sum()),
+            "both_positive": len(x),
+        },
+        "cultivars": cultivar_table(x),
+        "runs": {},
+    }
+    for label, frame in variants(x):
+        res = fitkit.fit_read(
+            condition(frame),
+            ["grain", "straw"],
+            k2=(label == PRIMARY),
+            taus=(3.0, 10.0, 30.0, 100.0),
+        )
+        res["rows"] = len(frame)
+        res["harvest_index_median"] = float(harvest_index(frame).median())
+        results["runs"][label] = res
+        print(label, res["n"], res["n_lemma"], res["exponents_k1"], flush=True)
+    fitkit.dump(results, HERE / "results.json")
     return None
 
 
