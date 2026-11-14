@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The boundary of 0.1 drawn by spikes (14:15).** The supervisor's pattern, in his words (`WP44-decisions.md`
+  context; verbatim): "i am placing work outside the scope of 0.1 but doing work to help clarify that boundary so there
+  are concrete items on the other side of the limit and we feel confident about what we say in the paper because we
+  have some foresight about our forward looking claims even if we're not trying to defend them in the paper". Four
+  packages carry it: WP41 (the bridge: framing and docs page in 0.1, interface and demonstration in 0.2; scoped,
+  awaiting his word), WP42 (tension and the glossary; scoped with one open decision, the solver's word), WP43 (beyond
+  the posynomial; scoped, awaiting his word), WP44 (a second case study from a public dataset; the hunt running). Every
+  readout ends with what the paper may say now, what it may not, and what 0.2 builds.
+
 - **40a93f2 fully green (12:45).** CI run 43614474657: every job green on both platforms, the thirty-fifth fully green
   head; the second paper unit's acceptance stands with CI behind it. The supervisor's abstract pass is under way in
   chat; his rulings are entered verbatim in `WP11-decisions.md` as they come (the 500-word cap, the Pareto sentence,
