@@ -158,3 +158,11 @@ interpretable ways, the three conditions for trust), How (the former What: PCA e
 tensions; the n-lemma; the figure). Headers kept or dropped by what lets the page do its job, to be settled by a cold
 read of both renderings rather than by argument. Nothing applied before his word.
 
+**Supervisor, verbatim (00:45):** "i am good with dropping the headers. i want you to draft the updated index page based on
+this discussion and then show it to me for a close read and feedback before we merge it into dev"
+
+**Applied as:** the root page redrafted on a branch (`rootpage`) by the driver: three sections without headers (why,
+what, how), the summary and the two doors kept, the figure under the how; built and shown rendered in the browser pane
+for his close read; merged into `dev` only on his word, with the page's structure test and the claims row updated in
+the same commit.
+
