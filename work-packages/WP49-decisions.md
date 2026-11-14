@@ -83,3 +83,17 @@ is recorded where tool use is recorded, beside the editor, the build tools and t
 part of a pull request's description or a work package's record, never in the committer or author fields. The shape
 (A, B or C) is still his open call.
 
+## The covenant's shape (2026-11-14, 17:20 EST; after the three shapes were shown as a contributor meets them)
+
+**Supervisor, verbatim:** "A"
+
+**Applied as:** Option A. `CODE_OF_CONDUCT.md` is Contributor Covenant 3.0 unaltered, with its attribution line and the
+reporting contact filled in (him, until there are other maintainers); `CONTRIBUTING.md` opens with the two clauses
+("Who owns a change", "Tools") in the wording he gave on 03:05 (order) and then states the process (scopes, review
+against the scope, blast radius, readable history, candidates on `dev`, releases from `main` by the maintainer). The
+three wording points of the readout remain his (which cases "should" document tools; whether no agent opens or merges
+a change without a named person; whether "as an editor is" stays) and are put to him one at a time before the text is
+written. Placement: with WP47's `CONTRIBUTING.md` in v0.1 unless he says otherwise. The covenant's verification cases
+(no attribution line in any commit; a scope, a review and a decisions record per package; a person's name on every
+commit) go to WP48's list. He signs off the final text.
+
