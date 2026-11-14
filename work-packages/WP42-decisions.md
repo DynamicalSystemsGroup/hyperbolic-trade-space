@@ -31,3 +31,12 @@ the data by persistent homology. That direction is its own research spike, WP50 
 sampled designs, simplicial complexes, persistent homology, strategic sampling, beyond the envelope method), nothing
 built.
 
+## Naming item 2, the package's names (2026-11-14, 22:50; popup with the driver's recommendation, at his request: "give me the open questions for scope 42A one at a time with recommendations and justifications")
+
+**Supervisor, verbatim:** "Rename all (Recommended)"
+
+**Applied as:** `tension_report` becomes `trade_off_report`; `tension_directions` and `tension_loadings` become
+`spread_directions` and `spread_loadings`; `plot_tensions` becomes `plot_association`; `tension_matrix` and
+`design_tensions` are new members of the report. README, root page, user guide and paper follow in the same unit;
+no deprecation path (nothing released); the interface contract is amended with the build.
+
