@@ -29,8 +29,11 @@ points together with topological data analysis. It writes no code into the packa
   barcode and what a long-lived class means here; the tools (at least GUDHI, Ripser,
   giotto-tda) with licences and what each computes; the literature on persistent homology for sampled surfaces and for
   design spaces, each source resolved.
-- G3. **Hole against white space:** the envelope method's white space (the fit speaks, the data do not) and a topological
-  hole (a class that persists) are two objects; where they coincide, where they do not, with a small worked instance on
+- G3. **Hole against white space, and a hole as a hypothesis** (his direction of 22:20): the envelope method's white
+  space (the fit speaks, the data do not) and a topological hole (a class that persists) are two objects, and a
+  persistent class in a finite sample may be only an absence of witnesses; the readout defines a hole so that it is
+  resolved by sampling for witnesses, with three outcomes (a witness found and the space filled; no witness after a
+  stated effort and the hole stands with that evidence; the region infeasible, a true hole of the attainable set); where they coincide, where they do not, with a small worked instance on
   the cubesat chart of record or a planted table (a figure of the diagram is allowed as a readout image, not a paper
   figure).
 - G4. **Strategic sampling, sketched, with two objectives kept apart** (his direction of 22:15): advancing the frontier
@@ -53,7 +56,7 @@ points together with topological data analysis. It writes no code into the packa
 |---|---|---|
 | D-1 | `work-packages/WP50-rounds/spike/objects-and-distances.md` | G1 |
 | D-2 | `work-packages/WP50-rounds/spike/construction-and-tools.md` (sources with dates read; the tools' licences) | G2 |
-| D-3 | `work-packages/WP50-rounds/spike/instance/` (a script and its persistence diagram on the chart of record or a planted table, reproducible with `uv run`, dependencies added to a scratch environment and not to `pyproject.toml`) and `instance.md` | G3 |
+| D-3 | `work-packages/WP50-rounds/spike/instance/` (a script and its persistence diagram on the chart of record or a planted table, reproducible with `uv run`, dependencies added to a scratch environment and not to `pyproject.toml`) and `instance.md`; the planted instance resolves one candidate hole by a witness and leaves one standing | G3, G4 |
 | D-4 | `work-packages/WP50-rounds/spike/readout.md`: hole against white space, the sampling sketch, the boundary, the drafted future-work sentence, plain options for the first package of the later release | G3, G4, G5 |
 
 ## Requirements

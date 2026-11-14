@@ -42,3 +42,15 @@ sample changes them). The readout says what the measure of a hole is, how a prop
 it, and how that score sits beside the level in the search of Section 7, so a sampling rule can trade the two. The
 word objective here is the decision layer's, as the glossary has it.
 
+## A hole is a hypothesis until sampled (2026-11-14, 22:20)
+
+**Supervisor, verbatim:** "its not TDA for its own sake. we don't want to mistake an absense of witnesses for a hole, we can try to sample to find
+witnesses"
+
+**Applied as:** the purpose is the search's measurement, not the topology. A persistent class in the sampled chart is a
+candidate hole, which may be only an absence of witnesses; the sampling rule targets it to find witnesses. Three
+outcomes, as the bridge's proposals have (WP41): a witness is found and the white space is filled; no witness can be
+produced after a stated effort and the hole stands with that evidence; the region is infeasible, which is a true hole
+of the attainable set. G3 and G4 amended so the readout defines hole with this test built in, and the instance shows a
+candidate hole resolved both ways (one filled by a witness, one that stands).
+
