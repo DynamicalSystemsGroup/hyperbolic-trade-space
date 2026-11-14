@@ -88,7 +88,7 @@ scoped from it.
 
 ## Open decisions (for the supervisor)
 
-- **OD1.** The solver's function: (a) "loss" everywhere (the scikit-learn word), freeing "objective" for the decision
-  frame, a mechanical pass over the theorems, Appendix A and the tests; (b) "objective" kept for the solver, as Boyd
-  writes it, and the decision frame's "objective" distinguished by its entry ("a stakeholder's objective"), two
-  meanings stated openly.
+None. OD1 closed on 2026-11-14 at 15:50 (`WP11-decisions.md`, verbatim): loss for the solver's function everywhere,
+the choice stated where the notation is set and in the glossary; objective reserved for the decision-analysis frame,
+the subset of the metrics the decision-maker optimizes for. G3's entry for the solver's function is therefore "loss",
+and the build stage carries the mechanical pass over the theorems, Appendix A, the scripts' docstrings and the tests.

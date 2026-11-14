@@ -146,3 +146,14 @@ V(m/V(m)) = 1, Theorem 6 and D.16.)
 exactly to attribute units; a point with a datum is a design in the table; a point without one is a conjecture about a
 design, proposed by a rule and settled by building and measuring it." (Theorem 7; the table's rows; Section 7 and
 WP41's page.)
+
+**Supervisor, verbatim (15:50), on the solver's word:** ""Loss for the solver's function everywhere (scikit-learn's
+word)" yes. though we need to make sure we're clear that we've chosen that, and it frees up the objective phrase so it
+fits in the what subset of the metrics do we care about optimizing for from the perspective of the decision analysis
+problem, rather than getting it bound up in the solver level"
+
+**Applied as:** WP42's open decision closes on (a): loss names the function the solver minimizes (J_tau at one term,
+the mean slack at several) everywhere, with the choice stated once where the notation is set (Section 3's sentence on
+Boyd and Vandenberghe and the scikit-learn terms, and the glossary's entries for loss and objective); objective names,
+in the decision-analysis frame, the subset of the metrics the decision-maker optimizes for; the solver level never
+uses the word. The theorems, Appendix A, the lemma scripts' docstrings and the tests move with it in WP42's build.
