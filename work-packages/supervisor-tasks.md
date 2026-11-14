@@ -8,6 +8,10 @@ names and steps, he performs the guarded actions). Order within each kind is the
 
 ## His word
 
+Each item is walked with him in chat, one at a time, from `supervisor-walkthrough.md`: what he is accepting, what he
+reviews it against (the scope's good-enough list and any amendment), where to look, what the driver verified, and the
+question he answers.
+
 | # | Task | When | Prepared by |
 |---|---|---|---|
 | W1 | Accept WP33, WP35, WP37, WP38, WP39, WP40 (delivered, driver-verified; one line each) | any time | `supervisor-review-list.md` |
@@ -24,7 +28,6 @@ names and steps, he performs the guarded actions). Order within each kind is the
 
 | # | Task | What he does | What the assistant prepares | When |
 |---|---|---|---|---|
-| K1 | A readable copy of "Protocols and Institutions v.1" | copies the file into `~/Downloads` (the iCloud folder is not readable from the session) | hands it to the WP49 unit as background | any time |
 | K3 | PyPI and TestPyPI accounts | signs in or creates the accounts, enables two-factor authentication | nothing to prepare; his credentials are never typed by the assistant | before W11 |
 | K4 | Pending trusted publishers on TestPyPI and PyPI | adds a pending publisher for `DynamicalSystemsGroup/hyperbolic-trade-space` with the workflow file name and the environment names WP47 delivers | the exact names in `WP47-rounds/pypi-checklist.md` | when WP47 delivers |
 | K5 | GitHub environments `testpypi` and `pypi` | creates them on the repository with himself as required reviewer, so no publish runs without his click | the names and the reviewer rule | with K4 |
