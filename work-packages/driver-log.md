@@ -228,6 +228,14 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Wave 6 spawned by the assistant (07:25).** PM15 has been held in a foreground call on the second change unit since
+  13:55 UTC and had spawned neither wave 6 nor wave 7; the briefs are committed files and name the stage at c23cf60,
+  so the assistant spawned wave 6's seven readers from them (F27, F24 on Haiku and G12, G28 on Sonnet in the browser,
+  four tabs; G11, F07 on Sonnet and G16 on Haiku on the captured slices), models per `slots.tsv`, with the prompt
+  "read the brief file in full, then do exactly what it says". Wave 7 (G07, G19, G09, G13) follows when wave 6's
+  reports exist, under the same rule. PM15 is told not to spawn or commit these waves. The wave loop is the
+  supervisor's path to his close read; a PM blocked on a two-hour unit is not a reason to stall it.
+
 - **Final round, wave 5 committed and triaged (07:35).** Seven reports finished 13:49 to 13:55 UTC; PM15 silent since
   13:55, so the assistant committed them verbatim (bc5e724) and triaged them. No wrong belief in thirty-five reports.
   The three mathematicians on Sections 3 to 6 (F14, G05, F28) return the statements' precision defects: forty requests
