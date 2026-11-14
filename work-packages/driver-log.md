@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The round's supervisor items entered on the review list (08:45).** `supervisor-review-list.md` gains a section with
+  the twenty-one items the round routes to the supervisor, each with its cell count, the cells, and the readers' words
+  in one line; the triage files hold the quotations by item number. Nothing in it is applied.
+
 - **Final round, wave 7 triaged; the core round complete (08:35).** Four reports, spawned by the assistant, committed
   as each finished. Forty-six core reads, no wrong belief of the key in any; three loose statements, each prevented by
   a request on the list. 165 requests: 31 landed at c42d860, 134 in the second unit (record defects first, then the
