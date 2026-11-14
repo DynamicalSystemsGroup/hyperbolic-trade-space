@@ -1,0 +1,127 @@
+surface                                             words   meta  hedge intens  paren lparen restat  longs  compd  deepc
+paper/abstract                                        255      0      1      0      4      0      0      2      1      1
+paper/the-decision-problem                            635      0      1      2     19      4      0      1      7      0
+paper/prior-art-by-family                            1057      0      0      0      3      0      0      0      1      0
+paper/preliminaries-and-notation                      406      0      0      0      5      0      0      1      0      0
+paper/definitions                                     625      0      0      0     11      0      0      2      4      0
+paper/methods                                         532      0      0      0     19      0      0      2      8      0
+paper/results                                        2260      1      1      0     93     10      0     10     21      0
+paper/search-of-the-design-space-preliminary          245      1      1      0      1      0      0      0      0      0
+paper/case-construction                              1264      0      0      0     35      9      0     12      8      0
+paper/case-analysis                                  1749      1      0      0     26      6      1     13      5      0
+paper/discussion                                      699      1      0      0      3      1      0      3      2      0
+paper/reproducibility-and-your-own-case               299      0      1      0      3      0      0      0      0      0
+appendix/title                                         36      0      0      0      4      0      0      0      0      0
+appendix/appendix-a                                  1718      3      0      0      0      0      0      1      1      0
+appendix/appendix-b                                   827      1      1      0      9      1      0      2      2      0
+appendix/b-1                                          407      0      0      0      8      0      0      0      1      0
+appendix/l2                                           589      0      0      0      2      0      0      0      1      0
+appendix/l3                                          2152      0      0      0      9      1      0      2      2      0
+appendix/l4                                          1093      0      0      0      7      0      0      0      0      0
+appendix/l5                                           965      0      0      0      2      0      0      1      1      0
+appendix/l6                                           480      0      0      0      4      0      0      1      1      0
+appendix/l7                                           460      0      0      0      2      0      0      0      1      0
+appendix/l8                                           675      0      0      0      3      0      0      0      1      0
+appendix/l9                                           375      0      0      0      2      0      0      0      0      0
+appendix/l10                                         1213      0      0      0      7      0      0      1      1      0
+appendix/l11                                          898      0      0      0     12      0      0      3      2      0
+appendix/b-2                                          259      0      0      0      5      0      0      1      2      0
+appendix/l12                                         1643      0      0      0     12      0      0      1      1      0
+appendix/l13                                          814      0      0      0     12      0      0      3      1      0
+appendix/l14                                         1028      0      0      0     21      1      0      2      1      0
+appendix/l14-2                                        264      0      0      0      4      0      0      1      0      0
+appendix/l15                                          999      0      0      0      7      2      0      3      2      0
+appendix/l15-2                                        531      0      0      0      7      2      0      3      2      0
+appendix/l16                                         2146      0      0      0      7      0      0      1      2      0
+appendix/l17                                         2250      0      0      0      2      0      1      1      2      0
+appendix/l18                                         1169      0      0      0      5      0      0      2      2      0
+appendix/l19                                         1730      0      0      0      7      0      0      1      2      0
+appendix/l20                                         3674      0      0      0     22      1      0      3      2      0
+appendix/b-3                                          318      0      0      0      1      0      0      0      0      0
+appendix/appendix-c                                   181      1      0      0      3      0      0      3      1      0
+appendix/c-1                                          260      0      0      0      0      0      0      0      0      0
+appendix/c-3                                          409      0      0      0      3      1      0      1      0      0
+appendix/c-5                                         1126      0      0      0      1      1      0      0      3      0
+appendix/c-6                                          691      0      0      0      3      0      0      4      0      0
+appendix/appendix-d                                   226      1      0      0      0      0      0      1      1      0
+appendix/d-1                                          273      0      0      0      1      0      0      0      0      0
+appendix/d-2                                         1132      0      0      0      0      0      0      0      0      0
+appendix/d-4                                          420      0      0      0      0      0      0      0      1      0
+appendix/d-6                                          190      0      0      0      0      0      0      0      0      0
+appendix/d-7                                          460      0      0      0      3      0      0      2      1      0
+appendix/d-9                                          472      0      0      0      2      0      0      1      0      0
+appendix/d-12                                         213      0      0      0      1      0      0      1      1      0
+appendix/d-13                                         537      0      0      0      6      1      0      3      0      0
+appendix/d-15                                         266      0      0      0      1      1      1      1      1      0
+appendix/d-16                                         168      0      0      0      0      0      0      0      0      0
+appendix/d-17                                        1319      0      0      0      3      2      0      3      0      0
+appendix/d-18                                         278      0      0      0      3      0      0      1      0      0
+appendix/d-19                                         769      0      0      0      4      1      0      3      2      0
+appendix/appendix-e                                  3720      1      0      0      0      0      0      1      1      0
+appendix/appendix-f                                  1207      3      0      0      0      0      0      1      1      0
+appendix/appendix-g                                   190      1      0      0      1      1      0      1      1      0
+appendix/g-1                                         1135      0      0      0      6      2      0      9      5      0
+appendix/dimension-reduction-and-model-fitting        799      0      0      1      4      1      0      7      5      0
+appendix/systems-engineering-practice-and-decision    718      0      0      0      3      1      0      8      5      0
+appendix/g-2                                         1207      0      0      0      0      0      0      1      0      1
+appendix/appendix-h-horopca-beside-this-work-a-tes   1023      2      1      0     23      2      0      5      5      0
+docs/api-reference.md                                 288      0      0      0      6      0      0      3     12      0
+docs/examples.md                                      600      0      0      0      2      0      1      2      3      0
+docs/further-reading.md                               182      0      1      0      0      0      0      2      3      0
+docs/getting-started.md                               325      0      0      0      4      0      0      2      1      0
+docs/index.md                                         193      0      0      0      2      0      0      2      1      0
+docs/theory.md                                        577      0      0      0      6      0      0      1      3      0
+docs/user-guide/chart.md                              508      0      0      0      3      0      0      3      3      0
+docs/user-guide/choosing-k.md                         545      0      2      0      5      2      0      2      1      0
+docs/user-guide/conditioning.md                       576      0      0      0      2      0      1      0      1      0
+docs/user-guide/fitting.md                            614      0      0      0      8      1      0      2      3      0
+docs/user-guide/index.md                                3      0      0      0      0      0      0      0      0      0
+docs/user-guide/limitations.md                        443      0      0      0      3      0      0      0      0      0
+docs/user-guide/overview.md                           388      0      0      0      2      0      0      2      1      1
+docs/user-guide/prediction.md                         212      0      1      0      1      0      0      1      1      0
+docs/user-guide/tensions.md                           560      0      0      0      7      0      0      1      1      0
+docs/user-guide/termination.md                        703      0      0      0      5      0      0      1      4      0
+examples/adcs/case-model.md/the-cubesat-model-the-    248      0      0      0      1      0      0      0      0      0
+examples/adcs/case-model.md/reading-the-model-top-    429      0      0      0     17      0      0      3      2      0
+examples/adcs/case-model.md/from-the-assembly-to-t   1976      0      0      0     44      8      1     13      5      0
+examples/adcs/case-model.md/running-an-experiment-    444      0      0      0      3      1      0      1      1      0
+examples/adcs/case-model.md/the-cadcad-like-mappin    171      0      0      0      5      1      0      1      1      0
+examples/adcs/case-model.md/the-toolkit-account       695      0      0      0      5      0      0      1      1      0
+examples/adcs/case-model.md/z3-excludes-infeasible    472      0      0      0      7      1      0      3      0      0
+examples/adcs/case-model.md/the-legacy-geostationa    202      0      0      0      4      2      0      2      0      0
+examples/adcs/case-model.md/provide-the-oracle-thr    365      0      0      0      1      0      0      0      0      0
+README.md                                             191      0      0      0      2      0      0      1      1      0
+site/index.html                                       300      0      1      0      2      0      0      1      0      0
+site/history.html                                     323      0      0      1      9      0      0      1      0      0
+glossary/long-forms                                  2531      0      0      0     27      0      0      1      7      0
+TOTAL                                               73192     17     12      4    659     68      6    188    180      3
+
+per document: acronyms and glossary terms met before a definition
+document                                            acr  undef  noexp  terms  undef
+README.md                                               2      0      2      3      1
+docs/api-reference.md                                   1      1      1     14     14
+docs/examples.md                                        0      0      0     13      8
+docs/further-reading.md                                 1      0      1      5      1
+docs/getting-started.md                                 0      0      0     11      9
+docs/index.md                                           1      1      1      6      3
+docs/theory.md                                          1      0      0     18     12
+docs/user-guide/chart.md                                0      0      0     16     15
+docs/user-guide/choosing-k.md                           1      1      1     11      3
+docs/user-guide/conditioning.md                         0      0      0      8      8
+docs/user-guide/fitting.md                              0      0      0     18     16
+docs/user-guide/index.md                                0      0      0      0      0
+docs/user-guide/limitations.md                          0      0      0     13      1
+docs/user-guide/overview.md                             1      0      0     12      9
+docs/user-guide/prediction.md                           0      0      0      5      4
+docs/user-guide/tensions.md                             0      0      0     14     11
+docs/user-guide/termination.md                          0      0      0     15     10
+examples/adcs/case-model.md                            11      8      8     11      5
+glossary.yaml                                           0      0      0     37     32
+paper/paper.ipynb                                       5      2      1     52      8
+paper/supporting_material.ipynb                         9      8      5     39     11
+site/history.html                                       1      1      1      3      3
+site/index.html                                         1      0      0     10      8
+
+acronyms undefined at first use: 22; never expanded: 21; glossary terms without a definition at first use: 192
+
+against the baseline (head c0fe11b): 0 count(s) rose
