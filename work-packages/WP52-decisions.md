@@ -77,3 +77,11 @@ ethnography (2023) and Building the Loop (2025) on artificial organisational int
 this paper does and defers. The OpenMBEE sentence and the four "in our own account" removals are on the same branch;
 the record entries from the proposal are in `history.yaml`. Tests, the word ceiling and the checker follow his read.
 
+**Supervisor, verbatim (22:10 EST), on the client-projects paragraph:** "jamming "a special case where the work was
+highly public" into the timeline works against its own purpose. it makes people think more about the crypto than they
+would have otherwise"
+
+**Applied as:** the aside is gone; the sentence now names the two public items and nothing about why they are public:
+"The RAI controller's design record (2021) and Zargham's talk at a workshop in Edinburgh (ICMS), October 2024 are
+public."
+
