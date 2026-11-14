@@ -57,3 +57,10 @@ retitled "OpenMBEE maintainer" with the role "maintainer at OpenMBEE since 2026 
 false, or the entry is removed if nothing else cites it; the tests that tie the page to the record decide which).
 Queued with the governance paragraph and the "in our own account" rule as one history unit after his placement call.
 
+**Supervisor, verbatim (21:45 EST):** "also you said in our own account again, don't say that"
+
+**Applied as:** the phrase goes from the whole history page, both places (after the OpenMBEE sentence and at the head of
+the client-projects paragraph), and from any page of ours where it stands as a hedge: what the page says is the
+team's account by definition. The history unit removes both; the vocabulary checker gains the phrase as an avoided
+variant so it does not come back.
+
