@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Round 2 of the pass received; one register row returned (23:30).** The round-2 unit (ba22d92): one sentence
+  restored, fifteen re-pointed, three lead sentences added to bare tables, the citation rendering and the lemma pages
+  routed; its record notes that most of the gaps predate the pass. On ba22d92: ruff, lock, vocabulary and attribution
+  clean; no stderr output in the notebooks; the figures unchanged; the fast suite 1946 passed with one failure,
+  `test_the_register_holds`: row C422's fragment is the rendered R1 sentence, which the generator now assembles from a
+  reference, so the literal is not in the source file the row names. Returned to PM14 for the nit unit in flight, with
+  the rest of the closing steps: the 29 confirmations committed, the baseline retaken, WP38-review.md, the review list,
+  the final round's briefs to the assistant before they run. The stage rebuilt at ba22d92.
+
 - **2a12f7f fully green (22:45).** CI 43564973529 on 2a12f7f (the residue unit and the 27 confirmations): every job
   green on both platforms, the thirty-first fully green head. The round-2 unit is iterating on the paper tests in its
   worktree; the last two confirmations are not yet filed.
