@@ -193,3 +193,12 @@ merges the subsystems' trade-offs; two terms separate them." my gut is we can ju
 **Applied as:** dropped from the draft. The answer key's depth-A line (the finding in one sentence) reads, from its
 next version, the sentence that follows it in his abstract: high-dimensional n-lemmas detected and used to inform the
 decision; the ledger raise of 2026-11-09 that paid for the old finding sentence (7 words) lapses with the new cap.
+
+**Supervisor, verbatim (17:55):** "you can land the abstract now based on my edits."
+
+**Applied as:** the abstract lands as the draft stands at 49e7838 (`WP11-final/abstract/draft-2026-11-14.md`, 497
+words), by a unit the assistant spawns: the notebook's front matter replaced word for word; the length ledger's
+`[abstract]` entry set to target 500 with a five percent tolerance (the test's bound 525) citing the 17:35 ruling; the
+three tests that pinned the old abstract's phrases rewritten to pin the new text; claims rows for the new sentences;
+vocabulary clean; no other surface changed without the assistant's word. The unit lands after the third paper unit if
+that lands first, rebased and fast-forwarded; the assistant verifies before the stage is rebuilt for the held-out reads.
