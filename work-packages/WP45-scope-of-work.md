@@ -10,6 +10,12 @@
 
 ## Purpose
 
+The supervisor's purpose, verbatim (`WP44-decisions.md`, 15:00): "the point here is to truly show the method works, for
+that we need a variety of unrelated cases" and "this will do double duty by populating an examples section of the
+documentation and help us harden our understanding of our own method". Each case is a known-answer test against the
+field's named trade-off on data the method's authors did not make, reported whether the fit names it or not; the three
+differ in domain, in who produced the data, in dimension and in whether a designer exists.
+
 The supervisor's choice from the WP44 readout (`WP44-decisions.md`, 14:55, verbatim): both the Perovskite Database
 Project and the Amniote life-history database become documentation case studies, independent of the synthetic
 cubesat; and (14:50) Rothamsted's Broadbalk wheat yields become a two-metric example for intuition if the data are

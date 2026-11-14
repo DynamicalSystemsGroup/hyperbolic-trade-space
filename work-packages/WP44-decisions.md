@@ -40,3 +40,14 @@ life-history database"
 **Applied as:** option 1 of the readout. The build is scoped as WP45 (two Examples pages with fetch-at-build steps,
 conditioning rules stated, the fits at K = 1 and 2, the tension matrix once WP42 lands; the Broadbalk wheat example as
 the two-metric page if its two checks hold); its place in 0.1 or after is the one open decision of that scope.
+
+## The purpose, in the supervisor's words (2026-11-14, 15:00)
+
+**Supervisor, verbatim:** "the point here is to truly show the method works, for that we need a variety of unrelated
+cases." And: "this will do double duty by populating an examples section of the documentation and help us harden our
+understanding of our own method"
+
+**Applied as:** WP45's purpose is the demonstration: unrelated cases (in domain, in who made the data, in dimension, in
+whether a designer exists), each a known-answer test against the field's named trade-off, reported whether the fit
+names it or not; the Examples section of the docs is the second duty. The leaf-trait and battery tables stay on the
+candidates list as the next two domains.
