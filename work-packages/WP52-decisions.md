@@ -191,3 +191,9 @@ story" (seen in the browser pane); the Internet Archive holds a capture of 16 Ju
 paper; the text does not mention Arbitrum. The page links the archived capture for now, the record says why, and his
 word decides whether a deleted essay is cited at all.
 
+**Supervisor (00:50 EST):** "two other reference points we might consider: https://blog.block.science/algorithms-as-policy/
+and https://www.dynamicalsystemsgroup.com/blog/an-algorithm-is-a-camera"
+
+**Applied as (pending):** both read and resolved; placed on the timeline at their dates if he says so, each in a clause
+that says what it argued.
+
