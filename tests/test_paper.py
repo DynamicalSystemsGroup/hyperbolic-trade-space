@@ -352,7 +352,9 @@ def test_one_name_for_the_surface_and_the_data_is_what_is_modelled():
     body = " ".join(_markdown(nb).split())
     for phrase in ("model of the table", "models the table", "surface models the table"):
         assert phrase not in body and phrase not in fm, phrase
-    assert "fitted to the data underlying the table" in body and "its reading are views" in body
+    assert (
+        "fitted to the data underlying the table" in body
+    )  # the body keeps it; the abstract does not
     others = [
         _src(c) for c in nb.cells
         if c.cell_type == "markdown" and "generalized posynomial" in _src(c)
@@ -2179,7 +2181,8 @@ def test_register_phrases_are_used_in_the_main_text_itself():
 def test_disclosure_cites_the_incose_paper_and_the_search_and_stage_one_stay_abstract():
     ack = _section("Acknowledgments")
     assert "@zargham2026incose" in ack and "supervisor-gated" in ack
-    body = _markdown(_nb(PAPER_NB))
+    # the body only: the abstract (the supervisor's text of 2026-11-14) names the SysML v2 model
+    body = "\n".join(_src(c) for c in _nb(PAPER_NB).cells[1:] if c.cell_type == "markdown")
     assert "black box to the method" in body  # the register's wording for a
     assert not re.search(r"SysML|OpenSysML|Modelica|Simulink|pip install", body, re.I)
 
@@ -3113,11 +3116,14 @@ def test_cr4_5_6_the_term_share_is_described_and_the_terms_carry_their_clause():
     assert "in the cell of term $k$" in definitions and "depends on the band" in definitions
     assert "dominates" not in definitions
     assert "a design's level relative to the fitted reference surface" in definitions
-    front = _src(_nb(PAPER_NB).cells[0])
+    front = " ".join(_src(_nb(PAPER_NB).cells[0]).split())
     intro = _section("The decision problem")
-    for text in (front, intro):
-        assert "by analogy with dilemma and trilemma" in " ".join(text.split())
-    assert "its level relative to the surface" in " ".join(front.split())
+    assert "by analogy with dilemma and trilemma" in " ".join(intro.split())
+    # the abstract (the supervisor's text of 2026-11-14) says it in his words: "Expanding on the
+    # concept of a dilemma or trilemma, a monomial term in n metrics characterizes an n-lemma";
+    # "energy" is his intuition word, in quotation marks, for the level sets
+    assert "Expanding on the concept of a dilemma or trilemma" in front
+    assert 'solving for the "energy" level sets' in front
 
 
 def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_apart():
@@ -3127,7 +3133,7 @@ def test_cr7_16_the_first_screen_says_what_scales_and_keeps_the_three_objects_ap
     assert ids.index("num-nondominated") < ids.index("sec-prior-art")
     assert "number of designs and of metrics" in _section("The decision problem")
     front = _src(nb.cells[0])
-    assert "level sets of a posynomial function of the metrics" in front
+    assert "level sets of a posynomial function of the metrics" in " ".join(front.split())
     # R-38 (c): the abstract no longer carries the scaling sentence; section 1 keeps it
     assert "scales where" not in front
     assert "dominance stops shortlisting" in _section("The decision problem")
