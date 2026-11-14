@@ -467,7 +467,7 @@ def test_root_index_is_thin_and_routes_by_need():
     assert all(re.fullmatch(r'<a href="[^"]+">[^<]+</a>', i) for i in items), items
     assert text.count('class="lead"') == 1 and 'class="subtitle"' not in text
     assert 'class="adopt"' not in text
-    low = text.lower()
+    low = " ".join(text.lower().split())
     assert "<h2>" not in low, "the three sections carry no headers"
     assert low.count("<section>") == 3
     order = [
