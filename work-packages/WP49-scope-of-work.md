@@ -32,8 +32,11 @@ covenant.
   beside a separate AI-use and supervision statement; the Covenant extended with that statement; a covenant of this
   repository's own. For each: what it promises a user (how a reader knows a human stood behind a change and what was
   checked), what it asks of a contributor, how it would be checked (the hook into WP48's verification cases), and its
-  cost. Tensions named for him, not resolved: the no-attribution rule against the disclosure norms other projects use;
-  what "AI native" commits the project to in public.
+  cost. The accountability principle he stated on 2026-11-14, 20:50 (`WP49-decisions.md`) is a given, not a tension:
+  actor agnostic at the code level, a named human who owns what they merge, no AI trailers, AI use neither disclosed by
+  rule nor an excuse; the readout sets the other projects' disclosure norms against it (what each secures, and whether
+  the protocol approach secures it another way) and drafts the covenant's accountability clause in those terms for his
+  sign-off. One tension remains named, not resolved: what "AI native" commits the project to in public.
 
 ## Non-goals
 
