@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The supervisor's priority, verbatim (14:20):** "at the end of the day i care about having a well documented
+  practically useful HTS package, the paper is just means to an end." Applied as: the four spikes' build stages name
+  their docs example and API change as deliverables; the round's two reader-need verdicts about using the tool (G09:
+  "could not start on Monday from this text"; the scikit-learn persona's interface questions, G04, F04, G11) move from
+  the paper's list to the docs' list (Getting started, Conditioning, the API page) as product items for 0.1.
+
 - **The boundary of 0.1 drawn by spikes (14:15).** The supervisor's pattern, in his words (`WP44-decisions.md`
   context; verbatim): "i am placing work outside the scope of 0.1 but doing work to help clarify that boundary so there
   are concrete items on the other side of the limit and we feel confident about what we say in the paper because we
