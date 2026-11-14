@@ -306,3 +306,12 @@ enters the page it enters the people's paragraph beside his review of the block-
 on keeping a mechanism as simple as Occam's razor allows and as varied as Ashby's law requires; it is not on the
 governance lineage's line. Pending his word, and his word on whether a paper version with other authors exists.
 
+**Supervisor, verbatim (03:15 EST; popup):** "Add Protocols and Institutions,Add min-maxing complexity"
+
+**Supervisor, verbatim (03:16 EST):** "the length can be relaxed. 1000 words is okay with me, we're filling in the real
+story of this work which is actually quite rich"
+
+**Applied as:** Protocols and institutions (2025) as one sentence between the legitimacy work and the loop; Bernardineli's
+presentation (2024) as a clause in the people's paragraph after his review; record entries and rows; the page's word
+ceiling in `tests/test_site.py` set to 1000 with his words as the reason.
+
