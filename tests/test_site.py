@@ -482,7 +482,9 @@ def test_root_index_is_thin_and_routes_by_need():
         )
     ]
     assert order == sorted(order), "order: summary, why, what, how, lead, needs"
-    for needle in ("scikit-learn", "unsupervised", "feature engineering", "pca"):
+    # "feature engineering" left the page with the abstract's ruling of 2026-11-14 (three readers read it as
+    # frontier estimation); the page says unsupervised learning, beside PCA
+    for needle in ("scikit-learn", "unsupervised", "pca"):
         assert needle in low, needle
     for banned in ("sympy", "worked example", "chatgpt", "openai"):
         assert banned not in low, banned
