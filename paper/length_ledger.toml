@@ -1617,3 +1617,83 @@ section = "Discussion"
 words_added = 16
 job = "the contending-set change under pre-imposed requirements is generated per regime with the size of the set, in place of one count typed for the primary regime (five metrics, where the set has seven)"
 reader = "the reader weighing whether the requirements belong before or after the fit"
+
+# The final reader round, second paper unit (change requests 32 to 92 of triage/wave-2.md, wave-3.md, wave-4.md): the section's measured
+# growth, before and after (tests/test_paper.py words_by_section); the cut is the sentence the same unit deleted.
+
+[[raise]]
+date = "2026-11-14"
+section = "The decision problem"
+words_added = 37
+job = "Main results: each pointer resolves to the statement that carries the claim (chart, elasticity, the geometric program in the exponents, the three levels in order, the stopping declaration named as a paragraph), the Numerical tag becomes a sentence and 'blends' is glossed"
+reader = "the reader of the main results who followed a pointer to the wrong statement"
+
+[[raise]]
+date = "2026-11-14"
+section = "Preliminaries and notation"
+words_added = 19
+job = "names the package at its first use, and gives the second-order scores and the line that the case holds no zero rows (the definitions that read them come after)"
+reader = "the executive and the skimmer who meet 'the package' before anything says what it is"
+
+[[raise]]
+date = "2026-11-14"
+section = "Definitions"
+words_added = 58
+job = "the fit temperature and the reach glossed where Definitions 1 and 2 use them, the score defined where the reach uses it, the rule that numbers the terms, the n-lemma figure's rule that reads a face from the contending set"
+reader = "the reader checking the mathematics who met a symbol before its definition"
+
+[[raise]]
+date = "2026-11-14"
+section = "Methods"
+words_added = 27
+job = "the zero-row hypothesis against the package's handling, the robust scaler beside the target-fraction sentence, reach for the offset"
+reader = "the reader weighing whether the conditioning and the temperature are choices"
+
+[[raise]]
+date = "2026-11-14"
+section = "Results"
+words_added = 111
+job = "the statements say what they state: the descent condition of the soft alternation, the empty-cell status, the factor for a small exponent, what the codes F and I are, the vector of Lemma 2, the sign of kappa M, Corollary 1's parents, Theorem 8's order"
+reader = "the reader checking the mathematics against the lemma scripts"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case construction"
+words_added = 228
+job = "the requirements sorted into thirteen, four feasibility conditions and six read after the fit; the illustrative thresholds; how the fleet cost is formed; Figure 3's tags and measure names; Figure 4's lower panel described as lines"
+reader = "the reader of the case who met six requirements in the text and thirteen in the figure"
+
+[[raise]]
+date = "2026-11-14"
+section = "Case analysis"
+words_added = 231
+job = "the second-order claims of the case read from the record: the K = 1 zeros and where they enter, total mass outside the support, the robust scaler, the known answer's failure, the regressor's band, the two quantities of propose-predict-check; Figures 5 to 8 and Table 2 say what their points, axes, levels and rules are; the shortlist rule in steps"
+reader = "the executive and the frontier economist reading the case and its figures"
+
+[[raise]]
+date = "2026-11-14"
+section = "Discussion"
+words_added = 32
+job = "the propose-predict-check reading says one thing with Section 9's, and the kernel direction says which program is meant"
+reader = "the reader comparing the Discussion with the case"
+
+[[raise]]
+date = "2026-11-14"
+section = "Future work and final remark"
+words_added = 13
+job = "the final remark says what a forecast V would and would not say, against Section 10's novelty sentence; GGP is in the metrics"
+reader = "the reader who met a novelty score the paper disclaims"
+
+[[raise]]
+date = "2026-11-14"
+section = "Works cited"
+words_added = 16
+job = "says that the list holds the sources of the main text and of Appendix G"
+reader = "the reader who found seven entries with no citation in the text"
+
+[[cut]]
+date = "2026-11-14"
+section = "Search of the design space (preliminary)"
+words_removed = 14
+no_longer_did = "'the procedure resembles a diffusion with drift along the tangent spaces' (no definition or result stood behind it); the monotonicity sentence now says conjectured"
+authority = "final reader round wave 3, change request 49; marginal-value test; measured by tests/test_paper.py words_by_section on the sources before and after"

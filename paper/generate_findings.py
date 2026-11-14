@@ -15,6 +15,8 @@ import pandas as pd
 from paper_common import Md, appendix_link, md_table, thousands
 from paper_stability import cell, entry, stable, summary
 
+from hyperbolic_trade_space.estimator import PARTICIPATION_THRESHOLD
+
 _C7 = appendix_link("sub-c-7", "Appendix C.7")
 _D3 = appendix_link("sub-d-3", "Appendix D.3")
 _D5 = appendix_link("sub-d-5", "Appendix D.5")
@@ -26,6 +28,7 @@ _E = appendix_link("appendix-e", "Appendix E")
 _D15 = appendix_link("sub-d-15", "Appendix D.15")
 _D17 = appendix_link("sub-d-17", "Appendix D.17")
 _C8 = appendix_link("sub-c-8", "Appendix C.8")
+_D19 = appendix_link("sub-d-19", "Appendix D.19")
 
 
 def _and(items) -> str:
@@ -195,12 +198,20 @@ def participation_sentence() -> Md:
         n: max(((min(rho[frozenset((n, m))]), m) for m in used), key=lambda p: p[0]) for n in out
     }
     low = int(min(v for v, _ in best.values()) * 100) / 100
+    st0 = gr._study(regs[0])
+    w1 = np.asarray(case._reports(st0, gr._fits(regs[0])[1])[0].exponents)
+    zero = [n for n, v in zip(st0.names, w1, strict=True) if v <= PARTICIPATION_THRESHOLD]
+    later = [n for n in zero if n in used]
     return Md(
         f"Of the {_NUMBER_WORDS.get(len(names), len(names))} traded metrics, "
         f"{_NUMBER_WORDS.get(len(out), len(out))}, "
         f"{_and('the ' + n for n in out)}, enter no contending set at K = 1 to {depth} in either "
         f"regime: each is nearly one axis with a metric that does (Spearman at least {low:.2f}, "
-        f"{_C5})."
+        f"{_C5}). At K = 1 in the {regs[0]} regime {_NUMBER_WORDS.get(len(zero), len(zero))} "
+        f"carry no exponent at the fit temperature; {_NUMBER_WORDS.get(len(later), len(later))} "
+        f"of them ({_and(later)}) enter a contending set at K = 2 or 3 or in the other regime. A "
+        f"zero exponent says the metric does not set the surface in this sample; a near-collinear "
+        f"pair is read summed ({_D3})."
     )
 
 
@@ -210,6 +221,22 @@ def _target_variants_keep_the_set(study) -> bool:
     sets = {v: set(s.strip() for s in t.loc[v, "contending set"].split(",")) for v in t.index}
     base = sets["baseline"]
     return all(sets[v] == base for v in ("target fraction halved", "target fraction doubled"))
+
+
+def _scaler_variant_sentence(study) -> str:
+    """What the robust scaler does to the K = 1 contending set (Appendix D.5's scaler row): its
+    size, how many of the baseline's metrics it shares and where its largest exponent falls."""
+    t = case.sensitivity_table(study).set_index("variant")
+    base, rob = t.loc["baseline"], t.loc["robust scaler"]
+    base_set = {m.strip() for m in base["contending set"].split(",")}
+    rob_set = {m.strip() for m in rob["contending set"].split(",")}
+    if rob_set == base_set and rob["largest exponent at"] == base["largest exponent at"]:
+        return " The robust scaler leaves it unchanged."
+    return (
+        f" The robust scaler changes it: {len(rob_set)} metrics, {len(rob_set & base_set)} of the "
+        f"baseline's {len(base_set)} among them, the largest exponent on "
+        f"{rob['largest exponent at']}."
+    )
 
 
 def design_sets_sentence() -> Md:
@@ -267,6 +294,7 @@ def temperature_sentence(study, fit) -> Md:
         if _target_variants_keep_the_set(study)
         else "changes with the target fraction halved or doubled"
     )
+    scaler = _scaler_variant_sentence(study)
     return Md(
         f"The fit temperature is tau = {fit.tau:.1f}: a fraction {frac} of "
         f"designs lies above V = 1 (the target is {study.spec.target_frac:.2f}), the band "
@@ -275,7 +303,9 @@ def temperature_sentence(study, fit) -> Md:
         f"of the designs in the fit: the designs the soft maximum weighs as if equally, so the "
         f"exponents at the fit temperature rest on about that many of the "
         f"{thousands(len(study.M))} "
-        f"designs. The contending set {holds} ({_D5})."
+        f"designs. The contending set {holds} ({_D5}).{scaler} The exponents' stability under "
+        f"resampling of the rows is not assessed at K = 1: the movement of an exponent vector is "
+        f"read from K = 2 ({_D15})."
     )
 
 
@@ -292,12 +322,25 @@ def k1_sentence(study, fit) -> Md:
         f"D exponents K=1 | {study.regime} | {n} | exponent w", lambda v: f"{v:.2f}"
     )
     low, high = min(w, key=w.get), max(w, key=w.get)
+    outside = [
+        study.names[j]
+        for j in np.flatnonzero(np.asarray(rep.exponents) > PARTICIPATION_THRESHOLD)
+        if j not in set(rep.contending_set)
+    ]
+    extra = "".join(
+        f" At the fit temperature {m} also carries "
+        f"{stable(f'D exponents K=1 | {study.regime} | {m} | exponent w', lambda v: f'{v:.2f}')} "
+        "and is not in the contending set, which is the exact maximum's support "
+        "(Definition 6)."
+        for m in outside
+    )
     return Md(
         f"At K = 1 the exact-maximum fit has {_a(len(names))} {len(names)}-lemma across "
         f"{_span(study.spec.subsystems_of(names))}: {_and(names)} contend, with "
-        f"exponents at the fit temperature from {two(low)} to {two(high)}. "
-        "R1 of Section 5 holds on both regimes: the exact-maximum optimum is one point, so the "
-        "support is not a solver's choice."
+        f"exponents at the fit temperature from {two(low)} to {two(high)}.{extra} "
+        "R1 of Section 5 holds on both regimes: the exact-maximum optimum is one point, "
+        "checked by a test of the repository on both regimes, so the support is not a "
+        "solver's choice."
     )
 
 
@@ -326,7 +369,8 @@ def choosing_k_sentence() -> Md:
     return Md(
         f"**{_NUMBER_WORDS[K].capitalize()} terms.** The package's checks for choosing K ({_D15}) "
         f"pick K = {K} on {regimes}: the mean "
-        f"slack, read at the K = 1 temperature, drops most at K = {K} ({both('drop', K, two)}) "
+        f"slack (in log V), read at the K = 1 temperature, drops most at K = {K} "
+        f"({both('drop', K, two)}) "
         f"and less at K = {K + 1} ({both('drop', K + 1, two)}). The thinnest term holds "
         f"{both('thinnest share, own tau', K, two)} of the near-frontier designs at K = {K} and "
         f"{both('thinnest share, own tau', K + 1, two)} at K = {K + 1}, the step where a thin term "
@@ -470,8 +514,17 @@ def recovery_sentence() -> Md:
             f"{g} at the exact maximum" if np.isinf(t) else f"{g} at temperature {t:g}"
             for g, t in zip(good, gr.RECOVERY_TAUS, strict=True)
         )
+    thin_ok = min(r["rows_on_thinnest"] for r in first if r["recovered"])
+    worst = max(
+        (r for r in runs if not r["recovered"] and r["tau"] == gr.RECOVERY_TAUS[1]),
+        key=lambda r: r["rows_on_thinnest"],
+    )
     tail = (
-        f"the {len(rows)} failures have {_and(rows)} frontier rows on their thinnest term ({_D14})"
+        f"the {len(rows)} failures have {_and(rows)} frontier rows on their thinnest term, where "
+        f"every recovered table has at least {thin_ok}; the one with {rows[-1]} is "
+        f"{worst['status']} at temperature {gr.RECOVERY_TAUS[1]:g} and still errs by "
+        f"{worst['error']:.2f}, with {worst['right']:.2f} of its frontier rows on the right term "
+        f"({_D14})"
         if same
         else f"the failures differ between the temperatures ({_D14})"
     )
@@ -560,7 +613,8 @@ def predict_check_sentence(table, reg) -> Md:
     one = lambda v: f"{v:.1f}"  # noqa: E731
     return Md(
         f"Of {n} proposals, the predicted energy differential lies within the regressor's own "
-        f"band 1/tau = {stable('sentence | predict-check | band', lambda v: f'{v:.4f}')} of the "
+        f"band 1/tau = {stable('sentence | predict-check | band', lambda v: f'{v:.4f}')} (its "
+        f"four-metric fit's, not the case's) of the "
         f"measured one for {lv}, and the predicted position within that band for {z}; position "
         f"errors run from {stable('sentence | predict-check | lowest position error', one)} to "
         f"{stable('sentence | predict-check | highest position error', one)} bands."
@@ -572,7 +626,8 @@ def predict_reading(table, reg) -> Md:
 
     Reads the same table as :func:`predict_check_sentence`, and the recorded predictions and the
     measured check designs of the spec for what the proposals are: how many distinct
-    configurations, how many meet the model's depth-of-discharge requirement (``dod_ok``), their
+    configurations, how many meet the model's depth-of-discharge feasibility condition
+    (``dod_ok``), their
     batteries and depths of discharge, and where they sit on the four-metric view (spike A of the
     WP23 close-out: they reached that frontier by spending the battery).
     """
@@ -601,12 +656,13 @@ def predict_reading(table, reg) -> Md:
     where = "inside" if far < band else "against"
     joined = lambda xs, f: " and ".join(f.format(x) for x in sorted(set(xs)))  # noqa: E731
     fail = (
-        " They reached the four-metric frontier they were aimed at by spending the battery. "
+        " They reached the four-metric fitted reference surface they were aimed at "
+        "by spending the battery. "
         f"Their measured log V is within {far:.3f} of V = 1, {where} the band {band:.3f}. "
         "Their batteries are "
         f"{joined(props['battery_wh'].round(0), '{:.0f}')} Wh, at the bottom of the {lo:g} to "
         f"{hi:g} Wh range, and {'all' if dod == 0 else f'{n - dod} of the'} {n} fail the model's "
-        "depth-of-discharge requirement at "
+        "depth-of-discharge feasibility condition at "
         f"{joined(props['dod_eclipse'].round(2), '{:.2f}')}. The proposer's chart is the "
         "four-metric view, which has no depth-of-discharge axis. A proposer that also predicts "
         "the feasibility flags, and proposes only designs predicted to meet them, is future work."
@@ -614,10 +670,11 @@ def predict_reading(table, reg) -> Md:
         else ""
     )
     return Md(
-        f"**What propose, predict, check showed.**{same} It showed that the regressor places "
-        "the energy differential of a proposal "
-        f"within its band ({lv} of {n}), the easy part. It did not show that it places the "
-        f"position along the frontier ({z} of {n}).{fail} "
+        f"**What propose, predict, check showed.**{same} It showed that the regressor's "
+        "predicted energy differential and predicted position of a proposal each lie within its "
+        f"band of the measured one ({lv} of {n} and {z} of {n}): the error of the prediction. "
+        "Where the proposals landed is a second quantity, the measured log V against zero."
+        f"{fail} "
         f"{words(n).capitalize()} proposals{designs} illustrate and do not estimate a rate. "
         "A predicted crossing of V = 1 remains a hypothesis."
     )
@@ -666,7 +723,9 @@ def elasticity_sentence(study, fits) -> Md:
     return Md(
         f"On term {k} the elasticity between {a} and {b} is -{text}: along the term, one percent "
         f"gained in {b} is {text} percent given up in {a}. The percentages are of the "
-        f"conditioned metrics; Theorem 7 gives the rates in the attributes' own units.{tail}"
+        f"conditioned metrics (their logs after the standard scaler); Theorem 7 gives the rates in "
+        f"the attributes' own units, where the rate between two metrics is multiplied by "
+        f"alpha_i/alpha_j, the ratio of their conditioning exponents.{tail}"
     )
 
 
@@ -863,16 +922,17 @@ def decision_sentence(d: Decision) -> Md:
         if p["fine"][col] != sp[col]
     ]  # fmt: skip
     assert "tracker grade" in differs, "premise of the sentence: the fleets differ in the tracker"
+    assert bw["nd"], "premise of the paragraph: the pick between them is one no other beats"
     tracker = lambda r: f"{r['wheel_class']}-wheel, {r['st_grade']}-tracker"  # noqa: E731
     one = lambda v: f"{v:.1g}"  # noqa: E731
     held = lambda role, col, orig: _held(f"{role} | {col}", p[role][col], orig)  # noqa: E731
     return Md(
         f"**What the executives decide.** The case's two stakeholders: the operator cares "
         f"about the pointing error, the sponsor about the unit cost and the fleet cost. "
-        f"The requirements and the frontier "
+        f"The requirements and the fits "
         f"cut {thousands(_count(d, 'feasible'))} feasible designs to {_count(d, 'working')} that "
         f"pass all six requirements and lie in the near-frontier band of both fits, the simpler "
-        f"and the richer. One question remains, "
+        f"and the richer (the K = 1 band for both, as at every K; {_D19}). One question remains, "
         f"and it is theirs: whether a fine star tracker, which brings the pointing error from "
         f"about {held('sponsor', 'pointing_error_deg', one)} to "
         f"{held('fine', 'pointing_error_deg', one)} degree, is worth about "
@@ -882,11 +942,12 @@ def decision_sentence(d: Decision) -> Md:
         f"If it is, the fleet of {int(bw['fleet_size'])} {tracker(bw)} satellites at "
         f"{held('between', 'fleet_cost_usd', _musd)} M USD "
         f"({held('between', 'unit_cost_usd', _thousand_usd)} USD each) "
-        f"gives up the least of either measure among the {_count(d, 'nondominated_working')} of "
-        f"the {_count(d, 'working')} that no other beats on both; "
+        f"is the one whose larger shortfall on the two measures, each scaled from its best to its "
+        f"worst of the {_count(d, 'working')}, is smallest, among the "
+        f"{_count(d, 'nondominated_working')} that no other beats on both; "
         f"if not, the fleet of {int(sp['fleet_size'])} {tracker(sp)} satellites at "
-        f"{held('sponsor', 'fleet_cost_usd', _musd)} M USD is cheapest. The method prices the "
-        f"question and does not answer it; the numbers are nominal ({_C8})."
+        f"{held('sponsor', 'fleet_cost_usd', _musd)} M USD is the cheapest fleet. The method "
+        f"prices the question and does not answer it; the numbers are nominal ({_C8})."
     )
 
 

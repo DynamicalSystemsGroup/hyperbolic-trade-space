@@ -241,7 +241,8 @@ entries:
       convex piecewise-linear fits, and reweighted ℓ₁ sparsity. The sources fit regression
       surfaces.
     shares: >-
-      The model class, the K > 1 refit scheme and the sparsity option.
+      The K > 1 refit scheme and the sparsity option (reweighted ℓ₁, Candès et al. 2008), and
+      the model class.
     differs: >-
       This work fits an envelope, the one-sided boundary of the data, and reads its exponents as
       elasticities.
@@ -251,7 +252,7 @@ entries:
     # (a test checks it). Appendix G prints the full sentences.
     short:
       does: "Geometric programming with generalized posynomials"
-      shares: "The model class, the K > 1 refit scheme"
+      shares: "The K > 1 refit scheme and the sparsity option"
       differs: "This work fits an envelope, the one-sided boundary of the data"
     nearest: true
     why_not_just: >-
