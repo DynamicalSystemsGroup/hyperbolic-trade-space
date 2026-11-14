@@ -117,3 +117,23 @@ surfaces, the flag table and the second reader's confirmation, copy-editing only
 landing unit per surface group through the owning package's ledger and the paper queue. The abstract is read and
 flagged like every surface and changed by no one but the supervisor; the five entry surfaces' changes are listed for
 his close read."
+
+## The pass landed; the assistant's calls on what it left (2026-11-14, 18:30; head c8897c2)
+
+The four landing units are on dev (L1 docs 7f790f2, L2 the README and root page 0b31ef1, L3 the case page and
+glossary d417196, N1 and N2 the paper and appendices 7caf05d, with both notebooks executed once at 9586065): 1,211
+first-reader rows, 537 applied, 156 left, 269 routed, 275 not applied with their reasons; the whole paper 10,354 to
+9,914 words against 11,332; Appendix H 911 of 920; the figures unchanged and no quoted number moved; the checker
+18 counts above the pre-pass baseline, down from 28, the rises being text that landed after the baseline was taken.
+
+**Assistant, verbatim:** "The pass is accepted on the landings as rendered and on the suite. Calls on what it left.
+(1) The baseline is retaken at the pass's final head once the second readers have confirmed, and the before and after
+counts are recorded beside it; from then the strict compare guards new text. (2) The history page's thirty rows and
+the two root-page rows (the lead sentence of the call to action; the Why figure's caption) are the supervisor's: they
+go to his close-read list with the entry surfaces, applied by no one else. (3) The 163 rows on the lemma scripts'
+generated text are recorded as a post-0.1 tidiness item; derivation/ stays off limits in this release. (4) One
+residue unit through the paper queue, correctness not copy-editing: the D.18 pointer to 'the last column' (which is the
+Jaccard), the 'G-1 to G-17' against G-18 count in Appendix E, the '20 of the variables' wording in the case model if it
+is wrong, and bibliography entry 7's \ell_1 markup; and in the same unit a second pass over the fifty-five Appendix E
+rows the N2 record did not reason individually, under the pass's rules. (5) WP38-review.md after the confirmations;
+then the final reader round against key version 5."

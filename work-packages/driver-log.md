@@ -228,6 +228,17 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The residual pass landed and verified; rulings on its residue (18:30).** All four landing units on dev at
+  c8897c2 (the paper and appendices as one unit with a single execution; the figures unchanged; no quoted number
+  moved; the paper 10,354 to 9,914 words). The assistant's checks on c8897c2: ruff, lock, attribution clean; the
+  vocabulary check 0 new with the known count down to 61; the fast suite 1946 passed; no stderr output in either
+  notebook; the stage rebuilt and Section 1 and Appendix E read in the browser, where the "G-1 to G-17" against G-18
+  mismatch and the "reweighted l1" rendering of the bibliography are visible, as the pass reported. The after-checker
+  shows 18 counts above the old baseline, down from 28. Calls in WP38-decisions.md: rebaseline after the second
+  readers; the history page's and two root-page rows to the supervisor's close read; the lemma-script rows a post-0.1
+  item; one correctness residue unit with a second pass over Appendix E's unreasoned rows; then the review and the
+  final reader round. CI dispatched on c8897c2.
+
 - **7f790f2 fully green (17:15).** CI 43536108422 on 7f790f2 (the pass's entry-surface and docs landings): every job
   green on both platforms, the twenty-ninth fully green head. The paper unit of the pass has its notebooks executed
   once on the copy-edited sources (416911d in its worktree) and is running the paper tests before the push.
