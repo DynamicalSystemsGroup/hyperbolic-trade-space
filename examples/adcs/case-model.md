@@ -1,14 +1,9 @@
 # The cubesat model, the experiment layer and how to plug in your own case
 
-This is the how-to for `examples/adcs/`. The method sees one thing: a map from configurations to
-attributes. This page separates that map from the physics of this example, shows how to read the
-model that provides it, how to run an experiment and read its ledger, and how to provide the
-same map from a simulator, a physical test campaign or a human assessment.
+The method sees one thing: a map from configurations to attributes.
 
-Two generations sit in the directory until the swap gate. The **frozen** generation
-(`cubesat_model.py`, `cubesat_tradespace.sysml`, `generate_dataset.py`, `make_check_designs.py`,
-`design_space.py`, `extended_design_space.sysml`, and the CSVs in `data/`) is what the paper and the
-records cite; it stays as it is. The **v2** generation (`model_v2/cubesat.sysml`, `experiments/`,
+Two generations sit in the directory. The **frozen** generation is what the paper and the records
+cite. The **v2** generation (`model_v2/cubesat.sysml`, `experiments/`,
 `data/v2/`) is the tidied model with an experiment layer; it lands beside the frozen one. Every
 file in `data/` and `data/v2/` has an entry in the ledger.
 
@@ -42,16 +37,13 @@ Everything else in this directory is the physics of one case:
 | the slew integration (the measurement of record) | this example's physics | `adcs_sim.py` |
 | the glue that makes the model an oracle | this example's instance | `experiments/cubesat_oracle.py` |
 
-To run your own case you replace three things and keep the rest: the **oracle** (what turns a
-configuration into attributes), the **sampler** (how configurations are drawn, or which are
-tested), and the **experiment declaration** (names, count, seed, evidence kind). The runner and the
-ledger are unchanged; the toy cases at the end of this page show it.
+To run your own case you replace three things and keep the rest. The **oracle** turns a
+configuration into attributes. The **sampler** draws the configurations, or says which are tested.
+The **experiment declaration** gives the names, count, seed and evidence kind.
 
 ## Reading the model top to bottom
 
 `model_v2/cubesat.sysml` is one file and one package, `CubesatTradeSpaceV2`, read in this order.
-The table is generated from the file by `tests/test_case_model_howto.py`; the line pointers follow
-the file.
 
 <!-- sections:begin -->
 | section | title | lines |
@@ -65,66 +57,54 @@ the file.
 | 7 | NAMED CONFIGURATIONS (configuration view) | 1176 to 1199 |
 <!-- sections:end -->
 
-What to take from each section:
-
-- **Configuration space.** The two enumerations (wheel class, star-tracker grade), the abstract
-  part definitions with one concrete alternative per literal carrying its attribute table, the
-  continuous ranges, and both gain boxes (baseline and aggressive) as named parts. The sampler
+- **Configuration space.** It holds the two enumerations (wheel class, star-tracker grade) and the abstract
+  part definitions, with a concrete alternative for each literal and its attribute table. The
+  continuous ranges and both gain boxes (baseline and aggressive) are named parts. The sampler
   reads all of it from here; no range, literal or constant is copied into Python.
 - **The cubesat.** The composition (panels, battery, wheel, tracker, controller) and the
   environment (eclipse, loads).
 - **Accounting.** One `calc def` per accounting quantity: masses, power, energy balance, pointing
   error, depth of discharge. Each constant has a `doc` rationale beside it.
 - **Scenarios.** The nominal slew as a named part (angle, horizon, step, bands), and a closed-form
-  approximation of the slew for model checking. The integration of the slew itself is in Python
+  approximation of the slew for the solver. The integration of the slew itself is in Python
   (`adcs_sim.simulate_adcs`), because the model language cannot integrate the equations of motion.
-- **Requirements.** Feasibility as named requirements (`settled`, `momentum_ok`, `power_ok`,
-  `dod_ok` are their verdicts), the requirements over the other traded metrics, `satisfy`
-  statements tying them to the baseline (a negated one, `not satisfy`, for the pointing-error
-  requirement, which the baseline configuration fails), verification definitions naming what each verifies, and
-  claims over every in-range configuration. Which quantity each requirement reads is the table of
-  the next section.
+- **Requirements.** Feasibility as named requirements, whose verdicts are `settled`,
+  `momentum_ok`, `power_ok` and `dod_ok`, and the requirements over the other metrics. `satisfy`
+  statements tie them to the baseline; the pointing-error requirement, which the baseline
+  configuration fails, has a negated one, `not satisfy`. Verification definitions name what each
+  verifies. Claims cover every in-range configuration.
 - **The experiment.** `analysis def SlewExperiment` takes the configuration and the measured slew
-  quantities and returns the attributes the model computes. The measured quantities are not
-  computed; they pass into the row from the measurement.
+  quantities and returns the attributes the model computes.
 - **Named configurations.** The baseline and two contrasts (agile, compact).
 
-The model has two views, generated from its elements and committed in `model_v2/views/`
-(PlantUML text, SVG and PNG). The assembly view (`assembly_view`) shows what a configuration is:
+The model has two views, generated from its elements and committed in `model_v2/views/`.
+The assembly view (`assembly_view`) shows what a configuration is:
 the parts, the alternatives swapped for a categorical variable and the parameters tuned for a
 continuous one. The behavioural view (`behavioural_view`) shows how a configuration is assessed:
 for each traded metric, the requirement that reads it, or none, and where the metric comes from
-(the analysis or the measured slew). The generator is
-`docs/superpowers/notes/spike-sysml-diagrams/project.py` (`render.sh` there draws the SVG and PNG);
-`tests/test_system_model_v2_r1.py` checks that the committed text is its output on this file.
+(the analysis or the measured slew).
 
 ## From the assembly to the dataset: measures of effectiveness and measures of performance
 
-This section reads the model `model_v2/cubesat.sysml` as adopted at the package's data gate
-(`work-packages/WP23-scope-of-work.md`, G8; the version it replaced is in history at d3018ba, and
-the section table above is this file's). The chain is short.
 A configuration is what the assembly view shows: two swaps (the wheel class, the star-tracker
 grade) and four tunes (the panel span, the battery capacity, the gains Kp and Kd). The assessment
-turns a configuration into thirteen traded metrics: the slew is integrated once and measured, the
-accounting calcs are evaluated, and the experiment returns the metrics as one row of the dataset,
+turns a configuration into thirteen traded metrics. The slew is integrated once and measured, the
+accounting calculations are evaluated, and the experiment returns the metrics as one row of the dataset,
 with the four flags beside them. Each metric is marked in the model as a measure of effectiveness
-(MoE) or a measure of performance (MoP), by one rule stated in the model's top comment: an MoE is a
-measure a stakeholder states without knowing the design; an MoP is a measure of the system's
-performance under the scenario the engineer states. Three MoEs (the pointing error, the unit cost
-and the fleet cost) and ten MoPs: the stakeholders ask for a payload that points and a launch they can afford;
+(MoE) or a measure of performance (MoP) by one rule, stated in the model's top comment. An MoE is a
+measure a stakeholder states without knowing the design. An MoP is a measure of the system's
+performance under the scenario the engineer states. There are three MoEs (the pointing error, the
+unit cost and the fleet cost) and ten MoPs. The stakeholders ask for a payload that points and a launch they can afford;
 everything else is how the design performs under the engineer's slew and orbit. Each metric is read
-by a requirement on its own quantity and verified in a verification case (`model_v2/views/coverage.md`,
-second table; `tests/test_model_coverage.py::test_every_traded_metric_has_a_requirement_that_reads_it_and_a_mark`).
+by a requirement on its own quantity and verified in a verification case.
 
 ### The traded metrics in their disciplines' words
 
 Control (the attitude loop under the nominal slew, a 30 degree slew with a 600 s horizon).
 
 - **Settling time** (MoP, measured): the hold time, the first time after which the pointing error
-  stays inside the settling band, a fraction of the slew's initial error; computed by event detection
-  as the last exit from the band, so a slew that never holds inside the band has the horizon as its
-  settling time. It is the case's one time metric: the slew time (first entry into a band) left the
-  traded metrics with WP16's decision (`WP16-decisions.md`, "Slew time under event detection").
+  stays inside the settling band, a fraction of the slew's initial error. It is found as the last
+  exit from the band, so a slew that never holds has the horizon as its settling time.
 - **Pointing error** (MoE, a calc of the configuration): how well the payload points, the
   root-sum-square of the steady attitude error under the disturbance and gravity-gradient torques
   (the torque over Kp) and the star tracker's accuracy.
@@ -132,8 +112,7 @@ Control (the attitude loop under the nominal slew, a 30 degree slew with a 600 s
   in N.m.s; what the slew asks of the wheels.
 - **Momentum headroom** (MoP, from the measured peak momentum): the wheel class's momentum
   capacity over the peak wheel momentum of the slew; 1 where the peak just reaches the capacity,
-  above 1 where the wheel keeps reserve. It is the inverse of the momentum utilisation, and the
-  quantity the momentum requirement reads.
+  above 1 where the wheel keeps reserve.
 
 Power and energy (the panels, the battery and the loads under the stated orbit and eclipse).
 
@@ -142,38 +121,31 @@ Power and energy (the panels, the battery and the loads under the stated orbit a
 - **Energy balance** (MoP): over one orbit, the energy the panels supply in sunlight less the base
   load over the orbit and the slew's loss energy.
 - **Depth of discharge** (MoP): the eclipse demand (the base load over the eclipse plus the slew's
-  loss energy) over the battery capacity. It is the one metric and the one requirement on the
-  eclipse energy: the eclipse reserve, the energy left above the allowed depth of discharge, left
-  the model at the WP23 close-out, because its requirement (a reserve not negative) was the
-  depth-of-discharge requirement restated (`WP23-rounds/spike-redundancy.md`, pair 1).
+  loss energy) over the battery capacity.
 - **Peak slew power** (MoP): the electrical draw at the peak of the slew, the tracker's power plus
   the idle wheels plus the wheels' loss at the peak torque.
 - **Available power** (MoP, a calc of the configuration): the generated power left after the
   housekeeping load and the tracker, before any slew; positive wherever the power requirement holds.
-- **Battery peak power ratio** (MoP): the pack's peak power, its discharge rating times its
-  capacity, over the eclipse peak load, the housekeeping load plus the peak slew power with the
-  panels giving nothing; 1 where the pack just carries the slew in eclipse, above 1 where it keeps
-  reserve.
+- **Battery peak power ratio** (MoP): the pack's peak power (its discharge rating times its
+  capacity) over the eclipse peak load (the housekeeping load plus the peak slew power with the
+  panels giving nothing). It is 1 where the pack just carries the slew in eclipse and above 1 where
+  it keeps reserve.
 <!-- vocab-exempt: power margin -->
 
 Mass and cost.
 
-- **Total mass** (MoP): the launch mass of the configuration, the sum of the bus, battery, panels,
-  antenna, wheels, tracker and IMU masses.
+- **Total mass** (MoP): the launch mass of the configuration, the sum of the part masses.
 - **Unit cost** (MoE, a calc of the configuration): the cost per satellite to build and launch a
-  fleet, the fleet cost over the fleet size, read at the configuration's own fleet size; it falls
+  fleet, the fleet cost over the fleet size; it falls
   as the fleet grows.
-- **Fleet cost** (MoE, a calc of the configuration): the cost to build and launch the fleet: the
-  parts and the assembly line, each a fixed share paid once plus a learning curve in the fleet
-  size, and the launch of every satellite at 7,000 USD per kilogram of its total mass. It rises
-  with the fleet size, more slowly on the build part than on the launch part. Both cost metrics are lower bounds on
-  a full costing (below, and Appendix C.8 of the paper).
+- **Fleet cost** (MoE, a calc of the configuration): the cost to build and launch the fleet. The
+  parts and the assembly line each cost a fixed share paid once plus a learning curve in the fleet
+  size, and the launch of every satellite costs 7,000 USD per kilogram of its total mass. It rises
+  with the fleet size, more slowly on the build part than on the launch part.
 - **Launch cost** (MoE, not traded): the total mass times 7,000 USD per kilogram
-  (`launchRate` in `model_v2/cubesat.sysml`), increasing in mass; the launch cost is the stakeholder's
+  (`launchRate` in `model_v2/cubesat.sysml`). It is the stakeholder's
   measure on the mass and the quantity the launch-budget requirement reads. The total mass stays the
-  traded metric and the dataset gains no column
-  (`WP23-decisions.md`, OD1 and OD2;
-  `tests/test_system_model_v2.py::test_launch_cost_is_the_rate_times_the_total_mass_and_increases_with_it`).
+  traded metric and the dataset gains no column.
 
 ### The requirements and what each reads
 
@@ -185,98 +157,88 @@ Mass and cost.
 | `DepthOfDischargeRequirement` (`dod_ok`) | the depth of discharge | within the environment's allowed depth | the environment |
 | `PowerMarginRequirement` | the power margin | not negative | zero |
 | `EnergyBalanceRequirement` | the energy balance | not negative | zero |
-| `PointingErrorRequirement` | the pointing error | within `budgets.pointingErrorLimit`, 0.008495 degree | the supervisor's choice (below) |
+| `PointingErrorRequirement` | the pointing error | within `budgets.pointingErrorLimit`, 0.008495 degree | the supervisor's choice |
 | `ControlEffortRequirement` | the measured control effort | within `budgets.controlEffortLimit`, 0.05922 N.m.s | the supervisor's choice |
 | `PeakSlewPowerRequirement` | the peak slew power | within `budgets.peakSlewPowerLimit`, 2.6 W | the supervisor's choice |
 | `LaunchBudgetRequirement` | the launch cost (the MoE on the total mass) | within `budgets.launchBudget`, 105,770 USD | the supervisor's choice |
 | `UnitCostRequirement` | the unit cost | within `budgets.unitCostLimit`, 350,000 USD per satellite | the supervisor's choice |
 | `FleetCostRequirement` | the fleet cost | within `budgets.fleetCostLimit`, 6,000,000 USD | the supervisor's choice |
-| `BatteryPeakPowerRequirement` | the battery peak power ratio | at least 1 | the battery's rating (below) |
+| `BatteryPeakPowerRequirement` | the battery peak power ratio | at least 1 | the battery's rating |
 <!-- vocab-exempt: power margin -->
 
-The first four are the flags of the dataset, the verdicts of named requirements on each simulated
-configuration; `dod_ok` is also one of the case's feasibility flags (`case.CUBESAT.flags`), so the
-depth-of-discharge failures leave the fit by name. The four thresholds are the supervisor's choice
-from the loop's ladder of pass fractions (`WP23-decisions.md`, "The four thresholds"), literal values
-in `budgets` with the share of the feasible designs each admits (primary / baseline regime): a peak
+The first four are the flags of the dataset: the verdicts of named requirements on each simulated
+configuration. `dod_ok` is also one of the case's feasibility flags (`case.CUBESAT.flags`), so the
+depth-of-discharge failures leave the fit by name. The four thresholds are the supervisor's choice.
+They are literal values in `budgets`, each with the share of the feasible designs it admits (primary / baseline regime): a peak
 slew power of 2.6 W (62.2 % / 67.3 %, every small and medium wheel), a pointing error of 0.008495
 degree (94.9 % / 63.7 %), a control effort of 0.05922 N.m.s (58.9 % / 90.0 %) and a launch budget
-of 105,770 USD, 15.11 kg at 7,000 USD per kilogram (94.9 % / 95.6 %); they are read from the model by
-`tests/test_system_model_v2.py::test_the_four_thresholds_are_the_supervisors_values`. The baseline
+of 105,770 USD, 15.11 kg at 7,000 USD per kilogram (94.9 % / 95.6 %). The baseline
 configuration fails the pointing-error requirement: its pointing error is 0.0155 degree against
-0.0085 degree, and 63.7 % of the baseline regime's feasible designs pass it ("Keep 0.0085 deg",
-`WP23-decisions.md`); the model states the failure as `not satisfy baselinePointingError by
-cubesatBaseline`, which the engine checks true. The battery's discharge rating is proposed: a
-continuous rating of 1 C (`environment.batteryDischargeRate`, 1.0 per hour), the pack delivering its
-capacity in one hour, the plain rating of a small-satellite lithium-ion pack and not a cited one
-(`WP23-review.md`, "Round 2"). None of these thresholds enters the dataset or the fit: the fit of
-record is the fit on the feasible designs, and the case reads the four requirements after it
-(`case.requirements_table`, `case.design_sets_table`; Appendix D.17 of the supporting material).
+0.0085 degree, and 63.7 % of the baseline regime's feasible designs pass it. The model states the failure as `not satisfy baselinePointingError by
+cubesatBaseline`, which the engine checks true. The battery's discharge rating is a
+continuous rating of 1 C (`environment.batteryDischargeRate`, 1.0 per hour): the pack delivers its
+capacity in one hour. It is the plain rating of a small-satellite lithium-ion pack and not a cited
+one. None of these thresholds enters the dataset or the fit. The fit is on the feasible designs,
+and the case reads the four requirements after it (`case.requirements_table`, `case.design_sets_table`; Appendix D.17 of the supporting material).
 
 ### What the case leaves out
 "Verification" on this page is a solver checking a requirement on a configuration, not a hardware test. The model is a
-demonstration; what bears on how far it reaches:
+demonstration.
 - **Cost beyond a lower bound.** The unit cost and the fleet cost cover the bus, the attitude-control parts, assembly and test,
   and wholesale launch, and leave out the payload, communications, flight software, licensing, operations and the rest of the
   full costing. The fleet cost requirement holds the covered cost under 6,000,000 USD, inside the sponsor's full budget of
-  8,000,000 USD, the rest being the allowance for what is not covered.
+  8,000,000 USD; the rest is the allowance for what is not covered.
 - **Pointing error.** It is the closed-form steady error with the star tracker's accuracy, summed in quadrature; boresight
   alignment, the tracker's roll axis and wheel jitter are not modelled, so its smallest value, 0.0006 degree, is not a flight claim.
-- **Momentum management.** `momentum_ok` compares one slew's peak momentum with the wheel's capacity; the constant disturbance
-  torque is not accumulated over an orbit and no desaturation device exists, so that the small wheel is feasible is a one-slew
-  reading and not a sizing.
+- **Momentum management.** `momentum_ok` compares one slew's peak momentum with the wheel's capacity. The constant disturbance
+  torque is not accumulated over an orbit and no desaturation device exists, so the small wheel's
+  feasibility is a one-slew reading and not a sizing.
 - **Launch slot.** The 50 kg minimum slot (350,000 USD) is a note in the model and not a cost: a fleet of one to three pays it, so
   the launch cost is understated by 3.1 to 4.2 times at one satellite and the low end of the fleet-size axis is underpriced.
 - **Margins and growth.** Mass and power are nominal sums; solar degradation is one fixed factor (0.9); no battery fade or charge loss.
-- **One scenario.** One 30 degree slew in a 600 s horizon under a saturating proportional-derivative law (both choices of the case), one fixed 0.6 h eclipse of a LEO of about 95 minutes, no altitude.
+- **One scenario.** One 30 degree slew in a 600 s horizon under a saturating proportional-derivative law (both choices of the case), and one fixed 0.6 h eclipse in a low Earth orbit of about 95 minutes.
 
-The full list (the order of the cost exclusions, schedule and qualification, fault tolerance, thermal and communications, the
-gains as hardware, the source of each limit) is Appendix C.8 of the supporting material.
+The full list is Appendix C.8 of the supporting material.
 
 ### Coverage: every swap and tune reaches a metric
 
-The coverage table (`model_v2/views/coverage.md` and `.csv`, generated from the model by
-`model_v2/coverage.py`) states, for each decision element and each traded metric, whether the model
-has a path from the metric back to the element and whether a one-at-a-time change of the element
-at the three named configurations moves the metric. Every swap and tune reaches at least one
-traded metric in both columns, and every traded metric is reached: the tracker grade and the panel
-span reach all thirteen, the wheel class and the battery twelve (not the available power), Kp nine and Kd
-eight (neither reaches the total mass, the available power or the two costs: the accounting has no gain in
-it; Kd not the pointing error either, whose closed form has Kp alone), and the fleet size the two costs
-(`tests/test_model_coverage.py::test_no_decision_element_row_is_empty_structurally`,
-`test_no_decision_element_row_is_empty_empirically`,
-`test_the_gains_do_not_reach_the_mass_and_kd_does_not_reach_the_pointing_error`). Ten cells
-disagree between the columns, with one cause: the power margin, the peak slew power and the battery
-peak power ratio read the measured peak torque, which at the named configurations is the wheel
-class's maximum, because the power cap does not bind there; the model allows the effect, the three configurations do not
-show it (`WP23-review.md`, "Coverage findings").
+The coverage table is `model_v2/views/coverage.md` (and `.csv`), generated from the model by
+`model_v2/coverage.py`. For each decision element and each traded metric it states whether the
+model has a path from the metric back to the element and whether a one-at-a-time change of the
+element at the three named configurations moves the metric. Every swap and tune reaches at least
+one traded metric in both columns, and every traded metric is reached. The tracker grade and the
+panel span reach all thirteen, the wheel class and the battery twelve (not the available power), Kp
+nine and Kd eight, and the fleet size the two costs. Neither gain reaches the total mass, the
+available power or the two costs, because the accounting has no gain in it; Kd does not reach the
+pointing error either, because its closed form has Kp alone. Ten cells disagree between the
+columns, with one cause. The power margin, the peak slew power and the battery peak power ratio read
+the measured peak torque, which at the named configurations is the wheel class's maximum, because
+the power cap does not bind there. The model allows the effect; the three configurations do not
+show it.
 <!-- vocab-exempt: power margin -->
 
 The table's third part is the coupling between subsystems, in the form of the design structure
 matrix of multidisciplinary design analysis and optimization (MDAO), the family the paper names
 beside this method; the form is the XDSM of Lambe and Martins (`lambe2012extensions` in
-`docs/references.bib`) without its process line. Rows feed columns: the configuration values feed
-the three subsystems of the behavioural view (controls; power and energy; mass), the subsystems
-exchange named coupling variables (the measured peak torque and the torque-squared integral from
+`docs/references.bib`) without its process line. Rows feed columns. The configuration values feed
+the three subsystems of the behavioural view (controls; power and energy; mass). The subsystems
+exchange named coupling variables: the measured peak torque and the torque-squared integral from
 the controls to the power subsystem; the usable wheel torque and the panel mass back; the battery
 and panel masses into the mass accounting; the structure mass and the inertias from the mass
-accounting to the controls), and the metrics and requirements are read off the subsystems. The
-graph of configuration values, subsystems and metrics is connected, and the controls and the power
-subsystem feed each other, a loop the model resolves in one pass because the usable torque is a
-quantity of the configuration computed before the slew and the peak torque is read after it
-(`tests/test_model_coverage.py::test_every_configuration_value_feeds_a_subsystem_and_the_graph_is_connected`,
-`test_coupling_variables_between_subsystems_are_the_models_named_quantities`).
+accounting to the controls. The metrics and requirements are read off the subsystems. The
+graph of configuration values, subsystems and metrics is connected. The controls and the power
+subsystem feed each other, a loop the model resolves in one pass: the usable torque is a
+quantity of the configuration computed before the slew, and the peak torque is read after it.
 
 ### The texture hypothesis and what the fit returned
 
-The hypothesis (the supervisor's, quoted in `WP23-scope-of-work.md`, Purpose): once the configuration space and the metric
+The supervisor's hypothesis: once the configuration space and the metric
 space are each explicit and joined by requirements, the K = 1 exponent heatmap across the fit
-temperature shows more texture, more metrics carrying weight. It is a hypothesis the regenerated
-figure checks after the data gate, never a target: no metric, threshold or constant of the model
-was chosen because it moves the heatmap, and the fit runs unchanged on whatever the model produces
-(`WP23-scope-of-work.md`, non-goals).
+temperature shows more texture, more metrics carrying weight. The regenerated
+figure checks it; it is never a target. No metric, threshold or constant of the model
+was chosen because it moves the heatmap, and the fit runs unchanged on whatever the model produces.
 
-What the fit returns on the thirteen-metric data of record, the contending set and the terms, is in Appendix D of the supporting material.
+What the fit returns on the thirteen-metric data is in Appendix D of the supporting material.
 
 ## Running an experiment and reading the ledger
 
@@ -299,8 +261,7 @@ PYTHONPATH=examples/adcs uv run python -m experiments compare
   before the check designs are simulated, and the ledger order shows it.
 - `run <id> --supersede` is the re-run after the model or the code changed: a new entry
   `<id>@<n>` names the entry it replaces in `supersedes`, and its parents are the current entries of
-  the parent experiments. Nothing earlier is rewritten; the superseded entry keeps the hashes of the
-  model and code it ran with, which is the history. If the re-run overwrote the output file, the
+  the parent experiments. Nothing earlier is rewritten. If the re-run overwrote the output file, the
   superseded entry is listed as `superseded, output replaced`.
 - `adopt` registers the five frozen datasets without regenerating them.
 - `compare` regenerates the v1 to v2 comparison report in `experiments/reports/`.
@@ -326,20 +287,19 @@ the previous one by hash, so editing or deleting a line breaks `verify`.
 | `output_sha256` | its hash |
 | `versions` | tool and library versions, and the runtime and engine list when the oracle reports them |
 | `platform` | the platform string |
-| `inputs` | count, seed, scenario, gain box, oracle and sampler names, the column names, and anything the experiment declares (for the v2 runs the exclusion record, below) |
+| `inputs` | count, seed, scenario, gain box, oracle and sampler names, the column names, and anything the experiment declares (for the v2 runs the exclusion record) |
 | `parents` | the entries whose outputs this run read, with their hashes taken before it ran |
 | `supersedes` | the earlier entry ids this run replaces (empty when none; unknown ids and itself are refused) |
 | `prev_hash` | the previous entry's hash |
 | `entry_hash` | the hash of this entry without this field |
 
 The output hash is an exact-match integrity check of the committed file. Regeneration is judged by
-tolerances, because the integration of the slew is not bit-reproducible across platforms; the
+tolerances, because the integration of the slew is not bit-reproducible across platforms. The
 tolerances of each dataset are in its entry (`adopted`) or in `tests/test_v2_data.py`.
 
 ## The cadCAD-like mapping
 
-An experiment reads like a cadCAD simulation configuration. The mapping is stated once, in the
-docstring of `experiments/experiment.py`; the block below is that text, generated from it.
+cadCAD is a Python library for simulating systems by state updates.
 
 <!-- cadcad:begin -->
 > An experiment reads like a cadCAD simulation configuration:
@@ -361,13 +321,11 @@ docstring of `experiments/experiment.py`; the block below is that text, generate
 ## The toolkit account
 
 The model uses the runtime's checking and simulation machinery where it supports them, and Python
-holds only what the model language cannot do. The table lists each capability with the
-documentation section it rests on, whether this example uses it, why, and the probe that backs the
-statement. Probe numbers are those of `experiments/probes/probe-record.md`; `experiments/probes.py`
-re-runs them against the live runtime, and `tests/test_model_checking_v2.py::test_probe_still_holds`
-fails by probe name when a recorded result no longer holds. Documentation sections are those of the
-runtime's Python client (the runtime's own `docs/clients/python/verification.md`, not a path in
-this repository, and the client README, "The service") and of the toolkit (README and `CLI.md`).
+holds only what the model language cannot do. Probe numbers are those of
+`experiments/probes/probe-record.md`, and `experiments/probes.py` re-runs them against the live
+runtime. Documentation sections are those of the runtime's Python client and of the toolkit (README
+and `CLI.md`). The client's own documents are `docs/clients/python/verification.md`, which is not a
+path in this repository, and its README, "The service".
 
 <!-- toolkit:begin -->
 | capability | documentation section | used | why | probe |
@@ -392,13 +350,12 @@ this repository, and the client README, "The service") and of the toolkit (READM
 | `verify --solve` (CLI) | toolkit README, "Calculation and static-analysis boundaries" | used | joint satisfiability of the model's asserted constraints with a gating exit code; the runtime's `solve` engine gives the three-way answer for claims, so the CLI is the CI gate and not the claim checker | 11 |
 <!-- toolkit:end -->
 
-The binary is pinned in `experiments/toolkit-pin.toml` with a checksum per platform, and
-`experiments/toolkit.py` fetches and verifies it; nothing downloads unless that command is run.
+The binary is pinned in `experiments/toolkit-pin.toml` with a checksum per platform.
+`experiments/toolkit.py` fetches and verifies it, and nothing downloads unless that script is run.
 
 ## Z3 excludes infeasible configurations before simulation
 
-The solver side runs before any simulation. A region of the configuration space (a battery range, a
-wheel class with a range of inertias on the nominal slew, a panel-span range) is a box over scalar
+Z3 is a constraint solver. A region of the configuration space (a battery range) is a box over scalar
 variables. `experiments/exclusion.py` restates the feasibility condition of the region over the
 same scalars, with the model's constants read from the model, and asks the `solve` engine two
 questions about two constraints appended to the model text:
@@ -409,10 +366,9 @@ questions about two constraints appended to the model text:
 | `holds` | the region implies the condition | `holds`, proved | all feasible: nothing to exclude |
 | both | otherwise | `satisfiable` and `violated` | mixed: keep the region, test each point |
 
-The same classification of a model variant (the model text with other literal ranges or constants,
-`model_variant`) excludes a variant in which no configuration is feasible; `build` in
-`experiments/cubesat_oracle.py` then raises `ExcludedVariant` and nothing is simulated
-(`tests/test_cubesat_oracle.py::test_a_variant_without_a_feasible_configuration_is_not_simulated`).
+The same classification applies to a model variant (the model text with other literal ranges or
+constants, `model_variant`). A variant in which no configuration is feasible is excluded: `build` in
+`experiments/cubesat_oracle.py` then raises `ExcludedVariant` and nothing is simulated.
 
 The recipe, run by `tests/test_case_model_howto.py` (`ADCS` is `examples/adcs`):
 
@@ -426,44 +382,35 @@ assert verdict.verdict == "excluded"
 assert record["satisfiable"] == ["unsatisfiable", "proved"]
 ```
 
-An example from the tests: the battery range 20 to 26 Wh is proved infeasible, and designs sampled
-there are simulated anyway to compare. Every one has `dod_ok` false
-(`tests/test_cubesat_oracle.py::test_flags_observe_the_excluded_battery_region`); the range 40 Wh
-and up, with the slew loss bounded, is proved all feasible and every sampled design has `dod_ok` true
+The battery range 20 to 26 Wh is proved infeasible, and designs sampled there are simulated anyway
+to compare. Every one has `dod_ok` false
+(`tests/test_cubesat_oracle.py::test_flags_observe_the_excluded_battery_region`). The range 40 Wh
+and up, with the slew loss bounded, is proved all feasible, and every sampled design has `dod_ok` true
 (`tests/test_cubesat_oracle.py::test_flags_observe_the_all_feasible_battery_region`).
 
-The ledger records what was excluded and why. `build` classifies the declared design space once and
-stores the block in the experiment's `inputs["exclusion"]`: per region the claim text, the engine,
-the verdict, the evidence strength, the witness and the model hash
-(`tests/test_cubesat_oracle.py::test_the_exclusion_block_records_the_classification_of_the_declared_space`).
-When the whole variant is proved infeasible, `build` raises before anything is simulated, and the
-runner first appends an `exclusion` entry: the variant's edits, the classified regions with claim,
-engine, verdict, strength and witnesses, the model hash and the reason
-(`tests/test_cubesat_oracle.py::test_a_proved_infeasible_variant_is_recorded_in_the_ledger_before_the_error`).
-The sampler consumes excluded regions. When the exclusion block in `inputs["exclusion"]` has a
-region classified `excluded`, the runner wraps the sampler in `runner.ExcludingSampler`, which takes
+`build` classifies the declared design space once and stores the block in the experiment's
+`inputs["exclusion"]`. When the whole variant is proved infeasible, `build` raises before anything
+is simulated, and the runner first appends an `exclusion` entry. The entry holds the variant's
+edits, the classified regions with claim, engine, verdict, strength and witnesses, the model hash
+and the reason.
+When the exclusion block in `inputs["exclusion"]` has a
+region classified `excluded`, the runner wraps the sampler in `runner.ExcludingSampler`. It takes
 the base sampler's designs in order, skips any design inside an excluded region and keeps the first
-`count` others with their original `design_id` and `seed`. The result is the unexcluded sampler's
-draws with the excluded ones skipped, reproducibly; the entry's `inputs["excluded_sampling"]` records
-the regions, the designs examined and the draws avoided (per region). The experiment names the
+`count` others with their original `design_id` and `seed`. The entry's `inputs["excluded_sampling"]`
+records the regions, the designs examined and the draws avoided (per region). The experiment names the
 design column of each region variable in `inputs["exclusion_columns"]`; an excluded region without
 it is an error rather than a silent no-op. Regions that are not excluded are sampled whole and the
 flags remain observations. The declared space excludes nothing, so for every committed dataset the
-sampler is the base sampler and no data changed
-(`tests/test_cubesat_oracle.py::test_declared_space_excludes_nothing_so_the_first_designs_are_unchanged`;
-a constructed space with the battery range 20 to 26 Wh excluded:
-`tests/test_cubesat_oracle.py::test_sampler_skips_a_solver_excluded_battery_region`).
+sampler is the base sampler and no data changed.
 `design_space_regions` covers power and depth of discharge, not momentum, because the momentum
 condition depends on the configuration through the inertia and is the closed-form approximation.
-The momentum condition uses the closed-form bang-bang peak momentum, an approximation that the
-integrated slew overshoots; an excluded wheel region is a necessary-condition result that the
+The closed-form bang-bang peak momentum is an approximation that the
+integrated slew overshoots, so an excluded wheel region is a necessary-condition result that the
 simulation confirms, and "all feasible" there means feasible by the closed form. The momentum
-condition on the integrated slew (the peak momentum of the ODE against the wheel class capacity) is
-outside what the solver can represent, so it is not classified and stays an observation of the
-simulation.
+condition on the integrated slew is outside what the solver can represent, so it is not classified
+and stays an observation of the simulation.
 
-The four Python flags (`settled`, `momentum_ok`, `power_ok`, `dod_ok`) are observations of single
-simulated configurations, produced by verifying the model's requirements. They are not the
+The four Python flags (`settled`, `momentum_ok`, `power_ok`, `dod_ok`) are not the
 definition of feasibility; the requirements and the solver's classification of regions are.
 
 ## The legacy geostationary oracle and the scope-sensitivity experiment
@@ -471,7 +418,7 @@ definition of feasibility; the requirements and the solver's classification of r
 The first case of this repository, the geostationary spacecraft of `design_space.py`, is kept
 frozen and runnable. `experiments/legacy_oracle.py` puts `design_space.evaluate_design` behind the
 same `Oracle` protocol (`LegacyGeostationaryOracle`, evidence `simulation`, the frozen keys and
-column order, no edit to the frozen modules; it needs no `opensysml`), and the ledger entry
+column order), with no edit to the frozen modules and no need for `opensysml`. The ledger entry
 `adopted-adcs_designs` registers its dataset as the legacy oracle.
 
 From the repository root, this runs both oracles on the same designs:
@@ -481,22 +428,20 @@ PYTHONPATH=examples/adcs uv run python -m experiments run scope-sensitivity-shar
 ```
 
 The draws are 20 of the variables the two variants share. Wheel class and tracker grade are
-shared over the levels both declare; Kp is shared over the overlap of the v2 gain box and the
-frozen range. Kd carries the same name but the ranges do not overlap, so it is fixed in each
-variant (1.0 in v2, the frozen baseline 10.0), and the variables that belong to one variant only
+shared over the levels both declare; the controller gain Kp is shared over the overlap of the v2 gain box and the
+frozen range. The gain Kd carries the same name but the ranges do not overlap, so it is fixed in each
+variant (1.0 in v2, the frozen baseline 10.0). The variables that belong to one variant only
 are fixed at declared values (panel span 0.6 m and battery 80 Wh in v2; panel mass 30 kg and
 antenna mass 18 kg in the frozen variant). Each oracle keeps its own scenario. The two ledger
 entries (`scope-sensitivity-shared-subspace-v2`, `-legacy`) record the subspace in
 `inputs["shared_subspace"]`, and `legacy_oracle.side_by_side` joins the two CSVs on `design_id`.
-What the comparison shows is a later study; this is its definition and a small run.
 
 ## Provide the oracle: three small cases through the same runner and ledger
 
-Your case needs an oracle, a sampler and an experiment declaration. Three oracles follow, each
-the same shape and each satisfying the protocol above. They share two design variables, `gain` and
-`size`; the runner, the sampler class and the ledger are the ones the cubesat uses. The test in
-`tests/test_case_model_howto.py` extracts the blocks named below and runs them, so the text shown is
-the fixture.
+Your case needs an oracle, a sampler and an experiment declaration. The three oracles share two
+design variables, `gain` and `size`. The runner, the sampler class and the ledger are the ones the
+cubesat uses. The test in `tests/test_case_model_howto.py` extracts these blocks and runs them, so
+the text shown is the fixture.
 
 The common part: a base class that gives the batch form from the single-configuration call.
 
@@ -515,8 +460,8 @@ class Base:
 
 ### A simulator: a SysML model with a stub measurement
 
-The toy model is about thirty lines. It declares the design ranges, one cost the model computes,
-and a budget requirement. Save it as `toy.sysml`.
+The toy model, in SysML (a systems-modelling language), declares the design ranges, one cost the
+model computes, and a budget requirement. Save it as `toy.sysml`.
 
 ```sysml toy-model
 package Toy {
@@ -547,7 +492,6 @@ package Toy {
 
 The oracle configures a `Plant` from the design, reads the cost from the model, takes the flag from
 verifying the requirement, and gets the settling time from a stub that stands in for a simulator.
-In your case that line is the call to your simulator.
 
 ```python toy-simulator
 import opensysml
@@ -636,8 +580,7 @@ class RecordedTests(Base):
 
 ### A human assessment: scores from a callable standing in for raters
 
-The oracle collects scores for a configuration and averages them. The callable `rater` stands in
-for the people filling in a form.
+The oracle collects scores for a configuration and averages them.
 
 ```python toy-human
 class PanelRatings(Base):
@@ -661,7 +604,7 @@ def rater(c):  # three raters; replace with the collection of real scores
 ### Run all three through the runner and the ledger
 
 Each experiment declares its evidence kind. The simulator names its model, so the entry carries the
-model hash; the campaign file is listed as a code file, because it determines the output and is
+model hash. The campaign file is listed as a code file, because it determines the output and is
 hashed with it. `root` is the directory holding `toy.sysml` and `campaign.csv`.
 
 ```python toy-run
@@ -716,11 +659,9 @@ assert lg.verify(ledger, root) == []
 ```
 
 The three entries differ in `evidence_kind` and in what they hash: the simulation entry has the model
-hash, the other two have none. The test checks that, that the ledger verifies, and that each
-output holds what its evidence says: the model's accounting and requirement for the simulator, the
-recorded numbers for the campaign, the averaged scores for the panel.
+hash, the other two have none. The test checks this, that the ledger verifies, and that each
+output holds what its evidence says. For the simulator that is the model's accounting and
+requirement, for the campaign the recorded numbers, for the panel the averaged scores.
 
-To plug in your own case: write the oracle (from a SysML model with a simulator, from your test
-records, or from your raters' scores), choose the sampler (a log-uniform draw over ranges, or the
-list of configurations you can test), and declare the experiment with its evidence kind. Estimators
+To plug in your own case: write the oracle, choose the sampler, and declare the experiment with its evidence kind. Estimators
 downstream read the CSV the runner writes; they do not know which kind of evidence stood behind it.
