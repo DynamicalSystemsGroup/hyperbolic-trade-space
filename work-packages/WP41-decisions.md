@@ -44,3 +44,23 @@ supervisor's verbal word, quoted here when given.
 decision, the solver's word). Execution begins under `work-execution`: a unit per package in its own worktree on
 Sonnet, in the background, with the scope file as the brief; the assistant verifies each delivery before the
 supervisor's acceptance.
+
+## The method's intent, in the supervisor's words (2026-11-14, 16:35)
+
+**Supervisor, verbatim:** "so the intuition for my method is to make a patchwork of weighted product terms that
+parameterize the (near) frontier in high dimensional space so we can look in the data to see if there are areas that
+are devoid of data we might want to fill in (space filling). here holes would be places the fit had something to say
+but the data does not, so if possible we should get some data. i also want to know at any give point (or region) of
+our (approximate) frontier which competing objectives are binding, and through chain rule, partials and pull backs what
+metrics and what configuration dimensions are most relevant. I also want the ability to ask questions about what moving
+up the energy levels (past the frontier) looks like, and to be able to reason about that in terms gradients on the my
+fit surface so i can pull back into config space and search for new configurations that might move us upward"
+
+**Applied as:** the statement of intent the docs' "User guide: start here" page and the glossary's preamble carry (in
+WP42's build); each clause maps to an object and a package: the patchwork of terms and the chart (built); holes in the
+chart as places the fit speaks and the data do not (built, D.10's holes; the proposal rule in WP41); the binding
+objectives at a point or region (the contending set, built; the tension matrix and a design's tensions, WP42); the
+pull-back to attribute units (Theorem 7, built) and to configuration dimensions through the surrogate's Jacobian (the
+chain rule from a tension or the ascent direction through the regressor: WP41 part 2, 0.2, a conjecture until checked);
+moving past the frontier as the ascent direction w on the fit surface, pulled back through the surrogate into
+configuration space as the search's step (Section 7; WP41 part 2), with the submartingale conjecture as its open item.
