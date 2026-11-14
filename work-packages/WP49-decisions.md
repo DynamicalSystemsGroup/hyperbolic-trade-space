@@ -319,3 +319,11 @@ human judged?"
 "fitness, a code owner"), the opening paragraph says what each kind means for a tag, and the fitness row states what the
 approver has read (the changelog and the review records of the pull requests inside).
 
+**Supervisor, verbatim (20:50 EST):** "all 3 admissibility pages must address this"
+
+**Applied as:** the issue and pull request admissibility files are drafted in the same shape as the release one
+(`WP49-rounds/ISSUE_ADMISSIBILITY.draft.md`, `PR_ADMISSIBILITY.draft.md`): every row carries its kind, conformance by
+machine or fitness by a code owner, with what enforces or records it; the machine rows are what WP47's D-7 workflows
+check, the code owner rows are what the label change or the review records by name. WP47's unit takes all three as
+written.
+
