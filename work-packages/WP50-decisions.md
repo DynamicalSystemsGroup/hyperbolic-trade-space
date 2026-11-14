@@ -85,3 +85,12 @@ methods and performance. The readout's G5 drafts that three-item sentence beside
 his register (a term corrected, nothing else), within the abstract's 500-word target with its tolerance, so the
 assessment has the text in front of it. The abstract is not touched before his word.
 
+**Supervisor, verbatim (23:20), on the same:** "the spike will tell us whether this is a fruitful enough research direction to name. i am inclined to name it in order to
+plant a flag for future work, and will tolerate going a few words over 500."
+
+**Applied as:** the readout's boundary section answers one question first, in a line: is the direction fruitful enough to
+name in the abstract, with the reasons either way (what the instance showed, what the literature establishes, what the
+first package would be). His inclination is to name it, to plant a flag for future work, and a few words over 500 are
+tolerated for it (the ledger's tolerance of 25 already allows this; no ledger change). The decision is his after the
+readout.
+
