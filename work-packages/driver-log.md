@@ -228,6 +228,13 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The stage rebuilt on the recreated worktree; the residue fixes read as rendered (21:40).** The copied environment
+  of the old worktree did not import, so the environment was rebuilt from the lock and the stage built at 003f1d2;
+  served again. Read in the browser: Appendix E no longer says "G-1 to G-17", the D.18 pointer names the overlap
+  column, no "Table ??", no stderr text; one nit for round 2, the prose phrase "reweighted l1 sparsity" where the
+  bibliography now prints the ell-one. PM14 told the stage is up for the last two confirmations and the round-2 unit,
+  and asked which of its agents, if any, removed or pruned worktrees since the stage broke.
+
 - **The stage worktree found broken and recreated (21:10).** The residue unit (b8366f6, 368f3a1: the D.18 pointer, the
   Appendix E count, the case model's draws, the bibliography's ell-one, and 56 Appendix E rows decided) and the second
   readers' 27 confirmations (4bcbf9a, 2a12f7f) are on dev; on 2a12f7f ruff, lock, vocabulary and attribution clean, the
