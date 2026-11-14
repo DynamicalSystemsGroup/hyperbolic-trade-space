@@ -69,3 +69,17 @@ because they learned from published code is not asked of anyone; the governance 
 choice of model as to their choice of editor. The readout states where tool documentation belongs and drafts that
 clause with the accountability clause.
 
+## His wording for the clauses (2026-11-15, 03:05), on the drafts in the readout
+
+**Supervisor, verbatim:** "No tool is a contributor, so commits should not carry a trailer or line naming a tool as author.
+
+Tool use documentation gets coupled with other tool use documentation. this is a matter of how the facts are organized.
+humans make commits, humans use tools. AI use goes where relevant with tools used not committers"
+
+**Applied as:** the accountability clause's last sentence takes his words ("No tool is a contributor, so commits should
+not carry a trailer or line naming a tool as author."). The tools clause is reorganised around his rule of how the
+facts are kept: humans make commits and humans use tools, so the commit history names people, and the use of AI tools
+is recorded where tool use is recorded, beside the editor, the build tools and the environment, in the "tools used"
+part of a pull request's description or a work package's record, never in the committer or author fields. The shape
+(A, B or C) is still his open call.
+
