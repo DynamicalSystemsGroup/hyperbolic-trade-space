@@ -26,3 +26,10 @@ part of the automated release control and how they are expressed as verification
 TestPyPI) can be created as soon as WP47 gives him the exact workflow file name and environment name, so before the
 release PR; the TestPyPI publish runs from `dev` at the candidate head as a dry run; the real publish runs on the
 `v0.1.0` tag on `main` after his merge, so nothing is published before his acceptance.
+
+**Supervisor, verbatim (19:30):** "basically i am talking about the devsecops aspects of this work which come into
+focus now that the project is nearing a release"
+
+**Applied as:** WP47 and WP48 together are the DevSecOps line: WP47 the release path v0.1 needs (packaging, trusted
+publishing with no secrets, the branch flow, ownership, templates, the maintainers' page); WP48 the controls that become
+automated release gates after v0.1, read from his research and expressed as verification cases.
