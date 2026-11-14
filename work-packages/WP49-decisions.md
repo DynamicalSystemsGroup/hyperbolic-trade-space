@@ -200,3 +200,18 @@ and that they are enforced: a bounded scope (what is delivered and what is not),
 surfaces it may touch, small enough to review), and definitions of good (what the work aims at) and good enough (the
 items a reviewer checks). A draft that lacks one is returned, not approved. The issue template asks for each.
 
+## Conformance and fitness (2026-11-14, 18:40 EST), on the CONTRIBUTING draft
+
+**Supervisor, verbatim:** "we also need to clearly separate verifiable conformance from validated fitness. have you accounted for that in your
+draft?"
+
+**Applied as (pending his word on the text):** not accounted for in the draft as it stood; the review paragraph mixed
+the two in one list. The draft is to separate them: verification of conformance (does the change meet what the scope
+and the repository's checks state: tests, lint, format, lock, the checkers, CI; machine-run, pass or fail, and what a
+tool may run) from validation of fitness (does the change do what the issue intends, read as intended, render right;
+a judgement a named reviewer makes and signs). The issue's good-enough items are written so each is one or the other;
+the review reports both; a pull request merges only when conformance passes and a named person has validated fitness;
+no check stands in for that judgement. The four thinner points of the validation of 18:25 (amendments; done is good
+enough plus no open gap with the three dispositions; agent's defaults; merged by a maintainer who is not the author)
+are drafted with it.
+
