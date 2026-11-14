@@ -157,3 +157,17 @@ the mean slack at several) everywhere, with the choice stated once where the not
 Boyd and Vandenberghe and the scikit-learn terms, and the glossary's entries for loss and objective); objective names,
 in the decision-analysis frame, the subset of the metrics the decision-maker optimizes for; the solver level never
 uses the word. The theorems, Appendix A, the lemma scripts' docstrings and the tests move with it in WP42's build.
+
+**Supervisor, verbatim (16:00), on the nested layers:** "our fundamental challenge is we have nested layers of
+optimizations: a design optimization problem, wherein we construct a novel unsupervised learning method, which has its
+properties from optimization. so we're dealing with optimization in both the application domain (decision analysis)
+and the methods (ML for detecting and interpreting trade-offs latent in the design space)"
+
+**Supervisor, verbatim (16:05), on where the three-layer statement goes:** "definitely goes in the glossary. i think
+we should cover it in brief in the paper and cite to the relevant appendix for more details"
+
+**Applied as:** the three layers (the decision layer: objectives, constraints, Pareto notions; the design layer: the
+model as a function of the metrics inside a designer's optimization, where GGP and log-convex belong; the method
+layer: the fit as an optimization over the exponents, whose word is loss) are stated in full in the glossary's
+preamble, with each entry naming its layer, and in brief in Section 3 with a citation to Appendix A (the register) for
+the detail. Added to WP42's G3 and deliverables; the Section 3 paragraph lands with WP42's build.

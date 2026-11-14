@@ -34,6 +34,11 @@ stages; this scope is the research spike and the decision gate, with the build s
   of effectiveness and measure of performance, proposal and check (shared with WP41); each entry says which register
   uses the word; the checker's stems extended to objective, loss, tension and trade-off; the surfaces brought into line,
   the abstract excepted (the supervisor's hand).
+- G3b. **The three layers are stated once:** the glossary's preamble names the decision layer (objectives,
+  constraints, the Pareto notions), the design layer (the model as a function of the metrics inside a designer's
+  optimization; GGP and log-convex belong here) and the method layer (the fit as an optimization over the exponents;
+  its word is loss), and every entry names its layer; Section 3 covers it in brief and cites Appendix A (the supervisor's
+  ruling of 16:05, `WP11-decisions.md`). The readout drafts both texts.
 - G4. **The decision section's number:** the readout states what one sentence of Section 9 would say with a design's
   tension at the picked design between the operator's and the sponsor's measures, in attribute units, for the
   supervisor to accept or decline at the gate; nothing lands in the paper in this scope.
