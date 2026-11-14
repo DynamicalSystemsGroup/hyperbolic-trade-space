@@ -30,3 +30,15 @@ learned coordinate system (the chart) is used to decide what is near what. His `
 earlier work on topological data analysis are read by the unit as a source of his interests and intuitions, not as the
 literature to build on and not to be favoured. Dispatched to PM15.
 
+## Two objectives of the search (2026-11-14, 22:15)
+
+**Supervisor, verbatim:** "i want to add that this approach to TDA should make whitespace filling a measurable objective distinct from advancing the
+frontier (of the envelope) because holes are measurable with persistent homology"
+
+**Applied as:** G4 amended. The readout treats the search as having two measurable objectives and keeps them apart:
+advancing the frontier (the envelope's level, log V, which the fit already measures) and filling white space, which
+becomes measurable once holes are classes of a persistence diagram (their number, their persistence, and how a new
+sample changes them). The readout says what the measure of a hole is, how a proposed sample would be scored against
+it, and how that score sits beside the level in the search of Section 7, so a sampling rule can trade the two. The
+word objective here is the decision layer's, as the glossary has it.
+

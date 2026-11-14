@@ -33,8 +33,12 @@ points together with topological data analysis. It writes no code into the packa
   hole (a class that persists) are two objects; where they coincide, where they do not, with a small worked instance on
   the cubesat chart of record or a planted table (a figure of the diagram is allowed as a readout image, not a paper
   figure).
-- G4. **Strategic sampling, sketched:** how a sampling rule that targets white space would make holes emerge, what the
-  propose-predict-check loop of Section 7 would add, and what a definition of hole that survives refits must satisfy.
+- G4. **Strategic sampling, sketched, with two objectives kept apart** (his direction of 22:15): advancing the frontier
+  (the envelope's level, which the fit measures) and filling white space, measurable once holes are classes of a
+  persistence diagram (their number and persistence, and how a new sample changes them); what the measure of a hole
+  is, how a proposed sample is scored against it, how that score sits beside the level in the propose-predict-check
+  loop of Section 7 so a sampling rule can trade the two, how such a rule makes holes emerge, and what a definition of
+  hole that survives refits must satisfy.
 - G5. **The boundary:** what 0.1 may say (a future-work sentence at most, drafted for him), what it may not, and what a
   later release would build, with its first package named.
 
