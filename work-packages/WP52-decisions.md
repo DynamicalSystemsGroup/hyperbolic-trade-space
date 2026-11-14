@@ -239,3 +239,8 @@ checker, the fast suite); CI then runs on the head. WP52 is accepted with it.
 algorithm is a camera (2023) made the point this page rests on: a model is a framed view of a reality that exceeds it,
 not a view from nowhere." The judgement that it fits is the driver's; his read decides.
 
+**Supervisor, verbatim (01:45 EST):** "i also don't think citing my cv is necessary. if its a bare claim, so be it"
+
+**Applied as:** the Edinburgh talk is stated without a link; the trace marks the sentence as the team's account; the
+record entry stays as the note of where the talk is listed.
+
