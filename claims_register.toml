@@ -480,24 +480,8 @@ source = "WP10, supervisor words of 2026-11-09 (WP10-decisions.md)"
 note = "Section 3 defines the evaluation as a black box to the method (a simulator, a physical test or a human assessment), so the table and the fit do not depend on where the attributes came from."
 
 [[claim]]
-id = "C033"
-fragment = "It is fitted to the outer edge of the data, not through its middle: a soft support that a few designs may exceed, not a regression"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "M"
-backing = [
-  "lemma:L5",
-  "glossary:supporting-envelope",
-  "glossary:fitted-reference-surface",
-]
-status = "backed"
-disposition = "keep"
-source = "WP11 round 1, CR-1"
-note = "The fit takes the entropic soft maximum of the scores over the designs (L5), so the surface sits at the upper edge of the data, with some designs beyond it at finite temperature, and is the soft form of the supporting envelope; it is not a least-squares curve through the points."
-
-[[claim]]
 id = "C034"
-fragment = "one term blends the subsystems' trade-offs into a single tension; two terms separate the contending sets"
+fragment = "High-dimensional n-lemmas are detected and used to inform a design decision by stakeholders who care primarily about cost and performance"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "R"
@@ -508,8 +492,8 @@ backing = [
 ]
 status = "backed"
 disposition = "keep"
-source = "WP11 round 1, CR-1"
-note = "On the primary regime the K = 1 fit reports one contending set and the K = 2 fit two different ones, the K the checks of Appendix D.15 pick (Section 9, Appendix D.3); on this case only, not a claim about other tables."
+source = "WP11 round 1, CR-1; abstract re-pointed 2026-11-14"
+note = "On the primary regime the K = 1 fit reports one contending set and the K = 2 fit two different ones (Section 9, Appendix D.3); on this case only. 'used to inform a design decision' is the case study of the body, which prices the question and does not answer it."
 
 [[claim]]
 id = "C035"
@@ -648,63 +632,62 @@ note = "Consistency under noise and refitting is open question Q2; the sentence 
 
 [[claim]]
 id = "C044"
-fragment = "A trade study must produce an answer and a justification an accountable executive can follow."
+fragment = "A trade study must produce an answer and a justification an accountable decision-maker can follow."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "P"
-backing = ["reading"]
+backing = [
+  "reading",
+]
 status = "backed"
 disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Normative statement of the paper's own position; reading_pass n=1/2: the two products are uncited own statement (howard1988decision, keeney1993decisions only partly supported)"
+source = "P5 claims pass, WP10 Amendment 5 R-43; abstract re-pointed 2026-11-14"
+note = "Framing, not a checkable claim: the supervisor's normative statement of the paper's position (with decision-maker, the glossary's word); uncited by design, as in Section 1."
 
 [[claim]]
 id = "C045"
-fragment = "Principal component analysis (PCA) is trusted as reproducible and interpretable, and explains"
+fragment = "Machine learning techniques can make principled scientific workflows scalable, reproducible and interpretable."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "P"
-backing = ["bib:jolliffe2016principal", "reading"]
+backing = [
+  "reading",
+]
 status = "backed"
 disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "reading_pass n=9: source supports dimensionality reduction/interpretability only; 'trusted' and 'reproducible' are the author's wording, marked reading"
+source = "P5 claims pass, WP10 Amendment 5 R-43; abstract re-pointed 2026-11-14"
+note = "Framing, not a checkable claim: the supervisor's general statement, narrowed by one word to 'can make'; the body backs only PCA as the trusted example (C046), the rest is his framing."
 
 [[claim]]
 id = "C046"
-fragment = "interpretable, and explains variance. We explain tensions."
+fragment = "principal component analysis (PCA) identifies basis vectors which explain the variance in a dataset"
 file = "paper/paper.ipynb"
 anchor = ""
-kind = "M"
-backing = ["bib:jolliffe2016principal"]
+kind = "L"
+backing = [
+  "bib:jolliffe2016principal",
+]
 status = "backed"
 disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "PCA explains variance: prior_art id pca / reading_pass n=33 supported; 'We explain tensions' is statement of intent/scope"
-
-[[claim]]
-id = "C047"
-fragment = "the data underlying the table, not the Pareto boundary, and gives the data a coordinate system;"
-file = "paper/paper.ipynb"
-anchor = ""
-kind = "M"
-backing = ["lemma:L8", "lemma:L11", "glossary:chart"]
-status = "backed"
-disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Chart is a coordinate system on the data (L8); surface is not the Pareto boundary (L11: maximizer of V is efficient, converse not claimed); def-objects scope statement"
+source = "P5 claims pass, WP10 Amendment 5 R-43; abstract re-pointed 2026-11-14"
+note = "PCA finds orthogonal directions (basis vectors) ordered by the variance they explain: prior_art id pca, reading_pass n=33 supported."
 
 [[claim]]
 id = "C048"
-fragment = "Modelling a single n-lemma fits a monomial, which transforms into a convex program and is solved directly; when"
+fragment = "The monomial case is a convex optimization problem, and the posynomial case is compatible with generalized geometric programming."
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"
-backing = ["lemma:L10.9", "lemma:L4.13", "lemma:L4.24", "test:tests/test_solvers.py::test_slsqp_agrees_with_lp"]
+backing = [
+  "lemma:L10.9",
+  "lemma:L4.13",
+  "lemma:L4.24",
+  "test:tests/test_solvers.py::test_slsqp_agrees_with_lp",
+]
 status = "backed"
 disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "L10.9 K=1 is a monomial; L4.13 convex, L4.24 geometric program (one term). 'solved directly' only loosely pinned by SLSQP-vs-LP agreement"
+source = "P5 claims pass, WP10 Amendment 5 R-43; abstract re-pointed 2026-11-14"
+note = "L10.9: K = 1 is a monomial; L4.13 its fit objective is convex; L4.24 it is a geometric program; the posynomial (K > 1) model is a generalized posynomial, GGP-compatible, and the abstract does not say the several-term fit is itself convex or a GGP."
 
 [[claim]]
 id = "C049"
@@ -816,15 +799,19 @@ note = "reading_pass n=9 (reworded to what PCA does: reduces dimensionality, inc
 
 [[claim]]
 id = "C058"
-fragment = "Like PCA, our method is unsupervised feature engineering; the two answer different questions and compose"
+fragment = "Like PCA, HTS is an unsupervised learning method"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "S"
-backing = ["test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator", "test:tests/test_sklearn_compat.py::test_no_predict_decision_function_or_score", "test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples"]
+backing = [
+  "test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator",
+  "test:tests/test_sklearn_compat.py::test_no_predict_decision_function_or_score",
+  "test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples",
+]
 status = "backed"
 disposition = "keep"
-source = "P5 claims pass, WP10 Amendment 5 R-43"
-note = "Transformer with fit/transform/inverse_transform/score_samples under parametrize_with_checks, empty expected-failures dict, no predict; decomposition-family semantics."
+source = "P5 claims pass, WP10 Amendment 5 R-43; abstract re-pointed 2026-11-14"
+note = "The estimator takes no target and has fit/transform/inverse_transform/score_samples under parametrize_with_checks, with no predict; decomposition-family semantics."
 
 [[claim]]
 id = "C059"
@@ -7974,3 +7961,263 @@ status = "backed"
 disposition = "keep"
 source = "final round, third paper unit, change request 169 (the supervisor's ruling of 2026-11-14, 12:20, WP36-decisions.md)"
 note = "Stated as future work as the supervisor expects it; no lemma, no conditions."
+
+[[claim]]
+id = "C676"
+fragment = "Our method, hyperbolic trade space (HTS), explains trade-offs in a dataset of designs and measurements of their performance on real-valued attributes."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "func:src/hyperbolic_trade_space/estimator.py::HyperbolicTradeSpace",
+  "glossary:attributes",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "Definition of the method and of its input (a table of designs and attribute measurements); the estimator takes that table."
+
+[[claim]]
+id = "C677"
+fragment = "Trade-offs trace piecewise hyperbolic frontiers: in order to get more of one objective, we must tolerate less of another."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = [
+  "lemma:L10.9",
+  "lemma:L4.13",
+  "lemma:L7",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "The frontier is the level set V = 1 of a posynomial (a sum of monomial terms, each a hyperbola-shaped level set in two metrics, flat in log units); on it the elasticities are negative between metrics of a term (L7), so more of one means less of another. The geometry settled at 16:20 (WP11-decisions.md): 'hyperbolic' names the level sets' family; the sentence is the supervisor's wording of 17:20."
+
+[[claim]]
+id = "C678"
+fragment = "When supplied with a dataset we first condition the attributes into metrics that are strictly positive and \"all else being equal, more is better.\""
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "glossary:conditioning",
+  "glossary:metrics",
+  "test:tests/test_estimator.py::test_negative_and_nonfinite_raise",
+  "test:tests/test_preconditioning.py::test_round_trip_mixed_orientation_and_shift",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "Conditioning (the analyst's step, with scikit-learn tools) turns attributes into metrics: strictly positive, larger is better; the estimator rejects negative values and the preconditioning round-trips orientation and shift."
+
+[[claim]]
+id = "C679"
+fragment = "We do not assume the design space is well behaved, as it is often a mix of categorical and numerical values, on different scales and with different units."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples",
+  "test:tests/test_case.py::test_category_refits_cover_each_level_and_partition_the_designs",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "The method sees only the metrics, so the configuration may be categorical, mixed and unscaled; the case's ColumnTransformer pipeline and per-category refits are the demonstration (the claim is about what the method does not require, not about every design space)."
+
+[[claim]]
+id = "C680"
+fragment = "we do not make strong assumptions about the sampling distribution, only that the frontier is log-convex"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = [
+  "lemma:L4",
+  "file:docs/superpowers/notes/abstraction-gaps.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "The fit objective is convex in the log metrics (L4) and the frontier a posynomial level set, log-convex; the assumptions the fit does make (designed samples are not independent observations, noise) are listed in the abstraction-gaps ledger, not hidden. The conditioning clause before it is framing."
+
+[[claim]]
+id = "C681"
+fragment = "we define the family of hyperbolic trade spaces by the level sets of a posynomial function of the metrics"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = [
+  "lemma:L10",
+  "lemma:L9",
+  "glossary:posynomial",
+  "glossary:invariant-value",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "The definition of the model: V is the root of a posynomial in the metrics (L10, K-term extension) and its level sets are the family; the pull-back to the raw attributes is L9."
+
+[[claim]]
+id = "C682"
+fragment = "HTS fits a surface one dimension below the data and places each design by its position on it and its level above or below it, losing nothing"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = [
+  "lemma:L8",
+  "glossary:chart",
+  "test:tests/test_estimator.py::test_chart_roundtrip_and_score_samples",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "The chart is a bijection between (log-scale, Z) coordinates and the data (L8): position along the surface and energy differential reconstruct every design; the round trip is tested."
+
+[[claim]]
+id = "C683"
+fragment = "By assuming this hyperbolic shape and solving for the \"energy\" level sets, the resulting fit describes the trade-off space."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "P"
+backing = [
+  "reading",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "Framing, not a checkable claim: the supervisor's summary sentence; 'energy' is his intuition word for the invariant value's level, in quotation marks, and the object behind it is named in Section 4 (the glossary's energy differential); no new fact beyond the rows around it."
+
+[[claim]]
+id = "C684"
+fragment = "a monomial term in n metrics characterizes an n-lemma (\"nye-LEM-uh\")"
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "glossary:n-lemma",
+  "lemma:L7",
+  "func:paper/figures/nlemma.py::nlemma_data",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "An n-lemma is the contending set of a term, the metrics with positive exponent in the exact-maximum fit (glossary); the dilemma and trilemma comparison and the pronunciation are the supervisor's framing."
+
+[[claim]]
+id = "C685"
+fragment = "Pareto improvements increase energy, and a design that maximizes energy is weakly Pareto-efficient."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = [
+  "lemma:L11",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "L11: a maximizer of V is Pareto-efficient, one direction only (weak efficiency stated here, the converse not claimed); an improvement in one metric with the others held raises V."
+
+[[claim]]
+id = "C686"
+fragment = "White space within an occupied level set may be an under-explored region of the design space."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "test:tests/test_gaps.py::test_find_holes_2d_planted_disc",
+  "test:tests/test_gaps.py::test_find_holes_restricts_to_hull",
+  "glossary:white-space",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "find_holes returns candidate white space, the regions no design occupies, inside the hull; 'may be' carries the claim, a candidate and not a finding."
+
+[[claim]]
+id = "C687"
+fragment = "The paper provides a literature review, formal results and a worked example to demonstrate HTS's applicability to decision analysis."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "P"
+backing = [
+  "reading",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "Framing, not a checkable claim: the supervisor's description of the paper's own contents; the review is Section 2 and Appendix G, the formal results Sections 4 and 5 and the lemma scripts, the example Sections 7 and 8; each is backed in its own section."
+
+[[claim]]
+id = "C688"
+fragment = "Our proofs are scripted with SymPy, and HTS is implemented as a scikit-learn estimator, so it works with existing pipelines and tools."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "file:derivation/run.py",
+  "test:tests/test_sklearn_compat.py::test_sklearn_compatible_estimator",
+  "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "The lemma scripts are plain SymPy run as a chain (never called formally verified); the estimator passes parametrize_with_checks and the case's ColumnTransformer pipeline carries it (the supervisor's wording of 17:35)."
+
+[[claim]]
+id = "C689"
+fragment = "The worked example is a cubesat design optimization problem with competing objectives in performance and cost."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "file:examples/adcs/model_v2/cubesat.sysml",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "The case is the cubesat model (power, mass and attitude control, Section 7); performance and cost are the decision-maker's two objectives over the metrics."
+
+[[claim]]
+id = "C690"
+fragment = "The underlying design problem is characterized by a SysML v2 model, and a simulation study scores each design on thirteen metrics."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "S"
+backing = [
+  "file:examples/adcs/model_v2/cubesat.sysml",
+  "test:tests/test_model_coverage.py::test_traded_metrics_are_the_thirteen_of_the_case",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "The model file is SysML v2 and loads strictly; the traded metrics are the thirteen of the case."
+
+[[claim]]
+id = "C691"
+fragment = "A point of the trade space pulls back to the design that produced it; a point without data is a conjecture about a design, proposed by a rule and settled by building and measuring it."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "M"
+backing = [
+  "lemma:L9",
+  "test:tests/test_preconditioning.py::test_pullback_reproduces_pipeline_score_samples",
+  "func:src/hyperbolic_trade_space/preconditioning.py::frontier_in_original_units",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "L9: the pull-back through the conditioning gives V in the raw attributes, and a sampled point maps to its source design; the second clause (a point without data is a conjecture settled by building and measuring) is the supervisor's statement of what the method does not do, Section 9."
+
+[[claim]]
+id = "C692"
+fragment = "Future work has two key thrusts: (1) searching the design space by sampling white space and pushing the frontier, and (2) formal verification and performance by moving beyond Python into Rust and using theorem provers."
+file = "paper/paper.ipynb"
+anchor = ""
+kind = "P"
+backing = [
+  "reading",
+]
+status = "backed"
+disposition = "keep"
+source = "WP11 abstract, the supervisor's text of 2026-11-14"
+note = "Framing, not a checkable claim: the supervisor's statement of intent for work outside 0.1 (the release line); not a claim about the method; the Rust and theorem-prover clauses are scoped in the body's Future work and Appendix G of the record."
