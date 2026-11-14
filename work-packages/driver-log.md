@@ -228,6 +228,12 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **40a93f2 fully green (12:45).** CI run 43614474657: every job green on both platforms, the thirty-fifth fully green
+  head; the second paper unit's acceptance stands with CI behind it. The supervisor's abstract pass is under way in
+  chat; his rulings are entered verbatim in `WP11-decisions.md` as they come (the 500-word cap, the Pareto sentence,
+  the reduction sentence, the pull-back sentence), WP41 is scoped and awaits his word, and WP42 (tension and the
+  glossary) is to be scoped on his readings of 12:00 to 12:40.
+
 - **Second paper unit (requests 32 to 92) verified and accepted at 40a93f2 (10:40).** Landed in the local checkout at
   f2b9026, 3047008 and a80c126 with the README's wave sections at 40a93f2; not pushed by PM15 (held in a foreground
   call on the third unit), so the assistant pushed it and dispatched CI (run 43614474657). Checks: ruff and format
