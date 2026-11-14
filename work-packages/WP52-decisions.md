@@ -183,3 +183,11 @@ Aztec study as a document-based trade study of two candidate protocols against s
 for a client's engineering team (August 2023). Record entries with the special-case flag; register rows; the word
 ceiling follows the count.
 
+## The essay's page is gone from Medium (2026-11-15, 00:45 EST)
+
+What the sources show: the Medium URL of "Engineering for Legitimacy" answers 410, "The author deleted this Medium
+story" (seen in the browser pane); the Internet Archive holds a capture of 16 June 2025 whose metadata gives the byline
+"By Ilan Ben-Meir and Michael Zargham" and the publication date 19 March 2024, one day before the Arbitrum position
+paper; the text does not mention Arbitrum. The page links the archived capture for now, the record says why, and his
+word decides whether a deleted essay is cited at all.
+
