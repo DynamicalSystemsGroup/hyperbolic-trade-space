@@ -228,6 +228,29 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Wave-1 change unit (requests 1 to 31) verified and accepted at c42d860 (06:55).** The unit landed in the local
+  checkout and was not pushed; the assistant pushed it and dispatched CI (run 43601203914, in progress; the run
+  dispatched a minute earlier on 745dc9f was cancelled). Checks on c42d860: ruff and format clean; `uv lock --check`
+  clean; vocabulary 0 new violations (61 known); attribution grep clean (the six commit-body hits are the word
+  "regenerated", matched by the old pattern and excluded by the CI's whole-word check); fast suite 1948 passed, 15
+  skipped, 2 xfailed in 6:57 (head-verify-26.log); `derivation/run.py` ALL LEMMAS PASS; the implementer's full suite
+  2437 passed, 16 skipped, 2 xfailed. Diff read against the 31 requests: 30 applied, item 2 needed no change (Theorem 6
+  already reads 1/sqrt(d)), item 20 resolved as a narrowing (the contending set is "another object, read after the
+  fit"; no well-posedness claim is made because no record backs one). Theorem 9 is narrowed below L11's docstring
+  (the K > 1 efficiency clause dropped), which is safe. Two test edits accepted: the "enlarge" regexes now match
+  "full-size figure", and the decision paragraph's bound rises from 160 to 180 words with the clause of request 30
+  (the length ledger carries five rows for the unit, each with its job). Browser pass on the site built from
+  c42d860 in the verify worktree, served at 127.0.0.1:8792 (the readers' stage at 8791 stays at c23cf60 for waves 5
+  to 7): the "full-size figure" link renders as a link under Figures 4 and 7; Figure 1's legend prints (0.44, 0.28,
+  0.28) and the caption no longer names "association maps"; the generated sentences read 65.6 % and the per-regime
+  contending-set change; Definition 6 states the three thresholds side by side; Figure 8's caption says the triples
+  are their own fits, 105 of 291; D.19 prints pointing error to six decimals and names the near ties; Appendix E no
+  longer quotes tau = 38.10; no "Loading", stderr or traceback text on either page. Screenshots:
+  `tool-results/mcp-Claude_Browser-blob-1794664311420-9fs0gv.jpg` (Figure 1) and `...-1794664333285-wk86yv.png`
+  (Figure 4's caption). Decisions sent to PM15: the second unit (32 to 92) starts from c42d860 in the background;
+  waves 5 to 7 read c23cf60 as captured so the round compares one head; the held-out cells read the landed head after
+  the stage is rebuilt.
+
 - **Final round, wave 4 committed and triaged (06:20).** The seven reports finished at 11:30 UTC in the round's
   scratchpad and sat uncommitted because PM15 was held by the running change unit (its own units run in the
   foreground); the assistant committed them verbatim (b6f9b76) under the round's rule and triaged them. No wrong
