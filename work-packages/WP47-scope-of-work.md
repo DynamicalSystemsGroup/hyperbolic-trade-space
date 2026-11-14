@@ -30,8 +30,9 @@ only he can take (accounts, trusted publishers, branch protection).
   checklist in `docs/maintainers.md` with screenshots' worth of exact setting names.
 - G3. **Ownership and templates:** `.github/CODEOWNERS` naming him for everything (one line to add a maintainer);
   issue templates (bug, question, a case study proposal) and a pull-request template that asks for the claim-and-backing
-  habit (what changed, what backs it, which tests); `SECURITY.md` with how to report; `CODE_OF_CONDUCT.md` if he wants
-  one (OD1).
+  habit (what changed, what backs it, which tests); `SECURITY.md` with how to report. No code of conduct here: the
+  contributor covenant is WP49's spike (OD1, closed 2026-11-14), and `CONTRIBUTING.md` carries one line pointing to it
+  once it lands.
 - G4. **Onboarding a maintainer is one page:** `docs/maintainers.md`: how a maintainer is added (CODEOWNERS, the
   GitHub team, the PyPI collaborator), how a release is cut (version bump, changelog, tag, the workflow), how a
   candidate is reviewed, where the records live.
@@ -52,7 +53,7 @@ only he can take (accounts, trusted publishers, branch protection).
 |---|---|---|
 | D-1 | `pyproject.toml` metadata and version 0.1.0 (landing with the version unit of WP8b, rebased), `uv build` clean, the wheel's contents checked | G1 |
 | D-2 | `.github/workflows/release.yml` (trusted publishing; TestPyPI on dispatch from `dev`, PyPI on `v*` tags on `main`; the suite first; the version check) | G1 |
-| D-3 | `CONTRIBUTING.md`, `SECURITY.md`, `.github/CODEOWNERS`, `.github/ISSUE_TEMPLATE/` (three), `.github/pull_request_template.md`; `CODE_OF_CONDUCT.md` per OD1 | G2, G3 |
+| D-3 | `CONTRIBUTING.md`, `SECURITY.md`, `.github/CODEOWNERS`, `.github/ISSUE_TEMPLATE/` (three), `.github/pull_request_template.md` | G2, G3 |
 | D-4 | `docs/maintainers.md` (the flow, the branch-protection checklist, onboarding, cutting a release), in the docs navigation under a "Project" heading | G2, G4 |
 | D-5 | `work-packages/WP47-rounds/pypi-checklist.md`: the supervisor's steps with exact names, and the record of the TestPyPI dry run when it is done | G5 |
 | D-6 | `work-packages/WP47-review.md`: the build and the workflow tried on a fork or a dry run (`workflow_dispatch` against TestPyPI needs his publisher first; until then the workflow is validated by `act` or by a dry-run job that builds and checks the version) | all |
@@ -92,4 +93,7 @@ Good enough is met, no open item remains unresolved, and the supervisor has acce
 
 ## Open decisions (for the supervisor)
 
-- **OD1.** A code of conduct: (a) include one (the Contributor Covenant, attributed); (b) none for v0.1.
+- **OD1 (closed 2026-11-14, `WP47-decisions.md`).** A code of conduct: he wants a contributor covenant tied to how AI is
+  used and supervised, as its own spike (WP49). None is written in WP47.
+
+No open decision remains.

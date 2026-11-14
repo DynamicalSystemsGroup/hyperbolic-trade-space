@@ -33,3 +33,16 @@ focus now that the project is nearing a release"
 **Applied as:** WP47 and WP48 together are the DevSecOps line: WP47 the release path v0.1 needs (packaging, trusted
 publishing with no secrets, the branch flow, ownership, templates, the maintainers' page); WP48 the controls that become
 automated release gates after v0.1, read from his research and expressed as verification cases.
+
+## OD1, the code of conduct (2026-11-14, 19:40)
+
+**Supervisor, verbatim:** "i think it would be good to have a contributor covenant and given the nature of this work to
+date it may need to be explicitly tied to how AI is used and supervised. i want this to be an AI native open source
+package but i also need it be trusted and trustworthy. so i think the contributor covenant is its own spike."
+
+**Applied as:** OD1 closed. WP47 ships no `CODE_OF_CONDUCT.md`; `CONTRIBUTING.md` leaves a line for the covenant once
+it lands. The covenant is its own research spike, WP49 (`WP49-scope-of-work.md`, decisions in `WP49-decisions.md`):
+the Contributor Covenant read, the published AI-contribution policies of other open-source projects read, this
+repository's own practice written down as it is, and a readout with plain options for a covenant that says how AI is
+used and supervised here. Nothing is adopted before his word on the readout.
+
