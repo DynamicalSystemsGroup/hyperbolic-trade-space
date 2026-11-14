@@ -228,6 +228,10 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **d417196 fully green (16:15).** CI 43532734200 on d417196 (the pass's first landing): every job green on both
+  platforms, the twenty-eighth fully green head; the run on 7f790f2 is in progress. The paper unit of the pass is
+  iterating on the tests that pin the paper's sentences in its worktree.
+
 - **The pass's entry-surface and docs landings verified (16:15).** L2-entry (a390117 and its rows: the root page and
   the README) and L1-docs (1ef3dc7, 1d92961, 7f790f2: 116 flags applied across the docs pages, Getting started back
   to its 348-word budget) read as diffs: splits of long sentences, acronyms expanded at first use (PCA on the root page
