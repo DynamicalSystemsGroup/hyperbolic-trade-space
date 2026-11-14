@@ -2283,7 +2283,7 @@ def tension_figure(study, fit, band=None):
                              squeeze=False)  # fmt: skip
     for k, (ax, rep) in enumerate(zip(axes[:, 0], reps, strict=True)):
         plotting.plot_tensions(rep, names=study.names, ax=ax)
-        ax.set_title(_wrap(_member_title(rep, f"term {k + 1}"), 48))
+        ax.set_title(_wrap(_member_title(rep, f"term {k + 1}"), 60))
         plt.setp(ax.get_xticklabels(), rotation=90, ha="center")
     fig.tight_layout()
     return fig
