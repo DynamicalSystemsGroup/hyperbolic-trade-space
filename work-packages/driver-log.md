@@ -228,6 +228,11 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **CI red on ba22d92 for the known register row (00:15).** CI 43574786539 on ba22d92: the slow and docs-paper jobs
+  green, both fast jobs red with the one failure the assistant had already found and returned, register row C422's
+  fragment; nothing else failed. The fix is committed in the nit unit's worktree (2d3c98f) and in its test group
+  before the push; a green run on that head closes it.
+
 - **Round 2 of the pass received; one register row returned (23:30).** The round-2 unit (ba22d92): one sentence
   restored, fifteen re-pointed, three lead sentences added to bare tables, the citation rendering and the lemma pages
   routed; its record notes that most of the gaps predate the pass. On ba22d92: ruff, lock, vocabulary and attribution
