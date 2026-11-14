@@ -228,6 +228,16 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Final round, wave 7 triaged; the core round complete (08:35).** Four reports, spawned by the assistant, committed
+  as each finished. Forty-six core reads, no wrong belief of the key in any; three loose statements, each prevented by
+  a request on the list. 165 requests: 31 landed at c42d860, 134 in the second unit (record defects first, then the
+  figure-review loop for Figures 3 to 7, then wording). The roll-up and the replication counts are in
+  `WP11-final/triage/wave-7.md`. Two reader-need verdicts go to the supervisor beside the vocabulary items: the
+  executives (F07, G07) want the decision that changed and a cost of adoption; the analyst (G09) cannot start from the
+  main text because conditioning, the temperature's choice and the package's calls are deferred. Held-out waves 8
+  and 9 read the landed head after the stage is rebuilt. CI run 43601203914 on c42d860 still in progress (slow and
+  docs-paper jobs).
+
 - **Final round, wave 6 triaged (08:05).** Seven reports, spawned by the assistant and committed as each finished; no
   wrong belief in forty-two. The depth-D mathematician (F27) crossed the appendices against each other and returns the
   round's weightiest defects: Theorem 10 (ii) drops the entropy term its own script proves (verified in lemma_16, step
