@@ -63,7 +63,7 @@ the release; the PDF export later.
 | 6 | Release candidate (WP8b, the driver scopes): version, license file, changelog, the archive cleared, stable reference keys from the docsite into the paper, the punch list, the reviewer's guide in sittings | 2, 5 |
 | 7 | The PR from `dev` to `main` | 6 |
 
-After 0.1: the search (WP12); publishing to an index or a registry; the PDF export.
+After 0.1: the search (WP12); publishing to an index or a registry; the PDF export. From 2026-11-14 the two-milestone board `milestones.md` tracks every item in flight against v0.1 and v0.2 (the supervisor's request before the autonomous phase resumed).
 
 ## What "candidate" means (the driver's definition of done; his review may change it)
 

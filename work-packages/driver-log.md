@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The two-milestone board (18:30).** At the supervisor's request before the autonomous phase resumes,
+  `milestones.md` restates the goal state (v0.1, the paper ships with it) and the secondary (v0.2, tooling,
+  documentation and more worked examples), and tracks every item in flight against both: the third paper unit, the
+  abstract landing, the held-out reads, the figure loop, his acceptances and close read, WP8b, WP41 part 1 (0.1) and
+  part 2 (0.2), WP42 (spike informing; vocabulary in 0.1; tension's place in the paper his call at the readout), WP43
+  (informing; build 0.2), WP44 (done), WP45 (records 0.1; pages 0.2), WP46 (0.1), the docs acceptance test (proposed),
+  the refreshes, the post-0.1 list and the future directions. The autonomous phase's standing orders and stop
+  conditions are unchanged; his items are listed in order at the board's foot.
+
 - **The supervisor's priority, verbatim (14:20):** "at the end of the day i care about having a well documented
   practically useful HTS package, the paper is just means to an end." Applied as: the four spikes' build stages name
   their docs example and API change as deliverables; the round's two reader-need verdicts about using the tool (G09:
