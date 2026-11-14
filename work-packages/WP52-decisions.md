@@ -219,3 +219,9 @@ and filecoin as a filestorage and retrieveal network. we need to do a decrypto-f
 and retrieval network"; a pass over the page for words that read as cryptocurrency found no other in the prose (source
 titles in the dated list keep their own words, as the list's rule allows).
 
+**Supervisor, verbatim (01:20 EST):** "you don't actually need the brand names RAI or filecoin in the text. just their
+categorical descriptions"
+
+**Applied as:** "a feedback controller for an algorithmic debt market"; "the governance of a file storage and retrieval
+network"; the names stay in the record entries and the dated list's source titles.
+
