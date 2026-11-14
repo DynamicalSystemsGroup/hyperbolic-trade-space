@@ -66,7 +66,7 @@ def harvest_index(x):
 def record(path):
     """Write the file's size and hashes into the manifest (a text edit, keys kept in place)."""
     path = Path(path)
-    text = (HERE / "manifest.toml").read_text()
+    text = (HERE / "manifest.toml").read_text(encoding="utf-8")
     for key, val in (
         ("file", f'"{path.name}"'),
         ("size", str(path.stat().st_size)),
@@ -74,7 +74,7 @@ def record(path):
         ("sha256", f'"{fitkit.file_hash(path, "sha256")}"'),
     ):
         text = re.sub(rf"^{key} = .*$", f"{key} = {val}", text, flags=re.M)
-    (HERE / "manifest.toml").write_text(text)
+    (HERE / "manifest.toml").write_text(text, encoding="utf-8")
 
 
 def main(argv=None):
@@ -101,7 +101,8 @@ def main(argv=None):
     (HERE / "derived" / "LICENCE-DATA.txt").write_text(
         f"{m['licence_text']}\n\nAttribution: {m['attribution']}\nSource: {m['landing_page']}\n"
         f"Licence: {m['licence_url']}\nThis table is derived: rows with grain and straw both "
-        "recorded and positive, selected columns only.\n"
+        "recorded and positive, selected columns only.\n",
+        encoding="utf-8",
     )
     res = fitkit.fit_read(condition(x), ["grain", "straw"], taus=(3.0, 10.0, 30.0, 100.0, np.inf))
     res["rows"] = len(x)

@@ -163,4 +163,4 @@ def fit_read(M, names, target=0.10, taus=(3.0, 10.0, 30.0, 100.0, np.inf), k2=Tr
 
 def dump(result, path):
     """Write a result dict as sorted, indented JSON."""
-    Path(path).write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+    Path(path).write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
