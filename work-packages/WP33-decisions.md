@@ -109,3 +109,29 @@ Examples page's requirements block stays reachable from the docs; the Bring-your
 started carries it; the adoption line: its measured figure stays on the README and in register row C563, re-pointed).
 The journeys note's placements for P1, P7 and P8 are updated to the two doors. Folded into the root-page unit; listed
 under Entry surfaces.
+
+## The root page's Why: the descriptive and the normative kept apart (2026-11-15, 00:20)
+
+**Supervisor, verbatim:** "one thing i want to get into the \"why\" is that we're trying to make a scientific assessment of what is possible and what
+trades against what while deferring on the normative judgement of what is preferable. this aims to strike a cleaner or at
+least reproducible and auditable distinction between what options are on the table and which options are preferable. this
+is critical for any system with multiple stakeholders, and this makes the nature of how competing objects actually compete
+explicit, it offers a concrete approach to deciding both whether to search for new options, and to deliberate in a
+scientific grounded way about the options currently available. i don't want you to add a lot of prose to the index but we
+wrote this before we introduced the 2 stakeholders with partially competing top level directions in the paper. my personal
+motivation intersects with questions of governance, politics and accountability, with a desire to improve epistemics while
+preserving the real contentions that arise naturally. an extra bit of context for me is that i plan to use this research
+project for my ostrom workshop visiting researcher application / nomination so we need to hit a note where the
+applicability to collective governance is is easy to see but without reframing the project around it. we already know
+infrastructure is political, its part of the reason we have decision analysis and engineering requirements mapped back to
+stakeholder needs in the first place."
+
+**Applied as:** a light-touch addition to the root page's Why, his surface, drafted for his red pen and not applied
+before his word: the method makes a scientific assessment of what is possible and what trades against what, and defers
+the normative judgement of what is preferable; the distinction between the options on the table and the options
+preferred is reproducible and auditable; with several stakeholders this makes explicit how competing objectives
+compete, and gives a concrete footing for two decisions, whether to search for new options and how to deliberate over
+the ones in hand. Two or three sentences, no reframing; the paper's two stakeholders are the instance. The context he
+gives (governance, politics, accountability; epistemics with the real contentions preserved; the Ostrom Workshop
+application) is recorded as his intent and not written onto the page.
+
