@@ -228,6 +228,17 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **PM14 handed back; the pass closed on dev; the final round's settings made (01:25).** PM14's run ended at 6891eae
+  with its handover in PM-BRIEF.md; the pass's closing commits (the last two confirmations, the baseline retaken, the
+  review and its review-list row) are on dev. The review marks R-8 partly met (the counts fell from the pass's start
+  to its end: words 75,104 to 73,192, parentheticals 757 to 659, long sentences 274 to 188, compound sentences 263 to
+  180, undefined acronyms 34 to 22; against the pre-pass baseline the count of rises is 28 in different places, and
+  the retaken baseline shows none) and lists 78 surfaces still flagged, mostly kinds 9 and 10 on pinned text, as the
+  post-0.1 list with the lemma and history rows. The PM saw a docs-site fixture failure in its own worktree it
+  attributes to the environment; the assistant is running the site and docs group on this checkout to settle it
+  before accepting WP38. The final round's five settings are recorded in WP11-decisions.md; the fifteenth PM is spawned
+  on the handover to run the pre-launch capture and the waves, with the triage against the key held by the assistant.
+
 - **The nit unit verified; register row C422 closed (00:50).** The nit unit (8bc69cf, 116c929): the prose prints the
   ell-one as the bibliography does, and C422's fragment is re-pointed to the source's string literals; the claims
   register tests 21 passed here; no stderr output in the notebooks; on 116c929 ruff, lock, vocabulary and attribution

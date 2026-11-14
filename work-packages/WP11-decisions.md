@@ -54,3 +54,17 @@ traded metrics, the fleet size, 3,000 designs per regime, the cost coverage and 
 K = 2 by the package's own checks, the term order, the six requirements read after the fit, the data of record
 (the container's `@12` entries) and the noise corollary; wrong beliefs W9 to W12 added. Kept outside the repository
 and never shown to a reader, triager or author; sha256 `a041bc84c27f144a8ea7339ec59059f20e37a816d0f5d64bf4cb4e784ccc5bc4`. The final reader round reads against it.
+
+## The final reader round: the assistant's settings (2026-11-14, 01:25; plan and briefs in the scratchpad, written without the key; dev at 6891eae)
+
+Against answer key version 5 (sha256 a041bc84…, held by the assistant). The PM's plan asked five questions with plain
+options; the assistant's settings, verbatim:
+
+**Assistant, verbatim:** "1 (c): depths A and B as captured files and images, C and D as the live pages, and a
+root-page arrival at depth A for P1 and P8, so the root page's new order is read cold. 2 (b): two readers per core
+cell on two models and two brief wordings, 56 reads in eight waves; this is the release's evidence and the grid note's
+protocol asks for two. 3 (a): no edge cells; a fifth batch only if the triage shows a persona weak across depths.
+4 (a): the mathematics pair as built, the lemma scripts withheld, since the contract's depth D has no repository.
+5 (b): the six held-out cells are read in a batch after the other twenty-two are triaged and any change has landed,
+so they stay unseen by the revision loop. The triage is the assistant's, against the key, one form per report; every
+report is committed verbatim before any triage; the stopping rule stands as the plan states it."
