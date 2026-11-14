@@ -12,3 +12,9 @@ practice as it already is (supervisor-gated work packages, decision records in h
 commit with no AI attribution lines, reviews that run the thing, claims backed or narrowed), and returns plain options
 for a covenant that states how AI is used and supervised here and what a user may trust because of it. The covenant
 itself is written only after his word on the readout.
+
+## Approval
+
+**Supervisor, verbatim (2026-11-14, 19:50; popup, multi-select over WP47, WP48, WP49):** "WP47,WP48,WP49"
+
+**Applied as:** WP49 approved as scoped; the spike starts, readout before the v0.1 pull request.

@@ -46,3 +46,8 @@ the Contributor Covenant read, the published AI-contribution policies of other o
 repository's own practice written down as it is, and a readout with plain options for a covenant that says how AI is
 used and supervised here. Nothing is adopted before his word on the readout.
 
+## Approval
+
+**Supervisor, verbatim (2026-11-14, 19:50; popup, multi-select over WP47, WP48, WP49):** "WP47,WP48,WP49"
+
+**Applied as:** WP47 approved as scoped (OD1 closed above); WP48 approved as scoped (its approval record is this file). The WP47 unit starts in a worktree; the WP48 spike continues from its committed first pass to the readout.
