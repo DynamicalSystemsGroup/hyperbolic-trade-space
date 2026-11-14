@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **The pass's entry-surface and docs landings verified (16:15).** L2-entry (a390117 and its rows: the root page and
+  the README) and L1-docs (1ef3dc7, 1d92961, 7f790f2: 116 flags applied across the docs pages, Getting started back
+  to its 348-word budget) read as diffs: splits of long sentences, acronyms expanded at first use (PCA on the root page
+  and the docs home), parentheticals unpacked, no claim or number changed; the docs home down to 188 words with its
+  five need links first. On 7f790f2: ruff, lock, vocabulary and attribution clean; the fast suite 1946 passed; the
+  stage rebuilt and the root page and docs home read in the browser. Every entry-surface change is listed in the
+  review list with its commit for the supervisor's close read. CI dispatched. The paper unit (N1) is running its
+  tests in its worktree.
+
 - **The residual pass's flags in; its first landing unit verified; 995075b fully green (15:40).** CI 43522590868 on
   995075b: every job green on both platforms, the twenty-seventh fully green head. The pass (6007221): first-reader
   flag tables for all 29 slots with every sentence quoted in full and a disposition (cut, split, define, routed or
