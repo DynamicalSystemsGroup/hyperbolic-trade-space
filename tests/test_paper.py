@@ -3466,7 +3466,7 @@ def test_the_two_metrics_in_no_contending_set_are_the_computed_ones(case_sentenc
         in text
     )
     assert "enter no contending set at K = 1 to 3 in either regime" in text
-    assert "Spearman at least 0.97" in text
+    assert "|Spearman| at least 0.97" in text
 
 
 def test_the_body_states_the_marks_the_coverage_and_the_draw():
