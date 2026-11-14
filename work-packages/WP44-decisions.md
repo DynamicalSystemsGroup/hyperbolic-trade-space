@@ -75,3 +75,12 @@ site 0.2 content"
 rules, the fits, the known-answer verdicts, the sensitivities, the limits) land in the 0.1 candidate as research under
 `work-packages/WP45-rounds/`, with their scripts under `examples/` so the fits are reproducible; the docs pages (D-2)
 and their fresh-reader review (D-4) are 0.2's first package, drawn from the records. OD1 is closed.
+
+## Approval (2026-11-14, 15:40)
+
+**Supervisor, verbatim:** "i approve the Work Packages above. we can return to the open wording discussions"
+
+**Applied as:** the scope as drafted is approved (WP41, WP43 and WP45 were the three listed; WP42 waits on its open
+decision, the solver's word). Execution begins under `work-execution`: a unit per package in its own worktree on
+Sonnet, in the background, with the scope file as the brief; the assistant verifies each delivery before the
+supervisor's acceptance.

@@ -35,3 +35,12 @@ named with a default, the outcome set, what stays open), the docs page that tell
 paragraph naming the procedure with no new claim. The package interface and the case demonstration with a Monte Carlo
 check are the first package of 0.2, scoped from the note. `WP41-scope-of-work.md` holds the scope; its approval is the
 supervisor's verbal word, quoted here when given.
+
+## Approval (2026-11-14, 15:40)
+
+**Supervisor, verbatim:** "i approve the Work Packages above. we can return to the open wording discussions"
+
+**Applied as:** the scope as drafted is approved (WP41, WP43 and WP45 were the three listed; WP42 waits on its open
+decision, the solver's word). Execution begins under `work-execution`: a unit per package in its own worktree on
+Sonnet, in the background, with the scope file as the brief; the assistant verifies each delivery before the
+supervisor's acceptance.

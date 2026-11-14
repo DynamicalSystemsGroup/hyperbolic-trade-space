@@ -34,3 +34,12 @@ the documentation's examples; the paper gains no result and no section. The pape
 "kernels that keep the model a generalized geometric program (GGP) in the metrics") are the claims the spike backs or
 narrows, by at most a word (GGP against log-convex). `WP43-scope-of-work.md` holds the scope; approval is the
 supervisor's verbal word, quoted here when given.
+
+## Approval (2026-11-14, 15:40)
+
+**Supervisor, verbatim:** "i approve the Work Packages above. we can return to the open wording discussions"
+
+**Applied as:** the scope as drafted is approved (WP41, WP43 and WP45 were the three listed; WP42 waits on its open
+decision, the solver's word). Execution begins under `work-execution`: a unit per package in its own worktree on
+Sonnet, in the background, with the scope file as the brief; the assistant verifies each delivery before the
+supervisor's acceptance.
