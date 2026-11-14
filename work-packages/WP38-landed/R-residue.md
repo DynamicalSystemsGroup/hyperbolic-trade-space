@@ -131,4 +131,6 @@ Both notebooks executed once (paper/execute_notebooks.py, warmed MPLCONFIGDIR, n
 - TOTAL words 73047 before, 73036 after.
 
 ## Claims rows and ledger rows
-None re-pointed. See paper/length_ledger.toml note below if the checks name a row.
+None re-pointed; no length_ledger row changed.
+
+Tests: group (test_paper, claims_register, site, docs, text_encoding, residuals, gaps) 378 passed, 4 skipped, serial. ruff, format, uv lock --check, vocabulary: clean.
