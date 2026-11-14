@@ -137,3 +137,15 @@ Jaccard), the 'G-1 to G-17' against G-18 count in Appendix E, the '20 of the var
 is wrong, and bibliography entry 7's \ell_1 markup; and in the same unit a second pass over the fifty-five Appendix E
 rows the N2 record did not reason individually, under the pass's rules. (5) WP38-review.md after the confirmations;
 then the final reader round against key version 5."
+
+## WP38 delivered and verified by the assistant (2026-11-14, 02:20; head 6891eae, review 5fa00a5)
+
+**Assistant, verbatim:** "WP38 is delivered and verified under the mandate: two reader rounds over 29 slots, 1,211
+flagged sentences with 537 copy edits landed in five units and a residue unit, the counts down across the board
+(words 75,104 to 73,192, parentheticals 757 to 659, long sentences 274 to 188, undefined acronyms 34 to 22), no figure
+or quoted number moved, the baseline retaken at the pass's end with the before and after counts recorded, and the
+remainder (78 surfaces mostly of kinds 9 and 10 on pinned text, the lemma scripts' generated text, the history page's
+rows) listed for the supervisor as the post-0.1 list. The docs-build errors the PMs saw in their worktrees are the
+worktrees' environment: on this checkout the site and docs group with its slow tests is 125 passed and the fast suite
+1947 at 6891eae. R-8 stands as partly met for the reason the review gives. WP38 goes on the review list for the
+supervisor's acceptance."

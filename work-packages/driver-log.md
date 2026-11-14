@@ -228,6 +228,15 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **WP38 accepted at the assistant's level; the final round cleared to launch (02:20).** The site and docs test
+  group, slow tests included, 125 passed on this checkout at 6891eae in 28 minutes, which settles the PMs'
+  worktree-only fixture errors as environmental; with the fast suite 1947 and the review read, WP38 is delivered and
+  verified (WP38-decisions.md). The final round's R-2 check done by the assistant: the 58 briefs grep clean for persona
+  names, depth words and key material; three briefs read in full; the depth-A slice seen as image and text; the
+  depth-B statements file read. PM15 cleared to launch waves 1 to 6 and a split wave 7 of the four non-held reads;
+  the six held-out cells wait for the assistant's triage of the rest and any landing; every wave's reports committed
+  verbatim before reading. The version unit stays held. The stage serves c23cf60.
+
 - **PM14 handed back; the pass closed on dev; the final round's settings made (01:25).** PM14's run ended at 6891eae
   with its handover in PM-BRIEF.md; the pass's closing commits (the last two confirmations, the baseline retaken, the
   review and its review-list row) are on dev. The review marks R-8 partly met (the counts fell from the pass's start
