@@ -327,3 +327,11 @@ Stellar Community Fund. **Applied as:** the clause moves from the people's parag
 firm's paper with four authors, linked by its SSRN record, and ties to the Aztec trade study the page already names;
 the presentation entry stays in the record as the talk of it.
 
+**Supervisor (03:30 EST):** "one more post crypto citation https://docs.dynamicalsystemsgroup.com/governed-compute/ assess
+this for inclusion" and "Tindall is the correct spelling / the lead on this work was Sayer Tinsall" (the second line his
+correction of the first: Sayer Tindall).
+
+**Applied as (pending the read):** the page is read; if it enters, it enters the 2026 paragraph as the firm's work on
+governed compute led by Sayer Tindall, the Realization layer the lifecycle demo's README points to, in neutral words;
+the record entry names Tindall as lead on his authority unless the page states it.
+
