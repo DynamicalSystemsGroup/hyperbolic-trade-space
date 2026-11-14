@@ -282,3 +282,15 @@ doi: https://doi.org/10.1002/iis2.70203"
 the record entries as where each DOI resolves. Both hosts answer 403 to automated requests, as the DOIs do, so the
 link checker's "blocked" reading stands for both.
 
+**Supervisor (02:50 EST):** "does protocols and institutions belong in this history and acknowledgements page"
+
+**The driver's view, pending his word:** yes, as one clause in the late lineage at its date. The record: Zargham and
+Ben-Meir, "Protocols and Institutions", Zenodo preprint of a book chapter, 6 March 2025, doi:10.5281/zenodo.15122312
+(resolves): institutions defined mathematically by correspondence to stability in Lyapunov's sense, protocols and
+institutions read through control systems engineering, with institutional economics, cybernetics and market design
+cross-referenced. It is the step between legitimacy as trade-off curves (2024) and the ethnography-and-loop work (2025)
+and the theoretical ground of the protocol-based stance his contributing guideline takes; it also brings the control
+and stability vocabulary of his earliest work back into the lineage. Against: the page is at 904 words and each
+clause must earn its place. If he says yes: "Protocols and institutions (2025), with Ben-Meir, defined institutions by
+their stability in Lyapunov's sense and set protocols as the engineered part of them", one record entry, one row.
+
