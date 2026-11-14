@@ -114,3 +114,39 @@ or run a check, but it is never the committer: every act in this repository is d
 person, and that person is the one who answers for it." Placed in the accountability clause after "No tool is a
 contributor, so commits should not carry a trailer or line naming a tool as author."
 
+## Wording point 3 of 3, the editor analogy (2026-11-14, 17:35 EST; popup)
+
+**Supervisor, verbatim:** "name IDEs, smooth the language. its not intended as an attack its simply a clarifcation and a heuristic. the AI has become
+part of the Integrated Development Environement in practice. Developer (not IDEs) are responsible for what they produce,
+commit, review, merge etc. i am comfortable with you doing some word smithing but my intents should be clear here. if they
+are not, ask me clarifying questions"
+
+**Applied as:** the analogy stays, names the integrated development environment, and is written as a heuristic: AI has
+in practice become part of the development environment, and developers, not their environments, are responsible for
+what they produce, commit, review and merge. The two clauses are assembled below with all three points and his
+wording of 03:05 (order), for his sign-off; the text lands in `CONTRIBUTING.md` by WP47's unit only after that.
+
+## The two clauses, assembled for his sign-off
+
+**Who owns a change.**
+
+> Every change merged here has a named human contributor: the person who submits it, who owns it. To own a change is
+> to be able to explain it, to have checked it against its scope, and to answer for it afterwards. The bar a change
+> must meet does not depend on what produced it: the same scope, the same review, the same blast radius, the same
+> readable history. You are not asked whether or how you used AI, and "a tool wrote it" is never an answer to a
+> question about the change. No tool is a contributor, so commits should not carry a trailer or line naming a tool as
+> author. A tool may write code, open a draft or run a check, but it is never the committer: every act in this
+> repository is done on the authority of a named person, and that person is the one who answers for it.
+
+**Tools.**
+
+> Humans make commits, and humans use tools. The commit history names people. Coding agents and agent-based editors
+> (Claude Code, Codex, Devin, Cursor and their like) have in practice become part of the integrated development
+> environment, and this project treats them so: nobody is asked to avoid them or the models behind them, and a
+> developer, not their environment, is responsible for what they produce, commit, review and merge. The use of AI
+> tools is documented where tool use is documented, together with the editor, the build tools and the environment:
+> in the "tools used" part of the pull request's description or of the work package's record, and never as the
+> committer or author. You may document which tools you used, and should when it helps a reviewer reproduce or check
+> the work. Putting someone else's code through a model to escape its licence is a licence violation exactly as
+> copying it would be. This project's checks are written to hold whichever model or editor you use.
+
