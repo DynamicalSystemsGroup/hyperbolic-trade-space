@@ -228,6 +228,18 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Final round, wave 2 triaged (04:30).** Seven reports (P2-B, P6-A, the root page for P1 and P8, P5-C, P4-A,
+  P10-B): no wrong belief, every depth's job done; fourteen reports in all with none. The signal is replication: the
+  same ten places in the statements and captions stop readers of every persona (Definition 3's sum and mean, the
+  three thresholds, f_k's two scopes, Figure 3's settling time, Figure 5's caption against its picture, Theorem 12's
+  sign, the "Numerical" tag, Table 2's "executives' measures", the duplicate L14 label, "certified"). Sixteen change
+  requests added (32 to 47) to the unit, among them four defects a mathematician found (a theorem cited for a claim it
+  does not state, a bibliography entry in the wrong prior-art row, the Discussion's propose-predict-check sentence
+  against Section 9's, three bibliography entries with no citation found). For the supervisor: both executives stop
+  at the root page's summary paragraph ("posynomial invariant form", "invariant", "unsupervised") and at "the
+  alternatives are bespoke or opaque"; the abstract's phrases are now four cells; the title's two words and the
+  n-lemma name are vocabulary rulings. Wave 3 is on dev and triaged next.
+
 - **Final round, wave 1 triaged against the key (03:40).** Seven reports (P8-A, P1-B, P4-B, P3-C, P9-C, P7-D,
   P9-D; Sonnet and Haiku), each read in full against the key's S and W marks and the depth's job: no wrong belief in
   any of the seven; every depth's job done, the two depth-C reads leaving whys the main text owes, which are the
