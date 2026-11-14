@@ -65,3 +65,10 @@ fill them in where they can be; and push the envelope (advance the frontier). Th
 WP41 (`WP41-decisions.md` carries the cross-reference), where filling in is the witness sampling of 22:20 and pushing is
 the proposal beyond the surface, each a conjecture settled by building and measuring.
 
+**Supervisor, verbatim (22:27), on the two aims:** "these are fundamentally complementary"
+
+**Applied as:** the readout presents them as complementary, not competing: filling in makes the envelope's interior
+known (each witness is a measured design that tightens the fit and settles a hole), and pushing the envelope opens new
+interior to fill; a sampling rule serves both in turn rather than trading one away for the other, and the readout's
+"trade the two" of 22:15 is read as allocating effort between complementary aims, not as a conflict.
+
