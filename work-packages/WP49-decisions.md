@@ -231,3 +231,23 @@ codeowners in the future"
 that adding one changes that file and nothing on the page. The page WP47 writes keeps its path `docs/maintainers.md`
 until WP47's unit renames it with the same rule (a note to PM16); the word on this page is code owner throughout.
 
+## Enforcement (2026-11-14, 19:10 EST), on the CONTRIBUTING draft
+
+**Supervisor, verbatim:** "we also may need some scripts and some github actions using the github cli and triggering conditions to enforce some of
+what we just asserted"
+
+**Applied as:** the assertions of the page that are conformance (checkable by machine) get a check each, with its
+trigger, as verification cases in WP48's readout and built by WP47 or a follow-on package as he places them; the
+assertions that are fitness (a code owner's judgement) get no script, only the record of who judged. The candidate
+list, for his placement: (1) an issue's admissibility, on issue opened or edited: the template's fields (scope and
+non-goals, blast radius, good, good enough) present and non-empty, else a comment naming the gap and a `draft` label
+kept; (2) the draft gate: only a code owner removes the `draft` label (an action reverts any other removal); (3) a pull
+request names the issue it resolves ("closes #n") or carries the small-fix label, on pull request opened or edited;
+(4) the pull request description's fields (what changed, what backs it, tests, tools used) filled, same trigger;
+(5) the merge into `dev` by a code owner who is not the author: branch protection (review from code owners, no
+self-approval) plus a check on the merge event; (6) no commit message names a tool as author (exists, `test.yml`);
+(7) releases only from `main` by tag through the release workflow with the environment's code-owner approval
+(exists in WP47's `release.yml`); (8) the review record exists for each merged pull request (a file or a comment
+naming conformance results and the fitness judgement by name), on merge. Each as a verification case: requirement,
+method, evidence, verdict.
+
