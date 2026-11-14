@@ -228,6 +228,19 @@ linux/arm64 instead of linux/amd64, which he was told would come back to him
 
 ## The driver's calls of 2026-11-09, evening (for the supervisor's review)
 
+- **Final round, wave 3 triaged (05:20).** Seven reports (P7-C, P4-A, P2-C, P2-B, P8-A, P7-B, P6-C): no wrong
+  belief, every depth's job done; twenty-one reports in all with none. One mis-stated detail outside the key's list
+  (F02: "thirteen requirements" for six). Twenty-one new requests (48 to 68), each stopping two to four readers of
+  different personas: the fleet size "not drawn" (three cells, plus the fleet cost's relation to unit cost), "the
+  package" undefined (four), n_eff = 74 with no stability word (four), "frontier" for which object (three), the
+  F-codes' "restrict nothing" (three), the Final remark's novelty score against Section 10 (three), Section 7's
+  diffusion sentence (three), Table 2's level column read as a ranking within the band (three), Figure 4's saturated
+  scale (three); and five one-cell defects (a dangling pointer in the main results, a heading's "contrast" never
+  introduced, "offset" for beta against the glossary's reach, the term numbering rule stated nowhere, the fit's GP
+  variables against the GGP compatibility's). Figure 5 is at seven cells and goes to the figure-review loop. For the
+  supervisor: the abstract at six cells, the n-lemma name at eight, "invariant" at four; Theorem 9's place in the main
+  results and the decision section's "what the fit adds" as marginal-value questions. Waves 4 to 7 as PM15 commits them.
+
 - **Final round, wave 2 triaged (04:30).** Seven reports (P2-B, P6-A, the root page for P1 and P8, P5-C, P4-A,
   P10-B): no wrong belief, every depth's job done; fourteen reports in all with none. The signal is replication: the
   same ten places in the statements and captions stop readers of every persona (Definition 3's sum and mean, the
