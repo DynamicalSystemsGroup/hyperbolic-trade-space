@@ -66,3 +66,12 @@ conditioning and temperature, the row counts and the limits), which is the work 
 whether it passes or not; then the docs page, drawn from that record as a didactic story for a user with their own
 table (what the data are, how to condition, how to fit, how to read), with none of the test record's apparatus on the
 page and no sentence written to convince. The page cites the record for a reader who wants it.
+
+**Supervisor, verbatim (15:25), on WP45's place:** "i want the research and testing our method part of the work to land
+before 0.1 to help us make sure we didn't miss something or get something wrong but extending examples in documentation
+site 0.2 content"
+
+**Applied as:** WP45 splits by that line: the test records for the three cases (D-0: the fetches, the conditioning
+rules, the fits, the known-answer verdicts, the sensitivities, the limits) land in the 0.1 candidate as research under
+`work-packages/WP45-rounds/`, with their scripts under `examples/` so the fits are reproducible; the docs pages (D-2)
+and their fresh-reader review (D-4) are 0.2's first package, drawn from the records. OD1 is closed.

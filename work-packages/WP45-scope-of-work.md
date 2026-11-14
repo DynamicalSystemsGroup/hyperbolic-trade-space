@@ -110,5 +110,7 @@ above.
 
 ## Open decisions (for the supervisor)
 
-- **OD1.** Place: (a) in the 0.1 candidate, before the release PR, so the docs ship with three examples beside the
-  cubesat; (b) the first package of 0.2, with 0.1's Examples page naming them as coming.
+None. OD1 is closed by the supervisor's ruling of 15:25 (`WP44-decisions.md`): the test records, their scripts and
+the fetches land in the 0.1 candidate as the research that checks the method; the docs pages and their review are the
+first package of 0.2. This scope therefore delivers D-0, D-1 and D-3's claims rows for the records in 0.1 and holds
+D-2 and D-4 for the 0.2 package, which is scoped from the records.
