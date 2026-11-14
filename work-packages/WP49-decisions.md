@@ -312,3 +312,10 @@ conformance with their checks, one fitness (a code owner's decision, recorded by
 produces the file with the other two conditions files (R-14 covers its link); WP48's readout takes the eight as release
 gates.
 
+**Supervisor (20:45 EST):** "does the release admissibility page distinguish between what is machine verifiable and what is
+human judged?"
+
+**Applied as:** it did so only in a closing sentence; now each row carries a Kind column ("conformance, machine" or
+"fitness, a code owner"), the opening paragraph says what each kind means for a tag, and the fitness row states what the
+approver has read (the changelog and the review records of the pull requests inside).
+
