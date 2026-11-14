@@ -39,6 +39,14 @@ stages; this scope is the research spike and the decision gate, with the build s
   optimization; GGP and log-convex belong here) and the method layer (the fit as an optimization over the exponents;
   its word is loss), and every entry names its layer; Section 3 covers it in brief and cites Appendix A (the supervisor's
   ruling of 16:05, `WP11-decisions.md`). The readout drafts both texts.
+- G3c. **The entry surfaces follow the abstract** (the supervisor's direction of 18:15; the read is
+  `WP11-final/abstract/entry-surfaces-consistency.md`): the build's first list is the four small edits (the root page's
+  What: "explains trade-offs" for "explains tensions", "contend" for "compete"; "unsupervised learning, beside PCA" on
+  the root page and the docs home in place of "and feature engineering"; the README's Layout line "fit a frontier, read
+  its trade-offs"), and the readout settles the two naming items (one word for gap, hole and white space; whether the
+  package's `tension_report` gains the tension matrix and keeps its name or is renamed, the README and root page
+  following). The root page's summary paragraph and its "bespoke or opaque" sentence are the supervisor's and are not
+  touched.
 - G4. **The decision section's number:** the readout states what one sentence of Section 9 would say with a design's
   tension at the picked design between the operator's and the sponsor's measures, in attribute units, for the
   supervisor to accept or decline at the gate; nothing lands in the paper in this scope.

@@ -202,3 +202,11 @@ words), by a unit the assistant spawns: the notebook's front matter replaced wor
 three tests that pinned the old abstract's phrases rewritten to pin the new text; claims rows for the new sentences;
 vocabulary clean; no other surface changed without the assistant's word. The unit lands after the third paper unit if
 that lands first, rebased and fast-forwarded; the assistant verifies before the stage is rebuilt for the held-out reads.
+
+**Supervisor, verbatim (18:15), on the entry surfaces against the new abstract:** "make sure the small edits are
+captured in a relevant workpackage. broadly its a good sign that we didn't cause edit cascades."
+
+**Applied as:** the four small edits and the two naming items of
+`WP11-final/abstract/entry-surfaces-consistency.md` are entered in WP42's scope (G3, the surfaces brought into line
+with the glossary), as its build's first list; the root page's summary paragraph and "bespoke or opaque" stay on the
+supervisor's review list as his hand.
