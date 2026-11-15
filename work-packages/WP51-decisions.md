@@ -351,3 +351,11 @@ the figure's placement or the reader's experience; the residual checker's metana
 reader-experience openers; the unit redrafts the lead and re-reads its captions under the rule; the driver re-reads
 the root page, the docs home and the history essay for the same fault before the morning.
 
+**Supervisor (2026-11-15 00:03 EST), with the ternary and the slices side by side:** "i need you to make sure these plots have terms
+which are numbered and colored the same"
+
+**Applied as:** one mapping from the fit's term index to number, colour and marker, shared by the ternary and the
+slices by construction (one function both call), and a test that renders both from `fit_why()` and asserts the mapping
+is the same; the ternary's own colour assignment is checked against the palette's order, since the two figures were
+drawn by different code paths tonight.
+
