@@ -30,3 +30,10 @@ their formula, their reading for an executive and the model detail each needs (a
 with unit cost and fleet cost as a three-metric table and drawn as a ternary; the candidates brought to him with the
 figures before any build. The WP59 finding that a derived metric can absorb the metrics it is made of applies and is
 stated once in the spike.
+
+**Supervisor, verbatim (the ternary's three objectives, 2026-11-15):** "it will make the story easier to follow sponsor =
+total cost, manufacture = unit cost, operator = performance. that way we map our 3 objectives to unique stakeholders"
+
+**Recorded for the WP56 spike and build:** the decision-maker's ternary maps each objective to one stakeholder: the
+sponsor to total (fleet) cost, the manufacturer to unit cost, the operator to performance (how well the fleet does
+its job). Section 9's decision and its table use the same mapping, one stakeholder per objective.
