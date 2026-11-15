@@ -933,3 +933,46 @@ def test_the_contrasts_verdicts_rest_on_their_own_measurements(who_cares):
     assert rebound != flipped
     other = cm.get_connection().load_from_content(TEXT + "\n" + rebound, strict=True)
     assert all(v.holds for v in other.verify_satisfaction())
+
+
+# ---------------------------------------------------------------------------------------------
+# WP56 D-1: the operator's coverage probability, a derived attribute of the fleet
+# ---------------------------------------------------------------------------------------------
+def test_coverage_probability_in_the_model_is_the_pipelines(who_cares):
+    """``CoverageProbability`` (``stakeholders.sysml``, section 5) is marked MoE and documented
+    with its formula, units, constants and justification; its constants are the case module's
+    (p0 = 0.2, e0 the pointing-error limit of the model's requirement); and it evaluates to
+    ``case.coverage_probability`` on the three named configurations and on a fleet of twelve."""
+    import case
+
+    stk = STAKEHOLDERS.read_text(encoding="utf-8")
+    body = stk[stk.index("calc def CoverageProbability") :]
+    doc = " ".join(body[body.index("doc /*") : body.index("*/")].split())
+    assert doc.startswith("doc /* MoE: how well the fleet does its job")
+    for words in ("1 - (1 - p(e))^n", "Dimensionless", "Why this measure", "readout.md"):
+        assert words in doc, words
+
+    def one(v):  # an attribute evaluates to a value, a calc to a list of one
+        return v[0] if isinstance(v, list) else v
+
+    assert (
+        one(who_cares.eval(f"{S}::coverageAssumptions.singleSatelliteCoverage")) == case.COVERAGE_P0
+    )
+    deg = who_cares.eval("1.0 [SI::degree]").unit
+    e0 = one(who_cares.eval(f"{S}::coverageAssumptions.errorScale")).in_unit(deg)
+    assert e0 == pytest.approx(case.CUBESAT.requirements["pointing_error_deg"][0], rel=1e-12)
+    fleet = (  # the baseline's parts, twelve satellites
+        "package F {\n private import CubesatTradeSpaceV2::*;\n part f12 : Cubesat {\n"
+        "  :>> fleetSize = 12.0; part :>> wheel : MediumWheel; part :>> tracker : MediumTracker;\n"
+        " }\n}\n"
+    )
+    model = cm.get_connection().load_from_content(TEXT + "\n" + stk + "\n" + fleet, strict=True)
+    named = [
+        (who_cares, f"{P}::{n}") for n in ("cubesatCompact", "cubesatBaseline", "cubesatAgile")
+    ]
+    for m, c in [*named, (model, "F::f12")]:
+        e = one(m.eval(f"{P}::PointingError({c})")).in_unit(deg)
+        n = float(one(m.eval(f"{c}.fleetSize")))
+        got = one(m.eval(f"{S}::CoverageProbability({c})"))
+        assert got == pytest.approx(float(case.coverage_probability(n, e)), rel=1e-12), c
+    assert n == 12.0 and got > 0.3  # the last is the fleet of twelve

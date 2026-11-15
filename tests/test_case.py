@@ -258,6 +258,68 @@ def test_the_tension_matrix_figure_draws_the_terms_that_carry_an_exponent(small,
     plt.close(fig)
 
 
+@pytest.mark.parametrize("triangle", ["upper", "lower"])
+@pytest.mark.parametrize("order", ["exponent", "tension"])
+def test_the_tension_matrix_figure_draws_one_triangle(small, triangle, order):
+    """WP56 (Figure 7 as one triangle): ``triangle`` draws one half, the grey diagonal kept and
+    the rows and columns the same metrics in one order; ``order="tension"`` puts every cell right
+    of the diagonal at -1 or below; an unknown option raises."""
+    import matplotlib.pyplot as plt
+
+    from hyperbolic_trade_space import tension_matrix
+
+    fit = case.k_fits(small, Ks=(2,))[2]
+    T = tension_matrix(fit.estimator, small.M)
+    W = fit.estimator.exponents_
+    fig = case.tension_matrix_figure(small, fit, triangle=triangle, order=order)
+    axes = [a for a in fig.axes if a.get_title()]
+    for k, ax in enumerate(axes):
+        by_w = [j for j in np.argsort(-W[k], kind="stable") if W[k][j] > 1e-3]
+        keep = case.tension_order(T[k], by_w, order)
+        n = len(keep)
+        assert [t.get_text() for t in ax.get_xticklabels()] == [small.names[j] for j in keep]
+        rows = [t.get_text().split("  w=")[0] for t in ax.get_yticklabels()]
+        assert rows == [small.names[j] for j in keep]
+        cells = [(t.get_position(), float(t.get_text())) for t in ax.texts]
+        assert len(cells) == n * (n - 1) // 2
+        above = [(x > y) for (x, y), _ in cells]
+        assert all(above) if triangle == "upper" else not any(above)
+        if order == "tension":
+            values = [v for _, v in cells]
+            assert (
+                all(v <= -1 for v in values)
+                if triangle == "upper"
+                else all(v >= -1 for v in values)
+            )
+    plt.close(fig)
+    with pytest.raises(ValueError, match="triangle must be one of"):
+        case.tension_matrix_figure(small, fit, triangle="diagonal")
+
+
+def test_the_fleet_ternary_names_its_measure_and_its_stakeholders():
+    """WP56 (the decision-maker's ternary): three objectives of the primary regime, the title
+    names the coverage probability and carries no formula, each corner names its stakeholder;
+    at K = 1 the unit-cost exponent is the smallest (the one trade-off is fleet cost against
+    coverage probability)."""
+    import matplotlib.pyplot as plt
+
+    st = case.fleet_ternary_study()
+    assert st.names == ["fleet cost", "unit cost", "coverage probability"]
+    fit = case.fit_study(st, case.FLEET_TERNARY_K)
+    w = fit.estimator.exponents_[0]
+    assert np.argmin(w) == 1 and w[1] < 0.05
+    fig = case.fleet_ternary_figure(st, fit)
+    (ax,) = fig.axes
+    assert ax.get_title(loc="left") == case.FLEET_TERNARY_TITLE
+    corners = [" ".join(t.get_text().split()) for t in ax.texts if "favours" in t.get_text()]
+    assert sorted(corners) == sorted([
+        "favours fleet cost (sponsor)",
+        "favours unit cost (manufacturer)",
+        "favours coverage probability (operator)",
+    ])  # fmt: skip
+    plt.close(fig)
+
+
 def test_tau_sweep_figure_marks_the_fit_temperature_and_orders_the_rows(small, small_fit):
     """The redraw's requirements (WP19-figure-review.md, "Heatmap redraw (fourth PM, after WP23's
     rounds)" and its "redraw 2"): the fit temperature is one outlined, bold-labelled column of the

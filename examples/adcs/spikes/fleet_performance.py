@@ -448,7 +448,9 @@ def main():
         r: result["section9_picks"][r]["design_id"] for r in ("operator", "between")
     }
     result["across"] = cross
-    (HERE / "fleet_performance.json").write_text(json.dumps(result, indent=1, default=float))
+    (HERE / "fleet_performance.json").write_text(
+        json.dumps(result, indent=1, default=float), encoding="utf-8"
+    )
     print("wrote", HERE / "fleet_performance.json")
 
 
