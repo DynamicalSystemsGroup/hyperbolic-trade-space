@@ -576,3 +576,9 @@ knowledge about lineage that exists no where outside my head. should we look at 
 Read as acceptance of the essay draft for landing on dev once its tests pass, with the carving pass ("carve it down to
 ensure everyone word and reference earns its place") as a later unit on his read.
 
+**Supervisor (10:35 EST):** "Olfati-Saber's work needs to be cited by full name to avoid confusion \"Consensus and
+Cooperation in Networked Multi-Agent Systems\""
+
+Applied on dev, the essay having landed at 3700a64: the title in full as the link's text, in place of the driver's gloss
+"consensus and sensor fusion".
+
