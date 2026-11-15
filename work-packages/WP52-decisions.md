@@ -415,3 +415,17 @@ the credsperiment"
 SourceCred work (Exploring Subjectivity in Algorithms) and Rennie's ethnography of the CredSperiment read and placed at
 their dates as the strand from algorithms as policy to computer-aided ethnography, in neutral words.
 
+**Supervisor (05:30 EST):** "one more reference from Eric Alston that may help build up the background
+https://law.mit.edu/pub/governanceasconflict/release/1" and "we also had this in the same journal which may also fit the
+story arc https://law.mit.edu/pub/dao-precedents-cybernetics/release/1", then: "i am going to need you to give me an
+assessment of how these works fit the story. basically this history spans mathematics, engineering, economics, and
+political science"
+
+**What the sources show so far:** law.mit.edu answers 403 to automated readers (Cloudflare). From secondary records:
+Alston, "Governance as Conflict: Constitution of Shared Values Defining Future Margins of Disagreement", MIT
+Computational Law Report: conflict as an input to institutional decision-making, accommodated ex ante (mitigated) and
+ex post (resolved) among heterogeneous governance preferences, applied to DAO design. Zargham and Nabben, "Aligning
+'Decentralized Autonomous Organization' to Precedents in Cybernetics", SSRN 4077358 (4 April 2022) with a version in the
+same journal: Beer's viable system model, DAOs read by viability and purpose, the 1Hive case, the subjectivity of the
+governance designer. The assessment he asked for is given in chat and recorded here once he has answered it.
+
