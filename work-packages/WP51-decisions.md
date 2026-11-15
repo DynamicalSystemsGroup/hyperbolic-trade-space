@@ -213,3 +213,13 @@ chat):** "this is good. looking forward to seeing what it looks like with the la
 **Applied as:** round 3 passes his read; the landmarks (the ternary's three markers mapped to their surface points) are
 the next and last add-on of the night, judged by his read in the morning if he is asleep by then.
 
+## The landmarks tried and dropped by the unit (2026-11-14 23:12 EST)
+
+The ternary's three markers are the terms' exponent vectors read as shares (the point where each term's V peaks at a
+fixed total); mapped to their surface points as ruled and drawn hollow in the slices and on the chart's line (render
+`rework-round3-markers-light.png`). Two fresh readers: the one-sentence reading did not get worse, but both asked what
+the markers are, one took them for landmark designs, and in the slices they sit off the drawn curve (their third metric
+is not the held median) and read as stray points. The unit dropped them; the page carries round 3 without markers
+(`wp51fig` 3bc5510, temperature 50 after the re-planting). The render was sent to him; his call stands over the
+readers'.
+
