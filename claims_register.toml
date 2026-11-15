@@ -7873,7 +7873,7 @@ note = "The definition of the model: V is the root of a posynomial in the metric
 
 [[claim]]
 id = "C682"
-fragment = "HTS fits a surface one dimension below the data and places each design by its position on it and its level above or below it, losing nothing"
+fragment = "HTS fits a surface one dimension below the data and places each design by its position on it and its level above or below that surface"
 file = "paper/paper.ipynb"
 anchor = ""
 kind = "M"

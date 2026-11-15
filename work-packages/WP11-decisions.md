@@ -227,3 +227,12 @@ places each design by its position on it and its level above or below that surfa
 
 **Applied as:** the sentence now ends "its level above or below that surface." ("losing nothing" dropped, "it" made
 "that surface") in `paper/paper.ipynb`; the register row's fragment follows the text.
+
+**Supervisor, verbatim (the same sitting):** "i don't think i can say it is a "scikit-learn estimator" since we're not
+literally adding it scikit-learn, i think we need to say. "HTS is implemented with a scikit learn compatible API, so it
+integrates naturally with existing pipelines and tools.""
+
+**Applied as:** the abstract's sentence reads "HTS is implemented with a scikit-learn-compatible API, so it
+integrates with existing pipelines and tools." ("naturally" dropped as a word doing no work; hyphenation per the
+glossary). The two other surfaces that say "scikit-learn estimator" (the docs home's quickstart line and the
+package docstring) are put to him as one question before any sweep.
