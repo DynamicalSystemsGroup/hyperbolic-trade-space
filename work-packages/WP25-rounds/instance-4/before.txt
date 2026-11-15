@@ -1,0 +1,214 @@
+dev 57570571e7ad9808b750c49d6a644d3d4b0e9d8e
+refs/heads/abstractfix 5ee0d6947a3aa574941c73c3edf5dc5bb123ef82 refs/remotes/origin/dev
+refs/heads/claimsland 7bba8ed093953a92ff628fd81ff2db115c565ad3 refs/remotes/origin/dev
+refs/heads/dev 57570571e7ad9808b750c49d6a644d3d4b0e9d8e refs/remotes/origin/dev
+refs/heads/docshome 67e9741203506653bdd7b1088eef01ceb09a17c2 
+refs/heads/docsvocab 7be42ee9275a3854ff12c426bc5a7db2d38fbb80 refs/remotes/origin/dev
+refs/heads/entrysurf e5d2c3579ad868d697f25380b925d582aed2fff5 refs/remotes/origin/dev
+refs/heads/figdet 71df406269eae4c502374ccf226d8adee300ee66 refs/remotes/origin/dev
+refs/heads/fix4 a114e1ca4bda396778cd230c2bef7469f7b03227 
+refs/heads/history d71dd4a4d25faa72089cd6539152fa51a6e8218f 
+refs/heads/house 811d260dd3992c4e3e6b8e6b926b31f24cd8513a refs/remotes/origin/dev
+refs/heads/lintfix a2d25f961216307c0138de032cccf1c915549ef7 refs/remotes/origin/dev
+refs/heads/main e7fd116567f2c8f8dd27cb187395739961cac35e refs/remotes/origin/main
+refs/heads/p1b 68f3a37267cfb19f4b2c94fd6ba731f1c5db1eca refs/remotes/origin/dev
+refs/heads/p1c 792daa851cff85e45021af24d8bbf0782cf6f301 refs/remotes/origin/dev
+refs/heads/p1d 36718d3bd1bdaecbc7145c4bde71a09761114952 refs/remotes/origin/dev
+refs/heads/p1e 3d7d149ed45cb2cb0508b5715414347bd5a97871 refs/remotes/origin/dev
+refs/heads/p2 9a3156e7d5c371d624141f8a22497cae8d2f099b refs/remotes/origin/dev
+refs/heads/p6b 0fb09ab2ea2e106e3ecf9436d941d46d766a6ad0 refs/remotes/origin/dev
+refs/heads/p6c 183397d0d0bb218ccc4892f4c4ed91c92c5d0a18 refs/remotes/origin/dev
+refs/heads/p6d 8752903d126172d6ad6da1530db17fcf7fed9276 refs/remotes/origin/dev
+refs/heads/p8 fb8fbe17619352db532a370c837e1c979c3cdeed refs/remotes/origin/dev
+refs/heads/p8b abd6c1133ac0c22fb52a92fa5257769d9423f350 refs/remotes/origin/dev
+refs/heads/paper e2385601c9496929855b66b23ca3f95b9de8a091 refs/remotes/origin/dev
+refs/heads/paper5 e47ab1f588276d377d9f59513cea6b1fc95a4b32 
+refs/heads/paperq1 d801a439c2e98f2ce281cb5672b977d0ba55c97f refs/remotes/origin/dev
+refs/heads/pm13-grid f2a8812125b4762c272229960117c02b9c8ff773 refs/remotes/origin/dev
+refs/heads/pm13main 809b8b8900a58ed6da461d42574eedaae7ca3026 refs/remotes/origin/dev
+refs/heads/pm3board 01e2d648ab6cf61fe7ddc89e35a8ac1cbdbe3547 refs/remotes/origin/dev
+refs/heads/preview/site 5f07dad5c2289fbbbe697fe8510f1933eae9c76c 
+refs/heads/regen 25dba3cefeb53f0028ece3055fadace4d1cad9d0 refs/remotes/origin/dev
+refs/heads/regrows 60f92d9501508659ad0537f7fb76a29d41ea23ea refs/remotes/origin/dev
+refs/heads/rootpage 87c2327acd7ef598b31ff91358b4fbbd49b6850c 
+refs/heads/spikeA 9002bbe81f355822686220eb8d90f7ce251035ac refs/remotes/origin/dev
+refs/heads/spikeB2 abd1df2481f4e060a5d3afe85a003761d0ed766b refs/remotes/origin/dev
+refs/heads/support 4b5a539b2852ebb68b9b5720577d8a2eb5d22be2 refs/remotes/origin/dev
+refs/heads/viz 7afffce12e538d82a494f129c5d090467930ea9a refs/remotes/origin/dev
+refs/heads/vocab 8c9d0a2cff5300352848c17cc3bd94fb443848a8 refs/remotes/origin/dev
+refs/heads/wp15fix 17e6019cd2c35dfa39a9fd7d35165c2175d6b5d4 refs/remotes/origin/dev
+refs/heads/wp16 6a07783f8a2854e3a48adc3b00948f4487c008e9 refs/remotes/origin/dev
+refs/heads/wp16amend f7d180d51dfba251811852badb589957c21c3d39 refs/remotes/origin/dev
+refs/heads/wp17fix b6ed7b814ea2c809e0dda12fb076bb38028fd61f refs/remotes/origin/dev
+refs/heads/wp17fix2 424314518f48df0e6ead9516ca5ac175e7be5bb2 refs/remotes/origin/dev
+refs/heads/wp17s3 6a8abd558912c7407b317ed10b6a6c46b38bd554 refs/remotes/origin/dev
+refs/heads/wp19 3cd27226abd00c2917f1c83cd62d4cdfbc5581e5 refs/remotes/origin/dev
+refs/heads/wp20b 57752209e9fd5efa3bc3441616f2ebfc1d9cf61b refs/remotes/origin/dev
+refs/heads/wp21c 3a552c69866e9b4dc064cac52a36324ab27a02fd refs/remotes/origin/dev
+refs/heads/wp22 9fc3952497f13750df5af6f7926ab5b6568a7077 refs/remotes/origin/dev
+refs/heads/wp22d d3018ba11d5f36060f56c7dd1de4b0fc8c75ecfc refs/remotes/origin/dev
+refs/heads/wp22gate 264f1b89f61f5966d756fda0768b58b39550dbd3 refs/remotes/origin/dev
+refs/heads/wp23scope 7ffb7199f271c272e910bfd9cd696825dfd1f1f5 refs/remotes/origin/dev
+refs/heads/wp254 3543f09096146085d5933a372189d4db00820a6a refs/remotes/origin/dev
+refs/heads/wp254review-work 399c3ef070729c36ac95b13fded10bb4e690d9e4 refs/remotes/origin/dev
+refs/heads/wp27model 05f8a2a4d51a323169f74f41a38dd5b64526766c refs/remotes/origin/dev
+refs/heads/wp28close b1a806ccb4a247b63c2eb11e7eac1cfd6148bb98 refs/remotes/origin/dev
+refs/heads/wp28close2 823dc2caf011d09d032f4412bdf70bfdd65e0757 refs/remotes/origin/dev
+refs/heads/wp28close3 f74bbe8016a855f70fa77a5381653b316d76738f refs/remotes/origin/dev
+refs/heads/wp28docs e15577274c5e889868826602324ff5da194fa858 refs/remotes/origin/dev
+refs/heads/wp28review 30b0e78f9255ed5ebfe8d5b247cbf8c5c38ed1ae refs/remotes/origin/dev
+refs/heads/wp29scope 35668e5434547fe1f7213292af9811647cfb4e99 refs/remotes/origin/dev
+refs/heads/wp30b 684b5b759d4ed36f5eb498902450fdf21f905551 refs/remotes/origin/wp30a
+refs/heads/wp30b-notebooks b1362b02cc215e2810ee971003bca8a4c3a19c30 
+refs/heads/wp30scope 747a45ecbe4b3840c62214a351e1317459611ee8 refs/remotes/origin/dev
+refs/heads/wp31docs 39582fe05aae7cd7ca7b022a3dda77914eedb44f refs/remotes/origin/dev
+refs/heads/wp31spike 18c258c799237796f78d3a494619f5cb8f5c8260 refs/remotes/origin/dev
+refs/heads/wp32close c33b108b220e2c213aa103f0a5079d105d5d20e1 refs/remotes/origin/dev
+refs/heads/wp32r2 2942ff59bcd8f0d9dbc2585c5b3f42c46dd0ae5c refs/remotes/origin/dev
+refs/heads/wp32rec 0efe6bdc45dbda6c741d61bcc6918ecbadd65356 refs/remotes/origin/dev
+refs/heads/wp32rev d09af781fbbf86819a377350fbb3179071a0f3f4 refs/remotes/origin/dev
+refs/heads/wp33api 7ef86dc49e0d2ba46fa5a2185a6c74214547a955 refs/remotes/origin/dev
+refs/heads/wp33d1 cde6e5d557834083e4f69b39f8abbfd88b73fd4d refs/remotes/origin/dev
+refs/heads/wp33docs fa612f49790c756edd9edb42d8942cc716f6f402 refs/remotes/origin/dev
+refs/heads/wp33docs2 2114aad9b10884d377413dc123bdc1d3cc48262c refs/remotes/origin/dev
+refs/heads/wp33paper d8d650edee1b4a8ad75b7a9c53eb1c55d69b31d5 refs/remotes/origin/dev
+refs/heads/wp33paper2 0ecba1d9c228ebc4beb1f3ef1ef23fa25a11d710 refs/remotes/origin/dev
+refs/heads/wp33readme a80a4035f8262132810f4c7e75df4fcdf3c1236e refs/remotes/origin/dev
+refs/heads/wp33rev 44db49455895279db1ef9b4dbb1b37803e5ca385 refs/remotes/origin/dev
+refs/heads/wp33root ebacd28c810a89f5b49a2a508d1af717ad02f72e refs/remotes/origin/dev
+refs/heads/wp33root2 35619df53e570a041b9fac8a380529c1de676800 refs/remotes/origin/dev
+refs/heads/wp35amd dae99a6632cabf999c82e40feda42441fcfbf032 refs/remotes/origin/dev
+refs/heads/wp35build b1b43cfd17ced3524d64d2bf34555d24acc6fd1d refs/remotes/origin/dev
+refs/heads/wp35h ef4d118c121f2133b7aa9919d2d558dfb5f9b6e0 refs/remotes/origin/dev
+refs/heads/wp35hnb 3d5a53ec29cd0ee232a16bd29debd74e3688b790 refs/remotes/origin/dev
+refs/heads/wp35rev 48a0eadfdea231dc0e81c118e8852735688fcfbc refs/remotes/origin/dev
+refs/heads/wp35scope 1d27f8c5684c048702a4d25b6becef6bd8138fc5 refs/remotes/origin/dev
+refs/heads/wp35spike ace2840600c88d3da504ce0f0b6c99e5296d86ab refs/remotes/origin/dev
+refs/heads/wp36int 9b284fa83cf1b1491562a651a7a3ef7b5f30e520 refs/remotes/origin/dev
+refs/heads/wp36syn 7b648a88854e8d084ee3cf522a8893c3ef1828d6 refs/remotes/origin/dev
+refs/heads/wp36w1 3d73cea995c1c748be9018268689447f585dd8ac refs/remotes/origin/dev
+refs/heads/wp36w2 e11fe6079ffe0f167e021c3dda6624d94b16593c refs/remotes/origin/dev
+refs/heads/wp36w3 07217d4373ec4cdc015b58fbaec970a1e7179eed refs/remotes/origin/dev
+refs/heads/wp37d9 df0cad9a133119183ca06549de53c74d9de31004 refs/remotes/origin/dev
+refs/heads/wp37draft b0386e3776085799a2680730f751f69b64807fc8 refs/remotes/origin/dev
+refs/heads/wp37fix b6fb97e6677832702656f9940f3c620564c6536b 
+refs/heads/wp37fix2 10fb343988d03e140d16e930edaa6551fbd8633f refs/remotes/origin/dev
+refs/heads/wp37r2a 48464508cb4d8feacf89d4186e93099227023151 refs/remotes/origin/dev
+refs/heads/wp37r2b a3200c46c07a321f6e4caecd5bad2aa2c92dcaee refs/remotes/origin/dev
+refs/heads/wp37r3 a5d56073f1b43a0c9957de4caccaace8525197a1 refs/remotes/origin/dev
+refs/heads/wp37rev 940e238a8131417ea226760d63d51bb34c4b525d refs/remotes/origin/dev
+refs/heads/wp37scope 2a1d4fa2d12f97df274db5f36f8854038ad56610 refs/remotes/origin/dev
+refs/heads/wp37w1 d5ab21db2189655a77994af7964d3172e49f9ee8 refs/remotes/origin/dev
+refs/heads/wp37w2 822d80b05d7078bd4199b6a4a601d81ea6f866d6 refs/remotes/origin/dev
+refs/heads/wp37w3 5073055b236e03a73e591826c14358f7b4f1e0d5 refs/remotes/origin/dev
+refs/heads/wp38 94f33ae501b4cd8db5ab2a13bec05cc212002887 refs/remotes/origin/dev
+refs/heads/wp39scope fe2335ec39f2ad83df176b00a20fbb7c6999b825 refs/remotes/origin/dev
+refs/heads/wp39spike fb6adcccad972f69efcb11ac3b85423898d91e0c refs/remotes/origin/dev
+refs/heads/wp40scope dfc7c95a1b97a7efe5bb858a2d9f0ee2d69b673f refs/remotes/origin/dev
+refs/heads/wp41 61a4d743d91599f9df0d6f046362177f4e51eaee 
+refs/heads/wp42 19c6b5aaa654b6b9fb2a2c57619946e1a434dee4 
+refs/heads/wp42build f6514a81af468c83442ec756b07905d8370e071c 
+refs/heads/wp43 c56892a068fc2d1bfd2e6357855b78e2d568f2c9 
+refs/heads/wp45 fb80fe75a80fc82139416c4ace58ad4f00700185 
+refs/heads/wp46 7b61429a51eccdba87f408938217335912bcfcb2 
+refs/heads/wp47 afee328adfe15f0116f56d19c1507e4852ca5a03 
+refs/heads/wp48 879d1add76242f05cd86b71eb26aaf10f0d82282 
+refs/heads/wp50 5027d921438f673203c18f32d9bcca204801c03b 
+refs/heads/wp8b a6b4a29ba51325528a0faa121c399af3d1d5bb82 refs/remotes/origin/dev
+refs/heads/wp8b-drafts 468b27a3ba5f29daadc829597d27b18c2f9988e4 
+refs/heads/wp8b-version c23cf60dd4da679001850575fd5b4fab32ec19e9 
+refs/heads/wp8b2 4958ea6c1d8830ee5634c18f87281e202eb2e1ad refs/remotes/origin/dev
+refs/remotes/origin/HEAD e7fd116567f2c8f8dd27cb187395739961cac35e 
+refs/remotes/origin/dev 57570571e7ad9808b750c49d6a644d3d4b0e9d8e 
+refs/remotes/origin/main e7fd116567f2c8f8dd27cb187395739961cac35e 
+refs/remotes/origin/wp29 d96db86d3c516a74835e855b04fd2cbcdfc28dba 
+refs/remotes/origin/wp30a 79ca1d86835c33ea96fab52c7e417ed415cc7363 
+refs/remotes/origin/wp30b 4040f088064fa9013240808fde6bc8ed1c78e4c7 
+worktree /Users/z/Documents/GitHub/posynomial-invariant-form
+HEAD 57570571e7ad9808b750c49d6a644d3d4b0e9d8e
+branch refs/heads/dev
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/docshome
+HEAD 67e9741203506653bdd7b1088eef01ceb09a17c2
+branch refs/heads/docshome
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/history
+HEAD d71dd4a4d25faa72089cd6539152fa51a6e8218f
+branch refs/heads/history
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/fix4
+HEAD a114e1ca4bda396778cd230c2bef7469f7b03227
+branch refs/heads/fix4
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/paper5
+HEAD e47ab1f588276d377d9f59513cea6b1fc95a4b32
+branch refs/heads/paper5
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/pm13main
+HEAD 809b8b8900a58ed6da461d42574eedaae7ca3026
+branch refs/heads/pm13main
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/wp27model
+HEAD 05f8a2a4d51a323169f74f41a38dd5b64526766c
+branch refs/heads/wp27model
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/wp41
+HEAD 61a4d743d91599f9df0d6f046362177f4e51eaee
+branch refs/heads/wp41
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/wp42
+HEAD 19c6b5aaa654b6b9fb2a2c57619946e1a434dee4
+branch refs/heads/wp42
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/wp42build
+HEAD f6514a81af468c83442ec756b07905d8370e071c
+branch refs/heads/wp42build
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/wp43
+HEAD c56892a068fc2d1bfd2e6357855b78e2d568f2c9
+branch refs/heads/wp43
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/wp45
+HEAD fb80fe75a80fc82139416c4ace58ad4f00700185
+branch refs/heads/wp45
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/wp46
+HEAD 7b61429a51eccdba87f408938217335912bcfcb2
+branch refs/heads/wp46
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/wp47
+HEAD afee328adfe15f0116f56d19c1507e4852ca5a03
+branch refs/heads/wp47
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/wp48
+HEAD 879d1add76242f05cd86b71eb26aaf10f0d82282
+branch refs/heads/wp48
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/wp50
+HEAD 5027d921438f673203c18f32d9bcca204801c03b
+branch refs/heads/wp50
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/wp8b-drafts
+HEAD 468b27a3ba5f29daadc829597d27b18c2f9988e4
+branch refs/heads/wp8b-drafts
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/pm-worktrees/wp8b-version
+HEAD c23cf60dd4da679001850575fd5b4fab32ec19e9
+branch refs/heads/wp8b-version
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/rootpage
+HEAD 87c2327acd7ef598b31ff91358b4fbbd49b6850c
+branch refs/heads/rootpage
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/stage
+HEAD 5ac44f7e03e7a8b873ff572bb8d55fa00b0ec0d8
+detached
+
+worktree /private/tmp/claude-501/-Users-z--claude-spares-spare-4Zb8mW/71474a52-35d3-48fa-82b0-c1328e96b5d6/scratchpad/verify
+HEAD 5ac44f7e03e7a8b873ff572bb8d55fa00b0ec0d8
+detached
+
+worktree /Users/z/Documents/GitHub/hts-reader-EF
+HEAD caff4442c4e016db59d0c3817160a5a54ae99013
+detached
+

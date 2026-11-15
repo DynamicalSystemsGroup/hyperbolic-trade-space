@@ -194,3 +194,10 @@ remote branches wp29, wp30a and wp30b are his to retire (added to his keyboard l
 instance. Non-goals: no force deletes, no loop over candidates without the per-branch check, no removal of a tree a
 unit still owns.
 
+**Supervisor (11:50 EST):** "you can retire remote branches. the only 2 remote branches you cannot touch without my approval
+are main and dev. main is the release branch and dev is what we're integrating into together through this long running
+work session"
+
+Applied: the remote branches wp29, wp30a and wp30b retired by the driver after the supersession check and with their tips
+in the manifest and the bundle; origin/main and origin/dev untouched, by his rule, for the whole run.
+
