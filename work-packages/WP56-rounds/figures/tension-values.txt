@@ -1,0 +1,44 @@
+term 1, order exponent: peak slew power, pointing error, unit cost, available power, fleet cost, momentum headroom, settling time, depth of discharge
+  upper half |T|: min 0.683, max 17.283, 4 of 28 below one
+  lower half |T|: min 0.058, max 1.464, 4 of 28 above one
+       peak slew power w=0.426       -   0.925   2.436   1.787   2.911   1.988   4.026  15.986
+        pointing error w=0.206   1.081       -   2.633   1.932   3.147   2.149   4.353  17.283
+             unit cost w=0.122   0.411   0.380       -   0.734   1.195   0.816   1.653   6.563
+       available power w=0.083   0.560   0.518   1.363       -   1.629   1.113   2.254   8.948
+            fleet cost w=0.070   0.344   0.318   0.837   0.614       -   0.683   1.383   5.491
+     momentum headroom w=0.054   0.503   0.465   1.225   0.899   1.464       -   2.025   8.042
+         settling time w=0.027   0.248   0.230   0.605   0.444   0.723   0.494       -   3.970
+    depth of discharge w=0.012   0.063   0.058   0.152   0.112   0.182   0.124   0.252       -
+term 1, order tension: pointing error, peak slew power, available power, momentum headroom, unit cost, fleet cost, settling time, depth of discharge
+  upper half |T|: min 1.081, max 17.283, 0 of 28 below one
+  lower half |T|: min 0.058, max 0.925, 0 of 28 above one
+        pointing error w=0.206       -   1.081   1.932   2.149   2.633   3.147   4.353  17.283
+       peak slew power w=0.426   0.925       -   1.787   1.988   2.436   2.911   4.026  15.986
+       available power w=0.083   0.518   0.560       -   1.113   1.363   1.629   2.254   8.948
+     momentum headroom w=0.054   0.465   0.503   0.899       -   1.225   1.464   2.025   8.042
+             unit cost w=0.122   0.380   0.411   0.734   0.816       -   1.195   1.653   6.563
+            fleet cost w=0.070   0.318   0.344   0.614   0.683   0.837       -   1.383   5.491
+         settling time w=0.027   0.230   0.248   0.444   0.494   0.605   0.723       -   3.970
+    depth of discharge w=0.012   0.058   0.063   0.112   0.124   0.152   0.182   0.252       -
+term 2, order exponent: unit cost, available power, fleet cost, momentum headroom, pointing error, settling time, depth of discharge, total mass
+  upper half |T|: min 0.529, max 30.131, 1 of 28 below one
+  lower half |T|: min 0.033, max 1.891, 1 of 28 above one
+             unit cost w=0.250       -   2.841   2.878   7.032   3.719   7.984  19.405  30.131
+       available power w=0.216   0.352       -   1.013   2.475   1.309   2.810   6.830  10.606
+            fleet cost w=0.142   0.347   0.987       -   2.443   1.292   2.774   6.741  10.468
+     momentum headroom w=0.132   0.142   0.404   0.409       -   0.529   1.135   2.760   4.285
+        pointing error w=0.119   0.269   0.764   0.774   1.891       -   2.147   5.218   8.102
+         settling time w=0.113   0.125   0.356   0.361   0.881   0.466       -   2.430   3.774
+    depth of discharge w=0.022   0.052   0.146   0.148   0.362   0.192   0.411       -   1.553
+            total mass w=0.006   0.033   0.094   0.096   0.233   0.123   0.265   0.644       -
+term 2, order tension: unit cost, available power, fleet cost, pointing error, momentum headroom, settling time, depth of discharge, total mass
+  upper half |T|: min 1.013, max 30.131, 0 of 28 below one
+  lower half |T|: min 0.033, max 0.987, 0 of 28 above one
+             unit cost w=0.250       -   2.841   2.878   3.719   7.032   7.984  19.405  30.131
+       available power w=0.216   0.352       -   1.013   1.309   2.475   2.810   6.830  10.606
+            fleet cost w=0.142   0.347   0.987       -   1.292   2.443   2.774   6.741  10.468
+        pointing error w=0.119   0.269   0.764   0.774       -   1.891   2.147   5.218   8.102
+     momentum headroom w=0.132   0.142   0.404   0.409   0.529       -   1.135   2.760   4.285
+         settling time w=0.113   0.125   0.356   0.361   0.466   0.881       -   2.430   3.774
+    depth of discharge w=0.022   0.052   0.146   0.148   0.192   0.362   0.411       -   1.553
+            total mass w=0.006   0.033   0.094   0.096   0.123   0.233   0.265   0.644       -
