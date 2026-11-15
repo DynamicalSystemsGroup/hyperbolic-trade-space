@@ -359,3 +359,11 @@ slices by construction (one function both call), and a test that renders both fr
 is the same; the ternary's own colour assignment is checked against the palette's order, since the two figures were
 drawn by different code paths tonight.
 
+**Supervisor (2026-11-15 00:09 EST):** "i don't know. in the versions i am looking at yellow is 1 in both but blue term is 2 in the
+ternary and 3 in the 3x3, green term is 3 in the ternary but 2 in the 3x3" then "my bad maybe i am misreading green is 3
+in both"
+
+**Checked from the fit:** term 1 (0.53, 0.21, 0.26) amber, "all three trade"; term 2 (0.19, 0.05, 0.76) blue, "metric 3
+trades against metric 1"; term 3 (0, 0.17, 0.83) green, "metric 3 trades against metric 2"; one colour function serves
+both figures, so the mapping is the same in both; the test making it a guarantee is still being added.
+
