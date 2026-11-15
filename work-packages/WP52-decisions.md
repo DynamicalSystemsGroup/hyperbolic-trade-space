@@ -400,3 +400,8 @@ sourced from metagov.org/people (Board; Research Director) and placed beside the
 
 **Applied as:** "in June 2026 and to the Open Source Architects community in October 2026".
 
+**Supervisor (05:10 EST):** "" long-running endeavour with many contributors." doesn't need a link i think"
+
+**Applied as:** the opening sentence's link to the dated-references anchor is removed; the list keeps its own heading and
+anchor; the test that pinned the link is turned round.
+
