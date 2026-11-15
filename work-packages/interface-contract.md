@@ -1,6 +1,6 @@
 # Interface contract: technical side and presentation side
 
-Contract version 24. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
+Contract version 25. Manifest: `work-packages/interface-contract.toml` (single source of every pinned
 fact below). Asserted by `tests/test_interface_contract.py` in the default `uv run pytest`.
 
 ## 1. Purpose
@@ -27,7 +27,7 @@ the block and fails if any line differs from the manifest. A fact changes in bot
 (section 14).
 
 ```toml
-contract_version = 24
+contract_version = 25
 package.import_name = "hyperbolic_trade_space"
 package.distribution_name = "hyperbolic-trade-space"
 package.version = "0.0.1"
