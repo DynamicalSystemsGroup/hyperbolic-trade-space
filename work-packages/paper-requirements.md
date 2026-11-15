@@ -29,7 +29,8 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   2026-11-15 afternoon: humans see the page, they do not read it as a sequence of tokens): the figure itself; the
   figure with its caption; figure, caption and the prose around it; how it flows in the section; how it flows in
   the paper. Not every depth on every pass, but each figure passes the first three before its section is
-  soft-confirmed and the last two at WP58.
+  soft-confirmed and the last two at WP58. The same for text sections: a soft-confirm is done on screenshots of the
+  rendered section, not on the notebook's source (his recommendation, 2026-11-15 afternoon).
 - Notation and presentation in the conventions of the Boyd and Vandenberghe lineage: the problem statement as
   "minimize ... subject to ..., with variable ...", theorems as "Suppose ... Then ...", proofs in the appendix
   (`WP55-rounds/spike-notation.md`).
