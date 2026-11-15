@@ -1472,8 +1472,11 @@ def test_figures_are_few_captioned_and_in_both_colour_schemes():
             )
             assert sorted(k for _, k in pair) == ["dark", "light"], name
             assert pair[0][0] == pair[1][0] and len(pair[0][0].split()) >= 8, f"alt text: {name}"
+            # the docs home repeats Getting started's Figure 1 as its preview and carries no number
+            # of its own (the supervisor read and landed it so, 2026-11-14)
+            number = "" if page.name == "index.md" else r"Figure \d+\. "
             assert re.search(
-                rf"{name}-dark\.png[^\n]*\n<figcaption>Figure \d+\. [^<]{{30,}}</figcaption>", text
+                rf"{name}-dark\.png[^\n]*\n<figcaption>{number}[^<]{{30,}}</figcaption>", text
             )
         assert [i for i, _ in bf.page_figures(page)] == sorted(i for i, _ in bf.page_figures(page))
     # the docs home repeats Getting started's Figure 1 as its preview (the supervisor, 2026-11-14:
@@ -1491,7 +1494,7 @@ def test_figure_numbers_run_one_to_n_in_navigation_order(mkdocs_config):
     numbers = []
     for name in flatten_nav(mkdocs_config["nav"]):
         path = DOCS / name
-        if path.exists() and path in source_pages():
+        if path.exists() and path in source_pages() and name != "index.md":
             text = path.read_text(encoding="utf-8")
             numbers += [int(n) for n in re.findall(r"<figcaption>Figure (\d+)\.", text)]
     assert numbers == list(range(1, len(numbers) + 1)), numbers
