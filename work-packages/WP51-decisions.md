@@ -265,3 +265,13 @@ after the slices figure and before the new footer, in the page's register, as on
 figure unit with the page and shown to him in the morning read of the page as a whole. The earlier ruling that the
 summary paragraph and the two doors were "unchanged" is superseded for the doors' wording, not their presence.
 
+**Supervisor (2026-11-14 23:32 EST), on candidate A (the landmarks on the chart column; image in chat):** "\"own\" in the \"term <k>'s
+own point\" is confusing. what is the its point? it was derived from something what actually charactizes it, is it a
+maximal point or something else"
+
+**The driver's reading, to be confirmed against the code:** the ternary's marker for term k is the point of the share
+simplex whose shares equal the term's exponents, which by the inequality of the means is where that term's monomial is
+largest among points with a fixed total; mapped to the surface it is the term's peak on the surface. The legend and
+caption name it by what characterises it ("term k's peak: where the term's share of each metric equals its exponent")
+and "own point" goes. The glossary's "balanced point" is a different object (the dual-weighted mean) and is not used.
+
