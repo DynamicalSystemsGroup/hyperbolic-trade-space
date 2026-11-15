@@ -78,6 +78,7 @@ nav:
       - Limitations: user-guide/limitations.md
   - API: api-reference.md
   - Examples: examples.md
+  - From the chart back to a design: bridge.md
   - Theory in brief: theory.md
   - Glossary: generated/glossary.md
   - Further reading: further-reading.md

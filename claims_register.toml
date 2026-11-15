@@ -9122,3 +9122,210 @@ disposition = "keep"
 source = "final round, fifth paper unit, change requests 173, 174, 175, 176, 177, 182"
 note = "Request 182: the five picks' K = 2 levels (+0.016 to -0.022) lie inside the K = 1 band 0.0240; the baseline's is -0.330."
 
+[[claim]]
+id = "C807"
+fragment = "The conditioning is invertible ... so a chart point maps back to attributes and to metrics."
+file = "docs/bridge.md"
+anchor = "Where invertibility is lost"
+kind = "M"
+backing = ["lemma:L8", "lemma:L9"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-2"
+note = "The chart is a bijection (L8) and the conditioning is invertible (L9); the evaluation from configuration to attributes is not part of either."
+
+
+[[claim]]
+id = "C808"
+fragment = "many configurations can give one outcome, so a point's preimage is not one configuration"
+file = "docs/bridge.md"
+anchor = "Where invertibility is lost"
+kind = "P"
+backing = ["reading", "file:work-packages/WP41-rounds/spike/readout.md"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-2"
+note = "The three ways the evaluation fails to invert are the supervisor's framing (WP41-decisions.md, 12:05) and the spike note's section 1; the case's evaluation is a deterministic simulator, so the third way (noise) is injected there (noise_injection.py), not observed."
+
+
+[[claim]]
+id = "C809"
+fragment = "A point with a datum is a row of your table, so its configuration is the row's."
+file = "docs/bridge.md"
+anchor = "Two routes back"
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor", "test:tests/test_predictive.py::test_recovers_planted_coordinates"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-2"
+note = "The regressor is fitted on rows of configuration and metrics: a row's metrics give its chart point by transform and its configuration is the row's."
+
+
+[[claim]]
+id = "C810"
+fragment = "`TradeSpaceRegressor` is the prediction half. It maps a configuration to the chart point, and the regression ... error carries into the position and the level, not into raw metrics."
+file = "docs/bridge.md"
+anchor = "Propose and predict"
+kind = "S"
+backing = ["func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor", "test:tests/test_predictive.py::test_recovers_planted_coordinates"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-2"
+note = "Module docstring: the regression error is in coordinates; predict_coordinates returns (Z, log V)."
+
+
+[[claim]]
+id = "C811"
+fragment = "the case's code uses one, nearest in a seeded pool: of many random configurations, take the one predicted nearest the target."
+file = "docs/bridge.md"
+anchor = "Propose and predict"
+kind = "S"
+backing = ["func:examples/adcs/experiments/check_designs.py::Proposer", "test:tests/test_check_designs.py::test_predictions_recorded_for_the_proposals_only"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-2"
+note = "Proposer.draw: seeded pool of 100,000 configurations, the one with the nearest predicted [Z | 2 log V] to the hole."
+
+
+[[claim]]
+id = "C812"
+fragment = "The tolerance is the band $1/\\tau$ of the fit by default"
+file = "docs/bridge.md"
+anchor = "Check, and the three outcomes"
+kind = "S"
+backing = ["func:examples/adcs/case.py::predict_check", "test:tests/test_case.py::test_predict_check_within_the_band"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-2"
+note = "case.predict_check compares ||dZ|| and |dlog V| with the band 1/tau."
+
+
+[[claim]]
+id = "C813"
+fragment = "Each landed within the band of its predicted point, and each failed the depth-of-discharge condition"
+file = "docs/bridge.md"
+anchor = "Check, and the three outcomes"
+kind = "R"
+backing = ["gen:examples/adcs/case.py::predict_check", "test:tests/test_case.py::test_predict_check_within_the_band", "test:tests/test_bridge_page.py::test_the_case_proposals_fail_depth_of_discharge_and_the_candidates_pass"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-2"
+note = "The paper's D.10 table (log V and Z within band for all three) and the committed check designs (dod_ok false for the three proposals)."
+
+
+[[claim]]
+id = "C814"
+fragment = "Two of the three are the same configuration, since two white-space points had one pooled configuration nearest."
+file = "docs/bridge.md"
+anchor = "Check, and the three outcomes"
+kind = "R"
+backing = ["gen:examples/adcs/experiments/check_designs.py::Proposer", "test:tests/test_bridge_page.py::test_two_of_the_three_case_proposals_are_one_configuration"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-2"
+note = "The committed v2 predictions: proposals 1 and 3 have identical configurations; the spike's run recomputes this (work-packages/WP41-rounds/spike/run-record.txt)."
+
+
+[[claim]]
+id = "C815"
+fragment = "need not move outward at every step."
+file = "docs/bridge.md"
+anchor = "The outer loop, and what is open"
+kind = "P"
+backing = ["reading", "file:work-packages/WP36-decisions.md"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-2"
+note = "The supervisor's ruling of 2026-11-14, 12:20, quoted verbatim in WP36-decisions.md; stated as future work with no conditions derived."
+
+
+[[claim]]
+id = "C816"
+fragment = "Shipped as case code, not as package functions: the pooled proposal and the check of the cubesat case"
+file = "docs/bridge.md"
+anchor = "What this release ships"
+kind = "S"
+backing = ["func:examples/adcs/experiments/check_designs.py::Proposer", "func:examples/adcs/case.py::predict_check"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-2"
+note = "The two case functions; the package has no propose or check function (git grep finds none under src/)."
+
+
+[[claim]]
+id = "C817"
+fragment = "A configuration chosen for a chart point that has no datum, with the chart point predicted for it and a tolerance. A conjecture until it is checked."
+file = "glossary.yaml"
+anchor = ""
+kind = "S"
+backing = ["glossary:proposal", "file:work-packages/WP41-rounds/spike/readout.md"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-4"
+note = "The entry states the term of the WP41 note (section 1 of the spike readout); a definition, registered with the note it comes from."
+
+
+[[claim]]
+id = "C818"
+fragment = "How one configuration is picked for a chart point when many are predicted near it, because the way back from the chart to the design space is not unique."
+file = "glossary.yaml"
+anchor = ""
+kind = "S"
+backing = ["glossary:selection-rule", "file:work-packages/WP41-rounds/spike/readout.md"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-4"
+note = "The entry states the term of the WP41 note (section 1 of the spike readout); a definition, registered with the note it comes from."
+
+
+[[claim]]
+id = "C819"
+fragment = "Evaluating a proposal once and comparing the measured chart point with the predicted one. Three outcomes: confirmed, refuted (a row the table lacked, so the fit is rerun) or infeasible."
+file = "glossary.yaml"
+anchor = ""
+kind = "S"
+backing = ["glossary:check", "file:work-packages/WP41-rounds/spike/readout.md"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-4"
+note = "The entry states the term of the WP41 note (section 1 of the spike readout); a definition, registered with the note it comes from."
+
+
+[[claim]]
+id = "C820"
+fragment = "A configuration chosen for a chart point is a **proposal**: the configuration, its predicted point and a tolerance."
+file = "paper/paper.ipynb"
+anchor = "Search of the design space (preliminary)"
+kind = "S"
+backing = ["glossary:proposal", "func:src/hyperbolic_trade_space/predictive.py::TradeSpaceRegressor"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-3"
+note = "The glossary's definition; the regressor supplies the predicted point."
+
+
+[[claim]]
+id = "C821"
+fragment = "A **selection rule** picks one of the many configurations predicted near a point."
+file = "paper/paper.ipynb"
+anchor = "Search of the design space (preliminary)"
+kind = "S"
+backing = ["glossary:selection-rule", "func:examples/adcs/experiments/check_designs.py::Proposer"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-3"
+note = "The case's rule is nearest in a seeded pool; two others are prototyped in work-packages/WP41-rounds/spike/readout.md."
+
+
+[[claim]]
+id = "C822"
+fragment = "A move along the ascent direction is a Pareto improvement of the prediction; a design built to reach it need not follow; the **check** finds out"
+file = "paper/paper.ipynb"
+anchor = "Search of the design space (preliminary)"
+kind = "P"
+backing = ["reading", "file:work-packages/WP11-decisions.md"]
+status = "backed"
+disposition = "keep"
+source = "WP41 D-3"
+note = "The supervisor's ruling of 2026-11-14, 13:10 (WP11-decisions.md): the predicted-against-measured distinction; D.10 is the one run of the check."
+

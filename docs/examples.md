@@ -186,6 +186,10 @@ for name, (study, est) in fits.items():
 
 The triples show how to read the figure; they are not findings.
 
+## Proposing a design for a point with no datum
+
+The case also proposes designs for gaps in the chart, then builds and measures them: [From the chart back to a design](bridge.md).
+
 ## Run it
 
 [`examples/adcs/`](https://github.com/DynamicalSystemsGroup/hyperbolic-trade-space/tree/main/examples/adcs/)

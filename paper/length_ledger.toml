@@ -1806,6 +1806,13 @@ reader = "the reader who met the glossary's one word for each object"
 
 [[raise]]
 date = "2026-11-14"
+section = "Search of the design space (preliminary)"
+words_added = 57
+job = "names the procedure's objects (proposal, selection rule, check) and says the check is how a predicted improvement is told from a built one; no result, no figure, no number; the pointer to the check's appendix is left out because the section carries no digit (R-15) (WP41 D-3)"
+reader = "the reader asking what the middle loop hands to the outer loop"
+
+[[raise]]
+date = "2026-11-14"
 section = "Future work and final remark"
 words_added = 1
 job = "dents and disconnected regions replaces dents and holes, since hole is reserved for the topological object of a later study"
@@ -1852,3 +1859,10 @@ section = "Case construction"
 words_removed = 6
 no_longer_did = "named the 900-row worked example of Appendix C.7 in the sentence that gives the recovery count, which is on twenty other tables of 400 rows; the count now says what it is on"
 authority = "final round, fifth paper unit, request 173; marginal-value test; measured by tests/test_paper.py words_by_section"
+
+[[raise]]
+date = "2026-11-14"
+section = "Future work and final remark"
+words_added = 2
+job = "'selection rules' now names the rule that picks one configuration for a chart point (Section 7); the analyst's choice of K is said in its own words (WP41)"
+reader = "the reader who met the term in Section 7 and again here"

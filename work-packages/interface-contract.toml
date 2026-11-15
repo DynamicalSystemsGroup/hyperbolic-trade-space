@@ -30,7 +30,7 @@
 # Floor rule (R-8): a pinned list may grow without an amendment (same commit as the manifest edit),
 # never shrink or rename without one.
 
-contract_version = 25
+contract_version = 26
 
 [package]
 import_name = "hyperbolic_trade_space"
@@ -250,7 +250,7 @@ pages = [
   "index.md", "getting-started.md", "user-guide/index.md", "user-guide/overview.md", "user-guide/conditioning.md",
   "user-guide/fitting.md", "user-guide/choosing-k.md", "user-guide/tensions.md", "user-guide/tension-routes.md", "user-guide/chart.md",
   "user-guide/prediction.md", "user-guide/termination.md", "user-guide/limitations.md",
-  "examples.md", "theory.md", "further-reading.md", "code-owners.md",
+  "examples.md", "bridge.md", "theory.md", "further-reading.md", "code-owners.md",
 ]
 generated_dir = "docs/generated/"
 generated_pages = ["glossary.md"]
@@ -278,8 +278,7 @@ presentation_pages = [
   "docs/index.md", "docs/getting-started.md", "docs/user-guide/index.md", "docs/user-guide/overview.md",
   "docs/user-guide/conditioning.md", "docs/user-guide/fitting.md", "docs/user-guide/choosing-k.md", "docs/user-guide/tensions.md", "docs/user-guide/tension-routes.md",
   "docs/user-guide/chart.md", "docs/user-guide/prediction.md", "docs/user-guide/termination.md",
-  "docs/user-guide/limitations.md", "docs/examples.md", "docs/theory.md",
-  "docs/further-reading.md", "docs/code-owners.md", "docs/api-reference.md",
+  "docs/user-guide/limitations.md", "docs/examples.md", "docs/bridge.md", "docs/theory.md", "docs/further-reading.md", "docs/code-owners.md", "docs/api-reference.md",
 ]
 helper = "tests/test_references.py"
 
@@ -354,8 +353,7 @@ paths = [
 paths = [
   "mkdocs.yml", "glossary.yaml", "site/", "scripts/", ".github/workflows/pages.yml",
   "tests/test_site.py", "docs/index.md", "docs/getting-started.md", "docs/user-guide/",
-  "docs/api-reference.md", "docs/examples.md", "docs/theory.md",
-  "docs/further-reading.md", "docs/code-owners.md", "docs/generated/", "docs/superpowers/notes/paper-sources/",
+  "docs/api-reference.md", "docs/examples.md", "docs/bridge.md", "docs/theory.md", "docs/further-reading.md", "docs/code-owners.md", "docs/generated/", "docs/superpowers/notes/paper-sources/",
 ]
 
 [ownership.wp10]

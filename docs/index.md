@@ -7,6 +7,7 @@ For an analyst with a table of evaluated designs. The [paper](paper:sect-problem
 - [Place it beside principal component analysis, or PCA, and scikit-learn](user-guide/overview.md)
 - [Read the limits](user-guide/limitations.md)
 - [See the worked case](examples.md): a cubesat trade study, a synthetic satellite demonstrator.
+- [Pick a point on the chart and get a design](bridge.md): the route back, the conjecture it is and how to check it.
 
 `hyperbolic_trade_space` learns the shape of a design trade space from evaluated designs. Give it a
 table of designs, each scored on several metrics where larger is better, and it fits a frontier

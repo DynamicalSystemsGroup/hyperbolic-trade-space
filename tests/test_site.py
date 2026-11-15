@@ -49,6 +49,7 @@ NAV_PAGES = [
     "user-guide/limitations.md",
     "api-reference.md",
     "examples.md",
+    "bridge.md",
     "theory.md",
     "generated/glossary.md",
     "further-reading.md",
@@ -78,12 +79,14 @@ BUDGETS = {
     "user-guide/limitations.md": 491,
     "api-reference.md": 291,  # api.md (300) merged in; the ::: are not prose; 287 until WP42
     "examples.md": 671,  # 720 until WP28 X-2 (the coordinates figure went); 676 until WP33
+    # 805 until the D-5 fresh read named tau, the level and the submartingale (2026-11-15)
+    "bridge.md": 815,
     "theory.md": 700,
     "further-reading.md": 300,
 }
-# 7430 until the docs home took its figure and quickstart (his 350); 7237 until WP42;
-# 7472 until WP33
-TOTAL_BUDGET = 7480
+# 7480 until WP41 (the bridge page, 815); 7430 until the docs home took its figure and quickstart
+# (his 350); 7237 until WP42; 7472 until WP33
+TOTAL_BUDGET = 8340
 # Post-release live routes (the punch list names each; stage_site.REVIEW_PAGES follows them).
 LIVE_ROUTES = (
     "docs/",

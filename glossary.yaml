@@ -713,6 +713,37 @@ entries:
     not: 'a measure of attainability'
     defined_in: 'Novelty and white space'
 
+  - id: 'proposal'
+    term: 'proposal'
+    short: 'A configuration chosen for a chart point that has no datum, with the chart point predicted for it and a tolerance. A conjecture until it is checked.'
+    register: 'proposal'
+    formal: 'a triple of a configuration, the chart point the regressor predicts for it, and a tolerance (the band 1/tau by default)'
+    not: 'a design known to land at the target, or a result'
+    defined_in: 'Prediction from configuration; WP41 note'
+    aliases:
+      - 'proposals'
+
+  - id: 'selection-rule'
+    term: 'selection rule'
+    short: 'How one configuration is picked for a chart point when many are predicted near it, because the way back from the chart to the design space is not unique.'
+    register: 'selection rule'
+    formal: 'a map from a target chart point to one configuration among those predicted near it'
+    not: 'a property of the model or of the fit'
+    defined_in: 'WP41 note'
+    aliases:
+      - 'selection rules'
+
+  - id: 'check'
+    term: 'check'
+    short: 'Evaluating a proposal once and comparing the measured chart point with the predicted one. Three outcomes: confirmed, refuted (a row the table lacked, so the fit is rerun) or infeasible.'
+    register: 'check'
+    formal: 'the comparison of the measured chart point of a proposal with its predicted chart point within the tolerance, together with the feasibility conditions'
+    not: 'an estimate of the rate at which proposals are confirmed'
+    defined_in: 'Appendix D.10; WP41 note'
+    aliases:
+      - 'checks'
+      - 'checked'
+
   - id: 'ternary-plot'
     term: 'ternary plot'
     short: 'A triangle whose corners are three metrics: a design sits by its shares of their total, tinted by region, with a numbered marker for each term''s exponent vector. For reading, not for measuring distance.'
@@ -826,3 +857,5 @@ stems:
   - 'radius'
   - 'temperature'
   - 'gap'
+  - 'proposal'
+  - 'check'

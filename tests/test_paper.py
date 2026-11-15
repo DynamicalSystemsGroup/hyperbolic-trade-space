@@ -2074,10 +2074,11 @@ def test_no_shell_marker_remains_in_the_paper():
 
 
 def test_search_section_is_short_future_work_without_numbers():
-    """R-15: about 150 to 250 words, says it is future work, carries no digits at all."""
+    """R-15: about 150 to 320 words (250 until WP41 D-3 added its naming paragraph, 300 until
+    request 169's restatement of the open item), says it is future work, carries no digits."""
     text = _section("Search of the design space")
     words = len(re.sub(r"[#>*`:{}\[\]@|-]", " ", _rendered(text)).split())
-    assert 150 <= words <= 250
+    assert 150 <= words <= 320
     assert "future work" in text and "no results" in text
     assert not re.search(r"\d", text)
 
