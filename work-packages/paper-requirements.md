@@ -25,6 +25,11 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   skim over the plots (his ruling, 2026-11-15 12:40 EST by the machine clock): the figures in sequence, with their
   captions, carry the paper's argument on their own; each is judged by the figure loop (cold read, the sentence
   test, ink as data, legibility) before its section is soft-confirmed, and the sequence is read as a whole at WP58.
+- Visual loops at five depths, with screenshots of the rendered page and never from the source alone (his ruling,
+  2026-11-15 afternoon: humans see the page, they do not read it as a sequence of tokens): the figure itself; the
+  figure with its caption; figure, caption and the prose around it; how it flows in the section; how it flows in
+  the paper. Not every depth on every pass, but each figure passes the first three before its section is
+  soft-confirmed and the last two at WP58.
 - Notation and presentation in the conventions of the Boyd and Vandenberghe lineage: the problem statement as
   "minimize ... subject to ..., with variable ...", theorems as "Suppose ... Then ...", proofs in the appendix
   (`WP55-rounds/spike-notation.md`).
