@@ -218,3 +218,12 @@ options (keep; "though not the reverse"; "since energy rises with every metric")
 Request 172's Pareto item is closed with no change; the sentence stands as written. The other abstract phrases of
 request 172 remain his list.
 
+
+## The abstract, his review of the candidate (2026-11-15 08:40 EST)
+
+**Supervisor, verbatim** (quoting the sentence "HTS fits a surface one dimension below the data and places each design
+by its position on it and its level above or below it, losing nothing"): "surface one dimension below the data and
+places each design by its position on it and its level above or below that surface."
+
+**Applied as:** the sentence now ends "its level above or below that surface." ("losing nothing" dropped, "it" made
+"that surface") in `paper/paper.ipynb`; the register row's fragment follows the text.
