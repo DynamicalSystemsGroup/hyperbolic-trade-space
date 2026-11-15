@@ -2399,4 +2399,10 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   dispatched on dev tonight; the TestPyPI publish waits on his environments); the combined candidate verified as a
   whole, not branch by branch (the final head's CI on both platforms, slow and docs-paper included, and a local slow
   run). The reviewer did not run the suite or the workflow; the driver's runs are the evidence.
+- **Milestones board rewritten; the release dry run cannot be dispatched yet (2026-11-14 22:56 EST).** The board now carries one head
+  and one remaining-work list in four blocks (landed, landing tonight, waiting on him, after 0.1), replacing the stale
+  table the external review named. `gh workflow run release.yml` answers 404 on dev: GitHub dispatches a workflow only
+  from the default branch, where `release.yml` does not exist until the merge; the rehearsal therefore follows the
+  merge to `main` and the local dry run of its checks stands as tonight's evidence. The reworked figure (three terms
+  at the median, temperature 10; the unit's gates clean, 2,035 passed; served on 8861) sent to him as a screenshot.
 
