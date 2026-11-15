@@ -12,6 +12,18 @@ This repository is built as supervisor-gated work packages, following the superv
 `scope-of-work`, `work-execution`, `work-acceptance`, and the decision loop in
 `~/.claude/skills/CLAUDE.md`). Read those before working here.
 
+## Tracking
+
+- `INDEX.md` is the status of every package: its state, the commit where its scope was locked, the commit where it was
+  accepted, and where its documents are. The scope files carry no live status line; a landed scope's header says
+  "see INDEX.md".
+- `milestones.md` is the board of the release; `driver-log.md` is the dated record.
+- At a package's landing the driver adds its row with the accepted hash and removes its documents (scope, decisions,
+  review, amendments, rounds) with `git rm`; git keeps them. A path that code, tests, notebooks, docs or the claims
+  register read stays tracked and the row names the reader. Read a removed file with
+  `git show <accepted>:work-packages/<file>`.
+- `work-packages/archive/` is git-ignored: a place for local copies of removed documents, never committed.
+
 ## Screenshots of the records
 
 The screenshots the reviews and rounds cite are not in the checkout; git holds them at commit `2a669de`, and each

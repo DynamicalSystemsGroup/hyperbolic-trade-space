@@ -27,3 +27,6 @@ docs/generated/
 examples/perovskite/data/
 examples/amniote/data/
 examples/wheat/data/
+
+# local copies of removed work-package documents
+work-packages/archive/
