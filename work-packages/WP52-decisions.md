@@ -449,3 +449,9 @@ Recorded as the page's intent, beside the earlier rulings (categorical descripti
 without being the point). Applied to the pending sentence: the paper with Nabben is described by what it argues, not by
 the acronym in its title; Alston's organisations are described as organisations whose rules are partly code.
 
+**Supervisor (06:10 EST):** "Eric is cited primarily for the need to support conflict and disagreement as essential rather
+than to model them away"
+
+The point of the Alston sentence is fixed by this; the draft in chat carries it, with the paper with Nabben described in
+plain words. Placement, the word bound and the two remaining "automated market maker" phrasings await his word.
+
