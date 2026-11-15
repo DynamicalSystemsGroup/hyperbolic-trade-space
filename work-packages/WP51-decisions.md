@@ -336,3 +336,9 @@ elsewhere if necessary) that the term “carries the largest weight” at a fini
 same clarification goes wherever the docs explain the regions or the cells (the docs example page, the tensions and
 chart pages if they say "binds"); the index says "binds" alone.
 
+**Supervisor (2026-11-14 23:44 EST), on the legend (image in chat):** "reorder the legend so its 3 line 1,2,3 in row one, then 3 points
+1,2,3 in row 2. the cols need to align by color (term)"
+
+**Applied as:** a two-row legend: row one the three term lines in order 1, 2, 3; row two the three characteristic
+points in the same order under their term's colour; three columns, one per term.
+
