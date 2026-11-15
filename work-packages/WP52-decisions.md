@@ -551,3 +551,9 @@ https://www.dynamicalsystemsgroup.com/blog/meltdown"
 
 The closing paragraph ends on that sentence, with Meltdown linked; the post read before the sentence is written.
 
+**Supervisor (08:58 EST):** "participate meaningfully in decision-making"
+
+Meltdown read (the firm's blog, Zargham and Ben-Meir, 22 September 2025: the bottleneck moved from generation to
+judgment; judgment is rate-limiting; regulative against generative AI). The closing sentence in his words, with
+"meaningfully".
+
