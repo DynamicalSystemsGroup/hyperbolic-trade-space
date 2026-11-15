@@ -2315,4 +2315,17 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   are sequence labels, not wall-clock times: they continue the drift noted after 19:05 on 2026-11-14 and overran the
   date. Their order is right; their clock is not. From this entry on, every label is the machine clock. The supervisor's
   words in the decision files are unaffected.
+- **Integration for a morning candidate (2026-11-14 21:15 EST).** His direction: "focus on testing and integration so there is a
+  proper candidate release for me to review in the morning". PM16 blocked for over two hours in a foreground spawn
+  with no reply to six messages, so the driver took over the mechanical integrations on landing branches of his own
+  cut from the delivery heads, the PM's worktrees untouched (PM16 told; it keeps the fifth paper unit in paper5):
+  fix4-land (rebased on dev; its two caption rows renumbered C772 and C773, kind S, the superseded Figure 3 row C623
+  dropped; register green); wp42build-land (squash onto dev, 105 files, rows C793 to C800); wp46-land (squash, rows
+  C774 to C792, the review record's ids re-pointed); wp41-land (squash, rows C801 to C816; the docs home budget kept
+  at his 350); wp43-land (rebased; lint with a subagent, then the rerun check); wp47-land (squash). Landing order
+  once each verifies, fix4, WP42 build, wp46, wp41, wp43, wp47, then WP48 and WP50 records, the fifth unit when it
+  delivers, the version unit. Each lands as one commit, its delivery branch and the bundle keeping the history.
+  Verification per branch in the background: ruff, format, lock, vocabulary, attribution, the lemma chain where
+  touched, the fast suite; CI on dev after each landing; the slow and docs-paper jobs on the final head. Root page
+  assembled at dev's head and served on 8797 for his read. The clock labels are the machine's from here.
 
