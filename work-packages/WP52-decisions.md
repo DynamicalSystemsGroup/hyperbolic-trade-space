@@ -471,3 +471,13 @@ Recorded as the page's second statement of intent: the ideas are the thread; the
 their ideas and contributions; the page is not about Zargham. The driver's read of where the page still centres him, and
 the proposed edits, are in chat.
 
+**Supervisor (06:50 EST):** "after that i want you to do a sanity check against my personal website for timeline and story
+arc consistency. this is a different view but its the same history so compatibility not consistency is the requirement:
+michael.zargham.org" and, on Alston: "tied in via the MIT cybernetics paper (common case study 1hive, but also was used by
+giveth, commons stack and token engineering commons)."
+
+The site's three pages read by the driver (front, research, publications; "Updated October 2026"). The joint works with
+Alston found there: "What Constitutes a Constitution?" (Zargham, Alston, Nabben, Ben-Meir; Zenodo 10.5281/zenodo.10609125,
+6 April 2023) and "Path Dependence: An Uncomfortable Institutional Design Axiom" (Alston, Case, Zargham; Ostrom Workshop
+abstract 2024, hdl:10535/11015). The communities he names are described on the page in categorical terms, per his rule.
+
