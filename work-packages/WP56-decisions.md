@@ -102,3 +102,16 @@ of record, the fit, the figure. No new model complexity.
 **Supervisor, verbatim (14:03 EST):** "also don't force the equation into the figure"
 
 **Applied as:** the ternary's title carries the name of the performance measure (coverage probability), not its formula; the formula lives in the SysML v2 model and the record, named once in the prose.
+
+## The driver's approval as proxy (18:03 EST)
+
+Under his autonomous-mode mandate (`WP11-decisions.md`, 2026-11-15: "run in autonomous mode ... do a soft confirm on
+each section as my proxy") the driver approves `WP56-scope-of-work.md` at dev 1ba7af9, with two amendments made before
+approval: G3 covers every caption in the paper and the supporting material, not only Sections 7 to 9 (Figure 3's
+caption still carries the Shows, Does-not-show and Good-for lines WP60 removed from the docs); and the first unit
+starts now on the deliverables that do not touch the notebooks (the coverage attribute in the SysML v2 model, the
+generator, the tension matrix routine's `triangle` option, the figure loop at the first two depths), pausing before
+any notebook edit until WP55 lands. The spike inputs are taken from the branches `wp56-ternary` (cf4faca:
+`work-packages/WP56-rounds/ternary/`, `examples/adcs/spikes/fleet_performance.py`) and `wp56spike` (6cbf936:
+`work-packages/WP56-rounds/spike-lineage.md`). Open decisions for him: none; the triangle and row order of Figure 7
+are the driver's call on the figure loop's screenshots.
