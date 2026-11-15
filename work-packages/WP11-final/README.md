@@ -39,3 +39,21 @@ G twins) are read later on the landed head, with slices recaptured and briefs re
 
 Harness incidents: the H02 note above stands. A "Loading" output on first extraction for six readers; Appendix D.15
 did not render once for G25; the captured first screen's collapsed contents chevron for G16.
+
+## Waves 8 and 9: the held-out cells, read at the abstract head (triage in `triage/wave-8.md` and `wave-9.md`)
+
+- **Stage head read:** `5ac44f7` (dev, the abstract's landing plus its verification record), `scripts/stage_site.py` output served
+  on http://127.0.0.1:8791. The A and B slices were recaptured from the rendered pages at this head (title and abstract
+  screenshot at 1280 px, light scheme, headless Chrome; text and figures from the DOM by `extract.js`; 8 figures and
+  2 tables; the abstract is 497 words of body). List with byte sizes and sha256: `slices-manifest-5ac44f7.tsv`; the
+  main text is 85,824 bytes and the supporting material 313,770 bytes as extracted (hashes in the manifest's raw
+  files, which are not given to readers). The earlier `slices-manifest.tsv` stays as the record of the core round.
+- **Briefs:** the second rendering of the twelve (`make_briefs2.py`), placeholders substituted with the stage address,
+  this head and the alias directories; readers saw them through a neutral task directory.
+- **Wave 8 (all first wording):** F01 (Sonnet), F15 (Sonnet), F23 (Sonnet), F17 (Sonnet), F10 (Haiku), F18 (Sonnet).
+  **Wave 9 (second wording, the twins):** G01, G15, G17, G18, G23 (Haiku), G10 (Sonnet). Models per `slots.tsv`; three
+  browser readers in each wave, each in its own tab. Reports committed verbatim as each wave finished (729f120, 309b191);
+  every report carries the head line `Head: 5ac44f7`.
+- **Harness incidents:** G10 sent three read-only JavaScript calls to a tab that was not its own; F18 and G10 saw
+  appendix tables as "Loading..." and F18's Appendix E was cut off after about G-16 (the same class as the core
+  round's "Loading" incidents). No reader returned its report as the final message.
