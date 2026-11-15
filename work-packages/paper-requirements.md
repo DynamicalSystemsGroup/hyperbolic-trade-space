@@ -120,6 +120,8 @@ reads a fresh candidate and makes light edits, not content or style revisions). 
   executives make, the thread preserved through code and data; the generated nondominated sentence now opens it
   (keep or strike at WP56); K = 2 as the case's reading.
 - **Style:** narrate the case and tie it to the thesis; the figures play the key role.
+- **Figure 7, the tension matrix:** one triangle in the paper (the plotting routine keeps both as an option); the
+  reader is not left to work out the reciprocal (WP56-decisions.md, the tension matrix figure).
 - **State:** open (WP56).
 
 ## Section 9, Discussion
