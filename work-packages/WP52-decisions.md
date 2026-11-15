@@ -335,3 +335,10 @@ correction of the first: Sayer Tindall).
 governed compute led by Sayer Tindall, the Realization layer the lifecycle demo's README points to, in neutral words;
 the record entry names Tindall as lead on his authority unless the page states it.
 
+**Applied (03:40 EST):** governed compute read (the firm's documentation, September 2026, no byline: authorization opens a
+run; nothing advances until it conforms to its specification and is fit for its purpose; evidence a byproduct of the
+work) and placed in the 2026 paragraph as led by Sayer Tindall on his authority. The addition took the page to 1,021
+words against his ceiling of 1,000, so the sentence was tightened and the page's closing line "This project keeps the
+same split between machine verification and human validation" was cut as redundant now that the INCOSE paper and the
+governed-compute sentence say it; the page stands under the ceiling.
+
