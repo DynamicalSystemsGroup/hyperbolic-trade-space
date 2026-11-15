@@ -109,3 +109,11 @@ The figure loop's verdict from the one reader who matters: not kept as drawn. Th
 off dev; the root page keeps the ternary and the paper's Figure 1 unless he says otherwise. The next step (rework the
 planted example, redraw, or park the figure for after 0.1) is his call, asked in chat.
 
+**Supervisor (2026-11-14 22:31 EST), asked whether to park the fan figure for after 0.1 or rework it tonight:** "Rework tonight"
+
+**Applied as:** a rework unit on `wp51fig`, by the figure loop's order: three candidate renders (the fan removed, the
+third metric at its median; the fan as rows for the leading pair; the planted example re-seeded so the three terms
+separate), each cold-read by two fresh readers against the one-sentence test, the clearest applied with its caption and
+prose, the three candidates kept in the loop record for his morning read. In every candidate the envelope at a fan value
+is one connected line. Merges only on his word.
+
