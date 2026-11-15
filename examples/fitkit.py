@@ -103,7 +103,7 @@ def fit_read(M, names, target=0.10, taus=(3.0, 10.0, 30.0, 100.0, np.inf), k2=Tr
         JSON-ready: counts, selected temperature, K = 1 exponents, contending set at tau = inf,
         the near-frontier association, the table over temperatures, and the K = 2 terms.
     """
-    from hyperbolic_trade_space import HyperbolicTradeSpace, select_temperature, tension_report
+    from hyperbolic_trade_space import HyperbolicTradeSpace, select_temperature, trade_off_report
 
     M = np.asarray(M, float)
     names = list(names)
@@ -117,7 +117,7 @@ def fit_read(M, names, target=0.10, taus=(3.0, 10.0, 30.0, 100.0, np.inf), k2=Tr
     out["n_eff"] = float(est.n_eff_)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        rep = tension_report(est, M)
+        rep = trade_off_report(est, M)
     out["contending_set"] = [names[j] for j in rep.contending_set]
     out["contending_exponents"] = [float(x) for x in rep.contending_exponents]
     out["n_lemma"] = int(rep.n_lemma)
@@ -146,7 +146,7 @@ def fit_read(M, names, target=0.10, taus=(3.0, 10.0, 30.0, 100.0, np.inf), k2=Tr
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             try:
-                r2 = tension_report(e2, M)
+                r2 = trade_off_report(e2, M)
                 lem = [[names[j] for j in r.contending_set] for r in r2]
             except ValueError as err:
                 lem = str(err)[:200]

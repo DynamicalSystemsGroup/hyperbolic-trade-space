@@ -20,12 +20,12 @@ A first fit, on a synthetic table of 300 designs scored on 3 metrics:
 from hyperbolic_trade_space import (
     HyperbolicTradeSpace,
     make_frontier_data,
-    tension_report,
+    trade_off_report,
 )
 
 X, info = make_frontier_data(300, 3, random_state=0)
 ts = HyperbolicTradeSpace(temperature=20.0).fit(X)
-report = tension_report(ts, X)
+report = trade_off_report(ts, X)
 print(report.lemma_name, report.contending_set)
 print(report.exponents.round(2))
 ```
