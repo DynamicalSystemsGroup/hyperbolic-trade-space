@@ -2456,3 +2456,12 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   number, colour and marker, with a test) and stopped without a report; the driver reads the loop record and runs the
   branch's checks.
 
+- **Tick (2026-11-15 01:05 EST).** The figure branch's checks at 74506ad: lint, lock, vocabulary 0 new, attribution clean, the
+  fast suite 2,038 passed (its round-4 figure: three terms numbered and coloured the same across the ternary, the
+  slices and the term table; characteristic points on the chart column only). A unit is writing the docs example
+  section "The synthetic three-metric case" on that branch, the root page's caption already linking there. wp46
+  re-resolved against dev on a fresh landing branch (wp46-land2, 8542352): eleven conflicts (both lemmas in the chain,
+  the plotting docstring and exports merged with WP42's renames, captions renumbered with dev's wording, the contract
+  at 26 with the temperature page, the proof map regenerated with L22's entry, the notebook heading replayed on dev's
+  notebook, rows C823 to C841 on the assumption that wp41's C807 to C822 land first); its notebooks executing. wp41's
+  chain still executing its notebooks since 00:30; the contract becomes 27 for whichever of the two lands second.
