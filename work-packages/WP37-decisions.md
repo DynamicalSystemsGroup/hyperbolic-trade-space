@@ -445,3 +445,11 @@ Folded into the WP37 closing unit.
 of the paper, not a step of the team's lineage, and the paper's bibliography is where it stays. The same test (did the
 team do it, or was it a step the team took) runs over the remaining paper entries in the people audit. Folded into
 the WP37 closing unit.
+
+## Accepted by the supervisor (2026-11-15, 11:25 EST)
+
+**Supervisor (2026-11-15, 11:25 EST), on the six packages verified under the mandate, walked through one line each
+(WP33, WP35, WP37, WP38, WP39, WP40):** "all 6 are acceptable to me. we'll still need to do final holistic review work but
+the incremental reviews pass as written"
+
+WP37 is accepted; the final holistic review (the PR from dev to main, in sittings) remains.

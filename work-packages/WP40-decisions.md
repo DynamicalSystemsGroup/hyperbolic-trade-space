@@ -81,3 +81,11 @@ and every pointer line in the records names 2a669de, the commit on dev that last
 assistant's records now name too; R-10, the residual checker's counts raised by the new README Layout list, is met by
 the WP38 pass that is running over these surfaces now and is not a return. WP40 goes on the review list for the
 supervisor's acceptance."
+
+## Accepted by the supervisor (2026-11-15, 11:25 EST)
+
+**Supervisor (2026-11-15, 11:25 EST), on the six packages verified under the mandate, walked through one line each
+(WP33, WP35, WP37, WP38, WP39, WP40):** "all 6 are acceptable to me. we'll still need to do final holistic review work but
+the incremental reviews pass as written"
+
+WP40 is accepted; the final holistic review (the PR from dev to main, in sittings) remains.

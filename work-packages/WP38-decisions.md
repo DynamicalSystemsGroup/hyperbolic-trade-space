@@ -149,3 +149,11 @@ rows) listed for the supervisor as the post-0.1 list. The docs-build errors the 
 worktrees' environment: on this checkout the site and docs group with its slow tests is 125 passed and the fast suite
 1947 at 6891eae. R-8 stands as partly met for the reason the review gives. WP38 goes on the review list for the
 supervisor's acceptance."
+
+## Accepted by the supervisor (2026-11-15, 11:25 EST)
+
+**Supervisor (2026-11-15, 11:25 EST), on the six packages verified under the mandate, walked through one line each
+(WP33, WP35, WP37, WP38, WP39, WP40):** "all 6 are acceptable to me. we'll still need to do final holistic review work but
+the incremental reviews pass as written"
+
+WP38 is accepted; the final holistic review (the PR from dev to main, in sittings) remains.

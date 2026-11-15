@@ -14,7 +14,6 @@ question he answers.
 
 | # | Task | When | Prepared by |
 |---|---|---|---|
-| W1 | Accept WP33, WP35, WP37, WP38, WP39, WP40 (delivered, driver-verified; one line each) | any time | `supervisor-review-list.md` |
 | W2 | Accept the third paper unit (ca352f5) and the abstract landing (735fa51) | after CI is green on both | the driver log's entries |
 | W7 | Close read of the five entry surfaces; the two root-page sentences that are his (the summary paragraph; "bespoke or opaque") | before the PR | `WP11-final/abstract/entry-surfaces-consistency.md` |
 | W8 | Reading pass G.2 | before the PR | the paper's Appendix G.2 |

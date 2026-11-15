@@ -281,3 +281,11 @@ at 916 of 920 words, the chain to D.16 standing, the cut sentence on a HoroPCA o
 the readers' definitions (ρ, the ball, the symmetric cloud, the 30 percent of rows on the edge) now on the page; the
 fast suite 1943 passed, ruff, lock and vocabulary clean; read as rendered on the rebuilt stage. WP35 goes on the review
 list for the supervisor's acceptance."
+
+## Accepted by the supervisor (2026-11-15, 11:25 EST)
+
+**Supervisor (2026-11-15, 11:25 EST), on the six packages verified under the mandate, walked through one line each
+(WP33, WP35, WP37, WP38, WP39, WP40):** "all 6 are acceptable to me. we'll still need to do final holistic review work but
+the incremental reviews pass as written"
+
+WP35 is accepted; the final holistic review (the PR from dev to main, in sittings) remains.

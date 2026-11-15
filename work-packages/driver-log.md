@@ -2283,4 +2283,9 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   the abstract's target test and the front-matter tests passed. Olfati-Saber's paper by its full title and the
   advisor clause landed before it (74d5bae, 29101b6). CI dispatched on each head. WP50's dependency choice and first
   package stay with him after v0.1.
+- **Six acceptances; the cleanup guide (2026-11-15, 11:25 EST).** WP33, WP35, WP37, WP38, WP39 and WP40 accepted by him
+  in one line ("all 6 are acceptable to me ... the incremental reviews pass as written"), recorded in each decisions file;
+  W1 leaves the supervisor's list; the holistic review is the PR. Before that he asked for a review of a Codex cleanup
+  guide of the branches and worktrees; read, checked against the live repository and recorded under WP25; his call on
+  timing pending.
 

@@ -166,3 +166,10 @@ what, how), the summary and the two doors kept, the figure under the how; built 
 for his close read; merged into `dev` only on his word, with the page's structure test and the claims row updated in
 the same commit.
 
+## Accepted by the supervisor (2026-11-15, 11:25 EST)
+
+**Supervisor (2026-11-15, 11:25 EST), on the six packages verified under the mandate, walked through one line each
+(WP33, WP35, WP37, WP38, WP39, WP40):** "all 6 are acceptable to me. we'll still need to do final holistic review work but
+the incremental reviews pass as written"
+
+WP33 is accepted; the final holistic review (the PR from dev to main, in sittings) remains.

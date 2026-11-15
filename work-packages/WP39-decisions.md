@@ -166,3 +166,11 @@ a reader note beside the row and not as a return; the skim test's put-off senten
 abstract's two are reported; the suite 1946 passed on 94cb6a1 with the hash-abbreviation flake fixed; CI fully green
 at 8699324. WP39 goes on the review list for the supervisor's acceptance with the three reads and the re-read beside
 it."
+
+## Accepted by the supervisor (2026-11-15, 11:25 EST)
+
+**Supervisor (2026-11-15, 11:25 EST), on the six packages verified under the mandate, walked through one line each
+(WP33, WP35, WP37, WP38, WP39, WP40):** "all 6 are acceptable to me. we'll still need to do final holistic review work but
+the incremental reviews pass as written"
+
+WP39 is accepted; the final holistic review (the PR from dev to main, in sittings) remains.
