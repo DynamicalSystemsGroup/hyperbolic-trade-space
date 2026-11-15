@@ -32,3 +32,12 @@ seven subsections uncited. The driver's calls on the six items the map left open
 
 Children: WP57a (front matter, A, F, G) and WP57b (B) are scoped now and run in sequence by one unit after WP55 lands;
 WP57c (C, D) after WP56; WP57d (E, H) after c; WP57e last.
+
+## WP57a and WP57b approved as proxy (18:42 EST)
+
+`WP57a-scope-of-work.md` (front matter, Appendices A, F, G; Section 2's one sentence naming Appendix G; G.2 to
+`paper/supplement/reading-pass.md` on his WP38 words; the glossary's `defined_in` fields repointed, five not four) and
+`WP57b-scope-of-work.md` (Appendix B: the Job block cut, `how_to_read` and B.2 shortened to what the citing sentences
+need, every proof reachable by its lemma label, the derivation chain and proof map unchanged), both at d7d3403, are
+approved by the driver under his mandate. One unit runs a then b on branch `wp57ab` after WP55 lands; the driver
+soft-confirms each appendix on screenshots before the next child.
