@@ -2443,4 +2443,9 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   tests/test_site.py from the driver's own history-test edit of 5507ee7, committed without a lint run. Formatted and
   re-dispatched. The driver's rule from here: every commit to dev runs ruff check and format before the push, no
   exceptions for one-line edits. The fifth unit's landing itself is unaffected.
+- **Cleanup batch 2 done (2026-11-15 00:33 EST).** The eight delivery branches whose content landed tonight (fix4, wp42build, wp43,
+  wp47, wp48, wp50, paper5, wp45) and the WP42 spike branch: tips kept as `refs/backup/landed-<branch>` and in the
+  bundle, branches deleted, clean worktrees removed; the five landing branches (ancestors of dev) deleted with their
+  worktrees. Worktrees 18 to 12; branches 22 to 14. Left for the next instance: the wp27model directory (no longer a
+  registered worktree), pm13main, the stage and verify trees (kept until the PR). Manifest extended.
 
