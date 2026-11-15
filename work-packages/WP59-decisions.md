@@ -29,3 +29,7 @@ per appendix or group from what it reads.
 PCA scores made positive and oriented are a change of representation, reported with an explicit interpretation of
 each component; a positive leading loading does not make a larger score preferable to a stakeholder. The readout
 says so where it reports the chain, and keeps every conditioning result that weakens the preferred reading.
+
+## Acceptance (13:02 EST)
+
+Accepted by the driver under the mandate after its own read: the reviewer's reruns from a clean cache matched byte for byte, the primary rows reproduce the WP45 records, the four readout defects the review found were fixed by the driver, and the readout reads as guidance an analyst can act on. Landed on dev at a9cfb60. His read remains; the pages (WP60) are scoped from the readout.
