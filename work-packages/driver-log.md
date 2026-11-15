@@ -2526,3 +2526,12 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   three-thrusts sentence (a draft put to him) and the same ruling on "scikit-learn estimator" for the docs home and
   the package docstring (to be applied with the next commit unless he says otherwise). The staged site on 8797
   rebuilding at b0bba19.
+- **Packages after his review (2026-11-15 12:15 EST).** WP53 (integrate his batch) running as a unit on branch wp53; WP54
+  (the skeleton) scoped and approved, waits for WP53; WP55's notation spike delivered on wp55spike (five sources, DOIs
+  resolved; it read dev's Section 3, not the batch's); WP59 (conditioning and feature engineering on the three public
+  cases, a research spike before their pages) approved "ok" and dispatched as two units on wp59-wide and wp59-wheat;
+  WP57 becomes a planning package per his note. The root page (wp51fig) reviewed by him before the merge: the
+  slices caption simplified, the two doors as cards, "dataset" for the data, the held metric's quantile an option;
+  landing on wp51-land (86ded0e, rows C842 to C848), notebooks re-executing. His summary request answered in chat with
+  the table of packages in flight and queued; the path to the release is every package landed and read, the guide's
+  four sittings on the final head, then the merge workflow with 0.1.0 on his word.
