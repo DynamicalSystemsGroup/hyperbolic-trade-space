@@ -8913,7 +8913,7 @@ note = "Record id 2025-meltdown (https://www.dynamicalsystemsgroup.com/blog/melt
 
 [[claim]]
 id = "C772"
-fragment = "Eleven arrows leave the slew experiment's box: nine for the metrics it computes, three of them from the configuration alone, and two, to the unit cost and the fleet cost, for an analysis each, drawn from the same box. The box's own count, ten of thirteen, adds the control effort, which the experiment passes on from the measured slew (that arrow runs from the measurement)."
+fragment = "Eleven arrows leave the slew experiment's box: nine for the metrics it computes, three of them"
 file = "paper/paper.ipynb"
 anchor = "Case construction"
 kind = "S"
@@ -8929,9 +8929,9 @@ note = "Counted in the image: eleven arrows end at momentum headroom, pointing e
 
 [[claim]]
 id = "C773"
-fragment = "log V of the K = 2 fit, the level; V is the invariant value (Definition 2); the percentage on the axis is the share of the near-frontier spread that lies along it."
+fragment = "the axis names the metrics it improves, and the percentage there is the share of the near-frontier spread that lies along it"
 file = "paper/paper.ipynb"
-anchor = "The chart of the K = 2 fit"
+anchor = ""
 kind = "S"
 backing = ["file:paper/figures/chart_level.py", "test:tests/test_paper.py::test_the_case_reads_one_named_k"]
 status = "backed"
