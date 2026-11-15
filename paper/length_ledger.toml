@@ -1866,3 +1866,31 @@ section = "Future work and final remark"
 words_added = 2
 job = "'selection rules' now names the rule that picks one configuration for a chart point (Section 7); the analyst's choice of K is said in its own words (WP41)"
 reader = "the reader who met the term in Section 7 and again here"
+
+[[raise]]
+date = "2026-11-15"
+section = "Prior art"
+words_added = 111
+job = "his opening paragraph of Section 2 (the decision problem, the learning technique and the optimization beneath it) and the caption of the three-layer figure, which replace the sentence that listed the families"
+reader = "the reader placing the method among its prior art before the family table"
+
+[[raise]]
+date = "2026-11-15"
+section = "Definitions"
+words_added = 81
+job = "the fitted reference surface, the supporting envelope and the Pareto boundary each stated as a definition of their own, in place of the one definition that held three objects"
+reader = "the reader who needs one definition per object, with the Pareto boundary kept apart from the fit"
+
+[[raise]]
+date = "2026-11-15"
+section = "Methods"
+words_added = 147
+job = "the assumptions A1 to A11, moved from Preliminaries and notation to stand beside the conditions of the theory they qualify"
+reader = "the reader checking the mathematics, who looks for the assumptions where the results are stated"
+
+[[raise]]
+date = "2026-11-15"
+section = "Case analysis"
+words_added = 60
+job = "the generated nondominated-set sentence, moved from Section 1 to open Case analysis, where its numbers are read"
+reader = "the reader of the case who wants the dominance count before the fit's reading"

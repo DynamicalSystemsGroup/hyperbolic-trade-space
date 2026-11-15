@@ -40,7 +40,7 @@ def test_each_drawn_svg_equals_its_generators_output(module, svg):
         generator = importlib.import_module(f"figures.{module}")
     finally:
         sys.path.remove(str(ROOT / "paper"))
-    assert (ROOT / "paper" / "figures" / svg).read_text() == generator.svg()
+    assert (ROOT / "paper" / "figures" / svg).read_text(encoding="utf-8") == generator.svg()
 
 
 def test_the_two_panel_ternary_is_committed_beside_its_generator():

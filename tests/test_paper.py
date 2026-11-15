@@ -1669,7 +1669,9 @@ def test_section2_distinguishes_horopca_in_one_paragraph():
     ):
         assert phrase in p, phrase
     # WP35 amendment 1: the paragraph points at Appendix H and says what it tests
-    assert "recovered the planted trade-offs only where they were the direction of largest spread" in p
+    assert (
+        "recovered the planted trade-offs only where they were the direction of largest spread" in p
+    )
     assert "{ref}`Appendix H <appendix-h>`" in p and "Appendix G" not in p
     assert "kernel" not in p.lower()
     assert "unrelated" not in s2 and "Färe" not in s2  # the two caveats are pointers or gone
@@ -2337,8 +2339,8 @@ def test_generated_sentence_cells_have_outputs_and_the_case_numbers_are_not_type
 
 def test_reader_depth_anchors_are_all_present():
     """R-13: L-A title and abstract on the first page (the three-pane figure left the body: it is
-    on the index page); L-B headings and the roadmap of Section 1 (his review of 2026-11-15 replaced the main-results
-    list and the organization paragraph); L-D pointers."""
+    on the index page); L-B headings and the roadmap of Section 1 (his review of 2026-11-15
+    replaced the main-results list and the organization paragraph); L-D pointers."""
     nb = _nb(PAPER_NB)
     fm = yaml.safe_load(_src(nb.cells[0]).split("---")[1])
     assert fm["title"] and len(fm["abstract"].split()) <= abstract_cap()
@@ -2660,7 +2662,9 @@ def test_every_figure_and_table_is_referenced_from_the_text():
     """G-2: each float with a label has a numref to it in the running text (not in its caption)."""
     body = _markdown(_nb(PAPER_NB))
     floats = re.findall(r"^:::+\{(?:figure|table)\}[^\n]*\n:label: (\S+)", body, re.M)
-    assert len(floats) == 12, floats  # ten figures (the prior-art layers and the pipeline joined) and two tables
+    assert len(floats) == 12, (
+        floats
+    )  # ten figures (the prior-art layers and the pipeline joined) and two tables
     for cell in _nb(PAPER_NB).cells:
         if cell.cell_type != "markdown" or cell.id == "frontmatter":
             continue

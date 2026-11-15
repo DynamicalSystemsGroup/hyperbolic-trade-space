@@ -8,6 +8,7 @@ file is written again.
 
 Run ``uv run python paper/figures/pipeline.py`` to write ``fig-pipeline.svg`` beside it.
 """
+# ruff: noqa: E501  (the SVG text is held as written, one element to a line)
 
 from __future__ import annotations
 
@@ -85,7 +86,7 @@ def svg() -> str:
 
 def main() -> None:
     """Write ``fig-pipeline.svg`` beside this file."""
-    OUT.write_text(svg())
+    OUT.write_text(svg(), encoding="utf-8")
     print("wrote", OUT)
 
 

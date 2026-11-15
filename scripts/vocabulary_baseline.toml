@@ -401,3 +401,73 @@ file = "src/hyperbolic_trade_space/tuning.py"
 phrase = "return temperature"
 owner = "package docstrings"
 reason = "BASELINE: numpydoc Returns entry of a docstring (WP10 re-triage 2026-11-09)"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "attributes"
+owner = "WP53 (his review text)"
+reason = "BASELINE: his wording of Sections 1 and 2 (2026-11-15), applied as written; the glossary term is the supervisor's to choose where the text should change"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "configuration"
+owner = "WP53 (his review text)"
+reason = "BASELINE: his wording of Sections 1 and 2 (2026-11-15), applied as written; the glossary term is the supervisor's to choose where the text should change"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "elasticity"
+owner = "WP53 (his review text)"
+reason = "BASELINE: his wording of Sections 1 and 2 (2026-11-15), applied as written; the glossary term is the supervisor's to choose where the text should change"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "fit temperature"
+owner = "WP53 (his review text)"
+reason = "BASELINE: his wording of Sections 1 and 2 (2026-11-15), applied as written; the glossary term is the supervisor's to choose where the text should change"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "metrics"
+owner = "WP53 (his review text)"
+reason = "BASELINE: his wording of Sections 1 and 2 (2026-11-15), applied as written; the glossary term is the supervisor's to choose where the text should change"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "posynomial"
+owner = "WP53 (his review text)"
+reason = "BASELINE: his wording of Sections 1 and 2 (2026-11-15), applied as written; the glossary term is the supervisor's to choose where the text should change"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "region"
+owner = "WP53 (his review text)"
+reason = "BASELINE: his wording of Sections 1 and 2 (2026-11-15), applied as written; the glossary term is the supervisor's to choose where the text should change"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "share"
+owner = "WP53 (his review text)"
+reason = "BASELINE: his wording of Sections 1 and 2 (2026-11-15), applied as written; the glossary term is the supervisor's to choose where the text should change"
+
+[[violation]]
+kind = "first-use"
+file = "paper/paper.ipynb"
+phrase = "trade-off"
+owner = "WP53 (his review text)"
+reason = "BASELINE: his wording of Sections 1 and 2 (2026-11-15), applied as written; the glossary term is the supervisor's to choose where the text should change"
+
+[[violation]]
+kind = "stem"
+file = "paper/paper.ipynb"
+phrase = "reference surface"
+owner = "WP53 (his review text)"
+reason = "BASELINE: his wording of Sections 1 and 2 (2026-11-15), applied as written; the glossary term is the supervisor's to choose where the text should change"
