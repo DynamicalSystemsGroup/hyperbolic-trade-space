@@ -366,3 +366,16 @@ to lyupunov"
 record's existing entry; the record dates the firm's blog copy 1 October 2018 and the Medium copy 2 May 2019, so the
 page says 2018; the tie is his account, noted on the row.
 
+**Supervisor (04:20 EST):** "given the political economy undertones, it might worth citing: https://mzargham.github.io/politics-of-progress/
+and https://www.dynamicalsystemsgroup.com/blog/knowledge-networks-and-the-politics-of-protocols"
+
+**What the pages show:** Knowledge Networks and the Politics of Protocols, Zargham, Ben-Meir and Nabben, the firm's blog,
+9 January 2024 (marked updated): tools that let users provision, operate and govern their own instances create a new
+commons; the tools are never politically neutral, since developers' decisions structure the action space ("design is
+governance", after Amber Case). The Politics of Progress, Zargham 2025, a GitHub Pages site: a comparative and
+meta-analysis of two books on techno-political thought (Andreessen's manifesto; Klein and Thompson's Abundance) to
+surface the assumptions behind the Overton window on progress. **The driver's view:** the first belongs, one clause in
+2024 between Algorithms as Policy and the legitimacy work, since it states the premise the page's lineage sentence
+rests on (a protocol structures an action space, so its design is politics); the second is a reading of other people's
+books and would read as editorial on a page about this work's lineage; his call.
+
