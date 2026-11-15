@@ -2345,4 +2345,11 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   and verifying after its rebase, whose conflicts in two notebooks and the length ledger were resolved by taking the
   build's notebooks and replaying fix4's edits, and the figure module keeping the build's function with fix4's one-line
   titles), wp41, WP43 (the rerun changed only the timing columns of its result files, as its record says).
+- **WP43 landed (2026-11-14 21:43 EST).** The lint subagent cleared 36 findings in the spike's scripts (noqa on the path-insert imports,
+  lines wrapped, unused bindings dropped, files opened in with blocks, the loop variable bound as a default) and
+  reran the spike (2,546 s): every number identical, the timing columns different as the record allows, and the three
+  figures not byte-identical (8 and 18 percent of pixels, text placement; the pre-lint scripts give the same new bytes,
+  so the renderer, not the code). The driver's call: the rerun record now says the figures regenerate with the same
+  data and not the same bytes, the committed figures kept; the readout's claims stand on the data files. Landed as one
+  commit on dev after a clean rebase, ruff and format clean. Its branch's fast suite had passed (1,972).
 
