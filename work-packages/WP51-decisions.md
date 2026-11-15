@@ -198,3 +198,12 @@ an optional add on if its confusing rather than helpful, drop it"
 diamond, square) drawn with the same markers in the slices' panes as landmarks across the three views, judged by the
 cold reads and dropped if they confuse; what the three markers are is read from the ternary's code and kept the same.
 
+**Supervisor (2026-11-14 23:06 EST):** "you have the code to map between coordinate systems. whether they are concrete designs or
+attribute vectors or points in the metrics or values of the exponents. to me knowledge we have unique mappings"
+
+**Applied as:** the landmarks are mapped, not matched: a point of the share simplex (a design's shares or a term's
+exponent vector) fixes a ray in metric space, and V's homogeneity of degree one puts exactly one point of the surface on
+that ray (t = 1/V(s)); from there the log-metric point and the chart point follow by the package's transform. So the
+ternary's three markers can be drawn in every pane as points of the surface, with the slice's held value noted where
+the point is off the slice. The unit draws them so and the cold reads judge.
+
