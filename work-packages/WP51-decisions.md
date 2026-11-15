@@ -275,3 +275,11 @@ largest among points with a fixed total; mapped to the surface it is the term's 
 caption name it by what characterises it ("term k's peak: where the term's share of each metric equals its exponent")
 and "own point" goes. The glossary's "balanced point" is a different object (the dual-weighted mean) and is not used.
 
+**Supervisor (2026-11-14 23:33 EST):** "we used the term own in the caption of the figure as well. should we call it the characteristic
+point"
+
+**Applied as:** the name is "characteristic point" (of a term): the point of the surface whose shares of the metrics
+are the term's exponents, where the term's monomial is largest for a given total. It replaces "own point" in the
+legend and both captions (the ternary's too) and "peak" in the driver's draft; it enters the glossary as one entry so
+the docs example page and the captions use one word; the register rows follow.
+
