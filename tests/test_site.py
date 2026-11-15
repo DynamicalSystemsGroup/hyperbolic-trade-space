@@ -1106,7 +1106,8 @@ def test_history_page_follows_the_scope_order_and_the_closing_unit_rulings():
         text.index(m, text.index("Before the firm") if m != "Before the firm" else 0) for m in order
     ]
     assert positions == sorted(positions), positions
-    assert 'href="#record">long-running endeavour with many contributors</a>' in raw
+    # the opening sentence's link to the record was dropped on the supervisor's word (2026-11-15)
+    assert 'href="#record">long-running endeavour' not in raw
     assert 'posynomial like <a href="paper/">this paper</a>' in raw
     assert (
         "Andrew \u201cOctopus\u201d Penland led workshops on MAIDs, GDS and cadCAD "

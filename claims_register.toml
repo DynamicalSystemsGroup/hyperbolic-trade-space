@@ -8454,7 +8454,7 @@ note = "Record id 2023-market-design-lessons (https://blog.block.science/market-
 
 [[claim]]
 id = "C710"
-fragment = "With <span class=\"n\">Kelsie Nabben</span> and <span class=\"n\">Ellie Rennie</span>, that lineage continued in"
+fragment = "With <span class=\"n\">Kelsie Nabben</span> and <span class=\"n\">Ellie Rennie</span>, whose"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -8465,7 +8465,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP52 history page, 2026-11-14"
-note = "Record ids 2023-computer-aided-ethnography (https://kelsienabben.substack.com/p/computer-aided-ethnography-cae, Nabben, Zargham, Rennie), 2025-building-the-loop (https://doi.org/10.1111/epic.70009, EPIC 2025; subtitle 'Artificial Organisational Intelligence')."
+note = "Record ids 2023-credsperiment (https://doi.org/10.2139/ssrn.4570035, Rennie 2023: a community paid by Cred scores), 2023-computer-aided-ethnography (https://kelsienabben.substack.com/p/computer-aided-ethnography-cae, Nabben, Zargham, Rennie), 2025-building-the-loop (https://doi.org/10.1111/epic.70009, EPIC 2025; subtitle 'Artificial Organisational Intelligence')."
 
 [[claim]]
 id = "C711"
@@ -8559,7 +8559,7 @@ note = "Record ids 2024-engineering-for-legitimacy (the firm's blog, Ben-Meir an
 
 [[claim]]
 id = "C717"
-fragment = "<a href=\"https://blog.block.science/algorithms-as-policy/\">Algorithms as policy</a> (2021), with"
+fragment = "<a href=\"https://kelsienabben.substack.com/p/algorithms-as-policy\">Algorithms as policy</a> (2020), with"
 file = "site/history.html"
 anchor = ""
 kind = "S"
@@ -8570,7 +8570,7 @@ backing = [
 status = "backed"
 disposition = "keep"
 source = "WP52 history page, 2026-11-14"
-note = "Record id 2021-algorithms-as-policy (https://blog.block.science/algorithms-as-policy/, Zargham and Nabben, 2021-03-31: algorithms as the rules of governance on platforms; algorithm design as policy-making with responsibility to the public interest)."
+note = "Record id 2020-algorithms-as-policy (https://kelsienabben.substack.com/p/algorithms-as-policy, Zargham and Nabben, 2020-12-15: algorithms as the rules of governance on platforms; algorithm design as policy-making with responsibility to the public interest)."
 
 [[claim]]
 id = "C718"
@@ -8706,3 +8706,18 @@ status = "backed"
 disposition = "keep"
 source = "WP52 history page, 2026-11-15"
 note = "Record id 2025-politics-of-progress (Zargham 2025, CC0: comparative analysis of the Techno-Optimist Manifesto and Abundance; abundance requires institutions that make trade-offs visible and negotiate shared constraints); 'neither acknowledged trade-offs' is the author's summary of his own editorial (2026-11-15)."
+
+[[claim]]
+id = "C727"
+fragment = "Exploring subjectivity in algorithms</a> (2019), written for SourceCred, showed the choices inside PageRank"
+file = "site/history.html"
+anchor = ""
+kind = "S"
+backing = [
+  "file:history.yaml",
+  "file:work-packages/WP37-rounds/trace.md",
+]
+status = "backed"
+disposition = "keep"
+source = "WP52 history page, 2026-11-15"
+note = "Record id 2019-exploring-subjectivity (Medium, SourceCred, 24 March 2019, Zargham; the Internet Archive capture: PageRank well defined only after a mixing model is imposed; the uniform heuristic, the seed vector and alpha as design choices)."

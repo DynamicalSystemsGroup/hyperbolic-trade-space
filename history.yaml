@@ -657,14 +657,34 @@ entries:
     claim: sourced
     special_case: true
 
-  - id: 2021-algorithms-as-policy
-    date: "2021-03-31"
+  - id: 2020-algorithms-as-policy
+    date: "2020-12-15"
     kind: post
     title: "Algorithms as Policy"
     people: [{name: "Michael Zargham"}, {name: "Kelsie Nabben"}]
-    url: https://blog.block.science/algorithms-as-policy/
-    read_on: "2026-11-14"
-    shows: "BlockScience blog, 31 March 2021, by Michael Zargham and Kelsie Nabben: algorithms function as the rules of governance on online platforms and are designed with too little attention to the people they govern; algorithm design should be treated as policy-making with responsibility to the public interest, and digital infrastructure as critical public infrastructure."
+    url: https://kelsienabben.substack.com/p/algorithms-as-policy
+    read_on: "2026-11-15"
+    shows: "Kelsie Nabben's Substack, published 15 December 2020 (the page's metadata; byline Michael Zargham and Kelsie Nabben, December 2020): algorithms fulfil the function of policies as the rules of governance on online platforms; algorithm design should be treated as policy-making with responsibility to the public interest. The BlockScience blog carries a copy dated 31 March 2021 (https://blog.block.science/algorithms-as-policy/); the supervisor named the Substack as the source (2026-11-15). It cites Exploring Subjectivity in Algorithms (Zargham, 2019)."
+    claim: sourced
+
+  - id: 2019-exploring-subjectivity
+    date: "2019-03-24"
+    kind: post
+    title: "Exploring Subjectivity in Algorithms"
+    people: [{name: "Michael Zargham"}]
+    url: https://web.archive.org/web/20260829051440/https://medium.com/sourcecred/exploring-subjectivity-in-algorithms-5d8bf1c91714
+    read_on: "2026-11-15"
+    shows: "Medium, the SourceCred publication, 24 March 2019, by Michael Zargham: PageRank is well defined only after a model of a mixing process is imposed on the network; the uniform-traversal heuristic, the seed vector and the coefficient alpha are design choices, so the ranking carries judgement. Medium answers 403 to automated readers; the link is the Internet Archive's capture of 29 August 2026 (no copy on the firm's blogs)."
+    claim: sourced
+
+  - id: 2023-credsperiment
+    date: "2023-09-14"
+    kind: paper
+    title: "The CredSperiment: An Ethnography of a Contributions System"
+    people: [{name: "Ellie Rennie"}]
+    url: https://doi.org/10.2139/ssrn.4570035
+    read_on: "2026-11-15"
+    shows: "SSRN 4570035 (Crossref: Rennie, 2023; posted 14 September 2023, revised 30 November 2023; read from the supervisor's copy, draft 2 of 13 September 2023): participants compensated by SourceCred's Cred scores in a permissionless organisation; contribution goods; terraforming against environmentality; names Zargham as an early contributor to SourceCred through whom the author met the group, and cites the governance surface (Zargham and Nabben 2022). SSRN answers 403 to automated requests (blocked, not failed)."
     claim: sourced
 
   - id: 2024-arbitrum-position-paper
