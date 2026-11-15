@@ -2465,3 +2465,9 @@ result is a verdict on a commit and cannot be disturbed by agents at work. First
   at 26 with the temperature page, the proof map regenerated with L22's entry, the notebook heading replayed on dev's
   notebook, rows C823 to C841 on the assumption that wp41's C807 to C822 land first); its notebooks executing. wp41's
   chain still executing its notebooks since 00:30; the contract becomes 27 for whichever of the two lands second.
+- **wp41 landed (2026-11-15 01:13 EST; the previous tick's label 01:05 was ~00:53 by the machine clock).** af54b3b on dev: the
+  bridge page with the D-5 reader's fixes, its notebooks re-executed on the merged tree (one docs code comment wrapped
+  to the 72 column after the chain's one failure), the rebase onto dev clean; lint, format, lock and attribution
+  clean; paper, register, contract, generated, site and docs tests 436 passed. CI dispatched (run 43684406562).
+  Rows C807 to C822; contract 26. wp46 follows once its chain on 8542352 finishes: rebase onto af54b3b (register
+  tail, contract to 27, budgets), notebooks again, then land.
