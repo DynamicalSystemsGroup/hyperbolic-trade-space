@@ -207,3 +207,9 @@ that ray (t = 1/V(s)); from there the log-metric point and the chart point follo
 ternary's three markers can be drawn in every pane as points of the surface, with the slice's held value noted where
 the point is off the slice. The unit draws them so and the cold reads judge.
 
+**Supervisor (2026-11-14 23:07 EST), on round 3 as served (the re-planted table, the data reaching the surface in every slice; image in
+chat):** "this is good. looking forward to seeing what it looks like with the landmarks"
+
+**Applied as:** round 3 passes his read; the landmarks (the ternary's three markers mapped to their surface points) are
+the next and last add-on of the night, judged by his read in the morning if he is asleep by then.
+
